@@ -21,7 +21,7 @@ SandDance is an offering of several JavaScript components:
 
 ## Changelog
 
-* March 2019 - Initial release to GitHub.
+* April 2019 - Initial release to GitHub.
 
 ## Roadmap
 
