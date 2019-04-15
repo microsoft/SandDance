@@ -7,4 +7,16 @@
 .c-page-content {
     min-height: 10em;
     padding-top: $spacing;
+
+    blockquote {
+      border-radius: 6px;
+      padding: 16px;
+      background-color: rgb(226, 218, 241);
+      p {
+        margin-bottom: 0;
+      }
+      .dark-theme & {
+          background-color: rgb(56, 34, 93);
+      }      
+    }
 }
