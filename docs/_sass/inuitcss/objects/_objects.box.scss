@@ -1,0 +1,48 @@
+/* ==========================================================================
+   #BOX
+   ========================================================================== */
+
+/**
+ * The box object simply boxes off content. Extend with cosmetic styles in the
+ * Components layer.
+ *
+ * 1. So we can apply the `.o-box` class to naturally-inline elements.
+ */
+
+.o-box {
+  @include inuit-clearfix();
+  display: block; /* [1] */
+  padding: $inuit-global-spacing-unit;
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+
+}
+
+
+
+
+
+/* Size variants
+   ========================================================================== */
+
+.o-box--flush {
+  padding: 0;
+}
+
+.o-box--tiny {
+  padding: $inuit-global-spacing-unit-tiny;
+}
+
+.o-box--small {
+  padding: $inuit-global-spacing-unit-small;
+}
+
+.o-box--large {
+  padding: $inuit-global-spacing-unit-large;
+}
+
+.o-box--huge {
+  padding: $inuit-global-spacing-unit-huge;
+}

@@ -1,0 +1,219 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+import * as searchExpression from './searchExpression';
+import { ActiveFieldName, CollapsedFieldName, SelectedFieldName } from './specs/constants';
+import { Animator } from './animator';
+import { constants, controls, util } from './vega-deck.gl';
+import { createElement, mount } from 'tsx-create-element';
+import { cssPrefix } from './defaults';
+import { DataScope, UserSelection } from './dataScope';
+import { Language } from './types';
+import { SearchExpression } from './searchExpression/types';
+
+interface State {
+    remapColor?: boolean;
+    userSelection: UserSelection;
+    index: number;
+}
+
+enum Action {
+    deselect, isolate, exclude, reset, next, previous
+}
+
+export class Details {
+    public element: HTMLElement;
+    private state: State;
+
+    constructor(
+        parentElement: HTMLElement,
+        private language: Language,
+        private animator: Animator,
+        private dataScope: DataScope,
+        private colorMapHandler: (remap: boolean) => void,
+        private hasColorMaps: () => boolean
+    ) {
+        this.element = util.addDiv(parentElement, `${cssPrefix}unitControls`);
+        this.clear();
+    }
+
+    clear() {
+        this.state = {
+            userSelection: null,
+            index: -1,
+            remapColor: false
+        }
+        this.render();
+    }
+
+    clearSelection() {
+        this.state.userSelection = null;
+        this.state.index = -1;
+        this.render();
+    }
+
+    populate(userSelection: UserSelection, index = 0) {
+        this.state.userSelection = userSelection;
+        this.state.index = index;
+        this.render();
+    }
+
+    private selectByNameValue(columnName: string, value: any) {
+        const search: SearchExpression = {
+            name: columnName,
+            operator: '==',
+            value
+        };
+        this.clearSelection();
+        this.animator.select(search);
+        this.populate(this.dataScope.selection);
+    }
+
+    private remapChanged(remap: boolean) {
+        this.state.remapColor = remap;
+        this.colorMapHandler(remap);
+        this.render();
+    }
+
+    private handleAction(action: Action) {
+        let p: Promise<void>;
+        const u = this.state.userSelection;
+
+        switch (action) {
+
+            case Action.deselect:
+                this.clearSelection();
+                p = this.animator.deselect();
+                break;
+
+            case Action.exclude:
+                this.clearSelection();
+                p = this.animator.filter(searchExpression.invert(u.search), u.excluded, u.included);
+                this.state.remapColor = false;
+                break;
+
+            case Action.isolate:
+                this.clearSelection();
+                p = this.animator.filter(u.search, u.included, u.excluded);
+                this.state.remapColor = false;
+                break;
+
+            case Action.reset:
+                this.clear();
+                p = this.animator.reset();
+                break;
+
+            default:
+                switch (action) {
+                    case Action.previous:
+                        this.state.index--;
+                        if (this.state.index < 0) {
+                            this.state.index = this.state.userSelection.included.length - 1;
+                        }
+                        break;
+
+                    case Action.next:
+                        this.state.index++;
+                        if (this.state.index >= this.state.userSelection.included.length) {
+                            this.state.index = 0;
+                        }
+                        break;
+                }
+                this.render();
+                p = this.animator.activate(this.state.userSelection.included[this.state.index]);
+        }
+        p.then(() => this.render());
+    }
+
+    render() {
+        const hasRefinedData = !!this.dataScope.filteredData;
+        const renderProps: RenderProps = {
+            language: this.language,
+            actionHandler: action => this.handleAction(action),
+            selectionHandler: (columnName, value) => this.selectByNameValue(columnName, value),
+            count: this.state.userSelection && this.state.userSelection.included.length,
+            hasRefinedData,
+            item: this.state.userSelection && this.state.userSelection.included[this.state.index],
+            remapColorHandler: remap => this.remapChanged(remap),
+            hasColorMaps: this.hasColorMaps() && hasRefinedData,
+            remapColor: this.state.remapColor
+        };
+        mount(renderDetails(renderProps), this.element);
+    }
+}
+
+interface RenderProps {
+    actionHandler: (action: Action) => void;
+    selectionHandler: (columnName: string, value: any) => void;
+    remapColorHandler: (remap: boolean) => void;
+    hasColorMaps: boolean;
+    remapColor: boolean;
+    item: any;
+    hasRefinedData: boolean;
+    count: number;
+    language: Language;
+}
+
+const renderDetails = (props: RenderProps) => {
+    const controlButtons = [
+        <button disabled={!props.item} onClick={e => props.actionHandler(Action.deselect)}>{props.language.deselect}</button>,
+        <button disabled={!props.item} onClick={e => props.actionHandler(Action.isolate)}>{props.language.isolate}</button>,
+        <button disabled={!props.item} onClick={e => props.actionHandler(Action.exclude)}>{props.language.exclude}</button>
+    ];
+    const colorMapping = (
+        <div>
+            <button disabled={props.remapColor} onClick={e => props.remapColorHandler(true)}>{props.language.newColorMap}</button>
+            <button disabled={!props.remapColor} onClick={e => props.remapColorHandler(false)}>{props.language.oldColorMap}</button>
+        </div>
+    );
+
+    const singleItem = props.count === 1;
+    const scrollButtons = [
+        <button disabled={singleItem} onClick={e => props.actionHandler(Action.previous)}>{props.language.previousDetail}</button>,
+        <button disabled={singleItem} onClick={e => props.actionHandler(Action.next)}>{props.language.nextDetail}</button>,
+        <span> {props.language.selectionCount(props.count)}</span>
+    ];
+    const rows: controls.TableRow[] = [];
+    for (let prop in props.item) {
+        switch (prop) {
+            case ActiveFieldName:
+            case CollapsedFieldName:
+            case SelectedFieldName:
+            case constants.GL_ORDINAL:
+                continue;
+            default:
+                rows.push({
+                    cells: [
+                        { content: prop }, { content: linkSelect(props.language, prop, props.item[prop], props.selectionHandler) }
+                    ]
+                });
+        }
+    }
+    return (
+        <div>
+            {props.hasColorMaps && colorMapping}
+            <h4>{props.language.headers.selection}</h4>
+            <div className={`${cssPrefix}selection`}>
+                {controlButtons}
+                <button disabled={!props.hasRefinedData} onClick={e => props.actionHandler(Action.reset)}>reset</button>
+            </div>
+            {props.item && <h4>{props.language.headers.details}</h4>}
+            <div>
+                <div className={`${cssPrefix}details-scroll`}>
+                    {props.item && scrollButtons}
+                </div>
+                <div className={`${cssPrefix}details`}>
+                    {props.item && <controls.Table rows={rows} />}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function linkSelect(language: Language, columnName: string, value: any, selectionHandler: (columnName: string, value: any) => void) {
+    return (
+        <span>
+            <a href="#" onClick={e => selectionHandler(columnName, value)} >{value}</a>
+            {isNaN(value) ? [' ', <a className="bing-search" href={`https://www.bing.com/search?q=${encodeURIComponent(value)}`} target="_blank">{language.bing}</a>] : ''}
+        </span>
+    );
+}

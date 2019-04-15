@@ -1,0 +1,30 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+/*------------------------------------*\
+  #TABLES
+\*------------------------------------*/
+
+table {
+    td, th {
+        padding-top:    $spacing-small;
+        padding-right:  $spacing;
+        padding-bottom: $spacing-small;
+        padding-left:   $spacing;
+        border-bottom: 1px solid $ms-black-200;
+        @include inuit-font-size($inuit-font-size-h5);
+
+        .dark-theme & {
+            border-bottom-color: $ms-black-500;
+        }
+    }
+
+    tr:last-child {
+        td {
+            border-bottom: 0;
+        }
+    }
+
+    th {
+        text-align: left;
+    }
+}

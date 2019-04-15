@@ -1,0 +1,7 @@
+{
+    "compilerOptions": {
+        "moduleResolution": "node",
+        "skipLibCheck": true,
+        "target": "es6"
+    }
+}

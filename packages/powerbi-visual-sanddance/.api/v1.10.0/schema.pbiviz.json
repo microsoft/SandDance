@@ -1,0 +1,103 @@
+{
+    "PBI_API_VERSION": "v1.10.0",
+    "type": "object",
+    "properties": {
+        "apiVersion": {
+            "type": "string",
+            "description": "Version of the IVisual API"
+        },
+        "author": {
+            "type": "object",
+            "description": "Information about the author of the visual",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of the visual author. This is displayed to users."
+                },
+                "email": {
+                    "type": "string",
+                    "description": "E-mail of the visual author. This is displayed to users for support."
+                }
+            }
+        },
+        "assets": {
+            "type": "object",
+            "description": "Assets used by the visual",
+            "properties": {
+                "icon": {
+                    "type": "string",
+                    "description": "A 20x20 png icon used to represent the visual"
+                }
+            }
+        },
+        "externalJS": {
+            "type": "array",
+            "description": "An array of relative paths to 3rd party javascript libraries to load",
+            "items": {
+                "type": "string"
+            }
+        },
+        "stringResources": {
+            "type": "array",
+            "description": "An array of relative paths to string resources to load",
+            "items": {
+                "type": "string"
+            },
+            "uniqueItems": true
+        },         
+        "style" : {
+            "type": "string",
+            "description": "Relative path to the stylesheet (less) for the visual"
+        },
+        "capabilities": {
+            "type": "string",
+            "description": "Relative path to the visual capabilities json file"
+        },
+        "visual": {
+            "type": "object",
+            "description": "Details about this visual",
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "What does this visual do?"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Internal visual name"
+                },
+                "displayName": {
+                    "type": "string",
+                    "description": "A friendly name"
+                },
+                "externals": {
+                    "type": "array",
+                    "description": "External files (such as JavaScript) that you would like to include"
+                },
+                "guid": {
+                    "type": "string",
+                    "description": "Unique identifier for the visual"
+                },
+                "visualClassName": {
+                    "type": "string",
+                    "description": "Class of your IVisual"
+                },
+                "icon": {
+                    "type": "string",
+                    "description": "Icon path"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Visual version"
+                },
+                "gitHubUrl": {
+                    "type": "string",
+                    "description": "Url to the github repository for this visual"
+                },
+                "supportUrl": {
+                    "type": "string",
+                    "description": "Url to the support page for this visual"
+                }
+            }
+        }
+    }
+}

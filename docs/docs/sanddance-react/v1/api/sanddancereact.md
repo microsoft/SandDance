@@ -1,0 +1,68 @@
+---
+layout: api
+---
+
+# sanddance-react .SandDanceReact
+
+```typescript
+class SandDanceReact
+```
+## Methods
+
+### componentDidMount()
+
+Called immediately after a component is mounted. Setting state here will trigger re-rendering.
+
+```typescript
+public componentDidMount(): void;
+```
+
+**Return type**
+
+void
+
+----------
+
+### componentDidUpdate()
+
+Called immediately after updating occurs. Not called for the initial render.
+
+The snapshot is only present if getSnapshotBeforeUpdate is present and returns non-null.
+
+```typescript
+public componentDidUpdate(): void;
+```
+
+**Return type**
+
+void
+
+----------
+
+### render()
+
+```typescript
+public render(): Element;
+```
+
+**Return type**
+
+Element
+
+## Properties
+
+### viewer
+
+```typescript
+public viewer: Viewer;
+```
+
+**Type**
+
+Viewer
+
+[ClassDeclaration-0]: sanddancereact#sanddancereact
+[MethodDeclaration-0]: sanddancereact#componentdidmount
+[MethodDeclaration-1]: sanddancereact#componentdidupdate
+[MethodDeclaration-2]: sanddancereact#render
+[PropertyDeclaration-0]: sanddancereact#viewer

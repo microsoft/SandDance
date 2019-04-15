@@ -1,0 +1,22 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+/*------------------------------------*\
+  #HEADINGS
+\*------------------------------------*/
+
+$header-height: 60px + $spacing;
+
+h1, h2, h3,
+h4, h5, h6 {
+    margin-top: 0;
+    font-weight: 600;
+
+    &:before {
+      display: block; 
+      content: ' '; 
+      margin-top: -$header-height; 
+      height: $header-height; 
+      visibility: hidden; 
+      pointer-events: none;
+    }
+}

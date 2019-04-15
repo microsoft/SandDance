@@ -1,0 +1,20 @@
+{
+  "name": "sanddance-test-es6",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsc -p .",
+    "deploy": "parcel build ./src/sanddance.ts --no-cache --no-minify --no-source-maps --public-url . --out-dir ../../docs/tests/es6/js"
+  },
+  "dependencies": {
+    "@deck.gl/core": "6.3.2",
+    "@deck.gl/layers": "6.3.2",
+    "gl-mat4": "1.2.0",
+    "gl-vec2": "1.3.0",
+    "gl-vec3": "1.1.3",
+    "gl-vec4": "1.0.1",
+    "luma.gl": "6.3.2",
+    "@msrvida/sanddance": "*",
+    "vega-lib": "4.3.0"
+  }
+}

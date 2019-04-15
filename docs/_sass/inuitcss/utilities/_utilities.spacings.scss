@@ -1,0 +1,60 @@
+/* ==========================================================================
+   #SPACINGS
+   ========================================================================== */
+
+/**
+ * Utility classes to put specific spacing values onto elements. The below loop
+ * will generate us a suite of classes like:
+ *
+ *   .u-margin-top {}
+ *   .u-padding-left-large {}
+ *   .u-margin-right-small {}
+ *   .u-padding {}
+ *   .u-padding-right-none {}
+ *   .u-padding-horizontal {}
+ *   .u-padding-vertical-small {}
+ */
+
+$inuit-spacing-directions: (
+  null: null,
+  "-top": "-top",
+  "-right": "-right",
+  "-bottom": "-bottom",
+  "-left": "-left",
+  "-horizontal": "-left" "-right",
+  "-vertical": "-top" "-bottom",
+) !default;
+
+$inuit-spacing-properties: (
+  "padding": "padding",
+  "margin": "margin",
+) !default;
+
+$inuit-spacing-sizes: (
+  null: $inuit-global-spacing-unit,
+  "-tiny": $inuit-global-spacing-unit-tiny,
+  "-small": $inuit-global-spacing-unit-small,
+  "-large": $inuit-global-spacing-unit-large,
+  "-huge": $inuit-global-spacing-unit-huge,
+  "-none": 0
+) !default;
+
+@each $property-namespace, $property in $inuit-spacing-properties {
+
+  @each $direction-namespace, $direction-rules in $inuit-spacing-directions {
+
+    @each $size-namespace, $size in $inuit-spacing-sizes {
+
+      .u-#{$property-namespace}#{$direction-namespace}#{$size-namespace} {
+
+        @each $direction in $direction-rules {
+          #{$property}#{$direction}: $size !important;
+        }
+
+      }
+
+    }
+
+  }
+
+}

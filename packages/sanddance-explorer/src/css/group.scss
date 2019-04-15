@@ -1,0 +1,47 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+@mixin group(
+    $margin,
+    $border-color: #ccc,
+    $head-opacity: 0.8,
+    $count-color: #333,
+    $bg-color: #ccc
+) {    
+    .sanddance-group {
+        border-top: 1px solid $border-color;
+        padding-bottom: 1.5em;
+        position: relative;
+        .group-head {
+            display: grid;
+            grid-template-columns: auto auto;
+            line-height: 16px;
+            margin: 1em 0;
+            label {
+                font-size: 11px;
+                font-weight: 600;
+                letter-spacing: 3px;
+                opacity: $head-opacity;
+                text-transform: uppercase;
+            }
+            .count {
+                color: $count-color;
+                font-size: 12px;
+                text-align: right;
+            }
+        }
+        .group-icon {
+            position: absolute;
+            top: -1px;
+            right: 0;
+        }
+        &:first-child {
+            border-top: none;
+            .group-head {
+                margin-top: 0;
+            }
+        }
+        &:last-child {
+            padding-bottom: 0;
+        }
+    }
+}

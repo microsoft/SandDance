@@ -1,0 +1,27 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+/*------------------------------------*\
+  #LINKS
+\*------------------------------------*/
+
+a {
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+        text-decoration: underline;
+    }
+
+    .c-page-main & {
+        color: $ms-sky-400;
+
+        &:hover,
+        &:focus {
+            color: $ms-sky-500;
+        }
+    }
+}
+
+button {
+    font-family: inherit;
+}

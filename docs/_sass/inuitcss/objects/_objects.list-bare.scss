@@ -1,0 +1,20 @@
+/* ==========================================================================
+   #LIST-BARE
+   ========================================================================== */
+
+/**
+ * Strip list-like appearance from lists by removing their bullets and any
+ * indentation.
+ *
+ * Note: Declaring the item class might not be necessary everywhere,
+ * but is for example in <dl> lists for the <dd> children.
+ */
+
+.o-list-bare {
+  list-style: none;
+  margin-left: 0;
+}
+
+  .o-list-bare__item {
+    margin-left: 0;
+  }

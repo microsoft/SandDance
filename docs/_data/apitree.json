@@ -1,0 +1,29 @@
+{
+  "sanddance": [
+    "colorSchemes",
+    "constants",
+    "searchExpression",
+    "types",
+    "use",
+    "util",
+    "VegaDeckGl",
+    "Viewer"
+  ],
+  "sanddance-explorer": [
+    "DataContent",
+    "DataFile",
+    "Explorer",
+    "Index",
+    "Prefs",
+    "Props",
+    "Snapshot",
+    "State",
+    "use"
+  ],
+  "sanddance-react": [
+    "Props",
+    "SandDance",
+    "SandDanceReact",
+    "util"
+  ]
+}

@@ -1,0 +1,77 @@
+---
+---
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+// SETTINGS
+$inuit-global-font-size: 16px;
+@import "inuitcss/settings/settings.core";
+@import "settings/settings.global";
+@import "settings/settings.colors";
+
+// TOOLS
+@import "inuitcss/tools/tools.font-size";
+@import "inuitcss/tools/tools.clearfix";
+@import "inuitcss/tools/tools.hidden";
+@import "../../node_modules/sass-mq/mq";
+
+// GENERIC
+@import "inuitcss/generic/generic.reset";
+@import "inuitcss/generic/generic.box-sizing";
+@import "inuitcss/generic/generic.normalize";
+@import "inuitcss/generic/generic.shared";
+@import "generic/generic.syntax-highlight";
+
+// ELEMENTS
+$inuit-font-size-h1: 40px;
+$inuit-font-size-h2: 28px;
+$inuit-font-size-h3: 19px;
+$inuit-font-size-h4: 16px;
+$inuit-font-size-h5: 14px;
+$inuit-font-size-h6: 13px;
+@import "inuitcss/elements/elements.page";
+@import "elements/elements.page";
+@import "inuitcss/elements/elements.headings";
+@import "elements/elements.headings";
+@import "inuitcss/elements/elements.images";
+@import "inuitcss/elements/elements.tables";
+@import "elements/elements.links";
+@import "elements/elements.code";
+@import "elements/elements.hr";
+@import "elements/elements.tables";
+
+// OBJECTS
+$inuit-wrapper-width: 1280px;
+@import "inuitcss/objects/objects.layout";
+@import "inuitcss/objects/objects.wrapper";
+@import "inuitcss/objects/objects.media";
+@import "inuitcss/objects/objects.flag";
+@import "inuitcss/objects/objects.list-bare";
+@import "inuitcss/objects/objects.list-inline";
+@import "inuitcss/objects/objects.box";
+@import "inuitcss/objects/objects.block";
+@import "inuitcss/objects/objects.table";
+
+// COMPONENTS
+@import "components/components.buttons";
+@import "components/components.tree";
+@import "components/components.site-nav";
+@import "components/components.page-head";
+@import "components/components.breadcrumbs";
+@import "components/components.page-main";
+@import "components/components.page-content";
+@import "components/components.page-foot";
+
+// UTILITIES
+@import "inuitcss/utilities/utilities.widths";
+@import "inuitcss/utilities/utilities.headings";
+@import "inuitcss/utilities/utilities.spacings";
+$inuit-responsive-spacing-directions: (
+  null: null,
+  "-bottom": "-bottom",
+);
+$inuit-responsive-spacing-properties: (
+  "margin": "margin",
+);
+$inuit-responsive-spacing-sizes: $inuit-spacing-sizes !default;
+@import "inuitcss/utilities/utilities.responsive-spacings";
+@import "inuitcss/utilities/utilities.hide";

@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "dom", "es2015"
+        ],
+        "outDir": "../../docs/tests/umd/js/",
+        "removeComments": true,
+        "skipLibCheck": true
+    }
+}

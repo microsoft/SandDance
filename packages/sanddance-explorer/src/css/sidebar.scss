@@ -1,0 +1,87 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+@mixin sidebar(
+    $bg-color,
+    $dark-bg-color,
+    $toolbar-margin,
+    $toolbar-width,
+    $sidetab-width: 50px
+) {
+    .sanddance-sidebar {
+        background-color: $bg-color;
+        bottom: 0;
+        display: grid;
+        grid-template-areas:    "stats stats"
+                                "tabs bar";
+        grid-template-columns: $sidetab-width auto;
+        grid-template-rows: 0fr auto;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        transition: width 350ms cubic-bezier(.4, 0, .2, 1);     //TODO param
+        width: $toolbar-width;
+        z-index: 1; //appear over the canvas even though it is behind it in the dom.
+        .vbuttons {
+            background-color: rgba(0, 0, 0, 0.1);
+            display: grid;
+            grid-area: tabs;
+            grid-template-rows: auto 0fr;
+            position: relative;
+        }
+        .vbutton {
+            &.selected {
+                background-color: $bg-color;
+            }
+            button {
+                height: 60px;
+                width: 100%;
+                .ms-Button-icon {
+                    font-size: 24px;
+                }
+            }
+        }
+        .scrollable-container {
+            width: $toolbar-width - $sidetab-width;
+        }
+        .sidetab {
+            grid-area: bar;
+            padding: $toolbar-margin;
+        }
+        &.closed {
+            width: $sidetab-width;
+        }
+        &.calculator {
+            .calculating {
+                background: rgba($bg-color, 0.5);
+                height: 100%;
+                position: absolute;
+                top: 0;
+                width: 100%;
+            }
+            .ms-Spinner {
+                margin-top: -16px;
+                position: relative;
+                top: 50%;
+            }
+        }
+    }
+    .dark-theme {
+        .sanddance-sidebar {
+            background-color: $dark-bg-color;
+            color: #fff;
+            .vbuttons {
+                background-color: rgba(0, 0, 0, 0.4);
+            }
+            .vbutton {
+                &.selected {
+                    background-color: $dark-bg-color;
+                }
+            }
+            &.calculator {
+                .calculating {
+                    background: rgba($dark-bg-color, 0.5);
+                }
+            }
+        }
+    }
+}

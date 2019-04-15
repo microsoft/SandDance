@@ -1,0 +1,19 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+/*------------------------------------*\
+  #PAGE ELEMENTS
+\*------------------------------------*/
+
+html {
+
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    color: $ms-black-600;
+
+    &.dark-theme {
+        background: $ms-black-700;
+        color: white;
+    }
+}

@@ -1,0 +1,41 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+@mixin dataItem(
+    $border-color,
+    $dark-border-color
+) {
+    .sanddance-dataItem {
+        background-color: #fff;
+        border: 1px solid $border-color;
+        .name-value {
+            border-top: 1px solid $border-color;
+            cursor: pointer;
+            padding: 4px;
+            position: relative;
+            word-break: break-all;
+            &:hover {
+                background-color: rgb(0, 120, 212);
+                color: #fff;
+            }
+            &:first-child {
+                border-top: none;
+            }
+        }
+        .column-name {
+            font-weight: 500;
+        }
+        .bing-search {
+            text-align: right;
+        }
+    }
+    .dark-theme .sanddance-dataItem {
+        background-color: #000;
+        border-color: $dark-border-color;
+        .name-value {
+            border-top-color: $dark-border-color;
+        }
+        a {
+            color: #00b4f0;
+        }
+    }
+}

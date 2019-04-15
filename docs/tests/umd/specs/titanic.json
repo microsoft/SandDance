@@ -1,0 +1,307 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
+    "height": 500,
+    "padding": 5,
+    "signals": [
+        {
+            "name": "columns",
+            "value": 17,
+            "bind": {
+                "input": "range",
+                "min": 10,
+                "max": 35,
+                "step": 1
+            }
+        },
+        {
+            "name": "bins",
+            "value": 7,
+            "bind": {
+                "input": "range",
+                "min": 2,
+                "max": 20,
+                "step": 1
+            }
+        },
+        {
+            "name": "x_step",
+            "value": 200,
+            "bind": {
+                "input": "range",
+                "min": 60,
+                "max": 200,
+                "step": 20
+            }
+        },
+        {
+            "name": "x_padding",
+            "value": 0.2
+        },
+        {
+            "name": "width",
+            "update": "bandspace(domain('xscale2').length, x_padding, x_padding) * x_step"
+        },
+        {
+            "name": "height",
+            "update": "(rowxtent[1])*(bandwidth('xscale')+2*x_padding)"
+        },
+        {
+            "name": "newheight2",
+            "update": "(rowxtent[1]-1)*(bandwidth('xscale')+2*x_padding)"
+        },
+        {
+            "name": "variable",
+            "value": "Age",
+            "bind": {
+                "input": "select",
+                "options": [
+                    "Age",
+                    "TicketCost"
+                ]
+            }
+        }
+    ],
+    "data": [
+        {
+            "name": "points",
+            "format": {
+                "type": "tsv",
+                "parse": "auto"
+            },
+            "url": "../../sample-data/titanicmaster.tsv"
+        },
+        {
+            "name": "nested",
+            "source": "points",
+            "transform": [
+                {
+                    "type": "extent",
+                    "field": {
+                        "signal": "variable"
+                    },
+                    "signal": "age_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": {
+                        "signal": "variable"
+                    },
+                    "extent": {
+                        "signal": "age_extent"
+                    },
+                    "maxbins": {
+                        "signal": "bins"
+                    },
+                    "as": [
+                        "age0",
+                        "age1"
+                    ]
+                },
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "age0"
+                    ],
+                    "sort": {
+                        "field": {
+                            "signal": "variable"
+                        }
+                    }
+                },
+                {
+                    "type": "formula",
+                    "expr": "floor(datum.y0 / columns)",
+                    "as": "row"
+                },
+                {
+                    "type": "extent",
+                    "signal": "xtent",
+                    "field": "y1"
+                },
+                {
+                    "type": "extent",
+                    "signal": "rowxtent",
+                    "field": "row"
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.y0 % columns",
+                    "as": "column"
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "xscale",
+            "type": "band",
+            "range": [
+                0,
+                {
+                    "signal": "x_step * (1-x_padding)"
+                }
+            ],
+            "domain": {
+                "data": "nested",
+                "field": "column",
+                "sort": true
+            }
+        },
+        {
+            "name": "yscale",
+            "type": "band",
+            "range": [
+                0,
+                {
+                    "signal": "newheight2"
+                }
+            ],
+            "round": true,
+            "reverse": true,
+            "align": 1,
+            "domain": {
+                "data": "nested",
+                "field": "row",
+                "sort": true
+            },
+            "zero": true,
+            "nice": true
+        },
+        {
+            "name": "yscalea",
+            "type": "band",
+            "range": [
+                0,
+                {
+                    "signal": "height"
+                }
+            ],
+            "round": true,
+            "reverse": true,
+            "align": 1,
+            "domain": {
+                "data": "nested",
+                "field": "row",
+                "sort": true
+            },
+            "zero": true,
+            "nice": true
+        },
+        {
+            "name": "xscale2",
+            "type": "band",
+            "range": {
+                "step": {
+                    "signal": "x_step"
+                }
+            },
+            "padding": {
+                "signal": "x_padding"
+            },
+            "domain": {
+                "data": "nested",
+                "field": "age0",
+                "sort": true
+            }
+        },
+        {
+            "name": "mycolor",
+            "type": "linear",
+            "domain": {
+                "data": "nested",
+                "field": {
+                    "signal": "variable"
+                }
+            },
+            "range": {
+                "scheme": "redyellowgreen"
+            }
+        }
+    ],
+    "axes": [
+        {
+            "orient": "bottom",
+            "scale": "xscale2",
+            "zindex": 1
+        },
+        {
+            "orient": "left",
+            "scale": "yscalea",
+            "zindex": 1,
+            "title": "People",
+            "encode": {
+                "ticks": {
+                    "update": {
+                        "stroke": {
+                            "value": "steelblue"
+                        }
+                    }
+                },
+                "labels": {
+                    "interactive": true,
+                    "update": {
+                        "text": {
+                            "signal": "columns * datum.value"
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "marks": [
+        {
+            "type": "rect",
+            "from": {
+                "data": "nested"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "xscale2",
+                        "field": "age0",
+                        "offset": {
+                            "scale": "xscale",
+                            "field": "column"
+                        }
+                    },
+                    "width": {
+                        "scale": "xscale",
+                        "band": true
+                    },
+                    "y": {
+                        "scale": "yscale",
+                        "field": "row",
+                        "band": true
+                    },
+                    "z": {
+                        "field": "TicketCost"
+                    },
+                    "depth": {
+                        "value": 10
+                    },
+                    "id": {
+                        "field": "Id"
+                    },
+                    "height": {
+                        "scale": "xscale",
+                        "band": true
+                    },
+                    "fill": {
+                        "scale": "mycolor",
+                        "field": {
+                            "signal": "variable"
+                        }
+                    },
+                    "stroke": {
+                        "value": "white"
+                    }
+                },
+                "hover": {
+                    "fill": {
+                        "value": "firebrick"
+                    }
+                }
+            }
+        }
+    ]
+}

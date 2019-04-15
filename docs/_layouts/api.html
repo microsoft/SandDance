@@ -1,0 +1,52 @@
+---
+layout: default
+---
+
+<nav class="c-breadcrumbs">
+    <div class="o-wrapper">
+        <a href="{{ site.baseurl }}/docs" class="c-breadcrumbs__crumb">Docs</a> 
+        <a href="{{ site.baseurl }}/docs/api" class="c-breadcrumbs__crumb">Api Reference</a>
+    </div>
+</nav>
+
+<section class="c-page-content">
+    <div class="o-wrapper">
+        <div class="o-layout o-layout--large">
+            <div class="o-layout__item u-1/4@tablet c-tree-stick">
+                <ul id="site-tree" class="c-tree o-list-bare" role="tree">
+                    {% for tree in site.data.apitree %}
+
+                    {% assign page_url = site.baseurl | append: page.url %}
+
+                    {% assign tree_url = site.baseurl | append: "/docs/" | append : tree[0] | append: "/v1/api/" %}
+
+                    <li class="c-tree__item o-list-bare__item">
+                        <div class="c-tree__toggle js-tree-toggle{% if page_url == tree_url %} is-open is-active{% endif %}">
+                            <a href="{{ tree_url }}" {% if page_url == tree_url %}class="is-active"{% endif %}>
+                                {{ tree[0] }}
+                            </a>
+                        </div>
+
+                        <ul class="c-tree__submenu">
+                            {% for branch in tree[1] %}
+                            <li class="c-tree__item">
+                                <a href="{{ site.baseurl }}/docs/{{ tree[0] }}/v1/api/#{{ branch | downcase }}">
+                                    {{ branch }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="o-layout__item u-3/4@tablet">
+
+                {{ content }}
+
+            </div>
+        </div>
+    </div>
+</div>

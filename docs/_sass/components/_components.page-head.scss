@@ -1,0 +1,129 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+/*------------------------------------*\
+  #PAGE HEAD
+\*------------------------------------*/
+
+.c-page-head {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+    padding-top:    $spacing-small;
+    padding-bottom: $spacing-small;
+    text-align: center;
+    background: $ms-black-600;
+    border-bottom: 1px solid transparent;
+    color: white;
+
+    .dark-theme & {
+        border-color: $ms-black-500;
+    }
+
+    @include mq($from: desktop) {
+        padding: 0;
+        text-align: left;
+    }
+
+    &__logo {
+        display: inline-block;
+        vertical-align: middle;
+        height: $spacing;
+        margin-bottom: $spacing;        
+
+        @include mq($from: desktop) {
+            margin-right:  $spacing-small + $spacing-tiny;
+            margin-bottom: 0;
+            padding-right: $spacing + $spacing-small;
+            border-right: 2px solid $ms-black-400;
+        }
+
+        > img {
+            display: block;
+            height: $spacing;
+        }
+    }
+
+    &__title {
+        display: block;
+        font-weight: 600;
+        text-align: left;
+        @include inuit-font-size($inuit-font-size-h5);
+
+        @include mq($from: desktop) {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: $spacing;
+            font-weight: 400;
+            @include inuit-font-size($inuit-font-size-h3);
+        }
+
+        &:after {
+            content: '';
+            position: absolute;
+            top: $spacing-large;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: $ms-black-500;
+
+            @include mq($from: desktop) {
+                display: none;
+            }
+        }
+    }
+}
+
+.c-dark-mode-toggle {
+    position: absolute;
+    top: $spacing-tiny + $spacing-tiny/2;
+    right: $spacing-small;
+    padding-top:    $spacing-tiny;
+    padding-bottom: $spacing-tiny;
+    padding-right:  $spacing-small;
+    padding-left:   $spacing-small;
+    display: inline-block;
+    background: transparent;
+    border: 0;
+    border-radius: $spacing-tiny/2;
+    outline: 0;
+    cursor: pointer;
+    color: white;
+    width: 6rem;
+    text-align: center;
+    line-height: $spacing;
+    @include inuit-font-size(10px);
+
+    &:hover,
+    &:focus {
+        background: $ms-black-500;
+    }
+
+    &:before {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: $spacing-tiny;
+        margin-top: -$spacing-tiny/2;
+        content: '';
+        height: $spacing;
+        width: $spacing;
+        background: url(../images/icons/moon.svg);
+        background-size: cover;
+        background-position: center center;
+    }
+
+    .dark-theme & {
+        &:before {
+            background-image: url(../images/icons/sun.svg);
+        }
+    }
+
+    @include mq($from: desktop) {
+        position: static;
+        float: right;
+        margin-top: $spacing-small;
+
+        @include inuit-font-size($inuit-font-size-h5);
+    }
+}

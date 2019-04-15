@@ -1,0 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+/*------------------------------------*\
+  #PAGE MAIN
+\*------------------------------------*/
+
+.c-page-main {
+    padding-top: $spacing-huge;
+    padding-bottom: $spacing-huge;
+    
+    @include mq($from: desktop) {
+        padding-top: $spacing-large + $spacing-small;
+    }
+}

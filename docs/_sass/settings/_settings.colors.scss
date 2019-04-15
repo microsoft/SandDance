@@ -1,0 +1,1873 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+////
+/// Microsoft Colors
+/// @link https://www.microsoft.com/en-us/design/color Microsoft Design Universal Color Palette
+////
+
+/// @group Red
+/// @type Color
+$ms-red-100: #f4abba;
+
+/// @group Red
+/// @type Color
+$ms-red-200: #e6808a;
+
+/// @group Red
+/// @type Color
+$ms-red-300: #e74856;
+
+/// @group Red
+/// @type Color
+$ms-red-400: #e81123;
+
+/// @group Red
+/// @type Color
+$ms-red-500: #c50f1f;
+
+/// @group Red
+/// @type Color
+$ms-red-600: #a80000;
+
+/// @group Red
+/// @type Color
+$ms-red-700: #750b1c;
+
+/// @group Red
+/// @type Map
+/// @example
+///     $red: map-get($ms-red, 400);
+///     // (Same as $ms-red-400)
+$ms-red: (
+    100: $ms-red-100,
+    200: $ms-red-200,
+    300: $ms-red-300,
+    400: $ms-red-400,
+    500: $ms-red-500,
+    600: $ms-red-600,
+    700: $ms-red-700
+);
+
+
+
+/// @group Red-Orange
+/// @type Color
+$ms-red-orange-100: #eec7c2;
+
+/// @group Red-Orange
+/// @type Color
+$ms-red-orange-200: #ee9889;
+
+/// @group Red-Orange
+/// @type Color
+$ms-red-orange-300: #ef6950;
+
+/// @group Red-Orange
+/// @type Color
+$ms-red-orange-400: #f03a17;
+
+/// @group Red-Orange
+/// @type Color
+$ms-red-orange-500: #da3b01;
+
+/// @group Red-Orange
+/// @type Color
+$ms-red-orange-600: #a52613;
+
+/// @group Red-Orange
+/// @type Color
+$ms-red-orange-700: #7f1d10;
+
+/// @group Red-Orange
+/// @type Map
+/// @example
+///     $red-orange: map-get($ms-red-orange, 400);
+///     // (Same as $ms-red-orange-400)
+$ms-red-orange: (
+    100: $ms-red-orange-100,
+    200: $ms-red-orange-200,
+    300: $ms-red-orange-300,
+    400: $ms-red-orange-400,
+    500: $ms-red-orange-500,
+    600: $ms-red-orange-600,
+    700: $ms-red-orange-700
+);
+
+/// @group Orange
+/// @type Color
+$ms-orange-100: #f2d5c9;
+
+/// @group Orange
+/// @type Color
+$ms-orange-200: #f7b189;
+
+/// @group Orange
+/// @type Color
+$ms-orange-300: #f7894a;
+
+/// @group Orange
+/// @type Color
+$ms-orange-400: #f7630c;
+
+/// @group Orange
+/// @type Color
+$ms-orange-500: #ca5010;
+
+/// @group Orange
+/// @type Color
+$ms-orange-600: #a74109;
+
+/// @group Orange
+/// @type Color
+$ms-orange-700: #7f2f08;
+
+/// @group Orange
+/// @type Map
+/// @example
+///     $orange: map-get($ms-orange, 400);
+///     // (Same as $ms-orange-400)
+$ms-orange: (
+    100: $ms-orange-100,
+    200: $ms-orange-200,
+    300: $ms-orange-300,
+    400: $ms-orange-400,
+    500: $ms-orange-500,
+    600: $ms-orange-600,
+    700: $ms-orange-700
+);
+
+
+
+/// @group Amber
+/// @type Color
+$ms-amber-100: #ffdabb;
+
+/// @group Amber
+/// @type Color
+$ms-amber-200: #ffc988;
+
+/// @group Amber
+/// @type Color
+$ms-amber-300: #fa4;
+
+/// @group Amber
+/// @type Color
+$ms-amber-400: #ff8c00;
+
+/// @group Amber
+/// @type Color
+$ms-amber-500: #d47300;
+
+/// @group Amber
+/// @type Color
+$ms-amber-600: #b05e0d;
+
+/// @group Amber
+/// @type Color
+$ms-amber-700: #7f4200;
+
+/// @group Amber
+/// @type Map
+/// @example
+///     $amber: map-get($ms-amber, 400);
+///     // (Same as $ms-amber-400)
+$ms-amber: (
+    100: $ms-amber-100,
+    200: $ms-amber-200,
+    300: $ms-amber-300,
+    400: $ms-amber-400,
+    500: $ms-amber-500,
+    600: $ms-amber-600,
+    700: $ms-amber-700
+);
+
+
+
+/// @group Gold
+/// @type Color
+$ms-gold-100: #ffe5b6;
+
+/// @group Gold
+/// @type Color
+$ms-gold-200: #ffd679;
+
+/// @group Gold
+/// @type Color
+$ms-gold-300: #ffc83d;
+
+/// @group Gold
+/// @type Color
+$ms-gold-400: #ffb900;
+
+/// @group Gold
+/// @type Color
+$ms-gold-500: #eaa300;
+
+/// @group Gold
+/// @type Color
+$ms-gold-600: #d48c00;
+
+/// @group Gold
+/// @type Color
+$ms-gold-700: #ab620d;
+
+/// @group Gold
+/// @type Map
+/// @example
+///     $gold: map-get($ms-gold, 400);
+///     // (Same as $ms-gold-400)
+$ms-gold: (
+    100: $ms-gold-100,
+    200: $ms-gold-200,
+    300: $ms-gold-300,
+    400: $ms-gold-400,
+    500: $ms-gold-500,
+    600: $ms-gold-600,
+    700: $ms-gold-700
+);
+
+
+
+/// @group Yellow
+/// @type Color
+$ms-yellow-100: #f9f1a5;
+
+/// @group Yellow
+/// @type Color
+$ms-yellow-200: #faec6e;
+
+/// @group Yellow
+/// @type Color
+$ms-yellow-300: #fff100;
+
+/// @group Yellow
+/// @type Color
+$ms-yellow-400: #fce100;
+
+/// @group Yellow
+/// @type Color
+$ms-yellow-500: #dfbe00;
+
+/// @group Yellow
+/// @type Color
+$ms-yellow-600: #c19c00;
+
+/// @group Yellow
+/// @type Color
+$ms-yellow-700: #986f0b;
+
+/// @group Yellow
+/// @type Map
+/// @example
+///     $yellow: map-get($ms-yellow, 400);
+///     // (Same as $ms-yellow-400)
+$ms-yellow: (
+    100: $ms-yellow-100,
+    200: $ms-yellow-200,
+    300: $ms-yellow-300,
+    400: $ms-yellow-400,
+    500: $ms-yellow-500,
+    600: $ms-yellow-600,
+    700: $ms-yellow-700
+);
+
+/// @group Chartreuse
+/// @type Color
+$ms-chartreuse-100: #f8ffb3;
+
+/// @group Yellow-Green
+/// @type Color
+$ms-chartreuse-200: #e4f577;
+
+/// @group Yellow-Green
+/// @type Color
+$ms-chartreuse-300: #d1ec3c;
+
+/// @group Yellow-Green
+/// @type Color
+$ms-chartreuse-400: #bad80a;
+
+/// @group Yellow-Green
+/// @type Color
+$ms-chartreuse-500: #a4cf0c;
+
+/// @group Yellow-Green
+/// @type Color
+$ms-chartreuse-600: #8cbd18;
+
+/// @group Yellow-Green
+/// @type Color
+$ms-chartreuse-700: #73aa24;
+
+/// @group Yellow-Green
+/// @type Map
+/// @example
+///     $chartreuse: map-get($ms-chartreuse, 400);
+///     // (Same as $ms-chartreuse-400)
+$ms-chartreuse: (
+    100: $ms-chartreuse-100,
+    200: $ms-chartreuse-200,
+    300: $ms-chartreuse-300,
+    400: $ms-chartreuse-400,
+    500: $ms-chartreuse-500,
+    600: $ms-chartreuse-600,
+    700: $ms-chartreuse-700
+);
+
+
+
+/// @group Lime
+/// @type Color
+$ms-lime-100: #d5e5ae;
+
+/// @group Lime
+/// @type Color
+$ms-lime-200: #b7df74;
+
+/// @group Lime
+/// @type Color
+$ms-lime-300: #9ad93a;
+
+/// @group Lime
+/// @type Color
+$ms-lime-400: #7cd300;
+
+/// @group Lime
+/// @type Color
+$ms-lime-500: #6bb700;
+
+/// @group Lime
+/// @type Color
+$ms-lime-600: #599b00;
+
+/// @group Lime
+/// @type Color
+$ms-lime-700: #498205;
+
+/// @group Lime
+/// @type Map
+/// @example
+///     $lime: map-get($ms-lime, 400);
+///     // (Same as $ms-lime-400)
+$ms-lime: (
+    100: $ms-lime-100,
+    200: $ms-lime-200,
+    300: $ms-lime-300,
+    400: $ms-lime-400,
+    500: $ms-lime-500,
+    600: $ms-lime-600,
+    700: $ms-lime-700
+);
+
+
+
+/// @group Green
+/// @type Color
+$ms-green-100: #aae5aa;
+
+/// @group Green
+/// @type Color
+$ms-green-200: #79db75;
+
+/// @group Green
+/// @type Color
+$ms-green-300: #47d041;
+
+/// @group Green
+/// @type Color
+$ms-green-400: #16c60c;
+
+/// @group Green
+/// @type Color
+$ms-green-500: #13a10e;
+
+/// @group Green
+/// @type Color
+$ms-green-600: #107c10;
+
+/// @group Green
+/// @type Color
+$ms-green-700: #0b6a0b;
+
+/// @group Green
+/// @type Map
+/// @example
+///     $green: map-get($ms-green, 400);
+///     // (Same as $ms-green-400)
+$ms-green: (
+    100: $ms-green-100,
+    200: $ms-green-200,
+    300: $ms-green-300,
+    400: $ms-green-400,
+    500: $ms-green-500,
+    600: $ms-green-600,
+    700: $ms-green-700
+);
+
+
+
+/// @group Mint
+/// @type Color
+$ms-mint-100: #a8e5c2;
+
+/// @group Mint
+/// @type Color
+$ms-mint-200: #70dda5;
+
+/// @group Mint
+/// @type Color
+$ms-mint-300: #38d487;
+
+/// @group Mint
+/// @type Color
+$ms-mint-400: #00cc6a;
+
+/// @group Mint
+/// @type Color
+$ms-mint-500: #00ae56;
+
+/// @group Mint
+/// @type Color
+$ms-mint-600: #10893e;
+
+/// @group Mint
+/// @type Color
+$ms-mint-700: #00722e;
+
+/// @group Mint
+/// @type Map
+/// @example
+///     $mint: map-get($ms-mint, 400);
+///     // (Same as $ms-mint-400)
+$ms-mint: (
+    100: $ms-mint-100,
+    200: $ms-mint-200,
+    300: $ms-mint-300,
+    400: $ms-mint-400,
+    500: $ms-mint-500,
+    600: $ms-mint-600,
+    700: $ms-mint-700
+);
+
+/// @group Teal
+/// @type Color
+$ms-teal-100: #c2f2e9;
+
+/// @group Teal
+/// @type Color
+$ms-teal-200: #81e6d3;
+
+/// @group Teal
+/// @type Color
+$ms-teal-300: #41dabc;
+
+/// @group Teal
+/// @type Color
+$ms-teal-400: #00cea6;
+
+/// @group Teal
+/// @type Color
+$ms-teal-500: #00b294;
+
+/// @group Teal
+/// @type Color
+$ms-teal-600: #008272;
+
+/// @group Teal
+/// @type Color
+$ms-teal-700: #005e50;
+
+/// @group Teal
+/// @type Map
+/// @example
+///     $teal: map-get($ms-teal, 400);
+///     // (Same as $ms-teal-400)
+$ms-teal: (
+    100: $ms-teal-100,
+    200: $ms-teal-200,
+    300: $ms-teal-300,
+    400: $ms-teal-400,
+    500: $ms-teal-500,
+    600: $ms-teal-600,
+    700: $ms-teal-700
+);
+
+
+
+/// @group Seafoam
+/// @type Color
+$ms-seafoam-100: #91e5df;
+
+/// @group Seafoam
+/// @type Color
+$ms-seafoam-200: #61d6d6;
+
+/// @group Seafoam
+/// @type Color
+$ms-seafoam-300: #30c6cc;
+
+/// @group Seafoam
+/// @type Color
+$ms-seafoam-400: #00b7c3;
+
+/// @group Seafoam
+/// @type Color
+$ms-seafoam-500: #009ca4;
+
+/// @group Seafoam
+/// @type Color
+$ms-seafoam-600: #038387;
+
+/// @group Seafoam
+/// @type Color
+$ms-seafoam-700: #066;
+
+/// @group Seafoam
+/// @type Map
+/// @example
+///     $splish-splash: map-get($ms-seafoam, 400);
+///     // (Same as $ms-seafoam-400)
+$ms-seafoam: (
+    100: $ms-seafoam-100,
+    200: $ms-seafoam-200,
+    300: $ms-seafoam-300,
+    400: $ms-seafoam-400,
+    500: $ms-seafoam-500,
+    600: $ms-seafoam-600,
+    700: $ms-seafoam-700
+);
+
+
+
+/// @group Cyan
+/// @type Color
+$ms-cyan-100: #99ecff;
+
+/// @group Cyan
+/// @type Color
+$ms-cyan-200: #69eaff;
+
+/// @group Cyan
+/// @type Color
+$ms-cyan-300: #31d2f7;
+
+/// @group Cyan
+/// @type Color
+$ms-cyan-400: #00bcf2;
+
+/// @group Cyan
+/// @type Color
+$ms-cyan-500: #0099bc;
+
+/// @group Cyan
+/// @type Color
+$ms-cyan-600: #006f94;
+
+/// @group Cyan
+/// @type Color
+$ms-cyan-700: #005b70;
+
+/// @group Cyan
+/// @type Map
+/// @example
+///     $cyan: map-get($ms-cyan, 400);
+///     // (Same as $ms-cyan-400)
+$ms-cyan: (
+    100: $ms-cyan-100,
+    200: $ms-cyan-200,
+    300: $ms-cyan-300,
+    400: $ms-cyan-400,
+    500: $ms-cyan-500,
+    600: $ms-cyan-600,
+    700: $ms-cyan-700
+);
+
+
+
+/// @group Sky
+/// @type Color
+$ms-sky-100: #b3dbf2;
+
+/// @group Sky
+/// @type Color
+$ms-sky-200: #83beec;
+
+/// @group Sky
+/// @type Color
+$ms-sky-300: #3a96dd;
+
+/// @group Sky
+/// @type Color
+$ms-sky-400: #0078d7;
+
+/// @group Sky
+/// @type Color
+$ms-sky-500: #0063b1;
+
+/// @group Sky
+/// @type Color
+$ms-sky-600: #004e8c;
+
+/// @group Sky
+/// @type Color
+$ms-sky-700: #003966;
+
+/// @group Sky
+/// @type Map
+/// @example
+///     $mr-blue-sky: map-get($ms-sky, 400);
+///     // (Same as $ms-sky-400)
+$ms-sky: (
+    100: $ms-sky-100,
+    200: $ms-sky-200,
+    300: $ms-sky-300,
+    400: $ms-sky-400,
+    500: $ms-sky-500,
+    600: $ms-sky-600,
+    700: $ms-sky-700
+);
+
+
+
+/// @group Blue
+/// @type Color
+$ms-blue-100: #abc9ed;
+
+/// @group Blue
+/// @type Color
+$ms-blue-200: #7ba7ff;
+
+/// @group Blue
+/// @type Color
+$ms-blue-300: #3b78ff;
+
+/// @group Blue
+/// @type Color
+$ms-blue-400: #0046ff;
+
+/// @group Blue
+/// @type Color
+$ms-blue-500: #0037da;
+
+/// @group Blue
+/// @type Color
+$ms-blue-600: #0027b4;
+
+/// @group Blue
+/// @type Color
+$ms-blue-700: #00188f;
+
+/// @group Blue
+/// @type Map
+/// @example
+///     $blue: map-get($ms-blue, 400);
+///     // (Same as $ms-blue-400)
+$ms-blue: (
+    100: $ms-blue-100,
+    200: $ms-blue-200,
+    300: $ms-blue-300,
+    400: $ms-blue-400,
+    500: $ms-blue-500,
+    600: $ms-blue-600,
+    700: $ms-blue-700
+);
+
+
+
+/// @group Navy
+/// @type Color
+$ms-navy-100: #a6bdff;
+
+/// @group Navy
+/// @type Color
+$ms-navy-200: #7c96f9;
+
+/// @group Navy
+/// @type Color
+$ms-navy-300: #4f6bed;
+
+/// @group Navy
+/// @type Color
+$ms-navy-400: #2849ec;
+
+/// @group Navy
+/// @type Color
+$ms-navy-500: #203dbd;
+
+/// @group Navy
+/// @type Color
+$ms-navy-600: #19318d;
+
+/// @group Navy
+/// @type Color
+$ms-navy-700: #11255e;
+
+/// @group Navy
+/// @type Map
+/// @example
+///     $in-the-navy: map-get($ms-navy, 400);
+///     // (Same as $ms-navy-400)
+$ms-navy: (
+    100: $ms-navy-100,
+    200: $ms-navy-200,
+    300: $ms-navy-300,
+    400: $ms-navy-400,
+    500: $ms-navy-500,
+    600: $ms-navy-600,
+    700: $ms-navy-700
+);
+
+/// @group Indigo
+/// @type Color
+$ms-indigo-100: #bebee5;
+
+/// @group Indigo
+/// @type Color
+$ms-indigo-200: #6b69d6;
+
+/// @group Indigo
+/// @type Color
+$ms-indigo-300: #4f4bd9;
+
+/// @group Indigo
+/// @type Color
+$ms-indigo-400: #413eb3;
+
+/// @group Indigo
+/// @type Color
+$ms-indigo-500: #32318c;
+
+/// @group Indigo
+/// @type Color
+$ms-indigo-600: #242466;
+
+/// Custom indigo shade (Not officially apart of Microsoft's color palette)
+/// @group Violet
+/// @type Color
+$ms-indigo-700: darken($ms-indigo-600, 10%);
+
+/// @group Indigo
+/// @type Map
+/// @example
+///     $girls: map-get($ms-indigo, 400);
+///     // (Same as $ms-indigo-400)
+$ms-indigo: (
+    100: $ms-indigo-100,
+    200: $ms-indigo-200,
+    300: $ms-indigo-300,
+    400: $ms-indigo-400,
+    500: $ms-indigo-500,
+    600: $ms-indigo-600,
+    700: $ms-indigo-700
+);
+
+
+
+/// @group Violet
+/// @type Color
+$ms-violet-100: #b5b5e2;
+
+/// @group Violet
+/// @type Color
+$ms-violet-200: #8378de;
+
+/// @group Violet
+/// @type Color
+$ms-violet-300: #7160e8;
+
+/// @group Violet
+/// @type Color
+$ms-violet-400: #5a4ebc;
+
+/// @group Violet
+/// @type Color
+$ms-violet-500: #49409a;
+
+/// @group Violet
+/// @type Color
+$ms-violet-600: #373277;
+
+/// Custom violet shade (Not officially apart of Microsoft's color palette)
+/// @group Violet
+/// @type Color
+$ms-violet-700: darken($ms-violet-600, 10%);
+
+/// @group Violet
+/// @type Map
+/// @example
+///     $girls: map-get($ms-indigo, 400);
+///     // (Same as $ms-indigo-400)
+$ms-violet: (
+    100: $ms-violet-100,
+    200: $ms-violet-200,
+    300: $ms-violet-300,
+    400: $ms-violet-400,
+    500: $ms-violet-500,
+    600: $ms-violet-600,
+    700: $ms-violet-700
+);
+
+
+
+/// @group Lavender
+/// @type Color
+$ms-lavender-100: #c3c3f4;
+
+/// @group Lavender
+/// @type Color
+$ms-lavender-200: #9c89e9;
+
+/// @group Lavender
+/// @type Color
+$ms-lavender-300: #886ce4;
+
+/// @group Lavender
+/// @type Color
+$ms-lavender-400: #735bc1;
+
+/// @group Lavender
+/// @type Color
+$ms-lavender-500: #5e4a9d;
+
+/// @group Lavender
+/// @type Color
+$ms-lavender-600: #49397a;
+
+/// Custom lavender shade (Not officially apart of Microsoft's color palette)
+/// @group Lavender
+/// @type Color
+$ms-lavender-700: darken($ms-lavender-600, 10%);
+
+/// @group Lavender
+/// @type Map
+/// @example
+///     $flower: map-get($ms-lavender, 400);
+///     // (Same as $ms-lavender-400)
+$ms-lavender: (
+    100: $ms-lavender-100,
+    200: $ms-lavender-200,
+    300: $ms-lavender-300,
+    400: $ms-lavender-400,
+    500: $ms-lavender-500,
+    600: $ms-lavender-600,
+    700: $ms-lavender-700
+);
+
+/// @group Purple
+/// @type Color
+$ms-purple-100: #cfc4f5;
+
+/// @group Purple
+/// @type Color
+$ms-purple-200: #8764b8;
+
+/// @group Purple
+/// @type Color
+$ms-purple-300: #744da9;
+
+/// @group Purple
+/// @type Color
+$ms-purple-400: #5c2e91;
+
+/// @group Purple
+/// @type Color
+$ms-purple-500: #4e257f;
+
+/// @group Purple
+/// @type Color
+$ms-purple-600: #401b6c;
+
+/// Custom purple shade (Not officially apart of Microsoft's color palette)
+/// @group Purple
+/// @type Color
+$ms-purple-700: darken($ms-purple-600, 10%);
+
+/// @group Purple
+/// @type Map
+/// @example
+///     $nurple: map-get($ms-purple, 400);
+///     // (Same as $ms-purple-400)
+$ms-purple: (
+    100: $ms-purple-100,
+    200: $ms-purple-200,
+    300: $ms-purple-300,
+    400: $ms-purple-400,
+    500: $ms-purple-500,
+    600: $ms-purple-600,
+    700: $ms-purple-700
+);
+
+
+
+/// @group Orchid
+/// @type Color
+$ms-orchid-100: #dea2ed;
+
+/// @group Orchid
+/// @type Color
+$ms-orchid-200: #b146c2;
+
+/// @group Orchid
+/// @type Color
+$ms-orchid-300: #881798;
+
+/// @group Orchid
+/// @type Color
+$ms-orchid-400: #721481;
+
+/// @group Orchid
+/// @type Color
+$ms-orchid-500: #5c126b;
+
+/// @group Orchid
+/// @type Color
+$ms-orchid-600: #460f54;
+
+/// Custom violet-red shade (Not officially apart of Microsoft's color palette)
+/// @group Orchid
+/// @type Color
+$ms-orchid-700: darken($ms-orchid-600, 10%);
+
+/// @group Orchid
+/// @type Map
+/// @example
+///     $flower: map-get($ms-orchid, 400);
+///     // (Same as $ms-orchid-400)
+$ms-orchid: (
+    100: $ms-orchid-100,
+    200: $ms-orchid-200,
+    300: $ms-orchid-300,
+    400: $ms-orchid-400,
+    500: $ms-orchid-500,
+    600: $ms-orchid-600,
+    700: $ms-orchid-700
+);
+
+
+
+/// @group Magenta
+/// @type Color
+$ms-magenta-100: #de94e0;
+
+/// @group Magenta
+/// @type Color
+$ms-magenta-200: #c239b3;
+
+/// @group Magenta
+/// @type Color
+$ms-magenta-300: #b4009e;
+
+/// @group Magenta
+/// @type Color
+$ms-magenta-400: #9a0089;
+
+/// @group Magenta
+/// @type Color
+$ms-magenta-500: #800074;
+
+/// @group Magenta
+/// @type Color
+$ms-magenta-600: #5c005c;
+
+/// Custom violet-red shade (Not officially apart of Microsoft's color palette)
+/// @group Magenta
+/// @type Color
+$ms-magenta-700: darken($ms-magenta-600, 10%);
+
+/// @group Orchid
+/// @type Map
+/// @example
+///     $not-pink: map-get($ms-magenta, 400);
+///     // (Same as $ms-magenta-400)
+$ms-magenta: (
+    100: $ms-magenta-100,
+    200: $ms-magenta-200,
+    300: $ms-magenta-300,
+    400: $ms-magenta-400,
+    500: $ms-magenta-500,
+    600: $ms-magenta-600,
+    700: $ms-magenta-700
+);
+
+
+
+/// @group Pink
+/// @type Color
+$ms-pink-100: #e8a3de;
+
+/// @group Pink
+/// @type Color
+$ms-pink-200: #e43ba6;
+
+/// @group Pink
+/// @type Color
+$ms-pink-300: #e3008c;
+
+/// @group Pink
+/// @type Color
+$ms-pink-400: #bf0077;
+
+/// @group Pink
+/// @type Color
+$ms-pink-500: #9b0062;
+
+/// @group Pink
+/// @type Color
+$ms-pink-600: #77004d;
+
+/// Custom pink shade (Not officially apart of Microsoft's color palette)
+/// @group Pink
+/// @type Color
+$ms-pink-700: darken($ms-pink-600, 10%);
+
+/// @group Pink
+/// @type Map
+/// @example
+///     $panther: map-get($ms-pink, 400);
+///     // (Same as $ms-pink-400)
+$ms-pink: (
+    100: $ms-pink-100,
+    200: $ms-pink-200,
+    300: $ms-pink-300,
+    400: $ms-pink-400,
+    500: $ms-pink-500,
+    600: $ms-pink-600,
+    700: $ms-pink-700
+);
+
+
+
+/// @group Fuchsia
+/// @type Color
+$ms-fuchsia-100: #edbed3;
+
+/// @group Fuchsia
+/// @type Color
+$ms-fuchsia-200: #ee3f86;
+
+/// @group Fuchsia
+/// @type Color
+$ms-fuchsia-300: #ea005e;
+
+/// @group Fuchsia
+/// @type Color
+$ms-fuchsia-400: #c30052;
+
+/// @group Fuchsia
+/// @type Color
+$ms-fuchsia-500: #970044;
+
+/// @group Fuchsia
+/// @type Color
+$ms-fuchsia-600: #6b0036;
+
+/// Custom fuchsia shade (Not officially apart of Microsoft's color palette)
+/// @group Fuchsia
+/// @type Color
+$ms-fuchsia-700: darken($ms-fuchsia-600, 10%);
+
+/// @group Fuchsia
+/// @type Map
+/// @example
+///     $fuchsia: map-get($ms-fuchsia, 400);
+///     // (Same as $ms-fuchsia-400)
+$ms-fuchsia: (
+    100: $ms-fuchsia-100,
+    200: $ms-fuchsia-200,
+    300: $ms-fuchsia-300,
+    400: $ms-fuchsia-400,
+    500: $ms-fuchsia-500,
+    600: $ms-fuchsia-600,
+    700: $ms-fuchsia-700
+);
+
+/// @group Crimson
+/// @type Color
+$ms-crimson-100: #ffc0c0;
+
+/// @group Crimson
+/// @type Color
+$ms-crimson-200: #ff8c8c;
+
+/// @group Crimson
+/// @type Color
+$ms-crimson-300: #ff6767;
+
+/// @group Crimson
+/// @type Color
+$ms-crimson-400: #ff4343;
+
+/// @group Crimson
+/// @type Color
+$ms-crimson-500: #d13438;
+
+/// @group Crimson
+/// @type Color
+$ms-crimson-600: #a4262c;
+
+/// @group Crimson
+/// @type Color
+$ms-crimson-700: #761721;
+
+/// @group Crimson
+/// @type Map
+/// @example
+///     $tide: map-get($ms-crimson, 400);
+///     // (Same as $ms-crimson-400)
+$ms-crimson: (
+    100: $ms-crimson-100,
+    200: $ms-crimson-200,
+    300: $ms-crimson-300,
+    400: $ms-crimson-400,
+    500: $ms-crimson-500,
+    600: $ms-crimson-600,
+    700: $ms-crimson-700
+);
+
+
+
+/// @group Brown
+/// @type Color
+$ms-brown-100: #f7d7c4;
+
+/// @group Brown
+/// @type Color
+$ms-brown-200: #d8b094;
+
+/// @group Brown
+/// @type Color
+$ms-brown-300: #bb9167;
+
+/// @group Brown
+/// @type Color
+$ms-brown-400: #ac744c;
+
+/// @group Brown
+/// @type Color
+$ms-brown-500: #8e562e;
+
+/// @group Brown
+/// @type Color
+$ms-brown-600: #603d30;
+
+/// @group Brown
+/// @type Color
+$ms-brown-700: #4d291c;
+
+/// @group Brown
+/// @type Map
+/// @example
+///     $brown: map-get($ms-brown, 400);
+///     // (Same as $ms-brown-400)
+$ms-brown: (
+    100: $ms-brown-100,
+    200: $ms-brown-200,
+    300: $ms-brown-300,
+    400: $ms-brown-400,
+    500: $ms-brown-500,
+    600: $ms-brown-600,
+    700: $ms-brown-700
+);
+
+
+
+/// @group Sage
+/// @type Color
+$ms-sage-100: #cae0d9;
+
+/// @group Sage
+/// @type Color
+$ms-sage-200: #a3bfb7;
+
+/// @group Sage
+/// @type Color
+$ms-sage-300: #7d9d95;
+
+/// @group Sage
+/// @type Color
+$ms-sage-400: #567c73;
+
+/// @group Sage
+/// @type Color
+$ms-sage-500: #486860;
+
+/// @group Sage
+/// @type Color
+$ms-sage-600: #3b534d;
+
+/// @group Sage
+/// @type Color
+$ms-sage-700: #2d3f3a;
+
+/// @group Sage
+/// @type Map
+/// @example
+///     $wisdom: map-get($ms-sage, 400);
+///     // (Same as $ms-sage-400)
+$ms-sage: (
+    100: $ms-sage-100,
+    200: $ms-sage-200,
+    300: $ms-sage-300,
+    400: $ms-sage-400,
+    500: $ms-sage-500,
+    600: $ms-sage-600,
+    700: $ms-sage-700
+);
+
+
+
+/// @group Slate
+/// @type Color
+$ms-slate-100: #bac8cc;
+
+/// @group Slate
+/// @type Color
+$ms-slate-200: #a0aeb2;
+
+/// @group Slate
+/// @type Color
+$ms-slate-300: #859599;
+
+/// @group Slate
+/// @type Color
+$ms-slate-400: #69797e;
+
+/// @group Slate
+/// @type Color
+$ms-slate-500: #5a686c;
+
+/// @group Slate
+/// @type Color
+$ms-slate-600: #4a5459;
+
+/// @group Slate
+/// @type Color
+$ms-slate-700: #394146;
+
+/// @group Slate
+/// @type Map
+/// @example
+///     $tabula-rasa: map-get($ms-slate, 400);
+///     // (Same as $ms-slate-400)
+$ms-slate: (
+    100: $ms-slate-100,
+    200: $ms-slate-200,
+    300: $ms-slate-300,
+    400: $ms-slate-400,
+    500: $ms-slate-500,
+    600: $ms-slate-600,
+    700: $ms-slate-700
+);
+
+
+
+/// @group Gray
+/// @type Color
+$ms-gray-100: #cbc6c4;
+
+/// @group Gray
+/// @type Color
+$ms-gray-200: #b1adab;
+
+/// @group Gray
+/// @type Color
+$ms-gray-300: #989391;
+
+/// @group Gray
+/// @type Color
+$ms-gray-400: #7a7574;
+
+/// @group Gray
+/// @type Color
+$ms-gray-500: #6e6a68;
+
+/// @group Gray
+/// @type Color
+$ms-gray-600: #5d5a58;
+
+/// @group Gray
+/// @type Color
+$ms-gray-700: #4c4a48;
+
+/// @group Gray
+/// @type Map
+/// @example
+///     $gray: map-get($ms-gray, 400);
+///     // (Same as $ms-gray-400)
+$ms-gray: (
+    100: $ms-gray-100,
+    200: $ms-gray-200,
+    300: $ms-gray-300,
+    400: $ms-gray-400,
+    500: $ms-gray-500,
+    600: $ms-gray-600,
+    700: $ms-gray-700
+);
+
+
+
+/// @group Black
+/// @type Color
+$ms-black-100: #f2f2f2;
+
+/// @group Black
+/// @type Color
+$ms-black-200: #e6e6e6;
+
+/// @group Black
+/// @type Color
+$ms-black-300: #ccc;
+
+/// @group Black
+/// @type Color
+$ms-black-400: #767676;
+
+/// @group Black
+/// @type Color
+$ms-black-500: #393939;
+
+/// @group Black
+/// @type Color
+$ms-black-600: #2b2b2b;
+
+/// @group Black
+/// @type Color
+$ms-black-700: #1f1f1f;
+
+/// @group Gray
+/// @type Map
+/// @example
+///     $gray: map-get($ms-gray, 400);
+///     // (Same as $ms-gray-400)
+$ms-black: (
+    100: $ms-black-100,
+    200: $ms-black-200,
+    300: $ms-black-300,
+    400: $ms-black-400,
+    500: $ms-black-500,
+    600: $ms-black-600,
+    700: $ms-black-700
+);
+
+
+
+/// @group Contextual Colors
+/// @type Color
+/// @see ms-crimson-500
+$ms-assertive: $ms-crimson-500 !default;
+
+/// @group Contextual Colors
+/// @type Color
+/// @see ms-red-400
+$ms-danger: $ms-red-400 !default;
+
+/// @group Contextual Colors
+/// @type Color
+/// @see ms-fuchsia-300
+$ms-beacon: $ms-fuchsia-300 !default;
+
+/// @group Contextual Colors
+/// @type Color
+/// @see ms-amber-400
+$ms-exciting: $ms-amber-400 !default;
+
+/// @group Contextual Colors
+/// @type Color
+/// @see ms-yellow-300
+$ms-cheerful: $ms-yellow-300 !default;
+
+/// @group Contextual Colors
+/// @type Color
+/// @see ms-yellow-400
+$ms-highlight: $ms-yellow-400 !default;
+
+/// @group Contextual Colors
+/// @type Color
+/// @see ms-lime-300
+$ms-energized: $ms-lime-300 !default;
+
+/// @group Contextual Colors
+/// @type Color
+/// @see ms-lime-400
+$ms-growth: $ms-lime-400 !default;
+
+/// @group Contextual Colors
+/// @type Color
+/// @see ms-mint-400
+$ms-positive: $ms-mint-400 !default;
+
+/// @group Contextual Colors
+/// @type Color
+/// @see ms-navy-400
+$ms-sturdy: $ms-navy-400 !default;
+
+/// @group Contextual Colors
+/// @type Color
+/// @see ms-sky-400
+$ms-calm: $ms-sky-400 !default;
+
+/// @group Contextual Colors
+/// @type Color
+/// @see ms-violet-300
+$ms-balanced: $ms-violet-300 !default;
+
+/// @group Contextual Colors
+/// @type Color
+/// @see ms-black-100
+$ms-light: $ms-black-100 !default;
+
+/// @group Contextual Colors
+/// @type Color
+/// @see ms-black-200
+$ms-stable: $ms-black-200 !default;
+
+
+
+/// Windows 10 UAC notice color
+/// @group UI Colors
+/// @type Color
+$ms-info: #65b7f0;
+
+/// Windows 10 UAC admin notice color
+/// @group UI Colors
+/// @type Color
+$ms-warn: #ffd64d;
+
+
+
+/// Light theme button background color
+/// @group Light UI Colors
+/// @type Color
+/// @see ms-black-300
+$ms-ui-light-btn: $ms-black-300;
+
+/// Light theme app bar background color
+/// @group Light UI Colors
+/// @type Color
+/// @see ms-black-200
+$ms-ui-light-appbar: $ms-black-200;
+
+/// Light theme navigation bar background color
+/// @group Light UI Colors
+/// @type Color
+/// @see ms-black-100
+$ms-ui-light-navbar: $ms-black-100;
+
+/// Light theme background color
+/// @group Light UI Colors
+/// @type Color
+$ms-ui-light-background: #fff;
+
+
+
+/// Dark theme button background color
+/// @group Dark UI Colors
+/// @type Color
+/// @see ms-black-600
+$ms-ui-dark-btn: $ms-black-600;
+
+/// Dark theme app bar background color
+/// @group Dark UI Colors
+/// @type Color
+/// @see ms-black-700
+$ms-ui-dark-appbar: $ms-black-700;
+
+/// Dark theme navigation bar background color
+/// @group Dark UI Colors
+/// @type Color
+$ms-ui-dark-navbar: #171717;
+
+/// Dark theme background color
+/// @group Dark UI Colors
+/// @type Color
+$ms-ui-dark-background: #000;
+
+
+/// Outlook
+/// @group Office & App Colors
+/// @type Color
+/// @see ms-sky-400
+$ms-outlook: $ms-sky-400;
+
+/// Calendar
+/// @group Office & App Colors
+/// @type Color
+$ms-calendar: #5133ab;
+
+/// OneDrive
+/// @group Office & App Colors
+/// @type Color
+$ms-onedrive: #094ab2;
+
+/// Office / Office 365
+/// @group Office & App Colors
+/// @type Color
+$ms-office: #d83b01;
+
+/// Word
+/// @group Office & App Colors
+/// @type Color
+$ms-word: #2b579a;
+
+/// Excel
+/// @group Office & App Colors
+/// @type Color
+$ms-excel: #217346;
+
+/// PowerPoint
+/// @group Office & App Colors
+/// @type Color
+$ms-powerpoint: #d24726;
+
+/// OneNote
+/// @group Office & App Colors
+/// @type Color
+$ms-onenote: #80397b;
+
+/// Sway
+/// @group Office & App Colors
+/// @type Color
+/// @see ms-teal-600
+$ms-sway: $ms-teal-600;
+
+/// Skype
+/// @group Office & App Colors
+/// @type Color
+$ms-skype: #00aff0;
+
+/// Bing
+/// @group Office & App Colors
+/// @type Color
+$ms-bing: #0c8484;
+
+/// MSN
+/// @group Office & App Colors
+/// @type Color
+$ms-msn: #1e1e1e;
+
+
+
+
+/// @group Skype Status Colors
+/// @type Color
+$ms-status-available: #5dd255;
+
+/// @group Skype Status Colors
+/// @type Color
+$ms-status-away: #ffd200;
+
+/// @group Skype Status Colors
+/// @type Color
+$ms-status-busy: #c72d25;
+
+/// @group Skype Status Colors
+/// @type Color
+$ms-status-invisible: #b6cfd8;
+
+
+
+/// @group Microsoft Logo Colors
+/// @type Color
+$ms-logo-red: #f25022;
+
+/// @group Microsoft Logo Colors
+/// @type Color
+$ms-logo-green: #7fba00;
+
+/// @group Microsoft Logo Colors
+/// @type Color
+$ms-logo-blue: #00a4ef;
+
+/// @group Microsoft Logo Colors
+/// @type Color
+/// @see ms-gold-400
+$ms-logo-yellow: $ms-gold-400;
+
+
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Color
+$ms-xbox-yellow: #e88c10;
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Color
+$ms-xbox-orange: #eb4910;
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Color
+$ms-xbox-red: #e31123;
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Color
+$ms-xbox-brick: #a21025;
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Color
+$ms-xbox-pink: #ed5588;
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Color
+$ms-xbox-magenta: #bf1077;
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Color
+$ms-xbox-lavender: #b144c0;
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Color
+$ms-xbox-purple: #744da9;
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Color
+$ms-xbox-blue: #1073d6;
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Color
+$ms-xbox-navy: #193e91;
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Color
+$ms-xbox-sky: #1081ca;
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Color
+$ms-xbox-slate: #677488;
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Color
+$ms-xbox-sage: #108272;
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Color
+$ms-xbox-forrest: #148282;
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Color
+$ms-xbox-lime: #54a81b;
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Color
+$ms-xbox-camo: #547a72;
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Color
+$ms-xbox-tan: #7e715c;
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Color
+$ms-xbox-brown: #724f2f;
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Color
+$ms-xbox-green: #107c10;
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Color
+$ms-xbox-gray: #737373;
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Color
+$ms-xbox-dark: #4c4a4b;
+
+/// @group Xbox Colors
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color#xbox-accent-colors Xbox accent colors in Windows Dev Center
+/// @type Map
+/// @example
+///     $accent: map-get($ms-xbox, yellow);
+///     // (Same as $ms-xbox-yellow)
+$ms-xbox: (
+    yellow: $ms-xbox-yellow,
+    orange: $ms-xbox-orange,
+    red: $ms-xbox-red,
+    brick: $ms-xbox-brick,
+    pink: $ms-xbox-pink,
+    magenta: $ms-xbox-magenta,
+    lavender: $ms-xbox-lavender,
+    purple: $ms-xbox-purple,
+    blue: $ms-xbox-blue,
+    navy: $ms-xbox-navy,
+    sky: $ms-xbox-sky,
+    slate: $ms-xbox-slate,
+    sage: $ms-xbox-sage,
+    forrest: $ms-xbox-forrest,
+    lime: $ms-xbox-lime,
+    camo: $ms-xbox-camo,
+    tan: $ms-xbox-tan,
+    brown: $ms-xbox-brown,
+    green: $ms-xbox-green,
+    gray: $ms-xbox-gray,
+    dark: $ms-xbox-dark
+);
+
+
+
+/// Windows 10 toast notification background color
+/// @group Windows 10 Colors
+/// @type Color
+$ms-win-toast: #464646;
+
+/// Windows 10 toast notification border color
+/// @group Windows 10 Colors
+/// @type Color
+$ms-win-toast-border: #404040;
+
+/// @group Windows 10 Colors
+/// @type Map
+/// @link https://msdn.microsoft.com/en-us/windows/uwp/style/color
+/// @todo Create Windows 10 color map, similar to `$ms-xbox`. Add more Windows 10 colors.
+$ms-win: ();
+
+
+
+/// @group Zune
+/// @type Color
+$ms-zune-pink: #f10da2;
+
+/// @group Zune
+/// @type Color
+$ms-zune-orange: #fd5d11;
+
+/// @group Zune
+/// @type Color
+$ms-zune-blue: #1370bb;
+
+/// Background color used in Zune app's default skin
+/// @group Zune
+/// @type Color
+$ms-zune-light: #fdfdfd;
+
+/// Dark background used in Zune's _Quickplay_ tab.
+/// @group Zune
+/// @type Color
+$ms-zune-dark: #11090f;
+
+/// @group Zune
+/// @type Color
+$ms-zune-text: #e9e9e9;
+
+/// @group Zune
+/// @type Color
+$ms-zune-muted: #828689;
+
+/// Zune logo gradient
+/// @group Zune
+/// @type String
+/// @link http://colorzilla.com/gradient-editor/#e95216+0,f10da2+100 Get CSS gradient vendor prefixes for `$ms-zune-gradient`
+/// @example
+///     .zune {
+///         background-image: $ms-zune-gradient;
+///     }
+$ms-zune-gradient: linear-gradient(to bottom, $ms-zune-pink 0%, $ms-zune-orange 100%);
+
+/// Zune HD gradient
+/// @group Zune
+/// @type String
+/// @link http://colorzilla.com/gradient-editor/#e95216+2,e95216+2,f10da2+50,1370bb+98 Get CSS gradient vendor prefixes for `$ms-zune-hd-gradient`
+/// @example
+///     .zune-hd {
+///         background-image: $ms-zune-hd-gradient;
+///     }
+$ms-zune-hd-gradient: linear-gradient(135deg, $ms-zune-orange 2%, $ms-zune-blue 50%, $ms-zune-orange 98%);
+
+/// Subtle gradient seen in background of Zune dialogs
+/// @group Zune
+/// @type String
+/// @link http://colorzilla.com/gradient-editor/#e95216+2,e95216+2,f10da2+50,1370bb+98 Get CSS gradient vendor prefixes for `$ms-zune-hd-gradient`
+/// @example
+///     .zune-hd {
+///         background-image: $ms-zune-hd-gradient;
+///     }
+$ms-zune-background-gradient: linear-gradient(135deg, #200319 0%, #21303a 60%, #07192a 100%); // scss-lint:disable ColorVariable
+
+/// @group Zune
+/// @type Map
+/// @link
+/// @example
+///     $cute-zune: map-get($ms-zune, pink);
+///     // (Same as $ms-zune-pink)
+$ms-zune: (
+    pink: $ms-zune-pink,
+    orange: $ms-zune-orange,
+    blue: $ms-zune-blue,
+    light: $ms-zune-light,
+    dark: $ms-zune-dark,
+    text: $ms-zune-text,
+    muted: $ms-zune-muted
+);
+
+
+
+/// Excel's "Good" cell color
+/// @group Excel
+/// @type Color
+$ms-excel-good: #c6efce;
+
+/// Excel's "Bad" cell color
+/// @group Excel
+/// @type Color
+$ms-excel-bad: #ffc7ce;
+
+/// Excel's "Neutral" cell color
+/// @group Excel
+/// @type Color
+$ms-excel-neutral: #ffeb9c;
+
+/// Excel's "Note" cell color
+/// @group Excel
+/// @type Color
+$ms-excel-note: #ffc;
+
+/// Excel's "Check Cell" cell color
+/// @group Excel
+/// @type Color
+$ms-excel-check: #a5a5a5;
+
+/// @group Excel
+/// @type Color
+$ms-excel-accent-cyan: #4bacc6;
+
+/// @group Excel
+/// @type Color
+$ms-excel-accent-blue: #4f81bd;
+
+/// @group Excel
+/// @type Color
+$ms-excel-accent-purple: #8064a2;
+
+/// @group Excel
+/// @type Color
+$ms-excel-accent-red: #c0504d;
+
+/// @group Excel
+/// @type Color
+$ms-excel-accent-orange: #f79646;
+
+/// @group Excel
+/// @type Color
+$ms-excel-accent-green: #9bbb59;
+
+
+
+// By Jason Gardner
+// https://github.com/jasonjgardner/microsoft-scss-colors

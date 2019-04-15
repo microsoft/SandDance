@@ -1,0 +1,20 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+@mixin dataIndex(
+) {
+    .sanddance-dataIndex {
+        .index {
+            display: grid;
+            grid-template-columns: 32px auto 32px;
+            line-height: 32px;
+            margin: 0px -8px 6px -8px;
+            text-align: center;
+        }
+        .item-filtered {
+            background-color: rgba(0, 0, 0, 0.1);
+            font-size: 10px;
+            padding: 2px 4px;
+            text-transform: uppercase;
+        }
+    }
+}

@@ -1,0 +1,100 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+/*------------------------------------*\
+  #SITE NAV
+\*------------------------------------*/
+
+.c-site-nav {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+
+    @include mq($until: desktop) {
+        display: block;
+        position: absolute;
+        top: 48px;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+
+        &:not(.is-open) {
+            @include inuit-hidden-visually();
+        }
+    }
+
+    &__item {
+        position: relative;
+        display: block;
+        padding-top:    $spacing-small;
+        padding-right:  $spacing;
+        padding-bottom: $spacing-small;
+        padding-left:   $spacing;
+        color: white;
+        background: $ms-black-500;
+
+        @include mq($from: desktop) {
+            display: inline-block;
+            padding-top:    $spacing-small + $spacing-tiny;
+            padding-right:  $spacing-small;
+            padding-bottom: $spacing-small + $spacing-tiny;
+            padding-left:   $spacing-small;
+            background: transparent;
+            @include inuit-font-size($inuit-font-size-h6);
+        }
+
+        /*&:after {
+            content: "";
+            position: absolute;
+            bottom: $spacing-small + $spacing-tiny;
+            left: $spacing-small;
+            right: $spacing-small;
+            height: 2px;
+            background: $ms-black-100;
+            opacity: 0;
+        }*/
+
+        &:hover,
+        &:focus {
+            background: $ms-black-500;
+            text-decoration: none;
+
+            &:after {
+                opacity: 1;
+            }
+        }
+    }
+}
+
+.c-site-nav-toggle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: $spacing-large;
+    width: $spacing-large + $spacing;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    appearance: none;
+
+    &:hover,
+    &:focus {
+        background: $ms-black-500;
+    }
+
+    > span {
+        position: absolute;
+        width: $spacing;
+        height: 1px;
+        left: 50%;
+        margin-left: -$spacing/2;
+        background: $ms-black-100;
+
+        &:first-child  { top: 35%; }
+        &:nth-child(2) { top: 50%; }
+        &:last-child   { bottom: 35%; }
+    }
+
+    @include mq($from: desktop) {
+        display: none;
+    }
+}

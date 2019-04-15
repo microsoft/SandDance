@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SandDance</title>
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/main.css">
+</head>
+
+<body>
+    <header class="c-page-head">
+        <div class="o-wrapper">
+            <button id="site-nav-toggle" type="button" class="c-site-nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <a href="//microsoft.com" class="c-page-head__logo">
+                <img alt="Microsoft logo" src="{{ site.baseurl }}/assets/images/microsoft-logo.png">
+            </a>
+
+            <strong class="c-page-head__title">SandDance</strong>
+
+            <nav id="site-nav" class="c-site-nav">
+                <a href="{{ site.baseurl }}/" class="c-site-nav__item">
+                    Home
+                </a>
+                <a href="{{ site.baseurl }}/app" class="c-site-nav__item">
+                    Try Online
+                </a>
+                <a href="{{ site.baseurl }}/examples" class="c-site-nav__item">
+                    Examples
+                </a>
+                <a href="{{ site.baseurl }}/docs/" class="c-site-nav__item">
+                    Docs
+                </a>
+                <a href="https://github.com/Microsoft/SandDance" class="c-site-nav__item">
+                    GitHub
+                </a>
+            </nav>
+
+            <button id="site-tree-toggle" type="button" class="c-tree-toggle">
+                <div class="c-tree-toggle__icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <span class="c-tree-toggle__label">
+                    Contents
+                </span>
+            </button>
+
+            <button id="dark-mode-toggle" type="button" class="c-dark-mode-toggle">
+            </button>
+        </div>
+    </header>
+
+    <main class="c-page-main">
+
+        {{ content }}
+
+    </main>
+
+    <footer class="o-wrapper">
+        {% include footer-links.html %}
+    </footer>
+
+    <script src="{{ site.baseurl }}/assets/js/main.js"></script>
+</body>
+
+</html>

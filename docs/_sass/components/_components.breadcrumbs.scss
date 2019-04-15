@@ -1,0 +1,37 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+/*------------------------------------*\
+  #BREADCRUMBS
+\*------------------------------------*/
+
+.c-breadcrumbs {
+    border-bottom: 1px solid $ms-black-200;
+    background: $ms-black-100;
+
+    .dark-theme & {
+        border-bottom-color: $ms-black-500;
+        background: $ms-black-600;
+    }
+
+    &__crumb {
+        display: inline-block;
+        padding-top:    $spacing-small;
+        padding-right:  $spacing-tiny;
+        padding-bottom: $spacing-small;
+        color: $ms-sky-400;
+
+        // Dividers on all but the last crumb
+        &:not(:last-child) {
+            &:after {
+                display: inline-block;
+                content: "/";
+                margin-left: $spacing-small;
+                color: $ms-black-300;
+            }
+        }
+
+        &:last-child {
+            //color: $ms-black-600;
+        }
+    }
+}

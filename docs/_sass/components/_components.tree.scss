@@ -1,0 +1,194 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+/*------------------------------------*\
+  #TREE
+\*------------------------------------*/
+
+.c-tree {
+    @include mq($until: tablet) {
+        position: fixed;
+        top: $spacing-huge;
+        left: 0;
+        width: 100%;
+        padding: $spacing;
+        background: $ms-black-100;
+        border-bottom: 1px solid $ms-black-200;
+        z-index: 1000;
+
+        .dark-theme & {
+            background: $ms-black-500;
+            border-bottom-color: $ms-black-600;
+        }
+
+        &:not(.is-open) {
+            @include inuit-hidden-visually();
+        }
+    }
+
+    @include mq($from: tablet) {
+        position: sticky;
+        top: $spacing-huge;
+        max-height: calc(100vh - #{$spacing*7 - $spacing-small});
+        overflow-y: auto;
+        @include inuit-font-size($inuit-font-size-h4);
+    }
+
+    ul {
+        margin-left: 0;
+        overflow: hidden;
+        transition: height 250ms;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    a {
+        display: inline-block;
+        width: 100%;
+        vertical-align: middle;
+        padding-top:    $spacing-tiny/2;
+        padding-right:  $spacing-small;
+        padding-bottom: $spacing-tiny/2;
+        padding-left:   $spacing + $spacing-tiny;
+        color: $ms-black-600;
+
+        .dark-theme & {
+            color: white;
+        }
+
+        &:hover,
+        &:focus {
+            color: $ms-sky-500;
+            text-decoration: underline;
+        }
+
+        &.is-active {
+            background: $ms-sky-500;
+            color: white;
+        }
+    }
+
+    &__toggle {
+        position: relative;
+        cursor: pointer;
+        padding-top:    $spacing-tiny/2;
+        padding-right:  $spacing-small;
+        padding-bottom: $spacing-tiny/2;
+        padding-left:   $spacing + $spacing-tiny;
+
+        &:before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            margin-left:  $spacing-tiny;
+            margin-right: $spacing-tiny;
+            margin-top:   -$spacing-tiny/2;
+            height: $spacing-tiny*1.5;
+            width: $spacing-tiny*1.5;
+            border-style: solid;
+            border-radius: 2px;
+            border-width: 2px 2px 0 0;
+            border-color: $ms-black-500;
+            transform: rotate(45deg);
+            transition: transform 250ms;
+
+            .dark-theme & {
+                border-color: $ms-black-400;
+            }
+        }
+
+        &.is-open {
+            &:before {
+                transform: rotate(135deg);
+            }
+        }
+
+        &.is-active {
+            &:before {
+                border-color: white;
+            }
+        }
+
+        > a {
+            padding-left: 0;
+
+            &.is-active {
+                margin-left: -$spacing - $spacing-tiny;
+                padding-left: $spacing + $spacing-tiny;
+                width: calc(100% + #{$spacing + $spacing-tiny});
+            }
+        }
+    }
+}
+
+.c-tree-stick {
+    @include mq($from: tablet) {
+        position: sticky;
+        top: $spacing*3 + $spacing-small;
+    }
+}
+
+.c-tree-toggle {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-top:    $spacing-small;
+    padding-right:  $spacing;
+    padding-bottom: $spacing-small;
+    padding-left:   $spacing;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    appearance: none;
+    color: white;
+    @include inuit-font-size(10px);
+
+    @include mq($from: desktop) {
+        display: none;
+    }
+
+    &:hover,
+    &:focus {
+        background: $ms-black-500;
+    }
+
+    &__icon {
+        display: inline-block;
+        vertical-align: middle;
+        position: relative;
+        height: $spacing;
+        width: $spacing;
+        margin-right: $spacing-tiny;
+
+        > span {
+            width: 80%;
+            height: 1px;
+            position: absolute;
+            right: 0;
+            background: $ms-black-100;
+
+            &:first-child { top: 26%; }
+            &:nth-child(2) { top: 50%; }
+            &:last-child   { bottom: 26%; }
+
+            &:before {
+                content: "";
+                position: absolute;
+                top: -0.5px;
+                left: -20%;
+                width: 2px;
+                height: 2px;
+                border-radius: 50%;
+                background: inherit;
+            }
+        }
+    }
+
+    &__label {
+        display: inline-block;
+        vertical-align: middle;
+    }
+}

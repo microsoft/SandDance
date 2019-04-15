@@ -1,0 +1,105 @@
+[
+  {
+    "columns": {
+      "uid": "Name",
+      "x": "Age"
+    },
+    "chart": "barchart"
+  },
+  {
+    "columns": {
+      "uid": "Name",
+      "x": "Gender"
+    },
+    "chart": "barchart"
+  },
+  {
+    "columns": {
+      "uid": "Name",
+      "x": "Gender",
+      "color": "Survived"
+    },
+    "scheme": "dual_redgreen",
+    "chart": "barchart"
+  },
+  {
+    "columns": {
+      "uid": "Name",
+      "x": "Gender",
+      "color": "Survived",
+      "sort": "Survived"
+    },
+    "scheme": "dual_redgreen",
+    "chart": "barchart"
+  },
+  {
+    "columns": {
+      "uid": "Name",
+      "x": "Gender",
+      "color": "Survived",
+      "sort": "Survived"
+    },
+    "filter": {
+      "name": "Survived",
+      "operator": "==",
+      "value": "True"
+    },
+    "scheme": "dual_redgreen",
+    "chart": "barchart"
+  },
+  {
+    "columns": {
+      "uid": "Name",
+      "x": "Gender",
+      "color": "Survived",
+      "sort": "Survived",
+      "facet": "Class"
+    },
+    "facets": {
+      "columns": 2,
+      "rows": 2
+    },
+    "scheme": "dual_redgreen",
+    "chart": "barchart"
+  },
+  {
+    "columns": {
+      "uid": "Name",
+      "x": "Gender",
+      "color": "Survived",
+      "sort": "Survived",
+      "facet": "Class"
+    },
+    "facets": {
+      "columns": 2,
+      "rows": 2
+    },
+    "filter": {
+      "name": "Class",
+      "operator": "!=",
+      "value": "Crew"
+    },
+    "scheme": "dual_redgreen",
+    "chart": "barchart"
+  },
+  {
+    "columns": {
+      "uid": "Name",
+      "x": "Age",
+      "color": "Survived",
+      "sort": "Survived",
+      "facet": "Class"
+    },
+    "facets": {
+      "columns": 2,
+      "rows": 2
+    },
+    "filter": {
+      "name": "Class",
+      "operator": "!=",
+      "value": "Crew"
+    },
+    "scheme": "dual_redgreen",
+    "chart": "barchart"
+  }
+]

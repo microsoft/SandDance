@@ -1,0 +1,67 @@
+{
+    "PBI_API_VERSION": "v1.10.0",
+    "type": "object",
+    "properties": {
+        "locale": {
+            "$ref": "#/definitions/localeOptions"
+        },
+        "values": {
+            "type": "object",
+            "description": "translations for the display name keys in the capabilities",
+            "additionalProperties": { "type": "string" }
+        }
+    },
+    "required": [ "locale" ],
+    "definitions": {
+        "localeOptions": {
+            "description": "Specifies the locale key from a list of supported locales",
+            "type": "string",
+            "enum": [
+                "ar-SA",
+                "bg-BG",
+                "ca-ES",
+                "cs-CZ",
+                "da-DK",
+                "de-DE",
+                "el-GR",
+                "en-US",
+                "es-ES",
+                "et-EE",
+                "eu-ES",
+                "fi-FI",
+                "fr-FR",
+                "gl-ES",
+                "he-IL",
+                "hi-IN",
+                "hr-HR",
+                "hu-HU",
+                "id-ID",
+                "it-IT",
+                "ja-JP",
+                "kk-KZ",
+                "ko-KR",
+                "lt-LT",
+                "lv-LV",
+                "ms-MY",
+                "nb-NO",
+                "nl-NL",
+                "pl-PL",
+                "pt-BR",
+                "pt-PT",
+                "ro-RO",
+                "ru-RU",
+                "sk-SK",
+                "sl-SI",
+                "sr-Cyrl-RS",
+                "sr-Latn-RS",
+                "sv-SE",
+                "th-TH",
+                "tr-TR",
+                "uk-UA",
+                "vi-VN",
+                "zh-CN",
+                "zh-TW"
+            ]
+        }
+    }
+}

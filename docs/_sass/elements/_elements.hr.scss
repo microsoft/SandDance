@@ -1,0 +1,15 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+/*------------------------------------*\
+  #HORIZONTAL RULE
+\*------------------------------------*/
+
+hr {
+    border: 0;
+    height: 1px;
+    background: $ms-black-200;
+
+    .dark-theme & {
+        background: $ms-black-500;
+    }
+}

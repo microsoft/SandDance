@@ -1,0 +1,5 @@
+typings
+node_modules
+.DS_Store
+.tmp
+dist

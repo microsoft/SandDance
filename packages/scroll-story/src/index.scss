@@ -1,0 +1,43 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+body {
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.sanddance-ReactViewer {
+    position: fixed;
+    height: 600px;
+    width: 600px;
+    top: 10em;
+    left: 1em;
+    .sanddance-root,
+    .sanddance-gl {
+        height: 100%;
+    }
+    .sanddance-panel {
+        h4,
+        .sanddance-vegaControls,
+        .sanddance-selection {
+            display: none;
+        }
+    }
+    .sanddance-details-scroll {
+        display: none;
+    }
+    .sanddance-details {
+        border: 1px solid #ccc;
+        background-color: #fff;
+        padding: 1em;
+        position: fixed;
+        top: 12em;
+        left: 5em;
+    }
+}
+
+.content {
+    margin-left: 610px;
+    position: relative;
+    button {
+        display: block;
+    }
+}

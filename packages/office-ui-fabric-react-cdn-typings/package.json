@@ -1,0 +1,15 @@
+{
+  "name": "@msrvida/office-ui-fabric-react-cdn-typings",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "dependencies": {
+    "office-ui-fabric-react": "^6.129.1"
+  },
+  "license": "MIT"
+}

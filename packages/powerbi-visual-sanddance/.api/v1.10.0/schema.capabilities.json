@@ -1,0 +1,1143 @@
+{
+    "PBI_API_VERSION": "v1.10.0",
+    "type": "object",
+    "properties": {
+        "dataRoles": {
+            "type": "array",
+            "description": "Defines data roles for the visual",
+            "items": {
+                "$ref": "#/definitions/dataRole"
+            }
+        },
+        "dataViewMappings": {
+            "type": "array",
+            "description": "Defines data mappings for the visual",
+            "items": {
+                "$ref": "#/definitions/dataViewMapping"
+            }
+        },
+        "objects": {
+            "$ref": "#/definitions/objects"
+        },
+        "sorting": {
+            "$ref": "#/definitions/sorting"
+        },
+        "drilldown": {
+            "$ref": "#/definitions/drilldown"
+        },
+        "suppressDefaultTitle": {
+            "type": "boolean",
+            "description": "Indicates whether the visual should show a default title"
+        },
+        "supportsHighlight": {
+            "type": "boolean",
+            "description": "Tells the host to include highlight data"
+        },
+        "advancedEditModeSupport": {
+            "type": "number",
+            "description": "Indicates the action requested from the host when this visual enters Advanced Edit mode."
+        }
+    },
+    "additionalProperties": false,
+    "definitions": {
+        "dataRole": {
+            "type": "object",
+            "description": "dataRole - Defines the name, displayName, and kind of a data role",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "The internal name for this data role used for all references to this role"
+                },
+                "displayName": {
+                    "type": "string",
+                    "description": "The name of this data role that is shown to the user"
+                },
+                "displayNameKey": {
+                    "type": "string",
+                    "description": "The localization key for the displayed name in the stringResourced file"
+                },
+                "kind": {
+                    "description": "The kind of data that can be bound do this role",
+                    "$ref": "#/definitions/dataRole.kind"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "A description of this role shown to the user as a tooltip"
+                },
+                "descriptionKey": {
+                    "type": "string",
+                    "description": "The localization key for the description in the stringResourced file"
+                },
+                "preferredTypes": {
+                    "type": "array",
+                    "description": "Defines the preferred type of data for this data role",
+                    "items": {
+                        "$ref": "#/definitions/valueType"
+                    }
+                },
+                "requiredTypes": {
+                    "type": "array",
+                    "description": "Defines the required type of data for this data role. Any values that do not match will be set to null",
+                    "items": {
+                        "$ref": "#/definitions/valueType"
+                    }
+                }
+            },
+            "required": [
+                "name",
+                "displayName",
+                "kind"
+            ],
+            "additionalProperties": false
+        },
+        "dataViewMapping": {
+            "type": "object",
+            "description": "dataMapping - Defines how data is mapped to data roles",
+            "properties": {
+                "conditions": {
+                    "type": "array",
+                    "description": "List of conditions that must be met for this data mapping",
+                    "items": {
+                        "type": "object",
+                        "description": "condition - Defines conditions for a data mapping (each key needs to be a valid data role)",
+                        "patternProperties": {
+                            "^[\\w\\s-]+$": {
+                                "description": "Specifies the number of values that can be assigned to this data role in this mapping",
+                                "$ref": "#/definitions/dataViewMapping.numberRangeWithKind"
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                },
+                "single": {
+                    "$ref": "#/definitions/dataViewMapping.single"
+                },
+                "categorical": {
+                    "$ref": "#/definitions/dataViewMapping.categorical"
+                },
+                "table": {
+                    "$ref": "#/definitions/dataViewMapping.table"
+                },
+                "matrix": {
+                    "$ref": "#/definitions/dataViewMapping.matrix"
+                },
+                "scriptResult": {
+                    "$ref": "#/definitions/dataViewMapping.scriptResult"
+                }
+            },
+            "oneOf": [
+                {
+                    "required": [
+                        "single"
+                    ]
+                },
+                {
+                    "required": [
+                        "categorical"
+                    ]
+                },
+                {
+                    "required": [
+                        "table"
+                    ]
+                },
+                {
+                    "required": [
+                        "matrix"
+                    ]
+                },
+                {
+                    "required": [
+                        "scriptResult"
+                    ]
+                }
+            ],
+            "additionalProperties": false
+        },
+        "dataViewMapping.single": {
+            "type": "object",
+            "description": "single - Defines a single data mapping",
+            "properties": {
+                "role": {
+                    "type": "string",
+                    "description": "The data role to bind to this mapping"
+                }
+            },
+            "required": [
+                "role"
+            ],
+            "additionalProperties": false
+        },
+        "dataViewMapping.categorical": {
+            "type": "object",
+            "description": "categorical - Defines a categorical data mapping",
+            "properties": {
+                "categories": {
+                    "type": "object",
+                    "description": "Defines data roles to be used as categories",
+                    "properties": {
+                        "bind": {
+                            "$ref": "#/definitions/dataViewMapping.bindTo"
+                        },
+                        "for": {
+                            "$ref": "#/definitions/dataViewMapping.forIn"
+                        },
+                        "select": {
+                            "$ref": "#/definitions/dataViewMapping.select"
+                        },
+                        "dataReductionAlgorithm": {
+                            "$ref": "#/definitions/dataViewMapping.dataReductionAlgorithm"
+                        }
+                    },
+                    "oneOf": [
+                        {
+                            "required": [
+                                "for"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "bind"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "select"
+                            ]
+                        }
+                    ]
+                },
+                "values": {
+                    "type": "object",
+                    "description": "Defines data roles to be used as values",
+                    "properties": {
+                        "bind": {
+                            "$ref": "#/definitions/dataViewMapping.bindTo"
+                        },
+                        "for": {
+                            "$ref": "#/definitions/dataViewMapping.forIn"
+                        },
+                        "select": {
+                            "$ref": "#/definitions/dataViewMapping.select"
+                        },
+                        "group": {
+                            "type": "object",
+                            "description": "Groups on a a specific data role",
+                            "properties": {
+                                "by": {
+                                    "description": "Specifies a data role to use for grouping",
+                                    "type": "string"
+                                },
+                                "select": {
+                                    "$ref": "#/definitions/dataViewMapping.select"
+                                },
+                                "dataReductionAlgorithm": {
+                                    "$ref": "#/definitions/dataViewMapping.dataReductionAlgorithm"
+                                }
+                            },
+                            "required": [
+                                "by",
+                                "select"
+                            ]
+                        }
+                    },
+                    "oneOf": [
+                        {
+                            "required": [
+                                "for"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "bind"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "select"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "group"
+                            ]
+                        }
+                    ]
+                },
+                "dataVolume": {
+                    "$ref": "#/definitions/dataViewMapping.dataVolume"
+                }
+            },
+            "additionalProperties": false
+        },
+        "dataViewMapping.table": {
+            "type": "object",
+            "description": "table - Defines a table data mapping",
+            "properties": {
+                "rows": {
+                    "type": "object",
+                    "description": "Rows to use for the table",
+                    "properties": {
+                        "bind": {
+                            "$ref": "#/definitions/dataViewMapping.bindTo"
+                        },
+                        "for": {
+                            "$ref": "#/definitions/dataViewMapping.forIn"
+                        },
+                        "select": {
+                            "$ref": "#/definitions/dataViewMapping.select"
+                        },
+                        "dataReductionAlgorithm": {
+                            "$ref": "#/definitions/dataViewMapping.dataReductionAlgorithm"
+                        }
+                    },
+                    "oneOf": [
+                        {
+                            "required": [
+                                "for"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "bind"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "select"
+                            ]
+                        }
+                    ]
+                },
+                "rowCount": {
+                    "type": "object",
+                    "description": "Specifies a constraint on the number of data rows supported by the visual",
+                    "properties": {
+                        "preferred": {
+                            "description": "Specifies a preferred range of values for the constraint",
+                            "$ref": "#/definitions/dataViewMapping.numberRange"
+                        },
+                        "supported": {
+                            "description": "Specifies a supported range of values for the constraint. Defaults to preferred if not specified.",
+                            "$ref": "#/definitions/dataViewMapping.numberRange"
+                        }
+                    }
+                },
+                "dataVolume": {
+                    "$ref": "#/definitions/dataViewMapping.dataVolume"
+                }
+            },
+            "requires": [
+                "rows"
+            ]
+        },
+        "dataViewMapping.matrix": {
+            "type": "object",
+            "description": "matrix - Defines a matrix data mapping",
+            "properties": {
+                "rows": {
+                    "type": "object",
+                    "description": "Defines the rows used for the matrix",
+                    "properties": {
+                        "for": {
+                            "$ref": "#/definitions/dataViewMapping.forIn"
+                        },
+                        "select": {
+                            "$ref": "#/definitions/dataViewMapping.select"
+                        },
+                        "dataReductionAlgorithm": {
+                            "$ref": "#/definitions/dataViewMapping.dataReductionAlgorithm"
+                        }
+                    },
+                    "oneOf": [
+                        {
+                            "required": [
+                                "for"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "select"
+                            ]
+                        }
+                    ]
+                },
+                "columns": {
+                    "type": "object",
+                    "description": "Defines the columns used for the matrix",
+                    "properties": {
+                        "for": {
+                            "$ref": "#/definitions/dataViewMapping.forIn"
+                        },
+                        "dataReductionAlgorithm": {
+                            "$ref": "#/definitions/dataViewMapping.dataReductionAlgorithm"
+                        }
+                    },
+                    "required": [
+                        "for"
+                    ]
+                },
+                "values": {
+                    "type": "object",
+                    "description": "Defines the values used for the matrix",
+                    "properties": {
+                        "for": {
+                            "$ref": "#/definitions/dataViewMapping.forIn"
+                        },
+                        "select": {
+                            "$ref": "#/definitions/dataViewMapping.select"
+                        }
+                    },
+                    "oneOf": [
+                        {
+                            "required": [
+                                "for"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "select"
+                            ]
+                        }
+                    ]
+                },
+                "dataVolume": {
+                    "$ref": "#/definitions/dataViewMapping.dataVolume"
+                }
+            }
+        },
+        "dataViewMapping.scriptResult": {
+            "type": "object",
+            "description": "scriptResult - Defines a scriptResult data mapping",
+            "properties": {
+                "dataInput": {
+                    "type": "object",
+                    "description": "dataInput - Defines how data is mapped to data roles",
+                    "properties": {
+                        "table": {
+                            "$ref": "#/definitions/dataViewMapping.table"
+                        }
+                    }
+                },
+                "script": {
+                    "type": "object",
+                    "description": "script - Defines where the script text and provider are stored",
+                    "properties": {
+                        "scriptSourceDefault": {
+                            "type": "string",
+                            "description": "scriptSourceDefault - Defines the default script source value to be used when no script object is defined"
+                        },
+                        "scriptProviderDefault": {
+                            "type": "string",
+                            "description": "scriptProviderDefault - Defines the default script provider value to be used when no provider object is defined"
+                        },
+                        "scriptOutputType": {
+                            "type": "string",
+                            "description": "scriptOutputType - Defines the output type that the R script will generate"
+                        },
+                        "source": {
+                            "$ref": "#/definitions/dataViewObjectPropertyIdentifier"
+                        },
+                        "provider": {
+                            "$ref": "#/definitions/dataViewObjectPropertyIdentifier"
+                        }
+                    }
+                }
+            }
+        },
+        "dataViewObjectPropertyIdentifier": {
+            "type": "object",
+            "description": "Points to an object property",
+            "properties": {
+                "objectName": {
+                    "type": "string",
+                    "description": "The name of a object"
+                },
+                "propertyName": {
+                    "type": "string",
+                    "description": "The name of a property inside the object"
+                }
+            }
+        },
+        "dataViewMapping.bindTo": {
+            "type": "object",
+            "description": "Binds this data mapping to a single value",
+            "properties": {
+                "to": {
+                    "type": "string",
+                    "description": "The name of a data role to bind to"
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "to"
+            ]
+        },
+        "dataViewMapping.numberRange": {
+            "type": "object",
+            "description": "A number range from min to max",
+            "properties": {
+                "min": {
+                    "type": "number",
+                    "description": "Minimum value supported"
+                },
+                "max": {
+                    "type": "number",
+                    "description": "Maximum value supported"
+                }
+            }
+        },
+        "dataViewMapping.numberRangeWithKind": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/dataViewMapping.numberRange"
+                },
+                {
+                    "properties": {
+                        "kind": {
+                            "$ref": "#/definitions/dataRole.kind"
+                        }
+                    }
+                }
+            ]
+        },
+        "dataRole.kind": {
+            "type": "string",
+            "enum": [
+                "Grouping",
+                "Measure",
+                "GroupingOrMeasure"
+            ]
+        },
+        "dataViewMapping.select": {
+            "type": "array",
+            "description": "Defines a list of properties to bind",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "bind": {
+                        "$ref": "#/definitions/dataViewMapping.bindTo"
+                    },
+                    "for": {
+                        "$ref": "#/definitions/dataViewMapping.forIn"
+                    }
+                },
+                "oneOf": [
+                    {
+                        "required": [
+                            "for"
+                        ]
+                    },
+                    {
+                        "required": [
+                            "bind"
+                        ]
+                    }
+                ]
+            }
+        },
+        "dataViewMapping.dataReductionAlgorithm": {
+            "type": "object",
+            "description": "Describes how to reduce the amount of data exposed to the visual",
+            "properties": {
+                "top": {
+                    "type": "object",
+                    "description": "Reduce the data to the Top count items",
+                    "properties": {
+                        "count": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "bottom": {
+                    "type": "object",
+                    "description": "Reduce the data to the Bottom count items",
+                    "properties": {
+                        "count": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "sample": {
+                    "type": "object",
+                    "description": "Reduce the data using a simple Sample of count items",
+                    "properties": {
+                        "count": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "window": {
+                    "type": "object",
+                    "description": "Allow the data to be loaded one window, containing count items, at a time",
+                    "properties": {
+                        "count": {
+                            "type": "number"
+                        }
+                    }
+                }
+            },
+            "additionalProperties": false,
+            "oneOf": [
+                {
+                    "required": [
+                        "top"
+                    ]
+                },
+                {
+                    "required": [
+                        "bottom"
+                    ]
+                },
+                {
+                    "required": [
+                        "sample"
+                    ]
+                },
+                {
+                    "required": [
+                        "window"
+                    ]
+                }
+            ]
+        },
+        "dataViewMapping.dataVolume": {
+            "description": "Specifies the volume of data the query should return (1-6)",
+            "type": "number",
+            "enum": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+            ]
+        },
+        "dataViewMapping.forIn": {
+            "type": "object",
+            "description": "Binds this data mapping for all items in a collection",
+            "properties": {
+                "in": {
+                    "type": "string",
+                    "description": "The name of a data role to iterate over"
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "in"
+            ]
+        },
+        "objects": {
+            "type": "object",
+            "description": "A list of unique property groups",
+            "patternProperties": {
+                "^[\\w\\s-]+$": {
+                    "type": "object",
+                    "description": "Settings for a group of properties",
+                    "properties": {
+                        "displayName": {
+                            "type": "string",
+                            "description": "The name shown to the user to describe this group of properties"
+                        },
+                        "displayNameKey": {
+                            "type": "string",
+                            "description": "The localization key for the displayed name in the stringResourced file"
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "A description of this object shown to the user as a tooltip"
+                        },
+                        "descriptionKey": {
+                            "type": "string",
+                            "description": "The localization key for the description in the stringResourced file"
+                        },
+                        "properties": {
+                            "type": "object",
+                            "description": "A list of unique properties contained in this group",
+                            "patternProperties": {
+                                "^[\\w\\s-]+$": {
+                                    "$ref": "#/definitions/object.propertySettings"
+                                }
+                            },
+                            "additionalProperties": false
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
+        },
+        "object.propertySettings": {
+            "type": "object",
+            "description": "Settings for a property",
+            "properties": {
+                "displayName": {
+                    "type": "string",
+                    "description": "The name shown to the user to describe this property"
+                },
+                "displayNameKey": {
+                    "type": "string",
+                    "description": "The localization key for the displayed name in the stringResourced file"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "A description of this property shown to the user as a tooltip"
+                },
+                "descriptionKey": {
+                    "type": "string",
+                    "description": "The localization key for the description in the stringResourced file"
+                },
+                "placeHolderText": {
+                    "type": "string",
+                    "description": "Text to display if the field is empty"
+                },
+                "suppressFormatPainterCopy": {
+                    "type": "boolean",
+                    "description": "Indicates whether the Format Painter should ignore this property"
+                },
+                "type": {
+                    "description": "Describes what type of property this is and how it should be displayed to the user",
+                    "$ref": "#/definitions/valueType"
+                },
+                "rule": {
+                    "type": "object",
+                    "description": "Describes substitution rule that replaces property object, described inside the rule, to current property object that contains this rule",
+                    "$ref": "#/definitions/substitutionRule"
+                }
+            },
+            "additionalProperties": false
+        },
+        "substitutionRule": {
+            "type": "object",
+            "description": "Describes substitution rule that replaces property object, described inside the rule, to current property object that contains this rule",
+            "properties": {
+                "inputRole": {
+                    "type": "string",
+                    "description": "The name of role. If this role is set, the substitution will be applied"
+                },
+                "output": {
+                    "type": "object",
+                    "description": "Describes what exactly is necessary to replace",
+                    "properties": {
+                        "property": {
+                            "type": "string",
+                            "description": "The name of property object that will be replaced"
+                        },
+                        "selector": {
+                            "type": "array",
+                            "description": "The array of selector names. Usually, it contains only one selector -- 'Category'",
+                            "items": {
+                                "type": "string",
+                                "description": "The name of selector"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "sorting": {
+            "type": "object",
+            "description": "Specifies the default sorting behavior for the visual",
+            "properties": {
+                "default": {
+                    "type": "object",
+                    "additionalProperties": false
+                },
+                "custom": {
+                    "type": "object",
+                    "additionalProperties": false
+                },
+                "implicit": {
+                    "type": "object",
+                    "description": "implicit sort",
+                    "properties": {
+                        "clauses": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "role": {
+                                        "type": "string"
+                                    },
+                                    "direction": {
+                                        "type": "number",
+                                        "description": "Determines sort direction (1 = Ascending, 2 = Descending)",
+                                        "enum": [
+                                            1,
+                                            2
+                                        ]
+                                    }
+                                },
+                                "additionalProperties": false
+                            }
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false,
+            "oneOf": [
+                {
+                    "required": [
+                        "default"
+                    ]
+                },
+                {
+                    "required": [
+                        "custom"
+                    ]
+                },
+                {
+                    "required": [
+                        "implicit"
+                    ]
+                }
+            ]
+        },
+        "drilldown": {
+            "type": "object",
+            "description": "Defines the visual's drill capability",
+            "properties": {
+                "roles": {
+                    "type": "array",
+                    "description": "The drillable role names for this visual",
+                    "items": {
+                        "type": "string",
+                        "description": "The name of the role"
+                    }
+                }
+            }
+        },
+        "valueType": {
+            "type": "object",
+            "properties": {
+                "bool": {
+                    "type": "boolean",
+                    "description": "A boolean value that will be displayed to the user as a toggle switch"
+                },
+                "enumeration": {
+                    "type": "array",
+                    "description": "A list of values that will be displayed as a drop down list",
+                    "items": {
+                        "type": "object",
+                        "description": "Describes an item in the enumeration list",
+                        "properties": {
+                            "displayName": {
+                                "type": "string",
+                                "description": "The name shown to the user to describe this item"
+                            },
+                            "displayNameKey": {
+                                "type": "string",
+                                "description": "The localization key for the displayed name in the stringResourced file"
+                            },
+                            "value": {
+                                "type": "string",
+                                "description": "The internal value of this property when this item is selected"
+                            }
+                        }
+                    }
+                },
+                "fill": {
+                    "type": "object",
+                    "description": "A color value that will be displayed to the user as a color picker",
+                    "properties": {
+                        "solid": {
+                            "type": "object",
+                            "description": "A solid color value that will be displayed to the user as a color picker",
+                            "properties": {
+                                "color": {
+                                    "oneOf": [
+                                        {
+                                            "type": "boolean"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "nullable": {
+                                                    "description": "Allows the user to select 'no fill' for the color",
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "fillRule" : {
+                    "type": "object",
+                    "description": "A color gradient that will be dispalyed to the user as a minimum (,medium) and maximum color pickers",
+                    "properties": {
+                        "linearGradient2": {
+                            "type": "object",
+                            "description": "Two color gradient",
+                            "properties": {
+                                "max": {
+                                    "type": "object",
+                                    "description": "Maximum color for gradient",
+                                    "properties": {
+                                        "color": {
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "type": "number"
+                                        }
+                                    }
+                                },
+                                "min": {
+                                    "type": "object",
+                                    "description": "Minimum color for gradient",
+                                    "properties": {
+                                        "color": {
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "type": "number"
+                                        }
+                                    }
+                                },
+                                "nullColoringStrategy": {
+                                    "type": "object",
+                                    "description": "Null color strategy"
+                                }
+                            }
+                        },
+                        "linearGradient3": {
+                            "type": "object",
+                            "description": "Three color gradient",
+                            "properties": {
+                                "max": {
+                                    "type": "object",
+                                    "description": "Maximum color for gradient",
+                                    "properties": {
+                                        "color": {
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "type": "number"
+                                        }
+                                    }
+                                },
+                                "min": {
+                                    "type": "object",
+                                    "description": "Minimum color for gradient",
+                                    "properties": {
+                                        "color": {
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "type": "number"
+                                        }
+                                    }
+                                },
+                                "mid": {
+                                    "type": "object",
+                                    "description": "Middle color for gradient",
+                                    "properties": {
+                                        "color": {
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "type": "number"
+                                        }
+                                    }
+                                },
+                                "nullColoringStrategy": {
+                                    "type": "object",
+                                    "description": "Null color strategy"
+                                }
+                            }
+                        }
+                    }
+                },
+                "formatting": {
+                    "type": "object",
+                    "description": "A numeric value that will be displayed to the user as a text input",
+                    "properties": {
+                        "labelDisplayUnits": {
+                            "type": "boolean",
+                            "description": "Displays a dropdown with common display units (Auto, None, Thousands, Millions, Billions, Trillions)"
+                        },
+                        "alignment": {
+                            "type": "boolean",
+                            "description": "Displays a selector to allow the user to choose left, center, or right alignment"
+                        },
+                        "fontSize": {
+                            "type": "boolean",
+                            "description": "Displays a slider that allows the user to choose a font size in points"
+                        }
+                    },
+                    "additionalProperties": false,
+                    "oneOf": [
+                        {
+                            "required": [
+                                "labelDisplayUnits"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "alignment"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "fontSize"
+                            ]
+                        }
+                    ]
+                },
+                "integer": {
+                    "type": "boolean",
+                    "description": "An integer (whole number) value that will be displayed to the user as a text input"
+                },
+                "numeric": {
+                    "type": "boolean",
+                    "description": "A numeric value that will be displayed to the user as a text input"
+                },
+                "filter": {
+                    "oneOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "selfFilter": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    ],
+                    "description": "A filter"
+                },
+                "operations": {
+                    "type": "object",
+                    "description": "A visual operation",
+                    "properties": {
+                        "searchEnabled": {
+                            "type": "boolean",
+                            "description": "Turns search ability on"
+                        }
+                    }
+                },
+                "text": {
+                    "type": "boolean",
+                    "description": "A text value that will be displayed to the user as a text input"
+                },
+                "scripting": {
+                    "type": "object",
+                    "description": "A text value that will be displayed to the user as a script",
+                    "properties": {
+                        "source": {
+                            "type": "boolean",
+                            "description": "A source code"
+                        }
+                    }
+                },
+                "geography": {
+                    "type": "object",
+                    "description": "Geographical data",
+                    "properties": {
+                        "address": {
+                            "type": "boolean"
+                        },
+                        "city": {
+                            "type": "boolean"
+                        },
+                        "continent": {
+                            "type": "boolean"
+                        },
+                        "country": {
+                            "type": "boolean"
+                        },
+                        "county": {
+                            "type": "boolean"
+                        },
+                        "region": {
+                            "type": "boolean"
+                        },
+                        "postalCode": {
+                            "type": "boolean"
+                        },
+                        "stateOrProvince": {
+                            "type": "boolean"
+                        },
+                        "place": {
+                            "type": "boolean"
+                        },
+                        "latitude": {
+                            "type": "boolean"
+                        },
+                        "longitude": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            },
+            "additionalProperties": false,
+            "oneOf": [
+                {
+                    "required": [
+                        "bool"
+                    ]
+                },
+                {
+                    "required": [
+                        "enumeration"
+                    ]
+                },
+                {
+                    "required": [
+                        "fill"
+                    ]
+                },
+                {
+                    "required": [
+                        "fillRule"
+                    ]
+                },
+                {
+                    "required": [
+                        "formatting"
+                    ]
+                },
+                {
+                    "required": [
+                        "integer"
+                    ]
+                },
+                {
+                    "required": [
+                        "numeric"
+                    ]
+                },
+                {
+                    "required": [
+                        "text"
+                    ]
+                },
+                {
+                    "required": [
+                        "geography"
+                    ]
+                },
+                {
+                    "required": [
+                        "scripting"
+                    ]
+                },
+                {
+                    "required": [
+                        "filter"
+                    ]
+                },
+                {
+                    "required": [
+                        "operations"
+                    ]
+                }
+            ]
+        }
+    }
+}

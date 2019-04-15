@@ -1,0 +1,92 @@
+///* ========================================================================
+//   #CORE
+//   ======================================================================== */
+
+// This core file sets up inuitcss’ most important setup variables. They
+// underpin a lot of how the framework functions and should be modified and
+// preconfigured with caution.
+
+
+
+// Baseline grid lines height.
+// Every spacing metric should be based on this.
+
+$inuit-global-baseline:     6px !default;
+
+
+
+// How many grid lines should our spacing unit variants span?
+// Each value should be an unitless integer.
+
+$inuit-global-spacing-unit-factor-tiny:   1 !default;   // 6px
+$inuit-global-spacing-unit-factor-small:  2 !default;   // 12px
+$inuit-global-spacing-unit-factor:        4 !default;   // 24px
+$inuit-global-spacing-unit-factor-large:  8 !default;   // 48px
+$inuit-global-spacing-unit-factor-huge:   16 !default;  // 96px
+
+
+
+// Spacing values are determined based on your project’s global baseline grid.
+// It is not recommended that you modify these following variables
+// (it can break your vertical rhythm), but if you need to, you can.
+
+$inuit-global-spacing-unit:       $inuit-global-baseline * $inuit-global-spacing-unit-factor !default;
+$inuit-global-spacing-unit-tiny:  $inuit-global-baseline * $inuit-global-spacing-unit-factor-tiny !default;
+$inuit-global-spacing-unit-small: $inuit-global-baseline * $inuit-global-spacing-unit-factor-small !default;
+$inuit-global-spacing-unit-large: $inuit-global-baseline * $inuit-global-spacing-unit-factor-large !default;
+$inuit-global-spacing-unit-huge:  $inuit-global-baseline * $inuit-global-spacing-unit-factor-huge !default;
+
+
+
+// Base typographical styles.
+
+$inuit-global-font-size:    16px !default;
+$inuit-global-line-height:  $inuit-global-spacing-unit !default;
+
+
+
+
+
+// Check that the chosen font rules are pixel numbers.
+
+@each $_inuit-font-globals in
+      $inuit-global-font-size
+      $inuit-global-line-height {
+
+  @if (type-of($_inuit-font-globals) == number) {
+
+    @if (unit($_inuit-font-globals) != "px") {
+      @error "`#{$_inuit-font-globals}` needs to be a pixel value.";
+    }
+
+  } @else {
+    @error "`#{$_inuit-font-globals}` needs to be a number.";
+  }
+
+}
+
+
+
+// Check that the chosen size factors are unitless, integer numbers.
+
+@each $_inuit-spacing-unit in
+      $inuit-global-spacing-unit-factor-tiny
+      $inuit-global-spacing-unit-factor-small
+      $inuit-global-spacing-unit-factor-large
+      $inuit-global-spacing-unit-factor-huge {
+
+  @if (type-of($_inuit-spacing-unit) == number) {
+
+    @if (unitless($_inuit-spacing-unit) == false) {
+      @error "`#{$_inuit-spacing-unit}` needs to be unitless.";
+    }
+
+    @if ($_inuit-spacing-unit != ceil($_inuit-spacing-unit)) {
+      @error "`#{$_inuit-spacing-unit}` needs to be an integer.";
+    }
+
+  } @else {
+    @error "`#{$_inuit-spacing-unit}` needs to be a number.";
+  }
+
+}

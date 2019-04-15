@@ -1,0 +1,44 @@
+{
+  "Overview": [
+    {
+      "tree": "Introduction",
+      "url": "/docs"
+    },
+    {
+      "tree": "Changelog",
+      "url": "/docs/changelog"
+    },
+    {
+      "tree": "Contributing",
+      "url": "/docs/contributing"
+    }
+  ],
+  "Components": [
+    {
+      "tree": "sanddance",
+      "url": "/docs/sanddance/v1"
+    },
+    {
+      "tree": "sanddance-react",
+      "url": "/docs/sanddance-react/v1"
+    },
+    {
+      "tree": "sanddance-explorer",
+      "url": "/docs/sanddance-explorer/v1"
+    }
+  ],
+  "Resources": [
+    {
+      "tree": "API Reference",
+      "url": "/docs/api"
+    },
+    {
+      "tree": "Vega",
+      "url": "https://vega.github.io/"
+    },
+    {
+      "tree": "Deck.gl",
+      "url": "https://deck.gl/"
+    }
+  ]
+}

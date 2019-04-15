@@ -1,0 +1,74 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+/*------------------------------------*\
+  #CODE BLOCKS
+\*------------------------------------*/
+
+pre.highlight {
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+    margin-bottom: $spacing;
+    padding: $spacing;
+    background: lighten($ms-black-100, 3%);
+    border: 1px solid $ms-black-200;
+    @include inuit-font-size($inuit-font-size-h5);
+
+    .dark-theme & {
+         background: $ms-black-600;
+         border-color: $ms-black-500;
+    }
+
+    > pre {
+        margin-bottom: 0;
+        font-family: Consolas, Lucida Console, Courier New, monospace;
+    }
+
+    code {
+        padding: 0;
+    }
+}
+
+[class*="language-"]:before {
+    display: block;
+    width: 100%;
+    padding-top:    $spacing-tiny;
+    padding-right:  $spacing;
+    padding-bottom: $spacing-tiny;
+    padding-left:   $spacing;
+    background: $ms-black-100;
+    border: 1px solid $ms-black-200;
+    border-bottom: 0;
+    color: $ms-black-500;
+    @include inuit-font-size($inuit-font-size-h6);
+
+    .dark-theme & {
+        background: $ms-sky-500;
+        border-color: $ms-sky-400;
+        color: $ms-black-200;
+    }
+}
+
+.language-html:before       { content: 'HTML'; }
+.language-js:before         { content: 'JavaScript'; }
+.language-json:before       { content: 'JSON'; }
+.language-typescript:before { content: 'TypeScript'; }
+
+code {
+    padding-right:  $spacing-tiny;
+    padding-left:   $spacing-tiny;
+    background: lighten($ms-black-100, 3%);
+    border: 1px solid $ms-black-200;
+    color: $ms-black-500;
+    @include inuit-font-size($inuit-font-size-h5);
+
+    .dark-theme & {
+        background: $ms-black-600;
+        border-color: $ms-black-500;
+        color: $ms-black-100;
+    }
+
+    pre & {
+        border: 0;
+    }
+}

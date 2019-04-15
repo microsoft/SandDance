@@ -1,0 +1,23 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+.sanddance-app-static-content {
+    display: none;
+}
+
+.sanddance-app {
+    display: grid;
+    height: 100%;
+}
+
+.sanddance-datasource-picker {
+    width: 100%;
+    //margin-bottom: 12px;
+}
+
+@import "../../node_modules/@msrvida/sanddance-explorer/dist/css/sanddance-explorer";
+
+.sanddance-sidebar {
+    .sanddance-datascope {
+        min-height: 7em;
+    }
+}

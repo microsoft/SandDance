@@ -1,0 +1,64 @@
+{
+  "sanddance": {
+    "constants.md": [
+      "Variables"
+    ],
+    "searchexpression.md": [
+      "Functions"
+    ],
+    "types.md": [
+      "Interfaces",
+      "Types"
+    ],
+    "util.md": [
+      "Functions"
+    ],
+    "vegadeckgl.constants.md": [
+      "Variables"
+    ],
+    "vegadeckgl.controls.md": [
+      "Interfaces",
+      "Variables"
+    ],
+    "vegadeckgl.md": [
+      "Classes",
+      "Enums",
+      "Functions",
+      "Namespaces",
+      "Variables"
+    ],
+    "vegadeckgl.presenter.md": [
+      "Constructor",
+      "Methods",
+      "Properties"
+    ],
+    "vegadeckgl.types.md": [
+      "Interfaces",
+      "Types"
+    ],
+    "vegadeckgl.util.md": [
+      "Functions"
+    ],
+    "viewer.md": [
+      "Constructor",
+      "Methods",
+      "Properties"
+    ]
+  },
+  "sanddance-explorer": {
+    "explorer.md": [
+      "Constructor",
+      "Methods",
+      "Properties"
+    ]
+  },
+  "sanddance-react": {
+    "sanddancereact.md": [
+      "Methods",
+      "Properties"
+    ],
+    "util.md": [
+      "Variables"
+    ]
+  }
+}

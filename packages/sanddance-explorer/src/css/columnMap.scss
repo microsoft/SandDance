@@ -1,0 +1,15 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+@mixin columnMap() {
+    .sanddance-columnMap {
+        position: relative;
+        .ms-Dropdown-container {
+            margin-top: 10px;
+        }
+        .column-options {
+            bottom: 3px;
+            position: absolute;
+            right: 0;
+        }
+    }
+}

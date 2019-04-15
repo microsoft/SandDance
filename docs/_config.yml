@@ -1,0 +1,6 @@
+baseurl: /SandDance
+
+sass:
+  style: compressed
+
+permalink: pretty

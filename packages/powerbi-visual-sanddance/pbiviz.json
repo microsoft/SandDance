@@ -1,0 +1,30 @@
+{
+  "visual": {
+    "name": "sanddance",
+    "displayName": "SandDance",
+    "guid": "sanddance709B3BED4C45489989349159A08CF3BF",
+    "visualClassName": "Visual",
+    "version": "1.0.0",
+    "description": "",
+    "supportUrl": "",
+    "gitHubUrl": ""
+  },
+  "apiVersion": "1.10.0",
+  "author": {
+    "name": "",
+    "email": ""
+  },
+  "assets": {
+    "icon": "assets/icon.png"
+  },
+  "externalJS": [
+    "node_modules/powerbi-visuals-utils-dataviewutils/lib/index.js",
+    "node_modules/deck.gl/deckgl.min.js",
+    "node_modules/vega-lib/build/vega.js",
+    "node_modules/sanddance/dist/umd/sanddance.js"
+  ],
+  "style": "style/visual.less",
+  "capabilities": "capabilities.json",
+  "dependencies": "dependencies.json",
+  "stringResources": []
+}

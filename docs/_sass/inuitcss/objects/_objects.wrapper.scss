@@ -1,0 +1,22 @@
+/* ==========================================================================
+   #WRAPPER
+   ========================================================================== */
+
+/**
+ * Page-level constraining and wrapping elements.
+ */
+
+$inuit-wrapper-width: 1200px !default;
+
+@if (type-of($inuit-wrapper-width) != number) {
+  @error "`#{$inuit-wrapper-width}` needs to be a number.";
+}
+
+.o-wrapper {
+  @include inuit-clearfix();
+  padding-right: $inuit-global-spacing-unit;
+  padding-left:  $inuit-global-spacing-unit;
+  margin-right: auto;
+  margin-left:  auto;
+  max-width: $inuit-wrapper-width;
+}

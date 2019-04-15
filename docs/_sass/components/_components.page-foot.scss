@@ -1,0 +1,19 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+/*------------------------------------*\
+  #PAGE FOOT
+\*------------------------------------*/
+
+footer {
+    font-size: smaller;
+    span {
+        border-left: 1px solid $ms-black-300;
+        margin-left: 1em;
+        padding-left: 1em;
+    }
+    span:first-child {
+        border-left: initial;
+        margin-left: initial;
+        padding-left: initial;
+    }
+}

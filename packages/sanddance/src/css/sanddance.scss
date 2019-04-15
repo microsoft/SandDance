@@ -1,0 +1,81 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+.sanddance-root {
+    height: 100%;
+    position: relative;
+    width: 100%;
+}
+
+.sanddance-gl {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    &.show-center {
+        background:
+            linear-gradient(to right,
+                transparent 49.9%,
+                rgba(255, 0, 0, 0.7),
+                transparent 50.1%
+            ),
+            linear-gradient(to bottom,
+                transparent 49.9%,
+                rgba(255, 0, 0, 0.7),
+                transparent 50.1%
+            )
+        ;
+    }
+}
+
+.sanddance-panel {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    bottom: 1em;
+    
+    background: #fff;
+    box-shadow: 8px 8px 12px -6px #ccc;
+    
+    border: 1px solid #ccc;
+    overflow-y: scroll;
+    padding-bottom: 1em;
+    padding-left: 1em;
+}
+
+.sanddance-legend {
+    table {
+        border-collapse: collapse;
+    }
+    th {
+        word-break: break-word;
+        max-width: 11em;
+    }
+    .legend-row {
+        cursor: pointer;
+        td {
+            padding: 2px;
+        }
+        &:hover {
+            background-color: #efefef;
+        }
+    }
+    .symbol div {
+        border-style: outset;
+        border-width: 1.5px;
+    }
+    .label {
+        max-width: 9em;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}
+
+.sanddance-details {
+    font-size: smaller;
+}
+
+.sanddance-details-scroll {
+    padding-bottom: 1em;
+}

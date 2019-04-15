@@ -1,0 +1,33 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+@mixin snapshots() {
+    .sanddance-snapshots {
+        .snapshot {
+            cursor: pointer;
+            margin-top: 0.5em;
+            padding: 4px;
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+        }
+        .title {
+            display: grid;
+            grid-template-columns: auto 32px;
+            word-break: break-word;
+        }
+        img {
+            width: 100%;
+        }
+        .actions {
+            display: grid;
+            grid-auto-flow: column;
+            a {
+                align-self: center;
+                text-align: center;
+            }
+            button {
+                width: 100%;
+            }
+        }
+    }
+}

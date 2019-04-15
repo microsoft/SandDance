@@ -1,0 +1,38 @@
+{
+    "PBI_API_VERSION": "v1.10.0",
+    "type": "object",
+    "properties": {
+        "cranPackages": {
+            "type": "array",
+            "description": "An array of the Cran packages required for the custom R visual script to operate",
+            "items": {
+                "$ref": "#/definitions/cranPackage"
+            }
+        }
+    },
+    "definitions": {
+        "cranPackage": {
+            "type": "object",
+            "description": "cranPackage - Defines the name and displayName of a required Cran package",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "The name for this Cran package"
+                },
+                "displayName": {
+                    "type": "string",
+                    "description": "The name for this Cran package that is shown to the user"
+                },
+                "url": {
+                    "type": "string",
+                    "description": "A url for package documentation in Cran website"
+                }
+            },
+            "required": [
+                "name",
+                "url"
+            ],
+            "additionalProperties": false
+        }
+    }
+}

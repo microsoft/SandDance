@@ -1,0 +1,4 @@
+dist/es6
+dist/css
+dist/umd/*.js
+dist/umd/*.map

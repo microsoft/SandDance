@@ -1,0 +1,19 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+@mixin scrollable(
+    $min-height: 200px
+) {
+    .scrollable-container {
+        display: grid;
+        min-height: $min-height;
+        position: relative;
+    }
+    .scrollable {
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        right: 0;
+        overflow-y: auto;
+        top: 0;
+    }
+}

@@ -1,0 +1,68 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+@mixin dataScope(
+    $toolbar-margin,
+    $toolbar-width,
+    $sidetab-width: 50px
+) {
+    .sanddance-datascope {
+        grid-area: stats;
+        background-color: rgba(0, 0, 0, 0.05);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        min-height: 5em;
+        &.extended > div {
+            margin: $toolbar-margin;
+            width: $toolbar-width - (2 * $toolbar-margin);
+        }
+        label {
+            display: block;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+        &.compact {
+            align-self: center;
+            cursor: pointer;
+            display: grid;
+            text-align: center;
+            width: $sidetab-width;
+            > div {
+                align-self: center;
+            }
+        }
+        .datascope-button {
+            background-color: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            box-sizing: border-box;
+            height: 36px;
+            min-width: unset;
+            width: 33.333%;
+            &:hover {
+                background-color: $highlight-color;
+                color: #fff;
+            }
+            label {
+                cursor: inherit;
+            }
+        }
+        &.active {
+            .datascope-button {
+                &.selected {
+                    border-color: $highlight-color;
+                }
+            }
+        }
+    }
+    .dark-theme .sanddance-datascope {
+        background-color: rgba(0, 0, 0, 0.3);
+        border-bottom-color: rgba(255, 255, 255, 0.1);
+        .datascope-button {
+            background-color: #000;
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            &:hover {
+                background-color: $highlight-color;
+                color: #fff;
+            }
+        }
+    }
+}
