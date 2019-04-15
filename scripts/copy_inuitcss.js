@@ -12,3 +12,7 @@ fs.removeSync('./docs/_sass/inuitcss/README.md');
 fs.removeSync('./docs/_sass/inuitcss/components');
 fs.removeSync('./docs/_sass/inuitcss/settings/_example.settings.config.scss');
 fs.removeSync('./docs/_sass/inuitcss/settings/_example.settings.global.scss');
+
+fs.copySync('./node_modules/sass-mq', './docs/_sass/sass-mq');
+fs.removeSync('./docs/_sass/sass-mq/package.json');
+fs.removeSync('./docs/_sass/sass-mq/README.md');
