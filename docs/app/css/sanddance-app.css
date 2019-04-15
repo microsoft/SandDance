@@ -92,27 +92,36 @@
   height: 24px; }
 
 .sanddance-explorer-topbar {
+  border-bottom: 1px solid #ccc;
   display: grid;
   grid-template-columns: 250px auto; }
 
+.sanddance-explorer-topbar > div {
+  align-self: center; }
+
 .sanddance-explorer-topbar .logo {
   color: #0078d4;
-  padding-top: 4px; }
+  display: grid;
+  grid-template-columns: 50px auto;
+  height: 24px; }
 
 .sanddance-explorer-topbar .logo i {
   font-size: 24px;
-  margin-left: 12px;
-  margin-right: 8px; }
+  margin-left: 12px; }
 
-.sanddance-explorer-topbar .logo span {
+.sanddance-explorer-topbar .logo a {
+  color: inherit;
   font-size: 14px;
   font-weight: bold;
-  position: relative;
-  top: -6px; }
+  line-height: 24px;
+  text-decoration: none; }
 
 .sanddance-explorer-topbar button {
   margin-right: 1em;
   min-width: unset; }
+
+.dark-theme .sanddance-explorer-topbar .logo {
+  color: #00b4f0; }
 
 .sanddance-group {
   border-top: 1px solid #ccc;
@@ -155,7 +164,7 @@
   background-color: #f9f9f9;
   bottom: 0;
   display: grid;
-  grid-template-areas: "stats stats" "tabs bar";
+  grid-template-areas: "stats stats" "tabs bar";
   grid-template-columns: 50px auto;
   grid-template-rows: 0fr auto;
   overflow: hidden;
@@ -192,9 +201,6 @@
 .sanddance-sidebar.closed {
   width: 50px; }
 
-.sanddance-sidebar.calculator {
-  position: relative; }
-
 .sanddance-sidebar.calculator .calculating {
   background: rgba(249, 249, 249, 0.5);
   height: 100%;
@@ -206,6 +212,19 @@
   margin-top: -16px;
   position: relative;
   top: 50%; }
+
+.dark-theme .sanddance-sidebar {
+  background-color: #272727;
+  color: #fff; }
+
+.dark-theme .sanddance-sidebar .vbuttons {
+  background-color: rgba(0, 0, 0, 0.4); }
+
+.dark-theme .sanddance-sidebar .vbutton.selected {
+  background-color: #272727; }
+
+.dark-theme .sanddance-sidebar.calculator .calculating {
+  background: rgba(39, 39, 39, 0.5); }
 
 .sanddance-datascope {
   grid-area: stats;
@@ -241,13 +260,27 @@
   width: 33.333%; }
 
 .sanddance-datascope .datascope-button:hover {
-  background-color: #eff6fc; }
+  background-color: #0078d4;
+  color: #fff; }
 
 .sanddance-datascope .datascope-button label {
   cursor: inherit; }
 
 .sanddance-datascope.active .datascope-button.selected {
-  border-color: #000; }
+  border-color: #0078d4; }
+
+.dark-theme .sanddance-datascope {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-bottom-color: rgba(255, 255, 255, 0.1); }
+
+.dark-theme .sanddance-datascope .datascope-button {
+  background-color: #000;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff; }
+
+.dark-theme .sanddance-datascope .datascope-button:hover {
+  background-color: #0078d4;
+  color: #fff; }
 
 .sanddance-dataItem {
   background-color: #fff;
@@ -261,7 +294,8 @@
   word-break: break-all; }
 
 .sanddance-dataItem .name-value:hover {
-  background-color: #eff6fc; }
+  background-color: #0078d4;
+  color: #fff; }
 
 .sanddance-dataItem .name-value:first-child {
   border-top: none; }
@@ -271,6 +305,16 @@
 
 .sanddance-dataItem .bing-search {
   text-align: right; }
+
+.dark-theme .sanddance-dataItem {
+  background-color: #000;
+  border-color: #222; }
+
+.dark-theme .sanddance-dataItem .name-value {
+  border-top-color: #222; }
+
+.dark-theme .sanddance-dataItem a {
+  color: #00b4f0; }
 
 .sanddance-dataIndex .index {
   display: grid;
@@ -312,6 +356,10 @@
 
 .sanddance-search .search-field {
   margin-top: 4px; }
+
+.dark-theme .sanddance-search .sanddance-search-expression {
+  background-color: rgba(0, 0, 0, 0.9);
+  border-color: rgba(255, 255, 255, 0.2); }
 
 .sanddance-snapshots .snapshot {
   cursor: pointer;
@@ -356,67 +404,69 @@
   font-size: 13px;
   grid-template-rows: 50px auto; }
 
-.sanddance-explorer-topbar {
-  border-bottom: 1px solid #ccc;
-  padding-top: 8px; }
+.sanddance-explorer.dark-theme {
+  background-color: black; }
 
-.wide {
+.sanddance-explorer.dark-theme canvas {
+  background-color: black; }
+
+.sanddance-main {
   display: grid;
   position: relative;
   transition: grid-template-columns 350ms cubic-bezier(0.4, 0, 0.2, 1); }
 
-.wide .loading {
+.sanddance-main .loading {
   grid-row-end: span 2;
   position: relative; }
 
-.wide .loading .ms-Spinner {
+.sanddance-main .loading .ms-Spinner {
   position: absolute;
   top: 50%;
   width: 100%; }
 
-.wide .sanddance-view {
+.sanddance-main .sanddance-view {
   display: grid;
   position: relative; }
 
-.wide .sanddance-layout-unpinned, .wide .sanddance-layout-pinned {
+.sanddance-main .sanddance-layout-unpinned, .sanddance-main .sanddance-layout-pinned {
   position: absolute;
   top: 0;
   left: 0;
   right: 150px;
   bottom: 0; }
 
-.wide .sanddance-layout-pinned {
+.sanddance-main .sanddance-layout-pinned {
   left: 250px; }
 
-.wide .sanddance-ReactViewer {
+.sanddance-main .sanddance-ReactViewer {
   position: absolute;
   top: 0;
   left: -150px;
   bottom: 0;
   right: 0; }
 
-.wide.show-center .sanddance-layout-unpinned, .wide.show-center .sanddance-layout-pinned {
+.sanddance-main.show-center .sanddance-layout-unpinned, .sanddance-main.show-center .sanddance-layout-pinned {
   background: linear-gradient(to right, transparent 49%, rgba(255, 0, 255, 0.2), transparent 51%);
   background-color: rgba(0, 255, 255, 0.1); }
 
-.wide.pinned {
+.sanddance-main.pinned {
   grid-template-columns: 250px auto;
   grid-template-areas: "side main"; }
 
-.wide.pinned .sanddance-view {
+.sanddance-main.pinned .sanddance-view {
   grid-area: main; }
 
-.wide.pinned .loading {
+.sanddance-main.pinned .loading {
   grid-area: main;
   grid-row-end: unset; }
 
-.wide.pinned .sanddance-slidePanel {
+.sanddance-main.pinned .sanddance-slidePanel {
   grid-area: side; }
 
-.wide.pinned.closed {
+.sanddance-main.pinned.closed {
   grid-template-columns: 0 auto; }
 
-.wide span.ms-layer {
+.sanddance-main span.ms-layer {
   display: none; }
 
 #sanddance-explorer-toolbar {
@@ -458,7 +508,6 @@
   margin-top: 1em; }
 
 .sanddance-viewport {
-  background-color: #fff;
   position: absolute;
   right: 10px;
   top: -42px;
@@ -467,8 +516,13 @@
 .sanddance-viewport i {
   font-size: 20px; }
 
+.dark-theme .sanddance-panel {
+  background-color: #000;
+  color: #fff; }
+
+.sanddance-legend .legend-row:hover {
+  background-color: #0078d4;
+  color: #fff; }
+
 .sanddance-sidebar .sanddance-datascope {
   min-height: 7em; }
-
-.sanddance-app.dark-theme .wide, .sanddance-app.dark-theme canvas {
-  background-color: black; }

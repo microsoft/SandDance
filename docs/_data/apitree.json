@@ -18,6 +18,7 @@
     "Props",
     "Snapshot",
     "State",
+    "themePalettes",
     "use"
   ],
   "sanddance-react": [

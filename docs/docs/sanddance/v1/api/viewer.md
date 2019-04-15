@@ -198,6 +198,20 @@ public getInsight(): Insight;
 
 [Insight][InterfaceDeclaration-8]
 
+----------
+
+### getSignalValues()
+
+Gets current signal values.
+
+```typescript
+public getSignalValues(): SignalValues;
+```
+
+**Return type**
+
+[SignalValues][InterfaceDeclaration-11]
+
 ## Properties
 
 ### specCapabilities
@@ -331,6 +345,8 @@ number
 [MethodDeclaration-17]: viewer#deactivate
 [MethodDeclaration-18]: viewer#getinsight
 [InterfaceDeclaration-8]: types#insight
+[MethodDeclaration-19]: viewer#getsignalvalues
+[InterfaceDeclaration-11]: types#signalvalues
 [PropertyDeclaration-16]: viewer#speccapabilities
 [InterfaceDeclaration-13]: types#speccapabilities
 [PropertyDeclaration-17]: viewer#options

@@ -114,6 +114,7 @@ interface Prefs {
 
 ```typescript
 interface Props {
+    theme?: string;
     viewerOptions?: Partial<ViewerOptions>;
     initialView?: View;
     mounted?: (explorer: Explorer) => any;
@@ -128,6 +129,7 @@ interface Props {
 
 | Name              | Type                                     | Optional |
 | ----------------- | ---------------------------------------- | -------- |
+| theme             | string                                   | true     |
 | viewerOptions     | Partial<ViewerOptions>                   | true     |
 | initialView       | View                                     | true     |
 | mounted           | (explorer: Explorer) => any              | true     |
@@ -141,35 +143,27 @@ interface Props {
 ### State
 
 ```typescript
-interface State {
+interface State extends Insight {
     calculating: () => void;
     errors: string[];
     autoCompleteDistinctValues: AutoCompleteDistinctValues;
     search: SearchExpressionGroup<InputSearchExpression>[];
-    filter: Search;
     filteredData: object[];
     toolbarClosed: boolean;
     toolbarPinned: boolean;
-    view: View;
     dataFile: DataFile;
     dataContent: DataContent;
     specCapabilities: SpecCapabilities;
-    facets: Facets;
-    scheme: string;
-    chart: Chart;
-    columns: InsightColumns;
-    size: Size;
-    colorBin: ColorBin;
     sideTabId: SideTabId;
     dataScopeId: DataScopeId;
     selectedItemIndex: { [key: number]: number; };
-    initialPointSize: number;
-    initialColorBinCount: number;
-    initialXBinCount: number;
-    initialTreeMapMethod: string;
     snapshots: Snapshot[];
 }
 ```
+
+**Extends**
+
+Insight
 
 **Properties**
 
@@ -179,33 +173,33 @@ interface State {
 | errors                     | string[]                                                                 | false    |
 | autoCompleteDistinctValues | AutoCompleteDistinctValues                     | false    |
 | search                     | SearchExpressionGroup<InputSearchExpression>[] | false    |
-| filter                     | Search                                                                   | false    |
 | filteredData               | object[]                                                                 | false    |
 | toolbarClosed              | boolean                                                                  | false    |
 | toolbarPinned              | boolean                                                                  | false    |
-| view                       | View                                                                     | false    |
 | dataFile                   | [DataFile][InterfaceDeclaration-1]                                       | false    |
 | dataContent                | [DataContent][InterfaceDeclaration-0]                                    | false    |
 | specCapabilities           | SpecCapabilities                                                         | false    |
-| facets                     | Facets                                                                   | false    |
-| scheme                     | string                                                                   | false    |
-| chart                      | Chart                                                                    | false    |
-| columns                    | InsightColumns                                                           | false    |
-| size                       | Size                                                                     | false    |
-| colorBin                   | ColorBin                                                                 | false    |
 | sideTabId                  | SideTabId                                           | false    |
 | dataScopeId                | DataScopeId                                         | false    |
 | selectedItemIndex          | { [key: number]: number; }                                               | false    |
-| initialPointSize           | number                                                                   | false    |
-| initialColorBinCount       | number                                                                   | false    |
-| initialXBinCount           | number                                                                   | false    |
-| initialTreeMapMethod       | string                                                                   | false    |
 | snapshots                  | [Snapshot][InterfaceDeclaration-2][]                                     | false    |
 
 ## Classes
 
 ### [Explorer][ClassDeclaration-0]
 
+
+## Variables
+
+### themePalettes
+
+```typescript
+const themePalettes: { [theme: string]: Partial<IPalette>; };
+```
+
+**Type**
+
+{ [theme: string]: Partial<IPalette>; }
 
 [SourceFile-0]: index#indextsx
 [FunctionDeclaration-0]: index#use
@@ -219,3 +213,4 @@ interface State {
 [InterfaceDeclaration-0]: index#datacontent
 [InterfaceDeclaration-2]: index#snapshot
 [ClassDeclaration-0]: explorer#explorer
+[VariableDeclaration-0]: index#themepalettes

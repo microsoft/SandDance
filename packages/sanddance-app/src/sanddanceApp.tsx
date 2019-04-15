@@ -10,7 +10,7 @@ import {
   SandDance,
   Snapshot,
   themePalettes
-  } from '@msrvida/sanddance-explorer';
+} from '@msrvida/sanddance-explorer';
 import { strings } from './language';
 
 export interface Props {

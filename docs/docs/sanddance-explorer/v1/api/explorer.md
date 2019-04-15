@@ -133,6 +133,24 @@ void
 
 ----------
 
+### changeInsight(newState)
+
+```typescript
+public changeInsight(newState: Partial<State>): void;
+```
+
+**Parameters**
+
+| Name     | Type                                     |
+| -------- | ---------------------------------------- |
+| newState | Partial<[State][InterfaceDeclaration-7]> |
+
+**Return type**
+
+void
+
+----------
+
 ### changespecCapabilities(specCapabilities)
 
 ```typescript
@@ -254,10 +272,12 @@ public prefs: Prefs;
 [MethodDeclaration-3]: explorer#changecharttypechart
 [MethodDeclaration-4]: explorer#calculatecalculating
 [MethodDeclaration-5]: explorer#changeviewview
-[MethodDeclaration-6]: explorer#changespeccapabilitiesspeccapabilities
-[MethodDeclaration-7]: explorer#changecolumnmappingrole-column-options
-[MethodDeclaration-8]: explorer#componentdidmount
-[MethodDeclaration-9]: explorer#render
+[MethodDeclaration-6]: explorer#changeinsightnewstate
+[InterfaceDeclaration-7]: ../index#state
+[MethodDeclaration-7]: explorer#changespeccapabilitiesspeccapabilities
+[MethodDeclaration-8]: explorer#changecolumnmappingrole-column-options
+[MethodDeclaration-9]: explorer#componentdidmount
+[MethodDeclaration-10]: explorer#render
 [PropertyDeclaration-0]: explorer#viewer
 [PropertyDeclaration-1]: explorer#vieweroptions
 [PropertyDeclaration-2]: explorer#discardcolorcontextupdates

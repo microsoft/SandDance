@@ -199,7 +199,7 @@
     });
 
     function unwrapExports (x) {
-    	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x.default : x;
+    	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
     }
 
     function createCommonjsModule(fn, module) {
@@ -10184,11 +10184,14 @@ void main(void) {
          */
         getInsight() {
             const insight = Object.assign({}, this.insight);
-            insight.signalValues = {};
-            this.vegaSpec.signals.forEach(signal => {
-                insight.signalValues[signal.name] = this.vegaViewGl.signal(signal.name);
-            });
+            insight.signalValues = this.getSignalValues();
             return insight;
+        }
+        /**
+         * Gets current signal values.
+         */
+        getSignalValues() {
+            return extractSignalValuesFromView(this.vegaViewGl, this.vegaSpec);
         }
     }
 
