@@ -26,7 +26,7 @@ SandDance is an offering of several JavaScript components:
 ## Roadmap
 
 * PowerBI custom visual based on this new architecture.
-* Additional views, such as treemaps & 3d stacks.
+* Additional views, such as stacks.
 * Code examples and tutorials.
 
 ## Dependencies
