@@ -27,9 +27,8 @@ Depending on which component you'd like to see, you can run in various ways.
 1. `cd docs`
 1. `jekyll serve`
 1. Visit http://127.0.0.1:4000/SandDance/
-
-### Run basic tests
-1. Visit http://127.0.0.1:4000/SandDance/tests
+1. For tests, visit http://127.0.0.1:4000/SandDance/tests
 
 ### Run sanddance-app with watchers
-1. TODO
+1. `npm start`
+1. Visit http://127.0.0.1:8085/
