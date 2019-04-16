@@ -24,11 +24,3 @@ input {
 }
 
 @import "../../../node_modules/@msrvida/sanddance-explorer/dist/css/sanddance-explorer";
-
-//simple fix until office-ui-fabric widgets get themed
-.sanddance-explorer-topbar {
-    background-color: white;
-}
-.vscode-dark .sanddance-explorer {
-    color: #000;    
-}
