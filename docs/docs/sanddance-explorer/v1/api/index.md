@@ -114,6 +114,8 @@ interface Prefs {
 
 ```typescript
 interface Props {
+    logoClickUrl?: string;
+    logoClickTarget?: string;
     theme?: string;
     viewerOptions?: Partial<ViewerOptions>;
     initialView?: View;
@@ -129,6 +131,8 @@ interface Props {
 
 | Name              | Type                                     | Optional |
 | ----------------- | ---------------------------------------- | -------- |
+| logoClickUrl      | string                                   | true     |
+| logoClickTarget   | string                                   | true     |
 | theme             | string                                   | true     |
 | viewerOptions     | Partial<ViewerOptions>                   | true     |
 | initialView       | View                                     | true     |
