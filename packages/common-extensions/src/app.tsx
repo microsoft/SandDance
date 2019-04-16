@@ -100,6 +100,7 @@ class App extends React.Component<{}, State> {
     render() {
         return (
             <SandDanceExplorer.Explorer
+                logoClickUrl="https://microsoft.github.io/SandDance/"
                 theme={this.state.darkTheme && 'dark-theme'}
                 viewerOptions={this.viewerOptions}
                 initialView="2d"
