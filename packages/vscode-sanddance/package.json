@@ -62,26 +62,21 @@
         "clean": "rimraf ./resources/*.*",
         "vscode:prepublish": "npm run compile",
         "resources": "node ./resources",
-        "deploy": "parcel build ./src/ui/sanddance-explorer.js --global SandDanceExplorer --no-minify --out-dir ./resources/",
-        "build-css": "node-sass ./src/ui/css -o ./resources",
-        "compile-ui": "tsc -p ./src/ui",
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
-        "build": "npm run compile && npm run compile-ui && npm run build-css && npm run resources && npm run deploy",
+        "build": "npm run compile && npm run resources",
         "test": "npm run compile && node ./node_modules/vscode/bin/test"
     },
     "devDependencies": {
-        "@msrvida/sanddance-explorer": "^1.0.0",
         "@types/mocha": "^2.2.42",
         "@types/node": "^8.10.25",
-        "@types/react": "16.4.7",
+        "common-extensions": "*",
         "deck.gl": "6.3.2",
         "luma.gl": "6.3.2",
         "office-ui-fabric-react": "^6.136.0",
         "react": "^16.6.0",
         "react-dom": "^16.6.0",
-        "typescript": "^2.6.1",
         "vega-lib": "^4.3.0",
-        "vscode": "^1.1.21"
+        "vscode": "^1.1.21"        
     }
 }

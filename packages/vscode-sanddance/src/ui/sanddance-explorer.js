@@ -1,1 +1,0 @@
-export { Explorer, SandDance, themePalettes, types, use, VegaDeckGl } from '@msrvida/sanddance-explorer';

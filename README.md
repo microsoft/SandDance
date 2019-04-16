@@ -1,4 +1,4 @@
-# SandDance
+# SandDance (Preview)
 
 Visually explore, understand, and present your data.
 
@@ -22,6 +22,10 @@ SandDance is an offering of several JavaScript components:
 ## Changelog
 
 * April 2019 - Initial release to GitHub.
+
+## Known issues
+
+* Animations require a WebGL2 enabled browser.
 
 ## Roadmap
 

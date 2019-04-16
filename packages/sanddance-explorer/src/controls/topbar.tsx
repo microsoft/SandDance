@@ -10,6 +10,8 @@ import { strings } from '../language';
 export { TopBarButtonProps };
 
 export interface Props {
+    logoClickUrl: string;
+    logoClickTarget: string;
     buttons?: TopBarButtonProps[];
     doFilter: { (search: SandDance.types.Search): void };
     doUnfilter: { (): void };
@@ -28,7 +30,7 @@ export function Topbar(props: Props) {
         <div className="sanddance-explorer-topbar">
             <div className="logo">
                 <base.fabric.Icon iconName="Blur" />
-                <a href="/SandDance/">{strings.appName}</a>
+                <a href={props.logoClickUrl || "/SandDance/"} target={props.logoClickTarget || '_blank'}>{strings.appName}</a>
             </div>
             <div>
                 <Button

@@ -137,6 +137,7 @@ export class SandDanceApp extends React.Component<Props, State> {
     return (
       <section className="sanddance-app">
         <Explorer
+          logoClickTarget="_self"
           theme={this.state.darkTheme && 'dark-theme'}
           snapshotProps={{
             modifySnapShot: (snapshot: DataSourceSnapshot) => {

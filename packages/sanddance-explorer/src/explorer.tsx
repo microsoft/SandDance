@@ -15,7 +15,7 @@ import {
   Prefs,
   savePref,
   saveSignalValuePref
-  } from './partialInsight';
+} from './partialInsight';
 import { DataBrowser } from './dialogs/dataBrowser';
 import { DataContent, DataFile, Snapshot } from './interfaces';
 import { DataScopeId } from './controls/dataScope';
@@ -31,6 +31,8 @@ import { themePalettes } from './themes';
 import { Topbar, TopBarButtonProps } from './controls/topbar';
 
 export interface Props {
+  logoClickUrl?: string;
+  logoClickTarget?: string;
   theme?: string;
   viewerOptions?: Partial<SandDance.types.ViewerOptions>;
   initialView?: SandDance.VegaDeckGl.types.View;
@@ -571,6 +573,8 @@ export class Explorer extends React.Component<Props, State> {
     return (
       <div className={util.classList("sanddance-explorer", this.props.theme)}>
         <Topbar
+          logoClickUrl={this.props.logoClickUrl}
+          logoClickTarget={this.props.logoClickTarget}
           themePalette={themePalette}
           loaded={loaded}
           doDeselect={this.doDeselect.bind(this)}
