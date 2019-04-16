@@ -1,8 +1,8 @@
 {
     "name": "azdata-sanddance",
-    "displayName": "azdata-sanddance",
-    "description": "SandDance viewer",
-    "version": "0.2.2",
+    "displayName": "Sandance for Azure Data Studio",
+    "description": "Visually explore, understand, and present your data.",
+    "version": "0.2.3",
     "publisher": "danmarshall",
     "repository": {
         "type": "git",
@@ -73,6 +73,7 @@
         "watch": "tsc -watch -p ./",
         "build": "npm run compile && npm run resources",
         "test": "npm run compile && node ./node_modules/vscode/bin/test",
+        "vsce-package": "vsce package",
         "postinstall": "node ./node_modules/sqlops/bin/install"
     },
     "devDependencies": {

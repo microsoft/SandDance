@@ -21,6 +21,7 @@
     "remove-pem": "rimraf **/*.pem && rimraf **/*.key",
     "deploy": "lerna run deploy",
     "test": "lerna run test",
+    "vsce-package": "lerna run vsce-package --parallel",
     "dev": "lerna run dev --scope dev --parallel"
   },
   "repository": {

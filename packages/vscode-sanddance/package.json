@@ -1,8 +1,8 @@
 {
     "name": "vscode-sanddance",
-    "displayName": "vscode-sanddance",
-    "description": "SandDance viewer",
-    "version": "0.2.2",
+    "displayName": "Sandance for VSCode",
+    "description": "Visually explore, understand, and present your data.",
+    "version": "0.2.3",
     "publisher": "danmarshall",
     "repository": {
         "type": "git",
@@ -65,7 +65,8 @@
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
         "build": "npm run compile && npm run resources",
-        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+        "test": "npm run compile && node ./node_modules/vscode/bin/test",
+        "vsce-package": "vsce package"
     },
     "devDependencies": {
         "@types/mocha": "^2.2.42",
