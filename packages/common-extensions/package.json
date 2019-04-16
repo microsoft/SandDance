@@ -10,6 +10,10 @@
     "build-ui": "tsc -p .",
     "build": "npm run build-css && npm run build-explorer && npm run build-ui"
   },
+  "alias": {
+    "react": "./alias/react-external.js",
+    "react-dom": "./alias/react-dom-external.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/SandDance.git"
