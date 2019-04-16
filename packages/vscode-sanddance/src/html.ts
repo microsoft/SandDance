@@ -18,7 +18,7 @@ export function getWebviewContent(extensionPath: string, fileUriFsPath: string) 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SandDance</title>
-    ${link(resourceUrl(extensionPath, "ui.css"))}
+    ${link(resourceUrl(extensionPath, "app.css"))}
 </head>
 <body>
     <div id="app"></div>
@@ -28,7 +28,7 @@ export function getWebviewContent(extensionPath: string, fileUriFsPath: string) 
     ${script(resourceUrl(extensionPath, "react-dom.production.min.js"))}
     ${script(resourceUrl(extensionPath, "office-ui-fabric-react.js"))}
     ${script(resourceUrl(extensionPath, "sanddance-explorer.js"))}
-    ${script(resourceUrl(extensionPath, "ui.js"))}
+    ${script(resourceUrl(extensionPath, "app.js"))}
 </body>
 </html>`;
 }

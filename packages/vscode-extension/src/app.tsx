@@ -3,7 +3,7 @@
 declare var vega: SandDanceExplorer.SandDance.VegaDeckGl.types.VegaBase;
 declare var deck: SandDanceExplorer.SandDance.VegaDeckGl.types.DeckBase & SandDanceExplorer.SandDance.VegaDeckGl.types.DeckLayerBase;
 declare var luma: SandDanceExplorer.SandDance.VegaDeckGl.types.LumaBase;
-declare var Fabric: any;
+declare var Fabric: _Fabric.FabricComponents;
 
 SandDanceExplorer.use(ReactDOM.render, Fabric, vega, deck, deck, luma);
 
@@ -59,13 +59,16 @@ class App extends React.Component<{}, State> {
         const darkTheme = vscodeThemeClassName.indexOf('dark') >= 0;
         if (this.state.darkTheme !== darkTheme && this.explorer) {
             this.explorer.updateViewerOptions(this.viewerOptions);
-            this.explorer.viewer.renderSameLayout(this.explorer.viewerOptions);
+            if (this.explorer.viewer) {
+                this.explorer.viewer.renderSameLayout(this.explorer.viewerOptions);
+            }
         }
         Fabric.loadTheme({ palette: getThemePalette(darkTheme) });
         this.setState({ darkTheme });
     }
 
     mounted(explorer: SandDanceExplorer.Explorer) {
+        this.explorer = explorer;
 
         // Handle the message inside the webview
         window.addEventListener('message', event => {

@@ -1,0 +1,28 @@
+{
+  "name": "vscode-extension",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Common code for vscode-extension based projects",
+  "main": "index.js",
+  "scripts": {
+    "build-css": "node-sass ./src/css -o ./dist/",
+    "build-explorer": "parcel build ./src/sanddance-explorer.js --global SandDanceExplorer --no-minify --no-source-maps --out-dir ./dist/",
+    "build-ui": "tsc -p .",
+    "build": "npm run build-css && npm run build-explorer && npm run build-ui"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/SandDance.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Microsoft/SandDance/issues"
+  },
+  "homepage": "https://github.com/Microsoft/SandDance#readme",
+  "devDependencies": {
+    "@msrvida/sanddance-explorer": "^1.0.0",
+    "@types/react": "16.4.7",
+    "typescript": "^3.2.4"
+  }
+}

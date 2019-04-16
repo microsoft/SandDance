@@ -2,6 +2,10 @@ const path = require('path');
 const fs = require('fs');
 
 const resources = [
+    "./node_modules/vscode-extension/dist/app-test.js",
+    "./node_modules/vscode-extension/dist/app.css",
+    "./node_modules/vscode-extension/dist/app.js",
+    "./node_modules/vscode-extension/dist/sanddance-explorer.js",
     "./node_modules/vega-lib/build/vega.js",
     "./node_modules/deck.gl/deckgl.min.js",
     "./node_modules/react/umd/react.production.min.js",
