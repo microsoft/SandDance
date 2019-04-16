@@ -1,5 +1,5 @@
 {
-  "name": "vscode-extension",
+  "name": "common-extensions",
   "private": true,
   "version": "1.0.0",
   "description": "Common code for vscode-extension based projects",

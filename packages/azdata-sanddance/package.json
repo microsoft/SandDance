@@ -78,6 +78,7 @@
     "devDependencies": {
         "@types/mocha": "^2.2.42",
         "@types/node": "^8.10.25",
+        "common-extensions": "*",
         "deck.gl": "6.3.2",
         "luma.gl": "6.3.2",
         "office-ui-fabric-react": "^6.136.0",
@@ -85,7 +86,6 @@
         "react-dom": "^16.6.0",
         "vega-lib": "^4.3.0",
         "vscode": "^1.1.21",
-        "vscode-extension": "*",
         "sqlops": "github:anthonydresser/sqlops-extension-sqlops"
     },
     "dependencies": {
