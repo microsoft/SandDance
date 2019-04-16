@@ -1,6 +1,6 @@
 {
     "name": "vscode-sanddance",
-    "displayName": "Sandance for VSCode",
+    "displayName": "SandDance for VSCode (Preview)",
     "description": "Visually explore, understand, and present your data.",
     "version": "0.2.3",
     "publisher": "danmarshall",
