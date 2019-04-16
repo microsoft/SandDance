@@ -2,7 +2,7 @@
     "name": "vscode-sanddance",
     "displayName": "vscode-sanddance",
     "description": "SandDance viewer",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "publisher": "danmarshall",
     "repository": {
         "type": "git",
