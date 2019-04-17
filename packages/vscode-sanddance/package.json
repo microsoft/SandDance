@@ -3,6 +3,7 @@
     "displayName": "SandDance for VSCode (Preview)",
     "description": "Visually explore, understand, and present your data.",
     "version": "0.2.3",
+    "preview": true,
     "publisher": "msrvida",
     "repository": {
         "type": "git",
