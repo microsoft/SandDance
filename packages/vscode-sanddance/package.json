@@ -2,7 +2,7 @@
     "name": "vscode-sanddance",
     "displayName": "SandDance for VSCode (Preview)",
     "description": "Visually explore, understand, and present your data.",
-    "version": "0.2.3",
+    "version": "0.2.4",
     "preview": true,
     "publisher": "msrvida",
     "repository": {

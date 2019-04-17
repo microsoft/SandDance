@@ -2,7 +2,7 @@
     "name": "azdata-sanddance",
     "displayName": "SandDance for Azure Data Studio (Preview)",
     "description": "Visually explore, understand, and present your data.",
-    "version": "0.2.3",
+    "version": "0.2.4",
     "preview": true,
     "publisher": "msrvida",
     "repository": {
