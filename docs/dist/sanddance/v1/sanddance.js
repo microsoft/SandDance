@@ -9631,11 +9631,18 @@ void main(void) {
         return selectBetween(column, lowValue, highValue, lowOperator, highOperator);
     }
     function finalizeLegend(colorBinType, colorColumn, legend, language) {
+        const rowTexts = [];
         for (let i in legend.rows) {
             let row = legend.rows[i];
             row.search = legendRange(colorBinType, colorColumn, legend, +i);
             if (row.value === Other) {
                 row.label = language.legendOther;
+            }
+            else if (rowTexts.indexOf(row.value) >= 0) {
+                delete legend.rows[i];
+            }
+            else {
+                rowTexts.push(row.value);
             }
         }
     }
