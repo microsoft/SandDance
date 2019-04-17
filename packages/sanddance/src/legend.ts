@@ -9,7 +9,7 @@ import {
     selectExact,
     selectNone,
     selectNullOrEmpty
-    } from './expression';
+} from './expression';
 import { Other } from './specs/constants';
 import { SearchExpressionGroup, SearchExpressionOperators } from './searchExpression/types';
 
@@ -82,11 +82,16 @@ function selectQuantitative(colorBinType: ColorBin, column: Column, legend: Vega
 }
 
 export function finalizeLegend(colorBinType: ColorBin, colorColumn: Column, legend: VegaDeckGl.types.Legend, language: Language) {
+    const rowTexts: string[] = [];
     for (let i in legend.rows) {
         let row = legend.rows[i] as LegendRowWithSearch;
         row.search = legendRange(colorBinType, colorColumn, legend, +i)
         if (row.value === Other) {
             row.label = language.legendOther
+        } else if (rowTexts.indexOf(row.value) >= 0) {
+            delete legend.rows[i];
+        } else {
+            rowTexts.push(row.value);
         }
     }
 }
