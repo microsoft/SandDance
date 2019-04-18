@@ -1,5 +1,8 @@
 # Change Log
 
+## [0.2.5]
+- Added icon
+
 ## [0.2.4]
 - Added preview tag to package.json
 
