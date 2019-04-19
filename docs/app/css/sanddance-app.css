@@ -105,9 +105,11 @@
   grid-template-columns: 50px auto;
   height: 24px; }
 
-.sanddance-explorer-topbar .logo i {
-  font-size: 24px;
-  margin-left: 12px; }
+.sanddance-explorer-topbar .logo svg {
+  fill: #0078d4;
+  height: 40px;
+  margin: -7px 0 0 7px;
+  width: 40px; }
 
 .sanddance-explorer-topbar .logo a {
   color: inherit;
