@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
-import { base } from '../base';
 import { Button, Props as TopBarButtonProps } from './button';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { Logo } from './logo';
 import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
 
@@ -29,7 +29,7 @@ export function Topbar(props: Props) {
     return (
         <div className="sanddance-explorer-topbar">
             <div className="logo">
-                <base.fabric.Icon iconName="Blur" />
+                <Logo />
                 <a href={props.logoClickUrl || "/SandDance/"} target={props.logoClickTarget || '_blank'}>{strings.appName}</a>
             </div>
             <div>

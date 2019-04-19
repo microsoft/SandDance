@@ -17,9 +17,11 @@
             display: grid;
             grid-template-columns: $sidetab-width auto;
             height: 24px;
-            i {
-                font-size: 24px;
-                margin-left: $toolbar-margin;
+            svg {
+                fill: $highlight-color;
+                height: 40px;
+                margin: -7px 0 0 7px;
+                width: 40px;
             }
             a {
                 color: inherit;
