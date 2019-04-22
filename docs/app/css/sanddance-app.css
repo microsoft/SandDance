@@ -471,11 +471,9 @@
 .sanddance-main span.ms-layer {
   display: none; }
 
-#sanddance-explorer-toolbar {
-  z-index: 1; }
-
-#sanddance-explorer-toolbar .ms-Label {
-  padding: 5px 0; }
+#sanddance-vega-spec {
+  border: 1px inset;
+  overflow: scroll; }
 
 .sanddance-panel {
   top: 5em;
