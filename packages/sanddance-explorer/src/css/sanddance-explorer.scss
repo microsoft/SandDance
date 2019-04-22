@@ -110,11 +110,9 @@ $layout-margin-right: 150px; //room for legend
     }
 }
 
-#sanddance-explorer-toolbar {
-    z-index: 1;
-    .ms-Label {
-        padding: 5px 0;
-    }
+#sanddance-vega-spec {
+    border: 1px inset;
+    overflow: scroll;
 }
 
 .sanddance-panel {
