@@ -777,6 +777,8 @@ export class Explorer extends React.Component<Props, State> {
                   return (
                     <Settings
                       explorer={this}
+                      dataFile={this.state.dataFile}
+                      scheme={this.state.scheme}
                     />
                   );
               }
