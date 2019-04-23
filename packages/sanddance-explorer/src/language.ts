@@ -94,7 +94,7 @@ export const strings = {
     selectDataSpanFilter: "Filtered",
     selectDataSpanSelection: "Selected",
     selectVegaSpecDataNone: "None",
-    selectVegaSpecDataInline: "Inline - WARNING this may use substantial browser/clipboard memory.",
+    selectVegaSpecDataInline: "Inline - WARNING this may use substantial browser/clipboard memory for large data sets.",
     selectVegaSpecDataUrl: "URL",
     noContent: "none",
     record: (current, total) => `${current} of ${total}`,
