@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { allTruthy } from '../../array';
 import { BinXSignal, MainYScale, YDomainSignal } from '../constants';
-import { colorBinCountSignal, textSignals } from '../signals';
+import { colorBinCountSignal, textSignals, colorReverseSignal } from '../signals';
 import { facetSignals } from '../facet';
 import { Insight, SpecColumns, SpecViewOptions } from '../types';
 import { Signal } from 'vega-typings';
@@ -38,7 +38,8 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                 "name": "shapesPerRow",
                 "update": "ceil(sqrt(binAspect*xtent[1]))"
             },
-            colorBinCountSignal(specViewOptions)
+            colorBinCountSignal(specViewOptions),
+            colorReverseSignal(specViewOptions)
         ],
         columns.facet && facetSignals(insight.facets, specViewOptions)
     );

@@ -20,6 +20,7 @@ import { Modal } from 'office-ui-fabric-react/lib/components/Modal';
 import { Slider } from 'office-ui-fabric-react/lib/Slider';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
+import { Toggle } from 'office-ui-fabric-react/lib/Toggle';
 
 initializeIcons();
 
@@ -44,5 +45,6 @@ export const fabric: FabricComponents = {
   Slider,
   Spinner,
   SpinnerSize,
-  TextField
+  TextField,
+  Toggle
 };

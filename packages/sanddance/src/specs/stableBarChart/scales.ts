@@ -9,7 +9,8 @@ import {
     MainYScale,
     MainZScale,
     TopFieldName,
-    ZHeightSignal
+    ZHeightSignal,
+    ColorReverseSignal
 } from '../constants';
 import { Insight, SpecColumns } from '../types';
 import { linearScale, pointScale, binnableColorScale } from '../scales';
@@ -88,7 +89,8 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
                     },
                     "range": {
                         "scheme": insight.scheme || ColorScaleNone
-                    }
+                    },
+                    "reverse": {"signal":ColorReverseSignal}
                 }
             );
         }

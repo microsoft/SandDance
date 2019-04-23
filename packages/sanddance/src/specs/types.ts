@@ -212,6 +212,11 @@ export interface SpecLanguage {
     colorBinCount: string;
 
     /**
+     * Label for the color reverse checkbox.
+     */
+    colorReverse: string;
+
+    /**
      * Label for facet columns slider.
      */
     facetColumns: string;

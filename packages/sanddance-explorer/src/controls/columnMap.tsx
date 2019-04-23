@@ -130,7 +130,7 @@ export function ColumnMap(props: Props) {
           prefix={label}
           explorer={props.explorer}
           signal={signal}
-          onChange={value => props.onChangeSignal(SandDance.constants.BinXSignal, value)}
+          onChange={value => props.onChangeSignal && props.onChangeSignal(signal.name, value)}
         />
       ))}
     </div>

@@ -39,6 +39,7 @@ export const defaultViewerOptions: ViewerOptions = {
         previousDetail: '<',
         reset: 'reset',
         colorBinCount: 'Color bin count',
+        colorReverse: 'Color reverse',
         scatterPointSize: 'Point size',
         barChartBinSize: 'Bin size',
         treeMapMethod: 'Method',

@@ -17,7 +17,7 @@ import {
     facetSize,
     layout
 } from '../facet';
-import { FacetGroupCellDataName, BinXSignal } from '../constants';
+import { FacetGroupCellDataName, BinXSignal, ColorReverseSignal } from '../constants';
 import { legend } from '../legends';
 import { Mark, Spec } from 'vega-typings';
 import { NameSpace } from './namespace';
@@ -44,8 +44,11 @@ export const barchart: SpecCreator = (insight: Insight, columns: SpecColumns, sp
             },
             {
                 role: 'color',
-                allowNone: true
+                allowNone: true,
+                signals: [ColorReverseSignal]
+
             },
+            
             {
                 role: 'sort',
                 allowNone: true
