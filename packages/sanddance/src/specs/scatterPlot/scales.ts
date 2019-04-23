@@ -10,7 +10,8 @@ import {
     MainYScale,
     MainZScale,
     TopFieldName,
-    ZHeightSignal
+    ZHeightSignal,
+    ColorReverseSignal
 } from '../constants';
 import { Insight, SpecColumns } from '../types';
 import { RangeScheme, Scale } from 'vega-typings';
@@ -45,7 +46,8 @@ export default function (columns: SpecColumns, insight: Insight) {
                     },
                     "range": {
                         "scheme": insight.scheme || ColorScaleNone
-                    }
+                    },
+                    "reverse": {"signal": ColorReverseSignal}
                 }
             );
         }

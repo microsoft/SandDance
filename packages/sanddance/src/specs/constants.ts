@@ -34,6 +34,7 @@ export const TextAngleXSignal = "SandDanceTextAngleX";
 export const TextAngleYSignal = "SandDanceTextAngleY";
 export const ZHeightSignal = "SandDanceZHeightSignal";
 export const ZProportionSignal = "SandDanceZProportion";
+export const ColorReverseSignal = "SandDanceColorReverseSignal";
 
 //These are special formulaic data values
 export const Other = "__SandDanceOther";

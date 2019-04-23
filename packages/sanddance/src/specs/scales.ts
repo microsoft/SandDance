@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { ColorBinCountSignal, ColorScaleName, ColorScaleNone } from './constants';
+import { ColorBinCountSignal, ColorScaleName, ColorScaleNone, ColorReverseSignal } from './constants';
 import { ColorBin } from './types';
 import {
     LinearScale,
@@ -54,6 +54,7 @@ export function binnableColorScale(colorBin: ColorBin, data: string, field: stri
     const range: RangeScheme = {
         scheme
     };
+    const reverse = {"signal":ColorReverseSignal};
     if (colorBin !== 'continuous') {
         range.count = { signal: ColorBinCountSignal };
     }
@@ -63,7 +64,8 @@ export function binnableColorScale(colorBin: ColorBin, data: string, field: stri
                 name,
                 "type": "sequential",
                 domain,
-                range
+                range,
+                reverse
             };
             return sequentialScale;
 
@@ -72,7 +74,8 @@ export function binnableColorScale(colorBin: ColorBin, data: string, field: stri
                 name,
                 "type": "quantile",
                 domain,
-                range
+                range,
+                reverse
             };
             return quantileScale;
 
@@ -81,7 +84,8 @@ export function binnableColorScale(colorBin: ColorBin, data: string, field: stri
                 name,
                 "type": "quantize",
                 domain,
-                range
+                range,
+                reverse
             };
             return quantizeScale;
     }

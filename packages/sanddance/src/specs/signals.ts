@@ -8,7 +8,8 @@ import {
     TextSizeSignal,
     TitleTextSizeSignal,
     ZHeightSignal,
-    ZProportionSignal
+    ZProportionSignal,
+    ColorReverseSignal
 } from './constants';
 import { NewSignal } from 'vega-typings/types';
 import { SpecViewOptions } from './types';
@@ -89,6 +90,18 @@ export function colorBinCountSignal(specViewOptions: SpecViewOptions) {
             "min": 1,
             "max": specViewOptions.maxLegends + 1,
             "step": 1
+        }
+    };
+    return signal;
+}
+
+export function colorReverseSignal(specViewOptions: SpecViewOptions) {
+    const signal: NewSignal = {
+        "name": ColorReverseSignal,
+        "value": false,
+        "bind": {
+            "name": specViewOptions.language.colorReverse,
+            "input": "checkbox"            
         }
     };
     return signal;

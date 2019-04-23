@@ -101,4 +101,15 @@ map['select'] = (prefix: string, bind: BindRadioSelect, initialValue: any, onCha
     );
 }
 
+map['checkbox'] = (prefix: string, bind: BindCheckbox, initialValue: any, onChange: (value: any) => void, disabled: boolean) => {    
+    return (
+        <base.fabric.Toggle            
+            label={prefix + bind.name}            
+            onChange={(e, o) => {                
+                return(onChange(o));
+            }}
+            disabled={disabled}
+        />
+    );
+}
 //TODO other signal types
