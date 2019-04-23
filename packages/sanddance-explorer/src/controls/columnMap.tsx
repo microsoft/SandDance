@@ -127,7 +127,6 @@ export function ColumnMap(props: Props) {
       {signals && signals.map((signal, i) => (
         <Signal
           key={i}
-          prefix={label}
           explorer={props.explorer}
           signal={signal}
           onChange={value => props.onChangeSignal && props.onChangeSignal(signal.name, value)}

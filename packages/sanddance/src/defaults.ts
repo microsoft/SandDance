@@ -41,7 +41,7 @@ export const defaultViewerOptions: ViewerOptions = {
         colorBinCount: 'Color bin count',
         colorReverse: 'Color reverse',
         scatterPointSize: 'Point size',
-        barChartBinSize: 'Bin size',
+        barChartBinSize: 'X Axis Bin size',
         treeMapMethod: 'Method',
         facetColumns: 'Facet columns',
         facetRows: 'Facet rows',
