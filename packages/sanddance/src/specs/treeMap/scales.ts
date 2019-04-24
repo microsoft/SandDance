@@ -7,7 +7,7 @@ import {
     DataName,
     DataNameLegend,
     ScaleNameZ,
-    FieldNameTop,
+    FieldNames,
     ZHeightSignal
 } from '../constants';
 import { Insight, SpecColumns } from '../types';
@@ -25,7 +25,7 @@ export default function (columns: SpecColumns, insight: Insight) {
                     "type": "ordinal",
                     "domain": {
                         "data": DataNameLegend,
-                        "field": FieldNameTop,
+                        "field": FieldNames.Top,
                         "sort": true
                     },
                     "range": {

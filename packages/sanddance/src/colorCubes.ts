@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from './vega-deck.gl';
-import { FieldNameActive, FieldNameSelected } from './specs/constants';
+import { FieldNames } from './specs/constants';
 import { Color } from '@deck.gl/core/utils/color';
 import {
     ColorContext,
@@ -15,12 +15,12 @@ export function getSelectedColorMap(currentData: object[], showSelectedData: boo
     function getSelectionColorItem(datum: object) {
         let item: ColorMappedItem;
         if (showSelectedData) {
-            item = datum[FieldNameSelected] ?
+            item = datum[FieldNames.Selected] ?
                 { color: viewerOptions.colors.selectedCube }
                 :
                 { unSelected: true };
         }
-        if (showActive && datum[FieldNameActive]) {
+        if (showActive && datum[FieldNames.Active]) {
             item = { color: viewerOptions.colors.activeCube };
         }
         return item;

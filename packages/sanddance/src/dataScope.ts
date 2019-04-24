@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from './vega-deck.gl';
-import { FieldNameActive, FieldNameCollapsed, FieldNameSelected } from './specs/constants';
+import { FieldNames } from './specs/constants';
 import { Column, ColumnTypeMap } from './specs/types';
 import { Exec } from './searchExpression/exec';
 import { getColumnsFromData } from './specs/inference';
@@ -67,7 +67,7 @@ export class DataScope {
         this.currentData().forEach(datum => {
             if (exec.run(datum)) {
                 if (assign) {
-                    datum[FieldNameSelected] = true;
+                    datum[FieldNames.Selected] = true;
                 }
                 s.included.push(datum);
             } else {
@@ -80,7 +80,7 @@ export class DataScope {
     deselect() {
         this.deactivate();
         this.data.forEach(datum => {
-            delete datum[FieldNameSelected];
+            delete datum[FieldNames.Selected];
         });
         this.selection = null;
     }
@@ -91,20 +91,20 @@ export class DataScope {
 
     collapse(collapsed: boolean, data = this.data) {
         data.forEach(datum => {
-            datum[FieldNameCollapsed] = collapsed;
+            datum[FieldNames.Collapsed] = collapsed;
         });
         this.isCollapsed = collapsed;
     }
 
     activate(datum: object) {
         this.deactivate();
-        datum[FieldNameActive] = true;
+        datum[FieldNames.Active] = true;
         this.active = datum;
     }
 
     deactivate() {
         if (this.active) {
-            delete this.active[FieldNameActive];
+            delete this.active[FieldNames.Active];
         }
         this.active = null;
     }

@@ -2,10 +2,12 @@
 // Licensed under the MIT license.
 
 //Field names
-export const FieldNameActive = "__SandDanceActive";
-export const FieldNameCollapsed = "__SandDanceCollapsed";
-export const FieldNameSelected = "__SandDanceSelected";
-export const FieldNameTop = "__SandDanceTop";
+export const FieldNames = {
+    Active: "__SandDanceActive",
+    Collapsed: "__SandDanceCollapsed",
+    Selected: "__SandDanceSelected",
+    Top: "__SandDanceTop"
+};
 
 //Data names
 export const DataNamePre = "SandDancePreData";
