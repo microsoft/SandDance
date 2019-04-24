@@ -3,10 +3,10 @@
 import { collapseY, zeroIfCollapsed } from '../selection';
 import {
     DataName,
-    LegendDataName,
-    MainXScale,
-    MainYScale,
-    MainZScale,
+    DataNameLegend,
+    ScaleNameX,
+    ScaleNameY,
+    ScaleNameZ,
     PointSizeSignal
 } from '../constants';
 import { fill } from '../fill';
@@ -19,7 +19,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
         {
             "type": "rect",
             "from": {
-                "data": categoricalColor ? LegendDataName : DataName
+                "data": categoricalColor ? DataNameLegend : DataName
             },
             "encode": {
                 "update": {
@@ -27,14 +27,14 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                         "field": columns.uid.name
                     },
                     "x": {
-                        "scale": MainXScale,
+                        "scale": ScaleNameX,
                         "field": columns.x.name,
                         "offset": 1
                     },
                     "width": { "signal": PointSizeSignal },
                     "y": collapseY(
                         {
-                            "scale": MainYScale,
+                            "scale": ScaleNameY,
                             "field": columns.y.name,
                             "offset": {
                                 "signal": `-${PointSizeSignal}`
@@ -52,7 +52,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
     if (columns.z) {
         const update = marks[0].encode.update;
         update.z = zeroIfCollapsed({
-            "scale": MainZScale,
+            "scale": ScaleNameZ,
             "field": columns.z.name
         });
         update.depth = { "signal": PointSizeSignal };

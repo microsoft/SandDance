@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { FacetCellTitles, FacetColumnsSignal, FacetRowsSignal } from './specs/constants';
+import { DataNameFacetCellTitles, FacetColumnsSignal, FacetRowsSignal } from './specs/constants';
 import { Facets } from './specs/types';
 import { ViewGl_Class } from './vega-deck.gl/vega-classes/viewGl';
 
@@ -8,7 +8,7 @@ export function adjustActualFacetSignals(fc: Facets, VegaDeckGl: ViewGl_Class) {
     if (fc) {
         let reRender = false;
         const innerState = VegaDeckGl.getState();
-        const actualCellCount = VegaDeckGl.data(FacetCellTitles).length;
+        const actualCellCount = VegaDeckGl.data(DataNameFacetCellTitles).length;
         const actualRows = Math.ceil(actualCellCount / fc.columns);
         const signalRows = VegaDeckGl.signal(FacetRowsSignal);
         if (actualRows !== signalRows) {

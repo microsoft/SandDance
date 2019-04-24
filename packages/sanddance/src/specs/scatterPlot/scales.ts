@@ -2,13 +2,13 @@
 // Licensed under the MIT license.
 import { binnableColorScale, linearScale, pointScale } from '../scales';
 import {
-    ColorScaleName,
+    ScaleNameColor,
     ColorScaleNone,
     DataName,
-    LegendDataName,
-    MainXScale,
-    MainYScale,
-    MainZScale,
+    DataNameLegend,
+    ScaleNameX,
+    ScaleNameY,
+    ScaleNameZ,
     FieldNameTop,
     ZHeightSignal,
     ColorReverseSignal
@@ -20,15 +20,15 @@ export default function (columns: SpecColumns, insight: Insight) {
     const scales: Scale[] = [
         (
             columns.x.quantitative ?
-                linearScale(MainXScale, DataName, columns.x.name, "width", false, false)
+                linearScale(ScaleNameX, DataName, columns.x.name, "width", false, false)
                 :
-                pointScale(MainXScale, DataName, "width", columns.x.name)
+                pointScale(ScaleNameX, DataName, "width", columns.x.name)
         ),
         (
             columns.y.quantitative ?
-                linearScale(MainYScale, DataName, columns.y.name, "height", false, false)
+                linearScale(ScaleNameY, DataName, columns.y.name, "height", false, false)
                 :
-                pointScale(MainYScale, DataName, "height", columns.y.name)
+                pointScale(ScaleNameY, DataName, "height", columns.y.name)
         )
     ];
     if (columns.color) {
@@ -37,10 +37,10 @@ export default function (columns: SpecColumns, insight: Insight) {
         } else {
             scales.push(
                 {
-                    "name": ColorScaleName,
+                    "name": ScaleNameColor,
                     "type": "ordinal",
                     "domain": {
-                        "data": LegendDataName,
+                        "data": DataNameLegend,
                         "field": FieldNameTop,
                         "sort": true
                     },
@@ -56,9 +56,9 @@ export default function (columns: SpecColumns, insight: Insight) {
         const zRange: RangeScheme = [0, { "signal": ZHeightSignal }];
         scales.push(
             columns.z.quantitative ?
-                linearScale(MainZScale, DataName, columns.z.name, zRange, false, false)
+                linearScale(ScaleNameZ, DataName, columns.z.name, zRange, false, false)
                 :
-                pointScale(MainZScale, DataName, zRange, columns.z.name)
+                pointScale(ScaleNameZ, DataName, zRange, columns.z.name)
         );
     }
     return scales;

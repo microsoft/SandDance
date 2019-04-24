@@ -4,7 +4,7 @@ import getData, { treemapTransforms } from './data';
 import getMarks from './marks';
 import getScales from './scales';
 import getSignals from './signals';
-import { DataName, FacetGroupCellDataName, LegendDataName, TreeMapMethod, ColorReverseSignal } from '../constants';
+import { DataName, DataNameFacetGroupCell, DataNameLegend, TreeMapMethod, ColorReverseSignal } from '../constants';
 import {
     Insight,
     SpecCapabilities,
@@ -64,7 +64,7 @@ export const treemap: SpecCreator = (insight: Insight, columns: SpecColumns, spe
     }
 
     const categoricalColor = columns.color && !columns.color.quantitative;
-    const dataName = categoricalColor ? LegendDataName : DataName;
+    const dataName = categoricalColor ? DataNameLegend : DataName;
 
     const TreeMapName = "SandDanceTreeMapFaceted";
     const data = getData(insight, columns, specViewOptions);
@@ -73,7 +73,7 @@ export const treemap: SpecCreator = (insight: Insight, columns: SpecColumns, spe
     if (columns.facet) {
         const childData: Data = {
             "name": TreeMapName,
-            "source": FacetGroupCellDataName,
+            "source": DataNameFacetGroupCell,
             "transform": treemapTransforms(insight)
         };
         marks = facetMarks(specViewOptions, dataName, marks, null, [childData]);

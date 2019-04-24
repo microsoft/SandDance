@@ -8,19 +8,19 @@ export const FieldNameSelected = "__SandDanceSelected";
 export const FieldNameTop = "__SandDanceTop";
 
 //Data names
-export const PreDataName = "SandDancePreData";
+export const DataNamePre = "SandDancePreData";
 export const DataName = "SandDanceData";
-export const EmptyBinDataName = "SandDanceEmptyBins";
-export const TopLookupDataName = "SandDanceTop";
-export const LegendDataName = "SandDanceLegend";
-export const FacetGroupCellDataName = "SandDanceFacetGroupCellData";
-export const FacetCellTitles = "SandDanceFacetCellTitles";
+export const DataNameEmptyBin = "SandDanceEmptyBins";
+export const DataNameTopLookup = "SandDanceTop";
+export const DataNameLegend = "SandDanceLegend";
+export const DataNameFacetGroupCell = "SandDanceFacetGroupCellData";
+export const DataNameFacetCellTitles = "SandDanceFacetCellTitles";
 
 //Scale names
-export const ColorScaleName = "SandDanceColorScale";
-export const MainXScale = "SandDanceMainXScale";
-export const MainYScale = "SandDanceMainYScale";
-export const MainZScale = "SandDanceMainZScale";
+export const ScaleNameColor = "SandDanceColorScale";
+export const ScaleNameX = "SandDanceMainXScale";
+export const ScaleNameY = "SandDanceMainYScale";
+export const ScaleNameZ = "SandDanceMainZScale";
 
 //Signal names
 export const ColorBinCountSignal = "SandDanceColorBinCount";

@@ -70,7 +70,7 @@ function cloneScales(vegaSpec: Spec) {
 
 function serializeSpec(vegaSpec: Spec, datafile: DataFile, dataRefType: DataRefType, scheme: string) {
     const scales = cloneScales(vegaSpec);
-    const colorScale = scales.filter(scale => scale.name === SandDance.constants.ColorScaleName)[0];
+    const colorScale = scales.filter(scale => scale.name === SandDance.constants.ScaleNameColor)[0];
     if (scheme.indexOf('dual_') >= 0) {
         (colorScale as ScalesWithRange).range = SandDance.colorSchemes.filter(cs => cs.scheme === scheme)[0].colors;
     }

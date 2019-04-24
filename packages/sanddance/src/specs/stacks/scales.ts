@@ -3,7 +3,7 @@
 import { Insight, SpecColumns } from '../types';
 import { Scale } from 'vega-typings';
 import { binnableColorScale } from '../scales';
-import { DataName, ColorScaleName, LegendDataName, FieldNameTop, ColorScaleNone } from '../constants';
+import { DataName, ScaleNameColor, DataNameLegend, FieldNameTop, ColorScaleNone } from '../constants';
 
 export default function (columns: SpecColumns, insight: Insight) {
     const scales: Scale[] = [
@@ -138,10 +138,10 @@ export default function (columns: SpecColumns, insight: Insight) {
         } else {
             scales.push(
                 {
-                    "name": ColorScaleName,
+                    "name": ScaleNameColor,
                     "type": "ordinal",
                     "domain": {
-                        "data": LegendDataName,
+                        "data": DataNameLegend,
                         "field": FieldNameTop,
                         "sort": true
                     },

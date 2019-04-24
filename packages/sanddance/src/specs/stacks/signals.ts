@@ -4,7 +4,7 @@ import { allTruthy } from '../../array';
 import { colorBinCountSignal, textSignals } from '../signals';
 import { facetSignals } from '../facet';
 import { Insight, SpecViewOptions, SpecColumns } from '../types';
-import { MainYScale, PointSizeSignal, YDomainSignal, BinXSignal, BinYSignal } from '../constants';
+import { ScaleNameY, PointSizeSignal, YDomainSignal, BinXSignal, BinYSignal } from '../constants';
 import { Signal } from 'vega-typings';
 
 export default function (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions) {

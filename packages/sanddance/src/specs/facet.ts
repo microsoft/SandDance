@@ -10,12 +10,12 @@ import {
 } from 'vega-typings';
 import {
     FieldNameCollapsed,
-    EmptyBinDataName,
-    FacetCellTitles,
+    DataNameEmptyBin,
+    DataNameFacetCellTitles,
     FacetColumnsSignal,
-    FacetGroupCellDataName,
+    DataNameFacetGroupCell,
     FacetRowsSignal,
-    PreDataName,
+    DataNamePre,
     TextSizeSignal
 } from './constants';
 import {
@@ -130,12 +130,12 @@ export function facetSourceData(facetColumn: Column, facets: Facets, name: strin
     if (facetColumn && facetColumn.quantitative) {
         data = [
             {
-                "name": PreDataName
+                "name": DataNamePre
             },
-            emptyBinsDataSource(EmptyBinDataName, facetColumn, facets),
+            emptyBinsDataSource(DataNameEmptyBin, facetColumn, facets),
             {
                 name,
-                "source": [PreDataName, EmptyBinDataName]
+                "source": [DataNamePre, DataNameEmptyBin]
             }
         ];
     } else {
@@ -147,7 +147,7 @@ export function facetSourceData(facetColumn: Column, facets: Facets, name: strin
 export function facetGroupData(source: string) {
     const data: Data[] = [
         {
-            "name": FacetCellTitles,
+            "name": DataNameFacetCellTitles,
             source,
             "transform": [
                 {
@@ -163,7 +163,7 @@ export function facetGroupData(source: string) {
                     "type": "sequence",
                     "start": 0,
                     "step": 1,
-                    "stop": { "signal": `${FacetColumnsSignal} * ${FacetRowsSignal} - length(data('${FacetCellTitles}'))` }
+                    "stop": { "signal": `${FacetColumnsSignal} * ${FacetRowsSignal} - length(data('${DataNameFacetCellTitles}'))` }
                 }
             ]
         },
@@ -245,7 +245,7 @@ export function facetMarks(specViewOptions: SpecViewOptions, sourceDataName: str
         "type": "group",
         "from": {
             "facet": {
-                "name": FacetGroupCellDataName,
+                "name": DataNameFacetGroupCell,
                 "data": sourceDataName,
                 "groupby": [CellTitle]
             }
@@ -277,7 +277,7 @@ export function facetMarks(specViewOptions: SpecViewOptions, sourceDataName: str
         "data": childData,
         "marks": childMarks.map(mark => {
             if (mark.from && mark.from.data && mark.from.data === sourceDataName) {
-                mark.from.data = FacetGroupCellDataName;
+                mark.from.data = DataNameFacetGroupCell;
             }
             return mark;
         })

@@ -6,7 +6,7 @@ export {
     BinYSignal,
     FieldNameCollapsed,
     ColorBinCountSignal,
-    ColorScaleName,
+    ScaleNameColor,
     ColorScaleNone,
     PointSizeSignal,
     FieldNameSelected,
