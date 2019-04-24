@@ -7,7 +7,7 @@ import { SpecViewOptions } from './types';
 export function textSignals(specViewOptions: SpecViewOptions) {
     const signals: NewSignal[] = [
         {
-            "name": SignalNames.ZProportionSignal,
+            "name": SignalNames.ZProportion,
             "value": 0.6,
             "bind": {
                 "name": specViewOptions.language.zScaleProportion,
@@ -19,11 +19,11 @@ export function textSignals(specViewOptions: SpecViewOptions) {
             }
         },
         {
-            "name": SignalNames.ZHeightSignal,
-            "update": `height * ${SignalNames.ZProportionSignal}`
+            "name": SignalNames.ZHeight,
+            "update": `height * ${SignalNames.ZProportion}`
         },
         {
-            "name": SignalNames.TextScaleSignal,
+            "name": SignalNames.TextScale,
             "value": 2,
             "bind": {
                 "name": specViewOptions.language.textScaleSignal,
@@ -35,15 +35,15 @@ export function textSignals(specViewOptions: SpecViewOptions) {
             }
         },
         {
-            "name": SignalNames.TextSizeSignal,
-            "update": `${SignalNames.TextScaleSignal} * 10`
+            "name": SignalNames.TextSize,
+            "update": `${SignalNames.TextScale} * 10`
         },
         {
-            "name": SignalNames.TitleTextSizeSignal,
-            "update": `${SignalNames.TextScaleSignal} * 15`
+            "name": SignalNames.TitleTextSize,
+            "update": `${SignalNames.TextScale} * 15`
         },
         {
-            "name": SignalNames.TextAngleXSignal,
+            "name": SignalNames.TextAngleX,
             "value": 30,
             "bind": {
                 "name": specViewOptions.language.xAxisTextAngleSignal,
@@ -55,7 +55,7 @@ export function textSignals(specViewOptions: SpecViewOptions) {
             }
         },
         {
-            "name": SignalNames.TextAngleYSignal,
+            "name": SignalNames.TextAngleY,
             "value": 0,
             "bind": {
                 "name": specViewOptions.language.yAxisTextAngleSignal,
@@ -72,7 +72,7 @@ export function textSignals(specViewOptions: SpecViewOptions) {
 
 export function colorBinCountSignal(specViewOptions: SpecViewOptions) {
     const signal: NewSignal = {
-        "name": SignalNames.ColorBinCountSignal,
+        "name": SignalNames.ColorBinCount,
         "value": 7,
         "bind": {
             "name": specViewOptions.language.colorBinCount,
@@ -87,7 +87,7 @@ export function colorBinCountSignal(specViewOptions: SpecViewOptions) {
 
 export function colorReverseSignal(specViewOptions: SpecViewOptions) {
     const signal: NewSignal = {
-        "name": SignalNames.ColorReverseSignal,
+        "name": SignalNames.ColorReverse,
         "value": false,
         "bind": {
             "name": specViewOptions.language.colorReverse,

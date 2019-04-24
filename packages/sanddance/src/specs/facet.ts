@@ -28,7 +28,7 @@ export const facetTitleSeparator = ' - ';
 export function facetSignals(facets: Facets, specViewOptions: SpecViewOptions) {
     const signals: Signal[] = [
         {
-            "name": SignalNames.FacetColumnsSignal,
+            "name": SignalNames.FacetColumns,
             "value": facets.columns,
             // "bind": {
             //     "name": viewerOptions.language.facetColumns,
@@ -40,7 +40,7 @@ export function facetSignals(facets: Facets, specViewOptions: SpecViewOptions) {
             // }
         },
         {
-            "name": SignalNames.FacetRowsSignal,
+            "name": SignalNames.FacetRows,
             "value": facets.rows,
             // "bind": {
             //     "name": viewerOptions.language.facetRows,
@@ -83,7 +83,7 @@ export function facetSize(facets: Facets, size: Size, specViewOptions: SpecViewO
 export function layout(specViewOptions: SpecViewOptions): LayoutParams {
     const layout: LayoutParams = {
         "columns": {
-            "signal": SignalNames.FacetColumnsSignal
+            "signal": SignalNames.FacetColumns
         },
         "bounds": "full",
         "padding": {
@@ -154,7 +154,7 @@ export function facetGroupData(source: string) {
                     "type": "sequence",
                     "start": 0,
                     "step": 1,
-                    "stop": { "signal": `${SignalNames.FacetColumnsSignal} * ${SignalNames.FacetRowsSignal} - length(data('${DataNames.FacetCellTitles}'))` }
+                    "stop": { "signal": `${SignalNames.FacetColumns} * ${SignalNames.FacetRows} - length(data('${DataNames.FacetCellTitles}'))` }
                 }
             ]
         },
@@ -165,7 +165,7 @@ export function facetGroupData(source: string) {
                     "type": "sequence",
                     "start": 0,
                     "stop": {
-                        "signal": SignalNames.FacetColumnsSignal
+                        "signal": SignalNames.FacetColumns
                     },
                     "as": SequenceNumber
                 }
@@ -178,7 +178,7 @@ export function facetGroupData(source: string) {
                     "type": "sequence",
                     "start": 0,
                     "stop": {
-                        "signal": SignalNames.FacetRowsSignal
+                        "signal": SignalNames.FacetRows
                     },
                     "as": SequenceNumber
                 }
@@ -252,7 +252,7 @@ export function facetMarks(specViewOptions: SpecViewOptions, sourceDataName: str
             },
             "color": util.colorToString(specViewOptions.colors.axisText),
             "fontSize": {
-                "signal": SignalNames.TextSizeSignal
+                "signal": SignalNames.TextSize
             }
         },
         "encode": {
@@ -295,7 +295,7 @@ export function facetMarks(specViewOptions: SpecViewOptions, sourceDataName: str
             "offset": specViewOptions.facetMargins.title,
             "text": "",
             "fontSize": {
-                "signal": SignalNames.TextSizeSignal
+                "signal": SignalNames.TextSize
             }
         },
         "encode": {

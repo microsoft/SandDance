@@ -36,7 +36,7 @@ export const barchart: SpecCreator = (insight: Insight, columns: SpecColumns, sp
                 role: 'x',
                 binnable: true,
                 axisSelection: columns.x && columns.x.quantitative ? 'range' : 'exact',
-                signals: [SignalNames.BinXSignal]
+                signals: [SignalNames.BinX]
             },
             {
                 role: 'z',
@@ -45,7 +45,7 @@ export const barchart: SpecCreator = (insight: Insight, columns: SpecColumns, sp
             {
                 role: 'color',
                 allowNone: true,
-                signals: [SignalNames.ColorReverseSignal]
+                signals: [SignalNames.ColorReverse]
 
             },
             

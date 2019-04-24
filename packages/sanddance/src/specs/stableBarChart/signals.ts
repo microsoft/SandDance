@@ -12,11 +12,11 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
         textSignals(specViewOptions),
         [
             {
-                "name": SignalNames.YDomainSignal,
+                "name": SignalNames.YDomain,
                 "update": `domain('${ScaleNames.Y}')`
             },
             columns.x.quantitative && {
-                "name": SignalNames.BinXSignal,
+                "name": SignalNames.BinX,
                 "value": 7,
                 "bind": {
                     "name": specViewOptions.language.barChartBinSize,

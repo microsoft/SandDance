@@ -42,13 +42,13 @@ export default function (columns: SpecColumns, insight: Insight) {
                     "range": {
                         "scheme": insight.scheme || ColorScaleNone
                     },
-                    "reverse": {"signal": SignalNames.ColorReverseSignal}
+                    "reverse": {"signal": SignalNames.ColorReverse}
                 }
             );
         }
     }
     if (columns.z) {
-        const zRange: RangeScheme = [0, { "signal": SignalNames.ZHeightSignal }];
+        const zRange: RangeScheme = [0, { "signal": SignalNames.ZHeight }];
         scales.push(
             columns.z.quantitative ?
                 linearScale(ScaleNames.Z, DataNames.Main, columns.z.name, zRange, false, false)

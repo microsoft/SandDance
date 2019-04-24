@@ -45,7 +45,7 @@ export const treemap: SpecCreator = (insight: Insight, columns: SpecColumns, spe
             {
                 role: 'color',
                 allowNone: true,
-                signals: [SignalNames.ColorReverseSignal]
+                signals: [SignalNames.ColorReverse]
             },
             {
                 role: 'facet',

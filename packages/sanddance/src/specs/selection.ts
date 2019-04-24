@@ -23,7 +23,7 @@ export function collapseY(numericValueRef: NumericValueRef): ProductionRule<Nume
     {
       "scale": ScaleNames.Y,
       "test": testForCollapseSelection(),
-      "signal": `${SignalNames.YDomainSignal}[0]`
+      "signal": `${SignalNames.YDomain}[0]`
     },
     numericValueRef
   ];

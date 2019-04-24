@@ -54,9 +54,9 @@ export function binnableColorScale(colorBin: ColorBin, data: string, field: stri
     const range: RangeScheme = {
         scheme
     };
-    const reverse = {"signal":SignalNames.ColorReverseSignal};
+    const reverse = {"signal":SignalNames.ColorReverse};
     if (colorBin !== 'continuous') {
-        range.count = { signal: SignalNames.ColorBinCountSignal };
+        range.count = { signal: SignalNames.ColorBinCount };
     }
     switch (colorBin) {
         case 'continuous':

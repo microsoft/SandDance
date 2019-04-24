@@ -19,20 +19,20 @@ export default function (specViewOptions: SpecViewOptions, columns: SpecColumns)
         {
             "orient": "bottom",
             "labelAngle": {
-                "signal": SignalNames.TextAngleXSignal
+                "signal": SignalNames.TextAngleX
             },
             "labelAlign": "left",
             "labelFontSize": {
-                "signal": SignalNames.TextSizeSignal
+                "signal": SignalNames.TextSize
             },
             "scale": ScaleNames.X,
             "title": columns.x.name,
             "titleAngle": {
-                "signal": SignalNames.TextAngleXSignal
+                "signal": SignalNames.TextAngleX
             },
             "titleAlign": "left",
             "titleFontSize": {
-                "signal": SignalNames.TitleTextSizeSignal
+                "signal": SignalNames.TitleTextSize
             },
             "titleColor": util.colorToString(specViewOptions.colors.axisText),
             "tickSize": specViewOptions.tickSize,
@@ -42,10 +42,10 @@ export default function (specViewOptions: SpecViewOptions, columns: SpecColumns)
             "orient": "left",
             "labelAlign": "right",
             "labelAngle": {
-                "signal": SignalNames.TextAngleYSignal
+                "signal": SignalNames.TextAngleY
             },
             "labelFontSize": {
-                "signal": SignalNames.TextSizeSignal
+                "signal": SignalNames.TextSize
             },
             "scale": "yscalelabel",
             "encode": {
@@ -59,11 +59,11 @@ export default function (specViewOptions: SpecViewOptions, columns: SpecColumns)
             },
             "title": "Count",
             "titleAngle": {
-                "signal": SignalNames.TextAngleYSignal
+                "signal": SignalNames.TextAngleY
             },
             "titleAlign": "right",
             "titleFontSize": {
-                "signal": SignalNames.TitleTextSizeSignal
+                "signal": SignalNames.TitleTextSize
             },
             "titleColor": util.colorToString(specViewOptions.colors.axisText),
             "tickSize": specViewOptions.tickSize,

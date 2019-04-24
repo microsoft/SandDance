@@ -30,7 +30,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                             "signal": "long_extent"
                         },
                         "maxbins": {
-                            "signal": SignalNames.BinXSignal
+                            "signal": SignalNames.BinX
                         },
                         "as": [
                             "long0",
@@ -44,7 +44,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                             "signal": "lat_extent"
                         },
                         "maxbins": {
-                            "signal": SignalNames.BinYSignal
+                            "signal": SignalNames.BinY
                         },
                         "as": [
                             "lat0",

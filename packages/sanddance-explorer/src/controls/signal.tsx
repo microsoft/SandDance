@@ -26,7 +26,7 @@ export function Signal(props: Props) {
         return null;
     }
     const onChange = (name: string, value: any) => {
-        if (name === SandDance.constants.SignalNames.ColorBinCountSignal) {
+        if (name === SandDance.constants.SignalNames.ColorBinCount) {
             props.explorer.discardColorContextUpdates = false;
         }
         props.explorer.viewer.vegaViewGl.signal(name, value);

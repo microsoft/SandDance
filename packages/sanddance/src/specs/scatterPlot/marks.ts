@@ -28,18 +28,18 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                         "field": columns.x.name,
                         "offset": 1
                     },
-                    "width": { "signal": SignalNames.PointSizeSignal },
+                    "width": { "signal": SignalNames.PointSize },
                     "y": collapseY(
                         {
                             "scale": ScaleNames.Y,
                             "field": columns.y.name,
                             "offset": {
-                                "signal": `-${SignalNames.PointSizeSignal}`
+                                "signal": `-${SignalNames.PointSize}`
                             }
                         }
                     ),
                     "height": zeroIfCollapsed(
-                        { "signal": SignalNames.PointSizeSignal }
+                        { "signal": SignalNames.PointSize }
                     ),
                     "fill": fill(columns.color, specViewOptions)
                 }
@@ -52,7 +52,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
             "scale": ScaleNames.Z,
             "field": columns.z.name
         });
-        update.depth = { "signal": SignalNames.PointSizeSignal };
+        update.depth = { "signal": SignalNames.PointSize };
     }
     return marks;
 }

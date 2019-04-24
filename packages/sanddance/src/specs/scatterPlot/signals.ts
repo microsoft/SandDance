@@ -12,11 +12,11 @@ export default function (insight: Insight, specViewOptions: SpecViewOptions) {
         textSignals(specViewOptions),
         [
             {
-                "name": SignalNames.YDomainSignal,
+                "name": SignalNames.YDomain,
                 "update": `domain('${ScaleNames.Y}')`
             },
             {
-                "name": SignalNames.PointSizeSignal,
+                "name": SignalNames.PointSize,
                 "value": 5,
                 "bind": {
                     "name": specViewOptions.language.scatterPointSize,

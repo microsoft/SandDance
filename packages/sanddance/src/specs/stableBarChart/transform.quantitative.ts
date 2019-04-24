@@ -32,7 +32,7 @@ export default function (columns: SpecColumns, groupBy: Column) {
                 "signal": "var_extent"
             },
             "maxbins": {
-                "signal": SignalNames.BinXSignal
+                "signal": SignalNames.BinX
             },
             "as": [
                 "__bin0",
