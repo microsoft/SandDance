@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { BinXSignal } from '../constants';
+import { SignalNames } from '../constants';
 import { Column, SpecColumns } from '../types';
 import { StackTransform, Transforms } from 'vega-typings';
 
@@ -32,7 +32,7 @@ export default function (columns: SpecColumns, groupBy: Column) {
                 "signal": "var_extent"
             },
             "maxbins": {
-                "signal": BinXSignal
+                "signal": SignalNames.BinXSignal
             },
             "as": [
                 "__bin0",

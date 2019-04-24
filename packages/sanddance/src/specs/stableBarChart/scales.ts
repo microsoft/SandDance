@@ -7,8 +7,7 @@ import {
     DataNames,
     ScaleNames,
     FieldNames,
-    ZHeightSignal,
-    ColorReverseSignal
+    SignalNames
 } from '../constants';
 import { Insight, SpecColumns } from '../types';
 import { linearScale, pointScale, binnableColorScale } from '../scales';
@@ -88,13 +87,13 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
                     "range": {
                         "scheme": insight.scheme || ColorScaleNone
                     },
-                    "reverse": {"signal":ColorReverseSignal}
+                    "reverse": {"signal":SignalNames.ColorReverseSignal}
                 }
             );
         }
     }
     if (columns.z) {
-        const zRange: RangeScheme = [0, { "signal": ZHeightSignal }];
+        const zRange: RangeScheme = [0, { "signal": SignalNames.ZHeightSignal }];
         scales.push(
             columns.z.quantitative ?
                 linearScale(ScaleNames.Z, DataNames.Main, columns.z.name, zRange, false, true)

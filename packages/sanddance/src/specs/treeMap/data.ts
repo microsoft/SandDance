@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { allTruthy } from '../../array';
 import { Data, Transforms } from 'vega-typings';
-import { DataNames, TreeMapMethod } from '../constants';
+import { DataNames, SignalNames } from '../constants';
 import { facetGroupData, facetSourceData, facetTransforms } from '../facet';
 import { Insight, SpecColumns, SpecViewOptions } from '../types';
 import { topLookup } from '../top';
@@ -39,7 +39,7 @@ export function treemapTransforms(insight: Insight) {
             "field": insight.columns.size,
             "sort": { "field": "value", "order": "descending" },
             "round": true,
-            "method": { "signal": TreeMapMethod },
+            "method": { "signal": SignalNames.TreeMapMethod },
             "padding": 1,
             "size": [{ "signal": "width" }, { "signal": "height" }]
         }

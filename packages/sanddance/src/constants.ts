@@ -2,11 +2,7 @@
 // Licensed under the MIT license.
 export {
     FieldNames,
-    BinXSignal,
-    BinYSignal,
-    ColorBinCountSignal,
     ScaleNames,
     ColorScaleNone,
-    PointSizeSignal,
-    TreeMapMethod
+    SignalNames
 } from './specs/constants';

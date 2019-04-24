@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { FieldNames, ScaleNames, YDomainSignal } from './constants';
+import { FieldNames, ScaleNames, SignalNames } from './constants';
 import { NumericValueRef, ProductionRule } from 'vega-typings';
 
 function testForCollapseSelection() {
@@ -23,7 +23,7 @@ export function collapseY(numericValueRef: NumericValueRef): ProductionRule<Nume
     {
       "scale": ScaleNames.Y,
       "test": testForCollapseSelection(),
-      "signal": `${YDomainSignal}[0]`
+      "signal": `${SignalNames.YDomainSignal}[0]`
     },
     numericValueRef
   ];

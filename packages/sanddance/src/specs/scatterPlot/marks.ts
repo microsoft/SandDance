@@ -4,7 +4,7 @@ import { collapseY, zeroIfCollapsed } from '../selection';
 import {
     DataNames,
     ScaleNames,
-    PointSizeSignal
+    SignalNames
 } from '../constants';
 import { fill } from '../fill';
 import { Mark } from 'vega-typings';
@@ -28,18 +28,18 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                         "field": columns.x.name,
                         "offset": 1
                     },
-                    "width": { "signal": PointSizeSignal },
+                    "width": { "signal": SignalNames.PointSizeSignal },
                     "y": collapseY(
                         {
                             "scale": ScaleNames.Y,
                             "field": columns.y.name,
                             "offset": {
-                                "signal": `-${PointSizeSignal}`
+                                "signal": `-${SignalNames.PointSizeSignal}`
                             }
                         }
                     ),
                     "height": zeroIfCollapsed(
-                        { "signal": PointSizeSignal }
+                        { "signal": SignalNames.PointSizeSignal }
                     ),
                     "fill": fill(columns.color, specViewOptions)
                 }
@@ -52,7 +52,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
             "scale": ScaleNames.Z,
             "field": columns.z.name
         });
-        update.depth = { "signal": PointSizeSignal };
+        update.depth = { "signal": SignalNames.PointSizeSignal };
     }
     return marks;
 }

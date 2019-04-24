@@ -17,7 +17,7 @@ import {
     facetSize,
     layout
 } from '../facet';
-import { DataNames, BinXSignal, ColorReverseSignal } from '../constants';
+import { DataNames, SignalNames } from '../constants';
 import { legend } from '../legends';
 import { Mark, Spec } from 'vega-typings';
 import { NameSpace } from './namespace';
@@ -36,7 +36,7 @@ export const barchart: SpecCreator = (insight: Insight, columns: SpecColumns, sp
                 role: 'x',
                 binnable: true,
                 axisSelection: columns.x && columns.x.quantitative ? 'range' : 'exact',
-                signals: [BinXSignal]
+                signals: [SignalNames.BinXSignal]
             },
             {
                 role: 'z',
@@ -45,7 +45,7 @@ export const barchart: SpecCreator = (insight: Insight, columns: SpecColumns, sp
             {
                 role: 'color',
                 allowNone: true,
-                signals: [ColorReverseSignal]
+                signals: [SignalNames.ColorReverseSignal]
 
             },
             

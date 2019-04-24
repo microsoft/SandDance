@@ -1,23 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import {
-    ColorBinCountSignal,
-    TextAngleXSignal,
-    TextAngleYSignal,
-    TextScaleSignal,
-    TextSizeSignal,
-    TitleTextSizeSignal,
-    ZHeightSignal,
-    ZProportionSignal,
-    ColorReverseSignal
-} from './constants';
+import { SignalNames } from './constants';
 import { NewSignal } from 'vega-typings/types';
 import { SpecViewOptions } from './types';
 
 export function textSignals(specViewOptions: SpecViewOptions) {
     const signals: NewSignal[] = [
         {
-            "name": ZProportionSignal,
+            "name": SignalNames.ZProportionSignal,
             "value": 0.6,
             "bind": {
                 "name": specViewOptions.language.zScaleProportion,
@@ -29,11 +19,11 @@ export function textSignals(specViewOptions: SpecViewOptions) {
             }
         },
         {
-            "name": ZHeightSignal,
-            "update": `height * ${ZProportionSignal}`
+            "name": SignalNames.ZHeightSignal,
+            "update": `height * ${SignalNames.ZProportionSignal}`
         },
         {
-            "name": TextScaleSignal,
+            "name": SignalNames.TextScaleSignal,
             "value": 2,
             "bind": {
                 "name": specViewOptions.language.textScaleSignal,
@@ -45,15 +35,15 @@ export function textSignals(specViewOptions: SpecViewOptions) {
             }
         },
         {
-            "name": TextSizeSignal,
-            "update": `${TextScaleSignal} * 10`
+            "name": SignalNames.TextSizeSignal,
+            "update": `${SignalNames.TextScaleSignal} * 10`
         },
         {
-            "name": TitleTextSizeSignal,
-            "update": `${TextScaleSignal} * 15`
+            "name": SignalNames.TitleTextSizeSignal,
+            "update": `${SignalNames.TextScaleSignal} * 15`
         },
         {
-            "name": TextAngleXSignal,
+            "name": SignalNames.TextAngleXSignal,
             "value": 30,
             "bind": {
                 "name": specViewOptions.language.xAxisTextAngleSignal,
@@ -65,7 +55,7 @@ export function textSignals(specViewOptions: SpecViewOptions) {
             }
         },
         {
-            "name": TextAngleYSignal,
+            "name": SignalNames.TextAngleYSignal,
             "value": 0,
             "bind": {
                 "name": specViewOptions.language.yAxisTextAngleSignal,
@@ -82,7 +72,7 @@ export function textSignals(specViewOptions: SpecViewOptions) {
 
 export function colorBinCountSignal(specViewOptions: SpecViewOptions) {
     const signal: NewSignal = {
-        "name": ColorBinCountSignal,
+        "name": SignalNames.ColorBinCountSignal,
         "value": 7,
         "bind": {
             "name": specViewOptions.language.colorBinCount,
@@ -97,11 +87,11 @@ export function colorBinCountSignal(specViewOptions: SpecViewOptions) {
 
 export function colorReverseSignal(specViewOptions: SpecViewOptions) {
     const signal: NewSignal = {
-        "name": ColorReverseSignal,
+        "name": SignalNames.ColorReverseSignal,
         "value": false,
         "bind": {
             "name": specViewOptions.language.colorReverse,
-            "input": "checkbox"            
+            "input": "checkbox"
         }
     };
     return signal;

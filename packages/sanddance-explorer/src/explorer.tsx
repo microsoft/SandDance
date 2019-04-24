@@ -672,7 +672,7 @@ export class Explorer extends React.Component<Props, State> {
                       dataContent={this.state.dataContent}
                       scheme={this.state.scheme}
                       colorBin={this.state.colorBin}
-                      colorBinSignal={this.viewer && this.viewer.vegaSpec && this.viewer.vegaSpec.signals.filter(s => s.name === SandDance.constants.ColorBinCountSignal)[0]}
+                      colorBinSignal={this.viewer && this.viewer.vegaSpec && this.viewer.vegaSpec.signals.filter(s => s.name === SandDance.constants.SignalNames.ColorBinCountSignal)[0]}
                       colorColumn={this.state.columns.color}
                       changeColorBin={colorBin => {
                         this.ignoreSelectionChange = true;
@@ -692,7 +692,7 @@ export class Explorer extends React.Component<Props, State> {
                       }}
                       onColorBinCountChange={value => {
                         const signalValues: SandDance.types.SignalValues = {};
-                        signalValues[SandDance.constants.ColorBinCountSignal] = value;
+                        signalValues[SandDance.constants.SignalNames.ColorBinCountSignal] = value;
                         savePref(this.prefs, this.state.chart, 'color', this.state.columns.color, { signalValues });
                       }}
                     />

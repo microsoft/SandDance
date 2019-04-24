@@ -4,7 +4,7 @@ import { allTruthy } from '../../array';
 import { colorBinCountSignal, textSignals,colorReverseSignal } from '../signals';
 import { facetSignals } from '../facet';
 import { Insight, SpecViewOptions } from '../types';
-import { TreeMapMethod } from '../constants';
+import { SignalNames } from '../constants';
 import { Signal } from 'vega-typings';
 
 export default function (insight: Insight, specViewOptions: SpecViewOptions) {
@@ -13,7 +13,7 @@ export default function (insight: Insight, specViewOptions: SpecViewOptions) {
         [
             colorBinCountSignal(specViewOptions),
             {
-                "name": TreeMapMethod,
+                "name": SignalNames.TreeMapMethod,
                 "value": "squarify",
                 "bind": {
                     "name": specViewOptions.language.treeMapMethod,

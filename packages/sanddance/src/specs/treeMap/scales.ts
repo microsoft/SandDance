@@ -6,7 +6,7 @@ import {
     DataNames,
     ScaleNames,
     FieldNames,
-    ZHeightSignal
+    SignalNames
 } from '../constants';
 import { Insight, SpecColumns } from '../types';
 import { RangeScheme, Scale } from 'vega-typings';
@@ -34,7 +34,7 @@ export default function (columns: SpecColumns, insight: Insight) {
         }
     }
     if (columns.z) {
-        const zRange: RangeScheme = [0, { "signal": ZHeightSignal }];
+        const zRange: RangeScheme = [0, { "signal": SignalNames.ZHeightSignal }];
         scales.push(
             columns.z.quantitative ?
                 linearScale(ScaleNames.Z, DataNames.Main, columns.z.name, zRange, false, false)

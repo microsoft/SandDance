@@ -26,22 +26,24 @@ export const ScaleNames = {
 };
 
 //Signal names
-export const ColorBinCountSignal = "SandDanceColorBinCount";
-export const PointSizeSignal = "SandDancePointSize";
-export const BinXSignal = "SandDanceBinX";
-export const BinYSignal = "SandDanceBinY";
-export const YDomainSignal = "SandDanceYDomainSignal";
-export const TreeMapMethod = "SandDanceTreeMapMethodSignal";
-export const FacetColumnsSignal = "SandDanceFacetColumnsSignal";
-export const FacetRowsSignal = "SandDanceFacetRowsSignal";
-export const TextScaleSignal = "SandDanceTextScale";
-export const TextSizeSignal = "SandDanceTextSize";
-export const TitleTextSizeSignal = "SandDanceTitleTextSize";
-export const TextAngleXSignal = "SandDanceTextAngleX";
-export const TextAngleYSignal = "SandDanceTextAngleY";
-export const ZHeightSignal = "SandDanceZHeightSignal";
-export const ZProportionSignal = "SandDanceZProportion";
-export const ColorReverseSignal = "SandDanceColorReverseSignal";
+export const SignalNames = {
+    ColorBinCountSignal: "SandDanceColorBinCount",
+    PointSizeSignal: "SandDancePointSize",
+    BinXSignal: "SandDanceBinX",
+    BinYSignal: "SandDanceBinY",
+    YDomainSignal: "SandDanceYDomainSignal",
+    TreeMapMethod: "SandDanceTreeMapMethodSignal",
+    FacetColumnsSignal: "SandDanceFacetColumnsSignal",
+    FacetRowsSignal: "SandDanceFacetRowsSignal",
+    TextScaleSignal: "SandDanceTextScale",
+    TextSizeSignal: "SandDanceTextSize",
+    TitleTextSizeSignal: "SandDanceTitleTextSize",
+    TextAngleXSignal: "SandDanceTextAngleX",
+    TextAngleYSignal: "SandDanceTextAngleY",
+    ZHeightSignal: "SandDanceZHeightSignal",
+    ZProportionSignal: "SandDanceZProportion",
+    ColorReverseSignal: "SandDanceColorReverseSignal"
+};
 
 //These are special formulaic data values
 export const Other = "__SandDanceOther";

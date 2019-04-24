@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { ColorBinCountSignal, ScaleNames, ColorScaleNone, ColorReverseSignal } from './constants';
+import { SignalNames, ScaleNames, ColorScaleNone } from './constants';
 import { ColorBin } from './types';
 import {
     LinearScale,
@@ -54,9 +54,9 @@ export function binnableColorScale(colorBin: ColorBin, data: string, field: stri
     const range: RangeScheme = {
         scheme
     };
-    const reverse = {"signal":ColorReverseSignal};
+    const reverse = {"signal":SignalNames.ColorReverseSignal};
     if (colorBin !== 'continuous') {
-        range.count = { signal: ColorBinCountSignal };
+        range.count = { signal: SignalNames.ColorBinCountSignal };
     }
     switch (colorBin) {
         case 'continuous':

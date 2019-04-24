@@ -4,7 +4,7 @@ import getData, { treemapTransforms } from './data';
 import getMarks from './marks';
 import getScales from './scales';
 import getSignals from './signals';
-import { DataNames, TreeMapMethod, ColorReverseSignal } from '../constants';
+import { DataNames, SignalNames } from '../constants';
 import {
     Insight,
     SpecCapabilities,
@@ -45,14 +45,14 @@ export const treemap: SpecCreator = (insight: Insight, columns: SpecColumns, spe
             {
                 role: 'color',
                 allowNone: true,
-                signals: [ColorReverseSignal]
+                signals: [SignalNames.ColorReverseSignal]
             },
             {
                 role: 'facet',
                 allowNone: true
             }
         ],
-        signals: [TreeMapMethod]
+        signals: [SignalNames.TreeMapMethod]
     };
 
     if (errors.length) {

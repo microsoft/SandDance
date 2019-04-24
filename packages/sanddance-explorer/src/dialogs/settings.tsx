@@ -43,11 +43,11 @@ enum DataRefType {
 
 function filterSignals(signal: VegaSignal) {
     switch (signal.name) {
-        case SandDance.constants.BinXSignal:
-        case SandDance.constants.BinYSignal:
-        case SandDance.constants.ColorBinCountSignal:
-        case SandDance.constants.PointSizeSignal:
-        case SandDance.constants.TreeMapMethod:
+        case SandDance.constants.SignalNames.BinXSignal:
+        case SandDance.constants.SignalNames.BinYSignal:
+        case SandDance.constants.SignalNames.ColorBinCountSignal:
+        case SandDance.constants.SignalNames.PointSizeSignal:
+        case SandDance.constants.SignalNames.TreeMapMethod:
             return false;
         default:
             return true;

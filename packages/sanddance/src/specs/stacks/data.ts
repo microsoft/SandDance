@@ -3,7 +3,7 @@
 import { allTruthy } from '../../array';
 import { Data, Transforms } from 'vega-typings';
 import { Insight, SpecColumns, SpecViewOptions } from '../types';
-import { DataNames, BinXSignal, BinYSignal } from '../constants';
+import { DataNames, SignalNames } from '../constants';
 import { topLookup } from '../top';
 
 export default function (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions) {
@@ -30,7 +30,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                             "signal": "long_extent"
                         },
                         "maxbins": {
-                            "signal": BinXSignal
+                            "signal": SignalNames.BinXSignal
                         },
                         "as": [
                             "long0",
@@ -44,7 +44,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                             "signal": "lat_extent"
                         },
                         "maxbins": {
-                            "signal": BinYSignal
+                            "signal": SignalNames.BinYSignal
                         },
                         "as": [
                             "lat0",
