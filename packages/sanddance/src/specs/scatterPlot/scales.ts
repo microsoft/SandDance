@@ -2,12 +2,9 @@
 // Licensed under the MIT license.
 import { binnableColorScale, linearScale, pointScale } from '../scales';
 import {
-    ScaleNameColor,
+    ScaleNames,
     ColorScaleNone,
     DataNames,
-    ScaleNameX,
-    ScaleNameY,
-    ScaleNameZ,
     FieldNames,
     ZHeightSignal,
     ColorReverseSignal
@@ -19,15 +16,15 @@ export default function (columns: SpecColumns, insight: Insight) {
     const scales: Scale[] = [
         (
             columns.x.quantitative ?
-                linearScale(ScaleNameX, DataNames.Main, columns.x.name, "width", false, false)
+                linearScale(ScaleNames.X, DataNames.Main, columns.x.name, "width", false, false)
                 :
-                pointScale(ScaleNameX, DataNames.Main, "width", columns.x.name)
+                pointScale(ScaleNames.X, DataNames.Main, "width", columns.x.name)
         ),
         (
             columns.y.quantitative ?
-                linearScale(ScaleNameY, DataNames.Main, columns.y.name, "height", false, false)
+                linearScale(ScaleNames.Y, DataNames.Main, columns.y.name, "height", false, false)
                 :
-                pointScale(ScaleNameY, DataNames.Main, "height", columns.y.name)
+                pointScale(ScaleNames.Y, DataNames.Main, "height", columns.y.name)
         )
     ];
     if (columns.color) {
@@ -36,7 +33,7 @@ export default function (columns: SpecColumns, insight: Insight) {
         } else {
             scales.push(
                 {
-                    "name": ScaleNameColor,
+                    "name": ScaleNames.Color,
                     "type": "ordinal",
                     "domain": {
                         "data": DataNames.Legend,
@@ -55,9 +52,9 @@ export default function (columns: SpecColumns, insight: Insight) {
         const zRange: RangeScheme = [0, { "signal": ZHeightSignal }];
         scales.push(
             columns.z.quantitative ?
-                linearScale(ScaleNameZ, DataNames.Main, columns.z.name, zRange, false, false)
+                linearScale(ScaleNames.Z, DataNames.Main, columns.z.name, zRange, false, false)
                 :
-                pointScale(ScaleNameZ, DataNames.Main, zRange, columns.z.name)
+                pointScale(ScaleNames.Z, DataNames.Main, zRange, columns.z.name)
         );
     }
     return scales;

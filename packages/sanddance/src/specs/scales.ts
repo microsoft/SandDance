@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { ColorBinCountSignal, ScaleNameColor, ColorScaleNone, ColorReverseSignal } from './constants';
+import { ColorBinCountSignal, ScaleNames, ColorScaleNone, ColorReverseSignal } from './constants';
 import { ColorBin } from './types';
 import {
     LinearScale,
@@ -46,7 +46,7 @@ export function pointScale(name: string, data: string, range: RangeBand, field: 
 
 export function binnableColorScale(colorBin: ColorBin, data: string, field: string, scheme?: string) {
     scheme = scheme || ColorScaleNone;
-    const name = ScaleNameColor;
+    const name = ScaleNames.Color;
     const domain: ScaleData = {
         data,
         field

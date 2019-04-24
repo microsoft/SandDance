@@ -3,11 +3,9 @@
 import qualitativeScales from './scales.qualitative';
 import quantitativeScales from './scales.quantitative';
 import {
-    ScaleNameColor,
     ColorScaleNone,
     DataNames,
-    ScaleNameY,
-    ScaleNameZ,
+    ScaleNames,
     FieldNames,
     ZHeightSignal,
     ColorReverseSignal
@@ -53,7 +51,7 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
             "nice": true
         },
         {
-            "name": ScaleNameY,
+            "name": ScaleNames.Y,
             "type": "band",
             "range": [
                 {
@@ -80,7 +78,7 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
         } else {
             scales.push(
                 {
-                    "name": ScaleNameColor,
+                    "name": ScaleNames.Color,
                     "type": "ordinal",
                     "domain": {
                         "data": namespace.nested,
@@ -99,9 +97,9 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
         const zRange: RangeScheme = [0, { "signal": ZHeightSignal }];
         scales.push(
             columns.z.quantitative ?
-                linearScale(ScaleNameZ, DataNames.Main, columns.z.name, zRange, false, true)
+                linearScale(ScaleNames.Z, DataNames.Main, columns.z.name, zRange, false, true)
                 :
-                pointScale(ScaleNameZ, DataNames.Main, zRange, columns.z.name)
+                pointScale(ScaleNames.Z, DataNames.Main, zRange, columns.z.name)
         );
     }
     return scales.concat(columns.x.quantitative ? quantitativeScales(namespace, columns) : qualitativeScales(namespace, columns));

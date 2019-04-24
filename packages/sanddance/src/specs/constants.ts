@@ -18,11 +18,12 @@ export const DataNames = {
     FacetCellTitles: "SandDanceFacetCellTitles"
 };
 
-//Scale names
-export const ScaleNameColor = "SandDanceColorScale";
-export const ScaleNameX = "SandDanceMainXScale";
-export const ScaleNameY = "SandDanceMainYScale";
-export const ScaleNameZ = "SandDanceMainZScale";
+export const ScaleNames = {
+    Color: "SandDanceColorScale",
+    X: "SandDanceMainXScale",
+    Y: "SandDanceMainYScale",
+    Z: "SandDanceMainZScale"
+};
 
 //Signal names
 export const ColorBinCountSignal = "SandDanceColorBinCount";

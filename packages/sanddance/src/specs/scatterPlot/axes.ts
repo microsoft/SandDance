@@ -2,8 +2,7 @@
 // Licensed under the MIT license.
 import { Axis } from 'vega-typings';
 import {
-    ScaleNameX,
-    ScaleNameY,
+    ScaleNames,
     TextAngleXSignal,
     TextAngleYSignal,
     TextSizeSignal,
@@ -29,7 +28,7 @@ export default function (specViewOptions: SpecViewOptions, columns: SpecColumns)
             "labelFontSize": {
                 "signal": TextSizeSignal
             },
-            "scale": ScaleNameX,
+            "scale": ScaleNames.X,
             "title": columns.x.name,
             "titleAngle": {
                 "signal": TextAngleXSignal
@@ -51,7 +50,7 @@ export default function (specViewOptions: SpecViewOptions, columns: SpecColumns)
             "labelFontSize": {
                 "signal": TextSizeSignal
             },
-            "scale": ScaleNameY,
+            "scale": ScaleNames.Y,
             "title": columns.y.name,
             "titleAngle": {
                 "signal": TextAngleYSignal

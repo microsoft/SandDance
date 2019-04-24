@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { fill } from '../fill';
-import { ScaleNameZ } from '../constants';
+import { ScaleNames } from '../constants';
 import { Mark } from 'vega-typings';
 import { SpecColumns, SpecViewOptions } from '../types';
 import { zeroIfCollapsed } from '../selection';
@@ -31,7 +31,7 @@ export default function (data: string, columns: SpecColumns, specViewOptions: Sp
             "value": 0
         };
         update.depth = zeroIfCollapsed({
-            "scale": ScaleNameZ,
+            "scale": ScaleNames.Z,
             "field": columns.z.name
         });
     }

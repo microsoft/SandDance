@@ -2,10 +2,9 @@
 // Licensed under the MIT license.
 import { binnableColorScale, linearScale, pointScale } from '../scales';
 import {
-    ScaleNameColor,
     ColorScaleNone,
     DataNames,
-    ScaleNameZ,
+    ScaleNames,
     FieldNames,
     ZHeightSignal
 } from '../constants';
@@ -20,7 +19,7 @@ export default function (columns: SpecColumns, insight: Insight) {
         } else {
             scales.push(
                 {
-                    "name": ScaleNameColor,
+                    "name": ScaleNames.Color,
                     "type": "ordinal",
                     "domain": {
                         "data": DataNames.Legend,
@@ -38,9 +37,9 @@ export default function (columns: SpecColumns, insight: Insight) {
         const zRange: RangeScheme = [0, { "signal": ZHeightSignal }];
         scales.push(
             columns.z.quantitative ?
-                linearScale(ScaleNameZ, DataNames.Main, columns.z.name, zRange, false, false)
+                linearScale(ScaleNames.Z, DataNames.Main, columns.z.name, zRange, false, false)
                 :
-                pointScale(ScaleNameZ, DataNames.Main, zRange, columns.z.name)
+                pointScale(ScaleNames.Z, DataNames.Main, zRange, columns.z.name)
         );
     }
     return scales;

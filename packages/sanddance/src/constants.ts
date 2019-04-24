@@ -5,7 +5,7 @@ export {
     BinXSignal,
     BinYSignal,
     ColorBinCountSignal,
-    ScaleNameColor,
+    ScaleNames,
     ColorScaleNone,
     PointSizeSignal,
     TreeMapMethod

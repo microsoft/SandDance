@@ -3,9 +3,7 @@
 import { collapseY, zeroIfCollapsed } from '../selection';
 import {
     DataNames,
-    ScaleNameX,
-    ScaleNameY,
-    ScaleNameZ,
+    ScaleNames,
     PointSizeSignal
 } from '../constants';
 import { fill } from '../fill';
@@ -26,14 +24,14 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                         "field": columns.uid.name
                     },
                     "x": {
-                        "scale": ScaleNameX,
+                        "scale": ScaleNames.X,
                         "field": columns.x.name,
                         "offset": 1
                     },
                     "width": { "signal": PointSizeSignal },
                     "y": collapseY(
                         {
-                            "scale": ScaleNameY,
+                            "scale": ScaleNames.Y,
                             "field": columns.y.name,
                             "offset": {
                                 "signal": `-${PointSizeSignal}`
@@ -51,7 +49,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
     if (columns.z) {
         const update = marks[0].encode.update;
         update.z = zeroIfCollapsed({
-            "scale": ScaleNameZ,
+            "scale": ScaleNames.Z,
             "field": columns.z.name
         });
         update.depth = { "signal": PointSizeSignal };
