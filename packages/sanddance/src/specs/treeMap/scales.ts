@@ -4,8 +4,7 @@ import { binnableColorScale, linearScale, pointScale } from '../scales';
 import {
     ScaleNameColor,
     ColorScaleNone,
-    DataName,
-    DataNameLegend,
+    DataNames,
     ScaleNameZ,
     FieldNames,
     ZHeightSignal
@@ -17,14 +16,14 @@ export default function (columns: SpecColumns, insight: Insight) {
     const scales: Scale[] = [];
     if (columns.color) {
         if (columns.color.quantitative) {
-            scales.push(binnableColorScale(insight.colorBin, DataName, columns.color.name, insight.scheme));
+            scales.push(binnableColorScale(insight.colorBin, DataNames.Main, columns.color.name, insight.scheme));
         } else {
             scales.push(
                 {
                     "name": ScaleNameColor,
                     "type": "ordinal",
                     "domain": {
-                        "data": DataNameLegend,
+                        "data": DataNames.Legend,
                         "field": FieldNames.Top,
                         "sort": true
                     },
@@ -39,9 +38,9 @@ export default function (columns: SpecColumns, insight: Insight) {
         const zRange: RangeScheme = [0, { "signal": ZHeightSignal }];
         scales.push(
             columns.z.quantitative ?
-                linearScale(ScaleNameZ, DataName, columns.z.name, zRange, false, false)
+                linearScale(ScaleNameZ, DataNames.Main, columns.z.name, zRange, false, false)
                 :
-                pointScale(ScaleNameZ, DataName, zRange, columns.z.name)
+                pointScale(ScaleNameZ, DataNames.Main, zRange, columns.z.name)
         );
     }
     return scales;

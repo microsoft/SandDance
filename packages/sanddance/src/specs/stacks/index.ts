@@ -5,7 +5,7 @@ import getData from './data';
 import getMarks from './marks';
 import getScales from './scales';
 import getSignals from './signals';
-import { BinXSignal, DataNameFacetGroupCell, BinYSignal } from '../constants';
+import { BinXSignal, DataNames, BinYSignal } from '../constants';
 import {
     checkForFacetErrors,
     facetMarks,

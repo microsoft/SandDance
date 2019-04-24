@@ -17,7 +17,7 @@ import {
     facetSize,
     layout
 } from '../facet';
-import { DataNameFacetGroupCell, BinXSignal, ColorReverseSignal } from '../constants';
+import { DataNames, BinXSignal, ColorReverseSignal } from '../constants';
 import { legend } from '../legends';
 import { Mark, Spec } from 'vega-typings';
 import { NameSpace } from './namespace';
@@ -75,7 +75,7 @@ export const barchart: SpecCreator = (insight: Insight, columns: SpecColumns, sp
     if (columns.facet) {
         const cellNamespace = new NameSpace('Cell');
         const cellMarks = getMarks(cellNamespace, columns, specViewOptions);
-        marks = facetMarks(specViewOptions, rootNamespace.stacked, cellMarks, axes, cellData(cellNamespace, DataNameFacetGroupCell, columns));
+        marks = facetMarks(specViewOptions, rootNamespace.stacked, cellMarks, axes, cellData(cellNamespace, DataNames.FacetGroupCell, columns));
         axes = [];
     } else {
         marks = getMarks(rootNamespace, columns, specViewOptions);

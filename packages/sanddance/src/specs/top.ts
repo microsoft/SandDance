@@ -3,18 +3,16 @@
 import { Column } from './types';
 import { Data } from 'vega-typings';
 import {
-    DataName,
-    DataNameLegend,
+    DataNames,
     Other,
-    FieldNames,
-    DataNameTopLookup
+    FieldNames
 } from './constants';
 
 export function topLookup(column: Column, count: number) {
     const data: Data[] = [
         {
-            "name": DataNameTopLookup,
-            "source": DataName,
+            "name": DataNames.TopLookup,
+            "source": DataNames.Main,
             "transform": [
                 { "type": "aggregate", "groupby": [column.name] },
                 { "type": "identifier", "as": "id" },
@@ -22,12 +20,12 @@ export function topLookup(column: Column, count: number) {
             ]
         },
         {
-            "name": DataNameLegend,
-            "source": DataName,
+            "name": DataNames.Legend,
+            "source": DataNames.Main,
             "transform": [
                 {
                     "type": "lookup",
-                    "from": DataNameTopLookup,
+                    "from": DataNames.TopLookup,
                     "key": column.name,
                     "fields": [column.name],
                     "values": [column.name],

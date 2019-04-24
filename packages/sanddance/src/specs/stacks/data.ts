@@ -3,7 +3,7 @@
 import { allTruthy } from '../../array';
 import { Data, Transforms } from 'vega-typings';
 import { Insight, SpecColumns, SpecViewOptions } from '../types';
-import { DataName, BinXSignal, BinYSignal } from '../constants';
+import { DataNames, BinXSignal, BinYSignal } from '../constants';
 import { topLookup } from '../top';
 
 export default function (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions) {
@@ -11,7 +11,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
     const data = allTruthy<Data>(
         [
             {
-                "name": DataName,
+                "name": DataNames.Main,
                 "transform": [
                     {
                         "type": "extent",
@@ -55,7 +55,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
             },
             {
                 "name": "summary",
-                "source": DataName,
+                "source": DataNames.Main,
                 "transform": [
                     {
                         "type": "nest",
@@ -67,7 +67,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
             },
             {
                 "name": "aggregated",
-                "source": DataName,
+                "source": DataNames.Main,
                 "transform": [
                     {
                         "type": "aggregate",

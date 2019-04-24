@@ -2,8 +2,7 @@
 // Licensed under the MIT license.
 import { collapseY, zeroIfCollapsed } from '../selection';
 import {
-    DataName,
-    DataNameLegend,
+    DataNames,
     ScaleNameX,
     ScaleNameY,
     ScaleNameZ,
@@ -19,7 +18,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
         {
             "type": "rect",
             "from": {
-                "data": categoricalColor ? DataNameLegend : DataName
+                "data": categoricalColor ? DataNames.Legend : DataNames.Main
             },
             "encode": {
                 "update": {

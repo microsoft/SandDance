@@ -4,7 +4,7 @@ import getQualitative from './transform.qualitative';
 import getQuantitative from './transform.quantitative';
 import { allTruthy } from '../../array';
 import { Data, Transforms } from 'vega-typings';
-import { DataName, DataNameLegend, DataNamePre } from '../constants';
+import { DataNames } from '../constants';
 import { facetGroupData, facetSourceData, facetTransforms } from '../facet';
 import { Insight, SpecColumns, SpecViewOptions } from '../types';
 import { NameSpace } from './namespace';
@@ -12,12 +12,12 @@ import { topLookup } from '../top';
 
 export default function (namespace: NameSpace, insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions) {
     const categoricalColor = columns.color && !columns.color.quantitative;
-    const nestedDataName = columns.facet && columns.facet.quantitative ? DataNamePre : DataName;
+    const nestedDataName = columns.facet && columns.facet.quantitative ? DataNames.Pre : DataNames.Main;
     const data = allTruthy<Data>(
-        facetSourceData(columns.facet, insight.facets, DataName),
+        facetSourceData(columns.facet, insight.facets, DataNames.Main),
         categoricalColor && topLookup(columns.color, specViewOptions.maxLegends),
         [
-            nested(namespace, categoricalColor ? DataNameLegend : nestedDataName, columns),
+            nested(namespace, categoricalColor ? DataNames.Legend : nestedDataName, columns),
             stacked(namespace,
                 columns.facet && facetTransforms(columns.facet, insight.facets)
             )

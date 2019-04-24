@@ -3,7 +3,7 @@
 import { Insight, SpecColumns } from '../types';
 import { Scale } from 'vega-typings';
 import { binnableColorScale } from '../scales';
-import { DataName, ScaleNameColor, DataNameLegend, FieldNames, ColorScaleNone } from '../constants';
+import { DataNames, ScaleNameColor, FieldNames, ColorScaleNone } from '../constants';
 
 export default function (columns: SpecColumns, insight: Insight) {
     const scales: Scale[] = [
@@ -11,7 +11,7 @@ export default function (columns: SpecColumns, insight: Insight) {
             "name": "xband",
             "type": "band",
             "domain": {
-                "data": DataName,
+                "data": DataNames.Main,
                 "field": "long0",
                 "sort": true
             },
@@ -29,7 +29,7 @@ export default function (columns: SpecColumns, insight: Insight) {
             "type": "band",
             "reverse": true,
             "domain": {
-                "data": DataName,
+                "data": DataNames.Main,
                 "field": "lat0",
                 "sort": true
             },
@@ -99,7 +99,7 @@ export default function (columns: SpecColumns, insight: Insight) {
             "nice": true,
             "zero": false,
             "domain": {
-                "data": DataName,
+                "data": DataNames.Main,
                 "field": columns.x.name
             },
             "range": "width"
@@ -111,7 +111,7 @@ export default function (columns: SpecColumns, insight: Insight) {
             "nice": true,
             "zero": false,
             "domain": {
-                "data": DataName,
+                "data": DataNames.Main,
                 "field": columns.y.name
             },
             "range": "height"
@@ -134,14 +134,14 @@ export default function (columns: SpecColumns, insight: Insight) {
     ];
     if (columns.color) {
         if (columns.color.quantitative) {
-            scales.push(binnableColorScale(insight.colorBin, DataName, columns.color.name, insight.scheme));
+            scales.push(binnableColorScale(insight.colorBin, DataNames.Main, columns.color.name, insight.scheme));
         } else {
             scales.push(
                 {
                     "name": ScaleNameColor,
                     "type": "ordinal",
                     "domain": {
-                        "data": DataNameLegend,
+                        "data": DataNames.Legend,
                         "field": FieldNames.Top,
                         "sort": true
                     },

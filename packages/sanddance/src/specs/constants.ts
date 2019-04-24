@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-//Field names
 export const FieldNames = {
     Active: "__SandDanceActive",
     Collapsed: "__SandDanceCollapsed",
@@ -9,14 +8,15 @@ export const FieldNames = {
     Top: "__SandDanceTop"
 };
 
-//Data names
-export const DataNamePre = "SandDancePreData";
-export const DataName = "SandDanceData";
-export const DataNameEmptyBin = "SandDanceEmptyBins";
-export const DataNameTopLookup = "SandDanceTop";
-export const DataNameLegend = "SandDanceLegend";
-export const DataNameFacetGroupCell = "SandDanceFacetGroupCellData";
-export const DataNameFacetCellTitles = "SandDanceFacetCellTitles";
+export const DataNames = {
+    Pre: "SandDancePreData",
+    Main: "SandDanceData",
+    EmptyBin: "SandDanceEmptyBins",
+    TopLookup: "SandDanceTop",
+    Legend: "SandDanceLegend",
+    FacetGroupCell: "SandDanceFacetGroupCellData",
+    FacetCellTitles: "SandDanceFacetCellTitles"
+};
 
 //Scale names
 export const ScaleNameColor = "SandDanceColorScale";

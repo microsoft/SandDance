@@ -4,8 +4,7 @@ import { binnableColorScale, linearScale, pointScale } from '../scales';
 import {
     ScaleNameColor,
     ColorScaleNone,
-    DataName,
-    DataNameLegend,
+    DataNames,
     ScaleNameX,
     ScaleNameY,
     ScaleNameZ,
@@ -20,27 +19,27 @@ export default function (columns: SpecColumns, insight: Insight) {
     const scales: Scale[] = [
         (
             columns.x.quantitative ?
-                linearScale(ScaleNameX, DataName, columns.x.name, "width", false, false)
+                linearScale(ScaleNameX, DataNames.Main, columns.x.name, "width", false, false)
                 :
-                pointScale(ScaleNameX, DataName, "width", columns.x.name)
+                pointScale(ScaleNameX, DataNames.Main, "width", columns.x.name)
         ),
         (
             columns.y.quantitative ?
-                linearScale(ScaleNameY, DataName, columns.y.name, "height", false, false)
+                linearScale(ScaleNameY, DataNames.Main, columns.y.name, "height", false, false)
                 :
-                pointScale(ScaleNameY, DataName, "height", columns.y.name)
+                pointScale(ScaleNameY, DataNames.Main, "height", columns.y.name)
         )
     ];
     if (columns.color) {
         if (columns.color.quantitative) {
-            scales.push(binnableColorScale(insight.colorBin, DataName, columns.color.name, insight.scheme));
+            scales.push(binnableColorScale(insight.colorBin, DataNames.Main, columns.color.name, insight.scheme));
         } else {
             scales.push(
                 {
                     "name": ScaleNameColor,
                     "type": "ordinal",
                     "domain": {
-                        "data": DataNameLegend,
+                        "data": DataNames.Legend,
                         "field": FieldNames.Top,
                         "sort": true
                     },
@@ -56,9 +55,9 @@ export default function (columns: SpecColumns, insight: Insight) {
         const zRange: RangeScheme = [0, { "signal": ZHeightSignal }];
         scales.push(
             columns.z.quantitative ?
-                linearScale(ScaleNameZ, DataName, columns.z.name, zRange, false, false)
+                linearScale(ScaleNameZ, DataNames.Main, columns.z.name, zRange, false, false)
                 :
-                pointScale(ScaleNameZ, DataName, zRange, columns.z.name)
+                pointScale(ScaleNameZ, DataNames.Main, zRange, columns.z.name)
         );
     }
     return scales;

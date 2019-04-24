@@ -5,7 +5,7 @@ import quantitativeScales from './scales.quantitative';
 import {
     ScaleNameColor,
     ColorScaleNone,
-    DataName,
+    DataNames,
     ScaleNameY,
     ScaleNameZ,
     FieldNames,
@@ -99,9 +99,9 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
         const zRange: RangeScheme = [0, { "signal": ZHeightSignal }];
         scales.push(
             columns.z.quantitative ?
-                linearScale(ScaleNameZ, DataName, columns.z.name, zRange, false, true)
+                linearScale(ScaleNameZ, DataNames.Main, columns.z.name, zRange, false, true)
                 :
-                pointScale(ScaleNameZ, DataName, zRange, columns.z.name)
+                pointScale(ScaleNameZ, DataNames.Main, zRange, columns.z.name)
         );
     }
     return scales.concat(columns.x.quantitative ? quantitativeScales(namespace, columns) : qualitativeScales(namespace, columns));

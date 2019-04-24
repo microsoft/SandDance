@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { allTruthy } from '../../array';
 import { Data, Transforms } from 'vega-typings';
-import { DataName, TreeMapMethod } from '../constants';
+import { DataNames, TreeMapMethod } from '../constants';
 import { facetGroupData, facetSourceData, facetTransforms } from '../facet';
 import { Insight, SpecColumns, SpecViewOptions } from '../types';
 import { topLookup } from '../top';
@@ -14,7 +14,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
         facetSourceData(columns.facet, insight.facets, TreeMapDataName),
         [
             {
-                "name": DataName,
+                "name": DataNames.Main,
                 "source": TreeMapDataName,
                 "transform": allTruthy<Transforms>(
                     columns.facet && facetTransforms(columns.facet, insight.facets),
@@ -23,7 +23,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
             }
         ],
         categoricalColor && topLookup(columns.color, specViewOptions.maxLegends),
-        columns.facet && facetGroupData(DataName)
+        columns.facet && facetGroupData(DataNames.Main)
     );
     return data;
 }
