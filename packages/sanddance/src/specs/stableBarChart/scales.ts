@@ -8,7 +8,7 @@ import {
     DataName,
     MainYScale,
     MainZScale,
-    TopFieldName,
+    FieldNameTop,
     ZHeightSignal,
     ColorReverseSignal
 } from '../constants';
@@ -84,7 +84,7 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
                     "type": "ordinal",
                     "domain": {
                         "data": namespace.nested,
-                        "field": TopFieldName,
+                        "field": FieldNameTop,
                         "sort": true
                     },
                     "range": {

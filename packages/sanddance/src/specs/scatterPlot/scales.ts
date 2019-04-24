@@ -9,7 +9,7 @@ import {
     MainXScale,
     MainYScale,
     MainZScale,
-    TopFieldName,
+    FieldNameTop,
     ZHeightSignal,
     ColorReverseSignal
 } from '../constants';
@@ -41,7 +41,7 @@ export default function (columns: SpecColumns, insight: Insight) {
                     "type": "ordinal",
                     "domain": {
                         "data": LegendDataName,
-                        "field": TopFieldName,
+                        "field": FieldNameTop,
                         "sort": true
                     },
                     "range": {

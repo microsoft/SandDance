@@ -9,7 +9,7 @@ import {
     Transforms
 } from 'vega-typings';
 import {
-    CollapsedFieldName,
+    FieldNameCollapsed,
     EmptyBinDataName,
     FacetCellTitles,
     FacetColumnsSignal,
@@ -117,7 +117,7 @@ function emptyBinsDataSource(name: string, facetColumn: Column, facets: Facets) 
     }
     const values = steps.map(s => {
         const obj = {};
-        obj[CollapsedFieldName] = true;
+        obj[FieldNameCollapsed] = true;
         obj[facetColumn.name] = s;
         return obj;
     });

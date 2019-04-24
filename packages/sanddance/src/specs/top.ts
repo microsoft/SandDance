@@ -6,7 +6,7 @@ import {
     DataName,
     LegendDataName,
     Other,
-    TopFieldName,
+    FieldNameTop,
     TopLookupDataName
 } from './constants';
 
@@ -31,12 +31,12 @@ export function topLookup(column: Column, count: number) {
                     "key": column.name,
                     "fields": [column.name],
                     "values": [column.name],
-                    "as": [TopFieldName]
+                    "as": [FieldNameTop]
                 },
                 {
                     "type": "formula",
-                    "expr": `datum.${TopFieldName} || '${Other}'`,
-                    "as": TopFieldName
+                    "expr": `datum.${FieldNameTop} || '${Other}'`,
+                    "as": FieldNameTop
                 }
             ]
         }

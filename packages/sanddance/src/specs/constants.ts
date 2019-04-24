@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-//These fields get added to the data to mark the records as selected or active
-export const ActiveFieldName = "__SandDanceActive";
-export const CollapsedFieldName = "__SandDanceCollapsed";
-export const SelectedFieldName = "__SandDanceSelected";
-export const TopFieldName = "__SandDanceTop";
+//Field names
+export const FieldNameActive = "__SandDanceActive";
+export const FieldNameCollapsed = "__SandDanceCollapsed";
+export const FieldNameSelected = "__SandDanceSelected";
+export const FieldNameTop = "__SandDanceTop";
 
 //These are strong names which appear in the specs
 export const ColorScaleName = "SandDanceColorScale";

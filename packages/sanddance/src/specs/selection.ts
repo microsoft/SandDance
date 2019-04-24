@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { CollapsedFieldName, MainYScale, YDomainSignal } from './constants';
+import { FieldNameCollapsed, MainYScale, YDomainSignal } from './constants';
 import { NumericValueRef, ProductionRule } from 'vega-typings';
 
 function testForCollapseSelection() {
-  return `datum.${CollapsedFieldName}`;
+  return `datum.${FieldNameCollapsed}`;
 }
 
 export function zeroIfCollapsed(numericValueRef: NumericValueRef): ProductionRule<NumericValueRef> {
