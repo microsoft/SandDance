@@ -47,8 +47,7 @@ export const scatterplot: SpecCreator = (insight: Insight, columns: SpecColumns,
             },
             {
                 role: 'color',
-                allowNone: true,
-                signals: [SignalNames.ColorReverse]
+                allowNone: true
             },
             {
                 role: 'sort',
