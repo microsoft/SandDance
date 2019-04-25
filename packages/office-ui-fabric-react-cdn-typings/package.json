@@ -4,12 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tsc index.d.ts"
   },
   "keywords": [],
   "author": "",
   "dependencies": {
     "office-ui-fabric-react": "^6.129.1"
+  },
+  "devDependencies": {
+    "@types/react": "16.4.7",
+    "typescript": "^3.2.4"
   },
   "license": "MIT"
 }
