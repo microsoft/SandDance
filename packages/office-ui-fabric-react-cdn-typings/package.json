@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "tsc index.d.ts"
+    "test": "tsc index.d.ts --lib es6"
   },
   "keywords": [],
   "author": "",
