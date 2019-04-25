@@ -16,6 +16,8 @@ export { IDropdownProps, IDropdownOption } from "office-ui-fabric-react/lib/comp
 
 export { IComboBox, IComboBoxProps, IComboBoxOption } from 'office-ui-fabric-react/lib/components/ComboBox';
 
+export { IToggleProps } from 'office-ui-fabric-react/lib/Toggle';
+
 export { IDialogProps } from 'office-ui-fabric-react/lib/Dialog';
 
 export { IStyle, ITheme, IPalette } from "office-ui-fabric-react/lib/Styling";
