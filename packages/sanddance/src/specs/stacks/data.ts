@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { allTruthy } from '../../array';
-import { Data, Transforms } from 'vega-typings';
+import { Data } from 'vega-typings';
+import { DataNames, SignalNames } from '../constants';
 import { Insight, SpecColumns, SpecViewOptions } from '../types';
-import { DataName, BinXSignal, BinYSignal } from '../constants';
 import { topLookup } from '../top';
 
 export default function (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions) {
@@ -11,7 +11,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
     const data = allTruthy<Data>(
         [
             {
-                "name": DataName,
+                "name": DataNames.Main,
                 "transform": [
                     {
                         "type": "extent",
@@ -30,7 +30,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                             "signal": "long_extent"
                         },
                         "maxbins": {
-                            "signal": BinXSignal
+                            "signal": SignalNames.XBins
                         },
                         "as": [
                             "long0",
@@ -44,7 +44,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                             "signal": "lat_extent"
                         },
                         "maxbins": {
-                            "signal": BinYSignal
+                            "signal": SignalNames.YBins
                         },
                         "as": [
                             "lat0",
@@ -55,7 +55,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
             },
             {
                 "name": "summary",
-                "source": DataName,
+                "source": DataNames.Main,
                 "transform": [
                     {
                         "type": "nest",
@@ -67,7 +67,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
             },
             {
                 "name": "aggregated",
-                "source": DataName,
+                "source": DataNames.Main,
                 "transform": [
                     {
                         "type": "aggregate",

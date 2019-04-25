@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { allTruthy } from '../../array';
-import { BinXSignal, MainYScale, YDomainSignal } from '../constants';
-import { colorBinCountSignal, textSignals, colorReverseSignal } from '../signals';
+import { colorBinCountSignal, colorReverseSignal, textSignals } from '../signals';
 import { facetSignals } from '../facet';
 import { Insight, SpecColumns, SpecViewOptions } from '../types';
+import { ScaleNames, SignalNames } from '../constants';
 import { Signal } from 'vega-typings';
 
 export default function (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): Signal[] {
@@ -12,11 +12,11 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
         textSignals(specViewOptions),
         [
             {
-                "name": YDomainSignal,
-                "update": `domain('${MainYScale}')`
+                "name": SignalNames.YDomain,
+                "update": `domain('${ScaleNames.Y}')`
             },
             columns.x.quantitative && {
-                "name": BinXSignal,
+                "name": SignalNames.XBins,
                 "value": 7,
                 "bind": {
                     "name": specViewOptions.language.barChartBinSize,

@@ -66,9 +66,9 @@ export function DataItem(props: Props) {
     const nameValuePairs: NameValuePair[] = [];
     for (let columnName in props.item) {
         switch (columnName) {
-            case SandDance.constants.ActiveFieldName:
-            case SandDance.constants.CollapsedFieldName:
-            case SandDance.constants.SelectedFieldName:
+            case SandDance.constants.FieldNames.Active:
+            case SandDance.constants.FieldNames.Collapsed:
+            case SandDance.constants.FieldNames.Selected:
                 continue;
             default:
                 if (columnName === SandDance.VegaDeckGl.constants.GL_ORDINAL && !props.showSystemFields) {

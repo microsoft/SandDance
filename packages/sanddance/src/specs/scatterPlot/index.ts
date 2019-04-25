@@ -21,7 +21,7 @@ import {
 import { legend } from '../legends';
 import { Spec } from 'vega-typings';
 import { SpecCreator, SpecResult } from '../interfaces';
-import { PointSizeSignal, ColorBinCountSignal, ColorReverseSignal } from '../constants';
+import { SignalNames } from '../constants';
 
 export const scatterplot: SpecCreator = (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult => {
     const errors: string[] = [];
@@ -47,8 +47,7 @@ export const scatterplot: SpecCreator = (insight: Insight, columns: SpecColumns,
             },
             {
                 role: 'color',
-                allowNone: true,
-                signals: [ColorReverseSignal]
+                allowNone: true
             },
             {
                 role: 'sort',
@@ -59,7 +58,7 @@ export const scatterplot: SpecCreator = (insight: Insight, columns: SpecColumns,
                 allowNone: true
             }
         ],
-        signals: [PointSizeSignal]
+        signals: [SignalNames.PointSize]
     };
 
     if (errors.length) {

@@ -20,7 +20,7 @@
     "clean": "lerna clean --yes && npm run clean-build",
     "remove-pem": "rimraf **/*.pem && rimraf **/*.key",
     "deploy": "lerna run deploy",
-    "test": "lerna run test",
+    "test": "npm run build && lerna run test",
     "vsce-package": "lerna run vsce-package --parallel",
     "dev": "lerna run dev --scope dev --parallel"
   },

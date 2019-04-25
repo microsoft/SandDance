@@ -3,14 +3,11 @@
 import qualitativeScales from './scales.qualitative';
 import quantitativeScales from './scales.quantitative';
 import {
-    ColorScaleName,
     ColorScaleNone,
-    DataName,
-    MainYScale,
-    MainZScale,
-    TopFieldName,
-    ZHeightSignal,
-    ColorReverseSignal
+    DataNames,
+    ScaleNames,
+    FieldNames,
+    SignalNames
 } from '../constants';
 import { Insight, SpecColumns } from '../types';
 import { linearScale, pointScale, binnableColorScale } from '../scales';
@@ -53,7 +50,7 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
             "nice": true
         },
         {
-            "name": MainYScale,
+            "name": ScaleNames.Y,
             "type": "band",
             "range": [
                 {
@@ -80,28 +77,28 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
         } else {
             scales.push(
                 {
-                    "name": ColorScaleName,
+                    "name": ScaleNames.Color,
                     "type": "ordinal",
                     "domain": {
                         "data": namespace.nested,
-                        "field": TopFieldName,
+                        "field": FieldNames.Top,
                         "sort": true
                     },
                     "range": {
                         "scheme": insight.scheme || ColorScaleNone
                     },
-                    "reverse": {"signal":ColorReverseSignal}
+                    "reverse": { "signal": SignalNames.ColorReverse} 
                 }
             );
         }
     }
     if (columns.z) {
-        const zRange: RangeScheme = [0, { "signal": ZHeightSignal }];
+        const zRange: RangeScheme = [0, { "signal": SignalNames.ZHeight }];
         scales.push(
             columns.z.quantitative ?
-                linearScale(MainZScale, DataName, columns.z.name, zRange, false, true)
+                linearScale(ScaleNames.Z, DataNames.Main, columns.z.name, zRange, false, true)
                 :
-                pointScale(MainZScale, DataName, zRange, columns.z.name)
+                pointScale(ScaleNames.Z, DataNames.Main, zRange, columns.z.name)
         );
     }
     return scales.concat(columns.x.quantitative ? quantitativeScales(namespace, columns) : qualitativeScales(namespace, columns));

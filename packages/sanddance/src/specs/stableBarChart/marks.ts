@@ -2,9 +2,7 @@
 // Licensed under the MIT license.
 import { collapseY, zeroIfCollapsed } from '../selection';
 import {
-    MainXScale,
-    MainYScale,
-    MainZScale
+    ScaleNames
 } from '../constants';
 import { fill } from '../fill';
 import { NameSpace } from './namespace';
@@ -20,7 +18,7 @@ export default function (namespace: NameSpace, columns: SpecColumns, specViewOpt
         "encode": {
             "update": {
                 "x": {
-                    "scale": MainXScale,
+                    "scale": ScaleNames.X,
                     "field": columns.x.quantitative ? "__bin0" : columns.x.name,
                     "offset": {
                         "scale": "xnewinternalscale",
@@ -33,17 +31,17 @@ export default function (namespace: NameSpace, columns: SpecColumns, specViewOpt
                 },
                 "y": collapseY(
                     {
-                        "scale": MainYScale,
+                        "scale": ScaleNames.Y,
                         "field": namespace.__row,
                         "band": true,
                         "offset": {
-                            "signal": `-bandwidth('${MainYScale}')-1`
+                            "signal": `-bandwidth('${ScaleNames.Y}')-1`
                         }
                     }
                 ),
                 "height": zeroIfCollapsed(
                     {
-                        "scale": MainYScale,
+                        "scale": ScaleNames.Y,
                         "band": true
                     }
                 ),
@@ -57,7 +55,7 @@ export default function (namespace: NameSpace, columns: SpecColumns, specViewOpt
             "value": 0
         };
         update.depth = zeroIfCollapsed({
-            "scale": MainZScale,
+            "scale": ScaleNames.Z,
             "field": columns.z.name
         });
     }

@@ -10,6 +10,7 @@ import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { Group } from '../controls/group';
 import {
     LinearScale,
+    NewSignal,
     OrdinalScale,
     QuantileScale,
     QuantizeScale,
@@ -41,16 +42,17 @@ enum DataRefType {
     none, inline, url
 }
 
-function filterSignals(signal: VegaSignal) {
+function filterSignals(signal: NewSignal) {
     switch (signal.name) {
-        case SandDance.constants.BinXSignal:
-        case SandDance.constants.BinYSignal:
-        case SandDance.constants.ColorBinCountSignal:
-        case SandDance.constants.PointSizeSignal:
-        case SandDance.constants.TreeMapMethod:
+        case SandDance.constants.SignalNames.XBins:
+        case SandDance.constants.SignalNames.YBins:
+        case SandDance.constants.SignalNames.ColorBinCount:
+        case SandDance.constants.SignalNames.ColorReverse:
+        case SandDance.constants.SignalNames.PointSize:
+        case SandDance.constants.SignalNames.TreeMapMethod:
             return false;
         default:
-            return true;
+            return !!signal.bind;
     }
 }
 
@@ -70,7 +72,7 @@ function cloneScales(vegaSpec: Spec) {
 
 function serializeSpec(vegaSpec: Spec, datafile: DataFile, dataRefType: DataRefType, scheme: string) {
     const scales = cloneScales(vegaSpec);
-    const colorScale = scales.filter(scale => scale.name === SandDance.constants.ColorScaleName)[0];
+    const colorScale = scales.filter(scale => scale.name === SandDance.constants.ScaleNames.Color)[0];
     if (scheme.indexOf('dual_') >= 0) {
         (colorScale as ScalesWithRange).range = SandDance.colorSchemes.filter(cs => cs.scheme === scheme)[0].colors;
     }
@@ -105,6 +107,17 @@ function initState(props: Props): State {
     };
 }
 
+function vegaSignalGroups(vegaSignals: VegaSignal[]) {
+    const signalGroupMap: { [key: string]: VegaSignal[] } = {};
+    vegaSignals.forEach(vs => {
+        const split = vs.name.split('_');
+        const key = split[0];
+        signalGroupMap[key] = signalGroupMap[key] || [];
+        signalGroupMap[key].push(vs);
+    });
+    return signalGroupMap;
+}
+
 export class Settings extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
@@ -134,21 +147,31 @@ export class Settings extends React.Component<Props, State> {
                 data: DataRefType.inline
             }
         ].filter(Boolean);
+        const signalGroupMap = vegaSignalGroups(props.explorer.viewer.vegaSpec.signals);
         return (
             <div>
-                <Group
-                    label={strings.dialogTitleChartSettings}
-                >
-                    {props.explorer.viewer.vegaSpec.signals.filter(filterSignals).map((signal, i) => {
-                        return (
-                            <Signal
-                                key={i}
-                                signal={signal}
-                                explorer={props.explorer}
-                            />
-                        );
-                    })}
-                </Group>
+                {strings.signalGroups.map((sg: { prefix: string, label: string }) => {
+                    const vegaSignals = signalGroupMap[sg.prefix];
+                    if (vegaSignals) {
+                        const filteredVegaSignals = vegaSignals.filter(filterSignals);
+                        if (filteredVegaSignals.length > 0) {
+                            return (
+                                <Group
+                                    key={sg.prefix}
+                                    label={sg.label}
+                                >
+                                    {filteredVegaSignals.map((signal, i) => (
+                                        <Signal
+                                            key={i}
+                                            signal={signal}
+                                            explorer={props.explorer}
+                                        />
+                                    ))}
+                                </Group>
+                            );
+                        }
+                    }
+                })}
                 <Group
                     label={strings.dialogTitleTools}
                 >

@@ -9,21 +9,12 @@ import {
     Transforms
 } from 'vega-typings';
 import {
-    CollapsedFieldName,
-    EmptyBinDataName,
-    FacetCellTitles,
-    FacetColumnsSignal,
-    FacetGroupCellDataName,
-    FacetRowsSignal,
-    PreDataName,
-    TextSizeSignal
-} from './constants';
-import {
     Column,
     Facets,
     Size,
     SpecViewOptions
 } from './types';
+import { DataNames, FieldNames, SignalNames } from './constants';
 import { util } from '../vega-deck.gl';
 
 const FacetColumnsSequence = "FacetColumnsSequence";
@@ -37,7 +28,7 @@ export const facetTitleSeparator = ' - ';
 export function facetSignals(facets: Facets, specViewOptions: SpecViewOptions) {
     const signals: Signal[] = [
         {
-            "name": FacetColumnsSignal,
+            "name": SignalNames.FacetColumns,
             "value": facets.columns,
             // "bind": {
             //     "name": viewerOptions.language.facetColumns,
@@ -49,7 +40,7 @@ export function facetSignals(facets: Facets, specViewOptions: SpecViewOptions) {
             // }
         },
         {
-            "name": FacetRowsSignal,
+            "name": SignalNames.FacetRows,
             "value": facets.rows,
             // "bind": {
             //     "name": viewerOptions.language.facetRows,
@@ -92,7 +83,7 @@ export function facetSize(facets: Facets, size: Size, specViewOptions: SpecViewO
 export function layout(specViewOptions: SpecViewOptions): LayoutParams {
     const layout: LayoutParams = {
         "columns": {
-            "signal": FacetColumnsSignal
+            "signal": SignalNames.FacetColumns
         },
         "bounds": "full",
         "padding": {
@@ -117,7 +108,7 @@ function emptyBinsDataSource(name: string, facetColumn: Column, facets: Facets) 
     }
     const values = steps.map(s => {
         const obj = {};
-        obj[CollapsedFieldName] = true;
+        obj[FieldNames.Collapsed] = true;
         obj[facetColumn.name] = s;
         return obj;
     });
@@ -130,12 +121,12 @@ export function facetSourceData(facetColumn: Column, facets: Facets, name: strin
     if (facetColumn && facetColumn.quantitative) {
         data = [
             {
-                "name": PreDataName
+                "name": DataNames.Pre
             },
-            emptyBinsDataSource(EmptyBinDataName, facetColumn, facets),
+            emptyBinsDataSource(DataNames.EmptyBin, facetColumn, facets),
             {
                 name,
-                "source": [PreDataName, EmptyBinDataName]
+                "source": [DataNames.Pre, DataNames.EmptyBin]
             }
         ];
     } else {
@@ -147,7 +138,7 @@ export function facetSourceData(facetColumn: Column, facets: Facets, name: strin
 export function facetGroupData(source: string) {
     const data: Data[] = [
         {
-            "name": FacetCellTitles,
+            "name": DataNames.FacetCellTitles,
             source,
             "transform": [
                 {
@@ -163,7 +154,7 @@ export function facetGroupData(source: string) {
                     "type": "sequence",
                     "start": 0,
                     "step": 1,
-                    "stop": { "signal": `${FacetColumnsSignal} * ${FacetRowsSignal} - length(data('${FacetCellTitles}'))` }
+                    "stop": { "signal": `${SignalNames.FacetColumns} * ${SignalNames.FacetRows} - length(data('${DataNames.FacetCellTitles}'))` }
                 }
             ]
         },
@@ -174,7 +165,7 @@ export function facetGroupData(source: string) {
                     "type": "sequence",
                     "start": 0,
                     "stop": {
-                        "signal": FacetColumnsSignal
+                        "signal": SignalNames.FacetColumns
                     },
                     "as": SequenceNumber
                 }
@@ -187,7 +178,7 @@ export function facetGroupData(source: string) {
                     "type": "sequence",
                     "start": 0,
                     "stop": {
-                        "signal": FacetRowsSignal
+                        "signal": SignalNames.FacetRows
                     },
                     "as": SequenceNumber
                 }
@@ -245,7 +236,7 @@ export function facetMarks(specViewOptions: SpecViewOptions, sourceDataName: str
         "type": "group",
         "from": {
             "facet": {
-                "name": FacetGroupCellDataName,
+                "name": DataNames.FacetGroupCell,
                 "data": sourceDataName,
                 "groupby": [CellTitle]
             }
@@ -261,7 +252,7 @@ export function facetMarks(specViewOptions: SpecViewOptions, sourceDataName: str
             },
             "color": util.colorToString(specViewOptions.colors.axisText),
             "fontSize": {
-                "signal": TextSizeSignal
+                "signal": SignalNames.TextSize
             }
         },
         "encode": {
@@ -277,7 +268,7 @@ export function facetMarks(specViewOptions: SpecViewOptions, sourceDataName: str
         "data": childData,
         "marks": childMarks.map(mark => {
             if (mark.from && mark.from.data && mark.from.data === sourceDataName) {
-                mark.from.data = FacetGroupCellDataName;
+                mark.from.data = DataNames.FacetGroupCell;
             }
             return mark;
         })
@@ -304,7 +295,7 @@ export function facetMarks(specViewOptions: SpecViewOptions, sourceDataName: str
             "offset": specViewOptions.facetMargins.title,
             "text": "",
             "fontSize": {
-                "signal": TextSizeSignal
+                "signal": SignalNames.TextSize
             }
         },
         "encode": {

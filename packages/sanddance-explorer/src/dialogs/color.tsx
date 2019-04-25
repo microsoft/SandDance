@@ -17,10 +17,12 @@ export interface Props extends ColumnMapProps {
     colorColumn: string;
     colorBin: SandDance.types.ColorBin;
     colorBinSignal: NewSignal;
+    colorReverseSignal: NewSignal;
     dataContent: DataContent;
     changeColorScheme: (scheme: string) => void;
     changeColorBin: (colorBin: SandDance.types.ColorBin) => void;
     onColorBinCountChange: (value: number) => void;
+    onColorReverseChange: (value: boolean) => void;
     disabled: boolean;
 }
 
@@ -44,6 +46,12 @@ export function Color(props: Props) {
                         props.changeColorScheme(scheme);
                     }}
                     dataContent={props.dataContent}
+                />
+                <Signal
+                    disabled={props.disabled}
+                    signal={props.colorReverseSignal}
+                    explorer={props.explorer}
+                    onChange={props.onColorReverseChange}
                 />
             </Group>
             <Group label={strings.labelColorBin}>
@@ -74,7 +82,7 @@ export function Color(props: Props) {
                     }}
                 />
                 <Signal
-                    disabled={disabledColorBin || props.colorBin === 'continuous'}
+                    disabled={props.disabled || disabledColorBin || props.colorBin === 'continuous'}
                     signal={props.colorBinSignal}
                     explorer={props.explorer}
                     onChange={props.onColorBinCountChange}

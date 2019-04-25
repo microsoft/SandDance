@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { ColorBinCountSignal, ColorScaleName, ColorScaleNone, ColorReverseSignal } from './constants';
 import { ColorBin } from './types';
+import { ColorScaleNone, ScaleNames, SignalNames } from './constants';
 import {
     LinearScale,
     PointScale,
@@ -10,7 +10,8 @@ import {
     RangeBand,
     RangeScheme,
     ScaleData,
-    SequentialScale
+    SequentialScale,
+    SignalRef
 } from 'vega-typings';
 
 export function linearScale(name: string, data: string, field: string, range: RangeScheme, reverse: boolean, zero: boolean) {
@@ -46,7 +47,7 @@ export function pointScale(name: string, data: string, range: RangeBand, field: 
 
 export function binnableColorScale(colorBin: ColorBin, data: string, field: string, scheme?: string) {
     scheme = scheme || ColorScaleNone;
-    const name = ColorScaleName;
+    const name = ScaleNames.Color;
     const domain: ScaleData = {
         data,
         field
@@ -54,9 +55,9 @@ export function binnableColorScale(colorBin: ColorBin, data: string, field: stri
     const range: RangeScheme = {
         scheme
     };
-    const reverse = {"signal":ColorReverseSignal};
+    const reverse: SignalRef = { "signal": SignalNames.ColorReverse };
     if (colorBin !== 'continuous') {
-        range.count = { signal: ColorBinCountSignal };
+        range.count = { signal: SignalNames.ColorBinCount };
     }
     switch (colorBin) {
         case 'continuous':

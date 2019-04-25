@@ -2,13 +2,11 @@
 // Licensed under the MIT license.
 import { binnableColorScale, linearScale, pointScale } from '../scales';
 import {
-    ColorScaleName,
     ColorScaleNone,
-    DataName,
-    LegendDataName,
-    MainZScale,
-    TopFieldName,
-    ZHeightSignal
+    DataNames,
+    FieldNames,
+    ScaleNames,
+    SignalNames
 } from '../constants';
 import { Insight, SpecColumns } from '../types';
 import { RangeScheme, Scale } from 'vega-typings';
@@ -17,31 +15,32 @@ export default function (columns: SpecColumns, insight: Insight) {
     const scales: Scale[] = [];
     if (columns.color) {
         if (columns.color.quantitative) {
-            scales.push(binnableColorScale(insight.colorBin, DataName, columns.color.name, insight.scheme));
+            scales.push(binnableColorScale(insight.colorBin, DataNames.Main, columns.color.name, insight.scheme));
         } else {
             scales.push(
                 {
-                    "name": ColorScaleName,
+                    "name": ScaleNames.Color,
                     "type": "ordinal",
                     "domain": {
-                        "data": LegendDataName,
-                        "field": TopFieldName,
+                        "data": DataNames.Legend,
+                        "field": FieldNames.Top,
                         "sort": true
                     },
                     "range": {
                         "scheme": insight.scheme || ColorScaleNone
-                    }
+                    },
+                    "reverse": { "signal": SignalNames.ColorReverse }
                 }
             );
         }
     }
     if (columns.z) {
-        const zRange: RangeScheme = [0, { "signal": ZHeightSignal }];
+        const zRange: RangeScheme = [0, { "signal": SignalNames.ZHeight }];
         scales.push(
             columns.z.quantitative ?
-                linearScale(MainZScale, DataName, columns.z.name, zRange, false, false)
+                linearScale(ScaleNames.Z, DataNames.Main, columns.z.name, zRange, false, false)
                 :
-                pointScale(MainZScale, DataName, zRange, columns.z.name)
+                pointScale(ScaleNames.Z, DataNames.Main, zRange, columns.z.name)
         );
     }
     return scales;

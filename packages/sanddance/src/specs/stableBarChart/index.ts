@@ -6,18 +6,18 @@ import getMarks from './marks';
 import getScales from './scales';
 import getSignals from './signals';
 import {
-    Insight,
-    SpecCapabilities,
-    SpecColumns,
-    SpecViewOptions
-} from '../types';
-import {
     checkForFacetErrors,
     facetMarks,
     facetSize,
     layout
 } from '../facet';
-import { FacetGroupCellDataName, BinXSignal, ColorReverseSignal } from '../constants';
+import { DataNames, SignalNames } from '../constants';
+import {
+    Insight,
+    SpecCapabilities,
+    SpecColumns,
+    SpecViewOptions
+} from '../types';
 import { legend } from '../legends';
 import { Mark, Spec } from 'vega-typings';
 import { NameSpace } from './namespace';
@@ -36,7 +36,7 @@ export const barchart: SpecCreator = (insight: Insight, columns: SpecColumns, sp
                 role: 'x',
                 binnable: true,
                 axisSelection: columns.x && columns.x.quantitative ? 'range' : 'exact',
-                signals: [BinXSignal]
+                signals: [SignalNames.XBins]
             },
             {
                 role: 'z',
@@ -44,11 +44,8 @@ export const barchart: SpecCreator = (insight: Insight, columns: SpecColumns, sp
             },
             {
                 role: 'color',
-                allowNone: true,
-                signals: [ColorReverseSignal]
-
+                allowNone: true
             },
-            
             {
                 role: 'sort',
                 allowNone: true
@@ -75,7 +72,7 @@ export const barchart: SpecCreator = (insight: Insight, columns: SpecColumns, sp
     if (columns.facet) {
         const cellNamespace = new NameSpace('Cell');
         const cellMarks = getMarks(cellNamespace, columns, specViewOptions);
-        marks = facetMarks(specViewOptions, rootNamespace.stacked, cellMarks, axes, cellData(cellNamespace, FacetGroupCellDataName, columns));
+        marks = facetMarks(specViewOptions, rootNamespace.stacked, cellMarks, axes, cellData(cellNamespace, DataNames.FacetGroupCell, columns));
         axes = [];
     } else {
         marks = getMarks(rootNamespace, columns, specViewOptions);

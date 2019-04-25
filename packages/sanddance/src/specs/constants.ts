@@ -1,43 +1,52 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-//These fields get added to the data to mark the records as selected or active
-export const ActiveFieldName = "__SandDanceActive";
-export const CollapsedFieldName = "__SandDanceCollapsed";
-export const SelectedFieldName = "__SandDanceSelected";
-export const TopFieldName = "__SandDanceTop";
+export const FieldNames = {
+    Active: "__SandDance__Active",
+    Collapsed: "__SandDance__Collapsed",
+    Selected: "__SandDance__Selected",
+    Top: "__SandDance__Top"
+};
 
-//These are strong names which appear in the specs
-export const ColorScaleName = "SandDanceColorScale";
-export const ColorBinCountSignal = "SandDanceColorBinCount";
-export const PreDataName = "SandDancePreData";
-export const DataName = "SandDanceData";
-export const EmptyBinDataName = "SandDanceEmptyBins";
-export const TopLookupDataName = "SandDanceTop";
-export const LegendDataName = "SandDanceLegend";
-export const MainXScale = "SandDanceMainXScale";
-export const MainYScale = "SandDanceMainYScale";
-export const MainZScale = "SandDanceMainZScale";
-export const PointSizeSignal = "SandDancePointSize";
-export const BinXSignal = "SandDanceBinX";
-export const BinYSignal = "SandDanceBinY";
-export const YDomainSignal = "SandDanceYDomainSignal";
-export const TreeMapMethod = "SandDanceTreeMapMethodSignal";
-export const FacetColumnsSignal = "SandDanceFacetColumnsSignal";
-export const FacetRowsSignal = "SandDanceFacetRowsSignal";
-export const FacetGroupCellDataName = "SandDanceFacetGroupCellData";
-export const FacetCellTitles = "SandDanceFacetCellTitles";
-export const TextScaleSignal = "SandDanceTextScale";
-export const TextSizeSignal = "SandDanceTextSize";
-export const TitleTextSizeSignal = "SandDanceTitleTextSize";
-export const TextAngleXSignal = "SandDanceTextAngleX";
-export const TextAngleYSignal = "SandDanceTextAngleY";
-export const ZHeightSignal = "SandDanceZHeightSignal";
-export const ZProportionSignal = "SandDanceZProportion";
-export const ColorReverseSignal = "SandDanceColorReverseSignal";
+export const DataNames = {
+    Pre: "PreData",
+    Main: "MainData",
+    EmptyBin: "EmptyBinsData",
+    TopLookup: "TopData",
+    Legend: "LegendData",
+    FacetGroupCell: "FacetGroupCellData",
+    FacetCellTitles: "FacetCellTitlesData"
+};
+
+export const ScaleNames = {
+    Color: "ColorScale",
+    X: "MainXScale",
+    Y: "MainYScale",
+    Z: "MainZScale"
+};
+
+//Signal names
+export const SignalNames = {
+    PointSize: "Chart_PointSizeSignal",
+    TreeMapMethod: "Chart_TreeMapMethodSignal",
+    ColorBinCount: "RoleColor_BinCountSignal",
+    ColorReverse: "RoleColor_ReverseSignal",
+    FacetColumns: "RoleFacet_ColumnsSignal",
+    FacetRows: "RoleFacet_RowsSignal",
+    XBins: "RoleX_BinsSignal",
+    YBins: "RoleY_BinsSignal",
+    YDomain: "RoleY_DomainSignal",
+    ZHeight: "RoleZ_HeightSignal",
+    ZProportion: "RoleZ_ProportionSignal",
+    TextAngleX: "Text_AngleXSignal",
+    TextAngleY: "Text_AngleYSignal",
+    TextScale: "Text_ScaleSignal",
+    TextSize: "Text_SizeSignal",
+    TextTitleSize: "Text_TitleSizeSignal"
+};
 
 //These are special formulaic data values
-export const Other = "__SandDanceOther";
+export const Other = "__Other";
 
 //name of the "no-color" palette
 export const ColorScaleNone = "none";

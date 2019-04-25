@@ -2,12 +2,9 @@
 // Licensed under the MIT license.
 import { collapseY, zeroIfCollapsed } from '../selection';
 import {
-    DataName,
-    LegendDataName,
-    MainXScale,
-    MainYScale,
-    MainZScale,
-    PointSizeSignal
+    DataNames,
+    ScaleNames,
+    SignalNames
 } from '../constants';
 import { fill } from '../fill';
 import { Mark } from 'vega-typings';
@@ -19,7 +16,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
         {
             "type": "rect",
             "from": {
-                "data": categoricalColor ? LegendDataName : DataName
+                "data": categoricalColor ? DataNames.Legend : DataNames.Main
             },
             "encode": {
                 "update": {
@@ -27,22 +24,22 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                         "field": columns.uid.name
                     },
                     "x": {
-                        "scale": MainXScale,
+                        "scale": ScaleNames.X,
                         "field": columns.x.name,
                         "offset": 1
                     },
-                    "width": { "signal": PointSizeSignal },
+                    "width": { "signal": SignalNames.PointSize },
                     "y": collapseY(
                         {
-                            "scale": MainYScale,
+                            "scale": ScaleNames.Y,
                             "field": columns.y.name,
                             "offset": {
-                                "signal": `-${PointSizeSignal}`
+                                "signal": `-${SignalNames.PointSize}`
                             }
                         }
                     ),
                     "height": zeroIfCollapsed(
-                        { "signal": PointSizeSignal }
+                        { "signal": SignalNames.PointSize }
                     ),
                     "fill": fill(columns.color, specViewOptions)
                 }
@@ -52,10 +49,10 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
     if (columns.z) {
         const update = marks[0].encode.update;
         update.z = zeroIfCollapsed({
-            "scale": MainZScale,
+            "scale": ScaleNames.Z,
             "field": columns.z.name
         });
-        update.depth = { "signal": PointSizeSignal };
+        update.depth = { "signal": SignalNames.PointSize };
     }
     return marks;
 }

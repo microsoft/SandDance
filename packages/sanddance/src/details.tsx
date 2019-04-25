@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as searchExpression from './searchExpression';
-import { ActiveFieldName, CollapsedFieldName, SelectedFieldName } from './specs/constants';
+import { FieldNames } from './specs/constants';
 import { Animator } from './animator';
 import { constants, controls, util } from './vega-deck.gl';
 import { createElement, mount } from 'tsx-create-element';
@@ -175,9 +175,9 @@ const renderDetails = (props: RenderProps) => {
     const rows: controls.TableRow[] = [];
     for (let prop in props.item) {
         switch (prop) {
-            case ActiveFieldName:
-            case CollapsedFieldName:
-            case SelectedFieldName:
+            case FieldNames.Active:
+            case FieldNames.Collapsed:
+            case FieldNames.Selected:
             case constants.GL_ORDINAL:
                 continue;
             default:

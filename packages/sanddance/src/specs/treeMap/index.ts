@@ -4,21 +4,21 @@ import getData, { treemapTransforms } from './data';
 import getMarks from './marks';
 import getScales from './scales';
 import getSignals from './signals';
-import { DataName, FacetGroupCellDataName, LegendDataName, TreeMapMethod, ColorReverseSignal } from '../constants';
-import {
-    Insight,
-    SpecCapabilities,
-    SpecColumns,
-    SpecViewOptions
-} from '../types';
 import {
     checkForFacetErrors,
     facetMarks,
     facetSize,
     layout
 } from '../facet';
-import { legend } from '../legends';
 import { Data, GroupMark, Spec } from 'vega-typings';
+import { DataNames, SignalNames } from '../constants';
+import {
+    Insight,
+    SpecCapabilities,
+    SpecColumns,
+    SpecViewOptions
+} from '../types';
+import { legend } from '../legends';
 import { SpecCreator, SpecResult } from '../interfaces';
 
 export const treemap: SpecCreator = (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult => {
@@ -44,15 +44,14 @@ export const treemap: SpecCreator = (insight: Insight, columns: SpecColumns, spe
             },
             {
                 role: 'color',
-                allowNone: true,
-                signals: [ColorReverseSignal]
+                allowNone: true
             },
             {
                 role: 'facet',
                 allowNone: true
             }
         ],
-        signals: [TreeMapMethod]
+        signals: [SignalNames.TreeMapMethod]
     };
 
     if (errors.length) {
@@ -64,16 +63,16 @@ export const treemap: SpecCreator = (insight: Insight, columns: SpecColumns, spe
     }
 
     const categoricalColor = columns.color && !columns.color.quantitative;
-    const dataName = categoricalColor ? LegendDataName : DataName;
+    const dataName = categoricalColor ? DataNames.Legend : DataNames.Main;
 
     const TreeMapName = "SandDanceTreeMapFaceted";
     const data = getData(insight, columns, specViewOptions);
-    let marks = getMarks(columns.facet ? TreeMapName: dataName, columns, specViewOptions);
+    let marks = getMarks(columns.facet ? TreeMapName : dataName, columns, specViewOptions);
 
     if (columns.facet) {
         const childData: Data = {
             "name": TreeMapName,
-            "source": FacetGroupCellDataName,
+            "source": DataNames.FacetGroupCell,
             "transform": treemapTransforms(insight)
         };
         marks = facetMarks(specViewOptions, dataName, marks, null, [childData]);

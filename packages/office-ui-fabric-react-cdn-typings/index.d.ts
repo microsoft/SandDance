@@ -46,5 +46,5 @@ export interface FabricComponents {
   Spinner: typeof Spinner;
   SpinnerSize: typeof SpinnerSize;
   TextField: typeof TextField;
-  Toggle: typeof Toggle;
+  Toggle: FabricTypes.IReactCast<FabricTypes.IToggleProps>;
 }

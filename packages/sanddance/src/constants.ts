@@ -1,15 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 export {
-    ActiveFieldName,
-    BinXSignal,
-    BinYSignal,
-    CollapsedFieldName,
-    ColorBinCountSignal,
-    ColorScaleName,
+    FieldNames,
+    ScaleNames,
     ColorScaleNone,
-    PointSizeSignal,
-    SelectedFieldName,
-    TopFieldName,
-    TreeMapMethod
+    SignalNames
 } from './specs/constants';

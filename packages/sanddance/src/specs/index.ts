@@ -10,7 +10,7 @@ import {
 } from './types';
 import { scatterplot } from './scatterPlot';
 import { SpecCreator, SpecResult } from './interfaces';
-import { treemap } from './treemap';
+import { treemap } from './treeMap';
 import { stacks } from './stacks';
 
 export { constants, barchart as barChart, scatterplot as scatterPlot };

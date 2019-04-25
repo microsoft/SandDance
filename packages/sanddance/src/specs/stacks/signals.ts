@@ -4,7 +4,7 @@ import { allTruthy } from '../../array';
 import { colorBinCountSignal, textSignals } from '../signals';
 import { facetSignals } from '../facet';
 import { Insight, SpecViewOptions, SpecColumns } from '../types';
-import { MainYScale, PointSizeSignal, YDomainSignal, BinXSignal, BinYSignal } from '../constants';
+import { ScaleNames, SignalNames } from '../constants';
 import { Signal } from 'vega-typings';
 
 export default function (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions) {
@@ -12,7 +12,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
         textSignals(specViewOptions),
         [
             columns.x.quantitative && {
-                "name": BinXSignal,
+                "name": SignalNames.XBins,
                 "value": 20,
                 "bind": {
                     "name": specViewOptions.language.barChartBinSize,
@@ -23,7 +23,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                 }
             },
             columns.y.quantitative && {
-                "name": BinYSignal,
+                "name": SignalNames.YBins,
                 "value": 20,
                 "bind": {
                     "name": specViewOptions.language.barChartBinSize,
@@ -89,7 +89,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
             },
             {
                 "name": "xbandw",
-                "update": `width/(${BinXSignal}+x_out_padding)`
+                "update": `width/(${SignalNames.XBins}+x_out_padding)`
             },
             {
                 "name": "xbandsize",
@@ -97,7 +97,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
             },
             {
                 "name": "ybandw",
-                "update": `height/(${BinYSignal}+x_out_padding)`
+                "update": `height/(${SignalNames.YBins}+x_out_padding)`
             },
             {
                 "name": "ybandsize",

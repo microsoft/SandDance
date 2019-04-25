@@ -2,11 +2,8 @@
 // Licensed under the MIT license.
 import { Axis } from 'vega-typings';
 import {
-    MainXScale,
-    TextAngleXSignal,
-    TextAngleYSignal,
-    TextSizeSignal,
-    TitleTextSizeSignal
+    ScaleNames,
+    SignalNames
 } from '../constants';
 import { SpecColumns, SpecViewOptions } from '../types';
 import { util } from '../../vega-deck.gl';
@@ -22,20 +19,20 @@ export default function (specViewOptions: SpecViewOptions, columns: SpecColumns)
         {
             "orient": "bottom",
             "labelAngle": {
-                "signal": TextAngleXSignal
+                "signal": SignalNames.TextAngleX
             },
             "labelAlign": "left",
             "labelFontSize": {
-                "signal": TextSizeSignal
+                "signal": SignalNames.TextSize
             },
-            "scale": MainXScale,
+            "scale": ScaleNames.X,
             "title": columns.x.name,
             "titleAngle": {
-                "signal": TextAngleXSignal
+                "signal": SignalNames.TextAngleX
             },
             "titleAlign": "left",
             "titleFontSize": {
-                "signal": TitleTextSizeSignal
+                "signal": SignalNames.TextTitleSize
             },
             "titleColor": util.colorToString(specViewOptions.colors.axisText),
             "tickSize": specViewOptions.tickSize,
@@ -45,10 +42,10 @@ export default function (specViewOptions: SpecViewOptions, columns: SpecColumns)
             "orient": "left",
             "labelAlign": "right",
             "labelAngle": {
-                "signal": TextAngleYSignal
+                "signal": SignalNames.TextAngleY
             },
             "labelFontSize": {
-                "signal": TextSizeSignal
+                "signal": SignalNames.TextSize
             },
             "scale": "yscalelabel",
             "encode": {
@@ -62,11 +59,11 @@ export default function (specViewOptions: SpecViewOptions, columns: SpecColumns)
             },
             "title": "Count",
             "titleAngle": {
-                "signal": TextAngleYSignal
+                "signal": SignalNames.TextAngleY
             },
             "titleAlign": "right",
             "titleFontSize": {
-                "signal": TitleTextSizeSignal
+                "signal": SignalNames.TextTitleSize
             },
             "titleColor": util.colorToString(specViewOptions.colors.axisText),
             "tickSize": specViewOptions.tickSize,

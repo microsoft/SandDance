@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { MainXScale } from '../constants';
+import { ScaleNames } from '../constants';
 import { NameSpace } from './namespace';
 import { Scale } from 'vega-typings';
 import { SpecColumns } from '../types';
@@ -18,7 +18,7 @@ export default function (namespace: NameSpace, columns: SpecColumns) {
             }
         },
         {
-            "name": MainXScale,
+            "name": ScaleNames.X,
             "type": "band",
             "range": [
                 0,

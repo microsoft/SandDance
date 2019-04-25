@@ -4,7 +4,7 @@ import { allTruthy } from '../../array';
 import { colorBinCountSignal, textSignals, colorReverseSignal } from '../signals';
 import { facetSignals } from '../facet';
 import { Insight, SpecViewOptions } from '../types';
-import { MainYScale, PointSizeSignal, YDomainSignal } from '../constants';
+import { ScaleNames, SignalNames } from '../constants';
 import { Signal } from 'vega-typings';
 
 export default function (insight: Insight, specViewOptions: SpecViewOptions) {
@@ -12,11 +12,11 @@ export default function (insight: Insight, specViewOptions: SpecViewOptions) {
         textSignals(specViewOptions),
         [
             {
-                "name": YDomainSignal,
-                "update": `domain('${MainYScale}')`
+                "name": SignalNames.YDomain,
+                "update": `domain('${ScaleNames.Y}')`
             },
             {
-                "name": PointSizeSignal,
+                "name": SignalNames.PointSize,
                 "value": 5,
                 "bind": {
                     "name": specViewOptions.language.scatterPointSize,

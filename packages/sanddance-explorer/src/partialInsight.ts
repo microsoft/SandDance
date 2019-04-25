@@ -39,11 +39,11 @@ export function initPrefs(prefs: Prefs, partialInsight: Partial<SandDance.types.
               scheme: partialInsight.scheme,
               colorBin: partialInsight.colorBin
             };
-            copySignalValue(SandDance.constants.ColorBinCountSignal);
+            copySignalValue(SandDance.constants.SignalNames.ColorBinCount);
             break;
 
           case 'x':
-            copySignalValue(SandDance.constants.BinXSignal);
+            copySignalValue(SandDance.constants.SignalNames.XBins);
             break;
         }
       }

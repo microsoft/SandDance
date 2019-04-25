@@ -1,9 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { binnableColorScale } from '../scales';
+import {
+    ColorScaleNone,
+    DataNames,
+    FieldNames,
+    ScaleNames,
+    SignalNames
+} from '../constants';
 import { Insight, SpecColumns } from '../types';
 import { Scale } from 'vega-typings';
-import { binnableColorScale } from '../scales';
-import { DataName, ColorScaleName, LegendDataName, TopFieldName, ColorScaleNone } from '../constants';
 
 export default function (columns: SpecColumns, insight: Insight) {
     const scales: Scale[] = [
@@ -11,7 +17,7 @@ export default function (columns: SpecColumns, insight: Insight) {
             "name": "xband",
             "type": "band",
             "domain": {
-                "data": DataName,
+                "data": DataNames.Main,
                 "field": "long0",
                 "sort": true
             },
@@ -29,7 +35,7 @@ export default function (columns: SpecColumns, insight: Insight) {
             "type": "band",
             "reverse": true,
             "domain": {
-                "data": DataName,
+                "data": DataNames.Main,
                 "field": "lat0",
                 "sort": true
             },
@@ -99,7 +105,7 @@ export default function (columns: SpecColumns, insight: Insight) {
             "nice": true,
             "zero": false,
             "domain": {
-                "data": DataName,
+                "data": DataNames.Main,
                 "field": columns.x.name
             },
             "range": "width"
@@ -111,7 +117,7 @@ export default function (columns: SpecColumns, insight: Insight) {
             "nice": true,
             "zero": false,
             "domain": {
-                "data": DataName,
+                "data": DataNames.Main,
                 "field": columns.y.name
             },
             "range": "height"
@@ -134,20 +140,21 @@ export default function (columns: SpecColumns, insight: Insight) {
     ];
     if (columns.color) {
         if (columns.color.quantitative) {
-            scales.push(binnableColorScale(insight.colorBin, DataName, columns.color.name, insight.scheme));
+            scales.push(binnableColorScale(insight.colorBin, DataNames.Main, columns.color.name, insight.scheme));
         } else {
             scales.push(
                 {
-                    "name": ColorScaleName,
+                    "name": ScaleNames.Color,
                     "type": "ordinal",
                     "domain": {
-                        "data": LegendDataName,
-                        "field": TopFieldName,
+                        "data": DataNames.Legend,
+                        "field": FieldNames.Top,
                         "sort": true
                     },
                     "range": {
                         "scheme": insight.scheme || ColorScaleNone
-                    }
+                    },
+                    "reverse": { "signal": SignalNames.ColorReverse }
                 }
             );
         }

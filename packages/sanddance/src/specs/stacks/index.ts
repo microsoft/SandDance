@@ -5,7 +5,7 @@ import getData from './data';
 import getMarks from './marks';
 import getScales from './scales';
 import getSignals from './signals';
-import { BinXSignal, FacetGroupCellDataName, BinYSignal } from '../constants';
+import { DataNames, SignalNames } from '../constants';
 import {
     checkForFacetErrors,
     facetMarks,
@@ -35,13 +35,13 @@ export const stacks: SpecCreator = (insight: Insight, columns: SpecColumns, spec
                 role: 'x',
                 binnable: true,
                 axisSelection: columns.x && columns.x.quantitative ? 'range' : 'exact',
-                signals: [BinXSignal]
+                signals: [SignalNames.XBins]
             },
             {
                 role: 'y',
                 binnable: true,
                 axisSelection: columns.y && columns.y.quantitative ? 'range' : 'exact',
-                signals: [BinYSignal]
+                signals: [SignalNames.YBins]
             },
             {
                 role: 'z',
