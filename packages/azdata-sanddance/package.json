@@ -74,7 +74,7 @@
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
         "build": "npm run compile && npm run resources",
-        "test": "npm run compile && node ./node_modules/vscode/bin/test",
+        "x-test": "npm run compile && node ./node_modules/vscode/bin/test",
         "vsce-package": "vsce package",
         "postinstall": "node ./node_modules/vscode/bin/install && node ./node_modules/sqlops/bin/install"
     },
