@@ -2,51 +2,51 @@
 // Licensed under the MIT license.
 
 export const FieldNames = {
-    Active: "__SandDanceActive",
-    Collapsed: "__SandDanceCollapsed",
-    Selected: "__SandDanceSelected",
-    Top: "__SandDanceTop"
+    Active: "__SandDance__Active",
+    Collapsed: "__SandDance__Collapsed",
+    Selected: "__SandDance__Selected",
+    Top: "__SandDance__Top"
 };
 
 export const DataNames = {
-    Pre: "SandDancePreData",
-    Main: "SandDanceData",
-    EmptyBin: "SandDanceEmptyBinsData",
-    TopLookup: "SandDanceTopData",
-    Legend: "SandDanceLegendData",
-    FacetGroupCell: "SandDanceFacetGroupCellData",
-    FacetCellTitles: "SandDanceFacetCellTitlesData"
+    Pre: "PreData",
+    Main: "MainData",
+    EmptyBin: "EmptyBinsData",
+    TopLookup: "TopData",
+    Legend: "LegendData",
+    FacetGroupCell: "FacetGroupCellData",
+    FacetCellTitles: "FacetCellTitlesData"
 };
 
 export const ScaleNames = {
-    Color: "SandDanceColorScale",
-    X: "SandDanceMainXScale",
-    Y: "SandDanceMainYScale",
-    Z: "SandDanceMainZScale"
+    Color: "ColorScale",
+    X: "MainXScale",
+    Y: "MainYScale",
+    Z: "MainZScale"
 };
 
 //Signal names
 export const SignalNames = {
-    PointSize: "SandDanceChart_PointSizeSignal",
-    TreeMapMethod: "SandDanceChart_TreeMapMethodSignal",
-    ColorBinCount: "SandDanceRoleColor_BinCountSignal",
-    ColorReverse: "SandDanceRoleColor_ReverseSignal",
-    FacetColumns: "SandDanceRoleFacet_ColumnsSignal",
-    FacetRows: "SandDanceRoleFacet_RowsSignal",
-    XBins: "SandDanceRoleX_BinsSignal",
-    YBins: "SandDanceRoleY_BinsSignal",
-    YDomain: "SandDanceRoleY_DomainSignal",
-    ZHeight: "SandDanceRoleZ_HeightSignal",
-    ZProportion: "SandDanceRoleZ_ProportionSignal",
-    TextAngleX: "SandDanceText_AngleXSignal",
-    TextAngleY: "SandDanceText_AngleYSignal",
-    TextScale: "SandDanceText_ScaleSignal",
-    TextSize: "SandDanceText_SizeSignal",
-    TextTitleSize: "SandDanceText_TitleSizeSignal"
+    PointSize: "Chart_PointSizeSignal",
+    TreeMapMethod: "Chart_TreeMapMethodSignal",
+    ColorBinCount: "RoleColor_BinCountSignal",
+    ColorReverse: "RoleColor_ReverseSignal",
+    FacetColumns: "RoleFacet_ColumnsSignal",
+    FacetRows: "RoleFacet_RowsSignal",
+    XBins: "RoleX_BinsSignal",
+    YBins: "RoleY_BinsSignal",
+    YDomain: "RoleY_DomainSignal",
+    ZHeight: "RoleZ_HeightSignal",
+    ZProportion: "RoleZ_ProportionSignal",
+    TextAngleX: "Text_AngleXSignal",
+    TextAngleY: "Text_AngleYSignal",
+    TextScale: "Text_ScaleSignal",
+    TextSize: "Text_SizeSignal",
+    TextTitleSize: "Text_TitleSizeSignal"
 };
 
 //These are special formulaic data values
-export const Other = "__SandDanceOther";
+export const Other = "__Other";
 
 //name of the "no-color" palette
 export const ColorScaleNone = "none";

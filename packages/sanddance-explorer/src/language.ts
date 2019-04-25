@@ -125,13 +125,13 @@ export const strings = {
     zeroAll: "Dataset contains zero rows.",
     zeroSearchResults: "No rows matched your search.",
     signalGroups: [
-        { prefix: "SandDanceChart", label: "Chart options" },
-        { prefix: "SandDanceRoleColor", label: "Color options" },
-        { prefix: "SandDanceRoleFacet", label: "Facet options" },
-        { prefix: "SandDanceRoleSort", label: "Sort options" },
-        { prefix: "SandDanceRoleX", label: "X axis options" },
-        { prefix: "SandDanceRoleY", label: "Y axis options" },
-        { prefix: "SandDanceRoleZ", label: "Z axis options" },
-        { prefix: "SandDanceText", label: "Text options" },
+        { prefix: "Chart", label: "Chart options" },
+        { prefix: "RoleColor", label: "Color options" },
+        { prefix: "RoleFacet", label: "Facet options" },
+        { prefix: "RoleSort", label: "Sort options" },
+        { prefix: "RoleX", label: "X axis options" },
+        { prefix: "RoleY", label: "Y axis options" },
+        { prefix: "RoleZ", label: "Z axis options" },
+        { prefix: "Text", label: "Text options" },
     ]
 };
