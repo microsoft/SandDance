@@ -123,5 +123,15 @@ export const strings = {
     nullFiltered: "You can filter by first making a selection, then choosing <b>Isolate</b> or <b>Exclude</b> in the top bar.",
     nullSelection: "You can select by: <ul><li>clicking the chart axes</li><li>clicking in the legend</li><li>searching</li</ul>",
     zeroAll: "Dataset contains zero rows.",
-    zeroSearchResults: "No rows matched your search."
+    zeroSearchResults: "No rows matched your search.",
+    signalGroups: [
+        { prefix: "SandDanceChart", label: "Chart options" },
+        { prefix: "SandDanceRoleColor", label: "Color options" },
+        { prefix: "SandDanceRoleFacet", label: "Facet options" },
+        { prefix: "SandDanceRoleSort", label: "Sort options" },
+        { prefix: "SandDanceRoleX", label: "X axis options" },
+        { prefix: "SandDanceRoleY", label: "Y axis options" },
+        { prefix: "SandDanceRoleZ", label: "Z axis options" },
+        { prefix: "SandDanceText", label: "Text options" },
+    ]
 };

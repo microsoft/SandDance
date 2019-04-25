@@ -32,7 +32,7 @@ export default function (specViewOptions: SpecViewOptions, columns: SpecColumns)
             },
             "titleAlign": "left",
             "titleFontSize": {
-                "signal": SignalNames.TitleTextSize
+                "signal": SignalNames.TextTitleSize
             },
             "titleColor": util.colorToString(specViewOptions.colors.axisText),
             "tickSize": specViewOptions.tickSize,
@@ -63,7 +63,7 @@ export default function (specViewOptions: SpecViewOptions, columns: SpecColumns)
             },
             "titleAlign": "right",
             "titleFontSize": {
-                "signal": SignalNames.TitleTextSize
+                "signal": SignalNames.TextTitleSize
             },
             "titleColor": util.colorToString(specViewOptions.colors.axisText),
             "tickSize": specViewOptions.tickSize,

@@ -1,9 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { binnableColorScale } from '../scales';
+import {
+    ColorScaleNone,
+    DataNames,
+    FieldNames,
+    ScaleNames,
+    SignalNames
+} from '../constants';
 import { Insight, SpecColumns } from '../types';
 import { Scale } from 'vega-typings';
-import { binnableColorScale } from '../scales';
-import { DataNames, ScaleNames, FieldNames, ColorScaleNone } from '../constants';
 
 export default function (columns: SpecColumns, insight: Insight) {
     const scales: Scale[] = [
@@ -147,7 +153,8 @@ export default function (columns: SpecColumns, insight: Insight) {
                     },
                     "range": {
                         "scheme": insight.scheme || ColorScaleNone
-                    }
+                    },
+                    "reverse": { "signal": SignalNames.ColorReverse }
                 }
             );
         }

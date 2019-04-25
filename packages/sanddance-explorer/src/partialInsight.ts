@@ -43,7 +43,7 @@ export function initPrefs(prefs: Prefs, partialInsight: Partial<SandDance.types.
             break;
 
           case 'x':
-            copySignalValue(SandDance.constants.SignalNames.BinX);
+            copySignalValue(SandDance.constants.SignalNames.XBins);
             break;
         }
       }

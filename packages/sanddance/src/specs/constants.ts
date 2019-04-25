@@ -11,11 +11,11 @@ export const FieldNames = {
 export const DataNames = {
     Pre: "SandDancePreData",
     Main: "SandDanceData",
-    EmptyBin: "SandDanceEmptyBins",
-    TopLookup: "SandDanceTop",
-    Legend: "SandDanceLegend",
+    EmptyBin: "SandDanceEmptyBinsData",
+    TopLookup: "SandDanceTopData",
+    Legend: "SandDanceLegendData",
     FacetGroupCell: "SandDanceFacetGroupCellData",
-    FacetCellTitles: "SandDanceFacetCellTitles"
+    FacetCellTitles: "SandDanceFacetCellTitlesData"
 };
 
 export const ScaleNames = {
@@ -27,22 +27,22 @@ export const ScaleNames = {
 
 //Signal names
 export const SignalNames = {
-    ColorBinCount: "SandDanceColorBinCount",
-    PointSize: "SandDancePointSize",
-    BinX: "SandDanceBinX",
-    BinY: "SandDanceBinY",
-    YDomain: "SandDanceYDomainSignal",
-    TreeMapMethod: "SandDanceTreeMapMethodSignal",
-    FacetColumns: "SandDanceFacetColumnsSignal",
-    FacetRows: "SandDanceFacetRowsSignal",
-    TextScale: "SandDanceTextScale",
-    TextSize: "SandDanceTextSize",
-    TitleTextSize: "SandDanceTitleTextSize",
-    TextAngleX: "SandDanceTextAngleX",
-    TextAngleY: "SandDanceTextAngleY",
-    ZHeight: "SandDanceZHeightSignal",
-    ZProportion: "SandDanceZProportion",
-    ColorReverse: "SandDanceColorReverseSignal"
+    PointSize: "SandDanceChart_PointSizeSignal",
+    TreeMapMethod: "SandDanceChart_TreeMapMethodSignal",
+    ColorBinCount: "SandDanceRoleColor_BinCountSignal",
+    ColorReverse: "SandDanceRoleColor_ReverseSignal",
+    FacetColumns: "SandDanceRoleFacet_ColumnsSignal",
+    FacetRows: "SandDanceRoleFacet_RowsSignal",
+    XBins: "SandDanceRoleX_BinsSignal",
+    YBins: "SandDanceRoleY_BinsSignal",
+    YDomain: "SandDanceRoleY_DomainSignal",
+    ZHeight: "SandDanceRoleZ_HeightSignal",
+    ZProportion: "SandDanceRoleZ_ProportionSignal",
+    TextAngleX: "SandDanceText_AngleXSignal",
+    TextAngleY: "SandDanceText_AngleYSignal",
+    TextScale: "SandDanceText_ScaleSignal",
+    TextSize: "SandDanceText_SizeSignal",
+    TextTitleSize: "SandDanceText_TitleSizeSignal"
 };
 
 //These are special formulaic data values

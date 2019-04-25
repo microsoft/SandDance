@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { SignalNames } from './constants';
 import { NewSignal } from 'vega-typings/types';
+import { SignalNames } from './constants';
 import { SpecViewOptions } from './types';
 
 export function textSignals(specViewOptions: SpecViewOptions) {
@@ -39,7 +39,7 @@ export function textSignals(specViewOptions: SpecViewOptions) {
             "update": `${SignalNames.TextScale} * 10`
         },
         {
-            "name": SignalNames.TitleTextSize,
+            "name": SignalNames.TextTitleSize,
             "update": `${SignalNames.TextScale} * 15`
         },
         {

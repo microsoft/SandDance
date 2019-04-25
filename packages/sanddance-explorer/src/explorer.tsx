@@ -673,6 +673,7 @@ export class Explorer extends React.Component<Props, State> {
                       scheme={this.state.scheme}
                       colorBin={this.state.colorBin}
                       colorBinSignal={this.viewer && this.viewer.vegaSpec && this.viewer.vegaSpec.signals.filter(s => s.name === SandDance.constants.SignalNames.ColorBinCount)[0]}
+                      colorReverseSignal={this.viewer && this.viewer.vegaSpec && this.viewer.vegaSpec.signals.filter(s => s.name === SandDance.constants.SignalNames.ColorReverse)[0]}
                       colorColumn={this.state.columns.color}
                       changeColorBin={colorBin => {
                         this.ignoreSelectionChange = true;
@@ -694,6 +695,11 @@ export class Explorer extends React.Component<Props, State> {
                         const signalValues: SandDance.types.SignalValues = {};
                         signalValues[SandDance.constants.SignalNames.ColorBinCount] = value;
                         savePref(this.prefs, this.state.chart, 'color', this.state.columns.color, { signalValues });
+                      }}
+                      onColorReverseChange={value => {
+                        this.getColorContext = null;
+                        const signalValues: SandDance.types.SignalValues = {};
+                        signalValues[SandDance.constants.SignalNames.ColorReverse] = value;
                       }}
                     />
                   );
@@ -829,7 +835,7 @@ export class Explorer extends React.Component<Props, State> {
                     if (oldInsight.columns.color !== newInsight.columns.color) {
                       return null;
                     }
-                    return this.viewer.colorContexts[this.viewer.currentColorContext]
+                    return this.viewer.colorContexts[this.viewer.currentColorContext];
                   };
                   //don't allow tabbing to the canvas
                   this.viewer.presenter.getElement(SandDance.VegaDeckGl.PresenterElement.gl).getElementsByTagName('canvas')[0].tabIndex = -1;

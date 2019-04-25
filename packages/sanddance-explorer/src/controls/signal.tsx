@@ -26,8 +26,11 @@ export function Signal(props: Props) {
         return null;
     }
     const onChange = (name: string, value: any) => {
-        if (name === SandDance.constants.SignalNames.ColorBinCount) {
-            props.explorer.discardColorContextUpdates = false;
+        switch (name) {
+            case SandDance.constants.SignalNames.ColorBinCount:
+            case SandDance.constants.SignalNames.ColorReverse:
+                props.explorer.discardColorContextUpdates = false;
+                break;
         }
         props.explorer.viewer.vegaViewGl.signal(name, value);
         props.explorer.viewer.vegaViewGl.run();
@@ -101,15 +104,15 @@ map['select'] = (prefix: string, bind: BindRadioSelect, initialValue: any, onCha
     );
 }
 
-map['checkbox'] = (prefix: string, bind: BindCheckbox, initialValue: any, onChange: (value: any) => void, disabled: boolean) => {    
+map['checkbox'] = (prefix: string, bind: BindCheckbox, initialValue: boolean, onChange: (checked: boolean) => void, disabled: boolean) => {
     return (
-        <base.fabric.Toggle            
-            label={prefix + bind.name}            
-            onChange={(e, o) => {                
-                return(onChange(o));
-            }}
+        <base.fabric.Toggle
+            defaultChecked={initialValue}
+            label={prefix + bind.name}
+            onChange={(e, checked?: boolean) => onChange(checked)}
             disabled={disabled}
         />
     );
 }
+
 //TODO other signal types

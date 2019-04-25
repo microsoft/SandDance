@@ -35,13 +35,13 @@ export const stacks: SpecCreator = (insight: Insight, columns: SpecColumns, spec
                 role: 'x',
                 binnable: true,
                 axisSelection: columns.x && columns.x.quantitative ? 'range' : 'exact',
-                signals: [SignalNames.BinX]
+                signals: [SignalNames.XBins]
             },
             {
                 role: 'y',
                 binnable: true,
                 axisSelection: columns.y && columns.y.quantitative ? 'range' : 'exact',
-                signals: [SignalNames.BinY]
+                signals: [SignalNames.YBins]
             },
             {
                 role: 'z',

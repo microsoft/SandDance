@@ -12,7 +12,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
         textSignals(specViewOptions),
         [
             columns.x.quantitative && {
-                "name": SignalNames.BinX,
+                "name": SignalNames.XBins,
                 "value": 20,
                 "bind": {
                     "name": specViewOptions.language.barChartBinSize,
@@ -23,7 +23,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                 }
             },
             columns.y.quantitative && {
-                "name": SignalNames.BinY,
+                "name": SignalNames.YBins,
                 "value": 20,
                 "bind": {
                     "name": specViewOptions.language.barChartBinSize,
@@ -89,7 +89,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
             },
             {
                 "name": "xbandw",
-                "update": `width/(${SignalNames.BinX}+x_out_padding)`
+                "update": `width/(${SignalNames.XBins}+x_out_padding)`
             },
             {
                 "name": "xbandsize",
@@ -97,7 +97,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
             },
             {
                 "name": "ybandw",
-                "update": `height/(${SignalNames.BinY}+x_out_padding)`
+                "update": `height/(${SignalNames.YBins}+x_out_padding)`
             },
             {
                 "name": "ybandsize",

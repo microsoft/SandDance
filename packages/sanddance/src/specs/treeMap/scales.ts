@@ -4,8 +4,8 @@ import { binnableColorScale, linearScale, pointScale } from '../scales';
 import {
     ColorScaleNone,
     DataNames,
-    ScaleNames,
     FieldNames,
+    ScaleNames,
     SignalNames
 } from '../constants';
 import { Insight, SpecColumns } from '../types';
@@ -28,7 +28,8 @@ export default function (columns: SpecColumns, insight: Insight) {
                     },
                     "range": {
                         "scheme": insight.scheme || ColorScaleNone
-                    }
+                    },
+                    "reverse": { "signal": SignalNames.ColorReverse }
                 }
             );
         }

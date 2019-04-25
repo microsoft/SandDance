@@ -4,6 +4,13 @@ import getData, { treemapTransforms } from './data';
 import getMarks from './marks';
 import getScales from './scales';
 import getSignals from './signals';
+import {
+    checkForFacetErrors,
+    facetMarks,
+    facetSize,
+    layout
+} from '../facet';
+import { Data, GroupMark, Spec } from 'vega-typings';
 import { DataNames, SignalNames } from '../constants';
 import {
     Insight,
@@ -11,14 +18,7 @@ import {
     SpecColumns,
     SpecViewOptions
 } from '../types';
-import {
-    checkForFacetErrors,
-    facetMarks,
-    facetSize,
-    layout
-} from '../facet';
 import { legend } from '../legends';
-import { Data, GroupMark, Spec } from 'vega-typings';
 import { SpecCreator, SpecResult } from '../interfaces';
 
 export const treemap: SpecCreator = (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult => {
@@ -44,8 +44,7 @@ export const treemap: SpecCreator = (insight: Insight, columns: SpecColumns, spe
             },
             {
                 role: 'color',
-                allowNone: true,
-                signals: [SignalNames.ColorReverse]
+                allowNone: true
             },
             {
                 role: 'facet',
@@ -68,7 +67,7 @@ export const treemap: SpecCreator = (insight: Insight, columns: SpecColumns, spe
 
     const TreeMapName = "SandDanceTreeMapFaceted";
     const data = getData(insight, columns, specViewOptions);
-    let marks = getMarks(columns.facet ? TreeMapName: dataName, columns, specViewOptions);
+    let marks = getMarks(columns.facet ? TreeMapName : dataName, columns, specViewOptions);
 
     if (columns.facet) {
         const childData: Data = {
