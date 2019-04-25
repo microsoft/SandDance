@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "tsc index.d.ts --lib es6"
+    "test": "tsc index.d.ts --lib es6 --skipLibCheck true"
   },
   "keywords": [],
   "author": "",
