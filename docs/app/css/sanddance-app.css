@@ -473,6 +473,7 @@
 
 #sanddance-vega-spec {
   border: 1px inset;
+  max-height: 20em;
   overflow: scroll; }
 
 .sanddance-panel {

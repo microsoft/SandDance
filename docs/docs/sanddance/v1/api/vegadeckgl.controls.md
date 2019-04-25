@@ -80,5 +80,5 @@ StatelessComponent<[TableProps][InterfaceDeclaration-55]>
 [InterfaceDeclaration-56]: vegadeckgl.controls#tablerow
 [InterfaceDeclaration-56]: vegadeckgl.controls#tablerow
 [InterfaceDeclaration-54]: vegadeckgl.controls#tablecell
-[VariableDeclaration-15]: vegadeckgl.controls#table
+[VariableDeclaration-9]: vegadeckgl.controls#table
 [InterfaceDeclaration-55]: vegadeckgl.controls#tableprops

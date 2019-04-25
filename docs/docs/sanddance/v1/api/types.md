@@ -305,6 +305,7 @@ interface SpecLanguage {
     scatterPointSize: string;
     barChartBinSize: string;
     colorBinCount: string;
+    colorReverse: string;
     facetColumns: string;
     facetRows: string;
     textScaleSignal: string;
@@ -322,6 +323,7 @@ interface SpecLanguage {
 | scatterPointSize     | string | false    | Label for scatterPlot point size slider. |
 | barChartBinSize      | string | false    | Label for bar chart bin size slider.     |
 | colorBinCount        | string | false    | Label for the color bin count slider.    |
+| colorReverse         | string | false    | Label for the color reverse checkbox.    |
 | facetColumns         | string | false    | Label for facet columns slider.          |
 | facetRows            | string | false    | Label for facet rows slider.             |
 | textScaleSignal      | string | false    | Label for text scale slider.             |

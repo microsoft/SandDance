@@ -6,63 +6,27 @@ layout: api
 
 ## Variables
 
-### ActiveFieldName
+### FieldNames
 
 ```typescript
-const ActiveFieldName: "__SandDanceActive";
+const FieldNames: { Active: string; Collapsed: string; Selected: string; Top: string; };
 ```
 
 **Type**
 
-"__SandDanceActive"
+{ Active: string; Collapsed: string; Selected: string; Top: string; }
 
 ----------
 
-### BinXSignal
+### ScaleNames
 
 ```typescript
-const BinXSignal: "SandDanceBinX";
+const ScaleNames: { Color: string; X: string; Y: string; Z: string; };
 ```
 
 **Type**
 
-"SandDanceBinX"
-
-----------
-
-### BinYSignal
-
-```typescript
-const BinYSignal: "SandDanceBinY";
-```
-
-**Type**
-
-"SandDanceBinY"
-
-----------
-
-### CollapsedFieldName
-
-```typescript
-const CollapsedFieldName: "__SandDanceCollapsed";
-```
-
-**Type**
-
-"__SandDanceCollapsed"
-
-----------
-
-### ColorBinCountSignal
-
-```typescript
-const ColorBinCountSignal: "SandDanceColorBinCount";
-```
-
-**Type**
-
-"SandDanceColorBinCount"
+{ Color: string; X: string; Y: string; Z: string; }
 
 ----------
 
@@ -78,60 +42,18 @@ const ColorScaleNone: "none";
 
 ----------
 
-### PointSizeSignal
+### SignalNames
 
 ```typescript
-const PointSizeSignal: "SandDancePointSize";
+const SignalNames: { PointSize: string; TreeMapMethod: string; ColorBinCount: string; ColorReverse: string; FacetColumns: string; FacetRows: string; XBins: string; YBins: string; YDomain: string; ZHeight: string; ZProportion: string; TextAngleX: string; TextAngleY: string; TextScale: string; TextSize: string; TextTitleSize: string; };
 ```
 
 **Type**
 
-"SandDancePointSize"
-
-----------
-
-### SelectedFieldName
-
-```typescript
-const SelectedFieldName: "__SandDanceSelected";
-```
-
-**Type**
-
-"__SandDanceSelected"
-
-----------
-
-### TopFieldName
-
-```typescript
-const TopFieldName: "__SandDanceTop";
-```
-
-**Type**
-
-"__SandDanceTop"
-
-----------
-
-### TreeMapMethod
-
-```typescript
-const TreeMapMethod: "SandDanceTreeMapMethodSignal";
-```
-
-**Type**
-
-"SandDanceTreeMapMethodSignal"
+{ PointSize: string; TreeMapMethod: string; ColorBinCount: string; ColorReverse: string; FacetColumns: string; FacetRows: string; XBins: string; YBins: string; YDomain: string; ZHeight: string; ZProportion: string; TextAngleX: string; TextAngleY: string; TextScale: string; TextSize: string; TextTitleSize: string; }
 
 [NamespaceImport-0]: constants#constants
-[VariableDeclaration-1]: constants#activefieldname
-[VariableDeclaration-2]: constants#binxsignal
-[VariableDeclaration-3]: constants#binysignal
-[VariableDeclaration-4]: constants#collapsedfieldname
-[VariableDeclaration-5]: constants#colorbincountsignal
-[VariableDeclaration-6]: constants#colorscalenone
-[VariableDeclaration-7]: constants#pointsizesignal
-[VariableDeclaration-8]: constants#selectedfieldname
-[VariableDeclaration-9]: constants#topfieldname
-[VariableDeclaration-10]: constants#treemapmethod
+[VariableDeclaration-1]: constants#fieldnames
+[VariableDeclaration-2]: constants#scalenames
+[VariableDeclaration-3]: constants#colorscalenone
+[VariableDeclaration-4]: constants#signalnames
