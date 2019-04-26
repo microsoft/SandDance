@@ -6782,7 +6782,7 @@ void main(void) {
     function applyColorMapToCubes(maps, cubes, unselectedColorMethod) {
         Object.keys(maps[0]).forEach(ordinal => {
             const cube = cubes[+ordinal];
-            if (cube) {
+            if (cube && !cube.isEmpty) {
                 const actualColorMappedItem = maps[0][ordinal];
                 if (maps.length > 1) {
                     const selectedColorMappedItem = maps[1][ordinal];
