@@ -30,7 +30,7 @@ export class SandDanceReact extends Component<Props, State> {
 
   private areLayoutPropsSame() {
     const currentInsight = this.viewer.getInsight();
-    const a = addNullable(currentInsight, { ...currentInsight.signalValues, ...this.viewer.insight.signalValues });
+    const a = addNullable(currentInsight, { ...this.viewer.insight.signalValues, ...currentInsight.signalValues });
     const b = addNullable(this.props.insight, { ...a.signalValues, ...this.props.insight.signalValues });
     const compare = deepCompare(a, b);
     return compare && (this.props.data === this.lastData);
