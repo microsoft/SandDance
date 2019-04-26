@@ -19,7 +19,7 @@ export const defaultViewerOptions: ViewerOptions = {
             const c = desaturate(color, 0.05);
             c[3] = 171;
             return c;
-        } //[128, 128, 128, 128]
+        }
     },
     language: {
         headers: {
