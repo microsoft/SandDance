@@ -56,7 +56,7 @@ export function populateColorContext(colorContext: ColorContext, presenter: Vega
 export function applyColorMapToCubes(maps: ColorMap[], cubes: VegaDeckGl.types.Cube[], unselectedColorMethod?: ColorMethod) {
     Object.keys(maps[0]).forEach(ordinal => {
         const cube = cubes[+ordinal];
-        if (cube) {
+        if (cube && !cube.isEmpty) {
             const actualColorMappedItem: ColorMappedItem = maps[0][ordinal];
             if (maps.length > 1) {
                 const selectedColorMappedItem: ColorMappedItem = maps[1][ordinal];
