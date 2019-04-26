@@ -51,6 +51,11 @@ let didRegisterColorSchemes = false;
 export class Viewer {
 
     /**
+     * Default Viewer options.
+     */
+    static defaultViewerOptions = defaultViewerOptions;
+
+    /**
      * Behavior specified by the visualization type.
      */
     public specCapabilities: SpecCapabilities;
