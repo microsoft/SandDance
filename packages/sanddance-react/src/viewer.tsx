@@ -18,19 +18,22 @@ export interface Props {
 export interface State {
 }
 
+function addNullable(insight: types.Insight, signalValues: types.SignalValues) {
+  const withNulls: types.Insight = { view: null, filter: null, ...insight, signalValues };
+  return withNulls;
+}
+
 export class SandDanceReact extends Component<Props, State> {
   public viewer: Viewer;
   private viewerDiv: React.ReactInstance;
   private lastData: object[];
 
-  private addNullable(insight: types.Insight) {
-    const withNulls: types.Insight = { view: null, filter: null, ...insight };
-    return withNulls;
-  }
-
   private areLayoutPropsSame() {
-    return deepCompare(this.addNullable(this.props.insight), this.addNullable(this.viewer.insight))
-      && (this.props.data === this.lastData);
+    const currentInsight = this.viewer.getInsight();
+    const a = addNullable(currentInsight, { ...currentInsight.signalValues, ...this.viewer.insight.signalValues });
+    const b = addNullable(this.props.insight, { ...a.signalValues, ...this.props.insight.signalValues });
+    const compare = deepCompare(a, b);
+    return compare && (this.props.data === this.lastData);
   }
 
   private needsLayout() {
