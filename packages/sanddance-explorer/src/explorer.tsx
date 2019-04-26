@@ -138,7 +138,7 @@ export class Explorer extends React.Component<Props, State> {
     this.state.selectedItemIndex[DataScopeId.SelectedData] = 0;
 
     this.discardColorContextUpdates = true;
-    this.updateViewerOptions(props.viewerOptions);
+    this.updateViewerOptions({ ...SandDance.VegaDeckGl.util.clone(SandDance.Viewer.defaultViewerOptions), ...props.viewerOptions });
   }
 
   public updateViewerOptions(viewerOptions: Partial<SandDance.types.ViewerOptions>) {
@@ -185,7 +185,6 @@ export class Explorer extends React.Component<Props, State> {
       const newPresenterStyle = SandDance.util.getPresenterStyle(this.viewerOptions as SandDance.types.ViewerOptions);
       const mergePrenterStyle = { ...this.viewer.presenter.style, ...newPresenterStyle };
       this.viewer.presenter.style = mergePrenterStyle;
-      this.viewer.options = SandDance.VegaDeckGl.util.deepMerge(this.viewer.options, this.viewerOptions) as SandDance.types.ViewerOptions;
     }
   }
 
