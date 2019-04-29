@@ -202,9 +202,34 @@ export interface SpecLanguage {
     scatterPointSize: string;
 
     /**
-     * Label for bar chart bin size slider.
+     * Label for bar x axis bin size slider.
      */
-    barChartBinSize: string;
+    XBinSize: string;
+
+    /**
+     * Label for bar y axis bin size slider.
+     */
+    YBinSize: string;
+
+    /**
+     * Label for bar x grid size slider.
+     */
+    XGridSize: string;
+
+    /**
+     * Label for bar y grid size slider.
+     */
+    YGridSize: string;
+
+    /**
+     * Label for bar inner padding size slider.
+     */
+    InnerPaddingSize: string;
+
+    /**
+     * Label for bar outer padding size slider.
+     */
+    OuterPaddingSize: string;
 
     /**
      * Label for the color bin count slider.
