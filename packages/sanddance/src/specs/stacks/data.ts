@@ -1,9 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { allTruthy } from '../../array';
-import { Data } from 'vega-typings';
+import {
+    Column,
+    Insight,
+    SpecColumns,
+    SpecViewOptions
+} from '../types';
+import { Data, StackTransform, Transforms } from 'vega-typings';
 import { DataNames, SignalNames } from '../constants';
-import { Insight, SpecColumns, SpecViewOptions } from '../types';
 import { topLookup } from '../top';
 
 export default function (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions) {
@@ -12,7 +17,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
         [
             {
                 "name": DataNames.Main,
-                "transform": [
+                "transform": allTruthy<Transforms>([
                     {
                         "type": "extent",
                         "field": columns.x.name,
@@ -23,7 +28,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                         "field": columns.y.name,
                         "signal": "lat_extent"
                     },
-                    {
+                    columns.x.quantitative && {
                         "type": "bin",
                         "field": columns.x.name,
                         "extent": {
@@ -32,17 +37,19 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                         "maxbins": {
                             "signal": SignalNames.XBins
                         },
+                        "nice": false,
                         "as": [
                             "long0",
                             "long1"
                         ]
                     },
-                    {
+                    columns.y.quantitative && {
                         "type": "bin",
                         "field": columns.y.name,
                         "extent": {
                             "signal": "lat_extent"
                         },
+                        "nice": false,
                         "maxbins": {
                             "signal": SignalNames.YBins
                         },
@@ -51,54 +58,13 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                             "lat1"
                         ]
                     }
-                ]
-            },
-            {
-                "name": "summary",
-                "source": DataNames.Main,
-                "transform": [
-                    {
-                        "type": "nest",
-                        "keys": [
-                            "lat0",
-                            "long0"
-                        ]
-                    }]
-            },
-            {
-                "name": "aggregated",
-                "source": DataNames.Main,
-                "transform": [
-                    {
-                        "type": "aggregate",
-                        "groupby": [
-                            "lat0",
-                            "long0"
-                        ],
-
-                        "ops": [
-                            "count"
-                        ]
-                    }]
+                ])
             },
             {
                 "name": "stackedgroup",
-                "source": "summary",
+                "source": DataNames.Main,
                 "transform": [
-                    {
-                        "type": "stack",
-                        "groupby": [
-                            "lat0",
-                            "long0"
-                        ],
-                        "sort": {
-                            "field": columns.sort.name
-                        },
-                        "as": [
-                            "s1",
-                            "s2"
-                        ]
-                    },
+                    stackTransform(columns.sort, columns.x, columns.y),
                     {
                         "type": "extent",
                         "signal": "xtent",
@@ -116,12 +82,12 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                     },
                     {
                         "type": "formula",
-                        "expr": "datum.s1 % mywidth",
+                        "expr": `datum.s1 % ${SignalNames.XGridSize}`,
                         "as": "column"
                     },
                     {
                         "type": "formula",
-                        "expr": "floor((datum.s1 % columns)/ mywidth)",
+                        "expr": `floor((datum.s1 % columns)/ ${SignalNames.XGridSize})`,
                         "as": "depth"
                     },
                     {
@@ -130,9 +96,59 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                         "field": "row"
                     }
                 ]
+            },
+            {
+                "name": "sequ",
+                "transform": [
+                    {
+                        "type": "sequence",
+                        "start": 1,
+                        "stop": 20
+                    },
+                    {
+                        "type": "formula",
+                        "expr": "(height*datum.data*datum.data)/(xtent[1])",
+                        "as": "heightval"
+                    },
+                    {
+                        "type": "formula",
+                        "expr": "(xbandsignal/datum.data)",
+                        "as": "lval"
+                    },
+                    {
+                        "type": "formula",
+                        "expr": "(ybandsignal/datum.data)",
+                        "as": "wval"
+                    },
+                    {
+                        "type": "formula",
+                        "expr": "min(datum.heightval, datum.lval, datum.wval)",
+                        "as": "minval"
+                    }
+                ]
             }
         ],
         categoricalColor && topLookup(columns.color, specViewOptions.maxLegends),
     );
     return data;
+}
+
+function stackTransform(sortColumn: Column, xColumn: Column, yColumn: Column) {
+    const st: StackTransform = {
+        "type": "stack",
+        "groupby": [
+            yColumn.quantitative ? "lat0" : yColumn.name,
+            xColumn.quantitative ? "long0" : xColumn.name
+        ],
+        "as": [
+            "s1",
+            "s2"
+        ]
+    };
+    if (sortColumn) {
+        st.sort = {
+            "field": sortColumn.name
+        };
+    }
+    return st;
 }

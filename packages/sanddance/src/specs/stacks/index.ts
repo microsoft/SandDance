@@ -5,13 +5,7 @@ import getData from './data';
 import getMarks from './marks';
 import getScales from './scales';
 import getSignals from './signals';
-import { DataNames, SignalNames } from '../constants';
-import {
-    checkForFacetErrors,
-    facetMarks,
-    facetSize,
-    layout
-} from '../facet';
+import { checkForFacetErrors, facetSize, layout } from '../facet';
 import {
     Insight,
     SpecCapabilities,
@@ -19,7 +13,7 @@ import {
     SpecViewOptions
 } from '../types';
 import { legend } from '../legends';
-import { Mark, Spec } from 'vega-typings';
+import { Spec } from 'vega-typings';
 import { SpecCreator, SpecResult } from '../interfaces';
 
 export const stacks: SpecCreator = (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult => {
@@ -27,6 +21,7 @@ export const stacks: SpecCreator = (insight: Insight, columns: SpecColumns, spec
 
     if (!columns.uid) errors.push(`Must set a field for id`);
     if (!columns.x) errors.push(`Must set a field for x axis`);
+    if (!columns.y) errors.push(`Must set a field for y axis`);
     checkForFacetErrors(insight.facets, errors);
 
     const specCapabilities: SpecCapabilities = {
@@ -34,14 +29,12 @@ export const stacks: SpecCreator = (insight: Insight, columns: SpecColumns, spec
             {
                 role: 'x',
                 binnable: true,
-                axisSelection: columns.x && columns.x.quantitative ? 'range' : 'exact',
-                signals: [SignalNames.XBins]
+                axisSelection: columns.x && columns.x.quantitative ? 'range' : 'exact'
             },
             {
                 role: 'y',
                 binnable: true,
-                axisSelection: columns.y && columns.y.quantitative ? 'range' : 'exact',
-                signals: [SignalNames.YBins]
+                axisSelection: columns.y && columns.y.quantitative ? 'range' : 'exact'
             },
             {
                 role: 'z',
@@ -54,13 +47,8 @@ export const stacks: SpecCreator = (insight: Insight, columns: SpecColumns, spec
             {
                 role: 'sort',
                 allowNone: true
-            },
-            {
-                role: 'facet',
-                allowNone: true
             }
-        ],
-        signals: ['mywidth', 'mydepth']
+        ]
     };
 
     if (errors.length) {
@@ -90,7 +78,6 @@ export const stacks: SpecCreator = (insight: Insight, columns: SpecColumns, spec
         "$schema": "https://vega.github.io/schema/vega/v3.json",
         "height": size.height,
         "width": size.width,
-        "padding": 5,
         signals: getSignals(insight, columns, specViewOptions),
         data: getData(insight, columns, specViewOptions),
         scales: getScales(columns, insight),

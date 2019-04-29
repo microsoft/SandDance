@@ -16,7 +16,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                 "update": {
                     "x": {
                         "scale": "xband",
-                        "field": "long0",
+                        "field": columns.x.quantitative ? "long0" : columns.x.name,
                         "offset": {
                             "scale": "xinternalscale",
                             "field": "column"
@@ -24,7 +24,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                     },
                     "y": {
                         "scale": "yband",
-                        "field": "lat0",
+                        "field": columns.y.quantitative ? "lat0" : columns.y.name,
                         "offset": {
                             "scale": "yinternalscale",
                             "field": "depth"
