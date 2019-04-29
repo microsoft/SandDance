@@ -133,5 +133,6 @@ export const strings = {
         { prefix: "RoleY", label: "Y axis options" },
         { prefix: "RoleZ", label: "Z axis options" },
         { prefix: "Text", label: "Text options" },
+        { prefix: "*", label: "Options" }
     ]
 };
