@@ -834,7 +834,7 @@ export class Explorer extends React.Component<Props, State> {
                     if (oldInsight.columns.color !== newInsight.columns.color) {
                       return null;
                     }
-                    return this.viewer.colorContexts[this.viewer.currentColorContext];
+                    return this.viewer.colorContexts && this.viewer.colorContexts[this.viewer.currentColorContext];
                   };
                   //don't allow tabbing to the canvas
                   this.viewer.presenter.getElement(SandDance.VegaDeckGl.PresenterElement.gl).getElementsByTagName('canvas')[0].tabIndex = -1;
