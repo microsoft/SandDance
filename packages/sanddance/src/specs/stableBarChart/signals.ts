@@ -19,7 +19,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                 "name": SignalNames.XBins,
                 "value": 7,
                 "bind": {
-                    "name": specViewOptions.language.barChartBinSize,
+                    "name": specViewOptions.language.XBinSize,
                     "input": "range",
                     "min": 1,
                     "max": 20,
