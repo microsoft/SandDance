@@ -107,11 +107,20 @@ function initState(props: Props): State {
     };
 }
 
+function signalGroupKey(key: string) {
+    for (let i = 0; i < strings.signalGroups.length; i++) {
+        if (strings.signalGroups[i].prefix === key) {
+            return key;
+        }
+    }
+    return '*';
+}
+
 function vegaSignalGroups(vegaSignals: VegaSignal[]) {
     const signalGroupMap: { [key: string]: VegaSignal[] } = {};
     vegaSignals.forEach(vs => {
         const split = vs.name.split('_');
-        const key = split[0];
+        const key = signalGroupKey(split[0]);
         signalGroupMap[key] = signalGroupMap[key] || [];
         signalGroupMap[key].push(vs);
     });
@@ -181,6 +190,46 @@ export class Settings extends React.Component<Props, State> {
                             showVegaDialog: true,
                             spec: serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, this.state.dataRefType, this.props.scheme)
                         })}
+                    />
+                </Group>
+                <Group
+                    label="TODO transition settings"
+                >
+                    <base.fabric.Slider
+                        label="TODO Color duration"
+                        onChange={value => {
+                            this.props.explorer.viewerOptions.transitionDurations.color = value;
+                        }}
+                        min={0}
+                        max={10000}
+                        defaultValue={this.props.explorer.viewerOptions.transitionDurations.color}
+                    />
+                    <base.fabric.Slider
+                        label="TODO Position duration"
+                        onChange={value => {
+                            this.props.explorer.viewerOptions.transitionDurations.position = value;
+                        }}
+                        min={0}
+                        max={10000}
+                        defaultValue={this.props.explorer.viewerOptions.transitionDurations.position}
+                    />
+                    <base.fabric.Slider
+                        label="TODO Size duration"
+                        onChange={value => {
+                            this.props.explorer.viewerOptions.transitionDurations.size = value;
+                        }}
+                        min={0}
+                        max={10000}
+                        defaultValue={this.props.explorer.viewerOptions.transitionDurations.size}
+                    />
+                    <base.fabric.Slider
+                        label="TODO Camera duration"
+                        onChange={value => {
+                            this.props.explorer.viewerOptions.transitionDurations.view = value;
+                        }}
+                        min={0}
+                        max={10000}
+                        defaultValue={this.props.explorer.viewerOptions.transitionDurations.view}
                     />
                 </Group>
                 <Dialog
