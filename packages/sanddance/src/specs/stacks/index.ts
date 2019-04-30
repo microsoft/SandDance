@@ -13,6 +13,7 @@ import {
     SpecViewOptions
 } from '../types';
 import { legend } from '../legends';
+import { SignalNames } from '../constants';
 import { Spec } from 'vega-typings';
 import { SpecCreator, SpecResult } from '../interfaces';
 
@@ -29,12 +30,14 @@ export const stacks: SpecCreator = (insight: Insight, columns: SpecColumns, spec
             {
                 role: 'x',
                 binnable: true,
-                axisSelection: columns.x && columns.x.quantitative ? 'range' : 'exact'
+                axisSelection: columns.x && columns.x.quantitative ? 'range' : 'exact',
+                signals: [SignalNames.XBins]
             },
             {
                 role: 'y',
                 binnable: true,
-                axisSelection: columns.y && columns.y.quantitative ? 'range' : 'exact'
+                axisSelection: columns.y && columns.y.quantitative ? 'range' : 'exact',
+                signals: [SignalNames.YBins]
             },
             {
                 role: 'z',

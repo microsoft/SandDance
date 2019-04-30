@@ -35,7 +35,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                     "step": 1
                 }
             },
-            {
+            columns.x.quantitative && {
                 "name": SignalNames.XBins,
                 "value": 30,
                 "bind": {
@@ -46,7 +46,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                     "step": 1
                 }
             },
-            {
+            columns.y.quantitative && {
                 "name": SignalNames.YBins,
                 "value": 30,
                 "bind": {
@@ -80,24 +80,12 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                 }
             },
             {
-                "name": "binwidth",
-                "update": `(height)/${SignalNames.YBins}`
-            },
-            {
-                "name": "binlength",
-                "update": `(width)/${SignalNames.XBins}`
-            },
-            {
-                "name": "actheight",
-                "update": `actsize*rowxtent[1] * (1+ ${SignalNames.InnerPadding})`
-            },
-            {
                 "name": "columns",
                 "update": `${SignalNames.XGridSize}*${SignalNames.YGridSize}`
             },
             {
                 "name": "xbandw",
-                "update": `width/(${SignalNames.XBins}+${SignalNames.OuterPadding})`
+                "update": `width/(${columns.x.quantitative ? SignalNames.XBins : columns.x.stats.distinctValueCount}+${SignalNames.OuterPadding})`
             },
             {
                 "name": "xbandsize",
@@ -105,7 +93,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
             },
             {
                 "name": "ybandw",
-                "update": `height/(${SignalNames.YBins}+${SignalNames.OuterPadding})`
+                "update": `height/(${columns.y.quantitative ? SignalNames.YBins : columns.y.stats.distinctValueCount}+${SignalNames.OuterPadding})`
             },
             {
                 "name": "ybandsize",
