@@ -84,12 +84,12 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                 "update": `${SignalNames.XGridSize}*${SignalNames.YGridSize}`
             },
             {
-                "name": "xbandw",
-                "update": `width/(${columns.x.quantitative ? SignalNames.XBins : columns.x.stats.distinctValueCount}+${SignalNames.OuterPadding})`
+                "name": "xbandw2",
+                "update": "bandwidth('xband')"
             },
             {
                 "name": "xbandsize",
-                "update": `(xbandw / (${SignalNames.XGridSize} + ${SignalNames.InnerPadding}))*(1-${SignalNames.InnerPadding})`
+                "update": `(xbandw2 / (${SignalNames.XGridSize} + ${SignalNames.InnerPadding}))*(1-${SignalNames.InnerPadding})`
             },
             {
                 "name": "ybandw",
