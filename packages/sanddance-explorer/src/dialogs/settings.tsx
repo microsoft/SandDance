@@ -193,10 +193,10 @@ export class Settings extends React.Component<Props, State> {
                     />
                 </Group>
                 <Group
-                    label="TODO transition settings"
+                    label={strings.labelTransitionDurations}
                 >
                     <base.fabric.Slider
-                        label="TODO Color duration"
+                        label={strings.labelTransitionColor}
                         onChange={value => {
                             this.props.explorer.viewerOptions.transitionDurations.color = value;
                         }}
@@ -205,7 +205,7 @@ export class Settings extends React.Component<Props, State> {
                         defaultValue={this.props.explorer.viewerOptions.transitionDurations.color}
                     />
                     <base.fabric.Slider
-                        label="TODO Position duration"
+                        label={strings.labelTransitionPosition}
                         onChange={value => {
                             this.props.explorer.viewerOptions.transitionDurations.position = value;
                         }}
@@ -214,7 +214,7 @@ export class Settings extends React.Component<Props, State> {
                         defaultValue={this.props.explorer.viewerOptions.transitionDurations.position}
                     />
                     <base.fabric.Slider
-                        label="TODO Size duration"
+                        label={strings.labelTransitionSize}
                         onChange={value => {
                             this.props.explorer.viewerOptions.transitionDurations.size = value;
                         }}
@@ -223,7 +223,7 @@ export class Settings extends React.Component<Props, State> {
                         defaultValue={this.props.explorer.viewerOptions.transitionDurations.size}
                     />
                     <base.fabric.Slider
-                        label="TODO Camera duration"
+                        label={strings.labelTransitionCamera}
                         onChange={value => {
                             this.props.explorer.viewerOptions.transitionDurations.view = value;
                         }}
