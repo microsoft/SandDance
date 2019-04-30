@@ -192,6 +192,11 @@ export interface SpecColorSettings {
 export interface SpecLanguage {
 
     /**
+     * Label for a count axis.
+     */
+    count: string;
+    
+    /**
      * Label for treemap method dropdown.
      */
     treeMapMethod: string;
@@ -270,11 +275,6 @@ export interface SpecLanguage {
      * Label for z scale proportion slider.
      */
     zScaleProportion: string;
-
-    // errorRequiredX: string;
-    // errorRequiredY: string;
-    // errorRequiredSize: string;
-
 }
 
 export interface SignalValues {

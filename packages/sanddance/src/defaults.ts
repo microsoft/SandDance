@@ -40,6 +40,7 @@ export const defaultViewerOptions: ViewerOptions = {
         reset: 'reset',
         colorBinCount: 'Color bin count',
         colorReverse: 'Color reverse',
+        count: 'Count',
         scatterPointSize: 'Point size',
         XBinSize: 'X axis bin size',
         YBinSize: 'Y axis bin size',
