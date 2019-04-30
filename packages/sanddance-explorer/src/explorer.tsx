@@ -283,7 +283,8 @@ export class Explorer extends React.Component<Props, State> {
   }
 
   changeChartType(chart: SandDance.types.Chart) {
-    const newState: Partial<State> = { chart };
+    const partialInsight = copyPrefToNewState(this.prefs, chart, '*', '*');
+    const newState: Partial<State> = { chart, ...partialInsight };
 
     //special case mappings when switching chart type
     if (this.state.chart === 'scatterplot' && chart === 'barchart') {
