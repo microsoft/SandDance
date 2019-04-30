@@ -41,9 +41,6 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                     "width": {
                         "signal": "actsize"
                     },
-                    "opacity": {
-                        "value": 0.1
-                    },
                     "height": {
                         "signal": "actsize"
                     },
