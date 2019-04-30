@@ -59,10 +59,13 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                         ]
                     }
                 ])
-            },
+            }
+        ],
+        categoricalColor && topLookup(columns.color, specViewOptions.maxLegends),
+        [
             {
                 "name": "stackedgroup",
-                "source": DataNames.Main,
+                "source": categoricalColor ? DataNames.Legend : DataNames.Main,
                 "transform": [
                     stackTransform(columns.sort, columns.x, columns.y),
                     {
@@ -127,8 +130,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                     }
                 ]
             }
-        ],
-        categoricalColor && topLookup(columns.color, specViewOptions.maxLegends),
+        ]
     );
     return data;
 }
