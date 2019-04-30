@@ -64,18 +64,18 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                     "name": specViewOptions.language.InnerPaddingSize,
                     "input": "range",
                     "min": 0.1,
-                    "max": 1,
+                    "max": 0.6,
                     "step": 0.1
                 }
             },
             {
                 "name": SignalNames.OuterPadding,
-                "value": 0.1,
+                "value": 0.2,
                 "bind": {
                     "name": specViewOptions.language.OuterPaddingSize,
                     "input": "range",
                     "min": 0.1,
-                    "max": 1,
+                    "max": 0.6,
                     "step": 0.1
                 }
             },
@@ -93,7 +93,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
             },
             {
                 "name": "ybandw",
-                "update": `height/(${columns.y.quantitative ? SignalNames.YBins : columns.y.stats.distinctValueCount}+${SignalNames.OuterPadding})`
+                "update": `height/((${columns.y.quantitative ? SignalNames.YBins : columns.y.stats.distinctValueCount}) * (1 + ${SignalNames.OuterPadding}))`
             },
             {
                 "name": "ybandsize",
