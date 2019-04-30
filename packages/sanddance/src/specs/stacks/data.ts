@@ -99,36 +99,6 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                         "field": "row"
                     }
                 ]
-            },
-            {
-                "name": "sequ",
-                "transform": [
-                    {
-                        "type": "sequence",
-                        "start": 1,
-                        "stop": 20
-                    },
-                    {
-                        "type": "formula",
-                        "expr": "(height*datum.data*datum.data)/(xtent[1])",
-                        "as": "heightval"
-                    },
-                    {
-                        "type": "formula",
-                        "expr": "(xbandsignal/datum.data)",
-                        "as": "lval"
-                    },
-                    {
-                        "type": "formula",
-                        "expr": "(ybandsignal/datum.data)",
-                        "as": "wval"
-                    },
-                    {
-                        "type": "formula",
-                        "expr": "min(datum.heightval, datum.lval, datum.wval)",
-                        "as": "minval"
-                    }
-                ]
             }
         ]
     );
