@@ -15,7 +15,7 @@ import {
     Scene3d,
     Stage,
     View
-    } from './interfaces';
+} from './interfaces';
 import { CubeLayer_Class, CubeLayerInterpolatedProps } from './cube-layer/cube-layer';
 import { DeckProps } from '@deck.gl/core/lib/deck';
 import { easeExpInOut } from 'd3-ease';
@@ -29,6 +29,13 @@ import { patchCubeArray } from './patchedCubeArray';
 import { PresenterElement } from './enums';
 import { sceneToStage } from './stagers';
 import { targetViewState, viewStateProps } from './viewState';
+
+interface IBounds {
+    view: View;
+    height: number;
+    width: number;
+    cubeCount: number;
+}
 
 /**
  * Class which presents a Stage of chart data using Deck.gl to render.
@@ -71,7 +78,7 @@ export class Presenter {
     }
 
     private queuedAnimationOptions: QueuedAnimationOptions;
-    private _last: { view: View, height: number, width: number, cubeCount: number, stage: Stage, homeViewState: any };
+    private _last: IBounds & { stage: Stage };
     private _showGuides: boolean;
 
     /**
@@ -82,7 +89,7 @@ export class Presenter {
     constructor(public el: HTMLElement, style?: PresenterStyle) {
         this.style = deepMerge<PresenterStyle>(defaultPresenterStyle, style);
         initializePanel(this);
-        this._last = { view: null, height: null, width: null, cubeCount: null, stage: null, homeViewState: null };
+        this._last = { view: null, height: null, width: null, cubeCount: null, stage: null };
     }
 
     /**
@@ -212,21 +219,35 @@ export class Presenter {
         this.setDeckProps(newStage, this._last.height, this._last.width, this._last.cubeCount, modifyConfig);
     }
 
+    private isNewBounds(view: View, height: number, width: number, cubeCount: number) {
+        const lastBounds: IBounds = this.lastBounds();
+        for (let prop in lastBounds) {
+            if (lastBounds[prop] === null) return true;
+        }
+        const newBounds: IBounds = { cubeCount, height, view, width };
+        for (let prop in lastBounds) {
+            if (lastBounds[prop] !== newBounds[prop]) return true;
+        }
+    }
+
+    private lastBounds(): IBounds {
+        const { cubeCount, height, view, width } = this._last;
+        return { cubeCount, height, view, width };
+    }
+
     private setDeckProps(stage: Stage, height: number, width: number, cubeCount: number, modifyConfig: PresenterConfig) {
         const config = deepMerge<PresenterConfig>(defaultPresenterConfig, modifyConfig);
-        const switchView = this._last.view && this._last.view !== stage.view;
+        const newBounds = this.isNewBounds(stage.view, height, width, cubeCount);
         let lightSettings = this.style.lightSettings[stage.view];
         let lightingMix = stage.view === '3d' ? 1.0 : 0.0;
         let linearInterpolator: LinearInterpolator_Class<CubeLayerInterpolatedProps>;
         //choose the current OrbitView viewstate if possible
-        let homeViewState = this._last.homeViewState;
         let viewState = (this.deckgl.viewState && Object.keys(this.deckgl.viewState).length && this.deckgl.viewState.OrbitView)
             //otherwise use the initial viewstate if any
             || this.deckgl.props.viewState;
 
-        if (!viewState || switchView || config.shouldViewstateTransition && config.shouldViewstateTransition()) {
+        if (!viewState || newBounds || config.shouldViewstateTransition && config.shouldViewstateTransition()) {
             viewState = targetViewState(height, width, stage.view);
-            homeViewState = clone(viewState);
             const oldCubeLayer = getCubeLayer(this.deckgl.props) as CubeLayer_Class;
             if (oldCubeLayer) {
                 linearInterpolator = new LinearInterpolator(viewStateProps);
@@ -257,8 +278,7 @@ export class Presenter {
             height,
             width,
             stage: stage,
-            view: stage.view,
-            homeViewState
+            view: stage.view
         };
     }
 
@@ -266,7 +286,7 @@ export class Presenter {
      * Home the camera to the last initial position.
      */
     homeCamera() {
-        const viewState = clone(this._last.homeViewState);
+        const viewState = targetViewState(this._last.height, this._last.width, this._last.view) as any;
         viewState.transitionDuration = defaultPresenterConfig.transitionDurations.view;
         viewState.transitionEasing = easeExpInOut;
         viewState.transitionInterpolator = new LinearInterpolator(viewStateProps);
