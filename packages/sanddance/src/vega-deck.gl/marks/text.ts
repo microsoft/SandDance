@@ -10,7 +10,7 @@ import {
     SceneTextAlign,
     SceneTextBaseline
 } from 'vega-typings';
-import { Stage } from '../interfaces';
+import { Stage, TickText } from '../interfaces';
 
 const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scene, x: number, y: number, groupType: GroupType) => {
 
@@ -37,7 +37,9 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
         };
 
         if (item.mark.role === "axis-label") {
-            options.currAxis.tickText.push(textItem);
+            const tickText = textItem as TickText;
+            tickText.value = item.datum['value'];
+            options.currAxis.tickText.push(tickText);
         } else if (options.currFacetRect && !options.currFacetRect.facetTitle) {
             options.currFacetRect.facetTitle = textItem;
         } else {

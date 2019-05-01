@@ -75,6 +75,7 @@ export class SandDanceReact extends Component<Props, State> {
   }
 
   componentDidUpdate() {
+    this.viewer.options = VegaDeckGl.util.deepMerge(this.viewer.options, this.props.viewerOptions) as types.ViewerOptions;
     this.view();
   }
 

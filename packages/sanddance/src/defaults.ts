@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from './vega-deck.gl';
-import { defaultPresenterStyle } from './vega-deck.gl/defaults';
+import { defaultPresenterConfig, defaultPresenterStyle } from './vega-deck.gl/defaults';
 import { desaturate } from './vega-deck.gl/color';
 import { ViewerOptions } from './types';
 
@@ -19,7 +19,7 @@ export const defaultViewerOptions: ViewerOptions = {
             const c = desaturate(color, 0.05);
             c[3] = 171;
             return c;
-        } //[128, 128, 128, 128]
+        }
     },
     language: {
         headers: {
@@ -40,8 +40,14 @@ export const defaultViewerOptions: ViewerOptions = {
         reset: 'reset',
         colorBinCount: 'Color bin count',
         colorReverse: 'Color reverse',
+        count: 'Count',
         scatterPointSize: 'Point size',
-        barChartBinSize: 'X Axis Bin size',
+        XBinSize: 'X axis bin size',
+        YBinSize: 'Y axis bin size',
+        XGridSize: 'X grid size',
+        YGridSize: 'Y grid size',
+        InnerPaddingSize: 'Inner padding size',
+        OuterPaddingSize: 'Outer padding size',
         treeMapMethod: 'Method',
         facetColumns: 'Facet columns',
         facetRows: 'Facet rows',
@@ -56,10 +62,8 @@ export const defaultViewerOptions: ViewerOptions = {
         //console.log(`UnitVisViewer errors: ${errors.join('\n')}`);
     },
     transitionDurations: {
-        color: 100,
-        position: 600,
-        scope: 800,
-        size: 600
+        ...defaultPresenterConfig.transitionDurations,
+        scope: 600
     },
     selectionPolygonZ: -1,
     tickSize: 10,

@@ -18,7 +18,7 @@ export default function (columns: SpecColumns, insight: Insight) {
             "type": "band",
             "domain": {
                 "data": DataNames.Main,
-                "field": "long0",
+                "field": columns.x.quantitative ? "long0" : columns.x.name,
                 "sort": true
             },
             "range": [
@@ -27,7 +27,7 @@ export default function (columns: SpecColumns, insight: Insight) {
                     "signal": "width"
                 }
             ],
-            "padding": 0.05,
+            "padding": { "signal": SignalNames.OuterPadding },
             "round": true
         },
         {
@@ -36,11 +36,11 @@ export default function (columns: SpecColumns, insight: Insight) {
             "reverse": true,
             "domain": {
                 "data": DataNames.Main,
-                "field": "lat0",
+                "field": columns.y.quantitative ? "lat0" : columns.y.name,
                 "sort": true
             },
             "range": "height",
-            "padding": 0.05,
+            "padding": { "signal": SignalNames.OuterPadding },
             "round": true
         },
         {
@@ -56,11 +56,11 @@ export default function (columns: SpecColumns, insight: Insight) {
             "range": [
                 0,
                 {
-                    "signal": "height"
+                    "signal": "countheight"
                 }
             ],
-            "padding": 0.1,
-            "round": true
+            "padding": { "signal": SignalNames.InnerPadding },
+            "round": false
         },
         {
             "name": "xinternalscale",
@@ -68,11 +68,11 @@ export default function (columns: SpecColumns, insight: Insight) {
             "range": [
                 0,
                 {
-                    "signal": "xbandw"
+                    "signal": "xbandsignal"
                 }
             ],
             "padding": {
-                "signal": "x_padding"
+                "signal": SignalNames.InnerPadding
             },
             "domain": {
                 "data": "stackedgroup",
@@ -90,52 +90,13 @@ export default function (columns: SpecColumns, insight: Insight) {
                 }
             ],
             "padding": {
-                "signal": "x_padding"
+                "signal": SignalNames.InnerPadding
             },
             "domain": {
                 "data": "stackedgroup",
                 "field": "depth",
                 "sort": true
             }
-        },
-        {
-            "name": "x",
-            "type": "linear",
-            "round": true,
-            "nice": true,
-            "zero": false,
-            "domain": {
-                "data": DataNames.Main,
-                "field": columns.x.name
-            },
-            "range": "width"
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "round": true,
-            "nice": true,
-            "zero": false,
-            "domain": {
-                "data": DataNames.Main,
-                "field": columns.y.name
-            },
-            "range": "height"
-        },
-        {
-            "name": "z",
-            "type": "linear",
-            "round": true,
-            "nice": true,
-            "zero": false,
-            "domain": {
-                "data": "stackedgroup",
-                "field": "s1"
-            },
-            "range": [
-                0,
-                "height"
-            ]
         }
     ];
     if (columns.color) {

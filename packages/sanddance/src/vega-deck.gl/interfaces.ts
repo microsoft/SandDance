@@ -11,10 +11,14 @@ export interface StyledLine extends LineLayerDatum {
     strokeWidth?: number;
 }
 
+export interface TickText extends TextLayerDatum {
+    value: number | string;
+}
+
 export interface Axis {
     domain: StyledLine;
     ticks: StyledLine[];
-    tickText: TextLayerDatum[];
+    tickText: TickText[];
 }
 
 /**

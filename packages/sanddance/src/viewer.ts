@@ -51,6 +51,11 @@ let didRegisterColorSchemes = false;
 export class Viewer {
 
     /**
+     * Default Viewer options.
+     */
+    static defaultViewerOptions = defaultViewerOptions;
+
+    /**
      * Behavior specified by the visualization type.
      */
     public specCapabilities: SpecCapabilities;
@@ -121,7 +126,7 @@ export class Viewer {
                 this.currentColorContext = ~~remap;
                 this.renderSameLayout();
             },
-            () => this.insight && !!this.insight.columns.color && this.colorContexts.length > 1
+            () => this.insight && !!this.insight.columns.color && this.colorContexts && this.colorContexts.length > 1
         );
         this.insight = {} as Insight;
         this._signalValues = {};
@@ -400,7 +405,6 @@ export class Viewer {
         }
         this._specColumns = getSpecColumns(insight, this._dataScope.getColumns(options.columnTypes));
         const map = assignOrdinals(this._specColumns, data, options.ordinalMap);
-        const shouldViewstateTransition = this.shouldViewstateTransition(insight, this.insight);
         this.insight = VegaDeckGl.util.clone(insight);
         this._shouldSaveColorContext = () => !options.initialColorContext;
         const colorContext = options.initialColorContext || {
@@ -436,7 +440,7 @@ export class Viewer {
                         this.applyLegendColorContext(colorContext);
                     }
                 },
-                shouldViewstateTransition: () => shouldViewstateTransition
+                shouldViewstateTransition: () => this.shouldViewstateTransition(insight, this.insight)
             },
             this.getView(insight.view)
         );

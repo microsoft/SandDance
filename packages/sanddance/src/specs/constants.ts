@@ -28,6 +28,10 @@ export const ScaleNames = {
 //Signal names
 export const SignalNames = {
     PointSize: "Chart_PointSizeSignal",
+    XGridSize: "Chart_XGridSize",
+    YGridSize: "Chart_YGridSize",
+    InnerPadding: "Chart_InnerPadding",
+    OuterPadding: "Chart_OuterPadding",
     TreeMapMethod: "Chart_TreeMapMethodSignal",
     ColorBinCount: "RoleColor_BinCountSignal",
     ColorReverse: "RoleColor_ReverseSignal",

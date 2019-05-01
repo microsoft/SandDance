@@ -48,14 +48,13 @@ export function Chart(props: Props) {
                                 text: strings.chartTypeTreeMap,
                                 checked: props.chart === 'treemap',
                                 disabled: props.disabled
+                            },
+                            {
+                                key: 'stacks',
+                                text: strings.chartTypeStacks,
+                                checked: props.chart === 'stacks',
+                                disabled: props.disabled
                             }
-                            //,
-                            // {
-                            //     key: 'stacks',
-                            //     text: strings.chartTypeStacks,
-                            //     checked: props.chart === 'stacks',
-                            //     disabled: props.disabled
-                            // }
                         ]}
                         onChange={(e, o) => props.onChangeChartType(o.key as SandDance.types.Chart)}
                     />

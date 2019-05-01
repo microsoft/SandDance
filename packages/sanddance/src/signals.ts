@@ -20,7 +20,10 @@ export function extractSignalValuesFromView(view: View, spec: Spec) {
     spec.signals.forEach((signalA: NewSignal) => {
         //bound to a UI control
         if (signalA.bind) {
-            result[signalA.name] = view.signal(signalA.name);
+            try {
+                result[signalA.name] = view.signal(signalA.name);
+            }
+            catch (e) { }
         }
     });
     return result;

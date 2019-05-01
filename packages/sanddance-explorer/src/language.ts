@@ -80,6 +80,11 @@ export const strings = {
     labelSearchOperator: "Operator",
     labelSearchValue: "Value",
     labelSnapshotDescription: "Description",
+    labelTransitionDurations: "Transition durations",
+    labelTransitionCamera: "2D / 3D view",
+    labelTransitionColor: "Color",
+    labelTransitionPosition: "Position",
+    labelTransitionSize: "Size",
     labelVegaSpecData: "Data reference",
     labelVegaSpecNotes: "Note: You may need to change the color scheme to make this visible in Vega.",
     loading: "Loading...",
@@ -133,5 +138,6 @@ export const strings = {
         { prefix: "RoleY", label: "Y axis options" },
         { prefix: "RoleZ", label: "Z axis options" },
         { prefix: "Text", label: "Text options" },
+        { prefix: "*", label: "Options" }
     ]
 };

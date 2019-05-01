@@ -138,7 +138,7 @@ export class Explorer extends React.Component<Props, State> {
     this.state.selectedItemIndex[DataScopeId.SelectedData] = 0;
 
     this.discardColorContextUpdates = true;
-    this.updateViewerOptions(props.viewerOptions);
+    this.updateViewerOptions({ ...SandDance.VegaDeckGl.util.clone(SandDance.Viewer.defaultViewerOptions), ...props.viewerOptions });
   }
 
   public updateViewerOptions(viewerOptions: Partial<SandDance.types.ViewerOptions>) {
@@ -185,7 +185,6 @@ export class Explorer extends React.Component<Props, State> {
       const newPresenterStyle = SandDance.util.getPresenterStyle(this.viewerOptions as SandDance.types.ViewerOptions);
       const mergePrenterStyle = { ...this.viewer.presenter.style, ...newPresenterStyle };
       this.viewer.presenter.style = mergePrenterStyle;
-      this.viewer.options = SandDance.VegaDeckGl.util.deepMerge(this.viewer.options, this.viewerOptions) as SandDance.types.ViewerOptions;
     }
   }
 
@@ -284,7 +283,8 @@ export class Explorer extends React.Component<Props, State> {
   }
 
   changeChartType(chart: SandDance.types.Chart) {
-    const newState: Partial<State> = { chart };
+    const partialInsight = copyPrefToNewState(this.prefs, chart, '*', '*');
+    const newState: Partial<State> = { chart, ...partialInsight };
 
     //special case mappings when switching chart type
     if (this.state.chart === 'scatterplot' && chart === 'barchart') {
@@ -835,7 +835,7 @@ export class Explorer extends React.Component<Props, State> {
                     if (oldInsight.columns.color !== newInsight.columns.color) {
                       return null;
                     }
-                    return this.viewer.colorContexts[this.viewer.currentColorContext];
+                    return this.viewer.colorContexts && this.viewer.colorContexts[this.viewer.currentColorContext];
                   };
                   //don't allow tabbing to the canvas
                   this.viewer.presenter.getElement(SandDance.VegaDeckGl.PresenterElement.gl).getElementsByTagName('canvas')[0].tabIndex = -1;
