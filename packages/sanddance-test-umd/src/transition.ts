@@ -1,24 +1,35 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 ///<reference path='../node_modules/@msrvida/sanddance/dist/umd/sanddance.d.ts' />
+///<reference path='vega.d.ts' />
 
 namespace transition {
     declare var deck: SandDance.VegaDeckGl.types.DeckBase & SandDance.VegaDeckGl.types.DeckLayerBase;
     declare var luma: SandDance.VegaDeckGl.types.LumaBase;
     declare var vega: SandDance.VegaDeckGl.types.VegaBase;
 
-    var view: SandDance.ViewGl_Class;
-    let lastText;
+    let view: SandDance.ViewGl_Class;
+    let lastSpec: Vega.Spec;
+    let viewType: SandDance.VegaDeckGl.types.View = "3d";
 
     SandDance.use(vega, deck, deck, luma);
 
-    export function update(spec) {
-        view = new SandDance.VegaDeckGl.ViewGl(vega.parse(spec), { presenter: view && view.presenter, getView: ()=> "3d" })
+    export function toggleView() {
+        if (viewType === '3d') {
+            viewType = '2d';
+        } else {
+            viewType = '3d';
+        }
+        update(lastSpec);
+    }
+
+    export function update(spec: Vega.Spec) {
+        view = new SandDance.VegaDeckGl.ViewGl(vega.parse(spec), { presenter: view && view.presenter, getView: () => viewType })
             .renderer('deck.gl')
             .initialize(document.querySelector('#split-right'))
             .run();
 
-        lastText = JSON.stringify(spec);
+        lastSpec = spec;
     }
 
     export function getText(textId) {
@@ -30,8 +41,6 @@ namespace transition {
 
         try {
             var spec = JSON.parse(text);
-
-            if (JSON.stringify(spec) === lastText) return;
 
             splitRight.style.opacity = '1';
             errorDiv.style.display = 'none';
