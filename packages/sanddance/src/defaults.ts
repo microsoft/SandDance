@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from './vega-deck.gl';
-import { defaultPresenterStyle } from './vega-deck.gl/defaults';
+import { defaultPresenterConfig, defaultPresenterStyle } from './vega-deck.gl/defaults';
 import { desaturate } from './vega-deck.gl/color';
 import { ViewerOptions } from './types';
 
@@ -62,10 +62,8 @@ export const defaultViewerOptions: ViewerOptions = {
         //console.log(`UnitVisViewer errors: ${errors.join('\n')}`);
     },
     transitionDurations: {
-        color: 100,
-        position: 600,
-        scope: 800,
-        size: 600
+        ...defaultPresenterConfig.transitionDurations,
+        scope: 600
     },
     selectionPolygonZ: -1,
     tickSize: 10,
