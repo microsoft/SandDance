@@ -1,9 +1,11 @@
-import { SpecViewOptions } from "./types";
-import { util } from "../vega-deck.gl";
-import { Axis } from "vega-typings";
-import { SignalNames } from "./constants";
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+import { Axis } from 'vega-typings';
+import { Column, SpecViewOptions } from './types';
+import { SignalNames } from './constants';
+import { util } from '../vega-deck.gl';
 
-export function partialAxes(specViewOptions: SpecViewOptions) {
+export function partialAxes(specViewOptions: SpecViewOptions, xColumn: Column, yColumn: Column) {
     const lineColor = util.colorToString(specViewOptions.colors.axisLine);
     const axisColor = {
         "domainColor": lineColor,
@@ -30,6 +32,9 @@ export function partialAxes(specViewOptions: SpecViewOptions) {
         "tickSize": specViewOptions.tickSize,
         ...axisColor
     };
+    if (xColumn.quantitative) {
+        bottom.format = "~r";
+    }
     const left: Partial<Axis> =
     {
         "orient": "left",
@@ -51,5 +56,8 @@ export function partialAxes(specViewOptions: SpecViewOptions) {
         "tickSize": specViewOptions.tickSize,
         ...axisColor
     };
+    if (yColumn.quantitative) {
+        left.format = "~r";
+    }
     return { left, bottom };
 }

@@ -5,7 +5,7 @@ import { partialAxes } from '../axes';
 import { SpecColumns, SpecViewOptions } from '../types';
 
 export default function (specViewOptions: SpecViewOptions, columns: SpecColumns) {
-    const pa = partialAxes(specViewOptions);
+    const pa = partialAxes(specViewOptions, columns.x, columns.y);
     const axes: Axis[] = [
         {
             "scale": "xband",

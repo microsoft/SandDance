@@ -10,23 +10,11 @@ export function notNice(niceValue: string) {
     return niceValue.replace(/,/g, '');
 }
 
-function columnTypeValue(column: Column, value: string) {
-    switch (column.type) {
-        case 'integer':
-        //BUG? axis of integers may contain floats
-        //return parseInt(notNice(value));
-        case 'number':
-            return parseFloat(notNice(value));
-        case 'string':
-            return value;
-    }
-}
-
-function tickValue(axis: VegaDeckGl.types.Axis, column: Column, i: number) {
+function tickValue(axis: VegaDeckGl.types.Axis, i: number) {
     const tick = axis.tickText[i];
     let value: any;
     if (tick) {
-        value = columnTypeValue(column, axis.tickText[i].text);
+        value = axis.tickText[i].value;
     }
     return { tick, value };
 }
@@ -67,7 +55,7 @@ export function selectNone(column: Column, values: string[]) {
 }
 
 export function selectExactAxis(axis: VegaDeckGl.types.Axis, column: Column, i: number) {
-    const result = tickValue(axis, column, i);
+    const result = tickValue(axis, i);
     if (result.tick) {
         return selectExact(column, result.value);
     }
@@ -99,8 +87,8 @@ export function selectBetween(column: Column, lowValue: string, highValue: strin
 }
 
 export function selectBetweenAxis(axis: VegaDeckGl.types.Axis, column: Column, i: number) {
-    const low = tickValue(axis, column, i);
-    const high = tickValue(axis, column, i + 1);
+    const low = tickValue(axis, i);
+    const high = tickValue(axis, i + 1);
     return selectBetween(column, low.value, high.value);
 }
 
