@@ -17,6 +17,7 @@
     ".api/v1.10.0/PowerBI-visuals.d.ts",
     "node_modules/powerbi-visuals-utils-dataviewutils/lib/index.d.ts",
     "src/sanddance.d.ts",
+    "src/vega.d.ts",
     "src/htmlHelpers.ts",
     "src/pbiData.ts",
     "src/messages.ts",
