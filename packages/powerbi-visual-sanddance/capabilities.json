@@ -49,6 +49,12 @@
                             }
                         ]
                     }
+                },
+                "showaxes": {
+                    "displayName": "Show axes",
+                    "type": {
+                        "bool": true
+                    }
                 }
             }
         }

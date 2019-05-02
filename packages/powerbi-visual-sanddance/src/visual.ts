@@ -5,6 +5,7 @@ module powerbi.extensibility.visual {
 
     export interface FormatLayout {
         charttype: SandDance.types.Chart;
+        showaxes: boolean;
     }
 
     export interface Settings {
@@ -35,7 +36,8 @@ module powerbi.extensibility.visual {
 
             this.settings = {
                 layout: {
-                    charttype: 'barchart'
+                    charttype: 'barchart',
+                    showaxes: true
                 }
             };
 
@@ -56,9 +58,15 @@ module powerbi.extensibility.visual {
             });
 
             global.SandDance.use(vega, deck, deck, luma);
-            this.viewer = new global.SandDance.Viewer(this.viewElement);
+            this.viewer = new global.SandDance.Viewer(this.viewElement, { onVegaSpec: vegaSpec => this.onVegaSpec(vegaSpec) });
 
             this.showMessage(messages.selectData);
+        }
+
+        private onVegaSpec(vegaSpec: Vega.Spec) {
+            if (!this.settings.layout.showaxes) {
+                delete vegaSpec.axes;
+            }
         }
 
         public showMessage(errorHTML: string) {
