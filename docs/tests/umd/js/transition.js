@@ -1,14 +1,25 @@
 var transition;
 (function (transition) {
     var view;
-    var lastText;
+    var lastSpec;
+    var viewType = "3d";
     SandDance.use(vega, deck, deck, luma);
+    function toggleView() {
+        if (viewType === '3d') {
+            viewType = '2d';
+        }
+        else {
+            viewType = '3d';
+        }
+        update(lastSpec);
+    }
+    transition.toggleView = toggleView;
     function update(spec) {
-        view = new SandDance.VegaDeckGl.ViewGl(vega.parse(spec), { presenter: view && view.presenter, getView: function () { return "3d"; } })
+        view = new SandDance.VegaDeckGl.ViewGl(vega.parse(spec), { presenter: view && view.presenter, getView: function () { return viewType; } })
             .renderer('deck.gl')
             .initialize(document.querySelector('#split-right'))
             .run();
-        lastText = JSON.stringify(spec);
+        lastSpec = spec;
     }
     transition.update = update;
     function getText(textId) {
@@ -18,8 +29,6 @@ var transition;
         var splitRight = document.getElementById('split-right');
         try {
             var spec = JSON.parse(text);
-            if (JSON.stringify(spec) === lastText)
-                return;
             splitRight.style.opacity = '1';
             errorDiv.style.display = 'none';
             update(spec);

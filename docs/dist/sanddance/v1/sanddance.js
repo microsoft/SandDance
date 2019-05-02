@@ -30,6 +30,10 @@
     //Signal names
     const SignalNames = {
         PointSize: "Chart_PointSizeSignal",
+        XGridSize: "Chart_XGridSize",
+        YGridSize: "Chart_YGridSize",
+        InnerPadding: "Chart_InnerPadding",
+        OuterPadding: "Chart_OuterPadding",
         TreeMapMethod: "Chart_TreeMapMethodSignal",
         ColorBinCount: "RoleColor_BinCountSignal",
         ColorReverse: "RoleColor_ReverseSignal",
@@ -5973,7 +5977,9 @@ void main(void) {
                 alignmentBaseline: convertBaseline(item.baseline)
             };
             if (item.mark.role === "axis-label") {
-                options.currAxis.tickText.push(textItem);
+                const tickText = textItem;
+                tickText.value = item.datum['value'];
+                options.currAxis.tickText.push(tickText);
             }
             else if (options.currFacetRect && !options.currFacetRect.facetTitle) {
                 options.currFacetRect.facetTitle = textItem;
@@ -6154,7 +6160,7 @@ void main(void) {
             this.el = el;
             this.style = deepMerge(defaultPresenterStyle, style);
             initializePanel(this);
-            this._last = { view: null, height: null, width: null, cubeCount: null, stage: null, homeViewState: null };
+            this._last = { view: null, height: null, width: null, cubeCount: null, stage: null };
         }
         /**
          * Get the previously rendered Stage object.
@@ -6291,20 +6297,34 @@ void main(void) {
             const newStage = Object.assign({}, this._last.stage, stage);
             this.setDeckProps(newStage, this._last.height, this._last.width, this._last.cubeCount, modifyConfig);
         }
+        isNewBounds(view, height, width, cubeCount) {
+            const lastBounds = this.lastBounds();
+            for (let prop in lastBounds) {
+                if (lastBounds[prop] === null)
+                    return true;
+            }
+            const newBounds = { cubeCount, height, view, width };
+            for (let prop in lastBounds) {
+                if (lastBounds[prop] !== newBounds[prop])
+                    return true;
+            }
+        }
+        lastBounds() {
+            const { cubeCount, height, view, width } = this._last;
+            return { cubeCount, height, view, width };
+        }
         setDeckProps(stage, height, width, cubeCount, modifyConfig) {
             const config = deepMerge(defaultPresenterConfig, modifyConfig);
-            const switchView = this._last.view && this._last.view !== stage.view;
+            const newBounds = this.isNewBounds(stage.view, height, width, cubeCount);
             let lightSettings = this.style.lightSettings[stage.view];
             let lightingMix = stage.view === '3d' ? 1.0 : 0.0;
             let linearInterpolator;
             //choose the current OrbitView viewstate if possible
-            let homeViewState = this._last.homeViewState;
             let viewState = (this.deckgl.viewState && Object.keys(this.deckgl.viewState).length && this.deckgl.viewState.OrbitView)
                 //otherwise use the initial viewstate if any
                 || this.deckgl.props.viewState;
-            if (!viewState || switchView || config.shouldViewstateTransition && config.shouldViewstateTransition()) {
+            if (!viewState || newBounds || config.shouldViewstateTransition && config.shouldViewstateTransition()) {
                 viewState = targetViewState(height, width, stage.view);
-                homeViewState = clone(viewState);
                 const oldCubeLayer = getCubeLayer(this.deckgl.props);
                 if (oldCubeLayer) {
                     linearInterpolator = new LinearInterpolator(viewStateProps);
@@ -6335,15 +6355,14 @@ void main(void) {
                 height,
                 width,
                 stage: stage,
-                view: stage.view,
-                homeViewState
+                view: stage.view
             };
         }
         /**
          * Home the camera to the last initial position.
          */
         homeCamera() {
-            const viewState = clone(this._last.homeViewState);
+            const viewState = targetViewState(this._last.height, this._last.width, this._last.view);
             viewState.transitionDuration = defaultPresenterConfig.transitionDurations.view;
             viewState.transitionEasing = expInOut;
             viewState.transitionInterpolator = new LinearInterpolator(viewStateProps);
@@ -6549,7 +6568,7 @@ void main(void) {
                 const c = desaturate(color, 0.05);
                 c[3] = 171;
                 return c;
-            } //[128, 128, 128, 128]
+            }
         },
         language: {
             headers: {
@@ -6570,8 +6589,14 @@ void main(void) {
             reset: 'reset',
             colorBinCount: 'Color bin count',
             colorReverse: 'Color reverse',
+            count: 'Count',
             scatterPointSize: 'Point size',
-            barChartBinSize: 'X Axis Bin size',
+            XBinSize: 'X axis bin size',
+            YBinSize: 'Y axis bin size',
+            XGridSize: 'X grid size',
+            YGridSize: 'Y grid size',
+            InnerPaddingSize: 'Inner padding size',
+            OuterPaddingSize: 'Outer padding size',
             treeMapMethod: 'Method',
             facetColumns: 'Facet columns',
             facetRows: 'Facet rows',
@@ -6585,12 +6610,7 @@ void main(void) {
         onError: (errors) => {
             //console.log(`UnitVisViewer errors: ${errors.join('\n')}`);
         },
-        transitionDurations: {
-            color: 100,
-            position: 600,
-            scope: 800,
-            size: 600
-        },
+        transitionDurations: Object.assign({}, defaultPresenterConfig.transitionDurations, { scope: 600 }),
         selectionPolygonZ: -1,
         tickSize: 10,
         facetMargins: {
@@ -6819,7 +6839,10 @@ void main(void) {
         spec.signals.forEach((signalA) => {
             //bound to a UI control
             if (signalA.bind) {
-                result[signalA.name] = view.signal(signalA.name);
+                try {
+                    result[signalA.name] = view.signal(signalA.name);
+                }
+                catch (e) { }
             }
         });
         return result;
@@ -7193,22 +7216,11 @@ void main(void) {
         //convert "nice" numbers to numeric value
         return niceValue.replace(/,/g, '');
     }
-    function columnTypeValue(column, value) {
-        switch (column.type) {
-            case 'integer':
-            //BUG? axis of integers may contain floats
-            //return parseInt(notNice(value));
-            case 'number':
-                return parseFloat(notNice(value));
-            case 'string':
-                return value;
-        }
-    }
-    function tickValue(axis, column, i) {
+    function tickValue(axis, i) {
         const tick = axis.tickText[i];
         let value;
         if (tick) {
-            value = columnTypeValue(column, axis.tickText[i].text);
+            value = axis.tickText[i].value;
         }
         return { tick, value };
     }
@@ -7245,7 +7257,7 @@ void main(void) {
         return searchExpressionGroup;
     }
     function selectExactAxis(axis, column, i) {
-        const result = tickValue(axis, column, i);
+        const result = tickValue(axis, i);
         if (result.tick) {
             return selectExact(column, result.value);
         }
@@ -7275,8 +7287,8 @@ void main(void) {
         return searchExpressionGroup;
     }
     function selectBetweenAxis(axis, column, i) {
-        const low = tickValue(axis, column, i);
-        const high = tickValue(axis, column, i + 1);
+        const low = tickValue(axis, i);
+        const high = tickValue(axis, i + 1);
         return selectBetween(column, low.value, high.value);
     }
     function selectBetweenFacet(column, title, isFirst, isLast) {
@@ -7407,28 +7419,45 @@ void main(void) {
         });
     }
 
-    function getAxes (specViewOptions, columns) {
+    function partialAxes(specViewOptions, xColumn, yColumn) {
         const lineColor = colorToString(specViewOptions.colors.axisLine);
         const axisColor = {
             "domainColor": lineColor,
             "tickColor": lineColor,
             "labelColor": colorToString(specViewOptions.colors.axisText)
         };
+        const bottom = Object.assign({ "orient": "bottom", "labelAlign": "left", "labelAngle": {
+                "signal": SignalNames.TextAngleX
+            }, "labelFontSize": {
+                "signal": SignalNames.TextSize
+            }, "titleAngle": {
+                "signal": SignalNames.TextAngleX
+            }, "titleAlign": "left", "titleFontSize": {
+                "signal": SignalNames.TextTitleSize
+            }, "titleColor": colorToString(specViewOptions.colors.axisText), "tickSize": specViewOptions.tickSize }, axisColor);
+        if (xColumn.quantitative) {
+            bottom.format = "~r";
+        }
+        const left = Object.assign({ "orient": "left", "labelAlign": "right", "labelAngle": {
+                "signal": SignalNames.TextAngleY
+            }, "labelFontSize": {
+                "signal": SignalNames.TextSize
+            }, "titleAngle": {
+                "signal": SignalNames.TextAngleY
+            }, "titleAlign": "right", "titleFontSize": {
+                "signal": SignalNames.TextTitleSize
+            }, "titleColor": colorToString(specViewOptions.colors.axisText), "tickSize": specViewOptions.tickSize }, axisColor);
+        if (yColumn.quantitative) {
+            left.format = "~r";
+        }
+        return { left, bottom };
+    }
+
+    function getAxes (specViewOptions, columns) {
+        const pa = partialAxes(specViewOptions, columns.x, columns.y);
         const axes = [
-            Object.assign({ "orient": "bottom", "labelAngle": {
-                    "signal": SignalNames.TextAngleX
-                }, "labelAlign": "left", "labelFontSize": {
-                    "signal": SignalNames.TextSize
-                }, "scale": ScaleNames.X, "title": columns.x.name, "titleAngle": {
-                    "signal": SignalNames.TextAngleX
-                }, "titleAlign": "left", "titleFontSize": {
-                    "signal": SignalNames.TextTitleSize
-                }, "titleColor": colorToString(specViewOptions.colors.axisText), "tickSize": specViewOptions.tickSize }, axisColor),
-            Object.assign({ "orient": "left", "labelAlign": "right", "labelAngle": {
-                    "signal": SignalNames.TextAngleY
-                }, "labelFontSize": {
-                    "signal": SignalNames.TextSize
-                }, "scale": "yscalelabel", "encode": {
+            Object.assign({ "scale": ScaleNames.X, "title": columns.x.name }, pa.bottom),
+            Object.assign({ "scale": "yscalelabel", "title": specViewOptions.language.count, "encode": {
                     "labels": {
                         "update": {
                             "text": {
@@ -7436,11 +7465,7 @@ void main(void) {
                             }
                         }
                     }
-                }, "title": "Count", "titleAngle": {
-                    "signal": SignalNames.TextAngleY
-                }, "titleAlign": "right", "titleFontSize": {
-                    "signal": SignalNames.TextTitleSize
-                }, "titleColor": colorToString(specViewOptions.colors.axisText), "tickSize": specViewOptions.tickSize }, axisColor)
+                } }, pa.left)
         ];
         return axes;
     }
@@ -8030,7 +8055,7 @@ void main(void) {
                 "name": SignalNames.XBins,
                 "value": 7,
                 "bind": {
-                    "name": specViewOptions.language.barChartBinSize,
+                    "name": specViewOptions.language.XBinSize,
                     "input": "range",
                     "min": 1,
                     "max": 20,
@@ -8165,31 +8190,10 @@ void main(void) {
     };
 
     function getAxes$1 (specViewOptions, columns) {
-        const lineColor = colorToString(specViewOptions.colors.axisLine);
-        const axisColor = {
-            "domainColor": lineColor,
-            "tickColor": lineColor,
-            "labelColor": colorToString(specViewOptions.colors.axisText)
-        };
+        const pa = partialAxes(specViewOptions, columns.x, columns.y);
         const axes = [
-            Object.assign({ "orient": "bottom", "labelAngle": {
-                    "signal": SignalNames.TextAngleX
-                }, "labelAlign": "left", "labelFontSize": {
-                    "signal": SignalNames.TextSize
-                }, "scale": ScaleNames.X, "title": columns.x.name, "titleAngle": {
-                    "signal": SignalNames.TextAngleX
-                }, "titleAlign": "left", "titleFontSize": {
-                    "signal": SignalNames.TextTitleSize
-                }, "titleColor": colorToString(specViewOptions.colors.axisText), "tickSize": specViewOptions.tickSize }, axisColor),
-            Object.assign({ "orient": "left", "labelAlign": "right", "labelAngle": {
-                    "signal": SignalNames.TextAngleY
-                }, "labelFontSize": {
-                    "signal": SignalNames.TextSize
-                }, "scale": ScaleNames.Y, "title": columns.y.name, "titleAngle": {
-                    "signal": SignalNames.TextAngleY
-                }, "titleAlign": "right", "titleFontSize": {
-                    "signal": SignalNames.TextTitleSize
-                }, "titleColor": colorToString(specViewOptions.colors.axisText), "tickSize": specViewOptions.tickSize }, axisColor)
+            Object.assign({ "scale": ScaleNames.X, "title": columns.x.name }, pa.bottom),
+            Object.assign({ "scale": ScaleNames.Y, "title": columns.y.name }, pa.left)
         ];
         return axes;
     }
@@ -8591,23 +8595,10 @@ void main(void) {
     };
 
     function getAxes$2 (specViewOptions, columns) {
+        const pa = partialAxes(specViewOptions, columns.x, columns.y);
         const axes = [
-            {
-                "scale": "xband",
-                "grid": true,
-                "domain": false,
-                "orient": "bottom",
-                "tickCount": 5,
-                "title": columns.x.name
-            },
-            {
-                "scale": "yband",
-                "grid": true,
-                "domain": false,
-                "orient": "left",
-                "titlePadding": 5,
-                "title": columns.y.name
-            }
+            Object.assign({ "scale": "xband", "title": columns.x.name, "bandPosition": 0.5, "grid": true, "labelFlush": true }, pa.bottom),
+            Object.assign({ "scale": "yband", "title": columns.y.name, "bandPosition": columns.y.quantitative ? 0 : 0.5, "grid": true, "labelFlush": true }, pa.left)
         ];
         return axes;
     }
@@ -8618,7 +8609,7 @@ void main(void) {
         const data = allTruthy([
             {
                 "name": DataNames.Main,
-                "transform": [
+                "transform": allTruthy([
                     {
                         "type": "extent",
                         "field": columns.x.name,
@@ -8629,7 +8620,7 @@ void main(void) {
                         "field": columns.y.name,
                         "signal": "lat_extent"
                     },
-                    {
+                    columns.x.quantitative && {
                         "type": "bin",
                         "field": columns.x.name,
                         "extent": {
@@ -8638,17 +8629,19 @@ void main(void) {
                         "maxbins": {
                             "signal": SignalNames.XBins
                         },
+                        "nice": false,
                         "as": [
                             "long0",
                             "long1"
                         ]
                     },
-                    {
+                    columns.y.quantitative && {
                         "type": "bin",
                         "field": columns.y.name,
                         "extent": {
                             "signal": "lat_extent"
                         },
+                        "nice": false,
                         "maxbins": {
                             "signal": SignalNames.YBins
                         },
@@ -8657,55 +8650,14 @@ void main(void) {
                             "lat1"
                         ]
                     }
-                ]
-            },
-            {
-                "name": "summary",
-                "source": DataNames.Main,
-                "transform": [
-                    {
-                        "type": "nest",
-                        "keys": [
-                            "lat0",
-                            "long0"
-                        ]
-                    }
-                ]
-            },
-            {
-                "name": "aggregated",
-                "source": DataNames.Main,
-                "transform": [
-                    {
-                        "type": "aggregate",
-                        "groupby": [
-                            "lat0",
-                            "long0"
-                        ],
-                        "ops": [
-                            "count"
-                        ]
-                    }
-                ]
-            },
+                ])
+            }
+        ], categoricalColor && topLookup(columns.color, specViewOptions.maxLegends), [
             {
                 "name": "stackedgroup",
-                "source": "summary",
+                "source": categoricalColor ? DataNames.Legend : DataNames.Main,
                 "transform": [
-                    {
-                        "type": "stack",
-                        "groupby": [
-                            "lat0",
-                            "long0"
-                        ],
-                        "sort": {
-                            "field": columns.sort.name
-                        },
-                        "as": [
-                            "s1",
-                            "s2"
-                        ]
-                    },
+                    stackTransform(columns.sort, columns.x, columns.y),
                     {
                         "type": "extent",
                         "signal": "xtent",
@@ -8723,12 +8675,12 @@ void main(void) {
                     },
                     {
                         "type": "formula",
-                        "expr": "datum.s1 % mywidth",
+                        "expr": `datum.s1 % ${SignalNames.XGridSize}`,
                         "as": "column"
                     },
                     {
                         "type": "formula",
-                        "expr": "floor((datum.s1 % columns)/ mywidth)",
+                        "expr": `floor((datum.s1 % columns)/ ${SignalNames.XGridSize})`,
                         "as": "depth"
                     },
                     {
@@ -8738,8 +8690,27 @@ void main(void) {
                     }
                 ]
             }
-        ], categoricalColor && topLookup(columns.color, specViewOptions.maxLegends));
+        ]);
         return data;
+    }
+    function stackTransform(sortColumn, xColumn, yColumn) {
+        const st = {
+            "type": "stack",
+            "groupby": [
+                yColumn.quantitative ? "lat0" : yColumn.name,
+                xColumn.quantitative ? "long0" : xColumn.name
+            ],
+            "as": [
+                "s1",
+                "s2"
+            ]
+        };
+        if (sortColumn) {
+            st.sort = {
+                "field": sortColumn.name
+            };
+        }
+        return st;
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -8755,7 +8726,7 @@ void main(void) {
                     "update": {
                         "x": {
                             "scale": "xband",
-                            "field": "long0",
+                            "field": columns.x.quantitative ? "long0" : columns.x.name,
                             "offset": {
                                 "scale": "xinternalscale",
                                 "field": "column"
@@ -8763,7 +8734,7 @@ void main(void) {
                         },
                         "y": {
                             "scale": "yband",
-                            "field": "lat0",
+                            "field": columns.y.quantitative ? "lat0" : columns.y.name,
                             "offset": {
                                 "scale": "yinternalscale",
                                 "field": "depth"
@@ -8779,9 +8750,6 @@ void main(void) {
                         },
                         "width": {
                             "signal": "actsize"
-                        },
-                        "opacity": {
-                            "value": 0.1
                         },
                         "height": {
                             "signal": "actsize"
@@ -8802,7 +8770,7 @@ void main(void) {
                 "type": "band",
                 "domain": {
                     "data": DataNames.Main,
-                    "field": "long0",
+                    "field": columns.x.quantitative ? "long0" : columns.x.name,
                     "sort": true
                 },
                 "range": [
@@ -8811,7 +8779,7 @@ void main(void) {
                         "signal": "width"
                     }
                 ],
-                "padding": 0.05,
+                "padding": { "signal": SignalNames.OuterPadding },
                 "round": true
             },
             {
@@ -8820,11 +8788,11 @@ void main(void) {
                 "reverse": true,
                 "domain": {
                     "data": DataNames.Main,
-                    "field": "lat0",
+                    "field": columns.y.quantitative ? "lat0" : columns.y.name,
                     "sort": true
                 },
                 "range": "height",
-                "padding": 0.05,
+                "padding": { "signal": SignalNames.OuterPadding },
                 "round": true
             },
             {
@@ -8840,11 +8808,11 @@ void main(void) {
                 "range": [
                     0,
                     {
-                        "signal": "height"
+                        "signal": "countheight"
                     }
                 ],
-                "padding": 0.1,
-                "round": true
+                "padding": { "signal": SignalNames.InnerPadding },
+                "round": false
             },
             {
                 "name": "xinternalscale",
@@ -8852,11 +8820,11 @@ void main(void) {
                 "range": [
                     0,
                     {
-                        "signal": "xbandw"
+                        "signal": "xbandsignal"
                     }
                 ],
                 "padding": {
-                    "signal": "x_padding"
+                    "signal": SignalNames.InnerPadding
                 },
                 "domain": {
                     "data": "stackedgroup",
@@ -8874,52 +8842,13 @@ void main(void) {
                     }
                 ],
                 "padding": {
-                    "signal": "x_padding"
+                    "signal": SignalNames.InnerPadding
                 },
                 "domain": {
                     "data": "stackedgroup",
                     "field": "depth",
                     "sort": true
                 }
-            },
-            {
-                "name": "x",
-                "type": "linear",
-                "round": true,
-                "nice": true,
-                "zero": false,
-                "domain": {
-                    "data": DataNames.Main,
-                    "field": columns.x.name
-                },
-                "range": "width"
-            },
-            {
-                "name": "y",
-                "type": "linear",
-                "round": true,
-                "nice": true,
-                "zero": false,
-                "domain": {
-                    "data": DataNames.Main,
-                    "field": columns.y.name
-                },
-                "range": "height"
-            },
-            {
-                "name": "z",
-                "type": "linear",
-                "round": true,
-                "nice": true,
-                "zero": false,
-                "domain": {
-                    "data": "stackedgroup",
-                    "field": "s1"
-                },
-                "range": [
-                    0,
-                    "height"
-                ]
             }
         ];
         if (columns.color) {
@@ -8948,100 +8877,109 @@ void main(void) {
     // Copyright (c) Microsoft Corporation. All rights reserved.
     function getSignals$3 (insight, columns, specViewOptions) {
         const signals = allTruthy(textSignals(specViewOptions), [
-            columns.x.quantitative && {
-                "name": SignalNames.XBins,
-                "value": 20,
+            colorBinCountSignal(specViewOptions),
+            colorReverseSignal(specViewOptions),
+            {
+                "name": SignalNames.XGridSize,
+                "value": 3,
                 "bind": {
-                    "name": specViewOptions.language.barChartBinSize,
+                    "name": specViewOptions.language.XGridSize,
                     "input": "range",
                     "min": 1,
-                    "max": 50,
+                    "max": 20,
+                    "step": 1
+                }
+            },
+            {
+                "name": SignalNames.YGridSize,
+                "value": 3,
+                "bind": {
+                    "name": specViewOptions.language.YGridSize,
+                    "input": "range",
+                    "min": 1,
+                    "max": 20,
+                    "step": 1
+                }
+            },
+            columns.x.quantitative && {
+                "name": SignalNames.XBins,
+                "value": 30,
+                "bind": {
+                    "name": specViewOptions.language.XBinSize,
+                    "input": "range",
+                    "min": 1,
+                    "max": 60,
                     "step": 1
                 }
             },
             columns.y.quantitative && {
                 "name": SignalNames.YBins,
-                "value": 20,
+                "value": 30,
                 "bind": {
-                    "name": specViewOptions.language.barChartBinSize,
+                    "name": specViewOptions.language.YBinSize,
                     "input": "range",
                     "min": 1,
-                    "max": 50,
-                    "step": 1
-                }
-            },
-            colorBinCountSignal(specViewOptions),
-            {
-                "name": "mywidth",
-                "value": 3,
-                "bind": {
-                    "name": "TODO width",
-                    "input": "range",
-                    "min": 1,
-                    "max": 20,
+                    "max": 60,
                     "step": 1
                 }
             },
             {
-                "name": "mydepth",
-                "value": 3,
-                "bind": {
-                    "name": "TODO depth",
-                    "input": "range",
-                    "min": 1,
-                    "max": 20,
-                    "step": 1
-                }
-            },
-            {
-                "name": "x_padding",
+                "name": SignalNames.InnerPadding,
                 "value": 0.1,
                 "bind": {
-                    "name": "TODO x padding",
+                    "name": specViewOptions.language.InnerPaddingSize,
                     "input": "range",
                     "min": 0.1,
-                    "max": 1,
+                    "max": 0.6,
                     "step": 0.1
                 }
             },
             {
-                "name": "x_out_padding",
-                "value": 0.1,
+                "name": SignalNames.OuterPadding,
+                "value": 0.2,
                 "bind": {
-                    "name": "TODO x out padding",
+                    "name": specViewOptions.language.OuterPaddingSize,
                     "input": "range",
                     "min": 0.1,
-                    "max": 1,
+                    "max": 0.6,
                     "step": 0.1
                 }
-            },
-            {
-                "name": "actheight",
-                "update": "actsize*rowxtent[1] * (1+ x_padding)"
             },
             {
                 "name": "columns",
-                "update": "mywidth*mydepth"
+                "update": `${SignalNames.XGridSize}*${SignalNames.YGridSize}`
             },
             {
-                "name": "xbandw",
-                "update": `width/(${SignalNames.XBins}+x_out_padding)`
+                "name": "xbandw2",
+                "update": "bandwidth('xband')"
             },
             {
                 "name": "xbandsize",
-                "update": "(xbandw / (mywidth + x_padding))*(1-x_padding)"
+                "update": `(xbandw2 / (${SignalNames.XGridSize} + ${SignalNames.InnerPadding}))*(1-${SignalNames.InnerPadding})`
             },
             {
                 "name": "ybandw",
-                "update": `height/(${SignalNames.YBins}+x_out_padding)`
+                "update": `height/((${columns.y.quantitative ? SignalNames.YBins : columns.y.stats.distinctValueCount}) * (1 + ${SignalNames.OuterPadding}))`
             },
             {
                 "name": "ybandsize",
-                "update": "(ybandw / (mydepth + x_padding))*(1-x_padding)"
+                "update": `(ybandw / (${SignalNames.YGridSize} + ${SignalNames.InnerPadding}))*(1-${SignalNames.InnerPadding})`
             },
             {
                 "name": "actsize",
                 "update": "min(xbandsize,ybandsize)"
+            },
+            {
+                "name": "xbandsignal",
+                "update": "bandwidth('xband')"
+            },
+            {
+                "name": "ybandsignal",
+                "update": "bandwidth('yband')"
+            },
+            {
+                "name": "countheight",
+                "update": "rowxtent[1]*actsize"
             }
         ], insight.columns.facet && facetSignals(insight.facets, specViewOptions));
         return signals;
@@ -9054,6 +8992,8 @@ void main(void) {
             errors.push(`Must set a field for id`);
         if (!columns.x)
             errors.push(`Must set a field for x axis`);
+        if (!columns.y)
+            errors.push(`Must set a field for y axis`);
         checkForFacetErrors(insight.facets, errors);
         const specCapabilities = {
             roles: [
@@ -9080,13 +9020,8 @@ void main(void) {
                 {
                     role: 'sort',
                     allowNone: true
-                },
-                {
-                    role: 'facet',
-                    allowNone: true
                 }
-            ],
-            signals: ['mywidth', 'mydepth']
+            ]
         };
         if (errors.length) {
             return {
@@ -9111,7 +9046,6 @@ void main(void) {
             "$schema": "https://vega.github.io/schema/vega/v3.json",
             "height": size.height,
             "width": size.width,
-            "padding": 5,
             signals: getSignals$3(insight, columns, specViewOptions),
             data: getData$3(insight, columns, specViewOptions),
             scales: getScales$3(columns, insight),
@@ -9736,7 +9670,7 @@ void main(void) {
             this._details = new Details(this.presenter.getElement(PresenterElement.panel), this.options.language, this._animator, this._dataScope, remap => {
                 this.currentColorContext = ~~remap;
                 this.renderSameLayout();
-            }, () => this.insight && !!this.insight.columns.color && this.colorContexts.length > 1);
+            }, () => this.insight && !!this.insight.columns.color && this.colorContexts && this.colorContexts.length > 1);
             this.insight = {};
             this._signalValues = {};
         }
@@ -10002,7 +9936,6 @@ void main(void) {
             }
             this._specColumns = getSpecColumns(insight, this._dataScope.getColumns(options.columnTypes));
             const map = assignOrdinals(this._specColumns, data, options.ordinalMap);
-            const shouldViewstateTransition = this.shouldViewstateTransition(insight, this.insight);
             this.insight = clone(insight);
             this._shouldSaveColorContext = () => !options.initialColorContext;
             const colorContext = options.initialColorContext || {
@@ -10039,7 +9972,7 @@ void main(void) {
                         this.applyLegendColorContext(colorContext);
                     }
                 },
-                shouldViewstateTransition: () => shouldViewstateTransition
+                shouldViewstateTransition: () => this.shouldViewstateTransition(insight, this.insight)
             }, this.getView(insight.view));
             //future signal changes should save the color context
             this._shouldSaveColorContext = () => !options.discardColorContextUpdates || !options.discardColorContextUpdates();
@@ -10224,6 +10157,10 @@ void main(void) {
             return extractSignalValuesFromView(this.vegaViewGl, this.vegaSpec);
         }
     }
+    /**
+     * Default Viewer options.
+     */
+    Viewer.defaultViewerOptions = defaultViewerOptions;
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
 

@@ -12,7 +12,7 @@ layout: api
 interface Axis {
     domain: StyledLine;
     ticks: StyledLine[];
-    tickText: TextLayerDatum[];
+    tickText: TickText[];
 }
 ```
 
@@ -22,7 +22,7 @@ interface Axis {
 | -------- | --------------------------------------- | -------- |
 | domain   | [StyledLine][InterfaceDeclaration-34]   | false    |
 | ticks    | [StyledLine][InterfaceDeclaration-34][] | false    |
-| tickText | TextLayerDatum[]                        | false    |
+| tickText | TickText[]   | false    |
 
 ----------
 
@@ -43,10 +43,10 @@ interface Base {
 
 | Name   | Type                                     | Optional |
 | ------ | ---------------------------------------- | -------- |
-| deck   | [DeckBase][InterfaceDeclaration-43]      | false    |
-| layers | [DeckLayerBase][InterfaceDeclaration-44] | false    |
-| luma   | [LumaBase][InterfaceDeclaration-45]      | false    |
-| vega   | [VegaBase][InterfaceDeclaration-42]      | false    |
+| deck   | [DeckBase][InterfaceDeclaration-44]      | false    |
+| layers | [DeckLayerBase][InterfaceDeclaration-45] | false    |
+| luma   | [LumaBase][InterfaceDeclaration-46]      | false    |
+| vega   | [VegaBase][InterfaceDeclaration-43]      | false    |
 
 ----------
 
@@ -320,7 +320,7 @@ interface PresenterConfig {
 | Name                      | Type                                                                                                | Optional |
 | ------------------------- | --------------------------------------------------------------------------------------------------- | -------- |
 | transitionDurations       | [TransitionDurations][InterfaceDeclaration-22]                                                      | true     |
-| preStage                  | [PreStage][InterfaceDeclaration-52]                                                                 | true     |
+| preStage                  | [PreStage][InterfaceDeclaration-53]                                                                 | true     |
 | redraw                    | () => void                                                                                          | true     |
 | onCubeHover               | (e: MouseEvent &#124; PointerEvent &#124; TouchEvent, cube: Cube) => void                           | true     |
 | onCubeClick               | (e: MouseEvent &#124; PointerEvent &#124; TouchEvent, cube: Cube) => void                           | true     |
@@ -425,7 +425,7 @@ interface Stage {
 | textData        | TextLayerDatum[]                                                                | false    |
 | view            | [View][TypeAliasDeclaration-8]                                                  | false    |
 | gridLines       | [StyledLine][InterfaceDeclaration-34][]                                         | true     |
-| facets          | [FacetRect][InterfaceDeclaration-35][]                                          | true     |
+| facets          | [FacetRect][InterfaceDeclaration-36][]                                          | true     |
 
 ----------
 
@@ -528,7 +528,7 @@ interface ViewGlConfig {
 | Name            | Type                                       | Optional |
 | --------------- | ------------------------------------------ | -------- |
 | presenter       | [Presenter][ClassDeclaration-0]            | true     |
-| presenterConfig | [PresenterConfig][InterfaceDeclaration-51] | true     |
+| presenterConfig | [PresenterConfig][InterfaceDeclaration-52] | true     |
 | getView         | { (): [View][TypeAliasDeclaration-8]; }    | true     |
 
 ## Types
@@ -541,7 +541,7 @@ type CubeLayerProps = LayerProps & CubeLayerDefaultProps & CubeLayerDataProps;
 
 **Type**
 
-LayerProps & [CubeLayerDefaultProps][InterfaceDeclaration-60] & [CubeLayerDataProps][InterfaceDeclaration-57]
+LayerProps & [CubeLayerDefaultProps][InterfaceDeclaration-61] & [CubeLayerDataProps][InterfaceDeclaration-58]
 
 ----------
 
@@ -575,34 +575,34 @@ type View = "2d" | "3d";
 [InterfaceDeclaration-33]: vegadeckgl.types#axis
 [InterfaceDeclaration-34]: vegadeckgl.types#styledline
 [InterfaceDeclaration-34]: vegadeckgl.types#styledline
-[InterfaceDeclaration-47]: vegadeckgl.types#base
-[InterfaceDeclaration-43]: vegadeckgl.types#deckbase
-[InterfaceDeclaration-44]: vegadeckgl.types#decklayerbase
-[InterfaceDeclaration-45]: vegadeckgl.types#lumabase
-[InterfaceDeclaration-42]: vegadeckgl.types#vegabase
+[InterfaceDeclaration-48]: vegadeckgl.types#base
+[InterfaceDeclaration-44]: vegadeckgl.types#deckbase
+[InterfaceDeclaration-45]: vegadeckgl.types#decklayerbase
+[InterfaceDeclaration-46]: vegadeckgl.types#lumabase
+[InterfaceDeclaration-43]: vegadeckgl.types#vegabase
 [InterfaceDeclaration-29]: vegadeckgl.types#cube
-[InterfaceDeclaration-57]: vegadeckgl.types#cubelayerdataprops
+[InterfaceDeclaration-58]: vegadeckgl.types#cubelayerdataprops
 [InterfaceDeclaration-29]: vegadeckgl.types#cube
-[InterfaceDeclaration-60]: vegadeckgl.types#cubelayerdefaultprops
-[InterfaceDeclaration-43]: vegadeckgl.types#deckbase
-[InterfaceDeclaration-44]: vegadeckgl.types#decklayerbase
-[InterfaceDeclaration-35]: vegadeckgl.types#facetrect
+[InterfaceDeclaration-61]: vegadeckgl.types#cubelayerdefaultprops
+[InterfaceDeclaration-44]: vegadeckgl.types#deckbase
+[InterfaceDeclaration-45]: vegadeckgl.types#decklayerbase
+[InterfaceDeclaration-36]: vegadeckgl.types#facetrect
 [InterfaceDeclaration-34]: vegadeckgl.types#styledline
 [InterfaceDeclaration-30]: vegadeckgl.types#legend
 [InterfaceDeclaration-31]: vegadeckgl.types#legendrow
 [InterfaceDeclaration-31]: vegadeckgl.types#legendrow
 [InterfaceDeclaration-32]: vegadeckgl.types#legendrowsymbol
 [InterfaceDeclaration-32]: vegadeckgl.types#legendrowsymbol
-[InterfaceDeclaration-45]: vegadeckgl.types#lumabase
-[InterfaceDeclaration-52]: vegadeckgl.types#prestage
+[InterfaceDeclaration-46]: vegadeckgl.types#lumabase
+[InterfaceDeclaration-53]: vegadeckgl.types#prestage
 [InterfaceDeclaration-28]: vegadeckgl.types#stage
-[InterfaceDeclaration-51]: vegadeckgl.types#presenterconfig
+[InterfaceDeclaration-52]: vegadeckgl.types#presenterconfig
 [InterfaceDeclaration-22]: vegadeckgl.types#transitiondurations
-[InterfaceDeclaration-52]: vegadeckgl.types#prestage
-[InterfaceDeclaration-46]: vegadeckgl.types#presenterstyle
+[InterfaceDeclaration-53]: vegadeckgl.types#prestage
+[InterfaceDeclaration-47]: vegadeckgl.types#presenterstyle
 [TypeAliasDeclaration-8]: vegadeckgl.types#view
-[InterfaceDeclaration-49]: vegadeckgl.types#queuedanimationoptions
-[InterfaceDeclaration-50]: vegadeckgl.types#scene3d
+[InterfaceDeclaration-50]: vegadeckgl.types#queuedanimationoptions
+[InterfaceDeclaration-51]: vegadeckgl.types#scene3d
 [TypeAliasDeclaration-8]: vegadeckgl.types#view
 [InterfaceDeclaration-28]: vegadeckgl.types#stage
 [InterfaceDeclaration-29]: vegadeckgl.types#cube
@@ -611,16 +611,16 @@ type View = "2d" | "3d";
 [InterfaceDeclaration-33]: vegadeckgl.types#axis
 [TypeAliasDeclaration-8]: vegadeckgl.types#view
 [InterfaceDeclaration-34]: vegadeckgl.types#styledline
-[InterfaceDeclaration-35]: vegadeckgl.types#facetrect
+[InterfaceDeclaration-36]: vegadeckgl.types#facetrect
 [InterfaceDeclaration-34]: vegadeckgl.types#styledline
 [InterfaceDeclaration-22]: vegadeckgl.types#transitiondurations
-[InterfaceDeclaration-42]: vegadeckgl.types#vegabase
-[InterfaceDeclaration-53]: vegadeckgl.types#viewglconfig
+[InterfaceDeclaration-43]: vegadeckgl.types#vegabase
+[InterfaceDeclaration-54]: vegadeckgl.types#viewglconfig
 [ClassDeclaration-0]: vegadeckgl.presenter#presenter
-[InterfaceDeclaration-51]: vegadeckgl.types#presenterconfig
+[InterfaceDeclaration-52]: vegadeckgl.types#presenterconfig
 [TypeAliasDeclaration-8]: vegadeckgl.types#view
 [TypeAliasDeclaration-10]: vegadeckgl.types#cubelayerprops
-[InterfaceDeclaration-60]: vegadeckgl.types#cubelayerdefaultprops
-[InterfaceDeclaration-57]: vegadeckgl.types#cubelayerdataprops
+[InterfaceDeclaration-61]: vegadeckgl.types#cubelayerdefaultprops
+[InterfaceDeclaration-58]: vegadeckgl.types#cubelayerdataprops
 [TypeAliasDeclaration-11]: vegadeckgl.types#vec3
 [TypeAliasDeclaration-8]: vegadeckgl.types#view

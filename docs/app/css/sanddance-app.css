@@ -166,7 +166,7 @@
   background-color: #f9f9f9;
   bottom: 0;
   display: grid;
-  grid-template-areas: "stats stats" "tabs bar";
+  grid-template-areas: "stats stats" "tabs bar";
   grid-template-columns: 50px auto;
   grid-template-rows: 0fr auto;
   overflow: hidden;

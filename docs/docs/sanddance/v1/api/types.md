@@ -301,9 +301,15 @@ Language settings.
 
 ```typescript
 interface SpecLanguage {
+    count: string;
     treeMapMethod: string;
     scatterPointSize: string;
-    barChartBinSize: string;
+    XBinSize: string;
+    YBinSize: string;
+    XGridSize: string;
+    YGridSize: string;
+    InnerPaddingSize: string;
+    OuterPaddingSize: string;
     colorBinCount: string;
     colorReverse: string;
     facetColumns: string;
@@ -319,9 +325,15 @@ interface SpecLanguage {
 
 | Name                 | Type   | Optional | Description                              |
 | -------------------- | ------ | -------- | ---------------------------------------- |
+| count                | string | false    | Label for a count axis.                  |
 | treeMapMethod        | string | false    | Label for treemap method dropdown.       |
 | scatterPointSize     | string | false    | Label for scatterPlot point size slider. |
-| barChartBinSize      | string | false    | Label for bar chart bin size slider.     |
+| XBinSize             | string | false    | Label for bar x axis bin size slider.    |
+| YBinSize             | string | false    | Label for bar y axis bin size slider.    |
+| XGridSize            | string | false    | Label for bar x grid size slider.        |
+| YGridSize            | string | false    | Label for bar y grid size slider.        |
+| InnerPaddingSize     | string | false    | Label for bar inner padding size slider. |
+| OuterPaddingSize     | string | false    | Label for bar outer padding size slider. |
 | colorBinCount        | string | false    | Label for the color bin count slider.    |
 | colorReverse         | string | false    | Label for the color reverse checkbox.    |
 | facetColumns         | string | false    | Label for facet columns slider.          |
@@ -558,7 +570,7 @@ interface RenderOptions {
 | columns                    | [Column][InterfaceDeclaration-3][]      | true     |
 | columnTypes                | [ColumnTypeMap][InterfaceDeclaration-5] | true     |
 | ordinalMap                 | [OrdinalMap][InterfaceDeclaration-18]   | true     |
-| initialColorContext        | [ColorContext][InterfaceDeclaration-38] | true     |
+| initialColorContext        | [ColorContext][InterfaceDeclaration-39] | true     |
 | discardColorContextUpdates | () => boolean                           | true     |
 
 ----------
@@ -715,7 +727,7 @@ interface ColorMap {
 ```
 
 * *Parameter* `ordinal` - number
-* *Type* [ColorMappedItem][InterfaceDeclaration-40]
+* *Type* [ColorMappedItem][InterfaceDeclaration-41]
 
 
 ----------
@@ -736,7 +748,7 @@ interface ColorContext {
 
 | Name          | Type                                | Optional |
 | ------------- | ----------------------------------- | -------- |
-| colorMap      | [ColorMap][InterfaceDeclaration-39] | false    |
+| colorMap      | [ColorMap][InterfaceDeclaration-40] | false    |
 | legendElement | HTMLElement                         | false    |
 | legend        | [Legend][InterfaceDeclaration-30]   | false    |
 
@@ -976,11 +988,11 @@ type InsightColumnRoles = "uid" | "x" | "y" | "z" | "group" | "size" | "color" |
 [InterfaceDeclaration-26]: types#language
 [TypeAliasDeclaration-8]: vegadeckgl/types#view
 [InterfaceDeclaration-21]: types#transitiondurations
-[InterfaceDeclaration-37]: types#renderoptions
+[InterfaceDeclaration-38]: types#renderoptions
 [InterfaceDeclaration-3]: types#column
 [InterfaceDeclaration-5]: types#columntypemap
 [InterfaceDeclaration-18]: types#ordinalmap
-[InterfaceDeclaration-38]: types#colorcontext
+[InterfaceDeclaration-39]: types#colorcontext
 [InterfaceDeclaration-24]: types#colorsettings
 [InterfaceDeclaration-14]: types#speccolorsettings
 [InterfaceDeclaration-25]: types#colormethod
@@ -989,18 +1001,18 @@ type InsightColumnRoles = "uid" | "x" | "y" | "z" | "group" | "size" | "color" |
 [InterfaceDeclaration-15]: types#speclanguage
 [InterfaceDeclaration-27]: types#headers
 [InterfaceDeclaration-0]: types#colorscheme
-[InterfaceDeclaration-40]: types#colormappeditem
-[InterfaceDeclaration-39]: types#colormap
-[InterfaceDeclaration-40]: types#colormappeditem
-[InterfaceDeclaration-38]: types#colorcontext
-[InterfaceDeclaration-39]: types#colormap
+[InterfaceDeclaration-41]: types#colormappeditem
+[InterfaceDeclaration-40]: types#colormap
+[InterfaceDeclaration-41]: types#colormappeditem
+[InterfaceDeclaration-39]: types#colorcontext
+[InterfaceDeclaration-40]: types#colormap
 [InterfaceDeclaration-30]: vegadeckgl/types#legend
 [InterfaceDeclaration-25]: types#colormethod
-[InterfaceDeclaration-36]: types#legendrowwithsearch
+[InterfaceDeclaration-37]: types#legendrowwithsearch
 [InterfaceDeclaration-31]: vegadeckgl/types#legendrow
 [InterfaceDeclaration-1]: types#searchexpression
 [InterfaceDeclaration-2]: types#searchexpressiongroup
-[InterfaceDeclaration-41]: types#selectionstate
+[InterfaceDeclaration-42]: types#selectionstate
 [TypeAliasDeclaration-0]: types#search
 [TypeAliasDeclaration-1]: types#searchexpressionclause
 [TypeAliasDeclaration-3]: types#searchexpressionstringsearchoperators

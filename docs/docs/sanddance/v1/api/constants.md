@@ -45,12 +45,12 @@ const ColorScaleNone: "none";
 ### SignalNames
 
 ```typescript
-const SignalNames: { PointSize: string; TreeMapMethod: string; ColorBinCount: string; ColorReverse: string; FacetColumns: string; FacetRows: string; XBins: string; YBins: string; YDomain: string; ZHeight: string; ZProportion: string; TextAngleX: string; TextAngleY: string; TextScale: string; TextSize: string; TextTitleSize: string; };
+const SignalNames: { PointSize: string; XGridSize: string; YGridSize: string; InnerPadding: string; OuterPadding: string; TreeMapMethod: string; ColorBinCount: string; ColorReverse: string; FacetColumns: string; FacetRows: string; XBins: string; YBins: string; YDomain: string; ZHeight: string; ZProportion: string; TextAngleX: string; TextAngleY: string; TextScale: string; TextSize: string; TextTitleSize: string; };
 ```
 
 **Type**
 
-{ PointSize: string; TreeMapMethod: string; ColorBinCount: string; ColorReverse: string; FacetColumns: string; FacetRows: string; XBins: string; YBins: string; YDomain: string; ZHeight: string; ZProportion: string; TextAngleX: string; TextAngleY: string; TextScale: string; TextSize: string; TextTitleSize: string; }
+{ PointSize: string; XGridSize: string; YGridSize: string; InnerPadding: string; OuterPadding: string; TreeMapMethod: string; ColorBinCount: string; ColorReverse: string; FacetColumns: string; FacetRows: string; XBins: string; YBins: string; YDomain: string; ZHeight: string; ZProportion: string; TextAngleX: string; TextAngleY: string; TextScale: string; TextSize: string; TextTitleSize: string; }
 
 [NamespaceImport-0]: constants#constants
 [VariableDeclaration-1]: constants#fieldnames

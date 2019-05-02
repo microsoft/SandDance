@@ -18,10 +18,10 @@ function use(vega: VegaBase, deck: DeckBase, layers: DeckLayerBase, luma: LumaBa
 
 | Name   | Type                                     | Description          |
 | ------ | ---------------------------------------- | -------------------- |
-| vega   | [VegaBase][InterfaceDeclaration-42]      | Vega library.        |
-| deck   | [DeckBase][InterfaceDeclaration-43]      | deck/core library.   |
-| layers | [DeckLayerBase][InterfaceDeclaration-44] | deck/layers library. |
-| luma   | [LumaBase][InterfaceDeclaration-45]      | luma.gl library.     |
+| vega   | [VegaBase][InterfaceDeclaration-43]      | Vega library.        |
+| deck   | [DeckBase][InterfaceDeclaration-44]      | deck/core library.   |
+| layers | [DeckLayerBase][InterfaceDeclaration-45] | deck/layers library. |
+| luma   | [LumaBase][InterfaceDeclaration-46]      | luma.gl library.     |
 
 **Return type**
 
@@ -75,10 +75,10 @@ const colorSchemes: ColorScheme[];
 
 [SourceFile-0]: index#indexts
 [FunctionDeclaration-3]: index#use
-[InterfaceDeclaration-42]: vegadeckgl/types#vegabase
-[InterfaceDeclaration-43]: vegadeckgl/types#deckbase
-[InterfaceDeclaration-44]: vegadeckgl/types#decklayerbase
-[InterfaceDeclaration-45]: vegadeckgl/types#lumabase
+[InterfaceDeclaration-43]: vegadeckgl/types#vegabase
+[InterfaceDeclaration-44]: vegadeckgl/types#deckbase
+[InterfaceDeclaration-45]: vegadeckgl/types#decklayerbase
+[InterfaceDeclaration-46]: vegadeckgl/types#lumabase
 [ClassDeclaration-5]: viewer#viewer
 [NamespaceImport-0]: constants#constants
 [NamespaceImport-1]: searchexpression#searchexpression
