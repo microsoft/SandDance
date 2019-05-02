@@ -143,6 +143,7 @@ export class Explorer extends React.Component<Props, State> {
 
   public updateViewerOptions(viewerOptions: Partial<SandDance.types.ViewerOptions>) {
     this.viewerOptions = {
+      ...this.viewerOptions,
       ...viewerOptions,
       onColorContextChange: () => this.manageColorToolbar(),
       onDataFilter: (dataFilter, filteredData) => {
