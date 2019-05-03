@@ -22,6 +22,25 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
                 columns.facet && facetTransforms(columns.facet, insight.facets)
             )
         ],
+        columns.x.quantitative && [
+            {
+                "name": "xaxisdata",
+                "transform": [
+                    {
+                        "type": "sequence",
+                        "start": {
+                            "signal": "binSignal.start"
+                        },
+                        "stop": {
+                            "signal": "binSignal.stop"
+                        },
+                        "step": {
+                            "signal": "binSignal.step"
+                        }
+                    }
+                ]
+            }
+        ],
         columns.facet && facetGroupData(namespace.stacked)
     );
     return data;

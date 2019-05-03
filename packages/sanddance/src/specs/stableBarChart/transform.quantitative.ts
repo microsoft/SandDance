@@ -37,7 +37,8 @@ export default function (columns: SpecColumns, groupBy: Column) {
             "as": [
                 "__bin0",
                 "__bin1"
-            ]
+            ],
+            "signal": "binSignal"
         },
         stackTransform,
         {
