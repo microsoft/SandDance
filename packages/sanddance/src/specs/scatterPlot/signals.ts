@@ -29,7 +29,6 @@ export default function (insight: Insight, specViewOptions: SpecViewOptions) {
             },
             colorBinCountSignal(specViewOptions),
             colorReverseSignal(specViewOptions)
-
         ],
         insight.columns.facet && facetSignals(insight.facets, specViewOptions)
     );
