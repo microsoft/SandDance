@@ -38,6 +38,12 @@ export function Chart(props: Props) {
                                 disabled: props.disabled
                             },
                             {
+                                key: 'density',
+                                text: strings.chartTypeDensity,
+                                checked: props.chart === 'density',
+                                disabled: props.disabled
+                            },
+                            {
                                 key: 'barchart',
                                 text: strings.chartTypeBarChart,
                                 checked: props.chart === 'barchart',
