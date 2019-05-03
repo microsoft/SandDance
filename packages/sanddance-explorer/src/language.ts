@@ -34,6 +34,7 @@ export const strings = {
     buttonLaunchVegaEditor: "Open Vega Editor",
     cameraHome: "Center chart in window",
     chartTypeScatterPlot: "Scatter plot",
+    chartTypeDensity: "Density",
     chartTypeBarChart: "Bar chart",
     chartTypeTreeMap: "Tree Map",
     chartTypeStacks: "Stacks",
