@@ -43,8 +43,29 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
             {
                 "name": "unitsize",
                 "update": "cellwidth/((1 + unitpad)*maxnumbers)"
+            },
+            columns.x.quantitative && {
+                "name": SignalNames.XBins,
+                "value": 30,
+                "bind": {
+                    "name": specViewOptions.language.XBinSize,
+                    "input": "range",
+                    "min": 1,
+                    "max": 60,
+                    "step": 1
+                }
+            },
+            columns.y.quantitative && {
+                "name": SignalNames.YBins,
+                "value": 30,
+                "bind": {
+                    "name": specViewOptions.language.YBinSize,
+                    "input": "range",
+                    "min": 1,
+                    "max": 60,
+                    "step": 1
+                }
             }
-
         ],
         insight.columns.facet && facetSignals(insight.facets, specViewOptions)
     );

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { binnableColorScale } from '../scales';
+import { binnableColorScale, linearScale, pointScale } from '../scales';
 import {
     ColorScaleNone,
     DataNames,
@@ -9,29 +9,45 @@ import {
     SignalNames
 } from '../constants';
 import { Insight, SpecColumns } from '../types';
-import { Scale } from 'vega-typings';
+import { RangeScheme, Scale } from 'vega-typings';
 
 export default function (columns: SpecColumns, insight: Insight) {
     const scales: Scale[] = [
         {
             "name": "xscale",
             "type": "point",
-            "domain": {
-                "data": DataNames.Main,
-                "field": columns.x.name,
-                "sort": true
-            },
+            "domain": columns.x.quantitative ?
+                {
+                    "data": "xaxisdata",
+                    "field": "data",
+                    "sort": true
+                }
+                :
+                {
+                    "data": DataNames.Main,
+                    "field": columns.x.name,
+                    "sort": true
+                },
             "range": "width",
             "padding": 0.5
         },
         {
             "name": "yscale",
             "type": "point",
-            "domain": {
-                "data": DataNames.Main,
-                "field": columns.y.name
-            },
+            "domain": columns.y.quantitative ?
+                {
+                    "data": "yaxisdata",
+                    "field": "data",
+                    "sort": true
+                }
+                :
+                {
+                    "data": DataNames.Main,
+                    "field": columns.y.name,
+                    "sort": true
+                },
             "range": "height",
+            "reverse": true,
             "padding": 0.5
         },
         {
@@ -71,6 +87,15 @@ export default function (columns: SpecColumns, insight: Insight) {
                 }
             );
         }
+    }
+    if (columns.z) {
+        const zRange: RangeScheme = [0, { "signal": SignalNames.ZHeight }];
+        scales.push(
+            columns.z.quantitative ?
+                linearScale(ScaleNames.Z, DataNames.Main, columns.z.name, zRange, false, true)
+                :
+                pointScale(ScaleNames.Z, DataNames.Main, zRange, columns.z.name)
+        );
     }
     return scales;
 }
