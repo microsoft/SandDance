@@ -8,17 +8,26 @@
     right: 0;
 }
 .sanddance-gl {
-    right: 290px;
+    right: 150px;
 }
 .sanddance-panel {
-    width: 250px;
-    h4, .sanddance-vegaControls {
+    bottom: unset;
+    overflow-y: unset;
+    padding-right: 1em;
+    h4, 
+    .sanddance-vegaControls,
+    .sanddance-unitControls {
         display: none;
-    }
-    .sanddance-unitControls h4 {
-        display: block;
     }
 }
 .vega-bind-name {
     display: block;
+}
+.sanddance-root.no-legend {
+    .sanddance-gl {
+        right: 0;
+    }
+    .sanddance-panel {
+        display: none;
+    }
 }

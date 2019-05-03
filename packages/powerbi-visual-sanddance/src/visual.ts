@@ -6,6 +6,7 @@ module powerbi.extensibility.visual {
     export interface FormatLayout {
         charttype: SandDance.types.Chart;
         showaxes: boolean;
+        showlegend: boolean;
     }
 
     export interface Settings {
@@ -37,7 +38,8 @@ module powerbi.extensibility.visual {
             this.settings = {
                 layout: {
                     charttype: 'barchart',
-                    showaxes: true
+                    showaxes: true,
+                    showlegend: true,
                 }
             };
 
@@ -107,6 +109,13 @@ module powerbi.extensibility.visual {
                 dataView.metadata.columns &&
                 dataView.metadata.columns.length > 0 &&
                 dataView.table.rows) {
+
+                const rootElclassList = this.viewer.presenter.getElement(global.SandDance.VegaDeckGl.PresenterElement.root).classList;
+                if (this.settings.layout.showlegend) {
+                    rootElclassList.remove('no-legend');
+                } else {
+                    rootElclassList.add('no-legend');
+                }
 
                 const metaDataColumns = getColumnsWithRoles(dataView.metadata.columns, ['uid', 'x', 'y', 'z', 'color', 'sort']);
                 const data = getDataRows(metaDataColumns, dataView.table.rows);
