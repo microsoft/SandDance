@@ -62,19 +62,6 @@ export const stacks: SpecCreator = (insight: Insight, columns: SpecColumns, spec
         };
     }
 
-    //  const rootNamespace = new NameSpace();
-    //  let axes = getAxes(specViewOptions, columns);
-    //  let marks: Mark[];
-
-    // if (columns.facet) {
-    //      const cellNamespace = new NameSpace('Cell');
-    //      const cellMarks = getMarks(cellNamespace, columns, specViewOptions);
-    //      marks = facetMarks(specViewOptions, rootNamespace.stacked, cellMarks, axes, cellData(cellNamespace, FacetGroupCellDataName, columns));
-    //     axes = [];
-    // } else {
-    //     marks = getMarks(rootNamespace, columns, specViewOptions);
-    //  }
-
     const size = columns.facet ? facetSize(insight.facets, insight.size, specViewOptions) : insight.size;
 
     var vegaSpec: Spec = {
