@@ -41,7 +41,8 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                         "as": [
                             "long0",
                             "long1"
-                        ]
+                        ],
+                        "signal": "binXSignal"
                     },
                     columns.y.quantitative && {
                         "type": "bin",
@@ -56,9 +57,48 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                         "as": [
                             "lat0",
                             "lat1"
-                        ]
+                        ],
+                        "signal": "binYSignal"
                     }
                 ])
+            }
+        ],
+        columns.x.quantitative && [
+            {
+                "name": "xaxisdata",
+                "transform": [
+                    {
+                        "type": "sequence",
+                        "start": {
+                            "signal": "binXSignal.start"
+                        },
+                        "stop": {
+                            "signal": "binXSignal.stop"
+                        },
+                        "step": {
+                            "signal": "binXSignal.step"
+                        }
+                    }
+                ]
+            }
+        ],
+        columns.y.quantitative && [
+            {
+                "name": "yaxisdata",
+                "transform": [
+                    {
+                        "type": "sequence",
+                        "start": {
+                            "signal": "binYSignal.start"
+                        },
+                        "stop": {
+                            "signal": "binYSignal.stop"
+                        },
+                        "step": {
+                            "signal": "binYSignal.step"
+                        }
+                    }
+                ]
             }
         ],
         categoricalColor && topLookup(columns.color, specViewOptions.maxLegends),

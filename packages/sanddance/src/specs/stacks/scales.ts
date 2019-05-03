@@ -16,11 +16,18 @@ export default function (columns: SpecColumns, insight: Insight) {
         {
             "name": "xband",
             "type": "band",
-            "domain": {
-                "data": DataNames.Main,
-                "field": columns.x.quantitative ? "long0" : columns.x.name,
-                "sort": true
-            },
+            "domain": columns.x.quantitative ?
+                {
+                    "data": "xaxisdata",
+                    "field": "data",
+                    "sort": true
+                }
+                :
+                {
+                    "data": DataNames.Main,
+                    "field": columns.x.quantitative ? "long0" : columns.x.name,
+                    "sort": true
+                },
             "range": [
                 0,
                 {
@@ -34,11 +41,18 @@ export default function (columns: SpecColumns, insight: Insight) {
             "name": "yband",
             "type": "band",
             "reverse": true,
-            "domain": {
-                "data": DataNames.Main,
-                "field": columns.y.quantitative ? "lat0" : columns.y.name,
-                "sort": true
-            },
+            "domain": columns.y.quantitative ?
+                {
+                    "data": "yaxisdata",
+                    "field": "data",
+                    "sort": true
+                }
+                :
+                {
+                    "data": DataNames.Main,
+                    "field": columns.y.quantitative ? "lat0" : columns.y.name,
+                    "sort": true
+                },
             "range": "height",
             "padding": { "signal": SignalNames.OuterPadding },
             "round": true
@@ -68,7 +82,7 @@ export default function (columns: SpecColumns, insight: Insight) {
             "range": [
                 0,
                 {
-                    "signal": "xbandsignal"
+                    "signal": "xbandw"
                 }
             ],
             "padding": {
