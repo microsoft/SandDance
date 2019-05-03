@@ -110,16 +110,18 @@ module powerbi.extensibility.visual {
                 dataView.metadata.columns.length > 0 &&
                 dataView.table.rows) {
 
-                const rootElclassList = this.viewer.presenter.getElement(global.SandDance.VegaDeckGl.PresenterElement.root).classList;
-                if (this.settings.layout.showlegend) {
-                    rootElclassList.remove('no-legend');
-                } else {
-                    rootElclassList.add('no-legend');
-                }
-
                 const metaDataColumns = getColumnsWithRoles(dataView.metadata.columns, ['uid', 'x', 'y', 'z', 'color', 'sort']);
                 const data = getDataRows(metaDataColumns, dataView.table.rows);
-                const insight = getInsight(this.settings, this.getGlSize(), metaDataColumns);
+
+                const rootElclassList = this.viewer.presenter.getElement(global.SandDance.VegaDeckGl.PresenterElement.root).classList;
+                if (!this.settings.layout.showlegend || !metaDataColumns.color) {
+                    rootElclassList.add('no-legend');
+                } else {
+                    rootElclassList.remove('no-legend');
+                }
+                const size = this.getGlSize();
+
+                const insight = getInsight(this.settings, size, metaDataColumns);
                 if (metaDataColumns.color) {
                     insight.scheme = "pbi";
                 }
