@@ -3,7 +3,7 @@
 import getQualitative from './transform.qualitative';
 import getQuantitative from './transform.quantitative';
 import { allTruthy } from '../../array';
-import { Data, Transforms } from 'vega-typings';
+import { Data, SourceData, Transforms } from 'vega-typings';
 import { DataNames } from '../constants';
 import { facetGroupData, facetSourceData, facetTransforms } from '../facet';
 import { Insight, SpecColumns, SpecViewOptions } from '../types';
@@ -18,7 +18,7 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
         categoricalColor && topLookup(columns.color, specViewOptions.maxLegends),
         [
             nested(namespace, categoricalColor ? DataNames.Legend : nestedDataName, columns),
-            stacked(namespace,
+            stacked(namespace, namespace.nested,
                 columns.facet && facetTransforms(columns.facet, insight.facets)
             )
         ],
@@ -46,8 +46,8 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
     return data;
 }
 
-function nested(namespace: NameSpace, source: string, columns: SpecColumns) {
-    const data: Data = {
+export function nested(namespace: NameSpace, source: string, columns: SpecColumns) {
+    const data: SourceData = {
         "name": namespace.nested,
         source,
         "transform": columns.x.quantitative ?
@@ -58,10 +58,10 @@ function nested(namespace: NameSpace, source: string, columns: SpecColumns) {
     return data;
 }
 
-function stacked(namespace: NameSpace, transforms?: Transforms[]) {
-    const data: Data = {
+export function stacked(namespace: NameSpace, source: string, transforms?: Transforms[]) {
+    const data: SourceData = {
         "name": namespace.stacked,
-        "source": namespace.nested,
+        source,
         "transform": allTruthy<Transforms>(
             transforms,
             xy(namespace)
@@ -84,12 +84,4 @@ function xy(namespace: NameSpace) {
         }
     ];
     return transforms;
-}
-
-export function cellData(namespace: NameSpace, source: string, columns: SpecColumns) {
-    const data: Data[] = [
-        nested(namespace, source, columns),
-        stacked(namespace)
-    ];
-    return data;
 }

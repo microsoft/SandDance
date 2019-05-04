@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import getAxes from './axes';
-import getData, { cellData } from './data';
+import getData, { nested, stacked } from './data';
 import getMarks from './marks';
 import getScales from './scales';
 import getSignals from './signals';
@@ -72,7 +72,16 @@ export const barchart: SpecCreator = (insight: Insight, columns: SpecColumns, sp
     if (columns.facet) {
         const cellNamespace = new NameSpace('Cell');
         const cellMarks = getMarks(cellNamespace, columns, specViewOptions);
-        marks = facetMarks(specViewOptions, rootNamespace.stacked, cellMarks, axes, cellData(cellNamespace, DataNames.FacetGroupCell, columns));
+        const cd = columns.x.quantitative ?
+            [
+                stacked(cellNamespace, DataNames.FacetGroupCell)
+            ]
+            :
+            [
+                nested(cellNamespace, DataNames.FacetGroupCell, columns),
+                stacked(cellNamespace, cellNamespace.nested)
+            ];
+        marks = facetMarks(specViewOptions, rootNamespace.stacked, cellMarks, axes, cd);
         axes = [];
     } else {
         marks = getMarks(rootNamespace, columns, specViewOptions);
