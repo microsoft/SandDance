@@ -31,17 +31,21 @@ export function linearScale(name: string, data: string, field: string, range: Ra
     return scale;
 }
 
-export function pointScale(name: string, data: string, range: RangeBand, field: string) {
+export function pointScale(name: string, data: string, range: RangeBand, field: string, reverse?: boolean) {
     const scale: PointScale = {
         name,
         "type": "point",
         range,
         "domain": {
             data,
-            field
+            field,
+            sort: true
         },
         "padding": 0.5
     };
+    if (reverse !== undefined) {
+        scale.reverse = reverse;
+    }
     return scale;
 }
 

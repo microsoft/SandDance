@@ -84,12 +84,12 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                 "update": `${SignalNames.XGridSize}*${SignalNames.YGridSize}`
             },
             {
-                "name": "xbandw2",
-                "update": "bandwidth('xband')"
+                "name": "xbandw",
+                "update": `bandwidth('xband')`
             },
             {
                 "name": "xbandsize",
-                "update": `(xbandw2 / (${SignalNames.XGridSize} + ${SignalNames.InnerPadding}))*(1-${SignalNames.InnerPadding})`
+                "update": `(xbandw / (${SignalNames.XGridSize} + ${SignalNames.InnerPadding}))*(1-${SignalNames.InnerPadding})`
             },
             {
                 "name": "ybandw",
@@ -102,14 +102,6 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
             {
                 "name": "actsize",
                 "update": "min(xbandsize,ybandsize)"
-            },
-            {
-                "name": "xbandsignal",
-                "update": "bandwidth('xband')"
-            },
-            {
-                "name": "ybandsignal",
-                "update": "bandwidth('yband')"
             },
             {
                 "name": "countheight",

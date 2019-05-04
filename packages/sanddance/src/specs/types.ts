@@ -13,7 +13,7 @@ export type AxisSelectionType = 'exact' | 'range';
 /**
  * Types of SandDance visualizations.
  */
-export type Chart = 'scatterplot' | 'barchart' | 'treemap' | 'stacks';
+export type Chart = 'scatterplot' | 'barchart' | 'treemap' | 'stacks' | 'density';
 
 export type ColorBin = 'continuous' | 'quantize' | 'quantile';
 

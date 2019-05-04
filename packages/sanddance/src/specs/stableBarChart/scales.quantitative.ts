@@ -28,8 +28,8 @@ export default function (namespace: NameSpace, columns: SpecColumns) {
             ],
             "padding": 0.01,
             "domain": {
-                "data": namespace.nested,
-                "field": "__bin0",
+                "data": "xaxisdata",
+                "field": "data",
                 "sort": true
             }
         }

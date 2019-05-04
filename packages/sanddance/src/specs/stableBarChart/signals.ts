@@ -28,7 +28,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
             },
             {
                 "name": "xdesbandwidth",
-                "update": "bandwidth('xscaleavailable')"
+                "update": `bandwidth('${columns.x.quantitative ? ScaleNames.X : 'xscaleavailable'}')`
             },
             {
                 "name": "binAspect",

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { binnableColorScale } from '../scales';
+import { binnableColorScale, linearScale, pointScale } from '../scales';
 import {
     ColorScaleNone,
     DataNames,
@@ -9,13 +9,13 @@ import {
     SignalNames
 } from '../constants';
 import { Insight, SpecColumns } from '../types';
-import { Scale } from 'vega-typings';
+import { RangeScheme, Scale } from 'vega-typings';
 
 export default function (columns: SpecColumns, insight: Insight) {
     const scales: Scale[] = [
         {
-            "name": "xband",
-            "type": "band",
+            "name": "xscale",
+            "type": "point",
             "domain": columns.x.quantitative ?
                 {
                     "data": "xaxisdata",
@@ -25,22 +25,15 @@ export default function (columns: SpecColumns, insight: Insight) {
                 :
                 {
                     "data": DataNames.Main,
-                    "field": columns.x.quantitative ? "long0" : columns.x.name,
+                    "field": columns.x.name,
                     "sort": true
                 },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "padding": { "signal": SignalNames.OuterPadding },
-            "round": true
+            "range": "width",
+            "padding": 0.5
         },
         {
-            "name": "yband",
-            "type": "band",
-            "reverse": true,
+            "name": "yscale",
+            "type": "point",
             "domain": columns.y.quantitative ?
                 {
                     "data": "yaxisdata",
@@ -50,67 +43,28 @@ export default function (columns: SpecColumns, insight: Insight) {
                 :
                 {
                     "data": DataNames.Main,
-                    "field": columns.y.quantitative ? "lat0" : columns.y.name,
+                    "field": columns.y.name,
                     "sort": true
                 },
             "range": "height",
-            "padding": { "signal": SignalNames.OuterPadding },
-            "round": true
+            "reverse": true,
+            "padding": 0.5
         },
         {
-            "name": "zband",
-            "type": "band",
-            "reverse": false,
-            "domain": {
-                "data": "stackedgroup",
-                "field": "row",
-                "sort": true
-            },
-            "align": 0.0,
+            "name": "sizescale",
+            "type": "linear",
+            "domain": [
+                0,
+                {
+                    "signal": "sqrt(cextent[1])"
+                }
+            ],
             "range": [
                 0,
                 {
-                    "signal": "countheight"
+                    "signal": "width/max(xsize,ysize)"
                 }
-            ],
-            "padding": { "signal": SignalNames.InnerPadding },
-            "round": false
-        },
-        {
-            "name": "xinternalscale",
-            "type": "band",
-            "range": [
-                0,
-                {
-                    "signal": "xbandw"
-                }
-            ],
-            "padding": {
-                "signal": SignalNames.InnerPadding
-            },
-            "domain": {
-                "data": "stackedgroup",
-                "field": "column",
-                "sort": true
-            }
-        },
-        {
-            "name": "yinternalscale",
-            "type": "band",
-            "range": [
-                0,
-                {
-                    "signal": "ybandw"
-                }
-            ],
-            "padding": {
-                "signal": SignalNames.InnerPadding
-            },
-            "domain": {
-                "data": "stackedgroup",
-                "field": "depth",
-                "sort": true
-            }
+            ]
         }
     ];
     if (columns.color) {
@@ -133,6 +87,15 @@ export default function (columns: SpecColumns, insight: Insight) {
                 }
             );
         }
+    }
+    if (columns.z) {
+        const zRange: RangeScheme = [0, { "signal": SignalNames.ZHeight }];
+        scales.push(
+            columns.z.quantitative ?
+                linearScale(ScaleNames.Z, DataNames.Main, columns.z.name, zRange, false, true)
+                :
+                pointScale(ScaleNames.Z, DataNames.Main, zRange, columns.z.name)
+        );
     }
     return scales;
 }

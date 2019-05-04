@@ -12,6 +12,7 @@ import { scatterplot } from './scatterPlot';
 import { SpecCreator, SpecResult } from './interfaces';
 import { treemap } from './treeMap';
 import { stacks } from './stacks';
+import { density } from './density';
 
 export { constants, barchart as barChart, scatterplot as scatterPlot };
 
@@ -19,7 +20,8 @@ export const creators: { [chart in Chart]: SpecCreator } = {
     barchart,
     scatterplot,
     treemap,
-    stacks
+    stacks,
+    density
 }
 
 export function create(insight: Insight, specColumns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult {

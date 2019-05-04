@@ -1,17 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import getAxes from './axes';
-import getData, { nested, stacked } from './data';
+import getData from './data';
 import getMarks from './marks';
 import getScales from './scales';
 import getSignals from './signals';
-import {
-    checkForFacetErrors,
-    facetMarks,
-    facetSize,
-    layout
-} from '../facet';
-import { DataNames, SignalNames } from '../constants';
+import { checkForFacetErrors, facetSize, layout } from '../facet';
 import {
     Insight,
     SpecCapabilities,
@@ -19,15 +13,16 @@ import {
     SpecViewOptions
 } from '../types';
 import { legend } from '../legends';
-import { Mark, Spec } from 'vega-typings';
-import { NameSpace } from './namespace';
+import { SignalNames } from '../constants';
+import { Spec } from 'vega-typings';
 import { SpecCreator, SpecResult } from '../interfaces';
 
-export const barchart: SpecCreator = (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult => {
+export const density: SpecCreator = (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult => {
     const errors: string[] = [];
 
     if (!columns.uid) errors.push(`Must set a field for id`);
     if (!columns.x) errors.push(`Must set a field for x axis`);
+    if (!columns.y) errors.push(`Must set a field for y axis`);
     checkForFacetErrors(insight.facets, errors);
 
     const specCapabilities: SpecCapabilities = {
@@ -39,6 +34,12 @@ export const barchart: SpecCreator = (insight: Insight, columns: SpecColumns, sp
                 signals: [SignalNames.XBins]
             },
             {
+                role: 'y',
+                binnable: true,
+                axisSelection: columns.y && columns.y.quantitative ? 'range' : 'exact',
+                signals: [SignalNames.YBins]
+            },
+            {
                 role: 'z',
                 allowNone: true
             },
@@ -48,10 +49,6 @@ export const barchart: SpecCreator = (insight: Insight, columns: SpecColumns, sp
             },
             {
                 role: 'sort',
-                allowNone: true
-            },
-            {
-                role: 'facet',
                 allowNone: true
             }
         ]
@@ -65,28 +62,6 @@ export const barchart: SpecCreator = (insight: Insight, columns: SpecColumns, sp
         };
     }
 
-    const rootNamespace = new NameSpace();
-    let axes = getAxes(specViewOptions, columns);
-    let marks: Mark[];
-
-    if (columns.facet) {
-        const cellNamespace = new NameSpace('Cell');
-        const cellMarks = getMarks(cellNamespace, columns, specViewOptions);
-        const cd = columns.x.quantitative ?
-            [
-                stacked(cellNamespace, DataNames.FacetGroupCell)
-            ]
-            :
-            [
-                nested(cellNamespace, DataNames.FacetGroupCell, columns),
-                stacked(cellNamespace, cellNamespace.nested)
-            ];
-        marks = facetMarks(specViewOptions, rootNamespace.stacked, cellMarks, axes, cd);
-        axes = [];
-    } else {
-        marks = getMarks(rootNamespace, columns, specViewOptions);
-    }
-
     const size = columns.facet ? facetSize(insight.facets, insight.size, specViewOptions) : insight.size;
 
     var vegaSpec: Spec = {
@@ -94,10 +69,10 @@ export const barchart: SpecCreator = (insight: Insight, columns: SpecColumns, sp
         "height": size.height,
         "width": size.width,
         signals: getSignals(insight, columns, specViewOptions),
-        scales: getScales(rootNamespace, insight, columns),
-        axes,
-        data: getData(rootNamespace, insight, columns, specViewOptions),
-        marks
+        data: getData(insight, columns, specViewOptions),
+        scales: getScales(columns, insight),
+        axes: getAxes(specViewOptions, columns),
+        marks: getMarks(columns, specViewOptions)
     };
 
     if (columns.color) {

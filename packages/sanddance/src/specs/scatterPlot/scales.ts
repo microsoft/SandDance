@@ -23,7 +23,7 @@ export default function (columns: SpecColumns, insight: Insight) {
             columns.y.quantitative ?
                 linearScale(ScaleNames.Y, DataNames.Main, columns.y.name, "height", false, false)
                 :
-                pointScale(ScaleNames.Y, DataNames.Main, "height", columns.y.name)
+                pointScale(ScaleNames.Y, DataNames.Main, "height", columns.y.name, true)
         )
     ];
     if (columns.color) {
