@@ -1947,7 +1947,7 @@ Name	Class	Joined	Job	TicketCost	Age	Gender	Survived	Department
 "LUCAS, Mr William Watson"	Crew	Belfast	Saloon Steward (1st class)	0	31	Male	True	Victualling
 "LYDIATT, Mr Charles"	Crew	Southampton	Saloon Steward (1st class)	0	45	Male	False	Victualling
 "MABEY, Mr John Charles"	Crew	Southampton	3rd Class Steward	0	23	Male	False	Victualling
-"MACKAY, Mr Charles Donald"	Crew	Belfast	Saloon Steward	0	34	Female	True	Victualling
+"MACKAY, Mr Charles Donald"	Crew	Belfast	Saloon Steward	0	34	Male	True	Victualling
 "MACKIE, Mr George William"	Crew	Southampton	2nd Class Bedroom Steward	0	34	Male	False	Victualling
 "MAJOR, Mr Thomas Edgar"	Crew	Belfast	Bathroom Steward (1st Class)	0	35	Male	False	Victualling
 "MANTLE, Mr Roland Frederick"	Crew	Southampton	3rd Class Steward	0	40	Male	False	Victualling
