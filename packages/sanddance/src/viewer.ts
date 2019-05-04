@@ -241,6 +241,7 @@ export class Viewer {
             this._signalValues = { ...this._signalValues, ...uiValues, ...this.insight.signalValues };
             applySignalValues(this._signalValues, specResult.vegaSpec);
             this.vegaSpec = specResult.vegaSpec;
+            this.options.onVegaSpec && this.options.onVegaSpec(this.vegaSpec);
             this.specCapabilities = specResult.specCapabilities;
             const config = this.createConfig(c);
             if (view) {

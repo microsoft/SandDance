@@ -5,6 +5,8 @@ module powerbi.extensibility.visual {
 
     export interface FormatLayout {
         charttype: SandDance.types.Chart;
+        showaxes: boolean;
+        showlegend: boolean;
     }
 
     export interface Settings {
@@ -35,7 +37,9 @@ module powerbi.extensibility.visual {
 
             this.settings = {
                 layout: {
-                    charttype: 'barchart'
+                    charttype: 'barchart',
+                    showaxes: true,
+                    showlegend: true,
                 }
             };
 
@@ -56,9 +60,15 @@ module powerbi.extensibility.visual {
             });
 
             global.SandDance.use(vega, deck, deck, luma);
-            this.viewer = new global.SandDance.Viewer(this.viewElement);
+            this.viewer = new global.SandDance.Viewer(this.viewElement, { onVegaSpec: vegaSpec => this.onVegaSpec(vegaSpec) });
 
             this.showMessage(messages.selectData);
+        }
+
+        private onVegaSpec(vegaSpec: Vega.Spec) {
+            if (!this.settings.layout.showaxes) {
+                delete vegaSpec.axes;
+            }
         }
 
         public showMessage(errorHTML: string) {
@@ -102,7 +112,16 @@ module powerbi.extensibility.visual {
 
                 const metaDataColumns = getColumnsWithRoles(dataView.metadata.columns, ['uid', 'x', 'y', 'z', 'color', 'sort']);
                 const data = getDataRows(metaDataColumns, dataView.table.rows);
-                const insight = getInsight(this.settings, this.getGlSize(), metaDataColumns);
+
+                const rootElclassList = this.viewer.presenter.getElement(global.SandDance.VegaDeckGl.PresenterElement.root).classList;
+                if (!this.settings.layout.showlegend || !metaDataColumns.color) {
+                    rootElclassList.add('no-legend');
+                } else {
+                    rootElclassList.remove('no-legend');
+                }
+                const size = this.getGlSize();
+
+                const insight = getInsight(this.settings, size, metaDataColumns);
                 if (metaDataColumns.color) {
                     insight.scheme = "pbi";
                 }

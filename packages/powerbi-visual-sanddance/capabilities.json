@@ -49,6 +49,18 @@
                             }
                         ]
                     }
+                },
+                "showaxes": {
+                    "displayName": "Show axes",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "showlegend": {
+                    "displayName": "Show legend",
+                    "type": {
+                        "bool": true
+                    }
                 }
             }
         }

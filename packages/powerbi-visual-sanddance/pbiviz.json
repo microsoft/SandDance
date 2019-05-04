@@ -21,7 +21,7 @@
     "node_modules/powerbi-visuals-utils-dataviewutils/lib/index.js",
     "node_modules/deck.gl/deckgl.min.js",
     "node_modules/vega-lib/build/vega.js",
-    "node_modules/sanddance/dist/umd/sanddance.js"
+    "node_modules/@msrvida/sanddance/dist/umd/sanddance.js"
   ],
   "style": "style/visual.less",
   "capabilities": "capabilities.json",

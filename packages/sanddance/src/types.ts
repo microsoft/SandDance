@@ -8,10 +8,11 @@ import {
     SpecColorSettings,
     SpecLanguage,
     SpecViewOptions
-} from './specs/types';
+    } from './specs/types';
 import { DeckProps } from '@deck.gl/core/lib/deck';
 import { LightSettings } from '@deck.gl/core/lib/layer';
 import { Search, SearchExpressionGroup } from './searchExpression/types';
+import { Spec } from 'vega-typings';
 import { SpecResult } from './specs/interfaces';
 
 export * from './searchExpression/types';
@@ -115,6 +116,11 @@ export interface ViewerOptions extends SpecViewOptions {
      * Optional handler when legend row is clicked.
      */
     onLegendRowClick?: (e: TouchEvent | MouseEvent | PointerEvent, legendRow: LegendRowWithSearch) => void;
+
+    /**
+     * Optional handler when Vega spec is created, prior to it being rendered.
+     */
+    onVegaSpec?: (vegaSpec: Spec) => void;
 
     /**
      * Z value of selection polygons.
