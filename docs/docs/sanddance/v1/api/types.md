@@ -523,6 +523,7 @@ interface ViewerOptions extends SpecViewOptions {
     onPresent?: () => void;
     onAxisClick?: (e: TouchEvent | MouseEvent | PointerEvent, serch: SearchExpressionGroup<SearchExpression>) => void;
     onLegendRowClick?: (e: TouchEvent | MouseEvent | PointerEvent, legendRow: LegendRowWithSearch) => void;
+    onVegaSpec?: (vegaSpec: Spec) => void;
     selectionPolygonZ: number;
 }
 ```
@@ -547,6 +548,7 @@ interface ViewerOptions extends SpecViewOptions {
 | onPresent            | () => void                                                                                                    | true     | Optional handler when chart is presented.                                   |
 | onAxisClick          | (e: TouchEvent &#124; MouseEvent &#124; PointerEvent, serch: SearchExpressionGroup<SearchExpression>) => void | true     | Optional handler when axis is clicked.                                      |
 | onLegendRowClick     | (e: TouchEvent &#124; MouseEvent &#124; PointerEvent, legendRow: LegendRowWithSearch) => void                 | true     | Optional handler when legend row is clicked.                                |
+| onVegaSpec           | (vegaSpec: Spec) => void                                                                                      | true     | Optional handler when Vega spec is created, prior to it being rendered.     |
 | selectionPolygonZ    | number                                                                                                        | false    | Z value of selection polygons.                                              |
 
 ----------
@@ -899,12 +901,12 @@ type AxisSelectionType = "exact" | "range";
 Types of SandDance visualizations.
 
 ```typescript
-type Chart = "scatterplot" | "barchart" | "treemap" | "stacks";
+type Chart = "scatterplot" | "barchart" | "treemap" | "stacks" | "density";
 ```
 
 **Type**
 
-"scatterplot" | "barchart" | "treemap" | "stacks"
+"scatterplot" | "barchart" | "treemap" | "stacks" | "density"
 
 ----------
 
