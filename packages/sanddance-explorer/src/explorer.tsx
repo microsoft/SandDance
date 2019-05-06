@@ -291,14 +291,19 @@ export class Explorer extends React.Component<Props, State> {
     //special case mappings when switching chart type
     if (this.state.chart === 'scatterplot' && chart === 'barchart') {
       newState.columns = { ...this.state.columns, sort: this.state.columns.y };
-    } else if (chart === 'treemap' && !this.state.columns.size) {
-      //make sure size exists and is numeric
-      const sizeColumn = this.state.dataContent.columns.filter(c => c.quantitative)[0];
-      if (!sizeColumn) {
-        //TODO error - no numeric columns
-      } else {
-        newState.columns = { ...this.state.columns, size: sizeColumn.name };
+    } else if (chart === 'treemap') {
+      newState.view = '2d';
+      if (!this.state.columns.size) {
+        //make sure size exists and is numeric
+        const sizeColumn = this.state.dataContent.columns.filter(c => c.quantitative)[0];
+        if (!sizeColumn) {
+          //TODO error - no numeric columns
+        } else {
+          newState.columns = { ...this.state.columns, size: sizeColumn.name };
+        }
       }
+    } else if (chart === 'stacks') {
+      newState.view = '3d';
     }
 
     this.calculate(() => this.changeInsight(newState as any));
