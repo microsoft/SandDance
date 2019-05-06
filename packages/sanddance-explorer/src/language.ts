@@ -36,7 +36,7 @@ export const strings = {
     chartTypeScatterPlot: "Scatter plot",
     chartTypeDensity: "Density",
     chartTypeBarChart: "Bar chart",
-    chartTypeTreeMap: "Tree Map",
+    chartTypeTreeMap: "Tree map",
     chartTypeStacks: "Stacks",
     columnLabelColumn: "Column",
     columnLabelLink: "Web Search",
