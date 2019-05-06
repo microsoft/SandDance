@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.1.0]
+- Added chart types: Density & Stacks
+
 ## [0.2.5]
 - Added icon
 
