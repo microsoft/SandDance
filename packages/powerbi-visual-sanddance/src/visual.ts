@@ -3,11 +3,16 @@
 module powerbi.extensibility.visual {
     "use strict";
 
+    const defaultScheme = "powerbi";
+
     export interface FormatLayout {
         charttype: SandDance.types.Chart;
         showaxes: boolean;
         showlegend: boolean;
         scatterplotpointsize: number;
+        colorbynumeric: string;
+        colorbycategorical: string;
+        colorbytype: 'numeric' | 'categorical';
     }
 
     export interface Settings {
@@ -52,11 +57,14 @@ module powerbi.extensibility.visual {
                     charttype: 'barchart',
                     showaxes: true,
                     showlegend: true,
-                    scatterplotpointsize: 5
+                    scatterplotpointsize: 5,
+                    colorbycategorical: defaultScheme,
+                    colorbynumeric: defaultScheme,
+                    colorbytype: null
                 }
             };
 
-            vega.scheme("pbi", (value: any) => {
+            vega.scheme(defaultScheme, (value: any) => {
                 const color = options.host.colorPalette.getColor(value);
                 return color.value;
             });
@@ -125,7 +133,11 @@ module powerbi.extensibility.visual {
 
                 const insight = getInsight(this.settings, size, metaDataColumns);
                 if (metaDataColumns.color) {
-                    insight.scheme = "pbi";
+                    if (this.settings.layout.colorbytype === 'numeric') {
+                        insight.scheme = this.settings.layout.colorbynumeric || defaultScheme;
+                    } else {
+                        insight.scheme = this.settings.layout.colorbycategorical || defaultScheme;
+                    }
                 }
                 if (insight.chart === 'scatterplot') {
                     insight.signalValues[global.SandDance.constants.SignalNames.PointSize] = this.settings.layout.scatterplotpointsize;
