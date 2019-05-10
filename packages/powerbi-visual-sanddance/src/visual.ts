@@ -7,6 +7,7 @@ module powerbi.extensibility.visual {
         charttype: SandDance.types.Chart;
         showaxes: boolean;
         showlegend: boolean;
+        scatterplotpointsize: number;
     }
 
     export interface Settings {
@@ -30,19 +31,6 @@ module powerbi.extensibility.visual {
             //un-comment for debug
             //console.log('Visual constructor', options);
 
-            options.element.style.position = 'relative'
-            this.viewElement = htmlHelpers.addDiv(options.element, 'sanddance-view');
-            this.errorElement = htmlHelpers.addDiv(options.element, 'sanddance-error');
-            this.errorElement.style.position = 'absolute';
-
-            this.settings = {
-                layout: {
-                    charttype: 'barchart',
-                    showaxes: true,
-                    showlegend: true,
-                }
-            };
-
             var w = window as any as {
                 vega: SandDance.VegaDeckGl.types.VegaBase;
                 deck: SandDance.VegaDeckGl.types.DeckBase & SandDance.VegaDeckGl.types.DeckLayerBase;
@@ -53,6 +41,20 @@ module powerbi.extensibility.visual {
             var luma = w.luma;
             var vega = w.vega as SandDance.VegaDeckGl.types.VegaBase;
             global.SandDance = w.SandDance;
+
+            options.element.style.position = 'relative'
+            this.viewElement = global.SandDance.VegaDeckGl.util.addDiv(options.element, 'sanddance-view');
+            this.errorElement = global.SandDance.VegaDeckGl.util.addDiv(options.element, 'sanddance-error');
+            this.errorElement.style.position = 'absolute';
+
+            this.settings = {
+                layout: {
+                    charttype: 'barchart',
+                    showaxes: true,
+                    showlegend: true,
+                    scatterplotpointsize: 5
+                }
+            };
 
             vega.scheme("pbi", (value: any) => {
                 const color = options.host.colorPalette.getColor(value);
@@ -125,13 +127,15 @@ module powerbi.extensibility.visual {
                 if (metaDataColumns.color) {
                     insight.scheme = "pbi";
                 }
+                if (insight.chart === 'scatterplot') {
+                    insight.signalValues[global.SandDance.constants.SignalNames.PointSize] = this.settings.layout.scatterplotpointsize;
+                }
                 this.viewer.render(insight, data, { ordinalMap: this.ordinalMap }).then(renderResult => {
                     if (renderResult.specResult.errors) {
                         this.showMessage(messages.chartErrors(renderResult.specResult.errors));
                     } else {
                         this.ordinalMap = renderResult.ordinalMap;
                         this.showMessage('');
-                        //console.log('viewer.render', this.viewer.vegaSpec);
                     }
                 });
             } else {
@@ -150,6 +154,7 @@ module powerbi.extensibility.visual {
             let objectEnumeration: VisualObjectInstance[] = [];
 
             switch (objectName) {
+
                 case 'layout':
                     var o: VisualObjectInstance = {
                         objectName: objectName,

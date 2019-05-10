@@ -61,6 +61,13 @@
                     "type": {
                         "bool": true
                     }
+                },
+                "scatterplotpointsize": {
+                    "displayName": "Point size",
+                    "description": "Size of points (for Scatter Plot only.)",
+                    "type": {
+                        "numeric": true
+                    }
                 }
             }
         }

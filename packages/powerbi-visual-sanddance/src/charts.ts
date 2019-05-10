@@ -6,7 +6,7 @@ module powerbi.extensibility.visual {
         const columns = convertSpecColumnsToInsightColumns(specColumns);
         const view: SandDance.VegaDeckGl.types.View = columns.z ? "3d" : "2d";
         const chart = settings.layout.charttype as SandDance.types.Chart;
-        const insight: SandDance.types.Insight = { size, chart, columns, view };
+        const insight: SandDance.types.Insight = { size, chart, columns, view, signalValues: {} };
         return insight;
     }
 
