@@ -129,18 +129,11 @@ module powerbi.extensibility.visual {
 
             if (dataView.metadata && dataView.metadata.objects) {
                 const settings = dataView.metadata.objects as any as Settings;
-                const { sandDanceMainSettings, sandDanceColorNumericSettings, sandDanceColorCategoricalSettings, sandDanceScatterPlotSettings } = settings;
-                if (sandDanceMainSettings) {
-                    this.settings.sandDanceMainSettings = { ... this.settings.sandDanceMainSettings, ...sandDanceMainSettings };
-                }
-                if (sandDanceColorCategoricalSettings) {
-                    this.settings.sandDanceColorCategoricalSettings = { ... this.settings.sandDanceColorCategoricalSettings, ...sandDanceColorCategoricalSettings };
-                }
-                if (sandDanceColorNumericSettings) {
-                    this.settings.sandDanceColorNumericSettings = { ... this.settings.sandDanceColorNumericSettings, ...sandDanceColorNumericSettings };
-                }
-                if (sandDanceScatterPlotSettings) {
-                    this.settings.sandDanceScatterPlotSettings = { ... this.settings.sandDanceScatterPlotSettings, ...sandDanceScatterPlotSettings };
+                for (var key in settings) {
+                    let value = settings[key];
+                    if (value) {
+                        this.settings[key] = { ... this.settings[key], ...value };
+                    }
                 }
             }
 
