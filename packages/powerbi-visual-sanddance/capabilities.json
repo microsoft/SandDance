@@ -32,8 +32,8 @@
         }
     ],
     "objects": {
-        "layout": {
-            "displayName": "Layout",
+        "sandDanceMainSettings": {
+            "displayName": "SandDance",
             "properties": {
                 "charttype": {
                     "displayName": "Chart type",
@@ -60,13 +60,6 @@
                     "displayName": "Show legend",
                     "type": {
                         "bool": true
-                    }
-                },
-                "scatterplotpointsize": {
-                    "displayName": "Point size",
-                    "description": "Size of points (for Scatter Plot only.)",
-                    "type": {
-                        "numeric": true
                     }
                 },
                 "colorbytype": {
@@ -282,6 +275,17 @@
                                 "displayName": "set3"
                             }
                         ]
+                    }
+                }
+            }
+        },
+        "sandDanceScatterPlotSettings": {
+            "displayName": "SandDance Scatter",
+            "properties": {
+                "pointsize": {
+                    "displayName": "Point size",
+                    "type": {
+                        "numeric": true
                     }
                 }
             }

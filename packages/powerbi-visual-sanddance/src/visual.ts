@@ -5,18 +5,22 @@ module powerbi.extensibility.visual {
 
     const defaultScheme = "powerbi";
 
-    export interface FormatLayout {
+    export interface SandDanceMainSettings {
         charttype: SandDance.types.Chart;
         showaxes: boolean;
         showlegend: boolean;
-        scatterplotpointsize: number;
         colorbynumeric: string;
         colorbycategorical: string;
         colorbytype: 'numeric' | 'categorical';
     }
 
+    export interface SandDanceScatterPlotSettings {
+        pointsize: number;
+    }
+
     export interface Settings {
-        layout: FormatLayout;
+        sandDanceMainSettings: SandDanceMainSettings;
+        sandDanceScatterPlotSettings?: SandDanceScatterPlotSettings;
     }
 
     export interface Global {
@@ -53,14 +57,16 @@ module powerbi.extensibility.visual {
             this.errorElement.style.position = 'absolute';
 
             this.settings = {
-                layout: {
+                sandDanceMainSettings: {
                     charttype: 'barchart',
                     showaxes: true,
                     showlegend: true,
-                    scatterplotpointsize: 5,
                     colorbycategorical: defaultScheme,
                     colorbynumeric: defaultScheme,
                     colorbytype: null
+                },
+                sandDanceScatterPlotSettings: {
+                    pointsize: 5
                 }
             };
 
@@ -76,7 +82,7 @@ module powerbi.extensibility.visual {
         }
 
         private onVegaSpec(vegaSpec: Vega.Spec) {
-            if (!this.settings.layout.showaxes) {
+            if (!this.settings.sandDanceMainSettings.showaxes) {
                 delete vegaSpec.axes;
             }
         }
@@ -109,9 +115,16 @@ module powerbi.extensibility.visual {
                 return;
             }
 
-            let formatLayout = dataView.metadata && dataView.metadata.objects && (dataView.metadata.objects as any as Settings).layout;
-            if (formatLayout) {
-                this.settings.layout = { ... this.settings.layout, ...formatLayout };
+            if (dataView.metadata && dataView.metadata.objects) {
+                const settings = dataView.metadata.objects as any as Settings;
+                const sandDanceMainSettings = settings.sandDanceMainSettings;
+                if (sandDanceMainSettings) {
+                    this.settings.sandDanceMainSettings = { ... this.settings.sandDanceMainSettings, ...sandDanceMainSettings };
+                }
+                const sandDanceScatterPlotSettings = settings.sandDanceScatterPlotSettings;
+                if (sandDanceScatterPlotSettings) {
+                    this.settings.sandDanceScatterPlotSettings = { ... this.settings.sandDanceScatterPlotSettings, ...sandDanceScatterPlotSettings };
+                }
             }
 
             if (dataView.table &&
@@ -124,7 +137,7 @@ module powerbi.extensibility.visual {
                 const data = getDataRows(metaDataColumns, dataView.table.rows);
 
                 const rootElclassList = this.viewer.presenter.getElement(global.SandDance.VegaDeckGl.PresenterElement.root).classList;
-                if (!this.settings.layout.showlegend || !metaDataColumns.color) {
+                if (!this.settings.sandDanceMainSettings.showlegend || !metaDataColumns.color) {
                     rootElclassList.add('no-legend');
                 } else {
                     rootElclassList.remove('no-legend');
@@ -133,14 +146,14 @@ module powerbi.extensibility.visual {
 
                 const insight = getInsight(this.settings, size, metaDataColumns);
                 if (metaDataColumns.color) {
-                    if (this.settings.layout.colorbytype === 'numeric') {
-                        insight.scheme = this.settings.layout.colorbynumeric || defaultScheme;
+                    if (this.settings.sandDanceMainSettings.colorbytype === 'numeric') {
+                        insight.scheme = this.settings.sandDanceMainSettings.colorbynumeric || defaultScheme;
                     } else {
-                        insight.scheme = this.settings.layout.colorbycategorical || defaultScheme;
+                        insight.scheme = this.settings.sandDanceMainSettings.colorbycategorical || defaultScheme;
                     }
                 }
                 if (insight.chart === 'scatterplot') {
-                    insight.signalValues[global.SandDance.constants.SignalNames.PointSize] = this.settings.layout.scatterplotpointsize;
+                    insight.signalValues[global.SandDance.constants.SignalNames.PointSize] = this.settings.sandDanceScatterPlotSettings.pointsize;
                 }
                 this.viewer.render(insight, data, { ordinalMap: this.ordinalMap }).then(renderResult => {
                     if (renderResult.specResult.errors) {
@@ -167,13 +180,25 @@ module powerbi.extensibility.visual {
 
             switch (objectName) {
 
-                case 'layout':
+                case 'sandDanceMainSettings':
                     var o: VisualObjectInstance = {
                         objectName: objectName,
-                        properties: this.settings.layout as any,
+                        properties: this.settings.sandDanceMainSettings as any,
                         selector: null
                     };
                     objectEnumeration.push(o);
+                    break;
+
+                case 'sandDanceScatterPlotSettings':
+                    console.log(objectName);
+                    if (this.settings.sandDanceMainSettings.charttype === 'scatterplot') {
+                        var o: VisualObjectInstance = {
+                            objectName: objectName,
+                            properties: this.settings.sandDanceScatterPlotSettings as any,
+                            selector: null
+                        };
+                        objectEnumeration.push(o);
+                    }
                     break;
             };
             return objectEnumeration;
