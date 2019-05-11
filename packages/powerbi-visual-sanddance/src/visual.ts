@@ -9,9 +9,15 @@ module powerbi.extensibility.visual {
         charttype: SandDance.types.Chart;
         showaxes: boolean;
         showlegend: boolean;
-        colorbynumeric: string;
-        colorbycategorical: string;
         colorbytype: 'numeric' | 'categorical';
+    }
+
+    export interface SandDanceColorCategoricalSettings {
+        colorbycategorical: string;
+    }
+
+    export interface SandDanceColorNumericSettings {
+        colorbynumeric: string;
     }
 
     export interface SandDanceScatterPlotSettings {
@@ -20,6 +26,8 @@ module powerbi.extensibility.visual {
 
     export interface Settings {
         sandDanceMainSettings: SandDanceMainSettings;
+        sandDanceColorCategoricalSettings?: SandDanceColorCategoricalSettings;
+        sandDanceColorNumericSettings?: SandDanceColorNumericSettings;
         sandDanceScatterPlotSettings?: SandDanceScatterPlotSettings;
     }
 
@@ -61,9 +69,13 @@ module powerbi.extensibility.visual {
                     charttype: 'barchart',
                     showaxes: true,
                     showlegend: true,
-                    colorbycategorical: defaultScheme,
-                    colorbynumeric: defaultScheme,
                     colorbytype: null
+                },
+                sandDanceColorCategoricalSettings: {
+                    colorbycategorical: defaultScheme
+                },
+                sandDanceColorNumericSettings: {
+                    colorbynumeric: defaultScheme
                 },
                 sandDanceScatterPlotSettings: {
                     pointsize: 5
@@ -117,11 +129,16 @@ module powerbi.extensibility.visual {
 
             if (dataView.metadata && dataView.metadata.objects) {
                 const settings = dataView.metadata.objects as any as Settings;
-                const sandDanceMainSettings = settings.sandDanceMainSettings;
+                const { sandDanceMainSettings, sandDanceColorNumericSettings, sandDanceColorCategoricalSettings, sandDanceScatterPlotSettings } = settings;
                 if (sandDanceMainSettings) {
                     this.settings.sandDanceMainSettings = { ... this.settings.sandDanceMainSettings, ...sandDanceMainSettings };
                 }
-                const sandDanceScatterPlotSettings = settings.sandDanceScatterPlotSettings;
+                if (sandDanceColorCategoricalSettings) {
+                    this.settings.sandDanceColorCategoricalSettings = { ... this.settings.sandDanceColorCategoricalSettings, ...sandDanceColorCategoricalSettings };
+                }
+                if (sandDanceColorNumericSettings) {
+                    this.settings.sandDanceColorNumericSettings = { ... this.settings.sandDanceColorNumericSettings, ...sandDanceColorNumericSettings };
+                }
                 if (sandDanceScatterPlotSettings) {
                     this.settings.sandDanceScatterPlotSettings = { ... this.settings.sandDanceScatterPlotSettings, ...sandDanceScatterPlotSettings };
                 }
@@ -147,9 +164,9 @@ module powerbi.extensibility.visual {
                 const insight = getInsight(this.settings, size, metaDataColumns);
                 if (metaDataColumns.color) {
                     if (this.settings.sandDanceMainSettings.colorbytype === 'numeric') {
-                        insight.scheme = this.settings.sandDanceMainSettings.colorbynumeric || defaultScheme;
+                        insight.scheme = (this.settings.sandDanceColorNumericSettings && this.settings.sandDanceColorNumericSettings.colorbynumeric) || defaultScheme;
                     } else {
-                        insight.scheme = this.settings.sandDanceMainSettings.colorbycategorical || defaultScheme;
+                        insight.scheme = (this.settings.sandDanceColorCategoricalSettings && this.settings.sandDanceColorCategoricalSettings.colorbycategorical) || defaultScheme;
                     }
                 }
                 if (insight.chart === 'scatterplot') {
@@ -189,8 +206,29 @@ module powerbi.extensibility.visual {
                     objectEnumeration.push(o);
                     break;
 
+                case 'sandDanceColorCategoricalSettings':
+                    if (this.settings.sandDanceMainSettings.colorbytype === 'categorical') {
+                        var o: VisualObjectInstance = {
+                            objectName: objectName,
+                            properties: this.settings.sandDanceColorCategoricalSettings as any,
+                            selector: null
+                        };
+                        objectEnumeration.push(o);
+                    }
+                    break;
+
+                case 'sandDanceColorNumericSettings':
+                    if (this.settings.sandDanceMainSettings.colorbytype === 'numeric') {
+                        var o: VisualObjectInstance = {
+                            objectName: objectName,
+                            properties: this.settings.sandDanceColorNumericSettings as any,
+                            selector: null
+                        };
+                        objectEnumeration.push(o);
+                    }
+                    break;
+
                 case 'sandDanceScatterPlotSettings':
-                    console.log(objectName);
                     if (this.settings.sandDanceMainSettings.charttype === 'scatterplot') {
                         var o: VisualObjectInstance = {
                             objectName: objectName,
