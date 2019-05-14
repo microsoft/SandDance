@@ -9,7 +9,12 @@
     "watch-typescript": "tsc -p . -w",
     "build-css": "node-sass ./src/css -o ./dist/css",
     "watch-css": "node-sass ./src/css -o ./dist/css --watch",
-    "build": "npm run build-typescript && npm run build-css"
+    "bundle": "parcel build ./dist/es6/index.js --global SandDanceExplorer --no-minify --no-source-maps --out-dir ./dist/umd/ --out-file sanddance-explorer.js",
+    "build": "npm run build-typescript && npm run bundle && npm run build-css"
+  },
+  "alias": {
+    "react": "./alias/react-external.js",
+    "react-dom": "./alias/react-dom-external.js"
   },
   "devDependencies": {
     "@msrvida/office-ui-fabric-react-cdn-typings": "*",

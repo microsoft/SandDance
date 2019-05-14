@@ -6,13 +6,8 @@
   "main": "index.js",
   "scripts": {
     "build-css": "node-sass ./src/css -o ./dist/",
-    "build-explorer": "parcel build ./src/sanddance-explorer.js --global SandDanceExplorer --no-minify --no-source-maps --out-dir ./dist/",
     "build-ui": "tsc -p .",
-    "build": "npm run build-css && npm run build-explorer && npm run build-ui"
-  },
-  "alias": {
-    "react": "./alias/react-external.js",
-    "react-dom": "./alias/react-dom-external.js"
+    "build": "npm run build-css && npm run build-ui"
   },
   "repository": {
     "type": "git",
