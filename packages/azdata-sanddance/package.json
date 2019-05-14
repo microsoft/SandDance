@@ -70,7 +70,7 @@
     "scripts": {
         "clean": "rimraf ./resources/*.*",
         "vscode:prepublish": "npm run compile",
-        "resources": "node ./resources",
+        "resources": "node ./resources.js",
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
         "build": "npm run compile && npm run resources",
