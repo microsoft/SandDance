@@ -1,7 +1,7 @@
 {
   "name": "powerbi-visual-sanddance",
   "dependencies": {
-    "deck.gl": "6.3.2",
+    "deck.gl": "6.4",
     "powerbi-visuals-utils-dataviewutils": "1.2.0",
     "typescript": "2.3.3",
     "@msrvida/sanddance": "^1.0.0",
