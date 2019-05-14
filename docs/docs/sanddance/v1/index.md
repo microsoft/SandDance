@@ -19,7 +19,7 @@ You will need to consider how to load the libraries that `sanddance` depends on,
 Load dependencies via `<script>` tags in your HTML:
 ```html
 <script src="https://unpkg.com/vega-lib/build/vega.js" charset="utf-8"></script>
-<script src="https://unpkg.com/deck.gl@~6.3.2/deckgl.min.js"></script>
+<script src="https://unpkg.com/deck.gl@~6.4/deckgl.min.js"></script>
 <script src="TODO sanddance.js"></script>
 ```
 
@@ -34,9 +34,9 @@ SandDance.use(vega, deck, deck, luma);
 Add these to the `dependencies` section of your `package.json`, then run `npm install`:
 
 ```json
-"@deck.gl/core": "6.3.2",
-"@deck.gl/layers": "6.3.2",
-"luma.gl": "6.3.2",
+"@deck.gl/core": "6.4",
+"@deck.gl/layers": "6.4",
+"luma.gl": "6.4",
 "sanddance": "*",
 "vega-lib": "^4.3.0"
 ```
