@@ -12,9 +12,9 @@ Visually explore, understand, and present your data.
 Add these to the `dependencies` section of your `package.json`, then run `npm install`:
 
 ```json
-"@deck.gl/core": "6.3.2",
-"@deck.gl/layers": "6.3.2",
-"luma.gl": "6.3.2",
+"@deck.gl/core": "6.4",
+"@deck.gl/layers": "6.4",
+"luma.gl": "6.4",
 "sanddance-explorer": "*",
 "vega-lib": "^4.3.0"
 ```

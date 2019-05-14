@@ -27,7 +27,7 @@ This is the quickest installation option. You can load scripts from a CDN, or yo
 
 ```html
 <script src="https://unpkg.com/vega-lib/build/vega.js" charset="utf-8"></script>
-<script src="https://unpkg.com/deck.gl@~6.3.2/deckgl.min.js"></script>
+<script src="https://unpkg.com/deck.gl@~6.4/deckgl.min.js"></script>
 <script src="TODO vega-deck.gl.js"></script>
 ```
 
@@ -44,9 +44,9 @@ This option is for those who are using a script bundler such as [WebPack](https:
 Add these to the `dependencies` section of your `package.json`, then run `npm install`:
 
 ```json
-"@deck.gl/core": "6.3.2",
-"@deck.gl/layers": "6.3.2",
-"luma.gl": "6.3.2",
+"@deck.gl/core": "6.4",
+"@deck.gl/layers": "6.4",
+"luma.gl": "6.4",
 "vega-deck.gl": "*",
 "vega-lib": "^4.3.0"
 ```

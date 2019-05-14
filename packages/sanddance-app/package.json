@@ -22,13 +22,9 @@
     "react-dom": "./alias/react-dom-external.js"
   },
   "dependencies": {
-    "@deck.gl/core": "6.3.2",
-    "@deck.gl/layers": "6.3.2",
-    "gl-mat4": "1.2.0",
-    "gl-vec2": "1.3.0",
-    "gl-vec3": "1.1.3",
-    "gl-vec4": "1.0.1",
-    "luma.gl": "6.3.2",
+    "@deck.gl/core": "6.4",
+    "@deck.gl/layers": "6.4",
+    "luma.gl": "6.4",
     "office-ui-fabric-react": "^6.129.1",
     "@msrvida/sanddance-explorer": "*",
     "vega-lib": "^4.3.0"
