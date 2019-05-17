@@ -4,30 +4,13 @@ import * as fabric from "office-ui-fabric-react";
 import * as React from 'react';
 import { Explorer, SandDance, themePalettes, use } from "@msrvida/sanddance-explorer";
 
-function getTextcolor() {
-    const cssColor = getComputedStyle(document.body).color;
-    return SandDance.VegaDeckGl.util.colorFromString(cssColor);
-}
-
 function getThemePalette(darkTheme: boolean) {
     const theme = darkTheme ? 'dark-theme' : '';
     return themePalettes[theme];
 }
 
-function getViewerOptions() {
-    const color = getTextcolor();
-    const viewerOptions: Partial<SandDance.types.ViewerOptions> = {
-        colors: {
-            axisLine: color,
-            axisText: color,
-            hoveredCube: color
-        }
-    };
-    return viewerOptions;
-}
-
 export interface Props {
-    mounted: (explorer: Explorer) => void;
+    mounted: (app: App) => void;
 }
 
 export interface State {
@@ -43,12 +26,24 @@ export class App extends React.Component<Props, State> {
         this.state = {
             darkTheme: null
         };
-        this.viewerOptions = getViewerOptions();
+        this.viewerOptions = this.getViewerOptions();
     }
 
-    checkForDarkTheme() {
-        this.viewerOptions = getViewerOptions();
-        const darkTheme = false;
+    private getViewerOptions(darkTheme?: boolean) {
+        const textColor = darkTheme ? "white" : "black";
+        const color = SandDance.VegaDeckGl.util.colorFromString(textColor);
+        const viewerOptions: Partial<SandDance.types.ViewerOptions> = {
+            colors: {
+                axisLine: color,
+                axisText: color,
+                hoveredCube: color
+            }
+        };
+        return viewerOptions;
+    }
+
+    changeTheme(darkTheme: boolean) {
+        this.viewerOptions = this.getViewerOptions(darkTheme);
         if (this.state.darkTheme !== darkTheme && this.explorer) {
             this.explorer.updateViewerOptions(this.viewerOptions);
             if (this.explorer.viewer) {
@@ -67,7 +62,10 @@ export class App extends React.Component<Props, State> {
                 theme: this.state.darkTheme && 'dark-theme',
                 viewerOptions: this.viewerOptions,
                 initialView: "2d",
-                mounted: (e) => this.props.mounted(e)
+                mounted: explorer => {
+                    this.explorer = explorer;
+                    this.props.mounted(this);
+                }
             }
         );
     }

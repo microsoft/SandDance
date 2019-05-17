@@ -52,7 +52,7 @@ export class Visual implements IVisual {
     private settings: VisualSettings;
     private viewElement: HTMLElement;
     private errorElement: HTMLElement;
-    private explorer: Explorer;
+    private app: App;
 
     constructor(options: VisualConstructorOptions) {
         console.log('Visual constructor', options);
@@ -64,8 +64,6 @@ export class Visual implements IVisual {
             this.errorElement = SandDance.VegaDeckGl.util.addDiv(options.element, 'sanddance-error');
             this.errorElement.style.position = 'absolute';
 
-            this.errorElement.innerText = "hello world";
-
             vega.scheme(defaultScheme, (value: any) => {
                 const color = options.host.colorPalette.getColor(value);
                 return color.value;
@@ -75,13 +73,10 @@ export class Visual implements IVisual {
             use(ReactDOM.render as any, fabric as any, vega as any, deck, layers, luma);
 
             const props: Props = {
-                mounted: (explorer: Explorer) => {
-                    this.explorer = explorer;
-                }
+                mounted: (app: App) => this.app = app
             };
 
-            const app = React.createElement(App, props);
-            ReactDOM.render(app, this.viewElement);
+            ReactDOM.render(React.createElement(App, props), this.viewElement);
         }
     }
 
@@ -103,11 +98,9 @@ export class Visual implements IVisual {
             view: '3d'
         };
 
-        setTimeout(() => {
-            this.explorer.load(data, columns => insight).then(() => {
-                this.explorer.viewer.presenter.showGuides();
-            });
-        }, 1);
+        this.app.explorer.load(data, columns => insight).then(() => {
+            this.app.explorer.viewer.presenter.showGuides();
+        });
     }
 
     private static parseSettings(dataView: DataView): VisualSettings {
