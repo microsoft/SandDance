@@ -69,6 +69,7 @@ package-lock.json
 
 # powerbi builds
 .tmp
+webpack.statistics.dev.html
 
 # local jekyll site
 _site
