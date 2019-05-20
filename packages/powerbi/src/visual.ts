@@ -34,7 +34,7 @@ import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInst
 import VisualObjectInstance = powerbi.VisualObjectInstance;
 import DataView = powerbi.DataView;
 import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject;
-import { SandDance, use, Explorer } from "@msrvida/sanddance-explorer";
+import { SandDance, use } from "@msrvida/sanddance-explorer";
 import * as deck from '@deck.gl/core';
 import * as layers from '@deck.gl/layers';
 import * as luma from 'luma.gl';
@@ -83,6 +83,11 @@ export class Visual implements IVisual {
     public update(options: VisualUpdateOptions) {
         this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
         console.log('Visual update', options);
+
+        const { categorical } = options.dataViews[0];
+
+        const uid = categorical.categories[0].values;
+        const y = categorical.values[0].values;
 
         const insight: SandDance.types.Insight = {
             scheme: "blues",
