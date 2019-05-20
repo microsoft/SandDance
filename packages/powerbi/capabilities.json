@@ -1,58 +1,299 @@
 {
     "dataRoles": [
         {
-            "displayName": "Category Data",
-            "name": "category",
-            "kind": "Grouping"
+            "displayName": "Unique Id",
+            "name": "uid",
+            "kind": "GroupingOrMeasure"
         },
         {
-            "displayName": "Measure Data",
-            "name": "measure",
-            "kind": "Measure"
+            "displayName": "X Axis",
+            "name": "x",
+            "kind": "GroupingOrMeasure"
+        },
+        {
+            "displayName": "Y Axis",
+            "name": "y",
+            "kind": "GroupingOrMeasure"
+        },
+        {
+            "displayName": "Z Axis",
+            "name": "z",
+            "kind": "GroupingOrMeasure"
+        },
+        {
+            "displayName": "Color by",
+            "name": "color",
+            "kind": "GroupingOrMeasure"
+        },
+        {
+            "displayName": "Sort by",
+            "name": "sort",
+            "kind": "GroupingOrMeasure"
         }
     ],
     "objects": {
-        "dataPoint": {
-            "displayName": "Data colors",
+        "sandDanceMainSettings": {
+            "displayName": "SandDance",
             "properties": {
-                "defaultColor": {
-                    "displayName": "Default color",
+                "charttype": {
+                    "displayName": "Chart type",
                     "type": {
-                        "fill": {
-                            "solid": {
-                                "color": true
+                        "enumeration": [
+                            {
+                                "value": "barchart",
+                                "displayName": "Column"
+                            },
+                            {
+                                "value": "scatterplot",
+                                "displayName": "Scatter"
                             }
-                        }
+                        ]
                     }
                 },
-                "showAllDataPoints": {
-                    "displayName": "Show all",
+                "showaxes": {
+                    "displayName": "Show axes",
                     "type": {
                         "bool": true
                     }
                 },
-                "fill": {
-                    "displayName": "Fill",
+                "showlegend": {
+                    "displayName": "Show legend",
                     "type": {
-                        "fill": {
-                            "solid": {
-                                "color": true
+                        "bool": true
+                    }
+                },
+                "colorbytype": {
+                    "displayName": "Color scheme type",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "value": "numeric",
+                                "displayName": "Numeric"
+                            },
+                            {
+                                "value": "categorical",
+                                "displayName": "Categorical"
                             }
-                        }
+                        ]
                     }
-                },
-                "fillRule": {
-                    "displayName": "Color saturation",
+                }
+            }
+        },
+        "sandDanceColorCategoricalSettings": {
+            "displayName": "SandDance Categorical color",
+            "properties": {
+                "colorbycategorical": {
+                    "displayName": "Color scheme",
                     "type": {
-                        "fill": {}
+                        "enumeration": [
+                            {
+                                "value": "powerbi",
+                                "displayName": "Power BI"
+                            },
+                            {
+                                "value": "accent",
+                                "displayName": "accent"
+                            },
+                            {
+                                "value": "category10",
+                                "displayName": "category10"
+                            },
+                            {
+                                "value": "category20",
+                                "displayName": "category20"
+                            },
+                            {
+                                "value": "category20b",
+                                "displayName": "category20b"
+                            },
+                            {
+                                "value": "category20c",
+                                "displayName": "category20c"
+                            },
+                            {
+                                "value": "dark2",
+                                "displayName": "dark2"
+                            },
+                            {
+                                "value": "paired",
+                                "displayName": "paired"
+                            },
+                            {
+                                "value": "pastel1",
+                                "displayName": "pastel1"
+                            },
+                            {
+                                "value": "pastel2",
+                                "displayName": "pastel2"
+                            },
+                            {
+                                "value": "set1",
+                                "displayName": "set1"
+                            },
+                            {
+                                "value": "set2",
+                                "displayName": "set2"
+                            },
+                            {
+                                "value": "set3",
+                                "displayName": "set3"
+                            }
+                        ]
                     }
-                },
-                 "fontSize": {
-                    "displayName": "Text Size",
+                }
+            }
+        },
+        "sandDanceColorNumericSettings": {
+            "displayName": "SandDance Numeric Color",
+            "properties": {
+                "colorbynumeric": {
+                    "displayName": "Color scheme",
                     "type": {
-                        "formatting": {
-                            "fontSize": true
-                        }
+                        "enumeration": [
+                            {
+                                "value": "powerbi",
+                                "displayName": "Power BI"
+                            },
+                            {
+                                "value": "blues",
+                                "displayName": "blues"
+                            },
+                            {
+                                "value": "greens",
+                                "displayName": "greens"
+                            },
+                            {
+                                "value": "oranges",
+                                "displayName": "oranges"
+                            },
+                            {
+                                "value": "reds",
+                                "displayName": "reds"
+                            },
+                            {
+                                "value": "purples",
+                                "displayName": "purples"
+                            },
+                            {
+                                "value": "greys",
+                                "displayName": "greys"
+                            },
+                            {
+                                "value": "viridis",
+                                "displayName": "viridis"
+                            },
+                            {
+                                "value": "magma",
+                                "displayName": "magma"
+                            },
+                            {
+                                "value": "inferno",
+                                "displayName": "inferno"
+                            },
+                            {
+                                "value": "plasma",
+                                "displayName": "plasma"
+                            },
+                            {
+                                "value": "bluegreen",
+                                "displayName": "bluegreen"
+                            },
+                            {
+                                "value": "bluepurple",
+                                "displayName": "bluepurple"
+                            },
+                            {
+                                "value": "greenblue",
+                                "displayName": "greenblue"
+                            },
+                            {
+                                "value": "orangered",
+                                "displayName": "orangered"
+                            },
+                            {
+                                "value": "purplebluegreen",
+                                "displayName": "purplebluegreen"
+                            },
+                            {
+                                "value": "purpleblue",
+                                "displayName": "purpleblue"
+                            },
+                            {
+                                "value": "purplered",
+                                "displayName": "purplered"
+                            },
+                            {
+                                "value": "redpurple",
+                                "displayName": "redpurple"
+                            },
+                            {
+                                "value": "yellowgreenblue",
+                                "displayName": "yellowgreenblue"
+                            },
+                            {
+                                "value": "yellowgreen",
+                                "displayName": "yellowgreen"
+                            },
+                            {
+                                "value": "yelloworangebrown",
+                                "displayName": "yelloworangebrown"
+                            },
+                            {
+                                "value": "yelloworangered",
+                                "displayName": "yelloworangered"
+                            },
+                            {
+                                "value": "blueorange",
+                                "displayName": "blueorange"
+                            },
+                            {
+                                "value": "brownbluegreen",
+                                "displayName": "brownbluegreen"
+                            },
+                            {
+                                "value": "purplegreen",
+                                "displayName": "purplegreen"
+                            },
+                            {
+                                "value": "pinkyellowgreen",
+                                "displayName": "pinkyellowgreen"
+                            },
+                            {
+                                "value": "purpleorange",
+                                "displayName": "purpleorange"
+                            },
+                            {
+                                "value": "redblue",
+                                "displayName": "redblue"
+                            },
+                            {
+                                "value": "redgrey",
+                                "displayName": "redgrey"
+                            },
+                            {
+                                "value": "redyellowblue",
+                                "displayName": "redyellowblue"
+                            },
+                            {
+                                "value": "redyellowgreen",
+                                "displayName": "redyellowgreen"
+                            },
+                            {
+                                "value": "spectral",
+                                "displayName": "spectral"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "sandDanceScatterPlotSettings": {
+            "displayName": "SandDance Scatter",
+            "properties": {
+                "pointsize": {
+                    "displayName": "Point size",
+                    "type": {
+                        "numeric": true
                     }
                 }
             }
@@ -60,23 +301,70 @@
     },
     "dataViewMappings": [
         {
+            "conditions": [
+                {
+                    "uid": {
+                        "max": 1
+                    },
+                    "x": {
+                        "max": 1
+                    },
+                    "y": {
+                        "max": 1
+                    },
+                    "z": {
+                        "max": 1
+                    },
+                    "color": {
+                        "max": 1
+                    },
+                    "sort": {
+                        "max": 1
+                    }
+                }
+            ],
             "categorical": {
                 "categories": {
                     "for": {
-                        "in": "category"
+                        "in": "uid"
                     },
                     "dataReductionAlgorithm": {
-                        "top": {}
+                        "sample": {
+                            "count": 30000
+                        }
                     }
                 },
                 "values": {
-                    "select": [
-                        {
-                            "bind": {
-                                "to": "measure"
+                    "group": {
+                        "by": "grouping",
+                        "select": [
+                            {
+                                "bind": {
+                                    "to": "x"
+                                }
+                            },
+                            {
+                                "bind": {
+                                    "to": "y"
+                                }
+                            },
+                            {
+                                "bind": {
+                                    "to": "z"
+                                }
+                            },
+                            {
+                                "bind": {
+                                    "to": "color"
+                                }
+                            },
+                            {
+                                "bind": {
+                                    "to": "sort"
+                                }
                             }
-                        }
-                    ]
+                        ]
+                    }
                 }
             }
         }
