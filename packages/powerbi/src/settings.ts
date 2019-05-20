@@ -29,20 +29,32 @@
 import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
 import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 
-export class VisualSettings extends DataViewObjectsParser {
-      public dataPoint: dataPointSettings = new dataPointSettings();
-      }
+import { SandDance } from "@msrvida/sanddance-explorer";
 
-    export class dataPointSettings {
-     // Default color
-      public defaultColor: string = "";
-     // Show all
-      public showAllDataPoints: boolean = true;
-     // Fill
-      public fill: string = "";
-     // Color saturation
-      public fillRule: string = "";
-     // Text Size
-      public fontSize: number = 12;
-     }
+export class SandDanceMainSettings {
+  charttype: SandDance.types.Chart;
+  showaxes: boolean;
+  showlegend: boolean;
+  colorbytype: 'numeric' | 'categorical';
+}
+
+export class SandDanceColorCategoricalSettings {
+  colorbycategorical: string;
+}
+
+export class SandDanceColorNumericSettings {
+  colorbynumeric: string;
+}
+
+export class SandDanceScatterPlotSettings {
+  pointsize: number;
+}
+
+export class VisualSettings extends DataViewObjectsParser {
+  //public dataPoint: dataPointSettings = new dataPointSettings();
+  public sandDanceMainSettings = new SandDanceMainSettings();
+  public sandDanceColorCategoricalSettings = new SandDanceColorCategoricalSettings();
+  public sandDanceColorNumericSettings = new SandDanceColorNumericSettings();
+  public sandDanceScatterPlotSettings = new SandDanceScatterPlotSettings();
+}
 
