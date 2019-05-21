@@ -29,6 +29,7 @@ import { SnapshotProps, Snapshots } from './dialogs/snapshots';
 import { strings } from './language';
 import { themePalettes } from './themes';
 import { Topbar, TopBarButtonProps } from './controls/topbar';
+import { toggleSearch } from './toggleSearch';
 
 export interface Props {
   logoClickUrl?: string;
@@ -491,28 +492,73 @@ export class Explorer extends React.Component<Props, State> {
     return { height: div.offsetHeight, width: div.offsetWidth };
   }
 
-  private toggleableSearch(e: TouchEvent | MouseEvent | PointerEvent, search: SandDance.types.SearchExpressionGroup<SandDance.types.SearchExpression>) {
+  private toggleableSearch(e: TouchEvent | MouseEvent | PointerEvent, search: SandDance.types.SearchExpressionGroup) {
     if (e.ctrlKey) {
       this.setState({ search: createInputSearch(search) });
       this.setSideTabId(SideTabId.Search);
     } else {
       var oldSelection = this.viewer.getSelection();
-      if (oldSelection.search && SandDance.searchExpression.compare(oldSelection.search, search)) {
-        this.doDeselect();
-      } else {
-        let combinedSearch: SandDance.types.SearchExpressionGroup[];
-        if (oldSelection.search && (e.altKey || e.shiftKey)) {
-          const oldGroup = SandDance.util.ensureSearchExpressionGroupArray(oldSelection.search);
-          const newGroup = SandDance.util.ensureSearchExpressionGroupArray(SandDance.VegaDeckGl.util.clone(search));
-          combinedSearch = oldGroup.concat(newGroup);
-          if (e.shiftKey) {
-            newGroup[0].clause = '||';
-          } else if (e.altKey) {
-            newGroup[0].clause = '&&';
+      if (oldSelection.search) {
+        //look for matching groups and toggle them
+        const result = toggleSearch(SandDance.util.ensureSearchExpressionGroupArray(oldSelection.search), search);
+        if (result.found) {
+          //removing a group
+          if (result.groups.length === 0) {
+            this.doDeselect();
+          } else {
+            //select with new search removed
+            this.doSelect(result.groups);
+          }
+        } else {
+          //adding a new group
+          if (e.altKey || e.shiftKey) {
+            if (e.shiftKey) {
+              search.clause = '||';
+            } else if (e.altKey) {
+              search.clause = '&&';
+            }
+            result.groups.push(search);
+            this.doSelect(result.groups);
+          } else {
+            //replace
+            this.doSelect(search);
           }
         }
-        this.doSelect(combinedSearch || search);
+        // if (result.found && result.groups.length === 0) {
+        //   this.doDeselect();
+        // } else {
+        //   if (result.groups.length === 0) {
+        //   } else {
+        //     if (e.shiftKey) {
+        //       search.clause = '||';
+        //     } else if (e.altKey) {
+        //       search.clause = '&&';
+        //     } else {
+        //       this.doSelect(search);
+        //       return;
+        //     }
+        //     this.doSelect(result.groups);
+        //   }
+        // }
+      } else {
+        this.doSelect(search);
       }
+      // if (oldSelection.search && SandDance.searchExpression.compare(oldSelection.search, search)) {
+      //   this.doDeselect();
+      // } else {
+      //   let combinedSearch: SandDance.types.SearchExpressionGroup[];
+      //   if (oldSelection.search && (e.altKey || e.shiftKey)) {
+      //     const oldGroup = SandDance.util.ensureSearchExpressionGroupArray(oldSelection.search);
+      //     const newGroup = SandDance.util.ensureSearchExpressionGroupArray(SandDance.VegaDeckGl.util.clone(search));
+      //     combinedSearch = oldGroup.concat(newGroup);
+      //     if (e.shiftKey) {
+      //       newGroup[0].clause = '||';
+      //     } else if (e.altKey) {
+      //       newGroup[0].clause = '&&';
+      //     }
+      //   }
+      //   this.doSelect(combinedSearch || search);
+      // }
     }
   }
 
