@@ -66,21 +66,14 @@ export interface Props {
     column: SandDance.types.Column;
 }
 
-function getClauses(ex: InputSearchExpression, index: number) {
-    let keys: [SandDance.types.SearchExpressionClause, string][];
-    if (index === 0) {
-        keys = [
-            [null, strings.searchWHERE]
-        ];
-    } else {
-        keys = [
-            ['&&', strings.searchAND],
-            ['||', strings.searchOR]
-        ];
-    }
+function getExpressionClauses(currClause: SandDance.types.SearchExpressionClause, index: number) {
+    const keys: [SandDance.types.SearchExpressionClause, string][] = [
+        ['&&', strings.searchAND],
+        ['||', strings.searchOR]
+    ];
     return keys.map((key: [SandDance.types.SearchExpressionClause, string], i: number) => {
         const [clause, text] = key;
-        const selected = ex.clause == clause; //deliberate double equal 
+        const selected = currClause == clause; //deliberate double equal 
         const option: FabricTypes.IDropdownOption = {
             key: i,
             text,
@@ -149,14 +142,16 @@ export function SearchTerm(props: Props) {
 
     return (
         <div>
-            <Dropdown
-                className="search-field"
-                //label={strings.labelSearchClause}
-                dropdownWidth={120}
-                disabled={!ex.unlocked}
-                options={getClauses(ex, props.index)}
-                onChange={(e, o) => props.onUpdateExpression({ clause: (o.data as SandDance.types.SearchExpressionClause) }, props.index)}
-            />
+            {props.index > 0 && (
+                <Dropdown
+                    className="search-field"
+                    //label={strings.labelSearchClause}
+                    dropdownWidth={120}
+                    disabled={!ex.unlocked}
+                    options={getExpressionClauses(ex.clause, props.index)}
+                    onChange={(e, o) => props.onUpdateExpression({ clause: (o.data as SandDance.types.SearchExpressionClause) }, props.index)}
+                />
+            )}
             <Dropdown
                 className="search-field"
                 //label={strings.labelSearchColumn}

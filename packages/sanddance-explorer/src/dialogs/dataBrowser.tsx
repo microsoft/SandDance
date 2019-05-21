@@ -5,7 +5,7 @@ import { DataItem } from '../controls/dataItem';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { Group } from '../controls/group';
 import { IconButton } from '../controls/iconButton';
-import { InputSearchExpression } from '../controls/searchTerm';
+import { InputSearchExpressionGroup } from './search';
 import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
 
@@ -14,7 +14,7 @@ export interface Props {
     data: object[];
     index: number;
     onActivate: { (row: object, index: number): void };
-    onSearch?: { (event: React.MouseEvent<{}>, search: SandDance.types.SearchExpressionGroup<InputSearchExpression>[]): void };
+    onSearch?: { (event: React.MouseEvent<{}>, search: InputSearchExpressionGroup[]): void };
     columns: SandDance.types.Column[];
     disabled?: boolean;
     nullMessage: string;

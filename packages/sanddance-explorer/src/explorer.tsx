@@ -21,8 +21,8 @@ import { DataContent, DataFile, Snapshot } from './interfaces';
 import { DataScopeId } from './controls/dataScope';
 import { Dialog } from './controls/dialog';
 import { IconButton } from './controls/iconButton';
+import { InputSearchExpressionGroup, Search } from './dialogs/search';
 import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
-import { Search } from './dialogs/search';
 import { Settings } from './dialogs/settings';
 import { Sidebar, SideTabId } from './controls/sidebar';
 import { SnapshotProps, Snapshots } from './dialogs/snapshots';
@@ -47,7 +47,7 @@ export interface State extends SandDance.types.Insight {
   calculating: () => void;
   errors: string[];
   autoCompleteDistinctValues: AutoCompleteDistinctValues;
-  search: SandDance.types.SearchExpressionGroup<InputSearchExpression>[];
+  search: InputSearchExpressionGroup[];
   filteredData: object[];
   toolbarClosed: boolean;
   toolbarPinned: boolean;
@@ -77,8 +77,10 @@ dataBrowserNullMessages[DataScopeId.SelectedData] = strings.nullSelection;
 
 function createInputSearch(search: SandDance.types.Search) {
   const groups = SandDance.util.ensureSearchExpressionGroupArray(search);
-  const dialogSearch: SandDance.types.SearchExpressionGroup<InputSearchExpression>[] = groups.map(group => {
+  const dialogSearch: InputSearchExpressionGroup[] = groups.map((group, groupIndex) => {
     return {
+      key: groupIndex,
+      ...group,
       expressions: group.expressions.map((ex, i) => {
         const ex2: InputSearchExpression = {
           key: i,
@@ -493,18 +495,24 @@ export class Explorer extends React.Component<Props, State> {
     if (e.ctrlKey) {
       this.setState({ search: createInputSearch(search) });
       this.setSideTabId(SideTabId.Search);
-    }
-    else {
-      this.toggleSelectIfSame(search);
-    }
-  }
-
-  private toggleSelectIfSame(newSearch: SandDance.types.Search) {
-    var oldSelection = this.viewer.getSelection();
-    if (oldSelection.search && SandDance.searchExpression.compare(oldSelection.search, newSearch)) {
-      this.doDeselect();
     } else {
-      this.doSelect(newSearch);
+      var oldSelection = this.viewer.getSelection();
+      if (oldSelection.search && SandDance.searchExpression.compare(oldSelection.search, search)) {
+        this.doDeselect();
+      } else {
+        let combinedSearch: SandDance.types.SearchExpressionGroup[];
+        if (oldSelection.search && (e.altKey || e.shiftKey)) {
+          const oldGroup = SandDance.util.ensureSearchExpressionGroupArray(oldSelection.search);
+          const newGroup = SandDance.util.ensureSearchExpressionGroupArray(SandDance.VegaDeckGl.util.clone(search));
+          combinedSearch = oldGroup.concat(newGroup);
+          if (e.shiftKey) {
+            newGroup[0].clause = '||';
+          } else if (e.altKey) {
+            newGroup[0].clause = '&&';
+          }
+        }
+        this.doSelect(combinedSearch || search);
+      }
     }
   }
 
