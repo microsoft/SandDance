@@ -1,37 +1,22 @@
 {
     "dataRoles": [
         {
-            "displayName": "Unique Id",
-            "name": "uid",
-            "kind": "GroupingOrMeasure"
-        },
-        {
-            "displayName": "X Axis",
-            "name": "x",
-            "kind": "GroupingOrMeasure"
-        },
-        {
-            "displayName": "Y Axis",
-            "name": "y",
-            "kind": "GroupingOrMeasure"
-        },
-        {
-            "displayName": "Z Axis",
-            "name": "z",
-            "kind": "GroupingOrMeasure"
-        },
-        {
-            "displayName": "Color by",
-            "name": "color",
-            "kind": "GroupingOrMeasure"
-        },
-        {
-            "displayName": "Sort by",
-            "name": "sort",
+            "displayName": "Values",
+            "name": "values",
             "kind": "GroupingOrMeasure"
         }
     ],
     "objects": {
+        "sandDanceConfig": {
+            "displayName": "SandDance config area",
+            "properties": {
+                "insightJSON": {
+                    "type": {
+                        "text": true
+                    }
+                }
+            }
+        },
         "sandDanceMainSettings": {
             "displayName": "SandDance",
             "properties": {
@@ -301,69 +286,15 @@
     },
     "dataViewMappings": [
         {
-            "conditions": [
-                {
-                    "uid": {
-                        "max": 1
-                    },
-                    "x": {
-                        "max": 1
-                    },
-                    "y": {
-                        "max": 1
-                    },
-                    "z": {
-                        "max": 1
-                    },
-                    "color": {
-                        "max": 1
-                    },
-                    "sort": {
-                        "max": 1
-                    }
-                }
-            ],
-            "categorical": {
-                "categories": {
+            "table": {
+                "rows": {
                     "for": {
-                        "in": "uid"
+                        "in": "values"
                     },
                     "dataReductionAlgorithm": {
                         "sample": {
                             "count": 30000
                         }
-                    }
-                },
-                "values": {
-                    "group": {
-                        "by": "grouping",
-                        "select": [
-                            {
-                                "bind": {
-                                    "to": "x"
-                                }
-                            },
-                            {
-                                "bind": {
-                                    "to": "y"
-                                }
-                            },
-                            {
-                                "bind": {
-                                    "to": "z"
-                                }
-                            },
-                            {
-                                "bind": {
-                                    "to": "color"
-                                }
-                            },
-                            {
-                                "bind": {
-                                    "to": "sort"
-                                }
-                            }
-                        ]
                     }
                 }
             }
