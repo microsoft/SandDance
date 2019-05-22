@@ -1,20 +1,52 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { createGroupFromExpression, isSearchExpressionGroup } from './group';
-import { Search, SearchExpression, SearchExpressionGroup } from './types';
+import { isSearchExpressionGroup } from './group';
+import {
+    Search,
+    SearchExpression,
+    SearchExpressionClause,
+    SearchExpressionGroup,
+    SearchExpressionOperators
+} from './types';
 
 function invertSearchExpressionGroup(input: SearchExpressionGroup) {
+    //this only works if all expressions in this group have the same clause
     const output: SearchExpressionGroup = {
-        expressions: input.expressions
+        expressions: input.expressions.map(invertSearchExpression)
     };
-    if (input.logic !== '!') {
-        output.logic = '!';
+    if (input.clause) {
+        output.clause = invertedClauses[input.clause]
     }
     return output;
 }
 
+const invertedOperators: { [key in SearchExpressionOperators]: SearchExpressionOperators } = {
+    '!=': '==',
+    '==': '!=',
+    '<': '>=',
+    '>=': '<',
+    '<=': '>',
+    '>': '<=',
+    '!contains': 'contains',
+    'contains': '!contains',
+    '!isnullorEmpty': 'isnullorEmpty',
+    'isnullorEmpty': '!isnullorEmpty',
+    '!starts': 'starts',
+    'starts': '!starts'
+};
+
+const invertedClauses: { [key in SearchExpressionClause]: SearchExpressionClause } = {
+    '&&': '||',
+    '||': '&&'
+};
+
 function invertSearchExpression(input: SearchExpression) {
-    return createGroupFromExpression(input, '!');
+    const operator = invertedOperators[input.operator];
+    const output: SearchExpression = { ...input, operator };
+    if (input.clause) {
+        output.clause = invertedClauses[input.clause]
+    }
+    return output;
 }
 
 export function invert(search: Search): Search {

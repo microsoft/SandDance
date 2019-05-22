@@ -128,9 +128,6 @@ export class Exec {
                     break;
             }
         }
-        if (group.logic == '!') {
-            accumulator = !accumulator;
-        }
         return accumulator;
     }
 

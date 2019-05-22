@@ -10,7 +10,7 @@ const expressionKeys = Object.keys(<Partial<SearchExpression>>{
     value: null
 });
 
-function compareExpressions(a: SearchExpression, b: SearchExpression): boolean {
+export function compareExpression(a: SearchExpression, b: SearchExpression): boolean {
     for (let k = 0; k < expressionKeys.length; k++) {
         let key = expressionKeys[k];
         if (a[key] != b[key]) return false;
@@ -19,18 +19,17 @@ function compareExpressions(a: SearchExpression, b: SearchExpression): boolean {
 }
 
 const groupKeys = Object.keys(<Partial<SearchExpressionGroup>>{
-    clause: null,
-    logic: null
+    clause: null
 });
 
-function compareGroup(a: SearchExpressionGroup, b: SearchExpressionGroup): boolean {
+export function compareGroup(a: SearchExpressionGroup, b: SearchExpressionGroup): boolean {
     for (let k = 0; k < groupKeys.length; k++) {
         let key = groupKeys[k];
         if (a[key] != b[key]) return false;
     }
     if (a.expressions.length != b.expressions.length) return false;
     for (let i = 0; i < a.expressions.length; i++) {
-        if (!compareExpressions(a.expressions[i], b.expressions[i])) return false;
+        if (!compareExpression(a.expressions[i], b.expressions[i])) return false;
     }
     return true;
 }

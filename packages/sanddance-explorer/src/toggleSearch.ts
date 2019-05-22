@@ -1,7 +1,7 @@
 import { SandDance } from '@msrvida/sanddance-react';
 
 function comparableGroup(group: SandDance.types.SearchExpressionGroup): SandDance.types.SearchExpressionGroup {
-    return { ...group, clause: null, logic: null, };
+    return { ...group, clause: null };
 }
 
 function compareGroup(a: SandDance.types.SearchExpressionGroup, b: SandDance.types.SearchExpressionGroup) {

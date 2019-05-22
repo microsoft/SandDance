@@ -3,13 +3,13 @@
 
 export type SearchExpressionClause = '&&' | '||';
 
-export type SearchExpressionStringSearchOperators = 'starts' | 'contains';
+export type SearchExpressionStringSearchOperators = 'starts' | '!starts' | 'contains' | '!contains';
 
 export type SearchExpressionOperators =
     '==' | '!=' |
     '<' | '<=' |
     '>' | '>=' |
-    'isnullorEmpty' |
+    'isnullorEmpty' | '!isnullorEmpty' |
     SearchExpressionStringSearchOperators;
 
 export interface SearchExpression {
@@ -19,10 +19,7 @@ export interface SearchExpression {
     value?: boolean | Date | number | string;
 }
 
-export type SearchExpressionGroupLogic = '!';
-
 export interface SearchExpressionGroup<T extends SearchExpression = SearchExpression> {
-    logic?: SearchExpressionGroupLogic;
     clause?: SearchExpressionClause;
     expressions: T[];
 }
