@@ -44,9 +44,7 @@ import * as vega from 'vega-lib';
 import * as fabric from "office-ui-fabric-react";
 
 import { App, Props } from './app'
-import { VisualSettings } from "./settings";
-
-const defaultScheme = "powerbi";
+import { VisualSettings, defaultScheme } from "./settings";
 
 export class Visual implements IVisual {
     private settings: VisualSettings;
@@ -82,7 +80,7 @@ export class Visual implements IVisual {
 
     public update(options: VisualUpdateOptions) {
         this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
-        console.log('Visual update', options);
+        console.log('Visual update', options, this.settings);
 
         const { categorical } = options.dataViews[0];
 
@@ -108,7 +106,7 @@ export class Visual implements IVisual {
         });
     }
 
-    private static parseSettings(dataView: DataView): VisualSettings {
+    private static parseSettings(dataView: DataView): VisualSettings {        
         return VisualSettings.parse(dataView) as VisualSettings;
     }
 
