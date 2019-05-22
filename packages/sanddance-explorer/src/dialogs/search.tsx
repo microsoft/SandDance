@@ -109,6 +109,9 @@ export class Search extends React.Component<Props, State> {
             sortedColumns: [...props.initializer.columns].sort((a, b) => a.name.localeCompare(b.name)),
             initializer: props.initializer
         };
+        initialState.groups.forEach(group => {
+            group.expressions.forEach(ex => ex.unlocked = group.expressions.length <= 2);
+        });
         return initialState;
     }
 
