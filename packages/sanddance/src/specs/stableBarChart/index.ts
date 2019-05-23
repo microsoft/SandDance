@@ -26,7 +26,6 @@ import { SpecCreator, SpecResult } from '../interfaces';
 export const barchart: SpecCreator = (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult => {
     const errors: string[] = [];
 
-    if (!columns.uid) errors.push(`Must set a field for id`);
     if (!columns.x) errors.push(`Must set a field for x axis`);
     checkForFacetErrors(insight.facets, errors);
 
