@@ -24,7 +24,6 @@ import { SpecCreator, SpecResult } from '../interfaces';
 export const treemap: SpecCreator = (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult => {
     const errors: string[] = [];
 
-    if (!columns.uid) errors.push(`Must set a field for id`);
     if (!columns.size) errors.push(`Must set a field for size`);
     checkForFacetErrors(insight.facets, errors);
 
