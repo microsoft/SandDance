@@ -11,7 +11,7 @@ import * as luma from 'luma.gl';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as vega from 'vega-lib';
-import { defaultScheme } from './settings';
+
 import {
     Explorer,
     Props as ExplorerProps,
@@ -48,13 +48,6 @@ export class App extends React.Component<Props, State> {
             darkTheme: null
         };
         this.viewerOptions = this.getViewerOptions();
-    }
-
-    public registerColor(colorPalette: ISandboxExtendedColorPalette) {
-        vega.scheme(defaultScheme, (value: any) => {
-            const color = colorPalette.getColor(value);
-            return color.value;
-        });
     }
 
     private getViewerOptions(darkTheme?: boolean) {
