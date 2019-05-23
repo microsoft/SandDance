@@ -41,6 +41,7 @@ export interface Props {
   topBarButtonProps?: TopBarButtonProps[];
   snapshotProps?: SnapshotProps;
   onSnapshotClick?: (snapshot: Snapshot) => void;
+  onView?: () => void;
 }
 
 export interface State extends SandDance.types.Insight {
@@ -846,6 +847,7 @@ export class Explorer extends React.Component<Props, State> {
                   };
                   //don't allow tabbing to the canvas
                   this.viewer.presenter.getElement(SandDance.VegaDeckGl.PresenterElement.gl).getElementsByTagName('canvas')[0].tabIndex = -1;
+                  this.props.onView && this.props.onView();
                 }}
                 data={this.state.dataContent.data}
                 insight={insight}
