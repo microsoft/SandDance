@@ -7,16 +7,6 @@
         }
     ],
     "objects": {
-        "sandDanceConfig": {
-            "displayName": "SandDance config area",
-            "properties": {
-                "insightJSON": {
-                    "type": {
-                        "text": true
-                    }
-                }
-            }
-        },
         "sandDanceMainSettings": {
             "displayName": "SandDance",
             "properties": {
@@ -279,6 +269,16 @@
                     "displayName": "Point size",
                     "type": {
                         "numeric": true
+                    }
+                }
+            }
+        },
+        "sandDanceConfig": {
+            "displayName": "SandDance config area",
+            "properties": {
+                "insightJSON": {
+                    "type": {
+                        "text": true
                     }
                 }
             }
