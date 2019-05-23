@@ -120,7 +120,7 @@ export interface Insight {
 export type InsightColumnRoles = 'uid' | 'x' | 'y' | 'z' | 'group' | 'size' | 'color' | 'facet' | 'sort';
 
 export interface InsightColumns {
-    uid: string;
+    uid?: string;
     x?: string;
     y?: string;
     z?: string;
