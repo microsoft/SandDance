@@ -6,8 +6,13 @@ import * as luma from 'luma.gl';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as vega from 'vega-lib';
+import {
+  DataFileType,
+  Explorer,
+  Prefs,
+  SandDance
+} from '@msrvida/sanddance-explorer';
 import { DataSource, InsightMap } from './types';
-import { Explorer, Prefs, SandDance } from '@msrvida/sanddance-explorer';
 import { fabric } from './fabricComponents';
 import { SandDanceApp } from './sanddanceApp';
 import { use } from './base';
@@ -22,7 +27,7 @@ const dataSets = Array.from(
     id: n.id,
     displayName: n.dataset["displayName"],
     dataUrl: n.href,
-    type: n.dataset["type"]
+    type: n.dataset["type"] as DataFileType
   };
 });
 

@@ -3,10 +3,12 @@
 import { SandDance } from '@msrvida/sanddance-react';
 import { IconButtonProps } from './controls/iconButton';
 
+export type DataFileType = 'json' | 'csv' | 'tsv' | 'topojson';
+
 export interface DataFile {
   dataUrl?: string;
   rawText?: string;
-  type: string;
+  type: DataFileType;
 }
 
 export interface DataContent {
