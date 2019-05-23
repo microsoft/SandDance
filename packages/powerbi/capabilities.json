@@ -15,12 +15,24 @@
                     "type": {
                         "enumeration": [
                             {
-                                "value": "barchart",
-                                "displayName": "Column"
+                                "value": "scatterplot",
+                                "displayName": "Scatter plot"
                             },
                             {
-                                "value": "scatterplot",
-                                "displayName": "Scatter"
+                                "value": "density",
+                                "displayName": "Density"
+                            },
+                            {
+                                "value": "barchart",
+                                "displayName": "Bar chart"
+                            },
+                            {
+                                "value": "treemap",
+                                "displayName": "Tree map"
+                            },
+                            {
+                                "value": "stacks",
+                                "displayName": "Stacks"
                             }
                         ]
                     }
