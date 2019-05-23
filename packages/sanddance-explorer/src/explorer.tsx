@@ -42,6 +42,7 @@ export interface Props {
   snapshotProps?: SnapshotProps;
   onSnapshotClick?: (snapshot: Snapshot) => void;
   onView?: () => void;
+  onSignalChanged?: () => void;
 }
 
 export interface State extends SandDance.types.Insight {
@@ -189,6 +190,19 @@ export class Explorer extends React.Component<Props, State> {
       this.viewer.presenter.style = mergePrenterStyle;
       this.viewer.options = SandDance.VegaDeckGl.util.deepMerge(this.viewer.options, this.props.viewerOptions, this.viewerOptions) as SandDance.types.ViewerOptions;
     }
+  }
+
+  signal(signalName: string, signalValue: any) {
+    switch (signalName) {
+      case SandDance.constants.SignalNames.ColorBinCount:
+      case SandDance.constants.SignalNames.ColorReverse:
+        this.discardColorContextUpdates = false;
+        break;
+    }
+    this.viewer.vegaViewGl.signal(signalName, signalValue);
+    this.viewer.vegaViewGl.run();
+    this.discardColorContextUpdates = true;
+    this.props.onSignalChanged && this.props.onSignalChanged();
   }
 
   private manageColorToolbar() {
