@@ -31,7 +31,7 @@ function getThemePalette(darkTheme: boolean) {
 
 export interface Props {
     mounted: (app: App) => void;
-    onView: () => void;
+    onViewChange: () => void;
 }
 
 export interface State {
@@ -85,7 +85,8 @@ export class App extends React.Component<Props, State> {
                 this.explorer = explorer;
                 this.props.mounted(this);
             },
-            onView: this.props.onView
+            onSignalChanged: this.props.onViewChange,
+            onView: this.props.onViewChange
         };
         return React.createElement(Explorer, props);
     }

@@ -3,14 +3,27 @@
 
 import powerbi from "powerbi-visuals-api";
 
-export function convertTableToObjectArray(table: powerbi.DataViewTable) {
+export function convertTableToObjectArray(table: powerbi.DataViewTable, oldData: object[]) {
+    let different: boolean;
+    if (oldData) {
+        different = table.rows.length !== oldData.length;
+    } else {
+        different = true;
+    }
     const columnNames = table.columns.map(c => c.displayName);
-    const data = table.rows.map(row => {
-        const o: object = {};
-        columnNames.forEach((cn, i) => {
-            o[cn] = row[i];
+    const data = table.rows.map((row, ri) => {
+        const newObject: object = {};
+        columnNames.forEach((cn, ci) => {
+            const value = row[ci];
+            newObject[cn] = value;
+            if (!different) {
+                const oldObject = oldData && oldData[ri];
+                if (oldObject[cn] !== value) {
+                    different = true;
+                }
+            }
         });
-        return o;
+        return newObject;
     });
-    return data;
+    return { data, different };
 }
