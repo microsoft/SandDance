@@ -60,7 +60,6 @@ export class Visual implements IVisual {
             const props: Props = {
                 mounted: (app: App) => {
                     this.app = app;
-                    app.registerColor(options.host.colorPalette);
                 },
                 onView: () => {
                     const insight = this.app.explorer.viewer.getInsight();
@@ -91,8 +90,6 @@ export class Visual implements IVisual {
 
             const {
                 sandDanceMainSettings,
-                sandDanceColorCategoricalSettings,
-                sandDanceColorNumericSettings,
                 sandDanceConfig
             } = this.settings;
 
@@ -108,16 +105,10 @@ export class Visual implements IVisual {
             }
 
             if (!insight) {
-                const scheme = sandDanceMainSettings.colorbytype === 'categorical'
-                    ? sandDanceColorCategoricalSettings.colorbycategorical
-                    : sandDanceColorNumericSettings.colorbynumeric;
-
                 //TODO make sure insight works with columns
                 insight = {
-                    scheme,
                     columns: {
                     },
-                    chart: sandDanceMainSettings.charttype,
                     view: '2d'
                 };
             }

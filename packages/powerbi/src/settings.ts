@@ -29,45 +29,21 @@
 import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
 import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 
-import { SandDance } from "@msrvida/sanddance-explorer";
-
-export const defaultScheme = "powerbi";
-
 export class SandDanceConfig {
   insightJSON: string = "";
 }
 
 export class SandDanceMainSettings {
-  charttype: SandDance.types.Chart = 'scatterplot';
   showaxes: boolean = true;
   showlegend: boolean = true;
-  colorbytype: 'numeric' | 'categorical' = 'categorical';
-}
-
-export class SandDanceColorCategoricalSettings {
-  colorbycategorical: string = defaultScheme;
-}
-
-export class SandDanceColorNumericSettings {
-  colorbynumeric: string = defaultScheme;
-}
-
-export class SandDanceScatterPlotSettings {
-  pointsize: number = 5;
 }
 
 export interface IVisualSettings {
   sandDanceConfig?: SandDanceConfig;
   sandDanceMainSettings?: SandDanceMainSettings;
-  sandDanceColorCategoricalSettings?: SandDanceColorCategoricalSettings;
-  sandDanceColorNumericSettings?: SandDanceColorNumericSettings;
-  sandDanceScatterPlotSettings?: SandDanceScatterPlotSettings;
 }
 
 export class VisualSettings extends DataViewObjectsParser implements IVisualSettings {
   public sandDanceConfig = new SandDanceConfig();
   public sandDanceMainSettings = new SandDanceMainSettings();
-  public sandDanceColorCategoricalSettings = new SandDanceColorCategoricalSettings();
-  public sandDanceColorNumericSettings = new SandDanceColorNumericSettings();
-  public sandDanceScatterPlotSettings = new SandDanceScatterPlotSettings();
 }
