@@ -34,91 +34,98 @@ import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInst
 import VisualObjectInstance = powerbi.VisualObjectInstance;
 import DataView = powerbi.DataView;
 import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject;
-import { SandDance, use } from "@msrvida/sanddance-explorer";
-import * as deck from '@deck.gl/core';
-import * as layers from '@deck.gl/layers';
-import * as luma from 'luma.gl';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import * as vega from 'vega-lib';
-import * as fabric from "office-ui-fabric-react";
+import { SandDance } from "@msrvida/sanddance-explorer";
+import { createElement } from 'react';
+import { render } from 'react-dom';
 
 import { App, Props } from './app'
-import { VisualSettings, defaultScheme } from "./settings";
+import { convertTableToObjectArray } from './data';
+import { cleanInsight } from './insight';
+import { VisualSettings, SandDanceConfig } from "./settings";
 
 export class Visual implements IVisual {
     private settings: VisualSettings;
     private viewElement: HTMLElement;
     private errorElement: HTMLElement;
     private app: App;
+    private persisting: boolean;
 
     constructor(options: VisualConstructorOptions) {
-        console.log('Visual constructor', options);
-
+        //console.log('Visual constructor', options);
         if (typeof document !== "undefined") {
-
             options.element.style.position = 'relative'
             this.viewElement = SandDance.VegaDeckGl.util.addDiv(options.element, 'sanddance-view');
             this.errorElement = SandDance.VegaDeckGl.util.addDiv(options.element, 'sanddance-error');
             this.errorElement.style.position = 'absolute';
-
-            vega.scheme(defaultScheme, (value: any) => {
-                const color = options.host.colorPalette.getColor(value);
-                return color.value;
-            });
-
-            fabric.initializeIcons();
-            use(ReactDOM.render as any, fabric as any, vega as any, deck, layers, luma);
-
             const props: Props = {
-                mounted: (app: App) => this.app = app
+                mounted: (app: App) => {
+                    this.app = app;
+                    app.registerColor(options.host.colorPalette);
+                },
+                onView: () => {
+                    const insight = this.app.explorer.viewer.getInsight();
+                    cleanInsight(insight);
+                    const config: SandDanceConfig = {
+                        insightJSON: JSON.stringify(insight)
+                    };
+                    const properties = config as any;
+                    this.persisting = true;
+                    options.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
+                    console.log('view!', this.app.explorer.viewer.getInsight());
+                }
             };
-
-            ReactDOM.render(React.createElement(App, props), this.viewElement);
+            render(createElement(App, props), this.viewElement);
         }
     }
 
     public update(options: VisualUpdateOptions) {
-        console.log('Visual update', options);
+        console.log('Visual update', options, this.persisting);
         const dataView = options && options.dataViews && options.dataViews[0];
-        if (!dataView) return;
+        if (!dataView || this.persisting) return;
 
         this.settings = Visual.parseSettings(dataView);
 
-        const { table } = dataView;
-        const columnNames = table.columns.map(c => c.displayName);
-        const data = table.rows.map(row => {
-            const o: object = {};
-            columnNames.forEach((cn, i) => {
-                o[cn] = row[i];
-            });
-            return o;
-        });
+        const data = convertTableToObjectArray(dataView.table);
 
         this.app.explorer.load(data, columns => {
 
             const {
                 sandDanceMainSettings,
                 sandDanceColorCategoricalSettings,
-                sandDanceColorNumericSettings
+                sandDanceColorNumericSettings,
+                sandDanceConfig
             } = this.settings;
 
-            const scheme = sandDanceMainSettings.colorbytype === 'categorical'
-                ? sandDanceColorCategoricalSettings.colorbycategorical
-                : sandDanceColorNumericSettings.colorbynumeric;
+            let insight: Partial<SandDance.types.Insight>;
 
-            //TODO make sure insight works with columns
-            const insight: Partial<SandDance.types.Insight> = {
-                scheme,
-                columns: {
-                },
-                chart: sandDanceMainSettings.charttype,
-                view: '2d'
-            };
+            if (sandDanceConfig.insightJSON) {
+                try {
+                    insight = JSON.parse(sandDanceConfig.insightJSON);
+                    delete insight.size;
+                } catch (e) {
+                    //TODO inform user that JSON did not parse. Possibly re-persist a blank.
+                }
+            }
+
+            if (!insight) {
+                const scheme = sandDanceMainSettings.colorbytype === 'categorical'
+                    ? sandDanceColorCategoricalSettings.colorbycategorical
+                    : sandDanceColorNumericSettings.colorbynumeric;
+
+                //TODO make sure insight works with columns
+                insight = {
+                    scheme,
+                    columns: {
+                    },
+                    chart: sandDanceMainSettings.charttype,
+                    view: '2d'
+                };
+            }
 
             return insight;
-
         });
+
+        this.persisting = false;
     }
 
     private static parseSettings(dataView: DataView): VisualSettings {
