@@ -48,7 +48,6 @@ export class Visual implements IVisual {
     private viewElement: HTMLElement;
     private errorElement: HTMLElement;
     private app: App;
-    private persisting: boolean;
 
     constructor(options: VisualConstructorOptions) {
         //console.log('Visual constructor', options);
@@ -57,20 +56,19 @@ export class Visual implements IVisual {
             this.viewElement = SandDance.VegaDeckGl.util.addDiv(options.element, 'sanddance-view');
             this.errorElement = SandDance.VegaDeckGl.util.addDiv(options.element, 'sanddance-error');
             this.errorElement.style.position = 'absolute';
+
             const props: Props = {
                 mounted: (app: App) => {
                     this.app = app;
                 },
-                onView: () => {
+                onViewChange: () => {
                     const insight = this.app.explorer.viewer.getInsight();
                     cleanInsight(insight);
                     const config: SandDanceConfig = {
                         insightJSON: JSON.stringify(insight)
                     };
                     const properties = config as any;
-                    this.persisting = true;
                     options.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
-                    console.log('view!', this.app.explorer.viewer.getInsight());
                 }
             };
             render(createElement(App, props), this.viewElement);
@@ -78,13 +76,15 @@ export class Visual implements IVisual {
     }
 
     public update(options: VisualUpdateOptions) {
-        console.log('Visual update', options, this.persisting);
+        console.log('Visual update', options);
+
         const dataView = options && options.dataViews && options.dataViews[0];
-        if (!dataView || this.persisting) return;
+        if (!dataView) return;
 
         this.settings = Visual.parseSettings(dataView);
-
-        const data = convertTableToObjectArray(dataView.table);
+        const oldData = this.app.explorer.state.dataContent && this.app.explorer.state.dataContent.data;
+        const { data, different } = convertTableToObjectArray(dataView.table, oldData);
+        if (!different) return;
 
         this.app.explorer.load(data, columns => {
 
@@ -99,6 +99,9 @@ export class Visual implements IVisual {
                 try {
                     insight = JSON.parse(sandDanceConfig.insightJSON);
                     delete insight.size;
+
+                    console.log('using insight:', insight);
+
                 } catch (e) {
                     //TODO inform user that JSON did not parse. Possibly re-persist a blank.
                 }
@@ -111,12 +114,12 @@ export class Visual implements IVisual {
                     },
                     view: '2d'
                 };
+                console.log('new insight');
             }
 
             return insight;
         });
 
-        this.persisting = false;
     }
 
     private static parseSettings(dataView: DataView): VisualSettings {
