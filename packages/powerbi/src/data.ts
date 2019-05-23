@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 import powerbi from "powerbi-visuals-api";
+import { SandDance, util } from "@msrvida/sanddance-explorer";
 
 export function convertTableToObjectArray(table: powerbi.DataViewTable, oldData: object[]) {
     let different: boolean;
@@ -23,6 +24,14 @@ export function convertTableToObjectArray(table: powerbi.DataViewTable, oldData:
                 }
             }
         });
+        if (!different && ri === 0) {
+            //check that all keys are the same
+            const oldKeys = Object.keys(oldData[0]).filter(key => key !== SandDance.VegaDeckGl.constants.GL_ORDINAL);
+            const newKeys = Object.keys(newObject);
+            if (!util.deepCompare(oldKeys, newKeys)) {
+                different = true;
+            }
+        }
         return newObject;
     });
     return { data, different };
