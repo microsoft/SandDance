@@ -79,34 +79,49 @@ export class Visual implements IVisual {
     }
 
     public update(options: VisualUpdateOptions) {
-        this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
-        console.log('Visual update', options, this.settings);
+        console.log('Visual update', options);
+        const dataView = options && options.dataViews && options.dataViews[0];
+        if (!dataView) return;
 
-        const { categorical } = options.dataViews[0];
+        this.settings = Visual.parseSettings(dataView);
 
-        const uid = categorical.categories[0].values;
-        const y = categorical.values[0].values;
+        const { table } = dataView;
+        const columnNames = table.columns.map(c => c.displayName);
+        const data = table.rows.map(row => {
+            const o: object = {};
+            columnNames.forEach((cn, i) => {
+                o[cn] = row[i];
+            });
+            return o;
+        });
 
-        const insight: SandDance.types.Insight = {
-            scheme: "blues",
-            columns: {
-                color: "z",
-                uid: "id",
-                x: "x",
-                y: "y",
-                z: "z"
-            },
-            size: { height: 500, width: 500 },
-            chart: 'scatterplot',
-            view: '3d'
-        };
+        this.app.explorer.load(data, columns => {
 
-        this.app.explorer.load(data, columns => insight).then(() => {
-            this.app.explorer.viewer.presenter.showGuides();
+            const {
+                sandDanceMainSettings,
+                sandDanceColorCategoricalSettings,
+                sandDanceColorNumericSettings
+            } = this.settings;
+
+            const scheme = sandDanceMainSettings.colorbytype === 'categorical'
+                ? sandDanceColorCategoricalSettings.colorbycategorical
+                : sandDanceColorNumericSettings.colorbynumeric;
+
+            //TODO make sure insight works with columns
+            const insight: Partial<SandDance.types.Insight> = {
+                scheme,
+                columns: {
+                },
+                chart: sandDanceMainSettings.charttype,
+                view: '2d'
+            };
+
+            return insight;
+
         });
     }
 
-    private static parseSettings(dataView: DataView): VisualSettings {        
+    private static parseSettings(dataView: DataView): VisualSettings {
         return VisualSettings.parse(dataView) as VisualSettings;
     }
 
@@ -119,24 +134,3 @@ export class Visual implements IVisual {
         return VisualSettings.enumerateObjectInstances(this.settings || VisualSettings.getDefault(), options);
     }
 }
-
-interface Datum {
-    id: number;
-    x: number;
-    y: number;
-    z: number;
-    w: number;
-}
-
-const data: Datum[] = [];
-const size = 100;
-
-for (let x = 0; x < size; x++) {
-    for (let y = 0; y < size; y++) {
-        let id = x * y;
-        let z = Math.random() * size * (x % 10) * (y % 10);
-        let w = Math.random() * size;
-        data.push({ id, x, y: y, z, w });
-    }
-}
-
