@@ -5,6 +5,7 @@ import { base } from './base';
 import { DataSource, DataSourceType } from './types';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { strings } from './language';
+import { DataFileType } from '@msrvida/sanddance-explorer';
 
 export interface Props {
   dataSource: DataSource;
@@ -16,7 +17,7 @@ export interface Props {
 export interface State {
   uploadFormatError?: string;
   url?: string;
-  urlType?: string;
+  urlType?: DataFileType;
   urlError?: string;
   working: boolean;
   dialogMode?: DataSourceType;
@@ -32,7 +33,7 @@ export class DataSourcePicker extends React.Component<Props, State> {
     };
   }
 
-  static urlTypes = ["json", "csv", "tsv", "dsv", "topojson"];
+  static urlTypes: DataFileType[] = ["json", "csv", "tsv", "topojson"];
 
   changeDataSource(dataSource: DataSource) {
     this.setState({ working: true });
@@ -62,7 +63,7 @@ export class DataSourcePicker extends React.Component<Props, State> {
     if (e.target.files) {
       const file = e.target.files[0];
       const split = file.name.split(".");
-      const type = split[split.length - 1];
+      const type = split[split.length - 1] as DataFileType;
       if (DataSourcePicker.urlTypes.indexOf(type) >= 0) {
         const reader = new FileReader();
         reader.onload = () => {
@@ -219,7 +220,7 @@ export class DataSourcePicker extends React.Component<Props, State> {
               })
             }
             onChange={(ev: React.FormEvent<HTMLInputElement>, option: FabricTypes.IChoiceGroupOption) =>
-              this.setState({ urlType: option.text, urlError: "" })
+              this.setState({ urlType: option.text as DataFileType, urlError: "" })
             }
             label={strings.labelDataFormat}
           />
