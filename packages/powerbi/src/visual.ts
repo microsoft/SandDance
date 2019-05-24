@@ -41,13 +41,14 @@ import { render } from 'react-dom';
 import { App, Props } from './app'
 import { convertTableToObjectArray } from './data';
 import { cleanInsight } from './insight';
-import { VisualSettings, SandDanceConfig } from "./settings";
+import { VisualSettings, SandDanceConfig, IVisualSettings } from "./settings";
 
 export class Visual implements IVisual {
     private settings: VisualSettings;
     private viewElement: HTMLElement;
     private errorElement: HTMLElement;
     private app: App;
+    private prevSettings: IVisualSettings;
 
     constructor(options: VisualConstructorOptions) {
         //console.log('Visual constructor', options);
@@ -69,7 +70,8 @@ export class Visual implements IVisual {
                     };
                     const properties = config as any;
                     options.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
-                }
+                },
+                onShowAxes: () => this.settings.sandDanceMainSettings.showaxes
             };
             render(createElement(App, props), this.viewElement);
         }
@@ -83,7 +85,14 @@ export class Visual implements IVisual {
 
         this.settings = Visual.parseSettings(dataView);
         const oldData = this.app.explorer.state.dataContent && this.app.explorer.state.dataContent.data;
-        const { data, different } = convertTableToObjectArray(dataView.table, oldData);
+        let { data, different } = convertTableToObjectArray(dataView.table, oldData);
+
+        if (!this.prevSettings || this.settings.sandDanceMainSettings.showaxes != this.prevSettings.sandDanceMainSettings.showaxes) {
+            different = true;
+        }
+
+        this.prevSettings = SandDance.VegaDeckGl.util.clone(this.settings);
+
         if (!different) return;
 
         this.app.explorer.load(data, columns => {
@@ -107,15 +116,15 @@ export class Visual implements IVisual {
                 }
             }
 
-            if (!insight) {
-                //TODO make sure insight works with columns
-                insight = {
-                    columns: {
-                    },
-                    view: '2d'
-                };
-                console.log('new insight');
-            }
+            // if (!insight) {
+            //     //TODO make sure insight works with columns
+            //     insight = {
+            //         columns: {
+            //         },
+            //         view: '2d'
+            //     };
+            //     console.log('new insight');
+            // }
 
             return insight;
         });
