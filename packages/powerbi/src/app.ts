@@ -32,6 +32,7 @@ function getThemePalette(darkTheme: boolean) {
 export interface Props {
     mounted: (app: App) => void;
     onViewChange: () => void;
+    onShowAxes: ()=> boolean;
 }
 
 export interface State {
@@ -58,6 +59,11 @@ export class App extends React.Component<Props, State> {
                 axisLine: color,
                 axisText: color,
                 hoveredCube: color
+            },
+            onVegaSpec: spec => {
+                if (!this.props.onShowAxes()) {
+                    delete spec.axes;
+                }
             }
         };
         return viewerOptions;
