@@ -19,7 +19,7 @@ import {
     SpecViewOptions
 } from '../types';
 import { legend } from '../legends';
-import { Mark, Spec } from 'vega-typings';
+import { Axis, Mark, Spec } from 'vega-typings';
 import { NameSpace } from './namespace';
 import { SpecCreator, SpecResult } from '../interfaces';
 
@@ -66,7 +66,12 @@ export const barchart: SpecCreator = (insight: Insight, columns: SpecColumns, sp
     }
 
     const rootNamespace = new NameSpace();
-    let axes = getAxes(specViewOptions, columns);
+    let axes: Axis[];
+
+    if (!insight.hideAxes) {
+        axes = getAxes(specViewOptions, columns);
+    }
+
     let marks: Mark[];
 
     if (columns.facet) {
@@ -95,12 +100,15 @@ export const barchart: SpecCreator = (insight: Insight, columns: SpecColumns, sp
         "width": size.width,
         signals: getSignals(insight, columns, specViewOptions),
         scales: getScales(rootNamespace, insight, columns),
-        axes,
         data: getData(rootNamespace, insight, columns, specViewOptions),
         marks
     };
 
-    if (columns.color) {
+    if (!insight.hideAxes && axes && axes.length) {
+        vegaSpec.axes = axes;
+    }
+
+    if (columns.color && !insight.hideLegend) {
         vegaSpec.legends = [legend(columns.color)];
     }
 

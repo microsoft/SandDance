@@ -30,6 +30,10 @@ export interface Props {
     explorer: Explorer;
     dataFile: DataFile;
     scheme: string;
+    hideLegend: boolean;
+    onToggleLegend: (checked: boolean) => void;
+    hideAxes: boolean;
+    onToggleAxes: (checked: boolean) => void;
 }
 
 export interface State {
@@ -182,7 +186,24 @@ export class Settings extends React.Component<Props, State> {
                     }
                 })}
                 <Group
-                    label={strings.dialogTitleTools}
+                    label={strings.labelChartCanvas}
+                >
+                    <base.fabric.Toggle
+                        label={strings.labelShowAxes}
+                        defaultChecked={!props.hideAxes}
+                        onChange={(e, checked?) => props.onToggleAxes(checked)}
+                    />
+                    <base.fabric.Toggle
+                        label={strings.labelShowLegend}
+                        defaultChecked={!props.hideLegend}
+                        onChange={(e, checked?) => {
+                            console.log('toggling legend: ', checked);
+                            props.onToggleLegend(checked);
+                        }}
+                    />
+                </Group>
+                <Group
+                    label={strings.labelTools}
                 >
                     <base.fabric.DefaultButton
                         text={strings.buttonShowVegaSpec}
@@ -236,7 +257,7 @@ export class Settings extends React.Component<Props, State> {
                     hidden={!state.showVegaDialog}
                     onDismiss={() => this.setState(initState(this.props))}
                     minWidth="80%"
-                    title={strings.dialogTitleVegaSpec}
+                    title={strings.labelVegaSpec}
                     buttons={[
                         (
                             <base.fabric.PrimaryButton

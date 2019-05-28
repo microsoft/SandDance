@@ -19,7 +19,7 @@ import {
     layout
 } from '../facet';
 import { legend } from '../legends';
-import { Spec } from 'vega-typings';
+import { Axis, Spec } from 'vega-typings';
 import { SpecCreator, SpecResult } from '../interfaces';
 import { SignalNames } from '../constants';
 
@@ -69,7 +69,12 @@ export const scatterplot: SpecCreator = (insight: Insight, columns: SpecColumns,
         };
     }
 
-    let axes = getAxes(specViewOptions, columns);
+    let axes: Axis[];
+
+    if (!insight.hideAxes) {
+        axes = getAxes(specViewOptions, columns);
+    }
+
     let marks = getMarks(columns, specViewOptions);
 
     if (columns.facet) {
@@ -86,11 +91,14 @@ export const scatterplot: SpecCreator = (insight: Insight, columns: SpecColumns,
         signals: getSignals(insight, specViewOptions),
         data: getData(insight, columns, specViewOptions),
         scales: getScales(columns, insight),
-        axes,
         marks
     };
 
-    if (columns.color) {
+    if (!insight.hideAxes && axes && axes.length) {
+        vegaSpec.axes = axes;
+    }
+
+    if (columns.color && !insight.hideLegend) {
         vegaSpec.legends = [legend(columns.color)];
     }
 

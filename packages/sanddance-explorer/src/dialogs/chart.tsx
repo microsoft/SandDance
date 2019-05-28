@@ -26,10 +26,9 @@ export function Chart(props: Props) {
         props.explorer.viewer.vegaSpec.signals.filter(s => props.specCapabilities.signals.indexOf(s.name) >= 0);
     return (
         <div>
-            <Group label={strings.groupLabelChart}>
+            <Group label={strings.labelChart}>
                 <div className="calculator">
                     <base.fabric.ChoiceGroup
-                        //label={strings.labelChartType}
                         options={[
                             {
                                 key: 'scatterplot',
