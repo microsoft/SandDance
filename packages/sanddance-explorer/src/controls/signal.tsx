@@ -25,17 +25,6 @@ export function Signal(props: Props) {
     if (!props.explorer.viewer || !props.signal) {
         return null;
     }
-    const onChange = (name: string, value: any) => {
-        switch (name) {
-            case SandDance.constants.SignalNames.ColorBinCount:
-            case SandDance.constants.SignalNames.ColorReverse:
-                props.explorer.discardColorContextUpdates = false;
-                break;
-        }
-        props.explorer.viewer.vegaViewGl.signal(name, value);
-        props.explorer.viewer.vegaViewGl.run();
-        props.explorer.discardColorContextUpdates = true;
-    };
     if (props.signal.bind) {
         const input = (props.signal.bind as BindCheckbox | BindRadioSelect | BindRange).input;
         if (input) {
@@ -54,7 +43,7 @@ export function Signal(props: Props) {
                     initialValue,
                     (value) => {
                         props.onChange && props.onChange(value);
-                        onChange(props.signal.name, value);
+                        props.explorer.signal(props.signal.name, value);
                     },
                     props.disabled
                 );
