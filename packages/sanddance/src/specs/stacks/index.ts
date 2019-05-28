@@ -71,11 +71,14 @@ export const stacks: SpecCreator = (insight: Insight, columns: SpecColumns, spec
         signals: getSignals(insight, columns, specViewOptions),
         data: getData(insight, columns, specViewOptions),
         scales: getScales(columns, insight),
-        axes: getAxes(specViewOptions, columns),
         marks: getMarks(columns, specViewOptions)
     };
 
-    if (columns.color) {
+    if (!insight.hideAxes) {
+        vegaSpec.axes = getAxes(specViewOptions, columns);
+    }
+
+    if (columns.color && !insight.hideLegend) {
         vegaSpec.legends = [legend(columns.color)];
     }
 

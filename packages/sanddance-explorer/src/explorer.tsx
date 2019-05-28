@@ -67,14 +67,14 @@ dataBrowserTitles[DataScopeId.FilteredData] = strings.selectDataSpanFilter;
 dataBrowserTitles[DataScopeId.SelectedData] = strings.selectDataSpanSelection;
 
 const dataBrowserZeroMessages: { [key: number]: string } = {};
-dataBrowserZeroMessages[DataScopeId.AllData] = strings.zeroAll;
+dataBrowserZeroMessages[DataScopeId.AllData] = strings.labelZeroAll;
 dataBrowserZeroMessages[DataScopeId.FilteredData] = null; //empty array is not used
-dataBrowserZeroMessages[DataScopeId.SelectedData] = strings.zeroSearchResults;
+dataBrowserZeroMessages[DataScopeId.SelectedData] = strings.labelZeroSearchResults;
 
 const dataBrowserNullMessages: { [key: number]: string } = {};
-dataBrowserNullMessages[DataScopeId.AllData] = strings.nullAll;
-dataBrowserNullMessages[DataScopeId.FilteredData] = strings.nullFiltered;
-dataBrowserNullMessages[DataScopeId.SelectedData] = strings.nullSelection;
+dataBrowserNullMessages[DataScopeId.AllData] = strings.labelDataNullAll;
+dataBrowserNullMessages[DataScopeId.FilteredData] = strings.labelDataNullFiltered;
+dataBrowserNullMessages[DataScopeId.SelectedData] = strings.labelDataNullSelection;
 
 function createInputSearch(search: SandDance.types.Search) {
   const groups = SandDance.util.ensureSearchExpressionGroupArray(search);
@@ -127,6 +127,8 @@ export class Explorer extends React.Component<Props, State> {
       columns: null,
       chart: "scatterplot", //TODO initial
       signalValues: null,
+      hideAxes: false,
+      hideLegend: false,
       sideTabId: SideTabId.ChartType,
       dataScopeId: DataScopeId.AllData,
       selectedItemIndex: {},
@@ -476,10 +478,14 @@ export class Explorer extends React.Component<Props, State> {
     }
   }
 
+  private resize() {
+    this.changeInsight({ size: this.getLayoutDivSize(this.state.toolbarPinned, this.state.toolbarClosed) });
+  }
+
   private viewerMounted(glDiv: HTMLElement) {
     window.addEventListener("resize", () => {
       //TODO: throttle events
-      this.changeInsight({ size: this.getLayoutDivSize(this.state.toolbarPinned, this.state.toolbarClosed) });
+      this.resize();
     });
     this.setState({
       size: this.getLayoutDivSize(this.state.toolbarPinned, this.state.toolbarClosed),
@@ -553,12 +559,14 @@ export class Explorer extends React.Component<Props, State> {
   }
 
   render() {
-    const { colorBin, columns, facets, filter, scheme, signalValues, size, chart, view } = this.state;
+    const { colorBin, columns, facets, filter, hideAxes, hideLegend, scheme, signalValues, size, chart, view } = this.state;
     const insight: SandDance.types.Insight = {
       colorBin,
       columns,
       facets,
       filter,
+      hideAxes,
+      hideLegend,
       scheme,
       signalValues,
       size,
@@ -614,7 +622,7 @@ export class Explorer extends React.Component<Props, State> {
           selectionState={selectionState}
           buttons={this.props.topBarButtonProps}
         />
-        <div className={util.classList("sanddance-main", this.state.toolbarPinned && "pinned", this.state.toolbarClosed && "closed")}>
+        <div className={util.classList("sanddance-main", this.state.toolbarPinned && "pinned", this.state.toolbarClosed && "closed", this.state.hideLegend && "hide-legend")}>
           <div ref={div => { if (div && !this.layoutDivUnpinned) this.layoutDivUnpinned = div }} className="sanddance-layout-unpinned"></div>
           <div ref={div => { if (div && !this.layoutDivPinned) this.layoutDivPinned = div }} className="sanddance-layout-pinned"></div>
           {!loaded && (
@@ -814,6 +822,10 @@ export class Explorer extends React.Component<Props, State> {
                       explorer={this}
                       dataFile={this.state.dataFile}
                       scheme={this.state.scheme}
+                      hideLegend={this.state.hideLegend}
+                      onToggleLegend={hideLegend => this.setState({ hideLegend, calculating: () => this.resize() })}
+                      hideAxes={this.state.hideAxes}
+                      onToggleAxes={hideAxes => this.setState({ calculating: () => this.setState({ hideAxes }) })}
                     />
                   );
               }
@@ -824,7 +836,7 @@ export class Explorer extends React.Component<Props, State> {
               <div className="sanddance-viewport">
                 <IconButton
                   themePalette={themePalette}
-                  title={this.state.view === '2d' ? strings.viewType3d : strings.viewType2d}
+                  title={this.state.view === '2d' ? strings.labelViewType3d : strings.lavelViewType2d}
                   iconName={this.state.view === '2d' ? "Product" : "Page"}
                   onClick={() => {
                     const view = this.state.view === '2d' ? '3d' : '2d';
@@ -833,7 +845,7 @@ export class Explorer extends React.Component<Props, State> {
                 />
                 <IconButton
                   themePalette={themePalette}
-                  title={strings.cameraHome}
+                  title={strings.buttonCameraHome}
                   iconName="PicturePosition"
                   onClick={() => this.viewer.presenter.homeCamera()}
                 />
@@ -876,7 +888,7 @@ export class Explorer extends React.Component<Props, State> {
             </div>
           )}
           <Dialog
-            title={strings.dialogTitleError}
+            title={strings.labelError}
             hidden={!this.state.errors}
             onDismiss={() => {
               this.setState({ errors: null });

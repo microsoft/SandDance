@@ -30,32 +30,32 @@ export function Sidebar(props: Props) {
         {
             sideTabId: SideTabId.ChartType,
             iconName: "BIDashboard",
-            title: strings.groupLabelChart
+            title: strings.labelChart
         },
         {
             sideTabId: SideTabId.Color,
             iconName: "Color",
-            title: strings.dialogTitleColor
+            title: strings.labelColor
         },
         {
             sideTabId: SideTabId.Data,
             iconName: "Table",
-            title: strings.buttonData
+            title: strings.labelDataBrowser
         },
         {
             sideTabId: SideTabId.Search,
             iconName: "Search",
-            title: strings.dialogTitleSearch
+            title: strings.labelSearch
         },
         {
             sideTabId: SideTabId.Snapshots,
             iconName: "Camera",
-            title: strings.dialogTitleSnapshots
+            title: strings.labelSnapshots
         },
         {
             sideTabId: SideTabId.Settings,
             iconName: "Settings",
-            title: strings.dialogTitleChartSettings
+            title: strings.labelChartSettings
         }
     ];
     return (

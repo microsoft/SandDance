@@ -115,6 +115,16 @@ export interface Insight {
      * Vega signal values for this insight.
      */
     signalValues?: SignalValues;
+
+    /**
+     * Optional flag to hide axes.
+     */
+    hideAxes?: boolean;
+
+    /**
+     * Optional flag to hide legend.
+     */
+    hideLegend?: boolean;
 }
 
 export type InsightColumnRoles = 'uid' | 'x' | 'y' | 'z' | 'group' | 'size' | 'color' | 'facet' | 'sort';
@@ -195,7 +205,7 @@ export interface SpecLanguage {
      * Label for a count axis.
      */
     count: string;
-    
+
     /**
      * Label for treemap method dropdown.
      */

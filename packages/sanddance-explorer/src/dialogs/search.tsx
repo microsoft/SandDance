@@ -54,7 +54,7 @@ function validateExpression(ex: InputSearchExpression) {
     }
     const s = (typeof ex.value === 'string') ? ex.value : ex.value.toString();
     if (s.length === 0) {
-        ex.errorMessage = strings.validateRequired;
+        ex.errorMessage = strings.labelRequired;
     } else {
         ex.errorMessage = null;
     }
@@ -228,7 +228,7 @@ export class Search extends React.Component<Props, State> {
         return (
             <Group
                 className="sanddance-search"
-                label={strings.dialogTitleSearch}
+                label={strings.labelSearch}
             >
                 <div>
                     {this.state.groups.map((group, groupIndex) => (

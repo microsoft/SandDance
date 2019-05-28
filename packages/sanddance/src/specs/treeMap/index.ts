@@ -91,7 +91,7 @@ export const treemap: SpecCreator = (insight: Insight, columns: SpecColumns, spe
         marks
     };
 
-    if (columns.color) {
+    if (columns.color && !insight.hideLegend) {
         vegaSpec.legends = [legend(columns.color)];
     }
 

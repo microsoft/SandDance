@@ -32,7 +32,7 @@ export function Color(props: Props) {
     const colorBin = props.colorBin || 'quantize';
     return (
         <div className="sanddance-color-dialog">
-            <Group label={strings.dialogTitleColor}>
+            <Group label={strings.labelColor}>
                 <ColumnMap
                     {...props}
                     selectedColumnName={props.colorColumn}

@@ -78,7 +78,7 @@ export class Snapshots extends React.Component<Props, State>{
 
     render() {
         return (
-            <Group className="sanddance-snapshots" label={strings.dialogTitleSnapshots}>
+            <Group className="sanddance-snapshots" label={strings.labelSnapshots}>
                 <base.fabric.PrimaryButton
                     text={strings.buttonCreateSnapshot}
                     onClick={e => {

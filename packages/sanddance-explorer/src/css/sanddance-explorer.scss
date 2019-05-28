@@ -68,6 +68,11 @@ $layout-margin-right: 150px; //room for legend
         right: $layout-margin-right;
         bottom: 0;
     }
+    &.hide-legend {
+        .sanddance-layout-unpinned, .sanddance-layout-pinned {
+            right: 0;
+        }
+    }
     .sanddance-layout-pinned {
         left: $toolbar-width + $layout-margin-left;
     }
@@ -77,6 +82,11 @@ $layout-margin-right: 150px; //room for legend
         left: $layout-margin-left - $layout-margin-right;   //oversize canvas to align center
         bottom: 0;
         right: 0;
+    }
+    &.hide-legend {
+        .sanddance-ReactViewer {
+            left: $layout-margin-left;
+        }
     }
     &.show-center {
         .sanddance-layout-unpinned, .sanddance-layout-pinned {
@@ -127,6 +137,10 @@ $layout-margin-right: 150px; //room for legend
     .sanddance-unitControls {
         display: none;
     }
+}
+
+.sanddance-main.hide-legend .sanddance-panel {
+    display: none;
 }
 
 .sanddance-panel-tools {
