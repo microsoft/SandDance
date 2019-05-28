@@ -20,9 +20,6 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
             },
             "encode": {
                 "update": {
-                    "id": {
-                        "field": columns.uid.name
-                    },
                     "x": {
                         "scale": ScaleNames.X,
                         "field": columns.x.name,
