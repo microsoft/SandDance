@@ -191,15 +191,12 @@ export class Settings extends React.Component<Props, State> {
                     <base.fabric.Toggle
                         label={strings.labelShowAxes}
                         defaultChecked={!props.hideAxes}
-                        onChange={(e, checked?) => props.onToggleAxes(checked)}
+                        onChange={(e, checked?) => props.onToggleAxes(!checked)}
                     />
                     <base.fabric.Toggle
                         label={strings.labelShowLegend}
                         defaultChecked={!props.hideLegend}
-                        onChange={(e, checked?) => {
-                            console.log('toggling legend: ', checked);
-                            props.onToggleLegend(checked);
-                        }}
+                        onChange={(e, checked?) => props.onToggleLegend(!checked)}
                     />
                 </Group>
                 <Group
