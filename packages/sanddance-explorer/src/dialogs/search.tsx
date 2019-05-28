@@ -259,7 +259,7 @@ export class Search extends React.Component<Props, State> {
                                             searchExpression={ex}
                                             column={getColumnWithName(ex.name, this.state.sortedColumns)}
                                         />
-                                        {i > 0 && (
+                                        {group.expressions.length > 1 && (
                                             <Button
                                                 themePalette={this.props.themePalette}
                                                 className="search-action"
@@ -282,7 +282,7 @@ export class Search extends React.Component<Props, State> {
                                     />
                                 </div>
                             )}
-                            {groupIndex > 0 && (
+                            {this.state.groups.length > 1 && (
                                 <Button
                                     themePalette={this.props.themePalette}
                                     className="search-action"
