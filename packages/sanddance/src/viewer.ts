@@ -405,7 +405,7 @@ export class Viewer {
             this._signalValues = {};
         }
         this._specColumns = getSpecColumns(insight, this._dataScope.getColumns(options.columnTypes));
-        const map = assignOrdinals(this._specColumns, data, options.ordinalMap);
+        const ordinalMap = assignOrdinals(this._specColumns, data, options.ordinalMap);
         this.insight = VegaDeckGl.util.clone(insight);
         this._shouldSaveColorContext = () => !options.initialColorContext;
         const colorContext = options.initialColorContext || {
@@ -448,7 +448,7 @@ export class Viewer {
         //future signal changes should save the color context
         this._shouldSaveColorContext = () => !options.discardColorContextUpdates || !options.discardColorContextUpdates();
         this._details.render();
-        const result: RenderResult = { ordinalMap: map, specResult };
+        const result: RenderResult = { ordinalMap, specResult };
         return result;
     }
 
