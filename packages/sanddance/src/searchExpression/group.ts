@@ -3,8 +3,7 @@
 import {
     Search,
     SearchExpression,
-    SearchExpressionGroup,
-    SearchExpressionGroupLogic
+    SearchExpressionGroup
 } from './types';
 
 export function isSearchExpressionGroup(search: Search) {
@@ -14,13 +13,10 @@ export function isSearchExpressionGroup(search: Search) {
     return !!(search as SearchExpressionGroup).expressions;
 }
 
-export function createGroupFromExpression(input: SearchExpression, logic?: SearchExpressionGroupLogic) {
+export function createGroupFromExpression(input: SearchExpression) {
     const output: SearchExpressionGroup = {
         expressions: [input]
     };
-    if (logic) {
-        output.logic = logic;
-    }
     return output;
 }
 

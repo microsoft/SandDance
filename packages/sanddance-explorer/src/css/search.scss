@@ -3,26 +3,39 @@
 @mixin search(
 ) {
     .sanddance-search {
-        .sanddance-search-expression {
-            background-color: rgba(255, 255, 255, 0.9);
+        .sanddance-search-group {
             border: 1px solid rgba(0, 0, 0, 0.2);
-            border-top: none;
+        }        
+        .sanddance-search-group {
+            background: #fff;
+            margin-top: 1em;
+            padding: 4px;
+             &:first-child {
+                margin-top: 0;
+             }
+        }
+        .sanddance-search-expression {
+            background-color: rgba(0, 0, 0, 0.1);
+            margin: 12px 4px;
             padding: 4px 8px 8px 8px;
-            &:first-child {
-                border-top: 1px solid rgba(0, 0, 0, 0.2);
-            }
         }
         .search-action {
-            margin-top: 1em;    
+            width: 100%;
+        }
+        .search-bottom-action {
+            margin-top: 1em;
         }
         .search-field {
             margin-top: 4px;
         }
     }
     .dark-theme .sanddance-search {
-        .sanddance-search-expression {
-            background-color: rgba(0, 0, 0 , 0.9);
+        .sanddance-search-group {
             border-color: rgba(255, 255, 255, 0.2);
+            background: #000;
+        }
+        .sanddance-search-expression {
+            background-color: rgba(255, 255, 255, 0.2);
         }
     }
 }

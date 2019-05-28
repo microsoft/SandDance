@@ -2,13 +2,14 @@
 // Licensed under the MIT license.
 import * as React from 'react';
 import { InputSearchExpression } from './searchTerm';
+import { InputSearchExpressionGroup } from '../dialogs/search';
 import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
 
 export interface Props {
     item: object;
     showSystemFields?: boolean;
-    onSearch?: { (event: React.MouseEvent<HTMLElement>, search: SandDance.types.SearchExpressionGroup<InputSearchExpression>[]): void };
+    onSearch?: { (event: React.MouseEvent<HTMLElement>, search: InputSearchExpressionGroup[]): void };
     disabled: boolean;
     columns: SandDance.types.Column[];
 }
@@ -92,7 +93,8 @@ export function DataItem(props: Props) {
                     value: nameValuePair.value
                 };
                 const searchClick = (e: React.MouseEvent<HTMLTableDataCellElement>) => {
-                    const search: SandDance.types.SearchExpressionGroup<InputSearchExpression> = {
+                    const search: InputSearchExpressionGroup = {
+                        key: 0,
                         expressions: [ex]
                     }
                     props.onSearch(e, [search]);

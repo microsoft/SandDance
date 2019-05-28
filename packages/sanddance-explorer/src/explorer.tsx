@@ -21,14 +21,15 @@ import { DataContent, DataFile, Snapshot } from './interfaces';
 import { DataScopeId } from './controls/dataScope';
 import { Dialog } from './controls/dialog';
 import { IconButton } from './controls/iconButton';
+import { InputSearchExpressionGroup, Search } from './dialogs/search';
 import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
-import { Search } from './dialogs/search';
 import { Settings } from './dialogs/settings';
 import { Sidebar, SideTabId } from './controls/sidebar';
 import { SnapshotProps, Snapshots } from './dialogs/snapshots';
 import { strings } from './language';
 import { themePalettes } from './themes';
 import { Topbar, TopBarButtonProps } from './controls/topbar';
+import { toggleSearch } from './toggleSearch';
 
 export interface Props {
   logoClickUrl?: string;
@@ -47,7 +48,7 @@ export interface State extends SandDance.types.Insight {
   calculating: () => void;
   errors: string[];
   autoCompleteDistinctValues: AutoCompleteDistinctValues;
-  search: SandDance.types.SearchExpressionGroup<InputSearchExpression>[];
+  search: InputSearchExpressionGroup[];
   filteredData: object[];
   toolbarClosed: boolean;
   toolbarPinned: boolean;
@@ -77,8 +78,10 @@ dataBrowserNullMessages[DataScopeId.SelectedData] = strings.nullSelection;
 
 function createInputSearch(search: SandDance.types.Search) {
   const groups = SandDance.util.ensureSearchExpressionGroupArray(search);
-  const dialogSearch: SandDance.types.SearchExpressionGroup<InputSearchExpression>[] = groups.map(group => {
+  const dialogSearch: InputSearchExpressionGroup[] = groups.map((group, groupIndex) => {
     return {
+      key: groupIndex,
+      ...group,
       expressions: group.expressions.map((ex, i) => {
         const ex2: InputSearchExpression = {
           key: i,
@@ -489,22 +492,41 @@ export class Explorer extends React.Component<Props, State> {
     return { height: div.offsetHeight, width: div.offsetWidth };
   }
 
-  private toggleableSearch(e: TouchEvent | MouseEvent | PointerEvent, search: SandDance.types.SearchExpressionGroup<SandDance.types.SearchExpression>) {
+  private toggleableSearch(e: TouchEvent | MouseEvent | PointerEvent, search: SandDance.types.SearchExpressionGroup) {
     if (e.ctrlKey) {
       this.setState({ search: createInputSearch(search) });
       this.setSideTabId(SideTabId.Search);
-    }
-    else {
-      this.toggleSelectIfSame(search);
-    }
-  }
-
-  private toggleSelectIfSame(newSearch: SandDance.types.Search) {
-    var oldSelection = this.viewer.getSelection();
-    if (oldSelection.search && SandDance.searchExpression.compare(oldSelection.search, newSearch)) {
-      this.doDeselect();
     } else {
-      this.doSelect(newSearch);
+      var oldSelection = this.viewer.getSelection();
+      if (oldSelection.search) {
+        //look for matching groups and toggle them
+        const result = toggleSearch(SandDance.util.ensureSearchExpressionGroupArray(oldSelection.search), search);
+        if (result.found) {
+          //removing a group
+          if (result.groups.length === 0) {
+            this.doDeselect();
+          } else {
+            //select with new search removed
+            this.doSelect(result.groups);
+          }
+        } else {
+          //adding a new group
+          if (e.altKey || e.shiftKey) {
+            if (e.shiftKey) {
+              search.clause = '||';
+            } else if (e.altKey) {
+              search.clause = '&&';
+            }
+            result.groups.push(search);
+            this.doSelect(result.groups);
+          } else {
+            //replace
+            this.doSelect(search);
+          }
+        }
+      } else {
+        this.doSelect(search);
+      }
     }
   }
 

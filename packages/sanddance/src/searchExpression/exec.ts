@@ -22,7 +22,9 @@ function valueToString(value: any) {
 function isStringOperation(ex: SearchExpression) {
     switch (ex.operator) {
         case 'contains':
+        case '!contains':
         case 'starts':
+        case '!starts':
             return true;
     }
     return false;
@@ -66,6 +68,8 @@ export class Exec {
         const actualDataValue = datum[ex.name];
         if (ex.operator === 'isnullorEmpty') {
             return isnullorEmpty(actualDataValue)
+        } else if (ex.operator === '!isnullorEmpty') {
+            return !isnullorEmpty(actualDataValue)
         }
         let dataValue = actualDataValue;
         let expressionValue = ex.value;
@@ -88,8 +92,12 @@ export class Exec {
                 return dataValue >= expressionValue;
             case 'contains':
                 return dataValue.indexOf(expressionValue) >= 0;
+            case '!contains':
+                return dataValue.indexOf(expressionValue) < 0;
             case 'starts':
                 return dataValue.indexOf(expressionValue) == 0;
+            case '!starts':
+                return dataValue.indexOf(expressionValue) !== 0;
         }
     }
 
@@ -127,9 +135,6 @@ export class Exec {
                     accumulator = accumulator || this.runExpression(datum, ex);
                     break;
             }
-        }
-        if (group.logic == '!') {
-            accumulator = !accumulator;
         }
         return accumulator;
     }
