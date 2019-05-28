@@ -524,41 +524,9 @@ export class Explorer extends React.Component<Props, State> {
             this.doSelect(search);
           }
         }
-        // if (result.found && result.groups.length === 0) {
-        //   this.doDeselect();
-        // } else {
-        //   if (result.groups.length === 0) {
-        //   } else {
-        //     if (e.shiftKey) {
-        //       search.clause = '||';
-        //     } else if (e.altKey) {
-        //       search.clause = '&&';
-        //     } else {
-        //       this.doSelect(search);
-        //       return;
-        //     }
-        //     this.doSelect(result.groups);
-        //   }
-        // }
       } else {
         this.doSelect(search);
       }
-      // if (oldSelection.search && SandDance.searchExpression.compare(oldSelection.search, search)) {
-      //   this.doDeselect();
-      // } else {
-      //   let combinedSearch: SandDance.types.SearchExpressionGroup[];
-      //   if (oldSelection.search && (e.altKey || e.shiftKey)) {
-      //     const oldGroup = SandDance.util.ensureSearchExpressionGroupArray(oldSelection.search);
-      //     const newGroup = SandDance.util.ensureSearchExpressionGroupArray(SandDance.VegaDeckGl.util.clone(search));
-      //     combinedSearch = oldGroup.concat(newGroup);
-      //     if (e.shiftKey) {
-      //       newGroup[0].clause = '||';
-      //     } else if (e.altKey) {
-      //       newGroup[0].clause = '&&';
-      //     }
-      //   }
-      //   this.doSelect(combinedSearch || search);
-      // }
     }
   }
 
