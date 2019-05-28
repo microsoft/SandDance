@@ -344,24 +344,37 @@
   overflow-y: auto;
   top: 0; }
 
+.sanddance-search .sanddance-search-group {
+  border: 1px solid rgba(0, 0, 0, 0.2); }
+
+.sanddance-search .sanddance-search-group {
+  background: #fff;
+  margin-top: 1em;
+  padding: 4px; }
+
+.sanddance-search .sanddance-search-group:first-child {
+  margin-top: 0; }
+
 .sanddance-search .sanddance-search-expression {
-  background-color: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-top: none;
+  background-color: rgba(0, 0, 0, 0.1);
+  margin: 12px 4px;
   padding: 4px 8px 8px 8px; }
 
-.sanddance-search .sanddance-search-expression:first-child {
-  border-top: 1px solid rgba(0, 0, 0, 0.2); }
-
 .sanddance-search .search-action {
+  width: 100%; }
+
+.sanddance-search .search-bottom-action {
   margin-top: 1em; }
 
 .sanddance-search .search-field {
   margin-top: 4px; }
 
+.dark-theme .sanddance-search .sanddance-search-group {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: #000; }
+
 .dark-theme .sanddance-search .sanddance-search-expression {
-  background-color: rgba(0, 0, 0, 0.9);
-  border-color: rgba(255, 255, 255, 0.2); }
+  background-color: rgba(255, 255, 255, 0.2); }
 
 .sanddance-snapshots .snapshot {
   cursor: pointer;
@@ -437,6 +450,9 @@
   right: 150px;
   bottom: 0; }
 
+.sanddance-main.hide-legend .sanddance-layout-unpinned, .sanddance-main.hide-legend .sanddance-layout-pinned {
+  right: 0; }
+
 .sanddance-main .sanddance-layout-pinned {
   left: 250px; }
 
@@ -446,6 +462,9 @@
   left: -150px;
   bottom: 0;
   right: 0; }
+
+.sanddance-main.hide-legend .sanddance-ReactViewer {
+  left: 0; }
 
 .sanddance-main.show-center .sanddance-layout-unpinned, .sanddance-main.show-center .sanddance-layout-pinned {
   background: linear-gradient(to right, transparent 49%, rgba(255, 0, 255, 0.2), transparent 51%);
@@ -486,6 +505,9 @@
 .sanddance-panel h4,
 .sanddance-panel .sanddance-vegaControls,
 .sanddance-panel .sanddance-unitControls {
+  display: none; }
+
+.sanddance-main.hide-legend .sanddance-panel {
   display: none; }
 
 .sanddance-panel-tools {

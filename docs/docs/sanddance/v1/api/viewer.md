@@ -82,7 +82,7 @@ public filter(search: Search): Promise<void>;
 
 | Name   | Type                             | Description                                                          |
 | ------ | -------------------------------- | -------------------------------------------------------------------- |
-| search | [Search][TypeAliasDeclaration-0] | Filter expression, see https://vega.github.io/vega/docs/expressions/ |
+| search | [Search][TypeAliasDeclaration-3] | Filter expression, see https://vega.github.io/vega/docs/expressions/ |
 
 **Return type**
 
@@ -116,7 +116,7 @@ public select(search: Search): Promise<void>;
 
 | Name   | Type                             | Description                                                          |
 | ------ | -------------------------------- | -------------------------------------------------------------------- |
-| search | [Search][TypeAliasDeclaration-0] | Filter expression, see https://vega.github.io/vega/docs/expressions/ |
+| search | [Search][TypeAliasDeclaration-3] | Filter expression, see https://vega.github.io/vega/docs/expressions/ |
 
 **Return type**
 
@@ -348,10 +348,10 @@ number
 [InterfaceDeclaration-38]: types#renderoptions
 [InterfaceDeclaration-19]: types#renderresult
 [MethodDeclaration-11]: viewer#filtersearch
-[TypeAliasDeclaration-0]: types#search
+[TypeAliasDeclaration-3]: types#search
 [MethodDeclaration-12]: viewer#reset
 [MethodDeclaration-13]: viewer#selectsearch
-[TypeAliasDeclaration-0]: types#search
+[TypeAliasDeclaration-3]: types#search
 [MethodDeclaration-14]: viewer#deselect
 [MethodDeclaration-15]: viewer#getselection
 [InterfaceDeclaration-42]: types#selectionstate

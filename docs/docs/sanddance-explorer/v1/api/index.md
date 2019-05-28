@@ -151,7 +151,7 @@ interface State extends Insight {
     calculating: () => void;
     errors: string[];
     autoCompleteDistinctValues: AutoCompleteDistinctValues;
-    search: SearchExpressionGroup<InputSearchExpression>[];
+    search: InputSearchExpressionGroup[];
     filteredData: object[];
     toolbarClosed: boolean;
     toolbarPinned: boolean;
@@ -171,22 +171,22 @@ Insight
 
 **Properties**
 
-| Name                       | Type                                                                     | Optional |
-| -------------------------- | ------------------------------------------------------------------------ | -------- |
-| calculating                | () => void                                                               | false    |
-| errors                     | string[]                                                                 | false    |
-| autoCompleteDistinctValues | AutoCompleteDistinctValues                     | false    |
-| search                     | SearchExpressionGroup<InputSearchExpression>[] | false    |
-| filteredData               | object[]                                                                 | false    |
-| toolbarClosed              | boolean                                                                  | false    |
-| toolbarPinned              | boolean                                                                  | false    |
-| dataFile                   | [DataFile][InterfaceDeclaration-1]                                       | false    |
-| dataContent                | [DataContent][InterfaceDeclaration-0]                                    | false    |
-| specCapabilities           | SpecCapabilities                                                         | false    |
-| sideTabId                  | SideTabId                                           | false    |
-| dataScopeId                | DataScopeId                                         | false    |
-| selectedItemIndex          | { [key: number]: number; }                                               | false    |
-| snapshots                  | [Snapshot][InterfaceDeclaration-2][]                                     | false    |
+| Name                       | Type                                                   | Optional |
+| -------------------------- | ------------------------------------------------------ | -------- |
+| calculating                | () => void                                             | false    |
+| errors                     | string[]                                               | false    |
+| autoCompleteDistinctValues | AutoCompleteDistinctValues   | false    |
+| search                     | InputSearchExpressionGroup[] | false    |
+| filteredData               | object[]                                               | false    |
+| toolbarClosed              | boolean                                                | false    |
+| toolbarPinned              | boolean                                                | false    |
+| dataFile                   | [DataFile][InterfaceDeclaration-1]                     | false    |
+| dataContent                | [DataContent][InterfaceDeclaration-0]                  | false    |
+| specCapabilities           | SpecCapabilities                                       | false    |
+| sideTabId                  | SideTabId                         | false    |
+| dataScopeId                | DataScopeId                       | false    |
+| selectedItemIndex          | { [key: number]: number; }                             | false    |
+| snapshots                  | [Snapshot][InterfaceDeclaration-2][]                   | false    |
 
 ## Classes
 

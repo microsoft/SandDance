@@ -58,7 +58,7 @@ function ensureSearchExpressionGroupArray(search: Search): SearchExpressionGroup
 
 | Name   | Type                             |
 | ------ | -------------------------------- |
-| search | [Search][TypeAliasDeclaration-0] |
+| search | [Search][TypeAliasDeclaration-3] |
 
 **Return type**
 
@@ -83,15 +83,15 @@ function getPresenterStyle(options: ViewerOptions): PresenterStyle;
 [PresenterStyle][InterfaceDeclaration-47]
 
 [NamespaceImport-3]: util#util
-[FunctionDeclaration-4]: util#getcolumnsfromdata
+[FunctionDeclaration-6]: util#getcolumnsfromdata
 [InterfaceDeclaration-5]: types#columntypemap
 [InterfaceDeclaration-3]: types#column
-[FunctionDeclaration-5]: util#inferall
+[FunctionDeclaration-7]: util#inferall
 [InterfaceDeclaration-3]: types#column
-[FunctionDeclaration-6]: util#ensuresearchexpressiongrouparray
-[TypeAliasDeclaration-0]: types#search
+[FunctionDeclaration-8]: util#ensuresearchexpressiongrouparray
+[TypeAliasDeclaration-3]: types#search
 [InterfaceDeclaration-1]: types#searchexpression
 [InterfaceDeclaration-2]: types#searchexpressiongroup
-[FunctionDeclaration-7]: util#getpresenterstyle
+[FunctionDeclaration-9]: util#getpresenterstyle
 [InterfaceDeclaration-23]: types#vieweroptions
 [InterfaceDeclaration-47]: vegadeckgl/types#presenterstyle

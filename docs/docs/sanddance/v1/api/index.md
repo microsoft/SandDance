@@ -74,7 +74,7 @@ const colorSchemes: ColorScheme[];
 [ColorScheme][InterfaceDeclaration-0][]
 
 [SourceFile-0]: index#indexts
-[FunctionDeclaration-3]: index#use
+[FunctionDeclaration-5]: index#use
 [InterfaceDeclaration-43]: vegadeckgl/types#vegabase
 [InterfaceDeclaration-44]: vegadeckgl/types#deckbase
 [InterfaceDeclaration-45]: vegadeckgl/types#decklayerbase

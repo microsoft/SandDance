@@ -251,7 +251,7 @@ public get view: View;
 
 **Type**
 
-[View][TypeAliasDeclaration-8]
+[View][TypeAliasDeclaration-7]
 
 [ClassDeclaration-0]: vegadeckgl.presenter#presenter
 [Constructor-0]: vegadeckgl.presenter#constructorel-style
@@ -280,4 +280,4 @@ public get view: View;
 [PropertyDeclaration-4]: vegadeckgl.presenter#style
 [InterfaceDeclaration-47]: vegadeckgl.types#presenterstyle
 [GetAccessor-1]: vegadeckgl.presenter#view
-[TypeAliasDeclaration-8]: vegadeckgl.types#view
+[TypeAliasDeclaration-7]: vegadeckgl.types#view

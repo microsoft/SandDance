@@ -70,13 +70,10 @@
         }
         return !!search.expressions;
     }
-    function createGroupFromExpression(input, logic) {
+    function createGroupFromExpression(input) {
         const output = {
             expressions: [input]
         };
-        if (logic) {
-            output.logic = logic;
-        }
         return output;
     }
     function ensureSearchExpressionGroupArray(search) {
@@ -98,7 +95,7 @@
         operator: null,
         value: null
     });
-    function compareExpressions(a, b) {
+    function compareExpression(a, b) {
         for (let k = 0; k < expressionKeys.length; k++) {
             let key = expressionKeys[k];
             if (a[key] != b[key])
@@ -107,8 +104,7 @@
         return true;
     }
     const groupKeys = Object.keys({
-        clause: null,
-        logic: null
+        clause: null
     });
     function compareGroup(a, b) {
         for (let k = 0; k < groupKeys.length; k++) {
@@ -119,7 +115,7 @@
         if (a.expressions.length != b.expressions.length)
             return false;
         for (let i = 0; i < a.expressions.length; i++) {
-            if (!compareExpressions(a.expressions[i], b.expressions[i]))
+            if (!compareExpression(a.expressions[i], b.expressions[i]))
                 return false;
         }
         return true;
@@ -142,16 +138,40 @@
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     function invertSearchExpressionGroup(input) {
+        //this only works if all expressions in this group have the same clause
         const output = {
-            expressions: input.expressions
+            expressions: input.expressions.map(invertSearchExpression)
         };
-        if (input.logic !== '!') {
-            output.logic = '!';
+        if (input.clause) {
+            output.clause = invertedClauses[input.clause];
         }
         return output;
     }
+    const invertedOperators = {
+        '!=': '==',
+        '==': '!=',
+        '<': '>=',
+        '>=': '<',
+        '<=': '>',
+        '>': '<=',
+        '!contains': 'contains',
+        'contains': '!contains',
+        '!isnullorEmpty': 'isnullorEmpty',
+        'isnullorEmpty': '!isnullorEmpty',
+        '!starts': 'starts',
+        'starts': '!starts'
+    };
+    const invertedClauses = {
+        '&&': '||',
+        '||': '&&'
+    };
     function invertSearchExpression(input) {
-        return createGroupFromExpression(input, '!');
+        const operator = invertedOperators[input.operator];
+        const output = Object.assign({}, input, { operator });
+        if (input.clause) {
+            output.clause = invertedClauses[input.clause];
+        }
+        return output;
     }
     function invert(search) {
         if (Array.isArray(search)) {
@@ -179,6 +199,8 @@
     // Copyright (c) Microsoft Corporation. All rights reserved.
 
     var index = /*#__PURE__*/Object.freeze({
+        compareExpression: compareExpression,
+        compareGroup: compareGroup,
         compare: compare,
         invert: invert,
         narrow: narrow
@@ -8170,7 +8192,10 @@ void main(void) {
             };
         }
         const rootNamespace = new NameSpace();
-        let axes = getAxes(specViewOptions, columns);
+        let axes;
+        if (!insight.hideAxes) {
+            axes = getAxes(specViewOptions, columns);
+        }
         let marks;
         if (columns.facet) {
             const cellNamespace = new NameSpace('Cell');
@@ -8197,11 +8222,13 @@ void main(void) {
             "width": size.width,
             signals: getSignals(insight, columns, specViewOptions),
             scales: getScales(rootNamespace, insight, columns),
-            axes,
             data: getData(rootNamespace, insight, columns, specViewOptions),
             marks
         };
-        if (columns.color) {
+        if (!insight.hideAxes && axes && axes.length) {
+            vegaSpec.axes = axes;
+        }
+        if (columns.color && !insight.hideLegend) {
             vegaSpec.legends = [legend(columns.color)];
         }
         if (columns.facet) {
@@ -8394,7 +8421,10 @@ void main(void) {
                 vegaSpec: null,
             };
         }
-        let axes = getAxes$1(specViewOptions, columns);
+        let axes;
+        if (!insight.hideAxes) {
+            axes = getAxes$1(specViewOptions, columns);
+        }
         let marks = getMarks$1(columns, specViewOptions);
         if (columns.facet) {
             marks = facetMarks(specViewOptions, marks[0].from.data, marks, axes);
@@ -8408,10 +8438,12 @@ void main(void) {
             signals: getSignals$1(insight, specViewOptions),
             data: getData$1(insight, columns, specViewOptions),
             scales: getScales$1(columns, insight),
-            axes,
             marks
         };
-        if (columns.color) {
+        if (!insight.hideAxes && axes && axes.length) {
+            vegaSpec.axes = axes;
+        }
+        if (columns.color && !insight.hideLegend) {
             vegaSpec.legends = [legend(columns.color)];
         }
         if (columns.facet) {
@@ -8606,7 +8638,7 @@ void main(void) {
             scales: getScales$2(columns, insight),
             marks
         };
-        if (columns.color) {
+        if (columns.color && !insight.hideLegend) {
             vegaSpec.legends = [legend(columns.color)];
         }
         if (columns.facet) {
@@ -9107,10 +9139,12 @@ void main(void) {
             signals: getSignals$3(insight, columns, specViewOptions),
             data: getData$3(insight, columns, specViewOptions),
             scales: getScales$3(columns, insight),
-            axes: getAxes$2(specViewOptions, columns),
             marks: getMarks$3(columns, specViewOptions)
         };
-        if (columns.color) {
+        if (!insight.hideAxes) {
+            vegaSpec.axes = getAxes$2(specViewOptions, columns);
+        }
+        if (columns.color && !insight.hideLegend) {
             vegaSpec.legends = [legend(columns.color)];
         }
         if (columns.facet) {
@@ -9541,10 +9575,12 @@ void main(void) {
             signals: getSignals$4(insight, columns, specViewOptions),
             data: getData$4(insight, columns, specViewOptions),
             scales: getScales$4(columns, insight),
-            axes: getAxes$3(specViewOptions, columns),
             marks: getMarks$4(columns, specViewOptions)
         };
-        if (columns.color) {
+        if (!insight.hideAxes) {
+            vegaSpec.axes = getAxes$3(specViewOptions, columns);
+        }
+        if (columns.color && !insight.hideLegend) {
             vegaSpec.legends = [legend(columns.color)];
         }
         if (columns.facet) {
@@ -9615,7 +9651,9 @@ void main(void) {
     function isStringOperation(ex) {
         switch (ex.operator) {
             case 'contains':
+            case '!contains':
             case 'starts':
+            case '!starts':
                 return true;
         }
         return false;
@@ -9651,6 +9689,9 @@ void main(void) {
             if (ex.operator === 'isnullorEmpty') {
                 return isnullorEmpty(actualDataValue);
             }
+            else if (ex.operator === '!isnullorEmpty') {
+                return !isnullorEmpty(actualDataValue);
+            }
             let dataValue = actualDataValue;
             let expressionValue = ex.value;
             if ((ex.column && ex.column.type === 'string') || ex.stringOperation) {
@@ -9672,8 +9713,12 @@ void main(void) {
                     return dataValue >= expressionValue;
                 case 'contains':
                     return dataValue.indexOf(expressionValue) >= 0;
+                case '!contains':
+                    return dataValue.indexOf(expressionValue) < 0;
                 case 'starts':
                     return dataValue.indexOf(expressionValue) == 0;
+                case '!starts':
+                    return dataValue.indexOf(expressionValue) !== 0;
             }
         }
         runExpression(datum, ex) {
@@ -9706,9 +9751,6 @@ void main(void) {
                         accumulator = accumulator || this.runExpression(datum, ex);
                         break;
                 }
-            }
-            if (group.logic == '!') {
-                accumulator = !accumulator;
             }
             return accumulator;
         }

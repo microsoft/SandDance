@@ -21,9 +21,9 @@ interface SearchExpression {
 
 | Name     | Type                                                | Optional |
 | -------- | --------------------------------------------------- | -------- |
-| clause   | [SearchExpressionClause][TypeAliasDeclaration-1]    | true     |
+| clause   | [SearchExpressionClause][TypeAliasDeclaration-0]    | true     |
 | name     | string                                              | false    |
-| operator | [SearchExpressionOperators][TypeAliasDeclaration-2] | false    |
+| operator | [SearchExpressionOperators][TypeAliasDeclaration-1] | false    |
 | value    | boolean &#124; Date &#124; number &#124; string     | true     |
 
 ----------
@@ -32,7 +32,6 @@ interface SearchExpression {
 
 ```typescript
 interface SearchExpressionGroup<T extends SearchExpression = SearchExpression> {
-    logic?: "!";
     clause?: SearchExpressionClause;
     expressions: T[];
 }
@@ -48,8 +47,7 @@ interface SearchExpressionGroup<T extends SearchExpression = SearchExpression> {
 
 | Name        | Type                                             | Optional |
 | ----------- | ------------------------------------------------ | -------- |
-| logic       | "!"                                              | true     |
-| clause      | [SearchExpressionClause][TypeAliasDeclaration-1] | true     |
+| clause      | [SearchExpressionClause][TypeAliasDeclaration-0] | true     |
 | expressions | T[]                                              | false    |
 
 ----------
@@ -174,6 +172,8 @@ interface Insight {
     colorBin?: ColorBin;
     scheme?: string;
     signalValues?: SignalValues;
+    hideAxes?: boolean;
+    hideLegend?: boolean;
 }
 ```
 
@@ -181,15 +181,17 @@ interface Insight {
 
 | Name         | Type                                      | Optional | Description                                                                                                      |
 | ------------ | ----------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------- |
-| chart        | [Chart][TypeAliasDeclaration-6]           | false    |                                                                                                                  |
+| chart        | [Chart][TypeAliasDeclaration-5]           | false    |                                                                                                                  |
 | size         | [Size][InterfaceDeclaration-9]            | false    |                                                                                                                  |
 | columns      | [InsightColumns][InterfaceDeclaration-10] | false    |                                                                                                                  |
-| view         | [View][TypeAliasDeclaration-8]            | true     |                                                                                                                  |
-| filter       | [Search][TypeAliasDeclaration-0]          | true     |                                                                                                                  |
+| view         | [View][TypeAliasDeclaration-7]            | true     |                                                                                                                  |
+| filter       | [Search][TypeAliasDeclaration-3]          | true     |                                                                                                                  |
 | facets       | [Facets][InterfaceDeclaration-7]          | true     |                                                                                                                  |
-| colorBin     | [ColorBin][TypeAliasDeclaration-7]        | true     | Type of color binning to use on color scale. Only applicable when the column in the color role is quantitative.  |
+| colorBin     | [ColorBin][TypeAliasDeclaration-6]        | true     | Type of color binning to use on color scale. Only applicable when the column in the color role is quantitative.  |
 | scheme       | string                                    | true     | Name of the color scheme. See https://vega.github.io/vega/docs/schemes/                                          |
 | signalValues | [SignalValues][InterfaceDeclaration-11]   | true     | Vega signal values for this insight.                                                                             |
+| hideAxes     | boolean                                   | true     | Optional flag to hide axes.                                                                                      |
+| hideLegend   | boolean                                   | true     | Optional flag to hide legend.                                                                                    |
 
 ----------
 
@@ -242,11 +244,11 @@ interface SpecRoleCapabilities {
 
 | Name             | Type                                         | Optional | Description                             |
 | ---------------- | -------------------------------------------- | -------- | --------------------------------------- |
-| role             | [InsightColumnRoles][TypeAliasDeclaration-9] | false    |                                         |
+| role             | [InsightColumnRoles][TypeAliasDeclaration-8] | false    |                                         |
 | excludeCategoric | boolean                                      | true     |                                         |
 | allowNone        | boolean                                      | true     |                                         |
 | binnable         | boolean                                      | true     |                                         |
-| axisSelection    | [AxisSelectionType][TypeAliasDeclaration-5]  | true     |                                         |
+| axisSelection    | [AxisSelectionType][TypeAliasDeclaration-4]  | true     |                                         |
 | signals          | string[]                                     | true     | Signals associated with this spec role. |
 
 ----------
@@ -538,7 +540,7 @@ interface ViewerOptions extends SpecViewOptions {
 | -------------------- | ------------------------------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------- |
 | colors               | [ColorSettings][InterfaceDeclaration-24]                                                                      | false    | Custom colors of various parts of the visualization.                        |
 | language             | [Language][InterfaceDeclaration-26]                                                                           | false    | Language settings for the visualization.                                    |
-| lightSettings        | { [view extends [View][TypeAliasDeclaration-8]]: LightSettings }                                              | true     | Optional map of light settings for the visualization, per camera view type. |
+| lightSettings        | { [view extends [View][TypeAliasDeclaration-7]]: LightSettings }                                              | true     | Optional map of light settings for the visualization, per camera view type. |
 | transitionDurations  | [TransitionDurations][InterfaceDeclaration-21]                                                                | false    | Lengths of time for a transition animation.                                 |
 | onError              | (errors: string[]) => void                                                                                    | true     | Optional error handler.                                                     |
 | onColorContextChange | () => void                                                                                                    | true     | Optional handler when color context changes.                                |
@@ -816,7 +818,7 @@ interface SelectionState {
 
 | Name         | Type                             | Optional |
 | ------------ | -------------------------------- | -------- |
-| search       | [Search][TypeAliasDeclaration-0] | true     |
+| search       | [Search][TypeAliasDeclaration-3] | true     |
 | selectedData | object[]                         | true     |
 | active       | object                           | true     |
 
@@ -837,36 +839,24 @@ type SearchExpressionClause = "&&" | "||";
 ### SearchExpressionStringSearchOperators
 
 ```typescript
-type SearchExpressionStringSearchOperators = "starts" | "contains";
+type SearchExpressionStringSearchOperators = "starts" | "!starts" | "contains" | "!contains";
 ```
 
 **Type**
 
-"starts" | "contains"
+"starts" | "!starts" | "contains" | "!contains"
 
 ----------
 
 ### SearchExpressionOperators
 
 ```typescript
-type SearchExpressionOperators = "==" | "!=" | "<" | "<=" | ">" | ">=" | "isnullorEmpty" | SearchExpressionStringSearchOperators;
+type SearchExpressionOperators = "==" | "!=" | "<" | "<=" | ">" | ">=" | "isnullorEmpty" | "!isnullorEmpty" | SearchExpressionStringSearchOperators;
 ```
 
 **Type**
 
-"==" | "!=" | "<" | "<=" | ">" | ">=" | "isnullorEmpty" | [SearchExpressionStringSearchOperators][TypeAliasDeclaration-3]
-
-----------
-
-### SearchExpressionGroupLogic
-
-```typescript
-type SearchExpressionGroupLogic = "!";
-```
-
-**Type**
-
-"!"
+"==" | "!=" | "<" | "<=" | ">" | ">=" | "isnullorEmpty" | "!isnullorEmpty" | [SearchExpressionStringSearchOperators][TypeAliasDeclaration-2]
 
 ----------
 
@@ -934,12 +924,12 @@ type InsightColumnRoles = "uid" | "x" | "y" | "z" | "group" | "size" | "color" |
 
 [NamespaceImport-2]: types#types
 [InterfaceDeclaration-1]: types#searchexpression
-[TypeAliasDeclaration-1]: types#searchexpressionclause
-[TypeAliasDeclaration-2]: types#searchexpressionoperators
+[TypeAliasDeclaration-0]: types#searchexpressionclause
+[TypeAliasDeclaration-1]: types#searchexpressionoperators
 [InterfaceDeclaration-2]: types#searchexpressiongroup
 [InterfaceDeclaration-1]: types#searchexpression
 [InterfaceDeclaration-1]: types#searchexpression
-[TypeAliasDeclaration-1]: types#searchexpressionclause
+[TypeAliasDeclaration-0]: types#searchexpressionclause
 [InterfaceDeclaration-3]: types#column
 [InterfaceDeclaration-4]: types#columnstats
 [InterfaceDeclaration-4]: types#columnstats
@@ -947,18 +937,18 @@ type InsightColumnRoles = "uid" | "x" | "y" | "z" | "group" | "size" | "color" |
 [InterfaceDeclaration-6]: types#facetmargins
 [InterfaceDeclaration-7]: types#facets
 [InterfaceDeclaration-8]: types#insight
-[TypeAliasDeclaration-6]: types#chart
+[TypeAliasDeclaration-5]: types#chart
 [InterfaceDeclaration-9]: types#size
 [InterfaceDeclaration-10]: types#insightcolumns
-[TypeAliasDeclaration-8]: vegadeckgl/types#view
-[TypeAliasDeclaration-0]: types#search
+[TypeAliasDeclaration-7]: vegadeckgl/types#view
+[TypeAliasDeclaration-3]: types#search
 [InterfaceDeclaration-7]: types#facets
-[TypeAliasDeclaration-7]: types#colorbin
+[TypeAliasDeclaration-6]: types#colorbin
 [InterfaceDeclaration-11]: types#signalvalues
 [InterfaceDeclaration-10]: types#insightcolumns
 [InterfaceDeclaration-12]: types#specrolecapabilities
-[TypeAliasDeclaration-9]: types#insightcolumnroles
-[TypeAliasDeclaration-5]: types#axisselectiontype
+[TypeAliasDeclaration-8]: types#insightcolumnroles
+[TypeAliasDeclaration-4]: types#axisselectiontype
 [InterfaceDeclaration-13]: types#speccapabilities
 [InterfaceDeclaration-12]: types#specrolecapabilities
 [InterfaceDeclaration-14]: types#speccolorsettings
@@ -988,7 +978,7 @@ type InsightColumnRoles = "uid" | "x" | "y" | "z" | "group" | "size" | "color" |
 [InterfaceDeclaration-17]: types#specviewoptions
 [InterfaceDeclaration-24]: types#colorsettings
 [InterfaceDeclaration-26]: types#language
-[TypeAliasDeclaration-8]: vegadeckgl/types#view
+[TypeAliasDeclaration-7]: vegadeckgl/types#view
 [InterfaceDeclaration-21]: types#transitiondurations
 [InterfaceDeclaration-38]: types#renderoptions
 [InterfaceDeclaration-3]: types#column
@@ -1015,19 +1005,18 @@ type InsightColumnRoles = "uid" | "x" | "y" | "z" | "group" | "size" | "color" |
 [InterfaceDeclaration-1]: types#searchexpression
 [InterfaceDeclaration-2]: types#searchexpressiongroup
 [InterfaceDeclaration-42]: types#selectionstate
-[TypeAliasDeclaration-0]: types#search
-[TypeAliasDeclaration-1]: types#searchexpressionclause
-[TypeAliasDeclaration-3]: types#searchexpressionstringsearchoperators
-[TypeAliasDeclaration-2]: types#searchexpressionoperators
-[TypeAliasDeclaration-3]: types#searchexpressionstringsearchoperators
-[TypeAliasDeclaration-4]: types#searchexpressiongrouplogic
-[TypeAliasDeclaration-0]: types#search
+[TypeAliasDeclaration-3]: types#search
+[TypeAliasDeclaration-0]: types#searchexpressionclause
+[TypeAliasDeclaration-2]: types#searchexpressionstringsearchoperators
+[TypeAliasDeclaration-1]: types#searchexpressionoperators
+[TypeAliasDeclaration-2]: types#searchexpressionstringsearchoperators
+[TypeAliasDeclaration-3]: types#search
 [InterfaceDeclaration-1]: types#searchexpression
 [InterfaceDeclaration-1]: types#searchexpression
 [InterfaceDeclaration-2]: types#searchexpressiongroup
 [InterfaceDeclaration-1]: types#searchexpression
 [InterfaceDeclaration-2]: types#searchexpressiongroup
-[TypeAliasDeclaration-5]: types#axisselectiontype
-[TypeAliasDeclaration-6]: types#chart
-[TypeAliasDeclaration-7]: types#colorbin
-[TypeAliasDeclaration-9]: types#insightcolumnroles
+[TypeAliasDeclaration-4]: types#axisselectiontype
+[TypeAliasDeclaration-5]: types#chart
+[TypeAliasDeclaration-6]: types#colorbin
+[TypeAliasDeclaration-8]: types#insightcolumnroles

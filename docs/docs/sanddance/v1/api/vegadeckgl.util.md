@@ -171,12 +171,12 @@ function getCubes(deckProps: DeckProps): Cube[];
 [Cube][InterfaceDeclaration-29][]
 
 [NamespaceImport-8]: vegadeckgl.util#util
-[FunctionDeclaration-8]: vegadeckgl.util#adddiv
-[FunctionDeclaration-9]: vegadeckgl.util#addel
-[FunctionDeclaration-10]: vegadeckgl.util#clone
-[FunctionDeclaration-11]: vegadeckgl.util#colorfromstring
-[FunctionDeclaration-12]: vegadeckgl.util#colortostring
-[FunctionDeclaration-13]: vegadeckgl.util#deepmerge
-[FunctionDeclaration-14]: vegadeckgl.util#getcubelayer
-[FunctionDeclaration-15]: vegadeckgl.util#getcubes
+[FunctionDeclaration-10]: vegadeckgl.util#adddiv
+[FunctionDeclaration-11]: vegadeckgl.util#addel
+[FunctionDeclaration-12]: vegadeckgl.util#clone
+[FunctionDeclaration-13]: vegadeckgl.util#colorfromstring
+[FunctionDeclaration-14]: vegadeckgl.util#colortostring
+[FunctionDeclaration-15]: vegadeckgl.util#deepmerge
+[FunctionDeclaration-16]: vegadeckgl.util#getcubelayer
+[FunctionDeclaration-17]: vegadeckgl.util#getcubes
 [InterfaceDeclaration-29]: vegadeckgl.types#cube

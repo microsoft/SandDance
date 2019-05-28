@@ -349,7 +349,7 @@ interface PresenterStyle {
 | cssPrefix        | string                                                           | true     |
 | defaultCubeColor | Color                                                            | false    |
 | highlightColor   | Color                                                            | true     |
-| lightSettings    | { [view extends [View][TypeAliasDeclaration-8]]: LightSettings } | true     |
+| lightSettings    | { [view extends [View][TypeAliasDeclaration-7]]: LightSettings } | true     |
 
 ----------
 
@@ -393,7 +393,7 @@ Scene
 
 | Name | Type                           | Optional |
 | ---- | ------------------------------ | -------- |
-| view | [View][TypeAliasDeclaration-8] | false    |
+| view | [View][TypeAliasDeclaration-7] | false    |
 
 ----------
 
@@ -423,7 +423,7 @@ interface Stage {
 | legend          | [Legend][InterfaceDeclaration-30]                                               | true     |
 | axes            | { x: [Axis][InterfaceDeclaration-33][]; y: [Axis][InterfaceDeclaration-33][]; } | false    |
 | textData        | TextLayerDatum[]                                                                | false    |
-| view            | [View][TypeAliasDeclaration-8]                                                  | false    |
+| view            | [View][TypeAliasDeclaration-7]                                                  | false    |
 | gridLines       | [StyledLine][InterfaceDeclaration-34][]                                         | true     |
 | facets          | [FacetRect][InterfaceDeclaration-36][]                                          | true     |
 
@@ -529,7 +529,7 @@ interface ViewGlConfig {
 | --------------- | ------------------------------------------ | -------- |
 | presenter       | [Presenter][ClassDeclaration-0]            | true     |
 | presenterConfig | [PresenterConfig][InterfaceDeclaration-52] | true     |
-| getView         | { (): [View][TypeAliasDeclaration-8]; }    | true     |
+| getView         | { (): [View][TypeAliasDeclaration-7]; }    | true     |
 
 ## Types
 
@@ -600,16 +600,16 @@ type View = "2d" | "3d";
 [InterfaceDeclaration-22]: vegadeckgl.types#transitiondurations
 [InterfaceDeclaration-53]: vegadeckgl.types#prestage
 [InterfaceDeclaration-47]: vegadeckgl.types#presenterstyle
-[TypeAliasDeclaration-8]: vegadeckgl.types#view
+[TypeAliasDeclaration-7]: vegadeckgl.types#view
 [InterfaceDeclaration-50]: vegadeckgl.types#queuedanimationoptions
 [InterfaceDeclaration-51]: vegadeckgl.types#scene3d
-[TypeAliasDeclaration-8]: vegadeckgl.types#view
+[TypeAliasDeclaration-7]: vegadeckgl.types#view
 [InterfaceDeclaration-28]: vegadeckgl.types#stage
 [InterfaceDeclaration-29]: vegadeckgl.types#cube
 [InterfaceDeclaration-30]: vegadeckgl.types#legend
 [InterfaceDeclaration-33]: vegadeckgl.types#axis
 [InterfaceDeclaration-33]: vegadeckgl.types#axis
-[TypeAliasDeclaration-8]: vegadeckgl.types#view
+[TypeAliasDeclaration-7]: vegadeckgl.types#view
 [InterfaceDeclaration-34]: vegadeckgl.types#styledline
 [InterfaceDeclaration-36]: vegadeckgl.types#facetrect
 [InterfaceDeclaration-34]: vegadeckgl.types#styledline
@@ -618,9 +618,9 @@ type View = "2d" | "3d";
 [InterfaceDeclaration-54]: vegadeckgl.types#viewglconfig
 [ClassDeclaration-0]: vegadeckgl.presenter#presenter
 [InterfaceDeclaration-52]: vegadeckgl.types#presenterconfig
-[TypeAliasDeclaration-8]: vegadeckgl.types#view
-[TypeAliasDeclaration-10]: vegadeckgl.types#cubelayerprops
+[TypeAliasDeclaration-7]: vegadeckgl.types#view
+[TypeAliasDeclaration-9]: vegadeckgl.types#cubelayerprops
 [InterfaceDeclaration-61]: vegadeckgl.types#cubelayerdefaultprops
 [InterfaceDeclaration-58]: vegadeckgl.types#cubelayerdataprops
-[TypeAliasDeclaration-11]: vegadeckgl.types#vec3
-[TypeAliasDeclaration-8]: vegadeckgl.types#view
+[TypeAliasDeclaration-10]: vegadeckgl.types#vec3
+[TypeAliasDeclaration-7]: vegadeckgl.types#view
