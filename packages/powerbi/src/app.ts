@@ -17,7 +17,8 @@ import {
     Props as ExplorerProps,
     SandDance,
     themePalettes,
-    use
+    use,
+    util
 } from '@msrvida/sanddance-explorer';
 
 fabric.initializeIcons();
@@ -32,10 +33,10 @@ function getThemePalette(darkTheme: boolean) {
 export interface Props {
     mounted: (app: App) => void;
     onViewChange: () => void;
-    onShowAxes: ()=> boolean;
 }
 
 export interface State {
+    chromeless: boolean;
     darkTheme: boolean;
 }
 
@@ -46,6 +47,7 @@ export class App extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
+            chromeless: false,
             darkTheme: null
         };
         this.viewerOptions = this.getViewerOptions();
@@ -59,11 +61,6 @@ export class App extends React.Component<Props, State> {
                 axisLine: color,
                 axisText: color,
                 hoveredCube: color
-            },
-            onVegaSpec: spec => {
-                if (!this.props.onShowAxes()) {
-                    delete spec.axes;
-                }
             }
         };
         return viewerOptions;
@@ -81,8 +78,15 @@ export class App extends React.Component<Props, State> {
         this.setState({ darkTheme });
     }
 
+    setChromeless(chromeless: boolean) {
+        this.setState({ chromeless });
+        this.explorer.sidebar(chromeless, !chromeless);
+        this.explorer.resize();
+    }
+
     render() {
         const props: ExplorerProps = {
+            collapsibleSidebar: false,
             logoClickUrl: "https://microsoft.github.io/SandDance/",
             theme: this.state.darkTheme && 'dark-theme',
             viewerOptions: this.viewerOptions,
@@ -94,6 +98,8 @@ export class App extends React.Component<Props, State> {
             onSignalChanged: this.props.onViewChange,
             onView: this.props.onViewChange
         };
-        return React.createElement(Explorer, props);
+        return React.createElement("div", {
+            className: util.classList("sanddance-app", this.state.chromeless && "chromeless")
+        }, React.createElement(Explorer, props));
     }
 }

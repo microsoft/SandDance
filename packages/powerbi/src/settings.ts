@@ -34,8 +34,7 @@ export class SandDanceConfig {
 }
 
 export class SandDanceMainSettings {
-  showaxes: boolean = true;
-  showlegend: boolean = true;
+  showchrome: boolean = true;
 }
 
 export interface IVisualSettings {

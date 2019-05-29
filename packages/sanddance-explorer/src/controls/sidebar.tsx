@@ -16,6 +16,7 @@ export enum SideTabId {
 export interface Props {
     calculating: boolean;
     children: JSX.Element | JSX.Element[];
+    collapsibleSidebar: boolean;
     onSideTabClick: (sideTabId: SideTabId) => void;
     selectedSideTab: SideTabId;
     disabled: boolean;
@@ -74,20 +75,22 @@ export function Sidebar(props: Props) {
                         />
                     ))}
                 </div>
-                <div>
-                    <Sidebutton
-                        {...props}
-                        sideTabId={SideTabId.Pin}
-                        iconName={props.pinned ? "Pinned" : "Pin"}
-                        title={props.pinned ? strings.buttonToolbarFloat : strings.buttonToolbarDock}
-                    />
-                    <Sidebutton
-                        {...props}
-                        sideTabId={SideTabId.Collapse}
-                        iconName={props.closed ? "DoubleChevronRight12" : "DoubleChevronLeft12"}
-                        title={props.closed ? strings.buttonToolbarShow : strings.buttonToolbarHide}
-                    />
-                </div>
+                {props.collapsibleSidebar && (
+                    <div>
+                        <Sidebutton
+                            {...props}
+                            sideTabId={SideTabId.Pin}
+                            iconName={props.pinned ? "Pinned" : "Pin"}
+                            title={props.pinned ? strings.buttonToolbarFloat : strings.buttonToolbarDock}
+                        />
+                        <Sidebutton
+                            {...props}
+                            sideTabId={SideTabId.Collapse}
+                            iconName={props.closed ? "DoubleChevronRight12" : "DoubleChevronLeft12"}
+                            title={props.closed ? strings.buttonToolbarShow : strings.buttonToolbarHide}
+                        />
+                    </div>
+                )}
             </div>
             <Scrollable>
                 <div className="sidetab">

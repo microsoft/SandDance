@@ -10,14 +10,8 @@
         "sandDanceMainSettings": {
             "displayName": "SandDance",
             "properties": {
-                "showaxes": {
-                    "displayName": "Show axes",
-                    "type": {
-                        "bool": true
-                    }
-                },
-                "showlegend": {
-                    "displayName": "Show legend",
+                "showchrome": {
+                    "displayName": "Show chrome",
                     "type": {
                         "bool": true
                     }

@@ -70,8 +70,7 @@ export class Visual implements IVisual {
                     };
                     const properties = config as any;
                     options.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
-                },
-                onShowAxes: () => this.settings.sandDanceMainSettings.showaxes
+                }
             };
             render(createElement(App, props), this.viewElement);
         }
@@ -87,9 +86,11 @@ export class Visual implements IVisual {
         const oldData = this.app.explorer.state.dataContent && this.app.explorer.state.dataContent.data;
         let { data, different } = convertTableToObjectArray(dataView.table, oldData);
 
-        if (!this.prevSettings || this.settings.sandDanceMainSettings.showaxes != this.prevSettings.sandDanceMainSettings.showaxes) {
+        if (!this.prevSettings) {
             different = true;
         }
+
+        this.app.setChromeless(!this.settings.sandDanceMainSettings.showchrome);
 
         this.prevSettings = SandDance.VegaDeckGl.util.clone(this.settings);
 

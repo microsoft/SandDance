@@ -8,3 +8,15 @@
     left: 0;
     right: 0;
 }
+
+.sanddance-app {
+    display: grid;
+    &.chromeless {
+        .sanddance-explorer {
+            grid-template-rows: auto;
+        }
+        .sanddance-explorer-topbar, .sanddance-sidebar {
+            display: none;
+        }
+    }
+}
