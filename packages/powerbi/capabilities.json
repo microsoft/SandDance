@@ -1,0 +1,55 @@
+{
+    "dataRoles": [
+        {
+            "displayName": "Values",
+            "name": "values",
+            "kind": "GroupingOrMeasure"
+        }
+    ],
+    "objects": {
+        "sandDanceMainSettings": {
+            "displayName": "SandDance",
+            "properties": {
+                "showaxes": {
+                    "displayName": "Show axes",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "showlegend": {
+                    "displayName": "Show legend",
+                    "type": {
+                        "bool": true
+                    }
+                }
+            }
+        },
+        "sandDanceConfig": {
+            "displayName": "SandDance config area",
+            "properties": {
+                "insightJSON": {
+                    "type": {
+                        "text": true
+                    }
+                }
+            }
+        }
+    },
+    "dataViewMappings": [
+        {
+            "table": {
+                "rows": {
+                    "for": {
+                        "in": "values"
+                    },
+                    "dataReductionAlgorithm": {
+                        "sample": {
+                            "count": 30000
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "suppressDefaultTitle": true
+}
