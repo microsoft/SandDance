@@ -39,8 +39,8 @@ function getInsightColumns(columnArray: SandDance.types.Column[]): ColumnsAndSch
     }
 
     const columns: SandDance.types.InsightColumns = {
-        uid: columnArray[0].name,
-        x: columnArray[1].name,
+        uid: columnArray[0] && columnArray[0].name,
+        x: columnArray[1] && columnArray[1].name,
         y: columnArray[2] && columnArray[2].name,
         color: colorColumn && colorColumn.name,
         z: columnArray[4] && columnArray[4].name

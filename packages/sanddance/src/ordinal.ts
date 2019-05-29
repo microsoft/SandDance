@@ -5,18 +5,18 @@ import { Column, Insight, SpecColumns } from './specs/types';
 import { OrdinalMap } from './types';
 
 export function assignOrdinals(columns: SpecColumns, data: object[], ordinalMap?: OrdinalMap) {
-    const uCol = columns.uid.name;
+    const uCol = columns.uid && columns.uid.name;
 
     if (ordinalMap) {
-        data.forEach(d => {
-            const key = d[uCol];
+        data.forEach((d, i) => {
+            const key = uCol ? d[uCol] : i;
             d[VegaDeckGl.constants.GL_ORDINAL] = ordinalMap[key];
         });
     } else {
         ordinalMap = {};
         data.forEach((d, i) => {
             d[VegaDeckGl.constants.GL_ORDINAL] = i;
-            const uColValue = d[uCol];
+            const uColValue = uCol ? d[uCol] : i;
             ordinalMap[uColValue] = i;
         })
     }

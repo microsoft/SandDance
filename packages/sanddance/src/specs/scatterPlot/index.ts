@@ -26,7 +26,6 @@ import { SignalNames } from '../constants';
 export const scatterplot: SpecCreator = (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult => {
     const errors: string[] = [];
 
-    if (!columns.uid) errors.push(`Must set a field for id`);
     if (!columns.x) errors.push(`Must set a field for x axis`);
     if (!columns.y) errors.push(`Must set a field for y axis`);
     checkForFacetErrors(insight.facets, errors);
