@@ -20,7 +20,7 @@ import { DataBrowser } from './dialogs/dataBrowser';
 import { DataContent, DataFile, Snapshot } from './interfaces';
 import { DataScopeId } from './controls/dataScope';
 import { Dialog } from './controls/dialog';
-import { IconButton } from './controls/iconButton';
+import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { InputSearchExpressionGroup, Search } from './dialogs/search';
 import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
 import { Settings } from './dialogs/settings';
@@ -28,8 +28,8 @@ import { Sidebar, SideTabId } from './controls/sidebar';
 import { SnapshotProps, Snapshots } from './dialogs/snapshots';
 import { strings } from './language';
 import { themePalettes } from './themes';
-import { Topbar, TopBarButtonProps } from './controls/topbar';
 import { toggleSearch } from './toggleSearch';
+import { Topbar } from './controls/topbar';
 
 export interface Props {
   collapsibleSidebar?: boolean;
@@ -40,7 +40,7 @@ export interface Props {
   initialView?: SandDance.VegaDeckGl.types.View;
   mounted?: (explorer: Explorer) => any;
   datasetElement?: JSX.Element;
-  topBarButtonProps?: TopBarButtonProps[];
+  topBarButtonProps?: FabricTypes.ICommandBarItemProps[];
   snapshotProps?: SnapshotProps;
   onSnapshotClick?: (snapshot: Snapshot) => void;
   onView?: () => void;
@@ -645,6 +645,12 @@ export class Explorer extends React.Component<Props, State> {
           selectionSearch={selectionSearch}
           selectionState={selectionState}
           buttons={this.props.topBarButtonProps}
+          view={this.state.view}
+          onViewClick={() => {
+            const view = this.state.view === '2d' ? '3d' : '2d';
+            this.changeInsight({ view });
+          }}
+          onHomeClick={() => this.viewer.presenter.homeCamera()}
         />
         <div className={util.classList("sanddance-main", this.state.sidebarPinned && "pinned", this.state.sidebarClosed && "closed", this.state.hideLegend && "hide-legend")}>
           <div ref={div => { if (div && !this.layoutDivUnpinned) this.layoutDivUnpinned = div }} className="sanddance-layout-unpinned"></div>
@@ -659,7 +665,7 @@ export class Explorer extends React.Component<Props, State> {
           )}
           <Sidebar
             themePalette={themePalette}
-            calculating={!!this.state.calculating}            
+            calculating={!!this.state.calculating}
             closed={this.state.sidebarClosed}
             collapsibleSidebar={this.props.collapsibleSidebar}
             pinned={this.state.sidebarPinned}
@@ -858,23 +864,6 @@ export class Explorer extends React.Component<Props, State> {
           </Sidebar>
           {loaded && (
             <div className="sanddance-view">
-              <div className="sanddance-viewport">
-                <IconButton
-                  themePalette={themePalette}
-                  title={this.state.view === '2d' ? strings.labelViewType3d : strings.lavelViewType2d}
-                  iconName={this.state.view === '2d' ? "Product" : "Page"}
-                  onClick={() => {
-                    const view = this.state.view === '2d' ? '3d' : '2d';
-                    this.changeInsight({ view });
-                  }}
-                />
-                <IconButton
-                  themePalette={themePalette}
-                  title={strings.buttonCameraHome}
-                  iconName="PicturePosition"
-                  onClick={() => this.viewer.presenter.homeCamera()}
-                />
-              </div>
               <SandDanceReact
                 renderOptions={{
                   initialColorContext: this.getColorContext && this.getColorContext(this.viewer.insight, insight),

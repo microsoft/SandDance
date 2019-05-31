@@ -174,9 +174,11 @@ export class SandDanceApp extends React.Component<Props, State> {
           )}
           topBarButtonProps={[
             {
-              themePalette,
+              key: 'theme',
               text: this.state.darkTheme ? strings.buttonThemeLight : strings.buttonThemeDark,
-              iconName: this.state.darkTheme ? "Sunny" : "ClearNight",
+              iconProps: {
+                iconName: this.state.darkTheme ? "Sunny" : "ClearNight"
+              },
               onClick: () => {
                 const darkTheme = !this.state.darkTheme;
                 this.props.setTheme && this.props.setTheme(darkTheme);

@@ -19,9 +19,9 @@
             height: 24px;
             svg {
                 fill: $highlight-color;
-                height: 40px;
-                margin: -7px 0 0 7px;
-                width: 40px;
+                height: 24px;
+                margin: 0 auto;
+                width: 24px;
             }
             a {
                 color: inherit;
@@ -30,10 +30,6 @@
                 line-height: 24px;
                 text-decoration: none;
             }
-        }
-        button {
-            margin-right: 1em;
-            min-width: unset;
         }
     }
     .dark-theme .sanddance-explorer-topbar {
