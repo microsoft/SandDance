@@ -8,14 +8,16 @@ import {
 } from 'office-ui-fabric-react/lib/components/Button';
 import { ChoiceGroup } from 'office-ui-fabric-react/lib/ChoiceGroup';
 import { ComboBox } from 'office-ui-fabric-react/lib/components/ComboBox';
+import { CommandBar } from 'office-ui-fabric-react/lib/components/CommandBar';
 import { ContextualMenuItemType } from 'office-ui-fabric-react/lib/components/ContextualMenu';
+import { Customizer } from '@uifabric/utilities';
 import { Dialog, DialogFooter, DialogType } from 'office-ui-fabric-react/lib/Dialog';
 import { Dropdown, DropdownMenuItemType } from 'office-ui-fabric-react/lib/components/Dropdown';
 import { FabricComponents } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { getTheme, loadTheme } from 'office-ui-fabric-react/lib/Styling';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
-import { Label } from 'office-ui-fabric-react/lib/Label';
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
+import { Label } from 'office-ui-fabric-react/lib/Label';
 import { Modal } from 'office-ui-fabric-react/lib/components/Modal';
 import { Slider } from 'office-ui-fabric-react/lib/Slider';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
@@ -28,7 +30,9 @@ export const fabric: FabricComponents = {
   ActionButton: ActionButton as any,
   ChoiceGroup,
   ComboBox: ComboBox as any,
+  CommandBar,
   ContextualMenuItemType,
+  Customizer,
   DefaultButton: DefaultButton as any,
   Dialog,
   DialogFooter: DialogFooter as any,

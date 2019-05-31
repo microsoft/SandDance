@@ -10,7 +10,9 @@ import {
 } from 'office-ui-fabric-react/lib/components/Button';
 import { ChoiceGroup } from 'office-ui-fabric-react/lib/ChoiceGroup';
 import { ComboBox } from 'office-ui-fabric-react/lib/components/ComboBox';
+import { CommandBar } from 'office-ui-fabric-react/lib/components/CommandBar';
 import { ContextualMenuItemType } from 'office-ui-fabric-react/lib/components/ContextualMenu';
+import { Customizer } from '@uifabric/utilities';
 import { Dialog, DialogFooter, DialogType } from 'office-ui-fabric-react/lib/Dialog';
 import { Dropdown, DropdownMenuItemType } from 'office-ui-fabric-react/lib/components/Dropdown';
 import { getTheme, loadTheme } from 'office-ui-fabric-react/lib/Styling';
@@ -28,7 +30,9 @@ export interface FabricComponents {
   ActionButton: FabricTypes.IReactCast<FabricTypes.IButtonProps>;
   ChoiceGroup: typeof ChoiceGroup;
   ComboBox: FabricTypes.IReactCast<FabricTypes.IComboBoxProps>;
+  CommandBar: typeof CommandBar;
   ContextualMenuItemType: typeof ContextualMenuItemType;
+  Customizer: typeof Customizer;
   DefaultButton: FabricTypes.IReactCast<FabricTypes.IButtonProps>;
   Dialog: typeof Dialog;
   DialogFooter: FabricTypes.IReactCast<{}>;
