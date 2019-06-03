@@ -16,7 +16,7 @@ export enum SideTabId {
 export interface Props {
     calculating: boolean;
     children: JSX.Element | JSX.Element[];
-    collapsibleSidebar: boolean;
+    hideCollapsibleSidebar: boolean;
     onSideTabClick: (sideTabId: SideTabId) => void;
     selectedSideTab: SideTabId;
     disabled: boolean;
@@ -75,7 +75,7 @@ export function Sidebar(props: Props) {
                         />
                     ))}
                 </div>
-                {props.collapsibleSidebar && (
+                {!props.hideCollapsibleSidebar && (
                     <div>
                         <Sidebutton
                             {...props}

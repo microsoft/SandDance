@@ -86,7 +86,7 @@ export class App extends React.Component<Props, State> {
 
     render() {
         const props: ExplorerProps = {
-            collapsibleSidebar: false,
+            hideCollapsibleSidebar: true,
             logoClickUrl: "https://microsoft.github.io/SandDance/",
             theme: this.state.darkTheme && 'dark-theme',
             viewerOptions: this.viewerOptions,
