@@ -6,7 +6,7 @@ import { ScaleNames } from '../constants';
 import { SpecColumns, SpecViewOptions } from '../types';
 
 export default function (specViewOptions: SpecViewOptions, columns: SpecColumns) {
-    const pa = partialAxes(specViewOptions, columns.x, columns.y);
+    const pa = partialAxes(specViewOptions, columns.x.quantitative, columns.y.quantitative);
     const axes: Axis[] = [
         {
             "scale": ScaleNames.X,

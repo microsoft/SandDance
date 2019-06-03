@@ -5,7 +5,7 @@ import { Column, SpecViewOptions } from './types';
 import { SignalNames } from './constants';
 import { util } from '../vega-deck.gl';
 
-export function partialAxes(specViewOptions: SpecViewOptions, xColumn: Column, yColumn: Column) {
+export function partialAxes(specViewOptions: SpecViewOptions, xColumnQuantitative: boolean, yColumnQuantitative: boolean) {
     const lineColor = util.colorToString(specViewOptions.colors.axisLine);
     const axisColor = {
         "domainColor": lineColor,
@@ -32,7 +32,7 @@ export function partialAxes(specViewOptions: SpecViewOptions, xColumn: Column, y
         "tickSize": specViewOptions.tickSize,
         ...axisColor
     };
-    if (xColumn.quantitative) {
+    if (xColumnQuantitative) {
         bottom.format = "~r";
     }
     const left: Partial<Axis> =
@@ -56,7 +56,7 @@ export function partialAxes(specViewOptions: SpecViewOptions, xColumn: Column, y
         "tickSize": specViewOptions.tickSize,
         ...axisColor
     };
-    if (yColumn.quantitative) {
+    if (yColumnQuantitative) {
         left.format = "~r";
     }
     return { left, bottom };
