@@ -3,41 +3,51 @@
 @mixin topbar(
     $toolbar-margin,
     $toolbar-width,
-    $sidetab-width
+    $sidetab-width,
+    $toolbar-height: 32px
 ) {
-    .sanddance-explorer-topbar {
-        border-bottom: 1px solid $toolbar-border;
-        height: 32px;
-        position: relative;
-        > div {             //contain the commandbar so it can be measured
-            left: 0;
-            margin: 4px 0;
-            position: absolute;
-            right: 0;
-        }
-        .logo {
-            color: $highlight-color;
-            display: grid;
-            grid-template-columns: $sidetab-width auto;
-            width: $toolbar-width;
-            svg {
-                fill: $highlight-color;
-                height: 24px;
-                margin: 0 auto;
-                width: 24px;
-            }
-            a {
-                color: inherit;
-                font-size: 14px;
-                font-weight: bold;
-                line-height: 24px;
-                text-decoration: none;
-            }
-        }
+  .sanddance-explorer-topbar {
+    border-bottom: 1px solid $toolbar-border;
+    display: grid;
+    grid-template-columns: $toolbar-width auto;
+    height: $toolbar-height;
+    .logo {
+      color: $highlight-color;
+      display: grid;
+      grid-template-columns: $sidetab-width auto;
+      padding: 4px 0;
+      svg {
+        fill: $highlight-color;
+        height: 24px;
+        margin: 0 auto;
+        width: 24px;
+      }
+      a {
+        color: inherit;
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 24px;
+        text-decoration: none;
+      }
     }
-    .dark-theme .sanddance-explorer-topbar {
-        .logo {
-            color: #00b4f0;
-        }
+  }
+
+  //contain the commandbar so it can be measured
+  .sanddance-explorer-commandbar {
+    position: relative;
+    > div {
+      left: 0;
+      position: absolute;
+      right: 0;
     }
+    .ms-CommandBar {
+        height: $toolbar-height;
+    }
+  }
+
+  .dark-theme .sanddance-explorer-topbar {
+    .logo {
+      color: #00b4f0;
+    }
+  }
 }

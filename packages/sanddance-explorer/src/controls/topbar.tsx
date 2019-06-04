@@ -30,15 +30,6 @@ export function Topbar(props: Props) {
     const disabled = !props.loaded;
     const items: FabricTypes.ICommandBarItemProps[] = [
         {
-            key: 'logo',
-            onRender: () => (
-                <div className="logo" style={{ width: "250px" }}>
-                    <Logo />
-                    <a href={props.logoClickUrl || "/SandDance/"} target={props.logoClickTarget || '_blank'}>{strings.appName}</a>
-                </div>
-            )
-        },
-        {
             key: 'deselect',
             name: strings.buttonDeselect,
             iconProps: {
@@ -101,15 +92,21 @@ export function Topbar(props: Props) {
 
     return (
         <div className="sanddance-explorer-topbar">
-            <base.fabric.Customizer {...FluentCustomizations} >
-                <base.fabric.CommandBar
-                    items={items}
-                    farItems={farItems}
-                    styles={{
-                        root: { height: "unset", paddingLeft: 0, paddingRight: 0 }
-                    }}
-                />
-            </base.fabric.Customizer>
+            <div className="logo" style={{ width: "250px" }}>
+                <Logo />
+                <a href={props.logoClickUrl || "/SandDance/"} target={props.logoClickTarget || '_blank'}>{strings.appName}</a>
+            </div>
+            <div className="sanddance-explorer-commandbar">
+                <base.fabric.Customizer {...FluentCustomizations} >
+                    <base.fabric.CommandBar
+                        items={items}
+                        farItems={farItems}
+                        styles={{
+                            root: { height: "unset", paddingLeft: 0, paddingRight: 0 }
+                        }}
+                    />
+                </base.fabric.Customizer>
+            </div>
         </div>
     );
 }
