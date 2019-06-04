@@ -88,15 +88,6 @@ export function Topbar(props: Props) {
         }
     ];
 
-    const scopedSettings = {
-        CommandBarButton: {
-            styles: (args: FabricTypes.IButtonProps) => {
-                args.theme.palette = props.themePalette as FabricTypes.IPalette;
-                return CommandBarButtonStyles(args);
-            }
-        }
-    };
-
     return (
         <div className="sanddance-explorer-topbar">
             <div className="logo">
@@ -105,7 +96,14 @@ export function Topbar(props: Props) {
             </div>
             <div className="sanddance-explorer-commandbar">
                 <base.fabric.Customizer
-                    scopedSettings={scopedSettings}
+                    scopedSettings={{
+                        CommandBarButton: {
+                            styles: (buttonProps: FabricTypes.IButtonProps) => {
+                                buttonProps.theme.palette = props.themePalette as FabricTypes.IPalette;
+                                return CommandBarButtonStyles(buttonProps);
+                            }
+                        }
+                    }}
                 >
                     <base.fabric.CommandBar
                         items={items}
