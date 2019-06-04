@@ -7,6 +7,7 @@
     $toolbar-height: 32px
 ) {
   .sanddance-explorer-topbar {
+    background-color: #fff;
     border-bottom: 1px solid $toolbar-border;
     display: grid;
     grid-template-columns: $toolbar-width auto;
@@ -46,6 +47,7 @@
   }
 
   .dark-theme .sanddance-explorer-topbar {
+    background-color: #000;
     .logo {
       color: #00b4f0;
     }

@@ -102,7 +102,12 @@ export function Topbar(props: Props) {
                         items={items}
                         farItems={farItems}
                         styles={{
-                            root: { height: "unset", paddingLeft: 0, paddingRight: 0 }
+                            root: {
+                                backgroundColor: "transparent",
+                                height: "unset",
+                                paddingLeft: 0,
+                                paddingRight: 0
+                            }
                         }}
                     />
                 </base.fabric.Customizer>
