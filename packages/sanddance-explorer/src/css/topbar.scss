@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 @mixin topbar(
-    $toolbar-margin,
-    $toolbar-width,
-    $sidetab-width,
-    $toolbar-height: 36px
+  $toolbar-margin,
+  $toolbar-width,
+  $sidetab-width,
+  $toolbar-height: 36px
 ) {
   .sanddance-explorer-topbar {
     background-color: #fff;
@@ -42,7 +42,7 @@
       right: 0;
     }
     .ms-CommandBar {
-        height: $toolbar-height;
+      height: $toolbar-height;
     }
   }
 
