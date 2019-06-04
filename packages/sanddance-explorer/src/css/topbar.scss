@@ -7,16 +7,19 @@
 ) {
     .sanddance-explorer-topbar {
         border-bottom: 1px solid $toolbar-border;
-        display: grid;
-        grid-template-columns: $toolbar-width auto;
-        > div {
-            align-self: center;
+        height: 32px;
+        position: relative;
+        > div {             //contain the commandbar so it can be measured
+            left: 0;
+            margin: 4px 0;
+            position: absolute;
+            right: 0;
         }
         .logo {
             color: $highlight-color;
             display: grid;
             grid-template-columns: $sidetab-width auto;
-            height: 24px;
+            width: $toolbar-width;
             svg {
                 fill: $highlight-color;
                 height: 24px;
