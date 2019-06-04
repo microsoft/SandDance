@@ -4,7 +4,7 @@
     $toolbar-margin,
     $toolbar-width,
     $sidetab-width,
-    $toolbar-height: 32px
+    $toolbar-height: 36px
 ) {
   .sanddance-explorer-topbar {
     background-color: #fff;
@@ -16,7 +16,7 @@
       color: $highlight-color;
       display: grid;
       grid-template-columns: $sidetab-width auto;
-      padding: 4px 0;
+      padding: 6px 0;
       svg {
         fill: $highlight-color;
         height: 24px;
