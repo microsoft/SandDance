@@ -14,7 +14,7 @@ import { Customizer } from '@uifabric/utilities';
 import { Dialog, DialogFooter, DialogType } from 'office-ui-fabric-react/lib/Dialog';
 import { Dropdown, DropdownMenuItemType } from 'office-ui-fabric-react/lib/components/Dropdown';
 import { FabricComponents } from '@msrvida/office-ui-fabric-react-cdn-typings';
-import { getTheme, loadTheme } from 'office-ui-fabric-react/lib/Styling';
+import { getFocusStyle, getTheme, loadTheme } from 'office-ui-fabric-react/lib/Styling';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
 import { Label } from 'office-ui-fabric-react/lib/Label';
@@ -41,6 +41,7 @@ export const fabric: FabricComponents = {
   DropdownMenuItemType,
   Icon,
   IconButton: IconButton as any,
+  getFocusStyle,
   getTheme,
   Label,
   loadTheme,

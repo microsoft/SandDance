@@ -15,7 +15,7 @@ import { ContextualMenuItemType } from 'office-ui-fabric-react/lib/components/Co
 import { Customizer } from '@uifabric/utilities';
 import { Dialog, DialogFooter, DialogType } from 'office-ui-fabric-react/lib/Dialog';
 import { Dropdown, DropdownMenuItemType } from 'office-ui-fabric-react/lib/components/Dropdown';
-import { getTheme, loadTheme } from 'office-ui-fabric-react/lib/Styling';
+import { getFocusStyle, getTheme, loadTheme } from 'office-ui-fabric-react/lib/Styling';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import { Modal } from 'office-ui-fabric-react/lib/components/Modal';
@@ -41,6 +41,7 @@ export interface FabricComponents {
   DropdownMenuItemType: typeof DropdownMenuItemType;
   Icon: typeof Icon;
   IconButton: FabricTypes.IReactCast<FabricTypes.IButtonProps>;
+  getFocusStyle: typeof getFocusStyle;
   getTheme: typeof getTheme;
   Label: typeof Label;
   loadTheme: typeof loadTheme;
