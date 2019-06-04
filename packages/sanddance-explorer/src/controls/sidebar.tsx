@@ -65,7 +65,7 @@ export function Sidebar(props: Props) {
                 {...props.dataScopeProps}
             />
             <div className="vbuttons">
-                <div>
+                <div className="sidebar-dialogs">
                     {sidebuttons.map((sidebutton, i) => (
                         <Sidebutton
                             key={i}
@@ -76,7 +76,7 @@ export function Sidebar(props: Props) {
                     ))}
                 </div>
                 {!props.hideSidebarControls && (
-                    <div>
+                    <div className="sidebar-controls">
                         <Sidebutton
                             {...props}
                             sideTabId={SideTabId.Pin}
