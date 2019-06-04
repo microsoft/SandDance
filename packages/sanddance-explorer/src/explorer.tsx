@@ -32,7 +32,7 @@ import { toggleSearch } from './toggleSearch';
 import { Topbar } from './controls/topbar';
 
 export interface Props {
-  hideCollapsibleSidebar?: boolean;
+  hideSidebarControls?: boolean;
   logoClickUrl?: string;
   logoClickTarget?: string;
   theme?: string;
@@ -667,7 +667,7 @@ export class Explorer extends React.Component<Props, State> {
             themePalette={themePalette}
             calculating={!!this.state.calculating}
             closed={this.state.sidebarClosed}
-            hideCollapsibleSidebar={this.props.hideCollapsibleSidebar}
+            hideSidebarControls={this.props.hideSidebarControls}
             pinned={this.state.sidebarPinned}
             disabled={!loaded}
             dataScopeProps={{
