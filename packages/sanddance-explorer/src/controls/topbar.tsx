@@ -2,8 +2,8 @@
 // Licensed under the MIT license.
 import * as React from 'react';
 import { base } from '../base';
+import { CommandBarButtonStyles } from './CommandBarButton.styles';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
-import { FluentCustomizations } from '@uifabric/fluent-theme';
 import { Logo } from './logo';
 import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
@@ -88,7 +88,14 @@ export function Topbar(props: Props) {
         }
     ];
 
-    FluentCustomizations.settings.theme.palette = props.themePalette;
+    const scopedSettings = {
+        CommandBarButton: {
+            styles: (args: FabricTypes.IButtonProps) => {
+                args.theme.palette = props.themePalette as FabricTypes.IPalette;
+                return CommandBarButtonStyles(args);
+            }
+        }
+    };
 
     return (
         <div className="sanddance-explorer-topbar">
@@ -97,7 +104,9 @@ export function Topbar(props: Props) {
                 <a href={props.logoClickUrl || "/SandDance/"} target={props.logoClickTarget || '_blank'}>{strings.appName}</a>
             </div>
             <div className="sanddance-explorer-commandbar">
-                <base.fabric.Customizer {...FluentCustomizations} >
+                <base.fabric.Customizer
+                    scopedSettings={scopedSettings}
+                >
                     <base.fabric.CommandBar
                         items={items}
                         farItems={farItems}
