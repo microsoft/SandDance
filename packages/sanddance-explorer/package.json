@@ -1,10 +1,10 @@
 {
   "name": "@msrvida/sanddance-explorer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
   "files": [
-    "alias", "dist"
+    "dist"
   ],
   "scripts": {
     "docs": "ts-docs-gen --entryFile src/index.tsx -o ../../docs/docs/sanddance-explorer/v1/ && node ./scripts/docs.js",
@@ -14,10 +14,6 @@
     "watch-css": "node-sass ./src/css -o ./dist/css --watch",
     "bundle": "parcel build ./dist/es6/index.js --global SandDanceExplorer --no-minify --no-source-maps --out-dir ./dist/umd/ --out-file sanddance-explorer.js",
     "build": "npm run build-typescript && npm run bundle && npm run build-css"
-  },
-  "alias": {
-    "react": "./alias/react-external.js",
-    "react-dom": "./alias/react-dom-external.js"
   },
   "devDependencies": {
     "@msrvida/office-ui-fabric-react-cdn-typings": "*",
