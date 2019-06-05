@@ -9,7 +9,7 @@ export const strings = {
     menuLocal: "On this computer ...",
     menuUrl: "Enter a URL ...",
     dialogTitleLocal: "Use a file from your computer",
-    dialogSubtextLocal: "Your file will not be uploaded, it is only used by the browser on this computer.  The currently supported data formats are json (the default), csv (comma-separated values), tsv (tab-separated values), dsv (delimited text files), and topojson.",
+    dialogSubtextLocal: "Your file will not be uploaded, it is only used by the browser on this computer.  The currently supported data formats are json (the default), csv (comma-separated values), tsv (tab-separated values), and topojson.",
     dialogTitleUrl: "Use a data file via URL",
     dialogCloseButton: "Close",
     dialogLoadButton: "Load",
