@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 import * as SandDanceExplorer from '@msrvida/sanddance-explorer';
 import { FabricComponents } from '@msrvida/office-ui-fabric-react-cdn-typings';
-import { Renderer } from 'react-dom';
 import { SandDance } from '@msrvida/sanddance-explorer';
 
 /**
@@ -21,13 +20,12 @@ export const base: Base = {
  * @param fabric Office UI Fabric React library.
  */
 export function use(
-  reactDomRender: Renderer,
   fabric: FabricComponents,
   vega: SandDance.VegaDeckGl.types.VegaBase,
   deck: SandDance.VegaDeckGl.types.DeckBase,
   layers: SandDance.VegaDeckGl.types.DeckLayerBase,
   luma: SandDance.VegaDeckGl.types.LumaBase
 ) {
-  SandDanceExplorer.use(reactDomRender, fabric, vega, deck, layers, luma);
+  SandDanceExplorer.use(fabric, vega, deck, layers, luma);
   base.fabric = fabric;
 }

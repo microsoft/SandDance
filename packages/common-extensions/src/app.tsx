@@ -5,7 +5,7 @@ declare var deck: SandDanceExplorer.SandDance.VegaDeckGl.types.DeckBase & SandDa
 declare var luma: SandDanceExplorer.SandDance.VegaDeckGl.types.LumaBase;
 declare var Fabric: _Fabric.FabricComponents;
 
-SandDanceExplorer.use(ReactDOM.render, Fabric, vega, deck, deck, luma);
+SandDanceExplorer.use(Fabric, vega, deck, deck, luma);
 
 function getTextcolor() {
     const cssColor = getComputedStyle(document.body).color;

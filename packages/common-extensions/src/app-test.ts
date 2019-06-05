@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 namespace testSandDance {
 
-    SandDanceExplorer.use(ReactDOM.render, Fabric, vega, deck, deck, luma);
+    SandDanceExplorer.use(Fabric, vega, deck, deck, luma);
 
     interface Datum {
         id: number;
