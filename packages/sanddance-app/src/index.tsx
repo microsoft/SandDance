@@ -17,7 +17,7 @@ import { fabric } from './fabricComponents';
 import { SandDanceApp } from './sanddanceApp';
 import { use } from './base';
 
-use(ReactDOM.render, fabric, vega, deck, layers, luma);
+use(fabric, vega, deck, layers, luma);
 
 const dataSets = Array.from(
   document.querySelectorAll<HTMLAnchorElement>("a.sanddance-app-static-content")
