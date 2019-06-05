@@ -1,10 +1,10 @@
 {
   "name": "@msrvida/sanddance-explorer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
   "files": [
-    "dist"
+    "alias", "dist"
   ],
   "scripts": {
     "docs": "ts-docs-gen --entryFile src/index.tsx -o ../../docs/docs/sanddance-explorer/v1/ && node ./scripts/docs.js",
