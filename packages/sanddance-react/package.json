@@ -1,9 +1,12 @@
 {
   "name": "@msrvida/sanddance-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "docs": "ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/sanddance-react/v1/ && node ./scripts/docs.js",
     "watch-typescript": "tsc -p . -w",
@@ -22,7 +25,7 @@
   "dependencies": {
     "@msrvida/sanddance": "^1.0.0",
     "just-compare": "^1.3.0",
-    "react": "16.8.6",
-    "react-dom": "16.8.6"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   }
 }
