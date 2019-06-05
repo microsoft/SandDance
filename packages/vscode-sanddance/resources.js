@@ -5,7 +5,7 @@ const resources = [
     "./node_modules/common-extensions/dist/app-test.js",
     "./node_modules/common-extensions/dist/app.css",
     "./node_modules/common-extensions/dist/app.js",
-    "./node_modules/@msrvida/sanddance-explorer/dist/umd/sanddance-explorer.js",
+    "./node_modules/common-extensions/node_modules/@msrvida/sanddance-explorer/dist/umd/sanddance-explorer.js",
     "./node_modules/vega-lib/build/vega.js",
     "./node_modules/deck.gl/deckgl.min.js",
     "./node_modules/react/umd/react.production.min.js",
@@ -21,7 +21,15 @@ if (!fs.existsSync(resourcesPath)) {
 }
 
 resources.forEach(resource => {
-    fs.copyFile(resource, path.resolve(resourcesPath, path.basename(resource)), err => errors.push({ err, resource }));
+    const dest = path.resolve(resourcesPath, path.basename(resource));
+    if (fs.existsSync(dest)) {
+        fs.unlinkSync(dest);
+    }
+    if (fs.existsSync(resource)) {
+        fs.copyFile(resource, dest, err => errors.push({ err, resource }));
+    } else { 
+        errors.push('file does not exist', resource);
+    }
 });
 
 if (errors.length) {
