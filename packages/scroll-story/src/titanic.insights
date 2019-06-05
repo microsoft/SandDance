@@ -1,21 +1,18 @@
 [
   {
     "columns": {
-      "uid": "Name",
       "x": "Age"
     },
     "chart": "barchart"
   },
   {
     "columns": {
-      "uid": "Name",
       "x": "Gender"
     },
     "chart": "barchart"
   },
   {
     "columns": {
-      "uid": "Name",
       "x": "Gender",
       "color": "Survived"
     },
@@ -24,7 +21,6 @@
   },
   {
     "columns": {
-      "uid": "Name",
       "x": "Gender",
       "color": "Survived",
       "sort": "Survived"
@@ -34,7 +30,6 @@
   },
   {
     "columns": {
-      "uid": "Name",
       "x": "Gender",
       "color": "Survived",
       "sort": "Survived"
@@ -49,7 +44,6 @@
   },
   {
     "columns": {
-      "uid": "Name",
       "x": "Gender",
       "color": "Survived",
       "sort": "Survived",
@@ -64,7 +58,6 @@
   },
   {
     "columns": {
-      "uid": "Name",
       "x": "Gender",
       "color": "Survived",
       "sort": "Survived",
@@ -84,7 +77,6 @@
   },
   {
     "columns": {
-      "uid": "Name",
       "x": "Age",
       "color": "Survived",
       "sort": "Survived",

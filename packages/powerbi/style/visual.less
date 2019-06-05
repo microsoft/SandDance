@@ -1,0 +1,22 @@
+@import (less) "node_modules/@msrvida/sanddance-explorer/dist/css/sanddance-explorer.css";
+
+.sanddance-view {
+    display: grid;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.sanddance-app {
+    display: grid;
+    &.chromeless {
+        .sanddance-explorer {
+            grid-template-rows: auto;
+        }
+        .sanddance-explorer-topbar, .sanddance-sidebar {
+            display: none;
+        }
+    }
+}

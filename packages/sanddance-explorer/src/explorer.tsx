@@ -20,7 +20,7 @@ import { DataBrowser } from './dialogs/dataBrowser';
 import { DataContent, DataFile, Snapshot } from './interfaces';
 import { DataScopeId } from './controls/dataScope';
 import { Dialog } from './controls/dialog';
-import { IconButton } from './controls/iconButton';
+import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { InputSearchExpressionGroup, Search } from './dialogs/search';
 import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
 import { Settings } from './dialogs/settings';
@@ -28,10 +28,11 @@ import { Sidebar, SideTabId } from './controls/sidebar';
 import { SnapshotProps, Snapshots } from './dialogs/snapshots';
 import { strings } from './language';
 import { themePalettes } from './themes';
-import { Topbar, TopBarButtonProps } from './controls/topbar';
 import { toggleSearch } from './toggleSearch';
+import { Topbar } from './controls/topbar';
 
 export interface Props {
+  hideSidebarControls?: boolean;
   logoClickUrl?: string;
   logoClickTarget?: string;
   theme?: string;
@@ -39,7 +40,7 @@ export interface Props {
   initialView?: SandDance.VegaDeckGl.types.View;
   mounted?: (explorer: Explorer) => any;
   datasetElement?: JSX.Element;
-  topBarButtonProps?: TopBarButtonProps[];
+  topBarButtonProps?: FabricTypes.ICommandBarItemProps[];
   snapshotProps?: SnapshotProps;
   onSnapshotClick?: (snapshot: Snapshot) => void;
   onView?: () => void;
@@ -52,8 +53,8 @@ export interface State extends SandDance.types.Insight {
   autoCompleteDistinctValues: AutoCompleteDistinctValues;
   search: InputSearchExpressionGroup[];
   filteredData: object[];
-  toolbarClosed: boolean;
-  toolbarPinned: boolean;
+  sidebarClosed: boolean;
+  sidebarPinned: boolean;
   dataFile: DataFile;
   dataContent: DataContent;
   specCapabilities: SandDance.types.SpecCapabilities;
@@ -134,8 +135,8 @@ export class Explorer extends React.Component<Props, State> {
       sideTabId: SideTabId.ChartType,
       dataScopeId: DataScopeId.AllData,
       selectedItemIndex: {},
-      toolbarClosed: false,
-      toolbarPinned: true,
+      sidebarClosed: false,
+      sidebarPinned: true,
       view: props.initialView || "2d",
       snapshots: []
     };
@@ -442,7 +443,7 @@ export class Explorer extends React.Component<Props, State> {
     if (dataScopeId == null) {
       dataScopeId = this.state.dataScopeId;
     }
-    this.setState({ sideTabId, dataScopeId, toolbarClosed: false });
+    this.setState({ sideTabId, dataScopeId, sidebarClosed: false });
     this.activateDataBrowserItem(sideTabId, dataScopeId);
   }
 
@@ -493,8 +494,16 @@ export class Explorer extends React.Component<Props, State> {
     }
   }
 
-  private resize() {
-    this.changeInsight({ size: this.getLayoutDivSize(this.state.toolbarPinned, this.state.toolbarClosed) });
+  sidebar(sidebarClosed: boolean, sidebarPinned: boolean) {
+    this.setState({ sidebarClosed, sidebarPinned });
+  }
+
+  resize() {
+    this.setState({ calculating: () => this._resize() });
+  }
+
+  private _resize() {
+    this.changeInsight({ size: this.getLayoutDivSize(this.state.sidebarPinned, this.state.sidebarClosed) });
   }
 
   private viewerMounted(glDiv: HTMLElement) {
@@ -503,7 +512,7 @@ export class Explorer extends React.Component<Props, State> {
       this.resize();
     });
     this.setState({
-      size: this.getLayoutDivSize(this.state.toolbarPinned, this.state.toolbarClosed),
+      size: this.getLayoutDivSize(this.state.sidebarPinned, this.state.sidebarClosed),
       signalValues: this.state.signalValues //keep initialized signalValues
     });
   }
@@ -636,8 +645,14 @@ export class Explorer extends React.Component<Props, State> {
           selectionSearch={selectionSearch}
           selectionState={selectionState}
           buttons={this.props.topBarButtonProps}
+          view={this.state.view}
+          onViewClick={() => {
+            const view = this.state.view === '2d' ? '3d' : '2d';
+            this.changeInsight({ view });
+          }}
+          onHomeClick={() => this.viewer.presenter.homeCamera()}
         />
-        <div className={util.classList("sanddance-main", this.state.toolbarPinned && "pinned", this.state.toolbarClosed && "closed", this.state.hideLegend && "hide-legend")}>
+        <div className={util.classList("sanddance-main", this.state.sidebarPinned && "pinned", this.state.sidebarClosed && "closed", this.state.hideLegend && "hide-legend")}>
           <div ref={div => { if (div && !this.layoutDivUnpinned) this.layoutDivUnpinned = div }} className="sanddance-layout-unpinned"></div>
           <div ref={div => { if (div && !this.layoutDivPinned) this.layoutDivPinned = div }} className="sanddance-layout-pinned"></div>
           {!loaded && (
@@ -651,16 +666,17 @@ export class Explorer extends React.Component<Props, State> {
           <Sidebar
             themePalette={themePalette}
             calculating={!!this.state.calculating}
-            closed={this.state.toolbarClosed}
-            pinned={this.state.toolbarPinned}
+            closed={this.state.sidebarClosed}
+            hideSidebarControls={this.props.hideSidebarControls}
+            pinned={this.state.sidebarPinned}
             disabled={!loaded}
             dataScopeProps={{
               themePalette,
-              compact: this.state.toolbarClosed,
+              compact: this.state.sidebarClosed,
               onCompactClick: () => {
                 this.changeInsight({
-                  toolbarClosed: false,
-                  size: this.getLayoutDivSize(this.state.toolbarPinned, false)
+                  sidebarClosed: false,
+                  size: this.getLayoutDivSize(this.state.sidebarPinned, false)
                 });
               },
               dataSet: this.props.datasetElement,
@@ -677,20 +693,20 @@ export class Explorer extends React.Component<Props, State> {
             onSideTabClick={sideTabId => {
               //collapse or toggle
               if (sideTabId === SideTabId.Collapse || this.state.sideTabId === sideTabId) {
-                let { dataScopeId, toolbarClosed } = this.state;
-                if (toolbarClosed && sideTabId === SideTabId.Data) {
+                let { dataScopeId, sidebarClosed } = this.state;
+                if (sidebarClosed && sideTabId === SideTabId.Data) {
                   dataScopeId = this.getBestDataScopeId();
                 }
-                toolbarClosed = !this.state.toolbarClosed;
+                sidebarClosed = !this.state.sidebarClosed;
                 this.changeInsight({
                   dataScopeId,
-                  toolbarClosed,
-                  size: this.getLayoutDivSize(this.state.toolbarPinned, toolbarClosed)
+                  sidebarClosed,
+                  size: this.getLayoutDivSize(this.state.sidebarPinned, sidebarClosed)
                 });
               } else if (sideTabId === SideTabId.Pin) {
                 this.changeInsight({
-                  toolbarPinned: !this.state.toolbarPinned,
-                  size: this.getLayoutDivSize(!this.state.toolbarPinned, this.state.toolbarClosed)
+                  sidebarPinned: !this.state.sidebarPinned,
+                  size: this.getLayoutDivSize(!this.state.sidebarPinned, this.state.sidebarClosed)
                 });
               } else {
                 this.setSideTabId(sideTabId);
@@ -704,7 +720,7 @@ export class Explorer extends React.Component<Props, State> {
                   return (
                     <Chart
                       specCapabilities={this.state.specCapabilities}
-                      disabled={!loaded || this.state.toolbarClosed}
+                      disabled={!loaded || this.state.sidebarClosed}
                       {...columnMapProps}
                       chart={this.state.chart}
                       view={this.state.view}
@@ -719,7 +735,7 @@ export class Explorer extends React.Component<Props, State> {
                   return (
                     <Color
                       specCapabilities={this.state.specCapabilities}
-                      disabled={!loaded || this.state.toolbarClosed}
+                      disabled={!loaded || this.state.sidebarClosed}
                       {...columnMapProps}
                       dataContent={this.state.dataContent}
                       scheme={this.state.scheme}
@@ -766,7 +782,7 @@ export class Explorer extends React.Component<Props, State> {
                   return (
                     <DataBrowser
                       themePalette={themePalette}
-                      disabled={!loaded || this.state.toolbarClosed}
+                      disabled={!loaded || this.state.sidebarClosed}
                       columns={this.state.dataContent && this.state.dataContent.columns}
                       data={data}
                       title={dataBrowserTitles[this.state.dataScopeId]}
@@ -793,7 +809,7 @@ export class Explorer extends React.Component<Props, State> {
                   return (
                     <Search
                       themePalette={themePalette}
-                      disabled={!loaded || this.state.toolbarClosed}
+                      disabled={!loaded || this.state.sidebarClosed}
                       initializer={{
                         columns: this.state.dataContent.columns,
                         search: this.state.search
@@ -838,7 +854,7 @@ export class Explorer extends React.Component<Props, State> {
                       dataFile={this.state.dataFile}
                       scheme={this.state.scheme}
                       hideLegend={this.state.hideLegend}
-                      onToggleLegend={hideLegend => this.setState({ hideLegend, calculating: () => this.resize() })}
+                      onToggleLegend={hideLegend => this.setState({ hideLegend, calculating: () => this._resize() })}
                       hideAxes={this.state.hideAxes}
                       onToggleAxes={hideAxes => this.setState({ calculating: () => this.setState({ hideAxes }) })}
                     />
@@ -848,23 +864,6 @@ export class Explorer extends React.Component<Props, State> {
           </Sidebar>
           {loaded && (
             <div className="sanddance-view">
-              <div className="sanddance-viewport">
-                <IconButton
-                  themePalette={themePalette}
-                  title={this.state.view === '2d' ? strings.labelViewType3d : strings.lavelViewType2d}
-                  iconName={this.state.view === '2d' ? "Product" : "Page"}
-                  onClick={() => {
-                    const view = this.state.view === '2d' ? '3d' : '2d';
-                    this.changeInsight({ view });
-                  }}
-                />
-                <IconButton
-                  themePalette={themePalette}
-                  title={strings.buttonCameraHome}
-                  iconName="PicturePosition"
-                  onClick={() => this.viewer.presenter.homeCamera()}
-                />
-              </div>
               <SandDanceReact
                 renderOptions={{
                   initialColorContext: this.getColorContext && this.getColorContext(this.viewer.insight, insight),

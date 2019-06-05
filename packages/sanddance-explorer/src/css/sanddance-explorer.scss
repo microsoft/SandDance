@@ -35,7 +35,7 @@ $layout-margin-right: 150px; //room for legend
 .sanddance-explorer {
     display: grid;
     font-size: 13px;
-    grid-template-rows: 50px auto;
+    grid-template-rows: 0fr auto;
     &.dark-theme {
         background-color: black;
         canvas {
@@ -165,16 +165,6 @@ $layout-margin-right: 150px; //room for legend
 
 .sanddance-signal {
     margin-top: 1em;   
-}
-
-.sanddance-viewport {
-    position: absolute;
-    right: 10px;
-    top: -42px;       //temp show in topbar until theming is done  //4px;
-    z-index: 1;
-    i {
-        font-size: 20px;
-    }
 }
 
 .dark-theme {

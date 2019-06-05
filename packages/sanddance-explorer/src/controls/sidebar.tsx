@@ -16,6 +16,7 @@ export enum SideTabId {
 export interface Props {
     calculating: boolean;
     children: JSX.Element | JSX.Element[];
+    hideSidebarControls: boolean;
     onSideTabClick: (sideTabId: SideTabId) => void;
     selectedSideTab: SideTabId;
     disabled: boolean;
@@ -64,7 +65,7 @@ export function Sidebar(props: Props) {
                 {...props.dataScopeProps}
             />
             <div className="vbuttons">
-                <div>
+                <div className="sidebar-dialogs">
                     {sidebuttons.map((sidebutton, i) => (
                         <Sidebutton
                             key={i}
@@ -74,20 +75,22 @@ export function Sidebar(props: Props) {
                         />
                     ))}
                 </div>
-                <div>
-                    <Sidebutton
-                        {...props}
-                        sideTabId={SideTabId.Pin}
-                        iconName={props.pinned ? "Pinned" : "Pin"}
-                        title={props.pinned ? strings.buttonToolbarFloat : strings.buttonToolbarDock}
-                    />
-                    <Sidebutton
-                        {...props}
-                        sideTabId={SideTabId.Collapse}
-                        iconName={props.closed ? "DoubleChevronRight12" : "DoubleChevronLeft12"}
-                        title={props.closed ? strings.buttonToolbarShow : strings.buttonToolbarHide}
-                    />
-                </div>
+                {!props.hideSidebarControls && (
+                    <div className="sidebar-controls">
+                        <Sidebutton
+                            {...props}
+                            sideTabId={SideTabId.Pin}
+                            iconName={props.pinned ? "Pinned" : "Pin"}
+                            title={props.pinned ? strings.buttonToolbarFloat : strings.buttonToolbarDock}
+                        />
+                        <Sidebutton
+                            {...props}
+                            sideTabId={SideTabId.Collapse}
+                            iconName={props.closed ? "DoubleChevronRight12" : "DoubleChevronLeft12"}
+                            title={props.closed ? strings.buttonToolbarShow : strings.buttonToolbarHide}
+                        />
+                    </div>
+                )}
             </div>
             <Scrollable>
                 <div className="sidetab">

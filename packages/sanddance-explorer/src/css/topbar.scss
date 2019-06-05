@@ -1,44 +1,55 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 @mixin topbar(
-    $toolbar-margin,
-    $toolbar-width,
-    $sidetab-width
+  $toolbar-margin,
+  $toolbar-width,
+  $sidetab-width,
+  $toolbar-height: 36px
 ) {
-    .sanddance-explorer-topbar {
-        border-bottom: 1px solid $toolbar-border;
-        display: grid;
-        grid-template-columns: $toolbar-width auto;
-        > div {
-            align-self: center;
-        }
-        .logo {
-            color: $highlight-color;
-            display: grid;
-            grid-template-columns: $sidetab-width auto;
-            height: 24px;
-            svg {
-                fill: $highlight-color;
-                height: 40px;
-                margin: -7px 0 0 7px;
-                width: 40px;
-            }
-            a {
-                color: inherit;
-                font-size: 14px;
-                font-weight: bold;
-                line-height: 24px;
-                text-decoration: none;
-            }
-        }
-        button {
-            margin-right: 1em;
-            min-width: unset;
-        }
+  .sanddance-explorer-topbar {
+    background-color: #fff;
+    border-bottom: 1px solid $toolbar-border;
+    display: grid;
+    grid-template-columns: $toolbar-width auto;
+    height: $toolbar-height;
+    .logo {
+      color: $highlight-color;
+      display: grid;
+      grid-template-columns: $sidetab-width auto;
+      padding: 6px 0;
+      svg {
+        fill: $highlight-color;
+        height: 24px;
+        margin: 0 auto;
+        width: 24px;
+      }
+      a {
+        color: inherit;
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 24px;
+        text-decoration: none;
+      }
     }
-    .dark-theme .sanddance-explorer-topbar {
-        .logo {
-            color: #00b4f0;
-        }
+  }
+
+  //contain the commandbar so it can be measured
+  .sanddance-explorer-commandbar {
+    position: relative;
+    > div {
+      left: 0;
+      position: absolute;
+      right: 0;
     }
+    .ms-CommandBar {
+      height: $toolbar-height;
+    }
+  }
+
+  .dark-theme .sanddance-explorer-topbar {
+    background-color: #000;
+    .logo {
+      color: #00b4f0;
+    }
+  }
 }
