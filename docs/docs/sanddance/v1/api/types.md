@@ -199,7 +199,7 @@ interface Insight {
 
 ```typescript
 interface InsightColumns {
-    uid: string;
+    uid?: string;
     x?: string;
     y?: string;
     z?: string;
@@ -215,7 +215,7 @@ interface InsightColumns {
 
 | Name  | Type   | Optional |
 | ----- | ------ | -------- |
-| uid   | string | false    |
+| uid   | string | true     |
 | x     | string | true     |
 | y     | string | true     |
 | z     | string | true     |

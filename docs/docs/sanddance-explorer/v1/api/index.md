@@ -11,19 +11,18 @@ layout: api
 Specify the dependency libraries to use for rendering.
 
 ```typescript
-function use(reactDomRender: Renderer, fabric: FabricComponents, vega: VegaBase, deck: DeckBase, layers: DeckLayerBase, luma: LumaBase): void;
+function use(fabric: FabricComponents, vega: VegaBase, deck: DeckBase, layers: DeckLayerBase, luma: LumaBase): void;
 ```
 
 **Parameters**
 
-| Name           | Type             | Description                     |
-| -------------- | ---------------- | ------------------------------- |
-| reactDomRender | Renderer         |                                 |
-| fabric         | FabricComponents | Office UI Fabric React library. |
-| vega           | VegaBase         |                                 |
-| deck           | DeckBase         |                                 |
-| layers         | DeckLayerBase    |                                 |
-| luma           | LumaBase         |                                 |
+| Name   | Type             | Description                     |
+| ------ | ---------------- | ------------------------------- |
+| fabric | FabricComponents | Office UI Fabric React library. |
+| vega   | VegaBase         |                                 |
+| deck   | DeckBase         |                                 |
+| layers | DeckLayerBase    |                                 |
+| luma   | LumaBase         |                                 |
 
 **Return type**
 
@@ -55,17 +54,17 @@ interface DataContent {
 interface DataFile {
     dataUrl?: string;
     rawText?: string;
-    type: string;
+    type: DataFileType;
 }
 ```
 
 **Properties**
 
-| Name    | Type   | Optional |
-| ------- | ------ | -------- |
-| dataUrl | string | true     |
-| rawText | string | true     |
-| type    | string | false    |
+| Name    | Type                                   | Optional |
+| ------- | -------------------------------------- | -------- |
+| dataUrl | string                                 | true     |
+| rawText | string                                 | true     |
+| type    | [DataFileType][TypeAliasDeclaration-0] | false    |
 
 ----------
 
@@ -114,6 +113,7 @@ interface Prefs {
 
 ```typescript
 interface Props {
+    hideSidebarControls?: boolean;
     logoClickUrl?: string;
     logoClickTarget?: string;
     theme?: string;
@@ -121,26 +121,31 @@ interface Props {
     initialView?: View;
     mounted?: (explorer: Explorer) => any;
     datasetElement?: Element;
-    topBarButtonProps?: Props[];
+    topBarButtonProps?: ICommandBarItemProps[];
     snapshotProps?: SnapshotProps;
     onSnapshotClick?: (snapshot: Snapshot) => void;
+    onView?: () => void;
+    onSignalChanged?: () => void;
 }
 ```
 
 **Properties**
 
-| Name              | Type                                     | Optional |
-| ----------------- | ---------------------------------------- | -------- |
-| logoClickUrl      | string                                   | true     |
-| logoClickTarget   | string                                   | true     |
-| theme             | string                                   | true     |
-| viewerOptions     | Partial<ViewerOptions>                   | true     |
-| initialView       | View                                     | true     |
-| mounted           | (explorer: Explorer) => any              | true     |
-| datasetElement    | Element                                  | true     |
-| topBarButtonProps | Props[]       | true     |
-| snapshotProps     | SnapshotProps | true     |
-| onSnapshotClick   | (snapshot: Snapshot) => void             | true     |
+| Name                | Type                                     | Optional |
+| ------------------- | ---------------------------------------- | -------- |
+| hideSidebarControls | boolean                                  | true     |
+| logoClickUrl        | string                                   | true     |
+| logoClickTarget     | string                                   | true     |
+| theme               | string                                   | true     |
+| viewerOptions       | Partial<ViewerOptions>                   | true     |
+| initialView         | View                                     | true     |
+| mounted             | (explorer: Explorer) => any              | true     |
+| datasetElement      | Element                                  | true     |
+| topBarButtonProps   | ICommandBarItemProps[]                   | true     |
+| snapshotProps       | SnapshotProps | true     |
+| onSnapshotClick     | (snapshot: Snapshot) => void             | true     |
+| onView              | () => void                               | true     |
+| onSignalChanged     | () => void                               | true     |
 
 ----------
 
@@ -153,8 +158,8 @@ interface State extends Insight {
     autoCompleteDistinctValues: AutoCompleteDistinctValues;
     search: InputSearchExpressionGroup[];
     filteredData: object[];
-    toolbarClosed: boolean;
-    toolbarPinned: boolean;
+    sidebarClosed: boolean;
+    sidebarPinned: boolean;
     dataFile: DataFile;
     dataContent: DataContent;
     specCapabilities: SpecCapabilities;
@@ -178,8 +183,8 @@ Insight
 | autoCompleteDistinctValues | AutoCompleteDistinctValues   | false    |
 | search                     | InputSearchExpressionGroup[] | false    |
 | filteredData               | object[]                                               | false    |
-| toolbarClosed              | boolean                                                | false    |
-| toolbarPinned              | boolean                                                | false    |
+| sidebarClosed              | boolean                                                | false    |
+| sidebarPinned              | boolean                                                | false    |
 | dataFile                   | [DataFile][InterfaceDeclaration-1]                     | false    |
 | dataContent                | [DataContent][InterfaceDeclaration-0]                  | false    |
 | specCapabilities           | SpecCapabilities                                       | false    |
@@ -187,6 +192,18 @@ Insight
 | dataScopeId                | DataScopeId                       | false    |
 | selectedItemIndex          | { [key: number]: number; }                             | false    |
 | snapshots                  | [Snapshot][InterfaceDeclaration-2][]                   | false    |
+
+## Types
+
+### DataFileType
+
+```typescript
+type DataFileType = "json" | "csv" | "tsv" | "topojson";
+```
+
+**Type**
+
+"json" | "csv" | "tsv" | "topojson"
 
 ## Classes
 
@@ -209,6 +226,7 @@ const themePalettes: { [theme: string]: Partial<IPalette>; };
 [FunctionDeclaration-0]: index#use
 [InterfaceDeclaration-0]: index#datacontent
 [InterfaceDeclaration-1]: index#datafile
+[TypeAliasDeclaration-0]: index#datafiletype
 [InterfaceDeclaration-2]: index#snapshot
 [InterfaceDeclaration-3]: index#prefs
 [InterfaceDeclaration-6]: index#props
@@ -216,5 +234,6 @@ const themePalettes: { [theme: string]: Partial<IPalette>; };
 [InterfaceDeclaration-1]: index#datafile
 [InterfaceDeclaration-0]: index#datacontent
 [InterfaceDeclaration-2]: index#snapshot
+[TypeAliasDeclaration-0]: index#datafiletype
 [ClassDeclaration-0]: explorer#explorer
 [VariableDeclaration-0]: index#themepalettes

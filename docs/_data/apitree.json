@@ -12,6 +12,7 @@
   "sanddance-explorer": [
     "DataContent",
     "DataFile",
+    "DataFileType",
     "Explorer",
     "Index",
     "Prefs",

@@ -92,24 +92,23 @@
   height: 24px; }
 
 .sanddance-explorer-topbar {
+  background-color: #fff;
   border-bottom: 1px solid #ccc;
   display: grid;
-  grid-template-columns: 250px auto; }
-
-.sanddance-explorer-topbar > div {
-  align-self: center; }
+  grid-template-columns: 250px auto;
+  height: 36px; }
 
 .sanddance-explorer-topbar .logo {
   color: #0078d4;
   display: grid;
   grid-template-columns: 50px auto;
-  height: 24px; }
+  padding: 6px 0; }
 
 .sanddance-explorer-topbar .logo svg {
   fill: #0078d4;
-  height: 40px;
-  margin: -7px 0 0 7px;
-  width: 40px; }
+  height: 24px;
+  margin: 0 auto;
+  width: 24px; }
 
 .sanddance-explorer-topbar .logo a {
   color: inherit;
@@ -118,9 +117,19 @@
   line-height: 24px;
   text-decoration: none; }
 
-.sanddance-explorer-topbar button {
-  margin-right: 1em;
-  min-width: unset; }
+.sanddance-explorer-commandbar {
+  position: relative; }
+
+.sanddance-explorer-commandbar > div {
+  left: 0;
+  position: absolute;
+  right: 0; }
+
+.sanddance-explorer-commandbar .ms-CommandBar {
+  height: 36px; }
+
+.dark-theme .sanddance-explorer-topbar {
+  background-color: #000; }
 
 .dark-theme .sanddance-explorer-topbar .logo {
   color: #00b4f0; }
@@ -183,15 +192,25 @@
   grid-template-rows: auto 0fr;
   position: relative; }
 
+.sanddance-sidebar .vbutton {
+  align-self: center;
+  display: grid;
+  height: 60px; }
+
 .sanddance-sidebar .vbutton.selected {
   background-color: #f9f9f9; }
 
 .sanddance-sidebar .vbutton button {
-  height: 60px;
+  height: 100%;
   width: 100%; }
 
 .sanddance-sidebar .vbutton button .ms-Button-icon {
   font-size: 24px; }
+
+.sanddance-sidebar .sidebar-dialogs .vbutton {
+  height: 16%;
+  max-height: 60px;
+  min-height: 32px; }
 
 .sanddance-sidebar .scrollable-container {
   width: 200px; }
@@ -417,7 +436,7 @@
 .sanddance-explorer {
   display: grid;
   font-size: 13px;
-  grid-template-rows: 50px auto; }
+  grid-template-rows: 0fr auto; }
 
 .sanddance-explorer.dark-theme {
   background-color: black; }
@@ -529,15 +548,6 @@
 
 .sanddance-signal {
   margin-top: 1em; }
-
-.sanddance-viewport {
-  position: absolute;
-  right: 10px;
-  top: -42px;
-  z-index: 1; }
-
-.sanddance-viewport i {
-  font-size: 20px; }
 
 .dark-theme .sanddance-panel {
   background-color: #000;

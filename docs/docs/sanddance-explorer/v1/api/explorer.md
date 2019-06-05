@@ -41,6 +41,25 @@ void
 
 ----------
 
+### signal(signalName, signalValue)
+
+```typescript
+public signal(signalName: string, signalValue: any): void;
+```
+
+**Parameters**
+
+| Name        | Type   |
+| ----------- | ------ |
+| signalName  | string |
+| signalValue | any    |
+
+**Return type**
+
+void
+
+----------
+
 ### setInsight(partialInsight)
 
 ```typescript
@@ -189,6 +208,37 @@ void
 
 ----------
 
+### sidebar(sidebarClosed, sidebarPinned)
+
+```typescript
+public sidebar(sidebarClosed: boolean, sidebarPinned: boolean): void;
+```
+
+**Parameters**
+
+| Name          | Type    |
+| ------------- | ------- |
+| sidebarClosed | boolean |
+| sidebarPinned | boolean |
+
+**Return type**
+
+void
+
+----------
+
+### resize()
+
+```typescript
+public resize(): void;
+```
+
+**Return type**
+
+void
+
+----------
+
 ### componentDidMount()
 
 Called immediately after a component is mounted. Setting state here will trigger re-rendering.
@@ -265,19 +315,22 @@ public prefs: Prefs;
 [Constructor-0]: explorer#constructorprops
 [InterfaceDeclaration-6]: ../index#props
 [MethodDeclaration-0]: explorer#updatevieweroptionsvieweroptions
-[MethodDeclaration-1]: explorer#setinsightpartialinsight
-[MethodDeclaration-2]: explorer#loaddata-getpartialinsight-prefs
+[MethodDeclaration-1]: explorer#signalsignalname-signalvalue
+[MethodDeclaration-2]: explorer#setinsightpartialinsight
+[MethodDeclaration-3]: explorer#loaddata-getpartialinsight-prefs
 [InterfaceDeclaration-1]: ../index#datafile
 [InterfaceDeclaration-3]: ../index#prefs
-[MethodDeclaration-3]: explorer#changecharttypechart
-[MethodDeclaration-4]: explorer#calculatecalculating
-[MethodDeclaration-5]: explorer#changeviewview
-[MethodDeclaration-6]: explorer#changeinsightnewstate
+[MethodDeclaration-4]: explorer#changecharttypechart
+[MethodDeclaration-5]: explorer#calculatecalculating
+[MethodDeclaration-6]: explorer#changeviewview
+[MethodDeclaration-7]: explorer#changeinsightnewstate
 [InterfaceDeclaration-7]: ../index#state
-[MethodDeclaration-7]: explorer#changespeccapabilitiesspeccapabilities
-[MethodDeclaration-8]: explorer#changecolumnmappingrole-column-options
-[MethodDeclaration-9]: explorer#componentdidmount
-[MethodDeclaration-10]: explorer#render
+[MethodDeclaration-8]: explorer#changespeccapabilitiesspeccapabilities
+[MethodDeclaration-9]: explorer#changecolumnmappingrole-column-options
+[MethodDeclaration-10]: explorer#sidebarsidebarclosed-sidebarpinned
+[MethodDeclaration-11]: explorer#resize
+[MethodDeclaration-12]: explorer#componentdidmount
+[MethodDeclaration-13]: explorer#render
 [PropertyDeclaration-0]: explorer#viewer
 [PropertyDeclaration-1]: explorer#vieweroptions
 [PropertyDeclaration-2]: explorer#discardcolorcontextupdates

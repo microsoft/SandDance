@@ -6872,10 +6872,10 @@ void main(void) {
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     function assignOrdinals(columns, data, ordinalMap) {
-        const uCol = columns.uid.name;
+        const uCol = columns.uid && columns.uid.name;
         if (ordinalMap) {
-            data.forEach(d => {
-                const key = d[uCol];
+            data.forEach((d, i) => {
+                const key = uCol ? d[uCol] : i;
                 d[GL_ORDINAL] = ordinalMap[key];
             });
         }
@@ -6883,7 +6883,7 @@ void main(void) {
             ordinalMap = {};
             data.forEach((d, i) => {
                 d[GL_ORDINAL] = i;
-                const uColValue = d[uCol];
+                const uColValue = uCol ? d[uCol] : i;
                 ordinalMap[uColValue] = i;
             });
         }
@@ -7441,7 +7441,7 @@ void main(void) {
         });
     }
 
-    function partialAxes(specViewOptions, xColumn, yColumn) {
+    function partialAxes(specViewOptions, xColumnQuantitative, yColumnQuantitative) {
         const lineColor = colorToString(specViewOptions.colors.axisLine);
         const axisColor = {
             "domainColor": lineColor,
@@ -7457,7 +7457,7 @@ void main(void) {
             }, "titleAlign": "left", "titleFontSize": {
                 "signal": SignalNames.TextTitleSize
             }, "titleColor": colorToString(specViewOptions.colors.axisText), "tickSize": specViewOptions.tickSize }, axisColor);
-        if (xColumn.quantitative) {
+        if (xColumnQuantitative) {
             bottom.format = "~r";
         }
         const left = Object.assign({ "orient": "left", "labelAlign": "right", "labelAngle": {
@@ -7469,14 +7469,14 @@ void main(void) {
             }, "titleAlign": "right", "titleFontSize": {
                 "signal": SignalNames.TextTitleSize
             }, "titleColor": colorToString(specViewOptions.colors.axisText), "tickSize": specViewOptions.tickSize }, axisColor);
-        if (yColumn.quantitative) {
+        if (yColumnQuantitative) {
             left.format = "~r";
         }
         return { left, bottom };
     }
 
     function getAxes (specViewOptions, columns) {
-        const pa = partialAxes(specViewOptions, columns.x, columns.y);
+        const pa = partialAxes(specViewOptions, columns.x.quantitative, true);
         const axes = [
             Object.assign({ "scale": ScaleNames.X, "title": columns.x.name }, pa.bottom),
             Object.assign({ "scale": "yscalelabel", "title": specViewOptions.language.count, "encode": {
@@ -8153,8 +8153,6 @@ void main(void) {
     // Copyright (c) Microsoft Corporation. All rights reserved.
     const barchart = (insight, columns, specViewOptions) => {
         const errors = [];
-        if (!columns.uid)
-            errors.push(`Must set a field for id`);
         if (!columns.x)
             errors.push(`Must set a field for x axis`);
         checkForFacetErrors(insight.facets, errors);
@@ -8242,7 +8240,7 @@ void main(void) {
     };
 
     function getAxes$1 (specViewOptions, columns) {
-        const pa = partialAxes(specViewOptions, columns.x, columns.y);
+        const pa = partialAxes(specViewOptions, columns.x.quantitative, columns.y.quantitative);
         const axes = [
             Object.assign({ "scale": ScaleNames.X, "title": columns.x.name }, pa.bottom),
             Object.assign({ "scale": ScaleNames.Y, "title": columns.y.name }, pa.left)
@@ -8275,9 +8273,6 @@ void main(void) {
                 },
                 "encode": {
                     "update": {
-                        "id": {
-                            "field": columns.uid.name
-                        },
                         "x": {
                             "scale": ScaleNames.X,
                             "field": columns.x.name,
@@ -8378,8 +8373,6 @@ void main(void) {
     // Copyright (c) Microsoft Corporation. All rights reserved.
     const scatterplot = (insight, columns, specViewOptions) => {
         const errors = [];
-        if (!columns.uid)
-            errors.push(`Must set a field for id`);
         if (!columns.x)
             errors.push(`Must set a field for x axis`);
         if (!columns.y)
@@ -8577,8 +8570,6 @@ void main(void) {
     // Copyright (c) Microsoft Corporation. All rights reserved.
     const treemap = (insight, columns, specViewOptions) => {
         const errors = [];
-        if (!columns.uid)
-            errors.push(`Must set a field for id`);
         if (!columns.size)
             errors.push(`Must set a field for size`);
         checkForFacetErrors(insight.facets, errors);
@@ -8652,7 +8643,7 @@ void main(void) {
     };
 
     function getAxes$2 (specViewOptions, columns) {
-        const pa = partialAxes(specViewOptions, columns.x, columns.y);
+        const pa = partialAxes(specViewOptions, columns.x.quantitative, columns.y.quantitative);
         const axes = [
             Object.assign({ "scale": "xband", "title": columns.x.name, "bandPosition": 0.5, "grid": true, "labelFlush": true }, pa.bottom),
             Object.assign({ "scale": "yband", "title": columns.y.name, "bandPosition": columns.y.quantitative ? 0 : 0.5, "grid": true, "labelFlush": true }, pa.left)
@@ -9089,8 +9080,6 @@ void main(void) {
     // Copyright (c) Microsoft Corporation. All rights reserved.
     const stacks = (insight, columns, specViewOptions) => {
         const errors = [];
-        if (!columns.uid)
-            errors.push(`Must set a field for id`);
         if (!columns.x)
             errors.push(`Must set a field for x axis`);
         if (!columns.y)
@@ -9158,7 +9147,7 @@ void main(void) {
     };
 
     function getAxes$3 (specViewOptions, columns) {
-        const pa = partialAxes(specViewOptions, columns.x, columns.y);
+        const pa = partialAxes(specViewOptions, columns.x.quantitative, columns.y.quantitative);
         const axes = [
             Object.assign({ "scale": "xscale", "title": columns.x.name, "bandPosition": 0.5, "grid": true, "labelFlush": true }, pa.bottom),
             Object.assign({ "scale": "yscale", "title": columns.y.name, "bandPosition": columns.y.quantitative ? 0 : 0.5, "grid": true, "labelFlush": true }, pa.left)
@@ -9525,8 +9514,6 @@ void main(void) {
     // Copyright (c) Microsoft Corporation. All rights reserved.
     const density = (insight, columns, specViewOptions) => {
         const errors = [];
-        if (!columns.uid)
-            errors.push(`Must set a field for id`);
         if (!columns.x)
             errors.push(`Must set a field for x axis`);
         if (!columns.y)
@@ -10471,7 +10458,7 @@ void main(void) {
                 this._signalValues = {};
             }
             this._specColumns = getSpecColumns(insight, this._dataScope.getColumns(options.columnTypes));
-            const map = assignOrdinals(this._specColumns, data, options.ordinalMap);
+            const ordinalMap = assignOrdinals(this._specColumns, data, options.ordinalMap);
             this.insight = clone(insight);
             this._shouldSaveColorContext = () => !options.initialColorContext;
             const colorContext = options.initialColorContext || {
@@ -10513,7 +10500,7 @@ void main(void) {
             //future signal changes should save the color context
             this._shouldSaveColorContext = () => !options.discardColorContextUpdates || !options.discardColorContextUpdates();
             this._details.render();
-            const result = { ordinalMap: map, specResult };
+            const result = { ordinalMap, specResult };
             return result;
         }
         preStage(stage, deckProps) {
