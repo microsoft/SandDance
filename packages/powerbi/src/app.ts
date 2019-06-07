@@ -9,7 +9,6 @@ import * as fabric from 'office-ui-fabric-react';
 import * as layers from '@deck.gl/layers';
 import * as luma from 'luma.gl';
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import * as vega from 'vega-lib';
 
 import {
@@ -23,7 +22,7 @@ import {
 
 fabric.initializeIcons();
 
-use(ReactDOM.render as any, fabric as any, vega as any, deck, layers, luma);
+use(fabric as any, vega as any, deck, layers, luma);
 
 function getThemePalette(darkTheme: boolean) {
     const theme = darkTheme ? 'dark-theme' : '';
