@@ -54,7 +54,7 @@ export class Visual implements IVisual {
         //console.log('Visual constructor', options);
         if (typeof document !== "undefined") {
             options.element.style.position = 'relative'
-            this.viewElement = SandDance.VegaDeckGl.util.addDiv(options.element, 'sanddance-view');
+            this.viewElement = SandDance.VegaDeckGl.util.addDiv(options.element, 'sanddance-powerbi');
             this.errorElement = SandDance.VegaDeckGl.util.addDiv(options.element, 'sanddance-error');
             this.errorElement.style.position = 'absolute';
 
