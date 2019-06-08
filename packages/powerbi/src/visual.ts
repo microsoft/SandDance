@@ -76,6 +76,11 @@ export class Visual implements IVisual {
         }
     }
 
+    destroy() {
+        this.app && this.app.finalize();
+        this.app = null;
+    }
+
     public update(options: VisualUpdateOptions) {
         console.log('Visual update', options);
 

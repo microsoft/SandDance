@@ -149,6 +149,10 @@ export class Explorer extends React.Component<Props, State> {
     this.updateViewerOptions({ ...SandDance.VegaDeckGl.util.clone(SandDance.Viewer.defaultViewerOptions), ...props.viewerOptions });
   }
 
+  finalize() {
+    if (this.viewer) this.viewer.finalize();
+  }
+
   public updateViewerOptions(viewerOptions: Partial<SandDance.types.ViewerOptions>) {
     this.viewerOptions = {
       ...this.viewerOptions,
@@ -507,10 +511,6 @@ export class Explorer extends React.Component<Props, State> {
   }
 
   private viewerMounted(glDiv: HTMLElement) {
-    window.addEventListener("resize", () => {
-      //TODO: throttle events
-      this.resize();
-    });
     this.setState({
       size: this.getLayoutDivSize(this.state.sidebarPinned, this.state.sidebarClosed),
       signalValues: this.state.signalValues //keep initialized signalValues

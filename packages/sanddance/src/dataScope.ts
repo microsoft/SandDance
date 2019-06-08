@@ -120,4 +120,14 @@ export class DataScope {
         }
         return { datum: null, index: -1 };
     }
+
+    finalize() {
+        this.data = null;
+        this.filteredData = null;
+        if (this.selection) {
+            this.selection.excluded = null;
+            this.selection.included = null;
+            this.selection = null;
+        }
+    }
 }

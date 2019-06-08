@@ -52,6 +52,11 @@ export class App extends React.Component<Props, State> {
         this.viewerOptions = this.getViewerOptions();
     }
 
+    finalize() {
+        this.explorer && this.explorer.finalize();
+        this.explorer = null;
+    }
+
     private getViewerOptions(darkTheme?: boolean) {
         const textColor = darkTheme ? "white" : "black";
         const color = SandDance.VegaDeckGl.util.colorFromString(textColor);
