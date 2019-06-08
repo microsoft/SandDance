@@ -68,8 +68,13 @@ if (snapshotOnLoad && snapshotOnLoad.dataSource.dataSourceType === 'local') {
   snapshotOnLoad = null;
 }
 
+interface Handlers {
+  hashchange: (e: HashChangeEvent) => void;
+  resize: (e: UIEvent) => void;
+}
 export class SandDanceApp extends React.Component<Props, State> {
   private viewerOptions: Partial<SandDance.types.ViewerOptions>;
+  private handlers: Handlers;
   public explorer: Explorer;
 
   constructor(props: Props) {
@@ -79,13 +84,29 @@ export class SandDanceApp extends React.Component<Props, State> {
       darkTheme: props.darkTheme
     };
     this.viewerOptions = getViewerOptions(this.state.darkTheme, props.themeColors);
-    window.addEventListener('hashchange', e => {
-      const snapshot = getSnapshotFromHash();
-      if (snapshot) {
-        this.explorer.calculate(() => this.hydrateSnapshot(snapshot));
+    this.handlers = {
+      hashchange: e => {
+        const snapshot = getSnapshotFromHash();
+        if (snapshot) {
+          this.explorer && this.explorer.calculate(() => this.hydrateSnapshot(snapshot));
+        }
+      },
+      resize: e=> {
+        this.explorer && this.explorer.resize();
       }
-    });
+    };
+    this.wireEventHandlers(true);
     this.changeColorScheme(this.state.darkTheme);
+  }
+
+  private wireEventHandlers(add: boolean) {
+    for (let key in this.handlers) {
+      if (add) {
+        window.addEventListener(key, this.handlers[key]);
+      } else {
+        window.removeEventListener(key, this.handlers[key]);
+      }
+    }
   }
 
   private hydrateSnapshot(snapshot: DataSourceSnapshot) {
@@ -98,10 +119,6 @@ export class SandDanceApp extends React.Component<Props, State> {
       }
       //this.setState({ snapshots: this.state.snapshots.filter(snapshot => snapshot.dataSource.dataSourceType !== 'local') });
     }
-  }
-
-  componentWillUnmount() {
-    //TODO unregister event handler
   }
 
   load(dataSource: DataSource, partialInsight?: Partial<SandDance.types.Insight>) {
