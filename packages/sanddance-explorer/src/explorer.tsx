@@ -128,7 +128,7 @@ export class Explorer extends React.Component<Props, State> {
       },
       scheme: null,
       columns: null,
-      chart: "scatterplot", //TODO initial
+      chart: "grid", //TODO initial
       signalValues: null,
       hideAxes: false,
       hideLegend: false,
