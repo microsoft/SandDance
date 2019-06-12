@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { ColumnCount } from './constants';
+import { FieldNames, ScaleNames } from '../constants';
 import { fill } from '../fill';
-import { ScaleNames } from '../constants';
 import { Mark } from 'vega-typings';
 import { SpecColumns, SpecViewOptions } from '../types';
 import { zeroIfCollapsed } from '../selection';
@@ -15,10 +16,22 @@ export default function (data: string, columns: SpecColumns, specViewOptions: Sp
             },
             "encode": {
                 "update": {
-                    "x": { "field": "x0" },
-                    "y": { "field": "y0" },
-                    "x2": { "field": "x1" },
-                    "y2": { "field": "y1" },
+                    "x": {
+                        "signal": `(datum['${FieldNames.Index}']-1)%${ColumnCount}`,
+                        "scale": ScaleNames.X
+                    },
+                    "width": {
+                        "scale": ScaleNames.X,
+                        "band": true
+                    },
+                    "y": {
+                        "signal": `floor((datum['${FieldNames.Index}']-1)/${ColumnCount})`,
+                        "scale": ScaleNames.Y
+                    },
+                    "height": {
+                        "scale": ScaleNames.Y,
+                        "band": true
+                    },
                     "fill": fill(columns.color, specViewOptions)
                 }
             }

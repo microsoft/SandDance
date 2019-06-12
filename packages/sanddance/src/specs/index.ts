@@ -8,20 +8,22 @@ import {
     SpecColumns,
     SpecViewOptions
 } from './types';
+import { density } from './density';
+import { grid } from './grid';
 import { scatterplot } from './scatterPlot';
 import { SpecCreator, SpecResult } from './interfaces';
-import { treemap } from './treeMap';
 import { stacks } from './stacks';
-import { density } from './density';
+import { treemap } from './treeMap';
 
-export { constants, barchart as barChart, scatterplot as scatterPlot };
+export { constants };
 
 export const creators: { [chart in Chart]: SpecCreator } = {
     barchart,
+    density,
+    grid,
     scatterplot,
-    treemap,
     stacks,
-    density
+    treemap
 }
 
 export function create(insight: Insight, specColumns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult {

@@ -31,6 +31,12 @@ export function Chart(props: Props) {
                     <base.fabric.ChoiceGroup
                         options={[
                             {
+                                key: 'grid',
+                                text: strings.chartTypeGrid,
+                                checked: props.chart === 'grid',
+                                disabled: props.disabled
+                            },
+                            {
                                 key: 'scatterplot',
                                 text: strings.chartTypeScatterPlot,
                                 checked: props.chart === 'scatterplot',
