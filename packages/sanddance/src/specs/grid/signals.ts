@@ -27,7 +27,7 @@ export default function (insight: Insight, specViewOptions: SpecViewOptions) {
             },
             colorReverseSignal(specViewOptions)
         ],
-        insight.columns.facet && facetSignals(insight.facets, specViewOptions)
+        insight.columns && insight.columns.facet && facetSignals(insight.facets, specViewOptions)
     );
     return signals;
 }
