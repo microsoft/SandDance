@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { allTruthy } from '../../array';
-import { Data } from 'vega-typings';
+import { Data, Transforms } from 'vega-typings';
 import { DataNames, FieldNames } from '../constants';
 import { SpecColumns, SpecViewOptions } from '../types';
 import { topLookup } from '../top';
@@ -12,7 +12,11 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
         [
             {
                 "name": DataNames.Main,
-                "transform": [
+                "transform": allTruthy<Transforms>([
+                    columns.sort && {
+                        "type": "collect",
+                        "sort": { "field": columns.sort.name }
+                    },
                     {
                         "type": "window",
                         "ops": [
@@ -22,7 +26,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                             FieldNames.Index
                         ]
                     }
-                ]
+                ])
             }
         ],
         categoricalColor && topLookup(columns.color, specViewOptions.maxLegends)

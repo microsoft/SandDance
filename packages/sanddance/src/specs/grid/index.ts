@@ -27,6 +27,10 @@ export const grid: SpecCreator = (insight: Insight, columns: SpecColumns, specVi
             {
                 role: 'color',
                 allowNone: true
+            },
+            {
+                role: 'sort',
+                allowNone: true
             }
         ]
     };
