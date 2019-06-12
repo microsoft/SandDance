@@ -1,6 +1,12 @@
 [
   {
     "columns": {
+      "sort": "Name"
+    },
+    "chart": "grid"
+  },
+  {
+    "columns": {
       "x": "Age"
     },
     "chart": "barchart"
@@ -93,5 +99,13 @@
     },
     "scheme": "dual_redgreen",
     "chart": "barchart"
+  },
+  {
+    "columns": {
+      "color": "Class",
+      "size": "TicketCost"
+    },
+    "scheme": "category10",
+    "chart": "treemap"
   }
 ]

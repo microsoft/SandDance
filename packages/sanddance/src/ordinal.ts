@@ -29,14 +29,14 @@ export function getSpecColumns(insight: Insight, columns: Column[]): SpecColumns
         return columns.filter(c => c.name === name)[0];
     }
     return {
-        color: getColumnByName(insight.columns.color),
-        facet: getColumnByName(insight.columns.facet),
-        group: getColumnByName(insight.columns.group),
-        size: getColumnByName(insight.columns.size),
-        sort: getColumnByName(insight.columns.sort),
-        uid: getColumnByName(insight.columns.uid),
-        x: getColumnByName(insight.columns.x),
-        y: getColumnByName(insight.columns.y),
-        z: getColumnByName(insight.columns.z)
+        color: getColumnByName(insight.columns && insight.columns.color),
+        facet: getColumnByName(insight.columns && insight.columns.facet),
+        group: getColumnByName(insight.columns && insight.columns.group),
+        size: getColumnByName(insight.columns && insight.columns.size),
+        sort: getColumnByName(insight.columns && insight.columns.sort),
+        uid: getColumnByName(insight.columns && insight.columns.uid),
+        x: getColumnByName(insight.columns && insight.columns.x),
+        y: getColumnByName(insight.columns && insight.columns.y),
+        z: getColumnByName(insight.columns && insight.columns.z)
     };
 }

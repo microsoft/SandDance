@@ -5,52 +5,52 @@ You can click on any square to see the details of that person.
 
 TODO: hide the details
 
-TODO: Grid view
+<button onClick={e => props.goTo(0)}>Grid</button>
 
 First, lets group the people by age. 
 
-<button onClick={e => props.goTo(0)}>By Age</button>
+<button onClick={e => props.goTo(1)}>By Age</button>
 
 Let's explore and see whether the age-old adage of *women and children first* was actually followed when they were going to the lifeboats.
 
-<button onClick={e => props.goTo(1)}>By Gender</button>
+<button onClick={e => props.goTo(2)}>By Gender</button>
 
 Now we are seeing females on the left and males on the right.
 We can color each square to see if that person survived or not.
 
-<button onClick={e => props.goTo(2)}>By Gender, color by survived</button>
+<button onClick={e => props.goTo(3)}>By Gender, color by survived</button>
 
 So now you can see that most of the women survived. Let's sort by color to make this easier to compare.
 
-<button onClick={e => props.goTo(3)}>By Gender, color by survived, sort by survived</button>
+<button onClick={e => props.goTo(4)}>By Gender, color by survived, sort by survived</button>
 
 Let's select just the survivors.
 
-<button onClick={e => props.goTo(4)}>By Gender, color by survived, sort by survived, isolate survivors</button>
+<button onClick={e => props.goTo(5)}>By Gender, color by survived, sort by survived, isolate survivors</button>
 
 You can see that about the same number of women as men survived. 
 
-<button onClick={e => props.goTo(3)}>By Gender, color by survived, sort by survived</button>
+<button onClick={e => props.goTo(4)}>By Gender, color by survived, sort by survived</button>
 
 But as a percentage, the women did much better. But that's not the whole story.
 
 If we now look at this by cabin class:
 
-<button onClick={e => props.goTo(5)}>By Gender, color by survived, sort by survived, facet by class</button>
+<button onClick={e => props.goTo(6)}>By Gender, color by survived, sort by survived, facet by class</button>
 
 Clearly there were a lot of people in the crew, expecially men that did not survive.
 Let's look at just passengers.
 
-<button onClick={e => props.goTo(6)}>By Gender, color by survived, sort by survived, facet by class, remove crew</button>
+<button onClick={e => props.goTo(7)}>By Gender, color by survived, sort by survived, facet by class, remove crew</button>
 
 Looking at passengers in First Class, only about 6 women didn't survive. In second class, 14 women didn't survive.
 But in 3rd class, more than half of the women didn't survive. So, it helped to be female *and* rich.
 
 What about children?
 
-<button onClick={e => props.goTo(7)}>By Age, color by survived, sort by survived, facet by class, remove crew</button>
+<button onClick={e => props.goTo(8)}>By Age, color by survived, sort by survived, facet by class, remove crew</button>
 
 Turns out there was a similar pattern: in First and Second Class, there was only one child who did not survive.
 But in 3rd class, more than half of the children did not survive.
 
-TODO: squarify?
+<button onClick={e => props.goTo(9)}>Treemap</button>

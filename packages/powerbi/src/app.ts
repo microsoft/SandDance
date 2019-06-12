@@ -23,7 +23,7 @@ import {
 
 fabric.initializeIcons();
 
-use(ReactDOM.render as any, fabric as any, vega as any, deck, layers, luma);
+use(fabric as any, vega as any, deck, layers, luma);
 
 function getThemePalette(darkTheme: boolean) {
     const theme = darkTheme ? 'dark-theme' : '';

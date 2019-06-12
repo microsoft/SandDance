@@ -126,7 +126,7 @@ export class Viewer {
                 this.currentColorContext = ~~remap;
                 this.renderSameLayout();
             },
-            () => this.insight && !!this.insight.columns.color && this.colorContexts && this.colorContexts.length > 1
+            () => this.insight && this.insight.columns && !!this.insight.columns.color && this.colorContexts && this.colorContexts.length > 1
         );
         this.insight = {} as Insight;
         this._signalValues = {};
