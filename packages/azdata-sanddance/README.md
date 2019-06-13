@@ -13,10 +13,6 @@ Smooth animated transitions between views help you to maintain context as you in
 
 Right-click on a .csv or .tsv file and choose *View in SandDance*.
 
-## Requirements
-
-Your data should have the first column as a unique identifier.
-
 ## Known Issues
 
 See https://github.com/Microsoft/SandDance#known-issues

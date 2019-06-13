@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance-explorer",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "main": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
   "files": [

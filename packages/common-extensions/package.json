@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/Microsoft/SandDance#readme",
   "devDependencies": {
-    "@msrvida/sanddance-explorer": "^1.0.0",
+    "@msrvida/sanddance-explorer": "*",
     "@types/react": "16.4.7",
     "@types/react-dom": "^16.8.4",
     "typescript": "^3.2.4"

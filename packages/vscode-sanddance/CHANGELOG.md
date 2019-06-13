@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.2.0]
+- Added chart types: Grid
+- Added search expression grouping
+- Option to hide axes & legend
+- Data does not require a unique identifier column
+
 ## [1.1.0]
 - Added chart types: Density & Stacks
 
