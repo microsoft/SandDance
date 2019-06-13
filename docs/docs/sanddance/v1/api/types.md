@@ -891,12 +891,12 @@ type AxisSelectionType = "exact" | "range";
 Types of SandDance visualizations.
 
 ```typescript
-type Chart = "scatterplot" | "barchart" | "treemap" | "stacks" | "density";
+type Chart = "barchart" | "density" | "grid" | "scatterplot" | "stacks" | "treemap";
 ```
 
 **Type**
 
-"scatterplot" | "barchart" | "treemap" | "stacks" | "density"
+"barchart" | "density" | "grid" | "scatterplot" | "stacks" | "treemap"
 
 ----------
 

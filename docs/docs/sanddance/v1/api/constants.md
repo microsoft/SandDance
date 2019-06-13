@@ -9,12 +9,12 @@ layout: api
 ### FieldNames
 
 ```typescript
-const FieldNames: { Active: string; Collapsed: string; Selected: string; Top: string; };
+const FieldNames: { Active: string; Collapsed: string; Selected: string; Top: string; Index: string; };
 ```
 
 **Type**
 
-{ Active: string; Collapsed: string; Selected: string; Top: string; }
+{ Active: string; Collapsed: string; Selected: string; Top: string; Index: string; }
 
 ----------
 
@@ -45,12 +45,12 @@ const ColorScaleNone: "none";
 ### SignalNames
 
 ```typescript
-const SignalNames: { PointSize: string; XGridSize: string; YGridSize: string; InnerPadding: string; OuterPadding: string; TreeMapMethod: string; ColorBinCount: string; ColorReverse: string; FacetColumns: string; FacetRows: string; XBins: string; YBins: string; YDomain: string; ZHeight: string; ZProportion: string; TextAngleX: string; TextAngleY: string; TextScale: string; TextSize: string; TextTitleSize: string; };
+const SignalNames: { ColorBinCount: string; ColorReverse: string; FacetColumns: string; FacetRows: string; InnerPadding: string; OuterPadding: string; PointSize: string; TextAngleX: string; TextAngleY: string; TextScale: string; TextSize: string; TextTitleSize: string; TreeMapMethod: string; XBins: string; XGridSize: string; YBins: string; YDomain: string; YGridSize: string; ZHeight: string; ZProportion: string; };
 ```
 
 **Type**
 
-{ PointSize: string; XGridSize: string; YGridSize: string; InnerPadding: string; OuterPadding: string; TreeMapMethod: string; ColorBinCount: string; ColorReverse: string; FacetColumns: string; FacetRows: string; XBins: string; YBins: string; YDomain: string; ZHeight: string; ZProportion: string; TextAngleX: string; TextAngleY: string; TextScale: string; TextSize: string; TextTitleSize: string; }
+{ ColorBinCount: string; ColorReverse: string; FacetColumns: string; FacetRows: string; InnerPadding: string; OuterPadding: string; PointSize: string; TextAngleX: string; TextAngleY: string; TextScale: string; TextSize: string; TextTitleSize: string; TreeMapMethod: string; XBins: string; XGridSize: string; YBins: string; YDomain: string; YGridSize: string; ZHeight: string; ZProportion: string; }
 
 [NamespaceImport-0]: constants#constants
 [VariableDeclaration-1]: constants#fieldnames
