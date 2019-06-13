@@ -9,10 +9,10 @@
             "type": "sqlopsExtensionHost",
             "request": "launch",
             "runtimeExecutable": "azuredatastudio",
-            "args": ["--extensionDevelopmentPath=${workspaceRoot}/packages/azdata-sandance" ],
+            "args": ["--extensionDevelopmentPath=${workspaceRoot}/packages/azdata-sanddance" ],
             "stopOnEntry": false,
             "sourceMaps": true,
-            "outFiles": [ "${workspaceRoot}/packages/azdata-sandance/out/**/*.js" ],
+            "outFiles": [ "${workspaceRoot}/packages/azdata-sanddance/out/**/*.js" ],
             "preLaunchTask": "",
             "timeout": 60000
         },
