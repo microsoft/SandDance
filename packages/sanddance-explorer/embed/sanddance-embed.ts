@@ -7,11 +7,13 @@ declare var Fabric: _Fabric.FabricComponents;
 
 function SandDanceEmbed(data: object[] | SandDanceExplorer.DataFile, insight?: Partial<SandDanceExplorer.SandDance.types.Insight>) {
     SandDanceExplorer.use(Fabric, vega, deck, deck, luma);
-    ReactDOM.render(React.createElement(SandDanceExplorer.Explorer, {
+    const explorerProps: SandDanceExplorer.Props = {
+        logoClickUrl: 'https://microsoft.github.io/SandDance/',
         mounted: explorer => {
             explorer.load(data, columns => {
                 return insight || {};
             });
         }
-    }), document.getElementById('app'));
+    };
+    ReactDOM.render(React.createElement(SandDanceExplorer.Explorer, explorerProps), document.getElementById('app'));
 }
