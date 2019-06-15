@@ -15,7 +15,7 @@ import {
   Prefs,
   savePref,
   saveSignalValuePref
-  } from './partialInsight';
+} from './partialInsight';
 import { DataBrowser } from './dialogs/dataBrowser';
 import { DataContent, DataFile, Snapshot } from './interfaces';
 import { DataScopeId } from './controls/dataScope';
@@ -288,7 +288,7 @@ export class Explorer extends React.Component<Props, State> {
         this.getColorContext = null;
 
         ensureColumnsExist(newState.columns, dataContent.columns);
-        const errors = ensureColumnsPopulated(partialInsight.chart, newState.columns, dataContent.columns);
+        const errors = ensureColumnsPopulated(partialInsight ? partialInsight.chart : null, newState.columns, dataContent.columns);
         if (errors) {
           newState.errors = errors;
         }
