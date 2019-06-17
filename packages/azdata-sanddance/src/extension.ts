@@ -5,10 +5,13 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
+import * as azdata from 'azdata';
 import * as sqlops from 'sqlops';
 import * as tempWrite from 'temp-write';
 import { getWebviewContent } from './html';
 import { MssqlExtensionApi, IFileNode } from './mssqlapis';
+
+let iconclicked: boolean = false;
 
 interface WebViewWithUri {
     panel: vscode.WebviewPanel;
@@ -32,6 +35,37 @@ export function activate(context: vscode.ExtensionContext) {
             }
         )
     );
+
+	vscode.commands.registerCommand('query.sandance', () => {
+		iconclicked = !iconclicked;
+	});
+
+	azdata.queryeditor.registerQueryEventListener({
+		onQueryEvent(type: azdata.queryeditor.QueryEvent, document: azdata.queryeditor.QueryDocument, args: any) {
+			if (type === 'queryStart') {
+				if (iconclicked) {
+					let tab3 = azdata.window.createTab('Webview Test');
+					tab3.registerContent(async view => {
+						let webview = view.modelBuilder.webView().component();
+    					let flexModel = view.modelBuilder.flexContainer().component();						
+						flexModel.addItem(webview, { flex: '0' });
+						flexModel.setLayout({
+							flexFlow: 'column',
+							alignItems: 'stretch',
+							height: '100%'
+						});
+    				await view.initializeModel(flexModel);
+						setTimeout(() => {
+							if (webview) {
+						    	webview.html = "<html><body>Hello there</body></html>";
+							}
+						}, 2000);
+					});
+					document.createQueryTab(tab3);
+				}
+			}
+		}
+	});
 }
 
 async function downloadAndViewInSandance(commandContext: sqlops.ObjectExplorerContext, context: vscode.ExtensionContext): Promise<void> {

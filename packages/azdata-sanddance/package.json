@@ -18,7 +18,8 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:sandance.view"
+        "onCommand:sandance.view",
+        "OnCommand:query.sandance"
     ],
     "main": "./out/extension",
     "contributes": {
@@ -26,6 +27,10 @@
             {
                 "command": "sandance.view",
                 "title": "View in SandDance"
+            },
+            {
+                "command": "query.sandance",
+                "title": "Query SandDance"
             }
         ],
         "languages": [
@@ -89,7 +94,8 @@
         "react-dom": "^16.6.0",
         "vega-lib": "^4.3.0",
         "vscode": "^1.1.21",
-        "sqlops": "github:anthonydresser/sqlops-extension-sqlops"
+        "sqlops": "github:anthonydresser/sqlops-extension-sqlops",
+        "azdata": "*"
     },
     "dependencies": {
         "@types/temp-write": "^3.3.0",
