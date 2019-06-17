@@ -19,7 +19,7 @@
     ],
     "activationEvents": [
         "onCommand:sandance.view",
-        "OnCommand:query.sandance"
+        "onCommand:query.sandance"
     ],
     "main": "./out/extension",
     "contributes": {
