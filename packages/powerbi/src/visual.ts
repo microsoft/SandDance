@@ -85,12 +85,14 @@ export class Visual implements IVisual {
         console.log('Visual update', options);
 
         const dataView = options && options.dataViews && options.dataViews[0];
-        if (!dataView) return;
+        if (!dataView || !dataView.table) {
+            this.app.unload();
+            return;
+        }
 
         this.settings = Visual.parseSettings(dataView);
-        const oldData = this.app.explorer.state.dataContent && this.app.explorer.state.dataContent.data;
+        const oldData = this.app.getDataContent();
         let { data, different } = convertTableToObjectArray(dataView.table, oldData);
-
         if (!this.prevSettings) {
             different = true;
         }
@@ -99,9 +101,12 @@ export class Visual implements IVisual {
 
         this.prevSettings = SandDance.VegaDeckGl.util.clone(this.settings);
 
-        if (!different) return;
+        if (!different) {
+            //console.log('Visual update - not different');
+            return;
+        }
 
-        this.app.explorer.load(data, columns => {
+        this.app.load(data, columns => {
 
             const {
                 sandDanceMainSettings,

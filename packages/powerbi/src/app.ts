@@ -1,17 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-
-import powerbi from 'powerbi-visuals-api';
-import ISandboxExtendedColorPalette = powerbi.extensibility.ISandboxExtendedColorPalette;
-
 import * as deck from '@deck.gl/core';
 import * as fabric from 'office-ui-fabric-react';
 import * as layers from '@deck.gl/layers';
 import * as luma from 'luma.gl';
 import * as React from 'react';
 import * as vega from 'vega-lib';
-
 import {
+    DataFile,
     Explorer,
     Props as ExplorerProps,
     SandDance,
@@ -19,6 +15,7 @@ import {
     use,
     util
 } from '@msrvida/sanddance-explorer';
+import { Logo } from '@msrvida/sanddance-explorer/dist/es6/controls/logo';
 
 fabric.initializeIcons();
 
@@ -35,6 +32,7 @@ export interface Props {
 }
 
 export interface State {
+    loaded: boolean
     chromeless: boolean;
     darkTheme: boolean;
 }
@@ -46,6 +44,7 @@ export class App extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
+            loaded: false,
             chromeless: false,
             darkTheme: null
         };
@@ -70,6 +69,19 @@ export class App extends React.Component<Props, State> {
         return viewerOptions;
     }
 
+    getDataContent() {
+        return this.explorer && this.explorer.state.dataContent && this.explorer.state.dataContent.data;
+    }
+
+    load(data: DataFile | object[], getPartialInsight?: (columns: SandDance.types.Column[]) => Partial<SandDance.types.Insight>) {
+        this.setState({ loaded: true });
+        return this.explorer.load(data, getPartialInsight);
+    }
+
+    unload() {
+        this.setState({ loaded: false });
+    }
+
     changeTheme(darkTheme: boolean) {
         this.viewerOptions = this.getViewerOptions(darkTheme);
         if (this.state.darkTheme !== darkTheme && this.explorer) {
@@ -89,7 +101,12 @@ export class App extends React.Component<Props, State> {
     }
 
     render() {
-        const props: ExplorerProps = {
+        const className = util.classList(
+            "sanddance-app",
+            this.state.chromeless && "chromeless",
+            this.state.loaded && "loaded"
+        );
+        const explorerProps: ExplorerProps = {
             hideSidebarControls: true,
             logoClickUrl: "https://microsoft.github.io/SandDance/",
             theme: this.state.darkTheme && 'dark-theme',
@@ -102,8 +119,14 @@ export class App extends React.Component<Props, State> {
             onSignalChanged: this.props.onViewChange,
             onView: this.props.onViewChange
         };
-        return React.createElement("div", {
-            className: util.classList("sanddance-app", this.state.chromeless && "chromeless")
-        }, React.createElement(Explorer, props));
+        return React.createElement("div", { className },
+            React.createElement(Explorer, explorerProps),
+            React.createElement("div", { className: "sanddance-init" },
+                React.createElement("div", null,
+                    React.createElement(Logo),
+                    React.createElement("div", null, "Please add fields to Values") //TODO language
+                )
+            )
+        );
     }
 }
