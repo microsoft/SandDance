@@ -41,8 +41,14 @@ interface State {
     darkTheme: boolean;
 }
 
+interface Handlers {
+    message: (e: MessageEvent) => void;
+    resize: (e: UIEvent) => void;
+}
+
 class App extends React.Component<{}, State> {
     private viewerOptions: Partial<SandDanceExplorer.SandDance.types.ViewerOptions>;
+    private handlers: Handlers;
     public explorer: SandDanceExplorer.Explorer;
 
     constructor(props: {}) {
@@ -51,6 +57,35 @@ class App extends React.Component<{}, State> {
             darkTheme: null
         };
         this.viewerOptions = getViewerOptions();
+
+        this.handlers = {
+            message: event => {
+                // Handle the message inside the webview
+                const message = event.data as Message;
+
+                switch (message.command) {
+                    case 'gotFileContent':
+                        this.explorer && this.explorer.load(message.dataFile);
+
+                        //TODO: hydrate state
+
+                        break;
+                }
+            },
+            resize: e => {
+                this.explorer && this.explorer.resize();
+            }
+        };
+    }
+
+    private wireEventHandlers(add: boolean) {
+        for (let key in this.handlers) {
+            if (add) {
+                window.addEventListener(key, this.handlers[key]);
+            } else {
+                window.removeEventListener(key, this.handlers[key]);
+            }
+        }
     }
 
     checkForDarkTheme() {
@@ -70,19 +105,7 @@ class App extends React.Component<{}, State> {
     mounted(explorer: SandDanceExplorer.Explorer) {
         this.explorer = explorer;
 
-        // Handle the message inside the webview
-        window.addEventListener('message', event => {
-            const message = event.data as Message;
-
-            switch (message.command) {
-                case 'gotFileContent':
-                    explorer.load(message.dataFile);
-
-                    //TODO: hydrate state
-
-                    break;
-            }
-        });
+        this.wireEventHandlers(true);
 
         const vscode = acquireVsCodeApi();
 

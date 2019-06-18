@@ -1,22 +1,53 @@
-@import (less) "node_modules/@msrvida/sanddance-explorer/dist/css/sanddance-explorer.css";
+@import (less)
+  "node_modules/@msrvida/sanddance-explorer/dist/css/sanddance-explorer.css";
 
-.sanddance-view {
-    display: grid;
-    position: absolute;
-    bottom: 0;
-    top: 0;
-    left: 0;
-    right: 0;
+.sanddance-powerbi {
+  display: grid;
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 .sanddance-app {
-    display: grid;
-    &.chromeless {
-        .sanddance-explorer {
-            grid-template-rows: auto;
-        }
-        .sanddance-explorer-topbar, .sanddance-sidebar {
-            display: none;
-        }
+  display: grid;
+  &.chromeless {
+    .sanddance-explorer {
+      grid-template-rows: auto;
     }
+    .sanddance-explorer-topbar,
+    .sanddance-sidebar {
+      display: none;
+    }
+  }
+  .sanddance-explorer {
+    visibility: hidden;
+  }
+  .sanddance-init {
+    bottom: 0;
+    display: grid;
+    left: 0;
+    right: 0;
+    position: absolute;
+    top: 0;
+    > div {
+      align-self: center;
+      margin: auto;
+      text-align: center;
+    }
+    svg {
+      fill: red;
+      height: 50px;
+    }
+  }
+
+  &.loaded {
+    .sanddance-explorer {
+      visibility: visible;
+    }
+    .sanddance-init {
+      display: none;
+    }
+  }
 }

@@ -636,4 +636,21 @@ export class Viewer {
     getSignalValues() {
         return extractSignalValuesFromView(this.vegaViewGl, this.vegaSpec);
     }
+
+    finalize() {
+        if (this._dataScope) this._dataScope.finalize();
+        if (this._details) this._details.finalize();
+        if (this.vegaViewGl) this.vegaViewGl.finalize();
+        if (this.presenter) this.presenter.finalize();
+        if (this.element) this.element.innerHTML = '';
+        this.colorContexts = null;
+        this.element = null;
+        this.options = null;
+        this.presenter = null;
+        this.vegaSpec = null;
+        this.vegaViewGl = null;
+        this._animator = null;
+        this._dataScope = null;
+        this._details = null;
+    }
 }

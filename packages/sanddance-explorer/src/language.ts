@@ -34,6 +34,7 @@ export const strings = {
     chartTypeScatterPlot: "Scatter plot",
     chartTypeStacks: "Stacks",
     chartTypeTreeMap: "Tree map",
+    errorColumnMustBeNumeric: "Numeric column required for this chart type.",
     labelChartSettings: "Chart settings",
     labelDataBrowser: "Data browser",
     labelTools: "Tools",
