@@ -20,6 +20,7 @@ import { DataBrowser } from './dialogs/dataBrowser';
 import { DataContent, DataFile, Snapshot } from './interfaces';
 import { DataScopeId } from './controls/dataScope';
 import { Dialog } from './controls/dialog';
+import { ensureColumnsExist, ensureColumnsPopulated } from './columns';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { InputSearchExpressionGroup, Search } from './dialogs/search';
 import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
@@ -147,6 +148,10 @@ export class Explorer extends React.Component<Props, State> {
 
     this.discardColorContextUpdates = true;
     this.updateViewerOptions({ ...SandDance.VegaDeckGl.util.clone(SandDance.Viewer.defaultViewerOptions), ...props.viewerOptions });
+  }
+
+  finalize() {
+    if (this.viewer) this.viewer.finalize();
   }
 
   public updateViewerOptions(viewerOptions: Partial<SandDance.types.ViewerOptions>) {
@@ -281,6 +286,13 @@ export class Explorer extends React.Component<Props, State> {
           ...partialInsight
         };
         this.getColorContext = null;
+
+        ensureColumnsExist(newState.columns, dataContent.columns);
+        const errors = ensureColumnsPopulated(partialInsight ? partialInsight.chart : null, newState.columns, dataContent.columns);
+        if (errors) {
+          newState.errors = errors;
+        }
+
         this.changeInsight(newState as State);
         //make sure item is active
         this.activateDataBrowserItem(sideTabId, this.state.dataScopeId);
@@ -308,23 +320,31 @@ export class Explorer extends React.Component<Props, State> {
   changeChartType(chart: SandDance.types.Chart) {
     const partialInsight = copyPrefToNewState(this.prefs, chart, '*', '*');
     const newState: Partial<State> = { chart, ...partialInsight };
+    const columns = this.state.columns || {};
+    newState.columns = { ...columns };
 
     //special case mappings when switching chart type
     if (this.state.chart === 'scatterplot' && chart === 'barchart') {
-      newState.columns = { ...this.state.columns, sort: this.state.columns.y };
+      newState.columns = { ...columns, sort: columns.y };
     } else if (chart === 'treemap') {
       newState.view = '2d';
-      if (!this.state.columns.size) {
+      if (!columns.size) {
         //make sure size exists and is numeric
         const sizeColumn = this.state.dataContent.columns.filter(c => c.quantitative)[0];
         if (!sizeColumn) {
           //TODO error - no numeric columns
         } else {
-          newState.columns = { ...this.state.columns, size: sizeColumn.name };
+          newState.columns = { ...columns, size: sizeColumn.name };
         }
       }
     } else if (chart === 'stacks') {
       newState.view = '3d';
+    }
+
+    ensureColumnsExist(newState.columns, this.state.dataContent.columns);
+    const errors = ensureColumnsPopulated(chart, newState.columns, this.state.dataContent.columns);
+    if (errors) {
+      newState.errors = errors;
     }
 
     this.calculate(() => this.changeInsight(newState as any));
@@ -507,10 +527,6 @@ export class Explorer extends React.Component<Props, State> {
   }
 
   private viewerMounted(glDiv: HTMLElement) {
-    window.addEventListener("resize", () => {
-      //TODO: throttle events
-      this.resize();
-    });
     this.setState({
       size: this.getLayoutDivSize(this.state.sidebarPinned, this.state.sidebarClosed),
       signalValues: this.state.signalValues //keep initialized signalValues
@@ -598,6 +614,10 @@ export class Explorer extends React.Component<Props, State> {
       view
     };
 
+    if (!insight.columns || !insight.columns.color) {
+      insight.hideLegend = true;
+    }
+
     const loaded = !!(this.state.columns && this.state.dataContent);
 
     const selectionState: SandDance.types.SelectionState = (this.viewer && this.viewer.getSelection()) || {};
@@ -652,7 +672,7 @@ export class Explorer extends React.Component<Props, State> {
           }}
           onHomeClick={() => this.viewer.presenter.homeCamera()}
         />
-        <div className={util.classList("sanddance-main", this.state.sidebarPinned && "pinned", this.state.sidebarClosed && "closed", this.state.hideLegend && "hide-legend")}>
+        <div className={util.classList("sanddance-main", this.state.sidebarPinned && "pinned", this.state.sidebarClosed && "closed", insight.hideLegend && "hide-legend")}>
           <div ref={div => { if (div && !this.layoutDivUnpinned) this.layoutDivUnpinned = div }} className="sanddance-layout-unpinned"></div>
           <div ref={div => { if (div && !this.layoutDivPinned) this.layoutDivPinned = div }} className="sanddance-layout-pinned"></div>
           {!loaded && (

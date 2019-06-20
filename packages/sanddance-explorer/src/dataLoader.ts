@@ -33,17 +33,16 @@ export const loadDataArray = (data: object[]) => new Promise<[DataContent, Colum
 
 function getInsightColumns(columnArray: SandDance.types.Column[]): ColumnsAndScheme {
     let scheme: string;
-    const colorColumn = columnArray[3] as SandDance.types.Column;
+    const colorColumn = columnArray[2] as SandDance.types.Column;
     if (colorColumn) {
         scheme = colorColumn.quantitative ? 'redyellowgreen' : 'category20';
     }
 
     const columns: SandDance.types.InsightColumns = {
-        uid: columnArray[0] && columnArray[0].name,
-        x: columnArray[1] && columnArray[1].name,
-        y: columnArray[2] && columnArray[2].name,
+        x: columnArray[0] && columnArray[0].name,
+        y: columnArray[1] && columnArray[1].name,
         color: colorColumn && colorColumn.name,
-        z: columnArray[4] && columnArray[4].name
+        z: columnArray[3] && columnArray[3].name
     };
     const numericColumn = columnArray.filter(c => c.quantitative)[0];
     if (numericColumn) {

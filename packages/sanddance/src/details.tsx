@@ -36,6 +36,12 @@ export class Details {
         this.clear();
     }
 
+    finalize() {
+        if (this.element) this.element.innerHTML = '';
+        this.dataScope = null;
+        this.element = null;
+    }
+
     clear() {
         this.state = {
             userSelection: null,

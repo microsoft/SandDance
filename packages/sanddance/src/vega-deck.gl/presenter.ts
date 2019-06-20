@@ -313,4 +313,15 @@ export class Presenter {
         this.getElement(PresenterElement.gl).classList.add('show-center');
         this.rePresent({ ...this._last.stage, cubeData: this.getCubeData() });
     }
+
+    finalize() {
+        this.animationCancel();
+        if (this.deckgl) this.deckgl.finalize();
+        if (this.el) this.el.innerHTML = '';
+        this._last = null;
+        this.deckgl = null;
+        this.el = null;
+        this.logger = null;
+        this.queuedAnimationOptions = null;
+    }
 }
