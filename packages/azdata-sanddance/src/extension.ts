@@ -6,7 +6,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import * as azdata from 'azdata';
-import * as sqlops from 'sqlops';
 import * as tempWrite from 'temp-write';
 import { getWebviewContent } from './html';
 import { MssqlExtensionApi, IFileNode } from './mssqlapis';
@@ -21,7 +20,7 @@ let current: WebViewWithUri | undefined = undefined;
 
 export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
-        vscode.commands.registerCommand('sandance.view', (commandContext: vscode.Uri | sqlops.ObjectExplorerContext) => {
+        vscode.commands.registerCommand('sandance.view', (commandContext: vscode.Uri | azdata.ObjectExplorerContext) => {
                 if (!commandContext) {
                     vscode.window.showErrorMessage('No file was specified for the View in Sandance command');
                     return;
@@ -44,31 +43,42 @@ export function activate(context: vscode.ExtensionContext) {
 		onQueryEvent(type: azdata.queryeditor.QueryEvent, document: azdata.queryeditor.QueryDocument, args: any) {
 			if (type === 'queryStart') {
 				if (iconclicked) {
-					let tab3 = azdata.window.createTab('Webview Test');
-					tab3.registerContent(async view => {
-						let webview = view.modelBuilder.webView().component();
+					let sdtab = azdata.window.createTab('Webview Test54');
+					sdtab.registerContent(async view => {
+                        let properties: azdata.WebViewProperties = {
+                            options: {
+                            enableScripts: true,
+                            // Only allow the webview to access resources in our extension's media directory
+                            localResourceRoots: [
+                                vscode.Uri.file(path.join(context.extensionPath, 'resources'))
+                            ]
+                            }
+                        };
+                        let webview = view.modelBuilder.webView().withProperties(properties).component();
     					let flexModel = view.modelBuilder.flexContainer().component();						
-						flexModel.addItem(webview, { flex: '0' });
-						flexModel.setLayout({
+					    flexModel.addItem(webview, { flex: '1' });                     
+                        flexModel.setLayout({
 							flexFlow: 'column',
 							alignItems: 'stretch',
-							height: '100%'
-						});
-    				await view.initializeModel(flexModel);
+						    height: '100%'
+                            });
+    				    await view.initializeModel(flexModel);
+                        let uri= vscode.Uri.file("file:///C:/Users/t-rewang/sample.csv"); //temp
 						setTimeout(() => {
-							if (webview) {
-						    	webview.html = "<html><body>Hello there</body></html>";
+						if (webview) {
+                                queryviewInSandance(webview, uri, context);                                   
 							}
 						}, 2000);
+							
 					});
-					document.createQueryTab(tab3);
+					document.createQueryTab(sdtab);
 				}
 			}
 		}
 	});
 }
 
-async function downloadAndViewInSandance(commandContext: sqlops.ObjectExplorerContext, context: vscode.ExtensionContext): Promise<void> {
+async function downloadAndViewInSandance(commandContext: azdata.ObjectExplorerContext, context: vscode.ExtensionContext): Promise<void> {
     try {
         let fileUri = await saveHdfsFileToTempLocation(commandContext);
         if (fileUri) {
@@ -119,7 +129,33 @@ function viewInSandance(fileUri: vscode.Uri, context: vscode.ExtensionContext): 
 }
 
 
-export async function saveHdfsFileToTempLocation(commandContext: sqlops.ObjectExplorerContext): Promise<vscode.Uri|undefined> {
+function queryviewInSandance(webview: azdata.WebViewComponent, fileUri: vscode.Uri, context: vscode.ExtensionContext): void {
+    //const columnToShowIn = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
+    const uriFsPath = fileUri.fsPath;
+    // Otherwise, create a new panel
+    webview.html = getWebviewContent(context.extensionPath, uriFsPath);
+    // Handle messages from the webview
+        /*
+        webview.onDidReceiveMessage(message => {
+            switch (message.command) {
+                case 'getFileContent':
+                    fs.readFile(uriFsPath, (err, data) => {                            
+                            //TODO string type of dataFile
+                            const dataFile = {
+                                type: path.extname(uriFsPath).substring(1),
+                                rawText: data.toString('utf8')
+                            };
+                           webview.postMessage({ command: 'gotFileContent', dataFile });
+                        
+                    });
+                    break;
+            } 
+        }, undefined, context.subscriptions);
+        */
+}
+
+
+export async function saveHdfsFileToTempLocation(commandContext: azdata.ObjectExplorerContext): Promise<vscode.Uri|undefined> {
     let extension = vscode.extensions.getExtension('Microsoft.mssql');
     if (!extension) {
         return undefined;

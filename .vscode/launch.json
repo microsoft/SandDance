@@ -8,7 +8,7 @@
             "name": "Azure Data Studio",
             "type": "sqlopsExtensionHost",
             "request": "launch",
-            "runtimeExecutable": "azuredatastudio",
+            "runtimeExecutable": "C:/Users/t-rewang/azuredatastudio/scripts/sql.bat",
             "args": ["--extensionDevelopmentPath=${workspaceRoot}/packages/azdata-sanddance" ],
             "stopOnEntry": false,
             "sourceMaps": true,

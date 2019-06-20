@@ -5,6 +5,7 @@
   "description": "The core webgl component for rendering a SandDance visualization.",
   "main": "index.js",
   "scripts": {
+    "build-az": "lerna run build --scope azdata-sanddance",
     "postinstall": "node ./scripts/copy_inuitcss.js",
     "predocs": "rimraf docs/docs/sanddance && rimraf docs/docs/sanddance-explorer && rimraf docs/docs/sanddance-react",
     "docs": "lerna run docs && node ./scripts/docs.js && node ./scripts/toc.js && node ./scripts/readme.js",
