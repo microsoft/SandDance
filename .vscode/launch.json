@@ -4,6 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Azure Data Studio",
             "type": "sqlopsExtensionHost",
@@ -14,7 +15,8 @@
             "sourceMaps": true,
             "outFiles": [ "${workspaceRoot}/packages/azdata-sanddance/out/**/*.js" ],
             "preLaunchTask": "",
-            "timeout": 60000
+            "timeout": 60000,
+            "outputCapture": "std"
         },
     ]
 }

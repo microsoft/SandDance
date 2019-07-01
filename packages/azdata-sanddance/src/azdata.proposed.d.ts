@@ -1057,6 +1057,35 @@ declare module 'azdata' {
 		subset: EditRow[];
 	}
 
+	export class Insight {
+		private _insight: IInsight;
+	
+		public get insight(): IInsight;
+	
+		private _options: IInsightOptions;
+		private _data: IInsightData;
+		private dim: Dimension;
+	
+		constructor(
+			private container: HTMLElement, options: IInsightOptions = defaultOptions,
+			@IInstantiationService private _instantiationService: IInstantiationService
+		);
+	
+		public layout(dim: Dimension);
+	
+		public set options(val: IInsightOptions);
+	
+		public get options(): IInsightOptions;
+	
+		public set data(val: IInsightData);
+		
+	
+		private buildInsight();
+	
+		private findctor(type: ChartType | InsightType): IInsightCtor;
+	}
+	
+
 	/**
 	 * A reference to a named icon. Currently only a subset of the SQL icons are available.
 	 * Using a theme icon is preferred over a custom icon as it gives theme authors the possibility to change the icons.
