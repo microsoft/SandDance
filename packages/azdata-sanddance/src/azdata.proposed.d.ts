@@ -924,6 +924,17 @@ declare module 'azdata' {
 		rowsCount: number;
 	}
 
+	export interface IGridActionContext {
+		cell: { row: number; cell: number; };
+		selection: Slick.Range[];
+		runner: QueryRunner;
+		batchId: number;
+		resultId: number;
+		table: Table<any>;
+		selectionModel: CellSelectionModel<any>;
+		tableState: GridTableState;
+	}
+
 	export interface DbCellValue {
 		displayValue: string;
 		isNull: boolean;
@@ -3937,7 +3948,8 @@ declare module 'azdata' {
 		export type QueryEvent =
 			| 'queryStart'
 			| 'queryStop'
-			| 'executionPlan';
+			| 'executionPlan'
+			| 'visualize';
 
 		export interface QueryEventListener {
 			onQueryEvent(type: QueryEvent, document: queryeditor.QueryDocument, args: any): void;
