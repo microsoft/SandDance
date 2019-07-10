@@ -289,9 +289,7 @@ export class Explorer extends React.Component<Props, State> {
 
         ensureColumnsExist(newState.columns, dataContent.columns);
         const errors = ensureColumnsPopulated(partialInsight ? partialInsight.chart : null, newState.columns, dataContent.columns);
-        if (errors) {
-          newState.errors = errors;
-        }
+        newState.errors = errors;
 
         this.changeInsight(newState as State);
         //make sure item is active
