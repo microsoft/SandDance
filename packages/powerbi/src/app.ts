@@ -76,7 +76,7 @@ export class App extends React.Component<Props, State> {
 
     load(data: DataFile | object[], getPartialInsight?: (columns: SandDance.types.Column[]) => Partial<SandDance.types.Insight>) {
         this.setState({ loaded: true });
-            return this.explorer.load(data, getPartialInsight);
+        return this.explorer.load(data, getPartialInsight);
     }
 
     unload() {
