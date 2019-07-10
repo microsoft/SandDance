@@ -16,6 +16,7 @@ import {
     util
 } from '@msrvida/sanddance-explorer';
 import { Logo } from '@msrvida/sanddance-explorer/dist/es6/controls/logo';
+import { strings } from './language';
 
 fabric.initializeIcons();
 
@@ -32,7 +33,7 @@ export interface Props {
 }
 
 export interface State {
-    loaded: boolean
+    loaded: boolean;
     chromeless: boolean;
     darkTheme: boolean;
 }
@@ -75,7 +76,7 @@ export class App extends React.Component<Props, State> {
 
     load(data: DataFile | object[], getPartialInsight?: (columns: SandDance.types.Column[]) => Partial<SandDance.types.Insight>) {
         this.setState({ loaded: true });
-        return this.explorer.load(data, getPartialInsight);
+            return this.explorer.load(data, getPartialInsight);
     }
 
     unload() {
@@ -124,7 +125,7 @@ export class App extends React.Component<Props, State> {
             React.createElement("div", { className: "sanddance-init" },
                 React.createElement("div", null,
                     React.createElement(Logo),
-                    React.createElement("div", null, "Please add fields to Values") //TODO language
+                    React.createElement("div", null, strings.notLoaded)
                 )
             )
         );
