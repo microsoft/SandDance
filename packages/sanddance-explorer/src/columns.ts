@@ -14,13 +14,13 @@ export function ensureColumnsExist(insightColumns: SandDance.types.InsightColumn
 
 export function ensureColumnsPopulated(chart: SandDance.types.Chart, insightColumns: SandDance.types.InsightColumns, actualColumns: SandDance.types.Column[]) {
     //ensure columns are populated
-    const firstColumnName = actualColumns[0].name;
+    const firstColumn = actualColumns[0];
+    const firstColumnName = firstColumn && firstColumn.name;
     const ensureColumn = (role: SandDance.types.InsightColumnRoles) => {
         if (!insightColumns[role]) {
             insightColumns[role] = firstColumnName;
         }
     };
-
     switch (chart) {
         case 'barchart':
             ensureColumn('x');

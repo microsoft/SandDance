@@ -107,6 +107,7 @@ export class Visual implements IVisual {
         }
 
         this.app.load(data, columns => {
+            if (!columns) return;
 
             const {
                 sandDanceMainSettings,
