@@ -12,7 +12,8 @@ function isQuantitative(column: Column) {
  * @param data Array of data objects.
  */
 export function getColumnsFromData(data: object[], columnTypes?: ColumnTypeMap) {
-    const fields = Object.keys(data[0]);
+    const sample = data[0];
+    const fields = sample ? Object.keys(sample) : [];
     const inferences = { ...VegaDeckGl.base.vega.inferTypes(data, fields), ...columnTypes };
     const columns = fields.map(name => {
         const column: Column = {
