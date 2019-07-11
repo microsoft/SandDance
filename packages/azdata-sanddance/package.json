@@ -19,7 +19,7 @@
     ],
     "activationEvents": [
         "onCommand:sandance.view",
-        "onCommand:query.sandance"
+        "onCommand:query.sanddance"
     ],
     "main": "./out/extension",
     "contributes": {
@@ -29,7 +29,7 @@
                 "title": "View in SandDance"
             },
             {
-                "command": "query.sandance",
+                "command": "query.sanddance",
                 "title": "Query SandDance"
             }
         ],

@@ -10,8 +10,6 @@ import * as tempWrite from 'temp-write';
 import { getWebviewContent } from './html';
 import { MssqlExtensionApi, IFileNode } from './mssqlapis';
 
-let iconclicked: boolean = false;
-
 interface WebViewWithUri {
     panel: vscode.WebviewPanel;
     uriFsPath: string;
@@ -19,50 +17,44 @@ interface WebViewWithUri {
 let current: WebViewWithUri | undefined = undefined;
 
 export function activate(context: vscode.ExtensionContext) {
-    console.log("----------------------------");
     context.subscriptions.push(
         vscode.commands.registerCommand('sandance.view', (commandContext: vscode.Uri | azdata.ObjectExplorerContext) => {
-                if (!commandContext) {
-                    vscode.window.showErrorMessage('No file was specified for the View in Sandance command');
-                    return;
-                }
-                if (commandContext instanceof vscode.Uri) {
-                    viewInSandance( <vscode.Uri>commandContext, context);
-                } else if (commandContext.nodeInfo) {
-                    // This is a call from the object explorer right-click.
-                    downloadAndViewInSandance(commandContext, context);
-                }
+            if (!commandContext) {
+                vscode.window.showErrorMessage('No file was specified for the View in Sandance command');
+                return;
             }
+            if (commandContext instanceof vscode.Uri) {
+                viewInSandance(<vscode.Uri>commandContext, context);
+            } else if (commandContext.nodeInfo) {
+                // This is a call from the object explorer right-click.
+                downloadAndViewInSandance(commandContext, context);
+            }
+        }
         )
     );
-    
+
     //To do: replace regiserCommand with suubscription.push
-	vscode.commands.registerCommand('query.sandance', () => {
-        iconclicked = !iconclicked;
+    vscode.commands.registerCommand('query.sanddance', () => {
         azdata.queryeditor.registerQueryEventListener({
             async onQueryEvent(type: azdata.queryeditor.QueryEvent, document: azdata.queryeditor.QueryDocument, args: any) {
                 if (type === 'visualize') {
-                    if (iconclicked) {       
-                        const providerid = document.providerId;
-                        let provider: azdata.QueryProvider;
-                        provider = azdata.dataprotocol.getProvider(providerid, azdata.DataProviderType.QueryProvider);
-                        let data = await provider.getQueryRows({
-                            ownerUri: document.uri,
-                            batchIndex: args.batchId,
-                            resultSetIndex: args.id,
-                            rowsStartIndex: 0,
-                            rowsCount: args.rowCount
-                        });
-                        let datavalue = data.resultSubset.rows;
-                        let fileuri =  saveTemp(datavalue);
-                        queryViewInSandance(fileuri,context,document);                           
-                    
-                        }
-                    }
+                    const providerid = document.providerId;
+                    let provider: azdata.QueryProvider;
+                    provider = azdata.dataprotocol.getProvider(providerid, azdata.DataProviderType.QueryProvider);
+                    let data = await provider.getQueryRows({
+                        ownerUri: document.uri,
+                        batchIndex: args.batchId,
+                        resultSetIndex: args.id,
+                        rowsStartIndex: 0,
+                        rowsCount: args.rowCount
+                    });
+                    let datavalue = data.resultSubset.rows;
+                    let fileuri = saveTemp(datavalue);
+                    queryViewInSandance(fileuri, context, document);
                 }
-            
+            }
         });
-	});
+    });
 }
 
 async function downloadAndViewInSandance(commandContext: azdata.ObjectExplorerContext, context: vscode.ExtensionContext): Promise<void> {
@@ -157,7 +149,7 @@ function queryViewInSandance(fileUri: vscode.Uri, context: vscode.ExtensionConte
 }
 
 
-export async function saveHdfsFileToTempLocation(commandContext: azdata.ObjectExplorerContext): Promise<vscode.Uri|undefined> {
+export async function saveHdfsFileToTempLocation(commandContext: azdata.ObjectExplorerContext): Promise<vscode.Uri | undefined> {
     let extension = vscode.extensions.getExtension('Microsoft.mssql');
     if (!extension) {
         return undefined;
@@ -175,9 +167,8 @@ export async function saveHdfsFileToTempLocation(commandContext: azdata.ObjectEx
 
 
 function saveTemp(data: azdata.DbCellValue[][]): vscode.Uri {
-        
-        let localFile = tempWrite.sync( JSON.stringify(data), undefined);
-        return vscode.Uri.file(localFile);
+    let localFile = tempWrite.sync(JSON.stringify(data), undefined);
+    return vscode.Uri.file(localFile);
 }
 
 
@@ -209,7 +200,7 @@ function newPanelQuery(context: vscode.ExtensionContext, uriFsPath: string, uriT
     const webViewWithUri: WebViewWithUri = {
         panel: vscode.window.createWebviewPanel(
             'sandDance',
-            `SandDance: ${uriTabName}`,
+            `SandDance: ${path.basename(uriTabName)}`,
             vscode.ViewColumn.One,
             {
                 enableScripts: true,

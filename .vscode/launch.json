@@ -15,8 +15,7 @@
             "sourceMaps": true,
             "outFiles": [ "${workspaceRoot}/packages/azdata-sanddance/out/**/*.js" ],
             "preLaunchTask": "",
-            "timeout": 60000,
-            "outputCapture": "std"
+            "timeout": 60000
         },
     ]
 }
