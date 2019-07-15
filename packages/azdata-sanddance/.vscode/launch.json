@@ -9,7 +9,7 @@
             "name": "Extension",
             "type": "sqlopsExtensionHost",
             "request": "launch",
-            "runtimeExecutable": "C:/Users/t-rewang/azuredatastudio/scripts/sql.bat",
+            "runtimeExecutable": "${execPath}",
             "args": [
                 "--extensionDevelopmentPath=${workspaceFolder}"
             ],

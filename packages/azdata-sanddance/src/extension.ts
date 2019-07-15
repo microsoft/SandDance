@@ -49,9 +49,8 @@ export function activate(context: vscode.ExtensionContext) {
                         rowsCount: args.rowCount
                     });
 
-                    // TODO get columns and rows data from data
-                    let columns = data.columnInfo;
-                    let rows = data.rows;
+                    let rows = data.resultSubset.rows;
+                    let columns = args.columnInfo;
 
                     // Create csv 
                     let csv = "";
@@ -80,7 +79,6 @@ export function activate(context: vscode.ExtensionContext) {
                             csv = csv + " \n";
                         }
                     }     
-                    //let datavalue = data.resultSubset.rows;
                     let fileuri = saveTemp(csv);
                     queryViewInSandance(fileuri, context, document);
                 }
@@ -198,8 +196,8 @@ export async function saveHdfsFileToTempLocation(commandContext: azdata.ObjectEx
 }
 
 
-function saveTemp(data: azdata.DbCellValue[][]): vscode.Uri {
-    let localFile = tempWrite.sync(JSON.stringify(data), undefined);
+function saveTemp(data: string): vscode.Uri {
+    let localFile = tempWrite.sync(data, "file.csv");
     return vscode.Uri.file(localFile);
 }
 
