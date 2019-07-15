@@ -56,16 +56,16 @@ export function activate(context: vscode.ExtensionContext) {
                     let csv = "";
 
                     // Add column names to csv
-                    for (let i = 0; i < columns.length - 1; i++ ) {
+                    for (let i = 0; i < columns.length - 1; i++) {
                         csv = csv + columns[i].columnName + ",";
                     }
-                    csv = csv + columns[columns.length-1].columnName + "\n";
+                    csv = csv + columns[columns.length - 1].columnName + "\n";
 
                     // Add row information, adding if displayValue is not null
-                    for (let i = 0; i < rows.length; i++ ){ 
+                    for (let i = 0; i < rows.length; i++) {
                         let row = rows[i];
 
-                        for (let j = 0; j < row.length-1; j++ ) {
+                        for (let j = 0; j < row.length - 1; j++) {
                             if (!row[j].isNull) {
                                 csv = csv + row[j].displayValue + ",";
                             } else {
@@ -73,12 +73,12 @@ export function activate(context: vscode.ExtensionContext) {
                             }
                         }
 
-                        if (!row[row.length-1].isNull) {
-                            csv = csv + row[row.length-1].displayValue + "\n";
+                        if (!row[row.length - 1].isNull) {
+                            csv = csv + row[row.length - 1].displayValue + "\n";
                         } else {
                             csv = csv + " \n";
                         }
-                    }     
+                    }
                     let fileuri = saveTemp(csv);
                     queryViewInSandance(fileuri, context, document);
                 }
