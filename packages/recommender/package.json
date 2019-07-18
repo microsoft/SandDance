@@ -1,0 +1,13 @@
+{
+  "name": "recommender",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Recommendation engine for SandDance charts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -p ."
+  },
+  "author": "",
+  "license": "MIT"
+}

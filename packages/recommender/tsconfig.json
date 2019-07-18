@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "moduleResolution": "node",
+        "outDir": "dist/es6",
+        "skipLibCheck": true,
+        "target": "es6"
+    },
+    "include": [
+        "src"
+    ]
+}
