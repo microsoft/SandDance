@@ -4,15 +4,16 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Azure Data Studio",
             "type": "sqlopsExtensionHost",
             "request": "launch",
-            "runtimeExecutable": "azuredatastudio",
-            "args": ["--extensionDevelopmentPath=${workspaceRoot}/packages/azdata-sandance" ],
+            "runtimeExecutable": "${workspaceRoot}",
+            "args": ["--extensionDevelopmentPath=${workspaceRoot}/packages/azdata-sanddance" ],
             "stopOnEntry": false,
             "sourceMaps": true,
-            "outFiles": [ "${workspaceRoot}/packages/azdata-sandance/out/**/*.js" ],
+            "outFiles": [ "${workspaceRoot}/packages/azdata-sanddance/out/**/*.js" ],
             "preLaunchTask": "",
             "timeout": 60000
         },

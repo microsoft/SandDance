@@ -7,7 +7,7 @@
     "configurations": [
         {
             "name": "Extension",
-            "type": "extensionHost",
+            "type": "sqlopsExtensionHost",
             "request": "launch",
             "runtimeExecutable": "${execPath}",
             "args": [
