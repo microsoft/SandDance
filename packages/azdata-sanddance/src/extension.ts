@@ -205,6 +205,7 @@ function saveTemp(data: string): vscode.Uri {
 
 
 export function deactivate() {
+    vscode.commands.executeCommand('setContext', 'showVisualizer', false);
 }
 
 function newPanel(context: vscode.ExtensionContext, uriFsPath: string) {
