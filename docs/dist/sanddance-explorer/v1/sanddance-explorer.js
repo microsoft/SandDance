@@ -5238,7 +5238,7 @@ function Rgb(r, g, b, opacity) {
     return this;
   },
   displayable: function () {
-    return 0 <= this.r && this.r <= 255 && 0 <= this.g && this.g <= 255 && 0 <= this.b && this.b <= 255 && 0 <= this.opacity && this.opacity <= 1;
+    return -0.5 <= this.r && this.r < 255.5 && -0.5 <= this.g && this.g < 255.5 && -0.5 <= this.b && this.b < 255.5 && 0 <= this.opacity && this.opacity <= 1;
   },
   hex: function () {
     return "#" + hex(this.r) + hex(this.g) + hex(this.b);
@@ -5356,7 +5356,7 @@ var _math = require("./math");
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-// https://beta.observablehq.com/@mbostock/lab-and-rgb
+// https://observablehq.com/@mbostock/lab-and-rgb
 var K = 18,
     Xn = 0.96422,
     Yn = 1,
@@ -5368,13 +5368,7 @@ var K = 18,
 
 function labConvert(o) {
   if (o instanceof Lab) return new Lab(o.l, o.a, o.b, o.opacity);
-
-  if (o instanceof Hcl) {
-    if (isNaN(o.h)) return new Lab(o.l, 0, 0, o.opacity);
-    var h = o.h * _math.deg2rad;
-    return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
-  }
-
+  if (o instanceof Hcl) return hcl2lab(o);
   if (!(o instanceof _color.Rgb)) o = (0, _color.rgbConvert)(o);
   var r = rgb2lrgb(o.r),
       g = rgb2lrgb(o.g),
@@ -5441,7 +5435,7 @@ function rgb2lrgb(x) {
 function hclConvert(o) {
   if (o instanceof Hcl) return new Hcl(o.h, o.c, o.l, o.opacity);
   if (!(o instanceof Lab)) o = labConvert(o);
-  if (o.a === 0 && o.b === 0) return new Hcl(NaN, 0, o.l, o.opacity);
+  if (o.a === 0 && o.b === 0) return new Hcl(NaN, 0 < o.l && o.l < 100 ? 0 : NaN, o.l, o.opacity);
 
   var h = Math.atan2(o.b, o.a) * _math.rad2deg;
 
@@ -5463,6 +5457,12 @@ function Hcl(h, c, l, opacity) {
   this.opacity = +opacity;
 }
 
+function hcl2lab(o) {
+  if (isNaN(o.h)) return new Lab(o.l, 0, 0, o.opacity);
+  var h = o.h * _math.deg2rad;
+  return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
+}
+
 (0, _define.default)(Hcl, hcl, (0, _define.extend)(_color.Color, {
   brighter: function (k) {
     return new Hcl(this.h, this.c, this.l + K * (k == null ? 1 : k), this.opacity);
@@ -5471,7 +5471,7 @@ function Hcl(h, c, l, opacity) {
     return new Hcl(this.h, this.c, this.l - K * (k == null ? 1 : k), this.opacity);
   },
   rgb: function () {
-    return labConvert(this).rgb();
+    return hcl2lab(this).rgb();
   }
 }));
 },{"./define":"VlPU","./color":"LQD5","./math":"SQ+m"}],"rRwN":[function(require,module,exports) {
@@ -7998,6 +7998,17 @@ class Presenter {
     this.rePresent(Object.assign({}, this._last.stage, {
       cubeData: this.getCubeData()
     }));
+  }
+
+  finalize() {
+    this.animationCancel();
+    if (this.deckgl) this.deckgl.finalize();
+    if (this.el) this.el.innerHTML = '';
+    this._last = null;
+    this.deckgl = null;
+    this.el = null;
+    this.logger = null;
+    this.queuedAnimationOptions = null;
   }
 
 }
@@ -12708,6 +12719,17 @@ class DataScope {
     };
   }
 
+  finalize() {
+    this.data = null;
+    this.filteredData = null;
+
+    if (this.selection) {
+      this.selection.excluded = null;
+      this.selection.included = null;
+      this.selection = null;
+    }
+  }
+
 }
 
 exports.DataScope = DataScope;
@@ -12753,6 +12775,12 @@ class Details {
     this.hasColorMaps = hasColorMaps;
     this.element = _vegaDeck.util.addDiv(parentElement, `${_defaults.cssPrefix}unitControls`);
     this.clear();
+  }
+
+  finalize() {
+    if (this.element) this.element.innerHTML = '';
+    this.dataScope = null;
+    this.element = null;
   }
 
   clear() {
@@ -13812,6 +13840,23 @@ class Viewer {
 
   getSignalValues() {
     return (0, _signals.extractSignalValuesFromView)(this.vegaViewGl, this.vegaSpec);
+  }
+
+  finalize() {
+    if (this._dataScope) this._dataScope.finalize();
+    if (this._details) this._details.finalize();
+    if (this.vegaViewGl) this.vegaViewGl.finalize();
+    if (this.presenter) this.presenter.finalize();
+    if (this.element) this.element.innerHTML = '';
+    this.colorContexts = null;
+    this.element = null;
+    this.options = null;
+    this.presenter = null;
+    this.vegaSpec = null;
+    this.vegaViewGl = null;
+    this._animator = null;
+    this._dataScope = null;
+    this._details = null;
   }
 
 }
@@ -15819,6 +15864,7 @@ var strings = {
   buttonColorSchemeKeep: "Keep same color scheme",
   buttonCopyToClipboard: "Copy to clipboard",
   buttonExclude: "Exclude",
+  buttonExport: "Export",
   buttonIsolate: "Isolate",
   buttonReset: "Stop filtering",
   buttonDeselect: "Clear selection",
@@ -15843,6 +15889,7 @@ var strings = {
   chartTypeScatterPlot: "Scatter plot",
   chartTypeStacks: "Stacks",
   chartTypeTreeMap: "Tree map",
+  errorColumnMustBeNumeric: "Numeric column required for this chart type.",
   labelChartSettings: "Chart settings",
   labelDataBrowser: "Data browser",
   labelTools: "Tools",
@@ -19366,18 +19413,17 @@ exports.loadDataArray = loadDataArray;
 
 function getInsightColumns(columnArray) {
   var scheme;
-  var colorColumn = columnArray[3];
+  var colorColumn = columnArray[2];
 
   if (colorColumn) {
     scheme = colorColumn.quantitative ? 'redyellowgreen' : 'category20';
   }
 
   var columns = {
-    uid: columnArray[0] && columnArray[0].name,
-    x: columnArray[1] && columnArray[1].name,
-    y: columnArray[2] && columnArray[2].name,
+    x: columnArray[0] && columnArray[0].name,
+    y: columnArray[1] && columnArray[1].name,
     color: colorColumn && colorColumn.name,
-    z: columnArray[4] && columnArray[4].name
+    z: columnArray[3] && columnArray[3].name
   };
   var numericColumn = columnArray.filter(function (c) {
     return c.quantitative;
@@ -19610,7 +19656,9 @@ function DataItem(props) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.saveCsv = saveCsv;
 exports.DataBrowser = DataBrowser;
+exports.CsvDataService = void 0;
 
 var React = _interopRequireWildcard(require("react"));
 
@@ -19622,11 +19670,108 @@ var _iconButton = require("../controls/iconButton");
 
 var _language = require("../language");
 
+var _base = require("../base");
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+//From: https://codeburst.io/export-objects-array-as-csv-using-typescript-643bf4f794d9
+// To create and save csv file
+var CsvDataService =
+/*#__PURE__*/
+function () {
+  function CsvDataService() {
+    _classCallCheck(this, CsvDataService);
+  }
+
+  _createClass(CsvDataService, null, [{
+    key: "exportToCsv",
+    value: function exportToCsv(filename, rows) {
+      if (!rows || !rows.length) {
+        return;
+      }
+
+      var separator = ',';
+      var keys = Object.keys(rows[0]);
+      var csvContent = keys.join(separator) + '\n' + rows.map(function (row) {
+        return keys.map(function (k) {
+          var cell = row[k] === null || row[k] === undefined ? '' : row[k];
+          cell = cell instanceof Date ? cell.toLocaleString() : cell.toString().replace(/"/g, '""');
+
+          if (cell.search(/("|,|\n)/g) >= 0) {
+            cell = "\"".concat(cell, "\"");
+          }
+
+          return cell;
+        }).join(separator);
+      }).join('\n');
+      var blob = new Blob([csvContent], {
+        type: 'text/csv;charset=utf-8;'
+      });
+
+      if (navigator.msSaveBlob) {
+        // IE 10+
+        navigator.msSaveBlob(blob, filename);
+      } else {
+        var link = document.createElement('a');
+
+        if (link.download !== undefined) {
+          // Browsers that support HTML5 download attribute
+          var url = URL.createObjectURL(blob);
+          link.setAttribute('href', url);
+          link.setAttribute('download', filename);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      }
+    }
+  }]);
+
+  return CsvDataService;
+}();
+
+exports.CsvDataService = CsvDataService;
+
+function saveCsv() {
+  var _this = this;
+
+  var groups = _toConsumableArray(this.state.groups);
+
+  groups.forEach(function (group) {
+    group.expressions.forEach(validateExpression);
+    var errors = group.expressions.reduce(function (p, c) {
+      return p || c.errorMessage;
+    }, '');
+
+    if (errors) {
+      _this.setState({
+        groups: groups
+      });
+    } else {
+      _this.props.onSelect(_this.state.groups);
+    }
+  });
+  exportToCsv("csv", groups);
+}
+
 function DataBrowser(props) {
+  var _this2 = this;
+
   function activateRecord(newIndex) {
     props.onActivate(props.data[newIndex], newIndex);
   }
@@ -19665,9 +19810,15 @@ function DataBrowser(props) {
     item: props.data[index],
     disabled: props.disabled,
     onSearch: props.onSearch
-  })));
+  })), React.createElement(_base.base.fabric.PrimaryButton, {
+    className: "search-action search-bottom-action",
+    text: _language.strings.buttonExport,
+    onClick: function onClick() {
+      return _this2.props.datasetExportHandler(_this2.props.data);
+    }
+  }));
 }
-},{"react":"ccIB","../controls/dataItem":"Gai8","../controls/group":"4Q3h","../controls/iconButton":"5dQN","../language":"hk5u"}],"eqtW":[function(require,module,exports) {
+},{"react":"ccIB","../controls/dataItem":"Gai8","../controls/group":"4Q3h","../controls/iconButton":"5dQN","../language":"hk5u","../base":"Vlbn"}],"eqtW":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20395,7 +20546,78 @@ function Dialog(props) {
     text: _language.strings.buttonClose
   })));
 }
-},{"react":"ccIB","../base":"Vlbn","../language":"hk5u"}],"7xB+":[function(require,module,exports) {
+},{"react":"ccIB","../base":"Vlbn","../language":"hk5u"}],"f8v0":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ensureColumnsExist = ensureColumnsExist;
+exports.ensureColumnsPopulated = ensureColumnsPopulated;
+
+var _language = require("./language");
+
+function ensureColumnsExist(insightColumns, actualColumns) {
+  var _loop = function _loop(role) {
+    var columnName = insightColumns[role];
+    var column = actualColumns.filter(function (c) {
+      return c.name === columnName;
+    })[0];
+
+    if (!column) {
+      delete insightColumns[role];
+    }
+  };
+
+  //ensure columns exist
+  for (var role in insightColumns) {
+    _loop(role);
+  }
+}
+
+function ensureColumnsPopulated(chart, insightColumns, actualColumns) {
+  //ensure columns are populated
+  var firstColumnName = actualColumns[0].name;
+
+  var ensureColumn = function ensureColumn(role) {
+    if (!insightColumns[role]) {
+      insightColumns[role] = firstColumnName;
+    }
+  };
+
+  switch (chart) {
+    case 'barchart':
+      ensureColumn('x');
+      break;
+
+    case 'density':
+    case 'scatterplot':
+    case 'stacks':
+      ensureColumn('x');
+      ensureColumn('y');
+      break;
+
+    case 'treemap':
+      if (!insightColumns.size) {
+        for (var i = 0; i < actualColumns.length; i++) {
+          var c = actualColumns[i];
+
+          if (c.quantitative) {
+            insightColumns.size = c.name;
+            break;
+          }
+        }
+      }
+
+      if (!insightColumns.size) {
+        //error - no numeric column
+        return [_language.strings.errorColumnMustBeNumeric];
+      }
+
+      break;
+  }
+}
+},{"./language":"hk5u"}],"7xB+":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22001,6 +22223,8 @@ var _dataScope = require("./controls/dataScope");
 
 var _dialog = require("./controls/dialog");
 
+var _columns = require("./columns");
+
 var _search = require("./dialogs/search");
 
 var _sanddanceReact = require("@msrvida/sanddance-react");
@@ -22139,6 +22363,11 @@ function (_React$Component) {
   }
 
   _createClass(Explorer, [{
+    key: "finalize",
+    value: function finalize() {
+      if (this.viewer) this.viewer.finalize();
+    }
+  }, {
     key: "updateViewerOptions",
     value: function updateViewerOptions(viewerOptions) {
       var _this2 = this;
@@ -22307,6 +22536,12 @@ function (_React$Component) {
             sideTabId: sideTabId
           }, partialInsight);
           _this4.getColorContext = null;
+          (0, _columns.ensureColumnsExist)(newState.columns, dataContent.columns);
+          var errors = (0, _columns.ensureColumnsPopulated)(partialInsight ? partialInsight.chart : null, newState.columns, dataContent.columns);
+
+          if (errors) {
+            newState.errors = errors;
+          }
 
           _this4.changeInsight(newState); //make sure item is active
 
@@ -22339,16 +22574,18 @@ function (_React$Component) {
       var partialInsight = (0, _partialInsight.copyPrefToNewState)(this.prefs, chart, '*', '*');
       var newState = Object.assign({
         chart: chart
-      }, partialInsight); //special case mappings when switching chart type
+      }, partialInsight);
+      var columns = this.state.columns || {};
+      newState.columns = Object.assign({}, columns); //special case mappings when switching chart type
 
       if (this.state.chart === 'scatterplot' && chart === 'barchart') {
-        newState.columns = Object.assign({}, this.state.columns, {
-          sort: this.state.columns.y
+        newState.columns = Object.assign({}, columns, {
+          sort: columns.y
         });
       } else if (chart === 'treemap') {
         newState.view = '2d';
 
-        if (!this.state.columns.size) {
+        if (!columns.size) {
           //make sure size exists and is numeric
           var sizeColumn = this.state.dataContent.columns.filter(function (c) {
             return c.quantitative;
@@ -22356,13 +22593,20 @@ function (_React$Component) {
 
           if (!sizeColumn) {//TODO error - no numeric columns
           } else {
-            newState.columns = Object.assign({}, this.state.columns, {
+            newState.columns = Object.assign({}, columns, {
               size: sizeColumn.name
             });
           }
         }
       } else if (chart === 'stacks') {
         newState.view = '3d';
+      }
+
+      (0, _columns.ensureColumnsExist)(newState.columns, this.state.dataContent.columns);
+      var errors = (0, _columns.ensureColumnsPopulated)(chart, newState.columns, this.state.dataContent.columns);
+
+      if (errors) {
+        newState.errors = errors;
       }
 
       this.calculate(function () {
@@ -22621,12 +22865,6 @@ function (_React$Component) {
   }, {
     key: "viewerMounted",
     value: function viewerMounted(glDiv) {
-      var _this9 = this;
-
-      window.addEventListener("resize", function () {
-        //TODO: throttle events
-        _this9.resize();
-      });
       this.setState({
         size: this.getLayoutDivSize(this.state.sidebarPinned, this.state.sidebarClosed),
         signalValues: this.state.signalValues //keep initialized signalValues
@@ -22716,7 +22954,7 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this10 = this;
+      var _this9 = this;
 
       var _this$state = this.state,
           colorBin = _this$state.colorBin,
@@ -22743,6 +22981,11 @@ function (_React$Component) {
         chart: chart,
         view: view
       };
+
+      if (!insight.columns || !insight.columns.color) {
+        insight.hideLegend = true;
+      }
+
       var loaded = !!(this.state.columns && this.state.dataContent);
       var selectionState = this.viewer && this.viewer.getSelection() || {};
       var selectionSearch = selectionState && selectionState.search;
@@ -22754,7 +22997,7 @@ function (_React$Component) {
       });
       var columnMapProps = {
         changeColumnMapping: function changeColumnMapping(role, column) {
-          return _this10.changeColumnMapping(role, column);
+          return _this9.changeColumnMapping(role, column);
         },
         quantitativeColumns: quantitativeColumns,
         categoricalColumns: categoricalColumns,
@@ -22768,10 +23011,10 @@ function (_React$Component) {
       if (this.state.calculating) {
         setTimeout(function () {
           //allow render to complete
-          if (_this10.state.calculating) {
-            _this10.state.calculating();
+          if (_this9.state.calculating) {
+            _this9.state.calculating();
 
-            _this10.setState({
+            _this9.setState({
               calculating: null
             });
           }
@@ -22796,25 +23039,25 @@ function (_React$Component) {
         buttons: this.props.topBarButtonProps,
         view: this.state.view,
         onViewClick: function onViewClick() {
-          var view = _this10.state.view === '2d' ? '3d' : '2d';
+          var view = _this9.state.view === '2d' ? '3d' : '2d';
 
-          _this10.changeInsight({
+          _this9.changeInsight({
             view: view
           });
         },
         onHomeClick: function onHomeClick() {
-          return _this10.viewer.presenter.homeCamera();
+          return _this9.viewer.presenter.homeCamera();
         }
       }), React.createElement("div", {
-        className: _sanddanceReact.util.classList("sanddance-main", this.state.sidebarPinned && "pinned", this.state.sidebarClosed && "closed", this.state.hideLegend && "hide-legend")
+        className: _sanddanceReact.util.classList("sanddance-main", this.state.sidebarPinned && "pinned", this.state.sidebarClosed && "closed", insight.hideLegend && "hide-legend")
       }, React.createElement("div", {
         ref: function ref(div) {
-          if (div && !_this10.layoutDivUnpinned) _this10.layoutDivUnpinned = div;
+          if (div && !_this9.layoutDivUnpinned) _this9.layoutDivUnpinned = div;
         },
         className: "sanddance-layout-unpinned"
       }), React.createElement("div", {
         ref: function ref(div) {
-          if (div && !_this10.layoutDivPinned) _this10.layoutDivPinned = div;
+          if (div && !_this9.layoutDivPinned) _this9.layoutDivPinned = div;
         },
         className: "sanddance-layout-pinned"
       }), !loaded && React.createElement("div", {
@@ -22833,9 +23076,9 @@ function (_React$Component) {
           themePalette: themePalette,
           compact: this.state.sidebarClosed,
           onCompactClick: function onCompactClick() {
-            _this10.changeInsight({
+            _this9.changeInsight({
               sidebarClosed: false,
-              size: _this10.getLayoutDivSize(_this10.state.sidebarPinned, false)
+              size: _this9.getLayoutDivSize(_this9.state.sidebarPinned, false)
             });
           },
           dataSet: this.props.datasetElement,
@@ -22846,154 +23089,155 @@ function (_React$Component) {
           },
           active: this.state.sideTabId === _sidebar.SideTabId.Data,
           onDataScopeClick: function onDataScopeClick(dataScopeId) {
-            return _this10.setSideTabId(_sidebar.SideTabId.Data, dataScopeId);
+            return _this9.setSideTabId(_sidebar.SideTabId.Data, dataScopeId);
           },
           selectedDataScope: this.state.dataScopeId,
           disabled: !loaded
         },
         onSideTabClick: function onSideTabClick(sideTabId) {
           //collapse or toggle
-          if (sideTabId === _sidebar.SideTabId.Collapse || _this10.state.sideTabId === sideTabId) {
-            var _this10$state = _this10.state,
-                dataScopeId = _this10$state.dataScopeId,
-                sidebarClosed = _this10$state.sidebarClosed;
+          if (sideTabId === _sidebar.SideTabId.Collapse || _this9.state.sideTabId === sideTabId) {
+            var _this9$state = _this9.state,
+                dataScopeId = _this9$state.dataScopeId,
+                sidebarClosed = _this9$state.sidebarClosed;
 
             if (sidebarClosed && sideTabId === _sidebar.SideTabId.Data) {
-              dataScopeId = _this10.getBestDataScopeId();
+              dataScopeId = _this9.getBestDataScopeId();
             }
 
-            sidebarClosed = !_this10.state.sidebarClosed;
+            sidebarClosed = !_this9.state.sidebarClosed;
 
-            _this10.changeInsight({
+            _this9.changeInsight({
               dataScopeId: dataScopeId,
               sidebarClosed: sidebarClosed,
-              size: _this10.getLayoutDivSize(_this10.state.sidebarPinned, sidebarClosed)
+              size: _this9.getLayoutDivSize(_this9.state.sidebarPinned, sidebarClosed)
             });
           } else if (sideTabId === _sidebar.SideTabId.Pin) {
-            _this10.changeInsight({
-              sidebarPinned: !_this10.state.sidebarPinned,
-              size: _this10.getLayoutDivSize(!_this10.state.sidebarPinned, _this10.state.sidebarClosed)
+            _this9.changeInsight({
+              sidebarPinned: !_this9.state.sidebarPinned,
+              size: _this9.getLayoutDivSize(!_this9.state.sidebarPinned, _this9.state.sidebarClosed)
             });
           } else {
-            _this10.setSideTabId(sideTabId);
+            _this9.setSideTabId(sideTabId);
           }
         },
         selectedSideTab: this.state.sideTabId
       }, loaded && function () {
-        switch (_this10.state.sideTabId) {
+        switch (_this9.state.sideTabId) {
           case _sidebar.SideTabId.ChartType:
             return React.createElement(_chart.Chart, Object.assign({
-              specCapabilities: _this10.state.specCapabilities,
-              disabled: !loaded || _this10.state.sidebarClosed
+              specCapabilities: _this9.state.specCapabilities,
+              disabled: !loaded || _this9.state.sidebarClosed
             }, columnMapProps, {
-              chart: _this10.state.chart,
-              view: _this10.state.view,
+              chart: _this9.state.chart,
+              view: _this9.state.view,
               onChangeChartType: function onChangeChartType(chart) {
-                return _this10.changeChartType(chart);
+                return _this9.changeChartType(chart);
               },
-              columns: _this10.state.columns,
+              columns: _this9.state.columns,
               onChangeSignal: function onChangeSignal(role, column, name, value) {
-                (0, _partialInsight.saveSignalValuePref)(_this10.prefs, _this10.state.chart, role, column, name, value);
+                (0, _partialInsight.saveSignalValuePref)(_this9.prefs, _this9.state.chart, role, column, name, value);
               }
             }));
 
           case _sidebar.SideTabId.Color:
             return React.createElement(_color.Color, Object.assign({
-              specCapabilities: _this10.state.specCapabilities,
-              disabled: !loaded || _this10.state.sidebarClosed
+              specCapabilities: _this9.state.specCapabilities,
+              disabled: !loaded || _this9.state.sidebarClosed
             }, columnMapProps, {
-              dataContent: _this10.state.dataContent,
-              scheme: _this10.state.scheme,
-              colorBin: _this10.state.colorBin,
-              colorBinSignal: _this10.viewer && _this10.viewer.vegaSpec && _this10.viewer.vegaSpec.signals.filter(function (s) {
+              dataContent: _this9.state.dataContent,
+              scheme: _this9.state.scheme,
+              colorBin: _this9.state.colorBin,
+              colorBinSignal: _this9.viewer && _this9.viewer.vegaSpec && _this9.viewer.vegaSpec.signals.filter(function (s) {
                 return s.name === _sanddanceReact.SandDance.constants.SignalNames.ColorBinCount;
               })[0],
-              colorReverseSignal: _this10.viewer && _this10.viewer.vegaSpec && _this10.viewer.vegaSpec.signals.filter(function (s) {
+              colorReverseSignal: _this9.viewer && _this9.viewer.vegaSpec && _this9.viewer.vegaSpec.signals.filter(function (s) {
                 return s.name === _sanddanceReact.SandDance.constants.SignalNames.ColorReverse;
               })[0],
-              colorColumn: _this10.state.columns.color,
+              colorColumn: _this9.state.columns.color,
               changeColorBin: function changeColorBin(colorBin) {
-                _this10.ignoreSelectionChange = true;
+                _this9.ignoreSelectionChange = true;
 
-                _this10.viewer.deselect().then(function () {
-                  _this10.ignoreSelectionChange = false; //allow deselection to render
+                _this9.viewer.deselect().then(function () {
+                  _this9.ignoreSelectionChange = false; //allow deselection to render
 
                   setTimeout(function () {
-                    _this10.getColorContext = null;
+                    _this9.getColorContext = null;
 
-                    _this10.changeInsight({
+                    _this9.changeInsight({
                       colorBin: colorBin
                     });
 
-                    (0, _partialInsight.savePref)(_this10.prefs, _this10.state.chart, 'color', _this10.state.columns.color, {
+                    (0, _partialInsight.savePref)(_this9.prefs, _this9.state.chart, 'color', _this9.state.columns.color, {
                       colorBin: colorBin
                     });
                   }, 0);
                 });
               },
               changeColorScheme: function changeColorScheme(scheme) {
-                _this10.changeColumnMapping('color', _this10.state.dataContent.columns.filter(function (c) {
-                  return c.name === _this10.state.columns.color;
+                _this9.changeColumnMapping('color', _this9.state.dataContent.columns.filter(function (c) {
+                  return c.name === _this9.state.columns.color;
                 })[0], {
                   scheme: scheme
                 });
 
-                (0, _partialInsight.savePref)(_this10.prefs, _this10.state.chart, 'color', _this10.state.columns.color, {
+                (0, _partialInsight.savePref)(_this9.prefs, _this9.state.chart, 'color', _this9.state.columns.color, {
                   scheme: scheme
                 });
               },
               onColorBinCountChange: function onColorBinCountChange(value) {
                 var signalValues = {};
                 signalValues[_sanddanceReact.SandDance.constants.SignalNames.ColorBinCount] = value;
-                (0, _partialInsight.savePref)(_this10.prefs, _this10.state.chart, 'color', _this10.state.columns.color, {
+                (0, _partialInsight.savePref)(_this9.prefs, _this9.state.chart, 'color', _this9.state.columns.color, {
                   signalValues: signalValues
                 });
               },
               onColorReverseChange: function onColorReverseChange(value) {
-                _this10.getColorContext = null;
+                _this9.getColorContext = null;
                 var signalValues = {};
                 signalValues[_sanddanceReact.SandDance.constants.SignalNames.ColorReverse] = value;
               }
             }));
 
           case _sidebar.SideTabId.Data:
-            var data = datas[_this10.state.dataScopeId];
+            var data = datas[_this9.state.dataScopeId];
             var itemVisible = true;
 
-            switch (_this10.state.dataScopeId) {
+            switch (_this9.state.dataScopeId) {
               case _dataScope.DataScopeId.AllData:
-                var item = _this10.state.selectedItemIndex[_this10.state.dataScopeId];
-                itemVisible = _this10.state.dataContent && !_this10.state.filteredData || _this10.state.filteredData.indexOf(data[item]) >= 0;
+                var item = _this9.state.selectedItemIndex[_this9.state.dataScopeId];
+                itemVisible = _this9.state.dataContent && !_this9.state.filteredData || _this9.state.filteredData.indexOf(data[item]) >= 0;
             }
 
             return React.createElement(_dataBrowser.DataBrowser, {
               themePalette: themePalette,
-              disabled: !loaded || _this10.state.sidebarClosed,
-              columns: _this10.state.dataContent && _this10.state.dataContent.columns,
+              disabled: !loaded || _this9.state.sidebarClosed,
+              columns: _this9.state.dataContent && _this9.state.dataContent.columns,
               data: data,
-              title: dataBrowserTitles[_this10.state.dataScopeId],
-              nullMessage: dataBrowserNullMessages[_this10.state.dataScopeId],
-              zeroMessage: dataBrowserZeroMessages[_this10.state.dataScopeId],
-              index: _this10.state.selectedItemIndex[_this10.state.dataScopeId],
+              title: dataBrowserTitles[_this9.state.dataScopeId],
+              nullMessage: dataBrowserNullMessages[_this9.state.dataScopeId],
+              zeroMessage: dataBrowserZeroMessages[_this9.state.dataScopeId],
+              index: _this9.state.selectedItemIndex[_this9.state.dataScopeId],
               itemVisible: itemVisible,
+              datasetExportHandler: _this9.props.datasetExportHandler,
               onActivate: function onActivate(row, index) {
-                var selectedItemIndex = Object.assign({}, _this10.state.selectedItemIndex);
-                selectedItemIndex[_this10.state.dataScopeId] = index;
+                var selectedItemIndex = Object.assign({}, _this9.state.selectedItemIndex);
+                selectedItemIndex[_this9.state.dataScopeId] = index;
 
-                _this10.setState({
+                _this9.setState({
                   selectedItemIndex: selectedItemIndex
                 });
 
-                _this10.silentActivation(row);
+                _this9.silentActivation(row);
               },
               onSearch: function onSearch(e, search) {
                 if (e.ctrlKey) {
-                  _this10.setState({
+                  _this9.setState({
                     sideTabId: _sidebar.SideTabId.Search,
                     search: search
                   });
                 } else {
-                  _this10.doSelect(search);
+                  _this9.doSelect(search);
                 }
               }
             });
@@ -23001,43 +23245,43 @@ function (_React$Component) {
           case _sidebar.SideTabId.Search:
             return React.createElement(_search.Search, {
               themePalette: themePalette,
-              disabled: !loaded || _this10.state.sidebarClosed,
+              disabled: !loaded || _this9.state.sidebarClosed,
               initializer: {
-                columns: _this10.state.dataContent.columns,
-                search: _this10.state.search
+                columns: _this9.state.dataContent.columns,
+                search: _this9.state.search
               },
-              autoCompleteDistinctValues: _this10.state.autoCompleteDistinctValues,
+              autoCompleteDistinctValues: _this9.state.autoCompleteDistinctValues,
               onSelect: function onSelect(expr) {
-                _this10.doSelect(expr);
+                _this9.doSelect(expr);
               },
-              data: _this10.state.dataContent.data
+              data: _this9.state.dataContent.data
             });
 
           case _sidebar.SideTabId.Snapshots:
-            return React.createElement(_snapshots.Snapshots, Object.assign({}, _this10.props.snapshotProps, {
+            return React.createElement(_snapshots.Snapshots, Object.assign({}, _this9.props.snapshotProps, {
               themePalette: themePalette,
-              explorer: _this10,
-              snapshots: _this10.state.snapshots,
+              explorer: _this9,
+              snapshots: _this9.state.snapshots,
               onCreateSnapshot: function onCreateSnapshot(snapshot) {
-                _this10.setState({
-                  snapshots: _this10.state.snapshots.concat(snapshot)
+                _this9.setState({
+                  snapshots: _this9.state.snapshots.concat(snapshot)
                 });
               },
               onRemoveSnapshot: function onRemoveSnapshot(i) {
-                var snapshots = _toConsumableArray(_this10.state.snapshots);
+                var snapshots = _toConsumableArray(_this9.state.snapshots);
 
                 snapshots.splice(i, 1);
 
-                _this10.setState({
+                _this9.setState({
                   snapshots: snapshots
                 });
               },
               onSnapshotClick: function onSnapshotClick(snapshot) {
-                _this10.calculate(function () {
-                  if (_this10.props.onSnapshotClick) {
-                    _this10.props.onSnapshotClick(snapshot);
+                _this9.calculate(function () {
+                  if (_this9.props.onSnapshotClick) {
+                    _this9.props.onSnapshotClick(snapshot);
                   } else {
-                    _this10.setInsight(snapshot.insight);
+                    _this9.setInsight(snapshot.insight);
                   }
                 });
               }
@@ -23045,23 +23289,23 @@ function (_React$Component) {
 
           case _sidebar.SideTabId.Settings:
             return React.createElement(_settings.Settings, {
-              explorer: _this10,
-              dataFile: _this10.state.dataFile,
-              scheme: _this10.state.scheme,
-              hideLegend: _this10.state.hideLegend,
+              explorer: _this9,
+              dataFile: _this9.state.dataFile,
+              scheme: _this9.state.scheme,
+              hideLegend: _this9.state.hideLegend,
               onToggleLegend: function onToggleLegend(hideLegend) {
-                return _this10.setState({
+                return _this9.setState({
                   hideLegend: hideLegend,
                   calculating: function calculating() {
-                    return _this10._resize();
+                    return _this9._resize();
                   }
                 });
               },
-              hideAxes: _this10.state.hideAxes,
+              hideAxes: _this9.state.hideAxes,
               onToggleAxes: function onToggleAxes(hideAxes) {
-                return _this10.setState({
+                return _this9.setState({
                   calculating: function calculating() {
-                    return _this10.setState({
+                    return _this9.setState({
                       hideAxes: hideAxes
                     });
                   }
@@ -23075,19 +23319,19 @@ function (_React$Component) {
         renderOptions: {
           initialColorContext: this.getColorContext && this.getColorContext(this.viewer.insight, insight),
           discardColorContextUpdates: function discardColorContextUpdates() {
-            return _this10.discardColorContextUpdates;
+            return _this9.discardColorContextUpdates;
           }
         },
         viewerOptions: this.viewerOptions,
         ref: function ref(reactViewer) {
           if (reactViewer) {
-            _this10.viewer = reactViewer.viewer;
+            _this9.viewer = reactViewer.viewer;
           }
         },
         onView: function onView(renderResult) {
-          _this10.changespecCapabilities(renderResult.specResult.errors ? renderResult.specResult.specCapabilities : _this10.viewer.specCapabilities);
+          _this9.changespecCapabilities(renderResult.specResult.errors ? renderResult.specResult.specCapabilities : _this9.viewer.specCapabilities);
 
-          _this10.getColorContext = function (oldInsight, newInsight) {
+          _this9.getColorContext = function (oldInsight, newInsight) {
             if (!oldInsight && !newInsight) {
               return null;
             }
@@ -23104,23 +23348,23 @@ function (_React$Component) {
               return null;
             }
 
-            return _this10.viewer.colorContexts && _this10.viewer.colorContexts[_this10.viewer.currentColorContext];
+            return _this9.viewer.colorContexts && _this9.viewer.colorContexts[_this9.viewer.currentColorContext];
           }; //don't allow tabbing to the canvas
 
 
-          _this10.viewer.presenter.getElement(_sanddanceReact.SandDance.VegaDeckGl.PresenterElement.gl).getElementsByTagName('canvas')[0].tabIndex = -1;
-          _this10.props.onView && _this10.props.onView();
+          _this9.viewer.presenter.getElement(_sanddanceReact.SandDance.VegaDeckGl.PresenterElement.gl).getElementsByTagName('canvas')[0].tabIndex = -1;
+          _this9.props.onView && _this9.props.onView();
         },
         data: this.state.dataContent.data,
         insight: insight,
         onMount: function onMount(el) {
-          return _this10.viewerMounted(el);
+          return _this9.viewerMounted(el);
         }
       })), React.createElement(_dialog.Dialog, {
         title: _language.strings.labelError,
         hidden: !this.state.errors,
         onDismiss: function onDismiss() {
-          _this10.setState({
+          _this9.setState({
             errors: null
           });
         }
@@ -23136,7 +23380,7 @@ function (_React$Component) {
 }(React.Component);
 
 exports.Explorer = Explorer;
-},{"react":"ccIB","./colorMap":"E67y","./base":"Vlbn","./colorScheme":"L8O2","./dialogs/chart":"NGSt","./dialogs/color":"N8IJ","./dataLoader":"f19h","./partialInsight":"tb7d","./dialogs/dataBrowser":"8pJL","./controls/dataScope":"Os+N","./controls/dialog":"cFWm","./dialogs/search":"ozxe","@msrvida/sanddance-react":"MjKu","./dialogs/settings":"zKGJ","./controls/sidebar":"f8Jx","./dialogs/snapshots":"3oc9","./language":"hk5u","./themes":"CgE3","./toggleSearch":"yzxM","./controls/topbar":"Afi9"}],"Focm":[function(require,module,exports) {
+},{"react":"ccIB","./colorMap":"E67y","./base":"Vlbn","./colorScheme":"L8O2","./dialogs/chart":"NGSt","./dialogs/color":"N8IJ","./dataLoader":"f19h","./partialInsight":"tb7d","./dialogs/dataBrowser":"8pJL","./controls/dataScope":"Os+N","./controls/dialog":"cFWm","./columns":"f8v0","./dialogs/search":"ozxe","@msrvida/sanddance-react":"MjKu","./dialogs/settings":"zKGJ","./controls/sidebar":"f8Jx","./dialogs/snapshots":"3oc9","./language":"hk5u","./themes":"CgE3","./toggleSearch":"yzxM","./controls/topbar":"Afi9"}],"Focm":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

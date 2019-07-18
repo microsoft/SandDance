@@ -13,6 +13,8 @@ export const strings = {
     dialogTitleUrl: "Use a data file via URL",
     dialogCloseButton: "Close",
     dialogLoadButton: "Load",
+    dialogExportButton: "Export",
+    dialogExportTitle: "Choose a format",
     labelLocal: "[local]",
     labelColorFilter: "Note: Colors will be re-mapped to the filter when viewing this saved chart.",
     labelLink: "link",

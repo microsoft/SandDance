@@ -4,6 +4,7 @@ import * as React from 'react';
 import { base } from './base';
 import { DataSource, DataSourceSnapshot, InsightMap } from './types';
 import { DataSourcePicker } from './dataSourcePicker';
+
 import {
   Explorer,
   Prefs,
@@ -12,6 +13,7 @@ import {
   themePalettes
 } from '@msrvida/sanddance-explorer';
 import { strings } from './language';
+//import { DataExportPicker } from '@msrvida/sanddance-explorer/src/dataExporter';
 
 export interface Props {
   themeColors: { [theme: string]: SandDance.types.ColorSettings };
@@ -132,6 +134,12 @@ export class SandDanceApp extends React.Component<Props, State> {
       this.props.initialPrefs && VegaDeckGl.util.deepMerge({}, this.props.initialPrefs['*'], this.props.initialPrefs[dataSource.id]));
   }
 
+  //To do: download csv, json, or tsv
+  private downloadData(data:any) {
+    console.log(data);
+  }
+
+
   updateExplorerViewerOptions(viewerOptions: Partial<SandDance.types.ViewerOptions>) {
     this.viewerOptions = viewerOptions;
     this.explorer && this.explorer.updateViewerOptions(this.viewerOptions);
@@ -179,6 +187,7 @@ export class SandDanceApp extends React.Component<Props, State> {
             this.load(this.state.dataSource, snapshotOnLoad && snapshotOnLoad.insight);
             this.props.mounted(this);
           }}
+          datasetExportHandler={(data: any) => this.downloadData(data)}
           datasetElement={(
             <DataSourcePicker
               dataSource={this.state.dataSource}
@@ -188,6 +197,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                 return this.load(ds);
               }}
             />
+            
           )}
           topBarButtonProps={[
             {

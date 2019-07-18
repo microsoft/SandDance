@@ -9,7 +9,7 @@
             "name": "Azure Data Studio",
             "type": "sqlopsExtensionHost",
             "request": "launch",
-            "runtimeExecutable": "${workspaceRoot}",
+            "runtimeExecutable": "C:/Projects/azuredatastudio/scripts/sql.bat",
             "args": ["--extensionDevelopmentPath=${workspaceRoot}/packages/azdata-sanddance" ],
             "stopOnEntry": false,
             "sourceMaps": true,

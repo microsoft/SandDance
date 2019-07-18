@@ -10,6 +10,7 @@ export const strings = {
     buttonColorSchemeKeep: "Keep same color scheme",
     buttonCopyToClipboard: "Copy to clipboard",
     buttonExclude: "Exclude",
+    buttonExport: "Export",
     buttonIsolate: "Isolate",
     buttonReset: "Stop filtering",
     buttonDeselect: "Clear selection",
