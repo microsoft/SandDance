@@ -30,104 +30,7 @@ export interface Props {
 
 }
 
-//From: https://codeburst.io/export-objects-array-as-csv-using-typescript-643bf4f794d9
-// To create and save csv file
-// export class CsvDataService {
-
-//     static exportToCsv(filename: string, rows: object[]) {
-  
-//       if (!rows || !rows.length) {
-  
-//         return;
-  
-//       }
-  
-//       const separator = ',';
-  
-//       const keys = Object.keys(rows[0]);
-  
-//       const csvContent =
-  
-//         keys.join(separator) +
-  
-//         '\n' +
-  
-//         rows.map(row => {
-  
-//           return keys.map(k => {
-  
-//             let cell = row[k] === null || row[k] === undefined ? '' : row[k];
-  
-//             cell = cell instanceof Date
-  
-//               ? cell.toLocaleString()
-  
-//               : cell.toString().replace(/"/g, '""');
-  
-//             if (cell.search(/("|,|\n)/g) >= 0) {
-  
-//               cell = `"${cell}"`;
-  
-//             }
-  
-//             return cell;
-  
-//           }).join(separator);
-  
-//         }).join('\n');
-  
-  
-  
-//       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-  
-//       if (navigator.msSaveBlob) { // IE 10+
-  
-//         navigator.msSaveBlob(blob, filename);
-  
-//       } else {
-  
-//         const link = document.createElement('a');
-  
-//         if (link.download !== undefined) {
-  
-//           // Browsers that support HTML5 download attribute
-  
-//           const url = URL.createObjectURL(blob);
-  
-//           link.setAttribute('href', url);
-  
-//           link.setAttribute('download', filename);
-  
-//           link.style.visibility = 'hidden';
-  
-//           document.body.appendChild(link);
-  
-//           link.click();
-  
-//           document.body.removeChild(link);
-  
-//         }
-  
-//       }
-  
-//     }
-  
-//   }
-
-//   export function saveCsv() {
-//     const groups: InputSearchExpressionGroup[] = [...this.state.groups];
-//     groups.forEach(group => {
-//         group.expressions.forEach(validateExpression);
-//         const errors = group.expressions.reduce((p, c) => p || c.errorMessage, '');
-//         if (errors) {
-//             this.setState({ groups });
-//         } else {
-//             this.props.onSelect(this.state.groups);
-//         }
-//     });
-//     exportToCsv("csv",groups);
-//   }
-
+//From: https://codeburst.io/export-objects-array-as-csv-using-typescript-643bf4f794d9 ?
 
 export function DataBrowser(props: Props) {
     function activateRecord(newIndex: number) {
@@ -165,19 +68,13 @@ export function DataBrowser(props: Props) {
                     onSearch={props.onSearch}
                 />
             </div>}
-            <div>
+            {<div>
               <DataExportPicker 
                 data={props.data}
                 datasetExportHandler = {this.props.datasetExportHandler}
               />
-            </div>
-            <div>
-              <DataExportPicker 
-                data={props.data}
-                datasetExportHandler = {this.props.datasetExportHandler}
-              />
-            </div>
-              
+            </div>}
+
         </Group>
     );
 }
