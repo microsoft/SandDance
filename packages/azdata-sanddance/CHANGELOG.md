@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.3.0]
+- Enable visualization from SQL results grid
+
 ## [1.2.0]
 - Added chart types: Grid
 - Added search expression grouping
