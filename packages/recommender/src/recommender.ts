@@ -1,9 +1,16 @@
 import * as SandDance from "@msrvida/sanddance";
 
-export class Recommender {
+export interface Rule {
+    (columns: SandDance.types.Column[]): boolean;
+}
 
-    recommend() {
-        return true;
-    }
+export interface Recommendation {
+    score: number;
 
+}
+
+export abstract class Recommender {
+    constructor(columns: SandDance.types.Column[]) { }
+    abstract rules: Rule[];
+    abstract recommend(): Recommendation[];
 }

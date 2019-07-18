@@ -1,1 +1,1 @@
-export * from './recommender';
+export * from './scatterPlot';
