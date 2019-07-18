@@ -8,7 +8,7 @@ import { IconButton } from '../controls/iconButton';
 import { InputSearchExpressionGroup } from './search';
 import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
-import { DataExportPicker } from '../dataExporter';
+import { DataExportPicker } from './dataExporter';
 
 import { base } from '../base';
 
