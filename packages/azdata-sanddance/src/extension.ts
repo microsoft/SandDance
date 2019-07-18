@@ -32,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
         }
         )
     );
-    
+
     //make the visualizer icon visible
     vscode.commands.executeCommand('setContext', 'showVisualizer', true);
 
@@ -55,34 +55,26 @@ export function activate(context: vscode.ExtensionContext) {
                 let rows = data.resultSubset.rows;
                 let columns = args.columnInfo;
 
-                // Create csv 
-                let csv = "";
+                // Create Json
+                let jsonArray = [];
 
-                // Add column names to csv
-                for (let i = 0; i < columns.length - 1; i++) {
-                    csv = csv + columns[i].columnName + ",";
+                interface jsonType {
+                    [key: string]: any
                 }
-                csv = csv + columns[columns.length - 1].columnName + "\n";
+                let jsonObject: jsonType = {};
 
-                // Add row information, adding if displayValue is not null
-                for (let i = 0; i < rows.length; i++) {
-                    let row = rows[i];
-
-                    for (let j = 0; j < row.length - 1; j++) {
-                        if (!row[j].isNull) {
-                            csv = csv + row[j].displayValue + ",";
-                        } else {
-                            csv = csv + " ,";
+                for (let row = 0; row < rows[0].length; row++) {
+                    for (let col = 0; col < columns.length; col++) {
+                        if (!rows[row][col].isNull) {
+                            jsonObject[columns[col].columnName] = rows[row][col].displayValue;
                         }
+                        // If display value is null, don't do anything for now
                     }
-
-                    if (!row[row.length - 1].isNull) {
-                        csv = csv + row[row.length - 1].displayValue + "\n";
-                    } else {
-                        csv = csv + " \n";
-                    }
+                    jsonArray.push(jsonObject);
                 }
-                let fileuri = saveTemp(csv);
+
+                let json = JSON.stringify(jsonArray);
+                let fileuri = saveTemp(json);
                 queryViewInSandance(fileuri, context, document);
             }
         }
@@ -199,7 +191,7 @@ export async function saveHdfsFileToTempLocation(commandContext: azdata.ObjectEx
 
 
 function saveTemp(data: string): vscode.Uri {
-    let localFile = tempWrite.sync(data, "file.csv");
+    let localFile = tempWrite.sync(data, "file.json");
     return vscode.Uri.file(localFile);
 }
 
