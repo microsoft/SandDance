@@ -11,7 +11,9 @@ Smooth animated transitions between views help you to maintain context as you in
 
 ## Usage
 
-Right-click on a .csv or .tsv file and choose *View in SandDance*.
+There are multiple ways to invoke a visualization:
+* Right-click on a .csv or .tsv file and choose *View in SandDance*.
+* In SQL query results pane, click the Visualizer icon.
 
 ## Known Issues
 
