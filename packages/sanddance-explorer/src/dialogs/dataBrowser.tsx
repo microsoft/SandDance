@@ -8,9 +8,9 @@ import { IconButton } from '../controls/iconButton';
 import { InputSearchExpressionGroup } from './search';
 import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
-import { DataExportPicker } from './dataExporter';
 
 import { base } from '../base';
+import { DataExportPicker } from './dataExporter';
 
 
 export interface Props {
@@ -26,7 +26,7 @@ export interface Props {
     itemVisible: boolean;
     themePalette: Partial<FabricTypes.IPalette>;
     datasetExportHandler: (data: any) => void;
-    
+
 
 }
 
@@ -68,13 +68,12 @@ export function DataBrowser(props: Props) {
                     onSearch={props.onSearch}
                 />
             </div>}
-            {<div>
-              <DataExportPicker 
-                data={props.data}
-                datasetExportHandler = {this.props.datasetExportHandler}
-              />
-            </div>}
-
+            {props.datasetExportHandler && (
+                <DataExportPicker
+                    data={props.data}
+                    datasetExportHandler={props.datasetExportHandler}
+                />
+            )}
         </Group>
     );
 }

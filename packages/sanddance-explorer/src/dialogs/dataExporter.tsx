@@ -1,82 +1,69 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
-import { base } from '../../../sanddance-app/src/base';
-import { DataFileType } from '../../../sanddance-explorer'
-//@msrvida/sanddance-explorer';
-import { DataSource, DataSourceType } from '../../../sanddance-app/src/types';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { DataFileType } from '../interfaces';
 import { strings } from '../language';
-import { Dialog } from 'c:/Projects/SandDance/packages/sanddance-explorer/src/controls/dialog';
-import { Group } from 'c:/Projects/SandDance/packages/sanddance-explorer/src/controls/group';
-
+import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { base } from '../base';
 
 export interface Props {
   //dataSource: DataSource;
   data: object[];
   datasetExportHandler: (data: any) => void;
   // changeDataExport: (dataExportType: DataFileType) => Promise<void>;
-  //disabled?: boolean;
+  disabled?: boolean;
 }
 
 export interface State {
+  dialogHidden: boolean;
   exportType?: DataFileType;
   working: boolean;
-  dialogMode?: DataSourceType;
-  // csv, json, or tsv
-  exportData?: any;
-  error: string;
-  formHidden: boolean
+  //exportData?: any;
+  error: string
 }
-
-const thumbWidth = 300;
 
 export class DataExportPicker extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
+      dialogHidden: true,
       exportType: DataExportPicker.urlTypes[0],
       working: false,
-      error: "",
-      formHidden: true
+      error: ""
     };
   }
 
   static urlTypes: DataFileType[] = ["json", "csv", "tsv"];
 
-
   // Converts to dataExport type and calls dataExportHandler to deal with data
-   changeDataExport(dataExport: DataFileType) {
-       console.log("ChangeDataExport Called");
-//     this.setState({ working: true });
-//     return new Promise<void>((resolve, reject) => {
-//       const uploadFormatError = "";
-//       const urlError = "";
-//       this.setState({ exportType: dataExport });
-//       if (dataExport == "json") {
-//         this.setState({ exportData: this.convertToJson(this.props.data) })
-//       } else if (dataExport == "csv") {
-//         this.setState({ exportData: this.convertToCsv(this.props.data) })
-//       } else if (dataExport == "tsv") {
-//         this.setState({ exportData: this.convertToTsv(this.props.data) })
-//       };
-//     //   this.props
-//     //     .datasetExportHandler(this.exportData)
+  changeDataExport(dataExport: DataFileType) {
+    this.setState({ working: true });
+    return new Promise<void>((resolve, reject) => {
+      const uploadFormatError = "";
+      const urlError = "";
+      this.setState({ exportType: dataExport });
+      // if (dataExport == "json") {
+      //   this.setState({ exportData: this.convertToJson(this.props.data) })
+      // } else if (dataExport == "csv") {
+      //   this.setState({ exportData: this.convertToCsv(this.props.data) })
+      // } else if (dataExport == "tsv") {
+      //   this.setState({ exportData: this.convertToTsv(this.props.data) })
+      // };
+      this.props
+        .datasetExportHandler(this.exportData)
 
-//     });
-   }
+    });
+  }
 
-   exportData() {
-    console.log("ExportData Called");
+  exportData() {
+    if (!this.state.exportType) {
+      return this.setState({ error: "???strings.errorNoUrl" });
+    }
 
-//     if (!this.state.exportType) {
-//       return this.setState({ error: strings.labelError });
-//     }
-
-//     this.changeDataExport(this.state.exportType).catch((e: Error) => {
-//       this.setState({ error: e.message });
-//    });
-   }
+    this.changeDataExport(this.state.exportType).catch((e: Error) => {
+      this.setState({ error: e.message });
+    });
+  }
 
   // TODO: convert to json
   convertToJson(data: object[]) {
@@ -87,38 +74,6 @@ export class DataExportPicker extends React.Component<Props, State> {
   convertToCsv(data: object[]) {
     console.log(data);
 
-    /*
-    let rows = data.resultSubset.rows;
-    let columns = args.columnInfo;
-
-    // Create csv 
-    let csv = "";
-
-    // Add column names to csv
-    for (let i = 0; i < columns.length - 1; i++) {
-        csv = csv + columns[i].columnName + ",";
-    }
-    csv = csv + columns[columns.length - 1].columnName + "\n";
-
-    // Add row information, adding if displayValue is not null
-    for (let i = 0; i < rows.length; i++) {
-        let row = rows[i];
-
-        for (let j = 0; j < row.length - 1; j++) {
-            if (!row[j].isNull) {
-                csv = csv + row[j].displayValue + ",";
-            } else {
-                csv = csv + " ,";
-            }
-        }
-
-        if (!row[row.length - 1].isNull) {
-            csv = csv + row[row.length - 1].displayValue + "\n";
-        } else {
-            csv = csv + " \n";
-        }
-    }
-     */
   }
 
   // TODO: convert to tsx
@@ -128,41 +83,119 @@ export class DataExportPicker extends React.Component<Props, State> {
   }
 
 
+
+
   render() {
     const closeDialog = () => {
-      this.setState({ dialogMode: null });
+      this.setState({ dialogHidden: true });
     };
 
+
+    // const menuProps: FabricTypes.IContextualMenuProps = {
+    //   items: [
+    //     // {
+    //     //   key: "sample-section",
+    //     //   itemType: base.fabric.ContextualMenuItemType.Section,
+    //     //   sectionProps: {
+    //     //     title: strings.sampleDataPrefix,
+    //     //     items: this.props.dataSources.map((ds, i) => {
+    //     //       const item: FabricTypes.IContextualMenuItem = {
+    //     //         key: ds.id,
+    //     //         text: ds.displayName,
+    //     //         onClick: e => {
+    //     //           this.changeDataExport(ds);
+    //     //         }
+    //     //       };
+    //     //       return item;
+    //     //     })
+    //     //   }
+    //     // },
+    //     {
+    //       key: "user-section",
+    //       itemType: base.fabric.ContextualMenuItemType.Section,
+    //       sectionProps: {
+    //         topDivider: true,
+    //         title: strings.menuUserData,
+    //         items: [
+    //           {
+    //             key: "local",
+    //             text: strings.menuLocal,
+    //             onClick: e => {
+    //               this.setState({ dialogMode: 'local' });
+    //             }
+    //           },
+    //           {
+    //             key: "url",
+    //             text: strings.menuUrl,
+    //             onClick: e => {
+    //               this.setState({ dialogMode: 'url' });
+    //             }
+    //           }
+    //         ]
+    //       }
+    //     }
+    //   ]
+    // };
+
     return (
-        <Group className="sanddance-snapshots" label={strings.buttonExport}>
-            <base.fabric.PrimaryButton
-                text={strings.buttonExport}
-                onClick={e => {
-                    this.setState({ formHidden: false });
-                }}
-            />
-            <Dialog
-                // minWidth={`${thumbWidth + 64}px`}
-                // hidden={this.state.formHidden}
-                // onDismiss={() => this.setState({ formHidden: true })}
-                // title={strings.buttonCreateSnapshot}
-                // buttons={[
-                //     <base.fabric.PrimaryButton key={0} onClick={e => this.exportData} text={strings.buttonExport} />
-                // ]}
-            >
-                {/* <base.fabric.TextField
-                    label={strings.labelSnapshotDescription}
-                    onKeyUp={e => e.keyCode === 13 && this.exportData()}
-                    onChange={(e, description) =>
-                        this.setState({ description })
-                    }
-                    value={this.state.description}
-                /> */}
-                {/* <img src={this.state.image} style={{ backgroundColor: this.state.bgColor, width: `${thumbWidth}px` }} />
-                {this.props.explorer.viewer.colorContexts.length > 1 && <div>{strings.labelColorFilter}</div>} */}
-            </Dialog>
-           
-        </Group>
+      <div>
+        <base.fabric.PrimaryButton
+          className="search-action search-bottom-action"
+          text={strings.buttonExport}
+          onClick={() => this.setState({ dialogHidden: false })}
+          //menuProps={menuProps}
+          disabled={this.props.disabled}
+        />
+        {/* <base.fabric.Dialog
+          hidden={!(this.state.dialogMode === 'local')}
+          onDismiss={closeDialog}
+          dialogContentProps={{
+            className: "sanddance-dialog",
+            type: base.fabric.DialogType.normal,
+            title: strings.dialogTitleLocal,
+            subText: strings.dialogSubtextLocal
+          }}
+        >
+          <input
+            type="file"
+            onChange={e => this.upload(e)}
+            disabled={this.state.working}
+          />
+          {this.state.uploadFormatError && (
+            <div className="error">{this.state.uploadFormatError}</div>
+          )}
+        </base.fabric.Dialog> */}
+        <base.fabric.Dialog
+          hidden={this.state.dialogHidden}
+          onDismiss={closeDialog}
+          dialogContentProps={{
+            className: "sanddance-dialog",
+            type: base.fabric.DialogType.normal,
+            title: "???strings.dialogExportTitle"
+          }}
+        >
+          <base.fabric.ChoiceGroup
+            options={
+              DataExportPicker.urlTypes.map((urlType, i) => {
+                return {
+                  key: `${i}`,
+                  text: urlType,
+                  disabled: this.state.working,
+                  checked: i === 0
+                } as FabricTypes.IChoiceGroupOption;
+              })
+            }
+            onChange={(ev: React.FormEvent<HTMLInputElement>, option: FabricTypes.IChoiceGroupOption) =>
+              this.setState({ exportType: option.text as DataFileType, error: "" })
+            }
+            label={"???strings.labelDataFormat"}
+          />
+          <base.fabric.DialogFooter>
+            <base.fabric.PrimaryButton onClick={e => this.exportData()} text={"???strings.dialogExportButton"} disabled={this.state.working} />
+            <base.fabric.DefaultButton onClick={closeDialog} text={"???strings.dialogCloseButton"} />
+          </base.fabric.DialogFooter>
+        </base.fabric.Dialog>
+      </div>
     );
   }
 }

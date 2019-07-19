@@ -41,7 +41,7 @@ export interface Props {
   initialView?: SandDance.VegaDeckGl.types.View;
   mounted?: (explorer: Explorer) => any;
   datasetElement?: JSX.Element;
-  datasetExportHandler?: (data: any) => void;
+  datasetExportHandler?: (data: any) => void; 
   topBarButtonProps?: FabricTypes.ICommandBarItemProps[];
   snapshotProps?: SnapshotProps;
   onSnapshotClick?: (snapshot: Snapshot) => void;

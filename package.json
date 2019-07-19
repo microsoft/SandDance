@@ -16,6 +16,7 @@
     "watch-css": "lerna run watch-css --parallel",
     "watch-typescript": "lerna run watch-typescript --parallel",
     "start": "npm-run-all --parallel watch-typescript watch-css app-dev",
+    "story": "lerna run start --scope scroll-story --parallel",
     "parcel": "lerna run parcel --parallel",
     "clean-build": "rimraf ./packages/**/dist/ && rimraf ./packages/**/.cache/ && rimraf ./**/package-lock.json && rimraf ./lerna-debug.log",
     "clean": "lerna clean --yes && npm run clean-build",

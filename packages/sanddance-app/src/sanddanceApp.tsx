@@ -93,7 +93,7 @@ export class SandDanceApp extends React.Component<Props, State> {
           this.explorer && this.explorer.calculate(() => this.hydrateSnapshot(snapshot));
         }
       },
-      resize: e=> {
+      resize: e => {
         this.explorer && this.explorer.resize();
       }
     };
@@ -135,7 +135,7 @@ export class SandDanceApp extends React.Component<Props, State> {
   }
 
   //To do: download csv, json, or tsv
-  private downloadData(data:any) {
+  private downloadData(data: any) {
     console.log(data);
   }
 
@@ -187,7 +187,7 @@ export class SandDanceApp extends React.Component<Props, State> {
             this.load(this.state.dataSource, snapshotOnLoad && snapshotOnLoad.insight);
             this.props.mounted(this);
           }}
-          datasetExportHandler={(data: any) => this.downloadData(data)}
+          datasetExportHandler={data => this.downloadData(data)}
           datasetElement={(
             <DataSourcePicker
               dataSource={this.state.dataSource}
@@ -197,7 +197,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                 return this.load(ds);
               }}
             />
-            
+
           )}
           topBarButtonProps={[
             {
