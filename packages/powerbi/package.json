@@ -14,8 +14,8 @@
     "@msrvida/sanddance-explorer": "*",
     "luma.gl": "6.4",
     "office-ui-fabric-react": "^6.129.1",
+    "powerbi-visuals-api": "^2.6.1",
     "powerbi-visuals-utils-dataviewutils": "~2.2.0",
-    "powerbi-visuals-api": "~2.6.0",
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "vega-lib": "^4.3.0"
