@@ -124,8 +124,7 @@ export class App extends React.Component<Props, State> {
             React.createElement(Explorer, explorerProps),
             React.createElement("div", { className: "sanddance-init" },
                 React.createElement("div", null,
-                    React.createElement(Logo),
-                    React.createElement("div", null, strings.notLoaded)
+                    React.createElement(Logo)
                 )
             )
         );
