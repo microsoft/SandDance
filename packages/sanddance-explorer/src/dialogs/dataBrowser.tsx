@@ -25,7 +25,7 @@ export interface Props {
     zeroMessage: string;
     itemVisible: boolean;
     themePalette: Partial<FabricTypes.IPalette>;
-    datasetExportHandler: (data: any) => void;
+    datasetExportHandler: (data: any, datatype: string) => void;
 }
 
 export function DataBrowser(props: Props) {
