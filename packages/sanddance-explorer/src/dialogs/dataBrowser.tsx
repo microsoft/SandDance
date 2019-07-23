@@ -26,11 +26,7 @@ export interface Props {
     itemVisible: boolean;
     themePalette: Partial<FabricTypes.IPalette>;
     datasetExportHandler: (data: any) => void;
-
-
 }
-
-//From: https://codeburst.io/export-objects-array-as-csv-using-typescript-643bf4f794d9 ?
 
 export function DataBrowser(props: Props) {
     function activateRecord(newIndex: number) {

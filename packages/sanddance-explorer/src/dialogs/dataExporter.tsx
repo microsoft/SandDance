@@ -9,8 +9,7 @@ import { base } from '../base';
 export interface Props {
   //dataSource: DataSource;
   data: object[];
-  datasetExportHandler: (data: any) => void;
-  // changeDataExport: (dataExportType: DataFileType) => Promise<void>;
+  datasetExportHandler: (data: any, datatype: string) => void;
   disabled?: boolean;
 }
 
@@ -18,7 +17,7 @@ export interface State {
   dialogHidden: boolean;
   exportType?: DataFileType;
   working: boolean;
-  //exportData?: any;
+  exportData?: any;
   error: string
 }
 
@@ -28,7 +27,7 @@ export class DataExportPicker extends React.Component<Props, State> {
     this.state = {
       dialogHidden: true,
       exportType: DataExportPicker.urlTypes[0],
-      working: false,
+      working: true,
       error: ""
     };
   }
@@ -37,27 +36,31 @@ export class DataExportPicker extends React.Component<Props, State> {
 
   // Converts to dataExport type and calls dataExportHandler to deal with data
   changeDataExport(dataExport: DataFileType) {
-    this.setState({ working: true });
+    this.setState({ working: false });
     return new Promise<void>((resolve, reject) => {
       const uploadFormatError = "";
       const urlError = "";
+      var convertedData : any;
       this.setState({ exportType: dataExport });
-      // if (dataExport == "json") {
-      //   this.setState({ exportData: this.convertToJson(this.props.data) })
-      // } else if (dataExport == "csv") {
-      //   this.setState({ exportData: this.convertToCsv(this.props.data) })
-      // } else if (dataExport == "tsv") {
-      //   this.setState({ exportData: this.convertToTsv(this.props.data) })
-      // };
-      this.props
-        .datasetExportHandler(this.exportData)
-
+      if (dataExport == "json") {
+        convertedData = this.convertToJson(this.props.data);
+        this.props
+        .datasetExportHandler(convertedData, "json")
+      } else if (dataExport == "csv") {
+        convertedData = this.convertToCsv(this.props.data);
+        this.props
+        .datasetExportHandler(convertedData, "csv")
+      } else if (dataExport == "tsv") {
+        convertedData = this.convertToTsv(this.props.data);
+        this.props
+        .datasetExportHandler(convertedData, "tsv")
+      };
     });
   }
 
-  exportData() {
+  export() {
     if (!this.state.exportType) {
-      return this.setState({ error: "???strings.errorNoUrl" });
+      return this.setState({ error: "Error" });
     }
 
     this.changeDataExport(this.state.exportType).catch((e: Error) => {
@@ -65,113 +68,65 @@ export class DataExportPicker extends React.Component<Props, State> {
     });
   }
 
-  // TODO: convert to json
+  // Convert to json and store in dataExport state
   convertToJson(data: object[]) {
-    console.log(data);
+    console.log(JSON.stringify(data));
+    return JSON.stringify(data);
 
   }
-  // TODO: convert to csv
+  // Convert to csv
   convertToCsv(data: object[]) {
-    console.log(data);
+    // From: https://stackoverflow.com/questions/8847766/how-to-convert-json-to-csv-format-and-store-in-a-variable
+    var json = data;
+    var fields = Object.keys(json[0]);
+    var replacer = function(key, value) { return value === null ? '' : value };
+    var csv = json.map(function(row){
+    return fields.map(function(fieldName){
+    return JSON.stringify(row[fieldName], replacer)
+      }).join(',')
+    })
+    csv.unshift(fields.join(','));
+    return (csv.join('\r\n'));
 
   }
 
-  // TODO: convert to tsx
   convertToTsv(data: object[]) {
-    console.log(data);
-
+    // Adapted from: https://stackoverflow.com/questions/8847766/how-to-convert-json-to-csv-format-and-store-in-a-variable
+    var json = data;
+    var fields = Object.keys(json[0]);
+    var replacer = function(key, value) { return value === null ? '' : value };
+    var tsv = json.map(function(row){
+    return fields.map(function(fieldName){
+    return JSON.stringify(row[fieldName], replacer)
+      }).join('\t')
+    })
+    tsv.unshift(fields.join('\t'));
+    console.log(tsv.join('\r\n'));
+    return (tsv.join('\r\n'));
   }
-
-
 
 
   render() {
     const closeDialog = () => {
-      this.setState({ dialogHidden: true });
+      this.setState({ dialogHidden: true, working: true});
     };
-
-
-    // const menuProps: FabricTypes.IContextualMenuProps = {
-    //   items: [
-    //     // {
-    //     //   key: "sample-section",
-    //     //   itemType: base.fabric.ContextualMenuItemType.Section,
-    //     //   sectionProps: {
-    //     //     title: strings.sampleDataPrefix,
-    //     //     items: this.props.dataSources.map((ds, i) => {
-    //     //       const item: FabricTypes.IContextualMenuItem = {
-    //     //         key: ds.id,
-    //     //         text: ds.displayName,
-    //     //         onClick: e => {
-    //     //           this.changeDataExport(ds);
-    //     //         }
-    //     //       };
-    //     //       return item;
-    //     //     })
-    //     //   }
-    //     // },
-    //     {
-    //       key: "user-section",
-    //       itemType: base.fabric.ContextualMenuItemType.Section,
-    //       sectionProps: {
-    //         topDivider: true,
-    //         title: strings.menuUserData,
-    //         items: [
-    //           {
-    //             key: "local",
-    //             text: strings.menuLocal,
-    //             onClick: e => {
-    //               this.setState({ dialogMode: 'local' });
-    //             }
-    //           },
-    //           {
-    //             key: "url",
-    //             text: strings.menuUrl,
-    //             onClick: e => {
-    //               this.setState({ dialogMode: 'url' });
-    //             }
-    //           }
-    //         ]
-    //       }
-    //     }
-    //   ]
-    // };
 
     return (
       <div>
         <base.fabric.PrimaryButton
           className="search-action search-bottom-action"
           text={strings.buttonExport}
-          onClick={() => this.setState({ dialogHidden: false })}
-          //menuProps={menuProps}
+          onClick={() => this.setState({ dialogHidden: false, exportType: "json"})}
           disabled={this.props.disabled}
         />
-        {/* <base.fabric.Dialog
-          hidden={!(this.state.dialogMode === 'local')}
-          onDismiss={closeDialog}
-          dialogContentProps={{
-            className: "sanddance-dialog",
-            type: base.fabric.DialogType.normal,
-            title: strings.dialogTitleLocal,
-            subText: strings.dialogSubtextLocal
-          }}
-        >
-          <input
-            type="file"
-            onChange={e => this.upload(e)}
-            disabled={this.state.working}
-          />
-          {this.state.uploadFormatError && (
-            <div className="error">{this.state.uploadFormatError}</div>
-          )}
-        </base.fabric.Dialog> */}
+       
         <base.fabric.Dialog
           hidden={this.state.dialogHidden}
           onDismiss={closeDialog}
           dialogContentProps={{
             className: "sanddance-dialog",
             type: base.fabric.DialogType.normal,
-            title: "???strings.dialogExportTitle"
+            title: strings.labelExport
           }}
         >
           <base.fabric.ChoiceGroup
@@ -180,7 +135,7 @@ export class DataExportPicker extends React.Component<Props, State> {
                 return {
                   key: `${i}`,
                   text: urlType,
-                  disabled: this.state.working,
+                  disabled: !this.state.working,
                   checked: i === 0
                 } as FabricTypes.IChoiceGroupOption;
               })
@@ -188,26 +143,14 @@ export class DataExportPicker extends React.Component<Props, State> {
             onChange={(ev: React.FormEvent<HTMLInputElement>, option: FabricTypes.IChoiceGroupOption) =>
               this.setState({ exportType: option.text as DataFileType, error: "" })
             }
-            label={"???strings.labelDataFormat"}
+            label={strings.labelExportFormat}
           />
           <base.fabric.DialogFooter>
-            <base.fabric.PrimaryButton onClick={e => this.exportData()} text={"???strings.dialogExportButton"} disabled={this.state.working} />
-            <base.fabric.DefaultButton onClick={closeDialog} text={"???strings.dialogCloseButton"} />
+            <base.fabric.PrimaryButton onClick={e => this.export()} text={strings.buttonExport} disabled={!this.state.working} />
+            <base.fabric.DefaultButton onClick={closeDialog} text={strings.buttonClose} />
           </base.fabric.DialogFooter>
         </base.fabric.Dialog>
       </div>
     );
   }
 }
-
-// function dataSourcePrefix(dt: DataSourceType, displayName: string) {
-//   switch (dt) {
-//     case 'sample':
-//       return `${strings.sampleDataPrefix}: ${displayName}`;
-//     case 'local':
-//       return strings.localFilePrefix;
-//     case 'url':
-//       return strings.urlPrefix;
-//   }
-//   return "";
-// }

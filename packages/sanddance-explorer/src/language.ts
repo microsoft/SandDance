@@ -38,6 +38,8 @@ export const strings = {
     errorColumnMustBeNumeric: "Numeric column required for this chart type.",
     labelChartSettings: "Chart settings",
     labelDataBrowser: "Data browser",
+    labelExport: "Export Data",
+    labelExportFormat: "Choose a format:",
     labelTools: "Tools",
     labelVegaSpec: "Vega specification",
     labelColor: "Chart color",
