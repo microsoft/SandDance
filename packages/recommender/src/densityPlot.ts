@@ -1,7 +1,7 @@
 import * as SandDance from "@msrvida/sanddance";
 import { Recommender, Recommendation, Rule } from './recommender';
 
-export class ScatterPlotRecommenderSummary {
+export class DensityPlotRecommenderSummary {
     public best: Recommendation;
     //all columns
     constructor(columns: SandDance.types.Column[], data: object[]) {
@@ -11,7 +11,7 @@ export class ScatterPlotRecommenderSummary {
                 let axes = [];
                 axes.push(columns[i]);
                 axes.push(columns[j]);
-                let recommendation = new ScatterPlotRecommender(axes, data).recommend();
+                let recommendation = new DensityPlotRecommender(axes, data).recommend();
                 if (recommendation.score > score) {
                     this.best = recommendation;
                     score = recommendation.score;
@@ -27,7 +27,7 @@ export class ScatterPlotRecommenderSummary {
 
 }
 
-export class ScatterPlotRecommender implements Recommender {
+export class DensityPlotRecommender implements Recommender {
     public rules: Rule[];
     public columns: SandDance.types.Column[];
     public score: number;
@@ -38,24 +38,24 @@ export class ScatterPlotRecommender implements Recommender {
         this.rules = [
             //If both axes are numerical, return true
             (columns) => {
-                if (columns[0].quantitative && columns[1].quantitative) {
+                if (!columns[0].quantitative && !columns[1].quantitative) {
                     return true;
                 } else {
                     return false;
                 }
 
             },
-            //x-axis distinct value>10
+            //x-axis distinct value<5
             (columns) => {
-                if (columns[0].stats.distinctValueCount > 10) {
+                if (columns[0].stats.distinctValueCount < 5) {
                     return true;
                 } else {
                     return false;
                 }
             },
-            //y-axis distinct value>10
+            //y-axis distinct value<5
             (columns) => {
-                if (columns[1].stats.distinctValueCount > 10) {
+                if (columns[1].stats.distinctValueCount < 5) {
                     return true;
                 } else {
                     return false;

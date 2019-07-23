@@ -54,6 +54,7 @@ export function activate(context: vscode.ExtensionContext) {
 
                 let rows = data.resultSubset.rows;
                 let columns = args.columnInfo;
+                let rowCount =  args.rowCount;
 
                 // Create Json
                 let jsonArray = [];
@@ -61,9 +62,9 @@ export function activate(context: vscode.ExtensionContext) {
                 interface jsonType {
                     [key: string]: any
                 }
-                let jsonObject: jsonType = {};
 
-                for (let row = 0; row < rows[0].length; row++) {
+                for (let row = 0; row < rowCount; row++) {
+                let jsonObject: jsonType = {};
                     for (let col = 0; col < columns.length; col++) {
                         if (!rows[row][col].isNull) {
                             jsonObject[columns[col].columnName] = rows[row][col].displayValue;
