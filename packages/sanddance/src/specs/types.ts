@@ -59,6 +59,11 @@ export interface ColumnStats {
     max?: number;
 
     /**
+     * Mean value of data in this column, if column is numeric.
+     */
+    mean?: number;
+
+    /**
      * Minimum value of data in this column, if column is numeric.
      */
     min?: number;

@@ -49,8 +49,10 @@ function getStats(data: object[], column: Column) {
     const stats: ColumnStats = {
         distinctValueCount: null,
         max: null,
+        mean: null,
         min: null
     }
+    let sum = 0;
     for (let i = 0; i < data.length; i++) {
         let row = data[i];
         let value = row[column.name];
@@ -61,7 +63,12 @@ function getStats(data: object[], column: Column) {
         if (stats.min === null || value < stats.min) {
             stats.min = value;
         }
+        let num = +value;
+        if (!isNaN(num)) {
+            sum += num;
+        }
     }
+    stats.mean = data.length > 0 && (sum / data.length);
     stats.distinctValueCount = Object.keys(distinctMap).length;
     return stats;
 }
