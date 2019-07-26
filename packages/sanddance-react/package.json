@@ -1,7 +1,7 @@
 {
   "name": "@msrvida/sanddance-react",
   "version": "1.0.2",
-  "description": "",
+  "description": "SandDance visualization canvas React component",
   "main": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
   "files": [

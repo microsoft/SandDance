@@ -12,8 +12,7 @@
     "office-ui-fabric-react": "^6.129.1"
   },
   "devDependencies": {
-    "@types/react": "16.4.7",
-    "typescript": "^3.2.4"
+    "@types/react": "16.4.7"
   },
   "license": "MIT"
 }

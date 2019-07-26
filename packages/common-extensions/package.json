@@ -22,7 +22,6 @@
   "devDependencies": {
     "@msrvida/sanddance-explorer": "*",
     "@types/react": "16.4.7",
-    "@types/react-dom": "^16.8.4",
-    "typescript": "^3.2.4"
+    "@types/react-dom": "^16.8.4"
   }
 }
