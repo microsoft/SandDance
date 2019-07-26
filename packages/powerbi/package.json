@@ -22,7 +22,6 @@
   },
   "devDependencies": {
     "@types/react-dom": "^16.8.4",
-    "ts-loader": "4.5.0",
-    "typescript": "3.0.1"
+    "ts-loader": "4.5.0"
   }
 }
