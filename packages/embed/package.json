@@ -1,0 +1,19 @@
+{
+  "name": "embed",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p ."
+  },
+  "dependencies": {
+    "@msrvida/sanddance-explorer": "*"
+  },
+  "devDependencies": {
+    "@types/react": "16.4.7",
+    "@types/react-dom": "16.0.6",
+    "@msrvida/office-ui-fabric-react-cdn-typings": "*"
+  },
+  "author": "",
+  "license": "MIT"
+}

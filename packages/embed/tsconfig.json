@@ -1,11 +1,13 @@
 {
     "compilerOptions": {
-        "jsx": "react",
         "lib": [
             "dom",
             "es2015"
         ],
         "skipLibCheck": true,
-        "outDir": "../dist/umd"
-    }
+        "outDir": "../../docs/dist/sanddance-explorer/v1/"
+    },
+    "include": [
+        "src"
+    ]
 }

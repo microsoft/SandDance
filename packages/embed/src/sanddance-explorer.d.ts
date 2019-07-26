@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-export * from '../dist/es6';
+export * from '@msrvida/sanddance-explorer';
 
 export as namespace SandDanceExplorer;
