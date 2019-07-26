@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SandDance</title>
-    <link rel="stylesheet" type="text/css" href="sanddance-embed.css" />
+    <link rel="stylesheet" type="text/css" href="../dist/sanddance-embed.css" />
     <link rel="stylesheet" type="text/css"
         href="https://unpkg.com/@msrvida/sanddance-explorer@1.1.0/dist/css/sanddance-explorer.css" />
 </head>
@@ -17,18 +17,13 @@
     <script src="https://unpkg.com/vega@4.4.0/build/vega.min.js"></script>
     <script src="https://unpkg.com/office-ui-fabric-react@6.189.5/dist/office-ui-fabric-react.js"></script>
     <script src="https://unpkg.com/@msrvida/sanddance-explorer@1.1.0/dist/umd/sanddance-explorer.js"></script>
-    <script src="sanddance-embed.js"></script>
+    <script src="../dist/sanddance-embed.js"></script>
 
     <div id="app"></div>
 
     <script>
-        //SandDanceEmbed([], {});
-        SandDanceEmbed({
-            type: 'csv',
-            rawText: 'a,b,c\n1,2,3'
-        }, {});
+        SandDanceEmbed([{}], {});
     </script>
-
 </body>
 
 </html>

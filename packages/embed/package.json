@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "tsc -p ."
+    "build-css": "node-sass ./src/css -o ./dist",
+    "build-typescript": "tsc -p .",
+    "build": "npm run build-css && npm run build-typescript"
   },
   "dependencies": {
     "@msrvida/sanddance-explorer": "*"
