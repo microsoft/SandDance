@@ -71,9 +71,11 @@ export class DensityPlotRecommender implements Recommender {
 
     recommend() {
         let rec: Recommendation = {
+            type: 'density',
             x: this.columns[0],
             y: this.columns[1],
-            score: this.score
+            score: this.score,
+            sizeBy: undefined
         }
         return rec;
     }

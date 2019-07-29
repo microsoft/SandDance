@@ -6,9 +6,11 @@ export interface Rule {
 }
 
 export interface Recommendation {
+    type: SandDance.types.Chart;
     x: Column;
     y: Column;
     score: number;
+    sizeBy: Column;
 
 }
 

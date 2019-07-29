@@ -54,7 +54,7 @@
     "rollup-plugin-commonjs": "^9.1.3",
     "rollup-plugin-node-resolve": "^3.3.0",
     "ts-docs-gen": "^0.2.0",
-    "typescript": "2.7.2",
+    "typescript": "^3.2.4",
     "unified": "^7.0.2"
   },
   "babel": {

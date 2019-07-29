@@ -20,8 +20,7 @@ describe('Recommender', function () {
             }
         };
         let arr = [];
-        arr.push(column1);
-        arr.push(column2);
+        arr.push(column1, column2);
         var r = new recommender.ScatterPlotRecommenderSummary(arr, []);
         var rec = r.recommend();
 
@@ -46,8 +45,7 @@ describe('Recommender', function () {
             }
         };
         let arr = [];
-        arr.push(column1);
-        arr.push(column2);
+        arr.push(column1, column2);
         var r = new recommender.ScatterPlotRecommenderSummary(arr, []);
         var rec = r.recommend();
 
@@ -72,8 +70,7 @@ describe('Recommender', function () {
             }
         };
         let arr = [];
-        arr.push(column1);
-        arr.push(column2);
+        arr.push(column1, column2);
         var r = new recommender.ScatterPlotRecommenderSummary(arr, []);
         var rec = r.recommend();
 
@@ -98,8 +95,7 @@ describe('Recommender', function () {
             }
         };
         let arr = [];
-        arr.push(column1);
-        arr.push(column2);
+        arr.push(column1, column2);
         var r = new recommender.DensityPlotRecommenderSummary(arr, []);
         var rec = r.recommend();
 
@@ -124,8 +120,7 @@ describe('Recommender', function () {
             }
         };
         let arr = [];
-        arr.push(column1);
-        arr.push(column2);
+        arr.push(column1, column2);
         var r = new recommender.DensityPlotRecommenderSummary(arr, []);
         var rec = r.recommend();
 
@@ -150,36 +145,159 @@ describe('Recommender', function () {
             }
         };
         let arr = [];
-        arr.push(column1);
-        arr.push(column2);
+        arr.push(column1, column2);
         var r = new recommender.DensityPlotRecommenderSummary(arr, []);
         var rec = r.recommend();
 
         assert.ok(rec.score === 3);
     });
 
-    it('Bar chart categorical with distinct value>20', function () {
+    it('Bar chart categorical with distinct value<20', function () {
         var column1 = {
-            name: 'test',
+            name: 'col0',
             type: 'string',
             quantitative: false,
             stats: {
-                distinctValueCount: 15
+                distinctValueCount: 30
             }
         };
         var column2 = {
-            name: 'test1',
-            type: 'integer',
+            name: 'col1',
+            type: 'string',
             quantitative: false,
             stats: {
                 distinctValueCount: 2
             }
         };
         let arr = [];
-        arr.push(column1);
+        arr.push(column1, column2);
+        var r = new recommender.BarChartRecommenderSummary(arr, []);
+        var rec = r.recommend();
+
+        assert.ok(rec.score === 1 && rec.x.name === 'col1');
+    });
+
+    it('Bar chart categorical with distinct value<20', function () {
+        var column1 = {
+            name: 'col0',
+            type: 'string',
+            quantitative: false,
+            stats: {
+                distinctValueCount: 3
+            }
+        };
+        var column2 = {
+            name: 'col1',
+            type: 'string',
+            quantitative: false,
+            stats: {
+                distinctValueCount: 24
+            }
+        };
+        let arr = [];
+        arr.push(column1, column2);
+        var r = new recommender.BarChartRecommenderSummary(arr, []);
+        var rec = r.recommend();
+
+        assert.ok(rec.score === 1 && rec.x.name === 'col0');
+    });
+
+    it('Bar chart numerical', function () {
+        var column1 = {
+            name: 'test',
+            type: 'number',
+            quantitative: true,
+            stats: {
+                distinctValueCount: 15
+            }
+        };
+        var column2 = {
+            name: 'test1',
+            type: 'number',
+            quantitative: true,
+            stats: {
+                distinctValueCount: 2
+            }
+        };
+        let arr = [];
+        arr.push(column1, column2);
         var r = new recommender.BarChartRecommenderSummary(arr, []);
         var rec = r.recommend();
 
         assert.ok(rec.score === 1);
     });
+
+    it('TreeMap', function () {
+        var column1 = {
+            name: 'test',
+            type: 'number',
+            quantitative: true,
+            stats: {
+                distinctValueCount: 1
+            }
+        };
+        var column2 = {
+            name: 'test1',
+            type: 'number',
+            quantitative: true,
+            stats: {
+                distinctValueCount: 3
+            }
+        };
+        let arr = [];
+        arr.push(column1, column2);
+        var r = new recommender.TreeMapRecommenderSummary(arr, [{ "test": 2, "test1": 30 }, { "test": 2, "test1": 1 }, { "test": 2, "test1": 1000 }]);
+        var rec = r.recommend();
+        assert.ok(rec.score === 1);
+    });
+
+    it('TreeMap size by', function () {
+        var column1 = {
+            name: 'test',
+            type: 'number',
+            quantitative: true,
+            stats: {
+                distinctValueCount: 1
+            }
+        };
+        var column2 = {
+            name: 'test1',
+            type: 'number',
+            quantitative: true,
+            stats: {
+                distinctValueCount: 3
+            }
+        };
+        let arr = [];
+        arr.push(column1, column2);
+        var r = new recommender.TreeMapRecommenderSummary(arr, [{ "test": 2, "test1": 30 }, { "test": 2, "test1": 1 }, { "test": 2, "test1": 1000 }]);
+        var rec = r.recommend();
+        assert.ok(rec.sizeBy.name === 'test1');
+    });
+
+    it('RecommenderSummary', function () {
+        var column1 = {
+            name: 'test',
+            type: 'number',
+            quantitative: true,
+            stats: {
+                distinctValueCount: 1
+            }
+        };
+        var column2 = {
+            name: 'test1',
+            type: 'number',
+            quantitative: true,
+            stats: {
+                distinctValueCount: 3
+            }
+        };
+        let arr = [];
+        arr.push(column1, column2);
+        var r = new recommender.RecommenderSummary(arr, [{ "test": 2, "test1": 30 }, { "test": 2, "test1": 1 }, { "test": 2, "test1": 1000 }]);
+        var rec = r.recommend();
+        console.log(rec[0].type);
+        assert.ok(true);
+    });
+
 });

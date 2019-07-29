@@ -1,1 +1,25 @@
-{"visual":{"name":"powerbi","displayName":"powerbi","guid":"powerbi29976D117A654D0BAB8E96507442D80B","visualClassName":"Visual","version":"1.0.0","description":"","supportUrl":"","gitHubUrl":""},"apiVersion":"2.2.0","author":{"name":"","email":""},"assets":{"icon":"assets/icon.png"},"externalJS":null,"style":"style/visual.less","capabilities":"capabilities.json","dependencies":null,"stringResources":[]}
+{
+    "visual": {
+        "name": "SandDance",
+        "displayName": "SandDance",
+        "guid": "SandDance29976D117A654D0BAB8E96507442D80B",
+        "visualClassName": "Visual",
+        "version": "1.0.0",
+        "description": "Visually explore, understand, and present your data.",
+        "supportUrl": "https://github.com/Microsoft/SandDance/issues",
+        "gitHubUrl": "https://github.com/microsoft/SandDance"
+    },
+    "apiVersion": "2.6.0",
+    "author": {
+        "name": "Microsoft Research VIDA",
+        "email": "msrvida@microsoft.com"
+    },
+    "assets": {
+        "icon": "assets/icon.png"
+    },
+    "externalJS": null,
+    "style": "style/visual.less",
+    "capabilities": "capabilities.json",
+    "dependencies": null,
+    "stringResources": []
+}

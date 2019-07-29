@@ -1,7 +1,7 @@
 import * as SandDance from "@msrvida/sanddance";
 import { Recommender, Recommendation, Rule } from './recommender';
 
-export class BarChartRecommenderSummary {
+export class TreeMapRecommenderSummary {
     public best: Recommendation;
     //all columns
     constructor(columns: SandDance.types.Column[], data: object[]) {
@@ -9,7 +9,7 @@ export class BarChartRecommenderSummary {
         for (let i = 0; i < columns.length; i++) {
             let axes = [];
             axes.push(columns[i]);
-            let recommendation = new BarChartRecommender(axes, data).recommend();
+            let recommendation = new TreeMapRecommender(axes, data).recommend();
             if (recommendation.score > score) {
                 this.best = recommendation;
                 score = recommendation.score;
@@ -24,7 +24,7 @@ export class BarChartRecommenderSummary {
 
 }
 
-export class BarChartRecommender implements Recommender {
+export class TreeMapRecommender implements Recommender {
     public rules: Rule[];
     public columns: SandDance.types.Column[];
     public score: number;
@@ -35,14 +35,9 @@ export class BarChartRecommender implements Recommender {
         this.rules = [
 
             (columns) => {
-                //If x axis is numerical, return true
-                if (columns[0].quantitative) {
+                //standard deviation
+                if (this.calcCVColumn(columns[0], data) && this.calcCVColumn(columns[0], data) > 0.5) {
                     return true;
-                } else if (!columns[0].quantitative && columns[0].stats.distinctValueCount < 20) {
-                    //If x axis categorical & distinct values < 20, return true
-                    return true;
-                } else {
-                    return false;
                 }
 
             }
@@ -54,13 +49,36 @@ export class BarChartRecommender implements Recommender {
 
     }
 
+    calcCVColumn(column: SandDance.types.Column, data: object[]) {
+        if (column.quantitative) {
+            let sum: number = 0;
+            let size: number = data.length;
+            let colname = column.name;
+            for (let i = 0; i < size; i++) {
+                let value = data[i][colname];
+                sum = sum + value;
+            }
+            let mean: number = sum / size;
+            let sd: number = 0;
+            for (let i = 0; i < size; i++) {
+                let value = data[i][colname];
+                sd = sd + (value - mean) * (value - mean);
+            }
+            sd = Math.sqrt(sd / size);
+            let cv: number = sd / mean;
+            return cv;
+        }
+    }
+
+
+
     recommend() {
         let rec: Recommendation = {
-            type: 'barchart',
-            x: this.columns[0],
+            type: 'treemap',
+            x: undefined,
             y: undefined,
-            score: this.score,
-            sizeBy: undefined
+            sizeBy: this.columns[0],
+            score: this.score
         }
         return rec;
     }

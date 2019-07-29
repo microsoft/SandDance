@@ -14,8 +14,7 @@
   "devDependencies": {
     "@types/react": "16.4.7",
     "@types/react-dom": "16.0.6",
-    "@msrvida/office-ui-fabric-react-cdn-typings": "*",
-    "typescript": "^3.2.4"
+    "@msrvida/office-ui-fabric-react-cdn-typings": "*"
   },
   "alias": {
     "react": "./alias/react-external.js",
