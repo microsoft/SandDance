@@ -36,7 +36,7 @@ export class TreeMapRecommender implements Recommender {
 
             (columns) => {
                 //standard deviation
-                if (this.calcCVColumn(columns[0], data) && this.calcCVColumn(columns[0], data) > 0.5) {
+                if (this.calcCVColumn(columns[0], data) && this.calcCVColumn(columns[0], data) > 0.3) {
                     return true;
                 }
 
@@ -51,14 +51,9 @@ export class TreeMapRecommender implements Recommender {
 
     calcCVColumn(column: SandDance.types.Column, data: object[]) {
         if (column.quantitative) {
-            let sum: number = 0;
             let size: number = data.length;
             let colname = column.name;
-            for (let i = 0; i < size; i++) {
-                let value = data[i][colname];
-                sum = sum + value;
-            }
-            let mean: number = sum / size;
+            let mean: number = column.stats.mean;
             let sd: number = 0;
             for (let i = 0; i < size; i++) {
                 let value = data[i][colname];

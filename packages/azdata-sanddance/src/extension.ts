@@ -54,11 +54,7 @@ export function activate(context: vscode.ExtensionContext) {
 
                 let rows = data.resultSubset.rows;
                 let columns = args.columnInfo;
-<<<<<<< HEAD
-                let rowCount =  args.rowCount;
-=======
                 let rowsCount = args.rowCount;
->>>>>>> acdec131e45bcdd9427405ec02d9e42345f98a3a
 
                 // Create Json
                 let jsonArray = [];
@@ -67,13 +63,8 @@ export function activate(context: vscode.ExtensionContext) {
                     [key: string]: any
                 }
 
-<<<<<<< HEAD
-                for (let row = 0; row < rowCount; row++) {
-                let jsonObject: jsonType = {};
-=======
                 for (let row = 0; row < rowsCount; row++) {
                     let jsonObject: jsonType = {};
->>>>>>> acdec131e45bcdd9427405ec02d9e42345f98a3a
                     for (let col = 0; col < columns.length; col++) {
                         if (!rows[row][col].isNull) {
                             jsonObject[columns[col].columnName] = rows[row][col].displayValue;

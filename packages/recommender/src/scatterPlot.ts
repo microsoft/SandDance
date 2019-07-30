@@ -35,6 +35,7 @@ export class ScatterPlotRecommender implements Recommender {
     constructor(columns: SandDance.types.Column[], data: object[]) {
         this.score = 0;
         this.columns = columns;
+        //total score of 3
         this.rules = [
             //If both axes are numerical, return true
             (columns) => {

@@ -36,7 +36,7 @@ export class DensityPlotRecommender implements Recommender {
         this.score = 0;
         this.columns = columns;
         this.rules = [
-            //If both axes are numerical, return true
+            //If both axes are categorical, return true
             (columns) => {
                 if (!columns[0].quantitative && !columns[1].quantitative) {
                     return true;

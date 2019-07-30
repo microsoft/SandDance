@@ -1,303 +1,168 @@
 var assert = require('assert');
 var recommender = require("../dist/es5");
+var fs = require('fs');
+var vega = require('vega-lib');
+var SandDance = require('@msrvida/sanddance/dist/umd/sanddance');
+
+SandDance.use(vega);
+
+var sampleDir = './test-data/';
+
+function GetDataAndColumns(sampleFile) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(sampleDir + sampleFile, function (err, buffer) {
+            const rawText = buffer.toString();
+            const data = vega.read(rawText, { type: 'tsv', parse: "auto" });
+            const columns = SandDance.util.getColumnsFromData(data);
+            resolve({ data, columns });
+        });
+    });
+}
 
 describe('Recommender', function () {
-    it('Scatter plot distinct value >10 x-axis', function () {
-        var column1 = {
-            name: 'test',
-            type: 'integer',
-            quantitative: true,
-            stats: {
-                distinctValueCount: 15
-            }
-        };
-        var column2 = {
-            name: 'test1',
-            type: 'integer',
-            quantitative: true,
-            stats: {
-                distinctValueCount: 5
-            }
-        };
-        let arr = [];
-        arr.push(column1, column2);
-        var r = new recommender.ScatterPlotRecommenderSummary(arr, []);
-        var rec = r.recommend();
+    var sampleFiles = fs.readdirSync(sampleDir);
+    console.log(sampleFiles[0]);
+    sampleFiles.forEach(function (sampleFile) {
+        var dataAndColumnsPromise = GetDataAndColumns(sampleFile);
 
-        assert.ok(rec.score === 2);
+        it(`${sampleFile} test: Recommender Summary has 4 recommendations`, function (done) {
+
+            dataAndColumnsPromise.then(function (dataAndColumns) {
+                var r = new recommender.RecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
+                var rec = r.recommend();
+
+                assert.ok(rec.length === 4);
+                done();
+            });
+        });
     });
 
-    it('Scatter plot distinct value >10 both axes', function () {
-        var column1 = {
-            name: 'test',
-            type: 'integer',
-            quantitative: true,
-            stats: {
-                distinctValueCount: 15
-            }
-        };
-        var column2 = {
-            name: 'test1',
-            type: 'integer',
-            quantitative: true,
-            stats: {
-                distinctValueCount: 20
-            }
-        };
-        let arr = [];
-        arr.push(column1, column2);
-        var r = new recommender.ScatterPlotRecommenderSummary(arr, []);
-        var rec = r.recommend();
-
-        assert.ok(rec.score === 3);
+    it(`test2: Scatter plot distinct value >10 x-axis`, function (done) {
+        var dataAndColumnsPromise2 = GetDataAndColumns(sampleFiles[1]);
+        dataAndColumnsPromise2.then(function (dataAndColumns) {
+            var r = new recommender.ScatterPlotRecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
+            console.log(dataAndColumns.columns.length, dataAndColumns.data.length);
+            var rec = r.recommend();
+            assert.ok(rec.score === 2 && rec.type === 'scatterplot');
+            done();
+        });
     });
 
-    it('Scatter plot recommended x-axis', function () {
-        var column1 = {
-            name: 'test',
-            type: 'integer',
-            quantitative: true,
-            stats: {
-                distinctValueCount: 15
-            }
-        };
-        var column2 = {
-            name: 'test1',
-            type: 'integer',
-            quantitative: true,
-            stats: {
-                distinctValueCount: 20
-            }
-        };
-        let arr = [];
-        arr.push(column1, column2);
-        var r = new recommender.ScatterPlotRecommenderSummary(arr, []);
-        var rec = r.recommend();
-
-        assert.ok(rec.x.name === 'test' || rec.x.name === 'test1');
+    it('Scatter plot distinct value >10 both axes', function (done) {
+        var dataAndColumnsPromise2 = GetDataAndColumns(sampleFiles[2]);
+        dataAndColumnsPromise2.then(function (dataAndColumns) {
+            var r = new recommender.ScatterPlotRecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
+            console.log(dataAndColumns.columns.length, dataAndColumns.data.length);
+            var rec = r.recommend();
+            assert.ok(rec.score === 3 && rec.type === 'scatterplot');
+            done();
+        });
     });
 
-    it('Density plot categorical axes', function () {
-        var column1 = {
-            name: 'test',
-            type: 'integer',
-            quantitative: true,
-            stats: {
-                distinctValueCount: 15
-            }
-        };
-        var column2 = {
-            name: 'test1',
-            type: 'integer',
-            quantitative: true,
-            stats: {
-                distinctValueCount: 20
-            }
-        };
-        let arr = [];
-        arr.push(column1, column2);
-        var r = new recommender.DensityPlotRecommenderSummary(arr, []);
-        var rec = r.recommend();
-
-        assert.ok(rec.score === 0);
+    it('Scatter plot recommended x-axis', function (done) {
+        var dataAndColumnsPromise = GetDataAndColumns(sampleFiles[1]);
+        dataAndColumnsPromise.then(function (dataAndColumns) {
+            var r = new recommender.ScatterPlotRecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
+            console.log(dataAndColumns.columns.length, dataAndColumns.data.length);
+            var rec = r.recommend();
+            console.log(rec);
+            assert.ok(rec.x.name === 'Age'|| rec.x.name === 'Number');
+            done();
+        });
     });
 
-    it('Density plot distinct value <5 no axes', function () {
-        var column1 = {
-            name: 'test',
-            type: 'integer',
-            quantitative: false,
-            stats: {
-                distinctValueCount: 15
-            }
-        };
-        var column2 = {
-            name: 'test1',
-            type: 'integer',
-            quantitative: false,
-            stats: {
-                distinctValueCount: 20
-            }
-        };
-        let arr = [];
-        arr.push(column1, column2);
-        var r = new recommender.DensityPlotRecommenderSummary(arr, []);
-        var rec = r.recommend();
-
-        assert.ok(rec.score === 1);
+    it('Density plot categorical axes', function (done) {
+        var dataAndColumnsPromise = GetDataAndColumns(sampleFiles[2]);
+        dataAndColumnsPromise.then(function (dataAndColumns) {
+            var r = new recommender.DensityPlotRecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
+            console.log(dataAndColumns.columns.length, dataAndColumns.data.length);
+            var rec = r.recommend();
+            console.log(rec);
+            assert.ok(rec.score === 0);
+            done();
+        });
     });
 
-    it('Density plot distinct value <5 both axes', function () {
-        var column1 = {
-            name: 'test',
-            type: 'integer',
-            quantitative: false,
-            stats: {
-                distinctValueCount: 3
-            }
-        };
-        var column2 = {
-            name: 'test1',
-            type: 'integer',
-            quantitative: false,
-            stats: {
-                distinctValueCount: 2
-            }
-        };
-        let arr = [];
-        arr.push(column1, column2);
-        var r = new recommender.DensityPlotRecommenderSummary(arr, []);
-        var rec = r.recommend();
-
-        assert.ok(rec.score === 3);
+    it('Density plot distinct value <5 both axes', function (done) {
+        var dataAndColumnsPromise = GetDataAndColumns(sampleFiles[3]);
+        dataAndColumnsPromise.then(function (dataAndColumns) {
+            var r = new recommender.DensityPlotRecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
+            console.log(dataAndColumns.columns.length, dataAndColumns.data.length);
+            var rec = r.recommend();
+            console.log(rec);
+            assert.ok(rec.score === 3);
+            done();
+        });
     });
 
-    it('Bar chart categorical with distinct value<20', function () {
-        var column1 = {
-            name: 'col0',
-            type: 'string',
-            quantitative: false,
-            stats: {
-                distinctValueCount: 30
-            }
-        };
-        var column2 = {
-            name: 'col1',
-            type: 'string',
-            quantitative: false,
-            stats: {
-                distinctValueCount: 2
-            }
-        };
-        let arr = [];
-        arr.push(column1, column2);
-        var r = new recommender.BarChartRecommenderSummary(arr, []);
-        var rec = r.recommend();
-
-        assert.ok(rec.score === 1 && rec.x.name === 'col1');
+    it('Bar chart categorical with distinct value<20', function (done) {
+        var dataAndColumnsPromise = GetDataAndColumns(sampleFiles[4]);
+        dataAndColumnsPromise.then(function (dataAndColumns) {
+            var r = new recommender.BarChartRecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
+            console.log(dataAndColumns.columns.length, dataAndColumns.data.length);
+            var rec = r.recommend();
+            console.log(rec);
+            assert.ok(rec.score === 1 && rec.x.name === 'Number');
+            done();
+        });
     });
 
-    it('Bar chart categorical with distinct value<20', function () {
-        var column1 = {
-            name: 'col0',
-            type: 'string',
-            quantitative: false,
-            stats: {
-                distinctValueCount: 3
-            }
-        };
-        var column2 = {
-            name: 'col1',
-            type: 'string',
-            quantitative: false,
-            stats: {
-                distinctValueCount: 24
-            }
-        };
-        let arr = [];
-        arr.push(column1, column2);
-        var r = new recommender.BarChartRecommenderSummary(arr, []);
-        var rec = r.recommend();
-
-        assert.ok(rec.score === 1 && rec.x.name === 'col0');
+    it('Bar chart numerical', function (done) {
+        var dataAndColumnsPromise = GetDataAndColumns(sampleFiles[1]);
+        dataAndColumnsPromise.then(function (dataAndColumns) {
+            var r = new recommender.BarChartRecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
+            console.log(dataAndColumns.columns.length, dataAndColumns.data.length);
+            var rec = r.recommend();
+            console.log(rec);
+            assert.ok(rec.score === 1 && rec.x.name === 'Age');
+            done();
+        });
     });
 
-    it('Bar chart numerical', function () {
-        var column1 = {
-            name: 'test',
-            type: 'number',
-            quantitative: true,
-            stats: {
-                distinctValueCount: 15
-            }
-        };
-        var column2 = {
-            name: 'test1',
-            type: 'number',
-            quantitative: true,
-            stats: {
-                distinctValueCount: 2
-            }
-        };
-        let arr = [];
-        arr.push(column1, column2);
-        var r = new recommender.BarChartRecommenderSummary(arr, []);
-        var rec = r.recommend();
-
-        assert.ok(rec.score === 1);
+    it('Bar chart outlier', function (done) {
+        var dataAndColumnsPromise = GetDataAndColumns(sampleFiles[1]);
+        dataAndColumnsPromise.then(function (dataAndColumns) {
+            var r = new recommender.BarChartRecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
+            console.log(dataAndColumns.columns.length, dataAndColumns.data.length);
+            var rec = r.recommend();
+            console.log(rec);
+            assert.ok(true);
+            done();
+        });
     });
 
-    it('TreeMap', function () {
-        var column1 = {
-            name: 'test',
-            type: 'number',
-            quantitative: true,
-            stats: {
-                distinctValueCount: 1
-            }
-        };
-        var column2 = {
-            name: 'test1',
-            type: 'number',
-            quantitative: true,
-            stats: {
-                distinctValueCount: 3
-            }
-        };
-        let arr = [];
-        arr.push(column1, column2);
-        var r = new recommender.TreeMapRecommenderSummary(arr, [{ "test": 2, "test1": 30 }, { "test": 2, "test1": 1 }, { "test": 2, "test1": 1000 }]);
-        var rec = r.recommend();
-        assert.ok(rec.score === 1);
+    it('TreeMap', function (done) {
+        var dataAndColumnsPromise = GetDataAndColumns(sampleFiles[1]);
+        dataAndColumnsPromise.then(function (dataAndColumns) {
+            var r = new recommender.TreeMapRecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
+            console.log(dataAndColumns.columns.length, dataAndColumns.data.length);
+            var rec = r.recommend();
+            console.log(rec);
+            assert.ok(rec.score === 1);
+            done();
+        });
     });
 
-    it('TreeMap size by', function () {
-        var column1 = {
-            name: 'test',
-            type: 'number',
-            quantitative: true,
-            stats: {
-                distinctValueCount: 1
-            }
-        };
-        var column2 = {
-            name: 'test1',
-            type: 'number',
-            quantitative: true,
-            stats: {
-                distinctValueCount: 3
-            }
-        };
-        let arr = [];
-        arr.push(column1, column2);
-        var r = new recommender.TreeMapRecommenderSummary(arr, [{ "test": 2, "test1": 30 }, { "test": 2, "test1": 1 }, { "test": 2, "test1": 1000 }]);
-        var rec = r.recommend();
-        assert.ok(rec.sizeBy.name === 'test1');
+    it('TreeMap size by', function (done) {
+        var dataAndColumnsPromise = GetDataAndColumns(sampleFiles[1]);
+        dataAndColumnsPromise.then(function (dataAndColumns) {
+            var r = new recommender.TreeMapRecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
+            console.log(dataAndColumns.columns.length, dataAndColumns.data.length);
+            var rec = r.recommend();
+            console.log(rec);
+            assert.ok(rec.sizeBy.name === 'Age');
+            done();
+        });
     });
 
-    it('RecommenderSummary', function () {
-        var column1 = {
-            name: 'test',
-            type: 'number',
-            quantitative: true,
-            stats: {
-                distinctValueCount: 1
-            }
-        };
-        var column2 = {
-            name: 'test1',
-            type: 'number',
-            quantitative: true,
-            stats: {
-                distinctValueCount: 3
-            }
-        };
-        let arr = [];
-        arr.push(column1, column2);
-        var r = new recommender.RecommenderSummary(arr, [{ "test": 2, "test1": 30 }, { "test": 2, "test1": 1 }, { "test": 2, "test1": 1000 }]);
-        var rec = r.recommend();
-        console.log(rec[0].type);
-        assert.ok(true);
+    it('RecommenderSummary', function (done) {
+        var dataAndColumnsPromise = GetDataAndColumns(sampleFiles[2]);
+        dataAndColumnsPromise.then(function (dataAndColumns) {
+            var r = new recommender.RecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
+            var rec = r.recommend();
+            assert.ok(rec.length === 4 && rec[0].type === 'scatterplot');
+            done();
+        });
     });
 
 });
