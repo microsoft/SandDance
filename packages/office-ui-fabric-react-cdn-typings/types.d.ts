@@ -18,6 +18,8 @@ export { IComboBox, IComboBoxProps, IComboBoxOption } from 'office-ui-fabric-rea
 
 export { ICommandBarItemProps, ICommandBarProps } from 'office-ui-fabric-react/lib/components/CommandBar';
 
+export { ITeachingBubbleProps } from 'office-ui-fabric-react/lib/components/TeachingBubble';
+
 export { IToggleProps } from 'office-ui-fabric-react/lib/Toggle';
 
 export { IDialogProps } from 'office-ui-fabric-react/lib/Dialog';

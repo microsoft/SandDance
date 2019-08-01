@@ -21,6 +21,7 @@ import { Label } from 'office-ui-fabric-react/lib/Label';
 import { Modal } from 'office-ui-fabric-react/lib/components/Modal';
 import { Slider } from 'office-ui-fabric-react/lib/Slider';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
+import { TeachingBubble } from 'office-ui-fabric-react/lib/TeachingBubble';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { Toggle } from 'office-ui-fabric-react/lib/Toggle';
 
@@ -50,6 +51,7 @@ export const fabric: FabricComponents = {
   Slider: Slider as any,
   Spinner,
   SpinnerSize,
+  TeachingBubble,
   TextField,
   Toggle
 };
