@@ -19,6 +19,14 @@ export class TreeMapRecommenderSummary {
             if(score===1) break;
         }
 
+        for (let k = 0; k < columns.length; k++) {
+            if(columns[k]===this.best.sizeBy ) continue;
+            if(columns[k].quantitative || columns[k].stats.distinctValueCount<5) {
+                this.best.colorBy = columns[k];
+                break;
+            }
+        }
+
     }
 
     recommend() {
@@ -76,7 +84,8 @@ export class TreeMapRecommender implements Recommender {
             x: undefined,
             y: undefined,
             sizeBy: this.columns[0],
-            score: this.score
+            score: this.score,
+            colorBy: undefined
         }
         return rec;
     }

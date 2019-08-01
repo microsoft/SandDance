@@ -19,6 +19,14 @@ export class BarChartRecommenderSummary {
             };
             if(score===2) break;
         }
+
+        for (let k = 0; k < columns.length; k++) {
+            if(columns[k]===this.best.x ) continue;
+            if(columns[k].quantitative || columns[k].stats.distinctValueCount<5) {
+                this.best.colorBy = columns[k];
+                break;
+            }
+        }
     }
 
     recommend() {
@@ -40,7 +48,6 @@ export class BarChartRecommender implements Recommender {
                 //If x axis is numerical, return true
                 if (columns[0].quantitative) {
                     return true;
-                    // put 20 and 1 as constant 
                 } else if (!columns[0].quantitative && columns[0].stats.distinctValueCount <= maxDistinctVal && columns[0].stats.distinctValueCount >= minDistinctVal) {
                     //If x axis categorical & distinct values < 20, return true
                     return true;
@@ -96,7 +103,8 @@ export class BarChartRecommender implements Recommender {
             x: this.columns[0],
             y: undefined,
             score: this.score,
-            sizeBy: undefined
+            sizeBy: undefined,
+            colorBy: undefined
         }
         return rec;
     }

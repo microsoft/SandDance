@@ -52,18 +52,23 @@ export class RecommenderSummary {
             x: undefined,
             y: undefined,
             score: undefined,
-            sizeBy: undefined
+            sizeBy: undefined,
+            colorBy:undefined
         }
         columns.forEach(column => {
             if(column.name.toLowerCase() === 'longitude') {
                 longi= true;
                 rec.x = column;
             }
-            if(column.name.toLowerCase() === 'latitude') {
+            else if(column.name.toLowerCase() === 'latitude') {
                 lati= true;
                 rec.y = column;
             }
+            else if(column.quantitative || column.stats.distinctValueCount<5){
+                rec.colorBy = column;
+            }
         });
+        
         if(longi&&lati) {
             return rec;
         } 

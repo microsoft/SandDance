@@ -19,13 +19,24 @@ function GetDataAndColumns(sampleFile) {
     });
 }
 
+function FileGetDataAndColumns(sampleFile) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(sampleFile, function (err, buffer) {
+            const rawText = buffer.toString();
+            const data = vega.read(rawText, { type: 'tsv', parse: "auto" });
+            const columns = SandDance.util.getColumnsFromData(data);
+            resolve({ data, columns });
+        });
+    });
+}
+
 describe('Recommender', function () {
     var sampleFiles = fs.readdirSync(sampleDir);
     console.log(sampleFiles[0]);
     sampleFiles.forEach(function (sampleFile) {
         var dataAndColumnsPromise = GetDataAndColumns(sampleFile);
 
-        it(`${sampleFile} test: Recommender Summary has one recommendations`, function (done) {
+        it(`${sampleFile} Recommender returns one recommendations`, function (done) {
 
             dataAndColumnsPromise.then(function (dataAndColumns) {
                 var r = new recommender.RecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
@@ -35,30 +46,32 @@ describe('Recommender', function () {
                 done();
             });
         });
-
-        it(`${sampleFile}Bar chart test1`, function (done) {
-            dataAndColumnsPromise.then(function (dataAndColumns) {
-                var r = new recommender.BarChartRecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
-                console.log(dataAndColumns.columns.length, dataAndColumns.data.length);
-                var rec = r.recommend();
-                console.log(rec);
-                assert.ok(true);
-                done();
-            });
     });
-    /*
-    it('RecommenderSummary', function (done) {
-        var dataAndColumnsPromise = GetDataAndColumns(sampleFiles[3]);
+
+    it(`longitude/latitude : recommends scatter plot `, function (done) {
+        let filePath = './test-data/demovote-sample.tsv'
+        var dataAndColumnsPromise = FileGetDataAndColumns(filePath);
         dataAndColumnsPromise.then(function (dataAndColumns) {
             var r = new recommender.RecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
             var rec = r.recommend();
             console.log(rec);
-            assert.ok(rec.type === 'barchart');
+            assert.ok(rec.type==='scatterplot');
             done();
         });
     });
-    */
+
+    it(`test-scatter : recommends scatter plot `, function (done) {
+        let filePath = './test-data/test-scatter.tsv'
+        var dataAndColumnsPromise = FileGetDataAndColumns(filePath);
+        dataAndColumnsPromise.then(function (dataAndColumns) {
+            var r = new recommender.RecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
+            var rec = r.recommend();
+            console.log(rec);
+            assert.ok(rec.type==='scatterplot');
+            done();
+        });
     });
+
 
     /*
     it(`test2: Scatter plot distinct value >10 x-axis`, function (done) {

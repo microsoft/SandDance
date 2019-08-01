@@ -22,6 +22,14 @@ export class DensityPlotRecommenderSummary {
             if(score===3) break;
         }
 
+        for (let k = 0; k < columns.length; k++) {
+            if(columns[k]===this.best.x || columns[k]===this.best.y ) continue;
+            if(columns[k].quantitative || columns[k].stats.distinctValueCount<5) {
+                this.best.colorBy = columns[k];
+                break;
+            }
+        }
+
     }
 
     recommend() {
@@ -78,7 +86,8 @@ export class DensityPlotRecommender implements Recommender {
             x: this.columns[0],
             y: this.columns[1],
             score: this.score,
-            sizeBy: undefined
+            sizeBy: undefined,
+            colorBy: undefined
         }
         return rec;
     }

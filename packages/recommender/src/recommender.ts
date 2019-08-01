@@ -11,7 +11,7 @@ export interface Recommendation {
     y: Column;
     score: number;
     sizeBy: Column;
-
+    colorBy: Column;
 }
 
 export abstract class Recommender {
