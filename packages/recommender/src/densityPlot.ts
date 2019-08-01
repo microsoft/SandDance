@@ -1,6 +1,8 @@
 import * as SandDance from "@msrvida/sanddance";
 import { Recommender, Recommendation, Rule } from './recommender';
 
+const maxDistinctVal = 5;
+
 export class DensityPlotRecommenderSummary {
     public best: Recommendation;
     //all columns
@@ -9,14 +11,15 @@ export class DensityPlotRecommenderSummary {
         for (let i = 0; i < columns.length; i++) {
             for (let j = i + 1; j < columns.length; j++) {
                 let axes = [];
-                axes.push(columns[i]);
-                axes.push(columns[j]);
+                axes.push(columns[i],columns[j]);
                 let recommendation = new DensityPlotRecommender(axes, data).recommend();
                 if (recommendation.score > score) {
                     this.best = recommendation;
                     score = recommendation.score;
                 }
+                if(score===3) break;
             };
+            if(score===3) break;
         }
 
     }
@@ -47,7 +50,7 @@ export class DensityPlotRecommender implements Recommender {
             },
             //x-axis distinct value<5
             (columns) => {
-                if (columns[0].stats.distinctValueCount < 5) {
+                if (columns[0].stats.distinctValueCount < maxDistinctVal) {
                     return true;
                 } else {
                     return false;
@@ -55,7 +58,7 @@ export class DensityPlotRecommender implements Recommender {
             },
             //y-axis distinct value<5
             (columns) => {
-                if (columns[1].stats.distinctValueCount < 5) {
+                if (columns[1].stats.distinctValueCount < maxDistinctVal) {
                     return true;
                 } else {
                     return false;

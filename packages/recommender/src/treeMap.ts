@@ -1,6 +1,8 @@
 import * as SandDance from "@msrvida/sanddance";
 import { Recommender, Recommendation, Rule } from './recommender';
 
+const minCV = 0.3;
+
 export class TreeMapRecommenderSummary {
     public best: Recommendation;
     //all columns
@@ -14,6 +16,7 @@ export class TreeMapRecommenderSummary {
                 this.best = recommendation;
                 score = recommendation.score;
             };
+            if(score===1) break;
         }
 
     }
@@ -36,7 +39,7 @@ export class TreeMapRecommender implements Recommender {
 
             (columns) => {
                 //standard deviation
-                if (this.calcCVColumn(columns[0], data) && this.calcCVColumn(columns[0], data) > 0.3) {
+                if (columns[0].quantitative && this.calcCVColumn(columns[0], data) && this.calcCVColumn(columns[0], data) > minCV) {
                     return true;
                 }
 

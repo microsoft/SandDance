@@ -1,6 +1,8 @@
 import * as SandDance from "@msrvida/sanddance";
 import { Recommender, Recommendation, Rule } from './recommender';
 
+const minDistinctVal = 10;
+
 export class ScatterPlotRecommenderSummary {
     public best: Recommendation;
     //all columns
@@ -16,7 +18,9 @@ export class ScatterPlotRecommenderSummary {
                     this.best = recommendation;
                     score = recommendation.score;
                 }
+                if(score===3) break;
             };
+            if(score===3) break;
         }
 
     }
@@ -48,7 +52,7 @@ export class ScatterPlotRecommender implements Recommender {
             },
             //x-axis distinct value>10
             (columns) => {
-                if (columns[0].stats.distinctValueCount > 10) {
+                if (columns[0].stats.distinctValueCount > minDistinctVal) {
                     return true;
                 } else {
                     return false;
@@ -56,7 +60,7 @@ export class ScatterPlotRecommender implements Recommender {
             },
             //y-axis distinct value>10
             (columns) => {
-                if (columns[1].stats.distinctValueCount > 10) {
+                if (columns[1].stats.distinctValueCount > minDistinctVal) {
                     return true;
                 } else {
                     return false;

@@ -1,6 +1,9 @@
 import * as SandDance from "@msrvida/sanddance";
 import { Recommender, Recommendation, Rule } from './recommender';
 
+const maxDistinctVal = 20;
+const minDistinctVal = 2;
+
 export class BarChartRecommenderSummary {
     public best: Recommendation;
     //all columns
@@ -14,8 +17,8 @@ export class BarChartRecommenderSummary {
                 this.best = recommendation;
                 score = recommendation.score;
             };
+            if(score===2) break;
         }
-
     }
 
     recommend() {
@@ -37,7 +40,8 @@ export class BarChartRecommender implements Recommender {
                 //If x axis is numerical, return true
                 if (columns[0].quantitative) {
                     return true;
-                } else if (!columns[0].quantitative && columns[0].stats.distinctValueCount < 20 && columns[0].stats.distinctValueCount > 4) {
+                    // put 20 and 1 as constant 
+                } else if (!columns[0].quantitative && columns[0].stats.distinctValueCount <= maxDistinctVal && columns[0].stats.distinctValueCount >= minDistinctVal) {
                     //If x axis categorical & distinct values < 20, return true
                     return true;
                 } else {
@@ -46,29 +50,35 @@ export class BarChartRecommender implements Recommender {
             }
             /*
             (columns) => {
-                if (!columns[0].quantitative) { 
+                if (!columns[0].quantitative || columns[0].stats.distinctValueCount<7) { 
                     return false; 
                 }
                 //detect outliers for numerical variable
                 let max = columns[0].stats.max;
                 let min = columns[0].stats.min;
                 let colname = columns[0].name;
-                let bin = (max - min) / 7;
-                let bins: number[];
+                let bin = (max - min) / 60;
+                if(bin===0) return false;
+                let bins: number[] = new Array(7).fill(0);
+               
                 for (let i = 0; i < data.length; i++) {
-                    bins[(data[i][colname] - min) / bin]++;
+                    let binIndex = Math.floor((data[i][colname] - min) / bin);
+                    if(binIndex===60) binIndex--;
+                    bins[binIndex]++;
                 };
                 let emptyBin = 0;
+                console.log(bins);
                 bins.forEach(binNum => {
                     if (binNum === 0) emptyBin++;
                 });
-                if (emptyBin < 3) {
+                if (emptyBin < 20) {
                     return true;
                 } else {
                     return false;
                 }
             }
             */
+            
         ];
         for (let i = 0; i < this.rules.length; i++) {
             if (this.rules[i](columns)) this.score++;
