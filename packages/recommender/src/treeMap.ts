@@ -5,7 +5,6 @@ const minCV = 0.3;
 
 export class TreeMapRecommenderSummary {
     public best: Recommendation;
-    //all columns
     constructor(columns: SandDance.types.Column[], data: object[]) {
         let score = -1;
         for (let i = 0; i < columns.length; i++) {
@@ -20,9 +19,9 @@ export class TreeMapRecommenderSummary {
         }
 
         for (let k = 0; k < columns.length; k++) {
-            if(columns[k]===this.best.sizeBy ) continue;
+            if(columns[k].name===this.best.columns.size ) continue;
             if(columns[k].quantitative || columns[k].stats.distinctValueCount<5) {
-                this.best.colorBy = columns[k];
+                this.best.columns.size = columns[k].name ;
                 break;
             }
         }
@@ -43,10 +42,11 @@ export class TreeMapRecommender implements Recommender {
     constructor(columns: SandDance.types.Column[], data: object[]) {
         this.score = 0;
         this.columns = columns;
+        //total score is 1
         this.rules = [
 
             (columns) => {
-                //standard deviation
+                //standard deviation of the variable should be large enough
                 if (columns[0].quantitative && this.calcCVColumn(columns[0], data) && this.calcCVColumn(columns[0], data) > minCV) {
                     return true;
                 }
@@ -60,6 +60,7 @@ export class TreeMapRecommender implements Recommender {
 
     }
 
+    //Calculate the coefficient of variation (CV) of one column
     calcCVColumn(column: SandDance.types.Column, data: object[]) {
         if (column.quantitative) {
             let size: number = data.length;
@@ -80,12 +81,9 @@ export class TreeMapRecommender implements Recommender {
 
     recommend() {
         let rec: Recommendation = {
-            type: 'treemap',
-            x: undefined,
-            y: undefined,
-            sizeBy: this.columns[0],
-            score: this.score,
-            colorBy: undefined
+            chart: 'treemap',
+            
+            score: this.score
         }
         return rec;
     }

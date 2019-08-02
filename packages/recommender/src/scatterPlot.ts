@@ -5,14 +5,13 @@ const minDistinctVal = 10;
 
 export class ScatterPlotRecommenderSummary {
     public best: Recommendation;
-    //all columns
+    
     constructor(columns: SandDance.types.Column[], data: object[]) {
         let score = -1;
         for (let i = 0; i < columns.length; i++) {
             for (let j = i + 1; j < columns.length; j++) {
                 let axes = [];
-                axes.push(columns[i]);
-                axes.push(columns[j]);
+                axes.push(columns[i],columns[j]);
                 let recommendation = new ScatterPlotRecommender(axes, data).recommend();
                 if (recommendation.score > score) {
                     this.best = recommendation;
@@ -24,9 +23,9 @@ export class ScatterPlotRecommenderSummary {
         }
 
         for (let k = 0; k < columns.length; k++) {
-            if(columns[k]===this.best.x || columns[k]===this.best.y ) continue;
+            if(columns[k].name===this.best.columns.x || columns[k].name===this.best.columns.y ) continue;
             if(columns[k].quantitative || columns[k].stats.distinctValueCount<5) {
-                this.best.colorBy = columns[k];
+                this.best.columns.color = columns[k].name;
                 break;
             }
         }
@@ -58,7 +57,7 @@ export class ScatterPlotRecommender implements Recommender {
                 }
 
             },
-            //x-axis distinct value>10
+            //if x-axis distinct value>10, return true
             (columns) => {
                 if (columns[0].stats.distinctValueCount > minDistinctVal) {
                     return true;
@@ -66,7 +65,7 @@ export class ScatterPlotRecommender implements Recommender {
                     return false;
                 }
             },
-            //y-axis distinct value>10
+            //if y-axis distinct value>10, return true
             (columns) => {
                 if (columns[1].stats.distinctValueCount > minDistinctVal) {
                     return true;
@@ -84,12 +83,13 @@ export class ScatterPlotRecommender implements Recommender {
 
     recommend() {
         let rec: Recommendation = {
-            type: 'scatterplot',
-            x: this.columns[0],
-            y: this.columns[1],
-            score: this.score,
-            sizeBy: undefined,
-            colorBy: undefined
+            chart: 'scatterplot',
+            columns: {
+                x: this.columns[0].name,
+                y: this.columns[1].name
+            },
+
+            score: this.score
         }
         return rec;
     }

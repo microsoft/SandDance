@@ -5,7 +5,6 @@ const maxDistinctVal = 5;
 
 export class DensityPlotRecommenderSummary {
     public best: Recommendation;
-    //all columns
     constructor(columns: SandDance.types.Column[], data: object[]) {
         let score = -1;
         for (let i = 0; i < columns.length; i++) {
@@ -23,9 +22,9 @@ export class DensityPlotRecommenderSummary {
         }
 
         for (let k = 0; k < columns.length; k++) {
-            if(columns[k]===this.best.x || columns[k]===this.best.y ) continue;
+            if(columns[k].name ===this.best.columns.x || columns[k].name ===this.best.columns.y ) continue;
             if(columns[k].quantitative || columns[k].stats.distinctValueCount<5) {
-                this.best.colorBy = columns[k];
+                this.best.columns.color = columns[k].name;
                 break;
             }
         }
@@ -46,6 +45,7 @@ export class DensityPlotRecommender implements Recommender {
     constructor(columns: SandDance.types.Column[], data: object[]) {
         this.score = 0;
         this.columns = columns;
+        //total score is 3
         this.rules = [
             //If both axes are categorical, return true
             (columns) => {
@@ -82,12 +82,12 @@ export class DensityPlotRecommender implements Recommender {
 
     recommend() {
         let rec: Recommendation = {
-            type: 'density',
-            x: this.columns[0],
-            y: this.columns[1],
+            chart: 'density',
+            columns: {
+                x: this.columns[0].name,
+                y: this.columns[1].name
+            },
             score: this.score,
-            sizeBy: undefined,
-            colorBy: undefined
         }
         return rec;
     }

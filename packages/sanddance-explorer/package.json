@@ -26,6 +26,7 @@
   "dependencies": {
     "@msrvida/office-ui-fabric-react-cdn-typings": "*",
     "@msrvida/sanddance-react": "^1.0.0",
+    "@msrvida/recommender":"^1.0.0",
     "d3-format": "^1.3.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"

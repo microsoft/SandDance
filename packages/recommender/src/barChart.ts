@@ -6,7 +6,6 @@ const minDistinctVal = 2;
 
 export class BarChartRecommenderSummary {
     public best: Recommendation;
-    //all columns
     constructor(columns: SandDance.types.Column[], data: object[]) {
         let score = -1;
         for (let i = 0; i < columns.length; i++) {
@@ -17,13 +16,13 @@ export class BarChartRecommenderSummary {
                 this.best = recommendation;
                 score = recommendation.score;
             };
-            if(score===2) break;
+            if(score===1) break;
         }
 
         for (let k = 0; k < columns.length; k++) {
-            if(columns[k]===this.best.x ) continue;
+            if(columns[k].name ===this.best.columns.x ) continue;
             if(columns[k].quantitative || columns[k].stats.distinctValueCount<5) {
-                this.best.colorBy = columns[k];
+                this.best.columns.color = columns[k].name;
                 break;
             }
         }
@@ -43,19 +42,22 @@ export class BarChartRecommender implements Recommender {
     constructor(columns: SandDance.types.Column[], data: object[]) {
         this.score = 0;
         this.columns = columns;
+        //total score is 1
         this.rules = [
             (columns) => {
                 //If x axis is numerical, return true
                 if (columns[0].quantitative) {
                     return true;
-                } else if (!columns[0].quantitative && columns[0].stats.distinctValueCount <= maxDistinctVal && columns[0].stats.distinctValueCount >= minDistinctVal) {
-                    //If x axis categorical & distinct values < 20, return true
+                } 
+                //If x axis categorical & 1 < distinct values < 20, return true
+                else if (!columns[0].quantitative && columns[0].stats.distinctValueCount <= maxDistinctVal && columns[0].stats.distinctValueCount >= minDistinctVal) { 
                     return true;
                 } else {
                     return false;
                 }
             }
             /*
+            // outlier rule
             (columns) => {
                 if (!columns[0].quantitative || columns[0].stats.distinctValueCount<7) { 
                     return false; 
@@ -99,12 +101,11 @@ export class BarChartRecommender implements Recommender {
 
     recommend() {
         let rec: Recommendation = {
-            type: 'barchart',
-            x: this.columns[0],
-            y: undefined,
-            score: this.score,
-            sizeBy: undefined,
-            colorBy: undefined
+            chart: 'barchart',
+            columns: {
+                x: this.columns[0].name
+            },
+            score: this.score
         }
         return rec;
     }

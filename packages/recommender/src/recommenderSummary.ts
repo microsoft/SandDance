@@ -48,24 +48,23 @@ export class RecommenderSummary {
         let longi = false;
         let lati = false;
         let rec: Recommendation = {
-            type: 'scatterplot',
-            x: undefined,
-            y: undefined,
-            score: undefined,
-            sizeBy: undefined,
-            colorBy:undefined
+            chart: 'scatterplot',
+            score:undefined,
+            columns:{
+                
+            }
         }
         columns.forEach(column => {
             if(column.name.toLowerCase() === 'longitude') {
                 longi= true;
-                rec.x = column;
+                rec.columns.x = column.name;
             }
             else if(column.name.toLowerCase() === 'latitude') {
                 lati= true;
-                rec.y = column;
+                rec.columns.y = column.name;
             }
             else if(column.quantitative || column.stats.distinctValueCount<5){
-                rec.colorBy = column;
+                rec.columns.color = column.name;
             }
         });
         
