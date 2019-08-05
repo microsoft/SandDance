@@ -147,7 +147,7 @@ export class DataExportPicker extends React.Component<Props, State> {
                 return {
                   key: `${i}`,
                   text: urlType,
-                  disabled: !this.state.working,
+                  disabled: false,
                   checked: i === 0
                 } as FabricTypes.IChoiceGroupOption;
               })
@@ -158,7 +158,7 @@ export class DataExportPicker extends React.Component<Props, State> {
             label={strings.labelExportFormat}
           />
           <base.fabric.DialogFooter>
-            <base.fabric.PrimaryButton onClick={e => this.export()} text={strings.buttonExport} disabled={!this.state.working} />
+            <base.fabric.PrimaryButton onClick={e => this.export()} text={strings.buttonExport} />
             <base.fabric.DefaultButton onClick={closeDialog} text={strings.buttonClose} />
           </base.fabric.DialogFooter>
         </base.fabric.Dialog>
