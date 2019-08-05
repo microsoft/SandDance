@@ -1,14 +1,14 @@
 {
-  "name": "powerbi",
+  "name": "sandDance2019",
   "scripts": {
     "pbiviz": "pbiviz",
     "start": "pbiviz start",
     "package": "pbiviz package"
   },
   "dependencies": {
-    "@babel/polyfill": "7.0.0",
-    "@babel/runtime": "^7.2.0",
-    "@babel/runtime-corejs2": "^7.2.0",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/runtime": "^7.4.5",
+    "@babel/runtime-corejs2": "^7.4.5",
     "@deck.gl/core": "6.4",
     "@deck.gl/layers": "6.4",
     "@msrvida/sanddance-explorer": "*",
@@ -22,6 +22,6 @@
   },
   "devDependencies": {
     "@types/react-dom": "^16.8.4",
-    "ts-loader": "4.5.0"
+    "ts-loader": "5.2.2"
   }
 }
