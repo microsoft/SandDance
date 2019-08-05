@@ -61,6 +61,7 @@ export interface Props {
     initialView?: SandDance.VegaDeckGl.types.View;
     mounted?: (explorer: Explorer) => any;
     datasetElement?: JSX.Element;
+    datasetExportHandler?: (data: any, datatype: string) => void;
     topBarButtonProps?: FabricTypes.ICommandBarItemProps[];
     snapshotProps?: SnapshotProps;
     onSnapshotClick?: (snapshot: Snapshot) => void;
@@ -289,10 +290,10 @@ export class Explorer extends React.Component<Props, State> {
 
     signal(signalName: string, signalValue: any) {
         switch (signalName) {
-        case SandDance.constants.SignalNames.ColorBinCount:
-        case SandDance.constants.SignalNames.ColorReverse:
-            this.discardColorContextUpdates = false;
-            break;
+            case SandDance.constants.SignalNames.ColorBinCount:
+            case SandDance.constants.SignalNames.ColorReverse:
+                this.discardColorContextUpdates = false;
+                break;
         }
         this.viewer.vegaViewGl.signal(signalName, signalValue);
         this.viewer.vegaViewGl.run();
@@ -469,90 +470,90 @@ export class Explorer extends React.Component<Props, State> {
         };
         if (column) {
             switch (role) {
-            case 'facet': {
-                (() => {
-                    const facetColumn = column;
-                    let facets: SandDance.types.Facets;
-                    if (facetColumn.quantitative) {
-                        facets = {
-                            columns: 3, //TODO: calculate grid from aspect ratio
-                            rows: 3
-                        };
-                    } else {
-                        switch (facetColumn.stats.distinctValueCount) {
-                        case 2: {
+                case 'facet': {
+                    (() => {
+                        const facetColumn = column;
+                        let facets: SandDance.types.Facets;
+                        if (facetColumn.quantitative) {
                             facets = {
-                                columns: 2,
-                                rows: 1
+                                columns: 3, //TODO: calculate grid from aspect ratio
+                                rows: 3
                             };
-                            break;
-                        }
-                        default: {
-                            facets = {
-                                columns: null,
-                                rows: null
-                            };
-                            let square = 1;
-                            while (square * square < facetColumn.stats.distinctValueCount) {
-                                square++;
+                        } else {
+                            switch (facetColumn.stats.distinctValueCount) {
+                                case 2: {
+                                    facets = {
+                                        columns: 2,
+                                        rows: 1
+                                    };
+                                    break;
+                                }
+                                default: {
+                                    facets = {
+                                        columns: null,
+                                        rows: null
+                                    };
+                                    let square = 1;
+                                    while (square * square < facetColumn.stats.distinctValueCount) {
+                                        square++;
+                                    }
+                                    facets.columns = facets.rows = square;
+                                }
                             }
-                            facets.columns = facets.rows = square;
                         }
+                        columns['facet'] = column.name;
+                        this.changeInsight({ facets, columns });
+                    })();
+                    break;
+                }
+                case 'color': {
+                    (() => {
+                        let newState: Partial<State> = { scheme: options && options.scheme, columns, colorBin: this.state.colorBin };
+                        if (!newState.scheme) {
+                            const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'color', column.name);
+                            newState = { ...newState, ...partialInsight };
                         }
-                    }
-                    columns['facet'] = column.name;
-                    this.changeInsight({ facets, columns });
-                })();
-                break;
-            }
-            case 'color': {
-                (() => {
-                    let newState: Partial<State> = { scheme: options && options.scheme, columns, colorBin: this.state.colorBin };
-                    if (!newState.scheme) {
-                        const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'color', column.name);
-                        newState = { ...newState, ...partialInsight };
-                    }
-                    if (!newState.scheme) {
-                        newState.scheme = bestColorScheme(column, null, this.state.scheme);
-                    }
-                    if (!column.stats.hasColorData) {
-                        newState.directColor = false;
-                        if (this.state.directColor !== newState.directColor) {
-                            newState.calculating = () => this._resize();
+                        if (!newState.scheme) {
+                            newState.scheme = bestColorScheme(column, null, this.state.scheme);
                         }
-                    }
-                    if (this.state.columns && this.state.columns.color && this.state.columns.color !== column.name) {
-                        const currColorColumn = this.state.dataContent.columns.filter(c => c.name === this.state.columns.color)[0];
-                        if (column.isColorData != currColorColumn.isColorData) {
-                            newState.calculating = () => this._resize();
+                        if (!column.stats.hasColorData) {
+                            newState.directColor = false;
+                            if (this.state.directColor !== newState.directColor) {
+                                newState.calculating = () => this._resize();
+                            }
                         }
-                    }
-                    this.ignoreSelectionChange = true;
-                    this.viewer.deselect().then(() => {
-                        this.ignoreSelectionChange = false;
-                        //allow deselection to render
-                        setTimeout(() => {
-                            columns['color'] = column.name;
-                            this.getColorContext = null;
-                            this.changeInsight(newState as any);
-                        }, 0);
-                    });
-                })();
-                break;
-            }
-            case 'x': {
-                (() => {
-                    const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'x', column.name);
-                    const newState: Partial<State> = { columns, ...partialInsight };
-                    columns['x'] = column.name;
-                    this.changeInsight(newState as any);
-                })();
-                break;
-            }
-            default: {
-                final();
-                break;
-            }
+                        if (this.state.columns && this.state.columns.color && this.state.columns.color !== column.name) {
+                            const currColorColumn = this.state.dataContent.columns.filter(c => c.name === this.state.columns.color)[0];
+                            if (column.isColorData != currColorColumn.isColorData) {
+                                newState.calculating = () => this._resize();
+                            }
+                        }
+                        this.ignoreSelectionChange = true;
+                        this.viewer.deselect().then(() => {
+                            this.ignoreSelectionChange = false;
+                            //allow deselection to render
+                            setTimeout(() => {
+                                columns['color'] = column.name;
+                                this.getColorContext = null;
+                                this.changeInsight(newState as any);
+                            }, 0);
+                        });
+                    })();
+                    break;
+                }
+                case 'x': {
+                    (() => {
+                        const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'x', column.name);
+                        const newState: Partial<State> = { columns, ...partialInsight };
+                        columns['x'] = column.name;
+                        this.changeInsight(newState as any);
+                    })();
+                    break;
+                }
+                default: {
+                    final();
+                    break;
+                }
             }
         } else {
             final();
@@ -591,19 +592,19 @@ export class Explorer extends React.Component<Props, State> {
         let itemToActivate: object;
         if (sideTabId === SideTabId.Data) {
             switch (dataScopeId) {
-            case DataScopeId.AllData: {
-                itemToActivate = this.state.dataContent && this.state.dataContent.data[this.state.selectedItemIndex[DataScopeId.AllData]];
-                break;
-            }
-            case DataScopeId.FilteredData: {
-                itemToActivate = this.state.filteredData && this.state.filteredData[this.state.selectedItemIndex[DataScopeId.FilteredData]];
-                break;
-            }
-            case DataScopeId.SelectedData: {
-                const selection = this.viewer.getSelection() || {};
-                itemToActivate = selection.selectedData && selection.selectedData[this.state.selectedItemIndex[DataScopeId.SelectedData]];
-                break;
-            }
+                case DataScopeId.AllData: {
+                    itemToActivate = this.state.dataContent && this.state.dataContent.data[this.state.selectedItemIndex[DataScopeId.AllData]];
+                    break;
+                }
+                case DataScopeId.FilteredData: {
+                    itemToActivate = this.state.filteredData && this.state.filteredData[this.state.selectedItemIndex[DataScopeId.FilteredData]];
+                    break;
+                }
+                case DataScopeId.SelectedData: {
+                    const selection = this.viewer.getSelection() || {};
+                    itemToActivate = selection.selectedData && selection.selectedData[this.state.selectedItemIndex[DataScopeId.SelectedData]];
+                    break;
+                }
             }
         }
         this.silentActivation(itemToActivate);
@@ -835,173 +836,174 @@ export class Explorer extends React.Component<Props, State> {
                     >
                         {loaded && (() => {
                             switch (this.state.sideTabId) {
-                            case SideTabId.ChartType: {
-                                return (
-                                    <Chart
-                                        tooltipExclusions={this.state.tooltipExclusions}
-                                        toggleTooltipExclusion={columnName => {
-                                            const tooltipExclusions = [...this.state.tooltipExclusions];
-                                            const i = tooltipExclusions.indexOf(columnName);
-                                            if (i < 0) {
-                                                tooltipExclusions.push(columnName);
-                                            } else {
-                                                tooltipExclusions.splice(i, 1);
-                                            }
-                                            this.setState({ tooltipExclusions });
-                                            this.props.onTooltipExclusionsChanged && this.props.onTooltipExclusionsChanged(tooltipExclusions);
-                                        }}
-                                        disabled={!loaded || this.state.sidebarClosed}
-                                        {...columnMapProps}
-                                        chart={this.state.chart}
-                                        view={this.state.view}
-                                        onChangeChartType={chart => this.changeChartType(chart)}
-                                        insightColumns={this.state.columns}
-                                        onChangeSignal={(role, column, name, value) => {
-                                            saveSignalValuePref(this.prefs, this.state.chart, role, column, name, value);
-                                        }}
-                                    />
-                                );
-                            }
-                            case SideTabId.Color: {
-                                return (
-                                    <Color
-                                        specCapabilities={this.state.specCapabilities}
-                                        disabled={!loaded || this.state.sidebarClosed}
-                                        {...columnMapProps}
-                                        dataContent={this.state.dataContent}
-                                        scheme={this.state.scheme}
-                                        colorBin={this.state.colorBin}
-                                        colorBinSignal={this.viewer && this.viewer.vegaSpec && this.viewer.vegaSpec.signals.filter(s => s.name === SandDance.constants.SignalNames.ColorBinCount)[0]}
-                                        colorReverseSignal={this.viewer && this.viewer.vegaSpec && this.viewer.vegaSpec.signals.filter(s => s.name === SandDance.constants.SignalNames.ColorReverse)[0]}
-                                        colorColumn={this.state.columns.color}
-                                        onColorBinChange={colorBin => {
-                                            this.ignoreSelectionChange = true;
-                                            this.viewer.deselect().then(() => {
-                                                this.ignoreSelectionChange = false;
-                                                //allow deselection to render
-                                                setTimeout(() => {
-                                                    this.getColorContext = null;
-                                                    this.changeInsight({ colorBin });
-                                                    savePref(this.prefs, this.state.chart, 'color', this.state.columns.color, { colorBin });
-                                                }, 0);
-                                            });
-                                        }}
-                                        onColorSchemeChange={(scheme) => {
-                                            this.changeColumnMapping('color', this.state.dataContent.columns.filter(c => c.name === this.state.columns.color)[0], { scheme });
-                                            savePref(this.prefs, this.state.chart, 'color', this.state.columns.color, { scheme });
-                                        }}
-                                        onColorBinCountChange={value => {
-                                            const signalValues: SandDance.types.SignalValues = {};
-                                            signalValues[SandDance.constants.SignalNames.ColorBinCount] = value;
-                                            savePref(this.prefs, this.state.chart, 'color', this.state.columns.color, { signalValues });
-                                        }}
-                                        onColorReverseChange={value => {
-                                            this.getColorContext = null;
-                                            const signalValues: SandDance.types.SignalValues = {};
-                                            signalValues[SandDance.constants.SignalNames.ColorReverse] = value;
-                                        }}
-                                        directColor={this.state.directColor}
-                                        onDirectColorChange={directColor => {
-                                            this.changeInsight({ directColor, calculating: () => this._resize() });
-                                        }}
-                                    />
-                                );
-                            }
-                            case SideTabId.Data: {
-                                const data = datas[this.state.dataScopeId];
-                                let itemVisible = true;
-                                switch (this.state.dataScopeId) {
-                                case DataScopeId.AllData: {
-                                    const item = this.state.selectedItemIndex[this.state.dataScopeId];
-                                    itemVisible = this.state.dataContent && !this.state.filteredData || this.state.filteredData.indexOf(data[item]) >= 0;
-                                }
-                                }
-                                return (
-                                    <DataBrowser
-                                        themePalette={themePalette}
-                                        disabled={!loaded || this.state.sidebarClosed}
-                                        columns={this.state.dataContent && this.state.dataContent.columns}
-                                        data={data}
-                                        title={dataBrowserTitles[this.state.dataScopeId]}
-                                        nullMessage={dataBrowserNullMessages[this.state.dataScopeId]}
-                                        zeroMessage={dataBrowserZeroMessages[this.state.dataScopeId]}
-                                        index={this.state.selectedItemIndex[this.state.dataScopeId]}
-                                        itemVisible={itemVisible}
-                                        onActivate={(row, index) => {
-                                            const selectedItemIndex = { ...this.state.selectedItemIndex };
-                                            selectedItemIndex[this.state.dataScopeId] = index;
-                                            this.setState({ selectedItemIndex });
-                                            this.silentActivation(row);
-                                        }}
-                                        onSearch={(e, search) => {
-                                            if (e.ctrlKey) {
-                                                this.setState({ sideTabId: SideTabId.Search, search });
-                                            } else {
-                                                this.doSelect(search);
-                                            }
-                                        }}
-                                    />
-                                );
-                            }
-                            case SideTabId.Search: {
-                                return (
-                                    <Search
-                                        themePalette={themePalette}
-                                        disabled={!loaded || this.state.sidebarClosed}
-                                        initializer={{
-                                            columns: columnMapProps.allColumns,
-                                            search: this.state.search
-                                        }}
-                                        autoCompleteDistinctValues={this.state.autoCompleteDistinctValues}
-                                        onSelect={expr => {
-                                            this.doSelect(expr);
-                                        }}
-                                        data={this.state.dataContent.data}
-                                    />
-                                );
-                            }
-                            case SideTabId.Snapshots: {
-                                return (
-                                    <Snapshots
-                                        {...this.props.snapshotProps}
-                                        themePalette={themePalette}
-                                        explorer={this}
-                                        snapshots={this.state.snapshots}
-                                        onCreateSnapshot={snapshot => {
-                                            this.setState({ snapshots: this.state.snapshots.concat(snapshot) });
-                                        }}
-                                        onRemoveSnapshot={i => {
-                                            const snapshots = [...this.state.snapshots];
-                                            snapshots.splice(i, 1);
-                                            this.setState({ snapshots });
-                                        }}
-                                        onSnapshotClick={snapshot => {
-                                            this.calculate(() => {
-                                                if (this.props.onSnapshotClick) {
-                                                    this.props.onSnapshotClick(snapshot);
+                                case SideTabId.ChartType: {
+                                    return (
+                                        <Chart
+                                            tooltipExclusions={this.state.tooltipExclusions}
+                                            toggleTooltipExclusion={columnName => {
+                                                const tooltipExclusions = [...this.state.tooltipExclusions];
+                                                const i = tooltipExclusions.indexOf(columnName);
+                                                if (i < 0) {
+                                                    tooltipExclusions.push(columnName);
                                                 } else {
-                                                    this.setInsight(snapshot.insight);
+                                                    tooltipExclusions.splice(i, 1);
                                                 }
-                                            });
-                                        }}
-                                    />
-                                );
-                            }
-                            case SideTabId.Settings: {
-                                return (
-                                    <Settings
-                                        explorer={this}
-                                        dataFile={this.state.dataFile}
-                                        scheme={this.state.scheme}
-                                        hideLegend={this.state.hideLegend}
-                                        onToggleLegend={hideLegend => this.setState({ hideLegend, calculating: () => this._resize() })}
-                                        hideAxes={this.state.hideAxes}
-                                        onToggleAxes={hideAxes => this.setState({ calculating: () => this.setState({ hideAxes }) })}
-                                    >
-                                        {this.props.systemInfoChildren}
-                                    </Settings>
-                                );
-                            }
+                                                this.setState({ tooltipExclusions });
+                                                this.props.onTooltipExclusionsChanged && this.props.onTooltipExclusionsChanged(tooltipExclusions);
+                                            }}
+                                            disabled={!loaded || this.state.sidebarClosed}
+                                            {...columnMapProps}
+                                            chart={this.state.chart}
+                                            view={this.state.view}
+                                            onChangeChartType={chart => this.changeChartType(chart)}
+                                            insightColumns={this.state.columns}
+                                            onChangeSignal={(role, column, name, value) => {
+                                                saveSignalValuePref(this.prefs, this.state.chart, role, column, name, value);
+                                            }}
+                                        />
+                                    );
+                                }
+                                case SideTabId.Color: {
+                                    return (
+                                        <Color
+                                            specCapabilities={this.state.specCapabilities}
+                                            disabled={!loaded || this.state.sidebarClosed}
+                                            {...columnMapProps}
+                                            dataContent={this.state.dataContent}
+                                            scheme={this.state.scheme}
+                                            colorBin={this.state.colorBin}
+                                            colorBinSignal={this.viewer && this.viewer.vegaSpec && this.viewer.vegaSpec.signals.filter(s => s.name === SandDance.constants.SignalNames.ColorBinCount)[0]}
+                                            colorReverseSignal={this.viewer && this.viewer.vegaSpec && this.viewer.vegaSpec.signals.filter(s => s.name === SandDance.constants.SignalNames.ColorReverse)[0]}
+                                            colorColumn={this.state.columns.color}
+                                            onColorBinChange={colorBin => {
+                                                this.ignoreSelectionChange = true;
+                                                this.viewer.deselect().then(() => {
+                                                    this.ignoreSelectionChange = false;
+                                                    //allow deselection to render
+                                                    setTimeout(() => {
+                                                        this.getColorContext = null;
+                                                        this.changeInsight({ colorBin });
+                                                        savePref(this.prefs, this.state.chart, 'color', this.state.columns.color, { colorBin });
+                                                    }, 0);
+                                                });
+                                            }}
+                                            onColorSchemeChange={(scheme) => {
+                                                this.changeColumnMapping('color', this.state.dataContent.columns.filter(c => c.name === this.state.columns.color)[0], { scheme });
+                                                savePref(this.prefs, this.state.chart, 'color', this.state.columns.color, { scheme });
+                                            }}
+                                            onColorBinCountChange={value => {
+                                                const signalValues: SandDance.types.SignalValues = {};
+                                                signalValues[SandDance.constants.SignalNames.ColorBinCount] = value;
+                                                savePref(this.prefs, this.state.chart, 'color', this.state.columns.color, { signalValues });
+                                            }}
+                                            onColorReverseChange={value => {
+                                                this.getColorContext = null;
+                                                const signalValues: SandDance.types.SignalValues = {};
+                                                signalValues[SandDance.constants.SignalNames.ColorReverse] = value;
+                                            }}
+                                            directColor={this.state.directColor}
+                                            onDirectColorChange={directColor => {
+                                                this.changeInsight({ directColor, calculating: () => this._resize() });
+                                            }}
+                                        />
+                                    );
+                                }
+                                case SideTabId.Data: {
+                                    const data = datas[this.state.dataScopeId];
+                                    let itemVisible = true;
+                                    switch (this.state.dataScopeId) {
+                                        case DataScopeId.AllData: {
+                                            const item = this.state.selectedItemIndex[this.state.dataScopeId];
+                                            itemVisible = this.state.dataContent && !this.state.filteredData || this.state.filteredData.indexOf(data[item]) >= 0;
+                                        }
+                                    }
+                                    return (
+                                        <DataBrowser
+                                            themePalette={themePalette}
+                                            disabled={!loaded || this.state.sidebarClosed}
+                                            columns={this.state.dataContent && this.state.dataContent.columns}
+                                            data={data}
+                                            title={dataBrowserTitles[this.state.dataScopeId]}
+                                            nullMessage={dataBrowserNullMessages[this.state.dataScopeId]}
+                                            zeroMessage={dataBrowserZeroMessages[this.state.dataScopeId]}
+                                            index={this.state.selectedItemIndex[this.state.dataScopeId]}
+                                            itemVisible={itemVisible}
+                                            datasetExportHandler = {this.props.datasetExportHandler}
+                                            onActivate={(row, index) => {
+                                                const selectedItemIndex = { ...this.state.selectedItemIndex };
+                                                selectedItemIndex[this.state.dataScopeId] = index;
+                                                this.setState({ selectedItemIndex });
+                                                this.silentActivation(row);
+                                            }}
+                                            onSearch={(e, search) => {
+                                                if (e.ctrlKey) {
+                                                    this.setState({ sideTabId: SideTabId.Search, search });
+                                                } else {
+                                                    this.doSelect(search);
+                                                }
+                                            }}
+                                        />
+                                    );
+                                }
+                                case SideTabId.Search: {
+                                    return (
+                                        <Search
+                                            themePalette={themePalette}
+                                            disabled={!loaded || this.state.sidebarClosed}
+                                            initializer={{
+                                                columns: columnMapProps.allColumns,
+                                                search: this.state.search
+                                            }}
+                                            autoCompleteDistinctValues={this.state.autoCompleteDistinctValues}
+                                            onSelect={expr => {
+                                                this.doSelect(expr);
+                                            }}
+                                            data={this.state.dataContent.data}
+                                        />
+                                    );
+                                }
+                                case SideTabId.Snapshots: {
+                                    return (
+                                        <Snapshots
+                                            {...this.props.snapshotProps}
+                                            themePalette={themePalette}
+                                            explorer={this}
+                                            snapshots={this.state.snapshots}
+                                            onCreateSnapshot={snapshot => {
+                                                this.setState({ snapshots: this.state.snapshots.concat(snapshot) });
+                                            }}
+                                            onRemoveSnapshot={i => {
+                                                const snapshots = [...this.state.snapshots];
+                                                snapshots.splice(i, 1);
+                                                this.setState({ snapshots });
+                                            }}
+                                            onSnapshotClick={snapshot => {
+                                                this.calculate(() => {
+                                                    if (this.props.onSnapshotClick) {
+                                                        this.props.onSnapshotClick(snapshot);
+                                                    } else {
+                                                        this.setInsight(snapshot.insight);
+                                                    }
+                                                });
+                                            }}
+                                        />
+                                    );
+                                }
+                                case SideTabId.Settings: {
+                                    return (
+                                        <Settings
+                                            explorer={this}
+                                            dataFile={this.state.dataFile}
+                                            scheme={this.state.scheme}
+                                            hideLegend={this.state.hideLegend}
+                                            onToggleLegend={hideLegend => this.setState({ hideLegend, calculating: () => this._resize() })}
+                                            hideAxes={this.state.hideAxes}
+                                            onToggleAxes={hideAxes => this.setState({ calculating: () => this.setState({ hideAxes }) })}
+                                        >
+                                            {this.props.systemInfoChildren}
+                                        </Settings>
+                                    );
+                                }
                             }
                         })()}
                     </Sidebar>

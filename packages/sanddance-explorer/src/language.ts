@@ -44,6 +44,8 @@ export const strings = {
     labelSystemInfo: 'System info',
     labelChartSettings: 'Chart settings',
     labelDataBrowser: 'Data browser',
+    labelExport: 'Export Data',
+    labelExportFormat: 'Choose a format:',
     labelTools: 'Tools',
     labelVegaSpec: 'Vega specification',
     labelColor: 'Chart color',
