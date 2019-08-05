@@ -20,7 +20,6 @@ import { DataBrowser } from './dialogs/dataBrowser';
 import { DataContent, DataFile, Snapshot } from './interfaces';
 import { DataScopeId } from './controls/dataScope';
 import { Dialog } from './controls/dialog';
-import { TeachingBubble } from './controls/teachingBubble';
 import { ensureColumnsExist, ensureColumnsPopulated } from './columns';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { RecommenderSummary } from '@msrvida/recommender';
@@ -291,17 +290,19 @@ export class Explorer extends React.Component<Props, State> {
           ...partialInsight
         };
         this.getColorContext = null;
-
         ensureColumnsExist(newState.columns, dataContent.columns);
         const errors = ensureColumnsPopulated(partialInsight ? partialInsight.chart : null, newState.columns, dataContent.columns);
         newState.errors = errors;
         //change insight
         this.changeInsight(newState as State);
+        //load recommendation
+        if(!partialInsight ){
+          let r = new RecommenderSummary(dataContent.columns, dataContent.data);
+          let rec = r.recommend();
+          this.changeInsight(rec);
+        }
         //make sure item is active
         this.activateDataBrowserItem(sideTabId, this.state.dataScopeId);
-        let r = new RecommenderSummary(this.state.dataContent.columns, this.state.dataContent.data);
-        let rec = r.recommend();
-        console.log(rec);
         resolve();
       };
       let dataFile: DataFile;
@@ -902,17 +903,6 @@ export class Explorer extends React.Component<Props, State> {
                   }
                 }}
                 onView={renderResult => {
-                  
-                  //first time run rec
-                  //if(!this.state.tryRecommend) {
-                    //this.changeInsight(rec);
-                    let r = new RecommenderSummary(this.state.dataContent.columns, this.state.dataContent.data);
-                    let rec = r.recommend();
-                    console.log(rec);
-                    this.setState({
-                      tryRecommend: true
-                    })
-                  //}
                   this.changespecCapabilities(renderResult.specResult.errors ? renderResult.specResult.specCapabilities : this.viewer.specCapabilities);
                   this.getColorContext = (oldInsight: SandDance.types.Insight, newInsight: SandDance.types.Insight) => {
                     if (!oldInsight && !newInsight) {
@@ -949,13 +939,7 @@ export class Explorer extends React.Component<Props, State> {
             {this.state.errors && this.state.errors.map((error, i) => (
               <div key={i}>{error}</div>
             ))}
-          </Dialog>
-          <TeachingBubble
-          target= {this.layoutDivUnpinned}
-          changeChart={this}
-          rec={this.state}>
-          </TeachingBubble>
-          
+          </Dialog>          
         </div>
       </div>
     );

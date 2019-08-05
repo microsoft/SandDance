@@ -21,7 +21,10 @@ export class BarChartRecommenderSummary {
 
         for (let k = 0; k < columns.length; k++) {
             if(columns[k].name ===this.best.columns.x ) continue;
-            if(columns[k].quantitative || columns[k].stats.distinctValueCount<5) {
+            if(columns[k].quantitative) {
+                this.best.columns.color = columns[k].name;
+                break;
+            } else if ( columns[k].stats.distinctValueCount<5 && columns[k].stats.distinctValueCount>1) {
                 this.best.columns.color = columns[k].name;
                 break;
             }
