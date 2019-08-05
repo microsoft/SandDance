@@ -9,6 +9,10 @@ import { InputSearchExpressionGroup } from './search';
 import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
 
+import { base } from '../base';
+import { DataExportPicker } from './dataExporter';
+
+
 export interface Props {
     title: string;
     data: object[];
@@ -21,6 +25,7 @@ export interface Props {
     zeroMessage: string;
     itemVisible: boolean;
     themePalette: Partial<FabricTypes.IPalette>;
+    datasetExportHandler: (data: any, datatype: string) => void;
 }
 
 export function DataBrowser(props: Props) {
@@ -59,6 +64,12 @@ export function DataBrowser(props: Props) {
                     onSearch={props.onSearch}
                 />
             </div>}
+            {props.datasetExportHandler && (
+                <DataExportPicker
+                    data={props.data}
+                    datasetExportHandler={props.datasetExportHandler}
+                />
+            )}
         </Group>
     );
 }

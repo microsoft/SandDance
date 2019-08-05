@@ -15,6 +15,7 @@ import {
 import { DataSource, DataSourceSnapshot, InsightMap } from './types';
 import { DataSourcePicker } from './dataSourcePicker';
 import { strings } from './language';
+//import { DataExportPicker } from '@msrvida/sanddance-explorer/src/dataExporter';
 
 import VegaDeckGl = SandDance.VegaDeckGl;
 import types = SandDance.types;
@@ -136,6 +137,20 @@ export class SandDanceApp extends React.Component<Props, State> {
         );
     }
 
+  //To do: download csv, json, or tsv
+  private downloadData(data: any, datatype: string) {
+    var filename = this.state.dataSource.displayName + "." + datatype;
+
+    //https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(String(data)));
+    element.setAttribute('download', filename);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  }
+
     updateExplorerViewerOptions(viewerOptions: Partial<types.ViewerOptions>) {
         this.viewerOptions = viewerOptions;
         this.explorer && this.explorer.updateViewerOptions(this.viewerOptions);
@@ -183,6 +198,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                         this.load(this.state.dataSource, snapshotOnLoad && snapshotOnLoad.insight);
                         this.props.mounted(this);
                     }}
+                    datasetExportHandler={(data, datatype) => this.downloadData(data, datatype)}
                     datasetElement={(
                         <DataSourcePicker
                             dataSource={this.state.dataSource}
