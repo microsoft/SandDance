@@ -139,7 +139,8 @@ export class SandDanceApp extends React.Component<Props, State> {
 
   //To do: download csv, json, or tsv
   private downloadData(data: any, datatype: string) {
-    var filename = this.state.dataSource.displayName + "." + datatype;
+    var re = /.(csv|tsv|json|topojson)/
+    var filename = this.state.dataSource.displayName.replace(re, "") + "." + datatype;
 
     //https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
     var element = document.createElement('a');
