@@ -55,7 +55,7 @@ describe('Recommender', function () {
             var r = new recommender.RecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
             var rec = r.recommend();
             console.log(rec);
-            assert.ok(rec.type==='scatterplot');
+            assert.ok(rec.chart==='scatterplot');
             done();
         });
     });
@@ -67,11 +67,22 @@ describe('Recommender', function () {
             var r = new recommender.RecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
             var rec = r.recommend();
             console.log(rec);
-            assert.ok(rec.type==='scatterplot');
+            assert.ok(rec.chart==='scatterplot');
             done();
         });
     });
 
+    it(`test-scatter : recommends scatter plot `, function (done) {
+        let filePath = './test-data/test-scatter.tsv'
+        var dataAndColumnsPromise = FileGetDataAndColumns(filePath);
+        dataAndColumnsPromise.then(function (dataAndColumns) {
+            var r = new recommender.RecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
+            var rec = r.recommend();
+            console.log(rec);
+            assert.ok(rec.chart==='scatterplot');
+            done();
+        });
+    });
 
     /*
     it(`test2: Scatter plot distinct value >10 x-axis`, function (done) {
