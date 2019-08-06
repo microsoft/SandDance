@@ -1,5 +1,5 @@
 import * as SandDance from "@msrvida/sanddance";
-import { Recommender, Recommendation, Rule } from './recommender';
+import { Recommender, Recommendation, Rule, defaultColorScheme } from './recommender';
 
 const maxDistinctVal = 20;
 const minDistinctVal = 2;
@@ -23,9 +23,11 @@ export class BarChartRecommenderSummary {
             if(columns[k].name ===this.best.columns.x ) continue;
             if(columns[k].quantitative) {
                 this.best.columns.color = columns[k].name;
+                this.best.columns.sort = columns[k].name;
                 break;
             } else if ( columns[k].stats.distinctValueCount<5 && columns[k].stats.distinctValueCount>1) {
                 this.best.columns.color = columns[k].name;
+                this.best.columns.sort = columns[k].name;
                 break;
             }
         }
@@ -98,17 +100,15 @@ export class BarChartRecommender implements Recommender {
 
     }
 
-    calcBinColumn(column: SandDance.types.Column, data: object[], min: number, max: number) {
-
-    }
-
     recommend() {
+        let scheme = defaultColorScheme(this.columns[0]);
         let rec: Recommendation = {
             chart: 'barchart',
             columns: {
                 x: this.columns[0].name
             },
-            score: this.score
+            score: this.score,
+            scheme: scheme
         }
         return rec;
     }

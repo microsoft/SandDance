@@ -20,3 +20,14 @@ export abstract class Recommender {
     abstract rules: Rule[];
     abstract recommend(): Recommendation;
 }
+
+export function defaultColorScheme(c: SandDance.types.Column) {
+    if (c.quantitative) {
+        return 'redyellowgreen';
+    } else if (c.stats.distinctValueCount === 2) {
+        return 'dual_redgreen';
+    } else if (c.stats.distinctValueCount <= 10) {
+        return 'category10';
+    }
+    return 'category20';
+}

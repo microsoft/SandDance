@@ -1,5 +1,5 @@
 import * as SandDance from "@msrvida/sanddance";
-import { Recommender, Recommendation, Rule } from './recommender';
+import { Recommender, Recommendation, Rule, defaultColorScheme } from './recommender';
 
 const maxDistinctVal = 5;
 
@@ -81,6 +81,7 @@ export class DensityPlotRecommender implements Recommender {
     }
 
     recommend() {
+        let scheme = defaultColorScheme(this.columns[0]);
         let rec: Recommendation = {
             chart: 'density',
             columns: {
@@ -88,6 +89,7 @@ export class DensityPlotRecommender implements Recommender {
                 y: this.columns[1].name
             },
             score: this.score,
+            scheme: scheme
         }
         return rec;
     }

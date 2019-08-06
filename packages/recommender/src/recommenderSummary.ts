@@ -1,5 +1,5 @@
 import * as SandDance from "@msrvida/sanddance";
-import { Recommender, Recommendation, Rule } from './recommender';
+import { Recommender, Recommendation, Rule, defaultColorScheme } from './recommender';
 import { ScatterPlotRecommenderSummary } from './scatterPlot';
 import { DensityPlotRecommenderSummary } from './densityPlot';
 import { BarChartRecommenderSummary } from './barChart';
@@ -52,11 +52,13 @@ export class RecommenderSummary {
             score:undefined,
             columns:{
                 
-            }
+            },
+            scheme: undefined
         }
         columns.forEach(column => {
             if(column.name.toLowerCase() === 'longitude') {
                 longi= true;
+                rec.scheme =  defaultColorScheme(column);
                 rec.columns.x = column.name;
             }
             else if(column.name.toLowerCase() === 'latitude') {

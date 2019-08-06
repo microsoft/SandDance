@@ -1,5 +1,5 @@
 import * as SandDance from "@msrvida/sanddance";
-import { Recommender, Recommendation, Rule } from './recommender';
+import { Recommender, Recommendation, Rule, defaultColorScheme } from './recommender';
 
 const minDistinctVal = 10;
 
@@ -82,14 +82,15 @@ export class ScatterPlotRecommender implements Recommender {
     }
 
     recommend() {
+        let scheme = defaultColorScheme(this.columns[0]);
         let rec: Recommendation = {
             chart: 'scatterplot',
             columns: {
                 x: this.columns[0].name,
                 y: this.columns[1].name
             },
-
-            score: this.score
+            score: this.score,
+            scheme: scheme
         }
         return rec;
     }

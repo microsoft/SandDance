@@ -1,5 +1,5 @@
 import * as SandDance from "@msrvida/sanddance";
-import { Recommender, Recommendation, Rule } from './recommender';
+import { Recommender, Recommendation, Rule, defaultColorScheme } from './recommender';
 
 const minCV = 0.3;
 
@@ -80,10 +80,11 @@ export class TreeMapRecommender implements Recommender {
 
 
     recommend() {
+        let scheme = defaultColorScheme(this.columns[0]);
         let rec: Recommendation = {
             chart: 'treemap',
-            
-            score: this.score
+            score: this.score,
+            scheme: scheme
         }
         return rec;
     }
