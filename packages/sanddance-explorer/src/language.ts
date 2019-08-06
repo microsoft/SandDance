@@ -10,6 +10,8 @@ export const strings = {
     buttonColorSchemeKeep: 'Keep same color scheme',
     buttonCopyToClipboard: 'Copy to clipboard',
     buttonExclude: 'Exclude',
+    buttonExport: 'Export',
+    buttonExportCount: (total) => total == 1? `Export 1 row` : `Export ${total} rows`,
     buttonIsolate: 'Isolate',
     buttonReset: 'Stop filtering',
     buttonDeselect: 'Clear selection',
