@@ -24,7 +24,7 @@
     "test": "npm run build && lerna run test",
     "vsce-package": "lerna run vsce-package --parallel",
     "dev": "lerna run dev --scope dev --parallel",
-    "build-rec": "lerna run build-typescript --scope @msrvida/recommender",
+    "build-rec": "lerna run build --scope @msrvida/recommender",
     "test-rec": "lerna run test --scope @msrvida/recommender"
   },
   "repository": {
@@ -54,7 +54,7 @@
     "rollup-plugin-commonjs": "^9.1.3",
     "rollup-plugin-node-resolve": "^3.3.0",
     "ts-docs-gen": "^0.2.0",
-    "typescript": "^3.2.4",
+    "typescript": "^3.3",
     "unified": "^7.0.2"
   },
   "babel": {
