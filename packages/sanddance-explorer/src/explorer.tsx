@@ -63,7 +63,7 @@ export interface State extends SandDance.types.Insight {
   sideTabId: SideTabId;
   dataScopeId: DataScopeId;
   selectedItemIndex: { [key: number]: number };
-  snapshots: Snapshot[]
+  snapshots: Snapshot[];
 }
 
 const dataBrowserTitles: { [key: number]: string } = {};

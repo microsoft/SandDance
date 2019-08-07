@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 var assert = require('assert');
 var recommender = require("../dist/es5");
 var fs = require('fs');
@@ -45,7 +47,7 @@ describe('Recommender', function () {
     });
 
     it(`longitude/latitude: recommends scatter plot`, function (done) {
-        let filePath = './test-data/demovote-sample.tsv'
+        let filePath = '../../docs/sample-data/demovote.tsv';
         var dataAndColumnsPromise = FileGetDataAndColumns(filePath);
         dataAndColumnsPromise.then(function (dataAndColumns) {
             var r = new recommender.RecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
@@ -56,7 +58,7 @@ describe('Recommender', function () {
     });
 
     it(`test-barchart: recommends bar chart`, function (done) {
-        let filePath = './test-data/titanic-sample.tsv'
+        let filePath =  '../../docs/sample-data/titanicmaster.tsv';
         var dataAndColumnsPromise = FileGetDataAndColumns(filePath);
         dataAndColumnsPromise.then(function (dataAndColumns) {
             var r = new recommender.RecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
