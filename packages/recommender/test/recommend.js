@@ -36,11 +36,11 @@ describe('Recommender', function () {
     console.log(sampleFiles[0]);
     sampleFiles.forEach(function (sampleFile) {
         var dataAndColumnsPromise = GetDataAndColumns(sampleFile);
-        it(`${sampleFile} Recommender returns one recommendations`, function (done) {
+        it(`${sampleFile} Recommender returns one bar chart recommendations`, function (done) {
             dataAndColumnsPromise.then(function (dataAndColumns) {
                 var r = new recommender.RecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
                 var rec = r.recommend();
-                assert.ok(rec);
+                assert.ok(rec.chart === 'barchart');
                 done();
             });
         });

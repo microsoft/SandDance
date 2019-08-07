@@ -1,5 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import * as SandDance from "@msrvida/sanddance";
-import { Column } from "@msrvida/sanddance/dist/es6/types";
 import { Insight } from "@msrvida/sanddance/dist/es6/specs/types";
 
 export interface Rule {
