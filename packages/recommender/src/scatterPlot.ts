@@ -17,17 +17,19 @@ export class ScatterPlotRecommenderSummary {
             view: "2d"
         }
         columns.forEach(column => {
-            if (column.name.toLowerCase() === 'longitude') {
+            if (longi === false && column.name.toLowerCase() === 'longitude') {
                 longi = true;
-                rec.scheme = defaultColorScheme(column);
                 rec.columns.x = column.name;
             }
-            else if (column.name.toLowerCase() === 'latitude') {
+            else if (lati === false && column.name.toLowerCase() === 'latitude') {
                 lati = true;
                 rec.columns.y = column.name;
             }
-            else if (column.quantitative || column.stats.distinctValueCount < 5) {
-                rec.columns.color = column.name;
+            else if (!rec.columns.color) {
+                if(column.quantitative || column.stats.distinctValueCount < 20) {
+                    rec.columns.color = column.name;
+                    rec.scheme = defaultColorScheme(column);
+                }
             }
         });
         if (longi && lati) {

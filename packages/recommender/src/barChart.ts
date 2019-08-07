@@ -25,10 +25,12 @@ export class BarChartRecommenderSummary {
             if (columns[k].quantitative) {
                 this.best.columns.color = columns[k].name;
                 this.best.columns.sort = columns[k].name;
+                this.best.scheme =  defaultColorScheme(columns[k]);
                 break;
             } else if (columns[k].stats.distinctValueCount < 5 && columns[k].stats.distinctValueCount > 1) {
                 this.best.columns.color = columns[k].name;
                 this.best.columns.sort = columns[k].name;
+                this.best.scheme =  defaultColorScheme(columns[k]);
                 break;
             }
         }
@@ -67,14 +69,13 @@ export class BarChartRecommender implements Recommender {
     }
 
     recommend() {
-        let scheme = defaultColorScheme(this.column);
         let rec: Recommendation = {
             chart: 'barchart',
             columns: {
                 x: this.column.name
             },
             score: this.score,
-            scheme: scheme,
+            scheme: undefined,
             view: "2d"
         }
         return rec;
