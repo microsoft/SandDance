@@ -50,7 +50,7 @@ describe('Recommender', function () {
         dataAndColumnsPromise.then(function (dataAndColumns) {
             var r = new recommender.RecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
             var rec = r.recommend();
-            assert.ok(rec.chart==='scatterplot');
+            assert.ok(rec.chart === 'scatterplot');
             done();
         });
     });
@@ -61,7 +61,7 @@ describe('Recommender', function () {
         dataAndColumnsPromise.then(function (dataAndColumns) {
             var r = new recommender.RecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
             var rec = r.recommend();
-            assert.ok(rec.chart==='barchart');
+            assert.ok(rec.chart === 'barchart');
             done();
         });
     });
