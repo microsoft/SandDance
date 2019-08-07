@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "mocha",
-    "build": "tsc -p ."
+    "build-typescript": "tsc -p .",
+    "watch-typescript": "tsc -p . -w"
   },
   "author": "",
   "license": "MIT"

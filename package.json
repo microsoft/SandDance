@@ -24,7 +24,7 @@
     "test": "npm run build && lerna run test",
     "vsce-package": "lerna run vsce-package --parallel",
     "dev": "lerna run dev --scope dev --parallel",
-    "build-rec": "lerna run build --scope @msrvida/recommender",
+    "build-rec": "lerna run build-typescript --scope @msrvida/recommender",
     "test-rec": "lerna run test --scope @msrvida/recommender"
   },
   "repository": {
