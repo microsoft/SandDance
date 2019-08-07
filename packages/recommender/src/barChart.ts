@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as SandDance from "@msrvida/sanddance";
-import { Recommender, Recommendation, Rule, defaultColorScheme } from './recommender';
+import { Recommender, Recommendation, Rule, defaultColorScheme, maxCategoricalColors } from './recommender';
 
 const maxDistinctVal = 20;
 const minDistinctVal = 2;
@@ -27,7 +27,7 @@ export class BarChartRecommenderSummary {
                 this.best.columns.sort = columns[k].name;
                 this.best.scheme =  defaultColorScheme(columns[k]);
                 break;
-            } else if (columns[k].stats.distinctValueCount < 5 && columns[k].stats.distinctValueCount > 1) {
+            } else if (columns[k].stats.distinctValueCount < maxCategoricalColors && columns[k].stats.distinctValueCount > 1) {
                 this.best.columns.color = columns[k].name;
                 this.best.columns.sort = columns[k].name;
                 this.best.scheme =  defaultColorScheme(columns[k]);

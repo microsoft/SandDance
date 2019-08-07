@@ -3,6 +3,8 @@
 import * as SandDance from "@msrvida/sanddance";
 import { Insight } from "@msrvida/sanddance/dist/es6/specs/types";
 
+export const maxCategoricalColors : number = 20;
+
 export interface Rule {
     (column: SandDance.types.Column): boolean;
 }

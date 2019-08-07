@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as SandDance from "@msrvida/sanddance";
-import { Recommender, Recommendation, defaultColorScheme } from './recommender';
+import { Recommender, Recommendation, defaultColorScheme, maxCategoricalColors } from './recommender';
 
 export class ScatterPlotRecommenderSummary {
     public best: Recommendation;
@@ -26,7 +26,7 @@ export class ScatterPlotRecommenderSummary {
                 rec.columns.y = column.name;
             }
             else if (!rec.columns.color) {
-                if(column.quantitative || column.stats.distinctValueCount < 20) {
+                if(column.quantitative || column.stats.distinctValueCount < maxCategoricalColors) {
                     rec.columns.color = column.name;
                     rec.scheme = defaultColorScheme(column);
                 }
