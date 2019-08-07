@@ -2,8 +2,7 @@
     "compilerOptions": {
         "declaration": true,
         "lib": [
-            "es2015",
-            "webworker"
+            "es2015"
         ],
         "moduleResolution": "node",
         "outDir": "dist/es5",

@@ -63,8 +63,7 @@ export interface State extends SandDance.types.Insight {
   sideTabId: SideTabId;
   dataScopeId: DataScopeId;
   selectedItemIndex: { [key: number]: number };
-  snapshots: Snapshot[];
-  tryRecommend: boolean;
+  snapshots: Snapshot[]
 }
 
 const dataBrowserTitles: { [key: number]: string } = {};
@@ -141,8 +140,7 @@ export class Explorer extends React.Component<Props, State> {
       sidebarClosed: false,
       sidebarPinned: true,
       view: props.initialView || "2d",
-      snapshots: [],
-      tryRecommend: false
+      snapshots: []
     };
 
     this.state.selectedItemIndex[DataScopeId.AllData] = 0;
@@ -286,7 +284,6 @@ export class Explorer extends React.Component<Props, State> {
           filteredData: null,
           selectedItemIndex,
           sideTabId,
-          tryRecommend: false,
           ...partialInsight
         };
         this.getColorContext = null;
@@ -296,7 +293,7 @@ export class Explorer extends React.Component<Props, State> {
         //change insight
         this.changeInsight(newState as State);
         //load recommendation
-        if(!partialInsight ){
+        if (!partialInsight) {
           let r = new RecommenderSummary(dataContent.columns, dataContent.data);
           let rec = r.recommend();
           this.changeInsight(rec);
@@ -939,7 +936,7 @@ export class Explorer extends React.Component<Props, State> {
             {this.state.errors && this.state.errors.map((error, i) => (
               <div key={i}>{error}</div>
             ))}
-          </Dialog>          
+          </Dialog>
         </div>
       </div>
     );

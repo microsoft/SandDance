@@ -6,7 +6,7 @@ export interface Rule {
     (column: SandDance.types.Column): boolean;
 }
 
-export interface Recommendation  extends Partial<Insight> {
+export interface Recommendation extends Partial<Insight> {
     score: number;
 }
 

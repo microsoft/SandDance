@@ -21,7 +21,6 @@ import { Label } from 'office-ui-fabric-react/lib/Label';
 import { Modal } from 'office-ui-fabric-react/lib/components/Modal';
 import { Slider } from 'office-ui-fabric-react/lib/Slider';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
-import { TeachingBubble } from 'office-ui-fabric-react/lib/TeachingBubble';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { Toggle } from 'office-ui-fabric-react/lib/Toggle';
 
@@ -51,7 +50,6 @@ export interface FabricComponents {
   Slider: typeof Slider;
   Spinner: typeof Spinner;
   SpinnerSize: typeof SpinnerSize;
-  TeachingBubble: typeof TeachingBubble;
   TextField: typeof TextField;
   Toggle: FabricTypes.IReactCast<FabricTypes.IToggleProps>;
 }

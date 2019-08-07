@@ -6,4 +6,3 @@ export { use } from "./base";
 export { Prefs } from './partialInsight';
 export { themePalettes } from './themes'
 export * from "./explorer";
-export {RecommenderSummary} from '@msrvida/recommender'

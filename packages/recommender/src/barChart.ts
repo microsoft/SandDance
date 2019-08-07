@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import * as SandDance from "@msrvida/sanddance";
 import { Recommender, Recommendation, Rule, defaultColorScheme } from './recommender';
 
@@ -8,24 +10,23 @@ export class BarChartRecommenderSummary {
     public best: Recommendation;
 
     constructor(columns: SandDance.types.Column[], data: object[]) {
-        let score : number = -1;
+        let score: number = -1;
         for (let i = 0; i < columns.length; i++) {
-            let x : SandDance.types.Column = columns[i];
-            let recommendation = new BarChartRecommender(x, data).recommend();
+            let recommendation = new BarChartRecommender(columns[i], data).recommend();
             if (recommendation.score > score) {
                 this.best = recommendation;
                 score = recommendation.score;
             };
-            if(score===1) break;
+            if (score === 1) break;
         }
 
         for (let k = 0; k < columns.length; k++) {
-            if(columns[k].name ===this.best.columns.x ) continue;
-            if(columns[k].quantitative) {
+            if (columns[k].name === this.best.columns.x) continue;
+            if (columns[k].quantitative) {
                 this.best.columns.color = columns[k].name;
                 this.best.columns.sort = columns[k].name;
                 break;
-            } else if ( columns[k].stats.distinctValueCount<5 && columns[k].stats.distinctValueCount>1) {
+            } else if (columns[k].stats.distinctValueCount < 5 && columns[k].stats.distinctValueCount > 1) {
                 this.best.columns.color = columns[k].name;
                 this.best.columns.sort = columns[k].name;
                 break;
@@ -52,12 +53,12 @@ export class BarChartRecommender implements Recommender {
             (column) => {
                 if (column.quantitative) {
                     return true;
-                } else if (!column.quantitative && column.stats.distinctValueCount <= maxDistinctVal && column.stats.distinctValueCount >= minDistinctVal) { 
+                } else if (!column.quantitative && column.stats.distinctValueCount <= maxDistinctVal && column.stats.distinctValueCount >= minDistinctVal) {
                     return true;
                 } else {
                     return false;
                 }
-            }    
+            }
         ];
         for (let i = 0; i < this.rules.length; i++) {
             if (this.rules[i](column)) this.score++;
