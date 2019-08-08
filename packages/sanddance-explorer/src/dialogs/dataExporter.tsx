@@ -48,11 +48,11 @@ export class DataExportPicker extends React.Component<Props, State> {
         this.props
           .datasetExportHandler(convertedData, "json")
       } else if (dataExport == "csv") {
-        convertedData = this.convertToCsv(this.props.data);
+        convertedData = this.convertToDelimited(this.props.data, ',');
         this.props
           .datasetExportHandler(convertedData, "csv")
       } else if (dataExport == "tsv") {
-        convertedData = this.convertToTsv(this.props.data);
+        convertedData = this.convertToDelimited(this.props.data, '\t');
         this.props
           .datasetExportHandler(convertedData, "tsv")
       };
@@ -82,13 +82,7 @@ export class DataExportPicker extends React.Component<Props, State> {
     return value === null ? '' : value;
   }
 
-  // Convert to json and store in dataExport state
-  convertToJson(data: object[]) {
-    return JSON.stringify(data, this.columnReplacer);
-
-  }
-  // Convert to csv
-  convertToCsv(data: object[]) {
+  convertToDelimited(data: object[], delimiter: string) {
     // Adapted from: https://stackoverflow.com/questions/8847766/how-to-convert-json-to-csv-format-and-store-in-a-variable
     var json = JSON.parse(this.convertToJson(data));
     var fields = Object.keys(json[0]);
@@ -96,27 +90,17 @@ export class DataExportPicker extends React.Component<Props, State> {
     var csv = json.map(function (row) {
       return fields.map(function (fieldName) {
         return JSON.stringify(row[fieldName], replacer)
-      }).join(',')
+      }).join(delimiter)
     })
-    csv.unshift(fields.join(','));
+    csv.unshift(fields.join(delimiter));
     return (csv.join('\r\n'));
-
   }
 
-  convertToTsv(data: object[]) {
-    // Adapted from: https://stackoverflow.com/questions/8847766/how-to-convert-json-to-csv-format-and-store-in-a-variable
-    var json = JSON.parse(this.convertToJson(data));
-    var fields = Object.keys(json[0]);
-    var replacer = function(key, value) { return value === null ? '' : value };
-    var tsv = json.map(function (row) {
-      return fields.map(function (fieldName) {
-        return JSON.stringify(row[fieldName], replacer)
-      }).join('\t')
-    })
-    tsv.unshift(fields.join('\t'));
-    return (tsv.join('\r\n'));
-  }
+  // Convert to json and store in dataExport state
+  convertToJson(data: object[]) {
+    return JSON.stringify(data, this.columnReplacer);
 
+  }
 
   render() {
     const closeDialog = () => {

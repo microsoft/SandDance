@@ -13,7 +13,6 @@ import {
   themePalettes
 } from '@msrvida/sanddance-explorer';
 import { strings } from './language';
-//import { DataExportPicker } from '@msrvida/sanddance-explorer/src/dataExporter';
 
 export interface Props {
   themeColors: { [theme: string]: SandDance.types.ColorSettings };
