@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as SandDance from "@msrvida/sanddance";
-import { Recommender, Recommendation, defaultColorScheme, maxCategoricalColors } from './recommender';
+import { Recommender, Recommendation, defaultColorScheme, maxCategoricalColors, RecommenderColumn } from './recommender';
 
 export class ScatterPlotRecommenderSummary {
     public best: Recommendation;
 
-    constructor(columns: SandDance.types.Column[], data: object[]) {
+    constructor(columns: RecommenderColumn[], data: object[]) {
         let longi = false;
         let lati = false;
         let rec: Recommendation = {
@@ -25,7 +25,7 @@ export class ScatterPlotRecommenderSummary {
                 lati = true;
                 rec.columns.y = column.name;
             }
-            else if (!rec.columns.color) {
+            else if (!rec.columns.color && !column.isSequential) {
                 if(column.quantitative || column.stats.distinctValueCount < maxCategoricalColors) {
                     rec.columns.color = column.name;
                     rec.scheme = defaultColorScheme(column);
