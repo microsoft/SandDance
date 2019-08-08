@@ -15,7 +15,6 @@ import {
 import { DataSource, DataSourceSnapshot, InsightMap } from './types';
 import { DataSourcePicker } from './dataSourcePicker';
 import { strings } from './language';
-//import { DataExportPicker } from '@msrvida/sanddance-explorer/src/dataExporter';
 
 import VegaDeckGl = SandDance.VegaDeckGl;
 import types = SandDance.types;
