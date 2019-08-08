@@ -44,7 +44,7 @@ export class DataExportPicker extends React.Component<Props, State> {
       var convertedData: any;
       this.setState({ exportType: dataExport });
       if (dataExport == "json") {
-        convertedData = this.convertToJson(this.props.data);
+        convertedData = this.convertToDelimited(this.props.data);
         this.props
           .datasetExportHandler(convertedData, "json")
       } else if (dataExport == "csv") {
@@ -82,26 +82,26 @@ export class DataExportPicker extends React.Component<Props, State> {
     return value === null ? '' : value;
   }
 
-  convertToDelimited(data: object[], delimiter: string) {
+  convertToDelimited(data: object[], delimiter?: string) {
     // Adapted from: https://stackoverflow.com/questions/8847766/how-to-convert-json-to-csv-format-and-store-in-a-variable
-    var json = JSON.parse(this.convertToJson(data));
+    if (delimiter === undefined)  {
+      return JSON.stringify(data, this.columnReplacer);;
+    } 
+
+    var json = JSON.parse(JSON.stringify(data, this.columnReplacer));
+
     var fields = Object.keys(json[0]);
     var replacer = function(key, value) { return value === null ? '' : value };
-    var csv = json.map(function (row) {
+    var file = json.map(function (row) {
       return fields.map(function (fieldName) {
         return JSON.stringify(row[fieldName], replacer)
       }).join(delimiter)
     })
-    csv.unshift(fields.join(delimiter));
-    return (csv.join('\r\n'));
+    file.unshift(fields.join(delimiter));
+    return (file.join('\r\n'));
   }
 
-  // Convert to json and store in dataExport state
-  convertToJson(data: object[]) {
-    return JSON.stringify(data, this.columnReplacer);
-
-  }
-
+ 
   render() {
     const closeDialog = () => {
       this.setState({ dialogHidden: true, working: true, exportType: DataExportPicker.urlTypes[0] });
