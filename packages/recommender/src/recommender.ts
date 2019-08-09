@@ -1,15 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as SandDance from "@msrvida/sanddance";
-import { Insight } from "@msrvida/sanddance/dist/es6/specs/types";
 
-export const maxCategoricalColors : number = 20;
+export const maxCategoricalColors: number = 20;
 
 export interface Rule {
     (column: RecommenderColumn): boolean;
 }
 
-export interface Recommendation extends Partial<Insight> {
+export interface Recommendation extends Partial<SandDance.types.Insight> {
     score: number;
 }
 
@@ -37,15 +36,15 @@ export function defaultColorScheme(c: SandDance.types.Column) {
 export function detectSequential(column: SandDance.types.Column, data: object[]): boolean {
     let rowCount = data.length;
     let colname = column.name;
-    if (data.length>1000) {
+    if (data.length > 1000) {
         rowCount = 1000;
     }
     let startPointer = 0;
-    let endPointer = rowCount-1;
-    if(data[endPointer][colname] - data[startPointer][colname] !== endPointer-startPointer) return false;
-    while(startPointer < endPointer){
-        if(data[endPointer][colname] !== data[endPointer-1][colname]+1 ) return false;
-        if(data[startPointer][colname] !== data[startPointer+1][colname]-1 ) return false;
+    let endPointer = rowCount - 1;
+    if (data[endPointer][colname] - data[startPointer][colname] !== endPointer - startPointer) return false;
+    while (startPointer < endPointer) {
+        if (data[endPointer][colname] !== data[endPointer - 1][colname] + 1) return false;
+        if (data[startPointer][colname] !== data[startPointer + 1][colname] - 1) return false;
         startPointer++;
         endPointer--;
     }
@@ -53,16 +52,10 @@ export function detectSequential(column: SandDance.types.Column, data: object[])
 }
 
 export function detectSequentialAll(columns: SandDance.types.Column[], data: object[]): RecommenderColumn[] {
-    let recommenderColumns :RecommenderColumn[] = [];
+    let recommenderColumns: RecommenderColumn[] = [];
     columns.forEach(column => {
-        let isSequential = detectSequential(column, data);
-        let col : RecommenderColumn= {
-            name: column.name,
-            type: column.type,
-            quantitative: column.quantitative,
-            stats: column.stats,
-            isSequential: isSequential
-        }
+        let col = column as RecommenderColumn;
+        col.isSequential = detectSequential(column, data);
         recommenderColumns.push(col);
     });
     return recommenderColumns;
