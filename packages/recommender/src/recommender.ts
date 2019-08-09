@@ -33,13 +33,12 @@ export function defaultColorScheme(c: SandDance.types.Column) {
     return 'category20';
 }
 
-export function detectSequential(column: SandDance.types.Column, data: object[]): boolean {
-    let rowCount = data.length;
+function detectSequentialColumn(column: SandDance.types.Column, data: object[]): boolean {
+    if (data.length < 2) return false;
     let colname = column.name;
     let startPointer = 0;
-    let endPointer = rowCount - 1;
-    if (data[endPointer][colname] - data[startPointer][colname] !== endPointer - startPointer) return false;
-    while (startPointer<1000 && startPointer < endPointer) {
+    let endPointer = data.length - 1;
+    while (startPointer < 1000 && startPointer < endPointer) {
         if (data[endPointer][colname] !== data[endPointer - 1][colname] + 1) return false;
         if (data[startPointer][colname] !== data[startPointer + 1][colname] - 1) return false;
         startPointer++;
@@ -48,12 +47,10 @@ export function detectSequential(column: SandDance.types.Column, data: object[])
     return true;
 }
 
-export function detectSequentialAll(columns: SandDance.types.Column[], data: object[]): RecommenderColumn[] {
-    let recommenderColumns: RecommenderColumn[] = [];
+export function getRecommenderColumns(columns: SandDance.types.Column[], data: object[]) {
     columns.forEach(column => {
-        let col = column as RecommenderColumn;
-        col.isSequential = detectSequential(column, data);
-        recommenderColumns.push(col);
+        if (!column.quantitative || column.type !== 'integer') return;
+        (column as RecommenderColumn).isSequential = detectSequentialColumn(column, data);
     });
-    return recommenderColumns;
+    return columns as RecommenderColumn[];
 }
