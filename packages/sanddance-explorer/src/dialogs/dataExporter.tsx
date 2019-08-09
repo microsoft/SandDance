@@ -88,7 +88,6 @@ export class DataExportPicker extends React.Component<Props, State> {
     } 
 
     var json = JSON.parse(JSON.stringify(data, this.columnReplacer));
-
     var fields = Object.keys(json[0]);
     var replacer = function(key, value) { return value === null ? '' : value };
     var file = json.map(function (row) {
@@ -114,7 +113,6 @@ export class DataExportPicker extends React.Component<Props, State> {
           onClick={() => this.setState({ dialogHidden: false })}
           disabled={this.props.disabled}
         />
-
         <base.fabric.Dialog
           hidden={this.state.dialogHidden}
           onDismiss={closeDialog}
