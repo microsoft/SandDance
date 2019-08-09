@@ -98,7 +98,6 @@ export class DataExportPicker extends React.Component<Props, State> {
     file.unshift(fields.join(delimiter));
     return (file.join('\r\n'));
   }
-
  
   render() {
     const closeDialog = () => {
