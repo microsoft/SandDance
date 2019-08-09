@@ -148,7 +148,6 @@ export class SandDanceApp extends React.Component<Props, State> {
     document.body.removeChild(element);
   }
 
-
   updateExplorerViewerOptions(viewerOptions: Partial<SandDance.types.ViewerOptions>) {
     this.viewerOptions = viewerOptions;
     this.explorer && this.explorer.updateViewerOptions(this.viewerOptions);
