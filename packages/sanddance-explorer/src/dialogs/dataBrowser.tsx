@@ -68,7 +68,6 @@ export function DataBrowser(props: Props) {
                 <DataExportPicker
                     data={props.data}
                     datasetExportHandler={props.datasetExportHandler}
-                    //disabled={props.data.length == 0}
                 />
             )}
         </Group>
