@@ -26,9 +26,12 @@ export class ScatterPlotRecommenderSummary {
                 rec.columns.y = column.name;
             }
             else if (!rec.columns.color && !column.isSequential) {
-                if(column.quantitative || column.stats.distinctValueCount < maxCategoricalColors) {
-                    rec.columns.color = column.name;
+                if (column.quantitative || column.stats.distinctValueCount < maxCategoricalColors) {
+                    rec.columns.color = rec.columns.sort = column.name;
                     rec.scheme = defaultColorScheme(column);
+                    if (column.quantitative) {
+                        rec.colorBin = 'quantile';
+                    }
                 }
             }
         });
