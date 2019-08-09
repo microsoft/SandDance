@@ -8,7 +8,6 @@ import { base } from '../base';
 import { SandDance } from '@msrvida/sanddance-react';
 
 export interface Props {
-    //dataSource: DataSource;
     data: object[];
     datasetExportHandler: (data: any, datatype: string) => void;
     disabled?: boolean;
