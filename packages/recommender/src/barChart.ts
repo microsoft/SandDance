@@ -22,15 +22,9 @@ export class BarChartRecommenderSummary {
 
         for (let k = 0; k < columns.length; k++) {
             if (columns[k].name === this.best.columns.x || columns[k].isSequential) continue;
-            if (columns[k].quantitative) {
-                this.best.columns.color = columns[k].name;
-                this.best.columns.sort = columns[k].name;
-                this.best.scheme =  defaultColorScheme(columns[k]);
-                break;
-            } else if (columns[k].stats.distinctValueCount < maxCategoricalColors && columns[k].stats.distinctValueCount > 1) {
-                this.best.columns.color = columns[k].name;
-                this.best.columns.sort = columns[k].name;
-                this.best.scheme =  defaultColorScheme(columns[k]);
+            if (columns[k].quantitative || (columns[k].stats.distinctValueCount < maxCategoricalColors && columns[k].stats.distinctValueCount > 1)) {
+                this.best.columns.color = this.best.columns.sort = columns[k].name;
+                this.best.scheme = defaultColorScheme(columns[k]);
                 break;
             }
         }
@@ -53,7 +47,7 @@ export class BarChartRecommender implements Recommender {
         //the total score for bar chart is 1
         this.rules = [
             (column) => {
-                if(column.isSequential) return false;
+                if (column.isSequential) return false;
                 else if (column.quantitative) {
                     return true;
                 } else if (!column.quantitative && column.stats.distinctValueCount <= maxDistinctVal && column.stats.distinctValueCount >= minDistinctVal) {
