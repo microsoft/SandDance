@@ -10,7 +10,6 @@ import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
 import { DataExportPicker } from './dataExporter';
 
-
 export interface Props {
     title: string;
     data: object[];

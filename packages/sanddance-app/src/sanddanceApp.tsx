@@ -4,7 +4,6 @@ import * as React from 'react';
 import { base } from './base';
 import { DataSource, DataSourceSnapshot, InsightMap } from './types';
 import { DataSourcePicker } from './dataSourcePicker';
-
 import {
   Explorer,
   Prefs,
@@ -205,7 +204,6 @@ export class SandDanceApp extends React.Component<Props, State> {
                 return this.load(ds);
               }}
             />
-
           )}
           topBarButtonProps={[
             {
