@@ -21,10 +21,14 @@ export class BarChartRecommenderSummary {
         }
 
         for (let k = 0; k < columns.length; k++) {
-            if (columns[k].name === this.best.columns.x || columns[k].isSequential) continue;
-            if (columns[k].quantitative || (columns[k].stats.distinctValueCount < maxCategoricalColors && columns[k].stats.distinctValueCount > 1)) {
-                this.best.columns.color = this.best.columns.sort = columns[k].name;
-                this.best.scheme = defaultColorScheme(columns[k]);
+            let column = columns[k];
+            if (column.name === this.best.columns.x || column.isSequential) continue;
+            if (column.quantitative || (column.stats.distinctValueCount < maxCategoricalColors && column.stats.distinctValueCount > 1)) {
+                this.best.columns.color = this.best.columns.sort = column.name;
+                this.best.scheme = defaultColorScheme(column);
+                if (column.quantitative) {
+                    this.best.colorBin = 'quantile';
+                }
                 break;
             }
         }
