@@ -68,7 +68,9 @@ function getStats(data: object[], column: Column) {
             sum += num;
         }
     }
-    stats.mean = data.length > 0 && (sum / data.length);
+    if (column.quantitative) {
+        stats.mean = data.length > 0 && (sum / data.length);
+    }
     stats.distinctValueCount = Object.keys(distinctMap).length;
     return stats;
 }

@@ -22,6 +22,7 @@ import { DataScopeId } from './controls/dataScope';
 import { Dialog } from './controls/dialog';
 import { ensureColumnsExist, ensureColumnsPopulated } from './columns';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { RecommenderSummary } from '@msrvida/recommender';
 import { InputSearchExpressionGroup, Search } from './dialogs/search';
 import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
 import { Settings } from './dialogs/settings';
@@ -286,12 +287,17 @@ export class Explorer extends React.Component<Props, State> {
           ...partialInsight
         };
         this.getColorContext = null;
-
         ensureColumnsExist(newState.columns, dataContent.columns);
         const errors = ensureColumnsPopulated(partialInsight ? partialInsight.chart : null, newState.columns, dataContent.columns);
         newState.errors = errors;
-
+        //change insight
         this.changeInsight(newState as State);
+        //load recommendation
+        if (!partialInsight) {
+          let r = new RecommenderSummary(dataContent.columns, dataContent.data);
+          let rec = r.recommend();
+          this.changeInsight(rec);
+        }
         //make sure item is active
         this.activateDataBrowserItem(sideTabId, this.state.dataScopeId);
         resolve();
