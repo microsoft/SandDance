@@ -1,5 +1,8 @@
-import { SandDance } from "@msrvida/sanddance-react";
-import { strings } from "./language";
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+import { preferredColumnForTreemapSize } from '@msrvida/recommender';
+import { SandDance } from '@msrvida/sanddance-react';
+import { strings } from './language';
 
 export function ensureColumnsExist(insightColumns: SandDance.types.InsightColumns, actualColumns: SandDance.types.Column[]) {
     //ensure columns exist
@@ -33,12 +36,9 @@ export function ensureColumnsPopulated(chart: SandDance.types.Chart, insightColu
             break;
         case 'treemap':
             if (!insightColumns.size) {
-                for (let i = 0; i < actualColumns.length; i++) {
-                    let c = actualColumns[i];
-                    if (c.quantitative) {
-                        insightColumns.size = c.name;
-                        break;
-                    }
+                insightColumns.size = preferredColumnForTreemapSize(actualColumns, true);
+                if (!insightColumns.size) {
+                    insightColumns.size = preferredColumnForTreemapSize(actualColumns, false);
                 }
             }
             if (!insightColumns.size) {

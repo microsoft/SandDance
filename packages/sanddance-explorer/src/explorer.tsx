@@ -8,7 +8,7 @@ import { bestColorScheme } from './colorScheme';
 import { Chart } from './dialogs/chart';
 import { Color } from './dialogs/color';
 import { ColumnMapProps } from './controls/columnMap';
-import { ColumnsAndScheme, loadDataArray, loadDataFile } from './dataLoader';
+import { loadDataArray, loadDataFile } from './dataLoader';
 import {
   copyPrefToNewState,
   initPrefs,
@@ -22,7 +22,7 @@ import { DataScopeId } from './controls/dataScope';
 import { Dialog } from './controls/dialog';
 import { ensureColumnsExist, ensureColumnsPopulated } from './columns';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
-import { RecommenderSummary } from '@msrvida/recommender';
+import { preferredColumnForTreemapSize, RecommenderSummary } from '@msrvida/recommender';
 import { InputSearchExpressionGroup, Search } from './dialogs/search';
 import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
 import { Settings } from './dialogs/settings';
@@ -258,16 +258,17 @@ export class Explorer extends React.Component<Props, State> {
   ) {
     this.changeInsight({ columns: null });
     return new Promise<void>((resolve, reject) => {
-      const loadFinal = (
-        result: [DataContent, ColumnsAndScheme]
-      ) => {
-        const [dataContent, columnsAndScheme] = result;
-        const { scheme, columns } = columnsAndScheme;
+      const loadFinal = (dataContent: DataContent) => {
         let partialInsight: Partial<SandDance.types.Insight>;
         this.prefs = prefs || {};
         if (getPartialInsight) {
           partialInsight = getPartialInsight(dataContent.columns);
           initPrefs(this.prefs, partialInsight);
+        }
+        if (!partialInsight) {
+          //load recommendation
+          let r = new RecommenderSummary(dataContent.columns, dataContent.data);
+          partialInsight = r.recommend();
         }
         const selectedItemIndex = { ...this.state.selectedItemIndex };
         const sideTabId = SideTabId.ChartType;
@@ -277,8 +278,6 @@ export class Explorer extends React.Component<Props, State> {
         let newState: Partial<State> = {
           dataFile,
           dataContent,
-          scheme,
-          columns,
           autoCompleteDistinctValues: {},
           filter: null,
           filteredData: null,
@@ -292,12 +291,6 @@ export class Explorer extends React.Component<Props, State> {
         newState.errors = errors;
         //change insight
         this.changeInsight(newState as State);
-        //load recommendation
-        if (!partialInsight) {
-          let r = new RecommenderSummary(dataContent.columns, dataContent.data);
-          let rec = r.recommend();
-          this.changeInsight(rec);
-        }
         //make sure item is active
         this.activateDataBrowserItem(sideTabId, this.state.dataScopeId);
         resolve();
@@ -334,11 +327,14 @@ export class Explorer extends React.Component<Props, State> {
       newState.view = '2d';
       if (!columns.size) {
         //make sure size exists and is numeric
-        const sizeColumn = this.state.dataContent.columns.filter(c => c.quantitative)[0];
-        if (!sizeColumn) {
+        let sizeColumnName = preferredColumnForTreemapSize(this.state.dataContent.columns, true);
+        if (!sizeColumnName) {
+          sizeColumnName = preferredColumnForTreemapSize(this.state.dataContent.columns, false);
+        }
+        if (!sizeColumnName) {
           //TODO error - no numeric columns
         } else {
-          newState.columns = { ...columns, size: sizeColumn.name };
+          newState.columns = { ...columns, size: sizeColumnName };
         }
       }
     } else if (chart === 'stacks') {

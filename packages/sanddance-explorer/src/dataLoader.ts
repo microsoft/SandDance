@@ -3,12 +3,7 @@
 import { DataContent, DataFile } from './interfaces';
 import { SandDance } from '@msrvida/sanddance-react';
 
-export interface ColumnsAndScheme {
-    scheme: string;
-    columns: SandDance.types.InsightColumns;
-}
-
-export const loadDataFile = (dataFile: DataFile) => new Promise<[DataContent, ColumnsAndScheme]>((resolve, reject) => {
+export const loadDataFile = (dataFile: DataFile) => new Promise<DataContent>((resolve, reject) => {
     const vega = SandDance.VegaDeckGl.base.vega;
     const loader = vega.loader();
 
@@ -26,28 +21,7 @@ export const loadDataFile = (dataFile: DataFile) => new Promise<[DataContent, Co
     }
 });
 
-export const loadDataArray = (data: object[]) => new Promise<[DataContent, ColumnsAndScheme]>((resolve, reject) => {
+export const loadDataArray = (data: object[]) => new Promise<DataContent>((resolve, reject) => {
     const columns = SandDance.util.getColumnsFromData(data);
-    resolve([{ data, columns }, getInsightColumns(columns)]);
+    resolve({ data, columns });
 });
-
-function getInsightColumns(columnArray: SandDance.types.Column[]): ColumnsAndScheme {
-    let scheme: string;
-    const colorColumn = columnArray[2] as SandDance.types.Column;
-    if (colorColumn) {
-        scheme = colorColumn.quantitative ? 'redyellowgreen' : 'category20';
-    }
-
-    const columns: SandDance.types.InsightColumns = {
-        x: columnArray[0] && columnArray[0].name,
-        y: columnArray[1] && columnArray[1].name,
-        color: colorColumn && colorColumn.name,
-        z: columnArray[3] && columnArray[3].name
-    };
-    const numericColumn = columnArray.filter(c => c.quantitative)[0];
-    if (numericColumn) {
-        columns.size = numericColumn.name;
-    }
-
-    return { scheme, columns };
-}
