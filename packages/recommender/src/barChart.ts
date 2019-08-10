@@ -1,7 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as SandDance from "@msrvida/sanddance";
-import { Recommender, Recommendation, Rule, defaultColorScheme, maxCategoricalColors, RecommenderColumn } from './recommender';
+import {
+    defaultColorScheme,
+    maxCategoricalColors,
+    Recommendation,
+    Recommender,
+    RecommenderColumn,
+    Rule
+} from './recommender';
 
 const maxDistinctVal = 20;
 const minDistinctVal = 2;

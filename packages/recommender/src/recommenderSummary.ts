@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as SandDance from "@msrvida/sanddance";
-import { Recommendation, getRecommenderColumns } from './recommender';
+import * as SandDance from '@msrvida/sanddance';
 import { BarChartRecommenderSummary } from './barChart';
+import { getRecommenderColumns, Recommendation } from './recommender';
 import { ScatterPlotRecommenderSummary } from './scatterPlot';
 
 export class RecommenderSummary {
