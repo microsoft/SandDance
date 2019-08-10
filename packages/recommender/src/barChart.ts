@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import * as SandDance from '@msrvida/sanddance';
 import {
     defaultColorScheme,
     maxCategoricalColors,
     Recommendation,
     Recommender,
-    RecommenderColumn,
     Rule
 } from './recommender';
 
@@ -15,7 +15,7 @@ const minDistinctVal = 2;
 export class BarChartRecommenderSummary {
     public best: Recommendation;
 
-    constructor(columns: RecommenderColumn[], data: object[]) {
+    constructor(columns: SandDance.types.Column[], data: object[]) {
         let score: number = -1;
         for (let i = 0; i < columns.length; i++) {
             let recommendation = new BarChartRecommender(columns[i], data).recommend();
@@ -28,7 +28,7 @@ export class BarChartRecommenderSummary {
 
         for (let k = 0; k < columns.length; k++) {
             let column = columns[k];
-            if (column.name === this.best.columns.x || column.isSequential) continue;
+            if (column.name === this.best.columns.x || column.stats.isSequential) continue;
             if (column.quantitative || (column.stats.distinctValueCount < maxCategoricalColors && column.stats.distinctValueCount > 1)) {
                 this.best.columns.color = this.best.columns.sort = column.name;
                 this.best.scheme = defaultColorScheme(column);
@@ -48,16 +48,16 @@ export class BarChartRecommenderSummary {
 
 export class BarChartRecommender implements Recommender {
     public rules: Rule[];
-    public column: RecommenderColumn;
+    public column: SandDance.types.Column;
     public score: number;
 
-    constructor(column: RecommenderColumn, data: object[]) {
+    constructor(column: SandDance.types.Column, data: object[]) {
         this.score = 0;
         this.column = column;
         //the total score for bar chart is 1
         this.rules = [
             (column) => {
-                if (column.isSequential) return false;
+                if (column.stats.isSequential) return false;
                 else if (column.quantitative) {
                     return true;
                 } else if (!column.quantitative && column.stats.distinctValueCount <= maxDistinctVal && column.stats.distinctValueCount >= minDistinctVal) {

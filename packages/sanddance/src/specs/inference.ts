@@ -70,7 +70,27 @@ function getStats(data: object[], column: Column) {
     }
     if (column.quantitative) {
         stats.mean = data.length > 0 && (sum / data.length);
+        stats.hasNegative = detectNegative(column, data);
+        if (column.type === 'integer') {
+            stats.isSequential = detectSequentialColumn(column, data);
+        }
     }
     stats.distinctValueCount = Object.keys(distinctMap).length;
     return stats;
+}
+
+function detectNegative(column: Column, data: object[]) {
+    for (let i = 1; i < data.length; i++) {
+        if (data[i][column.name] < 0) return true;
+    }
+    return false;
+}
+
+function detectSequentialColumn(column: Column, data: object[]): boolean {
+    if (data.length < 2) return false;
+    let colname = column.name;
+    for (let i = 1; i < data.length; i++) {
+        if (data[i][colname] !== data[i - 1][colname] + 1) return false;
+    }
+    return true;
 }

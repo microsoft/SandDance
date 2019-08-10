@@ -2,18 +2,17 @@
 // Licensed under the MIT license.
 import * as SandDance from '@msrvida/sanddance';
 import { BarChartRecommenderSummary } from './barChart';
-import { getRecommenderColumns, Recommendation } from './recommender';
+import { Recommendation } from './recommender';
 import { ScatterPlotRecommenderSummary } from './scatterPlot';
 
 export class RecommenderSummary {
     public rec: Recommendation;
 
     constructor(columns: SandDance.types.Column[], data: object[]) {
-        let recommenderColumns = getRecommenderColumns(columns, data);
-        let quickRec: Recommendation = new ScatterPlotRecommenderSummary(recommenderColumns, data).recommend();
+        let quickRec: Recommendation = new ScatterPlotRecommenderSummary(columns, data).recommend();
         if (quickRec) this.rec = quickRec;
         else {
-            let barChartrec: Recommendation = new BarChartRecommenderSummary(recommenderColumns, data).recommend();
+            let barChartrec: Recommendation = new BarChartRecommenderSummary(columns, data).recommend();
             if (barChartrec.score >= 1) this.rec = barChartrec;
         }
     }

@@ -1,16 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import {
-    defaultColorScheme,
-    maxCategoricalColors,
-    Recommendation,
-    RecommenderColumn
-} from './recommender';
+import * as SandDance from '@msrvida/sanddance';
+import { defaultColorScheme, maxCategoricalColors, Recommendation } from './recommender';
+import { isLatitude, isLongitude } from './geo';
 
 export class ScatterPlotRecommenderSummary {
     public best: Recommendation;
 
-    constructor(columns: RecommenderColumn[], data: object[]) {
+    constructor(columns: SandDance.types.Column[], data: object[]) {
         let longi = false;
         let lati = false;
         let rec: Recommendation = {
@@ -21,15 +18,15 @@ export class ScatterPlotRecommenderSummary {
             view: "2d"
         }
         columns.forEach(column => {
-            if (longi === false && column.name.toLowerCase() === 'longitude') {
+            if (longi === false && isLongitude(column)) {
                 longi = true;
                 rec.columns.x = column.name;
             }
-            else if (lati === false && column.name.toLowerCase() === 'latitude') {
+            else if (lati === false && isLatitude(column)) {
                 lati = true;
                 rec.columns.y = column.name;
             }
-            else if (!rec.columns.color && !column.isSequential) {
+            else if (!rec.columns.color && !column.stats.isSequential) {
                 if (column.quantitative || column.stats.distinctValueCount < maxCategoricalColors) {
                     rec.columns.color = rec.columns.sort = column.name;
                     rec.scheme = defaultColorScheme(column);
