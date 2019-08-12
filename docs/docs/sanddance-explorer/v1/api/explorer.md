@@ -23,6 +23,18 @@ public constructor(props: Props);
 
 ## Methods
 
+### finalize()
+
+```typescript
+public finalize(): void;
+```
+
+**Return type**
+
+void
+
+----------
+
 ### updateViewerOptions(viewerOptions)
 
 ```typescript
@@ -314,23 +326,24 @@ public prefs: Prefs;
 [ClassDeclaration-0]: explorer#explorer
 [Constructor-0]: explorer#constructorprops
 [InterfaceDeclaration-6]: ../index#props
-[MethodDeclaration-0]: explorer#updatevieweroptionsvieweroptions
-[MethodDeclaration-1]: explorer#signalsignalname-signalvalue
-[MethodDeclaration-2]: explorer#setinsightpartialinsight
-[MethodDeclaration-3]: explorer#loaddata-getpartialinsight-prefs
+[MethodDeclaration-0]: explorer#finalize
+[MethodDeclaration-1]: explorer#updatevieweroptionsvieweroptions
+[MethodDeclaration-2]: explorer#signalsignalname-signalvalue
+[MethodDeclaration-3]: explorer#setinsightpartialinsight
+[MethodDeclaration-4]: explorer#loaddata-getpartialinsight-prefs
 [InterfaceDeclaration-1]: ../index#datafile
 [InterfaceDeclaration-3]: ../index#prefs
-[MethodDeclaration-4]: explorer#changecharttypechart
-[MethodDeclaration-5]: explorer#calculatecalculating
-[MethodDeclaration-6]: explorer#changeviewview
-[MethodDeclaration-7]: explorer#changeinsightnewstate
+[MethodDeclaration-5]: explorer#changecharttypechart
+[MethodDeclaration-6]: explorer#calculatecalculating
+[MethodDeclaration-7]: explorer#changeviewview
+[MethodDeclaration-8]: explorer#changeinsightnewstate
 [InterfaceDeclaration-7]: ../index#state
-[MethodDeclaration-8]: explorer#changespeccapabilitiesspeccapabilities
-[MethodDeclaration-9]: explorer#changecolumnmappingrole-column-options
-[MethodDeclaration-10]: explorer#sidebarsidebarclosed-sidebarpinned
-[MethodDeclaration-11]: explorer#resize
-[MethodDeclaration-12]: explorer#componentdidmount
-[MethodDeclaration-13]: explorer#render
+[MethodDeclaration-9]: explorer#changespeccapabilitiesspeccapabilities
+[MethodDeclaration-10]: explorer#changecolumnmappingrole-column-options
+[MethodDeclaration-11]: explorer#sidebarsidebarclosed-sidebarpinned
+[MethodDeclaration-12]: explorer#resize
+[MethodDeclaration-13]: explorer#componentdidmount
+[MethodDeclaration-14]: explorer#render
 [PropertyDeclaration-0]: explorer#viewer
 [PropertyDeclaration-1]: explorer#vieweroptions
 [PropertyDeclaration-2]: explorer#discardcolorcontextupdates

@@ -212,6 +212,18 @@ public getSignalValues(): SignalValues;
 
 [SignalValues][InterfaceDeclaration-11]
 
+----------
+
+### finalize()
+
+```typescript
+public finalize(): void;
+```
+
+**Return type**
+
+void
+
 ## Properties
 
 ### defaultViewerOptions
@@ -341,26 +353,27 @@ number
 [ClassDeclaration-5]: viewer#viewer
 [Constructor-2]: viewer#constructorelement-options
 [InterfaceDeclaration-23]: types#vieweroptions
-[MethodDeclaration-9]: viewer#rendersamelayoutnewvieweroptions
+[MethodDeclaration-10]: viewer#rendersamelayoutnewvieweroptions
 [InterfaceDeclaration-23]: types#vieweroptions
-[MethodDeclaration-10]: viewer#renderinsight-data-options
+[MethodDeclaration-11]: viewer#renderinsight-data-options
 [InterfaceDeclaration-8]: types#insight
 [InterfaceDeclaration-38]: types#renderoptions
 [InterfaceDeclaration-19]: types#renderresult
-[MethodDeclaration-11]: viewer#filtersearch
+[MethodDeclaration-12]: viewer#filtersearch
 [TypeAliasDeclaration-3]: types#search
-[MethodDeclaration-12]: viewer#reset
-[MethodDeclaration-13]: viewer#selectsearch
+[MethodDeclaration-13]: viewer#reset
+[MethodDeclaration-14]: viewer#selectsearch
 [TypeAliasDeclaration-3]: types#search
-[MethodDeclaration-14]: viewer#deselect
-[MethodDeclaration-15]: viewer#getselection
+[MethodDeclaration-15]: viewer#deselect
+[MethodDeclaration-16]: viewer#getselection
 [InterfaceDeclaration-42]: types#selectionstate
-[MethodDeclaration-16]: viewer#activatedatum
-[MethodDeclaration-17]: viewer#deactivate
-[MethodDeclaration-18]: viewer#getinsight
+[MethodDeclaration-17]: viewer#activatedatum
+[MethodDeclaration-18]: viewer#deactivate
+[MethodDeclaration-19]: viewer#getinsight
 [InterfaceDeclaration-8]: types#insight
-[MethodDeclaration-19]: viewer#getsignalvalues
+[MethodDeclaration-20]: viewer#getsignalvalues
 [InterfaceDeclaration-11]: types#signalvalues
+[MethodDeclaration-21]: viewer#finalize
 [PropertyDeclaration-16]: viewer#defaultvieweroptions
 [InterfaceDeclaration-23]: types#vieweroptions
 [PropertyDeclaration-17]: viewer#speccapabilities
