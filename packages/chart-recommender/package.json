@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Recommendation engine for SandDance charts",
   "main": "dist/es5/index.js",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@msrvida/sanddance": "^1.1.1",
     "vega-lib": "^4.3.0"
