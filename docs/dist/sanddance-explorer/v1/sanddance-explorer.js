@@ -5173,16 +5173,31 @@ var named = {
   yellowgreen: 0x9acd32
 };
 (0, _define.default)(Color, color, {
+  copy: function (channels) {
+    return Object.assign(new this.constructor(), this, channels);
+  },
   displayable: function () {
     return this.rgb().displayable();
   },
-  hex: function () {
-    return this.rgb().hex();
-  },
-  toString: function () {
-    return this.rgb() + "";
-  }
+  hex: color_formatHex,
+  // Deprecated! Use color.formatHex.
+  formatHex: color_formatHex,
+  formatHsl: color_formatHsl,
+  formatRgb: color_formatRgb,
+  toString: color_formatRgb
 });
+
+function color_formatHex() {
+  return this.rgb().formatHex();
+}
+
+function color_formatHsl() {
+  return hslConvert(this).formatHsl();
+}
+
+function color_formatRgb() {
+  return this.rgb().formatRgb();
+}
 
 function color(format) {
   var m;
@@ -5195,7 +5210,8 @@ function color(format) {
   : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
   : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
   : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-  : named.hasOwnProperty(format) ? rgbn(named[format]) : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0) : null;
+  : named.hasOwnProperty(format) ? rgbn(named[format]) // eslint-disable-line no-prototype-builtins
+  : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0) : null;
 }
 
 function rgbn(n) {
@@ -5238,17 +5254,24 @@ function Rgb(r, g, b, opacity) {
     return this;
   },
   displayable: function () {
-    return 0 <= this.r && this.r <= 255 && 0 <= this.g && this.g <= 255 && 0 <= this.b && this.b <= 255 && 0 <= this.opacity && this.opacity <= 1;
+    return -0.5 <= this.r && this.r < 255.5 && -0.5 <= this.g && this.g < 255.5 && -0.5 <= this.b && this.b < 255.5 && 0 <= this.opacity && this.opacity <= 1;
   },
-  hex: function () {
-    return "#" + hex(this.r) + hex(this.g) + hex(this.b);
-  },
-  toString: function () {
-    var a = this.opacity;
-    a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-    return (a === 1 ? "rgb(" : "rgba(") + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.b) || 0)) + (a === 1 ? ")" : ", " + a + ")");
-  }
+  hex: rgb_formatHex,
+  // Deprecated! Use color.formatHex.
+  formatHex: rgb_formatHex,
+  formatRgb: rgb_formatRgb,
+  toString: rgb_formatRgb
 }));
+
+function rgb_formatHex() {
+  return "#" + hex(this.r) + hex(this.g) + hex(this.b);
+}
+
+function rgb_formatRgb() {
+  var a = this.opacity;
+  a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+  return (a === 1 ? "rgb(" : "rgba(") + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.b) || 0)) + (a === 1 ? ")" : ", " + a + ")");
+}
 
 function hex(value) {
   value = Math.max(0, Math.min(255, Math.round(value) || 0));
@@ -5316,6 +5339,11 @@ function Hsl(h, s, l, opacity) {
   },
   displayable: function () {
     return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && 0 <= this.l && this.l <= 1 && 0 <= this.opacity && this.opacity <= 1;
+  },
+  formatHsl: function () {
+    var a = this.opacity;
+    a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+    return (a === 1 ? "hsl(" : "hsla(") + (this.h || 0) + ", " + (this.s || 0) * 100 + "%, " + (this.l || 0) * 100 + "%" + (a === 1 ? ")" : ", " + a + ")");
   }
 }));
 /* From FvD 13.37, CSS Color Module Level 3 */
@@ -5356,7 +5384,7 @@ var _math = require("./math");
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-// https://beta.observablehq.com/@mbostock/lab-and-rgb
+// https://observablehq.com/@mbostock/lab-and-rgb
 var K = 18,
     Xn = 0.96422,
     Yn = 1,
@@ -5368,13 +5396,7 @@ var K = 18,
 
 function labConvert(o) {
   if (o instanceof Lab) return new Lab(o.l, o.a, o.b, o.opacity);
-
-  if (o instanceof Hcl) {
-    if (isNaN(o.h)) return new Lab(o.l, 0, 0, o.opacity);
-    var h = o.h * _math.deg2rad;
-    return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
-  }
-
+  if (o instanceof Hcl) return hcl2lab(o);
   if (!(o instanceof _color.Rgb)) o = (0, _color.rgbConvert)(o);
   var r = rgb2lrgb(o.r),
       g = rgb2lrgb(o.g),
@@ -5441,7 +5463,7 @@ function rgb2lrgb(x) {
 function hclConvert(o) {
   if (o instanceof Hcl) return new Hcl(o.h, o.c, o.l, o.opacity);
   if (!(o instanceof Lab)) o = labConvert(o);
-  if (o.a === 0 && o.b === 0) return new Hcl(NaN, 0, o.l, o.opacity);
+  if (o.a === 0 && o.b === 0) return new Hcl(NaN, 0 < o.l && o.l < 100 ? 0 : NaN, o.l, o.opacity);
 
   var h = Math.atan2(o.b, o.a) * _math.rad2deg;
 
@@ -5463,6 +5485,12 @@ function Hcl(h, c, l, opacity) {
   this.opacity = +opacity;
 }
 
+function hcl2lab(o) {
+  if (isNaN(o.h)) return new Lab(o.l, 0, 0, o.opacity);
+  var h = o.h * _math.deg2rad;
+  return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
+}
+
 (0, _define.default)(Hcl, hcl, (0, _define.extend)(_color.Color, {
   brighter: function (k) {
     return new Hcl(this.h, this.c, this.l + K * (k == null ? 1 : k), this.opacity);
@@ -5471,7 +5499,7 @@ function Hcl(h, c, l, opacity) {
     return new Hcl(this.h, this.c, this.l - K * (k == null ? 1 : k), this.opacity);
   },
   rgb: function () {
-    return labConvert(this).rgb();
+    return hcl2lab(this).rgb();
   }
 }));
 },{"./define":"VlPU","./color":"LQD5","./math":"SQ+m"}],"rRwN":[function(require,module,exports) {
@@ -8000,6 +8028,17 @@ class Presenter {
     }));
   }
 
+  finalize() {
+    this.animationCancel();
+    if (this.deckgl) this.deckgl.finalize();
+    if (this.el) this.el.innerHTML = '';
+    this._last = null;
+    this.deckgl = null;
+    this.el = null;
+    this.logger = null;
+    this.queuedAnimationOptions = null;
+  }
+
 }
 
 exports.Presenter = Presenter;
@@ -8250,7 +8289,8 @@ function isQuantitative(column) {
 
 
 function getColumnsFromData(data, columnTypes) {
-  const fields = Object.keys(data[0]);
+  const sample = data[0];
+  const fields = sample ? Object.keys(sample) : [];
   const inferences = Object.assign({}, VegaDeckGl.base.vega.inferTypes(data, fields), columnTypes);
   const columns = fields.map(name => {
     const column = {
@@ -8288,8 +8328,10 @@ function getStats(data, column) {
   const stats = {
     distinctValueCount: null,
     max: null,
+    mean: null,
     min: null
   };
+  let sum = 0;
 
   for (let i = 0; i < data.length; i++) {
     let row = data[i];
@@ -8303,10 +8345,44 @@ function getStats(data, column) {
     if (stats.min === null || value < stats.min) {
       stats.min = value;
     }
+
+    let num = +value;
+
+    if (!isNaN(num)) {
+      sum += num;
+    }
+  }
+
+  if (column.quantitative) {
+    stats.mean = data.length > 0 && sum / data.length;
+    stats.hasNegative = detectNegative(column, data);
+
+    if (column.type === 'integer') {
+      stats.isSequential = detectSequentialColumn(column, data);
+    }
   }
 
   stats.distinctValueCount = Object.keys(distinctMap).length;
   return stats;
+}
+
+function detectNegative(column, data) {
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][column.name] < 0) return true;
+  }
+
+  return false;
+}
+
+function detectSequentialColumn(column, data) {
+  if (data.length < 2) return false;
+  let colname = column.name;
+
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][colname] !== data[i - 1][colname] + 1) return false;
+  }
+
+  return true;
 }
 },{"../vega-deck.gl":"Uns8"}],"G0Md":[function(require,module,exports) {
 "use strict";
@@ -12708,6 +12784,17 @@ class DataScope {
     };
   }
 
+  finalize() {
+    this.data = null;
+    this.filteredData = null;
+
+    if (this.selection) {
+      this.selection.excluded = null;
+      this.selection.included = null;
+      this.selection = null;
+    }
+  }
+
 }
 
 exports.DataScope = DataScope;
@@ -12753,6 +12840,12 @@ class Details {
     this.hasColorMaps = hasColorMaps;
     this.element = _vegaDeck.util.addDiv(parentElement, `${_defaults.cssPrefix}unitControls`);
     this.clear();
+  }
+
+  finalize() {
+    if (this.element) this.element.innerHTML = '';
+    this.dataScope = null;
+    this.element = null;
   }
 
   clear() {
@@ -13812,6 +13905,23 @@ class Viewer {
 
   getSignalValues() {
     return (0, _signals.extractSignalValuesFromView)(this.vegaViewGl, this.vegaSpec);
+  }
+
+  finalize() {
+    if (this._dataScope) this._dataScope.finalize();
+    if (this._details) this._details.finalize();
+    if (this.vegaViewGl) this.vegaViewGl.finalize();
+    if (this.presenter) this.presenter.finalize();
+    if (this.element) this.element.innerHTML = '';
+    this.colorContexts = null;
+    this.element = null;
+    this.options = null;
+    this.presenter = null;
+    this.vegaSpec = null;
+    this.vegaViewGl = null;
+    this._animator = null;
+    this._dataScope = null;
+    this._details = null;
   }
 
 }
@@ -15843,6 +15953,7 @@ var strings = {
   chartTypeScatterPlot: "Scatter plot",
   chartTypeStacks: "Stacks",
   chartTypeTreeMap: "Tree map",
+  errorColumnMustBeNumeric: "Numeric column required for this chart type.",
   labelChartSettings: "Chart settings",
   labelDataBrowser: "Data browser",
   labelTools: "Tools",
@@ -19355,43 +19466,14 @@ var loadDataArray = function loadDataArray(data) {
   return new Promise(function (resolve, reject) {
     var columns = _sanddanceReact.SandDance.util.getColumnsFromData(data);
 
-    resolve([{
+    resolve({
       data: data,
       columns: columns
-    }, getInsightColumns(columns)]);
+    });
   });
 };
 
 exports.loadDataArray = loadDataArray;
-
-function getInsightColumns(columnArray) {
-  var scheme;
-  var colorColumn = columnArray[3];
-
-  if (colorColumn) {
-    scheme = colorColumn.quantitative ? 'redyellowgreen' : 'category20';
-  }
-
-  var columns = {
-    uid: columnArray[0] && columnArray[0].name,
-    x: columnArray[1] && columnArray[1].name,
-    y: columnArray[2] && columnArray[2].name,
-    color: colorColumn && colorColumn.name,
-    z: columnArray[4] && columnArray[4].name
-  };
-  var numericColumn = columnArray.filter(function (c) {
-    return c.quantitative;
-  })[0];
-
-  if (numericColumn) {
-    columns.size = numericColumn.name;
-  }
-
-  return {
-    scheme: scheme,
-    columns: columns
-  };
-}
 },{"@msrvida/sanddance-react":"MjKu"}],"tb7d":[function(require,module,exports) {
 "use strict";
 
@@ -20395,7 +20477,320 @@ function Dialog(props) {
     text: _language.strings.buttonClose
   })));
 }
-},{"react":"ccIB","../base":"Vlbn","../language":"hk5u"}],"7xB+":[function(require,module,exports) {
+},{"react":"ccIB","../base":"Vlbn","../language":"hk5u"}],"ENdt":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.maxCategoricalColors = 20;
+var Recommender = /** @class */ (function () {
+    function Recommender(columns, data) {
+    }
+    return Recommender;
+}());
+exports.Recommender = Recommender;
+function defaultColorScheme(c) {
+    if (c.quantitative) {
+        return 'redyellowgreen';
+    }
+    else if (c.stats.distinctValueCount === 2) {
+        return 'dual_redgreen';
+    }
+    else if (c.stats.distinctValueCount <= 10) {
+        return 'category10';
+    }
+    return 'category20';
+}
+exports.defaultColorScheme = defaultColorScheme;
+
+},{}],"oxgd":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var recommender_1 = require("./recommender");
+var maxDistinctVal = 20;
+var minDistinctVal = 2;
+var BarChartRecommenderSummary = /** @class */ (function () {
+    function BarChartRecommenderSummary(columns, data) {
+        var score = -1;
+        for (var i = 0; i < columns.length; i++) {
+            var recommendation = new BarChartRecommender(columns[i], data).recommend();
+            if (recommendation.score > score) {
+                this.best = recommendation;
+                score = recommendation.score;
+            }
+            ;
+            if (score === 1)
+                break;
+        }
+        for (var k = 0; k < columns.length; k++) {
+            var column = columns[k];
+            if (column.name === this.best.columns.x || column.stats.isSequential)
+                continue;
+            if (column.quantitative || (column.stats.distinctValueCount < recommender_1.maxCategoricalColors && column.stats.distinctValueCount > 1)) {
+                this.best.columns.color = this.best.columns.sort = column.name;
+                this.best.scheme = recommender_1.defaultColorScheme(column);
+                if (column.quantitative) {
+                    this.best.colorBin = 'quantile';
+                }
+                break;
+            }
+        }
+    }
+    BarChartRecommenderSummary.prototype.recommend = function () {
+        return this.best;
+    };
+    return BarChartRecommenderSummary;
+}());
+exports.BarChartRecommenderSummary = BarChartRecommenderSummary;
+var BarChartRecommender = /** @class */ (function () {
+    function BarChartRecommender(column, data) {
+        this.score = 0;
+        this.column = column;
+        //the total score for bar chart is 1
+        this.rules = [
+            function (column) {
+                if (column.stats.isSequential)
+                    return false;
+                else if (column.quantitative) {
+                    return true;
+                }
+                else if (!column.quantitative && column.stats.distinctValueCount <= maxDistinctVal && column.stats.distinctValueCount >= minDistinctVal) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        ];
+        for (var i = 0; i < this.rules.length; i++) {
+            if (this.rules[i](column))
+                this.score++;
+        }
+    }
+    BarChartRecommender.prototype.recommend = function () {
+        var rec = {
+            chart: 'barchart',
+            columns: {
+                x: this.column.name
+            },
+            score: this.score,
+            scheme: undefined,
+            view: "2d"
+        };
+        return rec;
+    };
+    return BarChartRecommender;
+}());
+exports.BarChartRecommender = BarChartRecommender;
+
+},{"./recommender":"ENdt"}],"O4ew":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+//TODO: languages other than english
+var longitudeNames = ['lon', 'long', 'longitude'];
+var latitudeNames = ['lat', 'latitude'];
+function isSpec(names, limits, column, data) {
+    var is = false;
+    var cname = column.name.toLowerCase();
+    for (var i = 0; i < names.length; i++) {
+        if (names[i] === cname) {
+            is = true;
+            break;
+        }
+    }
+    if (data) {
+        //TODO: spin through data to see if it is within limits
+    }
+    return is;
+}
+function isLongitude(column, data) {
+    return isSpec(longitudeNames, [-180, 180], column, data);
+}
+exports.isLongitude = isLongitude;
+function isLatitude(column, data) {
+    return isSpec(latitudeNames, [-90, 90], column, data);
+}
+exports.isLatitude = isLatitude;
+function isGeo(column, data) {
+    return isLatitude(column, data) || isLongitude(column, data);
+}
+exports.isGeo = isGeo;
+
+},{}],"iBe2":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var recommender_1 = require("./recommender");
+var geo_1 = require("./geo");
+var ScatterPlotRecommenderSummary = /** @class */ (function () {
+    function ScatterPlotRecommenderSummary(columns, data) {
+        var longi = false;
+        var lati = false;
+        var rec = {
+            chart: 'scatterplot',
+            score: undefined,
+            columns: {},
+            scheme: undefined,
+            view: "2d"
+        };
+        columns.forEach(function (column) {
+            if (longi === false && geo_1.isLongitude(column)) {
+                longi = true;
+                rec.columns.x = column.name;
+            }
+            else if (lati === false && geo_1.isLatitude(column)) {
+                lati = true;
+                rec.columns.y = column.name;
+            }
+            else if (!rec.columns.color && !column.stats.isSequential) {
+                if (column.quantitative || column.stats.distinctValueCount < recommender_1.maxCategoricalColors) {
+                    rec.columns.color = rec.columns.sort = column.name;
+                    rec.scheme = recommender_1.defaultColorScheme(column);
+                    if (column.quantitative) {
+                        rec.colorBin = 'quantile';
+                    }
+                }
+            }
+        });
+        if (longi && lati) {
+            this.best = rec;
+        }
+    }
+    ScatterPlotRecommenderSummary.prototype.recommend = function () {
+        return this.best;
+    };
+    return ScatterPlotRecommenderSummary;
+}());
+exports.ScatterPlotRecommenderSummary = ScatterPlotRecommenderSummary;
+
+},{"./recommender":"ENdt","./geo":"O4ew"}],"At4q":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var geo_1 = require("./geo");
+function preferredColumnForTreemapSize(columns, strict) {
+    for (var i = 0; i < columns.length; i++) {
+        var c = columns[i];
+        if (c.quantitative) {
+            if (strict && c.stats.hasNegative)
+                continue;
+            if (strict && c.stats.isSequential)
+                continue;
+            if (strict && geo_1.isGeo(c))
+                continue;
+            return c.name;
+        }
+    }
+}
+exports.preferredColumnForTreemapSize = preferredColumnForTreemapSize;
+
+},{"./geo":"O4ew"}],"fB3P":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var barChart_1 = require("./barChart");
+var scatterPlot_1 = require("./scatterPlot");
+var RecommenderSummary = /** @class */ (function () {
+    function RecommenderSummary(columns, data) {
+        var quickRec = new scatterPlot_1.ScatterPlotRecommenderSummary(columns, data).recommend();
+        if (quickRec)
+            this.rec = quickRec;
+        else {
+            var barChartrec = new barChart_1.BarChartRecommenderSummary(columns, data).recommend();
+            if (barChartrec.score >= 1)
+                this.rec = barChartrec;
+        }
+    }
+    RecommenderSummary.prototype.recommend = function () {
+        return this.rec;
+    };
+    return RecommenderSummary;
+}());
+exports.RecommenderSummary = RecommenderSummary;
+
+},{"./barChart":"oxgd","./scatterPlot":"iBe2"}],"/i6U":[function(require,module,exports) {
+"use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+__export(require("./barChart"));
+__export(require("./geo"));
+__export(require("./scatterPlot"));
+__export(require("./treemap"));
+__export(require("./recommenderSummary"));
+
+},{"./barChart":"oxgd","./geo":"O4ew","./scatterPlot":"iBe2","./treemap":"At4q","./recommenderSummary":"fB3P"}],"f8v0":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ensureColumnsExist = ensureColumnsExist;
+exports.ensureColumnsPopulated = ensureColumnsPopulated;
+
+var _chartRecommender = require("@msrvida/chart-recommender");
+
+var _language = require("./language");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function ensureColumnsExist(insightColumns, actualColumns) {
+  var _loop = function _loop(role) {
+    var columnName = insightColumns[role];
+    var column = actualColumns.filter(function (c) {
+      return c.name === columnName;
+    })[0];
+
+    if (!column) {
+      delete insightColumns[role];
+    }
+  };
+
+  //ensure columns exist
+  for (var role in insightColumns) {
+    _loop(role);
+  }
+}
+
+function ensureColumnsPopulated(chart, insightColumns, actualColumns) {
+  //ensure columns are populated
+  var firstColumn = actualColumns[0];
+  var firstColumnName = firstColumn && firstColumn.name;
+
+  var ensureColumn = function ensureColumn(role) {
+    if (!insightColumns[role]) {
+      insightColumns[role] = firstColumnName;
+    }
+  };
+
+  switch (chart) {
+    case 'barchart':
+      ensureColumn('x');
+      break;
+
+    case 'density':
+    case 'scatterplot':
+    case 'stacks':
+      ensureColumn('x');
+      ensureColumn('y');
+      break;
+
+    case 'treemap':
+      if (!insightColumns.size) {
+        insightColumns.size = (0, _chartRecommender.preferredColumnForTreemapSize)(actualColumns, true);
+
+        if (!insightColumns.size) {
+          insightColumns.size = (0, _chartRecommender.preferredColumnForTreemapSize)(actualColumns, false);
+        }
+      }
+
+      if (!insightColumns.size) {
+        //error - no numeric column
+        return [_language.strings.errorColumnMustBeNumeric];
+      }
+
+      break;
+  }
+}
+},{"@msrvida/chart-recommender":"/i6U","./language":"hk5u"}],"7xB+":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22001,6 +22396,10 @@ var _dataScope = require("./controls/dataScope");
 
 var _dialog = require("./controls/dialog");
 
+var _columns = require("./columns");
+
+var _chartRecommender = require("@msrvida/chart-recommender");
+
 var _search = require("./dialogs/search");
 
 var _sanddanceReact = require("@msrvida/sanddance-react");
@@ -22030,14 +22429,6 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -22139,6 +22530,11 @@ function (_React$Component) {
   }
 
   _createClass(Explorer, [{
+    key: "finalize",
+    value: function finalize() {
+      if (this.viewer) this.viewer.finalize();
+    }
+  }, {
     key: "updateViewerOptions",
     value: function updateViewerOptions(viewerOptions) {
       var _this2 = this;
@@ -22275,19 +22671,19 @@ function (_React$Component) {
         columns: null
       });
       return new Promise(function (resolve, reject) {
-        var loadFinal = function loadFinal(result) {
-          var _result = _slicedToArray(result, 2),
-              dataContent = _result[0],
-              columnsAndScheme = _result[1];
-
-          var scheme = columnsAndScheme.scheme,
-              columns = columnsAndScheme.columns;
+        var loadFinal = function loadFinal(dataContent) {
           var partialInsight;
           _this4.prefs = prefs || {};
 
           if (getPartialInsight) {
             partialInsight = getPartialInsight(dataContent.columns);
             (0, _partialInsight.initPrefs)(_this4.prefs, partialInsight);
+          }
+
+          if (!partialInsight) {
+            //load recommendation
+            var r = new _chartRecommender.RecommenderSummary(dataContent.columns, dataContent.data);
+            partialInsight = r.recommend();
           }
 
           var selectedItemIndex = Object.assign({}, _this4.state.selectedItemIndex);
@@ -22298,8 +22694,6 @@ function (_React$Component) {
           var newState = Object.assign({
             dataFile: dataFile,
             dataContent: dataContent,
-            scheme: scheme,
-            columns: columns,
             autoCompleteDistinctValues: {},
             filter: null,
             filteredData: null,
@@ -22307,6 +22701,9 @@ function (_React$Component) {
             sideTabId: sideTabId
           }, partialInsight);
           _this4.getColorContext = null;
+          (0, _columns.ensureColumnsExist)(newState.columns, dataContent.columns);
+          var errors = (0, _columns.ensureColumnsPopulated)(partialInsight ? partialInsight.chart : null, newState.columns, dataContent.columns);
+          newState.errors = errors; //change insight
 
           _this4.changeInsight(newState); //make sure item is active
 
@@ -22339,30 +22736,41 @@ function (_React$Component) {
       var partialInsight = (0, _partialInsight.copyPrefToNewState)(this.prefs, chart, '*', '*');
       var newState = Object.assign({
         chart: chart
-      }, partialInsight); //special case mappings when switching chart type
+      }, partialInsight);
+      var columns = this.state.columns || {};
+      newState.columns = Object.assign({}, columns); //special case mappings when switching chart type
 
       if (this.state.chart === 'scatterplot' && chart === 'barchart') {
-        newState.columns = Object.assign({}, this.state.columns, {
-          sort: this.state.columns.y
+        newState.columns = Object.assign({}, columns, {
+          sort: columns.y
         });
       } else if (chart === 'treemap') {
         newState.view = '2d';
 
-        if (!this.state.columns.size) {
+        if (!columns.size) {
           //make sure size exists and is numeric
-          var sizeColumn = this.state.dataContent.columns.filter(function (c) {
-            return c.quantitative;
-          })[0];
+          var sizeColumnName = (0, _chartRecommender.preferredColumnForTreemapSize)(this.state.dataContent.columns, true);
 
-          if (!sizeColumn) {//TODO error - no numeric columns
+          if (!sizeColumnName) {
+            sizeColumnName = (0, _chartRecommender.preferredColumnForTreemapSize)(this.state.dataContent.columns, false);
+          }
+
+          if (!sizeColumnName) {//TODO error - no numeric columns
           } else {
-            newState.columns = Object.assign({}, this.state.columns, {
-              size: sizeColumn.name
+            newState.columns = Object.assign({}, columns, {
+              size: sizeColumnName
             });
           }
         }
       } else if (chart === 'stacks') {
         newState.view = '3d';
+      }
+
+      (0, _columns.ensureColumnsExist)(newState.columns, this.state.dataContent.columns);
+      var errors = (0, _columns.ensureColumnsPopulated)(chart, newState.columns, this.state.dataContent.columns);
+
+      if (errors) {
+        newState.errors = errors;
       }
 
       this.calculate(function () {
@@ -22621,12 +23029,6 @@ function (_React$Component) {
   }, {
     key: "viewerMounted",
     value: function viewerMounted(glDiv) {
-      var _this9 = this;
-
-      window.addEventListener("resize", function () {
-        //TODO: throttle events
-        _this9.resize();
-      });
       this.setState({
         size: this.getLayoutDivSize(this.state.sidebarPinned, this.state.sidebarClosed),
         signalValues: this.state.signalValues //keep initialized signalValues
@@ -22716,7 +23118,7 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this10 = this;
+      var _this9 = this;
 
       var _this$state = this.state,
           colorBin = _this$state.colorBin,
@@ -22743,6 +23145,11 @@ function (_React$Component) {
         chart: chart,
         view: view
       };
+
+      if (!insight.columns || !insight.columns.color) {
+        insight.hideLegend = true;
+      }
+
       var loaded = !!(this.state.columns && this.state.dataContent);
       var selectionState = this.viewer && this.viewer.getSelection() || {};
       var selectionSearch = selectionState && selectionState.search;
@@ -22754,7 +23161,7 @@ function (_React$Component) {
       });
       var columnMapProps = {
         changeColumnMapping: function changeColumnMapping(role, column) {
-          return _this10.changeColumnMapping(role, column);
+          return _this9.changeColumnMapping(role, column);
         },
         quantitativeColumns: quantitativeColumns,
         categoricalColumns: categoricalColumns,
@@ -22768,10 +23175,10 @@ function (_React$Component) {
       if (this.state.calculating) {
         setTimeout(function () {
           //allow render to complete
-          if (_this10.state.calculating) {
-            _this10.state.calculating();
+          if (_this9.state.calculating) {
+            _this9.state.calculating();
 
-            _this10.setState({
+            _this9.setState({
               calculating: null
             });
           }
@@ -22796,25 +23203,25 @@ function (_React$Component) {
         buttons: this.props.topBarButtonProps,
         view: this.state.view,
         onViewClick: function onViewClick() {
-          var view = _this10.state.view === '2d' ? '3d' : '2d';
+          var view = _this9.state.view === '2d' ? '3d' : '2d';
 
-          _this10.changeInsight({
+          _this9.changeInsight({
             view: view
           });
         },
         onHomeClick: function onHomeClick() {
-          return _this10.viewer.presenter.homeCamera();
+          return _this9.viewer.presenter.homeCamera();
         }
       }), React.createElement("div", {
-        className: _sanddanceReact.util.classList("sanddance-main", this.state.sidebarPinned && "pinned", this.state.sidebarClosed && "closed", this.state.hideLegend && "hide-legend")
+        className: _sanddanceReact.util.classList("sanddance-main", this.state.sidebarPinned && "pinned", this.state.sidebarClosed && "closed", insight.hideLegend && "hide-legend")
       }, React.createElement("div", {
         ref: function ref(div) {
-          if (div && !_this10.layoutDivUnpinned) _this10.layoutDivUnpinned = div;
+          if (div && !_this9.layoutDivUnpinned) _this9.layoutDivUnpinned = div;
         },
         className: "sanddance-layout-unpinned"
       }), React.createElement("div", {
         ref: function ref(div) {
-          if (div && !_this10.layoutDivPinned) _this10.layoutDivPinned = div;
+          if (div && !_this9.layoutDivPinned) _this9.layoutDivPinned = div;
         },
         className: "sanddance-layout-pinned"
       }), !loaded && React.createElement("div", {
@@ -22833,9 +23240,9 @@ function (_React$Component) {
           themePalette: themePalette,
           compact: this.state.sidebarClosed,
           onCompactClick: function onCompactClick() {
-            _this10.changeInsight({
+            _this9.changeInsight({
               sidebarClosed: false,
-              size: _this10.getLayoutDivSize(_this10.state.sidebarPinned, false)
+              size: _this9.getLayoutDivSize(_this9.state.sidebarPinned, false)
             });
           },
           dataSet: this.props.datasetElement,
@@ -22846,154 +23253,154 @@ function (_React$Component) {
           },
           active: this.state.sideTabId === _sidebar.SideTabId.Data,
           onDataScopeClick: function onDataScopeClick(dataScopeId) {
-            return _this10.setSideTabId(_sidebar.SideTabId.Data, dataScopeId);
+            return _this9.setSideTabId(_sidebar.SideTabId.Data, dataScopeId);
           },
           selectedDataScope: this.state.dataScopeId,
           disabled: !loaded
         },
         onSideTabClick: function onSideTabClick(sideTabId) {
           //collapse or toggle
-          if (sideTabId === _sidebar.SideTabId.Collapse || _this10.state.sideTabId === sideTabId) {
-            var _this10$state = _this10.state,
-                dataScopeId = _this10$state.dataScopeId,
-                sidebarClosed = _this10$state.sidebarClosed;
+          if (sideTabId === _sidebar.SideTabId.Collapse || _this9.state.sideTabId === sideTabId) {
+            var _this9$state = _this9.state,
+                dataScopeId = _this9$state.dataScopeId,
+                sidebarClosed = _this9$state.sidebarClosed;
 
             if (sidebarClosed && sideTabId === _sidebar.SideTabId.Data) {
-              dataScopeId = _this10.getBestDataScopeId();
+              dataScopeId = _this9.getBestDataScopeId();
             }
 
-            sidebarClosed = !_this10.state.sidebarClosed;
+            sidebarClosed = !_this9.state.sidebarClosed;
 
-            _this10.changeInsight({
+            _this9.changeInsight({
               dataScopeId: dataScopeId,
               sidebarClosed: sidebarClosed,
-              size: _this10.getLayoutDivSize(_this10.state.sidebarPinned, sidebarClosed)
+              size: _this9.getLayoutDivSize(_this9.state.sidebarPinned, sidebarClosed)
             });
           } else if (sideTabId === _sidebar.SideTabId.Pin) {
-            _this10.changeInsight({
-              sidebarPinned: !_this10.state.sidebarPinned,
-              size: _this10.getLayoutDivSize(!_this10.state.sidebarPinned, _this10.state.sidebarClosed)
+            _this9.changeInsight({
+              sidebarPinned: !_this9.state.sidebarPinned,
+              size: _this9.getLayoutDivSize(!_this9.state.sidebarPinned, _this9.state.sidebarClosed)
             });
           } else {
-            _this10.setSideTabId(sideTabId);
+            _this9.setSideTabId(sideTabId);
           }
         },
         selectedSideTab: this.state.sideTabId
       }, loaded && function () {
-        switch (_this10.state.sideTabId) {
+        switch (_this9.state.sideTabId) {
           case _sidebar.SideTabId.ChartType:
             return React.createElement(_chart.Chart, Object.assign({
-              specCapabilities: _this10.state.specCapabilities,
-              disabled: !loaded || _this10.state.sidebarClosed
+              specCapabilities: _this9.state.specCapabilities,
+              disabled: !loaded || _this9.state.sidebarClosed
             }, columnMapProps, {
-              chart: _this10.state.chart,
-              view: _this10.state.view,
+              chart: _this9.state.chart,
+              view: _this9.state.view,
               onChangeChartType: function onChangeChartType(chart) {
-                return _this10.changeChartType(chart);
+                return _this9.changeChartType(chart);
               },
-              columns: _this10.state.columns,
+              columns: _this9.state.columns,
               onChangeSignal: function onChangeSignal(role, column, name, value) {
-                (0, _partialInsight.saveSignalValuePref)(_this10.prefs, _this10.state.chart, role, column, name, value);
+                (0, _partialInsight.saveSignalValuePref)(_this9.prefs, _this9.state.chart, role, column, name, value);
               }
             }));
 
           case _sidebar.SideTabId.Color:
             return React.createElement(_color.Color, Object.assign({
-              specCapabilities: _this10.state.specCapabilities,
-              disabled: !loaded || _this10.state.sidebarClosed
+              specCapabilities: _this9.state.specCapabilities,
+              disabled: !loaded || _this9.state.sidebarClosed
             }, columnMapProps, {
-              dataContent: _this10.state.dataContent,
-              scheme: _this10.state.scheme,
-              colorBin: _this10.state.colorBin,
-              colorBinSignal: _this10.viewer && _this10.viewer.vegaSpec && _this10.viewer.vegaSpec.signals.filter(function (s) {
+              dataContent: _this9.state.dataContent,
+              scheme: _this9.state.scheme,
+              colorBin: _this9.state.colorBin,
+              colorBinSignal: _this9.viewer && _this9.viewer.vegaSpec && _this9.viewer.vegaSpec.signals.filter(function (s) {
                 return s.name === _sanddanceReact.SandDance.constants.SignalNames.ColorBinCount;
               })[0],
-              colorReverseSignal: _this10.viewer && _this10.viewer.vegaSpec && _this10.viewer.vegaSpec.signals.filter(function (s) {
+              colorReverseSignal: _this9.viewer && _this9.viewer.vegaSpec && _this9.viewer.vegaSpec.signals.filter(function (s) {
                 return s.name === _sanddanceReact.SandDance.constants.SignalNames.ColorReverse;
               })[0],
-              colorColumn: _this10.state.columns.color,
+              colorColumn: _this9.state.columns.color,
               changeColorBin: function changeColorBin(colorBin) {
-                _this10.ignoreSelectionChange = true;
+                _this9.ignoreSelectionChange = true;
 
-                _this10.viewer.deselect().then(function () {
-                  _this10.ignoreSelectionChange = false; //allow deselection to render
+                _this9.viewer.deselect().then(function () {
+                  _this9.ignoreSelectionChange = false; //allow deselection to render
 
                   setTimeout(function () {
-                    _this10.getColorContext = null;
+                    _this9.getColorContext = null;
 
-                    _this10.changeInsight({
+                    _this9.changeInsight({
                       colorBin: colorBin
                     });
 
-                    (0, _partialInsight.savePref)(_this10.prefs, _this10.state.chart, 'color', _this10.state.columns.color, {
+                    (0, _partialInsight.savePref)(_this9.prefs, _this9.state.chart, 'color', _this9.state.columns.color, {
                       colorBin: colorBin
                     });
                   }, 0);
                 });
               },
               changeColorScheme: function changeColorScheme(scheme) {
-                _this10.changeColumnMapping('color', _this10.state.dataContent.columns.filter(function (c) {
-                  return c.name === _this10.state.columns.color;
+                _this9.changeColumnMapping('color', _this9.state.dataContent.columns.filter(function (c) {
+                  return c.name === _this9.state.columns.color;
                 })[0], {
                   scheme: scheme
                 });
 
-                (0, _partialInsight.savePref)(_this10.prefs, _this10.state.chart, 'color', _this10.state.columns.color, {
+                (0, _partialInsight.savePref)(_this9.prefs, _this9.state.chart, 'color', _this9.state.columns.color, {
                   scheme: scheme
                 });
               },
               onColorBinCountChange: function onColorBinCountChange(value) {
                 var signalValues = {};
                 signalValues[_sanddanceReact.SandDance.constants.SignalNames.ColorBinCount] = value;
-                (0, _partialInsight.savePref)(_this10.prefs, _this10.state.chart, 'color', _this10.state.columns.color, {
+                (0, _partialInsight.savePref)(_this9.prefs, _this9.state.chart, 'color', _this9.state.columns.color, {
                   signalValues: signalValues
                 });
               },
               onColorReverseChange: function onColorReverseChange(value) {
-                _this10.getColorContext = null;
+                _this9.getColorContext = null;
                 var signalValues = {};
                 signalValues[_sanddanceReact.SandDance.constants.SignalNames.ColorReverse] = value;
               }
             }));
 
           case _sidebar.SideTabId.Data:
-            var data = datas[_this10.state.dataScopeId];
+            var data = datas[_this9.state.dataScopeId];
             var itemVisible = true;
 
-            switch (_this10.state.dataScopeId) {
+            switch (_this9.state.dataScopeId) {
               case _dataScope.DataScopeId.AllData:
-                var item = _this10.state.selectedItemIndex[_this10.state.dataScopeId];
-                itemVisible = _this10.state.dataContent && !_this10.state.filteredData || _this10.state.filteredData.indexOf(data[item]) >= 0;
+                var item = _this9.state.selectedItemIndex[_this9.state.dataScopeId];
+                itemVisible = _this9.state.dataContent && !_this9.state.filteredData || _this9.state.filteredData.indexOf(data[item]) >= 0;
             }
 
             return React.createElement(_dataBrowser.DataBrowser, {
               themePalette: themePalette,
-              disabled: !loaded || _this10.state.sidebarClosed,
-              columns: _this10.state.dataContent && _this10.state.dataContent.columns,
+              disabled: !loaded || _this9.state.sidebarClosed,
+              columns: _this9.state.dataContent && _this9.state.dataContent.columns,
               data: data,
-              title: dataBrowserTitles[_this10.state.dataScopeId],
-              nullMessage: dataBrowserNullMessages[_this10.state.dataScopeId],
-              zeroMessage: dataBrowserZeroMessages[_this10.state.dataScopeId],
-              index: _this10.state.selectedItemIndex[_this10.state.dataScopeId],
+              title: dataBrowserTitles[_this9.state.dataScopeId],
+              nullMessage: dataBrowserNullMessages[_this9.state.dataScopeId],
+              zeroMessage: dataBrowserZeroMessages[_this9.state.dataScopeId],
+              index: _this9.state.selectedItemIndex[_this9.state.dataScopeId],
               itemVisible: itemVisible,
               onActivate: function onActivate(row, index) {
-                var selectedItemIndex = Object.assign({}, _this10.state.selectedItemIndex);
-                selectedItemIndex[_this10.state.dataScopeId] = index;
+                var selectedItemIndex = Object.assign({}, _this9.state.selectedItemIndex);
+                selectedItemIndex[_this9.state.dataScopeId] = index;
 
-                _this10.setState({
+                _this9.setState({
                   selectedItemIndex: selectedItemIndex
                 });
 
-                _this10.silentActivation(row);
+                _this9.silentActivation(row);
               },
               onSearch: function onSearch(e, search) {
                 if (e.ctrlKey) {
-                  _this10.setState({
+                  _this9.setState({
                     sideTabId: _sidebar.SideTabId.Search,
                     search: search
                   });
                 } else {
-                  _this10.doSelect(search);
+                  _this9.doSelect(search);
                 }
               }
             });
@@ -23001,43 +23408,43 @@ function (_React$Component) {
           case _sidebar.SideTabId.Search:
             return React.createElement(_search.Search, {
               themePalette: themePalette,
-              disabled: !loaded || _this10.state.sidebarClosed,
+              disabled: !loaded || _this9.state.sidebarClosed,
               initializer: {
-                columns: _this10.state.dataContent.columns,
-                search: _this10.state.search
+                columns: _this9.state.dataContent.columns,
+                search: _this9.state.search
               },
-              autoCompleteDistinctValues: _this10.state.autoCompleteDistinctValues,
+              autoCompleteDistinctValues: _this9.state.autoCompleteDistinctValues,
               onSelect: function onSelect(expr) {
-                _this10.doSelect(expr);
+                _this9.doSelect(expr);
               },
-              data: _this10.state.dataContent.data
+              data: _this9.state.dataContent.data
             });
 
           case _sidebar.SideTabId.Snapshots:
-            return React.createElement(_snapshots.Snapshots, Object.assign({}, _this10.props.snapshotProps, {
+            return React.createElement(_snapshots.Snapshots, Object.assign({}, _this9.props.snapshotProps, {
               themePalette: themePalette,
-              explorer: _this10,
-              snapshots: _this10.state.snapshots,
+              explorer: _this9,
+              snapshots: _this9.state.snapshots,
               onCreateSnapshot: function onCreateSnapshot(snapshot) {
-                _this10.setState({
-                  snapshots: _this10.state.snapshots.concat(snapshot)
+                _this9.setState({
+                  snapshots: _this9.state.snapshots.concat(snapshot)
                 });
               },
               onRemoveSnapshot: function onRemoveSnapshot(i) {
-                var snapshots = _toConsumableArray(_this10.state.snapshots);
+                var snapshots = _toConsumableArray(_this9.state.snapshots);
 
                 snapshots.splice(i, 1);
 
-                _this10.setState({
+                _this9.setState({
                   snapshots: snapshots
                 });
               },
               onSnapshotClick: function onSnapshotClick(snapshot) {
-                _this10.calculate(function () {
-                  if (_this10.props.onSnapshotClick) {
-                    _this10.props.onSnapshotClick(snapshot);
+                _this9.calculate(function () {
+                  if (_this9.props.onSnapshotClick) {
+                    _this9.props.onSnapshotClick(snapshot);
                   } else {
-                    _this10.setInsight(snapshot.insight);
+                    _this9.setInsight(snapshot.insight);
                   }
                 });
               }
@@ -23045,23 +23452,23 @@ function (_React$Component) {
 
           case _sidebar.SideTabId.Settings:
             return React.createElement(_settings.Settings, {
-              explorer: _this10,
-              dataFile: _this10.state.dataFile,
-              scheme: _this10.state.scheme,
-              hideLegend: _this10.state.hideLegend,
+              explorer: _this9,
+              dataFile: _this9.state.dataFile,
+              scheme: _this9.state.scheme,
+              hideLegend: _this9.state.hideLegend,
               onToggleLegend: function onToggleLegend(hideLegend) {
-                return _this10.setState({
+                return _this9.setState({
                   hideLegend: hideLegend,
                   calculating: function calculating() {
-                    return _this10._resize();
+                    return _this9._resize();
                   }
                 });
               },
-              hideAxes: _this10.state.hideAxes,
+              hideAxes: _this9.state.hideAxes,
               onToggleAxes: function onToggleAxes(hideAxes) {
-                return _this10.setState({
+                return _this9.setState({
                   calculating: function calculating() {
-                    return _this10.setState({
+                    return _this9.setState({
                       hideAxes: hideAxes
                     });
                   }
@@ -23075,19 +23482,19 @@ function (_React$Component) {
         renderOptions: {
           initialColorContext: this.getColorContext && this.getColorContext(this.viewer.insight, insight),
           discardColorContextUpdates: function discardColorContextUpdates() {
-            return _this10.discardColorContextUpdates;
+            return _this9.discardColorContextUpdates;
           }
         },
         viewerOptions: this.viewerOptions,
         ref: function ref(reactViewer) {
           if (reactViewer) {
-            _this10.viewer = reactViewer.viewer;
+            _this9.viewer = reactViewer.viewer;
           }
         },
         onView: function onView(renderResult) {
-          _this10.changespecCapabilities(renderResult.specResult.errors ? renderResult.specResult.specCapabilities : _this10.viewer.specCapabilities);
+          _this9.changespecCapabilities(renderResult.specResult.errors ? renderResult.specResult.specCapabilities : _this9.viewer.specCapabilities);
 
-          _this10.getColorContext = function (oldInsight, newInsight) {
+          _this9.getColorContext = function (oldInsight, newInsight) {
             if (!oldInsight && !newInsight) {
               return null;
             }
@@ -23104,23 +23511,23 @@ function (_React$Component) {
               return null;
             }
 
-            return _this10.viewer.colorContexts && _this10.viewer.colorContexts[_this10.viewer.currentColorContext];
+            return _this9.viewer.colorContexts && _this9.viewer.colorContexts[_this9.viewer.currentColorContext];
           }; //don't allow tabbing to the canvas
 
 
-          _this10.viewer.presenter.getElement(_sanddanceReact.SandDance.VegaDeckGl.PresenterElement.gl).getElementsByTagName('canvas')[0].tabIndex = -1;
-          _this10.props.onView && _this10.props.onView();
+          _this9.viewer.presenter.getElement(_sanddanceReact.SandDance.VegaDeckGl.PresenterElement.gl).getElementsByTagName('canvas')[0].tabIndex = -1;
+          _this9.props.onView && _this9.props.onView();
         },
         data: this.state.dataContent.data,
         insight: insight,
         onMount: function onMount(el) {
-          return _this10.viewerMounted(el);
+          return _this9.viewerMounted(el);
         }
       })), React.createElement(_dialog.Dialog, {
         title: _language.strings.labelError,
         hidden: !this.state.errors,
         onDismiss: function onDismiss() {
-          _this10.setState({
+          _this9.setState({
             errors: null
           });
         }
@@ -23136,7 +23543,7 @@ function (_React$Component) {
 }(React.Component);
 
 exports.Explorer = Explorer;
-},{"react":"ccIB","./colorMap":"E67y","./base":"Vlbn","./colorScheme":"L8O2","./dialogs/chart":"NGSt","./dialogs/color":"N8IJ","./dataLoader":"f19h","./partialInsight":"tb7d","./dialogs/dataBrowser":"8pJL","./controls/dataScope":"Os+N","./controls/dialog":"cFWm","./dialogs/search":"ozxe","@msrvida/sanddance-react":"MjKu","./dialogs/settings":"zKGJ","./controls/sidebar":"f8Jx","./dialogs/snapshots":"3oc9","./language":"hk5u","./themes":"CgE3","./toggleSearch":"yzxM","./controls/topbar":"Afi9"}],"Focm":[function(require,module,exports) {
+},{"react":"ccIB","./colorMap":"E67y","./base":"Vlbn","./colorScheme":"L8O2","./dialogs/chart":"NGSt","./dialogs/color":"N8IJ","./dataLoader":"f19h","./partialInsight":"tb7d","./dialogs/dataBrowser":"8pJL","./controls/dataScope":"Os+N","./controls/dialog":"cFWm","./columns":"f8v0","@msrvida/chart-recommender":"/i6U","./dialogs/search":"ozxe","@msrvida/sanddance-react":"MjKu","./dialogs/settings":"zKGJ","./controls/sidebar":"f8Jx","./dialogs/snapshots":"3oc9","./language":"hk5u","./themes":"CgE3","./toggleSearch":"yzxM","./controls/topbar":"Afi9"}],"Focm":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

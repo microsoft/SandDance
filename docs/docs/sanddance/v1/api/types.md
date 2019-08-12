@@ -84,17 +84,23 @@ Metadata about a column.
 interface ColumnStats {
     distinctValueCount: number;
     max?: number;
+    mean?: number;
     min?: number;
+    isSequential?: boolean;
+    hasNegative?: boolean;
 }
 ```
 
 **Properties**
 
-| Name               | Type   | Optional | Description                                                 |
-| ------------------ | ------ | -------- | ----------------------------------------------------------- |
-| distinctValueCount | number | false    | Number of unique values in this column.                     |
-| max                | number | true     | Maximum value of data in this column, if column is numeric. |
-| min                | number | true     | Minimum value of data in this column, if column is numeric. |
+| Name               | Type    | Optional | Description                                                            |
+| ------------------ | ------- | -------- | ---------------------------------------------------------------------- |
+| distinctValueCount | number  | false    | Number of unique values in this column.                                |
+| max                | number  | true     | Maximum value of data in this column, if column is numeric.            |
+| mean               | number  | true     | Mean value of data in this column, if column is numeric.               |
+| min                | number  | true     | Minimum value of data in this column, if column is numeric.            |
+| isSequential       | boolean | true     | Optional flag to specify if the column data is sequential.             |
+| hasNegative        | boolean | true     | Optional flag to specify if the column data contains negative numbers. |
 
 ----------
 

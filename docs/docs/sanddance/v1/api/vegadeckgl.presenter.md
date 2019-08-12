@@ -169,6 +169,18 @@ public showGuides(): void;
 
 void
 
+----------
+
+### finalize()
+
+```typescript
+public finalize(): void;
+```
+
+**Return type**
+
+void
+
 ## Properties
 
 ### animationTimer
@@ -272,6 +284,7 @@ public get view: View;
 [MethodDeclaration-6]: vegadeckgl.presenter#getcubedata
 [InterfaceDeclaration-29]: vegadeckgl.types#cube
 [MethodDeclaration-7]: vegadeckgl.presenter#showguides
+[MethodDeclaration-8]: vegadeckgl.presenter#finalize
 [PropertyDeclaration-0]: vegadeckgl.presenter#animationtimer
 [PropertyDeclaration-1]: vegadeckgl.presenter#deckgl
 [PropertyDeclaration-3]: vegadeckgl.presenter#logger
