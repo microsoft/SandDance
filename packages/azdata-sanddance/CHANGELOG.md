@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.3.1]
+- Updated sanddance-explorer to use chart recommendation heuristics
+
 ## [1.3.0]
 - Enable visualization from SQL results grid
 

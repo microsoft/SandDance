@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.2.1]
+- Updated sanddance-explorer to use chart recommendation heuristics
+
 ## [1.2.0]
 - Added chart types: Grid
 - Added search expression grouping
