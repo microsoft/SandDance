@@ -22,7 +22,7 @@ import { DataScopeId } from './controls/dataScope';
 import { Dialog } from './controls/dialog';
 import { ensureColumnsExist, ensureColumnsPopulated } from './columns';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
-import { preferredColumnForTreemapSize, RecommenderSummary } from '@msrvida/recommender';
+import { preferredColumnForTreemapSize, RecommenderSummary } from '@msrvida/chart-recommender';
 import { InputSearchExpressionGroup, Search } from './dialogs/search';
 import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
 import { Settings } from './dialogs/settings';
