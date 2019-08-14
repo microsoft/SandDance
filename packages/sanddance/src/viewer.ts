@@ -41,6 +41,7 @@ import { recolorAxes } from './axes';
 import { registerColorSchemes } from './colorSchemes';
 import { Search, SearchExpression, SearchExpressionGroup } from './searchExpression/types';
 import { Spec } from 'vega-typings';
+import { Tooltip } from './tooltip';
 import { ViewGl_Class } from './vega-deck.gl/vega-classes/viewGl';
 
 let didRegisterColorSchemes = false;
@@ -100,6 +101,7 @@ export class Viewer {
     private _dataScope: DataScope;
     private _animator: Animator;
     private _details: Details;
+    private _tooltip: Tooltip;
     private _shouldSaveColorContext: () => boolean;
 
     /**
@@ -496,9 +498,43 @@ export class Viewer {
         this.select(search);
     }
 
+    private onCubeHover(e: MouseEvent | PointerEvent | TouchEvent, cube: VegaDeckGl.types.Cube) {
+        if (this._tooltip) {
+            this._tooltip.clear();
+            this._tooltip = null;
+        }
+        if (!cube) {
+            return;
+        }
+        const getDataIndexOfCube = (data: object[]) => {
+            const len = data.length;
+            for (let i = 0; i < len; i++) {
+                if (data[i][VegaDeckGl.constants.GL_ORDINAL] === cube.ordinal) {
+                    return i;
+                }
+            }
+        }
+        const currentData = this._dataScope.currentData();
+        const index = getDataIndexOfCube(currentData);
+        if (index >= 0) {
+
+            this._tooltip = new Tooltip(
+                {
+                    language: this.options.language,
+                    dataItem: currentData[index],
+                    position: e as MouseEvent,
+                    presenter: this.presenter
+                }
+            );
+
+            console.log((e as PointerEvent).clientX);
+        }
+    }
+
     private createConfig(c?: VegaDeckGl.types.PresenterConfig): VegaDeckGl.types.ViewGlConfig {
         const defaultPresenterConfig: VegaDeckGl.types.PresenterConfig = {
             onCubeClick: this.onCubeClick.bind(this),
+            onCubeHover: this.onCubeHover.bind(this),
             preStage: this.preStage.bind(this),
             onPresent: this.options.onPresent,
             onLayerClick: (info: PickInfo, pickedInfos: PickInfo[], e: MouseEvent) => {
