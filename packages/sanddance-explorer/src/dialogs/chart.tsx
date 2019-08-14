@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { base } from '../base';
 import { ColumnMap, ColumnMapProps } from '../controls/columnMap';
+import { Dialog } from '../controls/dialog';
 import { Group } from '../controls/group';
 import { SandDance } from '@msrvida/sanddance-react';
 import { Signal } from '../controls/signal';
@@ -10,6 +11,8 @@ import { strings } from '../language';
 
 export interface Props extends ColumnMapProps {
     specCapabilities: SandDance.types.SpecCapabilities;
+    tooltipExclusions: string[];
+    toggleTooltipExclusion: (columnName: string) => void;
     disabled: boolean;
     chart: SandDance.types.Chart;
     onChangeChartType: (chart: SandDance.types.Chart) => void;
@@ -121,6 +124,26 @@ export class Chart extends React.Component<Props, State> {
                         </div>
                     </div>
                 </Group>
+                <Dialog
+                    hidden={!this.state.showTooltipDialog}
+                    onDismiss={() => this.setState({ showTooltipDialog: false })}
+                    title={strings.labelTooltipMapping}
+                >
+                    <div>
+                        {props.allColumns.map((c, i) => (
+                            <div key={c.name}>
+                                <label>
+                                    <base.fabric.Toggle
+                                        checked={props.tooltipExclusions.indexOf(c.name) < 0}
+                                        inlineLabel={true}
+                                        label={c.name}
+                                        onChange={() => props.toggleTooltipExclusion(c.name)}
+                                    />
+                                </label>
+                            </div>
+                        ))}
+                    </div>
+                </Dialog>
             </div>
         );
     }

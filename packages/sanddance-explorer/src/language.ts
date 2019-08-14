@@ -67,6 +67,7 @@ export const strings = {
     labelShowLegend: "Show legend",
     labelShowAxes: "Show axes",
     labelSnapshotDescription: "Description",
+    labelTooltipMapping: "Tooltip columns",
     labelTransitionDurations: "Transition durations",
     labelTransitionCamera: "2D / 3D view",
     labelTransitionColor: "Color",

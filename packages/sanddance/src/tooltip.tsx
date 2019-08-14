@@ -7,7 +7,7 @@ import { GL_ORDINAL } from './vega-deck.gl/constants';
 import { Presenter, PresenterElement } from './vega-deck.gl';
 
 export interface TooltipOptions {
-
+    exclude: (columnName: string) => boolean;
 }
 
 interface Props {
@@ -23,20 +23,21 @@ export class Tooltip {
 
     constructor(props: Props) {
         this.element = renderTooltip(props) as any as HTMLElement;
-        this.element.style.position = 'absolute';
-        this.child = this.element.firstChild as HTMLElement;
-        document.body.appendChild(this.element);
-        //measure and move is necessary
-        const m = this.measure();
-        if (props.position.clientX + m.width >= document.body.offsetWidth) {
-            this.child.style.right = '0';
+        if (this.element) {
+            this.element.style.position = 'absolute';
+            this.child = this.element.firstChild as HTMLElement;
+            document.body.appendChild(this.element);
+            //measure and move is necessary
+            const m = this.measure();
+            if (props.position.clientX + m.width >= document.body.offsetWidth) {
+                this.child.style.right = '0';
+            }
+            if (props.position.clientY + m.height >= document.body.offsetHeight) {
+                this.child.style.bottom = '0';
+            }
+            this.element.style.left = `${props.position.clientX}px`;
+            this.element.style.top = `${props.position.clientY}px`;
         }
-        if (props.position.clientY + m.height >= document.body.offsetHeight) {
-            this.child.style.bottom = '0';
-        }
-        this.element.style.left = `${props.position.clientX}px`;
-        this.element.style.top = `${props.position.clientY}px`;
-
     }
 
     private measure() {
@@ -69,13 +70,18 @@ const renderTooltip = (props: Props) => {
             case GL_ORDINAL:
                 continue;
             default:
+                if (props.options && props.options.exclude) {
+                    if (props.options.exclude(columnName)) {
+                        continue;
+                    }
+                }
                 nameValuePairs.push({
                     columnName,
                     value: props.item[columnName]
                 });
         }
     }
-    return (
+    return nameValuePairs.length === 0 ? null : (
         <div className={className(PresenterElement.tooltip, props.presenter)}>
             <table>
                 <tbody>
