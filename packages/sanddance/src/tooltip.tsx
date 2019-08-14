@@ -29,10 +29,10 @@ export class Tooltip {
             document.body.appendChild(this.element);
             //measure and move is necessary
             const m = this.measure();
-            if (props.position.clientX + m.width >= document.body.offsetWidth) {
+            if (props.position.clientX + m.width >= document.documentElement.clientWidth) {
                 this.child.style.right = '0';
             }
-            if (props.position.clientY + m.height >= document.body.offsetHeight) {
+            if (props.position.clientY + m.height >= document.documentElement.clientHeight) {
                 this.child.style.bottom = '0';
             }
             this.element.style.left = `${props.position.clientX}px`;
