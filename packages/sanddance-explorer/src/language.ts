@@ -47,7 +47,7 @@ export const strings = {
     labelChart: "Chart",
     labelChartCanvas: "Chart canvas",
     labelColumnMapping: "Column Mapping",
-    labelChartTypeOptions: "Chart options",    
+    labelChartTypeOptions: "Chart options",
     labelColorBin: "Color binning",
     labelColorBinExplanation: "For numeric columns",
     labelColorBinNone: "None (continuous)",
