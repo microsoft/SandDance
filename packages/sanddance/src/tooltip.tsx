@@ -55,14 +55,18 @@ const renderTooltip = (props: Props) => {
         let value = props.dataItem[key];
         rows.push({ key, value });
     }
-    rows.length = Math.min(rows.length, 3);
     return (
         <div className={className(PresenterElement.tooltip, props.presenter)}>
-            <div>
-                <div>
-                    {rows.map(row => (<div>x:y</div>))}
-                </div>
-            </div>
+            <table>
+                <tbody>
+                    {rows.map(row => (
+                        <tr>
+                            <td>{row.key}:</td>
+                            <td>{row.value}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
 }
