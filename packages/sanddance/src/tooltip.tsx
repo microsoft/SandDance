@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { className } from './vega-deck.gl/panel';
-import { createElement, mount } from 'tsx-create-element';
+import { createElement } from 'tsx-create-element';
 import { Language } from './types';
 import { Presenter, PresenterElement } from './vega-deck.gl';
 
@@ -18,24 +18,26 @@ export class Tooltip {
 
     constructor(props: Props) {
         this.element = renderTooltip(props) as any as HTMLElement;
-        this.child = this.element.children[0] as HTMLElement;
+        this.child = this.element.firstChild as HTMLElement;
         document.body.appendChild(this.element);
         //measure and move is necessary
         const m = this.measure();
         if (props.position.clientX + m.width >= document.body.offsetWidth) {
-            this.child.style.right = '0px';
+            this.child.style.right = '0';
         }
         if (props.position.clientY + m.height >= document.body.offsetHeight) {
-            this.child.style.bottom = '0px';
+            this.child.style.bottom = '0';
         }
+        this.element.style.position = 'absolute';
         this.element.style.left = `${props.position.clientX}px`;
         this.element.style.top = `${props.position.clientY}px`;
+
     }
 
     private measure() {
         const cs = getComputedStyle(this.child);
-        const height = parseFloat(cs.marginTop) + parseFloat(cs.borderTopWidth) + parseFloat(cs.height) + parseFloat(cs.borderBottomWidth) + parseFloat(cs.marginBottom);
-        const width = parseFloat(cs.marginLeft) + parseFloat(cs.borderLeftWidth) + parseFloat(cs.width) + parseFloat(cs.borderRightWidth) + parseFloat(cs.marginRight);
+        const height = parseFloat(cs.marginTop) + parseFloat(cs.borderTopWidth) + this.child.offsetHeight + parseFloat(cs.borderBottomWidth) + parseFloat(cs.marginBottom);
+        const width = parseFloat(cs.marginLeft) + parseFloat(cs.borderLeftWidth) + this.child.offsetWidth + parseFloat(cs.borderRightWidth) + parseFloat(cs.marginRight);
         return { height, width };
     }
 
@@ -48,10 +50,18 @@ export class Tooltip {
 }
 
 const renderTooltip = (props: Props) => {
+    const rows: { key: string, value: any }[] = [];
+    for (let key in props.dataItem) {
+        let value = props.dataItem[key];
+        rows.push({ key, value });
+    }
+    rows.length = Math.min(rows.length, 3);
     return (
         <div className={className(PresenterElement.tooltip, props.presenter)}>
-            <div className="data-item">
-                tooltip
+            <div>
+                <div>
+                    {rows.map(row => (<div>x:y</div>))}
+                </div>
             </div>
         </div>
     );

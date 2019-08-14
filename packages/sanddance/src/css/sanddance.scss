@@ -81,13 +81,13 @@
 }
 
 .sanddance-tooltip {
-    position: absolute;
     >div {
-        background: pink;
-        border: 1px solid black;
+        background: #333;
+        color: #fff;
         margin: 1em;
         min-width: 200px;
         min-height: 50px;
+        padding: 6px;
         position: absolute;
     }
 }
