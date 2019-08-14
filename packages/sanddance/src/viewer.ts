@@ -10,7 +10,7 @@ import {
     populateColorContext
 } from './colorCubes';
 import { applySignalValues, extractSignalValuesFromView } from './signals';
-import { assignOrdinals, getSpecColumns } from './ordinal';
+import { assignOrdinals, getDataIndexOfCube, getSpecColumns } from './ordinal';
 import { AxisSelectionHandler, axisSelectionLayer } from './axisSelection';
 import { cloneVegaSpecWithData } from './specs/clone';
 import {
@@ -506,28 +506,15 @@ export class Viewer {
         if (!cube) {
             return;
         }
-        const getDataIndexOfCube = (data: object[]) => {
-            const len = data.length;
-            for (let i = 0; i < len; i++) {
-                if (data[i][VegaDeckGl.constants.GL_ORDINAL] === cube.ordinal) {
-                    return i;
-                }
-            }
-        }
         const currentData = this._dataScope.currentData();
-        const index = getDataIndexOfCube(currentData);
+        const index = getDataIndexOfCube(cube, currentData);
         if (index >= 0) {
-
-            this._tooltip = new Tooltip(
-                {
-                    language: this.options.language,
-                    dataItem: currentData[index],
-                    position: e as MouseEvent,
-                    presenter: this.presenter
-                }
-            );
-
-            console.log((e as PointerEvent).clientX);
+            this._tooltip = new Tooltip({
+                language: this.options.language,
+                dataItem: currentData[index],
+                position: e as MouseEvent,
+                presenter: this.presenter
+            });
         }
     }
 
