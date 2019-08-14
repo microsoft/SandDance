@@ -8,15 +8,17 @@ import {
     SpecColorSettings,
     SpecLanguage,
     SpecViewOptions
-    } from './specs/types';
+} from './specs/types';
 import { DeckProps } from '@deck.gl/core/lib/deck';
 import { LightSettings } from '@deck.gl/core/lib/layer';
 import { Search, SearchExpressionGroup } from './searchExpression/types';
 import { Spec } from 'vega-typings';
 import { SpecResult } from './specs/interfaces';
+import { TooltipOptions } from './tooltip';
 
 export * from './searchExpression/types';
 export * from './specs/types';
+export { TooltipOptions };
 
 /**
  * Map of ordinals per unique Id.
@@ -66,6 +68,11 @@ export interface ViewerOptions extends SpecViewOptions {
      * Language settings for the visualization.
      */
     language: Language;
+
+    /**
+     * Tooltip options
+     */
+    tooltipOptions?: TooltipOptions;
 
     /**
      * Optional map of light settings for the visualization, per camera view type.

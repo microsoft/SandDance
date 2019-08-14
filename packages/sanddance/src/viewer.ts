@@ -510,8 +510,8 @@ export class Viewer {
         const index = getDataIndexOfCube(cube, currentData);
         if (index >= 0) {
             this._tooltip = new Tooltip({
-                language: this.options.language,
-                dataItem: currentData[index],
+                options: this.options.tooltipOptions,
+                item: currentData[index],
                 position: e as MouseEvent,
                 presenter: this.presenter
             });
