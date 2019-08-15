@@ -79,3 +79,23 @@
 .sanddance-details-scroll {
     padding-bottom: 1em;
 }
+
+.sanddance-tooltip {
+    table {
+        background: #333;
+        color: #fff;
+        font-size: smaller;
+        margin: 1em;
+        min-width: 16em;
+        padding: 6px;
+        position: absolute;
+    }
+    td {
+        text-align: left;
+        vertical-align: top;
+        width: 75%;
+        &:first-child {
+            width: 25%;
+        }
+    }
+}

@@ -25,3 +25,14 @@ export function addDiv(parentElement: HTMLElement, className?: string) {
     }
     return div;
 }
+
+/**
+ * Measure the outer height and width of an HTMLElement, including margin, padding and border.
+ * @param el HTML Element to measure.
+ */
+export function outerSize(el: HTMLElement) {
+    const cs = getComputedStyle(el);
+    const height = parseFloat(cs.marginTop) + parseFloat(cs.paddingTop) + parseFloat(cs.borderTopWidth) + el.offsetHeight + parseFloat(cs.borderBottomWidth) + parseFloat(cs.paddingBottom) + parseFloat(cs.marginBottom);
+    const width = parseFloat(cs.marginLeft) + parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth) + el.offsetWidth + parseFloat(cs.borderRightWidth) + parseFloat(cs.paddingRight) + parseFloat(cs.marginRight);
+    return { height, width };
+}

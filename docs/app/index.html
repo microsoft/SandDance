@@ -58,35 +58,42 @@
                 }
             }
         };
-        var prefs = {
+        var options = {
             "*": {
-                "*": {
+                "chartPrefs": {
                     "*": {
                         "*": {
-                            "signalValues": {
-                                "SandDanceColorBinCount": 7
+                            "*": {
+                                "signalValues": {
+                                    "SandDanceColorBinCount": 7
+                                }
                             }
                         }
                     }
                 }
             },
             "titanic": {
-                "barchart": {
-                    "color": {
-                        "Gender": {
-                            "scheme": "set2"
+                "chartPrefs": {
+                    "barchart": {
+                        "color": {
+                            "Gender": {
+                                "scheme": "set2"
+                            }
                         }
                     }
                 }
             },
             "demovote": {
-                "*": {
-                    "color": {
-                        "Winner": {
-                            "scheme": "dual_bluered"
+                "chartPrefs": {
+                    "*": {
+                        "color": {
+                            "Winner": {
+                                "scheme": "dual_bluered"
+                            }
                         }
                     }
-                }
+                },
+                "tooltipExclusions": ["Id", "Latitude", "Longitude"]
             }
         };
     </script>

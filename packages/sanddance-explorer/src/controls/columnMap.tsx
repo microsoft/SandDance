@@ -25,6 +25,7 @@ const roleLabels: { [role in SandDance.types.InsightColumnRoles]: string } = {
 };
 
 export interface ColumnMapProps {
+  allColumns: SandDance.types.Column[];
   quantitativeColumns: SandDance.types.Column[];
   categoricalColumns: SandDance.types.Column[];
   changeColumnMapping: { (role: SandDance.types.InsightColumnRoles, column: SandDance.types.Column): void };

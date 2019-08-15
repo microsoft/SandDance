@@ -40,7 +40,7 @@
     "http-server": "^0.11.1",
     "inuitcss": "^6.0.0",
     "lerna": "^2.9.1",
-    "marked": "^0.6.1",
+    "marked": "^0.7.0",
     "mdast-util-toc": "^3.0.1",
     "mocha": "^5.0.0",
     "node-sass": "^4.9.3",

@@ -60,6 +60,7 @@ function newCubeLayer(presenter: Presenter, config: PresenterConfig, cubeData: C
         onHover: (o, e) => {
              if (o.index === -1) {
                  presenter.deckgl.interactiveState.onCube = false;
+                 config.onCubeHover(e && e.srcEvent, null);
             } else {
                 presenter.deckgl.interactiveState.onCube = true;
                 config.onCubeHover(e && e.srcEvent, o.object as Cube);

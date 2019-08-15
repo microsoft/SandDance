@@ -33,6 +33,11 @@ import { themePalettes } from './themes';
 import { toggleSearch } from './toggleSearch';
 import { Topbar } from './controls/topbar';
 
+export interface Options {
+  chartPrefs?: Prefs;
+  tooltipExclusions?: string[];
+}
+
 export interface Props {
   hideSidebarControls?: boolean;
   logoClickUrl?: string;
@@ -64,6 +69,7 @@ export interface State extends SandDance.types.Insight {
   dataScopeId: DataScopeId;
   selectedItemIndex: { [key: number]: number };
   snapshots: Snapshot[];
+  tooltipExclusions: string[];
 }
 
 const dataBrowserTitles: { [key: number]: string } = {};
@@ -140,7 +146,8 @@ export class Explorer extends React.Component<Props, State> {
       sidebarClosed: false,
       sidebarPinned: true,
       view: props.initialView || "2d",
-      snapshots: []
+      snapshots: [],
+      tooltipExclusions: []
     };
 
     this.state.selectedItemIndex[DataScopeId.AllData] = 0;
@@ -159,6 +166,9 @@ export class Explorer extends React.Component<Props, State> {
     this.viewerOptions = {
       ...this.viewerOptions,
       ...viewerOptions,
+      tooltipOptions: {
+        exclude: columnName => this.state.tooltipExclusions.indexOf(columnName) >= 0
+      },
       onColorContextChange: () => this.manageColorToolbar(),
       onDataFilter: (dataFilter, filteredData) => {
         const selectedItemIndex = { ...this.state.selectedItemIndex };
@@ -254,13 +264,13 @@ export class Explorer extends React.Component<Props, State> {
     getPartialInsight?: (
       columns: SandDance.types.Column[]
     ) => Partial<SandDance.types.Insight>,
-    prefs?: Prefs
+    optionsOrPrefs?: Prefs | Options
   ) {
     this.changeInsight({ columns: null });
     return new Promise<void>((resolve, reject) => {
       const loadFinal = (dataContent: DataContent) => {
         let partialInsight: Partial<SandDance.types.Insight>;
-        this.prefs = prefs || {};
+        this.prefs = (optionsOrPrefs && (optionsOrPrefs as Options).chartPrefs || (optionsOrPrefs as Prefs)) || {};
         if (getPartialInsight) {
           partialInsight = getPartialInsight(dataContent.columns);
           initPrefs(this.prefs, partialInsight);
@@ -281,6 +291,7 @@ export class Explorer extends React.Component<Props, State> {
           autoCompleteDistinctValues: {},
           filter: null,
           filteredData: null,
+          tooltipExclusions: (optionsOrPrefs && (optionsOrPrefs as Options).tooltipExclusions) || [],
           selectedItemIndex,
           sideTabId,
           ...partialInsight
@@ -628,6 +639,7 @@ export class Explorer extends React.Component<Props, State> {
 
     const columnMapProps: ColumnMapProps = {
       changeColumnMapping: (role, column) => this.changeColumnMapping(role, column),
+      allColumns: this.state.dataContent && this.state.dataContent.columns,
       quantitativeColumns,
       categoricalColumns,
       explorer: this
@@ -740,6 +752,17 @@ export class Explorer extends React.Component<Props, State> {
                   return (
                     <Chart
                       specCapabilities={this.state.specCapabilities}
+                      tooltipExclusions={this.state.tooltipExclusions}
+                      toggleTooltipExclusion={columnName => {
+                        const tooltipExclusions = [...this.state.tooltipExclusions];
+                        const i = tooltipExclusions.indexOf(columnName);
+                        if (i < 0) {
+                          tooltipExclusions.push(columnName);
+                        } else {
+                          tooltipExclusions.splice(i, 1);
+                        }
+                        this.setState({ tooltipExclusions });
+                      }}
                       disabled={!loaded || this.state.sidebarClosed}
                       {...columnMapProps}
                       chart={this.state.chart}

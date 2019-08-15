@@ -6,7 +6,7 @@ import { DataSource, DataSourceSnapshot, InsightMap } from './types';
 import { DataSourcePicker } from './dataSourcePicker';
 import {
   Explorer,
-  Prefs,
+  Options,
   SandDance,
   Snapshot,
   themePalettes
@@ -20,7 +20,7 @@ export interface Props {
   dataSources: DataSource[];
   mounted?: (app: SandDanceApp) => void;
   insights?: InsightMap;
-  initialPrefs?: { [dataSetId: string]: Prefs };
+  initialOptions?: { [dataSetId: string]: Options };
 }
 
 export interface State {
@@ -91,7 +91,7 @@ export class SandDanceApp extends React.Component<Props, State> {
           this.explorer && this.explorer.calculate(() => this.hydrateSnapshot(snapshot));
         }
       },
-      resize: e=> {
+      resize: e => {
         this.explorer && this.explorer.resize();
       }
     };
@@ -129,7 +129,8 @@ export class SandDanceApp extends React.Component<Props, State> {
       columns => {
         return partialInsight || (this.props.insights && this.props.insights[dataSource.id]);
       },
-      this.props.initialPrefs && VegaDeckGl.util.deepMerge({}, this.props.initialPrefs['*'], this.props.initialPrefs[dataSource.id]));
+      this.props.initialOptions && VegaDeckGl.util.deepMerge({}, this.props.initialOptions['*'], this.props.initialOptions[dataSource.id])
+    );
   }
 
   updateExplorerViewerOptions(viewerOptions: Partial<SandDance.types.ViewerOptions>) {

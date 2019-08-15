@@ -40,3 +40,12 @@ export function getSpecColumns(insight: Insight, columns: Column[]): SpecColumns
         z: getColumnByName(insight.columns && insight.columns.z)
     };
 }
+
+export function getDataIndexOfCube(cube: VegaDeckGl.types.Cube, data: object[]) {
+    const len = data.length;
+    for (let i = 0; i < len; i++) {
+        if (data[i][VegaDeckGl.constants.GL_ORDINAL] === cube.ordinal) {
+            return i;
+        }
+    }
+}
