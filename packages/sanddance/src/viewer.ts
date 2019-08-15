@@ -402,6 +402,10 @@ export class Viewer {
     }
 
     private _render(insight: Insight, data: object[], options: RenderOptions) {
+        if (this._tooltip) {
+            this._tooltip.finalize();
+            this._tooltip = null;
+        }
         if (this._dataScope.setData(data, options.columns)) {
             //data is different, reset the signal value cache
             this._signalValues = {};
@@ -500,7 +504,7 @@ export class Viewer {
 
     private onCubeHover(e: MouseEvent | PointerEvent | TouchEvent, cube: VegaDeckGl.types.Cube) {
         if (this._tooltip) {
-            this._tooltip.clear();
+            this._tooltip.finalize();
             this._tooltip = null;
         }
         if (!cube) {
@@ -608,6 +612,7 @@ export class Viewer {
      * Gets the current selection.
      */
     getSelection() {
+        if (!this._dataScope) return null;
         const selectionState: SelectionState = {
             search: (this._dataScope.selection && this._dataScope.selection.search) || null,
             selectedData: (this._dataScope.selection && this._dataScope.selection.included) || null,
@@ -663,6 +668,7 @@ export class Viewer {
     finalize() {
         if (this._dataScope) this._dataScope.finalize();
         if (this._details) this._details.finalize();
+        if (this._tooltip) this._tooltip.finalize();
         if (this.vegaViewGl) this.vegaViewGl.finalize();
         if (this.presenter) this.presenter.finalize();
         if (this.element) this.element.innerHTML = '';
@@ -675,5 +681,6 @@ export class Viewer {
         this._animator = null;
         this._dataScope = null;
         this._details = null;
+        this._tooltip = null;
     }
 }

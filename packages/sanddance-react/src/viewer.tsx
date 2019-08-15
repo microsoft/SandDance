@@ -79,6 +79,10 @@ export class SandDanceReact extends Component<Props, State> {
     this.view();
   }
 
+  componentWillUnmount() {
+    this.viewer.finalize();
+  }
+
   render() {
     return (
       <div className="sanddance-ReactViewer" ref={div => (this.viewerDiv = div)} />
