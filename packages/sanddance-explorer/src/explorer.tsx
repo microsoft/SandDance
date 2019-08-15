@@ -33,6 +33,11 @@ import { themePalettes } from './themes';
 import { toggleSearch } from './toggleSearch';
 import { Topbar } from './controls/topbar';
 
+export interface Options {
+  chartPrefs?: Prefs;
+  tooltipExclusions?: string[];
+}
+
 export interface Props {
   hideSidebarControls?: boolean;
   logoClickUrl?: string;
@@ -259,13 +264,13 @@ export class Explorer extends React.Component<Props, State> {
     getPartialInsight?: (
       columns: SandDance.types.Column[]
     ) => Partial<SandDance.types.Insight>,
-    prefs?: Prefs
+    optionsOrPrefs?: Prefs | Options
   ) {
     this.changeInsight({ columns: null });
     return new Promise<void>((resolve, reject) => {
       const loadFinal = (dataContent: DataContent) => {
         let partialInsight: Partial<SandDance.types.Insight>;
-        this.prefs = prefs || {};
+        this.prefs = (optionsOrPrefs && (optionsOrPrefs as Options).chartPrefs || (optionsOrPrefs as Prefs)) || {};
         if (getPartialInsight) {
           partialInsight = getPartialInsight(dataContent.columns);
           initPrefs(this.prefs, partialInsight);
@@ -286,7 +291,7 @@ export class Explorer extends React.Component<Props, State> {
           autoCompleteDistinctValues: {},
           filter: null,
           filteredData: null,
-          tooltipExclusions: [],
+          tooltipExclusions: (optionsOrPrefs && (optionsOrPrefs as Options).tooltipExclusions) || [],
           selectedItemIndex,
           sideTabId,
           ...partialInsight

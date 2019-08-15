@@ -37,7 +37,7 @@ export { SandDance };
 declare var insights: InsightMap;
 declare var darkTheme: boolean;
 declare function setTheme(darkTheme: boolean): void;
-declare var prefs: { [datasetId: string]: Prefs };
+declare var options: { [datasetId: string]: Prefs };
 declare var themeColors: { [theme: string]: SandDance.types.ColorSettings };
 
 const undef = typeof undefined;
@@ -47,7 +47,7 @@ ReactDOM.render(
     setTheme={typeof setTheme !== undef && setTheme}
     darkTheme={typeof darkTheme !== undef && darkTheme}
     insights={typeof insights !== undef && insights}
-    initialPrefs={typeof prefs !== undef && prefs}
+    initialOptions={typeof options !== undef && options}
     themeColors={typeof themeColors !== undef && themeColors}
     dataSources={dataSets}
     mounted={app => {
