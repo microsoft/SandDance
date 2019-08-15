@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.3.2]
+- SandDance now has tooltips
+
 ## [1.3.1]
 - Updated sanddance-explorer to use chart recommendation heuristics
 

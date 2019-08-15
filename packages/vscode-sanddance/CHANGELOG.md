@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.2.4]
+- Vertically constrained tooltips
+
+## [1.2.3]
+- SandDance now has tooltips
+
 ## [1.2.1]
 - Updated sanddance-explorer to use chart recommendation heuristics
 
