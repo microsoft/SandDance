@@ -168,7 +168,27 @@ function getCubes(deckProps: DeckProps): Cube[];
 
 **Return type**
 
-[Cube][InterfaceDeclaration-29][]
+[Cube][InterfaceDeclaration-30][]
+
+----------
+
+### outerSize
+
+Measure the outer height and width of an HTMLElement, including margin, padding and border.
+
+```typescript
+function outerSize(el: HTMLElement): { };
+```
+
+**Parameters**
+
+| Name | Type        | Description              |
+| ---- | ----------- | ------------------------ |
+| el   | HTMLElement | HTML Element to measure. |
+
+**Return type**
+
+{ }
 
 [NamespaceImport-8]: vegadeckgl.util#util
 [FunctionDeclaration-10]: vegadeckgl.util#adddiv
@@ -179,4 +199,5 @@ function getCubes(deckProps: DeckProps): Cube[];
 [FunctionDeclaration-15]: vegadeckgl.util#deepmerge
 [FunctionDeclaration-16]: vegadeckgl.util#getcubelayer
 [FunctionDeclaration-17]: vegadeckgl.util#getcubes
-[InterfaceDeclaration-29]: vegadeckgl.types#cube
+[InterfaceDeclaration-30]: vegadeckgl.types#cube
+[FunctionDeclaration-18]: vegadeckgl.util#outersize

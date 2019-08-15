@@ -4811,6 +4811,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.addEl = addEl;
 exports.addDiv = addDiv;
+exports.outerSize = outerSize;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -4841,6 +4842,21 @@ function addDiv(parentElement, className) {
   }
 
   return div;
+}
+/**
+ * Measure the outer height and width of an HTMLElement, including margin, padding and border.
+ * @param el HTML Element to measure.
+ */
+
+
+function outerSize(el) {
+  const cs = getComputedStyle(el);
+  const height = parseFloat(cs.marginTop) + parseFloat(cs.paddingTop) + parseFloat(cs.borderTopWidth) + el.offsetHeight + parseFloat(cs.borderBottomWidth) + parseFloat(cs.paddingBottom) + parseFloat(cs.marginBottom);
+  const width = parseFloat(cs.marginLeft) + parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth) + el.offsetWidth + parseFloat(cs.borderRightWidth) + parseFloat(cs.paddingRight) + parseFloat(cs.marginRight);
+  return {
+    height,
+    width
+  };
 }
 },{}],"/AEP":[function(require,module,exports) {
 "use strict";
@@ -6772,6 +6788,7 @@ function newCubeLayer(presenter, config, cubeData, highlightColor, lightSettings
     onHover: (o, e) => {
       if (o.index === -1) {
         presenter.deckgl.interactiveState.onCube = false;
+        config.onCubeHover(e && e.srcEvent, null);
       } else {
         presenter.deckgl.interactiveState.onCube = true;
         config.onCubeHover(e && e.srcEvent, o.object);
@@ -6851,6 +6868,12 @@ Object.defineProperty(exports, "addEl", {
   enumerable: true,
   get: function () {
     return _htmlHelpers.addEl;
+  }
+});
+Object.defineProperty(exports, "outerSize", {
+  enumerable: true,
+  get: function () {
+    return _htmlHelpers.outerSize;
   }
 });
 Object.defineProperty(exports, "clone", {
@@ -8808,6 +8831,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.assignOrdinals = assignOrdinals;
 exports.getSpecColumns = getSpecColumns;
+exports.getDataIndexOfCube = getDataIndexOfCube;
 
 var VegaDeckGl = _interopRequireWildcard(require("./vega-deck.gl"));
 
@@ -8851,6 +8875,16 @@ function getSpecColumns(insight, columns) {
     y: getColumnByName(insight.columns && insight.columns.y),
     z: getColumnByName(insight.columns && insight.columns.z)
   };
+}
+
+function getDataIndexOfCube(cube, data) {
+  const len = data.length;
+
+  for (let i = 0; i < len; i++) {
+    if (data[i][VegaDeckGl.constants.GL_ORDINAL] === cube.ordinal) {
+      return i;
+    }
+  }
 }
 },{"./vega-deck.gl":"Uns8"}],"7Ifg":[function(require,module,exports) {
 "use strict";
@@ -13254,7 +13288,105 @@ function recolorAxes(stage, oldColors, newColors) {
     textData
   };
 }
-},{"./vega-deck.gl":"Uns8"}],"CdFf":[function(require,module,exports) {
+},{"./vega-deck.gl":"Uns8"}],"bkgF":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Tooltip = void 0;
+
+var _tsxCreateElement = require("tsx-create-element");
+
+var _constants = require("./constants");
+
+var _constants2 = require("./vega-deck.gl/constants");
+
+var _htmlHelpers = require("./vega-deck.gl/htmlHelpers");
+
+var _controls = require("./vega-deck.gl/controls");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+class Tooltip {
+  constructor(props) {
+    const renderProps = {
+      cssPrefix: props.cssPrefix,
+      rows: getRows(props.item, props.options)
+    };
+    this.element = renderTooltip(renderProps);
+
+    if (this.element) {
+      this.element.style.position = 'absolute';
+      this.child = this.element.firstChild;
+      document.body.appendChild(this.element); //measure and move as necessary
+
+      const m = (0, _htmlHelpers.outerSize)(this.child);
+
+      if (props.position.clientX + m.width >= document.documentElement.clientWidth) {
+        this.child.style.right = '0';
+      }
+
+      if (props.position.clientY + m.height >= document.documentElement.clientHeight) {
+        this.child.style.bottom = '0';
+      }
+
+      this.element.style.left = `${props.position.clientX}px`;
+      this.element.style.top = `${props.position.clientY}px`;
+    }
+  }
+
+  clear() {
+    if (this.element) {
+      document.body.removeChild(this.element);
+    }
+
+    this.element = null;
+  }
+
+}
+
+exports.Tooltip = Tooltip;
+
+function getRows(item, options) {
+  const rows = [];
+
+  for (let columnName in item) {
+    switch (columnName) {
+      case _constants.FieldNames.Active:
+      case _constants.FieldNames.Collapsed:
+      case _constants.FieldNames.Selected:
+      case _constants2.GL_ORDINAL:
+        continue;
+
+      default:
+        if (options && options.exclude) {
+          if (options.exclude(columnName)) {
+            continue;
+          }
+        }
+
+        rows.push({
+          cells: [{
+            content: columnName
+          }, {
+            content: item[columnName]
+          }]
+        });
+    }
+  }
+
+  return rows;
+}
+
+const renderTooltip = props => {
+  return props.rows.length === 0 ? null : (0, _tsxCreateElement.createElement)("div", {
+    className: `${props.cssPrefix}tooltip`
+  }, (0, _controls.Table)({
+    rows: props.rows
+  }));
+};
+},{"tsx-create-element":"QGtg","./constants":"Syc7","./vega-deck.gl/constants":"ipKi","./vega-deck.gl/htmlHelpers":"+tod","./vega-deck.gl/controls":"AQhe"}],"CdFf":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13295,6 +13427,8 @@ var _tsxCreateElement = require("tsx-create-element");
 var _axes = require("./axes");
 
 var _colorSchemes = require("./colorSchemes");
+
+var _tooltip = require("./tooltip");
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -13744,9 +13878,35 @@ class Viewer {
     this.select(search);
   }
 
+  onCubeHover(e, cube) {
+    if (this._tooltip) {
+      this._tooltip.clear();
+
+      this._tooltip = null;
+    }
+
+    if (!cube) {
+      return;
+    }
+
+    const currentData = this._dataScope.currentData();
+
+    const index = (0, _ordinal.getDataIndexOfCube)(cube, currentData);
+
+    if (index >= 0) {
+      this._tooltip = new _tooltip.Tooltip({
+        options: this.options.tooltipOptions,
+        item: currentData[index],
+        position: e,
+        cssPrefix: this.presenter.style.cssPrefix
+      });
+    }
+  }
+
   createConfig(c) {
     const defaultPresenterConfig = {
       onCubeClick: this.onCubeClick.bind(this),
+      onCubeHover: this.onCubeHover.bind(this),
       preStage: this.preStage.bind(this),
       onPresent: this.options.onPresent,
       onLayerClick: (info, pickedInfos, e) => {
@@ -13932,7 +14092,7 @@ class Viewer {
 
 exports.Viewer = Viewer;
 Viewer.defaultViewerOptions = _defaults2.defaultViewerOptions;
-},{"./searchExpression":"0mJg","./vega-deck.gl":"Uns8","./animator":"U1OZ","./colorCubes":"PfBA","./signals":"jmI2","./ordinal":"/0dx","./axisSelection":"oIzg","./specs/clone":"DO07","./dataScope":"5MJ1","./vega-deck.gl/defaults":"JuFU","./defaults":"G0Md","./details":"1/KC","./headers":"nQLz","./legend":"9/rI","tsx-create-element":"QGtg","./axes":"A7xy","./colorSchemes":"kNpg"}],"rZaE":[function(require,module,exports) {
+},{"./searchExpression":"0mJg","./vega-deck.gl":"Uns8","./animator":"U1OZ","./colorCubes":"PfBA","./signals":"jmI2","./ordinal":"/0dx","./axisSelection":"oIzg","./specs/clone":"DO07","./dataScope":"5MJ1","./vega-deck.gl/defaults":"JuFU","./defaults":"G0Md","./details":"1/KC","./headers":"nQLz","./legend":"9/rI","tsx-create-element":"QGtg","./axes":"A7xy","./colorSchemes":"kNpg","./tooltip":"bkgF"}],"rZaE":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15947,6 +16107,7 @@ var strings = {
   buttonShowVegaSpec: "Show Vega spec",
   buttonLaunchVegaEditor: "Open Vega Editor",
   buttonCameraHome: "Center chart in window",
+  buttonTooltipMapping: "Tooltip columns...",
   chartTypeBarChart: "Bar chart",
   chartTypeDensity: "Density",
   chartTypeGrid: "Grid",
@@ -15985,6 +16146,7 @@ var strings = {
   labelShowLegend: "Show legend",
   labelShowAxes: "Show axes",
   labelSnapshotDescription: "Description",
+  labelTooltipMapping: "Tooltip columns",
   labelTransitionDurations: "Transition durations",
   labelTransitionCamera: "2D / 3D view",
   labelTransitionColor: "Color",
@@ -16440,7 +16602,36 @@ function ColumnMap(props) {
     });
   }));
 }
-},{"react":"ccIB","../base":"Vlbn","./dropdown":"Uyrp","@msrvida/sanddance-react":"MjKu","./signal":"OWDI","../language":"hk5u"}],"4Q3h":[function(require,module,exports) {
+},{"react":"ccIB","../base":"Vlbn","./dropdown":"Uyrp","@msrvida/sanddance-react":"MjKu","./signal":"OWDI","../language":"hk5u"}],"cFWm":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Dialog = Dialog;
+
+var React = _interopRequireWildcard(require("react"));
+
+var _base = require("../base");
+
+var _language = require("../language");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function Dialog(props) {
+  return React.createElement(_base.base.fabric.Dialog, Object.assign({}, props, {
+    dialogContentProps: {
+      type: _base.base.fabric.DialogType.normal,
+      title: props.title
+    }
+  }), props.children, React.createElement(_base.base.fabric.DialogFooter, null, props.buttons, React.createElement(_base.base.fabric.DefaultButton, {
+    onClick: props.onDismiss,
+    text: _language.strings.buttonClose
+  })));
+}
+},{"react":"ccIB","../base":"Vlbn","../language":"hk5u"}],"4Q3h":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16473,13 +16664,15 @@ function Group(props) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Chart = Chart;
+exports.Chart = void 0;
 
 var React = _interopRequireWildcard(require("react"));
 
 var _base = require("../base");
 
 var _columnMap = require("../controls/columnMap");
+
+var _dialog = require("../controls/dialog");
 
 var _group = require("../controls/group");
 
@@ -16489,78 +16682,150 @@ var _language = require("../language");
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function Chart(props) {
-  var signals = props.explorer.viewer && props.explorer.viewer.vegaSpec && props.specCapabilities && props.specCapabilities.signals && props.explorer.viewer.vegaSpec.signals.filter(function (s) {
-    return props.specCapabilities.signals.indexOf(s.name) >= 0;
-  });
-  return React.createElement("div", null, React.createElement(_group.Group, {
-    label: _language.strings.labelChart
-  }, React.createElement("div", {
-    className: "calculator"
-  }, React.createElement(_base.base.fabric.ChoiceGroup, {
-    options: [{
-      key: 'grid',
-      text: _language.strings.chartTypeGrid,
-      checked: props.chart === 'grid',
-      disabled: props.disabled
-    }, {
-      key: 'scatterplot',
-      text: _language.strings.chartTypeScatterPlot,
-      checked: props.chart === 'scatterplot',
-      disabled: props.disabled
-    }, {
-      key: 'density',
-      text: _language.strings.chartTypeDensity,
-      checked: props.chart === 'density',
-      disabled: props.disabled
-    }, {
-      key: 'barchart',
-      text: _language.strings.chartTypeBarChart,
-      checked: props.chart === 'barchart',
-      disabled: props.disabled
-    }, {
-      key: 'treemap',
-      text: _language.strings.chartTypeTreeMap,
-      checked: props.chart === 'treemap',
-      disabled: props.disabled
-    }, {
-      key: 'stacks',
-      text: _language.strings.chartTypeStacks,
-      checked: props.chart === 'stacks',
-      disabled: props.disabled
-    }],
-    onChange: function onChange(e, o) {
-      return props.onChangeChartType(o.key);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var Chart =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(Chart, _React$Component);
+
+  function Chart(props) {
+    var _this;
+
+    _classCallCheck(this, Chart);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Chart).call(this, props));
+    _this.state = {
+      showTooltipDialog: false
+    };
+    return _this;
+  }
+
+  _createClass(Chart, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var props = this.props;
+      var signals = props.explorer.viewer && props.explorer.viewer.vegaSpec && props.specCapabilities && props.specCapabilities.signals && props.explorer.viewer.vegaSpec.signals.filter(function (s) {
+        return props.specCapabilities.signals.indexOf(s.name) >= 0;
+      });
+      return React.createElement("div", null, React.createElement(_group.Group, {
+        label: _language.strings.labelChart
+      }, React.createElement("div", {
+        className: "calculator"
+      }, React.createElement(_base.base.fabric.ChoiceGroup, {
+        options: [{
+          key: 'grid',
+          text: _language.strings.chartTypeGrid,
+          checked: props.chart === 'grid',
+          disabled: props.disabled
+        }, {
+          key: 'scatterplot',
+          text: _language.strings.chartTypeScatterPlot,
+          checked: props.chart === 'scatterplot',
+          disabled: props.disabled
+        }, {
+          key: 'density',
+          text: _language.strings.chartTypeDensity,
+          checked: props.chart === 'density',
+          disabled: props.disabled
+        }, {
+          key: 'barchart',
+          text: _language.strings.chartTypeBarChart,
+          checked: props.chart === 'barchart',
+          disabled: props.disabled
+        }, {
+          key: 'treemap',
+          text: _language.strings.chartTypeTreeMap,
+          checked: props.chart === 'treemap',
+          disabled: props.disabled
+        }, {
+          key: 'stacks',
+          text: _language.strings.chartTypeStacks,
+          checked: props.chart === 'stacks',
+          disabled: props.disabled
+        }],
+        onChange: function onChange(e, o) {
+          return props.onChangeChartType(o.key);
+        }
+      }))), signals && React.createElement(_group.Group, {
+        label: _language.strings.labelChartTypeOptions
+      }, signals.map(function (signal, i) {
+        return React.createElement(_signal.Signal, {
+          key: i,
+          signal: signal,
+          explorer: props.explorer,
+          disabled: props.disabled
+        });
+      })), React.createElement(_group.Group, {
+        label: _language.strings.labelColumnMapping
+      }, React.createElement("div", null, props.specCapabilities && props.specCapabilities.roles.map(function (specRole, i) {
+        var specColumnInRole = props.columns[specRole.role];
+        var selectedColumnName = specColumnInRole;
+        var disabled = props.disabled || props.view === '2d' && specRole.role === 'z';
+        return React.createElement(_columnMap.ColumnMap, Object.assign({}, props, {
+          disabled: disabled,
+          selectedColumnName: selectedColumnName,
+          specRole: specRole,
+          key: i,
+          onChangeSignal: function onChangeSignal(name, value) {
+            return props.onChangeSignal(specRole.role, selectedColumnName, name, value);
+          }
+        }));
+      }), React.createElement("div", {
+        className: "sanddance-tooltipMap"
+      }, React.createElement(_base.base.fabric.DefaultButton, {
+        text: _language.strings.buttonTooltipMapping,
+        onClick: function onClick() {
+          return _this2.setState({
+            showTooltipDialog: true
+          });
+        }
+      })))), React.createElement(_dialog.Dialog, {
+        hidden: !this.state.showTooltipDialog,
+        onDismiss: function onDismiss() {
+          return _this2.setState({
+            showTooltipDialog: false
+          });
+        },
+        title: _language.strings.labelTooltipMapping
+      }, React.createElement("div", null, props.allColumns.map(function (c, i) {
+        return React.createElement("div", {
+          key: c.name
+        }, React.createElement("label", null, React.createElement(_base.base.fabric.Toggle, {
+          checked: props.tooltipExclusions.indexOf(c.name) < 0,
+          inlineLabel: true,
+          label: c.name,
+          onChange: function onChange() {
+            return props.toggleTooltipExclusion(c.name);
+          }
+        })));
+      }))));
     }
-  }))), signals && React.createElement(_group.Group, {
-    label: _language.strings.labelChartTypeOptions
-  }, signals.map(function (signal, i) {
-    return React.createElement(_signal.Signal, {
-      key: i,
-      signal: signal,
-      explorer: props.explorer,
-      disabled: props.disabled
-    });
-  })), React.createElement(_group.Group, {
-    label: _language.strings.labelColumnMapping
-  }, props.specCapabilities && props.specCapabilities.roles.map(function (specRole, i) {
-    var specColumnInRole = props.columns[specRole.role];
-    var selectedColumnName = specColumnInRole;
-    var disabled = props.disabled || props.view === '2d' && specRole.role === 'z';
-    return React.createElement(_columnMap.ColumnMap, Object.assign({}, props, {
-      disabled: disabled,
-      selectedColumnName: selectedColumnName,
-      specRole: specRole,
-      key: i,
-      onChangeSignal: function onChangeSignal(name, value) {
-        return props.onChangeSignal(specRole.role, selectedColumnName, name, value);
-      }
-    }));
-  })));
-}
-},{"react":"ccIB","../base":"Vlbn","../controls/columnMap":"DSho","../controls/group":"4Q3h","../controls/signal":"OWDI","../language":"hk5u"}],"BSWy":[function(require,module,exports) {
+  }]);
+
+  return Chart;
+}(React.Component);
+
+exports.Chart = Chart;
+},{"react":"ccIB","../base":"Vlbn","../controls/columnMap":"DSho","../controls/dialog":"cFWm","../controls/group":"4Q3h","../controls/signal":"OWDI","../language":"hk5u"}],"BSWy":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20448,36 +20713,7 @@ function DataScopeButton(props) {
     }
   });
 }
-},{"react":"ccIB","./button":"eqtW","d3-format":"SA6z","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"cFWm":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Dialog = Dialog;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _base = require("../base");
-
-var _language = require("../language");
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function Dialog(props) {
-  return React.createElement(_base.base.fabric.Dialog, Object.assign({}, props, {
-    dialogContentProps: {
-      type: _base.base.fabric.DialogType.normal,
-      title: props.title
-    }
-  }), props.children, React.createElement(_base.base.fabric.DialogFooter, null, props.buttons, React.createElement(_base.base.fabric.DefaultButton, {
-    onClick: props.onDismiss,
-    text: _language.strings.buttonClose
-  })));
-}
-},{"react":"ccIB","../base":"Vlbn","../language":"hk5u"}],"ENdt":[function(require,module,exports) {
+},{"react":"ccIB","./button":"eqtW","d3-format":"SA6z","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"ENdt":[function(require,module,exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.maxCategoricalColors = 20;
@@ -22517,7 +22753,8 @@ function (_React$Component) {
       sidebarClosed: false,
       sidebarPinned: true,
       view: props.initialView || "2d",
-      snapshots: []
+      snapshots: [],
+      tooltipExclusions: []
     };
     _this.state.selectedItemIndex[_dataScope.DataScopeId.AllData] = 0;
     _this.state.selectedItemIndex[_dataScope.DataScopeId.FilteredData] = 0;
@@ -22540,6 +22777,11 @@ function (_React$Component) {
       var _this2 = this;
 
       this.viewerOptions = Object.assign({}, this.viewerOptions, viewerOptions, {
+        tooltipOptions: {
+          exclude: function exclude(columnName) {
+            return _this2.state.tooltipExclusions.indexOf(columnName) >= 0;
+          }
+        },
         onColorContextChange: function onColorContextChange() {
           return _this2.manageColorToolbar();
         },
@@ -22664,7 +22906,7 @@ function (_React$Component) {
     }
   }, {
     key: "load",
-    value: function load(data, getPartialInsight, prefs) {
+    value: function load(data, getPartialInsight, optionsOrPrefs) {
       var _this4 = this;
 
       this.changeInsight({
@@ -22673,7 +22915,7 @@ function (_React$Component) {
       return new Promise(function (resolve, reject) {
         var loadFinal = function loadFinal(dataContent) {
           var partialInsight;
-          _this4.prefs = prefs || {};
+          _this4.prefs = optionsOrPrefs && optionsOrPrefs.chartPrefs || optionsOrPrefs || {};
 
           if (getPartialInsight) {
             partialInsight = getPartialInsight(dataContent.columns);
@@ -22697,6 +22939,7 @@ function (_React$Component) {
             autoCompleteDistinctValues: {},
             filter: null,
             filteredData: null,
+            tooltipExclusions: optionsOrPrefs && optionsOrPrefs.tooltipExclusions || [],
             selectedItemIndex: selectedItemIndex,
             sideTabId: sideTabId
           }, partialInsight);
@@ -23163,6 +23406,7 @@ function (_React$Component) {
         changeColumnMapping: function changeColumnMapping(role, column) {
           return _this9.changeColumnMapping(role, column);
         },
+        allColumns: this.state.dataContent && this.state.dataContent.columns,
         quantitativeColumns: quantitativeColumns,
         categoricalColumns: categoricalColumns,
         explorer: this
@@ -23291,6 +23535,22 @@ function (_React$Component) {
           case _sidebar.SideTabId.ChartType:
             return React.createElement(_chart.Chart, Object.assign({
               specCapabilities: _this9.state.specCapabilities,
+              tooltipExclusions: _this9.state.tooltipExclusions,
+              toggleTooltipExclusion: function toggleTooltipExclusion(columnName) {
+                var tooltipExclusions = _toConsumableArray(_this9.state.tooltipExclusions);
+
+                var i = tooltipExclusions.indexOf(columnName);
+
+                if (i < 0) {
+                  tooltipExclusions.push(columnName);
+                } else {
+                  tooltipExclusions.splice(i, 1);
+                }
+
+                _this9.setState({
+                  tooltipExclusions: tooltipExclusions
+                });
+              },
               disabled: !loaded || _this9.state.sidebarClosed
             }, columnMapProps, {
               chart: _this9.state.chart,

@@ -450,6 +450,22 @@ interface SpecViewOptions {
 
 ----------
 
+### TooltipOptions
+
+```typescript
+interface TooltipOptions {
+    exclude: (columnName: string) => boolean;
+}
+```
+
+**Properties**
+
+| Name    | Type                            | Optional |
+| ------- | ------------------------------- | -------- |
+| exclude | (columnName: string) => boolean | false    |
+
+----------
+
 ### OrdinalMap
 
 Map of ordinals per unique Id.
@@ -487,7 +503,7 @@ interface RenderResult {
 | Name       | Type                                  | Optional | Description                                 |
 | ---------- | ------------------------------------- | -------- | ------------------------------------------- |
 | specResult | SpecResult | false    | Specification result object.                |
-| ordinalMap | [OrdinalMap][InterfaceDeclaration-18] | false    | Map of cube ordinals assigned by unique id. |
+| ordinalMap | [OrdinalMap][InterfaceDeclaration-19] | false    | Map of cube ordinals assigned by unique id. |
 
 ----------
 
@@ -503,7 +519,7 @@ interface TransitionDurations extends TransitionDurations {
 
 **Extends**
 
-[TransitionDurations][InterfaceDeclaration-22]
+[TransitionDurations][InterfaceDeclaration-23]
 
 **Properties**
 
@@ -521,6 +537,7 @@ Customization options for the Viewer.
 interface ViewerOptions extends SpecViewOptions {
     colors: ColorSettings;
     language: Language;
+    tooltipOptions?: TooltipOptions;
     lightSettings?: { [view extends View]: LightSettings };
     transitionDurations: TransitionDurations;
     onError?: (errors: string[]) => void;
@@ -544,10 +561,11 @@ interface ViewerOptions extends SpecViewOptions {
 
 | Name                 | Type                                                                                                          | Optional | Description                                                                 |
 | -------------------- | ------------------------------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------- |
-| colors               | [ColorSettings][InterfaceDeclaration-24]                                                                      | false    | Custom colors of various parts of the visualization.                        |
-| language             | [Language][InterfaceDeclaration-26]                                                                           | false    | Language settings for the visualization.                                    |
+| colors               | [ColorSettings][InterfaceDeclaration-25]                                                                      | false    | Custom colors of various parts of the visualization.                        |
+| language             | [Language][InterfaceDeclaration-27]                                                                           | false    | Language settings for the visualization.                                    |
+| tooltipOptions       | [TooltipOptions][InterfaceDeclaration-18]                                                                     | true     | Tooltip options                                                             |
 | lightSettings        | { [view extends [View][TypeAliasDeclaration-7]]: LightSettings }                                              | true     | Optional map of light settings for the visualization, per camera view type. |
-| transitionDurations  | [TransitionDurations][InterfaceDeclaration-21]                                                                | false    | Lengths of time for a transition animation.                                 |
+| transitionDurations  | [TransitionDurations][InterfaceDeclaration-22]                                                                | false    | Lengths of time for a transition animation.                                 |
 | onError              | (errors: string[]) => void                                                                                    | true     | Optional error handler.                                                     |
 | onColorContextChange | () => void                                                                                                    | true     | Optional handler when color context changes.                                |
 | onDataFilter         | (filter: Search, filteredData: object[]) => void                                                              | true     | Optional handler to be invoked when data is filtered.                       |
@@ -579,8 +597,8 @@ interface RenderOptions {
 | -------------------------- | --------------------------------------- | -------- |
 | columns                    | [Column][InterfaceDeclaration-3][]      | true     |
 | columnTypes                | [ColumnTypeMap][InterfaceDeclaration-5] | true     |
-| ordinalMap                 | [OrdinalMap][InterfaceDeclaration-18]   | true     |
-| initialColorContext        | [ColorContext][InterfaceDeclaration-39] | true     |
+| ordinalMap                 | [OrdinalMap][InterfaceDeclaration-19]   | true     |
+| initialColorContext        | [ColorContext][InterfaceDeclaration-40] | true     |
 | discardColorContextUpdates | () => boolean                           | true     |
 
 ----------
@@ -611,7 +629,7 @@ interface ColorSettings extends SpecColorSettings {
 | hoveredCube           | Color                                  | true     | Color of the cube when mouse hovered.    |
 | selectedCube          | Color                                  | true     | Color of selected cubes.                 |
 | axisSelectHighlight   | Color                                  | true     | Color of axis hover hotspots.            |
-| unselectedColorMethod | [ColorMethod][InterfaceDeclaration-25] | true     | Method of coloring unselected cubes.     |
+| unselectedColorMethod | [ColorMethod][InterfaceDeclaration-26] | true     | Method of coloring unselected cubes.     |
 
 ----------
 
@@ -668,7 +686,7 @@ interface Language extends SpecLanguage {
 
 | Name           | Type                               | Optional | Description                                   |
 | -------------- | ---------------------------------- | -------- | --------------------------------------------- |
-| headers        | [Headers][InterfaceDeclaration-27] | false    | Labels in the sections of the chart panel.    |
+| headers        | [Headers][InterfaceDeclaration-28] | false    | Labels in the sections of the chart panel.    |
 | bing           | string                             | false    | Text to use for "search with Bing".           |
 | newColorMap    | string                             | false    | Button text to re-map color.                  |
 | oldColorMap    | string                             | false    | Button text to keep same color.               |
@@ -737,7 +755,7 @@ interface ColorMap {
 ```
 
 * *Parameter* `ordinal` - number
-* *Type* [ColorMappedItem][InterfaceDeclaration-41]
+* *Type* [ColorMappedItem][InterfaceDeclaration-42]
 
 
 ----------
@@ -758,9 +776,9 @@ interface ColorContext {
 
 | Name          | Type                                | Optional |
 | ------------- | ----------------------------------- | -------- |
-| colorMap      | [ColorMap][InterfaceDeclaration-40] | false    |
+| colorMap      | [ColorMap][InterfaceDeclaration-41] | false    |
 | legendElement | HTMLElement                         | false    |
-| legend        | [Legend][InterfaceDeclaration-30]   | false    |
+| legend        | [Legend][InterfaceDeclaration-31]   | false    |
 
 ----------
 
@@ -800,7 +818,7 @@ interface LegendRowWithSearch extends LegendRow {
 
 **Extends**
 
-[LegendRow][InterfaceDeclaration-31]
+[LegendRow][InterfaceDeclaration-32]
 
 **Properties**
 
@@ -975,42 +993,44 @@ type InsightColumnRoles = "uid" | "x" | "y" | "z" | "group" | "size" | "color" |
 [InterfaceDeclaration-14]: types#speccolorsettings
 [InterfaceDeclaration-15]: types#speclanguage
 [InterfaceDeclaration-6]: types#facetmargins
-[InterfaceDeclaration-18]: types#ordinalmap
-[InterfaceDeclaration-19]: types#renderresult
-[InterfaceDeclaration-18]: types#ordinalmap
-[InterfaceDeclaration-21]: types#transitiondurations
-[InterfaceDeclaration-22]: vegadeckgl/types#transitiondurations
-[InterfaceDeclaration-23]: types#vieweroptions
+[InterfaceDeclaration-18]: types#tooltipoptions
+[InterfaceDeclaration-19]: types#ordinalmap
+[InterfaceDeclaration-20]: types#renderresult
+[InterfaceDeclaration-19]: types#ordinalmap
+[InterfaceDeclaration-22]: types#transitiondurations
+[InterfaceDeclaration-23]: vegadeckgl/types#transitiondurations
+[InterfaceDeclaration-24]: types#vieweroptions
 [InterfaceDeclaration-17]: types#specviewoptions
-[InterfaceDeclaration-24]: types#colorsettings
-[InterfaceDeclaration-26]: types#language
+[InterfaceDeclaration-25]: types#colorsettings
+[InterfaceDeclaration-27]: types#language
+[InterfaceDeclaration-18]: types#tooltipoptions
 [TypeAliasDeclaration-7]: vegadeckgl/types#view
-[InterfaceDeclaration-21]: types#transitiondurations
-[InterfaceDeclaration-38]: types#renderoptions
+[InterfaceDeclaration-22]: types#transitiondurations
+[InterfaceDeclaration-39]: types#renderoptions
 [InterfaceDeclaration-3]: types#column
 [InterfaceDeclaration-5]: types#columntypemap
-[InterfaceDeclaration-18]: types#ordinalmap
-[InterfaceDeclaration-39]: types#colorcontext
-[InterfaceDeclaration-24]: types#colorsettings
+[InterfaceDeclaration-19]: types#ordinalmap
+[InterfaceDeclaration-40]: types#colorcontext
+[InterfaceDeclaration-25]: types#colorsettings
 [InterfaceDeclaration-14]: types#speccolorsettings
-[InterfaceDeclaration-25]: types#colormethod
-[InterfaceDeclaration-27]: types#headers
-[InterfaceDeclaration-26]: types#language
+[InterfaceDeclaration-26]: types#colormethod
+[InterfaceDeclaration-28]: types#headers
+[InterfaceDeclaration-27]: types#language
 [InterfaceDeclaration-15]: types#speclanguage
-[InterfaceDeclaration-27]: types#headers
+[InterfaceDeclaration-28]: types#headers
 [InterfaceDeclaration-0]: types#colorscheme
-[InterfaceDeclaration-41]: types#colormappeditem
-[InterfaceDeclaration-40]: types#colormap
-[InterfaceDeclaration-41]: types#colormappeditem
-[InterfaceDeclaration-39]: types#colorcontext
-[InterfaceDeclaration-40]: types#colormap
-[InterfaceDeclaration-30]: vegadeckgl/types#legend
-[InterfaceDeclaration-25]: types#colormethod
-[InterfaceDeclaration-37]: types#legendrowwithsearch
-[InterfaceDeclaration-31]: vegadeckgl/types#legendrow
+[InterfaceDeclaration-42]: types#colormappeditem
+[InterfaceDeclaration-41]: types#colormap
+[InterfaceDeclaration-42]: types#colormappeditem
+[InterfaceDeclaration-40]: types#colorcontext
+[InterfaceDeclaration-41]: types#colormap
+[InterfaceDeclaration-31]: vegadeckgl/types#legend
+[InterfaceDeclaration-26]: types#colormethod
+[InterfaceDeclaration-38]: types#legendrowwithsearch
+[InterfaceDeclaration-32]: vegadeckgl/types#legendrow
 [InterfaceDeclaration-1]: types#searchexpression
 [InterfaceDeclaration-2]: types#searchexpressiongroup
-[InterfaceDeclaration-42]: types#selectionstate
+[InterfaceDeclaration-43]: types#selectionstate
 [TypeAliasDeclaration-3]: types#search
 [TypeAliasDeclaration-0]: types#searchexpressionclause
 [TypeAliasDeclaration-2]: types#searchexpressionstringsearchoperators

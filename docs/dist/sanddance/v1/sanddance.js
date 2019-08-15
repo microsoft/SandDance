@@ -4586,6 +4586,16 @@
         }
         return div;
     }
+    /**
+     * Measure the outer height and width of an HTMLElement, including margin, padding and border.
+     * @param el HTML Element to measure.
+     */
+    function outerSize(el) {
+        const cs = getComputedStyle(el);
+        const height = parseFloat(cs.marginTop) + parseFloat(cs.paddingTop) + parseFloat(cs.borderTopWidth) + el.offsetHeight + parseFloat(cs.borderBottomWidth) + parseFloat(cs.paddingBottom) + parseFloat(cs.marginBottom);
+        const width = parseFloat(cs.marginLeft) + parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth) + el.offsetWidth + parseFloat(cs.borderRightWidth) + parseFloat(cs.paddingRight) + parseFloat(cs.marginRight);
+        return { height, width };
+    }
 
     var isMergeableObject = function isMergeableObject(value) {
     	return isNonNullObject(value)
@@ -5638,6 +5648,7 @@ void main(void) {
             onHover: (o, e) => {
                 if (o.index === -1) {
                     presenter.deckgl.interactiveState.onCube = false;
+                    config.onCubeHover(e && e.srcEvent, null);
                 }
                 else {
                     presenter.deckgl.interactiveState.onCube = true;
@@ -5706,7 +5717,8 @@ void main(void) {
         colorToString: colorToString,
         deepMerge: deepMerge,
         getCubeLayer: getCubeLayer,
-        getCubes: getCubes
+        getCubes: getCubes,
+        outerSize: outerSize
     });
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -6978,6 +6990,14 @@ void main(void) {
             y: getColumnByName(insight.columns && insight.columns.y),
             z: getColumnByName(insight.columns && insight.columns.z)
         };
+    }
+    function getDataIndexOfCube(cube, data) {
+        const len = data.length;
+        for (let i = 0; i < len; i++) {
+            if (data[i][GL_ORDINAL] === cube.ordinal) {
+                return i;
+            }
+        }
     }
 
     const FacetColumnsSequence = "FacetColumnsSequence";
@@ -10456,6 +10476,66 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
+    class Tooltip {
+        constructor(props) {
+            const renderProps = {
+                cssPrefix: props.cssPrefix,
+                rows: getRows(props.item, props.options)
+            };
+            this.element = renderTooltip(renderProps);
+            if (this.element) {
+                this.element.style.position = 'absolute';
+                this.child = this.element.firstChild;
+                document.body.appendChild(this.element);
+                //measure and move as necessary
+                const m = outerSize(this.child);
+                if (props.position.clientX + m.width >= document.documentElement.clientWidth) {
+                    this.child.style.right = '0';
+                }
+                if (props.position.clientY + m.height >= document.documentElement.clientHeight) {
+                    this.child.style.bottom = '0';
+                }
+                this.element.style.left = `${props.position.clientX}px`;
+                this.element.style.top = `${props.position.clientY}px`;
+            }
+        }
+        clear() {
+            if (this.element) {
+                document.body.removeChild(this.element);
+            }
+            this.element = null;
+        }
+    }
+    function getRows(item, options) {
+        const rows = [];
+        for (let columnName in item) {
+            switch (columnName) {
+                case FieldNames.Active:
+                case FieldNames.Collapsed:
+                case FieldNames.Selected:
+                case GL_ORDINAL:
+                    continue;
+                default:
+                    if (options && options.exclude) {
+                        if (options.exclude(columnName)) {
+                            continue;
+                        }
+                    }
+                    rows.push({
+                        cells: [
+                            { content: columnName },
+                            { content: item[columnName] }
+                        ]
+                    });
+            }
+        }
+        return rows;
+    }
+    const renderTooltip = (props) => {
+        return props.rows.length === 0 ? null : (createElement("div", { className: `${props.cssPrefix}tooltip` }, Table({ rows: props.rows })));
+    };
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
     let didRegisterColorSchemes = false;
     /**
      * Component to view a SandDance data visualization.
@@ -10832,9 +10912,29 @@ void main(void) {
             };
             this.select(search);
         }
+        onCubeHover(e, cube) {
+            if (this._tooltip) {
+                this._tooltip.clear();
+                this._tooltip = null;
+            }
+            if (!cube) {
+                return;
+            }
+            const currentData = this._dataScope.currentData();
+            const index = getDataIndexOfCube(cube, currentData);
+            if (index >= 0) {
+                this._tooltip = new Tooltip({
+                    options: this.options.tooltipOptions,
+                    item: currentData[index],
+                    position: e,
+                    cssPrefix: this.presenter.style.cssPrefix
+                });
+            }
+        }
         createConfig(c) {
             const defaultPresenterConfig$$1 = {
                 onCubeClick: this.onCubeClick.bind(this),
+                onCubeHover: this.onCubeHover.bind(this),
                 preStage: this.preStage.bind(this),
                 onPresent: this.options.onPresent,
                 onLayerClick: (info, pickedInfos, e) => {

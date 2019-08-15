@@ -109,6 +109,24 @@ interface Prefs {
 
 ----------
 
+### Options
+
+```typescript
+interface Options {
+    chartPrefs?: Prefs;
+    tooltipExclusions?: string[];
+}
+```
+
+**Properties**
+
+| Name              | Type                            | Optional |
+| ----------------- | ------------------------------- | -------- |
+| chartPrefs        | [Prefs][InterfaceDeclaration-3] | true     |
+| tooltipExclusions | string[]                        | true     |
+
+----------
+
 ### Props
 
 ```typescript
@@ -167,6 +185,7 @@ interface State extends Insight {
     dataScopeId: DataScopeId;
     selectedItemIndex: { [key: number]: number; };
     snapshots: Snapshot[];
+    tooltipExclusions: string[];
 }
 ```
 
@@ -176,22 +195,23 @@ Insight
 
 **Properties**
 
-| Name                       | Type                                                   | Optional |
-| -------------------------- | ------------------------------------------------------ | -------- |
-| calculating                | () => void                                             | false    |
-| errors                     | string[]                                               | false    |
-| autoCompleteDistinctValues | AutoCompleteDistinctValues   | false    |
+| Name                       | Type                                                    | Optional |
+| -------------------------- | ------------------------------------------------------- | -------- |
+| calculating                | () => void                                              | false    |
+| errors                     | string[]                                                | false    |
+| autoCompleteDistinctValues | AutoCompleteDistinctValues    | false    |
 | search                     | InputSearchExpressionGroup[] | false    |
-| filteredData               | object[]                                               | false    |
-| sidebarClosed              | boolean                                                | false    |
-| sidebarPinned              | boolean                                                | false    |
-| dataFile                   | [DataFile][InterfaceDeclaration-1]                     | false    |
-| dataContent                | [DataContent][InterfaceDeclaration-0]                  | false    |
-| specCapabilities           | SpecCapabilities                                       | false    |
-| sideTabId                  | SideTabId                         | false    |
-| dataScopeId                | DataScopeId                       | false    |
-| selectedItemIndex          | { [key: number]: number; }                             | false    |
-| snapshots                  | [Snapshot][InterfaceDeclaration-2][]                   | false    |
+| filteredData               | object[]                                                | false    |
+| sidebarClosed              | boolean                                                 | false    |
+| sidebarPinned              | boolean                                                 | false    |
+| dataFile                   | [DataFile][InterfaceDeclaration-1]                      | false    |
+| dataContent                | [DataContent][InterfaceDeclaration-0]                   | false    |
+| specCapabilities           | SpecCapabilities                                        | false    |
+| sideTabId                  | SideTabId                          | false    |
+| dataScopeId                | DataScopeId                        | false    |
+| selectedItemIndex          | { [key: number]: number; }                              | false    |
+| snapshots                  | [Snapshot][InterfaceDeclaration-2][]                    | false    |
+| tooltipExclusions          | string[]                                                | false    |
 
 ## Types
 
@@ -229,8 +249,10 @@ const themePalettes: { [theme: string]: Partial<IPalette>; };
 [TypeAliasDeclaration-0]: index#datafiletype
 [InterfaceDeclaration-2]: index#snapshot
 [InterfaceDeclaration-3]: index#prefs
-[InterfaceDeclaration-6]: index#props
-[InterfaceDeclaration-7]: index#state
+[InterfaceDeclaration-6]: index#options
+[InterfaceDeclaration-3]: index#prefs
+[InterfaceDeclaration-7]: index#props
+[InterfaceDeclaration-8]: index#state
 [InterfaceDeclaration-1]: index#datafile
 [InterfaceDeclaration-0]: index#datacontent
 [InterfaceDeclaration-2]: index#snapshot

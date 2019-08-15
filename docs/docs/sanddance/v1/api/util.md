@@ -76,11 +76,11 @@ function getPresenterStyle(options: ViewerOptions): PresenterStyle;
 
 | Name    | Type                                     |
 | ------- | ---------------------------------------- |
-| options | [ViewerOptions][InterfaceDeclaration-23] |
+| options | [ViewerOptions][InterfaceDeclaration-24] |
 
 **Return type**
 
-[PresenterStyle][InterfaceDeclaration-47]
+[PresenterStyle][InterfaceDeclaration-48]
 
 [NamespaceImport-3]: util#util
 [FunctionDeclaration-6]: util#getcolumnsfromdata
@@ -93,5 +93,5 @@ function getPresenterStyle(options: ViewerOptions): PresenterStyle;
 [InterfaceDeclaration-1]: types#searchexpression
 [InterfaceDeclaration-2]: types#searchexpressiongroup
 [FunctionDeclaration-9]: util#getpresenterstyle
-[InterfaceDeclaration-23]: types#vieweroptions
-[InterfaceDeclaration-47]: vegadeckgl/types#presenterstyle
+[InterfaceDeclaration-24]: types#vieweroptions
+[InterfaceDeclaration-48]: vegadeckgl/types#presenterstyle

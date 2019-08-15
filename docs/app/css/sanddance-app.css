@@ -67,6 +67,23 @@
 .sanddance-details-scroll {
   padding-bottom: 1em; }
 
+.sanddance-tooltip table {
+  background: #333;
+  color: #fff;
+  font-size: smaller;
+  margin: 1em;
+  min-width: 16em;
+  padding: 6px;
+  position: absolute; }
+
+.sanddance-tooltip td {
+  text-align: left;
+  vertical-align: top;
+  width: 75%; }
+
+.sanddance-tooltip td:first-child {
+  width: 25%; }
+
 .sanddance-scheme.option {
   display: grid;
   grid-template-columns: 10em auto;
@@ -432,6 +449,9 @@
   bottom: 3px;
   position: absolute;
   right: 0; }
+
+.sanddance-tooltipMap {
+  margin-top: 10px; }
 
 .sanddance-explorer {
   display: grid;
