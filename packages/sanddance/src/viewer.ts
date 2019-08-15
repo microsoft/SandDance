@@ -513,7 +513,7 @@ export class Viewer {
                 options: this.options.tooltipOptions,
                 item: currentData[index],
                 position: e as MouseEvent,
-                presenter: this.presenter
+                cssPrefix: this.presenter.style.cssPrefix
             });
         }
     }

@@ -5,5 +5,5 @@
  * HTML elements outputted by the presenter.
  */
 export enum PresenterElement {
-    root, gl, panel, legend, tooltip, vegaControls
+    root, gl, panel, legend, vegaControls
 }

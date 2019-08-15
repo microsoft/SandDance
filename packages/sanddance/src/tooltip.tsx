@@ -1,20 +1,29 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { className } from './vega-deck.gl/panel';
 import { createElement } from 'tsx-create-element';
 import { FieldNames } from './constants';
 import { GL_ORDINAL } from './vega-deck.gl/constants';
-import { Presenter, PresenterElement } from './vega-deck.gl';
+import { outerSize } from './vega-deck.gl/htmlHelpers';
 
 export interface TooltipOptions {
     exclude: (columnName: string) => boolean;
 }
 
 interface Props {
-    presenter: Presenter;
+    cssPrefix: string;
     options: TooltipOptions;
     item: object;
     position?: { clientX: number; clientY: number };
+}
+
+interface NameValuePair {
+    columnName: string;
+    value: any;
+}
+
+interface RenderProps {
+    cssPrefix: string;
+    nameValuePairs: NameValuePair[];
 }
 
 export class Tooltip {
@@ -22,13 +31,17 @@ export class Tooltip {
     private child: HTMLElement;
 
     constructor(props: Props) {
-        this.element = renderTooltip(props) as any as HTMLElement;
+        const renderProps: RenderProps = {
+            cssPrefix: props.cssPrefix,
+            nameValuePairs: getNameValuePairs(props.item, props.options)
+        };
+        this.element = renderTooltip(renderProps) as any as HTMLElement;
         if (this.element) {
             this.element.style.position = 'absolute';
             this.child = this.element.firstChild as HTMLElement;
             document.body.appendChild(this.element);
-            //measure and move is necessary
-            const m = this.measure();
+            //measure and move as necessary
+            const m = outerSize(this.child);
             if (props.position.clientX + m.width >= document.documentElement.clientWidth) {
                 this.child.style.right = '0';
             }
@@ -40,13 +53,6 @@ export class Tooltip {
         }
     }
 
-    private measure() {
-        const cs = getComputedStyle(this.child);
-        const height = parseFloat(cs.marginTop) + parseFloat(cs.paddingTop) + parseFloat(cs.borderTopWidth) + this.child.offsetHeight + parseFloat(cs.borderBottomWidth) + parseFloat(cs.paddingBottom) + parseFloat(cs.marginBottom);
-        const width = parseFloat(cs.marginLeft) + parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth) + this.child.offsetWidth + parseFloat(cs.borderRightWidth) + parseFloat(cs.paddingRight) + parseFloat(cs.marginRight);
-        return { height, width };
-    }
-
     clear() {
         if (this.element) {
             document.body.removeChild(this.element);
@@ -55,14 +61,9 @@ export class Tooltip {
     }
 }
 
-interface NameValuePair {
-    columnName: string;
-    value: any;
-}
-
-const renderTooltip = (props: Props) => {
+function getNameValuePairs(item: object, options: TooltipOptions) {
     const nameValuePairs: NameValuePair[] = [];
-    for (let columnName in props.item) {
+    for (let columnName in item) {
         switch (columnName) {
             case FieldNames.Active:
             case FieldNames.Collapsed:
@@ -70,22 +71,26 @@ const renderTooltip = (props: Props) => {
             case GL_ORDINAL:
                 continue;
             default:
-                if (props.options && props.options.exclude) {
-                    if (props.options.exclude(columnName)) {
+                if (options && options.exclude) {
+                    if (options.exclude(columnName)) {
                         continue;
                     }
                 }
                 nameValuePairs.push({
                     columnName,
-                    value: props.item[columnName]
+                    value: item[columnName]
                 });
         }
     }
-    return nameValuePairs.length === 0 ? null : (
-        <div className={className(PresenterElement.tooltip, props.presenter)}>
+    return nameValuePairs;
+}
+
+const renderTooltip = (props: RenderProps) => {
+    return props.nameValuePairs.length === 0 ? null : (
+        <div className={`${props.cssPrefix}tooltip`}>
             <table>
                 <tbody>
-                    {nameValuePairs.map(row => (
+                    {props.nameValuePairs.map(row => (
                         <tr>
                             <td>{row.columnName}:</td>
                             <td>{row.value}</td>

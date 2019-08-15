@@ -6,10 +6,10 @@
  * as it may cause circular dependencies in Rollup.
  */
 
-import { addDiv, addEl } from '../htmlHelpers';
+import { addDiv, addEl, outerSize } from '../htmlHelpers';
 import { clone, deepMerge } from '../clone';
 import { colorFromString, colorToString } from '../color';
 import { getCubeLayer, getCubes } from '../layers';
 
 //alphabetize for documentation
-export { addDiv, addEl, clone, colorFromString, colorToString, deepMerge, getCubeLayer, getCubes };
+export { addDiv, addEl, clone, colorFromString, colorToString, deepMerge, getCubeLayer, getCubes, outerSize };
