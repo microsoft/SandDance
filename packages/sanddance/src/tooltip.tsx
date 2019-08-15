@@ -4,6 +4,7 @@ import { createElement } from 'tsx-create-element';
 import { FieldNames } from './constants';
 import { GL_ORDINAL } from './vega-deck.gl/constants';
 import { outerSize } from './vega-deck.gl/htmlHelpers';
+import { Table, TableRow } from './vega-deck.gl/controls';
 
 export interface TooltipOptions {
     exclude: (columnName: string) => boolean;
@@ -16,14 +17,9 @@ interface Props {
     position?: { clientX: number; clientY: number };
 }
 
-interface NameValuePair {
-    columnName: string;
-    value: any;
-}
-
 interface RenderProps {
     cssPrefix: string;
-    nameValuePairs: NameValuePair[];
+    rows: TableRow[];
 }
 
 export class Tooltip {
@@ -33,7 +29,7 @@ export class Tooltip {
     constructor(props: Props) {
         const renderProps: RenderProps = {
             cssPrefix: props.cssPrefix,
-            nameValuePairs: getNameValuePairs(props.item, props.options)
+            rows: getRows(props.item, props.options)
         };
         this.element = renderTooltip(renderProps) as any as HTMLElement;
         if (this.element) {
@@ -61,8 +57,8 @@ export class Tooltip {
     }
 }
 
-function getNameValuePairs(item: object, options: TooltipOptions) {
-    const nameValuePairs: NameValuePair[] = [];
+function getRows(item: object, options: TooltipOptions) {
+    const rows: TableRow[] = [];
     for (let columnName in item) {
         switch (columnName) {
             case FieldNames.Active:
@@ -76,28 +72,21 @@ function getNameValuePairs(item: object, options: TooltipOptions) {
                         continue;
                     }
                 }
-                nameValuePairs.push({
-                    columnName,
-                    value: item[columnName]
+                rows.push({
+                    cells: [
+                        { content: columnName },
+                        { content: item[columnName] }
+                    ]
                 });
         }
     }
-    return nameValuePairs;
+    return rows;
 }
 
 const renderTooltip = (props: RenderProps) => {
-    return props.nameValuePairs.length === 0 ? null : (
+    return props.rows.length === 0 ? null : (
         <div className={`${props.cssPrefix}tooltip`}>
-            <table>
-                <tbody>
-                    {props.nameValuePairs.map(row => (
-                        <tr>
-                            <td>{row.columnName}:</td>
-                            <td>{row.value}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            {Table({ rows: props.rows })}
         </div>
     );
 }
