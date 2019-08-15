@@ -37,15 +37,31 @@ export class Tooltip {
             this.child = this.element.firstChild as HTMLElement;
             document.body.appendChild(this.element);
             //measure and move as necessary
-            const m = outerSize(this.child);
+            let m = outerSize(this.child);
+            while (m.height > document.documentElement.clientHeight) {
+                let tr = this.child.querySelector('tr:last-child') as HTMLTableRowElement;
+                if (tr) {
+                    tr.parentElement.removeChild(tr);
+                } else {
+                    break;
+                }
+                m = outerSize(this.child);
+            }
             if (props.position.clientX + m.width >= document.documentElement.clientWidth) {
                 this.child.style.right = '0';
             }
+            let moveTop = true;
             if (props.position.clientY + m.height >= document.documentElement.clientHeight) {
-                this.child.style.bottom = '0';
+                if (props.position.clientY - m.height > 0) {
+                    this.child.style.bottom = '0';
+                } else {
+                    moveTop = false;
+                }
+            }
+            if (moveTop) {
+                this.element.style.top = `${props.position.clientY}px`;
             }
             this.element.style.left = `${props.position.clientX}px`;
-            this.element.style.top = `${props.position.clientY}px`;
         }
     }
 
@@ -74,7 +90,7 @@ function getRows(item: object, options: TooltipOptions) {
                 }
                 rows.push({
                     cells: [
-                        { content: columnName },
+                        { content: columnName + ':' },
                         { content: item[columnName] }
                     ]
                 });
