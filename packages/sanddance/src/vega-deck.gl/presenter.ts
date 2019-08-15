@@ -3,7 +3,7 @@
 import { base } from './base';
 import { box } from './marks/rule';
 import { className, initializePanel } from './panel';
-import { clone, deepMerge } from './clone';
+import { deepMerge } from './clone';
 import { colorToString } from './color';
 import { createDeckGLClassesForPresenter, DeckGL_Class, DeckGLInternalProps } from './deck.gl-classes/deckgl';
 import { createStage, defaultPresenterConfig, defaultPresenterStyle } from './defaults';
