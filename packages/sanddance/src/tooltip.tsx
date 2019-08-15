@@ -49,7 +49,7 @@ export class Tooltip {
         }
     }
 
-    clear() {
+    finalize() {
         if (this.element) {
             document.body.removeChild(this.element);
         }
