@@ -39,6 +39,21 @@ void
 
 ----------
 
+### componentWillUnmount()
+
+Called immediately before a component is destroyed. Perform any necessary cleanup in this method, such as
+cancelled network requests, or cleaning up any DOM elements created in `componentDidMount`.
+
+```typescript
+public componentWillUnmount(): void;
+```
+
+**Return type**
+
+void
+
+----------
+
 ### render()
 
 ```typescript
@@ -64,5 +79,6 @@ Viewer
 [ClassDeclaration-0]: sanddancereact#sanddancereact
 [MethodDeclaration-0]: sanddancereact#componentdidmount
 [MethodDeclaration-1]: sanddancereact#componentdidupdate
-[MethodDeclaration-2]: sanddancereact#render
+[MethodDeclaration-2]: sanddancereact#componentwillunmount
+[MethodDeclaration-3]: sanddancereact#render
 [PropertyDeclaration-0]: sanddancereact#viewer

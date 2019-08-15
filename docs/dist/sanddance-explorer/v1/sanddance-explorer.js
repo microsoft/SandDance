@@ -13321,22 +13321,43 @@ class Tooltip {
       this.child = this.element.firstChild;
       document.body.appendChild(this.element); //measure and move as necessary
 
-      const m = (0, _htmlHelpers.outerSize)(this.child);
+      let m = (0, _htmlHelpers.outerSize)(this.child);
+
+      while (m.height > document.documentElement.clientHeight) {
+        let tr = this.child.querySelector('tr:last-child');
+
+        if (tr) {
+          tr.parentElement.removeChild(tr);
+        } else {
+          break;
+        }
+
+        m = (0, _htmlHelpers.outerSize)(this.child);
+      }
 
       if (props.position.clientX + m.width >= document.documentElement.clientWidth) {
         this.child.style.right = '0';
       }
 
+      let moveTop = true;
+
       if (props.position.clientY + m.height >= document.documentElement.clientHeight) {
-        this.child.style.bottom = '0';
+        if (props.position.clientY - m.height > 0) {
+          this.child.style.bottom = '0';
+        } else {
+          moveTop = false;
+        }
+      }
+
+      if (moveTop) {
+        this.element.style.top = `${props.position.clientY}px`;
       }
 
       this.element.style.left = `${props.position.clientX}px`;
-      this.element.style.top = `${props.position.clientY}px`;
     }
   }
 
-  clear() {
+  finalize() {
     if (this.element) {
       document.body.removeChild(this.element);
     }
@@ -13368,7 +13389,7 @@ function getRows(item, options) {
 
         rows.push({
           cells: [{
-            content: columnName
+            content: columnName + ':'
           }, {
             content: item[columnName]
           }]
@@ -13764,6 +13785,12 @@ class Viewer {
   }
 
   _render(insight, data, options) {
+    if (this._tooltip) {
+      this._tooltip.finalize();
+
+      this._tooltip = null;
+    }
+
     if (this._dataScope.setData(data, options.columns)) {
       //data is different, reset the signal value cache
       this._signalValues = {};
@@ -13880,7 +13907,7 @@ class Viewer {
 
   onCubeHover(e, cube) {
     if (this._tooltip) {
-      this._tooltip.clear();
+      this._tooltip.finalize();
 
       this._tooltip = null;
     }
@@ -14009,6 +14036,7 @@ class Viewer {
 
 
   getSelection() {
+    if (!this._dataScope) return null;
     const selectionState = {
       search: this._dataScope.selection && this._dataScope.selection.search || null,
       selectedData: this._dataScope.selection && this._dataScope.selection.included || null,
@@ -14070,6 +14098,7 @@ class Viewer {
   finalize() {
     if (this._dataScope) this._dataScope.finalize();
     if (this._details) this._details.finalize();
+    if (this._tooltip) this._tooltip.finalize();
     if (this.vegaViewGl) this.vegaViewGl.finalize();
     if (this.presenter) this.presenter.finalize();
     if (this.element) this.element.innerHTML = '';
@@ -14082,6 +14111,7 @@ class Viewer {
     this._animator = null;
     this._dataScope = null;
     this._details = null;
+    this._tooltip = null;
   }
 
 }
@@ -15181,6 +15211,10 @@ class SandDanceReact extends React.Component {
   componentDidUpdate() {
     this.viewer.options = _sanddance.VegaDeckGl.util.deepMerge(this.viewer.options, this.props.viewerOptions);
     this.view();
+  }
+
+  componentWillUnmount() {
+    this.viewer.finalize();
   }
 
   render() {

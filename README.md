@@ -11,6 +11,12 @@ Smooth animated transitions between views help you to maintain context as you in
 
 > This new version of SandDance has been rebuilt from scratch with the goal of being modular, extensible, and embeddable into your custom applications. We are now on GitHub so that we are open and driven by the community through contributions, feature requests, and discussion.
 
+## Where can I use SandDance?
+* [Try it now on the web](https://microsoft.github.io/SandDance/app/)
+* [Azure Data Studio](https://docs.microsoft.com/en-us/sql/azure-data-studio/sanddance-extension?view=sql-server-2017)
+* [VSCode extension](https://marketplace.visualstudio.com/items?itemName=msrvida.vscode-sanddance)
+* In your own JavaScript apps - see below
+
 ## Component architecture
 
 SandDance is an offering of several JavaScript components:
