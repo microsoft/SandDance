@@ -31,6 +31,7 @@ import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 
 export class SandDanceConfig {
   insightJSON: string = "";
+  tooltipExclusionsJSON: string = "";
 }
 
 export class SandDanceMainSettings {

@@ -62,11 +62,13 @@ export class Visual implements IVisual {
                 mounted: (app: App) => {
                     this.app = app;
                 },
-                onViewChange: () => {
+                onViewChange: (tooltipExclusions: string[]) => {
                     const insight = this.app.explorer.viewer.getInsight();
+                    tooltipExclusions = tooltipExclusions || this.app.explorer.state.tooltipExclusions;
                     cleanInsight(insight);
                     const config: SandDanceConfig = {
-                        insightJSON: JSON.stringify(insight)
+                        insightJSON: JSON.stringify(insight),
+                        tooltipExclusionsJSON: JSON.stringify(tooltipExclusions)
                     };
                     const properties = config as any;
                     options.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
@@ -106,13 +108,21 @@ export class Visual implements IVisual {
             return;
         }
 
+        const {
+            sandDanceMainSettings,
+            sandDanceConfig
+        } = this.settings;
+
+        let tooltipExclusions: string[] = [];
+
+        if (sandDanceConfig.tooltipExclusionsJSON) {
+            try {
+                tooltipExclusions = JSON.parse(sandDanceConfig.tooltipExclusionsJSON);
+            } catch (e) { }
+        }
+
         this.app.load(data, columns => {
             if (!columns) return;
-
-            const {
-                sandDanceMainSettings,
-                sandDanceConfig
-            } = this.settings;
 
             let insight: Partial<SandDance.types.Insight>;
 
@@ -120,26 +130,11 @@ export class Visual implements IVisual {
                 try {
                     insight = JSON.parse(sandDanceConfig.insightJSON);
                     delete insight.size;
-
-                    console.log('using insight:', insight);
-
-                } catch (e) {
-                    //TODO inform user that JSON did not parse. Possibly re-persist a blank.
-                }
+                } catch (e) { }
             }
 
-            // if (!insight) {
-            //     //TODO make sure insight works with columns
-            //     insight = {
-            //         columns: {
-            //         },
-            //         view: '2d'
-            //     };
-            //     console.log('new insight');
-            // }
-
             return insight;
-        });
+        }, tooltipExclusions);
 
     }
 

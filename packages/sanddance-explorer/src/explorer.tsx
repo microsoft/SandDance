@@ -52,6 +52,7 @@ export interface Props {
   onSnapshotClick?: (snapshot: Snapshot) => void;
   onView?: () => void;
   onSignalChanged?: () => void;
+  onTooltipExclusionsChanged?: (tooltipExclusions: string[]) => void;
 }
 
 export interface State extends SandDance.types.Insight {
@@ -762,6 +763,7 @@ export class Explorer extends React.Component<Props, State> {
                           tooltipExclusions.splice(i, 1);
                         }
                         this.setState({ tooltipExclusions });
+                        this.props.onTooltipExclusionsChanged && this.props.onTooltipExclusionsChanged(tooltipExclusions)
                       }}
                       disabled={!loaded || this.state.sidebarClosed}
                       {...columnMapProps}
