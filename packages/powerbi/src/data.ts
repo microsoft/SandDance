@@ -4,7 +4,7 @@
 import powerbi from "powerbi-visuals-api";
 import { SandDance, util } from "@msrvida/sanddance-explorer";
 
-export function convertTableToObjectArray(table: powerbi.DataViewTable, oldData: object[]) {
+export function convertTableToObjectArray(table: powerbi.DataViewTable, oldData: object[], host: powerbi.extensibility.visual.IVisualHost) {
     let different: boolean;
     if (oldData) {
         different = table.rows.length !== oldData.length;
@@ -24,6 +24,7 @@ export function convertTableToObjectArray(table: powerbi.DataViewTable, oldData:
                 }
             }
         });
+        newObject[SandDance.constants.FieldNames.PowerBISelectionId] = host.createSelectionIdBuilder().withTable(table, ri).createSelectionId();
         if (!different && ri === 0) {
             //check that all keys are the same
             const oldKeys = Object.keys(oldData[0]).filter(key => key !== SandDance.VegaDeckGl.constants.GL_ORDINAL);

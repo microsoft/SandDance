@@ -49,9 +49,14 @@ export class Visual implements IVisual {
     private errorElement: HTMLElement;
     private app: App;
     private prevSettings: IVisualSettings;
+    private host: powerbi.extensibility.visual.IVisualHost;
+    private selectionManager: powerbi.extensibility.ISelectionManager;
 
     constructor(options: VisualConstructorOptions) {
         //console.log('Visual constructor', options);
+        this.host = options.host;
+        this.selectionManager = this.host.createSelectionManager();
+
         if (typeof document !== "undefined") {
             options.element.style.position = 'relative'
             this.viewElement = SandDance.VegaDeckGl.util.addDiv(options.element, 'sanddance-powerbi');
@@ -71,7 +76,7 @@ export class Visual implements IVisual {
                         tooltipExclusionsJSON: JSON.stringify(tooltipExclusions)
                     };
                     const properties = config as any;
-                    options.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
+                    this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
                 }
             };
             render(createElement(App, props), this.viewElement);
@@ -94,7 +99,7 @@ export class Visual implements IVisual {
 
         this.settings = Visual.parseSettings(dataView);
         const oldData = this.app.getDataContent();
-        let { data, different } = convertTableToObjectArray(dataView.table, oldData);
+        let { data, different } = convertTableToObjectArray(dataView.table, oldData, this.host);
         if (!this.prevSettings) {
             different = true;
         }
