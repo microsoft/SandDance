@@ -77,6 +77,15 @@ export class Visual implements IVisual {
                     };
                     const properties = config as any;
                     this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
+                },
+                onDataFilter: (filter, filteredData) => {
+                    if (filteredData) {
+                        console.log(`selecting ${filteredData.length}`);
+                        const ids = filteredData.map(item => item[SandDance.constants.FieldNames.PowerBISelectionId] as powerbi.extensibility.ISelectionId);
+                        this.selectionManager.select(ids, false);
+                    } else {
+                        this.selectionManager.clear();
+                    }
                 }
             };
             render(createElement(App, props), this.viewElement);

@@ -29,6 +29,7 @@ function getThemePalette(darkTheme: boolean) {
 export interface Props {
     mounted: (app: App) => void;
     onViewChange: (tooltipExclusions?: string[]) => void;
+    onDataFilter: (filter: SandDance.types.Search, filteredData: object[]) => void;
 }
 
 export interface State {
@@ -64,7 +65,8 @@ export class App extends React.Component<Props, State> {
                 axisLine: color,
                 axisText: color,
                 hoveredCube: color
-            }
+            },
+            onDataFilter: this.props.onDataFilter
         };
         return viewerOptions;
     }
