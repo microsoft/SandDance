@@ -8,7 +8,7 @@ import {
     SpecViewOptions
 } from '../types';
 import { Data, StackTransform, Transforms } from 'vega-typings';
-import { DataNames, SignalNames } from '../constants';
+import { DataNames, FieldNames, SignalNames } from '../constants';
 import { topLookup } from '../top';
 
 export default function (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions) {
@@ -39,8 +39,8 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                         },
                         "nice": false,
                         "as": [
-                            "long0",
-                            "long1"
+                            FieldNames.StacksLongBin0,
+                            FieldNames.StacksLongBin1
                         ],
                         "signal": "binXSignal"
                     },
@@ -55,8 +55,8 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                             "signal": SignalNames.YBins
                         },
                         "as": [
-                            "lat0",
-                            "lat1"
+                            FieldNames.StacksLatBin0,
+                            FieldNames.StacksLatBin1
                         ],
                         "signal": "binYSignal"
                     }
@@ -111,26 +111,26 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                     {
                         "type": "extent",
                         "signal": "xtent",
-                        "field": "s1"
+                        "field": FieldNames.StacksStart
                     },
                     {
                         "type": "formula",
-                        "expr": "datum.s2 % columns",
+                        "expr": `datum.${FieldNames.StacksEnd} % columns`,
                         "as": "_columns"
                     },
                     {
                         "type": "formula",
-                        "expr": "floor(datum.s1 / columns)",
+                        "expr": `floor(datum.${FieldNames.StacksStart} / columns)`,
                         "as": "row"
                     },
                     {
                         "type": "formula",
-                        "expr": `datum.s1 % ${SignalNames.XGridSize}`,
+                        "expr": `datum.${FieldNames.StacksStart} % ${SignalNames.XGridSize}`,
                         "as": "column"
                     },
                     {
                         "type": "formula",
-                        "expr": `floor((datum.s1 % columns)/ ${SignalNames.XGridSize})`,
+                        "expr": `floor((datum.${FieldNames.StacksStart} % columns)/ ${SignalNames.XGridSize})`,
                         "as": "depth"
                     },
                     {
@@ -149,12 +149,12 @@ function stackTransform(sortColumn: Column, xColumn: Column, yColumn: Column) {
     const st: StackTransform = {
         "type": "stack",
         "groupby": [
-            yColumn.quantitative ? "lat0" : yColumn.name,
-            xColumn.quantitative ? "long0" : xColumn.name
+            yColumn.quantitative ? FieldNames.StacksLatBin0 : yColumn.name,
+            xColumn.quantitative ? FieldNames.StacksLongBin0 : xColumn.name
         ],
         "as": [
-            "s1",
-            "s2"
+            FieldNames.StacksStart,
+            FieldNames.StacksEnd
         ]
     };
     if (sortColumn) {

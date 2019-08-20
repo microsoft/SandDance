@@ -25,7 +25,7 @@ export default function (columns: SpecColumns, insight: Insight) {
                 :
                 {
                     "data": DataNames.Main,
-                    "field": columns.x.quantitative ? "long0" : columns.x.name,
+                    "field": columns.x.quantitative ? FieldNames.StacksLongBin0 : columns.x.name,
                     "sort": true
                 },
             "range": [
@@ -50,7 +50,7 @@ export default function (columns: SpecColumns, insight: Insight) {
                 :
                 {
                     "data": DataNames.Main,
-                    "field": columns.y.quantitative ? "lat0" : columns.y.name,
+                    "field": columns.y.quantitative ? FieldNames.StacksLatBin0 : columns.y.name,
                     "sort": true
                 },
             "range": "height",
