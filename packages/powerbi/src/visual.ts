@@ -80,7 +80,6 @@ export class Visual implements IVisual {
                 },
                 onDataFilter: (filter, filteredData) => {
                     if (filteredData) {
-                        console.log(`selecting ${filteredData.length}`);
                         const ids = filteredData.map(item => item[SandDance.constants.FieldNames.PowerBISelectionId] as powerbi.extensibility.ISelectionId);
                         this.selectionManager.select(ids, false);
                     } else {
@@ -98,7 +97,7 @@ export class Visual implements IVisual {
     }
 
     public update(options: VisualUpdateOptions) {
-        console.log('Visual update', options);
+        //console.log('Visual update', options);
 
         const dataView = options && options.dataViews && options.dataViews[0];
         if (!dataView || !dataView.table) {
