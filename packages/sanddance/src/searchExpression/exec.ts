@@ -73,9 +73,14 @@ export class Exec {
         }
         let dataValue = actualDataValue;
         let expressionValue = ex.value;
-        if ((ex.column && ex.column.type === 'string') || ex.stringOperation) {
-            dataValue = valueToString(actualDataValue).toLocaleLowerCase();
-            expressionValue = ex.valueLow;
+        if (ex.column) {
+            if (ex.column.type === 'string' || ex.stringOperation) {
+                dataValue = valueToString(actualDataValue).toLocaleLowerCase();
+                expressionValue = ex.valueLow;
+            } else if (ex.column.quantitative) {
+                dataValue = +actualDataValue;
+                expressionValue = +ex.value
+            }
         }
         switch (ex.operator) {
             case '!=':
