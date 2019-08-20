@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 export {
+    ColorScaleNone,
     FieldNames,
     ScaleNames,
-    ColorScaleNone,
     SignalNames
 } from './specs/constants';

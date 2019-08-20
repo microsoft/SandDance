@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { collapseY, zeroIfCollapsed } from '../selection';
-import {
-    ScaleNames
-} from '../constants';
+import { FieldNames, ScaleNames } from '../constants';
 import { fill } from '../fill';
 import { NameSpace } from './namespace';
 import { RectMark } from 'vega-typings';
@@ -19,7 +17,7 @@ export default function (namespace: NameSpace, columns: SpecColumns, specViewOpt
             "update": {
                 "x": {
                     "scale": ScaleNames.X,
-                    "field": columns.x.quantitative ? "__bin0" : columns.x.name,
+                    "field": columns.x.quantitative ? FieldNames.BarChartBin0 : columns.x.name,
                     "offset": {
                         "scale": "xnewinternalscale",
                         "field": namespace.__column

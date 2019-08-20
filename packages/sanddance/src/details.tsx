@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as searchExpression from './searchExpression';
-import { FieldNames } from './specs/constants';
 import { Animator } from './animator';
 import { constants, controls, util } from './vega-deck.gl';
 import { createElement, mount } from 'tsx-create-element';
 import { cssPrefix } from './defaults';
 import { DataScope, UserSelection } from './dataScope';
+import { isInternalFieldName } from './util';
 import { Language } from './types';
 import { SearchExpression } from './searchExpression/types';
 
@@ -180,19 +180,17 @@ const renderDetails = (props: RenderProps) => {
     ];
     const rows: controls.TableRow[] = [];
     for (let prop in props.item) {
-        switch (prop) {
-            case FieldNames.Active:
-            case FieldNames.Collapsed:
-            case FieldNames.Selected:
-            case constants.GL_ORDINAL:
-                continue;
-            default:
-                rows.push({
-                    cells: [
-                        { content: prop }, { content: linkSelect(props.language, prop, props.item[prop], props.selectionHandler) }
-                    ]
-                });
+        if (prop === constants.GL_ORDINAL) {
+            continue;
         }
+        if (isInternalFieldName(prop)) {
+            continue;
+        }
+        rows.push({
+            cells: [
+                { content: prop }, { content: linkSelect(props.language, prop, props.item[prop], props.selectionHandler) }
+            ]
+        });
     }
     return (
         <div>

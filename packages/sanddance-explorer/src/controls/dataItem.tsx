@@ -66,22 +66,18 @@ export function DataItem(props: Props) {
     }
     const nameValuePairs: NameValuePair[] = [];
     for (let columnName in props.item) {
-        switch (columnName) {
-            case SandDance.constants.FieldNames.Active:
-            case SandDance.constants.FieldNames.Collapsed:
-            case SandDance.constants.FieldNames.Selected:
-                continue;
-            default:
-                if (columnName === SandDance.VegaDeckGl.constants.GL_ORDINAL && !props.showSystemFields) {
-                    continue;
-                }
-                let nameValuePair: NameValuePair = {
-                    columnName,
-                    value: props.item[columnName]
-                };
-                nameValuePair.bingSearch = bingSearchLink(props.columns.filter(c => c.name === columnName)[0], props.item[columnName]);
-                nameValuePairs.push(nameValuePair);
+        if (columnName === SandDance.VegaDeckGl.constants.GL_ORDINAL && !props.showSystemFields) {
+            continue;
         }
+        if (SandDance.util.isInternalFieldName(columnName)) {
+            continue;
+        }
+        let nameValuePair: NameValuePair = {
+            columnName,
+            value: props.item[columnName]
+        };
+        nameValuePair.bingSearch = bingSearchLink(props.columns.filter(c => c.name === columnName)[0], props.item[columnName]);
+        nameValuePairs.push(nameValuePair);
     }
     return (
         <div className="sanddance-dataItem">

@@ -2,13 +2,12 @@
 // Licensed under the MIT license.
 import { allTruthy } from '../../array';
 import {
-    Column,
     Insight,
     SpecColumns,
     SpecViewOptions
 } from '../types';
-import { Data, StackTransform, Transforms } from 'vega-typings';
-import { DataNames, SignalNames } from '../constants';
+import { Data, Transforms } from 'vega-typings';
+import { DataNames, FieldNames, SignalNames } from '../constants';
 import { topLookup } from '../top';
 
 export default function (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions) {
@@ -46,8 +45,8 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                                 "signal": SignalNames.XBins
                             },
                             "as": [
-                                "__binx0",
-                                "__binx1"
+                                FieldNames.DensityXBin0,
+                                FieldNames.DensityXBin1
                             ],
                             "signal": "binXSignal"
                         }
@@ -68,8 +67,8 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                                 "signal": SignalNames.YBins
                             },
                             "as": [
-                                "__biny0",
-                                "__biny1"
+                                FieldNames.DensityYBin0,
+                                FieldNames.DensityYBin1
                             ],
                             "signal": "binYSignal"
                         }
@@ -124,8 +123,8 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                     {
                         "type": "joinaggregate",
                         "groupby": [
-                            columns.x.quantitative ? "__binx0" : "ff_field1",
-                            columns.y.quantitative ? "__biny0" : "ff_field2"
+                            columns.x.quantitative ? FieldNames.DensityXBin0 : "ff_field1",
+                            columns.y.quantitative ? FieldNames.DensityYBin0 : "ff_field2"
                         ],
                         "ops": [
                             "count"
@@ -151,9 +150,9 @@ function windowTransform(columns: SpecColumns) {
     const t: Transforms = {
         "type": "window",
         "groupby": [
-            columns.x.quantitative ? "__binx0" : "ff_field1",
-            columns.y.quantitative ? "__biny0" : "ff_field2"
-],
+            columns.x.quantitative ? FieldNames.DensityXBin0 : "ff_field1",
+            columns.y.quantitative ? FieldNames.DensityYBin0 : "ff_field2"
+        ],
         "ops": [
             "row_number"
         ],

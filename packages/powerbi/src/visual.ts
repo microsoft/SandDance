@@ -49,9 +49,14 @@ export class Visual implements IVisual {
     private errorElement: HTMLElement;
     private app: App;
     private prevSettings: IVisualSettings;
+    private host: powerbi.extensibility.visual.IVisualHost;
+    private selectionManager: powerbi.extensibility.ISelectionManager;
 
     constructor(options: VisualConstructorOptions) {
         //console.log('Visual constructor', options);
+        this.host = options.host;
+        this.selectionManager = this.host.createSelectionManager();
+
         if (typeof document !== "undefined") {
             options.element.style.position = 'relative'
             this.viewElement = SandDance.VegaDeckGl.util.addDiv(options.element, 'sanddance-powerbi');
@@ -62,14 +67,24 @@ export class Visual implements IVisual {
                 mounted: (app: App) => {
                     this.app = app;
                 },
-                onViewChange: () => {
+                onViewChange: (tooltipExclusions: string[]) => {
                     const insight = this.app.explorer.viewer.getInsight();
+                    tooltipExclusions = tooltipExclusions || this.app.explorer.state.tooltipExclusions;
                     cleanInsight(insight);
                     const config: SandDanceConfig = {
-                        insightJSON: JSON.stringify(insight)
+                        insightJSON: JSON.stringify(insight),
+                        tooltipExclusionsJSON: JSON.stringify(tooltipExclusions)
                     };
                     const properties = config as any;
-                    options.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
+                    this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
+                },
+                onDataFilter: (filter, filteredData) => {
+                    if (filteredData) {
+                        const ids = filteredData.map(item => item[SandDance.constants.FieldNames.PowerBISelectionId] as powerbi.extensibility.ISelectionId);
+                        this.selectionManager.select(ids, false);
+                    } else {
+                        this.selectionManager.clear();
+                    }
                 }
             };
             render(createElement(App, props), this.viewElement);
@@ -82,7 +97,7 @@ export class Visual implements IVisual {
     }
 
     public update(options: VisualUpdateOptions) {
-        console.log('Visual update', options);
+        //console.log('Visual update', options);
 
         const dataView = options && options.dataViews && options.dataViews[0];
         if (!dataView || !dataView.table) {
@@ -92,7 +107,7 @@ export class Visual implements IVisual {
 
         this.settings = Visual.parseSettings(dataView);
         const oldData = this.app.getDataContent();
-        let { data, different } = convertTableToObjectArray(dataView.table, oldData);
+        let { data, different } = convertTableToObjectArray(dataView.table, oldData, this.host);
         if (!this.prevSettings) {
             different = true;
         }
@@ -106,13 +121,21 @@ export class Visual implements IVisual {
             return;
         }
 
+        const {
+            sandDanceMainSettings,
+            sandDanceConfig
+        } = this.settings;
+
+        let tooltipExclusions: string[] = [];
+
+        if (sandDanceConfig.tooltipExclusionsJSON) {
+            try {
+                tooltipExclusions = JSON.parse(sandDanceConfig.tooltipExclusionsJSON);
+            } catch (e) { }
+        }
+
         this.app.load(data, columns => {
             if (!columns) return;
-
-            const {
-                sandDanceMainSettings,
-                sandDanceConfig
-            } = this.settings;
 
             let insight: Partial<SandDance.types.Insight>;
 
@@ -120,26 +143,11 @@ export class Visual implements IVisual {
                 try {
                     insight = JSON.parse(sandDanceConfig.insightJSON);
                     delete insight.size;
-
-                    console.log('using insight:', insight);
-
-                } catch (e) {
-                    //TODO inform user that JSON did not parse. Possibly re-persist a blank.
-                }
+                } catch (e) { }
             }
 
-            // if (!insight) {
-            //     //TODO make sure insight works with columns
-            //     insight = {
-            //         columns: {
-            //         },
-            //         view: '2d'
-            //     };
-            //     console.log('new insight');
-            // }
-
             return insight;
-        });
+        }, tooltipExclusions);
 
     }
 

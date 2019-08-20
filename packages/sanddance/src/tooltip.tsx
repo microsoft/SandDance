@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { createElement } from 'tsx-create-element';
-import { FieldNames } from './constants';
 import { GL_ORDINAL } from './vega-deck.gl/constants';
+import { isInternalFieldName } from './util';
 import { outerSize } from './vega-deck.gl/htmlHelpers';
 import { Table, TableRow } from './vega-deck.gl/controls';
 
@@ -76,25 +76,23 @@ export class Tooltip {
 function getRows(item: object, options: TooltipOptions) {
     const rows: TableRow[] = [];
     for (let columnName in item) {
-        switch (columnName) {
-            case FieldNames.Active:
-            case FieldNames.Collapsed:
-            case FieldNames.Selected:
-            case GL_ORDINAL:
-                continue;
-            default:
-                if (options && options.exclude) {
-                    if (options.exclude(columnName)) {
-                        continue;
-                    }
-                }
-                rows.push({
-                    cells: [
-                        { content: columnName + ':' },
-                        { content: item[columnName] }
-                    ]
-                });
+        if (columnName === GL_ORDINAL) {
+            continue;
         }
+        if (isInternalFieldName(columnName)) {
+            continue;
+        }
+        if (options && options.exclude) {
+            if (options.exclude(columnName)) {
+                continue;
+            }
+        }
+        rows.push({
+            cells: [
+                { content: columnName + ':' },
+                { content: item[columnName] }
+            ]
+        });
     }
     return rows;
 }

@@ -16,7 +16,6 @@ import {
     util
 } from '@msrvida/sanddance-explorer';
 import { Logo } from '@msrvida/sanddance-explorer/dist/es6/controls/logo';
-import { strings } from './language';
 
 fabric.initializeIcons();
 
@@ -29,7 +28,8 @@ function getThemePalette(darkTheme: boolean) {
 
 export interface Props {
     mounted: (app: App) => void;
-    onViewChange: () => void;
+    onViewChange: (tooltipExclusions?: string[]) => void;
+    onDataFilter: (filter: SandDance.types.Search, filteredData: object[]) => void;
 }
 
 export interface State {
@@ -65,7 +65,8 @@ export class App extends React.Component<Props, State> {
                 axisLine: color,
                 axisText: color,
                 hoveredCube: color
-            }
+            },
+            onDataFilter: this.props.onDataFilter
         };
         return viewerOptions;
     }
@@ -74,9 +75,9 @@ export class App extends React.Component<Props, State> {
         return this.explorer && this.explorer.state.dataContent && this.explorer.state.dataContent.data;
     }
 
-    load(data: DataFile | object[], getPartialInsight?: (columns: SandDance.types.Column[]) => Partial<SandDance.types.Insight>) {
+    load(data: DataFile | object[], getPartialInsight: (columns: SandDance.types.Column[]) => Partial<SandDance.types.Insight>, tooltipExclusions?: string[]) {
         this.setState({ loaded: true });
-        return this.explorer.load(data, getPartialInsight);
+        return this.explorer.load(data, getPartialInsight, { tooltipExclusions });
     }
 
     unload() {
@@ -118,6 +119,7 @@ export class App extends React.Component<Props, State> {
                 this.props.mounted(this);
             },
             onSignalChanged: this.props.onViewChange,
+            onTooltipExclusionsChanged: tooltipExclusions => this.props.onViewChange(tooltipExclusions),
             onView: this.props.onViewChange
         };
         return React.createElement("div", { className },

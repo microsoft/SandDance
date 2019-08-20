@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Column, SpecColumns } from '../types';
-import { SignalNames } from '../constants';
+import { FieldNames, SignalNames } from '../constants';
 import { StackTransform, Transforms } from 'vega-typings';
 
 export default function (columns: SpecColumns, groupBy: Column) {
     const stackTransform: StackTransform = {
         "type": "stack",
         "groupby": [
-            "__bin0"
+            FieldNames.BarChartBin0
         ]
     };
     if (groupBy) {
@@ -35,8 +35,8 @@ export default function (columns: SpecColumns, groupBy: Column) {
                 "signal": SignalNames.XBins
             },
             "as": [
-                "__bin0",
-                "__bin1"
+                FieldNames.BarChartBin0,
+                FieldNames.BarChartBin1
             ],
             "signal": "binSignal"
         },

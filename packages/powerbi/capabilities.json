@@ -19,9 +19,13 @@
             }
         },
         "sandDanceConfig": {
-            "displayName": "SandDance config area",
             "properties": {
                 "insightJSON": {
+                    "type": {
+                        "text": true
+                    }
+                },
+                "tooltipExclusionsJSON": {
                     "type": {
                         "text": true
                     }

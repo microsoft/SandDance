@@ -52,6 +52,7 @@ export interface Props {
   onSnapshotClick?: (snapshot: Snapshot) => void;
   onView?: () => void;
   onSignalChanged?: () => void;
+  onTooltipExclusionsChanged?: (tooltipExclusions: string[]) => void;
 }
 
 export interface State extends SandDance.types.Insight {
@@ -634,12 +635,13 @@ export class Explorer extends React.Component<Props, State> {
     const selectionState: SandDance.types.SelectionState = (this.viewer && this.viewer.getSelection()) || {};
     const selectionSearch = selectionState && selectionState.search;
 
-    const quantitativeColumns = this.state.dataContent && this.state.dataContent.columns.filter(c => c.quantitative);
-    const categoricalColumns = this.state.dataContent && this.state.dataContent.columns.filter(c => !c.quantitative);
+    const allColumns = this.state.dataContent && this.state.dataContent.columns.filter(c => !SandDance.util.isInternalFieldName(c.name, true));
+    const quantitativeColumns = allColumns && allColumns.filter(c => c.quantitative);
+    const categoricalColumns = allColumns && allColumns.filter(c => !c.quantitative);
 
     const columnMapProps: ColumnMapProps = {
       changeColumnMapping: (role, column) => this.changeColumnMapping(role, column),
-      allColumns: this.state.dataContent && this.state.dataContent.columns,
+      allColumns,
       quantitativeColumns,
       categoricalColumns,
       explorer: this
@@ -762,6 +764,7 @@ export class Explorer extends React.Component<Props, State> {
                           tooltipExclusions.splice(i, 1);
                         }
                         this.setState({ tooltipExclusions });
+                        this.props.onTooltipExclusionsChanged && this.props.onTooltipExclusionsChanged(tooltipExclusions)
                       }}
                       disabled={!loaded || this.state.sidebarClosed}
                       {...columnMapProps}
@@ -854,7 +857,7 @@ export class Explorer extends React.Component<Props, State> {
                       themePalette={themePalette}
                       disabled={!loaded || this.state.sidebarClosed}
                       initializer={{
-                        columns: this.state.dataContent.columns,
+                        columns: allColumns,
                         search: this.state.search
                       }}
                       autoCompleteDistinctValues={this.state.autoCompleteDistinctValues}
