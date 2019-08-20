@@ -27,8 +27,8 @@ export function convertTableToObjectArray(table: powerbi.DataViewTable, oldData:
         newObject[SandDance.constants.FieldNames.PowerBISelectionId] = host.createSelectionIdBuilder().withTable(table, ri).createSelectionId();
         if (!different && ri === 0) {
             //check that all keys are the same
-            const oldKeys = Object.keys(oldData[0]).filter(key => key !== SandDance.VegaDeckGl.constants.GL_ORDINAL);
-            const newKeys = Object.keys(newObject);
+            const oldKeys = Object.keys(oldData[0]).filter(key => !SandDance.util.isInternalFieldName(key, true));
+            const newKeys = Object.keys(newObject).filter(key => !SandDance.util.isInternalFieldName(key, true));
             if (!util.deepCompare(oldKeys, newKeys)) {
                 different = true;
             }
