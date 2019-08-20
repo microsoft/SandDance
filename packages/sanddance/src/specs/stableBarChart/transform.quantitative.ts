@@ -9,6 +9,10 @@ export default function (columns: SpecColumns, groupBy: Column) {
         "type": "stack",
         "groupby": [
             FieldNames.BarChartBin0
+        ],
+        "as": [
+            FieldNames.BarChartStackY0,
+            FieldNames.BarChartStackY1
         ]
     };
     if (groupBy) {
@@ -44,7 +48,7 @@ export default function (columns: SpecColumns, groupBy: Column) {
         {
             "type": "extent",
             "signal": "xtent",
-            "field": "y1"
+            "field": FieldNames.BarChartStackY1
         }
     ];
     return transforms;

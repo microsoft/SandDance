@@ -4,7 +4,7 @@ import getQualitative from './transform.qualitative';
 import getQuantitative from './transform.quantitative';
 import { allTruthy } from '../../array';
 import { Data, SourceData, Transforms } from 'vega-typings';
-import { DataNames } from '../constants';
+import { DataNames, FieldNames } from '../constants';
 import { facetGroupData, facetSourceData, facetTransforms } from '../facet';
 import { Insight, SpecColumns, SpecViewOptions } from '../types';
 import { NameSpace } from './namespace';
@@ -74,12 +74,12 @@ function xy(namespace: NameSpace) {
     const transforms: Transforms[] = [
         {
             "type": "formula",
-            "expr": "floor(datum.y0 / shapesPerRow)",
+            "expr": `floor(datum.${FieldNames.BarChartStackY0} / shapesPerRow)`,
             "as": namespace.__row
         },
         {
             "type": "formula",
-            "expr": "datum.y0 % shapesPerRow",
+            "expr": `datum.${FieldNames.BarChartStackY0} % shapesPerRow`,
             "as": namespace.__column
         }
     ];
