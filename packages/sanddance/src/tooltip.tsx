@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { createElement } from 'tsx-create-element';
 import { GL_ORDINAL } from './vega-deck.gl/constants';
-import { isInternalFieldName } from './specs/constants';
+import { isInternalFieldName } from './util';
 import { outerSize } from './vega-deck.gl/htmlHelpers';
 import { Table, TableRow } from './vega-deck.gl/controls';
 

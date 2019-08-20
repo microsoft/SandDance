@@ -6,7 +6,7 @@ import { constants, controls, util } from './vega-deck.gl';
 import { createElement, mount } from 'tsx-create-element';
 import { cssPrefix } from './defaults';
 import { DataScope, UserSelection } from './dataScope';
-import { isInternalFieldName } from './specs/constants';
+import { isInternalFieldName } from './util';
 import { Language } from './types';
 import { SearchExpression } from './searchExpression/types';
 

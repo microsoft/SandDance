@@ -16,13 +16,6 @@ export const FieldNames = {
     DensityYBin1: "__SandDance__DensityYBin1"
 };
 
-export function isInternalFieldName(columnName: string) {
-    for (let f in FieldNames) {
-        if (columnName === FieldNames[f]) return true;
-    }
-    return false;
-}
-
 export const DataNames = {
     Pre: "PreData",
     Main: "MainData",
