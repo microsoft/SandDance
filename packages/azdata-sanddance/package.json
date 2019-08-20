@@ -59,6 +59,16 @@
                     "when": "resourceLangId == tsv"
                 }
             ],
+            "editor/title/context": [
+                {
+                    "command": "sandance.view",
+                    "when": "resourceLangId == csv"
+                },
+                {
+                    "command": "sandance.view",
+                    "when": "resourceLangId == tsv"
+                }
+            ],
             "objectExplorer/item/context": [
                 {
                     "command": "sandance.view",
