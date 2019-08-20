@@ -17,18 +17,6 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
             {
                 "name": DataNames.Main,
                 "transform": allTruthy<Transforms>(
-                    [
-                        {
-                            "type": "formula",
-                            "as": "ff_field1",
-                            "expr": `datum[${JSON.stringify(columns.x.name)}]`
-                        },
-                        {
-                            "type": "formula",
-                            "as": "ff_field2",
-                            "expr": `datum[${JSON.stringify(columns.y.name)}]`
-                        }
-                    ],
                     columns.x.quantitative && [
                         {
                             "type": "extent",
@@ -123,20 +111,20 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                     {
                         "type": "joinaggregate",
                         "groupby": [
-                            columns.x.quantitative ? FieldNames.DensityXBin0 : "ff_field1",
-                            columns.y.quantitative ? FieldNames.DensityYBin0 : "ff_field2"
+                            columns.x.quantitative ? FieldNames.DensityXBin0 : columns.x.name,
+                            columns.y.quantitative ? FieldNames.DensityYBin0 : columns.y.name
                         ],
                         "ops": [
                             "count"
                         ],
                         "as": [
-                            "count"
+                            FieldNames.DensityCount
                         ]
                     },
                     windowTransform(columns),
                     {
                         "type": "extent",
-                        "field": "s1",
+                        "field": FieldNames.DensityRow,
                         "signal": "cextent"
                     }
                 ]
@@ -150,14 +138,14 @@ function windowTransform(columns: SpecColumns) {
     const t: Transforms = {
         "type": "window",
         "groupby": [
-            columns.x.quantitative ? FieldNames.DensityXBin0 : "ff_field1",
-            columns.y.quantitative ? FieldNames.DensityYBin0 : "ff_field2"
+            columns.x.quantitative ? FieldNames.DensityXBin0 : columns.x.name,
+            columns.y.quantitative ? FieldNames.DensityYBin0 : columns.y.name
         ],
         "ops": [
             "row_number"
         ],
         "as": [
-            "s1"
+            FieldNames.DensityRow
         ]
     };
     if (columns.sort) {

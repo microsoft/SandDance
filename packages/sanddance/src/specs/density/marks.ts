@@ -14,8 +14,8 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
         },
         "sort": {
             "field": [
-                "ff_field1",
-                "ff_field2"
+                columns.x.name,
+                columns.y.name
             ],
             "order": [
                 "ascending",
@@ -26,16 +26,16 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
             "update": {
                 "xc": {
                     "scale": "xscale",
-                    "field": columns.x.quantitative ? FieldNames.DensityXBin0 : "ff_field1",
+                    "field": columns.x.quantitative ? FieldNames.DensityXBin0 : columns.x.name,
                     "offset": {
-                        "signal": "scale('sizescale', ((datum.s1-1) % floor(sqrt(datum.count))))-scale('sizescale', sqrt(datum.count)-2)/2"
+                        "signal": `scale('sizescale', ((datum.${FieldNames.DensityRow}-1) % floor(sqrt(datum.${FieldNames.DensityCount}))))-scale('sizescale', sqrt(datum.${FieldNames.DensityCount})-2)/2`
                     }
                 },
                 "yc": {
                     "scale": "yscale",
-                    "field": columns.y.quantitative ? FieldNames.DensityYBin0 : "ff_field2",
+                    "field": columns.y.quantitative ? FieldNames.DensityYBin0 : columns.y.name,
                     "offset": {
-                        "signal": "scale('sizescale',height/width*floor(((datum.s1-1) / floor(sqrt(datum.count))))) - scale('sizescale', height/width*sqrt(datum.count)+2)/2"
+                        "signal": `scale('sizescale',height/width*floor(((datum.${FieldNames.DensityRow}-1) / floor(sqrt(datum.${FieldNames.DensityCount}))))) - scale('sizescale', height/width*sqrt(datum.${FieldNames.DensityCount})+2)/2`
                     }
                 },
                 "width": {
