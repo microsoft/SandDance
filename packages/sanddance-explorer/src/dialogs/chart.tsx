@@ -130,7 +130,7 @@ export class Chart extends React.Component<Props, State> {
                     title={strings.labelTooltipMapping}
                 >
                     <div>
-                        {props.allColumns.filter(c => !SandDance.util.isInternalFieldName(c.name)).map((c, i) => (
+                        {props.allColumns.map((c, i) => (
                             <div key={c.name}>
                                 <label>
                                     <base.fabric.Toggle
