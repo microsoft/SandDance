@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { allTruthy } from '../../array';
 import { Data, Transforms } from 'vega-typings';
-import { DataNames, SignalNames } from '../constants';
+import { DataNames, FieldNames, SignalNames } from '../constants';
 import { facetGroupData, facetSourceData, facetTransforms } from '../facet';
 import { Insight, SpecColumns, SpecViewOptions } from '../types';
 import { topLookup } from '../top';
@@ -30,18 +30,26 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
 
 export function treemapTransforms(insight: Insight) {
     const transforms: Transforms[] = [
-        <any>{
+        {
             "type": "nest",
             "keys": [insight.columns.group || "__NONE__"]
         },
-        <any>{
+        {
             "type": "treemap",
             "field": insight.columns.size,
             "sort": { "field": "value", "order": "descending" },
             "round": true,
             "method": { "signal": SignalNames.TreeMapMethod },
             "padding": 1,
-            "size": [{ "signal": "width" }, { "signal": "height" }]
+            "size": [{ "signal": "width" }, { "signal": "height" }],
+            "as": [
+                FieldNames.TreemapStackX0,
+                FieldNames.TreemapStackY0,
+                FieldNames.TreemapStackX1,
+                FieldNames.TreemapStackY1,
+                FieldNames.TreemapStackDepth,
+                FieldNames.TreemapStackChildren
+            ]
         }
     ];
     return transforms;
