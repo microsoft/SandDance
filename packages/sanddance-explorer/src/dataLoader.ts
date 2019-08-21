@@ -22,6 +22,6 @@ export const loadDataFile = (dataFile: DataFile) => new Promise<DataContent>((re
 });
 
 export const loadDataArray = (data: object[]) => new Promise<DataContent>((resolve, reject) => {
-    const columns = SandDance.util.getColumnsFromData(data);
+    const columns = SandDance.util.getColumnsFromData(data).sort((a, b) => a.name.localeCompare(b.name));
     resolve({ data, columns });
 });

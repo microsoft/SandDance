@@ -55,8 +55,7 @@ function filterColumnList(context: SandDance.types.InsightColumnRoles, columns: 
 
 function optionsForSpecColumn(sectionName: string, columns: SandDance.types.Column[], role: SandDance.types.InsightColumnRoles, selectedColumnName?: string) {
   const filtered = filterColumnList(role, columns);
-  const sorted = filtered.sort((a, b) => a.name.localeCompare(b.name));
-  const options = sorted.map((column, i) => {
+  const options = filtered.map((column, i) => {
     const option: FabricTypes.IDropdownOption = {
       key: column.name,
       text: column.name,
