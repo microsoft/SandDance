@@ -15,8 +15,16 @@ export function topLookup(column: Column, count: number) {
             "source": DataNames.Main,
             "transform": [
                 { "type": "aggregate", "groupby": [column.name] },
-                { "type": "identifier", "as": "id" },
-                { "type": "filter", "expr": `datum.id <= ${count}` }
+                {
+                    "type": "window",
+                    "ops": [
+                        "count"
+                    ],
+                    "as": [
+                        FieldNames.TopIndex
+                    ]
+                },
+                { "type": "filter", "expr": `datum.${FieldNames.TopIndex} <= ${count}` }
             ]
         },
         {

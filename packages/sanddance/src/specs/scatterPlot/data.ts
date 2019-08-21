@@ -1,10 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { allTruthy } from '../../array';
+import {
+    Column,
+    Insight,
+    SpecColumns,
+    SpecViewOptions
+} from '../types';
 import { Data, Transforms } from 'vega-typings';
 import { DataNames } from '../constants';
 import { facetGroupData, facetSourceData, facetTransforms } from '../facet';
-import { Insight, SpecColumns, SpecViewOptions } from '../types';
 import { topLookup } from '../top';
 
 export default function (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions) {
@@ -17,6 +22,9 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                 "name": DataNames.Main,
                 "source": ScatterDataName,
                 "transform": allTruthy<Transforms>(
+                    filterInvalidWhenNumeric(columns.x),
+                    filterInvalidWhenNumeric(columns.y),
+                    filterInvalidWhenNumeric(columns.z),
                     columns.facet && facetTransforms(columns.facet, insight.facets)
                 )
             }
@@ -25,4 +33,16 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
         columns.facet && facetGroupData(DataNames.Main)
     );
     return data;
+}
+
+function filterInvalidWhenNumeric(column: Column) {
+    if (column && column.quantitative) {
+        const transforms: Transforms[] = [
+            {
+                "type": "filter",
+                "expr": `datum[${JSON.stringify(column.name)}] != null`
+            }
+        ];
+        return transforms;
+    }
 }

@@ -1,7 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { allTruthy } from '../../array';
-import { colorBinCountSignal, colorReverseSignal, textSignals } from '../signals';
+import {
+    colorBinCountSignal,
+    colorReverseSignal,
+    defaultZProportion,
+    textSignals
+} from '../signals';
 import { facetSignals } from '../facet';
 import { Insight, SpecColumns, SpecViewOptions } from '../types';
 import { Signal } from 'vega-typings';
@@ -105,7 +110,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
             },
             {
                 "name": "countheight",
-                "update": "rowxtent[1]*actsize"
+                "update": `rowxtent[1]*actsize*${SignalNames.ZProportion}/${defaultZProportion}`
             }
         ],
         insight.columns.facet && facetSignals(insight.facets, specViewOptions)

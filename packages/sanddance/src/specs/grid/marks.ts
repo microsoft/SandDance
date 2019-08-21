@@ -17,7 +17,7 @@ export default function (data: string, columns: SpecColumns, specViewOptions: Sp
             "encode": {
                 "update": {
                     "x": {
-                        "signal": `(datum['${FieldNames.Index}']-1)%${ColumnCount}`,
+                        "signal": `(datum.${FieldNames.GridIndex}-1)%${ColumnCount}`,
                         "scale": ScaleNames.X
                     },
                     "width": {
@@ -25,7 +25,7 @@ export default function (data: string, columns: SpecColumns, specViewOptions: Sp
                         "band": true
                     },
                     "y": {
-                        "signal": `floor((datum['${FieldNames.Index}']-1)/${ColumnCount})`,
+                        "signal": `floor((datum.${FieldNames.GridIndex}-1)/${ColumnCount})`,
                         "scale": ScaleNames.Y
                     },
                     "height": {

@@ -23,7 +23,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                             "count"
                         ],
                         "as": [
-                            FieldNames.Index
+                            FieldNames.GridIndex
                         ]
                     }
                 ])

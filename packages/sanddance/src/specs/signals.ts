@@ -4,11 +4,13 @@ import { NewSignal } from 'vega-typings/types';
 import { SignalNames } from './constants';
 import { SpecViewOptions } from './types';
 
+export const defaultZProportion = 0.6;
+
 export function textSignals(specViewOptions: SpecViewOptions) {
     const signals: NewSignal[] = [
         {
             "name": SignalNames.ZProportion,
-            "value": 0.6,
+            "value": defaultZProportion,
             "bind": {
                 "name": specViewOptions.language.zScaleProportion,
                 "debounce": 50,

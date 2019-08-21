@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { FieldNames } from '../constants';
 import { fill } from '../fill';
 import { Mark } from 'vega-typings';
 import { SpecColumns, SpecViewOptions } from '../types';
@@ -16,7 +17,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                 "update": {
                     "x": {
                         "scale": "xband",
-                        "field": columns.x.quantitative ? "long0" : columns.x.name,
+                        "field": columns.x.quantitative ? FieldNames.StacksLongBin0 : columns.x.name,
                         "offset": {
                             "scale": "xinternalscale",
                             "field": "column"
@@ -24,7 +25,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                     },
                     "y": {
                         "scale": "yband",
-                        "field": columns.y.quantitative ? "lat0" : columns.y.name,
+                        "field": columns.y.quantitative ? FieldNames.StacksLatBin0 : columns.y.name,
                         "offset": {
                             "scale": "yinternalscale",
                             "field": "depth"

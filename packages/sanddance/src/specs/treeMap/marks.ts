@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { FieldNames, ScaleNames } from '../constants';
 import { fill } from '../fill';
-import { ScaleNames } from '../constants';
 import { Mark } from 'vega-typings';
 import { SpecColumns, SpecViewOptions } from '../types';
 import { zeroIfCollapsed } from '../selection';
@@ -15,10 +15,10 @@ export default function (data: string, columns: SpecColumns, specViewOptions: Sp
             },
             "encode": {
                 "update": {
-                    "x": { "field": "x0" },
-                    "y": { "field": "y0" },
-                    "x2": { "field": "x1" },
-                    "y2": { "field": "y1" },
+                    "x": { "field": FieldNames.TreemapStackX0 },
+                    "y": { "field": FieldNames.TreemapStackY0 },
+                    "x2": { "field": FieldNames.TreemapStackX1 },
+                    "y2": { "field": FieldNames.TreemapStackY1 },
                     "fill": fill(columns.color, specViewOptions)
                 }
             }

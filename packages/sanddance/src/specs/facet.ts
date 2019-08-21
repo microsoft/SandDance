@@ -200,17 +200,20 @@ export function facetTransforms(facetColumn: Column, facets: Facets) {
                 step,
                 nice: false,
                 "extent": [facetColumn.stats.min, facetColumn.stats.max],
-                "as": ["facetBin0", "facetBin1"]
+                "as": [
+                    FieldNames.FacetBin0,
+                    FieldNames.FacetBin1
+                ]
             },
             {
                 "type": "collect",
                 "sort": {
-                    "field": "facetBin0"
+                    "field": FieldNames.FacetBin0
                 }
             },
             {
                 "type": "formula",
-                "expr": `format(datum.facetBin0, '~r') + '${facetTitleSeparator}' + format(datum.facetBin1, '~r')`,
+                "expr": `format(datum.${FieldNames.FacetBin0}, '~r') + '${facetTitleSeparator}' + format(datum.${FieldNames.FacetBin1}, '~r')`,
                 "as": CellTitle
             }
         ];
