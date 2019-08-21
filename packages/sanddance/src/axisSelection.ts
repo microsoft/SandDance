@@ -30,7 +30,7 @@ export function axisSelectionLayer(specCapabilities: SpecCapabilities, columns: 
             polygons.push.apply(polygons, axisSelectionPolygons(axis, false, xRole.axisSelection, columns.x));
         });
     }
-    const yRole=specCapabilities.roles.filter(r => r.role === 'y')[0];
+    const yRole = specCapabilities.roles.filter(r => r.role === 'y')[0];
     if (yRole && yRole.axisSelection) {
         stage.axes.y.filter(axis => axis.tickText.length).forEach(axis => {
             polygons.push.apply(polygons, axisSelectionPolygons(axis, true, yRole.axisSelection, columns.y));
