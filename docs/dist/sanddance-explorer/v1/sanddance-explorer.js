@@ -131,7 +131,34 @@ const FieldNames = {
   Collapsed: "__SandDance__Collapsed",
   Selected: "__SandDance__Selected",
   Top: "__SandDance__Top",
-  Index: "__SandDance__Index"
+  TopIndex: "__SandDance__TopIndex",
+  Index: "__SandDance__Index",
+  PowerBISelectionId: "__SandDance__PowerBISelectionId",
+  BarChartBin0: "__SandDance__BarChartBin0",
+  BarChartBin1: "__SandDance__BarChartBin1",
+  BarChartStackY0: "__SandDance__BarChartStackY0",
+  BarChartStackY1: "__SandDance__BarChartStackY1",
+  DensityCount: "__SandDance__DensityCount",
+  DensityRow: "__SandDance__DensityRow",
+  DensityXBin0: "__SandDance__DensityXBin0",
+  DensityXBin1: "__SandDance__DensityXBin1",
+  DensityYBin0: "__SandDance__DensityYBin0",
+  DensityYBin1: "__SandDance__DensityYBin1",
+  FacetBin0: "__SandDance__FacetBin0",
+  FacetBin1: "__SandDance__FacetBin1",
+  GridIndex: "__SandDance__GridIndex",
+  StacksLatBin0: "__SandDance__StacksLatBin0",
+  StacksLatBin1: "__SandDance__StacksLatBin1",
+  StacksLongBin0: "__SandDance__StacksLongBin0",
+  StacksLongBin1: "__SandDance__StacksLongBin1",
+  StacksStart: "__SandDance__StacksStart",
+  StacksEnd: "__SandDance__StacksEnd",
+  TreemapStackChildren: "__SandDance__TreemapStackChildren",
+  TreemapStackDepth: "__SandDance__TreemapStackDepth",
+  TreemapStackX0: "__SandDance__TreemapStackX0",
+  TreemapStackX1: "__SandDance__TreemapStackX1",
+  TreemapStackY0: "__SandDance__TreemapStackY0",
+  TreemapStackY1: "__SandDance__TreemapStackY1"
 };
 exports.FieldNames = FieldNames;
 const DataNames = {
@@ -187,6 +214,12 @@ exports.ColorScaleNone = ColorScaleNone;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+Object.defineProperty(exports, "ColorScaleNone", {
+  enumerable: true,
+  get: function () {
+    return _constants.ColorScaleNone;
+  }
+});
 Object.defineProperty(exports, "FieldNames", {
   enumerable: true,
   get: function () {
@@ -197,12 +230,6 @@ Object.defineProperty(exports, "ScaleNames", {
   enumerable: true,
   get: function () {
     return _constants.ScaleNames;
-  }
-});
-Object.defineProperty(exports, "ColorScaleNone", {
-  enumerable: true,
-  get: function () {
-    return _constants.ColorScaleNone;
   }
 });
 Object.defineProperty(exports, "SignalNames", {
@@ -8522,6 +8549,7 @@ exports.dualColorSchemeColors = dualColorSchemeColors;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.isInternalFieldName = isInternalFieldName;
 Object.defineProperty(exports, "getColumnsFromData", {
   enumerable: true,
   get: function () {
@@ -8547,12 +8575,30 @@ Object.defineProperty(exports, "getPresenterStyle", {
   }
 });
 
+var _constants = require("./constants");
+
+var _constants2 = require("./vega-deck.gl/constants");
+
 var _inference = require("./specs/inference");
 
 var _group = require("./searchExpression/group");
 
 var _defaults = require("./defaults");
-},{"./specs/inference":"SLia","./searchExpression/group":"yy6X","./defaults":"G0Md"}],"kNpg":[function(require,module,exports) {
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function isInternalFieldName(columnName, includeVegaDeckGLFields = false) {
+  if (includeVegaDeckGLFields) {
+    if (columnName === _constants2.GL_ORDINAL) return true;
+  }
+
+  for (let f in _constants.FieldNames) {
+    if (columnName === _constants.FieldNames[f]) return true;
+  }
+
+  return false;
+}
+},{"./constants":"Syc7","./vega-deck.gl/constants":"ipKi","./specs/inference":"SLia","./searchExpression/group":"yy6X","./defaults":"G0Md"}],"kNpg":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9069,15 +9115,15 @@ function facetTransforms(facetColumn, facets) {
       step,
       nice: false,
       "extent": [facetColumn.stats.min, facetColumn.stats.max],
-      "as": ["facetBin0", "facetBin1"]
+      "as": [_constants.FieldNames.FacetBin0, _constants.FieldNames.FacetBin1]
     }, {
       "type": "collect",
       "sort": {
-        "field": "facetBin0"
+        "field": _constants.FieldNames.FacetBin0
       }
     }, {
       "type": "formula",
-      "expr": `format(datum.facetBin0, '~r') + '${facetTitleSeparator}' + format(datum.facetBin1, '~r')`,
+      "expr": `format(datum.${_constants.FieldNames.FacetBin0}, '~r') + '${facetTitleSeparator}' + format(datum.${_constants.FieldNames.FacetBin1}, '~r')`,
       "as": CellTitle
     }];
   } else {
@@ -9628,12 +9674,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
+var _constants = require("../constants");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 function _default(columns) {
   const stackTransform = {
     "type": "stack",
     "groupby": [{
       "field": columns.x.name
-    }]
+    }],
+    "as": [_constants.FieldNames.BarChartStackY0, _constants.FieldNames.BarChartStackY1]
   };
 
   if (columns.sort) {
@@ -9645,11 +9696,11 @@ function _default(columns) {
   const transforms = [stackTransform, {
     "type": "extent",
     "signal": "xtent",
-    "field": "y1"
+    "field": _constants.FieldNames.BarChartStackY1
   }];
   return transforms;
 }
-},{}],"sqk8":[function(require,module,exports) {
+},{"../constants":"b0rV"}],"sqk8":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9662,7 +9713,8 @@ var _constants = require("../constants");
 function _default(columns, groupBy) {
   const stackTransform = {
     "type": "stack",
-    "groupby": ["__bin0"]
+    "groupby": [_constants.FieldNames.BarChartBin0],
+    "as": [_constants.FieldNames.BarChartStackY0, _constants.FieldNames.BarChartStackY1]
   };
 
   if (groupBy) {
@@ -9688,12 +9740,12 @@ function _default(columns, groupBy) {
     "maxbins": {
       "signal": _constants.SignalNames.XBins
     },
-    "as": ["__bin0", "__bin1"],
+    "as": [_constants.FieldNames.BarChartBin0, _constants.FieldNames.BarChartBin1],
     "signal": "binSignal"
   }, stackTransform, {
     "type": "extent",
     "signal": "xtent",
-    "field": "y1"
+    "field": _constants.FieldNames.BarChartStackY1
   }];
   return transforms;
 }
@@ -9733,11 +9785,12 @@ function topLookup(column, count) {
       "type": "aggregate",
       "groupby": [column.name]
     }, {
-      "type": "identifier",
-      "as": "id"
+      "type": "window",
+      "ops": ["count"],
+      "as": [_constants.FieldNames.TopIndex]
     }, {
       "type": "filter",
-      "expr": `datum.id <= ${count}`
+      "expr": `datum.${_constants.FieldNames.TopIndex} <= ${count}`
     }]
   }, {
     "name": _constants.DataNames.Legend,
@@ -9825,11 +9878,11 @@ function stacked(namespace, source, transforms) {
 function xy(namespace) {
   const transforms = [{
     "type": "formula",
-    "expr": "floor(datum.y0 / shapesPerRow)",
+    "expr": `floor(datum.${_constants.FieldNames.BarChartStackY0} / shapesPerRow)`,
     "as": namespace.__row
   }, {
     "type": "formula",
-    "expr": "datum.y0 % shapesPerRow",
+    "expr": `datum.${_constants.FieldNames.BarChartStackY0} % shapesPerRow`,
     "as": namespace.__column
   }];
   return transforms;
@@ -9915,7 +9968,7 @@ function _default(namespace, columns, specViewOptions) {
       "update": {
         "x": {
           "scale": _constants.ScaleNames.X,
-          "field": columns.x.quantitative ? "__bin0" : columns.x.name,
+          "field": columns.x.quantitative ? _constants.FieldNames.BarChartBin0 : columns.x.name,
           "offset": {
             "scale": "xnewinternalscale",
             "field": namespace.__column
@@ -10011,7 +10064,7 @@ function _default(namespace, columns) {
     "range": "width",
     "domain": {
       "data": namespace.nested,
-      "field": "__bin0",
+      "field": _constants.FieldNames.BarChartBin0,
       "sort": true
     }
   }, {
@@ -10235,13 +10288,17 @@ Object.defineProperty(exports, "__esModule", {
 exports.textSignals = textSignals;
 exports.colorBinCountSignal = colorBinCountSignal;
 exports.colorReverseSignal = colorReverseSignal;
+exports.defaultZProportion = void 0;
 
 var _constants = require("./constants");
+
+const defaultZProportion = 0.6;
+exports.defaultZProportion = defaultZProportion;
 
 function textSignals(specViewOptions) {
   const signals = [{
     "name": _constants.SignalNames.ZProportion,
-    "value": 0.6,
+    "value": defaultZProportion,
     "bind": {
       "name": specViewOptions.language.zScaleProportion,
       "debounce": 50,
@@ -10584,15 +10641,7 @@ function _default(insight, columns, specViewOptions) {
   const categoricalColor = columns.color && !columns.color.quantitative;
   const data = (0, _array.allTruthy)([{
     "name": _constants.DataNames.Main,
-    "transform": (0, _array.allTruthy)([{
-      "type": "formula",
-      "as": "ff_field1",
-      "expr": `datum[${JSON.stringify(columns.x.name)}]`
-    }, {
-      "type": "formula",
-      "as": "ff_field2",
-      "expr": `datum[${JSON.stringify(columns.y.name)}]`
-    }], columns.x.quantitative && [{
+    "transform": (0, _array.allTruthy)(columns.x.quantitative && [{
       "type": "extent",
       "field": columns.x.name,
       "signal": "var_Xextent"
@@ -10605,7 +10654,7 @@ function _default(insight, columns, specViewOptions) {
       "maxbins": {
         "signal": _constants.SignalNames.XBins
       },
-      "as": ["__binx0", "__binx1"],
+      "as": [_constants.FieldNames.DensityXBin0, _constants.FieldNames.DensityXBin1],
       "signal": "binXSignal"
     }], columns.y.quantitative && [{
       "type": "extent",
@@ -10620,7 +10669,7 @@ function _default(insight, columns, specViewOptions) {
       "maxbins": {
         "signal": _constants.SignalNames.YBins
       },
-      "as": ["__biny0", "__biny1"],
+      "as": [_constants.FieldNames.DensityYBin0, _constants.FieldNames.DensityYBin1],
       "signal": "binYSignal"
     }])
   }], columns.x.quantitative && [{
@@ -10656,12 +10705,12 @@ function _default(insight, columns, specViewOptions) {
     "source": categoricalColor ? _constants.DataNames.Legend : _constants.DataNames.Main,
     "transform": [{
       "type": "joinaggregate",
-      "groupby": [columns.x.quantitative ? "__binx0" : "ff_field1", columns.y.quantitative ? "__biny0" : "ff_field2"],
+      "groupby": [columns.x.quantitative ? _constants.FieldNames.DensityXBin0 : columns.x.name, columns.y.quantitative ? _constants.FieldNames.DensityYBin0 : columns.y.name],
       "ops": ["count"],
-      "as": ["count"]
+      "as": [_constants.FieldNames.DensityCount]
     }, windowTransform(columns), {
       "type": "extent",
-      "field": "s1",
+      "field": _constants.FieldNames.DensityRow,
       "signal": "cextent"
     }]
   }]);
@@ -10671,9 +10720,9 @@ function _default(insight, columns, specViewOptions) {
 function windowTransform(columns) {
   const t = {
     "type": "window",
-    "groupby": [columns.x.quantitative ? "__binx0" : "ff_field1", columns.y.quantitative ? "__biny0" : "ff_field2"],
+    "groupby": [columns.x.quantitative ? _constants.FieldNames.DensityXBin0 : columns.x.name, columns.y.quantitative ? _constants.FieldNames.DensityYBin0 : columns.y.name],
     "ops": ["row_number"],
-    "as": ["s1"]
+    "as": [_constants.FieldNames.DensityRow]
   };
 
   if (columns.sort) {
@@ -10693,9 +10742,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
-var _fill = require("../fill");
-
 var _constants = require("../constants");
+
+var _fill = require("../fill");
 
 var _selection = require("../selection");
 
@@ -10708,23 +10757,23 @@ function _default(columns, specViewOptions) {
       "data": "aggregated"
     },
     "sort": {
-      "field": ["ff_field1", "ff_field2"],
+      "field": [columns.x.name, columns.y.name],
       "order": ["ascending", "ascending"]
     },
     "encode": {
       "update": {
         "xc": {
           "scale": "xscale",
-          "field": columns.x.quantitative ? "__binx0" : "ff_field1",
+          "field": columns.x.quantitative ? _constants.FieldNames.DensityXBin0 : columns.x.name,
           "offset": {
-            "signal": "scale('sizescale', ((datum.s1-1) % floor(sqrt(datum.count))))-scale('sizescale', sqrt(datum.count)-2)/2"
+            "signal": `scale('sizescale', ((datum.${_constants.FieldNames.DensityRow}-1) % floor(sqrt(datum.${_constants.FieldNames.DensityCount}))))-scale('sizescale', sqrt(datum.${_constants.FieldNames.DensityCount})-2)/2`
           }
         },
         "yc": {
           "scale": "yscale",
-          "field": columns.y.quantitative ? "__biny0" : "ff_field2",
+          "field": columns.y.quantitative ? _constants.FieldNames.DensityYBin0 : columns.y.name,
           "offset": {
-            "signal": "scale('sizescale',height/width*floor(((datum.s1-1) / floor(sqrt(datum.count))))) - scale('sizescale', height/width*sqrt(datum.count)+2)/2"
+            "signal": `scale('sizescale',height/width*floor(((datum.${_constants.FieldNames.DensityRow}-1) / floor(sqrt(datum.${_constants.FieldNames.DensityCount}))))) - scale('sizescale', height/width*sqrt(datum.${_constants.FieldNames.DensityCount})+2)/2`
           }
         },
         "width": {
@@ -10751,7 +10800,7 @@ function _default(columns, specViewOptions) {
 
   return [mark];
 }
-},{"../fill":"S7Dm","../constants":"b0rV","../selection":"Dq8R"}],"PKQh":[function(require,module,exports) {
+},{"../constants":"b0rV","../fill":"S7Dm","../selection":"Dq8R"}],"PKQh":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11029,7 +11078,7 @@ function _default(columns, specViewOptions) {
     }, {
       "type": "window",
       "ops": ["count"],
-      "as": [_constants.FieldNames.Index]
+      "as": [_constants.FieldNames.GridIndex]
     }])
   }], categoricalColor && (0, _top.topLookup)(columns.color, specViewOptions.maxLegends));
   return data;
@@ -11076,7 +11125,7 @@ function _default(data, columns, specViewOptions) {
     "encode": {
       "update": {
         "x": {
-          "signal": `(datum['${_constants2.FieldNames.Index}']-1)%${_constants.ColumnCount}`,
+          "signal": `(datum.${_constants2.FieldNames.GridIndex}-1)%${_constants.ColumnCount}`,
           "scale": _constants2.ScaleNames.X
         },
         "width": {
@@ -11084,7 +11133,7 @@ function _default(data, columns, specViewOptions) {
           "band": true
         },
         "y": {
-          "signal": `floor((datum['${_constants2.FieldNames.Index}']-1)/${_constants.ColumnCount})`,
+          "signal": `floor((datum.${_constants2.FieldNames.GridIndex}-1)/${_constants.ColumnCount})`,
           "scale": _constants2.ScaleNames.Y
         },
         "height": {
@@ -11330,9 +11379,19 @@ function _default(insight, columns, specViewOptions) {
   const data = (0, _array.allTruthy)((0, _facet.facetSourceData)(columns.facet, insight.facets, ScatterDataName), [{
     "name": _constants.DataNames.Main,
     "source": ScatterDataName,
-    "transform": (0, _array.allTruthy)(columns.facet && (0, _facet.facetTransforms)(columns.facet, insight.facets))
+    "transform": (0, _array.allTruthy)(filterInvalidWhenNumeric(columns.x), filterInvalidWhenNumeric(columns.y), filterInvalidWhenNumeric(columns.z), columns.facet && (0, _facet.facetTransforms)(columns.facet, insight.facets))
   }], categoricalColor && (0, _top.topLookup)(columns.color, specViewOptions.maxLegends), columns.facet && (0, _facet.facetGroupData)(_constants.DataNames.Main));
   return data;
+}
+
+function filterInvalidWhenNumeric(column) {
+  if (column && column.quantitative) {
+    const transforms = [{
+      "type": "filter",
+      "expr": `datum[${JSON.stringify(column.name)}] != null`
+    }];
+    return transforms;
+  }
 }
 },{"../../array":"b//p","../constants":"b0rV","../facet":"7Ifg","../top":"83Xo"}],"Vq7N":[function(require,module,exports) {
 "use strict";
@@ -11654,7 +11713,7 @@ function _default(insight, columns, specViewOptions) {
         "signal": _constants.SignalNames.XBins
       },
       "nice": false,
-      "as": ["long0", "long1"],
+      "as": [_constants.FieldNames.StacksLongBin0, _constants.FieldNames.StacksLongBin1],
       "signal": "binXSignal"
     }, columns.y.quantitative && {
       "type": "bin",
@@ -11666,7 +11725,7 @@ function _default(insight, columns, specViewOptions) {
       "maxbins": {
         "signal": _constants.SignalNames.YBins
       },
-      "as": ["lat0", "lat1"],
+      "as": [_constants.FieldNames.StacksLatBin0, _constants.FieldNames.StacksLatBin1],
       "signal": "binYSignal"
     }])
   }], columns.x.quantitative && [{
@@ -11703,22 +11762,22 @@ function _default(insight, columns, specViewOptions) {
     "transform": [stackTransform(columns.sort, columns.x, columns.y), {
       "type": "extent",
       "signal": "xtent",
-      "field": "s1"
+      "field": _constants.FieldNames.StacksStart
     }, {
       "type": "formula",
-      "expr": "datum.s2 % columns",
+      "expr": `datum.${_constants.FieldNames.StacksEnd} % columns`,
       "as": "_columns"
     }, {
       "type": "formula",
-      "expr": "floor(datum.s1 / columns)",
+      "expr": `floor(datum.${_constants.FieldNames.StacksStart} / columns)`,
       "as": "row"
     }, {
       "type": "formula",
-      "expr": `datum.s1 % ${_constants.SignalNames.XGridSize}`,
+      "expr": `datum.${_constants.FieldNames.StacksStart} % ${_constants.SignalNames.XGridSize}`,
       "as": "column"
     }, {
       "type": "formula",
-      "expr": `floor((datum.s1 % columns)/ ${_constants.SignalNames.XGridSize})`,
+      "expr": `floor((datum.${_constants.FieldNames.StacksStart} % columns)/ ${_constants.SignalNames.XGridSize})`,
       "as": "depth"
     }, {
       "type": "extent",
@@ -11732,8 +11791,8 @@ function _default(insight, columns, specViewOptions) {
 function stackTransform(sortColumn, xColumn, yColumn) {
   const st = {
     "type": "stack",
-    "groupby": [yColumn.quantitative ? "lat0" : yColumn.name, xColumn.quantitative ? "long0" : xColumn.name],
-    "as": ["s1", "s2"]
+    "groupby": [yColumn.quantitative ? _constants.FieldNames.StacksLatBin0 : yColumn.name, xColumn.quantitative ? _constants.FieldNames.StacksLongBin0 : xColumn.name],
+    "as": [_constants.FieldNames.StacksStart, _constants.FieldNames.StacksEnd]
   };
 
   if (sortColumn) {
@@ -11752,6 +11811,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
+var _constants = require("../constants");
+
 var _fill = require("../fill");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -11767,7 +11828,7 @@ function _default(columns, specViewOptions) {
       "update": {
         "x": {
           "scale": "xband",
-          "field": columns.x.quantitative ? "long0" : columns.x.name,
+          "field": columns.x.quantitative ? _constants.FieldNames.StacksLongBin0 : columns.x.name,
           "offset": {
             "scale": "xinternalscale",
             "field": "column"
@@ -11775,7 +11836,7 @@ function _default(columns, specViewOptions) {
         },
         "y": {
           "scale": "yband",
-          "field": columns.y.quantitative ? "lat0" : columns.y.name,
+          "field": columns.y.quantitative ? _constants.FieldNames.StacksLatBin0 : columns.y.name,
           "offset": {
             "scale": "yinternalscale",
             "field": "depth"
@@ -11801,7 +11862,7 @@ function _default(columns, specViewOptions) {
   }];
   return marks;
 }
-},{"../fill":"S7Dm"}],"evLm":[function(require,module,exports) {
+},{"../constants":"b0rV","../fill":"S7Dm"}],"evLm":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11825,7 +11886,7 @@ function _default(columns, insight) {
       "sort": true
     } : {
       "data": _constants.DataNames.Main,
-      "field": columns.x.quantitative ? "long0" : columns.x.name,
+      "field": columns.x.quantitative ? _constants.FieldNames.StacksLongBin0 : columns.x.name,
       "sort": true
     },
     "range": [0, {
@@ -11845,7 +11906,7 @@ function _default(columns, insight) {
       "sort": true
     } : {
       "data": _constants.DataNames.Main,
-      "field": columns.y.quantitative ? "lat0" : columns.y.name,
+      "field": columns.y.quantitative ? _constants.FieldNames.StacksLatBin0 : columns.y.name,
       "sort": true
     },
     "range": "height",
@@ -12023,7 +12084,7 @@ function _default(insight, columns, specViewOptions) {
     "update": "min(xbandsize,ybandsize)"
   }, {
     "name": "countheight",
-    "update": "rowxtent[1]*actsize"
+    "update": `rowxtent[1]*actsize*${_constants.SignalNames.ZProportion}/${_signals.defaultZProportion}`
   }], insight.columns.facet && (0, _facet.facetSignals)(insight.facets, specViewOptions));
   return signals;
 }
@@ -12174,7 +12235,8 @@ function treemapTransforms(insight) {
       "signal": "width"
     }, {
       "signal": "height"
-    }]
+    }],
+    "as": [_constants.FieldNames.TreemapStackX0, _constants.FieldNames.TreemapStackY0, _constants.FieldNames.TreemapStackX1, _constants.FieldNames.TreemapStackY1, _constants.FieldNames.TreemapStackDepth, _constants.FieldNames.TreemapStackChildren]
   }];
   return transforms;
 }
@@ -12186,9 +12248,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
-var _fill = require("../fill");
-
 var _constants = require("../constants");
+
+var _fill = require("../fill");
 
 var _selection = require("../selection");
 
@@ -12203,16 +12265,16 @@ function _default(data, columns, specViewOptions) {
     "encode": {
       "update": {
         "x": {
-          "field": "x0"
+          "field": _constants.FieldNames.TreemapStackX0
         },
         "y": {
-          "field": "y0"
+          "field": _constants.FieldNames.TreemapStackY0
         },
         "x2": {
-          "field": "x1"
+          "field": _constants.FieldNames.TreemapStackX1
         },
         "y2": {
-          "field": "y1"
+          "field": _constants.FieldNames.TreemapStackY1
         },
         "fill": (0, _fill.fill)(columns.color, specViewOptions)
       }
@@ -12232,7 +12294,7 @@ function _default(data, columns, specViewOptions) {
 
   return marks;
 }
-},{"../fill":"S7Dm","../constants":"b0rV","../selection":"Dq8R"}],"2dh3":[function(require,module,exports) {
+},{"../constants":"b0rV","../fill":"S7Dm","../selection":"Dq8R"}],"2dh3":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12578,9 +12640,14 @@ class Exec {
     let dataValue = actualDataValue;
     let expressionValue = ex.value;
 
-    if (ex.column && ex.column.type === 'string' || ex.stringOperation) {
-      dataValue = valueToString(actualDataValue).toLocaleLowerCase();
-      expressionValue = ex.valueLow;
+    if (ex.column) {
+      if (ex.column.type === 'string' || ex.stringOperation) {
+        dataValue = valueToString(actualDataValue).toLocaleLowerCase();
+        expressionValue = ex.valueLow;
+      } else if (ex.column.quantitative) {
+        dataValue = +actualDataValue;
+        expressionValue = +ex.value;
+      }
     }
 
     switch (ex.operator) {
@@ -12842,13 +12909,13 @@ exports.Details = void 0;
 
 var searchExpression = _interopRequireWildcard(require("./searchExpression"));
 
-var _constants = require("./specs/constants");
-
 var _vegaDeck = require("./vega-deck.gl");
 
 var _tsxCreateElement = require("tsx-create-element");
 
 var _defaults = require("./defaults");
+
+var _util = require("./util");
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -13024,22 +13091,21 @@ const renderDetails = props => {
   const rows = [];
 
   for (let prop in props.item) {
-    switch (prop) {
-      case _constants.FieldNames.Active:
-      case _constants.FieldNames.Collapsed:
-      case _constants.FieldNames.Selected:
-      case _vegaDeck.constants.GL_ORDINAL:
-        continue;
-
-      default:
-        rows.push({
-          cells: [{
-            content: prop
-          }, {
-            content: linkSelect(props.language, prop, props.item[prop], props.selectionHandler)
-          }]
-        });
+    if (prop === _vegaDeck.constants.GL_ORDINAL) {
+      continue;
     }
+
+    if ((0, _util.isInternalFieldName)(prop)) {
+      continue;
+    }
+
+    rows.push({
+      cells: [{
+        content: prop
+      }, {
+        content: linkSelect(props.language, prop, props.item[prop], props.selectionHandler)
+      }]
+    });
   }
 
   return (0, _tsxCreateElement.createElement)("div", null, props.hasColorMaps && colorMapping, (0, _tsxCreateElement.createElement)("h4", null, props.language.headers.selection), (0, _tsxCreateElement.createElement)("div", {
@@ -13066,7 +13132,7 @@ function linkSelect(language, columnName, value, selectionHandler) {
     target: "_blank"
   }, language.bing)] : '');
 }
-},{"./searchExpression":"0mJg","./specs/constants":"b0rV","./vega-deck.gl":"Uns8","tsx-create-element":"QGtg","./defaults":"G0Md"}],"nQLz":[function(require,module,exports) {
+},{"./searchExpression":"0mJg","./vega-deck.gl":"Uns8","tsx-create-element":"QGtg","./defaults":"G0Md","./util":"BTLl"}],"nQLz":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13298,9 +13364,9 @@ exports.Tooltip = void 0;
 
 var _tsxCreateElement = require("tsx-create-element");
 
-var _constants = require("./constants");
+var _constants = require("./vega-deck.gl/constants");
 
-var _constants2 = require("./vega-deck.gl/constants");
+var _util = require("./util");
 
 var _htmlHelpers = require("./vega-deck.gl/htmlHelpers");
 
@@ -13373,28 +13439,27 @@ function getRows(item, options) {
   const rows = [];
 
   for (let columnName in item) {
-    switch (columnName) {
-      case _constants.FieldNames.Active:
-      case _constants.FieldNames.Collapsed:
-      case _constants.FieldNames.Selected:
-      case _constants2.GL_ORDINAL:
-        continue;
-
-      default:
-        if (options && options.exclude) {
-          if (options.exclude(columnName)) {
-            continue;
-          }
-        }
-
-        rows.push({
-          cells: [{
-            content: columnName + ':'
-          }, {
-            content: item[columnName]
-          }]
-        });
+    if (columnName === _constants.GL_ORDINAL) {
+      continue;
     }
+
+    if ((0, _util.isInternalFieldName)(columnName)) {
+      continue;
+    }
+
+    if (options && options.exclude) {
+      if (options.exclude(columnName)) {
+        continue;
+      }
+    }
+
+    rows.push({
+      cells: [{
+        content: columnName + ':'
+      }, {
+        content: item[columnName]
+      }]
+    });
   }
 
   return rows;
@@ -13407,7 +13472,7 @@ const renderTooltip = props => {
     rows: props.rows
   }));
 };
-},{"tsx-create-element":"QGtg","./constants":"Syc7","./vega-deck.gl/constants":"ipKi","./vega-deck.gl/htmlHelpers":"+tod","./vega-deck.gl/controls":"AQhe"}],"CdFf":[function(require,module,exports) {
+},{"tsx-create-element":"QGtg","./vega-deck.gl/constants":"ipKi","./util":"BTLl","./vega-deck.gl/htmlHelpers":"+tod","./vega-deck.gl/controls":"AQhe"}],"CdFf":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16544,10 +16609,7 @@ function filterColumnList(context, columns) {
 
 function optionsForSpecColumn(sectionName, columns, role, selectedColumnName) {
   var filtered = filterColumnList(role, columns);
-  var sorted = filtered.sort(function (a, b) {
-    return a.name.localeCompare(b.name);
-  });
-  var options = sorted.map(function (column, i) {
+  var options = filtered.map(function (column, i) {
     var option = {
       key: column.name,
       text: column.name,
@@ -16665,7 +16727,37 @@ function Dialog(props) {
     text: _language.strings.buttonClose
   })));
 }
-},{"react":"ccIB","../base":"Vlbn","../language":"hk5u"}],"4Q3h":[function(require,module,exports) {
+},{"react":"ccIB","../base":"Vlbn","../language":"hk5u"}],"ZOmP":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ToggleColumns = ToggleColumns;
+
+var React = _interopRequireWildcard(require("react"));
+
+var _base = require("../base");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function ToggleColumns(props) {
+  return React.createElement("div", null, props.allColumns.map(function (c, i) {
+    return React.createElement("div", {
+      key: c.name
+    }, React.createElement("label", null, React.createElement(_base.base.fabric.Toggle, {
+      checked: props.exclusions.indexOf(c.name) < 0,
+      inlineLabel: true,
+      label: c.name,
+      onChange: function onChange() {
+        return props.toggleExclusion(c.name);
+      }
+    })));
+  }));
+}
+},{"react":"ccIB","../base":"Vlbn"}],"4Q3h":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16707,6 +16799,8 @@ var _base = require("../base");
 var _columnMap = require("../controls/columnMap");
 
 var _dialog = require("../controls/dialog");
+
+var _toggleColumns = require("../controls/toggleColumns");
 
 var _group = require("../controls/group");
 
@@ -16840,18 +16934,11 @@ function (_React$Component) {
           });
         },
         title: _language.strings.labelTooltipMapping
-      }, React.createElement("div", null, props.allColumns.map(function (c, i) {
-        return React.createElement("div", {
-          key: c.name
-        }, React.createElement("label", null, React.createElement(_base.base.fabric.Toggle, {
-          checked: props.tooltipExclusions.indexOf(c.name) < 0,
-          inlineLabel: true,
-          label: c.name,
-          onChange: function onChange() {
-            return props.toggleTooltipExclusion(c.name);
-          }
-        })));
-      }))));
+      }, React.createElement(_toggleColumns.ToggleColumns, {
+        allColumns: props.allColumns,
+        exclusions: props.tooltipExclusions,
+        toggleExclusion: props.toggleTooltipExclusion
+      })));
     }
   }]);
 
@@ -16859,7 +16946,7 @@ function (_React$Component) {
 }(React.Component);
 
 exports.Chart = Chart;
-},{"react":"ccIB","../base":"Vlbn","../controls/columnMap":"DSho","../controls/dialog":"cFWm","../controls/group":"4Q3h","../controls/signal":"OWDI","../language":"hk5u"}],"BSWy":[function(require,module,exports) {
+},{"react":"ccIB","../base":"Vlbn","../controls/columnMap":"DSho","../controls/dialog":"cFWm","../controls/toggleColumns":"ZOmP","../controls/group":"4Q3h","../controls/signal":"OWDI","../language":"hk5u"}],"BSWy":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19763,7 +19850,9 @@ exports.loadDataFile = loadDataFile;
 
 var loadDataArray = function loadDataArray(data) {
   return new Promise(function (resolve, reject) {
-    var columns = _sanddanceReact.SandDance.util.getColumnsFromData(data);
+    var columns = _sanddanceReact.SandDance.util.getColumnsFromData(data).sort(function (a, b) {
+      return a.name.localeCompare(b.name);
+    });
 
     resolve({
       data: data,
@@ -19925,26 +20014,22 @@ function DataItem(props) {
   var nameValuePairs = [];
 
   var _loop = function _loop(columnName) {
-    switch (columnName) {
-      case _sanddanceReact.SandDance.constants.FieldNames.Active:
-      case _sanddanceReact.SandDance.constants.FieldNames.Collapsed:
-      case _sanddanceReact.SandDance.constants.FieldNames.Selected:
-        return "continue";
-
-      default:
-        if (columnName === _sanddanceReact.SandDance.VegaDeckGl.constants.GL_ORDINAL && !props.showSystemFields) {
-          return "continue";
-        }
-
-        var nameValuePair = {
-          columnName: columnName,
-          value: props.item[columnName]
-        };
-        nameValuePair.bingSearch = bingSearchLink(props.columns.filter(function (c) {
-          return c.name === columnName;
-        })[0], props.item[columnName]);
-        nameValuePairs.push(nameValuePair);
+    if (columnName === _sanddanceReact.SandDance.VegaDeckGl.constants.GL_ORDINAL && !props.showSystemFields) {
+      return "continue";
     }
+
+    if (_sanddanceReact.SandDance.util.isInternalFieldName(columnName)) {
+      return "continue";
+    }
+
+    var nameValuePair = {
+      columnName: columnName,
+      value: props.item[columnName]
+    };
+    nameValuePair.bingSearch = bingSearchLink(props.columns.filter(function (c) {
+      return c.name === columnName;
+    })[0], props.item[columnName]);
+    nameValuePairs.push(nameValuePair);
   };
 
   for (var columnName in props.item) {
@@ -23430,17 +23515,20 @@ function (_React$Component) {
       var loaded = !!(this.state.columns && this.state.dataContent);
       var selectionState = this.viewer && this.viewer.getSelection() || {};
       var selectionSearch = selectionState && selectionState.search;
-      var quantitativeColumns = this.state.dataContent && this.state.dataContent.columns.filter(function (c) {
+      var allColumns = this.state.dataContent && this.state.dataContent.columns.filter(function (c) {
+        return !_sanddanceReact.SandDance.util.isInternalFieldName(c.name, true);
+      });
+      var quantitativeColumns = allColumns && allColumns.filter(function (c) {
         return c.quantitative;
       });
-      var categoricalColumns = this.state.dataContent && this.state.dataContent.columns.filter(function (c) {
+      var categoricalColumns = allColumns && allColumns.filter(function (c) {
         return !c.quantitative;
       });
       var columnMapProps = {
         changeColumnMapping: function changeColumnMapping(role, column) {
           return _this9.changeColumnMapping(role, column);
         },
-        allColumns: this.state.dataContent && this.state.dataContent.columns,
+        allColumns: allColumns,
         quantitativeColumns: quantitativeColumns,
         categoricalColumns: categoricalColumns,
         explorer: this
@@ -23584,6 +23672,8 @@ function (_React$Component) {
                 _this9.setState({
                   tooltipExclusions: tooltipExclusions
                 });
+
+                _this9.props.onTooltipExclusionsChanged && _this9.props.onTooltipExclusionsChanged(tooltipExclusions);
               },
               disabled: !loaded || _this9.state.sidebarClosed
             }, columnMapProps, {
@@ -23704,7 +23794,7 @@ function (_React$Component) {
               themePalette: themePalette,
               disabled: !loaded || _this9.state.sidebarClosed,
               initializer: {
-                columns: _this9.state.dataContent.columns,
+                columns: allColumns,
                 search: _this9.state.search
               },
               autoCompleteDistinctValues: _this9.state.autoCompleteDistinctValues,

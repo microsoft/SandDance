@@ -11,7 +11,34 @@
         Collapsed: "__SandDance__Collapsed",
         Selected: "__SandDance__Selected",
         Top: "__SandDance__Top",
-        Index: "__SandDance__Index"
+        TopIndex: "__SandDance__TopIndex",
+        Index: "__SandDance__Index",
+        PowerBISelectionId: "__SandDance__PowerBISelectionId",
+        BarChartBin0: "__SandDance__BarChartBin0",
+        BarChartBin1: "__SandDance__BarChartBin1",
+        BarChartStackY0: "__SandDance__BarChartStackY0",
+        BarChartStackY1: "__SandDance__BarChartStackY1",
+        DensityCount: "__SandDance__DensityCount",
+        DensityRow: "__SandDance__DensityRow",
+        DensityXBin0: "__SandDance__DensityXBin0",
+        DensityXBin1: "__SandDance__DensityXBin1",
+        DensityYBin0: "__SandDance__DensityYBin0",
+        DensityYBin1: "__SandDance__DensityYBin1",
+        FacetBin0: "__SandDance__FacetBin0",
+        FacetBin1: "__SandDance__FacetBin1",
+        GridIndex: "__SandDance__GridIndex",
+        StacksLatBin0: "__SandDance__StacksLatBin0",
+        StacksLatBin1: "__SandDance__StacksLatBin1",
+        StacksLongBin0: "__SandDance__StacksLongBin0",
+        StacksLongBin1: "__SandDance__StacksLongBin1",
+        StacksStart: "__SandDance__StacksStart",
+        StacksEnd: "__SandDance__StacksEnd",
+        TreemapStackChildren: "__SandDance__TreemapStackChildren",
+        TreemapStackDepth: "__SandDance__TreemapStackDepth",
+        TreemapStackX0: "__SandDance__TreemapStackX0",
+        TreemapStackX1: "__SandDance__TreemapStackX1",
+        TreemapStackY0: "__SandDance__TreemapStackY0",
+        TreemapStackY1: "__SandDance__TreemapStackY1",
     };
     const DataNames = {
         Pre: "PreData",
@@ -59,9 +86,9 @@
     // Copyright (c) Microsoft Corporation. All rights reserved.
 
     var constants = /*#__PURE__*/Object.freeze({
+        ColorScaleNone: ColorScaleNone,
         FieldNames: FieldNames,
         ScaleNames: ScaleNames,
-        ColorScaleNone: ColorScaleNone,
         SignalNames: SignalNames
     });
 
@@ -6751,8 +6778,20 @@ void main(void) {
     };
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
+    function isInternalFieldName(columnName, includeVegaDeckGLFields = false) {
+        if (includeVegaDeckGLFields) {
+            if (columnName === GL_ORDINAL)
+                return true;
+        }
+        for (let f in FieldNames) {
+            if (columnName === FieldNames[f])
+                return true;
+        }
+        return false;
+    }
 
     var util$1 = /*#__PURE__*/Object.freeze({
+        isInternalFieldName: isInternalFieldName,
         getColumnsFromData: getColumnsFromData,
         inferAll: inferAll,
         ensureSearchExpressionGroupArray: ensureSearchExpressionGroupArray,
@@ -7158,17 +7197,20 @@ void main(void) {
                     step,
                     nice: false,
                     "extent": [facetColumn.stats.min, facetColumn.stats.max],
-                    "as": ["facetBin0", "facetBin1"]
+                    "as": [
+                        FieldNames.FacetBin0,
+                        FieldNames.FacetBin1
+                    ]
                 },
                 {
                     "type": "collect",
                     "sort": {
-                        "field": "facetBin0"
+                        "field": FieldNames.FacetBin0
                     }
                 },
                 {
                     "type": "formula",
-                    "expr": `format(datum.facetBin0, '~r') + '${facetTitleSeparator}' + format(datum.facetBin1, '~r')`,
+                    "expr": `format(datum.${FieldNames.FacetBin0}, '~r') + '${facetTitleSeparator}' + format(datum.${FieldNames.FacetBin1}, '~r')`,
                     "as": CellTitle
                 }
             ];
@@ -7586,6 +7628,7 @@ void main(void) {
         return axes;
     }
 
+    // Copyright (c) Microsoft Corporation. All rights reserved.
     function getQualitative (columns) {
         const stackTransform = {
             "type": "stack",
@@ -7593,6 +7636,10 @@ void main(void) {
                 {
                     "field": columns.x.name
                 }
+            ],
+            "as": [
+                FieldNames.BarChartStackY0,
+                FieldNames.BarChartStackY1
             ]
         };
         if (columns.sort) {
@@ -7605,7 +7652,7 @@ void main(void) {
             {
                 "type": "extent",
                 "signal": "xtent",
-                "field": "y1"
+                "field": FieldNames.BarChartStackY1
             }
         ];
         return transforms;
@@ -7615,7 +7662,11 @@ void main(void) {
         const stackTransform = {
             "type": "stack",
             "groupby": [
-                "__bin0"
+                FieldNames.BarChartBin0
+            ],
+            "as": [
+                FieldNames.BarChartStackY0,
+                FieldNames.BarChartStackY1
             ]
         };
         if (groupBy) {
@@ -7642,8 +7693,8 @@ void main(void) {
                     "signal": SignalNames.XBins
                 },
                 "as": [
-                    "__bin0",
-                    "__bin1"
+                    FieldNames.BarChartBin0,
+                    FieldNames.BarChartBin1
                 ],
                 "signal": "binSignal"
             },
@@ -7651,7 +7702,7 @@ void main(void) {
             {
                 "type": "extent",
                 "signal": "xtent",
-                "field": "y1"
+                "field": FieldNames.BarChartStackY1
             }
         ];
         return transforms;
@@ -7674,8 +7725,16 @@ void main(void) {
                 "source": DataNames.Main,
                 "transform": [
                     { "type": "aggregate", "groupby": [column.name] },
-                    { "type": "identifier", "as": "id" },
-                    { "type": "filter", "expr": `datum.id <= ${count}` }
+                    {
+                        "type": "window",
+                        "ops": [
+                            "count"
+                        ],
+                        "as": [
+                            FieldNames.TopIndex
+                        ]
+                    },
+                    { "type": "filter", "expr": `datum.${FieldNames.TopIndex} <= ${count}` }
                 ]
             },
             {
@@ -7752,12 +7811,12 @@ void main(void) {
         const transforms = [
             {
                 "type": "formula",
-                "expr": "floor(datum.y0 / shapesPerRow)",
+                "expr": `floor(datum.${FieldNames.BarChartStackY0} / shapesPerRow)`,
                 "as": namespace.__row
             },
             {
                 "type": "formula",
-                "expr": "datum.y0 % shapesPerRow",
+                "expr": `datum.${FieldNames.BarChartStackY0} % shapesPerRow`,
                 "as": namespace.__column
             }
         ];
@@ -7814,7 +7873,7 @@ void main(void) {
                 "update": {
                     "x": {
                         "scale": ScaleNames.X,
-                        "field": columns.x.quantitative ? "__bin0" : columns.x.name,
+                        "field": columns.x.quantitative ? FieldNames.BarChartBin0 : columns.x.name,
                         "offset": {
                             "scale": "xnewinternalscale",
                             "field": namespace.__column
@@ -7895,7 +7954,7 @@ void main(void) {
                 "range": "width",
                 "domain": {
                     "data": namespace.nested,
-                    "field": "__bin0",
+                    "field": FieldNames.BarChartBin0,
                     "sort": true
                 }
             },
@@ -8085,11 +8144,12 @@ void main(void) {
         return scales.concat(columns.x.quantitative ? quantitativeScales(namespace, columns) : qualitativeScales(namespace, columns));
     }
 
+    const defaultZProportion = 0.6;
     function textSignals(specViewOptions) {
         const signals = [
             {
                 "name": SignalNames.ZProportion,
-                "value": 0.6,
+                "value": defaultZProportion,
                 "bind": {
                     "name": specViewOptions.language.zScaleProportion,
                     "debounce": 50,
@@ -8348,18 +8408,7 @@ void main(void) {
         const data = allTruthy([
             {
                 "name": DataNames.Main,
-                "transform": allTruthy([
-                    {
-                        "type": "formula",
-                        "as": "ff_field1",
-                        "expr": `datum[${JSON.stringify(columns.x.name)}]`
-                    },
-                    {
-                        "type": "formula",
-                        "as": "ff_field2",
-                        "expr": `datum[${JSON.stringify(columns.y.name)}]`
-                    }
-                ], columns.x.quantitative && [
+                "transform": allTruthy(columns.x.quantitative && [
                     {
                         "type": "extent",
                         "field": columns.x.name,
@@ -8375,8 +8424,8 @@ void main(void) {
                             "signal": SignalNames.XBins
                         },
                         "as": [
-                            "__binx0",
-                            "__binx1"
+                            FieldNames.DensityXBin0,
+                            FieldNames.DensityXBin1
                         ],
                         "signal": "binXSignal"
                     }
@@ -8396,8 +8445,8 @@ void main(void) {
                             "signal": SignalNames.YBins
                         },
                         "as": [
-                            "__biny0",
-                            "__biny1"
+                            FieldNames.DensityYBin0,
+                            FieldNames.DensityYBin1
                         ],
                         "signal": "binYSignal"
                     }
@@ -8447,20 +8496,20 @@ void main(void) {
                     {
                         "type": "joinaggregate",
                         "groupby": [
-                            columns.x.quantitative ? "__binx0" : "ff_field1",
-                            columns.y.quantitative ? "__biny0" : "ff_field2"
+                            columns.x.quantitative ? FieldNames.DensityXBin0 : columns.x.name,
+                            columns.y.quantitative ? FieldNames.DensityYBin0 : columns.y.name
                         ],
                         "ops": [
                             "count"
                         ],
                         "as": [
-                            "count"
+                            FieldNames.DensityCount
                         ]
                     },
                     windowTransform(columns),
                     {
                         "type": "extent",
-                        "field": "s1",
+                        "field": FieldNames.DensityRow,
                         "signal": "cextent"
                     }
                 ]
@@ -8472,14 +8521,14 @@ void main(void) {
         const t = {
             "type": "window",
             "groupby": [
-                columns.x.quantitative ? "__binx0" : "ff_field1",
-                columns.y.quantitative ? "__biny0" : "ff_field2"
+                columns.x.quantitative ? FieldNames.DensityXBin0 : columns.x.name,
+                columns.y.quantitative ? FieldNames.DensityYBin0 : columns.y.name
             ],
             "ops": [
                 "row_number"
             ],
             "as": [
-                "s1"
+                FieldNames.DensityRow
             ]
         };
         if (columns.sort) {
@@ -8502,8 +8551,8 @@ void main(void) {
             },
             "sort": {
                 "field": [
-                    "ff_field1",
-                    "ff_field2"
+                    columns.x.name,
+                    columns.y.name
                 ],
                 "order": [
                     "ascending",
@@ -8514,16 +8563,16 @@ void main(void) {
                 "update": {
                     "xc": {
                         "scale": "xscale",
-                        "field": columns.x.quantitative ? "__binx0" : "ff_field1",
+                        "field": columns.x.quantitative ? FieldNames.DensityXBin0 : columns.x.name,
                         "offset": {
-                            "signal": "scale('sizescale', ((datum.s1-1) % floor(sqrt(datum.count))))-scale('sizescale', sqrt(datum.count)-2)/2"
+                            "signal": `scale('sizescale', ((datum.${FieldNames.DensityRow}-1) % floor(sqrt(datum.${FieldNames.DensityCount}))))-scale('sizescale', sqrt(datum.${FieldNames.DensityCount})-2)/2`
                         }
                     },
                     "yc": {
                         "scale": "yscale",
-                        "field": columns.y.quantitative ? "__biny0" : "ff_field2",
+                        "field": columns.y.quantitative ? FieldNames.DensityYBin0 : columns.y.name,
                         "offset": {
-                            "signal": "scale('sizescale',height/width*floor(((datum.s1-1) / floor(sqrt(datum.count))))) - scale('sizescale', height/width*sqrt(datum.count)+2)/2"
+                            "signal": `scale('sizescale',height/width*floor(((datum.${FieldNames.DensityRow}-1) / floor(sqrt(datum.${FieldNames.DensityCount}))))) - scale('sizescale', height/width*sqrt(datum.${FieldNames.DensityCount})+2)/2`
                         }
                     },
                     "width": {
@@ -8784,7 +8833,7 @@ void main(void) {
                             "count"
                         ],
                         "as": [
-                            FieldNames.Index
+                            FieldNames.GridIndex
                         ]
                     }
                 ])
@@ -8810,7 +8859,7 @@ void main(void) {
                 "encode": {
                     "update": {
                         "x": {
-                            "signal": `(datum['${FieldNames.Index}']-1)%${ColumnCount}`,
+                            "signal": `(datum.${FieldNames.GridIndex}-1)%${ColumnCount}`,
                             "scale": ScaleNames.X
                         },
                         "width": {
@@ -8818,7 +8867,7 @@ void main(void) {
                             "band": true
                         },
                         "y": {
-                            "signal": `floor((datum['${FieldNames.Index}']-1)/${ColumnCount})`,
+                            "signal": `floor((datum.${FieldNames.GridIndex}-1)/${ColumnCount})`,
                             "scale": ScaleNames.Y
                         },
                         "height": {
@@ -8981,10 +9030,21 @@ void main(void) {
             {
                 "name": DataNames.Main,
                 "source": ScatterDataName,
-                "transform": allTruthy(columns.facet && facetTransforms(columns.facet, insight.facets))
+                "transform": allTruthy(filterInvalidWhenNumeric(columns.x), filterInvalidWhenNumeric(columns.y), filterInvalidWhenNumeric(columns.z), columns.facet && facetTransforms(columns.facet, insight.facets))
             }
         ], categoricalColor && topLookup(columns.color, specViewOptions.maxLegends), columns.facet && facetGroupData(DataNames.Main));
         return data;
+    }
+    function filterInvalidWhenNumeric(column) {
+        if (column && column.quantitative) {
+            const transforms = [
+                {
+                    "type": "filter",
+                    "expr": `datum[${JSON.stringify(column.name)}] != null`
+                }
+            ];
+            return transforms;
+        }
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -9211,8 +9271,8 @@ void main(void) {
                         },
                         "nice": false,
                         "as": [
-                            "long0",
-                            "long1"
+                            FieldNames.StacksLongBin0,
+                            FieldNames.StacksLongBin1
                         ],
                         "signal": "binXSignal"
                     },
@@ -9227,8 +9287,8 @@ void main(void) {
                             "signal": SignalNames.YBins
                         },
                         "as": [
-                            "lat0",
-                            "lat1"
+                            FieldNames.StacksLatBin0,
+                            FieldNames.StacksLatBin1
                         ],
                         "signal": "binYSignal"
                     }
@@ -9279,26 +9339,26 @@ void main(void) {
                     {
                         "type": "extent",
                         "signal": "xtent",
-                        "field": "s1"
+                        "field": FieldNames.StacksStart
                     },
                     {
                         "type": "formula",
-                        "expr": "datum.s2 % columns",
+                        "expr": `datum.${FieldNames.StacksEnd} % columns`,
                         "as": "_columns"
                     },
                     {
                         "type": "formula",
-                        "expr": "floor(datum.s1 / columns)",
+                        "expr": `floor(datum.${FieldNames.StacksStart} / columns)`,
                         "as": "row"
                     },
                     {
                         "type": "formula",
-                        "expr": `datum.s1 % ${SignalNames.XGridSize}`,
+                        "expr": `datum.${FieldNames.StacksStart} % ${SignalNames.XGridSize}`,
                         "as": "column"
                     },
                     {
                         "type": "formula",
-                        "expr": `floor((datum.s1 % columns)/ ${SignalNames.XGridSize})`,
+                        "expr": `floor((datum.${FieldNames.StacksStart} % columns)/ ${SignalNames.XGridSize})`,
                         "as": "depth"
                     },
                     {
@@ -9315,12 +9375,12 @@ void main(void) {
         const st = {
             "type": "stack",
             "groupby": [
-                yColumn.quantitative ? "lat0" : yColumn.name,
-                xColumn.quantitative ? "long0" : xColumn.name
+                yColumn.quantitative ? FieldNames.StacksLatBin0 : yColumn.name,
+                xColumn.quantitative ? FieldNames.StacksLongBin0 : xColumn.name
             ],
             "as": [
-                "s1",
-                "s2"
+                FieldNames.StacksStart,
+                FieldNames.StacksEnd
             ]
         };
         if (sortColumn) {
@@ -9344,7 +9404,7 @@ void main(void) {
                     "update": {
                         "x": {
                             "scale": "xband",
-                            "field": columns.x.quantitative ? "long0" : columns.x.name,
+                            "field": columns.x.quantitative ? FieldNames.StacksLongBin0 : columns.x.name,
                             "offset": {
                                 "scale": "xinternalscale",
                                 "field": "column"
@@ -9352,7 +9412,7 @@ void main(void) {
                         },
                         "y": {
                             "scale": "yband",
-                            "field": columns.y.quantitative ? "lat0" : columns.y.name,
+                            "field": columns.y.quantitative ? FieldNames.StacksLatBin0 : columns.y.name,
                             "offset": {
                                 "scale": "yinternalscale",
                                 "field": "depth"
@@ -9395,7 +9455,7 @@ void main(void) {
                     :
                         {
                             "data": DataNames.Main,
-                            "field": columns.x.quantitative ? "long0" : columns.x.name,
+                            "field": columns.x.quantitative ? FieldNames.StacksLongBin0 : columns.x.name,
                             "sort": true
                         },
                 "range": [
@@ -9420,7 +9480,7 @@ void main(void) {
                     :
                         {
                             "data": DataNames.Main,
-                            "field": columns.y.quantitative ? "lat0" : columns.y.name,
+                            "field": columns.y.quantitative ? FieldNames.StacksLatBin0 : columns.y.name,
                             "sort": true
                         },
                 "range": "height",
@@ -9603,7 +9663,7 @@ void main(void) {
             },
             {
                 "name": "countheight",
-                "update": "rowxtent[1]*actsize"
+                "update": `rowxtent[1]*actsize*${SignalNames.ZProportion}/${defaultZProportion}`
             }
         ], insight.columns.facet && facetSignals(insight.facets, specViewOptions));
         return signals;
@@ -9704,7 +9764,15 @@ void main(void) {
                 "round": true,
                 "method": { "signal": SignalNames.TreeMapMethod },
                 "padding": 1,
-                "size": [{ "signal": "width" }, { "signal": "height" }]
+                "size": [{ "signal": "width" }, { "signal": "height" }],
+                "as": [
+                    FieldNames.TreemapStackX0,
+                    FieldNames.TreemapStackY0,
+                    FieldNames.TreemapStackX1,
+                    FieldNames.TreemapStackY1,
+                    FieldNames.TreemapStackDepth,
+                    FieldNames.TreemapStackChildren
+                ]
             }
         ];
         return transforms;
@@ -9720,10 +9788,10 @@ void main(void) {
                 },
                 "encode": {
                     "update": {
-                        "x": { "field": "x0" },
-                        "y": { "field": "y0" },
-                        "x2": { "field": "x1" },
-                        "y2": { "field": "y1" },
+                        "x": { "field": FieldNames.TreemapStackX0 },
+                        "y": { "field": FieldNames.TreemapStackY0 },
+                        "x2": { "field": FieldNames.TreemapStackX1 },
+                        "y2": { "field": FieldNames.TreemapStackY1 },
                         "fill": fill(columns.color, specViewOptions)
                     }
                 }
@@ -9972,9 +10040,15 @@ void main(void) {
             }
             let dataValue = actualDataValue;
             let expressionValue = ex.value;
-            if ((ex.column && ex.column.type === 'string') || ex.stringOperation) {
-                dataValue = valueToString(actualDataValue).toLocaleLowerCase();
-                expressionValue = ex.valueLow;
+            if (ex.column) {
+                if (ex.column.type === 'string' || ex.stringOperation) {
+                    dataValue = valueToString(actualDataValue).toLocaleLowerCase();
+                    expressionValue = ex.valueLow;
+                }
+                else if (ex.column.quantitative) {
+                    dataValue = +actualDataValue;
+                    expressionValue = +ex.value;
+                }
             }
             switch (ex.operator) {
                 case '!=':
@@ -10287,19 +10361,17 @@ void main(void) {
         ];
         const rows = [];
         for (let prop in props.item) {
-            switch (prop) {
-                case FieldNames.Active:
-                case FieldNames.Collapsed:
-                case FieldNames.Selected:
-                case GL_ORDINAL:
-                    continue;
-                default:
-                    rows.push({
-                        cells: [
-                            { content: prop }, { content: linkSelect(props.language, prop, props.item[prop], props.selectionHandler) }
-                        ]
-                    });
+            if (prop === GL_ORDINAL) {
+                continue;
             }
+            if (isInternalFieldName(prop)) {
+                continue;
+            }
+            rows.push({
+                cells: [
+                    { content: prop }, { content: linkSelect(props.language, prop, props.item[prop], props.selectionHandler) }
+                ]
+            });
         }
         return (createElement("div", null,
             props.hasColorMaps && colorMapping,
@@ -10527,25 +10599,23 @@ void main(void) {
     function getRows(item, options) {
         const rows = [];
         for (let columnName in item) {
-            switch (columnName) {
-                case FieldNames.Active:
-                case FieldNames.Collapsed:
-                case FieldNames.Selected:
-                case GL_ORDINAL:
-                    continue;
-                default:
-                    if (options && options.exclude) {
-                        if (options.exclude(columnName)) {
-                            continue;
-                        }
-                    }
-                    rows.push({
-                        cells: [
-                            { content: columnName + ':' },
-                            { content: item[columnName] }
-                        ]
-                    });
+            if (columnName === GL_ORDINAL) {
+                continue;
             }
+            if (isInternalFieldName(columnName)) {
+                continue;
+            }
+            if (options && options.exclude) {
+                if (options.exclude(columnName)) {
+                    continue;
+                }
+            }
+            rows.push({
+                cells: [
+                    { content: columnName + ':' },
+                    { content: item[columnName] }
+                ]
+            });
         }
         return rows;
     }
