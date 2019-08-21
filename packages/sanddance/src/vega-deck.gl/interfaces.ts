@@ -19,6 +19,7 @@ export interface Axis {
     domain: StyledLine;
     ticks: StyledLine[];
     tickText: TickText[];
+    title?: TextLayerDatum;
 }
 
 /**
