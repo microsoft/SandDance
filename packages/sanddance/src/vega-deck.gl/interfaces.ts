@@ -77,7 +77,8 @@ export interface Stage {
         x: Axis[];
         y: Axis[];
     };
-    textData: TextLayerDatum[];
+    textData?: TextLayerDatum[];
+    clickableTextData?: TextLayerDatum[];
     view: View;
     gridLines?: StyledLine[];
     facets?: FacetRect[];
@@ -131,17 +132,42 @@ export interface PresenterConfig {
     redraw?: () => void;
     onCubeHover?: (e: MouseEvent | PointerEvent | TouchEvent, cube: Cube) => void;
     onCubeClick?: (e: MouseEvent | PointerEvent | TouchEvent, cube: Cube) => void;
+    onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, text: TextLayerDatum) => void;
     onLayerClick?: (info: PickInfo, pickedInfos: PickInfo[], e: MouseEvent) => any;
     onLegendClick?: (e: MouseEvent | PointerEvent | TouchEvent, legend: Legend, clickedIndex: number) => void;
     onPresent?: () => void;
     shouldViewstateTransition?: () => boolean;
 }
 
+/**
+ * Style options to be used by the Presenter.
+ */
 export interface PresenterStyle {
+
+    /**
+     * Prefix of CSS class names.
+     */
     cssPrefix?: string;
+
+    /**
+     * Default color of cubes.
+     */
     defaultCubeColor: Color;
+
+    /**
+     * Highlight color of cubes.
+     */
     highlightColor?: Color;
+
+    /**
+     * Light settings per camera view.
+     */
     lightSettings?: { [view in View]: LightSettings };
+
+    /**
+     * Highlight color of clickable text.
+     */
+    textHighlightColor?: Color;
 }
 
 /**
