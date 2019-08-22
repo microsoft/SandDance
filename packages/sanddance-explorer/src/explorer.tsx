@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
-import { ActiveDropdown, ActiveDropdownProps, onBeforeCreateLayers } from './clickableTextLayer';
+import { ActiveDropdown, ActiveDropdownProps, injectClickableTextLayer } from './clickableTextLayer';
 import { applyColorButtons } from './colorMap';
 import { AutoCompleteDistinctValues, InputSearchExpression } from './controls/searchTerm';
 import { base } from './base';
@@ -211,14 +211,14 @@ export class Explorer extends React.Component<Props, State> {
         viewerOptions && viewerOptions.onError && viewerOptions.onError(errors);
       },
       onBeforeCreateLayers: (stage, layerFn, specCapabilities) => {
-        return onBeforeCreateLayers(stage, layerFn, specCapabilities, (iProps) => {
+        return injectClickableTextLayer(stage, layerFn, specCapabilities, (pos, specRole) => {
           const activeColumnMapProps: ActiveDropdownProps = {
             ...this.getColumnMapBaseProps(),
-            selectedColumnName: this.state.columns[iProps.specRole.role],
+            selectedColumnName: this.state.columns[specRole.role],
             onDismiss: () => { this.setState({ activeColumnMapProps: null }) },
-            specRole: iProps.specRole,
-            clientX: iProps.clientX - this.div.clientLeft,
-            clientY: iProps.clientY - this.div.clientTop,
+            specRole,
+            left: pos.left - this.div.clientLeft,
+            top: pos.top - this.div.clientTop,
           }
           this.setState({ activeColumnMapProps })
         });

@@ -1,21 +1,25 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
-import { base } from './base';
+import { ColumnMap, Props as ColumnMapProps } from './controls/columnMap';
+import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
-import { Props as ColumnMapProps2, ColumnMap } from './controls/columnMap';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 
 interface TextWithSpecRole extends TextLayerDatum {
     specRole: SandDance.types.SpecRoleCapabilities;
 }
 
-export function onBeforeCreateLayers(
+export interface Position {
+    top: number;
+    left: number;
+}
+
+export function injectClickableTextLayer(
     stage: SandDance.VegaDeckGl.types.Stage,
     layerFn: SandDance.VegaDeckGl.types.LayerFn,
     specCapabilities: SandDance.types.SpecCapabilities,
-    clickFn: (aprops: IProps) => void) {
+    clickFn: (pos: Position, specRole: SandDance.types.SpecRoleCapabilities) => void) {
     const clickableTextData: TextWithSpecRole[] = [];
     const pristineAxes = SandDance.VegaDeckGl.util.clone(stage.axes);
     for (let axisName in stage.axes) {
@@ -37,19 +41,7 @@ export function onBeforeCreateLayers(
     stage.axes = pristineAxes;
     if (clickableTextData.length > 0) {
         const onTextClick = (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => {
-            let clientX: number;
-            let clientY: number;
-            const ep = e as MouseEvent | PointerEvent;
-            if (ep.clientX) {
-                clientX = ep.clientX;
-                clientY = ep.clientY;
-            }
-            const aprops: IProps = {
-                clientX,
-                clientY,
-                specRole: text.specRole
-            };
-            clickFn(aprops);
+            clickFn(getPosition(e), text.specRole);
         };
         const clickableTextLayer = newClickableTextLayer('LAYER_CLICKABLE_TEXT', onTextClick, clickableTextData, [0, 0, 200, 255]);
         layers.splice(1, 0, clickableTextLayer);
@@ -57,6 +49,14 @@ export function onBeforeCreateLayers(
     return layers;
 }
 
+function getPosition(e: MouseEvent | PointerEvent | TouchEvent): Position {
+    const emp = e as MouseEvent | PointerEvent;
+    if (emp.clientX !== undefined) {
+        return { top: emp.clientY, left: emp.clientX };
+    }
+    const et = e as TouchEvent;
+    return { top: et.touches[0].clientY, left: et.touches[0].clientX };
+}
 
 function newClickableTextLayer(id: string, onTextClick: (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => void, data: TextWithSpecRole[], highlightColor: number[]) {
     return new SandDance.VegaDeckGl.base.layers.TextLayer({
@@ -74,16 +74,7 @@ function newClickableTextLayer(id: string, onTextClick: (e: MouseEvent | Pointer
     });
 }
 
-export interface IProps {
-    clientX: number;
-    clientY: number;
-    specRole: SandDance.types.SpecRoleCapabilities;
-}
-
-export interface ActiveDropdownProps extends ColumnMapProps2 {
-    clientX: number;
-    clientY: number;
-}
+export interface ActiveDropdownProps extends ColumnMapProps, Position { }
 
 export class ActiveDropdown extends React.Component<ActiveDropdownProps, {}> {
     private dropdownRef?: React.RefObject<FabricTypes.IDropdown>;
@@ -101,7 +92,7 @@ export class ActiveDropdown extends React.Component<ActiveDropdownProps, {}> {
         return (
             <div
                 className="sanddance-columnMap-absolute"
-                style={{ position: 'absolute', zIndex: 1, left: this.props.clientX, top: this.props.clientY }}
+                style={{ position: 'absolute', left: this.props.left + 'px', top: this.props.top + 'px' }}
             >
                 <ColumnMap
                     {...this.props}
