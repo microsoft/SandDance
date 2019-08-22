@@ -143,29 +143,10 @@ export interface PresenterConfig {
     shouldViewstateTransition?: () => boolean;
 }
 
-/**
- * Style options to be used by the Presenter.
- */
 export interface PresenterStyle {
-
-    /**
-     * Prefix of CSS class names.
-     */
     cssPrefix?: string;
-
-    /**
-     * Default color of cubes.
-     */
     defaultCubeColor: Color;
-
-    /**
-     * Highlight color of cubes.
-     */
     highlightColor?: Color;
-
-    /**
-     * Light settings per camera view.
-     */
     lightSettings?: { [view in View]: LightSettings };
 }
 
