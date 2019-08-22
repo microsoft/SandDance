@@ -528,7 +528,6 @@ export class Viewer {
             onCubeHover: this.onCubeHover.bind(this),
             preStage: this.preStage.bind(this),
             onPresent: this.options.onPresent,
-            onBeforeCreateLayers: (stage, layerFn) => this.options.onBeforeCreateLayers(stage, layerFn, this.specCapabilities),
             onLayerClick: (info: PickInfo, pickedInfos: PickInfo[], e: MouseEvent) => {
                 if (!info) {
                     this.deselect();
@@ -545,6 +544,9 @@ export class Viewer {
                 }
             }
         };
+        if (this.options.onBeforeCreateLayers) {
+            defaultPresenterConfig.onBeforeCreateLayers = (stage, layerFn) => this.options.onBeforeCreateLayers(stage, layerFn, this.specCapabilities);
+        }
         const config: VegaDeckGl.types.ViewGlConfig = {
             presenter: this.presenter,
             presenterConfig: Object.assign(defaultPresenterConfig, c)
