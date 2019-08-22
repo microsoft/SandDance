@@ -3,12 +3,12 @@
 import { base } from './base';
 import { box } from './marks/rule';
 import { className, initializePanel } from './panel';
-import { deepMerge } from './clone';
 import { colorToString } from './color';
 import { createDeckGLClassesForPresenter, DeckGL_Class, DeckGLInternalProps } from './deck.gl-classes/deckgl';
 import { createStage, defaultPresenterConfig, defaultPresenterStyle } from './defaults';
 import {
     Cube,
+    LayerFn,
     PresenterConfig,
     PresenterStyle,
     QueuedAnimationOptions,
@@ -18,6 +18,7 @@ import {
 } from './interfaces';
 import { CubeLayer_Class, CubeLayerInterpolatedProps } from './cube-layer/cube-layer';
 import { DeckProps } from '@deck.gl/core/lib/deck';
+import { deepMerge } from './clone';
 import { easeExpInOut } from 'd3-ease';
 import { getCubeLayer, getCubes, getLayers } from './layers';
 import { LegendView } from './legend';
@@ -262,7 +263,11 @@ export class Presenter {
             }
         }
         const guideLines = this._showGuides && box(0, 0, height, width, '#0f0', 1, true);
-        const layers = getLayers(this, config, stage, this.style.highlightColor, this.style.textHighlightColor, lightSettings, lightingMix, linearInterpolator, guideLines);
+        const layerFn: LayerFn = (_stage) => {
+            return getLayers(this, config, _stage, this.style.highlightColor, lightSettings, lightingMix, linearInterpolator, guideLines)
+        };
+        const layers = config.onBeforeCreateLayers ? config.onBeforeCreateLayers(stage, layerFn) : layerFn(stage);
+
         const deckProps: DeckProps = {
             views: [new base.deck.OrbitView({ controller: this.OrbitControllerClass })],
             viewState,

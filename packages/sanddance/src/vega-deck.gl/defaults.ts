@@ -28,8 +28,7 @@ export const defaultPresenterStyle: PresenterStyle = {
     cssPrefix: 'vega-deckgl-',
     defaultCubeColor: [128, 128, 128, 171],
     highlightColor: [0, 0, 0, 255],
-    lightSettings,
-    textHighlightColor: [0, 0, 216, 255]
+    lightSettings
 };
 
 export const defaultPresenterConfig: PresenterConfig = {

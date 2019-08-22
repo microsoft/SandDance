@@ -1,16 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from './vega-deck.gl';
+import Layer, { LightSettings } from '@deck.gl/core/lib/layer';
 import { Color } from '@deck.gl/core/utils/color';
 import {
     Column,
     ColumnTypeMap,
+    SpecCapabilities,
     SpecColorSettings,
     SpecLanguage,
     SpecViewOptions
 } from './specs/types';
 import { DeckProps } from '@deck.gl/core/lib/deck';
-import { LightSettings } from '@deck.gl/core/lib/layer';
 import { Search, SearchExpressionGroup } from './searchExpression/types';
 import { Spec } from 'vega-typings';
 import { SpecResult } from './specs/interfaces';
@@ -113,6 +114,9 @@ export interface ViewerOptions extends SpecViewOptions {
      * Optional handler when chart is presented.
      */
     onPresent?: () => void;
+
+
+    onBeforeCreateLayers?: (stage: VegaDeckGl.types.Stage, layerFn: VegaDeckGl.types.LayerFn, specCapabilities: SpecCapabilities) => Layer[];
 
     /**
      * Optional handler when axis is clicked.

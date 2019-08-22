@@ -8,7 +8,6 @@ import { bestColorScheme } from './colorScheme';
 import { Chart } from './dialogs/chart';
 import { Color } from './dialogs/color';
 import { ColumnMapProps } from './controls/columnMap';
-import { loadDataArray, loadDataFile } from './dataLoader';
 import {
   copyPrefToNewState,
   initPrefs,
@@ -22,13 +21,15 @@ import { DataScopeId } from './controls/dataScope';
 import { Dialog } from './controls/dialog';
 import { ensureColumnsExist, ensureColumnsPopulated } from './columns';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
-import { preferredColumnForTreemapSize, RecommenderSummary } from '@msrvida/chart-recommender';
 import { InputSearchExpressionGroup, Search } from './dialogs/search';
+import { loadDataArray, loadDataFile } from './dataLoader';
+import { preferredColumnForTreemapSize, RecommenderSummary } from '@msrvida/chart-recommender';
 import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
 import { Settings } from './dialogs/settings';
 import { Sidebar, SideTabId } from './controls/sidebar';
 import { SnapshotProps, Snapshots } from './dialogs/snapshots';
 import { strings } from './language';
+import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 import { themePalettes } from './themes';
 import { toggleSearch } from './toggleSearch';
 import { Topbar } from './controls/topbar';
@@ -205,6 +206,25 @@ export class Explorer extends React.Component<Props, State> {
       onError: (errors) => {
         this.setState({ errors });
         viewerOptions && viewerOptions.onError && viewerOptions.onError(errors);
+      },
+      onBeforeCreateLayers: (stage, layerFn, specCapabilities) => {
+        const clickableTextData: TextLayerDatum[] = [];
+        const pristineAxes = SandDance.VegaDeckGl.util.clone(stage.axes);
+        for (let axisName in stage.axes) {
+          let axes = stage.axes[axisName] as SandDance.VegaDeckGl.types.Axis[];
+          axes.forEach(axis => {
+            if (axis.title) {
+              clickableTextData.push(axis.title);
+              delete axis.title;
+            }
+          });
+        }
+        const layers = layerFn(stage);
+        stage.axes = pristineAxes;
+        if (clickableTextData.length > 0) {
+          layers.splice(1, 0, newClickableTextLayer("z", (e, o) => { }, clickableTextData, [0, 0, 200, 255]));
+        }
+        return layers;
       }
     };
     if (this.viewer && this.viewer.presenter) {
@@ -963,4 +983,20 @@ export class Explorer extends React.Component<Props, State> {
       </div>
     );
   }
+}
+
+function newClickableTextLayer(id: string, onTextClick: (e: MouseEvent | PointerEvent | TouchEvent, text: TextLayerDatum) => void, data: TextLayerDatum[], highlightColor: number[]) {
+  return new base.layers.TextLayer({
+    id,
+    data,
+    coordinateSystem: base.deck.COORDINATE_SYSTEM.IDENTITY,
+    autoHighlight: true,
+    highlightColor,
+    pickable: true,
+    onClick: (o, e) => onTextClick(e && e.srcEvent, o.object as TextLayerDatum),
+    getColor: o => o.color,
+    getTextAnchor: o => o.textAnchor,
+    getSize: o => o.size,
+    getAngle: o => o.angle
+  });
 }

@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { Color } from '@deck.gl/core/utils/color';
 import { DeckProps, PickInfo } from '@deck.gl/core/lib/deck';
-import { LightSettings } from '@deck.gl/core/lib/layer';
+import Layer, { LightSettings } from '@deck.gl/core/lib/layer';
 import { LineLayerDatum } from '@deck.gl/layers/line-layer/line-layer';
 import { Scene } from 'vega-typings';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
@@ -79,7 +79,6 @@ export interface Stage {
         y: Axis[];
     };
     textData?: TextLayerDatum[];
-    clickableTextData?: TextLayerDatum[];
     view: View;
     gridLines?: StyledLine[];
     facets?: FacetRect[];
@@ -107,6 +106,10 @@ export interface LegendRowSymbol {
     shape: string;
 }
 
+export interface LayerFn {
+    (stage: Stage): Layer[];
+}
+
 /**
  * Function that can be called prior to presenting the stage.
  */
@@ -131,9 +134,9 @@ export interface PresenterConfig {
     transitionDurations?: TransitionDurations;
     preStage?: PreStage;
     redraw?: () => void;
+    onBeforeCreateLayers?: (stage: Stage, layerFn: LayerFn) => Layer[];
     onCubeHover?: (e: MouseEvent | PointerEvent | TouchEvent, cube: Cube) => void;
     onCubeClick?: (e: MouseEvent | PointerEvent | TouchEvent, cube: Cube) => void;
-    onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, text: TextLayerDatum) => void;
     onLayerClick?: (info: PickInfo, pickedInfos: PickInfo[], e: MouseEvent) => any;
     onLegendClick?: (e: MouseEvent | PointerEvent | TouchEvent, legend: Legend, clickedIndex: number) => void;
     onPresent?: () => void;
@@ -164,11 +167,6 @@ export interface PresenterStyle {
      * Light settings per camera view.
      */
     lightSettings?: { [view in View]: LightSettings };
-
-    /**
-     * Highlight color of clickable text.
-     */
-    textHighlightColor?: Color;
 }
 
 /**

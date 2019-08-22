@@ -4,6 +4,5 @@ export const GL_ORDINAL = "GL_ORDINAL";
 export const layerNames = {
     cubes: "LAYER_CUBES",
     lines: "LAYER_LINES",
-    text: "LAYER_TEXT",
-    clickableText: "LAYER_CLICKABLE_TEXT"
+    text: "LAYER_TEXT"
 };

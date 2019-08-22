@@ -18,12 +18,11 @@ import { LinearInterpolator_Class } from './deck.gl-classes/linearInterpolator';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 import { Presenter } from './presenter';
 
-export function getLayers(presenter: Presenter, config: PresenterConfig, stage: Stage, highlightColor: number[], textHighlightColor: number[], lightSettings: LightSettings, lightingMix: number, interpolator: LinearInterpolator_Class<CubeLayerInterpolatedProps>, guideLines: StyledLine[]): Layer[] {
+export function getLayers(presenter: Presenter, config: PresenterConfig, stage: Stage, highlightColor: number[], lightSettings: LightSettings, lightingMix: number, interpolator: LinearInterpolator_Class<CubeLayerInterpolatedProps>, guideLines: StyledLine[]): Layer[] {
     const cubeLayer = newCubeLayer(presenter, config, stage.cubeData, highlightColor, lightSettings, lightingMix, interpolator);
     const { x, y } = stage.axes;
     const lines = concat(stage.gridLines, guideLines);
     const texts = [...stage.textData];
-    const clickableTexts = stage.clickableTextData ? [...stage.clickableTextData] : [];
     [x, y].forEach(axes => {
         axes.forEach(axis => {
             if (axis.domain) lines.push(axis.domain);
@@ -40,8 +39,7 @@ export function getLayers(presenter: Presenter, config: PresenterConfig, stage: 
     }
     const lineLayer = newLineLayer(layerNames.lines, lines);
     const textLayer = newTextLayer(layerNames.text, texts);
-    const clickableTextLayer = newClickableTextLayer(layerNames.clickableText, config, clickableTexts, textHighlightColor);
-    return [textLayer, clickableTextLayer, cubeLayer, lineLayer];
+    return [textLayer, cubeLayer, lineLayer];
 }
 
 function newCubeLayer(presenter: Presenter, config: PresenterConfig, cubeData: Cube[], highlightColor: number[], lightSettings: LightSettings, lightingMix: number, interpolator?: LinearInterpolator_Class<CubeLayerInterpolatedProps>) {
@@ -94,22 +92,6 @@ function newTextLayer(id: string, data: TextLayerDatum[]) {
         id,
         data,
         coordinateSystem: base.deck.COORDINATE_SYSTEM.IDENTITY,
-        getColor: o => o.color,
-        getTextAnchor: o => o.textAnchor,
-        getSize: o => o.size,
-        getAngle: o => o.angle
-    });
-}
-
-function newClickableTextLayer(id: string, config: PresenterConfig, data: TextLayerDatum[], highlightColor: number[]) {
-    return new base.layers.TextLayer({
-        id,
-        data,
-        coordinateSystem: base.deck.COORDINATE_SYSTEM.IDENTITY,
-        autoHighlight: true,
-        highlightColor,
-        pickable: true,
-        onClick: (o, e) => config.onTextClick(e && e.srcEvent, o.object as TextLayerDatum),
         getColor: o => o.color,
         getTextAnchor: o => o.textAnchor,
         getSize: o => o.size,
