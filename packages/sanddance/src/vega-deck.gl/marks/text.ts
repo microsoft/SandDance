@@ -36,7 +36,7 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
             alignmentBaseline: convertBaseline(item.baseline)
         };
 
-        if (item.mark.role === '"axis-label') {
+        if (item.mark.role === 'axis-label') {
             const tickText = textItem as TickText;
             tickText.value = item.datum['value'];
             options.currAxis.tickText.push(tickText);
