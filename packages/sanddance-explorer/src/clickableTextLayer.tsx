@@ -80,10 +80,9 @@ export interface IProps {
     specRole: SandDance.types.SpecRoleCapabilities;
 }
 
-export interface ActiveDropdownProps {
+export interface ActiveDropdownProps extends ColumnMapProps2 {
     clientX: number;
     clientY: number;
-    columnMapProps2: ColumnMapProps2;
 }
 
 export class ActiveDropdown extends React.Component<ActiveDropdownProps, {}> {
@@ -105,7 +104,7 @@ export class ActiveDropdown extends React.Component<ActiveDropdownProps, {}> {
                 style={{ position: 'absolute', zIndex: 1, left: this.props.clientX, top: this.props.clientY }}
             >
                 <ColumnMap
-                    {...this.props.columnMapProps2}
+                    {...this.props}
                     componentRef={this.dropdownRef}
                     hideSignals={true}
                 />

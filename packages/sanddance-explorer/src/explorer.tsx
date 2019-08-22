@@ -213,14 +213,12 @@ export class Explorer extends React.Component<Props, State> {
       onBeforeCreateLayers: (stage, layerFn, specCapabilities) => {
         return onBeforeCreateLayers(stage, layerFn, specCapabilities, (iProps) => {
           const activeColumnMapProps: ActiveDropdownProps = {
+            ...this.newMethod(),
+            selectedColumnName: this.state.columns[iProps.specRole.role],
+            onDismiss: () => { this.setState({ activeColumnMapProps: null }) },
+            specRole: iProps.specRole,
             clientX: iProps.clientX - this.div.clientLeft,
             clientY: iProps.clientY - this.div.clientTop,
-            columnMapProps2: {
-              ...this.newMethod(),
-              selectedColumnName: this.state.columns[iProps.specRole.role],
-              specRole: iProps.specRole,
-              onDismiss: () => { this.setState({ activeColumnMapProps: null }) }
-            }
           }
           this.setState({ activeColumnMapProps })
         });
