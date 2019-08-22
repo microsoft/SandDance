@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
+import { Color } from '@deck.gl/core/utils/color';
 import { ColumnMap, Props as ColumnMapProps } from './controls/columnMap';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';
@@ -19,7 +20,9 @@ export function injectClickableTextLayer(
     stage: SandDance.VegaDeckGl.types.Stage,
     layerFn: SandDance.VegaDeckGl.types.LayerFn,
     specCapabilities: SandDance.types.SpecCapabilities,
-    textClick: (pos: Position, specRole: SandDance.types.SpecRoleCapabilities) => void
+    textClick: (pos: Position, specRole: SandDance.types.SpecRoleCapabilities) => void,
+    textColor: Color,
+    highlightColor: Color
 ) {
     const clickableTextData: TextWithSpecRole[] = [];
     const originalAxes = SandDance.VegaDeckGl.util.clone(stage.axes);
@@ -44,7 +47,7 @@ export function injectClickableTextLayer(
         const onTextClick = (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => {
             textClick(getPosition(e), text.specRole);
         };
-        const clickableTextLayer = newClickableTextLayer('LAYER_CLICKABLE_TEXT', onTextClick, clickableTextData, [0, 0, 200, 255]);
+        const clickableTextLayer = newClickableTextLayer('LAYER_CLICKABLE_TEXT', onTextClick, clickableTextData, textColor, highlightColor);
         layers.splice(1, 0, clickableTextLayer);
     }
     return layers;
@@ -59,7 +62,7 @@ function getPosition(e: MouseEvent | PointerEvent | TouchEvent): Position {
     return { top: et.touches[0].clientY, left: et.touches[0].clientX };
 }
 
-function newClickableTextLayer(id: string, onTextClick: (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => void, data: TextWithSpecRole[], highlightColor: number[]) {
+function newClickableTextLayer(id: string, onTextClick: (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => void, data: TextWithSpecRole[], textColor: Color, highlightColor: Color) {
     return new SandDance.VegaDeckGl.base.layers.TextLayer({
         id,
         data,
@@ -68,7 +71,7 @@ function newClickableTextLayer(id: string, onTextClick: (e: MouseEvent | Pointer
         highlightColor,
         pickable: true,
         onClick: (o, e) => onTextClick(e && e.srcEvent, o.object as TextWithSpecRole),
-        getColor: [64, 64, 255, 255],
+        getColor: textColor,
         getTextAnchor: o => o.textAnchor,
         getSize: o => o.size,
         getAngle: o => o.angle

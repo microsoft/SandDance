@@ -221,7 +221,10 @@ export class Explorer extends React.Component<Props, State> {
             top: pos.top - this.div.clientTop,
           }
           this.setState({ activeColumnMapProps })
-        });
+        },
+          [32, 32, 255, 255],
+          [0, 0, 255, 255]
+        );
       }
     };
     if (this.viewer && this.viewer.presenter) {
