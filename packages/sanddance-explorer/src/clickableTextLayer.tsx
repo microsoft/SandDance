@@ -7,7 +7,7 @@ import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 import { Props as ColumnMapProps2, ColumnMap } from './controls/columnMap';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 
-interface Zzz extends TextLayerDatum {
+interface TextWithSpecRole extends TextLayerDatum {
     specRole: SandDance.types.SpecRoleCapabilities;
 }
 
@@ -16,7 +16,7 @@ export function onBeforeCreateLayers(
     layerFn: SandDance.VegaDeckGl.types.LayerFn,
     specCapabilities: SandDance.types.SpecCapabilities,
     clickFn: (aprops: IProps) => void) {
-    const clickableTextData: Zzz[] = [];
+    const clickableTextData: TextWithSpecRole[] = [];
     const pristineAxes = SandDance.VegaDeckGl.util.clone(stage.axes);
     for (let axisName in stage.axes) {
         specCapabilities.roles.forEach(specRole => {
@@ -24,9 +24,9 @@ export function onBeforeCreateLayers(
                 let axes = stage.axes[axisName] as SandDance.VegaDeckGl.types.Axis[];
                 axes.forEach(axis => {
                     if (axis.title) {
-                        const z = axis.title as Zzz;
-                        z.specRole = specRole;
-                        clickableTextData.push(z);
+                        const textItem = axis.title as TextWithSpecRole;
+                        textItem.specRole = specRole;
+                        clickableTextData.push(textItem);
                         delete axis.title;
                     }
                 });
@@ -36,7 +36,7 @@ export function onBeforeCreateLayers(
     const layers = layerFn(stage);
     stage.axes = pristineAxes;
     if (clickableTextData.length > 0) {
-        const onTextClick = (e: MouseEvent | PointerEvent | TouchEvent, text: Zzz) => {
+        const onTextClick = (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => {
             let clientX: number;
             let clientY: number;
             const ep = e as MouseEvent | PointerEvent;
@@ -49,17 +49,16 @@ export function onBeforeCreateLayers(
                 clientY,
                 specRole: text.specRole
             };
-            console.log('clicked', text, aprops);
             clickFn(aprops);
         };
-        const clickableTextLayer = newClickableTextLayer("z", onTextClick, clickableTextData, [0, 0, 200, 255]);
+        const clickableTextLayer = newClickableTextLayer('LAYER_CLICKABLE_TEXT', onTextClick, clickableTextData, [0, 0, 200, 255]);
         layers.splice(1, 0, clickableTextLayer);
     }
     return layers;
 }
 
 
-function newClickableTextLayer(id: string, onTextClick: (e: MouseEvent | PointerEvent | TouchEvent, text: Zzz) => void, data: Zzz[], highlightColor: number[]) {
+function newClickableTextLayer(id: string, onTextClick: (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => void, data: TextWithSpecRole[], highlightColor: number[]) {
     return new SandDance.VegaDeckGl.base.layers.TextLayer({
         id,
         data,
@@ -67,7 +66,7 @@ function newClickableTextLayer(id: string, onTextClick: (e: MouseEvent | Pointer
         autoHighlight: true,
         highlightColor,
         pickable: true,
-        onClick: (o, e) => onTextClick(e && e.srcEvent, o.object as Zzz),
+        onClick: (o, e) => onTextClick(e && e.srcEvent, o.object as TextWithSpecRole),
         getColor: [64, 64, 255, 255],
         getTextAnchor: o => o.textAnchor,
         getSize: o => o.size,
