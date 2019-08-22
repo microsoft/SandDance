@@ -60,10 +60,10 @@ export function onBeforeCreateLayers(
 
 
 function newClickableTextLayer(id: string, onTextClick: (e: MouseEvent | PointerEvent | TouchEvent, text: Zzz) => void, data: Zzz[], highlightColor: number[]) {
-    return new base.layers.TextLayer({
+    return new SandDance.VegaDeckGl.base.layers.TextLayer({
         id,
         data,
-        coordinateSystem: base.deck.COORDINATE_SYSTEM.IDENTITY,
+        coordinateSystem: SandDance.VegaDeckGl.base.deck.COORDINATE_SYSTEM.IDENTITY,
         autoHighlight: true,
         highlightColor,
         pickable: true,

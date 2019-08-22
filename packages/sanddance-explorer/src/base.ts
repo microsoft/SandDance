@@ -7,15 +7,11 @@ import { SandDance } from '@msrvida/sanddance-react';
  * References to dependency libraries.
  */
 export interface Base {
-  deck: SandDance.VegaDeckGl.types.DeckBase;
   fabric: FabricComponents;
-  layers: SandDance.VegaDeckGl.types.DeckLayerBase;
 }
 
 export const base: Base = {
-  deck: null,
-  fabric: null,
-  layers: null
+  fabric: null
 };
 
 /**
@@ -30,7 +26,5 @@ export function use(
   luma: SandDance.VegaDeckGl.types.LumaBase
 ) {
   SandDance.VegaDeckGl.use(vega, deck, layers, luma);
-  base.deck = deck;
   base.fabric = fabric;
-  base.layers = layers;
 }
