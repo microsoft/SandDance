@@ -7,7 +7,8 @@ import { AutoCompleteDistinctValues, InputSearchExpression } from './controls/se
 import { base } from './base';
 import { bestColorScheme } from './colorScheme';
 import { Chart } from './dialogs/chart';
-import { Color } from './dialogs/color';
+import { Color as ColorDialog } from './dialogs/color';
+import { Color } from '@deck.gl/core/utils/color';
 import { ColumnMapBaseProps } from './controls/columnMap';
 import {
   copyPrefToNewState,
@@ -39,6 +40,11 @@ export interface Options {
   tooltipExclusions?: string[];
 }
 
+export interface Colors {
+  clickableAxisColor: Color;
+  clickableAxisHighlightColor: Color;
+}
+
 export interface Props {
   hideSidebarControls?: boolean;
   logoClickUrl?: string;
@@ -54,6 +60,7 @@ export interface Props {
   onView?: () => void;
   onSignalChanged?: () => void;
   onTooltipExclusionsChanged?: (tooltipExclusions: string[]) => void;
+  colors?: Colors;
 }
 
 export interface State extends SandDance.types.Insight {
@@ -221,10 +228,10 @@ export class Explorer extends React.Component<Props, State> {
             top: pos.top - this.div.clientTop,
           }
           this.setState({ activeColumnMapProps })
-        },
-          [32, 32, 255, 255],
-          [0, 0, 255, 255]
-        );
+        }, this.props.colors || {
+          clickableAxisColor: [0, 0, 200, 255],
+          clickableAxisHighlightColor: [0, 0, 255, 100]
+        });
       }
     };
     if (this.viewer && this.viewer.presenter) {
@@ -792,7 +799,7 @@ export class Explorer extends React.Component<Props, State> {
                   );
                 case SideTabId.Color:
                   return (
-                    <Color
+                    <ColorDialog
                       specCapabilities={this.state.specCapabilities}
                       disabled={!loaded || this.state.sidebarClosed}
                       {...columnMapProps}
