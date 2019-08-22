@@ -528,7 +528,7 @@ export class Viewer {
             onCubeHover: this.onCubeHover.bind(this),
             preStage: this.preStage.bind(this),
             onPresent: this.options.onPresent,
-            onBeforeCreateLayers: (stage, layerFn)=> this.options.onBeforeCreateLayers(stage, layerFn, this.specCapabilities),
+            onBeforeCreateLayers: (stage, layerFn) => this.options.onBeforeCreateLayers(stage, layerFn, this.specCapabilities),
             onLayerClick: (info: PickInfo, pickedInfos: PickInfo[], e: MouseEvent) => {
                 if (!info) {
                     this.deselect();
