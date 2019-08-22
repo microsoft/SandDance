@@ -24,7 +24,7 @@ const roleLabels: { [role in SandDance.types.InsightColumnRoles]: string } = {
   z: strings.labelColumnZ
 };
 
-export interface ColumnMapProps {
+export interface ColumnMapBaseProps {
   allColumns: SandDance.types.Column[];
   quantitativeColumns: SandDance.types.Column[];
   categoricalColumns: SandDance.types.Column[];
@@ -32,7 +32,7 @@ export interface ColumnMapProps {
   explorer: Explorer;
 }
 
-export interface Props extends ColumnMapProps {
+export interface Props extends ColumnMapBaseProps {
   componentRef?: React.RefObject<FabricTypes.IDropdown>;
   hideSignals?: boolean;
   disabled?: boolean;

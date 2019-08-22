@@ -8,7 +8,7 @@ import { base } from './base';
 import { bestColorScheme } from './colorScheme';
 import { Chart } from './dialogs/chart';
 import { Color } from './dialogs/color';
-import { ColumnMapProps } from './controls/columnMap';
+import { ColumnMapBaseProps } from './controls/columnMap';
 import {
   copyPrefToNewState,
   initPrefs,
@@ -213,7 +213,7 @@ export class Explorer extends React.Component<Props, State> {
       onBeforeCreateLayers: (stage, layerFn, specCapabilities) => {
         return onBeforeCreateLayers(stage, layerFn, specCapabilities, (iProps) => {
           const activeColumnMapProps: ActiveDropdownProps = {
-            ...this.newMethod(),
+            ...this.getColumnMapBaseProps(),
             selectedColumnName: this.state.columns[iProps.specRole.role],
             onDismiss: () => { this.setState({ activeColumnMapProps: null }) },
             specRole: iProps.specRole,
@@ -652,7 +652,7 @@ export class Explorer extends React.Component<Props, State> {
     const selectionState: SandDance.types.SelectionState = (this.viewer && this.viewer.getSelection()) || {};
     const selectionSearch = selectionState && selectionState.search;
 
-    const columnMapProps = this.newMethod();
+    const columnMapProps = this.getColumnMapBaseProps();
 
     const datas: { [key: number]: object[] } = {};
     datas[DataScopeId.AllData] = this.state.dataContent && this.state.dataContent.data;
@@ -979,17 +979,17 @@ export class Explorer extends React.Component<Props, State> {
     );
   }
 
-  private newMethod() {
+  private getColumnMapBaseProps() {
     const allColumns = this.state.dataContent && this.state.dataContent.columns.filter(c => !SandDance.util.isInternalFieldName(c.name, true));
     const quantitativeColumns = allColumns && allColumns.filter(c => c.quantitative);
     const categoricalColumns = allColumns && allColumns.filter(c => !c.quantitative);
-    const columnMapProps: ColumnMapProps = {
+    const props: ColumnMapBaseProps = {
       changeColumnMapping: (role, column) => this.changeColumnMapping(role, column),
       allColumns,
       quantitativeColumns,
       categoricalColumns,
       explorer: this
     };
-    return columnMapProps;
+    return props;
   }
 }
