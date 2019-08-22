@@ -101,7 +101,10 @@ export class ActiveDropdown extends React.Component<ActiveDropdownProps, {}> {
 
     render() {
         return (
-            <div style={{ position: 'absolute', zIndex: 1, left: this.props.clientX, top: this.props.clientY }}>
+            <div
+                className="sanddance-columnMap-absolute"
+                style={{ position: 'absolute', zIndex: 1, left: this.props.clientX, top: this.props.clientY }}
+            >
                 <ColumnMap
                     {...this.props.columnMapProps2}
                     componentRef={this.dropdownRef}

@@ -118,6 +118,7 @@ export class Explorer extends React.Component<Props, State> {
   public viewerOptions: Partial<SandDance.types.ViewerOptions>;
   public discardColorContextUpdates: boolean;
   public prefs: Prefs;
+  public div: HTMLElement;
 
   constructor(props: Props) {
     super(props);
@@ -212,8 +213,8 @@ export class Explorer extends React.Component<Props, State> {
       onBeforeCreateLayers: (stage, layerFn, specCapabilities) => {
         return onBeforeCreateLayers(stage, layerFn, specCapabilities, (iProps) => {
           const activeColumnMapProps: ActiveDropdownProps = {
-            clientX: iProps.clientX,
-            clientY: iProps.clientY,
+            clientX: iProps.clientX - this.div.clientLeft,
+            clientY: iProps.clientY - this.div.clientTop,
             columnMapProps2: {
               ...this.newMethod(),
               selectedColumnName: this.state.columns[iProps.specRole.role],
@@ -674,7 +675,10 @@ export class Explorer extends React.Component<Props, State> {
     const themePalette = themePalettes[theme];
 
     return (
-      <div className={util.classList("sanddance-explorer", this.props.theme)}>
+      <div
+        ref={div => { if (div) this.div = div; }}
+        className={util.classList("sanddance-explorer", this.props.theme)}
+      >
         <Topbar
           logoClickUrl={this.props.logoClickUrl}
           logoClickTarget={this.props.logoClickTarget}
@@ -967,12 +971,12 @@ export class Explorer extends React.Component<Props, State> {
               <div key={i}>{error}</div>
             ))}
           </Dialog>
-          {this.state.activeColumnMapProps && (
-            <ActiveDropdown
-              {...this.state.activeColumnMapProps}
-            />
-          )}
         </div>
+        {this.state.activeColumnMapProps && (
+          <ActiveDropdown
+            {...this.state.activeColumnMapProps}
+          />
+        )}
       </div>
     );
   }
