@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
+import { ActiveDropdown, ActiveDropdownProps, onBeforeCreateLayers } from './clickableTextLayer';
 import { applyColorButtons } from './colorMap';
 import { AutoCompleteDistinctValues, InputSearchExpression } from './controls/searchTerm';
 import { base } from './base';
@@ -23,7 +24,6 @@ import { ensureColumnsExist, ensureColumnsPopulated } from './columns';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { InputSearchExpressionGroup, Search } from './dialogs/search';
 import { loadDataArray, loadDataFile } from './dataLoader';
-import { onBeforeCreateLayers } from './clickableTextLayer';
 import { preferredColumnForTreemapSize, RecommenderSummary } from '@msrvida/chart-recommender';
 import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
 import { Settings } from './dialogs/settings';
@@ -72,6 +72,7 @@ export interface State extends SandDance.types.Insight {
   selectedItemIndex: { [key: number]: number };
   snapshots: Snapshot[];
   tooltipExclusions: string[];
+  activeColumnMapProps: ActiveDropdownProps;
 }
 
 const dataBrowserTitles: { [key: number]: string } = {};
@@ -149,7 +150,8 @@ export class Explorer extends React.Component<Props, State> {
       sidebarPinned: true,
       view: props.initialView || "2d",
       snapshots: [],
-      tooltipExclusions: []
+      tooltipExclusions: [],
+      activeColumnMapProps: null
     };
 
     this.state.selectedItemIndex[DataScopeId.AllData] = 0;
@@ -207,7 +209,21 @@ export class Explorer extends React.Component<Props, State> {
         this.setState({ errors });
         viewerOptions && viewerOptions.onError && viewerOptions.onError(errors);
       },
-      onBeforeCreateLayers: onBeforeCreateLayers
+      onBeforeCreateLayers: (stage, layerFn, specCapabilities) => {
+        return onBeforeCreateLayers(stage, layerFn, specCapabilities, (iProps) => {
+          const activeColumnMapProps: ActiveDropdownProps = {
+            clientX: iProps.clientX,
+            clientY: iProps.clientY,
+            columnMapProps2: {
+              ...this.newMethod(),
+              selectedColumnName: this.state.columns[iProps.specRole.role],
+              specRole: iProps.specRole,
+              onDismiss: () => { this.setState({ activeColumnMapProps: null }) }
+            }
+          }
+          this.setState({ activeColumnMapProps })
+        });
+      }
     };
     if (this.viewer && this.viewer.presenter) {
       const newPresenterStyle = SandDance.util.getPresenterStyle(this.viewerOptions as SandDance.types.ViewerOptions);
@@ -637,17 +653,7 @@ export class Explorer extends React.Component<Props, State> {
     const selectionState: SandDance.types.SelectionState = (this.viewer && this.viewer.getSelection()) || {};
     const selectionSearch = selectionState && selectionState.search;
 
-    const allColumns = this.state.dataContent && this.state.dataContent.columns.filter(c => !SandDance.util.isInternalFieldName(c.name, true));
-    const quantitativeColumns = allColumns && allColumns.filter(c => c.quantitative);
-    const categoricalColumns = allColumns && allColumns.filter(c => !c.quantitative);
-
-    const columnMapProps: ColumnMapProps = {
-      changeColumnMapping: (role, column) => this.changeColumnMapping(role, column),
-      allColumns,
-      quantitativeColumns,
-      categoricalColumns,
-      explorer: this
-    };
+    const columnMapProps = this.newMethod();
 
     const datas: { [key: number]: object[] } = {};
     datas[DataScopeId.AllData] = this.state.dataContent && this.state.dataContent.data;
@@ -859,7 +865,7 @@ export class Explorer extends React.Component<Props, State> {
                       themePalette={themePalette}
                       disabled={!loaded || this.state.sidebarClosed}
                       initializer={{
-                        columns: allColumns,
+                        columns: columnMapProps.allColumns,
                         search: this.state.search
                       }}
                       autoCompleteDistinctValues={this.state.autoCompleteDistinctValues}
@@ -961,8 +967,27 @@ export class Explorer extends React.Component<Props, State> {
               <div key={i}>{error}</div>
             ))}
           </Dialog>
+          {this.state.activeColumnMapProps && (
+            <ActiveDropdown
+              {...this.state.activeColumnMapProps}
+            />
+          )}
         </div>
       </div>
     );
+  }
+
+  private newMethod() {
+    const allColumns = this.state.dataContent && this.state.dataContent.columns.filter(c => !SandDance.util.isInternalFieldName(c.name, true));
+    const quantitativeColumns = allColumns && allColumns.filter(c => c.quantitative);
+    const categoricalColumns = allColumns && allColumns.filter(c => !c.quantitative);
+    const columnMapProps: ColumnMapProps = {
+      changeColumnMapping: (role, column) => this.changeColumnMapping(role, column),
+      allColumns,
+      quantitativeColumns,
+      categoricalColumns,
+      explorer: this
+    };
+    return columnMapProps;
   }
 }
