@@ -19,9 +19,10 @@ export function injectClickableTextLayer(
     stage: SandDance.VegaDeckGl.types.Stage,
     layerFn: SandDance.VegaDeckGl.types.LayerFn,
     specCapabilities: SandDance.types.SpecCapabilities,
-    clickFn: (pos: Position, specRole: SandDance.types.SpecRoleCapabilities) => void) {
+    textClick: (pos: Position, specRole: SandDance.types.SpecRoleCapabilities) => void
+) {
     const clickableTextData: TextWithSpecRole[] = [];
-    const pristineAxes = SandDance.VegaDeckGl.util.clone(stage.axes);
+    const originalAxes = SandDance.VegaDeckGl.util.clone(stage.axes);
     for (let axisName in stage.axes) {
         specCapabilities.roles.forEach(specRole => {
             if (specRole.role === axisName) {
@@ -38,10 +39,10 @@ export function injectClickableTextLayer(
         });
     }
     const layers = layerFn(stage);
-    stage.axes = pristineAxes;
+    stage.axes = originalAxes;
     if (clickableTextData.length > 0) {
         const onTextClick = (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => {
-            clickFn(getPosition(e), text.specRole);
+            textClick(getPosition(e), text.specRole);
         };
         const clickableTextLayer = newClickableTextLayer('LAYER_CLICKABLE_TEXT', onTextClick, clickableTextData, [0, 0, 200, 255]);
         layers.splice(1, 0, clickableTextLayer);
