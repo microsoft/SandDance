@@ -78,7 +78,7 @@ export interface Stage {
         x: Axis[];
         y: Axis[];
     };
-    textData?: TextLayerDatum[];
+    textData: TextLayerDatum[];
     view: View;
     gridLines?: StyledLine[];
     facets?: FacetRect[];
