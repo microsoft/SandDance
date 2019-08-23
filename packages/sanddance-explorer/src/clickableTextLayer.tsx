@@ -52,13 +52,24 @@ export function injectClickableTextLayer(
     return layers;
 }
 
-function getPosition(e: MouseEvent | PointerEvent | TouchEvent): Position {
-    const emp = e as MouseEvent | PointerEvent;
-    if (emp.clientX !== undefined) {
-        return { top: emp.clientY, left: emp.clientX };
+function hasClientXY(e: MouseEvent | PointerEvent | Touch) {
+    if (e.clientX !== undefined && e.clientX !== undefined) {
+        return { top: e.clientY, left: e.clientX };
     }
-    const et = e as TouchEvent;
-    return { top: et.touches[0].clientY, left: et.touches[0].clientX };
+}
+
+function getPosition(e: MouseEvent | PointerEvent | TouchEvent): Position {
+    let xy = hasClientXY(e as MouseEvent | PointerEvent);
+    if (xy) {
+        return xy;
+    }
+    const te = e as TouchEvent;
+    for (let i = 0; i < te.touches.length; i++) {
+        let xy = hasClientXY(te.touches[i]);
+        if (xy) {
+            return xy;
+        }
+    }
 }
 
 function newClickableTextLayer(id: string, onTextClick: (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => void, data: TextWithSpecRole[], colors: Colors) {
@@ -73,7 +84,12 @@ function newClickableTextLayer(id: string, onTextClick: (e: MouseEvent | Pointer
         getColor: colors.clickableAxisColor,
         getTextAnchor: o => o.textAnchor,
         getSize: o => o.size,
-        getAngle: o => o.angle
+        getAngle: o => o.angle,
+        fontSettings: {
+            fontSize: 96,
+            sdf: true,
+            radius: 4
+        }
     });
 }
 
