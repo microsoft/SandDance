@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
-import { Colors } from './explorer';
+import { ColorSettings } from './themes';
 import { ColumnMap, Props as ColumnMapProps } from './controls/columnMap';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';
@@ -21,7 +21,7 @@ export function injectClickableTextLayer(
     layerFn: SandDance.VegaDeckGl.types.LayerFn,
     specCapabilities: SandDance.types.SpecCapabilities,
     textClick: (pos: Position, specRole: SandDance.types.SpecRoleCapabilities) => void,
-    colors: Colors
+    getColors: () => ColorSettings
 ) {
     const clickableTextData: TextWithSpecRole[] = [];
     const originalAxes = SandDance.VegaDeckGl.util.clone(stage.axes);
@@ -46,7 +46,7 @@ export function injectClickableTextLayer(
         const onTextClick = (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => {
             textClick(getPosition(e), text.specRole);
         };
-        const clickableTextLayer = newClickableTextLayer('LAYER_CLICKABLE_TEXT', onTextClick, clickableTextData, colors);
+        const clickableTextLayer = newClickableTextLayer('LAYER_CLICKABLE_TEXT', onTextClick, clickableTextData, getColors());
         layers.splice(1, 0, clickableTextLayer);
     }
     return layers;
@@ -72,16 +72,16 @@ function getPosition(e: MouseEvent | PointerEvent | TouchEvent): Position {
     }
 }
 
-function newClickableTextLayer(id: string, onTextClick: (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => void, data: TextWithSpecRole[], colors: Colors) {
+function newClickableTextLayer(id: string, onTextClick: (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => void, data: TextWithSpecRole[], colors: ColorSettings) {
     return new SandDance.VegaDeckGl.base.layers.TextLayer({
         id,
         data,
         coordinateSystem: SandDance.VegaDeckGl.base.deck.COORDINATE_SYSTEM.IDENTITY,
         autoHighlight: true,
-        highlightColor: colors.clickableAxisHighlightColor,
+        highlightColor: colors.clickableAxisHighlight,
         pickable: true,
         onClick: (o, e) => onTextClick(e && e.srcEvent, o.object as TextWithSpecRole),
-        getColor: colors.clickableAxisColor,
+        getColor: colors.clickableAxisText,
         getTextAnchor: o => o.textAnchor,
         getSize: o => o.size,
         getAngle: o => o.angle,

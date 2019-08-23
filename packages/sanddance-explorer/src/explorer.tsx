@@ -7,8 +7,8 @@ import { AutoCompleteDistinctValues, InputSearchExpression } from './controls/se
 import { base } from './base';
 import { bestColorScheme } from './colorScheme';
 import { Chart } from './dialogs/chart';
-import { Color as ColorDialog } from './dialogs/color';
-import { Color } from '@deck.gl/core/utils/color';
+import { Color } from './dialogs/color';
+import { ColorSettings, defaultViewerOptions, themePalettes } from './themes';
 import { ColumnMapBaseProps } from './controls/columnMap';
 import {
   copyPrefToNewState,
@@ -31,18 +31,12 @@ import { Settings } from './dialogs/settings';
 import { Sidebar, SideTabId } from './controls/sidebar';
 import { SnapshotProps, Snapshots } from './dialogs/snapshots';
 import { strings } from './language';
-import { themePalettes } from './themes';
 import { toggleSearch } from './toggleSearch';
 import { Topbar } from './controls/topbar';
 
 export interface Options {
   chartPrefs?: Prefs;
   tooltipExclusions?: string[];
-}
-
-export interface Colors {
-  clickableAxisColor: Color;
-  clickableAxisHighlightColor: Color;
 }
 
 export interface Props {
@@ -60,7 +54,6 @@ export interface Props {
   onView?: () => void;
   onSignalChanged?: () => void;
   onTooltipExclusionsChanged?: (tooltipExclusions: string[]) => void;
-  colors?: Colors;
 }
 
 export interface State extends SandDance.types.Insight {
@@ -176,8 +169,11 @@ export class Explorer extends React.Component<Props, State> {
 
   public updateViewerOptions(viewerOptions: Partial<SandDance.types.ViewerOptions>) {
     this.viewerOptions = {
-      ...this.viewerOptions,
-      ...viewerOptions,
+      ...SandDance.VegaDeckGl.util.deepMerge(
+        defaultViewerOptions,
+        this.viewerOptions,
+        viewerOptions
+      ),
       tooltipOptions: {
         exclude: columnName => this.state.tooltipExclusions.indexOf(columnName) >= 0
       },
@@ -228,9 +224,8 @@ export class Explorer extends React.Component<Props, State> {
             top: pos.top - this.div.clientTop,
           }
           this.setState({ activeColumnMapProps })
-        }, this.props.colors || {
-          clickableAxisColor: [0, 0, 200, 255],
-          clickableAxisHighlightColor: [0, 0, 255, 100]
+        }, () => {
+          return this.viewerOptions.colors as ColorSettings;
         });
       }
     };
@@ -799,7 +794,7 @@ export class Explorer extends React.Component<Props, State> {
                   );
                 case SideTabId.Color:
                   return (
-                    <ColorDialog
+                    <Color
                       specCapabilities={this.state.specCapabilities}
                       disabled={!loaded || this.state.sidebarClosed}
                       {...columnMapProps}

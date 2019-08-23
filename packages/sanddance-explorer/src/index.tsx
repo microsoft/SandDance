@@ -4,5 +4,5 @@ export { SandDance, util } from "@msrvida/sanddance-react";
 export { DataContent, DataFile, DataFileType, Snapshot } from "./interfaces";
 export { use } from "./base";
 export { Prefs } from './partialInsight';
-export { themePalettes } from './themes'
+export { themePalettes, ColorSettings } from './themes'
 export * from "./explorer";
