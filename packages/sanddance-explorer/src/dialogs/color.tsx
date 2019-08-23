@@ -45,7 +45,6 @@ export function Color(props: Props) {
                     changeColorScheme={scheme => {
                         props.changeColorScheme(scheme);
                     }}
-                    dataContent={props.dataContent}
                 />
                 <Signal
                     disabled={props.disabled}
