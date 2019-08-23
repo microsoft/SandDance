@@ -33,7 +33,6 @@ const { VegaDeckGl } = SandDance;
 function getViewerOptions(darkTheme: boolean, themeColors: { [theme: string]: SandDance.types.ColorSettings }) {
   const colors = themeColors && themeColors[darkTheme ? 'dark' : 'light'];
   const color = SandDance.VegaDeckGl.util.colorFromString(darkTheme ? "#fff" : "#000");
-
   const viewerOptions: Partial<SandDance.types.ViewerOptions> = {
     colors: {
       axisLine: color,
