@@ -77,6 +77,7 @@ function newClickableTextLayer(id: string, onTextClick: (e: MouseEvent | Pointer
     return new SandDance.VegaDeckGl.base.layers.TextLayer({
         id,
         data,
+        characterSet: SandDance.VegaDeckGl.base.characterSet,
         coordinateSystem: SandDance.VegaDeckGl.base.deck.COORDINATE_SYSTEM.IDENTITY,
         autoHighlight: true,
         highlightColor,

@@ -116,7 +116,18 @@ export interface Base {
     layers: DeckLayerBase;
     luma: LumaBase;
     vega: VegaBase;
+    characterSet: string | string[];
 }
+
+function getDefaultCharacterSet() {
+    const charSet: string[] = [];
+    for (let i = 32; i < 128; i++) {
+        charSet.push(String.fromCharCode(i));
+    }
+    return charSet;
+}
+
+const characterSet = getDefaultCharacterSet();
 
 /**
  * References to dependency libraries.
@@ -125,7 +136,8 @@ export const base: Base = {
     deck,
     layers,
     luma,
-    vega
+    vega,
+    characterSet
 }
 
 /**
