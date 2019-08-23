@@ -94,12 +94,12 @@ function newClickableTextLayer(id: string, onTextClick: (e: MouseEvent | Pointer
     });
 }
 
-export interface ActiveDropdownProps extends ColumnMapProps, Position { }
+export interface PositionedColumnMapProps extends ColumnMapProps, Position { }
 
-export class ActiveDropdown extends React.Component<ActiveDropdownProps, {}> {
+export class ActiveDropdown extends React.Component<PositionedColumnMapProps, {}> {
     private dropdownRef?: React.RefObject<FabricTypes.IDropdown>;
 
-    constructor(props: ActiveDropdownProps) {
+    constructor(props: PositionedColumnMapProps) {
         super(props);
         this.dropdownRef = React.createRef<FabricTypes.IDropdown>();
     }

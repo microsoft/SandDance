@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
-import { ActiveDropdown, ActiveDropdownProps, injectClickableTextLayer } from './clickableTextLayer';
+import { ActiveDropdown, PositionedColumnMapProps, injectClickableTextLayer } from './clickableTextLayer';
 import { applyColorButtons } from './colorMap';
 import { AutoCompleteDistinctValues, InputSearchExpression } from './controls/searchTerm';
 import { base } from './base';
@@ -72,7 +72,7 @@ export interface State extends SandDance.types.Insight {
   selectedItemIndex: { [key: number]: number };
   snapshots: Snapshot[];
   tooltipExclusions: string[];
-  activeColumnMapProps: ActiveDropdownProps;
+  positionedColumnMapProps: PositionedColumnMapProps;
 }
 
 const dataBrowserTitles: { [key: number]: string } = {};
@@ -152,7 +152,7 @@ export class Explorer extends React.Component<Props, State> {
       view: props.initialView || "2d",
       snapshots: [],
       tooltipExclusions: [],
-      activeColumnMapProps: null
+      positionedColumnMapProps: null
     };
 
     this.state.selectedItemIndex[DataScopeId.AllData] = 0;
@@ -212,15 +212,15 @@ export class Explorer extends React.Component<Props, State> {
       },
       onBeforeCreateLayers: (stage, layerFn, specCapabilities) => {
         return injectClickableTextLayer(stage, layerFn, specCapabilities, (pos, specRole) => {
-          const activeColumnMapProps: ActiveDropdownProps = {
+          const activeColumnMapProps: PositionedColumnMapProps = {
             ...this.getColumnMapBaseProps(),
             selectedColumnName: this.state.columns[specRole.role],
-            onDismiss: () => { this.setState({ activeColumnMapProps: null }) },
+            onDismiss: () => { this.setState({ positionedColumnMapProps: null }) },
             specRole,
             left: pos.left - this.div.clientLeft,
             top: pos.top - this.div.clientTop,
           }
-          this.setState({ activeColumnMapProps })
+          this.setState({ positionedColumnMapProps: activeColumnMapProps })
         }, () => this.viewerOptions.colors);
       }
     };
@@ -970,9 +970,9 @@ export class Explorer extends React.Component<Props, State> {
             ))}
           </Dialog>
         </div>
-        {this.state.activeColumnMapProps && (
+        {this.state.positionedColumnMapProps && (
           <ActiveDropdown
-            {...this.state.activeColumnMapProps}
+            {...this.state.positionedColumnMapProps}
           />
         )}
       </div>
