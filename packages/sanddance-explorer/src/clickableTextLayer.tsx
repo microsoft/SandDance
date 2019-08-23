@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
-import { ColorSettings } from './themes';
 import { ColumnMap, Props as ColumnMapProps } from './controls/columnMap';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';
@@ -21,7 +20,7 @@ export function injectClickableTextLayer(
     layerFn: SandDance.VegaDeckGl.types.LayerFn,
     specCapabilities: SandDance.types.SpecCapabilities,
     textClick: (pos: Position, specRole: SandDance.types.SpecRoleCapabilities) => void,
-    getColors: () => ColorSettings
+    getColors: () => SandDance.types.ColorSettings
 ) {
     const clickableTextData: TextWithSpecRole[] = [];
     const originalAxes = SandDance.VegaDeckGl.util.clone(stage.axes);
@@ -47,7 +46,7 @@ export function injectClickableTextLayer(
             textClick(getPosition(e), text.specRole);
         };
         const clickableTextLayer = newClickableTextLayer('LAYER_CLICKABLE_TEXT', onTextClick, clickableTextData, getColors());
-        layers.splice(1, 0, clickableTextLayer);
+        layers.push(clickableTextLayer);
     }
     return layers;
 }
@@ -72,23 +71,25 @@ function getPosition(e: MouseEvent | PointerEvent | TouchEvent): Position {
     }
 }
 
-function newClickableTextLayer(id: string, onTextClick: (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => void, data: TextWithSpecRole[], colors: ColorSettings) {
+function newClickableTextLayer(id: string, onTextClick: (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => void, data: TextWithSpecRole[], colors: SandDance.types.ColorSettings) {
+    const highlightColor = [...colors.axisText];
+    highlightColor[3] = 72;
     return new SandDance.VegaDeckGl.base.layers.TextLayer({
         id,
         data,
         coordinateSystem: SandDance.VegaDeckGl.base.deck.COORDINATE_SYSTEM.IDENTITY,
         autoHighlight: true,
-        highlightColor: colors.clickableAxisHighlight,
+        highlightColor,
         pickable: true,
         onClick: (o, e) => onTextClick(e && e.srcEvent, o.object as TextWithSpecRole),
-        getColor: colors.clickableAxisText,
+        getColor: colors.axisText,
         getTextAnchor: o => o.textAnchor,
         getSize: o => o.size,
         getAngle: o => o.angle,
         fontSettings: {
-            fontSize: 96,
+            fontSize: 128,
             sdf: true,
-            radius: 4
+            radius: 5
         }
     });
 }

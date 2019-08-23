@@ -8,7 +8,6 @@ import { base } from './base';
 import { bestColorScheme } from './colorScheme';
 import { Chart } from './dialogs/chart';
 import { Color } from './dialogs/color';
-import { ColorSettings, defaultViewerOptions, themePalettes } from './themes';
 import { ColumnMapBaseProps } from './controls/columnMap';
 import {
   copyPrefToNewState,
@@ -31,6 +30,7 @@ import { Settings } from './dialogs/settings';
 import { Sidebar, SideTabId } from './controls/sidebar';
 import { SnapshotProps, Snapshots } from './dialogs/snapshots';
 import { strings } from './language';
+import { themePalettes } from './themes';
 import { toggleSearch } from './toggleSearch';
 import { Topbar } from './controls/topbar';
 
@@ -169,11 +169,8 @@ export class Explorer extends React.Component<Props, State> {
 
   public updateViewerOptions(viewerOptions: Partial<SandDance.types.ViewerOptions>) {
     this.viewerOptions = {
-      ...SandDance.VegaDeckGl.util.deepMerge(
-        defaultViewerOptions,
-        this.viewerOptions,
-        viewerOptions
-      ),
+      ...this.viewerOptions,
+      ...viewerOptions,
       tooltipOptions: {
         exclude: columnName => this.state.tooltipExclusions.indexOf(columnName) >= 0
       },
@@ -224,9 +221,7 @@ export class Explorer extends React.Component<Props, State> {
             top: pos.top - this.div.clientTop,
           }
           this.setState({ activeColumnMapProps })
-        }, () => {
-          return this.viewerOptions.colors as ColorSettings;
-        });
+        }, () => this.viewerOptions.colors);
       }
     };
     if (this.viewer && this.viewer.presenter) {

@@ -95,7 +95,10 @@ function newTextLayer(id: string, data: TextLayerDatum[]) {
         getColor: o => o.color,
         getTextAnchor: o => o.textAnchor,
         getSize: o => o.size,
-        getAngle: o => o.angle
+        getAngle: o => o.angle,
+        fontSettings: {
+            sdf: true
+        }
     });
 }
 

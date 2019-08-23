@@ -7,7 +7,6 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as vega from 'vega-lib';
 import {
-  ColorSettings,
   DataFileType,
   Explorer,
   Prefs,
@@ -39,7 +38,7 @@ declare var insights: InsightMap;
 declare var darkTheme: boolean;
 declare function setTheme(darkTheme: boolean): void;
 declare var options: { [datasetId: string]: Prefs };
-declare var themeColors: { [theme: string]: ColorSettings };
+declare var themeColors: { [theme: string]: SandDance.types.ColorSettings };
 
 const undef = typeof undefined;
 
