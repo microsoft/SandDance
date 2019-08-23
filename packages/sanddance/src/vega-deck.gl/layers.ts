@@ -91,7 +91,6 @@ function newTextLayer(id: string, data: TextLayerDatum[]) {
     return new base.layers.TextLayer({
         id,
         data,
-        characterSet: base.characterSet,
         coordinateSystem: base.deck.COORDINATE_SYSTEM.IDENTITY,
         getColor: o => o.color,
         getTextAnchor: o => o.textAnchor,
