@@ -106,7 +106,7 @@ export interface LegendRowSymbol {
     shape: string;
 }
 
-export interface LayerFn {
+export interface StageToLayers {
     (stage: Stage): Layer[];
 }
 
@@ -134,7 +134,7 @@ export interface PresenterConfig {
     transitionDurations?: TransitionDurations;
     preStage?: PreStage;
     redraw?: () => void;
-    onBeforeCreateLayers?: (stage: Stage, layerFn: LayerFn) => Layer[];
+    onBeforeCreateLayers?: (stage: Stage, StageToLayers: StageToLayers) => Layer[];
     onCubeHover?: (e: MouseEvent | PointerEvent | TouchEvent, cube: Cube) => void;
     onCubeClick?: (e: MouseEvent | PointerEvent | TouchEvent, cube: Cube) => void;
     onLayerClick?: (info: PickInfo, pickedInfos: PickInfo[], e: MouseEvent) => any;

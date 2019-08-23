@@ -210,8 +210,8 @@ export class Explorer extends React.Component<Props, State> {
         this.setState({ errors });
         viewerOptions && viewerOptions.onError && viewerOptions.onError(errors);
       },
-      onBeforeCreateLayers: (stage, layerFn, specCapabilities) => {
-        return injectClickableTextLayer(stage, layerFn, specCapabilities, (pos, specRole) => {
+      onBeforeCreateLayers: (stage, stageToLayers, specCapabilities) => {
+        return injectClickableTextLayer(stage, stageToLayers, specCapabilities, (pos, specRole) => {
           const activeColumnMapProps: PositionedColumnMapProps = {
             ...this.getColumnMapBaseProps(),
             selectedColumnName: this.state.columns[specRole.role],

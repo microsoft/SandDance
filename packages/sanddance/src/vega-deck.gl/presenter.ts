@@ -8,12 +8,12 @@ import { createDeckGLClassesForPresenter, DeckGL_Class, DeckGLInternalProps } fr
 import { createStage, defaultPresenterConfig, defaultPresenterStyle } from './defaults';
 import {
     Cube,
-    LayerFn,
     PresenterConfig,
     PresenterStyle,
     QueuedAnimationOptions,
     Scene3d,
     Stage,
+    StageToLayers,
     View
 } from './interfaces';
 import { CubeLayer_Class, CubeLayerInterpolatedProps } from './cube-layer/cube-layer';
@@ -263,10 +263,10 @@ export class Presenter {
             }
         }
         const guideLines = this._showGuides && box(0, 0, height, width, '#0f0', 1, true);
-        const layerFn: LayerFn = (_stage) => {
+        const stageToLayers: StageToLayers = (_stage) => {
             return getLayers(this, config, _stage, this.style.highlightColor, lightSettings, lightingMix, linearInterpolator, guideLines)
         };
-        const layers = config.onBeforeCreateLayers ? config.onBeforeCreateLayers(stage, layerFn) : layerFn(stage);
+        const layers = config.onBeforeCreateLayers ? config.onBeforeCreateLayers(stage, stageToLayers) : stageToLayers(stage);
 
         const deckProps: DeckProps = {
             views: [new base.deck.OrbitView({ controller: this.OrbitControllerClass })],

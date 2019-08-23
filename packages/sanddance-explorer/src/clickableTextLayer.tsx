@@ -17,7 +17,7 @@ export interface Position {
 
 export function injectClickableTextLayer(
     stage: SandDance.VegaDeckGl.types.Stage,
-    layerFn: SandDance.VegaDeckGl.types.LayerFn,
+    stageToLayers: SandDance.VegaDeckGl.types.StageToLayers,
     specCapabilities: SandDance.types.SpecCapabilities,
     textClick: (pos: Position, specRole: SandDance.types.SpecRoleCapabilities) => void,
     getColors: () => SandDance.types.ColorSettings
@@ -39,7 +39,7 @@ export function injectClickableTextLayer(
             }
         });
     }
-    const layers = layerFn(stage);
+    const layers = stageToLayers(stage);
     stage.axes = originalAxes;
     if (clickableTextData.length > 0) {
         const onTextClick = (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => {

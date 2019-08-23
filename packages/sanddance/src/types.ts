@@ -116,7 +116,7 @@ export interface ViewerOptions extends SpecViewOptions {
     onPresent?: () => void;
 
 
-    onBeforeCreateLayers?: (stage: VegaDeckGl.types.Stage, layerFn: VegaDeckGl.types.LayerFn, specCapabilities: SpecCapabilities) => Layer[];
+    onBeforeCreateLayers?: (stage: VegaDeckGl.types.Stage, stageToLayers: VegaDeckGl.types.StageToLayers, specCapabilities: SpecCapabilities) => Layer[];
 
     /**
      * Optional handler when axis is clicked.
