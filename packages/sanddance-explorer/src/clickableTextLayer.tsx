@@ -41,13 +41,11 @@ export function injectClickableTextLayer(
     }
     const layers = stageToLayers(stage);
     stage.axes = originalAxes;
-    if (clickableTextData.length > 0) {
-        const onTextClick = (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => {
-            textClick(getPosition(e), text.specRole);
-        };
-        const clickableTextLayer = newClickableTextLayer('LAYER_CLICKABLE_TEXT', onTextClick, clickableTextData, getColors());
-        layers.push(clickableTextLayer);
-    }
+    const onTextClick = (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => {
+        textClick(getPosition(e), text.specRole);
+    };
+    const clickableTextLayer = newClickableTextLayer('LAYER_CLICKABLE_TEXT', onTextClick, clickableTextData, getColors());
+    layers.push(clickableTextLayer);
     return layers;
 }
 
@@ -82,14 +80,19 @@ function newClickableTextLayer(id: string, onTextClick: (e: MouseEvent | Pointer
         highlightColor,
         pickable: true,
         onClick: (o, e) => onTextClick(e && e.srcEvent, o.object as TextWithSpecRole),
+        onHover: () => {
+            console.log('HOVER', new Date);
+        },
         getColor: colors.axisText,
         getTextAnchor: o => o.textAnchor,
         getSize: o => o.size,
         getAngle: o => o.angle,
         fontSettings: {
+            buffer: 0,
             fontSize: 128,
             sdf: true,
-            radius: 5
+            radius: 5,
+            cutoff: 0
         }
     });
 }
