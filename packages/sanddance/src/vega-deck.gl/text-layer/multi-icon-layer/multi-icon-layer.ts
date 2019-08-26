@@ -46,12 +46,16 @@ const defaultProps = {
 
 export type MultiIconLayerProps = LayerProps & IconLayerProps & FontSettings;
 
-function _MultiIconLayer(props?: MultiIconLayerProps) {
+function _MultiIconLayer(props: MultiIconLayerProps, props2?: MultiIconLayerProps, props3?: MultiIconLayerProps) {
 
   class __MultiIconLayer extends base.layers.IconLayer {
 
     static layerName = 'MultiIconLayer';
     static defaultProps = defaultProps;
+
+    constructor(props: MultiIconLayerProps, props2?: MultiIconLayerProps, props3?: MultiIconLayerProps) {
+      super(props, props2, props3);
+    }
 
     getShaders() {
       return Object.assign({}, super.getShaders(), {
@@ -137,8 +141,7 @@ function _MultiIconLayer(props?: MultiIconLayerProps) {
     }
   }
 
-  const instance = new __MultiIconLayer(props) as Layer;
-
+  const instance = new __MultiIconLayer(props, props2, props3) as Layer;
   return instance;
 }
 
