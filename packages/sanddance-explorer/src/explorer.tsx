@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
-import { ActiveDropdown, PositionedColumnMapProps, injectClickableTextLayer } from './clickableTextLayer';
+import { ActiveDropdown, injectClickableTextLayer, PositionedColumnMapProps } from './clickableTextLayer';
 import { applyColorButtons } from './colorMap';
 import { AutoCompleteDistinctValues, InputSearchExpression } from './controls/searchTerm';
 import { base } from './base';
@@ -19,6 +19,7 @@ import {
 import { DataBrowser } from './dialogs/dataBrowser';
 import { DataContent, DataFile, Snapshot } from './interfaces';
 import { DataScopeId } from './controls/dataScope';
+import { defaultViewerOptions } from './defaults';
 import { Dialog } from './controls/dialog';
 import { ensureColumnsExist, ensureColumnsPopulated } from './columns';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
@@ -169,8 +170,11 @@ export class Explorer extends React.Component<Props, State> {
 
   public updateViewerOptions(viewerOptions: Partial<SandDance.types.ViewerOptions>) {
     this.viewerOptions = {
-      ...this.viewerOptions,
-      ...viewerOptions,
+      ...SandDance.VegaDeckGl.util.deepMerge(
+        defaultViewerOptions,
+        this.viewerOptions,
+        viewerOptions
+      ),
       tooltipOptions: {
         exclude: columnName => this.state.tooltipExclusions.indexOf(columnName) >= 0
       },
@@ -211,17 +215,26 @@ export class Explorer extends React.Component<Props, State> {
         viewerOptions && viewerOptions.onError && viewerOptions.onError(errors);
       },
       onBeforeCreateLayers: (stage, stageToLayers, specCapabilities) => {
-        return injectClickableTextLayer(stage, stageToLayers, specCapabilities, (pos, specRole) => {
-          const activeColumnMapProps: PositionedColumnMapProps = {
-            ...this.getColumnMapBaseProps(),
-            selectedColumnName: this.state.columns[specRole.role],
-            onDismiss: () => { this.setState({ positionedColumnMapProps: null }) },
-            specRole,
-            left: pos.left - this.div.clientLeft,
-            top: pos.top - this.div.clientTop,
-          }
-          this.setState({ positionedColumnMapProps: activeColumnMapProps })
-        }, () => this.viewerOptions.colors);
+        return injectClickableTextLayer(
+          stage,
+          stageToLayers,
+          specCapabilities,
+          (pos, specRole) => {
+            if (pos && specRole) {
+              const positionedColumnMapProps: PositionedColumnMapProps = {
+                ...this.getColumnMapBaseProps(),
+                selectedColumnName: this.state.columns[specRole.role],
+                onDismiss: () => { this.setState({ positionedColumnMapProps: null }) },
+                specRole,
+                left: pos.left - this.div.clientLeft,
+                top: pos.top - this.div.clientTop
+              };
+              this.setState({ positionedColumnMapProps });
+            } else {
+              this.setState({ positionedColumnMapProps: null });
+            }
+          },
+          () => this.viewerOptions.colors);
       }
     };
     if (this.viewer && this.viewer.presenter) {

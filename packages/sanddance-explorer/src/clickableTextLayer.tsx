@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
+import { ColorSettings } from './interfaces';
 import { ColumnMap, Props as ColumnMapProps } from './controls/columnMap';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';
@@ -20,10 +21,10 @@ export function injectClickableTextLayer(
     stageToLayers: SandDance.VegaDeckGl.types.StageToLayers,
     specCapabilities: SandDance.types.SpecCapabilities,
     textClick: (pos: Position, specRole: SandDance.types.SpecRoleCapabilities) => void,
-    getColors: () => SandDance.types.ColorSettings
+    getColors: () => ColorSettings
 ) {
     const clickableTextData: TextWithSpecRole[] = [];
-    const originalAxes = SandDance.VegaDeckGl.util.clone(stage.axes);
+    //const originalAxes = SandDance.VegaDeckGl.util.clone(stage.axes);
     for (let axisName in stage.axes) {
         specCapabilities.roles.forEach(specRole => {
             if (specRole.role === axisName) {
@@ -33,16 +34,18 @@ export function injectClickableTextLayer(
                         const textItem = axis.title as TextWithSpecRole;
                         textItem.specRole = specRole;
                         clickableTextData.push(textItem);
-                        delete axis.title;
+                        //                  delete axis.title;
                     }
                 });
             }
         });
     }
     const layers = stageToLayers(stage);
-    stage.axes = originalAxes;
+    //stage.axes = originalAxes;
     const onTextClick = (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => {
-        textClick(getPosition(e), text.specRole);
+        if (e && text) {
+            textClick(getPosition(e), text.specRole);
+        }
     };
     const clickableTextLayer = newClickableTextLayer('LAYER_CLICKABLE_TEXT', onTextClick, clickableTextData, getColors());
     layers.push(clickableTextLayer);
@@ -50,7 +53,7 @@ export function injectClickableTextLayer(
 }
 
 function hasClientXY(e: MouseEvent | PointerEvent | Touch) {
-    if (e.clientX !== undefined && e.clientX !== undefined) {
+    if (e && e.clientX !== undefined && e.clientX !== undefined) {
         return { top: e.clientY, left: e.clientX };
     }
 }
@@ -61,38 +64,37 @@ function getPosition(e: MouseEvent | PointerEvent | TouchEvent): Position {
         return xy;
     }
     const te = e as TouchEvent;
-    for (let i = 0; i < te.touches.length; i++) {
-        let xy = hasClientXY(te.touches[i]);
-        if (xy) {
-            return xy;
+    if (te) {
+        for (let i = 0; i < te.touches.length; i++) {
+            let xy = hasClientXY(te.touches[i]);
+            if (xy) {
+                return xy;
+            }
         }
     }
 }
 
-function newClickableTextLayer(id: string, onTextClick: (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => void, data: TextWithSpecRole[], colors: SandDance.types.ColorSettings) {
-    const highlightColor = [...colors.axisText];
-    highlightColor[3] = 72;
+function newClickableTextLayer(
+    id: string,
+    onTextHover: (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => void,
+    data: TextWithSpecRole[],
+    colors: ColorSettings
+) {
     return new SandDance.VegaDeckGl.base.layers.TextLayer({
         id,
         data,
         coordinateSystem: SandDance.VegaDeckGl.base.deck.COORDINATE_SYSTEM.IDENTITY,
-        autoHighlight: true,
-        highlightColor,
         pickable: true,
-        onClick: (o, e) => onTextClick(e && e.srcEvent, o.object as TextWithSpecRole),
-        onHover: () => {
-            console.log('HOVER', new Date);
-        },
-        getColor: colors.axisText,
+        onClick: (o, e) => onTextHover(e && e.srcEvent, o && o.object as TextWithSpecRole),
+        autoHighlight: true,
+        highlightColor: colors.clickableTextHighlight,
+        getColor: colors.clickableText,
         getTextAnchor: o => o.textAnchor,
         getSize: o => o.size,
         getAngle: o => o.angle,
         fontSettings: {
-            buffer: 0,
-            fontSize: 128,
             sdf: true,
-            radius: 5,
-            cutoff: 0
+            radius: 64
         }
     });
 }
