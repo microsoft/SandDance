@@ -80,7 +80,7 @@ function newClickableTextLayer(
     data: TextWithSpecRole[],
     colors: ColorSettings
 ) {
-    return new SandDance.VegaDeckGl.base.layers.TextLayer({
+    return new SandDance.VegaDeckGl.TextLayer({
         id,
         data,
         coordinateSystem: SandDance.VegaDeckGl.base.deck.COORDINATE_SYSTEM.IDENTITY,
@@ -91,11 +91,7 @@ function newClickableTextLayer(
         getColor: colors.clickableText,
         getTextAnchor: o => o.textAnchor,
         getSize: o => o.size,
-        getAngle: o => o.angle,
-        fontSettings: {
-            sdf: true,
-            radius: 64
-        }
+        getAngle: o => o.angle
     });
 }
 

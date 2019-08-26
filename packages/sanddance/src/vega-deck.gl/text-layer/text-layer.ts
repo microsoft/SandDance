@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import MultiIconLayer, { MultiIconLayer_Class, MultiIconLayerProps } from './multi-icon-layer/multi-icon-layer';
+import { MultiIconLayer_Class, MultiIconLayerProps, MultiIconLayer } from './multi-icon-layer/multi-icon-layer';
 import {
   makeFontAtlas,
   DEFAULT_CHAR_SET,
@@ -29,6 +29,7 @@ import {
 import { TextLayerProps } from '@deck.gl/layers/text-layer/text-layer';
 import { base } from '../base';
 import { Layer } from 'deck.gl';
+import { LayerProps } from '@deck.gl/core/lib/layer';
 
 const TEXT_ANCHOR = {
   start: 1,
@@ -66,7 +67,7 @@ const defaultProps = {
   getPixelOffset: { type: 'accessor', value: [0, 0] }
 };
 
-function _TextLayer(props?: TextLayerProps) {
+function _TextLayer(props?: LayerProps & TextLayerProps) {
 
   class __TextLayer extends base.deck.CompositeLayer {
 
@@ -306,4 +307,5 @@ export const TextLayer: typeof TextLayer_Class = _TextLayer as any;
 export declare class TextLayer_Class extends base.deck.Layer {
   id: string;
   props: TextLayerProps;
+  constructor(props: LayerProps & TextLayerProps);
 }

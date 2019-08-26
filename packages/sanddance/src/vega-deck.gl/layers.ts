@@ -15,8 +15,9 @@ import { Layer } from 'deck.gl';
 import { layerNames } from './constants';
 import { LightSettings, TransitionTiming } from '@deck.gl/core/lib/layer';
 import { LinearInterpolator_Class } from './deck.gl-classes/linearInterpolator';
-import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 import { Presenter } from './presenter';
+import { TextLayer } from './text-layer/text-layer';
+import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 
 export function getLayers(presenter: Presenter, config: PresenterConfig, stage: Stage, highlightColor: number[], lightSettings: LightSettings, lightingMix: number, interpolator: LinearInterpolator_Class<CubeLayerInterpolatedProps>, guideLines: StyledLine[]): Layer[] {
     const cubeLayer = newCubeLayer(presenter, config, stage.cubeData, highlightColor, lightSettings, lightingMix, interpolator);
@@ -88,17 +89,14 @@ function newLineLayer(id: string, data: StyledLine[]) {
 }
 
 function newTextLayer(id: string, data: TextLayerDatum[]) {
-    return new base.layers.TextLayer({
+    return new TextLayer({
         id,
         data,
         coordinateSystem: base.deck.COORDINATE_SYSTEM.IDENTITY,
         getColor: o => o.color,
         getTextAnchor: o => o.textAnchor,
         getSize: o => o.size,
-        getAngle: o => o.angle,
-        fontSettings: {
-            sdf: true
-        }
+        getAngle: o => o.angle
     });
 }
 

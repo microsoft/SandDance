@@ -149,7 +149,7 @@ function _MultiIconLayer(props?: MultiIconLayerProps) {
  * CubeLayer - a Deck.gl layer to render cuboids.
  * This is instantiatable by calling `new CubeLayer()`.
  */
-const MultiIconLayer: typeof MultiIconLayer_Class = _MultiIconLayer as any;
+export const MultiIconLayer: typeof MultiIconLayer_Class = _MultiIconLayer as any;
 
 /**
  * CubeLayer - a Deck.gl layer to render cuboids.
@@ -159,5 +159,3 @@ export declare class MultiIconLayer_Class extends base.deck.Layer {
   id: string;
   props: MultiIconLayerProps;
 }
-
-export default MultiIconLayer;
