@@ -134,15 +134,16 @@ export interface PresenterConfig {
     transitionDurations?: TransitionDurations;
     preStage?: PreStage;
     redraw?: () => void;
-    onBeforeCreateLayers?: (stage: Stage, StageToLayers: StageToLayers) => Layer[];
     onCubeHover?: (e: MouseEvent | PointerEvent | TouchEvent, cube: Cube) => void;
     onCubeClick?: (e: MouseEvent | PointerEvent | TouchEvent, cube: Cube) => void;
     onLayerClick?: (info: PickInfo, pickedInfos: PickInfo[], e: MouseEvent) => any;
     onLegendClick?: (e: MouseEvent | PointerEvent | TouchEvent, legend: Legend, clickedIndex: number) => void;
-    onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, o: TextLayerDatum) => void;
-    onTextHighlight?: (o: TextLayerDatum) => Color;
     onPresent?: () => void;
     shouldViewstateTransition?: () => boolean;
+    
+    onBeforeCreateLayers?: (stage: Stage, StageToLayers: StageToLayers) => Layer[];
+    onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, o: TextLayerDatum) => void;
+    onTextHighlight?: (o: TextLayerDatum) => Color;
 }
 
 export interface PresenterStyle {
