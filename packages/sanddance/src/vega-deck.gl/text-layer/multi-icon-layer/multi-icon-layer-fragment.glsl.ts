@@ -55,9 +55,11 @@ void main(void) {
   } else {
 
     //background color
-    gl_FragColor = vec4(255, 0, 0, 0.5);
+    //gl_FragColor = vec4(255, 0, 0, 0.5);
 
-    if (a >= MIN_ALPHA) {
+    if (a < MIN_ALPHA) {
+      discard;
+    } else {
 
       gl_FragColor = vec4(vColor.rgb, a);
 
@@ -66,7 +68,6 @@ void main(void) {
       if (selected) {
         gl_FragColor = vec4(vHighlightColor.rgb, a);
       }
-      //gl_FragColor = picking_filterHighlightColor(gl_FragColor);
     }
   }
 }
