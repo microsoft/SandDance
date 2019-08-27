@@ -30,6 +30,7 @@ uniform bool sdf;
 varying vec4 vColor;
 varying vec2 vTextureCoords;
 varying float vGamma;
+varying vec4 vHighlightColor;
 
 const float MIN_ALPHA = 0.05;
 
@@ -61,7 +62,11 @@ void main(void) {
       gl_FragColor = vec4(vColor.rgb, a);
 
       // use highlight color if this fragment belongs to the selected object.
-      gl_FragColor = picking_filterHighlightColor(gl_FragColor);
+      bool selected = bool(picking_vRGBcolor_Aselected.a);
+      if (selected) {
+        gl_FragColor = vec4(vHighlightColor.rgb, a);
+      }
+      //gl_FragColor = picking_filterHighlightColor(gl_FragColor);
     }
   }
 }

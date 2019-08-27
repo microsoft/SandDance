@@ -35,6 +35,7 @@ attribute vec2 instanceOffsets;
 
 // the following three attributes are for the multi-icon layer
 attribute vec2 instancePixelOffset;
+attribute vec4 instanceHighlightColors;
 
 uniform float sizeScale;
 uniform vec2 iconsTextureDim;
@@ -45,6 +46,7 @@ varying float vColorMode;
 varying vec4 vColor;
 varying vec2 vTextureCoords;
 varying float vGamma;
+varying vec4 vHighlightColor;
 
 vec2 rotate_by_angle(vec2 vertex, float angle) {
   float angle_radian = angle * PI / 180.0;
@@ -78,6 +80,8 @@ void main(void) {
   vTextureCoords.y = 1.0 - vTextureCoords.y;
 
   vColor = vec4(instanceColors.rgb, instanceColors.a * opacity) / 255.;
+  vHighlightColor = vec4(instanceHighlightColors.rgb, instanceHighlightColors.a * opacity) / 255.;
+
   picking_setPickingColor(instancePickingColors);
 
   vGamma = gamma / (sizeScale * iconSize.y);

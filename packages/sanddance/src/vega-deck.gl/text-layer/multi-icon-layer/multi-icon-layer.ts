@@ -36,6 +36,7 @@ const defaultProps = {
   getLengthOfQueue: { type: 'accessor', value: x => x.len || 1 },
   // 1: left, 0: middle, -1: right
   getAnchorX: { type: 'accessor', value: x => x.anchorX || 0 },
+  getInstanceHighlightColor: { type: 'accessor', value: x => [255, 0, 0, 255] },
   // 1: top, 0: center, -1: bottom
   getAnchorY: { type: 'accessor', value: x => x.anchorY || 0 },
   getPixelOffset: { type: 'accessor', value: [0, 0] },
@@ -43,6 +44,9 @@ const defaultProps = {
   // object with the same pickingIndex will be picked when any one of them is being picked
   getPickingIndex: { type: 'accessor', value: x => x.objectIndex }
 };
+
+//https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants
+const UNSIGNED_BYTE = 0x1401;
 
 export type MultiIconLayerProps = LayerProps & IconLayerProps & FontSettings;
 
@@ -73,6 +77,13 @@ function _MultiIconLayer(props: MultiIconLayerProps, props2?: MultiIconLayerProp
           size: 2,
           transition: true,
           accessor: 'getPixelOffset'
+        },
+        instanceHighlightColors: {
+          size: 4,
+          type: UNSIGNED_BYTE,
+          transition: true,
+          accessor: 'getInstanceHighlightColor',
+          defaultValue: [0, 255, 0, 255]
         }
       });
     }
