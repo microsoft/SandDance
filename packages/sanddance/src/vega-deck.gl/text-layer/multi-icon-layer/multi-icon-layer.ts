@@ -36,7 +36,7 @@ const defaultProps = {
   getLengthOfQueue: { type: 'accessor', value: x => x.len || 1 },
   // 1: left, 0: middle, -1: right
   getAnchorX: { type: 'accessor', value: x => x.anchorX || 0 },
-  getInstanceHighlightColor: { type: 'accessor', value: x => [255, 0, 0, 255] },
+  getHighlightColor: { type: 'accessor', value: x => [255, 0, 0, 255] },
   // 1: top, 0: center, -1: bottom
   getAnchorY: { type: 'accessor', value: x => x.anchorY || 0 },
   getPixelOffset: { type: 'accessor', value: [0, 0] },
@@ -82,7 +82,7 @@ function _MultiIconLayer(props: MultiIconLayerProps, props2?: MultiIconLayerProp
           size: 4,
           type: UNSIGNED_BYTE,
           transition: true,
-          accessor: 'getInstanceHighlightColor',
+          accessor: 'getHighlightColor',
           defaultValue: [0, 255, 0, 255]
         }
       });

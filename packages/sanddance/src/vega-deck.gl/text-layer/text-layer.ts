@@ -33,7 +33,7 @@ import { LayerProps } from '@deck.gl/core/lib/layer';
 import { Color } from '@deck.gl/core/utils/color';
 
 export interface TextLayerProps2 extends TextLayerProps {
-  getInstanceHighlightColor?: (x: TextLayerDatum) => Color;
+  getHighlightColor?: (x: TextLayerDatum) => Color;
 }
 
 const TEXT_ANCHOR = {
@@ -67,7 +67,7 @@ const defaultProps = {
   getColor: { type: 'accessor', value: DEFAULT_COLOR },
   getSize: { type: 'accessor', value: 32 },
   getAngle: { type: 'accessor', value: 0 },
-  getInstanceHighlightColor: { type: 'accessor', value: [0, 0, 255, 255] },
+  getHighlightColor: { type: 'accessor', value: DEFAULT_COLOR },
   getTextAnchor: { type: 'accessor', value: 'middle' },
   getAlignmentBaseline: { type: 'accessor', value: 'center' },
   getPixelOffset: { type: 'accessor', value: [0, 0] }
@@ -233,7 +233,7 @@ function _TextLayer(props?: LayerProps & TextLayerProps2) {
         getColor,
         getSize,
         getAngle,
-        getInstanceHighlightColor,
+        getHighlightColor,
         getTextAnchor,
         getAlignmentBaseline,
         getPixelOffset,
@@ -256,7 +256,7 @@ function _TextLayer(props?: LayerProps & TextLayerProps2) {
           getColor: this._getAccessor(getColor),
           getSize: this._getAccessor(getSize),
           getAngle: this._getAccessor(getAngle),
-          getInstanceHighlightColor: this._getAccessor(getInstanceHighlightColor),
+          getHighlightColor: this._getAccessor(getHighlightColor),
           getAnchorX: this.getAnchorXFromTextAnchor(getTextAnchor),
           getAnchorY: this.getAnchorYFromAlignmentBaseline(getAlignmentBaseline),
           getPixelOffset: this._getAccessor(getPixelOffset),
@@ -266,7 +266,7 @@ function _TextLayer(props?: LayerProps & TextLayerProps2) {
           transitions: transitions && {
             getPosition: transitions.getPosition,
             getAngle: transitions.getAngle,
-            getInstanceHighlightColor: transitions.getInstanceHighlightColor,
+            getHighlightColor: transitions.getHighlightColor,
             getColor: transitions.getColor,
             getSize: transitions.getSize,
             getPixelOffset: updateTriggers.getPixelOffset
@@ -277,7 +277,7 @@ function _TextLayer(props?: LayerProps & TextLayerProps2) {
           updateTriggers: {
             getPosition: updateTriggers.getPosition,
             getAngle: updateTriggers.getAngle,
-            getInstanceHighlightColor: updateTriggers.getInstanceHighlightColor,
+            getHighlightColor: updateTriggers.getHighlightColor,
             getColor: updateTriggers.getColor,
             getSize: updateTriggers.getSize,
             getPixelOffset: updateTriggers.getPixelOffset,
