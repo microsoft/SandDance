@@ -46,16 +46,23 @@ void main(void) {
   // Take the global opacity and the alpha from vColor into account for the alpha component
   float a = alpha * vColor.a;
 
-  if (a < MIN_ALPHA) {
-    discard;
+  if (picking_uActive) {
+
+    // use picking color for entire rectangle
+    gl_FragColor = vec4(picking_vRGBcolor_Aselected.rgb, 1.0);
+  
+  } else {
+
+    //background color
+    gl_FragColor = vec4(255, 0, 0, 0.5);
+
+    if (a >= MIN_ALPHA) {
+
+      gl_FragColor = vec4(vColor.rgb, a);
+
+      // use highlight color if this fragment belongs to the selected object.
+      gl_FragColor = picking_filterHighlightColor(gl_FragColor);
+    }
   }
-
-  gl_FragColor = vec4(vColor.rgb, a);
-
-  // use highlight color if this fragment belongs to the selected object.
-  gl_FragColor = picking_filterHighlightColor(gl_FragColor);
-
-  // use picking color if rendering to picking FBO.
-  gl_FragColor = picking_filterPickingColor(gl_FragColor);
 }
 `;
