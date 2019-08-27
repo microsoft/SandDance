@@ -26,14 +26,14 @@ import {
   DEFAULT_FONT_WEIGHT,
   DEFAULT_FONT_SETTINGS
 } from './font-atlas';
-import { TextLayerProps } from '@deck.gl/layers/text-layer/text-layer';
+import { TextLayerProps, TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 import { base } from '../base';
 import { Layer } from 'deck.gl';
 import { LayerProps } from '@deck.gl/core/lib/layer';
 import { Color } from '@deck.gl/core/utils/color';
 
 export interface TextLayerProps2 extends TextLayerProps {
-  getInstanceHighlightColor?: () => Color;
+  getInstanceHighlightColor?: (x: TextLayerDatum) => Color;
 }
 
 const TEXT_ANCHOR = {
@@ -67,7 +67,7 @@ const defaultProps = {
   getColor: { type: 'accessor', value: DEFAULT_COLOR },
   getSize: { type: 'accessor', value: 32 },
   getAngle: { type: 'accessor', value: 0 },
-  getInstanceHighlightColor: { type: 'accessor', value: [255, 0, 0, 255] },
+  getInstanceHighlightColor: { type: 'accessor', value: [0, 0, 255, 255] },
   getTextAnchor: { type: 'accessor', value: 'middle' },
   getAlignmentBaseline: { type: 'accessor', value: 'center' },
   getPixelOffset: { type: 'accessor', value: [0, 0] }

@@ -547,6 +547,12 @@ export class Viewer {
         if (this.options.onBeforeCreateLayers) {
             defaultPresenterConfig.onBeforeCreateLayers = (stage, layerFn) => this.options.onBeforeCreateLayers(stage, layerFn, this.specCapabilities);
         }
+        if (this.options.getTextHighlightColor) {
+            defaultPresenterConfig.onTextHighlight = this.options.getTextHighlightColor;
+        }
+        if (this.options.onTextClick) {
+            defaultPresenterConfig.onTextClick = this.options.onTextClick;
+        }
         const config: VegaDeckGl.types.ViewGlConfig = {
             presenter: this.presenter,
             presenterConfig: Object.assign(defaultPresenterConfig, c)

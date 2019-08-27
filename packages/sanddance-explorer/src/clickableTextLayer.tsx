@@ -7,7 +7,7 @@ import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 
-interface TextWithSpecRole extends TextLayerDatum {
+export interface TextWithSpecRole extends TextLayerDatum {
     specRole: SandDance.types.SpecRoleCapabilities;
 }
 
@@ -23,7 +23,7 @@ export function injectClickableTextLayer(
     textClick: (pos: Position, specRole: SandDance.types.SpecRoleCapabilities) => void,
     getColors: () => ColorSettings
 ) {
-    const clickableTextData: TextWithSpecRole[] = [];
+    //const clickableTextData: TextWithSpecRole[] = [];
     //const originalAxes = SandDance.VegaDeckGl.util.clone(stage.axes);
     for (let axisName in stage.axes) {
         specCapabilities.roles.forEach(specRole => {
@@ -33,8 +33,8 @@ export function injectClickableTextLayer(
                     if (axis.title) {
                         const textItem = axis.title as TextWithSpecRole;
                         textItem.specRole = specRole;
-                        clickableTextData.push(textItem);
-                        //                  delete axis.title;
+                        //clickableTextData.push(textItem);
+                        //delete axis.title;
                     }
                 });
             }
@@ -42,13 +42,13 @@ export function injectClickableTextLayer(
     }
     const layers = stageToLayers(stage);
     //stage.axes = originalAxes;
-    const onTextClick = (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => {
-        if (e && text) {
-            textClick(getPosition(e), text.specRole);
-        }
-    };
-    const clickableTextLayer = newClickableTextLayer('LAYER_CLICKABLE_TEXT', onTextClick, clickableTextData, getColors());
-    layers.push(clickableTextLayer);
+    // const onTextClick = (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => {
+    //     if (e && text) {
+    //         textClick(getPosition(e), text.specRole);
+    //     }
+    // };
+    //const clickableTextLayer = newClickableTextLayer('LAYER_CLICKABLE_TEXT', onTextClick, clickableTextData, getColors());
+    //layers.splice(2, 0, clickableTextLayer);
     return layers;
 }
 
@@ -58,7 +58,7 @@ function hasClientXY(e: MouseEvent | PointerEvent | Touch) {
     }
 }
 
-function getPosition(e: MouseEvent | PointerEvent | TouchEvent): Position {
+export function getPosition(e: MouseEvent | PointerEvent | TouchEvent): Position {
     let xy = hasClientXY(e as MouseEvent | PointerEvent);
     if (xy) {
         return xy;

@@ -39,7 +39,7 @@ export function getLayers(presenter: Presenter, config: PresenterConfig, stage: 
         });
     }
     const lineLayer = newLineLayer(layerNames.lines, lines);
-    const textLayer = newTextLayer(layerNames.text, texts);
+    const textLayer = newTextLayer(layerNames.text, texts, config);
     return [textLayer, cubeLayer, lineLayer];
 }
 
@@ -88,11 +88,17 @@ function newLineLayer(id: string, data: StyledLine[]) {
     });
 }
 
-function newTextLayer(id: string, data: TextLayerDatum[]) {
+function newTextLayer(id: string, data: TextLayerDatum[], config: PresenterConfig) {
     return new TextLayer({
         id,
         data,
         coordinateSystem: base.deck.COORDINATE_SYSTEM.IDENTITY,
+        autoHighlight: true,
+        pickable: true,
+        getInstanceHighlightColor: config.onTextHighlight || (o => o.color),        
+        onClick: (o, e) => {
+            config.onTextClick && config.onTextClick(e && e.srcEvent, o.object as TextLayerDatum);
+        },
         getColor: o => o.color,
         getTextAnchor: o => o.textAnchor,
         getSize: o => o.size,

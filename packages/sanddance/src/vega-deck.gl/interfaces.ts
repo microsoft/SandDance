@@ -139,6 +139,8 @@ export interface PresenterConfig {
     onCubeClick?: (e: MouseEvent | PointerEvent | TouchEvent, cube: Cube) => void;
     onLayerClick?: (info: PickInfo, pickedInfos: PickInfo[], e: MouseEvent) => any;
     onLegendClick?: (e: MouseEvent | PointerEvent | TouchEvent, legend: Legend, clickedIndex: number) => void;
+    onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, o: TextLayerDatum) => void;
+    onTextHighlight?: (o: TextLayerDatum) => Color;
     onPresent?: () => void;
     shouldViewstateTransition?: () => boolean;
 }

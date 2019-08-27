@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
-import { ActiveDropdown, injectClickableTextLayer, PositionedColumnMapProps } from './clickableTextLayer';
+import { ActiveDropdown, injectClickableTextLayer, PositionedColumnMapProps, TextWithSpecRole, getPosition } from './clickableTextLayer';
 import { applyColorButtons } from './colorMap';
 import { AutoCompleteDistinctValues, InputSearchExpression } from './controls/searchTerm';
 import { base } from './base';
@@ -235,6 +235,33 @@ export class Explorer extends React.Component<Props, State> {
             }
           },
           () => this.viewerOptions.colors);
+      },
+      getTextHighlightColor: o => {
+        const t = o as TextWithSpecRole;
+        if (t.specRole) {
+          return [255, 255, 0, 128];
+        } else {
+          return o.color;
+        }
+      },
+      onTextClick: (e, text) => {
+        if (e && text) {
+          const pos = getPosition(e);
+          const { specRole } = text as TextWithSpecRole;
+          if (pos && specRole) {
+            const positionedColumnMapProps: PositionedColumnMapProps = {
+              ...this.getColumnMapBaseProps(),
+              selectedColumnName: this.state.columns[specRole.role],
+              onDismiss: () => { this.setState({ positionedColumnMapProps: null }) },
+              specRole,
+              left: pos.left - this.div.clientLeft,
+              top: pos.top - this.div.clientTop
+            };
+            this.setState({ positionedColumnMapProps });
+          } else {
+            this.setState({ positionedColumnMapProps: null });
+          }
+        }
       }
     };
     if (this.viewer && this.viewer.presenter) {
