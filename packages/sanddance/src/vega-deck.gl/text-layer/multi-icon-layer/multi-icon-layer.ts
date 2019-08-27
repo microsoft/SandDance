@@ -21,7 +21,7 @@
 import { base } from '../../base';
 import { Layer } from 'deck.gl';
 import { LayerProps } from '@deck.gl/core/lib/layer';
-import { IconLayerProps } from '@deck.gl/layers/icon-layer/icon-layer';
+import { IconLayerProps, IconLayerDatum } from '@deck.gl/layers/icon-layer/icon-layer';
 
 import vs from './multi-icon-layer-vertex.glsl';
 import fs from './multi-icon-layer-fragment.glsl';
@@ -114,7 +114,7 @@ function _MultiIconLayer(props: MultiIconLayerProps, props2?: MultiIconLayerProp
       } = this.props;
       const { value } = attribute;
       let i = 0;
-      for (const object of data) {
+      for (const object of <IconLayerDatum[]>data) {
         const icon = getIcon(object);
         const rect = iconMapping[icon] || {};
         const len = getLengthOfQueue(object);
@@ -130,7 +130,7 @@ function _MultiIconLayer(props: MultiIconLayerProps, props2?: MultiIconLayerProp
       const { value } = attribute;
       let i = 0;
       const pickingColor = [];
-      for (const point of data) {
+      for (const point of <IconLayerDatum[]>data) {
         const index = getPickingIndex(point);
         this.encodePickingColor(index, pickingColor);
 
