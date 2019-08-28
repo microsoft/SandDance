@@ -20,15 +20,15 @@
 
 //adapted from https://github.com/uber/deck.gl/blob/6.4-release/modules/layers/src/text-layer/multi-icon-layer/multi-icon-layer.js
 
+import fs from './chromatic-multi-icon-layer-fragment.glsl';
+import vs from './chromatic-multi-icon-layer-vertex.glsl';
+
 import { base } from '../../base';
+import { Color } from '@deck.gl/core/utils/color';
+import { FontSettings } from '@deck.gl/layers/text-layer/font-atlas';
+import { IconDefinition, IconLayerDatum, IconLayerProps } from '@deck.gl/layers/icon-layer/icon-layer';
 import { Layer } from 'deck.gl';
 import { LayerProps } from '@deck.gl/core/lib/layer';
-import { IconLayerProps, IconLayerDatum, IconDefinition } from '@deck.gl/layers/icon-layer/icon-layer';
-
-import vs from './chromatic-multi-icon-layer-vertex.glsl';
-import fs from './chromatic-multi-icon-layer-fragment.glsl';
-import { FontSettings } from '@deck.gl/layers/text-layer/font-atlas';
-import { Color } from '@deck.gl/core/utils/color';
 
 // TODO expose as layer properties
 const DEFAULT_GAMMA = 0.2;

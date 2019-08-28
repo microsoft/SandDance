@@ -20,19 +20,19 @@
 
 //adapted from https://github.com/uber/deck.gl/blob/6.4-release/modules/layers/src/text-layer/text-layer.js
 
-import { MultiIconLayer_Class, MultiIconLayerProps, MultiIconLayer } from './chromatic-multi-icon-layer/chromatic-multi-icon-layer';
+import { base } from '../base';
+import { Color } from '@deck.gl/core/utils/color';
 import {
-  makeFontAtlas,
   DEFAULT_CHAR_SET,
   DEFAULT_FONT_FAMILY,
+  DEFAULT_FONT_SETTINGS,
   DEFAULT_FONT_WEIGHT,
-  DEFAULT_FONT_SETTINGS
+  makeFontAtlas
 } from './font-atlas';
-import { TextLayerProps, TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
-import { base } from '../base';
 import { Layer } from 'deck.gl';
 import { LayerProps } from '@deck.gl/core/lib/layer';
-import { Color } from '@deck.gl/core/utils/color';
+import { MultiIconLayer, MultiIconLayer_Class } from './chromatic-multi-icon-layer/chromatic-multi-icon-layer';
+import { TextLayerDatum, TextLayerProps } from '@deck.gl/layers/text-layer/text-layer';
 
 export interface ChromaticTextLayerProps extends TextLayerProps {
   getHighlightColor?: (x: TextLayerDatum) => Color;
