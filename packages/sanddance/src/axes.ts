@@ -9,6 +9,7 @@ function cloneAxis(axes: VegaDeckGl.types.Axis[], axisColor: Color, axisTextColo
     return axes.map(axis => {
         const newAxis = VegaDeckGl.util.deepMerge(axis);
         newAxis.domain.color = axisColor;
+        newAxis.title.color = axisTextColor;
         newAxis.ticks.forEach(t => { t.color = axisColor });
         newAxis.tickText.forEach(t => { t.color = axisTextColor });
         return newAxis;

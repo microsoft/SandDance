@@ -21,7 +21,8 @@ import {
     RenderOptions,
     RenderResult,
     SelectionState,
-    ViewerOptions
+    ViewerOptions,
+    ColorSettings
 } from './types';
 import { DataScope } from './dataScope';
 import { DeckProps, PickInfo } from '@deck.gl/core/lib/deck';
@@ -103,6 +104,7 @@ export class Viewer {
     private _details: Details;
     private _tooltip: Tooltip;
     private _shouldSaveColorContext: () => boolean;
+    private _lastColorOptions: ColorSettings;
 
     /**
      * Instantiate a new Viewer.
@@ -297,7 +299,7 @@ export class Viewer {
 
         if (newViewerOptions) {
             if (newViewerOptions.colors) {
-                recoloredAxes = recolorAxes(this.presenter.stage, this.options.colors, newViewerOptions.colors);
+                recoloredAxes = recolorAxes(this.presenter.stage, this._lastColorOptions, newViewerOptions.colors);
                 axes = recoloredAxes.axes || axes;
                 textData = recoloredAxes.textData || textData;
             }
@@ -413,6 +415,7 @@ export class Viewer {
         this._specColumns = getSpecColumns(insight, this._dataScope.getColumns(options.columnTypes));
         const ordinalMap = assignOrdinals(this._specColumns, data, options.ordinalMap);
         this.insight = VegaDeckGl.util.clone(insight);
+        this._lastColorOptions = VegaDeckGl.util.clone(this.options.colors);
         this._shouldSaveColorContext = () => !options.initialColorContext;
         const colorContext = options.initialColorContext || {
             colorMap: null,

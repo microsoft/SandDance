@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { ColorSettings } from './interfaces';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { SandDance } from '@msrvida/sanddance-react';
 
 export const themePalettes: { [theme: string]: Partial<FabricTypes.IPalette> } = {};
 
@@ -53,3 +55,14 @@ themePalettes['dark-theme'] = {
     "black": "#f5f5f5",
     "white": "#000000"
 };
+
+export function getColorSettingsFromThemePalette(themePalette: Partial<FabricTypes.IPalette>): Partial<ColorSettings> {
+    const { colorFromString } = SandDance.VegaDeckGl.util;
+    return {
+        axisLine: colorFromString(themePalette.black),
+        axisText: colorFromString(themePalette.black),
+        hoveredCube: colorFromString(themePalette.black),
+        clickableText: colorFromString(themePalette.themeDark),
+        clickableTextHighlight: colorFromString(themePalette.themeSecondary)
+    }
+}

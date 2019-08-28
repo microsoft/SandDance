@@ -6,6 +6,7 @@ import { DataSource, DataSourceSnapshot, InsightMap } from './types';
 import { DataSourcePicker } from './dataSourcePicker';
 import {
   ColorSettings,
+  getColorSettingsFromThemePalette,
   Explorer,
   Options,
   SandDance,
@@ -34,12 +35,9 @@ const { VegaDeckGl } = SandDance;
 
 function getViewerOptions(darkTheme: boolean, themeColors: { [theme: string]: ColorSettings }) {
   const colors = themeColors && themeColors[darkTheme ? 'dark' : 'light'];
-  const color = SandDance.VegaDeckGl.util.colorFromString(darkTheme ? "#fff" : "#000");
   const viewerOptions: Partial<ViewerOptions> = {
     colors: {
-      axisLine: color,
-      axisText: color,
-      hoveredCube: color,
+      ...getColorSettingsFromThemePalette(themePalettes[darkTheme ? 'dark-theme' : '']),
       ...colors
     }
   };

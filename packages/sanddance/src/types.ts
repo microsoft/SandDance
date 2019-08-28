@@ -67,6 +67,11 @@ export interface ViewerOptions extends SpecViewOptions {
     colors: ColorSettings;
 
     /**
+     * Font family of text elements.
+     */
+    fontFamily?: string;
+
+    /**
      * Language settings for the visualization.
      */
     language: Language;

@@ -17,10 +17,11 @@ function getThemePalette(darkTheme: boolean) {
     return SandDanceExplorer.themePalettes[theme];
 }
 
-function getViewerOptions() {
+function getViewerOptions(darkTheme: boolean) {
     const color = getTextcolor();
-    const viewerOptions: Partial<SandDanceExplorer.SandDance.types.ViewerOptions> = {
+    const viewerOptions: Partial<SandDanceExplorer.ViewerOptions> = {
         colors: {
+            ...SandDanceExplorer.getColorSettingsFromThemePalette(getThemePalette(darkTheme)),
             axisLine: color,
             axisText: color,
             hoveredCube: color
@@ -56,7 +57,7 @@ class App extends React.Component<{}, State> {
         this.state = {
             darkTheme: null
         };
-        this.viewerOptions = getViewerOptions();
+        this.viewerOptions = getViewerOptions(this.state.darkTheme);
 
         this.handlers = {
             message: event => {
@@ -89,9 +90,9 @@ class App extends React.Component<{}, State> {
     }
 
     checkForDarkTheme() {
-        this.viewerOptions = getViewerOptions();
         let vscodeThemeClassName = getVscodeThemeClassName();
         const darkTheme = vscodeThemeClassName.indexOf('dark') >= 0;
+        this.viewerOptions = getViewerOptions(darkTheme);
         if (this.state.darkTheme !== darkTheme && this.explorer) {
             this.explorer.updateViewerOptions(this.viewerOptions);
             if (this.explorer.viewer) {
