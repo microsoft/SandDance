@@ -136,7 +136,6 @@ export interface PresenterConfig {
     onLegendClick?: (e: MouseEvent | PointerEvent | TouchEvent, legend: Legend, clickedIndex: number) => void;
     onPresent?: () => void;
     shouldViewstateTransition?: () => boolean;
-
     preLayer?: (stage: Stage) => void;
     onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, o: TextLayerDatum) => void;
     getTextColor?: (o: TextLayerDatum) => Color;
