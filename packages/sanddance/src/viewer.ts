@@ -523,7 +523,10 @@ export class Viewer {
     }
 
     private createConfig(c?: VegaDeckGl.types.PresenterConfig): VegaDeckGl.types.ViewGlConfig {
+        const { getTextHighlightColor, onTextClick } = this.options;
         const defaultPresenterConfig: VegaDeckGl.types.PresenterConfig = {
+            getTextHighlightColor,
+            onTextClick,
             onCubeClick: this.onCubeClick.bind(this),
             onCubeHover: this.onCubeHover.bind(this),
             preStage: this.preStage.bind(this),
@@ -546,12 +549,6 @@ export class Viewer {
         };
         if (this.options.onBeforeCreateLayers) {
             defaultPresenterConfig.onBeforeCreateLayers = (stage, layerFn) => this.options.onBeforeCreateLayers(stage, layerFn, this.specCapabilities);
-        }
-        if (this.options.getTextHighlightColor) {
-            defaultPresenterConfig.onTextHighlight = this.options.getTextHighlightColor;
-        }
-        if (this.options.onTextClick) {
-            defaultPresenterConfig.onTextClick = this.options.onTextClick;
         }
         const config: VegaDeckGl.types.ViewGlConfig = {
             presenter: this.presenter,

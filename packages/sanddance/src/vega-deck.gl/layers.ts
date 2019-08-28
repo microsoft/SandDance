@@ -95,7 +95,7 @@ function newTextLayer(id: string, data: TextLayerDatum[], config: PresenterConfi
         coordinateSystem: base.deck.COORDINATE_SYSTEM.IDENTITY,
         autoHighlight: true,
         pickable: true,
-        getHighlightColor: config.onTextHighlight || (o => o.color),
+        getHighlightColor: config.getTextHighlightColor || (o => o.color),
         onClick: (o, e) => {
             config.onTextClick && config.onTextClick(e && e.srcEvent, o.object as TextLayerDatum);
         },
