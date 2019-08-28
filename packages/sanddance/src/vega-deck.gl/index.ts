@@ -9,7 +9,6 @@ export { base, use } from './base';
 export { Presenter } from './presenter';
 export { ViewGl } from './vega-classes/viewGl';
 export { CubeLayer } from './cube-layer/cube-layer';
-export { TextLayer } from './text-layer/text-layer';
 
 export * from './enums';
 export { constants, controls, types, util };

@@ -218,23 +218,8 @@ export class Explorer extends React.Component<Props, State> {
         return injectClickableTextLayer(
           stage,
           stageToLayers,
-          specCapabilities,
-          (pos, specRole) => {
-            if (pos && specRole) {
-              const positionedColumnMapProps: PositionedColumnMapProps = {
-                ...this.getColumnMapBaseProps(),
-                selectedColumnName: this.state.columns[specRole.role],
-                onDismiss: () => { this.setState({ positionedColumnMapProps: null }) },
-                specRole,
-                left: pos.left - this.div.clientLeft,
-                top: pos.top - this.div.clientTop
-              };
-              this.setState({ positionedColumnMapProps });
-            } else {
-              this.setState({ positionedColumnMapProps: null });
-            }
-          },
-          () => this.viewerOptions.colors);
+          specCapabilities
+        );
       },
       getTextHighlightColor: o => {
         const t = o as TextWithSpecRole;

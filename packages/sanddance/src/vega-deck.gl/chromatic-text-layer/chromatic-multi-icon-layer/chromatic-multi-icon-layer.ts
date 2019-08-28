@@ -18,13 +18,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+//adapted from https://github.com/uber/deck.gl/blob/6.4-release/modules/layers/src/text-layer/multi-icon-layer/multi-icon-layer.js
+
 import { base } from '../../base';
 import { Layer } from 'deck.gl';
 import { LayerProps } from '@deck.gl/core/lib/layer';
 import { IconLayerProps, IconLayerDatum } from '@deck.gl/layers/icon-layer/icon-layer';
 
-import vs from './multi-icon-layer-vertex.glsl';
-import fs from './multi-icon-layer-fragment.glsl';
+import vs from './chromatic-multi-icon-layer-vertex.glsl';
+import fs from './chromatic-multi-icon-layer-fragment.glsl';
 import { FontSettings } from '@deck.gl/layers/text-layer/font-atlas';
 
 // TODO expose as layer properties

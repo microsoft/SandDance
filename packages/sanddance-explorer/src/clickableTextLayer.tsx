@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
-import { ColorSettings } from './interfaces';
 import { ColumnMap, Props as ColumnMapProps } from './controls/columnMap';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';
@@ -19,12 +18,8 @@ export interface Position {
 export function injectClickableTextLayer(
     stage: SandDance.VegaDeckGl.types.Stage,
     stageToLayers: SandDance.VegaDeckGl.types.StageToLayers,
-    specCapabilities: SandDance.types.SpecCapabilities,
-    textClick: (pos: Position, specRole: SandDance.types.SpecRoleCapabilities) => void,
-    getColors: () => ColorSettings
+    specCapabilities: SandDance.types.SpecCapabilities
 ) {
-    //const clickableTextData: TextWithSpecRole[] = [];
-    //const originalAxes = SandDance.VegaDeckGl.util.clone(stage.axes);
     for (let axisName in stage.axes) {
         specCapabilities.roles.forEach(specRole => {
             if (specRole.role === axisName) {
@@ -33,22 +28,12 @@ export function injectClickableTextLayer(
                     if (axis.title) {
                         const textItem = axis.title as TextWithSpecRole;
                         textItem.specRole = specRole;
-                        //clickableTextData.push(textItem);
-                        //delete axis.title;
                     }
                 });
             }
         });
     }
     const layers = stageToLayers(stage);
-    //stage.axes = originalAxes;
-    // const onTextClick = (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => {
-    //     if (e && text) {
-    //         textClick(getPosition(e), text.specRole);
-    //     }
-    // };
-    //const clickableTextLayer = newClickableTextLayer('LAYER_CLICKABLE_TEXT', onTextClick, clickableTextData, getColors());
-    //layers.splice(2, 0, clickableTextLayer);
     return layers;
 }
 
@@ -72,27 +57,6 @@ export function getPosition(e: MouseEvent | PointerEvent | TouchEvent): Position
             }
         }
     }
-}
-
-function newClickableTextLayer(
-    id: string,
-    onTextHover: (e: MouseEvent | PointerEvent | TouchEvent, text: TextWithSpecRole) => void,
-    data: TextWithSpecRole[],
-    colors: ColorSettings
-) {
-    return new SandDance.VegaDeckGl.TextLayer({
-        id,
-        data,
-        coordinateSystem: SandDance.VegaDeckGl.base.deck.COORDINATE_SYSTEM.IDENTITY,
-        pickable: true,
-        onClick: (o, e) => onTextHover(e && e.srcEvent, o && o.object as TextWithSpecRole),
-        autoHighlight: true,
-        highlightColor: colors.clickableTextHighlight,
-        getColor: colors.clickableText,
-        getTextAnchor: o => o.textAnchor,
-        getSize: o => o.size,
-        getAngle: o => o.angle
-    });
 }
 
 export interface PositionedColumnMapProps extends ColumnMapProps, Position { }

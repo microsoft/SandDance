@@ -1,3 +1,5 @@
+//from https://github.com/uber/deck.gl/blob/6.4-release/modules/layers/src/text-layer/font-atlas.js
+
 /* global document */
 import TinySDF from '@mapbox/tiny-sdf';
 import { base } from '../base';

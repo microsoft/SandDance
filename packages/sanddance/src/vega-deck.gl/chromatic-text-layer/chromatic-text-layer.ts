@@ -18,7 +18,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import { MultiIconLayer_Class, MultiIconLayerProps, MultiIconLayer } from './multi-icon-layer/multi-icon-layer';
+//adapted from https://github.com/uber/deck.gl/blob/6.4-release/modules/layers/src/text-layer/text-layer.js
+
+import { MultiIconLayer_Class, MultiIconLayerProps, MultiIconLayer } from './chromatic-multi-icon-layer/chromatic-multi-icon-layer';
 import {
   makeFontAtlas,
   DEFAULT_CHAR_SET,
@@ -32,7 +34,7 @@ import { Layer } from 'deck.gl';
 import { LayerProps } from '@deck.gl/core/lib/layer';
 import { Color } from '@deck.gl/core/utils/color';
 
-export interface TextLayerProps2 extends TextLayerProps {
+export interface ChromaticTextLayerProps extends TextLayerProps {
   getHighlightColor?: (x: TextLayerDatum) => Color;
 }
 
@@ -73,9 +75,9 @@ const defaultProps = {
   getPixelOffset: { type: 'accessor', value: [0, 0] }
 };
 
-function _TextLayer(props?: LayerProps & TextLayerProps2) {
+function _ChromaticTextLayer(props?: LayerProps & ChromaticTextLayerProps) {
 
-  class __TextLayer extends base.deck.CompositeLayer {
+  class __ChromaticTextLayer extends base.deck.CompositeLayer {
 
     static layerName = 'TextLayer';
     static defaultProps = defaultProps;
@@ -296,7 +298,7 @@ function _TextLayer(props?: LayerProps & TextLayerProps2) {
     }
   }
 
-  const instance = new __TextLayer(props) as Layer;
+  const instance = new __ChromaticTextLayer(props) as Layer;
 
   return instance;
 }
@@ -308,14 +310,14 @@ function _TextLayer(props?: LayerProps & TextLayerProps2) {
  * TextLayer - a modification of deck.gl's TextLayer.
  * This is instantiatable by calling `new TextLayer()`.
  */
-export const TextLayer: typeof TextLayer_Class = _TextLayer as any;
+export const ChromaticTextLayer: typeof ChromaticTextLayer_Class = _ChromaticTextLayer as any;
 
 /**
  * CubeLayer - a Deck.gl layer to render cuboids.
  * This is not instantiatable, it is the TypeScript declaration of the type.
  */
-export declare class TextLayer_Class extends base.deck.Layer {
+export declare class ChromaticTextLayer_Class extends base.deck.Layer {
   id: string;
-  props: TextLayerProps2;
-  constructor(props: LayerProps & TextLayerProps2);
+  props: ChromaticTextLayerProps;
+  constructor(props: LayerProps & ChromaticTextLayerProps);
 }

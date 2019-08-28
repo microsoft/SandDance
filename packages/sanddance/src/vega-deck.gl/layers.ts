@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { base } from './base';
+import { ChromaticTextLayer } from './chromatic-text-layer/chromatic-text-layer';
 import { concat } from './array';
 import {
     Cube,
@@ -16,7 +17,6 @@ import { layerNames } from './constants';
 import { LightSettings, TransitionTiming } from '@deck.gl/core/lib/layer';
 import { LinearInterpolator_Class } from './deck.gl-classes/linearInterpolator';
 import { Presenter } from './presenter';
-import { TextLayer } from './text-layer/text-layer';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 
 export function getLayers(presenter: Presenter, config: PresenterConfig, stage: Stage, highlightColor: number[], lightSettings: LightSettings, lightingMix: number, interpolator: LinearInterpolator_Class<CubeLayerInterpolatedProps>, guideLines: StyledLine[]): Layer[] {
@@ -89,13 +89,13 @@ function newLineLayer(id: string, data: StyledLine[]) {
 }
 
 function newTextLayer(id: string, data: TextLayerDatum[], config: PresenterConfig) {
-    return new TextLayer({
+    return new ChromaticTextLayer({
         id,
         data,
         coordinateSystem: base.deck.COORDINATE_SYSTEM.IDENTITY,
         autoHighlight: true,
         pickable: true,
-        getHighlightColor: config.onTextHighlight || (o => o.color),        
+        getHighlightColor: config.onTextHighlight || (o => o.color),
         onClick: (o, e) => {
             config.onTextClick && config.onTextClick(e && e.srcEvent, o.object as TextLayerDatum);
         },
