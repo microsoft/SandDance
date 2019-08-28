@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { Color } from '@deck.gl/core/utils/color';
 import { DeckProps, PickInfo } from '@deck.gl/core/lib/deck';
-import Layer, { LightSettings } from '@deck.gl/core/lib/layer';
+import { LightSettings } from '@deck.gl/core/lib/layer';
 import { LineLayerDatum } from '@deck.gl/layers/line-layer/line-layer';
 import { Scene } from 'vega-typings';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
