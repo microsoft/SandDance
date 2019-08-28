@@ -116,11 +116,24 @@ export interface ViewerOptions extends SpecViewOptions {
      */
     onPresent?: () => void;
 
-
+    /**
+     * Optional handler to modify the stage prior to deck.gl layer construction.
+     */
     onBeforeCreateLayers?: (stage: VegaDeckGl.types.Stage, specCapabilities: SpecCapabilities) => void;
 
+    /**
+     * Optional handler to get the color of text elements.
+     */
     getTextColor?: (o: TextLayerDatum) => Color;
+
+    /**
+     * Optional handler to get the highlight color of text elements.
+     */
     getTextHighlightColor?: (o: TextLayerDatum) => Color;
+
+    /**
+     * Optional click handler for text elements.
+     */
     onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, o: TextLayerDatum) => void;
 
     /**
