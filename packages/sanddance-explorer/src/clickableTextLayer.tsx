@@ -5,14 +5,10 @@ import { ColumnMap, Props as ColumnMapProps } from './controls/columnMap';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
+import { MousePosition } from './mouseEvent';
 
 export interface TextWithSpecRole extends TextLayerDatum {
     specRole: SandDance.types.SpecRoleCapabilities;
-}
-
-export interface Position {
-    top: number;
-    left: number;
 }
 
 export function injectClickableTextLayer(
@@ -37,29 +33,7 @@ export function injectClickableTextLayer(
     return layers;
 }
 
-function hasClientXY(e: MouseEvent | PointerEvent | Touch) {
-    if (e && e.clientX !== undefined && e.clientX !== undefined) {
-        return { top: e.clientY, left: e.clientX };
-    }
-}
-
-export function getPosition(e: MouseEvent | PointerEvent | TouchEvent): Position {
-    let xy = hasClientXY(e as MouseEvent | PointerEvent);
-    if (xy) {
-        return xy;
-    }
-    const te = e as TouchEvent;
-    if (te) {
-        for (let i = 0; i < te.touches.length; i++) {
-            let xy = hasClientXY(te.touches[i]);
-            if (xy) {
-                return xy;
-            }
-        }
-    }
-}
-
-export interface PositionedColumnMapProps extends ColumnMapProps, Position { }
+export interface PositionedColumnMapProps extends ColumnMapProps, MousePosition { }
 
 export class ActiveDropdown extends React.Component<PositionedColumnMapProps, {}> {
     private dropdownRef?: React.RefObject<FabricTypes.IDropdown>;

@@ -1,13 +1,24 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
-import { ActiveDropdown, injectClickableTextLayer, PositionedColumnMapProps, TextWithSpecRole, getPosition } from './clickableTextLayer';
+import {
+  ActiveDropdown,
+  injectClickableTextLayer,
+  PositionedColumnMapProps,
+  TextWithSpecRole
+} from './clickableTextLayer';
 import { applyColorButtons } from './colorMap';
 import { AutoCompleteDistinctValues, InputSearchExpression } from './controls/searchTerm';
 import { base } from './base';
 import { bestColorScheme } from './colorScheme';
 import { Chart } from './dialogs/chart';
 import { Color } from './dialogs/color';
+import {
+  ColorSettings,
+  DataContent,
+  DataFile,
+  Snapshot
+} from './interfaces';
 import { ColumnMapBaseProps } from './controls/columnMap';
 import {
   copyPrefToNewState,
@@ -17,12 +28,12 @@ import {
   saveSignalValuePref
 } from './partialInsight';
 import { DataBrowser } from './dialogs/dataBrowser';
-import { DataContent, DataFile, Snapshot, ColorSettings } from './interfaces';
 import { DataScopeId } from './controls/dataScope';
 import { defaultViewerOptions } from './defaults';
 import { Dialog } from './controls/dialog';
 import { ensureColumnsExist, ensureColumnsPopulated } from './columns';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { getPosition } from './mouseEvent';
 import { InputSearchExpressionGroup, Search } from './dialogs/search';
 import { loadDataArray, loadDataFile } from './dataLoader';
 import { preferredColumnForTreemapSize, RecommenderSummary } from '@msrvida/chart-recommender';
