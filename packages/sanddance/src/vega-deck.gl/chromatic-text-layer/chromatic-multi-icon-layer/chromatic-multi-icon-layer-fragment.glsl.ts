@@ -56,9 +56,6 @@ void main(void) {
   
   } else {
 
-    //background color
-    //gl_FragColor = vec4(255, 0, 0, 0.5);
-
     if (a < MIN_ALPHA) {
       discard;
     } else {

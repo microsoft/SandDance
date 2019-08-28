@@ -523,8 +523,9 @@ export class Viewer {
     }
 
     private createConfig(c?: VegaDeckGl.types.PresenterConfig): VegaDeckGl.types.ViewGlConfig {
-        const { getTextHighlightColor, onTextClick } = this.options;
+        const { getTextColor, getTextHighlightColor, onTextClick } = this.options;
         const defaultPresenterConfig: VegaDeckGl.types.PresenterConfig = {
+            getTextColor,
             getTextHighlightColor,
             onTextClick,
             onCubeClick: this.onCubeClick.bind(this),

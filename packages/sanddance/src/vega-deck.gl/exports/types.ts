@@ -33,7 +33,6 @@ import {
     VegaBase
 } from '../base';
 import { CubeLayerDataProps, CubeLayerDefaultProps, CubeLayerProps } from '../cube-layer/cube-layer';
-import { ChromaticTextLayerProps } from '../chromatic-text-layer/chromatic-text-layer';
 import { ViewGlConfig } from '../vega-classes/viewGl';
 
 
@@ -41,7 +40,6 @@ import { ViewGlConfig } from '../vega-classes/viewGl';
 export {
     Axis,
     Base,
-    ChromaticTextLayerProps,
     Cube,
     CubeLayerDataProps,
     CubeLayerDefaultProps,

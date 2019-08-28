@@ -143,6 +143,7 @@ export interface PresenterConfig {
 
     onBeforeCreateLayers?: (stage: Stage, StageToLayers: StageToLayers) => Layer[];
     onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, o: TextLayerDatum) => void;
+    getTextColor?: (o: TextLayerDatum) => Color;
     getTextHighlightColor?: (o: TextLayerDatum) => Color;
 }
 

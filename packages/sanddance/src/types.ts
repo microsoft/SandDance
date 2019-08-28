@@ -119,7 +119,8 @@ export interface ViewerOptions extends SpecViewOptions {
 
     onBeforeCreateLayers?: (stage: VegaDeckGl.types.Stage, stageToLayers: VegaDeckGl.types.StageToLayers, specCapabilities: SpecCapabilities) => Layer[];
 
-    getTextHighlightColor?: (o: TextLayerDatum)=> Color;
+    getTextColor?: (o: TextLayerDatum) => Color;
+    getTextHighlightColor?: (o: TextLayerDatum) => Color;
     onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, o: TextLayerDatum) => void;
 
     /**

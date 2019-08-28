@@ -99,7 +99,7 @@ function newTextLayer(id: string, data: TextLayerDatum[], config: PresenterConfi
         onClick: (o, e) => {
             config.onTextClick && config.onTextClick(e && e.srcEvent, o.object as TextLayerDatum);
         },
-        getColor: o => o.color,
+        getColor: config.getTextColor || (o => o.color),
         getTextAnchor: o => o.textAnchor,
         getSize: o => o.size,
         getAngle: o => o.angle

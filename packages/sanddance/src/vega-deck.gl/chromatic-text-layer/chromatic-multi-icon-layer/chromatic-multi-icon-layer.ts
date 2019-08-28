@@ -38,7 +38,6 @@ const defaultProps = {
   getLengthOfQueue: { type: 'accessor', value: x => x.len || 1 },
   // 1: left, 0: middle, -1: right
   getAnchorX: { type: 'accessor', value: x => x.anchorX || 0 },
-  getHighlightColor: { type: 'accessor', value: x => [255, 0, 0, 255] },
   // 1: top, 0: center, -1: bottom
   getAnchorY: { type: 'accessor', value: x => x.anchorY || 0 },
   getPixelOffset: { type: 'accessor', value: [0, 0] },

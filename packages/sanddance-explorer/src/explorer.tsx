@@ -17,7 +17,7 @@ import {
   saveSignalValuePref
 } from './partialInsight';
 import { DataBrowser } from './dialogs/dataBrowser';
-import { DataContent, DataFile, Snapshot } from './interfaces';
+import { DataContent, DataFile, Snapshot, ColorSettings } from './interfaces';
 import { DataScopeId } from './controls/dataScope';
 import { defaultViewerOptions } from './defaults';
 import { Dialog } from './controls/dialog';
@@ -221,10 +221,18 @@ export class Explorer extends React.Component<Props, State> {
           specCapabilities
         );
       },
+      getTextColor: o => {
+        const t = o as TextWithSpecRole;
+        if (t.specRole) {
+          return (this.viewerOptions.colors as ColorSettings).clickableText;
+        } else {
+          return o.color;
+        }
+      },
       getTextHighlightColor: o => {
         const t = o as TextWithSpecRole;
         if (t.specRole) {
-          return [255, 255, 0, 128];
+          return (this.viewerOptions.colors as ColorSettings).clickableTextHighlight;
         } else {
           return o.color;
         }
