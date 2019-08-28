@@ -118,7 +118,11 @@ function newTextLayer(presenter: Presenter, id: string, data: TextLayerDatum[], 
         getTextAnchor: o => o.textAnchor,
         getSize: o => o.size,
         getAngle: o => o.angle,
-        fontFamily
+        fontFamily,
+        fontSettings: {
+            sdf: true,
+            fontSize: 128
+        }
     });
 }
 

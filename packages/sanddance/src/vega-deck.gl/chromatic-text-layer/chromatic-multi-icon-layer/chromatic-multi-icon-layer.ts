@@ -56,8 +56,8 @@ export interface MultiIconLayerProps extends LayerProps, IconLayerProps, FontSet
   getAnchorY?: (x) => number;
   getLengthOfQueue?: (x) => number;
   getShiftInQueue?: (x) => number;
-  getHighlightColor?: (x)=> Color;
-  getPixelOffset?: (x)=> [number, number];
+  getHighlightColor?: (x) => Color;
+  getPixelOffset?: (x) => [number, number];
 }
 
 function _MultiIconLayer(...props: Partial<MultiIconLayerProps>[]) {
@@ -113,12 +113,14 @@ function _MultiIconLayer(...props: Partial<MultiIconLayerProps>[]) {
     }
 
     draw({ uniforms }) {
+      const { sdf } = this.props;
       super.draw({
         uniforms: Object.assign({}, uniforms, {
           // Refer the following doc about gamma and buffer
           // https://blog.mapbox.com/drawing-text-with-signed-distance-fields-in-mapbox-gl-b0933af6f817
           buffer: DEFAULT_BUFFER,
-          gamma: DEFAULT_GAMMA
+          gamma: DEFAULT_GAMMA,
+          sdf: Boolean(sdf)
         })
       });
     }
