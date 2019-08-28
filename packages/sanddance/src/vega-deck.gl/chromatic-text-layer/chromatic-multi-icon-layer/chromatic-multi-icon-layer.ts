@@ -23,11 +23,12 @@
 import { base } from '../../base';
 import { Layer } from 'deck.gl';
 import { LayerProps } from '@deck.gl/core/lib/layer';
-import { IconLayerProps, IconLayerDatum } from '@deck.gl/layers/icon-layer/icon-layer';
+import { IconLayerProps, IconLayerDatum, IconDefinition } from '@deck.gl/layers/icon-layer/icon-layer';
 
 import vs from './chromatic-multi-icon-layer-vertex.glsl';
 import fs from './chromatic-multi-icon-layer-fragment.glsl';
 import { FontSettings } from '@deck.gl/layers/text-layer/font-atlas';
+import { Color } from '@deck.gl/core/utils/color';
 
 // TODO expose as layer properties
 const DEFAULT_GAMMA = 0.2;
@@ -49,11 +50,21 @@ const defaultProps = {
 //https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants
 const UNSIGNED_BYTE = 0x1401;
 
-export type MultiIconLayerProps = LayerProps & IconLayerProps & FontSettings;
+export interface MultiIconLayerProps extends LayerProps, IconLayerProps, FontSettings {
+  getPickingIndex?: (x) => number;
+  getAnchorX?: (x) => number;
+  getAnchorY?: (x) => number;
+  getLengthOfQueue?: (x) => number;
+  getShiftInQueue?: (x) => number;
+  getHighlightColor?: (x)=> Color;
+  getPixelOffset?: (x)=> [number, number];
+}
 
-function _MultiIconLayer(...props: MultiIconLayerProps[]) {
+function _MultiIconLayer(...props: Partial<MultiIconLayerProps>[]) {
 
   class __MultiIconLayer extends base.layers.IconLayer {
+
+    public props: MultiIconLayerProps;
 
     static layerName = 'MultiIconLayer';
     static defaultProps = defaultProps;
@@ -102,14 +113,12 @@ function _MultiIconLayer(...props: MultiIconLayerProps[]) {
     }
 
     draw({ uniforms }) {
-      const { sdf } = this.props;
       super.draw({
         uniforms: Object.assign({}, uniforms, {
           // Refer the following doc about gamma and buffer
           // https://blog.mapbox.com/drawing-text-with-signed-distance-fields-in-mapbox-gl-b0933af6f817
           buffer: DEFAULT_BUFFER,
-          gamma: DEFAULT_GAMMA,
-          sdf: Boolean(sdf)
+          gamma: DEFAULT_GAMMA
         })
       });
     }
@@ -127,8 +136,8 @@ function _MultiIconLayer(...props: MultiIconLayerProps[]) {
       const { value } = attribute;
       let i = 0;
       for (const object of <IconLayerDatum[]>data) {
-        const icon = getIcon(object);
-        const rect = iconMapping[icon] || {};
+        const icon = (<(x: IconLayerDatum) => string>getIcon)(object);
+        const rect = iconMapping[icon] || {} as IconDefinition;
         const len = getLengthOfQueue(object);
         const shiftX = getShiftInQueue(object);
 
@@ -162,7 +171,7 @@ function _MultiIconLayer(...props: MultiIconLayerProps[]) {
 
 /**
  * CubeLayer - a Deck.gl layer to render cuboids.
- * This is instantiatable by calling `new CubeLayer()`.
+ * This is instantiatable by calling `new MultiIconLayer()`.
  */
 export const MultiIconLayer: typeof MultiIconLayer_Class = _MultiIconLayer as any;
 
@@ -173,4 +182,6 @@ export const MultiIconLayer: typeof MultiIconLayer_Class = _MultiIconLayer as an
 export declare class MultiIconLayer_Class extends base.deck.Layer {
   id: string;
   props: MultiIconLayerProps;
+  constructor(props: MultiIconLayerProps)
+  constructor(...props: Partial<MultiIconLayerProps>[])
 }

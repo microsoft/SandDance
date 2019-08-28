@@ -273,7 +273,7 @@ function _ChromaticTextLayer(props?: LayerProps & ChromaticTextLayerProps) {
             getSize: transitions.getSize,
             getPixelOffset: updateTriggers.getPixelOffset
           }
-        } as Partial<MultiIconLayerProps>,
+        },
         this.getSubLayerProps({
           id: 'characters',
           updateTriggers: {
@@ -290,7 +290,7 @@ function _ChromaticTextLayer(props?: LayerProps & ChromaticTextLayerProps) {
         {
           data,
 
-          getIcon: d => d.text,
+          getIcon: d => (d as any).text,
           getShiftInQueue: d => this.getLetterOffset(d),
           getLengthOfQueue: d => this.getTextLength(d)
         }
