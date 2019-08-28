@@ -19,8 +19,16 @@ import { LinearInterpolator_Class } from './deck.gl-classes/linearInterpolator';
 import { Presenter } from './presenter';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 
-export function getLayers(presenter: Presenter, config: PresenterConfig, stage: Stage, highlightColor: number[], lightSettings: LightSettings, lightingMix: number, interpolator: LinearInterpolator_Class<CubeLayerInterpolatedProps>, guideLines: StyledLine[]): Layer[] {
-    const cubeLayer = newCubeLayer(presenter, config, stage.cubeData, highlightColor, lightSettings, lightingMix, interpolator);
+export function getLayers(
+    presenter: Presenter,
+    config: PresenterConfig,
+    stage: Stage,
+    lightSettings: LightSettings,
+    lightingMix: number,
+    interpolator: LinearInterpolator_Class<CubeLayerInterpolatedProps>,
+    guideLines: StyledLine[]
+): Layer[] {
+    const cubeLayer = newCubeLayer(presenter, config, stage.cubeData, presenter.style.highlightColor, lightSettings, lightingMix, interpolator);
     const { x, y } = stage.axes;
     const lines = concat(stage.gridLines, guideLines);
     const texts = [...stage.textData];
@@ -39,7 +47,7 @@ export function getLayers(presenter: Presenter, config: PresenterConfig, stage: 
         });
     }
     const lineLayer = newLineLayer(layerNames.lines, lines);
-    const textLayer = newTextLayer(layerNames.text, texts, config);
+    const textLayer = newTextLayer(layerNames.text, texts, config, presenter.style.fontFamily);
     return [textLayer, cubeLayer, lineLayer];
 }
 
@@ -88,7 +96,7 @@ function newLineLayer(id: string, data: StyledLine[]) {
     });
 }
 
-function newTextLayer(id: string, data: TextLayerDatum[], config: PresenterConfig) {
+function newTextLayer(id: string, data: TextLayerDatum[], config: PresenterConfig, fontFamily: string) {
     return new ChromaticTextLayer({
         id,
         data,
@@ -102,7 +110,8 @@ function newTextLayer(id: string, data: TextLayerDatum[], config: PresenterConfi
         getColor: config.getTextColor || (o => o.color),
         getTextAnchor: o => o.textAnchor,
         getSize: o => o.size,
-        getAngle: o => o.angle
+        getAngle: o => o.angle,
+        fontFamily
     });
 }
 

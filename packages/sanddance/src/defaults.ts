@@ -77,6 +77,7 @@ export const defaultViewerOptions: ViewerOptions = {
 export function getPresenterStyle(options: ViewerOptions) {
     var style: VegaDeckGl.types.PresenterStyle = {
         cssPrefix,
+        fontFamily: options.fontFamily,
         defaultCubeColor: options.colors.defaultCube
     };
     if (options.colors.hoveredCube) {

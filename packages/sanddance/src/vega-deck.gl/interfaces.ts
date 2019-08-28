@@ -147,6 +147,7 @@ export interface PresenterStyle {
     defaultCubeColor: Color;
     highlightColor?: Color;
     lightSettings?: { [view in View]: LightSettings };
+    fontFamily?: string;
 }
 
 /**

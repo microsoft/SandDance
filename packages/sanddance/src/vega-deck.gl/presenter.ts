@@ -263,7 +263,7 @@ export class Presenter {
         }
         const guideLines = this._showGuides && box(0, 0, height, width, '#0f0', 1, true);
         config.preLayer && config.preLayer(stage);
-        const layers = getLayers(this, config, stage, this.style.highlightColor, lightSettings, lightingMix, linearInterpolator, guideLines);
+        const layers = getLayers(this, config, stage, lightSettings, lightingMix, linearInterpolator, guideLines);
         const deckProps: DeckProps = {
             views: [new base.deck.OrbitView({ controller: this.OrbitControllerClass })],
             viewState,
