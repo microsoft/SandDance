@@ -13,7 +13,6 @@ import {
     QueuedAnimationOptions,
     Scene3d,
     Stage,
-    StageToLayers,
     View
 } from './interfaces';
 import { CubeLayer_Class, CubeLayerInterpolatedProps } from './cube-layer/cube-layer';
@@ -263,10 +262,8 @@ export class Presenter {
             }
         }
         const guideLines = this._showGuides && box(0, 0, height, width, '#0f0', 1, true);
-        const stageToLayers: StageToLayers = (_stage) => {
-            return getLayers(this, config, _stage, this.style.highlightColor, lightSettings, lightingMix, linearInterpolator, guideLines)
-        };
-        const layers = config.onBeforeCreateLayers ? config.onBeforeCreateLayers(stage, stageToLayers) : stageToLayers(stage);
+        config.preLayer && config.preLayer(stage);
+        const layers = getLayers(this, config, stage, this.style.highlightColor, lightSettings, lightingMix, linearInterpolator, guideLines);
 
         const deckProps: DeckProps = {
             views: [new base.deck.OrbitView({ controller: this.OrbitControllerClass })],

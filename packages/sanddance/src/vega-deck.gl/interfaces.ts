@@ -106,10 +106,6 @@ export interface LegendRowSymbol {
     shape: string;
 }
 
-export interface StageToLayers {
-    (stage: Stage): Layer[];
-}
-
 /**
  * Function that can be called prior to presenting the stage.
  */
@@ -141,7 +137,7 @@ export interface PresenterConfig {
     onPresent?: () => void;
     shouldViewstateTransition?: () => boolean;
 
-    onBeforeCreateLayers?: (stage: Stage, StageToLayers: StageToLayers) => Layer[];
+    preLayer?: (stage: Stage) => void;
     onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, o: TextLayerDatum) => void;
     getTextColor?: (o: TextLayerDatum) => Color;
     getTextHighlightColor?: (o: TextLayerDatum) => Color;

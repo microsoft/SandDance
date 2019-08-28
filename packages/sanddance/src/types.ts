@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from './vega-deck.gl';
-import Layer, { LightSettings } from '@deck.gl/core/lib/layer';
+import { LightSettings } from '@deck.gl/core/lib/layer';
 import { Color } from '@deck.gl/core/utils/color';
 import {
     Column,
@@ -117,7 +117,7 @@ export interface ViewerOptions extends SpecViewOptions {
     onPresent?: () => void;
 
 
-    onBeforeCreateLayers?: (stage: VegaDeckGl.types.Stage, stageToLayers: VegaDeckGl.types.StageToLayers, specCapabilities: SpecCapabilities) => Layer[];
+    onBeforeCreateLayers?: (stage: VegaDeckGl.types.Stage, specCapabilities: SpecCapabilities) => void;
 
     getTextColor?: (o: TextLayerDatum) => Color;
     getTextHighlightColor?: (o: TextLayerDatum) => Color;

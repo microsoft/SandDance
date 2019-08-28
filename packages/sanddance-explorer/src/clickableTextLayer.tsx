@@ -11,9 +11,8 @@ export interface TextWithSpecRole extends TextLayerDatum {
     specRole: SandDance.types.SpecRoleCapabilities;
 }
 
-export function injectClickableTextLayer(
+export function onBeforeCreateLayers(
     stage: SandDance.VegaDeckGl.types.Stage,
-    stageToLayers: SandDance.VegaDeckGl.types.StageToLayers,
     specCapabilities: SandDance.types.SpecCapabilities
 ) {
     for (let axisName in stage.axes) {
@@ -29,8 +28,6 @@ export function injectClickableTextLayer(
             }
         });
     }
-    const layers = stageToLayers(stage);
-    return layers;
 }
 
 export interface PositionedColumnMapProps extends ColumnMapProps, MousePosition { }

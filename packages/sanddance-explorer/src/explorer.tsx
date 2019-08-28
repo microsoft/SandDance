@@ -3,7 +3,7 @@
 import * as React from 'react';
 import {
   ActiveDropdown,
-  injectClickableTextLayer,
+  onBeforeCreateLayers,
   PositionedColumnMapProps,
   TextWithSpecRole
 } from './clickableTextLayer';
@@ -225,13 +225,7 @@ export class Explorer extends React.Component<Props, State> {
         this.setState({ errors });
         viewerOptions && viewerOptions.onError && viewerOptions.onError(errors);
       },
-      onBeforeCreateLayers: (stage, stageToLayers, specCapabilities) => {
-        return injectClickableTextLayer(
-          stage,
-          stageToLayers,
-          specCapabilities
-        );
-      },
+      onBeforeCreateLayers,
       getTextColor: o => {
         const t = o as TextWithSpecRole;
         if (t.specRole) {

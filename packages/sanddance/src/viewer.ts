@@ -549,7 +549,7 @@ export class Viewer {
             }
         };
         if (this.options.onBeforeCreateLayers) {
-            defaultPresenterConfig.onBeforeCreateLayers = (stage, layerFn) => this.options.onBeforeCreateLayers(stage, layerFn, this.specCapabilities);
+            defaultPresenterConfig.preLayer = stage => this.options.onBeforeCreateLayers(stage, this.specCapabilities);
         }
         const config: VegaDeckGl.types.ViewGlConfig = {
             presenter: this.presenter,
