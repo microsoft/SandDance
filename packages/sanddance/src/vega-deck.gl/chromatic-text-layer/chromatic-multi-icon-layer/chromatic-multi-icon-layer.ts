@@ -51,15 +51,15 @@ const UNSIGNED_BYTE = 0x1401;
 
 export type MultiIconLayerProps = LayerProps & IconLayerProps & FontSettings;
 
-function _MultiIconLayer(props: MultiIconLayerProps, props2?: MultiIconLayerProps, props3?: MultiIconLayerProps) {
+function _MultiIconLayer(...props: MultiIconLayerProps[]) {
 
   class __MultiIconLayer extends base.layers.IconLayer {
 
     static layerName = 'MultiIconLayer';
     static defaultProps = defaultProps;
 
-    constructor(props: MultiIconLayerProps, props2?: MultiIconLayerProps, props3?: MultiIconLayerProps) {
-      super(props, props2, props3);
+    constructor(...props: MultiIconLayerProps[]) {
+      super(...arguments);
     }
 
     getShaders() {
@@ -153,7 +153,7 @@ function _MultiIconLayer(props: MultiIconLayerProps, props2?: MultiIconLayerProp
     }
   }
 
-  const instance = new __MultiIconLayer(props, props2, props3) as Layer;
+  const instance = new __MultiIconLayer(...arguments) as Layer;
   return instance;
 }
 
