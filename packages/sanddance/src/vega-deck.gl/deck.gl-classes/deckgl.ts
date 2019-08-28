@@ -18,6 +18,7 @@ const CANVAS_STYLE = {
 export interface InteractiveState {
     isDragging: boolean;
     onCube: boolean;
+    onText: boolean;
 }
 
 export type DeckGLInternalProps = DeckProps & {

@@ -180,7 +180,7 @@ export class Presenter {
                 views: [new base.deck.OrbitView({ controller: this.OrbitControllerClass })],
                 container: this.getElement(PresenterElement.gl) as HTMLCanvasElement,
                 getCursor: (x) => {
-                    if (x.onCube) {
+                    if (x.onCube || x.onText) {
                         return 'default';
                     } else {
                         return 'grab';

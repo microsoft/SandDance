@@ -129,12 +129,12 @@ export interface ViewerOptions extends SpecViewOptions {
     /**
      * Optional handler to get the color of text elements.
      */
-    getTextColor?: (o: TextLayerDatum) => Color;
+    getTextColor?: (t: TextLayerDatum) => Color;
 
     /**
      * Optional handler to get the highlight color of text elements.
      */
-    getTextHighlightColor?: (o: TextLayerDatum) => Color;
+    getTextHighlightColor?: (t: TextLayerDatum) => Color;
 
     /**
      * Optional click handler for text elements.

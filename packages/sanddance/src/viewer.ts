@@ -17,12 +17,12 @@ import {
     ColorContext,
     ColorMap,
     ColorMethod,
+    ColorSettings,
     LegendRowWithSearch,
     RenderOptions,
     RenderResult,
     SelectionState,
-    ViewerOptions,
-    ColorSettings
+    ViewerOptions
 } from './types';
 import { DataScope } from './dataScope';
 import { DeckProps, PickInfo } from '@deck.gl/core/lib/deck';
@@ -42,6 +42,7 @@ import { recolorAxes } from './axes';
 import { registerColorSchemes } from './colorSchemes';
 import { Search, SearchExpression, SearchExpressionGroup } from './searchExpression/types';
 import { Spec } from 'vega-typings';
+import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 import { Tooltip } from './tooltip';
 import { ViewGl_Class } from './vega-deck.gl/vega-classes/viewGl';
 
@@ -525,6 +526,12 @@ export class Viewer {
         }
     }
 
+    private onTextHover(e: MouseEvent | PointerEvent | TouchEvent, t: TextLayerDatum) {
+        //return true if highlight color is different
+        if (!t || !this.options.getTextColor || !this.options.getTextHighlightColor) return false;
+        return !VegaDeckGl.util.colorIsEqual(this.options.getTextColor(t), this.options.getTextHighlightColor(t));
+    }
+
     private createConfig(c?: VegaDeckGl.types.PresenterConfig): VegaDeckGl.types.ViewGlConfig {
         const { getTextColor, getTextHighlightColor, onTextClick } = this.options;
         const defaultPresenterConfig: VegaDeckGl.types.PresenterConfig = {
@@ -533,6 +540,7 @@ export class Viewer {
             onTextClick,
             onCubeClick: this.onCubeClick.bind(this),
             onCubeHover: this.onCubeHover.bind(this),
+            onTextHover: this.onTextHover.bind(this),
             preStage: this.preStage.bind(this),
             onPresent: this.options.onPresent,
             onLayerClick: (info: PickInfo, pickedInfos: PickInfo[], e: MouseEvent) => {

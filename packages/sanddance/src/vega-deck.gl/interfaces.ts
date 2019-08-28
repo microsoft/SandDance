@@ -137,7 +137,8 @@ export interface PresenterConfig {
     onPresent?: () => void;
     shouldViewstateTransition?: () => boolean;
     preLayer?: (stage: Stage) => void;
-    onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, o: TextLayerDatum) => void;
+    onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, t: TextLayerDatum) => void;
+    onTextHover?: (e: MouseEvent | PointerEvent | TouchEvent, t: TextLayerDatum) => boolean;
     getTextColor?: (o: TextLayerDatum) => Color;
     getTextHighlightColor?: (o: TextLayerDatum) => Color;
 }

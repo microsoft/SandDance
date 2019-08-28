@@ -13,6 +13,20 @@ function rgbToDeckglColor(c: RGBColor): Color {
 }
 
 /**
+ * Compares 2 colors to see if they are equal.
+ * @param a Color to compare
+ * @param b Color to compare
+ * @returns True if colors are equal.
+ */
+export function colorIsEqual(a: Color, b: Color) {
+    if (a.length !== b.length) return false;
+    for (let i = 0; i < a.length; i++) {
+        if (a[i] !== b[i]) return false;
+    }
+    return true;
+}
+
+/**
  * Convert a CSS color string to a Deck.gl Color array - (The rgba color of each object, in r, g, b, [a]. Each component is in the 0-255 range.).
  * @param cssColorSpecifier A CSS Color Module Level 3 specifier string.
  */

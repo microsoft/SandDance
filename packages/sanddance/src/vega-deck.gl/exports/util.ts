@@ -8,8 +8,8 @@
 
 import { addDiv, addEl, outerSize } from '../htmlHelpers';
 import { clone, deepMerge } from '../clone';
-import { colorFromString, colorToString } from '../color';
+import { colorFromString, colorIsEqual, colorToString } from '../color';
 import { getCubeLayer, getCubes } from '../layers';
 
 //alphabetize for documentation
-export { addDiv, addEl, clone, colorFromString, colorToString, deepMerge, getCubeLayer, getCubes, outerSize };
+export { addDiv, addEl, clone, colorFromString, colorIsEqual, colorToString, deepMerge, getCubeLayer, getCubes, outerSize };

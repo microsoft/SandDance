@@ -47,7 +47,7 @@ export function getLayers(
         });
     }
     const lineLayer = newLineLayer(layerNames.lines, lines);
-    const textLayer = newTextLayer(layerNames.text, texts, config, presenter.style.fontFamily);
+    const textLayer = newTextLayer(presenter, layerNames.text, texts, config, presenter.style.fontFamily);
     return [textLayer, cubeLayer, lineLayer];
 }
 
@@ -96,7 +96,7 @@ function newLineLayer(id: string, data: StyledLine[]) {
     });
 }
 
-function newTextLayer(id: string, data: TextLayerDatum[], config: PresenterConfig, fontFamily: string) {
+function newTextLayer(presenter: Presenter, id: string, data: TextLayerDatum[], config: PresenterConfig, fontFamily: string) {
     return new ChromaticTextLayer({
         id,
         data,
@@ -106,6 +106,13 @@ function newTextLayer(id: string, data: TextLayerDatum[], config: PresenterConfi
         getHighlightColor: config.getTextHighlightColor || (o => o.color),
         onClick: (o, e) => {
             config.onTextClick && config.onTextClick(e && e.srcEvent, o.object as TextLayerDatum);
+        },
+        onHover: (o, e) => {
+            if (o.index === -1) {
+                presenter.deckgl.interactiveState.onText = false;
+            } else {
+                presenter.deckgl.interactiveState.onText = config.onTextHover ? config.onTextHover(e && e.srcEvent, o.object as TextLayerDatum) : true;
+            }
         },
         getColor: config.getTextColor || (o => o.color),
         getTextAnchor: o => o.textAnchor,
