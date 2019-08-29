@@ -164,9 +164,6 @@ export class Presenter {
         } else {
             stage = sceneOrStage as Stage;
         }
-        if (stage.cubeData.length === 0) {
-            return;
-        }
         if (!this.deckgl) {
             const classes = createDeckGLClassesForPresenter({
                 doubleClickHandler: () => {
