@@ -23948,7 +23948,7 @@ function Topbar(props) {
   }, React.createElement("div", {
     className: "logo"
   }, React.createElement(_logo.Logo, null), React.createElement("a", {
-    href: props.logoClickUrl || "/SandDance/",
+    href: props.logoClickUrl || "/",
     target: props.logoClickTarget || '_blank'
   }, _language.strings.appName)), React.createElement("div", {
     className: "sanddance-explorer-commandbar"

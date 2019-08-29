@@ -92,7 +92,7 @@ export function Topbar(props: Props) {
         <div className="sanddance-explorer-topbar">
             <div className="logo">
                 <Logo />
-                <a href={props.logoClickUrl || "/SandDance/"} target={props.logoClickTarget || '_blank'}>{strings.appName}</a>
+                <a href={props.logoClickUrl || "/"} target={props.logoClickTarget || '_blank'}>{strings.appName}</a>
             </div>
             <div className="sanddance-explorer-commandbar">
                 <base.fabric.Customizer
