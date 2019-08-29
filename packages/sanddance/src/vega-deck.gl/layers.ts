@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { base } from './base';
-import { ChromaticTextLayer } from './chromatic-text-layer/chromatic-text-layer';
+import { ChromaticTextLayer, ChromaticTextLayerProps } from './chromatic-text-layer/chromatic-text-layer';
 import { concat } from './array';
 import {
     Cube,
@@ -14,7 +14,7 @@ import { DeckProps } from '@deck.gl/core/lib/deck';
 import { easeExpInOut } from 'd3-ease';
 import { Layer } from 'deck.gl';
 import { layerNames } from './constants';
-import { LightSettings, TransitionTiming } from '@deck.gl/core/lib/layer';
+import { LayerProps, LightSettings, TransitionTiming } from '@deck.gl/core/lib/layer';
 import { LinearInterpolator_Class } from './deck.gl-classes/linearInterpolator';
 import { Presenter } from './presenter';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
@@ -97,7 +97,7 @@ function newLineLayer(id: string, data: StyledLine[]) {
 }
 
 function newTextLayer(presenter: Presenter, id: string, data: TextLayerDatum[], config: PresenterConfig, fontFamily: string) {
-    return new ChromaticTextLayer({
+    const props: LayerProps & ChromaticTextLayerProps = {
         id,
         data,
         coordinateSystem: base.deck.COORDINATE_SYSTEM.IDENTITY,
@@ -118,12 +118,15 @@ function newTextLayer(presenter: Presenter, id: string, data: TextLayerDatum[], 
         getTextAnchor: o => o.textAnchor,
         getSize: o => o.size,
         getAngle: o => o.angle,
-        fontFamily,
         fontSettings: {
             sdf: true,
             fontSize: 128
         }
-    });
+    };
+    if (fontFamily) {
+        props.fontFamily = fontFamily;
+    }
+    return new ChromaticTextLayer(props);
 }
 
 function getTiming(duration: number, easing?: (t: number) => number) {
