@@ -19,6 +19,7 @@ export interface Axis {
     domain: StyledLine;
     ticks: StyledLine[];
     tickText: TickText[];
+    title?: TextLayerDatum;
 }
 
 /**
@@ -135,13 +136,19 @@ export interface PresenterConfig {
     onLegendClick?: (e: MouseEvent | PointerEvent | TouchEvent, legend: Legend, clickedIndex: number) => void;
     onPresent?: () => void;
     shouldViewstateTransition?: () => boolean;
+    preLayer?: (stage: Stage) => void;
+    onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, t: TextLayerDatum) => void;
+    onTextHover?: (e: MouseEvent | PointerEvent | TouchEvent, t: TextLayerDatum) => boolean;
+    getTextColor?: (o: TextLayerDatum) => Color;
+    getTextHighlightColor?: (o: TextLayerDatum) => Color;
 }
 
 export interface PresenterStyle {
     cssPrefix?: string;
-    defaultCubeColor: Color;
+    defaultCubeColor?: Color;
     highlightColor?: Color;
     lightSettings?: { [view in View]: LightSettings };
+    fontFamily?: string;
 }
 
 /**

@@ -8,5 +8,6 @@ import * as util from './exports/util';
 export { base, use } from './base';
 export { Presenter } from './presenter';
 export { ViewGl } from './vega-classes/viewGl';
+
 export * from './enums';
 export { constants, controls, types, util };

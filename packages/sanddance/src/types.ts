@@ -1,20 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from './vega-deck.gl';
+import { LightSettings } from '@deck.gl/core/lib/layer';
 import { Color } from '@deck.gl/core/utils/color';
 import {
     Column,
     ColumnTypeMap,
+    SpecCapabilities,
     SpecColorSettings,
     SpecLanguage,
     SpecViewOptions
 } from './specs/types';
 import { DeckProps } from '@deck.gl/core/lib/deck';
-import { LightSettings } from '@deck.gl/core/lib/layer';
 import { Search, SearchExpressionGroup } from './searchExpression/types';
 import { Spec } from 'vega-typings';
 import { SpecResult } from './specs/interfaces';
 import { TooltipOptions } from './tooltip';
+import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 
 export * from './searchExpression/types';
 export * from './specs/types';
@@ -65,6 +67,11 @@ export interface ViewerOptions extends SpecViewOptions {
     colors: ColorSettings;
 
     /**
+     * Font family of text elements.
+     */
+    fontFamily?: string;
+
+    /**
      * Language settings for the visualization.
      */
     language: Language;
@@ -113,6 +120,26 @@ export interface ViewerOptions extends SpecViewOptions {
      * Optional handler when chart is presented.
      */
     onPresent?: () => void;
+
+    /**
+     * Optional handler to modify the stage prior to deck.gl layer construction.
+     */
+    onBeforeCreateLayers?: (stage: VegaDeckGl.types.Stage, specCapabilities: SpecCapabilities) => void;
+
+    /**
+     * Optional handler to get the color of text elements.
+     */
+    getTextColor?: (t: TextLayerDatum) => Color;
+
+    /**
+     * Optional handler to get the highlight color of text elements.
+     */
+    getTextHighlightColor?: (t: TextLayerDatum) => Color;
+
+    /**
+     * Optional click handler for text elements.
+     */
+    onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, o: TextLayerDatum) => void;
 
     /**
      * Optional handler when axis is clicked.

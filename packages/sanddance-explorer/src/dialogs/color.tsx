@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import * as React from 'react';
 import { base } from '../base';
-import { ColumnMap, ColumnMapProps } from '../controls/columnMap';
+import { ColumnMap, ColumnMapBaseProps } from '../controls/columnMap';
 import { DataContent } from '../interfaces';
 import { NewSignal } from 'vega-typings/types';
 import { Palette } from '../palettes';
@@ -11,7 +11,7 @@ import { Signal } from '../controls/signal';
 import { strings } from '../language';
 import { Group } from '../controls/group';
 
-export interface Props extends ColumnMapProps {
+export interface Props extends ColumnMapBaseProps {
     specCapabilities: SandDance.types.SpecCapabilities;
     scheme: string;
     colorColumn: string;
@@ -45,7 +45,6 @@ export function Color(props: Props) {
                     changeColorScheme={scheme => {
                         props.changeColorScheme(scheme);
                     }}
-                    dataContent={props.dataContent}
                 />
                 <Signal
                     disabled={props.disabled}

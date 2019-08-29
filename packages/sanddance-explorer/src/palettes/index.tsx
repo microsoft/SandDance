@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { base } from '../base';
 import { categorical } from './categorical';
-import { DataContent } from '../interfaces';
 import { diverging } from './diverging';
 import { Dropdown } from '../controls/dropdown';
 import { dual } from './dual';
@@ -17,7 +16,6 @@ import { strings } from '../language';
 const maxDistinctColors = 20;
 
 export interface Props {
-    dataContent: DataContent;
     scheme: string;
     colorColumn: SandDance.types.Column;
     changeColorScheme: (scheme: string) => void;

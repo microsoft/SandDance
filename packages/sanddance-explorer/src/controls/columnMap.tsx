@@ -24,7 +24,7 @@ const roleLabels: { [role in SandDance.types.InsightColumnRoles]: string } = {
   z: strings.labelColumnZ
 };
 
-export interface ColumnMapProps {
+export interface ColumnMapBaseProps {
   allColumns: SandDance.types.Column[];
   quantitativeColumns: SandDance.types.Column[];
   categoricalColumns: SandDance.types.Column[];
@@ -32,11 +32,14 @@ export interface ColumnMapProps {
   explorer: Explorer;
 }
 
-export interface Props extends ColumnMapProps {
+export interface Props extends ColumnMapBaseProps {
+  componentRef?: React.RefObject<FabricTypes.IDropdown>;
+  hideSignals?: boolean;
   disabled?: boolean;
   specRole: SandDance.types.SpecRoleCapabilities;
   selectedColumnName?: string
   onChangeSignal?: (name: string, value: any) => void;
+  onDismiss?: () => void;
 }
 
 function filterColumnList(context: SandDance.types.InsightColumnRoles, columns: SandDance.types.Column[]) {
@@ -116,6 +119,7 @@ export function ColumnMap(props: Props) {
       className="sanddance-columnMap"
     >
       <Dropdown
+        componentRef={props.componentRef}
         collapseLabel={true}
         disabled={props.disabled}
         label={label}
@@ -123,8 +127,9 @@ export function ColumnMap(props: Props) {
         onChange={(e, o) =>
           props.changeColumnMapping(props.specRole.role, SandDance.VegaDeckGl.util.clone(o.data))
         }
+        onDismiss={props.onDismiss}
       />
-      {signals && signals.map((signal, i) => (
+      {!props.hideSignals && signals && signals.map((signal, i) => (
         <Signal
           key={i}
           explorer={props.explorer}

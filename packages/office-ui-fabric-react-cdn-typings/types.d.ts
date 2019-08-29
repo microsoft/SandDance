@@ -12,7 +12,7 @@ export {
   IContextualMenuProps
 } from "office-ui-fabric-react/lib/components/ContextualMenu";
 
-export { IDropdownProps, IDropdownOption } from "office-ui-fabric-react/lib/components/Dropdown";
+export { IDropdown, IDropdownProps, IDropdownOption } from "office-ui-fabric-react/lib/components/Dropdown";
 
 export { IComboBox, IComboBoxProps, IComboBoxOption } from 'office-ui-fabric-react/lib/components/ComboBox';
 

@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import * as React from 'react';
 import { base } from '../base';
-import { ColumnMap, ColumnMapProps } from '../controls/columnMap';
+import { ColumnMap, ColumnMapBaseProps } from '../controls/columnMap';
 import { Dialog } from '../controls/dialog';
 import { ToggleColumns } from '../controls/toggleColumns';
 import { Group } from '../controls/group';
@@ -10,7 +10,7 @@ import { SandDance } from '@msrvida/sanddance-react';
 import { Signal } from '../controls/signal';
 import { strings } from '../language';
 
-export interface Props extends ColumnMapProps {
+export interface Props extends ColumnMapBaseProps {
     specCapabilities: SandDance.types.SpecCapabilities;
     tooltipExclusions: string[];
     toggleTooltipExclusion: (columnName: string) => void;

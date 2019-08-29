@@ -17,6 +17,7 @@ import {
     ColorContext,
     ColorMap,
     ColorMethod,
+    ColorSettings,
     LegendRowWithSearch,
     RenderOptions,
     RenderResult,
@@ -41,6 +42,7 @@ import { recolorAxes } from './axes';
 import { registerColorSchemes } from './colorSchemes';
 import { Search, SearchExpression, SearchExpressionGroup } from './searchExpression/types';
 import { Spec } from 'vega-typings';
+import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 import { Tooltip } from './tooltip';
 import { ViewGl_Class } from './vega-deck.gl/vega-classes/viewGl';
 
@@ -103,6 +105,7 @@ export class Viewer {
     private _details: Details;
     private _tooltip: Tooltip;
     private _shouldSaveColorContext: () => boolean;
+    private _lastColorOptions: ColorSettings;
 
     /**
      * Instantiate a new Viewer.
@@ -297,7 +300,7 @@ export class Viewer {
 
         if (newViewerOptions) {
             if (newViewerOptions.colors) {
-                recoloredAxes = recolorAxes(this.presenter.stage, this.options.colors, newViewerOptions.colors);
+                recoloredAxes = recolorAxes(this.presenter.stage, this._lastColorOptions, newViewerOptions.colors);
                 axes = recoloredAxes.axes || axes;
                 textData = recoloredAxes.textData || textData;
             }
@@ -413,6 +416,7 @@ export class Viewer {
         this._specColumns = getSpecColumns(insight, this._dataScope.getColumns(options.columnTypes));
         const ordinalMap = assignOrdinals(this._specColumns, data, options.ordinalMap);
         this.insight = VegaDeckGl.util.clone(insight);
+        this._lastColorOptions = VegaDeckGl.util.clone(this.options.colors);
         this._shouldSaveColorContext = () => !options.initialColorContext;
         const colorContext = options.initialColorContext || {
             colorMap: null,
@@ -522,10 +526,21 @@ export class Viewer {
         }
     }
 
+    private onTextHover(e: MouseEvent | PointerEvent | TouchEvent, t: TextLayerDatum) {
+        //return true if highlight color is different
+        if (!t || !this.options.getTextColor || !this.options.getTextHighlightColor) return false;
+        return !VegaDeckGl.util.colorIsEqual(this.options.getTextColor(t), this.options.getTextHighlightColor(t));
+    }
+
     private createConfig(c?: VegaDeckGl.types.PresenterConfig): VegaDeckGl.types.ViewGlConfig {
+        const { getTextColor, getTextHighlightColor, onTextClick } = this.options;
         const defaultPresenterConfig: VegaDeckGl.types.PresenterConfig = {
+            getTextColor,
+            getTextHighlightColor,
+            onTextClick,
             onCubeClick: this.onCubeClick.bind(this),
             onCubeHover: this.onCubeHover.bind(this),
+            onTextHover: this.onTextHover.bind(this),
             preStage: this.preStage.bind(this),
             onPresent: this.options.onPresent,
             onLayerClick: (info: PickInfo, pickedInfos: PickInfo[], e: MouseEvent) => {
@@ -544,6 +559,9 @@ export class Viewer {
                 }
             }
         };
+        if (this.options.onBeforeCreateLayers) {
+            defaultPresenterConfig.preLayer = stage => this.options.onBeforeCreateLayers(stage, this.specCapabilities);
+        }
         const config: VegaDeckGl.types.ViewGlConfig = {
             presenter: this.presenter,
             presenterConfig: Object.assign(defaultPresenterConfig, c)

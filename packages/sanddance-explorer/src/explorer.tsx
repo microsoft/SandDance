@@ -1,14 +1,25 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
+import {
+  ActiveDropdown,
+  onBeforeCreateLayers,
+  PositionedColumnMapProps,
+  TextWithSpecRole
+} from './clickableTextLayer';
 import { applyColorButtons } from './colorMap';
 import { AutoCompleteDistinctValues, InputSearchExpression } from './controls/searchTerm';
 import { base } from './base';
 import { bestColorScheme } from './colorScheme';
 import { Chart } from './dialogs/chart';
 import { Color } from './dialogs/color';
-import { ColumnMapProps } from './controls/columnMap';
-import { loadDataArray, loadDataFile } from './dataLoader';
+import {
+  ColorSettings,
+  DataContent,
+  DataFile,
+  Snapshot
+} from './interfaces';
+import { ColumnMapBaseProps } from './controls/columnMap';
 import {
   copyPrefToNewState,
   initPrefs,
@@ -17,13 +28,15 @@ import {
   saveSignalValuePref
 } from './partialInsight';
 import { DataBrowser } from './dialogs/dataBrowser';
-import { DataContent, DataFile, Snapshot } from './interfaces';
 import { DataScopeId } from './controls/dataScope';
+import { defaultViewerOptions } from './defaults';
 import { Dialog } from './controls/dialog';
 import { ensureColumnsExist, ensureColumnsPopulated } from './columns';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
-import { preferredColumnForTreemapSize, RecommenderSummary } from '@msrvida/chart-recommender';
+import { getPosition } from './mouseEvent';
 import { InputSearchExpressionGroup, Search } from './dialogs/search';
+import { loadDataArray, loadDataFile } from './dataLoader';
+import { preferredColumnForTreemapSize, RecommenderSummary } from '@msrvida/chart-recommender';
 import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
 import { Settings } from './dialogs/settings';
 import { Sidebar, SideTabId } from './controls/sidebar';
@@ -71,6 +84,7 @@ export interface State extends SandDance.types.Insight {
   selectedItemIndex: { [key: number]: number };
   snapshots: Snapshot[];
   tooltipExclusions: string[];
+  positionedColumnMapProps: PositionedColumnMapProps;
 }
 
 const dataBrowserTitles: { [key: number]: string } = {};
@@ -116,6 +130,7 @@ export class Explorer extends React.Component<Props, State> {
   public viewerOptions: Partial<SandDance.types.ViewerOptions>;
   public discardColorContextUpdates: boolean;
   public prefs: Prefs;
+  public div: HTMLElement;
 
   constructor(props: Props) {
     super(props);
@@ -148,7 +163,8 @@ export class Explorer extends React.Component<Props, State> {
       sidebarPinned: true,
       view: props.initialView || "2d",
       snapshots: [],
-      tooltipExclusions: []
+      tooltipExclusions: [],
+      positionedColumnMapProps: null
     };
 
     this.state.selectedItemIndex[DataScopeId.AllData] = 0;
@@ -165,8 +181,11 @@ export class Explorer extends React.Component<Props, State> {
 
   public updateViewerOptions(viewerOptions: Partial<SandDance.types.ViewerOptions>) {
     this.viewerOptions = {
-      ...this.viewerOptions,
-      ...viewerOptions,
+      ...SandDance.VegaDeckGl.util.deepMerge(
+        defaultViewerOptions,
+        this.viewerOptions,
+        viewerOptions
+      ),
       tooltipOptions: {
         exclude: columnName => this.state.tooltipExclusions.indexOf(columnName) >= 0
       },
@@ -205,6 +224,42 @@ export class Explorer extends React.Component<Props, State> {
       onError: (errors) => {
         this.setState({ errors });
         viewerOptions && viewerOptions.onError && viewerOptions.onError(errors);
+      },
+      onBeforeCreateLayers,
+      getTextColor: o => {
+        const t = o as TextWithSpecRole;
+        if (t.specRole) {
+          return (this.viewerOptions.colors as ColorSettings).clickableText;
+        } else {
+          return o.color;
+        }
+      },
+      getTextHighlightColor: o => {
+        const t = o as TextWithSpecRole;
+        if (t.specRole) {
+          return (this.viewerOptions.colors as ColorSettings).clickableTextHighlight;
+        } else {
+          return o.color;
+        }
+      },
+      onTextClick: (e, text) => {
+        if (e && text) {
+          const pos = getPosition(e);
+          const { specRole } = text as TextWithSpecRole;
+          if (pos && specRole) {
+            const positionedColumnMapProps: PositionedColumnMapProps = {
+              ...this.getColumnMapBaseProps(),
+              selectedColumnName: this.state.columns[specRole.role],
+              onDismiss: () => { this.setState({ positionedColumnMapProps: null }) },
+              specRole,
+              left: pos.left - this.div.clientLeft,
+              top: pos.top - this.div.clientTop
+            };
+            this.setState({ positionedColumnMapProps });
+          } else {
+            this.setState({ positionedColumnMapProps: null });
+          }
+        }
       }
     };
     if (this.viewer && this.viewer.presenter) {
@@ -635,17 +690,7 @@ export class Explorer extends React.Component<Props, State> {
     const selectionState: SandDance.types.SelectionState = (this.viewer && this.viewer.getSelection()) || {};
     const selectionSearch = selectionState && selectionState.search;
 
-    const allColumns = this.state.dataContent && this.state.dataContent.columns.filter(c => !SandDance.util.isInternalFieldName(c.name, true));
-    const quantitativeColumns = allColumns && allColumns.filter(c => c.quantitative);
-    const categoricalColumns = allColumns && allColumns.filter(c => !c.quantitative);
-
-    const columnMapProps: ColumnMapProps = {
-      changeColumnMapping: (role, column) => this.changeColumnMapping(role, column),
-      allColumns,
-      quantitativeColumns,
-      categoricalColumns,
-      explorer: this
-    };
+    const columnMapProps = this.getColumnMapBaseProps();
 
     const datas: { [key: number]: object[] } = {};
     datas[DataScopeId.AllData] = this.state.dataContent && this.state.dataContent.data;
@@ -666,7 +711,10 @@ export class Explorer extends React.Component<Props, State> {
     const themePalette = themePalettes[theme];
 
     return (
-      <div className={util.classList("sanddance-explorer", this.props.theme)}>
+      <div
+        ref={div => { if (div) this.div = div; }}
+        className={util.classList("sanddance-explorer", this.props.theme)}
+      >
         <Topbar
           logoClickUrl={this.props.logoClickUrl}
           logoClickTarget={this.props.logoClickTarget}
@@ -857,7 +905,7 @@ export class Explorer extends React.Component<Props, State> {
                       themePalette={themePalette}
                       disabled={!loaded || this.state.sidebarClosed}
                       initializer={{
-                        columns: allColumns,
+                        columns: columnMapProps.allColumns,
                         search: this.state.search
                       }}
                       autoCompleteDistinctValues={this.state.autoCompleteDistinctValues}
@@ -960,7 +1008,26 @@ export class Explorer extends React.Component<Props, State> {
             ))}
           </Dialog>
         </div>
+        {this.state.positionedColumnMapProps && (
+          <ActiveDropdown
+            {...this.state.positionedColumnMapProps}
+          />
+        )}
       </div>
     );
+  }
+
+  private getColumnMapBaseProps() {
+    const allColumns = this.state.dataContent && this.state.dataContent.columns.filter(c => !SandDance.util.isInternalFieldName(c.name, true));
+    const quantitativeColumns = allColumns && allColumns.filter(c => c.quantitative);
+    const categoricalColumns = allColumns && allColumns.filter(c => !c.quantitative);
+    const props: ColumnMapBaseProps = {
+      changeColumnMapping: (role, column) => this.changeColumnMapping(role, column),
+      allColumns,
+      quantitativeColumns,
+      categoricalColumns,
+      explorer: this
+    };
+    return props;
   }
 }

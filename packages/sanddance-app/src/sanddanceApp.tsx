@@ -5,16 +5,19 @@ import { base } from './base';
 import { DataSource, DataSourceSnapshot, InsightMap } from './types';
 import { DataSourcePicker } from './dataSourcePicker';
 import {
+  ColorSettings,
+  getColorSettingsFromThemePalette,
   Explorer,
   Options,
   SandDance,
   Snapshot,
-  themePalettes
+  themePalettes,
+  ViewerOptions
 } from '@msrvida/sanddance-explorer';
 import { strings } from './language';
 
 export interface Props {
-  themeColors: { [theme: string]: SandDance.types.ColorSettings };
+  themeColors: { [theme: string]: ColorSettings };
   setTheme?: (darkTheme: boolean) => void;
   darkTheme?: boolean;
   dataSources: DataSource[];
@@ -30,14 +33,11 @@ export interface State {
 
 const { VegaDeckGl } = SandDance;
 
-function getViewerOptions(darkTheme: boolean, themeColors: { [theme: string]: SandDance.types.ColorSettings }) {
+function getViewerOptions(darkTheme: boolean, themeColors: { [theme: string]: ColorSettings }) {
   const colors = themeColors && themeColors[darkTheme ? 'dark' : 'light'];
-  const color = SandDance.VegaDeckGl.util.colorFromString(darkTheme ? "#fff" : "#000");
-  const viewerOptions: Partial<SandDance.types.ViewerOptions> = {
+  const viewerOptions: Partial<ViewerOptions> = {
     colors: {
-      axisLine: color,
-      axisText: color,
-      hoveredCube: color,
+      ...getColorSettingsFromThemePalette(themePalettes[darkTheme ? 'dark-theme' : '']),
       ...colors
     }
   };
