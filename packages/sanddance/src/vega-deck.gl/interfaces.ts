@@ -145,7 +145,7 @@ export interface PresenterConfig {
 
 export interface PresenterStyle {
     cssPrefix?: string;
-    defaultCubeColor: Color;
+    defaultCubeColor?: Color;
     highlightColor?: Color;
     lightSettings?: { [view in View]: LightSettings };
     fontFamily?: string;
