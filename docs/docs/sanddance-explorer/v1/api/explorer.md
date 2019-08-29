@@ -19,7 +19,7 @@ public constructor(props: Props);
 
 | Name  | Type                            |
 | ----- | ------------------------------- |
-| props | [Props][InterfaceDeclaration-7] |
+| props | [Props][InterfaceDeclaration-9] |
 
 ## Methods
 
@@ -100,9 +100,9 @@ public load(data: DataFile | object[], getPartialInsight?: (columns: Column[]) =
 
 | Name              | Type                                                                     |
 | ----------------- | ------------------------------------------------------------------------ |
-| data              | [DataFile][InterfaceDeclaration-1] &#124; object[]                       |
+| data              | [DataFile][InterfaceDeclaration-2] &#124; object[]                       |
 | getPartialInsight | (columns: Column[]) => Partial<Insight>                                  |
-| optionsOrPrefs    | [Prefs][InterfaceDeclaration-3] &#124; [Options][InterfaceDeclaration-6] |
+| optionsOrPrefs    | [Prefs][InterfaceDeclaration-5] &#124; [Options][InterfaceDeclaration-8] |
 
 **Return type**
 
@@ -172,9 +172,9 @@ public changeInsight(newState: Partial<State>): void;
 
 **Parameters**
 
-| Name     | Type                                     |
-| -------- | ---------------------------------------- |
-| newState | Partial<[State][InterfaceDeclaration-8]> |
+| Name     | Type                                      |
+| -------- | ----------------------------------------- |
+| newState | Partial<[State][InterfaceDeclaration-10]> |
 
 **Return type**
 
@@ -321,24 +321,36 @@ public prefs: Prefs;
 
 **Type**
 
-[Prefs][InterfaceDeclaration-3]
+[Prefs][InterfaceDeclaration-5]
+
+----------
+
+### div
+
+```typescript
+public div: HTMLElement;
+```
+
+**Type**
+
+HTMLElement
 
 [ClassDeclaration-0]: explorer#explorer
 [Constructor-0]: explorer#constructorprops
-[InterfaceDeclaration-7]: ../index#props
+[InterfaceDeclaration-9]: ../index#props
 [MethodDeclaration-0]: explorer#finalize
 [MethodDeclaration-1]: explorer#updatevieweroptionsvieweroptions
 [MethodDeclaration-2]: explorer#signalsignalname-signalvalue
 [MethodDeclaration-3]: explorer#setinsightpartialinsight
 [MethodDeclaration-4]: explorer#loaddata-getpartialinsight-optionsorprefs
-[InterfaceDeclaration-1]: ../index#datafile
-[InterfaceDeclaration-3]: ../index#prefs
-[InterfaceDeclaration-6]: ../index#options
+[InterfaceDeclaration-2]: ../index#datafile
+[InterfaceDeclaration-5]: ../index#prefs
+[InterfaceDeclaration-8]: ../index#options
 [MethodDeclaration-5]: explorer#changecharttypechart
 [MethodDeclaration-6]: explorer#calculatecalculating
 [MethodDeclaration-7]: explorer#changeviewview
 [MethodDeclaration-8]: explorer#changeinsightnewstate
-[InterfaceDeclaration-8]: ../index#state
+[InterfaceDeclaration-10]: ../index#state
 [MethodDeclaration-9]: explorer#changespeccapabilitiesspeccapabilities
 [MethodDeclaration-10]: explorer#changecolumnmappingrole-column-options
 [MethodDeclaration-11]: explorer#sidebarsidebarclosed-sidebarpinned
@@ -349,4 +361,5 @@ public prefs: Prefs;
 [PropertyDeclaration-1]: explorer#vieweroptions
 [PropertyDeclaration-2]: explorer#discardcolorcontextupdates
 [PropertyDeclaration-3]: explorer#prefs
-[InterfaceDeclaration-3]: ../index#prefs
+[InterfaceDeclaration-5]: ../index#prefs
+[PropertyDeclaration-4]: explorer#div

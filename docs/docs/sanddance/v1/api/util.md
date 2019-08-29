@@ -6,6 +6,25 @@ layout: api
 
 ## Functions
 
+### isInternalFieldName
+
+```typescript
+function isInternalFieldName(columnName: string, includeVegaDeckGLFields: boolean = false): boolean;
+```
+
+**Parameters**
+
+| Name                    | Type    | Default value |
+| ----------------------- | ------- | ------------- |
+| columnName              | string  |               |
+| includeVegaDeckGLFields | boolean | false         |
+
+**Return type**
+
+boolean
+
+----------
+
 ### getColumnsFromData
 
 Derive column metadata from the data array.
@@ -83,15 +102,16 @@ function getPresenterStyle(options: ViewerOptions): PresenterStyle;
 [PresenterStyle][InterfaceDeclaration-48]
 
 [NamespaceImport-3]: util#util
-[FunctionDeclaration-6]: util#getcolumnsfromdata
+[FunctionDeclaration-6]: util#isinternalfieldname
+[FunctionDeclaration-7]: util#getcolumnsfromdata
 [InterfaceDeclaration-5]: types#columntypemap
 [InterfaceDeclaration-3]: types#column
-[FunctionDeclaration-7]: util#inferall
+[FunctionDeclaration-8]: util#inferall
 [InterfaceDeclaration-3]: types#column
-[FunctionDeclaration-8]: util#ensuresearchexpressiongrouparray
+[FunctionDeclaration-9]: util#ensuresearchexpressiongrouparray
 [TypeAliasDeclaration-3]: types#search
 [InterfaceDeclaration-1]: types#searchexpression
 [InterfaceDeclaration-2]: types#searchexpressiongroup
-[FunctionDeclaration-9]: util#getpresenterstyle
+[FunctionDeclaration-10]: util#getpresenterstyle
 [InterfaceDeclaration-24]: types#vieweroptions
 [InterfaceDeclaration-48]: vegadeckgl/types#presenterstyle

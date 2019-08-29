@@ -13,6 +13,7 @@ interface Axis {
     domain: StyledLine;
     ticks: StyledLine[];
     tickText: TickText[];
+    title?: TextLayerDatum;
 }
 ```
 
@@ -23,6 +24,7 @@ interface Axis {
 | domain   | [StyledLine][InterfaceDeclaration-35]   | false    |
 | ticks    | [StyledLine][InterfaceDeclaration-35][] | false    |
 | tickText | TickText[]   | false    |
+| title    | TextLayerDatum                          | true     |
 
 ----------
 
@@ -124,6 +126,7 @@ deck.gl/core dependency.
 
 ```typescript
 interface DeckBase {
+    CompositeLayer: typeof ???;
     COORDINATE_SYSTEM: typeof ???;
     Deck: typeof ???;
     Layer: typeof ???;
@@ -137,6 +140,7 @@ interface DeckBase {
 
 | Name               | Type       | Optional |
 | ------------------ | ---------- | -------- |
+| CompositeLayer     | typeof ??? | false    |
 | COORDINATE_SYSTEM  | typeof ??? | false    |
 | Deck               | typeof ??? | false    |
 | Layer              | typeof ??? | false    |
@@ -152,6 +156,7 @@ deck.gl/layers dependency.
 
 ```typescript
 interface DeckLayerBase {
+    IconLayer: typeof ???;
     LineLayer: typeof ???;
     PolygonLayer: typeof ???;
     TextLayer: typeof ???;
@@ -162,6 +167,7 @@ interface DeckLayerBase {
 
 | Name         | Type       | Optional |
 | ------------ | ---------- | -------- |
+| IconLayer    | typeof ??? | false    |
 | LineLayer    | typeof ??? | false    |
 | PolygonLayer | typeof ??? | false    |
 | TextLayer    | typeof ??? | false    |
@@ -255,6 +261,7 @@ interface LumaBase {
     CubeGeometry: typeof ???;
     fp64: typeof ???;
     Model: typeof ???;
+    Texture2D: typeof ???;
 }
 ```
 
@@ -265,6 +272,7 @@ interface LumaBase {
 | CubeGeometry | typeof ??? | false    |
 | fp64         | typeof ??? | false    |
 | Model        | typeof ??? | false    |
+| Texture2D    | typeof ??? | false    |
 
 ----------
 
@@ -312,6 +320,11 @@ interface PresenterConfig {
     onLegendClick?: (e: MouseEvent | PointerEvent | TouchEvent, legend: Legend, clickedIndex: number) => void;
     onPresent?: () => void;
     shouldViewstateTransition?: () => boolean;
+    preLayer?: (stage: Stage) => void;
+    onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, t: TextLayerDatum) => void;
+    onTextHover?: (e: MouseEvent | PointerEvent | TouchEvent, t: TextLayerDatum) => boolean;
+    getTextColor?: (o: TextLayerDatum) => Color;
+    getTextHighlightColor?: (o: TextLayerDatum) => Color;
 }
 ```
 
@@ -328,6 +341,11 @@ interface PresenterConfig {
 | onLegendClick             | (e: MouseEvent &#124; PointerEvent &#124; TouchEvent, legend: Legend, clickedIndex: number) => void | true     |
 | onPresent                 | () => void                                                                                          | true     |
 | shouldViewstateTransition | () => boolean                                                                                       | true     |
+| preLayer                  | (stage: Stage) => void                                                                              | true     |
+| onTextClick               | (e: MouseEvent &#124; PointerEvent &#124; TouchEvent, t: TextLayerDatum) => void                    | true     |
+| onTextHover               | (e: MouseEvent &#124; PointerEvent &#124; TouchEvent, t: TextLayerDatum) => boolean                 | true     |
+| getTextColor              | (o: TextLayerDatum) => Color                                                                        | true     |
+| getTextHighlightColor     | (o: TextLayerDatum) => Color                                                                        | true     |
 
 ----------
 
@@ -336,9 +354,10 @@ interface PresenterConfig {
 ```typescript
 interface PresenterStyle {
     cssPrefix?: string;
-    defaultCubeColor: Color;
+    defaultCubeColor?: Color;
     highlightColor?: Color;
     lightSettings?: { [view extends View]: LightSettings };
+    fontFamily?: string;
 }
 ```
 
@@ -347,9 +366,10 @@ interface PresenterStyle {
 | Name             | Type                                                             | Optional |
 | ---------------- | ---------------------------------------------------------------- | -------- |
 | cssPrefix        | string                                                           | true     |
-| defaultCubeColor | Color                                                            | false    |
+| defaultCubeColor | Color                                                            | true     |
 | highlightColor   | Color                                                            | true     |
 | lightSettings    | { [view extends [View][TypeAliasDeclaration-7]]: LightSettings } | true     |
+| fontFamily       | string                                                           | true     |
 
 ----------
 

@@ -536,6 +536,7 @@ Customization options for the Viewer.
 ```typescript
 interface ViewerOptions extends SpecViewOptions {
     colors: ColorSettings;
+    fontFamily?: string;
     language: Language;
     tooltipOptions?: TooltipOptions;
     lightSettings?: { [view extends View]: LightSettings };
@@ -546,6 +547,10 @@ interface ViewerOptions extends SpecViewOptions {
     onSelectionChanged?: (search?: Search, activeIndex?: number) => void;
     onStage?: (stage: Stage, deckProps: DeckProps) => void;
     onPresent?: () => void;
+    onBeforeCreateLayers?: (stage: Stage, specCapabilities: SpecCapabilities) => void;
+    getTextColor?: (t: TextLayerDatum) => Color;
+    getTextHighlightColor?: (t: TextLayerDatum) => Color;
+    onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, o: TextLayerDatum) => void;
     onAxisClick?: (e: TouchEvent | MouseEvent | PointerEvent, serch: SearchExpressionGroup<SearchExpression>) => void;
     onLegendRowClick?: (e: TouchEvent | MouseEvent | PointerEvent, legendRow: LegendRowWithSearch) => void;
     onVegaSpec?: (vegaSpec: Spec) => void;
@@ -559,23 +564,28 @@ interface ViewerOptions extends SpecViewOptions {
 
 **Properties**
 
-| Name                 | Type                                                                                                          | Optional | Description                                                                 |
-| -------------------- | ------------------------------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------- |
-| colors               | [ColorSettings][InterfaceDeclaration-25]                                                                      | false    | Custom colors of various parts of the visualization.                        |
-| language             | [Language][InterfaceDeclaration-27]                                                                           | false    | Language settings for the visualization.                                    |
-| tooltipOptions       | [TooltipOptions][InterfaceDeclaration-18]                                                                     | true     | Tooltip options                                                             |
-| lightSettings        | { [view extends [View][TypeAliasDeclaration-7]]: LightSettings }                                              | true     | Optional map of light settings for the visualization, per camera view type. |
-| transitionDurations  | [TransitionDurations][InterfaceDeclaration-22]                                                                | false    | Lengths of time for a transition animation.                                 |
-| onError              | (errors: string[]) => void                                                                                    | true     | Optional error handler.                                                     |
-| onColorContextChange | () => void                                                                                                    | true     | Optional handler when color context changes.                                |
-| onDataFilter         | (filter: Search, filteredData: object[]) => void                                                              | true     | Optional handler to be invoked when data is filtered.                       |
-| onSelectionChanged   | (search?: Search, activeIndex?: number) => void                                                               | true     | Optional handler to be invoked when selection has changed.                  |
-| onStage              | (stage: Stage, deckProps: DeckProps) => void                                                                  | true     | Optional handler when data is on stage.                                     |
-| onPresent            | () => void                                                                                                    | true     | Optional handler when chart is presented.                                   |
-| onAxisClick          | (e: TouchEvent &#124; MouseEvent &#124; PointerEvent, serch: SearchExpressionGroup<SearchExpression>) => void | true     | Optional handler when axis is clicked.                                      |
-| onLegendRowClick     | (e: TouchEvent &#124; MouseEvent &#124; PointerEvent, legendRow: LegendRowWithSearch) => void                 | true     | Optional handler when legend row is clicked.                                |
-| onVegaSpec           | (vegaSpec: Spec) => void                                                                                      | true     | Optional handler when Vega spec is created, prior to it being rendered.     |
-| selectionPolygonZ    | number                                                                                                        | false    | Z value of selection polygons.                                              |
+| Name                  | Type                                                                                                          | Optional | Description                                                                 |
+| --------------------- | ------------------------------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------- |
+| colors                | [ColorSettings][InterfaceDeclaration-25]                                                                      | false    | Custom colors of various parts of the visualization.                        |
+| fontFamily            | string                                                                                                        | true     | Font family of text elements.                                               |
+| language              | [Language][InterfaceDeclaration-27]                                                                           | false    | Language settings for the visualization.                                    |
+| tooltipOptions        | [TooltipOptions][InterfaceDeclaration-18]                                                                     | true     | Tooltip options                                                             |
+| lightSettings         | { [view extends [View][TypeAliasDeclaration-7]]: LightSettings }                                              | true     | Optional map of light settings for the visualization, per camera view type. |
+| transitionDurations   | [TransitionDurations][InterfaceDeclaration-22]                                                                | false    | Lengths of time for a transition animation.                                 |
+| onError               | (errors: string[]) => void                                                                                    | true     | Optional error handler.                                                     |
+| onColorContextChange  | () => void                                                                                                    | true     | Optional handler when color context changes.                                |
+| onDataFilter          | (filter: Search, filteredData: object[]) => void                                                              | true     | Optional handler to be invoked when data is filtered.                       |
+| onSelectionChanged    | (search?: Search, activeIndex?: number) => void                                                               | true     | Optional handler to be invoked when selection has changed.                  |
+| onStage               | (stage: Stage, deckProps: DeckProps) => void                                                                  | true     | Optional handler when data is on stage.                                     |
+| onPresent             | () => void                                                                                                    | true     | Optional handler when chart is presented.                                   |
+| onBeforeCreateLayers  | (stage: Stage, specCapabilities: SpecCapabilities) => void                                                    | true     | Optional handler to modify the stage prior to deck.gl layer construction.   |
+| getTextColor          | (t: TextLayerDatum) => Color                                                                                  | true     | Optional handler to get the color of text elements.                         |
+| getTextHighlightColor | (t: TextLayerDatum) => Color                                                                                  | true     | Optional handler to get the highlight color of text elements.               |
+| onTextClick           | (e: MouseEvent &#124; PointerEvent &#124; TouchEvent, o: TextLayerDatum) => void                              | true     | Optional click handler for text elements.                                   |
+| onAxisClick           | (e: TouchEvent &#124; MouseEvent &#124; PointerEvent, serch: SearchExpressionGroup<SearchExpression>) => void | true     | Optional handler when axis is clicked.                                      |
+| onLegendRowClick      | (e: TouchEvent &#124; MouseEvent &#124; PointerEvent, legendRow: LegendRowWithSearch) => void                 | true     | Optional handler when legend row is clicked.                                |
+| onVegaSpec            | (vegaSpec: Spec) => void                                                                                      | true     | Optional handler when Vega spec is created, prior to it being rendered.     |
+| selectionPolygonZ     | number                                                                                                        | false    | Z value of selection polygons.                                              |
 
 ----------
 

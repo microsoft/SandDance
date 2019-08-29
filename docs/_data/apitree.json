@@ -10,10 +10,12 @@
     "Viewer"
   ],
   "sanddance-explorer": [
+    "ColorSettings",
     "DataContent",
     "DataFile",
     "DataFileType",
     "Explorer",
+    "getColorSettingsFromThemePalette",
     "Index",
     "Options",
     "Prefs",
@@ -21,7 +23,8 @@
     "Snapshot",
     "State",
     "themePalettes",
-    "use"
+    "use",
+    "ViewerOptions"
   ],
   "sanddance-react": [
     "Props",

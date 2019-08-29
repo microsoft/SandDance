@@ -28,7 +28,47 @@ function use(fabric: FabricComponents, vega: VegaBase, deck: DeckBase, layers: D
 
 void
 
+----------
+
+### getColorSettingsFromThemePalette
+
+```typescript
+function getColorSettingsFromThemePalette(themePalette: Partial<IPalette>): Partial<ColorSettings>;
+```
+
+**Parameters**
+
+| Name         | Type              |
+| ------------ | ----------------- |
+| themePalette | Partial<IPalette> |
+
+**Return type**
+
+Partial<[ColorSettings][InterfaceDeclaration-0]>
+
 ## Interfaces
+
+### ColorSettings
+
+```typescript
+interface ColorSettings extends ColorSettings {
+    clickableText?: Color;
+    clickableTextHighlight?: Color;
+}
+```
+
+**Extends**
+
+ColorSettings
+
+**Properties**
+
+| Name                   | Type  | Optional |
+| ---------------------- | ----- | -------- |
+| clickableText          | Color | true     |
+| clickableTextHighlight | Color | true     |
+
+----------
 
 ### DataContent
 
@@ -90,6 +130,26 @@ interface Snapshot {
 
 ----------
 
+### ViewerOptions
+
+```typescript
+interface ViewerOptions extends ViewerOptions {
+    colors: ColorSettings;
+}
+```
+
+**Extends**
+
+ViewerOptions
+
+**Properties**
+
+| Name   | Type                                    | Optional | Description                                          |
+| ------ | --------------------------------------- | -------- | ---------------------------------------------------- |
+| colors | [ColorSettings][InterfaceDeclaration-0] | false    | Custom colors of various parts of the visualization. |
+
+----------
+
 ### Prefs
 
 ```typescript
@@ -122,7 +182,7 @@ interface Options {
 
 | Name              | Type                            | Optional |
 | ----------------- | ------------------------------- | -------- |
-| chartPrefs        | [Prefs][InterfaceDeclaration-3] | true     |
+| chartPrefs        | [Prefs][InterfaceDeclaration-5] | true     |
 | tooltipExclusions | string[]                        | true     |
 
 ----------
@@ -144,26 +204,28 @@ interface Props {
     onSnapshotClick?: (snapshot: Snapshot) => void;
     onView?: () => void;
     onSignalChanged?: () => void;
+    onTooltipExclusionsChanged?: (tooltipExclusions: string[]) => void;
 }
 ```
 
 **Properties**
 
-| Name                | Type                                     | Optional |
-| ------------------- | ---------------------------------------- | -------- |
-| hideSidebarControls | boolean                                  | true     |
-| logoClickUrl        | string                                   | true     |
-| logoClickTarget     | string                                   | true     |
-| theme               | string                                   | true     |
-| viewerOptions       | Partial<ViewerOptions>                   | true     |
-| initialView         | View                                     | true     |
-| mounted             | (explorer: Explorer) => any              | true     |
-| datasetElement      | Element                                  | true     |
-| topBarButtonProps   | ICommandBarItemProps[]                   | true     |
-| snapshotProps       | SnapshotProps | true     |
-| onSnapshotClick     | (snapshot: Snapshot) => void             | true     |
-| onView              | () => void                               | true     |
-| onSignalChanged     | () => void                               | true     |
+| Name                       | Type                                     | Optional |
+| -------------------------- | ---------------------------------------- | -------- |
+| hideSidebarControls        | boolean                                  | true     |
+| logoClickUrl               | string                                   | true     |
+| logoClickTarget            | string                                   | true     |
+| theme                      | string                                   | true     |
+| viewerOptions              | Partial<ViewerOptions>                   | true     |
+| initialView                | View                                     | true     |
+| mounted                    | (explorer: Explorer) => any              | true     |
+| datasetElement             | Element                                  | true     |
+| topBarButtonProps          | ICommandBarItemProps[]                   | true     |
+| snapshotProps              | SnapshotProps | true     |
+| onSnapshotClick            | (snapshot: Snapshot) => void             | true     |
+| onView                     | () => void                               | true     |
+| onSignalChanged            | () => void                               | true     |
+| onTooltipExclusionsChanged | (tooltipExclusions: string[]) => void    | true     |
 
 ----------
 
@@ -186,6 +248,7 @@ interface State extends Insight {
     selectedItemIndex: { [key: number]: number; };
     snapshots: Snapshot[];
     tooltipExclusions: string[];
+    positionedColumnMapProps: PositionedColumnMapProps;
 }
 ```
 
@@ -199,19 +262,20 @@ Insight
 | -------------------------- | ------------------------------------------------------- | -------- |
 | calculating                | () => void                                              | false    |
 | errors                     | string[]                                                | false    |
-| autoCompleteDistinctValues | AutoCompleteDistinctValues    | false    |
+| autoCompleteDistinctValues | AutoCompleteDistinctValues   | false    |
 | search                     | InputSearchExpressionGroup[] | false    |
 | filteredData               | object[]                                                | false    |
 | sidebarClosed              | boolean                                                 | false    |
 | sidebarPinned              | boolean                                                 | false    |
-| dataFile                   | [DataFile][InterfaceDeclaration-1]                      | false    |
-| dataContent                | [DataContent][InterfaceDeclaration-0]                   | false    |
+| dataFile                   | [DataFile][InterfaceDeclaration-2]                      | false    |
+| dataContent                | [DataContent][InterfaceDeclaration-1]                   | false    |
 | specCapabilities           | SpecCapabilities                                        | false    |
 | sideTabId                  | SideTabId                          | false    |
 | dataScopeId                | DataScopeId                        | false    |
 | selectedItemIndex          | { [key: number]: number; }                              | false    |
-| snapshots                  | [Snapshot][InterfaceDeclaration-2][]                    | false    |
+| snapshots                  | [Snapshot][InterfaceDeclaration-3][]                    | false    |
 | tooltipExclusions          | string[]                                                | false    |
+| positionedColumnMapProps   | PositionedColumnMapProps     | false    |
 
 ## Types
 
@@ -244,18 +308,23 @@ const themePalettes: { [theme: string]: Partial<IPalette>; };
 
 [SourceFile-0]: index#indextsx
 [FunctionDeclaration-0]: index#use
-[InterfaceDeclaration-0]: index#datacontent
-[InterfaceDeclaration-1]: index#datafile
+[FunctionDeclaration-1]: index#getcolorsettingsfromthemepalette
+[InterfaceDeclaration-0]: index#colorsettings
+[InterfaceDeclaration-0]: index#colorsettings
+[InterfaceDeclaration-1]: index#datacontent
+[InterfaceDeclaration-2]: index#datafile
 [TypeAliasDeclaration-0]: index#datafiletype
-[InterfaceDeclaration-2]: index#snapshot
-[InterfaceDeclaration-3]: index#prefs
-[InterfaceDeclaration-6]: index#options
-[InterfaceDeclaration-3]: index#prefs
-[InterfaceDeclaration-7]: index#props
-[InterfaceDeclaration-8]: index#state
-[InterfaceDeclaration-1]: index#datafile
-[InterfaceDeclaration-0]: index#datacontent
-[InterfaceDeclaration-2]: index#snapshot
+[InterfaceDeclaration-3]: index#snapshot
+[InterfaceDeclaration-4]: index#vieweroptions
+[InterfaceDeclaration-0]: index#colorsettings
+[InterfaceDeclaration-5]: index#prefs
+[InterfaceDeclaration-8]: index#options
+[InterfaceDeclaration-5]: index#prefs
+[InterfaceDeclaration-9]: index#props
+[InterfaceDeclaration-10]: index#state
+[InterfaceDeclaration-2]: index#datafile
+[InterfaceDeclaration-1]: index#datacontent
+[InterfaceDeclaration-3]: index#snapshot
 [TypeAliasDeclaration-0]: index#datafiletype
 [ClassDeclaration-0]: explorer#explorer
 [VariableDeclaration-0]: index#themepalettes

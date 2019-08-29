@@ -92,6 +92,27 @@ Color
 
 ----------
 
+### colorIsEqual
+
+Compares 2 colors to see if they are equal.
+
+```typescript
+function colorIsEqual(a: Color, b: Color): boolean;
+```
+
+**Parameters**
+
+| Name | Type  | Description      |
+| ---- | ----- | ---------------- |
+| a    | Color | Color to compare |
+| b    | Color | Color to compare |
+
+**Return type**
+
+boolean
+
+----------
+
 ### colorToString
 
 Convert a Deck.gl color to a CSS rgba() string.
@@ -191,13 +212,14 @@ function outerSize(el: HTMLElement): { };
 { }
 
 [NamespaceImport-8]: vegadeckgl.util#util
-[FunctionDeclaration-10]: vegadeckgl.util#adddiv
-[FunctionDeclaration-11]: vegadeckgl.util#addel
-[FunctionDeclaration-12]: vegadeckgl.util#clone
-[FunctionDeclaration-13]: vegadeckgl.util#colorfromstring
-[FunctionDeclaration-14]: vegadeckgl.util#colortostring
-[FunctionDeclaration-15]: vegadeckgl.util#deepmerge
-[FunctionDeclaration-16]: vegadeckgl.util#getcubelayer
-[FunctionDeclaration-17]: vegadeckgl.util#getcubes
+[FunctionDeclaration-11]: vegadeckgl.util#adddiv
+[FunctionDeclaration-12]: vegadeckgl.util#addel
+[FunctionDeclaration-13]: vegadeckgl.util#clone
+[FunctionDeclaration-14]: vegadeckgl.util#colorfromstring
+[FunctionDeclaration-15]: vegadeckgl.util#colorisequal
+[FunctionDeclaration-16]: vegadeckgl.util#colortostring
+[FunctionDeclaration-17]: vegadeckgl.util#deepmerge
+[FunctionDeclaration-18]: vegadeckgl.util#getcubelayer
+[FunctionDeclaration-19]: vegadeckgl.util#getcubes
 [InterfaceDeclaration-30]: vegadeckgl.types#cube
-[FunctionDeclaration-18]: vegadeckgl.util#outersize
+[FunctionDeclaration-20]: vegadeckgl.util#outersize
