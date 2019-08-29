@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.2.5]
+- Axes titles are clickable
+
 ## [1.2.4]
 - Vertically constrained tooltips
 

@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.3.3]
+- Axes titles are clickable
+
 ## [1.3.2]
 - SandDance now has tooltips
 
