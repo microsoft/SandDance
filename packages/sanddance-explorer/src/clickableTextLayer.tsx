@@ -30,25 +30,61 @@ export function onBeforeCreateLayers(
     }
 }
 
-export interface PositionedColumnMapProps extends ColumnMapProps, MousePosition { }
+function px(n: number) {
+    return n + 'px';
+}
 
-export class ActiveDropdown extends React.Component<PositionedColumnMapProps, {}> {
+export interface PositionedColumnMapProps extends ColumnMapProps, MousePosition {
+    container: HTMLElement;
+}
+
+export interface PositionedColumnMapState extends MousePosition { }
+
+export class PositionedColumnMap extends React.Component<PositionedColumnMapProps, PositionedColumnMapState> {
     private dropdownRef?: React.RefObject<FabricTypes.IDropdown>;
+    private focused: boolean;
+    private div: HTMLDivElement;
 
     constructor(props: PositionedColumnMapProps) {
         super(props);
+        const { left, top } = props;
+        this.state = { left, top };
         this.dropdownRef = React.createRef<FabricTypes.IDropdown>();
     }
 
+    focus() {
+        if (!this.focused) {
+            this.focused = true;
+            this.dropdownRef.current!.focus(true);
+        }
+    }
+
     componentDidMount() {
-        this.dropdownRef.current!.focus(true);
+        const size = SandDance.VegaDeckGl.util.outerSize(this.div);
+        const over: MousePosition = {
+            left: Math.max(0, this.state.left + size.width - this.props.container.offsetWidth),
+            top: Math.max(0, this.state.top + size.height - this.props.container.offsetHeight)
+        };
+        if (over.left || over.top) {
+            let { left, top } = this.state;
+            left -= over.left;
+            top -= over.top;
+            this.setState({ left, top });
+        } else {
+            this.focus();
+        }
+    }
+
+    componentDidUpdate() {
+        this.focus();
     }
 
     render() {
         return (
             <div
+                ref={div => { if (div) this.div = div; }}
                 className="sanddance-columnMap-absolute"
-                style={{ position: 'absolute', left: this.props.left + 'px', top: this.props.top + 'px' }}
+                style={{ position: 'absolute', left: px(this.state.left), top: px(this.state.top) }}
             >
                 <ColumnMap
                     {...this.props}

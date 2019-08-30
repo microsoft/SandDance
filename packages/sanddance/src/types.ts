@@ -147,6 +147,11 @@ export interface ViewerOptions extends SpecViewOptions {
     onAxisClick?: (e: TouchEvent | MouseEvent | PointerEvent, serch: SearchExpressionGroup) => void;
 
     /**
+     * Optional handler when legend header is clicked.
+     */
+    onLegendHeaderClick?: (e: TouchEvent | MouseEvent | PointerEvent) => void;
+
+    /**
      * Optional handler when legend row is clicked.
      */
     onLegendRowClick?: (e: TouchEvent | MouseEvent | PointerEvent, legendRow: LegendRowWithSearch) => void;

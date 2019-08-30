@@ -39,7 +39,7 @@ export const LegendView: StatelessComponent<LegendViewProps> = (props: Stateless
                 rowClassName="legend-row"
                 onRowClick={(e, i) => props.onClick(e, props.legend, i)}
             >
-                {props.legend.title !== void 0 && <tr><th colSpan={2}>{props.legend.title}</th></tr>}
+                {props.legend.title !== void 0 && <tr onClick={e => props.onClick(e as any as MouseEvent, props.legend, null)} ><th colSpan={2}>{props.legend.title}</th></tr>}
             </Table>
         );
     }

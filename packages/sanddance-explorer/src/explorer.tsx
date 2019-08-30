@@ -1,12 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
-import {
-  ActiveDropdown,
-  onBeforeCreateLayers,
-  PositionedColumnMapProps,
-  TextWithSpecRole
-} from './clickableTextLayer';
 import { applyColorButtons } from './colorMap';
 import { AutoCompleteDistinctValues, InputSearchExpression } from './controls/searchTerm';
 import { base } from './base';
@@ -36,6 +30,12 @@ import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { getPosition } from './mouseEvent';
 import { InputSearchExpressionGroup, Search } from './dialogs/search';
 import { loadDataArray, loadDataFile } from './dataLoader';
+import {
+  onBeforeCreateLayers,
+  PositionedColumnMap,
+  PositionedColumnMapProps,
+  TextWithSpecRole
+} from './clickableTextLayer';
 import { preferredColumnForTreemapSize, RecommenderSummary } from '@msrvida/chart-recommender';
 import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
 import { Settings } from './dialogs/settings';
@@ -217,6 +217,20 @@ export class Explorer extends React.Component<Props, State> {
         this.toggleableSearch(e, search);
         viewerOptions && viewerOptions.onLegendRowClick && viewerOptions.onAxisClick(e, search);
       },
+      onLegendHeaderClick: e => {
+        const pos = getPosition(e);
+        const specRole = this.state.specCapabilities && this.state.specCapabilities.roles.filter(r => r.role === 'color')[0];
+        const positionedColumnMapProps: PositionedColumnMapProps = {
+          ...this.getColumnMapBaseProps(),
+          container: this.div,
+          selectedColumnName: this.state.columns['color'],
+          onDismiss: () => { this.setState({ positionedColumnMapProps: null }) },
+          specRole,
+          left: pos.left - this.div.clientLeft,
+          top: pos.top - this.div.clientTop
+        };
+        this.setState({ positionedColumnMapProps });
+      },
       onLegendRowClick: (e, legendRow) => {
         this.toggleableSearch(e, legendRow.search);
         viewerOptions && viewerOptions.onLegendRowClick && viewerOptions.onLegendRowClick(e, legendRow);
@@ -249,6 +263,7 @@ export class Explorer extends React.Component<Props, State> {
           if (pos && specRole) {
             const positionedColumnMapProps: PositionedColumnMapProps = {
               ...this.getColumnMapBaseProps(),
+              container: this.div,
               selectedColumnName: this.state.columns[specRole.role],
               onDismiss: () => { this.setState({ positionedColumnMapProps: null }) },
               specRole,
@@ -1009,7 +1024,7 @@ export class Explorer extends React.Component<Props, State> {
           </Dialog>
         </div>
         {this.state.positionedColumnMapProps && (
-          <ActiveDropdown
+          <PositionedColumnMap
             {...this.state.positionedColumnMapProps}
           />
         )}
