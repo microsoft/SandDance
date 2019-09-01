@@ -167,14 +167,31 @@ $layout-margin-right: 150px; //room for legend
     margin-top: 1em;   
 }
 
+.sanddance-legend {
+    th {
+        color: #005a9e;
+        cursor: pointer;
+        &:hover {
+            color: #2b88d8;
+        }
+    }
+    .legend-row:hover {
+        background-color: $highlight-color;
+        color: #fff;
+    }
+}
+
 .dark-theme {
     .sanddance-panel {
         background-color: #000;
         color: #fff;
     }
-}
-
-.sanddance-legend .legend-row:hover {
-    background-color: $highlight-color;
-    color: #fff;
+    .sanddance-legend {
+        th {
+            color: #3ac5f3;
+            &:hover {
+                color: #009ed3;
+            }
+        }
+    }
 }
