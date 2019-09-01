@@ -89,9 +89,6 @@ function selectFirst(options: FabricTypes.IDropdownOption[]) {
 export function ColumnMap(props: Props) {
   if (!props.specRole) return null;
   let numericLabel = strings.selectNumeric;
-  if (props.specRole.binnable) {
-    numericLabel = strings.selectNumericWithBinning;
-  }
   const qoptions = optionsForSpecColumn(numericLabel, props.quantitativeColumns, props.specRole.role, props.selectedColumnName);
   const coptions = props.specRole.excludeCategoric ? null : optionsForSpecColumn(strings.selectNonNumeric, props.categoricalColumns, props.specRole.role, props.selectedColumnName);
   const options = qoptions.concat(coptions).filter(Boolean);
