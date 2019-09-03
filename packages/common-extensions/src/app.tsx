@@ -1,15 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-declare var vega: SandDanceExplorer.SandDance.VegaDeckGl.types.VegaBase;
-declare var deck: SandDanceExplorer.SandDance.VegaDeckGl.types.DeckBase & SandDanceExplorer.SandDance.VegaDeckGl.types.DeckLayerBase;
-declare var luma: SandDanceExplorer.SandDance.VegaDeckGl.types.LumaBase;
+import SandDance = SandDanceExplorer.SandDanceReact.SandDance;
+import VegaDeckGl = SandDance.VegaDeckGl;
+
+declare var vega: VegaDeckGl.types.VegaBase;
+declare var deck: VegaDeckGl.types.DeckBase & VegaDeckGl.types.DeckLayerBase;
+declare var luma: VegaDeckGl.types.LumaBase;
 declare var Fabric: _Fabric.FabricComponents;
 
 SandDanceExplorer.use(Fabric, vega, deck, deck, luma);
 
 function getTextcolor() {
     const cssColor = getComputedStyle(document.body).color;
-    return SandDanceExplorer.SandDance.VegaDeckGl.util.colorFromString(cssColor);
+    return VegaDeckGl.util.colorFromString(cssColor);
 }
 
 function getThemePalette(darkTheme: boolean) {
@@ -48,7 +51,7 @@ interface Handlers {
 }
 
 class App extends React.Component<{}, State> {
-    private viewerOptions: Partial<SandDanceExplorer.SandDance.types.ViewerOptions>;
+    private viewerOptions: Partial<SandDance.types.ViewerOptions>;
     private handlers: Handlers;
     public explorer: SandDanceExplorer.Explorer;
 
