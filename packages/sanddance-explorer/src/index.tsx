@@ -8,5 +8,4 @@ export { getColorSettingsFromThemePalette, themePalettes } from './themes'
 export * from "./explorer";
 
 export { SandDanceReact };
-
-export const version = "DEBUG";
+export { version } from './version';

@@ -7,9 +7,9 @@ console.log(`versioning in ${cwd}...`);
 
 const packageJson = require(path.resolve(cwd, 'package.json'));
 
-const index = path.resolve(cwd, 'dist', 'es6', 'index.js');
-const js = fs.readFileSync(index, 'utf8').replace('DEBUG', packageJson.version);
+const file = path.resolve(cwd, 'dist', 'es6', 'version.js');
+const js = fs.readFileSync(file, 'utf8').replace('DEBUG', packageJson.version);
 
-fs.writeFileSync(index, js);
+fs.writeFileSync(file, js);
 
 console.log(`versioning complete`);
