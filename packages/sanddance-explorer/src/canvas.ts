@@ -14,3 +14,8 @@ export function removeTabIndex(viewer: SandDance.Viewer) {
         canvas.tabIndex = -1;
     }
 }
+
+export const capabilities = {
+    webgl: !!document.createElement('canvas').getContext('webgl'),
+    webgl2: !!document.createElement('canvas').getContext('webgl2')
+};
