@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { DataFile, SandDance, Snapshot } from "@msrvida/sanddance-explorer";
+import { DataFile, SandDanceReact, Snapshot } from "@msrvida/sanddance-explorer";
+
+import types = SandDanceReact.SandDance.types;
 
 export type DataSourceType = 'sample' | 'local' | 'url';
 
@@ -11,7 +13,7 @@ export interface DataSource extends DataFile {
 }
 
 export interface InsightMap {
-  [id: string]: SandDance.types.Insight;
+  [id: string]: types.Insight;
 }
 
 export interface DataSourceSnapshot extends Snapshot {

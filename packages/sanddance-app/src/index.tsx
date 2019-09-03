@@ -5,13 +5,13 @@ import * as layers from '@deck.gl/layers';
 import * as luma from 'luma.gl';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import * as SandDanceExplorer from '@msrvida/sanddance-explorer';
 import * as vega from 'vega-lib';
 import {
   ColorSettings,
   DataFileType,
   Explorer,
-  Prefs,
-  SandDance
+  Prefs
 } from '@msrvida/sanddance-explorer';
 import { DataSource, InsightMap } from './types';
 import { fabric } from './fabricComponents';
@@ -33,7 +33,8 @@ const dataSets = Array.from(
 });
 
 export let explorer: Explorer;
-export { SandDance };
+
+export { SandDanceExplorer };
 
 declare var insights: InsightMap;
 declare var darkTheme: boolean;
