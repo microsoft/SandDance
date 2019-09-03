@@ -19,6 +19,7 @@ export interface InteractiveState {
     isDragging: boolean;
     onCube: boolean;
     onText: boolean;
+    onAxisSelection: boolean;
 }
 
 export type DeckGLInternalProps = DeckProps & {
