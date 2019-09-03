@@ -103,7 +103,6 @@ export const strings = {
     selectAny: "-- any --",
     selectNone: "-- none --",
     selectNumeric: "Numeric",
-    selectNumericWithBinning: "Numeric (with binning)",
     selectNonNumeric: "Categorical",
     tooltipSearch: (column, value) => `Click to search in '${column}' for "${value}"`,
     labelRequired: "required",

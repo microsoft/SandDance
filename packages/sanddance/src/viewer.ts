@@ -549,13 +549,16 @@ export class Viewer {
                 }
             },
             onLegendClick: (e: MouseEvent, legend: VegaDeckGl.types.Legend, clickedIndex: number) => {
-                const legendRow = legend.rows[clickedIndex] && legend.rows[clickedIndex] as LegendRowWithSearch;
+                const legendRow = clickedIndex !== null && legend.rows[clickedIndex] as LegendRowWithSearch;
                 if (legendRow) {
                     if (this.options.onLegendRowClick) {
                         this.options.onLegendRowClick(e, legendRow);
                     } else {
                         this.select(legendRow.search);
                     }
+                } else if (this.options.onLegendHeaderClick) {
+                    //header clicked
+                    this.options.onLegendHeaderClick(e);
                 }
             }
         };
