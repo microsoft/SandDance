@@ -15,7 +15,7 @@
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "bundle": "rollup -c",
-    "build": "npm run build-typescript && npm run build-css && npm run bundle",
+    "build": "npm run build-typescript && node ../../scripts/version.js && npm run build-css && npm run bundle",
     "watch-css": "node-sass ./src/css -o ./dist/css -w",
     "build-css": "node-sass ./src/css -o ./dist/css"
   },

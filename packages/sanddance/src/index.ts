@@ -9,7 +9,7 @@ import { colorSchemes } from './colorSchemes';
 import { use } from './vega-deck.gl';
 import { Viewer } from './viewer';
 
-export let version = "debug";
+export const version = "DEBUG";
 
 export {
     colorSchemes,

@@ -3,7 +3,7 @@
 import * as SandDance from '@msrvida/sanddance';
 import * as util from './util';
 
-export let version = "debug";
+export const version = "DEBUG";
 
 export { SandDance, util };
 export { Props, SandDanceReact } from './viewer';

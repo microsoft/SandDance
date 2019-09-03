@@ -9,4 +9,4 @@ export * from "./explorer";
 
 export { SandDanceReact };
 
-export let version = "debug";
+export const version = "DEBUG";
