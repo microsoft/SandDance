@@ -552,6 +552,7 @@ interface ViewerOptions extends SpecViewOptions {
     getTextHighlightColor?: (t: TextLayerDatum) => Color;
     onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, o: TextLayerDatum) => void;
     onAxisClick?: (e: TouchEvent | MouseEvent | PointerEvent, serch: SearchExpressionGroup<SearchExpression>) => void;
+    onLegendHeaderClick?: (e: TouchEvent | MouseEvent | PointerEvent) => void;
     onLegendRowClick?: (e: TouchEvent | MouseEvent | PointerEvent, legendRow: LegendRowWithSearch) => void;
     onVegaSpec?: (vegaSpec: Spec) => void;
     selectionPolygonZ: number;
@@ -583,6 +584,7 @@ interface ViewerOptions extends SpecViewOptions {
 | getTextHighlightColor | (t: TextLayerDatum) => Color                                                                                  | true     | Optional handler to get the highlight color of text elements.               |
 | onTextClick           | (e: MouseEvent &#124; PointerEvent &#124; TouchEvent, o: TextLayerDatum) => void                              | true     | Optional click handler for text elements.                                   |
 | onAxisClick           | (e: TouchEvent &#124; MouseEvent &#124; PointerEvent, serch: SearchExpressionGroup<SearchExpression>) => void | true     | Optional handler when axis is clicked.                                      |
+| onLegendHeaderClick   | (e: TouchEvent &#124; MouseEvent &#124; PointerEvent) => void                                                 | true     | Optional handler when legend header is clicked.                             |
 | onLegendRowClick      | (e: TouchEvent &#124; MouseEvent &#124; PointerEvent, legendRow: LegendRowWithSearch) => void                 | true     | Optional handler when legend row is clicked.                                |
 | onVegaSpec            | (vegaSpec: Spec) => void                                                                                      | true     | Optional handler when Vega spec is created, prior to it being rendered.     |
 | selectionPolygonZ     | number                                                                                                        | false    | Z value of selection polygons.                                              |

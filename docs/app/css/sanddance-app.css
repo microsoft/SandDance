@@ -451,7 +451,9 @@
   right: 0; }
 
 .sanddance-columnMap-absolute {
+  margin-bottom: 1em;
   margin-left: -4em;
+  margin-right: 1em;
   margin-top: -1em;
   z-index: 1; }
 
@@ -577,13 +579,26 @@
 .sanddance-signal {
   margin-top: 1em; }
 
-.dark-theme .sanddance-panel {
-  background-color: #000;
-  color: #fff; }
+.sanddance-legend th {
+  color: #005a9e;
+  cursor: pointer; }
+
+.sanddance-legend th:hover {
+  color: #2b88d8; }
 
 .sanddance-legend .legend-row:hover {
   background-color: #0078d4;
   color: #fff; }
+
+.dark-theme .sanddance-panel {
+  background-color: #000;
+  color: #fff; }
+
+.dark-theme .sanddance-legend th {
+  color: #3ac5f3; }
+
+.dark-theme .sanddance-legend th:hover {
+  color: #009ed3; }
 
 .sanddance-sidebar .sanddance-datascope {
   min-height: 7em; }

@@ -6692,7 +6692,7 @@ void main(void) {
         var sorted = Object.keys(props.legend.rows).sort((a, b) => +a - +b);
         sorted.forEach(i => addRow(props.legend.rows[i], +i));
         if (sorted.length) {
-            return (createElement(Table, { rows: rows, rowClassName: "legend-row", onRowClick: (e, i) => props.onClick(e, props.legend, i) }, props.legend.title !== void 0 && createElement("tr", null,
+            return (createElement(Table, { rows: rows, rowClassName: "legend-row", onRowClick: (e, i) => props.onClick(e, props.legend, i) }, props.legend.title !== void 0 && createElement("tr", { onClick: e => props.onClick(e, props.legend, null) },
                 createElement("th", { colSpan: 2 }, props.legend.title))));
         }
     };
@@ -7092,7 +7092,10 @@ void main(void) {
                     views: [new base.deck.OrbitView({ controller: this.OrbitControllerClass })],
                     container: this.getElement(PresenterElement.gl),
                     getCursor: (x) => {
-                        if (x.onCube || x.onText) {
+                        if (x.onText) {
+                            return 'pointer';
+                        }
+                        else if (x.onCube) {
                             return 'default';
                         }
                         else {
@@ -11791,7 +11794,7 @@ void main(void) {
                     }
                 },
                 onLegendClick: (e, legend, clickedIndex) => {
-                    const legendRow = legend.rows[clickedIndex] && legend.rows[clickedIndex];
+                    const legendRow = clickedIndex !== null && legend.rows[clickedIndex];
                     if (legendRow) {
                         if (this.options.onLegendRowClick) {
                             this.options.onLegendRowClick(e, legendRow);
@@ -11799,6 +11802,10 @@ void main(void) {
                         else {
                             this.select(legendRow.search);
                         }
+                    }
+                    else if (this.options.onLegendHeaderClick) {
+                        //header clicked
+                        this.options.onLegendHeaderClick(e);
                     }
                 }
             };
