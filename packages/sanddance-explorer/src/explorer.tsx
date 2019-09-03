@@ -37,6 +37,7 @@ import {
   TextWithSpecRole
 } from './clickableTextLayer';
 import { preferredColumnForTreemapSize, RecommenderSummary } from '@msrvida/chart-recommender';
+import { removeTabIndex } from './canvas';
 import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
 import { Settings } from './dialogs/settings';
 import { Sidebar, SideTabId } from './controls/sidebar';
@@ -1002,7 +1003,7 @@ export class Explorer extends React.Component<Props, State> {
                     return this.viewer.colorContexts && this.viewer.colorContexts[this.viewer.currentColorContext];
                   };
                   //don't allow tabbing to the canvas
-                  this.viewer.presenter.getElement(SandDance.VegaDeckGl.PresenterElement.gl).getElementsByTagName('canvas')[0].tabIndex = -1;
+                  removeTabIndex(this.viewer);
                   this.props.onView && this.props.onView();
                 }}
                 data={this.state.dataContent.data}

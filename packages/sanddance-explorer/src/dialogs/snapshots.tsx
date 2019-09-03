@@ -5,6 +5,7 @@ import { base } from '../base';
 import { Dialog } from '../controls/dialog';
 import { Explorer } from '../explorer';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { getCanvas } from '../canvas';
 import { Group } from '../controls/group';
 import { IconButton } from '../controls/iconButton';
 import { SandDance } from '@msrvida/sanddance-react';
@@ -82,7 +83,7 @@ export class Snapshots extends React.Component<Props, State>{
                 <base.fabric.PrimaryButton
                     text={strings.buttonCreateSnapshot}
                     onClick={e => {
-                        const canvas = this.props.explorer.viewer.presenter.getElement(SandDance.VegaDeckGl.PresenterElement.gl).getElementsByTagName('canvas')[0];
+                        const canvas = getCanvas(this.props.explorer.viewer);
                         this.resize(canvas && canvas.toDataURL("image/png"));
                         const bgColor = canvas && window.getComputedStyle(canvas).backgroundColor;
                         const insight = this.props.explorer.viewer.getInsight();
