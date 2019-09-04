@@ -38,11 +38,11 @@ function convertHomePage() {
 }
 
 const map = {
-    "https://microsoft.github.io/SandDance": "/SandDance",
+    "https://microsoft.github.io/SandDance": "",
     "dev.md": "https://github.com/Microsoft/SandDance/blob/master/dev.md",
-    "packages/sanddance/README.md": "/SandDance/docs/sanddance/v1/",
-    "packages/sanddance-react/README.md": "/SandDance/docs/sanddance-react/v1/",
-    "packages/sanddance-explorer/README.md": "/SandDance/docs/sanddance-explorer/v1/"
+    "packages/sanddance/README.md": "/docs/sanddance/v1/",
+    "packages/sanddance-react/README.md": "/docs/sanddance-react/v1/",
+    "packages/sanddance-explorer/README.md": "/docs/sanddance-explorer/v1/"
 };
 
 //https://stackoverflow.com/questions/1144783/how-to-replace-all-occurrences-of-a-string-in-javascript
