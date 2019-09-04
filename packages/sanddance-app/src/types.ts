@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { DataFile, SandDanceReact, Snapshot } from "@msrvida/sanddance-explorer";
+import { DataFile, SandDance, Snapshot } from "@msrvida/sanddance-explorer";
 
-import types = SandDanceReact.SandDance.types;
+import types = SandDance.types;
 
 export type DataSourceType = 'sample' | 'local' | 'url';
 

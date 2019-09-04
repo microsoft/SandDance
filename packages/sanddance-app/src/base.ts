@@ -2,9 +2,9 @@
 // Licensed under the MIT license.
 import * as SandDanceExplorer from '@msrvida/sanddance-explorer';
 import { FabricComponents } from '@msrvida/office-ui-fabric-react-cdn-typings';
-import { SandDanceReact } from '@msrvida/sanddance-explorer';
+import { SandDance } from '@msrvida/sanddance-explorer';
 
-import types = SandDanceReact.SandDance.VegaDeckGl.types;
+import types = SandDance.VegaDeckGl.types;
 
 /**
  * References to dependency libraries.

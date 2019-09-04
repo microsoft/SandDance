@@ -7,7 +7,7 @@ import {
   Explorer,
   getColorSettingsFromThemePalette,
   Options,
-  SandDanceReact,
+  SandDance,
   Snapshot,
   themePalettes,
   ViewerOptions
@@ -16,9 +16,8 @@ import { DataSource, DataSourceSnapshot, InsightMap } from './types';
 import { DataSourcePicker } from './dataSourcePicker';
 import { strings } from './language';
 
-import SandDance = SandDanceReact.SandDance;
 import VegaDeckGl = SandDance.VegaDeckGl;
-import types = SandDanceReact.SandDance.types;
+import types = SandDance.types;
 
 export interface Props {
   themeColors: { [theme: string]: ColorSettings };

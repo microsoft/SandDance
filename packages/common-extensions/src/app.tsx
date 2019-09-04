@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import SandDance = SandDanceExplorer.SandDanceReact.SandDance;
+import SandDance = SandDanceExplorer.SandDance;
 import VegaDeckGl = SandDance.VegaDeckGl;
 
 declare var vega: VegaDeckGl.types.VegaBase;
