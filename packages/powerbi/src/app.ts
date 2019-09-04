@@ -7,6 +7,7 @@ import * as luma from 'luma.gl';
 import * as React from 'react';
 import * as vega from 'vega-lib';
 import {
+    capabilities,
     DataFile,
     Explorer,
     Props as ExplorerProps,
@@ -16,6 +17,7 @@ import {
     util
 } from '@msrvida/sanddance-explorer';
 import { Logo } from '@msrvida/sanddance-explorer/dist/es6/controls/logo';
+import { strings } from './language';
 
 fabric.initializeIcons();
 
@@ -127,7 +129,10 @@ export class App extends React.Component<Props, State> {
             React.createElement("div", { className: "sanddance-init" },
                 React.createElement("div", null,
                     React.createElement(Logo)
-                )
+                ),
+                !capabilities.webgl && React.createElement("div", { className: "sanddance-webgl-required" },
+                    strings.webglDisabled
+                ),
             )
         );
     }

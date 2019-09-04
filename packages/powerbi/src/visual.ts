@@ -34,7 +34,7 @@ import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInst
 import VisualObjectInstance = powerbi.VisualObjectInstance;
 import DataView = powerbi.DataView;
 import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject;
-import { SandDance } from "@msrvida/sanddance-explorer";
+import { capabilities, SandDance } from "@msrvida/sanddance-explorer";
 import { createElement } from 'react';
 import { render } from 'react-dom';
 
@@ -98,6 +98,11 @@ export class Visual implements IVisual {
 
     public update(options: VisualUpdateOptions) {
         //console.log('Visual update', options);
+
+        if (!capabilities.webgl) {
+            this.app.unload();
+            return;
+        }
 
         const dataView = options && options.dataViews && options.dataViews[0];
         if (!dataView || !dataView.table) {
