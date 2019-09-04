@@ -52,9 +52,13 @@ interface NameValuePair {
 function displayValue(value: any) {
     switch (value) {
         case '':
-            return <i>blank</i>;
+            return <i>{strings.labelBlank}</i>;
         case null:
-            return <i>null</i>;
+            return <i>{strings.labelNull}</i>;
+        case true:
+            return <i>{strings.labelTrue}</i>;
+        case false:
+            return <i>{strings.labelFalse}</i>;
         default:
             return value;
     }
