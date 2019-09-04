@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@types/react-dom": "^16.8.4",
+    "powerbi-visuals-tools": "^3.1.5",
     "ts-loader": "5.2.2"
   }
 }
