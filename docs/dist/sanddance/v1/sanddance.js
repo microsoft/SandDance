@@ -7091,11 +7091,11 @@ void main(void) {
                     onLayerClick: config && config.onLayerClick,
                     views: [new base.deck.OrbitView({ controller: this.OrbitControllerClass })],
                     container: this.getElement(PresenterElement.gl),
-                    getCursor: (x) => {
-                        if (x.onText) {
+                    getCursor: (interactiveState) => {
+                        if (interactiveState.onText || interactiveState.onAxisSelection) {
                             return 'pointer';
                         }
-                        else if (x.onCube) {
+                        else if (interactiveState.onCube) {
                             return 'default';
                         }
                         else {
@@ -8201,7 +8201,7 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function axisSelectionLayer(specCapabilities, columns, stage, clickHandler, highlightColor, polygonZ) {
+    function axisSelectionLayer(presenter, specCapabilities, columns, stage, clickHandler, highlightColor, polygonZ) {
         const polygons = [];
         const xRole = specCapabilities.roles.filter(r => r.role === 'x')[0];
         if (xRole && xRole.axisSelection) {
@@ -8232,6 +8232,14 @@ void main(void) {
             extruded: false,
             highlightColor,
             id: 'selections',
+            onHover: (o, e) => {
+                if (o.index === -1) {
+                    presenter.deckgl.interactiveState.onAxisSelection = false;
+                }
+                else {
+                    presenter.deckgl.interactiveState.onAxisSelection = true;
+                }
+            },
             onClick,
             getElevation: () => 0,
             getFillColor: () => [0, 0, 0, 0],
@@ -11718,7 +11726,7 @@ void main(void) {
                     this.select(search);
                 }
             };
-            const polygonLayer = axisSelectionLayer(this.specCapabilities, this._specColumns, stage, onClick, this.options.colors.axisSelectHighlight, this.options.selectionPolygonZ);
+            const polygonLayer = axisSelectionLayer(this.presenter, this.specCapabilities, this._specColumns, stage, onClick, this.options.colors.axisSelectHighlight, this.options.selectionPolygonZ);
             const order = 1; //after textlayer but before others
             deckProps.layers.splice(order, 0, polygonLayer);
             finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
@@ -11956,6 +11964,10 @@ void main(void) {
     Viewer.defaultViewerOptions = defaultViewerOptions;
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
+    // Licensed under the MIT license.
+    const version = "1.4.0";
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
 
     exports.colorSchemes = colorSchemes;
     exports.constants = constants;
@@ -11965,6 +11977,7 @@ void main(void) {
     exports.util = util$1;
     exports.VegaDeckGl = index$2;
     exports.Viewer = Viewer;
+    exports.version = version;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

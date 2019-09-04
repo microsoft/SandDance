@@ -306,6 +306,18 @@ const themePalettes: { [theme: string]: Partial<IPalette>; };
 
 { [theme: string]: Partial<IPalette>; }
 
+----------
+
+### version
+
+```typescript
+const version: string;
+```
+
+**Type**
+
+string
+
 [SourceFile-0]: index#indextsx
 [FunctionDeclaration-0]: index#use
 [FunctionDeclaration-1]: index#getcolorsettingsfromthemepalette
@@ -328,3 +340,4 @@ const themePalettes: { [theme: string]: Partial<IPalette>; };
 [TypeAliasDeclaration-0]: index#datafiletype
 [ClassDeclaration-0]: explorer#explorer
 [VariableDeclaration-0]: index#themepalettes
+[VariableDeclaration-1]: index#version

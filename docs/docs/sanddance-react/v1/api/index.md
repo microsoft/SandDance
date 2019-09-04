@@ -44,8 +44,21 @@ interface Props {
 ### [util][NamespaceImport-1]
 
 
+## Variables
+
+### version
+
+```typescript
+const version: string;
+```
+
+**Type**
+
+string
+
 [SourceFile-0]: index#indexts
 [InterfaceDeclaration-0]: index#props
 [ClassDeclaration-0]: sanddancereact#sanddancereact
 [NamespaceImport-0]: sanddance#sanddance
 [NamespaceImport-1]: util#util
+[VariableDeclaration-2]: index#version

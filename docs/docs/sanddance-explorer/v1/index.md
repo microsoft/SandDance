@@ -9,7 +9,7 @@ Visually explore, understand, and present your data.
 ![image](https://user-images.githubusercontent.com/11507384/54243089-591fcf80-44e4-11e9-851e-5ff4a262ccfd.png)
 
 
-[Demo](/SandDance/app) - [API Reference](/SandDance/docs/sanddance-explorer/v1/api)
+[Demo](/app) - [API Reference](/docs/sanddance-explorer/v1/api)
 
 ## Installation
 
@@ -36,4 +36,4 @@ SandDance.use(vega, deck, layers, luma);
 ```
 
 ## For more information
-Please visit the [SandDance website](/SandDance/).
+Please visit the [SandDance website](/).

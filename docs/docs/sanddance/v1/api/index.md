@@ -73,6 +73,18 @@ const colorSchemes: ColorScheme[];
 
 [ColorScheme][InterfaceDeclaration-0][]
 
+----------
+
+### version
+
+```typescript
+const version: string;
+```
+
+**Type**
+
+string
+
 [SourceFile-0]: index#indexts
 [FunctionDeclaration-5]: index#use
 [InterfaceDeclaration-44]: vegadeckgl/types#vegabase
@@ -87,3 +99,4 @@ const colorSchemes: ColorScheme[];
 [NamespaceImport-4]: vegadeckgl#vegadeckgl
 [VariableDeclaration-0]: index#colorschemes
 [InterfaceDeclaration-0]: types#colorscheme
+[VariableDeclaration-10]: index#version

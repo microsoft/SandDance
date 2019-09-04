@@ -8932,10 +8932,10 @@ class Presenter {
           controller: this.OrbitControllerClass
         })],
         container: this.getElement(_enums.PresenterElement.gl),
-        getCursor: x => {
-          if (x.onText) {
+        getCursor: interactiveState => {
+          if (interactiveState.onText || interactiveState.onAxisSelection) {
             return 'pointer';
-          } else if (x.onCube) {
+          } else if (interactiveState.onCube) {
             return 'default';
           } else {
             return 'grab';
@@ -10462,7 +10462,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function axisSelectionLayer(specCapabilities, columns, stage, clickHandler, highlightColor, polygonZ) {
+function axisSelectionLayer(presenter, specCapabilities, columns, stage, clickHandler, highlightColor, polygonZ) {
   const polygons = [];
   const xRole = specCapabilities.roles.filter(r => r.role === 'x')[0];
 
@@ -10500,6 +10500,13 @@ function axisSelectionLayer(specCapabilities, columns, stage, clickHandler, high
     extruded: false,
     highlightColor,
     id: 'selections',
+    onHover: (o, e) => {
+      if (o.index === -1) {
+        presenter.deckgl.interactiveState.onAxisSelection = false;
+      } else {
+        presenter.deckgl.interactiveState.onAxisSelection = true;
+      }
+    },
     onClick,
     getElevation: () => 0,
     getFillColor: () => [0, 0, 0, 0],
@@ -14966,7 +14973,7 @@ class Viewer {
       }
     };
 
-    const polygonLayer = (0, _axisSelection.axisSelectionLayer)(this.specCapabilities, this._specColumns, stage, onClick, this.options.colors.axisSelectHighlight, this.options.selectionPolygonZ);
+    const polygonLayer = (0, _axisSelection.axisSelectionLayer)(this.presenter, this.specCapabilities, this._specColumns, stage, onClick, this.options.colors.axisSelectHighlight, this.options.selectionPolygonZ);
     const order = 1; //after textlayer but before others
 
     deckProps.layers.splice(order, 0, polygonLayer);
@@ -15251,7 +15258,18 @@ class Viewer {
 
 exports.Viewer = Viewer;
 Viewer.defaultViewerOptions = _defaults2.defaultViewerOptions;
-},{"./searchExpression":"0mJg","./vega-deck.gl":"Uns8","./animator":"U1OZ","./colorCubes":"PfBA","./signals":"jmI2","./ordinal":"/0dx","./axisSelection":"oIzg","./specs/clone":"DO07","./dataScope":"5MJ1","./vega-deck.gl/defaults":"JuFU","./defaults":"G0Md","./details":"1/KC","./headers":"nQLz","./legend":"9/rI","tsx-create-element":"QGtg","./axes":"A7xy","./colorSchemes":"kNpg","./tooltip":"bkgF"}],"rZaE":[function(require,module,exports) {
+},{"./searchExpression":"0mJg","./vega-deck.gl":"Uns8","./animator":"U1OZ","./colorCubes":"PfBA","./signals":"jmI2","./ordinal":"/0dx","./axisSelection":"oIzg","./specs/clone":"DO07","./dataScope":"5MJ1","./vega-deck.gl/defaults":"JuFU","./defaults":"G0Md","./details":"1/KC","./headers":"nQLz","./legend":"9/rI","tsx-create-element":"QGtg","./axes":"A7xy","./colorSchemes":"kNpg","./tooltip":"bkgF"}],"DZif":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.version = void 0;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+const version = "1.4.0";
+exports.version = version;
+},{}],"rZaE":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15273,6 +15291,12 @@ Object.defineProperty(exports, "Viewer", {
   enumerable: true,
   get: function () {
     return _viewer.Viewer;
+  }
+});
+Object.defineProperty(exports, "version", {
+  enumerable: true,
+  get: function () {
+    return _version.version;
   }
 });
 exports.VegaDeckGl = exports.util = exports.types = exports.searchExpression = exports.constants = void 0;
@@ -15301,8 +15325,10 @@ var _colorSchemes = require("./colorSchemes");
 
 var _viewer = require("./viewer");
 
+var _version = require("./version");
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-},{"./constants":"Syc7","./searchExpression":"0mJg","./types":"JCLk","./util":"BTLl","./vega-deck.gl":"Uns8","./colorSchemes":"kNpg","./viewer":"CdFf"}],"wkaK":[function(require,module,exports) {
+},{"./constants":"Syc7","./searchExpression":"0mJg","./types":"JCLk","./util":"BTLl","./vega-deck.gl":"Uns8","./colorSchemes":"kNpg","./viewer":"CdFf","./version":"DZif"}],"wkaK":[function(require,module,exports) {
 module.exports = compare;
 
 /*
@@ -16371,7 +16397,18 @@ class SandDanceReact extends React.Component {
 }
 
 exports.SandDanceReact = SandDanceReact;
-},{"react":"W4rj","./util":"HI4Z","react-dom":"UiuB","@msrvida/sanddance":"rZaE"}],"MjKu":[function(require,module,exports) {
+},{"react":"W4rj","./util":"HI4Z","react-dom":"UiuB","@msrvida/sanddance":"rZaE"}],"6TN0":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.version = void 0;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+const version = "1.1.0";
+exports.version = version;
+},{}],"MjKu":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16381,6 +16418,12 @@ Object.defineProperty(exports, "SandDanceReact", {
   enumerable: true,
   get: function () {
     return _viewer.SandDanceReact;
+  }
+});
+Object.defineProperty(exports, "version", {
+  enumerable: true,
+  get: function () {
+    return _version.version;
   }
 });
 exports.util = exports.SandDance = void 0;
@@ -16395,8 +16438,10 @@ exports.util = util;
 
 var _viewer = require("./viewer");
 
+var _version = require("./version");
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-},{"@msrvida/sanddance":"rZaE","./util":"HI4Z","./viewer":"qyfj"}],"Vlbn":[function(require,module,exports) {
+},{"@msrvida/sanddance":"rZaE","./util":"HI4Z","./viewer":"qyfj","./version":"6TN0"}],"Vlbn":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17322,6 +17367,7 @@ var strings = {
   chartTypeStacks: "Stacks",
   chartTypeTreeMap: "Tree map",
   errorColumnMustBeNumeric: "Numeric column required for this chart type.",
+  labelSystemInfo: "System info",
   labelChartSettings: "Chart settings",
   labelDataBrowser: "Data browser",
   labelTools: "Tools",
@@ -17361,6 +17407,8 @@ var strings = {
   labelTransitionSize: "Size",
   labelVegaSpecData: "Data reference",
   labelVegaSpecNotes: "Note: You may need to change the color scheme to make this visible in Vega.",
+  labelYes: "Yes",
+  labelNo: "No",
   loading: "Loading...",
   schemeCategorical: "Categorical",
   schemeDiverging: "Diverging",
@@ -17396,6 +17444,7 @@ var strings = {
     return "Click to search in '".concat(column, "' for \"").concat(value, "\"");
   },
   labelRequired: "required",
+  labelSystem: "System",
   lavelViewType2d: "View in 2D",
   labelViewType3d: "View in 3D",
   labelDataNullAll: "Loading data...",
@@ -23061,7 +23110,53 @@ function (_React$Component) {
 }(React.Component);
 
 exports.PositionedColumnMap = PositionedColumnMap;
-},{"react":"ccIB","./controls/columnMap":"DSho","@msrvida/sanddance-react":"MjKu"}],"zKGJ":[function(require,module,exports) {
+},{"react":"ccIB","./controls/columnMap":"DSho","@msrvida/sanddance-react":"MjKu"}],"Dryx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getCanvas = getCanvas;
+exports.removeTabIndex = removeTabIndex;
+exports.capabilities = void 0;
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var PresenterElement = _sanddanceReact.SandDance.VegaDeckGl.PresenterElement;
+
+function getCanvas(viewer) {
+  var tags = viewer.presenter.getElement(PresenterElement.gl).getElementsByTagName('canvas');
+
+  if (tags) {
+    return tags[0];
+  }
+}
+
+function removeTabIndex(viewer) {
+  var canvas = getCanvas(viewer);
+
+  if (canvas) {
+    canvas.tabIndex = -1;
+  }
+}
+
+var capabilities = {
+  webgl: !!document.createElement('canvas').getContext('webgl'),
+  webgl2: !!document.createElement('canvas').getContext('webgl2')
+};
+exports.capabilities = capabilities;
+},{"@msrvida/sanddance-react":"MjKu"}],"RvaL":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.version = void 0;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+var version = "1.5.0";
+exports.version = version;
+},{}],"zKGJ":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23071,7 +23166,11 @@ exports.Settings = void 0;
 
 var React = _interopRequireWildcard(require("react"));
 
+var SandDanceReact = _interopRequireWildcard(require("@msrvida/sanddance-react"));
+
 var _base = require("../base");
+
+var _canvas = require("../canvas");
 
 var _dialog = require("../controls/dialog");
 
@@ -23079,11 +23178,11 @@ var _dropdown = require("../controls/dropdown");
 
 var _group = require("../controls/group");
 
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
 var _signal = require("../controls/signal");
 
 var _language = require("../language");
+
+var _version = require("../version");
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -23105,6 +23204,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+var SandDance = SandDanceReact.SandDance;
 var DataRefType;
 
 (function (DataRefType) {
@@ -23115,12 +23215,12 @@ var DataRefType;
 
 function filterSignals(signal) {
   switch (signal.name) {
-    case _sanddanceReact.SandDance.constants.SignalNames.XBins:
-    case _sanddanceReact.SandDance.constants.SignalNames.YBins:
-    case _sanddanceReact.SandDance.constants.SignalNames.ColorBinCount:
-    case _sanddanceReact.SandDance.constants.SignalNames.ColorReverse:
-    case _sanddanceReact.SandDance.constants.SignalNames.PointSize:
-    case _sanddanceReact.SandDance.constants.SignalNames.TreeMapMethod:
+    case SandDance.constants.SignalNames.XBins:
+    case SandDance.constants.SignalNames.YBins:
+    case SandDance.constants.SignalNames.ColorBinCount:
+    case SandDance.constants.SignalNames.ColorReverse:
+    case SandDance.constants.SignalNames.PointSize:
+    case SandDance.constants.SignalNames.TreeMapMethod:
       return false;
 
     default:
@@ -23133,25 +23233,23 @@ function cloneData(vegaSpec) {
   var valuesData = data0;
   var values = valuesData.values;
   delete valuesData.values;
-
-  var data = _sanddanceReact.SandDance.VegaDeckGl.util.clone(vegaSpec.data);
-
+  var data = SandDance.VegaDeckGl.util.clone(vegaSpec.data);
   valuesData.values = values;
   return data;
 }
 
 function cloneScales(vegaSpec) {
-  return _sanddanceReact.SandDance.VegaDeckGl.util.clone(vegaSpec.scales);
+  return SandDance.VegaDeckGl.util.clone(vegaSpec.scales);
 }
 
 function serializeSpec(vegaSpec, datafile, dataRefType, scheme) {
   var scales = cloneScales(vegaSpec);
   var colorScale = scales.filter(function (scale) {
-    return scale.name === _sanddanceReact.SandDance.constants.ScaleNames.Color;
+    return scale.name === SandDance.constants.ScaleNames.Color;
   })[0];
 
   if (scheme.indexOf('dual_') >= 0) {
-    colorScale.range = _sanddanceReact.SandDance.colorSchemes.filter(function (cs) {
+    colorScale.range = SandDance.colorSchemes.filter(function (cs) {
       return cs.scheme === scheme;
     })[0].colors;
   }
@@ -23193,6 +23291,7 @@ function defaultDataRefType(datafile) {
 
 function initState(props) {
   return {
+    showSystemDialog: false,
     showVegaDialog: false,
     dataRefType: defaultDataRefType(props.dataFile),
     spec: null
@@ -23337,6 +23436,15 @@ function (_React$Component) {
         min: 0,
         max: 10000,
         defaultValue: this.props.explorer.viewerOptions.transitionDurations.view
+      })), React.createElement(_group.Group, {
+        label: _language.strings.labelSystem
+      }, React.createElement(_base.base.fabric.DefaultButton, {
+        text: _language.strings.labelSystemInfo,
+        onClick: function onClick() {
+          return _this2.setState({
+            showSystemDialog: true
+          });
+        }
       })), React.createElement(_dialog.Dialog, {
         hidden: !state.showVegaDialog,
         onDismiss: function onDismiss() {
@@ -23380,7 +23488,13 @@ function (_React$Component) {
         }
       }), React.createElement("pre", {
         id: "sanddance-vega-spec"
-      }, JSON.stringify(this.state.spec, null, 2)), React.createElement("div", null, _language.strings.labelVegaSpecNotes)));
+      }, JSON.stringify(this.state.spec, null, 2)), React.createElement("div", null, _language.strings.labelVegaSpecNotes)), React.createElement(_dialog.Dialog, {
+        hidden: !state.showSystemDialog,
+        onDismiss: function onDismiss() {
+          return _this2.setState(initState(_this2.props));
+        },
+        title: _language.strings.labelSystemInfo
+      }, React.createElement("ul", null, React.createElement("li", null, "SandDanceExplorer version: ", _version.version), React.createElement("li", null, "SandDanceReact version: ", SandDanceReact.version), React.createElement("li", null, "SandDance version: ", SandDance.version), React.createElement("li", null, "WebGL enabled: ", _canvas.capabilities.webgl ? _language.strings.labelYes : _language.strings.labelNo), React.createElement("li", null, "WebGL2 enabled: ", _canvas.capabilities.webgl2 ? _language.strings.labelYes : _language.strings.labelNo))));
     }
   }]);
 
@@ -23388,7 +23502,7 @@ function (_React$Component) {
 }(React.Component);
 
 exports.Settings = Settings;
-},{"react":"ccIB","../base":"Vlbn","../controls/dialog":"cFWm","../controls/dropdown":"Uyrp","../controls/group":"4Q3h","@msrvida/sanddance-react":"MjKu","../controls/signal":"OWDI","../language":"hk5u"}],"GuKX":[function(require,module,exports) {
+},{"react":"ccIB","@msrvida/sanddance-react":"MjKu","../base":"Vlbn","../canvas":"Dryx","../controls/dialog":"cFWm","../controls/dropdown":"Uyrp","../controls/group":"4Q3h","../controls/signal":"OWDI","../language":"hk5u","../version":"RvaL"}],"GuKX":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23539,11 +23653,11 @@ var _base = require("../base");
 
 var _dialog = require("../controls/dialog");
 
+var _canvas = require("../canvas");
+
 var _group = require("../controls/group");
 
 var _iconButton = require("../controls/iconButton");
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
 
 var _language = require("../language");
 
@@ -23641,7 +23755,7 @@ function (_React$Component) {
       }, React.createElement(_base.base.fabric.PrimaryButton, {
         text: _language.strings.buttonCreateSnapshot,
         onClick: function onClick(e) {
-          var canvas = _this3.props.explorer.viewer.presenter.getElement(_sanddanceReact.SandDance.VegaDeckGl.PresenterElement.gl).getElementsByTagName('canvas')[0];
+          var canvas = (0, _canvas.getCanvas)(_this3.props.explorer.viewer);
 
           _this3.resize(canvas && canvas.toDataURL("image/png"));
 
@@ -23745,7 +23859,7 @@ function Actions(props) {
     }
   }));
 }
-},{"react":"ccIB","../base":"Vlbn","../controls/dialog":"cFWm","../controls/group":"4Q3h","../controls/iconButton":"5dQN","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"yzxM":[function(require,module,exports) {
+},{"react":"ccIB","../base":"Vlbn","../controls/dialog":"cFWm","../canvas":"Dryx","../controls/group":"4Q3h","../controls/iconButton":"5dQN","../language":"hk5u"}],"yzxM":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24065,6 +24179,8 @@ var _dataLoader = require("./dataLoader");
 var _clickableTextLayer = require("./clickableTextLayer");
 
 var _chartRecommender = require("@msrvida/chart-recommender");
+
+var _canvas = require("./canvas");
 
 var _sanddanceReact = require("@msrvida/sanddance-react");
 
@@ -25267,7 +25383,7 @@ function (_React$Component) {
           }; //don't allow tabbing to the canvas
 
 
-          _this9.viewer.presenter.getElement(_sanddanceReact.SandDance.VegaDeckGl.PresenterElement.gl).getElementsByTagName('canvas')[0].tabIndex = -1;
+          (0, _canvas.removeTabIndex)(_this9.viewer);
           _this9.props.onView && _this9.props.onView();
         },
         data: this.state.dataContent.data,
@@ -25320,31 +25436,19 @@ function (_React$Component) {
 }(React.Component);
 
 exports.Explorer = Explorer;
-},{"react":"ccIB","./colorMap":"E67y","./base":"Vlbn","./colorScheme":"L8O2","./dialogs/chart":"NGSt","./dialogs/color":"N8IJ","./partialInsight":"tb7d","./dialogs/dataBrowser":"8pJL","./controls/dataScope":"Os+N","./defaults":"Tl9z","./controls/dialog":"cFWm","./columns":"f8v0","./mouseEvent":"yvMl","./dialogs/search":"ozxe","./dataLoader":"f19h","./clickableTextLayer":"UUG7","@msrvida/chart-recommender":"/i6U","@msrvida/sanddance-react":"MjKu","./dialogs/settings":"zKGJ","./controls/sidebar":"f8Jx","./dialogs/snapshots":"3oc9","./language":"hk5u","./themes":"CgE3","./toggleSearch":"yzxM","./controls/topbar":"Afi9"}],"Focm":[function(require,module,exports) {
+},{"react":"ccIB","./colorMap":"E67y","./base":"Vlbn","./colorScheme":"L8O2","./dialogs/chart":"NGSt","./dialogs/color":"N8IJ","./partialInsight":"tb7d","./dialogs/dataBrowser":"8pJL","./controls/dataScope":"Os+N","./defaults":"Tl9z","./controls/dialog":"cFWm","./columns":"f8v0","./mouseEvent":"yvMl","./dialogs/search":"ozxe","./dataLoader":"f19h","./clickableTextLayer":"UUG7","@msrvida/chart-recommender":"/i6U","./canvas":"Dryx","@msrvida/sanddance-react":"MjKu","./dialogs/settings":"zKGJ","./controls/sidebar":"f8Jx","./dialogs/snapshots":"3oc9","./language":"hk5u","./themes":"CgE3","./toggleSearch":"yzxM","./controls/topbar":"Afi9"}],"Focm":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var _exportNames = {
-  SandDance: true,
-  util: true,
   use: true,
   getColorSettingsFromThemePalette: true,
-  themePalettes: true
+  themePalettes: true,
+  SandDance: true,
+  version: true
 };
-Object.defineProperty(exports, "SandDance", {
-  enumerable: true,
-  get: function () {
-    return _sanddanceReact.SandDance;
-  }
-});
-Object.defineProperty(exports, "util", {
-  enumerable: true,
-  get: function () {
-    return _sanddanceReact.util;
-  }
-});
 Object.defineProperty(exports, "use", {
   enumerable: true,
   get: function () {
@@ -25363,8 +25467,18 @@ Object.defineProperty(exports, "themePalettes", {
     return _themes.themePalettes;
   }
 });
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
+Object.defineProperty(exports, "SandDance", {
+  enumerable: true,
+  get: function () {
+    return _sanddanceReact.SandDance;
+  }
+});
+Object.defineProperty(exports, "version", {
+  enumerable: true,
+  get: function () {
+    return _version.version;
+  }
+});
 
 var _base = require("./base");
 
@@ -25382,4 +25496,8 @@ Object.keys(_explorer).forEach(function (key) {
     }
   });
 });
-},{"@msrvida/sanddance-react":"MjKu","./base":"Vlbn","./themes":"CgE3","./explorer":"KeW6"}]},{},["Focm"], "SandDanceExplorer")
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var _version = require("./version");
+},{"./base":"Vlbn","./themes":"CgE3","./explorer":"KeW6","@msrvida/sanddance-react":"MjKu","./version":"RvaL"}]},{},["Focm"], "SandDanceExplorer")
