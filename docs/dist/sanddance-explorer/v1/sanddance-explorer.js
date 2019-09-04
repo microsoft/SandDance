@@ -16467,6 +16467,41 @@ function use(fabric, vega, deck, layers, luma) {
 
   base.fabric = fabric;
 }
+},{"@msrvida/sanddance-react":"MjKu"}],"Dryx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getCanvas = getCanvas;
+exports.removeTabIndex = removeTabIndex;
+exports.capabilities = void 0;
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var PresenterElement = _sanddanceReact.SandDance.VegaDeckGl.PresenterElement;
+
+function getCanvas(viewer) {
+  var tags = viewer.presenter.getElement(PresenterElement.gl).getElementsByTagName('canvas');
+
+  if (tags) {
+    return tags[0];
+  }
+}
+
+function removeTabIndex(viewer) {
+  var canvas = getCanvas(viewer);
+
+  if (canvas) {
+    canvas.tabIndex = -1;
+  }
+}
+
+var capabilities = {
+  webgl: !!document.createElement('canvas').getContext('webgl'),
+  webgl2: !!document.createElement('canvas').getContext('webgl2')
+};
+exports.capabilities = capabilities;
 },{"@msrvida/sanddance-react":"MjKu"}],"CgE3":[function(require,module,exports) {
 "use strict";
 
@@ -17367,6 +17402,10 @@ var strings = {
   chartTypeStacks: "Stacks",
   chartTypeTreeMap: "Tree map",
   errorColumnMustBeNumeric: "Numeric column required for this chart type.",
+  labelBlank: "blank",
+  labelNull: "null",
+  labelTrue: "true",
+  labelFalse: "false",
   labelSystemInfo: "System info",
   labelChartSettings: "Chart settings",
   labelDataBrowser: "Data browser",
@@ -21097,10 +21136,16 @@ function bingSearchLink(column, value) {
 function displayValue(value) {
   switch (value) {
     case '':
-      return React.createElement("i", null, "blank");
+      return React.createElement("i", null, _language.strings.labelBlank);
 
     case null:
-      return React.createElement("i", null, "null");
+      return React.createElement("i", null, _language.strings.labelNull);
+
+    case true:
+      return React.createElement("i", null, _language.strings.labelTrue);
+
+    case false:
+      return React.createElement("i", null, _language.strings.labelFalse);
 
     default:
       return value;
@@ -23110,42 +23155,7 @@ function (_React$Component) {
 }(React.Component);
 
 exports.PositionedColumnMap = PositionedColumnMap;
-},{"react":"ccIB","./controls/columnMap":"DSho","@msrvida/sanddance-react":"MjKu"}],"Dryx":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.getCanvas = getCanvas;
-exports.removeTabIndex = removeTabIndex;
-exports.capabilities = void 0;
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-var PresenterElement = _sanddanceReact.SandDance.VegaDeckGl.PresenterElement;
-
-function getCanvas(viewer) {
-  var tags = viewer.presenter.getElement(PresenterElement.gl).getElementsByTagName('canvas');
-
-  if (tags) {
-    return tags[0];
-  }
-}
-
-function removeTabIndex(viewer) {
-  var canvas = getCanvas(viewer);
-
-  if (canvas) {
-    canvas.tabIndex = -1;
-  }
-}
-
-var capabilities = {
-  webgl: !!document.createElement('canvas').getContext('webgl'),
-  webgl2: !!document.createElement('canvas').getContext('webgl2')
-};
-exports.capabilities = capabilities;
-},{"@msrvida/sanddance-react":"MjKu"}],"RvaL":[function(require,module,exports) {
+},{"react":"ccIB","./controls/columnMap":"DSho","@msrvida/sanddance-react":"MjKu"}],"RvaL":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23154,7 +23164,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var version = "1.5.0";
+var version = "1.5.1";
 exports.version = version;
 },{}],"zKGJ":[function(require,module,exports) {
 "use strict";
@@ -25444,15 +25454,23 @@ Object.defineProperty(exports, "__esModule", {
 });
 var _exportNames = {
   use: true,
+  capabilities: true,
   getColorSettingsFromThemePalette: true,
   themePalettes: true,
   SandDance: true,
+  util: true,
   version: true
 };
 Object.defineProperty(exports, "use", {
   enumerable: true,
   get: function () {
     return _base.use;
+  }
+});
+Object.defineProperty(exports, "capabilities", {
+  enumerable: true,
+  get: function () {
+    return _canvas.capabilities;
   }
 });
 Object.defineProperty(exports, "getColorSettingsFromThemePalette", {
@@ -25473,6 +25491,12 @@ Object.defineProperty(exports, "SandDance", {
     return _sanddanceReact.SandDance;
   }
 });
+Object.defineProperty(exports, "util", {
+  enumerable: true,
+  get: function () {
+    return _sanddanceReact.util;
+  }
+});
 Object.defineProperty(exports, "version", {
   enumerable: true,
   get: function () {
@@ -25481,6 +25505,8 @@ Object.defineProperty(exports, "version", {
 });
 
 var _base = require("./base");
+
+var _canvas = require("./canvas");
 
 var _themes = require("./themes");
 
@@ -25500,4 +25526,4 @@ Object.keys(_explorer).forEach(function (key) {
 var _sanddanceReact = require("@msrvida/sanddance-react");
 
 var _version = require("./version");
-},{"./base":"Vlbn","./themes":"CgE3","./explorer":"KeW6","@msrvida/sanddance-react":"MjKu","./version":"RvaL"}]},{},["Focm"], "SandDanceExplorer")
+},{"./base":"Vlbn","./canvas":"Dryx","./themes":"CgE3","./explorer":"KeW6","@msrvida/sanddance-react":"MjKu","./version":"RvaL"}]},{},["Focm"], "SandDanceExplorer")
