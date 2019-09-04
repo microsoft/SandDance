@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
+import * as SandDanceReact from '@msrvida/sanddance-react';
 import { base } from '../base';
+import { capabilities } from '../canvas';
 import { DataFile } from '../interfaces';
 import { Dialog } from '../controls/dialog';
 import { Dropdown } from '../controls/dropdown';
@@ -20,9 +22,11 @@ import {
     UrlData,
     ValuesData
 } from 'vega-typings/types';
-import { SandDance } from '@msrvida/sanddance-react';
 import { Signal } from '../controls/signal';
 import { strings } from '../language';
+import { version } from '../version';
+
+import SandDance = SandDanceReact.SandDance;
 
 type ScalesWithRange = QuantileScale | QuantizeScale | OrdinalScale | LinearScale | SequentialScale;
 
@@ -37,6 +41,7 @@ export interface Props {
 }
 
 export interface State {
+    showSystemDialog: boolean;
     showVegaDialog: boolean;
     dataRefType: DataRefType;
     spec: Spec;
@@ -105,6 +110,7 @@ function defaultDataRefType(datafile: DataFile) {
 
 function initState(props: Props): State {
     return {
+        showSystemDialog: false,
         showVegaDialog: false,
         dataRefType: defaultDataRefType(props.dataFile),
         spec: null
@@ -250,6 +256,12 @@ export class Settings extends React.Component<Props, State> {
                         defaultValue={this.props.explorer.viewerOptions.transitionDurations.view}
                     />
                 </Group>
+                <Group label={strings.labelSystem}>
+                    <base.fabric.DefaultButton
+                        text={strings.labelSystemInfo}
+                        onClick={() => this.setState({ showSystemDialog: true })}
+                    />
+                </Group>
                 <Dialog
                     hidden={!state.showVegaDialog}
                     onDismiss={() => this.setState(initState(this.props))}
@@ -298,6 +310,29 @@ export class Settings extends React.Component<Props, State> {
                     <div>
                         {strings.labelVegaSpecNotes}
                     </div>
+                </Dialog>
+                <Dialog
+                    hidden={!state.showSystemDialog}
+                    onDismiss={() => this.setState(initState(this.props))}
+                    title={strings.labelSystemInfo}
+                >
+                    <ul>
+                        <li>
+                            SandDanceExplorer version: {version}
+                        </li>
+                        <li>
+                            SandDanceReact version: {SandDanceReact.version}
+                        </li>
+                        <li>
+                            SandDance version: {SandDance.version}
+                        </li>
+                        <li>
+                            WebGL enabled: {capabilities.webgl ? strings.labelYes : strings.labelNo}
+                        </li>
+                        <li>
+                            WebGL2 enabled: {capabilities.webgl2 ? strings.labelYes : strings.labelNo}
+                        </li>
+                    </ul>
                 </Dialog>
             </div>
         );

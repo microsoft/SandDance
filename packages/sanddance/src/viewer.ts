@@ -470,7 +470,7 @@ export class Viewer {
                 this.select(search);
             }
         };
-        const polygonLayer = axisSelectionLayer(this.specCapabilities, this._specColumns, stage, onClick, this.options.colors.axisSelectHighlight, this.options.selectionPolygonZ);
+        const polygonLayer = axisSelectionLayer(this.presenter, this.specCapabilities, this._specColumns, stage, onClick, this.options.colors.axisSelectHighlight, this.options.selectionPolygonZ);
         const order = 1;//after textlayer but before others
         deckProps.layers.splice(order, 0, polygonLayer);
         finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);

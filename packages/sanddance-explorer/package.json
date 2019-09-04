@@ -15,7 +15,7 @@
     "watch-css": "node-sass ./src/css -o ./dist/css --watch",
     "bundle": "parcel build ./dist/es6/index.js --global SandDanceExplorer --no-minify --no-source-maps --out-dir ./dist/umd/ --out-file sanddance-explorer.js",
     "deploy": "node ./scripts/deploy.js",
-    "build": "npm run build-typescript && npm run bundle && npm run build-css"
+    "build": "npm run build-typescript && node ../../scripts/version.js && npm run bundle && npm run build-css"
   },
   "devDependencies": {
     "@types/d3-format": "^1.3.1",

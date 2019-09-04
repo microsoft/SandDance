@@ -19,3 +19,5 @@ export {
     VegaDeckGl,
     Viewer
 };
+
+export { version } from './version';

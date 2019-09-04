@@ -24,7 +24,7 @@ namespace testSandDance {
         }
     }
 
-    function specifycolumns(columns: SandDanceExplorer.SandDance.types.Column[]) {
+    function specifycolumns(columns: SandDance.types.Column[]) {
         return {
             columns: {
                 color: 'z',

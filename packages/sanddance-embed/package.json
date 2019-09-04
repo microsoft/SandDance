@@ -2,7 +2,7 @@
   "name": "@msrvida/sanddance-embed",
   "version": "1.0.1",
   "description": "SandDance Explorer with embedded data.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "files": [
     "dist"
   ],

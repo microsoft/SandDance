@@ -2,19 +2,23 @@
 // Licensed under the MIT license.
 import * as React from 'react';
 import { base } from './base';
-import { DataSource, DataSourceSnapshot, InsightMap } from './types';
-import { DataSourcePicker } from './dataSourcePicker';
 import {
   ColorSettings,
-  getColorSettingsFromThemePalette,
   Explorer,
+  getColorSettingsFromThemePalette,
   Options,
-  SandDance,
+  SandDanceReact,
   Snapshot,
   themePalettes,
   ViewerOptions
 } from '@msrvida/sanddance-explorer';
+import { DataSource, DataSourceSnapshot, InsightMap } from './types';
+import { DataSourcePicker } from './dataSourcePicker';
 import { strings } from './language';
+
+import SandDance = SandDanceReact.SandDance;
+import VegaDeckGl = SandDance.VegaDeckGl;
+import types = SandDanceReact.SandDance.types;
 
 export interface Props {
   themeColors: { [theme: string]: ColorSettings };
@@ -30,8 +34,6 @@ export interface State {
   dataSource: DataSource;
   darkTheme: boolean;
 }
-
-const { VegaDeckGl } = SandDance;
 
 function getViewerOptions(darkTheme: boolean, themeColors: { [theme: string]: ColorSettings }) {
   const colors = themeColors && themeColors[darkTheme ? 'dark' : 'light'];
@@ -55,7 +57,7 @@ function getSnapshotFromHash() {
 }
 
 export function serializeSnapshot(snapshotWithImage: Snapshot) {
-  const snapshot = SandDance.VegaDeckGl.util.clone(snapshotWithImage) as DataSourceSnapshot;
+  const snapshot = VegaDeckGl.util.clone(snapshotWithImage) as DataSourceSnapshot;
   //remove the image data from the snapshot
   delete snapshot.bgColor;
   delete snapshot.image;
@@ -73,7 +75,7 @@ interface Handlers {
   resize: (e: UIEvent) => void;
 }
 export class SandDanceApp extends React.Component<Props, State> {
-  private viewerOptions: Partial<SandDance.types.ViewerOptions>;
+  private viewerOptions: Partial<types.ViewerOptions>;
   private handlers: Handlers;
   public explorer: Explorer;
 
@@ -121,7 +123,7 @@ export class SandDanceApp extends React.Component<Props, State> {
     }
   }
 
-  load(dataSource: DataSource, partialInsight?: Partial<SandDance.types.Insight>) {
+  load(dataSource: DataSource, partialInsight?: Partial<types.Insight>) {
     this.setState({ dataSource });
     document.title = `SandDance - ${dataSource.displayName}`;
     return this.explorer.load(
@@ -133,7 +135,7 @@ export class SandDanceApp extends React.Component<Props, State> {
     );
   }
 
-  updateExplorerViewerOptions(viewerOptions: Partial<SandDance.types.ViewerOptions>) {
+  updateExplorerViewerOptions(viewerOptions: Partial<types.ViewerOptions>) {
     this.viewerOptions = viewerOptions;
     this.explorer && this.explorer.updateViewerOptions(this.viewerOptions);
   }
