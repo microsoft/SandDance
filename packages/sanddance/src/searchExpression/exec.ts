@@ -5,6 +5,18 @@ import { Column } from '../specs/types';
 import { ensureSearchExpressionGroupArray } from './group';
 import { Search, SearchExpression, SearchExpressionGroup } from './types';
 
+function valueToBoolean(value: any) {
+    if (typeof value === 'string') {
+        switch (value.toLowerCase()) {
+            case 'true':
+                return true;
+            case 'false':
+                return false;
+        }
+    }
+    return !!value;
+}
+
 function valueToString(value: any) {
     if (value == null) {
         return '';
@@ -39,6 +51,7 @@ function isnullorEmpty(value: any) {
 interface SearchExpressionLowercase extends SearchExpression {
     column: Column;
     valueLow: string;
+    valueBool: boolean;
     stringOperation: boolean;
 }
 
@@ -50,8 +63,9 @@ export class Exec {
         this.groups.forEach(group => {
             group.expressions.forEach(ex => {
                 ex.column = this.getColumn(ex.name);
+                ex.valueBool = valueToBoolean(ex.value);
                 ex.valueLow = valueToString(ex.value).toLocaleLowerCase();
-                ex.stringOperation = isStringOperation(ex)
+                ex.stringOperation = isStringOperation(ex);
             });
         });
     }
@@ -77,6 +91,9 @@ export class Exec {
             if (ex.column.type === 'string' || ex.stringOperation) {
                 dataValue = valueToString(actualDataValue).toLocaleLowerCase();
                 expressionValue = ex.valueLow;
+            } else if (ex.column.type === 'boolean') {
+                dataValue = valueToBoolean(actualDataValue);
+                expressionValue = ex.valueBool;
             } else if (ex.column.quantitative) {
                 dataValue = +actualDataValue;
                 expressionValue = +ex.value
