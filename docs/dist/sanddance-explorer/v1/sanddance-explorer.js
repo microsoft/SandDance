@@ -8411,7 +8411,8 @@ const legendMap = {
     const i = label.datum.index;
     legend.rows[i] = legend.rows[i] || {};
     const row = legend.rows[i];
-    row.label = row.value = label.text;
+    row.label = label.text;
+    row.value = label.datum.value;
   }
 };
 
@@ -8512,7 +8513,7 @@ const markStager = (options, stage, scene, x, y, groupType) => {
 
     if (item.mark.role === 'axis-label') {
       const tickText = textItem;
-      tickText.value = item.datum['value'];
+      tickText.value = item.datum.value;
       options.currAxis.tickText.push(tickText);
     } else if (item.mark.role === 'axis-title') {
       options.currAxis.title = textItem;
@@ -10850,7 +10851,7 @@ function topLookup(column, count) {
       "as": [_constants.FieldNames.Top]
     }, {
       "type": "formula",
-      "expr": `datum.${_constants.FieldNames.Top} || '${_constants.Other}'`,
+      "expr": `datum.${_constants.FieldNames.Top} == null ? '${_constants.Other}' : datum.${_constants.FieldNames.Top}`,
       "as": _constants.FieldNames.Top
     }]
   }];
@@ -13617,6 +13618,20 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+function valueToBoolean(value) {
+  if (typeof value === 'string') {
+    switch (value.toLowerCase()) {
+      case 'true':
+        return true;
+
+      case 'false':
+        return false;
+    }
+  }
+
+  return !!value;
+}
+
 function valueToString(value) {
   if (value == null) {
     return '';
@@ -13660,6 +13675,7 @@ class Exec {
     this.groups.forEach(group => {
       group.expressions.forEach(ex => {
         ex.column = this.getColumn(ex.name);
+        ex.valueBool = valueToBoolean(ex.value);
         ex.valueLow = valueToString(ex.value).toLocaleLowerCase();
         ex.stringOperation = isStringOperation(ex);
       });
@@ -13690,6 +13706,9 @@ class Exec {
       if (ex.column.type === 'string' || ex.stringOperation) {
         dataValue = valueToString(actualDataValue).toLocaleLowerCase();
         expressionValue = ex.valueLow;
+      } else if (ex.column.type === 'boolean') {
+        dataValue = valueToBoolean(actualDataValue);
+        expressionValue = ex.valueBool;
       } else if (ex.column.quantitative) {
         dataValue = +actualDataValue;
         expressionValue = +ex.value;
@@ -14269,7 +14288,7 @@ function selectQuantitative(colorBinType, column, legend, clickedIndex) {
   let lowOperator;
   let highValue;
   let highOperator;
-  const rowText = legend.rows[clickedIndex].value;
+  const rowText = legend.rows[clickedIndex].label;
 
   switch (colorBinType) {
     case 'continuous':
@@ -14500,11 +14519,31 @@ function getRows(item, options) {
       }
     }
 
+    let value = item[columnName];
+    let content;
+
+    if (options && options.displayValue) {
+      content = options.displayValue(value);
+    } else {
+      switch (value) {
+        case null:
+          content = (0, _tsxCreateElement.createElement)("i", null, "null");
+          break;
+
+        case undefined:
+          content = (0, _tsxCreateElement.createElement)("i", null, "undefined");
+          break;
+
+        default:
+          content = value.toString();
+      }
+    }
+
     rows.push({
       cells: [{
         content: columnName + ':'
       }, {
-        content: item[columnName]
+        content
       }]
     });
   }
@@ -15267,7 +15306,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = "1.4.0";
+const version = "1.4.3";
 exports.version = version;
 },{}],"rZaE":[function(require,module,exports) {
 "use strict";
@@ -21348,14 +21387,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
-var _formatDecimal = _interopRequireDefault(require("./formatDecimal"));
+var _formatDecimal = _interopRequireDefault(require("./formatDecimal.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _default(x) {
   return x = (0, _formatDecimal.default)(Math.abs(x)), x ? x[1] : NaN;
 }
-},{"./formatDecimal":"fiGR"}],"CupU":[function(require,module,exports) {
+},{"./formatDecimal.js":"fiGR"}],"CupU":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21403,32 +21442,44 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = formatSpecifier;
+exports.FormatSpecifier = FormatSpecifier;
 // [[fill]align][sign][symbol][0][width][,][.precision][~][type]
 var re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
 
 function formatSpecifier(specifier) {
-  return new FormatSpecifier(specifier);
+  if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
+  var match;
+  return new FormatSpecifier({
+    fill: match[1],
+    align: match[2],
+    sign: match[3],
+    symbol: match[4],
+    zero: match[5],
+    width: match[6],
+    comma: match[7],
+    precision: match[8] && match[8].slice(1),
+    trim: match[9],
+    type: match[10]
+  });
 }
 
 formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
 
 function FormatSpecifier(specifier) {
-  if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
-  var match;
-  this.fill = match[1] || " ";
-  this.align = match[2] || ">";
-  this.sign = match[3] || "-";
-  this.symbol = match[4] || "";
-  this.zero = !!match[5];
-  this.width = match[6] && +match[6];
-  this.comma = !!match[7];
-  this.precision = match[8] && +match[8].slice(1);
-  this.trim = !!match[9];
-  this.type = match[10] || "";
+  this.fill = specifier.fill === undefined ? " " : specifier.fill + "";
+  this.align = specifier.align === undefined ? ">" : specifier.align + "";
+  this.sign = specifier.sign === undefined ? "-" : specifier.sign + "";
+  this.symbol = specifier.symbol === undefined ? "" : specifier.symbol + "";
+  this.zero = !!specifier.zero;
+  this.width = specifier.width === undefined ? undefined : +specifier.width;
+  this.comma = !!specifier.comma;
+  this.precision = specifier.precision === undefined ? undefined : +specifier.precision;
+  this.trim = !!specifier.trim;
+  this.type = specifier.type === undefined ? "" : specifier.type + "";
 }
 
 FormatSpecifier.prototype.toString = function () {
-  return this.fill + this.align + this.sign + this.symbol + (this.zero ? "0" : "") + (this.width == null ? "" : Math.max(1, this.width | 0)) + (this.comma ? "," : "") + (this.precision == null ? "" : "." + Math.max(0, this.precision | 0)) + (this.trim ? "~" : "") + this.type;
+  return this.fill + this.align + this.sign + this.symbol + (this.zero ? "0" : "") + (this.width === undefined ? "" : Math.max(1, this.width | 0)) + (this.comma ? "," : "") + (this.precision === undefined ? "" : "." + Math.max(0, this.precision | 0)) + (this.trim ? "~" : "") + this.type;
 };
 },{}],"s/ik":[function(require,module,exports) {
 "use strict";
@@ -21472,7 +21523,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = _default;
 exports.prefixExponent = void 0;
 
-var _formatDecimal = _interopRequireDefault(require("./formatDecimal"));
+var _formatDecimal = _interopRequireDefault(require("./formatDecimal.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21488,7 +21539,7 @@ function _default(x, p) {
       n = coefficient.length;
   return i === n ? coefficient : i > n ? coefficient + new Array(i - n + 1).join("0") : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i) : "0." + new Array(1 - i).join("0") + (0, _formatDecimal.default)(x, Math.max(0, p + i - 1))[0]; // less than 1y!
 }
-},{"./formatDecimal":"fiGR"}],"gMFS":[function(require,module,exports) {
+},{"./formatDecimal.js":"fiGR"}],"gMFS":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21496,7 +21547,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
-var _formatDecimal = _interopRequireDefault(require("./formatDecimal"));
+var _formatDecimal = _interopRequireDefault(require("./formatDecimal.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21507,7 +21558,7 @@ function _default(x, p) {
       exponent = d[1];
   return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1) : coefficient + new Array(exponent - coefficient.length + 2).join("0");
 }
-},{"./formatDecimal":"fiGR"}],"w40g":[function(require,module,exports) {
+},{"./formatDecimal.js":"fiGR"}],"w40g":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21515,9 +21566,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _formatPrefixAuto = _interopRequireDefault(require("./formatPrefixAuto"));
+var _formatPrefixAuto = _interopRequireDefault(require("./formatPrefixAuto.js"));
 
-var _formatRounded = _interopRequireDefault(require("./formatRounded"));
+var _formatRounded = _interopRequireDefault(require("./formatRounded.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21559,7 +21610,7 @@ var _default = {
   }
 };
 exports.default = _default;
-},{"./formatPrefixAuto":"WMxc","./formatRounded":"gMFS"}],"7Ecm":[function(require,module,exports) {
+},{"./formatPrefixAuto.js":"WMxc","./formatRounded.js":"gMFS"}],"7Ecm":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21578,32 +21629,36 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
-var _exponent = _interopRequireDefault(require("./exponent"));
+var _exponent = _interopRequireDefault(require("./exponent.js"));
 
-var _formatGroup = _interopRequireDefault(require("./formatGroup"));
+var _formatGroup = _interopRequireDefault(require("./formatGroup.js"));
 
-var _formatNumerals = _interopRequireDefault(require("./formatNumerals"));
+var _formatNumerals = _interopRequireDefault(require("./formatNumerals.js"));
 
-var _formatSpecifier = _interopRequireDefault(require("./formatSpecifier"));
+var _formatSpecifier = _interopRequireDefault(require("./formatSpecifier.js"));
 
-var _formatTrim = _interopRequireDefault(require("./formatTrim"));
+var _formatTrim = _interopRequireDefault(require("./formatTrim.js"));
 
-var _formatTypes = _interopRequireDefault(require("./formatTypes"));
+var _formatTypes = _interopRequireDefault(require("./formatTypes.js"));
 
-var _formatPrefixAuto = require("./formatPrefixAuto");
+var _formatPrefixAuto = require("./formatPrefixAuto.js");
 
-var _identity = _interopRequireDefault(require("./identity"));
+var _identity = _interopRequireDefault(require("./identity.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var prefixes = ["y", "z", "a", "f", "p", "n", "µ", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y"];
+var map = Array.prototype.map,
+    prefixes = ["y", "z", "a", "f", "p", "n", "µ", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y"];
 
 function _default(locale) {
-  var group = locale.grouping && locale.thousands ? (0, _formatGroup.default)(locale.grouping, locale.thousands) : _identity.default,
-      currency = locale.currency,
-      decimal = locale.decimal,
-      numerals = locale.numerals ? (0, _formatNumerals.default)(locale.numerals) : _identity.default,
-      percent = locale.percent || "%";
+  var group = locale.grouping === undefined || locale.thousands === undefined ? _identity.default : (0, _formatGroup.default)(map.call(locale.grouping, Number), locale.thousands + ""),
+      currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "",
+      currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "",
+      decimal = locale.decimal === undefined ? "." : locale.decimal + "",
+      numerals = locale.numerals === undefined ? _identity.default : (0, _formatNumerals.default)(map.call(locale.numerals, String)),
+      percent = locale.percent === undefined ? "%" : locale.percent + "",
+      minus = locale.minus === undefined ? "-" : locale.minus + "",
+      nan = locale.nan === undefined ? "NaN" : locale.nan + "";
 
   function newFormat(specifier) {
     specifier = (0, _formatSpecifier.default)(specifier);
@@ -21619,13 +21674,13 @@ function _default(locale) {
         type = specifier.type; // The "n" type is an alias for ",g".
 
     if (type === "n") comma = true, type = "g"; // The "" type, and any invalid type, is an alias for ".12~g".
-    else if (!_formatTypes.default[type]) precision == null && (precision = 12), trim = true, type = "g"; // If zero fill is specified, padding goes after sign and before digits.
+    else if (!_formatTypes.default[type]) precision === undefined && (precision = 12), trim = true, type = "g"; // If zero fill is specified, padding goes after sign and before digits.
 
     if (zero || fill === "0" && align === "=") zero = true, fill = "0", align = "="; // Compute the prefix and suffix.
     // For SI-prefix, the suffix is lazily computed.
 
-    var prefix = symbol === "$" ? currency[0] : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "",
-        suffix = symbol === "$" ? currency[1] : /[%p]/.test(type) ? percent : ""; // What format function should we use?
+    var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "",
+        suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type) ? percent : ""; // What format function should we use?
     // Is this an integer type?
     // Can this type generate exponential notation?
 
@@ -21635,7 +21690,7 @@ function _default(locale) {
     // For significant precision, it must be in [1, 21].
     // For fixed precision, it must be in [0, 20].
 
-    precision = precision == null ? 6 : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision)) : Math.max(0, Math.min(20, precision));
+    precision = precision === undefined ? 6 : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision)) : Math.max(0, Math.min(20, precision));
 
     function format(value) {
       var valuePrefix = prefix,
@@ -21651,13 +21706,13 @@ function _default(locale) {
         value = +value; // Perform the initial formatting.
 
         var valueNegative = value < 0;
-        value = formatType(Math.abs(value), precision); // Trim insignificant zeros.
+        value = isNaN(value) ? nan : formatType(Math.abs(value), precision); // Trim insignificant zeros.
 
         if (trim) value = (0, _formatTrim.default)(value); // If a negative value rounds to zero during formatting, treat as positive.
 
         if (valueNegative && +value === 0) valueNegative = false; // Compute the prefix and suffix.
 
-        valuePrefix = (valueNegative ? sign === "(" ? sign : "-" : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
+        valuePrefix = (valueNegative ? sign === "(" ? sign : minus : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
         valueSuffix = (type === "s" ? prefixes[8 + _formatPrefixAuto.prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : ""); // Break the formatted value into the integer “value” part that can be
         // grouped, and fractional or exponential “suffix” part that is not.
 
@@ -21725,7 +21780,7 @@ function _default(locale) {
     formatPrefix: formatPrefix
   };
 }
-},{"./exponent":"G46r","./formatGroup":"CupU","./formatNumerals":"mUgz","./formatSpecifier":"Nf4q","./formatTrim":"s/ik","./formatTypes":"w40g","./formatPrefixAuto":"WMxc","./identity":"7Ecm"}],"00VI":[function(require,module,exports) {
+},{"./exponent.js":"G46r","./formatGroup.js":"CupU","./formatNumerals.js":"mUgz","./formatSpecifier.js":"Nf4q","./formatTrim.js":"s/ik","./formatTypes.js":"w40g","./formatPrefixAuto.js":"WMxc","./identity.js":"7Ecm"}],"00VI":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21734,7 +21789,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = defaultLocale;
 exports.formatPrefix = exports.format = void 0;
 
-var _locale = _interopRequireDefault(require("./locale"));
+var _locale = _interopRequireDefault(require("./locale.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21747,7 +21802,8 @@ defaultLocale({
   decimal: ".",
   thousands: ",",
   grouping: [3],
-  currency: ["$", ""]
+  currency: ["$", ""],
+  minus: "-"
 });
 
 function defaultLocale(definition) {
@@ -21756,7 +21812,7 @@ function defaultLocale(definition) {
   exports.formatPrefix = formatPrefix = locale.formatPrefix;
   return locale;
 }
-},{"./locale":"Iakc"}],"cTEw":[function(require,module,exports) {
+},{"./locale.js":"Iakc"}],"cTEw":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21764,14 +21820,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
-var _exponent = _interopRequireDefault(require("./exponent"));
+var _exponent = _interopRequireDefault(require("./exponent.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _default(step) {
   return Math.max(0, -(0, _exponent.default)(Math.abs(step)));
 }
-},{"./exponent":"G46r"}],"aFxy":[function(require,module,exports) {
+},{"./exponent.js":"G46r"}],"aFxy":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21779,14 +21835,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
-var _exponent = _interopRequireDefault(require("./exponent"));
+var _exponent = _interopRequireDefault(require("./exponent.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _default(step, value) {
   return Math.max(0, Math.max(-8, Math.min(8, Math.floor((0, _exponent.default)(value) / 3))) * 3 - (0, _exponent.default)(Math.abs(step)));
 }
-},{"./exponent":"G46r"}],"we+8":[function(require,module,exports) {
+},{"./exponent.js":"G46r"}],"we+8":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21794,7 +21850,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
-var _exponent = _interopRequireDefault(require("./exponent"));
+var _exponent = _interopRequireDefault(require("./exponent.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21802,7 +21858,7 @@ function _default(step, max) {
   step = Math.abs(step), max = Math.abs(max) - step;
   return Math.max(0, (0, _exponent.default)(max) - (0, _exponent.default)(step)) + 1;
 }
-},{"./exponent":"G46r"}],"SA6z":[function(require,module,exports) {
+},{"./exponent.js":"G46r"}],"SA6z":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21838,6 +21894,12 @@ Object.defineProperty(exports, "formatSpecifier", {
     return _formatSpecifier.default;
   }
 });
+Object.defineProperty(exports, "FormatSpecifier", {
+  enumerable: true,
+  get: function () {
+    return _formatSpecifier.FormatSpecifier;
+  }
+});
 Object.defineProperty(exports, "precisionFixed", {
   enumerable: true,
   get: function () {
@@ -21857,22 +21919,22 @@ Object.defineProperty(exports, "precisionRound", {
   }
 });
 
-var _defaultLocale = _interopRequireWildcard(require("./defaultLocale"));
+var _defaultLocale = _interopRequireWildcard(require("./defaultLocale.js"));
 
-var _locale = _interopRequireDefault(require("./locale"));
+var _locale = _interopRequireDefault(require("./locale.js"));
 
-var _formatSpecifier = _interopRequireDefault(require("./formatSpecifier"));
+var _formatSpecifier = _interopRequireWildcard(require("./formatSpecifier.js"));
 
-var _precisionFixed = _interopRequireDefault(require("./precisionFixed"));
+var _precisionFixed = _interopRequireDefault(require("./precisionFixed.js"));
 
-var _precisionPrefix = _interopRequireDefault(require("./precisionPrefix"));
+var _precisionPrefix = _interopRequireDefault(require("./precisionPrefix.js"));
 
-var _precisionRound = _interopRequireDefault(require("./precisionRound"));
+var _precisionRound = _interopRequireDefault(require("./precisionRound.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-},{"./defaultLocale":"00VI","./locale":"Iakc","./formatSpecifier":"Nf4q","./precisionFixed":"cTEw","./precisionPrefix":"aFxy","./precisionRound":"we+8"}],"Os+N":[function(require,module,exports) {
+},{"./defaultLocale.js":"00VI","./locale.js":"Iakc","./formatSpecifier.js":"Nf4q","./precisionFixed.js":"cTEw","./precisionPrefix.js":"aFxy","./precisionRound.js":"we+8"}],"Os+N":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22248,6 +22310,8 @@ exports.ensureColumnsPopulated = ensureColumnsPopulated;
 
 var _chartRecommender = require("@msrvida/chart-recommender");
 
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
 var _language = require("./language");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -22272,7 +22336,9 @@ function ensureColumnsExist(insightColumns, actualColumns) {
 
 function ensureColumnsPopulated(chart, insightColumns, actualColumns) {
   //ensure columns are populated
-  var firstColumn = actualColumns[0];
+  var firstColumn = actualColumns.filter(function (c) {
+    return !_sanddanceReact.SandDance.util.isInternalFieldName(c.name);
+  })[0];
   var firstColumnName = firstColumn && firstColumn.name;
 
   var ensureColumn = function ensureColumn(role) {
@@ -22310,7 +22376,7 @@ function ensureColumnsPopulated(chart, insightColumns, actualColumns) {
       break;
   }
 }
-},{"@msrvida/chart-recommender":"/i6U","./language":"hk5u"}],"yvMl":[function(require,module,exports) {
+},{"@msrvida/chart-recommender":"/i6U","@msrvida/sanddance-react":"MjKu","./language":"hk5u"}],"yvMl":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23164,7 +23230,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var version = "1.5.1";
+var version = "1.5.2";
 exports.version = version;
 },{}],"zKGJ":[function(require,module,exports) {
 "use strict";
@@ -23504,7 +23570,7 @@ function (_React$Component) {
           return _this2.setState(initState(_this2.props));
         },
         title: _language.strings.labelSystemInfo
-      }, React.createElement("ul", null, React.createElement("li", null, "SandDanceExplorer version: ", _version.version), React.createElement("li", null, "SandDanceReact version: ", SandDanceReact.version), React.createElement("li", null, "SandDance version: ", SandDance.version), React.createElement("li", null, "WebGL enabled: ", _canvas.capabilities.webgl ? _language.strings.labelYes : _language.strings.labelNo), React.createElement("li", null, "WebGL2 enabled: ", _canvas.capabilities.webgl2 ? _language.strings.labelYes : _language.strings.labelNo))));
+      }, React.createElement("ul", null, this.props.children, React.createElement("li", null, "SandDanceExplorer version: ", _version.version), React.createElement("li", null, "SandDanceReact version: ", SandDanceReact.version), React.createElement("li", null, "SandDance version: ", SandDance.version), React.createElement("li", null, "WebGL enabled: ", _canvas.capabilities.webgl ? _language.strings.labelYes : _language.strings.labelNo), React.createElement("li", null, "WebGL2 enabled: ", _canvas.capabilities.webgl2 ? _language.strings.labelYes : _language.strings.labelNo))));
     }
   }]);
 
@@ -25015,11 +25081,6 @@ function (_React$Component) {
         chart: chart,
         view: view
       };
-
-      if (!insight.columns || !insight.columns.color) {
-        insight.hideLegend = true;
-      }
-
       var loaded = !!(this.state.columns && this.state.dataContent);
       var selectionState = this.viewer && this.viewer.getSelection() || {};
       var selectionSearch = selectionState && selectionState.search;
@@ -25073,7 +25134,7 @@ function (_React$Component) {
           return _this9.viewer.presenter.homeCamera();
         }
       }), React.createElement("div", {
-        className: _sanddanceReact.util.classList("sanddance-main", this.state.sidebarPinned && "pinned", this.state.sidebarClosed && "closed", insight.hideLegend && "hide-legend")
+        className: _sanddanceReact.util.classList("sanddance-main", this.state.sidebarPinned && "pinned", this.state.sidebarClosed && "closed", (insight.hideLegend || !(insight.columns && insight.columns.color)) && "hide-legend")
       }, React.createElement("div", {
         ref: function ref(div) {
           if (div && !_this9.layoutDivUnpinned) _this9.layoutDivUnpinned = div;
@@ -25352,7 +25413,7 @@ function (_React$Component) {
                   }
                 });
               }
-            });
+            }, _this9.props.systemInfoChildren);
         }
       }()), loaded && React.createElement("div", {
         className: "sanddance-view"

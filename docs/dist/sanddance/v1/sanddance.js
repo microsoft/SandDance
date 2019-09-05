@@ -6749,7 +6749,8 @@ void main(void) {
             const i = label.datum.index;
             legend.rows[i] = legend.rows[i] || {};
             const row = legend.rows[i];
-            row.label = row.value = label.text;
+            row.label = label.text;
+            row.value = label.datum.value;
         }
     };
     const markStager$1 = (options, stage, scene, x, y, groupType) => {
@@ -6811,7 +6812,7 @@ void main(void) {
             };
             if (item.mark.role === 'axis-label') {
                 const tickText = textItem;
-                tickText.value = item.datum['value'];
+                tickText.value = item.datum.value;
                 options.currAxis.tickText.push(tickText);
             }
             else if (item.mark.role === 'axis-title') {
@@ -8505,7 +8506,7 @@ void main(void) {
                     },
                     {
                         "type": "formula",
-                        "expr": `datum.${FieldNames.Top} || '${Other}'`,
+                        "expr": `datum.${FieldNames.Top} == null ? '${Other}' : datum.${FieldNames.Top}`,
                         "as": FieldNames.Top
                     }
                 ]
@@ -10735,6 +10736,17 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
+    function valueToBoolean(value) {
+        if (typeof value === 'string') {
+            switch (value.toLowerCase()) {
+                case 'true':
+                    return true;
+                case 'false':
+                    return false;
+            }
+        }
+        return !!value;
+    }
     function valueToString(value) {
         if (value == null) {
             return '';
@@ -10772,6 +10784,7 @@ void main(void) {
             this.groups.forEach(group => {
                 group.expressions.forEach(ex => {
                     ex.column = this.getColumn(ex.name);
+                    ex.valueBool = valueToBoolean(ex.value);
                     ex.valueLow = valueToString(ex.value).toLocaleLowerCase();
                     ex.stringOperation = isStringOperation(ex);
                 });
@@ -10798,6 +10811,10 @@ void main(void) {
                 if (ex.column.type === 'string' || ex.stringOperation) {
                     dataValue = valueToString(actualDataValue).toLocaleLowerCase();
                     expressionValue = ex.valueLow;
+                }
+                else if (ex.column.type === 'boolean') {
+                    dataValue = valueToBoolean(actualDataValue);
+                    expressionValue = ex.valueBool;
                 }
                 else if (ex.column.quantitative) {
                     dataValue = +actualDataValue;
@@ -11201,7 +11218,7 @@ void main(void) {
         let lowOperator;
         let highValue;
         let highOperator;
-        const rowText = legend.rows[clickedIndex].value;
+        const rowText = legend.rows[clickedIndex].label;
         switch (colorBinType) {
             case 'continuous':
                 lowValue = rowText;
@@ -11365,10 +11382,27 @@ void main(void) {
                     continue;
                 }
             }
+            let value = item[columnName];
+            let content;
+            if (options && options.displayValue) {
+                content = options.displayValue(value);
+            }
+            else {
+                switch (value) {
+                    case null:
+                        content = createElement("i", null, "null");
+                        break;
+                    case undefined:
+                        content = createElement("i", null, "undefined");
+                        break;
+                    default:
+                        content = value.toString();
+                }
+            }
             rows.push({
                 cells: [
                     { content: columnName + ':' },
-                    { content: item[columnName] }
+                    { content }
                 ]
             });
         }
@@ -11965,7 +11999,7 @@ void main(void) {
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
-    const version = "1.4.0";
+    const version = "1.4.3";
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
 
