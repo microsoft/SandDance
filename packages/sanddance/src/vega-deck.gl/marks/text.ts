@@ -3,7 +3,12 @@
 import { AlignmentBaseline, TextAnchor, TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 import { base } from '../base';
 import { colorFromString } from '../color';
-import { GroupType, MarkStager, MarkStagerOptions } from './interfaces';
+import {
+    GroupType,
+    LabelDatum,
+    MarkStager,
+    MarkStagerOptions
+} from './interfaces';
 import {
     Scene,
     SceneText,
@@ -38,7 +43,7 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
 
         if (item.mark.role === 'axis-label') {
             const tickText = textItem as TickText;
-            tickText.value = item.datum['value'];
+            tickText.value = (item.datum as LabelDatum).value;
             options.currAxis.tickText.push(tickText);
         } else if (item.mark.role === 'axis-title') {
             options.currAxis.title = textItem;
