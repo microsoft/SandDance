@@ -24,7 +24,8 @@
 *  THE SOFTWARE.
 */
 "use strict";
-import "@babel/polyfill";
+
+import "core-js/stable";
 import "./../style/visual.less";
 import powerbi from "powerbi-visuals-api";
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
@@ -34,10 +35,10 @@ import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInst
 import VisualObjectInstance = powerbi.VisualObjectInstance;
 import DataView = powerbi.DataView;
 import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject;
+
 import { capabilities, SandDance } from "@msrvida/sanddance-explorer";
 import { createElement } from 'react';
 import { render } from 'react-dom';
-
 import { App, Props } from './app'
 import { convertTableToObjectArray } from './data';
 import { cleanInsight } from './insight';
@@ -53,7 +54,7 @@ export class Visual implements IVisual {
     private selectionManager: powerbi.extensibility.ISelectionManager;
 
     constructor(options: VisualConstructorOptions) {
-        //console.log('Visual constructor', options);
+        console.log('Visual constructor', options);
         this.host = options.host;
         this.selectionManager = this.host.createSelectionManager();
 
