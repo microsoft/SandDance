@@ -39,9 +39,6 @@
     <!-- link to JSON files so we can get a url from the bundler -->
     <a class="sanddance-app-static-content" id="titanic" data-display-name="Titanic" data-type="tsv"
         href="../../../docs/sample-data/titanicmaster.tsv"></a>
-    <a class="sanddance-app-static-content" id="demovote" data-display-name="Demo Vote" data-type="tsv"
-        href="../../../docs/sample-data/demovote.tsv"></a>
-
     <script>
         var themeColors = {
             "dark": {
@@ -64,23 +61,6 @@
                 "scheme": "dual_redgreen",
                 "chart": "barchart",
                 "view": "2d"
-            },
-            "demovote": {
-                "columns": {
-                    "uid": "Id",
-                    "x": "Longitude",
-                    "y": "Latitude",
-                    "color": "Obama",
-                    "z": "Education",
-                    "sort": "State"
-                },
-                "scheme": "redblue",
-                "chart": "scatterplot",
-                "view": "3d",
-                "colorBin": "quantize",
-                "signalValues": {
-                    "SandDanceColorBinCount": 2
-                }
             }
         };
         var options = {
@@ -107,18 +87,6 @@
                         }
                     }
                 }
-            },
-            "demovote": {
-                "chartPrefs": {
-                    "*": {
-                        "color": {
-                            "Winner": {
-                                "scheme": "dual_bluered"
-                            }
-                        }
-                    }
-                },
-                "tooltipExclusions": ["Id", "Latitude", "Longitude"]
             }
         };
     </script>
