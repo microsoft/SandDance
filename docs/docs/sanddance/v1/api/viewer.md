@@ -24,7 +24,7 @@ public constructor(element: HTMLElement, options?: Partial<ViewerOptions>);
 | Name    | Type                                              | Description                           |
 | ------- | ------------------------------------------------- | ------------------------------------- |
 | element | HTMLElement                                       | Parent HTMLElement to present within. |
-| options | Partial<[ViewerOptions][InterfaceDeclaration-24]> | Optional viewer options object.       |
+| options | Partial<[ViewerOptions][InterfaceDeclaration-23]> | Optional viewer options object.       |
 
 ## Methods
 
@@ -40,7 +40,7 @@ public renderSameLayout(newViewerOptions?: Partial<ViewerOptions>): void;
 
 | Name             | Type                                              | Description         |
 | ---------------- | ------------------------------------------------- | ------------------- |
-| newViewerOptions | Partial<[ViewerOptions][InterfaceDeclaration-24]> | New options object. |
+| newViewerOptions | Partial<[ViewerOptions][InterfaceDeclaration-23]> | New options object. |
 
 **Return type**
 
@@ -66,7 +66,7 @@ public render(insight: Insight, data: object[], options: RenderOptions = {}): Pr
 
 **Return type**
 
-Promise<[RenderResult][InterfaceDeclaration-20]>
+Promise<[RenderResult][InterfaceDeclaration-19]>
 
 ----------
 
@@ -236,7 +236,7 @@ public static defaultViewerOptions: ViewerOptions;
 
 **Type**
 
-[ViewerOptions][InterfaceDeclaration-24]
+[ViewerOptions][InterfaceDeclaration-23]
 
 ----------
 
@@ -264,7 +264,7 @@ public options: ViewerOptions;
 
 **Type**
 
-[ViewerOptions][InterfaceDeclaration-24]
+[ViewerOptions][InterfaceDeclaration-23]
 
 ----------
 
@@ -352,13 +352,13 @@ number
 
 [ClassDeclaration-5]: viewer#viewer
 [Constructor-2]: viewer#constructorelement-options
-[InterfaceDeclaration-24]: types#vieweroptions
+[InterfaceDeclaration-23]: types#vieweroptions
 [MethodDeclaration-10]: viewer#rendersamelayoutnewvieweroptions
-[InterfaceDeclaration-24]: types#vieweroptions
+[InterfaceDeclaration-23]: types#vieweroptions
 [MethodDeclaration-11]: viewer#renderinsight-data-options
 [InterfaceDeclaration-8]: types#insight
 [InterfaceDeclaration-39]: types#renderoptions
-[InterfaceDeclaration-20]: types#renderresult
+[InterfaceDeclaration-19]: types#renderresult
 [MethodDeclaration-12]: viewer#filtersearch
 [TypeAliasDeclaration-3]: types#search
 [MethodDeclaration-13]: viewer#reset
@@ -375,11 +375,11 @@ number
 [InterfaceDeclaration-11]: types#signalvalues
 [MethodDeclaration-21]: viewer#finalize
 [PropertyDeclaration-16]: viewer#defaultvieweroptions
-[InterfaceDeclaration-24]: types#vieweroptions
+[InterfaceDeclaration-23]: types#vieweroptions
 [PropertyDeclaration-17]: viewer#speccapabilities
 [InterfaceDeclaration-13]: types#speccapabilities
 [PropertyDeclaration-18]: viewer#options
-[InterfaceDeclaration-24]: types#vieweroptions
+[InterfaceDeclaration-23]: types#vieweroptions
 [PropertyDeclaration-19]: viewer#vegaspec
 [PropertyDeclaration-20]: viewer#vegaviewgl
 [PropertyDeclaration-21]: viewer#presenter

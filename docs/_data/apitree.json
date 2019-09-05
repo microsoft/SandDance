@@ -11,6 +11,7 @@
     "Viewer"
   ],
   "sanddance-explorer": [
+    "capabilities",
     "ColorSettings",
     "DataContent",
     "DataFile",

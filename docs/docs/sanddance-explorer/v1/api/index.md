@@ -205,6 +205,7 @@ interface Props {
     onView?: () => void;
     onSignalChanged?: () => void;
     onTooltipExclusionsChanged?: (tooltipExclusions: string[]) => void;
+    systemInfoChildren?: ReactNode;
 }
 ```
 
@@ -226,6 +227,7 @@ interface Props {
 | onView                     | () => void                               | true     |
 | onSignalChanged            | () => void                               | true     |
 | onTooltipExclusionsChanged | (tooltipExclusions: string[]) => void    | true     |
+| systemInfoChildren         | ReactNode                                | true     |
 
 ----------
 
@@ -296,6 +298,18 @@ type DataFileType = "json" | "csv" | "tsv" | "topojson";
 
 ## Variables
 
+### capabilities
+
+```typescript
+const capabilities: { webgl: boolean; webgl2: boolean; };
+```
+
+**Type**
+
+{ webgl: boolean; webgl2: boolean; }
+
+----------
+
 ### themePalettes
 
 ```typescript
@@ -339,5 +353,6 @@ string
 [InterfaceDeclaration-3]: index#snapshot
 [TypeAliasDeclaration-0]: index#datafiletype
 [ClassDeclaration-0]: explorer#explorer
-[VariableDeclaration-0]: index#themepalettes
-[VariableDeclaration-1]: index#version
+[VariableDeclaration-0]: index#capabilities
+[VariableDeclaration-1]: index#themepalettes
+[VariableDeclaration-2]: index#version

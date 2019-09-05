@@ -332,7 +332,7 @@ interface PresenterConfig {
 
 | Name                      | Type                                                                                                | Optional |
 | ------------------------- | --------------------------------------------------------------------------------------------------- | -------- |
-| transitionDurations       | [TransitionDurations][InterfaceDeclaration-23]                                                      | true     |
+| transitionDurations       | [TransitionDurations][InterfaceDeclaration-22]                                                      | true     |
 | preStage                  | [PreStage][InterfaceDeclaration-54]                                                                 | true     |
 | redraw                    | () => void                                                                                          | true     |
 | onCubeHover               | (e: MouseEvent &#124; PointerEvent &#124; TouchEvent, cube: Cube) => void                           | true     |
@@ -617,7 +617,7 @@ type View = "2d" | "3d";
 [InterfaceDeclaration-54]: vegadeckgl.types#prestage
 [InterfaceDeclaration-29]: vegadeckgl.types#stage
 [InterfaceDeclaration-53]: vegadeckgl.types#presenterconfig
-[InterfaceDeclaration-23]: vegadeckgl.types#transitiondurations
+[InterfaceDeclaration-22]: vegadeckgl.types#transitiondurations
 [InterfaceDeclaration-54]: vegadeckgl.types#prestage
 [InterfaceDeclaration-48]: vegadeckgl.types#presenterstyle
 [TypeAliasDeclaration-7]: vegadeckgl.types#view
@@ -633,7 +633,7 @@ type View = "2d" | "3d";
 [InterfaceDeclaration-35]: vegadeckgl.types#styledline
 [InterfaceDeclaration-37]: vegadeckgl.types#facetrect
 [InterfaceDeclaration-35]: vegadeckgl.types#styledline
-[InterfaceDeclaration-23]: vegadeckgl.types#transitiondurations
+[InterfaceDeclaration-22]: vegadeckgl.types#transitiondurations
 [InterfaceDeclaration-44]: vegadeckgl.types#vegabase
 [InterfaceDeclaration-55]: vegadeckgl.types#viewglconfig
 [ClassDeclaration-0]: vegadeckgl.presenter#presenter

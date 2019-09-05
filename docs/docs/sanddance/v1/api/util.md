@@ -95,7 +95,7 @@ function getPresenterStyle(options: ViewerOptions): PresenterStyle;
 
 | Name    | Type                                     |
 | ------- | ---------------------------------------- |
-| options | [ViewerOptions][InterfaceDeclaration-24] |
+| options | [ViewerOptions][InterfaceDeclaration-23] |
 
 **Return type**
 
@@ -113,5 +113,5 @@ function getPresenterStyle(options: ViewerOptions): PresenterStyle;
 [InterfaceDeclaration-1]: types#searchexpression
 [InterfaceDeclaration-2]: types#searchexpressiongroup
 [FunctionDeclaration-10]: util#getpresenterstyle
-[InterfaceDeclaration-24]: types#vieweroptions
+[InterfaceDeclaration-23]: types#vieweroptions
 [InterfaceDeclaration-48]: vegadeckgl/types#presenterstyle
