@@ -125,7 +125,7 @@ export class App extends React.Component<Props, State> {
             onTooltipExclusionsChanged: tooltipExclusions => this.props.onViewChange(tooltipExclusions),
             onView: this.props.onViewChange,
             systemInfoChildren: [
-                React.createElement("li", null, `${strings.webglDisabled}: ${version}`)
+                React.createElement("li", null, `${strings.powerBiCustomVisual}: ${version}`)
             ]
         };
         return React.createElement("div", { className },
