@@ -18,6 +18,7 @@ import {
 } from '@msrvida/sanddance-explorer';
 import { Logo } from '@msrvida/sanddance-explorer/dist/es6/controls/logo';
 import { strings } from './language';
+import { version } from './version';
 
 fabric.initializeIcons();
 
@@ -122,7 +123,10 @@ export class App extends React.Component<Props, State> {
             },
             onSignalChanged: this.props.onViewChange,
             onTooltipExclusionsChanged: tooltipExclusions => this.props.onViewChange(tooltipExclusions),
-            onView: this.props.onViewChange
+            onView: this.props.onViewChange,
+            systemInfoChildren: [
+                React.createElement("li", null, `${strings.powerBiCustomVisual}: ${version}`)
+            ]
         };
         return React.createElement("div", { className },
             React.createElement(Explorer, explorerProps),

@@ -15,12 +15,10 @@ import { DeckProps } from '@deck.gl/core/lib/deck';
 import { Search, SearchExpressionGroup } from './searchExpression/types';
 import { Spec } from 'vega-typings';
 import { SpecResult } from './specs/interfaces';
-import { TooltipOptions } from './tooltip';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 
 export * from './searchExpression/types';
 export * from './specs/types';
-export { TooltipOptions };
 
 /**
  * Map of ordinals per unique Id.
@@ -347,4 +345,9 @@ export interface SelectionState {
     search?: Search;
     selectedData?: object[];
     active?: object;
+}
+
+export interface TooltipOptions {
+    exclude?: (columnName: string) => boolean;
+    displayValue?: (value: any) => string;
 }

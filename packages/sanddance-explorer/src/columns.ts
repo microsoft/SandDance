@@ -17,7 +17,7 @@ export function ensureColumnsExist(insightColumns: SandDance.types.InsightColumn
 
 export function ensureColumnsPopulated(chart: SandDance.types.Chart, insightColumns: SandDance.types.InsightColumns, actualColumns: SandDance.types.Column[]) {
     //ensure columns are populated
-    const firstColumn = actualColumns[0];
+    const firstColumn = actualColumns.filter(c => !SandDance.util.isInternalFieldName(c.name))[0];
     const firstColumnName = firstColumn && firstColumn.name;
     const ensureColumn = (role: SandDance.types.InsightColumnRoles) => {
         if (!insightColumns[role]) {

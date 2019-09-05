@@ -67,6 +67,7 @@ export interface Props {
   onView?: () => void;
   onSignalChanged?: () => void;
   onTooltipExclusionsChanged?: (tooltipExclusions: string[]) => void;
+  systemInfoChildren?: React.ReactNode;
 }
 
 export interface State extends SandDance.types.Insight {
@@ -697,10 +698,6 @@ export class Explorer extends React.Component<Props, State> {
       view
     };
 
-    if (!insight.columns || !insight.columns.color) {
-      insight.hideLegend = true;
-    }
-
     const loaded = !!(this.state.columns && this.state.dataContent);
 
     const selectionState: SandDance.types.SelectionState = (this.viewer && this.viewer.getSelection()) || {};
@@ -750,7 +747,7 @@ export class Explorer extends React.Component<Props, State> {
           }}
           onHomeClick={() => this.viewer.presenter.homeCamera()}
         />
-        <div className={util.classList("sanddance-main", this.state.sidebarPinned && "pinned", this.state.sidebarClosed && "closed", insight.hideLegend && "hide-legend")}>
+        <div className={util.classList("sanddance-main", this.state.sidebarPinned && "pinned", this.state.sidebarClosed && "closed", (insight.hideLegend || !(insight.columns && insight.columns.color)) && "hide-legend")}>
           <div ref={div => { if (div && !this.layoutDivUnpinned) this.layoutDivUnpinned = div }} className="sanddance-layout-unpinned"></div>
           <div ref={div => { if (div && !this.layoutDivPinned) this.layoutDivPinned = div }} className="sanddance-layout-pinned"></div>
           {!loaded && (
@@ -967,7 +964,9 @@ export class Explorer extends React.Component<Props, State> {
                       onToggleLegend={hideLegend => this.setState({ hideLegend, calculating: () => this._resize() })}
                       hideAxes={this.state.hideAxes}
                       onToggleAxes={hideAxes => this.setState({ calculating: () => this.setState({ hideAxes }) })}
-                    />
+                    >
+                      {this.props.systemInfoChildren}
+                    </Settings>
                   );
               }
             })()}

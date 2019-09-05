@@ -9,15 +9,12 @@
 ) {
     .sanddance-sidebar {
         background-color: $bg-color;
-        bottom: 0;
         display: grid;
         grid-template-areas:    "stats stats"
                                 "tabs bar";
         grid-template-columns: $sidetab-width auto;
         grid-template-rows: 0fr auto;
         overflow: hidden;
-        position: absolute;
-        top: 0;
         transition: width 350ms cubic-bezier(.4, 0, .2, 1);     //TODO param
         width: $toolbar-width;
         z-index: 1; //appear over the canvas even though it is behind it in the dom.
