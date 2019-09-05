@@ -41,7 +41,7 @@ export function topLookup(column: Column, count: number) {
                 },
                 {
                     "type": "formula",
-                    "expr": `datum.${FieldNames.Top} || '${Other}'`,
+                    "expr": `datum.${FieldNames.Top} == null ? '${Other}' : datum.${FieldNames.Top}`,
                     "as": FieldNames.Top
                 }
             ]
