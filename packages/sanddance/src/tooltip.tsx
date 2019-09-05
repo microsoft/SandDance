@@ -5,10 +5,7 @@ import { GL_ORDINAL } from './vega-deck.gl/constants';
 import { isInternalFieldName } from './util';
 import { outerSize } from './vega-deck.gl/htmlHelpers';
 import { Table, TableRow } from './vega-deck.gl/controls';
-
-export interface TooltipOptions {
-    exclude: (columnName: string) => boolean;
-}
+import { TooltipOptions } from './types';
 
 interface Props {
     cssPrefix: string;
@@ -87,10 +84,26 @@ function getRows(item: object, options: TooltipOptions) {
                 continue;
             }
         }
+        let value: any = item[columnName];
+        let content: string | JSX.Element;
+        if (options && options.displayValue) {
+            content = options.displayValue(value);
+        } else {
+            switch (value) {
+                case null:
+                    content = <i>null</i>;
+                    break;
+                case undefined:
+                    content = <i>undefined</i>;
+                    break;
+                default:
+                    content = value.toString();
+            }
+        }
         rows.push({
             cells: [
                 { content: columnName + ':' },
-                { content: item[columnName] }
+                { content }
             ]
         });
     }
