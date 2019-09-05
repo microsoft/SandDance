@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.3.4]
+- Legend title is clickable
+- Legend, Tooltips and Search handle boolean values
+
 ## [1.3.3]
 - Axes titles are clickable
 
