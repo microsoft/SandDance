@@ -26,6 +26,7 @@
 "use strict";
 
 import "core-js/stable";
+import "regenerator-runtime/runtime";
 import "./../style/visual.less";
 import powerbi from "powerbi-visuals-api";
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
@@ -54,7 +55,7 @@ export class Visual implements IVisual {
     private selectionManager: powerbi.extensibility.ISelectionManager;
 
     constructor(options: VisualConstructorOptions) {
-        console.log('Visual constructor', options);
+        //console.log('Visual constructor', options);
         this.host = options.host;
         this.selectionManager = this.host.createSelectionManager();
 

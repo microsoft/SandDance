@@ -21,6 +21,7 @@
     "powerbi-visuals-utils-dataviewutils": "^2.2.1",
     "react": "16.8.6",
     "react-dom": "16.8.6",
+    "regenerator-runtime": "^0.13.3",
     "vega-lib": "^4.3.0"
   },
   "devDependencies": {
