@@ -317,6 +317,7 @@ export class Settings extends React.Component<Props, State> {
                     title={strings.labelSystemInfo}
                 >
                     <ul>
+                        {this.props.children}
                         <li>
                             SandDanceExplorer version: {version}
                         </li>

@@ -67,6 +67,7 @@ export interface Props {
   onView?: () => void;
   onSignalChanged?: () => void;
   onTooltipExclusionsChanged?: (tooltipExclusions: string[]) => void;
+  systemInfoChildren?: React.ReactNode;
 }
 
 export interface State extends SandDance.types.Insight {
@@ -967,7 +968,9 @@ export class Explorer extends React.Component<Props, State> {
                       onToggleLegend={hideLegend => this.setState({ hideLegend, calculating: () => this._resize() })}
                       hideAxes={this.state.hideAxes}
                       onToggleAxes={hideAxes => this.setState({ calculating: () => this.setState({ hideAxes }) })}
-                    />
+                    >
+                      {this.props.systemInfoChildren}
+                    </Settings>
                   );
               }
             })()}
