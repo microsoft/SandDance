@@ -23,6 +23,9 @@ export interface MarkStagerOptions {
 export type SceneGroup2 = SceneGroup & {
     datum?: any;
 };
+export interface LabelDatum {
+    value: any;
+}
 //TODO - use vega-typings above
 
 

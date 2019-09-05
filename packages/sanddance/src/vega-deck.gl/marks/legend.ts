@@ -1,7 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { base } from '../base';
-import { GroupType, MarkStager, MarkStagerOptions } from './interfaces';
+import {
+    GroupType,
+    LabelDatum,
+    MarkStager,
+    MarkStagerOptions
+} from './interfaces';
 import { Legend, LegendRowSymbol, Stage } from '../interfaces';
 import {
     Scene,
@@ -30,7 +35,8 @@ const legendMap: { [role: string]: (legend: Legend, item: SceneItem) => void } =
         const i = label.datum.index;
         legend.rows[i] = legend.rows[i] || {};
         const row = legend.rows[i];
-        row.label = row.value = label.text;
+        row.label = label.text;
+        row.value = (label.datum as LabelDatum).value;
     }
 
 };

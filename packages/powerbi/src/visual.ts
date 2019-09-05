@@ -24,7 +24,9 @@
 *  THE SOFTWARE.
 */
 "use strict";
-import "@babel/polyfill";
+
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import "./../style/visual.less";
 import powerbi from "powerbi-visuals-api";
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
@@ -34,10 +36,10 @@ import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInst
 import VisualObjectInstance = powerbi.VisualObjectInstance;
 import DataView = powerbi.DataView;
 import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject;
+
 import { capabilities, SandDance } from "@msrvida/sanddance-explorer";
 import { createElement } from 'react';
 import { render } from 'react-dom';
-
 import { App, Props } from './app'
 import { convertTableToObjectArray } from './data';
 import { cleanInsight } from './insight';
