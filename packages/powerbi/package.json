@@ -6,7 +6,7 @@
     "start": "pbiviz start",
     "package": "pbiviz package",
     "version": "node ./scripts/version.js",
-    "build": "npm run version && npm run package"
+    "prepackage": "npm run version"
   },
   "dependencies": {
     "@babel/runtime": "^7.5.5",
