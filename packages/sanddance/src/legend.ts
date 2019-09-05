@@ -43,7 +43,7 @@ function selectQuantitative(colorBinType: ColorBin, column: Column, legend: Vega
     let lowOperator: SearchExpressionOperators;
     let highValue: string;
     let highOperator: SearchExpressionOperators;
-    const rowText = legend.rows[clickedIndex].value;
+    const rowText = legend.rows[clickedIndex].label;
     switch (colorBinType) {
         case 'continuous':
             lowValue = rowText;
