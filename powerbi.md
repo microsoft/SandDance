@@ -2,7 +2,7 @@
 
 ## Background
 There was a previous release of SandDance to AppSource (the marketplace behind Power BI) which was named "SandDance".
-This GitHub repo contains the code for the "new" SandDance, and has been released to AppSource as "SandDance 2019".
+This GitHub repo contains the code for the "new" SandDance, and has been released to AppSource as ["SandDance 2019"](https://appsource.microsoft.com/en-us/product/power-bi-visuals/WA200000430).
 
 ## FAQ
 * Q: Will my reports using the *SandDance* custom visual automatically upgrade to *SandDance 2019*?
