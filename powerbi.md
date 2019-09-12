@@ -6,13 +6,10 @@ This GitHub repo contains the code for the "new" SandDance, and has been release
 
 ## FAQ
 * Q: Will my reports using the *SandDance* custom visual automatically upgrade to *SandDance 2019*?
-<br/>
-A: No. They are separate custom visuals.
+<br/>A: No. They are separate custom visuals.
 
 * Q: Is the old *SandDance* still available?
-<br/>
-A: It is not visible in the marketplace. Any existing reports containing the *SandDance* custom visual will continue to work as usual.
+<br/>A: It is not visible in the marketplace. Any existing reports containing the *SandDance* custom visual will continue to work as usual.
 
 * Q: Does *SandDance 2019* have all of the functionality from its predecessor?
-<br/>
-A: It is very similar, but not all features have been re-implemented. Please [create an issue](https://github.com/microsoft/SandDance/issues/new) to let us know what missing features you need. We'll do our best to add it.
+<br/>A: It is very similar, but not all features have been re-implemented. Please [create an issue](https://github.com/microsoft/SandDance/issues/new) to let us know what missing features you need. We'll do our best to add it.
