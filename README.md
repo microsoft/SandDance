@@ -13,6 +13,7 @@ Smooth animated transitions between views help you to maintain context as you in
 
 ## Where can I use SandDance?
 * [Try it now on the web](https://microsoft.github.io/SandDance/app/)
+* [Power BI](https://appsource.microsoft.com/en-us/product/power-bi-visuals/WA200000430)
 * [Azure Data Studio](https://docs.microsoft.com/en-us/sql/azure-data-studio/sanddance-extension?view=sql-server-2017)
 * [VSCode extension](https://marketplace.visualstudio.com/items?itemName=msrvida.vscode-sanddance)
 * In your own JavaScript apps - see below
