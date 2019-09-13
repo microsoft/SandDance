@@ -110,13 +110,16 @@ export class Visual implements IVisual {
         if (!dataView || !dataView.table) {
             this.app.unload();
         } else {
-            this.app.fetchStatus(dataView.table.rows.length);
             let doneFetching = true;
             if (dataView.metadata.segment) {
                 doneFetching = !this.host.fetchMoreData();
             }
+            this.app.fetchStatus(dataView.table.rows.length, !doneFetching);
             if (doneFetching) {
-                this.show(dataView);
+                //allow fetch status to render
+                setTimeout(() => {
+                    this.show(dataView);
+                }, 1);
             }
         }
     }
