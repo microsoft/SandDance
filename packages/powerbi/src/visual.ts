@@ -55,7 +55,7 @@ export class Visual implements IVisual {
     private selectionManager: powerbi.extensibility.ISelectionManager;
 
     constructor(options: VisualConstructorOptions) {
-        //console.log('Visual constructor', options);
+        console.log('Visual constructor', options);
         this.host = options.host;
         this.selectionManager = this.host.createSelectionManager();
 
@@ -99,7 +99,7 @@ export class Visual implements IVisual {
     }
 
     public update(options: VisualUpdateOptions) {
-        //console.log('Visual update', options);
+        console.log('Visual update', options);
 
         if (!capabilities.webgl) {
             this.app.unload();
@@ -109,8 +109,27 @@ export class Visual implements IVisual {
         const dataView = options && options.dataViews && options.dataViews[0];
         if (!dataView || !dataView.table) {
             this.app.unload();
-            return;
+        } else {
+            let doneFetching = true;
+            console.log(`dataView.metadata.segment: ${dataView.metadata.segment}`);
+            console.log(`dataView.table.rows.length: ${dataView.table.rows.length}`);
+            
+            if (dataView.metadata.segment) {
+                doneFetching = !this.host.fetchMoreData();
+            }
+            console.log(`doneFetching:${doneFetching}`);
+            if (doneFetching) {
+                //if (options.operationKind == powerbi.VisualDataChangeOperationKind.Create) {
+                this.tryShow(dataView);
+                //} else if (options.operationKind == powerbi.VisualDataChangeOperationKind.Append) {
+                //    this.tryShow(dataView);
+                //}
+            }
         }
+    }
+
+    tryShow(dataView: powerbi.DataView) {
+        console.log('tryShow');
 
         this.settings = Visual.parseSettings(dataView);
         const oldData = this.app.getDataContent();
@@ -128,10 +147,7 @@ export class Visual implements IVisual {
             return;
         }
 
-        const {
-            sandDanceMainSettings,
-            sandDanceConfig
-        } = this.settings;
+        const { sandDanceConfig } = this.settings;
 
         let tooltipExclusions: string[] = [];
 
