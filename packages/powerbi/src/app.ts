@@ -140,7 +140,7 @@ export class App extends React.Component<Props, State> {
                 React.createElement("div", null,
                     React.createElement(Logo),
                     !this.state.loaded && React.createElement("div", { className: "sanddance-fetch" },
-                        `${strings.fetching} ${this.state.rowCount || '...'}`
+                        `${strings.fetching} ${this.state.rowCount ? `(${this.state.rowCount} ${strings.fetched})` : ''}`
                     )
                 ),
                 !capabilities.webgl && React.createElement("div", { className: "sanddance-webgl-required" },
