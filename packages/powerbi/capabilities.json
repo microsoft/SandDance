@@ -42,7 +42,7 @@
                     },
                     "dataReductionAlgorithm": {
                         "window": {
-                            "count": 10001
+                            "count": 30000
                         }
                     }
                 }
