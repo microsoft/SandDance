@@ -39,6 +39,7 @@ export interface State {
     loaded: boolean;
     chromeless: boolean;
     darkTheme: boolean;
+    rowCount: number;
 }
 
 export class App extends React.Component<Props, State> {
@@ -50,7 +51,8 @@ export class App extends React.Component<Props, State> {
         this.state = {
             loaded: false,
             chromeless: false,
-            darkTheme: null
+            darkTheme: null,
+            rowCount: null
         };
         this.viewerOptions = this.getViewerOptions();
     }
@@ -85,6 +87,10 @@ export class App extends React.Component<Props, State> {
 
     unload() {
         this.setState({ loaded: false });
+    }
+
+    fetchStatus(rowCount: number) {
+        this.setState({ rowCount });
     }
 
     changeTheme(darkTheme: boolean) {
@@ -132,11 +138,14 @@ export class App extends React.Component<Props, State> {
             React.createElement(Explorer, explorerProps),
             React.createElement("div", { className: "sanddance-init" },
                 React.createElement("div", null,
-                    React.createElement(Logo)
+                    React.createElement(Logo),
+                    !this.state.loaded && React.createElement("div", { className: "sanddance-fetch" },
+                        `${strings.fetching} ${this.state.rowCount || '...'}`
+                    )
                 ),
                 !capabilities.webgl && React.createElement("div", { className: "sanddance-webgl-required" },
                     strings.webglDisabled
-                ),
+                )
             )
         );
     }
