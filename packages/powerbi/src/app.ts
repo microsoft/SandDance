@@ -83,8 +83,17 @@ export class App extends React.Component<Props, State> {
     }
 
     load(data: DataFile | object[], getPartialInsight: (columns: SandDance.types.Column[]) => Partial<SandDance.types.Insight>, tooltipExclusions?: string[]) {
+        const wasLoaded = this.state.loaded;
         this.setState({ loaded: true });
-        return this.explorer.load(data, getPartialInsight, { tooltipExclusions });
+        if (wasLoaded) {
+            this.explorer.setState({
+                calculating: () => {
+                    this.explorer.load(data, getPartialInsight, { tooltipExclusions });
+                }
+            });
+        } else {
+            this.explorer.load(data, getPartialInsight, { tooltipExclusions });
+        }
     }
 
     unload() {

@@ -117,9 +117,7 @@ export class Visual implements IVisual {
             this.app.fetchStatus(dataView.table.rows.length, !doneFetching);
             if (doneFetching) {
                 //allow fetch status to render
-                setTimeout(() => {
-                    this.show(dataView);
-                }, 1);
+                this.show(dataView);
             }
         }
     }
