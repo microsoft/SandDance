@@ -40,10 +40,13 @@ varying vec4 vColor;
 
 void main(void) {
 
+  float x = instanceSizes.x > 0.0 ? max(instanceSizes.x, 0.5) : 0.0;
+  float y = instanceSizes.y > 0.0 ? max(instanceSizes.y, 0.5) : 0.0;
+
   // if alpha == 0.0, do not render element
   float noRender = float(instanceColors.a == 0.0);
-  float finalXScale = project_scale(instanceSizes.x) * mix(1.0, 0.0, noRender);
-  float finalYScale = project_scale(instanceSizes.y) * mix(1.0, 0.0, noRender);
+  float finalXScale = project_scale(x) * mix(1.0, 0.0, noRender);
+  float finalYScale = project_scale(y) * mix(1.0, 0.0, noRender);
   float finalZScale = project_scale(instanceSizes.z) * mix(1.0, 0.0, noRender);
 
   // cube geometry vertics are between -1 to 1, scale and transform it to between 0, 1
