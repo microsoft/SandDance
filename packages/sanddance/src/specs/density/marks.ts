@@ -4,7 +4,7 @@ import { FieldNames, ScaleNames } from '../constants';
 import { fill } from '../fill';
 import { RectMark } from 'vega-typings';
 import { SpecColumns, SpecViewOptions } from '../types';
-import { zeroIfCollapsed } from '../selection';
+import { testForCollapseSelection } from '../selection';
 
 export default function (columns: SpecColumns, specViewOptions: SpecViewOptions) {
     const mark: RectMark = {
@@ -53,10 +53,16 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
         update.z = {
             "value": 0
         };
-        update.depth = zeroIfCollapsed({
-            "scale": ScaleNames.Z,
-            "field": columns.z.name
-        });
+        update.depth = [
+            {
+                "test": testForCollapseSelection(),
+                "value": 0
+            },
+            {
+                "scale": ScaleNames.Z,
+                "field": columns.z.name
+            }
+        ];
     }
     return [mark];
 }
