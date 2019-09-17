@@ -659,7 +659,7 @@ export class Viewer {
      */
     deActivate() {
         return new Promise<void>((resolve, reject) => {
-            if (this._dataScope.active) {
+            if (this._dataScope && this._dataScope.active) {
                 this._animator.deactivate().then(() => {
                     this._details.render();
                     resolve();
