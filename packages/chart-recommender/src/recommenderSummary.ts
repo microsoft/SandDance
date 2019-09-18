@@ -10,10 +10,19 @@ export class RecommenderSummary {
 
     constructor(columns: SandDance.types.Column[], data: object[]) {
         let quickRec: Recommendation = new ScatterPlotRecommenderSummary(columns, data).recommend();
-        if (quickRec) this.rec = quickRec;
-        else {
+        if (quickRec) {
+            this.rec = quickRec;
+        } else {
             let barChartrec: Recommendation = new BarChartRecommenderSummary(columns, data).recommend();
-            if (barChartrec.score >= 1) this.rec = barChartrec;
+            if (barChartrec.score >= 1) {
+                this.rec = barChartrec;
+            } else {
+                this.rec = {
+                    chart: "grid",
+                    columns: {},
+                    score: 1
+                };
+            }
         }
     }
 
