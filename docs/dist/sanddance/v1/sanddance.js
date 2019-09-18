@@ -6174,6 +6174,20 @@ void main(void) {
     const lineZ = -1;
     const defaultView = "2d";
     const min3dDepth = 0.05;
+    const minPixelSize = 0.5;
+
+    var defaults = /*#__PURE__*/Object.freeze({
+        minHeight: minHeight,
+        minWidth: minWidth,
+        defaultPresenterStyle: defaultPresenterStyle,
+        defaultPresenterConfig: defaultPresenterConfig,
+        createStage: createStage,
+        groupStrokeWidth: groupStrokeWidth,
+        lineZ: lineZ,
+        defaultView: defaultView,
+        min3dDepth: min3dDepth,
+        minPixelSize: minPixelSize
+    });
 
     // Copyright (c) 2015 - 2017 Uber Technologies, Inc.
     var vs$1 = `\
@@ -6196,10 +6210,13 @@ varying vec4 vColor;
 
 void main(void) {
 
+  float x = instanceSizes.x > 0.0 ? max(instanceSizes.x, ${minPixelSize.toFixed(1)}) : 0.0;
+  float y = instanceSizes.y > 0.0 ? max(instanceSizes.y, ${minPixelSize.toFixed(1)}) : 0.0;
+
   // if alpha == 0.0, do not render element
   float noRender = float(instanceColors.a == 0.0);
-  float finalXScale = project_scale(instanceSizes.x) * mix(1.0, 0.0, noRender);
-  float finalYScale = project_scale(instanceSizes.y) * mix(1.0, 0.0, noRender);
+  float finalXScale = project_scale(x) * mix(1.0, 0.0, noRender);
+  float finalYScale = project_scale(y) * mix(1.0, 0.0, noRender);
   float finalZScale = project_scale(instanceSizes.z) * mix(1.0, 0.0, noRender);
 
   // cube geometry vertics are between -1 to 1, scale and transform it to between 0, 1
@@ -6215,7 +6232,7 @@ void main(void) {
   float lightWeight = 1.0;
   
   //allow for a small amount of error around the min3dDepth 
-  if (instanceSizes.z >= ${min3dDepth} - 0.0001) {
+  if (instanceSizes.z >= ${min3dDepth.toFixed(4)} - 0.0001) {
     lightWeight = lighting_getLightWeight(
       position_worldspace.xyz, // the w component is always 1.0
       normals
@@ -7335,6 +7352,7 @@ void main(void) {
     var index$2 = /*#__PURE__*/Object.freeze({
         constants: constants$1,
         controls: controls,
+        defaults: defaults,
         types: types$1,
         util: util,
         base: base,
@@ -8579,32 +8597,6 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function testForCollapseSelection() {
-        return `datum.${FieldNames.Collapsed}`;
-    }
-    function zeroIfCollapsed(numericValueRef) {
-        const rules = [
-            {
-                "test": testForCollapseSelection(),
-                "value": 0
-            },
-            numericValueRef
-        ];
-        return rules;
-    }
-    function collapseY(numericValueRef) {
-        const rules = [
-            {
-                "scale": ScaleNames.Y,
-                "test": testForCollapseSelection(),
-                "signal": `${SignalNames.YDomain}[0]`
-            },
-            numericValueRef
-        ];
-        return rules;
-    }
-
-    // Copyright (c) Microsoft Corporation. All rights reserved.
     function fill(colorColumn, specViewOptions) {
         return colorColumn ?
             {
@@ -8615,6 +8607,11 @@ void main(void) {
                 {
                     "value": colorToString(specViewOptions.colors.defaultCube)
                 };
+    }
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    function testForCollapseSelection() {
+        return `datum.${FieldNames.Collapsed}`;
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -8634,22 +8631,45 @@ void main(void) {
                             "field": namespace.__column
                         }
                     },
-                    "width": {
-                        "scale": "xnewinternalscale",
-                        "band": true
-                    },
-                    "y": collapseY({
-                        "scale": ScaleNames.Y,
-                        "field": namespace.__row,
-                        "band": true,
-                        "offset": {
-                            "signal": `-bandwidth('${ScaleNames.Y}')-1`
+                    "width": [
+                        {
+                            "test": `bandwidth('xnewinternalscale') < 1`,
+                            "value": minPixelSize
+                        },
+                        {
+                            "scale": "xnewinternalscale",
+                            "band": 1
                         }
-                    }),
-                    "height": zeroIfCollapsed({
-                        "scale": ScaleNames.Y,
-                        "band": true
-                    }),
+                    ],
+                    "y": [
+                        {
+                            "scale": ScaleNames.Y,
+                            "test": testForCollapseSelection(),
+                            "signal": `${SignalNames.YDomain}[0]`
+                        },
+                        {
+                            "scale": ScaleNames.Y,
+                            "field": namespace.__row,
+                            "band": 1,
+                            "offset": {
+                                "signal": `-bandwidth('${ScaleNames.Y}')-1`
+                            }
+                        }
+                    ],
+                    "height": [
+                        {
+                            "test": testForCollapseSelection(),
+                            "value": 0
+                        },
+                        {
+                            "test": `bandwidth('${ScaleNames.Y}') < 1`,
+                            "value": minPixelSize
+                        },
+                        {
+                            "scale": ScaleNames.Y,
+                            "band": 1
+                        }
+                    ],
                     "fill": fill(columns.color, specViewOptions)
                 }
             }
@@ -8659,10 +8679,16 @@ void main(void) {
             update.z = {
                 "value": 0
             };
-            update.depth = zeroIfCollapsed({
-                "scale": ScaleNames.Z,
-                "field": columns.z.name
-            });
+            update.depth = [
+                {
+                    "test": testForCollapseSelection(),
+                    "value": 0
+                },
+                {
+                    "scale": ScaleNames.Z,
+                    "field": columns.z.name
+                }
+            ];
         }
         return [mark];
     }
@@ -8859,7 +8885,7 @@ void main(void) {
                     }
                 ],
                 "padding": 0.1,
-                "round": true,
+                "round": false,
                 "reverse": false,
                 "align": 1,
                 "domain": {
@@ -9345,10 +9371,16 @@ void main(void) {
             update.z = {
                 "value": 0
             };
-            update.depth = zeroIfCollapsed({
-                "scale": ScaleNames.Z,
-                "field": columns.z.name
-            });
+            update.depth = [
+                {
+                    "test": testForCollapseSelection(),
+                    "value": 0
+                },
+                {
+                    "scale": ScaleNames.Z,
+                    "field": columns.z.name
+                }
+            ];
         }
         return [mark];
     }
@@ -9639,10 +9671,16 @@ void main(void) {
             update.z = {
                 "value": 0
             };
-            update.depth = zeroIfCollapsed({
-                "scale": ScaleNames.Z,
-                "field": columns.z.name
-            });
+            update.depth = [
+                {
+                    "test": testForCollapseSelection(),
+                    "value": 0
+                },
+                {
+                    "scale": ScaleNames.Z,
+                    "field": columns.z.name
+                }
+            ];
         }
         return marks;
     }
@@ -9819,14 +9857,29 @@ void main(void) {
                             "offset": 1
                         },
                         "width": { "signal": SignalNames.PointSize },
-                        "y": collapseY({
-                            "scale": ScaleNames.Y,
-                            "field": columns.y.name,
-                            "offset": {
-                                "signal": `-${SignalNames.PointSize}`
+                        "y": [
+                            {
+                                "scale": ScaleNames.Y,
+                                "test": testForCollapseSelection(),
+                                "signal": `${SignalNames.YDomain}[0]`
+                            },
+                            {
+                                "scale": ScaleNames.Y,
+                                "field": columns.y.name,
+                                "offset": {
+                                    "signal": `-${SignalNames.PointSize}`
+                                }
                             }
-                        }),
-                        "height": zeroIfCollapsed({ "signal": SignalNames.PointSize }),
+                        ],
+                        "height": [
+                            {
+                                "test": testForCollapseSelection(),
+                                "value": 0
+                            },
+                            {
+                                "signal": SignalNames.PointSize
+                            }
+                        ],
                         "fill": fill(columns.color, specViewOptions)
                     }
                 }
@@ -9834,10 +9887,16 @@ void main(void) {
         ];
         if (columns.z) {
             const update = marks[0].encode.update;
-            update.z = zeroIfCollapsed({
-                "scale": ScaleNames.Z,
-                "field": columns.z.name
-            });
+            update.z = [
+                {
+                    "test": testForCollapseSelection(),
+                    "value": 0
+                },
+                {
+                    "scale": ScaleNames.Z,
+                    "field": columns.z.name
+                }
+            ];
             update.depth = { "signal": SignalNames.PointSize };
         }
         return marks;
@@ -10557,10 +10616,16 @@ void main(void) {
             update.z = {
                 "value": 0
             };
-            update.depth = zeroIfCollapsed({
-                "scale": ScaleNames.Z,
-                "field": columns.z.name
-            });
+            update.depth = [
+                {
+                    "test": testForCollapseSelection(),
+                    "value": 0
+                },
+                {
+                    "scale": ScaleNames.Z,
+                    "field": columns.z.name
+                }
+            ];
         }
         return marks;
     }
@@ -11942,7 +12007,7 @@ void main(void) {
          */
         deActivate() {
             return new Promise((resolve, reject) => {
-                if (this._dataScope.active) {
+                if (this._dataScope && this._dataScope.active) {
                     this._animator.deactivate().then(() => {
                         this._details.render();
                         resolve();
@@ -11999,7 +12064,7 @@ void main(void) {
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
-    const version = "1.4.3";
+    const version = "1.5.0";
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
 

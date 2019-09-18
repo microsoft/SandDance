@@ -57,6 +57,9 @@
 .sanddance-details-scroll {
   padding-bottom: 1em; }
 
+.sanddance-tooltip {
+  z-index: 1; }
+
 .sanddance-tooltip table {
   background: #333;
   color: #fff;

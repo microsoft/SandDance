@@ -99,4 +99,4 @@ string
 [NamespaceImport-4]: vegadeckgl#vegadeckgl
 [VariableDeclaration-0]: index#colorschemes
 [InterfaceDeclaration-0]: types#colorscheme
-[VariableDeclaration-10]: index#version
+[VariableDeclaration-19]: index#version

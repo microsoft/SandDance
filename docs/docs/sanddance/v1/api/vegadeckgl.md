@@ -73,12 +73,17 @@ Class which presents a Stage of chart data using Deck.gl to render.
 
 ----------
 
-### [types][NamespaceImport-2]
+### [defaults][NamespaceImport-2]
 
 
 ----------
 
-### [util][NamespaceImport-3]
+### [types][NamespaceImport-3]
+
+
+----------
+
+### [util][NamespaceImport-4]
 
 
 ## Variables
@@ -120,8 +125,9 @@ typeof ViewGl_Class
 [ClassDeclaration-0]: vegadeckgl.presenter#presenter
 [NamespaceImport-0]: vegadeckgl.constants#constants
 [NamespaceImport-1]: vegadeckgl.controls#controls
-[NamespaceImport-2]: vegadeckgl.types#types
-[NamespaceImport-3]: vegadeckgl.util#util
+[NamespaceImport-2]: vegadeckgl.defaults#defaults
+[NamespaceImport-3]: vegadeckgl.types#types
+[NamespaceImport-4]: vegadeckgl.util#util
 [VariableDeclaration-0]: vegadeckgl#base
 [InterfaceDeclaration-0]: vegadeckgl.types#base
 [VariableDeclaration-1]: vegadeckgl#viewgl

@@ -591,7 +591,7 @@ type View = "2d" | "3d";
 
 "2d" | "3d"
 
-[NamespaceImport-7]: vegadeckgl.types#types
+[NamespaceImport-8]: vegadeckgl.types#types
 [InterfaceDeclaration-34]: vegadeckgl.types#axis
 [InterfaceDeclaration-35]: vegadeckgl.types#styledline
 [InterfaceDeclaration-35]: vegadeckgl.types#styledline

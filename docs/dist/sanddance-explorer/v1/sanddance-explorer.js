@@ -6860,7 +6860,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.createStage = createStage;
-exports.min3dDepth = exports.defaultView = exports.lineZ = exports.groupStrokeWidth = exports.defaultPresenterConfig = exports.defaultPresenterStyle = exports.minWidth = exports.minHeight = void 0;
+exports.minPixelSize = exports.min3dDepth = exports.defaultView = exports.lineZ = exports.groupStrokeWidth = exports.defaultPresenterConfig = exports.defaultPresenterStyle = exports.minWidth = exports.minHeight = void 0;
 const minHeight = '100px';
 exports.minHeight = minHeight;
 const minWidth = '100px';
@@ -6921,6 +6921,8 @@ const defaultView = "2d";
 exports.defaultView = defaultView;
 const min3dDepth = 0.05;
 exports.min3dDepth = min3dDepth;
+const minPixelSize = 0.5;
+exports.minPixelSize = minPixelSize;
 },{}],"3LG2":[function(require,module,exports) {
 "use strict";
 
@@ -6970,10 +6972,13 @@ varying vec4 vColor;
 
 void main(void) {
 
+  float x = instanceSizes.x > 0.0 ? max(instanceSizes.x, ${_defaults.minPixelSize.toFixed(1)}) : 0.0;
+  float y = instanceSizes.y > 0.0 ? max(instanceSizes.y, ${_defaults.minPixelSize.toFixed(1)}) : 0.0;
+
   // if alpha == 0.0, do not render element
   float noRender = float(instanceColors.a == 0.0);
-  float finalXScale = project_scale(instanceSizes.x) * mix(1.0, 0.0, noRender);
-  float finalYScale = project_scale(instanceSizes.y) * mix(1.0, 0.0, noRender);
+  float finalXScale = project_scale(x) * mix(1.0, 0.0, noRender);
+  float finalYScale = project_scale(y) * mix(1.0, 0.0, noRender);
   float finalZScale = project_scale(instanceSizes.z) * mix(1.0, 0.0, noRender);
 
   // cube geometry vertics are between -1 to 1, scale and transform it to between 0, 1
@@ -6989,7 +6994,7 @@ void main(void) {
   float lightWeight = 1.0;
   
   //allow for a small amount of error around the min3dDepth 
-  if (instanceSizes.z >= ${_defaults.min3dDepth} - 0.0001) {
+  if (instanceSizes.z >= ${_defaults.min3dDepth.toFixed(4)} - 0.0001) {
     lightWeight = lighting_getLightWeight(
       position_worldspace.xyz, // the w component is always 1.0
       normals
@@ -9286,6 +9291,7 @@ var _exportNames = {
   controls: true,
   types: true,
   util: true,
+  defaults: true,
   base: true,
   use: true,
   Presenter: true,
@@ -9315,7 +9321,7 @@ Object.defineProperty(exports, "ViewGl", {
     return _viewGl.ViewGl;
   }
 });
-exports.util = exports.types = exports.controls = exports.constants = void 0;
+exports.defaults = exports.util = exports.types = exports.controls = exports.constants = void 0;
 
 var constants = _interopRequireWildcard(require("./constants"));
 
@@ -9332,6 +9338,10 @@ exports.types = types;
 var util = _interopRequireWildcard(require("./exports/util"));
 
 exports.util = util;
+
+var defaults = _interopRequireWildcard(require("./defaults"));
+
+exports.defaults = defaults;
 
 var _base = require("./base");
 
@@ -9353,7 +9363,7 @@ Object.keys(_enums).forEach(function (key) {
 });
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-},{"./constants":"ipKi","./exports/controls":"P7sC","./exports/types":"28lv","./exports/util":"y8T8","./base":"nnlJ","./presenter":"Ft4K","./vega-classes/viewGl":"C81u","./enums":"tDiU"}],"SLia":[function(require,module,exports) {
+},{"./constants":"ipKi","./exports/controls":"P7sC","./exports/types":"28lv","./exports/util":"y8T8","./defaults":"JuFU","./base":"nnlJ","./presenter":"Ft4K","./vega-classes/viewGl":"C81u","./enums":"tDiU"}],"SLia":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10934,40 +10944,7 @@ function xy(namespace) {
   }];
   return transforms;
 }
-},{"./transform.qualitative":"jWo5","./transform.quantitative":"sqk8","../../array":"b//p","../constants":"b0rV","../facet":"7Ifg","../top":"83Xo"}],"Dq8R":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.zeroIfCollapsed = zeroIfCollapsed;
-exports.collapseY = collapseY;
-
-var _constants = require("./constants");
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function testForCollapseSelection() {
-  return `datum.${_constants.FieldNames.Collapsed}`;
-}
-
-function zeroIfCollapsed(numericValueRef) {
-  const rules = [{
-    "test": testForCollapseSelection(),
-    "value": 0
-  }, numericValueRef];
-  return rules;
-}
-
-function collapseY(numericValueRef) {
-  const rules = [{
-    "scale": _constants.ScaleNames.Y,
-    "test": testForCollapseSelection(),
-    "signal": `${_constants.SignalNames.YDomain}[0]`
-  }, numericValueRef];
-  return rules;
-}
-},{"./constants":"b0rV"}],"S7Dm":[function(require,module,exports) {
+},{"./transform.qualitative":"jWo5","./transform.quantitative":"sqk8","../../array":"b//p","../constants":"b0rV","../facet":"7Ifg","../top":"83Xo"}],"S7Dm":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10989,7 +10966,22 @@ function fill(colorColumn, specViewOptions) {
     "value": _vegaDeck.util.colorToString(specViewOptions.colors.defaultCube)
   };
 }
-},{"./constants":"b0rV","../vega-deck.gl":"Uns8"}],"3Y6I":[function(require,module,exports) {
+},{"./constants":"b0rV","../vega-deck.gl":"Uns8"}],"Dq8R":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.testForCollapseSelection = testForCollapseSelection;
+
+var _constants = require("./constants");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function testForCollapseSelection() {
+  return `datum.${_constants.FieldNames.Collapsed}`;
+}
+},{"./constants":"b0rV"}],"3Y6I":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10997,11 +10989,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
-var _selection = require("../selection");
+var VegaDeckGl = _interopRequireWildcard(require("../../vega-deck.gl"));
 
 var _constants = require("../constants");
 
 var _fill = require("../fill");
+
+var _selection = require("../selection");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -11021,22 +11017,35 @@ function _default(namespace, columns, specViewOptions) {
             "field": namespace.__column
           }
         },
-        "width": {
+        "width": [{
+          "test": `bandwidth('xnewinternalscale') < 1`,
+          "value": VegaDeckGl.defaults.minPixelSize
+        }, {
           "scale": "xnewinternalscale",
-          "band": true
-        },
-        "y": (0, _selection.collapseY)({
+          "band": 1
+        }],
+        "y": [{
+          "scale": _constants.ScaleNames.Y,
+          "test": (0, _selection.testForCollapseSelection)(),
+          "signal": `${_constants.SignalNames.YDomain}[0]`
+        }, {
           "scale": _constants.ScaleNames.Y,
           "field": namespace.__row,
-          "band": true,
+          "band": 1,
           "offset": {
             "signal": `-bandwidth('${_constants.ScaleNames.Y}')-1`
           }
-        }),
-        "height": (0, _selection.zeroIfCollapsed)({
+        }],
+        "height": [{
+          "test": (0, _selection.testForCollapseSelection)(),
+          "value": 0
+        }, {
+          "test": `bandwidth('${_constants.ScaleNames.Y}') < 1`,
+          "value": VegaDeckGl.defaults.minPixelSize
+        }, {
           "scale": _constants.ScaleNames.Y,
-          "band": true
-        }),
+          "band": 1
+        }],
         "fill": (0, _fill.fill)(columns.color, specViewOptions)
       }
     }
@@ -11047,15 +11056,18 @@ function _default(namespace, columns, specViewOptions) {
     update.z = {
       "value": 0
     };
-    update.depth = (0, _selection.zeroIfCollapsed)({
+    update.depth = [{
+      "test": (0, _selection.testForCollapseSelection)(),
+      "value": 0
+    }, {
       "scale": _constants.ScaleNames.Z,
       "field": columns.z.name
-    });
+    }];
   }
 
   return [mark];
 }
-},{"../selection":"Dq8R","../constants":"b0rV","../fill":"S7Dm"}],"X355":[function(require,module,exports) {
+},{"../../vega-deck.gl":"Uns8","../constants":"b0rV","../fill":"S7Dm","../selection":"Dq8R"}],"X355":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11285,7 +11297,7 @@ function _default(namespace, insight, columns) {
       "signal": "0"
     }],
     "padding": 0.1,
-    "round": true,
+    "round": false,
     "reverse": false,
     "align": 1,
     "domain": {
@@ -11839,10 +11851,13 @@ function _default(columns, specViewOptions) {
     update.z = {
       "value": 0
     };
-    update.depth = (0, _selection.zeroIfCollapsed)({
+    update.depth = [{
+      "test": (0, _selection.testForCollapseSelection)(),
+      "value": 0
+    }, {
       "scale": _constants.ScaleNames.Z,
       "field": columns.z.name
-    });
+    }];
   }
 
   return [mark];
@@ -12197,10 +12212,13 @@ function _default(data, columns, specViewOptions) {
     update.z = {
       "value": 0
     };
-    update.depth = (0, _selection.zeroIfCollapsed)({
+    update.depth = [{
+      "test": (0, _selection.testForCollapseSelection)(),
+      "value": 0
+    }, {
       "scale": _constants2.ScaleNames.Z,
       "field": columns.z.name
-    });
+    }];
   }
 
   return marks;
@@ -12448,11 +12466,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
-var _selection = require("../selection");
-
 var _constants = require("../constants");
 
 var _fill = require("../fill");
+
+var _selection = require("../selection");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -12473,16 +12491,23 @@ function _default(columns, specViewOptions) {
         "width": {
           "signal": _constants.SignalNames.PointSize
         },
-        "y": (0, _selection.collapseY)({
+        "y": [{
+          "scale": _constants.ScaleNames.Y,
+          "test": (0, _selection.testForCollapseSelection)(),
+          "signal": `${_constants.SignalNames.YDomain}[0]`
+        }, {
           "scale": _constants.ScaleNames.Y,
           "field": columns.y.name,
           "offset": {
             "signal": `-${_constants.SignalNames.PointSize}`
           }
-        }),
-        "height": (0, _selection.zeroIfCollapsed)({
+        }],
+        "height": [{
+          "test": (0, _selection.testForCollapseSelection)(),
+          "value": 0
+        }, {
           "signal": _constants.SignalNames.PointSize
-        }),
+        }],
         "fill": (0, _fill.fill)(columns.color, specViewOptions)
       }
     }
@@ -12490,10 +12515,13 @@ function _default(columns, specViewOptions) {
 
   if (columns.z) {
     const update = marks[0].encode.update;
-    update.z = (0, _selection.zeroIfCollapsed)({
+    update.z = [{
+      "test": (0, _selection.testForCollapseSelection)(),
+      "value": 0
+    }, {
       "scale": _constants.ScaleNames.Z,
       "field": columns.z.name
-    });
+    }];
     update.depth = {
       "signal": _constants.SignalNames.PointSize
     };
@@ -12501,7 +12529,7 @@ function _default(columns, specViewOptions) {
 
   return marks;
 }
-},{"../selection":"Dq8R","../constants":"b0rV","../fill":"S7Dm"}],"vZre":[function(require,module,exports) {
+},{"../constants":"b0rV","../fill":"S7Dm","../selection":"Dq8R"}],"vZre":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13333,10 +13361,13 @@ function _default(data, columns, specViewOptions) {
     update.z = {
       "value": 0
     };
-    update.depth = (0, _selection.zeroIfCollapsed)({
+    update.depth = [{
+      "test": (0, _selection.testForCollapseSelection)(),
+      "value": 0
+    }, {
       "scale": _constants.ScaleNames.Z,
       "field": columns.z.name
-    });
+    }];
   }
 
   return marks;
@@ -15240,7 +15271,7 @@ class Viewer {
 
   deActivate() {
     return new Promise((resolve, reject) => {
-      if (this._dataScope.active) {
+      if (this._dataScope && this._dataScope.active) {
         this._animator.deactivate().then(() => {
           this._details.render();
 
@@ -15306,7 +15337,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = "1.4.3";
+const version = "1.5.0";
 exports.version = version;
 },{}],"rZaE":[function(require,module,exports) {
 "use strict";
@@ -16445,7 +16476,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = "1.1.0";
+const version = "1.1.1";
 exports.version = version;
 },{}],"MjKu":[function(require,module,exports) {
 "use strict";
@@ -23230,7 +23261,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var version = "1.5.2";
+var version = "1.5.3";
 exports.version = version;
 },{}],"zKGJ":[function(require,module,exports) {
 "use strict";
