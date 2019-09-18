@@ -22301,12 +22301,21 @@ var scatterPlot_1 = require("./scatterPlot");
 var RecommenderSummary = /** @class */ (function () {
     function RecommenderSummary(columns, data) {
         var quickRec = new scatterPlot_1.ScatterPlotRecommenderSummary(columns, data).recommend();
-        if (quickRec)
+        if (quickRec) {
             this.rec = quickRec;
+        }
         else {
             var barChartrec = new barChart_1.BarChartRecommenderSummary(columns, data).recommend();
-            if (barChartrec.score >= 1)
+            if (barChartrec.score >= 1) {
                 this.rec = barChartrec;
+            }
+            else {
+                this.rec = {
+                    chart: "grid",
+                    columns: {},
+                    score: 1
+                };
+            }
         }
     }
     RecommenderSummary.prototype.recommend = function () {
