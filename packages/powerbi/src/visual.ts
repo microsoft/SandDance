@@ -53,6 +53,9 @@ export class Visual implements IVisual {
     private prevSettings: IVisualSettings;
     private host: powerbi.extensibility.visual.IVisualHost;
     private selectionManager: powerbi.extensibility.ISelectionManager;
+    private fetchMoreTimer: number;
+
+    public static fetchMoreTimeout = 5000;
 
     constructor(options: VisualConstructorOptions) {
         //console.log('Visual constructor', options);
@@ -101,6 +104,10 @@ export class Visual implements IVisual {
     public update(options: VisualUpdateOptions) {
         //console.log('Visual update', options);
 
+        if (this.fetchMoreTimer) {
+            clearTimeout(this.fetchMoreTimer);
+        }
+
         if (!capabilities.webgl) {
             this.app.unload();
             return;
@@ -116,8 +123,15 @@ export class Visual implements IVisual {
             }
             this.app.fetchStatus(dataView.table.rows.length, !doneFetching);
             if (doneFetching) {
-                //allow fetch status to render
                 this.show(dataView);
+            } else {
+                this.fetchMoreTimer = window.setTimeout(() => {
+                    //console.log('Visual fetchMoreTimeout', options);
+
+                    this.app.fetchStatus(dataView.table.rows.length, false);
+                    this.show(dataView);
+
+                }, Visual.fetchMoreTimeout);
             }
         }
     }
