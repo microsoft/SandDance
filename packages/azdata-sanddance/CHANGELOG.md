@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.3.5]
+- Sub-pixel rendering
+
 ## [1.3.4]
 - Legend title is clickable
 - Legend, Tooltips and Search handle boolean values
