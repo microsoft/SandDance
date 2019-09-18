@@ -39,6 +39,8 @@ export interface State {
     loaded: boolean;
     chromeless: boolean;
     darkTheme: boolean;
+    rowCount: number;
+    fetching: boolean;
 }
 
 export class App extends React.Component<Props, State> {
@@ -50,7 +52,9 @@ export class App extends React.Component<Props, State> {
         this.state = {
             loaded: false,
             chromeless: false,
-            darkTheme: null
+            darkTheme: null,
+            rowCount: null,
+            fetching: false
         };
         this.viewerOptions = this.getViewerOptions();
     }
@@ -79,12 +83,25 @@ export class App extends React.Component<Props, State> {
     }
 
     load(data: DataFile | object[], getPartialInsight: (columns: SandDance.types.Column[]) => Partial<SandDance.types.Insight>, tooltipExclusions?: string[]) {
+        const wasLoaded = this.state.loaded;
         this.setState({ loaded: true });
-        return this.explorer.load(data, getPartialInsight, { tooltipExclusions });
+        if (wasLoaded) {
+            this.explorer.setState({
+                calculating: () => {
+                    this.explorer.load(data, getPartialInsight, { tooltipExclusions });
+                }
+            });
+        } else {
+            this.explorer.load(data, getPartialInsight, { tooltipExclusions });
+        }
     }
 
     unload() {
         this.setState({ loaded: false });
+    }
+
+    fetchStatus(rowCount: number, fetching: boolean) {
+        this.setState({ rowCount, fetching });
     }
 
     changeTheme(darkTheme: boolean) {
@@ -136,7 +153,10 @@ export class App extends React.Component<Props, State> {
                 ),
                 !capabilities.webgl && React.createElement("div", { className: "sanddance-webgl-required" },
                     strings.webglDisabled
-                ),
+                )
+            ),
+            this.state.fetching && React.createElement("div", { className: "sanddance-fetch" },
+                `${strings.fetching} ${this.state.rowCount ? `(${this.state.rowCount} ${strings.fetched})` : ''}`
             )
         );
     }

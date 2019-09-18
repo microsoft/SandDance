@@ -61,7 +61,7 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
                 }
             ],
             "padding": 0.1,
-            "round": true,
+            "round": false,
             "reverse": false,
             "align": 1,
             "domain": {

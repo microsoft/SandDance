@@ -67,3 +67,4 @@ export const lineZ = -1;
 export const defaultView: View = "2d";
 
 export const min3dDepth = 0.05;
+export const minPixelSize = 0.5;

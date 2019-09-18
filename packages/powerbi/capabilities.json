@@ -41,7 +41,7 @@
                         "in": "values"
                     },
                     "dataReductionAlgorithm": {
-                        "sample": {
+                        "window": {
                             "count": 30000
                         }
                     }

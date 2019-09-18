@@ -15,7 +15,7 @@ This GitHub repo contains the code for the "new" SandDance, and has been release
 <br/>A: *SandDance 2019* is a complete reimplementation of SandDance built on a different technology stack. As such, there are certain features that haven’t been reimplemented and other features that are. For example, it has a better 3D mode, allow more smooth rotation and pan/zoom.  The model for selection is different, since clicking in the viewing area pans/zooms/rotates the view.  Please [create an issue](https://github.com/microsoft/SandDance/issues/new) to let us know what missing features you need. We'll do our best to prioritize that when we’re adding functionality.
 
 * **Q: How many data points are supported in *SandDance 2019*?**
-<br/>A: Right now, there is a limit of 30K data points that are sent to any custom visual. We’re exploring ways to increase this limit.
+<br/>A: In Power BI custom visual version: 1.2.9 there is a limit of 30K data points. We have a new version [coming soon](https://github.com/microsoft/SandDance/pull/89) that has been tested up to 500K data points. We will list the new version number here after it ships.
 
 ## Usage
 Note that PowerBI aggregates data when sending it down to be displayed to a custom visual. Since SandDance works best when working on non-aggregated data, make sure to send down at least one column with unique IDs to keep it from performing aggregation.

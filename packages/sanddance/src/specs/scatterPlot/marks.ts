@@ -1,14 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { collapseY, zeroIfCollapsed } from '../selection';
-import {
-    DataNames,
-    ScaleNames,
-    SignalNames
-} from '../constants';
+import { DataNames, ScaleNames, SignalNames } from '../constants';
 import { fill } from '../fill';
 import { Mark } from 'vega-typings';
 import { SpecColumns, SpecViewOptions } from '../types';
+import { testForCollapseSelection } from '../selection';
 
 export default function (columns: SpecColumns, specViewOptions: SpecViewOptions) {
     const categoricalColor = columns.color && !columns.color.quantitative;
@@ -26,7 +22,12 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                         "offset": 1
                     },
                     "width": { "signal": SignalNames.PointSize },
-                    "y": collapseY(
+                    "y": [
+                        {
+                            "scale": ScaleNames.Y,
+                            "test": testForCollapseSelection(),
+                            "signal": `${SignalNames.YDomain}[0]`
+                        },
                         {
                             "scale": ScaleNames.Y,
                             "field": columns.y.name,
@@ -34,10 +35,16 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                                 "signal": `-${SignalNames.PointSize}`
                             }
                         }
-                    ),
-                    "height": zeroIfCollapsed(
-                        { "signal": SignalNames.PointSize }
-                    ),
+                    ],
+                    "height": [
+                        {
+                            "test": testForCollapseSelection(),
+                            "value": 0
+                        },
+                        {
+                            "signal": SignalNames.PointSize
+                        }
+                    ],
                     "fill": fill(columns.color, specViewOptions)
                 }
             }
@@ -45,10 +52,16 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
     ];
     if (columns.z) {
         const update = marks[0].encode.update;
-        update.z = zeroIfCollapsed({
-            "scale": ScaleNames.Z,
-            "field": columns.z.name
-        });
+        update.z = [
+            {
+                "test": testForCollapseSelection(),
+                "value": 0
+            },
+            {
+                "scale": ScaleNames.Z,
+                "field": columns.z.name
+            }
+        ];
         update.depth = { "signal": SignalNames.PointSize };
     }
     return marks;

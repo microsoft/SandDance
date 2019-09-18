@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import { min3dDepth } from "../defaults";
+import { min3dDepth, minPixelSize } from "../defaults";
 
 export default `\
 #define SHADER_NAME cube-layer-vertex-shader
@@ -40,10 +40,13 @@ varying vec4 vColor;
 
 void main(void) {
 
+  float x = instanceSizes.x > 0.0 ? max(instanceSizes.x, ${minPixelSize.toFixed(1)}) : 0.0;
+  float y = instanceSizes.y > 0.0 ? max(instanceSizes.y, ${minPixelSize.toFixed(1)}) : 0.0;
+
   // if alpha == 0.0, do not render element
   float noRender = float(instanceColors.a == 0.0);
-  float finalXScale = project_scale(instanceSizes.x) * mix(1.0, 0.0, noRender);
-  float finalYScale = project_scale(instanceSizes.y) * mix(1.0, 0.0, noRender);
+  float finalXScale = project_scale(x) * mix(1.0, 0.0, noRender);
+  float finalYScale = project_scale(y) * mix(1.0, 0.0, noRender);
   float finalZScale = project_scale(instanceSizes.z) * mix(1.0, 0.0, noRender);
 
   // cube geometry vertics are between -1 to 1, scale and transform it to between 0, 1
@@ -59,7 +62,7 @@ void main(void) {
   float lightWeight = 1.0;
   
   //allow for a small amount of error around the min3dDepth 
-  if (instanceSizes.z >= ${min3dDepth} - 0.0001) {
+  if (instanceSizes.z >= ${min3dDepth.toFixed(4)} - 0.0001) {
     lightWeight = lighting_getLightWeight(
       position_worldspace.xyz, // the w component is always 1.0
       normals

@@ -109,9 +109,20 @@ export class Visual implements IVisual {
         const dataView = options && options.dataViews && options.dataViews[0];
         if (!dataView || !dataView.table) {
             this.app.unload();
-            return;
+        } else {
+            let doneFetching = true;
+            if (dataView.metadata.segment) {
+                doneFetching = !this.host.fetchMoreData();
+            }
+            this.app.fetchStatus(dataView.table.rows.length, !doneFetching);
+            if (doneFetching) {
+                //allow fetch status to render
+                this.show(dataView);
+            }
         }
+    }
 
+    show(dataView: powerbi.DataView) {
         this.settings = Visual.parseSettings(dataView);
         const oldData = this.app.getDataContent();
         let { data, different } = convertTableToObjectArray(dataView.table, oldData, this.host);
@@ -128,10 +139,7 @@ export class Visual implements IVisual {
             return;
         }
 
-        const {
-            sandDanceMainSettings,
-            sandDanceConfig
-        } = this.settings;
+        const { sandDanceConfig } = this.settings;
 
         let tooltipExclusions: string[] = [];
 
