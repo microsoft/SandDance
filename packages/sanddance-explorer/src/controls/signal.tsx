@@ -11,7 +11,6 @@ import {
 } from 'vega-typings';
 import { Explorer } from '../explorer';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
-import { SandDance } from '@msrvida/sanddance-react';
 
 export interface Props {
     explorer: Explorer;
