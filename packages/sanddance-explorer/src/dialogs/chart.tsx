@@ -4,11 +4,11 @@ import * as React from 'react';
 import { base } from '../base';
 import { ColumnMap, ColumnMapBaseProps } from '../controls/columnMap';
 import { Dialog } from '../controls/dialog';
-import { ToggleColumns } from '../controls/toggleColumns';
 import { Group } from '../controls/group';
 import { SandDance } from '@msrvida/sanddance-react';
 import { Signal } from '../controls/signal';
 import { strings } from '../language';
+import { ToggleColumns } from '../controls/toggleColumns';
 
 export interface Props extends ColumnMapBaseProps {
     specCapabilities: SandDance.types.SpecCapabilities;
@@ -46,44 +46,39 @@ export class Chart extends React.Component<Props, State> {
                 <Group label={strings.labelChart}>
                     <div className="calculator">
                         <base.fabric.ChoiceGroup
+                            className="sanddance-chart-type"
                             options={[
                                 {
                                     key: 'grid',
-                                    text: strings.chartTypeGrid,
-                                    checked: props.chart === 'grid',
-                                    disabled: props.disabled
+                                    text: strings.chartTypeGrid
                                 },
                                 {
                                     key: 'scatterplot',
-                                    text: strings.chartTypeScatterPlot,
-                                    checked: props.chart === 'scatterplot',
-                                    disabled: props.disabled
+                                    text: strings.chartTypeScatterPlot
                                 },
                                 {
                                     key: 'density',
-                                    text: strings.chartTypeDensity,
-                                    checked: props.chart === 'density',
-                                    disabled: props.disabled
+                                    text: strings.chartTypeDensity
                                 },
                                 {
                                     key: 'barchart',
-                                    text: strings.chartTypeBarChart,
-                                    checked: props.chart === 'barchart',
-                                    disabled: props.disabled
+                                    text: strings.chartTypeBarChart
                                 },
                                 {
                                     key: 'treemap',
-                                    text: strings.chartTypeTreeMap,
-                                    checked: props.chart === 'treemap',
-                                    disabled: props.disabled
+                                    text: strings.chartTypeTreeMap
                                 },
                                 {
                                     key: 'stacks',
-                                    text: strings.chartTypeStacks,
-                                    checked: props.chart === 'stacks',
-                                    disabled: props.disabled
+                                    text: strings.chartTypeStacks
                                 }
-                            ]}
+                            ].map(o => {
+                                return {
+                                    ...o,
+                                    checked: props.chart === o.key,
+                                    disabled: props.disabled
+                                };
+                            })}
                             onChange={(e, o) => props.onChangeChartType(o.key as SandDance.types.Chart)}
                         />
                     </div>
