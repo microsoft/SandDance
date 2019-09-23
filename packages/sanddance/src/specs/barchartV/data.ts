@@ -74,12 +74,12 @@ function xy(namespace: NameSpace) {
     const transforms: Transforms[] = [
         {
             "type": "formula",
-            "expr": `floor(datum.${FieldNames.BarChartStackY0} / shapesPerRow)`,
+            "expr": `floor(datum.${FieldNames.BarChartStack0} / shapesPerRow)`,
             "as": namespace.__row
         },
         {
             "type": "formula",
-            "expr": `datum.${FieldNames.BarChartStackY0} % shapesPerRow`,
+            "expr": `datum.${FieldNames.BarChartStack0} % shapesPerRow`,
             "as": namespace.__column
         }
     ];
