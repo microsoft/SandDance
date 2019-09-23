@@ -1,19 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { ScaleNames } from '../constants';
+import { BarChartScaleNames } from './constants';
 import { NameSpace } from './namespace';
 import { Scale } from 'vega-typings';
+import { ScaleNames } from '../constants';
 import { SpecColumns } from '../types';
-import { xscaleavailable } from './constants';
 
 export default function (namespace: NameSpace, columns: SpecColumns) {
     const scales: Scale[] = [
         {
-            "name": xscaleavailable,
+            "name": BarChartScaleNames.bucketScale,
             "type": "band",
             "range": "width",
             "domain": {
-                "data": namespace.nested,
+                "data": namespace.bucket,
                 "field": columns.x.name,
                 "sort": true
             }

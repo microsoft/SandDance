@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { aggregateScale, shapesPerRow } from './constants';
 import { Axis } from 'vega-typings';
+import { BarChartScaleNames, BarChartSignalNames } from './constants';
 import { partialAxes } from '../axes';
 import { ScaleNames } from '../constants';
 import { SpecColumns, SpecViewOptions } from '../types';
@@ -15,13 +15,13 @@ export default function (specViewOptions: SpecViewOptions, columns: SpecColumns)
             ...pa.bottom as Axis
         },
         {
-            "scale": aggregateScale,
+            "scale": BarChartScaleNames.levelScale,
             "title": specViewOptions.language.count,
             "encode": {
                 "labels": {
                     "update": {
                         "text": {
-                            "signal": `${shapesPerRow} * datum.value`
+                            "signal": `${BarChartSignalNames.compartmentsPerLevelSignal} * datum.value`
                         }
                     }
                 }

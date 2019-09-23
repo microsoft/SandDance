@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from '../../vega-deck.gl';
+import { BarChartScaleNames } from './constants';
 import { FieldNames, ScaleNames, SignalNames } from '../constants';
 import { fill } from '../fill';
 import { NameSpace } from './namespace';
 import { RectMark } from 'vega-typings';
 import { SpecColumns, SpecViewOptions } from '../types';
 import { testForCollapseSelection } from '../selection';
-import { xnewinternalscale } from './constants';
 
 export default function (namespace: NameSpace, columns: SpecColumns, specViewOptions: SpecViewOptions): RectMark[] {
     const mark: RectMark = {
@@ -21,17 +21,17 @@ export default function (namespace: NameSpace, columns: SpecColumns, specViewOpt
                     "scale": ScaleNames.X,
                     "field": columns.x.quantitative ? FieldNames.BarChartBin0 : columns.x.name,
                     "offset": {
-                        "scale": xnewinternalscale,
-                        "field": namespace.__column
+                        "scale": BarChartScaleNames.compartmentScale,
+                        "field": namespace.__compartment
                     }
                 },
                 "width": [
                     {
-                        "test": `bandwidth('${xnewinternalscale}') < 1`,
+                        "test": `bandwidth('${BarChartScaleNames.compartmentScale}') < 1`,
                         "value": VegaDeckGl.defaults.minPixelSize
                     },
                     {
-                        "scale": xnewinternalscale,
+                        "scale": BarChartScaleNames.compartmentScale,
                         "band": 1
                     }
                 ],
@@ -43,7 +43,7 @@ export default function (namespace: NameSpace, columns: SpecColumns, specViewOpt
                     },
                     {
                         "scale": ScaleNames.Y,
-                        "field": namespace.__row,
+                        "field": namespace.__level,
                         "band": 1,
                         "offset": {
                             "signal": `-bandwidth('${ScaleNames.Y}')-1`

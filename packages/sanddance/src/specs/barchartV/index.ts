@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import getAxes from './axes';
-import getData, { nested, stacked } from './data';
+import getData, { bucketed, stacked } from './data';
 import getMarks from './marks';
 import getScales from './scales';
 import getSignals from './signals';
+import { Axis, Mark, Spec } from 'vega-typings';
 import {
     checkForFacetErrors,
     facetMarks,
@@ -19,7 +20,6 @@ import {
     SpecViewOptions
 } from '../types';
 import { legend } from '../legends';
-import { Axis, Mark, Spec } from 'vega-typings';
 import { NameSpace } from './namespace';
 import { SpecCreator, SpecResult } from '../interfaces';
 
@@ -82,8 +82,8 @@ export const barchartV: SpecCreator = (insight: Insight, columns: SpecColumns, s
             ]
             :
             [
-                nested(cellNamespace, DataNames.FacetGroupCell, columns),
-                stacked(cellNamespace, cellNamespace.nested)
+                bucketed(cellNamespace, DataNames.FacetGroupCell, columns),
+                stacked(cellNamespace, cellNamespace.bucket)
             ];
         marks = facetMarks(specViewOptions, rootNamespace.stacked, cellMarks, axes, cd);
         axes = [];

@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 export class NameSpace {
-    public nested: string;
+    public bucket: string;
     public stacked: string;
-    public __column: string;
-    public __row: string;
+    public __compartment: string;
+    public __level: string;
 
     constructor(nameSpace = '') {
-        ['nested', 'stacked', '__column', '__row'].forEach(name => {
+        ['bucket', 'stacked', '__compartment', '__level'].forEach(name => {
             this[name] = `${name}${nameSpace}`;
         });
     }

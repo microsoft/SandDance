@@ -43,7 +43,8 @@ export const DataNames = {
     TopLookup: "TopData",
     Legend: "LegendData",
     FacetGroupCell: "FacetGroupCellData",
-    FacetCellTitles: "FacetCellTitlesData"
+    FacetCellTitles: "FacetCellTitlesData",
+    QuantitativeData: "QuantitativeData"
 };
 
 export const ScaleNames = {

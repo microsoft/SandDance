@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { BarChartSignalNames } from './constants';
 import { FieldNames } from '../constants';
 import { SpecColumns } from '../types';
 import { StackTransform, Transforms } from 'vega-typings';
-import { xtent } from './constants';
 
 export default function (columns: SpecColumns) {
     const stackTransform: StackTransform = {
@@ -27,7 +27,7 @@ export default function (columns: SpecColumns) {
         stackTransform,
         {
             "type": "extent",
-            "signal": xtent,
+            "signal": BarChartSignalNames.levelExtentSignal,
             "field": FieldNames.BarChartStack1
         }
     ];

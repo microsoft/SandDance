@@ -1,23 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { FieldNames, ScaleNames } from '../constants';
-import { NameSpace } from './namespace';
+import { DataNames, ScaleNames } from '../constants';
 import { Scale } from 'vega-typings';
-import { SpecColumns } from '../types';
-import { xaxisdata, xscaleavailable } from './constants';
 
-export default function (namespace: NameSpace, columns: SpecColumns) {
+export default function () {
     const scales: Scale[] = [
-        {
-            "name": xscaleavailable,
-            "type": "band",
-            "range": "width",
-            "domain": {
-                "data": namespace.nested,
-                "field": FieldNames.BarChartBin0,
-                "sort": true
-            }
-        },
         {
             "name": ScaleNames.X,
             "type": "band",
@@ -29,7 +16,7 @@ export default function (namespace: NameSpace, columns: SpecColumns) {
             ],
             "padding": 0.01,
             "domain": {
-                "data": xaxisdata,
+                "data": DataNames.QuantitativeData,
                 "field": "data",
                 "sort": true
             }
