@@ -69,6 +69,7 @@ export const SignalNames = {
     TextSize: "Text_SizeSignal",
     TextTitleSize: "Text_TitleSizeSignal",
     TreeMapMethod: "Chart_TreeMapMethodSignal",
+    XDomain: "RoleX_DomainSignal",
     XBins: "RoleX_BinsSignal",
     XGridSize: "Chart_XGridSize",
     YBins: "RoleY_BinsSignal",

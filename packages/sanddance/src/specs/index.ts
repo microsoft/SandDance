@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as constants from './constants';
+import { barchartH } from './barchartH';
 import { barchartV } from './barchartV';
 import {
     Chart,
@@ -19,6 +20,8 @@ export { constants };
 
 export const creators: { [chart in Chart]: SpecCreator } = {
     barchart: barchartV,
+    barchartH,
+    barchartV,
     density,
     grid,
     scatterplot,

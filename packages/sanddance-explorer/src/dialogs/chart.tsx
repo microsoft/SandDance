@@ -61,8 +61,12 @@ export class Chart extends React.Component<Props, State> {
                                     text: strings.chartTypeDensity
                                 },
                                 {
-                                    key: 'barchart',
-                                    text: strings.chartTypeBarChart
+                                    key: 'barchartV',
+                                    text: strings.chartTypeBarChartV
+                                },
+                                {
+                                    key: 'barchartH',
+                                    text: strings.chartTypeBarChartH
                                 },
                                 {
                                     key: 'treemap',
