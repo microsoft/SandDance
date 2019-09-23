@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as constants from './constants';
-import { barchart } from './barchart-v';
+import { barchartV } from './barchartV';
 import {
     Chart,
     Insight,
@@ -18,7 +18,7 @@ import { treemap } from './treeMap';
 export { constants };
 
 export const creators: { [chart in Chart]: SpecCreator } = {
-    barchart,
+    barchart: barchartV,
     density,
     grid,
     scatterplot,

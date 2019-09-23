@@ -23,7 +23,7 @@ import { Axis, Mark, Spec } from 'vega-typings';
 import { NameSpace } from './namespace';
 import { SpecCreator, SpecResult } from '../interfaces';
 
-export const barchart: SpecCreator = (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult => {
+export const barchartV: SpecCreator = (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult => {
     const errors: string[] = [];
 
     if (!columns.x) errors.push(`Must set a field for x axis`);
