@@ -4,11 +4,12 @@ import { ScaleNames } from '../constants';
 import { NameSpace } from './namespace';
 import { Scale } from 'vega-typings';
 import { SpecColumns } from '../types';
+import { xscaleavailable } from './constants';
 
 export default function (namespace: NameSpace, columns: SpecColumns) {
     const scales: Scale[] = [
         {
-            "name": "xscaleavailable",
+            "name": xscaleavailable,
             "type": "band",
             "range": "width",
             "domain": {

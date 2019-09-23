@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { binSignal, var_extent, xtent } from './constants';
 import { Column, SpecColumns } from '../types';
 import { FieldNames, SignalNames } from '../constants';
 import { StackTransform, Transforms } from 'vega-typings';
@@ -27,13 +28,13 @@ export default function (columns: SpecColumns, groupBy: Column) {
         {
             "type": "extent",
             "field": columns.x.name,
-            "signal": "var_extent"
+            "signal": var_extent
         },
         {
             "type": "bin",
             "field": columns.x.name,
             "extent": {
-                "signal": "var_extent"
+                "signal": var_extent
             },
             "maxbins": {
                 "signal": SignalNames.XBins
@@ -42,12 +43,12 @@ export default function (columns: SpecColumns, groupBy: Column) {
                 FieldNames.BarChartBin0,
                 FieldNames.BarChartBin1
             ],
-            "signal": "binSignal"
+            "signal": binSignal
         },
         stackTransform,
         {
             "type": "extent",
-            "signal": "xtent",
+            "signal": xtent,
             "field": FieldNames.BarChartStack1
         }
     ];

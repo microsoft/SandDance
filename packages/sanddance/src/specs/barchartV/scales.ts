@@ -3,35 +3,41 @@
 import qualitativeScales from './scales.qualitative';
 import quantitativeScales from './scales.quantitative';
 import {
+    aggregateScale,
+    shapesPerRow,
+    xdesbandwidth,
+    xnewinternalscale
+} from './constants';
+import { binnableColorScale, linearScale, pointScale } from '../scales';
+import {
     ColorScaleNone,
     DataNames,
-    ScaleNames,
     FieldNames,
+    ScaleNames,
     SignalNames
 } from '../constants';
 import { Insight, SpecColumns } from '../types';
-import { linearScale, pointScale, binnableColorScale } from '../scales';
 import { NameSpace } from './namespace';
 import { RangeScheme, Scale } from 'vega-typings';
 
 export default function (namespace: NameSpace, insight: Insight, columns: SpecColumns) {
     const scales: Scale[] = [
         {
-            "name": "xnewinternalscale",
+            "name": xnewinternalscale,
             "type": "band",
             "range": [
                 0,
                 {
-                    "signal": "xdesbandwidth"
+                    "signal": xdesbandwidth
                 }
             ],
             "padding": 0.1,
             "domain": {
-                "signal": "sequence(0, shapesPerRow+1, 1)"
+                "signal": `sequence(0, ${shapesPerRow}+1, 1)`
             }
         },
         {
-            "name": "yscalelabel",
+            "name": aggregateScale,
             "range": [
                 {
                     "signal": "height"
@@ -87,7 +93,7 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
                     "range": {
                         "scheme": insight.scheme || ColorScaleNone
                     },
-                    "reverse": { "signal": SignalNames.ColorReverse} 
+                    "reverse": { "signal": SignalNames.ColorReverse }
                 }
             );
         }

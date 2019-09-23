@@ -7,6 +7,7 @@ import { NameSpace } from './namespace';
 import { RectMark } from 'vega-typings';
 import { SpecColumns, SpecViewOptions } from '../types';
 import { testForCollapseSelection } from '../selection';
+import { xnewinternalscale } from './constants';
 
 export default function (namespace: NameSpace, columns: SpecColumns, specViewOptions: SpecViewOptions): RectMark[] {
     const mark: RectMark = {
@@ -20,17 +21,17 @@ export default function (namespace: NameSpace, columns: SpecColumns, specViewOpt
                     "scale": ScaleNames.X,
                     "field": columns.x.quantitative ? FieldNames.BarChartBin0 : columns.x.name,
                     "offset": {
-                        "scale": "xnewinternalscale",
+                        "scale": xnewinternalscale,
                         "field": namespace.__column
                     }
                 },
                 "width": [
                     {
-                        "test": `bandwidth('xnewinternalscale') < 1`,
+                        "test": `bandwidth('${xnewinternalscale}') < 1`,
                         "value": VegaDeckGl.defaults.minPixelSize
                     },
                     {
-                        "scale": "xnewinternalscale",
+                        "scale": xnewinternalscale,
                         "band": 1
                     }
                 ],

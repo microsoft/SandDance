@@ -1,6 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { allTruthy } from '../../array';
+import {
+    binAspect,
+    shapesPerRow,
+    xdesbandwidth,
+    xscaleavailable,
+    xtent
+} from './constants';
 import { colorBinCountSignal, colorReverseSignal, textSignals } from '../signals';
 import { facetSignals } from '../facet';
 import { Insight, SpecColumns, SpecViewOptions } from '../types';
@@ -27,16 +34,16 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                 }
             },
             {
-                "name": "xdesbandwidth",
-                "update": `bandwidth('${columns.x.quantitative ? ScaleNames.X : 'xscaleavailable'}')`
+                "name": xdesbandwidth,
+                "update": `bandwidth('${columns.x.quantitative ? ScaleNames.X : xscaleavailable}')`
             },
             {
-                "name": "binAspect",
-                "update": "xdesbandwidth/height"
+                "name": binAspect,
+                "update": `${xdesbandwidth}/height`
             },
             {
-                "name": "shapesPerRow",
-                "update": "ceil(sqrt(binAspect*xtent[1]))"
+                "name": shapesPerRow,
+                "update": `ceil(sqrt(${binAspect}*${xtent}[1]))`
             },
             colorBinCountSignal(specViewOptions),
             colorReverseSignal(specViewOptions)

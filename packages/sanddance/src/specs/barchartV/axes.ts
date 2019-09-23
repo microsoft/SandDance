@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { aggregateScale, shapesPerRow } from './constants';
 import { Axis } from 'vega-typings';
 import { partialAxes } from '../axes';
 import { ScaleNames } from '../constants';
@@ -14,13 +15,13 @@ export default function (specViewOptions: SpecViewOptions, columns: SpecColumns)
             ...pa.bottom as Axis
         },
         {
-            "scale": "yscalelabel",
+            "scale": aggregateScale,
             "title": specViewOptions.language.count,
             "encode": {
                 "labels": {
                     "update": {
                         "text": {
-                            "signal": "shapesPerRow * datum.value"
+                            "signal": `${shapesPerRow} * datum.value`
                         }
                     }
                 }

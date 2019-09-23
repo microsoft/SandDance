@@ -3,6 +3,7 @@
 import { FieldNames } from '../constants';
 import { SpecColumns } from '../types';
 import { StackTransform, Transforms } from 'vega-typings';
+import { xtent } from './constants';
 
 export default function (columns: SpecColumns) {
     const stackTransform: StackTransform = {
@@ -26,7 +27,7 @@ export default function (columns: SpecColumns) {
         stackTransform,
         {
             "type": "extent",
-            "signal": "xtent",
+            "signal": xtent,
             "field": FieldNames.BarChartStack1
         }
     ];

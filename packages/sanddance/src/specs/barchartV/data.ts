@@ -3,6 +3,7 @@
 import getQualitative from './transform.qualitative';
 import getQuantitative from './transform.quantitative';
 import { allTruthy } from '../../array';
+import { binSignal, shapesPerRow, xaxisdata } from './constants';
 import { Data, SourceData, Transforms } from 'vega-typings';
 import { DataNames, FieldNames } from '../constants';
 import { facetGroupData, facetSourceData, facetTransforms } from '../facet';
@@ -24,18 +25,18 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
         ],
         columns.x.quantitative && [
             {
-                "name": "xaxisdata",
+                "name": xaxisdata,
                 "transform": [
                     {
                         "type": "sequence",
                         "start": {
-                            "signal": "binSignal.start"
+                            "signal": `${binSignal}.start`
                         },
                         "stop": {
-                            "signal": "binSignal.stop"
+                            "signal": `${binSignal}.stop`
                         },
                         "step": {
-                            "signal": "binSignal.step"
+                            "signal": `${binSignal}.step`
                         }
                     }
                 ]
@@ -74,12 +75,12 @@ function xy(namespace: NameSpace) {
     const transforms: Transforms[] = [
         {
             "type": "formula",
-            "expr": `floor(datum.${FieldNames.BarChartStack0} / shapesPerRow)`,
+            "expr": `floor(datum.${FieldNames.BarChartStack0} / ${shapesPerRow})`,
             "as": namespace.__row
         },
         {
             "type": "formula",
-            "expr": `datum.${FieldNames.BarChartStack0} % shapesPerRow`,
+            "expr": `datum.${FieldNames.BarChartStack0} % ${shapesPerRow}`,
             "as": namespace.__column
         }
     ];
