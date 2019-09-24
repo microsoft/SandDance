@@ -19,7 +19,8 @@ export default function () {
                 "data": DataNames.QuantitativeData,
                 "field": "data",
                 "sort": true
-            }
+            },
+            "reverse": true
         }
     ];
     return scales;

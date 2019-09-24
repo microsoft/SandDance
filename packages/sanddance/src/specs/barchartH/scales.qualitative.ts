@@ -32,7 +32,8 @@ export default function (namespace: NameSpace, columns: SpecColumns) {
                 "data": namespace.stacked,
                 "field": columns.y.name,
                 "sort": true
-            }
+            },
+            "reverse": true
         }
     ];
     return scales;
