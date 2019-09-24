@@ -817,7 +817,6 @@ export class Explorer extends React.Component<Props, State> {
                 case SideTabId.ChartType:
                   return (
                     <Chart
-                      specCapabilities={this.state.specCapabilities}
                       tooltipExclusions={this.state.tooltipExclusions}
                       toggleTooltipExclusion={columnName => {
                         const tooltipExclusions = [...this.state.tooltipExclusions];
@@ -835,7 +834,7 @@ export class Explorer extends React.Component<Props, State> {
                       chart={this.state.chart}
                       view={this.state.view}
                       onChangeChartType={chart => this.changeChartType(chart)}
-                      columns={this.state.columns}
+                      insightColumns={this.state.columns}
                       onChangeSignal={(role, column, name, value) => {
                         saveSignalValuePref(this.prefs, this.state.chart, role, column, name, value);
                       }}
@@ -1040,10 +1039,21 @@ export class Explorer extends React.Component<Props, State> {
     const quantitativeColumns = allColumns && allColumns.filter(c => c.quantitative);
     const categoricalColumns = allColumns && allColumns.filter(c => !c.quantitative);
     const props: ColumnMapBaseProps = {
-      changeColumnMapping: (role, column) => this.changeColumnMapping(role, column),
+      changeColumnMapping: (role, columnOrRole) => {
+        let column: SandDance.types.Column;
+        if (typeof columnOrRole === 'string') {
+          //look up current insight
+          const columnName = this.state.columns[columnOrRole];
+          column = allColumns.filter(c => c.name === columnName)[0];
+        } else {
+          column = columnOrRole;
+        }
+        this.changeColumnMapping(role, column)
+      },
       allColumns,
       quantitativeColumns,
       categoricalColumns,
+      specCapabilities: this.state.specCapabilities,
       explorer: this
     };
     return props;

@@ -24,12 +24,25 @@ const roleLabels: { [role in SandDance.types.InsightColumnRoles]: string } = {
   z: strings.labelColumnZ
 };
 
+const aliasLabels: { [role in SandDance.types.InsightColumnRoles]: string } = {
+  color: strings.labelAliasColor,
+  facet: strings.labelAliasFacet,
+  group: strings.labelAliasGroup,
+  size: strings.labelAliasSize,
+  sort: strings.labelAliasSort,
+  uid: null,
+  x: strings.labelAliasX,
+  y: strings.labelAliasY,
+  z: strings.labelAliasZ
+};
+
 export interface ColumnMapBaseProps {
   allColumns: SandDance.types.Column[];
   quantitativeColumns: SandDance.types.Column[];
   categoricalColumns: SandDance.types.Column[];
-  changeColumnMapping: { (role: SandDance.types.InsightColumnRoles, column: SandDance.types.Column): void };
+  changeColumnMapping: { (role: SandDance.types.InsightColumnRoles, columnOrRole: SandDance.types.Column | string): void };
   explorer: Explorer;
+  specCapabilities: SandDance.types.SpecCapabilities;
 }
 
 export interface Props extends ColumnMapBaseProps {
@@ -58,15 +71,35 @@ function filterColumnList(context: SandDance.types.InsightColumnRoles, columns: 
 
 function optionsForSpecColumn(sectionName: string, columns: SandDance.types.Column[], role: SandDance.types.InsightColumnRoles, selectedColumnName?: string) {
   const filtered = filterColumnList(role, columns);
-  const options = filtered.map((column, i) => {
+  const options = filtered.map(column => {
     const option: FabricTypes.IDropdownOption = {
-      key: column.name,
+      key: `column:${column.name}`,
       text: column.name,
       data: column,
       selected: selectedColumnName === column.name
     };
     return option;
   });
+  if (options.length) {
+    const option: FabricTypes.IDropdownOption = {
+      key: sectionName,
+      text: sectionName,
+      itemType: base.fabric.DropdownMenuItemType.Header
+    };
+    options.unshift(option);
+  }
+  return options;
+}
+
+function optionsForReference(sectionName: string, specRoles: SandDance.types.SpecRoleCapabilities[]) {
+  const options = specRoles.map(specRole => {
+    const option: FabricTypes.IDropdownOption = {
+      key: `role:${specRole.role}`,
+      text: aliasLabels[specRole.role],
+      data: specRole.role
+    };
+    return option;
+  }).sort((a, b) => a.text.localeCompare(b.text));
   if (options.length) {
     const option: FabricTypes.IDropdownOption = {
       key: sectionName,
@@ -88,10 +121,29 @@ function selectFirst(options: FabricTypes.IDropdownOption[]) {
 
 export function ColumnMap(props: Props) {
   if (!props.specRole) return null;
-  let numericLabel = strings.selectNumeric;
-  const qoptions = optionsForSpecColumn(numericLabel, props.quantitativeColumns, props.specRole.role, props.selectedColumnName);
-  const coptions = props.specRole.excludeCategoric ? null : optionsForSpecColumn(strings.selectNonNumeric, props.categoricalColumns, props.specRole.role, props.selectedColumnName);
-  const options = qoptions.concat(coptions).filter(Boolean);
+
+  let categoricalColumns: SandDance.types.Column[];
+  let directColorColumns: SandDance.types.Column[];
+  let directColorGroup: FabricTypes.IDropdownOption[];
+  let referenceGroup: FabricTypes.IDropdownOption[] = [];
+
+  if (props.specRole.role === 'color') {
+    categoricalColumns = props.categoricalColumns.filter(c => !c.isColorData);
+    directColorColumns = props.categoricalColumns.filter(c => c.isColorData);
+    directColorGroup = optionsForSpecColumn(strings.selectDirectColor, directColorColumns, 'color', props.selectedColumnName);
+  } else {
+    categoricalColumns = props.categoricalColumns;
+  }
+
+  if (props.specRole.role === 'sort') {
+    const others = props.specCapabilities.roles.filter(specRole => specRole.role !== props.specRole.role);
+    referenceGroup = optionsForReference(strings.selectReference, others);
+  }
+
+  const quantitativeGroup = optionsForSpecColumn(strings.selectNumeric, props.quantitativeColumns, props.specRole.role, props.selectedColumnName);
+  const categoricGroup = props.specRole.excludeCategoric ? null : optionsForSpecColumn(strings.selectNonNumeric, categoricalColumns, props.specRole.role, props.selectedColumnName);
+
+  const options = referenceGroup.concat(quantitativeGroup).concat(categoricGroup).concat(directColorGroup).filter(Boolean);
   if (props.specRole.allowNone) {
     options.unshift({
       key: -1,
@@ -122,7 +174,7 @@ export function ColumnMap(props: Props) {
         label={label}
         options={options}
         onChange={(e, o) =>
-          props.changeColumnMapping(props.specRole.role, SandDance.VegaDeckGl.util.clone(o.data))
+          props.changeColumnMapping(props.specRole.role, typeof o.data === 'string' ? o.data : SandDance.VegaDeckGl.util.clone(o.data))
         }
         onDismiss={props.onDismiss}
       />
