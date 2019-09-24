@@ -5,23 +5,22 @@ import getData from './data';
 import getMarks from './marks';
 import getScales from './scales';
 import getSignals from './signals';
-import {
-    AxisSelectionType,
-    Insight,
-    SpecCapabilities,
-    SpecColumns,
-    SpecViewOptions
-} from '../types';
+import { Axis, Spec } from 'vega-typings';
 import {
     checkForFacetErrors,
     facetMarks,
     facetSize,
     layout
 } from '../facet';
-import { legend } from '../legends';
-import { Axis, Spec } from 'vega-typings';
-import { SpecCreator, SpecResult } from '../interfaces';
+import { getLegends } from '../legends';
+import {
+    Insight,
+    SpecCapabilities,
+    SpecColumns,
+    SpecViewOptions
+} from '../types';
 import { SignalNames } from '../constants';
+import { SpecCreator, SpecResult } from '../interfaces';
 
 export const scatterplot: SpecCreator = (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult => {
     const errors: string[] = [];
@@ -97,8 +96,9 @@ export const scatterplot: SpecCreator = (insight: Insight, columns: SpecColumns,
         vegaSpec.axes = axes;
     }
 
-    if (columns.color && !insight.hideLegend) {
-        vegaSpec.legends = [legend(columns.color)];
+    const legends = getLegends(insight, columns)
+    if (legends) {
+        vegaSpec.legends = legends;
     }
 
     if (columns.facet) {

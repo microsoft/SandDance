@@ -5,13 +5,13 @@ import getMarks from './marks';
 import getScales from './scales';
 import getSignals from './signals';
 import { DataNames } from '../constants';
+import { getLegends } from '../legends';
 import {
     Insight,
     SpecCapabilities,
     SpecColumns,
     SpecViewOptions
 } from '../types';
-import { legend } from '../legends';
 import { Spec } from 'vega-typings';
 import { SpecCreator, SpecResult } from '../interfaces';
 
@@ -58,8 +58,9 @@ export const grid: SpecCreator = (insight: Insight, columns: SpecColumns, specVi
         marks: getMarks(dataName, columns, specViewOptions)
     };
 
-    if (columns.color && !insight.hideLegend) {
-        vegaSpec.legends = [legend(columns.color)];
+    const legends = getLegends(insight, columns)
+    if (legends) {
+        vegaSpec.legends = legends;
     }
 
     //use autosize only when not faceting

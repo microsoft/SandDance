@@ -35,7 +35,7 @@ export default function (columns: SpecColumns, insight: Insight) {
             "paddingOuter": 0
         }
     ];
-    if (columns.color) {
+    if (columns.color && !columns.color.isColorData) {
         if (columns.color.quantitative) {
             scales.push(binnableColorScale(insight.colorBin, DataNames.Main, columns.color.name, insight.scheme));
         } else {

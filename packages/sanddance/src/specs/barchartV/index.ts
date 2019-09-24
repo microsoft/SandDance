@@ -13,13 +13,13 @@ import {
     layout
 } from '../facet';
 import { DataNames, SignalNames } from '../constants';
+import { getLegends } from '../legends';
 import {
     Insight,
     SpecCapabilities,
     SpecColumns,
     SpecViewOptions
 } from '../types';
-import { legend } from '../legends';
 import { NameSpace } from './namespace';
 import { SpecCreator, SpecResult } from '../interfaces';
 
@@ -107,8 +107,9 @@ export const barchartV: SpecCreator = (insight: Insight, columns: SpecColumns, s
         vegaSpec.axes = axes;
     }
 
-    if (columns.color && !insight.hideLegend) {
-        vegaSpec.legends = [legend(columns.color)];
+    const legends = getLegends(insight, columns)
+    if (legends) {
+        vegaSpec.legends = legends;
     }
 
     if (columns.facet) {

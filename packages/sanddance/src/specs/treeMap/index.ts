@@ -12,13 +12,13 @@ import {
 } from '../facet';
 import { Data, GroupMark, Spec } from 'vega-typings';
 import { DataNames, SignalNames } from '../constants';
+import { getLegends } from '../legends';
 import {
     Insight,
     SpecCapabilities,
     SpecColumns,
     SpecViewOptions
 } from '../types';
-import { legend } from '../legends';
 import { SpecCreator, SpecResult } from '../interfaces';
 
 export const treemap: SpecCreator = (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult => {
@@ -90,8 +90,9 @@ export const treemap: SpecCreator = (insight: Insight, columns: SpecColumns, spe
         marks
     };
 
-    if (columns.color && !insight.hideLegend) {
-        vegaSpec.legends = [legend(columns.color)];
+    const legends = getLegends(insight, columns)
+    if (legends) {
+        vegaSpec.legends = legends;
     }
 
     if (columns.facet) {

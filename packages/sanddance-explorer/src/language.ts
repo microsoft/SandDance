@@ -56,6 +56,10 @@ export const strings = {
     labelChartTypeOptions: "Chart options",
     labelColorBin: "Color binning",
     labelColorBinExplanation: "For numeric columns",
+    labelColorFieldInfo: (colorColumnName, colorColumnType, categoricalNumeric, distinctValueCount) =>
+        `Field <span className="fieldname">${colorColumnName}</span> is of type <span className="fieldtype">${colorColumnType}</span>${categoricalNumeric ? ` and has ${distinctValueCount} distinct values` : ''}.`,
+    labelColorFieldIsColorData: (colorColumnName) =>
+        `Field <span className="fieldname">${colorColumnName}</span> contains direct color data.`,
     labelColorBinNone: "None (continuous)",
     labelColorBinQuantize: "Quantize",
     labelColorBinQuantile: "Quantile",
@@ -114,7 +118,7 @@ export const strings = {
     selectNonNumeric: "Categorical",
     tooltipSearch: (column, value) => `Click to search in '${column}' for "${value}"`,
     labelRequired: "required",
-    labelSystem: "System",    
+    labelSystem: "System",
     lavelViewType2d: "View in 2D",
     labelViewType3d: "View in 3D",
     labelDataNullAll: "Loading data...",

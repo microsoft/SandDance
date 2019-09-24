@@ -6,13 +6,13 @@ import getMarks from './marks';
 import getScales from './scales';
 import getSignals from './signals';
 import { checkForFacetErrors, facetSize, layout } from '../facet';
+import { getLegends } from '../legends';
 import {
     Insight,
     SpecCapabilities,
     SpecColumns,
     SpecViewOptions
 } from '../types';
-import { legend } from '../legends';
 import { SignalNames } from '../constants';
 import { Spec } from 'vega-typings';
 import { SpecCreator, SpecResult } from '../interfaces';
@@ -77,8 +77,9 @@ export const density: SpecCreator = (insight: Insight, columns: SpecColumns, spe
         vegaSpec.axes = getAxes(specViewOptions, columns);
     }
 
-    if (columns.color && !insight.hideLegend) {
-        vegaSpec.legends = [legend(columns.color)];
+    const legends = getLegends(insight, columns)
+    if (legends) {
+        vegaSpec.legends = legends;
     }
 
     if (columns.facet) {

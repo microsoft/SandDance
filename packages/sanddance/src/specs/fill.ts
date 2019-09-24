@@ -7,10 +7,15 @@ import { util } from '../vega-deck.gl';
 
 export function fill(colorColumn: Column, specViewOptions: SpecViewOptions): ProductionRule<ColorValueRef> {
     return colorColumn ?
-        {
-            "scale": ScaleNames.Color,
-            "field": colorColumn.quantitative ? colorColumn.name : FieldNames.Top
-        }
+        colorColumn.isColorData ?
+            {
+                "field": colorColumn.name
+            }
+            :
+            {
+                "scale": ScaleNames.Color,
+                "field": colorColumn.quantitative ? colorColumn.name : FieldNames.Top
+            }
         :
         {
             "value": util.colorToString(specViewOptions.colors.defaultCube)

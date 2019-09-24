@@ -37,11 +37,23 @@ export function inferAll(columns: Column[], data: object[]) {
             if (typeof column.quantitative !== 'boolean') {
                 column.quantitative = isQuantitative(column);
             }
+            if (column.type === 'string') {
+                checkIsColorData(data, column);
+            }
             if (!column.stats) {
                 column.stats = getStats(data, column);
             }
         }
     });
+}
+
+function checkIsColorData(data: object[], column: Column) {
+    for (let i = 0; i < data.length; i++) {
+        if (!VegaDeckGl.util.isColor(data[i][column.name])) {
+            return;
+        }
+    }
+    column.isColorData = true;
 }
 
 function getStats(data: object[], column: Column) {
@@ -52,6 +64,7 @@ function getStats(data: object[], column: Column) {
         mean: null,
         min: null
     }
+    let isColorData = true;
     let sum = 0;
     for (let i = 0; i < data.length; i++) {
         let row = data[i];
@@ -67,6 +80,7 @@ function getStats(data: object[], column: Column) {
         if (!isNaN(num)) {
             sum += num;
         }
+        if (column.type === 'string' && isColorData) {}
     }
     if (column.quantitative) {
         stats.mean = data.length > 0 && (sum / data.length);

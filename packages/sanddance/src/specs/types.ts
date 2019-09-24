@@ -37,6 +37,11 @@ export interface Column {
      */
     quantitative?: boolean;
 
+     /**
+     * Optional flag to specify if the column data is CSS colors.
+     */   
+    isColorData?: boolean;
+
     /**
      * Optional stats object with metadata of column data content.
      */

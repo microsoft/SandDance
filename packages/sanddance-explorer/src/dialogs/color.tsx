@@ -39,21 +39,26 @@ export function Color(props: Props) {
                     specRole={props.specCapabilities && props.specCapabilities.roles.filter(r => r.role === 'color')[0]}
                     key={0}
                 />
-                <Palette
+                {colorColumn && colorColumn.isColorData && <div
+                    className="sanddance-explanation"
+                    dangerouslySetInnerHTML={{ __html: strings.labelColorFieldIsColorData(colorColumn.name) }}
+                />}
+                {colorColumn && !colorColumn.isColorData && <Palette
                     scheme={props.scheme}
                     colorColumn={colorColumn}
                     changeColorScheme={scheme => {
                         props.changeColorScheme(scheme);
                     }}
-                />
-                <Signal
-                    disabled={props.disabled}
+                    disabled={props.disabled || (colorColumn && colorColumn.isColorData)}
+                />}
+                {colorColumn && !colorColumn.isColorData && <Signal
+                    disabled={props.disabled || !colorColumn || (colorColumn && colorColumn.isColorData)}
                     signal={props.colorReverseSignal}
                     explorer={props.explorer}
                     onChange={props.onColorReverseChange}
-                />
+                />}
             </Group>
-            <Group label={strings.labelColorBin}>
+            {colorColumn && !colorColumn.isColorData && <Group label={strings.labelColorBin}>
                 <div className="sanddance-explanation">{strings.labelColorBinExplanation}</div>
                 <base.fabric.ChoiceGroup
                     options={[
@@ -86,7 +91,7 @@ export function Color(props: Props) {
                     explorer={props.explorer}
                     onChange={props.onColorBinCountChange}
                 />
-            </Group>
+            </Group>}
         </div>
     );
 }

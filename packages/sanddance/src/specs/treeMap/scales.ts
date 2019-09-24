@@ -13,7 +13,7 @@ import { RangeScheme, Scale } from 'vega-typings';
 
 export default function (columns: SpecColumns, insight: Insight) {
     const scales: Scale[] = [];
-    if (columns.color) {
+    if (columns.color && !columns.color.isColorData) {
         if (columns.color.quantitative) {
             scales.push(binnableColorScale(insight.colorBin, DataNames.Main, columns.color.name, insight.scheme));
         } else {

@@ -750,7 +750,7 @@ export class Explorer extends React.Component<Props, State> {
           }}
           onHomeClick={() => this.viewer.presenter.homeCamera()}
         />
-        <div className={util.classList("sanddance-main", this.state.sidebarPinned && "pinned", this.state.sidebarClosed && "closed", (insight.hideLegend || !(insight.columns && insight.columns.color)) && "hide-legend")}>
+        <div className={util.classList("sanddance-main", this.state.sidebarPinned && "pinned", this.state.sidebarClosed && "closed", (insight.hideLegend || !(insight.columns && insight.columns.color && !this.state.dataContent.columns.filter(c => c.name === insight.columns.color)[0].isColorData)) && "hide-legend")}>
           <div ref={div => { if (div && !this.layoutDivUnpinned) this.layoutDivUnpinned = div }} className="sanddance-layout-unpinned"></div>
           <div ref={div => { if (div && !this.layoutDivPinned) this.layoutDivPinned = div }} className="sanddance-layout-pinned"></div>
           {!loaded && (
