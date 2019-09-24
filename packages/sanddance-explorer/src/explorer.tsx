@@ -447,6 +447,9 @@ export class Explorer extends React.Component<Props, State> {
     if (!newState.signalValues) {
       newState.signalValues = null;
     }
+    if (newState.chart === 'barchart') {
+      newState.chart = 'barchartV';
+    }
     this.setState(newState as State);
   }
 

@@ -1,18 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { BarChartSignalNames } from './constants';
 import { Column, SpecColumns } from '../types';
 import { FieldNames, SignalNames } from '../constants';
 import { StackTransform, Transforms } from 'vega-typings';
 
 export default function (columns: SpecColumns, groupBy: Column) {
+    const bucket_extent = "bucket_extent";
+
     const stackTransform: StackTransform = {
         "type": "stack",
         "groupby": [
             FieldNames.BarChartBin0
         ],
         "as": [
-            FieldNames.BarChartStackY0,
-            FieldNames.BarChartStackY1
+            FieldNames.BarChartStack0,
+            FieldNames.BarChartStack1
         ]
     };
     if (groupBy) {
@@ -26,29 +29,29 @@ export default function (columns: SpecColumns, groupBy: Column) {
     const transforms: Transforms[] = [
         {
             "type": "extent",
-            "field": columns.x.name,
-            "signal": "var_extent"
+            "field": columns.y.name,
+            "signal": bucket_extent
         },
         {
             "type": "bin",
-            "field": columns.x.name,
+            "field": columns.y.name,
             "extent": {
-                "signal": "var_extent"
+                "signal": bucket_extent
             },
             "maxbins": {
-                "signal": SignalNames.XBins
+                "signal": SignalNames.YBins
             },
             "as": [
                 FieldNames.BarChartBin0,
                 FieldNames.BarChartBin1
             ],
-            "signal": "binSignal"
+            "signal": BarChartSignalNames.quantitativeBinSignal
         },
         stackTransform,
         {
             "type": "extent",
-            "signal": "xtent",
-            "field": FieldNames.BarChartStackY1
+            "signal": BarChartSignalNames.levelExtentSignal,
+            "field": FieldNames.BarChartStack1
         }
     ];
     return transforms;

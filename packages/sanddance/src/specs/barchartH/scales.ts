@@ -2,62 +2,63 @@
 // Licensed under the MIT license.
 import qualitativeScales from './scales.qualitative';
 import quantitativeScales from './scales.quantitative';
+import { BarChartScaleNames, BarChartSignalNames } from './constants';
+import { binnableColorScale, linearScale, pointScale } from '../scales';
 import {
     ColorScaleNone,
     DataNames,
-    ScaleNames,
     FieldNames,
+    ScaleNames,
     SignalNames
 } from '../constants';
 import { Insight, SpecColumns } from '../types';
-import { linearScale, pointScale, binnableColorScale } from '../scales';
 import { NameSpace } from './namespace';
 import { RangeScheme, Scale } from 'vega-typings';
 
 export default function (namespace: NameSpace, insight: Insight, columns: SpecColumns) {
     const scales: Scale[] = [
         {
-            "name": "xnewinternalscale",
+            "name": BarChartScaleNames.compartmentScale,
             "type": "band",
             "range": [
                 0,
                 {
-                    "signal": "xdesbandwidth"
+                    "signal": BarChartSignalNames.compartmentHeightSignal
                 }
             ],
             "padding": 0.1,
             "domain": {
-                "signal": "sequence(0, shapesPerRow+1, 1)"
+                "signal": `sequence(0, ${BarChartSignalNames.compartmentsPerLevelSignal}+1, 1)`
             }
         },
         {
-            "name": "yscalelabel",
+            "name": BarChartScaleNames.levelScale,
             "range": [
                 {
-                    "signal": "height"
+                    "signal": "0"
                 },
                 {
-                    "signal": "0"
+                    "signal": "width"
                 }
             ],
             "round": true,
             "domain": {
                 "data": namespace.stacked,
-                "field": namespace.__row,
+                "field": namespace.__level,
                 "sort": true
             },
             "zero": true,
             "nice": true
         },
         {
-            "name": ScaleNames.Y,
+            "name": ScaleNames.X,
             "type": "band",
             "range": [
                 {
-                    "signal": "height"
+                    "signal": "0"
                 },
                 {
-                    "signal": "0"
+                    "signal": "width"
                 }
             ],
             "padding": 0.1,
@@ -66,28 +67,28 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
             "align": 1,
             "domain": {
                 "data": namespace.stacked,
-                "field": namespace.__row,
+                "field": namespace.__level,
                 "sort": true
             }
         }
     ];
     if (columns.color) {
         if (columns.color.quantitative) {
-            scales.push(binnableColorScale(insight.colorBin, namespace.nested, columns.color.name, insight.scheme));
+            scales.push(binnableColorScale(insight.colorBin, namespace.bucket, columns.color.name, insight.scheme));
         } else {
             scales.push(
                 {
                     "name": ScaleNames.Color,
                     "type": "ordinal",
                     "domain": {
-                        "data": namespace.nested,
+                        "data": namespace.bucket,
                         "field": FieldNames.Top,
                         "sort": true
                     },
                     "range": {
                         "scheme": insight.scheme || ColorScaleNone
                     },
-                    "reverse": { "signal": SignalNames.ColorReverse} 
+                    "reverse": { "signal": SignalNames.ColorReverse }
                 }
             );
         }
@@ -101,5 +102,5 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
                 pointScale(ScaleNames.Z, DataNames.Main, zRange, columns.z.name)
         );
     }
-    return scales.concat(columns.x.quantitative ? quantitativeScales(namespace, columns) : qualitativeScales(namespace, columns));
+    return scales.concat(columns.y.quantitative ? quantitativeScales() : qualitativeScales(namespace, columns));
 }

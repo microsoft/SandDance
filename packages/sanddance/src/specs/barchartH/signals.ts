@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { allTruthy } from '../../array';
+import { BarChartScaleNames, BarChartSignalNames } from './constants';
 import { colorBinCountSignal, colorReverseSignal, textSignals } from '../signals';
 import { facetSignals } from '../facet';
 import { Insight, SpecColumns, SpecViewOptions } from '../types';
@@ -12,14 +13,14 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
         textSignals(specViewOptions),
         [
             {
-                "name": SignalNames.YDomain,
-                "update": `domain('${ScaleNames.Y}')`
+                "name": SignalNames.XDomain,
+                "update": `domain('${ScaleNames.X}')`
             },
-            columns.x.quantitative && {
-                "name": SignalNames.XBins,
+            columns.y.quantitative && {
+                "name": SignalNames.YBins,
                 "value": 7,
                 "bind": {
-                    "name": specViewOptions.language.XBinSize,
+                    "name": specViewOptions.language.YBinSize,
                     "input": "range",
                     "min": 1,
                     "max": 20,
@@ -27,16 +28,16 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                 }
             },
             {
-                "name": "xdesbandwidth",
-                "update": `bandwidth('${columns.x.quantitative ? ScaleNames.X : 'xscaleavailable'}')`
+                "name": BarChartSignalNames.compartmentHeightSignal,
+                "update": `bandwidth('${columns.y.quantitative ? ScaleNames.Y : BarChartScaleNames.bucketScale}')`
             },
             {
-                "name": "binAspect",
-                "update": "xdesbandwidth/height"
+                "name": BarChartSignalNames.aspectRatioSignal,
+                "update": `${BarChartSignalNames.compartmentHeightSignal}/width`
             },
             {
-                "name": "shapesPerRow",
-                "update": "ceil(sqrt(binAspect*xtent[1]))"
+                "name": BarChartSignalNames.compartmentsPerLevelSignal,
+                "update": `ceil(sqrt(${BarChartSignalNames.aspectRatioSignal}*${BarChartSignalNames.levelExtentSignal}[1]))`
             },
             colorBinCountSignal(specViewOptions),
             colorReverseSignal(specViewOptions)

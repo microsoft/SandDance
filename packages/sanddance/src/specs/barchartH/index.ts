@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import getAxes from './axes';
-import getData, { nested, stacked } from './data';
+import getData, { bucketed, stacked } from './data';
 import getMarks from './marks';
 import getScales from './scales';
 import getSignals from './signals';
+import { Axis, Mark, Spec } from 'vega-typings';
 import {
     checkForFacetErrors,
     facetMarks,
@@ -19,23 +20,22 @@ import {
     SpecViewOptions
 } from '../types';
 import { legend } from '../legends';
-import { Axis, Mark, Spec } from 'vega-typings';
 import { NameSpace } from './namespace';
 import { SpecCreator, SpecResult } from '../interfaces';
 
-export const barchart: SpecCreator = (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult => {
+export const barchartH: SpecCreator = (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult => {
     const errors: string[] = [];
 
-    if (!columns.x) errors.push(`Must set a field for x axis`);
+    if (!columns.y) errors.push(`Must set a field for y axis`);
     checkForFacetErrors(insight.facets, errors);
 
     const specCapabilities: SpecCapabilities = {
         roles: [
             {
-                role: 'x',
+                role: 'y',
                 binnable: true,
-                axisSelection: columns.x && columns.x.quantitative ? 'range' : 'exact',
-                signals: [SignalNames.XBins]
+                axisSelection: columns.y && columns.y.quantitative ? 'range' : 'exact',
+                signals: [SignalNames.YBins]
             },
             {
                 role: 'z',
@@ -76,14 +76,14 @@ export const barchart: SpecCreator = (insight: Insight, columns: SpecColumns, sp
     if (columns.facet) {
         const cellNamespace = new NameSpace('Cell');
         const cellMarks = getMarks(cellNamespace, columns, specViewOptions);
-        const cd = columns.x.quantitative ?
+        const cd = columns.y.quantitative ?
             [
                 stacked(cellNamespace, DataNames.FacetGroupCell)
             ]
             :
             [
-                nested(cellNamespace, DataNames.FacetGroupCell, columns),
-                stacked(cellNamespace, cellNamespace.nested)
+                bucketed(cellNamespace, DataNames.FacetGroupCell, columns),
+                stacked(cellNamespace, cellNamespace.bucket)
             ];
         marks = facetMarks(specViewOptions, rootNamespace.stacked, cellMarks, axes, cd);
         axes = [];

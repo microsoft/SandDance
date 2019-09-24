@@ -3,6 +3,7 @@
 import getQualitative from './transform.qualitative';
 import getQuantitative from './transform.quantitative';
 import { allTruthy } from '../../array';
+import { BarChartSignalNames } from './constants';
 import { Data, SourceData, Transforms } from 'vega-typings';
 import { DataNames, FieldNames } from '../constants';
 import { facetGroupData, facetSourceData, facetTransforms } from '../facet';
@@ -17,25 +18,25 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
         facetSourceData(columns.facet, insight.facets, DataNames.Main),
         categoricalColor && topLookup(columns.color, specViewOptions.maxLegends),
         [
-            nested(namespace, categoricalColor ? DataNames.Legend : nestedDataName, columns),
-            stacked(namespace, namespace.nested,
+            bucketed(namespace, categoricalColor ? DataNames.Legend : nestedDataName, columns),
+            stacked(namespace, namespace.bucket,
                 columns.facet && facetTransforms(columns.facet, insight.facets)
             )
         ],
         columns.x.quantitative && [
             {
-                "name": "xaxisdata",
+                "name": DataNames.QuantitativeData,
                 "transform": [
                     {
                         "type": "sequence",
                         "start": {
-                            "signal": "binSignal.start"
+                            "signal": `${BarChartSignalNames.quantitativeBinSignal}.start`
                         },
                         "stop": {
-                            "signal": "binSignal.stop"
+                            "signal": `${BarChartSignalNames.quantitativeBinSignal}.stop`
                         },
                         "step": {
-                            "signal": "binSignal.step"
+                            "signal": `${BarChartSignalNames.quantitativeBinSignal}.step`
                         }
                     }
                 ]
@@ -46,9 +47,9 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
     return data;
 }
 
-export function nested(namespace: NameSpace, source: string, columns: SpecColumns) {
+export function bucketed(namespace: NameSpace, source: string, columns: SpecColumns) {
     const data: SourceData = {
-        "name": namespace.nested,
+        "name": namespace.bucket,
         source,
         "transform": columns.x.quantitative ?
             getQuantitative(columns, columns.facet)
@@ -74,13 +75,13 @@ function xy(namespace: NameSpace) {
     const transforms: Transforms[] = [
         {
             "type": "formula",
-            "expr": `floor(datum.${FieldNames.BarChartStackY0} / shapesPerRow)`,
-            "as": namespace.__row
+            "expr": `floor(datum.${FieldNames.BarChartStack0} / ${BarChartSignalNames.compartmentsPerLevelSignal})`,
+            "as": namespace.__level
         },
         {
             "type": "formula",
-            "expr": `datum.${FieldNames.BarChartStackY0} % shapesPerRow`,
-            "as": namespace.__column
+            "expr": `datum.${FieldNames.BarChartStack0} % ${BarChartSignalNames.compartmentsPerLevelSignal}`,
+            "as": namespace.__compartment
         }
     ];
     return transforms;

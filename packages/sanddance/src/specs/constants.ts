@@ -11,8 +11,8 @@ export const FieldNames = {
     PowerBISelectionId: "__SandDance__PowerBISelectionId",
     BarChartBin0: "__SandDance__BarChartBin0",
     BarChartBin1: "__SandDance__BarChartBin1",
-    BarChartStackY0: "__SandDance__BarChartStackY0",
-    BarChartStackY1: "__SandDance__BarChartStackY1",
+    BarChartStack0: "__SandDance__BarChartStack0",
+    BarChartStack1: "__SandDance__BarChartStack1",
     DensityCount: "__SandDance__DensityCount",
     DensityRow: "__SandDance__DensityRow",
     DensityXBin0: "__SandDance__DensityXBin0",
@@ -43,7 +43,8 @@ export const DataNames = {
     TopLookup: "TopData",
     Legend: "LegendData",
     FacetGroupCell: "FacetGroupCellData",
-    FacetCellTitles: "FacetCellTitlesData"
+    FacetCellTitles: "FacetCellTitlesData",
+    QuantitativeData: "QuantitativeData"
 };
 
 export const ScaleNames = {
@@ -68,6 +69,7 @@ export const SignalNames = {
     TextSize: "Text_SizeSignal",
     TextTitleSize: "Text_TitleSizeSignal",
     TreeMapMethod: "Chart_TreeMapMethodSignal",
+    XDomain: "RoleX_DomainSignal",
     XBins: "RoleX_BinsSignal",
     XGridSize: "Chart_XGridSize",
     YBins: "RoleY_BinsSignal",
