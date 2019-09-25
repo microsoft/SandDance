@@ -55,6 +55,7 @@ export const strings = {
     labelColumnMapping: "Column Mapping",
     labelChartTypeOptions: "Chart options",
     labelColorBin: "Color binning",
+    labelColorOptions: "Color options",
     labelColorBinExplanation: "For numeric columns",
     labelColorFieldInfo: (colorColumnName, colorColumnType, categoricalNumeric, distinctValueCount) =>
         `Field <span className="fieldname">${colorColumnName}</span> is of type <span className="fieldtype">${colorColumnType}</span>${categoricalNumeric ? ` and has ${distinctValueCount} distinct values` : ''}.`,
@@ -131,6 +132,7 @@ export const strings = {
     labelSystem: "System",
     lavelViewType2d: "View in 2D",
     labelViewType3d: "View in 3D",
+    labelDataColors: "Enabled if this data column contains any CSS color values.",
     labelDataNullAll: "Loading data...",
     labelDataNullFiltered: "You can filter by first making a selection, then choosing <b>Isolate</b> or <b>Exclude</b> in the top bar.",
     labelDataNullSelection: "You can select by: <ul><li>clicking the chart axes</li><li>clicking in the legend</li><li>searching</li</ul>",

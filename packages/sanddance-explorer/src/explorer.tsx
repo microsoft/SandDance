@@ -511,6 +511,9 @@ export class Explorer extends React.Component<Props, State> {
             if (!newState.scheme) {
               newState.scheme = bestColorScheme(column, null, this.state.scheme);
             }
+            if (!column.stats.hasColorData) {
+              newState.directColor = false;
+            }
             this.ignoreSelectionChange = true;
             this.viewer.deselect().then(() => {
               this.ignoreSelectionChange = false;
@@ -686,10 +689,11 @@ export class Explorer extends React.Component<Props, State> {
   }
 
   render() {
-    const { colorBin, columns, facets, filter, hideAxes, hideLegend, scheme, signalValues, size, chart, view } = this.state;
+    const { colorBin, columns, directColor, facets, filter, hideAxes, hideLegend, scheme, signalValues, size, chart, view } = this.state;
     const insight: SandDance.types.Insight = {
       colorBin,
       columns,
+      directColor,
       facets,
       filter,
       hideAxes,
@@ -750,7 +754,7 @@ export class Explorer extends React.Component<Props, State> {
           }}
           onHomeClick={() => this.viewer.presenter.homeCamera()}
         />
-        <div className={util.classList("sanddance-main", this.state.sidebarPinned && "pinned", this.state.sidebarClosed && "closed", (insight.hideLegend || !(insight.columns && insight.columns.color && !this.state.dataContent.columns.filter(c => c.name === insight.columns.color)[0].isColorData)) && "hide-legend")}>
+        <div className={util.classList("sanddance-main", this.state.sidebarPinned && "pinned", this.state.sidebarClosed && "closed", (insight.hideLegend || insight.directColor || !(insight.columns && insight.columns.color && !this.state.dataContent.columns.filter(c => c.name === insight.columns.color)[0].isColorData)) && "hide-legend")}>
           <div ref={div => { if (div && !this.layoutDivUnpinned) this.layoutDivUnpinned = div }} className="sanddance-layout-unpinned"></div>
           <div ref={div => { if (div && !this.layoutDivPinned) this.layoutDivPinned = div }} className="sanddance-layout-pinned"></div>
           {!loaded && (
@@ -852,7 +856,7 @@ export class Explorer extends React.Component<Props, State> {
                       colorBinSignal={this.viewer && this.viewer.vegaSpec && this.viewer.vegaSpec.signals.filter(s => s.name === SandDance.constants.SignalNames.ColorBinCount)[0]}
                       colorReverseSignal={this.viewer && this.viewer.vegaSpec && this.viewer.vegaSpec.signals.filter(s => s.name === SandDance.constants.SignalNames.ColorReverse)[0]}
                       colorColumn={this.state.columns.color}
-                      changeColorBin={colorBin => {
+                      onColorBinChange={colorBin => {
                         this.ignoreSelectionChange = true;
                         this.viewer.deselect().then(() => {
                           this.ignoreSelectionChange = false;
@@ -864,7 +868,7 @@ export class Explorer extends React.Component<Props, State> {
                           }, 0);
                         });
                       }}
-                      changeColorScheme={(scheme) => {
+                      onColorSchemeChange={(scheme) => {
                         this.changeColumnMapping('color', this.state.dataContent.columns.filter(c => c.name === this.state.columns.color)[0], { scheme });
                         savePref(this.prefs, this.state.chart, 'color', this.state.columns.color, { scheme });
                       }}
@@ -877,6 +881,10 @@ export class Explorer extends React.Component<Props, State> {
                         this.getColorContext = null;
                         const signalValues: SandDance.types.SignalValues = {};
                         signalValues[SandDance.constants.SignalNames.ColorReverse] = value;
+                      }}
+                      directColor={this.state.directColor}
+                      onDirectColorChange={directColor => {
+                        this.changeInsight({ directColor });
                       }}
                     />
                   );
@@ -999,6 +1007,9 @@ export class Explorer extends React.Component<Props, State> {
                       return null;
                     }
                     if (oldInsight.columns.color !== newInsight.columns.color) {
+                      return null;
+                    }
+                    if (oldInsight.directColor != newInsight.directColor) {
                       return null;
                     }
                     return this.viewer.colorContexts && this.viewer.colorContexts[this.viewer.currentColorContext];
