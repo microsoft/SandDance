@@ -64,7 +64,6 @@ function getStats(data: object[], column: Column) {
         mean: null,
         min: null
     }
-    let isColorData = true;
     let sum = 0;
     for (let i = 0; i < data.length; i++) {
         let row = data[i];
@@ -80,7 +79,9 @@ function getStats(data: object[], column: Column) {
         if (!isNaN(num)) {
             sum += num;
         }
-        if (column.type === 'string' && isColorData) {}
+        if (column.type === 'string' && !stats.hasColorData && VegaDeckGl.util.isColor(value)) {
+            stats.hasColorData = true;
+        }
     }
     if (column.quantitative) {
         stats.mean = data.length > 0 && (sum / data.length);
