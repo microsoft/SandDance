@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Axis, FacetRect, Stage } from '../interfaces';
+import { Color } from '@deck.gl/core/utils/color';
 import { Scene, SceneGroup } from 'vega-typings';
 
 export enum GroupType {
@@ -17,6 +18,7 @@ export interface MarkStagerOptions {
     ordinalsSpecified: boolean;
     currAxis: Axis;
     currFacetRect: FacetRect;
+    defaultCubeColor: Color
 }
 
 //TODO - use vega-typings below

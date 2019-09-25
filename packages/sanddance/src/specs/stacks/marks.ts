@@ -3,9 +3,10 @@
 import { FieldNames } from '../constants';
 import { fill } from '../fill';
 import { Mark } from 'vega-typings';
-import { SpecColumns, SpecViewOptions } from '../types';
+import { SpecContext } from '../types';
 
-export default function (columns: SpecColumns, specViewOptions: SpecViewOptions) {
+export default function (context: SpecContext) {
+    const { specColumns } = context;
     const marks: Mark[] = [
         {
             "name": "marks2",
@@ -17,7 +18,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                 "update": {
                     "x": {
                         "scale": "xband",
-                        "field": columns.x.quantitative ? FieldNames.StacksLongBin0 : columns.x.name,
+                        "field": specColumns.x.quantitative ? FieldNames.StacksLongBin0 : specColumns.x.name,
                         "offset": {
                             "scale": "xinternalscale",
                             "field": "column"
@@ -25,7 +26,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                     },
                     "y": {
                         "scale": "yband",
-                        "field": columns.y.quantitative ? FieldNames.StacksLatBin0 : columns.y.name,
+                        "field": specColumns.y.quantitative ? FieldNames.StacksLatBin0 : specColumns.y.name,
                         "offset": {
                             "scale": "yinternalscale",
                             "field": "depth"
@@ -45,7 +46,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                     "height": {
                         "signal": "actsize"
                     },
-                    "fill": fill(columns.color, specViewOptions)
+                    "fill": fill(context)
                 }
             }
         }

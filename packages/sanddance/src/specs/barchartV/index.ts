@@ -13,20 +13,16 @@ import {
     layout
 } from '../facet';
 import { DataNames, SignalNames } from '../constants';
-import {
-    Insight,
-    SpecCapabilities,
-    SpecColumns,
-    SpecViewOptions
-} from '../types';
-import { legend } from '../legends';
+import { getLegends } from '../legends';
 import { NameSpace } from './namespace';
+import { SpecCapabilities, SpecContext } from '../types';
 import { SpecCreator, SpecResult } from '../interfaces';
 
-export const barchartV: SpecCreator = (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult => {
+export const barchartV: SpecCreator = (context: SpecContext): SpecResult => {
+    const { specColumns, insight, specViewOptions } = context;
     const errors: string[] = [];
 
-    if (!columns.x) errors.push(`Must set a field for x axis`);
+    if (!specColumns.x) errors.push(`Must set a field for x axis`);
     checkForFacetErrors(insight.facets, errors);
 
     const specCapabilities: SpecCapabilities = {
@@ -34,7 +30,7 @@ export const barchartV: SpecCreator = (insight: Insight, columns: SpecColumns, s
             {
                 role: 'x',
                 binnable: true,
-                axisSelection: columns.x && columns.x.quantitative ? 'range' : 'exact',
+                axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
                 signals: [SignalNames.XBins]
             },
             {
@@ -68,38 +64,38 @@ export const barchartV: SpecCreator = (insight: Insight, columns: SpecColumns, s
     let axes: Axis[];
 
     if (!insight.hideAxes) {
-        axes = getAxes(specViewOptions, columns);
+        axes = getAxes(context);
     }
 
     let marks: Mark[];
 
-    if (columns.facet) {
+    if (specColumns.facet) {
         const cellNamespace = new NameSpace('Cell');
-        const cellMarks = getMarks(cellNamespace, columns, specViewOptions);
-        const cd = columns.x.quantitative ?
+        const cellMarks = getMarks(context, cellNamespace);
+        const cd = specColumns.x.quantitative ?
             [
                 stacked(cellNamespace, DataNames.FacetGroupCell)
             ]
             :
             [
-                bucketed(cellNamespace, DataNames.FacetGroupCell, columns),
+                bucketed(context, cellNamespace, DataNames.FacetGroupCell),
                 stacked(cellNamespace, cellNamespace.bucket)
             ];
         marks = facetMarks(specViewOptions, rootNamespace.stacked, cellMarks, axes, cd);
         axes = [];
     } else {
-        marks = getMarks(rootNamespace, columns, specViewOptions);
+        marks = getMarks(context, rootNamespace);
     }
 
-    const size = columns.facet ? facetSize(insight.facets, insight.size, specViewOptions) : insight.size;
+    const size = specColumns.facet ? facetSize(context) : insight.size;
 
     var vegaSpec: Spec = {
         "$schema": "https://vega.github.io/schema/vega/v3.json",
         "height": size.height,
         "width": size.width,
-        signals: getSignals(insight, columns, specViewOptions),
-        scales: getScales(rootNamespace, insight, columns),
-        data: getData(rootNamespace, insight, columns, specViewOptions),
+        signals: getSignals(context),
+        scales: getScales(context, rootNamespace),
+        data: getData(context, rootNamespace),
         marks
     };
 
@@ -107,12 +103,13 @@ export const barchartV: SpecCreator = (insight: Insight, columns: SpecColumns, s
         vegaSpec.axes = axes;
     }
 
-    if (columns.color && !insight.hideLegend) {
-        vegaSpec.legends = [legend(columns.color)];
+    const legends = getLegends(context)
+    if (legends) {
+        vegaSpec.legends = legends;
     }
 
-    if (columns.facet) {
-        vegaSpec.layout = layout(specViewOptions);
+    if (specColumns.facet) {
+        vegaSpec.layout = layout(context);
     } else {
         //use autosize only when not faceting
         vegaSpec.autosize = "fit";

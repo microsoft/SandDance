@@ -3,10 +3,11 @@
 import { create } from '.';
 import { Data } from 'vega-typings';
 import { inferAll } from './inference';
-import { Insight, SpecColumns, SpecViewOptions } from './types';
+import { SpecContext } from './types';
 import { SpecResult } from './interfaces';
 
-export function cloneVegaSpecWithData(insight: Insight, specColumns: SpecColumns, specViewOptions: SpecViewOptions, currData: object[]): SpecResult {
+export function cloneVegaSpecWithData(context: SpecContext, currData: object[]): SpecResult {
+    const { specColumns } = context;
     const columns = [
         specColumns.color,
         specColumns.facet,
@@ -19,7 +20,7 @@ export function cloneVegaSpecWithData(insight: Insight, specColumns: SpecColumns
     ]
     inferAll(columns, currData);
 
-    const specResult = create(insight, specColumns, specViewOptions);
+    const specResult = create(context);
     if (!specResult.errors) {
         const data0 = specResult.vegaSpec.data[0] as Data & { values: object[] };
         data0.values = currData;

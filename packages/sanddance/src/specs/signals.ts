@@ -2,11 +2,12 @@
 // Licensed under the MIT license.
 import { NewSignal } from 'vega-typings/types';
 import { SignalNames } from './constants';
-import { SpecViewOptions } from './types';
+import { SpecContext } from './types';
 
 export const defaultZProportion = 0.6;
 
-export function textSignals(specViewOptions: SpecViewOptions) {
+export function textSignals(context: SpecContext) {
+    const { specViewOptions } = context;
     const signals: NewSignal[] = [
         {
             "name": SignalNames.ZProportion,
@@ -72,7 +73,8 @@ export function textSignals(specViewOptions: SpecViewOptions) {
     return signals;
 }
 
-export function colorBinCountSignal(specViewOptions: SpecViewOptions) {
+export function colorBinCountSignal(context: SpecContext) {
+    const { specViewOptions } = context;
     const signal: NewSignal = {
         "name": SignalNames.ColorBinCount,
         "value": 7,
@@ -87,7 +89,8 @@ export function colorBinCountSignal(specViewOptions: SpecViewOptions) {
     return signal;
 }
 
-export function colorReverseSignal(specViewOptions: SpecViewOptions) {
+export function colorReverseSignal(context: SpecContext) {
+    const { specViewOptions } = context;
     const signal: NewSignal = {
         "name": SignalNames.ColorReverse,
         "value": false,

@@ -3,11 +3,12 @@
 import { DataNames, ScaleNames, SignalNames } from '../constants';
 import { fill } from '../fill';
 import { Mark } from 'vega-typings';
-import { SpecColumns, SpecViewOptions } from '../types';
+import { SpecContext } from '../types';
 import { testForCollapseSelection } from '../selection';
 
-export default function (columns: SpecColumns, specViewOptions: SpecViewOptions) {
-    const categoricalColor = columns.color && !columns.color.quantitative;
+export default function (context: SpecContext) {
+    const { specColumns } = context;
+    const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     const marks: Mark[] = [
         {
             "type": "rect",
@@ -18,7 +19,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                 "update": {
                     "x": {
                         "scale": ScaleNames.X,
-                        "field": columns.x.name,
+                        "field": specColumns.x.name,
                         "offset": 1
                     },
                     "width": { "signal": SignalNames.PointSize },
@@ -30,7 +31,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                         },
                         {
                             "scale": ScaleNames.Y,
-                            "field": columns.y.name,
+                            "field": specColumns.y.name,
                             "offset": {
                                 "signal": `-${SignalNames.PointSize}`
                             }
@@ -45,12 +46,12 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                             "signal": SignalNames.PointSize
                         }
                     ],
-                    "fill": fill(columns.color, specViewOptions)
+                    "fill": fill(context)
                 }
             }
         }
     ];
-    if (columns.z) {
+    if (specColumns.z) {
         const update = marks[0].encode.update;
         update.z = [
             {
@@ -59,7 +60,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
             },
             {
                 "scale": ScaleNames.Z,
-                "field": columns.z.name
+                "field": specColumns.z.name
             }
         ];
         update.depth = { "signal": SignalNames.PointSize };

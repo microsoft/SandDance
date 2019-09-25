@@ -4,26 +4,27 @@ import { allTruthy } from '../../array';
 import { Data, Transforms } from 'vega-typings';
 import { DataNames, FieldNames, SignalNames } from '../constants';
 import { facetGroupData, facetSourceData, facetTransforms } from '../facet';
-import { Insight, SpecColumns, SpecViewOptions } from '../types';
+import { Insight, SpecContext } from '../types';
 import { topLookup } from '../top';
 
-export default function (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions) {
-    const categoricalColor = columns.color && !columns.color.quantitative;
+export default function (context: SpecContext) {
+    const { specColumns, insight, specViewOptions } = context;
+    const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     const TreeMapDataName = "SandDanceTreeMapData";
     const data = allTruthy<Data>(
-        facetSourceData(columns.facet, insight.facets, TreeMapDataName),
+        facetSourceData(specColumns.facet, insight.facets, TreeMapDataName),
         [
             {
                 "name": DataNames.Main,
                 "source": TreeMapDataName,
                 "transform": allTruthy<Transforms>(
-                    columns.facet && facetTransforms(columns.facet, insight.facets),
-                    !columns.facet && treemapTransforms(insight)
+                    specColumns.facet && facetTransforms(specColumns.facet, insight.facets),
+                    !specColumns.facet && treemapTransforms(insight)
                 )
             }
         ],
-        categoricalColor && topLookup(columns.color, specViewOptions.maxLegends),
-        columns.facet && facetGroupData(DataNames.Main)
+        categoricalColor && topLookup(specColumns.color, specViewOptions.maxLegends),
+        specColumns.facet && facetGroupData(DataNames.Main)
     );
     return data;
 }

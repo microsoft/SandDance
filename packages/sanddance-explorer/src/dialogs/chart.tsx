@@ -11,14 +11,13 @@ import { strings } from '../language';
 import { ToggleColumns } from '../controls/toggleColumns';
 
 export interface Props extends ColumnMapBaseProps {
-    specCapabilities: SandDance.types.SpecCapabilities;
     tooltipExclusions: string[];
     toggleTooltipExclusion: (columnName: string) => void;
     disabled: boolean;
     chart: SandDance.types.Chart;
     onChangeChartType: (chart: SandDance.types.Chart) => void;
     view: SandDance.VegaDeckGl.types.View;
-    columns: SandDance.types.InsightColumns;
+    insightColumns: SandDance.types.InsightColumns;
     onChangeSignal: (role: string, column: string, name: string, value: any) => void;
 }
 
@@ -102,7 +101,7 @@ export class Chart extends React.Component<Props, State> {
                 <Group label={strings.labelColumnMapping}>
                     <div>
                         {props.specCapabilities && props.specCapabilities.roles.map((specRole, i) => {
-                            const specColumnInRole = props.columns[specRole.role];
+                            const specColumnInRole = props.insightColumns[specRole.role];
                             const selectedColumnName = specColumnInRole;
                             let disabled = props.disabled || (props.view === '2d' && specRole.role === 'z');
                             return (

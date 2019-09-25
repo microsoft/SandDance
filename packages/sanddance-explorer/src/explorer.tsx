@@ -511,6 +511,9 @@ export class Explorer extends React.Component<Props, State> {
             if (!newState.scheme) {
               newState.scheme = bestColorScheme(column, null, this.state.scheme);
             }
+            if (!column.stats.hasColorData) {
+              newState.directColor = false;
+            }
             this.ignoreSelectionChange = true;
             this.viewer.deselect().then(() => {
               this.ignoreSelectionChange = false;
@@ -686,10 +689,11 @@ export class Explorer extends React.Component<Props, State> {
   }
 
   render() {
-    const { colorBin, columns, facets, filter, hideAxes, hideLegend, scheme, signalValues, size, chart, view } = this.state;
+    const { colorBin, columns, directColor, facets, filter, hideAxes, hideLegend, scheme, signalValues, size, chart, view } = this.state;
     const insight: SandDance.types.Insight = {
       colorBin,
       columns,
+      directColor,
       facets,
       filter,
       hideAxes,
@@ -750,7 +754,7 @@ export class Explorer extends React.Component<Props, State> {
           }}
           onHomeClick={() => this.viewer.presenter.homeCamera()}
         />
-        <div className={util.classList("sanddance-main", this.state.sidebarPinned && "pinned", this.state.sidebarClosed && "closed", (insight.hideLegend || !(insight.columns && insight.columns.color)) && "hide-legend")}>
+        <div className={util.classList("sanddance-main", this.state.sidebarPinned && "pinned", this.state.sidebarClosed && "closed", (insight.hideLegend || insight.directColor || !(insight.columns && insight.columns.color && !this.state.dataContent.columns.filter(c => c.name === insight.columns.color)[0].isColorData)) && "hide-legend")}>
           <div ref={div => { if (div && !this.layoutDivUnpinned) this.layoutDivUnpinned = div }} className="sanddance-layout-unpinned"></div>
           <div ref={div => { if (div && !this.layoutDivPinned) this.layoutDivPinned = div }} className="sanddance-layout-pinned"></div>
           {!loaded && (
@@ -817,7 +821,6 @@ export class Explorer extends React.Component<Props, State> {
                 case SideTabId.ChartType:
                   return (
                     <Chart
-                      specCapabilities={this.state.specCapabilities}
                       tooltipExclusions={this.state.tooltipExclusions}
                       toggleTooltipExclusion={columnName => {
                         const tooltipExclusions = [...this.state.tooltipExclusions];
@@ -835,7 +838,7 @@ export class Explorer extends React.Component<Props, State> {
                       chart={this.state.chart}
                       view={this.state.view}
                       onChangeChartType={chart => this.changeChartType(chart)}
-                      columns={this.state.columns}
+                      insightColumns={this.state.columns}
                       onChangeSignal={(role, column, name, value) => {
                         saveSignalValuePref(this.prefs, this.state.chart, role, column, name, value);
                       }}
@@ -853,7 +856,7 @@ export class Explorer extends React.Component<Props, State> {
                       colorBinSignal={this.viewer && this.viewer.vegaSpec && this.viewer.vegaSpec.signals.filter(s => s.name === SandDance.constants.SignalNames.ColorBinCount)[0]}
                       colorReverseSignal={this.viewer && this.viewer.vegaSpec && this.viewer.vegaSpec.signals.filter(s => s.name === SandDance.constants.SignalNames.ColorReverse)[0]}
                       colorColumn={this.state.columns.color}
-                      changeColorBin={colorBin => {
+                      onColorBinChange={colorBin => {
                         this.ignoreSelectionChange = true;
                         this.viewer.deselect().then(() => {
                           this.ignoreSelectionChange = false;
@@ -865,7 +868,7 @@ export class Explorer extends React.Component<Props, State> {
                           }, 0);
                         });
                       }}
-                      changeColorScheme={(scheme) => {
+                      onColorSchemeChange={(scheme) => {
                         this.changeColumnMapping('color', this.state.dataContent.columns.filter(c => c.name === this.state.columns.color)[0], { scheme });
                         savePref(this.prefs, this.state.chart, 'color', this.state.columns.color, { scheme });
                       }}
@@ -878,6 +881,10 @@ export class Explorer extends React.Component<Props, State> {
                         this.getColorContext = null;
                         const signalValues: SandDance.types.SignalValues = {};
                         signalValues[SandDance.constants.SignalNames.ColorReverse] = value;
+                      }}
+                      directColor={this.state.directColor}
+                      onDirectColorChange={directColor => {
+                        this.changeInsight({ directColor });
                       }}
                     />
                   );
@@ -1002,6 +1009,9 @@ export class Explorer extends React.Component<Props, State> {
                     if (oldInsight.columns.color !== newInsight.columns.color) {
                       return null;
                     }
+                    if (oldInsight.directColor != newInsight.directColor) {
+                      return null;
+                    }
                     return this.viewer.colorContexts && this.viewer.colorContexts[this.viewer.currentColorContext];
                   };
                   //don't allow tabbing to the canvas
@@ -1040,10 +1050,21 @@ export class Explorer extends React.Component<Props, State> {
     const quantitativeColumns = allColumns && allColumns.filter(c => c.quantitative);
     const categoricalColumns = allColumns && allColumns.filter(c => !c.quantitative);
     const props: ColumnMapBaseProps = {
-      changeColumnMapping: (role, column) => this.changeColumnMapping(role, column),
+      changeColumnMapping: (role, columnOrRole) => {
+        let column: SandDance.types.Column;
+        if (typeof columnOrRole === 'string') {
+          //look up current insight
+          const columnName = this.state.columns[columnOrRole];
+          column = allColumns.filter(c => c.name === columnName)[0];
+        } else {
+          column = columnOrRole;
+        }
+        this.changeColumnMapping(role, column)
+      },
       allColumns,
       quantitativeColumns,
       categoricalColumns,
+      specCapabilities: this.state.specCapabilities,
       explorer: this
     };
     return props;

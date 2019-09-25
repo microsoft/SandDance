@@ -2,33 +2,34 @@
 // Licensed under the MIT license.
 import { binnableColorScale, linearScale, pointScale } from '../scales';
 import {
-    ScaleNames,
     ColorScaleNone,
     DataNames,
     FieldNames,
+    ScaleNames,
     SignalNames
 } from '../constants';
-import { Insight, SpecColumns } from '../types';
 import { RangeScheme, Scale } from 'vega-typings';
+import { SpecContext } from '../types';
 
-export default function (columns: SpecColumns, insight: Insight) {
+export default function (context: SpecContext) {
+    const { specColumns, insight } = context;
     const scales: Scale[] = [
         (
-            columns.x.quantitative ?
-                linearScale(ScaleNames.X, DataNames.Main, columns.x.name, "width", false, false)
+            specColumns.x.quantitative ?
+                linearScale(ScaleNames.X, DataNames.Main, specColumns.x.name, "width", false, false)
                 :
-                pointScale(ScaleNames.X, DataNames.Main, "width", columns.x.name)
+                pointScale(ScaleNames.X, DataNames.Main, "width", specColumns.x.name)
         ),
         (
-            columns.y.quantitative ?
-                linearScale(ScaleNames.Y, DataNames.Main, columns.y.name, "height", false, false)
+            specColumns.y.quantitative ?
+                linearScale(ScaleNames.Y, DataNames.Main, specColumns.y.name, "height", false, false)
                 :
-                pointScale(ScaleNames.Y, DataNames.Main, "height", columns.y.name, true)
+                pointScale(ScaleNames.Y, DataNames.Main, "height", specColumns.y.name, true)
         )
     ];
-    if (columns.color) {
-        if (columns.color.quantitative) {
-            scales.push(binnableColorScale(insight.colorBin, DataNames.Main, columns.color.name, insight.scheme));
+    if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
+        if (specColumns.color.quantitative) {
+            scales.push(binnableColorScale(insight.colorBin, DataNames.Main, specColumns.color.name, insight.scheme));
         } else {
             scales.push(
                 {
@@ -42,18 +43,18 @@ export default function (columns: SpecColumns, insight: Insight) {
                     "range": {
                         "scheme": insight.scheme || ColorScaleNone
                     },
-                    "reverse": {"signal": SignalNames.ColorReverse}
+                    "reverse": { "signal": SignalNames.ColorReverse }
                 }
             );
         }
     }
-    if (columns.z) {
+    if (specColumns.z) {
         const zRange: RangeScheme = [0, { "signal": SignalNames.ZHeight }];
         scales.push(
-            columns.z.quantitative ?
-                linearScale(ScaleNames.Z, DataNames.Main, columns.z.name, zRange, false, false)
+            specColumns.z.quantitative ?
+                linearScale(ScaleNames.Z, DataNames.Main, specColumns.z.name, zRange, false, false)
                 :
-                pointScale(ScaleNames.Z, DataNames.Main, zRange, columns.z.name)
+                pointScale(ScaleNames.Z, DataNames.Main, zRange, specColumns.z.name)
         );
     }
     return scales;

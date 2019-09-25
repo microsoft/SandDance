@@ -6,10 +6,11 @@ import { FieldNames, ScaleNames, SignalNames } from '../constants';
 import { fill } from '../fill';
 import { NameSpace } from './namespace';
 import { RectMark } from 'vega-typings';
-import { SpecColumns, SpecViewOptions } from '../types';
+import { SpecContext } from '../types';
 import { testForCollapseSelection } from '../selection';
 
-export default function (namespace: NameSpace, columns: SpecColumns, specViewOptions: SpecViewOptions): RectMark[] {
+export default function (context: SpecContext, namespace: NameSpace): RectMark[] {
+    const { specColumns } = context;
     const mark: RectMark = {
         "type": "rect",
         "from": {
@@ -19,7 +20,7 @@ export default function (namespace: NameSpace, columns: SpecColumns, specViewOpt
             "update": {
                 "x": {
                     "scale": ScaleNames.X,
-                    "field": columns.x.quantitative ? FieldNames.BarChartBin0 : columns.x.name,
+                    "field": specColumns.x.quantitative ? FieldNames.BarChartBin0 : specColumns.x.name,
                     "offset": {
                         "scale": BarChartScaleNames.compartmentScale,
                         "field": namespace.__compartment
@@ -64,11 +65,11 @@ export default function (namespace: NameSpace, columns: SpecColumns, specViewOpt
                         "band": 1
                     }
                 ],
-                "fill": fill(columns.color, specViewOptions)
+                "fill": fill(context)
             }
         }
     };
-    if (columns.z) {
+    if (specColumns.z) {
         const update = mark.encode.update;
         update.z = {
             "value": 0
@@ -80,7 +81,7 @@ export default function (namespace: NameSpace, columns: SpecColumns, specViewOpt
             },
             {
                 "scale": ScaleNames.Z,
-                "field": columns.z.name
+                "field": specColumns.z.name
             }
         ];
     }

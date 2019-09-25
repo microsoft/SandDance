@@ -2,14 +2,15 @@
 // Licensed under the MIT license.
 import { Axis } from 'vega-typings';
 import { partialAxes } from '../axes';
-import { SpecColumns, SpecViewOptions } from '../types';
+import { SpecContext } from '../types';
 
-export default function (specViewOptions: SpecViewOptions, columns: SpecColumns) {
-    const pa = partialAxes(specViewOptions, columns.x.quantitative, columns.y.quantitative);
+export default function (context: SpecContext) {
+    const { specColumns, specViewOptions } = context;
+    const pa = partialAxes(specViewOptions, specColumns.x.quantitative, specColumns.y.quantitative);
     const axes: Axis[] = [
         {
             "scale": "xband",
-            "title": columns.x.name,
+            "title": specColumns.x.name,
             "bandPosition": 0.5,
             "grid": true,
             "labelFlush": true,
@@ -17,8 +18,8 @@ export default function (specViewOptions: SpecViewOptions, columns: SpecColumns)
         },
         {
             "scale": "yband",
-            "title": columns.y.name,
-            "bandPosition": columns.y.quantitative ? 0 : 0.5,
+            "title": specColumns.y.name,
+            "bandPosition": specColumns.y.quantitative ? 0 : 0.5,
             "grid": true,
             "labelFlush": true,
             ...pa.left as Axis

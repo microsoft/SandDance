@@ -5,14 +5,15 @@ import { colorBinCountSignal, colorReverseSignal, textSignals } from '../signals
 import { ColumnCount, RowCount, Total } from './constants';
 import { DataNames } from '../constants';
 import { facetSignals } from '../facet';
-import { Insight, SpecViewOptions } from '../types';
 import { Signal } from 'vega-typings';
+import { SpecContext } from '../types';
 
-export default function (insight: Insight, specViewOptions: SpecViewOptions) {
+export default function (context: SpecContext) {
+    const { insight } = context;
     const signals = allTruthy<Signal>(
-        textSignals(specViewOptions),
+        textSignals(context),
         [
-            colorBinCountSignal(specViewOptions),
+            colorBinCountSignal(context),
             {
                 "name": Total,
                 "update": `data('${DataNames.Main}').length`
@@ -25,9 +26,9 @@ export default function (insight: Insight, specViewOptions: SpecViewOptions) {
                 "name": RowCount,
                 "update": `${Total}/${ColumnCount}`
             },
-            colorReverseSignal(specViewOptions)
+            colorReverseSignal(context)
         ],
-        insight.columns && insight.columns.facet && facetSignals(insight.facets, specViewOptions)
+        insight.columns && insight.columns.facet && facetSignals(context)
     );
     return signals;
 }

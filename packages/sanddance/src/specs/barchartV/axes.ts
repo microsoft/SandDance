@@ -4,14 +4,15 @@ import { Axis } from 'vega-typings';
 import { BarChartScaleNames, BarChartSignalNames } from './constants';
 import { partialAxes } from '../axes';
 import { ScaleNames } from '../constants';
-import { SpecColumns, SpecViewOptions } from '../types';
+import { SpecContext } from '../types';
 
-export default function (specViewOptions: SpecViewOptions, columns: SpecColumns) {
-    const pa = partialAxes(specViewOptions, columns.x.quantitative, true);
+export default function (context: SpecContext) {
+    const { specColumns, specViewOptions } = context;
+    const pa = partialAxes(specViewOptions, specColumns.x.quantitative, true);
     const axes: Axis[] = [
         {
             "scale": ScaleNames.X,
-            "title": columns.x.name,
+            "title": specColumns.x.name,
             ...pa.bottom as Axis
         },
         {

@@ -8,15 +8,16 @@ import {
     ScaleNames,
     SignalNames
 } from '../constants';
-import { Insight, SpecColumns } from '../types';
 import { Scale } from 'vega-typings';
+import { SpecContext } from '../types';
 
-export default function (columns: SpecColumns, insight: Insight) {
+export default function (context: SpecContext) {
+    const { specColumns, insight } = context;
     const scales: Scale[] = [
         {
             "name": "xband",
             "type": "band",
-            "domain": columns.x.quantitative ?
+            "domain": specColumns.x.quantitative ?
                 {
                     "data": "xaxisdata",
                     "field": "data",
@@ -25,7 +26,7 @@ export default function (columns: SpecColumns, insight: Insight) {
                 :
                 {
                     "data": DataNames.Main,
-                    "field": columns.x.quantitative ? FieldNames.StacksLongBin0 : columns.x.name,
+                    "field": specColumns.x.quantitative ? FieldNames.StacksLongBin0 : specColumns.x.name,
                     "sort": true
                 },
             "range": [
@@ -41,7 +42,7 @@ export default function (columns: SpecColumns, insight: Insight) {
             "name": "yband",
             "type": "band",
             "reverse": true,
-            "domain": columns.y.quantitative ?
+            "domain": specColumns.y.quantitative ?
                 {
                     "data": "yaxisdata",
                     "field": "data",
@@ -50,7 +51,7 @@ export default function (columns: SpecColumns, insight: Insight) {
                 :
                 {
                     "data": DataNames.Main,
-                    "field": columns.y.quantitative ? FieldNames.StacksLatBin0 : columns.y.name,
+                    "field": specColumns.y.quantitative ? FieldNames.StacksLatBin0 : specColumns.y.name,
                     "sort": true
                 },
             "range": "height",
@@ -113,9 +114,9 @@ export default function (columns: SpecColumns, insight: Insight) {
             }
         }
     ];
-    if (columns.color) {
-        if (columns.color.quantitative) {
-            scales.push(binnableColorScale(insight.colorBin, DataNames.Main, columns.color.name, insight.scheme));
+    if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
+        if (specColumns.color.quantitative) {
+            scales.push(binnableColorScale(insight.colorBin, DataNames.Main, specColumns.color.name, insight.scheme));
         } else {
             scales.push(
                 {

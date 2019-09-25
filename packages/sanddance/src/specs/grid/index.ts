@@ -5,17 +5,13 @@ import getMarks from './marks';
 import getScales from './scales';
 import getSignals from './signals';
 import { DataNames } from '../constants';
-import {
-    Insight,
-    SpecCapabilities,
-    SpecColumns,
-    SpecViewOptions
-} from '../types';
-import { legend } from '../legends';
+import { getLegends } from '../legends';
 import { Spec } from 'vega-typings';
+import { SpecCapabilities, SpecContext } from '../types';
 import { SpecCreator, SpecResult } from '../interfaces';
 
-export const grid: SpecCreator = (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult => {
+export const grid: SpecCreator = (context: SpecContext): SpecResult => {
+    const { specColumns, insight } = context;
     const errors: string[] = [];
 
     const specCapabilities: SpecCapabilities = {
@@ -43,7 +39,7 @@ export const grid: SpecCreator = (insight: Insight, columns: SpecColumns, specVi
         };
     }
 
-    const categoricalColor = columns.color && !columns.color.quantitative;
+    const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     const dataName = categoricalColor ? DataNames.Legend : DataNames.Main;
 
     const size = insight.size;
@@ -52,14 +48,15 @@ export const grid: SpecCreator = (insight: Insight, columns: SpecColumns, specVi
         "$schema": "https://vega.github.io/schema/vega/v3.json",
         "height": size.height,
         "width": size.width,
-        signals: getSignals(insight, specViewOptions),
-        scales: getScales(columns, insight),
-        data: getData(columns, specViewOptions),
-        marks: getMarks(dataName, columns, specViewOptions)
+        signals: getSignals(context),
+        scales: getScales(context),
+        data: getData(context),
+        marks: getMarks(context, dataName)
     };
 
-    if (columns.color && !insight.hideLegend) {
-        vegaSpec.legends = [legend(columns.color)];
+    const legends = getLegends(context)
+    if (legends) {
+        vegaSpec.legends = legends;
     }
 
     //use autosize only when not faceting

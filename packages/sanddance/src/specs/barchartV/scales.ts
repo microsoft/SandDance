@@ -11,11 +11,12 @@ import {
     ScaleNames,
     SignalNames
 } from '../constants';
-import { Insight, SpecColumns } from '../types';
 import { NameSpace } from './namespace';
 import { RangeScheme, Scale } from 'vega-typings';
+import { SpecContext } from '../types';
 
-export default function (namespace: NameSpace, insight: Insight, columns: SpecColumns) {
+export default function (context: SpecContext, namespace: NameSpace) {
+    const { specColumns, insight } = context;
     const scales: Scale[] = [
         {
             "name": BarChartScaleNames.compartmentScale,
@@ -72,9 +73,9 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
             }
         }
     ];
-    if (columns.color) {
-        if (columns.color.quantitative) {
-            scales.push(binnableColorScale(insight.colorBin, namespace.bucket, columns.color.name, insight.scheme));
+    if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
+        if (specColumns.color.quantitative) {
+            scales.push(binnableColorScale(insight.colorBin, namespace.bucket, specColumns.color.name, insight.scheme));
         } else {
             scales.push(
                 {
@@ -93,14 +94,14 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
             );
         }
     }
-    if (columns.z) {
+    if (specColumns.z) {
         const zRange: RangeScheme = [0, { "signal": SignalNames.ZHeight }];
         scales.push(
-            columns.z.quantitative ?
-                linearScale(ScaleNames.Z, DataNames.Main, columns.z.name, zRange, false, true)
+            specColumns.z.quantitative ?
+                linearScale(ScaleNames.Z, DataNames.Main, specColumns.z.name, zRange, false, true)
                 :
-                pointScale(ScaleNames.Z, DataNames.Main, zRange, columns.z.name)
+                pointScale(ScaleNames.Z, DataNames.Main, zRange, specColumns.z.name)
         );
     }
-    return scales.concat(columns.x.quantitative ? quantitativeScales() : qualitativeScales(namespace, columns));
+    return scales.concat(specColumns.x.quantitative ? quantitativeScales() : qualitativeScales(context, namespace));
 }

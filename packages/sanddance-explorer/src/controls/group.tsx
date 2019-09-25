@@ -6,7 +6,7 @@ import { util } from '@msrvida/sanddance-react';
 export interface Props {
     label: string;
     labelCount?: string;
-    children?: string | React.ReactText[] | JSX.Element | JSX.Element[];
+    children?: React.ReactNode;
     className?: string;
 }
 

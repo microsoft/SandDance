@@ -37,11 +37,23 @@ export function inferAll(columns: Column[], data: object[]) {
             if (typeof column.quantitative !== 'boolean') {
                 column.quantitative = isQuantitative(column);
             }
+            if (column.type === 'string') {
+                checkIsColorData(data, column);
+            }
             if (!column.stats) {
                 column.stats = getStats(data, column);
             }
         }
     });
+}
+
+function checkIsColorData(data: object[], column: Column) {
+    for (let i = 0; i < data.length; i++) {
+        if (!VegaDeckGl.util.isColor(data[i][column.name])) {
+            return;
+        }
+    }
+    column.isColorData = true;
 }
 
 function getStats(data: object[], column: Column) {
@@ -66,6 +78,9 @@ function getStats(data: object[], column: Column) {
         let num = +value;
         if (!isNaN(num)) {
             sum += num;
+        }
+        if (column.type === 'string' && !stats.hasColorData && VegaDeckGl.util.isColor(value)) {
+            stats.hasColorData = true;
         }
     }
     if (column.quantitative) {

@@ -1,36 +1,32 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { allTruthy } from '../../array';
-import {
-    Column,
-    Insight,
-    SpecColumns,
-    SpecViewOptions
-} from '../types';
+import { Column, SpecContext } from '../types';
 import { Data, Transforms } from 'vega-typings';
 import { DataNames } from '../constants';
 import { facetGroupData, facetSourceData, facetTransforms } from '../facet';
 import { topLookup } from '../top';
 
-export default function (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions) {
-    const categoricalColor = columns.color && !columns.color.quantitative;
+export default function (context: SpecContext) {
+    const { specColumns, insight, specViewOptions } = context;
+    const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     const ScatterDataName = "SandDanceScatterPlotData";
     const data = allTruthy<Data>(
-        facetSourceData(columns.facet, insight.facets, ScatterDataName),
+        facetSourceData(specColumns.facet, insight.facets, ScatterDataName),
         [
             {
                 "name": DataNames.Main,
                 "source": ScatterDataName,
                 "transform": allTruthy<Transforms>(
-                    filterInvalidWhenNumeric(columns.x),
-                    filterInvalidWhenNumeric(columns.y),
-                    filterInvalidWhenNumeric(columns.z),
-                    columns.facet && facetTransforms(columns.facet, insight.facets)
+                    filterInvalidWhenNumeric(specColumns.x),
+                    filterInvalidWhenNumeric(specColumns.y),
+                    filterInvalidWhenNumeric(specColumns.z),
+                    specColumns.facet && facetTransforms(specColumns.facet, insight.facets)
                 )
             }
         ],
-        categoricalColor && topLookup(columns.color, specViewOptions.maxLegends),
-        columns.facet && facetGroupData(DataNames.Main)
+        categoricalColor && topLookup(specColumns.color, specViewOptions.maxLegends),
+        specColumns.facet && facetGroupData(DataNames.Main)
     );
     return data;
 }

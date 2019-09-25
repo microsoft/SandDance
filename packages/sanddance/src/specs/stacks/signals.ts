@@ -8,16 +8,17 @@ import {
     textSignals
 } from '../signals';
 import { facetSignals } from '../facet';
-import { Insight, SpecColumns, SpecViewOptions } from '../types';
 import { Signal } from 'vega-typings';
 import { SignalNames } from '../constants';
+import { SpecContext } from '../types';
 
-export default function (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions) {
+export default function (context: SpecContext) {
+    const { specColumns, insight, specViewOptions } = context;
     const signals = allTruthy<Signal>(
-        textSignals(specViewOptions),
+        textSignals(context),
         [
-            colorBinCountSignal(specViewOptions),
-            colorReverseSignal(specViewOptions),
+            colorBinCountSignal(context),
+            colorReverseSignal(context),
             {
                 "name": SignalNames.XGridSize,
                 "value": 3,
@@ -40,7 +41,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                     "step": 1
                 }
             },
-            columns.x.quantitative && {
+            specColumns.x.quantitative && {
                 "name": SignalNames.XBins,
                 "value": 30,
                 "bind": {
@@ -51,7 +52,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                     "step": 1
                 }
             },
-            columns.y.quantitative && {
+            specColumns.y.quantitative && {
                 "name": SignalNames.YBins,
                 "value": 30,
                 "bind": {
@@ -98,7 +99,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
             },
             {
                 "name": "ybandw",
-                "update": `height/((${columns.y.quantitative ? SignalNames.YBins : columns.y.stats.distinctValueCount}) * (1 + ${SignalNames.OuterPadding}))`
+                "update": `height/((${specColumns.y.quantitative ? SignalNames.YBins : specColumns.y.stats.distinctValueCount}) * (1 + ${SignalNames.OuterPadding}))`
             },
             {
                 "name": "ybandsize",
@@ -113,7 +114,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                 "update": `rowxtent[1]*actsize*${SignalNames.ZProportion}/${defaultZProportion}`
             }
         ],
-        insight.columns.facet && facetSignals(insight.facets, specViewOptions)
+        insight.columns.facet && facetSignals(context)
     );
     return signals;
 }

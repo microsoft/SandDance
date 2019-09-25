@@ -4,7 +4,7 @@ import * as React from 'react';
 import { util } from '@msrvida/sanddance-react';
 
 export interface Props {
-    children: JSX.Element | JSX.Element[];
+    children: React.ReactNode;
     className?: string;
 }
 

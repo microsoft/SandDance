@@ -1,18 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { allTruthy } from '../../array';
-import {
-    Column,
-    Insight,
-    SpecColumns,
-    SpecViewOptions
-} from '../types';
+import { Column, SpecContext } from '../types';
 import { Data, StackTransform, Transforms } from 'vega-typings';
 import { DataNames, FieldNames, SignalNames } from '../constants';
 import { topLookup } from '../top';
 
-export default function (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions) {
-    const categoricalColor = columns.color && !columns.color.quantitative;
+export default function (context: SpecContext) {
+    const { specColumns, specViewOptions } = context;
+    const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     const data = allTruthy<Data>(
         [
             {
@@ -20,17 +16,17 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                 "transform": allTruthy<Transforms>([
                     {
                         "type": "extent",
-                        "field": columns.x.name,
+                        "field": specColumns.x.name,
                         "signal": "long_extent"
                     },
                     {
                         "type": "extent",
-                        "field": columns.y.name,
+                        "field": specColumns.y.name,
                         "signal": "lat_extent"
                     },
-                    columns.x.quantitative && {
+                    specColumns.x.quantitative && {
                         "type": "bin",
-                        "field": columns.x.name,
+                        "field": specColumns.x.name,
                         "extent": {
                             "signal": "long_extent"
                         },
@@ -44,9 +40,9 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                         ],
                         "signal": "binXSignal"
                     },
-                    columns.y.quantitative && {
+                    specColumns.y.quantitative && {
                         "type": "bin",
-                        "field": columns.y.name,
+                        "field": specColumns.y.name,
                         "extent": {
                             "signal": "lat_extent"
                         },
@@ -63,7 +59,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                 ])
             }
         ],
-        columns.x.quantitative && [
+        specColumns.x.quantitative && [
             {
                 "name": "xaxisdata",
                 "transform": [
@@ -82,7 +78,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                 ]
             }
         ],
-        columns.y.quantitative && [
+        specColumns.y.quantitative && [
             {
                 "name": "yaxisdata",
                 "transform": [
@@ -101,13 +97,13 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                 ]
             }
         ],
-        categoricalColor && topLookup(columns.color, specViewOptions.maxLegends),
+        categoricalColor && topLookup(specColumns.color, specViewOptions.maxLegends),
         [
             {
                 "name": "stackedgroup",
                 "source": categoricalColor ? DataNames.Legend : DataNames.Main,
                 "transform": [
-                    stackTransform(columns.sort, columns.x, columns.y),
+                    stackTransform(specColumns.sort, specColumns.x, specColumns.y),
                     {
                         "type": "extent",
                         "signal": "xtent",

@@ -19,11 +19,10 @@ export interface Props {
     scheme: string;
     colorColumn: SandDance.types.Column;
     changeColorScheme: (scheme: string) => void;
+    disabled: boolean;
 }
 
 export function Palette(props: Props) {
-    if (!props.colorColumn) return null;
-
     const { distinctValueCount } = props.colorColumn.stats;
     let isDual = distinctValueCount === 2;
     const categoricalNumeric = distinctValueCount > 0 && distinctValueCount < maxDistinctColors;
@@ -67,9 +66,20 @@ export function Palette(props: Props) {
 
     return (
         <div className="sanddance-palette">
-            <div className="sanddance-explanation">Field <span className="fieldname">{props.colorColumn.name}</span> is of type <span className="fieldtype">{props.colorColumn.type}</span>{categoricalNumeric && ` and has ${distinctValueCount} distinct values`}.</div>
+            <div
+                className="sanddance-explanation"
+                dangerouslySetInnerHTML={{
+                    __html: strings.labelColorFieldInfo(
+                        props.colorColumn.name,
+                        props.colorColumn.type,
+                        categoricalNumeric,
+                        distinctValueCount
+                    )
+                }}
+            />
             <Dropdown
                 collapseLabel={true}
+                disabled={props.disabled}
                 dropdownWidth={400}
                 label={strings.labelColorScheme}
                 onRenderOption={(option: ISchemeOption): JSX.Element => {

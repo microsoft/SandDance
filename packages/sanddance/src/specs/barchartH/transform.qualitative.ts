@@ -2,15 +2,16 @@
 // Licensed under the MIT license.
 import { BarChartSignalNames } from './constants';
 import { FieldNames } from '../constants';
-import { SpecColumns } from '../types';
+import { SpecContext } from '../types';
 import { StackTransform, Transforms } from 'vega-typings';
 
-export default function (columns: SpecColumns) {
+export default function (context: SpecContext) {
+    const { specColumns } = context;
     const stackTransform: StackTransform = {
         "type": "stack",
         "groupby": [
             {
-                "field": columns.y.name
+                "field": specColumns.y.name
             }
         ],
         "as": [
@@ -18,9 +19,9 @@ export default function (columns: SpecColumns) {
             FieldNames.BarChartStack1
         ]
     };
-    if (columns.sort) {
+    if (specColumns.sort) {
         stackTransform.sort = {
-            "field": columns.sort.name
+            "field": specColumns.sort.name
         };
     }
     const transforms: Transforms[] = [

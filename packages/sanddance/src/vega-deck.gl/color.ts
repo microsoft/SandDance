@@ -31,8 +31,13 @@ export function colorIsEqual(a: Color, b: Color) {
  * @param cssColorSpecifier A CSS Color Module Level 3 specifier string.
  */
 export function colorFromString(cssColorSpecifier: string): Color {
-    const c = d3color(cssColorSpecifier).rgb();
-    return rgbToDeckglColor(c);
+    if (cssColorSpecifier) {
+        const dc = d3color(cssColorSpecifier);
+        if (dc) {
+            const c = dc.rgb();
+            return rgbToDeckglColor(c);
+        }
+    }
 }
 
 /**
@@ -53,4 +58,8 @@ export function desaturate(color: Color, value: number): Color {
     hslColor.s = value;
     const c = hslColor.rgb();
     return rgbToDeckglColor(c);
+}
+
+export function isColor(cssColorSpecifier: string) {
+    return !!d3color(cssColorSpecifier);
 }

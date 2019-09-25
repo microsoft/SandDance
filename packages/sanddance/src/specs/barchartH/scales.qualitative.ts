@@ -4,9 +4,10 @@ import { BarChartScaleNames } from './constants';
 import { NameSpace } from './namespace';
 import { Scale } from 'vega-typings';
 import { ScaleNames } from '../constants';
-import { SpecColumns } from '../types';
+import { SpecContext } from '../types';
 
-export default function (namespace: NameSpace, columns: SpecColumns) {
+export default function (context: SpecContext, namespace: NameSpace) {
+    const { specColumns } = context;
     const scales: Scale[] = [
         {
             "name": BarChartScaleNames.bucketScale,
@@ -14,7 +15,7 @@ export default function (namespace: NameSpace, columns: SpecColumns) {
             "range": "height",
             "domain": {
                 "data": namespace.bucket,
-                "field": columns.y.name,
+                "field": specColumns.y.name,
                 "sort": true
             }
         },
@@ -30,7 +31,7 @@ export default function (namespace: NameSpace, columns: SpecColumns) {
             "padding": 0.01,
             "domain": {
                 "data": namespace.stacked,
-                "field": columns.y.name,
+                "field": specColumns.y.name,
                 "sort": true
             },
             "reverse": true

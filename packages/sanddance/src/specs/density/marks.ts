@@ -3,10 +3,11 @@
 import { FieldNames, ScaleNames } from '../constants';
 import { fill } from '../fill';
 import { RectMark } from 'vega-typings';
-import { SpecColumns, SpecViewOptions } from '../types';
+import { SpecContext } from '../types';
 import { testForCollapseSelection } from '../selection';
 
-export default function (columns: SpecColumns, specViewOptions: SpecViewOptions) {
+export default function (context: SpecContext) {
+    const { specColumns } = context;
     const mark: RectMark = {
         "type": "rect",
         "from": {
@@ -14,8 +15,8 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
         },
         "sort": {
             "field": [
-                columns.x.name,
-                columns.y.name
+                specColumns.x.name,
+                specColumns.y.name
             ],
             "order": [
                 "ascending",
@@ -26,14 +27,14 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
             "update": {
                 "xc": {
                     "scale": "xscale",
-                    "field": columns.x.quantitative ? FieldNames.DensityXBin0 : columns.x.name,
+                    "field": specColumns.x.quantitative ? FieldNames.DensityXBin0 : specColumns.x.name,
                     "offset": {
                         "signal": `scale('sizescale', ((datum.${FieldNames.DensityRow}-1) % floor(sqrt(datum.${FieldNames.DensityCount}))))-scale('sizescale', sqrt(datum.${FieldNames.DensityCount})-2)/2`
                     }
                 },
                 "yc": {
                     "scale": "yscale",
-                    "field": columns.y.quantitative ? FieldNames.DensityYBin0 : columns.y.name,
+                    "field": specColumns.y.quantitative ? FieldNames.DensityYBin0 : specColumns.y.name,
                     "offset": {
                         "signal": `scale('sizescale',height/width*floor(((datum.${FieldNames.DensityRow}-1) / floor(sqrt(datum.${FieldNames.DensityCount}))))) - scale('sizescale', height/width*sqrt(datum.${FieldNames.DensityCount})+2)/2`
                     }
@@ -44,11 +45,11 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                 "height": {
                     "signal": "height/width*unitsize"
                 },
-                "fill": fill(columns.color, specViewOptions)
+                "fill": fill(context)
             }
         }
     };
-    if (columns.z) {
+    if (specColumns.z) {
         const update = mark.encode.update;
         update.z = {
             "value": 0
@@ -60,7 +61,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
             },
             {
                 "scale": ScaleNames.Z,
-                "field": columns.z.name
+                "field": specColumns.z.name
             }
         ];
     }

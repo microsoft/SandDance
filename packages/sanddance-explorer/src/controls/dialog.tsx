@@ -7,7 +7,7 @@ import { strings } from '../language';
 
 export interface Props extends FabricTypes.IDialogProps {
     title?: string;
-    children?: string | React.ReactText[] | JSX.Element | JSX.Element[];
+    children?: React.ReactNode;
     buttons?: JSX.Element | JSX.Element[];
 }
 

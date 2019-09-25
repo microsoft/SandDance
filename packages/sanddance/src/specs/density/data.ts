@@ -1,31 +1,28 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { allTruthy } from '../../array';
-import {
-    Insight,
-    SpecColumns,
-    SpecViewOptions
-} from '../types';
 import { Data, Transforms } from 'vega-typings';
 import { DataNames, FieldNames, SignalNames } from '../constants';
+import { SpecColumns, SpecContext } from '../types';
 import { topLookup } from '../top';
 
-export default function (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions) {
-    const categoricalColor = columns.color && !columns.color.quantitative;
+export default function (context: SpecContext) {
+    const { specColumns, specViewOptions } = context;
+    const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     const data = allTruthy<Data>(
         [
             {
                 "name": DataNames.Main,
                 "transform": allTruthy<Transforms>(
-                    columns.x.quantitative && [
+                    specColumns.x.quantitative && [
                         {
                             "type": "extent",
-                            "field": columns.x.name,
+                            "field": specColumns.x.name,
                             "signal": "var_Xextent"
                         },
                         {
                             "type": "bin",
-                            "field": columns.x.name,
+                            "field": specColumns.x.name,
                             "extent": {
                                 "signal": "var_Xextent"
                             },
@@ -39,15 +36,15 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                             "signal": "binXSignal"
                         }
                     ],
-                    columns.y.quantitative && [
+                    specColumns.y.quantitative && [
                         {
                             "type": "extent",
-                            "field": columns.y.name,
+                            "field": specColumns.y.name,
                             "signal": "var_Yextent"
                         },
                         {
                             "type": "bin",
-                            "field": columns.y.name,
+                            "field": specColumns.y.name,
                             "extent": {
                                 "signal": "var_Yextent"
                             },
@@ -64,7 +61,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                 )
             }
         ],
-        columns.x.quantitative && [
+        specColumns.x.quantitative && [
             {
                 "name": "xaxisdata",
                 "transform": [
@@ -83,7 +80,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                 ]
             }
         ],
-        columns.y.quantitative && [
+        specColumns.y.quantitative && [
             {
                 "name": "yaxisdata",
                 "transform": [
@@ -102,7 +99,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                 ]
             }
         ],
-        categoricalColor && topLookup(columns.color, specViewOptions.maxLegends),
+        categoricalColor && topLookup(specColumns.color, specViewOptions.maxLegends),
         [
             {
                 "name": "aggregated",
@@ -111,8 +108,8 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                     {
                         "type": "joinaggregate",
                         "groupby": [
-                            columns.x.quantitative ? FieldNames.DensityXBin0 : columns.x.name,
-                            columns.y.quantitative ? FieldNames.DensityYBin0 : columns.y.name
+                            specColumns.x.quantitative ? FieldNames.DensityXBin0 : specColumns.x.name,
+                            specColumns.y.quantitative ? FieldNames.DensityYBin0 : specColumns.y.name
                         ],
                         "ops": [
                             "count"
@@ -121,7 +118,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                             FieldNames.DensityCount
                         ]
                     },
-                    windowTransform(columns),
+                    windowTransform(specColumns),
                     {
                         "type": "extent",
                         "field": FieldNames.DensityRow,

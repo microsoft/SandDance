@@ -3,19 +3,20 @@
 import { allTruthy } from '../../array';
 import { Data, Transforms } from 'vega-typings';
 import { DataNames, FieldNames } from '../constants';
-import { SpecColumns, SpecViewOptions } from '../types';
+import { SpecContext } from '../types';
 import { topLookup } from '../top';
 
-export default function (columns: SpecColumns, specViewOptions: SpecViewOptions) {
-    const categoricalColor = columns.color && !columns.color.quantitative;
+export default function (context: SpecContext) {
+    const { specColumns, specViewOptions } = context;
+    const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     const data = allTruthy<Data>(
         [
             {
                 "name": DataNames.Main,
                 "transform": allTruthy<Transforms>([
-                    columns.sort && {
+                    specColumns.sort && {
                         "type": "collect",
-                        "sort": { "field": columns.sort.name }
+                        "sort": { "field": specColumns.sort.name }
                     },
                     {
                         "type": "window",
@@ -29,7 +30,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                 ])
             }
         ],
-        categoricalColor && topLookup(columns.color, specViewOptions.maxLegends)
+        categoricalColor && topLookup(specColumns.color, specViewOptions.maxLegends)
     );
     return data;
 }

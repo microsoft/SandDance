@@ -3,10 +3,11 @@
 import { FieldNames, ScaleNames } from '../constants';
 import { fill } from '../fill';
 import { Mark } from 'vega-typings';
-import { SpecColumns, SpecViewOptions } from '../types';
+import { SpecContext } from '../types';
 import { testForCollapseSelection } from '../selection';
 
-export default function (data: string, columns: SpecColumns, specViewOptions: SpecViewOptions) {
+export default function (context: SpecContext, data: string) {
+    const { specColumns } = context;
     const marks: Mark[] = [
         {
             "type": "rect",
@@ -19,12 +20,12 @@ export default function (data: string, columns: SpecColumns, specViewOptions: Sp
                     "y": { "field": FieldNames.TreemapStackY0 },
                     "x2": { "field": FieldNames.TreemapStackX1 },
                     "y2": { "field": FieldNames.TreemapStackY1 },
-                    "fill": fill(columns.color, specViewOptions)
+                    "fill": fill(context)
                 }
             }
         }
     ];
-    if (columns.z) {
+    if (specColumns.z) {
         const update = marks[0].encode.update;
         update.z = {
             "value": 0
@@ -36,7 +37,7 @@ export default function (data: string, columns: SpecColumns, specViewOptions: Sp
             },
             {
                 "scale": ScaleNames.Z,
-                "field": columns.z.name
+                "field": specColumns.z.name
             }
         ];
     }

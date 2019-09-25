@@ -5,40 +5,35 @@ import getData from './data';
 import getMarks from './marks';
 import getScales from './scales';
 import getSignals from './signals';
-import {
-    AxisSelectionType,
-    Insight,
-    SpecCapabilities,
-    SpecColumns,
-    SpecViewOptions
-} from '../types';
+import { Axis, Spec } from 'vega-typings';
 import {
     checkForFacetErrors,
     facetMarks,
     facetSize,
     layout
 } from '../facet';
-import { legend } from '../legends';
-import { Axis, Spec } from 'vega-typings';
-import { SpecCreator, SpecResult } from '../interfaces';
+import { getLegends } from '../legends';
 import { SignalNames } from '../constants';
+import { SpecCapabilities, SpecContext } from '../types';
+import { SpecCreator, SpecResult } from '../interfaces';
 
-export const scatterplot: SpecCreator = (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult => {
+export const scatterplot: SpecCreator = (context: SpecContext): SpecResult => {
+    const { specColumns, insight, specViewOptions } = context;
     const errors: string[] = [];
 
-    if (!columns.x) errors.push(`Must set a field for x axis`);
-    if (!columns.y) errors.push(`Must set a field for y axis`);
+    if (!specColumns.x) errors.push(`Must set a field for x axis`);
+    if (!specColumns.y) errors.push(`Must set a field for y axis`);
     checkForFacetErrors(insight.facets, errors);
 
     const specCapabilities: SpecCapabilities = {
         roles: [
             {
                 role: 'x',
-                axisSelection: columns.x && columns.x.quantitative ? 'range' : 'exact'
+                axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact'
             },
             {
                 role: 'y',
-                axisSelection: columns.y && columns.y.quantitative ? 'range' : 'exact'
+                axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact'
             },
             {
                 role: 'z',
@@ -71,25 +66,25 @@ export const scatterplot: SpecCreator = (insight: Insight, columns: SpecColumns,
     let axes: Axis[];
 
     if (!insight.hideAxes) {
-        axes = getAxes(specViewOptions, columns);
+        axes = getAxes(context);
     }
 
-    let marks = getMarks(columns, specViewOptions);
+    let marks = getMarks(context);
 
-    if (columns.facet) {
+    if (specColumns.facet) {
         marks = facetMarks(specViewOptions, marks[0].from.data, marks, axes);
         axes = [];
     }
 
-    const size = columns.facet ? facetSize(insight.facets, insight.size, specViewOptions) : insight.size;
+    const size = specColumns.facet ? facetSize(context) : insight.size;
 
     var vegaSpec: Spec = {
         "$schema": "https://vega.github.io/schema/vega/v3.json",
         "height": size.height,
         "width": size.width,
-        signals: getSignals(insight, specViewOptions),
-        data: getData(insight, columns, specViewOptions),
-        scales: getScales(columns, insight),
+        signals: getSignals(context),
+        data: getData(context),
+        scales: getScales(context),
         marks
     };
 
@@ -97,12 +92,13 @@ export const scatterplot: SpecCreator = (insight: Insight, columns: SpecColumns,
         vegaSpec.axes = axes;
     }
 
-    if (columns.color && !insight.hideLegend) {
-        vegaSpec.legends = [legend(columns.color)];
+    const legends = getLegends(context)
+    if (legends) {
+        vegaSpec.legends = legends;
     }
 
-    if (columns.facet) {
-        vegaSpec.layout = layout(specViewOptions);
+    if (specColumns.facet) {
+        vegaSpec.layout = layout(context);
     } else {
         //use autosize only when not faceting
         vegaSpec.autosize = "fit";
