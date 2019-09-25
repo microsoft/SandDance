@@ -4,11 +4,11 @@ import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 
 export interface ISchemeOption extends FabricTypes.IDropdownOption {
     scheme: string;
-    children: JSX.Element;
+    children: React.ReactNode;
 }
 
 export function schemeOption(selected: string, scheme: string): ISchemeOption {
-    
+
     return {
         key: scheme,
         text: scheme,

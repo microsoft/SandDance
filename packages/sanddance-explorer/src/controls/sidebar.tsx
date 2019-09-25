@@ -15,7 +15,7 @@ export enum SideTabId {
 
 export interface Props {
     calculating: boolean;
-    children: JSX.Element | JSX.Element[];
+    children: React.ReactNode;
     hideSidebarControls: boolean;
     onSideTabClick: (sideTabId: SideTabId) => void;
     selectedSideTab: SideTabId;
