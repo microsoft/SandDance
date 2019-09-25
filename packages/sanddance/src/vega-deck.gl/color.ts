@@ -31,10 +31,12 @@ export function colorIsEqual(a: Color, b: Color) {
  * @param cssColorSpecifier A CSS Color Module Level 3 specifier string.
  */
 export function colorFromString(cssColorSpecifier: string): Color {
-    const dc = d3color(cssColorSpecifier);
-    if (dc) {
-        const c = dc.rgb();
-        return rgbToDeckglColor(c);
+    if (cssColorSpecifier) {
+        const dc = d3color(cssColorSpecifier);
+        if (dc) {
+            const c = dc.rgb();
+            return rgbToDeckglColor(c);
+        }
     }
 }
 

@@ -160,7 +160,8 @@ export class Presenter {
             maxOrdinal: -1,
             ordinalsSpecified: false,
             currAxis: null,
-            currFacetRect: null
+            currFacetRect: null,
+            defaultCubeColor: this.style.defaultCubeColor
         };
         //determine if this is a vega scene
         if (scene.marktype) {
