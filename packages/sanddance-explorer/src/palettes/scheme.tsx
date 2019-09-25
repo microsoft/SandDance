@@ -8,7 +8,6 @@ export interface ISchemeOption extends FabricTypes.IDropdownOption {
 }
 
 export function schemeOption(selected: string, scheme: string): ISchemeOption {
-
     return {
         key: scheme,
         text: scheme,
