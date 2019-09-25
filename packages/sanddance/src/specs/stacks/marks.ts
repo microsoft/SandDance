@@ -3,9 +3,10 @@
 import { FieldNames } from '../constants';
 import { fill } from '../fill';
 import { Mark } from 'vega-typings';
-import { SpecColumns, SpecViewOptions } from '../types';
+import { SpecContext } from '../types';
 
-export default function (columns: SpecColumns, specViewOptions: SpecViewOptions) {
+export default function (context: SpecContext) {
+    const { columns } = context;
     const marks: Mark[] = [
         {
             "name": "marks2",
@@ -45,7 +46,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                     "height": {
                         "signal": "actsize"
                     },
-                    "fill": fill(columns.color, specViewOptions)
+                    "fill": fill(context)
                 }
             }
         }

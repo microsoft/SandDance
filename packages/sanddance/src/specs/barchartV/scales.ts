@@ -11,11 +11,12 @@ import {
     ScaleNames,
     SignalNames
 } from '../constants';
-import { Insight, SpecColumns } from '../types';
 import { NameSpace } from './namespace';
 import { RangeScheme, Scale } from 'vega-typings';
+import { SpecContext } from '../types';
 
-export default function (namespace: NameSpace, insight: Insight, columns: SpecColumns) {
+export default function (context: SpecContext, namespace: NameSpace) {
+    const { columns, insight } = context;
     const scales: Scale[] = [
         {
             "name": BarChartScaleNames.compartmentScale,
@@ -102,5 +103,5 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
                 pointScale(ScaleNames.Z, DataNames.Main, zRange, columns.z.name)
         );
     }
-    return scales.concat(columns.x.quantitative ? quantitativeScales() : qualitativeScales(namespace, columns));
+    return scales.concat(columns.x.quantitative ? quantitativeScales() : qualitativeScales(context, namespace));
 }

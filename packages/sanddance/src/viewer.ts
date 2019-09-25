@@ -35,7 +35,8 @@ import {
     Insight,
     SignalValues,
     SpecCapabilities,
-    SpecColumns
+    SpecColumns,
+    SpecContext
 } from './specs/types';
 import { mount } from 'tsx-create-element';
 import { recolorAxes } from './axes';
@@ -240,7 +241,8 @@ export class Viewer {
 
     private renderNewLayout(c?: VegaDeckGl.types.PresenterConfig, view?: VegaDeckGl.types.View) {
         const currData = this._dataScope.currentData();
-        const specResult = cloneVegaSpecWithData(this.insight, this._specColumns, this.options, currData);
+        const context: SpecContext = { columns: this._specColumns, insight: this.insight, specViewOptions: this.options };
+        const specResult = cloneVegaSpecWithData(context, currData);
         if (!specResult.errors) {
             const uiValues = extractSignalValuesFromView(this.vegaViewGl, this.vegaSpec);
             this._signalValues = { ...this._signalValues, ...uiValues, ...this.insight.signalValues };

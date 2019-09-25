@@ -13,16 +13,12 @@ import {
     layout
 } from '../facet';
 import { getLegends } from '../legends';
-import {
-    Insight,
-    SpecCapabilities,
-    SpecColumns,
-    SpecViewOptions
-} from '../types';
 import { SignalNames } from '../constants';
+import { SpecCapabilities, SpecContext } from '../types';
 import { SpecCreator, SpecResult } from '../interfaces';
 
-export const scatterplot: SpecCreator = (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult => {
+export const scatterplot: SpecCreator = (context: SpecContext): SpecResult => {
+    const { columns, insight, specViewOptions } = context;
     const errors: string[] = [];
 
     if (!columns.x) errors.push(`Must set a field for x axis`);
@@ -70,25 +66,25 @@ export const scatterplot: SpecCreator = (insight: Insight, columns: SpecColumns,
     let axes: Axis[];
 
     if (!insight.hideAxes) {
-        axes = getAxes(specViewOptions, columns);
+        axes = getAxes(context);
     }
 
-    let marks = getMarks(columns, specViewOptions);
+    let marks = getMarks(context);
 
     if (columns.facet) {
         marks = facetMarks(specViewOptions, marks[0].from.data, marks, axes);
         axes = [];
     }
 
-    const size = columns.facet ? facetSize(insight.facets, insight.size, specViewOptions) : insight.size;
+    const size = columns.facet ? facetSize(context) : insight.size;
 
     var vegaSpec: Spec = {
         "$schema": "https://vega.github.io/schema/vega/v3.json",
         "height": size.height,
         "width": size.width,
-        signals: getSignals(insight, specViewOptions),
-        data: getData(insight, columns, specViewOptions),
-        scales: getScales(columns, insight),
+        signals: getSignals(context),
+        data: getData(context),
+        scales: getScales(context),
         marks
     };
 
@@ -96,13 +92,13 @@ export const scatterplot: SpecCreator = (insight: Insight, columns: SpecColumns,
         vegaSpec.axes = axes;
     }
 
-    const legends = getLegends(insight, columns)
+    const legends = getLegends(context)
     if (legends) {
         vegaSpec.legends = legends;
     }
 
     if (columns.facet) {
-        vegaSpec.layout = layout(specViewOptions);
+        vegaSpec.layout = layout(context);
     } else {
         //use autosize only when not faceting
         vegaSpec.autosize = "fit";

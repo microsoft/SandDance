@@ -6,10 +6,11 @@ import { FieldNames, ScaleNames, SignalNames } from '../constants';
 import { fill } from '../fill';
 import { NameSpace } from './namespace';
 import { RectMark } from 'vega-typings';
-import { SpecColumns, SpecViewOptions } from '../types';
+import { SpecContext } from '../types';
 import { testForCollapseSelection } from '../selection';
 
-export default function (namespace: NameSpace, columns: SpecColumns, specViewOptions: SpecViewOptions): RectMark[] {
+export default function (context: SpecContext, namespace: NameSpace): RectMark[] {
+    const { columns } = context;
     const mark: RectMark = {
         "type": "rect",
         "from": {
@@ -64,7 +65,7 @@ export default function (namespace: NameSpace, columns: SpecColumns, specViewOpt
                         "band": 1
                     }
                 ],
-                "fill": fill(columns.color, specViewOptions)
+                "fill": fill(context)
             }
         }
     };

@@ -3,10 +3,11 @@
 import { allTruthy } from '../../array';
 import { Data, Transforms } from 'vega-typings';
 import { DataNames, FieldNames } from '../constants';
-import { SpecColumns, SpecViewOptions } from '../types';
+import { SpecContext } from '../types';
 import { topLookup } from '../top';
 
-export default function (columns: SpecColumns, specViewOptions: SpecViewOptions) {
+export default function (context: SpecContext) {
+    const { columns, specViewOptions } = context;
     const categoricalColor = columns.color && !columns.color.quantitative;
     const data = allTruthy<Data>(
         [

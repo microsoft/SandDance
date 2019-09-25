@@ -7,18 +7,19 @@ import { BarChartSignalNames } from './constants';
 import { Data, SourceData, Transforms } from 'vega-typings';
 import { DataNames, FieldNames } from '../constants';
 import { facetGroupData, facetSourceData, facetTransforms } from '../facet';
-import { Insight, SpecColumns, SpecViewOptions } from '../types';
 import { NameSpace } from './namespace';
+import { SpecContext } from '../types';
 import { topLookup } from '../top';
 
-export default function (namespace: NameSpace, insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions) {
+export default function (context: SpecContext, namespace: NameSpace) {
+    const { columns, insight, specViewOptions } = context;
     const categoricalColor = columns.color && !columns.color.quantitative;
     const nestedDataName = columns.facet && columns.facet.quantitative ? DataNames.Pre : DataNames.Main;
     const data = allTruthy<Data>(
         facetSourceData(columns.facet, insight.facets, DataNames.Main),
         categoricalColor && topLookup(columns.color, specViewOptions.maxLegends),
         [
-            bucketed(namespace, categoricalColor ? DataNames.Legend : nestedDataName, columns),
+            bucketed(context, namespace, categoricalColor ? DataNames.Legend : nestedDataName),
             stacked(namespace, namespace.bucket,
                 columns.facet && facetTransforms(columns.facet, insight.facets)
             )
@@ -47,14 +48,15 @@ export default function (namespace: NameSpace, insight: Insight, columns: SpecCo
     return data;
 }
 
-export function bucketed(namespace: NameSpace, source: string, columns: SpecColumns) {
+export function bucketed(context: SpecContext, namespace: NameSpace, source: string) {
+    const { columns } = context;
     const data: SourceData = {
         "name": namespace.bucket,
         source,
         "transform": columns.y.quantitative ?
-            getQuantitative(columns, columns.facet)
+            getQuantitative(context, columns.facet)
             :
-            getQualitative(columns)
+            getQualitative(context)
     };
     return data;
 }

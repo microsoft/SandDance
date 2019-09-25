@@ -7,17 +7,13 @@ import getScales from './scales';
 import getSignals from './signals';
 import { checkForFacetErrors, facetSize, layout } from '../facet';
 import { getLegends } from '../legends';
-import {
-    Insight,
-    SpecCapabilities,
-    SpecColumns,
-    SpecViewOptions
-} from '../types';
 import { SignalNames } from '../constants';
 import { Spec } from 'vega-typings';
+import { SpecCapabilities, SpecContext } from '../types';
 import { SpecCreator, SpecResult } from '../interfaces';
 
-export const stacks: SpecCreator = (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult => {
+export const stacks: SpecCreator = (context: SpecContext): SpecResult => {
+    const { columns, insight } = context;
     const errors: string[] = [];
 
     if (!columns.x) errors.push(`Must set a field for x axis`);
@@ -61,29 +57,29 @@ export const stacks: SpecCreator = (insight: Insight, columns: SpecColumns, spec
         };
     }
 
-    const size = columns.facet ? facetSize(insight.facets, insight.size, specViewOptions) : insight.size;
+    const size = columns.facet ? facetSize(context) : insight.size;
 
     var vegaSpec: Spec = {
         "$schema": "https://vega.github.io/schema/vega/v3.json",
         "height": size.height,
         "width": size.width,
-        signals: getSignals(insight, columns, specViewOptions),
-        data: getData(insight, columns, specViewOptions),
-        scales: getScales(columns, insight),
-        marks: getMarks(columns, specViewOptions)
+        signals: getSignals(context),
+        data: getData(context),
+        scales: getScales(context),
+        marks: getMarks(context)
     };
 
     if (!insight.hideAxes) {
-        vegaSpec.axes = getAxes(specViewOptions, columns);
+        vegaSpec.axes = getAxes(context);
     }
 
-    const legends = getLegends(insight, columns)
+    const legends = getLegends(context)
     if (legends) {
         vegaSpec.legends = legends;
     }
 
     if (columns.facet) {
-        vegaSpec.layout = layout(specViewOptions);
+        vegaSpec.layout = layout(context);
     } else {
         //use autosize only when not faceting
         vegaSpec.autosize = "fit";

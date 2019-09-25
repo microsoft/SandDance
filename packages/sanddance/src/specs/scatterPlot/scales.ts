@@ -2,16 +2,17 @@
 // Licensed under the MIT license.
 import { binnableColorScale, linearScale, pointScale } from '../scales';
 import {
-    ScaleNames,
     ColorScaleNone,
     DataNames,
     FieldNames,
+    ScaleNames,
     SignalNames
 } from '../constants';
-import { Insight, SpecColumns } from '../types';
 import { RangeScheme, Scale } from 'vega-typings';
+import { SpecContext } from '../types';
 
-export default function (columns: SpecColumns, insight: Insight) {
+export default function (context: SpecContext) {
+    const { columns, insight } = context;
     const scales: Scale[] = [
         (
             columns.x.quantitative ?
@@ -42,7 +43,7 @@ export default function (columns: SpecColumns, insight: Insight) {
                     "range": {
                         "scheme": insight.scheme || ColorScaleNone
                     },
-                    "reverse": {"signal": SignalNames.ColorReverse}
+                    "reverse": { "signal": SignalNames.ColorReverse }
                 }
             );
         }

@@ -1,12 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import {
-    Insight,
-    SpecCapabilities,
-    SpecColumns,
-    SpecViewOptions
-} from './types';
 import { Spec } from 'vega-typings';
+import { SpecCapabilities, SpecContext } from './types';
 
 /**
  * Specification result object.
@@ -18,5 +13,5 @@ export interface SpecResult {
 }
 
 export interface SpecCreator {
-    (insight: Insight, specColumns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult;
+    (context: SpecContext): SpecResult;
 }

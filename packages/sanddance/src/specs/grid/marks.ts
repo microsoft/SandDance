@@ -4,10 +4,11 @@ import { ColumnCount } from './constants';
 import { FieldNames, ScaleNames } from '../constants';
 import { fill } from '../fill';
 import { Mark } from 'vega-typings';
-import { SpecColumns, SpecViewOptions } from '../types';
+import { SpecContext } from '../types';
 import { testForCollapseSelection } from '../selection';
 
-export default function (data: string, columns: SpecColumns, specViewOptions: SpecViewOptions) {
+export default function (context: SpecContext, data: string) {
+    const { columns } = context;
     const marks: Mark[] = [
         {
             "type": "rect",
@@ -32,7 +33,7 @@ export default function (data: string, columns: SpecColumns, specViewOptions: Sp
                         "scale": ScaleNames.Y,
                         "band": true
                     },
-                    "fill": fill(columns.color, specViewOptions)
+                    "fill": fill(context)
                 }
             }
         }

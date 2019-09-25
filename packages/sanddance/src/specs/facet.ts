@@ -12,6 +12,7 @@ import {
     Column,
     Facets,
     Size,
+    SpecContext,
     SpecViewOptions
 } from './types';
 import { DataNames, FieldNames, SignalNames } from './constants';
@@ -25,7 +26,9 @@ const CellFiller = "CellFiller";
 
 export const facetTitleSeparator = ' - ';
 
-export function facetSignals(facets: Facets, specViewOptions: SpecViewOptions) {
+export function facetSignals(context: SpecContext) {
+    const { insight } = context;
+    const { facets } = insight;
     const signals: Signal[] = [
         {
             "name": SignalNames.FacetColumns,
@@ -73,14 +76,17 @@ export function checkForFacetErrors(facets: Facets, errors: string[]) {
     }
 }
 
-export function facetSize(facets: Facets, size: Size, specViewOptions: SpecViewOptions): Size {
+export function facetSize(context: SpecContext): Size {
+    const { insight, specViewOptions } = context;
+    const { facets, size } = insight;
     return {
         height: (size.height - (facets.rows + 1) * (specViewOptions.tickSize + specViewOptions.facetMargins.column)) / facets.columns,
         width: (size.width - (facets.columns + 1) * (specViewOptions.tickSize + specViewOptions.facetMargins.row)) / facets.rows,
     };
 }
 
-export function layout(specViewOptions: SpecViewOptions): LayoutParams {
+export function layout(context: SpecContext): LayoutParams {
+    const { specViewOptions } = context;
     const layout: LayoutParams = {
         "columns": {
             "signal": SignalNames.FacetColumns

@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { ScaleNames } from './constants';
-import { Column, Insight, SpecColumns } from './types';
+import { Column, SpecContext } from './types';
 import { Legend } from 'vega-typings';
+import { ScaleNames } from './constants';
 
 function legend(column: Column) {
     const legend: Legend = {
@@ -25,7 +25,8 @@ function legend(column: Column) {
     return legend;
 }
 
-export function getLegends(insight: Insight, columns: SpecColumns) {
+export function getLegends(context: SpecContext) {
+    const { columns, insight } = context;
     if (columns.color && !insight.hideLegend && !columns.color.isColorData) {
         return [legend(columns.color)];
     }

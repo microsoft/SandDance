@@ -4,10 +4,11 @@ import { allTruthy } from '../../array';
 import { Data, Transforms } from 'vega-typings';
 import { DataNames, FieldNames, SignalNames } from '../constants';
 import { facetGroupData, facetSourceData, facetTransforms } from '../facet';
-import { Insight, SpecColumns, SpecViewOptions } from '../types';
+import { Insight, SpecContext } from '../types';
 import { topLookup } from '../top';
 
-export default function (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions) {
+export default function (context: SpecContext) {
+    const { columns, insight, specViewOptions } = context;
     const categoricalColor = columns.color && !columns.color.quantitative;
     const TreeMapDataName = "SandDanceTreeMapData";
     const data = allTruthy<Data>(

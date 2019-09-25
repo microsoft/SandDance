@@ -3,10 +3,11 @@
 import { DataNames, ScaleNames, SignalNames } from '../constants';
 import { fill } from '../fill';
 import { Mark } from 'vega-typings';
-import { SpecColumns, SpecViewOptions } from '../types';
+import { SpecContext } from '../types';
 import { testForCollapseSelection } from '../selection';
 
-export default function (columns: SpecColumns, specViewOptions: SpecViewOptions) {
+export default function (context: SpecContext) {
+    const { columns } = context;
     const categoricalColor = columns.color && !columns.color.quantitative;
     const marks: Mark[] = [
         {
@@ -45,7 +46,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                             "signal": SignalNames.PointSize
                         }
                     ],
-                    "fill": fill(columns.color, specViewOptions)
+                    "fill": fill(context)
                 }
             }
         }

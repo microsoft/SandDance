@@ -4,13 +4,14 @@ import { allTruthy } from '../../array';
 import { BarChartScaleNames, BarChartSignalNames } from './constants';
 import { colorBinCountSignal, colorReverseSignal, textSignals } from '../signals';
 import { facetSignals } from '../facet';
-import { Insight, SpecColumns, SpecViewOptions } from '../types';
 import { ScaleNames, SignalNames } from '../constants';
 import { Signal } from 'vega-typings';
+import { SpecContext } from '../types';
 
-export default function (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions): Signal[] {
+export default function (context: SpecContext): Signal[] {
+    const { columns, specViewOptions } = context;
     const signals = allTruthy<Signal>(
-        textSignals(specViewOptions),
+        textSignals(context),
         [
             {
                 "name": SignalNames.XDomain,
@@ -39,10 +40,10 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                 "name": BarChartSignalNames.compartmentsPerLevelSignal,
                 "update": `ceil(sqrt(${BarChartSignalNames.aspectRatioSignal}*${BarChartSignalNames.levelExtentSignal}[1]))`
             },
-            colorBinCountSignal(specViewOptions),
-            colorReverseSignal(specViewOptions)
+            colorBinCountSignal(context),
+            colorReverseSignal(context)
         ],
-        columns.facet && facetSignals(insight.facets, specViewOptions)
+        columns.facet && facetSignals(context)
     );
     return signals;
 }

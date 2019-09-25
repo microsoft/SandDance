@@ -3,12 +3,7 @@
 import * as constants from './constants';
 import { barchartH } from './barchartH';
 import { barchartV } from './barchartV';
-import {
-    Chart,
-    Insight,
-    SpecColumns,
-    SpecViewOptions
-} from './types';
+import { Chart, SpecContext } from './types';
 import { density } from './density';
 import { grid } from './grid';
 import { scatterplot } from './scatterPlot';
@@ -29,10 +24,11 @@ export const creators: { [chart in Chart]: SpecCreator } = {
     treemap
 }
 
-export function create(insight: Insight, specColumns: SpecColumns, specViewOptions: SpecViewOptions): SpecResult {
+export function create(context: SpecContext): SpecResult {
+    const { insight } = context;
     const creator = creators[insight.chart];
     if (creator) {
-        const specResult = creator(insight, specColumns, specViewOptions);
+        const specResult = creator(context);
 
         //TODO: find why Vega is doing this. fixup for facets
         if (specResult.vegaSpec && insight.columns && insight.columns.facet && insight.facets.columns === 2 && insight.facets.rows === 1) {

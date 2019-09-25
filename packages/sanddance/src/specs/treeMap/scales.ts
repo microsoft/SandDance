@@ -8,10 +8,11 @@ import {
     ScaleNames,
     SignalNames
 } from '../constants';
-import { Insight, SpecColumns } from '../types';
 import { RangeScheme, Scale } from 'vega-typings';
+import { SpecContext } from '../types';
 
-export default function (columns: SpecColumns, insight: Insight) {
+export default function (context: SpecContext) {
+    const { columns, insight } = context;
     const scales: Scale[] = [];
     if (columns.color && !columns.color.isColorData) {
         if (columns.color.quantitative) {

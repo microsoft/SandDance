@@ -37,9 +37,9 @@ export interface Column {
      */
     quantitative?: boolean;
 
-     /**
-     * Optional flag to specify if the column data is CSS colors.
-     */   
+    /**
+    * Optional flag to specify if the column data is CSS colors.
+    */
     isColorData?: boolean;
 
     /**
@@ -82,6 +82,12 @@ export interface ColumnStats {
      * Optional flag to specify if the column data contains negative numbers.
      */
     hasNegative?: boolean;
+
+    /**
+     * Optional flag to specify if the column data contains color data.
+     */
+    hasColorData?: boolean;
+
 }
 
 export interface ColumnTypeMap {
@@ -145,6 +151,11 @@ export interface Insight {
      * Optional flag to hide legend.
      */
     hideLegend?: boolean;
+
+    /**
+     * Optional flag to use CSS colors directly from data.
+     */
+    directColor?: boolean;
 }
 
 export type InsightColumnRoles = 'uid' | 'x' | 'y' | 'z' | 'group' | 'size' | 'color' | 'facet' | 'sort';
@@ -390,4 +401,10 @@ export interface SpecViewOptions {
     facetMargins: FacetMargins;
 
     tickSize: number
+}
+
+export interface SpecContext {
+    columns: SpecColumns;
+    insight: Insight;
+    specViewOptions: SpecViewOptions;
 }

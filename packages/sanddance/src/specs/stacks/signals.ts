@@ -8,16 +8,17 @@ import {
     textSignals
 } from '../signals';
 import { facetSignals } from '../facet';
-import { Insight, SpecColumns, SpecViewOptions } from '../types';
 import { Signal } from 'vega-typings';
 import { SignalNames } from '../constants';
+import { SpecContext } from '../types';
 
-export default function (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions) {
+export default function (context: SpecContext) {
+    const { columns, insight, specViewOptions } = context;
     const signals = allTruthy<Signal>(
-        textSignals(specViewOptions),
+        textSignals(context),
         [
-            colorBinCountSignal(specViewOptions),
-            colorReverseSignal(specViewOptions),
+            colorBinCountSignal(context),
+            colorReverseSignal(context),
             {
                 "name": SignalNames.XGridSize,
                 "value": 3,
@@ -113,7 +114,7 @@ export default function (insight: Insight, columns: SpecColumns, specViewOptions
                 "update": `rowxtent[1]*actsize*${SignalNames.ZProportion}/${defaultZProportion}`
             }
         ],
-        insight.columns.facet && facetSignals(insight.facets, specViewOptions)
+        insight.columns.facet && facetSignals(context)
     );
     return signals;
 }

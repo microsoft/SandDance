@@ -3,10 +3,11 @@
 import { FieldNames, ScaleNames } from '../constants';
 import { fill } from '../fill';
 import { RectMark } from 'vega-typings';
-import { SpecColumns, SpecViewOptions } from '../types';
+import { SpecContext } from '../types';
 import { testForCollapseSelection } from '../selection';
 
-export default function (columns: SpecColumns, specViewOptions: SpecViewOptions) {
+export default function (context: SpecContext) {
+    const { columns } = context;
     const mark: RectMark = {
         "type": "rect",
         "from": {
@@ -44,7 +45,7 @@ export default function (columns: SpecColumns, specViewOptions: SpecViewOptions)
                 "height": {
                     "signal": "height/width*unitsize"
                 },
-                "fill": fill(columns.color, specViewOptions)
+                "fill": fill(context)
             }
         }
     };

@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { BarChartSignalNames } from './constants';
-import { Column, SpecColumns } from '../types';
+import { Column, SpecContext } from '../types';
 import { FieldNames, SignalNames } from '../constants';
 import { StackTransform, Transforms } from 'vega-typings';
 
-export default function (columns: SpecColumns, groupBy: Column) {
+export default function (context: SpecContext, groupBy: Column) {
+    const { columns } = context;
     const bucket_extent = "bucket_extent";
 
     const stackTransform: StackTransform = {

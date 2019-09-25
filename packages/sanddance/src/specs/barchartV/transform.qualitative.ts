@@ -2,10 +2,11 @@
 // Licensed under the MIT license.
 import { BarChartSignalNames } from './constants';
 import { FieldNames } from '../constants';
-import { SpecColumns } from '../types';
+import { SpecContext } from '../types';
 import { StackTransform, Transforms } from 'vega-typings';
 
-export default function (columns: SpecColumns) {
+export default function (context: SpecContext) {
+    const { columns } = context;
     const stackTransform: StackTransform = {
         "type": "stack",
         "groupby": [

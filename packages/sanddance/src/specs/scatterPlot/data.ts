@@ -1,18 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { allTruthy } from '../../array';
-import {
-    Column,
-    Insight,
-    SpecColumns,
-    SpecViewOptions
-} from '../types';
+import { Column, SpecContext } from '../types';
 import { Data, Transforms } from 'vega-typings';
 import { DataNames } from '../constants';
 import { facetGroupData, facetSourceData, facetTransforms } from '../facet';
 import { topLookup } from '../top';
 
-export default function (insight: Insight, columns: SpecColumns, specViewOptions: SpecViewOptions) {
+export default function (context: SpecContext) {
+    const { columns, insight, specViewOptions } = context;
     const categoricalColor = columns.color && !columns.color.quantitative;
     const ScatterDataName = "SandDanceScatterPlotData";
     const data = allTruthy<Data>(
