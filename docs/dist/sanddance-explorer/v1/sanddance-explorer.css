@@ -105,7 +105,7 @@
   background-color: #fff;
   border-bottom: 1px solid #ccc;
   display: grid;
-  grid-template-columns: 250px auto;
+  grid-template-columns: 300px auto;
   height: 36px; }
   .sanddance-explorer-topbar .logo {
     color: #0078d4;
@@ -176,7 +176,7 @@
   grid-template-rows: 0fr auto;
   overflow: hidden;
   transition: width 350ms cubic-bezier(0.4, 0, 0.2, 1);
-  width: 250px;
+  width: 300px;
   z-index: 1; }
   .sanddance-sidebar .vbuttons {
     background-color: rgba(0, 0, 0, 0.1);
@@ -200,7 +200,7 @@
     max-height: 60px;
     min-height: 32px; }
   .sanddance-sidebar .scrollable-container {
-    width: 200px; }
+    width: 250px; }
   .sanddance-sidebar .sidetab {
     grid-area: bar;
     padding: 12px; }
@@ -227,6 +227,12 @@
   .dark-theme .sanddance-sidebar.calculator .calculating {
     background: rgba(39, 39, 39, 0.5); }
 
+.sanddance-chart-type .ms-ChoiceFieldGroup-flexContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  grid-auto-flow: column;
+  grid-template-rows: repeat(4, auto); }
+
 .sanddance-datascope {
   grid-area: stats;
   background-color: rgba(0, 0, 0, 0.05);
@@ -234,7 +240,7 @@
   min-height: 5em; }
   .sanddance-datascope.extended > div {
     margin: 12px;
-    width: 226px; }
+    width: 276px; }
   .sanddance-datascope label {
     display: block;
     font-size: 10px;
@@ -434,7 +440,7 @@
   .sanddance-main.hide-legend .sanddance-layout-unpinned, .sanddance-main.hide-legend .sanddance-layout-pinned {
     right: 0; }
   .sanddance-main .sanddance-layout-pinned {
-    left: 250px; }
+    left: 300px; }
   .sanddance-main .sanddance-ReactViewer {
     position: absolute;
     top: 0;
@@ -447,7 +453,7 @@
     background: linear-gradient(to right, transparent 49%, rgba(255, 0, 255, 0.2), transparent 51%);
     background-color: rgba(0, 255, 255, 0.1); }
   .sanddance-main.pinned {
-    grid-template-columns: 250px auto;
+    grid-template-columns: 300px auto;
     grid-template-areas: "side main"; }
     .sanddance-main.pinned .sanddance-view {
       grid-area: main; }

@@ -136,8 +136,8 @@ const FieldNames = {
   PowerBISelectionId: "__SandDance__PowerBISelectionId",
   BarChartBin0: "__SandDance__BarChartBin0",
   BarChartBin1: "__SandDance__BarChartBin1",
-  BarChartStackY0: "__SandDance__BarChartStackY0",
-  BarChartStackY1: "__SandDance__BarChartStackY1",
+  BarChartStack0: "__SandDance__BarChartStack0",
+  BarChartStack1: "__SandDance__BarChartStack1",
   DensityCount: "__SandDance__DensityCount",
   DensityRow: "__SandDance__DensityRow",
   DensityXBin0: "__SandDance__DensityXBin0",
@@ -168,7 +168,8 @@ const DataNames = {
   TopLookup: "TopData",
   Legend: "LegendData",
   FacetGroupCell: "FacetGroupCellData",
-  FacetCellTitles: "FacetCellTitlesData"
+  FacetCellTitles: "FacetCellTitlesData",
+  QuantitativeData: "QuantitativeData"
 };
 exports.DataNames = DataNames;
 const ScaleNames = {
@@ -193,6 +194,7 @@ const SignalNames = {
   TextSize: "Text_SizeSignal",
   TextTitleSize: "Text_TitleSizeSignal",
   TreeMapMethod: "Chart_TreeMapMethodSignal",
+  XDomain: "RoleX_DomainSignal",
   XBins: "RoleX_BinsSignal",
   XGridSize: "Chart_XGridSize",
   YBins: "RoleY_BinsSignal",
@@ -5690,6 +5692,7 @@ exports.colorIsEqual = colorIsEqual;
 exports.colorFromString = colorFromString;
 exports.colorToString = colorToString;
 exports.desaturate = desaturate;
+exports.isColor = isColor;
 
 var _d3Color = require("d3-color");
 
@@ -5720,8 +5723,14 @@ function colorIsEqual(a, b) {
 
 
 function colorFromString(cssColorSpecifier) {
-  const c = (0, _d3Color.color)(cssColorSpecifier).rgb();
-  return rgbToDeckglColor(c);
+  if (cssColorSpecifier) {
+    const dc = (0, _d3Color.color)(cssColorSpecifier);
+
+    if (dc) {
+      const c = dc.rgb();
+      return rgbToDeckglColor(c);
+    }
+  }
 }
 /**
  * Convert a Deck.gl color to a CSS rgba() string.
@@ -5745,6 +5754,10 @@ function desaturate(color, value) {
   hslColor.s = value;
   const c = hslColor.rgb();
   return rgbToDeckglColor(c);
+}
+
+function isColor(cssColorSpecifier) {
+  return !!(0, _d3Color.color)(cssColorSpecifier);
 }
 },{"d3-color":"BlmO"}],"nnlJ":[function(require,module,exports) {
 "use strict";
@@ -7967,6 +7980,12 @@ Object.defineProperty(exports, "colorToString", {
     return _color.colorToString;
   }
 });
+Object.defineProperty(exports, "isColor", {
+  enumerable: true,
+  get: function () {
+    return _color.isColor;
+  }
+});
 Object.defineProperty(exports, "getCubeLayer", {
   enumerable: true,
   get: function () {
@@ -8474,7 +8493,7 @@ const markStager = (options, stage, scene, x, y, groupType) => {
       ordinal,
       size: [item.width, item.height, depth],
       position: [x + (item.x || 0) - options.offsetX, ty * (y + (item.y || 0) - options.offsetY) - item.height, z],
-      color: item.fill ? (0, _color.colorFromString)(item.fill) : [128, 128, 128, 128]
+      color: (0, _color.colorFromString)(item.fill) || options.defaultCubeColor || [128, 128, 128, 128]
     };
     stage.cubeData.push(cube);
     i++;
@@ -8915,7 +8934,8 @@ class Presenter {
       maxOrdinal: -1,
       ordinalsSpecified: false,
       currAxis: null,
-      currFacetRect: null
+      currFacetRect: null,
+      defaultCubeColor: this.style.defaultCubeColor
     }; //determine if this is a vega scene
 
     if (scene.marktype) {
@@ -9415,11 +9435,25 @@ function inferAll(columns, data) {
         column.quantitative = isQuantitative(column);
       }
 
+      if (column.type === 'string') {
+        checkIsColorData(data, column);
+      }
+
       if (!column.stats) {
         column.stats = getStats(data, column);
       }
     }
   });
+}
+
+function checkIsColorData(data, column) {
+  for (let i = 0; i < data.length; i++) {
+    if (!VegaDeckGl.util.isColor(data[i][column.name])) {
+      return;
+    }
+  }
+
+  column.isColorData = true;
 }
 
 function getStats(data, column) {
@@ -9449,6 +9483,10 @@ function getStats(data, column) {
 
     if (!isNaN(num)) {
       sum += num;
+    }
+
+    if (column.type === 'string' && !stats.hasColorData && VegaDeckGl.util.isColor(value)) {
+      stats.hasColorData = true;
     }
   }
 
@@ -10011,7 +10049,13 @@ const CellFiller = "CellFiller";
 const facetTitleSeparator = ' - ';
 exports.facetTitleSeparator = facetTitleSeparator;
 
-function facetSignals(facets, specViewOptions) {
+function facetSignals(context) {
+  const {
+    insight
+  } = context;
+  const {
+    facets
+  } = insight;
   const signals = [{
     "name": _constants.SignalNames.FacetColumns,
     "value": facets.columns
@@ -10044,14 +10088,25 @@ function checkForFacetErrors(facets, errors) {
   }
 }
 
-function facetSize(facets, size, specViewOptions) {
+function facetSize(context) {
+  const {
+    insight,
+    specViewOptions
+  } = context;
+  const {
+    facets,
+    size
+  } = insight;
   return {
     height: (size.height - (facets.rows + 1) * (specViewOptions.tickSize + specViewOptions.facetMargins.column)) / facets.columns,
     width: (size.width - (facets.columns + 1) * (specViewOptions.tickSize + specViewOptions.facetMargins.row)) / facets.rows
   };
 }
 
-function layout(specViewOptions) {
+function layout(context) {
+  const {
+    specViewOptions
+  } = context;
   const layout = {
     "columns": {
       "signal": _constants.SignalNames.FacetColumns
@@ -10618,7 +10673,30 @@ function minMaxPoints(lines) {
     return minMax;
   });
 }
-},{"./vega-deck.gl":"Uns8","./expression":"JTcr"}],"m4Pj":[function(require,module,exports) {
+},{"./vega-deck.gl":"Uns8","./expression":"JTcr"}],"v7Oc":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.BarChartSignalNames = exports.BarChartScaleNames = void 0;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+const BarChartScaleNames = {
+  bucketScale: "bucketScale",
+  levelScale: "levelScale",
+  compartmentScale: "compartmentScale"
+};
+exports.BarChartScaleNames = BarChartScaleNames;
+const BarChartSignalNames = {
+  aspectRatioSignal: "aspectRatioSignal",
+  compartmentsPerLevelSignal: "compartmentsPerLevelSignal",
+  compartmentHeightSignal: "compartmentHeightSignal",
+  levelExtentSignal: "levelExtentSignal",
+  quantitativeBinSignal: "quantitativeBinSignal"
+};
+exports.BarChartSignalNames = BarChartSignalNames;
+},{}],"m4Pj":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10691,7 +10769,7 @@ function partialAxes(specViewOptions, xColumnQuantitative, yColumnQuantitative) 
     bottom
   };
 }
-},{"./constants":"b0rV","../vega-deck.gl":"Uns8"}],"vXYY":[function(require,module,exports) {
+},{"./constants":"b0rV","../vega-deck.gl":"Uns8"}],"clq/":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10699,31 +10777,37 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
+var _constants = require("./constants");
+
 var _axes = require("../axes");
 
-var _constants = require("../constants");
+var _constants2 = require("../constants");
 
-function _default(specViewOptions, columns) {
-  const pa = (0, _axes.partialAxes)(specViewOptions, columns.x.quantitative, true);
+function _default(context) {
+  const {
+    specColumns,
+    specViewOptions
+  } = context;
+  const pa = (0, _axes.partialAxes)(specViewOptions, true, specColumns.y.quantitative);
   const axes = [Object.assign({
-    "scale": _constants.ScaleNames.X,
-    "title": columns.x.name
-  }, pa.bottom), Object.assign({
-    "scale": "yscalelabel",
+    "scale": _constants2.ScaleNames.Y,
+    "title": specColumns.y.name
+  }, pa.left), Object.assign({
+    "scale": _constants.BarChartScaleNames.levelScale,
     "title": specViewOptions.language.count,
     "encode": {
       "labels": {
         "update": {
           "text": {
-            "signal": "shapesPerRow * datum.value"
+            "signal": `${_constants.BarChartSignalNames.compartmentsPerLevelSignal} * datum.value`
           }
         }
       }
     }
-  }, pa.left)];
+  }, pa.bottom)];
   return axes;
 }
-},{"../axes":"m4Pj","../constants":"b0rV"}],"jWo5":[function(require,module,exports) {
+},{"./constants":"v7Oc","../axes":"m4Pj","../constants":"b0rV"}],"uuEv":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10731,33 +10815,38 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
-var _constants = require("../constants");
+var _constants = require("./constants");
+
+var _constants2 = require("../constants");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(columns) {
+function _default(context) {
+  const {
+    specColumns
+  } = context;
   const stackTransform = {
     "type": "stack",
     "groupby": [{
-      "field": columns.x.name
+      "field": specColumns.y.name
     }],
-    "as": [_constants.FieldNames.BarChartStackY0, _constants.FieldNames.BarChartStackY1]
+    "as": [_constants2.FieldNames.BarChartStack0, _constants2.FieldNames.BarChartStack1]
   };
 
-  if (columns.sort) {
+  if (specColumns.sort) {
     stackTransform.sort = {
-      "field": columns.sort.name
+      "field": specColumns.sort.name
     };
   }
 
   const transforms = [stackTransform, {
     "type": "extent",
-    "signal": "xtent",
-    "field": _constants.FieldNames.BarChartStackY1
+    "signal": _constants.BarChartSignalNames.levelExtentSignal,
+    "field": _constants2.FieldNames.BarChartStack1
   }];
   return transforms;
 }
-},{"../constants":"b0rV"}],"sqk8":[function(require,module,exports) {
+},{"./constants":"v7Oc","../constants":"b0rV"}],"Re96":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10765,48 +10854,56 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
-var _constants = require("../constants");
+var _constants = require("./constants");
 
-function _default(columns, groupBy) {
+var _constants2 = require("../constants");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function _default(context, groupBy) {
+  const {
+    specColumns
+  } = context;
+  const bucket_extent = "bucket_extent";
   const stackTransform = {
     "type": "stack",
-    "groupby": [_constants.FieldNames.BarChartBin0],
-    "as": [_constants.FieldNames.BarChartStackY0, _constants.FieldNames.BarChartStackY1]
+    "groupby": [_constants2.FieldNames.BarChartBin0],
+    "as": [_constants2.FieldNames.BarChartStack0, _constants2.FieldNames.BarChartStack1]
   };
 
   if (groupBy) {
     stackTransform.groupby.push(groupBy.name);
   }
 
-  if (columns.sort) {
+  if (specColumns.sort) {
     stackTransform.sort = {
-      "field": columns.sort.name
+      "field": specColumns.sort.name
     };
   }
 
   const transforms = [{
     "type": "extent",
-    "field": columns.x.name,
-    "signal": "var_extent"
+    "field": specColumns.y.name,
+    "signal": bucket_extent
   }, {
     "type": "bin",
-    "field": columns.x.name,
+    "field": specColumns.y.name,
     "extent": {
-      "signal": "var_extent"
+      "signal": bucket_extent
     },
     "maxbins": {
-      "signal": _constants.SignalNames.XBins
+      "signal": _constants2.SignalNames.YBins
     },
-    "as": [_constants.FieldNames.BarChartBin0, _constants.FieldNames.BarChartBin1],
-    "signal": "binSignal"
+    "as": [_constants2.FieldNames.BarChartBin0, _constants2.FieldNames.BarChartBin1],
+    "signal": _constants.BarChartSignalNames.quantitativeBinSignal
   }, stackTransform, {
     "type": "extent",
-    "signal": "xtent",
-    "field": _constants.FieldNames.BarChartStackY1
+    "signal": _constants.BarChartSignalNames.levelExtentSignal,
+    "field": _constants2.FieldNames.BarChartStack1
   }];
   return transforms;
 }
-},{"../constants":"b0rV"}],"b//p":[function(require,module,exports) {
+},{"./constants":"v7Oc","../constants":"b0rV"}],"b//p":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10867,14 +10964,14 @@ function topLookup(column, count) {
   }];
   return data;
 }
-},{"./constants":"b0rV"}],"Ou2c":[function(require,module,exports) {
+},{"./constants":"b0rV"}],"N8o5":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = _default;
-exports.nested = nested;
+exports.bucketed = bucketed;
 exports.stacked = stacked;
 
 var _transform = _interopRequireDefault(require("./transform.qualitative"));
@@ -10883,7 +10980,9 @@ var _transform2 = _interopRequireDefault(require("./transform.quantitative"));
 
 var _array = require("../../array");
 
-var _constants = require("../constants");
+var _constants = require("./constants");
+
+var _constants2 = require("../constants");
 
 var _facet = require("../facet");
 
@@ -10893,32 +10992,40 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(namespace, insight, columns, specViewOptions) {
-  const categoricalColor = columns.color && !columns.color.quantitative;
-  const nestedDataName = columns.facet && columns.facet.quantitative ? _constants.DataNames.Pre : _constants.DataNames.Main;
-  const data = (0, _array.allTruthy)((0, _facet.facetSourceData)(columns.facet, insight.facets, _constants.DataNames.Main), categoricalColor && (0, _top.topLookup)(columns.color, specViewOptions.maxLegends), [nested(namespace, categoricalColor ? _constants.DataNames.Legend : nestedDataName, columns), stacked(namespace, namespace.nested, columns.facet && (0, _facet.facetTransforms)(columns.facet, insight.facets))], columns.x.quantitative && [{
-    "name": "xaxisdata",
+function _default(context, namespace) {
+  const {
+    specColumns,
+    insight,
+    specViewOptions
+  } = context;
+  const categoricalColor = specColumns.color && !specColumns.color.quantitative;
+  const nestedDataName = specColumns.facet && specColumns.facet.quantitative ? _constants2.DataNames.Pre : _constants2.DataNames.Main;
+  const data = (0, _array.allTruthy)((0, _facet.facetSourceData)(specColumns.facet, insight.facets, _constants2.DataNames.Main), categoricalColor && (0, _top.topLookup)(specColumns.color, specViewOptions.maxLegends), [bucketed(context, namespace, categoricalColor ? _constants2.DataNames.Legend : nestedDataName), stacked(namespace, namespace.bucket, specColumns.facet && (0, _facet.facetTransforms)(specColumns.facet, insight.facets))], specColumns.y.quantitative && [{
+    "name": _constants2.DataNames.QuantitativeData,
     "transform": [{
       "type": "sequence",
       "start": {
-        "signal": "binSignal.start"
+        "signal": `${_constants.BarChartSignalNames.quantitativeBinSignal}.start`
       },
       "stop": {
-        "signal": "binSignal.stop"
+        "signal": `${_constants.BarChartSignalNames.quantitativeBinSignal}.stop`
       },
       "step": {
-        "signal": "binSignal.step"
+        "signal": `${_constants.BarChartSignalNames.quantitativeBinSignal}.step`
       }
     }]
-  }], columns.facet && (0, _facet.facetGroupData)(namespace.stacked));
+  }], specColumns.facet && (0, _facet.facetGroupData)(namespace.stacked));
   return data;
 }
 
-function nested(namespace, source, columns) {
+function bucketed(context, namespace, source) {
+  const {
+    specColumns: columns
+  } = context;
   const data = {
-    "name": namespace.nested,
+    "name": namespace.bucket,
     source,
-    "transform": columns.x.quantitative ? (0, _transform2.default)(columns, columns.facet) : (0, _transform.default)(columns)
+    "transform": columns.y.quantitative ? (0, _transform2.default)(context, columns.facet) : (0, _transform.default)(context)
   };
   return data;
 }
@@ -10935,16 +11042,16 @@ function stacked(namespace, source, transforms) {
 function xy(namespace) {
   const transforms = [{
     "type": "formula",
-    "expr": `floor(datum.${_constants.FieldNames.BarChartStackY0} / shapesPerRow)`,
-    "as": namespace.__row
+    "expr": `floor(datum.${_constants2.FieldNames.BarChartStack0} / ${_constants.BarChartSignalNames.compartmentsPerLevelSignal})`,
+    "as": namespace.__level
   }, {
     "type": "formula",
-    "expr": `datum.${_constants.FieldNames.BarChartStackY0} % shapesPerRow`,
-    "as": namespace.__column
+    "expr": `datum.${_constants2.FieldNames.BarChartStack0} % ${_constants.BarChartSignalNames.compartmentsPerLevelSignal}`,
+    "as": namespace.__compartment
   }];
   return transforms;
 }
-},{"./transform.qualitative":"jWo5","./transform.quantitative":"sqk8","../../array":"b//p","../constants":"b0rV","../facet":"7Ifg","../top":"83Xo"}],"S7Dm":[function(require,module,exports) {
+},{"./transform.qualitative":"uuEv","./transform.quantitative":"Re96","../../array":"b//p","./constants":"v7Oc","../constants":"b0rV","../facet":"7Ifg","../top":"83Xo"}],"S7Dm":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10956,10 +11063,16 @@ var _constants = require("./constants");
 
 var _vegaDeck = require("../vega-deck.gl");
 
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function fill(colorColumn, specViewOptions) {
-  return colorColumn ? {
+function fill(context) {
+  const {
+    specColumns,
+    insight,
+    specViewOptions
+  } = context;
+  const colorColumn = specColumns.color;
+  return colorColumn ? colorColumn.isColorData || insight.directColor ? {
+    "field": colorColumn.name
+  } : {
     "scale": _constants.ScaleNames.Color,
     "field": colorColumn.quantitative ? colorColumn.name : _constants.FieldNames.Top
   } : {
@@ -10981,7 +11094,7 @@ var _constants = require("./constants");
 function testForCollapseSelection() {
   return `datum.${_constants.FieldNames.Collapsed}`;
 }
-},{"./constants":"b0rV"}],"3Y6I":[function(require,module,exports) {
+},{"./constants":"b0rV"}],"BuYz":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10991,7 +11104,9 @@ exports.default = _default;
 
 var VegaDeckGl = _interopRequireWildcard(require("../../vega-deck.gl"));
 
-var _constants = require("../constants");
+var _constants = require("./constants");
+
+var _constants2 = require("../constants");
 
 var _fill = require("../fill");
 
@@ -11001,7 +11116,10 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(namespace, columns, specViewOptions) {
+function _default(context, namespace) {
+  const {
+    specColumns
+  } = context;
   const mark = {
     "type": "rect",
     "from": {
@@ -11009,49 +11127,49 @@ function _default(namespace, columns, specViewOptions) {
     },
     "encode": {
       "update": {
-        "x": {
-          "scale": _constants.ScaleNames.X,
-          "field": columns.x.quantitative ? _constants.FieldNames.BarChartBin0 : columns.x.name,
+        "y": {
+          "scale": _constants2.ScaleNames.Y,
+          "field": specColumns.y.quantitative ? _constants2.FieldNames.BarChartBin0 : specColumns.y.name,
           "offset": {
-            "scale": "xnewinternalscale",
-            "field": namespace.__column
+            "scale": _constants.BarChartScaleNames.compartmentScale,
+            "field": namespace.__compartment
           }
         },
-        "width": [{
-          "test": `bandwidth('xnewinternalscale') < 1`,
+        "height": [{
+          "test": `bandwidth('${_constants.BarChartScaleNames.compartmentScale}') < 1`,
           "value": VegaDeckGl.defaults.minPixelSize
         }, {
-          "scale": "xnewinternalscale",
+          "scale": _constants.BarChartScaleNames.compartmentScale,
           "band": 1
         }],
-        "y": [{
-          "scale": _constants.ScaleNames.Y,
+        "x": [{
+          "scale": _constants2.ScaleNames.X,
           "test": (0, _selection.testForCollapseSelection)(),
-          "signal": `${_constants.SignalNames.YDomain}[0]`
+          "signal": `${_constants2.SignalNames.XDomain}[0]`
         }, {
-          "scale": _constants.ScaleNames.Y,
-          "field": namespace.__row,
+          "scale": _constants2.ScaleNames.X,
+          "field": namespace.__level,
           "band": 1,
           "offset": {
-            "signal": `-bandwidth('${_constants.ScaleNames.Y}')-1`
+            "signal": `-bandwidth('${_constants2.ScaleNames.X}')-1`
           }
         }],
-        "height": [{
+        "width": [{
           "test": (0, _selection.testForCollapseSelection)(),
           "value": 0
         }, {
-          "test": `bandwidth('${_constants.ScaleNames.Y}') < 1`,
+          "test": `bandwidth('${_constants2.ScaleNames.X}') < 1`,
           "value": VegaDeckGl.defaults.minPixelSize
         }, {
-          "scale": _constants.ScaleNames.Y,
+          "scale": _constants2.ScaleNames.X,
           "band": 1
         }],
-        "fill": (0, _fill.fill)(columns.color, specViewOptions)
+        "fill": (0, _fill.fill)(context)
       }
     }
   };
 
-  if (columns.z) {
+  if (specColumns.z) {
     const update = mark.encode.update;
     update.z = {
       "value": 0
@@ -11060,14 +11178,14 @@ function _default(namespace, columns, specViewOptions) {
       "test": (0, _selection.testForCollapseSelection)(),
       "value": 0
     }, {
-      "scale": _constants.ScaleNames.Z,
-      "field": columns.z.name
+      "scale": _constants2.ScaleNames.Z,
+      "field": specColumns.z.name
     }];
   }
 
   return [mark];
 }
-},{"../../vega-deck.gl":"Uns8","../constants":"b0rV","../fill":"S7Dm","../selection":"Dq8R"}],"X355":[function(require,module,exports) {
+},{"../../vega-deck.gl":"Uns8","./constants":"v7Oc","../constants":"b0rV","../fill":"S7Dm","../selection":"Dq8R"}],"Po0S":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11075,36 +11193,42 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
-var _constants = require("../constants");
+var _constants = require("./constants");
+
+var _constants2 = require("../constants");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(namespace, columns) {
+function _default(context, namespace) {
+  const {
+    specColumns
+  } = context;
   const scales = [{
-    "name": "xscaleavailable",
+    "name": _constants.BarChartScaleNames.bucketScale,
     "type": "band",
-    "range": "width",
+    "range": "height",
     "domain": {
-      "data": namespace.nested,
-      "field": columns.x.name,
+      "data": namespace.bucket,
+      "field": specColumns.y.name,
       "sort": true
     }
   }, {
-    "name": _constants.ScaleNames.X,
+    "name": _constants2.ScaleNames.Y,
     "type": "band",
     "range": [0, {
-      "signal": "width"
+      "signal": "height"
     }],
     "padding": 0.01,
     "domain": {
       "data": namespace.stacked,
-      "field": columns.x.name,
+      "field": specColumns.y.name,
       "sort": true
-    }
+    },
+    "reverse": true
   }];
   return scales;
 }
-},{"../constants":"b0rV"}],"gCjg":[function(require,module,exports) {
+},{"./constants":"v7Oc","../constants":"b0rV"}],"w9lC":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11116,28 +11240,20 @@ var _constants = require("../constants");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(namespace, columns) {
+function _default() {
   const scales = [{
-    "name": "xscaleavailable",
-    "type": "band",
-    "range": "width",
-    "domain": {
-      "data": namespace.nested,
-      "field": _constants.FieldNames.BarChartBin0,
-      "sort": true
-    }
-  }, {
-    "name": _constants.ScaleNames.X,
+    "name": _constants.ScaleNames.Y,
     "type": "band",
     "range": [0, {
-      "signal": "width"
+      "signal": "height"
     }],
     "padding": 0.01,
     "domain": {
-      "data": "xaxisdata",
+      "data": _constants.DataNames.QuantitativeData,
       "field": "data",
       "sort": true
-    }
+    },
+    "reverse": true
   }];
   return scales;
 }
@@ -11242,7 +11358,7 @@ function binnableColorScale(colorBin, data, field, scheme) {
       return quantizeScale;
   }
 }
-},{"./constants":"b0rV"}],"UQ/Q":[function(require,module,exports) {
+},{"./constants":"b0rV"}],"6oli":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11254,47 +11370,53 @@ var _scales = _interopRequireDefault(require("./scales.qualitative"));
 
 var _scales2 = _interopRequireDefault(require("./scales.quantitative"));
 
-var _constants = require("../constants");
+var _constants = require("./constants");
 
 var _scales3 = require("../scales");
+
+var _constants2 = require("../constants");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(namespace, insight, columns) {
+function _default(context, namespace) {
+  const {
+    specColumns,
+    insight
+  } = context;
   const scales = [{
-    "name": "xnewinternalscale",
+    "name": _constants.BarChartScaleNames.compartmentScale,
     "type": "band",
     "range": [0, {
-      "signal": "xdesbandwidth"
+      "signal": _constants.BarChartSignalNames.compartmentHeightSignal
     }],
     "padding": 0.1,
     "domain": {
-      "signal": "sequence(0, shapesPerRow+1, 1)"
+      "signal": `sequence(0, ${_constants.BarChartSignalNames.compartmentsPerLevelSignal}+1, 1)`
     }
   }, {
-    "name": "yscalelabel",
+    "name": _constants.BarChartScaleNames.levelScale,
     "range": [{
-      "signal": "height"
-    }, {
       "signal": "0"
+    }, {
+      "signal": "width"
     }],
     "round": true,
     "domain": {
       "data": namespace.stacked,
-      "field": namespace.__row,
+      "field": namespace.__level,
       "sort": true
     },
     "zero": true,
     "nice": true
   }, {
-    "name": _constants.ScaleNames.Y,
+    "name": _constants2.ScaleNames.X,
     "type": "band",
     "range": [{
-      "signal": "height"
-    }, {
       "signal": "0"
+    }, {
+      "signal": "width"
     }],
     "padding": 0.1,
     "round": false,
@@ -11302,43 +11424,43 @@ function _default(namespace, insight, columns) {
     "align": 1,
     "domain": {
       "data": namespace.stacked,
-      "field": namespace.__row,
+      "field": namespace.__level,
       "sort": true
     }
   }];
 
-  if (columns.color) {
-    if (columns.color.quantitative) {
-      scales.push((0, _scales3.binnableColorScale)(insight.colorBin, namespace.nested, columns.color.name, insight.scheme));
+  if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
+    if (specColumns.color.quantitative) {
+      scales.push((0, _scales3.binnableColorScale)(insight.colorBin, namespace.bucket, specColumns.color.name, insight.scheme));
     } else {
       scales.push({
-        "name": _constants.ScaleNames.Color,
+        "name": _constants2.ScaleNames.Color,
         "type": "ordinal",
         "domain": {
-          "data": namespace.nested,
-          "field": _constants.FieldNames.Top,
+          "data": namespace.bucket,
+          "field": _constants2.FieldNames.Top,
           "sort": true
         },
         "range": {
-          "scheme": insight.scheme || _constants.ColorScaleNone
+          "scheme": insight.scheme || _constants2.ColorScaleNone
         },
         "reverse": {
-          "signal": _constants.SignalNames.ColorReverse
+          "signal": _constants2.SignalNames.ColorReverse
         }
       });
     }
   }
 
-  if (columns.z) {
+  if (specColumns.z) {
     const zRange = [0, {
-      "signal": _constants.SignalNames.ZHeight
+      "signal": _constants2.SignalNames.ZHeight
     }];
-    scales.push(columns.z.quantitative ? (0, _scales3.linearScale)(_constants.ScaleNames.Z, _constants.DataNames.Main, columns.z.name, zRange, false, true) : (0, _scales3.pointScale)(_constants.ScaleNames.Z, _constants.DataNames.Main, zRange, columns.z.name));
+    scales.push(specColumns.z.quantitative ? (0, _scales3.linearScale)(_constants2.ScaleNames.Z, _constants2.DataNames.Main, specColumns.z.name, zRange, false, true) : (0, _scales3.pointScale)(_constants2.ScaleNames.Z, _constants2.DataNames.Main, zRange, specColumns.z.name));
   }
 
-  return scales.concat(columns.x.quantitative ? (0, _scales2.default)(namespace, columns) : (0, _scales.default)(namespace, columns));
+  return scales.concat(specColumns.y.quantitative ? (0, _scales2.default)() : (0, _scales.default)(context, namespace));
 }
-},{"./scales.qualitative":"X355","./scales.quantitative":"gCjg","../constants":"b0rV","../scales":"v/y+"}],"N3c7":[function(require,module,exports) {
+},{"./scales.qualitative":"Po0S","./scales.quantitative":"w9lC","./constants":"v7Oc","../scales":"v/y+","../constants":"b0rV"}],"N3c7":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11354,7 +11476,10 @@ var _constants = require("./constants");
 const defaultZProportion = 0.6;
 exports.defaultZProportion = defaultZProportion;
 
-function textSignals(specViewOptions) {
+function textSignals(context) {
+  const {
+    specViewOptions
+  } = context;
   const signals = [{
     "name": _constants.SignalNames.ZProportion,
     "value": defaultZProportion,
@@ -11412,7 +11537,10 @@ function textSignals(specViewOptions) {
   return signals;
 }
 
-function colorBinCountSignal(specViewOptions) {
+function colorBinCountSignal(context) {
+  const {
+    specViewOptions
+  } = context;
   const signal = {
     "name": _constants.SignalNames.ColorBinCount,
     "value": 7,
@@ -11427,7 +11555,10 @@ function colorBinCountSignal(specViewOptions) {
   return signal;
 }
 
-function colorReverseSignal(specViewOptions) {
+function colorReverseSignal(context) {
+  const {
+    specViewOptions
+  } = context;
   const signal = {
     "name": _constants.SignalNames.ColorReverse,
     "value": false,
@@ -11438,7 +11569,7 @@ function colorReverseSignal(specViewOptions) {
   };
   return signal;
 }
-},{"./constants":"b0rV"}],"I0up":[function(require,module,exports) {
+},{"./constants":"b0rV"}],"6Mej":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11448,52 +11579,56 @@ exports.default = _default;
 
 var _array = require("../../array");
 
+var _constants = require("./constants");
+
 var _signals = require("../signals");
 
 var _facet = require("../facet");
 
-var _constants = require("../constants");
+var _constants2 = require("../constants");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(insight, columns, specViewOptions) {
-  const signals = (0, _array.allTruthy)((0, _signals.textSignals)(specViewOptions), [{
-    "name": _constants.SignalNames.YDomain,
-    "update": `domain('${_constants.ScaleNames.Y}')`
-  }, columns.x.quantitative && {
-    "name": _constants.SignalNames.XBins,
+function _default(context) {
+  const {
+    specColumns,
+    specViewOptions
+  } = context;
+  const signals = (0, _array.allTruthy)((0, _signals.textSignals)(context), [{
+    "name": _constants2.SignalNames.XDomain,
+    "update": `domain('${_constants2.ScaleNames.X}')`
+  }, specColumns.y.quantitative && {
+    "name": _constants2.SignalNames.YBins,
     "value": 7,
     "bind": {
-      "name": specViewOptions.language.XBinSize,
+      "name": specViewOptions.language.YBinSize,
       "input": "range",
       "min": 1,
       "max": 20,
       "step": 1
     }
   }, {
-    "name": "xdesbandwidth",
-    "update": `bandwidth('${columns.x.quantitative ? _constants.ScaleNames.X : 'xscaleavailable'}')`
+    "name": _constants.BarChartSignalNames.compartmentHeightSignal,
+    "update": `bandwidth('${specColumns.y.quantitative ? _constants2.ScaleNames.Y : _constants.BarChartScaleNames.bucketScale}')`
   }, {
-    "name": "binAspect",
-    "update": "xdesbandwidth/height"
+    "name": _constants.BarChartSignalNames.aspectRatioSignal,
+    "update": `${_constants.BarChartSignalNames.compartmentHeightSignal}/width`
   }, {
-    "name": "shapesPerRow",
-    "update": "ceil(sqrt(binAspect*xtent[1]))"
-  }, (0, _signals.colorBinCountSignal)(specViewOptions), (0, _signals.colorReverseSignal)(specViewOptions)], columns.facet && (0, _facet.facetSignals)(insight.facets, specViewOptions));
+    "name": _constants.BarChartSignalNames.compartmentsPerLevelSignal,
+    "update": `ceil(sqrt(${_constants.BarChartSignalNames.aspectRatioSignal}*${_constants.BarChartSignalNames.levelExtentSignal}[1]))`
+  }, (0, _signals.colorBinCountSignal)(context), (0, _signals.colorReverseSignal)(context)], specColumns.facet && (0, _facet.facetSignals)(context));
   return signals;
 }
-},{"../../array":"b//p","../signals":"N3c7","../facet":"7Ifg","../constants":"b0rV"}],"6oTL":[function(require,module,exports) {
+},{"../../array":"b//p","./constants":"v7Oc","../signals":"N3c7","../facet":"7Ifg","../constants":"b0rV"}],"6oTL":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.legend = legend;
+exports.getLegends = getLegends;
 
 var _constants = require("./constants");
 
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
 function legend(column) {
   const legend = {
     "orient": "none",
@@ -11516,7 +11651,18 @@ function legend(column) {
 
   return legend;
 }
-},{"./constants":"b0rV"}],"bs4R":[function(require,module,exports) {
+
+function getLegends(context) {
+  const {
+    specColumns,
+    insight
+  } = context;
+
+  if (specColumns.color && !insight.hideLegend && !insight.directColor && !specColumns.color.isColorData) {
+    return [legend(specColumns.color)];
+  }
+}
+},{"./constants":"b0rV"}],"0IZ5":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11528,7 +11674,7 @@ exports.NameSpace = void 0;
 // Licensed under the MIT license.
 class NameSpace {
   constructor(nameSpace = '') {
-    ['nested', 'stacked', '__column', '__row'].forEach(name => {
+    ['bucket', 'stacked', '__compartment', '__level'].forEach(name => {
       this[name] = `${name}${nameSpace}`;
     });
   }
@@ -11536,13 +11682,13 @@ class NameSpace {
 }
 
 exports.NameSpace = NameSpace;
-},{}],"MNJW":[function(require,module,exports) {
+},{}],"29CI":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.barchart = void 0;
+exports.barchartH = void 0;
 
 var _axes = _interopRequireDefault(require("./axes"));
 
@@ -11568,15 +11714,701 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const barchart = (insight, columns, specViewOptions) => {
+const barchartH = context => {
+  const {
+    specColumns,
+    insight,
+    specViewOptions
+  } = context;
   const errors = [];
-  if (!columns.x) errors.push(`Must set a field for x axis`);
+  if (!specColumns.y) errors.push(`Must set a field for y axis`);
+  (0, _facet.checkForFacetErrors)(insight.facets, errors);
+  const specCapabilities = {
+    roles: [{
+      role: 'y',
+      binnable: true,
+      axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
+      signals: [_constants.SignalNames.YBins]
+    }, {
+      role: 'z',
+      allowNone: true
+    }, {
+      role: 'color',
+      allowNone: true
+    }, {
+      role: 'sort',
+      allowNone: true
+    }, {
+      role: 'facet',
+      allowNone: true
+    }]
+  };
+
+  if (errors.length) {
+    return {
+      errors,
+      specCapabilities,
+      vegaSpec: null
+    };
+  }
+
+  const rootNamespace = new _namespace.NameSpace();
+  let axes;
+
+  if (!insight.hideAxes) {
+    axes = (0, _axes.default)(context);
+  }
+
+  let marks;
+
+  if (specColumns.facet) {
+    const cellNamespace = new _namespace.NameSpace('Cell');
+    const cellMarks = (0, _marks.default)(context, cellNamespace);
+    const cd = specColumns.y.quantitative ? [(0, _data.stacked)(cellNamespace, _constants.DataNames.FacetGroupCell)] : [(0, _data.bucketed)(context, cellNamespace, _constants.DataNames.FacetGroupCell), (0, _data.stacked)(cellNamespace, cellNamespace.bucket)];
+    marks = (0, _facet.facetMarks)(specViewOptions, rootNamespace.stacked, cellMarks, axes, cd);
+    axes = [];
+  } else {
+    marks = (0, _marks.default)(context, rootNamespace);
+  }
+
+  const size = specColumns.facet ? (0, _facet.facetSize)(context) : insight.size;
+  var vegaSpec = {
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
+    "height": size.height,
+    "width": size.width,
+    signals: (0, _signals.default)(context),
+    scales: (0, _scales.default)(context, rootNamespace),
+    data: (0, _data.default)(context, rootNamespace),
+    marks
+  };
+
+  if (!insight.hideAxes && axes && axes.length) {
+    vegaSpec.axes = axes;
+  }
+
+  const legends = (0, _legends.getLegends)(context);
+
+  if (legends) {
+    vegaSpec.legends = legends;
+  }
+
+  if (specColumns.facet) {
+    vegaSpec.layout = (0, _facet.layout)(context);
+  } else {
+    //use autosize only when not faceting
+    vegaSpec.autosize = "fit";
+  }
+
+  return {
+    vegaSpec,
+    specCapabilities
+  };
+};
+
+exports.barchartH = barchartH;
+},{"./axes":"clq/","./data":"N8o5","./marks":"BuYz","./scales":"6oli","./signals":"6Mej","../facet":"7Ifg","../constants":"b0rV","../legends":"6oTL","./namespace":"0IZ5"}],"kXgn":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.BarChartSignalNames = exports.BarChartScaleNames = void 0;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+const BarChartScaleNames = {
+  bucketScale: "bucketScale",
+  levelScale: "levelScale",
+  compartmentScale: "compartmentScale"
+};
+exports.BarChartScaleNames = BarChartScaleNames;
+const BarChartSignalNames = {
+  aspectRatioSignal: "aspectRatioSignal",
+  compartmentsPerLevelSignal: "compartmentsPerLevelSignal",
+  compartmentWidthSignal: "compartmentWidthSignal",
+  levelExtentSignal: "levelExtentSignal",
+  quantitativeBinSignal: "quantitativeBinSignal"
+};
+exports.BarChartSignalNames = BarChartSignalNames;
+},{}],"qaUm":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+var _constants = require("./constants");
+
+var _axes = require("../axes");
+
+var _constants2 = require("../constants");
+
+function _default(context) {
+  const {
+    specColumns,
+    specViewOptions
+  } = context;
+  const pa = (0, _axes.partialAxes)(specViewOptions, specColumns.x.quantitative, true);
+  const axes = [Object.assign({
+    "scale": _constants2.ScaleNames.X,
+    "title": specColumns.x.name
+  }, pa.bottom), Object.assign({
+    "scale": _constants.BarChartScaleNames.levelScale,
+    "title": specViewOptions.language.count,
+    "encode": {
+      "labels": {
+        "update": {
+          "text": {
+            "signal": `${_constants.BarChartSignalNames.compartmentsPerLevelSignal} * datum.value`
+          }
+        }
+      }
+    }
+  }, pa.left)];
+  return axes;
+}
+},{"./constants":"kXgn","../axes":"m4Pj","../constants":"b0rV"}],"sGLW":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+var _constants = require("./constants");
+
+var _constants2 = require("../constants");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function _default(context) {
+  const {
+    specColumns
+  } = context;
+  const stackTransform = {
+    "type": "stack",
+    "groupby": [{
+      "field": specColumns.x.name
+    }],
+    "as": [_constants2.FieldNames.BarChartStack0, _constants2.FieldNames.BarChartStack1]
+  };
+
+  if (specColumns.sort) {
+    stackTransform.sort = {
+      "field": specColumns.sort.name
+    };
+  }
+
+  const transforms = [stackTransform, {
+    "type": "extent",
+    "signal": _constants.BarChartSignalNames.levelExtentSignal,
+    "field": _constants2.FieldNames.BarChartStack1
+  }];
+  return transforms;
+}
+},{"./constants":"kXgn","../constants":"b0rV"}],"D8M6":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+var _constants = require("./constants");
+
+var _constants2 = require("../constants");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function _default(context, groupBy) {
+  const {
+    specColumns
+  } = context;
+  const bucket_extent = "bucket_extent";
+  const stackTransform = {
+    "type": "stack",
+    "groupby": [_constants2.FieldNames.BarChartBin0],
+    "as": [_constants2.FieldNames.BarChartStack0, _constants2.FieldNames.BarChartStack1]
+  };
+
+  if (groupBy) {
+    stackTransform.groupby.push(groupBy.name);
+  }
+
+  if (specColumns.sort) {
+    stackTransform.sort = {
+      "field": specColumns.sort.name
+    };
+  }
+
+  const transforms = [{
+    "type": "extent",
+    "field": specColumns.x.name,
+    "signal": bucket_extent
+  }, {
+    "type": "bin",
+    "field": specColumns.x.name,
+    "extent": {
+      "signal": bucket_extent
+    },
+    "maxbins": {
+      "signal": _constants2.SignalNames.XBins
+    },
+    "as": [_constants2.FieldNames.BarChartBin0, _constants2.FieldNames.BarChartBin1],
+    "signal": _constants.BarChartSignalNames.quantitativeBinSignal
+  }, stackTransform, {
+    "type": "extent",
+    "signal": _constants.BarChartSignalNames.levelExtentSignal,
+    "field": _constants2.FieldNames.BarChartStack1
+  }];
+  return transforms;
+}
+},{"./constants":"kXgn","../constants":"b0rV"}],"MPMp":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+exports.bucketed = bucketed;
+exports.stacked = stacked;
+
+var _transform = _interopRequireDefault(require("./transform.qualitative"));
+
+var _transform2 = _interopRequireDefault(require("./transform.quantitative"));
+
+var _array = require("../../array");
+
+var _constants = require("./constants");
+
+var _constants2 = require("../constants");
+
+var _facet = require("../facet");
+
+var _top = require("../top");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function _default(context, namespace) {
+  const {
+    specColumns,
+    insight,
+    specViewOptions
+  } = context;
+  const categoricalColor = specColumns.color && !specColumns.color.quantitative;
+  const nestedDataName = specColumns.facet && specColumns.facet.quantitative ? _constants2.DataNames.Pre : _constants2.DataNames.Main;
+  const data = (0, _array.allTruthy)((0, _facet.facetSourceData)(specColumns.facet, insight.facets, _constants2.DataNames.Main), categoricalColor && (0, _top.topLookup)(specColumns.color, specViewOptions.maxLegends), [bucketed(context, namespace, categoricalColor ? _constants2.DataNames.Legend : nestedDataName), stacked(namespace, namespace.bucket, specColumns.facet && (0, _facet.facetTransforms)(specColumns.facet, insight.facets))], specColumns.x.quantitative && [{
+    "name": _constants2.DataNames.QuantitativeData,
+    "transform": [{
+      "type": "sequence",
+      "start": {
+        "signal": `${_constants.BarChartSignalNames.quantitativeBinSignal}.start`
+      },
+      "stop": {
+        "signal": `${_constants.BarChartSignalNames.quantitativeBinSignal}.stop`
+      },
+      "step": {
+        "signal": `${_constants.BarChartSignalNames.quantitativeBinSignal}.step`
+      }
+    }]
+  }], specColumns.facet && (0, _facet.facetGroupData)(namespace.stacked));
+  return data;
+}
+
+function bucketed(context, namespace, source) {
+  const {
+    specColumns: columns
+  } = context;
+  const data = {
+    "name": namespace.bucket,
+    source,
+    "transform": columns.x.quantitative ? (0, _transform2.default)(context, columns.facet) : (0, _transform.default)(context)
+  };
+  return data;
+}
+
+function stacked(namespace, source, transforms) {
+  const data = {
+    "name": namespace.stacked,
+    source,
+    "transform": (0, _array.allTruthy)(transforms, xy(namespace))
+  };
+  return data;
+}
+
+function xy(namespace) {
+  const transforms = [{
+    "type": "formula",
+    "expr": `floor(datum.${_constants2.FieldNames.BarChartStack0} / ${_constants.BarChartSignalNames.compartmentsPerLevelSignal})`,
+    "as": namespace.__level
+  }, {
+    "type": "formula",
+    "expr": `datum.${_constants2.FieldNames.BarChartStack0} % ${_constants.BarChartSignalNames.compartmentsPerLevelSignal}`,
+    "as": namespace.__compartment
+  }];
+  return transforms;
+}
+},{"./transform.qualitative":"sGLW","./transform.quantitative":"D8M6","../../array":"b//p","./constants":"kXgn","../constants":"b0rV","../facet":"7Ifg","../top":"83Xo"}],"bUVh":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+var VegaDeckGl = _interopRequireWildcard(require("../../vega-deck.gl"));
+
+var _constants = require("./constants");
+
+var _constants2 = require("../constants");
+
+var _fill = require("../fill");
+
+var _selection = require("../selection");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function _default(context, namespace) {
+  const {
+    specColumns
+  } = context;
+  const mark = {
+    "type": "rect",
+    "from": {
+      "data": namespace.stacked
+    },
+    "encode": {
+      "update": {
+        "x": {
+          "scale": _constants2.ScaleNames.X,
+          "field": specColumns.x.quantitative ? _constants2.FieldNames.BarChartBin0 : specColumns.x.name,
+          "offset": {
+            "scale": _constants.BarChartScaleNames.compartmentScale,
+            "field": namespace.__compartment
+          }
+        },
+        "width": [{
+          "test": `bandwidth('${_constants.BarChartScaleNames.compartmentScale}') < 1`,
+          "value": VegaDeckGl.defaults.minPixelSize
+        }, {
+          "scale": _constants.BarChartScaleNames.compartmentScale,
+          "band": 1
+        }],
+        "y": [{
+          "scale": _constants2.ScaleNames.Y,
+          "test": (0, _selection.testForCollapseSelection)(),
+          "signal": `${_constants2.SignalNames.YDomain}[0]`
+        }, {
+          "scale": _constants2.ScaleNames.Y,
+          "field": namespace.__level,
+          "band": 1,
+          "offset": {
+            "signal": `-bandwidth('${_constants2.ScaleNames.Y}')-1`
+          }
+        }],
+        "height": [{
+          "test": (0, _selection.testForCollapseSelection)(),
+          "value": 0
+        }, {
+          "test": `bandwidth('${_constants2.ScaleNames.Y}') < 1`,
+          "value": VegaDeckGl.defaults.minPixelSize
+        }, {
+          "scale": _constants2.ScaleNames.Y,
+          "band": 1
+        }],
+        "fill": (0, _fill.fill)(context)
+      }
+    }
+  };
+
+  if (specColumns.z) {
+    const update = mark.encode.update;
+    update.z = {
+      "value": 0
+    };
+    update.depth = [{
+      "test": (0, _selection.testForCollapseSelection)(),
+      "value": 0
+    }, {
+      "scale": _constants2.ScaleNames.Z,
+      "field": specColumns.z.name
+    }];
+  }
+
+  return [mark];
+}
+},{"../../vega-deck.gl":"Uns8","./constants":"kXgn","../constants":"b0rV","../fill":"S7Dm","../selection":"Dq8R"}],"Od9T":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+var _constants = require("./constants");
+
+var _constants2 = require("../constants");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function _default(context, namespace) {
+  const {
+    specColumns
+  } = context;
+  const scales = [{
+    "name": _constants.BarChartScaleNames.bucketScale,
+    "type": "band",
+    "range": "width",
+    "domain": {
+      "data": namespace.bucket,
+      "field": specColumns.x.name,
+      "sort": true
+    }
+  }, {
+    "name": _constants2.ScaleNames.X,
+    "type": "band",
+    "range": [0, {
+      "signal": "width"
+    }],
+    "padding": 0.01,
+    "domain": {
+      "data": namespace.stacked,
+      "field": specColumns.x.name,
+      "sort": true
+    }
+  }];
+  return scales;
+}
+},{"./constants":"kXgn","../constants":"b0rV"}],"tWqL":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+var _constants = require("../constants");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function _default() {
+  const scales = [{
+    "name": _constants.ScaleNames.X,
+    "type": "band",
+    "range": [0, {
+      "signal": "width"
+    }],
+    "padding": 0.01,
+    "domain": {
+      "data": _constants.DataNames.QuantitativeData,
+      "field": "data",
+      "sort": true
+    }
+  }];
+  return scales;
+}
+},{"../constants":"b0rV"}],"6qKX":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+var _scales = _interopRequireDefault(require("./scales.qualitative"));
+
+var _scales2 = _interopRequireDefault(require("./scales.quantitative"));
+
+var _constants = require("./constants");
+
+var _scales3 = require("../scales");
+
+var _constants2 = require("../constants");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function _default(context, namespace) {
+  const {
+    specColumns,
+    insight
+  } = context;
+  const scales = [{
+    "name": _constants.BarChartScaleNames.compartmentScale,
+    "type": "band",
+    "range": [0, {
+      "signal": _constants.BarChartSignalNames.compartmentWidthSignal
+    }],
+    "padding": 0.1,
+    "domain": {
+      "signal": `sequence(0, ${_constants.BarChartSignalNames.compartmentsPerLevelSignal}+1, 1)`
+    }
+  }, {
+    "name": _constants.BarChartScaleNames.levelScale,
+    "range": [{
+      "signal": "height"
+    }, {
+      "signal": "0"
+    }],
+    "round": true,
+    "domain": {
+      "data": namespace.stacked,
+      "field": namespace.__level,
+      "sort": true
+    },
+    "zero": true,
+    "nice": true
+  }, {
+    "name": _constants2.ScaleNames.Y,
+    "type": "band",
+    "range": [{
+      "signal": "height"
+    }, {
+      "signal": "0"
+    }],
+    "padding": 0.1,
+    "round": false,
+    "reverse": false,
+    "align": 1,
+    "domain": {
+      "data": namespace.stacked,
+      "field": namespace.__level,
+      "sort": true
+    }
+  }];
+
+  if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
+    if (specColumns.color.quantitative) {
+      scales.push((0, _scales3.binnableColorScale)(insight.colorBin, namespace.bucket, specColumns.color.name, insight.scheme));
+    } else {
+      scales.push({
+        "name": _constants2.ScaleNames.Color,
+        "type": "ordinal",
+        "domain": {
+          "data": namespace.bucket,
+          "field": _constants2.FieldNames.Top,
+          "sort": true
+        },
+        "range": {
+          "scheme": insight.scheme || _constants2.ColorScaleNone
+        },
+        "reverse": {
+          "signal": _constants2.SignalNames.ColorReverse
+        }
+      });
+    }
+  }
+
+  if (specColumns.z) {
+    const zRange = [0, {
+      "signal": _constants2.SignalNames.ZHeight
+    }];
+    scales.push(specColumns.z.quantitative ? (0, _scales3.linearScale)(_constants2.ScaleNames.Z, _constants2.DataNames.Main, specColumns.z.name, zRange, false, true) : (0, _scales3.pointScale)(_constants2.ScaleNames.Z, _constants2.DataNames.Main, zRange, specColumns.z.name));
+  }
+
+  return scales.concat(specColumns.x.quantitative ? (0, _scales2.default)() : (0, _scales.default)(context, namespace));
+}
+},{"./scales.qualitative":"Od9T","./scales.quantitative":"tWqL","./constants":"kXgn","../scales":"v/y+","../constants":"b0rV"}],"w+eg":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+var _array = require("../../array");
+
+var _constants = require("./constants");
+
+var _signals = require("../signals");
+
+var _facet = require("../facet");
+
+var _constants2 = require("../constants");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function _default(context) {
+  const {
+    specColumns,
+    specViewOptions
+  } = context;
+  const signals = (0, _array.allTruthy)((0, _signals.textSignals)(context), [{
+    "name": _constants2.SignalNames.YDomain,
+    "update": `domain('${_constants2.ScaleNames.Y}')`
+  }, specColumns.x.quantitative && {
+    "name": _constants2.SignalNames.XBins,
+    "value": 7,
+    "bind": {
+      "name": specViewOptions.language.XBinSize,
+      "input": "range",
+      "min": 1,
+      "max": 20,
+      "step": 1
+    }
+  }, {
+    "name": _constants.BarChartSignalNames.compartmentWidthSignal,
+    "update": `bandwidth('${specColumns.x.quantitative ? _constants2.ScaleNames.X : _constants.BarChartScaleNames.bucketScale}')`
+  }, {
+    "name": _constants.BarChartSignalNames.aspectRatioSignal,
+    "update": `${_constants.BarChartSignalNames.compartmentWidthSignal}/height`
+  }, {
+    "name": _constants.BarChartSignalNames.compartmentsPerLevelSignal,
+    "update": `ceil(sqrt(${_constants.BarChartSignalNames.aspectRatioSignal}*${_constants.BarChartSignalNames.levelExtentSignal}[1]))`
+  }, (0, _signals.colorBinCountSignal)(context), (0, _signals.colorReverseSignal)(context)], specColumns.facet && (0, _facet.facetSignals)(context));
+  return signals;
+}
+},{"../../array":"b//p","./constants":"kXgn","../signals":"N3c7","../facet":"7Ifg","../constants":"b0rV"}],"J9sm":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.barchartV = void 0;
+
+var _axes = _interopRequireDefault(require("./axes"));
+
+var _data = _interopRequireWildcard(require("./data"));
+
+var _marks = _interopRequireDefault(require("./marks"));
+
+var _scales = _interopRequireDefault(require("./scales"));
+
+var _signals = _interopRequireDefault(require("./signals"));
+
+var _facet = require("../facet");
+
+var _constants = require("../constants");
+
+var _legends = require("../legends");
+
+var _namespace = require("./namespace");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+const barchartV = context => {
+  const {
+    specColumns,
+    insight,
+    specViewOptions
+  } = context;
+  const errors = [];
+  if (!specColumns.x) errors.push(`Must set a field for x axis`);
   (0, _facet.checkForFacetErrors)(insight.facets, errors);
   const specCapabilities = {
     roles: [{
       role: 'x',
       binnable: true,
-      axisSelection: columns.x && columns.x.quantitative ? 'range' : 'exact',
+      axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
       signals: [_constants.SignalNames.XBins]
     }, {
       role: 'z',
@@ -11605,29 +12437,29 @@ const barchart = (insight, columns, specViewOptions) => {
   let axes;
 
   if (!insight.hideAxes) {
-    axes = (0, _axes.default)(specViewOptions, columns);
+    axes = (0, _axes.default)(context);
   }
 
   let marks;
 
-  if (columns.facet) {
+  if (specColumns.facet) {
     const cellNamespace = new _namespace.NameSpace('Cell');
-    const cellMarks = (0, _marks.default)(cellNamespace, columns, specViewOptions);
-    const cd = columns.x.quantitative ? [(0, _data.stacked)(cellNamespace, _constants.DataNames.FacetGroupCell)] : [(0, _data.nested)(cellNamespace, _constants.DataNames.FacetGroupCell, columns), (0, _data.stacked)(cellNamespace, cellNamespace.nested)];
+    const cellMarks = (0, _marks.default)(context, cellNamespace);
+    const cd = specColumns.x.quantitative ? [(0, _data.stacked)(cellNamespace, _constants.DataNames.FacetGroupCell)] : [(0, _data.bucketed)(context, cellNamespace, _constants.DataNames.FacetGroupCell), (0, _data.stacked)(cellNamespace, cellNamespace.bucket)];
     marks = (0, _facet.facetMarks)(specViewOptions, rootNamespace.stacked, cellMarks, axes, cd);
     axes = [];
   } else {
-    marks = (0, _marks.default)(rootNamespace, columns, specViewOptions);
+    marks = (0, _marks.default)(context, rootNamespace);
   }
 
-  const size = columns.facet ? (0, _facet.facetSize)(insight.facets, insight.size, specViewOptions) : insight.size;
+  const size = specColumns.facet ? (0, _facet.facetSize)(context) : insight.size;
   var vegaSpec = {
     "$schema": "https://vega.github.io/schema/vega/v3.json",
     "height": size.height,
     "width": size.width,
-    signals: (0, _signals.default)(insight, columns, specViewOptions),
-    scales: (0, _scales.default)(rootNamespace, insight, columns),
-    data: (0, _data.default)(rootNamespace, insight, columns, specViewOptions),
+    signals: (0, _signals.default)(context),
+    scales: (0, _scales.default)(context, rootNamespace),
+    data: (0, _data.default)(context, rootNamespace),
     marks
   };
 
@@ -11635,12 +12467,14 @@ const barchart = (insight, columns, specViewOptions) => {
     vegaSpec.axes = axes;
   }
 
-  if (columns.color && !insight.hideLegend) {
-    vegaSpec.legends = [(0, _legends.legend)(columns.color)];
+  const legends = (0, _legends.getLegends)(context);
+
+  if (legends) {
+    vegaSpec.legends = legends;
   }
 
-  if (columns.facet) {
-    vegaSpec.layout = (0, _facet.layout)(specViewOptions);
+  if (specColumns.facet) {
+    vegaSpec.layout = (0, _facet.layout)(context);
   } else {
     //use autosize only when not faceting
     vegaSpec.autosize = "fit";
@@ -11652,8 +12486,8 @@ const barchart = (insight, columns, specViewOptions) => {
   };
 };
 
-exports.barchart = barchart;
-},{"./axes":"vXYY","./data":"Ou2c","./marks":"3Y6I","./scales":"UQ/Q","./signals":"I0up","../facet":"7Ifg","../constants":"b0rV","../legends":"6oTL","./namespace":"bs4R"}],"0BUb":[function(require,module,exports) {
+exports.barchartV = barchartV;
+},{"./axes":"qaUm","./data":"MPMp","./marks":"bUVh","./scales":"6qKX","./signals":"w+eg","../facet":"7Ifg","../constants":"b0rV","../legends":"6oTL","./namespace":"0IZ5"}],"0BUb":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11663,18 +12497,22 @@ exports.default = _default;
 
 var _axes = require("../axes");
 
-function _default(specViewOptions, columns) {
-  const pa = (0, _axes.partialAxes)(specViewOptions, columns.x.quantitative, columns.y.quantitative);
+function _default(context) {
+  const {
+    specColumns,
+    specViewOptions
+  } = context;
+  const pa = (0, _axes.partialAxes)(specViewOptions, specColumns.x.quantitative, specColumns.y.quantitative);
   const axes = [Object.assign({
     "scale": "xscale",
-    "title": columns.x.name,
+    "title": specColumns.x.name,
     "bandPosition": 0.5,
     "grid": true,
     "labelFlush": true
   }, pa.bottom), Object.assign({
     "scale": "yscale",
-    "title": columns.y.name,
-    "bandPosition": columns.y.quantitative ? 0 : 0.5,
+    "title": specColumns.y.name,
+    "bandPosition": specColumns.y.quantitative ? 0 : 0.5,
     "grid": true,
     "labelFlush": true
   }, pa.left)];
@@ -11696,17 +12534,21 @@ var _top = require("../top");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(insight, columns, specViewOptions) {
-  const categoricalColor = columns.color && !columns.color.quantitative;
+function _default(context) {
+  const {
+    specColumns,
+    specViewOptions
+  } = context;
+  const categoricalColor = specColumns.color && !specColumns.color.quantitative;
   const data = (0, _array.allTruthy)([{
     "name": _constants.DataNames.Main,
-    "transform": (0, _array.allTruthy)(columns.x.quantitative && [{
+    "transform": (0, _array.allTruthy)(specColumns.x.quantitative && [{
       "type": "extent",
-      "field": columns.x.name,
+      "field": specColumns.x.name,
       "signal": "var_Xextent"
     }, {
       "type": "bin",
-      "field": columns.x.name,
+      "field": specColumns.x.name,
       "extent": {
         "signal": "var_Xextent"
       },
@@ -11715,13 +12557,13 @@ function _default(insight, columns, specViewOptions) {
       },
       "as": [_constants.FieldNames.DensityXBin0, _constants.FieldNames.DensityXBin1],
       "signal": "binXSignal"
-    }], columns.y.quantitative && [{
+    }], specColumns.y.quantitative && [{
       "type": "extent",
-      "field": columns.y.name,
+      "field": specColumns.y.name,
       "signal": "var_Yextent"
     }, {
       "type": "bin",
-      "field": columns.y.name,
+      "field": specColumns.y.name,
       "extent": {
         "signal": "var_Yextent"
       },
@@ -11731,7 +12573,7 @@ function _default(insight, columns, specViewOptions) {
       "as": [_constants.FieldNames.DensityYBin0, _constants.FieldNames.DensityYBin1],
       "signal": "binYSignal"
     }])
-  }], columns.x.quantitative && [{
+  }], specColumns.x.quantitative && [{
     "name": "xaxisdata",
     "transform": [{
       "type": "sequence",
@@ -11745,7 +12587,7 @@ function _default(insight, columns, specViewOptions) {
         "signal": "binXSignal.step"
       }
     }]
-  }], columns.y.quantitative && [{
+  }], specColumns.y.quantitative && [{
     "name": "yaxisdata",
     "transform": [{
       "type": "sequence",
@@ -11759,15 +12601,15 @@ function _default(insight, columns, specViewOptions) {
         "signal": "binYSignal.step"
       }
     }]
-  }], categoricalColor && (0, _top.topLookup)(columns.color, specViewOptions.maxLegends), [{
+  }], categoricalColor && (0, _top.topLookup)(specColumns.color, specViewOptions.maxLegends), [{
     "name": "aggregated",
     "source": categoricalColor ? _constants.DataNames.Legend : _constants.DataNames.Main,
     "transform": [{
       "type": "joinaggregate",
-      "groupby": [columns.x.quantitative ? _constants.FieldNames.DensityXBin0 : columns.x.name, columns.y.quantitative ? _constants.FieldNames.DensityYBin0 : columns.y.name],
+      "groupby": [specColumns.x.quantitative ? _constants.FieldNames.DensityXBin0 : specColumns.x.name, specColumns.y.quantitative ? _constants.FieldNames.DensityYBin0 : specColumns.y.name],
       "ops": ["count"],
       "as": [_constants.FieldNames.DensityCount]
-    }, windowTransform(columns), {
+    }, windowTransform(specColumns), {
       "type": "extent",
       "field": _constants.FieldNames.DensityRow,
       "signal": "cextent"
@@ -11809,28 +12651,31 @@ var _selection = require("../selection");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(columns, specViewOptions) {
+function _default(context) {
+  const {
+    specColumns
+  } = context;
   const mark = {
     "type": "rect",
     "from": {
       "data": "aggregated"
     },
     "sort": {
-      "field": [columns.x.name, columns.y.name],
+      "field": [specColumns.x.name, specColumns.y.name],
       "order": ["ascending", "ascending"]
     },
     "encode": {
       "update": {
         "xc": {
           "scale": "xscale",
-          "field": columns.x.quantitative ? _constants.FieldNames.DensityXBin0 : columns.x.name,
+          "field": specColumns.x.quantitative ? _constants.FieldNames.DensityXBin0 : specColumns.x.name,
           "offset": {
             "signal": `scale('sizescale', ((datum.${_constants.FieldNames.DensityRow}-1) % floor(sqrt(datum.${_constants.FieldNames.DensityCount}))))-scale('sizescale', sqrt(datum.${_constants.FieldNames.DensityCount})-2)/2`
           }
         },
         "yc": {
           "scale": "yscale",
-          "field": columns.y.quantitative ? _constants.FieldNames.DensityYBin0 : columns.y.name,
+          "field": specColumns.y.quantitative ? _constants.FieldNames.DensityYBin0 : specColumns.y.name,
           "offset": {
             "signal": `scale('sizescale',height/width*floor(((datum.${_constants.FieldNames.DensityRow}-1) / floor(sqrt(datum.${_constants.FieldNames.DensityCount}))))) - scale('sizescale', height/width*sqrt(datum.${_constants.FieldNames.DensityCount})+2)/2`
           }
@@ -11841,12 +12686,12 @@ function _default(columns, specViewOptions) {
         "height": {
           "signal": "height/width*unitsize"
         },
-        "fill": (0, _fill.fill)(columns.color, specViewOptions)
+        "fill": (0, _fill.fill)(context)
       }
     }
   };
 
-  if (columns.z) {
+  if (specColumns.z) {
     const update = mark.encode.update;
     update.z = {
       "value": 0
@@ -11856,7 +12701,7 @@ function _default(columns, specViewOptions) {
       "value": 0
     }, {
       "scale": _constants.ScaleNames.Z,
-      "field": columns.z.name
+      "field": specColumns.z.name
     }];
   }
 
@@ -11876,17 +12721,21 @@ var _constants = require("../constants");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(columns, insight) {
+function _default(context) {
+  const {
+    specColumns,
+    insight
+  } = context;
   const scales = [{
     "name": "xscale",
     "type": "point",
-    "domain": columns.x.quantitative ? {
+    "domain": specColumns.x.quantitative ? {
       "data": "xaxisdata",
       "field": "data",
       "sort": true
     } : {
       "data": _constants.DataNames.Main,
-      "field": columns.x.name,
+      "field": specColumns.x.name,
       "sort": true
     },
     "range": "width",
@@ -11894,13 +12743,13 @@ function _default(columns, insight) {
   }, {
     "name": "yscale",
     "type": "point",
-    "domain": columns.y.quantitative ? {
+    "domain": specColumns.y.quantitative ? {
       "data": "yaxisdata",
       "field": "data",
       "sort": true
     } : {
       "data": _constants.DataNames.Main,
-      "field": columns.y.name,
+      "field": specColumns.y.name,
       "sort": true
     },
     "range": "height",
@@ -11917,9 +12766,9 @@ function _default(columns, insight) {
     }]
   }];
 
-  if (columns.color) {
-    if (columns.color.quantitative) {
-      scales.push((0, _scales.binnableColorScale)(insight.colorBin, _constants.DataNames.Main, columns.color.name, insight.scheme));
+  if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
+    if (specColumns.color.quantitative) {
+      scales.push((0, _scales.binnableColorScale)(insight.colorBin, _constants.DataNames.Main, specColumns.color.name, insight.scheme));
     } else {
       scales.push({
         "name": _constants.ScaleNames.Color,
@@ -11939,11 +12788,11 @@ function _default(columns, insight) {
     }
   }
 
-  if (columns.z) {
+  if (specColumns.z) {
     const zRange = [0, {
       "signal": _constants.SignalNames.ZHeight
     }];
-    scales.push(columns.z.quantitative ? (0, _scales.linearScale)(_constants.ScaleNames.Z, _constants.DataNames.Main, columns.z.name, zRange, false, true) : (0, _scales.pointScale)(_constants.ScaleNames.Z, _constants.DataNames.Main, zRange, columns.z.name));
+    scales.push(specColumns.z.quantitative ? (0, _scales.linearScale)(_constants.ScaleNames.Z, _constants.DataNames.Main, specColumns.z.name, zRange, false, true) : (0, _scales.pointScale)(_constants.ScaleNames.Z, _constants.DataNames.Main, zRange, specColumns.z.name));
   }
 
   return scales;
@@ -11966,8 +12815,13 @@ var _constants = require("../constants");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(insight, columns, specViewOptions) {
-  const signals = (0, _array.allTruthy)((0, _signals.textSignals)(specViewOptions), [(0, _signals.colorBinCountSignal)(specViewOptions), (0, _signals.colorReverseSignal)(specViewOptions), {
+function _default(context) {
+  const {
+    specColumns,
+    insight,
+    specViewOptions
+  } = context;
+  const signals = (0, _array.allTruthy)((0, _signals.textSignals)(context), [(0, _signals.colorBinCountSignal)(context), (0, _signals.colorReverseSignal)(context), {
     "name": "unitpad",
     "value": 0.1,
     "bind": {
@@ -11992,7 +12846,7 @@ function _default(insight, columns, specViewOptions) {
   }, {
     "name": "unitsize",
     "update": "cellwidth/((1 + unitpad)*maxnumbers)"
-  }, columns.x.quantitative && {
+  }, specColumns.x.quantitative && {
     "name": _constants.SignalNames.XBins,
     "value": 30,
     "bind": {
@@ -12002,7 +12856,7 @@ function _default(insight, columns, specViewOptions) {
       "max": 60,
       "step": 1
     }
-  }, columns.y.quantitative && {
+  }, specColumns.y.quantitative && {
     "name": _constants.SignalNames.YBins,
     "value": 30,
     "bind": {
@@ -12012,7 +12866,7 @@ function _default(insight, columns, specViewOptions) {
       "max": 60,
       "step": 1
     }
-  }], insight.columns.facet && (0, _facet.facetSignals)(insight.facets, specViewOptions));
+  }], insight.columns.facet && (0, _facet.facetSignals)(context));
   return signals;
 }
 },{"../../array":"b//p","../signals":"N3c7","../facet":"7Ifg","../constants":"b0rV"}],"7yaW":[function(require,module,exports) {
@@ -12043,21 +12897,25 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const density = (insight, columns, specViewOptions) => {
+const density = context => {
+  const {
+    specColumns,
+    insight
+  } = context;
   const errors = [];
-  if (!columns.x) errors.push(`Must set a field for x axis`);
-  if (!columns.y) errors.push(`Must set a field for y axis`);
+  if (!specColumns.x) errors.push(`Must set a field for x axis`);
+  if (!specColumns.y) errors.push(`Must set a field for y axis`);
   (0, _facet.checkForFacetErrors)(insight.facets, errors);
   const specCapabilities = {
     roles: [{
       role: 'x',
       binnable: true,
-      axisSelection: columns.x && columns.x.quantitative ? 'range' : 'exact',
+      axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
       signals: [_constants.SignalNames.XBins]
     }, {
       role: 'y',
       binnable: true,
-      axisSelection: columns.y && columns.y.quantitative ? 'range' : 'exact',
+      axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
       signals: [_constants.SignalNames.YBins]
     }, {
       role: 'z',
@@ -12079,27 +12937,29 @@ const density = (insight, columns, specViewOptions) => {
     };
   }
 
-  const size = columns.facet ? (0, _facet.facetSize)(insight.facets, insight.size, specViewOptions) : insight.size;
+  const size = specColumns.facet ? (0, _facet.facetSize)(context) : insight.size;
   var vegaSpec = {
     "$schema": "https://vega.github.io/schema/vega/v3.json",
     "height": size.height,
     "width": size.width,
-    signals: (0, _signals.default)(insight, columns, specViewOptions),
-    data: (0, _data.default)(insight, columns, specViewOptions),
-    scales: (0, _scales.default)(columns, insight),
-    marks: (0, _marks.default)(columns, specViewOptions)
+    signals: (0, _signals.default)(context),
+    data: (0, _data.default)(context),
+    scales: (0, _scales.default)(context),
+    marks: (0, _marks.default)(context)
   };
 
   if (!insight.hideAxes) {
-    vegaSpec.axes = (0, _axes.default)(specViewOptions, columns);
+    vegaSpec.axes = (0, _axes.default)(context);
   }
 
-  if (columns.color && !insight.hideLegend) {
-    vegaSpec.legends = [(0, _legends.legend)(columns.color)];
+  const legends = (0, _legends.getLegends)(context);
+
+  if (legends) {
+    vegaSpec.legends = legends;
   }
 
-  if (columns.facet) {
-    vegaSpec.layout = (0, _facet.layout)(specViewOptions);
+  if (specColumns.facet) {
+    vegaSpec.layout = (0, _facet.layout)(context);
   } else {
     //use autosize only when not faceting
     vegaSpec.autosize = "fit";
@@ -12128,21 +12988,25 @@ var _top = require("../top");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(columns, specViewOptions) {
-  const categoricalColor = columns.color && !columns.color.quantitative;
+function _default(context) {
+  const {
+    specColumns,
+    specViewOptions
+  } = context;
+  const categoricalColor = specColumns.color && !specColumns.color.quantitative;
   const data = (0, _array.allTruthy)([{
     "name": _constants.DataNames.Main,
-    "transform": (0, _array.allTruthy)([columns.sort && {
+    "transform": (0, _array.allTruthy)([specColumns.sort && {
       "type": "collect",
       "sort": {
-        "field": columns.sort.name
+        "field": specColumns.sort.name
       }
     }, {
       "type": "window",
       "ops": ["count"],
       "as": [_constants.FieldNames.GridIndex]
     }])
-  }], categoricalColor && (0, _top.topLookup)(columns.color, specViewOptions.maxLegends));
+  }], categoricalColor && (0, _top.topLookup)(specColumns.color, specViewOptions.maxLegends));
   return data;
 }
 },{"../../array":"b//p","../constants":"b0rV","../top":"83Xo"}],"gPej":[function(require,module,exports) {
@@ -12178,7 +13042,10 @@ var _selection = require("../selection");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(data, columns, specViewOptions) {
+function _default(context, data) {
+  const {
+    specColumns
+  } = context;
   const marks = [{
     "type": "rect",
     "from": {
@@ -12202,12 +13069,12 @@ function _default(data, columns, specViewOptions) {
           "scale": _constants2.ScaleNames.Y,
           "band": true
         },
-        "fill": (0, _fill.fill)(columns.color, specViewOptions)
+        "fill": (0, _fill.fill)(context)
       }
     }
   }];
 
-  if (columns.z) {
+  if (specColumns.z) {
     const update = marks[0].encode.update;
     update.z = {
       "value": 0
@@ -12217,7 +13084,7 @@ function _default(data, columns, specViewOptions) {
       "value": 0
     }, {
       "scale": _constants2.ScaleNames.Z,
-      "field": columns.z.name
+      "field": specColumns.z.name
     }];
   }
 
@@ -12239,7 +13106,11 @@ var _constants2 = require("./constants");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(columns, insight) {
+function _default(context) {
+  const {
+    specColumns,
+    insight
+  } = context;
   const scales = [{
     "name": _constants.ScaleNames.X,
     "type": "band",
@@ -12260,9 +13131,9 @@ function _default(columns, insight) {
     "paddingOuter": 0
   }];
 
-  if (columns.color) {
-    if (columns.color.quantitative) {
-      scales.push((0, _scales.binnableColorScale)(insight.colorBin, _constants.DataNames.Main, columns.color.name, insight.scheme));
+  if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
+    if (specColumns.color.quantitative) {
+      scales.push((0, _scales.binnableColorScale)(insight.colorBin, _constants.DataNames.Main, specColumns.color.name, insight.scheme));
     } else {
       scales.push({
         "name": _constants.ScaleNames.Color,
@@ -12282,11 +13153,11 @@ function _default(columns, insight) {
     }
   }
 
-  if (columns.z) {
+  if (specColumns.z) {
     const zRange = [0, {
       "signal": _constants.SignalNames.ZHeight
     }];
-    scales.push(columns.z.quantitative ? (0, _scales.linearScale)(_constants.ScaleNames.Z, _constants.DataNames.Main, columns.z.name, zRange, false, false) : (0, _scales.pointScale)(_constants.ScaleNames.Z, _constants.DataNames.Main, zRange, columns.z.name));
+    scales.push(specColumns.z.quantitative ? (0, _scales.linearScale)(_constants.ScaleNames.Z, _constants.DataNames.Main, specColumns.z.name, zRange, false, false) : (0, _scales.pointScale)(_constants.ScaleNames.Z, _constants.DataNames.Main, zRange, specColumns.z.name));
   }
 
   return scales;
@@ -12311,8 +13182,11 @@ var _facet = require("../facet");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(insight, specViewOptions) {
-  const signals = (0, _array.allTruthy)((0, _signals.textSignals)(specViewOptions), [(0, _signals.colorBinCountSignal)(specViewOptions), {
+function _default(context) {
+  const {
+    insight
+  } = context;
+  const signals = (0, _array.allTruthy)((0, _signals.textSignals)(context), [(0, _signals.colorBinCountSignal)(context), {
     "name": _constants.Total,
     "update": `data('${_constants2.DataNames.Main}').length`
   }, {
@@ -12321,7 +13195,7 @@ function _default(insight, specViewOptions) {
   }, {
     "name": _constants.RowCount,
     "update": `${_constants.Total}/${_constants.ColumnCount}`
-  }, (0, _signals.colorReverseSignal)(specViewOptions)], insight.columns && insight.columns.facet && (0, _facet.facetSignals)(insight.facets, specViewOptions));
+  }, (0, _signals.colorReverseSignal)(context)], insight.columns && insight.columns.facet && (0, _facet.facetSignals)(context));
   return signals;
 }
 },{"../../array":"b//p","../signals":"N3c7","./constants":"gPej","../constants":"b0rV","../facet":"7Ifg"}],"m34o":[function(require,module,exports) {
@@ -12348,7 +13222,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const grid = (insight, columns, specViewOptions) => {
+const grid = context => {
+  const {
+    specColumns,
+    insight
+  } = context;
   const errors = [];
   const specCapabilities = {
     roles: [{
@@ -12371,21 +13249,22 @@ const grid = (insight, columns, specViewOptions) => {
     };
   }
 
-  const categoricalColor = columns.color && !columns.color.quantitative;
+  const categoricalColor = specColumns.color && !specColumns.color.quantitative;
   const dataName = categoricalColor ? _constants.DataNames.Legend : _constants.DataNames.Main;
   const size = insight.size;
   var vegaSpec = {
     "$schema": "https://vega.github.io/schema/vega/v3.json",
     "height": size.height,
     "width": size.width,
-    signals: (0, _signals.default)(insight, specViewOptions),
-    scales: (0, _scales.default)(columns, insight),
-    data: (0, _data.default)(columns, specViewOptions),
-    marks: (0, _marks.default)(dataName, columns, specViewOptions)
+    signals: (0, _signals.default)(context),
+    scales: (0, _scales.default)(context),
+    data: (0, _data.default)(context),
+    marks: (0, _marks.default)(context, dataName)
   };
+  const legends = (0, _legends.getLegends)(context);
 
-  if (columns.color && !insight.hideLegend) {
-    vegaSpec.legends = [(0, _legends.legend)(columns.color)];
+  if (legends) {
+    vegaSpec.legends = legends;
   } //use autosize only when not faceting
 
 
@@ -12409,14 +13288,18 @@ var _axes = require("../axes");
 
 var _constants = require("../constants");
 
-function _default(specViewOptions, columns) {
-  const pa = (0, _axes.partialAxes)(specViewOptions, columns.x.quantitative, columns.y.quantitative);
+function _default(context) {
+  const {
+    specColumns,
+    specViewOptions
+  } = context;
+  const pa = (0, _axes.partialAxes)(specViewOptions, specColumns.x.quantitative, specColumns.y.quantitative);
   const axes = [Object.assign({
     "scale": _constants.ScaleNames.X,
-    "title": columns.x.name
+    "title": specColumns.x.name
   }, pa.bottom), Object.assign({
     "scale": _constants.ScaleNames.Y,
-    "title": columns.y.name
+    "title": specColumns.y.name
   }, pa.left)];
   return axes;
 }
@@ -12438,14 +13321,19 @@ var _top = require("../top");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(insight, columns, specViewOptions) {
-  const categoricalColor = columns.color && !columns.color.quantitative;
+function _default(context) {
+  const {
+    specColumns,
+    insight,
+    specViewOptions
+  } = context;
+  const categoricalColor = specColumns.color && !specColumns.color.quantitative;
   const ScatterDataName = "SandDanceScatterPlotData";
-  const data = (0, _array.allTruthy)((0, _facet.facetSourceData)(columns.facet, insight.facets, ScatterDataName), [{
+  const data = (0, _array.allTruthy)((0, _facet.facetSourceData)(specColumns.facet, insight.facets, ScatterDataName), [{
     "name": _constants.DataNames.Main,
     "source": ScatterDataName,
-    "transform": (0, _array.allTruthy)(filterInvalidWhenNumeric(columns.x), filterInvalidWhenNumeric(columns.y), filterInvalidWhenNumeric(columns.z), columns.facet && (0, _facet.facetTransforms)(columns.facet, insight.facets))
-  }], categoricalColor && (0, _top.topLookup)(columns.color, specViewOptions.maxLegends), columns.facet && (0, _facet.facetGroupData)(_constants.DataNames.Main));
+    "transform": (0, _array.allTruthy)(filterInvalidWhenNumeric(specColumns.x), filterInvalidWhenNumeric(specColumns.y), filterInvalidWhenNumeric(specColumns.z), specColumns.facet && (0, _facet.facetTransforms)(specColumns.facet, insight.facets))
+  }], categoricalColor && (0, _top.topLookup)(specColumns.color, specViewOptions.maxLegends), specColumns.facet && (0, _facet.facetGroupData)(_constants.DataNames.Main));
   return data;
 }
 
@@ -12474,8 +13362,11 @@ var _selection = require("../selection");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(columns, specViewOptions) {
-  const categoricalColor = columns.color && !columns.color.quantitative;
+function _default(context) {
+  const {
+    specColumns
+  } = context;
+  const categoricalColor = specColumns.color && !specColumns.color.quantitative;
   const marks = [{
     "type": "rect",
     "from": {
@@ -12485,7 +13376,7 @@ function _default(columns, specViewOptions) {
       "update": {
         "x": {
           "scale": _constants.ScaleNames.X,
-          "field": columns.x.name,
+          "field": specColumns.x.name,
           "offset": 1
         },
         "width": {
@@ -12497,7 +13388,7 @@ function _default(columns, specViewOptions) {
           "signal": `${_constants.SignalNames.YDomain}[0]`
         }, {
           "scale": _constants.ScaleNames.Y,
-          "field": columns.y.name,
+          "field": specColumns.y.name,
           "offset": {
             "signal": `-${_constants.SignalNames.PointSize}`
           }
@@ -12508,19 +13399,19 @@ function _default(columns, specViewOptions) {
         }, {
           "signal": _constants.SignalNames.PointSize
         }],
-        "fill": (0, _fill.fill)(columns.color, specViewOptions)
+        "fill": (0, _fill.fill)(context)
       }
     }
   }];
 
-  if (columns.z) {
+  if (specColumns.z) {
     const update = marks[0].encode.update;
     update.z = [{
       "test": (0, _selection.testForCollapseSelection)(),
       "value": 0
     }, {
       "scale": _constants.ScaleNames.Z,
-      "field": columns.z.name
+      "field": specColumns.z.name
     }];
     update.depth = {
       "signal": _constants.SignalNames.PointSize
@@ -12543,12 +13434,16 @@ var _constants = require("../constants");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(columns, insight) {
-  const scales = [columns.x.quantitative ? (0, _scales.linearScale)(_constants.ScaleNames.X, _constants.DataNames.Main, columns.x.name, "width", false, false) : (0, _scales.pointScale)(_constants.ScaleNames.X, _constants.DataNames.Main, "width", columns.x.name), columns.y.quantitative ? (0, _scales.linearScale)(_constants.ScaleNames.Y, _constants.DataNames.Main, columns.y.name, "height", false, false) : (0, _scales.pointScale)(_constants.ScaleNames.Y, _constants.DataNames.Main, "height", columns.y.name, true)];
+function _default(context) {
+  const {
+    specColumns,
+    insight
+  } = context;
+  const scales = [specColumns.x.quantitative ? (0, _scales.linearScale)(_constants.ScaleNames.X, _constants.DataNames.Main, specColumns.x.name, "width", false, false) : (0, _scales.pointScale)(_constants.ScaleNames.X, _constants.DataNames.Main, "width", specColumns.x.name), specColumns.y.quantitative ? (0, _scales.linearScale)(_constants.ScaleNames.Y, _constants.DataNames.Main, specColumns.y.name, "height", false, false) : (0, _scales.pointScale)(_constants.ScaleNames.Y, _constants.DataNames.Main, "height", specColumns.y.name, true)];
 
-  if (columns.color) {
-    if (columns.color.quantitative) {
-      scales.push((0, _scales.binnableColorScale)(insight.colorBin, _constants.DataNames.Main, columns.color.name, insight.scheme));
+  if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
+    if (specColumns.color.quantitative) {
+      scales.push((0, _scales.binnableColorScale)(insight.colorBin, _constants.DataNames.Main, specColumns.color.name, insight.scheme));
     } else {
       scales.push({
         "name": _constants.ScaleNames.Color,
@@ -12568,11 +13463,11 @@ function _default(columns, insight) {
     }
   }
 
-  if (columns.z) {
+  if (specColumns.z) {
     const zRange = [0, {
       "signal": _constants.SignalNames.ZHeight
     }];
-    scales.push(columns.z.quantitative ? (0, _scales.linearScale)(_constants.ScaleNames.Z, _constants.DataNames.Main, columns.z.name, zRange, false, false) : (0, _scales.pointScale)(_constants.ScaleNames.Z, _constants.DataNames.Main, zRange, columns.z.name));
+    scales.push(specColumns.z.quantitative ? (0, _scales.linearScale)(_constants.ScaleNames.Z, _constants.DataNames.Main, specColumns.z.name, zRange, false, false) : (0, _scales.pointScale)(_constants.ScaleNames.Z, _constants.DataNames.Main, zRange, specColumns.z.name));
   }
 
   return scales;
@@ -12595,8 +13490,12 @@ var _constants = require("../constants");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(insight, specViewOptions) {
-  const signals = (0, _array.allTruthy)((0, _signals.textSignals)(specViewOptions), [{
+function _default(context) {
+  const {
+    insight,
+    specViewOptions
+  } = context;
+  const signals = (0, _array.allTruthy)((0, _signals.textSignals)(context), [{
     "name": _constants.SignalNames.YDomain,
     "update": `domain('${_constants.ScaleNames.Y}')`
   }, {
@@ -12610,7 +13509,7 @@ function _default(insight, specViewOptions) {
       "max": 25,
       "step": 1
     }
-  }, (0, _signals.colorBinCountSignal)(specViewOptions), (0, _signals.colorReverseSignal)(specViewOptions)], insight.columns.facet && (0, _facet.facetSignals)(insight.facets, specViewOptions));
+  }, (0, _signals.colorBinCountSignal)(context), (0, _signals.colorReverseSignal)(context)], insight.columns.facet && (0, _facet.facetSignals)(context));
   return signals;
 }
 },{"../../array":"b//p","../signals":"N3c7","../facet":"7Ifg","../constants":"b0rV"}],"Rl9U":[function(require,module,exports) {
@@ -12641,18 +13540,23 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const scatterplot = (insight, columns, specViewOptions) => {
+const scatterplot = context => {
+  const {
+    specColumns,
+    insight,
+    specViewOptions
+  } = context;
   const errors = [];
-  if (!columns.x) errors.push(`Must set a field for x axis`);
-  if (!columns.y) errors.push(`Must set a field for y axis`);
+  if (!specColumns.x) errors.push(`Must set a field for x axis`);
+  if (!specColumns.y) errors.push(`Must set a field for y axis`);
   (0, _facet.checkForFacetErrors)(insight.facets, errors);
   const specCapabilities = {
     roles: [{
       role: 'x',
-      axisSelection: columns.x && columns.x.quantitative ? 'range' : 'exact'
+      axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact'
     }, {
       role: 'y',
-      axisSelection: columns.y && columns.y.quantitative ? 'range' : 'exact'
+      axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact'
     }, {
       role: 'z',
       allowNone: true
@@ -12680,24 +13584,24 @@ const scatterplot = (insight, columns, specViewOptions) => {
   let axes;
 
   if (!insight.hideAxes) {
-    axes = (0, _axes.default)(specViewOptions, columns);
+    axes = (0, _axes.default)(context);
   }
 
-  let marks = (0, _marks.default)(columns, specViewOptions);
+  let marks = (0, _marks.default)(context);
 
-  if (columns.facet) {
+  if (specColumns.facet) {
     marks = (0, _facet.facetMarks)(specViewOptions, marks[0].from.data, marks, axes);
     axes = [];
   }
 
-  const size = columns.facet ? (0, _facet.facetSize)(insight.facets, insight.size, specViewOptions) : insight.size;
+  const size = specColumns.facet ? (0, _facet.facetSize)(context) : insight.size;
   var vegaSpec = {
     "$schema": "https://vega.github.io/schema/vega/v3.json",
     "height": size.height,
     "width": size.width,
-    signals: (0, _signals.default)(insight, specViewOptions),
-    data: (0, _data.default)(insight, columns, specViewOptions),
-    scales: (0, _scales.default)(columns, insight),
+    signals: (0, _signals.default)(context),
+    data: (0, _data.default)(context),
+    scales: (0, _scales.default)(context),
     marks
   };
 
@@ -12705,12 +13609,14 @@ const scatterplot = (insight, columns, specViewOptions) => {
     vegaSpec.axes = axes;
   }
 
-  if (columns.color && !insight.hideLegend) {
-    vegaSpec.legends = [(0, _legends.legend)(columns.color)];
+  const legends = (0, _legends.getLegends)(context);
+
+  if (legends) {
+    vegaSpec.legends = legends;
   }
 
-  if (columns.facet) {
-    vegaSpec.layout = (0, _facet.layout)(specViewOptions);
+  if (specColumns.facet) {
+    vegaSpec.layout = (0, _facet.layout)(context);
   } else {
     //use autosize only when not faceting
     vegaSpec.autosize = "fit";
@@ -12733,18 +13639,22 @@ exports.default = _default;
 
 var _axes = require("../axes");
 
-function _default(specViewOptions, columns) {
-  const pa = (0, _axes.partialAxes)(specViewOptions, columns.x.quantitative, columns.y.quantitative);
+function _default(context) {
+  const {
+    specColumns,
+    specViewOptions
+  } = context;
+  const pa = (0, _axes.partialAxes)(specViewOptions, specColumns.x.quantitative, specColumns.y.quantitative);
   const axes = [Object.assign({
     "scale": "xband",
-    "title": columns.x.name,
+    "title": specColumns.x.name,
     "bandPosition": 0.5,
     "grid": true,
     "labelFlush": true
   }, pa.bottom), Object.assign({
     "scale": "yband",
-    "title": columns.y.name,
-    "bandPosition": columns.y.quantitative ? 0 : 0.5,
+    "title": specColumns.y.name,
+    "bandPosition": specColumns.y.quantitative ? 0 : 0.5,
     "grid": true,
     "labelFlush": true
   }, pa.left)];
@@ -12766,21 +13676,25 @@ var _top = require("../top");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(insight, columns, specViewOptions) {
-  const categoricalColor = columns.color && !columns.color.quantitative;
+function _default(context) {
+  const {
+    specColumns,
+    specViewOptions
+  } = context;
+  const categoricalColor = specColumns.color && !specColumns.color.quantitative;
   const data = (0, _array.allTruthy)([{
     "name": _constants.DataNames.Main,
     "transform": (0, _array.allTruthy)([{
       "type": "extent",
-      "field": columns.x.name,
+      "field": specColumns.x.name,
       "signal": "long_extent"
     }, {
       "type": "extent",
-      "field": columns.y.name,
+      "field": specColumns.y.name,
       "signal": "lat_extent"
-    }, columns.x.quantitative && {
+    }, specColumns.x.quantitative && {
       "type": "bin",
-      "field": columns.x.name,
+      "field": specColumns.x.name,
       "extent": {
         "signal": "long_extent"
       },
@@ -12790,9 +13704,9 @@ function _default(insight, columns, specViewOptions) {
       "nice": false,
       "as": [_constants.FieldNames.StacksLongBin0, _constants.FieldNames.StacksLongBin1],
       "signal": "binXSignal"
-    }, columns.y.quantitative && {
+    }, specColumns.y.quantitative && {
       "type": "bin",
-      "field": columns.y.name,
+      "field": specColumns.y.name,
       "extent": {
         "signal": "lat_extent"
       },
@@ -12803,7 +13717,7 @@ function _default(insight, columns, specViewOptions) {
       "as": [_constants.FieldNames.StacksLatBin0, _constants.FieldNames.StacksLatBin1],
       "signal": "binYSignal"
     }])
-  }], columns.x.quantitative && [{
+  }], specColumns.x.quantitative && [{
     "name": "xaxisdata",
     "transform": [{
       "type": "sequence",
@@ -12817,7 +13731,7 @@ function _default(insight, columns, specViewOptions) {
         "signal": "binXSignal.step"
       }
     }]
-  }], columns.y.quantitative && [{
+  }], specColumns.y.quantitative && [{
     "name": "yaxisdata",
     "transform": [{
       "type": "sequence",
@@ -12831,10 +13745,10 @@ function _default(insight, columns, specViewOptions) {
         "signal": "binYSignal.step"
       }
     }]
-  }], categoricalColor && (0, _top.topLookup)(columns.color, specViewOptions.maxLegends), [{
+  }], categoricalColor && (0, _top.topLookup)(specColumns.color, specViewOptions.maxLegends), [{
     "name": "stackedgroup",
     "source": categoricalColor ? _constants.DataNames.Legend : _constants.DataNames.Main,
-    "transform": [stackTransform(columns.sort, columns.x, columns.y), {
+    "transform": [stackTransform(specColumns.sort, specColumns.x, specColumns.y), {
       "type": "extent",
       "signal": "xtent",
       "field": _constants.FieldNames.StacksStart
@@ -12892,7 +13806,10 @@ var _fill = require("../fill");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(columns, specViewOptions) {
+function _default(context) {
+  const {
+    specColumns
+  } = context;
   const marks = [{
     "name": "marks2",
     "type": "rect",
@@ -12903,7 +13820,7 @@ function _default(columns, specViewOptions) {
       "update": {
         "x": {
           "scale": "xband",
-          "field": columns.x.quantitative ? _constants.FieldNames.StacksLongBin0 : columns.x.name,
+          "field": specColumns.x.quantitative ? _constants.FieldNames.StacksLongBin0 : specColumns.x.name,
           "offset": {
             "scale": "xinternalscale",
             "field": "column"
@@ -12911,7 +13828,7 @@ function _default(columns, specViewOptions) {
         },
         "y": {
           "scale": "yband",
-          "field": columns.y.quantitative ? _constants.FieldNames.StacksLatBin0 : columns.y.name,
+          "field": specColumns.y.quantitative ? _constants.FieldNames.StacksLatBin0 : specColumns.y.name,
           "offset": {
             "scale": "yinternalscale",
             "field": "depth"
@@ -12931,7 +13848,7 @@ function _default(columns, specViewOptions) {
         "height": {
           "signal": "actsize"
         },
-        "fill": (0, _fill.fill)(columns.color, specViewOptions)
+        "fill": (0, _fill.fill)(context)
       }
     }
   }];
@@ -12951,17 +13868,21 @@ var _constants = require("../constants");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(columns, insight) {
+function _default(context) {
+  const {
+    specColumns,
+    insight
+  } = context;
   const scales = [{
     "name": "xband",
     "type": "band",
-    "domain": columns.x.quantitative ? {
+    "domain": specColumns.x.quantitative ? {
       "data": "xaxisdata",
       "field": "data",
       "sort": true
     } : {
       "data": _constants.DataNames.Main,
-      "field": columns.x.quantitative ? _constants.FieldNames.StacksLongBin0 : columns.x.name,
+      "field": specColumns.x.quantitative ? _constants.FieldNames.StacksLongBin0 : specColumns.x.name,
       "sort": true
     },
     "range": [0, {
@@ -12975,13 +13896,13 @@ function _default(columns, insight) {
     "name": "yband",
     "type": "band",
     "reverse": true,
-    "domain": columns.y.quantitative ? {
+    "domain": specColumns.y.quantitative ? {
       "data": "yaxisdata",
       "field": "data",
       "sort": true
     } : {
       "data": _constants.DataNames.Main,
-      "field": columns.y.quantitative ? _constants.FieldNames.StacksLatBin0 : columns.y.name,
+      "field": specColumns.y.quantitative ? _constants.FieldNames.StacksLatBin0 : specColumns.y.name,
       "sort": true
     },
     "range": "height",
@@ -13036,9 +13957,9 @@ function _default(columns, insight) {
     }
   }];
 
-  if (columns.color) {
-    if (columns.color.quantitative) {
-      scales.push((0, _scales.binnableColorScale)(insight.colorBin, _constants.DataNames.Main, columns.color.name, insight.scheme));
+  if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
+    if (specColumns.color.quantitative) {
+      scales.push((0, _scales.binnableColorScale)(insight.colorBin, _constants.DataNames.Main, specColumns.color.name, insight.scheme));
     } else {
       scales.push({
         "name": _constants.ScaleNames.Color,
@@ -13078,8 +13999,13 @@ var _constants = require("../constants");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(insight, columns, specViewOptions) {
-  const signals = (0, _array.allTruthy)((0, _signals.textSignals)(specViewOptions), [(0, _signals.colorBinCountSignal)(specViewOptions), (0, _signals.colorReverseSignal)(specViewOptions), {
+function _default(context) {
+  const {
+    specColumns,
+    insight,
+    specViewOptions
+  } = context;
+  const signals = (0, _array.allTruthy)((0, _signals.textSignals)(context), [(0, _signals.colorBinCountSignal)(context), (0, _signals.colorReverseSignal)(context), {
     "name": _constants.SignalNames.XGridSize,
     "value": 3,
     "bind": {
@@ -13099,7 +14025,7 @@ function _default(insight, columns, specViewOptions) {
       "max": 20,
       "step": 1
     }
-  }, columns.x.quantitative && {
+  }, specColumns.x.quantitative && {
     "name": _constants.SignalNames.XBins,
     "value": 30,
     "bind": {
@@ -13109,7 +14035,7 @@ function _default(insight, columns, specViewOptions) {
       "max": 60,
       "step": 1
     }
-  }, columns.y.quantitative && {
+  }, specColumns.y.quantitative && {
     "name": _constants.SignalNames.YBins,
     "value": 30,
     "bind": {
@@ -13150,7 +14076,7 @@ function _default(insight, columns, specViewOptions) {
     "update": `(xbandw / (${_constants.SignalNames.XGridSize} + ${_constants.SignalNames.InnerPadding}))*(1-${_constants.SignalNames.InnerPadding})`
   }, {
     "name": "ybandw",
-    "update": `height/((${columns.y.quantitative ? _constants.SignalNames.YBins : columns.y.stats.distinctValueCount}) * (1 + ${_constants.SignalNames.OuterPadding}))`
+    "update": `height/((${specColumns.y.quantitative ? _constants.SignalNames.YBins : specColumns.y.stats.distinctValueCount}) * (1 + ${_constants.SignalNames.OuterPadding}))`
   }, {
     "name": "ybandsize",
     "update": `(ybandw / (${_constants.SignalNames.YGridSize} + ${_constants.SignalNames.InnerPadding}))*(1-${_constants.SignalNames.InnerPadding})`
@@ -13160,7 +14086,7 @@ function _default(insight, columns, specViewOptions) {
   }, {
     "name": "countheight",
     "update": `rowxtent[1]*actsize*${_constants.SignalNames.ZProportion}/${_signals.defaultZProportion}`
-  }], insight.columns.facet && (0, _facet.facetSignals)(insight.facets, specViewOptions));
+  }], insight.columns.facet && (0, _facet.facetSignals)(context));
   return signals;
 }
 },{"../../array":"b//p","../signals":"N3c7","../facet":"7Ifg","../constants":"b0rV"}],"oOWF":[function(require,module,exports) {
@@ -13191,21 +14117,25 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const stacks = (insight, columns, specViewOptions) => {
+const stacks = context => {
+  const {
+    specColumns,
+    insight
+  } = context;
   const errors = [];
-  if (!columns.x) errors.push(`Must set a field for x axis`);
-  if (!columns.y) errors.push(`Must set a field for y axis`);
+  if (!specColumns.x) errors.push(`Must set a field for x axis`);
+  if (!specColumns.y) errors.push(`Must set a field for y axis`);
   (0, _facet.checkForFacetErrors)(insight.facets, errors);
   const specCapabilities = {
     roles: [{
       role: 'x',
       binnable: true,
-      axisSelection: columns.x && columns.x.quantitative ? 'range' : 'exact',
+      axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
       signals: [_constants.SignalNames.XBins]
     }, {
       role: 'y',
       binnable: true,
-      axisSelection: columns.y && columns.y.quantitative ? 'range' : 'exact',
+      axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
       signals: [_constants.SignalNames.YBins]
     }, {
       role: 'z',
@@ -13227,27 +14157,29 @@ const stacks = (insight, columns, specViewOptions) => {
     };
   }
 
-  const size = columns.facet ? (0, _facet.facetSize)(insight.facets, insight.size, specViewOptions) : insight.size;
+  const size = specColumns.facet ? (0, _facet.facetSize)(context) : insight.size;
   var vegaSpec = {
     "$schema": "https://vega.github.io/schema/vega/v3.json",
     "height": size.height,
     "width": size.width,
-    signals: (0, _signals.default)(insight, columns, specViewOptions),
-    data: (0, _data.default)(insight, columns, specViewOptions),
-    scales: (0, _scales.default)(columns, insight),
-    marks: (0, _marks.default)(columns, specViewOptions)
+    signals: (0, _signals.default)(context),
+    data: (0, _data.default)(context),
+    scales: (0, _scales.default)(context),
+    marks: (0, _marks.default)(context)
   };
 
   if (!insight.hideAxes) {
-    vegaSpec.axes = (0, _axes.default)(specViewOptions, columns);
+    vegaSpec.axes = (0, _axes.default)(context);
   }
 
-  if (columns.color && !insight.hideLegend) {
-    vegaSpec.legends = [(0, _legends.legend)(columns.color)];
+  const legends = (0, _legends.getLegends)(context);
+
+  if (legends) {
+    vegaSpec.legends = legends;
   }
 
-  if (columns.facet) {
-    vegaSpec.layout = (0, _facet.layout)(specViewOptions);
+  if (specColumns.facet) {
+    vegaSpec.layout = (0, _facet.layout)(context);
   } else {
     //use autosize only when not faceting
     vegaSpec.autosize = "fit";
@@ -13279,14 +14211,19 @@ var _top = require("../top");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(insight, columns, specViewOptions) {
-  const categoricalColor = columns.color && !columns.color.quantitative;
+function _default(context) {
+  const {
+    specColumns,
+    insight,
+    specViewOptions
+  } = context;
+  const categoricalColor = specColumns.color && !specColumns.color.quantitative;
   const TreeMapDataName = "SandDanceTreeMapData";
-  const data = (0, _array.allTruthy)((0, _facet.facetSourceData)(columns.facet, insight.facets, TreeMapDataName), [{
+  const data = (0, _array.allTruthy)((0, _facet.facetSourceData)(specColumns.facet, insight.facets, TreeMapDataName), [{
     "name": _constants.DataNames.Main,
     "source": TreeMapDataName,
-    "transform": (0, _array.allTruthy)(columns.facet && (0, _facet.facetTransforms)(columns.facet, insight.facets), !columns.facet && treemapTransforms(insight))
-  }], categoricalColor && (0, _top.topLookup)(columns.color, specViewOptions.maxLegends), columns.facet && (0, _facet.facetGroupData)(_constants.DataNames.Main));
+    "transform": (0, _array.allTruthy)(specColumns.facet && (0, _facet.facetTransforms)(specColumns.facet, insight.facets), !specColumns.facet && treemapTransforms(insight))
+  }], categoricalColor && (0, _top.topLookup)(specColumns.color, specViewOptions.maxLegends), specColumns.facet && (0, _facet.facetGroupData)(_constants.DataNames.Main));
   return data;
 }
 
@@ -13331,7 +14268,10 @@ var _selection = require("../selection");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(data, columns, specViewOptions) {
+function _default(context, data) {
+  const {
+    specColumns
+  } = context;
   const marks = [{
     "type": "rect",
     "from": {
@@ -13351,12 +14291,12 @@ function _default(data, columns, specViewOptions) {
         "y2": {
           "field": _constants.FieldNames.TreemapStackY1
         },
-        "fill": (0, _fill.fill)(columns.color, specViewOptions)
+        "fill": (0, _fill.fill)(context)
       }
     }
   }];
 
-  if (columns.z) {
+  if (specColumns.z) {
     const update = marks[0].encode.update;
     update.z = {
       "value": 0
@@ -13366,7 +14306,7 @@ function _default(data, columns, specViewOptions) {
       "value": 0
     }, {
       "scale": _constants.ScaleNames.Z,
-      "field": columns.z.name
+      "field": specColumns.z.name
     }];
   }
 
@@ -13386,12 +14326,16 @@ var _constants = require("../constants");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(columns, insight) {
+function _default(context) {
+  const {
+    specColumns,
+    insight
+  } = context;
   const scales = [];
 
-  if (columns.color) {
-    if (columns.color.quantitative) {
-      scales.push((0, _scales.binnableColorScale)(insight.colorBin, _constants.DataNames.Main, columns.color.name, insight.scheme));
+  if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
+    if (specColumns.color.quantitative) {
+      scales.push((0, _scales.binnableColorScale)(insight.colorBin, _constants.DataNames.Main, specColumns.color.name, insight.scheme));
     } else {
       scales.push({
         "name": _constants.ScaleNames.Color,
@@ -13411,11 +14355,11 @@ function _default(columns, insight) {
     }
   }
 
-  if (columns.z) {
+  if (specColumns.z) {
     const zRange = [0, {
       "signal": _constants.SignalNames.ZHeight
     }];
-    scales.push(columns.z.quantitative ? (0, _scales.linearScale)(_constants.ScaleNames.Z, _constants.DataNames.Main, columns.z.name, zRange, false, false) : (0, _scales.pointScale)(_constants.ScaleNames.Z, _constants.DataNames.Main, zRange, columns.z.name));
+    scales.push(specColumns.z.quantitative ? (0, _scales.linearScale)(_constants.ScaleNames.Z, _constants.DataNames.Main, specColumns.z.name, zRange, false, false) : (0, _scales.pointScale)(_constants.ScaleNames.Z, _constants.DataNames.Main, zRange, specColumns.z.name));
   }
 
   return scales;
@@ -13438,8 +14382,12 @@ var _constants = require("../constants");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function _default(insight, specViewOptions) {
-  const signals = (0, _array.allTruthy)((0, _signals.textSignals)(specViewOptions), [(0, _signals.colorBinCountSignal)(specViewOptions), {
+function _default(context) {
+  const {
+    insight,
+    specViewOptions
+  } = context;
+  const signals = (0, _array.allTruthy)((0, _signals.textSignals)(context), [(0, _signals.colorBinCountSignal)(context), {
     "name": _constants.SignalNames.TreeMapMethod,
     "value": "squarify",
     "bind": {
@@ -13447,7 +14395,7 @@ function _default(insight, specViewOptions) {
       "input": "select",
       "options": ["squarify", "binary"]
     }
-  }, (0, _signals.colorReverseSignal)(specViewOptions)], insight.columns.facet && (0, _facet.facetSignals)(insight.facets, specViewOptions));
+  }, (0, _signals.colorReverseSignal)(context)], insight.columns.facet && (0, _facet.facetSignals)(context));
   return signals;
 }
 },{"../../array":"b//p","../signals":"N3c7","../facet":"7Ifg","../constants":"b0rV"}],"MNHb":[function(require,module,exports) {
@@ -13478,9 +14426,14 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const treemap = (insight, columns, specViewOptions) => {
+const treemap = context => {
+  const {
+    specColumns,
+    insight,
+    specViewOptions
+  } = context;
   const errors = [];
-  if (!columns.size) errors.push(`Must set a field for size`);
+  if (!specColumns.size) errors.push(`Must set a field for size`);
   (0, _facet.checkForFacetErrors)(insight.facets, errors);
   const specCapabilities = {
     roles: [{
@@ -13510,13 +14463,13 @@ const treemap = (insight, columns, specViewOptions) => {
     };
   }
 
-  const categoricalColor = columns.color && !columns.color.quantitative;
+  const categoricalColor = specColumns.color && !specColumns.color.quantitative;
   const dataName = categoricalColor ? _constants.DataNames.Legend : _constants.DataNames.Main;
   const TreeMapName = "SandDanceTreeMapFaceted";
-  const data = (0, _data.default)(insight, columns, specViewOptions);
-  let marks = (0, _marks.default)(columns.facet ? TreeMapName : dataName, columns, specViewOptions);
+  const data = (0, _data.default)(context);
+  let marks = (0, _marks.default)(context, specColumns.facet ? TreeMapName : dataName);
 
-  if (columns.facet) {
+  if (specColumns.facet) {
     const childData = {
       "name": TreeMapName,
       "source": _constants.DataNames.FacetGroupCell,
@@ -13526,23 +14479,24 @@ const treemap = (insight, columns, specViewOptions) => {
     marks[0].marks;
   }
 
-  const size = columns.facet ? (0, _facet.facetSize)(insight.facets, insight.size, specViewOptions) : insight.size;
+  const size = specColumns.facet ? (0, _facet.facetSize)(context) : insight.size;
   var vegaSpec = {
     "$schema": "https://vega.github.io/schema/vega/v3.json",
     "height": size.height,
     "width": size.width,
-    signals: (0, _signals.default)(insight, specViewOptions),
+    signals: (0, _signals.default)(context),
     data,
-    scales: (0, _scales.default)(columns, insight),
+    scales: (0, _scales.default)(context),
     marks
   };
+  const legends = (0, _legends.getLegends)(context);
 
-  if (columns.color && !insight.hideLegend) {
-    vegaSpec.legends = [(0, _legends.legend)(columns.color)];
+  if (legends) {
+    vegaSpec.legends = legends;
   }
 
-  if (columns.facet) {
-    vegaSpec.layout = (0, _facet.layout)(specViewOptions);
+  if (specColumns.facet) {
+    vegaSpec.layout = (0, _facet.layout)(context);
   } else {
     //use autosize only when not faceting
     vegaSpec.autosize = "fit";
@@ -13568,7 +14522,9 @@ var constants = _interopRequireWildcard(require("./constants"));
 
 exports.constants = constants;
 
-var _stableBarChart = require("./stableBarChart");
+var _barchartH = require("./barchartH");
+
+var _barchartV = require("./barchartV");
 
 var _density = require("./density");
 
@@ -13585,7 +14541,9 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 const creators = {
-  barchart: _stableBarChart.barchart,
+  barchart: _barchartV.barchartV,
+  barchartH: _barchartH.barchartH,
+  barchartV: _barchartV.barchartV,
   density: _density.density,
   grid: _grid.grid,
   scatterplot: _scatterPlot.scatterplot,
@@ -13594,11 +14552,14 @@ const creators = {
 };
 exports.creators = creators;
 
-function create(insight, specColumns, specViewOptions) {
+function create(context) {
+  const {
+    insight
+  } = context;
   const creator = creators[insight.chart];
 
   if (creator) {
-    const specResult = creator(insight, specColumns, specViewOptions); //TODO: find why Vega is doing this. fixup for facets
+    const specResult = creator(context); //TODO: find why Vega is doing this. fixup for facets
 
     if (specResult.vegaSpec && insight.columns && insight.columns.facet && insight.facets.columns === 2 && insight.facets.rows === 1) {
       specResult.vegaSpec.width = insight.size.width / 3;
@@ -13607,7 +14568,7 @@ function create(insight, specColumns, specViewOptions) {
     return specResult;
   }
 }
-},{"./constants":"b0rV","./stableBarChart":"MNJW","./density":"7yaW","./grid":"m34o","./scatterPlot":"Rl9U","./stacks":"oOWF","./treeMap":"MNHb"}],"DO07":[function(require,module,exports) {
+},{"./constants":"b0rV","./barchartH":"29CI","./barchartV":"J9sm","./density":"7yaW","./grid":"m34o","./scatterPlot":"Rl9U","./stacks":"oOWF","./treeMap":"MNHb"}],"DO07":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13621,10 +14582,13 @@ var _inference = require("./inference");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function cloneVegaSpecWithData(insight, specColumns, specViewOptions, currData) {
+function cloneVegaSpecWithData(context, currData) {
+  const {
+    specColumns
+  } = context;
   const columns = [specColumns.color, specColumns.facet, specColumns.group, specColumns.size, specColumns.sort, specColumns.x, specColumns.y, specColumns.z];
   (0, _inference.inferAll)(columns, currData);
-  const specResult = (0, _.create)(insight, specColumns, specViewOptions);
+  const specResult = (0, _.create)(context);
 
   if (!specResult.errors) {
     const data0 = specResult.vegaSpec.data[0];
@@ -14779,7 +15743,12 @@ class Viewer {
   renderNewLayout(c, view) {
     const currData = this._dataScope.currentData();
 
-    const specResult = (0, _clone.cloneVegaSpecWithData)(this.insight, this._specColumns, this.options, currData);
+    const context = {
+      specColumns: this._specColumns,
+      insight: this.insight,
+      specViewOptions: this.options
+    };
+    const specResult = (0, _clone.cloneVegaSpecWithData)(context, currData);
 
     if (!specResult.errors) {
       const uiValues = (0, _signals.extractSignalValuesFromView)(this.vegaViewGl, this.vegaSpec);
@@ -15337,7 +16306,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = "1.5.0";
+const version = "1.6.0";
 exports.version = version;
 },{}],"rZaE":[function(require,module,exports) {
 "use strict";
@@ -16476,7 +17445,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = "1.1.1";
+const version = "1.1.2";
 exports.version = version;
 },{}],"MjKu":[function(require,module,exports) {
 "use strict";
@@ -17465,12 +18434,13 @@ var strings = {
   buttonLaunchVegaEditor: "Open Vega Editor",
   buttonCameraHome: "Center chart in window",
   buttonTooltipMapping: "Tooltip columns...",
-  chartTypeBarChart: "Bar chart",
+  chartTypeBarChartH: "Bar",
+  chartTypeBarChartV: "Column",
   chartTypeDensity: "Density",
   chartTypeGrid: "Grid",
-  chartTypeScatterPlot: "Scatter plot",
+  chartTypeScatterPlot: "Scatter",
   chartTypeStacks: "Stacks",
-  chartTypeTreeMap: "Tree map",
+  chartTypeTreeMap: "Treemap",
   errorColumnMustBeNumeric: "Numeric column required for this chart type.",
   labelBlank: "blank",
   labelNull: "null",
@@ -17490,7 +18460,14 @@ var strings = {
   labelColumnMapping: "Column Mapping",
   labelChartTypeOptions: "Chart options",
   labelColorBin: "Color binning",
+  labelColorOptions: "Color options",
   labelColorBinExplanation: "For numeric columns",
+  labelColorFieldInfo: function labelColorFieldInfo(colorColumnName, colorColumnType, categoricalNumeric, distinctValueCount) {
+    return "Field <span className=\"fieldname\">".concat(colorColumnName, "</span> is of type <span className=\"fieldtype\">").concat(colorColumnType, "</span>").concat(categoricalNumeric ? " and has ".concat(distinctValueCount, " distinct values") : '', ".");
+  },
+  labelColorFieldIsColorData: function labelColorFieldIsColorData(colorColumnName) {
+    return "Field <span className=\"fieldname\">".concat(colorColumnName, "</span> contains direct color data.");
+  },
   labelColorBinNone: "None (continuous)",
   labelColorBinQuantize: "Quantize",
   labelColorBinQuantile: "Quantile",
@@ -17504,6 +18481,14 @@ var strings = {
   labelColumnZ: "Z Axis",
   labelColumnSize: "Size by",
   labelColumnGroup: "Group by",
+  labelAliasColor: "Color",
+  labelAliasFacet: "Facet",
+  labelAliasSort: "Sort",
+  labelAliasX: "X Axis",
+  labelAliasY: "Y Axis",
+  labelAliasZ: "Z Axis",
+  labelAliasSize: "Size",
+  labelAliasGroup: "Group",
   labelDataItemIsFiltered: "Item is filtered from view",
   labelShowLegend: "Show legend",
   labelShowAxes: "Show axes",
@@ -17549,6 +18534,8 @@ var strings = {
   selectNone: "-- none --",
   selectNumeric: "Numeric",
   selectNonNumeric: "Categorical",
+  selectDirectColor: "Direct color",
+  selectReference: "Column mappings",
   tooltipSearch: function tooltipSearch(column, value) {
     return "Click to search in '".concat(column, "' for \"").concat(value, "\"");
   },
@@ -17556,6 +18543,7 @@ var strings = {
   labelSystem: "System",
   lavelViewType2d: "View in 2D",
   labelViewType3d: "View in 3D",
+  labelDataColors: "Enabled if this data column contains any CSS color values.",
   labelDataNullAll: "Loading data...",
   labelDataNullFiltered: "You can filter by first making a selection, then choosing <b>Isolate</b> or <b>Exclude</b> in the top bar.",
   labelDataNullSelection: "You can select by: <ul><li>clicking the chart axes</li><li>clicking in the legend</li><li>searching</li</ul>",
@@ -17859,6 +18847,17 @@ var roleLabels = {
   y: _language.strings.labelColumnY,
   z: _language.strings.labelColumnZ
 };
+var aliasLabels = {
+  color: _language.strings.labelAliasColor,
+  facet: _language.strings.labelAliasFacet,
+  group: _language.strings.labelAliasGroup,
+  size: _language.strings.labelAliasSize,
+  sort: _language.strings.labelAliasSort,
+  uid: null,
+  x: _language.strings.labelAliasX,
+  y: _language.strings.labelAliasY,
+  z: _language.strings.labelAliasZ
+};
 
 function filterColumnList(context, columns) {
   switch (context) {
@@ -17874,14 +18873,38 @@ function filterColumnList(context, columns) {
 
 function optionsForSpecColumn(sectionName, columns, role, selectedColumnName) {
   var filtered = filterColumnList(role, columns);
-  var options = filtered.map(function (column, i) {
+  var options = filtered.map(function (column) {
     var option = {
-      key: column.name,
+      key: "column:".concat(column.name),
       text: column.name,
       data: column,
       selected: selectedColumnName === column.name
     };
     return option;
+  });
+
+  if (options.length) {
+    var option = {
+      key: sectionName,
+      text: sectionName,
+      itemType: _base.base.fabric.DropdownMenuItemType.Header
+    };
+    options.unshift(option);
+  }
+
+  return options;
+}
+
+function optionsForReference(sectionName, specRoles) {
+  var options = specRoles.map(function (specRole) {
+    var option = {
+      key: "role:".concat(specRole.role),
+      text: aliasLabels[specRole.role],
+      data: specRole.role
+    };
+    return option;
+  }).sort(function (a, b) {
+    return a.text.localeCompare(b.text);
   });
 
   if (options.length) {
@@ -17906,10 +18929,33 @@ function selectFirst(options) {
 
 function ColumnMap(props) {
   if (!props.specRole) return null;
-  var numericLabel = _language.strings.selectNumeric;
-  var qoptions = optionsForSpecColumn(numericLabel, props.quantitativeColumns, props.specRole.role, props.selectedColumnName);
-  var coptions = props.specRole.excludeCategoric ? null : optionsForSpecColumn(_language.strings.selectNonNumeric, props.categoricalColumns, props.specRole.role, props.selectedColumnName);
-  var options = qoptions.concat(coptions).filter(Boolean);
+  var categoricalColumns;
+  var directColorColumns;
+  var directColorGroup;
+  var referenceGroup = [];
+
+  if (props.specRole.role === 'color') {
+    categoricalColumns = props.categoricalColumns.filter(function (c) {
+      return !c.isColorData;
+    });
+    directColorColumns = props.categoricalColumns.filter(function (c) {
+      return c.isColorData;
+    });
+    directColorGroup = optionsForSpecColumn(_language.strings.selectDirectColor, directColorColumns, 'color', props.selectedColumnName);
+  } else {
+    categoricalColumns = props.categoricalColumns;
+  }
+
+  if (props.specRole.role === 'sort') {
+    var others = props.specCapabilities.roles.filter(function (specRole) {
+      return specRole.role !== props.specRole.role;
+    });
+    referenceGroup = optionsForReference(_language.strings.selectReference, others);
+  }
+
+  var quantitativeGroup = optionsForSpecColumn(_language.strings.selectNumeric, props.quantitativeColumns, props.specRole.role, props.selectedColumnName);
+  var categoricGroup = props.specRole.excludeCategoric ? null : optionsForSpecColumn(_language.strings.selectNonNumeric, categoricalColumns, props.specRole.role, props.selectedColumnName);
+  var options = referenceGroup.concat(quantitativeGroup).concat(categoricGroup).concat(directColorGroup).filter(Boolean);
 
   if (props.specRole.allowNone) {
     options.unshift({
@@ -17946,7 +18992,7 @@ function ColumnMap(props) {
     label: label,
     options: options,
     onChange: function onChange(e, o) {
-      return props.changeColumnMapping(props.specRole.role, _sanddanceReact.SandDance.VegaDeckGl.util.clone(o.data));
+      return props.changeColumnMapping(props.specRole.role, typeof o.data === 'string' ? o.data : _sanddanceReact.SandDance.VegaDeckGl.util.clone(o.data));
     },
     onDismiss: props.onDismiss
   }), !props.hideSignals && signals && signals.map(function (signal, i) {
@@ -17989,7 +19035,34 @@ function Dialog(props) {
     text: _language.strings.buttonClose
   })));
 }
-},{"react":"ccIB","../base":"Vlbn","../language":"hk5u"}],"ZOmP":[function(require,module,exports) {
+},{"react":"ccIB","../base":"Vlbn","../language":"hk5u"}],"4Q3h":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Group = Group;
+
+var React = _interopRequireWildcard(require("react"));
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function Group(props) {
+  return React.createElement("div", {
+    className: _sanddanceReact.util.classList("sanddance-group", props.className)
+  }, React.createElement("div", {
+    className: "group-head"
+  }, React.createElement("label", null, props.label), props.labelCount && React.createElement("span", {
+    className: "count"
+  }, "(", props.labelCount, ")")), props.children && React.createElement("div", {
+    className: "group-body"
+  }, props.children));
+}
+},{"react":"ccIB","@msrvida/sanddance-react":"MjKu"}],"ZOmP":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18019,34 +19092,7 @@ function ToggleColumns(props) {
     })));
   }));
 }
-},{"react":"ccIB","../base":"Vlbn"}],"4Q3h":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Group = Group;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function Group(props) {
-  return React.createElement("div", {
-    className: _sanddanceReact.util.classList("sanddance-group", props.className)
-  }, React.createElement("div", {
-    className: "group-head"
-  }, React.createElement("label", null, props.label), props.labelCount && React.createElement("span", {
-    className: "count"
-  }, "(", props.labelCount, ")")), props.children && React.createElement("div", {
-    className: "group-body"
-  }, props.children));
-}
-},{"react":"ccIB","@msrvida/sanddance-react":"MjKu"}],"NGSt":[function(require,module,exports) {
+},{"react":"ccIB","../base":"Vlbn"}],"NGSt":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18062,13 +19108,13 @@ var _columnMap = require("../controls/columnMap");
 
 var _dialog = require("../controls/dialog");
 
-var _toggleColumns = require("../controls/toggleColumns");
-
 var _group = require("../controls/group");
 
 var _signal = require("../controls/signal");
 
 var _language = require("../language");
+
+var _toggleColumns = require("../controls/toggleColumns");
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -18121,37 +19167,34 @@ function (_React$Component) {
       }, React.createElement("div", {
         className: "calculator"
       }, React.createElement(_base.base.fabric.ChoiceGroup, {
+        className: "sanddance-chart-type",
         options: [{
           key: 'grid',
-          text: _language.strings.chartTypeGrid,
-          checked: props.chart === 'grid',
-          disabled: props.disabled
+          text: _language.strings.chartTypeGrid
         }, {
           key: 'scatterplot',
-          text: _language.strings.chartTypeScatterPlot,
-          checked: props.chart === 'scatterplot',
-          disabled: props.disabled
+          text: _language.strings.chartTypeScatterPlot
         }, {
           key: 'density',
-          text: _language.strings.chartTypeDensity,
-          checked: props.chart === 'density',
-          disabled: props.disabled
+          text: _language.strings.chartTypeDensity
         }, {
-          key: 'barchart',
-          text: _language.strings.chartTypeBarChart,
-          checked: props.chart === 'barchart',
-          disabled: props.disabled
+          key: 'barchartV',
+          text: _language.strings.chartTypeBarChartV
+        }, {
+          key: 'barchartH',
+          text: _language.strings.chartTypeBarChartH
         }, {
           key: 'treemap',
-          text: _language.strings.chartTypeTreeMap,
-          checked: props.chart === 'treemap',
-          disabled: props.disabled
+          text: _language.strings.chartTypeTreeMap
         }, {
           key: 'stacks',
-          text: _language.strings.chartTypeStacks,
-          checked: props.chart === 'stacks',
-          disabled: props.disabled
-        }],
+          text: _language.strings.chartTypeStacks
+        }].map(function (o) {
+          return Object.assign({}, o, {
+            checked: props.chart === o.key,
+            disabled: props.disabled
+          });
+        }),
         onChange: function onChange(e, o) {
           return props.onChangeChartType(o.key);
         }
@@ -18167,7 +19210,7 @@ function (_React$Component) {
       })), React.createElement(_group.Group, {
         label: _language.strings.labelColumnMapping
       }, React.createElement("div", null, props.specCapabilities && props.specCapabilities.roles.map(function (specRole, i) {
-        var specColumnInRole = props.columns[specRole.role];
+        var specColumnInRole = props.insightColumns[specRole.role];
         var selectedColumnName = specColumnInRole;
         var disabled = props.disabled || props.view === '2d' && specRole.role === 'z';
         return React.createElement(_columnMap.ColumnMap, Object.assign({}, props, {
@@ -18208,7 +19251,7 @@ function (_React$Component) {
 }(React.Component);
 
 exports.Chart = Chart;
-},{"react":"ccIB","../base":"Vlbn","../controls/columnMap":"DSho","../controls/dialog":"cFWm","../controls/toggleColumns":"ZOmP","../controls/group":"4Q3h","../controls/signal":"OWDI","../language":"hk5u"}],"BSWy":[function(require,module,exports) {
+},{"react":"ccIB","../base":"Vlbn","../controls/columnMap":"DSho","../controls/dialog":"cFWm","../controls/group":"4Q3h","../controls/signal":"OWDI","../language":"hk5u","../controls/toggleColumns":"ZOmP"}],"BSWy":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20917,7 +21960,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var maxDistinctColors = 20;
 
 function Palette(props) {
-  if (!props.colorColumn) return null;
   var distinctValueCount = props.colorColumn.stats.distinctValueCount;
   var isDual = distinctValueCount === 2;
   var categoricalNumeric = distinctValueCount > 0 && distinctValueCount < maxDistinctColors;
@@ -20960,13 +22002,13 @@ function Palette(props) {
   return React.createElement("div", {
     className: "sanddance-palette"
   }, React.createElement("div", {
-    className: "sanddance-explanation"
-  }, "Field ", React.createElement("span", {
-    className: "fieldname"
-  }, props.colorColumn.name), " is of type ", React.createElement("span", {
-    className: "fieldtype"
-  }, props.colorColumn.type), categoricalNumeric && " and has ".concat(distinctValueCount, " distinct values"), "."), React.createElement(_dropdown.Dropdown, {
+    className: "sanddance-explanation",
+    dangerouslySetInnerHTML: {
+      __html: _language.strings.labelColorFieldInfo(props.colorColumn.name, props.colorColumn.type, categoricalNumeric, distinctValueCount)
+    }
+  }), React.createElement(_dropdown.Dropdown, {
     collapseLabel: true,
+    disabled: props.disabled,
     dropdownWidth: 400,
     label: _language.strings.labelColorScheme,
     onRenderOption: function onRenderOption(option) {
@@ -21018,7 +22060,7 @@ function Color(props) {
   var colorColumn = props.dataContent.columns.filter(function (c) {
     return c.name === props.colorColumn;
   })[0];
-  var disabledColorBin = !colorColumn || !colorColumn.quantitative;
+  var disabledColorBin = !colorColumn || !colorColumn.quantitative || props.directColor;
   var colorBin = props.colorBin || 'quantize';
   return React.createElement("div", {
     className: "sanddance-color-dialog"
@@ -21030,18 +22072,24 @@ function Color(props) {
       return r.role === 'color';
     })[0],
     key: 0
-  })), React.createElement(_palettes.Palette, {
+  })), colorColumn && colorColumn.isColorData && React.createElement("div", {
+    className: "sanddance-explanation",
+    dangerouslySetInnerHTML: {
+      __html: _language.strings.labelColorFieldIsColorData(colorColumn.name)
+    }
+  }), colorColumn && !colorColumn.isColorData && React.createElement(_palettes.Palette, {
     scheme: props.scheme,
     colorColumn: colorColumn,
     changeColorScheme: function changeColorScheme(scheme) {
-      props.changeColorScheme(scheme);
-    }
-  }), React.createElement(_signal.Signal, {
-    disabled: props.disabled,
+      props.onColorSchemeChange(scheme);
+    },
+    disabled: props.disabled || props.directColor || colorColumn && colorColumn.isColorData
+  }), colorColumn && !colorColumn.isColorData && React.createElement(_signal.Signal, {
+    disabled: props.disabled || !colorColumn || props.directColor || colorColumn && colorColumn.isColorData,
     signal: props.colorReverseSignal,
     explorer: props.explorer,
     onChange: props.onColorReverseChange
-  })), React.createElement(_group.Group, {
+  })), colorColumn && !colorColumn.isColorData && React.createElement(_group.Group, {
     label: _language.strings.labelColorBin
   }, React.createElement("div", {
     className: "sanddance-explanation"
@@ -21063,13 +22111,27 @@ function Color(props) {
       disabled: disabledColorBin
     }],
     onChange: function onChange(e, o) {
-      props.changeColorBin(o.key);
+      props.onColorBinChange(o.key);
     }
   }), React.createElement(_signal.Signal, {
     disabled: props.disabled || disabledColorBin || props.colorBin === 'continuous',
     signal: props.colorBinSignal,
     explorer: props.explorer,
     onChange: props.onColorBinCountChange
+  })), colorColumn && !colorColumn.isColorData && React.createElement(_group.Group, {
+    label: _language.strings.labelColorOptions
+  }, React.createElement(_base.base.fabric.Toggle, {
+    label: _language.strings.selectDirectColor,
+    disabled: !colorColumn.stats.hasColorData,
+    checked: !!(colorColumn.stats.hasColorData && props.directColor),
+    onChange: function onChange(e, checked) {
+      return props.onDirectColorChange(checked);
+    }
+  }), React.createElement("div", {
+    className: "sanddance-explanation",
+    dangerouslySetInnerHTML: {
+      __html: _language.strings.labelDataColors
+    }
   })));
 }
 },{"react":"ccIB","../base":"Vlbn","../controls/columnMap":"DSho","../palettes":"otJp","../controls/signal":"OWDI","../language":"hk5u","../controls/group":"4Q3h"}],"tb7d":[function(require,module,exports) {
@@ -23270,7 +24332,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var version = "1.5.3";
+var version = "1.6.0";
 exports.version = version;
 },{}],"zKGJ":[function(require,module,exports) {
 "use strict";
@@ -24775,6 +25837,10 @@ function (_React$Component) {
         newState.signalValues = null;
       }
 
+      if (newState.chart === 'barchart') {
+        newState.chart = 'barchartV';
+      }
+
       this.setState(newState);
     }
   }, {
@@ -24860,6 +25926,10 @@ function (_React$Component) {
 
               if (!newState.scheme) {
                 newState.scheme = (0, _colorScheme.bestColorScheme)(column, null, _this6.state.scheme);
+              }
+
+              if (!column.stats.hasColorData) {
+                newState.directColor = false;
               }
 
               _this6.ignoreSelectionChange = true;
@@ -25099,6 +26169,7 @@ function (_React$Component) {
       var _this$state = this.state,
           colorBin = _this$state.colorBin,
           columns = _this$state.columns,
+          directColor = _this$state.directColor,
           facets = _this$state.facets,
           filter = _this$state.filter,
           hideAxes = _this$state.hideAxes,
@@ -25111,6 +26182,7 @@ function (_React$Component) {
       var insight = {
         colorBin: colorBin,
         columns: columns,
+        directColor: directColor,
         facets: facets,
         filter: filter,
         hideAxes: hideAxes,
@@ -25174,7 +26246,9 @@ function (_React$Component) {
           return _this9.viewer.presenter.homeCamera();
         }
       }), React.createElement("div", {
-        className: _sanddanceReact.util.classList("sanddance-main", this.state.sidebarPinned && "pinned", this.state.sidebarClosed && "closed", (insight.hideLegend || !(insight.columns && insight.columns.color)) && "hide-legend")
+        className: _sanddanceReact.util.classList("sanddance-main", this.state.sidebarPinned && "pinned", this.state.sidebarClosed && "closed", (insight.hideLegend || insight.directColor || !(insight.columns && insight.columns.color && !this.state.dataContent.columns.filter(function (c) {
+          return c.name === insight.columns.color;
+        })[0].isColorData)) && "hide-legend")
       }, React.createElement("div", {
         ref: function ref(div) {
           if (div && !_this9.layoutDivUnpinned) _this9.layoutDivUnpinned = div;
@@ -25251,7 +26325,6 @@ function (_React$Component) {
         switch (_this9.state.sideTabId) {
           case _sidebar.SideTabId.ChartType:
             return React.createElement(_chart.Chart, Object.assign({
-              specCapabilities: _this9.state.specCapabilities,
               tooltipExclusions: _this9.state.tooltipExclusions,
               toggleTooltipExclusion: function toggleTooltipExclusion(columnName) {
                 var tooltipExclusions = _toConsumableArray(_this9.state.tooltipExclusions);
@@ -25277,7 +26350,7 @@ function (_React$Component) {
               onChangeChartType: function onChangeChartType(chart) {
                 return _this9.changeChartType(chart);
               },
-              columns: _this9.state.columns,
+              insightColumns: _this9.state.columns,
               onChangeSignal: function onChangeSignal(role, column, name, value) {
                 (0, _partialInsight.saveSignalValuePref)(_this9.prefs, _this9.state.chart, role, column, name, value);
               }
@@ -25298,7 +26371,7 @@ function (_React$Component) {
                 return s.name === _sanddanceReact.SandDance.constants.SignalNames.ColorReverse;
               })[0],
               colorColumn: _this9.state.columns.color,
-              changeColorBin: function changeColorBin(colorBin) {
+              onColorBinChange: function onColorBinChange(colorBin) {
                 _this9.ignoreSelectionChange = true;
 
                 _this9.viewer.deselect().then(function () {
@@ -25317,7 +26390,7 @@ function (_React$Component) {
                   }, 0);
                 });
               },
-              changeColorScheme: function changeColorScheme(scheme) {
+              onColorSchemeChange: function onColorSchemeChange(scheme) {
                 _this9.changeColumnMapping('color', _this9.state.dataContent.columns.filter(function (c) {
                   return c.name === _this9.state.columns.color;
                 })[0], {
@@ -25339,6 +26412,12 @@ function (_React$Component) {
                 _this9.getColorContext = null;
                 var signalValues = {};
                 signalValues[_sanddanceReact.SandDance.constants.SignalNames.ColorReverse] = value;
+              },
+              directColor: _this9.state.directColor,
+              onDirectColorChange: function onDirectColorChange(directColor) {
+                _this9.changeInsight({
+                  directColor: directColor
+                });
               }
             }));
 
@@ -25490,6 +26569,10 @@ function (_React$Component) {
               return null;
             }
 
+            if (oldInsight.directColor != newInsight.directColor) {
+              return null;
+            }
+
             return _this9.viewer.colorContexts && _this9.viewer.colorContexts[_this9.viewer.currentColorContext];
           }; //don't allow tabbing to the canvas
 
@@ -25531,12 +26614,25 @@ function (_React$Component) {
         return !c.quantitative;
       });
       var props = {
-        changeColumnMapping: function changeColumnMapping(role, column) {
-          return _this10.changeColumnMapping(role, column);
+        changeColumnMapping: function changeColumnMapping(role, columnOrRole) {
+          var column;
+
+          if (typeof columnOrRole === 'string') {
+            //look up current insight
+            var columnName = _this10.state.columns[columnOrRole];
+            column = allColumns.filter(function (c) {
+              return c.name === columnName;
+            })[0];
+          } else {
+            column = columnOrRole;
+          }
+
+          _this10.changeColumnMapping(role, column);
         },
         allColumns: allColumns,
         quantitativeColumns: quantitativeColumns,
         categoricalColumns: categoricalColumns,
+        specCapabilities: this.state.specCapabilities,
         explorer: this
       };
       return props;

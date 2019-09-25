@@ -16,8 +16,8 @@
         PowerBISelectionId: "__SandDance__PowerBISelectionId",
         BarChartBin0: "__SandDance__BarChartBin0",
         BarChartBin1: "__SandDance__BarChartBin1",
-        BarChartStackY0: "__SandDance__BarChartStackY0",
-        BarChartStackY1: "__SandDance__BarChartStackY1",
+        BarChartStack0: "__SandDance__BarChartStack0",
+        BarChartStack1: "__SandDance__BarChartStack1",
         DensityCount: "__SandDance__DensityCount",
         DensityRow: "__SandDance__DensityRow",
         DensityXBin0: "__SandDance__DensityXBin0",
@@ -47,7 +47,8 @@
         TopLookup: "TopData",
         Legend: "LegendData",
         FacetGroupCell: "FacetGroupCellData",
-        FacetCellTitles: "FacetCellTitlesData"
+        FacetCellTitles: "FacetCellTitlesData",
+        QuantitativeData: "QuantitativeData"
     };
     const ScaleNames = {
         Color: "ColorScale",
@@ -70,6 +71,7 @@
         TextSize: "Text_SizeSignal",
         TextTitleSize: "Text_TitleSizeSignal",
         TreeMapMethod: "Chart_TreeMapMethodSignal",
+        XDomain: "RoleX_DomainSignal",
         XBins: "RoleX_BinsSignal",
         XGridSize: "Chart_XGridSize",
         YBins: "RoleY_BinsSignal",
@@ -5304,8 +5306,13 @@
      * @param cssColorSpecifier A CSS Color Module Level 3 specifier string.
      */
     function colorFromString(cssColorSpecifier) {
-        const c = color(cssColorSpecifier).rgb();
-        return rgbToDeckglColor(c);
+        if (cssColorSpecifier) {
+            const dc = color(cssColorSpecifier);
+            if (dc) {
+                const c = dc.rgb();
+                return rgbToDeckglColor(c);
+            }
+        }
     }
     /**
      * Convert a Deck.gl color to a CSS rgba() string.
@@ -5324,6 +5331,9 @@
         hslColor.s = value;
         const c = hslColor.rgb();
         return rgbToDeckglColor(c);
+    }
+    function isColor(cssColorSpecifier) {
+        return !!color(cssColorSpecifier);
     }
 
     let vega = {
@@ -6501,6 +6511,7 @@ void main(void) {
         colorIsEqual: colorIsEqual,
         colorToString: colorToString,
         deepMerge: deepMerge,
+        isColor: isColor,
         getCubeLayer: getCubeLayer,
         getCubes: getCubes,
         outerSize: outerSize
@@ -6800,7 +6811,7 @@ void main(void) {
                 ordinal,
                 size: [item.width, item.height, depth],
                 position: [x + (item.x || 0) - options.offsetX, ty * (y + (item.y || 0) - options.offsetY) - item.height, z],
-                color: item.fill ? colorFromString(item.fill) : [128, 128, 128, 128]
+                color: colorFromString(item.fill) || options.defaultCubeColor || [128, 128, 128, 128]
             };
             stage.cubeData.push(cube);
             i++;
@@ -7088,7 +7099,8 @@ void main(void) {
                 maxOrdinal: -1,
                 ordinalsSpecified: false,
                 currAxis: null,
-                currFacetRect: null
+                currFacetRect: null,
+                defaultCubeColor: this.style.defaultCubeColor
             };
             //determine if this is a vega scene
             if (scene.marktype) {
@@ -7395,11 +7407,22 @@ void main(void) {
                 if (typeof column.quantitative !== 'boolean') {
                     column.quantitative = isQuantitative(column);
                 }
+                if (column.type === 'string') {
+                    checkIsColorData(data, column);
+                }
                 if (!column.stats) {
                     column.stats = getStats(data, column);
                 }
             }
         });
+    }
+    function checkIsColorData(data, column) {
+        for (let i = 0; i < data.length; i++) {
+            if (!isColor(data[i][column.name])) {
+                return;
+            }
+        }
+        column.isColorData = true;
     }
     function getStats(data, column) {
         const distinctMap = {};
@@ -7423,6 +7446,9 @@ void main(void) {
             let num = +value;
             if (!isNaN(num)) {
                 sum += num;
+            }
+            if (column.type === 'string' && !stats.hasColorData && isColor(value)) {
+                stats.hasColorData = true;
             }
         }
         if (column.quantitative) {
@@ -7810,7 +7836,9 @@ void main(void) {
     const CellTitle = "CellTitle";
     const CellFiller = "CellFiller";
     const facetTitleSeparator = ' - ';
-    function facetSignals(facets, specViewOptions) {
+    function facetSignals(context) {
+        const { insight } = context;
+        const { facets } = insight;
         const signals = [
             {
                 "name": SignalNames.FacetColumns,
@@ -7840,13 +7868,16 @@ void main(void) {
             }
         }
     }
-    function facetSize(facets, size, specViewOptions) {
+    function facetSize(context) {
+        const { insight, specViewOptions } = context;
+        const { facets, size } = insight;
         return {
             height: (size.height - (facets.rows + 1) * (specViewOptions.tickSize + specViewOptions.facetMargins.column)) / facets.columns,
             width: (size.width - (facets.columns + 1) * (specViewOptions.tickSize + specViewOptions.facetMargins.row)) / facets.rows,
         };
     }
-    function layout(specViewOptions) {
+    function layout(context) {
+        const { specViewOptions } = context;
         const layout = {
             "columns": {
                 "signal": SignalNames.FacetColumns
@@ -8350,6 +8381,21 @@ void main(void) {
         });
     }
 
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    // Licensed under the MIT license.
+    const BarChartScaleNames = {
+        bucketScale: "bucketScale",
+        levelScale: "levelScale",
+        compartmentScale: "compartmentScale"
+    };
+    const BarChartSignalNames = {
+        aspectRatioSignal: "aspectRatioSignal",
+        compartmentsPerLevelSignal: "compartmentsPerLevelSignal",
+        compartmentHeightSignal: "compartmentHeightSignal",
+        levelExtentSignal: "levelExtentSignal",
+        quantitativeBinSignal: "quantitativeBinSignal"
+    };
+
     function partialAxes(specViewOptions, xColumnQuantitative, yColumnQuantitative) {
         const lineColor = colorToString(specViewOptions.colors.axisLine);
         const axisColor = {
@@ -8384,98 +8430,103 @@ void main(void) {
         return { left, bottom };
     }
 
-    function getAxes (specViewOptions, columns) {
-        const pa = partialAxes(specViewOptions, columns.x.quantitative, true);
+    function getAxes (context) {
+        const { specColumns, specViewOptions } = context;
+        const pa = partialAxes(specViewOptions, true, specColumns.y.quantitative);
         const axes = [
-            Object.assign({ "scale": ScaleNames.X, "title": columns.x.name }, pa.bottom),
-            Object.assign({ "scale": "yscalelabel", "title": specViewOptions.language.count, "encode": {
+            Object.assign({ "scale": ScaleNames.Y, "title": specColumns.y.name }, pa.left),
+            Object.assign({ "scale": BarChartScaleNames.levelScale, "title": specViewOptions.language.count, "encode": {
                     "labels": {
                         "update": {
                             "text": {
-                                "signal": "shapesPerRow * datum.value"
+                                "signal": `${BarChartSignalNames.compartmentsPerLevelSignal} * datum.value`
                             }
                         }
                     }
-                } }, pa.left)
+                } }, pa.bottom)
         ];
         return axes;
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getQualitative (columns) {
+    function getQualitative (context) {
+        const { specColumns } = context;
         const stackTransform = {
             "type": "stack",
             "groupby": [
                 {
-                    "field": columns.x.name
+                    "field": specColumns.y.name
                 }
             ],
             "as": [
-                FieldNames.BarChartStackY0,
-                FieldNames.BarChartStackY1
+                FieldNames.BarChartStack0,
+                FieldNames.BarChartStack1
             ]
         };
-        if (columns.sort) {
+        if (specColumns.sort) {
             stackTransform.sort = {
-                "field": columns.sort.name
+                "field": specColumns.sort.name
             };
         }
         const transforms = [
             stackTransform,
             {
                 "type": "extent",
-                "signal": "xtent",
-                "field": FieldNames.BarChartStackY1
+                "signal": BarChartSignalNames.levelExtentSignal,
+                "field": FieldNames.BarChartStack1
             }
         ];
         return transforms;
     }
 
-    function getQuantitative (columns, groupBy) {
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    function getQuantitative (context, groupBy) {
+        const { specColumns } = context;
+        const bucket_extent = "bucket_extent";
         const stackTransform = {
             "type": "stack",
             "groupby": [
                 FieldNames.BarChartBin0
             ],
             "as": [
-                FieldNames.BarChartStackY0,
-                FieldNames.BarChartStackY1
+                FieldNames.BarChartStack0,
+                FieldNames.BarChartStack1
             ]
         };
         if (groupBy) {
             stackTransform.groupby.push(groupBy.name);
         }
-        if (columns.sort) {
+        if (specColumns.sort) {
             stackTransform.sort = {
-                "field": columns.sort.name
+                "field": specColumns.sort.name
             };
         }
         const transforms = [
             {
                 "type": "extent",
-                "field": columns.x.name,
-                "signal": "var_extent"
+                "field": specColumns.y.name,
+                "signal": bucket_extent
             },
             {
                 "type": "bin",
-                "field": columns.x.name,
+                "field": specColumns.y.name,
                 "extent": {
-                    "signal": "var_extent"
+                    "signal": bucket_extent
                 },
                 "maxbins": {
-                    "signal": SignalNames.XBins
+                    "signal": SignalNames.YBins
                 },
                 "as": [
                     FieldNames.BarChartBin0,
                     FieldNames.BarChartBin1
                 ],
-                "signal": "binSignal"
+                "signal": BarChartSignalNames.quantitativeBinSignal
             },
             stackTransform,
             {
                 "type": "extent",
-                "signal": "xtent",
-                "field": FieldNames.BarChartStackY1
+                "signal": BarChartSignalNames.levelExtentSignal,
+                "field": FieldNames.BarChartStack1
             }
         ];
         return transforms;
@@ -8534,41 +8585,43 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getData (namespace, insight, columns, specViewOptions) {
-        const categoricalColor = columns.color && !columns.color.quantitative;
-        const nestedDataName = columns.facet && columns.facet.quantitative ? DataNames.Pre : DataNames.Main;
-        const data = allTruthy(facetSourceData(columns.facet, insight.facets, DataNames.Main), categoricalColor && topLookup(columns.color, specViewOptions.maxLegends), [
-            nested(namespace, categoricalColor ? DataNames.Legend : nestedDataName, columns),
-            stacked(namespace, namespace.nested, columns.facet && facetTransforms(columns.facet, insight.facets))
-        ], columns.x.quantitative && [
+    function getData (context, namespace) {
+        const { specColumns, insight, specViewOptions } = context;
+        const categoricalColor = specColumns.color && !specColumns.color.quantitative;
+        const nestedDataName = specColumns.facet && specColumns.facet.quantitative ? DataNames.Pre : DataNames.Main;
+        const data = allTruthy(facetSourceData(specColumns.facet, insight.facets, DataNames.Main), categoricalColor && topLookup(specColumns.color, specViewOptions.maxLegends), [
+            bucketed(context, namespace, categoricalColor ? DataNames.Legend : nestedDataName),
+            stacked(namespace, namespace.bucket, specColumns.facet && facetTransforms(specColumns.facet, insight.facets))
+        ], specColumns.y.quantitative && [
             {
-                "name": "xaxisdata",
+                "name": DataNames.QuantitativeData,
                 "transform": [
                     {
                         "type": "sequence",
                         "start": {
-                            "signal": "binSignal.start"
+                            "signal": `${BarChartSignalNames.quantitativeBinSignal}.start`
                         },
                         "stop": {
-                            "signal": "binSignal.stop"
+                            "signal": `${BarChartSignalNames.quantitativeBinSignal}.stop`
                         },
                         "step": {
-                            "signal": "binSignal.step"
+                            "signal": `${BarChartSignalNames.quantitativeBinSignal}.step`
                         }
                     }
                 ]
             }
-        ], columns.facet && facetGroupData(namespace.stacked));
+        ], specColumns.facet && facetGroupData(namespace.stacked));
         return data;
     }
-    function nested(namespace, source, columns) {
+    function bucketed(context, namespace, source) {
+        const { specColumns: columns } = context;
         const data = {
-            "name": namespace.nested,
+            "name": namespace.bucket,
             source,
-            "transform": columns.x.quantitative ?
-                getQuantitative(columns, columns.facet)
+            "transform": columns.y.quantitative ?
+                getQuantitative(context, columns.facet)
                 :
-                    getQualitative(columns)
+                    getQualitative(context)
         };
         return data;
     }
@@ -8584,25 +8637,31 @@ void main(void) {
         const transforms = [
             {
                 "type": "formula",
-                "expr": `floor(datum.${FieldNames.BarChartStackY0} / shapesPerRow)`,
-                "as": namespace.__row
+                "expr": `floor(datum.${FieldNames.BarChartStack0} / ${BarChartSignalNames.compartmentsPerLevelSignal})`,
+                "as": namespace.__level
             },
             {
                 "type": "formula",
-                "expr": `datum.${FieldNames.BarChartStackY0} % shapesPerRow`,
-                "as": namespace.__column
+                "expr": `datum.${FieldNames.BarChartStack0} % ${BarChartSignalNames.compartmentsPerLevelSignal}`,
+                "as": namespace.__compartment
             }
         ];
         return transforms;
     }
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
-    function fill(colorColumn, specViewOptions) {
+    function fill(context) {
+        const { specColumns, insight, specViewOptions } = context;
+        const colorColumn = specColumns.color;
         return colorColumn ?
-            {
-                "scale": ScaleNames.Color,
-                "field": colorColumn.quantitative ? colorColumn.name : FieldNames.Top
-            }
+            colorColumn.isColorData || insight.directColor ?
+                {
+                    "field": colorColumn.name
+                }
+                :
+                    {
+                        "scale": ScaleNames.Color,
+                        "field": colorColumn.quantitative ? colorColumn.name : FieldNames.Top
+                    }
             :
                 {
                     "value": colorToString(specViewOptions.colors.defaultCube)
@@ -8615,7 +8674,8 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getMarks (namespace, columns, specViewOptions) {
+    function getMarks (context, namespace) {
+        const { specColumns } = context;
         const mark = {
             "type": "rect",
             "from": {
@@ -8623,58 +8683,58 @@ void main(void) {
             },
             "encode": {
                 "update": {
-                    "x": {
-                        "scale": ScaleNames.X,
-                        "field": columns.x.quantitative ? FieldNames.BarChartBin0 : columns.x.name,
+                    "y": {
+                        "scale": ScaleNames.Y,
+                        "field": specColumns.y.quantitative ? FieldNames.BarChartBin0 : specColumns.y.name,
                         "offset": {
-                            "scale": "xnewinternalscale",
-                            "field": namespace.__column
+                            "scale": BarChartScaleNames.compartmentScale,
+                            "field": namespace.__compartment
                         }
                     },
-                    "width": [
+                    "height": [
                         {
-                            "test": `bandwidth('xnewinternalscale') < 1`,
+                            "test": `bandwidth('${BarChartScaleNames.compartmentScale}') < 1`,
                             "value": minPixelSize
                         },
                         {
-                            "scale": "xnewinternalscale",
+                            "scale": BarChartScaleNames.compartmentScale,
                             "band": 1
                         }
                     ],
-                    "y": [
+                    "x": [
                         {
-                            "scale": ScaleNames.Y,
+                            "scale": ScaleNames.X,
                             "test": testForCollapseSelection(),
-                            "signal": `${SignalNames.YDomain}[0]`
+                            "signal": `${SignalNames.XDomain}[0]`
                         },
                         {
-                            "scale": ScaleNames.Y,
-                            "field": namespace.__row,
+                            "scale": ScaleNames.X,
+                            "field": namespace.__level,
                             "band": 1,
                             "offset": {
-                                "signal": `-bandwidth('${ScaleNames.Y}')-1`
+                                "signal": `-bandwidth('${ScaleNames.X}')-1`
                             }
                         }
                     ],
-                    "height": [
+                    "width": [
                         {
                             "test": testForCollapseSelection(),
                             "value": 0
                         },
                         {
-                            "test": `bandwidth('${ScaleNames.Y}') < 1`,
+                            "test": `bandwidth('${ScaleNames.X}') < 1`,
                             "value": minPixelSize
                         },
                         {
-                            "scale": ScaleNames.Y,
+                            "scale": ScaleNames.X,
                             "band": 1
                         }
                     ],
-                    "fill": fill(columns.color, specViewOptions)
+                    "fill": fill(context)
                 }
             }
         };
-        if (columns.z) {
+        if (specColumns.z) {
             const update = mark.encode.update;
             update.z = {
                 "value": 0
@@ -8686,7 +8746,7 @@ void main(void) {
                 },
                 {
                     "scale": ScaleNames.Z,
-                    "field": columns.z.name
+                    "field": specColumns.z.name
                 }
             ];
         }
@@ -8694,66 +8754,59 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function qualitativeScales (namespace, columns) {
+    function qualitativeScales (context, namespace) {
+        const { specColumns } = context;
         const scales = [
             {
-                "name": "xscaleavailable",
+                "name": BarChartScaleNames.bucketScale,
                 "type": "band",
-                "range": "width",
+                "range": "height",
                 "domain": {
-                    "data": namespace.nested,
-                    "field": columns.x.name,
+                    "data": namespace.bucket,
+                    "field": specColumns.y.name,
                     "sort": true
                 }
             },
             {
-                "name": ScaleNames.X,
+                "name": ScaleNames.Y,
                 "type": "band",
                 "range": [
                     0,
                     {
-                        "signal": "width"
+                        "signal": "height"
                     }
                 ],
                 "padding": 0.01,
                 "domain": {
                     "data": namespace.stacked,
-                    "field": columns.x.name,
+                    "field": specColumns.y.name,
                     "sort": true
-                }
+                },
+                "reverse": true
             }
         ];
         return scales;
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function quantitativeScales (namespace, columns) {
+    function quantitativeScales () {
         const scales = [
             {
-                "name": "xscaleavailable",
-                "type": "band",
-                "range": "width",
-                "domain": {
-                    "data": namespace.nested,
-                    "field": FieldNames.BarChartBin0,
-                    "sort": true
-                }
-            },
-            {
-                "name": ScaleNames.X,
+                "name": ScaleNames.Y,
                 "type": "band",
                 "range": [
                     0,
                     {
-                        "signal": "width"
+                        "signal": "height"
                     }
                 ],
                 "padding": 0.01,
                 "domain": {
-                    "data": "xaxisdata",
+                    "data": DataNames.QuantitativeData,
                     "field": "data",
                     "sort": true
-                }
+                },
+                "reverse": true
             }
         ];
         return scales;
@@ -8838,50 +8891,51 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getScales (namespace, insight, columns) {
+    function getScales (context, namespace) {
+        const { specColumns, insight } = context;
         const scales = [
             {
-                "name": "xnewinternalscale",
+                "name": BarChartScaleNames.compartmentScale,
                 "type": "band",
                 "range": [
                     0,
                     {
-                        "signal": "xdesbandwidth"
+                        "signal": BarChartSignalNames.compartmentHeightSignal
                     }
                 ],
                 "padding": 0.1,
                 "domain": {
-                    "signal": "sequence(0, shapesPerRow+1, 1)"
+                    "signal": `sequence(0, ${BarChartSignalNames.compartmentsPerLevelSignal}+1, 1)`
                 }
             },
             {
-                "name": "yscalelabel",
+                "name": BarChartScaleNames.levelScale,
                 "range": [
                     {
-                        "signal": "height"
+                        "signal": "0"
                     },
                     {
-                        "signal": "0"
+                        "signal": "width"
                     }
                 ],
                 "round": true,
                 "domain": {
                     "data": namespace.stacked,
-                    "field": namespace.__row,
+                    "field": namespace.__level,
                     "sort": true
                 },
                 "zero": true,
                 "nice": true
             },
             {
-                "name": ScaleNames.Y,
+                "name": ScaleNames.X,
                 "type": "band",
                 "range": [
                     {
-                        "signal": "height"
+                        "signal": "0"
                     },
                     {
-                        "signal": "0"
+                        "signal": "width"
                     }
                 ],
                 "padding": 0.1,
@@ -8890,21 +8944,21 @@ void main(void) {
                 "align": 1,
                 "domain": {
                     "data": namespace.stacked,
-                    "field": namespace.__row,
+                    "field": namespace.__level,
                     "sort": true
                 }
             }
         ];
-        if (columns.color) {
-            if (columns.color.quantitative) {
-                scales.push(binnableColorScale(insight.colorBin, namespace.nested, columns.color.name, insight.scheme));
+        if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
+            if (specColumns.color.quantitative) {
+                scales.push(binnableColorScale(insight.colorBin, namespace.bucket, specColumns.color.name, insight.scheme));
             }
             else {
                 scales.push({
                     "name": ScaleNames.Color,
                     "type": "ordinal",
                     "domain": {
-                        "data": namespace.nested,
+                        "data": namespace.bucket,
                         "field": FieldNames.Top,
                         "sort": true
                     },
@@ -8915,18 +8969,19 @@ void main(void) {
                 });
             }
         }
-        if (columns.z) {
+        if (specColumns.z) {
             const zRange = [0, { "signal": SignalNames.ZHeight }];
-            scales.push(columns.z.quantitative ?
-                linearScale(ScaleNames.Z, DataNames.Main, columns.z.name, zRange, false, true)
+            scales.push(specColumns.z.quantitative ?
+                linearScale(ScaleNames.Z, DataNames.Main, specColumns.z.name, zRange, false, true)
                 :
-                    pointScale(ScaleNames.Z, DataNames.Main, zRange, columns.z.name));
+                    pointScale(ScaleNames.Z, DataNames.Main, zRange, specColumns.z.name));
         }
-        return scales.concat(columns.x.quantitative ? quantitativeScales(namespace, columns) : qualitativeScales(namespace, columns));
+        return scales.concat(specColumns.y.quantitative ? quantitativeScales() : qualitativeScales(context, namespace));
     }
 
     const defaultZProportion = 0.6;
-    function textSignals(specViewOptions) {
+    function textSignals(context) {
+        const { specViewOptions } = context;
         const signals = [
             {
                 "name": SignalNames.ZProportion,
@@ -8991,7 +9046,8 @@ void main(void) {
         ];
         return signals;
     }
-    function colorBinCountSignal(specViewOptions) {
+    function colorBinCountSignal(context) {
+        const { specViewOptions } = context;
         const signal = {
             "name": SignalNames.ColorBinCount,
             "value": 7,
@@ -9005,7 +9061,8 @@ void main(void) {
         };
         return signal;
     }
-    function colorReverseSignal(specViewOptions) {
+    function colorReverseSignal(context) {
+        const { specViewOptions } = context;
         const signal = {
             "name": SignalNames.ColorReverse,
             "value": false,
@@ -9018,17 +9075,18 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getSignals (insight, columns, specViewOptions) {
-        const signals = allTruthy(textSignals(specViewOptions), [
+    function getSignals (context) {
+        const { specColumns, specViewOptions } = context;
+        const signals = allTruthy(textSignals(context), [
             {
-                "name": SignalNames.YDomain,
-                "update": `domain('${ScaleNames.Y}')`
+                "name": SignalNames.XDomain,
+                "update": `domain('${ScaleNames.X}')`
             },
-            columns.x.quantitative && {
-                "name": SignalNames.XBins,
+            specColumns.y.quantitative && {
+                "name": SignalNames.YBins,
                 "value": 7,
                 "bind": {
-                    "name": specViewOptions.language.XBinSize,
+                    "name": specViewOptions.language.YBinSize,
                     "input": "range",
                     "min": 1,
                     "max": 20,
@@ -9036,24 +9094,23 @@ void main(void) {
                 }
             },
             {
-                "name": "xdesbandwidth",
-                "update": `bandwidth('${columns.x.quantitative ? ScaleNames.X : 'xscaleavailable'}')`
+                "name": BarChartSignalNames.compartmentHeightSignal,
+                "update": `bandwidth('${specColumns.y.quantitative ? ScaleNames.Y : BarChartScaleNames.bucketScale}')`
             },
             {
-                "name": "binAspect",
-                "update": "xdesbandwidth/height"
+                "name": BarChartSignalNames.aspectRatioSignal,
+                "update": `${BarChartSignalNames.compartmentHeightSignal}/width`
             },
             {
-                "name": "shapesPerRow",
-                "update": "ceil(sqrt(binAspect*xtent[1]))"
+                "name": BarChartSignalNames.compartmentsPerLevelSignal,
+                "update": `ceil(sqrt(${BarChartSignalNames.aspectRatioSignal}*${BarChartSignalNames.levelExtentSignal}[1]))`
             },
-            colorBinCountSignal(specViewOptions),
-            colorReverseSignal(specViewOptions)
-        ], columns.facet && facetSignals(insight.facets, specViewOptions));
+            colorBinCountSignal(context),
+            colorReverseSignal(context)
+        ], specColumns.facet && facetSignals(context));
         return signals;
     }
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
     function legend(column) {
         const legend = {
             "orient": "none",
@@ -9074,30 +9131,37 @@ void main(void) {
         }
         return legend;
     }
+    function getLegends(context) {
+        const { specColumns, insight } = context;
+        if (specColumns.color && !insight.hideLegend && !insight.directColor && !specColumns.color.isColorData) {
+            return [legend(specColumns.color)];
+        }
+    }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
     class NameSpace {
         constructor(nameSpace = '') {
-            ['nested', 'stacked', '__column', '__row'].forEach(name => {
+            ['bucket', 'stacked', '__compartment', '__level'].forEach(name => {
                 this[name] = `${name}${nameSpace}`;
             });
         }
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    const barchart = (insight, columns, specViewOptions) => {
+    const barchartH = (context) => {
+        const { specColumns, insight, specViewOptions } = context;
         const errors = [];
-        if (!columns.x)
-            errors.push(`Must set a field for x axis`);
+        if (!specColumns.y)
+            errors.push(`Must set a field for y axis`);
         checkForFacetErrors(insight.facets, errors);
         const specCapabilities = {
             roles: [
                 {
-                    role: 'x',
+                    role: 'y',
                     binnable: true,
-                    axisSelection: columns.x && columns.x.quantitative ? 'range' : 'exact',
-                    signals: [SignalNames.XBins]
+                    axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
+                    signals: [SignalNames.YBins]
                 },
                 {
                     role: 'z',
@@ -9127,45 +9191,46 @@ void main(void) {
         const rootNamespace = new NameSpace();
         let axes;
         if (!insight.hideAxes) {
-            axes = getAxes(specViewOptions, columns);
+            axes = getAxes(context);
         }
         let marks;
-        if (columns.facet) {
+        if (specColumns.facet) {
             const cellNamespace = new NameSpace('Cell');
-            const cellMarks = getMarks(cellNamespace, columns, specViewOptions);
-            const cd = columns.x.quantitative ?
+            const cellMarks = getMarks(context, cellNamespace);
+            const cd = specColumns.y.quantitative ?
                 [
                     stacked(cellNamespace, DataNames.FacetGroupCell)
                 ]
                 :
                     [
-                        nested(cellNamespace, DataNames.FacetGroupCell, columns),
-                        stacked(cellNamespace, cellNamespace.nested)
+                        bucketed(context, cellNamespace, DataNames.FacetGroupCell),
+                        stacked(cellNamespace, cellNamespace.bucket)
                     ];
             marks = facetMarks(specViewOptions, rootNamespace.stacked, cellMarks, axes, cd);
             axes = [];
         }
         else {
-            marks = getMarks(rootNamespace, columns, specViewOptions);
+            marks = getMarks(context, rootNamespace);
         }
-        const size = columns.facet ? facetSize(insight.facets, insight.size, specViewOptions) : insight.size;
+        const size = specColumns.facet ? facetSize(context) : insight.size;
         var vegaSpec = {
             "$schema": "https://vega.github.io/schema/vega/v3.json",
             "height": size.height,
             "width": size.width,
-            signals: getSignals(insight, columns, specViewOptions),
-            scales: getScales(rootNamespace, insight, columns),
-            data: getData(rootNamespace, insight, columns, specViewOptions),
+            signals: getSignals(context),
+            scales: getScales(context, rootNamespace),
+            data: getData(context, rootNamespace),
             marks
         };
         if (!insight.hideAxes && axes && axes.length) {
             vegaSpec.axes = axes;
         }
-        if (columns.color && !insight.hideLegend) {
-            vegaSpec.legends = [legend(columns.color)];
+        const legends = getLegends(context);
+        if (legends) {
+            vegaSpec.legends = legends;
         }
-        if (columns.facet) {
-            vegaSpec.layout = layout(specViewOptions);
+        if (specColumns.facet) {
+            vegaSpec.layout = layout(context);
         }
         else {
             //use autosize only when not faceting
@@ -9174,30 +9239,578 @@ void main(void) {
         return { vegaSpec, specCapabilities };
     };
 
-    function getAxes$1 (specViewOptions, columns) {
-        const pa = partialAxes(specViewOptions, columns.x.quantitative, columns.y.quantitative);
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    // Licensed under the MIT license.
+    const BarChartScaleNames$1 = {
+        bucketScale: "bucketScale",
+        levelScale: "levelScale",
+        compartmentScale: "compartmentScale"
+    };
+    const BarChartSignalNames$1 = {
+        aspectRatioSignal: "aspectRatioSignal",
+        compartmentsPerLevelSignal: "compartmentsPerLevelSignal",
+        compartmentWidthSignal: "compartmentWidthSignal",
+        levelExtentSignal: "levelExtentSignal",
+        quantitativeBinSignal: "quantitativeBinSignal"
+    };
+
+    function getAxes$1 (context) {
+        const { specColumns, specViewOptions } = context;
+        const pa = partialAxes(specViewOptions, specColumns.x.quantitative, true);
         const axes = [
-            Object.assign({ "scale": "xscale", "title": columns.x.name, "bandPosition": 0.5, "grid": true, "labelFlush": true }, pa.bottom),
-            Object.assign({ "scale": "yscale", "title": columns.y.name, "bandPosition": columns.y.quantitative ? 0 : 0.5, "grid": true, "labelFlush": true }, pa.left)
+            Object.assign({ "scale": ScaleNames.X, "title": specColumns.x.name }, pa.bottom),
+            Object.assign({ "scale": BarChartScaleNames$1.levelScale, "title": specViewOptions.language.count, "encode": {
+                    "labels": {
+                        "update": {
+                            "text": {
+                                "signal": `${BarChartSignalNames$1.compartmentsPerLevelSignal} * datum.value`
+                            }
+                        }
+                    }
+                } }, pa.left)
         ];
         return axes;
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getData$1 (insight, columns, specViewOptions) {
-        const categoricalColor = columns.color && !columns.color.quantitative;
+    function getQualitative$1 (context) {
+        const { specColumns } = context;
+        const stackTransform = {
+            "type": "stack",
+            "groupby": [
+                {
+                    "field": specColumns.x.name
+                }
+            ],
+            "as": [
+                FieldNames.BarChartStack0,
+                FieldNames.BarChartStack1
+            ]
+        };
+        if (specColumns.sort) {
+            stackTransform.sort = {
+                "field": specColumns.sort.name
+            };
+        }
+        const transforms = [
+            stackTransform,
+            {
+                "type": "extent",
+                "signal": BarChartSignalNames$1.levelExtentSignal,
+                "field": FieldNames.BarChartStack1
+            }
+        ];
+        return transforms;
+    }
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    function getQuantitative$1 (context, groupBy) {
+        const { specColumns } = context;
+        const bucket_extent = "bucket_extent";
+        const stackTransform = {
+            "type": "stack",
+            "groupby": [
+                FieldNames.BarChartBin0
+            ],
+            "as": [
+                FieldNames.BarChartStack0,
+                FieldNames.BarChartStack1
+            ]
+        };
+        if (groupBy) {
+            stackTransform.groupby.push(groupBy.name);
+        }
+        if (specColumns.sort) {
+            stackTransform.sort = {
+                "field": specColumns.sort.name
+            };
+        }
+        const transforms = [
+            {
+                "type": "extent",
+                "field": specColumns.x.name,
+                "signal": bucket_extent
+            },
+            {
+                "type": "bin",
+                "field": specColumns.x.name,
+                "extent": {
+                    "signal": bucket_extent
+                },
+                "maxbins": {
+                    "signal": SignalNames.XBins
+                },
+                "as": [
+                    FieldNames.BarChartBin0,
+                    FieldNames.BarChartBin1
+                ],
+                "signal": BarChartSignalNames$1.quantitativeBinSignal
+            },
+            stackTransform,
+            {
+                "type": "extent",
+                "signal": BarChartSignalNames$1.levelExtentSignal,
+                "field": FieldNames.BarChartStack1
+            }
+        ];
+        return transforms;
+    }
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    function getData$1 (context, namespace) {
+        const { specColumns, insight, specViewOptions } = context;
+        const categoricalColor = specColumns.color && !specColumns.color.quantitative;
+        const nestedDataName = specColumns.facet && specColumns.facet.quantitative ? DataNames.Pre : DataNames.Main;
+        const data = allTruthy(facetSourceData(specColumns.facet, insight.facets, DataNames.Main), categoricalColor && topLookup(specColumns.color, specViewOptions.maxLegends), [
+            bucketed$1(context, namespace, categoricalColor ? DataNames.Legend : nestedDataName),
+            stacked$1(namespace, namespace.bucket, specColumns.facet && facetTransforms(specColumns.facet, insight.facets))
+        ], specColumns.x.quantitative && [
+            {
+                "name": DataNames.QuantitativeData,
+                "transform": [
+                    {
+                        "type": "sequence",
+                        "start": {
+                            "signal": `${BarChartSignalNames$1.quantitativeBinSignal}.start`
+                        },
+                        "stop": {
+                            "signal": `${BarChartSignalNames$1.quantitativeBinSignal}.stop`
+                        },
+                        "step": {
+                            "signal": `${BarChartSignalNames$1.quantitativeBinSignal}.step`
+                        }
+                    }
+                ]
+            }
+        ], specColumns.facet && facetGroupData(namespace.stacked));
+        return data;
+    }
+    function bucketed$1(context, namespace, source) {
+        const { specColumns: columns } = context;
+        const data = {
+            "name": namespace.bucket,
+            source,
+            "transform": columns.x.quantitative ?
+                getQuantitative$1(context, columns.facet)
+                :
+                    getQualitative$1(context)
+        };
+        return data;
+    }
+    function stacked$1(namespace, source, transforms) {
+        const data = {
+            "name": namespace.stacked,
+            source,
+            "transform": allTruthy(transforms, xy$1(namespace))
+        };
+        return data;
+    }
+    function xy$1(namespace) {
+        const transforms = [
+            {
+                "type": "formula",
+                "expr": `floor(datum.${FieldNames.BarChartStack0} / ${BarChartSignalNames$1.compartmentsPerLevelSignal})`,
+                "as": namespace.__level
+            },
+            {
+                "type": "formula",
+                "expr": `datum.${FieldNames.BarChartStack0} % ${BarChartSignalNames$1.compartmentsPerLevelSignal}`,
+                "as": namespace.__compartment
+            }
+        ];
+        return transforms;
+    }
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    function getMarks$1 (context, namespace) {
+        const { specColumns } = context;
+        const mark = {
+            "type": "rect",
+            "from": {
+                "data": namespace.stacked
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": ScaleNames.X,
+                        "field": specColumns.x.quantitative ? FieldNames.BarChartBin0 : specColumns.x.name,
+                        "offset": {
+                            "scale": BarChartScaleNames$1.compartmentScale,
+                            "field": namespace.__compartment
+                        }
+                    },
+                    "width": [
+                        {
+                            "test": `bandwidth('${BarChartScaleNames$1.compartmentScale}') < 1`,
+                            "value": minPixelSize
+                        },
+                        {
+                            "scale": BarChartScaleNames$1.compartmentScale,
+                            "band": 1
+                        }
+                    ],
+                    "y": [
+                        {
+                            "scale": ScaleNames.Y,
+                            "test": testForCollapseSelection(),
+                            "signal": `${SignalNames.YDomain}[0]`
+                        },
+                        {
+                            "scale": ScaleNames.Y,
+                            "field": namespace.__level,
+                            "band": 1,
+                            "offset": {
+                                "signal": `-bandwidth('${ScaleNames.Y}')-1`
+                            }
+                        }
+                    ],
+                    "height": [
+                        {
+                            "test": testForCollapseSelection(),
+                            "value": 0
+                        },
+                        {
+                            "test": `bandwidth('${ScaleNames.Y}') < 1`,
+                            "value": minPixelSize
+                        },
+                        {
+                            "scale": ScaleNames.Y,
+                            "band": 1
+                        }
+                    ],
+                    "fill": fill(context)
+                }
+            }
+        };
+        if (specColumns.z) {
+            const update = mark.encode.update;
+            update.z = {
+                "value": 0
+            };
+            update.depth = [
+                {
+                    "test": testForCollapseSelection(),
+                    "value": 0
+                },
+                {
+                    "scale": ScaleNames.Z,
+                    "field": specColumns.z.name
+                }
+            ];
+        }
+        return [mark];
+    }
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    function qualitativeScales$1 (context, namespace) {
+        const { specColumns } = context;
+        const scales = [
+            {
+                "name": BarChartScaleNames$1.bucketScale,
+                "type": "band",
+                "range": "width",
+                "domain": {
+                    "data": namespace.bucket,
+                    "field": specColumns.x.name,
+                    "sort": true
+                }
+            },
+            {
+                "name": ScaleNames.X,
+                "type": "band",
+                "range": [
+                    0,
+                    {
+                        "signal": "width"
+                    }
+                ],
+                "padding": 0.01,
+                "domain": {
+                    "data": namespace.stacked,
+                    "field": specColumns.x.name,
+                    "sort": true
+                }
+            }
+        ];
+        return scales;
+    }
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    function quantitativeScales$1 () {
+        const scales = [
+            {
+                "name": ScaleNames.X,
+                "type": "band",
+                "range": [
+                    0,
+                    {
+                        "signal": "width"
+                    }
+                ],
+                "padding": 0.01,
+                "domain": {
+                    "data": DataNames.QuantitativeData,
+                    "field": "data",
+                    "sort": true
+                }
+            }
+        ];
+        return scales;
+    }
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    function getScales$1 (context, namespace) {
+        const { specColumns, insight } = context;
+        const scales = [
+            {
+                "name": BarChartScaleNames$1.compartmentScale,
+                "type": "band",
+                "range": [
+                    0,
+                    {
+                        "signal": BarChartSignalNames$1.compartmentWidthSignal
+                    }
+                ],
+                "padding": 0.1,
+                "domain": {
+                    "signal": `sequence(0, ${BarChartSignalNames$1.compartmentsPerLevelSignal}+1, 1)`
+                }
+            },
+            {
+                "name": BarChartScaleNames$1.levelScale,
+                "range": [
+                    {
+                        "signal": "height"
+                    },
+                    {
+                        "signal": "0"
+                    }
+                ],
+                "round": true,
+                "domain": {
+                    "data": namespace.stacked,
+                    "field": namespace.__level,
+                    "sort": true
+                },
+                "zero": true,
+                "nice": true
+            },
+            {
+                "name": ScaleNames.Y,
+                "type": "band",
+                "range": [
+                    {
+                        "signal": "height"
+                    },
+                    {
+                        "signal": "0"
+                    }
+                ],
+                "padding": 0.1,
+                "round": false,
+                "reverse": false,
+                "align": 1,
+                "domain": {
+                    "data": namespace.stacked,
+                    "field": namespace.__level,
+                    "sort": true
+                }
+            }
+        ];
+        if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
+            if (specColumns.color.quantitative) {
+                scales.push(binnableColorScale(insight.colorBin, namespace.bucket, specColumns.color.name, insight.scheme));
+            }
+            else {
+                scales.push({
+                    "name": ScaleNames.Color,
+                    "type": "ordinal",
+                    "domain": {
+                        "data": namespace.bucket,
+                        "field": FieldNames.Top,
+                        "sort": true
+                    },
+                    "range": {
+                        "scheme": insight.scheme || ColorScaleNone
+                    },
+                    "reverse": { "signal": SignalNames.ColorReverse }
+                });
+            }
+        }
+        if (specColumns.z) {
+            const zRange = [0, { "signal": SignalNames.ZHeight }];
+            scales.push(specColumns.z.quantitative ?
+                linearScale(ScaleNames.Z, DataNames.Main, specColumns.z.name, zRange, false, true)
+                :
+                    pointScale(ScaleNames.Z, DataNames.Main, zRange, specColumns.z.name));
+        }
+        return scales.concat(specColumns.x.quantitative ? quantitativeScales$1() : qualitativeScales$1(context, namespace));
+    }
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    function getSignals$1 (context) {
+        const { specColumns, specViewOptions } = context;
+        const signals = allTruthy(textSignals(context), [
+            {
+                "name": SignalNames.YDomain,
+                "update": `domain('${ScaleNames.Y}')`
+            },
+            specColumns.x.quantitative && {
+                "name": SignalNames.XBins,
+                "value": 7,
+                "bind": {
+                    "name": specViewOptions.language.XBinSize,
+                    "input": "range",
+                    "min": 1,
+                    "max": 20,
+                    "step": 1
+                }
+            },
+            {
+                "name": BarChartSignalNames$1.compartmentWidthSignal,
+                "update": `bandwidth('${specColumns.x.quantitative ? ScaleNames.X : BarChartScaleNames$1.bucketScale}')`
+            },
+            {
+                "name": BarChartSignalNames$1.aspectRatioSignal,
+                "update": `${BarChartSignalNames$1.compartmentWidthSignal}/height`
+            },
+            {
+                "name": BarChartSignalNames$1.compartmentsPerLevelSignal,
+                "update": `ceil(sqrt(${BarChartSignalNames$1.aspectRatioSignal}*${BarChartSignalNames$1.levelExtentSignal}[1]))`
+            },
+            colorBinCountSignal(context),
+            colorReverseSignal(context)
+        ], specColumns.facet && facetSignals(context));
+        return signals;
+    }
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    // Licensed under the MIT license.
+    class NameSpace$1 {
+        constructor(nameSpace = '') {
+            ['bucket', 'stacked', '__compartment', '__level'].forEach(name => {
+                this[name] = `${name}${nameSpace}`;
+            });
+        }
+    }
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    const barchartV = (context) => {
+        const { specColumns, insight, specViewOptions } = context;
+        const errors = [];
+        if (!specColumns.x)
+            errors.push(`Must set a field for x axis`);
+        checkForFacetErrors(insight.facets, errors);
+        const specCapabilities = {
+            roles: [
+                {
+                    role: 'x',
+                    binnable: true,
+                    axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
+                    signals: [SignalNames.XBins]
+                },
+                {
+                    role: 'z',
+                    allowNone: true
+                },
+                {
+                    role: 'color',
+                    allowNone: true
+                },
+                {
+                    role: 'sort',
+                    allowNone: true
+                },
+                {
+                    role: 'facet',
+                    allowNone: true
+                }
+            ]
+        };
+        if (errors.length) {
+            return {
+                errors,
+                specCapabilities,
+                vegaSpec: null,
+            };
+        }
+        const rootNamespace = new NameSpace$1();
+        let axes;
+        if (!insight.hideAxes) {
+            axes = getAxes$1(context);
+        }
+        let marks;
+        if (specColumns.facet) {
+            const cellNamespace = new NameSpace$1('Cell');
+            const cellMarks = getMarks$1(context, cellNamespace);
+            const cd = specColumns.x.quantitative ?
+                [
+                    stacked$1(cellNamespace, DataNames.FacetGroupCell)
+                ]
+                :
+                    [
+                        bucketed$1(context, cellNamespace, DataNames.FacetGroupCell),
+                        stacked$1(cellNamespace, cellNamespace.bucket)
+                    ];
+            marks = facetMarks(specViewOptions, rootNamespace.stacked, cellMarks, axes, cd);
+            axes = [];
+        }
+        else {
+            marks = getMarks$1(context, rootNamespace);
+        }
+        const size = specColumns.facet ? facetSize(context) : insight.size;
+        var vegaSpec = {
+            "$schema": "https://vega.github.io/schema/vega/v3.json",
+            "height": size.height,
+            "width": size.width,
+            signals: getSignals$1(context),
+            scales: getScales$1(context, rootNamespace),
+            data: getData$1(context, rootNamespace),
+            marks
+        };
+        if (!insight.hideAxes && axes && axes.length) {
+            vegaSpec.axes = axes;
+        }
+        const legends = getLegends(context);
+        if (legends) {
+            vegaSpec.legends = legends;
+        }
+        if (specColumns.facet) {
+            vegaSpec.layout = layout(context);
+        }
+        else {
+            //use autosize only when not faceting
+            vegaSpec.autosize = "fit";
+        }
+        return { vegaSpec, specCapabilities };
+    };
+
+    function getAxes$2 (context) {
+        const { specColumns, specViewOptions } = context;
+        const pa = partialAxes(specViewOptions, specColumns.x.quantitative, specColumns.y.quantitative);
+        const axes = [
+            Object.assign({ "scale": "xscale", "title": specColumns.x.name, "bandPosition": 0.5, "grid": true, "labelFlush": true }, pa.bottom),
+            Object.assign({ "scale": "yscale", "title": specColumns.y.name, "bandPosition": specColumns.y.quantitative ? 0 : 0.5, "grid": true, "labelFlush": true }, pa.left)
+        ];
+        return axes;
+    }
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    function getData$2 (context) {
+        const { specColumns, specViewOptions } = context;
+        const categoricalColor = specColumns.color && !specColumns.color.quantitative;
         const data = allTruthy([
             {
                 "name": DataNames.Main,
-                "transform": allTruthy(columns.x.quantitative && [
+                "transform": allTruthy(specColumns.x.quantitative && [
                     {
                         "type": "extent",
-                        "field": columns.x.name,
+                        "field": specColumns.x.name,
                         "signal": "var_Xextent"
                     },
                     {
                         "type": "bin",
-                        "field": columns.x.name,
+                        "field": specColumns.x.name,
                         "extent": {
                             "signal": "var_Xextent"
                         },
@@ -9210,15 +9823,15 @@ void main(void) {
                         ],
                         "signal": "binXSignal"
                     }
-                ], columns.y.quantitative && [
+                ], specColumns.y.quantitative && [
                     {
                         "type": "extent",
-                        "field": columns.y.name,
+                        "field": specColumns.y.name,
                         "signal": "var_Yextent"
                     },
                     {
                         "type": "bin",
-                        "field": columns.y.name,
+                        "field": specColumns.y.name,
                         "extent": {
                             "signal": "var_Yextent"
                         },
@@ -9233,7 +9846,7 @@ void main(void) {
                     }
                 ])
             }
-        ], columns.x.quantitative && [
+        ], specColumns.x.quantitative && [
             {
                 "name": "xaxisdata",
                 "transform": [
@@ -9251,7 +9864,7 @@ void main(void) {
                     }
                 ]
             }
-        ], columns.y.quantitative && [
+        ], specColumns.y.quantitative && [
             {
                 "name": "yaxisdata",
                 "transform": [
@@ -9269,7 +9882,7 @@ void main(void) {
                     }
                 ]
             }
-        ], categoricalColor && topLookup(columns.color, specViewOptions.maxLegends), [
+        ], categoricalColor && topLookup(specColumns.color, specViewOptions.maxLegends), [
             {
                 "name": "aggregated",
                 "source": categoricalColor ? DataNames.Legend : DataNames.Main,
@@ -9277,8 +9890,8 @@ void main(void) {
                     {
                         "type": "joinaggregate",
                         "groupby": [
-                            columns.x.quantitative ? FieldNames.DensityXBin0 : columns.x.name,
-                            columns.y.quantitative ? FieldNames.DensityYBin0 : columns.y.name
+                            specColumns.x.quantitative ? FieldNames.DensityXBin0 : specColumns.x.name,
+                            specColumns.y.quantitative ? FieldNames.DensityYBin0 : specColumns.y.name
                         ],
                         "ops": [
                             "count"
@@ -9287,7 +9900,7 @@ void main(void) {
                             FieldNames.DensityCount
                         ]
                     },
-                    windowTransform(columns),
+                    windowTransform(specColumns),
                     {
                         "type": "extent",
                         "field": FieldNames.DensityRow,
@@ -9324,7 +9937,8 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getMarks$1 (columns, specViewOptions) {
+    function getMarks$2 (context) {
+        const { specColumns } = context;
         const mark = {
             "type": "rect",
             "from": {
@@ -9332,8 +9946,8 @@ void main(void) {
             },
             "sort": {
                 "field": [
-                    columns.x.name,
-                    columns.y.name
+                    specColumns.x.name,
+                    specColumns.y.name
                 ],
                 "order": [
                     "ascending",
@@ -9344,14 +9958,14 @@ void main(void) {
                 "update": {
                     "xc": {
                         "scale": "xscale",
-                        "field": columns.x.quantitative ? FieldNames.DensityXBin0 : columns.x.name,
+                        "field": specColumns.x.quantitative ? FieldNames.DensityXBin0 : specColumns.x.name,
                         "offset": {
                             "signal": `scale('sizescale', ((datum.${FieldNames.DensityRow}-1) % floor(sqrt(datum.${FieldNames.DensityCount}))))-scale('sizescale', sqrt(datum.${FieldNames.DensityCount})-2)/2`
                         }
                     },
                     "yc": {
                         "scale": "yscale",
-                        "field": columns.y.quantitative ? FieldNames.DensityYBin0 : columns.y.name,
+                        "field": specColumns.y.quantitative ? FieldNames.DensityYBin0 : specColumns.y.name,
                         "offset": {
                             "signal": `scale('sizescale',height/width*floor(((datum.${FieldNames.DensityRow}-1) / floor(sqrt(datum.${FieldNames.DensityCount}))))) - scale('sizescale', height/width*sqrt(datum.${FieldNames.DensityCount})+2)/2`
                         }
@@ -9362,11 +9976,11 @@ void main(void) {
                     "height": {
                         "signal": "height/width*unitsize"
                     },
-                    "fill": fill(columns.color, specViewOptions)
+                    "fill": fill(context)
                 }
             }
         };
-        if (columns.z) {
+        if (specColumns.z) {
             const update = mark.encode.update;
             update.z = {
                 "value": 0
@@ -9378,7 +9992,7 @@ void main(void) {
                 },
                 {
                     "scale": ScaleNames.Z,
-                    "field": columns.z.name
+                    "field": specColumns.z.name
                 }
             ];
         }
@@ -9386,12 +10000,13 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getScales$1 (columns, insight) {
+    function getScales$2 (context) {
+        const { specColumns, insight } = context;
         const scales = [
             {
                 "name": "xscale",
                 "type": "point",
-                "domain": columns.x.quantitative ?
+                "domain": specColumns.x.quantitative ?
                     {
                         "data": "xaxisdata",
                         "field": "data",
@@ -9400,7 +10015,7 @@ void main(void) {
                     :
                         {
                             "data": DataNames.Main,
-                            "field": columns.x.name,
+                            "field": specColumns.x.name,
                             "sort": true
                         },
                 "range": "width",
@@ -9409,7 +10024,7 @@ void main(void) {
             {
                 "name": "yscale",
                 "type": "point",
-                "domain": columns.y.quantitative ?
+                "domain": specColumns.y.quantitative ?
                     {
                         "data": "yaxisdata",
                         "field": "data",
@@ -9418,7 +10033,7 @@ void main(void) {
                     :
                         {
                             "data": DataNames.Main,
-                            "field": columns.y.name,
+                            "field": specColumns.y.name,
                             "sort": true
                         },
                 "range": "height",
@@ -9442,9 +10057,9 @@ void main(void) {
                 ]
             }
         ];
-        if (columns.color) {
-            if (columns.color.quantitative) {
-                scales.push(binnableColorScale(insight.colorBin, DataNames.Main, columns.color.name, insight.scheme));
+        if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
+            if (specColumns.color.quantitative) {
+                scales.push(binnableColorScale(insight.colorBin, DataNames.Main, specColumns.color.name, insight.scheme));
             }
             else {
                 scales.push({
@@ -9462,21 +10077,22 @@ void main(void) {
                 });
             }
         }
-        if (columns.z) {
+        if (specColumns.z) {
             const zRange = [0, { "signal": SignalNames.ZHeight }];
-            scales.push(columns.z.quantitative ?
-                linearScale(ScaleNames.Z, DataNames.Main, columns.z.name, zRange, false, true)
+            scales.push(specColumns.z.quantitative ?
+                linearScale(ScaleNames.Z, DataNames.Main, specColumns.z.name, zRange, false, true)
                 :
-                    pointScale(ScaleNames.Z, DataNames.Main, zRange, columns.z.name));
+                    pointScale(ScaleNames.Z, DataNames.Main, zRange, specColumns.z.name));
         }
         return scales;
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getSignals$1 (insight, columns, specViewOptions) {
-        const signals = allTruthy(textSignals(specViewOptions), [
-            colorBinCountSignal(specViewOptions),
-            colorReverseSignal(specViewOptions),
+    function getSignals$2 (context) {
+        const { specColumns, insight, specViewOptions } = context;
+        const signals = allTruthy(textSignals(context), [
+            colorBinCountSignal(context),
+            colorReverseSignal(context),
             {
                 "name": "unitpad",
                 "value": 0.1,
@@ -9508,7 +10124,7 @@ void main(void) {
                 "name": "unitsize",
                 "update": "cellwidth/((1 + unitpad)*maxnumbers)"
             },
-            columns.x.quantitative && {
+            specColumns.x.quantitative && {
                 "name": SignalNames.XBins,
                 "value": 30,
                 "bind": {
@@ -9519,7 +10135,7 @@ void main(void) {
                     "step": 1
                 }
             },
-            columns.y.quantitative && {
+            specColumns.y.quantitative && {
                 "name": SignalNames.YBins,
                 "value": 30,
                 "bind": {
@@ -9530,16 +10146,17 @@ void main(void) {
                     "step": 1
                 }
             }
-        ], insight.columns.facet && facetSignals(insight.facets, specViewOptions));
+        ], insight.columns.facet && facetSignals(context));
         return signals;
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    const density = (insight, columns, specViewOptions) => {
+    const density = (context) => {
+        const { specColumns, insight } = context;
         const errors = [];
-        if (!columns.x)
+        if (!specColumns.x)
             errors.push(`Must set a field for x axis`);
-        if (!columns.y)
+        if (!specColumns.y)
             errors.push(`Must set a field for y axis`);
         checkForFacetErrors(insight.facets, errors);
         const specCapabilities = {
@@ -9547,13 +10164,13 @@ void main(void) {
                 {
                     role: 'x',
                     binnable: true,
-                    axisSelection: columns.x && columns.x.quantitative ? 'range' : 'exact',
+                    axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
                     signals: [SignalNames.XBins]
                 },
                 {
                     role: 'y',
                     binnable: true,
-                    axisSelection: columns.y && columns.y.quantitative ? 'range' : 'exact',
+                    axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
                     signals: [SignalNames.YBins]
                 },
                 {
@@ -9577,24 +10194,25 @@ void main(void) {
                 vegaSpec: null,
             };
         }
-        const size = columns.facet ? facetSize(insight.facets, insight.size, specViewOptions) : insight.size;
+        const size = specColumns.facet ? facetSize(context) : insight.size;
         var vegaSpec = {
             "$schema": "https://vega.github.io/schema/vega/v3.json",
             "height": size.height,
             "width": size.width,
-            signals: getSignals$1(insight, columns, specViewOptions),
-            data: getData$1(insight, columns, specViewOptions),
-            scales: getScales$1(columns, insight),
-            marks: getMarks$1(columns, specViewOptions)
+            signals: getSignals$2(context),
+            data: getData$2(context),
+            scales: getScales$2(context),
+            marks: getMarks$2(context)
         };
         if (!insight.hideAxes) {
-            vegaSpec.axes = getAxes$1(specViewOptions, columns);
+            vegaSpec.axes = getAxes$2(context);
         }
-        if (columns.color && !insight.hideLegend) {
-            vegaSpec.legends = [legend(columns.color)];
+        const legends = getLegends(context);
+        if (legends) {
+            vegaSpec.legends = legends;
         }
-        if (columns.facet) {
-            vegaSpec.layout = layout(specViewOptions);
+        if (specColumns.facet) {
+            vegaSpec.layout = layout(context);
         }
         else {
             //use autosize only when not faceting
@@ -9604,15 +10222,16 @@ void main(void) {
     };
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getData$2 (columns, specViewOptions) {
-        const categoricalColor = columns.color && !columns.color.quantitative;
+    function getData$3 (context) {
+        const { specColumns, specViewOptions } = context;
+        const categoricalColor = specColumns.color && !specColumns.color.quantitative;
         const data = allTruthy([
             {
                 "name": DataNames.Main,
                 "transform": allTruthy([
-                    columns.sort && {
+                    specColumns.sort && {
                         "type": "collect",
-                        "sort": { "field": columns.sort.name }
+                        "sort": { "field": specColumns.sort.name }
                     },
                     {
                         "type": "window",
@@ -9625,7 +10244,7 @@ void main(void) {
                     }
                 ])
             }
-        ], categoricalColor && topLookup(columns.color, specViewOptions.maxLegends));
+        ], categoricalColor && topLookup(specColumns.color, specViewOptions.maxLegends));
         return data;
     }
 
@@ -9636,7 +10255,8 @@ void main(void) {
     const Total = "total";
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getMarks$2 (data, columns, specViewOptions) {
+    function getMarks$3 (context, data) {
+        const { specColumns } = context;
         const marks = [
             {
                 "type": "rect",
@@ -9661,12 +10281,12 @@ void main(void) {
                             "scale": ScaleNames.Y,
                             "band": true
                         },
-                        "fill": fill(columns.color, specViewOptions)
+                        "fill": fill(context)
                     }
                 }
             }
         ];
-        if (columns.z) {
+        if (specColumns.z) {
             const update = marks[0].encode.update;
             update.z = {
                 "value": 0
@@ -9678,7 +10298,7 @@ void main(void) {
                 },
                 {
                     "scale": ScaleNames.Z,
-                    "field": columns.z.name
+                    "field": specColumns.z.name
                 }
             ];
         }
@@ -9686,7 +10306,8 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getScales$2 (columns, insight) {
+    function getScales$3 (context) {
+        const { specColumns, insight } = context;
         const scales = [
             {
                 "name": ScaleNames.X,
@@ -9709,9 +10330,9 @@ void main(void) {
                 "paddingOuter": 0
             }
         ];
-        if (columns.color) {
-            if (columns.color.quantitative) {
-                scales.push(binnableColorScale(insight.colorBin, DataNames.Main, columns.color.name, insight.scheme));
+        if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
+            if (specColumns.color.quantitative) {
+                scales.push(binnableColorScale(insight.colorBin, DataNames.Main, specColumns.color.name, insight.scheme));
             }
             else {
                 scales.push({
@@ -9729,20 +10350,21 @@ void main(void) {
                 });
             }
         }
-        if (columns.z) {
+        if (specColumns.z) {
             const zRange = [0, { "signal": SignalNames.ZHeight }];
-            scales.push(columns.z.quantitative ?
-                linearScale(ScaleNames.Z, DataNames.Main, columns.z.name, zRange, false, false)
+            scales.push(specColumns.z.quantitative ?
+                linearScale(ScaleNames.Z, DataNames.Main, specColumns.z.name, zRange, false, false)
                 :
-                    pointScale(ScaleNames.Z, DataNames.Main, zRange, columns.z.name));
+                    pointScale(ScaleNames.Z, DataNames.Main, zRange, specColumns.z.name));
         }
         return scales;
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getSignals$2 (insight, specViewOptions) {
-        const signals = allTruthy(textSignals(specViewOptions), [
-            colorBinCountSignal(specViewOptions),
+    function getSignals$3 (context) {
+        const { insight } = context;
+        const signals = allTruthy(textSignals(context), [
+            colorBinCountSignal(context),
             {
                 "name": Total,
                 "update": `data('${DataNames.Main}').length`
@@ -9755,13 +10377,14 @@ void main(void) {
                 "name": RowCount,
                 "update": `${Total}/${ColumnCount}`
             },
-            colorReverseSignal(specViewOptions)
-        ], insight.columns && insight.columns.facet && facetSignals(insight.facets, specViewOptions));
+            colorReverseSignal(context)
+        ], insight.columns && insight.columns.facet && facetSignals(context));
         return signals;
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    const grid = (insight, columns, specViewOptions) => {
+    const grid = (context) => {
+        const { specColumns, insight } = context;
         const errors = [];
         const specCapabilities = {
             roles: [
@@ -9786,46 +10409,49 @@ void main(void) {
                 vegaSpec: null,
             };
         }
-        const categoricalColor = columns.color && !columns.color.quantitative;
+        const categoricalColor = specColumns.color && !specColumns.color.quantitative;
         const dataName = categoricalColor ? DataNames.Legend : DataNames.Main;
         const size = insight.size;
         var vegaSpec = {
             "$schema": "https://vega.github.io/schema/vega/v3.json",
             "height": size.height,
             "width": size.width,
-            signals: getSignals$2(insight, specViewOptions),
-            scales: getScales$2(columns, insight),
-            data: getData$2(columns, specViewOptions),
-            marks: getMarks$2(dataName, columns, specViewOptions)
+            signals: getSignals$3(context),
+            scales: getScales$3(context),
+            data: getData$3(context),
+            marks: getMarks$3(context, dataName)
         };
-        if (columns.color && !insight.hideLegend) {
-            vegaSpec.legends = [legend(columns.color)];
+        const legends = getLegends(context);
+        if (legends) {
+            vegaSpec.legends = legends;
         }
         //use autosize only when not faceting
         vegaSpec.autosize = "fit";
         return { vegaSpec, specCapabilities };
     };
 
-    function getAxes$2 (specViewOptions, columns) {
-        const pa = partialAxes(specViewOptions, columns.x.quantitative, columns.y.quantitative);
+    function getAxes$3 (context) {
+        const { specColumns, specViewOptions } = context;
+        const pa = partialAxes(specViewOptions, specColumns.x.quantitative, specColumns.y.quantitative);
         const axes = [
-            Object.assign({ "scale": ScaleNames.X, "title": columns.x.name }, pa.bottom),
-            Object.assign({ "scale": ScaleNames.Y, "title": columns.y.name }, pa.left)
+            Object.assign({ "scale": ScaleNames.X, "title": specColumns.x.name }, pa.bottom),
+            Object.assign({ "scale": ScaleNames.Y, "title": specColumns.y.name }, pa.left)
         ];
         return axes;
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getData$3 (insight, columns, specViewOptions) {
-        const categoricalColor = columns.color && !columns.color.quantitative;
+    function getData$4 (context) {
+        const { specColumns, insight, specViewOptions } = context;
+        const categoricalColor = specColumns.color && !specColumns.color.quantitative;
         const ScatterDataName = "SandDanceScatterPlotData";
-        const data = allTruthy(facetSourceData(columns.facet, insight.facets, ScatterDataName), [
+        const data = allTruthy(facetSourceData(specColumns.facet, insight.facets, ScatterDataName), [
             {
                 "name": DataNames.Main,
                 "source": ScatterDataName,
-                "transform": allTruthy(filterInvalidWhenNumeric(columns.x), filterInvalidWhenNumeric(columns.y), filterInvalidWhenNumeric(columns.z), columns.facet && facetTransforms(columns.facet, insight.facets))
+                "transform": allTruthy(filterInvalidWhenNumeric(specColumns.x), filterInvalidWhenNumeric(specColumns.y), filterInvalidWhenNumeric(specColumns.z), specColumns.facet && facetTransforms(specColumns.facet, insight.facets))
             }
-        ], categoricalColor && topLookup(columns.color, specViewOptions.maxLegends), columns.facet && facetGroupData(DataNames.Main));
+        ], categoricalColor && topLookup(specColumns.color, specViewOptions.maxLegends), specColumns.facet && facetGroupData(DataNames.Main));
         return data;
     }
     function filterInvalidWhenNumeric(column) {
@@ -9841,8 +10467,9 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getMarks$3 (columns, specViewOptions) {
-        const categoricalColor = columns.color && !columns.color.quantitative;
+    function getMarks$4 (context) {
+        const { specColumns } = context;
+        const categoricalColor = specColumns.color && !specColumns.color.quantitative;
         const marks = [
             {
                 "type": "rect",
@@ -9853,7 +10480,7 @@ void main(void) {
                     "update": {
                         "x": {
                             "scale": ScaleNames.X,
-                            "field": columns.x.name,
+                            "field": specColumns.x.name,
                             "offset": 1
                         },
                         "width": { "signal": SignalNames.PointSize },
@@ -9865,7 +10492,7 @@ void main(void) {
                             },
                             {
                                 "scale": ScaleNames.Y,
-                                "field": columns.y.name,
+                                "field": specColumns.y.name,
                                 "offset": {
                                     "signal": `-${SignalNames.PointSize}`
                                 }
@@ -9880,12 +10507,12 @@ void main(void) {
                                 "signal": SignalNames.PointSize
                             }
                         ],
-                        "fill": fill(columns.color, specViewOptions)
+                        "fill": fill(context)
                     }
                 }
             }
         ];
-        if (columns.z) {
+        if (specColumns.z) {
             const update = marks[0].encode.update;
             update.z = [
                 {
@@ -9894,7 +10521,7 @@ void main(void) {
                 },
                 {
                     "scale": ScaleNames.Z,
-                    "field": columns.z.name
+                    "field": specColumns.z.name
                 }
             ];
             update.depth = { "signal": SignalNames.PointSize };
@@ -9903,20 +10530,21 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getScales$3 (columns, insight) {
+    function getScales$4 (context) {
+        const { specColumns, insight } = context;
         const scales = [
-            (columns.x.quantitative ?
-                linearScale(ScaleNames.X, DataNames.Main, columns.x.name, "width", false, false)
+            (specColumns.x.quantitative ?
+                linearScale(ScaleNames.X, DataNames.Main, specColumns.x.name, "width", false, false)
                 :
-                    pointScale(ScaleNames.X, DataNames.Main, "width", columns.x.name)),
-            (columns.y.quantitative ?
-                linearScale(ScaleNames.Y, DataNames.Main, columns.y.name, "height", false, false)
+                    pointScale(ScaleNames.X, DataNames.Main, "width", specColumns.x.name)),
+            (specColumns.y.quantitative ?
+                linearScale(ScaleNames.Y, DataNames.Main, specColumns.y.name, "height", false, false)
                 :
-                    pointScale(ScaleNames.Y, DataNames.Main, "height", columns.y.name, true))
+                    pointScale(ScaleNames.Y, DataNames.Main, "height", specColumns.y.name, true))
         ];
-        if (columns.color) {
-            if (columns.color.quantitative) {
-                scales.push(binnableColorScale(insight.colorBin, DataNames.Main, columns.color.name, insight.scheme));
+        if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
+            if (specColumns.color.quantitative) {
+                scales.push(binnableColorScale(insight.colorBin, DataNames.Main, specColumns.color.name, insight.scheme));
             }
             else {
                 scales.push({
@@ -9934,19 +10562,20 @@ void main(void) {
                 });
             }
         }
-        if (columns.z) {
+        if (specColumns.z) {
             const zRange = [0, { "signal": SignalNames.ZHeight }];
-            scales.push(columns.z.quantitative ?
-                linearScale(ScaleNames.Z, DataNames.Main, columns.z.name, zRange, false, false)
+            scales.push(specColumns.z.quantitative ?
+                linearScale(ScaleNames.Z, DataNames.Main, specColumns.z.name, zRange, false, false)
                 :
-                    pointScale(ScaleNames.Z, DataNames.Main, zRange, columns.z.name));
+                    pointScale(ScaleNames.Z, DataNames.Main, zRange, specColumns.z.name));
         }
         return scales;
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getSignals$3 (insight, specViewOptions) {
-        const signals = allTruthy(textSignals(specViewOptions), [
+    function getSignals$4 (context) {
+        const { insight, specViewOptions } = context;
+        const signals = allTruthy(textSignals(context), [
             {
                 "name": SignalNames.YDomain,
                 "update": `domain('${ScaleNames.Y}')`
@@ -9963,29 +10592,30 @@ void main(void) {
                     "step": 1
                 }
             },
-            colorBinCountSignal(specViewOptions),
-            colorReverseSignal(specViewOptions)
-        ], insight.columns.facet && facetSignals(insight.facets, specViewOptions));
+            colorBinCountSignal(context),
+            colorReverseSignal(context)
+        ], insight.columns.facet && facetSignals(context));
         return signals;
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    const scatterplot = (insight, columns, specViewOptions) => {
+    const scatterplot = (context) => {
+        const { specColumns, insight, specViewOptions } = context;
         const errors = [];
-        if (!columns.x)
+        if (!specColumns.x)
             errors.push(`Must set a field for x axis`);
-        if (!columns.y)
+        if (!specColumns.y)
             errors.push(`Must set a field for y axis`);
         checkForFacetErrors(insight.facets, errors);
         const specCapabilities = {
             roles: [
                 {
                     role: 'x',
-                    axisSelection: columns.x && columns.x.quantitative ? 'range' : 'exact'
+                    axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact'
                 },
                 {
                     role: 'y',
-                    axisSelection: columns.y && columns.y.quantitative ? 'range' : 'exact'
+                    axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact'
                 },
                 {
                     role: 'z',
@@ -10015,31 +10645,32 @@ void main(void) {
         }
         let axes;
         if (!insight.hideAxes) {
-            axes = getAxes$2(specViewOptions, columns);
+            axes = getAxes$3(context);
         }
-        let marks = getMarks$3(columns, specViewOptions);
-        if (columns.facet) {
+        let marks = getMarks$4(context);
+        if (specColumns.facet) {
             marks = facetMarks(specViewOptions, marks[0].from.data, marks, axes);
             axes = [];
         }
-        const size = columns.facet ? facetSize(insight.facets, insight.size, specViewOptions) : insight.size;
+        const size = specColumns.facet ? facetSize(context) : insight.size;
         var vegaSpec = {
             "$schema": "https://vega.github.io/schema/vega/v3.json",
             "height": size.height,
             "width": size.width,
-            signals: getSignals$3(insight, specViewOptions),
-            data: getData$3(insight, columns, specViewOptions),
-            scales: getScales$3(columns, insight),
+            signals: getSignals$4(context),
+            data: getData$4(context),
+            scales: getScales$4(context),
             marks
         };
         if (!insight.hideAxes && axes && axes.length) {
             vegaSpec.axes = axes;
         }
-        if (columns.color && !insight.hideLegend) {
-            vegaSpec.legends = [legend(columns.color)];
+        const legends = getLegends(context);
+        if (legends) {
+            vegaSpec.legends = legends;
         }
-        if (columns.facet) {
-            vegaSpec.layout = layout(specViewOptions);
+        if (specColumns.facet) {
+            vegaSpec.layout = layout(context);
         }
         else {
             //use autosize only when not faceting
@@ -10048,35 +10679,37 @@ void main(void) {
         return { vegaSpec, specCapabilities };
     };
 
-    function getAxes$3 (specViewOptions, columns) {
-        const pa = partialAxes(specViewOptions, columns.x.quantitative, columns.y.quantitative);
+    function getAxes$4 (context) {
+        const { specColumns, specViewOptions } = context;
+        const pa = partialAxes(specViewOptions, specColumns.x.quantitative, specColumns.y.quantitative);
         const axes = [
-            Object.assign({ "scale": "xband", "title": columns.x.name, "bandPosition": 0.5, "grid": true, "labelFlush": true }, pa.bottom),
-            Object.assign({ "scale": "yband", "title": columns.y.name, "bandPosition": columns.y.quantitative ? 0 : 0.5, "grid": true, "labelFlush": true }, pa.left)
+            Object.assign({ "scale": "xband", "title": specColumns.x.name, "bandPosition": 0.5, "grid": true, "labelFlush": true }, pa.bottom),
+            Object.assign({ "scale": "yband", "title": specColumns.y.name, "bandPosition": specColumns.y.quantitative ? 0 : 0.5, "grid": true, "labelFlush": true }, pa.left)
         ];
         return axes;
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getData$4 (insight, columns, specViewOptions) {
-        const categoricalColor = columns.color && !columns.color.quantitative;
+    function getData$5 (context) {
+        const { specColumns, specViewOptions } = context;
+        const categoricalColor = specColumns.color && !specColumns.color.quantitative;
         const data = allTruthy([
             {
                 "name": DataNames.Main,
                 "transform": allTruthy([
                     {
                         "type": "extent",
-                        "field": columns.x.name,
+                        "field": specColumns.x.name,
                         "signal": "long_extent"
                     },
                     {
                         "type": "extent",
-                        "field": columns.y.name,
+                        "field": specColumns.y.name,
                         "signal": "lat_extent"
                     },
-                    columns.x.quantitative && {
+                    specColumns.x.quantitative && {
                         "type": "bin",
-                        "field": columns.x.name,
+                        "field": specColumns.x.name,
                         "extent": {
                             "signal": "long_extent"
                         },
@@ -10090,9 +10723,9 @@ void main(void) {
                         ],
                         "signal": "binXSignal"
                     },
-                    columns.y.quantitative && {
+                    specColumns.y.quantitative && {
                         "type": "bin",
-                        "field": columns.y.name,
+                        "field": specColumns.y.name,
                         "extent": {
                             "signal": "lat_extent"
                         },
@@ -10108,7 +10741,7 @@ void main(void) {
                     }
                 ])
             }
-        ], columns.x.quantitative && [
+        ], specColumns.x.quantitative && [
             {
                 "name": "xaxisdata",
                 "transform": [
@@ -10126,7 +10759,7 @@ void main(void) {
                     }
                 ]
             }
-        ], columns.y.quantitative && [
+        ], specColumns.y.quantitative && [
             {
                 "name": "yaxisdata",
                 "transform": [
@@ -10144,12 +10777,12 @@ void main(void) {
                     }
                 ]
             }
-        ], categoricalColor && topLookup(columns.color, specViewOptions.maxLegends), [
+        ], categoricalColor && topLookup(specColumns.color, specViewOptions.maxLegends), [
             {
                 "name": "stackedgroup",
                 "source": categoricalColor ? DataNames.Legend : DataNames.Main,
                 "transform": [
-                    stackTransform(columns.sort, columns.x, columns.y),
+                    stackTransform(specColumns.sort, specColumns.x, specColumns.y),
                     {
                         "type": "extent",
                         "signal": "xtent",
@@ -10206,7 +10839,8 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getMarks$4 (columns, specViewOptions) {
+    function getMarks$5 (context) {
+        const { specColumns } = context;
         const marks = [
             {
                 "name": "marks2",
@@ -10218,7 +10852,7 @@ void main(void) {
                     "update": {
                         "x": {
                             "scale": "xband",
-                            "field": columns.x.quantitative ? FieldNames.StacksLongBin0 : columns.x.name,
+                            "field": specColumns.x.quantitative ? FieldNames.StacksLongBin0 : specColumns.x.name,
                             "offset": {
                                 "scale": "xinternalscale",
                                 "field": "column"
@@ -10226,7 +10860,7 @@ void main(void) {
                         },
                         "y": {
                             "scale": "yband",
-                            "field": columns.y.quantitative ? FieldNames.StacksLatBin0 : columns.y.name,
+                            "field": specColumns.y.quantitative ? FieldNames.StacksLatBin0 : specColumns.y.name,
                             "offset": {
                                 "scale": "yinternalscale",
                                 "field": "depth"
@@ -10246,7 +10880,7 @@ void main(void) {
                         "height": {
                             "signal": "actsize"
                         },
-                        "fill": fill(columns.color, specViewOptions)
+                        "fill": fill(context)
                     }
                 }
             }
@@ -10255,12 +10889,13 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getScales$4 (columns, insight) {
+    function getScales$5 (context) {
+        const { specColumns, insight } = context;
         const scales = [
             {
                 "name": "xband",
                 "type": "band",
-                "domain": columns.x.quantitative ?
+                "domain": specColumns.x.quantitative ?
                     {
                         "data": "xaxisdata",
                         "field": "data",
@@ -10269,7 +10904,7 @@ void main(void) {
                     :
                         {
                             "data": DataNames.Main,
-                            "field": columns.x.quantitative ? FieldNames.StacksLongBin0 : columns.x.name,
+                            "field": specColumns.x.quantitative ? FieldNames.StacksLongBin0 : specColumns.x.name,
                             "sort": true
                         },
                 "range": [
@@ -10285,7 +10920,7 @@ void main(void) {
                 "name": "yband",
                 "type": "band",
                 "reverse": true,
-                "domain": columns.y.quantitative ?
+                "domain": specColumns.y.quantitative ?
                     {
                         "data": "yaxisdata",
                         "field": "data",
@@ -10294,7 +10929,7 @@ void main(void) {
                     :
                         {
                             "data": DataNames.Main,
-                            "field": columns.y.quantitative ? FieldNames.StacksLatBin0 : columns.y.name,
+                            "field": specColumns.y.quantitative ? FieldNames.StacksLatBin0 : specColumns.y.name,
                             "sort": true
                         },
                 "range": "height",
@@ -10357,9 +10992,9 @@ void main(void) {
                 }
             }
         ];
-        if (columns.color) {
-            if (columns.color.quantitative) {
-                scales.push(binnableColorScale(insight.colorBin, DataNames.Main, columns.color.name, insight.scheme));
+        if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
+            if (specColumns.color.quantitative) {
+                scales.push(binnableColorScale(insight.colorBin, DataNames.Main, specColumns.color.name, insight.scheme));
             }
             else {
                 scales.push({
@@ -10381,10 +11016,11 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getSignals$4 (insight, columns, specViewOptions) {
-        const signals = allTruthy(textSignals(specViewOptions), [
-            colorBinCountSignal(specViewOptions),
-            colorReverseSignal(specViewOptions),
+    function getSignals$5 (context) {
+        const { specColumns, insight, specViewOptions } = context;
+        const signals = allTruthy(textSignals(context), [
+            colorBinCountSignal(context),
+            colorReverseSignal(context),
             {
                 "name": SignalNames.XGridSize,
                 "value": 3,
@@ -10407,7 +11043,7 @@ void main(void) {
                     "step": 1
                 }
             },
-            columns.x.quantitative && {
+            specColumns.x.quantitative && {
                 "name": SignalNames.XBins,
                 "value": 30,
                 "bind": {
@@ -10418,7 +11054,7 @@ void main(void) {
                     "step": 1
                 }
             },
-            columns.y.quantitative && {
+            specColumns.y.quantitative && {
                 "name": SignalNames.YBins,
                 "value": 30,
                 "bind": {
@@ -10465,7 +11101,7 @@ void main(void) {
             },
             {
                 "name": "ybandw",
-                "update": `height/((${columns.y.quantitative ? SignalNames.YBins : columns.y.stats.distinctValueCount}) * (1 + ${SignalNames.OuterPadding}))`
+                "update": `height/((${specColumns.y.quantitative ? SignalNames.YBins : specColumns.y.stats.distinctValueCount}) * (1 + ${SignalNames.OuterPadding}))`
             },
             {
                 "name": "ybandsize",
@@ -10479,16 +11115,17 @@ void main(void) {
                 "name": "countheight",
                 "update": `rowxtent[1]*actsize*${SignalNames.ZProportion}/${defaultZProportion}`
             }
-        ], insight.columns.facet && facetSignals(insight.facets, specViewOptions));
+        ], insight.columns.facet && facetSignals(context));
         return signals;
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    const stacks = (insight, columns, specViewOptions) => {
+    const stacks = (context) => {
+        const { specColumns, insight } = context;
         const errors = [];
-        if (!columns.x)
+        if (!specColumns.x)
             errors.push(`Must set a field for x axis`);
-        if (!columns.y)
+        if (!specColumns.y)
             errors.push(`Must set a field for y axis`);
         checkForFacetErrors(insight.facets, errors);
         const specCapabilities = {
@@ -10496,13 +11133,13 @@ void main(void) {
                 {
                     role: 'x',
                     binnable: true,
-                    axisSelection: columns.x && columns.x.quantitative ? 'range' : 'exact',
+                    axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
                     signals: [SignalNames.XBins]
                 },
                 {
                     role: 'y',
                     binnable: true,
-                    axisSelection: columns.y && columns.y.quantitative ? 'range' : 'exact',
+                    axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
                     signals: [SignalNames.YBins]
                 },
                 {
@@ -10526,24 +11163,25 @@ void main(void) {
                 vegaSpec: null,
             };
         }
-        const size = columns.facet ? facetSize(insight.facets, insight.size, specViewOptions) : insight.size;
+        const size = specColumns.facet ? facetSize(context) : insight.size;
         var vegaSpec = {
             "$schema": "https://vega.github.io/schema/vega/v3.json",
             "height": size.height,
             "width": size.width,
-            signals: getSignals$4(insight, columns, specViewOptions),
-            data: getData$4(insight, columns, specViewOptions),
-            scales: getScales$4(columns, insight),
-            marks: getMarks$4(columns, specViewOptions)
+            signals: getSignals$5(context),
+            data: getData$5(context),
+            scales: getScales$5(context),
+            marks: getMarks$5(context)
         };
         if (!insight.hideAxes) {
-            vegaSpec.axes = getAxes$3(specViewOptions, columns);
+            vegaSpec.axes = getAxes$4(context);
         }
-        if (columns.color && !insight.hideLegend) {
-            vegaSpec.legends = [legend(columns.color)];
+        const legends = getLegends(context);
+        if (legends) {
+            vegaSpec.legends = legends;
         }
-        if (columns.facet) {
-            vegaSpec.layout = layout(specViewOptions);
+        if (specColumns.facet) {
+            vegaSpec.layout = layout(context);
         }
         else {
             //use autosize only when not faceting
@@ -10553,16 +11191,17 @@ void main(void) {
     };
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getData$5 (insight, columns, specViewOptions) {
-        const categoricalColor = columns.color && !columns.color.quantitative;
+    function getData$6 (context) {
+        const { specColumns, insight, specViewOptions } = context;
+        const categoricalColor = specColumns.color && !specColumns.color.quantitative;
         const TreeMapDataName = "SandDanceTreeMapData";
-        const data = allTruthy(facetSourceData(columns.facet, insight.facets, TreeMapDataName), [
+        const data = allTruthy(facetSourceData(specColumns.facet, insight.facets, TreeMapDataName), [
             {
                 "name": DataNames.Main,
                 "source": TreeMapDataName,
-                "transform": allTruthy(columns.facet && facetTransforms(columns.facet, insight.facets), !columns.facet && treemapTransforms(insight))
+                "transform": allTruthy(specColumns.facet && facetTransforms(specColumns.facet, insight.facets), !specColumns.facet && treemapTransforms(insight))
             }
-        ], categoricalColor && topLookup(columns.color, specViewOptions.maxLegends), columns.facet && facetGroupData(DataNames.Main));
+        ], categoricalColor && topLookup(specColumns.color, specViewOptions.maxLegends), specColumns.facet && facetGroupData(DataNames.Main));
         return data;
     }
     function treemapTransforms(insight) {
@@ -10593,7 +11232,8 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getMarks$5 (data, columns, specViewOptions) {
+    function getMarks$6 (context, data) {
+        const { specColumns } = context;
         const marks = [
             {
                 "type": "rect",
@@ -10606,12 +11246,12 @@ void main(void) {
                         "y": { "field": FieldNames.TreemapStackY0 },
                         "x2": { "field": FieldNames.TreemapStackX1 },
                         "y2": { "field": FieldNames.TreemapStackY1 },
-                        "fill": fill(columns.color, specViewOptions)
+                        "fill": fill(context)
                     }
                 }
             }
         ];
-        if (columns.z) {
+        if (specColumns.z) {
             const update = marks[0].encode.update;
             update.z = {
                 "value": 0
@@ -10623,7 +11263,7 @@ void main(void) {
                 },
                 {
                     "scale": ScaleNames.Z,
-                    "field": columns.z.name
+                    "field": specColumns.z.name
                 }
             ];
         }
@@ -10631,11 +11271,12 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getScales$5 (columns, insight) {
+    function getScales$6 (context) {
+        const { specColumns, insight } = context;
         const scales = [];
-        if (columns.color) {
-            if (columns.color.quantitative) {
-                scales.push(binnableColorScale(insight.colorBin, DataNames.Main, columns.color.name, insight.scheme));
+        if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
+            if (specColumns.color.quantitative) {
+                scales.push(binnableColorScale(insight.colorBin, DataNames.Main, specColumns.color.name, insight.scheme));
             }
             else {
                 scales.push({
@@ -10653,20 +11294,21 @@ void main(void) {
                 });
             }
         }
-        if (columns.z) {
+        if (specColumns.z) {
             const zRange = [0, { "signal": SignalNames.ZHeight }];
-            scales.push(columns.z.quantitative ?
-                linearScale(ScaleNames.Z, DataNames.Main, columns.z.name, zRange, false, false)
+            scales.push(specColumns.z.quantitative ?
+                linearScale(ScaleNames.Z, DataNames.Main, specColumns.z.name, zRange, false, false)
                 :
-                    pointScale(ScaleNames.Z, DataNames.Main, zRange, columns.z.name));
+                    pointScale(ScaleNames.Z, DataNames.Main, zRange, specColumns.z.name));
         }
         return scales;
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getSignals$5 (insight, specViewOptions) {
-        const signals = allTruthy(textSignals(specViewOptions), [
-            colorBinCountSignal(specViewOptions),
+    function getSignals$6 (context) {
+        const { insight, specViewOptions } = context;
+        const signals = allTruthy(textSignals(context), [
+            colorBinCountSignal(context),
             {
                 "name": SignalNames.TreeMapMethod,
                 "value": "squarify",
@@ -10678,15 +11320,16 @@ void main(void) {
                     ]
                 }
             },
-            colorReverseSignal(specViewOptions)
-        ], insight.columns.facet && facetSignals(insight.facets, specViewOptions));
+            colorReverseSignal(context)
+        ], insight.columns.facet && facetSignals(context));
         return signals;
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    const treemap = (insight, columns, specViewOptions) => {
+    const treemap = (context) => {
+        const { specColumns, insight, specViewOptions } = context;
         const errors = [];
-        if (!columns.size)
+        if (!specColumns.size)
             errors.push(`Must set a field for size`);
         checkForFacetErrors(insight.facets, errors);
         const specCapabilities = {
@@ -10721,12 +11364,12 @@ void main(void) {
                 vegaSpec: null,
             };
         }
-        const categoricalColor = columns.color && !columns.color.quantitative;
+        const categoricalColor = specColumns.color && !specColumns.color.quantitative;
         const dataName = categoricalColor ? DataNames.Legend : DataNames.Main;
         const TreeMapName = "SandDanceTreeMapFaceted";
-        const data = getData$5(insight, columns, specViewOptions);
-        let marks = getMarks$5(columns.facet ? TreeMapName : dataName, columns, specViewOptions);
-        if (columns.facet) {
+        const data = getData$6(context);
+        let marks = getMarks$6(context, specColumns.facet ? TreeMapName : dataName);
+        if (specColumns.facet) {
             const childData = {
                 "name": TreeMapName,
                 "source": DataNames.FacetGroupCell,
@@ -10735,21 +11378,22 @@ void main(void) {
             marks = facetMarks(specViewOptions, dataName, marks, null, [childData]);
             marks[0].marks;
         }
-        const size = columns.facet ? facetSize(insight.facets, insight.size, specViewOptions) : insight.size;
+        const size = specColumns.facet ? facetSize(context) : insight.size;
         var vegaSpec = {
             "$schema": "https://vega.github.io/schema/vega/v3.json",
             "height": size.height,
             "width": size.width,
-            signals: getSignals$5(insight, specViewOptions),
+            signals: getSignals$6(context),
             data,
-            scales: getScales$5(columns, insight),
+            scales: getScales$6(context),
             marks
         };
-        if (columns.color && !insight.hideLegend) {
-            vegaSpec.legends = [legend(columns.color)];
+        const legends = getLegends(context);
+        if (legends) {
+            vegaSpec.legends = legends;
         }
-        if (columns.facet) {
-            vegaSpec.layout = layout(specViewOptions);
+        if (specColumns.facet) {
+            vegaSpec.layout = layout(context);
         }
         else {
             //use autosize only when not faceting
@@ -10760,17 +11404,20 @@ void main(void) {
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     const creators = {
-        barchart,
+        barchart: barchartV,
+        barchartH,
+        barchartV,
         density,
         grid,
         scatterplot,
         stacks,
         treemap
     };
-    function create(insight, specColumns, specViewOptions) {
+    function create(context) {
+        const { insight } = context;
         const creator = creators[insight.chart];
         if (creator) {
-            const specResult = creator(insight, specColumns, specViewOptions);
+            const specResult = creator(context);
             //TODO: find why Vega is doing this. fixup for facets
             if (specResult.vegaSpec && insight.columns && insight.columns.facet && insight.facets.columns === 2 && insight.facets.rows === 1) {
                 specResult.vegaSpec.width = insight.size.width / 3;
@@ -10780,7 +11427,8 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function cloneVegaSpecWithData(insight, specColumns, specViewOptions, currData) {
+    function cloneVegaSpecWithData(context, currData) {
+        const { specColumns } = context;
         const columns = [
             specColumns.color,
             specColumns.facet,
@@ -10792,7 +11440,7 @@ void main(void) {
             specColumns.z
         ];
         inferAll(columns, currData);
-        const specResult = create(insight, specColumns, specViewOptions);
+        const specResult = create(context);
         if (!specResult.errors) {
             const data0 = specResult.vegaSpec.data[0];
             data0.values = currData;
@@ -11600,7 +12248,8 @@ void main(void) {
         }
         renderNewLayout(c, view) {
             const currData = this._dataScope.currentData();
-            const specResult = cloneVegaSpecWithData(this.insight, this._specColumns, this.options, currData);
+            const context = { specColumns: this._specColumns, insight: this.insight, specViewOptions: this.options };
+            const specResult = cloneVegaSpecWithData(context, currData);
             if (!specResult.errors) {
                 const uiValues = extractSignalValuesFromView(this.vegaViewGl, this.vegaSpec);
                 this._signalValues = Object.assign({}, this._signalValues, uiValues, this.insight.signalValues);
@@ -12064,7 +12713,7 @@ void main(void) {
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
-    const version = "1.5.0";
+    const version = "1.6.0";
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
 
