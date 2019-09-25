@@ -5,12 +5,12 @@ import { partialAxes } from '../axes';
 import { SpecContext } from '../types';
 
 export default function (context: SpecContext) {
-    const { columns, specViewOptions } = context;
-    const pa = partialAxes(specViewOptions, columns.x.quantitative, columns.y.quantitative);
+    const { specColumns, specViewOptions } = context;
+    const pa = partialAxes(specViewOptions, specColumns.x.quantitative, specColumns.y.quantitative);
     const axes: Axis[] = [
         {
             "scale": "xscale",
-            "title": columns.x.name,
+            "title": specColumns.x.name,
             "bandPosition": 0.5,
             "grid": true,
             "labelFlush": true,
@@ -18,8 +18,8 @@ export default function (context: SpecContext) {
         },
         {
             "scale": "yscale",
-            "title": columns.y.name,
-            "bandPosition": columns.y.quantitative ? 0 : 0.5,
+            "title": specColumns.y.name,
+            "bandPosition": specColumns.y.quantitative ? 0 : 0.5,
             "grid": true,
             "labelFlush": true,
             ...pa.left as Axis

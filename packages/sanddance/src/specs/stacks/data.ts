@@ -7,8 +7,8 @@ import { DataNames, FieldNames, SignalNames } from '../constants';
 import { topLookup } from '../top';
 
 export default function (context: SpecContext) {
-    const { columns, specViewOptions } = context;
-    const categoricalColor = columns.color && !columns.color.quantitative;
+    const { specColumns, specViewOptions } = context;
+    const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     const data = allTruthy<Data>(
         [
             {
@@ -16,17 +16,17 @@ export default function (context: SpecContext) {
                 "transform": allTruthy<Transforms>([
                     {
                         "type": "extent",
-                        "field": columns.x.name,
+                        "field": specColumns.x.name,
                         "signal": "long_extent"
                     },
                     {
                         "type": "extent",
-                        "field": columns.y.name,
+                        "field": specColumns.y.name,
                         "signal": "lat_extent"
                     },
-                    columns.x.quantitative && {
+                    specColumns.x.quantitative && {
                         "type": "bin",
-                        "field": columns.x.name,
+                        "field": specColumns.x.name,
                         "extent": {
                             "signal": "long_extent"
                         },
@@ -40,9 +40,9 @@ export default function (context: SpecContext) {
                         ],
                         "signal": "binXSignal"
                     },
-                    columns.y.quantitative && {
+                    specColumns.y.quantitative && {
                         "type": "bin",
-                        "field": columns.y.name,
+                        "field": specColumns.y.name,
                         "extent": {
                             "signal": "lat_extent"
                         },
@@ -59,7 +59,7 @@ export default function (context: SpecContext) {
                 ])
             }
         ],
-        columns.x.quantitative && [
+        specColumns.x.quantitative && [
             {
                 "name": "xaxisdata",
                 "transform": [
@@ -78,7 +78,7 @@ export default function (context: SpecContext) {
                 ]
             }
         ],
-        columns.y.quantitative && [
+        specColumns.y.quantitative && [
             {
                 "name": "yaxisdata",
                 "transform": [
@@ -97,13 +97,13 @@ export default function (context: SpecContext) {
                 ]
             }
         ],
-        categoricalColor && topLookup(columns.color, specViewOptions.maxLegends),
+        categoricalColor && topLookup(specColumns.color, specViewOptions.maxLegends),
         [
             {
                 "name": "stackedgroup",
                 "source": categoricalColor ? DataNames.Legend : DataNames.Main,
                 "transform": [
-                    stackTransform(columns.sort, columns.x, columns.y),
+                    stackTransform(specColumns.sort, specColumns.x, specColumns.y),
                     {
                         "type": "extent",
                         "signal": "xtent",

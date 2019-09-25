@@ -19,10 +19,10 @@ import { SpecCapabilities, SpecContext } from '../types';
 import { SpecCreator, SpecResult } from '../interfaces';
 
 export const barchartH: SpecCreator = (context: SpecContext): SpecResult => {
-    const { columns, insight, specViewOptions } = context;
+    const { specColumns, insight, specViewOptions } = context;
     const errors: string[] = [];
 
-    if (!columns.y) errors.push(`Must set a field for y axis`);
+    if (!specColumns.y) errors.push(`Must set a field for y axis`);
     checkForFacetErrors(insight.facets, errors);
 
     const specCapabilities: SpecCapabilities = {
@@ -30,7 +30,7 @@ export const barchartH: SpecCreator = (context: SpecContext): SpecResult => {
             {
                 role: 'y',
                 binnable: true,
-                axisSelection: columns.y && columns.y.quantitative ? 'range' : 'exact',
+                axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
                 signals: [SignalNames.YBins]
             },
             {
@@ -69,10 +69,10 @@ export const barchartH: SpecCreator = (context: SpecContext): SpecResult => {
 
     let marks: Mark[];
 
-    if (columns.facet) {
+    if (specColumns.facet) {
         const cellNamespace = new NameSpace('Cell');
         const cellMarks = getMarks(context, cellNamespace);
-        const cd = columns.y.quantitative ?
+        const cd = specColumns.y.quantitative ?
             [
                 stacked(cellNamespace, DataNames.FacetGroupCell)
             ]
@@ -87,7 +87,7 @@ export const barchartH: SpecCreator = (context: SpecContext): SpecResult => {
         marks = getMarks(context, rootNamespace);
     }
 
-    const size = columns.facet ? facetSize(context) : insight.size;
+    const size = specColumns.facet ? facetSize(context) : insight.size;
 
     var vegaSpec: Spec = {
         "$schema": "https://vega.github.io/schema/vega/v3.json",
@@ -108,7 +108,7 @@ export const barchartH: SpecCreator = (context: SpecContext): SpecResult => {
         vegaSpec.legends = legends;
     }
 
-    if (columns.facet) {
+    if (specColumns.facet) {
         vegaSpec.layout = layout(context);
     } else {
         //use autosize only when not faceting

@@ -7,8 +7,8 @@ import { SpecContext } from '../types';
 import { testForCollapseSelection } from '../selection';
 
 export default function (context: SpecContext) {
-    const { columns } = context;
-    const categoricalColor = columns.color && !columns.color.quantitative;
+    const { specColumns } = context;
+    const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     const marks: Mark[] = [
         {
             "type": "rect",
@@ -19,7 +19,7 @@ export default function (context: SpecContext) {
                 "update": {
                     "x": {
                         "scale": ScaleNames.X,
-                        "field": columns.x.name,
+                        "field": specColumns.x.name,
                         "offset": 1
                     },
                     "width": { "signal": SignalNames.PointSize },
@@ -31,7 +31,7 @@ export default function (context: SpecContext) {
                         },
                         {
                             "scale": ScaleNames.Y,
-                            "field": columns.y.name,
+                            "field": specColumns.y.name,
                             "offset": {
                                 "signal": `-${SignalNames.PointSize}`
                             }
@@ -51,7 +51,7 @@ export default function (context: SpecContext) {
             }
         }
     ];
-    if (columns.z) {
+    if (specColumns.z) {
         const update = marks[0].encode.update;
         update.z = [
             {
@@ -60,7 +60,7 @@ export default function (context: SpecContext) {
             },
             {
                 "scale": ScaleNames.Z,
-                "field": columns.z.name
+                "field": specColumns.z.name
             }
         ];
         update.depth = { "signal": SignalNames.PointSize };

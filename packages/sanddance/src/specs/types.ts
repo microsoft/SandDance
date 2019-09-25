@@ -404,7 +404,7 @@ export interface SpecViewOptions {
 }
 
 export interface SpecContext {
-    columns: SpecColumns;
+    specColumns: SpecColumns;
     insight: Insight;
     specViewOptions: SpecViewOptions;
 }

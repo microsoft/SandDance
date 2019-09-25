@@ -8,23 +8,23 @@ import { Insight, SpecContext } from '../types';
 import { topLookup } from '../top';
 
 export default function (context: SpecContext) {
-    const { columns, insight, specViewOptions } = context;
-    const categoricalColor = columns.color && !columns.color.quantitative;
+    const { specColumns, insight, specViewOptions } = context;
+    const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     const TreeMapDataName = "SandDanceTreeMapData";
     const data = allTruthy<Data>(
-        facetSourceData(columns.facet, insight.facets, TreeMapDataName),
+        facetSourceData(specColumns.facet, insight.facets, TreeMapDataName),
         [
             {
                 "name": DataNames.Main,
                 "source": TreeMapDataName,
                 "transform": allTruthy<Transforms>(
-                    columns.facet && facetTransforms(columns.facet, insight.facets),
-                    !columns.facet && treemapTransforms(insight)
+                    specColumns.facet && facetTransforms(specColumns.facet, insight.facets),
+                    !specColumns.facet && treemapTransforms(insight)
                 )
             }
         ],
-        categoricalColor && topLookup(columns.color, specViewOptions.maxLegends),
-        columns.facet && facetGroupData(DataNames.Main)
+        categoricalColor && topLookup(specColumns.color, specViewOptions.maxLegends),
+        specColumns.facet && facetGroupData(DataNames.Main)
     );
     return data;
 }

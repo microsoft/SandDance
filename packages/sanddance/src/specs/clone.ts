@@ -7,18 +7,18 @@ import { SpecContext } from './types';
 import { SpecResult } from './interfaces';
 
 export function cloneVegaSpecWithData(context: SpecContext, currData: object[]): SpecResult {
-    const { columns } = context;
-    const rawColumns = [
-        columns.color,
-        columns.facet,
-        columns.group,
-        columns.size,
-        columns.sort,
-        columns.x,
-        columns.y,
-        columns.z
+    const { specColumns } = context;
+    const columns = [
+        specColumns.color,
+        specColumns.facet,
+        specColumns.group,
+        specColumns.size,
+        specColumns.sort,
+        specColumns.x,
+        specColumns.y,
+        specColumns.z
     ]
-    inferAll(rawColumns, currData);
+    inferAll(columns, currData);
 
     const specResult = create(context);
     if (!specResult.errors) {

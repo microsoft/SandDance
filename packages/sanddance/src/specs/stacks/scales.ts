@@ -12,12 +12,12 @@ import { Scale } from 'vega-typings';
 import { SpecContext } from '../types';
 
 export default function (context: SpecContext) {
-    const { columns, insight } = context;
+    const { specColumns, insight } = context;
     const scales: Scale[] = [
         {
             "name": "xband",
             "type": "band",
-            "domain": columns.x.quantitative ?
+            "domain": specColumns.x.quantitative ?
                 {
                     "data": "xaxisdata",
                     "field": "data",
@@ -26,7 +26,7 @@ export default function (context: SpecContext) {
                 :
                 {
                     "data": DataNames.Main,
-                    "field": columns.x.quantitative ? FieldNames.StacksLongBin0 : columns.x.name,
+                    "field": specColumns.x.quantitative ? FieldNames.StacksLongBin0 : specColumns.x.name,
                     "sort": true
                 },
             "range": [
@@ -42,7 +42,7 @@ export default function (context: SpecContext) {
             "name": "yband",
             "type": "band",
             "reverse": true,
-            "domain": columns.y.quantitative ?
+            "domain": specColumns.y.quantitative ?
                 {
                     "data": "yaxisdata",
                     "field": "data",
@@ -51,7 +51,7 @@ export default function (context: SpecContext) {
                 :
                 {
                     "data": DataNames.Main,
-                    "field": columns.y.quantitative ? FieldNames.StacksLatBin0 : columns.y.name,
+                    "field": specColumns.y.quantitative ? FieldNames.StacksLatBin0 : specColumns.y.name,
                     "sort": true
                 },
             "range": "height",
@@ -114,9 +114,9 @@ export default function (context: SpecContext) {
             }
         }
     ];
-    if (columns.color && !columns.color.isColorData) {
-        if (columns.color.quantitative) {
-            scales.push(binnableColorScale(insight.colorBin, DataNames.Main, columns.color.name, insight.scheme));
+    if (specColumns.color && !specColumns.color.isColorData) {
+        if (specColumns.color.quantitative) {
+            scales.push(binnableColorScale(insight.colorBin, DataNames.Main, specColumns.color.name, insight.scheme));
         } else {
             scales.push(
                 {

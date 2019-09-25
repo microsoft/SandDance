@@ -12,12 +12,12 @@ import { RangeScheme, Scale } from 'vega-typings';
 import { SpecContext } from '../types';
 
 export default function (context: SpecContext) {
-    const { columns, insight } = context;
+    const { specColumns, insight } = context;
     const scales: Scale[] = [
         {
             "name": "xscale",
             "type": "point",
-            "domain": columns.x.quantitative ?
+            "domain": specColumns.x.quantitative ?
                 {
                     "data": "xaxisdata",
                     "field": "data",
@@ -26,7 +26,7 @@ export default function (context: SpecContext) {
                 :
                 {
                     "data": DataNames.Main,
-                    "field": columns.x.name,
+                    "field": specColumns.x.name,
                     "sort": true
                 },
             "range": "width",
@@ -35,7 +35,7 @@ export default function (context: SpecContext) {
         {
             "name": "yscale",
             "type": "point",
-            "domain": columns.y.quantitative ?
+            "domain": specColumns.y.quantitative ?
                 {
                     "data": "yaxisdata",
                     "field": "data",
@@ -44,7 +44,7 @@ export default function (context: SpecContext) {
                 :
                 {
                     "data": DataNames.Main,
-                    "field": columns.y.name,
+                    "field": specColumns.y.name,
                     "sort": true
                 },
             "range": "height",
@@ -68,9 +68,9 @@ export default function (context: SpecContext) {
             ]
         }
     ];
-    if (columns.color && !columns.color.isColorData) {
-        if (columns.color.quantitative) {
-            scales.push(binnableColorScale(insight.colorBin, DataNames.Main, columns.color.name, insight.scheme));
+    if (specColumns.color && !specColumns.color.isColorData) {
+        if (specColumns.color.quantitative) {
+            scales.push(binnableColorScale(insight.colorBin, DataNames.Main, specColumns.color.name, insight.scheme));
         } else {
             scales.push(
                 {
@@ -89,13 +89,13 @@ export default function (context: SpecContext) {
             );
         }
     }
-    if (columns.z) {
+    if (specColumns.z) {
         const zRange: RangeScheme = [0, { "signal": SignalNames.ZHeight }];
         scales.push(
-            columns.z.quantitative ?
-                linearScale(ScaleNames.Z, DataNames.Main, columns.z.name, zRange, false, true)
+            specColumns.z.quantitative ?
+                linearScale(ScaleNames.Z, DataNames.Main, specColumns.z.name, zRange, false, true)
                 :
-                pointScale(ScaleNames.Z, DataNames.Main, zRange, columns.z.name)
+                pointScale(ScaleNames.Z, DataNames.Main, zRange, specColumns.z.name)
         );
     }
     return scales;

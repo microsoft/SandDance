@@ -8,7 +8,7 @@ import { SpecContext } from '../types';
 import { testForCollapseSelection } from '../selection';
 
 export default function (context: SpecContext, data: string) {
-    const { columns } = context;
+    const { specColumns } = context;
     const marks: Mark[] = [
         {
             "type": "rect",
@@ -38,7 +38,7 @@ export default function (context: SpecContext, data: string) {
             }
         }
     ];
-    if (columns.z) {
+    if (specColumns.z) {
         const update = marks[0].encode.update;
         update.z = {
             "value": 0
@@ -50,7 +50,7 @@ export default function (context: SpecContext, data: string) {
             },
             {
                 "scale": ScaleNames.Z,
-                "field": columns.z.name
+                "field": specColumns.z.name
             }
         ];
     }

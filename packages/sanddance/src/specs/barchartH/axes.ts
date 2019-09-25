@@ -7,12 +7,12 @@ import { ScaleNames } from '../constants';
 import { SpecContext } from '../types';
 
 export default function (context: SpecContext) {
-    const { columns, specViewOptions } = context;
-    const pa = partialAxes(specViewOptions, true, columns.y.quantitative);
+    const { specColumns, specViewOptions } = context;
+    const pa = partialAxes(specViewOptions, true, specColumns.y.quantitative);
     const axes: Axis[] = [
         {
             "scale": ScaleNames.Y,
-            "title": columns.y.name,
+            "title": specColumns.y.name,
             ...pa.left as Axis
         },
         {

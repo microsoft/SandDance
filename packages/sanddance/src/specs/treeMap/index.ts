@@ -17,10 +17,10 @@ import { SpecCapabilities, SpecContext } from '../types';
 import { SpecCreator, SpecResult } from '../interfaces';
 
 export const treemap: SpecCreator = (context: SpecContext): SpecResult => {
-    const { columns, insight, specViewOptions } = context;
+    const { specColumns, insight, specViewOptions } = context;
     const errors: string[] = [];
 
-    if (!columns.size) errors.push(`Must set a field for size`);
+    if (!specColumns.size) errors.push(`Must set a field for size`);
     checkForFacetErrors(insight.facets, errors);
 
     const specCapabilities: SpecCapabilities = {
@@ -57,15 +57,15 @@ export const treemap: SpecCreator = (context: SpecContext): SpecResult => {
         };
     }
 
-    const categoricalColor = columns.color && !columns.color.quantitative;
+    const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     const dataName = categoricalColor ? DataNames.Legend : DataNames.Main;
 
     const TreeMapName = "SandDanceTreeMapFaceted";
 
     const data = getData(context);
-    let marks = getMarks(context, columns.facet ? TreeMapName : dataName);
+    let marks = getMarks(context, specColumns.facet ? TreeMapName : dataName);
 
-    if (columns.facet) {
+    if (specColumns.facet) {
         const childData: Data = {
             "name": TreeMapName,
             "source": DataNames.FacetGroupCell,
@@ -75,7 +75,7 @@ export const treemap: SpecCreator = (context: SpecContext): SpecResult => {
         (marks[0] as GroupMark).marks
     }
 
-    const size = columns.facet ? facetSize(context) : insight.size;
+    const size = specColumns.facet ? facetSize(context) : insight.size;
 
     var vegaSpec: Spec = {
         "$schema": "https://vega.github.io/schema/vega/v3.json",
@@ -92,7 +92,7 @@ export const treemap: SpecCreator = (context: SpecContext): SpecResult => {
         vegaSpec.legends = legends;
     }
 
-    if (columns.facet) {
+    if (specColumns.facet) {
         vegaSpec.layout = layout(context);
     } else {
         //use autosize only when not faceting

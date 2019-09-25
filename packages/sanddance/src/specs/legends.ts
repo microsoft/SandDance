@@ -26,8 +26,8 @@ function legend(column: Column) {
 }
 
 export function getLegends(context: SpecContext) {
-    const { columns, insight } = context;
-    if (columns.color && !insight.hideLegend && !columns.color.isColorData) {
-        return [legend(columns.color)];
+    const { specColumns, insight } = context;
+    if (specColumns.color && !insight.hideLegend && !specColumns.color.isColorData) {
+        return [legend(specColumns.color)];
     }
 }

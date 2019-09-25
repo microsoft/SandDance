@@ -8,25 +8,25 @@ import { facetGroupData, facetSourceData, facetTransforms } from '../facet';
 import { topLookup } from '../top';
 
 export default function (context: SpecContext) {
-    const { columns, insight, specViewOptions } = context;
-    const categoricalColor = columns.color && !columns.color.quantitative;
+    const { specColumns, insight, specViewOptions } = context;
+    const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     const ScatterDataName = "SandDanceScatterPlotData";
     const data = allTruthy<Data>(
-        facetSourceData(columns.facet, insight.facets, ScatterDataName),
+        facetSourceData(specColumns.facet, insight.facets, ScatterDataName),
         [
             {
                 "name": DataNames.Main,
                 "source": ScatterDataName,
                 "transform": allTruthy<Transforms>(
-                    filterInvalidWhenNumeric(columns.x),
-                    filterInvalidWhenNumeric(columns.y),
-                    filterInvalidWhenNumeric(columns.z),
-                    columns.facet && facetTransforms(columns.facet, insight.facets)
+                    filterInvalidWhenNumeric(specColumns.x),
+                    filterInvalidWhenNumeric(specColumns.y),
+                    filterInvalidWhenNumeric(specColumns.z),
+                    specColumns.facet && facetTransforms(specColumns.facet, insight.facets)
                 )
             }
         ],
-        categoricalColor && topLookup(columns.color, specViewOptions.maxLegends),
-        columns.facet && facetGroupData(DataNames.Main)
+        categoricalColor && topLookup(specColumns.color, specViewOptions.maxLegends),
+        specColumns.facet && facetGroupData(DataNames.Main)
     );
     return data;
 }

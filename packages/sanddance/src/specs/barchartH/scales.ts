@@ -16,7 +16,7 @@ import { RangeScheme, Scale } from 'vega-typings';
 import { SpecContext } from '../types';
 
 export default function (context: SpecContext, namespace: NameSpace) {
-    const { columns, insight } = context;
+    const { specColumns, insight } = context;
     const scales: Scale[] = [
         {
             "name": BarChartScaleNames.compartmentScale,
@@ -73,9 +73,9 @@ export default function (context: SpecContext, namespace: NameSpace) {
             }
         }
     ];
-    if (columns.color && !columns.color.isColorData) {
-        if (columns.color.quantitative) {
-            scales.push(binnableColorScale(insight.colorBin, namespace.bucket, columns.color.name, insight.scheme));
+    if (specColumns.color && !specColumns.color.isColorData) {
+        if (specColumns.color.quantitative) {
+            scales.push(binnableColorScale(insight.colorBin, namespace.bucket, specColumns.color.name, insight.scheme));
         } else {
             scales.push(
                 {
@@ -94,14 +94,14 @@ export default function (context: SpecContext, namespace: NameSpace) {
             );
         }
     }
-    if (columns.z) {
+    if (specColumns.z) {
         const zRange: RangeScheme = [0, { "signal": SignalNames.ZHeight }];
         scales.push(
-            columns.z.quantitative ?
-                linearScale(ScaleNames.Z, DataNames.Main, columns.z.name, zRange, false, true)
+            specColumns.z.quantitative ?
+                linearScale(ScaleNames.Z, DataNames.Main, specColumns.z.name, zRange, false, true)
                 :
-                pointScale(ScaleNames.Z, DataNames.Main, zRange, columns.z.name)
+                pointScale(ScaleNames.Z, DataNames.Main, zRange, specColumns.z.name)
         );
     }
-    return scales.concat(columns.y.quantitative ? quantitativeScales() : qualitativeScales(context, namespace));
+    return scales.concat(specColumns.y.quantitative ? quantitativeScales() : qualitativeScales(context, namespace));
 }

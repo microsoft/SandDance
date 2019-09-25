@@ -8,7 +8,7 @@ import { SignalNames } from '../constants';
 import { SpecContext } from '../types';
 
 export default function (context: SpecContext) {
-    const { columns, insight, specViewOptions } = context;
+    const { specColumns, insight, specViewOptions } = context;
     const signals = allTruthy<Signal>(
         textSignals(context),
         [
@@ -45,7 +45,7 @@ export default function (context: SpecContext) {
                 "name": "unitsize",
                 "update": "cellwidth/((1 + unitpad)*maxnumbers)"
             },
-            columns.x.quantitative && {
+            specColumns.x.quantitative && {
                 "name": SignalNames.XBins,
                 "value": 30,
                 "bind": {
@@ -56,7 +56,7 @@ export default function (context: SpecContext) {
                     "step": 1
                 }
             },
-            columns.y.quantitative && {
+            specColumns.y.quantitative && {
                 "name": SignalNames.YBins,
                 "value": 30,
                 "bind": {

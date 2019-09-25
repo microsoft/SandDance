@@ -7,7 +7,7 @@ import { ScaleNames } from '../constants';
 import { SpecContext } from '../types';
 
 export default function (context: SpecContext, namespace: NameSpace) {
-    const { columns } = context;
+    const { specColumns } = context;
     const scales: Scale[] = [
         {
             "name": BarChartScaleNames.bucketScale,
@@ -15,7 +15,7 @@ export default function (context: SpecContext, namespace: NameSpace) {
             "range": "width",
             "domain": {
                 "data": namespace.bucket,
-                "field": columns.x.name,
+                "field": specColumns.x.name,
                 "sort": true
             }
         },
@@ -31,7 +31,7 @@ export default function (context: SpecContext, namespace: NameSpace) {
             "padding": 0.01,
             "domain": {
                 "data": namespace.stacked,
-                "field": columns.x.name,
+                "field": specColumns.x.name,
                 "sort": true
             }
         }

@@ -10,7 +10,7 @@ import { SpecContext } from '../types';
 import { testForCollapseSelection } from '../selection';
 
 export default function (context: SpecContext, namespace: NameSpace): RectMark[] {
-    const { columns } = context;
+    const { specColumns } = context;
     const mark: RectMark = {
         "type": "rect",
         "from": {
@@ -20,7 +20,7 @@ export default function (context: SpecContext, namespace: NameSpace): RectMark[]
             "update": {
                 "y": {
                     "scale": ScaleNames.Y,
-                    "field": columns.y.quantitative ? FieldNames.BarChartBin0 : columns.y.name,
+                    "field": specColumns.y.quantitative ? FieldNames.BarChartBin0 : specColumns.y.name,
                     "offset": {
                         "scale": BarChartScaleNames.compartmentScale,
                         "field": namespace.__compartment
@@ -69,7 +69,7 @@ export default function (context: SpecContext, namespace: NameSpace): RectMark[]
             }
         }
     };
-    if (columns.z) {
+    if (specColumns.z) {
         const update = mark.encode.update;
         update.z = {
             "value": 0
@@ -81,7 +81,7 @@ export default function (context: SpecContext, namespace: NameSpace): RectMark[]
             },
             {
                 "scale": ScaleNames.Z,
-                "field": columns.z.name
+                "field": specColumns.z.name
             }
         ];
     }

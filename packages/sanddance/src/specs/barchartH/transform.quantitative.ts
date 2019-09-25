@@ -6,7 +6,7 @@ import { FieldNames, SignalNames } from '../constants';
 import { StackTransform, Transforms } from 'vega-typings';
 
 export default function (context: SpecContext, groupBy: Column) {
-    const { columns } = context;
+    const { specColumns } = context;
     const bucket_extent = "bucket_extent";
 
     const stackTransform: StackTransform = {
@@ -22,20 +22,20 @@ export default function (context: SpecContext, groupBy: Column) {
     if (groupBy) {
         stackTransform.groupby.push(groupBy.name);
     }
-    if (columns.sort) {
+    if (specColumns.sort) {
         stackTransform.sort = {
-            "field": columns.sort.name
+            "field": specColumns.sort.name
         };
     }
     const transforms: Transforms[] = [
         {
             "type": "extent",
-            "field": columns.y.name,
+            "field": specColumns.y.name,
             "signal": bucket_extent
         },
         {
             "type": "bin",
-            "field": columns.y.name,
+            "field": specColumns.y.name,
             "extent": {
                 "signal": bucket_extent
             },

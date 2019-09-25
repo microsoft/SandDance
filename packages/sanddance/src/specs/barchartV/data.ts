@@ -12,19 +12,19 @@ import { SpecContext } from '../types';
 import { topLookup } from '../top';
 
 export default function (context: SpecContext, namespace: NameSpace) {
-    const { columns, insight, specViewOptions } = context;
-    const categoricalColor = columns.color && !columns.color.quantitative;
-    const nestedDataName = columns.facet && columns.facet.quantitative ? DataNames.Pre : DataNames.Main;
+    const { specColumns, insight, specViewOptions } = context;
+    const categoricalColor = specColumns.color && !specColumns.color.quantitative;
+    const nestedDataName = specColumns.facet && specColumns.facet.quantitative ? DataNames.Pre : DataNames.Main;
     const data = allTruthy<Data>(
-        facetSourceData(columns.facet, insight.facets, DataNames.Main),
-        categoricalColor && topLookup(columns.color, specViewOptions.maxLegends),
+        facetSourceData(specColumns.facet, insight.facets, DataNames.Main),
+        categoricalColor && topLookup(specColumns.color, specViewOptions.maxLegends),
         [
             bucketed(context, namespace, categoricalColor ? DataNames.Legend : nestedDataName),
             stacked(namespace, namespace.bucket,
-                columns.facet && facetTransforms(columns.facet, insight.facets)
+                specColumns.facet && facetTransforms(specColumns.facet, insight.facets)
             )
         ],
-        columns.x.quantitative && [
+        specColumns.x.quantitative && [
             {
                 "name": DataNames.QuantitativeData,
                 "transform": [
@@ -43,13 +43,13 @@ export default function (context: SpecContext, namespace: NameSpace) {
                 ]
             }
         ],
-        columns.facet && facetGroupData(namespace.stacked)
+        specColumns.facet && facetGroupData(namespace.stacked)
     );
     return data;
 }
 
 export function bucketed(context: SpecContext, namespace: NameSpace, source: string) {
-    const { columns } = context;
+    const { specColumns: columns } = context;
     const data: SourceData = {
         "name": namespace.bucket,
         source,

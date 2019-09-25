@@ -6,7 +6,7 @@ import { Mark } from 'vega-typings';
 import { SpecContext } from '../types';
 
 export default function (context: SpecContext) {
-    const { columns } = context;
+    const { specColumns } = context;
     const marks: Mark[] = [
         {
             "name": "marks2",
@@ -18,7 +18,7 @@ export default function (context: SpecContext) {
                 "update": {
                     "x": {
                         "scale": "xband",
-                        "field": columns.x.quantitative ? FieldNames.StacksLongBin0 : columns.x.name,
+                        "field": specColumns.x.quantitative ? FieldNames.StacksLongBin0 : specColumns.x.name,
                         "offset": {
                             "scale": "xinternalscale",
                             "field": "column"
@@ -26,7 +26,7 @@ export default function (context: SpecContext) {
                     },
                     "y": {
                         "scale": "yband",
-                        "field": columns.y.quantitative ? FieldNames.StacksLatBin0 : columns.y.name,
+                        "field": specColumns.y.quantitative ? FieldNames.StacksLatBin0 : specColumns.y.name,
                         "offset": {
                             "scale": "yinternalscale",
                             "field": "depth"

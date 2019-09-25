@@ -9,7 +9,7 @@ import { Signal } from 'vega-typings';
 import { SpecContext } from '../types';
 
 export default function (context: SpecContext): Signal[] {
-    const { columns, specViewOptions } = context;
+    const { specColumns, specViewOptions } = context;
     const signals = allTruthy<Signal>(
         textSignals(context),
         [
@@ -17,7 +17,7 @@ export default function (context: SpecContext): Signal[] {
                 "name": SignalNames.XDomain,
                 "update": `domain('${ScaleNames.X}')`
             },
-            columns.y.quantitative && {
+            specColumns.y.quantitative && {
                 "name": SignalNames.YBins,
                 "value": 7,
                 "bind": {
@@ -30,7 +30,7 @@ export default function (context: SpecContext): Signal[] {
             },
             {
                 "name": BarChartSignalNames.compartmentHeightSignal,
-                "update": `bandwidth('${columns.y.quantitative ? ScaleNames.Y : BarChartScaleNames.bucketScale}')`
+                "update": `bandwidth('${specColumns.y.quantitative ? ScaleNames.Y : BarChartScaleNames.bucketScale}')`
             },
             {
                 "name": BarChartSignalNames.aspectRatioSignal,
@@ -43,7 +43,7 @@ export default function (context: SpecContext): Signal[] {
             colorBinCountSignal(context),
             colorReverseSignal(context)
         ],
-        columns.facet && facetSignals(context)
+        specColumns.facet && facetSignals(context)
     );
     return signals;
 }

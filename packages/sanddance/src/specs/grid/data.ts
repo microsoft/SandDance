@@ -7,16 +7,16 @@ import { SpecContext } from '../types';
 import { topLookup } from '../top';
 
 export default function (context: SpecContext) {
-    const { columns, specViewOptions } = context;
-    const categoricalColor = columns.color && !columns.color.quantitative;
+    const { specColumns, specViewOptions } = context;
+    const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     const data = allTruthy<Data>(
         [
             {
                 "name": DataNames.Main,
                 "transform": allTruthy<Transforms>([
-                    columns.sort && {
+                    specColumns.sort && {
                         "type": "collect",
-                        "sort": { "field": columns.sort.name }
+                        "sort": { "field": specColumns.sort.name }
                     },
                     {
                         "type": "window",
@@ -30,7 +30,7 @@ export default function (context: SpecContext) {
                 ])
             }
         ],
-        categoricalColor && topLookup(columns.color, specViewOptions.maxLegends)
+        categoricalColor && topLookup(specColumns.color, specViewOptions.maxLegends)
     );
     return data;
 }

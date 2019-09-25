@@ -11,7 +11,7 @@ import { SpecCapabilities, SpecContext } from '../types';
 import { SpecCreator, SpecResult } from '../interfaces';
 
 export const grid: SpecCreator = (context: SpecContext): SpecResult => {
-    const { columns, insight } = context;
+    const { specColumns, insight } = context;
     const errors: string[] = [];
 
     const specCapabilities: SpecCapabilities = {
@@ -39,7 +39,7 @@ export const grid: SpecCreator = (context: SpecContext): SpecResult => {
         };
     }
 
-    const categoricalColor = columns.color && !columns.color.quantitative;
+    const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     const dataName = categoricalColor ? DataNames.Legend : DataNames.Main;
 
     const size = insight.size;

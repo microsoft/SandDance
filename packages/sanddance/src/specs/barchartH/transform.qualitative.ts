@@ -6,12 +6,12 @@ import { SpecContext } from '../types';
 import { StackTransform, Transforms } from 'vega-typings';
 
 export default function (context: SpecContext) {
-    const { columns } = context;
+    const { specColumns } = context;
     const stackTransform: StackTransform = {
         "type": "stack",
         "groupby": [
             {
-                "field": columns.y.name
+                "field": specColumns.y.name
             }
         ],
         "as": [
@@ -19,9 +19,9 @@ export default function (context: SpecContext) {
             FieldNames.BarChartStack1
         ]
     };
-    if (columns.sort) {
+    if (specColumns.sort) {
         stackTransform.sort = {
-            "field": columns.sort.name
+            "field": specColumns.sort.name
         };
     }
     const transforms: Transforms[] = [
