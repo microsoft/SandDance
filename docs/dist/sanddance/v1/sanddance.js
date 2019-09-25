@@ -8168,7 +8168,7 @@ void main(void) {
 
     function notNice(niceValue) {
         //convert "nice" numbers to numeric value
-        return niceValue.replace(/,/g, '');
+        return (niceValue + '').replace(/,/g, '');
     }
     function tickValue(axis, i) {
         const tick = axis.tickText[i];
@@ -12713,7 +12713,7 @@ void main(void) {
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
-    const version = "1.6.0";
+    const version = "1.6.1";
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
 

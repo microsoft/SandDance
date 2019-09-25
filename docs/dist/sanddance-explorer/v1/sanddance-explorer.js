@@ -10411,7 +10411,7 @@ var _facet = require("./specs/facet");
 
 function notNice(niceValue) {
   //convert "nice" numbers to numeric value
-  return niceValue.replace(/,/g, '');
+  return (niceValue + '').replace(/,/g, '');
 }
 
 function tickValue(axis, i) {
@@ -16306,7 +16306,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = "1.6.0";
+const version = "1.6.1";
 exports.version = version;
 },{}],"rZaE":[function(require,module,exports) {
 "use strict";
