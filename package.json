@@ -55,7 +55,8 @@
     "rollup-plugin-node-resolve": "^3.3.0",
     "ts-docs-gen": "^0.2.0",
     "typescript": "^3.5",
-    "unified": "^7.0.2"
+    "unified": "^7.0.2",
+    "vsce": "^1.66.0"
   },
   "babel": {
     "presets": [
