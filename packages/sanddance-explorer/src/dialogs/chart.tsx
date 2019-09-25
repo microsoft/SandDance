@@ -17,8 +17,8 @@ export interface Props extends ColumnMapBaseProps {
     chart: SandDance.types.Chart;
     onChangeChartType: (chart: SandDance.types.Chart) => void;
     view: SandDance.VegaDeckGl.types.View;
-    onChangeSignal: (role: string, column: string, name: string, value: any) => void;
     insightColumns: SandDance.types.InsightColumns;
+    onChangeSignal: (role: string, column: string, name: string, value: any) => void;
 }
 
 export interface State {
