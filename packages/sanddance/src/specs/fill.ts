@@ -6,10 +6,10 @@ import { SpecContext } from './types';
 import { util } from '../vega-deck.gl';
 
 export function fill(context: SpecContext): ProductionRule<ColorValueRef> {
-    const { specColumns, specViewOptions } = context;
+    const { specColumns, insight, specViewOptions } = context;
     const colorColumn = specColumns.color;
     return colorColumn ?
-        colorColumn.isColorData ?
+        colorColumn.isColorData || insight.directColor ?
             {
                 "field": colorColumn.name
             }

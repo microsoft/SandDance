@@ -73,7 +73,7 @@ export default function (context: SpecContext, namespace: NameSpace) {
             }
         }
     ];
-    if (specColumns.color && !specColumns.color.isColorData) {
+    if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
         if (specColumns.color.quantitative) {
             scales.push(binnableColorScale(insight.colorBin, namespace.bucket, specColumns.color.name, insight.scheme));
         } else {

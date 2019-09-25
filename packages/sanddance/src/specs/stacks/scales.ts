@@ -114,7 +114,7 @@ export default function (context: SpecContext) {
             }
         }
     ];
-    if (specColumns.color && !specColumns.color.isColorData) {
+    if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
         if (specColumns.color.quantitative) {
             scales.push(binnableColorScale(insight.colorBin, DataNames.Main, specColumns.color.name, insight.scheme));
         } else {
