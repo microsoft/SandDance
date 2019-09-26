@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.3.6]
+- Horizontal bar chart
+- Direct color mapping
+
 ## [1.3.5]
 - Sub-pixel rendering
 
