@@ -43,7 +43,7 @@ interface TableProps {
 | ------------ | ------------------------------------- | -------- |
 | className    | string                                | true     |
 | onRowClick   | (e: Event, index: number) => void     | true     |
-| rows         | [TableRow][InterfaceDeclaration-58][] | false    |
+| rows         | [TableRow][InterfaceDeclaration-59][] | false    |
 | rowClassName | string                                | true     |
 
 ----------
@@ -60,7 +60,7 @@ interface TableRow {
 
 | Name  | Type                                   | Optional |
 | ----- | -------------------------------------- | -------- |
-| cells | [TableCell][InterfaceDeclaration-56][] | false    |
+| cells | [TableCell][InterfaceDeclaration-57][] | false    |
 
 ## Variables
 
@@ -72,13 +72,13 @@ const Table: StatelessComponent<TableProps>;
 
 **Type**
 
-StatelessComponent<[TableProps][InterfaceDeclaration-57]>
+StatelessComponent<[TableProps][InterfaceDeclaration-58]>
 
 [NamespaceImport-6]: vegadeckgl.controls#controls
-[InterfaceDeclaration-56]: vegadeckgl.controls#tablecell
-[InterfaceDeclaration-57]: vegadeckgl.controls#tableprops
-[InterfaceDeclaration-58]: vegadeckgl.controls#tablerow
-[InterfaceDeclaration-58]: vegadeckgl.controls#tablerow
-[InterfaceDeclaration-56]: vegadeckgl.controls#tablecell
+[InterfaceDeclaration-57]: vegadeckgl.controls#tablecell
+[InterfaceDeclaration-58]: vegadeckgl.controls#tableprops
+[InterfaceDeclaration-59]: vegadeckgl.controls#tablerow
+[InterfaceDeclaration-59]: vegadeckgl.controls#tablerow
+[InterfaceDeclaration-57]: vegadeckgl.controls#tablecell
 [VariableDeclaration-9]: vegadeckgl.controls#table
-[InterfaceDeclaration-57]: vegadeckgl.controls#tableprops
+[InterfaceDeclaration-58]: vegadeckgl.controls#tableprops

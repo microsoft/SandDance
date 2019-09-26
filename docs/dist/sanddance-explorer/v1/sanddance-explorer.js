@@ -10437,6 +10437,10 @@ function selectNullOrEmpty(column) {
 }
 
 function selectExact(column, value) {
+  if (value == null) {
+    return selectNullOrEmpty(column);
+  }
+
   const searchExpression = {
     name: column.name,
     operator: '==',
@@ -16306,7 +16310,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = "1.6.1";
+const version = "1.6.2";
 exports.version = version;
 },{}],"rZaE":[function(require,module,exports) {
 "use strict";
@@ -17445,7 +17449,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = "1.1.2";
+const version = "1.1.4";
 exports.version = version;
 },{}],"MjKu":[function(require,module,exports) {
 "use strict";
@@ -23523,6 +23527,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.getValidOperators = getValidOperators;
+exports.getText = getText;
 exports.SearchTerm = SearchTerm;
 exports.maxAutocomplete = void 0;
 
@@ -23643,7 +23648,7 @@ function getValues(ex, column, data, autoCompleteDistinctValues) {
 
 function getText(ex) {
   if (ex.operator === 'isnullorEmpty') return '';
-  return typeof ex.value === 'string' ? ex.value : ex.value.toString();
+  return typeof ex.value === 'string' ? ex.value : ex.value == null ? '' : ex.value.toString();
 }
 
 function SearchTerm(props) {
@@ -23798,7 +23803,7 @@ function validateExpression(ex) {
     return;
   }
 
-  var s = typeof ex.value === 'string' ? ex.value : ex.value.toString();
+  var s = (0, _searchTerm.getText)(ex);
 
   if (s.length === 0) {
     ex.errorMessage = _language.strings.labelRequired;
@@ -23813,7 +23818,7 @@ function clearExpressionValidation(ex) {
     return;
   }
 
-  var s = typeof ex.value === 'string' ? ex.value : ex.value.toString();
+  var s = (0, _searchTerm.getText)(ex);
 
   if (s.length !== 0) {
     ex.errorMessage = null;
@@ -24332,7 +24337,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var version = "1.6.0";
+var version = "1.6.2";
 exports.version = version;
 },{}],"zKGJ":[function(require,module,exports) {
 "use strict";
@@ -25930,6 +25935,24 @@ function (_React$Component) {
 
               if (!column.stats.hasColorData) {
                 newState.directColor = false;
+
+                if (_this6.state.directColor !== newState.directColor) {
+                  newState.calculating = function () {
+                    return _this6._resize();
+                  };
+                }
+              }
+
+              if (_this6.state.columns && _this6.state.columns.color && _this6.state.columns.color !== column.name) {
+                var currColorColumn = _this6.state.dataContent.columns.filter(function (c) {
+                  return c.name === _this6.state.columns.color;
+                })[0];
+
+                if (column.isColorData != currColorColumn.isColorData) {
+                  newState.calculating = function () {
+                    return _this6._resize();
+                  };
+                }
               }
 
               _this6.ignoreSelectionChange = true;
@@ -26416,7 +26439,10 @@ function (_React$Component) {
               directColor: _this9.state.directColor,
               onDirectColorChange: function onDirectColorChange(directColor) {
                 _this9.changeInsight({
-                  directColor: directColor
+                  directColor: directColor,
+                  calculating: function calculating() {
+                    return _this9._resize();
+                  }
                 });
               }
             }));

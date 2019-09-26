@@ -20,7 +20,7 @@ function createStage(view: View): Stage;
 
 **Return type**
 
-[Stage][InterfaceDeclaration-29]
+[Stage][InterfaceDeclaration-30]
 
 ## Variables
 
@@ -56,7 +56,7 @@ const defaultPresenterStyle: PresenterStyle;
 
 **Type**
 
-[PresenterStyle][InterfaceDeclaration-48]
+[PresenterStyle][InterfaceDeclaration-49]
 
 ----------
 
@@ -68,7 +68,7 @@ const defaultPresenterConfig: PresenterConfig;
 
 **Type**
 
-[PresenterConfig][InterfaceDeclaration-53]
+[PresenterConfig][InterfaceDeclaration-54]
 
 ----------
 
@@ -133,13 +133,13 @@ const minPixelSize: 0.5;
 [NamespaceImport-7]: vegadeckgl.defaults#defaults
 [FunctionDeclaration-11]: vegadeckgl.defaults#createstage
 [TypeAliasDeclaration-7]: vegadeckgl.types#view
-[InterfaceDeclaration-29]: vegadeckgl.types#stage
+[InterfaceDeclaration-30]: vegadeckgl.types#stage
 [VariableDeclaration-10]: vegadeckgl.defaults#minheight
 [VariableDeclaration-11]: vegadeckgl.defaults#minwidth
 [VariableDeclaration-12]: vegadeckgl.defaults#defaultpresenterstyle
-[InterfaceDeclaration-48]: vegadeckgl.types#presenterstyle
+[InterfaceDeclaration-49]: vegadeckgl.types#presenterstyle
 [VariableDeclaration-13]: vegadeckgl.defaults#defaultpresenterconfig
-[InterfaceDeclaration-53]: vegadeckgl.types#presenterconfig
+[InterfaceDeclaration-54]: vegadeckgl.types#presenterconfig
 [VariableDeclaration-14]: vegadeckgl.defaults#groupstrokewidth
 [VariableDeclaration-15]: vegadeckgl.defaults#linez
 [VariableDeclaration-16]: vegadeckgl.defaults#defaultview

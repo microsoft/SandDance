@@ -8186,6 +8186,9 @@ void main(void) {
         return searchExpression;
     }
     function selectExact(column, value) {
+        if (value == null) {
+            return selectNullOrEmpty(column);
+        }
         const searchExpression = {
             name: column.name,
             operator: '==',
@@ -12713,7 +12716,7 @@ void main(void) {
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
-    const version = "1.6.1";
+    const version = "1.6.2";
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
 

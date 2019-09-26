@@ -157,6 +157,24 @@ T
 
 ----------
 
+### isColor
+
+```typescript
+function isColor(cssColorSpecifier: string): boolean;
+```
+
+**Parameters**
+
+| Name              | Type   |
+| ----------------- | ------ |
+| cssColorSpecifier | string |
+
+**Return type**
+
+boolean
+
+----------
+
 ### getCubeLayer
 
 ```typescript
@@ -189,7 +207,7 @@ function getCubes(deckProps: DeckProps): Cube[];
 
 **Return type**
 
-[Cube][InterfaceDeclaration-30][]
+[Cube][InterfaceDeclaration-31][]
 
 ----------
 
@@ -219,7 +237,8 @@ function outerSize(el: HTMLElement): { };
 [FunctionDeclaration-16]: vegadeckgl.util#colorisequal
 [FunctionDeclaration-17]: vegadeckgl.util#colortostring
 [FunctionDeclaration-18]: vegadeckgl.util#deepmerge
-[FunctionDeclaration-19]: vegadeckgl.util#getcubelayer
-[FunctionDeclaration-20]: vegadeckgl.util#getcubes
-[InterfaceDeclaration-30]: vegadeckgl.types#cube
-[FunctionDeclaration-21]: vegadeckgl.util#outersize
+[FunctionDeclaration-19]: vegadeckgl.util#iscolor
+[FunctionDeclaration-20]: vegadeckgl.util#getcubelayer
+[FunctionDeclaration-21]: vegadeckgl.util#getcubes
+[InterfaceDeclaration-31]: vegadeckgl.types#cube
+[FunctionDeclaration-22]: vegadeckgl.util#outersize
