@@ -77,7 +77,7 @@
         "watch": "tsc -watch -p ./",
         "build": "npm run compile && npm run resources",
         "x-test": "npm run compile && node ./node_modules/vscode/bin/test",
-        "vsce-package": "vsce package"
+        "package": "vsce package"
     },
     "devDependencies": {
         "@types/mocha": "^2.2.42",
