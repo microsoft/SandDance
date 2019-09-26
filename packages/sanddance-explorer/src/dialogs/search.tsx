@@ -5,7 +5,8 @@ import {
     AutoCompleteDistinctValues,
     getValidOperators,
     InputSearchExpression,
-    SearchTerm
+    SearchTerm,
+    getText
 } from '../controls/searchTerm';
 import { base } from '../base';
 import { Button } from '../controls/button';
@@ -52,7 +53,7 @@ function validateExpression(ex: InputSearchExpression) {
         ex.errorMessage = null;
         return;
     }
-    const s = (typeof ex.value === 'string') ? ex.value : ex.value.toString();
+    const s = getText(ex);
     if (s.length === 0) {
         ex.errorMessage = strings.labelRequired;
     } else {
@@ -65,7 +66,7 @@ function clearExpressionValidation(ex: InputSearchExpression) {
         ex.errorMessage = null;
         return;
     }
-    const s = (typeof ex.value === 'string') ? ex.value : ex.value.toString()
+    const s = getText(ex);
     if (s.length !== 0) {
         ex.errorMessage = null;
     }

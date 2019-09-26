@@ -5,9 +5,9 @@ import { Column } from './specs/types';
 import { facetTitleSeparator } from './specs/facet';
 import { SearchExpression, SearchExpressionGroup, SearchExpressionOperators } from './searchExpression/types';
 
-export function notNice(niceValue: string) {
+export function notNice(niceValue: string | number) {
     //convert "nice" numbers to numeric value
-    return niceValue.replace(/,/g, '');
+    return (niceValue + '').replace(/,/g, '');
 }
 
 function tickValue(axis: VegaDeckGl.types.Axis, i: number) {
@@ -28,6 +28,9 @@ export function selectNullOrEmpty(column: Column) {
 }
 
 export function selectExact(column: Column, value: string) {
+    if (value == null) {
+        return selectNullOrEmpty(column);
+    }
     const searchExpression: SearchExpression = {
         name: column.name,
         operator: '==',

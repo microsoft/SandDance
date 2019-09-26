@@ -129,9 +129,9 @@ function getValues(ex: InputSearchExpression, column: SandDance.types.Column, da
     return [];
 }
 
-function getText(ex: InputSearchExpression) {
+export function getText(ex: InputSearchExpression) {
     if (ex.operator === 'isnullorEmpty') return '';
-    return (typeof ex.value === 'string') ? ex.value : ex.value.toString();
+    return (typeof ex.value === 'string') ? ex.value : ex.value == null ? '' : ex.value.toString();
 }
 
 export function SearchTerm(props: Props) {
