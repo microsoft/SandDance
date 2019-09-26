@@ -21,8 +21,8 @@
     "clean": "lerna clean --yes && npm run clean-build",
     "remove-pem": "rimraf **/*.pem && rimraf **/*.key",
     "deploy": "lerna run deploy",
-    "test": "npm run build && lerna run test",
-    "vsce-package": "lerna run vsce-package --parallel",
+    "test": "npm run build && lerna run test && lerna run package",
+    "package": "lerna run package --parallel",
     "dev": "lerna run dev --scope dev --parallel",
     "build-rec": "lerna run build --scope @msrvida/chart-recommender",
     "test-rec": "lerna run test --scope @msrvida/chart-recommender"
@@ -55,7 +55,8 @@
     "rollup-plugin-node-resolve": "^3.3.0",
     "ts-docs-gen": "^0.2.0",
     "typescript": "^3.5",
-    "unified": "^7.0.2"
+    "unified": "^7.0.2",
+    "vsce": "^1.66.0"
   },
   "babel": {
     "presets": [
