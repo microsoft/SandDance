@@ -513,6 +513,15 @@ export class Explorer extends React.Component<Props, State> {
             }
             if (!column.stats.hasColorData) {
               newState.directColor = false;
+              if (this.state.directColor !== newState.directColor) {
+                newState.calculating = () => this._resize();
+              }
+            }
+            if (this.state.columns && this.state.columns.color && this.state.columns.color !== column.name) {
+              const currColorColumn = this.state.dataContent.columns.filter(c => c.name === this.state.columns.color)[0];
+              if (column.isColorData != currColorColumn.isColorData) {
+                newState.calculating = () => this._resize();
+              }
             }
             this.ignoreSelectionChange = true;
             this.viewer.deselect().then(() => {
@@ -884,7 +893,7 @@ export class Explorer extends React.Component<Props, State> {
                       }}
                       directColor={this.state.directColor}
                       onDirectColorChange={directColor => {
-                        this.changeInsight({ directColor });
+                        this.changeInsight({ directColor, calculating: () => this._resize() });
                       }}
                     />
                   );
