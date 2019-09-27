@@ -6454,7 +6454,12 @@ void main(void) {
             pickable: true,
             getHighlightColor: config.getTextHighlightColor || (o => o.color),
             onClick: (o, e) => {
-                config.onTextClick && config.onTextClick(e && e.srcEvent, o.object);
+                let pe = e && e.srcEvent;
+                //handle iOS event
+                if (e.center) {
+                    pe = { clientX: e.center.x, clientY: e.center.y };
+                }
+                config.onTextClick && config.onTextClick(pe, o.object);
             },
             onHover: (o, e) => {
                 if (o.index === -1) {
@@ -12716,7 +12721,7 @@ void main(void) {
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
-    const version = "1.6.2";
+    const version = "1.6.3";
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
 

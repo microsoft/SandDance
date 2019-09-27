@@ -7874,7 +7874,16 @@ function newTextLayer(presenter, id, data, config, fontFamily) {
     pickable: true,
     getHighlightColor: config.getTextHighlightColor || (o => o.color),
     onClick: (o, e) => {
-      config.onTextClick && config.onTextClick(e && e.srcEvent, o.object);
+      let pe = e && e.srcEvent; //handle iOS event
+
+      if (e.center) {
+        pe = {
+          clientX: e.center.x,
+          clientY: e.center.y
+        };
+      }
+
+      config.onTextClick && config.onTextClick(pe, o.object);
     },
     onHover: (o, e) => {
       if (o.index === -1) {
@@ -16310,7 +16319,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = "1.6.2";
+const version = "1.6.3";
 exports.version = version;
 },{}],"rZaE":[function(require,module,exports) {
 "use strict";
@@ -17449,7 +17458,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = "1.1.4";
+const version = "1.1.5";
 exports.version = version;
 },{}],"MjKu":[function(require,module,exports) {
 "use strict";
@@ -23455,7 +23464,12 @@ function ensureColumnsPopulated(chart, insightColumns, actualColumns) {
 
   switch (chart) {
     case 'barchart':
+    case 'barchartV':
       ensureColumn('x');
+      break;
+
+    case 'barchartH':
+      ensureColumn('y');
       break;
 
     case 'density':
@@ -24337,7 +24351,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var version = "1.6.2";
+var version = "1.6.3";
 exports.version = version;
 },{}],"zKGJ":[function(require,module,exports) {
 "use strict";
@@ -24778,6 +24792,8 @@ function Sidebar(props) {
   }];
   return React.createElement("div", {
     className: _sanddanceReact.util.classList("sanddance-sidebar", "calculator", props.pinned && "pinned", props.closed && "closed")
+  }, React.createElement("div", {
+    className: "sidebar-content"
   }, React.createElement(_dataScope.DataScope, Object.assign({}, props.dataScopeProps)), React.createElement("div", {
     className: "vbuttons"
   }, React.createElement("div", {
@@ -24804,7 +24820,7 @@ function Sidebar(props) {
     className: "calculating"
   }, React.createElement(_base.base.fabric.Spinner, {
     size: _base.base.fabric.SpinnerSize.large
-  })));
+  }))));
 }
 
 function Sidebutton(props) {
@@ -25783,9 +25799,13 @@ function (_React$Component) {
       var columns = this.state.columns || {};
       newState.columns = Object.assign({}, columns); //special case mappings when switching chart type
 
-      if (this.state.chart === 'scatterplot' && chart === 'barchart') {
+      if (this.state.chart === 'scatterplot' && (chart === 'barchart' || chart === 'barchartV')) {
         newState.columns = Object.assign({}, columns, {
           sort: columns.y
+        });
+      } else if (this.state.chart === 'scatterplot' && chart === 'barchartH') {
+        newState.columns = Object.assign({}, columns, {
+          sort: columns.x
         });
       } else if (chart === 'treemap') {
         newState.view = '2d';
