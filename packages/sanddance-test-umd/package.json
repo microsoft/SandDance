@@ -3,7 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "watch-typescript": "tsc -p . -w"
   },
   "dependencies": {
     "@msrvida/sanddance": "*"

@@ -9,6 +9,9 @@ layout: page
 ### cube-layer
 * [cubeTest](../tests/umd/cubeTest.html) using UMD/CDN
 
+### chromatic-text-layer
+* [chromaticTextTest](../tests/umd/chromaticTextTest.html) using UMD/CDN
+
 ### vega-deck.gl
 * [simple vega spec](../tests/umd/vega-deck.gl.test.html) using UMD/CDN
 * [transition between vega specs](../tests/umd/transition.html) using UMD/CDN

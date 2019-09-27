@@ -5,6 +5,7 @@ var chromaticTextTest;
         red: [255, 0, 0],
         green: [0, 255, 0],
         blue: [0, 0, 255],
+        orange: [255, 165, 0],
         black: [0, 0, 0]
     };
     chromaticTextTest.presenter = new SandDance.VegaDeckGl.Presenter(document.querySelector('#vis'));
@@ -16,23 +17,30 @@ var chromaticTextTest;
         gridLines: [],
         textData: [
             {
-                color: colors.black,
+                color: colors.red,
                 text: "red",
                 position: [-100, 0, 0],
                 size: 500,
                 textAnchor: "middle"
             },
             {
-                color: colors.black,
+                color: colors.green,
                 text: "green",
                 position: [0, 0, 0],
                 size: 500,
                 textAnchor: "middle"
             },
             {
-                color: colors.black,
+                color: colors.blue,
                 text: "blue",
                 position: [100, 0, 0],
+                size: 500,
+                textAnchor: "middle"
+            },
+            {
+                color: colors.black,
+                text: "black",
+                position: [0, 0, -20],
                 size: 500,
                 textAnchor: "middle"
             }
@@ -42,13 +50,16 @@ var chromaticTextTest;
         getTextHighlightColor: function (t) {
             switch (t.text) {
                 case 'red':
-                    return colors.red;
-                case 'green':
                     return colors.green;
+                case 'green':
+                    return colors.red;
                 case 'blue':
-                    return colors.blue;
+                    return colors.orange;
             }
             return colors.black;
+        },
+        onTextClick: function (e, t) {
+            alert(t.text + ' clicked');
         }
     });
     var orbitViewState = {
