@@ -2,6 +2,9 @@
 // Licensed under the MIT license.
 .sanddance-scheme {
     $color-icon-height: 24px;
+    &.disabled {
+        filter: grayscale(95%);
+    }
     &.option {
         display: grid;
         grid-template-columns: 10em auto;

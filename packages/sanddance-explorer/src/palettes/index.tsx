@@ -8,7 +8,7 @@ import { Dropdown } from '../controls/dropdown';
 import { dual } from './dual';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { ISchemeOption, schemesJSX } from './scheme';
-import { SandDance } from '@msrvida/sanddance-react';
+import { SandDance, util } from '@msrvida/sanddance-react';
 import { sequentialMultiHue } from './sequentialMultiHue';
 import { sequentialSingleHue } from './sequentialSingleHue';
 import { strings } from '../language';
@@ -99,7 +99,7 @@ export function Palette(props: Props) {
                     props.changeColorScheme(o.scheme);
                 }}
             />
-            <div className="sanddance-scheme">
+            <div className={util.classList("sanddance-scheme", props.disabled && "disabled")}>
                 {props.scheme && schemesJSX[props.scheme]}
             </div>
         </div>
