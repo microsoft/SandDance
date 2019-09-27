@@ -22,19 +22,19 @@
       "fileMatch": [
         "/pbiviz.json"
       ],
-      "url": "./packages/powerbi-visual-sanddance/.api/v1.10.0/schema.pbiviz.json"
+      "url": "./packages/powerbi/.api/v1.10.0/schema.pbiviz.json"
     },
     {
       "fileMatch": [
         "/capabilities.json"
       ],
-      "url": "./packages/powerbi-visual-sanddance/.api/v1.10.0/schema.capabilities.json"
+      "url": "./packages/powerbi/.api/v1.10.0/schema.capabilities.json"
     },
     {
       "fileMatch": [
         "/dependencies.json"
       ],
-      "url": "./packages/powerbi-visual-sanddance/.api/v1.10.0/schema.dependencies.json"
+      "url": "./packages/powerbi/.api/v1.10.0/schema.dependencies.json"
     }
   ]
 }
