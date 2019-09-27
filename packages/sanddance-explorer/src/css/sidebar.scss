@@ -10,18 +10,26 @@
     .sanddance-sidebar {
         background-color: $bg-color;
         display: grid;
-        grid-template-areas:    "stats stats"
-                                "tabs bar";
-        grid-template-columns: $sidetab-width auto;
-        grid-template-rows: 0fr auto;
         overflow: hidden;
+        position: relative;
         transition: width 350ms cubic-bezier(.4, 0, .2, 1);     //TODO param
         width: $toolbar-width;
-        z-index: 1; //appear over the canvas even though it is behind it in the dom.
         &:not(.pinned) {
             bottom: 0;
             position: absolute;
             top: 0;
+        }
+        .sidebar-content {
+            background-color: inherit;
+            display: grid;
+            grid-template-areas:    "stats stats"
+                                    "tabs bar";
+            grid-template-columns: $sidetab-width auto;
+            grid-template-rows: 0fr auto;
+            height: 100%;
+            overflow: hidden;
+            position: absolute;
+            z-index: 1; //appear over the canvas even though it is behind it in the dom.
         }
         .vbuttons {
             background-color: rgba(0, 0, 0, 0.1);

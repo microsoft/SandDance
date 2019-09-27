@@ -17,10 +17,12 @@
         margin-left: -4em;
         margin-right: 1em;
         margin-top: -1em;
-        z-index: 1;
         .ms-Dropdown-container {
             margin-top: 0;
         }
+    }
+    .sanddance-tooltip {
+        z-index: 2;
     }
     .sanddance-tooltipMap {
         margin-top: 10px;
