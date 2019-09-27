@@ -26,7 +26,11 @@ export function ensureColumnsPopulated(chart: SandDance.types.Chart, insightColu
     };
     switch (chart) {
         case 'barchart':
+        case 'barchartV':
             ensureColumn('x');
+            break;
+        case 'barchartH':
+            ensureColumn('y');
             break;
         case 'density':
         case 'scatterplot':

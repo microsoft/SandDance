@@ -405,8 +405,10 @@ export class Explorer extends React.Component<Props, State> {
     newState.columns = { ...columns };
 
     //special case mappings when switching chart type
-    if (this.state.chart === 'scatterplot' && chart === 'barchart') {
+    if (this.state.chart === 'scatterplot' && (chart === 'barchart' || chart === 'barchartV')) {
       newState.columns = { ...columns, sort: columns.y };
+    } else if (this.state.chart === 'scatterplot' && chart === 'barchartH') {
+      newState.columns = { ...columns, sort: columns.x };
     } else if (chart === 'treemap') {
       newState.view = '2d';
       if (!columns.size) {
