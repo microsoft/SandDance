@@ -61,49 +61,51 @@ export function Sidebar(props: Props) {
     ];
     return (
         <div className={util.classList("sanddance-sidebar", "calculator", props.pinned && "pinned", props.closed && "closed")}>
-            <DataScope
-                {...props.dataScopeProps}
-            />
-            <div className="vbuttons">
-                <div className="sidebar-dialogs">
-                    {sidebuttons.map((sidebutton, i) => (
-                        <Sidebutton
-                            key={i}
-                            {...props}
-                            {...sidebutton}
-                            themePalette={props.themePalette}
-                        />
-                    ))}
+            <div className="sidebar-content">
+                <DataScope
+                    {...props.dataScopeProps}
+                />
+                <div className="vbuttons">
+                    <div className="sidebar-dialogs">
+                        {sidebuttons.map((sidebutton, i) => (
+                            <Sidebutton
+                                key={i}
+                                {...props}
+                                {...sidebutton}
+                                themePalette={props.themePalette}
+                            />
+                        ))}
+                    </div>
+                    {!props.hideSidebarControls && (
+                        <div className="sidebar-controls">
+                            <Sidebutton
+                                {...props}
+                                sideTabId={SideTabId.Pin}
+                                iconName={props.pinned ? "Pinned" : "Pin"}
+                                title={props.pinned ? strings.buttonToolbarFloat : strings.buttonToolbarDock}
+                            />
+                            <Sidebutton
+                                {...props}
+                                sideTabId={SideTabId.Collapse}
+                                iconName={props.closed ? "DoubleChevronRight12" : "DoubleChevronLeft12"}
+                                title={props.closed ? strings.buttonToolbarShow : strings.buttonToolbarHide}
+                            />
+                        </div>
+                    )}
                 </div>
-                {!props.hideSidebarControls && (
-                    <div className="sidebar-controls">
-                        <Sidebutton
-                            {...props}
-                            sideTabId={SideTabId.Pin}
-                            iconName={props.pinned ? "Pinned" : "Pin"}
-                            title={props.pinned ? strings.buttonToolbarFloat : strings.buttonToolbarDock}
-                        />
-                        <Sidebutton
-                            {...props}
-                            sideTabId={SideTabId.Collapse}
-                            iconName={props.closed ? "DoubleChevronRight12" : "DoubleChevronLeft12"}
-                            title={props.closed ? strings.buttonToolbarShow : strings.buttonToolbarHide}
+                <Scrollable>
+                    <div className="sidetab">
+                        {props.children}
+                    </div>
+                </Scrollable>
+                {props.calculating && (
+                    <div className="calculating">
+                        <base.fabric.Spinner
+                            size={base.fabric.SpinnerSize.large}
                         />
                     </div>
                 )}
             </div>
-            <Scrollable>
-                <div className="sidetab">
-                    {props.children}
-                </div>
-            </Scrollable>
-            {props.calculating && (
-                <div className="calculating">
-                    <base.fabric.Spinner
-                        size={base.fabric.SpinnerSize.large}
-                    />
-                </div>
-            )}
         </div>
     );
 }

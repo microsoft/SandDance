@@ -105,7 +105,12 @@ function newTextLayer(presenter: Presenter, id: string, data: TextLayerDatum[], 
         pickable: true,
         getHighlightColor: config.getTextHighlightColor || (o => o.color),
         onClick: (o, e) => {
-            config.onTextClick && config.onTextClick(e && e.srcEvent, o.object as TextLayerDatum);
+            let pe: Partial<PointerEvent> = e && e.srcEvent;
+            //handle iOS event
+            if (e.center) {
+                pe = { clientX: e.center.x, clientY: e.center.y };
+            }
+            config.onTextClick && config.onTextClick(pe as PointerEvent, o.object as TextLayerDatum);
         },
         onHover: (o, e) => {
             if (o.index === -1) {
