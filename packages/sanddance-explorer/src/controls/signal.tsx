@@ -34,7 +34,7 @@ export function Signal(props: Props) {
                 try {
                     initialValue = props.explorer.viewer.vegaViewGl.signal(props.signal.name);
                 } catch (error) {
-
+                    // continue regardless of error
                 }
                 const control = fn(
                     prefix,
@@ -71,7 +71,7 @@ map['range'] = (prefix: string, bind: BindRange, initialValue: number, onChange:
             disabled={disabled}
         />
     );
-}
+};
 
 map['select'] = (prefix: string, bind: BindRadioSelect, initialValue: any, onChange: (value: any) => void, disabled: boolean) => {
     const options = bind.options.map((o, i) => {
@@ -90,7 +90,7 @@ map['select'] = (prefix: string, bind: BindRadioSelect, initialValue: any, onCha
             disabled={disabled}
         />
     );
-}
+};
 
 map['checkbox'] = (prefix: string, bind: BindCheckbox, initialValue: boolean, onChange: (checked: boolean) => void, disabled: boolean) => {
     return (
@@ -101,6 +101,6 @@ map['checkbox'] = (prefix: string, bind: BindCheckbox, initialValue: boolean, on
             disabled={disabled}
         />
     );
-}
+};
 
 //TODO other signal types

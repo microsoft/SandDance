@@ -32,28 +32,28 @@ themePalettes[''] = {
 };
 
 themePalettes['dark-theme'] = {
-    "themePrimary": "#00b4f0",
-    "themeLighterAlt": "#00070a",
-    "themeLighter": "#001d26",
-    "themeLight": "#003648",
-    "themeTertiary": "#006c90",
-    "themeSecondary": "#009ed3",
-    "themeDarkAlt": "#18bbf1",
-    "themeDark": "#3ac5f3",
-    "themeDarker": "#6cd4f6",
-    "neutralLighterAlt": "#0b0b0b",
-    "neutralLighter": "#151515",
-    "neutralLight": "#252525",
-    "neutralQuaternaryAlt": "#2f2f2f",
-    "neutralQuaternary": "#373737",
-    "neutralTertiaryAlt": "#595959",
-    "neutralTertiary": "#929292",
-    "neutralSecondary": "#a7a7a7",
-    "neutralPrimaryAlt": "#b4b4b4",
-    "neutralPrimary": "#cccccc",
-    "neutralDark": "#d8d8d8",
-    "black": "#f5f5f5",
-    "white": "#000000"
+    themePrimary: '#00b4f0',
+    themeLighterAlt: '#00070a',
+    themeLighter: '#001d26',
+    themeLight: '#003648',
+    themeTertiary: '#006c90',
+    themeSecondary: '#009ed3',
+    themeDarkAlt: '#18bbf1',
+    themeDark: '#3ac5f3',
+    themeDarker: '#6cd4f6',
+    neutralLighterAlt: '#0b0b0b',
+    neutralLighter: '#151515',
+    neutralLight: '#252525',
+    neutralQuaternaryAlt: '#2f2f2f',
+    neutralQuaternary: '#373737',
+    neutralTertiaryAlt: '#595959',
+    neutralTertiary: '#929292',
+    neutralSecondary: '#a7a7a7',
+    neutralPrimaryAlt: '#b4b4b4',
+    neutralPrimary: '#cccccc',
+    neutralDark: '#d8d8d8',
+    black: '#f5f5f5',
+    white: '#000000'
 };
 
 export function getColorSettingsFromThemePalette(themePalette: Partial<FabricTypes.IPalette>): Partial<ColorSettings> {
@@ -64,5 +64,5 @@ export function getColorSettingsFromThemePalette(themePalette: Partial<FabricTyp
         hoveredCube: colorFromString(themePalette.black),
         clickableText: colorFromString(themePalette.themeDark),
         clickableTextHighlight: colorFromString(themePalette.themeSecondary)
-    }
+    };
 }

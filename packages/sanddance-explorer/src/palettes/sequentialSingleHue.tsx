@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { schemeOption, schemesJSX } from './scheme';
 
-schemesJSX["blues"] = (
+schemesJSX['blues'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-blues">
@@ -23,7 +23,7 @@ schemesJSX["blues"] = (
         <rect fill="url(#gradient-blues)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["greens"] = (
+schemesJSX['greens'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-greens">
@@ -43,7 +43,7 @@ schemesJSX["greens"] = (
         <rect fill="url(#gradient-greens)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["greys"] = (
+schemesJSX['greys'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-greys">
@@ -63,7 +63,7 @@ schemesJSX["greys"] = (
         <rect fill="url(#gradient-greys)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["purples"] = (
+schemesJSX['purples'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-purples">
@@ -83,7 +83,7 @@ schemesJSX["purples"] = (
         <rect fill="url(#gradient-purples)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["reds"] = (
+schemesJSX['reds'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-reds">
@@ -103,7 +103,7 @@ schemesJSX["reds"] = (
         <rect fill="url(#gradient-reds)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["oranges"] = (
+schemesJSX['oranges'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-oranges">
@@ -126,11 +126,11 @@ schemesJSX["oranges"] = (
 
 export function sequentialSingleHue(selected: string) {
     return [
-        schemeOption(selected, "blues"),
-        schemeOption(selected, "greens"),
-        schemeOption(selected, "greys"),
-        schemeOption(selected, "purples"),
-        schemeOption(selected, "reds"),
-        schemeOption(selected, "oranges")
+        schemeOption(selected, 'blues'),
+        schemeOption(selected, 'greens'),
+        schemeOption(selected, 'greys'),
+        schemeOption(selected, 'purples'),
+        schemeOption(selected, 'reds'),
+        schemeOption(selected, 'oranges')
     ];
 }

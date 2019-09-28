@@ -53,15 +53,15 @@ enum DataRefType {
 
 function filterSignals(signal: NewSignal) {
     switch (signal.name) {
-        case SandDance.constants.SignalNames.XBins:
-        case SandDance.constants.SignalNames.YBins:
-        case SandDance.constants.SignalNames.ColorBinCount:
-        case SandDance.constants.SignalNames.ColorReverse:
-        case SandDance.constants.SignalNames.PointSize:
-        case SandDance.constants.SignalNames.TreeMapMethod:
-            return false;
-        default:
-            return !!signal.bind;
+    case SandDance.constants.SignalNames.XBins:
+    case SandDance.constants.SignalNames.YBins:
+    case SandDance.constants.SignalNames.ColorBinCount:
+    case SandDance.constants.SignalNames.ColorReverse:
+    case SandDance.constants.SignalNames.PointSize:
+    case SandDance.constants.SignalNames.TreeMapMethod:
+        return false;
+    default:
+        return !!signal.bind;
     }
 }
 
@@ -274,13 +274,13 @@ export class Settings extends React.Component<Props, State> {
                                 iconProps={{ iconName: 'Copy' }}
                                 text={strings.buttonCopyToClipboard}
                                 onClick={() => {
-                                    var pre = document.getElementById("sanddance-vega-spec") as HTMLPreElement;
+                                    var pre = document.getElementById('sanddance-vega-spec') as HTMLPreElement;
                                     var range = document.createRange();
                                     range.selectNode(pre);
                                     const selection = window.getSelection();
                                     selection.removeAllRanges();
                                     selection.addRange(range);
-                                    document.execCommand("copy");
+                                    document.execCommand('copy');
                                 }}
                             />
                         ),

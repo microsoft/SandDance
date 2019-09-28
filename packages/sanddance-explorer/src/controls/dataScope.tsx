@@ -29,10 +29,10 @@ export interface Props {
     themePalette: Partial<FabricTypes.IPalette>;
 }
 
-const shortFormat = format(".2~s");
+const shortFormat = format('.2~s');
 
 function short(n: number) {
-    return n === -1 ? '--' : n ? shortFormat(n) : "0";
+    return n === -1 ? '--' : n ? shortFormat(n) : '0';
 }
 
 export function DataScope(props: Props) {
@@ -44,7 +44,7 @@ export function DataScope(props: Props) {
     };
     return props.compact ?
         (
-            <div className={util.classList("sanddance-datascope", "compact")}
+            <div className={util.classList('sanddance-datascope', 'compact')}
                 onClick={props.onCompactClick}>
                 <Compact
                     {...props}
@@ -66,7 +66,7 @@ export function DataScope(props: Props) {
                 />
             </div>
         ) : (
-            <div className={util.classList("sanddance-datascope", "extended", props.active && "active")}>
+            <div className={util.classList('sanddance-datascope', 'extended', props.active && 'active')}>
                 <div>
                     <div>{props.dataSet}</div>
                     <div className="datascope-buttons">
@@ -98,7 +98,7 @@ function Compact(props: DataScopeButtonProps) {
     return (
         <div
             title={props.text}
-            onClick={() => { props.onDataScopeClick(props.dataScopeId) }}
+            onClick={() => { props.onDataScopeClick(props.dataScopeId); }}
         >{short(props.count)}</div>
     );
 }
@@ -113,10 +113,10 @@ function DataScopeButton(props: DataScopeButtonProps) {
     return (
         <Button
             themePalette={props.themePalette}
-            className={util.classList("datascope-button", props.selectedDataScope === props.dataScopeId && "selected")}
+            className={util.classList('datascope-button', props.selectedDataScope === props.dataScopeId && 'selected')}
             disabled={props.disabled}
             text={props.text}
-            onClick={() => { props.onDataScopeClick(props.dataScopeId) }}
+            onClick={() => { props.onDataScopeClick(props.dataScopeId); }}
             onRenderText={() => {
                 return (
                     <div title={props.count > 0 ? props.count.toString() : ''}>

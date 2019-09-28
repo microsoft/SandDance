@@ -3,7 +3,7 @@
 import { getColorSettingsFromThemePalette, themePalettes } from './themes';
 import { ViewerOptions } from './interfaces';
 
-export const fontFamily = "Segoe UI, sans-serif";
+export const fontFamily = 'Segoe UI, sans-serif';
 
 export const defaultViewerOptions: Partial<ViewerOptions> = {
     colors: getColorSettingsFromThemePalette(themePalettes['']),

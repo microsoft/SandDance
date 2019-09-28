@@ -25,30 +25,30 @@ export function ensureColumnsPopulated(chart: SandDance.types.Chart, insightColu
         }
     };
     switch (chart) {
-        case 'barchart':
-        case 'barchartV':
-            ensureColumn('x');
-            break;
-        case 'barchartH':
-            ensureColumn('y');
-            break;
-        case 'density':
-        case 'scatterplot':
-        case 'stacks':
-            ensureColumn('x');
-            ensureColumn('y');
-            break;
-        case 'treemap':
+    case 'barchart':
+    case 'barchartV':
+        ensureColumn('x');
+        break;
+    case 'barchartH':
+        ensureColumn('y');
+        break;
+    case 'density':
+    case 'scatterplot':
+    case 'stacks':
+        ensureColumn('x');
+        ensureColumn('y');
+        break;
+    case 'treemap':
+        if (!insightColumns.size) {
+            insightColumns.size = preferredColumnForTreemapSize(actualColumns, true);
             if (!insightColumns.size) {
-                insightColumns.size = preferredColumnForTreemapSize(actualColumns, true);
-                if (!insightColumns.size) {
-                    insightColumns.size = preferredColumnForTreemapSize(actualColumns, false);
-                }
+                insightColumns.size = preferredColumnForTreemapSize(actualColumns, false);
             }
-            if (!insightColumns.size) {
-                //error - no numeric column
-                return [strings.errorColumnMustBeNumeric];
-            }
-            break;
+        }
+        if (!insightColumns.size) {
+            //error - no numeric column
+            return [strings.errorColumnMustBeNumeric];
+        }
+        break;
     }
 }

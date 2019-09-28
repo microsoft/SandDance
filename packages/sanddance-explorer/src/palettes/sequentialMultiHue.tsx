@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { schemeOption, schemesJSX } from './scheme';
 
-schemesJSX["viridis"] = (
+schemesJSX['viridis'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-viridis">
@@ -23,7 +23,7 @@ schemesJSX["viridis"] = (
         <rect fill="url(#gradient-viridis)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["inferno"] = (
+schemesJSX['inferno'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-inferno">
@@ -43,7 +43,7 @@ schemesJSX["inferno"] = (
         <rect fill="url(#gradient-inferno)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["magma"] = (
+schemesJSX['magma'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-magma">
@@ -63,7 +63,7 @@ schemesJSX["magma"] = (
         <rect fill="url(#gradient-magma)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["plasma"] = (
+schemesJSX['plasma'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-plasma">
@@ -83,7 +83,7 @@ schemesJSX["plasma"] = (
         <rect fill="url(#gradient-plasma)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["bluegreen"] = (
+schemesJSX['bluegreen'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-bluegreen">
@@ -103,7 +103,7 @@ schemesJSX["bluegreen"] = (
         <rect fill="url(#gradient-bluegreen)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["bluepurple"] = (
+schemesJSX['bluepurple'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-bluepurple">
@@ -123,7 +123,7 @@ schemesJSX["bluepurple"] = (
         <rect fill="url(#gradient-bluepurple)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["greenblue"] = (
+schemesJSX['greenblue'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-greenblue">
@@ -143,7 +143,7 @@ schemesJSX["greenblue"] = (
         <rect fill="url(#gradient-greenblue)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["orangered"] = (
+schemesJSX['orangered'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-orangered">
@@ -163,7 +163,7 @@ schemesJSX["orangered"] = (
         <rect fill="url(#gradient-orangered)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["purplebluegreen"] = (
+schemesJSX['purplebluegreen'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-purplebluegreen">
@@ -183,7 +183,7 @@ schemesJSX["purplebluegreen"] = (
         <rect fill="url(#gradient-purplebluegreen)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["purpleblue"] = (
+schemesJSX['purpleblue'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-purpleblue">
@@ -203,7 +203,7 @@ schemesJSX["purpleblue"] = (
         <rect fill="url(#gradient-purpleblue)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["purplered"] = (
+schemesJSX['purplered'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-purplered">
@@ -223,7 +223,7 @@ schemesJSX["purplered"] = (
         <rect fill="url(#gradient-purplered)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["redpurple"] = (
+schemesJSX['redpurple'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-redpurple">
@@ -243,7 +243,7 @@ schemesJSX["redpurple"] = (
         <rect fill="url(#gradient-redpurple)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["yellowgreenblue"] = (
+schemesJSX['yellowgreenblue'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-yellowgreenblue">
@@ -263,7 +263,7 @@ schemesJSX["yellowgreenblue"] = (
         <rect fill="url(#gradient-yellowgreenblue)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["yellowgreen"] = (
+schemesJSX['yellowgreen'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-yellowgreen">
@@ -283,7 +283,7 @@ schemesJSX["yellowgreen"] = (
         <rect fill="url(#gradient-yellowgreen)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["yelloworangebrown"] = (
+schemesJSX['yelloworangebrown'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-yelloworangebrown">
@@ -303,7 +303,7 @@ schemesJSX["yelloworangebrown"] = (
         <rect fill="url(#gradient-yelloworangebrown)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["yelloworangered"] = (
+schemesJSX['yelloworangered'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-yelloworangered">
@@ -326,21 +326,21 @@ schemesJSX["yelloworangered"] = (
 
 export function sequentialMultiHue(selected: string) {
     return [
-        schemeOption(selected, "viridis"),
-        schemeOption(selected, "inferno"),
-        schemeOption(selected, "magma"),
-        schemeOption(selected, "plasma"),
-        schemeOption(selected, "bluegreen"),
-        schemeOption(selected, "bluepurple"),
-        schemeOption(selected, "greenblue"),
-        schemeOption(selected, "orangered"),
-        schemeOption(selected, "purplebluegreen"),
-        schemeOption(selected, "purpleblue"),
-        schemeOption(selected, "purplered"),
-        schemeOption(selected, "redpurple"),
-        schemeOption(selected, "yellowgreenblue"),
-        schemeOption(selected, "yellowgreen"),
-        schemeOption(selected, "yelloworangebrown"),
-        schemeOption(selected, "yelloworangered")
+        schemeOption(selected, 'viridis'),
+        schemeOption(selected, 'inferno'),
+        schemeOption(selected, 'magma'),
+        schemeOption(selected, 'plasma'),
+        schemeOption(selected, 'bluegreen'),
+        schemeOption(selected, 'bluepurple'),
+        schemeOption(selected, 'greenblue'),
+        schemeOption(selected, 'orangered'),
+        schemeOption(selected, 'purplebluegreen'),
+        schemeOption(selected, 'purpleblue'),
+        schemeOption(selected, 'purplered'),
+        schemeOption(selected, 'redpurple'),
+        schemeOption(selected, 'yellowgreenblue'),
+        schemeOption(selected, 'yellowgreen'),
+        schemeOption(selected, 'yelloworangebrown'),
+        schemeOption(selected, 'yelloworangered')
     ];
 }

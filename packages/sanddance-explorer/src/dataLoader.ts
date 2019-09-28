@@ -8,9 +8,9 @@ export const loadDataFile = (dataFile: DataFile) => new Promise<DataContent>((re
     const loader = vega.loader();
 
     function handleRawText(text: string) {
-        const data = vega.read(text, { type: dataFile.type, parse: "auto" });
+        const data = vega.read(text, { type: dataFile.type, parse: 'auto' });
         loadDataArray(data).then(resolve).catch(reject);
-    };
+    }
 
     if (dataFile.dataUrl) {
         loader.load(dataFile.dataUrl).then(handleRawText).catch(reject);
