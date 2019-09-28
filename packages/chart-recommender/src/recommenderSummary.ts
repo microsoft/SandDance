@@ -18,7 +18,7 @@ export class RecommenderSummary {
                 this.rec = barChartrec;
             } else {
                 this.rec = {
-                    chart: "grid",
+                    chart: 'grid',
                     columns: {},
                     score: 1
                 };

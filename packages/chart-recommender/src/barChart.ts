@@ -22,7 +22,7 @@ export class BarChartRecommenderSummary {
             if (recommendation.score > score) {
                 this.best = recommendation;
                 score = recommendation.score;
-            };
+            }
             if (score === 1) break;
         }
 
@@ -81,8 +81,8 @@ export class BarChartRecommender implements Recommender {
             },
             score: this.score,
             scheme: undefined,
-            view: "2d"
-        }
+            view: '2d'
+        };
         return rec;
     }
 
