@@ -14,7 +14,7 @@ export interface Base {
 }
 
 export const base: Base = {
-  fabric: null
+    fabric: null
 };
 
 /**
@@ -22,12 +22,12 @@ export const base: Base = {
  * @param fabric Office UI Fabric React library.
  */
 export function use(
-  fabric: FabricComponents,
-  vega: types.VegaBase,
-  deck: types.DeckBase,
-  layers: types.DeckLayerBase,
-  luma: types.LumaBase
+    fabric: FabricComponents,
+    vega: types.VegaBase,
+    deck: types.DeckBase,
+    layers: types.DeckLayerBase,
+    luma: types.LumaBase
 ) {
-  SandDanceExplorer.use(fabric, vega, deck, layers, luma);
-  base.fabric = fabric;
+    SandDanceExplorer.use(fabric, vega, deck, layers, luma);
+    base.fabric = fabric;
 }
