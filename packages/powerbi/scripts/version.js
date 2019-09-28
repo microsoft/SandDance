@@ -10,7 +10,7 @@ const pbivizJson = require(path.resolve(cwd, 'pbiviz.json'));
 const ts = `// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-export const version: string = "${pbivizJson.visual.version}";
+export const version: string = '${pbivizJson.visual.version}';
 `;
 
 const file = path.resolve(cwd, 'src', 'version.ts');

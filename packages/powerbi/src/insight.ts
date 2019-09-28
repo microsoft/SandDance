@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { SandDance } from "@msrvida/sanddance-explorer";
+import { SandDance } from '@msrvida/sanddance-explorer';
 
 export function cleanInsight(insight: SandDance.types.Insight) {
     delete insight.size;

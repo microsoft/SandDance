@@ -23,12 +23,12 @@
 *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 *  THE SOFTWARE.
 */
-"use strict";
+'use strict';
 
-import "core-js/stable";
-import "regenerator-runtime/runtime";
-import "./../style/visual.less";
-import powerbi from "powerbi-visuals-api";
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
+import './../style/visual.less';
+import powerbi from 'powerbi-visuals-api';
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
@@ -37,13 +37,13 @@ import VisualObjectInstance = powerbi.VisualObjectInstance;
 import DataView = powerbi.DataView;
 import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject;
 
-import { capabilities, SandDance } from "@msrvida/sanddance-explorer";
+import { capabilities, SandDance } from '@msrvida/sanddance-explorer';
 import { createElement } from 'react';
 import { render } from 'react-dom';
-import { App, Props } from './app'
+import { App, Props } from './app';
 import { convertTableToObjectArray } from './data';
 import { cleanInsight } from './insight';
-import { VisualSettings, SandDanceConfig, IVisualSettings } from "./settings";
+import { VisualSettings, SandDanceConfig, IVisualSettings } from './settings';
 
 export class Visual implements IVisual {
     private settings: VisualSettings;
@@ -62,8 +62,8 @@ export class Visual implements IVisual {
         this.host = options.host;
         this.selectionManager = this.host.createSelectionManager();
 
-        if (typeof document !== "undefined") {
-            options.element.style.position = 'relative'
+        if (typeof document !== 'undefined') {
+            options.element.style.position = 'relative';
             this.viewElement = SandDance.VegaDeckGl.util.addDiv(options.element, 'sanddance-powerbi');
             this.errorElement = SandDance.VegaDeckGl.util.addDiv(options.element, 'sanddance-error');
             this.errorElement.style.position = 'absolute';
@@ -160,7 +160,9 @@ export class Visual implements IVisual {
         if (sandDanceConfig.tooltipExclusionsJSON) {
             try {
                 tooltipExclusions = JSON.parse(sandDanceConfig.tooltipExclusionsJSON);
-            } catch (e) { }
+            } catch (e) {
+                // continue regardless of error
+            }
         }
 
         this.app.load(data, columns => {
@@ -172,7 +174,9 @@ export class Visual implements IVisual {
                 try {
                     insight = JSON.parse(sandDanceConfig.insightJSON);
                     delete insight.size;
-                } catch (e) { }
+                } catch (e) {
+                    // continue regardless of error
+                }
             }
 
             return insight;
