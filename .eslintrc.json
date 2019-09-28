@@ -35,11 +35,7 @@
         ],
         "quote-props": [
             "error",
-            "as-needed",
-            {
-                "keywords": true,
-                "unnecessary": true
-            }
+            "consistent-as-needed"
         ],
         "quotes": [
             "error",
