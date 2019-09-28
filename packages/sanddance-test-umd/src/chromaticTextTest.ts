@@ -20,39 +20,39 @@ namespace chromaticTextTest {
 
     export var presenter = new SandDance.VegaDeckGl.Presenter(document.querySelector('#vis'));
     var stage: SandDance.VegaDeckGl.types.Stage = {
-        view: "2d",
+        view: '2d',
         cubeData: [],
-        axes: { "x": [], "y": [] },
+        axes: { x: [], y: [] },
         legend: { rows: {} },
         gridLines: [],
         textData: [
             {
                 color: colors.red,
-                text: "red",
+                text: 'red',
                 position: [-100, 0, 0],
                 size: 500,
-                textAnchor: "middle"
+                textAnchor: 'middle'
             },
             {
                 color: colors.green,
-                text: "green",
+                text: 'green',
                 position: [0, 0, 0],
                 size: 500,
-                textAnchor: "middle"
+                textAnchor: 'middle'
             },
             {
                 color: colors.blue,
-                text: "blue",
+                text: 'blue',
                 position: [100, 0, 0],
                 size: 500,
-                textAnchor: "middle"
+                textAnchor: 'middle'
             },
             {
                 color: colors.black,
-                text: "black",
+                text: 'black',
                 position: [0, 0, -20],
                 size: 500,
-                textAnchor: "middle"
+                textAnchor: 'middle'
             }
         ]
     };
@@ -60,12 +60,12 @@ namespace chromaticTextTest {
     presenter.present(stage, 0, 0, {
         getTextHighlightColor: t => {
             switch (t.text) {
-                case 'red':
-                    return colors.green;
-                case 'green':
-                    return colors.red;
-                case 'blue':
-                    return colors.orange;
+            case 'red':
+                return colors.green;
+            case 'green':
+                return colors.red;
+            case 'blue':
+                return colors.orange;
             }
             return colors.black;
         },
