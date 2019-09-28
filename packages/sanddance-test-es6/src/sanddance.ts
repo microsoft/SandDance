@@ -40,8 +40,8 @@ const insight: SandDance.types.Insight = {
     },
     scheme: 'blues',
     size: { height: 500, width: 500 },
-    chart: "scatterplot",
-    view: "3d"
+    chart: 'scatterplot',
+    view: '3d'
 };
 
 viewer.render(insight, data);
