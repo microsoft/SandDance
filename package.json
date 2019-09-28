@@ -34,8 +34,12 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.3.1",
+    "@typescript-eslint/parser": "^2.3.1",
     "babel-core": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
+    "eslint": "^6.4.0",
+    "eslint-plugin-react": "^7.14.3",
     "fs-extra": "^7.0.1",
     "http-server": "^0.11.1",
     "inuitcss": "^6.0.0",
