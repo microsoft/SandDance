@@ -25,6 +25,9 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "no-prototype-builtins": [
+            "off"
+        ],
         "indent": [
             "error",
             4
@@ -32,6 +35,9 @@
         "linebreak-style": [
             "error",
             "unix"
+        ],
+        "no-unused-vars": [
+            "off"
         ],
         "quote-props": [
             "error",
