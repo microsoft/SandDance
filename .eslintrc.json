@@ -33,6 +33,14 @@
             "error",
             "unix"
         ],
+        "quote-props": [
+            "error",
+            "as-needed",
+            {
+                "keywords": true,
+                "unnecessary": true
+            }
+        ],
         "quotes": [
             "error",
             "single"
