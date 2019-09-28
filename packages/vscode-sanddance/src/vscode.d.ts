@@ -782,11 +782,11 @@ declare module 'vscode' {
 	 */
 	export class ThemeColor {
 
-		/**
+	    /**
 		 * Creates a reference to a theme color.
 		 * @param id of the color. The available colors are listed in https://code.visualstudio.com/docs/getstarted/theme-color-reference.
 		 */
-		constructor(id: string);
+	    constructor(id: string);
 	}
 
 	/**
@@ -1231,7 +1231,7 @@ declare module 'vscode' {
 	 */
 	export class Uri {
 
-		/**
+	    /**
 		 * Create an URI from a string, e.g. `http://www.msft.com/some/path`,
 		 * `file:///usr/home`, or `scheme:with/path`.
 		 *
@@ -1239,9 +1239,9 @@ declare module 'vscode' {
 		 * @param value The string value of an Uri.
 		 * @return A new Uri instance.
 		 */
-		static parse(value: string): Uri;
+	    static parse(value: string): Uri;
 
-		/**
+	    /**
 		 * Create an URI from a file system path. The [scheme](#Uri.scheme)
 		 * will be `file`.
 		 *
@@ -1264,12 +1264,12 @@ declare module 'vscode' {
 		 * @param path A file system or UNC path.
 		 * @return A new Uri instance.
 		 */
-		static file(path: string): Uri;
+	    static file(path: string): Uri;
 
-		/**
+	    /**
 		 * Use the `file` and `parse` factory functions to create new `Uri` objects.
 		 */
-		private constructor(scheme: string, authority: string, path: string, query: string, fragment: string);
+	    private constructor(scheme: string, authority: string, path: string, query: string, fragment: string);
 
 		/**
 		 * Scheme is the `http` part of `http://www.msft.com/some/path?query#fragment`.
@@ -1405,7 +1405,7 @@ declare module 'vscode' {
 	 */
 	export class Disposable {
 
-		/**
+	    /**
 		 * Combine many disposable-likes into one. Use this method
 		 * when having objects with a dispose function which are not
 		 * instances of Disposable.
@@ -1414,19 +1414,19 @@ declare module 'vscode' {
 		 * @return Returns a new disposable which, upon dispose, will
 		 * dispose all provided disposables.
 		 */
-		static from(...disposableLikes: { dispose: () => any }[]): Disposable;
+	    static from(...disposableLikes: { dispose: () => any }[]): Disposable;
 
-		/**
+	    /**
 		 * Creates a new Disposable calling the provided function
 		 * on dispose.
 		 * @param callOnDispose Function that disposes something.
 		 */
-		constructor(callOnDispose: Function);
+	    constructor(callOnDispose: Function);
 
-		/**
+	    /**
 		 * Dispose this object.
 		 */
-		dispose(): any;
+	    dispose(): any;
 	}
 
 	/**
@@ -2677,39 +2677,39 @@ declare module 'vscode' {
 	 */
 	export class TextEdit {
 
-		/**
+	    /**
 		 * Utility to create a replace edit.
 		 *
 		 * @param range A range.
 		 * @param newText A string.
 		 * @return A new text edit object.
 		 */
-		static replace(range: Range, newText: string): TextEdit;
+	    static replace(range: Range, newText: string): TextEdit;
 
-		/**
+	    /**
 		 * Utility to create an insert edit.
 		 *
 		 * @param position A position, will become an empty range.
 		 * @param newText A string.
 		 * @return A new text edit object.
 		 */
-		static insert(position: Position, newText: string): TextEdit;
+	    static insert(position: Position, newText: string): TextEdit;
 
-		/**
+	    /**
 		 * Utility to create a delete edit.
 		 *
 		 * @param range A range.
 		 * @return A new text edit object.
 		 */
-		static delete(range: Range): TextEdit;
+	    static delete(range: Range): TextEdit;
 
-		/**
+	    /**
 		 * Utility to create an eol-edit.
 		 *
 		 * @param eol An eol-sequence
 		 * @return A new text edit object.
 		 */
-		static setEndOfLine(eol: EndOfLine): TextEdit;
+	    static setEndOfLine(eol: EndOfLine): TextEdit;
 
 		/**
 		 * The range this edit applies to.
@@ -4737,22 +4737,22 @@ declare module 'vscode' {
 	 */
 	export class ProcessExecution {
 
-		/**
+	    /**
 		 * Creates a process execution.
 		 *
 		 * @param process The process to start.
 		 * @param options Optional options for the started process.
 		 */
-		constructor(process: string, options?: ProcessExecutionOptions);
+	    constructor(process: string, options?: ProcessExecutionOptions);
 
-		/**
+	    /**
 		 * Creates a process execution.
 		 *
 		 * @param process The process to start.
 		 * @param args Arguments to be passed to the process.
 		 * @param options Optional options for the started process.
 		 */
-		constructor(process: string, args: string[], options?: ProcessExecutionOptions);
+	    constructor(process: string, args: string[], options?: ProcessExecutionOptions);
 
 		/**
 		 * The process to be executed.
@@ -4886,15 +4886,15 @@ declare module 'vscode' {
 	}
 
 	export class ShellExecution {
-		/**
+	    /**
 		 * Creates a shell execution with a full command line.
 		 *
 		 * @param commandLine The command line to execute.
 		 * @param options Optional options for the started the shell.
 		 */
-		constructor(commandLine: string, options?: ShellExecutionOptions);
+	    constructor(commandLine: string, options?: ShellExecutionOptions);
 
-		/**
+	    /**
 		 * Creates a shell execution with a command and arguments. For the real execution VS Code will
 		 * construct a command line from the command and the arguments. This is subject to interpretation
 		 * especially when it comes to quoting. If full control over the command line is needed please
@@ -4904,7 +4904,7 @@ declare module 'vscode' {
 		 * @param args The command arguments.
 		 * @param options Optional options for the started the shell.
 		 */
-		constructor(command: string | ShellQuotedString, args: (string | ShellQuotedString)[], options?: ShellExecutionOptions);
+	    constructor(command: string | ShellQuotedString, args: (string | ShellQuotedString)[], options?: ShellExecutionOptions);
 
 		/**
 		 * The shell command line. Is `undefined` if created with a command and arguments.
@@ -4948,7 +4948,7 @@ declare module 'vscode' {
 	 */
 	export class Task {
 
-		/**
+	    /**
 		 * ~~Creates a new task.~~
 		 *
 		 * @deprecated Use the new constructors that allow specifying a target for the task.
@@ -4961,9 +4961,9 @@ declare module 'vscode' {
 		 *  or '$eslint'. Problem matchers can be contributed by an extension using
 		 *  the `problemMatchers` extension point.
 		 */
-		constructor(taskDefinition: TaskDefinition, name: string, source: string, execution?: ProcessExecution | ShellExecution, problemMatchers?: string | string[]);
+	    constructor(taskDefinition: TaskDefinition, name: string, source: string, execution?: ProcessExecution | ShellExecution, problemMatchers?: string | string[]);
 
-		/**
+	    /**
 		 * Creates a new task.
 		 *
 		 * @param definition The task definition as defined in the taskDefinitions extension point.
@@ -4975,7 +4975,7 @@ declare module 'vscode' {
 		 *  or '$eslint'. Problem matchers can be contributed by an extension using
 		 *  the `problemMatchers` extension point.
 		 */
-		constructor(taskDefinition: TaskDefinition, target: WorkspaceFolder | TaskScope.Global | TaskScope.Workspace, name: string, source: string, execution?: ProcessExecution | ShellExecution, problemMatchers?: string | string[]);
+	    constructor(taskDefinition: TaskDefinition, target: WorkspaceFolder | TaskScope.Global | TaskScope.Workspace, name: string, source: string, execution?: ProcessExecution | ShellExecution, problemMatchers?: string | string[]);
 
 		/**
 		 * The task's definition.
@@ -5263,50 +5263,50 @@ declare module 'vscode' {
 	 */
 	export class FileSystemError extends Error {
 
-		/**
+	    /**
 		 * Create an error to signal that a file or folder wasn't found.
 		 * @param messageOrUri Message or uri.
 		 */
-		static FileNotFound(messageOrUri?: string | Uri): FileSystemError;
+	    static FileNotFound(messageOrUri?: string | Uri): FileSystemError;
 
-		/**
+	    /**
 		 * Create an error to signal that a file or folder already exists, e.g. when
 		 * creating but not overwriting a file.
 		 * @param messageOrUri Message or uri.
 		 */
-		static FileExists(messageOrUri?: string | Uri): FileSystemError;
+	    static FileExists(messageOrUri?: string | Uri): FileSystemError;
 
-		/**
+	    /**
 		 * Create an error to signal that a file is not a folder.
 		 * @param messageOrUri Message or uri.
 		 */
-		static FileNotADirectory(messageOrUri?: string | Uri): FileSystemError;
+	    static FileNotADirectory(messageOrUri?: string | Uri): FileSystemError;
 
-		/**
+	    /**
 		 * Create an error to signal that a file is a folder.
 		 * @param messageOrUri Message or uri.
 		 */
-		static FileIsADirectory(messageOrUri?: string | Uri): FileSystemError;
+	    static FileIsADirectory(messageOrUri?: string | Uri): FileSystemError;
 
-		/**
+	    /**
 		 * Create an error to signal that an operation lacks required permissions.
 		 * @param messageOrUri Message or uri.
 		 */
-		static NoPermissions(messageOrUri?: string | Uri): FileSystemError;
+	    static NoPermissions(messageOrUri?: string | Uri): FileSystemError;
 
-		/**
+	    /**
 		 * Create an error to signal that the file system is unavailable or too busy to
 		 * complete a request.
 		 * @param messageOrUri Message or uri.
 		 */
-		static Unavailable(messageOrUri?: string | Uri): FileSystemError;
+	    static Unavailable(messageOrUri?: string | Uri): FileSystemError;
 
-		/**
+	    /**
 		 * Creates a new filesystem error.
 		 *
 		 * @param messageOrUri Message or uri.
 		 */
-		constructor(messageOrUri?: string | Uri);
+	    constructor(messageOrUri?: string | Uri);
 	}
 
 	/**

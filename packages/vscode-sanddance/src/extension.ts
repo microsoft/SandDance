@@ -42,19 +42,19 @@ export function activate(context: vscode.ExtensionContext) {
                     // Handle messages from the webview
                     current.panel.webview.onDidReceiveMessage(message => {
                         switch (message.command) {
-                            case 'getFileContent':
-                                fs.readFile(uriFsPath, (err, data) => {
-                                    if (current && current.panel.visible) {
+                        case 'getFileContent':
+                            fs.readFile(uriFsPath, (err, data) => {
+                                if (current && current.panel.visible) {
 
-                                        //TODO string type of dataFile
-                                        const dataFile = {
-                                            type: path.extname(uriFsPath).substring(1),
-                                            rawText: data.toString('utf8')
-                                        };
-                                        current.panel.webview.postMessage({ command: 'gotFileContent', dataFile });
-                                    }
-                                });
-                                break;
+                                    //TODO string type of dataFile
+                                    const dataFile = {
+                                        type: path.extname(uriFsPath).substring(1),
+                                        rawText: data.toString('utf8')
+                                    };
+                                    current.panel.webview.postMessage({ command: 'gotFileContent', dataFile });
+                                }
+                            });
+                            break;
                         }
                     }, undefined, context.subscriptions);
                 }
