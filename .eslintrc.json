@@ -25,6 +25,9 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "no-inner-declarations": [
+            "off"
+        ],
         "no-prototype-builtins": [
             "off"
         ],
