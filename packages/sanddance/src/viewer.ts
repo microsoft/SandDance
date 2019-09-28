@@ -180,11 +180,11 @@ export class Viewer {
 
     private onDataChanged(dataLayout: DataLayoutChange, filter?: Search) {
         switch (dataLayout) {
-        case DataLayoutChange.same:
+        case DataLayoutChange.same: {
             this.renderSameLayout();
             break;
-
-        case DataLayoutChange.refine:
+        }
+        case DataLayoutChange.refine: {
             //save cube colors
             const oldColorContext = this.colorContexts[this.currentColorContext];
             let colorMap: ColorMap;
@@ -213,8 +213,8 @@ export class Viewer {
                 this.options.onDataFilter(this.insight.filter, this._dataScope.currentData());
             }
             break;
-
-        case DataLayoutChange.reset:
+        }
+        case DataLayoutChange.reset: {
             const colorContext: ColorContext = {
                 colorMap: null,
                 legend: null,
@@ -232,6 +232,7 @@ export class Viewer {
                 this.options.onDataFilter(null, null);
             }
             break;
+        }
         }
         if (this.options.onSelectionChanged) {
             const sel = this.getSelection();

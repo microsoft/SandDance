@@ -23,7 +23,9 @@ export function extractSignalValuesFromView(view: View, spec: Spec) {
             try {
                 result[signalA.name] = view.signal(signalA.name);
             }
-            catch (e) { }
+            catch (e) {
+                // continue regardless of error
+            }
         }
     });
     return result;

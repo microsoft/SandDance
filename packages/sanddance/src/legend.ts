@@ -45,33 +45,34 @@ function selectQuantitative(colorBinType: ColorBin, column: Column, legend: Vega
     let highOperator: SearchExpressionOperators;
     const rowText = legend.rows[clickedIndex].label;
     switch (colorBinType) {
-    case 'continuous':
-        lowValue = rowText;
-        if (clickedIndex < keys.length - 1) {
-            highValue = legend.rows[clickedIndex + 1].value;
+        case 'continuous': {
+            lowValue = rowText;
+            if (clickedIndex < keys.length - 1) {
+                highValue = legend.rows[clickedIndex + 1].value;
+            }
+            break;
         }
-        break;
-
-    default:
-        if (rowText.indexOf('null') > 0) {
-            const ex: SearchExpressionGroup = {
-                expressions: [selectNullOrEmpty(column)]
-            };
-            return ex;
-        }
-        const dash = rowText.indexOf('–');  //this is not the common dash character!
-        if (dash > 0) {
-            //bug in Vega for quantize?
-            //lowOperator = '>';
-            //highOperator = '<=';
-            lowValue = rowText.substr(0, dash);
-            highValue = rowText.substr(dash + 1);
-        } else {
-            if (rowText.indexOf('<') >= 0) {
-                highValue = rowText.substring(2);
+        default: {
+            if (rowText.indexOf('null') > 0) {
+                const ex: SearchExpressionGroup = {
+                    expressions: [selectNullOrEmpty(column)]
+                };
+                return ex;
+            }
+            const dash = rowText.indexOf('–');  //this is not the common dash character!
+            if (dash > 0) {
+                //bug in Vega for quantize?
+                //lowOperator = '>';
+                //highOperator = '<=';
+                lowValue = rowText.substr(0, dash);
+                highValue = rowText.substr(dash + 1);
             } else {
-                if (rowText.indexOf('≥') >= 0) {
-                    lowValue = rowText.substring(2);
+                if (rowText.indexOf('<') >= 0) {
+                    highValue = rowText.substring(2);
+                } else {
+                    if (rowText.indexOf('≥') >= 0) {
+                        lowValue = rowText.substring(2);
+                    }
                 }
             }
         }
