@@ -2,11 +2,11 @@
 // Licensed under the MIT license.
 import * as FabricTypes from './types';
 import {
-  ActionButton,
-  CommandBarButton,
-  DefaultButton,
-  IconButton,
-  PrimaryButton
+    ActionButton,
+    CommandBarButton,
+    DefaultButton,
+    IconButton,
+    PrimaryButton
 } from 'office-ui-fabric-react/lib/components/Button';
 import { ChoiceGroup } from 'office-ui-fabric-react/lib/ChoiceGroup';
 import { ComboBox } from 'office-ui-fabric-react/lib/components/ComboBox';
