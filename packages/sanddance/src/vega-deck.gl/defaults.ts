@@ -13,8 +13,8 @@ export const minHeight = '100px';
 export const minWidth = '100px';
 
 const lightSettings: { [view in View]: LightSettings } = {
-    "2d": {},
-    "3d": {
+    '2d': {},
+    '3d': {
         lightsPosition: [-122.45, 37.66, 8000, -122.0, 38.0, 8000],
         ambientRatio: 0.3,
         diffuseRatio: 0.6,
@@ -64,7 +64,7 @@ export const groupStrokeWidth = 1;
 
 export const lineZ = -1;
 
-export const defaultView: View = "2d";
+export const defaultView: View = '2d';
 
 export const min3dDepth = 0.05;
 export const minPixelSize = 0.5;

@@ -16,15 +16,15 @@ export default function (context: SpecContext) {
     const scales: Scale[] = [
         (
             specColumns.x.quantitative ?
-                linearScale(ScaleNames.X, DataNames.Main, specColumns.x.name, "width", false, false)
+                linearScale(ScaleNames.X, DataNames.Main, specColumns.x.name, 'width', false, false)
                 :
-                pointScale(ScaleNames.X, DataNames.Main, "width", specColumns.x.name)
+                pointScale(ScaleNames.X, DataNames.Main, 'width', specColumns.x.name)
         ),
         (
             specColumns.y.quantitative ?
-                linearScale(ScaleNames.Y, DataNames.Main, specColumns.y.name, "height", false, false)
+                linearScale(ScaleNames.Y, DataNames.Main, specColumns.y.name, 'height', false, false)
                 :
-                pointScale(ScaleNames.Y, DataNames.Main, "height", specColumns.y.name, true)
+                pointScale(ScaleNames.Y, DataNames.Main, 'height', specColumns.y.name, true)
         )
     ];
     if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
@@ -33,23 +33,23 @@ export default function (context: SpecContext) {
         } else {
             scales.push(
                 {
-                    "name": ScaleNames.Color,
-                    "type": "ordinal",
-                    "domain": {
-                        "data": DataNames.Legend,
-                        "field": FieldNames.Top,
-                        "sort": true
+                    name: ScaleNames.Color,
+                    type: 'ordinal',
+                    domain: {
+                        data: DataNames.Legend,
+                        field: FieldNames.Top,
+                        sort: true
                     },
-                    "range": {
-                        "scheme": insight.scheme || ColorScaleNone
+                    range: {
+                        scheme: insight.scheme || ColorScaleNone
                     },
-                    "reverse": { "signal": SignalNames.ColorReverse }
+                    reverse: { signal: SignalNames.ColorReverse }
                 }
             );
         }
     }
     if (specColumns.z) {
-        const zRange: RangeScheme = [0, { "signal": SignalNames.ZHeight }];
+        const zRange: RangeScheme = [0, { signal: SignalNames.ZHeight }];
         scales.push(
             specColumns.z.quantitative ?
                 linearScale(ScaleNames.Z, DataNames.Main, specColumns.z.name, zRange, false, false)

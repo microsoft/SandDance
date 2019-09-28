@@ -14,13 +14,13 @@ export default function (context: SpecContext) {
         [
             colorBinCountSignal(context),
             {
-                "name": SignalNames.TreeMapMethod,
-                "value": "squarify",
-                "bind": {
-                    "name": specViewOptions.language.treeMapMethod,
-                    "input": "select",
-                    "options": [
-                        "squarify", "binary"
+                name: SignalNames.TreeMapMethod,
+                value: 'squarify',
+                bind: {
+                    name: specViewOptions.language.treeMapMethod,
+                    input: 'select',
+                    options: [
+                        'squarify', 'binary'
                     ]
                 }
             },

@@ -43,11 +43,11 @@ export const LegendView: StatelessComponent<LegendViewProps> = (props: Stateless
             </Table>
         );
     }
-}
+};
 
 const symbolMap: { [shape: string]: (symbol: LegendRowSymbol) => JSX.Element } = {
 
-    'square': function (symbol: LegendRowSymbol) {
+    square: function (symbol: LegendRowSymbol) {
         return (
             <div style={{
                 height: `${symbol.bounds.y2 - symbol.bounds.y1}px`,

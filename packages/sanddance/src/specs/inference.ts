@@ -63,7 +63,7 @@ function getStats(data: object[], column: Column) {
         max: null,
         mean: null,
         min: null
-    }
+    };
     let sum = 0;
     for (let i = 0; i < data.length; i++) {
         let row = data[i];

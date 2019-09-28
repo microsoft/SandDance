@@ -10,14 +10,14 @@ import { topLookup } from '../top';
 export default function (context: SpecContext) {
     const { specColumns, insight, specViewOptions } = context;
     const categoricalColor = specColumns.color && !specColumns.color.quantitative;
-    const ScatterDataName = "SandDanceScatterPlotData";
+    const ScatterDataName = 'SandDanceScatterPlotData';
     const data = allTruthy<Data>(
         facetSourceData(specColumns.facet, insight.facets, ScatterDataName),
         [
             {
-                "name": DataNames.Main,
-                "source": ScatterDataName,
-                "transform": allTruthy<Transforms>(
+                name: DataNames.Main,
+                source: ScatterDataName,
+                transform: allTruthy<Transforms>(
                     filterInvalidWhenNumeric(specColumns.x),
                     filterInvalidWhenNumeric(specColumns.y),
                     filterInvalidWhenNumeric(specColumns.z),
@@ -35,8 +35,8 @@ function filterInvalidWhenNumeric(column: Column) {
     if (column && column.quantitative) {
         const transforms: Transforms[] = [
             {
-                "type": "filter",
-                "expr": `datum[${JSON.stringify(column.name)}] != null`
+                type: 'filter',
+                expr: `datum[${JSON.stringify(column.name)}] != null`
             }
         ];
         return transforms;

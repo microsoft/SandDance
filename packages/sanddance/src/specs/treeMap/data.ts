@@ -10,14 +10,14 @@ import { topLookup } from '../top';
 export default function (context: SpecContext) {
     const { specColumns, insight, specViewOptions } = context;
     const categoricalColor = specColumns.color && !specColumns.color.quantitative;
-    const TreeMapDataName = "SandDanceTreeMapData";
+    const TreeMapDataName = 'SandDanceTreeMapData';
     const data = allTruthy<Data>(
         facetSourceData(specColumns.facet, insight.facets, TreeMapDataName),
         [
             {
-                "name": DataNames.Main,
-                "source": TreeMapDataName,
-                "transform": allTruthy<Transforms>(
+                name: DataNames.Main,
+                source: TreeMapDataName,
+                transform: allTruthy<Transforms>(
                     specColumns.facet && facetTransforms(specColumns.facet, insight.facets),
                     !specColumns.facet && treemapTransforms(insight)
                 )
@@ -32,18 +32,18 @@ export default function (context: SpecContext) {
 export function treemapTransforms(insight: Insight) {
     const transforms: Transforms[] = [
         {
-            "type": "nest",
-            "keys": [insight.columns.group || "__NONE__"]
+            type: 'nest',
+            keys: [insight.columns.group || '__NONE__']
         },
         {
-            "type": "treemap",
-            "field": insight.columns.size,
-            "sort": { "field": "value", "order": "descending" },
-            "round": true,
-            "method": { "signal": SignalNames.TreeMapMethod },
-            "padding": 1,
-            "size": [{ "signal": "width" }, { "signal": "height" }],
-            "as": [
+            type: 'treemap',
+            field: insight.columns.size,
+            sort: { field: 'value', order: 'descending' },
+            round: true,
+            method: { signal: SignalNames.TreeMapMethod },
+            padding: 1,
+            size: [{ signal: 'width' }, { signal: 'height' }],
+            as: [
                 FieldNames.TreemapStackX0,
                 FieldNames.TreemapStackY0,
                 FieldNames.TreemapStackX1,

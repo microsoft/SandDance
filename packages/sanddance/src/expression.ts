@@ -53,7 +53,7 @@ export function selectNone(column: Column, values: string[]) {
     });
     const searchExpressionGroup: SearchExpressionGroup = {
         expressions
-    }
+    };
     return searchExpressionGroup;
 }
 

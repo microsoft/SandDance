@@ -22,7 +22,7 @@ export const barchartV: SpecCreator = (context: SpecContext): SpecResult => {
     const { specColumns, insight, specViewOptions } = context;
     const errors: string[] = [];
 
-    if (!specColumns.x) errors.push(`Must set a field for x axis`);
+    if (!specColumns.x) errors.push('Must set a field for x axis');
     checkForFacetErrors(insight.facets, errors);
 
     const specCapabilities: SpecCapabilities = {
@@ -90,9 +90,9 @@ export const barchartV: SpecCreator = (context: SpecContext): SpecResult => {
     const size = specColumns.facet ? facetSize(context) : insight.size;
 
     var vegaSpec: Spec = {
-        "$schema": "https://vega.github.io/schema/vega/v3.json",
-        "height": size.height,
-        "width": size.width,
+        $schema: 'https://vega.github.io/schema/vega/v3.json',
+        height: size.height,
+        width: size.width,
         signals: getSignals(context),
         scales: getScales(context, rootNamespace),
         data: getData(context, rootNamespace),
@@ -103,7 +103,7 @@ export const barchartV: SpecCreator = (context: SpecContext): SpecResult => {
         vegaSpec.axes = axes;
     }
 
-    const legends = getLegends(context)
+    const legends = getLegends(context);
     if (legends) {
         vegaSpec.legends = legends;
     }
@@ -112,8 +112,8 @@ export const barchartV: SpecCreator = (context: SpecContext): SpecResult => {
         vegaSpec.layout = layout(context);
     } else {
         //use autosize only when not faceting
-        vegaSpec.autosize = "fit";
+        vegaSpec.autosize = 'fit';
     }
 
     return { vegaSpec, specCapabilities };
-}
+};

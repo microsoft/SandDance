@@ -26,18 +26,18 @@ export default function (context: SpecContext, namespace: NameSpace) {
         ],
         specColumns.x.quantitative && [
             {
-                "name": DataNames.QuantitativeData,
-                "transform": [
+                name: DataNames.QuantitativeData,
+                transform: [
                     {
-                        "type": "sequence",
-                        "start": {
-                            "signal": `${BarChartSignalNames.quantitativeBinSignal}.start`
+                        type: 'sequence',
+                        start: {
+                            signal: `${BarChartSignalNames.quantitativeBinSignal}.start`
                         },
-                        "stop": {
-                            "signal": `${BarChartSignalNames.quantitativeBinSignal}.stop`
+                        stop: {
+                            signal: `${BarChartSignalNames.quantitativeBinSignal}.stop`
                         },
-                        "step": {
-                            "signal": `${BarChartSignalNames.quantitativeBinSignal}.step`
+                        step: {
+                            signal: `${BarChartSignalNames.quantitativeBinSignal}.step`
                         }
                     }
                 ]
@@ -51,9 +51,9 @@ export default function (context: SpecContext, namespace: NameSpace) {
 export function bucketed(context: SpecContext, namespace: NameSpace, source: string) {
     const { specColumns: columns } = context;
     const data: SourceData = {
-        "name": namespace.bucket,
+        name: namespace.bucket,
         source,
-        "transform": columns.x.quantitative ?
+        transform: columns.x.quantitative ?
             getQuantitative(context, columns.facet)
             :
             getQualitative(context)
@@ -63,9 +63,9 @@ export function bucketed(context: SpecContext, namespace: NameSpace, source: str
 
 export function stacked(namespace: NameSpace, source: string, transforms?: Transforms[]) {
     const data: SourceData = {
-        "name": namespace.stacked,
+        name: namespace.stacked,
         source,
-        "transform": allTruthy<Transforms>(
+        transform: allTruthy<Transforms>(
             transforms,
             xy(namespace)
         )
@@ -76,14 +76,14 @@ export function stacked(namespace: NameSpace, source: string, transforms?: Trans
 function xy(namespace: NameSpace) {
     const transforms: Transforms[] = [
         {
-            "type": "formula",
-            "expr": `floor(datum.${FieldNames.BarChartStack0} / ${BarChartSignalNames.compartmentsPerLevelSignal})`,
-            "as": namespace.__level
+            type: 'formula',
+            expr: `floor(datum.${FieldNames.BarChartStack0} / ${BarChartSignalNames.compartmentsPerLevelSignal})`,
+            as: namespace.__level
         },
         {
-            "type": "formula",
-            "expr": `datum.${FieldNames.BarChartStack0} % ${BarChartSignalNames.compartmentsPerLevelSignal}`,
-            "as": namespace.__compartment
+            type: 'formula',
+            expr: `datum.${FieldNames.BarChartStack0} % ${BarChartSignalNames.compartmentsPerLevelSignal}`,
+            as: namespace.__compartment
         }
     ];
     return transforms;

@@ -12,76 +12,76 @@ import { testForCollapseSelection } from '../selection';
 export default function (context: SpecContext, namespace: NameSpace): RectMark[] {
     const { specColumns } = context;
     const mark: RectMark = {
-        "type": "rect",
-        "from": {
-            "data": namespace.stacked
+        type: 'rect',
+        from: {
+            data: namespace.stacked
         },
-        "encode": {
-            "update": {
-                "y": {
-                    "scale": ScaleNames.Y,
-                    "field": specColumns.y.quantitative ? FieldNames.BarChartBin0 : specColumns.y.name,
-                    "offset": {
-                        "scale": BarChartScaleNames.compartmentScale,
-                        "field": namespace.__compartment
+        encode: {
+            update: {
+                y: {
+                    scale: ScaleNames.Y,
+                    field: specColumns.y.quantitative ? FieldNames.BarChartBin0 : specColumns.y.name,
+                    offset: {
+                        scale: BarChartScaleNames.compartmentScale,
+                        field: namespace.__compartment
                     }
                 },
-                "height": [
+                height: [
                     {
-                        "test": `bandwidth('${BarChartScaleNames.compartmentScale}') < 1`,
-                        "value": VegaDeckGl.defaults.minPixelSize
+                        test: `bandwidth('${BarChartScaleNames.compartmentScale}') < 1`,
+                        value: VegaDeckGl.defaults.minPixelSize
                     },
                     {
-                        "scale": BarChartScaleNames.compartmentScale,
-                        "band": 1
+                        scale: BarChartScaleNames.compartmentScale,
+                        band: 1
                     }
                 ],
-                "x": [
+                x: [
                     {
-                        "scale": ScaleNames.X,
-                        "test": testForCollapseSelection(),
-                        "signal": `${SignalNames.XDomain}[0]`
+                        scale: ScaleNames.X,
+                        test: testForCollapseSelection(),
+                        signal: `${SignalNames.XDomain}[0]`
                     },
                     {
-                        "scale": ScaleNames.X,
-                        "field": namespace.__level,
-                        "band": 1,
-                        "offset": {
-                            "signal": `-bandwidth('${ScaleNames.X}')-1`
+                        scale: ScaleNames.X,
+                        field: namespace.__level,
+                        band: 1,
+                        offset: {
+                            signal: `-bandwidth('${ScaleNames.X}')-1`
                         }
                     }
                 ],
-                "width": [
+                width: [
                     {
-                        "test": testForCollapseSelection(),
-                        "value": 0
+                        test: testForCollapseSelection(),
+                        value: 0
                     },
                     {
-                        "test": `bandwidth('${ScaleNames.X}') < 1`,
-                        "value": VegaDeckGl.defaults.minPixelSize
+                        test: `bandwidth('${ScaleNames.X}') < 1`,
+                        value: VegaDeckGl.defaults.minPixelSize
                     },
                     {
-                        "scale": ScaleNames.X,
-                        "band": 1
+                        scale: ScaleNames.X,
+                        band: 1
                     }
                 ],
-                "fill": fill(context)
+                fill: fill(context)
             }
         }
     };
     if (specColumns.z) {
         const update = mark.encode.update;
         update.z = {
-            "value": 0
+            value: 0
         };
         update.depth = [
             {
-                "test": testForCollapseSelection(),
-                "value": 0
+                test: testForCollapseSelection(),
+                value: 0
             },
             {
-                "scale": ScaleNames.Z,
-                "field": specColumns.z.name
+                scale: ScaleNames.Z,
+                field: specColumns.z.name
             }
         ];
     }

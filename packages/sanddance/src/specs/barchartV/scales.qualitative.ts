@@ -10,29 +10,29 @@ export default function (context: SpecContext, namespace: NameSpace) {
     const { specColumns } = context;
     const scales: Scale[] = [
         {
-            "name": BarChartScaleNames.bucketScale,
-            "type": "band",
-            "range": "width",
-            "domain": {
-                "data": namespace.bucket,
-                "field": specColumns.x.name,
-                "sort": true
+            name: BarChartScaleNames.bucketScale,
+            type: 'band',
+            range: 'width',
+            domain: {
+                data: namespace.bucket,
+                field: specColumns.x.name,
+                sort: true
             }
         },
         {
-            "name": ScaleNames.X,
-            "type": "band",
-            "range": [
+            name: ScaleNames.X,
+            type: 'band',
+            range: [
                 0,
                 {
-                    "signal": "width"
+                    signal: 'width'
                 }
             ],
-            "padding": 0.01,
-            "domain": {
-                "data": namespace.stacked,
-                "field": specColumns.x.name,
-                "sort": true
+            padding: 0.01,
+            domain: {
+                data: namespace.stacked,
+                field: specColumns.x.name,
+                sort: true
             }
         }
     ];

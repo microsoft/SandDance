@@ -15,56 +15,56 @@ export default function (context: SpecContext) {
             colorBinCountSignal(context),
             colorReverseSignal(context),
             {
-                "name": "unitpad",
-                "value": 0.1,
-                "bind": {
-                    "name": SignalNames.InnerPadding,
-                    "input": "range",
-                    "min": 0.1,
-                    "max": 1.0,
-                    "step": 0.1
+                name: 'unitpad',
+                value: 0.1,
+                bind: {
+                    name: SignalNames.InnerPadding,
+                    input: 'range',
+                    min: 0.1,
+                    max: 1.0,
+                    step: 0.1
                 }
             },
             {
-                "name": "xsize",
-                "update": "domain('xscale').length"
+                name: 'xsize',
+                update: 'domain(\'xscale\').length'
             },
             {
-                "name": "ysize",
-                "update": "domain('yscale').length"
+                name: 'ysize',
+                update: 'domain(\'yscale\').length'
             },
             {
-                "name": "cellwidth",
-                "update": "width/max(xsize,ysize)"
+                name: 'cellwidth',
+                update: 'width/max(xsize,ysize)'
             },
             {
-                "name": "maxnumbers",
-                "update": "sqrt(cextent[1])"
+                name: 'maxnumbers',
+                update: 'sqrt(cextent[1])'
             },
             {
-                "name": "unitsize",
-                "update": "cellwidth/((1 + unitpad)*maxnumbers)"
+                name: 'unitsize',
+                update: 'cellwidth/((1 + unitpad)*maxnumbers)'
             },
             specColumns.x.quantitative && {
-                "name": SignalNames.XBins,
-                "value": 30,
-                "bind": {
-                    "name": specViewOptions.language.XBinSize,
-                    "input": "range",
-                    "min": 1,
-                    "max": 60,
-                    "step": 1
+                name: SignalNames.XBins,
+                value: 30,
+                bind: {
+                    name: specViewOptions.language.XBinSize,
+                    input: 'range',
+                    min: 1,
+                    max: 60,
+                    step: 1
                 }
             },
             specColumns.y.quantitative && {
-                "name": SignalNames.YBins,
-                "value": 30,
-                "bind": {
-                    "name": specViewOptions.language.YBinSize,
-                    "input": "range",
-                    "min": 1,
-                    "max": 60,
-                    "step": 1
+                name: SignalNames.YBins,
+                value: 30,
+                bind: {
+                    name: specViewOptions.language.YBinSize,
+                    input: 'range',
+                    min: 1,
+                    max: 60,
+                    step: 1
                 }
             }
         ],

@@ -193,7 +193,7 @@ export class Presenter {
                 }
             };
             if (stage.backgroundColor) {
-                deckProps.style = { "background-color": colorToString(stage.backgroundColor) };
+                deckProps.style = { 'background-color': colorToString(stage.backgroundColor) };
             }
             this.deckgl = new classes.DeckGL_Class(deckProps);
         }

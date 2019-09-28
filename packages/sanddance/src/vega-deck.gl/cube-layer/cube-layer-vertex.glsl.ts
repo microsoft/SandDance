@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import { min3dDepth, minPixelSize } from "../defaults";
+import { min3dDepth, minPixelSize } from '../defaults';
 
 export default `\
 #define SHADER_NAME cube-layer-vertex-shader

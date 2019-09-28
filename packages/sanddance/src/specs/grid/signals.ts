@@ -15,16 +15,16 @@ export default function (context: SpecContext) {
         [
             colorBinCountSignal(context),
             {
-                "name": Total,
-                "update": `data('${DataNames.Main}').length`
+                name: Total,
+                update: `data('${DataNames.Main}').length`
             },
             {
-                "name": ColumnCount,
-                "update": `ceil(sqrt((width/height)*${Total}))`
+                name: ColumnCount,
+                update: `ceil(sqrt((width/height)*${Total}))`
             },
             {
-                "name": RowCount,
-                "update": `${Total}/${ColumnCount}`
+                name: RowCount,
+                update: `${Total}/${ColumnCount}`
             },
             colorReverseSignal(context)
         ],

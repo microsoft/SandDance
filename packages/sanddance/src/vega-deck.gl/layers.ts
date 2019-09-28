@@ -38,7 +38,7 @@ export function getLayers(
             if (axis.ticks) lines.push.apply(lines, axis.ticks);
             if (axis.tickText) texts.push.apply(texts, axis.tickText);
             if (axis.title) texts.push(axis.title);
-        })
+        });
     });
     if (stage.facets) {
         stage.facets.forEach(f => {

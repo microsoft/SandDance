@@ -12,50 +12,50 @@ export default function (context: SpecContext) {
     const data = allTruthy<Data>(
         [
             {
-                "name": DataNames.Main,
-                "transform": allTruthy<Transforms>(
+                name: DataNames.Main,
+                transform: allTruthy<Transforms>(
                     specColumns.x.quantitative && [
                         {
-                            "type": "extent",
-                            "field": specColumns.x.name,
-                            "signal": "var_Xextent"
+                            type: 'extent',
+                            field: specColumns.x.name,
+                            signal: 'var_Xextent'
                         },
                         {
-                            "type": "bin",
-                            "field": specColumns.x.name,
-                            "extent": {
-                                "signal": "var_Xextent"
+                            type: 'bin',
+                            field: specColumns.x.name,
+                            extent: {
+                                signal: 'var_Xextent'
                             },
-                            "maxbins": {
-                                "signal": SignalNames.XBins
+                            maxbins: {
+                                signal: SignalNames.XBins
                             },
-                            "as": [
+                            as: [
                                 FieldNames.DensityXBin0,
                                 FieldNames.DensityXBin1
                             ],
-                            "signal": "binXSignal"
+                            signal: 'binXSignal'
                         }
                     ],
                     specColumns.y.quantitative && [
                         {
-                            "type": "extent",
-                            "field": specColumns.y.name,
-                            "signal": "var_Yextent"
+                            type: 'extent',
+                            field: specColumns.y.name,
+                            signal: 'var_Yextent'
                         },
                         {
-                            "type": "bin",
-                            "field": specColumns.y.name,
-                            "extent": {
-                                "signal": "var_Yextent"
+                            type: 'bin',
+                            field: specColumns.y.name,
+                            extent: {
+                                signal: 'var_Yextent'
                             },
-                            "maxbins": {
-                                "signal": SignalNames.YBins
+                            maxbins: {
+                                signal: SignalNames.YBins
                             },
-                            "as": [
+                            as: [
                                 FieldNames.DensityYBin0,
                                 FieldNames.DensityYBin1
                             ],
-                            "signal": "binYSignal"
+                            signal: 'binYSignal'
                         }
                     ]
                 )
@@ -63,18 +63,18 @@ export default function (context: SpecContext) {
         ],
         specColumns.x.quantitative && [
             {
-                "name": "xaxisdata",
-                "transform": [
+                name: 'xaxisdata',
+                transform: [
                     {
-                        "type": "sequence",
-                        "start": {
-                            "signal": "binXSignal.start"
+                        type: 'sequence',
+                        start: {
+                            signal: 'binXSignal.start'
                         },
-                        "stop": {
-                            "signal": "binXSignal.stop"
+                        stop: {
+                            signal: 'binXSignal.stop'
                         },
-                        "step": {
-                            "signal": "binXSignal.step"
+                        step: {
+                            signal: 'binXSignal.step'
                         }
                     }
                 ]
@@ -82,18 +82,18 @@ export default function (context: SpecContext) {
         ],
         specColumns.y.quantitative && [
             {
-                "name": "yaxisdata",
-                "transform": [
+                name: 'yaxisdata',
+                transform: [
                     {
-                        "type": "sequence",
-                        "start": {
-                            "signal": "binYSignal.start"
+                        type: 'sequence',
+                        start: {
+                            signal: 'binYSignal.start'
                         },
-                        "stop": {
-                            "signal": "binYSignal.stop"
+                        stop: {
+                            signal: 'binYSignal.stop'
                         },
-                        "step": {
-                            "signal": "binYSignal.step"
+                        step: {
+                            signal: 'binYSignal.step'
                         }
                     }
                 ]
@@ -102,27 +102,27 @@ export default function (context: SpecContext) {
         categoricalColor && topLookup(specColumns.color, specViewOptions.maxLegends),
         [
             {
-                "name": "aggregated",
-                "source": categoricalColor ? DataNames.Legend : DataNames.Main,
-                "transform": [
+                name: 'aggregated',
+                source: categoricalColor ? DataNames.Legend : DataNames.Main,
+                transform: [
                     {
-                        "type": "joinaggregate",
-                        "groupby": [
+                        type: 'joinaggregate',
+                        groupby: [
                             specColumns.x.quantitative ? FieldNames.DensityXBin0 : specColumns.x.name,
                             specColumns.y.quantitative ? FieldNames.DensityYBin0 : specColumns.y.name
                         ],
-                        "ops": [
-                            "count"
+                        ops: [
+                            'count'
                         ],
-                        "as": [
+                        as: [
                             FieldNames.DensityCount
                         ]
                     },
                     windowTransform(specColumns),
                     {
-                        "type": "extent",
-                        "field": FieldNames.DensityRow,
-                        "signal": "cextent"
+                        type: 'extent',
+                        field: FieldNames.DensityRow,
+                        signal: 'cextent'
                     }
                 ]
             }
@@ -133,23 +133,23 @@ export default function (context: SpecContext) {
 
 function windowTransform(columns: SpecColumns) {
     const t: Transforms = {
-        "type": "window",
-        "groupby": [
+        type: 'window',
+        groupby: [
             columns.x.quantitative ? FieldNames.DensityXBin0 : columns.x.name,
             columns.y.quantitative ? FieldNames.DensityYBin0 : columns.y.name
         ],
-        "ops": [
-            "row_number"
+        ops: [
+            'row_number'
         ],
-        "as": [
+        as: [
             FieldNames.DensityRow
         ]
     };
     if (columns.sort) {
         t.sort = {
-            "field": [columns.sort.name],
-            "order": [
-                "descending"
+            field: [columns.sort.name],
+            order: [
+                'descending'
             ]
         };
     }

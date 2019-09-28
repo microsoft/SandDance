@@ -50,7 +50,7 @@ export function populateColorContext(colorContext: ColorContext, presenter: Vega
         colorContext.colorMap = colorMapFromCubes(cubes);
     }
     colorContext.legend = VegaDeckGl.util.clone(presenter.stage.legend);
-    colorContext.legendElement = presenter.getElement(VegaDeckGl.PresenterElement.legend).children[0] as HTMLElement
+    colorContext.legendElement = presenter.getElement(VegaDeckGl.PresenterElement.legend).children[0] as HTMLElement;
 }
 
 export function applyColorMapToCubes(maps: ColorMap[], cubes: VegaDeckGl.types.Cube[], unselectedColorMethod?: ColorMethod) {

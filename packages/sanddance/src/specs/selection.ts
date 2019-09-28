@@ -3,5 +3,5 @@
 import { FieldNames } from './constants';
 
 export function testForCollapseSelection() {
-  return `datum.${FieldNames.Collapsed}`;
+    return `datum.${FieldNames.Collapsed}`;
 }

@@ -6,19 +6,19 @@ import { Scale } from 'vega-typings';
 export default function () {
     const scales: Scale[] = [
         {
-            "name": ScaleNames.X,
-            "type": "band",
-            "range": [
+            name: ScaleNames.X,
+            type: 'band',
+            range: [
                 0,
                 {
-                    "signal": "width"
+                    signal: 'width'
                 }
             ],
-            "padding": 0.01,
-            "domain": {
-                "data": DataNames.QuantitativeData,
-                "field": "data",
-                "sort": true
+            padding: 0.01,
+            domain: {
+                data: DataNames.QuantitativeData,
+                field: 'data',
+                sort: true
             }
         }
     ];

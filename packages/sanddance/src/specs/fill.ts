@@ -11,15 +11,15 @@ export function fill(context: SpecContext): ProductionRule<ColorValueRef> {
     return colorColumn ?
         colorColumn.isColorData || insight.directColor ?
             {
-                "field": colorColumn.name
+                field: colorColumn.name
             }
             :
             {
-                "scale": ScaleNames.Color,
-                "field": colorColumn.quantitative ? colorColumn.name : FieldNames.Top
+                scale: ScaleNames.Color,
+                field: colorColumn.quantitative ? colorColumn.name : FieldNames.Top
             }
         :
         {
-            "value": util.colorToString(specViewOptions.colors.defaultCube)
-        }
+            value: util.colorToString(specViewOptions.colors.defaultCube)
+        };
 }

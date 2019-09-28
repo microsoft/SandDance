@@ -53,17 +53,17 @@ const UNSIGNED_BYTE = 0x1401;
 const DEFAULT_COLOR = [255, 0, 255, 255];
 
 const defaultProps: CubeLayerDefaultProps = {
-  lightingMix: 0.5,
-  fp64: false,
-  getSize: x => x.size,
-  getPosition: x => x.position,
-  getColor: x => x.color
+    lightingMix: 0.5,
+    fp64: false,
+    getSize: x => x.size,
+    getPosition: x => x.position,
+    getColor: x => x.color
 };
 
 function _CubeLayer(props?: CubeLayerProps) {
 
-  //dynamic superclass, since we don't know have deck.Layer in the declaration phase
-  class __CubeLayer extends base.deck.Layer {
+    //dynamic superclass, since we don't know have deck.Layer in the declaration phase
+    class __CubeLayer extends base.deck.Layer {
 
     static layerName = 'CubeLayer';
     static defaultProps = defaultProps;
@@ -72,98 +72,98 @@ function _CubeLayer(props?: CubeLayerProps) {
     public props: CubeLayerProps;
 
     getShaders() {
-      const projectModule = this.use64bitProjection() ? 'project64' : 'project32';
-      return { vs, fs, modules: [projectModule, 'lighting', 'picking'] };
+        const projectModule = this.use64bitProjection() ? 'project64' : 'project32';
+        return { vs, fs, modules: [projectModule, 'lighting', 'picking'] };
     }
 
     initializeState() {
-      const attributeManager = this.getAttributeManager();
-      attributeManager.addInstanced({
-        instancePositions: {
-          size: 3,
-          transition: true,
-          accessor: 'getPosition'
-        },
-        instancePositions64xyLow: {
-          size: 3,
-          accessor: 'getPosition',
-          update: this.calculateInstancePositions64xyLow
-        },
-        instanceSizes: {
-          size: 3,
-          transition: true,
-          accessor: 'getSize'
-        },
-        instanceColors: {
-          size: 4,
-          type: UNSIGNED_BYTE,
-          transition: true,
-          accessor: 'getColor',
-          defaultValue: DEFAULT_COLOR
-        }
-      });
+        const attributeManager = this.getAttributeManager();
+        attributeManager.addInstanced({
+            instancePositions: {
+                size: 3,
+                transition: true,
+                accessor: 'getPosition'
+            },
+            instancePositions64xyLow: {
+                size: 3,
+                accessor: 'getPosition',
+                update: this.calculateInstancePositions64xyLow
+            },
+            instanceSizes: {
+                size: 3,
+                transition: true,
+                accessor: 'getSize'
+            },
+            instanceColors: {
+                size: 4,
+                type: UNSIGNED_BYTE,
+                transition: true,
+                accessor: 'getColor',
+                defaultValue: DEFAULT_COLOR
+            }
+        });
     }
 
     updateState({ props, oldProps, changeFlags }) {
-      super.updateState({ props, oldProps, changeFlags } as any); //TODO add parameter type to deck.gl-typings
-      // Re-generate model if geometry changed
-      if (props.fp64 !== oldProps.fp64) {
-        const { gl } = this.context;
-        if (this.state.model) {
-          this.state.model.delete();
+        super.updateState({ props, oldProps, changeFlags } as any); //TODO add parameter type to deck.gl-typings
+        // Re-generate model if geometry changed
+        if (props.fp64 !== oldProps.fp64) {
+            const { gl } = this.context;
+            if (this.state.model) {
+                this.state.model.delete();
+            }
+            this.setState({ model: this._getModel(gl) });
+            this.getAttributeManager().invalidateAll();
         }
-        this.setState({ model: this._getModel(gl) });
-        this.getAttributeManager().invalidateAll();
-      }
     }
 
     _getModel(gl) {
-      return new base.luma.Model(
-        gl,
-        Object.assign({}, this.getShaders(), {
-          id: this.props.id,
-          geometry: new base.luma.CubeGeometry(),
-          isInstanced: true,
-          shaderCache: this.context.shaderCache
-        })
-      );
+        return new base.luma.Model(
+            gl,
+            Object.assign({}, this.getShaders(), {
+                id: this.props.id,
+                geometry: new base.luma.CubeGeometry(),
+                isInstanced: true,
+                shaderCache: this.context.shaderCache
+            })
+        );
     }
 
     draw({ uniforms }) {
-      let { lightingMix } = this.props;
-      if (this.props.interpolator && this.props.interpolator.layerInterpolatedProps) {
-        lightingMix = this.props.interpolator.layerInterpolatedProps.lightingMix;
-      }
-      this.state.model.render(
-        Object.assign({}, uniforms, {
-          lightingMix
-        })
-      );
+        let { lightingMix } = this.props;
+        if (this.props.interpolator && this.props.interpolator.layerInterpolatedProps) {
+            lightingMix = this.props.interpolator.layerInterpolatedProps.lightingMix;
+        }
+        this.state.model.render(
+            Object.assign({}, uniforms, {
+                lightingMix
+            })
+        );
     }
 
     calculateInstancePositions64xyLow(attribute) {
-      const isFP64 = this.use64bitPositions();
-      attribute.constant = !isFP64;
+        const isFP64 = this.use64bitPositions();
+        attribute.constant = !isFP64;
 
-      if (!isFP64) {
-        attribute.value = new Float32Array(2);
-        return;
-      }
+        if (!isFP64) {
+            attribute.value = new Float32Array(2);
+            return;
+        }
 
-      const { data, getPosition } = this.props;
-      const { value } = attribute;
-      let i = 0;
-      for (const point of data) {
-        const position = getPosition(point);
-        value[i++] = base.luma.fp64.fp64LowPart(position[0]);
-        value[i++] = base.luma.fp64.fp64LowPart(position[1]);
-      }
+        const { data, getPosition } = this.props;
+        const { value } = attribute;
+        let i = 0;
+        for (const point of data) {
+            const position = getPosition(point);
+            value[i++] = base.luma.fp64.fp64LowPart(position[0]);
+            value[i++] = base.luma.fp64.fp64LowPart(position[1]);
+        }
     }
-  }
+    }
 
-  const instance = new __CubeLayer(props) as Layer;
+    const instance = new __CubeLayer(props) as Layer;
 
-  return instance;
+    return instance;
 }
 
 //signature to allow this function to be used with the 'new' keyword.

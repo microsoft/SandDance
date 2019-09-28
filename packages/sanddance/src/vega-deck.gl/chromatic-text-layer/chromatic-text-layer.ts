@@ -23,11 +23,11 @@
 import { base } from '../base';
 import { Color } from '@deck.gl/core/utils/color';
 import {
-  DEFAULT_CHAR_SET,
-  DEFAULT_FONT_FAMILY,
-  DEFAULT_FONT_SETTINGS,
-  DEFAULT_FONT_WEIGHT,
-  makeFontAtlas
+    DEFAULT_CHAR_SET,
+    DEFAULT_FONT_FAMILY,
+    DEFAULT_FONT_SETTINGS,
+    DEFAULT_FONT_WEIGHT,
+    makeFontAtlas
 } from './font-atlas';
 import { Layer } from 'deck.gl';
 import { LayerProps } from '@deck.gl/core/lib/layer';
@@ -39,15 +39,15 @@ export interface ChromaticTextLayerProps extends TextLayerProps {
 }
 
 const TEXT_ANCHOR = {
-  start: 1,
-  middle: 0,
-  end: -1
+    start: 1,
+    middle: 0,
+    end: -1
 };
 
 const ALIGNMENT_BASELINE = {
-  top: 1,
-  center: 0,
-  bottom: -1
+    top: 1,
+    center: 0,
+    bottom: -1
 };
 
 const DEFAULT_COLOR = [0, 0, 0, 255];
@@ -56,251 +56,251 @@ const MISSING_CHAR_WIDTH = 32;
 const FONT_SETTINGS_PROPS = ['fontSize', 'buffer', 'sdf', 'radius', 'cutoff'];
 
 const defaultProps = {
-  fp64: false,
-  sizeScale: 1,
+    fp64: false,
+    sizeScale: 1,
 
-  characterSet: DEFAULT_CHAR_SET,
-  fontFamily: DEFAULT_FONT_FAMILY,
-  fontWeight: DEFAULT_FONT_WEIGHT,
-  fontSettings: {},
+    characterSet: DEFAULT_CHAR_SET,
+    fontFamily: DEFAULT_FONT_FAMILY,
+    fontWeight: DEFAULT_FONT_WEIGHT,
+    fontSettings: {},
 
-  getText: { type: 'accessor', value: x => x.text },
-  getPosition: { type: 'accessor', value: x => x.position },
-  getColor: { type: 'accessor', value: DEFAULT_COLOR },
-  getSize: { type: 'accessor', value: 32 },
-  getAngle: { type: 'accessor', value: 0 },
-  getHighlightColor: { type: 'accessor', value: DEFAULT_COLOR },
-  getTextAnchor: { type: 'accessor', value: 'middle' },
-  getAlignmentBaseline: { type: 'accessor', value: 'center' },
-  getPixelOffset: { type: 'accessor', value: [0, 0] }
+    getText: { type: 'accessor', value: x => x.text },
+    getPosition: { type: 'accessor', value: x => x.position },
+    getColor: { type: 'accessor', value: DEFAULT_COLOR },
+    getSize: { type: 'accessor', value: 32 },
+    getAngle: { type: 'accessor', value: 0 },
+    getHighlightColor: { type: 'accessor', value: DEFAULT_COLOR },
+    getTextAnchor: { type: 'accessor', value: 'middle' },
+    getAlignmentBaseline: { type: 'accessor', value: 'center' },
+    getPixelOffset: { type: 'accessor', value: [0, 0] }
 };
 
 function _ChromaticTextLayer(props?: LayerProps & ChromaticTextLayerProps) {
 
-  class __ChromaticTextLayer extends base.deck.CompositeLayer {
+    class __ChromaticTextLayer extends base.deck.CompositeLayer {
 
     static layerName = 'TextLayer';
     static defaultProps = defaultProps;
 
     updateState({ props, oldProps, changeFlags }) {
-      const fontChanged = this.fontChanged(oldProps, props);
-      if (fontChanged) {
-        this.updateFontAtlas();
-      }
+        const fontChanged = this.fontChanged(oldProps, props);
+        if (fontChanged) {
+            this.updateFontAtlas();
+        }
 
-      if (
-        changeFlags.dataChanged ||
+        if (
+            changeFlags.dataChanged ||
         fontChanged ||
         (changeFlags.updateTriggersChanged &&
           (changeFlags.updateTriggersChanged.all || changeFlags.updateTriggersChanged.getText))
-      ) {
-        this.transformStringToLetters();
-      }
+        ) {
+            this.transformStringToLetters();
+        }
     }
 
     updateFontAtlas() {
-      const { gl } = this.context;
-      const { fontSettings, fontFamily, fontWeight, characterSet } = this.props;
+        const { gl } = this.context;
+        const { fontSettings, fontFamily, fontWeight, characterSet } = this.props;
 
-      const mergedFontSettings = Object.assign({}, DEFAULT_FONT_SETTINGS, fontSettings, {
-        fontFamily,
-        fontWeight,
-        characterSet
-      });
-      const { scale, mapping, texture } = makeFontAtlas(gl, mergedFontSettings);
+        const mergedFontSettings = Object.assign({}, DEFAULT_FONT_SETTINGS, fontSettings, {
+            fontFamily,
+            fontWeight,
+            characterSet
+        });
+        const { scale, mapping, texture } = makeFontAtlas(gl, mergedFontSettings);
 
-      this.setState({
-        scale,
-        iconAtlas: texture,
-        iconMapping: mapping
-      });
+        this.setState({
+            scale,
+            iconAtlas: texture,
+            iconMapping: mapping
+        });
     }
 
     fontChanged(oldProps, props) {
-      if (
-        oldProps.fontFamily !== props.fontFamily ||
+        if (
+            oldProps.fontFamily !== props.fontFamily ||
         oldProps.characterSet !== props.characterSet ||
         oldProps.fontWeight !== props.fontWeight
-      ) {
-        return true;
-      }
+        ) {
+            return true;
+        }
 
-      if (oldProps.fontSettings === props.fontSettings) {
-        return false;
-      }
+        if (oldProps.fontSettings === props.fontSettings) {
+            return false;
+        }
 
-      const oldFontSettings = oldProps.fontSettings || {};
-      const fontSettings = props.fontSettings || {};
+        const oldFontSettings = oldProps.fontSettings || {};
+        const fontSettings = props.fontSettings || {};
 
-      return FONT_SETTINGS_PROPS.some(prop => oldFontSettings[prop] !== fontSettings[prop]);
+        return FONT_SETTINGS_PROPS.some(prop => oldFontSettings[prop] !== fontSettings[prop]);
     }
 
     getPickingInfo({ info }) {
-      // because `TextLayer` assign the same pickingInfoIndex for one text label,
-      // here info.index refers the index of text label in props.data
-      return Object.assign(info, {
+        // because `TextLayer` assign the same pickingInfoIndex for one text label,
+        // here info.index refers the index of text label in props.data
+        return Object.assign(info, {
         // override object with original data
-        object: info.index >= 0 ? this.props.data[info.index] : null
-      });
+            object: info.index >= 0 ? this.props.data[info.index] : null
+        });
     }
 
     /* eslint-disable no-loop-func */
     transformStringToLetters() {
-      const { data, getText } = this.props;
-      const { iconMapping } = this.state;
+        const { data, getText } = this.props;
+        const { iconMapping } = this.state;
 
-      const transformedData = [];
-      let objectIndex = 0;
-      for (const val of data) {
-        const text = getText(val) as string;
-        if (text) {
-          const letters = Array.from(text);
-          const offsets = [0];
-          let offsetLeft = 0;
+        const transformedData = [];
+        let objectIndex = 0;
+        for (const val of data) {
+            const text = getText(val) as string;
+            if (text) {
+                const letters = Array.from(text);
+                const offsets = [0];
+                let offsetLeft = 0;
 
-          letters.forEach((letter, i) => {
-            const datum = {
-              text: letter,
-              index: i,
-              offsets,
-              len: text.length,
-              // reference of original object and object index
-              object: val,
-              objectIndex
-            };
+                letters.forEach((letter, i) => {
+                    const datum = {
+                        text: letter,
+                        index: i,
+                        offsets,
+                        len: text.length,
+                        // reference of original object and object index
+                        object: val,
+                        objectIndex
+                    };
 
-            const frame = iconMapping[letter];
-            if (frame) {
-              offsetLeft += frame.width;
-            } else {
-              //log.warn(`Missing character: ${letter}`)();
-              offsetLeft += MISSING_CHAR_WIDTH;
+                    const frame = iconMapping[letter];
+                    if (frame) {
+                        offsetLeft += frame.width;
+                    } else {
+                        //log.warn(`Missing character: ${letter}`)();
+                        offsetLeft += MISSING_CHAR_WIDTH;
+                    }
+                    offsets.push(offsetLeft);
+                    transformedData.push(datum);
+                });
             }
-            offsets.push(offsetLeft);
-            transformedData.push(datum);
-          });
+
+            objectIndex++;
         }
 
-        objectIndex++;
-      }
-
-      this.setState({ data: transformedData });
+        this.setState({ data: transformedData });
     }
     /* eslint-enable no-loop-func */
 
     getLetterOffset(datum) {
-      return datum.offsets[datum.index];
+        return datum.offsets[datum.index];
     }
 
     getTextLength(datum) {
-      return datum.offsets[datum.offsets.length - 1];
+        return datum.offsets[datum.offsets.length - 1];
     }
 
     _getAccessor(accessor) {
-      if (typeof accessor === 'function') {
-        return x => accessor(x.object);
-      }
-      return accessor;
+        if (typeof accessor === 'function') {
+            return x => accessor(x.object);
+        }
+        return accessor;
     }
 
     getAnchorXFromTextAnchor(getTextAnchor) {
-      return x => {
-        const textAnchor =
+        return x => {
+            const textAnchor =
           typeof getTextAnchor === 'function' ? getTextAnchor(x.object) : getTextAnchor;
-        if (!TEXT_ANCHOR.hasOwnProperty(textAnchor)) {
-          throw new Error(`Invalid text anchor parameter: ${textAnchor}`);
-        }
-        return TEXT_ANCHOR[textAnchor];
-      };
+            if (!TEXT_ANCHOR.hasOwnProperty(textAnchor)) {
+                throw new Error(`Invalid text anchor parameter: ${textAnchor}`);
+            }
+            return TEXT_ANCHOR[textAnchor];
+        };
     }
 
     getAnchorYFromAlignmentBaseline(getAlignmentBaseline) {
-      return x => {
-        const alignmentBaseline =
+        return x => {
+            const alignmentBaseline =
           typeof getAlignmentBaseline === 'function'
-            ? getAlignmentBaseline(x.object)
-            : getAlignmentBaseline;
-        if (!ALIGNMENT_BASELINE.hasOwnProperty(alignmentBaseline)) {
-          throw new Error(`Invalid alignment baseline parameter: ${alignmentBaseline}`);
-        }
-        return ALIGNMENT_BASELINE[alignmentBaseline];
-      };
+              ? getAlignmentBaseline(x.object)
+              : getAlignmentBaseline;
+            if (!ALIGNMENT_BASELINE.hasOwnProperty(alignmentBaseline)) {
+                throw new Error(`Invalid alignment baseline parameter: ${alignmentBaseline}`);
+            }
+            return ALIGNMENT_BASELINE[alignmentBaseline];
+        };
     }
 
     renderLayers() {
-      const { data, scale, iconAtlas, iconMapping } = this.state;
+        const { data, scale, iconAtlas, iconMapping } = this.state;
 
-      const {
-        getPosition,
-        getColor,
-        getSize,
-        getAngle,
-        getHighlightColor,
-        getTextAnchor,
-        getAlignmentBaseline,
-        getPixelOffset,
-        fp64,
-        sdf,
-        sizeScale,
-        transitions,
-        updateTriggers
-      } = this.props;
+        const {
+            getPosition,
+            getColor,
+            getSize,
+            getAngle,
+            getHighlightColor,
+            getTextAnchor,
+            getAlignmentBaseline,
+            getPixelOffset,
+            fp64,
+            sdf,
+            sizeScale,
+            transitions,
+            updateTriggers
+        } = this.props;
 
-      const SubLayerClass = this.getSubLayerClass('characters', MultiIconLayer) as typeof MultiIconLayer_Class;
+        const SubLayerClass = this.getSubLayerClass('characters', MultiIconLayer) as typeof MultiIconLayer_Class;
 
-      return new SubLayerClass(
-        {
-          sdf,
-          iconAtlas,
-          iconMapping,
+        return new SubLayerClass(
+            {
+                sdf,
+                iconAtlas,
+                iconMapping,
 
-          getPosition: d => getPosition((d as any).object),
-          getColor: this._getAccessor(getColor),
-          getSize: this._getAccessor(getSize),
-          getAngle: this._getAccessor(getAngle),
-          getHighlightColor: this._getAccessor(getHighlightColor),
-          getAnchorX: this.getAnchorXFromTextAnchor(getTextAnchor),
-          getAnchorY: this.getAnchorYFromAlignmentBaseline(getAlignmentBaseline),
-          getPixelOffset: this._getAccessor(getPixelOffset),
-          fp64,
-          sizeScale: sizeScale * scale,
+                getPosition: d => getPosition((d as any).object),
+                getColor: this._getAccessor(getColor),
+                getSize: this._getAccessor(getSize),
+                getAngle: this._getAccessor(getAngle),
+                getHighlightColor: this._getAccessor(getHighlightColor),
+                getAnchorX: this.getAnchorXFromTextAnchor(getTextAnchor),
+                getAnchorY: this.getAnchorYFromAlignmentBaseline(getAlignmentBaseline),
+                getPixelOffset: this._getAccessor(getPixelOffset),
+                fp64,
+                sizeScale: sizeScale * scale,
 
-          transitions: transitions && {
-            getPosition: transitions.getPosition,
-            getAngle: transitions.getAngle,
-            getHighlightColor: transitions.getHighlightColor,
-            getColor: transitions.getColor,
-            getSize: transitions.getSize,
-            getPixelOffset: updateTriggers.getPixelOffset
-          }
-        },
-        this.getSubLayerProps({
-          id: 'characters',
-          updateTriggers: {
-            getPosition: updateTriggers.getPosition,
-            getAngle: updateTriggers.getAngle,
-            getHighlightColor: updateTriggers.getHighlightColor,
-            getColor: updateTriggers.getColor,
-            getSize: updateTriggers.getSize,
-            getPixelOffset: updateTriggers.getPixelOffset,
-            getAnchorX: updateTriggers.getTextAnchor,
-            getAnchorY: updateTriggers.getAlignmentBaseline
-          }
-        }),
-        {
-          data,
+                transitions: transitions && {
+                    getPosition: transitions.getPosition,
+                    getAngle: transitions.getAngle,
+                    getHighlightColor: transitions.getHighlightColor,
+                    getColor: transitions.getColor,
+                    getSize: transitions.getSize,
+                    getPixelOffset: updateTriggers.getPixelOffset
+                }
+            },
+            this.getSubLayerProps({
+                id: 'characters',
+                updateTriggers: {
+                    getPosition: updateTriggers.getPosition,
+                    getAngle: updateTriggers.getAngle,
+                    getHighlightColor: updateTriggers.getHighlightColor,
+                    getColor: updateTriggers.getColor,
+                    getSize: updateTriggers.getSize,
+                    getPixelOffset: updateTriggers.getPixelOffset,
+                    getAnchorX: updateTriggers.getTextAnchor,
+                    getAnchorY: updateTriggers.getAlignmentBaseline
+                }
+            }),
+            {
+                data,
 
-          getIcon: d => (d as any).text,
-          getShiftInQueue: d => this.getLetterOffset(d),
-          getLengthOfQueue: d => this.getTextLength(d)
-        }
-      );
+                getIcon: d => (d as any).text,
+                getShiftInQueue: d => this.getLetterOffset(d),
+                getLengthOfQueue: d => this.getTextLength(d)
+            }
+        );
     }
-  }
+    }
 
-  const instance = new __ChromaticTextLayer(props) as Layer;
+    const instance = new __ChromaticTextLayer(props) as Layer;
 
-  return instance;
+    return instance;
 }
 
 //signature to allow this function to be used with the 'new' keyword.

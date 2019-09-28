@@ -53,7 +53,7 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
             stage.textData.push(textItem);
         }
     });
-}
+};
 
 function convertAngle(vegaTextAngle: number) {
     return 360 - vegaTextAngle;
@@ -61,15 +61,15 @@ function convertAngle(vegaTextAngle: number) {
 
 function convertAlignment(textAlign: SceneTextAlign): TextAnchor {
     switch (textAlign) {
-        case 'center': return 'middle';
-        case 'left': return 'start';
-        case 'right': return 'end'
+    case 'center': return 'middle';
+    case 'left': return 'start';
+    case 'right': return 'end';
     }
 }
 
 function convertBaseline(baseline: SceneTextBaseline): AlignmentBaseline {
     switch (baseline) {
-        case 'middle': return 'center';
+    case 'middle': return 'center';
     }
     return baseline;
 }

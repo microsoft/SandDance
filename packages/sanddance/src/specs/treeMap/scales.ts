@@ -20,23 +20,23 @@ export default function (context: SpecContext) {
         } else {
             scales.push(
                 {
-                    "name": ScaleNames.Color,
-                    "type": "ordinal",
-                    "domain": {
-                        "data": DataNames.Legend,
-                        "field": FieldNames.Top,
-                        "sort": true
+                    name: ScaleNames.Color,
+                    type: 'ordinal',
+                    domain: {
+                        data: DataNames.Legend,
+                        field: FieldNames.Top,
+                        sort: true
                     },
-                    "range": {
-                        "scheme": insight.scheme || ColorScaleNone
+                    range: {
+                        scheme: insight.scheme || ColorScaleNone
                     },
-                    "reverse": { "signal": SignalNames.ColorReverse }
+                    reverse: { signal: SignalNames.ColorReverse }
                 }
             );
         }
     }
     if (specColumns.z) {
-        const zRange: RangeScheme = [0, { "signal": SignalNames.ZHeight }];
+        const zRange: RangeScheme = [0, { signal: SignalNames.ZHeight }];
         scales.push(
             specColumns.z.quantitative ?
                 linearScale(ScaleNames.Z, DataNames.Main, specColumns.z.name, zRange, false, false)
