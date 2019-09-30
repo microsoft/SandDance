@@ -71,13 +71,13 @@ export class DataExportPicker extends React.Component<Props, State> {
 
     columnReplacer(name, value) {
         switch (name) {
-            case SandDance.VegaDeckGl.constants.GL_ORDINAL:
-            case SandDance.constants.FieldNames.Active:
-            case SandDance.constants.FieldNames.Collapsed:
-            case SandDance.constants.FieldNames.Index:
-            case SandDance.constants.FieldNames.Selected:
-            case SandDance.constants.FieldNames.Top:
-                return undefined;
+        case SandDance.VegaDeckGl.constants.GL_ORDINAL:
+        case SandDance.constants.FieldNames.Active:
+        case SandDance.constants.FieldNames.Collapsed:
+        case SandDance.constants.FieldNames.Index:
+        case SandDance.constants.FieldNames.Selected:
+        case SandDance.constants.FieldNames.Top:
+            return undefined;
         }
         return value === null ? '' : value;
     }
