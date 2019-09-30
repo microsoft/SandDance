@@ -10,17 +10,17 @@ export default function (context: SpecContext, data: string) {
     const { specColumns } = context;
     const marks: Mark[] = [
         {
-            "type": "rect",
-            "from": {
+            type: 'rect',
+            from: {
                 data
             },
-            "encode": {
-                "update": {
-                    "x": { "field": FieldNames.TreemapStackX0 },
-                    "y": { "field": FieldNames.TreemapStackY0 },
-                    "x2": { "field": FieldNames.TreemapStackX1 },
-                    "y2": { "field": FieldNames.TreemapStackY1 },
-                    "fill": fill(context)
+            encode: {
+                update: {
+                    x: { field: FieldNames.TreemapStackX0 },
+                    y: { field: FieldNames.TreemapStackY0 },
+                    x2: { field: FieldNames.TreemapStackX1 },
+                    y2: { field: FieldNames.TreemapStackY1 },
+                    fill: fill(context)
                 }
             }
         }
@@ -28,16 +28,16 @@ export default function (context: SpecContext, data: string) {
     if (specColumns.z) {
         const update = marks[0].encode.update;
         update.z = {
-            "value": 0
+            value: 0
         };
         update.depth = [
             {
-                "test": testForCollapseSelection(),
-                "value": 0
+                test: testForCollapseSelection(),
+                value: 0
             },
             {
-                "scale": ScaleNames.Z,
-                "field": specColumns.z.name
+                scale: ScaleNames.Z,
+                field: specColumns.z.name
             }
         ];
     }

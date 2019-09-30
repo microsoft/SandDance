@@ -58,7 +58,7 @@ namespace cubeTest {
             }]
         },
         textData: [],
-        view: "3d"
+        view: '3d'
     };
 
     presenter.present(stage, 200, 400);

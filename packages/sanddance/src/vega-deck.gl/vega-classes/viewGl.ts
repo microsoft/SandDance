@@ -37,7 +37,7 @@ function _ViewGl(runtime: Runtime, config?: ViewGlConfig) {
             config.presenterConfig.redraw = () => {
                 (this as any)._redraw = true;   //use Vega View private member _redraw
                 this.run();
-            }
+            };
         }
 
         renderer(renderer: Renderers | 'deck.gl') {

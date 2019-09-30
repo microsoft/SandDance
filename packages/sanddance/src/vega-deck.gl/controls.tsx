@@ -48,4 +48,4 @@ export const Table: StatelessComponent<TableProps> = (props: StatelessProps<Tabl
             ))}
         </table>
     );
-}
+};

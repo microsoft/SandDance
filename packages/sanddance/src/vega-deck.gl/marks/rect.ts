@@ -16,38 +16,38 @@ type SceneCube = SceneRect & {
 
 const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scene, x: number, y: number, groupType: GroupType) => {
 
-  let i = 0;
+    let i = 0;
 
-  base.vega.sceneVisit(scene, function (item: SceneCube) {
+    base.vega.sceneVisit(scene, function (item: SceneCube) {
 
-    //for orthographic (2d) - always use 0 or else Deck will not show them
-    const z = stage.view === "2d" ? 0 : (item.z || 0);
-    const depth = (stage.view === "2d" ? 0 : (item.depth || 0)) + min3dDepth;
+        //for orthographic (2d) - always use 0 or else Deck will not show them
+        const z = stage.view === '2d' ? 0 : (item.z || 0);
+        const depth = (stage.view === '2d' ? 0 : (item.depth || 0)) + min3dDepth;
 
-    //change direction of y from SVG to GL
-    const ty = -1;
+        //change direction of y from SVG to GL
+        const ty = -1;
 
-    let ordinal = i;
-    if (item.datum.GL_ORDINAL !== void 0) {
-      options.ordinalsSpecified = true;
+        let ordinal = i;
+        if (item.datum.GL_ORDINAL !== void 0) {
+            options.ordinalsSpecified = true;
 
-      ordinal = item.datum.GL_ORDINAL;
-      if (ordinal > options.maxOrdinal) {
-        options.maxOrdinal = ordinal;
-      }
-    }
+            ordinal = item.datum.GL_ORDINAL;
+            if (ordinal > options.maxOrdinal) {
+                options.maxOrdinal = ordinal;
+            }
+        }
 
-    const cube: Cube = {
-      ordinal,
-      size: [item.width, item.height, depth],
-      position: [x + (item.x || 0) - options.offsetX, ty * (y + (item.y || 0) - options.offsetY) - item.height, z],
-      color: colorFromString(item.fill) || options.defaultCubeColor || [128, 128, 128, 128]
-    };
-    stage.cubeData.push(cube);
+        const cube: Cube = {
+            ordinal,
+            size: [item.width, item.height, depth],
+            position: [x + (item.x || 0) - options.offsetX, ty * (y + (item.y || 0) - options.offsetY) - item.height, z],
+            color: colorFromString(item.fill) || options.defaultCubeColor || [128, 128, 128, 128]
+        };
+        stage.cubeData.push(cube);
 
-    i++;
-  });
+        i++;
+    });
 
-}
+};
 
 export default markStager;

@@ -6,21 +6,21 @@ import { ScaleNames } from './constants';
 
 function legend(column: Column) {
     const legend: Legend = {
-        "orient": "none",
-        "title": column.name,
-        "fill": ScaleNames.Color,
-        "encode": {
-            "symbols": {
-                "update": {
-                    "shape": {
-                        "value": "square"
+        orient: 'none',
+        title: column.name,
+        fill: ScaleNames.Color,
+        encode: {
+            symbols: {
+                update: {
+                    shape: {
+                        value: 'square'
                     }
                 }
             }
         }
     };
     if (column.quantitative) {
-        legend.type = "symbol";
+        legend.type = 'symbol';
     }
     return legend;
 }

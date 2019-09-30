@@ -8,6 +8,7 @@
     "dist"
   ],
   "scripts": {
+    "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "predocs": "node ./scripts/predocs.js",
     "docs": "ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/sanddance/v1/ && ts-docs-gen --entryFile src/vega-deck.gl/index.ts -o ../../docs/docs/vega-deck.gl/v1/ && node ./scripts/docs.js",
     "postdocs": "node ./scripts/postdocs.js",

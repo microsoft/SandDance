@@ -18,7 +18,7 @@ export function assignOrdinals(columns: SpecColumns, data: object[], ordinalMap?
             d[VegaDeckGl.constants.GL_ORDINAL] = i;
             const uColValue = uCol ? d[uCol] : i;
             ordinalMap[uColValue] = i;
-        })
+        });
     }
 
     return ordinalMap;

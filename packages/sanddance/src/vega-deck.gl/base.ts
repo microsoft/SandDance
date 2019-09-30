@@ -57,7 +57,7 @@ let vega: VegaBase = {
     sceneVisit: null,
     scheme: null,
     View: null
-}
+};
 
 /**
  * deck.gl/core dependency.
@@ -90,14 +90,14 @@ let deck: DeckBase = {
     LinearInterpolator: null,
     OrbitView: null,
     _OrbitController: null
-}
+};
 
 let layers: DeckLayerBase = {
     IconLayer: null,
     LineLayer: null,
     PolygonLayer: null,
     TextLayer: null
-}
+};
 
 /**
  * luma.gl dependency.
@@ -114,7 +114,7 @@ let luma: LumaBase = {
     fp64: null,
     Model: null,
     Texture2D: null
-}
+};
 
 /**
  * References to dependency libraries.
@@ -134,7 +134,7 @@ export const base: Base = {
     layers,
     luma,
     vega
-}
+};
 
 /**
  * Specify the dependency libraries to use for rendering.

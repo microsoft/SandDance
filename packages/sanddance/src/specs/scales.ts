@@ -17,16 +17,16 @@ import {
 export function linearScale(name: string, data: string, field: string, range: RangeScheme, reverse: boolean, zero: boolean) {
     const scale: LinearScale = {
         name,
-        "type": "linear",
+        type: 'linear',
         range,
-        "round": true,
+        round: true,
         reverse,
-        "domain": {
+        domain: {
             data,
             field
         },
         zero,
-        "nice": true
+        nice: true
     };
     return scale;
 }
@@ -34,14 +34,14 @@ export function linearScale(name: string, data: string, field: string, range: Ra
 export function pointScale(name: string, data: string, range: RangeBand, field: string, reverse?: boolean) {
     const scale: PointScale = {
         name,
-        "type": "point",
+        type: 'point',
         range,
-        "domain": {
+        domain: {
             data,
             field,
             sort: true
         },
-        "padding": 0.5
+        padding: 0.5
     };
     if (reverse !== undefined) {
         scale.reverse = reverse;
@@ -59,39 +59,40 @@ export function binnableColorScale(colorBin: ColorBin, data: string, field: stri
     const range: RangeScheme = {
         scheme
     };
-    const reverse: SignalRef = { "signal": SignalNames.ColorReverse };
+    const reverse: SignalRef = { signal: SignalNames.ColorReverse };
     if (colorBin !== 'continuous') {
         range.count = { signal: SignalNames.ColorBinCount };
     }
     switch (colorBin) {
-        case 'continuous':
-            const sequentialScale: SequentialScale = {
-                name,
-                "type": "sequential",
-                domain,
-                range,
-                reverse
-            };
-            return sequentialScale;
-
-        case 'quantile':
-            const quantileScale: QuantileScale = {
-                name,
-                "type": "quantile",
-                domain,
-                range,
-                reverse
-            };
-            return quantileScale;
-
-        default:
-            const quantizeScale: QuantizeScale = {
-                name,
-                "type": "quantize",
-                domain,
-                range,
-                reverse
-            };
-            return quantizeScale;
+    case 'continuous': {
+        const sequentialScale: SequentialScale = {
+            name,
+            type: 'sequential',
+            domain,
+            range,
+            reverse
+        };
+        return sequentialScale;
+    }
+    case 'quantile': {
+        const quantileScale: QuantileScale = {
+            name,
+            type: 'quantile',
+            domain,
+            range,
+            reverse
+        };
+        return quantileScale;
+    }
+    default: {
+        const quantizeScale: QuantizeScale = {
+            name,
+            type: 'quantize',
+            domain,
+            range,
+            reverse
+        };
+        return quantizeScale;
+    }
     }
 }

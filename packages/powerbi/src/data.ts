@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import powerbi from "powerbi-visuals-api";
-import { SandDance, util } from "@msrvida/sanddance-explorer";
+import powerbi from 'powerbi-visuals-api';
+import { SandDance, util } from '@msrvida/sanddance-explorer';
 
 export function convertTableToObjectArray(table: powerbi.DataViewTable, oldData: object[], host: powerbi.extensibility.visual.IVisualHost) {
     let different: boolean;

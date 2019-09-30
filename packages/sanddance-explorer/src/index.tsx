@@ -4,7 +4,7 @@ export { ColorSettings, DataContent, DataFile, DataFileType, Snapshot, ViewerOpt
 export { use } from './base';
 export { capabilities } from './canvas';
 export { Prefs } from './partialInsight';
-export { getColorSettingsFromThemePalette, themePalettes } from './themes'
+export { getColorSettingsFromThemePalette, themePalettes } from './themes';
 export * from './explorer';
 
 export { SandDance, util } from '@msrvida/sanddance-react';

@@ -11,18 +11,18 @@ export default function (context: SpecContext) {
     const pa = partialAxes(specViewOptions, true, specColumns.y.quantitative);
     const axes: Axis[] = [
         {
-            "scale": ScaleNames.Y,
-            "title": specColumns.y.name,
+            scale: ScaleNames.Y,
+            title: specColumns.y.name,
             ...pa.left as Axis
         },
         {
-            "scale": BarChartScaleNames.levelScale,
-            "title": specViewOptions.language.count,
-            "encode": {
-                "labels": {
-                    "update": {
-                        "text": {
-                            "signal": `${BarChartSignalNames.compartmentsPerLevelSignal} * datum.value`
+            scale: BarChartScaleNames.levelScale,
+            title: specViewOptions.language.count,
+            encode: {
+                labels: {
+                    update: {
+                        text: {
+                            signal: `${BarChartSignalNames.compartmentsPerLevelSignal} * datum.value`
                         }
                     }
                 }

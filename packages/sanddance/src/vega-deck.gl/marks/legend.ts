@@ -50,6 +50,6 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
             //console.log(`need to render legend ${item.mark.role}`);
         }
     });
-}
+};
 
 export default markStager;

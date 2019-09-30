@@ -10,13 +10,13 @@ export default function (context: SpecContext) {
     const pa = partialAxes(specViewOptions, specColumns.x.quantitative, specColumns.y.quantitative);
     const axes: Axis[] = [
         {
-            "scale": ScaleNames.X,
-            "title": specColumns.x.name,
+            scale: ScaleNames.X,
+            title: specColumns.x.name,
             ...pa.bottom as Axis
         },
         {
-            "scale": ScaleNames.Y,
-            "title": specColumns.y.name,
+            scale: ScaleNames.Y,
+            title: specColumns.y.name,
             ...pa.left as Axis
         }
     ];

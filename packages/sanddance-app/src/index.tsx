@@ -8,10 +8,10 @@ import * as ReactDOM from 'react-dom';
 import * as SandDanceExplorer from '@msrvida/sanddance-explorer';
 import * as vega from 'vega-lib';
 import {
-  ColorSettings,
-  DataFileType,
-  Explorer,
-  Prefs
+    ColorSettings,
+    DataFileType,
+    Explorer,
+    Prefs
 } from '@msrvida/sanddance-explorer';
 import { DataSource, InsightMap } from './types';
 import { fabric } from './fabricComponents';
@@ -21,15 +21,15 @@ import { use } from './base';
 use(fabric, vega, deck, layers, luma);
 
 const dataSets = Array.from(
-  document.querySelectorAll<HTMLAnchorElement>("a.sanddance-app-static-content")
+    document.querySelectorAll<HTMLAnchorElement>('a.sanddance-app-static-content')
 ).map<DataSource>(n => {
-  return {
-    dataSourceType: 'sample',
-    id: n.id,
-    displayName: n.dataset["displayName"],
-    dataUrl: n.href,
-    type: n.dataset["type"] as DataFileType
-  };
+    return {
+        dataSourceType: 'sample',
+        id: n.id,
+        displayName: n.dataset['displayName'],
+        dataUrl: n.href,
+        type: n.dataset['type'] as DataFileType
+    };
 });
 
 export let explorer: Explorer;
@@ -45,16 +45,16 @@ declare var themeColors: { [theme: string]: ColorSettings };
 const undef = typeof undefined;
 
 ReactDOM.render(
-  <SandDanceApp
-    setTheme={typeof setTheme !== undef && setTheme}
-    darkTheme={typeof darkTheme !== undef && darkTheme}
-    insights={typeof insights !== undef && insights}
-    initialOptions={typeof options !== undef && options}
-    themeColors={typeof themeColors !== undef && themeColors}
-    dataSources={dataSets}
-    mounted={app => {
-      explorer = app.explorer;
-    }}
-  />,
-  document.getElementById("app")
+    <SandDanceApp
+        setTheme={typeof setTheme !== undef && setTheme}
+        darkTheme={typeof darkTheme !== undef && darkTheme}
+        insights={typeof insights !== undef && insights}
+        initialOptions={typeof options !== undef && options}
+        themeColors={typeof themeColors !== undef && themeColors}
+        dataSources={dataSets}
+        mounted={app => {
+            explorer = app.explorer;
+        }}
+    />,
+    document.getElementById('app')
 );

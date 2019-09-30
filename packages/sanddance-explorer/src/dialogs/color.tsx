@@ -65,26 +65,26 @@ export function Color(props: Props) {
                 <base.fabric.ChoiceGroup
                     options={[
                         {
-                            key: "continuous",
+                            key: 'continuous',
                             text: strings.labelColorBinNone,
                             checked: colorBin === 'continuous',
                             disabled: disabledColorBin
                         },
                         {
-                            key: "quantize",
+                            key: 'quantize',
                             text: strings.labelColorBinQuantize,
                             checked: colorBin === 'quantize',
                             disabled: disabledColorBin
                         },
                         {
-                            key: "quantile",
+                            key: 'quantile',
                             text: strings.labelColorBinQuantile,
                             checked: colorBin === 'quantile',
                             disabled: disabledColorBin
                         }
                     ]}
                     onChange={(e, o) => {
-                        props.onColorBinChange(o.key as SandDance.types.ColorBin)
+                        props.onColorBinChange(o.key as SandDance.types.ColorBin);
                     }}
                 />
                 <Signal

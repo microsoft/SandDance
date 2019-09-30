@@ -65,7 +65,7 @@ export class App extends React.Component<Props, State> {
     }
 
     private getViewerOptions(darkTheme?: boolean) {
-        const textColor = darkTheme ? "white" : "black";
+        const textColor = darkTheme ? 'white' : 'black';
         const color = SandDance.VegaDeckGl.util.colorFromString(textColor);
         const viewerOptions: Partial<SandDance.types.ViewerOptions> = {
             colors: {
@@ -124,16 +124,16 @@ export class App extends React.Component<Props, State> {
 
     render() {
         const className = util.classList(
-            "sanddance-app",
-            this.state.chromeless && "chromeless",
-            this.state.loaded && "loaded"
+            'sanddance-app',
+            this.state.chromeless && 'chromeless',
+            this.state.loaded && 'loaded'
         );
         const explorerProps: ExplorerProps = {
             hideSidebarControls: true,
-            logoClickUrl: "https://microsoft.github.io/SandDance/",
+            logoClickUrl: 'https://microsoft.github.io/SandDance/',
             theme: this.state.darkTheme && 'dark-theme',
             viewerOptions: this.viewerOptions,
-            initialView: "2d",
+            initialView: '2d',
             mounted: explorer => {
                 this.explorer = explorer;
                 this.props.mounted(this);
@@ -142,20 +142,20 @@ export class App extends React.Component<Props, State> {
             onTooltipExclusionsChanged: tooltipExclusions => this.props.onViewChange(tooltipExclusions),
             onView: this.props.onViewChange,
             systemInfoChildren: [
-                React.createElement("li", null, `${strings.powerBiCustomVisual}: ${version}`)
+                React.createElement('li', null, `${strings.powerBiCustomVisual}: ${version}`)
             ]
         };
-        return React.createElement("div", { className },
+        return React.createElement('div', { className },
             React.createElement(Explorer, explorerProps),
-            React.createElement("div", { className: "sanddance-init" },
-                React.createElement("div", null,
+            React.createElement('div', { className: 'sanddance-init' },
+                React.createElement('div', null,
                     React.createElement(Logo)
                 ),
-                !capabilities.webgl && React.createElement("div", { className: "sanddance-webgl-required" },
+                !capabilities.webgl && React.createElement('div', { className: 'sanddance-webgl-required' },
                     strings.webglDisabled
                 )
             ),
-            this.state.fetching && React.createElement("div", { className: "sanddance-fetch" },
+            this.state.fetching && React.createElement('div', { className: 'sanddance-fetch' },
                 `${strings.fetching} ${this.state.rowCount ? `(${this.state.rowCount} ${strings.fetched})` : ''}`
             )
         );

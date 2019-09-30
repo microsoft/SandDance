@@ -11,42 +11,42 @@ export default function (context: SpecContext) {
     const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     const marks: Mark[] = [
         {
-            "type": "rect",
-            "from": {
-                "data": categoricalColor ? DataNames.Legend : DataNames.Main
+            type: 'rect',
+            from: {
+                data: categoricalColor ? DataNames.Legend : DataNames.Main
             },
-            "encode": {
-                "update": {
-                    "x": {
-                        "scale": ScaleNames.X,
-                        "field": specColumns.x.name,
-                        "offset": 1
+            encode: {
+                update: {
+                    x: {
+                        scale: ScaleNames.X,
+                        field: specColumns.x.name,
+                        offset: 1
                     },
-                    "width": { "signal": SignalNames.PointSize },
-                    "y": [
+                    width: { signal: SignalNames.PointSize },
+                    y: [
                         {
-                            "scale": ScaleNames.Y,
-                            "test": testForCollapseSelection(),
-                            "signal": `${SignalNames.YDomain}[0]`
+                            scale: ScaleNames.Y,
+                            test: testForCollapseSelection(),
+                            signal: `${SignalNames.YDomain}[0]`
                         },
                         {
-                            "scale": ScaleNames.Y,
-                            "field": specColumns.y.name,
-                            "offset": {
-                                "signal": `-${SignalNames.PointSize}`
+                            scale: ScaleNames.Y,
+                            field: specColumns.y.name,
+                            offset: {
+                                signal: `-${SignalNames.PointSize}`
                             }
                         }
                     ],
-                    "height": [
+                    height: [
                         {
-                            "test": testForCollapseSelection(),
-                            "value": 0
+                            test: testForCollapseSelection(),
+                            value: 0
                         },
                         {
-                            "signal": SignalNames.PointSize
+                            signal: SignalNames.PointSize
                         }
                     ],
-                    "fill": fill(context)
+                    fill: fill(context)
                 }
             }
         }
@@ -55,15 +55,15 @@ export default function (context: SpecContext) {
         const update = marks[0].encode.update;
         update.z = [
             {
-                "test": testForCollapseSelection(),
-                "value": 0
+                test: testForCollapseSelection(),
+                value: 0
             },
             {
-                "scale": ScaleNames.Z,
-                "field": specColumns.z.name
+                scale: ScaleNames.Z,
+                field: specColumns.z.name
             }
         ];
-        update.depth = { "signal": SignalNames.PointSize };
+        update.depth = { signal: SignalNames.PointSize };
     }
     return marks;
 }

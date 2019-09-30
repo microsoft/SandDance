@@ -11,29 +11,29 @@ export default function (context: SpecContext, data: string) {
     const { specColumns } = context;
     const marks: Mark[] = [
         {
-            "type": "rect",
-            "from": {
+            type: 'rect',
+            from: {
                 data
             },
-            "encode": {
-                "update": {
-                    "x": {
-                        "signal": `(datum.${FieldNames.GridIndex}-1)%${ColumnCount}`,
-                        "scale": ScaleNames.X
+            encode: {
+                update: {
+                    x: {
+                        signal: `(datum.${FieldNames.GridIndex}-1)%${ColumnCount}`,
+                        scale: ScaleNames.X
                     },
-                    "width": {
-                        "scale": ScaleNames.X,
-                        "band": true
+                    width: {
+                        scale: ScaleNames.X,
+                        band: true
                     },
-                    "y": {
-                        "signal": `floor((datum.${FieldNames.GridIndex}-1)/${ColumnCount})`,
-                        "scale": ScaleNames.Y
+                    y: {
+                        signal: `floor((datum.${FieldNames.GridIndex}-1)/${ColumnCount})`,
+                        scale: ScaleNames.Y
                     },
-                    "height": {
-                        "scale": ScaleNames.Y,
-                        "band": true
+                    height: {
+                        scale: ScaleNames.Y,
+                        band: true
                     },
-                    "fill": fill(context)
+                    fill: fill(context)
                 }
             }
         }
@@ -41,16 +41,16 @@ export default function (context: SpecContext, data: string) {
     if (specColumns.z) {
         const update = marks[0].encode.update;
         update.z = {
-            "value": 0
+            value: 0
         };
         update.depth = [
             {
-                "test": testForCollapseSelection(),
-                "value": 0
+                test: testForCollapseSelection(),
+                value: 0
             },
             {
-                "scale": ScaleNames.Z,
-                "field": specColumns.z.name
+                scale: ScaleNames.Z,
+                field: specColumns.z.name
             }
         ];
     }

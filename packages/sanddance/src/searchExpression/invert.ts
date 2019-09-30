@@ -15,7 +15,7 @@ function invertSearchExpressionGroup(input: SearchExpressionGroup) {
         expressions: input.expressions.map(invertSearchExpression)
     };
     if (input.clause) {
-        output.clause = invertedClauses[input.clause]
+        output.clause = invertedClauses[input.clause];
     }
     return output;
 }
@@ -44,7 +44,7 @@ function invertSearchExpression(input: SearchExpression) {
     const operator = invertedOperators[input.operator];
     const output: SearchExpression = { ...input, operator };
     if (input.clause) {
-        output.clause = invertedClauses[input.clause]
+        output.clause = invertedClauses[input.clause];
     }
     return output;
 }

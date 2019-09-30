@@ -24,14 +24,14 @@
  *  THE SOFTWARE.
  */
 
-"use strict";
+'use strict';
 
-import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
+import { dataViewObjectsParser } from 'powerbi-visuals-utils-dataviewutils';
 import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 
 export class SandDanceConfig {
-  insightJSON: string = "";
-  tooltipExclusionsJSON: string = "";
+  insightJSON: string = '';
+  tooltipExclusionsJSON: string = '';
 }
 
 export class SandDanceMainSettings {

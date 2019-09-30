@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { DataFile, SandDance, Snapshot } from "@msrvida/sanddance-explorer";
+import { DataFile, SandDance, Snapshot } from '@msrvida/sanddance-explorer';
 
 import types = SandDance.types;
 

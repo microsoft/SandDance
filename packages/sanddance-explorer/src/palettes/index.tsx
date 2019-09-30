@@ -8,7 +8,7 @@ import { Dropdown } from '../controls/dropdown';
 import { dual } from './dual';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { ISchemeOption, schemesJSX } from './scheme';
-import { SandDance } from '@msrvida/sanddance-react';
+import { SandDance, util } from '@msrvida/sanddance-react';
 import { sequentialMultiHue } from './sequentialMultiHue';
 import { sequentialSingleHue } from './sequentialSingleHue';
 import { strings } from '../language';
@@ -30,19 +30,19 @@ export function Palette(props: Props) {
     let isQuantitative = false;
 
     switch (props.colorColumn.type) {
-        case "boolean":
-        case "string":
-            isQualitative = true;
-            break;
+    case 'boolean':
+    case 'string':
+        isQualitative = true;
+        break;
 
-        case "number":
-            isQuantitative = true;
-            break;
+    case 'number':
+        isQuantitative = true;
+        break;
 
-        case "date":
-        case "integer":
-            isQuantitative = true;
-            isQualitative = categoricalNumeric;
+    case 'date':
+    case 'integer':
+        isQuantitative = true;
+        isQualitative = categoricalNumeric;
     }
 
     const selected = props.scheme;
@@ -59,7 +59,7 @@ export function Palette(props: Props) {
     }
 
     isQualitative && menu(strings.schemeCategorical, categorical(selected));
-    isQuantitative && menu(strings.schemeSequentialSingleHue, sequentialSingleHue(selected))
+    isQuantitative && menu(strings.schemeSequentialSingleHue, sequentialSingleHue(selected));
     isQuantitative && menu(strings.schemeSequentialMultiHue, sequentialMultiHue(selected));
     isQuantitative && menu(strings.schemeDiverging, diverging(selected));
     isDual && menu(strings.schemeDual, dual(selected));
@@ -99,7 +99,7 @@ export function Palette(props: Props) {
                     props.changeColorScheme(o.scheme);
                 }}
             />
-            <div className="sanddance-scheme">
+            <div className={util.classList('sanddance-scheme', props.disabled && 'disabled')}>
                 {props.scheme && schemesJSX[props.scheme]}
             </div>
         </div>

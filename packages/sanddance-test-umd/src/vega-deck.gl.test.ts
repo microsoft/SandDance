@@ -10,6 +10,7 @@ namespace vegaDeckglTest {
 
     SandDance.use(vega, deck, deck, luma);
 
+    /* eslint-disable */
     var spec: Vega.Spec = {
         "$schema": "https://vega.github.io/schema/vega/v4.json",
         "background": "#DEDEDE",
@@ -105,8 +106,9 @@ namespace vegaDeckglTest {
             }
         ]
     };
+    /* eslint-enable */
 
-    var view = new SandDance.VegaDeckGl.ViewGl(vega.parse(spec), { getView: () => "2d" })
+    var view = new SandDance.VegaDeckGl.ViewGl(vega.parse(spec), { getView: () => '2d' })
         .renderer('deck.gl')
         .initialize(document.querySelector('#vis'))
         .run();

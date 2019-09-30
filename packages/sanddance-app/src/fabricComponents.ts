@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import {
-  ActionButton,
-  DefaultButton,
-  IconButton,
-  PrimaryButton
+    ActionButton,
+    DefaultButton,
+    IconButton,
+    PrimaryButton
 } from 'office-ui-fabric-react/lib/components/Button';
 import { ChoiceGroup } from 'office-ui-fabric-react/lib/ChoiceGroup';
 import { ComboBox } from 'office-ui-fabric-react/lib/components/ComboBox';
@@ -27,29 +27,29 @@ import { Toggle } from 'office-ui-fabric-react/lib/Toggle';
 initializeIcons();
 
 export const fabric: FabricComponents = {
-  ActionButton: ActionButton as any,
-  ChoiceGroup,
-  ComboBox: ComboBox as any,
-  CommandBar: CommandBar as any,
-  ContextualMenuItemType,
-  Customizer,
-  DefaultButton: DefaultButton as any,
-  Dialog: Dialog as any,
-  DialogFooter: DialogFooter as any,
-  DialogType,
-  Dropdown: Dropdown as any,
-  DropdownMenuItemType,
-  Icon,
-  IconButton: IconButton as any,
-  getFocusStyle,
-  getTheme,
-  Label,
-  loadTheme,
-  Modal: Modal as any,
-  PrimaryButton: PrimaryButton as any,
-  Slider: Slider as any,
-  Spinner,
-  SpinnerSize,
-  TextField,
-  Toggle
+    ActionButton: ActionButton as any,
+    ChoiceGroup,
+    ComboBox: ComboBox as any,
+    CommandBar: CommandBar as any,
+    ContextualMenuItemType,
+    Customizer,
+    DefaultButton: DefaultButton as any,
+    Dialog: Dialog as any,
+    DialogFooter: DialogFooter as any,
+    DialogType,
+    Dropdown: Dropdown as any,
+    DropdownMenuItemType,
+    Icon,
+    IconButton: IconButton as any,
+    getFocusStyle,
+    getTheme,
+    Label,
+    loadTheme,
+    Modal: Modal as any,
+    PrimaryButton: PrimaryButton as any,
+    Slider: Slider as any,
+    Spinner,
+    SpinnerSize,
+    TextField,
+    Toggle
 };

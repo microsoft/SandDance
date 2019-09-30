@@ -3,16 +3,16 @@
 export { IChoiceGroupOption } from 'office-ui-fabric-react/lib/ChoiceGroup';
 
 export {
-  IButtonProps,
-  IButtonStyles
-} from "office-ui-fabric-react/lib/components/Button";
+    IButtonProps,
+    IButtonStyles
+} from 'office-ui-fabric-react/lib/components/Button';
 
 export {
-  IContextualMenuItem,
-  IContextualMenuProps
-} from "office-ui-fabric-react/lib/components/ContextualMenu";
+    IContextualMenuItem,
+    IContextualMenuProps
+} from 'office-ui-fabric-react/lib/components/ContextualMenu';
 
-export { IDropdown, IDropdownProps, IDropdownOption } from "office-ui-fabric-react/lib/components/Dropdown";
+export { IDropdown, IDropdownProps, IDropdownOption } from 'office-ui-fabric-react/lib/components/Dropdown';
 
 export { IComboBox, IComboBoxProps, IComboBoxOption } from 'office-ui-fabric-react/lib/components/ComboBox';
 
@@ -22,9 +22,9 @@ export { IToggleProps } from 'office-ui-fabric-react/lib/Toggle';
 
 export { IDialogProps } from 'office-ui-fabric-react/lib/Dialog';
 
-export { IStyle, ITheme, IPalette } from "office-ui-fabric-react/lib/Styling";
+export { IStyle, ITheme, IPalette } from 'office-ui-fabric-react/lib/Styling';
 
-export { ICSSRule, ICSSPixelUnitRule } from "@uifabric/merge-styles/lib/IRawStyleBase";
+export { ICSSRule, ICSSPixelUnitRule } from '@uifabric/merge-styles/lib/IRawStyleBase';
 
 export interface IReactCast<T> {
   (props: T & React.DOMAttributes<{}>, children: Element[]): JSX.Element

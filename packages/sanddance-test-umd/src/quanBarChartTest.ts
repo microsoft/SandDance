@@ -38,7 +38,7 @@ namespace quanBarChartTest {
             myZ: i,
             myColor: v,
             mySort: i
-        })
+        });
     }
     const glDiv = viewer.presenter.getElement(SandDance.VegaDeckGl.PresenterElement.gl);
     const insight: SandDance.types.Insight = {
@@ -55,8 +55,8 @@ namespace quanBarChartTest {
             height: glDiv.offsetHeight,
             width: glDiv.offsetWidth
         },
-        chart: "barchart",
-        view: "2d"
+        chart: 'barchart',
+        view: '2d'
     };
 
     viewer.render(insight, data);

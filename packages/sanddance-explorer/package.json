@@ -8,6 +8,7 @@
     "dist"
   ],
   "scripts": {
+    "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "docs": "ts-docs-gen --entryFile src/index.tsx -o ../../docs/docs/sanddance-explorer/v1/ && node ./scripts/docs.js",
     "build-typescript": "tsc -p .",
     "watch-typescript": "tsc -p . -w",

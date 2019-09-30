@@ -12,7 +12,7 @@ export interface Props {
 
 export function Group(props: Props) {
     return (
-        <div className={util.classList("sanddance-group", props.className)}>
+        <div className={util.classList('sanddance-group', props.className)}>
             <div className="group-head">
                 <label>{props.label}</label>
                 {props.labelCount && <span className="count">({props.labelCount})</span>}

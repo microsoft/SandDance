@@ -25,23 +25,23 @@ interface VegaAxisDatum {
     domain: boolean;
     grid: boolean;
     labels: boolean;
-    orient: "bottom" | "left" | "right" | "top";
+    orient: 'bottom' | 'left' | 'right' | 'top';
     ticks: boolean;
     title: boolean;
 }
 
 function convertGroupRole(group: SceneGroup2): GroupType {
-    if (group.mark.role === "legend") return GroupType.legend;
-    if (group.mark.role === "axis") {
+    if (group.mark.role === 'legend') return GroupType.legend;
+    if (group.mark.role === 'axis') {
         var vegaAxisDatum = group.datum as VegaAxisDatum;
         if (vegaAxisDatum) {
             switch (vegaAxisDatum.orient) {
-                case "bottom":
-                case "top":
-                    return GroupType.xAxis;
-                case "left":
-                case "right":
-                    return GroupType.yAxis;
+            case 'bottom':
+            case 'top':
+                return GroupType.xAxis;
+            case 'left':
+            case 'right':
+                return GroupType.yAxis;
             }
         }
     }
@@ -61,7 +61,7 @@ const group: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scen
 
         const gx = g.x || 0, gy = g.y || 0;
         if (g.context && g.context.background && !stage.backgroundColor) {
-            stage.backgroundColor = colorFromString(g.context.background)
+            stage.backgroundColor = colorFromString(g.context.background);
         }
         if (g.stroke) {
             const facetRect: FacetRect = {
@@ -85,14 +85,14 @@ const group: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scen
 function setCurrentAxis(options: MarkStagerOptions, stage: Stage, groupType: GroupType) {
     let axes: Axis[];
     switch (groupType) {
-        case GroupType.xAxis:
-            axes = stage.axes.x;
-            break;
-        case GroupType.yAxis:
-            axes = stage.axes.y;
-            break;
-        default:
-            return;
+    case GroupType.xAxis:
+        axes = stage.axes.x;
+        break;
+    case GroupType.yAxis:
+        axes = stage.axes.y;
+        break;
+    default:
+        return;
     }
     options.currAxis = {
         domain: null,
@@ -121,7 +121,7 @@ var mainStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: S
             //console.log(`need to render ${scene.marktype}`);
         }
     }
-}
+};
 
 export function sceneToStage(options: MarkStagerOptions, stage: Stage, scene: Scene) {
     mainStager(options, stage, scene, 0, 0, null);

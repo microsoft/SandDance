@@ -18,17 +18,17 @@ export function getWebviewContent(extensionPath: string, fileUriFsPath: string) 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SandDance</title>
-    ${link(resourceUrl(extensionPath, "app.css"))}
+    ${link(resourceUrl(extensionPath, 'app.css'))}
 </head>
 <body>
     <div id="app"></div>
-    ${script(resourceUrl(extensionPath, "deckgl.min.js"))}
-    ${script(resourceUrl(extensionPath, "vega.js"))}
-    ${script(resourceUrl(extensionPath, "react.production.min.js"))}
-    ${script(resourceUrl(extensionPath, "react-dom.production.min.js"))}
-    ${script(resourceUrl(extensionPath, "office-ui-fabric-react.js"))}
-    ${script(resourceUrl(extensionPath, "sanddance-explorer.js"))}
-    ${script(resourceUrl(extensionPath, "app.js"))}
+    ${script(resourceUrl(extensionPath, 'deckgl.min.js'))}
+    ${script(resourceUrl(extensionPath, 'vega.js'))}
+    ${script(resourceUrl(extensionPath, 'react.production.min.js'))}
+    ${script(resourceUrl(extensionPath, 'react-dom.production.min.js'))}
+    ${script(resourceUrl(extensionPath, 'office-ui-fabric-react.js'))}
+    ${script(resourceUrl(extensionPath, 'sanddance-explorer.js'))}
+    ${script(resourceUrl(extensionPath, 'app.js'))}
 </body>
 </html>`;
 }

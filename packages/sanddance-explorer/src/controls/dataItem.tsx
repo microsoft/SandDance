@@ -15,18 +15,18 @@ export interface Props {
 }
 
 function isNumber(value: any) {
-    if (typeof value === "number") return true;
+    if (typeof value === 'number') return true;
     if (!isNaN(value)) return true;
     return false;
 }
 
 function isBoolean(value: any) {
-    if (typeof value === "boolean") return true;
-    if (typeof value === "string") {
+    if (typeof value === 'boolean') return true;
+    if (typeof value === 'string') {
         switch (value.toLowerCase()) {
-            case true + '':
-            case false + '':
-                return true;
+        case true + '':
+        case false + '':
+            return true;
         }
     }
     return false;
@@ -51,16 +51,16 @@ interface NameValuePair {
 
 function displayValue(value: any) {
     switch (value) {
-        case '':
-            return <i>{strings.labelBlank}</i>;
-        case null:
-            return <i>{strings.labelNull}</i>;
-        case true:
-            return <i>{strings.labelTrue}</i>;
-        case false:
-            return <i>{strings.labelFalse}</i>;
-        default:
-            return value;
+    case '':
+        return <i>{strings.labelBlank}</i>;
+    case null:
+        return <i>{strings.labelNull}</i>;
+    case true:
+        return <i>{strings.labelTrue}</i>;
+    case false:
+        return <i>{strings.labelFalse}</i>;
+    default:
+        return value;
     }
 }
 
@@ -96,9 +96,9 @@ export function DataItem(props: Props) {
                     const search: InputSearchExpressionGroup = {
                         key: 0,
                         expressions: [ex]
-                    }
+                    };
                     props.onSearch(e, [search]);
-                }
+                };
                 const title = strings.tooltipSearch(nameValuePair.columnName, nameValuePair.value);
                 return (
                     <div

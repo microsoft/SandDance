@@ -10,8 +10,8 @@ function cloneAxis(axes: VegaDeckGl.types.Axis[], axisColor: Color, axisTextColo
         const newAxis = VegaDeckGl.util.deepMerge(axis);
         newAxis.domain.color = axisColor;
         newAxis.title.color = axisTextColor;
-        newAxis.ticks.forEach(t => { t.color = axisColor });
-        newAxis.tickText.forEach(t => { t.color = axisTextColor });
+        newAxis.ticks.forEach(t => { t.color = axisColor; });
+        newAxis.tickText.forEach(t => { t.color = axisTextColor; });
         return newAxis;
     });
 }

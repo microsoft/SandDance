@@ -19,57 +19,57 @@ export default function (context: SpecContext, namespace: NameSpace) {
     const { specColumns, insight } = context;
     const scales: Scale[] = [
         {
-            "name": BarChartScaleNames.compartmentScale,
-            "type": "band",
-            "range": [
+            name: BarChartScaleNames.compartmentScale,
+            type: 'band',
+            range: [
                 0,
                 {
-                    "signal": BarChartSignalNames.compartmentWidthSignal
+                    signal: BarChartSignalNames.compartmentWidthSignal
                 }
             ],
-            "padding": 0.1,
-            "domain": {
-                "signal": `sequence(0, ${BarChartSignalNames.compartmentsPerLevelSignal}+1, 1)`
+            padding: 0.1,
+            domain: {
+                signal: `sequence(0, ${BarChartSignalNames.compartmentsPerLevelSignal}+1, 1)`
             }
         },
         {
-            "name": BarChartScaleNames.levelScale,
-            "range": [
+            name: BarChartScaleNames.levelScale,
+            range: [
                 {
-                    "signal": "height"
+                    signal: 'height'
                 },
                 {
-                    "signal": "0"
+                    signal: '0'
                 }
             ],
-            "round": true,
-            "domain": {
-                "data": namespace.stacked,
-                "field": namespace.__level,
-                "sort": true
+            round: true,
+            domain: {
+                data: namespace.stacked,
+                field: namespace.__level,
+                sort: true
             },
-            "zero": true,
-            "nice": true
+            zero: true,
+            nice: true
         },
         {
-            "name": ScaleNames.Y,
-            "type": "band",
-            "range": [
+            name: ScaleNames.Y,
+            type: 'band',
+            range: [
                 {
-                    "signal": "height"
+                    signal: 'height'
                 },
                 {
-                    "signal": "0"
+                    signal: '0'
                 }
             ],
-            "padding": 0.1,
-            "round": false,
-            "reverse": false,
-            "align": 1,
-            "domain": {
-                "data": namespace.stacked,
-                "field": namespace.__level,
-                "sort": true
+            padding: 0.1,
+            round: false,
+            reverse: false,
+            align: 1,
+            domain: {
+                data: namespace.stacked,
+                field: namespace.__level,
+                sort: true
             }
         }
     ];
@@ -79,23 +79,23 @@ export default function (context: SpecContext, namespace: NameSpace) {
         } else {
             scales.push(
                 {
-                    "name": ScaleNames.Color,
-                    "type": "ordinal",
-                    "domain": {
-                        "data": namespace.bucket,
-                        "field": FieldNames.Top,
-                        "sort": true
+                    name: ScaleNames.Color,
+                    type: 'ordinal',
+                    domain: {
+                        data: namespace.bucket,
+                        field: FieldNames.Top,
+                        sort: true
                     },
-                    "range": {
-                        "scheme": insight.scheme || ColorScaleNone
+                    range: {
+                        scheme: insight.scheme || ColorScaleNone
                     },
-                    "reverse": { "signal": SignalNames.ColorReverse }
+                    reverse: { signal: SignalNames.ColorReverse }
                 }
             );
         }
     }
     if (specColumns.z) {
-        const zRange: RangeScheme = [0, { "signal": SignalNames.ZHeight }];
+        const zRange: RangeScheme = [0, { signal: SignalNames.ZHeight }];
         scales.push(
             specColumns.z.quantitative ?
                 linearScale(ScaleNames.Z, DataNames.Main, specColumns.z.name, zRange, false, true)

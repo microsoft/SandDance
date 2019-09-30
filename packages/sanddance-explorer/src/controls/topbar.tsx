@@ -42,7 +42,7 @@ export function Topbar(props: Props) {
             key: 'isolate',
             name: strings.buttonIsolate,
             iconProps: {
-                iconName: "Filter"
+                iconName: 'Filter'
             },
             disabled: disabled || !props.selectionSearch || zeroResults,
             onClick: () => props.doFilter(props.selectionSearch)
@@ -51,7 +51,7 @@ export function Topbar(props: Props) {
             key: 'exclude',
             name: strings.buttonExclude,
             iconProps: {
-                iconName: "ClearFilter"
+                iconName: 'ClearFilter'
             },
             disabled: disabled || !props.selectionSearch || zeroResults,
             onClick: () => props.doFilter(SandDance.searchExpression.invert(props.selectionSearch))
@@ -60,7 +60,7 @@ export function Topbar(props: Props) {
             key: 'reset',
             name: strings.buttonReset,
             iconProps: {
-                iconName: "RemoveFilter"
+                iconName: 'RemoveFilter'
             },
             disabled: disabled || !props.filter,
             onClick: props.doUnfilter
@@ -73,7 +73,7 @@ export function Topbar(props: Props) {
         {
             key: 'view',
             iconProps: {
-                iconName: props.view === '2d' ? "Product" : "Page"
+                iconName: props.view === '2d' ? 'Product' : 'Page'
             },
             title: props.view === '2d' ? strings.labelViewType3d : strings.lavelViewType2d,
             onClick: props.onViewClick
@@ -81,7 +81,7 @@ export function Topbar(props: Props) {
         {
             key: 'home',
             iconProps: {
-                iconName: "PicturePosition"
+                iconName: 'PicturePosition'
             },
             title: strings.buttonCameraHome,
             onClick: props.onHomeClick
@@ -92,7 +92,7 @@ export function Topbar(props: Props) {
         <div className="sanddance-explorer-topbar">
             <div className="logo">
                 <Logo />
-                <a href={props.logoClickUrl || "/"} target={props.logoClickTarget || '_blank'}>{strings.appName}</a>
+                <a href={props.logoClickUrl || '/'} target={props.logoClickTarget || '_blank'}>{strings.appName}</a>
             </div>
             <div className="sanddance-explorer-commandbar">
                 <base.fabric.Customizer
@@ -110,8 +110,8 @@ export function Topbar(props: Props) {
                         farItems={farItems}
                         styles={{
                             root: {
-                                backgroundColor: "transparent",
-                                height: "unset",
+                                backgroundColor: 'transparent',
+                                height: 'unset',
                                 paddingLeft: 0,
                                 paddingRight: 0
                             }

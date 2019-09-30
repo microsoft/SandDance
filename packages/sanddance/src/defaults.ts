@@ -51,10 +51,10 @@ export const defaultViewerOptions: ViewerOptions = {
         treeMapMethod: 'Method',
         facetColumns: 'Facet columns',
         facetRows: 'Facet rows',
-        textScaleSignal: "Text scale",
-        xAxisTextAngleSignal: "X axis text angle",
-        yAxisTextAngleSignal: "Y axis text angle",
-        zScaleProportion: "Z scale proportion to Y",
+        textScaleSignal: 'Text scale',
+        xAxisTextAngleSignal: 'X axis text angle',
+        yAxisTextAngleSignal: 'Y axis text angle',
+        zScaleProportion: 'Z scale proportion to Y',
         selectionCount: count => `${count} items selected`
     },
     maxLegends: 19, //20 would be "other"

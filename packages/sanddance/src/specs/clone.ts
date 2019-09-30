@@ -17,7 +17,7 @@ export function cloneVegaSpecWithData(context: SpecContext, currData: object[]):
         specColumns.x,
         specColumns.y,
         specColumns.z
-    ]
+    ];
     inferAll(columns, currData);
 
     const specResult = create(context);

@@ -24,7 +24,7 @@ namespace testSandDance {
         }
     }
 
-    function specifycolumns(columns: SandDance.types.Column[]) {
+    const specifycolumns = (columns: SandDance.types.Column[]) => {
         return {
             columns: {
                 color: 'z',
@@ -35,13 +35,13 @@ namespace testSandDance {
             },
             scheme: 'yelloworangered'
         };
-    }
+    };
 
-    function mounted(explorer: SandDanceExplorer.Explorer) {
+    const mounted = (explorer: SandDanceExplorer.Explorer) => {
         explorer.load(data, specifycolumns);
-    }
+    };
 
-    const testApp = React.createElement(SandDanceExplorer.Explorer, { initialView: "3d", mounted });
+    const testApp = React.createElement(SandDanceExplorer.Explorer, { initialView: '3d', mounted });
 
     ReactDOM.render(testApp, document.getElementById('app'));
 }

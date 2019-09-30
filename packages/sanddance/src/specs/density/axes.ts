@@ -9,19 +9,19 @@ export default function (context: SpecContext) {
     const pa = partialAxes(specViewOptions, specColumns.x.quantitative, specColumns.y.quantitative);
     const axes: Axis[] = [
         {
-            "scale": "xscale",
-            "title": specColumns.x.name,
-            "bandPosition": 0.5,
-            "grid": true,
-            "labelFlush": true,
+            scale: 'xscale',
+            title: specColumns.x.name,
+            bandPosition: 0.5,
+            grid: true,
+            labelFlush: true,
             ...pa.bottom as Axis
         },
         {
-            "scale": "yscale",
-            "title": specColumns.y.name,
-            "bandPosition": specColumns.y.quantitative ? 0 : 0.5,
-            "grid": true,
-            "labelFlush": true,
+            scale: 'yscale',
+            title: specColumns.y.name,
+            bandPosition: specColumns.y.quantitative ? 0 : 0.5,
+            grid: true,
+            labelFlush: true,
             ...pa.left as Axis
         }
     ];

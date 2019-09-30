@@ -12,18 +12,18 @@ export default function (context: SpecContext) {
     const data = allTruthy<Data>(
         [
             {
-                "name": DataNames.Main,
-                "transform": allTruthy<Transforms>([
+                name: DataNames.Main,
+                transform: allTruthy<Transforms>([
                     specColumns.sort && {
-                        "type": "collect",
-                        "sort": { "field": specColumns.sort.name }
+                        type: 'collect',
+                        sort: { field: specColumns.sort.name }
                     },
                     {
-                        "type": "window",
-                        "ops": [
-                            "count"
+                        type: 'window',
+                        ops: [
+                            'count'
                         ],
-                        "as": [
+                        as: [
                             FieldNames.GridIndex
                         ]
                     }

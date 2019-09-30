@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { schemeOption, schemesJSX } from './scheme';
 
-schemesJSX["blueorange"] = (
+schemesJSX['blueorange'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-blueorange">
@@ -23,7 +23,7 @@ schemesJSX["blueorange"] = (
         <rect fill="url(#gradient-blueorange)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["brownbluegreen"] = (
+schemesJSX['brownbluegreen'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-brownbluegreen">
@@ -43,7 +43,7 @@ schemesJSX["brownbluegreen"] = (
         <rect fill="url(#gradient-brownbluegreen)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["purplegreen"] = (
+schemesJSX['purplegreen'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-purplegreen">
@@ -63,7 +63,7 @@ schemesJSX["purplegreen"] = (
         <rect fill="url(#gradient-purplegreen)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["pinkyellowgreen"] = (
+schemesJSX['pinkyellowgreen'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-pinkyellowgreen">
@@ -83,7 +83,7 @@ schemesJSX["pinkyellowgreen"] = (
         <rect fill="url(#gradient-pinkyellowgreen)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["purpleorange"] = (
+schemesJSX['purpleorange'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-purpleorange">
@@ -103,7 +103,7 @@ schemesJSX["purpleorange"] = (
         <rect fill="url(#gradient-purpleorange)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["redblue"] = (
+schemesJSX['redblue'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-redblue">
@@ -123,7 +123,7 @@ schemesJSX["redblue"] = (
         <rect fill="url(#gradient-redblue)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["redgrey"] = (
+schemesJSX['redgrey'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-redgrey">
@@ -143,7 +143,7 @@ schemesJSX["redgrey"] = (
         <rect fill="url(#gradient-redgrey)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["redyellowblue"] = (
+schemesJSX['redyellowblue'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-redyellowblue">
@@ -163,7 +163,7 @@ schemesJSX["redyellowblue"] = (
         <rect fill="url(#gradient-redyellowblue)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["redyellowgreen"] = (
+schemesJSX['redyellowgreen'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-redyellowgreen">
@@ -183,7 +183,7 @@ schemesJSX["redyellowgreen"] = (
         <rect fill="url(#gradient-redyellowgreen)" x="0" y="0" width="1" height="1"></rect>
     </svg>
 );
-schemesJSX["spectral"] = (
+schemesJSX['spectral'] = (
     <svg viewBox="0,0,1,1" preserveAspectRatio="none">
         <defs>
             <linearGradient id="gradient-spectral">
@@ -206,15 +206,15 @@ schemesJSX["spectral"] = (
 
 export function diverging(selected: string) {
     return [
-        schemeOption(selected, "blueorange"),
-        schemeOption(selected, "brownbluegreen"),
-        schemeOption(selected, "purplegreen"),
-        schemeOption(selected, "pinkyellowgreen"),
-        schemeOption(selected, "purpleorange"),
-        schemeOption(selected, "redblue"),
-        schemeOption(selected, "redgrey"),
-        schemeOption(selected, "redyellowblue"),
-        schemeOption(selected, "redyellowgreen"),
-        schemeOption(selected, "spectral")
+        schemeOption(selected, 'blueorange'),
+        schemeOption(selected, 'brownbluegreen'),
+        schemeOption(selected, 'purplegreen'),
+        schemeOption(selected, 'pinkyellowgreen'),
+        schemeOption(selected, 'purpleorange'),
+        schemeOption(selected, 'redblue'),
+        schemeOption(selected, 'redgrey'),
+        schemeOption(selected, 'redyellowblue'),
+        schemeOption(selected, 'redyellowgreen'),
+        schemeOption(selected, 'spectral')
     ];
 }

@@ -35,16 +35,16 @@ const DEFAULT_GAMMA = 0.2;
 const DEFAULT_BUFFER = 192.0 / 256;
 
 const defaultProps = {
-  getShiftInQueue: { type: 'accessor', value: x => x.shift || 0 },
-  getLengthOfQueue: { type: 'accessor', value: x => x.len || 1 },
-  // 1: left, 0: middle, -1: right
-  getAnchorX: { type: 'accessor', value: x => x.anchorX || 0 },
-  // 1: top, 0: center, -1: bottom
-  getAnchorY: { type: 'accessor', value: x => x.anchorY || 0 },
-  getPixelOffset: { type: 'accessor', value: [0, 0] },
+    getShiftInQueue: { type: 'accessor', value: x => x.shift || 0 },
+    getLengthOfQueue: { type: 'accessor', value: x => x.len || 1 },
+    // 1: left, 0: middle, -1: right
+    getAnchorX: { type: 'accessor', value: x => x.anchorX || 0 },
+    // 1: top, 0: center, -1: bottom
+    getAnchorY: { type: 'accessor', value: x => x.anchorY || 0 },
+    getPixelOffset: { type: 'accessor', value: [0, 0] },
 
-  // object with the same pickingIndex will be picked when any one of them is being picked
-  getPickingIndex: { type: 'accessor', value: x => x.objectIndex }
+    // object with the same pickingIndex will be picked when any one of them is being picked
+    getPickingIndex: { type: 'accessor', value: x => x.objectIndex }
 };
 
 //https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants
@@ -62,7 +62,7 @@ export interface MultiIconLayerProps extends LayerProps, IconLayerProps, FontSet
 
 function _MultiIconLayer(...props: Partial<MultiIconLayerProps>[]) {
 
-  class __MultiIconLayer extends base.layers.IconLayer {
+    class __MultiIconLayer extends base.layers.IconLayer {
 
     public props: MultiIconLayerProps;
 
@@ -70,102 +70,102 @@ function _MultiIconLayer(...props: Partial<MultiIconLayerProps>[]) {
     static defaultProps = defaultProps;
 
     constructor(...props: MultiIconLayerProps[]) {
-      super(...arguments);
+        super(...arguments);
     }
 
     getShaders() {
-      return Object.assign({}, super.getShaders(), {
-        vs,
-        fs
-      });
+        return Object.assign({}, super.getShaders(), {
+            vs,
+            fs
+        });
     }
 
     initializeState() {
-      super.initializeState();
+        super.initializeState();
 
-      const attributeManager = this.getAttributeManager();
-      attributeManager.addInstanced({
-        instancePixelOffset: {
-          size: 2,
-          transition: true,
-          accessor: 'getPixelOffset'
-        },
-        instanceHighlightColors: {
-          size: 4,
-          type: UNSIGNED_BYTE,
-          transition: true,
-          accessor: 'getHighlightColor',
-          defaultValue: [0, 255, 0, 255]
-        }
-      });
+        const attributeManager = this.getAttributeManager();
+        attributeManager.addInstanced({
+            instancePixelOffset: {
+                size: 2,
+                transition: true,
+                accessor: 'getPixelOffset'
+            },
+            instanceHighlightColors: {
+                size: 4,
+                type: UNSIGNED_BYTE,
+                transition: true,
+                accessor: 'getHighlightColor',
+                defaultValue: [0, 255, 0, 255]
+            }
+        });
     }
 
     updateState(updateParams) {
-      super.updateState(updateParams);
-      const { changeFlags } = updateParams;
+        super.updateState(updateParams);
+        const { changeFlags } = updateParams;
 
-      if (
-        changeFlags.updateTriggersChanged &&
+        if (
+            changeFlags.updateTriggersChanged &&
         (changeFlags.updateTriggersChanged.getAnchorX || changeFlags.updateTriggersChanged.getAnchorY)
-      ) {
-        this.getAttributeManager().invalidate('instanceOffsets');
-      }
+        ) {
+            this.getAttributeManager().invalidate('instanceOffsets');
+        }
     }
 
     draw({ uniforms }) {
-      const { sdf } = this.props;
-      super.draw({
-        uniforms: Object.assign({}, uniforms, {
-          // Refer the following doc about gamma and buffer
-          // https://blog.mapbox.com/drawing-text-with-signed-distance-fields-in-mapbox-gl-b0933af6f817
-          buffer: DEFAULT_BUFFER,
-          gamma: DEFAULT_GAMMA,
-          sdf: Boolean(sdf)
-        })
-      });
+        const { sdf } = this.props;
+        super.draw({
+            uniforms: Object.assign({}, uniforms, {
+                // Refer the following doc about gamma and buffer
+                // https://blog.mapbox.com/drawing-text-with-signed-distance-fields-in-mapbox-gl-b0933af6f817
+                buffer: DEFAULT_BUFFER,
+                gamma: DEFAULT_GAMMA,
+                sdf: Boolean(sdf)
+            })
+        });
     }
 
     calculateInstanceOffsets(attribute) {
-      const {
-        data,
-        iconMapping,
-        getIcon,
-        getAnchorX,
-        getAnchorY,
-        getLengthOfQueue,
-        getShiftInQueue
-      } = this.props;
-      const { value } = attribute;
-      let i = 0;
-      for (const object of <IconLayerDatum[]>data) {
-        const icon = (<(x: IconLayerDatum) => string>getIcon)(object);
-        const rect = iconMapping[icon] || {} as IconDefinition;
-        const len = getLengthOfQueue(object);
-        const shiftX = getShiftInQueue(object);
+        const {
+            data,
+            iconMapping,
+            getIcon,
+            getAnchorX,
+            getAnchorY,
+            getLengthOfQueue,
+            getShiftInQueue
+        } = this.props;
+        const { value } = attribute;
+        let i = 0;
+        for (const object of <IconLayerDatum[]>data) {
+            const icon = (<(x: IconLayerDatum) => string>getIcon)(object);
+            const rect = iconMapping[icon] || {} as IconDefinition;
+            const len = getLengthOfQueue(object);
+            const shiftX = getShiftInQueue(object);
 
-        value[i++] = ((getAnchorX(object) - 1) * len) / 2 + rect.width / 2 + shiftX || 0;
-        value[i++] = (rect.height / 2) * getAnchorY(object) || 0;
-      }
+            value[i++] = ((getAnchorX(object) - 1) * len) / 2 + rect.width / 2 + shiftX || 0;
+            value[i++] = (rect.height / 2) * getAnchorY(object) || 0;
+        }
     }
 
     calculateInstancePickingColors(attribute) {
-      const { data, getPickingIndex } = this.props;
-      const { value } = attribute;
-      let i = 0;
-      const pickingColor = [];
-      for (const point of <IconLayerDatum[]>data) {
-        const index = getPickingIndex(point);
-        this.encodePickingColor(index, pickingColor);
+        const { data, getPickingIndex } = this.props;
+        const { value } = attribute;
+        let i = 0;
+        const pickingColor = [];
+        for (const point of <IconLayerDatum[]>data) {
+            const index = getPickingIndex(point);
+            this.encodePickingColor(index, pickingColor);
 
-        value[i++] = pickingColor[0];
-        value[i++] = pickingColor[1];
-        value[i++] = pickingColor[2];
-      }
+            value[i++] = pickingColor[0];
+            value[i++] = pickingColor[1];
+            value[i++] = pickingColor[2];
+        }
     }
-  }
+    }
 
-  const instance = new __MultiIconLayer(...arguments) as Layer;
-  return instance;
+    const instance = new __MultiIconLayer(...arguments) as Layer;
+    return instance;
 }
 
 //signature to allow this function to be used with the 'new' keyword.

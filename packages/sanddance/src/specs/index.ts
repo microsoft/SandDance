@@ -22,7 +22,7 @@ export const creators: { [chart in Chart]: SpecCreator } = {
     scatterplot,
     stacks,
     treemap
-}
+};
 
 export function create(context: SpecContext): SpecResult {
     const { insight } = context;

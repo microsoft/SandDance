@@ -73,7 +73,7 @@ export class Snapshots extends React.Component<Props, State>{
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
             const image = canvas.toDataURL();
             this.setState({ image });
-        }
+        };
         img.src = src;
     }
 
@@ -84,7 +84,7 @@ export class Snapshots extends React.Component<Props, State>{
                     text={strings.buttonCreateSnapshot}
                     onClick={e => {
                         const canvas = getCanvas(this.props.explorer.viewer);
-                        this.resize(canvas && canvas.toDataURL("image/png"));
+                        this.resize(canvas && canvas.toDataURL('image/png'));
                         const bgColor = canvas && window.getComputedStyle(canvas).backgroundColor;
                         const insight = this.props.explorer.viewer.getInsight();
                         const description = this.props.getDescription && this.props.getDescription(insight) || '';
@@ -119,7 +119,7 @@ export class Snapshots extends React.Component<Props, State>{
                                 themePalette: this.props.themePalette,
                                 title: strings.buttonDeleteSnapshot,
                                 onClick: e => this.props.onRemoveSnapshot(i),
-                                iconName: "Delete"
+                                iconName: 'Delete'
                             }
                         });
                         return (

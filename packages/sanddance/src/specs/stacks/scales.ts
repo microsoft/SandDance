@@ -15,102 +15,102 @@ export default function (context: SpecContext) {
     const { specColumns, insight } = context;
     const scales: Scale[] = [
         {
-            "name": "xband",
-            "type": "band",
-            "domain": specColumns.x.quantitative ?
+            name: 'xband',
+            type: 'band',
+            domain: specColumns.x.quantitative ?
                 {
-                    "data": "xaxisdata",
-                    "field": "data",
-                    "sort": true
+                    data: 'xaxisdata',
+                    field: 'data',
+                    sort: true
                 }
                 :
                 {
-                    "data": DataNames.Main,
-                    "field": specColumns.x.quantitative ? FieldNames.StacksLongBin0 : specColumns.x.name,
-                    "sort": true
+                    data: DataNames.Main,
+                    field: specColumns.x.quantitative ? FieldNames.StacksLongBin0 : specColumns.x.name,
+                    sort: true
                 },
-            "range": [
+            range: [
                 0,
                 {
-                    "signal": "width"
+                    signal: 'width'
                 }
             ],
-            "padding": { "signal": SignalNames.OuterPadding },
-            "round": true
+            padding: { signal: SignalNames.OuterPadding },
+            round: true
         },
         {
-            "name": "yband",
-            "type": "band",
-            "reverse": true,
-            "domain": specColumns.y.quantitative ?
+            name: 'yband',
+            type: 'band',
+            reverse: true,
+            domain: specColumns.y.quantitative ?
                 {
-                    "data": "yaxisdata",
-                    "field": "data",
-                    "sort": true
+                    data: 'yaxisdata',
+                    field: 'data',
+                    sort: true
                 }
                 :
                 {
-                    "data": DataNames.Main,
-                    "field": specColumns.y.quantitative ? FieldNames.StacksLatBin0 : specColumns.y.name,
-                    "sort": true
+                    data: DataNames.Main,
+                    field: specColumns.y.quantitative ? FieldNames.StacksLatBin0 : specColumns.y.name,
+                    sort: true
                 },
-            "range": "height",
-            "padding": { "signal": SignalNames.OuterPadding },
-            "round": true
+            range: 'height',
+            padding: { signal: SignalNames.OuterPadding },
+            round: true
         },
         {
-            "name": "zband",
-            "type": "band",
-            "reverse": false,
-            "domain": {
-                "data": "stackedgroup",
-                "field": "row",
-                "sort": true
+            name: 'zband',
+            type: 'band',
+            reverse: false,
+            domain: {
+                data: 'stackedgroup',
+                field: 'row',
+                sort: true
             },
-            "align": 0.0,
-            "range": [
+            align: 0.0,
+            range: [
                 0,
                 {
-                    "signal": "countheight"
+                    signal: 'countheight'
                 }
             ],
-            "padding": { "signal": SignalNames.InnerPadding },
-            "round": false
+            padding: { signal: SignalNames.InnerPadding },
+            round: false
         },
         {
-            "name": "xinternalscale",
-            "type": "band",
-            "range": [
+            name: 'xinternalscale',
+            type: 'band',
+            range: [
                 0,
                 {
-                    "signal": "xbandw"
+                    signal: 'xbandw'
                 }
             ],
-            "padding": {
-                "signal": SignalNames.InnerPadding
+            padding: {
+                signal: SignalNames.InnerPadding
             },
-            "domain": {
-                "data": "stackedgroup",
-                "field": "column",
-                "sort": true
+            domain: {
+                data: 'stackedgroup',
+                field: 'column',
+                sort: true
             }
         },
         {
-            "name": "yinternalscale",
-            "type": "band",
-            "range": [
+            name: 'yinternalscale',
+            type: 'band',
+            range: [
                 0,
                 {
-                    "signal": "ybandw"
+                    signal: 'ybandw'
                 }
             ],
-            "padding": {
-                "signal": SignalNames.InnerPadding
+            padding: {
+                signal: SignalNames.InnerPadding
             },
-            "domain": {
-                "data": "stackedgroup",
-                "field": "depth",
-                "sort": true
+            domain: {
+                data: 'stackedgroup',
+                field: 'depth',
+                sort: true
             }
         }
     ];
@@ -120,17 +120,17 @@ export default function (context: SpecContext) {
         } else {
             scales.push(
                 {
-                    "name": ScaleNames.Color,
-                    "type": "ordinal",
-                    "domain": {
-                        "data": DataNames.Legend,
-                        "field": FieldNames.Top,
-                        "sort": true
+                    name: ScaleNames.Color,
+                    type: 'ordinal',
+                    domain: {
+                        data: DataNames.Legend,
+                        field: FieldNames.Top,
+                        sort: true
                     },
-                    "range": {
-                        "scheme": insight.scheme || ColorScaleNone
+                    range: {
+                        scheme: insight.scheme || ColorScaleNone
                     },
-                    "reverse": { "signal": SignalNames.ColorReverse }
+                    reverse: { signal: SignalNames.ColorReverse }
                 }
             );
         }

@@ -45,22 +45,22 @@ export const grid: SpecCreator = (context: SpecContext): SpecResult => {
     const size = insight.size;
 
     var vegaSpec: Spec = {
-        "$schema": "https://vega.github.io/schema/vega/v3.json",
-        "height": size.height,
-        "width": size.width,
+        $schema: 'https://vega.github.io/schema/vega/v3.json',
+        height: size.height,
+        width: size.width,
         signals: getSignals(context),
         scales: getScales(context),
         data: getData(context),
         marks: getMarks(context, dataName)
     };
 
-    const legends = getLegends(context)
+    const legends = getLegends(context);
     if (legends) {
         vegaSpec.legends = legends;
     }
 
     //use autosize only when not faceting
-    vegaSpec.autosize = "fit";
+    vegaSpec.autosize = 'fit';
 
     return { vegaSpec, specCapabilities };
-}
+};

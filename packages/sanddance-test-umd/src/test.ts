@@ -36,7 +36,7 @@ namespace test {
             height: 700,
             width: 700
         },
-        chart: "scatterplot"
+        chart: 'scatterplot'
     };
 
     SandDance.use(vega, deck, deck, luma);

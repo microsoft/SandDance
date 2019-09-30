@@ -136,4 +136,4 @@ export function createDeckGLClassesForPresenter(factoryOptions: OrbitControllerC
  */
 export declare class DeckGL_Class extends base.deck.Deck {
     public interactiveState: InteractiveState;
- }
+}

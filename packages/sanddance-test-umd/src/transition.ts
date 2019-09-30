@@ -10,7 +10,7 @@ namespace transition {
 
     let view: SandDance.ViewGl_Class;
     let lastSpec: Vega.Spec;
-    let viewType: SandDance.VegaDeckGl.types.View = "3d";
+    let viewType: SandDance.VegaDeckGl.types.View = '3d';
 
     SandDance.use(vega, deck, deck, luma);
 

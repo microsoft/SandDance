@@ -8,10 +8,10 @@ import { Search, SearchExpression, SearchExpressionGroup } from './types';
 function valueToBoolean(value: any) {
     if (typeof value === 'string') {
         switch (value.toLowerCase()) {
-            case 'true':
-                return true;
-            case 'false':
-                return false;
+        case 'true':
+            return true;
+        case 'false':
+            return false;
         }
     }
     return !!value;
@@ -22,22 +22,22 @@ function valueToString(value: any) {
         return '';
     }
     switch (typeof value) {
-        case 'string':
-            return value;
-        case 'boolean':
-        case 'number':
-            return value.toString();
+    case 'string':
+        return value;
+    case 'boolean':
+    case 'number':
+        return value.toString();
     }
     return '';
 }
 
 function isStringOperation(ex: SearchExpression) {
     switch (ex.operator) {
-        case 'contains':
-        case '!contains':
-        case 'starts':
-        case '!starts':
-            return true;
+    case 'contains':
+    case '!contains':
+    case 'starts':
+    case '!starts':
+        return true;
     }
     return false;
 }
@@ -81,9 +81,9 @@ export class Exec {
     private runExpressionOnColumn(datum: object, ex: SearchExpressionLowercase) {
         const actualDataValue = datum[ex.name];
         if (ex.operator === 'isnullorEmpty') {
-            return isnullorEmpty(actualDataValue)
+            return isnullorEmpty(actualDataValue);
         } else if (ex.operator === '!isnullorEmpty') {
-            return !isnullorEmpty(actualDataValue)
+            return !isnullorEmpty(actualDataValue);
         }
         let dataValue = actualDataValue;
         let expressionValue = ex.value;
@@ -96,30 +96,30 @@ export class Exec {
                 expressionValue = ex.valueBool;
             } else if (ex.column.quantitative) {
                 dataValue = +actualDataValue;
-                expressionValue = +ex.value
+                expressionValue = +ex.value;
             }
         }
         switch (ex.operator) {
-            case '!=':
-                return dataValue != expressionValue;
-            case '<':
-                return dataValue < expressionValue;
-            case '<=':
-                return dataValue <= expressionValue;
-            case '==':
-                return dataValue == expressionValue;
-            case '>':
-                return dataValue > expressionValue;
-            case '>=':
-                return dataValue >= expressionValue;
-            case 'contains':
-                return dataValue.indexOf(expressionValue) >= 0;
-            case '!contains':
-                return dataValue.indexOf(expressionValue) < 0;
-            case 'starts':
-                return dataValue.indexOf(expressionValue) == 0;
-            case '!starts':
-                return dataValue.indexOf(expressionValue) !== 0;
+        case '!=':
+            return dataValue != expressionValue;
+        case '<':
+            return dataValue < expressionValue;
+        case '<=':
+            return dataValue <= expressionValue;
+        case '==':
+            return dataValue == expressionValue;
+        case '>':
+            return dataValue > expressionValue;
+        case '>=':
+            return dataValue >= expressionValue;
+        case 'contains':
+            return dataValue.indexOf(expressionValue) >= 0;
+        case '!contains':
+            return dataValue.indexOf(expressionValue) < 0;
+        case 'starts':
+            return dataValue.indexOf(expressionValue) == 0;
+        case '!starts':
+            return dataValue.indexOf(expressionValue) !== 0;
         }
     }
 
@@ -138,7 +138,7 @@ export class Exec {
                     }
                     return ex2;
                 })
-            }
+            };
             return this.runGroup(datum, group);
         } else {
             return this.runExpressionOnColumn(datum, ex);
@@ -150,12 +150,12 @@ export class Exec {
         for (let i = 1; i < group.expressions.length; i++) {
             let ex = group.expressions[i];
             switch (ex.clause) {
-                case '&&':
-                    accumulator = accumulator && this.runExpression(datum, ex);
-                    break;
-                case '||':
-                    accumulator = accumulator || this.runExpression(datum, ex);
-                    break;
+            case '&&':
+                accumulator = accumulator && this.runExpression(datum, ex);
+                break;
+            case '||':
+                accumulator = accumulator || this.runExpression(datum, ex);
+                break;
             }
         }
         return accumulator;
@@ -166,12 +166,12 @@ export class Exec {
         for (let i = 1; i < this.groups.length; i++) {
             let group = this.groups[i];
             switch (group.clause) {
-                case '&&':
-                    accumulator = accumulator && this.runGroup(datum, group);
-                    break;
-                case '||':
-                    accumulator = accumulator || this.runGroup(datum, group);
-                    break;
+            case '&&':
+                accumulator = accumulator && this.runGroup(datum, group);
+                break;
+            case '||':
+                accumulator = accumulator || this.runGroup(datum, group);
+                break;
             }
         }
         return accumulator;

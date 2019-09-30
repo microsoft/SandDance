@@ -60,7 +60,7 @@ export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabili
                 presenter.deckgl.interactiveState.onAxisSelection = true;
             }
         },
-        onClick,        
+        onClick,
         getElevation: () => 0,
         getFillColor: () => [0, 0, 0, 0],
         pickable: true,
@@ -96,14 +96,14 @@ function axisSelectionPolygons(axis: VegaDeckGl.types.Axis, vertical: boolean, a
             divisions = ticks.slice(1, -1).map(tick => tick.sourcePosition[dim]);
         }
 
-        function add(p2: number, i: number) {
+        const add = (p2: number, i: number) => {
             var coords = [[p1, q1], [p2, q1], [p2, q2], [p1, q2]];
             polygons.push({
                 search: getSearch(axis, column, i),
                 polygon: vertical ? coords.map(xy => xy.reverse()) : coords
             });
             p1 = p2;
-        }
+        };
 
         let p1 = domain.sourcePosition[dim];
         const q1 = domain.sourcePosition[vertical ? 0 : 1];

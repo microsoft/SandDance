@@ -22,37 +22,37 @@ export interface InputSearchExpression extends SandDance.types.SearchExpression 
 export function getValidOperators(column: SandDance.types.Column): [SandDance.types.SearchExpressionOperators, string][] {
     const type = column && column.type;
     switch (type) {
-        case "boolean":
-            return [
-                ['==', strings.searchEQ],
-                ['!=', strings.searchNEQ],
-                ['isnullorEmpty', strings.searchNULL]
-            ]
-        case "date":
-        case "integer":
-        case "number":
-            return [
-                ['==', strings.searchEQ],
-                ['!=', strings.searchNEQ],
-                ['>', strings.searchGT],
-                ['>=', strings.searchGTE],
-                ['<', strings.searchLT],
-                ['<=', strings.searchLTE],
-                ['isnullorEmpty', strings.searchNULL]
-            ];
-        case "string":
-        default:
-            return [
-                ['==', strings.searchEQ],
-                ['!=', strings.searchNEQ],
-                ['>', strings.searchGT],
-                ['>=', strings.searchGTE],
-                ['<', strings.searchLT],
-                ['<=', strings.searchLTE],
-                ['contains', strings.searchIN],
-                ['starts', strings.searchSW],
-                ['isnullorEmpty', strings.searchNULL]
-            ];
+    case 'boolean':
+        return [
+            ['==', strings.searchEQ],
+            ['!=', strings.searchNEQ],
+            ['isnullorEmpty', strings.searchNULL]
+        ];
+    case 'date':
+    case 'integer':
+    case 'number':
+        return [
+            ['==', strings.searchEQ],
+            ['!=', strings.searchNEQ],
+            ['>', strings.searchGT],
+            ['>=', strings.searchGTE],
+            ['<', strings.searchLT],
+            ['<=', strings.searchLTE],
+            ['isnullorEmpty', strings.searchNULL]
+        ];
+    case 'string':
+    default:
+        return [
+            ['==', strings.searchEQ],
+            ['!=', strings.searchNEQ],
+            ['>', strings.searchGT],
+            ['>=', strings.searchGTE],
+            ['<', strings.searchLT],
+            ['<=', strings.searchLTE],
+            ['contains', strings.searchIN],
+            ['starts', strings.searchSW],
+            ['isnullorEmpty', strings.searchNULL]
+        ];
     }
 }
 

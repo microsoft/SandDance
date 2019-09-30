@@ -15,8 +15,8 @@ export class ScatterPlotRecommenderSummary {
             score: undefined,
             columns: {},
             scheme: undefined,
-            view: "2d"
-        }
+            view: '2d'
+        };
         columns.forEach(column => {
             if (longi === false && isLongitude(column)) {
                 longi = true;
