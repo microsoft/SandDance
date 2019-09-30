@@ -10,6 +10,7 @@ namespace vegaDeckglTest {
 
     SandDance.use(vega, deck, deck, luma);
 
+    /* eslint quote-props: "off", quotes: ["error", "double"] */
     var spec: Vega.Spec = {
         "$schema": "https://vega.github.io/schema/vega/v4.json",
         "background": "#DEDEDE",
