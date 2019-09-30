@@ -19,7 +19,7 @@ function fetchResource(linkId: string) {
 const dataPromise = fetchResource('titanic-data').then(response => {
     return response.text();
 }).then(text => {
-    //vega converts the tsv to json.
+    //vega converts the csv to json.
     return SandDance.VegaDeckGl.base.vega.read(text, { type: 'csv', parse: 'auto' });
 });
 
@@ -50,8 +50,8 @@ export class Page extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        Promise.all([dataPromise, insightsPromise]).then(promiseResults => {
-            this.setState({ data: promiseResults[0], insights: promiseResults[1] });
+        Promise.all([dataPromise, insightsPromise]).then(([data, insights]) => {
+            this.setState({ data, insights });
         });
     }
 
