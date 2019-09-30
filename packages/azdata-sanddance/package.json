@@ -78,6 +78,7 @@
         }
     },
     "scripts": {
+        "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
         "clean": "rimraf ./resources/*.*",
         "vscode:prepublish": "npm run compile",
         "resources": "node ./resources.js",

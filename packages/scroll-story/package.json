@@ -3,6 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
+    "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "build": "tsc -p .",
     "start": "parcel serve ./src/index.html --port 8086 --no-hmr"
   },

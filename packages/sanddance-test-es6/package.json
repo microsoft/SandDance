@@ -3,6 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
+    "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "build": "tsc -p .",
     "deploy": "parcel build ./src/sanddance.ts --no-cache --no-minify --no-source-maps --public-url . --out-dir ../../docs/tests/es6/js"
   },

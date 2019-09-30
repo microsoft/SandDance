@@ -11,6 +11,7 @@
     "vega-lib": "^4.3.0"
   },
   "scripts": {
+    "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "test": "mocha",
     "build-typescript": "tsc -p .",
     "watch-typescript": "tsc -p . -w",
