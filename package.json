@@ -5,6 +5,7 @@
   "description": "The core webgl component for rendering a SandDance visualization.",
   "main": "index.js",
   "scripts": {
+    "eslint": "lerna run eslint --parallel",
     "build-az": "lerna run build --scope azdata-sanddance",
     "postinstall": "node ./scripts/copy_inuitcss.js",
     "predocs": "rimraf docs/docs/sanddance && rimraf docs/docs/sanddance-explorer && rimraf docs/docs/sanddance-react",
@@ -21,7 +22,7 @@
     "clean": "lerna clean --yes && npm run clean-build",
     "remove-pem": "rimraf **/*.pem && rimraf **/*.key",
     "deploy": "lerna run deploy",
-    "test": "npm run build && lerna run test && lerna run package",
+    "test": "npm run eslint && npm run build && lerna run test && lerna run package",
     "package": "lerna run package --parallel",
     "dev": "lerna run dev --scope dev --parallel",
     "build-rec": "lerna run build --scope @msrvida/chart-recommender",
