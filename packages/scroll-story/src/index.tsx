@@ -20,7 +20,7 @@ const dataPromise = fetchResource('titanic-data').then(response => {
     return response.text();
 }).then(text => {
     //vega converts the tsv to json.
-    return SandDance.VegaDeckGl.base.vega.read(text, { type: 'tsv', parse: "auto" });
+    return SandDance.VegaDeckGl.base.vega.read(text, { type: 'tsv', parse: 'auto' });
 });
 
 const insightsPromise = fetchResource('titanic-insights').then(response => {
@@ -46,7 +46,7 @@ export class Page extends React.Component<Props, State> {
         this.state = {
             insightIndex: 0,
             size: { height: 600, width: 600 }
-        }
+        };
     }
 
     componentDidMount() {
@@ -66,7 +66,7 @@ export class Page extends React.Component<Props, State> {
         const insight: SandDance.types.Insight = {
             ...partialInsight,
             size: this.state.size,
-            view: "2d"
+            view: '2d'
         };
         return (
             <div>
