@@ -20,7 +20,7 @@ const dataPromise = fetchResource('titanic-data').then(response => {
     return response.text();
 }).then(text => {
     //vega converts the tsv to json.
-    return SandDance.VegaDeckGl.base.vega.read(text, { type: 'tsv', parse: 'auto' });
+    return SandDance.VegaDeckGl.base.vega.read(text, { type: 'csv', parse: 'auto' });
 });
 
 const insightsPromise = fetchResource('titanic-insights').then(response => {
