@@ -86,13 +86,13 @@ export class DataExportPicker extends React.Component<Props, State> {
         var json = JSON.parse(this.convertToJson(data));
         var fields = Object.keys(json[0]);
         var replacer = function (key, value) { return value === null ? '' : value; };
-        var csv = json.map(function (row) {
+        var dsv = json.map(function (row) {
             return fields.map(function (fieldName) {
                 return JSON.stringify(row[fieldName], replacer);
             }).join(delimiter);
         });
-        csv.unshift(fields.join(delimiter));
-        return (csv.join('\r\n'));
+        dsv.unshift(fields.join(delimiter));
+        return (dsv.join('\r\n'));
     }
 
     // Convert to json and store in dataExport state
