@@ -298,6 +298,11 @@ export interface SpecLanguage {
     facetRows: string;
 
     /**
+     * Label for mark opacity slider.
+     */
+    markOpacitySignal: string;
+
+    /**
      * Label for text scale slider.
      */
     textScaleSignal: string;

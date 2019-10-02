@@ -62,6 +62,7 @@ export const SignalNames = {
     FacetRows: 'RoleFacet_RowsSignal',
     InnerPadding: 'Chart_InnerPadding',
     OuterPadding: 'Chart_OuterPadding',
+    MarkOpacity: 'Mark_OpacitySignal',
     PointSize: 'Chart_PointSizeSignal',
     TextAngleX: 'Text_AngleXSignal',
     TextAngleY: 'Text_AngleYSignal',
