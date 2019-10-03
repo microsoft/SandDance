@@ -38,8 +38,8 @@ var qualBarChartTest;
             height: glDiv.offsetHeight,
             width: glDiv.offsetWidth
         },
-        chart: "barchart",
-        view: "2d"
+        chart: 'barchart',
+        view: '2d'
     };
-    qualBarChartTest.viewer.render(insight, data, { columnTypes: { 'myColor': 'string' } });
+    qualBarChartTest.viewer.render(insight, data, { columnTypes: { myColor: 'string' } });
 })(qualBarChartTest || (qualBarChartTest = {}));

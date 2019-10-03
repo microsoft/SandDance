@@ -10,39 +10,39 @@ var chromaticTextTest;
     };
     chromaticTextTest.presenter = new SandDance.VegaDeckGl.Presenter(document.querySelector('#vis'));
     var stage = {
-        view: "2d",
+        view: '2d',
         cubeData: [],
-        axes: { "x": [], "y": [] },
+        axes: { x: [], y: [] },
         legend: { rows: {} },
         gridLines: [],
         textData: [
             {
                 color: colors.red,
-                text: "red",
+                text: 'red',
                 position: [-100, 0, 0],
                 size: 500,
-                textAnchor: "middle"
+                textAnchor: 'middle'
             },
             {
                 color: colors.green,
-                text: "green",
+                text: 'green',
                 position: [0, 0, 0],
                 size: 500,
-                textAnchor: "middle"
+                textAnchor: 'middle'
             },
             {
                 color: colors.blue,
-                text: "blue",
+                text: 'blue',
                 position: [100, 0, 0],
                 size: 500,
-                textAnchor: "middle"
+                textAnchor: 'middle'
             },
             {
                 color: colors.black,
-                text: "black",
+                text: 'black',
                 position: [0, 0, -20],
                 size: 500,
-                textAnchor: "middle"
+                textAnchor: 'middle'
             }
         ]
     };

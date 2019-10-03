@@ -92,7 +92,7 @@ var vegaDeckglTest;
             }
         ]
     };
-    var view = new SandDance.VegaDeckGl.ViewGl(vega.parse(spec), { getView: function () { return "2d"; } })
+    var view = new SandDance.VegaDeckGl.ViewGl(vega.parse(spec), { getView: function () { return '2d'; } })
         .renderer('deck.gl')
         .initialize(document.querySelector('#vis'))
         .run();

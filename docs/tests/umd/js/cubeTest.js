@@ -48,7 +48,7 @@ var cubeTest;
                 }]
         },
         textData: [],
-        view: "3d"
+        view: '3d'
     };
     cubeTest.presenter.present(stage, 200, 400);
     var orbitViewState = {

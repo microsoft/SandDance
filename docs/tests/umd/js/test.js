@@ -18,7 +18,7 @@ var test;
             height: 700,
             width: 700
         },
-        chart: "scatterplot"
+        chart: 'scatterplot'
     };
     SandDance.use(vega, deck, deck, luma);
     test.viewer = new SandDance.Viewer(document.querySelector('#vis'));

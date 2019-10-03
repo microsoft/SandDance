@@ -14,7 +14,7 @@ var treeMapTest;
             height: glDiv.offsetHeight,
             width: glDiv.offsetWidth
         },
-        chart: "treemap"
+        chart: 'treemap'
     };
     vega.loader().load('../../sample-data/titanicmaster.tsv').then(function (text) {
         var data = vega.read(text, { type: 'tsv' });

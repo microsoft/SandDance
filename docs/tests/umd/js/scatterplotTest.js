@@ -17,7 +17,7 @@ var scatterplotTest;
             height: glDiv.offsetHeight,
             width: glDiv.offsetWidth
         },
-        chart: "scatterplot"
+        chart: 'scatterplot'
     };
     vega.loader().load('../../sample-data/demovote.tsv').then(function (text) {
         var data = vega.read(text, { type: 'tsv' });

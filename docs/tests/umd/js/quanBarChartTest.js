@@ -38,8 +38,8 @@ var quanBarChartTest;
             height: glDiv.offsetHeight,
             width: glDiv.offsetWidth
         },
-        chart: "barchart",
-        view: "2d"
+        chart: 'barchart',
+        view: '2d'
     };
     quanBarChartTest.viewer.render(insight, data);
 })(quanBarChartTest || (quanBarChartTest = {}));

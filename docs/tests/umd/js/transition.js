@@ -2,7 +2,7 @@ var transition;
 (function (transition) {
     var view;
     var lastSpec;
-    var viewType = "3d";
+    var viewType = '3d';
     SandDance.use(vega, deck, deck, luma);
     function toggleView() {
         if (viewType === '3d') {
