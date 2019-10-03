@@ -26,7 +26,7 @@ const lightSettings: { [view in View]: LightSettings } = {
 
 export const defaultPresenterStyle: PresenterStyle = {
     cssPrefix: 'vega-deckgl-',
-    defaultCubeColor: [128, 128, 128, 171],
+    defaultCubeColor: [128, 128, 128, 255],
     highlightColor: [0, 0, 0, 255],
     lightSettings
 };

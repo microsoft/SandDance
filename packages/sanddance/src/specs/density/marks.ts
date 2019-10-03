@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { FieldNames, ScaleNames } from '../constants';
-import { fill } from '../fill';
+import { fill, opacity } from '../fill';
 import { RectMark } from 'vega-typings';
 import { SpecContext } from '../types';
 import { testForCollapseSelection } from '../selection';
@@ -45,7 +45,8 @@ export default function (context: SpecContext) {
                 height: {
                     signal: 'height/width*unitsize'
                 },
-                fill: fill(context)
+                fill: fill(context),
+                opacity: opacity(context)
             }
         }
     };

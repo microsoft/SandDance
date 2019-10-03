@@ -8,10 +8,10 @@ import { GroupType, MarkStager, MarkStagerOptions } from './interfaces';
 import { min3dDepth } from '../defaults';
 
 type SceneCube = SceneRect & {
-  datum: Datum & { GL_ORDINAL: number };
-  depth: number;
-  fill: string;
-  z: number;
+    datum: Datum & { GL_ORDINAL: number };
+    depth: number;
+    opacity: number;
+    z: number;
 }
 
 const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scene, x: number, y: number, groupType: GroupType) => {
@@ -43,6 +43,9 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
             position: [x + (item.x || 0) - options.offsetX, ty * (y + (item.y || 0) - options.offsetY) - item.height, z],
             color: colorFromString(item.fill) || options.defaultCubeColor || [128, 128, 128, 128]
         };
+
+        cube.color[3] = item.opacity === undefined ? 255 : 255 * item.opacity;
+
         stage.cubeData.push(cube);
 
         i++;

@@ -3,7 +3,7 @@
 import * as VegaDeckGl from '../../vega-deck.gl';
 import { BarChartScaleNames } from './constants';
 import { FieldNames, ScaleNames, SignalNames } from '../constants';
-import { fill } from '../fill';
+import { fill, opacity } from '../fill';
 import { NameSpace } from './namespace';
 import { RectMark } from 'vega-typings';
 import { SpecContext } from '../types';
@@ -65,7 +65,8 @@ export default function (context: SpecContext, namespace: NameSpace): RectMark[]
                         band: 1
                     }
                 ],
-                fill: fill(context)
+                fill: fill(context),
+                opacity: opacity(context)
             }
         }
     };

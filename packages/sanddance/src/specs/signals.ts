@@ -68,6 +68,18 @@ export function textSignals(context: SpecContext) {
                 max: 0,
                 step: 1
             }
+        },
+        {
+            name: SignalNames.MarkOpacity,
+            value: 1,
+            bind: {
+                name: specViewOptions.language.markOpacitySignal,
+                debounce: 50,
+                input: 'range',
+                min: 0.1,
+                max: 1,
+                step: 0.05
+            }
         }
     ];
     return signals;

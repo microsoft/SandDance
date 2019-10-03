@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { DataNames, ScaleNames, SignalNames } from '../constants';
-import { fill } from '../fill';
+import { fill, opacity } from '../fill';
 import { Mark } from 'vega-typings';
 import { SpecContext } from '../types';
 import { testForCollapseSelection } from '../selection';
@@ -46,7 +46,8 @@ export default function (context: SpecContext) {
                             signal: SignalNames.PointSize
                         }
                     ],
-                    fill: fill(context)
+                    fill: fill(context),
+                    opacity: opacity(context)
                 }
             }
         }

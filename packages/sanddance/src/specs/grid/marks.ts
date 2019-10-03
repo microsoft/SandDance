@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { ColumnCount } from './constants';
 import { FieldNames, ScaleNames } from '../constants';
-import { fill } from '../fill';
+import { fill, opacity } from '../fill';
 import { Mark } from 'vega-typings';
 import { SpecContext } from '../types';
 import { testForCollapseSelection } from '../selection';
@@ -33,7 +33,8 @@ export default function (context: SpecContext, data: string) {
                         scale: ScaleNames.Y,
                         band: true
                     },
-                    fill: fill(context)
+                    fill: fill(context),
+                    opacity: opacity(context)
                 }
             }
         }

@@ -140,6 +140,7 @@ export const strings = {
     labelZeroSearchResults: 'No rows matched your search.',
     signalGroups: [
         { prefix: 'Chart', label: 'Chart options' },
+        { prefix: 'Mark', label: 'Mark options' },
         { prefix: 'RoleColor', label: 'Color options' },
         { prefix: 'RoleFacet', label: 'Facet options' },
         { prefix: 'RoleSort', label: 'Sort options' },

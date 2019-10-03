@@ -51,6 +51,7 @@ export const defaultViewerOptions: ViewerOptions = {
         treeMapMethod: 'Method',
         facetColumns: 'Facet columns',
         facetRows: 'Facet rows',
+        markOpacitySignal: 'Mark opacity',
         textScaleSignal: 'Text scale',
         xAxisTextAngleSignal: 'X axis text angle',
         yAxisTextAngleSignal: 'Y axis text angle',
