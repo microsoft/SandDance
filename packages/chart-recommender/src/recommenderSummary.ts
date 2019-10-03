@@ -14,7 +14,7 @@ export class RecommenderSummary {
             this.rec = quickRec;
         } else {
             let barChartrec: Recommendation = new BarChartRecommenderSummary(columns, data).recommend();
-            if (barChartrec.score >= 1) {
+            if (barChartrec && barChartrec.score >= 1) {
                 this.rec = barChartrec;
             } else {
                 this.rec = {
