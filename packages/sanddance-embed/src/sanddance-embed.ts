@@ -8,7 +8,7 @@ declare var deck: VegaDeckGl.types.DeckBase & VegaDeckGl.types.DeckLayerBase;
 declare var luma: VegaDeckGl.types.LumaBase;
 declare var Fabric: _Fabric.FabricComponents;
 
-let explorer: SandDanceExplorer.Explorer;
+let sandDanceExplorer: SandDanceExplorer.Explorer;
 
 function SandDanceEmbed(data: object[] | SandDanceExplorer.DataFile, insight?: Partial<SandDance.types.Insight>) {
 
@@ -18,22 +18,22 @@ function SandDanceEmbed(data: object[] | SandDanceExplorer.DataFile, insight?: P
             //TODO make sure that insight columns exist in dataset
             getPartialInsight = columns => insight;
         }
-        explorer.load(data, getPartialInsight);
+        sandDanceExplorer.load(data, getPartialInsight);
     };
 
     const init = () => {
         SandDanceExplorer.use(Fabric, vega, deck, deck, luma);
         const explorerProps: SandDanceExplorer.Props = {
             logoClickUrl: 'https://microsoft.github.io/SandDance/',
-            mounted: e => {
-                explorer = e;
+            mounted: explorer => {
+                sandDanceExplorer = explorer;
                 load();
             }
         };
         ReactDOM.render(React.createElement(SandDanceExplorer.Explorer, explorerProps), document.getElementById('app'));
     };
 
-    if (explorer) {
+    if (sandDanceExplorer) {
         load();
     } else {
         init();
@@ -46,12 +46,39 @@ interface DataWithInsight {
 }
 
 window.addEventListener('message', e => {
-    const payload: object[] | DataWithInsight = e.data;
+    const payload: object[] | DataWithInsight | MessageRequest = e.data;
+    if (!payload) return;
     if (Array.isArray(payload)) {
         SandDanceEmbed(payload);
     } else {
-        if (Array.isArray(payload.data)) {
-            SandDanceEmbed(payload.data, payload.insight);
+        const dataWithInsight = payload as DataWithInsight;
+        if (Array.isArray(dataWithInsight.data)) {
+            SandDanceEmbed(dataWithInsight.data, dataWithInsight.insight);
+        } else {
+            const request = payload as MessageRequest;
+            switch (request.action) {
+                case 'load': {
+                    const request_load = request as MessageRequest_Load;
+                    SandDanceEmbed(request_load.data, request_load.insight);
+                }
+                    break;
+                case 'getData': {
+                    const response: MessageResponse_GetData = {
+                        requestAction: request.action,
+                        data: sandDanceExplorer.state.dataContent.data
+                    };
+                    (e.source as WindowProxy).postMessage(response, '*');
+                }
+                    break;
+                case 'getInsight': {
+                    const response: MessageResponse_GetInsight = {
+                        requestAction: request.action,
+                        insight: sandDanceExplorer.viewer.getInsight()
+                    };
+                    (e.source as WindowProxy).postMessage(response, '*');
+                }
+                    break;
+            }
         }
     }
 });
