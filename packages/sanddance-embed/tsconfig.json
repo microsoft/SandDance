@@ -5,7 +5,7 @@
             "es2015"
         ],
         "skipLibCheck": true,
-        "outDir": "dist",
+        "outDir": "dist/umd"
     },
     "include": [
         "src"
