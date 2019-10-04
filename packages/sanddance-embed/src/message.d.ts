@@ -4,6 +4,8 @@ type Actions = 'load' | 'getData' | 'getInsight';
 
 interface MessageRequestBase {
     action: Actions;
+    id?: string | number;
+    ts?: string | number;
 }
 
 interface MessageRequest_Load extends MessageRequestBase {
@@ -25,16 +27,14 @@ type MessageRequest = MessageRequest_Load | MessageRequest_GetData | MessageRequ
 /// responses
 
 interface MessageResponseBase {
-    requestAction: Actions;
+    request: MessageRequestBase;
 }
 
 interface MessageResponse_GetData extends MessageResponseBase {
-    requestAction: 'getData';
     data: object[];
 }
 
 interface MessageResponse_GetInsight extends MessageResponseBase {
-    requestAction: 'getInsight';
     insight: SandDanceExplorer.SandDance.types.Insight;
 }
 
