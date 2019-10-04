@@ -190,20 +190,20 @@ interface Insight {
 
 **Properties**
 
-| Name         | Type                                      | Optional | Description                                                                                                      |
-| ------------ | ----------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------- |
-| chart        | [Chart][TypeAliasDeclaration-5]           | false    |                                                                                                                  |
-| size         | [Size][InterfaceDeclaration-9]            | false    |                                                                                                                  |
-| columns      | [InsightColumns][InterfaceDeclaration-10] | false    |                                                                                                                  |
-| view         | [View][TypeAliasDeclaration-7]            | true     |                                                                                                                  |
-| filter       | [Search][TypeAliasDeclaration-3]          | true     |                                                                                                                  |
-| facets       | [Facets][InterfaceDeclaration-7]          | true     |                                                                                                                  |
-| colorBin     | [ColorBin][TypeAliasDeclaration-6]        | true     | Type of color binning to use on color scale. Only applicable when the column in the color role is quantitative.  |
-| scheme       | string                                    | true     | Name of the color scheme. See https://vega.github.io/vega/docs/schemes/                                          |
-| signalValues | [SignalValues][InterfaceDeclaration-11]   | true     | Vega signal values for this insight.                                                                             |
-| hideAxes     | boolean                                   | true     | Optional flag to hide axes.                                                                                      |
-| hideLegend   | boolean                                   | true     | Optional flag to hide legend.                                                                                    |
-| directColor  | boolean                                   | true     | Optional flag to use CSS colors directly from data.                                                              |
+| Name         | Type                                      | Optional | Description                                                                                                     |
+| ------------ | ----------------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------- |
+| chart        | [Chart][TypeAliasDeclaration-5]           | false    |                                                                                                                 |
+| size         | [Size][InterfaceDeclaration-9]            | false    |                                                                                                                 |
+| columns      | [InsightColumns][InterfaceDeclaration-10] | false    |                                                                                                                 |
+| view         | [View][TypeAliasDeclaration-7]            | true     |                                                                                                                 |
+| filter       | [Search][TypeAliasDeclaration-3]          | true     |                                                                                                                 |
+| facets       | [Facets][InterfaceDeclaration-7]          | true     |                                                                                                                 |
+| colorBin     | [ColorBin][TypeAliasDeclaration-6]        | true     | Type of color binning to use on color scale. Only applicable when the column in the color role is quantitative. |
+| scheme       | string                                    | true     | Name of the color scheme. See https://vega.github.io/vega/docs/schemes/                                         |
+| signalValues | [SignalValues][InterfaceDeclaration-11]   | true     | Vega signal values for this insight.                                                                            |
+| hideAxes     | boolean                                   | true     | Optional flag to hide axes.                                                                                     |
+| hideLegend   | boolean                                   | true     | Optional flag to hide legend.                                                                                   |
+| directColor  | boolean                                   | true     | Optional flag to use CSS colors directly from data.                                                             |
 
 ----------
 
@@ -328,6 +328,7 @@ interface SpecLanguage {
     colorReverse: string;
     facetColumns: string;
     facetRows: string;
+    markOpacitySignal: string;
     textScaleSignal: string;
     xAxisTextAngleSignal: string;
     yAxisTextAngleSignal: string;
@@ -352,6 +353,7 @@ interface SpecLanguage {
 | colorReverse         | string | false    | Label for the color reverse checkbox.    |
 | facetColumns         | string | false    | Label for facet columns slider.          |
 | facetRows            | string | false    | Label for facet rows slider.             |
+| markOpacitySignal    | string | false    | Label for mark opacity slider.           |
 | textScaleSignal      | string | false    | Label for text scale slider.             |
 | xAxisTextAngleSignal | string | false    | Label for x axis text angle slider.      |
 | yAxisTextAngleSignal | string | false    | Label for y axis text angle slider.      |

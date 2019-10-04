@@ -45,12 +45,12 @@ const ScaleNames: { Color: string; X: string; Y: string; Z: string; };
 ### SignalNames
 
 ```typescript
-const SignalNames: { ColorBinCount: string; ColorReverse: string; FacetColumns: string; FacetRows: string; InnerPadding: string; OuterPadding: string; PointSize: string; TextAngleX: string; TextAngleY: string; TextScale: string; TextSize: string; TextTitleSize: string; TreeMapMethod: string; XDomain: string; XBins: string; XGridSize: string; YBins: string; YDomain: string; YGridSize: string; ZHeight: string; ZProportion: string; };
+const SignalNames: { ColorBinCount: string; ColorReverse: string; FacetColumns: string; FacetRows: string; InnerPadding: string; OuterPadding: string; MarkOpacity: string; PointSize: string; TextAngleX: string; TextAngleY: string; TextScale: string; TextSize: string; TextTitleSize: string; TreeMapMethod: string; XDomain: string; XBins: string; XGridSize: string; YBins: string; YDomain: string; YGridSize: string; ZHeight: string; ZProportion: string; };
 ```
 
 **Type**
 
-{ ColorBinCount: string; ColorReverse: string; FacetColumns: string; FacetRows: string; InnerPadding: string; OuterPadding: string; PointSize: string; TextAngleX: string; TextAngleY: string; TextScale: string; TextSize: string; TextTitleSize: string; TreeMapMethod: string; XDomain: string; XBins: string; XGridSize: string; YBins: string; YDomain: string; YGridSize: string; ZHeight: string; ZProportion: string; }
+{ ColorBinCount: string; ColorReverse: string; FacetColumns: string; FacetRows: string; InnerPadding: string; OuterPadding: string; MarkOpacity: string; PointSize: string; TextAngleX: string; TextAngleY: string; TextScale: string; TextSize: string; TextTitleSize: string; TreeMapMethod: string; XDomain: string; XBins: string; XGridSize: string; YBins: string; YDomain: string; YGridSize: string; ZHeight: string; ZProportion: string; }
 
 [NamespaceImport-0]: constants#constants
 [VariableDeclaration-1]: constants#colorscalenone

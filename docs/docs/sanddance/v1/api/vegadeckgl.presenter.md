@@ -145,7 +145,7 @@ void
 
 ### getCubeData()
 
-Get cube data array from the cubes layer. 
+Get cube data array from the cubes layer.
 
 ```typescript
 public getCubeData(): Cube[];
