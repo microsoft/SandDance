@@ -8,17 +8,33 @@ declare var deck: VegaDeckGl.types.DeckBase & VegaDeckGl.types.DeckLayerBase;
 declare var luma: VegaDeckGl.types.LumaBase;
 declare var Fabric: _Fabric.FabricComponents;
 
+let explorer: SandDanceExplorer.Explorer;
+
 function SandDanceEmbed(data: object[] | SandDanceExplorer.DataFile, insight?: Partial<SandDance.types.Insight>) {
-    SandDanceExplorer.use(Fabric, vega, deck, deck, luma);
-    const explorerProps: SandDanceExplorer.Props = {
-        logoClickUrl: 'https://microsoft.github.io/SandDance/',
-        mounted: explorer => {
-            explorer.load(data, columns => {
-                return insight || {};
-            });
-        }
+
+    const load = () => {
+        explorer.load(data, columns => {
+            return insight || {};
+        });
     };
-    ReactDOM.render(React.createElement(SandDanceExplorer.Explorer, explorerProps), document.getElementById('app'));
+
+    const init = () => {
+        SandDanceExplorer.use(Fabric, vega, deck, deck, luma);
+        const explorerProps: SandDanceExplorer.Props = {
+            logoClickUrl: 'https://microsoft.github.io/SandDance/',
+            mounted: e => {
+                explorer = e;
+                load();
+            }
+        };
+        ReactDOM.render(React.createElement(SandDanceExplorer.Explorer, explorerProps), document.getElementById('app'));
+    };
+
+    if (explorer) {
+        load();
+    } else {
+        init();
+    }
 }
 
 interface DataWithInsight {
