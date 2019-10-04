@@ -13,9 +13,12 @@ let explorer: SandDanceExplorer.Explorer;
 function SandDanceEmbed(data: object[] | SandDanceExplorer.DataFile, insight?: Partial<SandDance.types.Insight>) {
 
     const load = () => {
-        explorer.load(data, columns => {
-            return insight || {};
-        });
+        let getPartialInsight: (columns: SandDance.types.Column[]) => Partial<SandDance.types.Insight>;
+        if (insight) {
+            //TODO make sure that insight columns exist in dataset
+            getPartialInsight = columns => insight;
+        }
+        explorer.load(data, getPartialInsight);
     };
 
     const init = () => {
