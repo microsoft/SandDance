@@ -20,3 +20,19 @@ function SandDanceEmbed(data: object[] | SandDanceExplorer.DataFile, insight?: P
     };
     ReactDOM.render(React.createElement(SandDanceExplorer.Explorer, explorerProps), document.getElementById('app'));
 }
+
+interface DataWithInsight {
+    data: object[];
+    insight: Partial<SandDance.types.Insight>;
+}
+
+window.addEventListener('message', e => {
+    const payload: object[] | DataWithInsight = e.data;
+    if (Array.isArray(payload)) {
+        SandDanceEmbed(payload);
+    } else {
+        if (Array.isArray(payload.data)) {
+            SandDanceEmbed(payload.data, payload.insight);
+        }
+    }
+});
