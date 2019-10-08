@@ -10,7 +10,7 @@
   "keywords": [],
   "author": "",
   "dependencies": {
-    "office-ui-fabric-react": "^6.129.1"
+    "office-ui-fabric-react": "6.204.4"
   },
   "devDependencies": {
     "@types/react": "16.4.7"
