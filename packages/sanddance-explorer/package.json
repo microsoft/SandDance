@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@msrvida/chart-recommender": "^1.1.0",
-    "@msrvida/office-ui-fabric-react-cdn-typings": "*",
+    "@msrvida/office-ui-fabric-react-cdn-typings": "^1",
     "@msrvida/sanddance-react": "^1.1.6",
     "d3-format": "^1.3.2",
     "react": "^16.8.6",

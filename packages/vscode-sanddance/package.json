@@ -87,7 +87,7 @@
         "common-extensions": "*",
         "deck.gl": "6.4",
         "luma.gl": "6.4",
-        "office-ui-fabric-react": "^6.136.0",
+        "office-ui-fabric-react": "6.204.4",
         "react": "^16.6.0",
         "react-dom": "^16.6.0",
         "vega-lib": "^4.3.0",
