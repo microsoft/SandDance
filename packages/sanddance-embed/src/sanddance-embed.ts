@@ -9,83 +9,124 @@ declare var luma: VegaDeckGl.types.LumaBase;
 declare var Fabric: _Fabric.FabricComponents;
 
 namespace SandDanceEmbed {
-    export let sandDanceExplorer: SandDanceExplorer.Explorer;
-    export const requests: (MessageRequest & { source: WindowProxy })[] = [];
-
-    export function load(data: object[] | SandDanceExplorer.DataFile, insight?: Partial<SandDance.types.Insight>) {
-
-        const _load = () => {
-            let getPartialInsight: (columns: SandDance.types.Column[]) => Partial<SandDance.types.Insight>;
-            if (insight) {
-                //TODO make sure that insight columns exist in dataset
-                getPartialInsight = columns => insight;
-            }
-            sandDanceExplorer.load(data, getPartialInsight);
-        };
-
-        const init = () => {
-            SandDanceExplorer.use(Fabric, vega, deck, deck, luma);
-            const explorerProps: SandDanceExplorer.Props = {
-                logoClickUrl: 'https://microsoft.github.io/SandDance/',
-                mounted: explorer => {
-                    sandDanceExplorer = explorer;
-                    _load();
-                }
-            };
-            ReactDOM.render(React.createElement(SandDanceExplorer.Explorer, explorerProps), document.getElementById('app'));
-        };
-
-        if (sandDanceExplorer) {
-            _load();
-        } else {
-            init();
-        }
-    }
 
     interface DataWithInsight {
         data: object[];
         insight: Partial<SandDance.types.Insight>;
     }
 
+    export let sandDanceExplorer: SandDanceExplorer.Explorer;
+    export const requests: MessageRequestWithSource[] = [];
+
+    export function load(data: object[] | SandDanceExplorer.DataFile, insight?: Partial<SandDance.types.Insight>) {
+        return new Promise((resolve) => {
+
+            const innerLoad = () => {
+                let getPartialInsight: (columns: SandDance.types.Column[]) => Partial<SandDance.types.Insight>;
+                if (insight) {
+                    //TODO make sure that insight columns exist in dataset
+                    getPartialInsight = columns => insight;
+                }
+                sandDanceExplorer.load(data, getPartialInsight).then(resolve);
+            };
+
+            const create = () => {
+                SandDanceExplorer.use(Fabric, vega, deck, deck, luma);
+                const explorerProps: SandDanceExplorer.Props = {
+                    logoClickUrl: 'https://microsoft.github.io/SandDance/',
+                    mounted: explorer => {
+                        sandDanceExplorer = explorer;
+                        innerLoad();
+                    }
+                };
+                ReactDOM.render(React.createElement(SandDanceExplorer.Explorer, explorerProps), document.getElementById('app'));
+            };
+
+            if (sandDanceExplorer) {
+                innerLoad();
+            } else {
+                create();
+            }
+        });
+    }
+
+    export function respondToRequest(requestWithSource: MessageRequestWithSource) {
+        requests.push(requestWithSource);
+        const copy: MessageRequestWithSource = { ...requestWithSource };
+        delete copy.source;
+        const request: MessageRequest = { ...copy };
+        let response: MessageResponse;
+        switch (request.action) {
+            case 'init': {
+                response = {
+                    request
+                };
+                break;
+            }
+            case 'load': {
+                const request_load = request as MessageRequest_Load;
+                load(request_load.data, request_load.insight).then(() => {
+                    response = {
+                        request
+                    };
+                    requestWithSource.source.postMessage(response, '*');
+                });
+                //don't keep a copy of the array
+                delete request_load.data;
+                break;
+            }
+            case 'getData': {
+                response = <MessageResponse_GetData>{
+                    request,
+                    data: sandDanceExplorer.state.dataContent.data
+                };
+                break;
+            }
+            case 'getInsight': {
+                response = <MessageResponse_GetInsight>{
+                    request,
+                    insight: sandDanceExplorer.viewer.getInsight()
+                };
+                break;
+            }
+        }
+        if (response) {
+            requestWithSource.source.postMessage(response, '*');
+        }
+    }
+
     window.addEventListener('message', e => {
-        const payload: object[] | DataWithInsight | MessageRequest = e.data;
+        let payload: object[] | DataWithInsight | MessageRequest = e.data;
         if (!payload) return;
         if (Array.isArray(payload)) {
-            load(payload);
+            const data = payload;
+            const requestLoadFromArray: MessageRequest_Load = {
+                action: 'load',
+                data,
+                insight: null
+            };
+            payload = requestLoadFromArray;
         } else {
             const dataWithInsight = payload as DataWithInsight;
             if (Array.isArray(dataWithInsight.data)) {
-                load(dataWithInsight.data, dataWithInsight.insight);
-            } else {
-                const request = payload as MessageRequest;
-                const requestWithSource = { ...request, source: e.source as WindowProxy };
-                requests.push(requestWithSource);
-                switch (request.action) {
-                    case 'load': {
-                        const request_load = request as MessageRequest_Load;
-                        load(request_load.data, request_load.insight);
-                        //don't keep a copy of the array
-                        delete request_load.data;
-                    }
-                        break;
-                    case 'getData': {
-                        const response: MessageResponse_GetData = {
-                            request,
-                            data: sandDanceExplorer.state.dataContent.data
-                        };
-                        requestWithSource.source.postMessage(response, '*');
-                    }
-                        break;
-                    case 'getInsight': {
-                        const response: MessageResponse_GetInsight = {
-                            request,
-                            insight: sandDanceExplorer.viewer.getInsight()
-                        };
-                        requestWithSource.source.postMessage(response, '*');
-                    }
-                        break;
-                }
+                const requestLoadFromDataWithInsight: MessageRequest_Load = {
+                    action: 'load',
+                    ...dataWithInsight
+                };
+                payload = requestLoadFromDataWithInsight;
             }
         }
+        const request = payload as MessageRequest;
+        if (!request) return;
+        const requestWithSource = { ...request, source: e.source as WindowProxy };
+        respondToRequest(requestWithSource);
     });
+
+    if (window.opener) {
+        const request: MessageRequest_Init = {
+            action: 'init',
+            ts: new Date()
+        };
+        respondToRequest({ ...request, source: window.opener });
+    }
 }
