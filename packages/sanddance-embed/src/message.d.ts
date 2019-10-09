@@ -1,9 +1,15 @@
-type Actions = 'load' | 'getData' | 'getInsight';
-
 /// requests
+
+type Actions = 'init' | 'load' | 'getData' | 'getInsight';
 
 interface MessageRequestBase {
     action: Actions;
+    id?: string | number;
+    ts?: string | number | Date;
+}
+
+interface MessageRequest_Init extends MessageRequestBase {
+    action: 'init';
 }
 
 interface MessageRequest_Load extends MessageRequestBase {
@@ -20,22 +26,24 @@ interface MessageRequest_GetInsight extends MessageRequestBase {
     action: 'getInsight';
 }
 
-type MessageRequest = MessageRequest_Load | MessageRequest_GetData | MessageRequest_GetInsight;
+type MessageRequest = MessageRequest_Init | MessageRequest_Load | MessageRequest_GetData | MessageRequest_GetInsight;
+
+type MessageRequestWithSource = MessageRequest & { source: WindowProxy };
 
 /// responses
 
 interface MessageResponseBase {
-    requestAction: Actions;
+    request: MessageRequest;
 }
 
+interface MessageResponse_Init extends MessageResponseBase { }
+
 interface MessageResponse_GetData extends MessageResponseBase {
-    requestAction: 'getData';
     data: object[];
 }
 
 interface MessageResponse_GetInsight extends MessageResponseBase {
-    requestAction: 'getInsight';
     insight: SandDanceExplorer.SandDance.types.Insight;
 }
 
-type MessageResponse = MessageResponse_GetData | MessageResponse_GetInsight;
+type MessageResponse = MessageResponse_Init | MessageResponse_GetData | MessageResponse_GetInsight;
