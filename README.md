@@ -32,6 +32,7 @@ SandDance is an offering of several JavaScript components:
 ## Changelog
 
 * April 2019 - Initial release to GitHub.
+* August 2019 - Initial release to AppSource (Power BI marketplace).
 
 ## Known issues
 
