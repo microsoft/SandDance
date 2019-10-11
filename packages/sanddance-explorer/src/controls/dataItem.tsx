@@ -10,6 +10,7 @@ export interface Props {
     item: object;
     showSystemFields?: boolean;
     onSearch?: { (event: React.MouseEvent<HTMLElement>, search: InputSearchExpressionGroup[]): void };
+    bingSearchDisabled: boolean;
     disabled: boolean;
     columns: SandDance.types.Column[];
 }
@@ -24,9 +25,9 @@ function isBoolean(value: any) {
     if (typeof value === 'boolean') return true;
     if (typeof value === 'string') {
         switch (value.toLowerCase()) {
-        case true + '':
-        case false + '':
-            return true;
+            case true + '':
+            case false + '':
+                return true;
         }
     }
     return false;
@@ -51,16 +52,16 @@ interface NameValuePair {
 
 function displayValue(value: any) {
     switch (value) {
-    case '':
-        return <i>{strings.labelBlank}</i>;
-    case null:
-        return <i>{strings.labelNull}</i>;
-    case true:
-        return <i>{strings.labelTrue}</i>;
-    case false:
-        return <i>{strings.labelFalse}</i>;
-    default:
-        return value;
+        case '':
+            return <i>{strings.labelBlank}</i>;
+        case null:
+            return <i>{strings.labelNull}</i>;
+        case true:
+            return <i>{strings.labelTrue}</i>;
+        case false:
+            return <i>{strings.labelFalse}</i>;
+        default:
+            return value;
     }
 }
 
@@ -80,7 +81,9 @@ export function DataItem(props: Props) {
             columnName,
             value: props.item[columnName]
         };
-        nameValuePair.bingSearch = bingSearchLink(props.columns.filter(c => c.name === columnName)[0], props.item[columnName]);
+        if (!props.bingSearchDisabled) {
+            nameValuePair.bingSearch = bingSearchLink(props.columns.filter(c => c.name === columnName)[0], props.item[columnName]);
+        }
         nameValuePairs.push(nameValuePair);
     }
     return (

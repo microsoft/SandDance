@@ -15,6 +15,7 @@ export interface Props {
     index: number;
     onActivate: { (row: object, index: number): void };
     onSearch?: { (event: React.MouseEvent<{}>, search: InputSearchExpressionGroup[]): void };
+    bingSearchDisabled: boolean;
     columns: SandDance.types.Column[];
     disabled?: boolean;
     nullMessage: string;
@@ -57,6 +58,7 @@ export function DataBrowser(props: Props) {
                     item={props.data[index]}
                     disabled={props.disabled}
                     onSearch={props.onSearch}
+                    bingSearchDisabled={props.bingSearchDisabled}
                 />
             </div>}
         </Group>
