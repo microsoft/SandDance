@@ -11,7 +11,7 @@ Smooth animated transitions between views help you to maintain context as you in
 
 > This new version of SandDance has been rebuilt from scratch with the goal of being modular, extensible, and embeddable into your custom applications. We are now on GitHub so that we are open and driven by the community through contributions, feature requests, and discussion.
 
-SandDance was created by the [Microsoft Research VIDA Group](aka.ms/vida) which explores novel technologies for visualization and immersive data analytics. 
+SandDance was created by the [Microsoft Research VIDA Group](https://aka.ms/vida) which explores novel technologies for visualization and immersive data analytics. 
 
 ## Where can I use SandDance?
 * [Try it now on the web](https://microsoft.github.io/SandDance/app/)
