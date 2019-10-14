@@ -194,6 +194,7 @@ interface Props {
     hideSidebarControls?: boolean;
     logoClickUrl?: string;
     logoClickTarget?: string;
+    bingSearchDisabled?: boolean;
     theme?: string;
     viewerOptions?: Partial<ViewerOptions>;
     initialView?: View;
@@ -216,6 +217,7 @@ interface Props {
 | hideSidebarControls        | boolean                                  | true     |
 | logoClickUrl               | string                                   | true     |
 | logoClickTarget            | string                                   | true     |
+| bingSearchDisabled         | boolean                                  | true     |
 | theme                      | string                                   | true     |
 | viewerOptions              | Partial<ViewerOptions>                   | true     |
 | initialView                | View                                     | true     |
