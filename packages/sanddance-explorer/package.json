@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance-explorer",
-  "version": "1.6.4",
+  "version": "1.6.5",
   "description": "SandDance data exploration React component.",
   "main": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
@@ -27,7 +27,7 @@
   "dependencies": {
     "@msrvida/chart-recommender": "^1.1.0",
     "@msrvida/office-ui-fabric-react-cdn-typings": "^1",
-    "@msrvida/sanddance-react": "^1.1.6",
+    "@msrvida/sanddance-react": "^1.1.7",
     "d3-format": "^1.3.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
