@@ -1,8 +1,8 @@
-# Sandance for Azure Data Studio (Preview)
+# SandDance for Azure Data Studio
 
 Visually explore, understand, and present your data.
 
-![sanddance-animation](https://user-images.githubusercontent.com/11507384/54236654-52d42800-44d1-11e9-859e-6c5d297a46d2.gif)
+![sanddance-animation](https://user-images.githubusercontent.com/11507384/66725060-5bcc0580-ede2-11e9-9f69-7bbd9a208697.gif)
 
 By using easy-to-understand views, SandDance helps you find insights about your data, which in turn help you tell stories supported by data, build cases based on evidence, test hypotheses, dig deeper into surface explanations, support decisions for purchases, or relate data into a wider, real world context.
 

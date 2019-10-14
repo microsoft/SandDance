@@ -1,8 +1,8 @@
-# Sandance for VSCode (Preview)
+# SandDance for VSCode
 
 Visually explore, understand, and present your data.
 
-![sanddance-animation](https://user-images.githubusercontent.com/11507384/54236654-52d42800-44d1-11e9-859e-6c5d297a46d2.gif)
+![sanddance-animation](https://user-images.githubusercontent.com/11507384/66712891-7d80aa80-ed58-11e9-8b95-d96568c1b240.gif)
 
 By using easy-to-understand views, SandDance helps you find insights about your data, which in turn help you tell stories supported by data, build cases based on evidence, test hypotheses, dig deeper into surface explanations, support decisions for purchases, or relate data into a wider, real world context.
 
