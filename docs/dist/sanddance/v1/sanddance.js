@@ -9165,6 +9165,7 @@ void main(void) {
         };
         if (column.quantitative) {
             legend.type = 'symbol';
+            legend.format = '~r';
         }
         return legend;
     }
@@ -12761,7 +12762,7 @@ void main(void) {
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
-    const version = '1.6.4';
+    const version = '1.6.5';
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
 

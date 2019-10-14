@@ -11692,6 +11692,7 @@ function legend(column) {
 
   if (column.quantitative) {
     legend.type = 'symbol';
+    legend.format = '~r';
   }
 
   return legend;
@@ -16366,7 +16367,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = '1.6.4';
+const version = '1.6.5';
 exports.version = version;
 },{}],"rZaE":[function(require,module,exports) {
 "use strict";
@@ -17518,7 +17519,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = '1.1.6';
+const version = '1.1.7';
 exports.version = version;
 },{}],"MjKu":[function(require,module,exports) {
 "use strict";
@@ -22397,9 +22398,13 @@ function DataItem(props) {
       columnName: columnName,
       value: props.item[columnName]
     };
-    nameValuePair.bingSearch = bingSearchLink(props.columns.filter(function (c) {
-      return c.name === columnName;
-    })[0], props.item[columnName]);
+
+    if (!props.bingSearchDisabled) {
+      nameValuePair.bingSearch = bingSearchLink(props.columns.filter(function (c) {
+        return c.name === columnName;
+      })[0], props.item[columnName]);
+    }
+
     nameValuePairs.push(nameValuePair);
   };
 
@@ -22501,7 +22506,8 @@ function DataBrowser(props) {
     columns: props.columns,
     item: props.data[index],
     disabled: props.disabled,
-    onSearch: props.onSearch
+    onSearch: props.onSearch,
+    bingSearchDisabled: props.bingSearchDisabled
   })));
 }
 },{"react":"ccIB","../controls/dataItem":"Gai8","../controls/group":"4Q3h","../controls/iconButton":"5dQN","../language":"hk5u"}],"eqtW":[function(require,module,exports) {
@@ -24428,7 +24434,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var version = '1.6.4';
+var version = '1.6.5';
 exports.version = version;
 },{}],"zKGJ":[function(require,module,exports) {
 "use strict";
@@ -26609,7 +26615,8 @@ function (_React$Component) {
                   } else {
                     _this9.doSelect(search);
                   }
-                }
+                },
+                bingSearchDisabled: _this9.props.bingSearchDisabled
               });
             }
 
