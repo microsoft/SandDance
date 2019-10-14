@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.2.11]
+- Opacity slider (for overlapping cubes)
+- Round numbers in Legend
+
 ## [1.2.8]
 - Horizontal bar chart
 - Direct color mapping
