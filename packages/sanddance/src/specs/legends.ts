@@ -21,6 +21,7 @@ function legend(column: Column) {
     };
     if (column.quantitative) {
         legend.type = 'symbol';
+        legend.format = '~r';
     }
     return legend;
 }
