@@ -2,8 +2,7 @@
   "name": "@msrvida/sanddance-root",
   "private": true,
   "version": "1.0.0",
-  "description": "The core webgl component for rendering a SandDance visualization.",
-  "main": "index.js",
+  "description": "SandDance development monorepo.",
   "scripts": {
     "eslint": "lerna run eslint --parallel",
     "build-az": "lerna run build --scope azdata-sanddance",
@@ -32,7 +31,7 @@
     "type": "git",
     "url": "https://msrp-data-vis.visualstudio.com/_git/SandDanceCanvas"
   },
-  "author": "",
+  "author": "Dan Marshall",
   "license": "MIT",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.3.1",
