@@ -56,6 +56,7 @@ export interface Props {
     hideSidebarControls?: boolean;
     logoClickUrl?: string;
     logoClickTarget?: string;
+    bingSearchDisabled?: boolean;
     theme?: string;
     viewerOptions?: Partial<SandDance.types.ViewerOptions>;
     initialView?: SandDance.VegaDeckGl.types.View;
@@ -941,6 +942,7 @@ export class Explorer extends React.Component<Props, State> {
                                                     this.doSelect(search);
                                                 }
                                             }}
+                                            bingSearchDisabled={this.props.bingSearchDisabled}
                                         />
                                     );
                                 }
