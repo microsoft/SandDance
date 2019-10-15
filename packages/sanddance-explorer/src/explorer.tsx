@@ -11,7 +11,8 @@ import {
     ColorSettings,
     DataContent,
     DataFile,
-    Snapshot
+    Snapshot,
+    DataFileType
 } from './interfaces';
 import { ColumnMapBaseProps } from './controls/columnMap';
 import {
@@ -61,7 +62,7 @@ export interface Props {
     initialView?: SandDance.VegaDeckGl.types.View;
     mounted?: (explorer: Explorer) => any;
     datasetElement?: JSX.Element;
-    datasetExportHandler?: (data: any, datatype: string) => void; 
+    datasetExportHandler?: (data: any, datatype: DataFileType) => void; 
     topBarButtonProps?: FabricTypes.ICommandBarItemProps[];
     snapshotProps?: SnapshotProps;
     onSnapshotClick?: (snapshot: Snapshot) => void;
