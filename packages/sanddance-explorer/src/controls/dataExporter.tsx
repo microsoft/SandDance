@@ -78,7 +78,7 @@ export class DataExportPicker extends React.Component<Props, State> {
 
         return (
             <div className="sanddance-dataExporter">
-                <base.fabric.PrimaryButton
+                <base.fabric.DefaultButton
                     className="search-action search-bottom-action"
                     text={strings.buttonExportCount(this.props.data.length)}
                     onClick={() => this.setState({ dialogHidden: false })}
