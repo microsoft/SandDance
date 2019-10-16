@@ -925,7 +925,7 @@ export class Explorer extends React.Component<Props, State> {
                                             disabled={!loaded || this.state.sidebarClosed}
                                             columns={this.state.dataContent && this.state.dataContent.columns}
                                             data={data}
-                                            displayName={(this.state.dataFile && this.state.dataFile.displayName) || ''}
+                                            displayName={(this.state.dataFile && this.state.dataFile.displayName) || strings.labelExportDefaultFileName}
                                             title={dataBrowserTitles[this.state.dataScopeId]}
                                             nullMessage={dataBrowserNullMessages[this.state.dataScopeId]}
                                             zeroMessage={dataBrowserZeroMessages[this.state.dataScopeId]}

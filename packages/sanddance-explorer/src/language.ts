@@ -53,6 +53,8 @@ export const strings = {
     labelVegaSpec: 'Vega specification',
     labelColor: 'Chart color',
     labelError: 'Error',
+    labelExportDefaultFileName: 'sanddance-data',
+    labelErrorExportFilenameEmpty: 'Filename cannot be blank',
     labelErrorExportFilenameCharacters: (characters) => `A filename cannot contain any of the following characters: ${characters}`,
     labelSnapshots: 'Snapshots',
     labelSearch: 'Select by search',
