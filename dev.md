@@ -2,14 +2,14 @@
 
 The SandDance repo is a monorepo made up of several packages, managed by [Lerna](). SandDance is a component stack with the layer hierarchy below:
 
-1. [Deck.gl]() - WebGL rendering and canvas control.
-1. [Vega]() - chart layout.
-1. [sanddance]() - unit visualization chart views and selecting / filtering interaction.
-1. [sanddance-test-umd]() - test of sanddance in UMD deployment.
-1. [sanddance-test-es6]() - test of sanddance in es6 deployment.
-1. [sanddance-react]() - (optional) React wrapper for sanddance.
-1. [sanddance-explorer]() - React-based data exploration component.
-1. [sanddance-app]() - React-based sample application used on website.
+1. [Deck.gl](https://github.com/uber/deck.gl) - WebGL rendering and canvas control.
+1. [Vega](https://github.com/vega/vega) - chart layout.
+1. [sanddance](https://github.com/microsoft/SandDance/tree/master/packages/sanddance) - unit visualization chart views and selecting / filtering interaction.
+1. [sanddance-test-umd](https://github.com/microsoft/SandDance/tree/master/packages/sanddance-test-umd) - test of sanddance in UMD deployment.
+1. [sanddance-test-es6](https://github.com/microsoft/SandDance/tree/master/packages/sanddance-test-es6) - test of sanddance in es6 deployment.
+1. [sanddance-react](https://github.com/microsoft/SandDance/tree/master/packages/sanddance-react) - (optional) React wrapper for sanddance.
+1. [sanddance-explorer](https://github.com/microsoft/SandDance/tree/master/packages/sanddance-explorer) - React-based data exploration component.
+1. [sanddance-app](https://github.com/microsoft/SandDance/tree/master/packages/sanddance-app) - React-based sample application used on website.
 
 ## Install
 1. Clone this repo
