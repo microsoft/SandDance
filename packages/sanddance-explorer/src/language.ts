@@ -46,6 +46,7 @@ export const strings = {
     labelSystemInfo: 'System info',
     labelChartSettings: 'Chart settings',
     labelDataBrowser: 'Data browser',
+    labelDataScope: 'Scope',
     labelExport: 'Export Data',
     labelExportFormat: 'Choose a format:',
     labelTools: 'Tools',
