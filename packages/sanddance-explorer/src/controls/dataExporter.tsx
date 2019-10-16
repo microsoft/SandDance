@@ -1,14 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as _jsonexport from 'jsonexport';
 import * as React from 'react';
 import { base } from '../base';
 import { DataFileType } from '../interfaces';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
-
-const jsonexport = ((_jsonexport as any).default || _jsonexport) as typeof _jsonexport;
 
 export interface Props {
     data: object[];
@@ -50,11 +47,11 @@ export class DataExportPicker extends React.Component<Props, State> {
                 break;
             }
             case 'csv': {
-                jsonexport(JSON.parse(json), (err, csv) => final(csv));
+                final(convertToDelimited(JSON.parse(json), ','));
                 break;
             }
             case 'tsv': {
-                jsonexport(JSON.parse(json), { rowDelimiter: '\t' }, (err, tsv) => final(tsv));
+                final(convertToDelimited(JSON.parse(json), '\t,'));
                 break;
             }
         }
@@ -137,4 +134,22 @@ function columnReplacer(name: string, value: any) {
         return undefined;
     }
     return value === null ? '' : value;
+}
+
+function convertToDelimited(data: object[], delimiter?: string) {
+    var fields = Object.keys(data[0]);
+    var file = data.map(row => {
+        return fields.map(fieldName => {
+            const value: any = row[fieldName];
+            if (typeof value === 'number') {
+                return value;
+            }
+            if (typeof value === 'string') {
+                return `"${value.replace(/"/g, '""')}"`;
+            }
+            return '';
+        }).join(delimiter)
+    })
+    file.unshift(fields.join(delimiter));
+    return (file.join('\r\n'));
 }
