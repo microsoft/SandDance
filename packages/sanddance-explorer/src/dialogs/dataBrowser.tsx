@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
+import { DataExportPicker } from './dataExporter';
+import { DataFileType } from '../interfaces';
 import { DataItem } from '../controls/dataItem';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { Group } from '../controls/group';
@@ -8,7 +10,6 @@ import { IconButton } from '../controls/iconButton';
 import { InputSearchExpressionGroup } from './search';
 import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
-import { DataExportPicker } from './dataExporter';
 
 export interface Props {
     title: string;
@@ -22,7 +23,7 @@ export interface Props {
     zeroMessage: string;
     itemVisible: boolean;
     themePalette: Partial<FabricTypes.IPalette>;
-    datasetExportHandler: (data: any, datatype: string) => void;
+    datasetExportHandler: (data: any, datatype: DataFileType) => void;
 }
 
 export function DataBrowser(props: Props) {
