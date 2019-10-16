@@ -200,7 +200,7 @@ export class Explorer extends React.Component<Props, State> {
                 this.changeInsight({ filter: dataFilter, filteredData, selectedItemIndex });
                 if (this.state.sideTabId === SideTabId.Data && this.state.dataScopeId === DataScopeId.FilteredData) {
                     //make sure item is active
-                    setTimeout(() => this.silentActivation(filteredData[0]), 0);
+                    requestAnimationFrame(() => this.silentActivation(filteredData[0]));
                 }
                 viewerOptions && viewerOptions.onDataFilter && viewerOptions.onDataFilter(dataFilter, filteredData);
             },
@@ -534,11 +534,11 @@ export class Explorer extends React.Component<Props, State> {
                         this.viewer.deselect().then(() => {
                             this.ignoreSelectionChange = false;
                             //allow deselection to render
-                            setTimeout(() => {
+                            requestAnimationFrame(() => {
                                 columns['color'] = column.name;
                                 this.getColorContext = null;
                                 this.changeInsight(newState as any);
-                            }, 0);
+                            });
                         });
                     })();
                     break;
@@ -738,13 +738,13 @@ export class Explorer extends React.Component<Props, State> {
         datas[DataScopeId.SelectedData] = selectionState && selectionState.selectedData;
 
         if (this.state.calculating) {
-            setTimeout(() => {
+            requestAnimationFrame(() => {
                 //allow render to complete
                 if (this.state.calculating) {
                     this.state.calculating();
                     this.setState({ calculating: null });
                 }
-            }, 0);
+            });
         }
 
         const theme = this.props.theme || '';
@@ -882,11 +882,11 @@ export class Explorer extends React.Component<Props, State> {
                                                 this.viewer.deselect().then(() => {
                                                     this.ignoreSelectionChange = false;
                                                     //allow deselection to render
-                                                    setTimeout(() => {
+                                                    requestAnimationFrame(() => {
                                                         this.getColorContext = null;
                                                         this.changeInsight({ colorBin });
                                                         savePref(this.prefs, this.state.chart, 'color', this.state.columns.color, { colorBin });
-                                                    }, 0);
+                                                    });
                                                 });
                                             }}
                                             onColorSchemeChange={(scheme) => {
