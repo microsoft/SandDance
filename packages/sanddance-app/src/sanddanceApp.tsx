@@ -155,7 +155,6 @@ export class SandDanceApp extends React.Component<Props, State> {
     }
 
     render() {
-        const themePalette = this.getThemePalette(this.state.darkTheme);
         return (
             <section className="sanddance-app">
                 <Explorer
@@ -184,7 +183,14 @@ export class SandDanceApp extends React.Component<Props, State> {
                         this.load(this.state.dataSource, snapshotOnLoad && snapshotOnLoad.insight);
                         this.props.mounted(this);
                     }}
-                    datasetExportHandler={(data, datatype, displayName) => downloadData(data, datatype, displayName)}
+                    datasetExportHandler={(data, datatype, displayName) => {
+                        try {
+                            downloadData(data, `${displayName}.${datatype}`);
+                        }
+                        catch (e) {
+                            this.explorer.setState({ errors: [strings.errorDownloadFailure] });
+                        }
+                    }}
                     datasetElement={(
                         <DataSourcePicker
                             dataSource={this.state.dataSource}
