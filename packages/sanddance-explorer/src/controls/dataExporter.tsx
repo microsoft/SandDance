@@ -12,7 +12,7 @@ import { strings } from '../language';
 export interface Props {
     data: object[];
     fileName: string;
-    datasetExportHandler: DataExportHandler;
+    dataExportHandler: DataExportHandler;
     disabled?: boolean;
 }
 
@@ -47,7 +47,7 @@ export class DataExportPicker extends React.Component<Props, State> {
     // Converts to dataExport type and calls dataExportHandler to deal with data
     createExport(exportType: DataExportType, displayName: string) {
         const final = (data: any) => {
-            this.props.datasetExportHandler(data, exportType, displayName);
+            this.props.dataExportHandler(data, exportType, displayName);
             this.close();
         };
         const json = JSON.stringify(this.props.data, columnReplacer);

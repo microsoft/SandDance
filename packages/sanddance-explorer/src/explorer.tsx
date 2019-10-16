@@ -62,7 +62,7 @@ export interface Props {
     initialView?: SandDance.VegaDeckGl.types.View;
     mounted?: (explorer: Explorer) => any;
     datasetElement?: JSX.Element;
-    datasetExportHandler?: DataExportHandler;
+    dataExportHandler?: DataExportHandler;
     topBarButtonProps?: FabricTypes.ICommandBarItemProps[];
     snapshotProps?: SnapshotProps;
     onSnapshotClick?: (snapshot: Snapshot) => void;
@@ -931,7 +931,7 @@ export class Explorer extends React.Component<Props, State> {
                                             zeroMessage={dataBrowserZeroMessages[this.state.dataScopeId]}
                                             index={this.state.selectedItemIndex[this.state.dataScopeId]}
                                             itemVisible={itemVisible}
-                                            datasetExportHandler={this.props.datasetExportHandler}
+                                            dataExportHandler={this.props.dataExportHandler}
                                             selectedDataScope={this.state.dataScopeId}
                                             onDataScopeClick={dataScopeId => this.setSideTabId(SideTabId.Data, dataScopeId)}
                                             onActivate={(row, index) => {

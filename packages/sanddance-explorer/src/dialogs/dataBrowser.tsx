@@ -25,7 +25,7 @@ export interface Props {
     zeroMessage: string;
     itemVisible: boolean;
     themePalette: Partial<FabricTypes.IPalette>;
-    datasetExportHandler: DataExportHandler;
+    dataExportHandler: DataExportHandler;
     selectedDataScope: DataScopeId;
     onDataScopeClick: (dataScopeId: DataScopeId) => void;
     displayName: string;
@@ -91,11 +91,11 @@ export function DataBrowser(props: Props) {
                     onSearch={props.onSearch}
                 />
             </div>}
-            {props.datasetExportHandler && props.data && (
+            {props.dataExportHandler && props.data && (
                 <DataExportPicker
                     fileName={props.displayName}
                     data={props.data}
-                    datasetExportHandler={props.datasetExportHandler}
+                    dataExportHandler={props.dataExportHandler}
                 />
             )}
         </Group>
