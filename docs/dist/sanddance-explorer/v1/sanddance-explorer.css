@@ -333,6 +333,9 @@
   padding: 2px 4px;
   text-transform: uppercase; }
 
+.sanddance-dataIndex .ms-Dropdown-container {
+  margin-bottom: 0.5em; }
+
 .scrollable-container {
   display: grid;
   min-height: 200px;
@@ -531,6 +534,12 @@
 .sanddance-legend .legend-row:hover {
   background-color: #0078d4;
   color: #fff; }
+
+.sanddance-dataExporter {
+  margin-top: 1em; }
+
+.sanddance-form-separate {
+  margin-top: 1em; }
 
 .dark-theme .sanddance-panel {
   background-color: #000;

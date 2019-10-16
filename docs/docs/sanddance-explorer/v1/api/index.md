@@ -92,6 +92,7 @@ interface DataContent {
 
 ```typescript
 interface DataFile {
+    displayName?: string;
     dataUrl?: string;
     rawText?: string;
     type: DataFileType;
@@ -100,11 +101,12 @@ interface DataFile {
 
 **Properties**
 
-| Name    | Type                                   | Optional |
-| ------- | -------------------------------------- | -------- |
-| dataUrl | string                                 | true     |
-| rawText | string                                 | true     |
-| type    | [DataFileType][TypeAliasDeclaration-0] | false    |
+| Name        | Type                                   | Optional |
+| ----------- | -------------------------------------- | -------- |
+| displayName | string                                 | true     |
+| dataUrl     | string                                 | true     |
+| rawText     | string                                 | true     |
+| type        | [DataFileType][TypeAliasDeclaration-1] | false    |
 
 ----------
 
@@ -200,6 +202,7 @@ interface Props {
     initialView?: View;
     mounted?: (explorer: Explorer) => any;
     datasetElement?: Element;
+    dataExportHandler?: DataExportHandler;
     topBarButtonProps?: ICommandBarItemProps[];
     snapshotProps?: SnapshotProps;
     onSnapshotClick?: (snapshot: Snapshot) => void;
@@ -212,24 +215,25 @@ interface Props {
 
 **Properties**
 
-| Name                       | Type                                     | Optional |
-| -------------------------- | ---------------------------------------- | -------- |
-| hideSidebarControls        | boolean                                  | true     |
-| logoClickUrl               | string                                   | true     |
-| logoClickTarget            | string                                   | true     |
-| bingSearchDisabled         | boolean                                  | true     |
-| theme                      | string                                   | true     |
-| viewerOptions              | Partial<ViewerOptions>                   | true     |
-| initialView                | View                                     | true     |
-| mounted                    | (explorer: Explorer) => any              | true     |
-| datasetElement             | Element                                  | true     |
-| topBarButtonProps          | ICommandBarItemProps[]                   | true     |
-| snapshotProps              | SnapshotProps | true     |
-| onSnapshotClick            | (snapshot: Snapshot) => void             | true     |
-| onView                     | () => void                               | true     |
-| onSignalChanged            | () => void                               | true     |
-| onTooltipExclusionsChanged | (tooltipExclusions: string[]) => void    | true     |
-| systemInfoChildren         | ReactNode                                | true     |
+| Name                       | Type                                         | Optional |
+| -------------------------- | -------------------------------------------- | -------- |
+| hideSidebarControls        | boolean                                      | true     |
+| logoClickUrl               | string                                       | true     |
+| logoClickTarget            | string                                       | true     |
+| bingSearchDisabled         | boolean                                      | true     |
+| theme                      | string                                       | true     |
+| viewerOptions              | Partial<ViewerOptions>                       | true     |
+| initialView                | View                                         | true     |
+| mounted                    | (explorer: Explorer) => any                  | true     |
+| datasetElement             | Element                                      | true     |
+| dataExportHandler          | DataExportHandler | true     |
+| topBarButtonProps          | ICommandBarItemProps[]                       | true     |
+| snapshotProps              | SnapshotProps     | true     |
+| onSnapshotClick            | (snapshot: Snapshot) => void                 | true     |
+| onView                     | () => void                                   | true     |
+| onSignalChanged            | () => void                                   | true     |
+| onTooltipExclusionsChanged | (tooltipExclusions: string[]) => void        | true     |
+| systemInfoChildren         | ReactNode                                    | true     |
 
 ----------
 
@@ -282,6 +286,18 @@ Insight
 | positionedColumnMapProps   | PositionedColumnMapProps     | false    |
 
 ## Types
+
+### DataExportType
+
+```typescript
+type DataExportType = DataFileType | "html";
+```
+
+**Type**
+
+[DataFileType][TypeAliasDeclaration-1] | "html"
+
+----------
 
 ### DataFileType
 
@@ -341,7 +357,7 @@ string
 [InterfaceDeclaration-0]: index#colorsettings
 [InterfaceDeclaration-1]: index#datacontent
 [InterfaceDeclaration-2]: index#datafile
-[TypeAliasDeclaration-0]: index#datafiletype
+[TypeAliasDeclaration-1]: index#datafiletype
 [InterfaceDeclaration-3]: index#snapshot
 [InterfaceDeclaration-4]: index#vieweroptions
 [InterfaceDeclaration-0]: index#colorsettings
@@ -353,7 +369,9 @@ string
 [InterfaceDeclaration-2]: index#datafile
 [InterfaceDeclaration-1]: index#datacontent
 [InterfaceDeclaration-3]: index#snapshot
-[TypeAliasDeclaration-0]: index#datafiletype
+[TypeAliasDeclaration-0]: index#dataexporttype
+[TypeAliasDeclaration-1]: index#datafiletype
+[TypeAliasDeclaration-1]: index#datafiletype
 [ClassDeclaration-0]: explorer#explorer
 [VariableDeclaration-0]: index#capabilities
 [VariableDeclaration-1]: index#themepalettes

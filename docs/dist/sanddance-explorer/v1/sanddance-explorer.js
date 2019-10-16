@@ -18503,6 +18503,10 @@ var strings = {
   buttonColorSchemeKeep: 'Keep same color scheme',
   buttonCopyToClipboard: 'Copy to clipboard',
   buttonExclude: 'Exclude',
+  buttonExport: 'Export',
+  buttonExportCount: function buttonExportCount(total) {
+    return total == 1 ? 'Export 1 row...' : "Export ".concat(total, " rows...");
+  },
   buttonIsolate: 'Isolate',
   buttonReset: 'Stop filtering',
   buttonDeselect: 'Clear selection',
@@ -18529,6 +18533,11 @@ var strings = {
   chartTypeScatterPlot: 'Scatter',
   chartTypeStacks: 'Stacks',
   chartTypeTreeMap: 'Treemap',
+  defaultFileName: 'sanddance-data',
+  errorExportFilenameEmpty: 'Filename cannot be blank',
+  errorExportFilenameCharacters: function errorExportFilenameCharacters(characters) {
+    return "A filename cannot contain any of the following characters: ".concat(characters);
+  },
   errorColumnMustBeNumeric: 'Numeric column required for this chart type.',
   labelBlank: 'blank',
   labelNull: 'null',
@@ -18537,10 +18546,18 @@ var strings = {
   labelSystemInfo: 'System info',
   labelChartSettings: 'Chart settings',
   labelDataBrowser: 'Data browser',
+  labelDataScope: 'Scope',
+  labelExport: 'Export Data',
+  labelExportFormat: 'File format',
+  labelExportCSV: '.CSV - Comma separated values',
+  labelExportHTML: '.HTML - A SandDance html page embedding this data',
+  labelExportJSON: '.JSON - JavaScript object notation',
+  labelExportTSV: '.TSV - Tab separated values',
   labelTools: 'Tools',
   labelVegaSpec: 'Vega specification',
   labelColor: 'Chart color',
   labelError: 'Error',
+  labelExportFileName: 'File name',
   labelSnapshots: 'Snapshots',
   labelSearch: 'Select by search',
   labelChart: 'Chart',
@@ -19117,7 +19134,9 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 function Dialog(props) {
-  return React.createElement(_base.base.fabric.Dialog, Object.assign({}, props, {
+  return React.createElement(_base.base.fabric.Dialog, Object.assign({
+    className: "sanddance-dialog"
+  }, props, {
     dialogContentProps: {
       type: _base.base.fabric.DialogType.normal,
       title: props.title
@@ -22309,7 +22328,326 @@ function savePref(prefs, chart, role, column, partialInsight) {
   rolePrefs[column] = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, rolePrefs[column], partialInsight);
   return rolePrefs[column];
 }
-},{"@msrvida/sanddance-react":"MjKu"}],"Gai8":[function(require,module,exports) {
+},{"@msrvida/sanddance-react":"MjKu"}],"pP3Y":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.convertToDelimited = convertToDelimited;
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function convertToDelimited(data, delimiter) {
+  var fields = Object.keys(data[0]);
+  var file = data.map(function (row) {
+    return fields.map(function (fieldName) {
+      var value = row[fieldName];
+
+      if (typeof value === 'number') {
+        return value;
+      }
+
+      if (typeof value === 'string') {
+        if (value.indexOf(delimiter) >= 0) {
+          return "\"".concat(value.replace(/"/g, '""'), "\"");
+        } else {
+          return value;
+        }
+      }
+
+      return '';
+    }).join(delimiter);
+  });
+  file.unshift(fields.join(delimiter));
+  return file.join('\n');
+}
+},{}],"fO+I":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.embedHtml = void 0;
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+var embedHtml = function embedHtml(title, embed) {
+  return "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>".concat(title, "</title>\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-embed@1/dist/css/sanddance-embed.css\" />\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-explorer@1/dist/css/sanddance-explorer.css\" />\n</head>\n\n<body>\n    <script src=\"https://unpkg.com/react@16/umd/react.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/react-dom@16/umd/react-dom.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/deck.gl@6/deckgl.min.js\"></script>\n    <script src=\"https://unpkg.com/vega@4/build/vega.min.js\"></script>\n    <script src=\"https://unpkg.com/office-ui-fabric-react@6.204.4/dist/office-ui-fabric-react.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-explorer@1/dist/umd/sanddance-explorer.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-embed@1/dist/umd/sanddance-embed.js\"></script>\n\n    <div id=\"app\"></div>\n\n    ").concat(embed, "\n\n</body>\n\n</html>");
+};
+
+exports.embedHtml = embedHtml;
+},{}],"l7po":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.removeExtensions = removeExtensions;
+exports.DataExportPicker = void 0;
+
+var React = _interopRequireWildcard(require("react"));
+
+var _base = require("../base");
+
+var _exportDelimited = require("../exportDelimited");
+
+var _dataExporterHtml = require("./dataExporterHtml");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var _language = require("../language");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var exportTypes = [['json', _language.strings.labelExportJSON], ['csv', _language.strings.labelExportCSV], ['tsv', _language.strings.labelExportTSV], ['html', _language.strings.labelExportHTML]];
+
+var DataExportPicker =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(DataExportPicker, _React$Component);
+
+  function DataExportPicker(props) {
+    var _this;
+
+    _classCallCheck(this, DataExportPicker);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(DataExportPicker).call(this, props));
+    _this.state = _this.getInitialState(_this.props);
+    return _this;
+  }
+
+  _createClass(DataExportPicker, [{
+    key: "getInitialState",
+    value: function getInitialState(props) {
+      var initialState = {
+        initializer: props.initializer,
+        dialogHidden: true,
+        exportType: exportTypes[0][0],
+        fileName: props.initializer.fileName,
+        fileNameError: '',
+        working: false
+      };
+      return initialState;
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      if (!_sanddanceReact.util.deepCompare(this.props.initializer, this.state.initializer)) {
+        this.setState(this.getInitialState(this.props));
+      }
+    } // Converts to dataExport type and calls dataExportHandler to deal with data
+
+  }, {
+    key: "createExport",
+    value: function createExport(exportType, displayName) {
+      var _this2 = this;
+
+      var final = function final(data) {
+        _this2.props.dataExportHandler(data, exportType, displayName);
+
+        _this2.close();
+      };
+
+      var json = JSON.stringify(this.props.data, columnReplacer);
+
+      switch (exportType) {
+        case 'json':
+          {
+            final(json);
+            break;
+          }
+
+        case 'csv':
+          {
+            final((0, _exportDelimited.convertToDelimited)(JSON.parse(json), ','));
+            break;
+          }
+
+        case 'tsv':
+          {
+            final((0, _exportDelimited.convertToDelimited)(JSON.parse(json), '\t'));
+            break;
+          }
+
+        case 'html':
+          {
+            final((0, _dataExporterHtml.embedHtml)("".concat(_language.strings.appName, " - ").concat(escape(displayName)), embedScript((0, _exportDelimited.convertToDelimited)(JSON.parse(json), ','), displayName)));
+          }
+      }
+    }
+  }, {
+    key: "close",
+    value: function close() {
+      this.setState({
+        dialogHidden: true,
+        working: false
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this3 = this;
+
+      var closeDialog = function closeDialog() {
+        return _this3.close();
+      };
+
+      if (this.state.delayAction) {
+        requestAnimationFrame(function () {
+          //allow render to complete
+          if (_this3.state.delayAction) {
+            _this3.state.delayAction();
+
+            _this3.setState({
+              delayAction: null
+            });
+          }
+        });
+      }
+
+      var disabled = this.state.working || this.state.dialogHidden;
+      return React.createElement("div", {
+        className: "sanddance-dataExporter"
+      }, React.createElement(_base.base.fabric.DefaultButton, {
+        className: "search-action search-bottom-action",
+        text: _language.strings.buttonExportCount(this.props.data.length),
+        onClick: function onClick() {
+          return _this3.setState({
+            dialogHidden: false
+          });
+        },
+        disabled: this.props.disabled
+      }), React.createElement(_base.base.fabric.Dialog, {
+        hidden: this.state.dialogHidden,
+        onDismiss: closeDialog,
+        dialogContentProps: {
+          className: 'sanddance-dialog',
+          type: _base.base.fabric.DialogType.normal,
+          title: _language.strings.labelExport
+        }
+      }, React.createElement(_base.base.fabric.TextField, {
+        label: _language.strings.labelExportFileName,
+        onChange: function onChange(e, displayName) {
+          var displayNameError = getFileNameError(displayName);
+
+          _this3.setState({
+            fileName: displayName,
+            fileNameError: displayNameError
+          });
+        },
+        errorMessage: this.state.fileNameError,
+        value: this.state.fileName
+      }), React.createElement(_base.base.fabric.ChoiceGroup, {
+        className: "sanddance-form-separate",
+        disabled: disabled,
+        options: exportTypes.map(function (_ref) {
+          var _ref2 = _slicedToArray(_ref, 2),
+              exportType = _ref2[0],
+              text = _ref2[1];
+
+          return {
+            key: exportType,
+            text: text,
+            disabled: false,
+            checked: exportType === _this3.state.exportType
+          };
+        }),
+        onChange: function onChange(ev, option) {
+          return _this3.setState({
+            exportType: option.key
+          });
+        },
+        label: _language.strings.labelExportFormat
+      }), React.createElement(_base.base.fabric.DialogFooter, null, React.createElement(_base.base.fabric.PrimaryButton, {
+        disabled: disabled || !!this.state.fileNameError,
+        onClick: function onClick(e) {
+          return _this3.setState({
+            delayAction: function delayAction() {
+              return _this3.createExport(_this3.state.exportType, _this3.state.fileName);
+            },
+            working: true
+          });
+        },
+        text: _language.strings.buttonExport
+      }), React.createElement(_base.base.fabric.DefaultButton, {
+        onClick: closeDialog,
+        text: _language.strings.buttonClose
+      }))));
+    }
+  }]);
+
+  return DataExportPicker;
+}(React.Component);
+
+exports.DataExportPicker = DataExportPicker;
+var illegalChars = "\\/:*?\"<>|";
+
+function getFileNameError(displayName) {
+  if (!displayName) {
+    return _language.strings.errorExportFilenameEmpty;
+  }
+
+  for (var i = 0; i < illegalChars.length; i++) {
+    if (displayName.indexOf(illegalChars[i]) >= 0) {
+      return _language.strings.errorExportFilenameCharacters(illegalChars);
+    }
+  }
+}
+
+function removeExtensions(fileName) {
+  exportTypes.forEach(function (_ref3) {
+    var _ref4 = _slicedToArray(_ref3, 1),
+        exportType = _ref4[0];
+
+    var re = new RegExp("\\.".concat(exportType), 'ig');
+    fileName = fileName.replace(re, '');
+  });
+  return fileName;
+}
+
+function columnReplacer(name, value) {
+  if (_sanddanceReact.SandDance.util.isInternalFieldName(name, true)) {
+    return undefined;
+  }
+
+  return value === null ? '' : value;
+}
+
+function embedScript(csv, displayName) {
+  var dataFile = {
+    type: 'csv',
+    displayName: displayName
+  };
+  return "<pre id='csv-data' style='display:none'>".concat(csv, "</pre>    \n    <script>SandDanceEmbed.load(Object.assign({rawText: document.getElementById('csv-data').innerText}, ").concat(JSON.stringify(dataFile), "))</script>");
+}
+},{"react":"ccIB","../base":"Vlbn","../exportDelimited":"pP3Y","./dataExporterHtml":"fO+I","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"Gai8":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22446,71 +22784,7 @@ function DataItem(props) {
     }, displayValue(nameValuePair.value)), nameValuePair.bingSearch);
   }));
 }
-},{"react":"ccIB","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"8pJL":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.DataBrowser = DataBrowser;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _dataItem = require("../controls/dataItem");
-
-var _group = require("../controls/group");
-
-var _iconButton = require("../controls/iconButton");
-
-var _language = require("../language");
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function DataBrowser(props) {
-  function activateRecord(newIndex) {
-    props.onActivate(props.data[newIndex], newIndex);
-  }
-
-  var index = props.index;
-  var length = props.data && props.data.length || 0;
-  return React.createElement(_group.Group, {
-    label: props.title,
-    className: "sanddance-dataIndex"
-  }, !props.data && React.createElement("div", {
-    dangerouslySetInnerHTML: {
-      __html: props.nullMessage
-    }
-  }), props.data && !props.data.length && React.createElement("div", null, props.zeroMessage), !!length && React.createElement("div", null, React.createElement("div", {
-    className: "index"
-  }, React.createElement(_iconButton.IconButton, {
-    themePalette: props.themePalette,
-    iconName: "ChevronLeftMed",
-    onClick: function onClick(e) {
-      return activateRecord(index <= 0 ? length - 1 : index - 1);
-    },
-    disabled: props.disabled || length === 1,
-    title: _language.strings.buttonPrevDataItem
-  }), React.createElement("span", null, _language.strings.record(index + 1, length)), React.createElement(_iconButton.IconButton, {
-    themePalette: props.themePalette,
-    iconName: "ChevronRightMed",
-    onClick: function onClick(e) {
-      return activateRecord(index >= length - 1 ? 0 : index + 1);
-    },
-    disabled: props.disabled || length === 1,
-    title: _language.strings.buttonNextDataItem
-  })), !props.itemVisible && React.createElement("div", {
-    className: "item-filtered"
-  }, _language.strings.labelDataItemIsFiltered), React.createElement(_dataItem.DataItem, {
-    columns: props.columns,
-    item: props.data[index],
-    disabled: props.disabled,
-    onSearch: props.onSearch,
-    bingSearchDisabled: props.bingSearchDisabled
-  })));
-}
-},{"react":"ccIB","../controls/dataItem":"Gai8","../controls/group":"4Q3h","../controls/iconButton":"5dQN","../language":"hk5u"}],"eqtW":[function(require,module,exports) {
+},{"react":"ccIB","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"eqtW":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23161,7 +23435,7 @@ exports.DataScopeId = DataScopeId;
 var shortFormat = (0, _d3Format.format)('.2~s');
 
 function short(n) {
-  return n === -1 ? '--' : n ? shortFormat(n) : '0';
+  return n === -1 ? '--' : n ? n < 1000 ? n.toString() : shortFormat(n) : '0';
 }
 
 function DataScope(props) {
@@ -23232,7 +23506,103 @@ function DataScopeButton(props) {
     }
   });
 }
-},{"react":"ccIB","./button":"eqtW","d3-format":"SA6z","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"Tl9z":[function(require,module,exports) {
+},{"react":"ccIB","./button":"eqtW","d3-format":"SA6z","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"8pJL":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.DataBrowser = DataBrowser;
+
+var React = _interopRequireWildcard(require("react"));
+
+var _dataExporter = require("../controls/dataExporter");
+
+var _dataItem = require("../controls/dataItem");
+
+var _dataScope = require("../controls/dataScope");
+
+var _dropdown = require("../controls/dropdown");
+
+var _group = require("../controls/group");
+
+var _iconButton = require("../controls/iconButton");
+
+var _language = require("../language");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function DataBrowser(props) {
+  function activateRecord(newIndex) {
+    props.onActivate(props.data[newIndex], newIndex);
+  }
+
+  var index = props.index;
+  var length = props.data && props.data.length || 0;
+  return React.createElement(_group.Group, {
+    label: _language.strings.labelDataBrowser,
+    className: "sanddance-dataIndex"
+  }, React.createElement(_dropdown.Dropdown, {
+    label: _language.strings.labelDataScope,
+    collapseLabel: true,
+    options: [{
+      key: _dataScope.DataScopeId.AllData,
+      text: _language.strings.selectDataSpanAll,
+      isSelected: props.selectedDataScope === _dataScope.DataScopeId.AllData
+    }, {
+      key: _dataScope.DataScopeId.FilteredData,
+      text: _language.strings.selectDataSpanFilter,
+      isSelected: props.selectedDataScope === _dataScope.DataScopeId.FilteredData
+    }, {
+      key: _dataScope.DataScopeId.SelectedData,
+      text: _language.strings.selectDataSpanSelection,
+      isSelected: props.selectedDataScope === _dataScope.DataScopeId.SelectedData
+    }],
+    onChange: function onChange(e, o) {
+      props.onDataScopeClick(o.key);
+    }
+  }), !props.data && React.createElement("div", {
+    dangerouslySetInnerHTML: {
+      __html: props.nullMessage
+    }
+  }), props.data && !props.data.length && React.createElement("div", null, props.zeroMessage), !!length && React.createElement("div", null, React.createElement("div", {
+    className: "index"
+  }, React.createElement(_iconButton.IconButton, {
+    themePalette: props.themePalette,
+    iconName: "ChevronLeftMed",
+    onClick: function onClick(e) {
+      return activateRecord(index <= 0 ? length - 1 : index - 1);
+    },
+    disabled: props.disabled || length === 1,
+    title: _language.strings.buttonPrevDataItem
+  }), React.createElement("span", null, _language.strings.record(index + 1, length)), React.createElement(_iconButton.IconButton, {
+    themePalette: props.themePalette,
+    iconName: "ChevronRightMed",
+    onClick: function onClick(e) {
+      return activateRecord(index >= length - 1 ? 0 : index + 1);
+    },
+    disabled: props.disabled || length === 1,
+    title: _language.strings.buttonNextDataItem
+  })), !props.itemVisible && React.createElement("div", {
+    className: "item-filtered"
+  }, _language.strings.labelDataItemIsFiltered), React.createElement(_dataItem.DataItem, {
+    columns: props.columns,
+    item: props.data[index],
+    disabled: props.disabled,
+    onSearch: props.onSearch,
+    bingSearchDisabled: props.bingSearchDisabled
+  })), props.dataExportHandler && props.data && React.createElement(_dataExporter.DataExportPicker, {
+    initializer: {
+      fileName: "".concat((0, _dataExporter.removeExtensions)(props.displayName), " (").concat(props.data.length, ")")
+    },
+    data: props.data,
+    dataExportHandler: props.dataExportHandler,
+    disabled: props.disabled
+  }));
+}
+},{"react":"ccIB","../controls/dataExporter":"l7po","../controls/dataItem":"Gai8","../controls/dataScope":"Os+N","../controls/dropdown":"Uyrp","../controls/group":"4Q3h","../controls/iconButton":"5dQN","../language":"hk5u"}],"Tl9z":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24434,7 +24804,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var version = '1.6.5';
+var version = '1.7.0';
 exports.version = version;
 },{}],"zKGJ":[function(require,module,exports) {
 "use strict";
@@ -25624,9 +25994,9 @@ function (_React$Component) {
 
           if (_this2.state.sideTabId === _sidebar.SideTabId.Data && _this2.state.dataScopeId === _dataScope.DataScopeId.FilteredData) {
             //make sure item is active
-            setTimeout(function () {
+            requestAnimationFrame(function () {
               return _this2.silentActivation(filteredData[0]);
-            }, 0);
+            });
           }
 
           viewerOptions && viewerOptions.onDataFilter && viewerOptions.onDataFilter(dataFilter, filteredData);
@@ -26071,12 +26441,12 @@ function (_React$Component) {
                 _this6.viewer.deselect().then(function () {
                   _this6.ignoreSelectionChange = false; //allow deselection to render
 
-                  setTimeout(function () {
+                  requestAnimationFrame(function () {
                     columns['color'] = column.name;
                     _this6.getColorContext = null;
 
                     _this6.changeInsight(newState);
-                  }, 0);
+                  });
                 });
               })();
 
@@ -26348,7 +26718,7 @@ function (_React$Component) {
       datas[_dataScope.DataScopeId.SelectedData] = selectionState && selectionState.selectedData;
 
       if (this.state.calculating) {
-        setTimeout(function () {
+        requestAnimationFrame(function () {
           //allow render to complete
           if (_this9.state.calculating) {
             _this9.state.calculating();
@@ -26357,7 +26727,7 @@ function (_React$Component) {
               calculating: null
             });
           }
-        }, 0);
+        });
       }
 
       var theme = this.props.theme || '';
@@ -26525,7 +26895,7 @@ function (_React$Component) {
                   _this9.viewer.deselect().then(function () {
                     _this9.ignoreSelectionChange = false; //allow deselection to render
 
-                    setTimeout(function () {
+                    requestAnimationFrame(function () {
                       _this9.getColorContext = null;
 
                       _this9.changeInsight({
@@ -26535,7 +26905,7 @@ function (_React$Component) {
                       (0, _partialInsight.savePref)(_this9.prefs, _this9.state.chart, 'color', _this9.state.columns.color, {
                         colorBin: colorBin
                       });
-                    }, 0);
+                    });
                   });
                 },
                 onColorSchemeChange: function onColorSchemeChange(scheme) {
@@ -26591,11 +26961,17 @@ function (_React$Component) {
                 disabled: !loaded || _this9.state.sidebarClosed,
                 columns: _this9.state.dataContent && _this9.state.dataContent.columns,
                 data: data,
+                displayName: _this9.state.dataFile && _this9.state.dataFile.displayName || _language.strings.defaultFileName,
                 title: dataBrowserTitles[_this9.state.dataScopeId],
                 nullMessage: dataBrowserNullMessages[_this9.state.dataScopeId],
                 zeroMessage: dataBrowserZeroMessages[_this9.state.dataScopeId],
                 index: _this9.state.selectedItemIndex[_this9.state.dataScopeId],
                 itemVisible: itemVisible,
+                dataExportHandler: _this9.props.dataExportHandler,
+                selectedDataScope: _this9.state.dataScopeId,
+                onDataScopeClick: function onDataScopeClick(dataScopeId) {
+                  return _this9.setSideTabId(_sidebar.SideTabId.Data, dataScopeId);
+                },
                 onActivate: function onActivate(row, index) {
                   var selectedItemIndex = Object.assign({}, _this9.state.selectedItemIndex);
                   selectedItemIndex[_this9.state.dataScopeId] = index;
