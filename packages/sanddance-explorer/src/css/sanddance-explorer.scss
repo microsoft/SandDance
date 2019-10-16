@@ -132,7 +132,7 @@ $layout-margin-right: 150px; //room for legend
     bottom: unset;
     overflow-y: unset;
     padding-right: 1em;
-    padding-top: 32px;    
+    padding-top: 32px;
     h4,
     .sanddance-vegaControls,
     .sanddance-unitControls {
@@ -165,7 +165,7 @@ $layout-margin-right: 150px; //room for legend
 }
 
 .sanddance-signal {
-    margin-top: 1em;   
+    margin-top: 1em;
 }
 
 .sanddance-legend {
@@ -183,7 +183,11 @@ $layout-margin-right: 150px; //room for legend
 }
 
 .sanddance-dataExporter {
-    margin-top: 1em;   
+    margin-top: 1em;
+}
+
+.sanddance-form-separate {
+    margin-top: 1em;
 }
 
 .dark-theme {

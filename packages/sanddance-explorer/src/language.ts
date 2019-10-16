@@ -51,7 +51,7 @@ export const strings = {
     labelDataBrowser: 'Data browser',
     labelDataScope: 'Scope',
     labelExport: 'Export Data',
-    labelExportFormat: 'Choose a format:',
+    labelExportFormat: 'File format',
     labelExportCSV: '.CSV - Comma separated values',
     labelExportHTML: '.HTML - A SandDance html page embedding this data',
     labelExportJSON: '.JSON - JavaScript object notation',

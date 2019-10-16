@@ -133,6 +133,7 @@ export class DataExportPicker extends React.Component<Props, State> {
                         value={this.state.fileName}
                     />
                     <base.fabric.ChoiceGroup
+                        className="sanddance-form-separate"
                         disabled={disabled}
                         options={
                             exportTypes.map(([exportType, text]) => {

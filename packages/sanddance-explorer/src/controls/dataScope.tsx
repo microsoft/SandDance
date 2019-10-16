@@ -32,7 +32,7 @@ export interface Props {
 const shortFormat = format('.2~s');
 
 function short(n: number) {
-    return n === -1 ? '--' : n ? shortFormat(n) : '0';
+    return n === -1 ? '--' : n ? (n < 1000 ? n.toString() : shortFormat(n)) : '0';
 }
 
 export function DataScope(props: Props) {
