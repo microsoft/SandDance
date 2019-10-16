@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
-import { DataExportPicker } from './dataExporter';
+import { DataExportPicker } from '../controls/dataExporter';
 import { DataFileType } from '../interfaces';
 import { DataItem } from '../controls/dataItem';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
