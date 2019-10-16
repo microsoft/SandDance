@@ -93,7 +93,7 @@ export function DataBrowser(props: Props) {
             </div>}
             {props.datasetExportHandler && props.data && (
                 <DataExportPicker
-                    displayName={props.displayName}
+                    fileName={props.displayName}
                     data={props.data}
                     datasetExportHandler={props.datasetExportHandler}
                 />

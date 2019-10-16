@@ -1,15 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { DataFileType } from '@msrvida/sanddance-explorer';
+import { DataExportType } from '@msrvida/sanddance-explorer';
 
 //To do: download csv, json, or tsv
-export function downloadData(data: any, datatype: DataFileType, displayName: string) {
-    var re = /.(csv|tsv|json|topojson)/;
-    var filename = displayName.replace(re, '') + '.' + datatype;
+export function downloadData(data: any, exportType: DataExportType, fileName: string) {
 
     // Adapted from https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
     var element = document.createElement('a');
-    element.setAttribute('download', filename);
+    element.setAttribute('download', `${fileName}.${exportType}`);
     document.body.appendChild(element);
 
     dataURIToBlob(data, blob => {

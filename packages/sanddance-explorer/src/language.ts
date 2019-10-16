@@ -56,7 +56,7 @@ export const strings = {
     labelVegaSpec: 'Vega specification',
     labelColor: 'Chart color',
     labelError: 'Error',
-    labelExportFileName: 'sanddance-data',
+    labelExportFileName: 'File name',
     labelSnapshots: 'Snapshots',
     labelSearch: 'Select by search',
     labelChart: 'Chart',

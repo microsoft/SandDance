@@ -18,8 +18,10 @@ export interface DataContent {
   columns: SandDance.types.Column[];
 }
 
+export type DataExportType = DataFileType | 'html';
+
 export interface DataExportHandler {
-  (data: any, datatype: DataFileType, displayName: string): void;
+  (data: any, datatype: DataExportType, displayName: string): void;
 }
 
 export interface Snapshot {

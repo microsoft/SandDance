@@ -2,23 +2,24 @@
 // Licensed under the MIT license.
 import * as React from 'react';
 import { base } from '../base';
-import { DataExportHandler, DataFileType } from '../interfaces';
+import { DataExportHandler, DataExportType, DataFile } from '../interfaces';
+import { embedHtml } from './dataExporterHtml';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
 
 export interface Props {
     data: object[];
-    displayName: string;
+    fileName: string;
     datasetExportHandler: DataExportHandler;
     disabled?: boolean;
 }
 
 export interface State {
     dialogHidden: boolean;
-    fileType: DataFileType;
-    displayName: string;
-    displayNameError: string;
+    exportType: DataExportType;
+    fileName: string;
+    fileNameError: string;
     working: boolean;
     error: string,
     delayAction?: () => void;
@@ -29,24 +30,24 @@ export class DataExportPicker extends React.Component<Props, State> {
         super(props);
         this.state = {
             dialogHidden: true,
-            fileType: DataExportPicker.fileTypes[0],
-            displayName: props.displayName,
-            displayNameError: '',
+            exportType: DataExportPicker.exportTypes[0],
+            fileName: props.fileName,
+            fileNameError: '',
             working: false,
             error: ''
         };
     }
 
-    static fileTypes: DataFileType[] = ['json', 'csv', 'tsv'];
+    static exportTypes: DataExportType[] = ['json', 'csv', 'tsv', 'html'];
 
     // Converts to dataExport type and calls dataExportHandler to deal with data
-    createExport(fileType: DataFileType, displayName: string) {
+    createExport(exportType: DataExportType, displayName: string) {
         const final = (data: any) => {
-            this.props.datasetExportHandler(data, fileType, displayName);
+            this.props.datasetExportHandler(data, exportType, displayName);
             this.close();
         };
         const json = JSON.stringify(this.props.data, columnReplacer);
-        switch (fileType) {
+        switch (exportType) {
             case 'json': {
                 final(json);
                 break;
@@ -58,6 +59,9 @@ export class DataExportPicker extends React.Component<Props, State> {
             case 'tsv': {
                 final(convertToDelimited(JSON.parse(json), '\t,'));
                 break;
+            }
+            case 'html': {
+                final(embedHtml.replace('<!--EMBED-->', embedScript(convertToDelimited(JSON.parse(json), ','), displayName)));
             }
         }
     }
@@ -99,36 +103,36 @@ export class DataExportPicker extends React.Component<Props, State> {
                     }}
                 >
                     <base.fabric.TextField
-                        label="fil ename"
+                        label={strings.labelExportFileName}
                         onChange={(e, displayName) => {
-                            const displayNameError = getDisplayNameError(displayName);
-                            this.setState({ displayName, displayNameError });
+                            const displayNameError = getFileNameError(displayName);
+                            this.setState({ fileName: displayName, fileNameError: displayNameError });
                         }}
-                        errorMessage={this.state.displayNameError}
-                        value={this.state.displayName}
+                        errorMessage={this.state.fileNameError}
+                        value={this.state.fileName}
                     />
                     <base.fabric.ChoiceGroup
                         disabled={disabled}
                         options={
-                            DataExportPicker.fileTypes.map(fileType => {
+                            DataExportPicker.exportTypes.map(exportType => {
                                 return {
-                                    key: fileType,
-                                    text: fileType,
+                                    key: exportType,
+                                    text: exportType,
                                     disabled: false,
-                                    checked: fileType === this.state.fileType
+                                    checked: exportType === this.state.exportType
                                 } as FabricTypes.IChoiceGroupOption;
                             })
                         }
                         onChange={(ev: React.FormEvent<HTMLInputElement>, option: FabricTypes.IChoiceGroupOption) =>
-                            this.setState({ fileType: option.text as DataFileType })
+                            this.setState({ exportType: option.text as DataExportType })
                         }
                         label={strings.labelExportFormat}
                     />
                     <base.fabric.DialogFooter>
                         <base.fabric.PrimaryButton
-                            disabled={disabled || !!this.state.displayNameError}
+                            disabled={disabled || !!this.state.fileNameError}
                             onClick={e => this.setState({
-                                delayAction: () => this.createExport(this.state.fileType, this.state.displayName),
+                                delayAction: () => this.createExport(this.state.exportType, this.state.fileName),
                                 working: true
                             })}
                             text={strings.buttonExport}
@@ -145,7 +149,7 @@ export class DataExportPicker extends React.Component<Props, State> {
 
 const illegalChars = `\\/:*?"<>|`;
 
-function getDisplayNameError(displayName: string) {
+function getFileNameError(displayName: string) {
     if (!displayName) {
         return strings.errorExportFilenameEmpty;
     }
@@ -179,4 +183,9 @@ function convertToDelimited(data: object[], delimiter?: string) {
     })
     file.unshift(fields.join(delimiter));
     return (file.join('\r\n'));
+}
+
+function embedScript(csv: string, displayName: string) {
+    const dataFile: DataFile = { rawText: csv, type: 'csv', displayName };
+    return `<script>SandDanceEmbed.load(${JSON.stringify(dataFile)})</script>`;
 }
