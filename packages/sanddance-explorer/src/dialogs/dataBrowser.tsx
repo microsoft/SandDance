@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
-import { DataExportPicker } from '../controls/dataExporter';
 import { DataExportHandler } from '../interfaces';
+import { DataExportPicker, removeExtensions } from '../controls/dataExporter';
 import { DataItem } from '../controls/dataItem';
 import { DataScopeId } from '../controls/dataScope';
 import { Dropdown } from '../controls/dropdown';
@@ -93,7 +93,9 @@ export function DataBrowser(props: Props) {
             </div>}
             {props.dataExportHandler && props.data && (
                 <DataExportPicker
-                    fileName={props.displayName}
+                    initializer={{
+                        fileName: `${removeExtensions(props.displayName)} (${props.data.length})`
+                    }}
                     data={props.data}
                     dataExportHandler={props.dataExportHandler}
                     disabled={props.disabled}

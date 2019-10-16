@@ -6,17 +6,22 @@ import { convertToDelimited } from '../exportDelimited';
 import { DataExportHandler, DataExportType, DataFile } from '../interfaces';
 import { embedHtml } from './dataExporterHtml';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
-import { SandDance } from '@msrvida/sanddance-react';
+import { SandDance, util } from '@msrvida/sanddance-react';
 import { strings } from '../language';
 
-export interface Props {
-    data: object[];
+export interface IInitializer {
     fileName: string;
+}
+
+export interface Props {
+    initializer: IInitializer;
+    data: object[];
     dataExportHandler: DataExportHandler;
     disabled?: boolean;
 }
 
 export interface State {
+    initializer: IInitializer;
     dialogHidden: boolean;
     exportType: DataExportType;
     fileName: string;
@@ -35,13 +40,25 @@ const exportTypes: ([DataExportType, string])[] = [
 export class DataExportPicker extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
-        this.state = {
+        this.state = this.getInitialState(this.props);
+    }
+
+    getInitialState(props: Props) {
+        const initialState: State = {
+            initializer: props.initializer,
             dialogHidden: true,
             exportType: exportTypes[0][0],
-            fileName: removeExtensions(props.fileName),
+            fileName: props.initializer.fileName,
             fileNameError: '',
             working: false
         };
+        return initialState;
+    }
+
+    componentDidUpdate() {
+        if (!util.deepCompare(this.props.initializer, this.state.initializer)) {
+            this.setState(this.getInitialState(this.props));
+        }
     }
 
     // Converts to dataExport type and calls dataExportHandler to deal with data
@@ -164,7 +181,7 @@ function getFileNameError(displayName: string) {
     }
 }
 
-function removeExtensions(fileName: string) {
+export function removeExtensions(fileName: string) {
     exportTypes.forEach(([exportType]) => {
         const re = new RegExp(`\\.${exportType}`, 'ig');
         fileName = fileName.replace(re, '');
