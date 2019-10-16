@@ -25,20 +25,25 @@ export interface State {
     delayAction?: () => void;
 }
 
+const exportTypes: ([DataExportType, string])[] = [
+    ['json', strings.labelExportJSON],
+    ['csv', strings.labelExportCSV],
+    ['tsv', strings.labelExportTSV],
+    ['html', strings.labelExportHTML]
+];
+
 export class DataExportPicker extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
             dialogHidden: true,
-            exportType: DataExportPicker.exportTypes[0],
+            exportType: exportTypes[0][0],
             fileName: props.fileName,
             fileNameError: '',
             working: false,
             error: ''
         };
     }
-
-    static exportTypes: DataExportType[] = ['json', 'csv', 'tsv', 'html'];
 
     // Converts to dataExport type and calls dataExportHandler to deal with data
     createExport(exportType: DataExportType, displayName: string) {
@@ -61,7 +66,7 @@ export class DataExportPicker extends React.Component<Props, State> {
                 break;
             }
             case 'html': {
-                final(embedHtml.replace('<!--EMBED-->', embedScript(convertToDelimited(JSON.parse(json), ','), displayName)));
+                final(embedHtml.replace(/<\/title>/, ` - ${escape(displayName)}</title>`).replace('<!--EMBED-->', embedScript(convertToDelimited(JSON.parse(json), ','), displayName)));
             }
         }
     }
@@ -114,17 +119,17 @@ export class DataExportPicker extends React.Component<Props, State> {
                     <base.fabric.ChoiceGroup
                         disabled={disabled}
                         options={
-                            DataExportPicker.exportTypes.map(exportType => {
+                            exportTypes.map(([exportType, text]) => {
                                 return {
                                     key: exportType,
-                                    text: exportType,
+                                    text,
                                     disabled: false,
                                     checked: exportType === this.state.exportType
                                 } as FabricTypes.IChoiceGroupOption;
                             })
                         }
                         onChange={(ev: React.FormEvent<HTMLInputElement>, option: FabricTypes.IChoiceGroupOption) =>
-                            this.setState({ exportType: option.text as DataExportType })
+                            this.setState({ exportType: option.key as DataExportType })
                         }
                         label={strings.labelExportFormat}
                     />
@@ -186,6 +191,7 @@ function convertToDelimited(data: object[], delimiter?: string) {
 }
 
 function embedScript(csv: string, displayName: string) {
-    const dataFile: DataFile = { rawText: csv, type: 'csv', displayName };
-    return `<script>SandDanceEmbed.load(${JSON.stringify(dataFile)})</script>`;
+    const dataFile: DataFile = { type: 'csv', displayName };
+    return `<pre id='csv-data' style='display:none'>${csv}</pre>    
+    <script>SandDanceEmbed.load(Object.assign({rawText: document.getElementById('csv-data').innerText}, ${JSON.stringify(dataFile)}))</script>`;
 }
