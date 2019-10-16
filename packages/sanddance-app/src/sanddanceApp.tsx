@@ -184,7 +184,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                         this.load(this.state.dataSource, snapshotOnLoad && snapshotOnLoad.insight);
                         this.props.mounted(this);
                     }}
-                    datasetExportHandler={(data, datatype) => downloadData(data, datatype, this.state.dataSource.displayName)}
+                    datasetExportHandler={(data, datatype, displayName) => downloadData(data, datatype, displayName)}
                     datasetElement={(
                         <DataSourcePicker
                             dataSource={this.state.dataSource}

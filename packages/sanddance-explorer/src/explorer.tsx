@@ -10,9 +10,9 @@ import { Color } from './dialogs/color';
 import {
     ColorSettings,
     DataContent,
+    DataExportHandler,
     DataFile,
-    Snapshot,
-    DataFileType
+    Snapshot
 } from './interfaces';
 import { ColumnMapBaseProps } from './controls/columnMap';
 import {
@@ -62,7 +62,7 @@ export interface Props {
     initialView?: SandDance.VegaDeckGl.types.View;
     mounted?: (explorer: Explorer) => any;
     datasetElement?: JSX.Element;
-    datasetExportHandler?: (data: any, datatype: DataFileType) => void;
+    datasetExportHandler?: DataExportHandler;
     topBarButtonProps?: FabricTypes.ICommandBarItemProps[];
     snapshotProps?: SnapshotProps;
     onSnapshotClick?: (snapshot: Snapshot) => void;
@@ -925,6 +925,7 @@ export class Explorer extends React.Component<Props, State> {
                                             disabled={!loaded || this.state.sidebarClosed}
                                             columns={this.state.dataContent && this.state.dataContent.columns}
                                             data={data}
+                                            displayName={(this.state.dataFile && this.state.dataFile.displayName) || ''}
                                             title={dataBrowserTitles[this.state.dataScopeId]}
                                             nullMessage={dataBrowserNullMessages[this.state.dataScopeId]}
                                             zeroMessage={dataBrowserZeroMessages[this.state.dataScopeId]}

@@ -2,20 +2,23 @@
 // Licensed under the MIT license.
 import * as React from 'react';
 import { base } from '../base';
-import { DataFileType } from '../interfaces';
+import { DataExportHandler, DataFileType } from '../interfaces';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
 
 export interface Props {
     data: object[];
-    datasetExportHandler: (data: any, datatype: DataFileType) => void;
+    displayName: string;
+    datasetExportHandler: DataExportHandler;
     disabled?: boolean;
 }
 
 export interface State {
     dialogHidden: boolean;
-    fileType?: DataFileType;
+    fileType: DataFileType;
+    displayName: string;
+    displayNameError: string;
     working: boolean;
     error: string,
     delayAction?: () => void;
@@ -27,6 +30,8 @@ export class DataExportPicker extends React.Component<Props, State> {
         this.state = {
             dialogHidden: true,
             fileType: DataExportPicker.fileTypes[0],
+            displayName: props.displayName,
+            displayNameError: '',
             working: false,
             error: ''
         };
@@ -35,9 +40,9 @@ export class DataExportPicker extends React.Component<Props, State> {
     static fileTypes: DataFileType[] = ['json', 'csv', 'tsv'];
 
     // Converts to dataExport type and calls dataExportHandler to deal with data
-    createExport(fileType: DataFileType) {
+    createExport(fileType: DataFileType, displayName: string) {
         const final = (data: any) => {
-            this.props.datasetExportHandler(data, fileType);
+            this.props.datasetExportHandler(data, fileType, displayName);
             this.close();
         };
         const json = JSON.stringify(this.props.data, columnReplacer);
@@ -93,6 +98,15 @@ export class DataExportPicker extends React.Component<Props, State> {
                         title: strings.labelExport
                     }}
                 >
+                    <base.fabric.TextField
+                        label="fil ename"
+                        onChange={(e, displayName) => {
+                            const displayNameError = getDisplayNameError(displayName);
+                            this.setState({ displayName, displayNameError });
+                        }}
+                        errorMessage={this.state.displayNameError}
+                        value={this.state.displayName}
+                    />
                     <base.fabric.ChoiceGroup
                         disabled={disabled}
                         options={
@@ -112,9 +126,9 @@ export class DataExportPicker extends React.Component<Props, State> {
                     />
                     <base.fabric.DialogFooter>
                         <base.fabric.PrimaryButton
-                            disabled={disabled}
+                            disabled={disabled || !!this.state.displayNameError}
                             onClick={e => this.setState({
-                                delayAction: () => this.createExport(this.state.fileType),
+                                delayAction: () => this.createExport(this.state.fileType, this.state.displayName),
                                 working: true
                             })}
                             text={strings.buttonExport}
@@ -126,6 +140,16 @@ export class DataExportPicker extends React.Component<Props, State> {
                 </base.fabric.Dialog>
             </div>
         );
+    }
+}
+
+const illegalChars = `\\/:*?"<>|`;
+
+function getDisplayNameError(displayName: string) {
+    for (let i = 0; i < illegalChars.length; i++) {
+        if (displayName.indexOf(illegalChars[i]) >= 0) {
+            return strings.labelErrorExportFilenameCharacters(illegalChars);
+        }
     }
 }
 

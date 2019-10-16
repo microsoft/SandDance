@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import * as React from 'react';
 import { DataExportPicker } from '../controls/dataExporter';
-import { DataFileType } from '../interfaces';
+import { DataExportHandler } from '../interfaces';
 import { DataItem } from '../controls/dataItem';
 import { DataScopeId } from '../controls/dataScope';
 import { Dropdown } from '../controls/dropdown';
@@ -25,9 +25,10 @@ export interface Props {
     zeroMessage: string;
     itemVisible: boolean;
     themePalette: Partial<FabricTypes.IPalette>;
-    datasetExportHandler: (data: any, datatype: DataFileType) => void;
+    datasetExportHandler: DataExportHandler;
     selectedDataScope: DataScopeId;
     onDataScopeClick: (dataScopeId: DataScopeId) => void;
+    displayName: string;
 }
 
 export function DataBrowser(props: Props) {
@@ -92,6 +93,7 @@ export function DataBrowser(props: Props) {
             </div>}
             {props.datasetExportHandler && props.data && (
                 <DataExportPicker
+                    displayName={props.displayName}
                     data={props.data}
                     datasetExportHandler={props.datasetExportHandler}
                 />
