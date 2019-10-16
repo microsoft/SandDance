@@ -147,11 +147,11 @@ const illegalChars = `\\/:*?"<>|`;
 
 function getDisplayNameError(displayName: string) {
     if (!displayName) {
-        return strings.labelErrorExportFilenameEmpty;
+        return strings.errorExportFilenameEmpty;
     }
     for (let i = 0; i < illegalChars.length; i++) {
         if (displayName.indexOf(illegalChars[i]) >= 0) {
-            return strings.labelErrorExportFilenameCharacters(illegalChars);
+            return strings.errorExportFilenameCharacters(illegalChars);
         }
     }
 }
