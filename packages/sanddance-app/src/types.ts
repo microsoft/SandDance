@@ -8,7 +8,6 @@ export type DataSourceType = 'sample' | 'local' | 'url';
 
 export interface DataSource extends DataFile {
   dataSourceType: DataSourceType;
-  displayName: string;
   id: string;
 }
 
