@@ -60,7 +60,7 @@ export class DataExportPicker extends React.Component<Props, State> {
                 break;
             }
             case 'tsv': {
-                final(convertToDelimited(JSON.parse(json), '\t,'));
+                final(convertToDelimited(JSON.parse(json), '\t'));
                 break;
             }
             case 'html': {
@@ -77,13 +77,13 @@ export class DataExportPicker extends React.Component<Props, State> {
         const closeDialog = () => this.close();
 
         if (this.state.delayAction) {
-            setTimeout(() => {
+            requestAnimationFrame(() => {
                 //allow render to complete
                 if (this.state.delayAction) {
                     this.state.delayAction();
                     this.setState({ delayAction: null });
                 }
-            }, 0);
+            });
         }
 
         const disabled = this.state.working || this.state.dialogHidden;
