@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-export const embedHtml = `<!DOCTYPE html>
+export const embedHtml = (title: string, embed: string) => `<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SandDance</title>
+    <title>${title}</title>
     <link rel="stylesheet" type="text/css"
         href="https://unpkg.com/@msrvida/sanddance-embed@1/dist/css/sanddance-embed.css" />
     <link rel="stylesheet" type="text/css"
@@ -24,7 +24,7 @@ export const embedHtml = `<!DOCTYPE html>
 
     <div id="app"></div>
 
-    <!--EMBED-->
+    ${embed}
 
 </body>
 

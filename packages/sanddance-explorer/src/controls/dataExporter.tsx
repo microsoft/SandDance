@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import * as React from 'react';
 import { base } from '../base';
+import { convertToDelimited } from '../exportDelimited';
 import { DataExportHandler, DataExportType, DataFile } from '../interfaces';
 import { embedHtml } from './dataExporterHtml';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
@@ -37,7 +38,7 @@ export class DataExportPicker extends React.Component<Props, State> {
         this.state = {
             dialogHidden: true,
             exportType: exportTypes[0][0],
-            fileName: props.fileName,
+            fileName: removeExtensions(props.fileName),
             fileNameError: '',
             working: false
         };
@@ -64,7 +65,7 @@ export class DataExportPicker extends React.Component<Props, State> {
                 break;
             }
             case 'html': {
-                final(embedHtml.replace(/<\/title>/, ` - ${escape(displayName)}</title>`).replace('<!--EMBED-->', embedScript(convertToDelimited(JSON.parse(json), ','), displayName)));
+                final(embedHtml(`${strings.appName} - ${escape(displayName)}`, embedScript(convertToDelimited(JSON.parse(json), ','), displayName)));
             }
         }
     }
@@ -163,29 +164,19 @@ function getFileNameError(displayName: string) {
     }
 }
 
+function removeExtensions(fileName: string) {
+    exportTypes.forEach(([exportType]) => {
+        const re = new RegExp(`\\.${exportType}`, 'ig');
+        fileName = fileName.replace(re, '');
+    });
+    return fileName;
+}
+
 function columnReplacer(name: string, value: any) {
     if (SandDance.util.isInternalFieldName(name, true)) {
         return undefined;
     }
     return value === null ? '' : value;
-}
-
-function convertToDelimited(data: object[], delimiter?: string) {
-    var fields = Object.keys(data[0]);
-    var file = data.map(row => {
-        return fields.map(fieldName => {
-            const value: any = row[fieldName];
-            if (typeof value === 'number') {
-                return value;
-            }
-            if (typeof value === 'string') {
-                return `"${value.replace(/"/g, '""')}"`;
-            }
-            return '';
-        }).join(delimiter)
-    })
-    file.unshift(fields.join(delimiter));
-    return (file.join('\r\n'));
 }
 
 function embedScript(csv: string, displayName: string) {
