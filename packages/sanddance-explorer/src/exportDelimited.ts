@@ -17,8 +17,8 @@ export function convertToDelimited(data: object[], delimiter?: string) {
                 }
             }
             return '';
-        }).join(delimiter)
-    })
+        }).join(delimiter);
+    });
     file.unshift(fields.join(delimiter));
     return (file.join('\n'));
 }
