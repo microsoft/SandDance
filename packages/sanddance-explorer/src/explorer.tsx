@@ -10,6 +10,7 @@ import { Color } from './dialogs/color';
 import {
     ColorSettings,
     DataContent,
+    DataExportHandler,
     DataFile,
     Snapshot
 } from './interfaces';
@@ -62,6 +63,7 @@ export interface Props {
     initialView?: SandDance.VegaDeckGl.types.View;
     mounted?: (explorer: Explorer) => any;
     datasetElement?: JSX.Element;
+    dataExportHandler?: DataExportHandler;
     topBarButtonProps?: FabricTypes.ICommandBarItemProps[];
     snapshotProps?: SnapshotProps;
     onSnapshotClick?: (snapshot: Snapshot) => void;
@@ -199,7 +201,7 @@ export class Explorer extends React.Component<Props, State> {
                 this.changeInsight({ filter: dataFilter, filteredData, selectedItemIndex });
                 if (this.state.sideTabId === SideTabId.Data && this.state.dataScopeId === DataScopeId.FilteredData) {
                     //make sure item is active
-                    setTimeout(() => this.silentActivation(filteredData[0]), 0);
+                    requestAnimationFrame(() => this.silentActivation(filteredData[0]));
                 }
                 viewerOptions && viewerOptions.onDataFilter && viewerOptions.onDataFilter(dataFilter, filteredData);
             },
@@ -533,11 +535,11 @@ export class Explorer extends React.Component<Props, State> {
                         this.viewer.deselect().then(() => {
                             this.ignoreSelectionChange = false;
                             //allow deselection to render
-                            setTimeout(() => {
+                            requestAnimationFrame(() => {
                                 columns['color'] = column.name;
                                 this.getColorContext = null;
                                 this.changeInsight(newState as any);
-                            }, 0);
+                            });
                         });
                     })();
                     break;
@@ -737,13 +739,13 @@ export class Explorer extends React.Component<Props, State> {
         datas[DataScopeId.SelectedData] = selectionState && selectionState.selectedData;
 
         if (this.state.calculating) {
-            setTimeout(() => {
+            requestAnimationFrame(() => {
                 //allow render to complete
                 if (this.state.calculating) {
                     this.state.calculating();
                     this.setState({ calculating: null });
                 }
-            }, 0);
+            });
         }
 
         const theme = this.props.theme || '';
@@ -881,11 +883,11 @@ export class Explorer extends React.Component<Props, State> {
                                                 this.viewer.deselect().then(() => {
                                                     this.ignoreSelectionChange = false;
                                                     //allow deselection to render
-                                                    setTimeout(() => {
+                                                    requestAnimationFrame(() => {
                                                         this.getColorContext = null;
                                                         this.changeInsight({ colorBin });
                                                         savePref(this.prefs, this.state.chart, 'color', this.state.columns.color, { colorBin });
-                                                    }, 0);
+                                                    });
                                                 });
                                             }}
                                             onColorSchemeChange={(scheme) => {
@@ -924,11 +926,15 @@ export class Explorer extends React.Component<Props, State> {
                                             disabled={!loaded || this.state.sidebarClosed}
                                             columns={this.state.dataContent && this.state.dataContent.columns}
                                             data={data}
+                                            displayName={(this.state.dataFile && this.state.dataFile.displayName) || strings.defaultFileName}
                                             title={dataBrowserTitles[this.state.dataScopeId]}
                                             nullMessage={dataBrowserNullMessages[this.state.dataScopeId]}
                                             zeroMessage={dataBrowserZeroMessages[this.state.dataScopeId]}
                                             index={this.state.selectedItemIndex[this.state.dataScopeId]}
                                             itemVisible={itemVisible}
+                                            dataExportHandler={this.props.dataExportHandler}
+                                            selectedDataScope={this.state.dataScopeId}
+                                            onDataScopeClick={dataScopeId => this.setSideTabId(SideTabId.Data, dataScopeId)}
                                             onActivate={(row, index) => {
                                                 const selectedItemIndex = { ...this.state.selectedItemIndex };
                                                 selectedItemIndex[this.state.dataScopeId] = index;

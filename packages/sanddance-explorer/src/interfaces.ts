@@ -7,6 +7,7 @@ import { SandDance } from '@msrvida/sanddance-react';
 export type DataFileType = 'json' | 'csv' | 'tsv' | 'topojson';
 
 export interface DataFile {
+  displayName?: string;
   dataUrl?: string;
   rawText?: string;
   type: DataFileType;
@@ -15,6 +16,12 @@ export interface DataFile {
 export interface DataContent {
   data: object[];
   columns: SandDance.types.Column[];
+}
+
+export type DataExportType = DataFileType | 'html';
+
+export interface DataExportHandler {
+  (data: any, datatype: DataExportType, displayName: string): void;
 }
 
 export interface Snapshot {

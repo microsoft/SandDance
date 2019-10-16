@@ -1,7 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
+import { DataExportHandler } from '../interfaces';
+import { DataExportPicker, removeExtensions } from '../controls/dataExporter';
 import { DataItem } from '../controls/dataItem';
+import { DataScopeId } from '../controls/dataScope';
+import { Dropdown } from '../controls/dropdown';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { Group } from '../controls/group';
 import { IconButton } from '../controls/iconButton';
@@ -22,6 +26,10 @@ export interface Props {
     zeroMessage: string;
     itemVisible: boolean;
     themePalette: Partial<FabricTypes.IPalette>;
+    dataExportHandler: DataExportHandler;
+    selectedDataScope: DataScopeId;
+    onDataScopeClick: (dataScopeId: DataScopeId) => void;
+    displayName: string;
 }
 
 export function DataBrowser(props: Props) {
@@ -31,7 +39,31 @@ export function DataBrowser(props: Props) {
     const { index } = props;
     const length = props.data && props.data.length || 0;
     return (
-        <Group label={props.title} className="sanddance-dataIndex">
+        <Group label={strings.labelDataBrowser} className="sanddance-dataIndex">
+            <Dropdown
+                label={strings.labelDataScope}
+                collapseLabel={true}
+                options={[
+                    {
+                        key: DataScopeId.AllData,
+                        text: strings.selectDataSpanAll,
+                        isSelected: props.selectedDataScope === DataScopeId.AllData
+                    },
+                    {
+                        key: DataScopeId.FilteredData,
+                        text: strings.selectDataSpanFilter,
+                        isSelected: props.selectedDataScope === DataScopeId.FilteredData
+                    },
+                    {
+                        key: DataScopeId.SelectedData,
+                        text: strings.selectDataSpanSelection,
+                        isSelected: props.selectedDataScope === DataScopeId.SelectedData
+                    }
+                ]}
+                onChange={(e, o) => {
+                    props.onDataScopeClick(o.key as DataScopeId);
+                }}
+            />
             {!props.data && <div dangerouslySetInnerHTML={{ __html: props.nullMessage }}></div>}
             {props.data && !props.data.length && <div>{props.zeroMessage}</div>}
             {!!length && <div>
@@ -61,6 +93,16 @@ export function DataBrowser(props: Props) {
                     bingSearchDisabled={props.bingSearchDisabled}
                 />
             </div>}
+            {props.dataExportHandler && props.data && (
+                <DataExportPicker
+                    initializer={{
+                        fileName: `${removeExtensions(props.displayName)} (${props.data.length})`
+                    }}
+                    data={props.data}
+                    dataExportHandler={props.dataExportHandler}
+                    disabled={props.disabled}
+                />
+            )}
         </Group>
     );
 }

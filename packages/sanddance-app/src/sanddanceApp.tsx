@@ -14,6 +14,7 @@ import {
 } from '@msrvida/sanddance-explorer';
 import { DataSource, DataSourceSnapshot, InsightMap } from './types';
 import { DataSourcePicker } from './dataSourcePicker';
+import { downloadData } from './download';
 import { strings } from './language';
 
 import VegaDeckGl = SandDance.VegaDeckGl;
@@ -154,7 +155,6 @@ export class SandDanceApp extends React.Component<Props, State> {
     }
 
     render() {
-        const themePalette = this.getThemePalette(this.state.darkTheme);
         return (
             <section className="sanddance-app">
                 <Explorer
@@ -182,6 +182,14 @@ export class SandDanceApp extends React.Component<Props, State> {
                         this.explorer = e;
                         this.load(this.state.dataSource, snapshotOnLoad && snapshotOnLoad.insight);
                         this.props.mounted(this);
+                    }}
+                    dataExportHandler={(data, datatype, displayName) => {
+                        try {
+                            downloadData(data, `${displayName}.${datatype}`);
+                        }
+                        catch (e) {
+                            this.explorer.setState({ errors: [strings.errorDownloadFailure] });
+                        }
                     }}
                     datasetElement={(
                         <DataSourcePicker

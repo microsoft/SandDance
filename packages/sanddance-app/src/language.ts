@@ -25,5 +25,6 @@ export const strings = {
     errorInvalidFileFormat: 'Invalid file format',
     errorNoUrl: 'Please enter a url',
     errorUrlHttp: 'Url must begin with "http"',
+    errorDownloadFailure: 'Data could not be prepared for download.',
     snapshots: 'Snapshots'
 };
