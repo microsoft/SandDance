@@ -96,6 +96,7 @@ export function DataBrowser(props: Props) {
                     fileName={props.displayName}
                     data={props.data}
                     dataExportHandler={props.dataExportHandler}
+                    disabled={props.disabled}
                 />
             )}
         </Group>
