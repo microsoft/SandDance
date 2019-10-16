@@ -9,21 +9,16 @@ export function downloadData(data: any, datatype: DataFileType, displayName: str
 
     // Adapted from https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
     var element = document.createElement('a');
-    //element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(String(data)));
     element.setAttribute('download', filename);
-    element.setAttribute('style', 'position:fixed;top:0;left: 0;z-index:9;background:pink');
-    element.innerText = 'download';
-    //element.style.display = 'none';
     document.body.appendChild(element);
 
     dataURIToBlob(data, blob => {
         element.href = URL.createObjectURL(blob);
-        console.log(element.href);
-        // you must revoke the object URL, 
-        //   but since we can't know when the download occured, we have to attach it on the click handler..
-        element.onclick = function () {
+        // we must revoke the object URL, 
+        // since we can't know when the download occured, we have to attach it on the click handler..
+        element.onclick = () => {
             // ..and to wait a frame
-            requestAnimationFrame(function () {
+            requestAnimationFrame(() => {
                 URL.revokeObjectURL(element.href);
             });
             document.body.removeChild(element);
@@ -45,6 +40,6 @@ function dataURIToBlob(binStr: string, callback: (blob: Blob) => void) {
         callback(new Blob([arr]));
     }
     catch (e) {
-        console.log(e);
+        //noop
     }
 }
