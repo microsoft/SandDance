@@ -21,7 +21,6 @@ export interface State {
     fileName: string;
     fileNameError: string;
     working: boolean;
-    error: string,
     delayAction?: () => void;
 }
 
@@ -40,8 +39,7 @@ export class DataExportPicker extends React.Component<Props, State> {
             exportType: exportTypes[0][0],
             fileName: props.fileName,
             fileNameError: '',
-            working: false,
-            error: ''
+            working: false
         };
     }
 
