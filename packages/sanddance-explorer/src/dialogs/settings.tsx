@@ -19,6 +19,7 @@ import {
     SequentialScale,
     Signal as VegaSignal,
     Spec,
+    Transforms,
     UrlData,
     ValuesData
 } from 'vega-typings/types';
@@ -53,15 +54,15 @@ enum DataRefType {
 
 function filterSignals(signal: NewSignal) {
     switch (signal.name) {
-    case SandDance.constants.SignalNames.XBins:
-    case SandDance.constants.SignalNames.YBins:
-    case SandDance.constants.SignalNames.ColorBinCount:
-    case SandDance.constants.SignalNames.ColorReverse:
-    case SandDance.constants.SignalNames.PointSize:
-    case SandDance.constants.SignalNames.TreeMapMethod:
-        return false;
-    default:
-        return !!signal.bind;
+        case SandDance.constants.SignalNames.XBins:
+        case SandDance.constants.SignalNames.YBins:
+        case SandDance.constants.SignalNames.ColorBinCount:
+        case SandDance.constants.SignalNames.ColorReverse:
+        case SandDance.constants.SignalNames.PointSize:
+        case SandDance.constants.SignalNames.TreeMapMethod:
+            return false;
+        default:
+            return !!signal.bind;
     }
 }
 
@@ -79,7 +80,7 @@ function cloneScales(vegaSpec: Spec) {
     return SandDance.VegaDeckGl.util.clone(vegaSpec.scales);
 }
 
-function serializeSpec(vegaSpec: Spec, datafile: DataFile, dataRefType: DataRefType, scheme: string) {
+function serializeSpec(vegaSpec: Spec, datafile: DataFile, dataRefType: DataRefType, transform: Transforms[], scheme: string) {
     const scales = cloneScales(vegaSpec);
     const colorScale = scales.filter(scale => scale.name === SandDance.constants.ScaleNames.Color)[0];
     if (scheme.indexOf('dual_') >= 0) {
@@ -93,10 +94,16 @@ function serializeSpec(vegaSpec: Spec, datafile: DataFile, dataRefType: DataRefT
     if (dataRefType === DataRefType.none) {
         const valuesData = data0 as ValuesData;
         valuesData.values = [];
+        if (transform) {
+            valuesData.transform = transform;
+        }
     } else if (dataRefType === DataRefType.url) {
         const urlData = data0 as UrlData;
         urlData.url = datafile.dataUrl;
         urlData.format = { parse: 'auto', type: datafile.type };
+        if (transform) {
+            urlData.transform = transform;
+        }
     }
     return { ...vegaSpec, data, scales };
 }
@@ -212,7 +219,7 @@ export class Settings extends React.Component<Props, State> {
                         text={strings.buttonShowVegaSpec}
                         onClick={() => this.setState({
                             showVegaDialog: true,
-                            spec: serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, this.state.dataRefType, this.props.scheme)
+                            spec: serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, this.state.dataRefType, props.explorer.viewer.getInsight().transform, this.props.scheme)
                         })}
                     />
                 </Group>
@@ -301,7 +308,7 @@ export class Settings extends React.Component<Props, State> {
                         options={options}
                         onChange={(e, o) => this.setState({
                             dataRefType: o.data,
-                            spec: serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, o.data, this.props.scheme)
+                            spec: serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, o.data, props.explorer.viewer.getInsight().transform, this.props.scheme)
                         })}
                     />
                     <pre id="sanddance-vega-spec">
