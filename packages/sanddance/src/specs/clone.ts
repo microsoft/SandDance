@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { create } from '.';
-import { Data } from 'vega-typings';
 import { inferAll } from './inference';
 import { SpecContext } from './types';
 import { SpecResult } from './interfaces';
+import { ValuesData } from 'vega-typings';
 
 export function cloneVegaSpecWithData(context: SpecContext, currData: object[]): SpecResult {
     const { specColumns } = context;
@@ -22,7 +22,7 @@ export function cloneVegaSpecWithData(context: SpecContext, currData: object[]):
 
     const specResult = create(context);
     if (!specResult.errors) {
-        const data0 = specResult.vegaSpec.data[0] as Data & { values: object[] };
+        const data0 = specResult.vegaSpec.data[0] as ValuesData;
         data0.values = currData;
     }
     return specResult;
