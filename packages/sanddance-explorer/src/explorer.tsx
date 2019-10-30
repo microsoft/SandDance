@@ -156,6 +156,7 @@ export class Explorer extends React.Component<Props, State> {
                 width: null
             },
             scheme: null,
+            transform: null,
             columns: null,
             chart: 'grid',
             signalValues: null,
@@ -368,13 +369,14 @@ export class Explorer extends React.Component<Props, State> {
                     autoCompleteDistinctValues: {},
                     filter: null,
                     filteredData: null,
+                    transform: null,
                     tooltipExclusions: (optionsOrPrefs && (optionsOrPrefs as Options).tooltipExclusions) || [],
                     selectedItemIndex,
                     sideTabId,
                     ...partialInsight
                 };
                 this.getColorContext = null;
-                ensureColumnsExist(newState.columns, dataContent.columns);
+                ensureColumnsExist(newState.columns, dataContent.columns, newState.transform);
                 const errors = ensureColumnsPopulated(partialInsight ? partialInsight.chart : null, newState.columns, dataContent.columns);
                 newState.errors = errors;
                 //change insight
@@ -431,7 +433,7 @@ export class Explorer extends React.Component<Props, State> {
             newState.view = '3d';
         }
 
-        ensureColumnsExist(newState.columns, this.state.dataContent.columns);
+        ensureColumnsExist(newState.columns, this.state.dataContent.columns, newState.transform);
         const errors = ensureColumnsPopulated(chart, newState.columns, this.state.dataContent.columns);
         if (errors) {
             newState.errors = errors;
@@ -710,7 +712,7 @@ export class Explorer extends React.Component<Props, State> {
     }
 
     render() {
-        const { colorBin, columns, directColor, facets, filter, hideAxes, hideLegend, scheme, signalValues, size, chart, view } = this.state;
+        const { colorBin, columns, directColor, facets, filter, hideAxes, hideLegend, scheme, signalValues, size, transform, chart, view } = this.state;
         const insight: SandDance.types.Insight = {
             colorBin,
             columns,
@@ -722,6 +724,7 @@ export class Explorer extends React.Component<Props, State> {
             scheme,
             signalValues,
             size,
+            transform,
             chart,
             view
         };

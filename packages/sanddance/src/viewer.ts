@@ -42,7 +42,7 @@ import { mount } from 'tsx-create-element';
 import { recolorAxes } from './axes';
 import { registerColorSchemes } from './colorSchemes';
 import { Search, SearchExpression, SearchExpressionGroup } from './searchExpression/types';
-import { Spec } from 'vega-typings';
+import { Spec, Transforms } from 'vega-typings';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 import { Tooltip } from './tooltip';
 import { ViewGl_Class } from './vega-deck.gl/vega-classes/viewGl';
@@ -180,59 +180,59 @@ export class Viewer {
 
     private onDataChanged(dataLayout: DataLayoutChange, filter?: Search) {
         switch (dataLayout) {
-        case DataLayoutChange.same: {
-            this.renderSameLayout();
-            break;
-        }
-        case DataLayoutChange.refine: {
-            //save cube colors
-            const oldColorContext = this.colorContexts[this.currentColorContext];
-            let colorMap: ColorMap;
-            this.renderNewLayout({
-                preStage: (stage: VegaDeckGl.types.Stage, deckProps: DeckProps) => {
-                    //save off the spec colors
-                    colorMap = colorMapFromCubes(stage.cubeData);
-                    applyColorMapToCubes([oldColorContext.colorMap], VegaDeckGl.util.getCubes(deckProps));
-                    this.preStage(stage, deckProps);
-                },
-                onPresent: () => {
-                    //save new legend
-                    const newColorContext: ColorContext = {
-                        colorMap,
-                        legend: VegaDeckGl.util.clone(this.presenter.stage.legend),
-                        legendElement: this.presenter.getElement(VegaDeckGl.PresenterElement.legend).children[0] as HTMLElement
-                    };
+            case DataLayoutChange.same: {
+                this.renderSameLayout();
+                break;
+            }
+            case DataLayoutChange.refine: {
+                //save cube colors
+                const oldColorContext = this.colorContexts[this.currentColorContext];
+                let colorMap: ColorMap;
+                this.renderNewLayout({
+                    preStage: (stage: VegaDeckGl.types.Stage, deckProps: DeckProps) => {
+                        //save off the spec colors
+                        colorMap = colorMapFromCubes(stage.cubeData);
+                        applyColorMapToCubes([oldColorContext.colorMap], VegaDeckGl.util.getCubes(deckProps));
+                        this.preStage(stage, deckProps);
+                    },
+                    onPresent: () => {
+                        //save new legend
+                        const newColorContext: ColorContext = {
+                            colorMap,
+                            legend: VegaDeckGl.util.clone(this.presenter.stage.legend),
+                            legendElement: this.presenter.getElement(VegaDeckGl.PresenterElement.legend).children[0] as HTMLElement
+                        };
                         //apply old legend
-                    this.applyLegendColorContext(oldColorContext);
-                    this.changeColorContexts([oldColorContext, newColorContext]);
-                }
-            });
+                        this.applyLegendColorContext(oldColorContext);
+                        this.changeColorContexts([oldColorContext, newColorContext]);
+                    }
+                });
 
-            this.insight.filter = searchExpression.narrow(this.insight.filter, filter);
-            if (this.options.onDataFilter) {
-                this.options.onDataFilter(this.insight.filter, this._dataScope.currentData());
-            }
-            break;
-        }
-        case DataLayoutChange.reset: {
-            const colorContext: ColorContext = {
-                colorMap: null,
-                legend: null,
-                legendElement: null
-            };
-            this.changeColorContexts([colorContext]);
-            this.renderNewLayout({
-                onPresent: () => {
-                    populateColorContext(colorContext, this.presenter);
+                this.insight.filter = searchExpression.narrow(this.insight.filter, filter);
+                if (this.options.onDataFilter) {
+                    this.options.onDataFilter(this.insight.filter, this._dataScope.currentData());
                 }
-            });
-
-            delete this.insight.filter;
-            if (this.options.onDataFilter) {
-                this.options.onDataFilter(null, null);
+                break;
             }
-            break;
-        }
+            case DataLayoutChange.reset: {
+                const colorContext: ColorContext = {
+                    colorMap: null,
+                    legend: null,
+                    legendElement: null
+                };
+                this.changeColorContexts([colorContext]);
+                this.renderNewLayout({
+                    onPresent: () => {
+                        populateColorContext(colorContext, this.presenter);
+                    }
+                });
+
+                delete this.insight.filter;
+                if (this.options.onDataFilter) {
+                    this.options.onDataFilter(null, null);
+                }
+                break;
+            }
         }
         if (this.options.onSelectionChanged) {
             const sel = this.getSelection();
@@ -338,6 +338,22 @@ export class Viewer {
         }
     }
 
+    private transformData(values: object[], transform: Transforms[]) {
+        try {
+            const runtime = VegaDeckGl.base.vega.parse({
+                $schema: "https://vega.github.io/schema/vega/v4.json",
+                data: [{
+                    name: 'source',
+                    values,
+                    transform
+                }]
+            });
+            new VegaDeckGl.ViewGl(runtime).run();
+        }
+        catch (e) { }
+        return values;
+    }
+
     /**
      * Render data into a visualization.
      * @param insight Object to create a visualization specification.
@@ -349,7 +365,7 @@ export class Viewer {
         return new Promise<RenderResult>((resolve, reject) => {
             let result: RenderResult;
             const layout = () => {
-                result = this._render(insight, data, options);
+                result = this._render(insight, insight.transform ? this.transformData(data, insight.transform) : data, options);
             };
             //see if refine expression has changed
             if (!searchExpression.compare(insight.filter, this.insight.filter)) {

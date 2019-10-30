@@ -3,7 +3,7 @@
 import * as VegaDeckGl from '../vega-deck.gl';
 import { Color } from '@deck.gl/core/utils/color';
 import { Search } from '../searchExpression/types';
-import { TypeInference } from 'vega-typings';
+import { Transforms, TypeInference } from 'vega-typings';
 
 /**
  * Type of selection scope on an axis.
@@ -156,6 +156,11 @@ export interface Insight {
      * Optional flag to use CSS colors directly from data.
      */
     directColor?: boolean;
+
+    /**
+     * Optional array of Vega transforms to apply to the data.
+     */
+    transform?: Transforms[];
 }
 
 export type InsightColumnRoles = 'uid' | 'x' | 'y' | 'z' | 'group' | 'size' | 'color' | 'facet' | 'sort';
