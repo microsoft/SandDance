@@ -47,7 +47,7 @@ export function partialAxes(specViewOptions: SpecViewOptions, bottomType: AxisTy
         ...axisColor
     };
     if (bottomType === AxisType.date) {
-        dateAxisEncode(bottom);
+        dateAxisEncode(bottom, SignalNames.XDateFormat);
     } else if (bottomType === AxisType.quantitative) {
         bottom.format = '~r';
     }
@@ -73,19 +73,19 @@ export function partialAxes(specViewOptions: SpecViewOptions, bottomType: AxisTy
         ...axisColor
     };
     if (leftType === AxisType.date) {
-        dateAxisEncode(left);
+        dateAxisEncode(left, SignalNames.YDateFormat);
     } else if (leftType === AxisType.quantitative) {
         left.format = '~r';
     }
     return { left, bottom };
 }
 
-function dateAxisEncode(axis: Partial<Axis>) {
+function dateAxisEncode(axis: Partial<Axis>, signalName: string) {
     axis.encode = {
         labels: {
             update: {
                 text: {
-                    signal: "timeFormat(datum.value, '%b %Y')"
+                    signal: `timeFormat(datum.value, ${signalName})`
                 }
             }
         }
