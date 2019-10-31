@@ -341,7 +341,7 @@ export class Viewer {
     private transformData(values: object[], transform: Transforms[]) {
         try {
             const runtime = VegaDeckGl.base.vega.parse({
-                $schema: "https://vega.github.io/schema/vega/v4.json",
+                $schema: 'https://vega.github.io/schema/vega/v4.json',
                 data: [{
                     name: 'source',
                     values,
