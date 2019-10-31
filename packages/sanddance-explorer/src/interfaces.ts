@@ -44,3 +44,7 @@ export interface ColorSettings extends SandDance.types.ColorSettings {
 export interface ViewerOptions extends SandDance.types.ViewerOptions {
   colors: ColorSettings;
 }
+
+export interface DateWithSource extends Date {
+  input?: string;
+}
