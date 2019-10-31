@@ -433,7 +433,7 @@ export class Explorer extends React.Component<Props, State> {
             newState.view = '3d';
         }
 
-        ensureColumnsExist(newState.columns, this.state.dataContent.columns, newState.transform);
+        ensureColumnsExist(newState.columns, this.state.dataContent.columns, this.state.transform);
         const errors = ensureColumnsPopulated(chart, newState.columns, this.state.dataContent.columns);
         if (errors) {
             newState.errors = errors;
