@@ -365,7 +365,7 @@ export class Viewer {
         return new Promise<RenderResult>((resolve, reject) => {
             let result: RenderResult;
             const layout = () => {
-                result = this._render(insight, insight.transform ? this.transformData(data, insight.transform) : data, options);
+                result = this._render(insight, data, options);
             };
             //see if refine expression has changed
             if (!searchExpression.compare(insight.filter, this.insight.filter)) {
@@ -431,6 +431,8 @@ export class Viewer {
         if (this._dataScope.setData(data, options.columns)) {
             //data is different, reset the signal value cache
             this._signalValues = {};
+            //apply transform to the data
+            this.transformData(data, insight.transform);
         }
         this._specColumns = getSpecColumns(insight, this._dataScope.getColumns(options.columnTypes));
         const ordinalMap = assignOrdinals(this._specColumns, data, options.ordinalMap);
