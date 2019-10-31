@@ -318,6 +318,10 @@ export class Explorer extends React.Component<Props, State> {
         });
     }
 
+    getInsight() {
+        return this.viewer.getInsight();
+    }
+
     setInsight(partialInsight: Partial<SandDance.types.Insight>) {
         const selectedItemIndex = { ...this.state.selectedItemIndex };
         selectedItemIndex[DataScopeId.AllData] = 0;
