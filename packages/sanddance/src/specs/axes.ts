@@ -5,7 +5,21 @@ import { Column, SpecViewOptions } from './types';
 import { SignalNames } from './constants';
 import { util } from '../vega-deck.gl';
 
-export function partialAxes(specViewOptions: SpecViewOptions, xColumnQuantitative: boolean, yColumnQuantitative: boolean) {
+export enum AxisType {
+    quantitative, categoric, date
+}
+
+export function columnToAxisType(c: Column): AxisType {
+    if (c.type === 'date') {
+        return AxisType.date;
+    }
+    if (c.quantitative) {
+        return AxisType.quantitative
+    }
+    return AxisType.categoric;
+}
+
+export function partialAxes(specViewOptions: SpecViewOptions, bottomType: AxisType, leftType: AxisType) {
     const lineColor = util.colorToString(specViewOptions.colors.axisLine);
     const axisColor = {
         domainColor: lineColor,
@@ -32,7 +46,9 @@ export function partialAxes(specViewOptions: SpecViewOptions, xColumnQuantitativ
         tickSize: specViewOptions.tickSize,
         ...axisColor
     };
-    if (xColumnQuantitative) {
+    if (bottomType === AxisType.date) {
+        dateAxisEncode(bottom);
+    } else if (bottomType === AxisType.quantitative) {
         bottom.format = '~r';
     }
     const left: Partial<Axis> =
@@ -56,8 +72,22 @@ export function partialAxes(specViewOptions: SpecViewOptions, xColumnQuantitativ
         tickSize: specViewOptions.tickSize,
         ...axisColor
     };
-    if (yColumnQuantitative) {
+    if (leftType === AxisType.date) {
+        dateAxisEncode(left);
+    } else if (leftType === AxisType.quantitative) {
         left.format = '~r';
     }
     return { left, bottom };
+}
+
+function dateAxisEncode(axis: Partial<Axis>) {
+    axis.encode = {
+        labels: {
+            update: {
+                text: {
+                    signal: "timeFormat(datum.value, '%b %Y')"
+                }
+            }
+        }
+    };
 }
