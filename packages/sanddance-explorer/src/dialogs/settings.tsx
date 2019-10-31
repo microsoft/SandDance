@@ -95,14 +95,22 @@ function serializeSpec(vegaSpec: Spec, datafile: DataFile, dataRefType: DataRefT
         const valuesData = data0 as ValuesData;
         valuesData.values = [];
         if (transform) {
-            valuesData.transform = transform;
+            if (valuesData.transform) {
+                valuesData.transform.push.apply(valuesData.transform, transform);
+            } else {
+                valuesData.transform = transform;
+            }
         }
     } else if (dataRefType === DataRefType.url) {
         const urlData = data0 as UrlData;
         urlData.url = datafile.dataUrl;
         urlData.format = { parse: 'auto', type: datafile.type };
         if (transform) {
-            urlData.transform = transform;
+            if (urlData.transform) {
+                urlData.transform.push.apply(urlData.transform, transform);
+            } else {
+                urlData.transform = transform;
+            }
         }
     }
     return { ...vegaSpec, data, scales };
