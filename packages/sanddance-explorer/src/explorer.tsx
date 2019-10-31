@@ -385,7 +385,7 @@ export class Explorer extends React.Component<Props, State> {
             };
             let dataFile: DataFile;
             if (Array.isArray(data)) {
-                return loadDataArray(data)
+                return loadDataArray(data, 'json')
                     .then(result => {
                         dataFile = {
                             type: 'json'
