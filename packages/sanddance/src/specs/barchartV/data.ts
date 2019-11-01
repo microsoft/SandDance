@@ -3,15 +3,15 @@
 import getQualitative from './transform.qualitative';
 import getQuantitative from './transform.quantitative';
 import { allTruthy } from '../../array';
-import { BarChartSignalNames } from './constants';
+import { BarChartSignalNames } from '../constants';
 import { Data, SourceData, Transforms } from 'vega-typings';
 import { DataNames, FieldNames } from '../constants';
 import { facetGroupData, facetSourceData, facetTransforms } from '../facet';
-import { NameSpace } from './namespace';
+import { BarChartNameSpace } from '../namespace';
 import { SpecContext } from '../types';
 import { topLookup } from '../top';
 
-export default function (context: SpecContext, namespace: NameSpace) {
+export default function (context: SpecContext, namespace: BarChartNameSpace) {
     const { specColumns, insight, specViewOptions } = context;
     const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     const nestedDataName = specColumns.facet && specColumns.facet.quantitative ? DataNames.Pre : DataNames.Main;
@@ -48,7 +48,7 @@ export default function (context: SpecContext, namespace: NameSpace) {
     return data;
 }
 
-export function bucketed(context: SpecContext, namespace: NameSpace, source: string) {
+export function bucketed(context: SpecContext, namespace: BarChartNameSpace, source: string) {
     const { specColumns: columns } = context;
     const data: SourceData = {
         name: namespace.bucket,
@@ -61,7 +61,7 @@ export function bucketed(context: SpecContext, namespace: NameSpace, source: str
     return data;
 }
 
-export function stacked(namespace: NameSpace, source: string, transforms?: Transforms[]) {
+export function stacked(namespace: BarChartNameSpace, source: string, transforms?: Transforms[]) {
     const data: SourceData = {
         name: namespace.stacked,
         source,
@@ -73,7 +73,7 @@ export function stacked(namespace: NameSpace, source: string, transforms?: Trans
     return data;
 }
 
-function xy(namespace: NameSpace) {
+function xy(namespace: BarChartNameSpace) {
     const transforms: Transforms[] = [
         {
             type: 'formula',

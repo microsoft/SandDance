@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { BarChartSignalNames } from './constants';
+import { BarChartSignalNames } from '../constants';
 import { FieldNames } from '../constants';
 import { SpecContext } from '../types';
 import { StackTransform, Transforms } from 'vega-typings';

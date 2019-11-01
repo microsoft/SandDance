@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { allTruthy } from '../../array';
-import { BarChartScaleNames, BarChartSignalNames } from './constants';
+import { BarChartScaleNames, BarChartSignalNames } from '../constants';
 import { colorBinCountSignal, colorReverseSignal, textSignals } from '../signals';
 import { facetSignals } from '../facet';
 import { ScaleNames, SignalNames } from '../constants';

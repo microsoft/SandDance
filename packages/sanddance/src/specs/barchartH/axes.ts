@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { Axis } from 'vega-typings';
 import { AxisType, columnToAxisType, partialAxes } from '../axes';
-import { BarChartScaleNames, BarChartSignalNames } from './constants';
+import { BarChartScaleNames, BarChartSignalNames } from '../constants';
 import { ScaleNames } from '../constants';
 import { SpecContext } from '../types';
 

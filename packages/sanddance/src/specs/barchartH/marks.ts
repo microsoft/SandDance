@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from '../../vega-deck.gl';
-import { BarChartScaleNames } from './constants';
+import { BarChartScaleNames } from '../constants';
 import { FieldNames, ScaleNames, SignalNames } from '../constants';
 import { fill, opacity } from '../fill';
-import { NameSpace } from './namespace';
+import { BarChartNameSpace } from '../namespace';
 import { RectMark } from 'vega-typings';
 import { SpecContext } from '../types';
 import { testForCollapseSelection } from '../selection';
 
-export default function (context: SpecContext, namespace: NameSpace): RectMark[] {
+export default function (context: SpecContext, namespace: BarChartNameSpace): RectMark[] {
     const { specColumns } = context;
     const mark: RectMark = {
         type: 'rect',

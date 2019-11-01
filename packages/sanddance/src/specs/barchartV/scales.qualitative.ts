@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { BarChartScaleNames } from './constants';
-import { NameSpace } from './namespace';
+import { BarChartScaleNames } from '../constants';
+import { BarChartNameSpace } from '../namespace';
 import { Scale } from 'vega-typings';
 import { ScaleNames } from '../constants';
 import { SpecContext } from '../types';
 
-export default function (context: SpecContext, namespace: NameSpace) {
+export default function (context: SpecContext, namespace: BarChartNameSpace) {
     const { specColumns } = context;
     const scales: Scale[] = [
         {

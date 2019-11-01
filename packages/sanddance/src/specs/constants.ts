@@ -82,6 +82,21 @@ export const SignalNames = {
     ZProportion: 'RoleZ_ProportionSignal'
 };
 
+export const BarChartScaleNames = {
+    bucketScale: 'bucketScale',
+    levelScale: 'levelScale',
+    compartmentScale: 'compartmentScale'
+};
+
+export const BarChartSignalNames = {
+    aspectRatioSignal: 'aspectRatioSignal',
+    compartmentsPerLevelSignal: 'compartmentsPerLevelSignal',
+    compartmentHeightSignal: 'compartmentHeightSignal',
+    compartmentWidthSignal: 'compartmentWidthSignal',
+    levelExtentSignal: 'levelExtentSignal',
+    quantitativeBinSignal: 'quantitativeBinSignal'
+};
+
 //These are special formulaic data values
 export const Other = '__Other';
 
