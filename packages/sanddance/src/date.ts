@@ -31,22 +31,16 @@ const minute = second * 60;
 const hour = minute * 60;
 const day = hour * 24;
 const year = day * 365;
-const quarter = year / 4;
 const month = year / 12;
 
 function getD3TimeFormat(min: number, max: number) {
     const span = max - min;
-    //return '%b %Y';
     if (span > year) return '%Y';
-    // if (span > quarter) return TimeSpanFormat.quarter;
-    // if (span > month) return TimeSpanFormat.month;
-    // if (span > day) return TimeSpanFormat.day;
-    // if (span > hour) return TimeSpanFormat.hour;
-    // if (span > minute) return TimeSpanFormat.minute;
-    // if (span > second) return TimeSpanFormat.second;
-    // return TimeSpanFormat.milli;
-
-    return '%b %Y';
+    if (span > month) return '%b %Y';
+    if (span > day) return '%d %b %y';
+    if (span > hour) return '%d %b %H:%M';
+    if (span > second) return '%H:%M:%S';
+    return '%S.%L';
 }
 
 function vegaTimeFormat(values: [number, number][], d3TimeFormat: string) {
@@ -54,19 +48,15 @@ function vegaTimeFormat(values: [number, number][], d3TimeFormat: string) {
     const as = 'output';
     const spec: Spec = {
         $schema: 'https://vega.github.io/schema/vega/v3.json',
-        data: [
-            {
-                name,
-                values,
-                transform: [
-                    {
-                        type: 'formula',
-                        expr: `timeFormat(datum[0], '${d3TimeFormat}') + ' - ' + timeFormat(datum[1], '${d3TimeFormat}')`,
-                        as
-                    }
-                ]
-            }
-        ]
+        data: [{
+            name,
+            values,
+            transform: [{
+                type: 'formula',
+                expr: `timeFormat(datum[0], '${d3TimeFormat}') + ' - ' + timeFormat(datum[1], '${d3TimeFormat}')`,
+                as
+            }]
+        }]
     };
     const runtime = VegaDeckGl.base.vega.parse(spec);
     const view = new VegaDeckGl.ViewGl(runtime).run();
