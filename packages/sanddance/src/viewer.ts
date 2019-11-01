@@ -472,14 +472,12 @@ export class Viewer {
         if (this._specColumns.x && this._specColumns.x.type === 'date') {
             stage.axes.x.forEach(axis => makeDateRange(
                 axis.tickText,
-                this.options.language,
                 this._dataScope.hasFilteredData() ? this._dataScope.getFilteredColumnStats(this._specColumns.x.name) : this._specColumns.x.stats
             ));
         }
         if (this._specColumns.y && this._specColumns.y.type === 'date') {
             stage.axes.y.forEach(axis => makeDateRange(
                 axis.tickText,
-                this.options.language,
                 this._dataScope.hasFilteredData() ? this._dataScope.getFilteredColumnStats(this._specColumns.y.name) : this._specColumns.y.stats
             ));
         }
