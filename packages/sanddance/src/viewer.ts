@@ -32,6 +32,7 @@ import { Details } from './details';
 import { ensureHeaders } from './headers';
 import { finalizeLegend } from './legend';
 import {
+    Column,
     Insight,
     SignalValues,
     SpecCapabilities,
@@ -490,13 +491,13 @@ export class Viewer {
         if (this._specColumns.x && this._specColumns.x.type === 'date') {
             stage.axes.x.forEach(axis => makeDateRange(
                 axis.tickText,
-                this._dataScope.hasFilteredData() ? this._dataScope.getFilteredColumnStats(this._specColumns.x.name) : this._specColumns.x.stats
+                this.getColumnStats(this._specColumns.x)
             ));
         }
         if (this._specColumns.y && this._specColumns.y.type === 'date') {
             stage.axes.y.forEach(axis => makeDateRange(
                 axis.tickText,
-                this._dataScope.hasFilteredData() ? this._dataScope.getFilteredColumnStats(this._specColumns.y.name) : this._specColumns.y.stats
+                this.getColumnStats(this._specColumns.y)
             ));
         }
     }
@@ -717,6 +718,14 @@ export class Viewer {
         const insight = { ...this.insight };
         insight.signalValues = this.getSignalValues();
         return insight;
+    }
+
+    /**
+     * Gets column stats from current data (filtered or all).
+     * @param column Column to get stats for.
+     */
+    getColumnStats(column: Column) {
+        return this._dataScope.hasFilteredData() ? this._dataScope.getFilteredColumnStats(column.name) : column.stats
     }
 
     /**
