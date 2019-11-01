@@ -27,7 +27,8 @@ export const loadDataFile = (dataFile: DataFile) => new Promise<DataContent>((re
 });
 
 export const loadDataArray = (data: object[], type: DataFileType) => new Promise<DataContent>((resolve, reject) => {
-    if (type === 'csv' || type === 'tsv') {
+    const parse = type === 'csv' || type === 'tsv';
+    if (parse) {
         //convert empty strings to null so that vega.inferType will get dates
         data.forEach(row => {
             for (let column in row) {
@@ -38,9 +39,14 @@ export const loadDataArray = (data: object[], type: DataFileType) => new Promise
         });
     }
     const columns = SandDance.util.getColumnsFromData(data).sort((a, b) => a.name.localeCompare(b.name));
-    const dateColumns = columns.filter(c => c.type === 'date');
-    if (dateColumns.length) {
+    if (parse) {
+        const booleanColumns = columns.filter(c => c.type === 'boolean');
+        const dateColumns = columns.filter(c => c.type === 'date');
+        const numericColumns = columns.filter(c => c.type === 'integer' || c.type === 'number');
         data.forEach(obj => {
+            booleanColumns.forEach(c => {
+                obj[c.name] = ('' + obj[c.name]).toLowerCase() === 'true';
+            });
             dateColumns.forEach(c => {
                 const input = obj[c.name];
                 if (input !== null) {
@@ -48,6 +54,10 @@ export const loadDataArray = (data: object[], type: DataFileType) => new Promise
                     d.input = input;
                     obj[c.name] = d;
                 }
+            });
+            numericColumns.forEach(c => {
+                const n = parseFloat(obj[c.name]);
+                obj[c.name] = isNaN(n) ? null : n;
             });
         });
     }
