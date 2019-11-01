@@ -10,20 +10,6 @@ export function textSignals(context: SpecContext) {
     const { specViewOptions } = context;
     const signals: NewSignal[] = [
         {
-            name: SignalNames.XDateFormat,
-            value: '%b %Y',
-            bind: {
-                name: 'X date format',
-                debounce: 50,
-                input: 'select',
-                options: ['%b %Y', '%A']
-            }
-        },
-        {
-            name: SignalNames.YDateFormat,
-            value: '%b %Y'
-        },
-        {
             name: SignalNames.ZProportion,
             value: defaultZProportion,
             bind: {
