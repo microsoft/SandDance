@@ -53,15 +53,15 @@ enum DataRefType {
 
 function filterSignals(signal: NewSignal) {
     switch (signal.name) {
-    case SandDance.constants.SignalNames.XBins:
-    case SandDance.constants.SignalNames.YBins:
-    case SandDance.constants.SignalNames.ColorBinCount:
-    case SandDance.constants.SignalNames.ColorReverse:
-    case SandDance.constants.SignalNames.PointSize:
-    case SandDance.constants.SignalNames.TreeMapMethod:
-        return false;
-    default:
-        return !!signal.bind;
+        case SandDance.constants.SignalNames.XBins:
+        case SandDance.constants.SignalNames.YBins:
+        case SandDance.constants.SignalNames.ColorBinCount:
+        case SandDance.constants.SignalNames.ColorReverse:
+        case SandDance.constants.SignalNames.PointSize:
+        case SandDance.constants.SignalNames.TreeMapMethod:
+            return false;
+        default:
+            return !!signal.bind;
     }
 }
 
@@ -72,7 +72,7 @@ function cloneData(vegaSpec: Spec) {
     delete valuesData.values;
     const data = SandDance.VegaDeckGl.util.clone(vegaSpec.data);
     valuesData.values = values;
-    return data;
+    return { data, values };
 }
 
 function cloneScales(vegaSpec: Spec) {
@@ -85,12 +85,13 @@ function serializeSpec(vegaSpec: Spec, datafile: DataFile, dataRefType: DataRefT
     if (scheme.indexOf('dual_') >= 0) {
         (colorScale as ScalesWithRange).range = SandDance.colorSchemes.filter(cs => cs.scheme === scheme)[0].colors;
     }
+    const clone = cloneData(vegaSpec);
+    const data0 = clone.data[0];
     if (dataRefType === DataRefType.inline) {
-        return { ...vegaSpec, scales };
-    }
-    const data = cloneData(vegaSpec);
-    const data0 = data[0];
-    if (dataRefType === DataRefType.none) {
+        const valuesData = data0 as ValuesData;
+        valuesData.format = { parse: 'auto', type: 'json' };
+        valuesData.values = clone.values;
+    } else if (dataRefType === DataRefType.none) {
         const valuesData = data0 as ValuesData;
         valuesData.values = [];
     } else if (dataRefType === DataRefType.url) {
@@ -98,7 +99,7 @@ function serializeSpec(vegaSpec: Spec, datafile: DataFile, dataRefType: DataRefT
         urlData.url = datafile.dataUrl;
         urlData.format = { parse: 'auto', type: datafile.type };
     }
-    return { ...vegaSpec, data, scales };
+    return { ...vegaSpec, data: clone.data, scales };
 }
 
 function defaultDataRefType(datafile: DataFile) {
