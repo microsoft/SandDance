@@ -38,6 +38,7 @@ import {
     SpecColumns,
     SpecContext
 } from './specs/types';
+import { makeDateRange } from './date';
 import { mount } from 'tsx-create-element';
 import { recolorAxes } from './axes';
 import { registerColorSchemes } from './colorSchemes';
@@ -155,6 +156,7 @@ export class Viewer {
             this.renderNewLayout({
                 preStage: (stage, deckProps) => {
                     finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
+                    this.overrideAxisLabels(stage);
                     applyColorMapToCubes([oldColorContext.colorMap], VegaDeckGl.util.getCubes(deckProps));
                     if (this.options.onStage) {
                         this.options.onStage(stage, deckProps);
@@ -167,6 +169,7 @@ export class Viewer {
             this.renderNewLayout({
                 preStage: (stage, deckProps) => {
                     finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
+                    this.overrideAxisLabels(stage);
                     if (this.options.onStage) {
                         this.options.onStage(stage, deckProps);
                     }
@@ -180,59 +183,59 @@ export class Viewer {
 
     private onDataChanged(dataLayout: DataLayoutChange, filter?: Search) {
         switch (dataLayout) {
-        case DataLayoutChange.same: {
-            this.renderSameLayout();
-            break;
-        }
-        case DataLayoutChange.refine: {
-            //save cube colors
-            const oldColorContext = this.colorContexts[this.currentColorContext];
-            let colorMap: ColorMap;
-            this.renderNewLayout({
-                preStage: (stage: VegaDeckGl.types.Stage, deckProps: DeckProps) => {
-                    //save off the spec colors
-                    colorMap = colorMapFromCubes(stage.cubeData);
-                    applyColorMapToCubes([oldColorContext.colorMap], VegaDeckGl.util.getCubes(deckProps));
-                    this.preStage(stage, deckProps);
-                },
-                onPresent: () => {
-                    //save new legend
-                    const newColorContext: ColorContext = {
-                        colorMap,
-                        legend: VegaDeckGl.util.clone(this.presenter.stage.legend),
-                        legendElement: this.presenter.getElement(VegaDeckGl.PresenterElement.legend).children[0] as HTMLElement
-                    };
+            case DataLayoutChange.same: {
+                this.renderSameLayout();
+                break;
+            }
+            case DataLayoutChange.refine: {
+                //save cube colors
+                const oldColorContext = this.colorContexts[this.currentColorContext];
+                let colorMap: ColorMap;
+                this.renderNewLayout({
+                    preStage: (stage: VegaDeckGl.types.Stage, deckProps: DeckProps) => {
+                        //save off the spec colors
+                        colorMap = colorMapFromCubes(stage.cubeData);
+                        applyColorMapToCubes([oldColorContext.colorMap], VegaDeckGl.util.getCubes(deckProps));
+                        this.preStage(stage, deckProps);
+                    },
+                    onPresent: () => {
+                        //save new legend
+                        const newColorContext: ColorContext = {
+                            colorMap,
+                            legend: VegaDeckGl.util.clone(this.presenter.stage.legend),
+                            legendElement: this.presenter.getElement(VegaDeckGl.PresenterElement.legend).children[0] as HTMLElement
+                        };
                         //apply old legend
-                    this.applyLegendColorContext(oldColorContext);
-                    this.changeColorContexts([oldColorContext, newColorContext]);
-                }
-            });
+                        this.applyLegendColorContext(oldColorContext);
+                        this.changeColorContexts([oldColorContext, newColorContext]);
+                    }
+                });
 
-            this.insight.filter = searchExpression.narrow(this.insight.filter, filter);
-            if (this.options.onDataFilter) {
-                this.options.onDataFilter(this.insight.filter, this._dataScope.currentData());
-            }
-            break;
-        }
-        case DataLayoutChange.reset: {
-            const colorContext: ColorContext = {
-                colorMap: null,
-                legend: null,
-                legendElement: null
-            };
-            this.changeColorContexts([colorContext]);
-            this.renderNewLayout({
-                onPresent: () => {
-                    populateColorContext(colorContext, this.presenter);
+                this.insight.filter = searchExpression.narrow(this.insight.filter, filter);
+                if (this.options.onDataFilter) {
+                    this.options.onDataFilter(this.insight.filter, this._dataScope.currentData());
                 }
-            });
-
-            delete this.insight.filter;
-            if (this.options.onDataFilter) {
-                this.options.onDataFilter(null, null);
+                break;
             }
-            break;
-        }
+            case DataLayoutChange.reset: {
+                const colorContext: ColorContext = {
+                    colorMap: null,
+                    legend: null,
+                    legendElement: null
+                };
+                this.changeColorContexts([colorContext]);
+                this.renderNewLayout({
+                    onPresent: () => {
+                        populateColorContext(colorContext, this.presenter);
+                    }
+                });
+
+                delete this.insight.filter;
+                if (this.options.onDataFilter) {
+                    this.options.onDataFilter(null, null);
+                }
+                break;
+            }
         }
         if (this.options.onSelectionChanged) {
             const sel = this.getSelection();
@@ -361,7 +364,7 @@ export class Viewer {
                     }, this.options.transitionDurations.position, { waitingLabel: 'layout before refine', handlerLabel: 'refine after layout' });
                 } else {
                     //not refining
-                    this._dataScope.filteredData = null;
+                    this._dataScope.setFilteredData(null);
                     layout();
                     this.presenter.animationQueue(() => {
                         this.reset();
@@ -465,6 +468,23 @@ export class Viewer {
         return result;
     }
 
+    private overrideAxisLabels(stage: VegaDeckGl.types.Stage) {
+        if (this._specColumns.x && this._specColumns.x.type === 'date') {
+            stage.axes.x.forEach(axis => makeDateRange(
+                axis.tickText,
+                this.options.language,
+                this._dataScope.hasFilteredData() ? this._dataScope.getFilteredColumnStats(this._specColumns.x.name) : this._specColumns.x.stats
+            ));
+        }
+        if (this._specColumns.y && this._specColumns.y.type === 'date') {
+            stage.axes.y.forEach(axis => makeDateRange(
+                axis.tickText,
+                this.options.language,
+                this._dataScope.hasFilteredData() ? this._dataScope.getFilteredColumnStats(this._specColumns.y.name) : this._specColumns.y.stats
+            ));
+        }
+    }
+
     private preStage(stage: VegaDeckGl.types.Stage, deckProps: DeckProps) {
         const onClick: AxisSelectionHandler = (e, search: SearchExpressionGroup) => {
             if (this.options.onAxisClick) {
@@ -473,6 +493,7 @@ export class Viewer {
                 this.select(search);
             }
         };
+        this.overrideAxisLabels(stage);
         const polygonLayer = axisSelectionLayer(this.presenter, this.specCapabilities, this._specColumns, stage, onClick, this.options.colors.axisSelectHighlight, this.options.selectionPolygonZ);
         const order = 1;//after textlayer but before others
         deckProps.layers.splice(order, 0, polygonLayer);
