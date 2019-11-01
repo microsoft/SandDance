@@ -1,18 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Language } from './types';
-import { TickText } from './vega-deck.gl/interfaces';
+import * as VegaDeckGl from './vega-deck.gl';
 import { ColumnStats } from './specs/types';
+import { Spec } from 'vega-typings';
+import { TickText } from './vega-deck.gl/interfaces';
 
-export function makeDateRange(tickTexts: TickText[], language: Language, columnStats: ColumnStats) {
-    const range = (d1: string, d2: string) => `${d1} - ${d2}`;
-
+export function makeDateRange(tickTexts: TickText[], columnStats: ColumnStats) {
     if (tickTexts.length === 1) {
-        const span = getSpan(columnStats.min, columnStats.max);
-        tickTexts[0].text = range(formatUnit(columnStats.min, span), formatUnit(columnStats.max, span));
+        const d3TimeFormat = getD3TimeFormat(columnStats.min, columnStats.max);
+        tickTexts[0].text = vegaTimeFormat([[columnStats.min, columnStats.max]], d3TimeFormat)[0];
     } else {
-        const span = getSpan(tickTexts[0].value as number, tickTexts[1].value as number);
-        tickTexts.forEach((t, i) => {
+        const d3TimeFormat = getD3TimeFormat(tickTexts[0].value as number, tickTexts[1].value as number);
+        const pairs = tickTexts.map((t, i) => {
             let min = t.value as number;
             let max: number;
             if (i === tickTexts.length - 1) {
@@ -20,13 +19,14 @@ export function makeDateRange(tickTexts: TickText[], language: Language, columnS
             } else {
                 max = tickTexts[i + 1].value as number
             }
-            t.text = range(formatUnit(min, span), formatUnit(max, span));
+            return [min, max] as [number, number];
         });
+        const formattedPairs = vegaTimeFormat(pairs, d3TimeFormat);
+        formattedPairs.forEach((formattedPair, i) => tickTexts[i].text = formattedPair);
     }
 }
 
-const milli = 1;
-const second = milli * 1000;
+const second = 1000;
 const minute = second * 60;
 const hour = minute * 60;
 const day = hour * 24;
@@ -34,31 +34,41 @@ const year = day * 365;
 const quarter = year / 4;
 const month = year / 12;
 
-enum TimeSpanFormat {
-    year, quarter, month, day, hour, minute, second, milli
-}
-
-function getSpan(min: number, max: number): TimeSpanFormat {
+function getD3TimeFormat(min: number, max: number) {
     const span = max - min;
-    if (span > year) return TimeSpanFormat.year;
-    if (span > quarter) return TimeSpanFormat.quarter;
-    if (span > month) return TimeSpanFormat.month;
-    if (span > day) return TimeSpanFormat.day;
-    if (span > hour) return TimeSpanFormat.hour;
-    if (span > minute) return TimeSpanFormat.minute;
-    if (span > second) return TimeSpanFormat.second;
-    return TimeSpanFormat.milli;
+    //return '%b %Y';
+    if (span > year) return '%Y';
+    // if (span > quarter) return TimeSpanFormat.quarter;
+    // if (span > month) return TimeSpanFormat.month;
+    // if (span > day) return TimeSpanFormat.day;
+    // if (span > hour) return TimeSpanFormat.hour;
+    // if (span > minute) return TimeSpanFormat.minute;
+    // if (span > second) return TimeSpanFormat.second;
+    // return TimeSpanFormat.milli;
+
+    return '%b %Y';
 }
 
-function formatUnit(dateValue: string | number, timeSpanFormat: TimeSpanFormat) {
-    const d = new Date(dateValue);
-    switch (timeSpanFormat) {
-        case TimeSpanFormat.year: return `${d.getFullYear()}`;
-        case TimeSpanFormat.quarter: return `${d.getMonth()} ${d.getFullYear()}`;
-        case TimeSpanFormat.month: return `${d.getMonth()} ${d.getFullYear()}`;
-        case TimeSpanFormat.day: return `${d.getDate()} ${d.getMonth()} ${d.getFullYear()}`;
-    }
-    //const span = max - min;
-    //TODO use span to determine unit
-    return d.toLocaleTimeString();
+function vegaTimeFormat(values: [number, number][], d3TimeFormat: string) {
+    const name = 'timeFormat';
+    const as = 'output';
+    const spec: Spec = {
+        $schema: 'https://vega.github.io/schema/vega/v3.json',
+        data: [
+            {
+                name,
+                values,
+                transform: [
+                    {
+                        type: 'formula',
+                        expr: `timeFormat(datum[0], '${d3TimeFormat}') + ' - ' + timeFormat(datum[1], '${d3TimeFormat}')`,
+                        as
+                    }
+                ]
+            }
+        ]
+    };
+    const runtime = VegaDeckGl.base.vega.parse(spec);
+    const view = new VegaDeckGl.ViewGl(runtime).run();
+    return view.data(name).map(row => row[as]);
 }
