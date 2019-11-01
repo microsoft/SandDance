@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import qualitativeScales from './scales.qualitative';
 import quantitativeScales from './scales.quantitative';
-import { BarChartScaleNames, BarChartSignalNames } from './constants';
+import { BarChartScaleNames, BarChartSignalNames } from '../constants';
 import { binnableColorScale, linearScale, pointScale } from '../scales';
 import {
     ColorScaleNone,
@@ -11,11 +11,11 @@ import {
     ScaleNames,
     SignalNames
 } from '../constants';
-import { NameSpace } from './namespace';
+import { BarChartNameSpace } from '../namespace';
 import { RangeScheme, Scale } from 'vega-typings';
 import { SpecContext } from '../types';
 
-export default function (context: SpecContext, namespace: NameSpace) {
+export default function (context: SpecContext, namespace: BarChartNameSpace) {
     const { specColumns, insight } = context;
     const scales: Scale[] = [
         {

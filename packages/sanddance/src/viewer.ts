@@ -38,6 +38,7 @@ import {
     SpecColumns,
     SpecContext
 } from './specs/types';
+import { makeDateRange } from './date';
 import { mount } from 'tsx-create-element';
 import { recolorAxes } from './axes';
 import { registerColorSchemes } from './colorSchemes';
@@ -155,6 +156,7 @@ export class Viewer {
             this.renderNewLayout({
                 preStage: (stage, deckProps) => {
                     finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
+                    this.overrideAxisLabels(stage);
                     applyColorMapToCubes([oldColorContext.colorMap], VegaDeckGl.util.getCubes(deckProps));
                     if (this.options.onStage) {
                         this.options.onStage(stage, deckProps);
@@ -167,6 +169,7 @@ export class Viewer {
             this.renderNewLayout({
                 preStage: (stage, deckProps) => {
                     finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
+                    this.overrideAxisLabels(stage);
                     if (this.options.onStage) {
                         this.options.onStage(stage, deckProps);
                     }
@@ -377,7 +380,7 @@ export class Viewer {
                     }, this.options.transitionDurations.position, { waitingLabel: 'layout before refine', handlerLabel: 'refine after layout' });
                 } else {
                     //not refining
-                    this._dataScope.filteredData = null;
+                    this._dataScope.setFilteredData(null);
                     layout();
                     this.presenter.animationQueue(() => {
                         this.reset();
@@ -483,6 +486,21 @@ export class Viewer {
         return result;
     }
 
+    private overrideAxisLabels(stage: VegaDeckGl.types.Stage) {
+        if (this._specColumns.x && this._specColumns.x.type === 'date') {
+            stage.axes.x.forEach(axis => makeDateRange(
+                axis.tickText,
+                this._dataScope.hasFilteredData() ? this._dataScope.getFilteredColumnStats(this._specColumns.x.name) : this._specColumns.x.stats
+            ));
+        }
+        if (this._specColumns.y && this._specColumns.y.type === 'date') {
+            stage.axes.y.forEach(axis => makeDateRange(
+                axis.tickText,
+                this._dataScope.hasFilteredData() ? this._dataScope.getFilteredColumnStats(this._specColumns.y.name) : this._specColumns.y.stats
+            ));
+        }
+    }
+
     private preStage(stage: VegaDeckGl.types.Stage, deckProps: DeckProps) {
         const onClick: AxisSelectionHandler = (e, search: SearchExpressionGroup) => {
             if (this.options.onAxisClick) {
@@ -491,6 +509,7 @@ export class Viewer {
                 this.select(search);
             }
         };
+        this.overrideAxisLabels(stage);
         const polygonLayer = axisSelectionLayer(this.presenter, this.specCapabilities, this._specColumns, stage, onClick, this.options.colors.axisSelectHighlight, this.options.selectionPolygonZ);
         const order = 1;//after textlayer but before others
         deckProps.layers.splice(order, 0, polygonLayer);

@@ -73,7 +73,7 @@ function cloneData(vegaSpec: Spec) {
     delete valuesData.values;
     const data = SandDance.VegaDeckGl.util.clone(vegaSpec.data);
     valuesData.values = values;
-    return data;
+    return { data, values };
 }
 
 function cloneScales(vegaSpec: Spec) {
@@ -86,12 +86,13 @@ function serializeSpec(vegaSpec: Spec, datafile: DataFile, dataRefType: DataRefT
     if (scheme.indexOf('dual_') >= 0) {
         (colorScale as ScalesWithRange).range = SandDance.colorSchemes.filter(cs => cs.scheme === scheme)[0].colors;
     }
+    const clone = cloneData(vegaSpec);
+    const data0 = clone.data[0];
     if (dataRefType === DataRefType.inline) {
-        return { ...vegaSpec, scales };
-    }
-    const data = cloneData(vegaSpec);
-    const data0 = data[0];
-    if (dataRefType === DataRefType.none) {
+        const valuesData = data0 as ValuesData;
+        valuesData.format = { parse: 'auto', type: 'json' };
+        valuesData.values = clone.values;
+    } else if (dataRefType === DataRefType.none) {
         const valuesData = data0 as ValuesData;
         valuesData.values = [];
         if (transform) {
@@ -113,7 +114,7 @@ function serializeSpec(vegaSpec: Spec, datafile: DataFile, dataRefType: DataRefT
             }
         }
     }
-    return { ...vegaSpec, data, scales };
+    return { ...vegaSpec, data: clone.data, scales };
 }
 
 function defaultDataRefType(datafile: DataFile) {

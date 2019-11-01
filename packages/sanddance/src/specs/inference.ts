@@ -56,7 +56,7 @@ function checkIsColorData(data: object[], column: Column) {
     column.isColorData = true;
 }
 
-function getStats(data: object[], column: Column) {
+export function getStats(data: object[], column: Column) {
     const distinctMap = {};
     const stats: ColumnStats = {
         distinctValueCount: null,

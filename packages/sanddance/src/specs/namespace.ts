@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-export class NameSpace {
+export class BarChartNameSpace {
     public bucket: string;
     public stacked: string;
     public __compartment: string;

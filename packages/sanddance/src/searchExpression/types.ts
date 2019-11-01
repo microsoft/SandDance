@@ -12,11 +12,13 @@ export type SearchExpressionOperators =
     'isnullorEmpty' | '!isnullorEmpty' |
     SearchExpressionStringSearchOperators;
 
+export type SearchExpressionValue = boolean | Date | number | string;
+
 export interface SearchExpression {
     clause?: SearchExpressionClause;
     name: string;
     operator: SearchExpressionOperators;
-    value?: boolean | Date | number | string;
+    value?: SearchExpressionValue;
 }
 
 export interface SearchExpressionGroup<T extends SearchExpression = SearchExpression> {

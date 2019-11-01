@@ -1,6 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { DataContent, DataFile } from './interfaces';
+import {
+    DataContent,
+    DataFile,
+    DataFileType,
+    DateWithSource
+} from './interfaces';
 import { SandDance } from '@msrvida/sanddance-react';
 
 export const loadDataFile = (dataFile: DataFile) => new Promise<DataContent>((resolve, reject) => {
@@ -8,8 +13,8 @@ export const loadDataFile = (dataFile: DataFile) => new Promise<DataContent>((re
     const loader = vega.loader();
 
     function handleRawText(text: string) {
-        const data = vega.read(text, { type: dataFile.type, parse: 'auto' });
-        loadDataArray(data).then(resolve).catch(reject);
+        const data = vega.read(text, { type: dataFile.type, parse: {} });
+        loadDataArray(data, dataFile.type).then(resolve).catch(reject);
     }
 
     if (dataFile.dataUrl) {
@@ -21,7 +26,40 @@ export const loadDataFile = (dataFile: DataFile) => new Promise<DataContent>((re
     }
 });
 
-export const loadDataArray = (data: object[]) => new Promise<DataContent>((resolve, reject) => {
+export const loadDataArray = (data: object[], type: DataFileType) => new Promise<DataContent>((resolve, reject) => {
+    const parse = type === 'csv' || type === 'tsv';
+    if (parse) {
+        //convert empty strings to null so that vega.inferType will get dates
+        data.forEach(row => {
+            for (let column in row) {
+                if (row[column] === '') {
+                    row[column] = null;
+                }
+            }
+        });
+    }
     const columns = SandDance.util.getColumnsFromData(data).sort((a, b) => a.name.localeCompare(b.name));
+    if (parse) {
+        const booleanColumns = columns.filter(c => c.type === 'boolean');
+        const dateColumns = columns.filter(c => c.type === 'date');
+        const numericColumns = columns.filter(c => c.type === 'integer' || c.type === 'number');
+        data.forEach(obj => {
+            booleanColumns.forEach(c => {
+                obj[c.name] = ('' + obj[c.name]).toLowerCase() === 'true';
+            });
+            dateColumns.forEach(c => {
+                const input = obj[c.name];
+                if (input !== null) {
+                    const d = new Date(input) as DateWithSource;
+                    d.input = input;
+                    obj[c.name] = d;
+                }
+            });
+            numericColumns.forEach(c => {
+                const n = parseFloat(obj[c.name]);
+                obj[c.name] = isNaN(n) ? null : n;
+            });
+        });
+    }
     resolve({ data, columns });
 });

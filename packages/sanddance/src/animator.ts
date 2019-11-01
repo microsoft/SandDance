@@ -37,7 +37,7 @@ export class Animator {
         return new Promise<void>((resolve, reject) => {
             this.props.onAnimateDataChange(DataLayoutChange.refine, 'before refine', 'refine').then(() => {
                 this.dataScope.deselect();
-                this.dataScope.filteredData = keepData;
+                this.dataScope.setFilteredData(keepData);
                 this.props.onDataChanged(DataLayoutChange.refine, search);
                 resolve();
             }).catch(reject);
@@ -47,7 +47,7 @@ export class Animator {
     reset() {
         return new Promise<void>((resolve, reject) => {
             this.dataScope.deselect();
-            this.dataScope.filteredData = null;
+            this.dataScope.setFilteredData(null);
             this.props.onAnimateDataChange(DataLayoutChange.reset, 'before reset', 'reset').then(() => {
                 this.dataScope.collapse(false);
                 this.props.onDataChanged(DataLayoutChange.reset);

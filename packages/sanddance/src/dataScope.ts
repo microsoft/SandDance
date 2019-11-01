@@ -2,10 +2,14 @@
 // Licensed under the MIT license.
 import * as VegaDeckGl from './vega-deck.gl';
 import { FieldNames } from './specs/constants';
-import { Column, ColumnTypeMap } from './specs/types';
+import { Column, ColumnStats, ColumnTypeMap } from './specs/types';
 import { Exec } from './searchExpression/exec';
-import { getColumnsFromData } from './specs/inference';
+import { getColumnsFromData, getStats } from './specs/inference';
 import { Search } from './searchExpression/types';
+
+export interface ColumnsStatsMap {
+    [columnName: string]: ColumnStats;
+}
 
 export interface UserSelection {
     search: Search;
@@ -15,14 +19,18 @@ export interface UserSelection {
 
 export class DataScope {
     public selection: UserSelection;
-
     private data: object[];
     private columns: Column[];
-    public filteredData: object[];
+    private filteredData: object[];
+    private filteredColumnsStats: ColumnsStatsMap;
     public active: object;
     public isCollapsed: boolean;
 
-    setData(data: object[], columns?: Column[]) {
+    constructor() {
+        this.filteredColumnsStats = {};
+    }
+
+    public setData(data: object[], columns?: Column[]) {
         const differentData = this.data !== data;
         if (differentData) {
             if (this.data) {
@@ -32,8 +40,14 @@ export class DataScope {
             this.data = data;
             this.columns = columns;
             this.filteredData = null;
+            this.filteredColumnsStats = {};
         }
         return differentData;
+    }
+
+    public setFilteredData(filteredData: object[]) {
+        this.filteredData = filteredData;
+        this.filteredColumnsStats = {};
     }
 
     public getColumns(columnTypes?: ColumnTypeMap) {
@@ -43,11 +57,18 @@ export class DataScope {
         return this.columns;
     }
 
-    currentData() {
+    public getFilteredColumnStats(columnName: string) {
+        if (!this.filteredColumnsStats[columnName]) {
+            this.filteredColumnsStats[columnName] = getStats(this.filteredData, this.columns.filter(c => c.name === columnName)[0]);
+        }
+        return this.filteredColumnsStats[columnName];
+    }
+
+    public currentData() {
         return this.filteredData || this.data;
     }
 
-    select(search: Search) {
+    public select(search: Search) {
         this.deselect();
         if (search) {
             this.selection = this.createUserSelection(search, true);
@@ -57,7 +78,7 @@ export class DataScope {
         }
     }
 
-    createUserSelection(search: Search, assign: boolean) {
+    public createUserSelection(search: Search, assign: boolean) {
         const exec = new Exec(search, this.getColumns());
         const s: UserSelection = {
             search,
@@ -77,7 +98,7 @@ export class DataScope {
         return s;
     }
 
-    deselect() {
+    public deselect() {
         this.deactivate();
         this.data.forEach(datum => {
             delete datum[FieldNames.Selected];
@@ -85,31 +106,35 @@ export class DataScope {
         this.selection = null;
     }
 
-    hasSelectedData() {
+    public hasFilteredData() {
+        return !!this.filteredData;
+    }
+
+    public hasSelectedData() {
         return !!this.selection;
     }
 
-    collapse(collapsed: boolean, data = this.data) {
+    public collapse(collapsed: boolean, data = this.data) {
         data.forEach(datum => {
             datum[FieldNames.Collapsed] = collapsed;
         });
         this.isCollapsed = collapsed;
     }
 
-    activate(datum: object) {
+    public activate(datum: object) {
         this.deactivate();
         datum[FieldNames.Active] = true;
         this.active = datum;
     }
 
-    deactivate() {
+    public deactivate() {
         if (this.active) {
             delete this.active[FieldNames.Active];
         }
         this.active = null;
     }
 
-    ordinalIndexWithinSelection(ordinal: number) {
+    public ordinalIndexWithinSelection(ordinal: number) {
         if (this.selection) {
             for (let i = 0; i < this.selection.included.length; i++) {
                 let datum = this.selection.included[i];
@@ -121,9 +146,10 @@ export class DataScope {
         return { datum: null, index: -1 };
     }
 
-    finalize() {
+    public finalize() {
         this.data = null;
         this.filteredData = null;
+        this.filteredColumnsStats = null;
         if (this.selection) {
             this.selection.excluded = null;
             this.selection.included = null;
