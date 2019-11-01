@@ -3,7 +3,7 @@
 import { FieldNames } from './constants';
 import { GL_ORDINAL } from './vega-deck.gl/constants';
 
-export { getColumnsFromData, inferAll } from './specs/inference';
+export { getColumnsFromData, getStats, inferAll } from './specs/inference';
 export { ensureSearchExpressionGroupArray } from './searchExpression/group';
 export { getPresenterStyle } from './defaults';
 
