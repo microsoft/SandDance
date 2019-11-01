@@ -10,9 +10,6 @@ export enum AxisType {
 }
 
 export function columnToAxisType(c: Column): AxisType {
-    if (c.type === 'date') {
-        return AxisType.date;
-    }
     if (c.quantitative) {
         return AxisType.quantitative
     }

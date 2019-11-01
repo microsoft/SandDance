@@ -4,7 +4,7 @@ import * as VegaDeckGl from '../vega-deck.gl';
 import { Column, ColumnStats, ColumnTypeMap } from './types';
 
 function isQuantitative(column: Column) {
-    return column.type === 'number' || column.type === 'integer' || column.type === 'date';
+    return column.type === 'number' || column.type === 'integer';
 }
 
 /**
