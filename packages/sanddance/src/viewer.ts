@@ -488,18 +488,18 @@ export class Viewer {
     }
 
     private overrideAxisLabels(stage: VegaDeckGl.types.Stage) {
-        if (this._specColumns.x && this._specColumns.x.type === 'date') {
-            stage.axes.x.forEach(axis => makeDateRange(
-                axis.tickText,
-                this.getColumnStats(this._specColumns.x)
-            ));
-        }
-        if (this._specColumns.y && this._specColumns.y.type === 'date') {
-            stage.axes.y.forEach(axis => makeDateRange(
-                axis.tickText,
-                this.getColumnStats(this._specColumns.y)
-            ));
-        }
+        // if (this._specColumns.x && this._specColumns.x.type === 'date') {
+        //     stage.axes.x.forEach(axis => makeDateRange(
+        //         axis.tickText,
+        //         this.getColumnStats(this._specColumns.x)
+        //     ));
+        // }
+        // if (this._specColumns.y && this._specColumns.y.type === 'date') {
+        //     stage.axes.y.forEach(axis => makeDateRange(
+        //         axis.tickText,
+        //         this.getColumnStats(this._specColumns.y)
+        //     ));
+        // }
     }
 
     private preStage(stage: VegaDeckGl.types.Stage, deckProps: DeckProps) {
