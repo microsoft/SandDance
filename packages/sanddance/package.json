@@ -27,7 +27,7 @@
     "@types/d3-ease": "^1.0.7"
   },
   "dependencies": {
-    "@danmarshall/deckgl-typings": "^2.2.5",
+    "@danmarshall/deckgl-typings": "^3.0.0",
     "@mapbox/tiny-sdf": "^1.1.1",
     "@types/react": "16.4.7",
     "d3-color": "^1.2.3",

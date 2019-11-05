@@ -25,7 +25,7 @@ import vs from './chromatic-multi-icon-layer-vertex.glsl';
 
 import { base } from '../../base';
 import { Color } from '@deck.gl/core/utils/color';
-import { FontSettings } from '@deck.gl/layers/text-layer/font-atlas';
+import { FontSettings } from '@deck.gl/layers/text-layer/font-atlas-manager';
 import { IconDefinition, IconLayerDatum, IconLayerProps } from '@deck.gl/layers/icon-layer/icon-layer';
 import { Layer } from 'deck.gl';
 import { LayerProps } from '@deck.gl/core/lib/layer';

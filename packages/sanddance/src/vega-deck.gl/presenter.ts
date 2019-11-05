@@ -178,7 +178,7 @@ export class Presenter {
             });
             this.OrbitControllerClass = classes.OrbitControllerClass;
 
-            const deckProps: DeckGLInternalProps = {
+            const deckProps: Partial<DeckGLInternalProps> = {
                 onLayerClick: config && config.onLayerClick,
                 views: [new base.deck.OrbitView({ controller: this.OrbitControllerClass })],
                 container: this.getElement(PresenterElement.gl) as HTMLCanvasElement,
@@ -195,7 +195,7 @@ export class Presenter {
             if (stage.backgroundColor) {
                 deckProps.style = { 'background-color': colorToString(stage.backgroundColor) };
             }
-            this.deckgl = new classes.DeckGL_Class(deckProps);
+            this.deckgl = new classes.DeckGL_Class(deckProps as DeckGLInternalProps);
         }
         let cubeCount = Math.max(this._last.cubeCount, stage.cubeData.length);
         if (options.ordinalsSpecified) {
@@ -269,13 +269,13 @@ export class Presenter {
         const guideLines = this._showGuides && box(0, 0, height, width, '#0f0', 1, true);
         config.preLayer && config.preLayer(stage);
         const layers = getLayers(this, config, stage, lightSettings, lightingMix, linearInterpolator, guideLines);
-        const deckProps: DeckProps = {
+        const deckProps: Partial<DeckProps> = {
             views: [new base.deck.OrbitView({ controller: this.OrbitControllerClass })],
             viewState,
             layers
         };
         if (config && config.preStage) {
-            config.preStage(stage, deckProps);
+            config.preStage(stage, deckProps as DeckProps);
         }
         this.deckgl.setProps(deckProps);
         delete stage.cubeData;
@@ -296,7 +296,7 @@ export class Presenter {
         viewState.transitionDuration = defaultPresenterConfig.transitionDurations.view;
         viewState.transitionEasing = easeExpInOut;
         viewState.transitionInterpolator = new LinearInterpolator(viewStateProps);
-        const deckProps: DeckProps = {
+        const deckProps: Partial<DeckProps> = {
             views: this.deckgl.props.views,
             viewState,
             layers: this.deckgl.props.layers

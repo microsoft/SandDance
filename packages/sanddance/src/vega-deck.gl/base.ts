@@ -26,7 +26,7 @@ import {
     scheme,
     View
 } from 'vega-typings';
-import { CubeGeometry, fp64, Model, Texture2D } from 'luma.gl';
+import { CubeGeometry, fp64, Model, Texture2D } from '@luma.gl/core';
 
 /**
  * Vega library dependency.

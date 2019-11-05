@@ -8,31 +8,23 @@ export interface OrbitControllerClassOptions {
 }
 
 export function createOrbitControllerClass(factoryOptions: OrbitControllerClassOptions): typeof OrbitController_Class {
-    
+
     function wrapper(props: any) {
 
         class OrbitControllerInternal extends base.deck._OrbitController {
             public invertPan: boolean;
-            public dragRotate: boolean;
 
             constructor(props: any) {
                 super(props);
                 this.invertPan = true;
             }
 
-            _onDoubleTap(event: MouseEvent) {
+            onDoubleTap(event: MouseEvent) {
                 if (factoryOptions && factoryOptions.doubleClickHandler) {
                     factoryOptions.doubleClickHandler(event, this);
                 } else {
                     super._onDoubleTap(event);
                 }
-            }
-
-            _onPanRotate(event: MouseEvent) {
-                if (!this.dragRotate) {
-                    return false;
-                }
-                return this._onPanRotateStandard(event);
             }
         }
 
@@ -40,7 +32,7 @@ export function createOrbitControllerClass(factoryOptions: OrbitControllerClassO
 
         return instance;
     }
-    
+
     return wrapper as any;
 }
 

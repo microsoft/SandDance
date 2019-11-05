@@ -8,6 +8,7 @@ import {
     SpecCapabilities,
     SpecColumns
 } from './specs/types';
+import { Color } from '@deck.gl/core/utils/color';
 import { LayerInputHandler } from '@deck.gl/core/lib/layer';
 import { SearchExpressionGroup } from './searchExpression/types';
 import {
@@ -22,7 +23,7 @@ export interface AxisSelectionHandler {
     (event: TouchEvent | MouseEvent | PointerEvent, search: SearchExpressionGroup): void;
 }
 
-export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabilities: SpecCapabilities, columns: SpecColumns, stage: VegaDeckGl.types.Stage, clickHandler: AxisSelectionHandler, highlightColor: number[], polygonZ: number): PolygonLayer {
+export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabilities: SpecCapabilities, columns: SpecColumns, stage: VegaDeckGl.types.Stage, clickHandler: AxisSelectionHandler, highlightColor: Color, polygonZ: number): PolygonLayer {
     const polygons: SelectPolygon[] = [];
     const xRole = specCapabilities.roles.filter(r => r.role === 'x')[0];
     if (xRole && xRole.axisSelection) {

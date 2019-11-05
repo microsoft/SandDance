@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import Deck, { DeckProps } from '@deck.gl/core/lib/deck';
+import Deck, { DeckProps, InteractiveState } from '@deck.gl/core/lib/deck';
 import { base } from '../base';
 import { createOrbitControllerClass, OrbitController_Class, OrbitControllerClassOptions } from './orbitController';
 
@@ -14,17 +14,8 @@ const CANVAS_STYLE = {
     height: '100%'
 };
 
-//TODO move into deckgl-typings
-export interface InteractiveState {
-    isDragging: boolean;
-    onCube: boolean;
-    onText: boolean;
-    onAxisSelection: boolean;
-}
-
 export type DeckGLInternalProps = DeckProps & {
     container?: HTMLElement;
-    getCursor?: (interactiveState: InteractiveState) => string;
 }
 
 // Create canvas elements for map and deck
@@ -78,11 +69,13 @@ export function createDeckGLClassesForPresenter(factoryOptions: OrbitControllerC
             private onViewStateChange;
             public interactiveState: InteractiveState;
 
-            constructor(props: DeckGLInternalProps = {}) {
+            constructor(props: DeckGLInternalProps) {
                 if (typeof document === 'undefined') {
                     // Not browser
                     throw Error('Deck can only be used in the browser');
                 }
+
+                props = props || {} as DeckProps;
 
                 const { deckCanvas } = createCanvas(props);
 

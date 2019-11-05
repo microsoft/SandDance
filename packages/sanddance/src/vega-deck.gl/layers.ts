@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import { base } from './base';
 import { ChromaticTextLayer, ChromaticTextLayerProps } from './chromatic-text-layer/chromatic-text-layer';
+import { Color } from '@deck.gl/core/utils/color';
 import { concat } from './array';
 import {
     Cube,
@@ -51,7 +52,7 @@ export function getLayers(
     return [textLayer, cubeLayer, lineLayer];
 }
 
-function newCubeLayer(presenter: Presenter, config: PresenterConfig, cubeData: Cube[], highlightColor: number[], lightSettings: LightSettings, lightingMix: number, interpolator?: LinearInterpolator_Class<CubeLayerInterpolatedProps>) {
+function newCubeLayer(presenter: Presenter, config: PresenterConfig, cubeData: Cube[], highlightColor: Color, lightSettings: LightSettings, lightingMix: number, interpolator?: LinearInterpolator_Class<CubeLayerInterpolatedProps>) {
     const getPosition = getTiming(config.transitionDurations.position, easeExpInOut);
     const getSize = getTiming(config.transitionDurations.size, easeExpInOut);
     const getColor = getTiming(config.transitionDurations.color);
