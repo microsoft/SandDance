@@ -50,7 +50,7 @@ export class Page extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        Promise.all([dataPromise, insightsPromise]).then(([data, insights]) => {
+        Promise.all([dataPromise, insightsPromise]).then(([data, insights]: [object[], SandDance.types.Insight[]]) => {
             this.setState({ data, insights });
         });
     }
