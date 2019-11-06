@@ -3,13 +3,21 @@
 import { preferredColumnForTreemapSize } from '@msrvida/chart-recommender';
 import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from './language';
+import { Transforms } from 'vega-typings/types';
 
-export function ensureColumnsExist(insightColumns: SandDance.types.InsightColumns, actualColumns: SandDance.types.Column[]) {
+export function ensureColumnsExist(insightColumns: SandDance.types.InsightColumns, actualColumns: SandDance.types.Column[], transform: Transforms[]) {
     //ensure columns exist
     for (let role in insightColumns) {
         let columnName = insightColumns[role];
         let column = actualColumns.filter(c => c.name === columnName)[0];
-        if (!column) {
+        let transformColumn = transform ? transform.filter(t => {
+            switch (t.type) {
+                case 'formula': {
+                    return t.as === columnName;
+                }
+            }
+        })[0] : null;
+        if (!(column || transformColumn)) {
             delete insightColumns[role];
         }
     }
@@ -25,30 +33,30 @@ export function ensureColumnsPopulated(chart: SandDance.types.Chart, insightColu
         }
     };
     switch (chart) {
-    case 'barchart':
-    case 'barchartV':
-        ensureColumn('x');
-        break;
-    case 'barchartH':
-        ensureColumn('y');
-        break;
-    case 'density':
-    case 'scatterplot':
-    case 'stacks':
-        ensureColumn('x');
-        ensureColumn('y');
-        break;
-    case 'treemap':
-        if (!insightColumns.size) {
-            insightColumns.size = preferredColumnForTreemapSize(actualColumns, true);
+        case 'barchart':
+        case 'barchartV':
+            ensureColumn('x');
+            break;
+        case 'barchartH':
+            ensureColumn('y');
+            break;
+        case 'density':
+        case 'scatterplot':
+        case 'stacks':
+            ensureColumn('x');
+            ensureColumn('y');
+            break;
+        case 'treemap':
             if (!insightColumns.size) {
-                insightColumns.size = preferredColumnForTreemapSize(actualColumns, false);
+                insightColumns.size = preferredColumnForTreemapSize(actualColumns, true);
+                if (!insightColumns.size) {
+                    insightColumns.size = preferredColumnForTreemapSize(actualColumns, false);
+                }
             }
-        }
-        if (!insightColumns.size) {
-            //error - no numeric column
-            return [strings.errorColumnMustBeNumeric];
-        }
-        break;
+            if (!insightColumns.size) {
+                //error - no numeric column
+                return [strings.errorColumnMustBeNumeric];
+            }
+            break;
     }
 }
