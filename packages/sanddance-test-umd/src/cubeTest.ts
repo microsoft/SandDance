@@ -19,27 +19,28 @@ namespace cubeTest {
 
     export var presenter = new SandDance.VegaDeckGl.Presenter(document.querySelector('#vis'));
     var stage: SandDance.VegaDeckGl.types.Stage = {
-        cubeData: [
+        shapeData: [
             {
                 color: colors.red,
-                position: [0, 0, 0],
-                size: [100, 100, 100]
+                polygon: [[0, 0, 0], [100, 0, 0], [100, 100, 0], [0, 100, 0], [0, 0, 0]],
+                depth: 100
             },
             {
                 color: colors.green,
-                position: [100, 0, 100],
-                size: [100, 100, 100]
+                polygon: [[100, 0, 100], [200, 0, 100], [200, 100, 100], [100, 100, 100], [100, 0, 100]],
+                depth: 100
             },
             {
                 color: colors.blue,
-                position: [0, 100, 100],
-                size: [100, 100, 100]
+                polygon: [[0, 100, 100], [100, 100, 100], [100, 200, 100], [0, 200, 100], [0, 100, 100]],
+                depth: 100
             }
         ],
         legend: { rows: {} },
         axes: {
             x: [{
                 domain: {
+                    color: [0, 0, 0],
                     sourcePosition: [0, 0, 0],
                     targetPosition: [400, 0, 0],
                     strokeWidth: 10
@@ -49,6 +50,7 @@ namespace cubeTest {
             }],
             y: [{
                 domain: {
+                    color: [0, 0, 0],
                     sourcePosition: [0, 0, 0],
                     targetPosition: [0, 200, 0],
                     strokeWidth: 10
@@ -76,26 +78,26 @@ namespace cubeTest {
 
     document.getElementById('animate').addEventListener('click', e => {
 
-        stage.cubeData = [
+        stage.shapeData = [
             {
                 color: colors.blue,
-                position: [0, 300, 100],
-                size: [100, 100, 100]
+                polygon: [[0, 300, 100], [100, 300, 100], [100, 400, 100], [0, 400, 100], [0, 300, 100]],
+                depth: 100
             },
             {
                 color: colors.gray,
-                position: [100, 100, 300],
-                size: [10, 10, 10]
+                polygon: [[100, 100, 300], [110, 100, 300], [110, 110, 300], [100, 110, 300], [100, 100, 300]],
+                depth: 10
             },
             {
                 color: colors.red,
-                position: [300, 0, 0],
-                size: [100, 100, 100]
+                polygon: [[300, 0, 0], [400, 0, 0], [400, 100, 0], [300, 100, 0], [300, 0, 0]],
+                depth: 100
             },
             {
                 color: colors.green,
-                position: [100, 300, 100],
-                size: [100, 100, 100]
+                polygon: [[100, 300, 100], [200, 300, 100], [200, 400, 100], [100, 400, 100], [100, 300, 100]],
+                depth: 100
             },
         ];
 
