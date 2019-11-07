@@ -11,6 +11,7 @@ import {
     LineLayer,
     OrbitView,
     PolygonLayer,
+    SolidPolygonLayer,
     TextLayer
 } from 'deck.gl';
 import {
@@ -26,7 +27,7 @@ import {
     scheme,
     View
 } from 'vega-typings';
-import { CubeGeometry, fp64, Model, Texture2D } from '@luma.gl/core';
+import { fp64, Model, Texture2D } from '@luma.gl/core';
 
 /**
  * Vega library dependency.
@@ -79,6 +80,7 @@ export interface DeckLayerBase {
     IconLayer: typeof IconLayer;
     LineLayer: typeof LineLayer;
     PolygonLayer: typeof PolygonLayer;
+    SolidPolygonLayer: typeof SolidPolygonLayer;
     TextLayer: typeof TextLayer;
 }
 
@@ -96,6 +98,7 @@ let layers: DeckLayerBase = {
     IconLayer: null,
     LineLayer: null,
     PolygonLayer: null,
+    SolidPolygonLayer: null,
     TextLayer: null
 };
 
@@ -103,14 +106,12 @@ let layers: DeckLayerBase = {
  * luma.gl dependency.
  */
 export interface LumaBase {
-    CubeGeometry: typeof CubeGeometry;
     fp64: typeof fp64;
     Model: typeof Model;
     Texture2D: typeof Texture2D
 }
 
 let luma: LumaBase = {
-    CubeGeometry: null,
     fp64: null,
     Model: null,
     Texture2D: null

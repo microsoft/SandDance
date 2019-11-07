@@ -172,13 +172,13 @@ function _MultiIconLayer(...props: Partial<MultiIconLayerProps>[]) {
 //need to trick the compiler by casting to 'any'.
 
 /**
- * CubeLayer - a Deck.gl layer to render cuboids.
+ * MultiIconLayer - a Deck.gl layer to render icons.
  * This is instantiatable by calling `new MultiIconLayer()`.
  */
 export const MultiIconLayer: typeof MultiIconLayer_Class = _MultiIconLayer as any;
 
 /**
- * CubeLayer - a Deck.gl layer to render cuboids.
+ * MultiIconLayer - a Deck.gl layer to render icons.
  * This is not instantiatable, it is the TypeScript declaration of the type.
  */
 export declare class MultiIconLayer_Class extends base.deck.Layer {

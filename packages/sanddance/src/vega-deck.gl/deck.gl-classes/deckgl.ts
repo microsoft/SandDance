@@ -1,8 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import Deck, { DeckProps, InteractiveState } from '@deck.gl/core/lib/deck';
+import Deck, { DeckProps, InteractiveState as _InteractiveState } from '@deck.gl/core/lib/deck';
 import { base } from '../base';
 import { createOrbitControllerClass, OrbitController_Class, OrbitControllerClassOptions } from './orbitController';
+
+export interface InteractiveState extends _InteractiveState {
+    onShape: boolean;
+    onText: boolean;
+    onAxisSelection: boolean;
+}
 
 //adapted from https://github.com/uber/deck.gl/blob/5.3-release/modules/lite/src/deckgl.js
 

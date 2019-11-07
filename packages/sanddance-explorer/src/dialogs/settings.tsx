@@ -231,20 +231,11 @@ export class Settings extends React.Component<Props, State> {
                     <base.fabric.Slider
                         label={strings.labelTransitionPosition}
                         onChange={value => {
-                            this.props.explorer.viewerOptions.transitionDurations.position = value;
+                            this.props.explorer.viewerOptions.transitionDurations.polygon = value;
                         }}
                         min={0}
                         max={10000}
-                        defaultValue={this.props.explorer.viewerOptions.transitionDurations.position}
-                    />
-                    <base.fabric.Slider
-                        label={strings.labelTransitionSize}
-                        onChange={value => {
-                            this.props.explorer.viewerOptions.transitionDurations.size = value;
-                        }}
-                        min={0}
-                        max={10000}
-                        defaultValue={this.props.explorer.viewerOptions.transitionDurations.size}
+                        defaultValue={this.props.explorer.viewerOptions.transitionDurations.polygon}
                     />
                     <base.fabric.Slider
                         label={strings.labelTransitionCamera}

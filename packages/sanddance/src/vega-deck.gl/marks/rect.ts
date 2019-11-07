@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { base } from '../base';
 import { colorFromString } from '../color';
-import { Cube, Stage } from '../interfaces';
+import { Shape, Stage } from '../interfaces';
 import { Datum, Scene, SceneRect } from 'vega-typings';
 import { GroupType, MarkStager, MarkStagerOptions } from './interfaces';
 import { min3dDepth } from '../defaults';
@@ -37,16 +37,26 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
             }
         }
 
-        const cube: Cube = {
+        const px = x + (item.x || 0) - options.offsetX;
+        const py = ty * (y + (item.y || 0) - options.offsetY) - item.height;
+        const position = [px, py, z];
+
+        const shape: Shape = {
             ordinal,
-            size: [item.width, item.height, depth],
-            position: [x + (item.x || 0) - options.offsetX, ty * (y + (item.y || 0) - options.offsetY) - item.height, z],
-            color: colorFromString(item.fill) || options.defaultCubeColor || [128, 128, 128, 128]
+            polygon: [
+                position,
+                [px + item.width, py, z],
+                [px + item.width, py + item.height, z],
+                [px, py + item.height, z],
+                position
+            ],
+            depth,
+            color: colorFromString(item.fill) || options.defaultShapeColor || [128, 128, 128, 128]
         };
 
-        cube.color[3] = item.opacity === undefined ? 255 : 255 * item.opacity;
+        shape.color[3] = item.opacity === undefined ? 255 : 255 * item.opacity;
 
-        stage.cubeData.push(cube);
+        stage.shapeData.push(shape);
 
         i++;
     });

@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { LightSettings } from '@deck.gl/core/lib/layer';
 import {
-    Cube,
     PresenterConfig,
     PresenterStyle,
+    Shape,
     Stage,
     View
 } from './interfaces';
-import { LightSettings } from '@deck.gl/core/lib/layer';
 
 export const minHeight = '100px';
 export const minWidth = '100px';
@@ -26,18 +26,17 @@ const lightSettings: { [view in View]: LightSettings } = {
 
 export const defaultPresenterStyle: PresenterStyle = {
     cssPrefix: 'vega-deckgl-',
-    defaultCubeColor: [128, 128, 128, 255],
+    defaultShapeColor: [128, 128, 128, 255],
     highlightColor: [0, 0, 0, 255],
     lightSettings
 };
 
 export const defaultPresenterConfig: PresenterConfig = {
-    onCubeClick: (e, cube: Cube) => { },
-    onCubeHover: (e, cube: Cube) => { },
+    onShapeClick: (e, shape: Shape) => { },
+    onShapeHover: (e, shape: Shape) => { },
     transitionDurations: {
         color: 100,
-        position: 600,
-        size: 600,
+        polygon: 600,
         view: 600
     }
 };
@@ -45,7 +44,7 @@ export const defaultPresenterConfig: PresenterConfig = {
 export function createStage(view: View) {
     const stage: Stage = {
         view,
-        cubeData: [],
+        shapeData: [],
         axes: {
             x: [],
             y: []

@@ -20,7 +20,7 @@ export function fill(context: SpecContext): ProductionRule<ColorValueRef> {
             }
         :
         {
-            value: util.colorToString(specViewOptions.colors.defaultCube)
+            value: util.colorToString(specViewOptions.colors.defaultShape)
         };
 }
 

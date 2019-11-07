@@ -6,6 +6,7 @@ import { LightSettings } from '@deck.gl/core/lib/layer';
 import { LineLayerDatum } from '@deck.gl/layers/line-layer/line-layer';
 import { Scene } from 'vega-typings';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
+import { Polygon, SolidPolygonLayerDatum } from '@deck.gl/layers/solid-polygon-layer/solid-polygon-layer';
 
 export interface StyledLine extends LineLayerDatum {
     strokeWidth?: number;
@@ -28,9 +29,9 @@ export interface Axis {
 export type Vec3 = [number, number, number];
 
 /**
- * Cuboid information. The cube does not need to have equal dimensions.
+ * Shape information.
  */
-export interface Cube {
+export interface Shape extends SolidPolygonLayerDatum {
 
     /**
      * Ordinal position.
@@ -38,13 +39,13 @@ export interface Cube {
     ordinal?: number;
 
     /**
-     * Flag whether this cube is a "placeholder" and is not to be rendered nor contains cube data.
+     * Flag whether this shape is a "placeholder" and is not to be rendered nor contains shape data.
      */
     isEmpty?: boolean;
 
     color: Color;
-    position: Vec3;
-    size: Vec3;
+    polygon: Polygon;
+    depth: number;
 }
 
 /**
@@ -72,7 +73,7 @@ export interface FacetRect {
  */
 export interface Stage {
     backgroundColor?: Color;
-    cubeData: Cube[];
+    shapeData: Shape[];
     legend?: Legend;
     axes: {
         x: Axis[];
@@ -118,8 +119,7 @@ export interface PreStage {
  */
 export interface TransitionDurations {
     color?: number;
-    position?: number;
-    size?: number;
+    polygon?: number;
     view?: number;
 }
 
@@ -130,8 +130,8 @@ export interface PresenterConfig {
     transitionDurations?: TransitionDurations;
     preStage?: PreStage;
     redraw?: () => void;
-    onCubeHover?: (e: MouseEvent | PointerEvent | TouchEvent, cube: Cube) => void;
-    onCubeClick?: (e: MouseEvent | PointerEvent | TouchEvent, cube: Cube) => void;
+    onShapeHover?: (e: MouseEvent | PointerEvent | TouchEvent, shape: Shape) => void;
+    onShapeClick?: (e: MouseEvent | PointerEvent | TouchEvent, shape: Shape) => void;
     onLayerClick?: (info: PickInfo, pickedInfos: PickInfo[], e: MouseEvent) => any;
     onLegendClick?: (e: MouseEvent | PointerEvent | TouchEvent, legend: Legend, clickedIndex: number) => void;
     onPresent?: () => void;
@@ -145,7 +145,7 @@ export interface PresenterConfig {
 
 export interface PresenterStyle {
     cssPrefix?: string;
-    defaultCubeColor?: Color;
+    defaultShapeColor?: Color;
     highlightColor?: Color;
     lightSettings?: { [view in View]: LightSettings };
     fontFamily?: string;

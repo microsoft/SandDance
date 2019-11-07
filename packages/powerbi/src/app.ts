@@ -71,7 +71,7 @@ export class App extends React.Component<Props, State> {
             colors: {
                 axisLine: color,
                 axisText: color,
-                hoveredCube: color
+                hoveredShape: color
             },
             onDataFilter: this.props.onDataFilter
         };

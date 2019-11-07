@@ -18,7 +18,7 @@ export interface MarkStagerOptions {
     ordinalsSpecified: boolean;
     currAxis: Axis;
     currFacetRect: FacetRect;
-    defaultCubeColor: Color
+    defaultShapeColor: Color
 }
 
 //TODO - use vega-typings below

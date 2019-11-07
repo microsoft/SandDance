@@ -21,7 +21,7 @@ namespace chromaticTextTest {
     export var presenter = new SandDance.VegaDeckGl.Presenter(document.querySelector('#vis'));
     var stage: SandDance.VegaDeckGl.types.Stage = {
         view: '2d',
-        cubeData: [],
+        shapeData: [],
         axes: { x: [], y: [] },
         legend: { rows: {} },
         gridLines: [],

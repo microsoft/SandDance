@@ -27,7 +27,7 @@ function getViewerOptions(darkTheme: boolean) {
             ...SandDanceExplorer.getColorSettingsFromThemePalette(getThemePalette(darkTheme)),
             axisLine: color,
             axisText: color,
-            hoveredCube: color
+            hoveredShape: color
         }
     };
     return viewerOptions;

@@ -4,10 +4,10 @@ import { base } from './base';
 import { box } from './marks/rule';
 import { className, initializePanel } from './panel';
 import { colorToString } from './color';
-import { createDeckGLClassesForPresenter, DeckGL_Class, DeckGLInternalProps } from './deck.gl-classes/deckgl';
+import { createDeckGLClassesForPresenter, DeckGL_Class, DeckGLInternalProps, InteractiveState } from './deck.gl-classes/deckgl';
 import { createStage, defaultPresenterConfig, defaultPresenterStyle } from './defaults';
 import {
-    Cube,
+    Shape,
     PresenterConfig,
     PresenterStyle,
     QueuedAnimationOptions,
@@ -15,17 +15,17 @@ import {
     Stage,
     View
 } from './interfaces';
-import { CubeLayer_Class, CubeLayerInterpolatedProps } from './cube-layer/cube-layer';
-import { DeckProps, InteractiveState } from '@deck.gl/core/lib/deck';
+import { ShapeLayer_Class } from './shape-layer/shape-layer';
+import { DeckProps } from '@deck.gl/core/lib/deck';
 import { deepMerge } from './clone';
 import { easeExpInOut } from 'd3-ease';
-import { getCubeLayer, getCubes, getLayers } from './layers';
+import { getShapeLayer, getShapes, getLayers } from './layers';
 import { LegendView } from './legend';
 import { LinearInterpolator, LinearInterpolator_Class } from './deck.gl-classes/linearInterpolator';
 import { MarkStagerOptions } from './marks/interfaces';
 import { mount } from 'tsx-create-element';
 import { OrbitController_Class } from './deck.gl-classes/orbitController';
-import { patchCubeArray } from './patchedCubeArray';
+import { patchShapeArray } from './patchedCubeArray';
 import { PresenterElement } from './enums';
 import { sceneToStage } from './stagers';
 import { targetViewState, viewStateProps } from './viewState';
@@ -34,7 +34,7 @@ interface IBounds {
     view: View;
     height: number;
     width: number;
-    cubeCount: number;
+    shapeCount: number;
 }
 
 /**
@@ -89,7 +89,7 @@ export class Presenter {
     constructor(public el: HTMLElement, style?: PresenterStyle) {
         this.style = deepMerge<PresenterStyle>(defaultPresenterStyle, style);
         initializePanel(this);
-        this._last = { view: null, height: null, width: null, cubeCount: null, stage: null };
+        this._last = { view: null, height: null, width: null, shapeCount: null, stage: null };
     }
 
     /**
@@ -156,7 +156,7 @@ export class Presenter {
             ordinalsSpecified: false,
             currAxis: null,
             currFacetRect: null,
-            defaultCubeColor: this.style.defaultCubeColor
+            defaultShapeColor: this.style.defaultShapeColor
         };
         //determine if this is a vega scene
         if (scene.marktype) {
@@ -180,7 +180,7 @@ export class Presenter {
                 getCursor: (interactiveState: InteractiveState) => {
                     if (interactiveState.onText || interactiveState.onAxisSelection) {
                         return 'pointer';
-                    } else if (interactiveState.onCube) {
+                    } else if (interactiveState.onShape) {
                         return 'default';
                     } else {
                         return 'grab';
@@ -192,16 +192,16 @@ export class Presenter {
             }
             this.deckgl = new classes.DeckGL_Class(deckProps as DeckGLInternalProps);
         }
-        let cubeCount = Math.max(this._last.cubeCount, stage.cubeData.length);
+        let shapeCount = Math.max(this._last.shapeCount, stage.shapeData.length);
         if (options.ordinalsSpecified) {
-            cubeCount = Math.max(cubeCount, options.maxOrdinal + 1);
-            const empty: Partial<Cube> = {
+            shapeCount = Math.max(shapeCount, options.maxOrdinal + 1);
+            const empty: Partial<Shape> = {
                 isEmpty: true,
                 color: [0, 0, 0, 0] // possibly a bug in Deck.gl? set color to invisible.
             };
-            stage.cubeData = patchCubeArray(cubeCount, empty, stage.cubeData as Cube[]);
+            stage.shapeData = patchShapeArray(shapeCount, empty, stage.shapeData as Shape[]);
         }
-        this.setDeckProps(stage, height, width, cubeCount, config);
+        this.setDeckProps(stage, height, width, shapeCount, config);
         mount(LegendView({ legend: stage.legend, onClick: config && config.onLegendClick }), this.getElement(PresenterElement.legend));
         if (config && config.onPresent) {
             config.onPresent();
@@ -216,31 +216,29 @@ export class Presenter {
      */
     rePresent(stage: Partial<Stage>, modifyConfig?: PresenterConfig) {
         const newStage = { ...this._last.stage, ...stage };
-        this.setDeckProps(newStage, this._last.height, this._last.width, this._last.cubeCount, modifyConfig);
+        this.setDeckProps(newStage, this._last.height, this._last.width, this._last.shapeCount, modifyConfig);
     }
 
-    private isNewBounds(view: View, height: number, width: number, cubeCount: number) {
+    private isNewBounds(view: View, height: number, width: number, shapeCount: number) {
         const lastBounds: IBounds = this.lastBounds();
         for (let prop in lastBounds) {
             if (lastBounds[prop] === null) return true;
         }
-        const newBounds: IBounds = { cubeCount, height, view, width };
+        const newBounds: IBounds = { shapeCount, height, view, width };
         for (let prop in lastBounds) {
             if (lastBounds[prop] !== newBounds[prop]) return true;
         }
     }
 
     private lastBounds(): IBounds {
-        const { cubeCount, height, view, width } = this._last;
-        return { cubeCount, height, view, width };
+        const { shapeCount, height, view, width } = this._last;
+        return { shapeCount, height, view, width };
     }
 
-    private setDeckProps(stage: Stage, height: number, width: number, cubeCount: number, modifyConfig: PresenterConfig) {
+    private setDeckProps(stage: Stage, height: number, width: number, shapeCount: number, modifyConfig: PresenterConfig) {
         const config = deepMerge<PresenterConfig>(defaultPresenterConfig, modifyConfig);
-        const newBounds = this.isNewBounds(stage.view, height, width, cubeCount);
-        let lightSettings = this.style.lightSettings[stage.view];
-        let lightingMix = stage.view === '3d' ? 1.0 : 0.0;
-        let linearInterpolator: LinearInterpolator_Class<CubeLayerInterpolatedProps>;
+        const newBounds = this.isNewBounds(stage.view, height, width, shapeCount);
+
         //choose the current OrbitView viewstate if possible
         let viewState = (this.deckgl.viewState && Object.keys(this.deckgl.viewState).length && this.deckgl.viewState.OrbitView)
             //otherwise use the initial viewstate if any
@@ -248,22 +246,23 @@ export class Presenter {
 
         if (!viewState || newBounds || config.shouldViewstateTransition && config.shouldViewstateTransition()) {
             viewState = targetViewState(height, width, stage.view);
-            const oldCubeLayer = getCubeLayer(this.deckgl.props) as CubeLayer_Class;
-            if (oldCubeLayer) {
-                linearInterpolator = new LinearInterpolator(viewStateProps);
-                linearInterpolator.layerStartProps = { lightingMix: oldCubeLayer.props.lightingMix };
-                linearInterpolator.layerEndProps = { lightingMix };
+            const oldShapeLayer = getShapeLayer(this.deckgl.props) as ShapeLayer_Class;
+            if (oldShapeLayer) {
+
+                //TODO use flyTo from deck.gl v7
                 viewState.transitionDuration = config.transitionDurations.view;
                 viewState.transitionEasing = easeExpInOut;
-                viewState.transitionInterpolator = linearInterpolator;
+                //                viewState.transitionInterpolator = linearInterpolator;
             }
             if (stage.view === '2d') {
-                lightSettings = this.style.lightSettings['3d'];
+
+                //TODO change lighting when changing view
+                //lightSettings = this.style.lightSettings['3d'];
             }
         }
         const guideLines = this._showGuides && box(0, 0, height, width, '#0f0', 1, true);
         config.preLayer && config.preLayer(stage);
-        const layers = getLayers(this, config, stage, lightSettings, lightingMix, linearInterpolator, guideLines);
+        const layers = getLayers(this, config, stage, guideLines);
         const deckProps: Partial<DeckProps> = {
             views: [new base.deck.OrbitView({ controller: this.OrbitControllerClass })],
             viewState,
@@ -273,9 +272,9 @@ export class Presenter {
             config.preStage(stage, deckProps as DeckProps);
         }
         this.deckgl.setProps(deckProps);
-        delete stage.cubeData;
+        delete stage.shapeData;
         this._last = {
-            cubeCount,
+            shapeCount: shapeCount,
             height,
             width,
             stage: stage,
@@ -300,10 +299,10 @@ export class Presenter {
     }
 
     /**
-     * Get cube data array from the cubes layer. 
+     * Get shape data array from the shapes layer. 
      */
-    getCubeData() {
-        return getCubes(this.deckgl.props);
+    getShapeData() {
+        return getShapes(this.deckgl.props);
     }
 
     /**
@@ -312,7 +311,7 @@ export class Presenter {
     showGuides() {
         this._showGuides = true;
         this.getElement(PresenterElement.gl).classList.add('show-center');
-        this.rePresent({ ...this._last.stage, cubeData: this.getCubeData() });
+        this.rePresent({ ...this._last.stage, shapeData: this.getShapeData() });
     }
 
     finalize() {

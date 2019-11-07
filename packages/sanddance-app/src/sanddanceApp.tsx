@@ -149,7 +149,7 @@ export class SandDanceApp extends React.Component<Props, State> {
 
     changeColorScheme(darkTheme: boolean) {
         this.updateExplorerViewerOptions(getViewerOptions(darkTheme, this.props.themeColors));
-        VegaDeckGl.base.vega.scheme(SandDance.constants.ColorScaleNone, x => VegaDeckGl.util.colorToString(this.explorer.viewer.options.colors.defaultCube));
+        VegaDeckGl.base.vega.scheme(SandDance.constants.ColorScaleNone, x => VegaDeckGl.util.colorToString(this.explorer.viewer.options.colors.defaultShape));
         this.explorer && this.explorer.viewer && this.explorer.viewer.render(this.explorer.viewer.insight, this.explorer.state.dataContent.data);
         base.fabric.loadTheme({ palette: this.getThemePalette(darkTheme) });
     }

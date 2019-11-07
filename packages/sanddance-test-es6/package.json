@@ -8,9 +8,9 @@
     "deploy": "parcel build ./src/sanddance.ts --no-cache --no-minify --no-source-maps --public-url . --out-dir ../../docs/tests/es6/js"
   },
   "dependencies": {
-    "@deck.gl/core": "6.4",
-    "@deck.gl/layers": "6.4",
-    "luma.gl": "6.4",
+    "@deck.gl/core": "^7",
+    "@deck.gl/layers": "^7",
+    "luma.gl": "^7",
     "@msrvida/sanddance": "*",
     "vega-lib": "4.3.0"
   }

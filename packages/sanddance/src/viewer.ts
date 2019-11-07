@@ -4,13 +4,13 @@ import * as searchExpression from './searchExpression';
 import * as VegaDeckGl from './vega-deck.gl';
 import { Animator, DataLayoutChange } from './animator';
 import {
-    applyColorMapToCubes,
-    colorMapFromCubes,
+    applyColorMapToShapes,
+    colorMapFromShapes,
     getSelectedColorMap,
     populateColorContext
 } from './colorCubes';
 import { applySignalValues, extractSignalValuesFromView } from './signals';
-import { assignOrdinals, getDataIndexOfCube, getSpecColumns } from './ordinal';
+import { assignOrdinals, getDataIndexOfShape, getSpecColumns } from './ordinal';
 import { AxisSelectionHandler, axisSelectionLayer } from './axisSelection';
 import { cloneVegaSpecWithData } from './specs/clone';
 import {
@@ -155,7 +155,7 @@ export class Viewer {
             this.renderNewLayout({
                 preStage: (stage, deckProps) => {
                     finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
-                    applyColorMapToCubes([oldColorContext.colorMap], VegaDeckGl.util.getCubes(deckProps));
+                    applyColorMapToShapes([oldColorContext.colorMap], VegaDeckGl.util.getShapes(deckProps));
                     if (this.options.onStage) {
                         this.options.onStage(stage, deckProps);
                     }
@@ -174,7 +174,7 @@ export class Viewer {
             });
         }
         return new Promise<void>((resolve, reject) => {
-            this.presenter.animationQueue(resolve, this.options.transitionDurations.position, { waitingLabel, handlerLabel, animationCanceled: reject });
+            this.presenter.animationQueue(resolve, this.options.transitionDurations.polygon, { waitingLabel, handlerLabel, animationCanceled: reject });
         });
     }
 
@@ -185,14 +185,14 @@ export class Viewer {
             break;
         }
         case DataLayoutChange.refine: {
-            //save cube colors
+            //save shape colors
             const oldColorContext = this.colorContexts[this.currentColorContext];
             let colorMap: ColorMap;
             this.renderNewLayout({
                 preStage: (stage: VegaDeckGl.types.Stage, deckProps: DeckProps) => {
                     //save off the spec colors
-                    colorMap = colorMapFromCubes(stage.cubeData);
-                    applyColorMapToCubes([oldColorContext.colorMap], VegaDeckGl.util.getCubes(deckProps));
+                    colorMap = colorMapFromShapes(stage.shapeData);
+                    applyColorMapToShapes([oldColorContext.colorMap], VegaDeckGl.util.getShapes(deckProps));
                     this.preStage(stage, deckProps);
                 },
                 onPresent: () => {
@@ -292,8 +292,8 @@ export class Viewer {
      */
     renderSameLayout(newViewerOptions?: Partial<ViewerOptions>) {
         const colorContext = this.colorContexts[this.currentColorContext];
-        const clonedCubes = this.presenter.getCubeData().map(cube => {
-            return { ...cube };
+        const clonedShapes = this.presenter.getShapeData().map(shape => {
+            return { ...shape };
         });
 
         this.applyLegendColorContext(colorContext);
@@ -320,9 +320,9 @@ export class Viewer {
             colorMethod = this.options.colors.unselectedColorMethod;
         }
 
-        applyColorMapToCubes(colorMaps, clonedCubes, colorMethod);
+        applyColorMapToShapes(colorMaps, clonedShapes, colorMethod);
 
-        const stage: Partial<VegaDeckGl.types.Stage> = { cubeData: clonedCubes, axes, textData };
+        const stage: Partial<VegaDeckGl.types.Stage> = { shapeData: clonedShapes, axes, textData };
         this.vegaViewGl.presenter.rePresent(stage, this.createConfig().presenterConfig);
     }
 
@@ -343,7 +343,7 @@ export class Viewer {
      * @param insight Object to create a visualization specification.
      * @param data Array of data objects.
      * @param view Optional View to specify camera type.
-     * @param ordinalMap Optional map of ordinals to assign to the data such that the same cubes can be re-used for new data.
+     * @param ordinalMap Optional map of ordinals to assign to the data such that the same shapes can be re-used for new data.
      */
     render(insight: Insight, data: object[], options: RenderOptions = {}): Promise<RenderResult> {
         return new Promise<RenderResult>((resolve, reject) => {
@@ -358,7 +358,7 @@ export class Viewer {
                     layout();
                     this.presenter.animationQueue(() => {
                         this.filter(insight.filter);
-                    }, this.options.transitionDurations.position, { waitingLabel: 'layout before refine', handlerLabel: 'refine after layout' });
+                    }, this.options.transitionDurations.polygon, { waitingLabel: 'layout before refine', handlerLabel: 'refine after layout' });
                 } else {
                     //not refining
                     this._dataScope.filteredData = null;
@@ -394,7 +394,7 @@ export class Viewer {
         presenterConfig.preStage = (stage: VegaDeckGl.types.Stage, deckProps: DeckProps) => {
             if (this._shouldSaveColorContext()) {
                 //save off the colors from Vega layout
-                colorContext.colorMap = colorMapFromCubes(stage.cubeData);
+                colorContext.colorMap = colorMapFromShapes(stage.shapeData);
             }
             this.preStage(stage, deckProps);
         };
@@ -431,17 +431,17 @@ export class Viewer {
                 preStage: (stage: VegaDeckGl.types.Stage, deckProps: DeckProps) => {
                     if (this._shouldSaveColorContext()) {
                         //save off the colors from Vega layout
-                        colorContext.colorMap = colorMapFromCubes(stage.cubeData);
+                        colorContext.colorMap = colorMapFromShapes(stage.shapeData);
                     } else {
                         //apply passed colorContext
-                        applyColorMapToCubes([colorContext.colorMap], VegaDeckGl.util.getCubes(deckProps));
+                        applyColorMapToShapes([colorContext.colorMap], VegaDeckGl.util.getShapes(deckProps));
                     }
                     //if items are selected, repaint
                     const hasSelectedData = !!this._dataScope.hasSelectedData();
                     const hasActive = !!this._dataScope.active;
                     if (this._dataScope.hasSelectedData() || this._dataScope.active) {
                         const selectedColorMap = getSelectedColorMap(this._dataScope.currentData(), hasSelectedData, hasActive, this.options);
-                        applyColorMapToCubes([colorContext.colorMap, selectedColorMap], stage.cubeData, this.options.colors.unselectedColorMethod);
+                        applyColorMapToShapes([colorContext.colorMap, selectedColorMap], stage.shapeData, this.options.colors.unselectedColorMethod);
                     }
                     this.preStage(stage, deckProps);
                 },
@@ -482,11 +482,11 @@ export class Viewer {
         }
     }
 
-    private onCubeClick(e: MouseEvent | PointerEvent | TouchEvent, cube: VegaDeckGl.types.Cube) {
+    private onShapeClick(e: MouseEvent | PointerEvent | TouchEvent, shape: VegaDeckGl.types.Shape) {
         const hasSelectedData = this._dataScope.hasSelectedData();
         if (hasSelectedData && this._dataScope.selection.included.length > 1) {
             //if active is within selection, keep the selection and activate the one.
-            const indexWithinSelection = this._dataScope.ordinalIndexWithinSelection(cube.ordinal);
+            const indexWithinSelection = this._dataScope.ordinalIndexWithinSelection(shape.ordinal);
             if (indexWithinSelection.index >= 0) {
                 this.activate(indexWithinSelection.datum);
                 this._details.populate(this._dataScope.selection, indexWithinSelection.index);
@@ -497,28 +497,28 @@ export class Viewer {
                 return;
             }
         }
-        if (hasSelectedData && this._dataScope.selection.included.length === 1 && this._dataScope.selection.included[0][VegaDeckGl.constants.GL_ORDINAL] === cube.ordinal) {
+        if (hasSelectedData && this._dataScope.selection.included.length === 1 && this._dataScope.selection.included[0][VegaDeckGl.constants.GL_ORDINAL] === shape.ordinal) {
             this.deselect();
             return;
         }
         const search: SearchExpression = {
             name: VegaDeckGl.constants.GL_ORDINAL,
             operator: '==',
-            value: cube.ordinal
+            value: shape.ordinal
         };
         this.select(search);
     }
 
-    private onCubeHover(e: MouseEvent | PointerEvent | TouchEvent, cube: VegaDeckGl.types.Cube) {
+    private onShapeHover(e: MouseEvent | PointerEvent | TouchEvent, shape: VegaDeckGl.types.Shape) {
         if (this._tooltip) {
             this._tooltip.finalize();
             this._tooltip = null;
         }
-        if (!cube) {
+        if (!shape) {
             return;
         }
         const currentData = this._dataScope.currentData();
-        const index = getDataIndexOfCube(cube, currentData);
+        const index = getDataIndexOfShape(shape, currentData);
         if (index >= 0) {
             this._tooltip = new Tooltip({
                 options: this.options.tooltipOptions,
@@ -541,8 +541,8 @@ export class Viewer {
             getTextColor,
             getTextHighlightColor,
             onTextClick,
-            onCubeClick: this.onCubeClick.bind(this),
-            onCubeHover: this.onCubeHover.bind(this),
+            onShapeClick: this.onShapeClick.bind(this),
+            onShapeHover: this.onShapeHover.bind(this),
             onTextHover: this.onTextHover.bind(this),
             preStage: this.preStage.bind(this),
             onPresent: this.options.onPresent,
@@ -608,7 +608,7 @@ export class Viewer {
     }
 
     /**
-     * Select cubes by a filter expression.
+     * Select shapes by a filter expression.
      * @param search Filter expression, see https://vega.github.io/vega/docs/expressions/
      */
     select(search: Search) {

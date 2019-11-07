@@ -307,13 +307,13 @@ function _ChromaticTextLayer(props?: LayerProps & ChromaticTextLayerProps) {
 //need to trick the compiler by casting to 'any'.
 
 /**
- * TextLayer - a modification of deck.gl's TextLayer.
+ * ChromaticTextLayer - a modification of deck.gl's TextLayer.
  * This is instantiatable by calling `new TextLayer()`.
  */
 export const ChromaticTextLayer: typeof ChromaticTextLayer_Class = _ChromaticTextLayer as any;
 
 /**
- * CubeLayer - a Deck.gl layer to render cuboids.
+ * ChromaticTextLayer - a modification of deck.gl's TextLayer.
  * This is not instantiatable, it is the TypeScript declaration of the type.
  */
 export declare class ChromaticTextLayer_Class extends base.deck.Layer {

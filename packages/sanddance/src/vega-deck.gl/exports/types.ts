@@ -8,7 +8,6 @@
 
 import {
     Axis,
-    Cube,
     FacetRect,
     Legend,
     LegendRow,
@@ -18,6 +17,7 @@ import {
     PreStage,
     QueuedAnimationOptions,
     Scene3d,
+    Shape,
     Stage,
     StyledLine,
     TransitionDurations,
@@ -31,7 +31,7 @@ import {
     LumaBase,
     VegaBase
 } from '../base';
-import { CubeLayerDataProps, CubeLayerDefaultProps, CubeLayerProps } from '../cube-layer/cube-layer';
+import { ShapeLayerProps } from '../shape-layer/shape-layer';
 import { ViewGlConfig } from '../vega-classes/viewGl';
 
 
@@ -39,9 +39,6 @@ import { ViewGlConfig } from '../vega-classes/viewGl';
 export {
     Axis,
     Base,
-    Cube,
-    CubeLayerDataProps,
-    CubeLayerDefaultProps,
     DeckBase,
     DeckLayerBase,
     FacetRect,
@@ -54,6 +51,7 @@ export {
     PresenterStyle,
     QueuedAnimationOptions,
     Scene3d,
+    Shape,
     Stage,
     StyledLine,
     TransitionDurations,
@@ -62,4 +60,4 @@ export {
 };
 
 //alphabetize types  for documentation
-export { CubeLayerProps, Vec3, View };
+export { ShapeLayerProps, Vec3, View };

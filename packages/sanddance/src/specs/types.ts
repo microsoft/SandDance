@@ -207,9 +207,9 @@ export interface SpecCapabilities {
 export interface SpecColorSettings {
 
     /**
-     * Color of cubes when there is no coloring specified.
+     * Color of shapes when there is no coloring specified.
      */
-    defaultCube?: Color;
+    defaultShape?: Color;
 
     /**
      * Color of axes lines.

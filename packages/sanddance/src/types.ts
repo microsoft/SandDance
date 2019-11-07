@@ -38,7 +38,7 @@ export interface RenderResult {
     specResult: SpecResult;
 
     /**
-     * Map of cube ordinals assigned by unique id.
+     * Map of shape ordinals assigned by unique id.
      */
     ordinalMap: OrdinalMap;
 }
@@ -179,19 +179,19 @@ export interface RenderOptions {
 export interface ColorSettings extends SpecColorSettings {
 
     /**
-     * Color of the individually selected cube.
+     * Color of the individually selected shape.
      */
-    activeCube?: Color;
+    activeShape?: Color;
 
     /**
-     * Color of the cube when mouse hovered.
+     * Color of the shape when mouse hovered.
      */
-    hoveredCube?: Color;
+    hoveredShape?: Color;
 
     /**
-     * Color of selected cubes.
+     * Color of selected shapes.
      */
-    selectedCube?: Color;
+    selectedShape?: Color;
 
     /**
      * Color of axis hover hotspots.
@@ -199,7 +199,7 @@ export interface ColorSettings extends SpecColorSettings {
     axisSelectHighlight?: Color;
 
     /**
-     * Method of coloring unselected cubes.
+     * Method of coloring unselected shapes.
      */
     unselectedColorMethod?: ColorMethod;
 }

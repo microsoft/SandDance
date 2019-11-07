@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 export const GL_ORDINAL = 'GL_ORDINAL';
 export const layerNames = {
-    cubes: 'LAYER_CUBES',
+    shapes: 'LAYER_SHAPES',
     lines: 'LAYER_LINES',
     text: 'LAYER_TEXT'
 };

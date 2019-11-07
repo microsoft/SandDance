@@ -61,7 +61,7 @@ export function getColorSettingsFromThemePalette(themePalette: Partial<FabricTyp
     return {
         axisLine: colorFromString(themePalette.black),
         axisText: colorFromString(themePalette.black),
-        hoveredCube: colorFromString(themePalette.black),
+        hoveredShape: colorFromString(themePalette.black),
         clickableText: colorFromString(themePalette.themeDark),
         clickableTextHighlight: colorFromString(themePalette.themeSecondary)
     };

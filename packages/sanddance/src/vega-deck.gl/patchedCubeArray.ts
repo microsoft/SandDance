@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Cube } from './interfaces';
+import { Shape } from './interfaces';
 
-export function patchCubeArray(allocatedSize: number, empty: Partial<Cube>, cubes: Cube[]) {
-    const patched: Cube[] = new Array<Cube>(allocatedSize);
-    patched.fill(empty as Cube);
+export function patchShapeArray(allocatedSize: number, empty: Partial<Shape>, shapes: Shape[]) {
+    const patched: Shape[] = new Array<Shape>(allocatedSize);
+    patched.fill(empty as Shape);
 
-    cubes.forEach(cube => patched[cube.ordinal] = cube);
+    shapes.forEach(shape => patched[shape.ordinal] = shape);
 
     return patched;
 }

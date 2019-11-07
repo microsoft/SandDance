@@ -16,12 +16,12 @@ export function getSelectedColorMap(currentData: object[], showSelectedData: boo
         let item: ColorMappedItem;
         if (showSelectedData) {
             item = datum[FieldNames.Selected] ?
-                { color: viewerOptions.colors.selectedCube }
+                { color: viewerOptions.colors.selectedShape }
                 :
                 { unSelected: true };
         }
         if (showActive && datum[FieldNames.Active]) {
-            item = { color: viewerOptions.colors.activeCube };
+            item = { color: viewerOptions.colors.activeShape };
         }
         return item;
     }
@@ -36,40 +36,40 @@ export function getSelectedColorMap(currentData: object[], showSelectedData: boo
     return colorMap;
 }
 
-export function colorMapFromCubes(cubes: VegaDeckGl.types.Cube[]) {
+export function colorMapFromShapes(shapes: VegaDeckGl.types.Shape[]) {
     const map: ColorMap = {};
-    cubes.forEach(cube => {
-        map[cube.ordinal] = { color: cube.color };
+    shapes.forEach(shape => {
+        map[shape.ordinal] = { color: shape.color };
     });
     return map;
 }
 
 export function populateColorContext(colorContext: ColorContext, presenter: VegaDeckGl.Presenter) {
     if (!colorContext.colorMap) {
-        const cubes = presenter.getCubeData();
-        colorContext.colorMap = colorMapFromCubes(cubes);
+        const shapes = presenter.getShapeData();
+        colorContext.colorMap = colorMapFromShapes(shapes);
     }
     colorContext.legend = VegaDeckGl.util.clone(presenter.stage.legend);
     colorContext.legendElement = presenter.getElement(VegaDeckGl.PresenterElement.legend).children[0] as HTMLElement;
 }
 
-export function applyColorMapToCubes(maps: ColorMap[], cubes: VegaDeckGl.types.Cube[], unselectedColorMethod?: ColorMethod) {
+export function applyColorMapToShapes(maps: ColorMap[], shapes: VegaDeckGl.types.Shape[], unselectedColorMethod?: ColorMethod) {
     Object.keys(maps[0]).forEach(ordinal => {
-        const cube = cubes[+ordinal];
-        if (cube && !cube.isEmpty) {
+        const shape = shapes[+ordinal];
+        if (shape && !shape.isEmpty) {
             const actualColorMappedItem: ColorMappedItem = maps[0][ordinal];
             if (maps.length > 1) {
                 const selectedColorMappedItem: ColorMappedItem = maps[1][ordinal];
                 if (selectedColorMappedItem) {
                     if (selectedColorMappedItem.unSelected && unselectedColorMethod) {
-                        cube.color = unselectedColorMethod(actualColorMappedItem.color);
+                        shape.color = unselectedColorMethod(actualColorMappedItem.color);
                     } else {
-                        cube.color = selectedColorMappedItem.color;
+                        shape.color = selectedColorMappedItem.color;
                     }
                     return;
                 }
             }
-            cube.color = actualColorMappedItem.color;
+            shape.color = actualColorMappedItem.color;
         }
     });
 }

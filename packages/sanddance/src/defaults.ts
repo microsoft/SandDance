@@ -7,10 +7,10 @@ import { ViewerOptions } from './types';
 
 export const defaultViewerOptions: ViewerOptions = {
     colors: {
-        activeCube: [128, 0, 128, 255], //purple
-        defaultCube: defaultPresenterStyle.defaultCubeColor,
-        hoveredCube: defaultPresenterStyle.highlightColor,
-        selectedCube: [255, 255, 0, 255],   //yellow
+        activeShape: [128, 0, 128, 255], //purple
+        defaultShape: defaultPresenterStyle.defaultShapeColor,
+        hoveredShape: defaultPresenterStyle.highlightColor,
+        selectedShape: [255, 255, 0, 255],   //yellow
         axisSelectHighlight: [128, 128, 128, 128],
         axisLine: [0, 0, 0, 255],
         axisText: [0, 0, 0, 255],
@@ -79,10 +79,10 @@ export function getPresenterStyle(options: ViewerOptions) {
     var style: VegaDeckGl.types.PresenterStyle = {
         cssPrefix,
         fontFamily: options.fontFamily,
-        defaultCubeColor: options.colors.defaultCube
+        defaultShapeColor: options.colors.defaultShape
     };
-    if (options.colors.hoveredCube) {
-        style.highlightColor = options.colors.hoveredCube;
+    if (options.colors.hoveredShape) {
+        style.highlightColor = options.colors.hoveredShape;
     }
     if (options.lightSettings) {
         style.lightSettings = options.lightSettings;

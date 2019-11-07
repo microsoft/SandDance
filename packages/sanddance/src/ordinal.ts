@@ -41,10 +41,10 @@ export function getSpecColumns(insight: Insight, columns: Column[]): SpecColumns
     };
 }
 
-export function getDataIndexOfCube(cube: VegaDeckGl.types.Cube, data: object[]) {
+export function getDataIndexOfShape(shape: VegaDeckGl.types.Shape, data: object[]) {
     const len = data.length;
     for (let i = 0; i < len; i++) {
-        if (data[i][VegaDeckGl.constants.GL_ORDINAL] === cube.ordinal) {
+        if (data[i][VegaDeckGl.constants.GL_ORDINAL] === shape.ordinal) {
             return i;
         }
     }

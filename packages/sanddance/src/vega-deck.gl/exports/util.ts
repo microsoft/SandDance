@@ -9,7 +9,7 @@
 import { addDiv, addEl, outerSize } from '../htmlHelpers';
 import { clone, deepMerge } from '../clone';
 import { colorFromString, colorIsEqual, colorToString, isColor } from '../color';
-import { getCubeLayer, getCubes } from '../layers';
+import { getShapeLayer, getShapes } from '../layers';
 
 //alphabetize for documentation
-export { addDiv, addEl, clone, colorFromString, colorIsEqual, colorToString, deepMerge, isColor, getCubeLayer, getCubes, outerSize };
+export { addDiv, addEl, clone, colorFromString, colorIsEqual, colorToString, deepMerge, isColor, getShapeLayer, getShapes, outerSize };
