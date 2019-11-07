@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import SolidPolygonLayer, { SolidPolygonLayerProps } from '@deck.gl/layers/solid-polygon-layer/solid-polygon-layer';
 import { base } from './base';
 import { ChromaticTextLayer, ChromaticTextLayerProps } from './chromatic-text-layer/chromatic-text-layer';
 import { Color } from '@deck.gl/core/utils/color';
@@ -9,7 +10,6 @@ import { easeExpInOut } from 'd3-ease';
 import { Layer } from 'deck.gl';
 import { layerNames } from './constants';
 import { LayerProps, TransitionTiming } from '@deck.gl/core/lib/layer';
-import { LinearInterpolator_Class } from './deck.gl-classes/linearInterpolator';
 import { Presenter } from './presenter';
 import {
     PresenterConfig,
@@ -17,9 +17,7 @@ import {
     Stage,
     StyledLine
 } from './interfaces';
-import { ShapeLayer, ShapeLayerProps } from './shape-layer/shape-layer';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
-import { SolidPolygonLayerProps } from '@deck.gl/layers/solid-polygon-layer/solid-polygon-layer';
 
 export function getLayers(
     presenter: Presenter,
@@ -92,7 +90,7 @@ function newLineLayer(id: string, data: StyledLine[]) {
         data,
         coordinateSystem: base.deck.COORDINATE_SYSTEM.IDENTITY,
         getColor: (o: StyledLine) => o.color,
-        getStrokeWidth: (o: StyledLine) => o.strokeWidth
+        getWidth: (o: StyledLine) => o.strokeWidth
     });
 }
 
@@ -148,12 +146,12 @@ function getTiming(duration: number, easing?: (t: number) => number) {
 }
 
 export function getShapeLayer(deckProps: DeckProps) {
-    return deckProps.layers.filter(layer => layer.id === layerNames.shapes)[0];
+    return deckProps.layers.filter(layer => layer.id === layerNames.shapes)[0] as SolidPolygonLayer;
 }
 
 export function getShapes(deckProps: DeckProps) {
     const shapeLayer = getShapeLayer(deckProps);
     if (!shapeLayer) return;
-    const shapeLayerProps = shapeLayer.props as ShapeLayerProps;
-    return shapeLayerProps.data;
+    const shapeLayerProps = shapeLayer.props as LayerProps & SolidPolygonLayerProps;
+    return shapeLayerProps.data as Shape[];
 }

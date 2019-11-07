@@ -15,7 +15,6 @@ import {
     Stage,
     View
 } from './interfaces';
-import { ShapeLayer_Class } from './shape-layer/shape-layer';
 import { DeckProps } from '@deck.gl/core/lib/deck';
 import { deepMerge } from './clone';
 import { easeExpInOut } from 'd3-ease';
@@ -246,7 +245,7 @@ export class Presenter {
 
         if (!viewState || newBounds || config.shouldViewstateTransition && config.shouldViewstateTransition()) {
             viewState = targetViewState(height, width, stage.view);
-            const oldShapeLayer = getShapeLayer(this.deckgl.props) as ShapeLayer_Class;
+            const oldShapeLayer = getShapeLayer(this.deckgl.props);
             if (oldShapeLayer) {
 
                 //TODO use flyTo from deck.gl v7

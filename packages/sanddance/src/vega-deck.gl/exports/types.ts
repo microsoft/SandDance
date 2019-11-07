@@ -31,7 +31,6 @@ import {
     LumaBase,
     VegaBase
 } from '../base';
-import { ShapeLayerProps } from '../shape-layer/shape-layer';
 import { ViewGlConfig } from '../vega-classes/viewGl';
 
 
@@ -60,4 +59,4 @@ export {
 };
 
 //alphabetize types  for documentation
-export { ShapeLayerProps, Vec3, View };
+export { Vec3, View };

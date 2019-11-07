@@ -9,6 +9,7 @@ import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 import { Polygon, SolidPolygonLayerDatum } from '@deck.gl/layers/solid-polygon-layer/solid-polygon-layer';
 
 export interface StyledLine extends LineLayerDatum {
+    color: Color;
     strokeWidth?: number;
 }
 
