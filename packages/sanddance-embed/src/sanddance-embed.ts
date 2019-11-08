@@ -57,38 +57,38 @@ namespace SandDanceEmbed {
         const request: MessageRequest = { ...copy };
         let response: MessageResponse;
         switch (request.action) {
-        case 'init': {
-            response = {
-                request
-            };
-            break;
-        }
-        case 'load': {
-            const request_load = request as MessageRequest_Load;
-            load(request_load.data, request_load.insight).then(() => {
+            case 'init': {
                 response = {
                     request
                 };
-                requestWithSource.source.postMessage(response, '*');
-            });
-            //don't keep a copy of the array
-            delete request_load.data;
-            break;
-        }
-        case 'getData': {
-            response = <MessageResponse_GetData>{
-                request,
-                data: sandDanceExplorer.state.dataContent.data
-            };
-            break;
-        }
-        case 'getInsight': {
-            response = <MessageResponse_GetInsight>{
-                request,
-                insight: sandDanceExplorer.viewer.getInsight()
-            };
-            break;
-        }
+                break;
+            }
+            case 'load': {
+                const request_load = request as MessageRequest_Load;
+                load(request_load.data, request_load.insight).then(() => {
+                    response = {
+                        request
+                    };
+                    requestWithSource.source.postMessage(response, '*');
+                });
+                //don't keep a copy of the array
+                delete request_load.data;
+                break;
+            }
+            case 'getData': {
+                response = <MessageResponse_GetData>{
+                    request,
+                    data: sandDanceExplorer.state.dataContent.data
+                };
+                break;
+            }
+            case 'getInsight': {
+                response = <MessageResponse_GetInsight>{
+                    request,
+                    insight: sandDanceExplorer.viewer.getInsight()
+                };
+                break;
+            }
         }
         if (response) {
             requestWithSource.source.postMessage(response, '*');

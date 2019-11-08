@@ -34,17 +34,17 @@ export function initPrefs(prefs: Prefs, partialInsight: Partial<SandDance.types.
                 };
 
                 switch (role) {
-                case 'color':
-                    rolePrefs[column] = {
-                        scheme: partialInsight.scheme,
-                        colorBin: partialInsight.colorBin
-                    };
-                    copySignalValue(SandDance.constants.SignalNames.ColorBinCount);
-                    break;
+                    case 'color':
+                        rolePrefs[column] = {
+                            scheme: partialInsight.scheme,
+                            colorBin: partialInsight.colorBin
+                        };
+                        copySignalValue(SandDance.constants.SignalNames.ColorBinCount);
+                        break;
 
-                case 'x':
-                    copySignalValue(SandDance.constants.SignalNames.XBins);
-                    break;
+                    case 'x':
+                        copySignalValue(SandDance.constants.SignalNames.XBins);
+                        break;
                 }
             }
         }

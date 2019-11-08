@@ -30,19 +30,19 @@ export function Palette(props: Props) {
     let isQuantitative = false;
 
     switch (props.colorColumn.type) {
-    case 'boolean':
-    case 'string':
-        isQualitative = true;
-        break;
+        case 'boolean':
+        case 'string':
+            isQualitative = true;
+            break;
 
-    case 'number':
-        isQuantitative = true;
-        break;
+        case 'number':
+            isQuantitative = true;
+            break;
 
-    case 'date':
-    case 'integer':
-        isQuantitative = true;
-        isQualitative = categoricalNumeric;
+        case 'date':
+        case 'integer':
+            isQuantitative = true;
+            isQualitative = categoricalNumeric;
     }
 
     const selected = props.scheme;

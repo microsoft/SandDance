@@ -68,12 +68,12 @@ class App extends React.Component<{}, State> {
                 const message = event.data as Message;
 
                 switch (message.command) {
-                case 'gotFileContent':
-                    this.explorer && this.explorer.load(message.dataFile);
+                    case 'gotFileContent':
+                        this.explorer && this.explorer.load(message.dataFile);
 
-                    //TODO: hydrate state
+                        //TODO: hydrate state
 
-                    break;
+                        break;
                 }
             },
             resize: e => {

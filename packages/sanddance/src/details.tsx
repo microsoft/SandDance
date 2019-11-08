@@ -86,46 +86,46 @@ export class Details {
 
         switch (action) {
 
-        case Action.deselect:
-            this.clearSelection();
-            p = this.animator.deselect();
-            break;
-
-        case Action.exclude:
-            this.clearSelection();
-            p = this.animator.filter(searchExpression.invert(u.search), u.excluded, u.included);
-            this.state.remapColor = false;
-            break;
-
-        case Action.isolate:
-            this.clearSelection();
-            p = this.animator.filter(u.search, u.included, u.excluded);
-            this.state.remapColor = false;
-            break;
-
-        case Action.reset:
-            this.clear();
-            p = this.animator.reset();
-            break;
-
-        default:
-            switch (action) {
-            case Action.previous:
-                this.state.index--;
-                if (this.state.index < 0) {
-                    this.state.index = this.state.userSelection.included.length - 1;
-                }
+            case Action.deselect:
+                this.clearSelection();
+                p = this.animator.deselect();
                 break;
 
-            case Action.next:
-                this.state.index++;
-                if (this.state.index >= this.state.userSelection.included.length) {
-                    this.state.index = 0;
-                }
+            case Action.exclude:
+                this.clearSelection();
+                p = this.animator.filter(searchExpression.invert(u.search), u.excluded, u.included);
+                this.state.remapColor = false;
                 break;
-            }
-            this.render();
-            p = this.animator.activate(this.state.userSelection.included[this.state.index]);
+
+            case Action.isolate:
+                this.clearSelection();
+                p = this.animator.filter(u.search, u.included, u.excluded);
+                this.state.remapColor = false;
+                break;
+
+            case Action.reset:
+                this.clear();
+                p = this.animator.reset();
+                break;
+
+            default:
+                switch (action) {
+                    case Action.previous:
+                        this.state.index--;
+                        if (this.state.index < 0) {
+                            this.state.index = this.state.userSelection.included.length - 1;
+                        }
+                        break;
+
+                    case Action.next:
+                        this.state.index++;
+                        if (this.state.index >= this.state.userSelection.included.length) {
+                            this.state.index = 0;
+                        }
+                        break;
+                }
+                this.render();
+                p = this.animator.activate(this.state.userSelection.included[this.state.index]);
         }
         p.then(() => this.render());
     }
