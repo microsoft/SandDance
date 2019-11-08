@@ -10,7 +10,6 @@ import {
     RangeBand,
     RangeScheme,
     ScaleData,
-    SequentialScale,
     SignalRef
 } from 'vega-typings';
 
@@ -65,9 +64,9 @@ export function binnableColorScale(colorBin: ColorBin, data: string, field: stri
     }
     switch (colorBin) {
         case 'continuous': {
-            const sequentialScale: SequentialScale = {
+            const sequentialScale: LinearScale = {
                 name,
-                type: 'sequential',
+                type: 'linear',
                 domain,
                 range,
                 reverse
