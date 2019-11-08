@@ -198,7 +198,7 @@
     };
     function invertSearchExpression(input) {
         const operator = invertedOperators[input.operator];
-        const output = Object.assign({}, input, { operator });
+        const output = Object.assign(Object.assign({}, input), { operator });
         if (input.clause) {
             output.clause = invertedClauses[input.clause];
         }
@@ -7169,7 +7169,7 @@ void main(void) {
          * @param modifyConfig Optional presentation configuration object.
          */
         rePresent(stage, modifyConfig) {
-            const newStage = Object.assign({}, this._last.stage, stage);
+            const newStage = Object.assign(Object.assign({}, this._last.stage), stage);
             this.setDeckProps(newStage, this._last.height, this._last.width, this._last.cubeCount, modifyConfig);
         }
         isNewBounds(view, height, width, cubeCount) {
@@ -7261,7 +7261,7 @@ void main(void) {
         showGuides() {
             this._showGuides = true;
             this.getElement(PresenterElement.gl).classList.add('show-center');
-            this.rePresent(Object.assign({}, this._last.stage, { cubeData: this.getCubeData() }));
+            this.rePresent(Object.assign(Object.assign({}, this._last.stage), { cubeData: this.getCubeData() }));
         }
         finalize() {
             this.animationCancel();
@@ -7394,7 +7394,7 @@ void main(void) {
     function getColumnsFromData(data, columnTypes) {
         const sample = data[0];
         const fields = sample ? Object.keys(sample) : [];
-        const inferences = Object.assign({}, base.vega.inferTypes(data, fields), columnTypes);
+        const inferences = Object.assign(Object.assign({}, base.vega.inferTypes(data, fields)), columnTypes);
         const columns = fields.map(name => {
             const column = {
                 name,
@@ -7545,7 +7545,7 @@ void main(void) {
         onError: (errors) => {
             //console.log(`UnitVisViewer errors: ${errors.join('\n')}`);
         },
-        transitionDurations: Object.assign({}, defaultPresenterConfig.transitionDurations, { scope: 600 }),
+        transitionDurations: Object.assign(Object.assign({}, defaultPresenterConfig.transitionDurations), { scope: 600 }),
         selectionPolygonZ: -1,
         tickSize: 10,
         facetMargins: {
@@ -11606,7 +11606,7 @@ void main(void) {
                 //run on all columns
                 const group = {
                     expressions: this.columns.map((column, i) => {
-                        const ex2 = Object.assign({}, ex, { column, name: column.name });
+                        const ex2 = Object.assign(Object.assign({}, ex), { column, name: column.name });
                         if (i) {
                             ex2.clause = '||';
                         }
@@ -12047,7 +12047,7 @@ void main(void) {
     }
     function cloneTextData(textData, color) {
         return textData.map(t => {
-            return Object.assign({}, t, { color });
+            return Object.assign(Object.assign({}, t), { color });
         });
     }
     function colorEquals(a, b) {
@@ -12292,7 +12292,7 @@ void main(void) {
             }
             if (this.options.onSelectionChanged) {
                 const sel = this.getSelection();
-                this.options.onSelectionChanged((sel && sel.search) || null);
+                this.options.onSelectionChanged((sel && sel.search) || null, 0, (sel && sel.selectedData) || null);
             }
         }
         renderNewLayout(c, view) {
@@ -12301,7 +12301,7 @@ void main(void) {
             const specResult = cloneVegaSpecWithData(context, currData);
             if (!specResult.errors) {
                 const uiValues = extractSignalValuesFromView(this.vegaViewGl, this.vegaSpec);
-                this._signalValues = Object.assign({}, this._signalValues, uiValues, this.insight.signalValues);
+                this._signalValues = Object.assign(Object.assign(Object.assign({}, this._signalValues), uiValues), this.insight.signalValues);
                 applySignalValues(this._signalValues, specResult.vegaSpec);
                 this.vegaSpec = specResult.vegaSpec;
                 this.options.onVegaSpec && this.options.onVegaSpec(this.vegaSpec);
@@ -12541,7 +12541,7 @@ void main(void) {
                     this._details.populate(this._dataScope.selection, indexWithinSelection.index);
                     if (this.options.onSelectionChanged) {
                         const sel = this.getSelection();
-                        this.options.onSelectionChanged(sel.search, indexWithinSelection.index);
+                        this.options.onSelectionChanged(sel.search, indexWithinSelection.index, sel.selectedData);
                     }
                     return;
                 }
@@ -12762,7 +12762,7 @@ void main(void) {
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
-    const version = '1.6.5';
+    const version = '1.6.6';
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
 

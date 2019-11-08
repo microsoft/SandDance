@@ -18,8 +18,8 @@ Add these to the `dependencies` section of your `package.json`, then run `npm in
 ```json
 "@deck.gl/core": "6.4",
 "@deck.gl/layers": "6.4",
+"@msrvida/sanddance-explorer": "^1",
 "luma.gl": "6.4",
-"sanddance-explorer": "*",
 "vega-lib": "^4.3.0"
 ```
 
