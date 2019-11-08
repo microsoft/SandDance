@@ -25,9 +25,9 @@ function isBoolean(value: any) {
     if (typeof value === 'boolean') return true;
     if (typeof value === 'string') {
         switch (value.toLowerCase()) {
-        case true + '':
-        case false + '':
-            return true;
+            case true + '':
+            case false + '':
+                return true;
         }
     }
     return false;
@@ -52,16 +52,16 @@ interface NameValuePair {
 
 function displayValue(value: any) {
     switch (value) {
-    case '':
-        return <i>{strings.labelBlank}</i>;
-    case null:
-        return <i>{strings.labelNull}</i>;
-    case true:
-        return <i>{strings.labelTrue}</i>;
-    case false:
-        return <i>{strings.labelFalse}</i>;
-    default:
-        return value;
+        case '':
+            return <i>{strings.labelBlank}</i>;
+        case null:
+            return <i>{strings.labelNull}</i>;
+        case true:
+            return <i>{strings.labelTrue}</i>;
+        case false:
+            return <i>{strings.labelFalse}</i>;
+        default:
+            return value;
     }
 }
 

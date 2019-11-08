@@ -60,12 +60,12 @@ namespace chromaticTextTest {
     presenter.present(stage, 0, 0, {
         getTextHighlightColor: t => {
             switch (t.text) {
-            case 'red':
-                return colors.green;
-            case 'green':
-                return colors.red;
-            case 'blue':
-                return colors.orange;
+                case 'red':
+                    return colors.green;
+                case 'green':
+                    return colors.red;
+                case 'blue':
+                    return colors.orange;
             }
             return colors.black;
         },

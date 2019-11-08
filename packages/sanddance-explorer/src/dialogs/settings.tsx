@@ -53,15 +53,15 @@ enum DataRefType {
 
 function filterSignals(signal: NewSignal) {
     switch (signal.name) {
-    case SandDance.constants.SignalNames.XBins:
-    case SandDance.constants.SignalNames.YBins:
-    case SandDance.constants.SignalNames.ColorBinCount:
-    case SandDance.constants.SignalNames.ColorReverse:
-    case SandDance.constants.SignalNames.PointSize:
-    case SandDance.constants.SignalNames.TreeMapMethod:
-        return false;
-    default:
-        return !!signal.bind;
+        case SandDance.constants.SignalNames.XBins:
+        case SandDance.constants.SignalNames.YBins:
+        case SandDance.constants.SignalNames.ColorBinCount:
+        case SandDance.constants.SignalNames.ColorReverse:
+        case SandDance.constants.SignalNames.PointSize:
+        case SandDance.constants.SignalNames.TreeMapMethod:
+            return false;
+        default:
+            return !!signal.bind;
     }
 }
 

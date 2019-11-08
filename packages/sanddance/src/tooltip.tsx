@@ -90,14 +90,14 @@ function getRows(item: object, options: TooltipOptions) {
             content = options.displayValue(value);
         } else {
             switch (value) {
-            case null:
-                content = <i>null</i>;
-                break;
-            case undefined:
-                content = <i>undefined</i>;
-                break;
-            default:
-                content = value.toString();
+                case null:
+                    content = <i>null</i>;
+                    break;
+                case undefined:
+                    content = <i>undefined</i>;
+                    break;
+                default:
+                    content = value.toString();
             }
         }
         rows.push({

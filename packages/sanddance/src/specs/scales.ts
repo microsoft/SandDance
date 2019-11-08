@@ -64,35 +64,35 @@ export function binnableColorScale(colorBin: ColorBin, data: string, field: stri
         range.count = { signal: SignalNames.ColorBinCount };
     }
     switch (colorBin) {
-    case 'continuous': {
-        const sequentialScale: SequentialScale = {
-            name,
-            type: 'sequential',
-            domain,
-            range,
-            reverse
-        };
-        return sequentialScale;
-    }
-    case 'quantile': {
-        const quantileScale: QuantileScale = {
-            name,
-            type: 'quantile',
-            domain,
-            range,
-            reverse
-        };
-        return quantileScale;
-    }
-    default: {
-        const quantizeScale: QuantizeScale = {
-            name,
-            type: 'quantize',
-            domain,
-            range,
-            reverse
-        };
-        return quantizeScale;
-    }
+        case 'continuous': {
+            const sequentialScale: SequentialScale = {
+                name,
+                type: 'sequential',
+                domain,
+                range,
+                reverse
+            };
+            return sequentialScale;
+        }
+        case 'quantile': {
+            const quantileScale: QuantileScale = {
+                name,
+                type: 'quantile',
+                domain,
+                range,
+                reverse
+            };
+            return quantileScale;
+        }
+        default: {
+            const quantizeScale: QuantizeScale = {
+                name,
+                type: 'quantize',
+                domain,
+                range,
+                reverse
+            };
+            return quantizeScale;
+        }
     }
 }
