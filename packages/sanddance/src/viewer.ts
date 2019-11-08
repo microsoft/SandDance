@@ -152,37 +152,44 @@ export class Viewer {
     }
 
     private onAnimateDataChange(dataChange: DataLayoutChange, waitingLabel: string, handlerLabel: string) {
-        if (dataChange === DataLayoutChange.refine) {
-            const oldColorContext = this.colorContexts[this.currentColorContext];
-            this.renderNewLayout({
-                preStage: (stage, deckProps) => {
-                    finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
-                    this.overrideAxisLabels(stage);
-                    applyColorMapToCubes([oldColorContext.colorMap], VegaDeckGl.util.getCubes(deckProps));
-                    if (this.options.onStage) {
-                        this.options.onStage(stage, deckProps);
-                    }
-                }
-            });
-            //apply old legend
-            this.applyLegendColorContext(oldColorContext);
-        } else {
-            this.renderNewLayout({
-                preStage: (stage, deckProps) => {
-                    finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
-                    this.overrideAxisLabels(stage);
-                    if (this.options.onStage) {
-                        this.options.onStage(stage, deckProps);
-                    }
-                }
-            });
-        }
         return new Promise<void>((resolve, reject) => {
-            this.presenter.animationQueue(resolve, this.options.transitionDurations.position, { waitingLabel, handlerLabel, animationCanceled: reject });
+            let innerPromise: Promise<any>;
+            if (dataChange === DataLayoutChange.refine) {
+                const oldColorContext = this.colorContexts[this.currentColorContext];
+                innerPromise = new Promise<void>(innerResolve => {
+                    this.renderNewLayout({
+                        preStage: (stage, deckProps) => {
+                            finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
+                            this.overrideAxisLabels(stage);
+                            applyColorMapToCubes([oldColorContext.colorMap], VegaDeckGl.util.getCubes(deckProps));
+                            if (this.options.onStage) {
+                                this.options.onStage(stage, deckProps);
+                            }
+                        }
+                    }).then(() => {
+                        //apply old legend
+                        this.applyLegendColorContext(oldColorContext);
+                        innerResolve();
+                    });
+                });
+            } else {
+                innerPromise = this.renderNewLayout({
+                    preStage: (stage, deckProps) => {
+                        finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
+                        this.overrideAxisLabels(stage);
+                        if (this.options.onStage) {
+                            this.options.onStage(stage, deckProps);
+                        }
+                    }
+                });
+            }
+            innerPromise.then(() => {
+                this.presenter.animationQueue(resolve, this.options.transitionDurations.position, { waitingLabel, handlerLabel, animationCanceled: reject });
+            });
         });
     }
 
-    private onDataChanged(dataLayout: DataLayoutChange, filter?: Search) {
+    private async onDataChanged(dataLayout: DataLayoutChange, filter?: Search) {
         switch (dataLayout) {
             case DataLayoutChange.same: {
                 this.renderSameLayout();
@@ -192,7 +199,7 @@ export class Viewer {
                 //save cube colors
                 const oldColorContext = this.colorContexts[this.currentColorContext];
                 let colorMap: ColorMap;
-                this.renderNewLayout({
+                await this.renderNewLayout({
                     preStage: (stage: VegaDeckGl.types.Stage, deckProps: DeckProps) => {
                         //save off the spec colors
                         colorMap = colorMapFromCubes(stage.cubeData);
@@ -225,7 +232,7 @@ export class Viewer {
                     legendElement: null
                 };
                 this.changeColorContexts([colorContext]);
-                this.renderNewLayout({
+                await this.renderNewLayout({
                     onPresent: () => {
                         populateColorContext(colorContext, this.presenter);
                     }
@@ -244,7 +251,7 @@ export class Viewer {
         }
     }
 
-    private renderNewLayout(c?: VegaDeckGl.types.PresenterConfig, view?: VegaDeckGl.types.View) {
+    private async renderNewLayout(c?: VegaDeckGl.types.PresenterConfig, view?: VegaDeckGl.types.View) {
         const currData = this._dataScope.currentData();
         const context: SpecContext = { specColumns: this._specColumns, insight: this.insight, specViewOptions: this.options };
         const specResult = cloneVegaSpecWithData(context, currData);
@@ -267,8 +274,8 @@ export class Viewer {
                 const runtime = VegaDeckGl.base.vega.parse(this.vegaSpec);
                 this.vegaViewGl = new VegaDeckGl.ViewGl(runtime, config)
                     .renderer('deck.gl')
-                    .initialize(this.element)
-                    .run() as ViewGl_Class;
+                    .initialize(this.element) as ViewGl_Class;
+                await this.vegaViewGl.runAsync();
 
                 //capture new color color contexts via signals
                 this.configForSignalCapture(config.presenterConfig);
@@ -367,33 +374,28 @@ export class Viewer {
      * @param view Optional View to specify camera type.
      * @param ordinalMap Optional map of ordinals to assign to the data such that the same cubes can be re-used for new data.
      */
-    render(insight: Insight, data: object[], options: RenderOptions = {}): Promise<RenderResult> {
-        return new Promise<RenderResult>((resolve, reject) => {
-            let result: RenderResult;
-            const layout = () => {
-                result = this._render(insight, data, options);
-            };
-            //see if refine expression has changed
-            if (!searchExpression.compare(insight.filter, this.insight.filter)) {
-                if (insight.filter) {
-                    //refining
-                    layout();
-                    this.presenter.animationQueue(() => {
-                        this.filter(insight.filter);
-                    }, this.options.transitionDurations.position, { waitingLabel: 'layout before refine', handlerLabel: 'refine after layout' });
-                } else {
-                    //not refining
-                    this._dataScope.setFilteredData(null);
-                    layout();
-                    this.presenter.animationQueue(() => {
-                        this.reset();
-                    }, 0, { waitingLabel: 'layout before reset', handlerLabel: 'reset after layout' });
-                }
+    async render(insight: Insight, data: object[], options: RenderOptions = {}) {
+        let result: RenderResult;
+        //see if refine expression has changed
+        if (!searchExpression.compare(insight.filter, this.insight.filter)) {
+            if (insight.filter) {
+                //refining
+                result = await this._render(insight, data, options);
+                this.presenter.animationQueue(() => {
+                    this.filter(insight.filter);
+                }, this.options.transitionDurations.position, { waitingLabel: 'layout before refine', handlerLabel: 'refine after layout' });
             } else {
-                layout();
+                //not refining
+                this._dataScope.setFilteredData(null);
+                result = await this._render(insight, data, options);
+                this.presenter.animationQueue(() => {
+                    this.reset();
+                }, 0, { waitingLabel: 'layout before reset', handlerLabel: 'reset after layout' });
             }
-            resolve(result);
-        });
+        } else {
+            result = await this._render(insight, data, options);
+        }
+        return result;
     }
 
     private shouldViewstateTransition(newInsight: Insight, oldInsight: Insight) {
@@ -429,7 +431,7 @@ export class Viewer {
         };
     }
 
-    private _render(insight: Insight, data: object[], options: RenderOptions) {
+    private async _render(insight: Insight, data: object[], options: RenderOptions) {
         if (this._tooltip) {
             this._tooltip.finalize();
             this._tooltip = null;
@@ -450,7 +452,7 @@ export class Viewer {
             legend: null,
             legendElement: null
         };
-        const specResult = this.renderNewLayout(
+        const specResult = await this.renderNewLayout(
             {
                 preStage: (stage: VegaDeckGl.types.Stage, deckProps: DeckProps) => {
                     if (this._shouldSaveColorContext()) {
