@@ -17,7 +17,7 @@ export function makeDateRange(tickTexts: TickText[], columnStats: ColumnStats) {
             if (i === tickTexts.length - 1) {
                 max = columnStats.max;
             } else {
-                max = tickTexts[i + 1].value as number
+                max = tickTexts[i + 1].value as number;
             }
             return [min, max] as [number, number];
         });

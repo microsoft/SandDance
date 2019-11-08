@@ -354,7 +354,9 @@ export class Viewer {
             });
             new VegaDeckGl.ViewGl(runtime).run();
         }
-        catch (e) { }
+        catch (e) {
+            // continue regardless of error
+        }
         return values;
     }
 
@@ -725,7 +727,7 @@ export class Viewer {
      * @param column Column to get stats for.
      */
     getColumnStats(column: Column) {
-        return this._dataScope.hasFilteredData() ? this._dataScope.getFilteredColumnStats(column.name) : column.stats
+        return this._dataScope.hasFilteredData() ? this._dataScope.getFilteredColumnStats(column.name) : column.stats;
     }
 
     /**

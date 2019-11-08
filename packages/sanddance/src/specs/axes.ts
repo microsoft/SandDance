@@ -11,7 +11,7 @@ export enum AxisType {
 
 export function columnToAxisType(c: Column): AxisType {
     if (c.quantitative) {
-        return AxisType.quantitative
+        return AxisType.quantitative;
     }
     return AxisType.categoric;
 }
