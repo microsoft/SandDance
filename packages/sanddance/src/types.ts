@@ -107,7 +107,7 @@ export interface ViewerOptions extends SpecViewOptions {
     /**
      * Optional handler to be invoked when selection has changed.
      */
-    onSelectionChanged?: (search?: Search, activeIndex?: number) => void;
+    onSelectionChanged?: (search: Search, activeIndex?: number, selectedData?: object[]) => void;
 
     /**
      * Optional handler when data is on stage.
