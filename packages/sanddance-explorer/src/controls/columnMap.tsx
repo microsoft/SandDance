@@ -57,15 +57,15 @@ export interface Props extends ColumnMapBaseProps {
 
 function filterColumnList(context: SandDance.types.InsightColumnRoles, columns: SandDance.types.Column[]) {
     switch (context) {
-    case 'facet':
-        return columns.filter(
-            column =>
-                column.quantitative ||
+        case 'facet':
+            return columns.filter(
+                column =>
+                    column.quantitative ||
           (column.stats.distinctValueCount &&
             column.stats.distinctValueCount < maxFacets)
-        );
-    default:
-        return columns.slice();
+            );
+        default:
+            return columns.slice();
     }
 }
 

@@ -556,7 +556,7 @@ interface ViewerOptions extends SpecViewOptions {
     onError?: (errors: string[]) => void;
     onColorContextChange?: () => void;
     onDataFilter?: (filter: Search, filteredData: object[]) => void;
-    onSelectionChanged?: (search?: Search, activeIndex?: number) => void;
+    onSelectionChanged?: (search: Search, activeIndex?: number, selectedData?: object[]) => void;
     onStage?: (stage: Stage, deckProps: DeckProps) => void;
     onPresent?: () => void;
     onBeforeCreateLayers?: (stage: Stage, specCapabilities: SpecCapabilities) => void;
@@ -588,7 +588,7 @@ interface ViewerOptions extends SpecViewOptions {
 | onError               | (errors: string[]) => void                                                                                    | true     | Optional error handler.                                                     |
 | onColorContextChange  | () => void                                                                                                    | true     | Optional handler when color context changes.                                |
 | onDataFilter          | (filter: Search, filteredData: object[]) => void                                                              | true     | Optional handler to be invoked when data is filtered.                       |
-| onSelectionChanged    | (search?: Search, activeIndex?: number) => void                                                               | true     | Optional handler to be invoked when selection has changed.                  |
+| onSelectionChanged    | (search: Search, activeIndex?: number, selectedData?: object[]) => void                                       | true     | Optional handler to be invoked when selection has changed.                  |
 | onStage               | (stage: Stage, deckProps: DeckProps) => void                                                                  | true     | Optional handler when data is on stage.                                     |
 | onPresent             | () => void                                                                                                    | true     | Optional handler when chart is presented.                                   |
 | onBeforeCreateLayers  | (stage: Stage, specCapabilities: SpecCapabilities) => void                                                    | true     | Optional handler to modify the stage prior to deck.gl layer construction.   |

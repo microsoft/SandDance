@@ -33,6 +33,7 @@ export interface Props {
     mounted: (app: App) => void;
     onViewChange: (tooltipExclusions?: string[]) => void;
     onDataFilter: (filter: SandDance.types.Search, filteredData: object[]) => void;
+    onSelectionChanged: (search: SandDance.types.Search, activeIndex: number, selectedData: object[]) => void;
 }
 
 export interface State {
@@ -73,7 +74,8 @@ export class App extends React.Component<Props, State> {
                 axisText: color,
                 hoveredCube: color
             },
-            onDataFilter: this.props.onDataFilter
+            onDataFilter: this.props.onDataFilter,
+            onSelectionChanged: this.props.onSelectionChanged
         };
         return viewerOptions;
     }
