@@ -205,7 +205,7 @@ export class Explorer extends React.Component<Props, State> {
                 }
                 viewerOptions && viewerOptions.onDataFilter && viewerOptions.onDataFilter(dataFilter, filteredData);
             },
-            onSelectionChanged: (newSearch, index) => {
+            onSelectionChanged: (newSearch, index, selectedData) => {
                 if (this.ignoreSelectionChange) return;
                 const selectedItemIndex = { ...this.state.selectedItemIndex };
                 selectedItemIndex[DataScopeId.SelectedData] = index || 0;
@@ -216,7 +216,7 @@ export class Explorer extends React.Component<Props, State> {
                     //sideTabId = SideTabId.ChartType;
                 }
                 this.setState({ search, selectedItemIndex, sideTabId });
-                viewerOptions && viewerOptions.onSelectionChanged && viewerOptions.onSelectionChanged(newSearch);
+                viewerOptions && viewerOptions.onSelectionChanged && viewerOptions.onSelectionChanged(newSearch, index, selectedData);
             },
             onAxisClick: (e, search) => {
                 this.toggleableSearch(e, search);

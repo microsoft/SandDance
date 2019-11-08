@@ -54,6 +54,7 @@ export class Visual implements IVisual {
     private host: powerbi.extensibility.visual.IVisualHost;
     private selectionManager: powerbi.extensibility.ISelectionManager;
     private fetchMoreTimer: number;
+    private filteredIds: powerbi.extensibility.ISelectionId[];
 
     public static fetchMoreTimeout = 5000;
 
@@ -84,11 +85,27 @@ export class Visual implements IVisual {
                     this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
                 },
                 onDataFilter: (filter, filteredData) => {
+                    //console.log('onDataFilter', filteredData);
                     if (filteredData) {
-                        const ids = filteredData.map(item => item[SandDance.constants.FieldNames.PowerBISelectionId] as powerbi.extensibility.ISelectionId);
-                        this.selectionManager.select(ids, false);
+                        this.filteredIds = filteredData.map(item => item[SandDance.constants.FieldNames.PowerBISelectionId] as powerbi.extensibility.ISelectionId);
+                        this.selectionManager.select(this.filteredIds, false);
                     } else {
+                        this.filteredIds = null;
                         this.selectionManager.clear();
+                    }
+                },
+                onSelectionChanged: (search, activeIndex, selectedData) => {
+                    //console.log('onDataSelected', selectedData);
+                    if (selectedData) {
+                        const selectedIds = selectedData.map(item => item[SandDance.constants.FieldNames.PowerBISelectionId] as powerbi.extensibility.ISelectionId);
+                        this.selectionManager.select(selectedIds, false);
+                    } else {
+                        //revert to filtered if it exists
+                        if (this.filteredIds) {
+                            this.selectionManager.select(this.filteredIds, false);
+                        } else {
+                            this.selectionManager.clear();
+                        }
                     }
                 }
             };
