@@ -5,7 +5,7 @@ import * as fabric from 'office-ui-fabric-react';
 import * as layers from '@deck.gl/layers';
 import * as luma from 'luma.gl';
 import * as React from 'react';
-import * as vega from 'vega-lib';
+import * as vega from 'vega';
 import {
     capabilities,
     DataFile,

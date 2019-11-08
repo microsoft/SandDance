@@ -12,6 +12,6 @@
     "@deck.gl/layers": "6.4",
     "luma.gl": "6.4",
     "@msrvida/sanddance": "*",
-    "vega-lib": "4.3.0"
+    "vega": "^5.7"
   }
 }

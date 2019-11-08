@@ -15,7 +15,7 @@
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "@msrvida/sanddance-react": "^1.0.0",
-    "vega-lib": "^4.3.0"
+    "vega": "^5.7"
   },
   "devDependencies": {
     "@mdx-js/parcel-plugin-mdx": "^0.15.4",

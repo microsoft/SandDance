@@ -6,7 +6,7 @@ import * as luma from 'luma.gl';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as SandDanceExplorer from '@msrvida/sanddance-explorer';
-import * as vega from 'vega-lib';
+import * as vega from 'vega';
 import { fabric } from './fabricComponents';
 
 import SandDance = SandDanceExplorer.SandDance;

@@ -3,7 +3,7 @@
 import * as deck from '@deck.gl/core';
 import * as layers from '@deck.gl/layers';
 import * as luma from 'luma.gl';
-import * as vega from 'vega-lib';
+import * as vega from 'vega';
 import { types, use, Viewer } from '../sanddance/src';
 
 interface Datum {

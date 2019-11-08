@@ -15,7 +15,7 @@ Add these to the `dependencies` section of your `package.json`, then run `npm in
 "@deck.gl/layers": "6.4",
 "@msrvida/sanddance-react": "^1",
 "luma.gl": "6.4",
-"vega-lib": "^4.3.0"
+"vega": "^5.7"
 ```
 
 Import these in your JavaScript:
@@ -24,7 +24,7 @@ Import these in your JavaScript:
 import * as deck from '@deck.gl/core';
 import * as layers from '@deck.gl/layers';
 import * as luma from 'luma.gl';
-import * as vega from 'vega-lib';
+import * as vega from 'vega';
 import { SandDance, SandDanceReact } from '@msrvida/sanddance-react';
 
 SandDance.use(vega, deck, layers, luma);
