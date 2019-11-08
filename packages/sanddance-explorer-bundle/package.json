@@ -20,7 +20,7 @@
     "office-ui-fabric-react": "6.204.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "vega-lib": "^4.3.0"
+    "vega": "^5.7"
   },
   "devDependencies": {
     "@types/react": "16.4.7",

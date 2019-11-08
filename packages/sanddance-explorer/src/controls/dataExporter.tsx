@@ -69,21 +69,21 @@ export class DataExportPicker extends React.Component<Props, State> {
         };
         const json = JSON.stringify(this.props.data, columnReplacer);
         switch (exportType) {
-        case 'json': {
-            final(json);
-            break;
-        }
-        case 'csv': {
-            final(convertToDelimited(JSON.parse(json), ','));
-            break;
-        }
-        case 'tsv': {
-            final(convertToDelimited(JSON.parse(json), '\t'));
-            break;
-        }
-        case 'html': {
-            final(embedHtml(`${strings.appName} - ${escape(displayName)}`, embedScript(convertToDelimited(JSON.parse(json), ','), displayName)));
-        }
+            case 'json': {
+                final(json);
+                break;
+            }
+            case 'csv': {
+                final(convertToDelimited(JSON.parse(json), ','));
+                break;
+            }
+            case 'tsv': {
+                final(convertToDelimited(JSON.parse(json), '\t'));
+                break;
+            }
+            case 'html': {
+                final(embedHtml(`${strings.appName} - ${escape(displayName)}`, embedScript(convertToDelimited(JSON.parse(json), ','), displayName)));
+            }
         }
     }
 

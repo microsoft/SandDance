@@ -36,12 +36,12 @@ function convertGroupRole(group: SceneGroup2): GroupType {
         var vegaAxisDatum = group.datum as VegaAxisDatum;
         if (vegaAxisDatum) {
             switch (vegaAxisDatum.orient) {
-            case 'bottom':
-            case 'top':
-                return GroupType.xAxis;
-            case 'left':
-            case 'right':
-                return GroupType.yAxis;
+                case 'bottom':
+                case 'top':
+                    return GroupType.xAxis;
+                case 'left':
+                case 'right':
+                    return GroupType.yAxis;
             }
         }
     }
@@ -85,14 +85,14 @@ const group: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scen
 function setCurrentAxis(options: MarkStagerOptions, stage: Stage, groupType: GroupType) {
     let axes: Axis[];
     switch (groupType) {
-    case GroupType.xAxis:
-        axes = stage.axes.x;
-        break;
-    case GroupType.yAxis:
-        axes = stage.axes.y;
-        break;
-    default:
-        return;
+        case GroupType.xAxis:
+            axes = stage.axes.x;
+            break;
+        case GroupType.yAxis:
+            axes = stage.axes.y;
+            break;
+        default:
+            return;
     }
     options.currAxis = {
         domain: null,

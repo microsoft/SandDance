@@ -339,7 +339,7 @@ function compare(a, b) {
 
   return true;
 }
-},{"./group":"yy6X"}],"4wNj":[function(require,module,exports) {
+},{"./group":"yy6X"}],"wNjT":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -385,7 +385,7 @@ const invertedClauses = {
 
 function invertSearchExpression(input) {
   const operator = invertedOperators[input.operator];
-  const output = Object.assign({}, input, {
+  const output = Object.assign(Object.assign({}, input), {
     operator
   });
 
@@ -427,7 +427,7 @@ function narrow(a, b) {
   arrB[0].clause = '&&';
   return arrA.concat(arrB);
 }
-},{"./group":"yy6X"}],"0mJg":[function(require,module,exports) {
+},{"./group":"yy6X"}],"mJgy":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -469,7 +469,7 @@ Object.keys(_narrow).forEach(function (key) {
     }
   });
 });
-},{"./compare":"r4by","./invert":"4wNj","./narrow":"hTOx"}],"JCLk":[function(require,module,exports) {
+},{"./compare":"r4by","./invert":"wNjT","./narrow":"hTOx"}],"JCLk":[function(require,module,exports) {
 
 },{}],"ipKi":[function(require,module,exports) {
 "use strict";
@@ -488,7 +488,7 @@ const layerNames = {
   text: 'LAYER_TEXT'
 };
 exports.layerNames = layerNames;
-},{}],"+DOk":[function(require,module,exports) {
+},{}],"DOky":[function(require,module,exports) {
 var global = arguments[3];
 'use strict';
 
@@ -2524,7 +2524,7 @@ exports.default = function (XRegExp) {
 };
 
 module.exports = exports['default'];
-},{}],"1/0w":[function(require,module,exports) {
+},{}],"wN5b":[function(require,module,exports) {
 var global = arguments[3];
 'use strict';
 
@@ -2728,7 +2728,7 @@ exports.default = function (XRegExp) {
 };
 
 module.exports = exports['default'];
-},{}],"/s3h":[function(require,module,exports) {
+},{}],"s3hB":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -4644,7 +4644,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = _xregexp2.default;
 module.exports = exports['default'];
-},{"./xregexp":"+DOk","./addons/build":"DN8N","./addons/matchrecursive":"1/0w","./addons/unicode-base":"/s3h","./addons/unicode-blocks":"YWjk","./addons/unicode-categories":"nPWq","./addons/unicode-properties":"sqgh","./addons/unicode-scripts":"RtWW"}],"U3j9":[function(require,module,exports) {
+},{"./xregexp":"DOky","./addons/build":"DN8N","./addons/matchrecursive":"wN5b","./addons/unicode-base":"s3hB","./addons/unicode-blocks":"YWjk","./addons/unicode-categories":"nPWq","./addons/unicode-properties":"sqgh","./addons/unicode-scripts":"RtWW"}],"U3j9":[function(require,module,exports) {
 'use strict';
 
 const xRegExp = require('xregexp');
@@ -4673,7 +4673,9 @@ exports.mount = mount;
 
 var _decamelize = _interopRequireWildcard(require("decamelize"));
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 //handle es6 / bundling
 const decamelize = _decamelize['default'] || _decamelize;
@@ -4829,11 +4831,11 @@ Object.defineProperty(exports, "Table", {
 });
 
 var _controls = require("../controls");
-},{"../controls":"AQhe"}],"28lv":[function(require,module,exports) {
+},{"../controls":"AQhe"}],"lvA6":[function(require,module,exports) {
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-},{}],"+tod":[function(require,module,exports) {
+},{}],"todx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4888,7 +4890,7 @@ function outerSize(el) {
     width
   };
 }
-},{}],"/AEP":[function(require,module,exports) {
+},{}],"AEPa":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4980,7 +4982,7 @@ deepmerge.all = function deepmergeAll(array, options) {
 var deepmerge_1 = deepmerge;
 var _default = deepmerge_1;
 exports.default = _default;
-},{}],"+1k3":[function(require,module,exports) {
+},{}],"k3Ez":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4991,7 +4993,9 @@ exports.deepMerge = deepMerge;
 
 var _deepmerge = _interopRequireWildcard(require("deepmerge"));
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -5010,7 +5014,7 @@ function deepMerge(...objectsToMerge) {
     arrayMerge: dontMerge
   });
 }
-},{"deepmerge":"/AEP"}],"VlPU":[function(require,module,exports) {
+},{"deepmerge":"AEPa"}],"VlPU":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5049,7 +5053,9 @@ exports.brighter = exports.darker = void 0;
 
 var _define = _interopRequireWildcard(require("./define.js"));
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function Color() {}
 
@@ -5399,7 +5405,7 @@ function Hsl(h, s, l, opacity) {
 function hsl2rgb(h, m1, m2) {
   return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
 }
-},{"./define.js":"VlPU"}],"SQ+m":[function(require,module,exports) {
+},{"./define.js":"VlPU"}],"SQMv":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5430,7 +5436,9 @@ var _color = require("./color.js");
 
 var _math = require("./math.js");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // https://observablehq.com/@mbostock/lab-and-rgb
 var K = 18,
@@ -5550,7 +5558,7 @@ function hcl2lab(o) {
     return hcl2lab(this).rgb();
   }
 }));
-},{"./define.js":"VlPU","./color.js":"LQD5","./math.js":"SQ+m"}],"rRwN":[function(require,module,exports) {
+},{"./define.js":"VlPU","./color.js":"LQD5","./math.js":"SQMv"}],"rRwN":[function(require,module,exports) {
 
 "use strict";
 
@@ -5566,7 +5574,9 @@ var _color = require("./color.js");
 
 var _math = require("./math.js");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 var A = -0.14861,
     B = +1.78277,
@@ -5621,7 +5631,7 @@ function Cubehelix(h, s, l, opacity) {
     return new _color.Rgb(255 * (l + a * (A * cosh + B * sinh)), 255 * (l + a * (C * cosh + D * sinh)), 255 * (l + a * (E * cosh)), this.opacity);
   }
 }));
-},{"./define.js":"VlPU","./color.js":"LQD5","./math.js":"SQ+m"}],"BlmO":[function(require,module,exports) {
+},{"./define.js":"VlPU","./color.js":"LQD5","./math.js":"SQMv"}],"BlmO":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5684,7 +5694,9 @@ var _cubehelix = _interopRequireDefault(require("./cubehelix.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 },{"./color.js":"LQD5","./lab.js":"tX36","./cubehelix.js":"rRwN"}],"yCoU":[function(require,module,exports) {
 "use strict";
 
@@ -5830,7 +5842,7 @@ function use(vega, deck, layers, luma) {
   base.luma = luma;
   base.vega = vega;
 }
-},{}],"mH+l":[function(require,module,exports) {
+},{}],"mHLM":[function(require,module,exports) {
 'use strict';
 
 module.exports = TinySDF;
@@ -6104,7 +6116,7 @@ function makeFontAtlas(gl, fontSettings) {
     })
   };
 }
-},{"@mapbox/tiny-sdf":"mH+l","../base":"nnlJ"}],"ETP3":[function(require,module,exports) {
+},{"@mapbox/tiny-sdf":"mHLM","../base":"nnlJ"}],"ETP3":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6474,7 +6486,7 @@ function _MultiIconLayer(...props) {
 
 const MultiIconLayer = _MultiIconLayer;
 exports.MultiIconLayer = MultiIconLayer;
-},{"./chromatic-multi-icon-layer-fragment.glsl":"ETP3","./chromatic-multi-icon-layer-vertex.glsl":"V2Pd","../../base":"nnlJ"}],"25Eo":[function(require,module,exports) {
+},{"./chromatic-multi-icon-layer-fragment.glsl":"ETP3","./chromatic-multi-icon-layer-vertex.glsl":"V2Pd","../../base":"nnlJ"}],"EoSk":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6939,7 +6951,7 @@ const min3dDepth = 0.05;
 exports.min3dDepth = min3dDepth;
 const minPixelSize = 0.5;
 exports.minPixelSize = minPixelSize;
-},{}],"3LG2":[function(require,module,exports) {
+},{}],"LG2Z":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7209,7 +7221,7 @@ function _CubeLayer(props) {
 
 const CubeLayer = _CubeLayer;
 exports.CubeLayer = CubeLayer;
-},{"./cube-layer-fragment.glsl":"kKa0","./cube-layer-vertex.glsl":"3LG2","../base":"nnlJ"}],"4wV6":[function(require,module,exports) {
+},{"./cube-layer-fragment.glsl":"kKa0","./cube-layer-vertex.glsl":"LG2Z","../base":"nnlJ"}],"wV6r":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7332,7 +7344,7 @@ function sinOut(t) {
 function sinInOut(t) {
   return (1 - Math.cos(pi * t)) / 2;
 }
-},{}],"1MKk":[function(require,module,exports) {
+},{}],"MKko":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7522,7 +7534,7 @@ var elasticInOut = function custom(a, p) {
 }(amplitude, period);
 
 exports.elasticInOut = elasticInOut;
-},{}],"7bMs":[function(require,module,exports) {
+},{}],"bMsN":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7770,7 +7782,7 @@ var _bounce = require("./bounce");
 var _back = require("./back");
 
 var _elastic = require("./elastic");
-},{"./linear":"4wV6","./quad":"hUrk","./cubic":"M57D","./poly":"uaRh","./sin":"Hzi1","./exp":"1MKk","./circle":"EaEa","./bounce":"SQ3i","./back":"yoXf","./elastic":"DpDB"}],"BGdw":[function(require,module,exports) {
+},{"./linear":"wV6r","./quad":"hUrk","./cubic":"M57D","./poly":"uaRh","./sin":"Hzi1","./exp":"MKko","./circle":"EaEa","./bounce":"SQ3i","./back":"yoXf","./elastic":"DpDB"}],"BGdw":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7938,7 +7950,7 @@ function getCubes(deckProps) {
   const cubeLayerProps = cubeLayer.props;
   return cubeLayerProps.data;
 }
-},{"./base":"nnlJ","./chromatic-text-layer/chromatic-text-layer":"25Eo","./array":"gfAs","./cube-layer/cube-layer":"OJks","d3-ease":"7bMs","./constants":"ipKi"}],"y8T8":[function(require,module,exports) {
+},{"./base":"nnlJ","./chromatic-text-layer/chromatic-text-layer":"EoSk","./array":"gfAs","./cube-layer/cube-layer":"OJks","d3-ease":"bMsN","./constants":"ipKi"}],"y8T8":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8018,7 +8030,7 @@ var _clone = require("../clone");
 var _color = require("../color");
 
 var _layers = require("../layers");
-},{"../htmlHelpers":"+tod","../clone":"+1k3","../color":"yCoU","../layers":"BGdw"}],"LdiJ":[function(require,module,exports) {
+},{"../htmlHelpers":"todx","../clone":"k3Ez","../color":"yCoU","../layers":"BGdw"}],"LdiJ":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8411,7 +8423,7 @@ function patchCubeArray(allocatedSize, empty, cubes) {
   cubes.forEach(cube => patched[cube.ordinal] = cube);
   return patched;
 }
-},{}],"/bdV":[function(require,module,exports) {
+},{}],"bdVG":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8630,7 +8642,9 @@ var _defaults = require("./defaults");
 
 var _interfaces = require("./marks/interfaces");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -8756,7 +8770,7 @@ function orderDomain(domain, dim) {
     domain.sourcePosition = temp;
   }
 }
-},{"./marks/legend":"/bdV","./marks/rect":"e5xB","./marks/rule":"LdiJ","./marks/text":"U2Rd","./base":"nnlJ","./color":"yCoU","./defaults":"JuFU","./marks/interfaces":"nMFB"}],"PXqU":[function(require,module,exports) {
+},{"./marks/legend":"bdVG","./marks/rect":"e5xB","./marks/rule":"LdiJ","./marks/text":"U2Rd","./base":"nnlJ","./color":"yCoU","./defaults":"JuFU","./marks/interfaces":"nMFB"}],"PXqU":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9022,7 +9036,7 @@ class Presenter {
 
 
   rePresent(stage, modifyConfig) {
-    const newStage = Object.assign({}, this._last.stage, stage);
+    const newStage = Object.assign(Object.assign({}, this._last.stage), stage);
     this.setDeckProps(newStage, this._last.height, this._last.width, this._last.cubeCount, modifyConfig);
   }
 
@@ -9150,7 +9164,7 @@ class Presenter {
   showGuides() {
     this._showGuides = true;
     this.getElement(_enums.PresenterElement.gl).classList.add('show-center');
-    this.rePresent(Object.assign({}, this._last.stage, {
+    this.rePresent(Object.assign(Object.assign({}, this._last.stage), {
       cubeData: this.getCubeData()
     }));
   }
@@ -9169,7 +9183,7 @@ class Presenter {
 }
 
 exports.Presenter = Presenter;
-},{"./base":"nnlJ","./marks/rule":"LdiJ","./panel":"r2Xb","./color":"yCoU","./deck.gl-classes/deckgl":"KTEt","./defaults":"JuFU","./clone":"+1k3","d3-ease":"7bMs","./layers":"BGdw","./legend":"JaRI","./deck.gl-classes/linearInterpolator":"xmKH","tsx-create-element":"QGtg","./patchedCubeArray":"eg4f","./enums":"tDiU","./stagers":"nVwG","./viewState":"PXqU"}],"ySLZ":[function(require,module,exports) {
+},{"./base":"nnlJ","./marks/rule":"LdiJ","./panel":"r2Xb","./color":"yCoU","./deck.gl-classes/deckgl":"KTEt","./defaults":"JuFU","./clone":"k3Ez","d3-ease":"bMsN","./layers":"BGdw","./legend":"JaRI","./deck.gl-classes/linearInterpolator":"xmKH","tsx-create-element":"QGtg","./patchedCubeArray":"eg4f","./enums":"tDiU","./stagers":"nVwG","./viewState":"PXqU"}],"ySLZ":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9395,8 +9409,10 @@ Object.keys(_enums).forEach(function (key) {
   });
 });
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-},{"./constants":"ipKi","./exports/controls":"P7sC","./exports/types":"28lv","./exports/util":"y8T8","./defaults":"JuFU","./base":"nnlJ","./presenter":"Ft4K","./vega-classes/viewGl":"C81u","./enums":"tDiU"}],"SLia":[function(require,module,exports) {
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+},{"./constants":"ipKi","./exports/controls":"P7sC","./exports/types":"lvA6","./exports/util":"y8T8","./defaults":"JuFU","./base":"nnlJ","./presenter":"Ft4K","./vega-classes/viewGl":"C81u","./enums":"tDiU"}],"SLia":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9407,7 +9423,9 @@ exports.inferAll = inferAll;
 
 var VegaDeckGl = _interopRequireWildcard(require("../vega-deck.gl"));
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -9423,7 +9441,7 @@ function isQuantitative(column) {
 function getColumnsFromData(data, columnTypes) {
   const sample = data[0];
   const fields = sample ? Object.keys(sample) : [];
-  const inferences = Object.assign({}, VegaDeckGl.base.vega.inferTypes(data, fields), columnTypes);
+  const inferences = Object.assign(Object.assign({}, VegaDeckGl.base.vega.inferTypes(data, fields)), columnTypes);
   const columns = fields.map(name => {
     const column = {
       name,
@@ -9603,7 +9621,7 @@ const defaultViewerOptions = {
   maxLegends: 19,
   onError: errors => {//console.log(`UnitVisViewer errors: ${errors.join('\n')}`);
   },
-  transitionDurations: Object.assign({}, _defaults.defaultPresenterConfig.transitionDurations, {
+  transitionDurations: Object.assign(Object.assign({}, _defaults.defaultPresenterConfig.transitionDurations), {
     scope: 600
   }),
   selectionPolygonZ: -1,
@@ -9715,7 +9733,9 @@ var _constants = require("./specs/constants");
 
 var _defaults = require("./defaults");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -9854,7 +9874,9 @@ var VegaDeckGl = _interopRequireWildcard(require("./vega-deck.gl"));
 
 var _constants = require("./specs/constants");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -9972,7 +9994,7 @@ function extractSignalValuesFromView(view, spec) {
   });
   return result;
 }
-},{}],"/0dx":[function(require,module,exports) {
+},{}],"dxn8":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9984,7 +10006,9 @@ exports.getDataIndexOfCube = getDataIndexOfCube;
 
 var VegaDeckGl = _interopRequireWildcard(require("./vega-deck.gl"));
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -10035,7 +10059,7 @@ function getDataIndexOfCube(cube, data) {
     }
   }
 }
-},{"./vega-deck.gl":"Uns8"}],"7Ifg":[function(require,module,exports) {
+},{"./vega-deck.gl":"Uns8"}],"Ifgo":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10531,7 +10555,7 @@ function selectBetweenFacet(column, title, isFirst, isLast) {
   const values = title.split(_facet.facetTitleSeparator);
   return selectBetween(column, isFirst ? undefined : values[0], isLast ? undefined : values[1]);
 }
-},{"./specs/facet":"7Ifg"}],"oIzg":[function(require,module,exports) {
+},{"./specs/facet":"Ifgo"}],"oIzg":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10543,7 +10567,9 @@ var VegaDeckGl = _interopRequireWildcard(require("./vega-deck.gl"));
 
 var _expression = require("./expression");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -10788,7 +10814,7 @@ function partialAxes(specViewOptions, xColumnQuantitative, yColumnQuantitative) 
     bottom
   };
 }
-},{"./constants":"b0rV","../vega-deck.gl":"Uns8"}],"clq/":[function(require,module,exports) {
+},{"./constants":"b0rV","../vega-deck.gl":"Uns8"}],"clqN":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10922,7 +10948,7 @@ function _default(context, groupBy) {
   }];
   return transforms;
 }
-},{"./constants":"v7Oc","../constants":"b0rV"}],"b//p":[function(require,module,exports) {
+},{"./constants":"v7Oc","../constants":"b0rV"}],"bPo5":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10940,7 +10966,7 @@ exports.allTruthy = allTruthy;
 function allTruthy(...args) {
   return args.reduce((p, c) => c ? p.concat(c) : p, []).filter(Boolean);
 }
-},{}],"83Xo":[function(require,module,exports) {
+},{}],"XoZh":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11070,7 +11096,7 @@ function xy(namespace) {
   }];
   return transforms;
 }
-},{"./transform.qualitative":"uuEv","./transform.quantitative":"Re96","../../array":"b//p","./constants":"v7Oc","../constants":"b0rV","../facet":"7Ifg","../top":"83Xo"}],"S7Dm":[function(require,module,exports) {
+},{"./transform.qualitative":"uuEv","./transform.quantitative":"Re96","../../array":"bPo5","./constants":"v7Oc","../constants":"b0rV","../facet":"Ifgo","../top":"XoZh"}],"S7Dm":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11139,7 +11165,9 @@ var _fill = require("../fill");
 
 var _selection = require("../selection");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -11285,7 +11313,7 @@ function _default() {
   }];
   return scales;
 }
-},{"../constants":"b0rV"}],"v/y+":[function(require,module,exports) {
+},{"../constants":"b0rV"}],"vYBt":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11392,7 +11420,7 @@ function binnableColorScale(colorBin, data, field, scheme) {
       }
   }
 }
-},{"./constants":"b0rV"}],"6oli":[function(require,module,exports) {
+},{"./constants":"b0rV"}],"oliH":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11494,7 +11522,7 @@ function _default(context, namespace) {
 
   return scales.concat(specColumns.y.quantitative ? (0, _scales2.default)() : (0, _scales.default)(context, namespace));
 }
-},{"./scales.qualitative":"Po0S","./scales.quantitative":"w9lC","./constants":"v7Oc","../scales":"v/y+","../constants":"b0rV"}],"N3c7":[function(require,module,exports) {
+},{"./scales.qualitative":"Po0S","./scales.quantitative":"w9lC","./constants":"v7Oc","../scales":"vYBt","../constants":"b0rV"}],"N3c7":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11614,7 +11642,7 @@ function colorReverseSignal(context) {
   };
   return signal;
 }
-},{"./constants":"b0rV"}],"6Mej":[function(require,module,exports) {
+},{"./constants":"b0rV"}],"MejL":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11664,7 +11692,7 @@ function _default(context) {
   }, (0, _signals.colorBinCountSignal)(context), (0, _signals.colorReverseSignal)(context)], specColumns.facet && (0, _facet.facetSignals)(context));
   return signals;
 }
-},{"../../array":"b//p","./constants":"v7Oc","../signals":"N3c7","../facet":"7Ifg","../constants":"b0rV"}],"6oTL":[function(require,module,exports) {
+},{"../../array":"bPo5","./constants":"v7Oc","../signals":"N3c7","../facet":"Ifgo","../constants":"b0rV"}],"oTLg":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11708,7 +11736,7 @@ function getLegends(context) {
     return [legend(specColumns.color)];
   }
 }
-},{"./constants":"b0rV"}],"0IZ5":[function(require,module,exports) {
+},{"./constants":"b0rV"}],"IZ55":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11728,7 +11756,7 @@ class NameSpace {
 }
 
 exports.NameSpace = NameSpace;
-},{}],"29CI":[function(require,module,exports) {
+},{}],"CIUm":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11754,7 +11782,9 @@ var _legends = require("../legends");
 
 var _namespace = require("./namespace");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11852,7 +11882,7 @@ const barchartH = context => {
 };
 
 exports.barchartH = barchartH;
-},{"./axes":"clq/","./data":"N8o5","./marks":"BuYz","./scales":"6oli","./signals":"6Mej","../facet":"7Ifg","../constants":"b0rV","../legends":"6oTL","./namespace":"0IZ5"}],"kXgn":[function(require,module,exports) {
+},{"./axes":"clqN","./data":"N8o5","./marks":"BuYz","./scales":"oliH","./signals":"MejL","../facet":"Ifgo","../constants":"b0rV","../legends":"oTLg","./namespace":"IZ55"}],"kXgn":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12096,7 +12126,7 @@ function xy(namespace) {
   }];
   return transforms;
 }
-},{"./transform.qualitative":"sGLW","./transform.quantitative":"D8M6","../../array":"b//p","./constants":"kXgn","../constants":"b0rV","../facet":"7Ifg","../top":"83Xo"}],"bUVh":[function(require,module,exports) {
+},{"./transform.qualitative":"sGLW","./transform.quantitative":"D8M6","../../array":"bPo5","./constants":"kXgn","../constants":"b0rV","../facet":"Ifgo","../top":"XoZh"}],"bUVh":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12114,7 +12144,9 @@ var _fill = require("../fill");
 
 var _selection = require("../selection");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -12258,7 +12290,7 @@ function _default() {
   }];
   return scales;
 }
-},{"../constants":"b0rV"}],"6qKX":[function(require,module,exports) {
+},{"../constants":"b0rV"}],"qKXg":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12360,7 +12392,7 @@ function _default(context, namespace) {
 
   return scales.concat(specColumns.x.quantitative ? (0, _scales2.default)() : (0, _scales.default)(context, namespace));
 }
-},{"./scales.qualitative":"Od9T","./scales.quantitative":"tWqL","./constants":"kXgn","../scales":"v/y+","../constants":"b0rV"}],"w+eg":[function(require,module,exports) {
+},{"./scales.qualitative":"Od9T","./scales.quantitative":"tWqL","./constants":"kXgn","../scales":"vYBt","../constants":"b0rV"}],"wEg1":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12410,7 +12442,7 @@ function _default(context) {
   }, (0, _signals.colorBinCountSignal)(context), (0, _signals.colorReverseSignal)(context)], specColumns.facet && (0, _facet.facetSignals)(context));
   return signals;
 }
-},{"../../array":"b//p","./constants":"kXgn","../signals":"N3c7","../facet":"7Ifg","../constants":"b0rV"}],"J9sm":[function(require,module,exports) {
+},{"../../array":"bPo5","./constants":"kXgn","../signals":"N3c7","../facet":"Ifgo","../constants":"b0rV"}],"J9sm":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12436,7 +12468,9 @@ var _legends = require("../legends");
 
 var _namespace = require("./namespace");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12534,7 +12568,7 @@ const barchartV = context => {
 };
 
 exports.barchartV = barchartV;
-},{"./axes":"qaUm","./data":"MPMp","./marks":"bUVh","./scales":"6qKX","./signals":"w+eg","../facet":"7Ifg","../constants":"b0rV","../legends":"6oTL","./namespace":"0IZ5"}],"0BUb":[function(require,module,exports) {
+},{"./axes":"qaUm","./data":"MPMp","./marks":"bUVh","./scales":"qKXg","./signals":"wEg1","../facet":"Ifgo","../constants":"b0rV","../legends":"oTLg","./namespace":"IZ55"}],"BUbq":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12682,7 +12716,7 @@ function windowTransform(columns) {
 
   return t;
 }
-},{"../../array":"b//p","../constants":"b0rV","../top":"83Xo"}],"+gFU":[function(require,module,exports) {
+},{"../../array":"bPo5","../constants":"b0rV","../top":"XoZh"}],"gFUs":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12845,7 +12879,7 @@ function _default(context) {
 
   return scales;
 }
-},{"../scales":"v/y+","../constants":"b0rV"}],"5olt":[function(require,module,exports) {
+},{"../scales":"vYBt","../constants":"b0rV"}],"oltd":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12917,7 +12951,7 @@ function _default(context) {
   }], insight.columns.facet && (0, _facet.facetSignals)(context));
   return signals;
 }
-},{"../../array":"b//p","../signals":"N3c7","../facet":"7Ifg","../constants":"b0rV"}],"7yaW":[function(require,module,exports) {
+},{"../../array":"bPo5","../signals":"N3c7","../facet":"Ifgo","../constants":"b0rV"}],"yaW2":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13020,7 +13054,7 @@ const density = context => {
 };
 
 exports.density = density;
-},{"./axes":"0BUb","./data":"Y16r","./marks":"+gFU","./scales":"PKQh","./signals":"5olt","../facet":"7Ifg","../legends":"6oTL","../constants":"b0rV"}],"iQ8b":[function(require,module,exports) {
+},{"./axes":"BUbq","./data":"Y16r","./marks":"gFUs","./scales":"PKQh","./signals":"oltd","../facet":"Ifgo","../legends":"oTLg","../constants":"b0rV"}],"iQ8b":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13057,7 +13091,7 @@ function _default(context) {
   }], categoricalColor && (0, _top.topLookup)(specColumns.color, specViewOptions.maxLegends));
   return data;
 }
-},{"../../array":"b//p","../constants":"b0rV","../top":"83Xo"}],"gPej":[function(require,module,exports) {
+},{"../../array":"bPo5","../constants":"b0rV","../top":"XoZh"}],"gPej":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13211,7 +13245,7 @@ function _default(context) {
 
   return scales;
 }
-},{"../scales":"v/y+","../constants":"b0rV","./constants":"gPej"}],"5Qhd":[function(require,module,exports) {
+},{"../scales":"vYBt","../constants":"b0rV","./constants":"gPej"}],"QhdK":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13247,7 +13281,7 @@ function _default(context) {
   }, (0, _signals.colorReverseSignal)(context)], insight.columns && insight.columns.facet && (0, _facet.facetSignals)(context));
   return signals;
 }
-},{"../../array":"b//p","../signals":"N3c7","./constants":"gPej","../constants":"b0rV","../facet":"7Ifg"}],"m34o":[function(require,module,exports) {
+},{"../../array":"bPo5","../signals":"N3c7","./constants":"gPej","../constants":"b0rV","../facet":"Ifgo"}],"m34o":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13325,7 +13359,7 @@ const grid = context => {
 };
 
 exports.grid = grid;
-},{"./data":"iQ8b","./marks":"qxOY","./scales":"q7IG","./signals":"5Qhd","../constants":"b0rV","../legends":"6oTL"}],"DRuS":[function(require,module,exports) {
+},{"./data":"iQ8b","./marks":"qxOY","./scales":"q7IG","./signals":"QhdK","../constants":"b0rV","../legends":"oTLg"}],"DRuS":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13352,7 +13386,7 @@ function _default(context) {
   }, pa.left)];
   return axes;
 }
-},{"../axes":"m4Pj","../constants":"b0rV"}],"4cCo":[function(require,module,exports) {
+},{"../axes":"m4Pj","../constants":"b0rV"}],"cCou":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13395,7 +13429,7 @@ function filterInvalidWhenNumeric(column) {
     return transforms;
   }
 }
-},{"../../array":"b//p","../constants":"b0rV","../facet":"7Ifg","../top":"83Xo"}],"Vq7N":[function(require,module,exports) {
+},{"../../array":"bPo5","../constants":"b0rV","../facet":"Ifgo","../top":"XoZh"}],"Vq7N":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13522,7 +13556,7 @@ function _default(context) {
 
   return scales;
 }
-},{"../scales":"v/y+","../constants":"b0rV"}],"jiD2":[function(require,module,exports) {
+},{"../scales":"vYBt","../constants":"b0rV"}],"jiD2":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13562,7 +13596,7 @@ function _default(context) {
   }, (0, _signals.colorBinCountSignal)(context), (0, _signals.colorReverseSignal)(context)], insight.columns.facet && (0, _facet.facetSignals)(context));
   return signals;
 }
-},{"../../array":"b//p","../signals":"N3c7","../facet":"7Ifg","../constants":"b0rV"}],"Rl9U":[function(require,module,exports) {
+},{"../../array":"bPo5","../signals":"N3c7","../facet":"Ifgo","../constants":"b0rV"}],"Rl9U":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13679,7 +13713,7 @@ const scatterplot = context => {
 };
 
 exports.scatterplot = scatterplot;
-},{"./axes":"DRuS","./data":"4cCo","./marks":"Vq7N","./scales":"vZre","./signals":"jiD2","../facet":"7Ifg","../legends":"6oTL","../constants":"b0rV"}],"uVNM":[function(require,module,exports) {
+},{"./axes":"DRuS","./data":"cCou","./marks":"Vq7N","./scales":"vZre","./signals":"jiD2","../facet":"Ifgo","../legends":"oTLg","../constants":"b0rV"}],"uVNM":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13842,7 +13876,7 @@ function stackTransform(sortColumn, xColumn, yColumn) {
 
   return st;
 }
-},{"../../array":"b//p","../constants":"b0rV","../top":"83Xo"}],"x3xn":[function(require,module,exports) {
+},{"../../array":"bPo5","../constants":"b0rV","../top":"XoZh"}],"x3xn":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14032,7 +14066,7 @@ function _default(context) {
 
   return scales;
 }
-},{"../scales":"v/y+","../constants":"b0rV"}],"uY1G":[function(require,module,exports) {
+},{"../scales":"vYBt","../constants":"b0rV"}],"uY1G":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14140,7 +14174,7 @@ function _default(context) {
   }], insight.columns.facet && (0, _facet.facetSignals)(context));
   return signals;
 }
-},{"../../array":"b//p","../signals":"N3c7","../facet":"7Ifg","../constants":"b0rV"}],"oOWF":[function(require,module,exports) {
+},{"../../array":"bPo5","../signals":"N3c7","../facet":"Ifgo","../constants":"b0rV"}],"oOWF":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14243,7 +14277,7 @@ const stacks = context => {
 };
 
 exports.stacks = stacks;
-},{"./axes":"uVNM","./data":"wBrd","./marks":"x3xn","./scales":"evLm","./signals":"uY1G","../facet":"7Ifg","../legends":"6oTL","../constants":"b0rV"}],"IV9v":[function(require,module,exports) {
+},{"./axes":"uVNM","./data":"wBrd","./marks":"x3xn","./scales":"evLm","./signals":"uY1G","../facet":"Ifgo","../legends":"oTLg","../constants":"b0rV"}],"IV9v":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14303,7 +14337,7 @@ function treemapTransforms(insight) {
   }];
   return transforms;
 }
-},{"../../array":"b//p","../constants":"b0rV","../facet":"7Ifg","../top":"83Xo"}],"vhMR":[function(require,module,exports) {
+},{"../../array":"bPo5","../constants":"b0rV","../facet":"Ifgo","../top":"XoZh"}],"vhMR":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14364,7 +14398,7 @@ function _default(context, data) {
 
   return marks;
 }
-},{"../constants":"b0rV","../fill":"S7Dm","../selection":"Dq8R"}],"2dh3":[function(require,module,exports) {
+},{"../constants":"b0rV","../fill":"S7Dm","../selection":"Dq8R"}],"dh30":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14416,7 +14450,7 @@ function _default(context) {
 
   return scales;
 }
-},{"../scales":"v/y+","../constants":"b0rV"}],"Qrog":[function(require,module,exports) {
+},{"../scales":"vYBt","../constants":"b0rV"}],"Qrog":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14450,7 +14484,7 @@ function _default(context) {
   }, (0, _signals.colorReverseSignal)(context)], insight.columns.facet && (0, _facet.facetSignals)(context));
   return signals;
 }
-},{"../../array":"b//p","../signals":"N3c7","../facet":"7Ifg","../constants":"b0rV"}],"MNHb":[function(require,module,exports) {
+},{"../../array":"bPo5","../signals":"N3c7","../facet":"Ifgo","../constants":"b0rV"}],"MNHb":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14474,7 +14508,9 @@ var _legends = require("../legends");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -14561,7 +14597,7 @@ const treemap = context => {
 };
 
 exports.treemap = treemap;
-},{"./data":"IV9v","./marks":"vhMR","./scales":"2dh3","./signals":"Qrog","../facet":"7Ifg","../constants":"b0rV","../legends":"6oTL"}],"6zwM":[function(require,module,exports) {
+},{"./data":"IV9v","./marks":"vhMR","./scales":"dh30","./signals":"Qrog","../facet":"Ifgo","../constants":"b0rV","../legends":"oTLg"}],"zwMy":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14588,7 +14624,9 @@ var _stacks = require("./stacks");
 
 var _treeMap = require("./treeMap");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -14620,7 +14658,7 @@ function create(context) {
     return specResult;
   }
 }
-},{"./constants":"b0rV","./barchartH":"29CI","./barchartV":"J9sm","./density":"7yaW","./grid":"m34o","./scatterPlot":"Rl9U","./stacks":"oOWF","./treeMap":"MNHb"}],"DO07":[function(require,module,exports) {
+},{"./constants":"b0rV","./barchartH":"CIUm","./barchartV":"J9sm","./density":"yaW2","./grid":"m34o","./scatterPlot":"Rl9U","./stacks":"oOWF","./treeMap":"MNHb"}],"DO07":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14649,7 +14687,7 @@ function cloneVegaSpecWithData(context, currData) {
 
   return specResult;
 }
-},{".":"6zwM","./inference":"SLia"}],"+TNG":[function(require,module,exports) {
+},{".":"zwMy","./inference":"SLia"}],"TNG8":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14661,7 +14699,9 @@ var VegaDeckGl = _interopRequireWildcard(require("../vega-deck.gl"));
 
 var _group = require("./group");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -14800,7 +14840,7 @@ class Exec {
       //run on all columns
       const group = {
         expressions: this.columns.map((column, i) => {
-          const ex2 = Object.assign({}, ex, {
+          const ex2 = Object.assign(Object.assign({}, ex), {
             column,
             name: column.name
           });
@@ -14861,7 +14901,7 @@ class Exec {
 }
 
 exports.Exec = Exec;
-},{"../vega-deck.gl":"Uns8","./group":"yy6X"}],"5MJ1":[function(require,module,exports) {
+},{"../vega-deck.gl":"Uns8","./group":"yy6X"}],"MJ1d":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14877,7 +14917,9 @@ var _exec = require("./searchExpression/exec");
 
 var _inference = require("./specs/inference");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -15011,7 +15053,7 @@ class DataScope {
 }
 
 exports.DataScope = DataScope;
-},{"./vega-deck.gl":"Uns8","./specs/constants":"b0rV","./searchExpression/exec":"+TNG","./specs/inference":"SLia"}],"1/KC":[function(require,module,exports) {
+},{"./vega-deck.gl":"Uns8","./specs/constants":"b0rV","./searchExpression/exec":"TNG8","./specs/inference":"SLia"}],"KCB5":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15029,7 +15071,9 @@ var _defaults = require("./defaults");
 
 var _util = require("./util");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -15244,7 +15288,7 @@ function linkSelect(language, columnName, value, selectionHandler) {
     target: "_blank"
   }, language.bing)] : '');
 }
-},{"./searchExpression":"0mJg","./vega-deck.gl":"Uns8","tsx-create-element":"QGtg","./defaults":"G0Md","./util":"BTLl"}],"nQLz":[function(require,module,exports) {
+},{"./searchExpression":"mJgy","./vega-deck.gl":"Uns8","tsx-create-element":"QGtg","./defaults":"G0Md","./util":"BTLl"}],"nQLz":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15288,7 +15332,7 @@ function existingHeader(element, header) {
     return previousElementSibling;
   }
 }
-},{"./vega-deck.gl":"Uns8"}],"9/rI":[function(require,module,exports) {
+},{"./vega-deck.gl":"Uns8"}],"rI67":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15409,7 +15453,9 @@ exports.recolorAxes = recolorAxes;
 
 var VegaDeckGl = _interopRequireWildcard(require("./vega-deck.gl"));
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -15430,7 +15476,7 @@ function cloneAxis(axes, axisColor, axisTextColor) {
 
 function cloneTextData(textData, color) {
   return textData.map(t => {
-    return Object.assign({}, t, {
+    return Object.assign(Object.assign({}, t), {
       color
     });
   });
@@ -15608,7 +15654,7 @@ const renderTooltip = props => {
     rows: props.rows
   }));
 };
-},{"tsx-create-element":"QGtg","./vega-deck.gl/constants":"ipKi","./util":"BTLl","./vega-deck.gl/htmlHelpers":"+tod","./vega-deck.gl/controls":"AQhe"}],"CdFf":[function(require,module,exports) {
+},{"tsx-create-element":"QGtg","./vega-deck.gl/constants":"ipKi","./util":"BTLl","./vega-deck.gl/htmlHelpers":"todx","./vega-deck.gl/controls":"AQhe"}],"CdFf":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15652,7 +15698,9 @@ var _colorSchemes = require("./colorSchemes");
 
 var _tooltip = require("./tooltip");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -15797,7 +15845,7 @@ class Viewer {
 
     if (this.options.onSelectionChanged) {
       const sel = this.getSelection();
-      this.options.onSelectionChanged(sel && sel.search || null);
+      this.options.onSelectionChanged(sel && sel.search || null, 0, sel && sel.selectedData || null);
     }
   }
 
@@ -15813,7 +15861,7 @@ class Viewer {
 
     if (!specResult.errors) {
       const uiValues = (0, _signals.extractSignalValuesFromView)(this.vegaViewGl, this.vegaSpec);
-      this._signalValues = Object.assign({}, this._signalValues, uiValues, this.insight.signalValues);
+      this._signalValues = Object.assign(Object.assign(Object.assign({}, this._signalValues), uiValues), this.insight.signalValues);
       (0, _signals.applySignalValues)(this._signalValues, specResult.vegaSpec);
       this.vegaSpec = specResult.vegaSpec;
       this.options.onVegaSpec && this.options.onVegaSpec(this.vegaSpec);
@@ -16098,7 +16146,7 @@ class Viewer {
 
         if (this.options.onSelectionChanged) {
           const sel = this.getSelection();
-          this.options.onSelectionChanged(sel.search, indexWithinSelection.index);
+          this.options.onSelectionChanged(sel.search, indexWithinSelection.index, sel.selectedData);
         }
 
         return;
@@ -16358,7 +16406,7 @@ class Viewer {
 
 exports.Viewer = Viewer;
 Viewer.defaultViewerOptions = _defaults2.defaultViewerOptions;
-},{"./searchExpression":"0mJg","./vega-deck.gl":"Uns8","./animator":"U1OZ","./colorCubes":"PfBA","./signals":"jmI2","./ordinal":"/0dx","./axisSelection":"oIzg","./specs/clone":"DO07","./dataScope":"5MJ1","./vega-deck.gl/defaults":"JuFU","./defaults":"G0Md","./details":"1/KC","./headers":"nQLz","./legend":"9/rI","tsx-create-element":"QGtg","./axes":"A7xy","./colorSchemes":"kNpg","./tooltip":"bkgF"}],"DZif":[function(require,module,exports) {
+},{"./searchExpression":"mJgy","./vega-deck.gl":"Uns8","./animator":"U1OZ","./colorCubes":"PfBA","./signals":"jmI2","./ordinal":"dxn8","./axisSelection":"oIzg","./specs/clone":"DO07","./dataScope":"MJ1d","./vega-deck.gl/defaults":"JuFU","./defaults":"G0Md","./details":"KCB5","./headers":"nQLz","./legend":"rI67","tsx-create-element":"QGtg","./axes":"A7xy","./colorSchemes":"kNpg","./tooltip":"bkgF"}],"DZif":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16367,7 +16415,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = '1.6.5';
+const version = '1.6.6';
 exports.version = version;
 },{}],"rZaE":[function(require,module,exports) {
 "use strict";
@@ -16427,8 +16475,10 @@ var _viewer = require("./viewer");
 
 var _version = require("./version");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-},{"./constants":"Syc7","./searchExpression":"0mJg","./types":"JCLk","./util":"BTLl","./vega-deck.gl":"Uns8","./colorSchemes":"kNpg","./viewer":"CdFf","./version":"DZif"}],"wkaK":[function(require,module,exports) {
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+},{"./constants":"Syc7","./searchExpression":"mJgy","./types":"JCLk","./util":"BTLl","./vega-deck.gl":"Uns8","./colorSchemes":"kNpg","./viewer":"CdFf","./version":"DZif"}],"wkaK":[function(require,module,exports) {
 module.exports = compare;
 
 /*
@@ -16521,7 +16571,9 @@ exports.deepCompare = exports.classList = void 0;
 
 var compare = _interopRequireWildcard(require("just-compare"));
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -16532,7 +16584,7 @@ const classList = (...args) => {
 exports.classList = classList;
 const deepCompare = compare.default || compare;
 exports.deepCompare = deepCompare;
-},{"just-compare":"wkaK"}],"4x5u":[function(require,module,exports) {
+},{"just-compare":"wkaK"}],"x5u5":[function(require,module,exports) {
 /*
 object-assign
 (c) Sindre Sorhus
@@ -17044,7 +17096,7 @@ var X = {
 },
     Z = Y && X || Y;
 module.exports = Z.default || Z;
-},{"object-assign":"4x5u"}],"W4rj":[function(require,module,exports) {
+},{"object-assign":"x5u5"}],"W4rj":[function(require,module,exports) {
 'use strict';
 
 if ("production" === 'production') {
@@ -17379,7 +17431,7 @@ function vk(a,b){if(!qk(a))throw t(Error(299),"unstable_createRoot");return new 
 (function(a){var b=a.findFiberByHostInstance;return dk(n({},a,{overrideHookState:null,overrideProps:null,setSuspenseHandler:null,scheduleUpdate:null,currentDispatcherRef:Da.ReactCurrentDispatcher,findHostInstanceByFiber:function(a){a=Ec(a);return null===a?null:a.stateNode},findFiberByHostInstance:function(a){return b?b(a):null},findHostInstancesForRefresh:null,scheduleRefresh:null,scheduleRoot:null,setRefreshHandler:null,getCurrentFiber:null}))})({findFiberByHostInstance:Cd,bundleType:0,version:"16.10.2",
 rendererPackageName:"react-dom"});var xk={default:wk},yk=xk&&wk||xk;module.exports=yk.default||yk;
 
-},{"react":"W4rj","object-assign":"4x5u","scheduler":"KTa4"}],"UiuB":[function(require,module,exports) {
+},{"react":"W4rj","object-assign":"x5u5","scheduler":"KTa4"}],"UiuB":[function(require,module,exports) {
 'use strict';
 
 function checkDCE() {
@@ -17433,15 +17485,17 @@ var _reactDom = require("react-dom");
 
 var _sanddance = require("@msrvida/sanddance");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 function addNullable(insight, signalValues) {
-  const withNulls = Object.assign({
+  const withNulls = Object.assign(Object.assign({
     view: null,
     filter: null
-  }, insight, {
+  }, insight), {
     signalValues
   });
   return withNulls;
@@ -17450,8 +17504,8 @@ function addNullable(insight, signalValues) {
 class SandDanceReact extends React.Component {
   areLayoutPropsSame() {
     const currentInsight = this.viewer.getInsight();
-    const a = addNullable(currentInsight, Object.assign({}, this.viewer.insight.signalValues, currentInsight.signalValues));
-    const b = addNullable(this.props.insight, Object.assign({}, a.signalValues, this.props.insight.signalValues));
+    const a = addNullable(currentInsight, Object.assign(Object.assign({}, this.viewer.insight.signalValues), currentInsight.signalValues));
+    const b = addNullable(this.props.insight, Object.assign(Object.assign({}, a.signalValues), this.props.insight.signalValues));
     const compare = (0, _util.deepCompare)(a, b);
     return compare && this.props.data === this.lastData;
   }
@@ -17510,7 +17564,7 @@ class SandDanceReact extends React.Component {
 }
 
 exports.SandDanceReact = SandDanceReact;
-},{"react":"W4rj","./util":"HI4Z","react-dom":"UiuB","@msrvida/sanddance":"rZaE"}],"6TN0":[function(require,module,exports) {
+},{"react":"W4rj","./util":"HI4Z","react-dom":"UiuB","@msrvida/sanddance":"rZaE"}],"TN0H":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17553,8 +17607,10 @@ var _viewer = require("./viewer");
 
 var _version = require("./version");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-},{"@msrvida/sanddance":"rZaE","./util":"HI4Z","./viewer":"qyfj","./version":"6TN0"}],"Vlbn":[function(require,module,exports) {
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+},{"@msrvida/sanddance":"rZaE","./util":"HI4Z","./viewer":"qyfj","./version":"TN0H"}],"Vlbn":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17687,7 +17743,7 @@ function getColorSettingsFromThemePalette(themePalette) {
     clickableTextHighlight: colorFromString(themePalette.themeSecondary)
   };
 }
-},{"@msrvida/sanddance-react":"MjKu"}],"8Xy5":[function(require,module,exports) {
+},{"@msrvida/sanddance-react":"MjKu"}],"Xy56":[function(require,module,exports) {
 /** @license React v16.10.2
  * react.production.min.js
  *
@@ -18103,7 +18159,7 @@ var X = {
 },
     Z = Y && X || Y;
 module.exports = Z.default || Z;
-},{"object-assign":"4x5u"}],"ccIB":[function(require,module,exports) {
+},{"object-assign":"x5u5"}],"ccIB":[function(require,module,exports) {
 'use strict';
 
 if ("production" === 'production') {
@@ -18111,7 +18167,7 @@ if ("production" === 'production') {
 } else {
   module.exports = require('./cjs/react.development.js');
 }
-},{"./cjs/react.production.min.js":"8Xy5"}],"dH6z":[function(require,module,exports) {
+},{"./cjs/react.production.min.js":"Xy56"}],"dH6z":[function(require,module,exports) {
 'use strict';
 
 if ("production" === 'production') {
@@ -18119,7 +18175,7 @@ if ("production" === 'production') {
 } else {
   module.exports = require('./cjs/scheduler.development.js');
 }
-},{"./cjs/scheduler.production.min.js":"W2Ku"}],"9MtQ":[function(require,module,exports) {
+},{"./cjs/scheduler.production.min.js":"W2Ku"}],"MtQn":[function(require,module,exports) {
 /** @license React v16.10.2
  * react-dom.production.min.js
  *
@@ -18414,7 +18470,7 @@ function vk(a,b){if(!qk(a))throw t(Error(299),"unstable_createRoot");return new 
 (function(a){var b=a.findFiberByHostInstance;return dk(n({},a,{overrideHookState:null,overrideProps:null,setSuspenseHandler:null,scheduleUpdate:null,currentDispatcherRef:Da.ReactCurrentDispatcher,findHostInstanceByFiber:function(a){a=Ec(a);return null===a?null:a.stateNode},findFiberByHostInstance:function(a){return b?b(a):null},findHostInstancesForRefresh:null,scheduleRefresh:null,scheduleRoot:null,setRefreshHandler:null,getCurrentFiber:null}))})({findFiberByHostInstance:Cd,bundleType:0,version:"16.10.2",
 rendererPackageName:"react-dom"});var xk={default:wk},yk=xk&&wk||xk;module.exports=yk.default||yk;
 
-},{"react":"ccIB","object-assign":"4x5u","scheduler":"dH6z"}],"x9tB":[function(require,module,exports) {
+},{"react":"ccIB","object-assign":"x5u5","scheduler":"dH6z"}],"x9tB":[function(require,module,exports) {
 'use strict';
 
 function checkDCE() {
@@ -18452,7 +18508,7 @@ if ("production" === 'production') {
 } else {
   module.exports = require('./cjs/react-dom.development.js');
 }
-},{"./cjs/react-dom.production.min.js":"9MtQ"}],"5dQN":[function(require,module,exports) {
+},{"./cjs/react-dom.production.min.js":"MtQn"}],"dQNc":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18464,7 +18520,9 @@ var React = _interopRequireWildcard(require("react"));
 
 var _base = require("../base");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -18705,7 +18763,9 @@ var _sanddanceReact = require("@msrvida/sanddance-react");
 
 var _language = require("./language");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -18757,7 +18817,7 @@ function ColorMap(props) {
     menuProps: menuProps
   }));
 }
-},{"react":"ccIB","react-dom":"x9tB","./controls/iconButton":"5dQN","@msrvida/sanddance-react":"MjKu","./language":"hk5u"}],"L8O2":[function(require,module,exports) {
+},{"react":"ccIB","react-dom":"x9tB","./controls/iconButton":"dQNc","@msrvida/sanddance-react":"MjKu","./language":"hk5u"}],"L8O2":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18797,7 +18857,9 @@ var React = _interopRequireWildcard(require("react"));
 
 var _base = require("../base");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -18839,7 +18901,9 @@ var React = _interopRequireWildcard(require("react"));
 
 var _base = require("../base");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -18940,7 +19004,9 @@ var _signal = require("./signal");
 
 var _language = require("../language");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -19129,7 +19195,9 @@ var _base = require("../base");
 
 var _language = require("../language");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -19146,7 +19214,7 @@ function Dialog(props) {
     text: _language.strings.buttonClose
   })));
 }
-},{"react":"ccIB","../base":"Vlbn","../language":"hk5u"}],"4Q3h":[function(require,module,exports) {
+},{"react":"ccIB","../base":"Vlbn","../language":"hk5u"}],"Q3hf":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19158,7 +19226,9 @@ var React = _interopRequireWildcard(require("react"));
 
 var _sanddanceReact = require("@msrvida/sanddance-react");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -19185,7 +19255,9 @@ var React = _interopRequireWildcard(require("react"));
 
 var _base = require("../base");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -19227,7 +19299,9 @@ var _language = require("../language");
 
 var _toggleColumns = require("../controls/toggleColumns");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -19301,7 +19375,7 @@ function (_React$Component) {
           key: 'stacks',
           text: _language.strings.chartTypeStacks
         }].map(function (o) {
-          return Object.assign({}, o, {
+          return Object.assign(Object.assign({}, o), {
             checked: props.chart === o.key,
             disabled: props.disabled
           });
@@ -19362,7 +19436,7 @@ function (_React$Component) {
 }(React.Component);
 
 exports.Chart = Chart;
-},{"react":"ccIB","../base":"Vlbn","../controls/columnMap":"DSho","../controls/dialog":"cFWm","../controls/group":"4Q3h","../controls/signal":"OWDI","../language":"hk5u","../controls/toggleColumns":"ZOmP"}],"BSWy":[function(require,module,exports) {
+},{"react":"ccIB","../base":"Vlbn","../controls/columnMap":"DSho","../controls/dialog":"cFWm","../controls/group":"Q3hf","../controls/signal":"OWDI","../language":"hk5u","../controls/toggleColumns":"ZOmP"}],"BSWy":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19395,7 +19469,9 @@ var React = _interopRequireWildcard(require("react"));
 
 var _scheme = require("./scheme");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -20494,7 +20570,7 @@ _scheme.schemesJSX['tableau20'] = React.createElement("div", {
 function categorical(selected) {
   return [(0, _scheme.schemeOption)(selected, 'accent'), (0, _scheme.schemeOption)(selected, 'category10'), (0, _scheme.schemeOption)(selected, 'category20'), (0, _scheme.schemeOption)(selected, 'category20b'), (0, _scheme.schemeOption)(selected, 'category20c'), (0, _scheme.schemeOption)(selected, 'dark2'), (0, _scheme.schemeOption)(selected, 'paired'), (0, _scheme.schemeOption)(selected, 'pastel1'), (0, _scheme.schemeOption)(selected, 'pastel2'), (0, _scheme.schemeOption)(selected, 'set1'), (0, _scheme.schemeOption)(selected, 'set2'), (0, _scheme.schemeOption)(selected, 'set3'), (0, _scheme.schemeOption)(selected, 'tableau10'), (0, _scheme.schemeOption)(selected, 'tableau20')];
 }
-},{"react":"ccIB","./scheme":"BSWy"}],"1wtj":[function(require,module,exports) {
+},{"react":"ccIB","./scheme":"BSWy"}],"wtjh":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20506,7 +20582,9 @@ var React = _interopRequireWildcard(require("react"));
 
 var _scheme = require("./scheme");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -20978,7 +21056,9 @@ var _sanddanceReact = require("@msrvida/sanddance-react");
 
 var _scheme = require("./scheme");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -21018,7 +21098,9 @@ var React = _interopRequireWildcard(require("react"));
 
 var _scheme = require("./scheme");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -21758,7 +21840,9 @@ var React = _interopRequireWildcard(require("react"));
 
 var _scheme = require("./scheme");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -22066,7 +22150,9 @@ var _sequentialSingleHue = require("./sequentialSingleHue");
 
 var _language = require("../language");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -22143,7 +22229,7 @@ function Palette(props) {
     className: _sanddanceReact.util.classList('sanddance-scheme', props.disabled && 'disabled')
   }, props.scheme && _scheme.schemesJSX[props.scheme]));
 }
-},{"react":"ccIB","../base":"Vlbn","./categorical":"JrIT","./diverging":"1wtj","../controls/dropdown":"Uyrp","./dual":"uM5k","./scheme":"BSWy","@msrvida/sanddance-react":"MjKu","./sequentialMultiHue":"rVQa","./sequentialSingleHue":"Prvn","../language":"hk5u"}],"N8IJ":[function(require,module,exports) {
+},{"react":"ccIB","../base":"Vlbn","./categorical":"JrIT","./diverging":"wtjh","../controls/dropdown":"Uyrp","./dual":"uM5k","./scheme":"BSWy","@msrvida/sanddance-react":"MjKu","./sequentialMultiHue":"rVQa","./sequentialSingleHue":"Prvn","../language":"hk5u"}],"N8IJ":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22165,7 +22251,9 @@ var _language = require("../language");
 
 var _group = require("../controls/group");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -22247,7 +22335,7 @@ function Color(props) {
     }
   })));
 }
-},{"react":"ccIB","../base":"Vlbn","../controls/columnMap":"DSho","../palettes":"otJp","../controls/signal":"OWDI","../language":"hk5u","../controls/group":"4Q3h"}],"tb7d":[function(require,module,exports) {
+},{"react":"ccIB","../base":"Vlbn","../controls/columnMap":"DSho","../palettes":"otJp","../controls/signal":"OWDI","../language":"hk5u","../controls/group":"Q3hf"}],"tb7d":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22362,7 +22450,7 @@ function convertToDelimited(data, delimiter) {
   file.unshift(fields.join(delimiter));
   return file.join('\n');
 }
-},{}],"fO+I":[function(require,module,exports) {
+},{}],"fOIZ":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22398,7 +22486,9 @@ var _sanddanceReact = require("@msrvida/sanddance-react");
 
 var _language = require("../language");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -22406,7 +22496,7 @@ function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArra
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
 
-function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -22607,7 +22697,7 @@ function (_React$Component) {
 }(React.Component);
 
 exports.DataExportPicker = DataExportPicker;
-var illegalChars = "\\/:*?\"<>|";
+var illegalChars = '\\/:*?"<>|';
 
 function getFileNameError(displayName) {
   if (!displayName) {
@@ -22647,7 +22737,7 @@ function embedScript(csv, displayName) {
   };
   return "<pre id='csv-data' style='display:none'>".concat(csv, "</pre>    \n    <script>SandDanceEmbed.load(Object.assign({rawText: document.getElementById('csv-data').innerText}, ").concat(JSON.stringify(dataFile), "))</script>");
 }
-},{"react":"ccIB","../base":"Vlbn","../exportDelimited":"pP3Y","./dataExporterHtml":"fO+I","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"Gai8":[function(require,module,exports) {
+},{"react":"ccIB","../base":"Vlbn","../exportDelimited":"pP3Y","./dataExporterHtml":"fOIZ","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"Gai8":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22661,7 +22751,9 @@ var _sanddanceReact = require("@msrvida/sanddance-react");
 
 var _language = require("../language");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -22796,7 +22888,9 @@ var React = _interopRequireWildcard(require("react"));
 
 var _base = require("../base");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -22947,7 +23041,7 @@ function FormatSpecifier(specifier) {
 FormatSpecifier.prototype.toString = function () {
   return this.fill + this.align + this.sign + this.symbol + (this.zero ? "0" : "") + (this.width === undefined ? "" : Math.max(1, this.width | 0)) + (this.comma ? "," : "") + (this.precision === undefined ? "" : "." + Math.max(0, this.precision | 0)) + (this.trim ? "~" : "") + this.type;
 };
-},{}],"s/ik":[function(require,module,exports) {
+},{}],"sIkL":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23076,7 +23170,7 @@ var _default = {
   }
 };
 exports.default = _default;
-},{"./formatPrefixAuto.js":"WMxc","./formatRounded.js":"gMFS"}],"7Ecm":[function(require,module,exports) {
+},{"./formatPrefixAuto.js":"WMxc","./formatRounded.js":"gMFS"}],"Ecm4":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23246,7 +23340,7 @@ function _default(locale) {
     formatPrefix: formatPrefix
   };
 }
-},{"./exponent.js":"G46r","./formatGroup.js":"CupU","./formatNumerals.js":"mUgz","./formatSpecifier.js":"Nf4q","./formatTrim.js":"s/ik","./formatTypes.js":"w40g","./formatPrefixAuto.js":"WMxc","./identity.js":"7Ecm"}],"00VI":[function(require,module,exports) {
+},{"./exponent.js":"G46r","./formatGroup.js":"CupU","./formatNumerals.js":"mUgz","./formatSpecifier.js":"Nf4q","./formatTrim.js":"sIkL","./formatTypes.js":"w40g","./formatPrefixAuto.js":"WMxc","./identity.js":"Ecm4"}],"VIed":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23308,7 +23402,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _default(step, value) {
   return Math.max(0, Math.max(-8, Math.min(8, Math.floor((0, _exponent.default)(value) / 3))) * 3 - (0, _exponent.default)(Math.abs(step)));
 }
-},{"./exponent.js":"G46r"}],"we+8":[function(require,module,exports) {
+},{"./exponent.js":"G46r"}],"we8G":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23399,8 +23493,10 @@ var _precisionRound = _interopRequireDefault(require("./precisionRound.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-},{"./defaultLocale.js":"00VI","./locale.js":"Iakc","./formatSpecifier.js":"Nf4q","./precisionFixed.js":"cTEw","./precisionPrefix.js":"aFxy","./precisionRound.js":"we+8"}],"Os+N":[function(require,module,exports) {
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+},{"./defaultLocale.js":"VIed","./locale.js":"Iakc","./formatSpecifier.js":"Nf4q","./precisionFixed.js":"cTEw","./precisionPrefix.js":"aFxy","./precisionRound.js":"we8G"}],"OsNT":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23419,7 +23515,9 @@ var _language = require("../language");
 
 var _sanddanceReact = require("@msrvida/sanddance-react");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -23506,7 +23604,7 @@ function DataScopeButton(props) {
     }
   });
 }
-},{"react":"ccIB","./button":"eqtW","d3-format":"SA6z","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"8pJL":[function(require,module,exports) {
+},{"react":"ccIB","./button":"eqtW","d3-format":"SA6z","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"pJLc":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23530,7 +23628,9 @@ var _iconButton = require("../controls/iconButton");
 
 var _language = require("../language");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -23602,7 +23702,7 @@ function DataBrowser(props) {
     disabled: props.disabled
   }));
 }
-},{"react":"ccIB","../controls/dataExporter":"l7po","../controls/dataItem":"Gai8","../controls/dataScope":"Os+N","../controls/dropdown":"Uyrp","../controls/group":"4Q3h","../controls/iconButton":"5dQN","../language":"hk5u"}],"Tl9z":[function(require,module,exports) {
+},{"react":"ccIB","../controls/dataExporter":"l7po","../controls/dataItem":"Gai8","../controls/dataScope":"OsNT","../controls/dropdown":"Uyrp","../controls/group":"Q3hf","../controls/iconButton":"dQNc","../language":"hk5u"}],"Tl9z":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23855,7 +23955,7 @@ var RecommenderSummary = /** @class */ (function () {
 }());
 exports.RecommenderSummary = RecommenderSummary;
 
-},{"./barChart":"oxgd","./scatterPlot":"iBe2"}],"/i6U":[function(require,module,exports) {
+},{"./barChart":"oxgd","./scatterPlot":"iBe2"}],"i6UQ":[function(require,module,exports) {
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -23951,7 +24051,7 @@ function ensureColumnsPopulated(chart, insightColumns, actualColumns) {
       break;
   }
 }
-},{"@msrvida/chart-recommender":"/i6U","@msrvida/sanddance-react":"MjKu","./language":"hk5u"}],"yvMl":[function(require,module,exports) {
+},{"@msrvida/chart-recommender":"i6UQ","@msrvida/sanddance-react":"MjKu","./language":"hk5u"}],"yvMl":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23989,7 +24089,7 @@ function getPosition(e) {
     }
   }
 }
-},{}],"7xB+":[function(require,module,exports) {
+},{}],"xBH3":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24008,13 +24108,15 @@ var _dropdown = require("./dropdown");
 
 var _language = require("../language");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
 
-function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -24222,7 +24324,9 @@ var _sanddanceReact = require("@msrvida/sanddance-react");
 
 var _language = require("../language");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -24254,7 +24358,7 @@ function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArra
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
 
-function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -24396,7 +24500,7 @@ function (_React$Component) {
     value: function updateGroup(partialGroup, groupIndex) {
       var groups = _toConsumableArray(this.state.groups);
 
-      var group = Object.assign({}, groups[groupIndex], partialGroup);
+      var group = Object.assign(Object.assign({}, groups[groupIndex]), partialGroup);
       groups[groupIndex] = group;
       this.setState({
         groups: groups
@@ -24603,7 +24707,7 @@ function (_React$Component) {
 }(React.Component);
 
 exports.Search = Search;
-},{"react":"ccIB","../controls/searchTerm":"7xB+","../base":"Vlbn","../controls/button":"eqtW","../controls/dropdown":"Uyrp","../controls/group":"4Q3h","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"f19h":[function(require,module,exports) {
+},{"react":"ccIB","../controls/searchTerm":"xBH3","../base":"Vlbn","../controls/button":"eqtW","../controls/dropdown":"Uyrp","../controls/group":"Q3hf","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"f19h":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24667,7 +24771,9 @@ var _columnMap = require("./controls/columnMap");
 
 var _sanddanceReact = require("@msrvida/sanddance-react");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -24804,7 +24910,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var version = '1.7.0';
+var version = '1.7.1';
 exports.version = version;
 },{}],"zKGJ":[function(require,module,exports) {
 "use strict";
@@ -24834,7 +24940,9 @@ var _language = require("../language");
 
 var _version = require("../version");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -24905,7 +25013,7 @@ function serializeSpec(vegaSpec, datafile, dataRefType, scheme) {
   }
 
   if (dataRefType === DataRefType.inline) {
-    return Object.assign({}, vegaSpec, {
+    return Object.assign(Object.assign({}, vegaSpec), {
       scales: scales
     });
   }
@@ -24925,7 +25033,7 @@ function serializeSpec(vegaSpec, datafile, dataRefType, scheme) {
     };
   }
 
-  return Object.assign({}, vegaSpec, {
+  return Object.assign(Object.assign({}, vegaSpec), {
     data: data,
     scales: scales
   });
@@ -25152,7 +25260,7 @@ function (_React$Component) {
 }(React.Component);
 
 exports.Settings = Settings;
-},{"react":"ccIB","@msrvida/sanddance-react":"MjKu","../base":"Vlbn","../canvas":"Dryx","../controls/dialog":"cFWm","../controls/dropdown":"Uyrp","../controls/group":"4Q3h","../controls/signal":"OWDI","../language":"hk5u","../version":"RvaL"}],"GuKX":[function(require,module,exports) {
+},{"react":"ccIB","@msrvida/sanddance-react":"MjKu","../base":"Vlbn","../canvas":"Dryx","../controls/dialog":"cFWm","../controls/dropdown":"Uyrp","../controls/group":"Q3hf","../controls/signal":"OWDI","../language":"hk5u","../version":"RvaL"}],"GuKX":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25164,7 +25272,9 @@ var React = _interopRequireWildcard(require("react"));
 
 var _sanddanceReact = require("@msrvida/sanddance-react");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -25199,7 +25309,9 @@ var _language = require("../language");
 
 var _sanddanceReact = require("@msrvida/sanddance-react");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -25291,7 +25403,7 @@ function Sidebutton(props) {
     }
   }));
 }
-},{"react":"ccIB","../base":"Vlbn","./dataScope":"Os+N","./iconButton":"5dQN","./scrollable":"GuKX","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"3oc9":[function(require,module,exports) {
+},{"react":"ccIB","../base":"Vlbn","./dataScope":"OsNT","./iconButton":"dQNc","./scrollable":"GuKX","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"oc9r":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25313,7 +25425,9 @@ var _iconButton = require("../controls/iconButton");
 
 var _language = require("../language");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -25511,7 +25625,7 @@ function Actions(props) {
     }
   }));
 }
-},{"react":"ccIB","../base":"Vlbn","../controls/dialog":"cFWm","../canvas":"Dryx","../controls/group":"4Q3h","../controls/iconButton":"5dQN","../language":"hk5u"}],"yzxM":[function(require,module,exports) {
+},{"react":"ccIB","../base":"Vlbn","../controls/dialog":"cFWm","../canvas":"Dryx","../controls/group":"Q3hf","../controls/iconButton":"dQNc","../language":"hk5u"}],"yzxM":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25524,7 +25638,7 @@ var _sanddanceReact = require("@msrvida/sanddance-react");
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 function comparableGroup(group) {
-  return Object.assign({}, group, {
+  return Object.assign(Object.assign({}, group), {
     clause: null
   });
 }
@@ -25656,7 +25770,9 @@ exports.Logo = Logo;
 
 var React = _interopRequireWildcard(require("react"));
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -25695,7 +25811,9 @@ var _sanddanceReact = require("@msrvida/sanddance-react");
 
 var _language = require("../language");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -25850,7 +25968,9 @@ var _toggleSearch = require("./toggleSearch");
 
 var _topbar = require("./controls/topbar");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -25896,9 +26016,9 @@ function createInputSearch(search) {
   var groups = _sanddanceReact.SandDance.util.ensureSearchExpressionGroupArray(search);
 
   var dialogSearch = groups.map(function (group, groupIndex) {
-    return Object.assign({
+    return Object.assign(Object.assign({
       key: groupIndex
-    }, group, {
+    }, group), {
       expressions: group.expressions.map(function (ex, i) {
         var ex2 = Object.assign({
           key: i
@@ -25958,7 +26078,7 @@ function (_React$Component) {
     _this.state.selectedItemIndex[_dataScope.DataScopeId.SelectedData] = 0;
     _this.discardColorContextUpdates = true;
 
-    _this.updateViewerOptions(Object.assign({}, _sanddanceReact.SandDance.VegaDeckGl.util.clone(_sanddanceReact.SandDance.Viewer.defaultViewerOptions), props.viewerOptions));
+    _this.updateViewerOptions(Object.assign(Object.assign({}, _sanddanceReact.SandDance.VegaDeckGl.util.clone(_sanddanceReact.SandDance.Viewer.defaultViewerOptions)), props.viewerOptions));
 
     return _this;
   }
@@ -25973,7 +26093,7 @@ function (_React$Component) {
     value: function updateViewerOptions(viewerOptions) {
       var _this2 = this;
 
-      this.viewerOptions = Object.assign({}, _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge(_defaults.defaultViewerOptions, this.viewerOptions, viewerOptions), {
+      this.viewerOptions = Object.assign(Object.assign({}, _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge(_defaults.defaultViewerOptions, this.viewerOptions, viewerOptions)), {
         tooltipOptions: {
           exclude: function exclude(columnName) {
             return _this2.state.tooltipExclusions.indexOf(columnName) >= 0;
@@ -26001,7 +26121,7 @@ function (_React$Component) {
 
           viewerOptions && viewerOptions.onDataFilter && viewerOptions.onDataFilter(dataFilter, filteredData);
         },
-        onSelectionChanged: function onSelectionChanged(newSearch, index) {
+        onSelectionChanged: function onSelectionChanged(newSearch, index, selectedData) {
           if (_this2.ignoreSelectionChange) return;
           var selectedItemIndex = Object.assign({}, _this2.state.selectedItemIndex);
           selectedItemIndex[_dataScope.DataScopeId.SelectedData] = index || 0;
@@ -26020,7 +26140,7 @@ function (_React$Component) {
             sideTabId: sideTabId
           });
 
-          viewerOptions && viewerOptions.onSelectionChanged && viewerOptions.onSelectionChanged(newSearch);
+          viewerOptions && viewerOptions.onSelectionChanged && viewerOptions.onSelectionChanged(newSearch, index, selectedData);
         },
         onAxisClick: function onAxisClick(e, search) {
           _this2.toggleableSearch(e, search);
@@ -26034,7 +26154,7 @@ function (_React$Component) {
             return r.role === 'color';
           })[0];
 
-          var positionedColumnMapProps = Object.assign({}, _this2.getColumnMapBaseProps(), {
+          var positionedColumnMapProps = Object.assign(Object.assign({}, _this2.getColumnMapBaseProps()), {
             container: _this2.div,
             selectedColumnName: _this2.state.columns['color'],
             onDismiss: function onDismiss() {
@@ -26088,7 +26208,7 @@ function (_React$Component) {
             var specRole = text.specRole;
 
             if (pos && specRole) {
-              var positionedColumnMapProps = Object.assign({}, _this2.getColumnMapBaseProps(), {
+              var positionedColumnMapProps = Object.assign(Object.assign({}, _this2.getColumnMapBaseProps()), {
                 container: _this2.div,
                 selectedColumnName: _this2.state.columns[specRole.role],
                 onDismiss: function onDismiss() {
@@ -26116,7 +26236,7 @@ function (_React$Component) {
       if (this.viewer && this.viewer.presenter) {
         var newPresenterStyle = _sanddanceReact.SandDance.util.getPresenterStyle(this.viewerOptions);
 
-        var mergePrenterStyle = Object.assign({}, this.viewer.presenter.style, newPresenterStyle);
+        var mergePrenterStyle = Object.assign(Object.assign({}, this.viewer.presenter.style), newPresenterStyle);
         this.viewer.presenter.style = mergePrenterStyle;
         this.viewer.options = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge(this.viewer.options, this.props.viewerOptions, this.viewerOptions);
       }
@@ -26254,11 +26374,11 @@ function (_React$Component) {
       newState.columns = Object.assign({}, columns); //special case mappings when switching chart type
 
       if (this.state.chart === 'scatterplot' && (chart === 'barchart' || chart === 'barchartV')) {
-        newState.columns = Object.assign({}, columns, {
+        newState.columns = Object.assign(Object.assign({}, columns), {
           sort: columns.y
         });
       } else if (this.state.chart === 'scatterplot' && chart === 'barchartH') {
-        newState.columns = Object.assign({}, columns, {
+        newState.columns = Object.assign(Object.assign({}, columns), {
           sort: columns.x
         });
       } else if (chart === 'treemap') {
@@ -26274,7 +26394,7 @@ function (_React$Component) {
 
           if (!sizeColumnName) {//TODO error - no numeric columns
           } else {
-            newState.columns = Object.assign({}, columns, {
+            newState.columns = Object.assign(Object.assign({}, columns), {
               size: sizeColumnName
             });
           }
@@ -26407,7 +26527,7 @@ function (_React$Component) {
 
                 if (!newState.scheme) {
                   var partialInsight = (0, _partialInsight.copyPrefToNewState)(_this6.prefs, _this6.state.chart, 'color', column.name);
-                  newState = Object.assign({}, newState, partialInsight);
+                  newState = Object.assign(Object.assign({}, newState), partialInsight);
                 }
 
                 if (!newState.scheme) {
@@ -27182,7 +27302,7 @@ function (_React$Component) {
 }(React.Component);
 
 exports.Explorer = Explorer;
-},{"react":"ccIB","./colorMap":"E67y","./base":"Vlbn","./colorScheme":"L8O2","./dialogs/chart":"NGSt","./dialogs/color":"N8IJ","./partialInsight":"tb7d","./dialogs/dataBrowser":"8pJL","./controls/dataScope":"Os+N","./defaults":"Tl9z","./controls/dialog":"cFWm","./columns":"f8v0","./mouseEvent":"yvMl","./dialogs/search":"ozxe","./dataLoader":"f19h","./clickableTextLayer":"UUG7","@msrvida/chart-recommender":"/i6U","./canvas":"Dryx","@msrvida/sanddance-react":"MjKu","./dialogs/settings":"zKGJ","./controls/sidebar":"f8Jx","./dialogs/snapshots":"3oc9","./language":"hk5u","./themes":"CgE3","./toggleSearch":"yzxM","./controls/topbar":"Afi9"}],"Focm":[function(require,module,exports) {
+},{"react":"ccIB","./colorMap":"E67y","./base":"Vlbn","./colorScheme":"L8O2","./dialogs/chart":"NGSt","./dialogs/color":"N8IJ","./partialInsight":"tb7d","./dialogs/dataBrowser":"pJLc","./controls/dataScope":"OsNT","./defaults":"Tl9z","./controls/dialog":"cFWm","./columns":"f8v0","./mouseEvent":"yvMl","./dialogs/search":"ozxe","./dataLoader":"f19h","./clickableTextLayer":"UUG7","@msrvida/chart-recommender":"i6UQ","./canvas":"Dryx","@msrvida/sanddance-react":"MjKu","./dialogs/settings":"zKGJ","./controls/sidebar":"f8Jx","./dialogs/snapshots":"oc9r","./language":"hk5u","./themes":"CgE3","./toggleSearch":"yzxM","./controls/topbar":"Afi9"}],"Focm":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

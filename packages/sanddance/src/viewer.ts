@@ -240,7 +240,7 @@ export class Viewer {
         }
         if (this.options.onSelectionChanged) {
             const sel = this.getSelection();
-            this.options.onSelectionChanged((sel && sel.search) || null);
+            this.options.onSelectionChanged((sel && sel.search) || null, 0, (sel && sel.selectedData) || null);
         }
     }
 
@@ -532,7 +532,7 @@ export class Viewer {
                 this._details.populate(this._dataScope.selection, indexWithinSelection.index);
                 if (this.options.onSelectionChanged) {
                     const sel = this.getSelection();
-                    this.options.onSelectionChanged(sel.search, indexWithinSelection.index);
+                    this.options.onSelectionChanged(sel.search, indexWithinSelection.index, sel.selectedData);
                 }
                 return;
             }

@@ -236,12 +236,12 @@ export class DataSourcePicker extends React.Component<Props, State> {
 
 function dataSourcePrefix(dt: DataSourceType, displayName: string) {
     switch (dt) {
-    case 'sample':
-        return `${strings.sampleDataPrefix}: ${displayName}`;
-    case 'local':
-        return strings.localFilePrefix;
-    case 'url':
-        return strings.urlPrefix;
+        case 'sample':
+            return `${strings.sampleDataPrefix}: ${displayName}`;
+        case 'local':
+            return strings.localFilePrefix;
+        case 'url':
+            return strings.urlPrefix;
     }
     return '';
 }
