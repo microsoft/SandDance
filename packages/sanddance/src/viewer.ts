@@ -251,9 +251,25 @@ export class Viewer {
         }
     }
 
+    private getSpecColumnsWithFilteredStats() {
+        if (!this._dataScope.hasFilteredData()) {
+            return this._specColumns;
+        }
+        const roles = ['color', 'facet', 'group', 'size', 'sort', 'x', 'y', 'z'];
+        const specColumns = { ...this._specColumns };
+        roles.forEach(r => {
+            if (specColumns[r]) {
+                const column = { ...specColumns[r] } as Column;
+                column.stats = this.getColumnStats(column);
+                specColumns[r] = column;
+            }
+        });
+        return specColumns;
+    }
+
     private async renderNewLayout(c?: VegaDeckGl.types.PresenterConfig, view?: VegaDeckGl.types.View) {
         const currData = this._dataScope.currentData();
-        const context: SpecContext = { specColumns: this._specColumns, insight: this.insight, specViewOptions: this.options };
+        const context: SpecContext = { specColumns: this.getSpecColumnsWithFilteredStats(), insight: this.insight, specViewOptions: this.options };
         const specResult = cloneVegaSpecWithData(context, currData);
         if (!specResult.errors) {
             const uiValues = extractSignalValuesFromView(this.vegaViewGl, this.vegaSpec);
