@@ -1,0 +1,432 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "data": [
+    {
+      "name": "source_00",
+      "url": "https://sanddance.js.org/sample-data/titanicmaster.tsv",
+      "format": {
+        "type": "tsv"
+      }
+    },
+    {
+      "name": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "Class",
+            "Gender"
+          ],
+          "ops": [
+            "count"
+          ],
+          "fields": [
+            null
+          ],
+          "as": [
+            "__count"
+          ]
+        },
+        {
+          "type": "extent",
+          "field": "__count",
+          "signal": "maxcount"
+        }
+      ],
+      "source": "source_00"
+    },
+    {
+      "name": "facet_domain",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "Gender"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "facet_domain_row",
+      "transform": [
+        {
+          "type": "sequence",
+          "start": 0,
+          "stop": 1
+        }
+      ]
+    },
+    {
+      "name": "facet_domain_column",
+      "transform": [
+        {
+          "type": "sequence",
+          "start": 0,
+          "stop": {
+            "signal": "length(data(\"facet_domain\"))"
+          }
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "name": "child_width",
+      "value": 300
+    },
+    {
+      "name": "child_height",
+      "value": 300
+    },
+    {
+      "name": "bandWidth",
+      "update": "bandwidth('x')"
+    },
+    {
+      "name": "bandPadding",
+      "value": 0.1
+    },
+    {
+      "name": "aspect",
+      "update": "bandWidth/child_height"
+    },
+    {
+      "name": "cellcount",
+      "update": "ceil(sqrt(maxcount[1]*aspect))"
+    },
+    {
+      "name": "gap",
+      "update": "min(0.1*(bandWidth/(cellcount-1)),1)"
+    },
+    {
+      "name": "marksize",
+      "update": "bandWidth/cellcount-gap"
+    }
+  ],
+  "layout": {
+    "padding": 20,
+    "bounds": "full",
+    "align": "all"
+  },
+  "marks": [
+    {
+      "name": "facet-title",
+      "type": "group",
+      "role": "column-title",
+      "title": {
+        "text": "Gender",
+        "style": "guide-title",
+        "offset": 10
+      }
+    },
+    {
+      "name": "row_header",
+      "type": "group",
+      "role": "row-header",
+      "from": {
+        "data": "facet_domain_row"
+      },
+      "encode": {
+        "update": {
+          "height": {
+            "signal": "child_height"
+          }
+        }
+      },
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "grid": false,
+          "title": "Count of Records",
+          "labelOverlap": true,
+          "tickCount": {
+            "signal": "ceil(child_height/40)"
+          },
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "name": "column_footer",
+      "type": "group",
+      "role": "column-footer",
+      "from": {
+        "data": "facet_domain_column"
+      },
+      "encode": {
+        "update": {
+          "width": {
+            "signal": "child_width"
+          }
+        }
+      },
+      "axes": [
+        {
+          "scale": "x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Class",
+          "labelAlign": "right",
+          "labelAngle": 270,
+          "labelBaseline": "middle",
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "name": "cell",
+      "type": "group",
+      "title": {
+        "text": {
+          "signal": "''+parent[\"Gender\"]"
+        },
+        "style": "guide-label",
+        "frame": "group",
+        "offset": 10
+      },
+      "style": "cell",
+      "from": {
+        "facet": {
+          "name": "facet",
+          "data": "source_00",
+          "groupby": [
+            "Gender"
+          ]
+        }
+      },
+      "sort": {
+        "field": [
+          "datum[\"Gender\"]"
+        ],
+        "order": [
+          "ascending"
+        ]
+      },
+      "encode": {
+        "update": {
+          "width": {
+            "signal": "child_width"
+          },
+          "height": {
+            "signal": "child_height"
+          }
+        }
+      },
+      "marks": [
+        {
+          "name": "child_marks",
+          "type": "rect",
+          "style": [
+            "bar"
+          ],
+          "from": {
+            "data": "s2"
+          },
+          "encode": {
+            "update": {
+              "fill": {
+                "value": "#4c78a8"
+              },
+              "x": {
+                "scale": "x",
+                "field": "Class"
+              },
+              "width": {
+                "scale": "x",
+                "band": true
+              },
+              "y": {
+                "scale": "y",
+                "field": "__count"
+              },
+              "y2": {
+                "scale": "y",
+                "value": 0
+              },
+              "opacity": {
+                "value": 0.2
+              }
+            }
+          }
+        },
+        {
+          "name": "bandfacet",
+          "type": "group",
+          "from": {
+            "facet": {
+              "name": "bandfacet_0",
+              "data": "facet",
+              "groupby": [
+                "Gender",
+                "Class"
+              ]
+            }
+          },
+          "signals": [
+            {
+              "name": "ytop",
+              "update": "scale('y', parent['count'])"
+            }
+          ],
+          "encode": {
+            "update": {
+              "x": {
+                "signal": "scale('x', datum['Class'])"
+              },
+              "width": {
+                "signal": "bandWidth"
+              },
+              "y": {
+                "signal": "scale('y', datum['count'])"
+              },
+              "height": {
+                "signal": "child_height - scale('y', datum['count'])"
+              },
+              "fill": {
+                "signal": "\"pink\""
+              },
+              "opacity": {
+                "value": 0.2
+              }
+            }
+          },
+          "marks": [
+            {
+              "name": "squaremarks",
+              "type": "rect",
+              "from": {
+                "data": "squares"
+              },
+              "encode": {
+                "update": {
+                  "x": {
+                    "offset": {
+                      "signal": "bandWidth /cellcount * ( (datum.squarecount-1) %cellcount)"
+                    }
+                  },
+                  "y": {
+                    "signal": "scale('y', floor((datum.squarecount-1)/cellcount) * cellcount)-marksize - ytop"
+                  },
+                  "height": {
+                    "signal": "marksize"
+                  },
+                  "width": {
+                    "signal": "marksize"
+                  }
+                }
+              }
+            }
+          ],
+          "data": [
+            {
+              "name": "squares",
+              "source": "bandfacet_0",
+              "transform": [
+                {
+                  "type": "window",
+                  "ops": [
+                    "count"
+                  ],
+                  "as": [
+                    "squarecount"
+                  ]
+                },
+                {
+                  "type": "extent",
+                  "field": "squarecount",
+                  "signal": "maxsquarecount"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "gridScale": "x",
+          "grid": true,
+          "tickCount": {
+            "signal": "ceil(child_height/40)"
+          },
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        }
+      ],
+      "data": [
+        {
+          "name": "s2",
+          "source": "facet",
+          "transform": [
+            {
+              "type": "aggregate",
+              "groupby": [
+                "Class",
+                "Gender"
+              ],
+              "ops": [
+                "count"
+              ],
+              "fields": [
+                null
+              ],
+              "as": [
+                "__count"
+              ]
+            },
+            {
+              "type": "extent",
+              "field": "__count",
+              "signal": "maxcount"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {
+        "data": "source_0",
+        "field": "Class",
+        "sort": true
+      },
+      "range": [
+        0,
+        {
+          "signal": "child_width"
+        }
+      ],
+      "padding": {
+        "signal": "bandPadding"
+      }
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "data": "source_0",
+        "field": "__count"
+      },
+      "range": [
+        {
+          "signal": "child_height"
+        },
+        0
+      ],
+      "nice": true,
+      "zero": true
+    }
+  ]
+}

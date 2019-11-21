@@ -1,0 +1,23 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+    "data": {
+        "url": "https://sanddance.js.org/sample-data/titanicmaster.tsv",
+        "format": {
+            "type": "tsv"
+        }
+    },
+    "height": 300,
+    "width": 300,
+    "mark": "bar",
+    "encoding": {
+        "y": {
+            "field": "Class",
+            "type": "nominal"
+        },
+        "x": {
+            "field": "Survived",
+            "type": "quantitative",
+            "aggregate": "count"
+        }
+    }
+}

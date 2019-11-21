@@ -1,0 +1,435 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "data": [
+    {
+      "name": "source_00",
+      "url": "https://sanddance.js.org/sample-data/titanicmaster.tsv",
+      "format": {
+        "type": "tsv"
+      }
+    },
+    {
+      "name": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "Class",
+            "Joined"
+          ],
+          "ops": [
+            "sum"
+          ],
+          "fields": [
+            "TicketCost"
+          ],
+          "as": [
+            "sum_TicketCost"
+          ]
+        },
+        {
+          "type": "extent",
+          "field": "__count",
+          "signal": "maxcount"
+        }
+      ],
+      "source": "source_00"
+    },
+    {
+      "name": "facet_domain",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "Joined"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "facet_domain_row",
+      "transform": [
+        {
+          "type": "sequence",
+          "start": 0,
+          "stop": 1
+        }
+      ]
+    },
+    {
+      "name": "facet_domain_column",
+      "transform": [
+        {
+          "type": "sequence",
+          "start": 0,
+          "stop": {
+            "signal": "length(data(\"facet_domain\"))"
+          }
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "name": "child_width",
+      "value": 300
+    },
+    {
+      "name": "child_height",
+      "value": 300
+    },
+    {
+      "name": "bandWidth",
+      "update": "bandwidth('y')"
+    },
+    {
+      "name": "bandPadding",
+      "value": 0.1
+    }
+  ],
+  "layout": {
+    "padding": 20,
+    "bounds": "full",
+    "align": "all"
+  },
+  "marks": [
+    {
+      "name": "facet-title",
+      "type": "group",
+      "role": "column-title",
+      "title": {
+        "text": "Joined",
+        "style": "guide-title",
+        "offset": 10
+      }
+    },
+    {
+      "name": "row_header",
+      "type": "group",
+      "role": "row-header",
+      "from": {
+        "data": "facet_domain_row"
+      },
+      "encode": {
+        "update": {
+          "height": {
+            "signal": "child_height"
+          }
+        }
+      },
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "grid": false,
+          "title": "Class",
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "name": "column_footer",
+      "type": "group",
+      "role": "column-footer",
+      "from": {
+        "data": "facet_domain_column"
+      },
+      "encode": {
+        "update": {
+          "width": {
+            "signal": "child_width"
+          }
+        }
+      },
+      "axes": [
+        {
+          "scale": "x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Sum of TicketCost",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {
+            "signal": "ceil(child_width/40)"
+          },
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "name": "cell",
+      "type": "group",
+      "title": {
+        "text": {
+          "signal": "''+parent[\"Joined\"]"
+        },
+        "style": "guide-label",
+        "frame": "group",
+        "offset": 10
+      },
+      "style": "cell",
+      "from": {
+        "facet": {
+          "name": "facet",
+          "data": "source_00",
+          "groupby": [
+            "Joined"
+          ]
+        }
+      },
+      "sort": {
+        "field": [
+          "datum[\"Joined\"]"
+        ],
+        "order": [
+          "ascending"
+        ]
+      },
+      "encode": {
+        "update": {
+          "width": {
+            "signal": "child_width"
+          },
+          "height": {
+            "signal": "child_height"
+          }
+        }
+      },
+      "marks": [
+        {
+          "name": "child_marks",
+          "type": "rect",
+          "style": [
+            "bar"
+          ],
+          "from": {
+            "data": "s2"
+          },
+          "encode": {
+            "update": {
+              "fill": {
+                "value": "#4c78a8"
+              },
+              "x": {
+                "scale": "x",
+                "field": "sum_TicketCost"
+              },
+              "x2": {
+                "scale": "x",
+                "value": 0
+              },
+              "y": {
+                "scale": "y",
+                "field": "Class"
+              },
+              "height": {
+                "scale": "y",
+                "band": true
+              },
+              "opacity": {
+                "value": 0.2
+              }
+            }
+          }
+        },
+        {
+          "name": "bandfacet",
+          "type": "group",
+          "from": {
+            "facet": {
+              "name": "bandfacet_0",
+              "data": "facet",
+              "groupby": [
+                "Joined",
+                "Class"
+              ],
+              "aggregate": {
+                "as": [
+                  "sum_TicketCost"
+                ],
+                "fields": [
+                  "TicketCost"
+                ],
+                "ops": [
+                  "sum"
+                ]
+              }
+            }
+          },
+          "signals": [
+            {
+              "name": "barWidth",
+              "update": "scale('x', parent['sum_TicketCost'])"
+            },
+            {
+              "name": "barHeight",
+              "update": "bandWidth"
+            }
+          ],
+          "encode": {
+            "update": {
+              "y": {
+                "signal": "scale('y', datum['Class'])"
+              },
+              "height": {
+                "signal": "bandWidth"
+              },
+              "x": {
+                "signal": "scale('x', 0)"
+              },
+              "width": {
+                "signal": "scale('x', datum['sum_TicketCost'])"
+              },
+              "fill": {
+                "signal": "\"pink\""
+              },
+              "opacity": {
+                "value": 0.4
+              }
+            }
+          },
+          "marks": [
+            {
+              "name": "treemapMarks",
+              "type": "rect",
+              "from": {
+                "data": "treemapData"
+              },
+              "encode": {
+                "update": {
+                  "x": {
+                    "field": "x0"
+                  },
+                  "x2": {
+                    "field": "x1"
+                  },
+                  "y": {
+                    "field": "y0"
+                  },
+                  "y2": {
+                    "field": "y1"
+                  }
+                }
+              }
+            }
+          ],
+          "data": [
+            {
+              "name": "treemapData",
+              "source": "bandfacet_0",
+              "transform": [
+                {
+                  "type": "nest"
+                },
+                {
+                  "type": "treemap",
+                  "field": "TicketCost",
+                  "sort": {
+                    "field": "value",
+                    "order": "descending"
+                  },
+                  "round": true,
+                  "method": "squarify",
+                  "padding": 1,
+                  "size": [
+                    {
+                      "signal": "barWidth"
+                    },
+                    {
+                      "signal": "barHeight"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "axes": [
+        {
+          "scale": "x",
+          "orient": "bottom",
+          "gridScale": "y",
+          "grid": true,
+          "tickCount": {
+            "signal": "ceil(child_width/40)"
+          },
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        }
+      ],
+      "data": [
+        {
+          "name": "s2",
+          "source": "facet",
+          "transform": [
+            {
+              "type": "aggregate",
+              "groupby": [
+                "Class",
+                "Joined"
+              ],
+              "ops": [
+                "sum"
+              ],
+              "fields": [
+                "TicketCost"
+              ],
+              "as": [
+                "sum_TicketCost"
+              ]
+            },
+            {
+              "type": "extent",
+              "field": "__count",
+              "signal": "maxcount"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "data": "source_0",
+        "field": "sum_TicketCost"
+      },
+      "range": [
+        0,
+        {
+          "signal": "child_width"
+        }
+      ],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "band",
+      "domain": {
+        "data": "source_0",
+        "field": "Class",
+        "sort": true
+      },
+      "range": [
+        0,
+        {
+          "signal": "child_height"
+        }
+      ],
+      "padding": {
+        "signal": "bandPadding"
+      }
+    }
+  ]
+}
