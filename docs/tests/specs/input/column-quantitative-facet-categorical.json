@@ -1,7 +1,7 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
     "data": {
-        "url": "../../../sample-data/titanicmaster.tsv",
+        "url": "https://sanddance.js.org/sample-data/titanicmaster.tsv",
         "format": {
             "type": "tsv"
         }

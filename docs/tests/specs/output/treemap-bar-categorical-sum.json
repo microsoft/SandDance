@@ -8,7 +8,7 @@
   "data": [
     {
       "name": "source_00",
-      "url": "../../../sample-data/titanicmaster.tsv",
+      "url": "https://sanddance.js.org/sample-data/titanicmaster.tsv",
       "format": {
         "type": "tsv"
       }
