@@ -65,7 +65,7 @@ filenames.forEach(src => {
                 unitStyles.forEach(unitStyle => {
                     const outputSpec = JSON.parse(JSON.stringify(spec));
                     unitizeBar(vegaLiteSpec, outputSpec, unitStyle);
-                    const dest = `${unitStyle}-${src}`;
+                    const dest = `${unitStyle}-${src.replace('.vl.', '.vg.')}`;
                     conversion.outputs.push(dest);
                     out(dest, outputSpec);
                 });

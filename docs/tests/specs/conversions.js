@@ -1,146 +1,146 @@
 var conversions = [
   {
-    "src": "bar-categorical-facet-categorical.json",
+    "src": "bar-categorical-facet-categorical.vl.json",
     "outputs": [
-      "square-bar-categorical-facet-categorical.json"
+      "square-bar-categorical-facet-categorical.vg.json"
     ]
   },
   {
-    "src": "bar-categorical-facet-quantitative.json",
+    "src": "bar-categorical-facet-quantitative.vl.json",
     "outputs": [
-      "square-bar-categorical-facet-quantitative.json"
+      "square-bar-categorical-facet-quantitative.vg.json"
     ]
   },
   {
-    "src": "bar-categorical-sum-facet-categorical.json",
+    "src": "bar-categorical-sum-facet-categorical.vl.json",
     "outputs": [
-      "treemap-bar-categorical-sum-facet-categorical.json"
+      "treemap-bar-categorical-sum-facet-categorical.vg.json"
     ]
   },
   {
-    "src": "bar-categorical-sum-facet-quantitative.json",
+    "src": "bar-categorical-sum-facet-quantitative.vl.json",
     "outputs": [
-      "treemap-bar-categorical-sum-facet-quantitative.json"
+      "treemap-bar-categorical-sum-facet-quantitative.vg.json"
     ]
   },
   {
-    "src": "bar-categorical-sum.json",
+    "src": "bar-categorical-sum.vl.json",
     "outputs": [
-      "treemap-bar-categorical-sum.json"
+      "treemap-bar-categorical-sum.vg.json"
     ]
   },
   {
-    "src": "bar-categorical.json",
+    "src": "bar-categorical.vl.json",
     "outputs": [
-      "square-bar-categorical.json"
+      "square-bar-categorical.vg.json"
     ]
   },
   {
-    "src": "bar-quantitative-facet-categorical.json",
+    "src": "bar-quantitative-facet-categorical.vl.json",
     "outputs": [
-      "square-bar-quantitative-facet-categorical.json"
+      "square-bar-quantitative-facet-categorical.vg.json"
     ]
   },
   {
-    "src": "bar-quantitative-facet-quantitative.json",
+    "src": "bar-quantitative-facet-quantitative.vl.json",
     "outputs": [
-      "square-bar-quantitative-facet-quantitative.json"
+      "square-bar-quantitative-facet-quantitative.vg.json"
     ]
   },
   {
-    "src": "bar-quantitative-sum-facet-categorical.json",
+    "src": "bar-quantitative-sum-facet-categorical.vl.json",
     "outputs": [
-      "treemap-bar-quantitative-sum-facet-categorical.json"
+      "treemap-bar-quantitative-sum-facet-categorical.vg.json"
     ]
   },
   {
-    "src": "bar-quantitative-sum-facet-quantitative.json",
+    "src": "bar-quantitative-sum-facet-quantitative.vl.json",
     "outputs": [
-      "treemap-bar-quantitative-sum-facet-quantitative.json"
+      "treemap-bar-quantitative-sum-facet-quantitative.vg.json"
     ]
   },
   {
-    "src": "bar-quantitative-sum.json",
+    "src": "bar-quantitative-sum.vl.json",
     "outputs": [
-      "treemap-bar-quantitative-sum.json"
+      "treemap-bar-quantitative-sum.vg.json"
     ]
   },
   {
-    "src": "bar-quantitative.json",
+    "src": "bar-quantitative.vl.json",
     "outputs": [
-      "square-bar-quantitative.json"
+      "square-bar-quantitative.vg.json"
     ]
   },
   {
-    "src": "column-categorical-facet-categorical.json",
+    "src": "column-categorical-facet-categorical.vl.json",
     "outputs": [
-      "square-column-categorical-facet-categorical.json"
+      "square-column-categorical-facet-categorical.vg.json"
     ]
   },
   {
-    "src": "column-categorical-facet-quantitative.json",
+    "src": "column-categorical-facet-quantitative.vl.json",
     "outputs": [
-      "square-column-categorical-facet-quantitative.json"
+      "square-column-categorical-facet-quantitative.vg.json"
     ]
   },
   {
-    "src": "column-categorical-sum-facet-categorical.json",
+    "src": "column-categorical-sum-facet-categorical.vl.json",
     "outputs": [
-      "treemap-column-categorical-sum-facet-categorical.json"
+      "treemap-column-categorical-sum-facet-categorical.vg.json"
     ]
   },
   {
-    "src": "column-categorical-sum-facet-quantitative.json",
+    "src": "column-categorical-sum-facet-quantitative.vl.json",
     "outputs": [
-      "treemap-column-categorical-sum-facet-quantitative.json"
+      "treemap-column-categorical-sum-facet-quantitative.vg.json"
     ]
   },
   {
-    "src": "column-categorical-sum.json",
+    "src": "column-categorical-sum.vl.json",
     "outputs": [
-      "treemap-column-categorical-sum.json"
+      "treemap-column-categorical-sum.vg.json"
     ]
   },
   {
-    "src": "column-categorical.json",
+    "src": "column-categorical.vl.json",
     "outputs": [
-      "square-column-categorical.json"
+      "square-column-categorical.vg.json"
     ]
   },
   {
-    "src": "column-quantitative-facet-categorical.json",
+    "src": "column-quantitative-facet-categorical.vl.json",
     "outputs": [
-      "square-column-quantitative-facet-categorical.json"
+      "square-column-quantitative-facet-categorical.vg.json"
     ]
   },
   {
-    "src": "column-quantitative-facet-quantitative.json",
+    "src": "column-quantitative-facet-quantitative.vl.json",
     "outputs": [
-      "square-column-quantitative-facet-quantitative.json"
+      "square-column-quantitative-facet-quantitative.vg.json"
     ]
   },
   {
-    "src": "column-quantitative-sum-facet-categorical.json",
+    "src": "column-quantitative-sum-facet-categorical.vl.json",
     "outputs": [
-      "treemap-column-quantitative-sum-facet-categorical.json"
+      "treemap-column-quantitative-sum-facet-categorical.vg.json"
     ]
   },
   {
-    "src": "column-quantitative-sum-facet-quantitative.json",
+    "src": "column-quantitative-sum-facet-quantitative.vl.json",
     "outputs": [
-      "treemap-column-quantitative-sum-facet-quantitative.json"
+      "treemap-column-quantitative-sum-facet-quantitative.vg.json"
     ]
   },
   {
-    "src": "column-quantitative-sum.json",
+    "src": "column-quantitative-sum.vl.json",
     "outputs": [
-      "treemap-column-quantitative-sum.json"
+      "treemap-column-quantitative-sum.vg.json"
     ]
   },
   {
-    "src": "column-quantitative.json",
+    "src": "column-quantitative.vl.json",
     "outputs": [
-      "square-column-quantitative.json"
+      "square-column-quantitative.vg.json"
     ]
   }
 ];
