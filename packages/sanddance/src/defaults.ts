@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
-import { defaultPresenterConfig, defaultPresenterStyle } from './vega-deck.gl/defaults';
-import { desaturate } from './vega-deck.gl/color';
 import { ViewerOptions } from './types';
+
+const { defaultPresenterConfig, defaultPresenterStyle } = VegaDeckGl.defaults;
+const { desaturate } = VegaDeckGl.util;
 
 export const defaultViewerOptions: ViewerOptions = {
     colors: {

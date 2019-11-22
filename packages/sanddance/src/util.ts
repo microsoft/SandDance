@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { FieldNames } from './constants';
-import { GL_ORDINAL } from './vega-deck.gl/constants';
+
+const { GL_ORDINAL } = VegaDeckGl.constants;
 
 export { getColumnsFromData, getStats, inferAll } from './specs/inference';
 export { ensureSearchExpressionGroupArray } from './searchExpression/group';

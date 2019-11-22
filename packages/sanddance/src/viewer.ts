@@ -24,13 +24,6 @@ import {
     SelectionState,
     ViewerOptions
 } from './types';
-import { DataScope } from './dataScope';
-import { DeckProps, PickInfo } from '@deck.gl/core/lib/deck';
-import { defaultView } from './vega-deck.gl/defaults';
-import { defaultViewerOptions, getPresenterStyle } from './defaults';
-import { Details } from './details';
-import { ensureHeaders } from './headers';
-import { finalizeLegend } from './legend';
 import {
     Column,
     Insight,
@@ -39,6 +32,12 @@ import {
     SpecColumns,
     SpecContext
 } from './specs/types';
+import { DataScope } from './dataScope';
+import { DeckProps, PickInfo } from '@deck.gl/core/lib/deck';
+import { defaultViewerOptions, getPresenterStyle } from './defaults';
+import { Details } from './details';
+import { ensureHeaders } from './headers';
+import { finalizeLegend } from './legend';
 import { makeDateRange } from './date';
 import { mount } from 'tsx-create-element';
 import { recolorAxes } from './axes';
@@ -47,7 +46,9 @@ import { Search, SearchExpression, SearchExpressionGroup } from './searchExpress
 import { Spec, Transforms } from 'vega-typings';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 import { Tooltip } from './tooltip';
-import { ViewGl_Class } from './vega-deck.gl/vega-classes/viewGl';
+import { ViewGl_Class } from '@msrvida/vega-deck.gl/dist/es6/vega-classes/viewGl';
+
+const { defaultView } = VegaDeckGl.defaults;
 
 let didRegisterColorSchemes = false;
 

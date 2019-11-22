@@ -3,9 +3,8 @@
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { ColumnStats } from './specs/types';
 import { Spec } from 'vega-typings';
-import { TickText } from './vega-deck.gl/interfaces';
 
-export function makeDateRange(tickTexts: TickText[], columnStats: ColumnStats) {
+export function makeDateRange(tickTexts: VegaDeckGl.types.TickText[], columnStats: ColumnStats) {
     if (tickTexts.length === 1) {
         const d3TimeFormat = getD3TimeFormat(columnStats.min, columnStats.max);
         tickTexts[0].text = vegaTimeFormat([[columnStats.min, columnStats.max]], d3TimeFormat)[0];
