@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as searchExpression from './searchExpression';
-import * as VegaDeckGl from './vega-deck.gl';
+import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { Animator, DataLayoutChange } from './animator';
 import {
     applyColorMapToCubes,
