@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "docs": "ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/sanddance-react/v1/ && node ./scripts/docs.js",
+    "docs": "ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/sanddance-react/v2/ && node ./scripts/docs.js",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "build-css": "node-sass ./src/css -o ./dist/css",
