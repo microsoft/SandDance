@@ -1,0 +1,541 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "data": [
+    {
+      "name": "source_00",
+      "url": "https://sanddance.js.org/sample-data/titanicmaster.tsv",
+      "format": {
+        "type": "tsv"
+      },
+      "transform": [
+        {
+          "type": "extent",
+          "field": "TicketCost",
+          "signal": "bin_maxbins_30_TicketCost_extent"
+        },
+        {
+          "type": "bin",
+          "field": "TicketCost",
+          "as": [
+            "bin_maxbins_30_TicketCost",
+            "bin_maxbins_30_TicketCost_end"
+          ],
+          "signal": "bin_maxbins_30_TicketCost_bins",
+          "extent": {
+            "signal": "bin_maxbins_30_TicketCost_extent"
+          },
+          "maxbins": 30
+        },
+        {
+          "type": "extent",
+          "field": "Age",
+          "signal": "child_bin_maxbins_20_Age_extent"
+        },
+        {
+          "type": "bin",
+          "field": "Age",
+          "as": [
+            "bin_maxbins_20_Age",
+            "bin_maxbins_20_Age_end"
+          ],
+          "signal": "child_bin_maxbins_20_Age_bins",
+          "extent": {
+            "signal": "child_bin_maxbins_20_Age_extent"
+          },
+          "maxbins": 20
+        }
+      ]
+    },
+    {
+      "name": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "bin_maxbins_20_Age",
+            "bin_maxbins_20_Age_end",
+            "bin_maxbins_30_TicketCost",
+            "bin_maxbins_30_TicketCost_end"
+          ],
+          "ops": [
+            "sum"
+          ],
+          "fields": [
+            "TicketCost"
+          ],
+          "as": [
+            "sum_TicketCost"
+          ]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"bin_maxbins_20_Age\"]) && isFinite(+datum[\"bin_maxbins_20_Age\"])"
+        },
+        {
+          "type": "extent",
+          "field": "__count",
+          "signal": "maxcount"
+        }
+      ],
+      "source": "source_00"
+    },
+    {
+      "name": "facet_domain",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "bin_maxbins_30_TicketCost",
+            "bin_maxbins_30_TicketCost_end"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "facet_domain_row",
+      "transform": [
+        {
+          "type": "sequence",
+          "start": 0,
+          "stop": {
+            "signal": "ceil(length(data(\"facet_domain\")) / 10)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "facet_domain_column",
+      "transform": [
+        {
+          "type": "sequence",
+          "start": 0,
+          "stop": {
+            "signal": "min(length(data(\"facet_domain\")), 10)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "seq",
+      "transform": [
+        {
+          "type": "sequence",
+          "start": {
+            "signal": "child_bin_maxbins_20_Age_bins.start"
+          },
+          "stop": {
+            "signal": "child_bin_maxbins_20_Age_bins.stop"
+          },
+          "step": {
+            "signal": "child_bin_maxbins_20_Age_bins.step"
+          }
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "name": "child_width",
+      "value": 300
+    },
+    {
+      "name": "child_height",
+      "value": 300
+    },
+    {
+      "name": "bandWidth",
+      "update": "bandwidth('quantBand')"
+    },
+    {
+      "name": "bandPadding",
+      "value": 0.1
+    }
+  ],
+  "layout": {
+    "padding": 20,
+    "bounds": "full",
+    "align": "all",
+    "columns": 10
+  },
+  "marks": [
+    {
+      "name": "facet-title",
+      "type": "group",
+      "role": "column-title",
+      "title": {
+        "text": "TicketCost (binned)",
+        "style": "guide-title",
+        "offset": 10
+      }
+    },
+    {
+      "name": "row_header",
+      "type": "group",
+      "role": "row-header",
+      "from": {
+        "data": "facet_domain_row"
+      },
+      "encode": {
+        "update": {
+          "height": {
+            "signal": "child_height"
+          }
+        }
+      },
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "grid": false,
+          "title": "Sum of TicketCost",
+          "labelOverlap": true,
+          "tickCount": {
+            "signal": "ceil(child_height/40)"
+          },
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "name": "column_footer",
+      "type": "group",
+      "role": "column-footer",
+      "from": {
+        "data": "facet_domain_column"
+      },
+      "encode": {
+        "update": {
+          "width": {
+            "signal": "child_width"
+          }
+        }
+      },
+      "axes": [
+        {
+          "scale": "x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Age (binned)",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {
+            "signal": "ceil(child_width/10)"
+          },
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "name": "cell",
+      "type": "group",
+      "title": {
+        "text": {
+          "signal": "!isValid(parent[\"bin_maxbins_30_TicketCost\"]) || !isFinite(+parent[\"bin_maxbins_30_TicketCost\"]) ? \"null\" : format(parent[\"bin_maxbins_30_TicketCost\"], \"\") + \" - \" + format(parent[\"bin_maxbins_30_TicketCost_end\"], \"\")"
+        },
+        "style": "guide-label",
+        "frame": "group",
+        "offset": 10
+      },
+      "style": "cell",
+      "from": {
+        "facet": {
+          "name": "facet",
+          "data": "source_00",
+          "groupby": [
+            "bin_maxbins_30_TicketCost",
+            "bin_maxbins_30_TicketCost_end"
+          ]
+        }
+      },
+      "sort": {
+        "field": [
+          "datum[\"bin_maxbins_30_TicketCost\"]"
+        ],
+        "order": [
+          "ascending"
+        ]
+      },
+      "encode": {
+        "update": {
+          "width": {
+            "signal": "child_width"
+          },
+          "height": {
+            "signal": "child_height"
+          }
+        }
+      },
+      "marks": [
+        {
+          "name": "child_marks",
+          "type": "rect",
+          "style": [
+            "bar"
+          ],
+          "from": {
+            "data": "s2"
+          },
+          "encode": {
+            "update": {
+              "fill": {
+                "value": "#4c78a8"
+              },
+              "x2": [
+                {
+                  "test": "!isValid(datum[\"bin_maxbins_20_Age\"]) || !isFinite(+datum[\"bin_maxbins_20_Age\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "x",
+                  "field": "bin_maxbins_20_Age",
+                  "offset": 1
+                }
+              ],
+              "x": [
+                {
+                  "test": "!isValid(datum[\"bin_maxbins_20_Age\"]) || !isFinite(+datum[\"bin_maxbins_20_Age\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "x",
+                  "field": "bin_maxbins_20_Age_end"
+                }
+              ],
+              "y": {
+                "scale": "y",
+                "field": "sum_TicketCost"
+              },
+              "y2": {
+                "scale": "y",
+                "value": 0
+              },
+              "opacity": {
+                "value": 0.2
+              }
+            }
+          }
+        },
+        {
+          "name": "bandfacet",
+          "type": "group",
+          "from": {
+            "facet": {
+              "name": "bandfacet_0",
+              "data": "facet",
+              "groupby": [
+                "bin_maxbins_30_TicketCost",
+                "bin_maxbins_20_Age"
+              ],
+              "aggregate": {
+                "as": [
+                  "sum_TicketCost"
+                ],
+                "fields": [
+                  "TicketCost"
+                ],
+                "ops": [
+                  "sum"
+                ]
+              }
+            }
+          },
+          "signals": [
+            {
+              "name": "barWidth",
+              "update": "bandWidth"
+            },
+            {
+              "name": "barHeight",
+              "update": "child_height - scale('y', parent['sum_TicketCost'])"
+            }
+          ],
+          "encode": {
+            "update": {
+              "x": {
+                "signal": "scale('x', datum['bin_maxbins_20_Age'])"
+              },
+              "width": {
+                "signal": "bandWidth"
+              },
+              "y": {
+                "signal": "scale('y', datum['sum_TicketCost'])"
+              },
+              "height": {
+                "signal": "child_height - scale('y', datum['sum_TicketCost'])"
+              },
+              "fill": {
+                "signal": "\"pink\""
+              },
+              "opacity": {
+                "value": 0.2
+              }
+            }
+          },
+          "marks": [
+            {
+              "name": "treemapMarks",
+              "type": "rect",
+              "from": {
+                "data": "treemapData"
+              },
+              "encode": {
+                "update": {
+                  "x": {
+                    "field": "x0"
+                  },
+                  "x2": {
+                    "field": "x1"
+                  },
+                  "y": {
+                    "field": "y0"
+                  },
+                  "y2": {
+                    "field": "y1"
+                  }
+                }
+              }
+            }
+          ],
+          "data": [
+            {
+              "name": "treemapData",
+              "source": "bandfacet_0",
+              "transform": [
+                {
+                  "type": "nest"
+                },
+                {
+                  "type": "treemap",
+                  "field": "TicketCost",
+                  "sort": {
+                    "field": "value",
+                    "order": "descending"
+                  },
+                  "round": true,
+                  "method": "squarify",
+                  "padding": 1,
+                  "size": [
+                    {
+                      "signal": "barWidth"
+                    },
+                    {
+                      "signal": "barHeight"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "gridScale": "x",
+          "grid": true,
+          "tickCount": {
+            "signal": "ceil(child_height/40)"
+          },
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        }
+      ],
+      "data": [
+        {
+          "name": "s2",
+          "source": "facet",
+          "transform": [
+            {
+              "type": "aggregate",
+              "groupby": [
+                "bin_maxbins_20_Age",
+                "bin_maxbins_20_Age_end",
+                "bin_maxbins_30_TicketCost",
+                "bin_maxbins_30_TicketCost_end"
+              ],
+              "ops": [
+                "sum"
+              ],
+              "fields": [
+                "TicketCost"
+              ],
+              "as": [
+                "sum_TicketCost"
+              ]
+            },
+            {
+              "type": "filter",
+              "expr": "isValid(datum[\"bin_maxbins_20_Age\"]) && isFinite(+datum[\"bin_maxbins_20_Age\"])"
+            },
+            {
+              "type": "extent",
+              "field": "__count",
+              "signal": "maxcount"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "signal": "[child_bin_maxbins_20_Age_bins.start, child_bin_maxbins_20_Age_bins.stop]"
+      },
+      "range": [
+        0,
+        {
+          "signal": "child_width"
+        }
+      ],
+      "bins": {
+        "signal": "child_bin_maxbins_20_Age_bins"
+      },
+      "zero": false
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "data": "source_0",
+        "field": "sum_TicketCost"
+      },
+      "range": [
+        {
+          "signal": "child_height"
+        },
+        0
+      ],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "quantBand",
+      "type": "band",
+      "domain": {
+        "data": "seq",
+        "field": "data",
+        "sort": true
+      },
+      "range": [
+        0,
+        {
+          "signal": "child_width"
+        }
+      ],
+      "padding": {
+        "signal": "bandPadding"
+      }
+    }
+  ]
+}

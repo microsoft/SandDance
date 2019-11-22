@@ -8575,7 +8575,11 @@ const markStager = (options, stage, scene, x, y, groupType) => {
 };
 
 function convertAngle(vegaTextAngle) {
-  return 360 - vegaTextAngle;
+  if (vegaTextAngle && !isNaN(vegaTextAngle)) {
+    return 360 - vegaTextAngle;
+  }
+
+  return 0;
 }
 
 function convertAlignment(textAlign) {
@@ -8589,6 +8593,8 @@ function convertAlignment(textAlign) {
     case 'right':
       return 'end';
   }
+
+  return 'start';
 }
 
 function convertBaseline(baseline) {
@@ -8597,7 +8603,7 @@ function convertBaseline(baseline) {
       return 'center';
   }
 
-  return baseline;
+  return baseline || 'bottom';
 }
 
 var _default = markStager;
@@ -16415,7 +16421,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = '1.6.6';
+const version = '1.6.7';
 exports.version = version;
 },{}],"rZaE":[function(require,module,exports) {
 "use strict";

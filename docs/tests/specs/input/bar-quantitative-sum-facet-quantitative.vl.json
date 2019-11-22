@@ -1,0 +1,34 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+    "data": {
+        "url": "https://sanddance.js.org/sample-data/titanicmaster.tsv",
+        "format": {
+            "type": "tsv"
+        }
+    },
+    "height": 300,
+    "width": 300,
+    "mark": "bar",
+    "encoding": {
+        "facet": {
+            "field": "TicketCost",
+            "type": "quantitative",
+            "bin": {
+                "maxbins": 30
+            },
+            "columns": 10
+        },
+        "y": {
+            "field": "Age",
+            "type": "quantitative",
+            "bin": {
+                "maxbins": 20
+            }
+        },
+        "x": {
+            "field": "TicketCost",
+            "type": "quantitative",
+            "aggregate": "sum"
+        }
+    }
+}

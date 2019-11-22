@@ -1,0 +1,277 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 300,
+  "height": 300,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_00",
+      "url": "https://sanddance.js.org/sample-data/titanicmaster.tsv",
+      "format": {
+        "type": "tsv"
+      }
+    },
+    {
+      "name": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "Class"
+          ],
+          "ops": [
+            "count"
+          ],
+          "fields": [
+            null
+          ],
+          "as": [
+            "__count"
+          ]
+        },
+        {
+          "type": "extent",
+          "field": "__count",
+          "signal": "maxcount"
+        }
+      ],
+      "source": "source_00"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": [
+        "bar"
+      ],
+      "from": {
+        "data": "source_0"
+      },
+      "encode": {
+        "update": {
+          "fill": {
+            "value": "#4c78a8"
+          },
+          "x": {
+            "scale": "x",
+            "field": "__count"
+          },
+          "x2": {
+            "scale": "x",
+            "value": 0
+          },
+          "y": {
+            "scale": "y",
+            "field": "Class"
+          },
+          "height": {
+            "scale": "y",
+            "band": true
+          },
+          "opacity": {
+            "value": 0.2
+          }
+        }
+      }
+    },
+    {
+      "name": "bandfacet",
+      "type": "group",
+      "from": {
+        "facet": {
+          "name": "bandfacet_0",
+          "data": "source_00",
+          "groupby": [
+            "Class"
+          ]
+        }
+      },
+      "signals": [
+        {
+          "name": "ytop",
+          "update": "scale('y', parent['Class'])"
+        }
+      ],
+      "encode": {
+        "update": {
+          "y": {
+            "signal": "scale('y', datum['Class'])"
+          },
+          "height": {
+            "signal": "bandWidth"
+          },
+          "x": {
+            "signal": "scale('x', 0)"
+          },
+          "width": {
+            "signal": "scale('x', datum['count'])"
+          },
+          "fill": {
+            "signal": "\"pink\""
+          },
+          "opacity": {
+            "value": 0.4
+          }
+        }
+      },
+      "marks": [
+        {
+          "name": "squaremarks",
+          "type": "rect",
+          "from": {
+            "data": "squares"
+          },
+          "encode": {
+            "update": {
+              "y": {
+                "offset": {
+                  "signal": "bandWidth /cellcount * ( (datum.squarecount-1) %cellcount)"
+                }
+              },
+              "x": {
+                "signal": "scale('x', floor((datum.squarecount-1)/cellcount) * cellcount)"
+              },
+              "height": {
+                "signal": "marksize"
+              },
+              "width": {
+                "signal": "marksize"
+              }
+            }
+          }
+        }
+      ],
+      "data": [
+        {
+          "name": "squares",
+          "source": "bandfacet_0",
+          "transform": [
+            {
+              "type": "window",
+              "ops": [
+                "count"
+              ],
+              "as": [
+                "squarecount"
+              ]
+            },
+            {
+              "type": "extent",
+              "field": "squarecount",
+              "signal": "maxsquarecount"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "data": "source_0",
+        "field": "__count"
+      },
+      "range": [
+        0,
+        {
+          "signal": "width"
+        }
+      ],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "band",
+      "domain": {
+        "data": "source_0",
+        "field": "Class",
+        "sort": true
+      },
+      "range": [
+        0,
+        {
+          "signal": "height"
+        }
+      ],
+      "padding": {
+        "signal": "bandPadding"
+      }
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {
+        "signal": "ceil(width/40)"
+      },
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Count of Records",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {
+        "signal": "ceil(width/40)"
+      },
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Class",
+      "zindex": 0
+    }
+  ],
+  "signals": [
+    {
+      "name": "child_width",
+      "update": "width"
+    },
+    {
+      "name": "child_height",
+      "update": "height"
+    },
+    {
+      "name": "bandWidth",
+      "update": "bandwidth('y')"
+    },
+    {
+      "name": "bandPadding",
+      "value": 0.1
+    },
+    {
+      "name": "aspect",
+      "update": "bandWidth/child_width"
+    },
+    {
+      "name": "cellcount",
+      "update": "ceil(sqrt(maxcount[1]*aspect))"
+    },
+    {
+      "name": "gap",
+      "update": "min(0.1*(bandWidth/(cellcount-1)),1)"
+    },
+    {
+      "name": "marksize",
+      "update": "bandWidth/cellcount-gap"
+    }
+  ]
+}

@@ -57,7 +57,10 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
 };
 
 function convertAngle(vegaTextAngle: number) {
-    return 360 - vegaTextAngle;
+    if (vegaTextAngle && !isNaN(vegaTextAngle)) {
+        return 360 - vegaTextAngle;
+    }
+    return 0;
 }
 
 function convertAlignment(textAlign: SceneTextAlign): TextAnchor {
@@ -66,13 +69,14 @@ function convertAlignment(textAlign: SceneTextAlign): TextAnchor {
         case 'left': return 'start';
         case 'right': return 'end';
     }
+    return 'start';
 }
 
 function convertBaseline(baseline: SceneTextBaseline): AlignmentBaseline {
     switch (baseline) {
         case 'middle': return 'center';
     }
-    return baseline;
+    return baseline || 'bottom';
 }
 
 export default markStager;
