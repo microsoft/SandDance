@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as VegaDeckGl from '../vega-deck.gl';
+import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { Color } from '@deck.gl/core/utils/color';
 import { Search } from '../searchExpression/types';
 import { Transforms, TypeInference } from 'vega-typings';

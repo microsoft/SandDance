@@ -3,7 +3,7 @@
 import { Axis } from 'vega-typings';
 import { Column, SpecViewOptions } from './types';
 import { SignalNames } from './constants';
-import { util } from '../vega-deck.gl';
+import { util } from '@msrvida/vega-deck.gl';
 
 export enum AxisType {
     quantitative, categoric, date
