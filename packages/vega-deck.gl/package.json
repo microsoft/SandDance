@@ -1,9 +1,10 @@
 {
   "name": "@msrvida/vega-deck.gl",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Deck.gl renderer for Vega",
   "main": "dist/es6/index.js",
   "scripts": {
+    "docs": "ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/vega-deck.gl/v2/",
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",

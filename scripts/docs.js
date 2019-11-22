@@ -15,7 +15,7 @@ function replaceInfile(packageName, f) {
 }
 
 function moveFilesInPackage(packageName, packageDir) {
-    const baseDir = path.resolve(packageDir, 'v1/api');
+    const baseDir = path.resolve(packageDir, 'v2/api');
     const indexDir = path.resolve(baseDir, 'index');
     fs.readdirSync(indexDir).forEach(f => {
         const dest = path.resolve(baseDir, f);

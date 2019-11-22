@@ -1,7 +1,7 @@
 {
   "name": "@msrvida/sanddance-app",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "deploy": "npm run bundle && node ./scripts/deploy.js",
@@ -26,7 +26,7 @@
     "@deck.gl/layers": "6.4",
     "luma.gl": "6.4",
     "office-ui-fabric-react": "6.204.4",
-    "@msrvida/sanddance-explorer": "^1",
-    "vega": "^5.7"
+    "@msrvida/sanddance-explorer": "^2",
+    "vega": "^5.8"
   }
 }

@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-let html = fs.readFileSync('../../docs/embed/v1/sanddance-embed.html', 'utf8');
+let html = fs.readFileSync('../../docs/embed/v2/sanddance-embed.html', 'utf8');
 
 const regex = /<title>(.*?)<\/title>/;
 
