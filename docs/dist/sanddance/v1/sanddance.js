@@ -6864,7 +6864,10 @@ void main(void) {
         });
     };
     function convertAngle(vegaTextAngle) {
-        return 360 - vegaTextAngle;
+        if (vegaTextAngle && !isNaN(vegaTextAngle)) {
+            return 360 - vegaTextAngle;
+        }
+        return 0;
     }
     function convertAlignment(textAlign) {
         switch (textAlign) {
@@ -6872,12 +6875,13 @@ void main(void) {
             case 'left': return 'start';
             case 'right': return 'end';
         }
+        return 'start';
     }
     function convertBaseline(baseline) {
         switch (baseline) {
             case 'middle': return 'center';
         }
-        return baseline;
+        return baseline || 'bottom';
     }
 
     var GroupType;
@@ -12762,7 +12766,7 @@ void main(void) {
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
-    const version = '1.6.6';
+    const version = '1.6.7';
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
 
