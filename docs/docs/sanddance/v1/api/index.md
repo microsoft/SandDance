@@ -85,18 +85,18 @@ const version: string;
 
 string
 
-[SourceFile-0]: index#indexts
-[FunctionDeclaration-5]: index#use
-[InterfaceDeclaration-45]: vegadeckgl/types#vegabase
-[InterfaceDeclaration-46]: vegadeckgl/types#deckbase
-[InterfaceDeclaration-47]: vegadeckgl/types#decklayerbase
-[InterfaceDeclaration-48]: vegadeckgl/types#lumabase
-[ClassDeclaration-5]: viewer#viewer
-[NamespaceImport-0]: constants#constants
-[NamespaceImport-1]: searchexpression#searchexpression
-[NamespaceImport-2]: types#types
-[NamespaceImport-3]: util#util
-[NamespaceImport-4]: vegadeckgl#vegadeckgl
-[VariableDeclaration-0]: index#colorschemes
-[InterfaceDeclaration-0]: types#colorscheme
-[VariableDeclaration-19]: index#version
+[SourceFile-0]: index.html#indexts
+[FunctionDeclaration-5]: index.html#use
+[InterfaceDeclaration-45]: vegadeckgl/types.html#vegabase
+[InterfaceDeclaration-46]: vegadeckgl/types.html#deckbase
+[InterfaceDeclaration-47]: vegadeckgl/types.html#decklayerbase
+[InterfaceDeclaration-48]: vegadeckgl/types.html#lumabase
+[ClassDeclaration-5]: viewer.html#viewer
+[NamespaceImport-0]: constants.html#constants
+[NamespaceImport-1]: searchexpression.html#searchexpression
+[NamespaceImport-2]: types.html#types
+[NamespaceImport-3]: util.html#util
+[NamespaceImport-4]: vegadeckgl.html#vegadeckgl
+[VariableDeclaration-0]: index.html#colorschemes
+[InterfaceDeclaration-0]: types.html#colorscheme
+[VariableDeclaration-19]: index.html#version

@@ -28,6 +28,6 @@ const deepCompare: <T>(a: T, b: T) => boolean;
 
 <T>(a: T, b: T) => boolean
 
-[NamespaceImport-1]: util#util
-[VariableDeclaration-0]: util#classlist
-[VariableDeclaration-1]: util#deepcompare
+[NamespaceImport-1]: util.html#util
+[VariableDeclaration-0]: util.html#classlist
+[VariableDeclaration-1]: util.html#deepcompare

@@ -28,6 +28,6 @@ const layerNames: { cubes: string; lines: string; text: string; };
 
 { cubes: string; lines: string; text: string; }
 
-[NamespaceImport-5]: vegadeckgl.constants#constants
-[VariableDeclaration-7]: vegadeckgl.constants#gl_ordinal
-[VariableDeclaration-8]: vegadeckgl.constants#layernames
+[NamespaceImport-5]: vegadeckgl.constants.html#constants
+[VariableDeclaration-7]: vegadeckgl.constants.html#gl_ordinal
+[VariableDeclaration-8]: vegadeckgl.constants.html#layernames

@@ -115,19 +115,19 @@ const ViewGl: typeof ViewGl_Class;
 
 typeof ViewGl_Class
 
-[SourceFile-0]: vegadeckgl#vegadeckgl
-[FunctionDeclaration-0]: vegadeckgl#use
-[InterfaceDeclaration-4]: vegadeckgl.types#vegabase
-[InterfaceDeclaration-1]: vegadeckgl.types#deckbase
-[InterfaceDeclaration-2]: vegadeckgl.types#decklayerbase
-[InterfaceDeclaration-3]: vegadeckgl.types#lumabase
-[EnumDeclaration-0]: vegadeckgl#presenterelement
-[ClassDeclaration-0]: vegadeckgl.presenter#presenter
-[NamespaceImport-0]: vegadeckgl.constants#constants
-[NamespaceImport-1]: vegadeckgl.controls#controls
-[NamespaceImport-2]: vegadeckgl.defaults#defaults
-[NamespaceImport-3]: vegadeckgl.types#types
-[NamespaceImport-4]: vegadeckgl.util#util
-[VariableDeclaration-0]: vegadeckgl#base
-[InterfaceDeclaration-0]: vegadeckgl.types#base
-[VariableDeclaration-1]: vegadeckgl#viewgl
+[SourceFile-0]: vegadeckgl.html#vegadeckgl
+[FunctionDeclaration-0]: vegadeckgl.html#use
+[InterfaceDeclaration-4]: vegadeckgl.types.html#vegabase
+[InterfaceDeclaration-1]: vegadeckgl.types.html#deckbase
+[InterfaceDeclaration-2]: vegadeckgl.types.html#decklayerbase
+[InterfaceDeclaration-3]: vegadeckgl.types.html#lumabase
+[EnumDeclaration-0]: vegadeckgl.html#presenterelement
+[ClassDeclaration-0]: vegadeckgl.presenter.html#presenter
+[NamespaceImport-0]: vegadeckgl.constants.html#constants
+[NamespaceImport-1]: vegadeckgl.controls.html#controls
+[NamespaceImport-2]: vegadeckgl.defaults.html#defaults
+[NamespaceImport-3]: vegadeckgl.types.html#types
+[NamespaceImport-4]: vegadeckgl.util.html#util
+[VariableDeclaration-0]: vegadeckgl.html#base
+[InterfaceDeclaration-0]: vegadeckgl.types.html#base
+[VariableDeclaration-1]: vegadeckgl.html#viewgl

@@ -229,16 +229,16 @@ function outerSize(el: HTMLElement): { };
 
 { }
 
-[NamespaceImport-9]: vegadeckgl.util#util
-[FunctionDeclaration-12]: vegadeckgl.util#adddiv
-[FunctionDeclaration-13]: vegadeckgl.util#addel
-[FunctionDeclaration-14]: vegadeckgl.util#clone
-[FunctionDeclaration-15]: vegadeckgl.util#colorfromstring
-[FunctionDeclaration-16]: vegadeckgl.util#colorisequal
-[FunctionDeclaration-17]: vegadeckgl.util#colortostring
-[FunctionDeclaration-18]: vegadeckgl.util#deepmerge
-[FunctionDeclaration-19]: vegadeckgl.util#iscolor
-[FunctionDeclaration-20]: vegadeckgl.util#getcubelayer
-[FunctionDeclaration-21]: vegadeckgl.util#getcubes
-[InterfaceDeclaration-31]: vegadeckgl.types#cube
-[FunctionDeclaration-22]: vegadeckgl.util#outersize
+[NamespaceImport-9]: vegadeckgl.util.html#util
+[FunctionDeclaration-12]: vegadeckgl.util.html#adddiv
+[FunctionDeclaration-13]: vegadeckgl.util.html#addel
+[FunctionDeclaration-14]: vegadeckgl.util.html#clone
+[FunctionDeclaration-15]: vegadeckgl.util.html#colorfromstring
+[FunctionDeclaration-16]: vegadeckgl.util.html#colorisequal
+[FunctionDeclaration-17]: vegadeckgl.util.html#colortostring
+[FunctionDeclaration-18]: vegadeckgl.util.html#deepmerge
+[FunctionDeclaration-19]: vegadeckgl.util.html#iscolor
+[FunctionDeclaration-20]: vegadeckgl.util.html#getcubelayer
+[FunctionDeclaration-21]: vegadeckgl.util.html#getcubes
+[InterfaceDeclaration-31]: vegadeckgl.types.html#cube
+[FunctionDeclaration-22]: vegadeckgl.util.html#outersize

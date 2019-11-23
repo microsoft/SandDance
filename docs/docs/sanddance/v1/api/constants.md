@@ -52,8 +52,8 @@ const SignalNames: { ColorBinCount: string; ColorReverse: string; FacetColumns: 
 
 { ColorBinCount: string; ColorReverse: string; FacetColumns: string; FacetRows: string; InnerPadding: string; OuterPadding: string; MarkOpacity: string; PointSize: string; TextAngleX: string; TextAngleY: string; TextScale: string; TextSize: string; TextTitleSize: string; TreeMapMethod: string; XDomain: string; XBins: string; XGridSize: string; YBins: string; YDomain: string; YGridSize: string; ZHeight: string; ZProportion: string; }
 
-[NamespaceImport-0]: constants#constants
-[VariableDeclaration-1]: constants#colorscalenone
-[VariableDeclaration-2]: constants#fieldnames
-[VariableDeclaration-3]: constants#scalenames
-[VariableDeclaration-4]: constants#signalnames
+[NamespaceImport-0]: constants.html#constants
+[VariableDeclaration-1]: constants.html#colorscalenone
+[VariableDeclaration-2]: constants.html#fieldnames
+[VariableDeclaration-3]: constants.html#scalenames
+[VariableDeclaration-4]: constants.html#signalnames

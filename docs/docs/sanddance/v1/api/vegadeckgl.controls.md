@@ -74,11 +74,11 @@ const Table: StatelessComponent<TableProps>;
 
 StatelessComponent<[TableProps][InterfaceDeclaration-58]>
 
-[NamespaceImport-6]: vegadeckgl.controls#controls
-[InterfaceDeclaration-57]: vegadeckgl.controls#tablecell
-[InterfaceDeclaration-58]: vegadeckgl.controls#tableprops
-[InterfaceDeclaration-59]: vegadeckgl.controls#tablerow
-[InterfaceDeclaration-59]: vegadeckgl.controls#tablerow
-[InterfaceDeclaration-57]: vegadeckgl.controls#tablecell
-[VariableDeclaration-9]: vegadeckgl.controls#table
-[InterfaceDeclaration-58]: vegadeckgl.controls#tableprops
+[NamespaceImport-6]: vegadeckgl.controls.html#controls
+[InterfaceDeclaration-57]: vegadeckgl.controls.html#tablecell
+[InterfaceDeclaration-58]: vegadeckgl.controls.html#tableprops
+[InterfaceDeclaration-59]: vegadeckgl.controls.html#tablerow
+[InterfaceDeclaration-59]: vegadeckgl.controls.html#tablerow
+[InterfaceDeclaration-57]: vegadeckgl.controls.html#tablecell
+[VariableDeclaration-9]: vegadeckgl.controls.html#table
+[InterfaceDeclaration-58]: vegadeckgl.controls.html#tableprops

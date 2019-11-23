@@ -56,9 +56,9 @@ const version: string;
 
 string
 
-[SourceFile-0]: index#indexts
-[InterfaceDeclaration-0]: index#props
-[ClassDeclaration-0]: sanddancereact#sanddancereact
-[NamespaceImport-0]: sanddance#sanddance
-[NamespaceImport-1]: util#util
-[VariableDeclaration-2]: index#version
+[SourceFile-0]: index.html#indexts
+[InterfaceDeclaration-0]: index.html#props
+[ClassDeclaration-0]: sanddancereact.html#sanddancereact
+[NamespaceImport-0]: sanddance.html#sanddance
+[NamespaceImport-1]: util.html#util
+[VariableDeclaration-2]: index.html#version

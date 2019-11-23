@@ -76,9 +76,9 @@ public viewer: Viewer;
 
 Viewer
 
-[ClassDeclaration-0]: sanddancereact#sanddancereact
-[MethodDeclaration-0]: sanddancereact#componentdidmount
-[MethodDeclaration-1]: sanddancereact#componentdidupdate
-[MethodDeclaration-2]: sanddancereact#componentwillunmount
-[MethodDeclaration-3]: sanddancereact#render
-[PropertyDeclaration-0]: sanddancereact#viewer
+[ClassDeclaration-0]: sanddancereact.html#sanddancereact
+[MethodDeclaration-0]: sanddancereact.html#componentdidmount
+[MethodDeclaration-1]: sanddancereact.html#componentdidupdate
+[MethodDeclaration-2]: sanddancereact.html#componentwillunmount
+[MethodDeclaration-3]: sanddancereact.html#render
+[PropertyDeclaration-0]: sanddancereact.html#viewer

@@ -130,19 +130,19 @@ const minPixelSize: 0.5;
 
 0.5
 
-[NamespaceImport-7]: vegadeckgl.defaults#defaults
-[FunctionDeclaration-11]: vegadeckgl.defaults#createstage
-[TypeAliasDeclaration-7]: vegadeckgl.types#view
-[InterfaceDeclaration-30]: vegadeckgl.types#stage
-[VariableDeclaration-10]: vegadeckgl.defaults#minheight
-[VariableDeclaration-11]: vegadeckgl.defaults#minwidth
-[VariableDeclaration-12]: vegadeckgl.defaults#defaultpresenterstyle
-[InterfaceDeclaration-49]: vegadeckgl.types#presenterstyle
-[VariableDeclaration-13]: vegadeckgl.defaults#defaultpresenterconfig
-[InterfaceDeclaration-54]: vegadeckgl.types#presenterconfig
-[VariableDeclaration-14]: vegadeckgl.defaults#groupstrokewidth
-[VariableDeclaration-15]: vegadeckgl.defaults#linez
-[VariableDeclaration-16]: vegadeckgl.defaults#defaultview
-[TypeAliasDeclaration-7]: vegadeckgl.types#view
-[VariableDeclaration-17]: vegadeckgl.defaults#min3ddepth
-[VariableDeclaration-18]: vegadeckgl.defaults#minpixelsize
+[NamespaceImport-7]: vegadeckgl.defaults.html#defaults
+[FunctionDeclaration-11]: vegadeckgl.defaults.html#createstage
+[TypeAliasDeclaration-7]: vegadeckgl.types.html#view
+[InterfaceDeclaration-30]: vegadeckgl.types.html#stage
+[VariableDeclaration-10]: vegadeckgl.defaults.html#minheight
+[VariableDeclaration-11]: vegadeckgl.defaults.html#minwidth
+[VariableDeclaration-12]: vegadeckgl.defaults.html#defaultpresenterstyle
+[InterfaceDeclaration-49]: vegadeckgl.types.html#presenterstyle
+[VariableDeclaration-13]: vegadeckgl.defaults.html#defaultpresenterconfig
+[InterfaceDeclaration-54]: vegadeckgl.types.html#presenterconfig
+[VariableDeclaration-14]: vegadeckgl.defaults.html#groupstrokewidth
+[VariableDeclaration-15]: vegadeckgl.defaults.html#linez
+[VariableDeclaration-16]: vegadeckgl.defaults.html#defaultview
+[TypeAliasDeclaration-7]: vegadeckgl.types.html#view
+[VariableDeclaration-17]: vegadeckgl.defaults.html#min3ddepth
+[VariableDeclaration-18]: vegadeckgl.defaults.html#minpixelsize
