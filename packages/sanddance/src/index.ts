@@ -6,8 +6,10 @@ import * as types from './types';
 import * as util from './util';
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { colorSchemes } from './colorSchemes';
-import { use } from '@msrvida/vega-deck.gl';
+import { use as _use } from '@msrvida/vega-deck.gl';
 import { Viewer } from './viewer';
+
+const use = _use;
 
 export {
     colorSchemes,
