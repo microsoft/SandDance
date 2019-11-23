@@ -28,7 +28,7 @@ function getTOC(mdPath) {
 
 function injectLiquid(mdPath) {
     let text = fs.readFileSync(mdPath, 'utf8');
-    text = text.replace(/\.md#/g, '#');
+    text = text.replace(/\.md#/g, '.html#');
     const liquid = `---\nlayout: api\n---\n\n`;
     fs.writeFileSync(mdPath, liquid + text, 'utf8');
 }
