@@ -1,11 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { createElement } from 'tsx-create-element';
-import { GL_ORDINAL } from './vega-deck.gl/constants';
 import { isInternalFieldName } from './util';
-import { outerSize } from './vega-deck.gl/htmlHelpers';
-import { Table, TableRow } from './vega-deck.gl/controls';
 import { TooltipOptions } from './types';
+
+const { GL_ORDINAL } = VegaDeckGl.constants;
+const { outerSize } = VegaDeckGl.util;
+const { Table } = VegaDeckGl.controls;
 
 interface Props {
     cssPrefix: string;
@@ -16,7 +18,7 @@ interface Props {
 
 interface RenderProps {
     cssPrefix: string;
-    rows: TableRow[];
+    rows: VegaDeckGl.controls.TableRow[];
 }
 
 export class Tooltip {
@@ -71,7 +73,7 @@ export class Tooltip {
 }
 
 function getRows(item: object, options: TooltipOptions) {
-    const rows: TableRow[] = [];
+    const rows: VegaDeckGl.controls.TableRow[] = [];
     for (let columnName in item) {
         if (columnName === GL_ORDINAL) {
             continue;

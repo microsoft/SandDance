@@ -20,6 +20,7 @@ import {
     Scene3d,
     Stage,
     StyledLine,
+    TickText,
     TransitionDurations,
     Vec3,
     View
@@ -56,6 +57,7 @@ export {
     Scene3d,
     Stage,
     StyledLine,
+    TickText,
     TransitionDurations,
     VegaBase,
     ViewGlConfig

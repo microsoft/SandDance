@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import * as searchExpression from './searchExpression';
 import { Animator } from './animator';
-import { constants, controls, util } from './vega-deck.gl';
+import { constants, controls, util } from '@msrvida/vega-deck.gl';
 import { createElement, mount } from 'tsx-create-element';
 import { cssPrefix } from './defaults';
 import { DataScope, UserSelection } from './dataScope';

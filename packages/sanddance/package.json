@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance",
-  "version": "1.6.7",
+  "version": "2.0.0",
   "description": "SandDance visualization canvas component.",
   "main": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
@@ -9,9 +9,7 @@
   ],
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "predocs": "node ./scripts/predocs.js",
-    "docs": "ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/sanddance/v1/ && ts-docs-gen --entryFile src/vega-deck.gl/index.ts -o ../../docs/docs/vega-deck.gl/v1/ && node ./scripts/docs.js",
-    "postdocs": "node ./scripts/postdocs.js",
+    "docs": "ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/sanddance/v2/",
     "deploy": "node ./scripts/deploy.js",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
@@ -27,12 +25,7 @@
     "@types/d3-ease": "^1.0.7"
   },
   "dependencies": {
-    "@danmarshall/deckgl-typings": "^2.2.5",
-    "@mapbox/tiny-sdf": "^1.1.1",
-    "@types/react": "16.4.7",
-    "d3-color": "^1.2.3",
-    "d3-ease": "^1.0.5",
-    "deepmerge": "^2.1.1",
+    "@msrvida/vega-deck.gl": "^2",
     "tsx-create-element": "1.1.4",
     "vega-typings": "*"
   }

@@ -66,7 +66,7 @@ function getTree(headings) {
 }
 
 function tocFilesInPackage(packageName, packageDir) {
-    const dir = path.resolve(packageDir, 'v1/api');
+    const dir = path.resolve(packageDir, 'v2/api');
     outlines[packageName] = {};
     fs.readdirSync(dir).forEach(f => {
         const mdPath = path.resolve(dir, f);
@@ -76,7 +76,11 @@ function tocFilesInPackage(packageName, packageDir) {
         } else {
             removeToc(mdPath);
             prefixName(packageName, mdPath);
-            outlines[packageName][f] = getOutline(getTOC(mdPath).map.children[0].children[1].children);
+            const thisToc = getTOC(mdPath);
+            const node = thisToc.map.children[0].children[1]
+            if (node) {
+                outlines[packageName][f] = getOutline(node.children);
+            }
         }
         injectLiquid(mdPath);
         console.log(`- ${f}`);

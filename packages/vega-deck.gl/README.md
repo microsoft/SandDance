@@ -1,4 +1,4 @@
-# vega-deck.gl
+# msrvida/vega-deck.gl
 
 View component for [Vega](https://vega.github.io/) visualizations, using [deck.gl](https://deck.gl/) for WebGL rendering.
 
@@ -7,7 +7,7 @@ TODO: image
 This project combines two great visualization libraries into one. You have the expressiveness of [Vega specifications](https://vega.github.io/vega/docs/specification/) and the WebGL rendering of [deck.gl](https://deck.gl). As a result, you have the option of visualizing data in 3 dimensions.
 
 
-[TODO: Demo]() - [TODO: Tutorial]() - [API Reference](https://microsoft.github.io/SandDance/docs/vega-deck.gl/v1/api)
+[TODO: Demo]() - [TODO: Tutorial]() - [API Reference](https://microsoft.github.io/SandDance/docs/vega-deck.gl/v2/api)
 
 ## Limitations
 

@@ -1,14 +1,16 @@
 {
   "name": "@msrvida/chart-recommender",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "Recommendation engine for SandDance charts",
   "main": "dist/es5/index.js",
   "files": [
     "dist"
   ],
   "dependencies": {
-    "@msrvida/sanddance": "^1.1.1",
-    "vega": "^5.7"
+    "@msrvida/sanddance": "^2"
+  },
+  "devDependencies": {
+    "vega": "^5.8"
   },
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",

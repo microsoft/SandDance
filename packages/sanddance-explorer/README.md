@@ -5,7 +5,7 @@ Visually explore, understand, and present your data.
 ![image](https://user-images.githubusercontent.com/11507384/54243089-591fcf80-44e4-11e9-851e-5ff4a262ccfd.png)
 
 
-[Demo](https://microsoft.github.io/SandDance/app) - [API Reference](https://microsoft.github.io/SandDance/docs/sanddance-explorer/v1/api)
+[Demo](https://microsoft.github.io/SandDance/app) - [API Reference](https://microsoft.github.io/SandDance/docs/sanddance-explorer/v2/api)
 
 ## Installation
 

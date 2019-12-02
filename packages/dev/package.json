@@ -11,7 +11,7 @@
     "@deck.gl/core": "6.4",
     "@deck.gl/layers": "6.4",
     "luma.gl": "6.4",
-    "vega": "^5.7"
+    "vega": "^5.8"
   },
   "keywords": [],
   "author": "",
