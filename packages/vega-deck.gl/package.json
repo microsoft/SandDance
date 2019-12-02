@@ -8,8 +8,7 @@
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
-    "build": "npm run build-typescript",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run build-typescript"
   },
   "keywords": [
     "vega",
