@@ -3,6 +3,9 @@
   "version": "2.0.0",
   "description": "Deck.gl renderer for Vega",
   "main": "dist/es6/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "docs": "ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/vega-deck.gl/v2/",
     "deploy": "node ./scripts/deploy.js",
