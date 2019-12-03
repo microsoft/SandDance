@@ -24,7 +24,7 @@ export function fill(context: SpecContext): ProductionRule<ColorValueRef> {
         };
 }
 
-export function opacity(context: SpecContext) {
+export function opacity(context: SpecContext): ProductionRule<NumericValueRef> {
     const result: ProductionRule<NumericValueRef> = {
         signal: SignalNames.MarkOpacity
     };
