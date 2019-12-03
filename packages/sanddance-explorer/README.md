@@ -5,7 +5,7 @@ Visually explore, understand, and present your data.
 ![image](https://user-images.githubusercontent.com/11507384/54243089-591fcf80-44e4-11e9-851e-5ff4a262ccfd.png)
 
 
-[Demo](https://microsoft.github.io/SandDance/app) - [API Reference](https://microsoft.github.io/SandDance/docs/sanddance-explorer/v1/api)
+[Demo](https://microsoft.github.io/SandDance/app) - [API Reference](https://microsoft.github.io/SandDance/docs/sanddance-explorer/v2/api)
 
 ## Installation
 
@@ -16,7 +16,7 @@ Add these to the `dependencies` section of your `package.json`, then run `npm in
 "@deck.gl/layers": "6.4",
 "@msrvida/sanddance-explorer": "^1",
 "luma.gl": "6.4",
-"vega-lib": "^4.3.0"
+"vega": "^5.8"
 ```
 
 Import these in your JavaScript:
@@ -25,7 +25,7 @@ Import these in your JavaScript:
 import * as deck from '@deck.gl/core';
 import * as layers from '@deck.gl/layers';
 import * as luma from 'luma.gl';
-import * as vega from 'vega-lib';
+import * as vega from 'vega';
 import { Explorer, SandDance } from '@msrvida/sanddance-explorer';
 
 SandDance.use(vega, deck, layers, luma);

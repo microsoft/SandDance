@@ -156,6 +156,7 @@ export class Explorer extends React.Component<Props, State> {
                 width: null
             },
             scheme: null,
+            transform: null,
             columns: null,
             chart: 'grid',
             signalValues: null,
@@ -201,7 +202,7 @@ export class Explorer extends React.Component<Props, State> {
                 this.changeInsight({ filter: dataFilter, filteredData, selectedItemIndex });
                 if (this.state.sideTabId === SideTabId.Data && this.state.dataScopeId === DataScopeId.FilteredData) {
                     //make sure item is active
-                    requestAnimationFrame(() => this.silentActivation(filteredData[0]));
+                    requestAnimationFrame(() => filteredData && this.silentActivation(filteredData[0]));
                 }
                 viewerOptions && viewerOptions.onDataFilter && viewerOptions.onDataFilter(dataFilter, filteredData);
             },
@@ -318,6 +319,10 @@ export class Explorer extends React.Component<Props, State> {
         });
     }
 
+    getInsight() {
+        return this.viewer.getInsight();
+    }
+
     setInsight(partialInsight: Partial<SandDance.types.Insight>) {
         const selectedItemIndex = { ...this.state.selectedItemIndex };
         selectedItemIndex[DataScopeId.AllData] = 0;
@@ -368,13 +373,14 @@ export class Explorer extends React.Component<Props, State> {
                     autoCompleteDistinctValues: {},
                     filter: null,
                     filteredData: null,
+                    transform: null,
                     tooltipExclusions: (optionsOrPrefs && (optionsOrPrefs as Options).tooltipExclusions) || [],
                     selectedItemIndex,
                     sideTabId,
                     ...partialInsight
                 };
                 this.getColorContext = null;
-                ensureColumnsExist(newState.columns, dataContent.columns);
+                ensureColumnsExist(newState.columns, dataContent.columns, newState.transform);
                 const errors = ensureColumnsPopulated(partialInsight ? partialInsight.chart : null, newState.columns, dataContent.columns);
                 newState.errors = errors;
                 //change insight
@@ -385,7 +391,7 @@ export class Explorer extends React.Component<Props, State> {
             };
             let dataFile: DataFile;
             if (Array.isArray(data)) {
-                return loadDataArray(data)
+                return loadDataArray(data, 'json')
                     .then(result => {
                         dataFile = {
                             type: 'json'
@@ -431,7 +437,7 @@ export class Explorer extends React.Component<Props, State> {
             newState.view = '3d';
         }
 
-        ensureColumnsExist(newState.columns, this.state.dataContent.columns);
+        ensureColumnsExist(newState.columns, this.state.dataContent.columns, this.state.transform);
         const errors = ensureColumnsPopulated(chart, newState.columns, this.state.dataContent.columns);
         if (errors) {
             newState.errors = errors;
@@ -710,7 +716,7 @@ export class Explorer extends React.Component<Props, State> {
     }
 
     render() {
-        const { colorBin, columns, directColor, facets, filter, hideAxes, hideLegend, scheme, signalValues, size, chart, view } = this.state;
+        const { colorBin, columns, directColor, facets, filter, hideAxes, hideLegend, scheme, signalValues, size, transform, chart, view } = this.state;
         const insight: SandDance.types.Insight = {
             colorBin,
             columns,
@@ -722,6 +728,7 @@ export class Explorer extends React.Component<Props, State> {
             scheme,
             signalValues,
             size,
+            transform,
             chart,
             view
         };

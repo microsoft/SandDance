@@ -14,7 +14,6 @@ export interface Props extends FabricTypes.IDialogProps {
 export function Dialog(props: Props) {
     return (
         <base.fabric.Dialog
-            className="sanddance-dialog"
             {...props}
             dialogContentProps={{
                 type: base.fabric.DialogType.normal,

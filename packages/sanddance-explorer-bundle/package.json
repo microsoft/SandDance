@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance-explorer-bundle",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "SandDance Explorer complete bundle for embedding.",
   "main": "dist/index.js",
   "browser": "dist/umd/sanddance-explorer-bundle.js",
@@ -15,12 +15,12 @@
   "dependencies": {
     "@deck.gl/core": "6.4",
     "@deck.gl/layers": "6.4",
-    "@msrvida/sanddance-explorer": "^1.6.4",
+    "@msrvida/sanddance-explorer": "^2",
     "luma.gl": "6.4",
     "office-ui-fabric-react": "6.204.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "vega-lib": "^4.3.0"
+    "vega": "^5.8"
   },
   "devDependencies": {
     "@types/react": "16.4.7",

@@ -14,7 +14,7 @@ import {
 } from '../facet';
 import { DataNames, SignalNames } from '../constants';
 import { getLegends } from '../legends';
-import { NameSpace } from './namespace';
+import { BarChartNameSpace } from '../namespace';
 import { SpecCapabilities, SpecContext } from '../types';
 import { SpecCreator, SpecResult } from '../interfaces';
 
@@ -60,7 +60,7 @@ export const barchartH: SpecCreator = (context: SpecContext): SpecResult => {
         };
     }
 
-    const rootNamespace = new NameSpace();
+    const rootNamespace = new BarChartNameSpace();
     let axes: Axis[];
 
     if (!insight.hideAxes) {
@@ -70,7 +70,7 @@ export const barchartH: SpecCreator = (context: SpecContext): SpecResult => {
     let marks: Mark[];
 
     if (specColumns.facet) {
-        const cellNamespace = new NameSpace('Cell');
+        const cellNamespace = new BarChartNameSpace('Cell');
         const cellMarks = getMarks(context, cellNamespace);
         const cd = specColumns.y.quantitative ?
             [

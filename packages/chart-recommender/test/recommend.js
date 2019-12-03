@@ -3,7 +3,7 @@
 var assert = require('assert');
 var recommender = require("../dist/es5");
 var fs = require('fs');
-var vega = require('vega-lib');
+var vega = require('vega');
 var SandDance = require('@msrvida/sanddance/dist/umd/sanddance');
 SandDance.use(vega);
 

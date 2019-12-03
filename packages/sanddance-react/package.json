@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance-react",
-  "version": "1.1.7",
+  "version": "2.0.0",
   "description": "SandDance visualization canvas React component",
   "main": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "docs": "ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/sanddance-react/v1/ && node ./scripts/docs.js",
+    "docs": "ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/sanddance-react/v2/ && node ./scripts/docs.js",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "build-css": "node-sass ./src/css -o ./dist/css",
@@ -24,7 +24,7 @@
     "@types/react-dom": "16.0.6"
   },
   "dependencies": {
-    "@msrvida/sanddance": "^1.6.5",
+    "@msrvida/sanddance": "^2",
     "just-compare": "^1.3.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"

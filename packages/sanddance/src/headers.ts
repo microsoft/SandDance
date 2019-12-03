@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Headers } from './types';
-import { Presenter, PresenterElement } from './vega-deck.gl';
+import { Presenter, PresenterElement } from '@msrvida/vega-deck.gl';
 
 export function ensureHeaders(presenter: Presenter, headers: Headers) {
     const vegaControls = presenter.getElement(PresenterElement.vegaControls);

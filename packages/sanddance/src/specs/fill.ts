@@ -3,7 +3,7 @@
 import { ColorValueRef, NumericValueRef, ProductionRule } from 'vega-typings';
 import { FieldNames, ScaleNames, SignalNames } from './constants';
 import { SpecContext } from './types';
-import { util } from '../vega-deck.gl';
+import { util } from '@msrvida/vega-deck.gl';
 
 export function fill(context: SpecContext): ProductionRule<ColorValueRef> {
     const { specColumns, insight, specViewOptions } = context;

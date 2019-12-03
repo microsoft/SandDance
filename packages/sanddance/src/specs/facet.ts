@@ -16,7 +16,7 @@ import {
     SpecViewOptions
 } from './types';
 import { DataNames, FieldNames, SignalNames } from './constants';
-import { util } from '../vega-deck.gl';
+import { util } from '@msrvida/vega-deck.gl';
 
 const FacetColumnsSequence = 'FacetColumnsSequence';
 const FacetRowsSequence = 'FacetRowsSequence';

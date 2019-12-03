@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance-embed",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "SandDance Explorer with embedded data.",
   "browser": "dist/umd/sanddance-embed.js",
   "files": [
@@ -13,7 +13,7 @@
     "build": "npm run build-css && npm run build-typescript"
   },
   "dependencies": {
-    "@msrvida/sanddance-explorer": "^1"
+    "@msrvida/sanddance-explorer": "^2"
   },
   "devDependencies": {
     "@types/react-dom": "16.0.6",

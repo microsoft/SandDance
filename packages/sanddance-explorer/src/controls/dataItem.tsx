@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from 'react';
+import { DateWithSource } from '../interfaces';
 import { InputSearchExpression } from './searchTerm';
 import { InputSearchExpressionGroup } from '../dialogs/search';
 import { SandDance } from '@msrvida/sanddance-react';
@@ -46,23 +47,48 @@ function bingSearchLink(column: SandDance.types.Column, value: any) {
 
 interface NameValuePair {
     columnName: string;
-    value: any;
+    value: SandDance.types.SearchExpressionValue;
     bingSearch?: JSX.Element;
 }
 
-function displayValue(value: any) {
+interface DisplayValue {
+    special: boolean;
+    display: string | number;
+}
+
+function displayValue(value: SandDance.types.SearchExpressionValue | object): DisplayValue {
     switch (value) {
-        case '':
-            return <i>{strings.labelBlank}</i>;
-        case null:
-            return <i>{strings.labelNull}</i>;
-        case true:
-            return <i>{strings.labelTrue}</i>;
-        case false:
-            return <i>{strings.labelFalse}</i>;
-        default:
-            return value;
+        case '': {
+            return { special: true, display: strings.labelBlank };
+        }
+        case null: {
+            return { special: true, display: strings.labelNull };
+        }
+        case true: {
+            return { special: true, display: strings.labelTrue };
+        }
+        case false: {
+            return { special: true, display: strings.labelFalse };
+        }
+        default: {
+            if (typeof value === 'object') {
+                if (value instanceof Date) {
+                    const d = value as DateWithSource;
+                    return displayValue(d.input);
+                }
+                return { special: false, display: value.toLocaleString() };
+            }
+            return { special: false, display: value };
+        }
     }
+}
+
+function displayValueElement(nvp: NameValuePair) {
+    const d = displayValue(nvp.value);
+    if (d.special) {
+        return <i>{d.display}</i>;
+    }
+    return d.display;
 }
 
 export function DataItem(props: Props) {
@@ -95,6 +121,10 @@ export function DataItem(props: Props) {
                     operator: '==',
                     value: nameValuePair.value
                 };
+                if (nameValuePair.value === null || nameValuePair.value === '') {
+                    ex.operator = 'isnullorEmpty';
+                    delete ex.value;
+                }
                 const searchClick = (e: React.MouseEvent<HTMLTableDataCellElement>) => {
                     const search: InputSearchExpressionGroup = {
                         key: 0,
@@ -102,7 +132,7 @@ export function DataItem(props: Props) {
                     };
                     props.onSearch(e, [search]);
                 };
-                const title = strings.tooltipSearch(nameValuePair.columnName, nameValuePair.value);
+                const title = strings.tooltipSearch(nameValuePair.columnName, displayValue(nameValuePair.value).display);
                 return (
                     <div
                         key={i}
@@ -111,7 +141,7 @@ export function DataItem(props: Props) {
                         className="name-value"
                     >
                         <div className="column-name">{nameValuePair.columnName}</div>
-                        <div className="column-value">{displayValue(nameValuePair.value)}</div>
+                        <div className="column-value">{displayValueElement(nameValuePair)}</div>
                         {nameValuePair.bingSearch}
                     </div>
                 );

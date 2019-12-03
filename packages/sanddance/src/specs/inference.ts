@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as VegaDeckGl from '../vega-deck.gl';
+import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { Column, ColumnStats, ColumnTypeMap } from './types';
 
 function isQuantitative(column: Column) {
@@ -56,7 +56,7 @@ function checkIsColorData(data: object[], column: Column) {
     column.isColorData = true;
 }
 
-function getStats(data: object[], column: Column) {
+export function getStats(data: object[], column: Column) {
     const distinctMap = {};
     const stats: ColumnStats = {
         distinctValueCount: null,

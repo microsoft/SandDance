@@ -125,7 +125,8 @@ function newTextLayer(presenter: Presenter, id: string, data: TextLayerDatum[], 
         getAngle: o => o.angle,
         fontSettings: {
             sdf: true,
-            fontSize: 128
+            fontSize: 128,
+            buffer: 3
         }
     };
     if (fontFamily) {

@@ -19,6 +19,7 @@ import {
     SequentialScale,
     Signal as VegaSignal,
     Spec,
+    Transforms,
     UrlData,
     ValuesData
 } from 'vega-typings/types';
@@ -72,33 +73,48 @@ function cloneData(vegaSpec: Spec) {
     delete valuesData.values;
     const data = SandDance.VegaDeckGl.util.clone(vegaSpec.data);
     valuesData.values = values;
-    return data;
+    return { data, values };
 }
 
 function cloneScales(vegaSpec: Spec) {
     return SandDance.VegaDeckGl.util.clone(vegaSpec.scales);
 }
 
-function serializeSpec(vegaSpec: Spec, datafile: DataFile, dataRefType: DataRefType, scheme: string) {
+function serializeSpec(vegaSpec: Spec, datafile: DataFile, dataRefType: DataRefType, transform: Transforms[], scheme: string) {
     const scales = cloneScales(vegaSpec);
     const colorScale = scales.filter(scale => scale.name === SandDance.constants.ScaleNames.Color)[0];
     if (scheme.indexOf('dual_') >= 0) {
         (colorScale as ScalesWithRange).range = SandDance.colorSchemes.filter(cs => cs.scheme === scheme)[0].colors;
     }
+    const clone = cloneData(vegaSpec);
+    const data0 = clone.data[0];
     if (dataRefType === DataRefType.inline) {
-        return { ...vegaSpec, scales };
-    }
-    const data = cloneData(vegaSpec);
-    const data0 = data[0];
-    if (dataRefType === DataRefType.none) {
+        const valuesData = data0 as ValuesData;
+        valuesData.format = { parse: 'auto', type: 'json' };
+        valuesData.values = clone.values;
+    } else if (dataRefType === DataRefType.none) {
         const valuesData = data0 as ValuesData;
         valuesData.values = [];
+        if (transform) {
+            if (valuesData.transform) {
+                valuesData.transform.push.apply(valuesData.transform, transform);
+            } else {
+                valuesData.transform = transform;
+            }
+        }
     } else if (dataRefType === DataRefType.url) {
         const urlData = data0 as UrlData;
         urlData.url = datafile.dataUrl;
         urlData.format = { parse: 'auto', type: datafile.type };
+        if (transform) {
+            if (urlData.transform) {
+                urlData.transform.push.apply(urlData.transform, transform);
+            } else {
+                urlData.transform = transform;
+            }
+        }
     }
-    return { ...vegaSpec, data, scales };
+    return { ...vegaSpec, data: clone.data, scales };
 }
 
 function defaultDataRefType(datafile: DataFile) {
@@ -212,7 +228,7 @@ export class Settings extends React.Component<Props, State> {
                         text={strings.buttonShowVegaSpec}
                         onClick={() => this.setState({
                             showVegaDialog: true,
-                            spec: serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, this.state.dataRefType, this.props.scheme)
+                            spec: serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, this.state.dataRefType, props.explorer.viewer.getInsight().transform, this.props.scheme)
                         })}
                     />
                 </Group>
@@ -301,7 +317,7 @@ export class Settings extends React.Component<Props, State> {
                         options={options}
                         onChange={(e, o) => this.setState({
                             dataRefType: o.data,
-                            spec: serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, o.data, this.props.scheme)
+                            spec: serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, o.data, props.explorer.viewer.getInsight().transform, this.props.scheme)
                         })}
                     />
                     <pre id="sanddance-vega-spec">

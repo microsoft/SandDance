@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as VegaDeckGl from './vega-deck.gl';
+import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import PolygonLayer, { PolygonLayerDatum } from '@deck.gl/layers/polygon-layer/polygon-layer';
 import {
     AxisSelectionType,

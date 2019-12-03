@@ -1,0 +1,32 @@
+{
+  "name": "@msrvida/vega-deck.gl",
+  "version": "2.0.0",
+  "description": "Deck.gl renderer for Vega",
+  "main": "dist/es6/index.js",
+  "scripts": {
+    "docs": "ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/vega-deck.gl/v2/",
+    "deploy": "node ./scripts/deploy.js",
+    "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
+    "watch-typescript": "tsc -p . -w",
+    "build-typescript": "tsc -p .",
+    "bundle": "rollup -c",
+    "build": "npm run build-typescript && npm run bundle"
+  },
+  "keywords": [
+    "vega",
+    "deck.gl",
+    "webgl"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@danmarshall/deckgl-typings": "^2.2.5",
+    "@mapbox/tiny-sdf": "^1.1.1",
+    "@types/react": "16.4.7",
+    "d3-color": "^1.2.3",
+    "d3-ease": "^1.0.5",
+    "deepmerge": "^2.1.1",
+    "tsx-create-element": "1.1.4",
+    "vega-typings": "*"
+  }
+}

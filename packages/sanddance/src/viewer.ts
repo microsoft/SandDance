@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as searchExpression from './searchExpression';
-import * as VegaDeckGl from './vega-deck.gl';
+import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { Animator, DataLayoutChange } from './animator';
 import {
     applyColorMapToCubes,
@@ -24,28 +24,31 @@ import {
     SelectionState,
     ViewerOptions
 } from './types';
-import { DataScope } from './dataScope';
-import { DeckProps, PickInfo } from '@deck.gl/core/lib/deck';
-import { defaultView } from './vega-deck.gl/defaults';
-import { defaultViewerOptions, getPresenterStyle } from './defaults';
-import { Details } from './details';
-import { ensureHeaders } from './headers';
-import { finalizeLegend } from './legend';
 import {
+    Column,
     Insight,
     SignalValues,
     SpecCapabilities,
     SpecColumns,
     SpecContext
 } from './specs/types';
+import { DataScope } from './dataScope';
+import { DeckProps, PickInfo } from '@deck.gl/core/lib/deck';
+import { defaultViewerOptions, getPresenterStyle } from './defaults';
+import { Details } from './details';
+import { ensureHeaders } from './headers';
+import { finalizeLegend } from './legend';
+import { makeDateRange } from './date';
 import { mount } from 'tsx-create-element';
 import { recolorAxes } from './axes';
 import { registerColorSchemes } from './colorSchemes';
 import { Search, SearchExpression, SearchExpressionGroup } from './searchExpression/types';
-import { Spec } from 'vega-typings';
+import { Spec, Transforms } from 'vega-typings';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 import { Tooltip } from './tooltip';
-import { ViewGl_Class } from './vega-deck.gl/vega-classes/viewGl';
+import { ViewGl_Class } from '@msrvida/vega-deck.gl/dist/es6/vega-classes/viewGl';
+
+const { defaultView } = VegaDeckGl.defaults;
 
 let didRegisterColorSchemes = false;
 
@@ -150,35 +153,44 @@ export class Viewer {
     }
 
     private onAnimateDataChange(dataChange: DataLayoutChange, waitingLabel: string, handlerLabel: string) {
-        if (dataChange === DataLayoutChange.refine) {
-            const oldColorContext = this.colorContexts[this.currentColorContext];
-            this.renderNewLayout({
-                preStage: (stage, deckProps) => {
-                    finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
-                    applyColorMapToCubes([oldColorContext.colorMap], VegaDeckGl.util.getCubes(deckProps));
-                    if (this.options.onStage) {
-                        this.options.onStage(stage, deckProps);
-                    }
-                }
-            });
-            //apply old legend
-            this.applyLegendColorContext(oldColorContext);
-        } else {
-            this.renderNewLayout({
-                preStage: (stage, deckProps) => {
-                    finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
-                    if (this.options.onStage) {
-                        this.options.onStage(stage, deckProps);
-                    }
-                }
-            });
-        }
         return new Promise<void>((resolve, reject) => {
-            this.presenter.animationQueue(resolve, this.options.transitionDurations.position, { waitingLabel, handlerLabel, animationCanceled: reject });
+            let innerPromise: Promise<any>;
+            if (dataChange === DataLayoutChange.refine) {
+                const oldColorContext = this.colorContexts[this.currentColorContext];
+                innerPromise = new Promise<void>(innerResolve => {
+                    this.renderNewLayout({
+                        preStage: (stage, deckProps) => {
+                            finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
+                            this.overrideAxisLabels(stage);
+                            applyColorMapToCubes([oldColorContext.colorMap], VegaDeckGl.util.getCubes(deckProps));
+                            if (this.options.onStage) {
+                                this.options.onStage(stage, deckProps);
+                            }
+                        }
+                    }).then(() => {
+                        //apply old legend
+                        this.applyLegendColorContext(oldColorContext);
+                        innerResolve();
+                    });
+                });
+            } else {
+                innerPromise = this.renderNewLayout({
+                    preStage: (stage, deckProps) => {
+                        finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
+                        this.overrideAxisLabels(stage);
+                        if (this.options.onStage) {
+                            this.options.onStage(stage, deckProps);
+                        }
+                    }
+                });
+            }
+            innerPromise.then(() => {
+                this.presenter.animationQueue(resolve, this.options.transitionDurations.position, { waitingLabel, handlerLabel, animationCanceled: reject });
+            });
         });
     }
 
-    private onDataChanged(dataLayout: DataLayoutChange, filter?: Search) {
+    private async onDataChanged(dataLayout: DataLayoutChange, filter?: Search) {
         switch (dataLayout) {
             case DataLayoutChange.same: {
                 this.renderSameLayout();
@@ -188,7 +200,7 @@ export class Viewer {
                 //save cube colors
                 const oldColorContext = this.colorContexts[this.currentColorContext];
                 let colorMap: ColorMap;
-                this.renderNewLayout({
+                await this.renderNewLayout({
                     preStage: (stage: VegaDeckGl.types.Stage, deckProps: DeckProps) => {
                         //save off the spec colors
                         colorMap = colorMapFromCubes(stage.cubeData);
@@ -221,7 +233,7 @@ export class Viewer {
                     legendElement: null
                 };
                 this.changeColorContexts([colorContext]);
-                this.renderNewLayout({
+                await this.renderNewLayout({
                     onPresent: () => {
                         populateColorContext(colorContext, this.presenter);
                     }
@@ -240,9 +252,25 @@ export class Viewer {
         }
     }
 
-    private renderNewLayout(c?: VegaDeckGl.types.PresenterConfig, view?: VegaDeckGl.types.View) {
+    private getSpecColumnsWithFilteredStats() {
+        if (!this._dataScope.hasFilteredData()) {
+            return this._specColumns;
+        }
+        const roles = ['color', 'facet', 'group', 'size', 'sort', 'x', 'y', 'z'];
+        const specColumns = { ...this._specColumns };
+        roles.forEach(r => {
+            if (specColumns[r]) {
+                const column = { ...specColumns[r] } as Column;
+                column.stats = this.getColumnStats(column);
+                specColumns[r] = column;
+            }
+        });
+        return specColumns;
+    }
+
+    private async renderNewLayout(c?: VegaDeckGl.types.PresenterConfig, view?: VegaDeckGl.types.View) {
         const currData = this._dataScope.currentData();
-        const context: SpecContext = { specColumns: this._specColumns, insight: this.insight, specViewOptions: this.options };
+        const context: SpecContext = { specColumns: this.getSpecColumnsWithFilteredStats(), insight: this.insight, specViewOptions: this.options };
         const specResult = cloneVegaSpecWithData(context, currData);
         if (!specResult.errors) {
             const uiValues = extractSignalValuesFromView(this.vegaViewGl, this.vegaSpec);
@@ -263,8 +291,8 @@ export class Viewer {
                 const runtime = VegaDeckGl.base.vega.parse(this.vegaSpec);
                 this.vegaViewGl = new VegaDeckGl.ViewGl(runtime, config)
                     .renderer('deck.gl')
-                    .initialize(this.element)
-                    .run() as ViewGl_Class;
+                    .initialize(this.element) as ViewGl_Class;
+                await this.vegaViewGl.runAsync();
 
                 //capture new color color contexts via signals
                 this.configForSignalCapture(config.presenterConfig);
@@ -338,6 +366,24 @@ export class Viewer {
         }
     }
 
+    private transformData(values: object[], transform: Transforms[]) {
+        try {
+            const runtime = VegaDeckGl.base.vega.parse({
+                $schema: 'https://vega.github.io/schema/vega/v4.json',
+                data: [{
+                    name: 'source',
+                    values,
+                    transform
+                }]
+            });
+            new VegaDeckGl.ViewGl(runtime).run();
+        }
+        catch (e) {
+            // continue regardless of error
+        }
+        return values;
+    }
+
     /**
      * Render data into a visualization.
      * @param insight Object to create a visualization specification.
@@ -345,33 +391,28 @@ export class Viewer {
      * @param view Optional View to specify camera type.
      * @param ordinalMap Optional map of ordinals to assign to the data such that the same cubes can be re-used for new data.
      */
-    render(insight: Insight, data: object[], options: RenderOptions = {}): Promise<RenderResult> {
-        return new Promise<RenderResult>((resolve, reject) => {
-            let result: RenderResult;
-            const layout = () => {
-                result = this._render(insight, data, options);
-            };
-            //see if refine expression has changed
-            if (!searchExpression.compare(insight.filter, this.insight.filter)) {
-                if (insight.filter) {
-                    //refining
-                    layout();
-                    this.presenter.animationQueue(() => {
-                        this.filter(insight.filter);
-                    }, this.options.transitionDurations.position, { waitingLabel: 'layout before refine', handlerLabel: 'refine after layout' });
-                } else {
-                    //not refining
-                    this._dataScope.filteredData = null;
-                    layout();
-                    this.presenter.animationQueue(() => {
-                        this.reset();
-                    }, 0, { waitingLabel: 'layout before reset', handlerLabel: 'reset after layout' });
-                }
+    async render(insight: Insight, data: object[], options: RenderOptions = {}) {
+        let result: RenderResult;
+        //see if refine expression has changed
+        if (!searchExpression.compare(insight.filter, this.insight.filter)) {
+            if (insight.filter) {
+                //refining
+                result = await this._render(insight, data, options);
+                this.presenter.animationQueue(() => {
+                    this.filter(insight.filter);
+                }, this.options.transitionDurations.position, { waitingLabel: 'layout before refine', handlerLabel: 'refine after layout' });
             } else {
-                layout();
+                //not refining
+                this._dataScope.setFilteredData(null);
+                result = await this._render(insight, data, options);
+                this.presenter.animationQueue(() => {
+                    this.reset();
+                }, 0, { waitingLabel: 'layout before reset', handlerLabel: 'reset after layout' });
             }
-            resolve(result);
-        });
+        } else {
+            result = await this._render(insight, data, options);
+        }
+        return result;
     }
 
     private shouldViewstateTransition(newInsight: Insight, oldInsight: Insight) {
@@ -407,7 +448,7 @@ export class Viewer {
         };
     }
 
-    private _render(insight: Insight, data: object[], options: RenderOptions) {
+    private async _render(insight: Insight, data: object[], options: RenderOptions) {
         if (this._tooltip) {
             this._tooltip.finalize();
             this._tooltip = null;
@@ -415,6 +456,8 @@ export class Viewer {
         if (this._dataScope.setData(data, options.columns)) {
             //data is different, reset the signal value cache
             this._signalValues = {};
+            //apply transform to the data
+            this.transformData(data, insight.transform);
         }
         this._specColumns = getSpecColumns(insight, this._dataScope.getColumns(options.columnTypes));
         const ordinalMap = assignOrdinals(this._specColumns, data, options.ordinalMap);
@@ -426,7 +469,7 @@ export class Viewer {
             legend: null,
             legendElement: null
         };
-        const specResult = this.renderNewLayout(
+        const specResult = await this.renderNewLayout(
             {
                 preStage: (stage: VegaDeckGl.types.Stage, deckProps: DeckProps) => {
                     if (this._shouldSaveColorContext()) {
@@ -465,6 +508,21 @@ export class Viewer {
         return result;
     }
 
+    private overrideAxisLabels(stage: VegaDeckGl.types.Stage) {
+        // if (this._specColumns.x && this._specColumns.x.type === 'date') {
+        //     stage.axes.x.forEach(axis => makeDateRange(
+        //         axis.tickText,
+        //         this.getColumnStats(this._specColumns.x)
+        //     ));
+        // }
+        // if (this._specColumns.y && this._specColumns.y.type === 'date') {
+        //     stage.axes.y.forEach(axis => makeDateRange(
+        //         axis.tickText,
+        //         this.getColumnStats(this._specColumns.y)
+        //     ));
+        // }
+    }
+
     private preStage(stage: VegaDeckGl.types.Stage, deckProps: DeckProps) {
         const onClick: AxisSelectionHandler = (e, search: SearchExpressionGroup) => {
             if (this.options.onAxisClick) {
@@ -473,6 +531,7 @@ export class Viewer {
                 this.select(search);
             }
         };
+        this.overrideAxisLabels(stage);
         const polygonLayer = axisSelectionLayer(this.presenter, this.specCapabilities, this._specColumns, stage, onClick, this.options.colors.axisSelectHighlight, this.options.selectionPolygonZ);
         const order = 1;//after textlayer but before others
         deckProps.layers.splice(order, 0, polygonLayer);
@@ -680,6 +739,14 @@ export class Viewer {
         const insight = { ...this.insight };
         insight.signalValues = this.getSignalValues();
         return insight;
+    }
+
+    /**
+     * Gets column stats from current data (filtered or all).
+     * @param column Column to get stats for.
+     */
+    getColumnStats(column: Column) {
+        return this._dataScope.hasFilteredData() ? this._dataScope.getFilteredColumnStats(column.name) : column.stats;
     }
 
     /**
