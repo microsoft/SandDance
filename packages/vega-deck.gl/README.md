@@ -2,12 +2,10 @@
 
 View component for [Vega](https://vega.github.io/) visualizations, using [deck.gl](https://deck.gl/) for WebGL rendering.
 
-TODO: image
-
 This project combines two great visualization libraries into one. You have the expressiveness of [Vega specifications](https://vega.github.io/vega/docs/specification/) and the WebGL rendering of [deck.gl](https://deck.gl). As a result, you have the option of visualizing data in 3 dimensions.
 
 
-[TODO: Demo]() - [TODO: Tutorial]() - [API Reference](https://microsoft.github.io/SandDance/docs/vega-deck.gl/v2/api)
+[API Reference](https://microsoft.github.io/SandDance/docs/vega-deck.gl/v2/api)
 
 ## Limitations
 
@@ -26,9 +24,9 @@ You will need to consider how to load the libraries that `vega-deck.gl` depends 
 This is the quickest installation option. You can load scripts from a CDN, or you can serve them from your own website. In your HTML, add these tags:
 
 ```html
-<script src="https://unpkg.com/vega@^5.7/build/vega.js" charset="utf-8"></script>
+<script src="https://unpkg.com/vega@^5.8/build/vega.js" charset="utf-8"></script>
 <script src="https://unpkg.com/deck.gl@~6.4/deckgl.min.js"></script>
-<script src="TODO vega-deck.gl.js"></script>
+<script src="https://unpkg.com/@msrvida/vega-deck.gl.js@2"></script>
 ```
 
 A global variable named `VegaDeckGl` will be available to you. In your JavaScript, call the `use()` function to pass the dependency libraries to `VegaDeckGl`:
@@ -48,7 +46,7 @@ Add these to the `dependencies` section of your `package.json`, then run `npm in
 "@deck.gl/layers": "6.4",
 "luma.gl": "6.4",
 "vega-deck.gl": "*",
-"vega": "^5.7"
+"vega": "^5.8"
 ```
 
 Import these in your JavaScript, then call the `use()` function to pass the dependency libraries to `VegaDeckGl`:
@@ -58,17 +56,17 @@ import * as deck from '@deck.gl/core';
 import * as layers from '@deck.gl/layers';
 import * as luma from 'luma.gl';
 import * as vega from 'vega';
-import * as VegaViewGl from 'vega-deck.gl';
+import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 
 VegaDeckGl.use(vega, deck, layers, luma);
 ```
 
 ## Usage
 
-Use the same API as [Vega's View](https://github.com/vega/vega-view), passing `'deck.gl'` as the type of the renderer:
+`VegaDeckGl.ViewGl` uses the same API as [Vega's View](https://github.com/vega/vega-view). In addition to `'canvas'` and `'svg'`, you can now pass `'deck.gl'` as the type of the renderer:
 
 ```js
-var view = new VegaViewGl.ViewGl(vega.parse(spec))
+var view = new VegaDeckGl.ViewGl(vega.parse(spec))
     .renderer('deck.gl')
     .initialize(document.querySelector('#vis'))
     .run();
