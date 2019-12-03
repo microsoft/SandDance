@@ -36,5 +36,17 @@
     "SandDanceReact",
     "util",
     "version"
+  ],
+  "vega-deck.gl": [
+    "base",
+    "constants",
+    "controls",
+    "defaults",
+    "Presenter",
+    "PresenterElement",
+    "types",
+    "use",
+    "util",
+    "ViewGl"
   ]
 }

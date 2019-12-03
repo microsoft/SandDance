@@ -13,36 +13,6 @@
     "util.md": [
       "Functions"
     ],
-    "vegadeckgl.constants.md": [
-      "Variables"
-    ],
-    "vegadeckgl.controls.md": [
-      "Interfaces",
-      "Variables"
-    ],
-    "vegadeckgl.defaults.md": [
-      "Functions",
-      "Variables"
-    ],
-    "vegadeckgl.md": [
-      "Classes",
-      "Enums",
-      "Functions",
-      "Namespaces",
-      "Variables"
-    ],
-    "vegadeckgl.presenter.md": [
-      "Constructor",
-      "Methods",
-      "Properties"
-    ],
-    "vegadeckgl.types.md": [
-      "Interfaces",
-      "Types"
-    ],
-    "vegadeckgl.util.md": [
-      "Functions"
-    ],
     "viewer.md": [
       "Constructor",
       "Methods",
@@ -63,6 +33,31 @@
     ],
     "util.md": [
       "Variables"
+    ]
+  },
+  "vega-deck.gl": {
+    "constants.md": [
+      "Variables"
+    ],
+    "controls.md": [
+      "Interfaces",
+      "Variables"
+    ],
+    "defaults.md": [
+      "Functions",
+      "Variables"
+    ],
+    "presenter.md": [
+      "Constructor",
+      "Methods",
+      "Properties"
+    ],
+    "types.md": [
+      "Interfaces",
+      "Types"
+    ],
+    "util.md": [
+      "Functions"
     ]
   }
 }
