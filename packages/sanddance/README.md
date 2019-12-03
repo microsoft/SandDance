@@ -16,7 +16,7 @@ Load dependencies via `<script>` tags in your HTML:
 ```html
 <script src="https://unpkg.com/vega@^5.8/build/vega.js" charset="utf-8"></script>
 <script src="https://unpkg.com/deck.gl@~6.4/deckgl.min.js"></script>
-<script src="TODO sanddance.js"></script>
+<script src="https://unpkg.com/@msrvida/sanddance@^2/dist/umd/sanddance.js"></script>
 ```
 
 A global variable named `SandDance` will be available to you. In your JavaScript, call the `use` function to pass the dependency libraries:

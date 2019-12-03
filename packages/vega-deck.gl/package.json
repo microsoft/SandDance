@@ -5,10 +5,12 @@
   "main": "dist/es6/index.js",
   "scripts": {
     "docs": "ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/vega-deck.gl/v2/",
+    "deploy": "node ./scripts/deploy.js",
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
-    "build": "npm run build-typescript"
+    "bundle": "rollup -c",
+    "build": "npm run build-typescript && npm run bundle"
   },
   "keywords": [
     "vega",
