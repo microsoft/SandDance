@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
+    "tslint": "tslint -p .",
     "pbiviz": "pbiviz",
     "start": "pbiviz start",
     "package": "pbiviz package",
@@ -26,8 +27,10 @@
     "vega": "^5.8"
   },
   "devDependencies": {
+    "@msrvida/office-ui-fabric-react-cdn-typings": "^1",
     "@types/react-dom": "^16.8.4",
     "powerbi-visuals-tools": "^3.1.5",
-    "ts-loader": "6.0.4"
+    "ts-loader": "6.0.4",
+    "tslint": "^5.20.1"
   }
 }

@@ -28,21 +28,21 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import './../style/visual.less';
-import powerbi from 'powerbi-visuals-api';
-import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
-import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
-import IVisual = powerbi.extensibility.visual.IVisual;
-import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInstancesOptions;
-import VisualObjectInstance = powerbi.VisualObjectInstance;
-import DataView = powerbi.DataView;
-import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject;
+import powerbiVisualsApi from 'powerbi-visuals-api';
+import VisualConstructorOptions = powerbiVisualsApi.extensibility.visual.VisualConstructorOptions;
+import VisualUpdateOptions = powerbiVisualsApi.extensibility.visual.VisualUpdateOptions;
+import IVisual = powerbiVisualsApi.extensibility.visual.IVisual;
+import EnumerateVisualObjectInstancesOptions = powerbiVisualsApi.EnumerateVisualObjectInstancesOptions;
+import VisualObjectInstance = powerbiVisualsApi.VisualObjectInstance;
+import DataView = powerbiVisualsApi.DataView;
+import VisualObjectInstanceEnumerationObject = powerbiVisualsApi.VisualObjectInstanceEnumerationObject;
 
 import { capabilities, SandDance } from '@msrvida/sanddance-explorer';
 import { createElement } from 'react';
 import { render } from 'react-dom';
 import { App, Props } from './app';
-import { convertTableToObjectArray } from './data';
-import { cleanInsight } from './insight';
+import { convertTableToObjectArray } from './convertTableToObjectArray';
+import { cleanInsight } from './cleanInsight';
 import { VisualSettings, SandDanceConfig, IVisualSettings } from './settings';
 
 export class Visual implements IVisual {
@@ -51,15 +51,15 @@ export class Visual implements IVisual {
     private errorElement: HTMLElement;
     private app: App;
     private prevSettings: IVisualSettings;
-    private host: powerbi.extensibility.visual.IVisualHost;
-    private selectionManager: powerbi.extensibility.ISelectionManager;
+    private host: powerbiVisualsApi.extensibility.visual.IVisualHost;
+    private selectionManager: powerbiVisualsApi.extensibility.ISelectionManager;
     private fetchMoreTimer: number;
-    private filteredIds: powerbi.extensibility.ISelectionId[];
+    private filteredIds: powerbiVisualsApi.extensibility.ISelectionId[];
 
     public static fetchMoreTimeout = 5000;
 
     constructor(options: VisualConstructorOptions) {
-        //console.log('Visual constructor', options);
+        // console.log('Visual constructor', options);
         this.host = options.host;
         this.selectionManager = this.host.createSelectionManager();
 
@@ -85,9 +85,9 @@ export class Visual implements IVisual {
                     this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
                 },
                 onDataFilter: (filter, filteredData) => {
-                    //console.log('onDataFilter', filteredData);
+                    // console.log('onDataFilter', filteredData);
                     if (filteredData) {
-                        this.filteredIds = filteredData.map(item => item[SandDance.constants.FieldNames.PowerBISelectionId] as powerbi.extensibility.ISelectionId);
+                        this.filteredIds = filteredData.map(item => item[SandDance.constants.FieldNames.PowerBISelectionId] as powerbiVisualsApi.extensibility.ISelectionId);
                         this.selectionManager.select(this.filteredIds, false);
                     } else {
                         this.filteredIds = null;
@@ -95,12 +95,12 @@ export class Visual implements IVisual {
                     }
                 },
                 onSelectionChanged: (search, activeIndex, selectedData) => {
-                    //console.log('onDataSelected', selectedData);
+                    // console.log('onDataSelected', selectedData);
                     if (selectedData) {
-                        const selectedIds = selectedData.map(item => item[SandDance.constants.FieldNames.PowerBISelectionId] as powerbi.extensibility.ISelectionId);
+                        const selectedIds = selectedData.map(item => item[SandDance.constants.FieldNames.PowerBISelectionId] as powerbiVisualsApi.extensibility.ISelectionId);
                         this.selectionManager.select(selectedIds, false);
                     } else {
-                        //revert to filtered if it exists
+                        // revert to filtered if it exists
                         if (this.filteredIds) {
                             this.selectionManager.select(this.filteredIds, false);
                         } else {
@@ -119,7 +119,7 @@ export class Visual implements IVisual {
     }
 
     public update(options: VisualUpdateOptions) {
-        //console.log('Visual update', options);
+        // console.log('Visual update', options);
 
         if (this.fetchMoreTimer) {
             clearTimeout(this.fetchMoreTimer);
@@ -143,7 +143,7 @@ export class Visual implements IVisual {
                 this.show(dataView);
             } else {
                 this.fetchMoreTimer = window.setTimeout(() => {
-                    //console.log('Visual fetchMoreTimeout', options);
+                    // console.log('Visual fetchMoreTimeout', options);
 
                     this.app.fetchStatus(dataView.table.rows.length, false);
                     this.show(dataView);
@@ -153,7 +153,7 @@ export class Visual implements IVisual {
         }
     }
 
-    show(dataView: powerbi.DataView) {
+    show(dataView: powerbiVisualsApi.DataView) {
         this.settings = Visual.parseSettings(dataView);
         const oldData = this.app.getDataContent();
         let { data, different } = convertTableToObjectArray(dataView.table, oldData, this.host);
@@ -166,7 +166,7 @@ export class Visual implements IVisual {
         this.prevSettings = SandDance.VegaDeckGl.util.clone(this.settings);
 
         if (!different) {
-            //console.log('Visual update - not different');
+            // console.log('Visual update - not different');
             return;
         }
 
