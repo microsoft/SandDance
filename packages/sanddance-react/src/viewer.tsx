@@ -12,6 +12,7 @@ export interface Props {
   data: object[];
   renderOptions?: types.RenderOptions;
   onView?: (renderResult: types.RenderResult) => void;
+  onError?: (error: any) => void;
   onMount?: (element: HTMLElement) => boolean | void;
 }
 
@@ -50,8 +51,9 @@ export class SandDanceReact extends Component<Props, State> {
       //TODO: show errors if any
       //console.log('viewer render');
           this.props.onView && this.props.onView(renderResult);
-      }).catch(() => {
+      }).catch(e => {
       //console.log('viewer error');
+      this.props.onError && this.props.onError(e);
       });
   }
 

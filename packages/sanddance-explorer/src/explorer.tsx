@@ -68,6 +68,7 @@ export interface Props {
     snapshotProps?: SnapshotProps;
     onSnapshotClick?: (snapshot: Snapshot) => void;
     onView?: () => void;
+    onError?: (e: any) => void;
     onSignalChanged?: () => void;
     onTooltipExclusionsChanged?: (tooltipExclusions: string[]) => void;
     systemInfoChildren?: React.ReactNode;
@@ -1057,6 +1058,9 @@ export class Explorer extends React.Component<Props, State> {
                                     //don't allow tabbing to the canvas
                                     removeTabIndex(this.viewer);
                                     this.props.onView && this.props.onView();
+                                }}
+                                onError={e => {
+                                    this.props.onError && this.props.onError(e);
                                 }}
                                 data={this.state.dataContent.data}
                                 insight={insight}
