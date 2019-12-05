@@ -30,6 +30,7 @@ function getThemePalette(darkTheme: boolean) {
 export interface Props {
     mounted: (app: App) => void;
     onViewChange: (tooltipExclusions?: string[]) => void;
+    onError: (e: any) => void;
     onDataFilter: (filter: SandDance.types.Search, filteredData: object[]) => void;
     onSelectionChanged: (search: SandDance.types.Search, activeIndex: number, selectedData: object[]) => void;
 }
@@ -141,6 +142,7 @@ export class App extends React.Component<Props, State> {
             onSignalChanged: this.props.onViewChange,
             onTooltipExclusionsChanged: tooltipExclusions => this.props.onViewChange(tooltipExclusions),
             onView: this.props.onViewChange,
+            onError: this.props.onError,
             systemInfoChildren: [
                 React.createElement('li', null, `${strings.powerBiCustomVisual}: ${version}`)
             ]
