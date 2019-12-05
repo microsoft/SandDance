@@ -49,6 +49,8 @@ export class Visual implements IVisual {
     private settings: VisualSettings;
     private viewElement: HTMLElement;
     private errorElement: HTMLElement;
+    private events: powerbiVisualsApi.extensibility.IVisualEventService;
+    private renderingOptions: VisualUpdateOptions;
     private app: App;
     private prevSettings: IVisualSettings;
     private host: powerbiVisualsApi.extensibility.visual.IVisualHost;
@@ -61,6 +63,7 @@ export class Visual implements IVisual {
     constructor(options: VisualConstructorOptions) {
         // console.log('Visual constructor', options);
         this.host = options.host;
+        this.events = this.host.eventService;
         this.selectionManager = this.host.createSelectionManager();
 
         if (typeof document !== 'undefined') {
@@ -74,6 +77,11 @@ export class Visual implements IVisual {
                     this.app = app;
                 },
                 onViewChange: (tooltipExclusions: string[]) => {
+                    // console.log('onViewChange');
+                    if (this.renderingOptions) {
+                        this.events.renderingFinished(this.renderingOptions);
+                        this.renderingOptions = null;
+                    }
                     const insight = this.app.explorer.viewer.getInsight();
                     tooltipExclusions = tooltipExclusions || this.app.explorer.state.tooltipExclusions;
                     cleanInsight(insight);
@@ -83,6 +91,12 @@ export class Visual implements IVisual {
                     };
                     const properties = config as any;
                     this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
+                },
+                onError: (e: any) => {
+                    if (this.renderingOptions) {
+                        this.events.renderingFailed(this.renderingOptions);
+                        this.renderingOptions = null;
+                    }
                 },
                 onDataFilter: (filter, filteredData) => {
                     // console.log('onDataFilter', filteredData);
@@ -120,6 +134,9 @@ export class Visual implements IVisual {
 
     public update(options: VisualUpdateOptions) {
         // console.log('Visual update', options);
+
+        this.renderingOptions = options;
+        this.events.renderingStarted(this.renderingOptions);
 
         if (this.fetchMoreTimer) {
             clearTimeout(this.fetchMoreTimer);
