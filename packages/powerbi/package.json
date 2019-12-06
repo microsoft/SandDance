@@ -19,6 +19,7 @@
     "core-js": "3.2.1",
     "luma.gl": "6.4",
     "office-ui-fabric-react": "6.204.4",
+    "powerbi-models": "^1.3.1",
     "powerbi-visuals-api": "~2.6.1",
     "powerbi-visuals-utils-dataviewutils": "^2.2.1",
     "react": "16.8.6",
