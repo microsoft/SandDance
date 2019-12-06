@@ -37,7 +37,10 @@ import VisualObjectInstance = powerbiVisualsApi.VisualObjectInstance;
 import DataView = powerbiVisualsApi.DataView;
 import VisualObjectInstanceEnumerationObject = powerbiVisualsApi.VisualObjectInstanceEnumerationObject;
 
+import * as powerbiModels from 'powerbi-models';
+
 import { capabilities, SandDance } from '@msrvida/sanddance-explorer';
+import { convertFilter } from './convertFilter';
 import { createElement } from 'react';
 import { render } from 'react-dom';
 import { App, Props } from './app';
@@ -54,9 +57,9 @@ export class Visual implements IVisual {
     private app: App;
     private prevSettings: IVisualSettings;
     private host: powerbiVisualsApi.extensibility.visual.IVisualHost;
-    private selectionManager: powerbiVisualsApi.extensibility.ISelectionManager;
     private fetchMoreTimer: number;
-    private filteredIds: powerbiVisualsApi.extensibility.ISelectionId[];
+    private filters: powerbiModels.IFilter[];
+    private columns: powerbiVisualsApi.DataViewMetadataColumn[];
 
     public static fetchMoreTimeout = 5000;
 
@@ -64,7 +67,6 @@ export class Visual implements IVisual {
         // console.log('Visual constructor', options);
         this.host = options.host;
         this.events = this.host.eventService;
-        this.selectionManager = this.host.createSelectionManager();
 
         if (typeof document !== 'undefined') {
             options.element.style.position = 'relative';
@@ -98,33 +100,41 @@ export class Visual implements IVisual {
                         this.renderingOptions = null;
                     }
                 },
-                onDataFilter: (filter, filteredData) => {
+                onDataFilter: (searchFilter, filteredData) => {
                     // console.log('onDataFilter', filteredData);
                     if (filteredData) {
-                        this.filteredIds = filteredData.map(item => item[SandDance.constants.FieldNames.PowerBISelectionId] as powerbiVisualsApi.extensibility.ISelectionId);
-                        this.selectionManager.select(this.filteredIds, false);
+                        this.filters = convertFilter(searchFilter, this.columns);
+                        this.applyFilters(this.filters);
                     } else {
-                        this.filteredIds = null;
-                        this.selectionManager.clear();
+                        this.filters = null;
+                        this.clearFilter();
                     }
                 },
-                onSelectionChanged: (search, activeIndex, selectedData) => {
+                onSelectionChanged: (searchFilter, activeIndex, selectedData) => {
                     // console.log('onDataSelected', selectedData);
                     if (selectedData) {
-                        const selectedIds = selectedData.map(item => item[SandDance.constants.FieldNames.PowerBISelectionId] as powerbiVisualsApi.extensibility.ISelectionId);
-                        this.selectionManager.select(selectedIds, false);
+                        const selectedFilters = convertFilter(searchFilter, this.columns);
+                        this.applyFilters(selectedFilters);
                     } else {
                         // revert to filtered if it exists
-                        if (this.filteredIds) {
-                            this.selectionManager.select(this.filteredIds, false);
+                        if (this.filters) {
+                            this.applyFilters(this.filters);
                         } else {
-                            this.selectionManager.clear();
+                            this.clearFilter();
                         }
                     }
                 }
             };
             render(createElement(App, props), this.viewElement);
         }
+    }
+
+    applyFilters(filters: powerbiModels.IFilter[]) {
+        this.host.applyJsonFilter(filters, "general", "filter", powerbiVisualsApi.FilterAction.merge);
+    }
+
+    clearFilter() {
+        this.applyFilters(null);
     }
 
     destroy() {
@@ -151,6 +161,7 @@ export class Visual implements IVisual {
         if (!dataView || !dataView.table) {
             this.app.unload();
         } else {
+            this.columns = dataView.metadata.columns;
             let doneFetching = true;
             if (dataView.metadata.segment) {
                 doneFetching = !this.host.fetchMoreData();
