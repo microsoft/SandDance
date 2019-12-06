@@ -60,17 +60,20 @@ export interface Props {
     index: number;
     columns: SandDance.types.Column[];
     data: object[];
-    searchExpression: InputSearchExpression
+    searchExpression: InputSearchExpression;
+    disableOR: boolean;
     autoCompleteDistinctValues: AutoCompleteDistinctValues;
     onUpdateExpression: { (ex: Partial<InputSearchExpression>, index: number): void };
     column: SandDance.types.Column;
 }
 
-function getExpressionClauses(currClause: SandDance.types.SearchExpressionClause, index: number) {
+function getExpressionClauses(currClause: SandDance.types.SearchExpressionClause, disableOR: boolean) {
     const keys: [SandDance.types.SearchExpressionClause, string][] = [
-        ['&&', strings.searchAND],
-        ['||', strings.searchOR]
+        ['&&', strings.searchAND]
     ];
+    if (!disableOR) {
+        keys.push(['||', strings.searchOR]);
+    }
     return keys.map((key: [SandDance.types.SearchExpressionClause, string], i: number) => {
         const [clause, text] = key;
         const selected = currClause == clause; //deliberate double equal 
@@ -147,8 +150,8 @@ export function SearchTerm(props: Props) {
                     className="search-field"
                     //label={strings.labelSearchClause}
                     dropdownWidth={120}
-                    disabled={!ex.unlocked}
-                    options={getExpressionClauses(ex.clause, props.index)}
+                    disabled={!ex.unlocked || props.disableOR}
+                    options={getExpressionClauses(ex.clause, props.disableOR)}
                     onChange={(e, o) => props.onUpdateExpression({ clause: (o.data as SandDance.types.SearchExpressionClause) }, props.index)}
                 />
             )}

@@ -58,7 +58,7 @@ export interface Props {
     logoClickUrl?: string;
     logoClickTarget?: string;
     bingSearchDisabled?: boolean;
-    searchUnionDisabled?: boolean;
+    searchORDisabled?: boolean;
     theme?: string;
     viewerOptions?: Partial<SandDance.types.ViewerOptions>;
     initialView?: SandDance.VegaDeckGl.types.View;
@@ -681,7 +681,7 @@ export class Explorer extends React.Component<Props, State> {
                         if (e.altKey) {
                             search.clause = '&&';
                         } else if (e.shiftKey) {
-                            if (this.props.searchUnionDisabled) {
+                            if (this.props.searchORDisabled) {
                                 group = false;
                             } else {
                                 search.clause = '||';
@@ -975,7 +975,8 @@ export class Explorer extends React.Component<Props, State> {
                                         <Search
                                             themePalette={themePalette}
                                             disabled={!loaded || this.state.sidebarClosed}
-                                            disableGroupOR={this.props.searchUnionDisabled}
+                                            disableGroupOR={this.props.searchORDisabled}
+                                            disableExpressionOR={this.props.searchORDisabled}
                                             initializer={{
                                                 columns: columnMapProps.allColumns,
                                                 search: this.state.search

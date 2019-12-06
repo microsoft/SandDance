@@ -32,6 +32,7 @@ export interface Props {
     initializer: IInitializer;
     onSelect: { (search: SandDance.types.Search): void };
     autoCompleteDistinctValues: AutoCompleteDistinctValues;
+    disableExpressionOR: boolean;
     disableGroupOR: boolean;
     disabled: boolean;
     themePalette: Partial<FabricTypes.IPalette>;
@@ -261,6 +262,7 @@ export class Search extends React.Component<Props, State> {
                                             columns={this.state.sortedColumns}
                                             data={this.props.data}
                                             searchExpression={ex}
+                                            disableOR={this.props.disableExpressionOR}
                                             column={getColumnWithName(ex.name, this.state.sortedColumns)}
                                         />
                                         {group.expressions.length > 1 && (
