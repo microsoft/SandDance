@@ -32,6 +32,7 @@ export interface Props {
     initializer: IInitializer;
     onSelect: { (search: SandDance.types.Search): void };
     autoCompleteDistinctValues: AutoCompleteDistinctValues;
+    disableGroupOR: boolean;
     disabled: boolean;
     themePalette: Partial<FabricTypes.IPalette>;
 }
@@ -72,7 +73,7 @@ function clearExpressionValidation(ex: InputSearchExpression) {
     }
 }
 
-function getGroupClauses(currClause: SandDance.types.SearchExpressionClause, index: number) {
+function getGroupClauses(currClause: SandDance.types.SearchExpressionClause, index: number, disableGroupOR: boolean) {
     let keys: [SandDance.types.SearchExpressionClause, string][];
     if (index === 0) {
         keys = [
@@ -80,9 +81,11 @@ function getGroupClauses(currClause: SandDance.types.SearchExpressionClause, ind
         ];
     } else {
         keys = [
-            ['&&', strings.searchAND],
-            ['||', strings.searchOR]
+            ['&&', strings.searchAND]
         ];
+        if (!disableGroupOR) {
+            keys.push(['||', strings.searchOR]);
+        }
     }
     return keys.map((key: [SandDance.types.SearchExpressionClause, string], i: number) => {
         const [clause, text] = key;
@@ -240,9 +243,9 @@ export class Search extends React.Component<Props, State> {
                             <Dropdown
                                 className="search-group-clause"
                                 //label={strings.labelSearchClause}
-                                disabled={groupIndex === 0}
+                                disabled={groupIndex === 0 || this.props.disableGroupOR}
                                 dropdownWidth={120}
-                                options={getGroupClauses(group.clause, groupIndex)}
+                                options={getGroupClauses(group.clause, groupIndex, this.props.disableGroupOR)}
                                 onChange={(e, o) => this.updateGroup({ clause: (o.data as SandDance.types.SearchExpressionClause) }, groupIndex)}
                             />
                             <div>

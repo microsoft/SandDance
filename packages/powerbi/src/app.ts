@@ -132,6 +132,7 @@ export class App extends React.Component<Props, State> {
             hideSidebarControls: true,
             logoClickUrl: 'https://microsoft.github.io/SandDance/',
             bingSearchDisabled: true,
+            searchUnionDisabled: true,
             theme: this.state.darkTheme && 'dark-theme',
             viewerOptions: this.viewerOptions,
             initialView: '2d',

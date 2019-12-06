@@ -58,6 +58,7 @@ export interface Props {
     logoClickUrl?: string;
     logoClickTarget?: string;
     bingSearchDisabled?: boolean;
+    searchUnionDisabled?: boolean;
     theme?: string;
     viewerOptions?: Partial<SandDance.types.ViewerOptions>;
     initialView?: SandDance.VegaDeckGl.types.View;
@@ -676,13 +677,22 @@ export class Explorer extends React.Component<Props, State> {
                 } else {
                     //adding a new group
                     if (e.altKey || e.shiftKey) {
-                        if (e.shiftKey) {
-                            search.clause = '||';
-                        } else if (e.altKey) {
+                        let group = true;
+                        if (e.altKey) {
                             search.clause = '&&';
+                        } else if (e.shiftKey) {
+                            if (this.props.searchUnionDisabled) {
+                                group = false;
+                            } else {
+                                search.clause = '||';
+                            }
                         }
-                        result.groups.push(search);
-                        this.doSelect(result.groups);
+                        if (group) {
+                            result.groups.push(search);
+                            this.doSelect(result.groups);
+                        } else {
+                            this.doSelect(search);
+                        }
                     } else {
                         //replace
                         this.doSelect(search);
@@ -965,6 +975,7 @@ export class Explorer extends React.Component<Props, State> {
                                         <Search
                                             themePalette={themePalette}
                                             disabled={!loaded || this.state.sidebarClosed}
+                                            disableGroupOR={this.props.searchUnionDisabled}
                                             initializer={{
                                                 columns: columnMapProps.allColumns,
                                                 search: this.state.search
