@@ -103,7 +103,7 @@ export class Visual implements IVisual {
                 onDataFilter: (searchFilter, filteredData) => {
                     // console.log('onDataFilter', filteredData);
                     if (filteredData) {
-                        this.filters = convertFilter(searchFilter, this.columns);
+                        this.filters = convertFilter(searchFilter, this.columns, filteredData);
                         this.applyFilters(this.filters);
                     } else {
                         this.filters = null;
@@ -111,9 +111,9 @@ export class Visual implements IVisual {
                     }
                 },
                 onSelectionChanged: (searchFilter, activeIndex, selectedData) => {
-                    // console.log('onDataSelected', selectedData);
-                    if (selectedData) {
-                        const selectedFilters = convertFilter(searchFilter, this.columns);
+                    // console.log('onDataSelected', selectedData);                    
+                    if (selectedData) {                        
+                        const selectedFilters = convertFilter(searchFilter, this.columns, selectedData);
                         this.applyFilters(selectedFilters);
                     } else {
                         // revert to filtered if it exists

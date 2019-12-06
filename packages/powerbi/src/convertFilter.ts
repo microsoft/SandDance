@@ -5,49 +5,57 @@ import * as powerbiModels from 'powerbi-models';
 import powerbiVisualsApi from 'powerbi-visuals-api';
 import { SandDance } from '@msrvida/sanddance-explorer';
 
-export function convertFilter(searchFilter: SandDance.types.Search, columns: powerbiVisualsApi.DataViewMetadataColumn[]) {
-    // const convertGroup = (group: SandDance.types.SearchExpressionGroup): powerbiModels.IFilter => {
-    //     const target: powerbiModels.ITupleFilterTarget = [];
-    //     const values: powerbiModels.ITupleElementValue[][] = [];
-    //     group.expressions.forEach(ex => {
-    //         target.push({
-    //             table: "DataTable",
-    //             column: "State"
-    //         });
-
-    //         values.push(
-    //             [
-    //                 {
-    //                     value: "Texas"
-    //                 }
-    //             ]
-    //         );
-    //     });
-    //     let filter: powerbiModels.ITupleFilter = {
-    //         $schema: "https://powerbi.com/product/schema#tuple",
-    //         filterType: powerbiModels.FilterType.Tuple,
-    //         operator: "In",
-    //         target,
-    //         values
-    //     };
-    //     return filter;
-    // };
-    // const groups = SandDance.util.ensureSearchExpressionGroupArray(searchFilter);
-    // const filters = groups.map(convertGroup);
-    const table = columns[0].queryName.substr(0, columns[0].queryName.indexOf('.')); // table
-    const filters = [convertFilterBasic(searchFilter, table).toJSON()];
+export function convertFilter(searchFilter: SandDance.types.Search, columns: powerbiVisualsApi.DataViewMetadataColumn[], data: object[]) {
+    const filters: powerbiModels.IFilter[] = [];
+    const groups = SandDance.util.ensureSearchExpressionGroupArray(searchFilter);
+    groups.forEach(group =>
+        group.expressions.forEach(ex => {
+            const column = columns.filter(c => c.displayName === ex.name)[0];
+            if (column) {
+                const a = convertFilterAdvanced(ex, column);
+                if (a) {
+                    filters.push(a.toJSON());
+                }
+            }
+        })
+    );
     return filters;
 }
 
-
-function convertFilterAdvanced(filter: SandDance.types.Search, table: string): powerbiModels.AdvancedFilter {
-    const a = new powerbiModels.AdvancedFilter(null, null, null);
-
-
-    return null;
+function convertFilterAdvanced(ex: SandDance.types.SearchExpression, column: powerbiVisualsApi.DataViewMetadataColumn): powerbiModels.AdvancedFilter {
+    const condition = convertCondition(ex);
+    if (condition.operator === 'None') {
+        return null;
+    } else {
+        let target: powerbiModels.IFilterColumnTarget = {
+            table: column.queryName.substr(0, column.queryName.indexOf('.')),
+            column: column.displayName
+        };
+        return new powerbiModels.AdvancedFilter(target, 'And', condition);
+    }
 }
 
-function convertFilterBasic(filter: SandDance.types.Search, table: string) {
-    const b = new powerbiModels.BasicFilter({ table, column: 'State' }, 'In', ['Texas', 'Ohio']);
-    return b;
+function convertCondition(ex: SandDance.types.SearchExpression): powerbiModels.IAdvancedFilterCondition {
+    return {
+        operator: convertExpressionOperator(ex.operator),
+        value: ex.value
+    };
+}
+
+function convertExpressionOperator(operator: SandDance.types.SearchExpressionOperators): powerbiModels.AdvancedFilterConditionOperators {
+    switch (operator) {
+        case '!=': return 'IsNot';
+        case '!contains': return 'DoesNotContain';
+        case '!isnullorEmpty': return 'IsNotBlank';
+        case '!starts': return 'DoesNotStartWith';
+        case '<': return 'LessThan';
+        case '<=': return 'LessThanOrEqual';
+        case '==': return 'Is';
+        case '>': return 'GreaterThan';
+        case '>=': return 'GreaterThanOrEqual';
+        case 'contains': return 'Contains';
+        case 'isnullorEmpty': return 'IsBlank';
+        case 'starts': return 'StartsWith';
+        default: return 'None';
+    }
 }
