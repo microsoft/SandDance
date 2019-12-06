@@ -17,7 +17,7 @@ export function convertFilter(searchFilter: SandDance.types.Search, columns: pow
                 const dataPoint = getDataPoint(ex.value as number, data);
                 if (dataPoint) {
                     filterSimilar(dataPoint, columns, filters);
-                    //then we will select this data point
+                    // then we will select this data point
                     selectedIds.push(dataPoint[SandDance.constants.FieldNames.PowerBISelectionId] as powerbiVisualsApi.extensibility.ISelectionId);
                 }
             } else {

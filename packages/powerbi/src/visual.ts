@@ -116,7 +116,7 @@ export class Visual implements IVisual {
                     }
                 },
                 onSelectionChanged: (searchFilter, activeIndex, selectedData) => {
-                    // console.log('onDataSelected', selectedData);                    
+                    // console.log('onDataSelected', selectedData);
                     if (selectedData) {
                         const result = convertFilter(searchFilter, this.columns, selectedData);
                         this.applySelection(result.selectedIds);
