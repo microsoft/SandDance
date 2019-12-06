@@ -57,6 +57,7 @@ export class Visual implements IVisual {
     private app: App;
     private prevSettings: IVisualSettings;
     private host: powerbiVisualsApi.extensibility.visual.IVisualHost;
+    private selectionManager: powerbiVisualsApi.extensibility.ISelectionManager;
     private fetchMoreTimer: number;
     private filters: powerbiModels.IFilter[];
     private columns: powerbiVisualsApi.DataViewMetadataColumn[];
@@ -67,6 +68,7 @@ export class Visual implements IVisual {
         // console.log('Visual constructor', options);
         this.host = options.host;
         this.events = this.host.eventService;
+        this.selectionManager = this.host.createSelectionManager();
 
         if (typeof document !== 'undefined') {
             options.element.style.position = 'relative';
@@ -103,19 +105,24 @@ export class Visual implements IVisual {
                 onDataFilter: (searchFilter, filteredData) => {
                     // console.log('onDataFilter', filteredData);
                     if (filteredData) {
-                        this.filters = convertFilter(searchFilter, this.columns, filteredData);
-                        this.applyFilters(this.filters);
+                        const result = convertFilter(searchFilter, this.columns, filteredData);
+                        this.applySelection(result.selectedIds);
+                        this.applyFilters(result.filters);
+                        this.filters = result.filters;
                     } else {
                         this.filters = null;
                         this.clearFilter();
+                        this.clearSelection();
                     }
                 },
                 onSelectionChanged: (searchFilter, activeIndex, selectedData) => {
                     // console.log('onDataSelected', selectedData);                    
-                    if (selectedData) {                        
-                        const selectedFilters = convertFilter(searchFilter, this.columns, selectedData);
-                        this.applyFilters(selectedFilters);
+                    if (selectedData) {
+                        const result = convertFilter(searchFilter, this.columns, selectedData);
+                        this.applySelection(result.selectedIds);
+                        this.applyFilters(this.filters ? this.filters.concat(result.filters) : result.filters);
                     } else {
+                        this.clearSelection();
                         // revert to filtered if it exists
                         if (this.filters) {
                             this.applyFilters(this.filters);
@@ -127,6 +134,18 @@ export class Visual implements IVisual {
             };
             render(createElement(App, props), this.viewElement);
         }
+    }
+
+    applySelection(selectedIds: powerbiVisualsApi.extensibility.ISelectionId[]) {
+        if (selectedIds.length) {
+            this.selectionManager.select(selectedIds, false);
+        } else {
+            this.clearSelection();
+        }
+    }
+
+    clearSelection() {
+        this.selectionManager.clear();
     }
 
     applyFilters(filters: powerbiModels.IFilter[]) {

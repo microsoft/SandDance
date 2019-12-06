@@ -6,24 +6,52 @@ import powerbiVisualsApi from 'powerbi-visuals-api';
 import { SandDance } from '@msrvida/sanddance-explorer';
 
 export function convertFilter(searchFilter: SandDance.types.Search, columns: powerbiVisualsApi.DataViewMetadataColumn[], data: object[]) {
+    const selectedIds: powerbiVisualsApi.extensibility.ISelectionId[] = [];
     const filters: powerbiModels.IFilter[] = [];
     const groups = SandDance.util.ensureSearchExpressionGroupArray(searchFilter);
     groups.forEach(group =>
         group.expressions.forEach(ex => {
-            const column = columns.filter(c => c.displayName === ex.name)[0];
-            if (column) {
-                const a = convertFilterAdvanced(ex, column);
-                if (a) {
-                    filters.push(a.toJSON());
+            if (ex.name === SandDance.VegaDeckGl.constants.GL_ORDINAL) {
+                // it would be ideal to filter to a single row identity, but the PoerBI API currently does not let us do that.
+                // so, we will filter to data points that have the same values
+                const dataPoint = getDataPoint(ex.value as number, data);
+                if (dataPoint) {
+                    filterSimilar(dataPoint, columns, filters);
+                    //then we will select this data point
+                    selectedIds.push(dataPoint[SandDance.constants.FieldNames.PowerBISelectionId] as powerbiVisualsApi.extensibility.ISelectionId);
+                }
+            } else {
+                const column = columns.filter(c => c.displayName === ex.name)[0];
+                if (column) {
+                    const advancedFilter = convertExpressionToAdvancedFilter(ex, column);
+                    if (advancedFilter) {
+                        filters.push(advancedFilter.toJSON());
+                    }
                 }
             }
         })
     );
-    return filters;
+    return { filters, selectedIds };
 }
 
-function convertFilterAdvanced(ex: SandDance.types.SearchExpression, column: powerbiVisualsApi.DataViewMetadataColumn): powerbiModels.AdvancedFilter {
-    const condition = convertCondition(ex);
+function getDataPoint(GL_ORDINAL: number, data: object[]) {
+    for (let i = 0; i < data.length; i++) {
+        if (data[i][SandDance.VegaDeckGl.constants.GL_ORDINAL] === GL_ORDINAL) {
+            return data[i];
+        }
+    }
+}
+
+function filterSimilar(data: object, columns: powerbiVisualsApi.DataViewMetadataColumn[], filters: powerbiModels.IFilter[]) {
+    columns.forEach(column => {
+        filters.push(createAdvancedFilter(column, {
+            operator: 'Is',
+            value: data[column.displayName]
+        }).toJSON());
+    });
+}
+
+function createAdvancedFilter(column: powerbiVisualsApi.DataViewMetadataColumn, condition: powerbiModels.IAdvancedFilterCondition): powerbiModels.AdvancedFilter {
     if (condition.operator === 'None') {
         return null;
     } else {
@@ -35,11 +63,14 @@ function convertFilterAdvanced(ex: SandDance.types.SearchExpression, column: pow
     }
 }
 
-function convertCondition(ex: SandDance.types.SearchExpression): powerbiModels.IAdvancedFilterCondition {
-    return {
-        operator: convertExpressionOperator(ex.operator),
-        value: ex.value
-    };
+function convertExpressionToAdvancedFilter(ex: SandDance.types.SearchExpression, column: powerbiVisualsApi.DataViewMetadataColumn): powerbiModels.AdvancedFilter {
+    return createAdvancedFilter(
+        column,
+        {
+            operator: convertExpressionOperator(ex.operator),
+            value: ex.value
+        }
+    );
 }
 
 function convertExpressionOperator(operator: SandDance.types.SearchExpressionOperators): powerbiModels.AdvancedFilterConditionOperators {
