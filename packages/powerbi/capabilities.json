@@ -7,6 +7,17 @@
         }
     ],
     "objects": {
+        "general": {
+            "displayName": "General",
+            "displayNameKey": "formattingGeneral",
+            "properties": {
+                "filter": {
+                    "type": {
+                        "filter": true
+                    }
+                }
+            }
+        },
         "sandDanceMainSettings": {
             "displayName": "SandDance",
             "properties": {
