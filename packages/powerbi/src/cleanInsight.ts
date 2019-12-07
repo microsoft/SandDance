@@ -5,6 +5,7 @@ import { SandDance } from '@msrvida/sanddance-explorer';
 
 export function cleanInsight(insight: SandDance.types.Insight) {
     delete insight.size;
+    delete insight.filter;
     visit(insight);
 }
 
