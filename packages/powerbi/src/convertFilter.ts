@@ -11,6 +11,7 @@ export function convertFilter(searchFilter: SandDance.types.Search, columns: pow
     const groups = SandDance.util.ensureSearchExpressionGroupArray(searchFilter);
     groups.forEach(group =>
         group.expressions.forEach(ex => {
+            if (!ex) return;
             if (ex.name === SandDance.VegaDeckGl.constants.GL_ORDINAL) {
                 // it would be ideal to filter to a single row identity, but the PoerBI API currently does not let us do that.
                 // so, we will filter to data points that have the same values
