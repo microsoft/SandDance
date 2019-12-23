@@ -48,6 +48,8 @@ import { convertTableToObjectArray } from './convertTableToObjectArray';
 import { cleanInsight } from './cleanInsight';
 import { VisualSettings, SandDanceConfig, IVisualSettings } from './settings';
 
+const { util } = SandDance.VegaDeckGl;
+
 export class Visual implements IVisual {
     private settings: VisualSettings;
     private viewElement: HTMLElement;
@@ -59,7 +61,7 @@ export class Visual implements IVisual {
     private host: powerbiVisualsApi.extensibility.visual.IVisualHost;
     private selectionManager: powerbiVisualsApi.extensibility.ISelectionManager;
     private fetchMoreTimer: number;
-    private filters: powerbiModels.IFilter[];
+    private filters: { sd: SandDance.types.Search, pbi: powerbiModels.IFilter[] };
     private columns: powerbiVisualsApi.DataViewMetadataColumn[];
 
     public static fetchMoreTimeout = 5000;
@@ -72,8 +74,8 @@ export class Visual implements IVisual {
 
         if (typeof document !== 'undefined') {
             options.element.style.position = 'relative';
-            this.viewElement = SandDance.VegaDeckGl.util.addDiv(options.element, 'sanddance-powerbi');
-            this.errorElement = SandDance.VegaDeckGl.util.addDiv(options.element, 'sanddance-error');
+            this.viewElement = util.addDiv(options.element, 'sanddance-powerbi');
+            this.errorElement = util.addDiv(options.element, 'sanddance-error');
             this.errorElement.style.position = 'absolute';
 
             const props: Props = {
@@ -86,15 +88,18 @@ export class Visual implements IVisual {
                         this.events.renderingFinished(this.renderingOptions);
                         this.renderingOptions = null;
                     }
-                    const insight = this.app.explorer.viewer.getInsight();
-                    tooltipExclusions = tooltipExclusions || this.app.explorer.state.tooltipExclusions;
-                    cleanInsight(insight);
-                    const config: SandDanceConfig = {
-                        insightJSON: JSON.stringify(insight),
-                        tooltipExclusionsJSON: JSON.stringify(tooltipExclusions)
-                    };
-                    const properties = config as any;
-                    this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
+
+                    if (this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.Edit || this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.InFocusEdit) {
+                        const insight = this.app.explorer.viewer.getInsight();
+                        tooltipExclusions = tooltipExclusions || this.app.explorer.state.tooltipExclusions;
+                        cleanInsight(insight);
+                        const config: SandDanceConfig = {
+                            insightJSON: JSON.stringify(insight),
+                            tooltipExclusionsJSON: JSON.stringify(tooltipExclusions)
+                        };
+                        const properties = config as any;
+                        this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
+                    }
                 },
                 onError: (e: any) => {
                     if (this.renderingOptions) {
@@ -108,7 +113,7 @@ export class Visual implements IVisual {
                         const result = convertFilter(searchFilter, this.columns, filteredData);
                         this.applySelection(result.selectedIds);
                         this.applyFilters(result.filters);
-                        this.filters = result.filters;
+                        this.filters = { sd: searchFilter, pbi: result.filters };
                     } else {
                         this.filters = null;
                         this.clearFilter();
@@ -120,12 +125,12 @@ export class Visual implements IVisual {
                     if (selectedData) {
                         const result = convertFilter(searchFilter, this.columns, selectedData);
                         this.applySelection(result.selectedIds);
-                        this.applyFilters(this.filters ? this.filters.concat(result.filters) : result.filters);
+                        this.applyFilters(this.filters ? this.filters.pbi.concat(result.filters) : result.filters);
                     } else {
                         this.clearSelection();
                         // revert to filtered if it exists
                         if (this.filters) {
-                            this.applyFilters(this.filters);
+                            this.applyFilters(this.filters.pbi);
                         } else {
                             this.clearFilter();
                         }
@@ -149,6 +154,7 @@ export class Visual implements IVisual {
     }
 
     applyFilters(filters: powerbiModels.IFilter[]) {
+        this.host.applyJsonFilter(null, "general", "filter", powerbiVisualsApi.FilterAction.merge);
         this.host.applyJsonFilter(filters, "general", "filter", powerbiVisualsApi.FilterAction.merge);
     }
 
@@ -210,7 +216,7 @@ export class Visual implements IVisual {
 
         this.app.setChromeless(!this.settings.sandDanceMainSettings.showchrome);
 
-        this.prevSettings = SandDance.VegaDeckGl.util.clone(this.settings);
+        this.prevSettings = util.clone(this.settings);
 
         if (!different) {
             // console.log('Visual update - not different');
@@ -241,6 +247,10 @@ export class Visual implements IVisual {
                 } catch (e) {
                     // continue regardless of error
                 }
+            }
+
+            if (this.filters) {
+                insight.filter = this.filters.sd;
             }
 
             return insight;
