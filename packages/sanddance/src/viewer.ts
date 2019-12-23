@@ -220,7 +220,10 @@ export class Viewer {
                     }
                 });
 
-                this.insight.filter = searchExpression.narrow(this.insight.filter, filter);
+                //narrow the filter only if it is different
+                if (searchExpression.compare(this.insight.filter, filter)) {
+                    this.insight.filter = searchExpression.narrow(this.insight.filter, filter);
+                }
                 if (this.options.onDataFilter) {
                     this.options.onDataFilter(this.insight.filter, this._dataScope.currentData());
                 }
