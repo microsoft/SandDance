@@ -37,13 +37,18 @@ import VisualObjectInstance = powerbiVisualsApi.VisualObjectInstance;
 import DataView = powerbiVisualsApi.DataView;
 import VisualObjectInstanceEnumerationObject = powerbiVisualsApi.VisualObjectInstanceEnumerationObject;
 
+import * as powerbiModels from 'powerbi-models';
+
 import { capabilities, SandDance } from '@msrvida/sanddance-explorer';
+import { convertFilter } from './convertFilter';
 import { createElement } from 'react';
 import { render } from 'react-dom';
 import { App, Props } from './app';
 import { convertTableToObjectArray } from './convertTableToObjectArray';
 import { cleanInsight } from './cleanInsight';
 import { VisualSettings, SandDanceConfig, IVisualSettings } from './settings';
+
+const { util } = SandDance.VegaDeckGl;
 
 export class Visual implements IVisual {
     private settings: VisualSettings;
@@ -56,7 +61,8 @@ export class Visual implements IVisual {
     private host: powerbiVisualsApi.extensibility.visual.IVisualHost;
     private selectionManager: powerbiVisualsApi.extensibility.ISelectionManager;
     private fetchMoreTimer: number;
-    private filteredIds: powerbiVisualsApi.extensibility.ISelectionId[];
+    private filters: { sd: SandDance.types.Search, pbi: powerbiModels.IFilter[] };
+    private columns: powerbiVisualsApi.DataViewMetadataColumn[];
 
     public static fetchMoreTimeout = 5000;
 
@@ -68,8 +74,8 @@ export class Visual implements IVisual {
 
         if (typeof document !== 'undefined') {
             options.element.style.position = 'relative';
-            this.viewElement = SandDance.VegaDeckGl.util.addDiv(options.element, 'sanddance-powerbi');
-            this.errorElement = SandDance.VegaDeckGl.util.addDiv(options.element, 'sanddance-error');
+            this.viewElement = util.addDiv(options.element, 'sanddance-powerbi');
+            this.errorElement = util.addDiv(options.element, 'sanddance-error');
             this.errorElement.style.position = 'absolute';
 
             const props: Props = {
@@ -82,15 +88,18 @@ export class Visual implements IVisual {
                         this.events.renderingFinished(this.renderingOptions);
                         this.renderingOptions = null;
                     }
-                    const insight = this.app.explorer.viewer.getInsight();
-                    tooltipExclusions = tooltipExclusions || this.app.explorer.state.tooltipExclusions;
-                    cleanInsight(insight);
-                    const config: SandDanceConfig = {
-                        insightJSON: JSON.stringify(insight),
-                        tooltipExclusionsJSON: JSON.stringify(tooltipExclusions)
-                    };
-                    const properties = config as any;
-                    this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
+
+                    if (this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.Edit || this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.InFocusEdit) {
+                        const insight = this.app.explorer.viewer.getInsight();
+                        tooltipExclusions = tooltipExclusions || this.app.explorer.state.tooltipExclusions;
+                        cleanInsight(insight);
+                        const config: SandDanceConfig = {
+                            insightJSON: JSON.stringify(insight),
+                            tooltipExclusionsJSON: JSON.stringify(tooltipExclusions)
+                        };
+                        const properties = config as any;
+                        this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
+                    }
                 },
                 onError: (e: any) => {
                     if (this.renderingOptions) {
@@ -98,33 +107,59 @@ export class Visual implements IVisual {
                         this.renderingOptions = null;
                     }
                 },
-                onDataFilter: (filter, filteredData) => {
+                onDataFilter: (searchFilter, filteredData) => {
                     // console.log('onDataFilter', filteredData);
                     if (filteredData) {
-                        this.filteredIds = filteredData.map(item => item[SandDance.constants.FieldNames.PowerBISelectionId] as powerbiVisualsApi.extensibility.ISelectionId);
-                        this.selectionManager.select(this.filteredIds, false);
+                        const result = convertFilter(searchFilter, this.columns, filteredData);
+                        this.applySelection(result.selectedIds);
+                        this.applyFilters(result.filters);
+                        this.filters = { sd: searchFilter, pbi: result.filters };
                     } else {
-                        this.filteredIds = null;
-                        this.selectionManager.clear();
+                        this.filters = null;
+                        this.clearFilter();
+                        this.clearSelection();
                     }
                 },
-                onSelectionChanged: (search, activeIndex, selectedData) => {
+                onSelectionChanged: (searchFilter, activeIndex, selectedData) => {
                     // console.log('onDataSelected', selectedData);
                     if (selectedData) {
-                        const selectedIds = selectedData.map(item => item[SandDance.constants.FieldNames.PowerBISelectionId] as powerbiVisualsApi.extensibility.ISelectionId);
-                        this.selectionManager.select(selectedIds, false);
+                        const result = convertFilter(searchFilter, this.columns, selectedData);
+                        this.applySelection(result.selectedIds);
+                        this.applyFilters(this.filters ? this.filters.pbi.concat(result.filters) : result.filters);
                     } else {
+                        this.clearSelection();
                         // revert to filtered if it exists
-                        if (this.filteredIds) {
-                            this.selectionManager.select(this.filteredIds, false);
+                        if (this.filters) {
+                            this.applyFilters(this.filters.pbi);
                         } else {
-                            this.selectionManager.clear();
+                            this.clearFilter();
                         }
                     }
                 }
             };
             render(createElement(App, props), this.viewElement);
         }
+    }
+
+    applySelection(selectedIds: powerbiVisualsApi.extensibility.ISelectionId[]) {
+        if (selectedIds.length) {
+            this.selectionManager.select(selectedIds, false);
+        } else {
+            this.clearSelection();
+        }
+    }
+
+    clearSelection() {
+        this.selectionManager.clear();
+    }
+
+    applyFilters(filters: powerbiModels.IFilter[]) {
+        this.host.applyJsonFilter(null, "general", "filter", powerbiVisualsApi.FilterAction.merge);
+        this.host.applyJsonFilter(filters, "general", "filter", powerbiVisualsApi.FilterAction.merge);
+    }
+
+    clearFilter() {
+        this.applyFilters(null);
     }
 
     destroy() {
@@ -151,6 +186,7 @@ export class Visual implements IVisual {
         if (!dataView || !dataView.table) {
             this.app.unload();
         } else {
+            this.columns = dataView.metadata.columns;
             let doneFetching = true;
             if (dataView.metadata.segment) {
                 doneFetching = !this.host.fetchMoreData();
@@ -180,7 +216,7 @@ export class Visual implements IVisual {
 
         this.app.setChromeless(!this.settings.sandDanceMainSettings.showchrome);
 
-        this.prevSettings = SandDance.VegaDeckGl.util.clone(this.settings);
+        this.prevSettings = util.clone(this.settings);
 
         if (!different) {
             // console.log('Visual update - not different');
@@ -211,6 +247,10 @@ export class Visual implements IVisual {
                 } catch (e) {
                     // continue regardless of error
                 }
+            }
+
+            if (this.filters) {
+                insight.filter = this.filters.sd;
             }
 
             return insight;
