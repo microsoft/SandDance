@@ -22,7 +22,7 @@ export interface SnapshotProps {
 export interface Props extends SnapshotProps {
     explorer: Explorer;
     snapshots: Snapshot[];
-    onCreateSnapshot: (snapshot: Snapshot) => void;
+    onCreateSnapshot: (snapshot: Snapshot, editIndex: number) => void;
     onRemoveSnapshot: (i: number) => void;
     onSnapshotClick?: (snapshot: Snapshot) => void;
     themePalette: Partial<FabricTypes.IPalette>;
@@ -35,6 +35,7 @@ interface State {
     image: string;
     bgColor: string;
     insight: SandDance.types.Insight;
+    editIndex: number;
 }
 
 const thumbWidth = 300;
@@ -49,7 +50,8 @@ export class Snapshots extends React.Component<Props, State>{
             description: '',
             image: null,
             bgColor: null,
-            insight: null
+            insight: null,
+            editIndex: -1
         };
     }
 
@@ -62,7 +64,7 @@ export class Snapshots extends React.Component<Props, State>{
             bgColor: this.state.bgColor
         };
         this.props.modifySnapShot && this.props.modifySnapShot(snapshot);
-        this.props.onCreateSnapshot(snapshot);
+        this.props.onCreateSnapshot(snapshot, this.state.editIndex);
         this.setState({ formHidden: true, title: '', description: '', image: null });
     }
 
@@ -94,7 +96,7 @@ export class Snapshots extends React.Component<Props, State>{
                             delete insight.size;
                             const title = this.props.getTitle && this.props.getTitle(insight) || '';
                             const description = this.props.getDescription && this.props.getDescription(insight) || '';
-                            this.setState({ formHidden: false, bgColor, title, description, insight, image: null });
+                            this.setState({ formHidden: false, bgColor, title, description, insight, image: null, editIndex: -1 });
 
                             //allow deselection to render
                             setTimeout(() => {
@@ -136,11 +138,21 @@ export class Snapshots extends React.Component<Props, State>{
                         actions.push({
                             iconButtonProps: {
                                 themePalette: this.props.themePalette,
-                                title: strings.buttonDeleteSnapshot,
-                                onClick: e => this.props.onRemoveSnapshot(i),
-                                iconName: 'Delete'
+                                title: strings.buttonEditSnapshot,
+                                onClick: e => {
+                                    this.setState({ formHidden: false, ...snapshot, editIndex: i });
+                                },
+                                iconName: 'Edit'
                             }
-                        });
+                        },
+                            {
+                                iconButtonProps: {
+                                    themePalette: this.props.themePalette,
+                                    title: strings.buttonDeleteSnapshot,
+                                    onClick: e => this.props.onRemoveSnapshot(i),
+                                    iconName: 'Delete'
+                                }
+                            });
                         return (
                             <div key={i} className="snapshot">
                                 <div

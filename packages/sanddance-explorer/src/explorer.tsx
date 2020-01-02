@@ -1010,8 +1010,15 @@ export class Explorer extends React.Component<Props, State> {
                                             themePalette={themePalette}
                                             explorer={this}
                                             snapshots={this.state.snapshots}
-                                            onCreateSnapshot={snapshot => {
-                                                this.setState({ snapshots: this.state.snapshots.concat(snapshot) });
+                                            onCreateSnapshot={(snapshot, editIndex) => {
+                                                let snapshots: Snapshot[];
+                                                if (editIndex >= 0) {
+                                                    snapshots = [...this.state.snapshots];
+                                                    snapshots[editIndex] = snapshot;
+                                                } else {
+                                                    snapshots = this.state.snapshots.concat(snapshot);
+                                                }
+                                                this.setState({ snapshots });
                                             }}
                                             onRemoveSnapshot={i => {
                                                 const snapshots = [...this.state.snapshots];
