@@ -325,7 +325,7 @@ export class Explorer extends React.Component<Props, State> {
         return this.viewer.getInsight();
     }
 
-    setInsight(partialInsight: Partial<SandDance.types.Insight>) {
+    setInsight(partialInsight: Partial<SandDance.types.Insight>, rebaseFilter = false) {
         const selectedItemIndex = { ...this.state.selectedItemIndex };
         selectedItemIndex[DataScopeId.AllData] = 0;
         selectedItemIndex[DataScopeId.FilteredData] = 0;
@@ -339,8 +339,22 @@ export class Explorer extends React.Component<Props, State> {
             selectedItemIndex,
             ...partialInsight
         };
-        this.getColorContext = null;
-        this.changeInsight(newState as State);
+        const changeInsight = () => {
+            this.getColorContext = null;
+            this.changeInsight(newState as State);
+        };
+        const currentFilter = this.viewer.getInsight().filter;
+        if (rebaseFilter && currentFilter && newState.filter) {
+            if (SandDance.searchExpression.startsWith(newState.filter, currentFilter)) {
+                changeInsight();
+            } else {
+                this.viewer.reset()
+                    .then(() => new Promise((resolve, reject) => { setTimeout(resolve, this.viewer.options.transitionDurations.scope); }))
+                    .then(changeInsight);
+            }
+        } else {
+            changeInsight();
+        }
     }
 
     load(
@@ -1009,7 +1023,7 @@ export class Explorer extends React.Component<Props, State> {
                                                     if (this.props.onSnapshotClick) {
                                                         this.props.onSnapshotClick(snapshot);
                                                     } else {
-                                                        this.setInsight(snapshot.insight);
+                                                        this.setInsight(snapshot.insight, true);
                                                     }
                                                 });
                                             }}

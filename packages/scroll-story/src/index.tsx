@@ -40,6 +40,7 @@ interface State {
 }
 
 export class Page extends React.Component<Props, State> {
+    public viewer: SandDance.Viewer;
 
     constructor(props: Props) {
         super(props);
@@ -53,6 +54,26 @@ export class Page extends React.Component<Props, State> {
         Promise.all([dataPromise, insightsPromise]).then(([data, insights]: [object[], SandDance.types.Insight[]]) => {
             this.setState({ data, insights });
         });
+    }
+
+    goTo(insightIndex: number) {
+        const changeInsight = () => {
+            this.setState({ insightIndex });
+        };
+        const currentFilter = this.viewer.getInsight().filter;
+        const newState = this.state.insights[insightIndex];
+        if (currentFilter && newState.filter) {
+            if (SandDance.searchExpression.startsWith(newState.filter, currentFilter)) {
+                changeInsight();
+            } else {
+                this.viewer.reset()
+                    .then(() => new Promise((resolve, reject) => { setTimeout(resolve, this.viewer.options.transitionDurations.scope); }))
+                    .then(changeInsight);
+            }
+        } else {
+            changeInsight();
+        }
+
     }
 
     render() {
@@ -71,11 +92,16 @@ export class Page extends React.Component<Props, State> {
         return (
             <div>
                 <SandDanceReact
+                    ref={reactViewer => {
+                        if (reactViewer) {
+                            this.viewer = reactViewer.viewer;
+                        }
+                    }}
                     insight={insight}
                     data={this.state.data}
                 />
                 <div className="content">
-                    <Content goTo={insightIndex => this.setState({ insightIndex })} />
+                    <Content goTo={insightIndex => this.goTo(insightIndex)} />
                 </div>
             </div>
         );

@@ -115,7 +115,7 @@ export class SandDanceApp extends React.Component<Props, State> {
 
     private hydrateSnapshot(snapshot: DataSourceSnapshot) {
         if (snapshot.dataSource.id === this.state.dataSource.id) {
-            this.explorer.setInsight(snapshot.insight);
+            this.explorer.setInsight(snapshot.insight, true);
         }
         else {
             if (snapshot.dataSource.dataSourceType !== 'local') {
