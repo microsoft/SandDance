@@ -3,6 +3,7 @@
 @mixin snapshots() {
     .sanddance-snapshots {
         .snapshot {
+            border: 1px solid rgba(0, 0, 0, 0.2);
             cursor: pointer;
             margin-top: 0.5em;
             padding: 4px;
@@ -15,7 +16,14 @@
             grid-template-columns: auto 32px;
             word-break: break-word;
         }
+        .thumbnail {
+            display: grid;
+            height: 160px;
+            margin-top: 0.5em;
+        }
         img {
+            height: 100%;
+            object-fit: contain;
             width: 100%;
         }
         .actions {
@@ -27,6 +35,29 @@
             }
             button {
                 width: 100%;
+            }
+        }
+    }
+    .sanddance-snapshot-dialog {
+        .thumbnail {
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            display: grid;
+            height: 300px;
+            margin-top: 1em;
+        }
+        img {
+            height: 100%;
+            object-fit: contain;
+            width: 100%;
+        }
+    }
+    .dark-theme {
+        .sanddance-snapshots {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        &.sanddance-snapshot-dialog {
+            .thumbnail {
+                border-color: rgba(255, 255, 255, 0.2);
             }
         }
     }

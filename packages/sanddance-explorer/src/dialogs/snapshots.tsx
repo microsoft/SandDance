@@ -8,13 +8,14 @@ import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { getCanvas } from '../canvas';
 import { Group } from '../controls/group';
 import { IconButton } from '../controls/iconButton';
-import { SandDance } from '@msrvida/sanddance-react';
+import { SandDance, util } from '@msrvida/sanddance-react';
 import { Snapshot, SnapshotAction } from '../interfaces';
 import { strings } from '../language';
 
 export interface SnapshotProps {
     getActions?: (snapshot: Snapshot, snapshotIndex: number) => SnapshotAction[];
     modifySnapShot?: (snapshot: Snapshot) => void;
+    getTitle?: (insight: SandDance.types.Insight) => string;
     getDescription?: (insight: SandDance.types.Insight) => string;
 }
 
@@ -28,6 +29,7 @@ export interface Props extends SnapshotProps {
 }
 
 interface State {
+    title: string;
     description: string;
     formHidden: boolean;
     image: string;
@@ -43,6 +45,7 @@ export class Snapshots extends React.Component<Props, State>{
         super(props);
         this.state = {
             formHidden: true,
+            title: '',
             description: '',
             image: null,
             bgColor: null,
@@ -52,6 +55,7 @@ export class Snapshots extends React.Component<Props, State>{
 
     saveSnapshot() {
         const snapshot: Snapshot = {
+            title: this.state.title,
             description: this.state.description,
             insight: this.state.insight,
             image: this.state.image,
@@ -59,7 +63,7 @@ export class Snapshots extends React.Component<Props, State>{
         };
         this.props.modifySnapShot && this.props.modifySnapShot(snapshot);
         this.props.onCreateSnapshot(snapshot);
-        this.setState({ formHidden: true, description: '' });
+        this.setState({ formHidden: true, title: '', description: '', image: null });
     }
 
     resize(src: string) {
@@ -83,32 +87,47 @@ export class Snapshots extends React.Component<Props, State>{
                 <base.fabric.PrimaryButton
                     text={strings.buttonCreateSnapshot}
                     onClick={e => {
-                        const canvas = getCanvas(this.props.explorer.viewer);
-                        this.resize(canvas && canvas.toDataURL('image/png'));
-                        const bgColor = canvas && window.getComputedStyle(canvas).backgroundColor;
-                        const insight = this.props.explorer.viewer.getInsight();
-                        const description = this.props.getDescription && this.props.getDescription(insight) || '';
-                        this.setState({ formHidden: false, bgColor, description, insight });
+                        this.props.explorer.viewer.deselect().then(() => {
+                            const canvas = getCanvas(this.props.explorer.viewer);
+                            const bgColor = canvas && window.getComputedStyle(canvas).backgroundColor;
+                            const insight = SandDance.VegaDeckGl.util.clone(this.props.explorer.viewer.getInsight());
+                            delete insight.size;
+                            const title = this.props.getTitle && this.props.getTitle(insight) || '';
+                            const description = this.props.getDescription && this.props.getDescription(insight) || '';
+                            this.setState({ formHidden: false, bgColor, title, description, insight, image: null });
+
+                            //allow deselection to render
+                            setTimeout(() => {
+                                this.resize(canvas && canvas.toDataURL('image/png'));
+                            }, 500);
+                        });
                     }}
                 />
                 <Dialog
+                    modalProps={{ className: util.classList('sanddance-snapshot-dialog', this.props.explorer.props.theme) }}
                     minWidth={`${thumbWidth + 64}px`}
                     hidden={this.state.formHidden}
                     onDismiss={() => this.setState({ formHidden: true })}
                     title={strings.buttonCreateSnapshot}
                     buttons={[
-                        <base.fabric.PrimaryButton key={0} onClick={e => this.saveSnapshot()} text={strings.buttonCreateSnapshot} />
+                        <base.fabric.PrimaryButton disabled={!this.state.image || !this.state.title} key={0} onClick={e => this.saveSnapshot()} text={strings.buttonCreateSnapshot} />
                     ]}
                 >
                     <base.fabric.TextField
-                        label={strings.labelSnapshotDescription}
-                        onKeyUp={e => e.keyCode === 13 && this.saveSnapshot()}
-                        onChange={(e, description) =>
-                            this.setState({ description })
-                        }
-                        value={this.state.description}
+                        label={strings.labelSnapshotTitle}
+                        onChange={(e, title) => this.setState({ title })}
+                        value={this.state.title}
                     />
-                    <img src={this.state.image} style={{ backgroundColor: this.state.bgColor, width: `${thumbWidth}px` }} />
+                    <base.fabric.TextField
+                        label={strings.labelSnapshotDescription}
+                        onChange={(e, description) => this.setState({ description })}
+                        value={this.state.description}
+                        multiline={true}
+                    />
+                    <div className='thumbnail'>
+                        {!this.state.image && <base.fabric.Spinner />}
+                        {this.state.image && <img src={this.state.image} style={{ backgroundColor: this.state.bgColor }} />}
+                    </div>
                     {this.props.explorer.viewer.colorContexts.length > 1 && <div>{strings.labelColorFilter}</div>}
                 </Dialog>
                 <div>
@@ -128,9 +147,11 @@ export class Snapshots extends React.Component<Props, State>{
                                     onClick={e => this.props.onSnapshotClick(snapshot)}
                                 >
                                     <div className="title">
-                                        {snapshot.description}
+                                        {snapshot.title}
                                     </div>
-                                    <img src={snapshot.image} style={{ backgroundColor: snapshot.bgColor }} />
+                                    <div className='thumbnail'>
+                                        <img title={snapshot.description} src={snapshot.image} style={{ backgroundColor: snapshot.bgColor }} />
+                                    </div>
                                 </div>
                                 <Actions
                                     actions={actions}

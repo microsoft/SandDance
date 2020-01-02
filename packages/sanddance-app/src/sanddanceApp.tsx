@@ -174,7 +174,8 @@ export class SandDanceApp extends React.Component<Props, State> {
                             }
                             return [{ element }];
                         },
-                        getDescription: insight => `${this.state.dataSource.displayName} ${insight.chart}`
+                        getTitle: insight => `${this.state.dataSource.displayName} ${insight.chart}`,
+                        getDescription: insight => '' //TODO create description from filter etc.
                     }}
                     onSnapshotClick={(snapshot: DataSourceSnapshot) => this.hydrateSnapshot(snapshot)}
                     initialView="2d"
