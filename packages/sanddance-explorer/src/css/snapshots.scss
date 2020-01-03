@@ -2,10 +2,13 @@
 // Licensed under the MIT license.
 @mixin snapshots() {
     .sanddance-snapshots {
+        .ms-Button {
+            margin-bottom: 0.5em;
+        }
         .snapshot {
             border: 1px solid rgba(0, 0, 0, 0.2);
             cursor: pointer;
-            margin-top: 0.5em;
+            margin-bottom: 0.5em;
             padding: 4px;
             &:hover {
                 background-color: rgba(0, 0, 0, 0.1);
@@ -54,6 +57,9 @@
     .dark-theme {
         .sanddance-snapshots {
             border-color: rgba(255, 255, 255, 0.2);
+            .actions a {
+                color: #fff;
+            }
         }
         &.sanddance-snapshot-dialog {
             .thumbnail {

@@ -25,11 +25,11 @@ export interface DataExportHandler {
 }
 
 export interface Snapshot {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   insight: SandDance.types.Insight;
-  image: string;
-  bgColor: string;
+  image?: string;
+  bgColor?: string;
 }
 
 export interface SnapshotAction {

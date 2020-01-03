@@ -1034,6 +1034,24 @@ export class Explorer extends React.Component<Props, State> {
                                                     }
                                                 });
                                             }}
+                                            onMoveUp={i => {
+                                                if (i > 0) {
+                                                    const snapshots = [...this.state.snapshots];
+                                                    const temp = snapshots[i - 1];
+                                                    snapshots[i - 1] = snapshots[i];
+                                                    snapshots[i] = temp;
+                                                    this.setState({ snapshots });
+                                                }
+                                            }}
+                                            onMoveDown={i => {
+                                                if (i < this.state.snapshots.length - 1) {
+                                                    const snapshots = [...this.state.snapshots];
+                                                    const temp = snapshots[i + 1];
+                                                    snapshots[i + 1] = snapshots[i];
+                                                    snapshots[i] = temp;
+                                                    this.setState({ snapshots });
+                                                }
+                                            }}
                                         />
                                     );
                                 }

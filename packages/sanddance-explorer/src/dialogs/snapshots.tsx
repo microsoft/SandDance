@@ -24,17 +24,14 @@ export interface Props extends SnapshotProps {
     snapshots: Snapshot[];
     onCreateSnapshot: (snapshot: Snapshot, editIndex: number) => void;
     onRemoveSnapshot: (i: number) => void;
+    onMoveUp: (i: number) => void;
+    onMoveDown: (i: number) => void;
     onSnapshotClick?: (snapshot: Snapshot) => void;
     themePalette: Partial<FabricTypes.IPalette>;
 }
 
-interface State {
-    title: string;
-    description: string;
+interface State extends Snapshot {
     formHidden: boolean;
-    image: string;
-    bgColor: string;
-    insight: SandDance.types.Insight;
     editIndex: number;
 }
 
@@ -112,7 +109,11 @@ export class Snapshots extends React.Component<Props, State>{
                     onDismiss={() => this.setState({ formHidden: true })}
                     title={strings.buttonCreateSnapshot}
                     buttons={[
-                        <base.fabric.PrimaryButton disabled={!this.state.image || !this.state.title} key={0} onClick={e => this.saveSnapshot()} text={strings.buttonCreateSnapshot} />
+                        <base.fabric.PrimaryButton
+                            disabled={!this.state.image || !this.state.title} key={0}
+                            onClick={e => this.saveSnapshot()}
+                            text={this.state.editIndex >= 0 ? strings.buttonUpdateSnapshot : strings.buttonCreateSnapshot}
+                        />
                     ]}
                 >
                     <base.fabric.TextField
@@ -139,20 +140,45 @@ export class Snapshots extends React.Component<Props, State>{
                             iconButtonProps: {
                                 themePalette: this.props.themePalette,
                                 title: strings.buttonEditSnapshot,
-                                onClick: e => {
-                                    this.setState({ formHidden: false, ...snapshot, editIndex: i });
-                                },
+                                onClick: e => this.setState({ formHidden: false, ...snapshot, editIndex: i }),
                                 iconName: 'Edit'
                             }
-                        },
-                            {
+                        });
+                        if (this.props.snapshots.length > 1) {
+                            actions.push({
                                 iconButtonProps: {
+                                    disabled: i === 0,
                                     themePalette: this.props.themePalette,
-                                    title: strings.buttonDeleteSnapshot,
-                                    onClick: e => this.props.onRemoveSnapshot(i),
-                                    iconName: 'Delete'
+                                    title: strings.buttonMoveUp,
+                                    onClick: e => this.props.onMoveUp(i),
+                                    iconName: 'Up'
+                                }
+                            }, {
+                                iconButtonProps: {
+                                    disabled: i > this.props.snapshots.length - 2,
+                                    themePalette: this.props.themePalette,
+                                    title: strings.buttonMoveDown,
+                                    onClick: e => this.props.onMoveDown(i),
+                                    iconName: 'Down'
                                 }
                             });
+                        }
+                        actions.push({
+                            iconButtonProps: {
+                                themePalette: this.props.themePalette,
+                                title: strings.buttonDeleteSnapshot,
+                                menuProps: {
+                                    items: [
+                                        {
+                                            key: 'confirm',
+                                            text: `${strings.buttonDeleteSnapshot}?`,
+                                            onClick: e => this.props.onRemoveSnapshot(i),
+                                        }
+                                    ]
+                                },
+                                iconName: 'Delete'
+                            }
+                        });
                         return (
                             <div key={i} className="snapshot">
                                 <div
