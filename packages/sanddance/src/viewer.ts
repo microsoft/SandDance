@@ -398,17 +398,17 @@ export class Viewer {
         let result: RenderResult;
         //see if refine expression has changed
         if (!searchExpression.compare(insight.filter, this.insight.filter)) {
+            const allowAsyncRenderTime = 100;
             if (insight.filter) {
                 //refining
                 result = await this._render(insight, data, options);
                 this.presenter.animationQueue(() => {
                     this.filter(insight.filter);
-                }, this.options.transitionDurations.position, { waitingLabel: 'layout before refine', handlerLabel: 'refine after layout' });
+                }, allowAsyncRenderTime, { waitingLabel: 'layout before refine', handlerLabel: 'refine after layout' });
             } else {
                 //not refining
                 this._dataScope.setFilteredData(null);
                 result = await this._render(insight, data, options);
-                const allowAsyncRenderTime = 100;
                 this.presenter.animationQueue(() => {
                     this.reset();
                 }, allowAsyncRenderTime, { waitingLabel: 'layout before reset', handlerLabel: 'reset after layout' });
