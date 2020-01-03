@@ -408,9 +408,10 @@ export class Viewer {
                 //not refining
                 this._dataScope.setFilteredData(null);
                 result = await this._render(insight, data, options);
+                const allowAsyncRenderTime = 100;
                 this.presenter.animationQueue(() => {
                     this.reset();
-                }, 0, { waitingLabel: 'layout before reset', handlerLabel: 'reset after layout' });
+                }, allowAsyncRenderTime, { waitingLabel: 'layout before reset', handlerLabel: 'reset after layout' });
             }
         } else {
             result = await this._render(insight, data, options);
