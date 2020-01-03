@@ -54,6 +54,7 @@ export function startsWith(whole: Search, part: Search): boolean {
     if (!part) return true;
     let arrs = [whole, part].map(ensureSearchExpressionGroupArray);
     let [wholeArray, partArray] = arrs;
+    if (partArray.length > wholeArray.length) return false;
     for (let i = 0; i < partArray.length; i++) {
         if (!compareGroup(wholeArray[i], partArray[i])) return false;
     }
