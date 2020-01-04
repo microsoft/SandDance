@@ -14,7 +14,22 @@ export const loadDataFile = (dataFile: DataFile) => new Promise<DataContent>((re
 
     function handleRawText(text: string) {
         const data = vega.read(text, { type: dataFile.type, parse: {} });
-        loadDataArray(data, dataFile.type).then(resolve).catch(reject);
+        loadDataArray(data, dataFile.type).then(dc => {
+            if (dataFile.snapshotsUrl) {
+                fetch(dataFile.snapshotsUrl)
+                    .then(response => response.json())
+                    .then(snapshots => {
+                        dc.snapshots = snapshots;
+                        resolve(dc);
+                    })
+                    .catch(reject);
+            } else if (dataFile.snapshots) {
+                dc.snapshots = dataFile.snapshots;
+                resolve(dc);
+            } else {
+                resolve(dc);
+            }
+        }).catch(reject);
     }
 
     if (dataFile.dataUrl) {

@@ -63,12 +63,14 @@ export function serializeSnapshot(snapshotWithImage: Snapshot) {
     //remove the image data from the snapshot
     delete snapshot.bgColor;
     delete snapshot.image;
-    delete snapshot.dataSource.rawText;
+    if (snapshot.dataSource) {
+        delete snapshot.dataSource.rawText;
+    }
     return JSON.stringify(snapshot);
 }
 
 let snapshotOnLoad = getSnapshotFromHash();
-if (snapshotOnLoad && snapshotOnLoad.dataSource.dataSourceType === 'local') {
+if (snapshotOnLoad && snapshotOnLoad.dataSource && snapshotOnLoad.dataSource.dataSourceType === 'local') {
     snapshotOnLoad = null;
 }
 
@@ -76,6 +78,7 @@ interface Handlers {
     hashchange: (e: HashChangeEvent) => void;
     resize: (e: UIEvent) => void;
 }
+
 export class SandDanceApp extends React.Component<Props, State> {
     private viewerOptions: Partial<types.ViewerOptions>;
     private handlers: Handlers;
@@ -114,11 +117,11 @@ export class SandDanceApp extends React.Component<Props, State> {
     }
 
     private hydrateSnapshot(snapshot: DataSourceSnapshot) {
-        if (snapshot.dataSource.id === this.state.dataSource.id) {
+        if (!snapshot.dataSource || snapshot.dataSource.id === this.state.dataSource.id) {
             this.explorer.setInsight(snapshot.insight, true);
         }
         else {
-            if (snapshot.dataSource.dataSourceType !== 'local') {
+            if (snapshot.dataSource && snapshot.dataSource.dataSourceType !== 'local') {
                 this.load(snapshot.dataSource, snapshot.insight);
             }
             //this.setState({ snapshots: this.state.snapshots.filter(snapshot => snapshot.dataSource.dataSourceType !== 'local') });
@@ -126,6 +129,8 @@ export class SandDanceApp extends React.Component<Props, State> {
     }
 
     load(dataSource: DataSource, partialInsight?: Partial<types.Insight>) {
+        //clone so that we do not modify original object
+        dataSource = VegaDeckGl.util.clone(dataSource);
         this.setState({ dataSource });
         document.title = `SandDance - ${dataSource.displayName}`;
         return this.explorer.load(
@@ -167,7 +172,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                         getActions: (snapshot: DataSourceSnapshot, i) => {
                             const url = '#' + serializeSnapshot(snapshot);
                             let element: JSX.Element;
-                            if (snapshot.dataSource.dataSourceType === 'local') {
+                            if (snapshot.dataSource && snapshot.dataSource.dataSourceType === 'local') {
                                 element = (<span>{strings.labelLocal}</span>);
                             } else {
                                 element = (<a key={`link${i}`} href={url}>{strings.labelLink}</a>);

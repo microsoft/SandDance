@@ -386,6 +386,7 @@ export class Explorer extends React.Component<Props, State> {
                 let newState: Partial<State> = {
                     dataFile,
                     dataContent,
+                    snapshots: dataContent.snapshots || [],
                     autoCompleteDistinctValues: {},
                     filter: null,
                     filteredData: null,

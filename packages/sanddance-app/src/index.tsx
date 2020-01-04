@@ -20,15 +20,19 @@ import { use } from './base';
 
 use(fabric, vega, deck, layers, luma);
 
-const dataSets = Array.from(
+const staticContent = Array.from(
     document.querySelectorAll<HTMLAnchorElement>('a.sanddance-app-static-content')
-).map<DataSource>(n => {
+);
+
+const dataSets = staticContent.filter(f => f.id).map<DataSource>(n => {
+    const forData = staticContent.filter(f => f.dataset['for'] === n.id)[0];
     return {
         dataSourceType: 'sample',
         id: n.id,
         displayName: n.dataset['displayName'],
         dataUrl: n.href,
-        type: n.dataset['type'] as DataFileType
+        type: n.dataset['type'] as DataFileType,
+        snapshotsUrl: forData ? forData.href : null
     };
 });
 

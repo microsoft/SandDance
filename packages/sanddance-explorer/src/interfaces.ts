@@ -9,13 +9,16 @@ export type DataFileType = 'json' | 'csv' | 'tsv' | 'topojson';
 export interface DataFile {
   displayName?: string;
   dataUrl?: string;
+  snapshotsUrl?: string;
   rawText?: string;
+  snapshots?: Snapshot[];
   type: DataFileType;
 }
 
 export interface DataContent {
   data: object[];
   columns: SandDance.types.Column[];
+  snapshots?: Snapshot[];
 }
 
 export type DataExportType = DataFileType | 'html';
@@ -27,7 +30,7 @@ export interface DataExportHandler {
 export interface Snapshot {
   title?: string;
   description?: string;
-  insight: SandDance.types.Insight;
+  insight?: SandDance.types.Insight;
   image?: string;
   bgColor?: string;
 }
