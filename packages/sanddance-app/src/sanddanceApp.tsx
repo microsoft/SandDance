@@ -15,6 +15,7 @@ import {
 import { DataSource, DataSourceSnapshot, InsightMap } from './types';
 import { DataSourcePicker } from './dataSourcePicker';
 import { downloadData } from './download';
+import { SnapshotExport, SnapshotImport } from './snapshots';
 import { strings } from './language';
 
 import VegaDeckGl = SandDance.VegaDeckGl;
@@ -180,7 +181,17 @@ export class SandDanceApp extends React.Component<Props, State> {
                             return [{ element }];
                         },
                         getTitle: insight => `${this.state.dataSource.displayName} ${insight.chart}`,
-                        getDescription: insight => '' //TODO create description from filter etc.
+                        getDescription: insight => '', //TODO create description from filter etc.
+                        getSidebarTopChildren: snapshots => (
+                            <SnapshotImport
+                                snapshots={snapshots}
+                            />
+                        ),
+                        getSidebarBottomChildren: snapshots => (
+                            <SnapshotExport
+                                snapshots={snapshots}
+                            />
+                        )
                     }}
                     onSnapshotClick={(snapshot: DataSourceSnapshot) => this.hydrateSnapshot(snapshot)}
                     initialView="2d"
