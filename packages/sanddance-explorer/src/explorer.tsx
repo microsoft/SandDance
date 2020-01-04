@@ -325,7 +325,7 @@ export class Explorer extends React.Component<Props, State> {
         return this.viewer.getInsight();
     }
 
-    setInsight(partialInsight: Partial<SandDance.types.Insight>, rebaseFilter = false) {
+    setInsight(partialInsight: Partial<SandDance.types.Insight> = this.viewer.getInsight(), rebaseFilter = false) {
         const selectedItemIndex = { ...this.state.selectedItemIndex };
         selectedItemIndex[DataScopeId.AllData] = 0;
         selectedItemIndex[DataScopeId.FilteredData] = 0;
