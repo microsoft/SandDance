@@ -15,7 +15,7 @@ import {
 import { DataSource, DataSourceSnapshot, InsightMap } from './types';
 import { DataSourcePicker } from './dataSourcePicker';
 import { downloadData } from './download';
-import { SnapshotExport, SnapshotImport } from './snapshots';
+import { SnapshotExport, SnapshotImport, validSnapshots } from './snapshots';
 import { strings } from './language';
 
 import VegaDeckGl = SandDance.VegaDeckGl;
@@ -120,6 +120,19 @@ export class SandDanceApp extends React.Component<Props, State> {
     private hydrateSnapshot(snapshot: DataSourceSnapshot) {
         if (!snapshot.dataSource || snapshot.dataSource.id === this.state.dataSource.id) {
             this.explorer.setInsight(snapshot.insight, true);
+            if (snapshot.dataSource && snapshot.dataSource.snapshotsUrl && snapshot.dataSource.snapshotsUrl !== this.state.dataSource.snapshotsUrl) {
+                //load new shaphots url
+                fetch(snapshot.dataSource.snapshotsUrl)
+                    .then(response => response.json())
+                    .then(snapshots => {
+                        if (validSnapshots(snapshots)) {
+                            this.explorer.setState({ snapshots })
+                            const dataSource = { ...this.state.dataSource };
+                            dataSource.snapshotsUrl = snapshot.dataSource.snapshotsUrl;
+                            this.setState({ dataSource });
+                        }
+                    });
+            }
         }
         else {
             if (snapshot.dataSource && snapshot.dataSource.dataSourceType !== 'local') {

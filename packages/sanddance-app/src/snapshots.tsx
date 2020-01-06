@@ -3,11 +3,24 @@
 import * as React from 'react';
 import { base } from './base';
 import { DataSource, DataSourceSnapshot } from './types';
+import { downloadData } from './download';
 import { SandDance, Snapshot } from '@msrvida/sanddance-explorer';
 import { strings } from './language';
 
 function isSnapshot(snapshot: Snapshot) {
     return snapshot.insight && snapshot.title;
+}
+
+export function validSnapshots(snapshots: Snapshot[]) {
+    if (Array.isArray(snapshots)) {
+        for (let i = 0; i < snapshots.length; i++) {
+            if (!isSnapshot(snapshots[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+    return false;
 }
 
 export interface ImportProps {
@@ -51,7 +64,7 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
                     this.setState({ fileFormatError: 'TODO JSON error', working: false });
                 }
                 //validate these are snapshots
-                if (this.validSnapshots(snapshots)) {
+                if (validSnapshots(snapshots)) {
                     this.props.onImportSnapshot(snapshots);
                     this.setState({ dialogMode: null, working: false });
                 } else {
@@ -62,20 +75,8 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
         }
     }
 
-    validSnapshots(snapshots: Snapshot[]) {
-        if (Array.isArray(snapshots)) {
-            for (let i = 0; i < snapshots.length; i++) {
-                if (!isSnapshot(snapshots[i])) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        return false;
-    }
-
     getUrlShortcut() {
-        const dataSource: DataSource = SandDance.VegaDeckGl.util.clone(this.props.dataSource);
+        const dataSource = SandDance.VegaDeckGl.util.clone(this.props.dataSource);
         delete dataSource.snapshots;
         dataSource.snapshotsUrl = this.state.url;
         const dss: DataSourceSnapshot = {
@@ -103,7 +104,7 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
         fetch(url)
             .then(response => response.json())
             .then(snapshots => {
-                if (this.validSnapshots(snapshots)) {
+                if (validSnapshots(snapshots)) {
                     this.props.onImportSnapshot(snapshots);
                     this.props.onSnapshotsUrl(url);
                     this.setState({ dialogMode: null, working: false });
@@ -137,7 +138,7 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
         return (
             <div>
                 <base.fabric.DefaultButton
-                    text='Import... TODO'
+                    text='Import TODO'
                     menuProps={{
                         items: [
                             {
@@ -239,14 +240,21 @@ export class SnapshotExport extends React.Component<ExportProps, ExportState> {
             <div>
                 {this.props.snapshots.length > 0 && (
                     <base.fabric.DefaultButton
-                        text='Export... TODO'
+                        text='Export TODO'
                         menuProps={{
                             items: [
                                 {
                                     key: 'json',
                                     text: `TODO json file`,
                                     onClick: e => {
-                                        //TODO export json
+                                        //clean prior to exporting
+                                        const snapshots = SandDance.VegaDeckGl.util.clone(this.props.snapshots) as DataSourceSnapshot[];
+                                        snapshots.forEach(snapshot => {
+                                            if (snapshot.dataSource) {
+                                                delete snapshot.dataSource.snapshotsUrl;
+                                            }
+                                        });
+                                        downloadData(JSON.stringify(snapshots, null, 2), `${this.props.dataSource.displayName}.snapshots`);
                                     }
                                 },
                                 {
