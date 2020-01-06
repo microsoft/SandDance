@@ -184,7 +184,9 @@ export class SandDanceApp extends React.Component<Props, State> {
                         getDescription: insight => '', //TODO create description from filter etc.
                         getSidebarChildren: (snapshots, snapshotElement) => (
                             <div>
-                                <SnapshotImport/>
+                                <SnapshotImport
+                                    onImport={snapshots => this.explorer.setState({ snapshots })}
+                                />
                                 {snapshotElement}
                                 <SnapshotExport
                                     snapshots={snapshots}

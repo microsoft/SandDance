@@ -5,7 +5,12 @@ import { base } from './base';
 import { Snapshot } from '@msrvida/sanddance-explorer';
 import { strings } from './language';
 
+function isSnapshot(snapshot: Snapshot) {
+    return snapshot.insight && snapshot.title;
+}
+
 export interface ImportProps {
+    onImport: (snapshots: Snapshot[]) => void;
 }
 
 export type ImportDialogMode = 'importFile' | 'importUrl';
@@ -14,6 +19,7 @@ export interface ImportState {
     dialogMode: ImportDialogMode;
     working: boolean;
     uploadFormatError?: string;
+    urlError?: string;
 }
 
 export class SnapshotImport extends React.Component<ImportProps, ImportState> {
@@ -28,14 +34,31 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
 
     upload(e: React.ChangeEvent<HTMLInputElement>) {
         if (e.target.files) {
+            this.setState({ working: true });
             const file = e.target.files[0];
-            const split = file.name.split('.');
             const reader = new FileReader();
             reader.onload = () => {
-                const id = file.name;
-                const displayName = file.name;
                 const rawText = reader.result as string;
-                //this.changeDataSource(ds);
+                let snapshots: Snapshot[];
+                try {
+                    snapshots = JSON.parse(rawText);
+                }
+                catch (e) {
+                    this.setState({ uploadFormatError: 'TODO JSON error', working: false });
+                }
+                //validate these are snapshots
+                if (Array.isArray(snapshots)) {
+                    for (let i = 0; i < snapshots.length; i++) {
+                        if (!isSnapshot(snapshots[i])) {
+                            this.setState({ uploadFormatError: 'TODO JSON error', working: false });
+                            return;
+                        }
+                    }
+                    this.props.onImport(snapshots);
+                    this.setState({ dialogMode: null });
+                } else {
+                    this.setState({ uploadFormatError: 'TODO JSON error', working: false });
+                }
             };
             reader.readAsText(file);
         }
@@ -104,7 +127,24 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
                             //disabled={!this.state.image || !this.state.title} 
                             key={0}
                             //onClick={e => this.saveSnapshot()}
-                            text={"???"}
+                            text={"TODO Import"}
+                        />
+                    )
+                )}
+                {this.commonDialog(
+                    'importUrl',
+                    'TODO Import url',
+                    (
+                        <div>
+                            TODO URL dialog
+                        </div>
+                    ),
+                    (
+                        <base.fabric.PrimaryButton
+                            //disabled={!this.state.image || !this.state.title} 
+                            key={0}
+                            //onClick={e => this.saveSnapshot()}
+                            text={"TODO Import"}
                         />
                     )
                 )}
