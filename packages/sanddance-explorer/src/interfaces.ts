@@ -28,9 +28,9 @@ export interface DataExportHandler {
 }
 
 export interface Snapshot {
-  title: string;
+  title?: string;
   description?: string;
-  insight: SandDance.types.Insight;
+  insight?: SandDance.types.Insight;
   image?: string;
   bgColor?: string;
 }

@@ -185,6 +185,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                         getSidebarChildren: (snapshots, snapshotElement) => (
                             <div>
                                 <SnapshotImport
+                                    dataSource={this.state.dataSource}
                                     onImport={snapshots => this.explorer.setState({ snapshots })}
                                 />
                                 {snapshotElement}

@@ -2,7 +2,8 @@
 // Licensed under the MIT license.
 import * as React from 'react';
 import { base } from './base';
-import { Snapshot } from '@msrvida/sanddance-explorer';
+import { DataSource, DataSourceSnapshot } from './types';
+import { SandDance, Snapshot } from '@msrvida/sanddance-explorer';
 import { strings } from './language';
 
 function isSnapshot(snapshot: Snapshot) {
@@ -11,6 +12,7 @@ function isSnapshot(snapshot: Snapshot) {
 
 export interface ImportProps {
     onImport: (snapshots: Snapshot[]) => void;
+    dataSource: DataSource;
 }
 
 export type ImportDialogMode = 'importFile' | 'importUrl';
@@ -18,7 +20,8 @@ export type ImportDialogMode = 'importFile' | 'importUrl';
 export interface ImportState {
     dialogMode: ImportDialogMode;
     working: boolean;
-    uploadFormatError?: string;
+    fileFormatError?: string;
+    url?: string;
     urlError?: string;
 }
 
@@ -32,7 +35,7 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
         };
     }
 
-    upload(e: React.ChangeEvent<HTMLInputElement>) {
+    readFile(e: React.ChangeEvent<HTMLInputElement>) {
         if (e.target.files) {
             this.setState({ working: true });
             const file = e.target.files[0];
@@ -44,29 +47,56 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
                     snapshots = JSON.parse(rawText);
                 }
                 catch (e) {
-                    this.setState({ uploadFormatError: 'TODO JSON error', working: false });
+                    this.setState({ fileFormatError: 'TODO JSON error', working: false });
                 }
                 //validate these are snapshots
                 if (Array.isArray(snapshots)) {
                     for (let i = 0; i < snapshots.length; i++) {
                         if (!isSnapshot(snapshots[i])) {
-                            this.setState({ uploadFormatError: 'TODO JSON error', working: false });
+                            this.setState({ fileFormatError: 'TODO JSON error', working: false });
                             return;
                         }
                     }
                     this.props.onImport(snapshots);
-                    this.setState({ dialogMode: null });
+                    this.setState({ dialogMode: null, working: false });
                 } else {
-                    this.setState({ uploadFormatError: 'TODO JSON error', working: false });
+                    this.setState({ fileFormatError: 'TODO JSON error', working: false });
                 }
             };
             reader.readAsText(file);
         }
     }
 
+    validUrl() {
+        if (!this.state.url) {
+            return this.setState({ urlError: strings.errorNoUrl });
+        }
+        if (this.state.url.toLocaleLowerCase().substr(0, 4) !== 'http') {
+            return this.setState({ urlError: strings.errorUrlHttp });
+        }
+    }
+
+    loadUrl() {
+        //TODO: check url
+        const { url } = this.state;
+        // this.changeDataSource(ds).catch((e: Error) => {
+        //     this.setState({ urlError: e.message });
+        // });
+    }
+
+    getUrlShortcut() {
+        //does not work for local url
+        const dataSource: DataSource = SandDance.VegaDeckGl.util.clone(this.props.dataSource);
+        delete dataSource.snapshots;
+        dataSource.snapshotsUrl = this.state.url;
+        const dss: DataSourceSnapshot = {
+            dataSource
+        };
+        return '#' + JSON.stringify(dss);
+    }
+
     commonDialog(dialogMode: ImportDialogMode, title: string, children: JSX.Element, buttons: JSX.Element | JSX.Element[]) {
         const onDismiss = () => this.setState({ dialogMode: null });
-
         return (
             <base.fabric.Dialog
                 hidden={this.state.dialogMode !== dialogMode}
@@ -94,14 +124,14 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
                                 key: 'file',
                                 text: `TODO json file ...`,
                                 onClick: e => {
-                                    this.setState({ dialogMode: 'importFile' });
+                                    this.setState({ dialogMode: 'importFile', working: false });
                                 }
                             },
                             {
                                 key: 'url',
                                 text: `TODO from url ...`,
                                 onClick: e => {
-                                    this.setState({ dialogMode: 'importUrl' });
+                                    this.setState({ dialogMode: 'importUrl', working: false });
                                 }
                             }
                         ]
@@ -114,11 +144,11 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
                         <div>
                             <input
                                 type="file"
-                                onChange={e => this.upload(e)}
+                                onChange={e => this.readFile(e)}
                                 disabled={this.state.working}
                             />
-                            {this.state.uploadFormatError && (
-                                <div className="error">{this.state.uploadFormatError}</div>
+                            {this.state.fileFormatError && (
+                                <div className="error">{this.state.fileFormatError}</div>
                             )}
                         </div>
                     ),
@@ -136,7 +166,22 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
                     'TODO Import url',
                     (
                         <div>
-                            TODO URL dialog
+                            <base.fabric.TextField
+                                label={strings.labelUrl}
+                                placeholder={strings.urlInputPlaceholder}
+                                onKeyUp={e => e.keyCode === 13 && this.loadUrl()}
+                                onChange={(e, url) =>
+                                    this.setState({ url, urlError: '' })
+                                }
+                                value={this.state.url}
+                                disabled={this.state.working}
+                            />
+                            {this.props.dataSource.dataSourceType !== 'local' && (
+                                <a href={this.getUrlShortcut()}>shortcut</a>
+                            )}
+                            {this.state.urlError && (
+                                <div className="error">{this.state.urlError}</div>
+                            )}
                         </div>
                     ),
                     (
