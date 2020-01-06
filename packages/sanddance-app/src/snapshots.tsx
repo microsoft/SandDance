@@ -11,7 +11,8 @@ function isSnapshot(snapshot: Snapshot) {
 }
 
 export interface ImportProps {
-    onImport: (snapshots: Snapshot[]) => void;
+    onImportSnapshot: (snapshots: Snapshot[]) => void;
+    onSnapshotsUrl: (snapshotsUrl: string) => void;
     dataSource: DataSource;
 }
 
@@ -50,14 +51,8 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
                     this.setState({ fileFormatError: 'TODO JSON error', working: false });
                 }
                 //validate these are snapshots
-                if (Array.isArray(snapshots)) {
-                    for (let i = 0; i < snapshots.length; i++) {
-                        if (!isSnapshot(snapshots[i])) {
-                            this.setState({ fileFormatError: 'TODO JSON error', working: false });
-                            return;
-                        }
-                    }
-                    this.props.onImport(snapshots);
+                if (this.validSnapshots(snapshots)) {
+                    this.props.onImportSnapshot(snapshots);
                     this.setState({ dialogMode: null, working: false });
                 } else {
                     this.setState({ fileFormatError: 'TODO JSON error', working: false });
@@ -67,25 +62,19 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
         }
     }
 
-    validUrl() {
-        if (!this.state.url) {
-            return this.setState({ urlError: strings.errorNoUrl });
+    validSnapshots(snapshots: Snapshot[]) {
+        if (Array.isArray(snapshots)) {
+            for (let i = 0; i < snapshots.length; i++) {
+                if (!isSnapshot(snapshots[i])) {
+                    return false;
+                }
+            }
+            return true;
         }
-        if (this.state.url.toLocaleLowerCase().substr(0, 4) !== 'http') {
-            return this.setState({ urlError: strings.errorUrlHttp });
-        }
-    }
-
-    loadUrl() {
-        //TODO: check url
-        const { url } = this.state;
-        // this.changeDataSource(ds).catch((e: Error) => {
-        //     this.setState({ urlError: e.message });
-        // });
+        return false;
     }
 
     getUrlShortcut() {
-        //does not work for local url
         const dataSource: DataSource = SandDance.VegaDeckGl.util.clone(this.props.dataSource);
         delete dataSource.snapshots;
         dataSource.snapshotsUrl = this.state.url;
@@ -95,6 +84,38 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
         return '#' + JSON.stringify(dss);
     }
 
+    invalidUrlError() {
+        if (!this.state.url) {
+            return strings.errorNoUrl;
+        }
+        if (this.state.url.toLocaleLowerCase().substr(0, 4) !== 'http') {
+            return strings.errorUrlHttp;
+        }
+    }
+
+    loadUrl() {
+        //TODO: check url
+        const urlError = this.invalidUrlError();
+        if (urlError) {
+            return this.setState({ urlError });
+        }
+        const { url } = this.state;
+        fetch(url)
+            .then(response => response.json())
+            .then(snapshots => {
+                if (this.validSnapshots(snapshots)) {
+                    this.props.onImportSnapshot(snapshots);
+                    this.props.onSnapshotsUrl(url);
+                    this.setState({ dialogMode: null, working: false });
+                } else {
+                    this.setState({ fileFormatError: 'TODO URL error', working: false });
+                }
+            })
+            .catch(() => {
+                this.setState({ urlError: 'TODO: url error' });
+            });
+    }
+
     commonDialog(dialogMode: ImportDialogMode, title: string, children: JSX.Element, buttons: JSX.Element | JSX.Element[]) {
         const onDismiss = () => this.setState({ dialogMode: null });
         return (
@@ -102,7 +123,6 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
                 hidden={this.state.dialogMode !== dialogMode}
                 onDismiss={onDismiss}
                 title={title}
-            //buttons={buttons}
             >
                 {children}
                 <base.fabric.DialogFooter>
@@ -176,7 +196,7 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
                                 value={this.state.url}
                                 disabled={this.state.working}
                             />
-                            {this.props.dataSource.dataSourceType !== 'local' && (
+                            {this.props.dataSource.dataSourceType !== 'local' && !this.invalidUrlError() && (
                                 <a href={this.getUrlShortcut()}>shortcut</a>
                             )}
                             {this.state.urlError && (
@@ -186,9 +206,9 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
                     ),
                     (
                         <base.fabric.PrimaryButton
-                            //disabled={!this.state.image || !this.state.title} 
+                            disabled={!this.state.url || !!this.state.urlError}
                             key={0}
-                            //onClick={e => this.saveSnapshot()}
+                            onClick={e => this.loadUrl()}
                             text={"TODO Import"}
                         />
                     )
@@ -199,6 +219,7 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
 }
 
 export interface ExportProps {
+    dataSource: DataSource;
     snapshots: Snapshot[];
 }
 
@@ -239,7 +260,6 @@ export class SnapshotExport extends React.Component<ExportProps, ExportState> {
                         }}
                     />
                 )}
-
             </div>
         );
     }

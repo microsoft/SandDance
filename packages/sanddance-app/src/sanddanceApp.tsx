@@ -186,10 +186,16 @@ export class SandDanceApp extends React.Component<Props, State> {
                             <div>
                                 <SnapshotImport
                                     dataSource={this.state.dataSource}
-                                    onImport={snapshots => this.explorer.setState({ snapshots })}
+                                    onImportSnapshot={snapshots => this.explorer.setState({ snapshots })}
+                                    onSnapshotsUrl={snapshotsUrl => {
+                                        const dataSource = { ...this.state.dataSource };
+                                        dataSource.snapshotsUrl = snapshotsUrl;
+                                        this.setState({ dataSource });
+                                    }}
                                 />
                                 {snapshotElement}
                                 <SnapshotExport
+                                    dataSource={this.state.dataSource}
                                     snapshots={snapshots}
                                 />
                             </div>
