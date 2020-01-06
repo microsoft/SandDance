@@ -3,22 +3,22 @@
 import * as React from 'react';
 import { base } from './base';
 import { Snapshot } from '@msrvida/sanddance-explorer';
+import { strings } from './language';
 
-export interface Props {
-    snapshots: Snapshot[];
+export interface ImportProps {
 }
 
-export type DialogMode = 'snapshot' | 'importFile' | 'importUrl' | 'exportJson' | 'exportMarkdown';
+export type ImportDialogMode = 'importFile' | 'importUrl';
 
 export interface ImportState {
-    dialogMode: DialogMode;
+    dialogMode: ImportDialogMode;
     working: boolean;
     uploadFormatError?: string;
 }
 
-export class SnapshotImport extends React.Component<Props, ImportState> {
+export class SnapshotImport extends React.Component<ImportProps, ImportState> {
 
-    constructor(props: Props) {
+    constructor(props: ImportProps) {
         super(props);
         this.state = {
             dialogMode: null,
@@ -41,15 +41,21 @@ export class SnapshotImport extends React.Component<Props, ImportState> {
         }
     }
 
-    commonDialog(dialogMode: DialogMode, title: string, children: JSX.Element, buttons: JSX.Element | JSX.Element[]) {
+    commonDialog(dialogMode: ImportDialogMode, title: string, children: JSX.Element, buttons: JSX.Element | JSX.Element[]) {
+        const onDismiss = () => this.setState({ dialogMode: null });
+
         return (
             <base.fabric.Dialog
                 hidden={this.state.dialogMode !== dialogMode}
-                onDismiss={() => this.setState({ dialogMode: null })}
+                onDismiss={onDismiss}
                 title={title}
             //buttons={buttons}
             >
                 {children}
+                <base.fabric.DialogFooter>
+                    {buttons}
+                    <base.fabric.DefaultButton onClick={onDismiss} text={strings.dialogCloseButton} />
+                </base.fabric.DialogFooter>
             </base.fabric.Dialog>
         );
     }
@@ -58,21 +64,21 @@ export class SnapshotImport extends React.Component<Props, ImportState> {
         return (
             <div>
                 <base.fabric.DefaultButton
-                    text='Export... TODO'
+                    text='Import... TODO'
                     menuProps={{
                         items: [
                             {
-                                key: 'json',
-                                text: `TODO json file`,
+                                key: 'file',
+                                text: `TODO json file ...`,
                                 onClick: e => {
-                                    this.setState({ dialogMode: 'exportJson' });
+                                    this.setState({ dialogMode: 'importFile' });
                                 }
                             },
                             {
-                                key: 'md',
-                                text: `TODO markdown page`,
+                                key: 'url',
+                                text: `TODO from url ...`,
                                 onClick: e => {
-                                    this.setState({ dialogMode: 'exportMarkdown' });
+                                    this.setState({ dialogMode: 'importUrl' });
                                 }
                             }
                         ]
@@ -107,12 +113,16 @@ export class SnapshotImport extends React.Component<Props, ImportState> {
     }
 }
 
+export interface ExportProps {
+    snapshots: Snapshot[];
+}
+
 export interface ExportState {
 }
 
-export class SnapshotExport extends React.Component<Props, ExportState> {
+export class SnapshotExport extends React.Component<ExportProps, ExportState> {
 
-    constructor(props: Props) {
+    constructor(props: ExportProps) {
         super(props);
         this.state = {
         };
@@ -130,14 +140,14 @@ export class SnapshotExport extends React.Component<Props, ExportState> {
                                     key: 'json',
                                     text: `TODO json file`,
                                     onClick: e => {
-                                        this.setState({ dialogMode: 'exportJson' });
+                                        //TODO export json
                                     }
                                 },
                                 {
                                     key: 'md',
                                     text: `TODO markdown page`,
                                     onClick: e => {
-                                        this.setState({ dialogMode: 'exportMarkdown' });
+                                        //TODO export md
                                     }
                                 }
                             ]

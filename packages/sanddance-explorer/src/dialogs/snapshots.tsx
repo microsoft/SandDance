@@ -13,8 +13,7 @@ import { Snapshot, SnapshotAction } from '../interfaces';
 import { strings } from '../language';
 
 export interface SnapshotProps {
-    getSidebarTopChildren?: (snapshots: Snapshot[]) => React.ReactNode;
-    getSidebarBottomChildren?: (snapshots: Snapshot[]) => React.ReactNode;
+    getSidebarChildren?: (snapshots: Snapshot[], snapshotElement: JSX.Element) => React.ReactNode;
     getActions?: (snapshot: Snapshot, snapshotIndex: number) => SnapshotAction[];
     modifySnapShot?: (snapshot: Snapshot) => void;
     getTitle?: (insight: SandDance.types.Insight) => string;
@@ -83,9 +82,8 @@ export class Snapshots extends React.Component<Props, State>{
     }
 
     render() {
-        return (
-            <Group className="sanddance-snapshots" label={strings.labelSnapshots}>
-                {this.props.getSidebarTopChildren && this.props.getSidebarTopChildren(this.props.snapshots)}
+        const snapshotElement = (
+            <div>
                 <base.fabric.PrimaryButton
                     text={strings.buttonCreateSnapshot}
                     onClick={e => {
@@ -209,8 +207,14 @@ export class Snapshots extends React.Component<Props, State>{
                             </div>
                         );
                     })}
-                    {this.props.getSidebarBottomChildren && this.props.getSidebarBottomChildren(this.props.snapshots)}
                 </div>
+            </div>
+        );
+
+        return (
+            <Group className="sanddance-snapshots" label={strings.labelSnapshots}>
+                {this.props.getSidebarChildren && this.props.getSidebarChildren(this.props.snapshots, snapshotElement)}
+                {!this.props.getSidebarChildren && snapshotElement}
             </Group>
         );
     }

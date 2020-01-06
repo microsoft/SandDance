@@ -182,15 +182,14 @@ export class SandDanceApp extends React.Component<Props, State> {
                         },
                         getTitle: insight => `${this.state.dataSource.displayName} ${insight.chart}`,
                         getDescription: insight => '', //TODO create description from filter etc.
-                        getSidebarTopChildren: snapshots => (
-                            <SnapshotImport
-                                snapshots={snapshots}
-                            />
-                        ),
-                        getSidebarBottomChildren: snapshots => (
-                            <SnapshotExport
-                                snapshots={snapshots}
-                            />
+                        getSidebarChildren: (snapshots, snapshotElement) => (
+                            <div>
+                                <SnapshotImport/>
+                                {snapshotElement}
+                                <SnapshotExport
+                                    snapshots={snapshots}
+                                />
+                            </div>
                         )
                     }}
                     onSnapshotClick={(snapshot: DataSourceSnapshot) => this.hydrateSnapshot(snapshot)}
