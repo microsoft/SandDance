@@ -90,6 +90,7 @@ export interface State extends SandDance.types.Insight {
     dataScopeId: DataScopeId;
     selectedItemIndex: { [key: number]: number };
     snapshots: Snapshot[];
+    selectedSnapshotIndex: number;
     tooltipExclusions: string[];
     positionedColumnMapProps: PositionedColumnMapProps;
 }
@@ -171,6 +172,7 @@ export class Explorer extends React.Component<Props, State> {
             sidebarPinned: true,
             view: props.initialView || '2d',
             snapshots: [],
+            selectedSnapshotIndex: -1,
             tooltipExclusions: [],
             positionedColumnMapProps: null
         };
@@ -1011,7 +1013,10 @@ export class Explorer extends React.Component<Props, State> {
                                             themePalette={themePalette}
                                             explorer={this}
                                             snapshots={this.state.snapshots}
-                                            onClearSnapshots={() => this.setState({ snapshots: [] })}
+                                            selectedSnapshotIndex={this.state.selectedSnapshotIndex}
+                                            onClearSnapshots={() => {
+                                                this.setState({ snapshots: [], selectedSnapshotIndex: -1 });
+                                            }}
                                             onCreateSnapshot={(snapshot, editIndex) => {
                                                 let snapshots: Snapshot[];
                                                 if (editIndex >= 0) {
@@ -1025,9 +1030,16 @@ export class Explorer extends React.Component<Props, State> {
                                             onRemoveSnapshot={i => {
                                                 const snapshots = [...this.state.snapshots];
                                                 snapshots.splice(i, 1);
-                                                this.setState({ snapshots });
+                                                let { selectedSnapshotIndex } = this.state;
+                                                if (i === selectedSnapshotIndex) {
+                                                    selectedSnapshotIndex = -1;
+                                                } else if (selectedSnapshotIndex > i) {
+                                                    selectedSnapshotIndex--;
+                                                }
+                                                this.setState({ snapshots, selectedSnapshotIndex });
                                             }}
-                                            onSnapshotClick={snapshot => {
+                                            onSnapshotClick={(snapshot, selectedSnapshotIndex) => {
+                                                this.setState({ selectedSnapshotIndex });
                                                 this.calculate(() => {
                                                     if (this.props.onSnapshotClick) {
                                                         this.props.onSnapshotClick(snapshot);
@@ -1042,7 +1054,13 @@ export class Explorer extends React.Component<Props, State> {
                                                     const temp = snapshots[i - 1];
                                                     snapshots[i - 1] = snapshots[i];
                                                     snapshots[i] = temp;
-                                                    this.setState({ snapshots });
+                                                    let { selectedSnapshotIndex } = this.state;
+                                                    if (i === selectedSnapshotIndex) {
+                                                        selectedSnapshotIndex = i - 1;
+                                                    } else if (i - 1 === selectedSnapshotIndex) {
+                                                        selectedSnapshotIndex = i;
+                                                    }
+                                                    this.setState({ snapshots, selectedSnapshotIndex });
                                                 }
                                             }}
                                             onMoveDown={i => {
@@ -1051,7 +1069,13 @@ export class Explorer extends React.Component<Props, State> {
                                                     const temp = snapshots[i + 1];
                                                     snapshots[i + 1] = snapshots[i];
                                                     snapshots[i] = temp;
-                                                    this.setState({ snapshots });
+                                                    let { selectedSnapshotIndex } = this.state;
+                                                    if (i === selectedSnapshotIndex) {
+                                                        selectedSnapshotIndex = i + 1;
+                                                    } else if (i + 1 === selectedSnapshotIndex) {
+                                                        selectedSnapshotIndex = i;
+                                                    }
+                                                    this.setState({ snapshots, selectedSnapshotIndex });
                                                 }
                                             }}
                                         />

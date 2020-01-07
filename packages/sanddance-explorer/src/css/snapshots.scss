@@ -9,7 +9,12 @@
             border: 1px solid rgba(0, 0, 0, 0.2);
             cursor: pointer;
             margin-bottom: 0.5em;
-            padding: 4px;
+            padding: 5px;
+            &.selected {
+                border-color: rgba(0, 0, 0, 0.6);
+                border-width: 2px;
+                padding: 4px;
+            }
             &:hover {
                 background-color: rgba(0, 0, 0, 0.1);
             }
@@ -65,6 +70,9 @@
             .snapshot {
                 background-color: rgba(0, 0, 0, 0.6);
                 border-color: rgba(255, 255, 255, 0.2);
+                &.selected {
+                    border-color: rgba(255, 255, 255, 0.6);
+                }
                 &:hover {
                     background-color: rgba(0, 0, 0, 1);
                 }

@@ -23,12 +23,13 @@ export interface SnapshotProps {
 export interface Props extends SnapshotProps {
     explorer: Explorer;
     snapshots: Snapshot[];
+    selectedSnapshotIndex: number;
     onClearSnapshots: () => void;
     onCreateSnapshot: (snapshot: Snapshot, editIndex: number) => void;
     onRemoveSnapshot: (i: number) => void;
     onMoveUp: (i: number) => void;
     onMoveDown: (i: number) => void;
-    onSnapshotClick?: (snapshot: Snapshot) => void;
+    onSnapshotClick?: (snapshot: Snapshot, index: number) => void;
     themePalette: Partial<FabricTypes.IPalette>;
 }
 
@@ -207,14 +208,14 @@ export class Snapshots extends React.Component<Props, State>{
                             }
                         );
                         return (
-                            <div key={i} className="snapshot">
+                            <div key={i} className={util.classList('snapshot', i === this.props.selectedSnapshotIndex && 'selected')}>
                                 <div
-                                    onClick={e => this.props.onSnapshotClick(snapshot)}
+                                    onClick={e => this.props.onSnapshotClick(snapshot, i)}
                                 >
-                                    <div className="title">
+                                    <div className='title'>
                                         {snapshot.title}
                                     </div>
-                                    <div className="description">
+                                    <div className='description'>
                                         {snapshot.description}
                                     </div>
                                     <div className='thumbnail'>
