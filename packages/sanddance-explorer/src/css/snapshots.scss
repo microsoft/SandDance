@@ -13,10 +13,16 @@
             &:hover {
                 background-color: rgba(0, 0, 0, 0.1);
             }
+            &:first-child {
+                margin-top: 0.5em;
+            }
         }
         .title {
-            display: grid;
-            grid-template-columns: auto 32px;
+            font-weight: 500;
+            word-break: break-word;
+        }
+        .description {
+            font-weight: 100;
             word-break: break-word;
         }
         .thumbnail {
@@ -56,7 +62,13 @@
     }
     .dark-theme {
         .sanddance-snapshots {
-            border-color: rgba(255, 255, 255, 0.2);
+            .snapshot {
+                background-color: rgba(0, 0, 0, 0.6);
+                border-color: rgba(255, 255, 255, 0.2);
+                &:hover {
+                    background-color: rgba(0, 0, 0, 1);
+                }
+            }
             .actions a {
                 color: #fff;
             }

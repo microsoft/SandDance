@@ -23,6 +23,7 @@ export interface SnapshotProps {
 export interface Props extends SnapshotProps {
     explorer: Explorer;
     snapshots: Snapshot[];
+    onClearSnapshots: () => void;
     onCreateSnapshot: (snapshot: Snapshot, editIndex: number) => void;
     onRemoveSnapshot: (i: number) => void;
     onMoveUp: (i: number) => void;
@@ -103,6 +104,23 @@ export class Snapshots extends React.Component<Props, State>{
                         });
                     }}
                 />
+                {this.props.snapshots.length > 0 && (
+                    <base.fabric.DefaultButton
+                        text={strings.buttonClearSnapshots}
+                        menuProps={{
+                            items: [
+                                {
+                                    key: 'confirm',
+                                    text: strings.labelConfirmDelete,
+                                    onClick: () => {
+                                        this.props.onClearSnapshots();
+                                    }
+                                }
+                            ]
+                        }}
+                        onRenderMenuIcon={() => null}
+                    />
+                )}
                 <Dialog
                     modalProps={{ className: util.classList('sanddance-snapshot-dialog', this.props.explorer.props.theme) }}
                     minWidth={`${thumbWidth + 64}px`}
@@ -179,7 +197,7 @@ export class Snapshots extends React.Component<Props, State>{
                                         items: [
                                             {
                                                 key: 'confirm',
-                                                text: `${strings.buttonDeleteSnapshot}?`,
+                                                text: strings.labelConfirmDelete,
                                                 onClick: e => this.props.onRemoveSnapshot(i),
                                             }
                                         ]
@@ -195,6 +213,9 @@ export class Snapshots extends React.Component<Props, State>{
                                 >
                                     <div className="title">
                                         {snapshot.title}
+                                    </div>
+                                    <div className="description">
+                                        {snapshot.description}
                                     </div>
                                     <div className='thumbnail'>
                                         <img title={snapshot.description} src={snapshot.image} style={{ backgroundColor: snapshot.bgColor }} />

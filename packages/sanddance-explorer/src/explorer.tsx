@@ -1011,6 +1011,7 @@ export class Explorer extends React.Component<Props, State> {
                                             themePalette={themePalette}
                                             explorer={this}
                                             snapshots={this.state.snapshots}
+                                            onClearSnapshots={() => this.setState({ snapshots: [] })}
                                             onCreateSnapshot={(snapshot, editIndex) => {
                                                 let snapshots: Snapshot[];
                                                 if (editIndex >= 0) {
