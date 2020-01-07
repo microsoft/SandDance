@@ -7,6 +7,20 @@ import { downloadData } from './download';
 import { SandDance, Snapshot } from '@msrvida/sanddance-explorer';
 import { strings } from './language';
 
+import VegaDeckGl = SandDance.VegaDeckGl;
+import util = VegaDeckGl.util;
+
+export function serializeSnapshot(snapshotWithImage: Snapshot) {
+    const snapshot = util.clone(snapshotWithImage) as DataSourceSnapshot;
+    //remove the image data from the snapshot
+    delete snapshot.bgColor;
+    delete snapshot.image;
+    if (snapshot.dataSource) {
+        delete snapshot.dataSource.rawText;
+    }
+    return JSON.stringify(snapshot);
+}
+
 function isSnapshot(snapshot: Snapshot) {
     return snapshot.insight && snapshot.title;
 }
@@ -61,14 +75,14 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
                     snapshots = JSON.parse(rawText);
                 }
                 catch (e) {
-                    this.setState({ fileFormatError: 'TODO JSON error', working: false });
+                    this.setState({ fileFormatError: strings.errorInvalidFileFormat, working: false });
                 }
                 //validate these are snapshots
                 if (validSnapshots(snapshots)) {
                     this.props.onImportSnapshot(snapshots);
                     this.setState({ dialogMode: null, working: false });
                 } else {
-                    this.setState({ fileFormatError: 'TODO JSON error', working: false });
+                    this.setState({ fileFormatError: strings.errorInvalidFileFormat, working: false });
                 }
             };
             reader.readAsText(file);
@@ -76,7 +90,7 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
     }
 
     getUrlShortcut() {
-        const dataSource = SandDance.VegaDeckGl.util.clone(this.props.dataSource);
+        const dataSource = util.clone(this.props.dataSource);
         delete dataSource.snapshots;
         dataSource.snapshotsUrl = this.state.url;
         const dss: DataSourceSnapshot = {
@@ -95,35 +109,46 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
     }
 
     loadUrl() {
-        //TODO: check url
         const urlError = this.invalidUrlError();
         if (urlError) {
             return this.setState({ urlError });
         }
         const { url } = this.state;
         fetch(url)
-            .then(response => response.json())
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    this.setState({ urlError: response.statusText });
+                }
+            })
             .then(snapshots => {
                 if (validSnapshots(snapshots)) {
                     this.props.onImportSnapshot(snapshots);
                     this.props.onSnapshotsUrl(url);
                     this.setState({ dialogMode: null, working: false });
                 } else {
-                    this.setState({ fileFormatError: 'TODO URL error', working: false });
+                    this.setState({ fileFormatError: strings.errorInvalidFileFormat, working: false });
                 }
             })
-            .catch(() => {
-                this.setState({ urlError: 'TODO: url error' });
+            .catch(e => {
+                console.log(e);
+                //this.setState({ urlError: e });
             });
     }
 
-    commonDialog(dialogMode: ImportDialogMode, title: string, children: JSX.Element, buttons: JSX.Element | JSX.Element[]) {
+    commonDialog(dialogMode: ImportDialogMode, title: string, subText: string, children: JSX.Element, buttons?: JSX.Element | JSX.Element[]) {
         const onDismiss = () => this.setState({ dialogMode: null });
         return (
             <base.fabric.Dialog
                 hidden={this.state.dialogMode !== dialogMode}
                 onDismiss={onDismiss}
-                title={title}
+                dialogContentProps={{
+                    className: 'sanddance-dialog',
+                    type: base.fabric.DialogType.normal,
+                    title,
+                    subText
+                }}
             >
                 {children}
                 <base.fabric.DialogFooter>
@@ -138,21 +163,21 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
         return (
             <div>
                 <base.fabric.DefaultButton
-                    text='Import TODO'
+                    text={strings.labelImportSnapshots}
                     menuProps={{
                         items: [
                             {
                                 key: 'file',
-                                text: `TODO json file ...`,
+                                text: strings.menuLocal,
                                 onClick: e => {
-                                    this.setState({ dialogMode: 'importFile', working: false });
+                                    this.setState({ dialogMode: 'importFile', fileFormatError: null, working: false });
                                 }
                             },
                             {
                                 key: 'url',
-                                text: `TODO from url ...`,
+                                text: strings.menuUrl,
                                 onClick: e => {
-                                    this.setState({ dialogMode: 'importUrl', working: false });
+                                    this.setState({ dialogMode: 'importUrl', url: '', urlError: null, working: false });
                                 }
                             }
                         ]
@@ -160,7 +185,8 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
                 />
                 {this.commonDialog(
                     'importFile',
-                    'TODO Import file',
+                    strings.dialogTitleSnapshotsLocal,
+                    strings.dialogSubtextSnapshotsLocal,
                     (
                         <div>
                             <input
@@ -172,19 +198,12 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
                                 <div className="error">{this.state.fileFormatError}</div>
                             )}
                         </div>
-                    ),
-                    (
-                        <base.fabric.PrimaryButton
-                            //disabled={!this.state.image || !this.state.title} 
-                            key={0}
-                            //onClick={e => this.saveSnapshot()}
-                            text={"TODO Import"}
-                        />
                     )
                 )}
                 {this.commonDialog(
                     'importUrl',
-                    'TODO Import url',
+                    strings.dialogTitleSnapshotsUrl,
+                    '',
                     (
                         <div>
                             <base.fabric.TextField
@@ -197,9 +216,13 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
                                 value={this.state.url}
                                 disabled={this.state.working}
                             />
-                            {this.props.dataSource.dataSourceType !== 'local' && !this.invalidUrlError() && (
-                                <a href={this.getUrlShortcut()}>shortcut</a>
-                            )}
+                            {this.props.dataSource.dataSourceType !== 'local'
+                                && !this.invalidUrlError()
+                                && !this.state.urlError
+                                && (
+                                    <a href={this.getUrlShortcut()}>shortcut</a>
+                                )
+                            }
                             {this.state.urlError && (
                                 <div className="error">{this.state.urlError}</div>
                             )}
@@ -210,7 +233,7 @@ export class SnapshotImport extends React.Component<ImportProps, ImportState> {
                             disabled={!this.state.url || !!this.state.urlError}
                             key={0}
                             onClick={e => this.loadUrl()}
-                            text={"TODO Import"}
+                            text={strings.dialogLoadButton}
                         />
                     )
                 )}
@@ -240,15 +263,15 @@ export class SnapshotExport extends React.Component<ExportProps, ExportState> {
             <div>
                 {this.props.snapshots.length > 0 && (
                     <base.fabric.DefaultButton
-                        text='Export TODO'
+                        text={strings.labelExportSnapshots}
                         menuProps={{
                             items: [
                                 {
                                     key: 'json',
-                                    text: `TODO json file`,
+                                    text: strings.menuSnapshotExportJson,
                                     onClick: e => {
                                         //clean prior to exporting
-                                        const snapshots = SandDance.VegaDeckGl.util.clone(this.props.snapshots) as DataSourceSnapshot[];
+                                        const snapshots = util.clone(this.props.snapshots) as DataSourceSnapshot[];
                                         snapshots.forEach(snapshot => {
                                             if (snapshot.dataSource) {
                                                 delete snapshot.dataSource.snapshotsUrl;
@@ -259,9 +282,18 @@ export class SnapshotExport extends React.Component<ExportProps, ExportState> {
                                 },
                                 {
                                     key: 'md',
-                                    text: `TODO markdown page`,
+                                    text: strings.menuSnapshotExportMarkdown,
                                     onClick: e => {
-                                        //TODO export md
+                                        const sections = this.props.snapshots.map(snapshot => {
+                                            const section = [`## ${snapshot.title}`];
+                                            section.push(snapshot.description);
+                                            section.push('\n');
+                                            const url = `${location.origin}/#${encodeURIComponent(serializeSnapshot(snapshot))}`;
+                                            section.push(markdownImageLink(snapshot.title, snapshot.image, url));
+                                            return section.join('\n');
+                                        });
+                                        sections.unshift(`# ${this.props.dataSource.displayName}`);
+                                        downloadData(sections.join('\n\n'), `${this.props.dataSource.displayName}.snapshots.md`);
                                     }
                                 }
                             ]
@@ -271,4 +303,9 @@ export class SnapshotExport extends React.Component<ExportProps, ExportState> {
             </div>
         );
     }
+}
+
+
+function markdownImageLink(alt: string, imageUrl: string, link: string) {
+    return `[![${alt}](${imageUrl})](${link})`;
 }

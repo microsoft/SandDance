@@ -15,7 +15,7 @@ import {
 import { DataSource, DataSourceSnapshot, InsightMap } from './types';
 import { DataSourcePicker } from './dataSourcePicker';
 import { downloadData } from './download';
-import { SnapshotExport, SnapshotImport, validSnapshots } from './snapshots';
+import { SnapshotExport, SnapshotImport, validSnapshots, serializeSnapshot } from './snapshots';
 import { strings } from './language';
 
 import VegaDeckGl = SandDance.VegaDeckGl;
@@ -57,17 +57,6 @@ function getSnapshotFromHash() {
             // continue regardless of error
         }
     }
-}
-
-export function serializeSnapshot(snapshotWithImage: Snapshot) {
-    const snapshot = VegaDeckGl.util.clone(snapshotWithImage) as DataSourceSnapshot;
-    //remove the image data from the snapshot
-    delete snapshot.bgColor;
-    delete snapshot.image;
-    if (snapshot.dataSource) {
-        delete snapshot.dataSource.rawText;
-    }
-    return JSON.stringify(snapshot);
 }
 
 let snapshotOnLoad = getSnapshotFromHash();

@@ -1,20 +1,25 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 export const strings = {
-    buttonCreateSnapshot: 'Generate snapshot',
-    labelSnapshotDescription: 'Description',
     buttonThemeDark: 'Dark',
     buttonThemeLight: 'Light',
     menuUserData: 'Use your own data',
     menuLocal: 'On this computer ...',
     menuUrl: 'Enter a URL ...',
+    menuSnapshotExportJson: 'As snapshots JSON',
+    menuSnapshotExportMarkdown: 'As Markdown',
     dialogTitleLocal: 'Use a file from your computer',
     dialogSubtextLocal: 'Your file will not be uploaded, it is only used by the browser on this computer.  The currently supported data formats are json (the default), csv (comma-separated values), tsv (tab-separated values), and topojson.',
     dialogTitleUrl: 'Use a data file via URL',
+    dialogTitleSnapshotsLocal: 'Use a snapshots file from your computer',
+    dialogSubtextSnapshotsLocal: 'Your file will not be uploaded, it is only used by the browser on this computer.',
+    dialogTitleSnapshotsUrl: 'Use a snapshots file via URL',
     dialogCloseButton: 'Close',
     dialogLoadButton: 'Load',
     labelLocal: '[local]',
     labelColorFilter: 'Note: Colors will be re-mapped to the filter when viewing this saved chart.',
+    labelExportSnapshots: 'Export snapshots',
+    labelImportSnapshots: 'Import snapshots',
     labelLink: 'link',
     labelUrl: 'Url',
     labelDataFormat: 'Data format',
@@ -25,6 +30,5 @@ export const strings = {
     errorInvalidFileFormat: 'Invalid file format',
     errorNoUrl: 'Please enter a url',
     errorUrlHttp: 'Url must begin with "http"',
-    errorDownloadFailure: 'Data could not be prepared for download.',
-    snapshots: 'Snapshots'
+    errorDownloadFailure: 'Data could not be prepared for download.'
 };
