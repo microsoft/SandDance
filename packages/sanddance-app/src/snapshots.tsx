@@ -267,29 +267,34 @@ export function SnapshotExport(props: ExportProps) {
         <base.fabric.Dialog
             hidden={false}
             onDismiss={props.onDismiss}
+            dialogContentProps={{
+                className:  'sanddance-dialog sanddance-export',
+                type: base.fabric.DialogType.normal,
+                title: strings.dialogTitleSnapshotsExport
+            }}
         >
-            <div style={{ display: 'grid', gridTemplateColumns: '50% 50%' }}>
-                <section>
-                    <h4>HTML</h4>
+            <ul>
+                <li>
+                    <strong>{strings.labelSnapshotsExportHTMLTitle}</strong>
                     <div>
-                        A self contained html page with these snapshots pre-loaded.
+                        {strings.labelSnapshotsExportHTMLDescription}
                     </div>
                     <base.fabric.PrimaryButton
-                        text={'TODO Download'}
+                        text={`${strings.buttonExport} ${strings.labelSnapshotsExportHTMLTitle}`}
                         onClick={e => {
                             const clean = cleanSnapshots(props.snapshots);
                             const snapshotsJSON = JSON.stringify(clean, null, 2);
                             //TODO add to HTML
                         }}
                     />
-                </section>
-                <section>
-                    <h4>Markdown file</h4>
+                </li>
+                <li>
+                    <strong>{strings.labelSnapshotsExportMarkdownTitle}</strong>
                     <div>
-                        Export a Markdown file. Markdown is commonly used to create blog posts.
+                        {strings.labelSnapshotsExportMarkdownDescription}
                     </div>
                     <base.fabric.PrimaryButton
-                        text={'TODO Download'}
+                        text={`${strings.buttonExport} ${strings.labelSnapshotsExportMarkdownTitle}`}
                         onClick={e => {
                             const sections = props.snapshots.map(snapshot => {
                                 const section = [`## ${snapshot.title}`];
@@ -303,8 +308,11 @@ export function SnapshotExport(props: ExportProps) {
                             downloadData(sections.join('\n\n'), `${props.dataSource.displayName}.snapshots.md`);
                         }}
                     />
-                </section>
-            </div>
+                </li>
+            </ul>
+            <base.fabric.DialogFooter>
+                <base.fabric.DefaultButton onClick={props.onDismiss} text={strings.dialogCloseButton} />
+            </base.fabric.DialogFooter>
         </base.fabric.Dialog>
     );
 }
