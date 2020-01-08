@@ -14,15 +14,15 @@ import {
 import { DataSource, DataSourceSnapshot, InsightMap } from './types';
 import { DataSourcePicker } from './dataSourcePicker';
 import { downloadData } from './download';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import {
+    downloadSnapshotsJSON,
     serializeSnapshot,
     SnapshotExport,
     SnapshotImportLocal,
     SnapshotImportRemote,
-    validSnapshots,
-    downloadSnapshotsJSON
+    validSnapshots
 } from './snapshots';
+import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { strings } from './language';
 
 import VegaDeckGl = SandDance.VegaDeckGl;
@@ -126,7 +126,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                     .then(response => response.json())
                     .then(snapshots => {
                         if (validSnapshots(snapshots)) {
-                            this.explorer.setState({ snapshots })
+                            this.explorer.setState({ snapshots });
                             const dataSource = { ...this.state.dataSource };
                             dataSource.snapshotsUrl = snapshot.dataSource.snapshotsUrl;
                             this.setState({ dataSource });
