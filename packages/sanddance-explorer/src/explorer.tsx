@@ -343,6 +343,7 @@ export class Explorer extends React.Component<Props, State> {
             selectedItemIndex,
             ...partialInsight
         };
+        newState.search = createInputSearch(newState.filter);
         const changeInsight = () => {
             this.getColorContext = null;
             this.changeInsight(newState as State);
