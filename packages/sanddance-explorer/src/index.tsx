@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+export { getEmbedHTML } from './controls/dataExporter';
 export { ColorSettings, DataContent, DataExportType, DataFile, DataFileType, Snapshot, ViewerOptions } from './interfaces';
 export { use } from './base';
 export { capabilities } from './canvas';
