@@ -1021,14 +1021,22 @@ export class Explorer extends React.Component<Props, State> {
                                                 this.setState({ snapshots: [], selectedSnapshotIndex: -1 });
                                             }}
                                             onCreateSnapshot={(snapshot, editIndex) => {
+                                                let { selectedSnapshotIndex } = this.state;
                                                 let snapshots: Snapshot[];
                                                 if (editIndex >= 0) {
                                                     snapshots = [...this.state.snapshots];
                                                     snapshots[editIndex] = snapshot;
                                                 } else {
                                                     snapshots = this.state.snapshots.concat(snapshot);
+                                                    selectedSnapshotIndex = snapshots.length - 1;
+                                                    setTimeout(() => {
+                                                        const selectedSnapshotElement = this.div.querySelector(`.snapshot:nth-child(${selectedSnapshotIndex + 1})`);
+                                                        if (selectedSnapshotElement) {
+                                                            selectedSnapshotElement.scrollIntoView();
+                                                        }
+                                                    }, 500);
                                                 }
-                                                this.setState({ snapshots });
+                                                this.setState({ snapshots, selectedSnapshotIndex });
                                             }}
                                             onRemoveSnapshot={i => {
                                                 const snapshots = [...this.state.snapshots];
