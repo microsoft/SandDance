@@ -9,3 +9,5 @@ export const defaultViewerOptions: Partial<ViewerOptions> = {
     colors: getColorSettingsFromThemePalette(themePalettes['']),
     fontFamily
 };
+
+export const snapshotThumbWidth = 300;

@@ -24,7 +24,7 @@ import {
 } from './partialInsight';
 import { DataBrowser } from './dialogs/dataBrowser';
 import { DataScopeId } from './controls/dataScope';
-import { defaultViewerOptions } from './defaults';
+import { defaultViewerOptions, snapshotThumbWidth } from './defaults';
 import { Dialog } from './controls/dialog';
 import { ensureColumnsExist, ensureColumnsPopulated } from './columns';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
@@ -139,6 +139,7 @@ export class Explorer extends React.Component<Props, State> {
     public discardColorContextUpdates: boolean;
     public prefs: Prefs;
     public div: HTMLElement;
+    public snapshotThumbWidth: number;
 
     constructor(props: Props) {
         super(props);
@@ -181,6 +182,7 @@ export class Explorer extends React.Component<Props, State> {
         this.state.selectedItemIndex[DataScopeId.FilteredData] = 0;
         this.state.selectedItemIndex[DataScopeId.SelectedData] = 0;
 
+        this.snapshotThumbWidth = snapshotThumbWidth;
         this.discardColorContextUpdates = true;
         this.updateViewerOptions({ ...SandDance.VegaDeckGl.util.clone(SandDance.Viewer.defaultViewerOptions), ...props.viewerOptions });
     }
