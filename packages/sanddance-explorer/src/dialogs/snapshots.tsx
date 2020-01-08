@@ -15,6 +15,7 @@ import { strings } from '../language';
 export interface SnapshotProps {
     getTopActions?: (snapshots: Snapshot[]) => FabricTypes.IContextualMenuItem[];
     getActions?: (snapshot: Snapshot, snapshotIndex: number) => SnapshotAction[];
+    getChildren?: (snapshots: Snapshot[]) => React.ReactNode;
     modifySnapShot?: (snapshot: Snapshot) => void;
     getTitle?: (insight: SandDance.types.Insight) => string;
     getDescription?: (insight: SandDance.types.Insight) => string;
@@ -133,6 +134,7 @@ export class Snapshots extends React.Component<Props, State>{
                             items
                         }}
                     />
+                    {this.props.getChildren && this.props.getChildren(this.props.snapshots)}
                     {this.state.confirmation && (
                         <Dialog
                             hidden={false}

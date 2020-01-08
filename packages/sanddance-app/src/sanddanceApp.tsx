@@ -18,8 +18,10 @@ import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import {
     serializeSnapshot,
     SnapshotExport,
-    SnapshotImport,
-    validSnapshots
+    SnapshotImportLocal,
+    SnapshotImportRemote,
+    validSnapshots,
+    downloadSnapshotsJSON
 } from './snapshots';
 import { strings } from './language';
 
@@ -36,7 +38,10 @@ export interface Props {
     initialOptions?: { [dataSetId: string]: Options };
 }
 
+export type Dialogs = 'import-local' | 'import-remote' | 'export';
+
 export interface State {
+    dialogMode: Dialogs;
     dataSource: DataSource;
     darkTheme: boolean;
 }
@@ -82,6 +87,7 @@ export class SandDanceApp extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
+            dialogMode: null,
             dataSource: snapshotOnLoad && snapshotOnLoad.dataSource || props.dataSources[0],
             darkTheme: props.darkTheme
         };
@@ -180,36 +186,68 @@ export class SandDanceApp extends React.Component<Props, State> {
                         getTopActions: snapshots => {
                             const items: FabricTypes.IContextualMenuItem[] = [
                                 {
-                                    key: 'import-file',
-                                    text: strings.menuSnapshotsImportFile
+                                    key: 'import',
+                                    text: strings.menuSnapshotsImport,
+                                    subMenuProps: {
+                                        items: [
+                                            {
+                                                key: 'import-local',
+                                                text: strings.menuLocal,
+                                                onClick: () => this.setState({ dialogMode: 'import-local' })
+                                            },
+                                            {
+                                                key: 'import-remote',
+                                                text: strings.menuUrl,
+                                                onClick: () => this.setState({ dialogMode: 'import-remote' })
+                                            }
+                                        ]
+                                    }
                                 },
                                 {
-                                    key: 'import-url',
-                                    text: strings.menuSnapshotsImportUrl
+                                    key: 'export',
+                                    text: strings.menuSnapshotsExportAsJSON,
+                                    disabled: snapshots.length === 0,
+                                    onClick: () => downloadSnapshotsJSON(snapshots, `${this.state.dataSource.displayName}.snapshots`)
+                                },
+                                {
+                                    key: 'export-as',
+                                    text: strings.menuSnapshotsExportAs,
+                                    disabled: snapshots.length === 0,
+                                    onClick: () => this.setState({ dialogMode: 'export' })
                                 }
                             ];
                             return items;
                         },
-
-                        //,
-                        // getSidebarChildren: (snapshots, snapshotElement) => (
-                        //     <div>
-                        //         <SnapshotImport
-                        //             dataSource={this.state.dataSource}
-                        //             onImportSnapshot={snapshots => this.explorer.setState({ snapshots })}
-                        //             onSnapshotsUrl={snapshotsUrl => {
-                        //                 const dataSource = { ...this.state.dataSource };
-                        //                 dataSource.snapshotsUrl = snapshotsUrl;
-                        //                 this.setState({ dataSource });
-                        //             }}
-                        //         />
-                        //         {snapshotElement}
-                        //         <SnapshotExport
-                        //             dataSource={this.state.dataSource}
-                        //             snapshots={snapshots}
-                        //         />
-                        //     </div>
-                        // )
+                        getChildren: snapshots => (
+                            <div>
+                                {this.state.dialogMode === 'import-local' && (
+                                    <SnapshotImportLocal
+                                        dataSource={this.state.dataSource}
+                                        onImportSnapshot={snapshots => this.explorer.setState({ snapshots })}
+                                        onDismiss={() => this.setState({ dialogMode: null })}
+                                    />
+                                )}
+                                {this.state.dialogMode === 'import-remote' && (
+                                    <SnapshotImportRemote
+                                        dataSource={this.state.dataSource}
+                                        onImportSnapshot={snapshots => this.explorer.setState({ snapshots })}
+                                        onSnapshotsUrl={snapshotsUrl => {
+                                            const dataSource = { ...this.state.dataSource };
+                                            dataSource.snapshotsUrl = snapshotsUrl;
+                                            this.setState({ dataSource });
+                                        }}
+                                        onDismiss={() => this.setState({ dialogMode: null })}
+                                    />
+                                )}
+                                {this.state.dialogMode === 'export' && (
+                                    <SnapshotExport
+                                        dataSource={this.state.dataSource}
+                                        snapshots={snapshots}
+                                        onDismiss={() => this.setState({ dialogMode: null })}
+                                    />
+                                )}
+                            </div>
+                        ),
 
                         getActions: (snapshot: DataSourceSnapshot, i) => {
                             const url = '#' + serializeSnapshot(snapshot);
