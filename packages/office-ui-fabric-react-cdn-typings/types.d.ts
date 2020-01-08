@@ -9,7 +9,8 @@ export {
 
 export {
     IContextualMenuItem,
-    IContextualMenuProps
+    IContextualMenuProps,
+    IContextualMenuRenderItem
 } from 'office-ui-fabric-react/lib/components/ContextualMenu';
 
 export { IDropdown, IDropdownProps, IDropdownOption } from 'office-ui-fabric-react/lib/components/Dropdown';
