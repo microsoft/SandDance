@@ -19,6 +19,7 @@ export const strings = {
     dialogLoadButton: 'Load',
     labelLocal: '[local]',
     labelColorFilter: 'Note: Colors will be re-mapped to the filter when viewing this saved chart.',
+    labelSnapshotsShortcut: 'Tip: Your .snapshots JSON file can also be pre-loaded with this',
     labelLink: 'link',
     labelUrl: 'Url',
     labelDataFormat: 'Data format',

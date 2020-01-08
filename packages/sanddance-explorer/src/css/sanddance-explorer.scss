@@ -32,6 +32,13 @@ $layout-margin-right: 150px; //room for legend
 @include snapshots();
 @include columnMap();
 
+.sanddance-dialog {
+    .tip {
+        font-style: italic;
+        margin-top: 1em;
+    }
+}
+
 .sanddance-explorer {
     display: grid;
     font-family: 'Segoe UI', sans-serif;

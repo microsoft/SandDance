@@ -203,6 +203,10 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
     }
 
     render() {
+        let shortcut: string;
+        if (this.props.dataSource.dataSourceType !== 'local' && this.state.url && !this.invalidUrlError() && !this.state.urlError) {
+            shortcut = this.getUrlShortcut();
+        }
         return (
             <div>
                 <base.fabric.Dialog
@@ -227,10 +231,10 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
                             disabled={this.state.working}
                         />
                         {this.props.dataSource.dataSourceType !== 'local'
-                            && !this.invalidUrlError()
-                            && !this.state.urlError
                             && (
-                                <a href={this.getUrlShortcut()}>shortcut</a>
+                                <div className='tip' style={{ visibility: !this.invalidUrlError() && !this.state.urlError ? 'visible' : 'hidden' }} >
+                                    {strings.labelSnapshotsShortcut} <a href={shortcut}>{strings.labelLink}</a>
+                                </div>
                             )
                         }
                         {this.state.urlError && (
