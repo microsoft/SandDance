@@ -3,6 +3,8 @@
 import { Color } from '@deck.gl/core/utils/color';
 import { IconButtonProps } from './controls/iconButton';
 import { SandDance } from '@msrvida/sanddance-react';
+import { SnapshotEditorProps } from './dialogs/snapshotEditor';
+import { SnapshotListProps } from './dialogs/snapshots';
 
 export type DataFileType = 'json' | 'csv' | 'tsv' | 'topojson';
 
@@ -38,6 +40,9 @@ export interface Snapshot {
 export interface SnapshotAction {
   element?: JSX.Element;
   iconButtonProps?: IconButtonProps;
+}
+
+export interface SnapshotProps extends SnapshotEditorProps, SnapshotListProps {
 }
 
 export interface ColorSettings extends SandDance.types.ColorSettings {

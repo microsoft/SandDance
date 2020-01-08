@@ -12,7 +12,8 @@ import {
     DataContent,
     DataExportHandler,
     DataFile,
-    Snapshot
+    Snapshot,
+    SnapshotProps
 } from './interfaces';
 import { ColumnMapBaseProps } from './controls/columnMap';
 import {
@@ -42,7 +43,8 @@ import { removeTabIndex } from './canvas';
 import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
 import { Settings } from './dialogs/settings';
 import { Sidebar, SideTabId } from './controls/sidebar';
-import { SnapshotProps, Snapshots } from './dialogs/snapshots';
+import { SnapshotEditor } from './dialogs/snapshotEditor';
+import { Snapshots } from './dialogs/snapshots';
 import { strings } from './language';
 import { themePalettes } from './themes';
 import { toggleSearch } from './toggleSearch';
@@ -93,6 +95,7 @@ export interface State extends SandDance.types.Insight {
     selectedSnapshotIndex: number;
     tooltipExclusions: string[];
     positionedColumnMapProps: PositionedColumnMapProps;
+    note: string;
 }
 
 const dataBrowserTitles: { [key: number]: string } = {};
@@ -133,6 +136,8 @@ export class Explorer extends React.Component<Props, State> {
     private layoutDivPinned: HTMLElement;
     private getColorContext: (oldInsight: SandDance.types.Insight, newInsight: SandDance.types.Insight) => SandDance.types.ColorContext;
     private ignoreSelectionChange: boolean;
+    private snapshotEditor: SnapshotEditor;
+    private scrollSnapshotTimer: number;
 
     public viewer: SandDance.Viewer;
     public viewerOptions: Partial<SandDance.types.ViewerOptions>;
@@ -175,7 +180,8 @@ export class Explorer extends React.Component<Props, State> {
             snapshots: [],
             selectedSnapshotIndex: -1,
             tooltipExclusions: [],
-            positionedColumnMapProps: null
+            positionedColumnMapProps: null,
+            note: null
         };
 
         this.state.selectedItemIndex[DataScopeId.AllData] = 0;
@@ -329,7 +335,7 @@ export class Explorer extends React.Component<Props, State> {
         return this.viewer.getInsight();
     }
 
-    setInsight(partialInsight: Partial<SandDance.types.Insight> = this.viewer.getInsight(), rebaseFilter = false) {
+    setInsight(partialInsight: Partial<SandDance.types.Insight> & Partial<State> = this.viewer.getInsight(), rebaseFilter = false) {
         const selectedItemIndex = { ...this.state.selectedItemIndex };
         selectedItemIndex[DataScopeId.AllData] = 0;
         selectedItemIndex[DataScopeId.FilteredData] = 0;
@@ -740,6 +746,31 @@ export class Explorer extends React.Component<Props, State> {
         return this.viewer.deselect();
     }
 
+    private writeSnapshot(snapshot: Snapshot, editIndex: number) {
+        let { selectedSnapshotIndex } = this.state;
+        let snapshots: Snapshot[];
+        const note = snapshot.description;
+        if (editIndex >= 0) {
+            snapshots = [...this.state.snapshots];
+            snapshots[editIndex] = snapshot;
+        } else {
+            snapshots = this.state.snapshots.concat(snapshot);
+            selectedSnapshotIndex = snapshots.length - 1;
+            this.scrollSnapshotIntoView(selectedSnapshotIndex);
+        }
+        this.setState({ sideTabId: SideTabId.Snapshots, snapshots, selectedSnapshotIndex, note });
+    }
+
+    private scrollSnapshotIntoView(selectedSnapshotIndex: number) {
+        clearTimeout(this.scrollSnapshotTimer);
+        this.scrollSnapshotTimer = setTimeout(() => {
+            const selectedSnapshotElement = this.div.querySelector(`.snapshot:nth-child(${selectedSnapshotIndex + 1})`) as HTMLElement;
+            if (selectedSnapshotElement) {
+                selectedSnapshotElement.scrollIntoView();
+            }
+        }, 500) as any as number;
+    }
+
     componentDidMount() {
         if (this.props.mounted) {
             this.props.mounted(this);
@@ -807,6 +838,38 @@ export class Explorer extends React.Component<Props, State> {
                     selectionState={selectionState}
                     buttons={this.props.topBarButtonProps}
                     view={this.state.view}
+                    snapshots={this.state.snapshots}
+                    onSnapshotPreviousClick={() => {
+                        let selectedSnapshotIndex: number;
+                        if (this.state.selectedSnapshotIndex === -1) {
+                            selectedSnapshotIndex = this.state.snapshots.length - 1;
+                        } else {
+                            selectedSnapshotIndex = this.state.selectedSnapshotIndex;
+                            selectedSnapshotIndex--;
+                            if (selectedSnapshotIndex < 0) {
+                                selectedSnapshotIndex = this.state.snapshots.length - 1;
+                            }
+                        }
+                        const snapshot = this.state.snapshots[selectedSnapshotIndex];
+                        this.setInsight({ ...snapshot.insight, note: snapshot.description, selectedSnapshotIndex, sideTabId: SideTabId.Snapshots });
+                        this.scrollSnapshotIntoView(selectedSnapshotIndex);
+                    }}
+                    onSnapshotClick={() => this.snapshotEditor.editSnapshot()}
+                    onSnapshotNextClick={() => {
+                        let selectedSnapshotIndex: number;
+                        if (this.state.selectedSnapshotIndex === -1) {
+                            selectedSnapshotIndex = 0;
+                        } else {
+                            selectedSnapshotIndex = this.state.selectedSnapshotIndex;
+                            selectedSnapshotIndex++;
+                            if (selectedSnapshotIndex > this.state.snapshots.length - 1) {
+                                selectedSnapshotIndex = 0;
+                            }
+                        }
+                        const snapshot = this.state.snapshots[selectedSnapshotIndex];
+                        this.setInsight({ ...snapshot.insight, note: snapshot.description, selectedSnapshotIndex, sideTabId: SideTabId.Snapshots });
+                        this.scrollSnapshotIntoView(selectedSnapshotIndex);
+                    }}
                     onViewClick={() => {
                         const view = this.state.view === '2d' ? '3d' : '2d';
                         this.changeInsight({ view });
@@ -1013,6 +1076,7 @@ export class Explorer extends React.Component<Props, State> {
                                     return (
                                         <Snapshots
                                             {...this.props.snapshotProps}
+                                            editor={this.snapshotEditor}
                                             themePalette={themePalette}
                                             explorer={this}
                                             snapshots={this.state.snapshots}
@@ -1020,24 +1084,7 @@ export class Explorer extends React.Component<Props, State> {
                                             onClearSnapshots={() => {
                                                 this.setState({ snapshots: [], selectedSnapshotIndex: -1 });
                                             }}
-                                            onCreateSnapshot={(snapshot, editIndex) => {
-                                                let { selectedSnapshotIndex } = this.state;
-                                                let snapshots: Snapshot[];
-                                                if (editIndex >= 0) {
-                                                    snapshots = [...this.state.snapshots];
-                                                    snapshots[editIndex] = snapshot;
-                                                } else {
-                                                    snapshots = this.state.snapshots.concat(snapshot);
-                                                    selectedSnapshotIndex = snapshots.length - 1;
-                                                    setTimeout(() => {
-                                                        const selectedSnapshotElement = this.div.querySelector(`.snapshot:nth-child(${selectedSnapshotIndex + 1})`);
-                                                        if (selectedSnapshotElement) {
-                                                            selectedSnapshotElement.scrollIntoView();
-                                                        }
-                                                    }, 500);
-                                                }
-                                                this.setState({ snapshots, selectedSnapshotIndex });
-                                            }}
+                                            onWriteSnapshot={(s, i) => this.writeSnapshot(s, i)}
                                             onRemoveSnapshot={i => {
                                                 const snapshots = [...this.state.snapshots];
                                                 snapshots.splice(i, 1);
@@ -1055,7 +1102,7 @@ export class Explorer extends React.Component<Props, State> {
                                                     if (this.props.onSnapshotClick) {
                                                         this.props.onSnapshotClick(snapshot);
                                                     } else {
-                                                        this.setInsight(snapshot.insight, true);
+                                                        this.setInsight({ ...snapshot.insight, note: snapshot.description }, true);
                                                     }
                                                 });
                                             }}
@@ -1154,6 +1201,11 @@ export class Explorer extends React.Component<Props, State> {
                                 insight={insight}
                                 onMount={el => this.viewerMounted(el)}
                             />
+                            {this.state.note && (
+                                <div className='sanddance-note' style={{ position: 'absolute', height: '200px', width: '200px' }}>
+                                    {this.state.note}
+                                </div>
+                            )}
                         </div>
                     )}
                     <Dialog
@@ -1167,6 +1219,13 @@ export class Explorer extends React.Component<Props, State> {
                             <div key={i}>{error}</div>
                         ))}
                     </Dialog>
+                    <SnapshotEditor
+                        ref={se => this.snapshotEditor = se}
+                        {...this.props.snapshotProps}
+                        explorer={this}
+                        onWriteSnapshot={(s, i) => this.writeSnapshot(s, i)}
+                        themePalette={themePalette}
+                    />
                 </div>
                 {this.state.positionedColumnMapProps && (
                     <PositionedColumnMap

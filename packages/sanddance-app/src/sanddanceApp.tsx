@@ -119,7 +119,7 @@ export class SandDanceApp extends React.Component<Props, State> {
 
     private hydrateSnapshot(snapshot: DataSourceSnapshot) {
         if (!snapshot.dataSource || snapshot.dataSource.id === this.state.dataSource.id) {
-            this.explorer.setInsight(snapshot.insight, true);
+            this.explorer.setInsight({ ...snapshot.insight, note: snapshot.description }, true);
             if (snapshot.dataSource && snapshot.dataSource.snapshotsUrl && snapshot.dataSource.snapshotsUrl !== this.state.dataSource.snapshotsUrl) {
                 //load new shaphots url
                 fetch(snapshot.dataSource.snapshotsUrl)
