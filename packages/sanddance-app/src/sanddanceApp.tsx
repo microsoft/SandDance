@@ -241,6 +241,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                                 )}
                                 {this.state.dialogMode === 'export' && (
                                     <SnapshotExport
+                                        explorer={this.explorer}
                                         dataSource={this.state.dataSource}
                                         snapshots={snapshots}
                                         onDismiss={() => this.setState({ dialogMode: null })}

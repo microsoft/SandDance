@@ -4,7 +4,7 @@ import * as React from 'react';
 import { base } from './base';
 import { DataSource, DataSourceSnapshot } from './types';
 import { downloadData } from './download';
-import { SandDance, Snapshot } from '@msrvida/sanddance-explorer';
+import { getEmbedHTML, SandDance, Snapshot, Explorer } from '@msrvida/sanddance-explorer';
 import { strings } from './language';
 
 import VegaDeckGl = SandDance.VegaDeckGl;
@@ -257,6 +257,7 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
 }
 
 export interface ExportProps {
+    explorer: Explorer;
     onDismiss: () => void;
     dataSource: DataSource;
     snapshots: Snapshot[];
@@ -268,7 +269,7 @@ export function SnapshotExport(props: ExportProps) {
             hidden={false}
             onDismiss={props.onDismiss}
             dialogContentProps={{
-                className:  'sanddance-dialog sanddance-export',
+                className: 'sanddance-dialog sanddance-export',
                 type: base.fabric.DialogType.normal,
                 title: strings.dialogTitleSnapshotsExport
             }}
@@ -283,8 +284,8 @@ export function SnapshotExport(props: ExportProps) {
                         text={`${strings.buttonExport} ${strings.labelSnapshotsExportHTMLTitle}`}
                         onClick={e => {
                             const clean = cleanSnapshots(props.snapshots);
-                            const snapshotsJSON = JSON.stringify(clean, null, 2);
-                            //TODO add to HTML
+                            const html = getEmbedHTML(props.explorer.state.dataContent.data, props.dataSource.displayName, clean);
+                            downloadData(html, `${props.dataSource.displayName}.html`);
                         }}
                     />
                 </li>
