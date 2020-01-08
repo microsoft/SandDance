@@ -192,6 +192,7 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
                     this.props.onImportSnapshot(snapshots);
                     this.props.onSnapshotsUrl(url);
                     this.setState({ working: false });
+                    this.props.onDismiss();
                 } else {
                     this.setState({ fileFormatError: strings.errorInvalidFileFormat, working: false });
                 }
