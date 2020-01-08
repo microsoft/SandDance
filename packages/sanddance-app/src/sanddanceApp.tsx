@@ -8,14 +8,19 @@ import {
     getColorSettingsFromThemePalette,
     Options,
     SandDance,
-    Snapshot,
     themePalettes,
     ViewerOptions
 } from '@msrvida/sanddance-explorer';
 import { DataSource, DataSourceSnapshot, InsightMap } from './types';
 import { DataSourcePicker } from './dataSourcePicker';
 import { downloadData } from './download';
-import { SnapshotExport, SnapshotImport, validSnapshots, serializeSnapshot } from './snapshots';
+import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import {
+    serializeSnapshot,
+    SnapshotExport,
+    SnapshotImport,
+    validSnapshots
+} from './snapshots';
 import { strings } from './language';
 
 import VegaDeckGl = SandDance.VegaDeckGl;
@@ -172,6 +177,40 @@ export class SandDanceApp extends React.Component<Props, State> {
                         modifySnapShot: (snapshot: DataSourceSnapshot) => {
                             snapshot.dataSource = this.state.dataSource;
                         },
+                        getTopActions: snapshots => {
+                            const items: FabricTypes.IContextualMenuItem[] = [
+                                {
+                                    key: 'import-file',
+                                    text: strings.menuSnapshotsImportFile
+                                },
+                                {
+                                    key: 'import-url',
+                                    text: strings.menuSnapshotsImportUrl
+                                }
+                            ];
+                            return items;
+                        },
+
+                        //,
+                        // getSidebarChildren: (snapshots, snapshotElement) => (
+                        //     <div>
+                        //         <SnapshotImport
+                        //             dataSource={this.state.dataSource}
+                        //             onImportSnapshot={snapshots => this.explorer.setState({ snapshots })}
+                        //             onSnapshotsUrl={snapshotsUrl => {
+                        //                 const dataSource = { ...this.state.dataSource };
+                        //                 dataSource.snapshotsUrl = snapshotsUrl;
+                        //                 this.setState({ dataSource });
+                        //             }}
+                        //         />
+                        //         {snapshotElement}
+                        //         <SnapshotExport
+                        //             dataSource={this.state.dataSource}
+                        //             snapshots={snapshots}
+                        //         />
+                        //     </div>
+                        // )
+
                         getActions: (snapshot: DataSourceSnapshot, i) => {
                             const url = '#' + serializeSnapshot(snapshot);
                             let element: JSX.Element;
@@ -183,25 +222,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                             return [{ element }];
                         },
                         getTitle: insight => `${this.state.dataSource.displayName} ${insight.chart}`,
-                        getDescription: insight => '', //TODO create description from filter etc.
-                        getSidebarChildren: (snapshots, snapshotElement) => (
-                            <div>
-                                <SnapshotImport
-                                    dataSource={this.state.dataSource}
-                                    onImportSnapshot={snapshots => this.explorer.setState({ snapshots })}
-                                    onSnapshotsUrl={snapshotsUrl => {
-                                        const dataSource = { ...this.state.dataSource };
-                                        dataSource.snapshotsUrl = snapshotsUrl;
-                                        this.setState({ dataSource });
-                                    }}
-                                />
-                                {snapshotElement}
-                                <SnapshotExport
-                                    dataSource={this.state.dataSource}
-                                    snapshots={snapshots}
-                                />
-                            </div>
-                        )
+                        getDescription: insight => '' //TODO create description from filter etc.
                     }}
                     onSnapshotClick={(snapshot: DataSourceSnapshot) => this.hydrateSnapshot(snapshot)}
                     initialView="2d"
