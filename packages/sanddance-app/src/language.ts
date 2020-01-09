@@ -30,6 +30,7 @@ export const strings = {
     labelSnapshotsExportMarkdownDescription: 'Markdown is a language used by many blogging platforms. Exports a Markdown file with thumbnails of these snapshots which link back to the SandDance website.',
     labelSnapshotsShortcut: 'Tip: Your .snapshots JSON file can also be pre-loaded with this',
     labelLink: 'link',
+    labelLinkDescription: 'A URL to revive this snapshot.',
     labelUrl: 'Url',
     labelDataFormat: 'Data format',
     urlInputPlaceholder: 'paste URL',
