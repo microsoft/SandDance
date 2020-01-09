@@ -121,18 +121,18 @@ function getPresenterStyle(options: ViewerOptions): PresenterStyle;
 PresenterStyle
 
 [NamespaceImport-3]: util.html#util
-[FunctionDeclaration-5]: util.html#isinternalfieldname
-[FunctionDeclaration-6]: util.html#getcolumnsfromdata
+[FunctionDeclaration-6]: util.html#isinternalfieldname
+[FunctionDeclaration-7]: util.html#getcolumnsfromdata
 [InterfaceDeclaration-5]: types.html#columntypemap
 [InterfaceDeclaration-3]: types.html#column
-[FunctionDeclaration-7]: util.html#getstats
+[FunctionDeclaration-8]: util.html#getstats
 [InterfaceDeclaration-3]: types.html#column
 [InterfaceDeclaration-4]: types.html#columnstats
-[FunctionDeclaration-8]: util.html#inferall
+[FunctionDeclaration-9]: util.html#inferall
 [InterfaceDeclaration-3]: types.html#column
-[FunctionDeclaration-9]: util.html#ensuresearchexpressiongrouparray
+[FunctionDeclaration-10]: util.html#ensuresearchexpressiongrouparray
 [TypeAliasDeclaration-4]: types.html#search
 [InterfaceDeclaration-1]: types.html#searchexpression
 [InterfaceDeclaration-2]: types.html#searchexpressiongroup
-[FunctionDeclaration-10]: util.html#getpresenterstyle
+[FunctionDeclaration-11]: util.html#getpresenterstyle
 [InterfaceDeclaration-23]: types.html#vieweroptions

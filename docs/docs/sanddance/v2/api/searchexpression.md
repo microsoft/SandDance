@@ -63,6 +63,25 @@ boolean
 
 ----------
 
+### startsWith
+
+```typescript
+function startsWith(whole: Search, part: Search): boolean;
+```
+
+**Parameters**
+
+| Name  | Type                             |
+| ----- | -------------------------------- |
+| whole | [Search][TypeAliasDeclaration-4] |
+| part  | [Search][TypeAliasDeclaration-4] |
+
+**Return type**
+
+boolean
+
+----------
+
 ### invert
 
 ```typescript
@@ -110,10 +129,13 @@ function narrow(a: Search, b: Search): Search;
 [FunctionDeclaration-2]: searchexpression.html#compare
 [TypeAliasDeclaration-4]: types.html#search
 [TypeAliasDeclaration-4]: types.html#search
-[FunctionDeclaration-3]: searchexpression.html#invert
+[FunctionDeclaration-3]: searchexpression.html#startswith
 [TypeAliasDeclaration-4]: types.html#search
 [TypeAliasDeclaration-4]: types.html#search
-[FunctionDeclaration-4]: searchexpression.html#narrow
+[FunctionDeclaration-4]: searchexpression.html#invert
+[TypeAliasDeclaration-4]: types.html#search
+[TypeAliasDeclaration-4]: types.html#search
+[FunctionDeclaration-5]: searchexpression.html#narrow
 [TypeAliasDeclaration-4]: types.html#search
 [TypeAliasDeclaration-4]: types.html#search
 [TypeAliasDeclaration-4]: types.html#search

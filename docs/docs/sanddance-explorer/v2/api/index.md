@@ -6,6 +6,26 @@ layout: api
 
 ## Functions
 
+### getEmbedHTML
+
+```typescript
+function getEmbedHTML(data: object[], displayName: string, snapshots?: Snapshot[]): string;
+```
+
+**Parameters**
+
+| Name        | Type                                 |
+| ----------- | ------------------------------------ |
+| data        | object[]                             |
+| displayName | string                               |
+| snapshots   | [Snapshot][InterfaceDeclaration-0][] |
+
+**Return type**
+
+string
+
+----------
+
 ### use
 
 Specify the dependency libraries to use for rendering.
@@ -44,7 +64,7 @@ function getColorSettingsFromThemePalette(themePalette: Partial<IPalette>): Part
 
 **Return type**
 
-Partial<[ColorSettings][InterfaceDeclaration-0]>
+Partial<[ColorSettings][InterfaceDeclaration-1]>
 
 ## Interfaces
 
@@ -76,15 +96,17 @@ ColorSettings
 interface DataContent {
     data: object[];
     columns: Column[];
+    snapshots?: Snapshot[];
 }
 ```
 
 **Properties**
 
-| Name    | Type     | Optional |
-| ------- | -------- | -------- |
-| data    | object[] | false    |
-| columns | Column[] | false    |
+| Name      | Type                                 | Optional |
+| --------- | ------------------------------------ | -------- |
+| data      | object[]                             | false    |
+| columns   | Column[]                             | false    |
+| snapshots | [Snapshot][InterfaceDeclaration-0][] | true     |
 
 ----------
 
@@ -94,19 +116,23 @@ interface DataContent {
 interface DataFile {
     displayName?: string;
     dataUrl?: string;
+    snapshotsUrl?: string;
     rawText?: string;
+    snapshots?: Snapshot[];
     type: DataFileType;
 }
 ```
 
 **Properties**
 
-| Name        | Type                                   | Optional |
-| ----------- | -------------------------------------- | -------- |
-| displayName | string                                 | true     |
-| dataUrl     | string                                 | true     |
-| rawText     | string                                 | true     |
-| type        | [DataFileType][TypeAliasDeclaration-1] | false    |
+| Name         | Type                                   | Optional |
+| ------------ | -------------------------------------- | -------- |
+| displayName  | string                                 | true     |
+| dataUrl      | string                                 | true     |
+| snapshotsUrl | string                                 | true     |
+| rawText      | string                                 | true     |
+| snapshots    | [Snapshot][InterfaceDeclaration-0][]   | true     |
+| type         | [DataFileType][TypeAliasDeclaration-1] | false    |
 
 ----------
 
@@ -114,10 +140,11 @@ interface DataFile {
 
 ```typescript
 interface Snapshot {
-    description: string;
-    insight: Insight;
-    image: string;
-    bgColor: string;
+    title?: string;
+    description?: string;
+    insight?: Insight;
+    image?: string;
+    bgColor?: string;
 }
 ```
 
@@ -125,10 +152,11 @@ interface Snapshot {
 
 | Name        | Type    | Optional |
 | ----------- | ------- | -------- |
-| description | string  | false    |
-| insight     | Insight | false    |
-| image       | string  | false    |
-| bgColor     | string  | false    |
+| title       | string  | true     |
+| description | string  | true     |
+| insight     | Insight | true     |
+| image       | string  | true     |
+| bgColor     | string  | true     |
 
 ----------
 
@@ -148,7 +176,7 @@ ViewerOptions
 
 | Name   | Type                                    | Optional | Description                                          |
 | ------ | --------------------------------------- | -------- | ---------------------------------------------------- |
-| colors | [ColorSettings][InterfaceDeclaration-0] | false    | Custom colors of various parts of the visualization. |
+| colors | [ColorSettings][InterfaceDeclaration-1] | false    | Custom colors of various parts of the visualization. |
 
 ----------
 
@@ -197,6 +225,7 @@ interface Props {
     logoClickUrl?: string;
     logoClickTarget?: string;
     bingSearchDisabled?: boolean;
+    searchORDisabled?: boolean;
     theme?: string;
     viewerOptions?: Partial<ViewerOptions>;
     initialView?: View;
@@ -205,8 +234,9 @@ interface Props {
     dataExportHandler?: DataExportHandler;
     topBarButtonProps?: ICommandBarItemProps[];
     snapshotProps?: SnapshotProps;
-    onSnapshotClick?: (snapshot: Snapshot) => void;
+    onSnapshotClick?: (snapshot: Snapshot, selectedSnaphotIndex: number) => void;
     onView?: () => void;
+    onError?: (e: any) => void;
     onSignalChanged?: () => void;
     onTooltipExclusionsChanged?: (tooltipExclusions: string[]) => void;
     systemInfoChildren?: ReactNode;
@@ -215,25 +245,27 @@ interface Props {
 
 **Properties**
 
-| Name                       | Type                                         | Optional |
-| -------------------------- | -------------------------------------------- | -------- |
-| hideSidebarControls        | boolean                                      | true     |
-| logoClickUrl               | string                                       | true     |
-| logoClickTarget            | string                                       | true     |
-| bingSearchDisabled         | boolean                                      | true     |
-| theme                      | string                                       | true     |
-| viewerOptions              | Partial<ViewerOptions>                       | true     |
-| initialView                | View                                         | true     |
-| mounted                    | (explorer: Explorer) => any                  | true     |
-| datasetElement             | Element                                      | true     |
-| dataExportHandler          | DataExportHandler | true     |
-| topBarButtonProps          | ICommandBarItemProps[]                       | true     |
-| snapshotProps              | SnapshotProps     | true     |
-| onSnapshotClick            | (snapshot: Snapshot) => void                 | true     |
-| onView                     | () => void                                   | true     |
-| onSignalChanged            | () => void                                   | true     |
-| onTooltipExclusionsChanged | (tooltipExclusions: string[]) => void        | true     |
-| systemInfoChildren         | ReactNode                                    | true     |
+| Name                       | Type                                                       | Optional |
+| -------------------------- | ---------------------------------------------------------- | -------- |
+| hideSidebarControls        | boolean                                                    | true     |
+| logoClickUrl               | string                                                     | true     |
+| logoClickTarget            | string                                                     | true     |
+| bingSearchDisabled         | boolean                                                    | true     |
+| searchORDisabled           | boolean                                                    | true     |
+| theme                      | string                                                     | true     |
+| viewerOptions              | Partial<ViewerOptions>                                     | true     |
+| initialView                | View                                                       | true     |
+| mounted                    | (explorer: Explorer) => any                                | true     |
+| datasetElement             | Element                                                    | true     |
+| dataExportHandler          | DataExportHandler               | true     |
+| topBarButtonProps          | ICommandBarItemProps[]                                     | true     |
+| snapshotProps              | SnapshotProps                   | true     |
+| onSnapshotClick            | (snapshot: Snapshot, selectedSnaphotIndex: number) => void | true     |
+| onView                     | () => void                                                 | true     |
+| onError                    | (e: any) => void                                           | true     |
+| onSignalChanged            | () => void                                                 | true     |
+| onTooltipExclusionsChanged | (tooltipExclusions: string[]) => void                      | true     |
+| systemInfoChildren         | ReactNode                                                  | true     |
 
 ----------
 
@@ -255,8 +287,10 @@ interface State extends Insight {
     dataScopeId: DataScopeId;
     selectedItemIndex: { [key: number]: number; };
     snapshots: Snapshot[];
+    selectedSnapshotIndex: number;
     tooltipExclusions: string[];
     positionedColumnMapProps: PositionedColumnMapProps;
+    note: string;
 }
 ```
 
@@ -275,15 +309,17 @@ Insight
 | filteredData               | object[]                                                | false    |
 | sidebarClosed              | boolean                                                 | false    |
 | sidebarPinned              | boolean                                                 | false    |
-| dataFile                   | [DataFile][InterfaceDeclaration-2]                      | false    |
-| dataContent                | [DataContent][InterfaceDeclaration-1]                   | false    |
+| dataFile                   | [DataFile][InterfaceDeclaration-3]                      | false    |
+| dataContent                | [DataContent][InterfaceDeclaration-2]                   | false    |
 | specCapabilities           | SpecCapabilities                                        | false    |
 | sideTabId                  | SideTabId                          | false    |
 | dataScopeId                | DataScopeId                        | false    |
 | selectedItemIndex          | { [key: number]: number; }                              | false    |
-| snapshots                  | [Snapshot][InterfaceDeclaration-3][]                    | false    |
+| snapshots                  | [Snapshot][InterfaceDeclaration-0][]                    | false    |
+| selectedSnapshotIndex      | number                                                  | false    |
 | tooltipExclusions          | string[]                                                | false    |
 | positionedColumnMapProps   | PositionedColumnMapProps     | false    |
+| note                       | string                                                  | false    |
 
 ## Types
 
@@ -351,24 +387,28 @@ const version: string;
 string
 
 [SourceFile-0]: index.html#indextsx
-[FunctionDeclaration-0]: index.html#use
-[FunctionDeclaration-1]: index.html#getcolorsettingsfromthemepalette
-[InterfaceDeclaration-0]: index.html#colorsettings
-[InterfaceDeclaration-0]: index.html#colorsettings
-[InterfaceDeclaration-1]: index.html#datacontent
-[InterfaceDeclaration-2]: index.html#datafile
+[FunctionDeclaration-0]: index.html#getembedhtml
+[InterfaceDeclaration-0]: index.html#snapshot
+[FunctionDeclaration-1]: index.html#use
+[FunctionDeclaration-2]: index.html#getcolorsettingsfromthemepalette
+[InterfaceDeclaration-1]: index.html#colorsettings
+[InterfaceDeclaration-1]: index.html#colorsettings
+[InterfaceDeclaration-2]: index.html#datacontent
+[InterfaceDeclaration-0]: index.html#snapshot
+[InterfaceDeclaration-3]: index.html#datafile
+[InterfaceDeclaration-0]: index.html#snapshot
 [TypeAliasDeclaration-1]: index.html#datafiletype
-[InterfaceDeclaration-3]: index.html#snapshot
+[InterfaceDeclaration-0]: index.html#snapshot
 [InterfaceDeclaration-4]: index.html#vieweroptions
-[InterfaceDeclaration-0]: index.html#colorsettings
+[InterfaceDeclaration-1]: index.html#colorsettings
 [InterfaceDeclaration-5]: index.html#prefs
 [InterfaceDeclaration-8]: index.html#options
 [InterfaceDeclaration-5]: index.html#prefs
 [InterfaceDeclaration-9]: index.html#props
 [InterfaceDeclaration-10]: index.html#state
-[InterfaceDeclaration-2]: index.html#datafile
-[InterfaceDeclaration-1]: index.html#datacontent
-[InterfaceDeclaration-3]: index.html#snapshot
+[InterfaceDeclaration-3]: index.html#datafile
+[InterfaceDeclaration-2]: index.html#datacontent
+[InterfaceDeclaration-0]: index.html#snapshot
 [TypeAliasDeclaration-0]: index.html#dataexporttype
 [TypeAliasDeclaration-1]: index.html#datafiletype
 [TypeAliasDeclaration-1]: index.html#datafiletype

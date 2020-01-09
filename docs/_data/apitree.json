@@ -19,6 +19,7 @@
     "DataFileType",
     "Explorer",
     "getColorSettingsFromThemePalette",
+    "getEmbedHTML",
     "Index",
     "Options",
     "Prefs",

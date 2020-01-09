@@ -15,6 +15,7 @@ interface Props {
     data: object[];
     renderOptions?: RenderOptions;
     onView?: (renderResult: RenderResult) => void;
+    onError?: (error: any) => void;
     onMount?: (element: HTMLElement) => boolean | void;
 }
 ```
@@ -28,6 +29,7 @@ interface Props {
 | data          | object[]                                      | false    |
 | renderOptions | RenderOptions                                 | true     |
 | onView        | (renderResult: RenderResult) => void          | true     |
+| onError       | (error: any) => void                          | true     |
 | onMount       | (element: HTMLElement) => boolean &#124; void | true     |
 
 ## Classes

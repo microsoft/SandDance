@@ -84,17 +84,36 @@ Insight
 
 ----------
 
-### setInsight(partialInsight)
+### setInsight(partialInsight, rebaseFilter)
 
 ```typescript
-public setInsight(partialInsight: Partial<Insight>): void;
+public setInsight(partialInsight: Partial<Insight> & Partial<State> = this.viewer.getInsight(), rebaseFilter: boolean = false): void;
 ```
 
 **Parameters**
 
-| Name           | Type             |
-| -------------- | ---------------- |
-| partialInsight | Partial<Insight> |
+| Name           | Type                                                         | Default value            |
+| -------------- | ------------------------------------------------------------ | ------------------------ |
+| partialInsight | Partial<Insight> & Partial<[State][InterfaceDeclaration-10]> | this.viewer.getInsight() |
+| rebaseFilter   | boolean                                                      | false                    |
+
+**Return type**
+
+void
+
+----------
+
+### reviveSnapshot(snapshotOrIndex)
+
+```typescript
+public reviveSnapshot(snapshotOrIndex: Snapshot | number): void;
+```
+
+**Parameters**
+
+| Name            | Type                                             |
+| --------------- | ------------------------------------------------ |
+| snapshotOrIndex | [Snapshot][InterfaceDeclaration-0] &#124; number |
 
 **Return type**
 
@@ -112,7 +131,7 @@ public load(data: DataFile | object[], getPartialInsight?: (columns: Column[]) =
 
 | Name              | Type                                                                     |
 | ----------------- | ------------------------------------------------------------------------ |
-| data              | [DataFile][InterfaceDeclaration-2] &#124; object[]                       |
+| data              | [DataFile][InterfaceDeclaration-3] &#124; object[]                       |
 | getPartialInsight | (columns: Column[]) => Partial<Insight>                                  |
 | optionsOrPrefs    | [Prefs][InterfaceDeclaration-5] &#124; [Options][InterfaceDeclaration-8] |
 
@@ -347,6 +366,18 @@ public div: HTMLElement;
 
 HTMLElement
 
+----------
+
+### snapshotThumbWidth
+
+```typescript
+public snapshotThumbWidth: number;
+```
+
+**Type**
+
+number
+
 [ClassDeclaration-0]: explorer.html#explorer
 [Constructor-0]: explorer.html#constructorprops
 [InterfaceDeclaration-9]: ../index.html#props
@@ -354,25 +385,29 @@ HTMLElement
 [MethodDeclaration-1]: explorer.html#updatevieweroptionsvieweroptions
 [MethodDeclaration-2]: explorer.html#signalsignalname-signalvalue
 [MethodDeclaration-3]: explorer.html#getinsight
-[MethodDeclaration-4]: explorer.html#setinsightpartialinsight
-[MethodDeclaration-5]: explorer.html#loaddata-getpartialinsight-optionsorprefs
-[InterfaceDeclaration-2]: ../index.html#datafile
+[MethodDeclaration-4]: explorer.html#setinsightpartialinsight-rebasefilter
+[InterfaceDeclaration-10]: ../index.html#state
+[MethodDeclaration-5]: explorer.html#revivesnapshotsnapshotorindex
+[InterfaceDeclaration-0]: ../index.html#snapshot
+[MethodDeclaration-6]: explorer.html#loaddata-getpartialinsight-optionsorprefs
+[InterfaceDeclaration-3]: ../index.html#datafile
 [InterfaceDeclaration-5]: ../index.html#prefs
 [InterfaceDeclaration-8]: ../index.html#options
-[MethodDeclaration-6]: explorer.html#changecharttypechart
-[MethodDeclaration-7]: explorer.html#calculatecalculating
-[MethodDeclaration-8]: explorer.html#changeviewview
-[MethodDeclaration-9]: explorer.html#changeinsightnewstate
+[MethodDeclaration-7]: explorer.html#changecharttypechart
+[MethodDeclaration-8]: explorer.html#calculatecalculating
+[MethodDeclaration-9]: explorer.html#changeviewview
+[MethodDeclaration-10]: explorer.html#changeinsightnewstate
 [InterfaceDeclaration-10]: ../index.html#state
-[MethodDeclaration-10]: explorer.html#changespeccapabilitiesspeccapabilities
-[MethodDeclaration-11]: explorer.html#changecolumnmappingrole-column-options
-[MethodDeclaration-12]: explorer.html#sidebarsidebarclosed-sidebarpinned
-[MethodDeclaration-13]: explorer.html#resize
-[MethodDeclaration-14]: explorer.html#componentdidmount
-[MethodDeclaration-15]: explorer.html#render
+[MethodDeclaration-11]: explorer.html#changespeccapabilitiesspeccapabilities
+[MethodDeclaration-12]: explorer.html#changecolumnmappingrole-column-options
+[MethodDeclaration-13]: explorer.html#sidebarsidebarclosed-sidebarpinned
+[MethodDeclaration-14]: explorer.html#resize
+[MethodDeclaration-15]: explorer.html#componentdidmount
+[MethodDeclaration-16]: explorer.html#render
 [PropertyDeclaration-0]: explorer.html#viewer
 [PropertyDeclaration-1]: explorer.html#vieweroptions
 [PropertyDeclaration-2]: explorer.html#discardcolorcontextupdates
 [PropertyDeclaration-3]: explorer.html#prefs
 [InterfaceDeclaration-5]: ../index.html#prefs
 [PropertyDeclaration-4]: explorer.html#div
+[PropertyDeclaration-5]: explorer.html#snapshotthumbwidth
