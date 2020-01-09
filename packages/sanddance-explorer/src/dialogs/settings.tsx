@@ -207,9 +207,7 @@ export class Settings extends React.Component<Props, State> {
                         }
                     }
                 })}
-                <Group
-                    label={strings.labelChartCanvas}
-                >
+                <Group label={strings.labelChartCanvas}>
                     <base.fabric.Toggle
                         label={strings.labelShowAxes}
                         defaultChecked={!props.hideAxes}
@@ -221,9 +219,7 @@ export class Settings extends React.Component<Props, State> {
                         onChange={(e, checked?) => props.onToggleLegend(!checked)}
                     />
                 </Group>
-                <Group
-                    label={strings.labelTools}
-                >
+                <Group label={strings.labelTools}>
                     <base.fabric.DefaultButton
                         text={strings.buttonShowVegaSpec}
                         onClick={() => this.setState({
@@ -232,9 +228,18 @@ export class Settings extends React.Component<Props, State> {
                         })}
                     />
                 </Group>
-                <Group
-                    label={strings.labelTransitionDurations}
-                >
+                <Group label={strings.labelSnapshots}>
+                    <base.fabric.Slider
+                        label={strings.labelSnapshotSettingThumbnailWidth}
+                        onChange={value => {
+                            this.props.explorer.snapshotThumbWidth = value;
+                        }}
+                        min={100}
+                        max={800}
+                        defaultValue={this.props.explorer.snapshotThumbWidth}
+                    />
+                </Group>
+                <Group label={strings.labelTransitionDurations}>
                     <base.fabric.Slider
                         label={strings.labelTransitionColor}
                         onChange={value => {

@@ -2,7 +2,7 @@
   "editor.tabSize": 4,
   "editor.insertSpaces": true,
   "files.associations": {
-    "*.insights": "json"
+    "*.snapshots": "json"
   },
   "files.eol": "\n",
   "files.watcherExclude": {

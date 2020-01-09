@@ -7,6 +7,7 @@
 @import "dataIndex";
 @import "dataScope";
 @import "group";
+@import "note";
 @import "palette";
 @import "search";
 @import "scrollable";
@@ -18,7 +19,7 @@
 $sidetab-width: 50px;
 $toolbar-width: 300px;
 $toolbar-margin: 12px;
-$layout-margin-left: 0;
+$layout-margin-left: $sidetab-width;
 $layout-margin-right: 150px; //room for legend
 
 @include topbar($toolbar-margin: $toolbar-margin, $toolbar-width: $toolbar-width, $sidetab-width: $sidetab-width);
@@ -30,7 +31,15 @@ $layout-margin-right: 150px; //room for legend
 @include scrollable();
 @include search();
 @include snapshots();
+@include note();
 @include columnMap();
+
+.sanddance-dialog {
+    .tip {
+        font-style: italic;
+        margin-top: 1em;
+    }
+}
 
 .sanddance-explorer {
     display: grid;
@@ -61,6 +70,7 @@ $layout-margin-right: 150px; //room for legend
     .sanddance-view {
         display: grid;
         position: relative;
+        margin-left: $sidetab-width;
     }
     .sanddance-layout-unpinned, .sanddance-layout-pinned {
         position: absolute;
@@ -75,7 +85,7 @@ $layout-margin-right: 150px; //room for legend
         }
     }
     .sanddance-layout-pinned {
-        left: $toolbar-width + $layout-margin-left;
+        left: $toolbar-width;
     }
     .sanddance-ReactViewer {
         position: absolute;
@@ -86,7 +96,7 @@ $layout-margin-right: 150px; //room for legend
     }
     &.hide-legend {
         .sanddance-ReactViewer {
-            left: $layout-margin-left;
+            left: 0;
         }
     }
     &.show-center {
@@ -104,6 +114,7 @@ $layout-margin-right: 150px; //room for legend
         grid-template-areas: "side main";
         .sanddance-view {
             grid-area: main;
+            margin-left: 0;
         }
         .loading {
             grid-area: main;
@@ -114,6 +125,9 @@ $layout-margin-right: 150px; //room for legend
         }
         &.closed {
             grid-template-columns: 0 auto;
+            .sanddance-view {
+                margin-left: $sidetab-width;
+            }
         }
     }
     span.ms-layer {

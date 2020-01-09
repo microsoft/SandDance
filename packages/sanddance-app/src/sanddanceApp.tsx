@@ -8,13 +8,21 @@ import {
     getColorSettingsFromThemePalette,
     Options,
     SandDance,
-    Snapshot,
     themePalettes,
     ViewerOptions
 } from '@msrvida/sanddance-explorer';
 import { DataSource, DataSourceSnapshot, InsightMap } from './types';
 import { DataSourcePicker } from './dataSourcePicker';
 import { downloadData } from './download';
+import {
+    downloadSnapshotsJSON,
+    serializeSnapshot,
+    SnapshotExport,
+    SnapshotImportLocal,
+    SnapshotImportRemote,
+    validSnapshots
+} from './snapshots';
+import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { strings } from './language';
 
 import VegaDeckGl = SandDance.VegaDeckGl;
@@ -30,7 +38,10 @@ export interface Props {
     initialOptions?: { [dataSetId: string]: Options };
 }
 
+export type Dialogs = 'import-local' | 'import-remote' | 'export';
+
 export interface State {
+    dialogMode: Dialogs;
     dataSource: DataSource;
     darkTheme: boolean;
 }
@@ -58,17 +69,8 @@ function getSnapshotFromHash() {
     }
 }
 
-export function serializeSnapshot(snapshotWithImage: Snapshot) {
-    const snapshot = VegaDeckGl.util.clone(snapshotWithImage) as DataSourceSnapshot;
-    //remove the image data from the snapshot
-    delete snapshot.bgColor;
-    delete snapshot.image;
-    delete snapshot.dataSource.rawText;
-    return JSON.stringify(snapshot);
-}
-
 let snapshotOnLoad = getSnapshotFromHash();
-if (snapshotOnLoad && snapshotOnLoad.dataSource.dataSourceType === 'local') {
+if (snapshotOnLoad && snapshotOnLoad.dataSource && snapshotOnLoad.dataSource.dataSourceType === 'local') {
     snapshotOnLoad = null;
 }
 
@@ -76,6 +78,7 @@ interface Handlers {
     hashchange: (e: HashChangeEvent) => void;
     resize: (e: UIEvent) => void;
 }
+
 export class SandDanceApp extends React.Component<Props, State> {
     private viewerOptions: Partial<types.ViewerOptions>;
     private handlers: Handlers;
@@ -84,6 +87,7 @@ export class SandDanceApp extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
+            dialogMode: null,
             dataSource: snapshotOnLoad && snapshotOnLoad.dataSource || props.dataSources[0],
             darkTheme: props.darkTheme
         };
@@ -113,12 +117,29 @@ export class SandDanceApp extends React.Component<Props, State> {
         }
     }
 
-    private hydrateSnapshot(snapshot: DataSourceSnapshot) {
-        if (snapshot.dataSource.id === this.state.dataSource.id) {
-            this.explorer.setInsight(snapshot.insight);
+    private hydrateSnapshot(snapshot: DataSourceSnapshot, selectedSnapshotIndex = -1) {
+        if (!snapshot.dataSource || snapshot.dataSource.id === this.state.dataSource.id) {
+            if (selectedSnapshotIndex === -1) {
+                this.explorer.reviveSnapshot(snapshot);
+            } else {
+                this.explorer.reviveSnapshot(selectedSnapshotIndex);
+            }
+            if (snapshot.dataSource && snapshot.dataSource.snapshotsUrl && snapshot.dataSource.snapshotsUrl !== this.state.dataSource.snapshotsUrl) {
+                //load new snapshots url
+                fetch(snapshot.dataSource.snapshotsUrl)
+                    .then(response => response.json())
+                    .then(snapshots => {
+                        if (validSnapshots(snapshots)) {
+                            this.explorer.setState({ snapshots });
+                            const dataSource = { ...this.state.dataSource };
+                            dataSource.snapshotsUrl = snapshot.dataSource.snapshotsUrl;
+                            this.setState({ dataSource });
+                        }
+                    });
+            }
         }
         else {
-            if (snapshot.dataSource.dataSourceType !== 'local') {
+            if (snapshot.dataSource && snapshot.dataSource.dataSourceType !== 'local') {
                 this.load(snapshot.dataSource, snapshot.insight);
             }
             //this.setState({ snapshots: this.state.snapshots.filter(snapshot => snapshot.dataSource.dataSourceType !== 'local') });
@@ -126,6 +147,8 @@ export class SandDanceApp extends React.Component<Props, State> {
     }
 
     load(dataSource: DataSource, partialInsight?: Partial<types.Insight>) {
+        //clone so that we do not modify original object
+        dataSource = VegaDeckGl.util.clone(dataSource);
         this.setState({ dataSource });
         document.title = `SandDance - ${dataSource.displayName}`;
         return this.explorer.load(
@@ -164,19 +187,87 @@ export class SandDanceApp extends React.Component<Props, State> {
                         modifySnapShot: (snapshot: DataSourceSnapshot) => {
                             snapshot.dataSource = this.state.dataSource;
                         },
+                        getTopActions: snapshots => {
+                            const items: FabricTypes.IContextualMenuItem[] = [
+                                {
+                                    key: 'import',
+                                    text: strings.menuSnapshotsImport,
+                                    subMenuProps: {
+                                        items: [
+                                            {
+                                                key: 'import-local',
+                                                text: strings.menuLocal,
+                                                onClick: () => this.setState({ dialogMode: 'import-local' })
+                                            },
+                                            {
+                                                key: 'import-remote',
+                                                text: strings.menuUrl,
+                                                onClick: () => this.setState({ dialogMode: 'import-remote' })
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    key: 'export',
+                                    text: strings.menuSnapshotsExportAsJSON,
+                                    disabled: snapshots.length === 0,
+                                    onClick: () => downloadSnapshotsJSON(snapshots, `${this.state.dataSource.displayName}.snapshots`)
+                                },
+                                {
+                                    key: 'export-as',
+                                    text: strings.menuSnapshotsExportAs,
+                                    disabled: snapshots.length === 0,
+                                    onClick: () => this.setState({ dialogMode: 'export' })
+                                }
+                            ];
+                            return items;
+                        },
+                        getChildren: snapshots => (
+                            <div>
+                                {this.state.dialogMode === 'import-local' && (
+                                    <SnapshotImportLocal
+                                        dataSource={this.state.dataSource}
+                                        onImportSnapshot={snapshots => this.explorer.setState({ snapshots })}
+                                        onDismiss={() => this.setState({ dialogMode: null })}
+                                    />
+                                )}
+                                {this.state.dialogMode === 'import-remote' && (
+                                    <SnapshotImportRemote
+                                        dataSource={this.state.dataSource}
+                                        onImportSnapshot={snapshots => this.explorer.setState({ snapshots })}
+                                        onSnapshotsUrl={snapshotsUrl => {
+                                            const dataSource = { ...this.state.dataSource };
+                                            dataSource.snapshotsUrl = snapshotsUrl;
+                                            this.setState({ dataSource });
+                                        }}
+                                        onDismiss={() => this.setState({ dialogMode: null })}
+                                    />
+                                )}
+                                {this.state.dialogMode === 'export' && (
+                                    <SnapshotExport
+                                        explorer={this.explorer}
+                                        dataSource={this.state.dataSource}
+                                        snapshots={snapshots}
+                                        onDismiss={() => this.setState({ dialogMode: null })}
+                                    />
+                                )}
+                            </div>
+                        ),
+
                         getActions: (snapshot: DataSourceSnapshot, i) => {
                             const url = '#' + serializeSnapshot(snapshot);
                             let element: JSX.Element;
-                            if (snapshot.dataSource.dataSourceType === 'local') {
+                            if (snapshot.dataSource && snapshot.dataSource.dataSourceType === 'local') {
                                 element = (<span>{strings.labelLocal}</span>);
                             } else {
                                 element = (<a key={`link${i}`} href={url}>{strings.labelLink}</a>);
                             }
                             return [{ element }];
                         },
-                        getDescription: insight => `${this.state.dataSource.displayName} ${insight.chart}`
+                        getTitle: insight => `${this.state.dataSource.displayName} ${insight.chart}`,
+                        getDescription: insight => '' //TODO create description from filter etc.
                     }}
-                    onSnapshotClick={(snapshot: DataSourceSnapshot) => this.hydrateSnapshot(snapshot)}
+                    onSnapshotClick={(snapshot: DataSourceSnapshot, selectedSnapshotIndex) => this.hydrateSnapshot(snapshot, selectedSnapshotIndex)}
                     initialView="2d"
                     mounted={e => {
                         this.explorer = e;

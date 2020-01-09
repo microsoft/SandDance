@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { base } from '../base';
 import { convertToDelimited } from '../exportDelimited';
-import { DataExportHandler, DataExportType, DataFile } from '../interfaces';
+import { DataExportHandler, DataExportType, DataFile, Snapshot } from '../interfaces';
 import { embedHtml } from './dataExporterHtml';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { SandDance, util } from '@msrvida/sanddance-react';
@@ -82,7 +82,9 @@ export class DataExportPicker extends React.Component<Props, State> {
                 break;
             }
             case 'html': {
-                final(embedHtml(`${strings.appName} - ${escape(displayName)}`, embedScript(convertToDelimited(JSON.parse(json), ','), displayName)));
+                const csv = convertToDelimited(JSON.parse(json), ',');
+                const html = embedHtml(`${strings.appName} - ${escape(displayName)}`, embedScript(csv, displayName));
+                final(html);
             }
         }
     }
@@ -197,8 +199,18 @@ function columnReplacer(name: string, value: any) {
     return value === null ? '' : value;
 }
 
-function embedScript(csv: string, displayName: string) {
-    const dataFile: DataFile = { type: 'csv', displayName };
-    return `<pre id='csv-data' style='display:none'>${csv}</pre>    
+function embedScript(csv: string, displayName: string, snapshots?: Snapshot[]) {
+    const dataFile: DataFile = { type: 'csv', displayName, snapshots };
+    return `<pre id='csv-data' style='display:none'>${csv}</pre>
     <script>SandDanceEmbed.load(Object.assign({rawText: document.getElementById('csv-data').innerText}, ${JSON.stringify(dataFile)}))</script>`;
+}
+
+export function getEmbedHTML(data: object[], displayName: string, snapshots?: Snapshot[]) {
+    const json = JSON.stringify(data, columnReplacer);
+    const csv = convertToDelimited(JSON.parse(json), ',');
+    const html = embedHtml(
+        `${strings.appName} - ${escape(displayName)}`,
+        embedScript(csv, displayName, snapshots)
+    );
+    return html;
 }

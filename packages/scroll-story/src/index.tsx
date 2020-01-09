@@ -23,23 +23,32 @@ const dataPromise = fetchResource('titanic-data').then(response => {
     return SandDance.VegaDeckGl.base.vega.read(text, { type: 'csv', parse: 'auto' });
 });
 
-const insightsPromise = fetchResource('titanic-insights').then(response => {
+const snapshotsPromise = fetchResource('titanic-snapshots').then(response => {
     return response.json();
 }).then(json => {
-    return json as SandDance.types.Insight[];
+    return json as Snapshot[];
 });
+
+export interface Snapshot {
+    title?: string;
+    description?: string;
+    insight: SandDance.types.Insight;
+    image?: string;
+    bgColor?: string;
+}
 
 interface Props {
 }
 
 interface State {
-    insights?: SandDance.types.Insight[];
+    snapshots?: Snapshot[];
     insightIndex: number;
     data?: object[];
     size: SandDance.types.Size;
 }
 
 export class Page extends React.Component<Props, State> {
+    public viewer: SandDance.Viewer;
 
     constructor(props: Props) {
         super(props);
@@ -50,19 +59,39 @@ export class Page extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        Promise.all([dataPromise, insightsPromise]).then(([data, insights]: [object[], SandDance.types.Insight[]]) => {
-            this.setState({ data, insights });
+        Promise.all([dataPromise, snapshotsPromise]).then(([data, snapshots]: [object[], Snapshot[]]) => {
+            this.setState({ data, snapshots });
         });
     }
 
+    goTo(insightIndex: number) {
+        const changeInsight = () => {
+            this.setState({ insightIndex });
+        };
+        const currentFilter = this.viewer.getInsight().filter;
+        const newState = this.state.snapshots[insightIndex].insight;
+        if (currentFilter && newState.filter) {
+            if (SandDance.searchExpression.startsWith(newState.filter, currentFilter)) {
+                changeInsight();
+            } else {
+                this.viewer.reset()
+                    .then(() => new Promise((resolve, reject) => { setTimeout(resolve, this.viewer.options.transitionDurations.scope); }))
+                    .then(changeInsight);
+            }
+        } else {
+            changeInsight();
+        }
+
+    }
+
     render() {
-        if (!this.state.insights || !this.state.data) {
+        if (!this.state.snapshots || !this.state.data) {
             return (
                 <div>loading...</div>
             );
         }
-        const { insightIndex, insights } = this.state;
-        const partialInsight = insights[insightIndex];
+        const { insightIndex, snapshots } = this.state;
+        const partialInsight = snapshots[insightIndex].insight;
         const insight: SandDance.types.Insight = {
             ...partialInsight,
             size: this.state.size,
@@ -71,11 +100,16 @@ export class Page extends React.Component<Props, State> {
         return (
             <div>
                 <SandDanceReact
+                    ref={reactViewer => {
+                        if (reactViewer) {
+                            this.viewer = reactViewer.viewer;
+                        }
+                    }}
                     insight={insight}
                     data={this.state.data}
                 />
                 <div className="content">
-                    <Content goTo={insightIndex => this.setState({ insightIndex })} />
+                    <Content goTo={insightIndex => this.goTo(insightIndex)} />
                 </div>
             </div>
         );

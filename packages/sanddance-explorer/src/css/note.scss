@@ -1,0 +1,21 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+@mixin note(
+) {
+    .sanddance-note {
+        background-color: #fffacd;
+        border: 1px solid #333;
+        box-shadow: 8px 8px 12px -6px #ccc;
+        color: #333;
+        margin: 1em;
+        padding: 20px;
+        position: absolute;
+        width: 15em;
+        word-break: break-word;
+        .cancel {
+            position: absolute;
+            right: -1px;
+            top: -1px;
+        }
+    }
+}

@@ -6,6 +6,7 @@ import { CommandBarButtonStyles } from './CommandBarButton.styles';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { Logo } from './logo';
 import { SandDance } from '@msrvida/sanddance-react';
+import { Snapshot } from '../interfaces';
 import { strings } from '../language';
 
 export interface Props {
@@ -13,15 +14,19 @@ export interface Props {
     logoClickTarget: string;
     buttons?: FabricTypes.ICommandBarItemProps[];
     doFilter: { (search: SandDance.types.Search): void };
-    doUnfilter: { (): void };
-    doDeselect: { (): void };
+    doUnfilter: () => void;
+    doDeselect: () => void;
     filter: SandDance.types.Search;
     loaded: boolean;
     selectionState: SandDance.types.SelectionState;
     selectionSearch: SandDance.types.Search;
     view: SandDance.VegaDeckGl.types.View;
-    onViewClick: { (): void };
-    onHomeClick: { (): void };
+    snapshots: Snapshot[];
+    onSnapshotClick: () => void;
+    onSnapshotNextClick: () => void;
+    onSnapshotPreviousClick: () => void;
+    onViewClick: () => void;
+    onHomeClick: () => void;
     themePalette: Partial<FabricTypes.IPalette>;
 }
 
@@ -71,12 +76,37 @@ export function Topbar(props: Props) {
     }
     const farItems: FabricTypes.ICommandBarItemProps[] = [
         {
+            key: 'previous-snapshot',
+            iconProps: {
+                iconName: 'Previous'
+            },
+            onClick: props.onSnapshotPreviousClick,
+            disabled: props.snapshots.length < 2
+        },
+        {
+            key: 'snapshot',
+            iconProps: {
+                iconName: 'Camera'
+            },
+            onClick: props.onSnapshotClick,
+            disabled: !props.loaded
+        },
+        {
+            key: 'next-snapshot',
+            iconProps: {
+                iconName: 'Next'
+            },
+            onClick: props.onSnapshotNextClick,
+            disabled: props.snapshots.length < 2
+        },
+        {
             key: 'view',
             iconProps: {
                 iconName: props.view === '2d' ? 'Product' : 'Page'
             },
             title: props.view === '2d' ? strings.labelViewType3d : strings.lavelViewType2d,
-            onClick: props.onViewClick
+            onClick: props.onViewClick,
+            disabled: !props.loaded
         },
         {
             key: 'home',
@@ -84,7 +114,8 @@ export function Topbar(props: Props) {
                 iconName: 'PicturePosition'
             },
             title: strings.buttonCameraHome,
-            onClick: props.onHomeClick
+            onClick: props.onHomeClick,
+            disabled: !props.loaded
         }
     ];
 

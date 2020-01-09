@@ -11,9 +11,13 @@ const expressionKeys = Object.keys(<Partial<SearchExpression>>{
 });
 
 export function compareExpression(a: SearchExpression, b: SearchExpression): boolean {
-    for (let k = 0; k < expressionKeys.length; k++) {
-        let key = expressionKeys[k];
-        if (a[key] != b[key]) return false;
+    if (a && b) {
+        for (let k = 0; k < expressionKeys.length; k++) {
+            let key = expressionKeys[k];
+            if (a[key] != b[key]) return false;
+        }
+    } else {
+        return !a && !b;
     }
     return true;
 }
@@ -42,6 +46,17 @@ export function compare(a: Search, b: Search): boolean {
     if (arrA.length != arrB.length) return false;
     for (let i = 0; i < arrA.length; i++) {
         if (!compareGroup(arrA[i], arrB[i])) return false;
+    }
+    return true;
+}
+
+export function startsWith(whole: Search, part: Search): boolean {
+    if (!part) return true;
+    let arrs = [whole, part].map(ensureSearchExpressionGroupArray);
+    let [wholeArray, partArray] = arrs;
+    if (partArray.length > wholeArray.length) return false;
+    for (let i = 0; i < partArray.length; i++) {
+        if (!compareGroup(wholeArray[i], partArray[i])) return false;
     }
     return true;
 }

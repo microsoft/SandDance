@@ -12,7 +12,8 @@ import {
     DataContent,
     DataExportHandler,
     DataFile,
-    Snapshot
+    Snapshot,
+    SnapshotProps
 } from './interfaces';
 import { ColumnMapBaseProps } from './controls/columnMap';
 import {
@@ -24,11 +25,12 @@ import {
 } from './partialInsight';
 import { DataBrowser } from './dialogs/dataBrowser';
 import { DataScopeId } from './controls/dataScope';
-import { defaultViewerOptions } from './defaults';
+import { defaultViewerOptions, snapshotThumbWidth } from './defaults';
 import { Dialog } from './controls/dialog';
 import { ensureColumnsExist, ensureColumnsPopulated } from './columns';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { getPosition } from './mouseEvent';
+import { IconButton } from './controls/iconButton';
 import { InputSearchExpressionGroup, Search } from './dialogs/search';
 import { loadDataArray, loadDataFile } from './dataLoader';
 import {
@@ -42,7 +44,8 @@ import { removeTabIndex } from './canvas';
 import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
 import { Settings } from './dialogs/settings';
 import { Sidebar, SideTabId } from './controls/sidebar';
-import { SnapshotProps, Snapshots } from './dialogs/snapshots';
+import { SnapshotEditor } from './dialogs/snapshotEditor';
+import { Snapshots } from './dialogs/snapshots';
 import { strings } from './language';
 import { themePalettes } from './themes';
 import { toggleSearch } from './toggleSearch';
@@ -67,7 +70,7 @@ export interface Props {
     dataExportHandler?: DataExportHandler;
     topBarButtonProps?: FabricTypes.ICommandBarItemProps[];
     snapshotProps?: SnapshotProps;
-    onSnapshotClick?: (snapshot: Snapshot) => void;
+    onSnapshotClick?: (snapshot: Snapshot, selectedSnaphotIndex: number) => void;
     onView?: () => void;
     onError?: (e: any) => void;
     onSignalChanged?: () => void;
@@ -90,8 +93,10 @@ export interface State extends SandDance.types.Insight {
     dataScopeId: DataScopeId;
     selectedItemIndex: { [key: number]: number };
     snapshots: Snapshot[];
+    selectedSnapshotIndex: number;
     tooltipExclusions: string[];
     positionedColumnMapProps: PositionedColumnMapProps;
+    note: string;
 }
 
 const dataBrowserTitles: { [key: number]: string } = {};
@@ -132,12 +137,15 @@ export class Explorer extends React.Component<Props, State> {
     private layoutDivPinned: HTMLElement;
     private getColorContext: (oldInsight: SandDance.types.Insight, newInsight: SandDance.types.Insight) => SandDance.types.ColorContext;
     private ignoreSelectionChange: boolean;
+    private snapshotEditor: SnapshotEditor;
+    private scrollSnapshotTimer: number;
 
     public viewer: SandDance.Viewer;
     public viewerOptions: Partial<SandDance.types.ViewerOptions>;
     public discardColorContextUpdates: boolean;
     public prefs: Prefs;
     public div: HTMLElement;
+    public snapshotThumbWidth: number;
 
     constructor(props: Props) {
         super(props);
@@ -171,14 +179,17 @@ export class Explorer extends React.Component<Props, State> {
             sidebarPinned: true,
             view: props.initialView || '2d',
             snapshots: [],
+            selectedSnapshotIndex: -1,
             tooltipExclusions: [],
-            positionedColumnMapProps: null
+            positionedColumnMapProps: null,
+            note: null
         };
 
         this.state.selectedItemIndex[DataScopeId.AllData] = 0;
         this.state.selectedItemIndex[DataScopeId.FilteredData] = 0;
         this.state.selectedItemIndex[DataScopeId.SelectedData] = 0;
 
+        this.snapshotThumbWidth = snapshotThumbWidth;
         this.discardColorContextUpdates = true;
         this.updateViewerOptions({ ...SandDance.VegaDeckGl.util.clone(SandDance.Viewer.defaultViewerOptions), ...props.viewerOptions });
     }
@@ -325,7 +336,7 @@ export class Explorer extends React.Component<Props, State> {
         return this.viewer.getInsight();
     }
 
-    setInsight(partialInsight: Partial<SandDance.types.Insight>) {
+    setInsight(partialInsight: Partial<SandDance.types.Insight> & Partial<State> = this.viewer.getInsight(), rebaseFilter = false) {
         const selectedItemIndex = { ...this.state.selectedItemIndex };
         selectedItemIndex[DataScopeId.AllData] = 0;
         selectedItemIndex[DataScopeId.FilteredData] = 0;
@@ -339,8 +350,39 @@ export class Explorer extends React.Component<Props, State> {
             selectedItemIndex,
             ...partialInsight
         };
-        this.getColorContext = null;
-        this.changeInsight(newState as State);
+        newState.search = createInputSearch(newState.filter);
+        const changeInsight = () => {
+            this.getColorContext = null;
+            this.changeInsight(newState as State);
+        };
+        const currentFilter = this.viewer.getInsight().filter;
+        if (rebaseFilter && currentFilter && newState.filter) {
+            if (SandDance.searchExpression.startsWith(newState.filter, currentFilter)) {
+                changeInsight();
+            } else {
+                this.viewer.reset()
+                    .then(() => new Promise((resolve, reject) => { setTimeout(resolve, this.viewer.options.transitionDurations.scope); }))
+                    .then(changeInsight);
+            }
+        } else {
+            changeInsight();
+        }
+    }
+
+    reviveSnapshot(snapshotOrIndex: Snapshot | number) {
+        if (typeof snapshotOrIndex === 'number') {
+            const selectedSnapshotIndex = snapshotOrIndex as number;
+            const snapshot = this.state.snapshots[selectedSnapshotIndex];
+            const newState: Partial<State> = { ...snapshot.insight, note: snapshot.description, selectedSnapshotIndex };
+            if (!this.state.sidebarClosed) {
+                newState.sideTabId = SideTabId.Snapshots;
+                this.scrollSnapshotIntoView(selectedSnapshotIndex);
+            }
+            this.setInsight(newState);
+        } else {
+            const snapshot = snapshotOrIndex as Snapshot;
+            this.setInsight({ ...snapshot.insight, note: snapshot.description, selectedSnapshotIndex: -1 }, true); //don't navigate to sideTab
+        }
     }
 
     load(
@@ -350,7 +392,7 @@ export class Explorer extends React.Component<Props, State> {
         ) => Partial<SandDance.types.Insight>,
         optionsOrPrefs?: Prefs | Options
     ) {
-        this.changeInsight({ columns: null });
+        this.changeInsight({ columns: null, note: null, snapshots: [] });
         return new Promise<void>((resolve, reject) => {
             const loadFinal = (dataContent: DataContent) => {
                 let partialInsight: Partial<SandDance.types.Insight>;
@@ -372,6 +414,7 @@ export class Explorer extends React.Component<Props, State> {
                 let newState: Partial<State> = {
                     dataFile,
                     dataContent,
+                    snapshots: dataContent.snapshots || [],
                     autoCompleteDistinctValues: {},
                     filter: null,
                     filteredData: null,
@@ -720,6 +763,34 @@ export class Explorer extends React.Component<Props, State> {
         return this.viewer.deselect();
     }
 
+    private writeSnapshot(snapshot: Snapshot, editIndex: number) {
+        let { selectedSnapshotIndex } = this.state;
+        let snapshots: Snapshot[];
+        if (editIndex >= 0) {
+            snapshots = [...this.state.snapshots];
+            snapshots[editIndex] = snapshot;
+            this.setState({ snapshots, selectedSnapshotIndex });
+        } else {
+            const note = snapshot.description;
+            snapshots = this.state.snapshots.concat(snapshot);
+            selectedSnapshotIndex = snapshots.length - 1;
+            if (!this.state.sidebarClosed) {
+                this.scrollSnapshotIntoView(selectedSnapshotIndex);
+            }
+            this.setState({ sideTabId: SideTabId.Snapshots, snapshots, selectedSnapshotIndex, note });
+        }
+    }
+
+    private scrollSnapshotIntoView(selectedSnapshotIndex: number) {
+        clearTimeout(this.scrollSnapshotTimer);
+        this.scrollSnapshotTimer = setTimeout(() => {
+            const selectedSnapshotElement = this.div.querySelector(`.snapshot:nth-child(${selectedSnapshotIndex + 1})`) as HTMLElement;
+            if (selectedSnapshotElement) {
+                selectedSnapshotElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }, 500) as any as number;
+    }
+
     componentDidMount() {
         if (this.props.mounted) {
             this.props.mounted(this);
@@ -787,6 +858,34 @@ export class Explorer extends React.Component<Props, State> {
                     selectionState={selectionState}
                     buttons={this.props.topBarButtonProps}
                     view={this.state.view}
+                    snapshots={this.state.snapshots}
+                    onSnapshotPreviousClick={() => {
+                        let selectedSnapshotIndex: number;
+                        if (this.state.selectedSnapshotIndex === -1) {
+                            selectedSnapshotIndex = this.state.snapshots.length - 1;
+                        } else {
+                            selectedSnapshotIndex = this.state.selectedSnapshotIndex;
+                            selectedSnapshotIndex--;
+                            if (selectedSnapshotIndex < 0) {
+                                selectedSnapshotIndex = this.state.snapshots.length - 1;
+                            }
+                        }
+                        this.reviveSnapshot(selectedSnapshotIndex);
+                    }}
+                    onSnapshotClick={() => this.snapshotEditor.editSnapshot()}
+                    onSnapshotNextClick={() => {
+                        let selectedSnapshotIndex: number;
+                        if (this.state.selectedSnapshotIndex === -1) {
+                            selectedSnapshotIndex = 0;
+                        } else {
+                            selectedSnapshotIndex = this.state.selectedSnapshotIndex;
+                            selectedSnapshotIndex++;
+                            if (selectedSnapshotIndex > this.state.snapshots.length - 1) {
+                                selectedSnapshotIndex = 0;
+                            }
+                        }
+                        this.reviveSnapshot(selectedSnapshotIndex);
+                    }}
                     onViewClick={() => {
                         const view = this.state.view === '2d' ? '3d' : '2d';
                         this.changeInsight({ view });
@@ -878,9 +977,7 @@ export class Explorer extends React.Component<Props, State> {
                                             view={this.state.view}
                                             onChangeChartType={chart => this.changeChartType(chart)}
                                             insightColumns={this.state.columns}
-                                            onChangeSignal={(role, column, name, value) => {
-                                                saveSignalValuePref(this.prefs, this.state.chart, role, column, name, value);
-                                            }}
+                                            onChangeSignal={(role, column, name, value) => saveSignalValuePref(this.prefs, this.state.chart, role, column, name, value)}
                                         />
                                     );
                                 }
@@ -982,9 +1079,7 @@ export class Explorer extends React.Component<Props, State> {
                                                 search: this.state.search
                                             }}
                                             autoCompleteDistinctValues={this.state.autoCompleteDistinctValues}
-                                            onSelect={expr => {
-                                                this.doSelect(expr);
-                                            }}
+                                            onSelect={expr => this.doSelect(expr)}
                                             data={this.state.dataContent.data}
                                         />
                                     );
@@ -993,25 +1088,63 @@ export class Explorer extends React.Component<Props, State> {
                                     return (
                                         <Snapshots
                                             {...this.props.snapshotProps}
+                                            editor={this.snapshotEditor}
                                             themePalette={themePalette}
                                             explorer={this}
                                             snapshots={this.state.snapshots}
-                                            onCreateSnapshot={snapshot => {
-                                                this.setState({ snapshots: this.state.snapshots.concat(snapshot) });
-                                            }}
+                                            selectedSnapshotIndex={this.state.selectedSnapshotIndex}
+                                            onClearSnapshots={() => this.setState({ snapshots: [], selectedSnapshotIndex: -1 })}
+                                            onWriteSnapshot={(s, i) => this.writeSnapshot(s, i)}
                                             onRemoveSnapshot={i => {
                                                 const snapshots = [...this.state.snapshots];
                                                 snapshots.splice(i, 1);
-                                                this.setState({ snapshots });
+                                                let { selectedSnapshotIndex } = this.state;
+                                                if (i === selectedSnapshotIndex) {
+                                                    selectedSnapshotIndex = -1;
+                                                } else if (selectedSnapshotIndex > i) {
+                                                    selectedSnapshotIndex--;
+                                                }
+                                                this.setState({ snapshots, selectedSnapshotIndex });
                                             }}
-                                            onSnapshotClick={snapshot => {
+                                            onSnapshotClick={(snapshot, selectedSnapshotIndex) => {
+                                                this.setState({ selectedSnapshotIndex });
                                                 this.calculate(() => {
                                                     if (this.props.onSnapshotClick) {
-                                                        this.props.onSnapshotClick(snapshot);
+                                                        this.props.onSnapshotClick(snapshot, selectedSnapshotIndex);
                                                     } else {
-                                                        this.setInsight(snapshot.insight);
+                                                        this.reviveSnapshot(selectedSnapshotIndex);
                                                     }
                                                 });
+                                            }}
+                                            onMoveUp={i => {
+                                                if (i > 0) {
+                                                    const snapshots = [...this.state.snapshots];
+                                                    const temp = snapshots[i - 1];
+                                                    snapshots[i - 1] = snapshots[i];
+                                                    snapshots[i] = temp;
+                                                    let { selectedSnapshotIndex } = this.state;
+                                                    if (i === selectedSnapshotIndex) {
+                                                        selectedSnapshotIndex = i - 1;
+                                                    } else if (i - 1 === selectedSnapshotIndex) {
+                                                        selectedSnapshotIndex = i;
+                                                    }
+                                                    this.setState({ snapshots, selectedSnapshotIndex });
+                                                }
+                                            }}
+                                            onMoveDown={i => {
+                                                if (i < this.state.snapshots.length - 1) {
+                                                    const snapshots = [...this.state.snapshots];
+                                                    const temp = snapshots[i + 1];
+                                                    snapshots[i + 1] = snapshots[i];
+                                                    snapshots[i] = temp;
+                                                    let { selectedSnapshotIndex } = this.state;
+                                                    if (i === selectedSnapshotIndex) {
+                                                        selectedSnapshotIndex = i + 1;
+                                                    } else if (i + 1 === selectedSnapshotIndex) {
+                                                        selectedSnapshotIndex = i;
+                                                    }
+                                                    this.setState({ snapshots, selectedSnapshotIndex });
+                                                }
                                             }}
                                         />
                                     );
@@ -1078,6 +1211,18 @@ export class Explorer extends React.Component<Props, State> {
                                 insight={insight}
                                 onMount={el => this.viewerMounted(el)}
                             />
+                            {this.state.note && (
+                                <div className='sanddance-note'>
+                                    <IconButton
+                                        className='cancel'
+                                        themePalette={themePalette}
+                                        title={strings.buttonClose}
+                                        iconName='Cancel'
+                                        onClick={() => this.setState({ note: null })}
+                                    />
+                                    {this.state.note}
+                                </div>
+                            )}
                         </div>
                     )}
                     <Dialog
@@ -1091,6 +1236,13 @@ export class Explorer extends React.Component<Props, State> {
                             <div key={i}>{error}</div>
                         ))}
                     </Dialog>
+                    <SnapshotEditor
+                        ref={se => this.snapshotEditor = se}
+                        {...this.props.snapshotProps}
+                        explorer={this}
+                        onWriteSnapshot={(s, i) => this.writeSnapshot(s, i)}
+                        themePalette={themePalette}
+                    />
                 </div>
                 {this.state.positionedColumnMapProps && (
                     <PositionedColumnMap
