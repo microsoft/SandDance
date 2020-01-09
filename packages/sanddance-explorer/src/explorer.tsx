@@ -69,7 +69,7 @@ export interface Props {
     dataExportHandler?: DataExportHandler;
     topBarButtonProps?: FabricTypes.ICommandBarItemProps[];
     snapshotProps?: SnapshotProps;
-    onSnapshotClick?: (snapshot: Snapshot) => void;
+    onSnapshotClick?: (snapshot: Snapshot, selectedSnaphotIndex: number) => void;
     onView?: () => void;
     onError?: (e: any) => void;
     onSignalChanged?: () => void;
@@ -365,6 +365,18 @@ export class Explorer extends React.Component<Props, State> {
             }
         } else {
             changeInsight();
+        }
+    }
+
+    reviveSnapshot(snapshotOrIndex: Snapshot | number) {
+        if (typeof snapshotOrIndex === 'number') {
+            const selectedSnapshotIndex = snapshotOrIndex as number;
+            const snapshot = this.state.snapshots[selectedSnapshotIndex];
+            this.setInsight({ ...snapshot.insight, note: snapshot.description, selectedSnapshotIndex, sideTabId: SideTabId.Snapshots });
+            this.scrollSnapshotIntoView(selectedSnapshotIndex);
+        } else {
+            const snapshot = snapshotOrIndex as Snapshot;
+            this.setInsight({ ...snapshot.insight, note: snapshot.description, selectedSnapshotIndex: -1 }, true); //don't navigate to sideTab
         }
     }
 
@@ -850,9 +862,7 @@ export class Explorer extends React.Component<Props, State> {
                                 selectedSnapshotIndex = this.state.snapshots.length - 1;
                             }
                         }
-                        const snapshot = this.state.snapshots[selectedSnapshotIndex];
-                        this.setInsight({ ...snapshot.insight, note: snapshot.description, selectedSnapshotIndex, sideTabId: SideTabId.Snapshots });
-                        this.scrollSnapshotIntoView(selectedSnapshotIndex);
+                        this.reviveSnapshot(selectedSnapshotIndex);
                     }}
                     onSnapshotClick={() => this.snapshotEditor.editSnapshot()}
                     onSnapshotNextClick={() => {
@@ -866,9 +876,7 @@ export class Explorer extends React.Component<Props, State> {
                                 selectedSnapshotIndex = 0;
                             }
                         }
-                        const snapshot = this.state.snapshots[selectedSnapshotIndex];
-                        this.setInsight({ ...snapshot.insight, note: snapshot.description, selectedSnapshotIndex, sideTabId: SideTabId.Snapshots });
-                        this.scrollSnapshotIntoView(selectedSnapshotIndex);
+                        this.reviveSnapshot(selectedSnapshotIndex);
                     }}
                     onViewClick={() => {
                         const view = this.state.view === '2d' ? '3d' : '2d';
@@ -1100,9 +1108,9 @@ export class Explorer extends React.Component<Props, State> {
                                                 this.setState({ selectedSnapshotIndex });
                                                 this.calculate(() => {
                                                     if (this.props.onSnapshotClick) {
-                                                        this.props.onSnapshotClick(snapshot);
+                                                        this.props.onSnapshotClick(snapshot, selectedSnapshotIndex);
                                                     } else {
-                                                        this.setInsight({ ...snapshot.insight, note: snapshot.description }, true);
+                                                        this.reviveSnapshot(selectedSnapshotIndex);
                                                     }
                                                 });
                                             }}

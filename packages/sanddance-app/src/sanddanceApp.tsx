@@ -117,11 +117,15 @@ export class SandDanceApp extends React.Component<Props, State> {
         }
     }
 
-    private hydrateSnapshot(snapshot: DataSourceSnapshot) {
+    private hydrateSnapshot(snapshot: DataSourceSnapshot, selectedSnapshotIndex = -1) {
         if (!snapshot.dataSource || snapshot.dataSource.id === this.state.dataSource.id) {
-            this.explorer.setInsight({ ...snapshot.insight, note: snapshot.description }, true);
+            if (selectedSnapshotIndex === -1) {
+                this.explorer.reviveSnapshot(snapshot);
+            } else {
+                this.explorer.reviveSnapshot(selectedSnapshotIndex);
+            }
             if (snapshot.dataSource && snapshot.dataSource.snapshotsUrl && snapshot.dataSource.snapshotsUrl !== this.state.dataSource.snapshotsUrl) {
-                //load new shaphots url
+                //load new snapshots url
                 fetch(snapshot.dataSource.snapshotsUrl)
                     .then(response => response.json())
                     .then(snapshots => {
@@ -263,7 +267,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                         getTitle: insight => `${this.state.dataSource.displayName} ${insight.chart}`,
                         getDescription: insight => '' //TODO create description from filter etc.
                     }}
-                    onSnapshotClick={(snapshot: DataSourceSnapshot) => this.hydrateSnapshot(snapshot)}
+                    onSnapshotClick={(snapshot: DataSourceSnapshot, selectedSnapshotIndex) => this.hydrateSnapshot(snapshot, selectedSnapshotIndex)}
                     initialView="2d"
                     mounted={e => {
                         this.explorer = e;
