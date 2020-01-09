@@ -88,7 +88,8 @@ export function Topbar(props: Props) {
             iconProps: {
                 iconName: 'Camera'
             },
-            onClick: props.onSnapshotClick
+            onClick: props.onSnapshotClick,
+            disabled: !props.loaded
         },
         {
             key: 'next-snapshot',
@@ -104,7 +105,8 @@ export function Topbar(props: Props) {
                 iconName: props.view === '2d' ? 'Product' : 'Page'
             },
             title: props.view === '2d' ? strings.labelViewType3d : strings.lavelViewType2d,
-            onClick: props.onViewClick
+            onClick: props.onViewClick,
+            disabled: !props.loaded
         },
         {
             key: 'home',
@@ -112,7 +114,8 @@ export function Topbar(props: Props) {
                 iconName: 'PicturePosition'
             },
             title: strings.buttonCameraHome,
-            onClick: props.onHomeClick
+            onClick: props.onHomeClick,
+            disabled: !props.loaded
         }
     ];
 
