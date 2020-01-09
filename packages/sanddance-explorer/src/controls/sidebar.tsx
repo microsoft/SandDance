@@ -65,7 +65,7 @@ export function Sidebar(props: Props) {
                 <DataScope
                     {...props.dataScopeProps}
                 />
-                <div className="vbuttons">
+                <div className="vbuttons" role='tablist'>
                     <div className="sidebar-dialogs">
                         {sidebuttons.map((sidebutton, i) => (
                             <Sidebutton
@@ -93,7 +93,7 @@ export function Sidebar(props: Props) {
                         </div>
                     )}
                 </div>
-                <Scrollable>
+                <Scrollable role='tabpanel'>
                     <div className="sidetab">
                         {props.children}
                     </div>
@@ -119,8 +119,9 @@ export interface SidebuttonProps {
 }
 
 export function Sidebutton(props: SidebuttonProps & Props) {
+    const selected = !props.closed && props.selectedSideTab === props.sideTabId;
     return (
-        <div className={util.classList('vbutton', !props.closed && props.selectedSideTab === props.sideTabId && 'selected')}>
+        <div className={util.classList('vbutton', selected && 'selected')} role='tab' aria-selected={selected}>
             {props.badgeText && <div className="count">{props.badgeText}</div>}
             <IconButton
                 themePalette={props.themePalette}

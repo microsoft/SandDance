@@ -28,6 +28,7 @@ export interface IInitializer {
 }
 
 export interface Props {
+    collapseLabels: boolean;
     data: object[];
     initializer: IInitializer;
     onSelect: { (search: SandDance.types.Search): void };
@@ -242,8 +243,9 @@ export class Search extends React.Component<Props, State> {
                             key={group.key}
                         >
                             <Dropdown
+                                collapseLabel={this.props.collapseLabels}
                                 className="search-group-clause"
-                                //label={strings.labelSearchClause}
+                                label={strings.labelSearchClause}
                                 disabled={groupIndex === 0 || this.props.disableGroupOR}
                                 dropdownWidth={120}
                                 options={getGroupClauses(group.clause, groupIndex, this.props.disableGroupOR)}
@@ -256,6 +258,7 @@ export class Search extends React.Component<Props, State> {
                                         key={ex.key}
                                     >
                                         <SearchTerm
+                                            collapseLabels={this.props.collapseLabels}
                                             onUpdateExpression={(ex, i) => this.updateExpression(ex, groupIndex, i)}
                                             autoCompleteDistinctValues={this.props.autoCompleteDistinctValues}
                                             index={i}

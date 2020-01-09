@@ -11,26 +11,29 @@ export interface Props extends FabricTypes.IDropdownProps {
 }
 
 export function Dropdown(props: Props) {
+    const newProps = { ...props };
     let selectedKey: string | number = null;
-    if (props.options && props.options.length > 1) {
-        const selectedOptions = props.options.filter(option => option.selected);
+    if (newProps.options && newProps.options.length > 1) {
+        const selectedOptions = newProps.options.filter(option => option.selected);
         if (selectedOptions && selectedOptions.length > 0) {
             selectedKey = selectedOptions[0].key;
         }
     }
+    if (newProps.collapseLabel) {
+        newProps.onRenderTitle = ((a, b) => {
+            return (
+                <span>
+                    {newProps.label}: {(a[0] as FabricTypes.IDropdownOption).text}
+                </span>
+            );
+        })
+    }
     return (
         <base.fabric.Dropdown
             dropdownWidth={dropdownWidth}
-            {...props}
-            label={props.collapseLabel ? null : props.label}
+            {...newProps}
+            label={newProps.collapseLabel ? null : newProps.label}
             selectedKey={selectedKey}
-            onRenderTitle={props.collapseLabel && ((a, b) => {
-                return (
-                    <span>
-                        {props.label}: {(a[0] as FabricTypes.IDropdownOption).text}
-                    </span>
-                );
-            })}
         />
     );
 }

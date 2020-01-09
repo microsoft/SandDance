@@ -13,6 +13,7 @@ import { ToggleColumns } from '../controls/toggleColumns';
 export interface Props extends ColumnMapBaseProps {
     tooltipExclusions: string[];
     toggleTooltipExclusion: (columnName: string) => void;
+    collapseLabels: boolean;
     disabled: boolean;
     chart: SandDance.types.Chart;
     onChangeChartType: (chart: SandDance.types.Chart) => void;
@@ -107,6 +108,7 @@ export class Chart extends React.Component<Props, State> {
                             return (
                                 <ColumnMap
                                     {...props}
+                                    collapseLabel={props.collapseLabels}
                                     disabled={disabled}
                                     selectedColumnName={selectedColumnName}
                                     specRole={specRole}

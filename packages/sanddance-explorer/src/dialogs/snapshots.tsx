@@ -64,7 +64,8 @@ export class Snapshots extends React.Component<Props, State>{
                         buttonText: strings.buttonClearSnapshots,
                         handler: () => this.props.onClearSnapshots()
                     }
-                })
+                }),
+                disabled: this.props.snapshots.length === 0
             }
         ];
         if (this.props.getTopActions) {
@@ -159,9 +160,6 @@ export class Snapshots extends React.Component<Props, State>{
                                         <div className='title'>
                                             {snapshot.title}
                                         </div>
-                                        {/* <div className='description'>
-                                            {snapshot.description}
-                                        </div> */}
                                         <div className='thumbnail'>
                                             <img title={snapshot.description} src={snapshot.image} style={{ backgroundColor: snapshot.bgColor }} />
                                         </div>

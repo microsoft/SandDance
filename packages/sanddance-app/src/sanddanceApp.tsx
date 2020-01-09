@@ -41,6 +41,7 @@ export interface Props {
 export type Dialogs = 'import-local' | 'import-remote' | 'export';
 
 export interface State {
+    compactUI: boolean;
     dialogMode: Dialogs;
     dataSource: DataSource;
     darkTheme: boolean;
@@ -87,6 +88,7 @@ export class SandDanceApp extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
+            compactUI: !!localStorage.getItem('compactUI'),
             dialogMode: null,
             dataSource: snapshotOnLoad && snapshotOnLoad.dataSource || props.dataSources[0],
             darkTheme: props.darkTheme
@@ -260,7 +262,12 @@ export class SandDanceApp extends React.Component<Props, State> {
                             if (snapshot.dataSource && snapshot.dataSource.dataSourceType === 'local') {
                                 element = (<span>{strings.labelLocal}</span>);
                             } else {
-                                element = (<a key={`link${i}`} href={url}>{strings.labelLink}</a>);
+                                element = (<a
+                                    key={`link${i}`}
+                                    href={url}
+                                    title={strings.labelLinkDescription}
+                                    aria-label={strings.labelLinkDescription}
+                                >{strings.labelLink}</a>);
                             }
                             return [{ element }];
                         },
@@ -308,6 +315,27 @@ export class SandDanceApp extends React.Component<Props, State> {
                         }
                     ]}
                     viewerOptions={this.viewerOptions}
+                    compactUI={this.state.compactUI}
+                    additionalSettings={[
+                        {
+                            groupLabel: strings.labelPreferences,
+                            children: (
+                                <base.fabric.Toggle
+                                    label={strings.labelCompactUI}
+                                    title={strings.labelCompactUIDescription}
+                                    checked={this.state.compactUI}
+                                    onChange={(e, checked?) => {
+                                        if (checked) {
+                                            localStorage.setItem('compactUI', 'true');
+                                        } else {
+                                            localStorage.removeItem('compactUI');
+                                        }
+                                        this.setState({ compactUI: checked });
+                                    }}
+                                />
+                            )
+                        }
+                    ]}
                 >
                 </Explorer>
             </section >

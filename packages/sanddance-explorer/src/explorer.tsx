@@ -12,6 +12,7 @@ import {
     DataContent,
     DataExportHandler,
     DataFile,
+    SettingsGroup,
     Snapshot,
     SnapshotProps
 } from './interfaces';
@@ -57,6 +58,7 @@ export interface Options {
 }
 
 export interface Props {
+    compactUI?: boolean;
     hideSidebarControls?: boolean;
     logoClickUrl?: string;
     logoClickTarget?: string;
@@ -75,6 +77,7 @@ export interface Props {
     onError?: (e: any) => void;
     onSignalChanged?: () => void;
     onTooltipExclusionsChanged?: (tooltipExclusions: string[]) => void;
+    additionalSettings?: SettingsGroup[];
     systemInfoChildren?: React.ReactNode;
 }
 
@@ -241,6 +244,7 @@ export class Explorer extends React.Component<Props, State> {
                 const specRole = this.state.specCapabilities && this.state.specCapabilities.roles.filter(r => r.role === 'color')[0];
                 const positionedColumnMapProps: PositionedColumnMapProps = {
                     ...this.getColumnMapBaseProps(),
+                    collapseLabel: true,
                     container: this.div,
                     selectedColumnName: this.state.columns['color'],
                     onDismiss: () => { this.setState({ positionedColumnMapProps: null }); },
@@ -282,6 +286,7 @@ export class Explorer extends React.Component<Props, State> {
                     if (pos && specRole) {
                         const positionedColumnMapProps: PositionedColumnMapProps = {
                             ...this.getColumnMapBaseProps(),
+                            collapseLabel: true,
                             container: this.div,
                             selectedColumnName: this.state.columns[specRole.role],
                             onDismiss: () => { this.setState({ positionedColumnMapProps: null }); },
@@ -959,6 +964,7 @@ export class Explorer extends React.Component<Props, State> {
                                 case SideTabId.ChartType: {
                                     return (
                                         <Chart
+                                            collapseLabels={this.props.compactUI}
                                             tooltipExclusions={this.state.tooltipExclusions}
                                             toggleTooltipExclusion={columnName => {
                                                 const tooltipExclusions = [...this.state.tooltipExclusions];
@@ -984,6 +990,7 @@ export class Explorer extends React.Component<Props, State> {
                                 case SideTabId.Color: {
                                     return (
                                         <Color
+                                            compactUI={this.props.compactUI}
                                             specCapabilities={this.state.specCapabilities}
                                             disabled={!loaded || this.state.sidebarClosed}
                                             {...columnMapProps}
@@ -1070,6 +1077,7 @@ export class Explorer extends React.Component<Props, State> {
                                 case SideTabId.Search: {
                                     return (
                                         <Search
+                                            collapseLabels={this.props.compactUI}
                                             themePalette={themePalette}
                                             disabled={!loaded || this.state.sidebarClosed}
                                             disableGroupOR={this.props.searchORDisabled}
@@ -1159,6 +1167,7 @@ export class Explorer extends React.Component<Props, State> {
                                             onToggleLegend={hideLegend => this.setState({ hideLegend, calculating: () => this._resize() })}
                                             hideAxes={this.state.hideAxes}
                                             onToggleAxes={hideAxes => this.setState({ calculating: () => this.setState({ hideAxes }) })}
+                                            additionalSettings={this.props.additionalSettings}
                                         >
                                             {this.props.systemInfoChildren}
                                         </Settings>

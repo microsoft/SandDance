@@ -233,7 +233,11 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
                         {this.props.dataSource.dataSourceType !== 'local'
                             && (
                                 <div className='tip' style={{ visibility: !this.invalidUrlError() && !this.state.urlError ? 'visible' : 'hidden' }} >
-                                    {strings.labelSnapshotsShortcut} <a href={shortcut}>{strings.labelLink}</a>
+                                    {strings.labelSnapshotsShortcut} <a
+                                        href={shortcut}
+                                        title={strings.labelLinkDescription}
+                                        aria-label={strings.labelLinkDescription}
+                                    >{strings.labelLink}</a>
                                 </div>
                             )
                         }

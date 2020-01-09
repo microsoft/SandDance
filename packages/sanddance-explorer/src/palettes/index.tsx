@@ -16,6 +16,7 @@ import { strings } from '../language';
 const maxDistinctColors = 20;
 
 export interface Props {
+    collapseLabel: boolean;
     scheme: string;
     colorColumn: SandDance.types.Column;
     changeColorScheme: (scheme: string) => void;
@@ -78,7 +79,7 @@ export function Palette(props: Props) {
                 }}
             />
             <Dropdown
-                collapseLabel={true}
+                collapseLabel={props.collapseLabel}
                 disabled={props.disabled}
                 dropdownWidth={400}
                 label={strings.labelColorScheme}
