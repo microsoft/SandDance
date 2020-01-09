@@ -372,8 +372,12 @@ export class Explorer extends React.Component<Props, State> {
         if (typeof snapshotOrIndex === 'number') {
             const selectedSnapshotIndex = snapshotOrIndex as number;
             const snapshot = this.state.snapshots[selectedSnapshotIndex];
-            this.setInsight({ ...snapshot.insight, note: snapshot.description, selectedSnapshotIndex, sideTabId: SideTabId.Snapshots });
-            this.scrollSnapshotIntoView(selectedSnapshotIndex);
+            const newState: Partial<State> = { ...snapshot.insight, note: snapshot.description, selectedSnapshotIndex };
+            if (!this.state.sidebarClosed) {
+                newState.sideTabId = SideTabId.Snapshots;
+                this.scrollSnapshotIntoView(selectedSnapshotIndex);
+            }
+            this.setInsight(newState);
         } else {
             const snapshot = snapshotOrIndex as Snapshot;
             this.setInsight({ ...snapshot.insight, note: snapshot.description, selectedSnapshotIndex: -1 }, true); //don't navigate to sideTab
