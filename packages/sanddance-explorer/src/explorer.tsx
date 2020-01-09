@@ -977,9 +977,7 @@ export class Explorer extends React.Component<Props, State> {
                                             view={this.state.view}
                                             onChangeChartType={chart => this.changeChartType(chart)}
                                             insightColumns={this.state.columns}
-                                            onChangeSignal={(role, column, name, value) => {
-                                                saveSignalValuePref(this.prefs, this.state.chart, role, column, name, value);
-                                            }}
+                                            onChangeSignal={(role, column, name, value) => saveSignalValuePref(this.prefs, this.state.chart, role, column, name, value)}
                                         />
                                     );
                                 }
@@ -1081,9 +1079,7 @@ export class Explorer extends React.Component<Props, State> {
                                                 search: this.state.search
                                             }}
                                             autoCompleteDistinctValues={this.state.autoCompleteDistinctValues}
-                                            onSelect={expr => {
-                                                this.doSelect(expr);
-                                            }}
+                                            onSelect={expr => this.doSelect(expr)}
                                             data={this.state.dataContent.data}
                                         />
                                     );
@@ -1097,9 +1093,7 @@ export class Explorer extends React.Component<Props, State> {
                                             explorer={this}
                                             snapshots={this.state.snapshots}
                                             selectedSnapshotIndex={this.state.selectedSnapshotIndex}
-                                            onClearSnapshots={() => {
-                                                this.setState({ snapshots: [], selectedSnapshotIndex: -1 });
-                                            }}
+                                            onClearSnapshots={() => this.setState({ snapshots: [], selectedSnapshotIndex: -1 })}
                                             onWriteSnapshot={(s, i) => this.writeSnapshot(s, i)}
                                             onRemoveSnapshot={i => {
                                                 const snapshots = [...this.state.snapshots];
