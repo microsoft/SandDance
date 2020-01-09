@@ -159,9 +159,9 @@ export class Snapshots extends React.Component<Props, State>{
                                         <div className='title'>
                                             {snapshot.title}
                                         </div>
-                                        <div className='description'>
+                                        {/* <div className='description'>
                                             {snapshot.description}
-                                        </div>
+                                        </div> */}
                                         <div className='thumbnail'>
                                             <img title={snapshot.description} src={snapshot.image} style={{ backgroundColor: snapshot.bgColor }} />
                                         </div>

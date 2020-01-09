@@ -85,7 +85,7 @@ $layout-margin-right: 150px; //room for legend
         }
     }
     .sanddance-layout-pinned {
-        left: $toolbar-width + $layout-margin-left;
+        left: $toolbar-width;
     }
     .sanddance-ReactViewer {
         position: absolute;
@@ -96,7 +96,7 @@ $layout-margin-right: 150px; //room for legend
     }
     &.hide-legend {
         .sanddance-ReactViewer {
-            left: $layout-margin-left;
+            left: 0;
         }
     }
     &.show-center {

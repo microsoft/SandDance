@@ -30,6 +30,7 @@ import { Dialog } from './controls/dialog';
 import { ensureColumnsExist, ensureColumnsPopulated } from './columns';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { getPosition } from './mouseEvent';
+import { IconButton } from './controls/iconButton';
 import { InputSearchExpressionGroup, Search } from './dialogs/search';
 import { loadDataArray, loadDataFile } from './dataLoader';
 import {
@@ -765,16 +766,19 @@ export class Explorer extends React.Component<Props, State> {
     private writeSnapshot(snapshot: Snapshot, editIndex: number) {
         let { selectedSnapshotIndex } = this.state;
         let snapshots: Snapshot[];
-        const note = snapshot.description;
         if (editIndex >= 0) {
             snapshots = [...this.state.snapshots];
             snapshots[editIndex] = snapshot;
+            this.setState({ snapshots, selectedSnapshotIndex });
         } else {
+            const note = snapshot.description;
             snapshots = this.state.snapshots.concat(snapshot);
             selectedSnapshotIndex = snapshots.length - 1;
-            this.scrollSnapshotIntoView(selectedSnapshotIndex);
+            if (!this.state.sidebarClosed) {
+                this.scrollSnapshotIntoView(selectedSnapshotIndex);
+            }
+            this.setState({ sideTabId: SideTabId.Snapshots, snapshots, selectedSnapshotIndex, note });
         }
-        this.setState({ sideTabId: SideTabId.Snapshots, snapshots, selectedSnapshotIndex, note });
     }
 
     private scrollSnapshotIntoView(selectedSnapshotIndex: number) {
@@ -1214,7 +1218,14 @@ export class Explorer extends React.Component<Props, State> {
                                 onMount={el => this.viewerMounted(el)}
                             />
                             {this.state.note && (
-                                <div className='sanddance-note' style={{ position: 'absolute', width: '200px' }}>
+                                <div className='sanddance-note'>
+                                    <IconButton
+                                        className='cancel'
+                                        themePalette={themePalette}
+                                        title={strings.buttonClose}
+                                        iconName='Cancel'
+                                        onClick={() => this.setState({ note: null })}
+                                    />
                                     {this.state.note}
                                 </div>
                             )}
