@@ -8,9 +8,9 @@ export const embedHtml = (title: string, embed: string) => `<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${title}</title>
     <link rel="stylesheet" type="text/css"
-        href="https://unpkg.com/@msrvida/sanddance-embed@1/dist/css/sanddance-embed.css" />
+        href="https://unpkg.com/@msrvida/sanddance-embed@2/dist/css/sanddance-embed.css" />
     <link rel="stylesheet" type="text/css"
-        href="https://unpkg.com/@msrvida/sanddance-explorer@1/dist/css/sanddance-explorer.css" />
+        href="https://unpkg.com/@msrvida/sanddance-explorer@2.1/dist/css/sanddance-explorer.css" />
 </head>
 
 <body>
@@ -19,7 +19,7 @@ export const embedHtml = (title: string, embed: string) => `<!DOCTYPE html>
     <script src="https://unpkg.com/deck.gl@6/deckgl.min.js"></script>
     <script src="https://unpkg.com/vega@5.8/build/vega.min.js"></script>
     <script src="https://unpkg.com/office-ui-fabric-react@6.204.4/dist/office-ui-fabric-react.js"></script>
-    <script src="https://unpkg.com/@msrvida/sanddance-explorer@2/dist/umd/sanddance-explorer.js"></script>
+    <script src="https://unpkg.com/@msrvida/sanddance-explorer@2.1/dist/umd/sanddance-explorer.js"></script>
     <script src="https://unpkg.com/@msrvida/sanddance-embed@2/dist/umd/sanddance-embed.js"></script>
 
     <div id="app"></div>
