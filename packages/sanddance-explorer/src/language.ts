@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 export const strings = {
     appName: 'SandDance',
-    bingsearch: 'Bing',
+    bingsearch: 'Bing search',
     buttonClose: 'Close',
     buttonSelect: 'Search & Select',
     buttonColorSchemeMap: 'Map color scheme to filtered data',
@@ -69,6 +69,10 @@ export const strings = {
     labelSnapshots: 'Snapshots',
     labelSnapshotSettingThumbnailWidth: 'Thumbnail image width',
     labelSearch: 'Select by search',
+    labelSearchClause: 'Clause',
+    labelSearchColumn: 'Field',
+    labelSearchOperator: 'Operator',
+    labelSearchValue: 'Value',
     labelChart: 'Chart',
     labelChartCanvas: 'Chart canvas',
     labelColumnMapping: 'Column Mapping',

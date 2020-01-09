@@ -4,7 +4,7 @@ import * as React from 'react';
 import * as SandDanceReact from '@msrvida/sanddance-react';
 import { base } from '../base';
 import { capabilities } from '../canvas';
-import { DataFile } from '../interfaces';
+import { DataFile, SettingsGroup } from '../interfaces';
 import { Dialog } from '../controls/dialog';
 import { Dropdown } from '../controls/dropdown';
 import { Explorer } from '../explorer';
@@ -32,6 +32,7 @@ import SandDance = SandDanceReact.SandDance;
 type ScalesWithRange = QuantileScale | QuantizeScale | OrdinalScale | LinearScale | SequentialScale;
 
 export interface Props {
+    additionalSettings: SettingsGroup[];
     explorer: Explorer;
     dataFile: DataFile;
     scheme: string;
@@ -277,6 +278,11 @@ export class Settings extends React.Component<Props, State> {
                         defaultValue={this.props.explorer.viewerOptions.transitionDurations.view}
                     />
                 </Group>
+                {props.additionalSettings && props.additionalSettings.map((g, i) => (
+                    <Group key={i} label={g.groupLabel}>
+                        {g.children}
+                    </Group>
+                ))}
                 <Group label={strings.labelSystem}>
                     <base.fabric.DefaultButton
                         text={strings.labelSystemInfo}

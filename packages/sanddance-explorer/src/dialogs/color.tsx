@@ -12,6 +12,7 @@ import { strings } from '../language';
 import { Group } from '../controls/group';
 
 export interface Props extends ColumnMapBaseProps {
+    compactUI: boolean;
     specCapabilities: SandDance.types.SpecCapabilities;
     scheme: string;
     colorColumn: string;
@@ -37,6 +38,7 @@ export function Color(props: Props) {
             <Group label={strings.labelColor}>
                 <ColumnMap
                     {...props}
+                    collapseLabel={props.compactUI}
                     selectedColumnName={props.colorColumn}
                     specRole={props.specCapabilities && props.specCapabilities.roles.filter(r => r.role === 'color')[0]}
                     key={0}
@@ -46,6 +48,7 @@ export function Color(props: Props) {
                     dangerouslySetInnerHTML={{ __html: strings.labelColorFieldIsColorData(colorColumn.name) }}
                 />}
                 {colorColumn && !colorColumn.isColorData && <Palette
+                    collapseLabel={props.compactUI}
                     scheme={props.scheme}
                     colorColumn={colorColumn}
                     changeColorScheme={scheme => {

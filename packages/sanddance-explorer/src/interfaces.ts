@@ -57,3 +57,8 @@ export interface ViewerOptions extends SandDance.types.ViewerOptions {
 export interface DateWithSource extends Date {
   input?: string;
 }
+
+export interface SettingsGroup {
+  groupLabel: string;
+  children: React.ReactNode;
+}

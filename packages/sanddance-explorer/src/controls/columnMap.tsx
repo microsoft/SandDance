@@ -37,22 +37,23 @@ const aliasLabels: { [role in SandDance.types.InsightColumnRoles]: string } = {
 };
 
 export interface ColumnMapBaseProps {
-  allColumns: SandDance.types.Column[];
-  quantitativeColumns: SandDance.types.Column[];
-  categoricalColumns: SandDance.types.Column[];
-  changeColumnMapping: { (role: SandDance.types.InsightColumnRoles, columnOrRole: SandDance.types.Column | string): void };
-  explorer: Explorer;
-  specCapabilities: SandDance.types.SpecCapabilities;
+    allColumns: SandDance.types.Column[];
+    quantitativeColumns: SandDance.types.Column[];
+    categoricalColumns: SandDance.types.Column[];
+    changeColumnMapping: { (role: SandDance.types.InsightColumnRoles, columnOrRole: SandDance.types.Column | string): void };
+    explorer: Explorer;
+    specCapabilities: SandDance.types.SpecCapabilities;
 }
 
 export interface Props extends ColumnMapBaseProps {
-  componentRef?: React.RefObject<FabricTypes.IDropdown>;
-  hideSignals?: boolean;
-  disabled?: boolean;
-  specRole: SandDance.types.SpecRoleCapabilities;
-  selectedColumnName?: string
-  onChangeSignal?: (name: string, value: any) => void;
-  onDismiss?: () => void;
+    collapseLabel: boolean;
+    componentRef?: React.RefObject<FabricTypes.IDropdown>;
+    hideSignals?: boolean;
+    disabled?: boolean;
+    specRole: SandDance.types.SpecRoleCapabilities;
+    selectedColumnName?: string
+    onChangeSignal?: (name: string, value: any) => void;
+    onDismiss?: () => void;
 }
 
 function filterColumnList(context: SandDance.types.InsightColumnRoles, columns: SandDance.types.Column[]) {
@@ -61,8 +62,8 @@ function filterColumnList(context: SandDance.types.InsightColumnRoles, columns: 
             return columns.filter(
                 column =>
                     column.quantitative ||
-          (column.stats.distinctValueCount &&
-            column.stats.distinctValueCount < maxFacets)
+                    (column.stats.distinctValueCount &&
+                        column.stats.distinctValueCount < maxFacets)
             );
         default:
             return columns.slice();
@@ -169,7 +170,7 @@ export function ColumnMap(props: Props) {
         >
             <Dropdown
                 componentRef={props.componentRef}
-                collapseLabel={true}
+                collapseLabel={props.collapseLabel}
                 disabled={props.disabled}
                 label={label}
                 options={options}
