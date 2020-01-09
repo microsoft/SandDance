@@ -89,7 +89,7 @@ export class SnapshotEditor extends React.Component<Props, State>{
                 minWidth={`${this.props.explorer.snapshotThumbWidth + 64}px`}
                 hidden={!this.state.showEditFormDialog}
                 onDismiss={() => this.setState({ showEditFormDialog: false })}
-                title={strings.buttonCreateSnapshot}
+                title={this.state.editIndex >= 0 ? strings.buttonEditSnapshot : strings.buttonCreateSnapshot}
                 buttons={(
                     <base.fabric.PrimaryButton
                         disabled={!this.state.image || !this.state.title}
