@@ -117,7 +117,514 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"b0rV":[function(require,module,exports) {
+})({"W2ED":[function(require,module,exports) {
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+'use strict';
+/* eslint-disable no-unused-vars */
+
+var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+function toObject(val) {
+  if (val === null || val === undefined) {
+    throw new TypeError('Object.assign cannot be called with null or undefined');
+  }
+
+  return Object(val);
+}
+
+function shouldUseNative() {
+  try {
+    if (!Object.assign) {
+      return false;
+    } // Detect buggy property enumeration order in older V8 versions.
+    // https://bugs.chromium.org/p/v8/issues/detail?id=4118
+
+
+    var test1 = new String('abc'); // eslint-disable-line no-new-wrappers
+
+    test1[5] = 'de';
+
+    if (Object.getOwnPropertyNames(test1)[0] === '5') {
+      return false;
+    } // https://bugs.chromium.org/p/v8/issues/detail?id=3056
+
+
+    var test2 = {};
+
+    for (var i = 0; i < 10; i++) {
+      test2['_' + String.fromCharCode(i)] = i;
+    }
+
+    var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+      return test2[n];
+    });
+
+    if (order2.join('') !== '0123456789') {
+      return false;
+    } // https://bugs.chromium.org/p/v8/issues/detail?id=3056
+
+
+    var test3 = {};
+    'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+      test3[letter] = letter;
+    });
+
+    if (Object.keys(Object.assign({}, test3)).join('') !== 'abcdefghijklmnopqrst') {
+      return false;
+    }
+
+    return true;
+  } catch (err) {
+    // We don't expect any of the above to throw, but better to be safe.
+    return false;
+  }
+}
+
+module.exports = shouldUseNative() ? Object.assign : function (target, source) {
+  var from;
+  var to = toObject(target);
+  var symbols;
+
+  for (var s = 1; s < arguments.length; s++) {
+    from = Object(arguments[s]);
+
+    for (var key in from) {
+      if (hasOwnProperty.call(from, key)) {
+        to[key] = from[key];
+      }
+    }
+
+    if (getOwnPropertySymbols) {
+      symbols = getOwnPropertySymbols(from);
+
+      for (var i = 0; i < symbols.length; i++) {
+        if (propIsEnumerable.call(from, symbols[i])) {
+          to[symbols[i]] = from[symbols[i]];
+        }
+      }
+    }
+  }
+
+  return to;
+};
+},{}],"Xy56":[function(require,module,exports) {
+/** @license React v16.12.0
+ * react.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+'use strict';
+
+var h = require("object-assign"),
+    n = "function" === typeof Symbol && Symbol.for,
+    p = n ? Symbol.for("react.element") : 60103,
+    q = n ? Symbol.for("react.portal") : 60106,
+    r = n ? Symbol.for("react.fragment") : 60107,
+    t = n ? Symbol.for("react.strict_mode") : 60108,
+    u = n ? Symbol.for("react.profiler") : 60114,
+    v = n ? Symbol.for("react.provider") : 60109,
+    w = n ? Symbol.for("react.context") : 60110,
+    x = n ? Symbol.for("react.forward_ref") : 60112,
+    y = n ? Symbol.for("react.suspense") : 60113;
+
+n && Symbol.for("react.suspense_list");
+var z = n ? Symbol.for("react.memo") : 60115,
+    aa = n ? Symbol.for("react.lazy") : 60116;
+n && Symbol.for("react.fundamental");
+n && Symbol.for("react.responder");
+n && Symbol.for("react.scope");
+var A = "function" === typeof Symbol && Symbol.iterator;
+
+function B(a) {
+  for (var b = "https://reactjs.org/docs/error-decoder.html?invariant=" + a, c = 1; c < arguments.length; c++) b += "&args[]=" + encodeURIComponent(arguments[c]);
+
+  return "Minified React error #" + a + "; visit " + b + " for the full message or use the non-minified dev environment for full errors and additional helpful warnings.";
+}
+
+var C = {
+  isMounted: function () {
+    return !1;
+  },
+  enqueueForceUpdate: function () {},
+  enqueueReplaceState: function () {},
+  enqueueSetState: function () {}
+},
+    D = {};
+
+function E(a, b, c) {
+  this.props = a;
+  this.context = b;
+  this.refs = D;
+  this.updater = c || C;
+}
+
+E.prototype.isReactComponent = {};
+
+E.prototype.setState = function (a, b) {
+  if ("object" !== typeof a && "function" !== typeof a && null != a) throw Error(B(85));
+  this.updater.enqueueSetState(this, a, b, "setState");
+};
+
+E.prototype.forceUpdate = function (a) {
+  this.updater.enqueueForceUpdate(this, a, "forceUpdate");
+};
+
+function F() {}
+
+F.prototype = E.prototype;
+
+function G(a, b, c) {
+  this.props = a;
+  this.context = b;
+  this.refs = D;
+  this.updater = c || C;
+}
+
+var H = G.prototype = new F();
+H.constructor = G;
+h(H, E.prototype);
+H.isPureReactComponent = !0;
+var I = {
+  current: null
+},
+    J = {
+  current: null
+},
+    K = Object.prototype.hasOwnProperty,
+    L = {
+  key: !0,
+  ref: !0,
+  __self: !0,
+  __source: !0
+};
+
+function M(a, b, c) {
+  var e,
+      d = {},
+      g = null,
+      l = null;
+  if (null != b) for (e in void 0 !== b.ref && (l = b.ref), void 0 !== b.key && (g = "" + b.key), b) K.call(b, e) && !L.hasOwnProperty(e) && (d[e] = b[e]);
+  var f = arguments.length - 2;
+  if (1 === f) d.children = c;else if (1 < f) {
+    for (var k = Array(f), m = 0; m < f; m++) k[m] = arguments[m + 2];
+
+    d.children = k;
+  }
+  if (a && a.defaultProps) for (e in f = a.defaultProps, f) void 0 === d[e] && (d[e] = f[e]);
+  return {
+    $$typeof: p,
+    type: a,
+    key: g,
+    ref: l,
+    props: d,
+    _owner: J.current
+  };
+}
+
+function ba(a, b) {
+  return {
+    $$typeof: p,
+    type: a.type,
+    key: b,
+    ref: a.ref,
+    props: a.props,
+    _owner: a._owner
+  };
+}
+
+function N(a) {
+  return "object" === typeof a && null !== a && a.$$typeof === p;
+}
+
+function escape(a) {
+  var b = {
+    "=": "=0",
+    ":": "=2"
+  };
+  return "$" + ("" + a).replace(/[=:]/g, function (a) {
+    return b[a];
+  });
+}
+
+var O = /\/+/g,
+    P = [];
+
+function Q(a, b, c, e) {
+  if (P.length) {
+    var d = P.pop();
+    d.result = a;
+    d.keyPrefix = b;
+    d.func = c;
+    d.context = e;
+    d.count = 0;
+    return d;
+  }
+
+  return {
+    result: a,
+    keyPrefix: b,
+    func: c,
+    context: e,
+    count: 0
+  };
+}
+
+function R(a) {
+  a.result = null;
+  a.keyPrefix = null;
+  a.func = null;
+  a.context = null;
+  a.count = 0;
+  10 > P.length && P.push(a);
+}
+
+function S(a, b, c, e) {
+  var d = typeof a;
+  if ("undefined" === d || "boolean" === d) a = null;
+  var g = !1;
+  if (null === a) g = !0;else switch (d) {
+    case "string":
+    case "number":
+      g = !0;
+      break;
+
+    case "object":
+      switch (a.$$typeof) {
+        case p:
+        case q:
+          g = !0;
+      }
+
+  }
+  if (g) return c(e, a, "" === b ? "." + T(a, 0) : b), 1;
+  g = 0;
+  b = "" === b ? "." : b + ":";
+  if (Array.isArray(a)) for (var l = 0; l < a.length; l++) {
+    d = a[l];
+    var f = b + T(d, l);
+    g += S(d, f, c, e);
+  } else if (null === a || "object" !== typeof a ? f = null : (f = A && a[A] || a["@@iterator"], f = "function" === typeof f ? f : null), "function" === typeof f) for (a = f.call(a), l = 0; !(d = a.next()).done;) d = d.value, f = b + T(d, l++), g += S(d, f, c, e);else if ("object" === d) throw c = "" + a, Error(B(31, "[object Object]" === c ? "object with keys {" + Object.keys(a).join(", ") + "}" : c, ""));
+  return g;
+}
+
+function U(a, b, c) {
+  return null == a ? 0 : S(a, "", b, c);
+}
+
+function T(a, b) {
+  return "object" === typeof a && null !== a && null != a.key ? escape(a.key) : b.toString(36);
+}
+
+function ca(a, b) {
+  a.func.call(a.context, b, a.count++);
+}
+
+function da(a, b, c) {
+  var e = a.result,
+      d = a.keyPrefix;
+  a = a.func.call(a.context, b, a.count++);
+  Array.isArray(a) ? V(a, e, c, function (a) {
+    return a;
+  }) : null != a && (N(a) && (a = ba(a, d + (!a.key || b && b.key === a.key ? "" : ("" + a.key).replace(O, "$&/") + "/") + c)), e.push(a));
+}
+
+function V(a, b, c, e, d) {
+  var g = "";
+  null != c && (g = ("" + c).replace(O, "$&/") + "/");
+  b = Q(b, g, e, d);
+  U(a, da, b);
+  R(b);
+}
+
+function W() {
+  var a = I.current;
+  if (null === a) throw Error(B(321));
+  return a;
+}
+
+var X = {
+  Children: {
+    map: function (a, b, c) {
+      if (null == a) return a;
+      var e = [];
+      V(a, e, null, b, c);
+      return e;
+    },
+    forEach: function (a, b, c) {
+      if (null == a) return a;
+      b = Q(null, null, b, c);
+      U(a, ca, b);
+      R(b);
+    },
+    count: function (a) {
+      return U(a, function () {
+        return null;
+      }, null);
+    },
+    toArray: function (a) {
+      var b = [];
+      V(a, b, null, function (a) {
+        return a;
+      });
+      return b;
+    },
+    only: function (a) {
+      if (!N(a)) throw Error(B(143));
+      return a;
+    }
+  },
+  createRef: function () {
+    return {
+      current: null
+    };
+  },
+  Component: E,
+  PureComponent: G,
+  createContext: function (a, b) {
+    void 0 === b && (b = null);
+    a = {
+      $$typeof: w,
+      _calculateChangedBits: b,
+      _currentValue: a,
+      _currentValue2: a,
+      _threadCount: 0,
+      Provider: null,
+      Consumer: null
+    };
+    a.Provider = {
+      $$typeof: v,
+      _context: a
+    };
+    return a.Consumer = a;
+  },
+  forwardRef: function (a) {
+    return {
+      $$typeof: x,
+      render: a
+    };
+  },
+  lazy: function (a) {
+    return {
+      $$typeof: aa,
+      _ctor: a,
+      _status: -1,
+      _result: null
+    };
+  },
+  memo: function (a, b) {
+    return {
+      $$typeof: z,
+      type: a,
+      compare: void 0 === b ? null : b
+    };
+  },
+  useCallback: function (a, b) {
+    return W().useCallback(a, b);
+  },
+  useContext: function (a, b) {
+    return W().useContext(a, b);
+  },
+  useEffect: function (a, b) {
+    return W().useEffect(a, b);
+  },
+  useImperativeHandle: function (a, b, c) {
+    return W().useImperativeHandle(a, b, c);
+  },
+  useDebugValue: function () {},
+  useLayoutEffect: function (a, b) {
+    return W().useLayoutEffect(a, b);
+  },
+  useMemo: function (a, b) {
+    return W().useMemo(a, b);
+  },
+  useReducer: function (a, b, c) {
+    return W().useReducer(a, b, c);
+  },
+  useRef: function (a) {
+    return W().useRef(a);
+  },
+  useState: function (a) {
+    return W().useState(a);
+  },
+  Fragment: r,
+  Profiler: u,
+  StrictMode: t,
+  Suspense: y,
+  createElement: M,
+  cloneElement: function (a, b, c) {
+    if (null === a || void 0 === a) throw Error(B(267, a));
+    var e = h({}, a.props),
+        d = a.key,
+        g = a.ref,
+        l = a._owner;
+
+    if (null != b) {
+      void 0 !== b.ref && (g = b.ref, l = J.current);
+      void 0 !== b.key && (d = "" + b.key);
+      if (a.type && a.type.defaultProps) var f = a.type.defaultProps;
+
+      for (k in b) K.call(b, k) && !L.hasOwnProperty(k) && (e[k] = void 0 === b[k] && void 0 !== f ? f[k] : b[k]);
+    }
+
+    var k = arguments.length - 2;
+    if (1 === k) e.children = c;else if (1 < k) {
+      f = Array(k);
+
+      for (var m = 0; m < k; m++) f[m] = arguments[m + 2];
+
+      e.children = f;
+    }
+    return {
+      $$typeof: p,
+      type: a.type,
+      key: d,
+      ref: g,
+      props: e,
+      _owner: l
+    };
+  },
+  createFactory: function (a) {
+    var b = M.bind(null, a);
+    b.type = a;
+    return b;
+  },
+  isValidElement: N,
+  version: "16.12.0",
+  __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {
+    ReactCurrentDispatcher: I,
+    ReactCurrentBatchConfig: {
+      suspense: null
+    },
+    ReactCurrentOwner: J,
+    IsSomeRendererActing: {
+      current: !1
+    },
+    assign: h
+  }
+},
+    Y = {
+  default: X
+},
+    Z = Y && X || Y;
+module.exports = Z.default || Z;
+},{"object-assign":"W2ED"}],"ccIB":[function(require,module,exports) {
+'use strict';
+
+if ("production" === 'production') {
+  module.exports = require('./cjs/react.production.min.js');
+} else {
+  module.exports = require('./cjs/react.development.js');
+}
+},{"./cjs/react.production.min.js":"Xy56"}],"b0rV":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -301,6 +808,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.compareExpression = compareExpression;
 exports.compareGroup = compareGroup;
 exports.compare = compare;
+exports.startsWith = startsWith;
 
 var _group = require("./group");
 
@@ -314,9 +822,13 @@ const expressionKeys = Object.keys({
 });
 
 function compareExpression(a, b) {
-  for (let k = 0; k < expressionKeys.length; k++) {
-    let key = expressionKeys[k];
-    if (a[key] != b[key]) return false;
+  if (a && b) {
+    for (let k = 0; k < expressionKeys.length; k++) {
+      let key = expressionKeys[k];
+      if (a[key] != b[key]) return false;
+    }
+  } else {
+    return !a && !b;
   }
 
   return true;
@@ -350,6 +862,19 @@ function compare(a, b) {
 
   for (let i = 0; i < arrA.length; i++) {
     if (!compareGroup(arrA[i], arrB[i])) return false;
+  }
+
+  return true;
+}
+
+function startsWith(whole, part) {
+  if (!part) return true;
+  let arrs = [whole, part].map(_group.ensureSearchExpressionGroupArray);
+  let [wholeArray, partArray] = arrs;
+  if (partArray.length > wholeArray.length) return false;
+
+  for (let i = 0; i < partArray.length; i++) {
+    if (!compareGroup(wholeArray[i], partArray[i])) return false;
   }
 
   return true;
@@ -16086,8 +16611,11 @@ class Viewer {
                 this.applyLegendColorContext(oldColorContext);
                 this.changeColorContexts([oldColorContext, newColorContext]);
               }
-            });
-            this.insight.filter = searchExpression.narrow(this.insight.filter, filter);
+            }); //narrow the filter only if it is different
+
+            if (!searchExpression.compare(this.insight.filter, filter)) {
+              this.insight.filter = searchExpression.narrow(this.insight.filter, filter);
+            }
 
             if (this.options.onDataFilter) {
               this.options.onDataFilter(this.insight.filter, this._dataScope.currentData());
@@ -16290,12 +16818,14 @@ class Viewer {
       let result; //see if refine expression has changed
 
       if (!searchExpression.compare(insight.filter, this.insight.filter)) {
+        const allowAsyncRenderTime = 100;
+
         if (insight.filter) {
           //refining
           result = yield this._render(insight, data, options);
           this.presenter.animationQueue(() => {
             this.filter(insight.filter);
-          }, this.options.transitionDurations.position, {
+          }, allowAsyncRenderTime, {
             waitingLabel: 'layout before refine',
             handlerLabel: 'refine after layout'
           });
@@ -16306,7 +16836,7 @@ class Viewer {
           result = yield this._render(insight, data, options);
           this.presenter.animationQueue(() => {
             this.reset();
-          }, 0, {
+          }, allowAsyncRenderTime, {
             waitingLabel: 'layout before reset',
             handlerLabel: 'reset after layout'
           });
@@ -16753,7 +17283,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = '2.0.0';
+const version = '2.1.0';
 exports.version = version;
 },{}],"rZaE":[function(require,module,exports) {
 "use strict";
@@ -16921,103 +17451,7 @@ const classList = (...args) => {
 exports.classList = classList;
 const deepCompare = compare.default || compare;
 exports.deepCompare = deepCompare;
-},{"just-compare":"wkaK"}],"x5u5":[function(require,module,exports) {
-/*
-object-assign
-(c) Sindre Sorhus
-@license MIT
-*/
-'use strict';
-/* eslint-disable no-unused-vars */
-
-var getOwnPropertySymbols = Object.getOwnPropertySymbols;
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-
-function toObject(val) {
-  if (val === null || val === undefined) {
-    throw new TypeError('Object.assign cannot be called with null or undefined');
-  }
-
-  return Object(val);
-}
-
-function shouldUseNative() {
-  try {
-    if (!Object.assign) {
-      return false;
-    } // Detect buggy property enumeration order in older V8 versions.
-    // https://bugs.chromium.org/p/v8/issues/detail?id=4118
-
-
-    var test1 = new String('abc'); // eslint-disable-line no-new-wrappers
-
-    test1[5] = 'de';
-
-    if (Object.getOwnPropertyNames(test1)[0] === '5') {
-      return false;
-    } // https://bugs.chromium.org/p/v8/issues/detail?id=3056
-
-
-    var test2 = {};
-
-    for (var i = 0; i < 10; i++) {
-      test2['_' + String.fromCharCode(i)] = i;
-    }
-
-    var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
-      return test2[n];
-    });
-
-    if (order2.join('') !== '0123456789') {
-      return false;
-    } // https://bugs.chromium.org/p/v8/issues/detail?id=3056
-
-
-    var test3 = {};
-    'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
-      test3[letter] = letter;
-    });
-
-    if (Object.keys(Object.assign({}, test3)).join('') !== 'abcdefghijklmnopqrst') {
-      return false;
-    }
-
-    return true;
-  } catch (err) {
-    // We don't expect any of the above to throw, but better to be safe.
-    return false;
-  }
-}
-
-module.exports = shouldUseNative() ? Object.assign : function (target, source) {
-  var from;
-  var to = toObject(target);
-  var symbols;
-
-  for (var s = 1; s < arguments.length; s++) {
-    from = Object(arguments[s]);
-
-    for (var key in from) {
-      if (hasOwnProperty.call(from, key)) {
-        to[key] = from[key];
-      }
-    }
-
-    if (getOwnPropertySymbols) {
-      symbols = getOwnPropertySymbols(from);
-
-      for (var i = 0; i < symbols.length; i++) {
-        if (propIsEnumerable.call(from, symbols[i])) {
-          to[symbols[i]] = from[symbols[i]];
-        }
-      }
-    }
-  }
-
-  return to;
-};
-},{}],"N4VU":[function(require,module,exports) {
+},{"just-compare":"wkaK"}],"N4VU":[function(require,module,exports) {
 /** @license React v16.12.0
  * react.production.min.js
  *
@@ -17420,7 +17854,7 @@ var X = {
 },
     Z = Y && X || Y;
 module.exports = Z.default || Z;
-},{"object-assign":"x5u5"}],"W4rj":[function(require,module,exports) {
+},{"object-assign":"W2ED"}],"W4rj":[function(require,module,exports) {
 'use strict';
 
 if ("production" === 'production') {
@@ -17752,7 +18186,7 @@ xe,ye,Ca.injectEventPluginsByName,fa,Sc,function(a){ya(a,Rc)},cb,db,Pd,Ba,Sj,{cu
 (function(a){var b=a.findFiberByHostInstance;return ok(n({},a,{overrideHookState:null,overrideProps:null,setSuspenseHandler:null,scheduleUpdate:null,currentDispatcherRef:Ea.ReactCurrentDispatcher,findHostInstanceByFiber:function(a){a=ic(a);return null===a?null:a.stateNode},findFiberByHostInstance:function(a){return b?b(a):null},findHostInstancesForRefresh:null,scheduleRefresh:null,scheduleRoot:null,setRefreshHandler:null,getCurrentFiber:null}))})({findFiberByHostInstance:Fc,bundleType:0,version:"16.12.0",
 rendererPackageName:"react-dom"});var Dk={default:Ck},Ek=Dk&&Ck||Dk;module.exports=Ek.default||Ek;
 
-},{"react":"W4rj","object-assign":"x5u5","scheduler":"KTa4"}],"UiuB":[function(require,module,exports) {
+},{"react":"W4rj","object-assign":"W2ED","scheduler":"KTa4"}],"UiuB":[function(require,module,exports) {
 'use strict';
 
 function checkDCE() {
@@ -17841,7 +18275,9 @@ class SandDanceReact extends React.Component {
       //TODO: show errors if any
       //console.log('viewer render');
       this.props.onView && this.props.onView(renderResult);
-    }).catch(() => {//console.log('viewer error');
+    }).catch(e => {
+      //console.log('viewer error');
+      this.props.onError && this.props.onError(e);
     });
   }
 
@@ -17885,7 +18321,18 @@ class SandDanceReact extends React.Component {
 }
 
 exports.SandDanceReact = SandDanceReact;
-},{"react":"W4rj","./util":"HI4Z","react-dom":"UiuB","@msrvida/sanddance":"rZaE"}],"MjKu":[function(require,module,exports) {
+},{"react":"W4rj","./util":"HI4Z","react-dom":"UiuB","@msrvida/sanddance":"rZaE"}],"TN0H":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.version = void 0;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+const version = '2.0.0';
+exports.version = version;
+},{}],"MjKu":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17920,7 +18367,7 @@ var _version = require("./version");
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-},{"@msrvida/sanddance":"rZaE","./util":"HI4Z","./viewer":"qyfj","./version":"DZif"}],"Vlbn":[function(require,module,exports) {
+},{"@msrvida/sanddance":"rZaE","./util":"HI4Z","./viewer":"qyfj","./version":"TN0H"}],"Vlbn":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17946,7 +18393,550 @@ function use(fabric, vega, deck, layers, luma) {
 
   base.fabric = fabric;
 }
-},{"@msrvida/sanddance-react":"MjKu"}],"Dryx":[function(require,module,exports) {
+},{"@msrvida/sanddance-react":"MjKu"}],"pP3Y":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.convertToDelimited = convertToDelimited;
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function convertToDelimited(data, delimiter) {
+  var fields = Object.keys(data[0]);
+  var file = data.map(function (row) {
+    return fields.map(function (fieldName) {
+      var value = row[fieldName];
+
+      if (typeof value === 'number') {
+        return value;
+      }
+
+      if (typeof value === 'string') {
+        if (value.indexOf(delimiter) >= 0) {
+          return "\"".concat(value.replace(/"/g, '""'), "\"");
+        } else {
+          return value;
+        }
+      }
+
+      return '';
+    }).join(delimiter);
+  });
+  file.unshift(fields.join(delimiter));
+  return file.join('\n');
+}
+},{}],"fOIZ":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.embedHtml = void 0;
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+var embedHtml = function embedHtml(title, embed) {
+  return "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>".concat(title, "</title>\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-embed@2/dist/css/sanddance-embed.css\" />\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-explorer@2.1/dist/css/sanddance-explorer.css\" />\n</head>\n\n<body>\n    <script src=\"https://unpkg.com/react@16/umd/react.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/react-dom@16/umd/react-dom.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/deck.gl@6/deckgl.min.js\"></script>\n    <script src=\"https://unpkg.com/vega@5.8/build/vega.min.js\"></script>\n    <script src=\"https://unpkg.com/office-ui-fabric-react@6.204.4/dist/office-ui-fabric-react.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-explorer@2.1/dist/umd/sanddance-explorer.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-embed@2/dist/umd/sanddance-embed.js\"></script>\n\n    <div id=\"app\"></div>\n\n    ").concat(embed, "\n\n</body>\n\n</html>");
+};
+
+exports.embedHtml = embedHtml;
+},{}],"hk5u":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.strings = void 0;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+var strings = {
+  appName: 'SandDance',
+  bingsearch: 'Bing',
+  buttonClose: 'Close',
+  buttonSelect: 'Search & Select',
+  buttonColorSchemeMap: 'Map color scheme to filtered data',
+  buttonColorSchemeRemap: 'Remap color to filtered data',
+  buttonColorSchemeKeep: 'Keep same color scheme',
+  buttonCopyToClipboard: 'Copy to clipboard',
+  buttonExclude: 'Exclude',
+  buttonExport: 'Export',
+  buttonExportCount: function buttonExportCount(total) {
+    return total == 1 ? 'Export 1 row...' : "Export ".concat(total, " rows...");
+  },
+  buttonIsolate: 'Isolate',
+  buttonReset: 'Stop filtering',
+  buttonDeselect: 'Clear selection',
+  buttonToolbarFloat: 'Float toolbar',
+  buttonToolbarDock: 'Dock toolbar',
+  buttonToolbarHide: 'Hide toolbar',
+  buttonToolbarShow: 'Show toolbar',
+  buttonNextDataItem: 'Next data item',
+  buttonPrevDataItem: 'Previous data item',
+  buttonCreateSnapshot: 'Create snapshot',
+  buttonUpdateSnapshot: 'Update snapshot',
+  buttonAddExpression: 'Add expression',
+  buttonAddExpressionGroup: 'Add group',
+  buttonDeleteExpression: 'Delete',
+  buttonDeleteExpressionGroup: 'Delete group',
+  buttonClearSnapshots: 'Clear snapshots',
+  buttonDeleteSnapshot: 'Delete snapshot',
+  buttonEditSnapshot: 'Edit snapshot',
+  buttonMoveUp: 'Move up',
+  buttonMoveDown: 'Move down',
+  buttonShowVegaSpec: 'Show Vega spec',
+  buttonLaunchVegaEditor: 'Open Vega Editor',
+  buttonCameraHome: 'Center chart in window',
+  buttonTooltipMapping: 'Tooltip columns...',
+  chartTypeBarChartH: 'Bar',
+  chartTypeBarChartV: 'Column',
+  chartTypeDensity: 'Density',
+  chartTypeGrid: 'Grid',
+  chartTypeScatterPlot: 'Scatter',
+  chartTypeStacks: 'Stacks',
+  chartTypeTreeMap: 'Treemap',
+  defaultFileName: 'sanddance-data',
+  errorExportFilenameEmpty: 'Filename cannot be blank',
+  errorExportFilenameCharacters: function errorExportFilenameCharacters(characters) {
+    return "A filename cannot contain any of the following characters: ".concat(characters);
+  },
+  errorColumnMustBeNumeric: 'Numeric column required for this chart type.',
+  labelBlank: 'blank',
+  labelNull: 'null',
+  labelTrue: 'true',
+  labelFalse: 'false',
+  labelSystemInfo: 'System info',
+  labelChartSettings: 'Chart settings',
+  labelDataBrowser: 'Data browser',
+  labelDataScope: 'Scope',
+  labelExport: 'Export Data',
+  labelExportFormat: 'File format',
+  labelExportCSV: '.CSV - Comma separated values',
+  labelExportHTML: '.HTML - A SandDance html page embedding this data',
+  labelExportJSON: '.JSON - JavaScript object notation',
+  labelExportTSV: '.TSV - Tab separated values',
+  labelTools: 'Tools',
+  labelVegaSpec: 'Vega specification',
+  labelColor: 'Chart color',
+  labelError: 'Error',
+  labelExportFileName: 'File name',
+  labelSnapshots: 'Snapshots',
+  labelSnapshotSettingThumbnailWidth: 'Thumbnail image width',
+  labelSearch: 'Select by search',
+  labelChart: 'Chart',
+  labelChartCanvas: 'Chart canvas',
+  labelColumnMapping: 'Column Mapping',
+  labelChartTypeOptions: 'Chart options',
+  labelColorBin: 'Color binning',
+  labelColorOptions: 'Color options',
+  labelColorBinExplanation: 'For numeric columns',
+  labelColorFieldInfo: function labelColorFieldInfo(colorColumnName, colorColumnType, categoricalNumeric, distinctValueCount) {
+    return "Field <span className=\"fieldname\">".concat(colorColumnName, "</span> is of type <span className=\"fieldtype\">").concat(colorColumnType, "</span>").concat(categoricalNumeric ? " and has ".concat(distinctValueCount, " distinct values") : '', ".");
+  },
+  labelColorFieldIsColorData: function labelColorFieldIsColorData(colorColumnName) {
+    return "Field <span className=\"fieldname\">".concat(colorColumnName, "</span> contains direct color data.");
+  },
+  labelColorBinNone: 'None (continuous)',
+  labelColorBinQuantize: 'Quantize',
+  labelColorBinQuantile: 'Quantile',
+  labelColorFilter: 'Note: Colors will be re-mapped to the filter when viewing this snapshot.',
+  labelColorScheme: 'Scheme',
+  labelColumnColor: 'Color by',
+  labelColumnFacet: 'Facet by',
+  labelColumnSort: 'Sort by',
+  labelColumnX: 'X Axis',
+  labelColumnY: 'Y Axis',
+  labelColumnZ: 'Z Axis',
+  labelColumnSize: 'Size by',
+  labelColumnGroup: 'Group by',
+  labelAliasColor: 'Color',
+  labelAliasFacet: 'Facet',
+  labelAliasSort: 'Sort',
+  labelAliasX: 'X Axis',
+  labelAliasY: 'Y Axis',
+  labelAliasZ: 'Z Axis',
+  labelAliasSize: 'Size',
+  labelAliasGroup: 'Group',
+  labelDataItemIsFiltered: 'Item is filtered from view',
+  labelShowLegend: 'Show legend',
+  labelShowAxes: 'Show axes',
+  labelSnapshotTitle: 'Title',
+  labelSnapshotDescription: 'Note (optional)',
+  labelTooltipMapping: 'Tooltip columns',
+  labelTransitionDurations: 'Transition durations',
+  labelTransitionCamera: '2D / 3D view',
+  labelTransitionColor: 'Color',
+  labelTransitionPosition: 'Position',
+  labelTransitionSize: 'Size',
+  labelVegaSpecData: 'Data reference',
+  labelVegaSpecNotes: 'Note: You may need to change the color scheme to make this visible in Vega.',
+  labelYes: 'Yes',
+  labelNo: 'No',
+  labelConfirmation: 'Are you sure?',
+  loading: 'Loading...',
+  schemeCategorical: 'Categorical',
+  schemeDiverging: 'Diverging',
+  schemeDual: 'Dual',
+  schemeSequentialMultiHue: 'Sequential Multi Hue',
+  schemeSequentialSingleHue: 'Sequential Single Hue',
+  selectDataSpanAll: 'All rows',
+  selectDataSpanFilter: 'Filtered',
+  selectDataSpanSelection: 'Selected',
+  selectVegaSpecDataNone: 'None',
+  selectVegaSpecDataInline: 'Inline - WARNING this may use substantial browser/clipboard memory for large data sets.',
+  selectVegaSpecDataUrl: 'URL',
+  record: function record(current, total) {
+    return "".concat(current, " of ").concat(total);
+  },
+  searchEQ: '=',
+  searchNEQ: '<>',
+  searchGT: '>',
+  searchGTE: '>=',
+  searchLT: '<',
+  searchLTE: '<=',
+  searchNULL: 'is null or empty',
+  searchIN: 'contains',
+  searchSW: 'starts with',
+  searchWHERE: 'Where',
+  searchAND: 'and',
+  searchOR: 'or',
+  selectAny: '-- any --',
+  selectNone: '-- none --',
+  selectNumeric: 'Numeric',
+  selectNonNumeric: 'Categorical',
+  selectDirectColor: 'Direct color',
+  selectReference: 'Column mappings',
+  tooltipSearch: function tooltipSearch(column, value) {
+    return "Click to search in '".concat(column, "' for \"").concat(value, "\"");
+  },
+  labelRequired: 'required',
+  labelSystem: 'System',
+  lavelViewType2d: 'View in 2D',
+  labelViewType3d: 'View in 3D',
+  labelDataColors: 'Enabled if this data column contains any CSS color values.',
+  labelDataNullAll: 'Loading data...',
+  labelDataNullFiltered: 'You can filter by first making a selection, then choosing <b>Isolate</b> or <b>Exclude</b> in the top bar.',
+  labelDataNullSelection: 'You can select by: <ul><li>clicking the chart axes</li><li>clicking in the legend</li><li>searching</li</ul>',
+  labelZeroAll: 'Dataset contains zero rows.',
+  labelZeroSearchResults: 'No rows matched your search.',
+  signalGroups: [{
+    prefix: 'Chart',
+    label: 'Chart options'
+  }, {
+    prefix: 'Mark',
+    label: 'Mark options'
+  }, {
+    prefix: 'RoleColor',
+    label: 'Color options'
+  }, {
+    prefix: 'RoleFacet',
+    label: 'Facet options'
+  }, {
+    prefix: 'RoleSort',
+    label: 'Sort options'
+  }, {
+    prefix: 'RoleX',
+    label: 'X axis options'
+  }, {
+    prefix: 'RoleY',
+    label: 'Y axis options'
+  }, {
+    prefix: 'RoleZ',
+    label: 'Z axis options'
+  }, {
+    prefix: 'Text',
+    label: 'Text options'
+  }, {
+    prefix: '*',
+    label: 'Options'
+  }]
+};
+exports.strings = strings;
+},{}],"l7po":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.removeExtensions = removeExtensions;
+exports.getEmbedHTML = getEmbedHTML;
+exports.DataExportPicker = void 0;
+
+var React = _interopRequireWildcard(require("react"));
+
+var _base = require("../base");
+
+var _exportDelimited = require("../exportDelimited");
+
+var _dataExporterHtml = require("./dataExporterHtml");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var _language = require("../language");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var exportTypes = [['json', _language.strings.labelExportJSON], ['csv', _language.strings.labelExportCSV], ['tsv', _language.strings.labelExportTSV], ['html', _language.strings.labelExportHTML]];
+
+var DataExportPicker =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(DataExportPicker, _React$Component);
+
+  function DataExportPicker(props) {
+    var _this;
+
+    _classCallCheck(this, DataExportPicker);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(DataExportPicker).call(this, props));
+    _this.state = _this.getInitialState(_this.props);
+    return _this;
+  }
+
+  _createClass(DataExportPicker, [{
+    key: "getInitialState",
+    value: function getInitialState(props) {
+      var initialState = {
+        initializer: props.initializer,
+        dialogHidden: true,
+        exportType: exportTypes[0][0],
+        fileName: props.initializer.fileName,
+        fileNameError: '',
+        working: false
+      };
+      return initialState;
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      if (!_sanddanceReact.util.deepCompare(this.props.initializer, this.state.initializer)) {
+        this.setState(this.getInitialState(this.props));
+      }
+    } // Converts to dataExport type and calls dataExportHandler to deal with data
+
+  }, {
+    key: "createExport",
+    value: function createExport(exportType, displayName) {
+      var _this2 = this;
+
+      var final = function final(data) {
+        _this2.props.dataExportHandler(data, exportType, displayName);
+
+        _this2.close();
+      };
+
+      var json = JSON.stringify(this.props.data, columnReplacer);
+
+      switch (exportType) {
+        case 'json':
+          {
+            final(json);
+            break;
+          }
+
+        case 'csv':
+          {
+            final((0, _exportDelimited.convertToDelimited)(JSON.parse(json), ','));
+            break;
+          }
+
+        case 'tsv':
+          {
+            final((0, _exportDelimited.convertToDelimited)(JSON.parse(json), '\t'));
+            break;
+          }
+
+        case 'html':
+          {
+            var csv = (0, _exportDelimited.convertToDelimited)(JSON.parse(json), ',');
+            var html = (0, _dataExporterHtml.embedHtml)("".concat(_language.strings.appName, " - ").concat(escape(displayName)), embedScript(csv, displayName));
+            final(html);
+          }
+      }
+    }
+  }, {
+    key: "close",
+    value: function close() {
+      this.setState({
+        dialogHidden: true,
+        working: false
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this3 = this;
+
+      var closeDialog = function closeDialog() {
+        return _this3.close();
+      };
+
+      if (this.state.delayAction) {
+        requestAnimationFrame(function () {
+          //allow render to complete
+          if (_this3.state.delayAction) {
+            _this3.state.delayAction();
+
+            _this3.setState({
+              delayAction: null
+            });
+          }
+        });
+      }
+
+      var disabled = this.state.working || this.state.dialogHidden;
+      return React.createElement("div", {
+        className: "sanddance-dataExporter"
+      }, React.createElement(_base.base.fabric.DefaultButton, {
+        className: "search-action search-bottom-action",
+        text: _language.strings.buttonExportCount(this.props.data.length),
+        onClick: function onClick() {
+          return _this3.setState({
+            dialogHidden: false
+          });
+        },
+        disabled: this.props.disabled
+      }), React.createElement(_base.base.fabric.Dialog, {
+        hidden: this.state.dialogHidden,
+        onDismiss: closeDialog,
+        dialogContentProps: {
+          className: 'sanddance-dialog',
+          type: _base.base.fabric.DialogType.normal,
+          title: _language.strings.labelExport
+        }
+      }, React.createElement(_base.base.fabric.TextField, {
+        label: _language.strings.labelExportFileName,
+        onChange: function onChange(e, displayName) {
+          var displayNameError = getFileNameError(displayName);
+
+          _this3.setState({
+            fileName: displayName,
+            fileNameError: displayNameError
+          });
+        },
+        errorMessage: this.state.fileNameError,
+        value: this.state.fileName
+      }), React.createElement(_base.base.fabric.ChoiceGroup, {
+        className: "sanddance-form-separate",
+        disabled: disabled,
+        options: exportTypes.map(function (_ref) {
+          var _ref2 = _slicedToArray(_ref, 2),
+              exportType = _ref2[0],
+              text = _ref2[1];
+
+          return {
+            key: exportType,
+            text: text,
+            disabled: false,
+            checked: exportType === _this3.state.exportType
+          };
+        }),
+        onChange: function onChange(ev, option) {
+          return _this3.setState({
+            exportType: option.key
+          });
+        },
+        label: _language.strings.labelExportFormat
+      }), React.createElement(_base.base.fabric.DialogFooter, null, React.createElement(_base.base.fabric.PrimaryButton, {
+        disabled: disabled || !!this.state.fileNameError,
+        onClick: function onClick(e) {
+          return _this3.setState({
+            delayAction: function delayAction() {
+              return _this3.createExport(_this3.state.exportType, _this3.state.fileName);
+            },
+            working: true
+          });
+        },
+        text: _language.strings.buttonExport
+      }), React.createElement(_base.base.fabric.DefaultButton, {
+        onClick: closeDialog,
+        text: _language.strings.buttonClose
+      }))));
+    }
+  }]);
+
+  return DataExportPicker;
+}(React.Component);
+
+exports.DataExportPicker = DataExportPicker;
+var illegalChars = '\\/:*?"<>|';
+
+function getFileNameError(displayName) {
+  if (!displayName) {
+    return _language.strings.errorExportFilenameEmpty;
+  }
+
+  for (var i = 0; i < illegalChars.length; i++) {
+    if (displayName.indexOf(illegalChars[i]) >= 0) {
+      return _language.strings.errorExportFilenameCharacters(illegalChars);
+    }
+  }
+}
+
+function removeExtensions(fileName) {
+  exportTypes.forEach(function (_ref3) {
+    var _ref4 = _slicedToArray(_ref3, 1),
+        exportType = _ref4[0];
+
+    var re = new RegExp("\\.".concat(exportType), 'ig');
+    fileName = fileName.replace(re, '');
+  });
+  return fileName;
+}
+
+function columnReplacer(name, value) {
+  if (_sanddanceReact.SandDance.util.isInternalFieldName(name, true)) {
+    return undefined;
+  }
+
+  return value === null ? '' : value;
+}
+
+function embedScript(csv, displayName, snapshots) {
+  var dataFile = {
+    type: 'csv',
+    displayName: displayName,
+    snapshots: snapshots
+  };
+  return "<pre id='csv-data' style='display:none'>".concat(csv, "</pre>\n    <script>SandDanceEmbed.load(Object.assign({rawText: document.getElementById('csv-data').innerText}, ").concat(JSON.stringify(dataFile), "))</script>");
+}
+
+function getEmbedHTML(data, displayName, snapshots) {
+  var json = JSON.stringify(data, columnReplacer);
+  var csv = (0, _exportDelimited.convertToDelimited)(JSON.parse(json), ',');
+  var html = (0, _dataExporterHtml.embedHtml)("".concat(_language.strings.appName, " - ").concat(escape(displayName)), embedScript(csv, displayName, snapshots));
+  return html;
+}
+},{"react":"ccIB","../base":"Vlbn","../exportDelimited":"pP3Y","./dataExporterHtml":"fOIZ","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"Dryx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18053,418 +19043,7 @@ function getColorSettingsFromThemePalette(themePalette) {
     clickableTextHighlight: colorFromString(themePalette.themeSecondary)
   };
 }
-},{"@msrvida/sanddance-react":"MjKu"}],"Xy56":[function(require,module,exports) {
-/** @license React v16.12.0
- * react.production.min.js
- *
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-'use strict';
-
-var h = require("object-assign"),
-    n = "function" === typeof Symbol && Symbol.for,
-    p = n ? Symbol.for("react.element") : 60103,
-    q = n ? Symbol.for("react.portal") : 60106,
-    r = n ? Symbol.for("react.fragment") : 60107,
-    t = n ? Symbol.for("react.strict_mode") : 60108,
-    u = n ? Symbol.for("react.profiler") : 60114,
-    v = n ? Symbol.for("react.provider") : 60109,
-    w = n ? Symbol.for("react.context") : 60110,
-    x = n ? Symbol.for("react.forward_ref") : 60112,
-    y = n ? Symbol.for("react.suspense") : 60113;
-
-n && Symbol.for("react.suspense_list");
-var z = n ? Symbol.for("react.memo") : 60115,
-    aa = n ? Symbol.for("react.lazy") : 60116;
-n && Symbol.for("react.fundamental");
-n && Symbol.for("react.responder");
-n && Symbol.for("react.scope");
-var A = "function" === typeof Symbol && Symbol.iterator;
-
-function B(a) {
-  for (var b = "https://reactjs.org/docs/error-decoder.html?invariant=" + a, c = 1; c < arguments.length; c++) b += "&args[]=" + encodeURIComponent(arguments[c]);
-
-  return "Minified React error #" + a + "; visit " + b + " for the full message or use the non-minified dev environment for full errors and additional helpful warnings.";
-}
-
-var C = {
-  isMounted: function () {
-    return !1;
-  },
-  enqueueForceUpdate: function () {},
-  enqueueReplaceState: function () {},
-  enqueueSetState: function () {}
-},
-    D = {};
-
-function E(a, b, c) {
-  this.props = a;
-  this.context = b;
-  this.refs = D;
-  this.updater = c || C;
-}
-
-E.prototype.isReactComponent = {};
-
-E.prototype.setState = function (a, b) {
-  if ("object" !== typeof a && "function" !== typeof a && null != a) throw Error(B(85));
-  this.updater.enqueueSetState(this, a, b, "setState");
-};
-
-E.prototype.forceUpdate = function (a) {
-  this.updater.enqueueForceUpdate(this, a, "forceUpdate");
-};
-
-function F() {}
-
-F.prototype = E.prototype;
-
-function G(a, b, c) {
-  this.props = a;
-  this.context = b;
-  this.refs = D;
-  this.updater = c || C;
-}
-
-var H = G.prototype = new F();
-H.constructor = G;
-h(H, E.prototype);
-H.isPureReactComponent = !0;
-var I = {
-  current: null
-},
-    J = {
-  current: null
-},
-    K = Object.prototype.hasOwnProperty,
-    L = {
-  key: !0,
-  ref: !0,
-  __self: !0,
-  __source: !0
-};
-
-function M(a, b, c) {
-  var e,
-      d = {},
-      g = null,
-      l = null;
-  if (null != b) for (e in void 0 !== b.ref && (l = b.ref), void 0 !== b.key && (g = "" + b.key), b) K.call(b, e) && !L.hasOwnProperty(e) && (d[e] = b[e]);
-  var f = arguments.length - 2;
-  if (1 === f) d.children = c;else if (1 < f) {
-    for (var k = Array(f), m = 0; m < f; m++) k[m] = arguments[m + 2];
-
-    d.children = k;
-  }
-  if (a && a.defaultProps) for (e in f = a.defaultProps, f) void 0 === d[e] && (d[e] = f[e]);
-  return {
-    $$typeof: p,
-    type: a,
-    key: g,
-    ref: l,
-    props: d,
-    _owner: J.current
-  };
-}
-
-function ba(a, b) {
-  return {
-    $$typeof: p,
-    type: a.type,
-    key: b,
-    ref: a.ref,
-    props: a.props,
-    _owner: a._owner
-  };
-}
-
-function N(a) {
-  return "object" === typeof a && null !== a && a.$$typeof === p;
-}
-
-function escape(a) {
-  var b = {
-    "=": "=0",
-    ":": "=2"
-  };
-  return "$" + ("" + a).replace(/[=:]/g, function (a) {
-    return b[a];
-  });
-}
-
-var O = /\/+/g,
-    P = [];
-
-function Q(a, b, c, e) {
-  if (P.length) {
-    var d = P.pop();
-    d.result = a;
-    d.keyPrefix = b;
-    d.func = c;
-    d.context = e;
-    d.count = 0;
-    return d;
-  }
-
-  return {
-    result: a,
-    keyPrefix: b,
-    func: c,
-    context: e,
-    count: 0
-  };
-}
-
-function R(a) {
-  a.result = null;
-  a.keyPrefix = null;
-  a.func = null;
-  a.context = null;
-  a.count = 0;
-  10 > P.length && P.push(a);
-}
-
-function S(a, b, c, e) {
-  var d = typeof a;
-  if ("undefined" === d || "boolean" === d) a = null;
-  var g = !1;
-  if (null === a) g = !0;else switch (d) {
-    case "string":
-    case "number":
-      g = !0;
-      break;
-
-    case "object":
-      switch (a.$$typeof) {
-        case p:
-        case q:
-          g = !0;
-      }
-
-  }
-  if (g) return c(e, a, "" === b ? "." + T(a, 0) : b), 1;
-  g = 0;
-  b = "" === b ? "." : b + ":";
-  if (Array.isArray(a)) for (var l = 0; l < a.length; l++) {
-    d = a[l];
-    var f = b + T(d, l);
-    g += S(d, f, c, e);
-  } else if (null === a || "object" !== typeof a ? f = null : (f = A && a[A] || a["@@iterator"], f = "function" === typeof f ? f : null), "function" === typeof f) for (a = f.call(a), l = 0; !(d = a.next()).done;) d = d.value, f = b + T(d, l++), g += S(d, f, c, e);else if ("object" === d) throw c = "" + a, Error(B(31, "[object Object]" === c ? "object with keys {" + Object.keys(a).join(", ") + "}" : c, ""));
-  return g;
-}
-
-function U(a, b, c) {
-  return null == a ? 0 : S(a, "", b, c);
-}
-
-function T(a, b) {
-  return "object" === typeof a && null !== a && null != a.key ? escape(a.key) : b.toString(36);
-}
-
-function ca(a, b) {
-  a.func.call(a.context, b, a.count++);
-}
-
-function da(a, b, c) {
-  var e = a.result,
-      d = a.keyPrefix;
-  a = a.func.call(a.context, b, a.count++);
-  Array.isArray(a) ? V(a, e, c, function (a) {
-    return a;
-  }) : null != a && (N(a) && (a = ba(a, d + (!a.key || b && b.key === a.key ? "" : ("" + a.key).replace(O, "$&/") + "/") + c)), e.push(a));
-}
-
-function V(a, b, c, e, d) {
-  var g = "";
-  null != c && (g = ("" + c).replace(O, "$&/") + "/");
-  b = Q(b, g, e, d);
-  U(a, da, b);
-  R(b);
-}
-
-function W() {
-  var a = I.current;
-  if (null === a) throw Error(B(321));
-  return a;
-}
-
-var X = {
-  Children: {
-    map: function (a, b, c) {
-      if (null == a) return a;
-      var e = [];
-      V(a, e, null, b, c);
-      return e;
-    },
-    forEach: function (a, b, c) {
-      if (null == a) return a;
-      b = Q(null, null, b, c);
-      U(a, ca, b);
-      R(b);
-    },
-    count: function (a) {
-      return U(a, function () {
-        return null;
-      }, null);
-    },
-    toArray: function (a) {
-      var b = [];
-      V(a, b, null, function (a) {
-        return a;
-      });
-      return b;
-    },
-    only: function (a) {
-      if (!N(a)) throw Error(B(143));
-      return a;
-    }
-  },
-  createRef: function () {
-    return {
-      current: null
-    };
-  },
-  Component: E,
-  PureComponent: G,
-  createContext: function (a, b) {
-    void 0 === b && (b = null);
-    a = {
-      $$typeof: w,
-      _calculateChangedBits: b,
-      _currentValue: a,
-      _currentValue2: a,
-      _threadCount: 0,
-      Provider: null,
-      Consumer: null
-    };
-    a.Provider = {
-      $$typeof: v,
-      _context: a
-    };
-    return a.Consumer = a;
-  },
-  forwardRef: function (a) {
-    return {
-      $$typeof: x,
-      render: a
-    };
-  },
-  lazy: function (a) {
-    return {
-      $$typeof: aa,
-      _ctor: a,
-      _status: -1,
-      _result: null
-    };
-  },
-  memo: function (a, b) {
-    return {
-      $$typeof: z,
-      type: a,
-      compare: void 0 === b ? null : b
-    };
-  },
-  useCallback: function (a, b) {
-    return W().useCallback(a, b);
-  },
-  useContext: function (a, b) {
-    return W().useContext(a, b);
-  },
-  useEffect: function (a, b) {
-    return W().useEffect(a, b);
-  },
-  useImperativeHandle: function (a, b, c) {
-    return W().useImperativeHandle(a, b, c);
-  },
-  useDebugValue: function () {},
-  useLayoutEffect: function (a, b) {
-    return W().useLayoutEffect(a, b);
-  },
-  useMemo: function (a, b) {
-    return W().useMemo(a, b);
-  },
-  useReducer: function (a, b, c) {
-    return W().useReducer(a, b, c);
-  },
-  useRef: function (a) {
-    return W().useRef(a);
-  },
-  useState: function (a) {
-    return W().useState(a);
-  },
-  Fragment: r,
-  Profiler: u,
-  StrictMode: t,
-  Suspense: y,
-  createElement: M,
-  cloneElement: function (a, b, c) {
-    if (null === a || void 0 === a) throw Error(B(267, a));
-    var e = h({}, a.props),
-        d = a.key,
-        g = a.ref,
-        l = a._owner;
-
-    if (null != b) {
-      void 0 !== b.ref && (g = b.ref, l = J.current);
-      void 0 !== b.key && (d = "" + b.key);
-      if (a.type && a.type.defaultProps) var f = a.type.defaultProps;
-
-      for (k in b) K.call(b, k) && !L.hasOwnProperty(k) && (e[k] = void 0 === b[k] && void 0 !== f ? f[k] : b[k]);
-    }
-
-    var k = arguments.length - 2;
-    if (1 === k) e.children = c;else if (1 < k) {
-      f = Array(k);
-
-      for (var m = 0; m < k; m++) f[m] = arguments[m + 2];
-
-      e.children = f;
-    }
-    return {
-      $$typeof: p,
-      type: a.type,
-      key: d,
-      ref: g,
-      props: e,
-      _owner: l
-    };
-  },
-  createFactory: function (a) {
-    var b = M.bind(null, a);
-    b.type = a;
-    return b;
-  },
-  isValidElement: N,
-  version: "16.12.0",
-  __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {
-    ReactCurrentDispatcher: I,
-    ReactCurrentBatchConfig: {
-      suspense: null
-    },
-    ReactCurrentOwner: J,
-    IsSomeRendererActing: {
-      current: !1
-    },
-    assign: h
-  }
-},
-    Y = {
-  default: X
-},
-    Z = Y && X || Y;
-module.exports = Z.default || Z;
-},{"object-assign":"x5u5"}],"ccIB":[function(require,module,exports) {
-'use strict';
-
-if ("production" === 'production') {
-  module.exports = require('./cjs/react.production.min.js');
-} else {
-  module.exports = require('./cjs/react.development.js');
-}
-},{"./cjs/react.production.min.js":"Xy56"}],"dH6z":[function(require,module,exports) {
+},{"@msrvida/sanddance-react":"MjKu"}],"dH6z":[function(require,module,exports) {
 'use strict';
 
 if ("production" === 'production') {
@@ -18764,7 +19343,7 @@ xe,ye,Ca.injectEventPluginsByName,fa,Sc,function(a){ya(a,Rc)},cb,db,Pd,Ba,Sj,{cu
 (function(a){var b=a.findFiberByHostInstance;return ok(n({},a,{overrideHookState:null,overrideProps:null,setSuspenseHandler:null,scheduleUpdate:null,currentDispatcherRef:Ea.ReactCurrentDispatcher,findHostInstanceByFiber:function(a){a=ic(a);return null===a?null:a.stateNode},findFiberByHostInstance:function(a){return b?b(a):null},findHostInstancesForRefresh:null,scheduleRefresh:null,scheduleRoot:null,setRefreshHandler:null,getCurrentFiber:null}))})({findFiberByHostInstance:Fc,bundleType:0,version:"16.12.0",
 rendererPackageName:"react-dom"});var Dk={default:Ck},Ek=Dk&&Ck||Dk;module.exports=Ek.default||Ek;
 
-},{"react":"ccIB","object-assign":"x5u5","scheduler":"dH6z"}],"x9tB":[function(require,module,exports) {
+},{"react":"ccIB","object-assign":"W2ED","scheduler":"dH6z"}],"x9tB":[function(require,module,exports) {
 'use strict';
 
 function checkDCE() {
@@ -18836,210 +19415,7 @@ function IconButton(props) {
     menuProps: props.menuProps
   }));
 }
-},{"react":"ccIB","../base":"Vlbn"}],"hk5u":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.strings = void 0;
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var strings = {
-  appName: 'SandDance',
-  bingsearch: 'Bing',
-  buttonClose: 'Close',
-  buttonSelect: 'Search & Select',
-  buttonColorSchemeMap: 'Map color scheme to filtered data',
-  buttonColorSchemeRemap: 'Remap color to filtered data',
-  buttonColorSchemeKeep: 'Keep same color scheme',
-  buttonCopyToClipboard: 'Copy to clipboard',
-  buttonExclude: 'Exclude',
-  buttonExport: 'Export',
-  buttonExportCount: function buttonExportCount(total) {
-    return total == 1 ? 'Export 1 row...' : "Export ".concat(total, " rows...");
-  },
-  buttonIsolate: 'Isolate',
-  buttonReset: 'Stop filtering',
-  buttonDeselect: 'Clear selection',
-  buttonToolbarFloat: 'Float toolbar',
-  buttonToolbarDock: 'Dock toolbar',
-  buttonToolbarHide: 'Hide toolbar',
-  buttonToolbarShow: 'Show toolbar',
-  buttonNextDataItem: 'Next data item',
-  buttonPrevDataItem: 'Previous data item',
-  buttonCreateSnapshot: 'Create snapshot',
-  buttonAddExpression: 'add expression',
-  buttonAddExpressionGroup: 'add group',
-  buttonDeleteExpression: 'delete',
-  buttonDeleteExpressionGroup: 'delete group',
-  buttonDeleteSnapshot: 'delete snapshot',
-  buttonShowVegaSpec: 'Show Vega spec',
-  buttonLaunchVegaEditor: 'Open Vega Editor',
-  buttonCameraHome: 'Center chart in window',
-  buttonTooltipMapping: 'Tooltip columns...',
-  chartTypeBarChartH: 'Bar',
-  chartTypeBarChartV: 'Column',
-  chartTypeDensity: 'Density',
-  chartTypeGrid: 'Grid',
-  chartTypeScatterPlot: 'Scatter',
-  chartTypeStacks: 'Stacks',
-  chartTypeTreeMap: 'Treemap',
-  defaultFileName: 'sanddance-data',
-  errorExportFilenameEmpty: 'Filename cannot be blank',
-  errorExportFilenameCharacters: function errorExportFilenameCharacters(characters) {
-    return "A filename cannot contain any of the following characters: ".concat(characters);
-  },
-  errorColumnMustBeNumeric: 'Numeric column required for this chart type.',
-  labelBlank: 'blank',
-  labelNull: 'null',
-  labelTrue: 'true',
-  labelFalse: 'false',
-  labelSystemInfo: 'System info',
-  labelChartSettings: 'Chart settings',
-  labelDataBrowser: 'Data browser',
-  labelDataScope: 'Scope',
-  labelExport: 'Export Data',
-  labelExportFormat: 'File format',
-  labelExportCSV: '.CSV - Comma separated values',
-  labelExportHTML: '.HTML - A SandDance html page embedding this data',
-  labelExportJSON: '.JSON - JavaScript object notation',
-  labelExportTSV: '.TSV - Tab separated values',
-  labelTools: 'Tools',
-  labelVegaSpec: 'Vega specification',
-  labelColor: 'Chart color',
-  labelError: 'Error',
-  labelExportFileName: 'File name',
-  labelSnapshots: 'Snapshots',
-  labelSearch: 'Select by search',
-  labelChart: 'Chart',
-  labelChartCanvas: 'Chart canvas',
-  labelColumnMapping: 'Column Mapping',
-  labelChartTypeOptions: 'Chart options',
-  labelColorBin: 'Color binning',
-  labelColorOptions: 'Color options',
-  labelColorBinExplanation: 'For numeric columns',
-  labelColorFieldInfo: function labelColorFieldInfo(colorColumnName, colorColumnType, categoricalNumeric, distinctValueCount) {
-    return "Field <span className=\"fieldname\">".concat(colorColumnName, "</span> is of type <span className=\"fieldtype\">").concat(colorColumnType, "</span>").concat(categoricalNumeric ? " and has ".concat(distinctValueCount, " distinct values") : '', ".");
-  },
-  labelColorFieldIsColorData: function labelColorFieldIsColorData(colorColumnName) {
-    return "Field <span className=\"fieldname\">".concat(colorColumnName, "</span> contains direct color data.");
-  },
-  labelColorBinNone: 'None (continuous)',
-  labelColorBinQuantize: 'Quantize',
-  labelColorBinQuantile: 'Quantile',
-  labelColorFilter: 'Note: Colors will be re-mapped to the filter when viewing this snapshot.',
-  labelColorScheme: 'Scheme',
-  labelColumnColor: 'Color by',
-  labelColumnFacet: 'Facet by',
-  labelColumnSort: 'Sort by',
-  labelColumnX: 'X Axis',
-  labelColumnY: 'Y Axis',
-  labelColumnZ: 'Z Axis',
-  labelColumnSize: 'Size by',
-  labelColumnGroup: 'Group by',
-  labelAliasColor: 'Color',
-  labelAliasFacet: 'Facet',
-  labelAliasSort: 'Sort',
-  labelAliasX: 'X Axis',
-  labelAliasY: 'Y Axis',
-  labelAliasZ: 'Z Axis',
-  labelAliasSize: 'Size',
-  labelAliasGroup: 'Group',
-  labelDataItemIsFiltered: 'Item is filtered from view',
-  labelShowLegend: 'Show legend',
-  labelShowAxes: 'Show axes',
-  labelSnapshotDescription: 'Description',
-  labelTooltipMapping: 'Tooltip columns',
-  labelTransitionDurations: 'Transition durations',
-  labelTransitionCamera: '2D / 3D view',
-  labelTransitionColor: 'Color',
-  labelTransitionPosition: 'Position',
-  labelTransitionSize: 'Size',
-  labelVegaSpecData: 'Data reference',
-  labelVegaSpecNotes: 'Note: You may need to change the color scheme to make this visible in Vega.',
-  labelYes: 'Yes',
-  labelNo: 'No',
-  loading: 'Loading...',
-  schemeCategorical: 'Categorical',
-  schemeDiverging: 'Diverging',
-  schemeDual: 'Dual',
-  schemeSequentialMultiHue: 'Sequential Multi Hue',
-  schemeSequentialSingleHue: 'Sequential Single Hue',
-  selectDataSpanAll: 'All rows',
-  selectDataSpanFilter: 'Filtered',
-  selectDataSpanSelection: 'Selected',
-  selectVegaSpecDataNone: 'None',
-  selectVegaSpecDataInline: 'Inline - WARNING this may use substantial browser/clipboard memory for large data sets.',
-  selectVegaSpecDataUrl: 'URL',
-  record: function record(current, total) {
-    return "".concat(current, " of ").concat(total);
-  },
-  searchEQ: '=',
-  searchNEQ: '<>',
-  searchGT: '>',
-  searchGTE: '>=',
-  searchLT: '<',
-  searchLTE: '<=',
-  searchNULL: 'is null or empty',
-  searchIN: 'contains',
-  searchSW: 'starts with',
-  searchWHERE: 'Where',
-  searchAND: 'and',
-  searchOR: 'or',
-  selectAny: '-- any --',
-  selectNone: '-- none --',
-  selectNumeric: 'Numeric',
-  selectNonNumeric: 'Categorical',
-  selectDirectColor: 'Direct color',
-  selectReference: 'Column mappings',
-  tooltipSearch: function tooltipSearch(column, value) {
-    return "Click to search in '".concat(column, "' for \"").concat(value, "\"");
-  },
-  labelRequired: 'required',
-  labelSystem: 'System',
-  lavelViewType2d: 'View in 2D',
-  labelViewType3d: 'View in 3D',
-  labelDataColors: 'Enabled if this data column contains any CSS color values.',
-  labelDataNullAll: 'Loading data...',
-  labelDataNullFiltered: 'You can filter by first making a selection, then choosing <b>Isolate</b> or <b>Exclude</b> in the top bar.',
-  labelDataNullSelection: 'You can select by: <ul><li>clicking the chart axes</li><li>clicking in the legend</li><li>searching</li</ul>',
-  labelZeroAll: 'Dataset contains zero rows.',
-  labelZeroSearchResults: 'No rows matched your search.',
-  signalGroups: [{
-    prefix: 'Chart',
-    label: 'Chart options'
-  }, {
-    prefix: 'Mark',
-    label: 'Mark options'
-  }, {
-    prefix: 'RoleColor',
-    label: 'Color options'
-  }, {
-    prefix: 'RoleFacet',
-    label: 'Facet options'
-  }, {
-    prefix: 'RoleSort',
-    label: 'Sort options'
-  }, {
-    prefix: 'RoleX',
-    label: 'X axis options'
-  }, {
-    prefix: 'RoleY',
-    label: 'Y axis options'
-  }, {
-    prefix: 'RoleZ',
-    label: 'Z axis options'
-  }, {
-    prefix: 'Text',
-    label: 'Text options'
-  }, {
-    prefix: '*',
-    label: 'Options'
-  }]
-};
-exports.strings = strings;
-},{}],"E67y":[function(require,module,exports) {
+},{"react":"ccIB","../base":"Vlbn"}],"E67y":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22708,328 +23084,7 @@ function savePref(prefs, chart, role, column, partialInsight) {
   rolePrefs[column] = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, rolePrefs[column], partialInsight);
   return rolePrefs[column];
 }
-},{"@msrvida/sanddance-react":"MjKu"}],"pP3Y":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.convertToDelimited = convertToDelimited;
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function convertToDelimited(data, delimiter) {
-  var fields = Object.keys(data[0]);
-  var file = data.map(function (row) {
-    return fields.map(function (fieldName) {
-      var value = row[fieldName];
-
-      if (typeof value === 'number') {
-        return value;
-      }
-
-      if (typeof value === 'string') {
-        if (value.indexOf(delimiter) >= 0) {
-          return "\"".concat(value.replace(/"/g, '""'), "\"");
-        } else {
-          return value;
-        }
-      }
-
-      return '';
-    }).join(delimiter);
-  });
-  file.unshift(fields.join(delimiter));
-  return file.join('\n');
-}
-},{}],"fOIZ":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.embedHtml = void 0;
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var embedHtml = function embedHtml(title, embed) {
-  return "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>".concat(title, "</title>\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-embed@1/dist/css/sanddance-embed.css\" />\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-explorer@1/dist/css/sanddance-explorer.css\" />\n</head>\n\n<body>\n    <script src=\"https://unpkg.com/react@16/umd/react.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/react-dom@16/umd/react-dom.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/deck.gl@6/deckgl.min.js\"></script>\n    <script src=\"https://unpkg.com/vega@5.8/build/vega.min.js\"></script>\n    <script src=\"https://unpkg.com/office-ui-fabric-react@6.204.4/dist/office-ui-fabric-react.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-explorer@2/dist/umd/sanddance-explorer.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-embed@2/dist/umd/sanddance-embed.js\"></script>\n\n    <div id=\"app\"></div>\n\n    ").concat(embed, "\n\n</body>\n\n</html>");
-};
-
-exports.embedHtml = embedHtml;
-},{}],"l7po":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.removeExtensions = removeExtensions;
-exports.DataExportPicker = void 0;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _base = require("../base");
-
-var _exportDelimited = require("../exportDelimited");
-
-var _dataExporterHtml = require("./dataExporterHtml");
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-var _language = require("../language");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-var exportTypes = [['json', _language.strings.labelExportJSON], ['csv', _language.strings.labelExportCSV], ['tsv', _language.strings.labelExportTSV], ['html', _language.strings.labelExportHTML]];
-
-var DataExportPicker =
-/*#__PURE__*/
-function (_React$Component) {
-  _inherits(DataExportPicker, _React$Component);
-
-  function DataExportPicker(props) {
-    var _this;
-
-    _classCallCheck(this, DataExportPicker);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(DataExportPicker).call(this, props));
-    _this.state = _this.getInitialState(_this.props);
-    return _this;
-  }
-
-  _createClass(DataExportPicker, [{
-    key: "getInitialState",
-    value: function getInitialState(props) {
-      var initialState = {
-        initializer: props.initializer,
-        dialogHidden: true,
-        exportType: exportTypes[0][0],
-        fileName: props.initializer.fileName,
-        fileNameError: '',
-        working: false
-      };
-      return initialState;
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate() {
-      if (!_sanddanceReact.util.deepCompare(this.props.initializer, this.state.initializer)) {
-        this.setState(this.getInitialState(this.props));
-      }
-    } // Converts to dataExport type and calls dataExportHandler to deal with data
-
-  }, {
-    key: "createExport",
-    value: function createExport(exportType, displayName) {
-      var _this2 = this;
-
-      var final = function final(data) {
-        _this2.props.dataExportHandler(data, exportType, displayName);
-
-        _this2.close();
-      };
-
-      var json = JSON.stringify(this.props.data, columnReplacer);
-
-      switch (exportType) {
-        case 'json':
-          {
-            final(json);
-            break;
-          }
-
-        case 'csv':
-          {
-            final((0, _exportDelimited.convertToDelimited)(JSON.parse(json), ','));
-            break;
-          }
-
-        case 'tsv':
-          {
-            final((0, _exportDelimited.convertToDelimited)(JSON.parse(json), '\t'));
-            break;
-          }
-
-        case 'html':
-          {
-            final((0, _dataExporterHtml.embedHtml)("".concat(_language.strings.appName, " - ").concat(escape(displayName)), embedScript((0, _exportDelimited.convertToDelimited)(JSON.parse(json), ','), displayName)));
-          }
-      }
-    }
-  }, {
-    key: "close",
-    value: function close() {
-      this.setState({
-        dialogHidden: true,
-        working: false
-      });
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this3 = this;
-
-      var closeDialog = function closeDialog() {
-        return _this3.close();
-      };
-
-      if (this.state.delayAction) {
-        requestAnimationFrame(function () {
-          //allow render to complete
-          if (_this3.state.delayAction) {
-            _this3.state.delayAction();
-
-            _this3.setState({
-              delayAction: null
-            });
-          }
-        });
-      }
-
-      var disabled = this.state.working || this.state.dialogHidden;
-      return React.createElement("div", {
-        className: "sanddance-dataExporter"
-      }, React.createElement(_base.base.fabric.DefaultButton, {
-        className: "search-action search-bottom-action",
-        text: _language.strings.buttonExportCount(this.props.data.length),
-        onClick: function onClick() {
-          return _this3.setState({
-            dialogHidden: false
-          });
-        },
-        disabled: this.props.disabled
-      }), React.createElement(_base.base.fabric.Dialog, {
-        hidden: this.state.dialogHidden,
-        onDismiss: closeDialog,
-        dialogContentProps: {
-          className: 'sanddance-dialog',
-          type: _base.base.fabric.DialogType.normal,
-          title: _language.strings.labelExport
-        }
-      }, React.createElement(_base.base.fabric.TextField, {
-        label: _language.strings.labelExportFileName,
-        onChange: function onChange(e, displayName) {
-          var displayNameError = getFileNameError(displayName);
-
-          _this3.setState({
-            fileName: displayName,
-            fileNameError: displayNameError
-          });
-        },
-        errorMessage: this.state.fileNameError,
-        value: this.state.fileName
-      }), React.createElement(_base.base.fabric.ChoiceGroup, {
-        className: "sanddance-form-separate",
-        disabled: disabled,
-        options: exportTypes.map(function (_ref) {
-          var _ref2 = _slicedToArray(_ref, 2),
-              exportType = _ref2[0],
-              text = _ref2[1];
-
-          return {
-            key: exportType,
-            text: text,
-            disabled: false,
-            checked: exportType === _this3.state.exportType
-          };
-        }),
-        onChange: function onChange(ev, option) {
-          return _this3.setState({
-            exportType: option.key
-          });
-        },
-        label: _language.strings.labelExportFormat
-      }), React.createElement(_base.base.fabric.DialogFooter, null, React.createElement(_base.base.fabric.PrimaryButton, {
-        disabled: disabled || !!this.state.fileNameError,
-        onClick: function onClick(e) {
-          return _this3.setState({
-            delayAction: function delayAction() {
-              return _this3.createExport(_this3.state.exportType, _this3.state.fileName);
-            },
-            working: true
-          });
-        },
-        text: _language.strings.buttonExport
-      }), React.createElement(_base.base.fabric.DefaultButton, {
-        onClick: closeDialog,
-        text: _language.strings.buttonClose
-      }))));
-    }
-  }]);
-
-  return DataExportPicker;
-}(React.Component);
-
-exports.DataExportPicker = DataExportPicker;
-var illegalChars = '\\/:*?"<>|';
-
-function getFileNameError(displayName) {
-  if (!displayName) {
-    return _language.strings.errorExportFilenameEmpty;
-  }
-
-  for (var i = 0; i < illegalChars.length; i++) {
-    if (displayName.indexOf(illegalChars[i]) >= 0) {
-      return _language.strings.errorExportFilenameCharacters(illegalChars);
-    }
-  }
-}
-
-function removeExtensions(fileName) {
-  exportTypes.forEach(function (_ref3) {
-    var _ref4 = _slicedToArray(_ref3, 1),
-        exportType = _ref4[0];
-
-    var re = new RegExp("\\.".concat(exportType), 'ig');
-    fileName = fileName.replace(re, '');
-  });
-  return fileName;
-}
-
-function columnReplacer(name, value) {
-  if (_sanddanceReact.SandDance.util.isInternalFieldName(name, true)) {
-    return undefined;
-  }
-
-  return value === null ? '' : value;
-}
-
-function embedScript(csv, displayName) {
-  var dataFile = {
-    type: 'csv',
-    displayName: displayName
-  };
-  return "<pre id='csv-data' style='display:none'>".concat(csv, "</pre>    \n    <script>SandDanceEmbed.load(Object.assign({rawText: document.getElementById('csv-data').innerText}, ").concat(JSON.stringify(dataFile), "))</script>");
-}
-},{"react":"ccIB","../base":"Vlbn","../exportDelimited":"pP3Y","./dataExporterHtml":"fOIZ","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"Gai8":[function(require,module,exports) {
+},{"@msrvida/sanddance-react":"MjKu"}],"Gai8":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24052,7 +24107,7 @@ function DataBrowser(props) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.defaultViewerOptions = exports.fontFamily = void 0;
+exports.snapshotThumbWidth = exports.defaultViewerOptions = exports.fontFamily = void 0;
 
 var _themes = require("./themes");
 
@@ -24065,6 +24120,8 @@ var defaultViewerOptions = {
   fontFamily: fontFamily
 };
 exports.defaultViewerOptions = defaultViewerOptions;
+var snapshotThumbWidth = 300;
+exports.snapshotThumbWidth = snapshotThumbWidth;
 },{"./themes":"CgE3"}],"ENdt":[function(require,module,exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -24493,8 +24550,13 @@ function getValidOperators(column) {
   }
 }
 
-function getExpressionClauses(currClause, index) {
-  var keys = [['&&', _language.strings.searchAND], ['||', _language.strings.searchOR]];
+function getExpressionClauses(currClause, disableOR) {
+  var keys = [['&&', _language.strings.searchAND]];
+
+  if (!disableOR) {
+    keys.push(['||', _language.strings.searchOR]);
+  }
+
   return keys.map(function (key, i) {
     var _key = _slicedToArray(key, 2),
         clause = _key[0],
@@ -24582,8 +24644,8 @@ function SearchTerm(props) {
     className: "search-field",
     //label={strings.labelSearchClause}
     dropdownWidth: 120,
-    disabled: !ex.unlocked,
-    options: getExpressionClauses(ex.clause, props.index),
+    disabled: !ex.unlocked || props.disableOR,
+    options: getExpressionClauses(ex.clause, props.disableOR),
     onChange: function onChange(e, o) {
       return props.onUpdateExpression({
         clause: o.data
@@ -24750,13 +24812,17 @@ function clearExpressionValidation(ex) {
   }
 }
 
-function getGroupClauses(currClause, index) {
+function getGroupClauses(currClause, index, disableGroupOR) {
   var keys;
 
   if (index === 0) {
     keys = [[null, _language.strings.searchWHERE]];
   } else {
-    keys = [['&&', _language.strings.searchAND], ['||', _language.strings.searchOR]];
+    keys = [['&&', _language.strings.searchAND]];
+
+    if (!disableGroupOR) {
+      keys.push(['||', _language.strings.searchOR]);
+    }
   }
 
   return keys.map(function (key, i) {
@@ -24989,9 +25055,9 @@ function (_React$Component) {
         }, React.createElement(_dropdown.Dropdown, {
           className: "search-group-clause",
           //label={strings.labelSearchClause}
-          disabled: groupIndex === 0,
+          disabled: groupIndex === 0 || _this3.props.disableGroupOR,
           dropdownWidth: 120,
-          options: getGroupClauses(group.clause, groupIndex),
+          options: getGroupClauses(group.clause, groupIndex, _this3.props.disableGroupOR),
           onChange: function onChange(e, o) {
             return _this3.updateGroup({
               clause: o.data
@@ -25010,6 +25076,7 @@ function (_React$Component) {
             columns: _this3.state.sortedColumns,
             data: _this3.props.data,
             searchExpression: ex,
+            disableOR: _this3.props.disableExpressionOR,
             column: getColumnWithName(ex.name, _this3.state.sortedColumns)
           }), group.expressions.length > 1 && React.createElement(_button.Button, {
             themePalette: _this3.props.themePalette,
@@ -25079,7 +25146,21 @@ var loadDataFile = function loadDataFile(dataFile) {
         type: dataFile.type,
         parse: {}
       });
-      loadDataArray(data, dataFile.type).then(resolve).catch(reject);
+      loadDataArray(data, dataFile.type).then(function (dc) {
+        if (dataFile.snapshotsUrl) {
+          fetch(dataFile.snapshotsUrl).then(function (response) {
+            return response.json();
+          }).then(function (snapshots) {
+            dc.snapshots = snapshots;
+            resolve(dc);
+          }).catch(reject);
+        } else if (dataFile.snapshots) {
+          dc.snapshots = dataFile.snapshots;
+          resolve(dc);
+        } else {
+          resolve(dc);
+        }
+      }).catch(reject);
     }
 
     if (dataFile.dataUrl) {
@@ -25305,7 +25386,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var version = '2.0.0';
+var version = '2.1.3';
 exports.version = version;
 },{}],"zKGJ":[function(require,module,exports) {
 "use strict";
@@ -25576,6 +25657,16 @@ function (_React$Component) {
           });
         }
       })), React.createElement(_group.Group, {
+        label: _language.strings.labelSnapshots
+      }, React.createElement(_base.base.fabric.Slider, {
+        label: _language.strings.labelSnapshotSettingThumbnailWidth,
+        onChange: function onChange(value) {
+          _this2.props.explorer.snapshotThumbWidth = value;
+        },
+        min: 100,
+        max: 800,
+        defaultValue: this.props.explorer.snapshotThumbWidth
+      })), React.createElement(_group.Group, {
         label: _language.strings.labelTransitionDurations
       }, React.createElement(_base.base.fabric.Slider, {
         label: _language.strings.labelTransitionColor,
@@ -25818,13 +25909,13 @@ function Sidebutton(props) {
     }
   }));
 }
-},{"react":"ccIB","../base":"Vlbn","./dataScope":"OsNT","./iconButton":"dQNc","./scrollable":"GuKX","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"oc9r":[function(require,module,exports) {
+},{"react":"ccIB","../base":"Vlbn","./dataScope":"OsNT","./iconButton":"dQNc","./scrollable":"GuKX","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"dSzJ":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Snapshots = void 0;
+exports.SnapshotEditor = void 0;
 
 var React = _interopRequireWildcard(require("react"));
 
@@ -25834,9 +25925,7 @@ var _dialog = require("../controls/dialog");
 
 var _canvas = require("../canvas");
 
-var _group = require("../controls/group");
-
-var _iconButton = require("../controls/iconButton");
+var _sanddanceReact = require("@msrvida/sanddance-react");
 
 var _language = require("../language");
 
@@ -25862,48 +25951,32 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var thumbWidth = 300;
-
-var Snapshots =
+var SnapshotEditor =
 /*#__PURE__*/
 function (_React$Component) {
-  _inherits(Snapshots, _React$Component);
+  _inherits(SnapshotEditor, _React$Component);
 
-  function Snapshots(props) {
+  function SnapshotEditor(props) {
     var _this;
 
-    _classCallCheck(this, Snapshots);
+    _classCallCheck(this, SnapshotEditor);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Snapshots).call(this, props));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(SnapshotEditor).call(this, props));
     _this.state = {
-      formHidden: true,
+      showEditFormDialog: false,
+      title: '',
       description: '',
       image: null,
       bgColor: null,
-      insight: null
+      insight: null,
+      editIndex: -1
     };
     return _this;
   }
 
-  _createClass(Snapshots, [{
-    key: "saveSnapshot",
-    value: function saveSnapshot() {
-      var snapshot = {
-        description: this.state.description,
-        insight: this.state.insight,
-        image: this.state.image,
-        bgColor: this.state.bgColor
-      };
-      this.props.modifySnapShot && this.props.modifySnapShot(snapshot);
-      this.props.onCreateSnapshot(snapshot);
-      this.setState({
-        formHidden: true,
-        description: ''
-      });
-    }
-  }, {
+  _createClass(SnapshotEditor, [{
     key: "resize",
-    value: function resize(src) {
+    value: function resize(src, thumbWidth) {
       var _this2 = this;
 
       if (!src) return;
@@ -25926,97 +25999,315 @@ function (_React$Component) {
       img.src = src;
     }
   }, {
+    key: "editSnapshot",
+    value: function editSnapshot(snapshot) {
+      var _this3 = this;
+
+      var editIndex = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
+
+      if (snapshot) {
+        this.setState(Object.assign(Object.assign({
+          showEditFormDialog: true
+        }, snapshot), {
+          editIndex: editIndex
+        }));
+      } else {
+        this.props.explorer.viewer.deselect().then(function () {
+          var canvas = (0, _canvas.getCanvas)(_this3.props.explorer.viewer);
+          var bgColor = canvas && window.getComputedStyle(canvas).backgroundColor;
+
+          var insight = _sanddanceReact.SandDance.VegaDeckGl.util.clone(_this3.props.explorer.viewer.getInsight());
+
+          delete insight.size;
+          var title = _this3.props.getTitle && _this3.props.getTitle(insight) || '';
+          var description = _this3.props.getDescription && _this3.props.getDescription(insight) || '';
+
+          _this3.setState({
+            showEditFormDialog: true,
+            bgColor: bgColor,
+            title: title,
+            description: description,
+            insight: insight,
+            image: null,
+            editIndex: editIndex
+          }); //allow deselection to render
+
+
+          setTimeout(function () {
+            _this3.resize(canvas && canvas.toDataURL('image/png'), _this3.props.explorer.snapshotThumbWidth);
+          }, 500);
+        });
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
+
+      return React.createElement(_dialog.Dialog, {
+        modalProps: {
+          className: _sanddanceReact.util.classList('sanddance-snapshot-dialog', this.props.explorer.props.theme)
+        },
+        minWidth: "".concat(this.props.explorer.snapshotThumbWidth + 64, "px"),
+        hidden: !this.state.showEditFormDialog,
+        onDismiss: function onDismiss() {
+          return _this4.setState({
+            showEditFormDialog: false
+          });
+        },
+        title: this.state.editIndex >= 0 ? _language.strings.buttonEditSnapshot : _language.strings.buttonCreateSnapshot,
+        buttons: React.createElement(_base.base.fabric.PrimaryButton, {
+          disabled: !this.state.image || !this.state.title,
+          key: 0,
+          onClick: function onClick(e) {
+            var snapshot = {
+              title: _this4.state.title,
+              description: _this4.state.description,
+              insight: _this4.state.insight,
+              image: _this4.state.image,
+              bgColor: _this4.state.bgColor
+            };
+            _this4.props.modifySnapShot && _this4.props.modifySnapShot(snapshot);
+
+            _this4.props.onWriteSnapshot(snapshot, _this4.state.editIndex);
+
+            _this4.setState({
+              showEditFormDialog: false,
+              title: '',
+              description: '',
+              image: null
+            });
+          },
+          text: this.state.editIndex >= 0 ? _language.strings.buttonUpdateSnapshot : _language.strings.buttonCreateSnapshot
+        })
+      }, React.createElement(_base.base.fabric.TextField, {
+        label: _language.strings.labelSnapshotTitle,
+        onChange: function onChange(e, title) {
+          return _this4.setState({
+            title: title
+          });
+        },
+        value: this.state.title
+      }), React.createElement(_base.base.fabric.TextField, {
+        label: _language.strings.labelSnapshotDescription,
+        onChange: function onChange(e, description) {
+          return _this4.setState({
+            description: description
+          });
+        },
+        value: this.state.description,
+        multiline: true
+      }), React.createElement("div", {
+        className: 'thumbnail'
+      }, !this.state.image && React.createElement(_base.base.fabric.Spinner, null), this.state.image && React.createElement("img", {
+        src: this.state.image,
+        style: {
+          backgroundColor: this.state.bgColor
+        }
+      })), this.props.explorer.viewer && this.props.explorer.viewer.colorContexts && this.props.explorer.viewer.colorContexts.length > 1 && React.createElement("div", null, _language.strings.labelColorFilter));
+    }
+  }]);
+
+  return SnapshotEditor;
+}(React.Component);
+
+exports.SnapshotEditor = SnapshotEditor;
+},{"react":"ccIB","../base":"Vlbn","../controls/dialog":"cFWm","../canvas":"Dryx","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"oc9r":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Snapshots = void 0;
+
+var React = _interopRequireWildcard(require("react"));
+
+var _base = require("../base");
+
+var _dialog = require("../controls/dialog");
+
+var _group = require("../controls/group");
+
+var _iconButton = require("../controls/iconButton");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var _language = require("../language");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var Snapshots =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(Snapshots, _React$Component);
+
+  function Snapshots(props) {
+    var _this;
+
+    _classCallCheck(this, Snapshots);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Snapshots).call(this, props));
+    _this.state = {
+      confirmation: null,
+      title: '',
+      description: '',
+      image: null,
+      bgColor: null,
+      insight: null
+    };
+    return _this;
+  }
+
+  _createClass(Snapshots, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var items = [{
+        key: 'clear',
+        text: _language.strings.buttonClearSnapshots,
+        onClick: function onClick() {
+          return _this2.setState({
+            confirmation: {
+              buttonText: _language.strings.buttonClearSnapshots,
+              handler: function handler() {
+                return _this2.props.onClearSnapshots();
+              }
+            }
+          });
+        }
+      }];
+
+      if (this.props.getTopActions) {
+        items.push.apply(items, this.props.getTopActions(this.props.snapshots));
+      }
 
       return React.createElement(_group.Group, {
         className: "sanddance-snapshots",
         label: _language.strings.labelSnapshots
-      }, React.createElement(_base.base.fabric.PrimaryButton, {
+      }, React.createElement("div", null, React.createElement(_base.base.fabric.PrimaryButton, {
         text: _language.strings.buttonCreateSnapshot,
         onClick: function onClick(e) {
-          var canvas = (0, _canvas.getCanvas)(_this3.props.explorer.viewer);
-
-          _this3.resize(canvas && canvas.toDataURL('image/png'));
-
-          var bgColor = canvas && window.getComputedStyle(canvas).backgroundColor;
-
-          var insight = _this3.props.explorer.viewer.getInsight();
-
-          var description = _this3.props.getDescription && _this3.props.getDescription(insight) || '';
-
-          _this3.setState({
-            formHidden: false,
-            bgColor: bgColor,
-            description: description,
-            insight: insight
-          });
-        }
-      }), React.createElement(_dialog.Dialog, {
-        minWidth: "".concat(thumbWidth + 64, "px"),
-        hidden: this.state.formHidden,
-        onDismiss: function onDismiss() {
-          return _this3.setState({
-            formHidden: true
-          });
+          return _this2.props.editor.editSnapshot();
         },
-        title: _language.strings.buttonCreateSnapshot,
-        buttons: [React.createElement(_base.base.fabric.PrimaryButton, {
+        split: true,
+        menuProps: {
+          items: items
+        }
+      }), this.props.getChildren && this.props.getChildren(this.props.snapshots), this.state.confirmation && React.createElement(_dialog.Dialog, {
+        hidden: false,
+        buttons: React.createElement(_base.base.fabric.PrimaryButton, {
           key: 0,
           onClick: function onClick(e) {
-            return _this3.saveSnapshot();
+            _this2.setState({
+              confirmation: null
+            });
+
+            _this2.state.confirmation.handler();
           },
-          text: _language.strings.buttonCreateSnapshot
-        })]
-      }, React.createElement(_base.base.fabric.TextField, {
-        label: _language.strings.labelSnapshotDescription,
-        onKeyUp: function onKeyUp(e) {
-          return e.keyCode === 13 && _this3.saveSnapshot();
-        },
-        onChange: function onChange(e, description) {
-          return _this3.setState({
-            description: description
+          text: this.state.confirmation.buttonText
+        }),
+        onDismiss: function onDismiss() {
+          return _this2.setState({
+            confirmation: null
           });
-        },
-        value: this.state.description
-      }), React.createElement("img", {
-        src: this.state.image,
-        style: {
-          backgroundColor: this.state.bgColor,
-          width: "".concat(thumbWidth, "px")
         }
-      }), this.props.explorer.viewer.colorContexts.length > 1 && React.createElement("div", null, _language.strings.labelColorFilter)), React.createElement("div", null, this.props.snapshots.map(function (snapshot, i) {
-        var actions = _this3.props.getActions && _this3.props.getActions(snapshot, i) || [];
+      }, _language.strings.labelConfirmation), React.createElement("div", null, this.props.snapshots.map(function (snapshot, i) {
+        var actions = _this2.props.getActions && _this2.props.getActions(snapshot, i) || [];
         actions.push({
           iconButtonProps: {
-            themePalette: _this3.props.themePalette,
-            title: _language.strings.buttonDeleteSnapshot,
+            themePalette: _this2.props.themePalette,
+            title: _language.strings.buttonEditSnapshot,
             onClick: function onClick(e) {
-              return _this3.props.onRemoveSnapshot(i);
+              return _this2.props.editor.editSnapshot(snapshot, i);
+            },
+            iconName: 'Edit'
+          }
+        });
+
+        if (_this2.props.snapshots.length > 1) {
+          actions.push({
+            iconButtonProps: {
+              disabled: i === 0,
+              themePalette: _this2.props.themePalette,
+              title: _language.strings.buttonMoveUp,
+              onClick: function onClick(e) {
+                return _this2.props.onMoveUp(i);
+              },
+              iconName: 'SortUp'
+            }
+          }, {
+            iconButtonProps: {
+              disabled: i > _this2.props.snapshots.length - 2,
+              themePalette: _this2.props.themePalette,
+              title: _language.strings.buttonMoveDown,
+              onClick: function onClick(e) {
+                return _this2.props.onMoveDown(i);
+              },
+              iconName: 'SortDown'
+            }
+          });
+        }
+
+        actions.push({
+          iconButtonProps: {
+            themePalette: _this2.props.themePalette,
+            title: _language.strings.buttonDeleteSnapshot,
+            onClick: function onClick() {
+              return _this2.setState({
+                confirmation: {
+                  buttonText: _language.strings.buttonDeleteSnapshot,
+                  handler: function handler() {
+                    return _this2.props.onRemoveSnapshot(i);
+                  }
+                }
+              });
             },
             iconName: 'Delete'
           }
         });
         return React.createElement("div", {
           key: i,
-          className: "snapshot"
+          className: _sanddanceReact.util.classList('snapshot', i === _this2.props.selectedSnapshotIndex && 'selected')
         }, React.createElement("div", {
           onClick: function onClick(e) {
-            return _this3.props.onSnapshotClick(snapshot);
+            return _this2.props.onSnapshotClick(snapshot, i);
           }
         }, React.createElement("div", {
-          className: "title"
-        }, snapshot.description), React.createElement("img", {
+          className: 'title'
+        }, snapshot.title), React.createElement("div", {
+          className: 'thumbnail'
+        }, React.createElement("img", {
+          title: snapshot.description,
           src: snapshot.image,
           style: {
             backgroundColor: snapshot.bgColor
           }
-        })), React.createElement(Actions, {
+        }))), React.createElement(Actions, {
           actions: actions,
           snapshot: snapshot
         }));
-      })));
+      }))));
     }
   }]);
 
@@ -26040,7 +26331,7 @@ function Actions(props) {
     }
   }));
 }
-},{"react":"ccIB","../base":"Vlbn","../controls/dialog":"cFWm","../canvas":"Dryx","../controls/group":"Q3hf","../controls/iconButton":"dQNc","../language":"hk5u"}],"yzxM":[function(require,module,exports) {
+},{"react":"ccIB","../base":"Vlbn","../controls/dialog":"cFWm","../controls/group":"Q3hf","../controls/iconButton":"dQNc","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"yzxM":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26278,19 +26569,42 @@ function Topbar(props) {
   }
 
   var farItems = [{
+    key: 'previous-snapshot',
+    iconProps: {
+      iconName: 'Previous'
+    },
+    onClick: props.onSnapshotPreviousClick,
+    disabled: props.snapshots.length < 2
+  }, {
+    key: 'snapshot',
+    iconProps: {
+      iconName: 'Camera'
+    },
+    onClick: props.onSnapshotClick,
+    disabled: !props.loaded
+  }, {
+    key: 'next-snapshot',
+    iconProps: {
+      iconName: 'Next'
+    },
+    onClick: props.onSnapshotNextClick,
+    disabled: props.snapshots.length < 2
+  }, {
     key: 'view',
     iconProps: {
       iconName: props.view === '2d' ? 'Product' : 'Page'
     },
     title: props.view === '2d' ? _language.strings.labelViewType3d : _language.strings.lavelViewType2d,
-    onClick: props.onViewClick
+    onClick: props.onViewClick,
+    disabled: !props.loaded
   }, {
     key: 'home',
     iconProps: {
       iconName: 'PicturePosition'
     },
     title: _language.strings.buttonCameraHome,
-    onClick: props.onHomeClick
+    onClick: props.onHomeClick,
+    disabled: !props.loaded
   }];
   return React.createElement("div", {
     className: "sanddance-explorer-topbar"
@@ -26357,6 +26671,8 @@ var _columns = require("./columns");
 
 var _mouseEvent = require("./mouseEvent");
 
+var _iconButton = require("./controls/iconButton");
+
 var _search = require("./dialogs/search");
 
 var _dataLoader = require("./dataLoader");
@@ -26372,6 +26688,8 @@ var _sanddanceReact = require("@msrvida/sanddance-react");
 var _settings = require("./dialogs/settings");
 
 var _sidebar = require("./controls/sidebar");
+
+var _snapshotEditor = require("./dialogs/snapshotEditor");
 
 var _snapshots = require("./dialogs/snapshots");
 
@@ -26486,12 +26804,15 @@ function (_React$Component) {
       sidebarPinned: true,
       view: props.initialView || '2d',
       snapshots: [],
+      selectedSnapshotIndex: -1,
       tooltipExclusions: [],
-      positionedColumnMapProps: null
+      positionedColumnMapProps: null,
+      note: null
     };
     _this.state.selectedItemIndex[_dataScope.DataScopeId.AllData] = 0;
     _this.state.selectedItemIndex[_dataScope.DataScopeId.FilteredData] = 0;
     _this.state.selectedItemIndex[_dataScope.DataScopeId.SelectedData] = 0;
+    _this.snapshotThumbWidth = _defaults.snapshotThumbWidth;
     _this.discardColorContextUpdates = true;
 
     _this.updateViewerOptions(Object.assign(Object.assign({}, _sanddanceReact.SandDance.VegaDeckGl.util.clone(_sanddanceReact.SandDance.Viewer.defaultViewerOptions)), props.viewerOptions));
@@ -26699,7 +27020,11 @@ function (_React$Component) {
     }
   }, {
     key: "setInsight",
-    value: function setInsight(partialInsight) {
+    value: function setInsight() {
+      var _this4 = this;
+
+      var partialInsight = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.viewer.getInsight();
+      var rebaseFilter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       var selectedItemIndex = Object.assign({}, this.state.selectedItemIndex);
       selectedItemIndex[_dataScope.DataScopeId.AllData] = 0;
       selectedItemIndex[_dataScope.DataScopeId.FilteredData] = 0;
@@ -26712,25 +27037,73 @@ function (_React$Component) {
         filteredData: null,
         selectedItemIndex: selectedItemIndex
       }, partialInsight);
-      this.getColorContext = null;
-      this.changeInsight(newState);
+      newState.search = createInputSearch(newState.filter);
+
+      var changeInsight = function changeInsight() {
+        _this4.getColorContext = null;
+
+        _this4.changeInsight(newState);
+      };
+
+      var currentFilter = this.viewer.getInsight().filter;
+
+      if (rebaseFilter && currentFilter && newState.filter) {
+        if (_sanddanceReact.SandDance.searchExpression.startsWith(newState.filter, currentFilter)) {
+          changeInsight();
+        } else {
+          this.viewer.reset().then(function () {
+            return new Promise(function (resolve, reject) {
+              setTimeout(resolve, _this4.viewer.options.transitionDurations.scope);
+            });
+          }).then(changeInsight);
+        }
+      } else {
+        changeInsight();
+      }
+    }
+  }, {
+    key: "reviveSnapshot",
+    value: function reviveSnapshot(snapshotOrIndex) {
+      if (typeof snapshotOrIndex === 'number') {
+        var selectedSnapshotIndex = snapshotOrIndex;
+        var snapshot = this.state.snapshots[selectedSnapshotIndex];
+        var newState = Object.assign(Object.assign({}, snapshot.insight), {
+          note: snapshot.description,
+          selectedSnapshotIndex: selectedSnapshotIndex
+        });
+
+        if (!this.state.sidebarClosed) {
+          newState.sideTabId = _sidebar.SideTabId.Snapshots;
+          this.scrollSnapshotIntoView(selectedSnapshotIndex);
+        }
+
+        this.setInsight(newState);
+      } else {
+        var _snapshot = snapshotOrIndex;
+        this.setInsight(Object.assign(Object.assign({}, _snapshot.insight), {
+          note: _snapshot.description,
+          selectedSnapshotIndex: -1
+        }), true); //don't navigate to sideTab
+      }
     }
   }, {
     key: "load",
     value: function load(data, getPartialInsight, optionsOrPrefs) {
-      var _this4 = this;
+      var _this5 = this;
 
       this.changeInsight({
-        columns: null
+        columns: null,
+        note: null,
+        snapshots: []
       });
       return new Promise(function (resolve, reject) {
         var loadFinal = function loadFinal(dataContent) {
           var partialInsight;
-          _this4.prefs = optionsOrPrefs && optionsOrPrefs.chartPrefs || optionsOrPrefs || {};
+          _this5.prefs = optionsOrPrefs && optionsOrPrefs.chartPrefs || optionsOrPrefs || {};
 
           if (getPartialInsight) {
             partialInsight = getPartialInsight(dataContent.columns);
-            (0, _partialInsight.initPrefs)(_this4.prefs, partialInsight);
+            (0, _partialInsight.initPrefs)(_this5.prefs, partialInsight);
           }
 
           if (!partialInsight) {
@@ -26739,7 +27112,7 @@ function (_React$Component) {
             partialInsight = r.recommend();
           }
 
-          var selectedItemIndex = Object.assign({}, _this4.state.selectedItemIndex);
+          var selectedItemIndex = Object.assign({}, _this5.state.selectedItemIndex);
           var sideTabId = _sidebar.SideTabId.ChartType;
           selectedItemIndex[_dataScope.DataScopeId.AllData] = 0;
           selectedItemIndex[_dataScope.DataScopeId.FilteredData] = 0;
@@ -26747,6 +27120,7 @@ function (_React$Component) {
           var newState = Object.assign({
             dataFile: dataFile,
             dataContent: dataContent,
+            snapshots: dataContent.snapshots || [],
             autoCompleteDistinctValues: {},
             filter: null,
             filteredData: null,
@@ -26755,15 +27129,15 @@ function (_React$Component) {
             selectedItemIndex: selectedItemIndex,
             sideTabId: sideTabId
           }, partialInsight);
-          _this4.getColorContext = null;
+          _this5.getColorContext = null;
           (0, _columns.ensureColumnsExist)(newState.columns, dataContent.columns, newState.transform);
           var errors = (0, _columns.ensureColumnsPopulated)(partialInsight ? partialInsight.chart : null, newState.columns, dataContent.columns);
           newState.errors = errors; //change insight
 
-          _this4.changeInsight(newState); //make sure item is active
+          _this5.changeInsight(newState); //make sure item is active
 
 
-          _this4.activateDataBrowserItem(sideTabId, _this4.state.dataScopeId);
+          _this5.activateDataBrowserItem(sideTabId, _this5.state.dataScopeId);
 
           resolve();
         };
@@ -26786,7 +27160,7 @@ function (_React$Component) {
   }, {
     key: "changeChartType",
     value: function changeChartType(chart) {
-      var _this5 = this;
+      var _this6 = this;
 
       var partialInsight = (0, _partialInsight.copyPrefToNewState)(this.prefs, chart, '*', '*');
       var newState = Object.assign({
@@ -26833,7 +27207,7 @@ function (_React$Component) {
       }
 
       this.calculate(function () {
-        return _this5.changeInsight(newState);
+        return _this6.changeInsight(newState);
       });
     }
   }, {
@@ -26874,14 +27248,14 @@ function (_React$Component) {
   }, {
     key: "changeColumnMapping",
     value: function changeColumnMapping(role, column, options) {
-      var _this6 = this;
+      var _this7 = this;
 
       var columns = Object.assign({}, this.state.columns);
 
       var final = function final() {
         columns[role] = column && column.name;
 
-        _this6.changeInsight({
+        _this7.changeInsight({
           columns: columns
         });
       };
@@ -26929,7 +27303,7 @@ function (_React$Component) {
 
                 columns['facet'] = column.name;
 
-                _this6.changeInsight({
+                _this7.changeInsight({
                   facets: facets,
                   columns: columns
                 });
@@ -26944,50 +27318,50 @@ function (_React$Component) {
                 var newState = {
                   scheme: options && options.scheme,
                   columns: columns,
-                  colorBin: _this6.state.colorBin
+                  colorBin: _this7.state.colorBin
                 };
 
                 if (!newState.scheme) {
-                  var partialInsight = (0, _partialInsight.copyPrefToNewState)(_this6.prefs, _this6.state.chart, 'color', column.name);
+                  var partialInsight = (0, _partialInsight.copyPrefToNewState)(_this7.prefs, _this7.state.chart, 'color', column.name);
                   newState = Object.assign(Object.assign({}, newState), partialInsight);
                 }
 
                 if (!newState.scheme) {
-                  newState.scheme = (0, _colorScheme.bestColorScheme)(column, null, _this6.state.scheme);
+                  newState.scheme = (0, _colorScheme.bestColorScheme)(column, null, _this7.state.scheme);
                 }
 
                 if (!column.stats.hasColorData) {
                   newState.directColor = false;
 
-                  if (_this6.state.directColor !== newState.directColor) {
+                  if (_this7.state.directColor !== newState.directColor) {
                     newState.calculating = function () {
-                      return _this6._resize();
+                      return _this7._resize();
                     };
                   }
                 }
 
-                if (_this6.state.columns && _this6.state.columns.color && _this6.state.columns.color !== column.name) {
-                  var currColorColumn = _this6.state.dataContent.columns.filter(function (c) {
-                    return c.name === _this6.state.columns.color;
+                if (_this7.state.columns && _this7.state.columns.color && _this7.state.columns.color !== column.name) {
+                  var currColorColumn = _this7.state.dataContent.columns.filter(function (c) {
+                    return c.name === _this7.state.columns.color;
                   })[0];
 
                   if (column.isColorData != currColorColumn.isColorData) {
                     newState.calculating = function () {
-                      return _this6._resize();
+                      return _this7._resize();
                     };
                   }
                 }
 
-                _this6.ignoreSelectionChange = true;
+                _this7.ignoreSelectionChange = true;
 
-                _this6.viewer.deselect().then(function () {
-                  _this6.ignoreSelectionChange = false; //allow deselection to render
+                _this7.viewer.deselect().then(function () {
+                  _this7.ignoreSelectionChange = false; //allow deselection to render
 
                   requestAnimationFrame(function () {
                     columns['color'] = column.name;
-                    _this6.getColorContext = null;
+                    _this7.getColorContext = null;
 
-                    _this6.changeInsight(newState);
+                    _this7.changeInsight(newState);
                   });
                 });
               })();
@@ -26998,13 +27372,13 @@ function (_React$Component) {
           case 'x':
             {
               (function () {
-                var partialInsight = (0, _partialInsight.copyPrefToNewState)(_this6.prefs, _this6.state.chart, 'x', column.name);
+                var partialInsight = (0, _partialInsight.copyPrefToNewState)(_this7.prefs, _this7.state.chart, 'x', column.name);
                 var newState = Object.assign({
                   columns: columns
                 }, partialInsight);
                 columns['x'] = column.name;
 
-                _this6.changeInsight(newState);
+                _this7.changeInsight(newState);
               })();
 
               break;
@@ -27089,12 +27463,12 @@ function (_React$Component) {
   }, {
     key: "silentActivation",
     value: function silentActivation(itemToActivate) {
-      var _this7 = this;
+      var _this8 = this;
 
       this.ignoreSelectionChange = true;
 
       var done = function done() {
-        _this7.ignoreSelectionChange = false;
+        _this8.ignoreSelectionChange = false;
       };
 
       if (itemToActivate) {
@@ -27114,11 +27488,11 @@ function (_React$Component) {
   }, {
     key: "resize",
     value: function resize() {
-      var _this8 = this;
+      var _this9 = this;
 
       this.setState({
         calculating: function calculating() {
-          return _this8._resize();
+          return _this9._resize();
         }
       });
     }
@@ -27173,14 +27547,24 @@ function (_React$Component) {
           } else {
             //adding a new group
             if (e.altKey || e.shiftKey) {
-              if (e.shiftKey) {
-                search.clause = '||';
-              } else if (e.altKey) {
+              var group = true;
+
+              if (e.altKey) {
                 search.clause = '&&';
+              } else if (e.shiftKey) {
+                if (this.props.searchORDisabled) {
+                  group = false;
+                } else {
+                  search.clause = '||';
+                }
               }
 
-              result.groups.push(search);
-              this.doSelect(result.groups);
+              if (group) {
+                result.groups.push(search);
+                this.doSelect(result.groups);
+              } else {
+                this.doSelect(search);
+              }
             } else {
               //replace
               this.doSelect(search);
@@ -27212,6 +27596,53 @@ function (_React$Component) {
       return this.viewer.deselect();
     }
   }, {
+    key: "writeSnapshot",
+    value: function writeSnapshot(snapshot, editIndex) {
+      var selectedSnapshotIndex = this.state.selectedSnapshotIndex;
+      var snapshots;
+
+      if (editIndex >= 0) {
+        snapshots = _toConsumableArray(this.state.snapshots);
+        snapshots[editIndex] = snapshot;
+        this.setState({
+          snapshots: snapshots,
+          selectedSnapshotIndex: selectedSnapshotIndex
+        });
+      } else {
+        var note = snapshot.description;
+        snapshots = this.state.snapshots.concat(snapshot);
+        selectedSnapshotIndex = snapshots.length - 1;
+
+        if (!this.state.sidebarClosed) {
+          this.scrollSnapshotIntoView(selectedSnapshotIndex);
+        }
+
+        this.setState({
+          sideTabId: _sidebar.SideTabId.Snapshots,
+          snapshots: snapshots,
+          selectedSnapshotIndex: selectedSnapshotIndex,
+          note: note
+        });
+      }
+    }
+  }, {
+    key: "scrollSnapshotIntoView",
+    value: function scrollSnapshotIntoView(selectedSnapshotIndex) {
+      var _this10 = this;
+
+      clearTimeout(this.scrollSnapshotTimer);
+      this.scrollSnapshotTimer = setTimeout(function () {
+        var selectedSnapshotElement = _this10.div.querySelector(".snapshot:nth-child(".concat(selectedSnapshotIndex + 1, ")"));
+
+        if (selectedSnapshotElement) {
+          selectedSnapshotElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest'
+          });
+        }
+      }, 500);
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       if (this.props.mounted) {
@@ -27221,7 +27652,7 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this9 = this;
+      var _this11 = this;
 
       var _this$state = this.state,
           colorBin = _this$state.colorBin,
@@ -27264,10 +27695,10 @@ function (_React$Component) {
       if (this.state.calculating) {
         requestAnimationFrame(function () {
           //allow render to complete
-          if (_this9.state.calculating) {
-            _this9.state.calculating();
+          if (_this11.state.calculating) {
+            _this11.state.calculating();
 
-            _this9.setState({
+            _this11.setState({
               calculating: null
             });
           }
@@ -27278,7 +27709,7 @@ function (_React$Component) {
       var themePalette = _themes.themePalettes[theme];
       return React.createElement("div", {
         ref: function ref(div) {
-          if (div) _this9.div = div;
+          if (div) _this11.div = div;
         },
         className: _sanddanceReact.util.classList('sanddance-explorer', this.props.theme)
       }, React.createElement(_topbar.Topbar, {
@@ -27294,15 +27725,51 @@ function (_React$Component) {
         selectionState: selectionState,
         buttons: this.props.topBarButtonProps,
         view: this.state.view,
-        onViewClick: function onViewClick() {
-          var view = _this9.state.view === '2d' ? '3d' : '2d';
+        snapshots: this.state.snapshots,
+        onSnapshotPreviousClick: function onSnapshotPreviousClick() {
+          var selectedSnapshotIndex;
 
-          _this9.changeInsight({
+          if (_this11.state.selectedSnapshotIndex === -1) {
+            selectedSnapshotIndex = _this11.state.snapshots.length - 1;
+          } else {
+            selectedSnapshotIndex = _this11.state.selectedSnapshotIndex;
+            selectedSnapshotIndex--;
+
+            if (selectedSnapshotIndex < 0) {
+              selectedSnapshotIndex = _this11.state.snapshots.length - 1;
+            }
+          }
+
+          _this11.reviveSnapshot(selectedSnapshotIndex);
+        },
+        onSnapshotClick: function onSnapshotClick() {
+          return _this11.snapshotEditor.editSnapshot();
+        },
+        onSnapshotNextClick: function onSnapshotNextClick() {
+          var selectedSnapshotIndex;
+
+          if (_this11.state.selectedSnapshotIndex === -1) {
+            selectedSnapshotIndex = 0;
+          } else {
+            selectedSnapshotIndex = _this11.state.selectedSnapshotIndex;
+            selectedSnapshotIndex++;
+
+            if (selectedSnapshotIndex > _this11.state.snapshots.length - 1) {
+              selectedSnapshotIndex = 0;
+            }
+          }
+
+          _this11.reviveSnapshot(selectedSnapshotIndex);
+        },
+        onViewClick: function onViewClick() {
+          var view = _this11.state.view === '2d' ? '3d' : '2d';
+
+          _this11.changeInsight({
             view: view
           });
         },
         onHomeClick: function onHomeClick() {
-          return _this9.viewer.presenter.homeCamera();
+          return _this11.viewer.presenter.homeCamera();
         }
       }), React.createElement("div", {
         className: _sanddanceReact.util.classList('sanddance-main', this.state.sidebarPinned && 'pinned', this.state.sidebarClosed && 'closed', (insight.hideLegend || insight.directColor || !(insight.columns && insight.columns.color && !this.state.dataContent.columns.filter(function (c) {
@@ -27310,12 +27777,12 @@ function (_React$Component) {
         })[0].isColorData)) && 'hide-legend')
       }, React.createElement("div", {
         ref: function ref(div) {
-          if (div && !_this9.layoutDivUnpinned) _this9.layoutDivUnpinned = div;
+          if (div && !_this11.layoutDivUnpinned) _this11.layoutDivUnpinned = div;
         },
         className: "sanddance-layout-unpinned"
       }), React.createElement("div", {
         ref: function ref(div) {
-          if (div && !_this9.layoutDivPinned) _this9.layoutDivPinned = div;
+          if (div && !_this11.layoutDivPinned) _this11.layoutDivPinned = div;
         },
         className: "sanddance-layout-pinned"
       }), !loaded && React.createElement("div", {
@@ -27334,9 +27801,9 @@ function (_React$Component) {
           themePalette: themePalette,
           compact: this.state.sidebarClosed,
           onCompactClick: function onCompactClick() {
-            _this9.changeInsight({
+            _this11.changeInsight({
               sidebarClosed: false,
-              size: _this9.getLayoutDivSize(_this9.state.sidebarPinned, false)
+              size: _this11.getLayoutDivSize(_this11.state.sidebarPinned, false)
             });
           },
           dataSet: this.props.datasetElement,
@@ -27347,47 +27814,47 @@ function (_React$Component) {
           },
           active: this.state.sideTabId === _sidebar.SideTabId.Data,
           onDataScopeClick: function onDataScopeClick(dataScopeId) {
-            return _this9.setSideTabId(_sidebar.SideTabId.Data, dataScopeId);
+            return _this11.setSideTabId(_sidebar.SideTabId.Data, dataScopeId);
           },
           selectedDataScope: this.state.dataScopeId,
           disabled: !loaded
         },
         onSideTabClick: function onSideTabClick(sideTabId) {
           //collapse or toggle
-          if (sideTabId === _sidebar.SideTabId.Collapse || _this9.state.sideTabId === sideTabId) {
-            var _this9$state = _this9.state,
-                dataScopeId = _this9$state.dataScopeId,
-                sidebarClosed = _this9$state.sidebarClosed;
+          if (sideTabId === _sidebar.SideTabId.Collapse || _this11.state.sideTabId === sideTabId) {
+            var _this11$state = _this11.state,
+                dataScopeId = _this11$state.dataScopeId,
+                sidebarClosed = _this11$state.sidebarClosed;
 
             if (sidebarClosed && sideTabId === _sidebar.SideTabId.Data) {
-              dataScopeId = _this9.getBestDataScopeId();
+              dataScopeId = _this11.getBestDataScopeId();
             }
 
-            sidebarClosed = !_this9.state.sidebarClosed;
+            sidebarClosed = !_this11.state.sidebarClosed;
 
-            _this9.changeInsight({
+            _this11.changeInsight({
               dataScopeId: dataScopeId,
               sidebarClosed: sidebarClosed,
-              size: _this9.getLayoutDivSize(_this9.state.sidebarPinned, sidebarClosed)
+              size: _this11.getLayoutDivSize(_this11.state.sidebarPinned, sidebarClosed)
             });
           } else if (sideTabId === _sidebar.SideTabId.Pin) {
-            _this9.changeInsight({
-              sidebarPinned: !_this9.state.sidebarPinned,
-              size: _this9.getLayoutDivSize(!_this9.state.sidebarPinned, _this9.state.sidebarClosed)
+            _this11.changeInsight({
+              sidebarPinned: !_this11.state.sidebarPinned,
+              size: _this11.getLayoutDivSize(!_this11.state.sidebarPinned, _this11.state.sidebarClosed)
             });
           } else {
-            _this9.setSideTabId(sideTabId);
+            _this11.setSideTabId(sideTabId);
           }
         },
         selectedSideTab: this.state.sideTabId
       }, loaded && function () {
-        switch (_this9.state.sideTabId) {
+        switch (_this11.state.sideTabId) {
           case _sidebar.SideTabId.ChartType:
             {
               return React.createElement(_chart.Chart, Object.assign({
-                tooltipExclusions: _this9.state.tooltipExclusions,
+                tooltipExclusions: _this11.state.tooltipExclusions,
                 toggleTooltipExclusion: function toggleTooltipExclusion(columnName) {
-                  var tooltipExclusions = _toConsumableArray(_this9.state.tooltipExclusions);
+                  var tooltipExclusions = _toConsumableArray(_this11.state.tooltipExclusions);
 
                   var i = tooltipExclusions.indexOf(columnName);
 
@@ -27397,22 +27864,22 @@ function (_React$Component) {
                     tooltipExclusions.splice(i, 1);
                   }
 
-                  _this9.setState({
+                  _this11.setState({
                     tooltipExclusions: tooltipExclusions
                   });
 
-                  _this9.props.onTooltipExclusionsChanged && _this9.props.onTooltipExclusionsChanged(tooltipExclusions);
+                  _this11.props.onTooltipExclusionsChanged && _this11.props.onTooltipExclusionsChanged(tooltipExclusions);
                 },
-                disabled: !loaded || _this9.state.sidebarClosed
+                disabled: !loaded || _this11.state.sidebarClosed
               }, columnMapProps, {
-                chart: _this9.state.chart,
-                view: _this9.state.view,
+                chart: _this11.state.chart,
+                view: _this11.state.view,
                 onChangeChartType: function onChangeChartType(chart) {
-                  return _this9.changeChartType(chart);
+                  return _this11.changeChartType(chart);
                 },
-                insightColumns: _this9.state.columns,
+                insightColumns: _this11.state.columns,
                 onChangeSignal: function onChangeSignal(role, column, name, value) {
-                  (0, _partialInsight.saveSignalValuePref)(_this9.prefs, _this9.state.chart, role, column, name, value);
+                  return (0, _partialInsight.saveSignalValuePref)(_this11.prefs, _this11.state.chart, role, column, name, value);
                 }
               }));
             }
@@ -27420,67 +27887,67 @@ function (_React$Component) {
           case _sidebar.SideTabId.Color:
             {
               return React.createElement(_color.Color, Object.assign({
-                specCapabilities: _this9.state.specCapabilities,
-                disabled: !loaded || _this9.state.sidebarClosed
+                specCapabilities: _this11.state.specCapabilities,
+                disabled: !loaded || _this11.state.sidebarClosed
               }, columnMapProps, {
-                dataContent: _this9.state.dataContent,
-                scheme: _this9.state.scheme,
-                colorBin: _this9.state.colorBin,
-                colorBinSignal: _this9.viewer && _this9.viewer.vegaSpec && _this9.viewer.vegaSpec.signals.filter(function (s) {
+                dataContent: _this11.state.dataContent,
+                scheme: _this11.state.scheme,
+                colorBin: _this11.state.colorBin,
+                colorBinSignal: _this11.viewer && _this11.viewer.vegaSpec && _this11.viewer.vegaSpec.signals.filter(function (s) {
                   return s.name === _sanddanceReact.SandDance.constants.SignalNames.ColorBinCount;
                 })[0],
-                colorReverseSignal: _this9.viewer && _this9.viewer.vegaSpec && _this9.viewer.vegaSpec.signals.filter(function (s) {
+                colorReverseSignal: _this11.viewer && _this11.viewer.vegaSpec && _this11.viewer.vegaSpec.signals.filter(function (s) {
                   return s.name === _sanddanceReact.SandDance.constants.SignalNames.ColorReverse;
                 })[0],
-                colorColumn: _this9.state.columns.color,
+                colorColumn: _this11.state.columns.color,
                 onColorBinChange: function onColorBinChange(colorBin) {
-                  _this9.ignoreSelectionChange = true;
+                  _this11.ignoreSelectionChange = true;
 
-                  _this9.viewer.deselect().then(function () {
-                    _this9.ignoreSelectionChange = false; //allow deselection to render
+                  _this11.viewer.deselect().then(function () {
+                    _this11.ignoreSelectionChange = false; //allow deselection to render
 
                     requestAnimationFrame(function () {
-                      _this9.getColorContext = null;
+                      _this11.getColorContext = null;
 
-                      _this9.changeInsight({
+                      _this11.changeInsight({
                         colorBin: colorBin
                       });
 
-                      (0, _partialInsight.savePref)(_this9.prefs, _this9.state.chart, 'color', _this9.state.columns.color, {
+                      (0, _partialInsight.savePref)(_this11.prefs, _this11.state.chart, 'color', _this11.state.columns.color, {
                         colorBin: colorBin
                       });
                     });
                   });
                 },
                 onColorSchemeChange: function onColorSchemeChange(scheme) {
-                  _this9.changeColumnMapping('color', _this9.state.dataContent.columns.filter(function (c) {
-                    return c.name === _this9.state.columns.color;
+                  _this11.changeColumnMapping('color', _this11.state.dataContent.columns.filter(function (c) {
+                    return c.name === _this11.state.columns.color;
                   })[0], {
                     scheme: scheme
                   });
 
-                  (0, _partialInsight.savePref)(_this9.prefs, _this9.state.chart, 'color', _this9.state.columns.color, {
+                  (0, _partialInsight.savePref)(_this11.prefs, _this11.state.chart, 'color', _this11.state.columns.color, {
                     scheme: scheme
                   });
                 },
                 onColorBinCountChange: function onColorBinCountChange(value) {
                   var signalValues = {};
                   signalValues[_sanddanceReact.SandDance.constants.SignalNames.ColorBinCount] = value;
-                  (0, _partialInsight.savePref)(_this9.prefs, _this9.state.chart, 'color', _this9.state.columns.color, {
+                  (0, _partialInsight.savePref)(_this11.prefs, _this11.state.chart, 'color', _this11.state.columns.color, {
                     signalValues: signalValues
                   });
                 },
                 onColorReverseChange: function onColorReverseChange(value) {
-                  _this9.getColorContext = null;
+                  _this11.getColorContext = null;
                   var signalValues = {};
                   signalValues[_sanddanceReact.SandDance.constants.SignalNames.ColorReverse] = value;
                 },
-                directColor: _this9.state.directColor,
+                directColor: _this11.state.directColor,
                 onDirectColorChange: function onDirectColorChange(directColor) {
-                  _this9.changeInsight({
+                  _this11.changeInsight({
                     directColor: directColor,
                     calculating: function calculating() {
-                      return _this9._resize();
+                      return _this11._resize();
                     }
                   });
                 }
@@ -27489,54 +27956,54 @@ function (_React$Component) {
 
           case _sidebar.SideTabId.Data:
             {
-              var data = datas[_this9.state.dataScopeId];
+              var data = datas[_this11.state.dataScopeId];
               var itemVisible = true;
 
-              switch (_this9.state.dataScopeId) {
+              switch (_this11.state.dataScopeId) {
                 case _dataScope.DataScopeId.AllData:
                   {
-                    var item = _this9.state.selectedItemIndex[_this9.state.dataScopeId];
-                    itemVisible = _this9.state.dataContent && !_this9.state.filteredData || _this9.state.filteredData.indexOf(data[item]) >= 0;
+                    var item = _this11.state.selectedItemIndex[_this11.state.dataScopeId];
+                    itemVisible = _this11.state.dataContent && !_this11.state.filteredData || _this11.state.filteredData.indexOf(data[item]) >= 0;
                   }
               }
 
               return React.createElement(_dataBrowser.DataBrowser, {
                 themePalette: themePalette,
-                disabled: !loaded || _this9.state.sidebarClosed,
-                columns: _this9.state.dataContent && _this9.state.dataContent.columns,
+                disabled: !loaded || _this11.state.sidebarClosed,
+                columns: _this11.state.dataContent && _this11.state.dataContent.columns,
                 data: data,
-                displayName: _this9.state.dataFile && _this9.state.dataFile.displayName || _language.strings.defaultFileName,
-                title: dataBrowserTitles[_this9.state.dataScopeId],
-                nullMessage: dataBrowserNullMessages[_this9.state.dataScopeId],
-                zeroMessage: dataBrowserZeroMessages[_this9.state.dataScopeId],
-                index: _this9.state.selectedItemIndex[_this9.state.dataScopeId],
+                displayName: _this11.state.dataFile && _this11.state.dataFile.displayName || _language.strings.defaultFileName,
+                title: dataBrowserTitles[_this11.state.dataScopeId],
+                nullMessage: dataBrowserNullMessages[_this11.state.dataScopeId],
+                zeroMessage: dataBrowserZeroMessages[_this11.state.dataScopeId],
+                index: _this11.state.selectedItemIndex[_this11.state.dataScopeId],
                 itemVisible: itemVisible,
-                dataExportHandler: _this9.props.dataExportHandler,
-                selectedDataScope: _this9.state.dataScopeId,
+                dataExportHandler: _this11.props.dataExportHandler,
+                selectedDataScope: _this11.state.dataScopeId,
                 onDataScopeClick: function onDataScopeClick(dataScopeId) {
-                  return _this9.setSideTabId(_sidebar.SideTabId.Data, dataScopeId);
+                  return _this11.setSideTabId(_sidebar.SideTabId.Data, dataScopeId);
                 },
                 onActivate: function onActivate(row, index) {
-                  var selectedItemIndex = Object.assign({}, _this9.state.selectedItemIndex);
-                  selectedItemIndex[_this9.state.dataScopeId] = index;
+                  var selectedItemIndex = Object.assign({}, _this11.state.selectedItemIndex);
+                  selectedItemIndex[_this11.state.dataScopeId] = index;
 
-                  _this9.setState({
+                  _this11.setState({
                     selectedItemIndex: selectedItemIndex
                   });
 
-                  _this9.silentActivation(row);
+                  _this11.silentActivation(row);
                 },
                 onSearch: function onSearch(e, search) {
                   if (e.ctrlKey) {
-                    _this9.setState({
+                    _this11.setState({
                       sideTabId: _sidebar.SideTabId.Search,
                       search: search
                     });
                   } else {
-                    _this9.doSelect(search);
+                    _this11.doSelect(search);
                   }
                 },
-                bingSearchDisabled: _this9.props.bingSearchDisabled
+                bingSearchDisabled: _this11.props.bingSearchDisabled
               });
             }
 
@@ -27544,47 +28011,109 @@ function (_React$Component) {
             {
               return React.createElement(_search.Search, {
                 themePalette: themePalette,
-                disabled: !loaded || _this9.state.sidebarClosed,
+                disabled: !loaded || _this11.state.sidebarClosed,
+                disableGroupOR: _this11.props.searchORDisabled,
+                disableExpressionOR: _this11.props.searchORDisabled,
                 initializer: {
                   columns: columnMapProps.allColumns,
-                  search: _this9.state.search
+                  search: _this11.state.search
                 },
-                autoCompleteDistinctValues: _this9.state.autoCompleteDistinctValues,
+                autoCompleteDistinctValues: _this11.state.autoCompleteDistinctValues,
                 onSelect: function onSelect(expr) {
-                  _this9.doSelect(expr);
+                  return _this11.doSelect(expr);
                 },
-                data: _this9.state.dataContent.data
+                data: _this11.state.dataContent.data
               });
             }
 
           case _sidebar.SideTabId.Snapshots:
             {
-              return React.createElement(_snapshots.Snapshots, Object.assign({}, _this9.props.snapshotProps, {
+              return React.createElement(_snapshots.Snapshots, Object.assign({}, _this11.props.snapshotProps, {
+                editor: _this11.snapshotEditor,
                 themePalette: themePalette,
-                explorer: _this9,
-                snapshots: _this9.state.snapshots,
-                onCreateSnapshot: function onCreateSnapshot(snapshot) {
-                  _this9.setState({
-                    snapshots: _this9.state.snapshots.concat(snapshot)
+                explorer: _this11,
+                snapshots: _this11.state.snapshots,
+                selectedSnapshotIndex: _this11.state.selectedSnapshotIndex,
+                onClearSnapshots: function onClearSnapshots() {
+                  return _this11.setState({
+                    snapshots: [],
+                    selectedSnapshotIndex: -1
                   });
+                },
+                onWriteSnapshot: function onWriteSnapshot(s, i) {
+                  return _this11.writeSnapshot(s, i);
                 },
                 onRemoveSnapshot: function onRemoveSnapshot(i) {
-                  var snapshots = _toConsumableArray(_this9.state.snapshots);
+                  var snapshots = _toConsumableArray(_this11.state.snapshots);
 
                   snapshots.splice(i, 1);
+                  var selectedSnapshotIndex = _this11.state.selectedSnapshotIndex;
 
-                  _this9.setState({
-                    snapshots: snapshots
+                  if (i === selectedSnapshotIndex) {
+                    selectedSnapshotIndex = -1;
+                  } else if (selectedSnapshotIndex > i) {
+                    selectedSnapshotIndex--;
+                  }
+
+                  _this11.setState({
+                    snapshots: snapshots,
+                    selectedSnapshotIndex: selectedSnapshotIndex
                   });
                 },
-                onSnapshotClick: function onSnapshotClick(snapshot) {
-                  _this9.calculate(function () {
-                    if (_this9.props.onSnapshotClick) {
-                      _this9.props.onSnapshotClick(snapshot);
+                onSnapshotClick: function onSnapshotClick(snapshot, selectedSnapshotIndex) {
+                  _this11.setState({
+                    selectedSnapshotIndex: selectedSnapshotIndex
+                  });
+
+                  _this11.calculate(function () {
+                    if (_this11.props.onSnapshotClick) {
+                      _this11.props.onSnapshotClick(snapshot, selectedSnapshotIndex);
                     } else {
-                      _this9.setInsight(snapshot.insight);
+                      _this11.reviveSnapshot(selectedSnapshotIndex);
                     }
                   });
+                },
+                onMoveUp: function onMoveUp(i) {
+                  if (i > 0) {
+                    var snapshots = _toConsumableArray(_this11.state.snapshots);
+
+                    var temp = snapshots[i - 1];
+                    snapshots[i - 1] = snapshots[i];
+                    snapshots[i] = temp;
+                    var selectedSnapshotIndex = _this11.state.selectedSnapshotIndex;
+
+                    if (i === selectedSnapshotIndex) {
+                      selectedSnapshotIndex = i - 1;
+                    } else if (i - 1 === selectedSnapshotIndex) {
+                      selectedSnapshotIndex = i;
+                    }
+
+                    _this11.setState({
+                      snapshots: snapshots,
+                      selectedSnapshotIndex: selectedSnapshotIndex
+                    });
+                  }
+                },
+                onMoveDown: function onMoveDown(i) {
+                  if (i < _this11.state.snapshots.length - 1) {
+                    var snapshots = _toConsumableArray(_this11.state.snapshots);
+
+                    var temp = snapshots[i + 1];
+                    snapshots[i + 1] = snapshots[i];
+                    snapshots[i] = temp;
+                    var selectedSnapshotIndex = _this11.state.selectedSnapshotIndex;
+
+                    if (i === selectedSnapshotIndex) {
+                      selectedSnapshotIndex = i + 1;
+                    } else if (i + 1 === selectedSnapshotIndex) {
+                      selectedSnapshotIndex = i;
+                    }
+
+                    _this11.setState({
+                      snapshots: snapshots,
+                      selectedSnapshotIndex: selectedSnapshotIndex
+                    });
+                  }
                 }
               }));
             }
@@ -27592,29 +28121,29 @@ function (_React$Component) {
           case _sidebar.SideTabId.Settings:
             {
               return React.createElement(_settings.Settings, {
-                explorer: _this9,
-                dataFile: _this9.state.dataFile,
-                scheme: _this9.state.scheme,
-                hideLegend: _this9.state.hideLegend,
+                explorer: _this11,
+                dataFile: _this11.state.dataFile,
+                scheme: _this11.state.scheme,
+                hideLegend: _this11.state.hideLegend,
                 onToggleLegend: function onToggleLegend(hideLegend) {
-                  return _this9.setState({
+                  return _this11.setState({
                     hideLegend: hideLegend,
                     calculating: function calculating() {
-                      return _this9._resize();
+                      return _this11._resize();
                     }
                   });
                 },
-                hideAxes: _this9.state.hideAxes,
+                hideAxes: _this11.state.hideAxes,
                 onToggleAxes: function onToggleAxes(hideAxes) {
-                  return _this9.setState({
+                  return _this11.setState({
                     calculating: function calculating() {
-                      return _this9.setState({
+                      return _this11.setState({
                         hideAxes: hideAxes
                       });
                     }
                   });
                 }
-              }, _this9.props.systemInfoChildren);
+              }, _this11.props.systemInfoChildren);
             }
         }
       }()), loaded && React.createElement("div", {
@@ -27623,19 +28152,19 @@ function (_React$Component) {
         renderOptions: {
           initialColorContext: this.getColorContext && this.getColorContext(this.viewer.insight, insight),
           discardColorContextUpdates: function discardColorContextUpdates() {
-            return _this9.discardColorContextUpdates;
+            return _this11.discardColorContextUpdates;
           }
         },
         viewerOptions: this.viewerOptions,
         ref: function ref(reactViewer) {
           if (reactViewer) {
-            _this9.viewer = reactViewer.viewer;
+            _this11.viewer = reactViewer.viewer;
           }
         },
         onView: function onView(renderResult) {
-          _this9.changespecCapabilities(renderResult.specResult.errors ? renderResult.specResult.specCapabilities : _this9.viewer.specCapabilities);
+          _this11.changespecCapabilities(renderResult.specResult.errors ? renderResult.specResult.specCapabilities : _this11.viewer.specCapabilities);
 
-          _this9.getColorContext = function (oldInsight, newInsight) {
+          _this11.getColorContext = function (oldInsight, newInsight) {
             if (!oldInsight && !newInsight) {
               return null;
             }
@@ -27656,23 +28185,38 @@ function (_React$Component) {
               return null;
             }
 
-            return _this9.viewer.colorContexts && _this9.viewer.colorContexts[_this9.viewer.currentColorContext];
+            return _this11.viewer.colorContexts && _this11.viewer.colorContexts[_this11.viewer.currentColorContext];
           }; //don't allow tabbing to the canvas
 
 
-          (0, _canvas.removeTabIndex)(_this9.viewer);
-          _this9.props.onView && _this9.props.onView();
+          (0, _canvas.removeTabIndex)(_this11.viewer);
+          _this11.props.onView && _this11.props.onView();
+        },
+        onError: function onError(e) {
+          _this11.props.onError && _this11.props.onError(e);
         },
         data: this.state.dataContent.data,
         insight: insight,
         onMount: function onMount(el) {
-          return _this9.viewerMounted(el);
+          return _this11.viewerMounted(el);
         }
-      })), React.createElement(_dialog.Dialog, {
+      }), this.state.note && React.createElement("div", {
+        className: 'sanddance-note'
+      }, React.createElement(_iconButton.IconButton, {
+        className: 'cancel',
+        themePalette: themePalette,
+        title: _language.strings.buttonClose,
+        iconName: 'Cancel',
+        onClick: function onClick() {
+          return _this11.setState({
+            note: null
+          });
+        }
+      }), this.state.note)), React.createElement(_dialog.Dialog, {
         title: _language.strings.labelError,
         hidden: !this.state.errors,
         onDismiss: function onDismiss() {
-          _this9.setState({
+          _this11.setState({
             errors: null
           });
         }
@@ -27680,12 +28224,22 @@ function (_React$Component) {
         return React.createElement("div", {
           key: i
         }, error);
+      })), React.createElement(_snapshotEditor.SnapshotEditor, Object.assign({
+        ref: function ref(se) {
+          return _this11.snapshotEditor = se;
+        }
+      }, this.props.snapshotProps, {
+        explorer: this,
+        onWriteSnapshot: function onWriteSnapshot(s, i) {
+          return _this11.writeSnapshot(s, i);
+        },
+        themePalette: themePalette
       }))), this.state.positionedColumnMapProps && React.createElement(_clickableTextLayer.PositionedColumnMap, Object.assign({}, this.state.positionedColumnMapProps)));
     }
   }, {
     key: "getColumnMapBaseProps",
     value: function getColumnMapBaseProps() {
-      var _this10 = this;
+      var _this12 = this;
 
       var allColumns = this.state.dataContent && this.state.dataContent.columns.filter(function (c) {
         return !_sanddanceReact.SandDance.util.isInternalFieldName(c.name, true);
@@ -27702,7 +28256,7 @@ function (_React$Component) {
 
           if (typeof columnOrRole === 'string') {
             //look up current insight
-            var columnName = _this10.state.columns[columnOrRole];
+            var columnName = _this12.state.columns[columnOrRole];
             column = allColumns.filter(function (c) {
               return c.name === columnName;
             })[0];
@@ -27710,7 +28264,7 @@ function (_React$Component) {
             column = columnOrRole;
           }
 
-          _this10.changeColumnMapping(role, column);
+          _this12.changeColumnMapping(role, column);
         },
         allColumns: allColumns,
         quantitativeColumns: quantitativeColumns,
@@ -27726,13 +28280,14 @@ function (_React$Component) {
 }(React.Component);
 
 exports.Explorer = Explorer;
-},{"react":"ccIB","./colorMap":"E67y","./base":"Vlbn","./colorScheme":"L8O2","./dialogs/chart":"NGSt","./dialogs/color":"N8IJ","./partialInsight":"tb7d","./dialogs/dataBrowser":"pJLc","./controls/dataScope":"OsNT","./defaults":"Tl9z","./controls/dialog":"cFWm","./columns":"f8v0","./mouseEvent":"yvMl","./dialogs/search":"ozxe","./dataLoader":"f19h","./clickableTextLayer":"UUG7","@msrvida/chart-recommender":"i6UQ","./canvas":"Dryx","@msrvida/sanddance-react":"MjKu","./dialogs/settings":"zKGJ","./controls/sidebar":"f8Jx","./dialogs/snapshots":"oc9r","./language":"hk5u","./themes":"CgE3","./toggleSearch":"yzxM","./controls/topbar":"Afi9"}],"Focm":[function(require,module,exports) {
+},{"react":"ccIB","./colorMap":"E67y","./base":"Vlbn","./colorScheme":"L8O2","./dialogs/chart":"NGSt","./dialogs/color":"N8IJ","./partialInsight":"tb7d","./dialogs/dataBrowser":"pJLc","./controls/dataScope":"OsNT","./defaults":"Tl9z","./controls/dialog":"cFWm","./columns":"f8v0","./mouseEvent":"yvMl","./controls/iconButton":"dQNc","./dialogs/search":"ozxe","./dataLoader":"f19h","./clickableTextLayer":"UUG7","@msrvida/chart-recommender":"i6UQ","./canvas":"Dryx","@msrvida/sanddance-react":"MjKu","./dialogs/settings":"zKGJ","./controls/sidebar":"f8Jx","./dialogs/snapshotEditor":"dSzJ","./dialogs/snapshots":"oc9r","./language":"hk5u","./themes":"CgE3","./toggleSearch":"yzxM","./controls/topbar":"Afi9"}],"Focm":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var _exportNames = {
+  getEmbedHTML: true,
   use: true,
   capabilities: true,
   getColorSettingsFromThemePalette: true,
@@ -27741,6 +28296,12 @@ var _exportNames = {
   util: true,
   version: true
 };
+Object.defineProperty(exports, "getEmbedHTML", {
+  enumerable: true,
+  get: function () {
+    return _dataExporter.getEmbedHTML;
+  }
+});
 Object.defineProperty(exports, "use", {
   enumerable: true,
   get: function () {
@@ -27784,6 +28345,8 @@ Object.defineProperty(exports, "version", {
   }
 });
 
+var _dataExporter = require("./controls/dataExporter");
+
 var _base = require("./base");
 
 var _canvas = require("./canvas");
@@ -27806,4 +28369,4 @@ Object.keys(_explorer).forEach(function (key) {
 var _sanddanceReact = require("@msrvida/sanddance-react");
 
 var _version = require("./version");
-},{"./base":"Vlbn","./canvas":"Dryx","./themes":"CgE3","./explorer":"KeW6","@msrvida/sanddance-react":"MjKu","./version":"RvaL"}]},{},["Focm"], "SandDanceExplorer")
+},{"./controls/dataExporter":"l7po","./base":"Vlbn","./canvas":"Dryx","./themes":"CgE3","./explorer":"KeW6","@msrvida/sanddance-react":"MjKu","./version":"RvaL"}]},{},["Focm"], "SandDanceExplorer")

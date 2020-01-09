@@ -140,10 +140,15 @@
         value: null
     });
     function compareExpression(a, b) {
-        for (let k = 0; k < expressionKeys.length; k++) {
-            let key = expressionKeys[k];
-            if (a[key] != b[key])
-                return false;
+        if (a && b) {
+            for (let k = 0; k < expressionKeys.length; k++) {
+                let key = expressionKeys[k];
+                if (a[key] != b[key])
+                    return false;
+            }
+        }
+        else {
+            return !a && !b;
         }
         return true;
     }
@@ -175,6 +180,19 @@
             return false;
         for (let i = 0; i < arrA.length; i++) {
             if (!compareGroup(arrA[i], arrB[i]))
+                return false;
+        }
+        return true;
+    }
+    function startsWith(whole, part) {
+        if (!part)
+            return true;
+        let arrs = [whole, part].map(ensureSearchExpressionGroupArray);
+        let [wholeArray, partArray] = arrs;
+        if (partArray.length > wholeArray.length)
+            return false;
+        for (let i = 0; i < partArray.length; i++) {
+            if (!compareGroup(wholeArray[i], partArray[i]))
                 return false;
         }
         return true;
@@ -246,6 +264,7 @@
         compareExpression: compareExpression,
         compareGroup: compareGroup,
         compare: compare,
+        startsWith: startsWith,
         invert: invert,
         narrow: narrow
     });
@@ -16608,7 +16627,10 @@ void main(void) {
                                 this.changeColorContexts([oldColorContext, newColorContext]);
                             }
                         });
-                        this.insight.filter = narrow(this.insight.filter, filter);
+                        //narrow the filter only if it is different
+                        if (!compare(this.insight.filter, filter)) {
+                            this.insight.filter = narrow(this.insight.filter, filter);
+                        }
                         if (this.options.onDataFilter) {
                             this.options.onDataFilter(this.insight.filter, this._dataScope.currentData());
                         }
@@ -16776,12 +16798,13 @@ void main(void) {
                 let result;
                 //see if refine expression has changed
                 if (!compare(insight.filter, this.insight.filter)) {
+                    const allowAsyncRenderTime = 100;
                     if (insight.filter) {
                         //refining
                         result = yield this._render(insight, data, options);
                         this.presenter.animationQueue(() => {
                             this.filter(insight.filter);
-                        }, this.options.transitionDurations.position, { waitingLabel: 'layout before refine', handlerLabel: 'refine after layout' });
+                        }, allowAsyncRenderTime, { waitingLabel: 'layout before refine', handlerLabel: 'refine after layout' });
                     }
                     else {
                         //not refining
@@ -16789,7 +16812,7 @@ void main(void) {
                         result = yield this._render(insight, data, options);
                         this.presenter.animationQueue(() => {
                             this.reset();
-                        }, 0, { waitingLabel: 'layout before reset', handlerLabel: 'reset after layout' });
+                        }, allowAsyncRenderTime, { waitingLabel: 'layout before reset', handlerLabel: 'reset after layout' });
                     }
                 }
                 else {
@@ -17163,7 +17186,7 @@ void main(void) {
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
-    const version = '2.0.0';
+    const version = '2.1.0';
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     const use$1 = use;
