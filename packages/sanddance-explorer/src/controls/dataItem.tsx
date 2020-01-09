@@ -39,8 +39,13 @@ function bingSearchLink(column: SandDance.types.Column, value: any) {
     if (isBoolean(value)) return null;
     if (column && column.stats.distinctValueCount === 2) return null;
     return (
-        <div className="bing-search">
-            <a href={`https://www.bing.com/search?q=${encodeURIComponent(value)}`} target="_blank">{strings.bingsearch}</a>
+        <div className='bing-search'>
+            <a
+                href={`https://www.bing.com/search?q=${encodeURIComponent(value)}`}
+                target='_blank'
+                title={strings.bingsearchDescription(value)}
+                aria-label={strings.bingsearchDescription(value)}
+            >{strings.bingsearch}</a>
         </div>
     );
 }

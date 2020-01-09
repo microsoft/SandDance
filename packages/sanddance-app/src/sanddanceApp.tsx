@@ -262,7 +262,12 @@ export class SandDanceApp extends React.Component<Props, State> {
                             if (snapshot.dataSource && snapshot.dataSource.dataSourceType === 'local') {
                                 element = (<span>{strings.labelLocal}</span>);
                             } else {
-                                element = (<a key={`link${i}`} href={url} title={strings.labelLinkDescription}>{strings.labelLink}</a>);
+                                element = (<a
+                                    key={`link${i}`}
+                                    href={url}
+                                    title={strings.labelLinkDescription}
+                                    aria-label={strings.labelLinkDescription}
+                                >{strings.labelLink}</a>);
                             }
                             return [{ element }];
                         },

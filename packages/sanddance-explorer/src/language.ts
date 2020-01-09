@@ -2,7 +2,8 @@
 // Licensed under the MIT license.
 export const strings = {
     appName: 'SandDance',
-    bingsearch: 'Bing search',
+    bingsearch: 'Bing',
+    bingsearchDescription: (term) => `Search Bing for "${term}"`,
     buttonClose: 'Close',
     buttonSelect: 'Search & Select',
     buttonColorSchemeMap: 'Map color scheme to filtered data',
