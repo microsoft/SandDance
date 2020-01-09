@@ -375,7 +375,7 @@ export class Explorer extends React.Component<Props, State> {
         ) => Partial<SandDance.types.Insight>,
         optionsOrPrefs?: Prefs | Options
     ) {
-        this.changeInsight({ columns: null });
+        this.changeInsight({ columns: null, note: null, snapshots: [] });
         return new Promise<void>((resolve, reject) => {
             const loadFinal = (dataContent: DataContent) => {
                 let partialInsight: Partial<SandDance.types.Insight>;
@@ -766,7 +766,7 @@ export class Explorer extends React.Component<Props, State> {
         this.scrollSnapshotTimer = setTimeout(() => {
             const selectedSnapshotElement = this.div.querySelector(`.snapshot:nth-child(${selectedSnapshotIndex + 1})`) as HTMLElement;
             if (selectedSnapshotElement) {
-                selectedSnapshotElement.scrollIntoView();
+                selectedSnapshotElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
         }, 500) as any as number;
     }
@@ -1202,7 +1202,7 @@ export class Explorer extends React.Component<Props, State> {
                                 onMount={el => this.viewerMounted(el)}
                             />
                             {this.state.note && (
-                                <div className='sanddance-note' style={{ position: 'absolute', height: '200px', width: '200px' }}>
+                                <div className='sanddance-note' style={{ position: 'absolute', width: '200px' }}>
                                     {this.state.note}
                                 </div>
                             )}
