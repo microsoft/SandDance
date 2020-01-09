@@ -96,6 +96,10 @@ function displayValueElement(nvp: NameValuePair) {
     return d.display;
 }
 
+const KeyCodes = {
+    ENTER: 13
+};
+
 export function DataItem(props: Props) {
     if (!props.item) {
         return null;
@@ -143,6 +147,12 @@ export function DataItem(props: Props) {
                         key={i}
                         onClick={!props.disabled ? searchClick : null}
                         title={title}
+                        onKeyUp={e => {
+                            if (e.keyCode === KeyCodes.ENTER ) {
+                                searchClick(e as any);
+                            }
+                        }}
+                        tabIndex={0}
                         className="name-value"
                     >
                         <div className="column-name">{nameValuePair.columnName}</div>
