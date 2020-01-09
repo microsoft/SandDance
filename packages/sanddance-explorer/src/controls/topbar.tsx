@@ -81,7 +81,7 @@ export function Topbar(props: Props) {
                 iconName: 'Previous'
             },
             onClick: props.onSnapshotPreviousClick,
-            disabled: props.snapshots.length === 0
+            disabled: props.snapshots.length < 2
         },
         {
             key: 'snapshot',
@@ -97,7 +97,7 @@ export function Topbar(props: Props) {
                 iconName: 'Next'
             },
             onClick: props.onSnapshotNextClick,
-            disabled: props.snapshots.length === 0
+            disabled: props.snapshots.length < 2
         },
         {
             key: 'view',
