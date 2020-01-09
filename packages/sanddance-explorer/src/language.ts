@@ -23,6 +23,8 @@ export const strings = {
     buttonNextDataItem: 'Next data item',
     buttonPrevDataItem: 'Previous data item',
     buttonCreateSnapshot: 'Create snapshot',
+    buttonNextSnapshot: 'Next snapshot',
+    buttonPrevSnapshot: 'Previous snapshot',
     buttonUpdateSnapshot: 'Update snapshot',
     buttonAddExpression: 'Add expression',
     buttonAddExpressionGroup: 'Add group',

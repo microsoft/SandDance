@@ -80,6 +80,7 @@ export function Topbar(props: Props) {
             iconProps: {
                 iconName: 'Previous'
             },
+            title: strings.buttonPrevSnapshot,
             onClick: props.onSnapshotPreviousClick,
             disabled: props.snapshots.length < 2
         },
@@ -88,6 +89,7 @@ export function Topbar(props: Props) {
             iconProps: {
                 iconName: 'Camera'
             },
+            title: strings.buttonCreateSnapshot,
             onClick: props.onSnapshotClick,
             disabled: !props.loaded
         },
@@ -96,6 +98,7 @@ export function Topbar(props: Props) {
             iconProps: {
                 iconName: 'Next'
             },
+            title: strings.buttonNextSnapshot,
             onClick: props.onSnapshotNextClick,
             disabled: props.snapshots.length < 2
         },
