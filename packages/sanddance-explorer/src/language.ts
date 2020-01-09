@@ -74,6 +74,7 @@ export const strings = {
     labelSearchColumn: 'Field',
     labelSearchOperator: 'Operator',
     labelSearchValue: 'Value',
+    labelSearchValuePlaceholder: 'Value to search for',
     labelChart: 'Chart',
     labelChartCanvas: 'Chart canvas',
     labelColumnMapping: 'Column Mapping',

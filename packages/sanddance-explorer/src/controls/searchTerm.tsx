@@ -188,6 +188,7 @@ export function SearchTerm(props: Props) {
                 <base.fabric.ComboBox
                     className="search-field"
                     label={props.collapseLabels ? null : strings.labelSearchValue}
+                    placeholder={strings.labelSearchValuePlaceholder}
                     disabled={ex.operator === 'isnullorEmpty'}
                     dropdownWidth={dropdownWidth}
                     allowFreeform={true}
@@ -214,6 +215,7 @@ export function SearchTerm(props: Props) {
                 <base.fabric.TextField
                     className="search-field"
                     label={props.collapseLabels ? null : strings.labelSearchValue}
+                    placeholder={strings.labelSearchValuePlaceholder}
                     disabled={ex.operator === 'isnullorEmpty'}
                     errorMessage={ex.errorMessage}
                     value={getText(ex)}
