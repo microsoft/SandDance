@@ -8,7 +8,7 @@ export interface IconButtonProps {
     className?: string;
     disabled?: boolean;
     iconName: string;
-    onClick?: { (event: React.MouseEvent<{}>): void };
+    onClick: { (event: React.MouseEvent<{}>): void };
     onMouseOver?: { (event: React.MouseEvent<{}>): void };
     menuProps?: FabricTypes.IContextualMenuProps;
     title: string;
