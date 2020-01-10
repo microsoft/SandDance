@@ -8,6 +8,7 @@ import {
     getColorSettingsFromThemePalette,
     Options,
     SandDance,
+    SideTabId,
     themePalettes,
     ViewerOptions
 } from '@msrvida/sanddance-explorer';
@@ -83,6 +84,9 @@ interface Handlers {
 export class SandDanceApp extends React.Component<Props, State> {
     private viewerOptions: Partial<types.ViewerOptions>;
     private handlers: Handlers;
+    private dataSourcePicker: DataSourcePicker;
+    private postLoad: (dataSource: DataSource) => void;
+
     public explorer: Explorer;
 
     constructor(props: Props) {
@@ -151,12 +155,20 @@ export class SandDanceApp extends React.Component<Props, State> {
                         });
                 }
             } else {
-                if (snapshot.dataSource.dataSourceType !== 'local') {
-                    this.load(snapshot.dataSource, snapshot.insight).catch(e => {
+                if (snapshot.dataSource.dataSourceType === 'local') {
+                    this.dataSourcePicker.setState({ dialogMode: 'local' });
+                    this.postLoad = ds => {
+                        if (this.isSameDataSource(snapshot.dataSource, ds)) {
+                            this.hydrateSnapshot(snapshot, selectedSnapshotIndex);
+                            //} else {                            //local file does not match snapshot
+                        }
+                    };
+                } else {
+                    this.load(snapshot.dataSource, snapshot.insight).then(() => {
+                        this.explorer.setState({ sideTabId: SideTabId.Snapshots });
+                    }).catch(e => {
                         this.loadError(snapshot.dataSource);
                     });
-                } else {
-                    return false;
                 }
             }
             return true;
@@ -294,7 +306,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                             const url = '#' + serializeSnapshot(snapshot);
                             let element: JSX.Element;
                             if (snapshot.dataSource && snapshot.dataSource.dataSourceType === 'local') {
-                                element = (<span>{strings.labelLocal}</span>);
+                                element = (<span key={`link${i}`}>{strings.labelLocal}</span>);
                             } else {
                                 element = (
                                     <a
@@ -329,12 +341,18 @@ export class SandDanceApp extends React.Component<Props, State> {
                     }}
                     datasetElement={(
                         <DataSourcePicker
+                            ref={dsp => { if (dsp && !this.dataSourcePicker) this.dataSourcePicker = dsp }}
                             theme={theme}
                             dataSource={this.state.dataSource}
                             dataSources={this.props.dataSources}
                             changeDataSource={ds => {
                                 document.location.hash = '';
-                                return this.load(ds).catch(() => this.loadError(ds));
+                                return this.load(ds).then(() => {
+                                    if (this.postLoad) {
+                                        this.postLoad(ds);
+                                        this.postLoad = null;
+                                    }
+                                }).catch(() => this.loadError(ds));
                             }}
                         />
                     )}

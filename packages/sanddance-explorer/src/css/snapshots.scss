@@ -43,7 +43,7 @@
         .actions {
             display: grid;
             grid-auto-flow: column;
-            a {
+            a, span {
                 align-self: center;
                 text-align: center;
             }

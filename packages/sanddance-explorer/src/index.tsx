@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 export { getEmbedHTML } from './controls/dataExporter';
-export { ColorSettings, DataContent, DataExportType, DataFile, DataFileType, SettingsGroup, Snapshot, ViewerOptions } from './interfaces';
+export { ColorSettings, DataContent, DataExportType, DataFile, DataFileType, SettingsGroup, SideTabId, Snapshot, ViewerOptions } from './interfaces';
 export { use } from './base';
 export { capabilities } from './canvas';
 export { Prefs } from './partialInsight';
