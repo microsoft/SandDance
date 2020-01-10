@@ -119,25 +119,45 @@ export class SandDanceApp extends React.Component<Props, State> {
         }
     }
 
+    private isSameDataSource(a: DataSource, b: DataSource) {
+        if (a.dataSourceType === b.dataSourceType && a.type === b.type && a.id === b.id) {
+            if (a.dataSourceType === 'url') {
+                return a.dataUrl === b.dataUrl;
+            }
+            return true;
+        }
+        return false;
+    }
+
     private hydrateSnapshot(snapshot: DataSourceSnapshot, selectedSnapshotIndex = -1) {
         if (snapshot.dataSource) {
-            if (selectedSnapshotIndex === -1) {
-                this.explorer.reviveSnapshot(snapshot);
+            if (this.isSameDataSource(snapshot.dataSource, this.state.dataSource)) {
+                if (selectedSnapshotIndex === -1) {
+                    this.explorer.reviveSnapshot(snapshot);
+                } else {
+                    this.explorer.reviveSnapshot(selectedSnapshotIndex);
+                }
+                if (snapshot.dataSource.snapshotsUrl && snapshot.dataSource.snapshotsUrl !== this.state.dataSource.snapshotsUrl) {
+                    //load new snapshots url
+                    fetch(snapshot.dataSource.snapshotsUrl)
+                        .then(response => response.json())
+                        .then(snapshots => {
+                            if (validSnapshots(snapshots)) {
+                                this.explorer.setState({ snapshots });
+                                const dataSource = { ...this.state.dataSource };
+                                dataSource.snapshotsUrl = snapshot.dataSource.snapshotsUrl;
+                                this.setState({ dataSource });
+                            }
+                        });
+                }
             } else {
-                this.explorer.reviveSnapshot(selectedSnapshotIndex);
-            }
-            if (snapshot.dataSource.snapshotsUrl && snapshot.dataSource.snapshotsUrl !== this.state.dataSource.snapshotsUrl) {
-                //load new snapshots url
-                fetch(snapshot.dataSource.snapshotsUrl)
-                    .then(response => response.json())
-                    .then(snapshots => {
-                        if (validSnapshots(snapshots)) {
-                            this.explorer.setState({ snapshots });
-                            const dataSource = { ...this.state.dataSource };
-                            dataSource.snapshotsUrl = snapshot.dataSource.snapshotsUrl;
-                            this.setState({ dataSource });
-                        }
+                if (snapshot.dataSource.dataSourceType !== 'local') {
+                    this.load(snapshot.dataSource, snapshot.insight).catch(e => {
+                        this.loadError(snapshot.dataSource);
                     });
+                } else {
+                    return false;
+                }
             }
             return true;
         }
@@ -155,6 +175,22 @@ export class SandDanceApp extends React.Component<Props, State> {
             },
             this.props.initialOptions && VegaDeckGl.util.deepMerge({}, this.props.initialOptions['*'], this.props.initialOptions[dataSource.id])
         );
+    }
+
+    private dataSourceError(dataSource: DataSource) {
+        switch (dataSource.dataSourceType) {
+            case 'local':
+                return strings.errorDataSourceFromLocal(dataSource);
+            case 'sample':
+            case 'url':
+                return strings.errorDataSourceFromUrl(dataSource);
+        }
+    }
+
+    private loadError(dataSource: DataSource) {
+        let error = this.dataSourceError(dataSource);
+        this.explorer.setState({ errors: [error] });
+        this.setState({ dataSource: { dataSourceType: null, id: null, type: null } });
     }
 
     updateExplorerViewerOptions(viewerOptions: Partial<types.ViewerOptions>) {
@@ -278,7 +314,9 @@ export class SandDanceApp extends React.Component<Props, State> {
                     initialView="2d"
                     mounted={e => {
                         this.explorer = e;
-                        this.load(this.state.dataSource, snapshotOnLoad && snapshotOnLoad.insight);
+                        this.load(this.state.dataSource, snapshotOnLoad && snapshotOnLoad.insight).catch(e => {
+                            this.loadError(this.state.dataSource);
+                        });
                         this.props.mounted(this);
                     }}
                     dataExportHandler={(data, datatype, displayName) => {
@@ -296,7 +334,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                             dataSources={this.props.dataSources}
                             changeDataSource={ds => {
                                 document.location.hash = '';
-                                return this.load(ds);
+                                return this.load(ds).catch(() => this.loadError(ds));
                             }}
                         />
                     )}

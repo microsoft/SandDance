@@ -115,7 +115,7 @@ export class DataSourcePicker extends React.Component<Props, State> {
             dataSource: {
                 dataSourceType: 'url',
                 dataUrl,
-                displayName: '', //TODO extract from filename
+                displayName: dataUrl.substring(dataUrl.lastIndexOf('/') + 1, dataUrl.lastIndexOf('.')),
                 id: '',
                 type,
             }
@@ -272,5 +272,5 @@ function dataSourcePrefix(dt: DataSourceType, displayName: string) {
         case 'url':
             return strings.urlPrefix;
     }
-    return '';
+    return strings.buttonLoadData;
 }
