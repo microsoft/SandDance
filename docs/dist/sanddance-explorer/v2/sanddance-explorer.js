@@ -18438,7 +18438,7 @@ exports.embedHtml = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var embedHtml = function embedHtml(title, embed) {
-  return "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>".concat(title, "</title>\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-embed@2/dist/css/sanddance-embed.css\" />\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-explorer@2.1/dist/css/sanddance-explorer.css\" />\n</head>\n\n<body>\n    <script src=\"https://unpkg.com/react@16/umd/react.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/react-dom@16/umd/react-dom.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/deck.gl@6/deckgl.min.js\"></script>\n    <script src=\"https://unpkg.com/vega@5.8/build/vega.min.js\"></script>\n    <script src=\"https://unpkg.com/office-ui-fabric-react@6.204.4/dist/office-ui-fabric-react.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-explorer@2.1/dist/umd/sanddance-explorer.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-embed@2/dist/umd/sanddance-embed.js\"></script>\n\n    <div id=\"app\"></div>\n\n    ").concat(embed, "\n\n</body>\n\n</html>");
+  return "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>".concat(title, "</title>\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-embed@2/dist/css/sanddance-embed.css\" />\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-explorer@2.2/dist/css/sanddance-explorer.css\" />\n</head>\n\n<body>\n    <script src=\"https://unpkg.com/react@16/umd/react.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/react-dom@16/umd/react-dom.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/deck.gl@6/deckgl.min.js\"></script>\n    <script src=\"https://unpkg.com/vega@5.8/build/vega.min.js\"></script>\n    <script src=\"https://unpkg.com/office-ui-fabric-react@6.204.4/dist/office-ui-fabric-react.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-explorer@2.2/dist/umd/sanddance-explorer.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-embed@2/dist/umd/sanddance-embed.js\"></script>\n\n    <div id=\"app\"></div>\n\n    ").concat(embed, "\n\n</body>\n\n</html>");
 };
 
 exports.embedHtml = embedHtml;
@@ -25439,7 +25439,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var version = '2.1.4';
+var version = '2.2.0';
 exports.version = version;
 },{}],"zKGJ":[function(require,module,exports) {
 "use strict";
