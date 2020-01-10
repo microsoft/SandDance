@@ -4,7 +4,13 @@ import * as React from 'react';
 import { base } from './base';
 import { DataSource, DataSourceSnapshot } from './types';
 import { downloadData } from './download';
-import { getEmbedHTML, SandDance, Snapshot, Explorer } from '@msrvida/sanddance-explorer';
+import {
+    Explorer,
+    getEmbedHTML,
+    SandDance,
+    Snapshot
+} from '@msrvida/sanddance-explorer';
+import { invalidUrlError } from './url';
 import { strings } from './language';
 
 import VegaDeckGl = SandDance.VegaDeckGl;
@@ -59,6 +65,7 @@ export function validSnapshots(snapshots: Snapshot[]) {
 }
 
 export interface ImportProps {
+    theme: string;
     onDismiss: () => void;
     onImportSnapshot: (snapshots: Snapshot[]) => void;
     dataSource: DataSource;
@@ -111,13 +118,13 @@ export class SnapshotImportLocal extends React.Component<ImportProps, ImportStat
                     hidden={false}
                     onDismiss={this.props.onDismiss}
                     dialogContentProps={{
-                        className: 'sanddance-dialog',
+                        className: `sanddance-dialog ${this.props.theme}`,
                         type: base.fabric.DialogType.normal,
                         title: strings.dialogTitleSnapshotsLocal,
                         subText: strings.dialogSubtextSnapshotsLocal
                     }}
                 >
-                    <div>
+                    <section>
                         <input
                             type="file"
                             onChange={e => this.readFile(e)}
@@ -126,7 +133,7 @@ export class SnapshotImportLocal extends React.Component<ImportProps, ImportStat
                         {this.state.fileFormatError && (
                             <div className="error">{this.state.fileFormatError}</div>
                         )}
-                    </div>
+                    </section>
                     <base.fabric.DialogFooter>
                         <base.fabric.DefaultButton onClick={this.props.onDismiss} text={strings.dialogCloseButton} />
                     </base.fabric.DialogFooter>
@@ -164,17 +171,8 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
         return '#' + JSON.stringify(dss);
     }
 
-    invalidUrlError() {
-        if (!this.state.url) {
-            return strings.errorNoUrl;
-        }
-        if (this.state.url.toLocaleLowerCase().substr(0, 4) !== 'http') {
-            return strings.errorUrlHttp;
-        }
-    }
-
     loadUrl() {
-        const urlError = this.invalidUrlError();
+        const urlError = invalidUrlError(this.state.url);
         if (urlError) {
             return this.setState({ urlError });
         }
@@ -204,7 +202,7 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
 
     render() {
         let shortcut: string;
-        if (this.props.dataSource.dataSourceType !== 'local' && this.state.url && !this.invalidUrlError() && !this.state.urlError) {
+        if (this.props.dataSource.dataSourceType !== 'local' && this.state.url && !invalidUrlError(this.state.url) && !this.state.urlError) {
             shortcut = this.getUrlShortcut();
         }
         return (
@@ -213,13 +211,12 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
                     hidden={false}
                     onDismiss={this.props.onDismiss}
                     dialogContentProps={{
-                        className: 'sanddance-dialog',
+                        className: `sanddance-dialog ${this.props.theme}`,
                         type: base.fabric.DialogType.normal,
                         title: strings.dialogTitleSnapshotsUrl
                     }}
                 >
-
-                    <div>
+                    <section>
                         <base.fabric.TextField
                             label={strings.labelUrl}
                             placeholder={strings.urlInputPlaceholder}
@@ -230,21 +227,21 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
                             value={this.state.url}
                             disabled={this.state.working}
                         />
-                        {this.props.dataSource.dataSourceType !== 'local'
-                            && (
-                                <div className='tip' style={{ visibility: !this.invalidUrlError() && !this.state.urlError ? 'visible' : 'hidden' }} >
-                                    {strings.labelSnapshotsShortcut} <a
-                                        href={shortcut}
-                                        title={strings.labelLinkDescription}
-                                        aria-label={strings.labelLinkDescription}
-                                    >{strings.labelLink}</a>
-                                </div>
-                            )
-                        }
                         {this.state.urlError && (
                             <div className="error">{this.state.urlError}</div>
                         )}
-                    </div>
+                    </section>
+                    {this.props.dataSource.dataSourceType !== 'local'
+                        && (
+                            <section className='tip' style={{ visibility: !invalidUrlError(this.state.url) && !this.state.urlError ? 'visible' : 'hidden' }} >
+                                {strings.labelSnapshotsShortcut} <a
+                                    href={shortcut}
+                                    title={strings.labelLinkDescription}
+                                    aria-label={strings.labelLinkDescription}
+                                >{strings.labelLink}</a>
+                            </section>
+                        )
+                    }
                     <base.fabric.DialogFooter>
                         <base.fabric.PrimaryButton
                             disabled={!this.state.url || !!this.state.urlError}
@@ -273,7 +270,7 @@ export function SnapshotExport(props: ExportProps) {
             hidden={false}
             onDismiss={props.onDismiss}
             dialogContentProps={{
-                className: 'sanddance-dialog sanddance-export',
+                className: `sanddance-dialog ${this.props.theme} sanddance-export`,
                 type: base.fabric.DialogType.normal,
                 title: strings.dialogTitleSnapshotsExport
             }}

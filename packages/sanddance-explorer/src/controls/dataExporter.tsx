@@ -18,6 +18,7 @@ export interface Props {
     data: object[];
     dataExportHandler: DataExportHandler;
     disabled?: boolean;
+    theme: string;
 }
 
 export interface State {
@@ -120,7 +121,7 @@ export class DataExportPicker extends React.Component<Props, State> {
                     hidden={this.state.dialogHidden}
                     onDismiss={closeDialog}
                     dialogContentProps={{
-                        className: 'sanddance-dialog',
+                        className: `sanddance-dialog ${this.props.theme}`,
                         type: base.fabric.DialogType.normal,
                         title: strings.labelExport
                     }}

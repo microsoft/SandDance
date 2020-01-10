@@ -13,23 +13,31 @@ export const loadDataFile = (dataFile: DataFile) => new Promise<DataContent>((re
     const loader = vega.loader();
 
     function handleRawText(text: string) {
-        const data = vega.read(text, { type: dataFile.type, parse: {} });
-        loadDataArray(data, dataFile.type).then(dc => {
-            if (dataFile.snapshotsUrl) {
-                fetch(dataFile.snapshotsUrl)
-                    .then(response => response.json())
-                    .then(snapshots => {
-                        dc.snapshots = snapshots;
-                        resolve(dc);
-                    })
-                    .catch(reject);
-            } else if (dataFile.snapshots) {
-                dc.snapshots = dataFile.snapshots;
-                resolve(dc);
-            } else {
-                resolve(dc);
-            }
-        }).catch(reject);
+        let data: object[];
+        try {
+            data = vega.read(text, { type: dataFile.type, parse: {} });
+        }
+        catch (e) {
+            reject(e);
+        }
+        if (data) {
+            loadDataArray(data, dataFile.type).then(dc => {
+                if (dataFile.snapshotsUrl) {
+                    fetch(dataFile.snapshotsUrl)
+                        .then(response => response.json())
+                        .then(snapshots => {
+                            dc.snapshots = snapshots;
+                            resolve(dc);
+                        })
+                        .catch(reject);
+                } else if (dataFile.snapshots) {
+                    dc.snapshots = dataFile.snapshots;
+                    resolve(dc);
+                } else {
+                    resolve(dc);
+                }
+            }).catch(reject);
+        }
     }
 
     if (dataFile.dataUrl) {

@@ -25,6 +25,7 @@ export interface Props {
     nullMessage: string;
     zeroMessage: string;
     itemVisible: boolean;
+    theme: string;
     themePalette: Partial<FabricTypes.IPalette>;
     dataExportHandler: DataExportHandler;
     selectedDataScope: DataScopeId;
@@ -95,6 +96,7 @@ export function DataBrowser(props: Props) {
             </div>}
             {props.dataExportHandler && props.data && (
                 <DataExportPicker
+                    theme={props.theme}
                     initializer={{
                         fileName: `${removeExtensions(props.displayName)} (${props.data.length})`
                     }}

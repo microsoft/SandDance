@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { DataSource } from "./types";
+
 export const strings = {
+    buttonLoadData: 'Load data',
     buttonThemeDark: 'Dark',
     buttonThemeLight: 'Light',
     buttonExport: 'Export',
@@ -33,6 +36,7 @@ export const strings = {
     labelLinkDescription: 'A URL to revive this snapshot.',
     labelUrl: 'Url',
     labelDataFormat: 'Data format',
+    labelDataUrlShortcut: 'Tip: Your data file can also be pre-loaded with this',
     urlInputPlaceholder: 'paste URL',
     sampleDataPrefix: 'Sample data',
     localFilePrefix: 'Local file',
@@ -40,5 +44,7 @@ export const strings = {
     errorInvalidFileFormat: 'Invalid file format',
     errorNoUrl: 'Please enter a url',
     errorUrlHttp: 'Url must begin with "http"',
-    errorDownloadFailure: 'Data could not be prepared for download.'
+    errorDownloadFailure: 'Data could not be prepared for download.',
+    errorDataSourceFromLocal: (ds: DataSource) => `Could not load ${ds.type} from local file.`,
+    errorDataSourceFromUrl: (ds: DataSource) => `Could not load ${ds.type} from ${ds.dataUrl}`
 };

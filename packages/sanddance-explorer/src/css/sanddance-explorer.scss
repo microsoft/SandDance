@@ -35,9 +35,17 @@ $layout-margin-right: 150px; //room for legend
 @include columnMap();
 
 .sanddance-dialog {
+    ul {
+        margin: 0;
+    }
+    section {
+        margin-top: 1em;
+        &:first-child {
+            margin-top: 0;
+        }
+    }
     .tip {
         font-style: italic;
-        margin-top: 1em;
     }
 }
 
@@ -205,6 +213,11 @@ $layout-margin-right: 150px; //room for legend
 }
 
 .dark-theme {
+    .sanddance-dialog {
+        a {
+            color: #00b4f0;
+        }
+    }
     .sanddance-panel {
         background-color: #000;
         color: #fff;
