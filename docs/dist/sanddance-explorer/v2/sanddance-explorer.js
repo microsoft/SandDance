@@ -25439,7 +25439,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var version = '2.2.0';
+var version = '2.2.1';
 exports.version = version;
 },{}],"zKGJ":[function(require,module,exports) {
 "use strict";
@@ -27172,8 +27172,7 @@ function (_React$Component) {
 
       this.changeInsight({
         columns: null,
-        note: null,
-        snapshots: []
+        note: null
       });
       return new Promise(function (resolve, reject) {
         var loadFinal = function loadFinal(dataContent) {
@@ -27199,7 +27198,7 @@ function (_React$Component) {
           var newState = Object.assign({
             dataFile: dataFile,
             dataContent: dataContent,
-            snapshots: dataContent.snapshots || [],
+            snapshots: dataContent.snapshots || _this5.state.snapshots,
             autoCompleteDistinctValues: {},
             filter: null,
             filteredData: null,
