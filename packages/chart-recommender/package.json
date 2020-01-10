@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/chart-recommender",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Recommendation engine for SandDance charts",
   "main": "dist/es5/index.js",
   "files": [
