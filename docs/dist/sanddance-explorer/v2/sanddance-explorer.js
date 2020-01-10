@@ -18454,6 +18454,9 @@ exports.strings = void 0;
 var strings = {
   appName: 'SandDance',
   bingsearch: 'Bing',
+  bingsearchDescription: function bingsearchDescription(term) {
+    return "Search Bing for \"".concat(term, "\"");
+  },
   buttonClose: 'Close',
   buttonSelect: 'Search & Select',
   buttonColorSchemeMap: 'Map color scheme to filtered data',
@@ -18475,6 +18478,8 @@ var strings = {
   buttonNextDataItem: 'Next data item',
   buttonPrevDataItem: 'Previous data item',
   buttonCreateSnapshot: 'Create snapshot',
+  buttonNextSnapshot: 'Next snapshot',
+  buttonPrevSnapshot: 'Previous snapshot',
   buttonUpdateSnapshot: 'Update snapshot',
   buttonAddExpression: 'Add expression',
   buttonAddExpressionGroup: 'Add group',
@@ -18524,6 +18529,11 @@ var strings = {
   labelSnapshots: 'Snapshots',
   labelSnapshotSettingThumbnailWidth: 'Thumbnail image width',
   labelSearch: 'Select by search',
+  labelSearchClause: 'Clause',
+  labelSearchColumn: 'Field',
+  labelSearchOperator: 'Operator',
+  labelSearchValue: 'Value',
+  labelSearchValuePlaceholder: 'Value to search for',
   labelChart: 'Chart',
   labelChartCanvas: 'Chart canvas',
   labelColumnMapping: 'Column Mapping',
@@ -18829,7 +18839,7 @@ function (_React$Component) {
         hidden: this.state.dialogHidden,
         onDismiss: closeDialog,
         dialogContentProps: {
-          className: 'sanddance-dialog',
+          className: "sanddance-dialog ".concat(this.props.theme),
           type: _base.base.fabric.DialogType.normal,
           title: _language.strings.labelExport
         }
@@ -19537,10 +19547,11 @@ var dropdownWidth = 200;
 exports.dropdownWidth = dropdownWidth;
 
 function Dropdown(props) {
+  var newProps = Object.assign({}, props);
   var selectedKey = null;
 
-  if (props.options && props.options.length > 1) {
-    var selectedOptions = props.options.filter(function (option) {
+  if (newProps.options && newProps.options.length > 1) {
+    var selectedOptions = newProps.options.filter(function (option) {
       return option.selected;
     });
 
@@ -19549,14 +19560,17 @@ function Dropdown(props) {
     }
   }
 
+  if (newProps.collapseLabel) {
+    newProps.onRenderTitle = function (a, b) {
+      return React.createElement("span", null, newProps.label, ": ", a[0].text);
+    };
+  }
+
   return React.createElement(_base.base.fabric.Dropdown, Object.assign({
     dropdownWidth: dropdownWidth
-  }, props, {
-    label: props.collapseLabel ? null : props.label,
-    selectedKey: selectedKey,
-    onRenderTitle: props.collapseLabel && function (a, b) {
-      return React.createElement("span", null, props.label, ": ", a[0].text);
-    }
+  }, newProps, {
+    label: newProps.collapseLabel ? null : newProps.label,
+    selectedKey: selectedKey
   }));
 }
 },{"react":"ccIB","../base":"Vlbn"}],"OWDI":[function(require,module,exports) {
@@ -19832,7 +19846,7 @@ function ColumnMap(props) {
     className: "sanddance-columnMap"
   }, React.createElement(_dropdown.Dropdown, {
     componentRef: props.componentRef,
-    collapseLabel: true,
+    collapseLabel: props.collapseLabel,
     disabled: props.disabled,
     label: label,
     options: options,
@@ -20067,6 +20081,7 @@ function (_React$Component) {
         var selectedColumnName = specColumnInRole;
         var disabled = props.disabled || props.view === '2d' && specRole.role === 'z';
         return React.createElement(_columnMap.ColumnMap, Object.assign({}, props, {
+          collapseLabel: props.collapseLabels,
           disabled: disabled,
           selectedColumnName: selectedColumnName,
           specRole: specRole,
@@ -22874,7 +22889,7 @@ function Palette(props) {
       __html: _language.strings.labelColorFieldInfo(props.colorColumn.name, props.colorColumn.type, categoricalNumeric, distinctValueCount)
     }
   }), React.createElement(_dropdown.Dropdown, {
-    collapseLabel: true,
+    collapseLabel: props.collapseLabel,
     disabled: props.disabled,
     dropdownWidth: 400,
     label: _language.strings.labelColorScheme,
@@ -22936,6 +22951,7 @@ function Color(props) {
   }, React.createElement(_group.Group, {
     label: _language.strings.labelColor
   }, React.createElement(_columnMap.ColumnMap, Object.assign({}, props, {
+    collapseLabel: props.compactUI,
     selectedColumnName: props.colorColumn,
     specRole: props.specCapabilities && props.specCapabilities.roles.filter(function (r) {
       return r.role === 'color';
@@ -22947,6 +22963,7 @@ function Color(props) {
       __html: _language.strings.labelColorFieldIsColorData(colorColumn.name)
     }
   }), colorColumn && !colorColumn.isColorData && React.createElement(_palettes.Palette, {
+    collapseLabel: props.compactUI,
     scheme: props.scheme,
     colorColumn: colorColumn,
     changeColorScheme: function changeColorScheme(scheme) {
@@ -23129,10 +23146,12 @@ function bingSearchLink(column, value) {
   if (isBoolean(value)) return null;
   if (column && column.stats.distinctValueCount === 2) return null;
   return React.createElement("div", {
-    className: "bing-search"
+    className: 'bing-search'
   }, React.createElement("a", {
     href: "https://www.bing.com/search?q=".concat(encodeURIComponent(value)),
-    target: "_blank"
+    target: '_blank',
+    title: _language.strings.bingsearchDescription(value),
+    "aria-label": _language.strings.bingsearchDescription(value)
   }, _language.strings.bingsearch));
 }
 
@@ -23202,6 +23221,10 @@ function displayValueElement(nvp) {
   return d.display;
 }
 
+var KeyCodes = {
+  ENTER: 13
+};
+
 function DataItem(props) {
   if (!props.item) {
     return null;
@@ -23267,6 +23290,12 @@ function DataItem(props) {
       key: i,
       onClick: !props.disabled ? searchClick : null,
       title: title,
+      onKeyUp: function onKeyUp(e) {
+        if (e.keyCode === KeyCodes.ENTER) {
+          searchClick(e);
+        }
+      },
+      tabIndex: 0,
       className: "name-value"
     }, React.createElement("div", {
       className: "column-name"
@@ -24093,6 +24122,7 @@ function DataBrowser(props) {
     onSearch: props.onSearch,
     bingSearchDisabled: props.bingSearchDisabled
   })), props.dataExportHandler && props.data && React.createElement(_dataExporter.DataExportPicker, {
+    theme: props.theme,
     initializer: {
       fileName: "".concat((0, _dataExporter.removeExtensions)(props.displayName), " (").concat(props.data.length, ")")
     },
@@ -24265,8 +24295,6 @@ var recommender_1 = require("./recommender");
 var geo_1 = require("./geo");
 var ScatterPlotRecommenderSummary = /** @class */ (function () {
     function ScatterPlotRecommenderSummary(columns, data) {
-        var longi = false;
-        var lati = false;
         var rec = {
             chart: 'scatterplot',
             score: undefined,
@@ -24275,25 +24303,34 @@ var ScatterPlotRecommenderSummary = /** @class */ (function () {
             view: '2d'
         };
         columns.forEach(function (column) {
-            if (longi === false && geo_1.isLongitude(column)) {
-                longi = true;
-                rec.columns.x = column.name;
+            if (!rec.columns.x) {
+                if (column.name.toLowerCase() === 'x') {
+                    return rec.columns.x = column.name;
+                }
+                else if (geo_1.isLongitude(column)) {
+                    return rec.columns.x = column.name;
+                }
             }
-            else if (lati === false && geo_1.isLatitude(column)) {
-                lati = true;
-                rec.columns.y = column.name;
+            if (!rec.columns.y) {
+                if (column.name.toLowerCase() === 'y') {
+                    return rec.columns.y = column.name;
+                }
+                else if (geo_1.isLatitude(column)) {
+                    return rec.columns.y = column.name;
+                }
             }
-            else if (!rec.columns.color && !column.stats.isSequential) {
+            if (!rec.columns.color && !column.stats.isSequential) {
                 if (column.quantitative || column.stats.distinctValueCount < recommender_1.maxCategoricalColors) {
                     rec.columns.color = rec.columns.sort = column.name;
                     rec.scheme = recommender_1.defaultColorScheme(column);
                     if (column.quantitative) {
                         rec.colorBin = 'quantile';
                     }
+                    return;
                 }
             }
         });
-        if (longi && lati) {
+        if (rec.columns.x && rec.columns.y) {
             this.best = rec;
         }
     }
@@ -24641,8 +24678,9 @@ function SearchTerm(props) {
   var possibleValues = getValues(ex, props.column, props.data, props.autoCompleteDistinctValues); //TODO better date handling with calendar picker
 
   return React.createElement("div", null, props.index > 0 && React.createElement(_dropdown.Dropdown, {
+    collapseLabel: props.collapseLabels,
     className: "search-field",
-    //label={strings.labelSearchClause}
+    label: _language.strings.labelSearchClause,
     dropdownWidth: 120,
     disabled: !ex.unlocked || props.disableOR,
     options: getExpressionClauses(ex.clause, props.disableOR),
@@ -24652,8 +24690,9 @@ function SearchTerm(props) {
       }, props.index);
     }
   }), React.createElement(_dropdown.Dropdown, {
+    collapseLabel: props.collapseLabels,
     className: "search-field",
-    //label={strings.labelSearchColumn}
+    label: _language.strings.labelSearchColumn,
     options: [{
       key: '',
       text: _language.strings.selectAny,
@@ -24673,8 +24712,9 @@ function SearchTerm(props) {
       }, props.index);
     }
   }), React.createElement(_dropdown.Dropdown, {
+    collapseLabel: props.collapseLabels,
     className: "search-field",
-    //label={strings.labelSearchOperator}
+    label: _language.strings.labelSearchOperator,
     dropdownWidth: 120,
     options: getOperators(ex, props.column),
     onChange: function onChange(e, o) {
@@ -24684,7 +24724,8 @@ function SearchTerm(props) {
     }
   }), possibleValues.length > 0 && React.createElement(_base.base.fabric.ComboBox, {
     className: "search-field",
-    //label={strings.labelSearchValue}
+    label: props.collapseLabels ? null : _language.strings.labelSearchValue,
+    placeholder: _language.strings.labelSearchValuePlaceholder,
     disabled: ex.operator === 'isnullorEmpty',
     dropdownWidth: _dropdown.dropdownWidth,
     allowFreeform: true,
@@ -24703,7 +24744,8 @@ function SearchTerm(props) {
     }
   }), possibleValues.length === 0 && React.createElement(_base.base.fabric.TextField, {
     className: "search-field",
-    //label={strings.labelSearchValue}
+    label: props.collapseLabels ? null : _language.strings.labelSearchValue,
+    placeholder: _language.strings.labelSearchValuePlaceholder,
     disabled: ex.operator === 'isnullorEmpty',
     errorMessage: ex.errorMessage,
     value: getText(ex),
@@ -25053,8 +25095,9 @@ function (_React$Component) {
           className: "sanddance-search-group",
           key: group.key
         }, React.createElement(_dropdown.Dropdown, {
+          collapseLabel: _this3.props.collapseLabels,
           className: "search-group-clause",
-          //label={strings.labelSearchClause}
+          label: _language.strings.labelSearchClause,
           disabled: groupIndex === 0 || _this3.props.disableGroupOR,
           dropdownWidth: 120,
           options: getGroupClauses(group.clause, groupIndex, _this3.props.disableGroupOR),
@@ -25068,6 +25111,7 @@ function (_React$Component) {
             className: "sanddance-search-expression",
             key: ex.key
           }, React.createElement(_searchTerm.SearchTerm, {
+            collapseLabels: _this3.props.collapseLabels,
             onUpdateExpression: function onUpdateExpression(ex, i) {
               return _this3.updateExpression(ex, groupIndex, i);
             },
@@ -25142,25 +25186,34 @@ var loadDataFile = function loadDataFile(dataFile) {
     var loader = vega.loader();
 
     function handleRawText(text) {
-      var data = vega.read(text, {
-        type: dataFile.type,
-        parse: {}
-      });
-      loadDataArray(data, dataFile.type).then(function (dc) {
-        if (dataFile.snapshotsUrl) {
-          fetch(dataFile.snapshotsUrl).then(function (response) {
-            return response.json();
-          }).then(function (snapshots) {
-            dc.snapshots = snapshots;
+      var data;
+
+      try {
+        data = vega.read(text, {
+          type: dataFile.type,
+          parse: {}
+        });
+      } catch (e) {
+        reject(e);
+      }
+
+      if (data) {
+        loadDataArray(data, dataFile.type).then(function (dc) {
+          if (dataFile.snapshotsUrl) {
+            fetch(dataFile.snapshotsUrl).then(function (response) {
+              return response.json();
+            }).then(function (snapshots) {
+              dc.snapshots = snapshots;
+              resolve(dc);
+            }).catch(reject);
+          } else if (dataFile.snapshots) {
+            dc.snapshots = dataFile.snapshots;
             resolve(dc);
-          }).catch(reject);
-        } else if (dataFile.snapshots) {
-          dc.snapshots = dataFile.snapshots;
-          resolve(dc);
-        } else {
-          resolve(dc);
-        }
-      }).catch(reject);
+          } else {
+            resolve(dc);
+          }
+        }).catch(reject);
+      }
     }
 
     if (dataFile.dataUrl) {
@@ -25386,7 +25439,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var version = '2.1.3';
+var version = '2.1.4';
 exports.version = version;
 },{}],"zKGJ":[function(require,module,exports) {
 "use strict";
@@ -25700,7 +25753,12 @@ function (_React$Component) {
         min: 0,
         max: 10000,
         defaultValue: this.props.explorer.viewerOptions.transitionDurations.view
-      })), React.createElement(_group.Group, {
+      })), props.additionalSettings && props.additionalSettings.map(function (g, i) {
+        return React.createElement(_group.Group, {
+          key: i,
+          label: g.groupLabel
+        }, g.children);
+      }), React.createElement(_group.Group, {
         label: _language.strings.labelSystem
       }, React.createElement(_base.base.fabric.DefaultButton, {
         text: _language.strings.labelSystemInfo,
@@ -25786,7 +25844,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 // Licensed under the MIT license.
 function Scrollable(props) {
   return React.createElement("div", {
-    className: _sanddanceReact.util.classList('scrollable-container', props.className)
+    className: _sanddanceReact.util.classList('scrollable-container', props.className),
+    role: props.role
   }, React.createElement("div", {
     className: "scrollable"
   }, props.children));
@@ -25866,7 +25925,8 @@ function Sidebar(props) {
   }, React.createElement("div", {
     className: "sidebar-content"
   }, React.createElement(_dataScope.DataScope, Object.assign({}, props.dataScopeProps)), React.createElement("div", {
-    className: "vbuttons"
+    className: "vbuttons",
+    role: 'tablist'
   }, React.createElement("div", {
     className: "sidebar-dialogs"
   }, sidebuttons.map(function (sidebutton, i) {
@@ -25885,7 +25945,9 @@ function Sidebar(props) {
     sideTabId: SideTabId.Collapse,
     iconName: props.closed ? 'DoubleChevronRight12' : 'DoubleChevronLeft12',
     title: props.closed ? _language.strings.buttonToolbarShow : _language.strings.buttonToolbarHide
-  })))), React.createElement(_scrollable.Scrollable, null, React.createElement("div", {
+  })))), React.createElement(_scrollable.Scrollable, {
+    role: 'tabpanel'
+  }, React.createElement("div", {
     className: "sidetab"
   }, props.children)), props.calculating && React.createElement("div", {
     className: "calculating"
@@ -25895,8 +25957,11 @@ function Sidebar(props) {
 }
 
 function Sidebutton(props) {
+  var selected = !props.closed && props.selectedSideTab === props.sideTabId;
   return React.createElement("div", {
-    className: _sanddanceReact.util.classList('vbutton', !props.closed && props.selectedSideTab === props.sideTabId && 'selected')
+    className: _sanddanceReact.util.classList('vbutton', selected && 'selected'),
+    role: 'tab',
+    "aria-selected": selected
   }, props.badgeText && React.createElement("div", {
     className: "count"
   }, props.badgeText), React.createElement(_iconButton.IconButton, {
@@ -26195,7 +26260,8 @@ function (_React$Component) {
               }
             }
           });
-        }
+        },
+        disabled: this.props.snapshots.length === 0
       }];
 
       if (this.props.getTopActions) {
@@ -26573,6 +26639,7 @@ function Topbar(props) {
     iconProps: {
       iconName: 'Previous'
     },
+    title: _language.strings.buttonPrevSnapshot,
     onClick: props.onSnapshotPreviousClick,
     disabled: props.snapshots.length < 2
   }, {
@@ -26580,6 +26647,7 @@ function Topbar(props) {
     iconProps: {
       iconName: 'Camera'
     },
+    title: _language.strings.buttonCreateSnapshot,
     onClick: props.onSnapshotClick,
     disabled: !props.loaded
   }, {
@@ -26587,6 +26655,7 @@ function Topbar(props) {
     iconProps: {
       iconName: 'Next'
     },
+    title: _language.strings.buttonNextSnapshot,
     onClick: props.onSnapshotNextClick,
     disabled: props.snapshots.length < 2
   }, {
@@ -26892,6 +26961,7 @@ function (_React$Component) {
           })[0];
 
           var positionedColumnMapProps = Object.assign(Object.assign({}, _this2.getColumnMapBaseProps()), {
+            collapseLabel: true,
             container: _this2.div,
             selectedColumnName: _this2.state.columns['color'],
             onDismiss: function onDismiss() {
@@ -26946,6 +27016,7 @@ function (_React$Component) {
 
             if (pos && specRole) {
               var positionedColumnMapProps = Object.assign(Object.assign({}, _this2.getColumnMapBaseProps()), {
+                collapseLabel: true,
                 container: _this2.div,
                 selectedColumnName: _this2.state.columns[specRole.role],
                 onDismiss: function onDismiss() {
@@ -27077,13 +27148,21 @@ function (_React$Component) {
           this.scrollSnapshotIntoView(selectedSnapshotIndex);
         }
 
-        this.setInsight(newState);
+        this.setInsight(newState, true);
       } else {
         var _snapshot = snapshotOrIndex;
-        this.setInsight(Object.assign(Object.assign({}, _snapshot.insight), {
-          note: _snapshot.description,
-          selectedSnapshotIndex: -1
-        }), true); //don't navigate to sideTab
+
+        if (_snapshot.insight) {
+          this.setInsight(Object.assign(Object.assign({}, _snapshot.insight), {
+            note: _snapshot.description,
+            selectedSnapshotIndex: -1
+          }), true); //don't navigate to sideTab
+        } else {
+          this.setState({
+            note: _snapshot.description,
+            selectedSnapshotIndex: -1
+          });
+        }
       }
     }
   }, {
@@ -27852,6 +27931,7 @@ function (_React$Component) {
           case _sidebar.SideTabId.ChartType:
             {
               return React.createElement(_chart.Chart, Object.assign({
+                collapseLabels: _this11.props.compactUI,
                 tooltipExclusions: _this11.state.tooltipExclusions,
                 toggleTooltipExclusion: function toggleTooltipExclusion(columnName) {
                   var tooltipExclusions = _toConsumableArray(_this11.state.tooltipExclusions);
@@ -27887,6 +27967,7 @@ function (_React$Component) {
           case _sidebar.SideTabId.Color:
             {
               return React.createElement(_color.Color, Object.assign({
+                compactUI: _this11.props.compactUI,
                 specCapabilities: _this11.state.specCapabilities,
                 disabled: !loaded || _this11.state.sidebarClosed
               }, columnMapProps, {
@@ -27968,6 +28049,7 @@ function (_React$Component) {
               }
 
               return React.createElement(_dataBrowser.DataBrowser, {
+                theme: _this11.props.theme,
                 themePalette: themePalette,
                 disabled: !loaded || _this11.state.sidebarClosed,
                 columns: _this11.state.dataContent && _this11.state.dataContent.columns,
@@ -28010,6 +28092,7 @@ function (_React$Component) {
           case _sidebar.SideTabId.Search:
             {
               return React.createElement(_search.Search, {
+                collapseLabels: _this11.props.compactUI,
                 themePalette: themePalette,
                 disabled: !loaded || _this11.state.sidebarClosed,
                 disableGroupOR: _this11.props.searchORDisabled,
@@ -28066,9 +28149,13 @@ function (_React$Component) {
                   });
 
                   _this11.calculate(function () {
+                    var handled = false;
+
                     if (_this11.props.onSnapshotClick) {
-                      _this11.props.onSnapshotClick(snapshot, selectedSnapshotIndex);
-                    } else {
+                      handled = _this11.props.onSnapshotClick(snapshot, selectedSnapshotIndex);
+                    }
+
+                    if (!handled) {
                       _this11.reviveSnapshot(selectedSnapshotIndex);
                     }
                   });
@@ -28142,7 +28229,8 @@ function (_React$Component) {
                       });
                     }
                   });
-                }
+                },
+                additionalSettings: _this11.props.additionalSettings
               }, _this11.props.systemInfoChildren);
             }
         }

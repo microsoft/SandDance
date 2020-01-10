@@ -5,9 +5,6 @@
   display: grid;
   height: 100%; }
 
-.sanddance-export ul {
-  margin: 0; }
-
 .sanddance-export .ms-Button {
   margin-bottom: 1em;
   margin-top: 0.5em; }
@@ -562,9 +559,17 @@
 .sanddance-tooltipMap {
   margin-top: 10px; }
 
-.sanddance-dialog .tip {
-  font-style: italic;
+.sanddance-dialog ul {
+  margin: 0; }
+
+.sanddance-dialog section {
   margin-top: 1em; }
+
+.sanddance-dialog section:first-child {
+  margin-top: 0; }
+
+.sanddance-dialog .tip {
+  font-style: italic; }
 
 .sanddance-explorer {
   display: grid;
@@ -704,6 +709,9 @@
 
 .sanddance-form-separate {
   margin-top: 1em; }
+
+.dark-theme .sanddance-dialog a {
+  color: #00b4f0; }
 
 .dark-theme .sanddance-panel {
   background-color: #000;
