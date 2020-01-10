@@ -17,9 +17,9 @@ public constructor(props: Props);
 
 **Parameters**
 
-| Name  | Type                            |
-| ----- | ------------------------------- |
-| props | [Props][InterfaceDeclaration-9] |
+| Name  | Type                             |
+| ----- | -------------------------------- |
+| props | [Props][InterfaceDeclaration-10] |
 
 ## Methods
 
@@ -94,7 +94,7 @@ public setInsight(partialInsight: Partial<Insight> & Partial<State> = this.viewe
 
 | Name           | Type                                                         | Default value            |
 | -------------- | ------------------------------------------------------------ | ------------------------ |
-| partialInsight | Partial<Insight> & Partial<[State][InterfaceDeclaration-10]> | this.viewer.getInsight() |
+| partialInsight | Partial<Insight> & Partial<[State][InterfaceDeclaration-11]> | this.viewer.getInsight() |
 | rebaseFilter   | boolean                                                      | false                    |
 
 **Return type**
@@ -133,7 +133,7 @@ public load(data: DataFile | object[], getPartialInsight?: (columns: Column[]) =
 | ----------------- | ------------------------------------------------------------------------ |
 | data              | [DataFile][InterfaceDeclaration-3] &#124; object[]                       |
 | getPartialInsight | (columns: Column[]) => Partial<Insight>                                  |
-| optionsOrPrefs    | [Prefs][InterfaceDeclaration-5] &#124; [Options][InterfaceDeclaration-8] |
+| optionsOrPrefs    | [Prefs][InterfaceDeclaration-6] &#124; [Options][InterfaceDeclaration-9] |
 
 **Return type**
 
@@ -205,7 +205,7 @@ public changeInsight(newState: Partial<State>): void;
 
 | Name     | Type                                      |
 | -------- | ----------------------------------------- |
-| newState | Partial<[State][InterfaceDeclaration-10]> |
+| newState | Partial<[State][InterfaceDeclaration-11]> |
 
 **Return type**
 
@@ -352,7 +352,7 @@ public prefs: Prefs;
 
 **Type**
 
-[Prefs][InterfaceDeclaration-5]
+[Prefs][InterfaceDeclaration-6]
 
 ----------
 
@@ -380,24 +380,24 @@ number
 
 [ClassDeclaration-0]: explorer.html#explorer
 [Constructor-0]: explorer.html#constructorprops
-[InterfaceDeclaration-9]: ../index.html#props
+[InterfaceDeclaration-10]: ../index.html#props
 [MethodDeclaration-0]: explorer.html#finalize
 [MethodDeclaration-1]: explorer.html#updatevieweroptionsvieweroptions
 [MethodDeclaration-2]: explorer.html#signalsignalname-signalvalue
 [MethodDeclaration-3]: explorer.html#getinsight
 [MethodDeclaration-4]: explorer.html#setinsightpartialinsight-rebasefilter
-[InterfaceDeclaration-10]: ../index.html#state
+[InterfaceDeclaration-11]: ../index.html#state
 [MethodDeclaration-5]: explorer.html#revivesnapshotsnapshotorindex
 [InterfaceDeclaration-0]: ../index.html#snapshot
 [MethodDeclaration-6]: explorer.html#loaddata-getpartialinsight-optionsorprefs
 [InterfaceDeclaration-3]: ../index.html#datafile
-[InterfaceDeclaration-5]: ../index.html#prefs
-[InterfaceDeclaration-8]: ../index.html#options
+[InterfaceDeclaration-6]: ../index.html#prefs
+[InterfaceDeclaration-9]: ../index.html#options
 [MethodDeclaration-7]: explorer.html#changecharttypechart
 [MethodDeclaration-8]: explorer.html#calculatecalculating
 [MethodDeclaration-9]: explorer.html#changeviewview
 [MethodDeclaration-10]: explorer.html#changeinsightnewstate
-[InterfaceDeclaration-10]: ../index.html#state
+[InterfaceDeclaration-11]: ../index.html#state
 [MethodDeclaration-11]: explorer.html#changespeccapabilitiesspeccapabilities
 [MethodDeclaration-12]: explorer.html#changecolumnmappingrole-column-options
 [MethodDeclaration-13]: explorer.html#sidebarsidebarclosed-sidebarpinned
@@ -408,6 +408,6 @@ number
 [PropertyDeclaration-1]: explorer.html#vieweroptions
 [PropertyDeclaration-2]: explorer.html#discardcolorcontextupdates
 [PropertyDeclaration-3]: explorer.html#prefs
-[InterfaceDeclaration-5]: ../index.html#prefs
+[InterfaceDeclaration-6]: ../index.html#prefs
 [PropertyDeclaration-4]: explorer.html#div
 [PropertyDeclaration-5]: explorer.html#snapshotthumbwidth

@@ -136,6 +136,24 @@ interface DataFile {
 
 ----------
 
+### SettingsGroup
+
+```typescript
+interface SettingsGroup {
+    groupLabel: string;
+    children: ReactNode;
+}
+```
+
+**Properties**
+
+| Name       | Type      | Optional |
+| ---------- | --------- | -------- |
+| groupLabel | string    | false    |
+| children   | ReactNode | false    |
+
+----------
+
 ### Snapshot
 
 ```typescript
@@ -212,7 +230,7 @@ interface Options {
 
 | Name              | Type                            | Optional |
 | ----------------- | ------------------------------- | -------- |
-| chartPrefs        | [Prefs][InterfaceDeclaration-5] | true     |
+| chartPrefs        | [Prefs][InterfaceDeclaration-6] | true     |
 | tooltipExclusions | string[]                        | true     |
 
 ----------
@@ -221,6 +239,7 @@ interface Options {
 
 ```typescript
 interface Props {
+    compactUI?: boolean;
     hideSidebarControls?: boolean;
     logoClickUrl?: string;
     logoClickTarget?: string;
@@ -234,38 +253,41 @@ interface Props {
     dataExportHandler?: DataExportHandler;
     topBarButtonProps?: ICommandBarItemProps[];
     snapshotProps?: SnapshotProps;
-    onSnapshotClick?: (snapshot: Snapshot, selectedSnaphotIndex: number) => void;
+    onSnapshotClick?: (snapshot: Snapshot, selectedSnaphotIndex: number) => void | boolean;
     onView?: () => void;
     onError?: (e: any) => void;
     onSignalChanged?: () => void;
     onTooltipExclusionsChanged?: (tooltipExclusions: string[]) => void;
+    additionalSettings?: SettingsGroup[];
     systemInfoChildren?: ReactNode;
 }
 ```
 
 **Properties**
 
-| Name                       | Type                                                       | Optional |
-| -------------------------- | ---------------------------------------------------------- | -------- |
-| hideSidebarControls        | boolean                                                    | true     |
-| logoClickUrl               | string                                                     | true     |
-| logoClickTarget            | string                                                     | true     |
-| bingSearchDisabled         | boolean                                                    | true     |
-| searchORDisabled           | boolean                                                    | true     |
-| theme                      | string                                                     | true     |
-| viewerOptions              | Partial<ViewerOptions>                                     | true     |
-| initialView                | View                                                       | true     |
-| mounted                    | (explorer: Explorer) => any                                | true     |
-| datasetElement             | Element                                                    | true     |
-| dataExportHandler          | DataExportHandler               | true     |
-| topBarButtonProps          | ICommandBarItemProps[]                                     | true     |
-| snapshotProps              | SnapshotProps                   | true     |
-| onSnapshotClick            | (snapshot: Snapshot, selectedSnaphotIndex: number) => void | true     |
-| onView                     | () => void                                                 | true     |
-| onError                    | (e: any) => void                                           | true     |
-| onSignalChanged            | () => void                                                 | true     |
-| onTooltipExclusionsChanged | (tooltipExclusions: string[]) => void                      | true     |
-| systemInfoChildren         | ReactNode                                                  | true     |
+| Name                       | Type                                                                      | Optional |
+| -------------------------- | ------------------------------------------------------------------------- | -------- |
+| compactUI                  | boolean                                                                   | true     |
+| hideSidebarControls        | boolean                                                                   | true     |
+| logoClickUrl               | string                                                                    | true     |
+| logoClickTarget            | string                                                                    | true     |
+| bingSearchDisabled         | boolean                                                                   | true     |
+| searchORDisabled           | boolean                                                                   | true     |
+| theme                      | string                                                                    | true     |
+| viewerOptions              | Partial<ViewerOptions>                                                    | true     |
+| initialView                | View                                                                      | true     |
+| mounted                    | (explorer: Explorer) => any                                               | true     |
+| datasetElement             | Element                                                                   | true     |
+| dataExportHandler          | DataExportHandler                              | true     |
+| topBarButtonProps          | ICommandBarItemProps[]                                                    | true     |
+| snapshotProps              | SnapshotProps                                  | true     |
+| onSnapshotClick            | (snapshot: Snapshot, selectedSnaphotIndex: number) => void &#124; boolean | true     |
+| onView                     | () => void                                                                | true     |
+| onError                    | (e: any) => void                                                          | true     |
+| onSignalChanged            | () => void                                                                | true     |
+| onTooltipExclusionsChanged | (tooltipExclusions: string[]) => void                                     | true     |
+| additionalSettings         | [SettingsGroup][InterfaceDeclaration-4][]                                 | true     |
+| systemInfoChildren         | ReactNode                                                                 | true     |
 
 ----------
 
@@ -398,14 +420,16 @@ string
 [InterfaceDeclaration-3]: index.html#datafile
 [InterfaceDeclaration-0]: index.html#snapshot
 [TypeAliasDeclaration-1]: index.html#datafiletype
+[InterfaceDeclaration-4]: index.html#settingsgroup
 [InterfaceDeclaration-0]: index.html#snapshot
-[InterfaceDeclaration-4]: index.html#vieweroptions
+[InterfaceDeclaration-5]: index.html#vieweroptions
 [InterfaceDeclaration-1]: index.html#colorsettings
-[InterfaceDeclaration-5]: index.html#prefs
-[InterfaceDeclaration-8]: index.html#options
-[InterfaceDeclaration-5]: index.html#prefs
-[InterfaceDeclaration-9]: index.html#props
-[InterfaceDeclaration-10]: index.html#state
+[InterfaceDeclaration-6]: index.html#prefs
+[InterfaceDeclaration-9]: index.html#options
+[InterfaceDeclaration-6]: index.html#prefs
+[InterfaceDeclaration-10]: index.html#props
+[InterfaceDeclaration-4]: index.html#settingsgroup
+[InterfaceDeclaration-11]: index.html#state
 [InterfaceDeclaration-3]: index.html#datafile
 [InterfaceDeclaration-2]: index.html#datacontent
 [InterfaceDeclaration-0]: index.html#snapshot
