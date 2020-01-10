@@ -62,3 +62,7 @@ export interface SettingsGroup {
   groupLabel: string;
   children: React.ReactNode;
 }
+
+export enum SideTabId {
+  ChartType, Data, Search, Color, Snapshots, Settings, Pin, Collapse
+}

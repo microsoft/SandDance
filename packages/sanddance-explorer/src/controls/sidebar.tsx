@@ -6,12 +6,9 @@ import { DataScope, Props as DataScopeProps } from './dataScope';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { IconButton } from './iconButton';
 import { Scrollable } from './scrollable';
+import { SideTabId } from '../interfaces';
 import { strings } from '../language';
 import { util } from '@msrvida/sanddance-react';
-
-export enum SideTabId {
-    ChartType, Data, Search, Color, Snapshots, Settings, Pin, Collapse
-}
 
 export interface Props {
     calculating: boolean;

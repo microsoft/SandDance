@@ -13,6 +13,7 @@ import {
     DataExportHandler,
     DataFile,
     SettingsGroup,
+    SideTabId,
     Snapshot,
     SnapshotProps
 } from './interfaces';
@@ -44,7 +45,7 @@ import { preferredColumnForTreemapSize, RecommenderSummary } from '@msrvida/char
 import { removeTabIndex } from './canvas';
 import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
 import { Settings } from './dialogs/settings';
-import { Sidebar, SideTabId } from './controls/sidebar';
+import { Sidebar } from './controls/sidebar';
 import { SnapshotEditor } from './dialogs/snapshotEditor';
 import { Snapshots } from './dialogs/snapshots';
 import { strings } from './language';
@@ -371,6 +372,17 @@ export class Explorer extends React.Component<Props, State> {
             }
         } else {
             changeInsight();
+        }
+    }
+
+    private handleReviveSnapshot(snapshot: Snapshot, selectedSnapshotIndex: number) {
+        let handled = false;
+        if (this.props.onSnapshotClick) {
+            this.setState({ selectedSnapshotIndex });
+            handled = this.props.onSnapshotClick(snapshot, selectedSnapshotIndex) as boolean;
+        }
+        if (!handled) {
+            this.reviveSnapshot(selectedSnapshotIndex);
         }
     }
 
@@ -879,7 +891,7 @@ export class Explorer extends React.Component<Props, State> {
                                 selectedSnapshotIndex = this.state.snapshots.length - 1;
                             }
                         }
-                        this.reviveSnapshot(selectedSnapshotIndex);
+                        this.handleReviveSnapshot(this.state.snapshots[selectedSnapshotIndex], selectedSnapshotIndex);
                     }}
                     onSnapshotClick={() => this.snapshotEditor.editSnapshot()}
                     onSnapshotNextClick={() => {
@@ -893,7 +905,7 @@ export class Explorer extends React.Component<Props, State> {
                                 selectedSnapshotIndex = 0;
                             }
                         }
-                        this.reviveSnapshot(selectedSnapshotIndex);
+                        this.handleReviveSnapshot(this.state.snapshots[selectedSnapshotIndex], selectedSnapshotIndex);
                     }}
                     onViewClick={() => {
                         const view = this.state.view === '2d' ? '3d' : '2d';
@@ -901,7 +913,7 @@ export class Explorer extends React.Component<Props, State> {
                     }}
                     onHomeClick={() => this.viewer.presenter.homeCamera()}
                 />
-                <div className={util.classList('sanddance-main', this.state.sidebarPinned && 'pinned', this.state.sidebarClosed && 'closed', (insight.hideLegend || insight.directColor || !(insight.columns && insight.columns.color && !this.state.dataContent.columns.filter(c => c.name === insight.columns.color)[0].isColorData)) && 'hide-legend')}>
+                <div className={util.classList('sanddance-main', this.state.sidebarPinned && 'pinned', this.state.sidebarClosed && 'closed', (insight.hideLegend || insight.directColor || !colorMapping(insight, this.state.dataContent && this.state.dataContent.columns)) && 'hide-legend')}>
                     <div ref={div => { if (div && !this.layoutDivUnpinned) this.layoutDivUnpinned = div; }} className="sanddance-layout-unpinned"></div>
                     <div ref={div => { if (div && !this.layoutDivPinned) this.layoutDivPinned = div; }} className="sanddance-layout-pinned"></div>
                     {!loaded && (
@@ -1122,13 +1134,7 @@ export class Explorer extends React.Component<Props, State> {
                                             onSnapshotClick={(snapshot, selectedSnapshotIndex) => {
                                                 this.setState({ selectedSnapshotIndex });
                                                 this.calculate(() => {
-                                                    let handled = false;
-                                                    if (this.props.onSnapshotClick) {
-                                                        handled = this.props.onSnapshotClick(snapshot, selectedSnapshotIndex) as boolean;
-                                                    }
-                                                    if (!handled) {
-                                                        this.reviveSnapshot(selectedSnapshotIndex);
-                                                    }
+                                                    this.handleReviveSnapshot(snapshot, selectedSnapshotIndex);
                                                 });
                                             }}
                                             onMoveUp={i => {
@@ -1292,5 +1298,11 @@ export class Explorer extends React.Component<Props, State> {
             explorer: this
         };
         return props;
+    }
+}
+
+function colorMapping(insight: SandDance.types.Insight, columns: SandDance.types.Column[]) {
+    if (columns && insight.columns && insight.columns.color) {
+        return columns.filter(c => c.name === insight.columns.color)[0];
     }
 }
