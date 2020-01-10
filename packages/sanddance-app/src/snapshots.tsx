@@ -103,6 +103,7 @@ export class SnapshotImportLocal extends React.Component<ImportProps, ImportStat
                 if (validSnapshots(snapshots)) {
                     this.props.onImportSnapshot(snapshots);
                     this.setState({ working: false });
+                    this.props.onDismiss();
                 } else {
                     this.setState({ fileFormatError: strings.errorInvalidFileFormat, working: false });
                 }
