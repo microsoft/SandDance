@@ -13,7 +13,7 @@ import {
     ViewerOptions
 } from '@msrvida/sanddance-explorer';
 import { DataSource, DataSourceSnapshot, InsightMap } from './types';
-import { DataSourcePicker } from './dataSourcePicker';
+import { DataSourcePicker, DataSourceButton, Props as DataSourceProps } from './dataSourcePicker';
 import { downloadData } from './download';
 import {
     downloadSnapshotsJSON,
@@ -224,6 +224,19 @@ export class SandDanceApp extends React.Component<Props, State> {
 
     render() {
         const theme = this.state.darkTheme ? 'dark-theme' : '';
+        const dataSourceProps: DataSourceProps = {
+            dataSource: this.state.dataSource,
+            dataSources: this.props.dataSources,
+            changeDataSource: (dataSource: DataSource) => {
+                document.location.hash = '';
+                return this.load(dataSource).then(() => {
+                    if (this.postLoad) {
+                        this.postLoad(dataSource);
+                        this.postLoad = null;
+                    }
+                }).catch(() => this.loadError(dataSource));
+            }
+        };
         return (
             <section className="sanddance-app">
                 <Explorer
@@ -340,20 +353,9 @@ export class SandDanceApp extends React.Component<Props, State> {
                         }
                     }}
                     datasetElement={(
-                        <DataSourcePicker
-                            ref={dsp => { if (dsp && !this.dataSourcePicker) this.dataSourcePicker = dsp }}
-                            theme={theme}
-                            dataSource={this.state.dataSource}
-                            dataSources={this.props.dataSources}
-                            changeDataSource={ds => {
-                                document.location.hash = '';
-                                return this.load(ds).then(() => {
-                                    if (this.postLoad) {
-                                        this.postLoad(ds);
-                                        this.postLoad = null;
-                                    }
-                                }).catch(() => this.loadError(ds));
-                            }}
+                        <DataSourceButton
+                            getPicker={() => this.dataSourcePicker}
+                            {...dataSourceProps}
                         />
                     )}
                     topBarButtonProps={[
@@ -395,6 +397,11 @@ export class SandDanceApp extends React.Component<Props, State> {
                     ]}
                 >
                 </Explorer>
+                <DataSourcePicker
+                    ref={dsp => { if (dsp && !this.dataSourcePicker) this.dataSourcePicker = dsp }}
+                    theme={theme}
+                    {...dataSourceProps}
+                />
             </section >
         );
     }

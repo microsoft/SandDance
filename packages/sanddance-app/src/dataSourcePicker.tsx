@@ -9,11 +9,70 @@ import { invalidUrlError } from './url';
 import { strings } from './language';
 
 export interface Props {
-    theme: string;
     dataSource: DataSource;
     dataSources: DataSource[];
     changeDataSource: (dataSource: DataSource) => Promise<void>;
-    disabled?: boolean;
+}
+
+export interface ButtonProps extends Props {
+    getPicker: () => DataSourcePicker;
+}
+
+export function DataSourceButton(props: ButtonProps) {
+    const picker = props.getPicker();
+    if (!picker) return null;
+    const menuProps: FabricTypes.IContextualMenuProps = {
+        items: [
+            {
+                key: 'sample-section',
+                itemType: base.fabric.ContextualMenuItemType.Section,
+                sectionProps: {
+                    title: strings.sampleDataPrefix,
+                    items: props.dataSources.map((ds, i) => {
+                        const item: FabricTypes.IContextualMenuItem = {
+                            key: ds.id,
+                            text: ds.displayName,
+                            onClick: e => {
+                                picker.changeDataSource(ds);
+                            }
+                        };
+                        return item;
+                    })
+                }
+            },
+            {
+                key: 'user-section',
+                itemType: base.fabric.ContextualMenuItemType.Section,
+                sectionProps: {
+                    topDivider: true,
+                    title: strings.menuUserData,
+                    items: [
+                        {
+                            key: 'local',
+                            text: strings.menuLocal,
+                            onClick: e => picker.setState({ dialogMode: 'local' })
+                        },
+                        {
+                            key: 'url',
+                            text: strings.menuUrl,
+                            onClick: e => picker.setState({ dialogMode: 'url' })
+                        }
+                    ]
+                }
+            }
+        ]
+    };
+    return (
+        <base.fabric.PrimaryButton
+            className="sanddance-datasource-picker"
+            text={dataSourcePrefix(props.dataSource.dataSourceType, props.dataSource.displayName)}
+            menuProps={menuProps}
+        />
+    );
+}
+
+export interface DialogProps extends Props {
+    theme: string;
 }
 
 export interface State {
@@ -25,8 +84,8 @@ export interface State {
     dialogMode?: DataSourceType;
 }
 
-export class DataSourcePicker extends React.Component<Props, State> {
-    constructor(props: Props) {
+export class DataSourcePicker extends React.Component<DialogProps, State> {
+    constructor(props: DialogProps) {
         super(props);
         this.state = {
             url: '',
@@ -127,139 +186,88 @@ export class DataSourcePicker extends React.Component<Props, State> {
         const closeDialog = () => {
             this.setState({ dialogMode: null });
         };
-
-        const menuProps: FabricTypes.IContextualMenuProps = {
-            items: [
-                {
-                    key: 'sample-section',
-                    itemType: base.fabric.ContextualMenuItemType.Section,
-                    sectionProps: {
-                        title: strings.sampleDataPrefix,
-                        items: this.props.dataSources.map((ds, i) => {
-                            const item: FabricTypes.IContextualMenuItem = {
-                                key: ds.id,
-                                text: ds.displayName,
-                                onClick: e => {
-                                    this.changeDataSource(ds);
-                                }
-                            };
-                            return item;
-                        })
-                    }
-                },
-                {
-                    key: 'user-section',
-                    itemType: base.fabric.ContextualMenuItemType.Section,
-                    sectionProps: {
-                        topDivider: true,
-                        title: strings.menuUserData,
-                        items: [
-                            {
-                                key: 'local',
-                                text: strings.menuLocal,
-                                onClick: e => {
-                                    this.setState({ dialogMode: 'local' });
-                                }
-                            },
-                            {
-                                key: 'url',
-                                text: strings.menuUrl,
-                                onClick: e => {
-                                    this.setState({ dialogMode: 'url' });
-                                }
-                            }
-                        ]
-                    }
-                }
-            ]
-        };
         let shortcut: string;
         if (this.state.url && !invalidUrlError(this.state.url) && !this.state.urlError) {
             shortcut = this.getUrlShortcut(this.state.url, this.state.urlType);
         }
-        return (
-            <div>
-                <base.fabric.PrimaryButton
-                    className="sanddance-datasource-picker"
-                    text={dataSourcePrefix(this.props.dataSource.dataSourceType, this.props.dataSource.displayName)}
-                    menuProps={menuProps}
-                    disabled={this.props.disabled}
+        return [(
+            <base.fabric.Dialog
+                key='local'
+                hidden={!(this.state.dialogMode === 'local')}
+                onDismiss={closeDialog}
+                dialogContentProps={{
+                    className: `sanddance-dialog ${this.props.theme}`,
+                    type: base.fabric.DialogType.normal,
+                    title: strings.dialogTitleLocal,
+                    subText: strings.dialogSubtextLocal
+                }}
+            >
+                <input
+                    type="file"
+                    onChange={e => this.upload(e)}
+                    disabled={this.state.working}
                 />
-                <base.fabric.Dialog
-                    hidden={!(this.state.dialogMode === 'local')}
-                    onDismiss={closeDialog}
-                    dialogContentProps={{
-                        className: `sanddance-dialog ${this.props.theme}`,
-                        type: base.fabric.DialogType.normal,
-                        title: strings.dialogTitleLocal,
-                        subText: strings.dialogSubtextLocal
-                    }}
-                >
-                    <input
-                        type="file"
-                        onChange={e => this.upload(e)}
+                {this.state.uploadFormatError && (
+                    <div className="error">{this.state.uploadFormatError}</div>
+                )}
+            </base.fabric.Dialog>
+        ), (
+            <base.fabric.Dialog
+                key='url'
+                hidden={!(this.state.dialogMode === 'url')}
+                onDismiss={closeDialog}
+                dialogContentProps={{
+                    className: `sanddance-dialog ${this.props.theme}`,
+                    type: base.fabric.DialogType.normal,
+                    title: strings.dialogTitleUrl
+                }}
+            >
+                <section>
+                    <base.fabric.TextField
+                        label={strings.labelUrl}
+                        placeholder={strings.urlInputPlaceholder}
+                        onKeyUp={e => e.keyCode === 13 && this.loadUrl()}
+                        onChange={(e, url) =>
+                            this.setState({ url, urlError: '' })
+                        }
+                        value={this.state.url}
                         disabled={this.state.working}
                     />
-                    {this.state.uploadFormatError && (
-                        <div className="error">{this.state.uploadFormatError}</div>
+                    {this.state.urlError && (
+                        <div className="error">{this.state.urlError}</div>
                     )}
-                </base.fabric.Dialog>
-                <base.fabric.Dialog
-                    hidden={!(this.state.dialogMode === 'url')}
-                    onDismiss={closeDialog}
-                    dialogContentProps={{
-                        className: `sanddance-dialog ${this.props.theme}`,
-                        type: base.fabric.DialogType.normal,
-                        title: strings.dialogTitleUrl
-                    }}
-                >
-                    <section>
-                        <base.fabric.TextField
-                            label={strings.labelUrl}
-                            placeholder={strings.urlInputPlaceholder}
-                            onKeyUp={e => e.keyCode === 13 && this.loadUrl()}
-                            onChange={(e, url) =>
-                                this.setState({ url, urlError: '' })
-                            }
-                            value={this.state.url}
-                            disabled={this.state.working}
-                        />
-                        {this.state.urlError && (
-                            <div className="error">{this.state.urlError}</div>
-                        )}
-                    </section>
-                    <section>
-                        <base.fabric.ChoiceGroup
-                            options={
-                                DataSourcePicker.urlTypes.map((urlType, i) => {
-                                    return {
-                                        key: `${i}`,
-                                        text: urlType,
-                                        disabled: this.state.working,
-                                        checked: i === 0
-                                    } as FabricTypes.IChoiceGroupOption;
-                                })
-                            }
-                            onChange={(ev: React.FormEvent<HTMLInputElement>, option: FabricTypes.IChoiceGroupOption) =>
-                                this.setState({ urlType: option.text as DataFileType, urlError: '' })
-                            }
-                            label={strings.labelDataFormat}
-                        />
-                    </section>
-                    <section className='tip' style={{ visibility: !invalidUrlError(this.state.url) && !this.state.urlError ? 'visible' : 'hidden' }} >
-                        {strings.labelDataUrlShortcut} <a
-                            href={shortcut}
-                            title={strings.labelLinkDescription}
-                            aria-label={strings.labelLinkDescription}
-                        >{strings.labelLink}</a>
-                    </section>
-                    <base.fabric.DialogFooter>
-                        <base.fabric.PrimaryButton onClick={e => this.loadUrl()} text={strings.dialogLoadButton} disabled={this.state.working} />
-                        <base.fabric.DefaultButton onClick={closeDialog} text={strings.dialogCloseButton} />
-                    </base.fabric.DialogFooter>
-                </base.fabric.Dialog>
-            </div>
-        );
+                </section>
+                <section>
+                    <base.fabric.ChoiceGroup
+                        options={
+                            DataSourcePicker.urlTypes.map((urlType, i) => {
+                                return {
+                                    key: `${i}`,
+                                    text: urlType,
+                                    disabled: this.state.working,
+                                    checked: i === 0
+                                } as FabricTypes.IChoiceGroupOption;
+                            })
+                        }
+                        onChange={(ev: React.FormEvent<HTMLInputElement>, option: FabricTypes.IChoiceGroupOption) =>
+                            this.setState({ urlType: option.text as DataFileType, urlError: '' })
+                        }
+                        label={strings.labelDataFormat}
+                    />
+                </section>
+                <section className='tip' style={{ visibility: !invalidUrlError(this.state.url) && !this.state.urlError ? 'visible' : 'hidden' }} >
+                    {strings.labelDataUrlShortcut} <a
+                        href={shortcut}
+                        title={strings.labelLinkDescription}
+                        aria-label={strings.labelLinkDescription}
+                    >{strings.labelLink}</a>
+                </section>
+                <base.fabric.DialogFooter>
+                    <base.fabric.PrimaryButton onClick={e => this.loadUrl()} text={strings.dialogLoadButton} disabled={this.state.working} />
+                    <base.fabric.DefaultButton onClick={closeDialog} text={strings.dialogCloseButton} />
+                </base.fabric.DialogFooter>
+            </base.fabric.Dialog>
+        )];
     }
 }
 
