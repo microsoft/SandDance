@@ -401,7 +401,7 @@ export class Explorer extends React.Component<Props, State> {
         ) => Partial<SandDance.types.Insight>,
         optionsOrPrefs?: Prefs | Options
     ) {
-        this.changeInsight({ columns: null, note: null, snapshots: [] });
+        this.changeInsight({ columns: null, note: null });
         return new Promise<void>((resolve, reject) => {
             const loadFinal = (dataContent: DataContent) => {
                 let partialInsight: Partial<SandDance.types.Insight>;
@@ -423,7 +423,7 @@ export class Explorer extends React.Component<Props, State> {
                 let newState: Partial<State> = {
                     dataFile,
                     dataContent,
-                    snapshots: dataContent.snapshots || [],
+                    snapshots: dataContent.snapshots || this.state.snapshots,
                     autoCompleteDistinctValues: {},
                     filter: null,
                     filteredData: null,
