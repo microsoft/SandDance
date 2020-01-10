@@ -120,13 +120,13 @@ export class SandDanceApp extends React.Component<Props, State> {
     }
 
     private hydrateSnapshot(snapshot: DataSourceSnapshot, selectedSnapshotIndex = -1) {
-        if (!snapshot.dataSource || snapshot.dataSource.id === this.state.dataSource.id) {
+        if (snapshot.dataSource) {
             if (selectedSnapshotIndex === -1) {
                 this.explorer.reviveSnapshot(snapshot);
             } else {
                 this.explorer.reviveSnapshot(selectedSnapshotIndex);
             }
-            if (snapshot.dataSource && snapshot.dataSource.snapshotsUrl && snapshot.dataSource.snapshotsUrl !== this.state.dataSource.snapshotsUrl) {
+            if (snapshot.dataSource.snapshotsUrl && snapshot.dataSource.snapshotsUrl !== this.state.dataSource.snapshotsUrl) {
                 //load new snapshots url
                 fetch(snapshot.dataSource.snapshotsUrl)
                     .then(response => response.json())
@@ -139,12 +139,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                         }
                     });
             }
-        }
-        else {
-            if (snapshot.dataSource && snapshot.dataSource.dataSourceType !== 'local') {
-                this.load(snapshot.dataSource, snapshot.insight);
-            }
-            //this.setState({ snapshots: this.state.snapshots.filter(snapshot => snapshot.dataSource.dataSourceType !== 'local') });
+            return true;
         }
     }
 
@@ -180,11 +175,12 @@ export class SandDanceApp extends React.Component<Props, State> {
     }
 
     render() {
+        const theme = this.state.darkTheme ? 'dark-theme' : '';
         return (
             <section className="sanddance-app">
                 <Explorer
                     logoClickTarget="_self"
-                    theme={this.state.darkTheme && 'dark-theme'}
+                    theme={theme}
                     snapshotProps={{
                         modifySnapShot: (snapshot: DataSourceSnapshot) => {
                             snapshot.dataSource = this.state.dataSource;
@@ -228,6 +224,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                             <div>
                                 {this.state.dialogMode === 'import-local' && (
                                     <SnapshotImportLocal
+                                        theme={theme}
                                         dataSource={this.state.dataSource}
                                         onImportSnapshot={snapshots => this.explorer.setState({ snapshots })}
                                         onDismiss={() => this.setState({ dialogMode: null })}
@@ -235,6 +232,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                                 )}
                                 {this.state.dialogMode === 'import-remote' && (
                                     <SnapshotImportRemote
+                                        theme={theme}
                                         dataSource={this.state.dataSource}
                                         onImportSnapshot={snapshots => this.explorer.setState({ snapshots })}
                                         onSnapshotsUrl={snapshotsUrl => {
@@ -262,12 +260,14 @@ export class SandDanceApp extends React.Component<Props, State> {
                             if (snapshot.dataSource && snapshot.dataSource.dataSourceType === 'local') {
                                 element = (<span>{strings.labelLocal}</span>);
                             } else {
-                                element = (<a
-                                    key={`link${i}`}
-                                    href={url}
-                                    title={strings.labelLinkDescription}
-                                    aria-label={strings.labelLinkDescription}
-                                >{strings.labelLink}</a>);
+                                element = (
+                                    <a
+                                        key={`link${i}`}
+                                        href={url}
+                                        title={strings.labelLinkDescription}
+                                        aria-label={strings.labelLinkDescription}
+                                    >{strings.labelLink}</a>
+                                );
                             }
                             return [{ element }];
                         },
@@ -291,6 +291,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                     }}
                     datasetElement={(
                         <DataSourcePicker
+                            theme={theme}
                             dataSource={this.state.dataSource}
                             dataSources={this.props.dataSources}
                             changeDataSource={ds => {

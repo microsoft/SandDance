@@ -72,7 +72,7 @@ export interface Props {
     dataExportHandler?: DataExportHandler;
     topBarButtonProps?: FabricTypes.ICommandBarItemProps[];
     snapshotProps?: SnapshotProps;
-    onSnapshotClick?: (snapshot: Snapshot, selectedSnaphotIndex: number) => void;
+    onSnapshotClick?: (snapshot: Snapshot, selectedSnaphotIndex: number) => void | boolean;
     onView?: () => void;
     onError?: (e: any) => void;
     onSignalChanged?: () => void;
@@ -383,10 +383,14 @@ export class Explorer extends React.Component<Props, State> {
                 newState.sideTabId = SideTabId.Snapshots;
                 this.scrollSnapshotIntoView(selectedSnapshotIndex);
             }
-            this.setInsight(newState);
+            this.setInsight(newState, true);
         } else {
             const snapshot = snapshotOrIndex as Snapshot;
-            this.setInsight({ ...snapshot.insight, note: snapshot.description, selectedSnapshotIndex: -1 }, true); //don't navigate to sideTab
+            if (snapshot.insight) {
+                this.setInsight({ ...snapshot.insight, note: snapshot.description, selectedSnapshotIndex: -1 }, true); //don't navigate to sideTab
+            } else {
+                this.setState({ note: snapshot.description, selectedSnapshotIndex: -1 });
+            }
         }
     }
 
@@ -1044,6 +1048,7 @@ export class Explorer extends React.Component<Props, State> {
                                     }
                                     return (
                                         <DataBrowser
+                                            theme={this.props.theme}
                                             themePalette={themePalette}
                                             disabled={!loaded || this.state.sidebarClosed}
                                             columns={this.state.dataContent && this.state.dataContent.columns}
@@ -1117,9 +1122,11 @@ export class Explorer extends React.Component<Props, State> {
                                             onSnapshotClick={(snapshot, selectedSnapshotIndex) => {
                                                 this.setState({ selectedSnapshotIndex });
                                                 this.calculate(() => {
+                                                    let handled = false;
                                                     if (this.props.onSnapshotClick) {
-                                                        this.props.onSnapshotClick(snapshot, selectedSnapshotIndex);
-                                                    } else {
+                                                        handled = this.props.onSnapshotClick(snapshot, selectedSnapshotIndex) as boolean;
+                                                    }
+                                                    if (!handled) {
                                                         this.reviveSnapshot(selectedSnapshotIndex);
                                                     }
                                                 });
