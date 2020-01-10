@@ -418,7 +418,7 @@
 .sanddance-snapshots .actions {
   display: grid;
   grid-auto-flow: column; }
-  .sanddance-snapshots .actions a {
+  .sanddance-snapshots .actions a, .sanddance-snapshots .actions span {
     align-self: center;
     text-align: center; }
   .sanddance-snapshots .actions button {

@@ -334,7 +334,7 @@ Insight
 | dataFile                   | [DataFile][InterfaceDeclaration-3]                      | false    |
 | dataContent                | [DataContent][InterfaceDeclaration-2]                   | false    |
 | specCapabilities           | SpecCapabilities                                        | false    |
-| sideTabId                  | SideTabId                          | false    |
+| sideTabId                  | [SideTabId][EnumDeclaration-0]                          | false    |
 | dataScopeId                | DataScopeId                        | false    |
 | selectedItemIndex          | { [key: number]: number; }                              | false    |
 | snapshots                  | [Snapshot][InterfaceDeclaration-0][]                    | false    |
@@ -366,6 +366,37 @@ type DataFileType = "json" | "csv" | "tsv" | "topojson";
 **Type**
 
 "json" | "csv" | "tsv" | "topojson"
+
+## Enums
+
+### SideTabId
+
+
+```typescript
+enum SideTabId {
+     ChartType = 0,
+     Data = 1,
+     Search = 2,
+     Color = 3,
+     Snapshots = 4,
+     Settings = 5,
+     Pin = 6,
+     Collapse = 7
+}
+```
+
+**Members**
+
+| Name      | Value |
+| --------- | ----- |
+| ChartType | 0     |
+| Data      | 1     |
+| Search    | 2     |
+| Color     | 3     |
+| Snapshots | 4     |
+| Settings  | 5     |
+| Pin       | 6     |
+| Collapse  | 7     |
 
 ## Classes
 
@@ -432,10 +463,12 @@ string
 [InterfaceDeclaration-11]: index.html#state
 [InterfaceDeclaration-3]: index.html#datafile
 [InterfaceDeclaration-2]: index.html#datacontent
+[EnumDeclaration-0]: index.html#sidetabid
 [InterfaceDeclaration-0]: index.html#snapshot
 [TypeAliasDeclaration-0]: index.html#dataexporttype
 [TypeAliasDeclaration-1]: index.html#datafiletype
 [TypeAliasDeclaration-1]: index.html#datafiletype
+[EnumDeclaration-0]: index.html#sidetabid
 [ClassDeclaration-0]: explorer.html#explorer
 [VariableDeclaration-0]: index.html#capabilities
 [VariableDeclaration-1]: index.html#themepalettes

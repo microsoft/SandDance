@@ -3,6 +3,7 @@
 
 .sanddance-app {
   display: grid;
+  grid-template-rows: 100% 0;
   height: 100%; }
 
 .sanddance-export .ms-Button {
@@ -483,7 +484,7 @@
   display: grid;
   grid-auto-flow: column; }
 
-.sanddance-snapshots .actions a {
+.sanddance-snapshots .actions a, .sanddance-snapshots .actions span {
   align-self: center;
   text-align: center; }
 

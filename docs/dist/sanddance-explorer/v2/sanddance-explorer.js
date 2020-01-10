@@ -18946,7 +18946,27 @@ function getEmbedHTML(data, displayName, snapshots) {
   var html = (0, _dataExporterHtml.embedHtml)("".concat(_language.strings.appName, " - ").concat(escape(displayName)), embedScript(csv, displayName, snapshots));
   return html;
 }
-},{"react":"ccIB","../base":"Vlbn","../exportDelimited":"pP3Y","./dataExporterHtml":"fOIZ","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"Dryx":[function(require,module,exports) {
+},{"react":"ccIB","../base":"Vlbn","../exportDelimited":"pP3Y","./dataExporterHtml":"fOIZ","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"h2T5":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SideTabId = void 0;
+var SideTabId;
+exports.SideTabId = SideTabId;
+
+(function (SideTabId) {
+  SideTabId[SideTabId["ChartType"] = 0] = "ChartType";
+  SideTabId[SideTabId["Data"] = 1] = "Data";
+  SideTabId[SideTabId["Search"] = 2] = "Search";
+  SideTabId[SideTabId["Color"] = 3] = "Color";
+  SideTabId[SideTabId["Snapshots"] = 4] = "Snapshots";
+  SideTabId[SideTabId["Settings"] = 5] = "Settings";
+  SideTabId[SideTabId["Pin"] = 6] = "Pin";
+  SideTabId[SideTabId["Collapse"] = 7] = "Collapse";
+})(SideTabId || (exports.SideTabId = SideTabId = {}));
+},{}],"Dryx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25439,7 +25459,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var version = '2.2.1';
+var version = '2.2.2';
 exports.version = version;
 },{}],"zKGJ":[function(require,module,exports) {
 "use strict";
@@ -25858,7 +25878,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Sidebar = Sidebar;
 exports.Sidebutton = Sidebutton;
-exports.SideTabId = void 0;
 
 var React = _interopRequireWildcard(require("react"));
 
@@ -25870,6 +25889,8 @@ var _iconButton = require("./iconButton");
 
 var _scrollable = require("./scrollable");
 
+var _interfaces = require("../interfaces");
+
 var _language = require("../language");
 
 var _sanddanceReact = require("@msrvida/sanddance-react");
@@ -25880,43 +25901,29 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var SideTabId;
-exports.SideTabId = SideTabId;
-
-(function (SideTabId) {
-  SideTabId[SideTabId["ChartType"] = 0] = "ChartType";
-  SideTabId[SideTabId["Data"] = 1] = "Data";
-  SideTabId[SideTabId["Search"] = 2] = "Search";
-  SideTabId[SideTabId["Color"] = 3] = "Color";
-  SideTabId[SideTabId["Snapshots"] = 4] = "Snapshots";
-  SideTabId[SideTabId["Settings"] = 5] = "Settings";
-  SideTabId[SideTabId["Pin"] = 6] = "Pin";
-  SideTabId[SideTabId["Collapse"] = 7] = "Collapse";
-})(SideTabId || (exports.SideTabId = SideTabId = {}));
-
 function Sidebar(props) {
   var sidebuttons = [{
-    sideTabId: SideTabId.ChartType,
+    sideTabId: _interfaces.SideTabId.ChartType,
     iconName: 'BIDashboard',
     title: _language.strings.labelChart
   }, {
-    sideTabId: SideTabId.Color,
+    sideTabId: _interfaces.SideTabId.Color,
     iconName: 'Color',
     title: _language.strings.labelColor
   }, {
-    sideTabId: SideTabId.Data,
+    sideTabId: _interfaces.SideTabId.Data,
     iconName: 'Table',
     title: _language.strings.labelDataBrowser
   }, {
-    sideTabId: SideTabId.Search,
+    sideTabId: _interfaces.SideTabId.Search,
     iconName: 'Search',
     title: _language.strings.labelSearch
   }, {
-    sideTabId: SideTabId.Snapshots,
+    sideTabId: _interfaces.SideTabId.Snapshots,
     iconName: 'Camera',
     title: _language.strings.labelSnapshots
   }, {
-    sideTabId: SideTabId.Settings,
+    sideTabId: _interfaces.SideTabId.Settings,
     iconName: 'Settings',
     title: _language.strings.labelChartSettings
   }];
@@ -25938,11 +25945,11 @@ function Sidebar(props) {
   })), !props.hideSidebarControls && React.createElement("div", {
     className: "sidebar-controls"
   }, React.createElement(Sidebutton, Object.assign({}, props, {
-    sideTabId: SideTabId.Pin,
+    sideTabId: _interfaces.SideTabId.Pin,
     iconName: props.pinned ? 'Pinned' : 'Pin',
     title: props.pinned ? _language.strings.buttonToolbarFloat : _language.strings.buttonToolbarDock
   })), React.createElement(Sidebutton, Object.assign({}, props, {
-    sideTabId: SideTabId.Collapse,
+    sideTabId: _interfaces.SideTabId.Collapse,
     iconName: props.closed ? 'DoubleChevronRight12' : 'DoubleChevronLeft12',
     title: props.closed ? _language.strings.buttonToolbarShow : _language.strings.buttonToolbarHide
   })))), React.createElement(_scrollable.Scrollable, {
@@ -25974,7 +25981,7 @@ function Sidebutton(props) {
     }
   }));
 }
-},{"react":"ccIB","../base":"Vlbn","./dataScope":"OsNT","./iconButton":"dQNc","./scrollable":"GuKX","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"dSzJ":[function(require,module,exports) {
+},{"react":"ccIB","../base":"Vlbn","./dataScope":"OsNT","./iconButton":"dQNc","./scrollable":"GuKX","../interfaces":"h2T5","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"dSzJ":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26726,6 +26733,8 @@ var _chart = require("./dialogs/chart");
 
 var _color = require("./dialogs/color");
 
+var _interfaces = require("./interfaces");
+
 var _partialInsight = require("./partialInsight");
 
 var _dataBrowser = require("./dialogs/dataBrowser");
@@ -26866,7 +26875,7 @@ function (_React$Component) {
       signalValues: null,
       hideAxes: false,
       hideLegend: false,
-      sideTabId: _sidebar.SideTabId.ChartType,
+      sideTabId: _interfaces.SideTabId.ChartType,
       dataScopeId: _dataScope.DataScopeId.AllData,
       selectedItemIndex: {},
       sidebarClosed: false,
@@ -26918,7 +26927,7 @@ function (_React$Component) {
             selectedItemIndex: selectedItemIndex
           });
 
-          if (_this2.state.sideTabId === _sidebar.SideTabId.Data && _this2.state.dataScopeId === _dataScope.DataScopeId.FilteredData) {
+          if (_this2.state.sideTabId === _interfaces.SideTabId.Data && _this2.state.dataScopeId === _dataScope.DataScopeId.FilteredData) {
             //make sure item is active
             requestAnimationFrame(function () {
               return filteredData && _this2.silentActivation(filteredData[0]);
@@ -27133,6 +27142,22 @@ function (_React$Component) {
       }
     }
   }, {
+    key: "handleReviveSnapshot",
+    value: function handleReviveSnapshot(snapshot, selectedSnapshotIndex) {
+      var handled = false;
+
+      if (this.props.onSnapshotClick) {
+        this.setState({
+          selectedSnapshotIndex: selectedSnapshotIndex
+        });
+        handled = this.props.onSnapshotClick(snapshot, selectedSnapshotIndex);
+      }
+
+      if (!handled) {
+        this.reviveSnapshot(selectedSnapshotIndex);
+      }
+    }
+  }, {
     key: "reviveSnapshot",
     value: function reviveSnapshot(snapshotOrIndex) {
       if (typeof snapshotOrIndex === 'number') {
@@ -27144,7 +27169,7 @@ function (_React$Component) {
         });
 
         if (!this.state.sidebarClosed) {
-          newState.sideTabId = _sidebar.SideTabId.Snapshots;
+          newState.sideTabId = _interfaces.SideTabId.Snapshots;
           this.scrollSnapshotIntoView(selectedSnapshotIndex);
         }
 
@@ -27191,7 +27216,7 @@ function (_React$Component) {
           }
 
           var selectedItemIndex = Object.assign({}, _this5.state.selectedItemIndex);
-          var sideTabId = _sidebar.SideTabId.ChartType;
+          var sideTabId = _interfaces.SideTabId.ChartType;
           selectedItemIndex[_dataScope.DataScopeId.AllData] = 0;
           selectedItemIndex[_dataScope.DataScopeId.FilteredData] = 0;
           selectedItemIndex[_dataScope.DataScopeId.SelectedData] = 0;
@@ -27475,7 +27500,7 @@ function (_React$Component) {
   }, {
     key: "setSideTabId",
     value: function setSideTabId(sideTabId, dataScopeId) {
-      if (sideTabId === _sidebar.SideTabId.Data && dataScopeId == null) {
+      if (sideTabId === _interfaces.SideTabId.Data && dataScopeId == null) {
         //choose most relevant DataScopeId
         dataScopeId = this.getBestDataScopeId();
       }
@@ -27513,7 +27538,7 @@ function (_React$Component) {
       if (!this.viewer) return;
       var itemToActivate;
 
-      if (sideTabId === _sidebar.SideTabId.Data) {
+      if (sideTabId === _interfaces.SideTabId.Data) {
         switch (dataScopeId) {
           case _dataScope.DataScopeId.AllData:
             {
@@ -27606,7 +27631,7 @@ function (_React$Component) {
         this.setState({
           search: createInputSearch(search)
         });
-        this.setSideTabId(_sidebar.SideTabId.Search);
+        this.setSideTabId(_interfaces.SideTabId.Search);
       } else {
         var oldSelection = this.viewer.getSelection();
 
@@ -27696,7 +27721,7 @@ function (_React$Component) {
         }
 
         this.setState({
-          sideTabId: _sidebar.SideTabId.Snapshots,
+          sideTabId: _interfaces.SideTabId.Snapshots,
           snapshots: snapshots,
           selectedSnapshotIndex: selectedSnapshotIndex,
           note: note
@@ -27818,7 +27843,7 @@ function (_React$Component) {
             }
           }
 
-          _this11.reviveSnapshot(selectedSnapshotIndex);
+          _this11.handleReviveSnapshot(_this11.state.snapshots[selectedSnapshotIndex], selectedSnapshotIndex);
         },
         onSnapshotClick: function onSnapshotClick() {
           return _this11.snapshotEditor.editSnapshot();
@@ -27837,7 +27862,7 @@ function (_React$Component) {
             }
           }
 
-          _this11.reviveSnapshot(selectedSnapshotIndex);
+          _this11.handleReviveSnapshot(_this11.state.snapshots[selectedSnapshotIndex], selectedSnapshotIndex);
         },
         onViewClick: function onViewClick() {
           var view = _this11.state.view === '2d' ? '3d' : '2d';
@@ -27850,9 +27875,7 @@ function (_React$Component) {
           return _this11.viewer.presenter.homeCamera();
         }
       }), React.createElement("div", {
-        className: _sanddanceReact.util.classList('sanddance-main', this.state.sidebarPinned && 'pinned', this.state.sidebarClosed && 'closed', (insight.hideLegend || insight.directColor || !(insight.columns && insight.columns.color && !this.state.dataContent.columns.filter(function (c) {
-          return c.name === insight.columns.color;
-        })[0].isColorData)) && 'hide-legend')
+        className: _sanddanceReact.util.classList('sanddance-main', this.state.sidebarPinned && 'pinned', this.state.sidebarClosed && 'closed', (insight.hideLegend || insight.directColor || !colorMapping(insight, this.state.dataContent && this.state.dataContent.columns)) && 'hide-legend')
       }, React.createElement("div", {
         ref: function ref(div) {
           if (div && !_this11.layoutDivUnpinned) _this11.layoutDivUnpinned = div;
@@ -27890,21 +27913,21 @@ function (_React$Component) {
             filtered: this.state.filteredData && this.state.filteredData.length,
             selected: selectionState && selectionState.selectedData && selectionState.selectedData.length
           },
-          active: this.state.sideTabId === _sidebar.SideTabId.Data,
+          active: this.state.sideTabId === _interfaces.SideTabId.Data,
           onDataScopeClick: function onDataScopeClick(dataScopeId) {
-            return _this11.setSideTabId(_sidebar.SideTabId.Data, dataScopeId);
+            return _this11.setSideTabId(_interfaces.SideTabId.Data, dataScopeId);
           },
           selectedDataScope: this.state.dataScopeId,
           disabled: !loaded
         },
         onSideTabClick: function onSideTabClick(sideTabId) {
           //collapse or toggle
-          if (sideTabId === _sidebar.SideTabId.Collapse || _this11.state.sideTabId === sideTabId) {
+          if (sideTabId === _interfaces.SideTabId.Collapse || _this11.state.sideTabId === sideTabId) {
             var _this11$state = _this11.state,
                 dataScopeId = _this11$state.dataScopeId,
                 sidebarClosed = _this11$state.sidebarClosed;
 
-            if (sidebarClosed && sideTabId === _sidebar.SideTabId.Data) {
+            if (sidebarClosed && sideTabId === _interfaces.SideTabId.Data) {
               dataScopeId = _this11.getBestDataScopeId();
             }
 
@@ -27915,7 +27938,7 @@ function (_React$Component) {
               sidebarClosed: sidebarClosed,
               size: _this11.getLayoutDivSize(_this11.state.sidebarPinned, sidebarClosed)
             });
-          } else if (sideTabId === _sidebar.SideTabId.Pin) {
+          } else if (sideTabId === _interfaces.SideTabId.Pin) {
             _this11.changeInsight({
               sidebarPinned: !_this11.state.sidebarPinned,
               size: _this11.getLayoutDivSize(!_this11.state.sidebarPinned, _this11.state.sidebarClosed)
@@ -27927,7 +27950,7 @@ function (_React$Component) {
         selectedSideTab: this.state.sideTabId
       }, loaded && function () {
         switch (_this11.state.sideTabId) {
-          case _sidebar.SideTabId.ChartType:
+          case _interfaces.SideTabId.ChartType:
             {
               return React.createElement(_chart.Chart, Object.assign({
                 collapseLabels: _this11.props.compactUI,
@@ -27963,7 +27986,7 @@ function (_React$Component) {
               }));
             }
 
-          case _sidebar.SideTabId.Color:
+          case _interfaces.SideTabId.Color:
             {
               return React.createElement(_color.Color, Object.assign({
                 compactUI: _this11.props.compactUI,
@@ -28034,7 +28057,7 @@ function (_React$Component) {
               }));
             }
 
-          case _sidebar.SideTabId.Data:
+          case _interfaces.SideTabId.Data:
             {
               var data = datas[_this11.state.dataScopeId];
               var itemVisible = true;
@@ -28062,7 +28085,7 @@ function (_React$Component) {
                 dataExportHandler: _this11.props.dataExportHandler,
                 selectedDataScope: _this11.state.dataScopeId,
                 onDataScopeClick: function onDataScopeClick(dataScopeId) {
-                  return _this11.setSideTabId(_sidebar.SideTabId.Data, dataScopeId);
+                  return _this11.setSideTabId(_interfaces.SideTabId.Data, dataScopeId);
                 },
                 onActivate: function onActivate(row, index) {
                   var selectedItemIndex = Object.assign({}, _this11.state.selectedItemIndex);
@@ -28077,7 +28100,7 @@ function (_React$Component) {
                 onSearch: function onSearch(e, search) {
                   if (e.ctrlKey) {
                     _this11.setState({
-                      sideTabId: _sidebar.SideTabId.Search,
+                      sideTabId: _interfaces.SideTabId.Search,
                       search: search
                     });
                   } else {
@@ -28088,7 +28111,7 @@ function (_React$Component) {
               });
             }
 
-          case _sidebar.SideTabId.Search:
+          case _interfaces.SideTabId.Search:
             {
               return React.createElement(_search.Search, {
                 collapseLabels: _this11.props.compactUI,
@@ -28108,7 +28131,7 @@ function (_React$Component) {
               });
             }
 
-          case _sidebar.SideTabId.Snapshots:
+          case _interfaces.SideTabId.Snapshots:
             {
               return React.createElement(_snapshots.Snapshots, Object.assign({}, _this11.props.snapshotProps, {
                 editor: _this11.snapshotEditor,
@@ -28148,15 +28171,7 @@ function (_React$Component) {
                   });
 
                   _this11.calculate(function () {
-                    var handled = false;
-
-                    if (_this11.props.onSnapshotClick) {
-                      handled = _this11.props.onSnapshotClick(snapshot, selectedSnapshotIndex);
-                    }
-
-                    if (!handled) {
-                      _this11.reviveSnapshot(selectedSnapshotIndex);
-                    }
+                    _this11.handleReviveSnapshot(snapshot, selectedSnapshotIndex);
                   });
                 },
                 onMoveUp: function onMoveUp(i) {
@@ -28204,7 +28219,7 @@ function (_React$Component) {
               }));
             }
 
-          case _sidebar.SideTabId.Settings:
+          case _interfaces.SideTabId.Settings:
             {
               return React.createElement(_settings.Settings, {
                 explorer: _this11,
@@ -28367,7 +28382,15 @@ function (_React$Component) {
 }(React.Component);
 
 exports.Explorer = Explorer;
-},{"react":"ccIB","./colorMap":"E67y","./base":"Vlbn","./colorScheme":"L8O2","./dialogs/chart":"NGSt","./dialogs/color":"N8IJ","./partialInsight":"tb7d","./dialogs/dataBrowser":"pJLc","./controls/dataScope":"OsNT","./defaults":"Tl9z","./controls/dialog":"cFWm","./columns":"f8v0","./mouseEvent":"yvMl","./controls/iconButton":"dQNc","./dialogs/search":"ozxe","./dataLoader":"f19h","./clickableTextLayer":"UUG7","@msrvida/chart-recommender":"i6UQ","./canvas":"Dryx","@msrvida/sanddance-react":"MjKu","./dialogs/settings":"zKGJ","./controls/sidebar":"f8Jx","./dialogs/snapshotEditor":"dSzJ","./dialogs/snapshots":"oc9r","./language":"hk5u","./themes":"CgE3","./toggleSearch":"yzxM","./controls/topbar":"Afi9"}],"Focm":[function(require,module,exports) {
+
+function colorMapping(insight, columns) {
+  if (columns && insight.columns && insight.columns.color) {
+    return columns.filter(function (c) {
+      return c.name === insight.columns.color;
+    })[0];
+  }
+}
+},{"react":"ccIB","./colorMap":"E67y","./base":"Vlbn","./colorScheme":"L8O2","./dialogs/chart":"NGSt","./dialogs/color":"N8IJ","./interfaces":"h2T5","./partialInsight":"tb7d","./dialogs/dataBrowser":"pJLc","./controls/dataScope":"OsNT","./defaults":"Tl9z","./controls/dialog":"cFWm","./columns":"f8v0","./mouseEvent":"yvMl","./controls/iconButton":"dQNc","./dialogs/search":"ozxe","./dataLoader":"f19h","./clickableTextLayer":"UUG7","@msrvida/chart-recommender":"i6UQ","./canvas":"Dryx","@msrvida/sanddance-react":"MjKu","./dialogs/settings":"zKGJ","./controls/sidebar":"f8Jx","./dialogs/snapshotEditor":"dSzJ","./dialogs/snapshots":"oc9r","./language":"hk5u","./themes":"CgE3","./toggleSearch":"yzxM","./controls/topbar":"Afi9"}],"Focm":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28375,6 +28398,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var _exportNames = {
   getEmbedHTML: true,
+  SideTabId: true,
   use: true,
   capabilities: true,
   getColorSettingsFromThemePalette: true,
@@ -28387,6 +28411,12 @@ Object.defineProperty(exports, "getEmbedHTML", {
   enumerable: true,
   get: function () {
     return _dataExporter.getEmbedHTML;
+  }
+});
+Object.defineProperty(exports, "SideTabId", {
+  enumerable: true,
+  get: function () {
+    return _interfaces.SideTabId;
   }
 });
 Object.defineProperty(exports, "use", {
@@ -28434,6 +28464,8 @@ Object.defineProperty(exports, "version", {
 
 var _dataExporter = require("./controls/dataExporter");
 
+var _interfaces = require("./interfaces");
+
 var _base = require("./base");
 
 var _canvas = require("./canvas");
@@ -28456,4 +28488,4 @@ Object.keys(_explorer).forEach(function (key) {
 var _sanddanceReact = require("@msrvida/sanddance-react");
 
 var _version = require("./version");
-},{"./controls/dataExporter":"l7po","./base":"Vlbn","./canvas":"Dryx","./themes":"CgE3","./explorer":"KeW6","@msrvida/sanddance-react":"MjKu","./version":"RvaL"}]},{},["Focm"], "SandDanceExplorer")
+},{"./controls/dataExporter":"l7po","./interfaces":"h2T5","./base":"Vlbn","./canvas":"Dryx","./themes":"CgE3","./explorer":"KeW6","@msrvida/sanddance-react":"MjKu","./version":"RvaL"}]},{},["Focm"], "SandDanceExplorer")
