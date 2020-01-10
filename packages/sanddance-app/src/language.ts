@@ -33,6 +33,7 @@ export const strings = {
     labelLinkDescription: 'A URL to revive this snapshot.',
     labelUrl: 'Url',
     labelDataFormat: 'Data format',
+    labelDataUrlShortcut: 'Tip: Your data file can also be pre-loaded with this',
     urlInputPlaceholder: 'paste URL',
     sampleDataPrefix: 'Sample data',
     localFilePrefix: 'Local file',
