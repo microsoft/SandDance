@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import * as Vega from 'vega-typings';
 import { FacetEncodingFieldDef } from 'vega-lite/build/src/spec/facet';
-import { Field, TypedFieldDef } from 'vega-lite/build/src/channeldef';
+import { Field, TypedFieldDef, PositionFieldDef } from 'vega-lite/build/src/channeldef';
 import { StandardType } from 'vega-lite/build/src/type';
 import { TopLevelUnitSpec } from 'vega-lite/build/src/spec/unit';
 
@@ -492,6 +492,26 @@ function findScaleByName<T extends Vega.Scale>(scales: Vega.Scale[], name: strin
     for (let i = 0; i < scales.length; i++) {
         if (scales[i].name === name) {
             return scales[i] as T;
+        }
+    }
+}
+
+export function isPercent(inputSpec: TopLevelUnitSpec) {
+    const xEncodingStacked = inputSpec.encoding.x as PositionFieldDef<string>;
+    const yEncodingStacked = inputSpec.encoding.y as PositionFieldDef<string>;
+    if (xEncodingStacked.stack && xEncodingStacked.stack === 'normalize') return true;
+    if (yEncodingStacked.stack && yEncodingStacked.stack === 'normalize') return true;
+    return false;
+}
+
+export function getSumField(inputSpec: TopLevelUnitSpec) {
+    const xEncodingStacked = inputSpec.encoding.x as PositionFieldDef<string>;
+    const yEncodingStacked = inputSpec.encoding.y as PositionFieldDef<string>;
+    const both = [xEncodingStacked, yEncodingStacked];
+    for (let i = 0; i < both.length; i++) {
+        let enc = both[i];
+        if (enc.aggregate && enc.aggregate === 'sum'){
+            return enc.field;
         }
     }
 }
