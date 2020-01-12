@@ -1,0 +1,410 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "data": [
+    {
+      "name": "source_0",
+      "url": "https://sanddance.js.org/sample-data/titanicmaster.tsv",
+      "format": {
+        "type": "tsv"
+      },
+      "transform": [
+        {
+          "type": "extent",
+          "field": "TicketCost",
+          "signal": "bin_maxbins_30_TicketCost_extent"
+        },
+        {
+          "type": "bin",
+          "field": "TicketCost",
+          "as": [
+            "bin_maxbins_30_TicketCost",
+            "bin_maxbins_30_TicketCost_end"
+          ],
+          "signal": "bin_maxbins_30_TicketCost_bins",
+          "extent": {
+            "signal": "bin_maxbins_30_TicketCost_extent"
+          },
+          "maxbins": 30
+        },
+        {
+          "type": "extent",
+          "field": "Age",
+          "signal": "child_bin_maxbins_20_Age_extent"
+        },
+        {
+          "type": "bin",
+          "field": "Age",
+          "as": [
+            "bin_maxbins_20_Age",
+            "bin_maxbins_20_Age_end"
+          ],
+          "signal": "child_bin_maxbins_20_Age_bins",
+          "extent": {
+            "signal": "child_bin_maxbins_20_Age_extent"
+          },
+          "maxbins": 20
+        },
+        {
+          "type": "window",
+          "params": [
+            null
+          ],
+          "as": [
+            "id"
+          ],
+          "ops": [
+            "row_number"
+          ],
+          "fields": [
+            null
+          ],
+          "sort": {
+            "field": [],
+            "order": []
+          }
+        },
+        {
+          "type": "aggregate",
+          "groupby": [
+            "bin_maxbins_20_Age",
+            "bin_maxbins_20_Age_end",
+            "id",
+            "Name",
+            "bin_maxbins_30_TicketCost",
+            "bin_maxbins_30_TicketCost_end"
+          ],
+          "ops": [
+            "count"
+          ],
+          "fields": [
+            null
+          ],
+          "as": [
+            "__count"
+          ]
+        },
+        {
+          "type": "stack",
+          "groupby": [
+            "bin_maxbins_20_Age",
+            "bin_maxbins_20_Age_end",
+            "bin_maxbins_30_TicketCost",
+            "bin_maxbins_30_TicketCost_end"
+          ],
+          "field": "__count",
+          "sort": {
+            "field": [
+              "id"
+            ],
+            "order": [
+              "descending"
+            ]
+          },
+          "as": [
+            "__count_start",
+            "__count_end"
+          ],
+          "offset": "normalize"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"bin_maxbins_20_Age\"]) && isFinite(+datum[\"bin_maxbins_20_Age\"])"
+        }
+      ]
+    },
+    {
+      "name": "facet_domain",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "bin_maxbins_30_TicketCost",
+            "bin_maxbins_30_TicketCost_end"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "facet_domain_row",
+      "transform": [
+        {
+          "type": "sequence",
+          "start": 0,
+          "stop": {
+            "signal": "ceil(length(data(\"facet_domain\")) / 10)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "facet_domain_column",
+      "transform": [
+        {
+          "type": "sequence",
+          "start": 0,
+          "stop": {
+            "signal": "min(length(data(\"facet_domain\")), 10)"
+          }
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "name": "child_width",
+      "value": 300
+    },
+    {
+      "name": "child_height",
+      "value": 300
+    }
+  ],
+  "layout": {
+    "padding": 20,
+    "bounds": "full",
+    "align": "all",
+    "columns": 10
+  },
+  "marks": [
+    {
+      "name": "facet-title",
+      "type": "group",
+      "role": "column-title",
+      "title": {
+        "text": "TicketCost (binned)",
+        "style": "guide-title",
+        "offset": 10
+      }
+    },
+    {
+      "name": "row_header",
+      "type": "group",
+      "role": "row-header",
+      "from": {
+        "data": "facet_domain_row"
+      },
+      "encode": {
+        "update": {
+          "height": {
+            "signal": "child_height"
+          }
+        }
+      },
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "grid": false,
+          "title": "Age (binned)",
+          "labelOverlap": true,
+          "tickCount": {
+            "signal": "ceil(child_height/10)"
+          },
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "name": "column_footer",
+      "type": "group",
+      "role": "column-footer",
+      "from": {
+        "data": "facet_domain_column"
+      },
+      "encode": {
+        "update": {
+          "width": {
+            "signal": "child_width"
+          }
+        }
+      },
+      "axes": [
+        {
+          "scale": "x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Count of Records",
+          "format": "%",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {
+            "signal": "ceil(child_width/40)"
+          },
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "name": "cell",
+      "type": "group",
+      "title": {
+        "text": {
+          "signal": "!isValid(parent[\"bin_maxbins_30_TicketCost\"]) || !isFinite(+parent[\"bin_maxbins_30_TicketCost\"]) ? \"null\" : format(parent[\"bin_maxbins_30_TicketCost\"], \"\") + \" - \" + format(parent[\"bin_maxbins_30_TicketCost_end\"], \"\")"
+        },
+        "style": "guide-label",
+        "frame": "group",
+        "offset": 10
+      },
+      "style": "cell",
+      "from": {
+        "facet": {
+          "name": "facet",
+          "data": "source_0",
+          "groupby": [
+            "bin_maxbins_30_TicketCost",
+            "bin_maxbins_30_TicketCost_end"
+          ]
+        }
+      },
+      "sort": {
+        "field": [
+          "datum[\"bin_maxbins_30_TicketCost\"]"
+        ],
+        "order": [
+          "ascending"
+        ]
+      },
+      "encode": {
+        "update": {
+          "width": {
+            "signal": "child_width"
+          },
+          "height": {
+            "signal": "child_height"
+          }
+        }
+      },
+      "marks": [
+        {
+          "name": "child_marks",
+          "type": "rect",
+          "style": [
+            "bar"
+          ],
+          "from": {
+            "data": "facet"
+          },
+          "encode": {
+            "update": {
+              "fill": {
+                "scale": "color",
+                "field": "id"
+              },
+              "tooltip": {
+                "signal": "''+datum[\"Name\"]"
+              },
+              "x": {
+                "scale": "x",
+                "field": "__count_end"
+              },
+              "x2": {
+                "scale": "x",
+                "field": "__count_start"
+              },
+              "y2": [
+                {
+                  "test": "!isValid(datum[\"bin_maxbins_20_Age\"]) || !isFinite(+datum[\"bin_maxbins_20_Age\"])",
+                  "field": {
+                    "group": "height"
+                  }
+                },
+                {
+                  "scale": "y",
+                  "field": "bin_maxbins_20_Age"
+                }
+              ],
+              "y": [
+                {
+                  "test": "!isValid(datum[\"bin_maxbins_20_Age\"]) || !isFinite(+datum[\"bin_maxbins_20_Age\"])",
+                  "field": {
+                    "group": "height"
+                  }
+                },
+                {
+                  "scale": "y",
+                  "field": "bin_maxbins_20_Age_end",
+                  "offset": 1
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "x",
+          "orient": "bottom",
+          "gridScale": "y",
+          "grid": true,
+          "tickCount": {
+            "signal": "ceil(child_width/40)"
+          },
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": [
+        0,
+        1
+      ],
+      "range": [
+        0,
+        {
+          "signal": "child_width"
+        }
+      ],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "signal": "[child_bin_maxbins_20_Age_bins.start, child_bin_maxbins_20_Age_bins.stop]"
+      },
+      "range": [
+        {
+          "signal": "child_height"
+        },
+        0
+      ],
+      "bins": {
+        "signal": "child_bin_maxbins_20_Age_bins"
+      },
+      "zero": false
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {
+        "data": "source_0",
+        "field": "id",
+        "sort": true
+      },
+      "range": "category"
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {
+        "signal": "clamp(child_height, 64, 200)"
+      },
+      "symbolType": "square",
+      "title": "id"
+    }
+  ]
+}
