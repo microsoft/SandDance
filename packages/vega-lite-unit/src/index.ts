@@ -5,7 +5,7 @@ import * as path from 'path';
 import * as Vega from 'vega-typings';
 import * as VegaLite from 'vega-lite';
 import { TopLevelUnitSpec } from 'vega-lite/build/src/spec/unit';
-import { unitizeBar, UnitStyle } from './bar';
+import { unitizeBar, UnitStyle, isPercent, getSumField } from './bar';
 import { Encoding } from 'vega-lite/build/src/encoding';
 import { PositionFieldDef } from 'vega-lite/build/src/channeldef';
 
@@ -46,6 +46,11 @@ function aggregateToUnitStyles(encoding: Encoding<any>): UnitStyle[] {
 }
 
 filenames.forEach(src => {
+    const rename = (prefix: string, outputSpec: Vega.Spec) => {
+        const dest = `${prefix}-${src.replace('.vl.', '.vg.')}`;
+        conversion.outputs.push(dest);
+        out(dest, outputSpec);
+    }
     const conversion: Conversion = { src, outputs: [] };
     conversions.push(conversion);
     const json = fs.readFileSync(path.join(base, 'input', src), 'utf8');
@@ -61,14 +66,33 @@ filenames.forEach(src => {
         const spec = output.spec as Vega.Spec;
         switch (vegaLiteSpec.mark) {
             case 'bar': {
-                const unitStyles = aggregateToUnitStyles(vegaLiteSpec.encoding);
-                unitStyles.forEach(unitStyle => {
-                    const outputSpec = JSON.parse(JSON.stringify(spec));
-                    unitizeBar(vegaLiteSpec, outputSpec, unitStyle);
-                    const dest = `${unitStyle}-${src.replace('.vl.', '.vg.')}`;
-                    conversion.outputs.push(dest);
-                    out(dest, outputSpec);
-                });
+                if (isPercent(vegaLiteSpec)) {
+                    const outputSpec = JSON.parse(JSON.stringify(spec)) as Vega.Spec;
+                    rename('percent', outputSpec);
+                } else {
+                    const unitStyles = aggregateToUnitStyles(vegaLiteSpec.encoding);
+                    unitStyles.forEach(unitStyle => {
+                        const outputSpec = JSON.parse(JSON.stringify(spec));
+                        unitizeBar(vegaLiteSpec, outputSpec, unitStyle);
+                        rename(unitStyle, outputSpec);
+                    });
+                    const inputSpecStrip = JSON.parse(JSON.stringify(vegaLiteSpec)) as TopLevelUnitSpec;
+                    inputSpecStrip.transform = [
+                        {
+                            window: [{
+                                op: "row_number",
+                                as: "id"
+                            }]
+                        }
+                    ];
+                    inputSpecStrip.encoding.color = { field: "id", type: "nominal" };
+                    inputSpecStrip.encoding.tooltip = { field: "Name", type: "nominal" };
+                    if (src.indexOf('-sum') > 0) {
+                        inputSpecStrip.encoding.order = { aggregate: "sum", field: getSumField(inputSpecStrip), type: "quantitative", sort: "descending" };
+                    }
+                    const outputStrip = VegaLite.compile(inputSpecStrip);
+                    rename('strip', outputStrip.spec as Vega.Spec);
+                }
             }
         }
     }
