@@ -14,9 +14,33 @@ var conversions = [
     ]
   },
   {
+    "src": "bar-categorical-percent-count-facet-categorical.vl.json",
+    "outputs": [
+      "percent-bar-categorical-percent-count-facet-categorical.vg.json"
+    ]
+  },
+  {
+    "src": "bar-categorical-percent-count-facet-quantitative.vl.json",
+    "outputs": [
+      "percent-bar-categorical-percent-count-facet-quantitative.vg.json"
+    ]
+  },
+  {
     "src": "bar-categorical-percent-count.vl.json",
     "outputs": [
       "percent-bar-categorical-percent-count.vg.json"
+    ]
+  },
+  {
+    "src": "bar-categorical-percent-sum-facet-categorical.vl.json",
+    "outputs": [
+      "percent-bar-categorical-percent-sum-facet-categorical.vg.json"
+    ]
+  },
+  {
+    "src": "bar-categorical-percent-sum-facet-quantitative.vl.json",
+    "outputs": [
+      "percent-bar-categorical-percent-sum-facet-quantitative.vg.json"
     ]
   },
   {
@@ -65,6 +89,42 @@ var conversions = [
     "outputs": [
       "square-bar-quantitative-facet-quantitative.vg.json",
       "strip-bar-quantitative-facet-quantitative.vg.json"
+    ]
+  },
+  {
+    "src": "bar-quantitative-percent-count-facet-categorical.vl.json",
+    "outputs": [
+      "percent-bar-quantitative-percent-count-facet-categorical.vg.json"
+    ]
+  },
+  {
+    "src": "bar-quantitative-percent-count-facet-quantitative.vl.json",
+    "outputs": [
+      "percent-bar-quantitative-percent-count-facet-quantitative.vg.json"
+    ]
+  },
+  {
+    "src": "bar-quantitative-percent-count.vl.json",
+    "outputs": [
+      "percent-bar-quantitative-percent-count.vg.json"
+    ]
+  },
+  {
+    "src": "bar-quantitative-percent-sum-facet-categorical.vl.json",
+    "outputs": [
+      "percent-bar-quantitative-percent-sum-facet-categorical.vg.json"
+    ]
+  },
+  {
+    "src": "bar-quantitative-percent-sum-facet-quantitative.vl.json",
+    "outputs": [
+      "percent-bar-quantitative-percent-sum-facet-quantitative.vg.json"
+    ]
+  },
+  {
+    "src": "bar-quantitative-percent-sum.vl.json",
+    "outputs": [
+      "percent-bar-quantitative-percent-sum.vg.json"
     ]
   },
   {
@@ -161,6 +221,42 @@ var conversions = [
     "outputs": [
       "square-column-quantitative-facet-quantitative.vg.json",
       "strip-column-quantitative-facet-quantitative.vg.json"
+    ]
+  },
+  {
+    "src": "column-quantitative-percent-count-facet-categorical.vl.json",
+    "outputs": [
+      "percent-column-quantitative-percent-count-facet-categorical.vg.json"
+    ]
+  },
+  {
+    "src": "column-quantitative-percent-count-facet-quantitative.vl.json",
+    "outputs": [
+      "percent-column-quantitative-percent-count-facet-quantitative.vg.json"
+    ]
+  },
+  {
+    "src": "column-quantitative-percent-count.vl.json",
+    "outputs": [
+      "percent-column-quantitative-percent-count.vg.json"
+    ]
+  },
+  {
+    "src": "column-quantitative-percent-sum-facet-categorical.vl.json",
+    "outputs": [
+      "percent-column-quantitative-percent-sum-facet-categorical.vg.json"
+    ]
+  },
+  {
+    "src": "column-quantitative-percent-sum-facet-quantitative.vl.json",
+    "outputs": [
+      "percent-column-quantitative-percent-sum-facet-quantitative.vg.json"
+    ]
+  },
+  {
+    "src": "column-quantitative-percent-sum.vl.json",
+    "outputs": [
+      "percent-column-quantitative-percent-sum.vg.json"
     ]
   },
   {
