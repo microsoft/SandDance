@@ -27,7 +27,17 @@ function moveFilesInPackage(packageName, packageDir) {
                 fs.unlinkSync(dest);
             }
         }
-        fs.renameSync(path.resolve(indexDir, f), dest);
+        const src = path.resolve(indexDir, f);
+
+        //remove blank typecast from output
+        const text = fs.readFileSync(src, 'utf8').replace(/<>/g, '');
+        
+        //write file in lew location
+        fs.writeFileSync(dest, text);
+
+        //delete original
+        fs.unlinkSync(src);
+
         console.log(`- ${f}`);
     });
     rimraf.sync(indexDir);
