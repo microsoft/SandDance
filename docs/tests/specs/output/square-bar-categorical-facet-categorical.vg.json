@@ -216,42 +216,6 @@
       },
       "marks": [
         {
-          "name": "child_marks",
-          "type": "rect",
-          "style": [
-            "bar"
-          ],
-          "from": {
-            "data": "s2"
-          },
-          "encode": {
-            "update": {
-              "fill": {
-                "value": "#4c78a8"
-              },
-              "x": {
-                "scale": "x",
-                "field": "__count"
-              },
-              "x2": {
-                "scale": "x",
-                "value": 0
-              },
-              "y": {
-                "scale": "y",
-                "field": "Class"
-              },
-              "height": {
-                "scale": "y",
-                "band": true
-              },
-              "opacity": {
-                "value": 0.2
-              }
-            }
-          }
-        },
-        {
           "name": "bandfacet",
           "type": "group",
           "from": {
@@ -283,12 +247,6 @@
               },
               "width": {
                 "signal": "scale('x', datum['count'])"
-              },
-              "fill": {
-                "signal": "\"pink\""
-              },
-              "opacity": {
-                "value": 0.4
               }
             }
           },
@@ -358,35 +316,6 @@
           "minExtent": 0,
           "ticks": false,
           "zindex": 0
-        }
-      ],
-      "data": [
-        {
-          "name": "s2",
-          "source": "facet",
-          "transform": [
-            {
-              "type": "aggregate",
-              "groupby": [
-                "Class",
-                "Joined"
-              ],
-              "ops": [
-                "count"
-              ],
-              "fields": [
-                null
-              ],
-              "as": [
-                "__count"
-              ]
-            },
-            {
-              "type": "extent",
-              "field": "__count",
-              "signal": "maxcount"
-            }
-          ]
         }
       ]
     }

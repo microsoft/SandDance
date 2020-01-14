@@ -84,59 +84,6 @@
   ],
   "marks": [
     {
-      "name": "marks",
-      "type": "rect",
-      "style": [
-        "bar"
-      ],
-      "from": {
-        "data": "source_0"
-      },
-      "encode": {
-        "update": {
-          "fill": {
-            "value": "#4c78a8"
-          },
-          "x": {
-            "scale": "x",
-            "field": "sum_TicketCost"
-          },
-          "x2": {
-            "scale": "x",
-            "value": 0
-          },
-          "y2": [
-            {
-              "test": "!isValid(datum[\"bin_maxbins_20_Age\"]) || !isFinite(+datum[\"bin_maxbins_20_Age\"])",
-              "field": {
-                "group": "height"
-              }
-            },
-            {
-              "scale": "y",
-              "field": "bin_maxbins_20_Age"
-            }
-          ],
-          "y": [
-            {
-              "test": "!isValid(datum[\"bin_maxbins_20_Age\"]) || !isFinite(+datum[\"bin_maxbins_20_Age\"])",
-              "field": {
-                "group": "height"
-              }
-            },
-            {
-              "scale": "y",
-              "field": "bin_maxbins_20_Age_end",
-              "offset": 1
-            }
-          ],
-          "opacity": {
-            "value": 0.2
-          }
-        }
-      }
-    },
-    {
       "name": "bandfacet",
       "type": "group",
       "from": {
@@ -182,12 +129,6 @@
           },
           "width": {
             "signal": "scale('x', datum['sum_TicketCost'])"
-          },
-          "fill": {
-            "signal": "\"pink\""
-          },
-          "opacity": {
-            "value": 0.4
           }
         }
       },

@@ -42,42 +42,6 @@
   ],
   "marks": [
     {
-      "name": "marks",
-      "type": "rect",
-      "style": [
-        "bar"
-      ],
-      "from": {
-        "data": "source_0"
-      },
-      "encode": {
-        "update": {
-          "fill": {
-            "value": "#4c78a8"
-          },
-          "x": {
-            "scale": "x",
-            "field": "sum_TicketCost"
-          },
-          "x2": {
-            "scale": "x",
-            "value": 0
-          },
-          "y": {
-            "scale": "y",
-            "field": "Class"
-          },
-          "height": {
-            "scale": "y",
-            "band": true
-          },
-          "opacity": {
-            "value": 0.2
-          }
-        }
-      }
-    },
-    {
       "name": "bandfacet",
       "type": "group",
       "from": {
@@ -123,12 +87,6 @@
           },
           "width": {
             "signal": "scale('x', datum['sum_TicketCost'])"
-          },
-          "fill": {
-            "signal": "\"pink\""
-          },
-          "opacity": {
-            "value": 0.4
           }
         }
       },
