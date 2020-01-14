@@ -61,20 +61,20 @@ interface Cube {
     ordinal?: number;
     isEmpty?: boolean;
     color: Color;
-    position: [number, number, number]<number, number, number>;
-    size: [number, number, number]<number, number, number>;
+    position: Vec3<number, number, number>;
+    size: Vec3<number, number, number>;
 }
 ```
 
 **Properties**
 
-| Name     | Type                                             | Optional | Description                                                                                 |
-| -------- | ------------------------------------------------ | -------- | ------------------------------------------------------------------------------------------- |
-| ordinal  | number                                           | true     | Ordinal position.                                                                           |
-| isEmpty  | boolean                                          | true     | Flag whether this cube is a "placeholder" and is not to be rendered nor contains cube data. |
-| color    | Color                                            | false    |                                                                                             |
-| position | [number, number, number]<number, number, number> | false    |                                                                                             |
-| size     | [number, number, number]<number, number, number> | false    |                                                                                             |
+| Name     | Type                                                   | Optional | Description                                                                                 |
+| -------- | ------------------------------------------------------ | -------- | ------------------------------------------------------------------------------------------- |
+| ordinal  | number                                                 | true     | Ordinal position.                                                                           |
+| isEmpty  | boolean                                                | true     | Flag whether this cube is a "placeholder" and is not to be rendered nor contains cube data. |
+| color    | Color                                                  | false    |                                                                                             |
+| position | [Vec3][TypeAliasDeclaration-0]<number, number, number> | false    |                                                                                             |
+| size     | [Vec3][TypeAliasDeclaration-0]<number, number, number> | false    |                                                                                             |
 
 ----------
 
@@ -368,7 +368,7 @@ interface PresenterStyle {
 | cssPrefix        | string                                                           | true     |
 | defaultCubeColor | Color                                                            | true     |
 | highlightColor   | Color                                                            | true     |
-| lightSettings    | { [view extends [View][TypeAliasDeclaration-0]]: LightSettings } | true     |
+| lightSettings    | { [view extends [View][TypeAliasDeclaration-1]]: LightSettings } | true     |
 | fontFamily       | string                                                           | true     |
 
 ----------
@@ -413,7 +413,7 @@ Scene
 
 | Name | Type                           | Optional |
 | ---- | ------------------------------ | -------- |
-| view | [View][TypeAliasDeclaration-0] | false    |
+| view | [View][TypeAliasDeclaration-1] | false    |
 
 ----------
 
@@ -443,7 +443,7 @@ interface Stage {
 | legend          | [Legend][InterfaceDeclaration-8]                                                | true     |
 | axes            | { x: [Axis][InterfaceDeclaration-11][]; y: [Axis][InterfaceDeclaration-11][]; } | false    |
 | textData        | TextLayerDatum[]                                                                | false    |
-| view            | [View][TypeAliasDeclaration-0]                                                  | false    |
+| view            | [View][TypeAliasDeclaration-1]                                                  | false    |
 | gridLines       | [StyledLine][InterfaceDeclaration-12][]                                         | true     |
 | facets          | [FacetRect][InterfaceDeclaration-14][]                                          | true     |
 
@@ -535,19 +535,19 @@ interface VegaBase {
 
 **Properties**
 
-| Name          | Type          | Optional |
-| ------------- | ------------- | -------- |
+| Name          | Type            | Optional |
+| ------------- | --------------- | -------- |
 | CanvasHandler | CanvasHandler | false    |
-| inferType     | typeof ???    | false    |
-| inferTypes    | typeof ???    | false    |
-| loader        | typeof ???    | false    |
-| parse         | typeof ???    | false    |
-| read          | typeof ???    | false    |
-| renderModule  | typeof ???    | false    |
-| Renderer      | typeof ???    | false    |
-| sceneVisit    | typeof ???    | false    |
-| scheme        | typeof ???    | false    |
-| View          | typeof ???    | false    |
+| inferType     | typeof ???      | false    |
+| inferTypes    | typeof ???      | false    |
+| loader        | typeof ???      | false    |
+| parse         | typeof ???      | false    |
+| read          | typeof ???      | false    |
+| renderModule  | typeof ???      | false    |
+| Renderer      | typeof ???      | false    |
+| sceneVisit    | typeof ???      | false    |
+| scheme        | typeof ???      | false    |
+| View          | typeof ???      | false    |
 
 ----------
 
@@ -567,9 +567,9 @@ interface ViewGlConfig {
 
 | Name            | Type                                       | Optional |
 | --------------- | ------------------------------------------ | -------- |
-| presenter       | [Presenter][ClassDeclaration-0]            | true     |
+| presenter       | [Presenter][ClassDeclaration-0]          | true     |
 | presenterConfig | [PresenterConfig][InterfaceDeclaration-18] | true     |
-| getView         | { (): [View][TypeAliasDeclaration-0]; }    | true     |
+| getView         | { (): [View][TypeAliasDeclaration-1]; }    | true     |
 
 ## Types
 
@@ -622,6 +622,8 @@ type View = "2d" | "3d";
 [InterfaceDeclaration-3]: types.html#lumabase
 [InterfaceDeclaration-4]: types.html#vegabase
 [InterfaceDeclaration-7]: types.html#cube
+[TypeAliasDeclaration-0]: types.html#vec3
+[TypeAliasDeclaration-0]: types.html#vec3
 [InterfaceDeclaration-25]: types.html#cubelayerdataprops
 [InterfaceDeclaration-7]: types.html#cube
 [InterfaceDeclaration-28]: types.html#cubelayerdefaultprops
@@ -641,16 +643,16 @@ type View = "2d" | "3d";
 [InterfaceDeclaration-19]: types.html#transitiondurations
 [InterfaceDeclaration-20]: types.html#prestage
 [InterfaceDeclaration-15]: types.html#presenterstyle
-[TypeAliasDeclaration-0]: types.html#view
+[TypeAliasDeclaration-1]: types.html#view
 [InterfaceDeclaration-16]: types.html#queuedanimationoptions
 [InterfaceDeclaration-17]: types.html#scene3d
-[TypeAliasDeclaration-0]: types.html#view
+[TypeAliasDeclaration-1]: types.html#view
 [InterfaceDeclaration-6]: types.html#stage
 [InterfaceDeclaration-7]: types.html#cube
 [InterfaceDeclaration-8]: types.html#legend
 [InterfaceDeclaration-11]: types.html#axis
 [InterfaceDeclaration-11]: types.html#axis
-[TypeAliasDeclaration-0]: types.html#view
+[TypeAliasDeclaration-1]: types.html#view
 [InterfaceDeclaration-12]: types.html#styledline
 [InterfaceDeclaration-14]: types.html#facetrect
 [InterfaceDeclaration-12]: types.html#styledline
@@ -660,9 +662,9 @@ type View = "2d" | "3d";
 [InterfaceDeclaration-21]: types.html#viewglconfig
 [ClassDeclaration-0]: presenter.html#presenter
 [InterfaceDeclaration-18]: types.html#presenterconfig
-[TypeAliasDeclaration-0]: types.html#view
-[TypeAliasDeclaration-1]: types.html#cubelayerprops
+[TypeAliasDeclaration-1]: types.html#view
+[TypeAliasDeclaration-2]: types.html#cubelayerprops
 [InterfaceDeclaration-28]: types.html#cubelayerdefaultprops
 [InterfaceDeclaration-25]: types.html#cubelayerdataprops
-[TypeAliasDeclaration-2]: types.html#vec3
-[TypeAliasDeclaration-0]: types.html#view
+[TypeAliasDeclaration-0]: types.html#vec3
+[TypeAliasDeclaration-1]: types.html#view

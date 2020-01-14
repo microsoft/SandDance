@@ -18,11 +18,11 @@ interface TableCell {
 
 **Properties**
 
-| Name      | Type                  | Optional |
-| --------- | --------------------- | -------- |
-| className | string                | true     |
+| Name      | Type                    | Optional |
+| --------- | ----------------------- | -------- |
+| className | string                  | true     |
 | content   | string &#124; Element | false    |
-| title     | string                | true     |
+| title     | string                  | true     |
 
 ----------
 

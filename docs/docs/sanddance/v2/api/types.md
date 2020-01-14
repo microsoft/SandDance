@@ -600,7 +600,7 @@ interface ViewerOptions extends SpecViewOptions {
 | onAxisClick           | (e: TouchEvent &#124; MouseEvent &#124; PointerEvent, serch: SearchExpressionGroup<SearchExpression>) => void | true     | Optional handler when axis is clicked.                                      |
 | onLegendHeaderClick   | (e: TouchEvent &#124; MouseEvent &#124; PointerEvent) => void                                                 | true     | Optional handler when legend header is clicked.                             |
 | onLegendRowClick      | (e: TouchEvent &#124; MouseEvent &#124; PointerEvent, legendRow: LegendRowWithSearch) => void                 | true     | Optional handler when legend row is clicked.                                |
-| onVegaSpec            | (vegaSpec: Spec) => void                                                                                      | true     | Optional handler when Vega spec is created, prior to it being rendered.     |
+| onVegaSpec            | (vegaSpec: Spec) => void                                                                                    | true     | Optional handler when Vega spec is created, prior to it being rendered.     |
 | selectionPolygonZ     | number                                                                                                        | false    | Z value of selection polygons.                                              |
 
 ----------

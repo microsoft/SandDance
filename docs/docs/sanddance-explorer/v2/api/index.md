@@ -248,8 +248,8 @@ interface Props {
     theme?: string;
     viewerOptions?: Partial<ViewerOptions>;
     initialView?: View;
-    mounted?: (explorer: Explorer) => any;
-    datasetElement?: Element;
+    mounted?: (explorer: Explorer<>) => any;
+    datasetElement?: Element<>;
     dataExportHandler?: DataExportHandler;
     topBarButtonProps?: ICommandBarItemProps[];
     snapshotProps?: SnapshotProps;
@@ -276,8 +276,8 @@ interface Props {
 | theme                      | string                                                                    | true     |
 | viewerOptions              | Partial<ViewerOptions>                                                    | true     |
 | initialView                | View                                                                      | true     |
-| mounted                    | (explorer: Explorer) => any                                               | true     |
-| datasetElement             | Element                                                                   | true     |
+| mounted                    | (explorer: Explorer<>) => any                                             | true     |
+| datasetElement             | Element<>                                                                 | true     |
 | dataExportHandler          | DataExportHandler                              | true     |
 | topBarButtonProps          | ICommandBarItemProps[]                                                    | true     |
 | snapshotProps              | SnapshotProps                                  | true     |
@@ -298,7 +298,7 @@ interface State extends Insight {
     calculating: () => void;
     errors: string[];
     autoCompleteDistinctValues: AutoCompleteDistinctValues;
-    search: InputSearchExpressionGroup[];
+    search: InputSearchExpressionGroup<>[];
     filteredData: object[];
     sidebarClosed: boolean;
     sidebarPinned: boolean;
@@ -322,26 +322,26 @@ Insight
 
 **Properties**
 
-| Name                       | Type                                                    | Optional |
-| -------------------------- | ------------------------------------------------------- | -------- |
-| calculating                | () => void                                              | false    |
-| errors                     | string[]                                                | false    |
-| autoCompleteDistinctValues | AutoCompleteDistinctValues   | false    |
-| search                     | InputSearchExpressionGroup[] | false    |
-| filteredData               | object[]                                                | false    |
-| sidebarClosed              | boolean                                                 | false    |
-| sidebarPinned              | boolean                                                 | false    |
-| dataFile                   | [DataFile][InterfaceDeclaration-3]                      | false    |
-| dataContent                | [DataContent][InterfaceDeclaration-2]                   | false    |
-| specCapabilities           | SpecCapabilities                                        | false    |
-| sideTabId                  | [SideTabId][EnumDeclaration-0]                          | false    |
-| dataScopeId                | DataScopeId                        | false    |
-| selectedItemIndex          | { [key: number]: number; }                              | false    |
-| snapshots                  | [Snapshot][InterfaceDeclaration-0][]                    | false    |
-| selectedSnapshotIndex      | number                                                  | false    |
-| tooltipExclusions          | string[]                                                | false    |
-| positionedColumnMapProps   | PositionedColumnMapProps     | false    |
-| note                       | string                                                  | false    |
+| Name                       | Type                                                      | Optional |
+| -------------------------- | --------------------------------------------------------- | -------- |
+| calculating                | () => void                                                | false    |
+| errors                     | string[]                                                  | false    |
+| autoCompleteDistinctValues | AutoCompleteDistinctValues     | false    |
+| search                     | InputSearchExpressionGroup<>[] | false    |
+| filteredData               | object[]                                                  | false    |
+| sidebarClosed              | boolean                                                   | false    |
+| sidebarPinned              | boolean                                                   | false    |
+| dataFile                   | [DataFile][InterfaceDeclaration-3]                        | false    |
+| dataContent                | [DataContent][InterfaceDeclaration-2]                     | false    |
+| specCapabilities           | SpecCapabilities                                          | false    |
+| sideTabId                  | [SideTabId][EnumDeclaration-0]                            | false    |
+| dataScopeId                | DataScopeId                          | false    |
+| selectedItemIndex          | { [key: number]: number; }                                | false    |
+| snapshots                  | [Snapshot][InterfaceDeclaration-0][]                      | false    |
+| selectedSnapshotIndex      | number                                                    | false    |
+| tooltipExclusions          | string[]                                                  | false    |
+| positionedColumnMapProps   | PositionedColumnMapProps       | false    |
+| note                       | string                                                    | false    |
 
 ## Types
 

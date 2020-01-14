@@ -263,7 +263,7 @@ public get view: View;
 
 **Type**
 
-[View][TypeAliasDeclaration-0]
+[View][TypeAliasDeclaration-1]
 
 [ClassDeclaration-0]: presenter.html#presenter
 [Constructor-0]: presenter.html#constructorel-style
@@ -293,4 +293,4 @@ public get view: View;
 [PropertyDeclaration-4]: presenter.html#style
 [InterfaceDeclaration-15]: types.html#presenterstyle
 [GetAccessor-1]: presenter.html#view
-[TypeAliasDeclaration-0]: types.html#view
+[TypeAliasDeclaration-1]: types.html#view

@@ -16,7 +16,7 @@ function createStage(view: View): Stage;
 
 | Name | Type                           |
 | ---- | ------------------------------ |
-| view | [View][TypeAliasDeclaration-0] |
+| view | [View][TypeAliasDeclaration-1] |
 
 **Return type**
 
@@ -104,7 +104,7 @@ const defaultView: View;
 
 **Type**
 
-[View][TypeAliasDeclaration-0]
+[View][TypeAliasDeclaration-1]
 
 ----------
 
@@ -132,7 +132,7 @@ const minPixelSize: 0.5;
 
 [NamespaceImport-2]: defaults.html#defaults
 [FunctionDeclaration-1]: defaults.html#createstage
-[TypeAliasDeclaration-0]: types.html#view
+[TypeAliasDeclaration-1]: types.html#view
 [InterfaceDeclaration-6]: types.html#stage
 [VariableDeclaration-5]: defaults.html#minheight
 [VariableDeclaration-6]: defaults.html#minwidth
@@ -143,6 +143,6 @@ const minPixelSize: 0.5;
 [VariableDeclaration-9]: defaults.html#groupstrokewidth
 [VariableDeclaration-10]: defaults.html#linez
 [VariableDeclaration-11]: defaults.html#defaultview
-[TypeAliasDeclaration-0]: types.html#view
+[TypeAliasDeclaration-1]: types.html#view
 [VariableDeclaration-12]: defaults.html#min3ddepth
 [VariableDeclaration-13]: defaults.html#minpixelsize
