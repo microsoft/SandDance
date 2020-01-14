@@ -64,9 +64,6 @@ typings/
 **/src/**/*.js
 docs/**/*.map
 
-# temporary until we need this checked in
-package-lock.json
-
 # powerbi builds
 .tmp
 webpack.statistics.dev.html
