@@ -42,42 +42,6 @@
   ],
   "marks": [
     {
-      "name": "marks",
-      "type": "rect",
-      "style": [
-        "bar"
-      ],
-      "from": {
-        "data": "source_0"
-      },
-      "encode": {
-        "update": {
-          "fill": {
-            "value": "#4c78a8"
-          },
-          "x": {
-            "scale": "x",
-            "field": "Class"
-          },
-          "width": {
-            "scale": "x",
-            "band": true
-          },
-          "y": {
-            "scale": "y",
-            "field": "__count"
-          },
-          "y2": {
-            "scale": "y",
-            "value": 0
-          },
-          "opacity": {
-            "value": 0.2
-          }
-        }
-      }
-    },
-    {
       "name": "bandfacet",
       "type": "group",
       "from": {
@@ -108,12 +72,6 @@
           },
           "height": {
             "signal": "child_height - scale('y', datum['count'])"
-          },
-          "fill": {
-            "signal": "\"pink\""
-          },
-          "opacity": {
-            "value": 0.2
           }
         }
       },

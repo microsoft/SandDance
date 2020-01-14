@@ -202,42 +202,6 @@
       },
       "marks": [
         {
-          "name": "child_marks",
-          "type": "rect",
-          "style": [
-            "bar"
-          ],
-          "from": {
-            "data": "s2"
-          },
-          "encode": {
-            "update": {
-              "fill": {
-                "value": "#4c78a8"
-              },
-              "x": {
-                "scale": "x",
-                "field": "Class"
-              },
-              "width": {
-                "scale": "x",
-                "band": true
-              },
-              "y": {
-                "scale": "y",
-                "field": "sum_TicketCost"
-              },
-              "y2": {
-                "scale": "y",
-                "value": 0
-              },
-              "opacity": {
-                "value": 0.2
-              }
-            }
-          }
-        },
-        {
           "name": "bandfacet",
           "type": "group",
           "from": {
@@ -284,12 +248,6 @@
               },
               "height": {
                 "signal": "child_height - scale('y', datum['sum_TicketCost'])"
-              },
-              "fill": {
-                "signal": "\"pink\""
-              },
-              "opacity": {
-                "value": 0.2
               }
             }
           },
@@ -365,35 +323,6 @@
           "minExtent": 0,
           "ticks": false,
           "zindex": 0
-        }
-      ],
-      "data": [
-        {
-          "name": "s2",
-          "source": "facet",
-          "transform": [
-            {
-              "type": "aggregate",
-              "groupby": [
-                "Class",
-                "Gender"
-              ],
-              "ops": [
-                "sum"
-              ],
-              "fields": [
-                "TicketCost"
-              ],
-              "as": [
-                "sum_TicketCost"
-              ]
-            },
-            {
-              "type": "extent",
-              "field": "__count",
-              "signal": "maxcount"
-            }
-          ]
         }
       ]
     }

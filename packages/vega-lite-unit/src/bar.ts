@@ -121,9 +121,10 @@ export function unitizeBar(inputSpec: TopLevelUnitSpec, outputSpec: Vega.Spec, u
         unitizeBasic(info, outputSpec)
         ;
 
-    //add a facet for the column
-    markAndGroupBy.marks[0].encode.update.opacity = { value: 0.2 };
+    //remove single rect
+    markAndGroupBy.marks.shift();
 
+    //add a facet for the column
     const fromFacet: Vega.Facet = {
         name: 'bandfacet_0',
         data: facet ? 'facet' : 'source_00',
@@ -168,12 +169,6 @@ export function unitizeBar(inputSpec: TopLevelUnitSpec, outputSpec: Vega.Spec, u
                     },
                     width: {
                         signal: `scale('${info.countDim}', datum['${aggField}'])`
-                    },
-                    fill: {
-                        signal: '"pink"'
-                    },
-                    opacity: {
-                        value: 0.4
                     }
                 }
                 :
@@ -189,12 +184,6 @@ export function unitizeBar(inputSpec: TopLevelUnitSpec, outputSpec: Vega.Spec, u
                     },
                     height: {
                         signal: `child_height - scale('${info.countDim}', datum['${aggField}'])`
-                    },
-                    fill: {
-                        signal: '"pink"'
-                    },
-                    opacity: {
-                        value: 0.2
                     }
                 }
         },
@@ -216,17 +205,6 @@ export function unitizeBar(inputSpec: TopLevelUnitSpec, outputSpec: Vega.Spec, u
         const cell = outputSpec.marks.filter(m => m.name === 'cell')[0] as Vega.Mark & Vega.Scope;
         const from = cell.from as Vega.FromFacet & { facet: Vega.Facet; };
         from.facet.data = 'source_00';
-
-        cell.data = [
-            {
-                name: "s2",
-                source: "facet",
-                transform: info.data0.transform
-            }
-        ];
-
-        markAndGroupBy.marks[0].from.data = 's2';
-
     }
     markAndGroupBy.marks.push(barFacet);
 
