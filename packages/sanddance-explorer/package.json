@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "docs": "ts-docs-gen --entryFile src/index.tsx -o ../../docs/docs/sanddance-explorer/v2/ && node ./scripts/docs.js",
+    "docs": "npx -p @danmarshall/ts-docs-gen ts-docs-gen --entryFile src/index.tsx -o ../../docs/docs/sanddance-explorer/v2/",
+    "postdocs": "node ./scripts/docs.js",
     "build-typescript": "tsc -p .",
     "watch-typescript": "tsc -p . -w",
     "build-css": "node-sass ./src/css -o ./dist/css",
