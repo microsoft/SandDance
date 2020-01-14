@@ -7,7 +7,7 @@
     "dist"
   ],
   "scripts": {
-    "docs": "ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/vega-deck.gl/v2/",
+    "docs": "npx -p @danmarshall/ts-docs-gen ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/vega-deck.gl/v2/",
     "deploy": "node ./scripts/deploy.js",
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "watch-typescript": "tsc -p . -w",
