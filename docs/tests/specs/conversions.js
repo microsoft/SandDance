@@ -286,5 +286,41 @@ var conversions = [
       "square-column-quantitative.vg.json",
       "strip-column-quantitative.vg.json"
     ]
+  },
+  {
+    "src": "scatter-categorical-x-categorical-facet-categorical.vl.json",
+    "outputs": [
+      "scatter-categorical-x-categorical-facet-categorical.vg.json"
+    ]
+  },
+  {
+    "src": "scatter-categorical-x-categorical-facet-quantitative.vl.json",
+    "outputs": [
+      "scatter-categorical-x-categorical-facet-quantitative.vg.json"
+    ]
+  },
+  {
+    "src": "scatter-categorical-x-categorical.vl.json",
+    "outputs": [
+      "scatter-categorical-x-categorical.vg.json"
+    ]
+  },
+  {
+    "src": "scatter-quantitative-x-quantitative-facet-categorical.vl.json",
+    "outputs": [
+      "scatter-quantitative-x-quantitative-facet-categorical.vg.json"
+    ]
+  },
+  {
+    "src": "scatter-quantitative-x-quantitative-facet-quantitative.vl.json",
+    "outputs": [
+      "scatter-quantitative-x-quantitative-facet-quantitative.vg.json"
+    ]
+  },
+  {
+    "src": "scatter-quantitative-x-quantitative.vl.json",
+    "outputs": [
+      "scatter-quantitative-x-quantitative.vg.json"
+    ]
   }
 ];
