@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import * as React from 'react';
 import { base } from '../base';
+import { ChangeColumnMappingOptions } from '../interfaces';
 import { Dropdown } from './dropdown';
 import { Explorer } from '../explorer';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
@@ -42,8 +43,7 @@ export interface ColumnMapBaseProps {
     allColumns: SandDance.types.Column[];
     quantitativeColumns: SandDance.types.Column[];
     categoricalColumns: SandDance.types.Column[];
-    changeColumnMapping: (role: SandDance.types.InsightColumnRoles, columnOrRole: SandDance.types.Column | string) => void;
-    changeSumStyle: (sumStyle: SandDance.types.SumStyle) => void;
+    changeColumnMapping: (role: SandDance.types.InsightColumnRoles, columnOrRole: SandDance.types.Column | string, options?: ChangeColumnMappingOptions) => void;
     sumStyle: SandDance.types.SumStyle;
     explorer: Explorer;
     specCapabilities: SandDance.types.SpecCapabilities;

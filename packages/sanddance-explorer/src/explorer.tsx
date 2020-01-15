@@ -5,9 +5,8 @@ import { applyColorButtons } from './colorMap';
 import { AutoCompleteDistinctValues, InputSearchExpression } from './controls/searchTerm';
 import { base } from './base';
 import { bestColorScheme } from './colorScheme';
-import { Chart } from './dialogs/chart';
-import { Color } from './dialogs/color';
 import {
+    ChangeColumnMappingOptions,
     ColorSettings,
     DataContent,
     DataExportHandler,
@@ -17,6 +16,8 @@ import {
     Snapshot,
     SnapshotProps
 } from './interfaces';
+import { Chart } from './dialogs/chart';
+import { Color } from './dialogs/color';
 import { ColumnMapBaseProps } from './controls/columnMap';
 import {
     copyPrefToNewState,
@@ -29,7 +30,7 @@ import { DataBrowser } from './dialogs/dataBrowser';
 import { DataScopeId } from './controls/dataScope';
 import { defaultViewerOptions, snapshotThumbWidth } from './defaults';
 import { Dialog } from './controls/dialog';
-import { ensureColumnsExist, ensureColumnsPopulated, getNumericColumns } from './columns';
+import { ensureColumnsExist, ensureColumnsPopulated } from './columns';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { getPosition } from './mouseEvent';
 import { IconButton } from './controls/iconButton';
@@ -92,7 +93,6 @@ export interface State extends SandDance.types.Insight {
     sidebarPinned: boolean;
     dataFile: DataFile;
     dataContent: DataContent;
-    hasNumericColumns: boolean;
     specCapabilities: SandDance.types.SpecCapabilities;
     sideTabId: SideTabId;
     dataScopeId: DataScopeId;
@@ -160,7 +160,6 @@ export class Explorer extends React.Component<Props, State> {
             autoCompleteDistinctValues: {},
             colorBin: null,
             dataContent: null,
-            hasNumericColumns: false,
             dataFile: null,
             search: null,
             facets: null,
@@ -445,7 +444,6 @@ export class Explorer extends React.Component<Props, State> {
                     tooltipExclusions: (optionsOrPrefs && (optionsOrPrefs as Options).tooltipExclusions) || [],
                     selectedItemIndex,
                     sideTabId,
-                    hasNumericColumns: getNumericColumns(dataContent.columns).length > 0,
                     ...partialInsight
                 };
                 this.getColorContext = null;
@@ -540,7 +538,7 @@ export class Explorer extends React.Component<Props, State> {
         this.setState({ specCapabilities });
     }
 
-    changeColumnMapping(role: SandDance.types.InsightColumnRoles, column: SandDance.types.Column, options?: { scheme?: string }) {
+    changeColumnMapping(role: SandDance.types.InsightColumnRoles, column: SandDance.types.Column, options?: ChangeColumnMappingOptions) {
         const columns = { ...this.state.columns };
         const final = () => {
             columns[role] = column && column.name;
@@ -626,6 +624,13 @@ export class Explorer extends React.Component<Props, State> {
                         columns['x'] = column.name;
                         this.changeInsight(newState as any);
                     })();
+                    break;
+                }
+                case 'sum': {
+                    const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'sum', column.name);
+                    const newState: Partial<State> = { columns, ...partialInsight, sumStyle: options.sumStyle };
+                    columns['sum'] = column.name;
+                    this.changeInsight(newState as any);
                     break;
                 }
                 default: {
@@ -998,7 +1003,6 @@ export class Explorer extends React.Component<Props, State> {
                                             }}
                                             disabled={!loaded || this.state.sidebarClosed}
                                             {...columnMapProps}
-                                            hasNumericColumns={this.state.hasNumericColumns}
                                             chart={this.state.chart}
                                             view={this.state.view}
                                             onChangeChartType={chart => this.changeChartType(chart)}
@@ -1284,7 +1288,7 @@ export class Explorer extends React.Component<Props, State> {
         const quantitativeColumns = allColumns && allColumns.filter(c => c.quantitative);
         const categoricalColumns = allColumns && allColumns.filter(c => !c.quantitative);
         const props: ColumnMapBaseProps = {
-            changeColumnMapping: (role, columnOrRole) => {
+            changeColumnMapping: (role, columnOrRole, options) => {
                 let column: SandDance.types.Column;
                 if (typeof columnOrRole === 'string') {
                     //look up current insight
@@ -1293,9 +1297,8 @@ export class Explorer extends React.Component<Props, State> {
                 } else {
                     column = columnOrRole;
                 }
-                this.changeColumnMapping(role, column);
+                this.changeColumnMapping(role, column, options);
             },
-            changeSumStyle: sumStyle => this.changeInsight({ sumStyle }),
             sumStyle: this.state.sumStyle,
             allColumns,
             quantitativeColumns,

@@ -15,7 +15,6 @@ export interface Props extends ColumnMapBaseProps {
     tooltipExclusions: string[];
     toggleTooltipExclusion: (columnName: string) => void;
     collapseLabels: boolean;
-    hasNumericColumns: boolean;
     disabled: boolean;
     chart: SandDance.types.Chart;
     onChangeChartType: (chart: SandDance.types.Chart) => void;
@@ -83,7 +82,7 @@ export class Chart extends React.Component<Props, State> {
                                     ...o,
                                     checked: props.chart === o.key,
                                     disabled: props.disabled
-                                        || (o.key === 'treemap' && !props.hasNumericColumns)
+                                        || (o.key === 'treemap' && props.quantitativeColumns.length === 0)
                                 };
                             })}
                             onChange={(e, o) => props.onChangeChartType(o.key as SandDance.types.Chart)}
@@ -125,18 +124,18 @@ export class Chart extends React.Component<Props, State> {
                                                 text: strings.labelTotalBySumTreemap,
                                                 data: 'treemap',
                                                 selected: props.sumStyle === 'treemap',
-                                                disabled: !props.hasNumericColumns
+                                                disabled: props.quantitativeColumns.length === 0
                                             },
                                             {
                                                 key: 'sum-percent',
                                                 text: strings.labelTotalBySumStripPercent,
                                                 data: 'strip-percent',
                                                 selected: props.sumStyle === 'strip-percent',
-                                                disabled: !props.hasNumericColumns
+                                                disabled: props.quantitativeColumns.length === 0
                                             }
                                         ]}
                                         onChange={(e, o) =>
-                                            props.changeSumStyle(o.data)
+                                            props.changeColumnMapping('sum', 'sum', { sumStyle: o.data })
                                         }
                                     />
                                 );
