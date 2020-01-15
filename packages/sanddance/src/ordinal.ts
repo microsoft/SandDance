@@ -34,6 +34,7 @@ export function getSpecColumns(insight: Insight, columns: Column[]): SpecColumns
         group: getColumnByName(insight.columns && insight.columns.group),
         size: getColumnByName(insight.columns && insight.columns.size),
         sort: getColumnByName(insight.columns && insight.columns.sort),
+        sum: getColumnByName(insight.columns && insight.columns.sum),
         uid: getColumnByName(insight.columns && insight.columns.uid),
         x: getColumnByName(insight.columns && insight.columns.x),
         y: getColumnByName(insight.columns && insight.columns.y),

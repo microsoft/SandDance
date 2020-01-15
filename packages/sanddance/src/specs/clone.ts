@@ -14,6 +14,7 @@ export function cloneVegaSpecWithData(context: SpecContext, currData: object[]):
         specColumns.group,
         specColumns.size,
         specColumns.sort,
+        specColumns.sum,
         specColumns.x,
         specColumns.y,
         specColumns.z

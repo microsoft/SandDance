@@ -393,6 +393,11 @@ export interface SpecColumns {
     sort?: Column;
 
     /**
+     * Column to use for summing a visualization.
+     */
+    sum?: Column;
+
+    /**
      * Column to use for faceting a visualization.
      */
     facet?: Column;

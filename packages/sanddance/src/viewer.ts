@@ -259,7 +259,7 @@ export class Viewer {
         if (!this._dataScope.hasFilteredData()) {
             return this._specColumns;
         }
-        const roles = ['color', 'facet', 'group', 'size', 'sort', 'x', 'y', 'z'];
+        const roles = ['color', 'facet', 'group', 'size', 'sort', 'sum', 'x', 'y', 'z'];
         const specColumns = { ...this._specColumns };
         roles.forEach(r => {
             if (specColumns[r]) {
