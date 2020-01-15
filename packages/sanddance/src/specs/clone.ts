@@ -11,6 +11,7 @@ export function cloneVegaSpecWithData(context: SpecContext, currData: object[]):
     const columns = [
         specColumns.color,
         specColumns.facet,
+        specColumns.facetV,
         specColumns.group,
         specColumns.size,
         specColumns.sort,

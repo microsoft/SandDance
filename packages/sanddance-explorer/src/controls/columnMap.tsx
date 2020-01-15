@@ -16,6 +16,7 @@ const maxFacets = 50;
 const roleLabels: { [role in SandDance.types.InsightColumnRoles]: string } = {
     color: strings.labelColumnColor,
     facet: strings.labelColumnFacet,
+    facetV: strings.labelColumnFacetV,
     group: strings.labelColumnGroup,
     size: strings.labelColumnSize,
     sort: strings.labelColumnSort,
@@ -29,6 +30,7 @@ const roleLabels: { [role in SandDance.types.InsightColumnRoles]: string } = {
 const aliasLabels: { [role in SandDance.types.InsightColumnRoles]: string } = {
     color: strings.labelAliasColor,
     facet: strings.labelAliasFacet,
+    facetV: strings.labelAliasFacetV,
     group: strings.labelAliasGroup,
     size: strings.labelAliasSize,
     sort: strings.labelAliasSort,

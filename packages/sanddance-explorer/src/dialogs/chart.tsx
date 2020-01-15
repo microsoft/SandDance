@@ -142,7 +142,8 @@ export class Chart extends React.Component<Props, State> {
                             }
                             let disabled = props.disabled
                                 || (props.view === '2d' && specRole.role === 'z')
-                                || (specRole.role === 'sum' && !props.sumStyle);
+                                || (specRole.role === 'sum' && !props.sumStyle)
+                                || (specRole.role === 'facetV' && !props.insightColumns.facet);
                             return (
                                 <ColumnMap
                                     {...props}

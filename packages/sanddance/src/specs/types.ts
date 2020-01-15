@@ -169,7 +169,7 @@ export interface Insight {
     transform?: Transforms[];
 }
 
-export type InsightColumnRoles = 'uid' | 'x' | 'y' | 'z' | 'group' | 'size' | 'color' | 'facet' | 'sort' | 'sum';
+export type InsightColumnRoles = 'uid' | 'x' | 'y' | 'z' | 'group' | 'size' | 'color' | 'facet' | 'facetV' | 'sort' | 'sum';
 
 export interface InsightColumns {
     uid?: string;
@@ -181,6 +181,7 @@ export interface InsightColumns {
     color?: string;
     sort?: string;
     facet?: string;
+    facetV?: string;
     sum?: string;
 }
 
@@ -401,6 +402,11 @@ export interface SpecColumns {
      * Column to use for faceting a visualization.
      */
     facet?: Column;
+
+    /**
+     * Column to use for vertically faceting a visualization.
+     */
+    facetV?: Column;
 }
 
 export interface SpecViewOptions {

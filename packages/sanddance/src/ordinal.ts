@@ -31,6 +31,7 @@ export function getSpecColumns(insight: Insight, columns: Column[]): SpecColumns
     return {
         color: getColumnByName(insight.columns && insight.columns.color),
         facet: getColumnByName(insight.columns && insight.columns.facet),
+        facetV: getColumnByName(insight.columns && insight.columns.facetV),
         group: getColumnByName(insight.columns && insight.columns.group),
         size: getColumnByName(insight.columns && insight.columns.size),
         sort: getColumnByName(insight.columns && insight.columns.sort),
