@@ -29,7 +29,7 @@ import { DataBrowser } from './dialogs/dataBrowser';
 import { DataScopeId } from './controls/dataScope';
 import { defaultViewerOptions, snapshotThumbWidth } from './defaults';
 import { Dialog } from './controls/dialog';
-import { ensureColumnsExist, ensureColumnsPopulated } from './columns';
+import { ensureColumnsExist, ensureColumnsPopulated, getNumericColumns } from './columns';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { getPosition } from './mouseEvent';
 import { IconButton } from './controls/iconButton';
@@ -92,6 +92,7 @@ export interface State extends SandDance.types.Insight {
     sidebarPinned: boolean;
     dataFile: DataFile;
     dataContent: DataContent;
+    hasNumericColumns: boolean;
     specCapabilities: SandDance.types.SpecCapabilities;
     sideTabId: SideTabId;
     dataScopeId: DataScopeId;
@@ -159,6 +160,7 @@ export class Explorer extends React.Component<Props, State> {
             autoCompleteDistinctValues: {},
             colorBin: null,
             dataContent: null,
+            hasNumericColumns: false,
             dataFile: null,
             search: null,
             facets: null,
@@ -443,6 +445,7 @@ export class Explorer extends React.Component<Props, State> {
                     tooltipExclusions: (optionsOrPrefs && (optionsOrPrefs as Options).tooltipExclusions) || [],
                     selectedItemIndex,
                     sideTabId,
+                    hasNumericColumns: getNumericColumns(dataContent.columns).length > 0,
                     ...partialInsight
                 };
                 this.getColorContext = null;
@@ -995,6 +998,7 @@ export class Explorer extends React.Component<Props, State> {
                                             }}
                                             disabled={!loaded || this.state.sidebarClosed}
                                             {...columnMapProps}
+                                            hasNumericColumns={this.state.hasNumericColumns}
                                             chart={this.state.chart}
                                             view={this.state.view}
                                             onChangeChartType={chart => this.changeChartType(chart)}
@@ -1291,6 +1295,8 @@ export class Explorer extends React.Component<Props, State> {
                 }
                 this.changeColumnMapping(role, column);
             },
+            changeSumStyle: sumStyle => this.changeInsight({ sumStyle }),
+            sumStyle: this.state.sumStyle,
             allColumns,
             quantitativeColumns,
             categoricalColumns,

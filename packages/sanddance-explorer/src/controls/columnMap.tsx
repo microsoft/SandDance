@@ -18,6 +18,7 @@ const roleLabels: { [role in SandDance.types.InsightColumnRoles]: string } = {
     group: strings.labelColumnGroup,
     size: strings.labelColumnSize,
     sort: strings.labelColumnSort,
+    sum: strings.labelColumnSum,
     uid: null,
     x: strings.labelColumnX,
     y: strings.labelColumnY,
@@ -30,6 +31,7 @@ const aliasLabels: { [role in SandDance.types.InsightColumnRoles]: string } = {
     group: strings.labelAliasGroup,
     size: strings.labelAliasSize,
     sort: strings.labelAliasSort,
+    sum: strings.labelAliasSum,
     uid: null,
     x: strings.labelAliasX,
     y: strings.labelAliasY,
@@ -40,7 +42,9 @@ export interface ColumnMapBaseProps {
     allColumns: SandDance.types.Column[];
     quantitativeColumns: SandDance.types.Column[];
     categoricalColumns: SandDance.types.Column[];
-    changeColumnMapping: { (role: SandDance.types.InsightColumnRoles, columnOrRole: SandDance.types.Column | string): void };
+    changeColumnMapping: (role: SandDance.types.InsightColumnRoles, columnOrRole: SandDance.types.Column | string) => void;
+    changeSumStyle: (sumStyle: SandDance.types.SumStyle) => void;
+    sumStyle: SandDance.types.SumStyle;
     explorer: Explorer;
     specCapabilities: SandDance.types.SpecCapabilities;
 }
@@ -49,6 +53,7 @@ export interface Props extends ColumnMapBaseProps {
     collapseLabel: boolean;
     componentRef?: React.RefObject<FabricTypes.IDropdown>;
     hideSignals?: boolean;
+    prefix?: JSX.Element;
     disabled?: boolean;
     specRole: SandDance.types.SpecRoleCapabilities;
     selectedColumnName?: string
@@ -168,6 +173,7 @@ export function ColumnMap(props: Props) {
         <div
             className="sanddance-columnMap"
         >
+            {props.prefix}
             <Dropdown
                 componentRef={props.componentRef}
                 collapseLabel={props.collapseLabel}

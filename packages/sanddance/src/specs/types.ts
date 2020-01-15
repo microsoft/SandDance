@@ -101,6 +101,11 @@ export interface FacetMargins {
 }
 
 /**
+ * Layout style to use for summing.
+ */
+export type SumStyle = 'treemap' | 'strip-percent'; // | 'strip' | 'treemap-percent';
+
+/**
  * Column to use for faceting into small multiples.
  */
 export interface Facets {
@@ -126,6 +131,7 @@ export interface Insight {
     view?: VegaDeckGl.types.View;
     filter?: Search;
     facets?: Facets;
+    sumStyle?: SumStyle;
 
     /**
      * Type of color binning to use on color scale. Only applicable when the column in the color role is quantitative. 
@@ -163,7 +169,7 @@ export interface Insight {
     transform?: Transforms[];
 }
 
-export type InsightColumnRoles = 'uid' | 'x' | 'y' | 'z' | 'group' | 'size' | 'color' | 'facet' | 'sort';
+export type InsightColumnRoles = 'uid' | 'x' | 'y' | 'z' | 'group' | 'size' | 'color' | 'facet' | 'sort' | 'sum';
 
 export interface InsightColumns {
     uid?: string;
@@ -175,6 +181,7 @@ export interface InsightColumns {
     color?: string;
     sort?: string;
     facet?: string;
+    sum?: string;
 }
 
 export interface SpecRoleCapabilities {

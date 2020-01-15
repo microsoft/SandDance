@@ -60,3 +60,11 @@ export function ensureColumnsPopulated(chart: SandDance.types.Chart, insightColu
             break;
     }
 }
+
+export function getNumericColumns(actualColumns: SandDance.types.Column[]) {
+    return actualColumns.filter(c =>
+        c.type === 'date' ||
+        c.type === 'integer' ||
+        c.type === 'number'
+    );
+}

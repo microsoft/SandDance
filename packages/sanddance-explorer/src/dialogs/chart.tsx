@@ -4,6 +4,7 @@ import * as React from 'react';
 import { base } from '../base';
 import { ColumnMap, ColumnMapBaseProps } from '../controls/columnMap';
 import { Dialog } from '../controls/dialog';
+import { Dropdown } from '../controls/dropdown';
 import { Group } from '../controls/group';
 import { SandDance } from '@msrvida/sanddance-react';
 import { Signal } from '../controls/signal';
@@ -14,6 +15,7 @@ export interface Props extends ColumnMapBaseProps {
     tooltipExclusions: string[];
     toggleTooltipExclusion: (columnName: string) => void;
     collapseLabels: boolean;
+    hasNumericColumns: boolean;
     disabled: boolean;
     chart: SandDance.types.Chart;
     onChangeChartType: (chart: SandDance.types.Chart) => void;
@@ -81,6 +83,7 @@ export class Chart extends React.Component<Props, State> {
                                     ...o,
                                     checked: props.chart === o.key,
                                     disabled: props.disabled
+                                        || (o.key === 'treemap' && !props.hasNumericColumns)
                                 };
                             })}
                             onChange={(e, o) => props.onChangeChartType(o.key as SandDance.types.Chart)}
@@ -104,10 +107,47 @@ export class Chart extends React.Component<Props, State> {
                         {props.specCapabilities && props.specCapabilities.roles.map((specRole, i) => {
                             const specColumnInRole = props.insightColumns[specRole.role];
                             const selectedColumnName = specColumnInRole;
-                            let disabled = props.disabled || (props.view === '2d' && specRole.role === 'z');
+                            let prefix: JSX.Element;
+                            if (specRole.role === 'sum') {
+                                prefix = (
+                                    <Dropdown
+                                        collapseLabel={props.collapseLabels}
+                                        label={strings.labelTotal}
+                                        options={[
+                                            {
+                                                key: 'count',
+                                                text: strings.labelTotalByCount,
+                                                data: null,
+                                                selected: !props.sumStyle
+                                            },
+                                            {
+                                                key: 'sum-treemap',
+                                                text: strings.labelTotalBySumTreemap,
+                                                data: 'treemap',
+                                                selected: props.sumStyle === 'treemap',
+                                                disabled: !props.hasNumericColumns
+                                            },
+                                            {
+                                                key: 'sum-percent',
+                                                text: strings.labelTotalBySumStripPercent,
+                                                data: 'strip-percent',
+                                                selected: props.sumStyle === 'strip-percent',
+                                                disabled: !props.hasNumericColumns
+                                            }
+                                        ]}
+                                        onChange={(e, o) =>
+                                            props.changeSumStyle(o.data)
+                                        }
+                                    />
+                                );
+                            }
+                            let disabled = props.disabled
+                                || (props.view === '2d' && specRole.role === 'z')
+                                || (specRole.role === 'sum' && !props.sumStyle);
                             return (
                                 <ColumnMap
                                     {...props}
+                                    prefix={prefix}
                                     collapseLabel={props.collapseLabels}
                                     disabled={disabled}
                                     selectedColumnName={selectedColumnName}
