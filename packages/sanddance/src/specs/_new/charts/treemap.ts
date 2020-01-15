@@ -1,0 +1,39 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+import { SignalNames } from '../../constants';
+import { SpecBuilderProps } from '../specBuilder';
+import { SpecContext } from '../../types';
+import { Treemap } from '../unitLayouts/treemap';
+
+export default function (specContext: SpecContext): SpecBuilderProps {
+    return {
+        specContext,
+        footprintClass: null,
+        unitLayoutClass: Treemap,
+        specCapabilities: {
+            roles: [
+                {
+                    role: 'size',
+                    excludeCategoric: true
+                },
+                {
+                    role: 'group',
+                    allowNone: true
+                },
+                {
+                    role: 'z',
+                    allowNone: true
+                },
+                {
+                    role: 'color',
+                    allowNone: true
+                },
+                {
+                    role: 'facet',
+                    allowNone: true
+                }
+            ],
+            signals: [SignalNames.TreeMapMethod]
+        }
+    };
+}
