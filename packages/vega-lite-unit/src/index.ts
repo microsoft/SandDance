@@ -47,7 +47,7 @@ function aggregateToUnitStyles(encoding: Encoding<any>): UnitStyle[] {
 
 filenames.forEach(src => {
     const rename = (prefix: string, outputSpec: Vega.Spec) => {
-        const dest = `${prefix}-${src.replace('.vl.', '.vg.')}`;
+        const dest = `${prefix}${src.replace('.vl.', '.vg.')}`;
         conversion.outputs.push(dest);
         out(dest, outputSpec);
     }
@@ -68,13 +68,13 @@ filenames.forEach(src => {
             case 'bar': {
                 if (isPercent(vegaLiteSpec)) {
                     const outputSpec = JSON.parse(JSON.stringify(spec)) as Vega.Spec;
-                    rename('percent', outputSpec);
+                    rename('percent-', outputSpec);
                 } else {
                     const unitStyles = aggregateToUnitStyles(vegaLiteSpec.encoding);
                     unitStyles.forEach(unitStyle => {
                         const outputSpec = JSON.parse(JSON.stringify(spec));
                         unitizeBar(vegaLiteSpec, outputSpec, unitStyle);
-                        rename(unitStyle, outputSpec);
+                        rename(`${unitStyle}-`, outputSpec);
                     });
                     const inputSpecStrip = JSON.parse(JSON.stringify(vegaLiteSpec)) as TopLevelUnitSpec;
                     inputSpecStrip.transform = [
@@ -91,8 +91,14 @@ filenames.forEach(src => {
                         inputSpecStrip.encoding.order = { aggregate: "sum", field: getSumField(inputSpecStrip), type: "quantitative", sort: "descending" };
                     }
                     const outputStrip = VegaLite.compile(inputSpecStrip);
-                    rename('strip', outputStrip.spec as Vega.Spec);
+                    rename('strip-', outputStrip.spec as Vega.Spec);
                 }
+                break;
+            }
+            default: {
+                const outputSpec = JSON.parse(JSON.stringify(spec)) as Vega.Spec;
+                rename('', outputSpec);
+                break;
             }
         }
     }
