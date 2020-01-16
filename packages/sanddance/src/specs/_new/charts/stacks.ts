@@ -37,6 +37,14 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 {
                     role: 'sort',
                     allowNone: true
+                },
+                {
+                    role: 'facet',
+                    allowNone: true
+                },
+                {
+                    role: 'facetV',
+                    allowNone: true
                 }
             ]
         }

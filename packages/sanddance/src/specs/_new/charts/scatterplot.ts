@@ -4,12 +4,13 @@ import { Scatter } from '../unitLayouts/scatter';
 import { SignalNames } from '../../constants';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../../types';
+import { Whole } from '../footprints/whole';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns } = specContext;
     return {
         specContext,
-        footprintClass: null,
+        footprintClass: Whole,
         unitLayoutClass: Scatter,
         specCapabilities: {
             roles: [
@@ -35,6 +36,10 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 },
                 {
                     role: 'facet',
+                    allowNone: true
+                },
+                {
+                    role: 'facetV',
                     allowNone: true
                 }
             ],

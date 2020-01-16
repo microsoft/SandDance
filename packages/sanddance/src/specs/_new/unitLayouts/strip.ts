@@ -1,9 +1,10 @@
-import { UnitLayout } from "./unitLayout";
+import { UnitLayout, UnitLayoutProps } from "./unitLayout";
+import { Orientation } from "../../interfaces";
 
-export class StripPercentH extends UnitLayout {
-
+export interface StripProps extends UnitLayoutProps {
+    orientation: Orientation;
 }
 
-export class StripPercentV extends UnitLayout {
+export class Strip extends UnitLayout {
 
 }

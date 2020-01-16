@@ -3,11 +3,12 @@
 import { Grid } from '../unitLayouts/grid';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../../types';
+import { Whole } from '../footprints/whole';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     return {
         specContext,
-        footprintClass: null,
+        footprintClass: Whole,
         unitLayoutClass: Grid,
         specCapabilities: {
             roles: [
@@ -21,6 +22,14 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 },
                 {
                     role: 'sort',
+                    allowNone: true
+                },
+                {
+                    role: 'facet',
+                    allowNone: true
+                },
+                {
+                    role: 'facetV',
                     allowNone: true
                 }
             ]

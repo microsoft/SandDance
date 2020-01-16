@@ -4,11 +4,12 @@ import { SignalNames } from '../../constants';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../../types';
 import { Treemap } from '../unitLayouts/treemap';
+import { Whole } from '../footprints/whole';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     return {
         specContext,
-        footprintClass: null,
+        footprintClass: Whole,
         unitLayoutClass: Treemap,
         specCapabilities: {
             roles: [
@@ -30,6 +31,10 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 },
                 {
                     role: 'facet',
+                    allowNone: true
+                },
+                {
+                    role: 'facetV',
                     allowNone: true
                 }
             ],
