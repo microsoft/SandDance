@@ -58,6 +58,7 @@ export interface Props extends ColumnMapBaseProps {
     prefix?: JSX.Element;
     disabled?: boolean;
     specRole: SandDance.types.SpecRoleCapabilities;
+    disabledColumnName?: string
     selectedColumnName?: string
     onChangeSignal?: (name: string, value: any) => void;
     onDismiss?: () => void;
@@ -77,14 +78,15 @@ function filterColumnList(context: SandDance.types.InsightColumnRoles, columns: 
     }
 }
 
-function optionsForSpecColumn(sectionName: string, columns: SandDance.types.Column[], role: SandDance.types.InsightColumnRoles, selectedColumnName?: string) {
+function optionsForSpecColumn(sectionName: string, columns: SandDance.types.Column[], role: SandDance.types.InsightColumnRoles, disabledColumnName: string, selectedColumnName: string) {
     const filtered = filterColumnList(role, columns);
     const options = filtered.map(column => {
         const option: FabricTypes.IDropdownOption = {
             key: `column:${column.name}`,
             text: column.name,
             data: column,
-            selected: selectedColumnName === column.name
+            selected: selectedColumnName === column.name,
+            disabled: disabledColumnName === column.name
         };
         return option;
     });
@@ -138,7 +140,7 @@ export function ColumnMap(props: Props) {
     if (props.specRole.role === 'color') {
         categoricalColumns = props.categoricalColumns.filter(c => !c.isColorData);
         directColorColumns = props.categoricalColumns.filter(c => c.isColorData);
-        directColorGroup = optionsForSpecColumn(strings.selectDirectColor, directColorColumns, 'color', props.selectedColumnName);
+        directColorGroup = optionsForSpecColumn(strings.selectDirectColor, directColorColumns, 'color', props.disabledColumnName, props.selectedColumnName);
     } else {
         categoricalColumns = props.categoricalColumns;
     }
@@ -148,8 +150,8 @@ export function ColumnMap(props: Props) {
         referenceGroup = optionsForReference(strings.selectReference, others);
     }
 
-    const quantitativeGroup = optionsForSpecColumn(strings.selectNumeric, props.quantitativeColumns, props.specRole.role, props.selectedColumnName);
-    const categoricGroup = props.specRole.excludeCategoric ? null : optionsForSpecColumn(strings.selectNonNumeric, categoricalColumns, props.specRole.role, props.selectedColumnName);
+    const quantitativeGroup = optionsForSpecColumn(strings.selectNumeric, props.quantitativeColumns, props.specRole.role, props.disabledColumnName, props.selectedColumnName);
+    const categoricGroup = props.specRole.excludeCategoric ? null : optionsForSpecColumn(strings.selectNonNumeric, categoricalColumns, props.specRole.role, props.disabledColumnName, props.selectedColumnName);
 
     const options = referenceGroup.concat(quantitativeGroup).concat(categoricGroup).concat(directColorGroup).filter(Boolean);
     if (props.specRole.allowNone) {

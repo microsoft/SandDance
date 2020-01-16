@@ -106,39 +106,51 @@ export class Chart extends React.Component<Props, State> {
                         {props.specCapabilities && props.specCapabilities.roles.map((specRole, i) => {
                             const specColumnInRole = props.insightColumns[specRole.role];
                             const selectedColumnName = specColumnInRole;
+                            let disabledColumnName: string;
                             let prefix: JSX.Element;
-                            if (specRole.role === 'sum') {
-                                prefix = (
-                                    <Dropdown
-                                        collapseLabel={props.collapseLabels}
-                                        label={strings.labelTotal}
-                                        options={[
-                                            {
-                                                key: 'count',
-                                                text: strings.labelTotalByCount,
-                                                data: null,
-                                                selected: !props.sumStyle
-                                            },
-                                            {
-                                                key: 'sum-treemap',
-                                                text: strings.labelTotalBySumTreemap,
-                                                data: 'treemap',
-                                                selected: props.sumStyle === 'treemap',
-                                                disabled: props.quantitativeColumns.length === 0
-                                            },
-                                            {
-                                                key: 'sum-percent',
-                                                text: strings.labelTotalBySumStripPercent,
-                                                data: 'strip-percent',
-                                                selected: props.sumStyle === 'strip-percent',
-                                                disabled: props.quantitativeColumns.length === 0
+                            switch (specRole.role) {
+                                case 'sum': {
+                                    prefix = (
+                                        <Dropdown
+                                            collapseLabel={props.collapseLabels}
+                                            label={strings.labelTotal}
+                                            options={[
+                                                {
+                                                    key: 'count',
+                                                    text: strings.labelTotalByCount,
+                                                    data: null,
+                                                    selected: !props.sumStyle
+                                                },
+                                                {
+                                                    key: 'sum-treemap',
+                                                    text: strings.labelTotalBySumTreemap,
+                                                    data: 'treemap',
+                                                    selected: props.sumStyle === 'treemap',
+                                                    disabled: props.quantitativeColumns.length === 0
+                                                },
+                                                {
+                                                    key: 'sum-percent',
+                                                    text: strings.labelTotalBySumStripPercent,
+                                                    data: 'strip-percent',
+                                                    selected: props.sumStyle === 'strip-percent',
+                                                    disabled: props.quantitativeColumns.length === 0
+                                                }
+                                            ]}
+                                            onChange={(e, o) =>
+                                                props.changeColumnMapping('sum', 'sum', { sumStyle: o.data })
                                             }
-                                        ]}
-                                        onChange={(e, o) =>
-                                            props.changeColumnMapping('sum', 'sum', { sumStyle: o.data })
-                                        }
-                                    />
-                                );
+                                        />
+                                    );
+                                    break;
+                                }
+                                case 'facet': {
+                                    disabledColumnName = props.insightColumns.facetV;
+                                    break;
+                                }
+                                case 'facetV': {
+                                    disabledColumnName = props.insightColumns.facet;
+                                    break;
+                                }
                             }
                             let disabled = props.disabled
                                 || (props.view === '2d' && specRole.role === 'z')
@@ -150,6 +162,7 @@ export class Chart extends React.Component<Props, State> {
                                     prefix={prefix}
                                     collapseLabel={props.collapseLabels}
                                     disabled={disabled}
+                                    disabledColumnName={disabledColumnName}
                                     selectedColumnName={selectedColumnName}
                                     specRole={specRole}
                                     key={i}
