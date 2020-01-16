@@ -639,7 +639,18 @@ export class Explorer extends React.Component<Props, State> {
                 }
             }
         } else {
-            final();
+            switch (role) {
+                case 'facet': {
+                    columns.facet = null;
+                    columns.facetV = null;
+                    this.changeInsight({ columns });
+                    break;
+                }
+                default: {
+                    final();
+                    break;
+                }
+            }
         }
     }
 
