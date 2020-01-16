@@ -34,7 +34,7 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
         const textItem: TextLayerDatum = {
             color: colorFromString(item.fill),
             text: item.text.toString(),
-            position: [x + item.x - options.offsetX, ty * (y + item.y + offsetYCenter - options.offsetY), 0],
+            position: [x + (item.x || 0) - options.offsetX, ty * (y + (item.y || 0) + offsetYCenter - options.offsetY), 0],
             size,
             angle: convertAngle(item.angle),
             textAnchor: convertAlignment(item.align),
