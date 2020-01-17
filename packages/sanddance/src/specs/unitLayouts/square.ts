@@ -3,12 +3,12 @@
 import { Scopes } from '../interfaces';
 import { UnitLayout, UnitLayoutProps } from './unitLayout';
 
-export interface GridProps extends UnitLayoutProps {
+export interface SquareProps extends UnitLayoutProps {
     growDirection: 'right-down' | 'right-up' | 'down-right';
 }
 
-export class Grid extends UnitLayout {
-    constructor(public props: GridProps & Scopes) {
+export class Square extends UnitLayout {
+    constructor(public props: SquareProps & Scopes) {
         super(props);
     }
 }

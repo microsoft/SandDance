@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { Bar, BarProps } from '../footprints/bar';
 import { Footprint, FootprintProps } from '../footprints/footprint';
-import { Grid, GridProps } from '../unitLayouts/grid';
+import { Square, SquareProps } from '../unitLayouts/square';
 import { Percent, PercentProps } from '../footprints/percent';
 import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
@@ -31,8 +31,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             break;
         }
         default: {
-            unitLayoutClass = Grid;
-            unitLayoutProps = { growDirection: 'right-up' } as GridProps;
+            unitLayoutClass = Square;
+            unitLayoutProps = { growDirection: 'right-up' } as SquareProps;
             break;
         }
     }
