@@ -49,8 +49,8 @@ export class SpecBuilder {
         } else {
             const dataName = 'data_source';
             const vegaSpec: Spec = {
-                $schema: 'https://vega.github.io/schema/vega/v3.json',
-                data: [{ name: dataName }],
+                $schema: 'https://vega.github.io/schema/vega/v5.json',
+                data: [{ name: dataName, transform: [] }],
                 marks: [],
                 scales: [],
                 signals: []
@@ -82,12 +82,12 @@ export class SpecBuilder {
         const { columns } = insight;
 
         if (columns.facet) {
-            const facetDataName = 'cell-facet';
-            const scope = manifold(columns, vegaSpec, dataName, facetDataName);
+            const facetDataName = 'manifold';
+            const scope = manifold(this.props.specContext.specColumns, vegaSpec, dataName, facetDataName);
             return { dataName: facetDataName, scope };
 
         } else {
-            vegaSpec.style = 'cell'; //TODO remove this once we get marks to appear
+            //vegaSpec.style = 'cell'; //TODO remove this once we get marks to appear
 
             Object.assign(vegaSpec, insight.size);
             return { dataName, scope: vegaSpec };
