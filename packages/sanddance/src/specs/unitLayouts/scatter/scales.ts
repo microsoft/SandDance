@@ -1,53 +1,28 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { binnableColorScale, linearScale, pointScale } from '../../scales';
-import {
-    ColorScaleNone,
-    DataNames,
-    FieldNames,
-    ScaleNames,
-    SignalNames
-} from '../../constants';
+import { DataNames, ScaleNames, SignalNames } from '../../constants';
+import { linearScale, pointScale } from '../../scales';
 import { RangeScheme, Scale } from 'vega-typings';
 import { SpecContext } from '../../types';
 
 export default function (context: SpecContext) {
-    const { specColumns, insight } = context;
+    const { specColumns } = context;
+    const heightRange: RangeScheme = [0, { signal: 'child_height' }];
+    const widthRange: RangeScheme = [0, { signal: 'child_width' }];
     const scales: Scale[] = [
         (
             specColumns.x.quantitative ?
-                linearScale(ScaleNames.X, DataNames.Main, specColumns.x.name, 'width', false, false)
+                linearScale(ScaleNames.X, DataNames.Main, specColumns.x.name, widthRange, false, false)
                 :
-                pointScale(ScaleNames.X, DataNames.Main, 'width', specColumns.x.name)
+                pointScale(ScaleNames.X, DataNames.Main, widthRange, specColumns.x.name)
         ),
         (
             specColumns.y.quantitative ?
-                linearScale(ScaleNames.Y, DataNames.Main, specColumns.y.name, 'height', false, false)
+                linearScale(ScaleNames.Y, DataNames.Main, specColumns.y.name, heightRange, false, false)
                 :
-                pointScale(ScaleNames.Y, DataNames.Main, 'height', specColumns.y.name, true)
+                pointScale(ScaleNames.Y, DataNames.Main, heightRange, specColumns.y.name, true)
         )
     ];
-    if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
-        if (specColumns.color.quantitative) {
-            scales.push(binnableColorScale(insight.colorBin, DataNames.Main, specColumns.color.name, insight.scheme));
-        } else {
-            scales.push(
-                {
-                    name: ScaleNames.Color,
-                    type: 'ordinal',
-                    domain: {
-                        data: DataNames.Legend,
-                        field: FieldNames.Top,
-                        sort: true
-                    },
-                    range: {
-                        scheme: insight.scheme || ColorScaleNone
-                    },
-                    reverse: { signal: SignalNames.ColorReverse }
-                }
-            );
-        }
-    }
     if (specColumns.z) {
         const zRange: RangeScheme = [0, { signal: SignalNames.ZHeight }];
         scales.push(

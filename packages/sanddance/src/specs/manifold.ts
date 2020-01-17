@@ -11,9 +11,6 @@ import {
 import { Orientation } from './interfaces';
 
 export function manifold(columns: SpecColumns, vegaSpec: Spec, dataInputName: string, dataOutputName: string): Scope {
-    //TODO: deal with size
-    // height: size.height,
-    // width: size.width,
 
     //TODO facet row & column headers > driven by data
     //TODO axes
@@ -34,6 +31,8 @@ export function manifold(columns: SpecColumns, vegaSpec: Spec, dataInputName: st
         const verticalCells = prepareCells(vegaSpec.data, dataInputName, 'vertical', columns.facetV, d0);
         groupby.push(verticalCells.groupBy);
         facet.aggregate = { cross: true } as any;
+    } else {
+        //TODO column wrap
     }
 
     const mark: Mark = {
@@ -55,11 +54,6 @@ export function manifold(columns: SpecColumns, vegaSpec: Spec, dataInputName: st
     };
 
     vegaSpec.marks.push(mark);
-
-    vegaSpec.signals.push(
-        { name: 'child_width', value: 200 },    //TODO get size
-        { name: 'child_height', value: 200 }
-    )
 
     vegaSpec.layout = {
         padding: 20,    //TODO defaults

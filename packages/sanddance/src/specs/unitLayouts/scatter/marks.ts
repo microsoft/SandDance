@@ -1,19 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { DataNames, ScaleNames, SignalNames } from '../../constants';
 import { fill, opacity } from '../../fill';
 import { Mark } from 'vega-typings';
+import { ScaleNames, SignalNames } from '../../constants';
 import { SpecContext } from '../../types';
 import { testForCollapseSelection } from '../../selection';
 
-export default function (context: SpecContext) {
+export default function (context: SpecContext, dataSource: string) {
     const { specColumns } = context;
-    const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     const marks: Mark[] = [
         {
             type: 'rect',
             from: {
-                data: categoricalColor ? DataNames.Legend : DataNames.Main
+                data: dataSource
             },
             encode: {
                 update: {

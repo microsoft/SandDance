@@ -1,7 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { ColorBin } from './types';
-import { ColorScaleNone, ScaleNames, SignalNames } from './constants';
+import { ColorBin, Column, Insight } from './types';
+import {
+    ColorScaleNone,
+    DataNames,
+    FieldNames,
+    ScaleNames,
+    SignalNames
+} from './constants';
 import {
     LinearScale,
     PointScale,
@@ -9,6 +15,7 @@ import {
     QuantizeScale,
     RangeBand,
     RangeScheme,
+    Scale,
     ScaleData,
     SignalRef
 } from 'vega-typings';
@@ -92,6 +99,28 @@ export function binnableColorScale(colorBin: ColorBin, data: string, field: stri
                 reverse
             };
             return quantizeScale;
+        }
+    }
+}
+
+export function getColorScale(colorColumn: Column, insight: Insight): Scale {
+    if (colorColumn && !colorColumn.isColorData && !insight.directColor) {
+        if (colorColumn.quantitative) {
+            return binnableColorScale(insight.colorBin, DataNames.Main, colorColumn.name, insight.scheme);
+        } else {
+            return {
+                name: ScaleNames.Color,
+                type: 'ordinal',
+                domain: {
+                    data: DataNames.Legend,
+                    field: FieldNames.Top,
+                    sort: true
+                },
+                range: {
+                    scheme: insight.scheme || ColorScaleNone
+                },
+                reverse: { signal: SignalNames.ColorReverse }
+            };
         }
     }
 }

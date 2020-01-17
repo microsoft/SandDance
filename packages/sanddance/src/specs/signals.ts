@@ -23,7 +23,7 @@ export function textSignals(context: SpecContext) {
         },
         {
             name: SignalNames.ZHeight,
-            update: `height * ${SignalNames.ZProportion}`
+            update: `child_height * ${SignalNames.ZProportion}`
         },
         {
             name: SignalNames.TextScale,

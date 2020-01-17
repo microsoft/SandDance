@@ -14,7 +14,7 @@ export class UnitLayout {
     public build(specContext: SpecContext) {
         const { dataName, scope } = this.props.parent;
 
-        scope.data = [
+        scope.data.push(
             {
                 "name": "list",
                 "source": dataName,
@@ -31,7 +31,7 @@ export class UnitLayout {
                     }
                 ]
             }
-        ];
+        );
 
         scope.marks = [
             {
