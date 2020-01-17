@@ -7,7 +7,7 @@ import { SpecContext } from '../../types';
 
 export default function (context: SpecContext) {
     const { specColumns } = context;
-    const heightRange: RangeScheme = [0, { signal: 'child_height' }];
+    const heightRange: RangeScheme = [{ signal: 'child_height' }, 0];
     const widthRange: RangeScheme = [0, { signal: 'child_width' }];
     const scales: Scale[] = [
         (
