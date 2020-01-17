@@ -4,11 +4,11 @@ import { allTruthy, push } from '../array';
 import { colorBinCountSignal, colorReverseSignal, textSignals } from './signals';
 import { DataNames } from './constants';
 import { Footprint, FootprintProps } from './footprints/footprint';
-import { getColorScale } from './scales';
+import { getColorScale, getZScale } from './scales';
 import { getLegends } from './legends';
 import { InnerScope, SpecResult } from './interfaces';
 import { manifold } from './manifold';
-import { Signal, Spec } from 'vega-typings';
+import { Scale, Signal, Spec } from 'vega-typings';
 import { Size, SpecCapabilities, SpecContext } from './types';
 import { topLookup } from './top';
 import { UnitLayout, UnitLayoutProps } from './unitLayouts/unitLayout';
@@ -21,6 +21,7 @@ export interface SpecBuilderProps {
     specContext: SpecContext;
     errors?: string[];
     specCapabilities: SpecCapabilities;
+    customZScale?: boolean;
 }
 
 export class SpecBuilder {
@@ -60,7 +61,10 @@ export class SpecBuilder {
                 $schema: 'https://vega.github.io/schema/vega/v5.json',
                 data: [{ name: dataName, transform: [] }],
                 marks: [],
-                scales: [getColorScale(specColumns.color, insight)],
+                scales: allTruthy<Scale>([
+                    getColorScale(specColumns.color, insight),
+                    !this.props.customZScale && getZScale(specColumns.z)
+                ]),
                 signals: allTruthy<Signal>(
                     textSignals(specContext),
                     [

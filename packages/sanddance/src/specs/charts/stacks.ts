@@ -9,6 +9,7 @@ import { Stack } from '../unitLayouts/stack';
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns } = specContext;
     return {
+        customZScale: true,
         specContext,
         footprintClass: Density,
         footprintProps: { mode: 'cube' } as DensityProps,

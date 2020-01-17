@@ -23,14 +23,5 @@ export default function (context: SpecContext) {
                 pointScale(ScaleNames.Y, DataNames.Main, heightRange, specColumns.y.name, true)
         )
     ];
-    if (specColumns.z) {
-        const zRange: RangeScheme = [0, { signal: SignalNames.ZHeight }];
-        scales.push(
-            specColumns.z.quantitative ?
-                linearScale(ScaleNames.Z, DataNames.Main, specColumns.z.name, zRange, false, false)
-                :
-                pointScale(ScaleNames.Z, DataNames.Main, zRange, specColumns.z.name)
-        );
-    }
     return scales;
 }

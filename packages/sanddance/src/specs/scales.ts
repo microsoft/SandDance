@@ -55,6 +55,8 @@ export function pointScale(name: string, data: string, range: RangeBand, field: 
     return scale;
 }
 
+//TODO should this be exported
+
 export function binnableColorScale(colorBin: ColorBin, data: string, field: string, scheme?: string) {
     scheme = scheme || ColorScaleNone;
     const name = ScaleNames.Color;
@@ -123,4 +125,13 @@ export function getColorScale(colorColumn: Column, insight: Insight): Scale {
             };
         }
     }
+}
+
+export function getZScale(zColumn: Column) {
+    const zRange: RangeScheme = [0, { signal: SignalNames.ZHeight }];
+    return zColumn.quantitative ?
+        linearScale(ScaleNames.Z, DataNames.Main, zColumn.name, zRange, false, false)
+        :
+        pointScale(ScaleNames.Z, DataNames.Main, zRange, zColumn.name)
+        ;
 }
