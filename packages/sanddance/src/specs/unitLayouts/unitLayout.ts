@@ -14,6 +14,10 @@ export class UnitLayout {
     public build(specContext: SpecContext) {
         const { dataName, scope } = this.props.parent;
 
+        if (!scope.data) {
+            scope.data = [];
+        }
+
         scope.data.push(
             {
                 "name": "list",
