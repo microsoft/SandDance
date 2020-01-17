@@ -114,6 +114,7 @@ export class Chart extends React.Component<Props, State> {
                                         <Dropdown
                                             collapseLabel={props.collapseLabels}
                                             label={strings.labelTotal}
+                                            calloutProps={{ style: { minWidth: '18em' } }}
                                             options={[
                                                 {
                                                     key: 'count',
