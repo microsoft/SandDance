@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import { Scopes } from '../interfaces';
 import { SpecContext } from '../types';
+import { push } from '../../array';
 
 export interface UnitLayoutProps {
 }
@@ -37,7 +38,7 @@ export class UnitLayout {
             }
         );
 
-        scope.marks = [
+        push(scope.marks, [
             {
                 "type": "text",
                 "from": { "data": "list" },
@@ -52,7 +53,7 @@ export class UnitLayout {
                     }
                 }
             }
-        ];
+        ]);
 
     }
 

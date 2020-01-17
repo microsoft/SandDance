@@ -3,7 +3,7 @@
 import { Bar, BarProps } from '../layouts/bar';
 import { Layout, LayoutProps } from '../layouts/layout';
 import { Square, SquareProps } from '../unitLayouts/square';
-import { Percent, PercentProps } from '../layouts/percent';
+import { Stack, StackProps } from '../layouts/stack';
 import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
@@ -24,8 +24,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             break;
         }
         case 'strip-percent': {
-            footprintClass = Percent;
-            footprintProps = { orientation: 'horizontal' } as PercentProps;
+            footprintClass = Stack;
+            footprintProps = { orientation: 'horizontal' } as StackProps;
             unitLayoutClass = Strip;
             unitLayoutProps = { orientation: 'vertical' } as StripProps;
             break;

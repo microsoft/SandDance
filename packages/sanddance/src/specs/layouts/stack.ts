@@ -3,10 +3,10 @@
 import { Layout, LayoutProps } from "./layout";
 import { Orientation } from "../interfaces";
 
-export interface PercentProps extends LayoutProps {
+export interface StackProps extends LayoutProps {
     orientation: Orientation;
 }
 
-export class Percent extends Layout {
+export class Stack extends Layout {
 
 }

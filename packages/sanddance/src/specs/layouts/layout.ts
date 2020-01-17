@@ -7,7 +7,11 @@ export interface LayoutProps {
 }
 
 export class Layout {
-    constructor (public props: LayoutProps & Scopes) {
+    public static count = 0;
+    public id: number;
+
+    constructor(public props: LayoutProps & Scopes) {
+        this.id = Layout.count++;
     }
 
     public build(): InnerScope {
