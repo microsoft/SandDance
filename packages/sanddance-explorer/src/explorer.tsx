@@ -628,7 +628,7 @@ export class Explorer extends React.Component<Props, State> {
                 }
                 case 'sum': {
                     const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'sum', column.name);
-                    const newState: Partial<State> = { columns, ...partialInsight, sumStyle: options.sumStyle };
+                    const newState: Partial<State> = { columns, ...partialInsight, sumStyle: options ? options.sumStyle : this.state.sumStyle };
                     columns['sum'] = column.name;
                     this.changeInsight(newState as any);
                     break;
