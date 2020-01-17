@@ -67,6 +67,7 @@ export interface Props extends ColumnMapBaseProps {
 function filterColumnList(context: SandDance.types.InsightColumnRoles, columns: SandDance.types.Column[]) {
     switch (context) {
         case 'facet':
+        case 'facetV':
             return columns.filter(
                 column =>
                     column.quantitative ||
