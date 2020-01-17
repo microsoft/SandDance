@@ -8,3 +8,7 @@
 export function allTruthy<T>(...args: T[][]) {
     return args.reduce((p, c) => c ? p.concat(c) : p, []).filter(Boolean);
 }
+
+export function push<T>(arr: T[], items: T[]) {
+    arr.push.apply(arr, items);
+}
