@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Density } from '../footprints/density';
+import { Density, DensityProps } from '../footprints/density';
 import { Grid } from '../unitLayouts/grid';
 import { SignalNames } from '../../constants';
 import { SpecBuilderProps } from '../specBuilder';
@@ -11,6 +11,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     return {
         specContext,
         footprintClass: Density,
+        footprintProps: { mode: 'square' } as DensityProps,
         unitLayoutClass: Grid,
         specCapabilities: {
             roles: [
