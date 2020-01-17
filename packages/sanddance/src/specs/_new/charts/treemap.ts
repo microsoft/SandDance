@@ -3,7 +3,7 @@
 import { SignalNames } from '../../constants';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../../types';
-import { Treemap } from '../unitLayouts/treemap';
+import { Treemap, TreemapProps } from '../unitLayouts/treemap';
 import { Whole } from '../footprints/whole';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
@@ -11,6 +11,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         specContext,
         footprintClass: Whole,
         unitLayoutClass: Treemap,
+        unitLayoutProps: { corner: 'top-left' } as TreemapProps,
         specCapabilities: {
             roles: [
                 {
