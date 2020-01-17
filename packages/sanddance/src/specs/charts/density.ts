@@ -2,9 +2,9 @@
 // Licensed under the MIT license.
 import { Density, DensityProps } from '../footprints/density';
 import { Grid } from '../unitLayouts/grid';
-import { SignalNames } from '../../constants';
+import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
-import { SpecContext } from '../../types';
+import { SpecContext } from '../types';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns } = specContext;

@@ -4,9 +4,9 @@ import { Bar, BarProps } from '../footprints/bar';
 import { Footprint, FootprintProps } from '../footprints/footprint';
 import { Grid, GridProps } from '../unitLayouts/grid';
 import { Percent, PercentProps } from '../footprints/percent';
-import { SignalNames } from '../../constants';
+import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
-import { SpecContext } from '../../types';
+import { SpecContext } from '../types';
 import { Strip, StripProps } from '../unitLayouts/strip';
 import { Treemap, TreemapProps } from '../unitLayouts/treemap';
 import { UnitLayout, UnitLayoutProps } from '../unitLayouts/unitLayout';
@@ -14,25 +14,25 @@ import { UnitLayout, UnitLayoutProps } from '../unitLayouts/unitLayout';
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns } = specContext;
     let footprintClass: typeof Footprint = Bar;
-    let footprintProps: FootprintProps = { orientation: 'horizontal' } as BarProps;
+    let footprintProps: FootprintProps = { orientation: 'vertical' } as BarProps;
     let unitLayoutClass: typeof UnitLayout;
     let unitLayoutProps: UnitLayoutProps;
     switch (insight.sumStyle) {
         case 'treemap': {
             unitLayoutClass = Treemap;
-            unitLayoutProps = { corner: 'top-left' } as TreemapProps;
+            unitLayoutProps = { corner: 'bottom-left' } as TreemapProps;
             break;
         }
         case 'strip-percent': {
             footprintClass = Percent;
-            footprintProps = { orientation: 'horizontal' } as PercentProps;
+            footprintProps = { orientation: 'vertical' } as PercentProps;
             unitLayoutClass = Strip;
-            unitLayoutProps = { orientation: 'vertical' } as StripProps;
+            unitLayoutProps = { orientation: 'horizontal' } as StripProps;
             break;
         }
         default: {
             unitLayoutClass = Grid;
-            unitLayoutProps = { growDirection: 'down-right' } as GridProps;
+            unitLayoutProps = { growDirection: 'right-up' } as GridProps;
             break;
         }
     }
@@ -45,7 +45,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         specCapabilities: {
             roles: [
                 {
-                    role: 'y',
+                    role: 'x',
                     binnable: true,
                     axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
                     signals: [SignalNames.YBins]

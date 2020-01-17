@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { allTruthy } from '../../array';
-import { colorBinCountSignal, colorReverseSignal, textSignals } from '../signals';
-import { facetSignals } from '../facet';
-import { ScaleNames, SignalNames } from '../constants';
+import { allTruthy } from '../../../array';
+import { colorBinCountSignal, colorReverseSignal, textSignals } from '../../signals';
+import { facetSignals } from '../../facet';
+import { ScaleNames, SignalNames } from '../../constants';
 import { Signal } from 'vega-typings';
-import { SpecContext } from '../types';
+import { SpecContext } from '../../types';
 
 export default function (context: SpecContext) {
     const { insight, specViewOptions } = context;

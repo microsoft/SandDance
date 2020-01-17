@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { DataNames, ScaleNames, SignalNames } from '../constants';
-import { fill, opacity } from '../fill';
+import { DataNames, ScaleNames, SignalNames } from '../../constants';
+import { fill, opacity } from '../../fill';
 import { Mark } from 'vega-typings';
-import { SpecContext } from '../types';
-import { testForCollapseSelection } from '../selection';
+import { SpecContext } from '../../types';
+import { testForCollapseSelection } from '../../selection';
 
 export default function (context: SpecContext) {
     const { specColumns } = context;

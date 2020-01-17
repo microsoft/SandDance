@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { allTruthy } from '../../array';
-import { Column, SpecContext } from '../types';
+import { allTruthy } from '../../../array';
+import { Column, SpecContext } from '../../types';
 import { Data, Transforms } from 'vega-typings';
-import { DataNames } from '../constants';
-import { facetGroupData, facetSourceData, facetTransforms } from '../facet';
-import { topLookup } from '../top';
+import { DataNames } from '../../constants';
+import { facetGroupData, facetSourceData, facetTransforms } from '../../facet';
+import { topLookup } from '../../top';
 
 export default function (context: SpecContext) {
     const { specColumns, insight, specViewOptions } = context;

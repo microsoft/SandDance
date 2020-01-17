@@ -1,28 +1,33 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Grid, GridProps } from '../unitLayouts/grid';
+import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
-import { SpecContext } from '../../types';
+import { SpecContext } from '../types';
+import { Treemap, TreemapProps } from '../unitLayouts/treemap';
 import { Whole } from '../footprints/whole';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     return {
         specContext,
         footprintClass: Whole,
-        unitLayoutClass: Grid,
-        unitLayoutProps: { growDirection: 'right-down' } as GridProps,
+        unitLayoutClass: Treemap,
+        unitLayoutProps: { corner: 'top-left' } as TreemapProps,
         specCapabilities: {
             roles: [
+                {
+                    role: 'size',
+                    excludeCategoric: true
+                },
+                {
+                    role: 'group',
+                    allowNone: true
+                },
                 {
                     role: 'z',
                     allowNone: true
                 },
                 {
                     role: 'color',
-                    allowNone: true
-                },
-                {
-                    role: 'sort',
                     allowNone: true
                 },
                 {
@@ -33,7 +38,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     role: 'facetV',
                     allowNone: true
                 }
-            ]
+            ],
+            signals: [SignalNames.TreeMapMethod]
         }
     };
 }

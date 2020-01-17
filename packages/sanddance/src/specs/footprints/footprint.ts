@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { InnerScope, Scopes } from '../../interfaces';
+import { InnerScope, Scopes } from '../interfaces';
 
 export interface FootprintProps {
 

@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { binnableColorScale, linearScale, pointScale } from '../scales';
+import { binnableColorScale, linearScale, pointScale } from '../../scales';
 import {
     ColorScaleNone,
     DataNames,
     FieldNames,
     ScaleNames,
     SignalNames
-} from '../constants';
+} from '../../constants';
 import { RangeScheme, Scale } from 'vega-typings';
-import { SpecContext } from '../types';
+import { SpecContext } from '../../types';
 
 export default function (context: SpecContext) {
     const { specColumns, insight } = context;

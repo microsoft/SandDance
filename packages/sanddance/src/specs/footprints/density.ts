@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Footprint, FootprintProps } from "./footprint";
-import { Scopes } from "../../interfaces";
+import { Scopes } from "../interfaces";
 
 export interface DensityProps extends FootprintProps {
     mode: 'square' | 'cube';

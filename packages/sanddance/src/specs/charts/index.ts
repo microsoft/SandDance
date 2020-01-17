@@ -8,7 +8,7 @@ import scatterplot from './scatterplot';
 import stacks from './stacks';
 import treemap from './treemap';
 import { SpecBuilder, SpecBuilderProps } from '../specBuilder';
-import { SpecContext } from '../../types';
+import { SpecContext } from '../types';
 
 const map: { [chart: string]: (specContext: SpecContext) => SpecBuilderProps } = {
     barchart: barchartV,

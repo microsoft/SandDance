@@ -1,26 +1,31 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Scatter } from '../unitLayouts/scatter';
-import { SignalNames } from '../../constants';
+import { Density, DensityProps } from '../footprints/density';
+import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
-import { SpecContext } from '../../types';
-import { Whole } from '../footprints/whole';
+import { SpecContext } from '../types';
+import { Stack } from '../unitLayouts/stack';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns } = specContext;
     return {
         specContext,
-        footprintClass: Whole,
-        unitLayoutClass: Scatter,
+        footprintClass: Density,
+        footprintProps: { mode: 'cube' } as DensityProps,
+        unitLayoutClass: Stack,
         specCapabilities: {
             roles: [
                 {
                     role: 'x',
-                    axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact'
+                    binnable: true,
+                    axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
+                    signals: [SignalNames.XBins]
                 },
                 {
                     role: 'y',
-                    axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact'
+                    binnable: true,
+                    axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
+                    signals: [SignalNames.YBins]
                 },
                 {
                     role: 'z',
@@ -42,8 +47,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     role: 'facetV',
                     allowNone: true
                 }
-            ],
-            signals: [SignalNames.PointSize]
+            ]
         }
     };
 }
