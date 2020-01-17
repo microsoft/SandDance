@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Footprint } from "./footprint";
+import { Layout } from "./layout";
 
-export class Whole extends Footprint {
+export class Whole extends Layout {
     public build() {
         return this.props.parent;
     }

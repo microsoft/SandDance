@@ -2,12 +2,12 @@
 // Licensed under the MIT license.
 import { InnerScope, Scopes } from '../interfaces';
 
-export interface FootprintProps {
+export interface LayoutProps {
 
 }
 
-export class Footprint {
-    constructor (public props: FootprintProps & Scopes) {
+export class Layout {
+    constructor (public props: LayoutProps & Scopes) {
     }
 
     public build(): InnerScope {

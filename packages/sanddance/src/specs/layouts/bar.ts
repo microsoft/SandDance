@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Footprint, FootprintProps } from "./footprint";
+import { Layout, LayoutProps } from "./layout";
 import { Orientation } from "../interfaces";
 
-export interface PercentProps extends FootprintProps {
+export interface BarProps extends LayoutProps {
     orientation: Orientation;
 }
 
-export class Percent extends Footprint {
+export class Bar extends Layout {
 
 }

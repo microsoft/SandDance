@@ -3,7 +3,7 @@
 import { allTruthy, push } from '../array';
 import { colorBinCountSignal, colorReverseSignal, textSignals } from './signals';
 import { DataNames } from './constants';
-import { Footprint, FootprintProps } from './footprints/footprint';
+import { Layout, LayoutProps } from './layouts/layout';
 import { getColorScale, getZScale } from './scales';
 import { getLegends } from './legends';
 import { InnerScope, SpecResult } from './interfaces';
@@ -14,8 +14,8 @@ import { topLookup } from './top';
 import { UnitLayout, UnitLayoutProps } from './unitLayouts/unitLayout';
 
 export interface SpecBuilderProps {
-    footprintProps?: FootprintProps;
-    footprintClass: typeof Footprint;
+    footprintProps?: LayoutProps;
+    footprintClass: typeof Layout;
     unitLayoutProps?: UnitLayoutProps;
     unitLayoutClass: typeof UnitLayout;
     specContext: SpecContext;

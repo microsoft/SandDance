@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Bar, BarProps } from '../footprints/bar';
-import { Footprint, FootprintProps } from '../footprints/footprint';
+import { Bar, BarProps } from '../layouts/bar';
+import { Layout, LayoutProps } from '../layouts/layout';
 import { Square, SquareProps } from '../unitLayouts/square';
-import { Percent, PercentProps } from '../footprints/percent';
+import { Percent, PercentProps } from '../layouts/percent';
 import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
@@ -13,8 +13,8 @@ import { UnitLayout, UnitLayoutProps } from '../unitLayouts/unitLayout';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns } = specContext;
-    let footprintClass: typeof Footprint = Bar;
-    let footprintProps: FootprintProps = { orientation: 'vertical' } as BarProps;
+    let footprintClass: typeof Layout = Bar;
+    let footprintProps: LayoutProps = { orientation: 'vertical' } as BarProps;
     let unitLayoutClass: typeof UnitLayout;
     let unitLayoutProps: UnitLayoutProps;
     switch (insight.sumStyle) {

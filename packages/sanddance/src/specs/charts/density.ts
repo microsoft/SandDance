@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Density, DensityProps } from '../footprints/density';
+import { Density, DensityProps } from '../layouts/density';
 import { Square } from '../unitLayouts/square';
 import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
