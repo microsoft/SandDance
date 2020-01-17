@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Column, InsightColumns, SpecColumns } from '../types';
+import { Column, SpecColumns } from '../types';
 import {
     Data,
     Facet,
@@ -34,19 +34,13 @@ export function manifold(columns: SpecColumns, vegaSpec: Spec, dataInputName: st
         const verticalCells = prepareCells(vegaSpec.data, dataInputName, 'vertical', columns.facetV, d0);
         groupby.push(verticalCells.groupBy);
         facet.aggregate = { cross: true } as any;
-        //TODO column count from X
-
-    } else {
-        //TODO column count signal
     }
 
     const mark: Mark = {
         name: 'cell',
         type: 'group',
         style: 'cell',
-        from: {
-            facet
-        },
+        from: { facet },
         sort: {
             field: groupby.map(g => `datum[${JSON.stringify(g)}]`),
             order: groupby.map(g => 'ascending')
@@ -63,7 +57,7 @@ export function manifold(columns: SpecColumns, vegaSpec: Spec, dataInputName: st
     vegaSpec.marks.push(mark);
 
     vegaSpec.signals.push(
-        { name: 'child_width', value: 200 },
+        { name: 'child_width', value: 200 },    //TODO get size
         { name: 'child_height', value: 200 }
     )
 
