@@ -13,7 +13,25 @@ import { Size, SpecCapabilities, SpecContext } from './types';
 import { topLookup } from './top';
 import { UnitLayout, UnitLayoutProps } from './unitLayouts/unitLayout';
 
+export interface DiscreteAxisScale {
+    discrete: true;
+}
+
+export interface ContinuousAxisScale {
+    discrete: false;
+    aggregate?: 'count' | 'multiply' | 'sum' | 'percent';
+}
+
+export type AxisScale = DiscreteAxisScale | ContinuousAxisScale;
+
+export interface AxisScales {
+    x: AxisScale;
+    y: AxisScale;
+    z: AxisScale;
+}
+
 export interface SpecBuilderProps {
+    axisScales?: AxisScales;
     footprintProps?: LayoutProps;
     footprintClass: typeof Layout;
     unitLayoutProps?: UnitLayoutProps;
