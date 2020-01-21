@@ -20,7 +20,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         layouts: [
             {
                 layoutClass: Density,
-                props: { mode: 'cube' } as DensityProps,
+                props: <DensityProps>{ mode: 'cube' },
             },
             {
                 layoutClass: Stack

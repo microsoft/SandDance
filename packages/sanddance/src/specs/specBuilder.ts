@@ -126,6 +126,7 @@ export class SpecBuilder {
 
             let parentScope = this.globalScope;
             for (let i = 0; i < layouts.length; i++) {
+                if (!parentScope) continue;
                 let { layoutClass, props } = layouts[i];
                 let layoutBuildProps: LayoutProps & BuildProps = {
                     ...props,
@@ -137,12 +138,14 @@ export class SpecBuilder {
                 const layout = new layoutClass(layoutBuildProps);
                 layout.id = i;
                 let childScope = layout.build();
-                if (childScope.globalScales) {
-                    this.addGlobalScales(childScope.globalScales);
-                }
-                if (childScope.globalTransforms) {
-                    for (let columnName in childScope.globalTransforms) {
-                        globalTransforms[columnName] = childScope.globalTransforms[columnName];
+                if (childScope) {
+                    if (childScope.globalScales) {
+                        this.addGlobalScales(childScope.globalScales, layoutBuildProps.axesScales);
+                    }
+                    if (childScope.globalTransforms) {
+                        for (let columnName in childScope.globalTransforms) {
+                            globalTransforms[columnName] = childScope.globalTransforms[columnName];
+                        }
                     }
                 }
                 parentScope = childScope;
@@ -228,7 +231,7 @@ export class SpecBuilder {
         return scales;
     }
 
-    private addGlobalScales(globalScales?: { x?: Scale, y?: Scale, z?: Scale }) {
+    private addGlobalScales(globalScales: { x?: Scale, y?: Scale, z?: Scale }, axisScales: AxisScales) {
         for (let s in globalScales) {
             let scale: Scale = globalScales[s];
             if (scale) {
@@ -247,6 +250,7 @@ export class SpecBuilder {
             case 'horizontal': {
                 const props: SliceProps = {
                     orientation: 'horizontal',
+                    maxbins,
                     groupby
                 };
                 layoutPair = {
@@ -258,6 +262,7 @@ export class SpecBuilder {
             case 'vertical': {
                 const props: SliceProps = {
                     orientation: 'vertical',
+                    maxbins,
                     groupby
                 };
                 layoutPair = {

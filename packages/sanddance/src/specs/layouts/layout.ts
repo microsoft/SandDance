@@ -24,6 +24,6 @@ export class Layout {
     }
 
     public build(): InnerScope {
-        return this.props.parent;
+        throw 'Not implemented';
     }
 }

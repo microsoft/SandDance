@@ -14,15 +14,14 @@ export class Wrap extends Layout {
 
     public build(): InnerScope {
         const { props } = this;
-        const { groupby, maxbins, parent } = props;
+        const { global, groupby, maxbins, parent } = props;
         const name = `wrap_${this.id}`;
         const facetDataName = `data_${name}_facet`;
-        const bin = binnable(groupby, maxbins);
+        const bin = binnable(global.dataName, groupby, maxbins);
         let globalTransforms: { [columnName: string]: Transforms[] };
         if (bin.transforms) {
             globalTransforms = {};
             globalTransforms[groupby.name] = bin.transforms;
-            //TODO use signals
         }
         const ord = this.ordinalReqs(name, bin.field);
         const mark: Mark = {
@@ -49,19 +48,29 @@ export class Wrap extends Layout {
                     }
                 }
             },
-            marks: []
+            marks: [
+                {
+                    type: 'text',
+                    encode: {
+                        update: {
+                            text: {
+                                signal: `length(data(${JSON.stringify(facetDataName)}))`
+                            },
+                            fontSize: {
+                                value: 20
+                            }
+                        }
+                    }
+                }
+            ]
         };
         parent.scope.marks.push(mark);
 
         return {
             dataName: facetDataName,
             scope: mark,
-            sizeSignals: { height: 'TODO', width: 'TODO' },
+            sizeSignals: parent.sizeSignals,
             globalTransforms
-            // globalScales: {
-            //     x: xScale,
-            //     y: yScale
-            // }
         };
     }
 

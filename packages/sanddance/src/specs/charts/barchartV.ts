@@ -9,6 +9,7 @@ import { Square, SquareProps } from '../layouts/square';
 import { Slice, SliceProps } from '../layouts/slice';
 import { Strip, StripProps } from '../layouts/strip';
 import { Treemap, TreemapProps } from '../layouts/treemap';
+import { maxbins } from '../defaults';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns } = specContext;
@@ -26,21 +27,21 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         case 'treemap': {
             y.aggregate = 'sum';
             unitLayoutClass = Treemap;
-            unitLayoutProps = { corner: 'bottom-left' } as TreemapProps;
+            unitLayoutProps = <TreemapProps>{ corner: 'bottom-left' };
             break;
         }
         case 'strip-percent': {
             y.aggregate = 'percent';
             footprintClass = Slice;
-            footprintProps = { orientation: 'vertical' } as SliceProps;
+            footprintProps = <SliceProps>{ orientation: 'vertical', maxbins };
             unitLayoutClass = Strip;
-            unitLayoutProps = { orientation: 'horizontal' } as StripProps;
+            unitLayoutProps = <StripProps>{ orientation: 'horizontal' };
             break;
         }
         default: {
             y.aggregate = 'count';
             unitLayoutClass = Square;
-            unitLayoutProps = { growDirection: 'right-up' } as SquareProps;
+            unitLayoutProps = <SquareProps>{ growDirection: 'right-up' };
             break;
         }
     }

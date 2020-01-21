@@ -11,7 +11,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         layouts: [
             {
                 layoutClass: Treemap,
-                props: { corner: 'top-left' } as TreemapProps
+                props: <TreemapProps>{ corner: 'top-left' }
             }
         ],
         specCapabilities: {

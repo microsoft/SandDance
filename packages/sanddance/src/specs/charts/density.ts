@@ -19,7 +19,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         layouts: [
             {
                 layoutClass: Density,
-                props: { mode: 'square' } as DensityProps
+                props: <DensityProps>{ mode: 'square' }
             },
             {
                 layoutClass: Square
