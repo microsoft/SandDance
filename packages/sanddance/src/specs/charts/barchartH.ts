@@ -42,7 +42,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         case 'strip-percent': {
             x.aggregate = 'percent';
             footprintClass = Slice;
-            const sliceProps: SliceProps = { orientation: 'horizontal', maxbins };
+            const sliceProps: SliceProps = { orientation: 'horizontal', groupby: specColumns.y, maxbins };
             footprintProps = sliceProps;
             unitLayoutClass = Strip;
             const stripProps: StripProps = { orientation: 'vertical' };

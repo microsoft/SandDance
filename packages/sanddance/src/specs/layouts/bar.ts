@@ -9,19 +9,19 @@ import {
     Transforms
 } from 'vega-typings';
 import { binnable, Binnable } from '../bin';
-import { BuildProps, Layout, LayoutProps } from './layout';
+import { BuildProps, GroupLayoutProps, GroupLayout } from './layout';
 import { Column } from '../types';
 import { ContinuousAxisScale } from '../specBuilder';
 import { InnerScope, Orientation } from '../interfaces';
 import { push } from '../../array';
 
-export interface BarProps extends LayoutProps {
+export interface BarProps extends GroupLayoutProps {
     sumBy: Column;
     orientation: Orientation;
     maxbins: number;
 }
 
-export class Bar extends Layout {
+export class Bar extends GroupLayout {
     public props: BarProps & BuildProps;
 
     public build(): InnerScope {

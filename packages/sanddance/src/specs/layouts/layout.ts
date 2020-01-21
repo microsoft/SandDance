@@ -5,7 +5,6 @@ import { Column } from '../types';
 import { InnerScope } from '../interfaces';
 
 export interface LayoutProps {
-    groupby?: Column;
 }
 
 export interface BuildProps {
@@ -23,4 +22,11 @@ export class Layout {
     public build(): InnerScope {
         throw 'Not implemented';
     }
+}
+
+export interface GroupLayoutProps extends LayoutProps {
+    groupby: Column;
+}
+
+export class GroupLayout extends Layout {
 }

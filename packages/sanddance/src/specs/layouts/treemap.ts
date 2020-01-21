@@ -13,7 +13,7 @@ export class Treemap extends Layout {
 
     public build(): InnerScope {
         const { props } = this;
-        const { global, groupby, parent } = props;
+        const { global, parent } = props;
         const name = `square_${this.id}`;
         const facetDataName = `facet_${name}`;
         const mark: Mark = {

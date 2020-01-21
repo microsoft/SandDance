@@ -1,16 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { binnable } from '../bin';
-import { BuildProps, Layout, LayoutProps } from './layout';
+import { BuildProps, GroupLayoutProps, GroupLayout } from './layout';
 import { createOrdinalsForFacet } from '../ordinal';
 import { InnerScope } from '../interfaces';
 import { Mark, Transforms } from 'vega-typings';
 
-export interface WrapProps extends LayoutProps {
+export interface WrapProps extends GroupLayoutProps {
     maxbins: number
 }
 
-export class Wrap extends Layout {
+export class Wrap extends GroupLayout {
     public props: WrapProps & BuildProps;
 
     public build(): InnerScope {
