@@ -46,6 +46,7 @@ export interface ColumnMapBaseProps {
     quantitativeColumns: SandDance.types.Column[];
     categoricalColumns: SandDance.types.Column[];
     changeColumnMapping: (role: SandDance.types.InsightColumnRoles, columnOrRole: SandDance.types.Column | string, options?: ChangeColumnMappingOptions) => void;
+    facetStyle: SandDance.types.FacetStyle;
     sumStyle: SandDance.types.SumStyle;
     explorer: Explorer;
     specCapabilities: SandDance.types.SpecCapabilities;
@@ -56,6 +57,7 @@ export interface Props extends ColumnMapBaseProps {
     componentRef?: React.RefObject<FabricTypes.IDropdown>;
     hideSignals?: boolean;
     prefix?: JSX.Element;
+    suffix?: JSX.Element;
     disabled?: boolean;
     specRole: SandDance.types.SpecRoleCapabilities;
     disabledColumnName?: string
@@ -174,6 +176,11 @@ export function ColumnMap(props: Props) {
         }
     }
     const label = roleLabels[props.specRole.role];
+
+    if (props.specRole.role === 'facetV') {
+        console.log('facetV options', options);
+    }
+
     return (
         <div
             className="sanddance-columnMap"
@@ -198,6 +205,7 @@ export function ColumnMap(props: Props) {
                     onChange={value => props.onChangeSignal && props.onChangeSignal(signal.name, value)}
                 />
             ))}
+            {props.suffix}
         </div>
     );
 }

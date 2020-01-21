@@ -35,6 +35,7 @@ export function ensureColumnsPopulated(chart: SandDance.types.Chart, insightColu
             insightColumns[role] = quantitative ? firstQuantitativeColumnName : firstColumnName;
         }
     };
+    ensureColumn('facetV');
     switch (chart) {
         case 'barchart':
         case 'barchartV':

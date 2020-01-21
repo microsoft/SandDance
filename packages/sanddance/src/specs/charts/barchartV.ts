@@ -5,18 +5,17 @@ import { Bar, BarProps } from '../layouts/bar';
 import { Layout, LayoutProps } from '../layouts/layout';
 import { SignalNames } from '../constants';
 import { SpecContext } from '../types';
-import { Square, SquareProps } from '../unitLayouts/square';
-import { Stack, StackProps } from '../layouts/stack';
-import { Strip, StripProps } from '../unitLayouts/strip';
-import { Treemap, TreemapProps } from '../unitLayouts/treemap';
-import { UnitLayout, UnitLayoutProps } from '../unitLayouts/unitLayout';
+import { Square, SquareProps } from '../layouts/square';
+import { Slice, SliceProps } from '../layouts/slice';
+import { Strip, StripProps } from '../layouts/strip';
+import { Treemap, TreemapProps } from '../layouts/treemap';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns } = specContext;
     let footprintClass: typeof Layout = Bar;
-    let footprintProps: LayoutProps = { orientation: 'vertical' } as BarProps;
-    let unitLayoutClass: typeof UnitLayout;
-    let unitLayoutProps: UnitLayoutProps;
+    let footprintProps: LayoutProps = { orientation: 'vertical', groupby: specContext.specColumns.x } as BarProps;
+    let unitLayoutClass: typeof Layout;
+    let unitLayoutProps: LayoutProps;
     const y: ContinuousAxisScale = { discrete: false };
     const axisScales: AxisScales = {
         x: { discrete: true },
@@ -32,8 +31,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         }
         case 'strip-percent': {
             y.aggregate = 'percent';
-            footprintClass = Stack;
-            footprintProps = { orientation: 'vertical' } as StackProps;
+            footprintClass = Slice;
+            footprintProps = { orientation: 'vertical' } as SliceProps;
             unitLayoutClass = Strip;
             unitLayoutProps = { orientation: 'horizontal' } as StripProps;
             break;
@@ -48,10 +47,16 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     return {
         axisScales,
         specContext,
-        footprintClass,
-        footprintProps,
-        unitLayoutClass,
-        unitLayoutProps,
+        layouts: [
+            {
+                layoutClass: footprintClass,
+                props: footprintProps
+            },
+            {
+                layoutClass: unitLayoutClass,
+                props: unitLayoutProps
+            }
+        ],
         specCapabilities: {
             roles: [
                 {

@@ -4,7 +4,7 @@ import { AxisScales, SpecBuilderProps } from '../specBuilder';
 import { Density, DensityProps } from '../layouts/density';
 import { SignalNames } from '../constants';
 import { SpecContext } from '../types';
-import { Square } from '../unitLayouts/square';
+import { Square } from '../layouts/square';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns } = specContext;
@@ -16,9 +16,15 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     return {
         axisScales,
         specContext,
-        footprintClass: Density,
-        footprintProps: { mode: 'square' } as DensityProps,
-        unitLayoutClass: Square,
+        layouts: [
+            {
+                layoutClass: Density,
+                props: { mode: 'square' } as DensityProps
+            },
+            {
+                layoutClass: Square
+            }
+        ],
         specCapabilities: {
             roles: [
                 {

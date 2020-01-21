@@ -108,8 +108,53 @@ export class Chart extends React.Component<Props, State> {
                             const selectedColumnName = specColumnInRole;
                             let disabledColumnName: string;
                             let prefix: JSX.Element;
+                            let suffix: JSX.Element;
                             switch (specRole.role) {
-                                case 'sum': {
+                                case 'facetV': {
+                                    console.log('props.insightColumns', props.insightColumns);
+                                    break;
+                                }
+                                case 'facet': {
+                                    suffix = (
+                                        <Dropdown
+                                            disabled={!props.insightColumns.facet}
+                                            collapseLabel={props.collapseLabels}
+                                            label={'Facet behavior'}
+                                            calloutProps={{ style: { minWidth: '18em' } }}
+                                            options={[
+                                                {
+                                                    key: 'wrap',                                                    
+                                                    text: 'Wrap',
+                                                    data: 'wrap',
+                                                    selected: !props.facetStyle || props.facetStyle === 'wrap'
+                                                },
+                                                {
+                                                    key: 'horizontal',
+                                                    text: 'horizontal',
+                                                    data: 'horizontal',
+                                                    selected: props.facetStyle === 'horizontal'
+                                                },
+                                                {
+                                                    key: 'vertical',
+                                                    text: 'vertical',
+                                                    data: 'vertical',
+                                                    selected: props.facetStyle === 'vertical'
+                                                },
+                                                {
+                                                    key: 'cross',
+                                                    text: 'cross',
+                                                    data: 'cross',
+                                                    selected: props.facetStyle === 'cross'
+                                                }
+                                            ]}
+                                            onChange={(e, o) =>
+                                                props.changeColumnMapping('facet', 'facet', { facetStyle: o.data })
+                                            }
+                                        />
+                                    );
+                                    break;
+                                }
+                                case 'sum': {                                    
                                     prefix = (
                                         <Dropdown
                                             collapseLabel={props.collapseLabels}
@@ -156,11 +201,12 @@ export class Chart extends React.Component<Props, State> {
                             let disabled = props.disabled
                                 || (props.view === '2d' && specRole.role === 'z')
                                 || (specRole.role === 'sum' && !props.sumStyle)
-                                || (specRole.role === 'facetV' && !props.insightColumns.facet);
+                                || (specRole.role === 'facetV' && (!props.insightColumns.facet || props.facetStyle !== 'cross'));
                             return (
                                 <ColumnMap
                                     {...props}
                                     prefix={prefix}
+                                    suffix={suffix}
                                     collapseLabel={props.collapseLabels}
                                     disabled={disabled}
                                     disabledColumnName={disabledColumnName}

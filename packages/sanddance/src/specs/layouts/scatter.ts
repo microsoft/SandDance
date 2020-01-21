@@ -14,22 +14,26 @@ import { linearScale, pointScale } from '../scales';
 import { push } from '../../array';
 import { SpecContext } from '../types';
 import { testForCollapseSelection } from '../selection';
-import { UnitLayout } from './unitLayout';
+import { Layout } from './layout';
+import { InnerScope } from '../interfaces';
 
-export class Scatter extends UnitLayout {
-    public build(specContext: SpecContext) {
-
+export class Scatter extends Layout {
+    public build(): InnerScope {
+        const { specContext } = this.props;
         //TODO clean data in global scope
         // filterInvalidWhenNumeric(specColumns.x),
         // filterInvalidWhenNumeric(specColumns.y),
         // filterInvalidWhenNumeric(specColumns.z),
 
-        //Add scales to global scope
+        //TODO use main scales 
         const { scales, signals } = this.props.global.scope;
         push(scales, getScales(specContext));
         push(signals, getSignals(specContext));
 
-        this.props.parent.scope.marks = [getMark(specContext, this.props.parent.dataName)];
+        const mark = getMark(specContext, this.props.parent.dataName);
+        this.props.parent.scope.marks = [mark];
+
+        return { dataName: 'f1', scope: mark, sizeSignals: this.props.parent.sizeSignals };
     }
 }
 
@@ -54,9 +58,13 @@ function getAxes(context: SpecContext) {
 function getMark(context: SpecContext, dataSource: string) {
     const { specColumns } = context;
     const mark: Mark = {
-        type: 'rect',
+        type: 'group',
         from: {
-            data: dataSource
+            facet: {
+                name: 'f1',
+                data: dataSource,
+                groupby: ['x', 'y']
+            }
         },
         encode: {
             update: {

@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { AxisScales, SpecBuilderProps } from '../specBuilder';
-import { Scatter } from '../unitLayouts/scatter';
+import { Scatter } from '../layouts/scatter';
 import { SignalNames } from '../constants';
 import { SpecContext } from '../types';
-import { Whole } from '../layouts/whole';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns } = specContext;
@@ -16,8 +15,11 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     return {
         axisScales,
         specContext,
-        footprintClass: Whole,
-        unitLayoutClass: Scatter,
+        layouts: [
+            {
+                layoutClass: Scatter
+            }
+        ],
         specCapabilities: {
             roles: [
                 {

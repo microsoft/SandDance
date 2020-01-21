@@ -101,9 +101,14 @@ export interface FacetMargins {
 }
 
 /**
+ * Layout style to use for faceting.
+ */
+export type FacetStyle = 'wrap' | 'horizontal' | 'vertical' | 'cross'; //horizontal, vertical, wrap, cross
+
+/**
  * Layout style to use for summing.
  */
-export type SumStyle = 'treemap' | 'strip-percent'; // | 'strip' | 'treemap-percent';
+export type SumStyle = 'treemap' | 'strip' | 'strip-percent';
 
 /**
  * Column to use for faceting into small multiples.
@@ -130,7 +135,8 @@ export interface Insight {
     columns: InsightColumns;
     view?: VegaDeckGl.types.View;
     filter?: Search;
-    facets?: Facets;
+    facetStyle?: FacetStyle;
+    facets?: Facets;            //TODO: deprecate
     sumStyle?: SumStyle;
 
     /**

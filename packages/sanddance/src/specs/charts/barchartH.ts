@@ -5,18 +5,17 @@ import { Bar, BarProps } from '../layouts/bar';
 import { Layout, LayoutProps } from '../layouts/layout';
 import { SignalNames } from '../constants';
 import { SpecContext } from '../types';
-import { Square, SquareProps } from '../unitLayouts/square';
-import { Stack, StackProps } from '../layouts/stack';
-import { Strip, StripProps } from '../unitLayouts/strip';
-import { Treemap, TreemapProps } from '../unitLayouts/treemap';
-import { UnitLayout, UnitLayoutProps } from '../unitLayouts/unitLayout';
+import { Square, SquareProps } from '../layouts/square';
+import { Slice, SliceProps } from '../layouts/slice';
+import { Strip, StripProps } from '../layouts/strip';
+import { Treemap, TreemapProps } from '../layouts/treemap';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns } = specContext;
     let footprintClass: typeof Layout = Bar;
-    let footprintProps: LayoutProps = { orientation: 'horizontal' } as BarProps;
-    let unitLayoutClass: typeof UnitLayout;
-    let unitLayoutProps: UnitLayoutProps;
+    let footprintProps: LayoutProps = <BarProps>{ orientation: 'horizontal' };
+    let unitLayoutClass: typeof Layout;
+    let unitLayoutProps: LayoutProps;
     const x: ContinuousAxisScale = { discrete: false };
     const axisScales: AxisScales = {
         x,
@@ -27,15 +26,15 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         case 'treemap': {
             x.aggregate = 'sum';
             unitLayoutClass = Treemap;
-            unitLayoutProps = { corner: 'top-left' } as TreemapProps;
+            unitLayoutProps = <TreemapProps>{ corner: 'top-left' } ;
             break;
         }
         case 'strip-percent': {
             x.aggregate = 'percent';
-            footprintClass = Stack;
-            footprintProps = { orientation: 'horizontal' } as StackProps;
+            footprintClass = Slice;
+            footprintProps = <SliceProps>{ orientation: 'horizontal' } ;
             unitLayoutClass = Strip;
-            unitLayoutProps = { orientation: 'vertical' } as StripProps;
+            unitLayoutProps = <StripProps>{ orientation: 'vertical' } ;
             break;
         }
         default: {
@@ -48,10 +47,16 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     return {
         axisScales,
         specContext,
-        footprintClass,
-        footprintProps,
-        unitLayoutClass,
-        unitLayoutProps,
+        layouts: [
+            {
+                layoutClass: footprintClass,
+                props: footprintProps
+            },
+            {
+                layoutClass: unitLayoutClass,
+                props: unitLayoutProps
+            }
+        ],
         specCapabilities: {
             roles: [
                 {

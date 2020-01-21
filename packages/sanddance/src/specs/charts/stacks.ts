@@ -4,7 +4,7 @@ import { AxisScales, SpecBuilderProps } from '../specBuilder';
 import { Density, DensityProps } from '../layouts/density';
 import { SignalNames } from '../constants';
 import { SpecContext } from '../types';
-import { Stack } from '../unitLayouts/stack';
+import { Stack } from '../layouts/stack';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns } = specContext;
@@ -17,9 +17,15 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         axisScales,
         customZScale: true,
         specContext,
-        footprintClass: Density,
-        footprintProps: { mode: 'cube' } as DensityProps,
-        unitLayoutClass: Stack,
+        layouts: [
+            {
+                layoutClass: Density,
+                props: { mode: 'cube' } as DensityProps,
+            },
+            {
+                layoutClass: Stack
+            }
+        ],
         specCapabilities: {
             roles: [
                 {
