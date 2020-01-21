@@ -120,6 +120,23 @@ export class SpecBuilder {
                 push(vegaSpec.signals, manifold.signals);
                 push(vegaSpec.scales, manifold.scales);
                 layouts = [manifold.layoutPair, ...layouts];
+
+                //TODO figure out tile size for facets
+                vegaSpec.signals.push(
+                    {
+                        name: 'h2',
+                        value: 100
+                    },
+                    {
+                        name: 'w2',
+                        value: 100
+                    }
+                );
+                this.globalScope.sizeSignals = {
+                    height: 'h2',
+                    width: 'w2'
+                }
+
             }
 
             const globalTransforms: { [columnName: string]: Transforms[] } = {};

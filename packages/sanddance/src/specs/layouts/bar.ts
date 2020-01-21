@@ -5,6 +5,7 @@ import { BuildProps, Layout, LayoutProps } from './layout';
 import { ContinuousAxisScale } from '../specBuilder';
 import { InnerScope, Orientation } from '../interfaces';
 import { binnable, Binnable } from '../bin';
+import { push } from '../../array';
 
 export interface BarProps extends LayoutProps {
     orientation: Orientation;
@@ -16,7 +17,7 @@ export class Bar extends Layout {
 
     public build(): InnerScope {
         const { props } = this;
-        const { global, groupby, maxbins, parent, specContext } = props;
+        const { global, groupby, maxbins, orientation, parent, specContext } = props;
         const name = `bar_${this.id}`;
         const facetDataName = `facet_${name}`;
         const aggregation = this.getAgregation();
@@ -26,6 +27,8 @@ export class Bar extends Layout {
         const localAggregateDataName = `${facetDataName}_${aggregation}`;
         const xScaleName = `${name}_scale_x`;
         const yScaleName = `${name}_scale_y`;
+        const bandWidth = `${name}_bandwidth`;
+
         const trans: AggregateTransform = {
             type: 'aggregate',
             groupby: [props.groupby.name],
@@ -56,10 +59,18 @@ export class Bar extends Layout {
                 }
             ]
         });
-        global.scope.signals.push({
-            name: globalAggregateMaxExtentSignal,
-            update: `max(${globalAggregateExtentSignal}[0],${globalAggregateExtentSignal}[1])`
-        })
+        push(global.scope.signals,
+            [
+                {
+                    name: globalAggregateMaxExtentSignal,
+                    update: `max(${globalAggregateExtentSignal}[0],${globalAggregateExtentSignal}[1])`
+                },
+                {
+                    name: bandWidth,
+                    update: `bandwidth(${JSON.stringify(orientation === 'horizontal' ? yScaleName : xScaleName)})`
+                }
+            ]
+        );
         const mark: Mark = {
             style: 'cell',
             name,
@@ -79,37 +90,36 @@ export class Bar extends Layout {
                 }
             ],
             encode: {
-                update: {
-                    // x: {
-                    //     scale: ScaleNames.X,
-                    //     field: specColumns.x.name,
-                    //     offset: 1
-                    // },
-                    // width: { signal: SignalNames.PointSize },
-                    // y: [
-                    //     {
-                    //         scale: ScaleNames.Y,
-                    //         test: testForCollapseSelection(),
-                    //         signal: `${SignalNames.YDomain}[0]`
-                    //     },
-                    //     {
-                    //         scale: ScaleNames.Y,
-                    //         field: specColumns.y.name,
-                    //         offset: {
-                    //             signal: `-${SignalNames.PointSize}`
-                    //         }
-                    //     }
-                    // ],
-                    // height: [
-                    //     {
-                    //         test: testForCollapseSelection(),
-                    //         value: 0
-                    //     },
-                    //     {
-                    //         signal: SignalNames.PointSize
-                    //     }
-                    // ]
-                }
+                update: orientation === 'horizontal' ?
+                    {
+                        x: {
+                            value: 0
+                        },
+                        y: {
+                            signal: `scale(${JSON.stringify(yScaleName)}, datum[${JSON.stringify(bin.field)}])`
+                        },
+                        height: {
+                            signal: bandWidth
+                        },
+                        width: {
+                            signal: `scale(${JSON.stringify(xScaleName)}, datum[${JSON.stringify(aggregation)}])`
+                        }
+                    }
+                    :
+                    {
+                        x: {
+                            signal: `scale(${JSON.stringify(xScaleName)}, datum[${JSON.stringify(bin.field)}])`
+                        },
+                        y: {
+                            signal: `scale(${JSON.stringify(yScaleName)}, datum[${JSON.stringify(aggregation)}])`
+                        },
+                        height: {
+                            signal: `${parent.sizeSignals.height} - scale(${JSON.stringify(yScaleName)}, datum[${JSON.stringify(aggregation)}])`
+                        },
+                        width: {
+                            signal: bandWidth
+                        }
+                    }
             },
             marks: [
                 {
@@ -145,7 +155,7 @@ export class Bar extends Layout {
     private getScales(bin: Binnable, xScaleName: string, yScaleName: string, globalAggregateMaxExtentSignal: string) {
         let xScale: Scale;
         let yScale: Scale;
-        if (this.props.orientation === 'horizontal') {
+        if (this.props.orientation === 'vertical') {
             xScale = <BandScale>{
                 type: 'band',
                 name: xScaleName,
@@ -172,10 +182,10 @@ export class Bar extends Layout {
                     }
                 ],
                 range: [
-                    0,
                     {
                         signal: this.props.parent.sizeSignals.height
-                    }
+                    }, 
+                    0
                 ],
                 nice: true,
                 zero: true
