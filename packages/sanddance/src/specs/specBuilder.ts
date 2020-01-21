@@ -85,8 +85,9 @@ export class SpecBuilder {
                 //width: insight.size.width,
                 data: [{ name: dataName, transform: [] }],
                 marks: [],
-                scales: this.getScales(),
+                scales: [],
 
+                //TODO add color & text signals
                 // signals: allTruthy<Signal>(
                 //     textSignals(specContext),
                 //     [
@@ -108,8 +109,8 @@ export class SpecBuilder {
                 dataName,
                 scope: vegaSpec,
                 sizeSignals: {
-                    height: 'height',
-                    width: 'width'
+                    height: 'h2',
+                    width: 'w2'
                 }
             };
 
@@ -132,11 +133,17 @@ export class SpecBuilder {
                         value: 100
                     }
                 );
-                this.globalScope.sizeSignals = {
-                    height: 'h2',
-                    width: 'w2'
-                }
-
+            } else {
+                vegaSpec.signals.push(
+                    {
+                        name: 'h2',
+                        value: insight.size.height
+                    },
+                    {
+                        name: 'w2',
+                        value: insight.size.width
+                    }
+                );
             }
 
             const globalTransforms: { [columnName: string]: Transforms[] } = {};
@@ -172,28 +179,9 @@ export class SpecBuilder {
                 push(vegaSpec.data[0].transform, globalTransforms[columnName]);
             }
 
-            //TODO apply the x/y/z scales
+            //TODO apply the x/y/z axes
 
             //TODO add mark to the final scope
-
-
-            // //create cells, based on insight facets
-            // const cellScope = this.createCells(dataName, vegaSpec);
-            // this.cellScope = cellScope;
-            // push(vegaSpec.signals, [
-            //     { name: 'child_height', value: cellScope.height },
-            //     { name: 'child_width', value: cellScope.width }
-            // ]);
-
-            // //create footprints within cells
-            // const { footprintClass, footprintProps } = this.props;
-            // const footprint = new footprintClass({ ...footprintProps, global: this.globalScope, parent: this.cellScope });
-            // this.footprintScope = footprint.build();
-
-            // //create unit layouts within footprints
-            // const { unitLayoutClass, unitLayoutProps } = this.props;
-            // const unitLayout = new unitLayoutClass({ ...unitLayoutProps, global: this.globalScope, parent: this.footprintScope });
-            // unitLayout.build(specContext);
 
             //final fixups
 
@@ -212,40 +200,6 @@ export class SpecBuilder {
                 vegaSpec
             }
         }
-    }
-
-    // private createCells(dataName: string, vegaSpec: Spec): InnerScope & Size {
-    //     const { insight } = this.props.specContext;
-    //     const { columns } = insight;
-
-    //     //TODO axes
-    //     // if (!insight.hideAxes && axes && axes.length) {
-    //     //     vegaSpec.axes = axes;
-    //     // }
-
-    //     if (columns.facet) {
-    //         //TODO: deal with size
-    //         const height = 200, width = 200;
-    //         const facetDataName = DataNames.FacetGroupCell;
-    //         const scope = manifold(this.props.specContext.specColumns, vegaSpec, dataName, facetDataName);
-    //         return { dataName: facetDataName, scope, height, width };
-
-    //     } else {
-    //         Object.assign(vegaSpec, insight.size);
-    //         return { dataName, scope: vegaSpec, ...insight.size };
-    //     }
-    // }
-
-    private getScales() {
-        const scales: Scale[] = [];
-
-        //TODO scales from axesScale prop
-        // scales: allTruthy<Scale>([
-        //     getColorScale(specColumns.color, insight),
-        //     !this.props.customZScale && getZScale(specColumns.z)
-        // ]),
-
-        return scales;
     }
 
     private addGlobalScales(globalScales: { x?: Scale, y?: Scale, z?: Scale }, axisScales: AxisScales) {
