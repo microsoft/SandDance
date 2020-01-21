@@ -36,7 +36,7 @@ export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabili
             polygons.push.apply(polygons, axisSelectionPolygons(axis, true, yRole.axisSelection, columns.y));
         });
     }
-    if (stage.facets) {
+    if (stage.facets && columns.facet) {
         polygons.push.apply(polygons, facetSelectionPolygons(stage.facets, columns.facet));
     }
     //move polygons to Z
