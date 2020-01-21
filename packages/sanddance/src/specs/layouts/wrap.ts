@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Mark, Transforms } from 'vega-typings';
 import { binnable } from '../bin';
 import { BuildProps, Layout, LayoutProps } from './layout';
+import { createOrdinalsForFacet } from '../ordinal';
 import { InnerScope } from '../interfaces';
+import { Mark, Transforms } from 'vega-typings';
 
 export interface WrapProps extends LayoutProps {
     maxbins: number
@@ -23,7 +24,7 @@ export class Wrap extends Layout {
             globalTransforms = {};
             globalTransforms[groupby.name] = bin.transforms;
         }
-        const ord = this.ordinalReqs(name, bin.field);
+        const ord = createOrdinalsForFacet(global.scope, global.dataName, name, bin.field);
         const mark: Mark = {
             style: 'cell',
             name,
@@ -71,56 +72,6 @@ export class Wrap extends Layout {
             scope: mark,
             sizeSignals: parent.sizeSignals,
             globalTransforms
-        };
-    }
-
-    private ordinalReqs(prefix: string, binField: string) {
-        const { global } = this.props;
-        const scaleName = `${prefix}_order`;
-        const lookupField = 'ordinal';
-        const dataName = `${prefix}_bin_order`;
-        global.scope.data.push(
-            {
-                name: dataName,
-                source: global.dataName,
-                transform: [
-                    {
-                        type: 'aggregate',
-                        groupby: [binField]
-                    },
-                    {
-                        type: 'collect',
-                        sort: {
-                            field: binField,
-                            order: 'ascending'
-                        }
-                    },
-                    {
-                        type: 'window',
-                        ops: ['row_number'],
-                        as: [lookupField]
-                    }
-                ]
-            }
-        );
-        global.scope.scales.push(
-            {
-                type: 'ordinal',
-                name: scaleName,
-                domain: {
-                    data: dataName,
-                    field: binField
-                },
-                range: {
-                    data: dataName,
-                    field: lookupField
-                }
-            }
-        );
-        return {
-            dataName,
-            scaleName,
-            lookupField
         };
     }
 }
