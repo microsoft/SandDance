@@ -14,7 +14,8 @@ import { Treemap, TreemapProps } from '../layouts/treemap';
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns } = specContext;
     let footprintClass: typeof Layout = Bar;
-    let footprintProps: LayoutProps = <BarProps>{ orientation: 'vertical', groupby: specContext.specColumns.x };
+    const barProps: BarProps = { orientation: 'vertical', groupby: specColumns.x, maxbins };
+    let footprintProps: LayoutProps = barProps;
     let unitLayoutClass: typeof Layout;
     let unitLayoutProps: LayoutProps;
     const y: ContinuousAxisScale = { discrete: false };
@@ -27,21 +28,32 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         case 'treemap': {
             y.aggregate = 'sum';
             unitLayoutClass = Treemap;
-            unitLayoutProps = <TreemapProps>{ corner: 'bottom-left' };
+            const treemapProps: TreemapProps = { corner: 'bottom-left' };
+            unitLayoutProps = treemapProps;
+            break;
+        }
+        case 'strip': {
+            y.aggregate = 'sum';
+            unitLayoutClass = Strip;
+            const stripProps: StripProps = { orientation: 'horizontal' };
+            unitLayoutProps = stripProps;
             break;
         }
         case 'strip-percent': {
             y.aggregate = 'percent';
             footprintClass = Slice;
-            footprintProps = <SliceProps>{ orientation: 'vertical', maxbins };
+            const sliceProps: SliceProps = { orientation: 'vertical', maxbins };
+            footprintProps = sliceProps;
             unitLayoutClass = Strip;
-            unitLayoutProps = <StripProps>{ orientation: 'horizontal' };
+            const stripProps: StripProps = { orientation: 'horizontal' };
+            unitLayoutProps = stripProps;
             break;
         }
         default: {
             y.aggregate = 'count';
             unitLayoutClass = Square;
-            unitLayoutProps = <SquareProps>{ growDirection: 'right-up' };
+            const squareProps: SquareProps = { growDirection: 'right-up' };
+            unitLayoutProps = squareProps;
             break;
         }
     }

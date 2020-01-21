@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { InnerScope, SizeSignals } from '../interfaces';
-import { SpecContext, Column } from '../types';
 import { AxisScales } from '../specBuilder';
+import { Column, SpecContext } from '../types';
+import { InnerScope } from '../interfaces';
 
 export interface LayoutProps {
-    groupby: Column;
+    groupby?: Column;
 }
 
 export interface BuildProps {
@@ -15,9 +15,7 @@ export interface BuildProps {
     parent: InnerScope;
 }
 
-
 export class Layout {
-    public static count = 0;
     public id: number;
 
     constructor(public props: LayoutProps & BuildProps) {

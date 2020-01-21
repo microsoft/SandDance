@@ -3,6 +3,7 @@
 import { AxisScales, ContinuousAxisScale, SpecBuilderProps } from '../specBuilder';
 import { Bar, BarProps } from '../layouts/bar';
 import { Layout, LayoutProps } from '../layouts/layout';
+import { maxbins } from '../defaults';
 import { SignalNames } from '../constants';
 import { Slice, SliceProps } from '../layouts/slice';
 import { SpecContext } from '../types';
@@ -13,7 +14,8 @@ import { Treemap, TreemapProps } from '../layouts/treemap';
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns } = specContext;
     let footprintClass: typeof Layout = Bar;
-    let footprintProps: LayoutProps = <BarProps>{ orientation: 'horizontal', groupby: specContext.specColumns.y };
+    const barProps: BarProps = { orientation: 'horizontal', groupby: specColumns.y, maxbins };
+    let footprintProps: LayoutProps = barProps;
     let unitLayoutClass: typeof Layout;
     let unitLayoutProps: LayoutProps;
     const x: ContinuousAxisScale = { discrete: false };
@@ -26,21 +28,32 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         case 'treemap': {
             x.aggregate = 'sum';
             unitLayoutClass = Treemap;
-            unitLayoutProps = <TreemapProps>{ corner: 'top-left' };
+            const treemapProps: TreemapProps = { corner: 'top-left' };
+            unitLayoutProps = treemapProps;
+            break;
+        }
+        case 'strip': {
+            x.aggregate = 'sum';
+            unitLayoutClass = Strip;
+            const stripProps: StripProps = { orientation: 'vertical' };
+            unitLayoutProps = stripProps;
             break;
         }
         case 'strip-percent': {
             x.aggregate = 'percent';
             footprintClass = Slice;
-            footprintProps = <SliceProps>{ orientation: 'horizontal' };
+            const sliceProps: SliceProps = { orientation: 'horizontal', maxbins };
+            footprintProps = sliceProps;
             unitLayoutClass = Strip;
-            unitLayoutProps = <StripProps>{ orientation: 'vertical' };
+            const stripProps: StripProps = { orientation: 'vertical' };
+            unitLayoutProps = stripProps;
             break;
         }
         default: {
             x.aggregate = 'count';
             unitLayoutClass = Square;
-            unitLayoutProps = { growDirection: 'down-right' } as SquareProps;
+            const squareProps: SquareProps = { growDirection: 'down-right' };
+            unitLayoutProps = squareProps;
             break;
         }
     }

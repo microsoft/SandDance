@@ -31,7 +31,6 @@ export class Bar extends Layout {
         const globalAggregateDataName = `${name}_${aggregation}`;
         const globalAggregateExtentSignal = `${globalAggregateDataName}_extent`;
         const globalAggregateMaxExtentSignal = `${globalAggregateDataName}_max`;
-        const localAggregateDataName = `${facetDataName}_${aggregation}`;
         const xScaleName = `${name}_scale_x`;
         const yScaleName = `${name}_scale_y`;
         const bandWidth = `${name}_bandwidth`;
@@ -86,16 +85,14 @@ export class Bar extends Layout {
                 facet: {
                     name: facetDataName,
                     data: parent.dataName,
-                    groupby: this.props.groupby.name
+                    groupby: groupby.name,
+                    aggregate: {
+                        fields: [aggregation === 'sum' ? specContext.insight.columns.sum : null],
+                        ops: [aggregation],
+                        as: [aggregation]
+                    }
                 }
             },
-            data: [
-                {
-                    name: localAggregateDataName,
-                    source: facetDataName,
-                    transform: [trans]
-                }
-            ],
             encode: {
                 update: orientation === 'horizontal' ?
                     {
@@ -176,16 +173,17 @@ export class Bar extends Layout {
     }
 
     private getScales(bin: Binnable, xScaleName: string, yScaleName: string, globalAggregateMaxExtentSignal: string) {
+        const { orientation, parent } = this.props;
         let xScale: Scale;
         let yScale: Scale;
-        if (this.props.orientation === 'vertical') {
+        if (orientation === 'vertical') {
             xScale = <BandScale>{
                 type: 'band',
                 name: xScaleName,
                 range: [
                     0,
                     {
-                        signal: this.props.parent.sizeSignals.width
+                        signal: parent.sizeSignals.width
                     }
                 ],
                 padding: 0.01,
@@ -206,7 +204,7 @@ export class Bar extends Layout {
                 ],
                 range: [
                     {
-                        signal: this.props.parent.sizeSignals.height
+                        signal: parent.sizeSignals.height
                     },
                     0
                 ],
@@ -226,7 +224,7 @@ export class Bar extends Layout {
                 range: [
                     0,
                     {
-                        signal: this.props.parent.sizeSignals.width
+                        signal: parent.sizeSignals.width
                     }
                 ],
                 nice: true,
@@ -238,7 +236,7 @@ export class Bar extends Layout {
                 range: [
                     0,
                     {
-                        signal: this.props.parent.sizeSignals.height
+                        signal: parent.sizeSignals.height
                     }
                 ],
                 padding: 0.01,
