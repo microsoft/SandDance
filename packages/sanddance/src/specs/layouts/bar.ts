@@ -140,22 +140,6 @@ export class Bar extends Layout {
                             }
                         }
                     }
-                },
-                {
-                    type: 'rect',
-                    encode: {
-                        update: {
-                            fill: {
-                                value: 'red'
-                            },
-                            height: {
-                                value: 20
-                            },
-                            width: {
-                                value: 20
-                            }
-                        }
-                    }
                 }
             ]
         };
