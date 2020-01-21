@@ -1,7 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Column } from "./types";
-import { BinTransform, ExtentTransform, Transforms, Data } from "vega-typings";
+import {
+    BinTransform,
+    Data,
+    ExtentTransform,
+    Transforms
+} from 'vega-typings';
+import { Column } from './types';
 
 export interface Binnable {
     transforms?: Transforms[];
