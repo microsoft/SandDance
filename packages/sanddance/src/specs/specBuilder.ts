@@ -1,19 +1,24 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { allTruthy, push } from '../array';
-import { colorBinCountSignal, colorReverseSignal, textSignals } from './signals';
-import { Layout, LayoutProps, BuildProps } from './layouts/layout';
-import { getColorScale, getZScale } from './scales';
-import { getLegends } from './legends';
-import { InnerScope, SpecResult, SizeSignals } from './interfaces';
-import { manifold } from './manifold';
-import { Scale, Signal, Spec, Transforms } from 'vega-typings';
-import { Size, SpecCapabilities, SpecContext, SpecColumns, Column, FacetStyle } from './types';
-import { topLookup } from './top';
-import { Slice, SliceProps } from './layouts/slice';
-import { WrapProps, Wrap } from './layouts/wrap';
-import { CrossProps, Cross } from './layouts/cross';
+import { BuildProps, Layout, LayoutProps } from './layouts/layout';
+import {
+    Column,
+    FacetStyle,
+    SpecCapabilities,
+    SpecContext
+} from './types';
+import { Cross, CrossProps } from './layouts/cross';
+import { InnerScope, SpecResult } from './interfaces';
 import { maxbins } from './defaults';
+import { push } from '../array';
+import {
+    Scale,
+    Signal,
+    Spec,
+    Transforms
+} from 'vega-typings';
+import { Slice, SliceProps } from './layouts/slice';
+import { Wrap, WrapProps } from './layouts/wrap';
 
 export interface DiscreteAxisScale {
     discrete: true;

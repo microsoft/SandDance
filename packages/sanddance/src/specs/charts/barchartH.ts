@@ -4,9 +4,9 @@ import { AxisScales, ContinuousAxisScale, SpecBuilderProps } from '../specBuilde
 import { Bar, BarProps } from '../layouts/bar';
 import { Layout, LayoutProps } from '../layouts/layout';
 import { SignalNames } from '../constants';
+import { Slice, SliceProps } from '../layouts/slice';
 import { SpecContext } from '../types';
 import { Square, SquareProps } from '../layouts/square';
-import { Slice, SliceProps } from '../layouts/slice';
 import { Strip, StripProps } from '../layouts/strip';
 import { Treemap, TreemapProps } from '../layouts/treemap';
 
@@ -26,15 +26,15 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         case 'treemap': {
             x.aggregate = 'sum';
             unitLayoutClass = Treemap;
-            unitLayoutProps = <TreemapProps>{ corner: 'top-left' } ;
+            unitLayoutProps = <TreemapProps>{ corner: 'top-left' };
             break;
         }
         case 'strip-percent': {
             x.aggregate = 'percent';
             footprintClass = Slice;
-            footprintProps = <SliceProps>{ orientation: 'horizontal' } ;
+            footprintProps = <SliceProps>{ orientation: 'horizontal' };
             unitLayoutClass = Strip;
-            unitLayoutProps = <StripProps>{ orientation: 'vertical' } ;
+            unitLayoutProps = <StripProps>{ orientation: 'vertical' };
             break;
         }
         default: {

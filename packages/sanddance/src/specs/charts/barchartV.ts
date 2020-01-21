@@ -3,13 +3,13 @@
 import { AxisScales, ContinuousAxisScale, SpecBuilderProps } from '../specBuilder';
 import { Bar, BarProps } from '../layouts/bar';
 import { Layout, LayoutProps } from '../layouts/layout';
+import { maxbins } from '../defaults';
 import { SignalNames } from '../constants';
+import { Slice, SliceProps } from '../layouts/slice';
 import { SpecContext } from '../types';
 import { Square, SquareProps } from '../layouts/square';
-import { Slice, SliceProps } from '../layouts/slice';
 import { Strip, StripProps } from '../layouts/strip';
 import { Treemap, TreemapProps } from '../layouts/treemap';
-import { maxbins } from '../defaults';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns } = specContext;

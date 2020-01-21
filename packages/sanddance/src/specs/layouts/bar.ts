@@ -1,10 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { AggregateTransform, Mark, Scale, BandScale, Transforms, LinearScale } from 'vega-typings';
+import {
+    AggregateTransform,
+    BandScale,
+    LinearScale,
+    Mark,
+    Scale,
+    Transforms
+} from 'vega-typings';
+import { binnable, Binnable } from '../bin';
 import { BuildProps, Layout, LayoutProps } from './layout';
 import { ContinuousAxisScale } from '../specBuilder';
 import { InnerScope, Orientation } from '../interfaces';
-import { binnable, Binnable } from '../bin';
 import { push } from '../../array';
 
 export interface BarProps extends LayoutProps {
@@ -118,7 +125,7 @@ export class Bar extends Layout {
                         },
                         width: {
                             signal: bandWidth
-                        }
+                        },
                     }
             },
             marks: [
@@ -130,6 +137,22 @@ export class Bar extends Layout {
                                 signal: `length(data(${JSON.stringify(facetDataName)}))`
                             },
                             fontSize: {
+                                value: 20
+                            }
+                        }
+                    }
+                },
+                {
+                    type: 'rect',
+                    encode: {
+                        update: {
+                            fill: {
+                                value: 'red'
+                            },
+                            height: {
+                                value: 20
+                            },
+                            width: {
                                 value: 20
                             }
                         }
@@ -184,7 +207,7 @@ export class Bar extends Layout {
                 range: [
                     {
                         signal: this.props.parent.sizeSignals.height
-                    }, 
+                    },
                     0
                 ],
                 nice: true,
