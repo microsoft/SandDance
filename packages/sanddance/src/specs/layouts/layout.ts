@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { AxisScales } from '../specBuilder';
-import { Column, SpecContext } from '../types';
+import { Column } from '../types';
 import { InnerScope } from '../interfaces';
 
 export interface LayoutProps {
@@ -9,7 +9,6 @@ export interface LayoutProps {
 }
 
 export interface BuildProps {
-    specContext: SpecContext;
     axesScales: AxisScales;
     global: InnerScope;
     parent: InnerScope;

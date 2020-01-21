@@ -10,11 +10,13 @@ import {
 } from 'vega-typings';
 import { binnable, Binnable } from '../bin';
 import { BuildProps, Layout, LayoutProps } from './layout';
+import { Column } from '../types';
 import { ContinuousAxisScale } from '../specBuilder';
 import { InnerScope, Orientation } from '../interfaces';
 import { push } from '../../array';
 
 export interface BarProps extends LayoutProps {
+    sumBy: Column;
     orientation: Orientation;
     maxbins: number;
 }
@@ -24,7 +26,7 @@ export class Bar extends Layout {
 
     public build(): InnerScope {
         const { props } = this;
-        const { global, groupby, maxbins, orientation, parent, specContext } = props;
+        const { global, groupby, maxbins, orientation, parent, sumBy } = props;
         const name = `bar_${this.id}`;
         const facetDataName = `facet_${name}`;
         const aggregation = this.getAgregation();
@@ -41,7 +43,7 @@ export class Bar extends Layout {
             ops: [aggregation]
         };
         if (aggregation === 'sum') {
-            trans.fields = [specContext.insight.columns.sum];
+            trans.fields = [sumBy.name];
         }
         const bin = binnable(global.dataName, groupby, maxbins);
         let globalTransforms: { [columnName: string]: Transforms[] };
@@ -87,7 +89,7 @@ export class Bar extends Layout {
                     data: parent.dataName,
                     groupby: groupby.name,
                     aggregate: {
-                        fields: [aggregation === 'sum' ? specContext.insight.columns.sum : null],
+                        fields: [aggregation === 'sum' ? sumBy.name : null],
                         ops: [aggregation],
                         as: [aggregation]
                     }

@@ -161,7 +161,6 @@ export class SpecBuilder {
                     ...props,
                     global: this.globalScope,
                     parent: parentScope,
-                    specContext,
                     axesScales: this.props.axisScales
                 };
                 const layout = new layoutClass(layoutBuildProps);

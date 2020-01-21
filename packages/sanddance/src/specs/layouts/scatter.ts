@@ -19,7 +19,7 @@ import { InnerScope } from '../interfaces';
 
 export class Scatter extends Layout {
     public build(): InnerScope {
-        const { specContext } = this.props;
+        const {  } = this.props;
         //TODO clean data in global scope
         // filterInvalidWhenNumeric(specColumns.x),
         // filterInvalidWhenNumeric(specColumns.y),
@@ -27,13 +27,14 @@ export class Scatter extends Layout {
 
         //TODO use main scales 
         const { scales, signals } = this.props.global.scope;
-        push(scales, getScales(specContext));
-        push(signals, getSignals(specContext));
+        //push(scales, getScales(specContext));
+        //push(signals, getSignals(specContext));
 
-        const mark = getMark(specContext, this.props.parent.dataName);
-        this.props.parent.scope.marks = [mark];
+        //const mark = getMark(specContext, this.props.parent.dataName);
+        //this.props.parent.scope.marks = [mark];
 
-        return { dataName: 'f1', scope: mark, sizeSignals: this.props.parent.sizeSignals };
+        //return { dataName: 'f1', scope: mark, sizeSignals: this.props.parent.sizeSignals };
+        return null;
     }
 }
 
