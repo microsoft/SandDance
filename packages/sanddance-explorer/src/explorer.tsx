@@ -808,17 +808,19 @@ export class Explorer extends React.Component<Props, State> {
     }
 
     render() {
-        const { colorBin, columns, directColor, filter, hideAxes, hideLegend, scheme, signalValues, size, transform, chart, view } = this.state;
+        const { colorBin, columns, directColor, facetStyle, filter, hideAxes, hideLegend, scheme, signalValues, size, sumStyle, transform, chart, view } = this.state;
         const insight: SandDance.types.Insight = {
             colorBin,
             columns,
             directColor,
+            facetStyle,
             filter,
             hideAxes,
             hideLegend,
             scheme,
             signalValues,
             size,
+            sumStyle,
             transform,
             chart,
             view
