@@ -13,7 +13,7 @@ import { Treemap, TreemapProps } from '../layouts/treemap';
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns } = specContext;
     let footprintClass: typeof Layout = Bar;
-    let footprintProps: LayoutProps = <BarProps>{ orientation: 'horizontal' };
+    let footprintProps: LayoutProps = <BarProps>{ orientation: 'horizontal', groupby: specContext.specColumns.y };
     let unitLayoutClass: typeof Layout;
     let unitLayoutProps: LayoutProps;
     const x: ContinuousAxisScale = { discrete: false };

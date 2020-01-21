@@ -14,7 +14,7 @@ import { maxbins } from '../defaults';
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns } = specContext;
     let footprintClass: typeof Layout = Bar;
-    let footprintProps: LayoutProps = { orientation: 'vertical', groupby: specContext.specColumns.x } as BarProps;
+    let footprintProps: LayoutProps = <BarProps>{ orientation: 'vertical', groupby: specContext.specColumns.x };
     let unitLayoutClass: typeof Layout;
     let unitLayoutProps: LayoutProps;
     const y: ContinuousAxisScale = { discrete: false };
