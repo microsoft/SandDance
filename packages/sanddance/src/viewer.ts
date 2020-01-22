@@ -631,6 +631,10 @@ export class Viewer {
             onSceneRectAssignCubeOrdinal: datum => {
                 //TODO see if datum is a facet selection rect
                 return datum[GL_ORDINAL];
+            },
+            onTargetViewState: (h, w) => {
+                const { height, width } = this.insight.size;
+                return { height, width };
             }
         };
         if (this.options.onBeforeCreateLayers) {

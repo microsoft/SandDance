@@ -252,6 +252,11 @@ export class Presenter {
             || this.deckgl.props.viewState;
 
         if (!viewState || newBounds || config.shouldViewstateTransition && config.shouldViewstateTransition()) {
+            if (config && config.onTargetViewState) {
+                const size = config.onTargetViewState(height, width);
+                height = size.height;
+                width = size.width;
+            }
             viewState = targetViewState(height, width, stage.view);
             const oldCubeLayer = getCubeLayer(this.deckgl.props) as CubeLayer_Class;
             if (oldCubeLayer) {

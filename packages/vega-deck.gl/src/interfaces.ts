@@ -142,6 +142,7 @@ export interface PresenterConfig {
     getTextColor?: (o: TextLayerDatum) => Color;
     getTextHighlightColor?: (o: TextLayerDatum) => Color;
     onSceneRectAssignCubeOrdinal?: (d: object) => number | undefined;
+    onTargetViewState?: (height: number, width: number) => { height: number, width: number };
 }
 
 export interface PresenterStyle {
