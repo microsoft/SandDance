@@ -54,6 +54,11 @@ export function binnable(domainDataName: string, column: Column, maxbins: number
                     step: {
                         signal: `${binSignal}.step`
                     }
+                },
+                {
+                  type: 'formula',
+                  expr: 'datum.data',
+                  as: field
                 }
             ]
         };
