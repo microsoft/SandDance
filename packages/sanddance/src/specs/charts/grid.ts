@@ -10,7 +10,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         layouts: [
             {
                 layoutClass: Square,
-                props: { growDirection: 'right-down' } as SquareProps
+                props: { fillDirection: 'right-down' } as SquareProps
             }
         ],
         specCapabilities: {

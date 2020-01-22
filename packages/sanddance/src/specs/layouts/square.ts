@@ -6,7 +6,7 @@ import { Mark } from 'vega-typings';
 import { push } from '../../array';
 
 export interface SquareProps extends LayoutProps {
-    growDirection: 'right-down' | 'right-up' | 'down-right';
+    fillDirection: 'right-down' | 'right-up' | 'down-right';
     maxSignal: string;
 }
 
@@ -15,10 +15,11 @@ export class Square extends Layout {
 
     public build(): InnerScope {
         const { props } = this;
-        const { global, parent } = props;
+        const { global, maxSignal, parent } = props;
         const name = `square_${this.id}`;
         const dataName = `facet_${name}`;
         const aspect = `${name}_aspect`;
+        const squaresPerBand = `${name}_squares_per_band`;
         const mark: Mark = {
             style: 'cell',
             name,
@@ -87,6 +88,10 @@ export class Square extends Layout {
             {
                 name: aspect,
                 update: `${parent.sizeSignals.width}/${parent.sizeSignals.height}`
+            },
+            {
+                name: squaresPerBand,
+                update: `ceil(sqrt(${maxSignal}*${aspect}))`
             }
         ]);
 

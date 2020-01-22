@@ -52,7 +52,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         default: {
             y.aggregate = 'count';
             unitLayoutClass = Square;
-            const squareProps: SquareProps = { growDirection: 'right-up', maxSignal: null };
+            const squareProps: SquareProps = { fillDirection: 'right-up', maxSignal: null };
             barProps.onBuild = barBuild => squareProps.maxSignal = barBuild.globalAggregateMaxExtentSignal;
             unitLayoutProps = squareProps;
             break;
