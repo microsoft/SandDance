@@ -23,10 +23,3 @@ export class Layout {
         throw 'Not implemented';
     }
 }
-
-export interface GroupLayoutProps extends LayoutProps {
-    groupby: Column;
-}
-
-export class GroupLayout extends Layout {
-}

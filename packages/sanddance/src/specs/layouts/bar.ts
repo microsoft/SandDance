@@ -9,19 +9,25 @@ import {
     Transforms
 } from 'vega-typings';
 import { binnable, Binnable } from '../bin';
-import { BuildProps, GroupLayoutProps, GroupLayout } from './layout';
+import { BuildProps, LayoutProps, Layout } from './layout';
 import { Column } from '../types';
 import { ContinuousAxisScale } from '../specBuilder';
 import { InnerScope, Orientation } from '../interfaces';
 import { push } from '../../array';
 
-export interface BarProps extends GroupLayoutProps {
+export interface BarBuild {
+    globalAggregateMaxExtentSignal: string;
+}
+
+export interface BarProps extends LayoutProps {
+    groupby: Column;
     sumBy: Column;
     orientation: Orientation;
     maxbins: number;
+    onBuild?: (barBuild: BarBuild) => void;
 }
 
-export class Bar extends GroupLayout {
+export class Bar extends Layout {
     public props: BarProps & BuildProps;
 
     public build(): InnerScope {
@@ -71,7 +77,7 @@ export class Bar extends GroupLayout {
             [
                 {
                     name: globalAggregateMaxExtentSignal,
-                    update: `max(${globalAggregateExtentSignal}[0],${globalAggregateExtentSignal}[1])`
+                    update: `${globalAggregateExtentSignal}[1]`
                 },
                 {
                     name: bandWidth,
@@ -147,10 +153,21 @@ export class Bar extends GroupLayout {
 
         const { xScale, yScale } = this.getScales(bin, xScaleName, yScaleName, globalAggregateMaxExtentSignal);
 
+        props.onBuild && props.onBuild({ globalAggregateMaxExtentSignal });
+
         return {
             dataName: facetDataName,
             scope: mark,
-            sizeSignals: parent.sizeSignals,
+            sizeSignals: orientation === 'horizontal' ?
+                {
+                    height: bandWidth,
+                    width: parent.sizeSignals.width
+                }
+                :
+                {
+                    height: parent.sizeSignals.height,
+                    width: bandWidth
+                },
             globalScales: {
                 x: xScale,
                 y: yScale

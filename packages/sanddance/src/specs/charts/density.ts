@@ -13,13 +13,18 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         y: { discrete: true },
         z: { discrete: false }
     };
+    const densityProps: DensityProps = {
+        mode: 'square',
+        groupbyX: specColumns.x,
+        groupbyY: specColumns.y
+    };
     return {
         axisScales,
         specContext,
         layouts: [
             {
                 layoutClass: Density,
-                props: <DensityProps>{ mode: 'square' }
+                props: densityProps
             },
             {
                 layoutClass: Square

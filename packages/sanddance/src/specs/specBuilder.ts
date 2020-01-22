@@ -248,8 +248,8 @@ export class SpecBuilder {
             }
             case 'cross': {
                 const props: CrossProps = {
-                    groupby,
-                    groupbyV: facetVColumn
+                    groupbyX: groupby,
+                    groupbyY: facetVColumn
                 };
                 layoutPair = {
                     layoutClass: Cross,

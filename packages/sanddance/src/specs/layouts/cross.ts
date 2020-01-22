@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { GroupLayoutProps, GroupLayout } from './layout';
+import { LayoutProps, Layout } from './layout';
 import { Column } from '../types';
 
-export interface CrossProps extends GroupLayoutProps {
-    groupbyV: Column;
+export interface CrossProps extends LayoutProps {
+    groupbyX: Column;
+    groupbyY: Column;
 }
 
-export class Cross extends GroupLayout {
+export class Cross extends Layout {
 
 }
