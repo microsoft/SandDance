@@ -43,20 +43,20 @@ export class Bar extends Layout {
         const yScaleName = `${name}_scale_y`;
         const bandWidth = `${name}_bandwidth`;
 
-        const trans: AggregateTransform = {
-            type: 'aggregate',
-            groupby: [props.groupby.name],
-            ops: [aggregation]
-        };
-        if (aggregation === 'sum') {
-            trans.fields = [sumBy.name];
-        }
         const bin = binnable(global.dataName, groupby, maxbins);
         let globalTransforms: { [columnName: string]: Transforms[] };
         if (bin.transforms) {
             globalTransforms = {};
             globalTransforms[groupby.name] = bin.transforms;
             global.scope.data.push(bin.dataSequence);
+        }
+        const trans: AggregateTransform = {
+            type: 'aggregate',
+            groupby: [bin.field],
+            ops: [aggregation]
+        };
+        if (aggregation === 'sum') {
+            trans.fields = [sumBy.name];
         }
         global.scope.data.push({
             name: globalAggregateDataName,
@@ -93,7 +93,7 @@ export class Bar extends Layout {
                 facet: {
                     name: facetDataName,
                     data: parent.dataName,
-                    groupby: groupby.name,
+                    groupby: bin.field,
                     aggregate: {
                         fields: [aggregation === 'sum' ? sumBy.name : null],
                         ops: [aggregation],
