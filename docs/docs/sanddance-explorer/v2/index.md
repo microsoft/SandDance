@@ -18,7 +18,7 @@ Add these to the `dependencies` section of your `package.json`, then run `npm in
 ```json
 "@deck.gl/core": "6.4",
 "@deck.gl/layers": "6.4",
-"@msrvida/sanddance-explorer": "^1",
+"@msrvida/sanddance-explorer": "^2",
 "luma.gl": "6.4",
 "office-ui-fabric-react": "6.204.4",
 "vega": "^5.8"
