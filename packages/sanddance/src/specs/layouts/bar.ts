@@ -171,7 +171,8 @@ export class Bar extends Layout {
             globalScales: {
                 x: xScale,
                 y: yScale
-            }
+            },
+            globalTransforms
         };
     }
 
