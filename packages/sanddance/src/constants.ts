@@ -6,3 +6,6 @@ export {
     ScaleNames,
     SignalNames
 } from './specs/constants';
+
+const GL_ORDINAL = 'GL_ORDINAL';
+export { GL_ORDINAL };

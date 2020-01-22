@@ -2,10 +2,11 @@
 // Licensed under the MIT license.
 import * as searchExpression from './searchExpression';
 import { Animator } from './animator';
-import { constants, controls, util } from '@msrvida/vega-deck.gl';
+import { controls, util } from '@msrvida/vega-deck.gl';
 import { createElement, mount } from 'tsx-create-element';
 import { cssPrefix } from './defaults';
 import { DataScope, UserSelection } from './dataScope';
+import { GL_ORDINAL } from './constants';
 import { isInternalFieldName } from './util';
 import { Language } from './types';
 import { SearchExpression } from './searchExpression/types';
@@ -180,7 +181,7 @@ const renderDetails = (props: RenderProps) => {
     ];
     const rows: controls.TableRow[] = [];
     for (let prop in props.item) {
-        if (prop === constants.GL_ORDINAL) {
+        if (prop === GL_ORDINAL) {
             continue;
         }
         if (isInternalFieldName(prop)) {

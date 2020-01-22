@@ -106,7 +106,7 @@ export function DataItem(props: Props) {
     }
     const nameValuePairs: NameValuePair[] = [];
     for (let columnName in props.item) {
-        if (columnName === SandDance.VegaDeckGl.constants.GL_ORDINAL && !props.showSystemFields) {
+        if (columnName === SandDance.constants.GL_ORDINAL && !props.showSystemFields) {
             continue;
         }
         if (SandDance.util.isInternalFieldName(columnName)) {

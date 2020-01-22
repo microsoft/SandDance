@@ -157,11 +157,11 @@ export class Presenter {
         let options: MarkStagerOptions = {
             offsetX: 0,
             offsetY: 0,
-            maxOrdinal: -1,
-            ordinalsSpecified: false,
+            maxOrdinal: 0,
             currAxis: null,
             currFacetRect: null,
-            defaultCubeColor: this.style.defaultCubeColor
+            defaultCubeColor: this.style.defaultCubeColor,
+            assignCubeOrdinal: (config && config.onSceneRectAssignCubeOrdinal) || (() => options.maxOrdinal++)
         };
         //determine if this is a vega scene
         if (scene.marktype) {
@@ -198,8 +198,8 @@ export class Presenter {
             this.deckgl = new classes.DeckGL_Class(deckProps);
         }
         let cubeCount = Math.max(this._last.cubeCount, stage.cubeData.length);
-        if (options.ordinalsSpecified) {
-            cubeCount = Math.max(cubeCount, options.maxOrdinal + 1);
+        if (options.maxOrdinal) {
+            cubeCount = Math.max(cubeCount, options.maxOrdinal);
             const empty: Partial<Cube> = {
                 isEmpty: true,
                 color: [0, 0, 0, 0] // possibly a bug in Deck.gl? set color to invisible.

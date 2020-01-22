@@ -141,6 +141,7 @@ export interface PresenterConfig {
     onTextHover?: (e: MouseEvent | PointerEvent | TouchEvent, t: TextLayerDatum) => boolean;
     getTextColor?: (o: TextLayerDatum) => Color;
     getTextHighlightColor?: (o: TextLayerDatum) => Color;
+    onSceneRectAssignCubeOrdinal?: (d: object) => number | undefined;
 }
 
 export interface PresenterStyle {

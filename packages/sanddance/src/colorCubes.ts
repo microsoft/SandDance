@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
-import { FieldNames } from './specs/constants';
-import { Color } from '@deck.gl/core/utils/color';
 import {
     ColorContext,
     ColorMap,
+    ColorMappedItem,
     ColorMethod,
-    ViewerOptions,
-    ColorMappedItem
-} from './types';
+    ViewerOptions
+    } from './types';
+import { FieldNames } from './specs/constants';
+import { GL_ORDINAL } from './constants';
 
 export function getSelectedColorMap(currentData: object[], showSelectedData: boolean, showActive: boolean, viewerOptions: ViewerOptions) {
     function getSelectionColorItem(datum: object) {
@@ -29,7 +29,7 @@ export function getSelectedColorMap(currentData: object[], showSelectedData: boo
     currentData.forEach(datum => {
         const selectionColor = getSelectionColorItem(datum);
         if (selectionColor) {
-            const ordinal = datum[VegaDeckGl.constants.GL_ORDINAL];
+            const ordinal = datum[GL_ORDINAL];
             colorMap[ordinal] = selectionColor;
         }
     });
