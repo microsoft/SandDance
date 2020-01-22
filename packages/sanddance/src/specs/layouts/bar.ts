@@ -14,12 +14,14 @@ import { Column } from '../types';
 import { ContinuousAxisScale } from '../specBuilder';
 import { InnerScope, Orientation } from '../interfaces';
 import { push } from '../../array';
+import { createOrdinalsForFacet } from '../ordinal';
 
 export interface BarBuild {
     globalAggregateMaxExtentSignal: string;
 }
 
 export interface BarProps extends LayoutProps {
+    minBandWidth: number;
     groupby: Column;
     sumBy: Column;
     orientation: Orientation;
@@ -32,8 +34,10 @@ export class Bar extends Layout {
 
     public build(): InnerScope {
         const { props } = this;
-        const { global, groupby, maxbins, orientation, parent, sumBy } = props;
+        const { global, groupby, maxbins, minBandWidth, orientation, parent, sumBy } = props;
         const name = `bar_${this.id}`;
+        const barCount = `bar_${this.id}_count`;
+        const minSize = `bar_${this.id}_minsize`;
         const facetDataName = `facet_${name}`;
         const aggregation = this.getAgregation();
         const globalAggregateDataName = `${name}_${aggregation}`;
@@ -42,7 +46,6 @@ export class Bar extends Layout {
         const xScaleName = `${name}_scale_x`;
         const yScaleName = `${name}_scale_y`;
         const bandWidth = `${name}_bandwidth`;
-
         const bin = binnable(global.dataName, groupby, maxbins);
         let globalTransforms: { [columnName: string]: Transforms[] };
         if (bin.transforms) {
@@ -151,7 +154,17 @@ export class Bar extends Layout {
         };
         parent.scope.marks.push(mark);
 
-        const { xScale, yScale } = this.getScales(bin, xScaleName, yScaleName, globalAggregateMaxExtentSignal);
+        const { xScale, yScale } = this.getScales(
+            bin,
+            xScaleName,
+            yScaleName,
+            globalAggregateMaxExtentSignal,
+            minBandWidth,
+            {
+                barCount,
+                minSize
+            }
+        );
 
         props.onBuild && props.onBuild({ globalAggregateMaxExtentSignal });
 
@@ -176,8 +189,21 @@ export class Bar extends Layout {
         };
     }
 
-    private getScales(bin: Binnable, xScaleName: string, yScaleName: string, globalAggregateMaxExtentSignal: string) {
-        const { orientation, parent } = this.props;
+    private getScales(bin: Binnable, xScaleName: string, yScaleName: string, globalAggregateMaxExtentSignal: string, minBandWidth: number, names: { barCount: string, minSize: string }) {
+        const { global, groupby, orientation, parent } = this.props;
+
+        const ord = createOrdinalsForFacet(global.scope, parent.dataName, name, groupby.name);
+        global.scope.signals.push(
+            {
+                name: names.barCount,
+                update: `length(data(${JSON.stringify(ord.dataName)}))`
+            },
+            {
+                name: names.minSize,
+                update: `${names.barCount} * ${minBandWidth}`
+            }
+        );
+
         let xScale: Scale;
         let yScale: Scale;
         if (orientation === 'vertical') {
@@ -187,7 +213,7 @@ export class Bar extends Layout {
                 range: [
                     0,
                     {
-                        signal: parent.sizeSignals.width
+                        signal: `max(${parent.sizeSignals.width},${names.minSize})`
                     }
                 ],
                 padding: 0.01,
@@ -240,7 +266,7 @@ export class Bar extends Layout {
                 range: [
                     0,
                     {
-                        signal: parent.sizeSignals.height
+                        signal: `max(${parent.sizeSignals.height},${names.minSize})`
                     }
                 ],
                 padding: 0.01,

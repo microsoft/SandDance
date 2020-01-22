@@ -3,7 +3,7 @@
 import { AxisScales, ContinuousAxisScale, SpecBuilderProps } from '../specBuilder';
 import { Bar, BarProps } from '../layouts/bar';
 import { Layout, LayoutProps } from '../layouts/layout';
-import { maxbins } from '../defaults';
+import { maxbins, minBarBandWidth } from '../defaults';
 import { SignalNames } from '../constants';
 import { Slice, SliceProps } from '../layouts/slice';
 import { SpecContext } from '../types';
@@ -14,7 +14,7 @@ import { Treemap, TreemapProps } from '../layouts/treemap';
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns } = specContext;
     let footprintClass: typeof Layout = Bar;
-    const barProps: BarProps = { orientation: 'horizontal', groupby: specColumns.y, sumBy: specColumns.sum, maxbins };
+    const barProps: BarProps = { orientation: 'horizontal', groupby: specColumns.y, sumBy: specColumns.sum, maxbins, minBandWidth: minBarBandWidth };
     let footprintProps: LayoutProps = barProps;
     let unitLayoutClass: typeof Layout;
     let unitLayoutProps: LayoutProps;

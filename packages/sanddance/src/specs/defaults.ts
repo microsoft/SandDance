@@ -5,4 +5,6 @@
 
 export const maxbins = 30;
 
+export const minBarBandWidth = 5;
+
 export const minFacetSize = 100;
