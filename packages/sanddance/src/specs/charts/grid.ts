@@ -5,12 +5,13 @@ import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
+    const squareProps: SquareProps = { fillDirection: 'right-down', maxSignal: null };
     return {
         specContext,
         layouts: [
             {
                 layoutClass: Square,
-                props: { fillDirection: 'right-down' } as SquareProps
+                props: squareProps
             }
         ],
         specCapabilities: {
