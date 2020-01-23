@@ -16,8 +16,8 @@ export class Slice extends Layout {
     public build(): InnerScope {
         const { props } = this;
         const { global, groupby, maxbins, parent } = props;
-        const name = `slice_${this.id}`;
-        const facetDataName = `data_${name}_facet`;
+        const prefix = `slice_${this.id}`;
+        const facetDataName = `data_${prefix}_facet`;
         const bin = binnable(global.dataName, groupby, maxbins);
         let globalTransforms: { [columnName: string]: Transforms[] };
         if (bin.transforms) {
@@ -27,7 +27,7 @@ export class Slice extends Layout {
         }
         const mark: Mark = {
             style: 'cell',
-            name,
+            name: prefix,
             type: 'group',
             from: {
                 facet: {

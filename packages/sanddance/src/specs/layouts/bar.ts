@@ -149,21 +149,7 @@ export class Bar extends Layout {
                         },
                     }
             },
-            marks: [
-                {
-                    type: 'text',
-                    encode: {
-                        update: {
-                            text: {
-                                signal: `length(data(${JSON.stringify(names.facetData)}))`
-                            },
-                            fontSize: {
-                                value: 20
-                            }
-                        }
-                    }
-                }
-            ]
+            marks: []
         };
         parent.scope.marks.push(mark);
 

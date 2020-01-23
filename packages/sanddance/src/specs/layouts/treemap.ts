@@ -14,8 +14,8 @@ export class Treemap extends Layout {
     public build(): InnerScope {
         const { props } = this;
         const { global, parent } = props;
-        const name = `square_${this.id}`;
-        const facetDataName = `facet_${name}`;
+        const prefix = `square_${this.id}`;
+        const facetDataName = `facet_${prefix}`;
         const mark: Mark = {
             style: 'cell',
             name: 'X',

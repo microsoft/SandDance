@@ -16,15 +16,15 @@ export class Wrap extends Layout {
     public build(): InnerScope {
         const { props } = this;
         const { global, groupby, maxbins, parent } = props;
-        const name = `wrap_${this.id}`;
-        const facetDataName = `data_${name}_facet`;
+        const prefix = `wrap_${this.id}`;
+        const facetDataName = `data_${prefix}_facet`;
         const bin = binnable(global.dataName, groupby, maxbins);
         let globalTransforms: { [columnName: string]: Transforms[] };
         if (bin.transforms) {
             globalTransforms = {};
             globalTransforms[groupby.name] = bin.transforms;
         }
-        const ord = createOrdinalsForFacet(parent.dataName, name, bin.field);
+        const ord = createOrdinalsForFacet(parent.dataName, prefix, bin.field);
         parent.scope.data = parent.scope.data || [];
         parent.scope.data.push(ord.data);
 
@@ -33,7 +33,7 @@ export class Wrap extends Layout {
 
         const mark: Mark = {
             style: 'cell',
-            name,
+            name: prefix,
             type: 'group',
             from: {
                 facet: {
