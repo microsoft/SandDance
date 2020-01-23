@@ -13,6 +13,12 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         y: { discrete: true },
         z: { discrete: false, aggregate: 'multiply' }
     };
+    const densityProps: DensityProps = {
+        mode: 'cube',
+        groupbyX: specColumns.x,
+        groupbyY: specColumns.y,
+        addScaleAxes: true
+    };
     return {
         axisScales,
         customZScale: true,
@@ -20,7 +26,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         layouts: [
             {
                 layoutClass: Density,
-                props: <DensityProps>{ mode: 'cube' },
+                props: densityProps,
             },
             {
                 layoutClass: Stack

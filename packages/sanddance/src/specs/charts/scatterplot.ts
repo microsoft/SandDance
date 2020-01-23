@@ -17,7 +17,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         specContext,
         layouts: [
             {
-                layoutClass: Scatter
+                layoutClass: Scatter,
+                props: { addScaleAxes: true }
             }
         ],
         specCapabilities: {

@@ -16,7 +16,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     const densityProps: DensityProps = {
         mode: 'square',
         groupbyX: specColumns.x,
-        groupbyY: specColumns.y
+        groupbyY: specColumns.y,
+        addScaleAxes: true
     };
     return {
         axisScales,

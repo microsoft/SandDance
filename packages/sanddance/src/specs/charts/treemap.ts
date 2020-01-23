@@ -6,12 +6,13 @@ import { SpecContext } from '../types';
 import { Treemap, TreemapProps } from '../layouts/treemap';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
+    const treemapProps: TreemapProps = { corner: 'top-left' };
     return {
         specContext,
         layouts: [
             {
                 layoutClass: Treemap,
-                props: <TreemapProps>{ corner: 'top-left' }
+                props: treemapProps
             }
         ],
         specCapabilities: {

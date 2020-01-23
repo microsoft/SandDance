@@ -14,7 +14,13 @@ import { Treemap, TreemapProps } from '../layouts/treemap';
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns } = specContext;
     let footprintClass: typeof Layout = Bar;
-    const barProps: BarProps = { orientation: 'horizontal', groupby: specColumns.y, sumBy: specColumns.sum, maxbins, minBandWidth: minBarBandWidth };
+    const barProps: BarProps = {
+        orientation: 'horizontal',
+        groupby: specColumns.y,
+        sumBy: specColumns.sum,
+        maxbins,
+        minBandWidth: minBarBandWidth
+    };
     let footprintProps: LayoutProps = barProps;
     let unitLayoutClass: typeof Layout;
     let unitLayoutProps: LayoutProps;
@@ -61,6 +67,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             break;
         }
     }
+    footprintProps.addScaleAxes = true;
     return {
         axisScales,
         specContext,
