@@ -1,13 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { BuildProps, LayoutProps, Layout } from "./layout";
+import { BuildProps, GroupLayoutProps, Layout } from "./layout";
 import { Orientation, InnerScope } from "../interfaces";
 import { Mark, Transforms } from "vega-typings";
 import { binnable } from "../bin";
-import { Column } from "../types";
 
-export interface SliceProps extends LayoutProps {
-    groupby: Column;
+export interface SliceProps extends GroupLayoutProps {
     orientation: Orientation;
     maxbins: number;
 }

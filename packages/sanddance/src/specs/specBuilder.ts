@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { BuildProps, Layout, LayoutProps } from './layouts/layout';
+import { BuildProps, Layout, LayoutProps, GroupLayoutProps } from './layouts/layout';
 import {
     Column,
     FacetStyle,
@@ -88,6 +88,7 @@ export class SpecBuilder {
                 $schema: 'https://vega.github.io/schema/vega/v5.json',
                 //height: insight.size.height,
                 //width: insight.size.width,
+                axes: [],
                 data: [{ name: dataName, transform: [] }],
                 marks: [],
                 scales: [],
@@ -152,13 +153,20 @@ export class SpecBuilder {
             }
 
             const globalTransforms: { [columnName: string]: Transforms[] } = {};
+            const groupbyAccumulation: Column[] = [];
 
             let parentScope = this.globalScope;
             for (let i = 0; i < layouts.length; i++) {
                 if (!parentScope) continue;
+                if (!parentScope.scope) break;
                 let { layoutClass, props } = layouts[i];
+                const groupLayoutProps = props as GroupLayoutProps;
+                if (groupLayoutProps.groupby) {
+                    groupbyAccumulation.push(groupLayoutProps.groupby);
+                }
                 let layoutBuildProps: LayoutProps & BuildProps = {
                     ...props,
+                    groupbyAccumulation,
                     global: this.globalScope,
                     parent: parentScope,
                     axesScales: this.props.axisScales
@@ -179,13 +187,19 @@ export class SpecBuilder {
                 parentScope = childScope;
             }
 
+            //add mark to the final scope
+            if (parentScope.mark) {
+                parentScope.mark.encode.update.fill = { value: 'pink' }
+                parentScope.mark.encode.update.opacity = { value: 0.4 }
+            }
+
+
             for (let columnName in globalTransforms) {
                 push(vegaSpec.data[0].transform, globalTransforms[columnName]);
             }
 
             //TODO apply the x/y/z axes
 
-            //TODO add mark to the final scope
 
             //final fixups
 
@@ -207,11 +221,26 @@ export class SpecBuilder {
     }
 
     private addGlobalScales(globalScales: { x?: Scale, y?: Scale, z?: Scale }, axisScales: AxisScales) {
+        const { scope } = this.globalScope;
         for (let s in globalScales) {
             let scale: Scale = globalScales[s];
             if (scale) {
                 //TODO check to see if scale exists in global scope
-                this.globalScope.scope.scales.push(scale);
+                scope.scales.push(scale);
+                if (axisScales) {
+                    let axisScale: AxisScale = axisScales[s];
+                    if (axisScale) {
+                        if (axisScale.discrete) {
+                            //band scale
+                        } else {
+                            //continuous scale
+                        }
+                        scope.axes.push({
+                            scale: scale.name,
+                            orient: s === 'x' ? 'bottom' : 'left'
+                        });
+                    }
+                }
             }
         }
     }

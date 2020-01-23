@@ -9,7 +9,7 @@ import {
     Transforms
 } from 'vega-typings';
 import { binnable, Binnable } from '../bin';
-import { BuildProps, LayoutProps, Layout } from './layout';
+import { BuildProps, GroupLayoutProps, Layout } from './layout';
 import { Column } from '../types';
 import { ContinuousAxisScale } from '../specBuilder';
 import { InnerScope, Orientation } from '../interfaces';
@@ -22,9 +22,8 @@ export interface BarBuild {
     parentHeight: string;
 }
 
-export interface BarProps extends LayoutProps {
+export interface BarProps extends GroupLayoutProps {
     minBandWidth: number;
-    groupby: Column;
     sumBy: Column;
     orientation: Orientation;
     maxbins: number;
@@ -49,17 +48,17 @@ export class Bar extends Layout {
         const { props } = this;
         const { global, groupby, maxbins, minBandWidth, orientation, parent, sumBy } = props;
         const aggregation = this.getAgregation();
-        const name = `bar_${this.id}`;
+        const prefix = `bar_${this.id}`;
         this.names = {
-            barCount: `${name}_count`,
-            minSize: `${name}_minsize`,
-            facetData: `facet_${name}`,
-            globalAggregateData: `${name}_${aggregation}`,
-            globalAggregateExtentSignal: `${name}_${aggregation}_extent`,
-            globalAggregateMaxExtentSignal: `${name}_${aggregation}_max`,
-            xScale: `${name}_scale_x`,
-            yScale: `${name}_scale_y`,
-            bandWidth: `${name}_bandwidth`
+            barCount: `${prefix}_count`,
+            minSize: `${prefix}_minsize`,
+            facetData: `facet_${prefix}`,
+            globalAggregateData: `${prefix}_aggregate_${aggregation}`,
+            globalAggregateExtentSignal: `${prefix}_${aggregation}_extent`,
+            globalAggregateMaxExtentSignal: `${prefix}_${aggregation}_max`,
+            xScale: `${prefix}_scale_x`,
+            yScale: `${prefix}_scale_y`,
+            bandWidth: `${prefix}_bandwidth`
         };
         const { names } = this;
         const bin = binnable(global.dataName, groupby, maxbins);
@@ -106,7 +105,7 @@ export class Bar extends Layout {
         );
         const mark: Mark = {
             style: 'cell',
-            name,
+            name: prefix,
             type: 'group',
             from: {
                 facet: {
@@ -170,7 +169,7 @@ export class Bar extends Layout {
         };
         parent.scope.marks.push(mark);
 
-        const { xScale, yScale } = this.getScales(bin, minBandWidth);
+        const { xScale, yScale } = this.getScales(prefix, bin, minBandWidth);
 
         props.onBuild && props.onBuild({
             globalAggregateMaxExtentSignal: names.globalAggregateMaxExtentSignal,
@@ -199,19 +198,27 @@ export class Bar extends Layout {
         };
     }
 
-    private getScales(bin: Binnable, minBandWidth: number) {
+    private getScales(prefix: string, bin: Binnable, minBandWidth: number) {
         const { names } = this;
-        const { global, groupby, orientation, parent } = this.props;
+        const { global, groupbyAccumulation, orientation, parent } = this.props;
 
-        const ord = createOrdinalsForFacet(global.scope, parent.dataName, name, groupby.name);
+        const accumulative = `${prefix}_accumulative`;
+        global.scope.data.push({
+            name: accumulative,
+            source: global.dataName,
+            transform: [
+                {
+                    type: 'aggregate',
+                    groupby: groupbyAccumulation.map(g => g.name),
+                    ops: ['count']
+                }
+            ]
+        });
+
         global.scope.signals.push(
             {
-                name: names.barCount,
-                update: `length(data(${JSON.stringify(ord.dataName)}))`
-            },
-            {
                 name: names.minSize,
-                update: `${names.barCount} * ${minBandWidth}`
+                update: `length(data(${JSON.stringify(accumulative)}))*${minBandWidth}`
             }
         );
 

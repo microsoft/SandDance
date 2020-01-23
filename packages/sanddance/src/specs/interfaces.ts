@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Scale, Scope, Spec, Transforms } from 'vega-typings';
+import { Scale, Scope, Spec, Transforms, Mark } from 'vega-typings';
 import { SpecCapabilities, SpecContext } from './types';
 
 /**
@@ -23,7 +23,8 @@ export interface SizeSignals {
 
 export interface InnerScope {
     dataName: string;
-    scope: Scope;
+    scope?: Scope;
+    mark?: Mark;
     globalScales?: { x?: Scale, y?: Scale, z?: Scale };
     globalTransforms?: { [columnName: string]: Transforms[] };
     sizeSignals: SizeSignals;

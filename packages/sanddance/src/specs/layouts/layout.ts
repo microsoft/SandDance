@@ -4,10 +4,15 @@ import { AxisScales } from '../specBuilder';
 import { Column } from '../types';
 import { InnerScope } from '../interfaces';
 
+export interface GroupLayoutProps extends LayoutProps {
+    groupby: Column
+}
+
 export interface LayoutProps {
 }
 
 export interface BuildProps {
+    groupbyAccumulation: Column[];
     axesScales: AxisScales;
     global: InnerScope;
     parent: InnerScope;

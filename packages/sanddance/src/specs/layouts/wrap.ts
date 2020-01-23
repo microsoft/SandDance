@@ -1,14 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { binnable } from '../bin';
-import { BuildProps, LayoutProps, Layout } from './layout';
+import { BuildProps, GroupLayoutProps, Layout } from './layout';
 import { createOrdinalsForFacet } from '../ordinal';
 import { InnerScope } from '../interfaces';
 import { Mark, Transforms } from 'vega-typings';
-import { Column } from '../types';
 
-export interface WrapProps extends LayoutProps {
-    groupby: Column;
+export interface WrapProps extends GroupLayoutProps {
     maxbins: number
 }
 
@@ -26,7 +24,13 @@ export class Wrap extends Layout {
             globalTransforms = {};
             globalTransforms[groupby.name] = bin.transforms;
         }
-        const ord = createOrdinalsForFacet(global.scope, global.dataName, name, bin.field);
+        const ord = createOrdinalsForFacet(parent.dataName, name, bin.field);
+        parent.scope.data = parent.scope.data || [];
+        parent.scope.data.push(ord.data);
+
+        parent.scope.scales = parent.scope.scales || [];
+        parent.scope.scales.push(ord.scale);
+
         const mark: Mark = {
             style: 'cell',
             name,
@@ -41,7 +45,7 @@ export class Wrap extends Layout {
             encode: {
                 update: {
                     x: {
-                        signal: `(scale(${JSON.stringify(ord.scaleName)}, datum[${JSON.stringify(bin.field)}])-1)*101`
+                        signal: `(scale(${JSON.stringify(ord.scale.name)}, datum[${JSON.stringify(bin.field)}])-1)*101`
                     },
                     height: {
                         value: 100
@@ -56,9 +60,9 @@ export class Wrap extends Layout {
                     type: 'text',
                     encode: {
                         update: {
-                            text: {
-                                signal: `length(data(${JSON.stringify(facetDataName)}))`
-                            },
+                            // text: {
+                            //     signal: `length(data(${JSON.stringify(facetDataName)}))`
+                            // },
                             fontSize: {
                                 value: 20
                             }
