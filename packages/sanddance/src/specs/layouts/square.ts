@@ -1,11 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { BuildProps, Layout, LayoutProps } from './layout';
+import { Column } from '../types';
+import { GroupEncodeEntry, Mark, Transforms } from 'vega-typings';
 import { InnerScope } from '../interfaces';
-import { Mark, GroupEncodeEntry } from 'vega-typings';
 import { push } from '../../array';
 
 export interface SquareProps extends LayoutProps {
+    sortBy: Column;
     fillDirection: 'right-down' | 'right-up' | 'down-right';
     maxSignal?: string;
     aspect?: string;
@@ -25,7 +27,7 @@ export class Square extends Layout {
 
     public build(): InnerScope {
         const { props } = this;
-        const { fillDirection, global, parent } = props;
+        const { global, parent, sortBy } = props;
         let { maxSignal } = props;
         const name = `square_${this.id}`;
         this.names = {
@@ -58,17 +60,25 @@ export class Square extends Layout {
         };
         parent.scope.marks.push(mark);
 
+        const transform: Transforms[] = [
+            {
+                type: 'window',
+                ops: ['row_number'],
+                as: [names.index]
+            }
+        ];
+        if (sortBy) {
+            transform.unshift({
+                type: 'collect',
+                sort: { field: sortBy.name }
+            });
+        }
+
         parent.scope.data = parent.scope.data || [];
         parent.scope.data.push({
             name: names.dataName,
             source: parent.dataName,
-            transform: [
-                {
-                    type: 'window',
-                    ops: ['row_number'],
-                    as: [names.index]
-                }
-            ]
+            transform
         });
 
         if (!maxSignal) {
