@@ -6,7 +6,7 @@ import { SpecContext } from './types';
 
 export const defaultZProportion = 0.6;
 
-export function textSignals(context: SpecContext) {
+export function textSignals(context: SpecContext, heightSignal = 'height') {
     const { specViewOptions } = context;
     const signals: NewSignal[] = [
         {
@@ -23,7 +23,7 @@ export function textSignals(context: SpecContext) {
         },
         {
             name: SignalNames.ZHeight,
-            update: `child_height * ${SignalNames.ZProportion}`
+            update: `${heightSignal} * ${SignalNames.ZProportion}`
         },
         {
             name: SignalNames.TextScale,

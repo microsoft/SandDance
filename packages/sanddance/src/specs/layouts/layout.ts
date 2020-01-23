@@ -9,6 +9,7 @@ export interface GroupLayoutProps extends LayoutProps {
 }
 
 export interface LayoutProps {
+    addScaleAxes?: boolean;
 }
 
 export interface BuildProps {

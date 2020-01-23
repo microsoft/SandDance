@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { BuildProps, Layout, LayoutProps, GroupLayoutProps } from './layouts/layout';
+import { binnableColorScale } from './scales';
+import { BuildProps, Layout, LayoutProps } from './layouts/layout';
+import { colorReverseSignal, textSignals } from './signals';
+import { ColorScaleNone, ScaleNames, SignalNames } from './constants';
 import {
     Column,
     FacetStyle,
@@ -8,6 +11,7 @@ import {
     SpecContext
 } from './types';
 import { Cross, CrossProps } from './layouts/cross';
+import { fill, opacity } from './fill';
 import { InnerScope, SpecResult } from './interfaces';
 import { maxbins } from './defaults';
 import { push } from '../array';
@@ -18,6 +22,7 @@ import {
     Transforms
 } from 'vega-typings';
 import { Slice, SliceProps } from './layouts/slice';
+import { topLookup } from './top';
 import { Wrap, WrapProps } from './layouts/wrap';
 
 export interface DiscreteAxisScale {
@@ -100,14 +105,40 @@ export class SpecBuilder {
                 //     ]
                 // )
 
-                signals: []
+                signals: textSignals(specContext, 'h2').concat([
+                    colorReverseSignal(specContext)
+                ])
             };
 
-            // const categoricalColor = specColumns.color && !specColumns.color.quantitative;
-            // if (categoricalColor) {
-            //     push(vegaSpec.data, topLookup(specColumns.color, specViewOptions.maxLegends));
-            //     dataName = 'data_legend';
-            // }
+            const topColorField = 'top_color';
+            const categoricalColor = specColumns.color && !specColumns.color.quantitative;
+            if (categoricalColor) {
+                const legendName = 'data_legend';
+                push(vegaSpec.data, topLookup(specColumns.color, specViewOptions.maxLegends, dataName, legendName, 'top_colors', topColorField));
+                dataName = legendName;
+            }
+
+            if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
+                if (specColumns.color.quantitative) {
+                    vegaSpec.scales.push(binnableColorScale(insight.colorBin, dataName, specColumns.color.name, insight.scheme));
+                } else {
+                    vegaSpec.scales.push(
+                        {
+                            name: ScaleNames.Color,
+                            type: 'ordinal',
+                            domain: {
+                                data: dataName,
+                                field: topColorField,
+                                sort: true
+                            },
+                            range: {
+                                scheme: insight.scheme || ColorScaleNone
+                            },
+                            reverse: { signal: SignalNames.ColorReverse }
+                        }
+                    );
+                }
+            }
 
             this.globalScope = {
                 dataName,
@@ -170,7 +201,7 @@ export class SpecBuilder {
                 layout.id = i;
                 let childScope = layout.build();
                 if (childScope) {
-                    if (childScope.globalScales) {
+                    if (props.addScaleAxes && childScope.globalScales) {
                         this.addGlobalScales(childScope.globalScales, layoutBuildProps.axesScales);
                     }
                     if (childScope.globalTransforms) {
@@ -184,8 +215,8 @@ export class SpecBuilder {
 
             //add mark to the final scope
             if (parentScope.mark) {
-                parentScope.mark.encode.update.fill = { value: 'pink' }
-                parentScope.mark.encode.update.opacity = { value: 0.4 }
+                parentScope.mark.encode.update.fill = fill(specContext, topColorField);
+                parentScope.mark.encode.update.opacity = opacity(specContext);
             }
 
 
@@ -216,7 +247,11 @@ export class SpecBuilder {
     }
 
     private addGlobalScales(globalScales: { x?: Scale, y?: Scale, z?: Scale }, axisScales: AxisScales) {
-        const { scope } = this.globalScope;
+
+        const { scope } = this.globalScope; //TODO if faceting, scope shoule be each facet!!
+
+        //TODO always add Z scale to global scope
+
         for (let s in globalScales) {
             let scale: Scale = globalScales[s];
             if (scale) {

@@ -105,28 +105,6 @@ export function binnableColorScale(colorBin: ColorBin, data: string, field: stri
     }
 }
 
-export function getColorScale(colorColumn: Column, insight: Insight): Scale {
-    if (colorColumn && !colorColumn.isColorData && !insight.directColor) {
-        if (colorColumn.quantitative) {
-            return binnableColorScale(insight.colorBin, DataNames.Main, colorColumn.name, insight.scheme);
-        } else {
-            return {
-                name: ScaleNames.Color,
-                type: 'ordinal',
-                domain: {
-                    data: DataNames.Legend,
-                    field: FieldNames.Top,
-                    sort: true
-                },
-                range: {
-                    scheme: insight.scheme || ColorScaleNone
-                },
-                reverse: { signal: SignalNames.ColorReverse }
-            };
-        }
-    }
-}
-
 export function getZScale(zColumn: Column) {
     const zRange: RangeScheme = [0, { signal: SignalNames.ZHeight }];
     return zColumn.quantitative ?

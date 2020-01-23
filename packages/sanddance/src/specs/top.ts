@@ -8,41 +8,37 @@ import {
     FieldNames
 } from './constants';
 
-export function topLookup(column: Column, count: number) {
+export function topLookup(column: Column, count: number, source = DataNames.Main, legend = DataNames.Legend, lookupName = DataNames.TopLookup, fieldName = FieldNames.Top, indexName = FieldNames.TopIndex) {
     const data: Data[] = [
         {
-            name: DataNames.TopLookup,
-            source: DataNames.Main,
+            name: lookupName,
+            source,
             transform: [
                 { type: 'aggregate', groupby: [column.name] },
                 {
                     type: 'window',
-                    ops: [
-                        'count'
-                    ],
-                    as: [
-                        FieldNames.TopIndex
-                    ]
+                    ops: ['count'],
+                    as: [indexName]
                 },
-                { type: 'filter', expr: `datum.${FieldNames.TopIndex} <= ${count}` }
+                { type: 'filter', expr: `datum.${indexName} <= ${count}` }
             ]
         },
         {
-            name: DataNames.Legend,
-            source: DataNames.Main,
+            name: legend,
+            source,
             transform: [
                 {
                     type: 'lookup',
-                    from: DataNames.TopLookup,
+                    from: lookupName,
                     key: column.name,
                     fields: [column.name],
                     values: [column.name],
-                    as: [FieldNames.Top]
+                    as: [fieldName]
                 },
                 {
                     type: 'formula',
-                    expr: `datum.${FieldNames.Top} == null ? '${Other}' : datum.${FieldNames.Top}`,
-                    as: FieldNames.Top
+                    expr: `datum.${fieldName} == null ? '${Other}' : datum.${fieldName}`,
+                    as: fieldName
                 }
             ]
         }
