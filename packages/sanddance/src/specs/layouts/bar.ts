@@ -31,21 +31,35 @@ export interface BarProps extends LayoutProps {
 
 export class Bar extends Layout {
     public props: BarProps & BuildProps;
+    private names: {
+        barCount: string,
+        minSize: string,
+        facetData: string,
+        globalAggregateData: string,
+        globalAggregateExtentSignal: string,
+        globalAggregateMaxExtentSignal: string,
+        xScale: string,
+        yScale: string,
+        bandWidth: string
+    };
 
     public build(): InnerScope {
         const { props } = this;
         const { global, groupby, maxbins, minBandWidth, orientation, parent, sumBy } = props;
-        const name = `bar_${this.id}`;
-        const barCount = `bar_${this.id}_count`;
-        const minSize = `bar_${this.id}_minsize`;
-        const facetDataName = `facet_${name}`;
         const aggregation = this.getAgregation();
-        const globalAggregateDataName = `${name}_${aggregation}`;
-        const globalAggregateExtentSignal = `${globalAggregateDataName}_extent`;
-        const globalAggregateMaxExtentSignal = `${globalAggregateDataName}_max`;
-        const xScaleName = `${name}_scale_x`;
-        const yScaleName = `${name}_scale_y`;
-        const bandWidth = `${name}_bandwidth`;
+        const name = `bar_${this.id}`;
+        this.names = {
+            barCount: `${name}_count`,
+            minSize: `${name}_minsize`,
+            facetData: `facet_${name}`,
+            globalAggregateData: `${name}_${aggregation}`,
+            globalAggregateExtentSignal: `${name}_${aggregation}_extent`,
+            globalAggregateMaxExtentSignal: `${name}_${aggregation}_max`,
+            xScale: `${name}_scale_x`,
+            yScale: `${name}_scale_y`,
+            bandWidth: `${name}_bandwidth`
+        };
+        const { names } = this;
         const bin = binnable(global.dataName, groupby, maxbins);
         let globalTransforms: { [columnName: string]: Transforms[] };
         if (bin.transforms) {
@@ -62,7 +76,7 @@ export class Bar extends Layout {
             trans.fields = [sumBy.name];
         }
         global.scope.data.push({
-            name: globalAggregateDataName,
+            name: names.globalAggregateData,
             source: global.dataName,
             transform: [
                 {
@@ -72,19 +86,19 @@ export class Bar extends Layout {
                 {
                     type: 'extent',
                     field: aggregation,
-                    signal: globalAggregateExtentSignal
+                    signal: names.globalAggregateExtentSignal
                 }
             ]
         });
         push(global.scope.signals,
             [
                 {
-                    name: globalAggregateMaxExtentSignal,
-                    update: `${globalAggregateExtentSignal}[1]`
+                    name: names.globalAggregateMaxExtentSignal,
+                    update: `${names.globalAggregateExtentSignal}[1]`
                 },
                 {
-                    name: bandWidth,
-                    update: `bandwidth(${JSON.stringify(orientation === 'horizontal' ? yScaleName : xScaleName)})`
+                    name: names.bandWidth,
+                    update: `bandwidth(${JSON.stringify(orientation === 'horizontal' ? names.yScale : names.xScale)})`
                 }
             ]
         );
@@ -94,7 +108,7 @@ export class Bar extends Layout {
             type: 'group',
             from: {
                 facet: {
-                    name: facetDataName,
+                    name: names.facetData,
                     data: parent.dataName,
                     groupby: bin.field,
                     aggregate: {
@@ -111,28 +125,28 @@ export class Bar extends Layout {
                             value: 0
                         },
                         y: {
-                            signal: `scale(${JSON.stringify(yScaleName)}, datum[${JSON.stringify(bin.field)}])`
+                            signal: `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(bin.field)}])`
                         },
                         height: {
-                            signal: bandWidth
+                            signal: names.bandWidth
                         },
                         width: {
-                            signal: `scale(${JSON.stringify(xScaleName)}, datum[${JSON.stringify(aggregation)}])`
+                            signal: `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(aggregation)}])`
                         }
                     }
                     :
                     {
                         x: {
-                            signal: `scale(${JSON.stringify(xScaleName)}, datum[${JSON.stringify(bin.field)}])`
+                            signal: `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(bin.field)}])`
                         },
                         y: {
-                            signal: `scale(${JSON.stringify(yScaleName)}, datum[${JSON.stringify(aggregation)}])`
+                            signal: `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(aggregation)}])`
                         },
                         height: {
-                            signal: `${parent.sizeSignals.height} - scale(${JSON.stringify(yScaleName)}, datum[${JSON.stringify(aggregation)}])`
+                            signal: `${parent.sizeSignals.height} - scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(aggregation)}])`
                         },
                         width: {
-                            signal: bandWidth
+                            signal: names.bandWidth
                         },
                     }
             },
@@ -142,7 +156,7 @@ export class Bar extends Layout {
                     encode: {
                         update: {
                             text: {
-                                signal: `length(data(${JSON.stringify(facetDataName)}))`
+                                signal: `length(data(${JSON.stringify(names.facetData)}))`
                             },
                             fontSize: {
                                 value: 20
@@ -154,32 +168,22 @@ export class Bar extends Layout {
         };
         parent.scope.marks.push(mark);
 
-        const { xScale, yScale } = this.getScales(
-            bin,
-            xScaleName,
-            yScaleName,
-            globalAggregateMaxExtentSignal,
-            minBandWidth,
-            {
-                barCount,
-                minSize
-            }
-        );
+        const { xScale, yScale } = this.getScales(bin, minBandWidth);
 
-        props.onBuild && props.onBuild({ globalAggregateMaxExtentSignal });
+        props.onBuild && props.onBuild({ globalAggregateMaxExtentSignal: names.globalAggregateMaxExtentSignal });
 
         return {
-            dataName: facetDataName,
+            dataName: names.facetData,
             scope: mark,
             sizeSignals: orientation === 'horizontal' ?
                 {
-                    height: bandWidth,
+                    height: names.bandWidth,
                     width: parent.sizeSignals.width
                 }
                 :
                 {
                     height: parent.sizeSignals.height,
-                    width: bandWidth
+                    width: names.bandWidth
                 },
             globalScales: {
                 x: xScale,
@@ -189,7 +193,8 @@ export class Bar extends Layout {
         };
     }
 
-    private getScales(bin: Binnable, xScaleName: string, yScaleName: string, globalAggregateMaxExtentSignal: string, minBandWidth: number, names: { barCount: string, minSize: string }) {
+    private getScales(bin: Binnable, minBandWidth: number) {
+        const { names } = this;
         const { global, groupby, orientation, parent } = this.props;
 
         const ord = createOrdinalsForFacet(global.scope, parent.dataName, name, groupby.name);
@@ -209,7 +214,7 @@ export class Bar extends Layout {
         if (orientation === 'vertical') {
             xScale = <BandScale>{
                 type: 'band',
-                name: xScaleName,
+                name: names.xScale,
                 range: [
                     0,
                     {
@@ -225,11 +230,11 @@ export class Bar extends Layout {
             };
             yScale = <LinearScale>{
                 type: 'linear',
-                name: yScaleName,
+                name: names.yScale,
                 domain: [
                     0,
                     {
-                        signal: globalAggregateMaxExtentSignal
+                        signal: names.globalAggregateMaxExtentSignal
                     }
                 ],
                 range: [
@@ -244,11 +249,11 @@ export class Bar extends Layout {
         } else {
             xScale = <LinearScale>{
                 type: 'linear',
-                name: xScaleName,
+                name: names.xScale,
                 domain: [
                     0,
                     {
-                        signal: globalAggregateMaxExtentSignal
+                        signal: names.globalAggregateMaxExtentSignal
                     }
                 ],
                 range: [
@@ -262,7 +267,7 @@ export class Bar extends Layout {
             };
             yScale = <BandScale>{
                 type: 'band',
-                name: yScaleName,
+                name: names.yScale,
                 range: [
                     0,
                     {
