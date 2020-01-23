@@ -18,6 +18,8 @@ import { createOrdinalsForFacet } from '../ordinal';
 
 export interface BarBuild {
     globalAggregateMaxExtentSignal: string;
+    bandWidth: string;
+    parentHeight: string;
 }
 
 export interface BarProps extends LayoutProps {
@@ -170,7 +172,11 @@ export class Bar extends Layout {
 
         const { xScale, yScale } = this.getScales(bin, minBandWidth);
 
-        props.onBuild && props.onBuild({ globalAggregateMaxExtentSignal: names.globalAggregateMaxExtentSignal });
+        props.onBuild && props.onBuild({
+            globalAggregateMaxExtentSignal: names.globalAggregateMaxExtentSignal,
+            bandWidth: names.bandWidth,
+            parentHeight: parent.sizeSignals.height
+        });
 
         return {
             dataName: names.facetData,
@@ -178,11 +184,11 @@ export class Bar extends Layout {
             sizeSignals: orientation === 'horizontal' ?
                 {
                     height: names.bandWidth,
-                    width: parent.sizeSignals.width
+                    width: `scale(${JSON.stringify(names.xScale)}, parent[${JSON.stringify(aggregation)}])`
                 }
                 :
                 {
-                    height: parent.sizeSignals.height,
+                    height: `${parent.sizeSignals.height} - scale(${JSON.stringify(names.yScale)}, parent[${JSON.stringify(aggregation)}])`,
                     width: names.bandWidth
                 },
             globalScales: {
@@ -221,7 +227,7 @@ export class Bar extends Layout {
                         signal: `max(${parent.sizeSignals.width},${names.minSize})`
                     }
                 ],
-                padding: 0.01,
+                padding: 0.1,
                 domain: {
                     data: bin.domainDataName,
                     field: bin.field,
@@ -274,7 +280,7 @@ export class Bar extends Layout {
                         signal: `max(${parent.sizeSignals.height},${names.minSize})`
                     }
                 ],
-                padding: 0.01,
+                padding: 0.1,
                 domain: {
                     data: bin.domainDataName,
                     field: bin.field,

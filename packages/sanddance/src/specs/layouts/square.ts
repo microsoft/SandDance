@@ -7,7 +7,8 @@ import { push } from '../../array';
 
 export interface SquareProps extends LayoutProps {
     fillDirection: 'right-down' | 'right-up' | 'down-right';
-    maxSignal: string;
+    maxSignal?: string;
+    aspect?: string;
 }
 
 export class Square extends Layout {
@@ -76,7 +77,7 @@ export class Square extends Layout {
         push(global.scope.signals, [
             {
                 name: names.aspect,
-                update: `${parent.sizeSignals.width}/${parent.sizeSignals.height}`
+                update: props.aspect || `${global.sizeSignals.width}/${global.sizeSignals.height}`
             },
             {
                 name: names.squaresPerBand,
@@ -124,7 +125,7 @@ export class Square extends Layout {
                         signal: compartment
                     },
                     y: {
-                        signal: `-${names.size}-${level}*(${names.size}+${names.gap})`
+                        signal: `${this.props.parent.sizeSignals.height}-${names.size}-${level}*(${names.size}+${names.gap})`
                     }
                 };
             }

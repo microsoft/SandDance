@@ -5,7 +5,7 @@ import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
-    const squareProps: SquareProps = { fillDirection: 'right-down', maxSignal: null };
+    const squareProps: SquareProps = { fillDirection: 'right-down' };
     return {
         specContext,
         layouts: [
