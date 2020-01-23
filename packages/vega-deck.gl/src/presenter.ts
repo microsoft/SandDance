@@ -155,8 +155,6 @@ export class Presenter {
         let scene = sceneOrStage as Scene3d;
         let stage: Stage;
         let options: MarkStagerOptions = {
-            offsetX: 0,
-            offsetY: 0,
             maxOrdinal: 0,
             currAxis: null,
             currFacetRect: null,

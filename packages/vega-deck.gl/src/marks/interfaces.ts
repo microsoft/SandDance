@@ -12,8 +12,6 @@ export enum GroupType {
 }
 
 export interface MarkStagerOptions {
-    offsetX: number;
-    offsetY: number;
     maxOrdinal: number;
     currAxis: Axis;
     currFacetRect: FacetRect;

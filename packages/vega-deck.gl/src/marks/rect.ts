@@ -36,7 +36,7 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
             const cube: Cube = {
                 ordinal,
                 size: [item.width, item.height, depth],
-                position: [x + (item.x || 0) - options.offsetX, ty * (y + (item.y || 0) - options.offsetY) - item.height, z],
+                position: [x + (item.x || 0), ty * (y + (item.y || 0)) - item.height, z],
                 color: colorFromString(item.fill) || options.defaultCubeColor || [128, 128, 128, 128]
             };
 

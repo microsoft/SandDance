@@ -34,7 +34,7 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
         const textItem: TextLayerDatum = {
             color: colorFromString(item.fill),
             text: item.text.toString(),
-            position: [x + (item.x || 0) - options.offsetX, ty * (y + (item.y || 0) + offsetYCenter - options.offsetY), 0],
+            position: [x + (item.x || 0), ty * (y + (item.y || 0) + offsetYCenter), 0],
             size,
             angle: convertAngle(item.angle),
             textAnchor: convertAlignment(item.align),
@@ -49,7 +49,7 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
             options.currAxis.title = textItem;
         } else if (options.currFacetRect && !options.currFacetRect.facetTitle) {
             options.currFacetRect.facetTitle = textItem;
-            textItem.position = [x - options.offsetX, ty * (y + offsetYCenter - options.offsetY), 0];
+            textItem.position = [x, ty * (y + offsetYCenter), 0];
         } else {
             stage.textData.push(textItem);
         }

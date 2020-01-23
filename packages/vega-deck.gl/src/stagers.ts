@@ -51,21 +51,13 @@ const group: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scen
 
     base.vega.sceneVisit(scene, function (g: SceneGroup2) {
 
-        if (g.bounds.x1 < options.offsetX) {
-            options.offsetX = g.bounds.x1;
-        }
-
-        if (g.bounds.y1 < options.offsetY) {
-            options.offsetY = g.bounds.y1;
-        }
-
         const gx = g.x || 0, gy = g.y || 0;
         if (g.context && g.context.background && !stage.backgroundColor) {
             stage.backgroundColor = colorFromString(g.context.background);
         }
         if (g.stroke) {
             const facetRect: FacetRect = {
-                lines: box(gx + x - options.offsetX, gy + y - options.offsetY, g.height, g.width, g.stroke, groupStrokeWidth)
+                lines: box(gx + x, gy + y, g.height, g.width, g.stroke, groupStrokeWidth)
             };
             stage.facets.push(facetRect);
             options.currFacetRect = facetRect;
