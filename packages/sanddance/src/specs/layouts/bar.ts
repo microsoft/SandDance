@@ -19,7 +19,7 @@ import { createOrdinalsForFacet } from '../ordinal';
 export interface BarBuild {
     globalAggregateMaxExtentSignal: string;
     bandWidth: string;
-    parentHeight: string;
+    parentSize: string;
 }
 
 export interface BarProps extends GroupLayoutProps {
@@ -174,7 +174,7 @@ export class Bar extends Layout {
         props.onBuild && props.onBuild({
             globalAggregateMaxExtentSignal: names.globalAggregateMaxExtentSignal,
             bandWidth: names.bandWidth,
-            parentHeight: parent.sizeSignals.height
+            parentSize: orientation === 'horizontal' ? parent.sizeSignals.width : parent.sizeSignals.height
         });
 
         return {

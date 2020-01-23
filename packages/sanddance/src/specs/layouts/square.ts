@@ -104,7 +104,7 @@ export class Square extends Layout {
         push(global.scope.signals, [
             {
                 name: names.aspect,
-                update: props.aspect || `${global.sizeSignals.width}/${global.sizeSignals.height}`
+                update: props.aspect || `${global.sizeSignals.width}/${props.fillDirection === 'down-right' ? global.sizeSignals.width : global.sizeSignals.height}`
             },
             {
                 name: names.squaresPerBand,

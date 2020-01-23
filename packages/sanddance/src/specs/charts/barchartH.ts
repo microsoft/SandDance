@@ -55,7 +55,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             const squareProps: SquareProps = { sortBy: specColumns.sort, fillDirection: 'down-right' };
             barProps.onBuild = barBuild => {
                 squareProps.maxSignal = barBuild.globalAggregateMaxExtentSignal;
-                squareProps.aspect = `${barBuild.bandWidth}/${barBuild.parentHeight}`;
+                squareProps.aspect = `${barBuild.bandWidth}/${barBuild.parentSize}`;
             };
             unitLayoutProps = squareProps;
             break;
