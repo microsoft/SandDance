@@ -14,7 +14,6 @@ import { Column } from '../types';
 import { ContinuousAxisScale } from '../specBuilder';
 import { InnerScope, Orientation } from '../interfaces';
 import { push } from '../../array';
-import { createOrdinalsForFacet } from '../ordinal';
 
 export interface BarBuild {
     globalAggregateMaxExtentSignal: string;
