@@ -200,7 +200,7 @@ export class Bar extends Layout {
 
     private getScales(prefix: string, bin: Binnable, minBandWidth: number) {
         const { names } = this;
-        const { global, groupbyAccumulation, orientation, parent } = this.props;
+        const { global, groupby, orientation, parent } = this.props;
 
         const accumulative = `${prefix}_accumulative`;
         global.scope.data.push({
@@ -209,7 +209,7 @@ export class Bar extends Layout {
             transform: [
                 {
                     type: 'aggregate',
-                    groupby: groupbyAccumulation.map(g => g.name),
+                    groupby: [groupby.name],
                     ops: ['count']
                 }
             ]

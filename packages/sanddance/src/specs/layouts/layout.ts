@@ -12,7 +12,6 @@ export interface LayoutProps {
 }
 
 export interface BuildProps {
-    groupbyAccumulation: Column[];
     axesScales: AxisScales;
     global: InnerScope;
     parent: InnerScope;

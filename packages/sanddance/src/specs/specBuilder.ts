@@ -86,8 +86,6 @@ export class SpecBuilder {
             let dataName = 'data_source';
             const vegaSpec: Spec = {
                 $schema: 'https://vega.github.io/schema/vega/v5.json',
-                //height: insight.size.height,
-                //width: insight.size.width,
                 axes: [],
                 data: [{ name: dataName, transform: [] }],
                 marks: [],
@@ -143,30 +141,27 @@ export class SpecBuilder {
                 vegaSpec.signals.push(
                     {
                         name: 'h2',
-                        value: insight.size.height
+                        update: 'height'
                     },
                     {
                         name: 'w2',
-                        value: insight.size.width
+                        update: 'width'
                     }
                 );
+                vegaSpec.height = insight.size.height;
+                vegaSpec.width = insight.size.width;
+                //vegaSpec.autosize = 'fit';
             }
 
             const globalTransforms: { [columnName: string]: Transforms[] } = {};
-            const groupbyAccumulation: Column[] = [];
 
             let parentScope = this.globalScope;
             for (let i = 0; i < layouts.length; i++) {
                 if (!parentScope) continue;
                 if (!parentScope.scope) break;
                 let { layoutClass, props } = layouts[i];
-                const groupLayoutProps = props as GroupLayoutProps;
-                if (groupLayoutProps.groupby) {
-                    groupbyAccumulation.push(groupLayoutProps.groupby);
-                }
                 let layoutBuildProps: LayoutProps & BuildProps = {
                     ...props,
-                    groupbyAccumulation,
                     global: this.globalScope,
                     parent: parentScope,
                     axesScales: this.props.axisScales
