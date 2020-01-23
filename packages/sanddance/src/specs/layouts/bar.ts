@@ -8,11 +8,10 @@ import {
     Scale,
     Transforms
 } from 'vega-typings';
-import { AxisScale } from '../specBuilder';
+import { AxisScale, InnerScope, Orientation } from '../interfaces';
 import { binnable, Binnable } from '../bin';
-import { BuildProps, GroupLayoutProps, Layout } from './layout';
 import { Column } from '../types';
-import { InnerScope, Orientation } from '../interfaces';
+import { GroupLayoutProps, Layout, LayoutBuildProps } from './layout';
 import { push } from '../../array';
 
 export interface BarBuild {
@@ -30,7 +29,7 @@ export interface BarProps extends GroupLayoutProps {
 }
 
 export class Bar extends Layout {
-    public props: BarProps & BuildProps;
+    public props: BarProps & LayoutBuildProps;
     private names: {
         barCount: string,
         minSize: string,

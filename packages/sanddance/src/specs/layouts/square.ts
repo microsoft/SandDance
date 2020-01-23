@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { BuildProps, Layout, LayoutProps } from './layout';
 import { Column } from '../types';
 import {
     GroupEncodeEntry,
@@ -10,6 +9,7 @@ import {
     Transforms
 } from 'vega-typings';
 import { InnerScope } from '../interfaces';
+import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { push } from '../../array';
 
 export interface SquareProps extends LayoutProps {
@@ -21,7 +21,7 @@ export interface SquareProps extends LayoutProps {
 }
 
 export class Square extends Layout {
-    public props: SquareProps & BuildProps;
+    public props: SquareProps & LayoutBuildProps;
     private names: {
         dataName: string,
         aspect: string,
@@ -55,7 +55,7 @@ export class Square extends Layout {
             },
             encode: {
                 update: {
-                    ...this.groupEncodeEntry(),
+                    ...this.encodeXY(),
                     height: {
                         signal: names.size
                     },
@@ -148,7 +148,7 @@ export class Square extends Layout {
         }
     }
 
-    private groupEncodeEntry(): GroupEncodeEntry {
+    private encodeXY(): GroupEncodeEntry {
         const { names } = this;
         const compartment = `${names.bandWidth}/${names.squaresPerBand}*((datum[${JSON.stringify(names.index)}]-1)%${names.squaresPerBand})`;
         const level = `floor((datum[${JSON.stringify(names.index)}]-1)/${names.squaresPerBand})`;

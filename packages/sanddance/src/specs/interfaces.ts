@@ -1,6 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Scale, Scope, Spec, Transforms, Mark } from 'vega-typings';
+import {
+    Mark,
+    Scale,
+    Scope,
+    Spec,
+    Transforms
+} from 'vega-typings';
 import { SpecCapabilities, SpecContext } from './types';
 
 /**
@@ -31,3 +37,20 @@ export interface InnerScope {
 }
 
 export type Orientation = 'horizontal' | 'vertical';
+
+export type Aggregate = 'count' | 'sum' | 'percent';
+
+export interface AxisScale {
+    type: 'discrete' | 'continuous' | 'continuousAggregate' | 'zFloor' | 'zFree' | 'zDiscrete';
+
+    /**
+     * Only used when type = continuousAggregate
+     */
+    aggregate?: Aggregate;
+}
+
+export interface AxisScales {
+    x?: AxisScale;
+    y?: AxisScale;
+    z?: AxisScale;
+}

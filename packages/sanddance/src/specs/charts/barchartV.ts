@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { AxisScale, AxisScales, SpecBuilderProps } from '../specBuilder';
+import { AxisScale, AxisScales } from '../interfaces';
 import { Bar, BarProps } from '../layouts/bar';
 import { Layout, LayoutProps } from '../layouts/layout';
 import { maxbins, minBarBandWidth } from '../defaults';
 import { SignalNames } from '../constants';
 import { Slice, SliceProps } from '../layouts/slice';
+import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
 import { Square, SquareProps } from '../layouts/square';
 import { Strip, StripProps } from '../layouts/strip';

@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { AxisScales, SpecBuilderProps } from '../specBuilder';
+import { AxisScales } from '../interfaces';
 import { Scatter } from '../layouts/scatter';
 import { SignalNames } from '../constants';
+import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
 
 export default function (specContext: SpecContext): SpecBuilderProps {

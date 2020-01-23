@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { BuildProps, GroupLayoutProps, Layout } from "./layout";
-import { Orientation, InnerScope } from "../interfaces";
-import { Mark, Transforms } from "vega-typings";
-import { binnable } from "../bin";
+import { binnable } from '../bin';
+import { GroupLayoutProps, Layout, LayoutBuildProps } from './layout';
+import { InnerScope, Orientation } from '../interfaces';
+import { Mark, Transforms } from 'vega-typings';
 
 export interface SliceProps extends GroupLayoutProps {
     orientation: Orientation;
@@ -11,7 +11,7 @@ export interface SliceProps extends GroupLayoutProps {
 }
 
 export class Slice extends Layout {
-    public props: SliceProps & BuildProps;
+    public props: SliceProps & LayoutBuildProps;
 
     public build(): InnerScope {
         const { props } = this;

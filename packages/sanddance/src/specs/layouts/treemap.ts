@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { BuildProps, Layout, LayoutProps } from './layout';
 import { InnerScope } from '../interfaces';
+import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { Mark } from 'vega-typings';
 
 export interface TreemapProps extends LayoutProps {
@@ -9,7 +9,7 @@ export interface TreemapProps extends LayoutProps {
 }
 
 export class Treemap extends Layout {
-    public props: TreemapProps & BuildProps;
+    public props: TreemapProps & LayoutBuildProps;
 
     public build(): InnerScope {
         const { props } = this;

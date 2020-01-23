@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { binnable } from '../bin';
-import { BuildProps, GroupLayoutProps, Layout } from './layout';
 import { createOrdinalsForFacet } from '../ordinal';
+import { GroupLayoutProps, Layout, LayoutBuildProps } from './layout';
 import { InnerScope } from '../interfaces';
 import { Mark, Transforms } from 'vega-typings';
 
@@ -11,7 +11,7 @@ export interface WrapProps extends GroupLayoutProps {
 }
 
 export class Wrap extends Layout {
-    public props: WrapProps & BuildProps;
+    public props: WrapProps & LayoutBuildProps;
 
     public build(): InnerScope {
         const { props } = this;

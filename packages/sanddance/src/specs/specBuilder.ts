@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { binnableColorScale } from './scales';
-import { BuildProps, Layout, LayoutProps } from './layouts/layout';
-import { colorReverseSignal, textSignals } from './signals';
+import { LayoutBuildProps, Layout, LayoutProps, LayoutPair } from './layouts/layout';
+import { colorReverseSignal, textSignals, colorBinCountSignal } from './signals';
 import { ColorScaleNone, ScaleNames, SignalNames } from './constants';
 import {
     Column,
@@ -12,7 +12,7 @@ import {
 } from './types';
 import { Cross, CrossProps } from './layouts/cross';
 import { fill, opacity } from './fill';
-import { InnerScope, SpecResult } from './interfaces';
+import { InnerScope, SpecResult, AxisScales, AxisScale } from './interfaces';
 import { maxbins } from './defaults';
 import { push } from '../array';
 import {
@@ -24,28 +24,6 @@ import {
 import { Slice, SliceProps } from './layouts/slice';
 import { topLookup } from './top';
 import { Wrap, WrapProps } from './layouts/wrap';
-
-export type Aggregate = 'count' | 'sum' | 'percent';
-
-export interface AxisScale {
-    type: 'discrete' | 'continuous' | 'continuousAggregate' | 'zFloor' | 'zFree' | 'zDiscrete';
-
-    /**
-     * Only used when type = continuousAggregate
-     */
-    aggregate?: Aggregate;
-}
-
-export interface AxisScales {
-    x?: AxisScale;
-    y?: AxisScale;
-    z?: AxisScale;
-}
-
-export interface LayoutPair {
-    props?: LayoutProps;
-    layoutClass: typeof Layout;
-}
 
 export interface SpecBuilderProps {
     axisScales?: AxisScales;
@@ -63,13 +41,29 @@ export class SpecBuilder {
 
     public validate() {
         const required = this.props.specCapabilities.roles.filter(r => !r.allowNone);
-        const errors = required.map(r => {
-            if (this.props.specContext.specColumns[r.role]) {
-                return null;
-            } else {
-                return `Must set a field for ${r.role}`;
-            }
-        }).filter(Boolean);
+        const numeric = this.props.specCapabilities.roles.filter(r => !r.excludeCategoric);
+        const errors = required
+            .map(
+                r => {
+                    if (this.props.specContext.specColumns[r.role]) {
+                        return null;
+                    } else {
+                        return `Field ${r.role} is required.`;
+                    }
+                }
+            )
+            .concat(
+                numeric.map(
+                    r => {
+                        if (this.props.specContext.specColumns[r.role].quantitative) {
+                            return null;
+                        } else {
+                            return `Field ${r.role} must be quantitative.`;
+                        }
+                    }
+                )
+            )
+            .filter(Boolean);
         return errors;
     }
 
@@ -92,17 +86,8 @@ export class SpecBuilder {
                 data: [{ name: dataName, transform: [] }],
                 marks: [],
                 scales: [],
-
-                //TODO add color & text signals
-                // signals: allTruthy<Signal>(
-                //     textSignals(specContext),
-                //     [
-                //         colorBinCountSignal(specContext),
-                //         colorReverseSignal(specContext)
-                //     ]
-                // )
-
                 signals: textSignals(specContext, 'h2').concat([
+                    colorBinCountSignal(specContext),
                     colorReverseSignal(specContext)
                 ])
             };
@@ -188,7 +173,7 @@ export class SpecBuilder {
                 if (!parentScope) continue;
                 if (!parentScope.scope) break;
                 let { layoutClass, props } = layouts[i];
-                let layoutBuildProps: LayoutProps & BuildProps = {
+                let layoutBuildProps: LayoutProps & LayoutBuildProps = {
                     ...props,
                     global: this.globalScope,
                     parent: parentScope,
