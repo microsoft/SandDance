@@ -40,12 +40,14 @@ export class SpecBuilder {
     }
 
     public validate() {
-        const required = this.props.specCapabilities.roles.filter(r => !r.allowNone);
-        const numeric = this.props.specCapabilities.roles.filter(r => !r.excludeCategoric);
+        const { specCapabilities, specContext } = this.props;
+        const { roles } = specCapabilities;
+        const required = roles.filter(r => !r.allowNone);
+        const numeric = roles.filter(r => r.excludeCategoric);
         const errors = required
             .map(
                 r => {
-                    if (this.props.specContext.specColumns[r.role]) {
+                    if (specContext.specColumns[r.role]) {
                         return null;
                     } else {
                         return `Field ${r.role} is required.`;
@@ -55,10 +57,10 @@ export class SpecBuilder {
             .concat(
                 numeric.map(
                     r => {
-                        if (this.props.specContext.specColumns[r.role].quantitative) {
-                            return null;
-                        } else {
+                        if (specContext.specColumns[r.role] && !specContext.specColumns[r.role].quantitative) {
                             return `Field ${r.role} must be quantitative.`;
+                        } else {
+                            return null;
                         }
                     }
                 )
