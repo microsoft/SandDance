@@ -8,10 +8,10 @@ import {
     Scale,
     Transforms
 } from 'vega-typings';
+import { AxisScale } from '../specBuilder';
 import { binnable, Binnable } from '../bin';
 import { BuildProps, GroupLayoutProps, Layout } from './layout';
 import { Column } from '../types';
-import { ContinuousAxisScale } from '../specBuilder';
 import { InnerScope, Orientation } from '../interfaces';
 import { push } from '../../array';
 
@@ -299,11 +299,11 @@ export class Bar extends Layout {
 
     private getAgregation() {
         const { props } = this;
-        let s: ContinuousAxisScale;
+        let s: AxisScale;
         if (props.orientation === 'vertical') {
-            s = <ContinuousAxisScale>props.axesScales.y;
+            s = props.axesScales.y;
         } else {
-            s = <ContinuousAxisScale>props.axesScales.x;
+            s = props.axesScales.x;
         }
         switch (s.aggregate) {
             case 'sum':

@@ -28,6 +28,6 @@ export function getSpecBuilderForChart(specContext: SpecContext) {
     const fn = map[insight.chart];
     if (fn) {
         props = fn(specContext);
-        return new SpecBuilder(props);
+        return new SpecBuilder({ ...props, specContext });
     }
 }

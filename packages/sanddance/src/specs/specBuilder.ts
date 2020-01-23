@@ -25,23 +25,21 @@ import { Slice, SliceProps } from './layouts/slice';
 import { topLookup } from './top';
 import { Wrap, WrapProps } from './layouts/wrap';
 
-export interface DiscreteAxisScale {
-    discrete: true;
-}
+export type Aggregate = 'count' | 'sum' | 'percent';
 
-export type Aggregate = 'count' | 'multiply' | 'sum' | 'percent';
+export interface AxisScale {
+    type: 'discrete' | 'continuous' | 'continuousAggregate' | 'zFloor' | 'zFree' | 'zDiscrete';
 
-export interface ContinuousAxisScale {
-    discrete: false;
+    /**
+     * Only used when type = continuousAggregate
+     */
     aggregate?: Aggregate;
 }
 
-export type AxisScale = DiscreteAxisScale | ContinuousAxisScale;
-
 export interface AxisScales {
-    x: AxisScale;
-    y: AxisScale;
-    z: AxisScale;
+    x?: AxisScale;
+    y?: AxisScale;
+    z?: AxisScale;
 }
 
 export interface LayoutPair {
@@ -52,7 +50,6 @@ export interface LayoutPair {
 export interface SpecBuilderProps {
     axisScales?: AxisScales;
     layouts: LayoutPair[];
-    specContext: SpecContext;
     errors?: string[];
     specCapabilities: SpecCapabilities;
     customZScale?: boolean;
@@ -61,7 +58,7 @@ export interface SpecBuilderProps {
 export class SpecBuilder {
     public globalScope: InnerScope;
 
-    constructor(public props: SpecBuilderProps) {
+    constructor(public props: SpecBuilderProps & { specContext: SpecContext }) {
     }
 
     public validate() {
@@ -215,8 +212,9 @@ export class SpecBuilder {
 
             //add mark to the final scope
             if (parentScope.mark) {
-                parentScope.mark.encode.update.fill = fill(specContext, topColorField);
-                parentScope.mark.encode.update.opacity = opacity(specContext);
+                const { update } = parentScope.mark.encode;
+                update.fill = fill(specContext, topColorField);
+                update.opacity = opacity(specContext);
             }
 
 
@@ -260,10 +258,10 @@ export class SpecBuilder {
                 if (axisScales) {
                     let axisScale: AxisScale = axisScales[s];
                     if (axisScale) {
-                        if (axisScale.discrete) {
+                        switch (axisScale.type) {
                             //band scale
-                        } else {
                             //continuous scale
+                            //etc
                         }
                         scope.axes.push({
                             scale: scale.name,

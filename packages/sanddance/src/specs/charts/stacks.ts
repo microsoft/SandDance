@@ -9,9 +9,9 @@ import { Stack } from '../layouts/stack';
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns } = specContext;
     const axisScales: AxisScales = {
-        x: { discrete: true },
-        y: { discrete: true },
-        z: { discrete: false, aggregate: 'multiply' }
+        x: { type: 'discrete' },
+        y: { type: 'discrete' },
+        z: { type: 'zDiscrete' }
     };
     const densityProps: DensityProps = {
         mode: 'cube',
@@ -22,7 +22,6 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     return {
         axisScales,
         customZScale: true,
-        specContext,
         layouts: [
             {
                 layoutClass: Density,

@@ -8,13 +8,12 @@ import { SpecContext } from '../types';
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns } = specContext;
     const axisScales: AxisScales = {
-        x: { discrete: false },
-        y: { discrete: false },
-        z: { discrete: false }
+        x: { type: 'continuous' },
+        y: { type: 'continuous' },
+        z: { type: 'zFree' }
     };
     return {
         axisScales,
-        specContext,
         layouts: [
             {
                 layoutClass: Scatter,

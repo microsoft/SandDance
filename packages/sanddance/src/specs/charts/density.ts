@@ -9,9 +9,9 @@ import { Square } from '../layouts/square';
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns } = specContext;
     const axisScales: AxisScales = {
-        x: { discrete: true },
-        y: { discrete: true },
-        z: { discrete: false }
+        x: { type: 'discrete' },
+        y: { type: 'discrete' },
+        z: { type: 'zFloor' }
     };
     const densityProps: DensityProps = {
         mode: 'square',
@@ -21,7 +21,6 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     };
     return {
         axisScales,
-        specContext,
         layouts: [
             {
                 layoutClass: Density,
