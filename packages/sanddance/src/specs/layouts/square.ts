@@ -60,6 +60,23 @@ export class Square extends Layout {
         };
         parent.scope.marks.push(mark);
 
+        parent.scope.marks.push({
+            type: 'text',
+            encode: {
+                update: {
+                    y: {
+                        value: 25
+                    },
+                    text: {
+                        signal: parent.sizeSignals.width
+                    },
+                    fontSize: {
+                        value: 20
+                    }
+                }
+            }
+        });
+
         const transform: Transforms[] = [
             {
                 type: 'window',
@@ -128,6 +145,16 @@ export class Square extends Layout {
         const compartment = `${names.bandWidth}/${names.squaresPerBand}*((datum[${JSON.stringify(names.index)}]-1)%${names.squaresPerBand})`;
         const level = `floor((datum[${JSON.stringify(names.index)}]-1)/${names.squaresPerBand})`;
         switch (this.props.fillDirection) {
+            case 'down-right': {
+                return {
+                    x: {
+                        signal: `${level}*(${names.size}+${names.gap})`
+                    },
+                    y: {
+                        signal: compartment
+                    }
+                };
+            }
             case 'right-up':
             default: {
                 return {
