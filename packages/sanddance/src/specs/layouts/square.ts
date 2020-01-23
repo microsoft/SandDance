@@ -2,7 +2,13 @@
 // Licensed under the MIT license.
 import { BuildProps, Layout, LayoutProps } from './layout';
 import { Column } from '../types';
-import { GroupEncodeEntry, Mark, Transforms } from 'vega-typings';
+import {
+    GroupEncodeEntry,
+    Mark,
+    RectMark,
+    Scope,
+    Transforms
+} from 'vega-typings';
 import { InnerScope } from '../interfaces';
 import { push } from '../../array';
 
@@ -11,6 +17,7 @@ export interface SquareProps extends LayoutProps {
     fillDirection: 'right-down' | 'right-up' | 'down-right';
     maxSignal?: string;
     aspect?: string;
+    markType: 'group' | 'rect';
 }
 
 export class Square extends Layout {
@@ -27,7 +34,7 @@ export class Square extends Layout {
 
     public build(): InnerScope {
         const { props } = this;
-        const { global, parent, sortBy } = props;
+        const { global, markType, parent, sortBy } = props;
         let { maxSignal } = props;
         const name = `square_${this.id}`;
         this.names = {
@@ -42,7 +49,7 @@ export class Square extends Layout {
         const { names } = this;
         const mark: Mark = {
             name,
-            type: 'rect',
+            type: markType,
             from: {
                 data: names.dataName
             },
@@ -122,7 +129,8 @@ export class Square extends Layout {
 
         return {
             dataName: names.dataName,
-            mark,
+            scope: markType === 'group' && <Scope>mark,
+            mark: markType === 'rect' && <RectMark>mark,
             sizeSignals: {
                 height: names.size,
                 width: names.size
@@ -155,14 +163,24 @@ export class Square extends Layout {
                     }
                 };
             }
-            case 'right-up':
-            default: {
+            case 'right-up': {
                 return {
                     x: {
                         signal: compartment
                     },
                     y: {
                         signal: `${this.props.parent.sizeSignals.height}-${names.size}-${level}*(${names.size}+${names.gap})`
+                    }
+                };
+            }
+            case 'right-down':
+            default: {
+                return {
+                    x: {
+                        signal: compartment
+                    },
+                    y: {
+                        signal: `${level}*(${names.size}+${names.gap})`
                     }
                 };
             }

@@ -5,7 +5,7 @@ import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
-    const squareProps: SquareProps = { sortBy: specContext.specColumns.sort, fillDirection: 'right-down' };
+    const squareProps: SquareProps = { sortBy: specContext.specColumns.sort, fillDirection: 'right-down', markType: 'rect' };
     return {
         specContext,
         layouts: [
