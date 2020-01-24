@@ -37,7 +37,7 @@ export class Square extends Layout {
     public build(): InnerScope {
         const { props } = this;
         const { fillDirection, global, markType, parent, sortBy } = props;
-        let { maxGroupedFillSize: commonSize, maxGroupedUnits: maxSignal } = props;
+        let { maxGroupedFillSize, maxGroupedUnits } = props;
         const prefix = `square_${this.id}`;
         this.names = {
             dataName: `facet_${prefix}`,
@@ -92,14 +92,14 @@ export class Square extends Layout {
             transform
         });
 
-        if (!maxSignal) {
-            maxSignal = `length(data(${JSON.stringify(parent.dataName)}))`;
+        if (!maxGroupedUnits) {
+            maxGroupedUnits = `length(data(${JSON.stringify(parent.dataName)}))`;
         }
-        if (!commonSize) {
-            commonSize = fillDirection === 'down-right' ? parent.sizeSignals.width : parent.sizeSignals.height;
+        if (!maxGroupedFillSize) {
+            maxGroupedFillSize = fillDirection === 'down-right' ? parent.sizeSignals.width : parent.sizeSignals.height;
         }
 
-        const aspect = `(${names.bandWidth})/(${commonSize})`;
+        const aspect = `(${names.bandWidth})/(${maxGroupedFillSize})`;
 
         parent.scope.signals = parent.scope.signals || [];
         push(parent.scope.signals, [
@@ -109,7 +109,7 @@ export class Square extends Layout {
             },
             {
                 name: names.squaresPerBand,
-                update: `ceil(sqrt(${maxSignal}*${names.aspect}))`
+                update: `ceil(sqrt(${maxGroupedUnits}*${names.aspect}))`
             },
             {
                 name: names.gap,
@@ -121,11 +121,11 @@ export class Square extends Layout {
             },
             {
                 name: names.levels,
-                update: `ceil(${maxSignal}/${names.squaresPerBand})`
+                update: `ceil(${maxGroupedUnits}/${names.squaresPerBand})`
             },
             {
                 name: names.levelSize,
-                update: `((${commonSize})/${names.levels})-${names.gap}`
+                update: `((${maxGroupedFillSize})/${names.levels})-${names.gap}`
             }
         ]);
 
