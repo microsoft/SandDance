@@ -25,7 +25,6 @@ export interface BarProps extends GroupLayoutProps {
     minBandWidth: number;
     sumBy: Column;
     orientation: Orientation;
-    maxbins: number;
     onBuild?: (barBuild: BarBuild) => void;
 }
 

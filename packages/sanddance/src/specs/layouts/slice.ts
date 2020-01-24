@@ -7,7 +7,6 @@ import { Mark, Transforms } from 'vega-typings';
 
 export interface SliceProps extends GroupLayoutProps {
     orientation: Orientation;
-    maxbins: number;
 }
 
 export class Slice extends Layout {

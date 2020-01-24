@@ -59,7 +59,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         default: {
             x.aggregate = 'count';
             unitLayoutClass = Square;
-            const squareProps: SquareProps = { sortBy: specColumns.sort, fillDirection: 'down-right', markType: 'rect' };
+            const squareProps: SquareProps = { sortBy: specColumns.sort, fillDirection: 'down-right' };
             barProps.onBuild = barBuild => {
                 squareProps.maxGroupedUnits = barBuild.globalAggregateMaxExtentSignal;
                 squareProps.maxGroupedFillSize = `(${barBuild.globalAggregateMaxExtentScaledSignal})`;

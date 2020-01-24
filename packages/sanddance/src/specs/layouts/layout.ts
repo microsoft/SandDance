@@ -4,7 +4,8 @@ import { AxisScales, InnerScope } from '../interfaces';
 import { Column } from '../types';
 
 export interface GroupLayoutProps extends LayoutProps {
-    groupby: Column
+    groupby: Column;
+    maxbins: number
 }
 
 export interface LayoutProps {

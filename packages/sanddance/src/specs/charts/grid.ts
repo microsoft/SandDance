@@ -6,7 +6,7 @@ import { SpecContext } from '../types';
 import { Square, SquareProps } from '../layouts/square';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
-    const squareProps: SquareProps = { sortBy: specContext.specColumns.sort, fillDirection: 'right-down', markType: 'rect' };
+    const squareProps: SquareProps = { sortBy: specContext.specColumns.sort, fillDirection: 'right-down' };
     const axisScales: AxisScales = {
         z: { type: 'zFloor' }
     };

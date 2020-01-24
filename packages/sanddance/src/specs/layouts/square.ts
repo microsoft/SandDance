@@ -1,15 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { binnable } from '../bin';
 import { Column } from '../types';
+import { createOrdinalsForFacet } from '../ordinal';
 import {
     GroupEncodeEntry,
-    Mark,
+    GroupMark,
     RectMark,
     Scope,
     Transforms
 } from 'vega-typings';
+import {
+    GroupLayoutProps,
+    Layout,
+    LayoutBuildProps,
+    LayoutProps
+} from './layout';
 import { InnerScope } from '../interfaces';
-import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { push } from '../../array';
 
 export interface SquareProps extends LayoutProps {
@@ -17,7 +24,7 @@ export interface SquareProps extends LayoutProps {
     fillDirection: 'right-down' | 'right-up' | 'down-right';
     maxGroupedUnits?: string;
     maxGroupedFillSize?: string;
-    markType: 'group' | 'rect';
+    groupLayoutProps?: GroupLayoutProps;
 }
 
 export class Square extends Layout {
@@ -31,15 +38,16 @@ export class Square extends Layout {
         gap: string,
         size: string,
         levels: string,
-        levelSize: string
+        levelSize: string,
+        facetData: string
     }
 
     public build(): InnerScope {
         const { props } = this;
-        const { fillDirection, markType, parent } = props;
+        const { fillDirection, groupLayoutProps, parent } = props;
         const prefix = `square_${this.id}`;
         this.names = {
-            dataName: `facet_${prefix}`,
+            dataName: `data_${prefix}`,
             aspect: `${prefix}_aspect`,
             bandWidth: this.getBandWidth(),
             squaresPerBand: `${prefix}_squares_per_band`,
@@ -47,12 +55,13 @@ export class Square extends Layout {
             gap: `${prefix}_gap`,
             size: `${prefix}_size`,
             levels: `${prefix}_levels`,
-            levelSize: `${prefix}_levelsize`
+            levelSize: `${prefix}_levelsize`,
+            facetData: `facet_${prefix}`
         };
         const { names } = this;
-        const mark: Mark = {
+        const mark: RectMark | GroupMark = {
             name: prefix,
-            type: markType,
+            type: groupLayoutProps ? 'group' : 'rect',
             from: {
                 data: names.dataName
             },
@@ -70,13 +79,37 @@ export class Square extends Layout {
         };
         parent.scope.marks.push(mark);
 
+        let dataName: string
+        let scope: Scope;
+        if (groupLayoutProps) {
+            dataName = names.facetData;
+            const groupMark = mark as GroupMark;
+            const { groupby, maxbins } = groupLayoutProps;
+            const bin = binnable(parent.dataName, groupby, maxbins);
+            const ord = createOrdinalsForFacet(parent.dataName, prefix, bin.field);
+            groupMark.data = [ord.data];
+            groupMark.scales = [ord.scale];
+            const childMark: GroupMark = {
+                type: 'group',
+                from: {
+                    facet: {
+                        name: names.facetData,
+                        data: names.dataName,
+                        groupby: bin.field
+                    }
+                }
+            };
+            groupMark.marks = [childMark];
+            scope = childMark;
+        }
+
         this.addData();
         this.addSignals();
 
         return {
-            dataName: names.dataName,
-            scope: markType === 'group' && <Scope>mark,
-            mark: markType === 'rect' && <RectMark>mark,
+            dataName,
+            scope,
+            mark: !groupLayoutProps && mark as RectMark,
             sizeSignals: {
                 height: names.size,
                 width: names.size

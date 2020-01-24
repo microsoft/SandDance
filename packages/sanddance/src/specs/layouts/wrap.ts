@@ -7,7 +7,6 @@ import { InnerScope } from '../interfaces';
 import { Mark, Transforms } from 'vega-typings';
 
 export interface WrapProps extends GroupLayoutProps {
-    maxbins: number
 }
 
 export class Wrap extends Layout {
