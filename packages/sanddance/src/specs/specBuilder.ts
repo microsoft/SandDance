@@ -1,8 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import {
+    AxisOrient,
+    Scale,
+    Signal,
+    Spec,
+    Transforms
+} from 'vega-typings';
+import {
+    AxisScale,
+    AxisScales,
+    InnerScope,
+    SpecResult
+} from './interfaces';
 import { binnableColorScale } from './scales';
-import { LayoutBuildProps, Layout, LayoutProps, LayoutPair } from './layouts/layout';
-import { colorReverseSignal, textSignals, colorBinCountSignal } from './signals';
+import { colorBinCountSignal, colorReverseSignal, textSignals } from './signals';
 import { ColorScaleNone, ScaleNames, SignalNames } from './constants';
 import {
     Column,
@@ -12,15 +24,14 @@ import {
 } from './types';
 import { Cross, CrossProps } from './layouts/cross';
 import { fill, opacity } from './fill';
-import { InnerScope, SpecResult, AxisScales, AxisScale } from './interfaces';
+import { getLegends } from './legends';
+import {
+    LayoutBuildProps,
+    LayoutPair,
+    LayoutProps
+} from './layouts/layout';
 import { maxbins } from './defaults';
 import { push } from '../array';
-import {
-    Scale,
-    Signal,
-    Spec,
-    Transforms
-} from 'vega-typings';
 import { Slice, SliceProps } from './layouts/slice';
 import { topLookup } from './top';
 import { Wrap, WrapProps } from './layouts/wrap';
@@ -88,44 +99,13 @@ export class SpecBuilder {
                 data: [{ name: dataName, transform: [] }],
                 marks: [],
                 scales: [],
-                signals: textSignals(specContext, 'h2').concat([
-                    colorBinCountSignal(specContext),
-                    colorReverseSignal(specContext)
-                ])
+                signals: textSignals(specContext, 'h2')
             };
 
-            const topColorField = 'top_color';
-            const categoricalColor = specColumns.color && !specColumns.color.quantitative;
-            if (categoricalColor) {
-                const legendName = 'data_legend';
-                push(vegaSpec.data, topLookup(specColumns.color, specViewOptions.maxLegends, dataName, legendName, 'top_colors', topColorField));
-                dataName = legendName;
-            }
-
-            if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
-                if (specColumns.color.quantitative) {
-                    vegaSpec.scales.push(binnableColorScale(insight.colorBin, dataName, specColumns.color.name, insight.scheme));
-                } else {
-                    vegaSpec.scales.push(
-                        {
-                            name: ScaleNames.Color,
-                            type: 'ordinal',
-                            domain: {
-                                data: dataName,
-                                field: topColorField,
-                                sort: true
-                            },
-                            range: {
-                                scheme: insight.scheme || ColorScaleNone
-                            },
-                            reverse: { signal: SignalNames.ColorReverse }
-                        }
-                    );
-                }
-            }
+            const { topColorField, colorDataName } = this.addColor(vegaSpec, dataName);
 
             this.globalScope = {
-                dataName,
+                dataName: colorDataName,
                 scope: vegaSpec,
                 sizeSignals: {
                     height: 'h2',
@@ -231,7 +211,62 @@ export class SpecBuilder {
         }
     }
 
+    private addColor(vegaSpec: Spec, dataSource: string) {
+        let colorDataName = dataSource;
+        const { specContext } = this.props;
+        const { insight, specColumns, specViewOptions } = specContext;
+        const legends = getLegends(specContext);
+        if (legends) {
+            vegaSpec.legends = legends;
+        }
+
+        const topColorField = 'top_color';
+        const categoricalColor = specColumns.color && !specColumns.color.quantitative;
+        if (categoricalColor) {
+            const legendName = 'data_legend';
+            push(vegaSpec.data, topLookup(specColumns.color, specViewOptions.maxLegends, dataSource, legendName, 'top_colors', topColorField));
+            colorDataName = legendName;
+        }
+
+        if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
+            if (specColumns.color.quantitative) {
+                vegaSpec.scales.push(binnableColorScale(insight.colorBin, dataSource, specColumns.color.name, insight.scheme));
+            } else {
+                vegaSpec.scales.push(
+                    {
+                        name: ScaleNames.Color,
+                        type: 'ordinal',
+                        domain: {
+                            data: colorDataName,
+                            field: topColorField,
+                            sort: true
+                        },
+                        range: {
+                            scheme: insight.scheme || ColorScaleNone
+                        },
+                        reverse: { signal: SignalNames.ColorReverse }
+                    }
+                );
+            }
+        }
+
+        push(vegaSpec.signals, [
+            colorBinCountSignal(specContext),
+            colorReverseSignal(specContext)
+        ]);
+
+        return { topColorField, colorDataName };
+    }
+
     private addGlobalScales(globalScales: { x?: Scale, y?: Scale, z?: Scale }, axisScales: AxisScales) {
+
+        const add = (axisScale: AxisScale, scale: Scale, orient: AxisOrient) => {
+
+        };
+
+        add(axisScales.x, globalScales.x, 'bottom');
+        add(axisScales.y, globalScales.y, 'left');
+        add(axisScales.z, globalScales.z, 'left');
 
         const { scope } = this.globalScope; //TODO if faceting, scope shoule be each facet!!
 
