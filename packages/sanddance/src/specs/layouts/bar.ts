@@ -16,6 +16,7 @@ import { push } from '../../array';
 
 export interface BarBuild {
     globalAggregateMaxExtentSignal: string;
+    globalAggregateMaxExtentScaledSignal: string;
     bandWidth: string;
     parentSize: string;
 }
@@ -157,6 +158,7 @@ export class Bar extends Layout {
 
         props.onBuild && props.onBuild({
             globalAggregateMaxExtentSignal: names.globalAggregateMaxExtentSignal,
+            globalAggregateMaxExtentScaledSignal: orientation === 'horizontal' ? `scale(${JSON.stringify(names.xScale)}, ${names.globalAggregateMaxExtentSignal})` : `(${parent.sizeSignals.height} - scale(${JSON.stringify(names.yScale)}, ${names.globalAggregateMaxExtentSignal}))`,
             bandWidth: names.bandWidth,
             parentSize: orientation === 'horizontal' ? parent.sizeSignals.width : parent.sizeSignals.height
         });
@@ -215,7 +217,8 @@ export class Bar extends Layout {
                 range: [
                     0,
                     {
-                        signal: `max(${parent.sizeSignals.width},${names.minSize})`
+//                        signal: `max(${parent.sizeSignals.width},${names.minSize})`
+                        signal: `${parent.sizeSignals.width}`
                     }
                 ],
                 padding: 0.1,

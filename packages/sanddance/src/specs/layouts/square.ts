@@ -17,6 +17,7 @@ export interface SquareProps extends LayoutProps {
     fillDirection: 'right-down' | 'right-up' | 'down-right';
     maxSignal?: string;
     aspect?: string;
+    commonSize?: string;
     markType: 'group' | 'rect';
 }
 
@@ -29,26 +30,32 @@ export class Square extends Layout {
         squaresPerBand: string,
         index: string,
         gap: string,
-        size: string
+        size: string,
+        count: string,
+        levels: string,
+        levelSize: string
     }
 
     public build(): InnerScope {
         const { props } = this;
         const { global, markType, parent, sortBy } = props;
         let { maxSignal } = props;
-        const name = `square_${this.id}`;
+        const prefix = `square_${this.id}`;
         this.names = {
-            dataName: `facet_${name}`,
-            aspect: `${name}_aspect`,
+            dataName: `facet_${prefix}`,
+            aspect: `${prefix}_aspect`,
             bandWidth: this.getBandWidth(),
-            squaresPerBand: `${name}_squares_per_band`,
-            index: `${name}_index`,
-            gap: `${name}_gap`,
-            size: `${name}_size`
+            squaresPerBand: `${prefix}_squares_per_band`,
+            index: `${prefix}_index`,
+            gap: `${prefix}_gap`,
+            size: `${prefix}_size`,
+            count: `${prefix}_count`,
+            levels: `${prefix}_levels`,
+            levelSize: `${prefix}_levelsize`
         };
         const { names } = this;
         const mark: Mark = {
-            name,
+            name: prefix,
             type: markType,
             from: {
                 data: names.dataName
@@ -57,7 +64,7 @@ export class Square extends Layout {
                 update: {
                     ...this.encodeXY(),
                     height: {
-                        signal: names.size
+                        signal: names.levelSize
                     },
                     width: {
                         signal: names.size
@@ -66,23 +73,6 @@ export class Square extends Layout {
             }
         };
         parent.scope.marks.push(mark);
-
-        parent.scope.marks.push({
-            type: 'text',
-            encode: {
-                update: {
-                    y: {
-                        value: 25
-                    },
-                    text: {
-                        signal: parent.sizeSignals.width
-                    },
-                    fontSize: {
-                        value: 20
-                    }
-                }
-            }
-        });
 
         const transform: Transforms[] = [
             {
@@ -108,7 +98,8 @@ export class Square extends Layout {
         if (!maxSignal) {
             maxSignal = `length(data(${JSON.stringify(parent.dataName)}))`;
         }
-        push(global.scope.signals, [
+        parent.scope.signals = parent.scope.signals || [];
+        push(parent.scope.signals, [
             {
                 name: names.aspect,
                 update: props.aspect || `${global.sizeSignals.width}/${props.fillDirection === 'down-right' ? global.sizeSignals.width : global.sizeSignals.height}`
@@ -124,6 +115,18 @@ export class Square extends Layout {
             {
                 name: names.size,
                 update: `${names.bandWidth}/${names.squaresPerBand}-${names.gap}`
+            },
+            {
+                name: names.count,
+                update: `length(data(${JSON.stringify(parent.dataName)}))`
+            },
+            {
+                name: names.levels,
+                update: `ceil(${maxSignal}/${names.squaresPerBand})`
+            },
+            {
+                name: names.levelSize,
+                update: `((${this.props.commonSize})/${names.levels})-${names.gap}`
             }
         ]);
 
@@ -169,7 +172,7 @@ export class Square extends Layout {
                         signal: compartment
                     },
                     y: {
-                        signal: `${this.props.parent.sizeSignals.height}-${names.size}-${level}*(${names.size}+${names.gap})`
+                        signal: `(${this.props.parent.sizeSignals.height})-${names.levelSize}-${level}*(${names.levelSize}+${names.gap})`
                     }
                 };
             }
