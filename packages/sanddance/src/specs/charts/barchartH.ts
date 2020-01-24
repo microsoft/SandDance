@@ -63,6 +63,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             barProps.onBuild = barBuild => {
                 squareProps.maxSignal = barBuild.globalAggregateMaxExtentSignal;
                 squareProps.aspect = `${barBuild.bandWidth}/${barBuild.parentSize}`;
+                squareProps.commonSize = `(${barBuild.globalAggregateMaxExtentScaledSignal})`;
             };
             unitLayoutProps = squareProps;
             break;

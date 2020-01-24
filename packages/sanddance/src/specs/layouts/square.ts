@@ -31,14 +31,13 @@ export class Square extends Layout {
         index: string,
         gap: string,
         size: string,
-        count: string,
         levels: string,
         levelSize: string
     }
 
     public build(): InnerScope {
         const { props } = this;
-        const { global, markType, parent, sortBy } = props;
+        const { fillDirection, global, markType, parent, sortBy } = props;
         let { maxSignal } = props;
         const prefix = `square_${this.id}`;
         this.names = {
@@ -49,7 +48,6 @@ export class Square extends Layout {
             index: `${prefix}_index`,
             gap: `${prefix}_gap`,
             size: `${prefix}_size`,
-            count: `${prefix}_count`,
             levels: `${prefix}_levels`,
             levelSize: `${prefix}_levelsize`
         };
@@ -64,10 +62,10 @@ export class Square extends Layout {
                 update: {
                     ...this.encodeXY(),
                     height: {
-                        signal: names.levelSize
+                        signal: fillDirection === 'down-right' ? names.size : names.levelSize
                     },
                     width: {
-                        signal: names.size
+                        signal: fillDirection === 'down-right' ? names.levelSize : names.size
                     }
                 }
             }
@@ -117,10 +115,6 @@ export class Square extends Layout {
                 update: `${names.bandWidth}/${names.squaresPerBand}-${names.gap}`
             },
             {
-                name: names.count,
-                update: `length(data(${JSON.stringify(parent.dataName)}))`
-            },
-            {
                 name: names.levels,
                 update: `ceil(${maxSignal}/${names.squaresPerBand})`
             },
@@ -155,11 +149,12 @@ export class Square extends Layout {
         const { names } = this;
         const compartment = `${names.bandWidth}/${names.squaresPerBand}*((datum[${JSON.stringify(names.index)}]-1)%${names.squaresPerBand})`;
         const level = `floor((datum[${JSON.stringify(names.index)}]-1)/${names.squaresPerBand})`;
-        switch (this.props.fillDirection) {
+        const { fillDirection, parent } = this.props;
+        switch (fillDirection) {
             case 'down-right': {
                 return {
                     x: {
-                        signal: `${level}*(${names.size}+${names.gap})`
+                        signal: `${level}*(${names.levelSize}+${names.gap})`
                     },
                     y: {
                         signal: compartment
@@ -172,7 +167,7 @@ export class Square extends Layout {
                         signal: compartment
                     },
                     y: {
-                        signal: `(${this.props.parent.sizeSignals.height})-${names.levelSize}-${level}*(${names.levelSize}+${names.gap})`
+                        signal: `(${parent.sizeSignals.height})-${names.levelSize}-${level}*(${names.levelSize}+${names.gap})`
                     }
                 };
             }
@@ -183,7 +178,7 @@ export class Square extends Layout {
                         signal: compartment
                     },
                     y: {
-                        signal: `${level}*(${names.size}+${names.gap})`
+                        signal: `${level}*(${names.levelSize}+${names.gap})`
                     }
                 };
             }
