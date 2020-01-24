@@ -4,8 +4,7 @@ import {
     AxisOrient,
     Scale,
     Signal,
-    Spec,
-    Transforms
+    Spec
 } from 'vega-typings';
 import {
     AxisScale,
@@ -148,8 +147,6 @@ export class SpecBuilder {
                 //vegaSpec.autosize = 'fit';
             }
 
-            const globalTransforms: { [columnName: string]: Transforms[] } = {};
-
             let parentScope = this.globalScope;
             for (let i = 0; i < layouts.length; i++) {
                 if (!parentScope) continue;
@@ -168,11 +165,6 @@ export class SpecBuilder {
                     if (props.addScaleAxes && childScope.globalScales) {
                         this.addGlobalScales(childScope.globalScales, layoutBuildProps.axesScales);
                     }
-                    if (childScope.globalTransforms) {
-                        for (let columnName in childScope.globalTransforms) {
-                            globalTransforms[columnName] = childScope.globalTransforms[columnName];
-                        }
-                    }
                 }
                 parentScope = childScope;
             }
@@ -183,26 +175,6 @@ export class SpecBuilder {
                 update.fill = fill(specContext, topColorField);
                 update.opacity = opacity(specContext);
             }
-
-
-            for (let columnName in globalTransforms) {
-                push(vegaSpec.data[0].transform, globalTransforms[columnName]);
-            }
-
-            //TODO apply the x/y/z axes
-
-
-            //final fixups
-
-            // const legends = getLegends(specContext);
-            // if (legends) {
-            //     vegaSpec.legends = legends;
-            // }
-
-            // if (!specColumns.facet) {
-            //     //use autosize only when not faceting
-            //     vegaSpec.autosize = 'fit';
-            // }
 
             return {
                 specCapabilities,

@@ -3,7 +3,8 @@
 import { binnable } from '../bin';
 import { GroupLayoutProps, Layout, LayoutBuildProps } from './layout';
 import { InnerScope, Orientation } from '../interfaces';
-import { Mark, Transforms } from 'vega-typings';
+import { Mark } from 'vega-typings';
+import { push } from '../../array';
 
 export interface SliceProps extends GroupLayoutProps {
     orientation: Orientation;
@@ -17,11 +18,9 @@ export class Slice extends Layout {
         const { global, groupby, maxbins, parent } = props;
         const prefix = `slice_${this.id}`;
         const facetDataName = `data_${prefix}_facet`;
-        const bin = binnable(global.dataName, groupby, maxbins);
-        let globalTransforms: { [columnName: string]: Transforms[] };
+        const bin = binnable(prefix, global.dataName, groupby, maxbins);
         if (bin.transforms) {
-            globalTransforms = {};
-            globalTransforms[groupby.name] = bin.transforms;
+            push(global.scope.data[0].transform, bin.transforms);
             global.scope.data.push(bin.dataSequence);
         }
         const mark: Mark = {
@@ -58,8 +57,7 @@ export class Slice extends Layout {
         return {
             dataName: facetDataName,
             scope: mark,
-            sizeSignals: { height: 'TODO', width: 'TODO' },
-            globalTransforms
+            sizeSignals: { height: 'TODO', width: 'TODO' }
         };
 
     }

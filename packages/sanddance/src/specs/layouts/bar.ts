@@ -59,11 +59,9 @@ export class Bar extends Layout {
             bandWidth: `${prefix}_bandwidth`
         };
         const { names } = this;
-        const bin = binnable(global.dataName, groupby, maxbins);
-        let globalTransforms: { [columnName: string]: Transforms[] };
+        const bin = binnable(prefix, global.dataName, groupby, maxbins);
         if (bin.transforms) {
-            globalTransforms = {};
-            globalTransforms[groupby.name] = bin.transforms;
+            push(global.scope.data[0].transform, bin.transforms);
             global.scope.data.push(bin.dataSequence);
         }
         const trans: AggregateTransform = {
@@ -178,8 +176,7 @@ export class Bar extends Layout {
             globalScales: {
                 x: xScale,
                 y: yScale
-            },
-            globalTransforms
+            }
         };
     }
 
@@ -216,7 +213,7 @@ export class Bar extends Layout {
                 range: [
                     0,
                     {
-//                        signal: `max(${parent.sizeSignals.width},${names.minSize})`
+                        //                        signal: `max(${parent.sizeSignals.width},${names.minSize})`
                         signal: `${parent.sizeSignals.width}`
                     }
                 ],

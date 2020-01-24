@@ -85,7 +85,7 @@ export class Square extends Layout {
             dataName = names.facetData;
             const groupMark = mark as GroupMark;
             const { groupby, maxbins } = groupLayoutProps;
-            const bin = binnable(parent.dataName, groupby, maxbins);
+            const bin = binnable(prefix, parent.dataName, groupby, maxbins);
             const ord = createOrdinalsForFacet(parent.dataName, prefix, bin.field);
             groupMark.data = [ord.data];
             groupMark.scales = [ord.scale];

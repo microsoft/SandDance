@@ -4,7 +4,8 @@ import { binnable } from '../bin';
 import { createOrdinalsForFacet } from '../ordinal';
 import { GroupLayoutProps, Layout, LayoutBuildProps } from './layout';
 import { InnerScope } from '../interfaces';
-import { Mark, Transforms } from 'vega-typings';
+import { Mark } from 'vega-typings';
+import { push } from '../../array';
 
 export interface WrapProps extends GroupLayoutProps {
 }
@@ -17,11 +18,10 @@ export class Wrap extends Layout {
         const { global, groupby, maxbins, parent } = props;
         const prefix = `wrap_${this.id}`;
         const facetDataName = `data_${prefix}_facet`;
-        const bin = binnable(global.dataName, groupby, maxbins);
-        let globalTransforms: { [columnName: string]: Transforms[] };
+        const bin = binnable(prefix, global.dataName, groupby, maxbins);
         if (bin.transforms) {
-            globalTransforms = {};
-            globalTransforms[groupby.name] = bin.transforms;
+            push(global.scope.data[0].transform, bin.transforms);
+            global.scope.data.push(bin.dataSequence);
         }
         const ord = createOrdinalsForFacet(parent.dataName, prefix, bin.field);
         parent.scope.data = parent.scope.data || [];
@@ -75,8 +75,7 @@ export class Wrap extends Layout {
         return {
             dataName: facetDataName,
             scope: mark,
-            sizeSignals: parent.sizeSignals,
-            globalTransforms
+            sizeSignals: parent.sizeSignals
         };
     }
 }

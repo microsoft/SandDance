@@ -16,9 +16,9 @@ export interface Binnable {
     dataSequence?: Data;
 }
 
-export function binnable(domainDataName: string, column: Column, maxbins: number): Binnable {
+export function binnable(prefix: string, domainDataName: string, column: Column, maxbins: number): Binnable {
     if (column.quantitative) {
-        const field = `bin_${column.name}`;
+        const field = `${prefix}_bin_${column.name}`;
         const binSignal = `${field}_bins`;
         const extentSignal = `${field}_extent`;
         domainDataName = `${field}_sequence`;

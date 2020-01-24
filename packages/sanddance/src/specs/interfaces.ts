@@ -32,7 +32,6 @@ export interface InnerScope {
     scope?: Scope;
     mark?: Mark;
     globalScales?: { x?: Scale, y?: Scale, z?: Scale };
-    globalTransforms?: { [columnName: string]: Transforms[] };
     sizeSignals: SizeSignals;
 }
 
