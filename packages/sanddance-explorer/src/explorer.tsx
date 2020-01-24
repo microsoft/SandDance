@@ -321,9 +321,10 @@ export class Explorer extends React.Component<Props, State> {
                 break;
         }
         this.viewer.vegaViewGl.signal(signalName, signalValue);
-        this.viewer.vegaViewGl.run();
-        this.discardColorContextUpdates = true;
-        this.props.onSignalChanged && this.props.onSignalChanged();
+        this.viewer.vegaViewGl.runAsync().then(() => {
+            this.discardColorContextUpdates = true;
+            this.props.onSignalChanged && this.props.onSignalChanged();
+        });
     }
 
     private manageColorToolbar() {
@@ -527,7 +528,12 @@ export class Explorer extends React.Component<Props, State> {
     //state members which change the insight
     changeInsight(newState: Partial<State>) {
         if (!newState.signalValues) {
-            newState.signalValues = null;
+            if (this.viewer) {
+                const { signalValues } = this.viewer.getInsight();
+                newState.signalValues = signalValues;
+            } else {
+                newState.signalValues = null;
+            }
         }
         if (newState.chart === 'barchart') {
             newState.chart = 'barchartV';
@@ -808,7 +814,11 @@ export class Explorer extends React.Component<Props, State> {
     }
 
     render() {
-        const { colorBin, columns, directColor, facetStyle, filter, hideAxes, hideLegend, scheme, signalValues, size, sumStyle, transform, chart, view } = this.state;
+        const { colorBin, columns, directColor, facetStyle, filter, hideAxes, hideLegend, scheme, size, sumStyle, transform, chart, view } = this.state;
+        let { signalValues } = this.state;
+        if (this.viewer) {
+            signalValues = { ...signalValues, ...this.viewer.getInsight().signalValues };
+        }
         const insight: SandDance.types.Insight = {
             colorBin,
             columns,
