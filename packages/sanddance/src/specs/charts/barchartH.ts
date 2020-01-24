@@ -61,9 +61,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             unitLayoutClass = Square;
             const squareProps: SquareProps = { sortBy: specColumns.sort, fillDirection: 'down-right', markType: 'rect' };
             barProps.onBuild = barBuild => {
-                squareProps.maxSignal = barBuild.globalAggregateMaxExtentSignal;
-                squareProps.aspect = `${barBuild.bandWidth}/${barBuild.parentSize}`;
-                squareProps.commonSize = `(${barBuild.globalAggregateMaxExtentScaledSignal})`;
+                squareProps.maxGroupedUnits = barBuild.globalAggregateMaxExtentSignal;
+                squareProps.maxGroupedFillSize = `(${barBuild.globalAggregateMaxExtentScaledSignal})`;
             };
             unitLayoutProps = squareProps;
             break;

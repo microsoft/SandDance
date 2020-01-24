@@ -15,9 +15,8 @@ import { push } from '../../array';
 export interface SquareProps extends LayoutProps {
     sortBy: Column;
     fillDirection: 'right-down' | 'right-up' | 'down-right';
-    maxSignal?: string;
-    aspect?: string;
-    commonSize?: string;
+    maxGroupedUnits?: string;
+    maxGroupedFillSize?: string;
     markType: 'group' | 'rect';
 }
 
@@ -38,7 +37,7 @@ export class Square extends Layout {
     public build(): InnerScope {
         const { props } = this;
         const { fillDirection, global, markType, parent, sortBy } = props;
-        let { maxSignal } = props;
+        let { maxGroupedFillSize: commonSize, maxGroupedUnits: maxSignal } = props;
         const prefix = `square_${this.id}`;
         this.names = {
             dataName: `facet_${prefix}`,
@@ -96,11 +95,17 @@ export class Square extends Layout {
         if (!maxSignal) {
             maxSignal = `length(data(${JSON.stringify(parent.dataName)}))`;
         }
+        if (!commonSize) {
+            commonSize = fillDirection === 'down-right' ? parent.sizeSignals.width : parent.sizeSignals.height;
+        }
+
+        const aspect = `(${names.bandWidth})/(${commonSize})`;
+
         parent.scope.signals = parent.scope.signals || [];
         push(parent.scope.signals, [
             {
                 name: names.aspect,
-                update: props.aspect || `${global.sizeSignals.width}/${props.fillDirection === 'down-right' ? global.sizeSignals.width : global.sizeSignals.height}`
+                update: aspect || `${global.sizeSignals.width}/${props.fillDirection === 'down-right' ? global.sizeSignals.width : global.sizeSignals.height}`
             },
             {
                 name: names.squaresPerBand,
@@ -120,7 +125,7 @@ export class Square extends Layout {
             },
             {
                 name: names.levelSize,
-                update: `((${this.props.commonSize})/${names.levels})-${names.gap}`
+                update: `((${commonSize})/${names.levels})-${names.gap}`
             }
         ]);
 
