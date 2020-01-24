@@ -36,8 +36,7 @@ export class Square extends Layout {
 
     public build(): InnerScope {
         const { props } = this;
-        const { fillDirection, global, markType, parent, sortBy } = props;
-        let { maxGroupedFillSize, maxGroupedUnits } = props;
+        const { fillDirection, markType, parent } = props;
         const prefix = `square_${this.id}`;
         this.names = {
             dataName: `facet_${prefix}`,
@@ -71,6 +70,33 @@ export class Square extends Layout {
         };
         parent.scope.marks.push(mark);
 
+        this.addData();
+        this.addSignals();
+
+        return {
+            dataName: names.dataName,
+            scope: markType === 'group' && <Scope>mark,
+            mark: markType === 'rect' && <RectMark>mark,
+            sizeSignals: {
+                height: names.size,
+                width: names.size
+            }
+        };
+    }
+
+    private getBandWidth() {
+        const { sizeSignals } = this.props.parent;
+        switch (this.props.fillDirection) {
+            case 'down-right':
+                return sizeSignals.height;
+            default:
+                return sizeSignals.width;
+        }
+    }
+
+    private addData() {
+        const { parent, sortBy } = this.props;
+        const { names } = this;
         const transform: Transforms[] = [
             {
                 type: 'window',
@@ -84,13 +110,18 @@ export class Square extends Layout {
                 sort: { field: sortBy.name }
             });
         }
-
         parent.scope.data = parent.scope.data || [];
         parent.scope.data.push({
             name: names.dataName,
             source: parent.dataName,
             transform
         });
+    }
+
+    private addSignals() {
+        const { names, props } = this;
+        const { fillDirection, global, parent } = props;
+        let { maxGroupedFillSize, maxGroupedUnits } = props;
 
         if (!maxGroupedUnits) {
             maxGroupedUnits = `length(data(${JSON.stringify(parent.dataName)}))`;
@@ -99,7 +130,7 @@ export class Square extends Layout {
             maxGroupedFillSize = fillDirection === 'down-right' ? parent.sizeSignals.width : parent.sizeSignals.height;
         }
 
-        const aspect = `(${names.bandWidth})/(${maxGroupedFillSize})`;
+        const aspect = `((${names.bandWidth})/(${maxGroupedFillSize}))`;
 
         parent.scope.signals = parent.scope.signals || [];
         push(parent.scope.signals, [
@@ -128,26 +159,6 @@ export class Square extends Layout {
                 update: `((${maxGroupedFillSize})/${names.levels})-${names.gap}`
             }
         ]);
-
-        return {
-            dataName: names.dataName,
-            scope: markType === 'group' && <Scope>mark,
-            mark: markType === 'rect' && <RectMark>mark,
-            sizeSignals: {
-                height: names.size,
-                width: names.size
-            }
-        };
-    }
-
-    private getBandWidth() {
-        const { sizeSignals } = this.props.parent;
-        switch (this.props.fillDirection) {
-            case 'down-right':
-                return sizeSignals.height;
-            default:
-                return sizeSignals.width;
-        }
     }
 
     private encodeXY(): GroupEncodeEntry {
