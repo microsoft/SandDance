@@ -80,22 +80,49 @@ export class Bar extends Layout {
             push(global.scope.data[0].transform, bin.transforms);
             global.scope.data.push(bin.dataSequence);
         }
-        const trans: AggregateTransform = {
-            type: 'aggregate',
-            groupby: groupings.reduce((acc, val) => acc.concat(val), []),
-            ops: [aggregation]
-        };
-        if (aggregation === 'sum') {
-            trans.fields = [sumBy.name];
-        }
 
+        parent.scope.data = parent.scope.data || [];
+        parent.scope.data.push(
+            {
+                name: 'local',  //TODO
+                source: parent.dataName,
+                transform: [
+                    {
+                        ...this.getTransforms(
+                            aggregation,
+                            [this.bin.field]
+                        ),
+                        as: [aggregation]
+                    },
+                    {
+                        type: 'extent',
+                        field: aggregation,
+                        signal: names.globalAggregateExtentSignal
+                    }
+                ]
+            },
+            {
+                name: 'pivot', //TODO
+                source: 'local',
+                transform: [
+                    {
+                        type: 'pivot',
+                        field: this.bin.field,
+                        value: aggregation
+                    }
+                ]
+            }
+        );
         //this needs to be global since the scale depends on it
         global.scope.data.push({
             name: names.globalAggregateData,
             source: global.dataName,
             transform: [
                 {
-                    ...trans,
+                    ...this.getTransforms(
+                        aggregation,
+                        groupings.concat(this.getGrouping()).reduce((acc, val) => acc.concat(val), [])
+                    ),
                     as: [aggregation]
                 },
                 {
@@ -184,11 +211,11 @@ export class Bar extends Layout {
             sizeSignals: orientation === 'horizontal' ?
                 {
                     height: names.bandWidth,
-                    width: `scale(${JSON.stringify(names.xScale)}, parent[${JSON.stringify(aggregation)}])`
+                    width: `scale(${JSON.stringify(names.xScale)}, data('pivot')[0][datum[${JSON.stringify(bin.field)}]])`
                 }
                 :
                 {
-                    height: `${parent.sizeSignals.height} - scale(${JSON.stringify(names.yScale)}, parent[${JSON.stringify(aggregation)}])`,
+                    height: `${parent.sizeSignals.height} - scale(${JSON.stringify(names.yScale)}, data('pivot')[0][datum[${JSON.stringify(bin.field)}]])`,
                     width: names.bandWidth
                 },
             globalScales: {
@@ -198,9 +225,21 @@ export class Bar extends Layout {
         };
     }
 
+    private getTransforms(aggregation: 'count' | 'sum', groupby: string[]) {
+        const trans: AggregateTransform = {
+            type: 'aggregate',
+            groupby,
+            ops: [aggregation]
+        };
+        if (aggregation === 'sum') {
+            trans.fields = [this.props.sumBy.name];
+        }
+        return trans;
+    }
+
     private getScales(prefix: string, bin: Binnable, minBandWidth: number) {
         const { names } = this;
-        const { global, orientation, parent } = this.props;
+        const { global, groupings, orientation, parent } = this.props;
 
         const accumulative = `${prefix}_accumulative`;
         global.scope.data.push({
@@ -209,7 +248,7 @@ export class Bar extends Layout {
             transform: [
                 {
                     type: 'aggregate',
-                    groupby: [bin.field],
+                    groupby: groupings.concat(this.getGrouping()).reduce((acc, val) => acc.concat(val), []),
                     ops: ['count']
                 }
             ]
