@@ -9,27 +9,18 @@ import {
 import {
     AxisScale,
     AxisScales,
+    DiscreteColumn,
     InnerScope,
     SpecResult
 } from './interfaces';
 import { binnableColorScale } from './scales';
 import { colorBinCountSignal, colorReverseSignal, textSignals } from './signals';
 import { ColorScaleNone, ScaleNames, SignalNames } from './constants';
-import {
-    Column,
-    FacetStyle,
-    SpecCapabilities,
-    SpecContext
-} from './types';
 import { Cross, CrossProps } from './layouts/cross';
+import { FacetStyle, SpecCapabilities, SpecContext } from './types';
 import { fill, opacity } from './fill';
 import { getLegends } from './legends';
-import {
-    LayoutBuildProps,
-    LayoutPair,
-    LayoutProps
-} from './layouts/layout';
-import { maxbins } from './defaults';
+import { LayoutBuildProps, LayoutPair, LayoutProps } from './layouts/layout';
 import { push } from '../array';
 import { Slice, SliceProps } from './layouts/slice';
 import { topLookup } from './top';
@@ -115,7 +106,19 @@ export class SpecBuilder {
             let { layouts } = this.props;
 
             if (insight.columns.facet) {
-                const manifold = this.getManifoldLayout(insight.facetStyle, specColumns.facet, specColumns.facetV);
+                const discreteFacetColumn: DiscreteColumn = {
+                    column: specColumns.facet,
+                    maxbins: 30,
+                    maxbinsSignalDisplayName: 'TODO facet',
+                    maxbinsSignalName: 'TODO facet'
+                };
+                const discreteFacetVColumn: DiscreteColumn = {
+                    column: specColumns.facetV,
+                    maxbins: 30,
+                    maxbinsSignalDisplayName: 'TODO facetV',
+                    maxbinsSignalName: 'TODO facetV'
+                };
+                const manifold = this.getManifoldLayout(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn);
                 push(vegaSpec.signals, manifold.signals);
                 push(vegaSpec.scales, manifold.scales);
                 layouts = [manifold.layoutPair, ...layouts];
@@ -124,11 +127,11 @@ export class SpecBuilder {
                 vegaSpec.signals.push(
                     {
                         name: 'h2',
-                        value: 100
+                        value: 300
                     },
                     {
                         name: 'w2',
-                        value: 100
+                        value: 300
                     }
                 );
             } else {
@@ -267,7 +270,7 @@ export class SpecBuilder {
         }
     }
 
-    private getManifoldLayout(facetStyle: FacetStyle, facetColumn: Column, facetVColumn: Column) {
+    private getManifoldLayout(facetStyle: FacetStyle, facetColumn: DiscreteColumn, facetVColumn: DiscreteColumn) {
         let layoutPair: LayoutPair;
         const scales: Scale[] = [];
         const signals: Signal[] = [];
@@ -276,7 +279,6 @@ export class SpecBuilder {
             case 'horizontal': {
                 const props: SliceProps = {
                     orientation: 'horizontal',
-                    maxbins,
                     groupby
                 };
                 layoutPair = {
@@ -288,7 +290,6 @@ export class SpecBuilder {
             case 'vertical': {
                 const props: SliceProps = {
                     orientation: 'vertical',
-                    maxbins,
                     groupby
                 };
                 layoutPair = {
@@ -311,8 +312,7 @@ export class SpecBuilder {
             case 'wrap':
             default:
                 const props: WrapProps = {
-                    groupby,
-                    maxbins
+                    groupby
                 };
                 layoutPair = {
                     layoutClass: Wrap,

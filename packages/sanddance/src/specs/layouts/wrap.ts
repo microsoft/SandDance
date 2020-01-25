@@ -2,12 +2,13 @@
 // Licensed under the MIT license.
 import { binnable } from '../bin';
 import { createOrdinalsForFacet } from '../ordinal';
-import { GroupLayoutProps, Layout, LayoutBuildProps } from './layout';
-import { InnerScope } from '../interfaces';
+import { DiscreteColumn, InnerScope } from '../interfaces';
+import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { Mark } from 'vega-typings';
 import { push } from '../../array';
 
-export interface WrapProps extends GroupLayoutProps {
+export interface WrapProps extends LayoutProps {
+    groupby: DiscreteColumn;
 }
 
 export class Wrap extends Layout {
@@ -15,11 +16,12 @@ export class Wrap extends Layout {
 
     public build(): InnerScope {
         const { props } = this;
-        const { global, groupby, maxbins, parent } = props;
+        const { global, groupby, parent } = props;
         const prefix = `wrap_${this.id}`;
         const facetDataName = `data_${prefix}_facet`;
-        const bin = binnable(prefix, global.dataName, groupby, maxbins);
-        if (bin.transforms) {
+        const bin = binnable(prefix, global.dataName, groupby);
+        if (bin.native === false) {
+            global.scope.signals.push(bin.maxbinsSignal);
             push(global.scope.data[0].transform, bin.transforms);
             global.scope.data.push(bin.dataSequence);
         }
@@ -44,13 +46,13 @@ export class Wrap extends Layout {
             encode: {
                 update: {
                     x: {
-                        signal: `(scale(${JSON.stringify(ord.scale.name)}, datum[${JSON.stringify(bin.field)}])-1)*101`
+                        signal: `(scale(${JSON.stringify(ord.scale.name)}, datum[${JSON.stringify(bin.field)}])-1)*301`
                     },
                     height: {
-                        value: 100
+                        value: 300
                     },
                     width: {
-                        value: 100
+                        value: 300
                     }
                 }
             },

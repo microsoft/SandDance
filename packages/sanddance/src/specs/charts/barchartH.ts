@@ -17,9 +17,13 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     let footprintClass: typeof Layout = Bar;
     const barProps: BarProps = {
         orientation: 'horizontal',
-        groupby: specColumns.y,
+        groupby: {
+            column: specColumns.y,
+            maxbinsSignalName: 'TODO maxbins',
+            maxbinsSignalDisplayName: 'TODO maxbins',
+            maxbins
+        },
         sumBy: specColumns.sum,
-        maxbins,
         minBandWidth: minBarBandWidth
     };
     let footprintProps: LayoutProps = barProps;
@@ -48,8 +52,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         }
         case 'strip-percent': {
             x.aggregate = 'percent';
-            footprintClass = Slice;
-            const sliceProps: SliceProps = { orientation: 'horizontal', groupby: specColumns.y, maxbins };
+            footprintClass = Slice;            
+            const sliceProps: SliceProps = { orientation: 'horizontal', groupby: barProps.groupby };
             footprintProps = sliceProps;
             unitLayoutClass = Strip;
             const stripProps: StripProps = { orientation: 'vertical' };

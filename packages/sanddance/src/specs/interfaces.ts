@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { Column, SpecCapabilities, SpecContext } from './types';
 import {
     Mark,
     Scale,
@@ -7,7 +8,6 @@ import {
     Spec,
     Transforms
 } from 'vega-typings';
-import { SpecCapabilities, SpecContext } from './types';
 
 /**
  * Specification result object.
@@ -52,4 +52,11 @@ export interface AxisScales {
     x?: AxisScale;
     y?: AxisScale;
     z?: AxisScale;
+}
+
+export interface DiscreteColumn {
+    column: Column;
+    maxbins: number;
+    maxbinsSignalName: string;
+    maxbinsSignalDisplayName: string;
 }

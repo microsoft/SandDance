@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { LayoutProps, Layout } from "./layout";
-import { Column } from "../types";
+import { DiscreteColumn } from '../interfaces';
+import { Layout, LayoutProps } from './layout';
 
 export interface DensityBuild {
 }
 
 export interface DensityProps extends LayoutProps {
-    groupbyX: Column;
-    groupbyY: Column;
+    groupbyX: DiscreteColumn;
+    groupbyY: DiscreteColumn;
     mode: 'square' | 'cube';
     onBuild?: (densityBuild: DensityBuild) => void;
 }

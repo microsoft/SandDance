@@ -3,6 +3,7 @@
 import { binnable } from '../bin';
 import { Column } from '../types';
 import { createOrdinalsForFacet } from '../ordinal';
+import { DiscreteColumn, InnerScope } from '../interfaces';
 import {
     GroupEncodeEntry,
     GroupMark,
@@ -10,13 +11,7 @@ import {
     Scope,
     Transforms
 } from 'vega-typings';
-import {
-    GroupLayoutProps,
-    Layout,
-    LayoutBuildProps,
-    LayoutProps
-} from './layout';
-import { InnerScope } from '../interfaces';
+import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { push } from '../../array';
 
 export interface SquareProps extends LayoutProps {
@@ -24,7 +19,7 @@ export interface SquareProps extends LayoutProps {
     fillDirection: 'right-down' | 'right-up' | 'down-right';
     maxGroupedUnits?: string;
     maxGroupedFillSize?: string;
-    groupLayoutProps?: GroupLayoutProps;
+    groupby?: DiscreteColumn;
 }
 
 export class Square extends Layout {
@@ -44,7 +39,7 @@ export class Square extends Layout {
 
     public build(): InnerScope {
         const { props } = this;
-        const { fillDirection, groupLayoutProps, parent } = props;
+        const { fillDirection, global, groupby, parent } = props;
         const prefix = `square_${this.id}`;
         this.names = {
             dataName: `data_${prefix}`,
@@ -61,7 +56,7 @@ export class Square extends Layout {
         const { names } = this;
         const mark: RectMark | GroupMark = {
             name: prefix,
-            type: groupLayoutProps ? 'group' : 'rect',
+            type: groupby ? 'group' : 'rect',
             from: {
                 data: names.dataName
             },
@@ -81,11 +76,15 @@ export class Square extends Layout {
 
         let dataName: string
         let scope: Scope;
-        if (groupLayoutProps) {
+        if (groupby) {
             dataName = names.facetData;
             const groupMark = mark as GroupMark;
-            const { groupby, maxbins } = groupLayoutProps;
-            const bin = binnable(prefix, parent.dataName, groupby, maxbins);
+            const bin = binnable(prefix, parent.dataName, groupby);
+            if (bin.native === false) {
+                global.scope.signals.push(bin.maxbinsSignal);
+                push(global.scope.data[0].transform, bin.transforms);
+                global.scope.data.push(bin.dataSequence);
+            }
             const ord = createOrdinalsForFacet(parent.dataName, prefix, bin.field);
             groupMark.data = [ord.data];
             groupMark.scales = [ord.scale];
@@ -109,7 +108,7 @@ export class Square extends Layout {
         return {
             dataName,
             scope,
-            mark: !groupLayoutProps && mark as RectMark,
+            mark: !groupby && mark as RectMark,
             sizeSignals: {
                 height: names.size,
                 width: names.size

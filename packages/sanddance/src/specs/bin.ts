@@ -4,28 +4,53 @@ import {
     BinTransform,
     Data,
     ExtentTransform,
+    Signal,
     Transforms
 } from 'vega-typings';
-import { Column } from './types';
+import { DiscreteColumn } from './interfaces';
 
-export interface Binnable {
-    transforms?: Transforms[];
+export interface BaseBinnable {
     field: string;
-    binSignal?: string;
-    domainDataName?: string;
-    dataSequence?: Data;
+    domainDataName: string;
 }
 
-export function binnable(prefix: string, domainDataName: string, column: Column, maxbins: number): Binnable {
+export interface NativeBinnable extends BaseBinnable {
+    native: true;
+}
+
+export interface AugmentBinnable extends BaseBinnable {
+    native: false;
+    transforms: Transforms[];
+    binSignal: string;
+    maxbinsSignal: Signal;
+    dataSequence: Data;
+}
+
+export type Binnable = NativeBinnable | AugmentBinnable;
+
+export function binnable(prefix: string, domainDataName: string, discreteColumn: DiscreteColumn): Binnable {
+    const { column, maxbins, maxbinsSignalDisplayName, maxbinsSignalName } = discreteColumn;
     if (column.quantitative) {
         const field = `${prefix}_bin_${column.name}`;
         const binSignal = `${field}_bins`;
-        const extentSignal = `${field}_extent`;
-        domainDataName = `${field}_sequence`;
+        const extentSignal = `${field}_bin_extent`;
+        domainDataName = `${field}_sequence`;   //override the data name
         const extentTransform: ExtentTransform = {
             type: 'extent',
             field: column.name,
             signal: extentSignal
+        };
+        const maxbinsSignal: Signal = {
+            name: maxbinsSignalName,
+            value: maxbins,
+            bind: {
+                name: maxbinsSignalDisplayName,
+                debounce: 50,
+                input: 'range',
+                min: 1,
+                max: maxbins,
+                step: 1
+            }
         };
         const binTransform: BinTransform = {
             type: 'bin',
@@ -38,7 +63,9 @@ export function binnable(prefix: string, domainDataName: string, column: Column,
             extent: {
                 signal: extentSignal
             },
-            maxbins
+            maxbins: {
+                signal: maxbinsSignalName
+            }
         };
         const dataSequence: Data = {
             name: domainDataName,
@@ -56,21 +83,24 @@ export function binnable(prefix: string, domainDataName: string, column: Column,
                     }
                 },
                 {
-                  type: 'formula',
-                  expr: 'datum.data',
-                  as: field
+                    type: 'formula',
+                    expr: 'datum.data',
+                    as: field
                 }
             ]
         };
         return {
+            native: false,
             transforms: [extentTransform, binTransform],
             field,
             binSignal,
             dataSequence,
-            domainDataName
+            domainDataName,
+            maxbinsSignal
         };
     } else {
         return {
+            native: true,
             field: column.name,
             domainDataName
         };

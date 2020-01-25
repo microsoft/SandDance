@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import { AxisScales } from '../interfaces';
 import { Density, DensityProps } from '../layouts/density';
+import { maxbins } from '../defaults';
 import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
@@ -16,8 +17,18 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     };
     const densityProps: DensityProps = {
         mode: 'square',
-        groupbyX: specColumns.x,
-        groupbyY: specColumns.y,
+        groupbyX: {
+            column: specColumns.x,
+            maxbins,
+            maxbinsSignalDisplayName: 'TODO maxbins x',
+            maxbinsSignalName: 'TODO maxbins x'
+        },
+        groupbyY: {
+            column: specColumns.y,
+            maxbins,
+            maxbinsSignalDisplayName: 'TODO maxbins y',
+            maxbinsSignalName: 'TODO maxbins y'
+        },
         addScaleAxes: true
     };
     return {

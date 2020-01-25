@@ -5,13 +5,17 @@ import {
     BandScale,
     LinearScale,
     Mark,
-    Scale,
-    Transforms
+    Scale
 } from 'vega-typings';
-import { AxisScale, InnerScope, Orientation } from '../interfaces';
+import {
+    AxisScale,
+    DiscreteColumn,
+    InnerScope,
+    Orientation
+} from '../interfaces';
 import { binnable, Binnable } from '../bin';
 import { Column } from '../types';
-import { GroupLayoutProps, Layout, LayoutBuildProps } from './layout';
+import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { push } from '../../array';
 
 export interface BarBuild {
@@ -21,7 +25,8 @@ export interface BarBuild {
     parentSize: string;
 }
 
-export interface BarProps extends GroupLayoutProps {
+export interface BarProps extends LayoutProps {
+    groupby: DiscreteColumn;
     minBandWidth: number;
     sumBy: Column;
     orientation: Orientation;
@@ -39,12 +44,13 @@ export class Bar extends Layout {
         globalAggregateMaxExtentSignal: string,
         xScale: string,
         yScale: string,
-        bandWidth: string
+        bandWidth: string,
+        scaledSize: string
     };
 
     public build(): InnerScope {
         const { props } = this;
-        const { global, groupby, maxbins, minBandWidth, orientation, parent, sumBy } = props;
+        const { global, groupby, minBandWidth, orientation, parent, sumBy } = props;
         const aggregation = this.getAgregation();
         const prefix = `bar_${this.id}`;
         this.names = {
@@ -56,11 +62,13 @@ export class Bar extends Layout {
             globalAggregateMaxExtentSignal: `${prefix}_${aggregation}_max`,
             xScale: `${prefix}_scale_x`,
             yScale: `${prefix}_scale_y`,
-            bandWidth: `${prefix}_bandwidth`
+            bandWidth: `${prefix}_bandwidth`,
+            scaledSize: `${prefix}_scaled_size`,
         };
         const { names } = this;
-        const bin = binnable(prefix, global.dataName, groupby, maxbins);
-        if (bin.transforms) {
+        const bin = binnable(prefix, global.dataName, groupby);
+        if (bin.native === false) {
+            global.scope.signals.push(bin.maxbinsSignal);
             push(global.scope.data[0].transform, bin.transforms);
             global.scope.data.push(bin.dataSequence);
         }
@@ -115,6 +123,12 @@ export class Bar extends Layout {
                     }
                 }
             },
+            signals: [
+                {
+                    name: names.scaledSize,
+                    update: orientation === 'horizontal' ? '' : ''
+                }
+            ],
             encode: {
                 update: orientation === 'horizontal' ?
                     {
@@ -213,7 +227,7 @@ export class Bar extends Layout {
                 range: [
                     0,
                     {
-                        //                        signal: `max(${parent.sizeSignals.width},${names.minSize})`
+                        //signal: `max(${parent.sizeSignals.width},${names.minSize})`   //for minumum size of bar
                         signal: `${parent.sizeSignals.width}`
                     }
                 ],
