@@ -34,7 +34,7 @@ export interface BarProps extends LayoutProps {
 }
 
 export class Bar extends Layout {
-    public props: BarProps & LayoutBuildProps;
+    private bin: Binnable;
     private names: {
         barCount: string,
         minSize: string,
@@ -48,11 +48,20 @@ export class Bar extends Layout {
         scaledSize: string
     };
 
+    constructor(public props: BarProps & LayoutBuildProps) {
+        super(props);
+        this.prefix = `bar_${this.id}`;
+        this.bin = binnable(this.prefix, props.global.dataName, props.groupby);
+    }
+
+    public getGrouping() {
+        return [this.bin.field];
+    }
+
     public build(): InnerScope {
-        const { props } = this;
+        const { bin, prefix, props } = this;
         const { global, groupby, minBandWidth, orientation, parent, sumBy } = props;
         const aggregation = this.getAgregation();
-        const prefix = `bar_${this.id}`;
         this.names = {
             barCount: `${prefix}_count`,
             minSize: `${prefix}_minsize`,
@@ -66,7 +75,6 @@ export class Bar extends Layout {
             scaledSize: `${prefix}_scaled_size`,
         };
         const { names } = this;
-        const bin = binnable(prefix, global.dataName, groupby);
         if (bin.native === false) {
             global.scope.signals.push(bin.maxbinsSignal);
             push(global.scope.data[0].transform, bin.transforms);

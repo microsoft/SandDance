@@ -152,6 +152,7 @@ export class SpecBuilder {
 
             let parentScope = this.globalScope;
             let childScope: InnerScope;
+            const groupings: string[][] = [];
             for (let i = 0; i < layouts.length; i++) {
                 if (!parentScope) continue;
                 if (!parentScope.scope) break;
@@ -160,10 +161,16 @@ export class SpecBuilder {
                     ...props,
                     global: this.globalScope,
                     parent: parentScope,
-                    axesScales: this.props.axisScales
+                    axesScales: this.props.axisScales,
+                    groupings,
+                    id: i
                 };
-                const layout = new layoutClass(layoutBuildProps);
+                let layout = new layoutClass(layoutBuildProps);
                 layout.id = i;
+                let grouping = layout.getGrouping();
+                if (grouping) {
+                    groupings.push(grouping);
+                }
                 try {
                     childScope = layout.build();
                 }

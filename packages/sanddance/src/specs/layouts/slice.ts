@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { binnable } from '../bin';
+import { binnable, Binnable } from '../bin';
 import { DiscreteColumn, InnerScope, Orientation } from '../interfaces';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { Mark } from 'vega-typings';
@@ -12,14 +12,23 @@ export interface SliceProps extends LayoutProps {
 }
 
 export class Slice extends Layout {
-    public props: SliceProps & LayoutBuildProps;
+    private bin: Binnable;
+
+    constructor(public props: SliceProps & LayoutBuildProps) {
+        super(props);
+        this.prefix = `slice_${this.id}`;
+        this.bin = binnable(this.prefix, props.global.dataName, props.groupby);
+    }
+
+    public getGrouping() {
+        return [this.bin.field];
+    }
 
     public build(): InnerScope {
-        const { props } = this;
-        const { global, groupby, parent } = props;
-        const prefix = `slice_${this.id}`;
+        const { bin, prefix, props } = this;
+        const { global, parent } = props;
         const facetDataName = `data_${prefix}_facet`;
-        const bin = binnable(prefix, global.dataName, groupby);
+
         if (bin.native === false) {
             global.scope.signals.push(bin.maxbinsSignal);
             push(global.scope.data[0].transform, bin.transforms);

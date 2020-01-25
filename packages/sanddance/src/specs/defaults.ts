@@ -3,7 +3,7 @@
 
 //TODO move these to options
 
-export const maxbins = 30;
+export const maxbins = 50;
 
 export const minBarBandWidth = 10;
 

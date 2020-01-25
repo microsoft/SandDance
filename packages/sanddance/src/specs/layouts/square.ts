@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { binnable } from '../bin';
+import { binnable, Binnable } from '../bin';
 import { Column } from '../types';
 import { createOrdinalsForFacet } from '../ordinal';
 import { DiscreteColumn, InnerScope } from '../interfaces';
@@ -23,7 +23,8 @@ export interface SquareProps extends LayoutProps {
 }
 
 export class Square extends Layout {
-    public props: SquareProps & LayoutBuildProps;
+    private bin: Binnable;
+
     private names: {
         dataName: string,
         aspect: string,
@@ -35,6 +36,18 @@ export class Square extends Layout {
         levels: string,
         levelSize: string,
         facetData: string
+    }
+
+    constructor(public props: SquareProps & LayoutBuildProps) {
+        super(props);
+        this.prefix = `square_${this.id}`;
+        if (props.groupby) {
+            this.bin = binnable(this.prefix, props.global.dataName, props.groupby);
+        }
+    }
+
+    public getGrouping() {
+        return this.bin ? [this.bin.field] : null;
     }
 
     public build(): InnerScope {
@@ -76,10 +89,10 @@ export class Square extends Layout {
 
         let dataName: string
         let scope: Scope;
-        if (groupby) {
+        if (this.bin) {
             dataName = names.facetData;
             const groupMark = mark as GroupMark;
-            const bin = binnable(prefix, parent.dataName, groupby);
+            const { bin } = this;
             if (bin.native === false) {
                 global.scope.signals.push(bin.maxbinsSignal);
                 push(global.scope.data[0].transform, bin.transforms);
