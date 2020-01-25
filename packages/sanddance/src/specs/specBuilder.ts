@@ -151,6 +151,7 @@ export class SpecBuilder {
             }
 
             let parentScope = this.globalScope;
+            let childScope: InnerScope;
             for (let i = 0; i < layouts.length; i++) {
                 if (!parentScope) continue;
                 if (!parentScope.scope) break;
@@ -163,7 +164,16 @@ export class SpecBuilder {
                 };
                 const layout = new layoutClass(layoutBuildProps);
                 layout.id = i;
-                let childScope = layout.build();
+                try {
+                    childScope = layout.build();
+                }
+                catch (e) {
+                    return {
+                        errors: [e.stack],
+                        specCapabilities,
+                        vegaSpec: null
+                    }
+                }
                 if (childScope) {
                     if (props.addScaleAxes && childScope.globalScales) {
                         this.addGlobalScales(childScope.globalScales, layoutBuildProps.axesScales);
