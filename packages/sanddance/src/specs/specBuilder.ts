@@ -167,12 +167,12 @@ export class SpecBuilder {
                 };
                 let layout = new layoutClass(layoutBuildProps);
                 layout.id = i;
-                let grouping = layout.getGrouping();
-                if (grouping) {
-                    groupings.push(grouping);
-                }
                 try {
                     childScope = layout.build();
+                    let grouping = layout.getGrouping();
+                    if (grouping) {
+                        groupings.push(grouping);
+                    }
                 }
                 catch (e) {
                     return {
