@@ -60,7 +60,7 @@ export class Bar extends Layout {
 
     public build(): InnerScope {
         const { bin, prefix, props } = this;
-        const { global, groupby, minBandWidth, orientation, parent, sumBy } = props;
+        const { global, groupings, minBandWidth, orientation, parent, sumBy } = props;
         const aggregation = this.getAgregation();
         this.names = {
             barCount: `${prefix}_count`,
@@ -82,12 +82,14 @@ export class Bar extends Layout {
         }
         const trans: AggregateTransform = {
             type: 'aggregate',
-            groupby: [bin.field],
+            groupby: groupings.reduce((acc, val) => acc.concat(val), []),
             ops: [aggregation]
         };
         if (aggregation === 'sum') {
             trans.fields = [sumBy.name];
         }
+
+        //this needs to be global since the scale depends on it
         global.scope.data.push({
             name: names.globalAggregateData,
             source: global.dataName,
