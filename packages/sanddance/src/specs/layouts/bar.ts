@@ -133,12 +133,6 @@ export class Bar extends Layout {
                     }
                 }
             },
-            signals: [
-                {
-                    name: names.scaledSize,
-                    update: orientation === 'horizontal' ? '' : ''
-                }
-            ],
             encode: {
                 update: orientation === 'horizontal' ?
                     {
