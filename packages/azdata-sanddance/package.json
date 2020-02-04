@@ -86,10 +86,10 @@
         "watch": "tsc -watch -p ./",
         "build": "npm run compile && npm run resources",
         "x-test": "npm run compile && node ./node_modules/vscode/bin/test",
-        "package": "vsce package",
-        "postinstall": "node ./node_modules/vscode/bin/install && node ./node_modules/azdata/bin/install"
+        "package": "vsce package"
     },
     "devDependencies": {
+        "@types/azdata": "^1.15.1",
         "@types/mocha": "^2.2.42",
         "@types/node": "^8.10.25",
         "common-extensions": "*",
@@ -99,8 +99,7 @@
         "react": "^16.6.0",
         "react-dom": "^16.6.0",
         "vega": "^5.8",
-        "vscode": "^1.1.21",
-        "azdata": "*"
+        "vscode": "^1.1.21"
     },
     "dependencies": {
         "@types/temp-write": "^3.3.0",
