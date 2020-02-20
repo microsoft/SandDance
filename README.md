@@ -68,3 +68,17 @@ provided by the bot. You will only need to do this once across all repos using o
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+## Publications
+
+2018- Atom: A Grammar for Unit Visualizations
+* Deokgun Park, Steven Drucker, Roland Fernandez, Niklas Elmqvist
+* IEEE Transactions on Visualization and Computer Graphics | December 2018, Vol 24(12): pp. 3032-3043
+
+View Publication : https://www.microsoft.com/en-us/research/uploads/prod/2019/01/atom.pdf
+
+2015- A Unifying Framework for Animated and Interactive Unit Visualizations
+* Steven Drucker, Roland Fernandez 
+* MSR-TR-2015-65 | August 2015
+
+View Publication : https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/sanddance.pdf
