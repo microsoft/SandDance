@@ -27,6 +27,6 @@
     "luma.gl": "6.4",
     "office-ui-fabric-react": "6.204.4",
     "@msrvida/sanddance-explorer": "^2",
-    "vega": "^5.8"
+    "vega": "^5.9"
   }
 }

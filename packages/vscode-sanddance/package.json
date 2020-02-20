@@ -90,7 +90,7 @@
         "office-ui-fabric-react": "6.204.4",
         "react": "^16.6.0",
         "react-dom": "^16.6.0",
-        "vega": "^5.8",
+        "vega": "^5.9",
         "vscode": "^1.1.21"
     }
 }
