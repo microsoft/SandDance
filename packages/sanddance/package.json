@@ -27,6 +27,6 @@
   "dependencies": {
     "@msrvida/vega-deck.gl": "^2",
     "tsx-create-element": "1.1.4",
-    "vega-typings": "*"
+    "vega-typings": "^0.12.4"
   }
 }

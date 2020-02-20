@@ -30,6 +30,6 @@
     "d3-ease": "^1.0.5",
     "deepmerge": "^2.1.1",
     "tsx-create-element": "1.1.4",
-    "vega-typings": "*"
+    "vega-typings": "^0.12.4"
   }
 }
