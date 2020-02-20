@@ -93,11 +93,6 @@ export class Bar extends Layout {
                             [this.bin.field]
                         ),
                         as: [aggregation]
-                    },
-                    {
-                        type: 'extent',
-                        field: aggregation,
-                        signal: names.globalAggregateExtentSignal
                     }
                 ]
             },
