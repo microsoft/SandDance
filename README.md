@@ -78,7 +78,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 View Publication : https://www.microsoft.com/en-us/research/uploads/prod/2019/01/atom.pdf
 
 2015- A Unifying Framework for Animated and Interactive Unit Visualizations
-* Steven Drucker, Roland Fernandez
+* Steven Drucker, Roland Fernandez 
 * MSR-TR-2015-65 | August 2015
 
 View Publication : https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/sanddance.pdf
