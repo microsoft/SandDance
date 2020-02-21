@@ -72,7 +72,7 @@ export class Wrap extends Layout {
                     },
                     {
                         type: 'formula',
-                        expr: `ceil(${dataLength}/datum.data)`,
+                        expr: `ceil(${dataLength} / datum.data)`,
                         as: 'complement'
                     }
                 ]
@@ -105,7 +105,7 @@ export class Wrap extends Layout {
                 transform: [
                     {
                         type: 'formula',
-                        expr: `ceil(${dataLength}/datum.cols)`,
+                        expr: `ceil(${dataLength} / datum.cols)`,
                         as: 'rows'
                     },
                     {
@@ -120,7 +120,7 @@ export class Wrap extends Layout {
                     },
                     {
                         type: 'formula',
-                        expr: `datum.cellw >=${mincell} && datum.cellh >=${mincell}`,
+                        expr: `datum.cellw >= ${mincell} && datum.cellh >= ${mincell}`,
                         as: 'meetsmin'
                     },
                     {
@@ -129,7 +129,7 @@ export class Wrap extends Layout {
                     },
                     {
                         type: 'formula',
-                        expr: 'datum.cellw/datum.cellh',
+                        expr: 'datum.cellw / datum.cellh',
                         as: aspect
                     },
                     {
@@ -139,7 +139,7 @@ export class Wrap extends Layout {
                     },
                     {
                         type: 'formula',
-                        expr: `${dataLength}/(datum.cols*datum.rows)`,
+                        expr: `${dataLength} / (datum.cols * datum.rows)`,
                         as: 'coverage'
                     },
                     {
@@ -161,12 +161,12 @@ export class Wrap extends Layout {
                     },
                     {
                         type: 'formula',
-                        expr: `floor((datum.row_number-1) / ${cellCount})`,
+                        expr: `floor((datum.row_number - 1) / ${cellCount})`,
                         as: 'r'
                     },
                     {
                         type: 'formula',
-                        expr: `(datum.row_number-1) % ${cellCount}`,
+                        expr: `(datum.row_number - 1) % ${cellCount}`,
                         as: 'c'
                     }
                 ]
@@ -211,7 +211,7 @@ export class Wrap extends Layout {
             },
             {
                 name: aspect,
-                update: 'w2/h2'
+                update: 'w2 / h2'
             },
             {
                 name: dataLength,
@@ -219,7 +219,7 @@ export class Wrap extends Layout {
             },
             {
                 name: growCellCount,
-                update: `max(floor(w2/${mincell}), 1)`
+                update: `max(floor(w2 / ${mincell}), 1)`
             },
             {
                 name: growCellWidth,
