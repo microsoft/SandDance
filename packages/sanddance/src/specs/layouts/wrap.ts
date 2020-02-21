@@ -274,21 +274,7 @@ export class Wrap extends Layout {
                     }
                 }
             },
-            marks: [
-                {
-                    type: 'text',
-                    encode: {
-                        update: {
-                            // text: {
-                            //     signal: `length(data(${JSON.stringify(facetDataName)}))`
-                            // },
-                            fontSize: {
-                                value: 20
-                            }
-                        }
-                    }
-                }
-            ]
+            marks: []
         };
         parent.scope.marks.push(mark);
 
