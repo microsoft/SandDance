@@ -22,7 +22,7 @@ export class Wrap extends Layout {
     }
 
     public getGrouping() {
-        return [this.bin.field];
+        return this.bin.fields;
     }
 
     public build(): InnerScope {
@@ -54,7 +54,7 @@ export class Wrap extends Layout {
             push(global.scope.data[0].transform, bin.transforms);
             global.scope.data.push(bin.dataSequence);
         }
-        const ord = createOrdinalsForFacet(parent.dataName, prefix, bin.field);
+        const ord = createOrdinalsForFacet(parent.dataName, prefix, bin.fields);
         parent.scope.data = parent.scope.data || [];
         parent.scope.data.push(ord.data);
 
@@ -178,14 +178,14 @@ export class Wrap extends Layout {
                     {
                         type: 'collect',
                         sort: {
-                            field: bin.field
+                            field: bin.fields
                         }
                     },
                     {
                         type: 'lookup',
                         from: rowColumnDataName,
-                        key: bin.field,
-                        fields: [bin.field],
+                        key: bin.fields[0],
+                        fields: [bin.fields[0]],
                         values: ['r', 'c']
                     }
                 ]
@@ -255,7 +255,7 @@ export class Wrap extends Layout {
                 facet: {
                     name: facetDataName,
                     data: sortedDataName,
-                    groupby: [bin.field, 'r', 'c']
+                    groupby: bin.fields.concat(['r', 'c'])
                 }
             },
             encode: {

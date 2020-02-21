@@ -55,7 +55,7 @@ export class Bar extends Layout {
     }
 
     public getGrouping() {
-        return [this.bin.field];
+        return this.bin.fields;
     }
 
     public build(): InnerScope {
@@ -75,6 +75,7 @@ export class Bar extends Layout {
             scaledSize: `${prefix}_scaled_size`,
         };
         const { names } = this;
+        const binField = bin.fields[0];
         if (bin.native === false) {
             global.scope.signals.push(bin.maxbinsSignal);
             push(global.scope.data[0].transform, bin.transforms);
@@ -90,7 +91,7 @@ export class Bar extends Layout {
                     {
                         ...this.getTransforms(
                             aggregation,
-                            [this.bin.field]
+                            this.bin.fields
                         ),
                         as: [aggregation]
                     }
@@ -102,7 +103,7 @@ export class Bar extends Layout {
                 transform: [
                     {
                         type: 'pivot',
-                        field: this.bin.field,
+                        field: binField,
                         value: aggregation
                     }
                 ]
@@ -147,7 +148,7 @@ export class Bar extends Layout {
                 facet: {
                     name: names.facetData,
                     data: parent.dataName,
-                    groupby: bin.field,
+                    groupby: bin.fields,
                     aggregate: {
                         fields: [aggregation === 'sum' ? sumBy.name : null],
                         ops: [aggregation],
@@ -162,7 +163,7 @@ export class Bar extends Layout {
                             value: 0
                         },
                         y: {
-                            signal: `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(bin.field)}])`
+                            signal: `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(binField)}])`
                         },
                         height: {
                             signal: names.bandWidth
@@ -174,7 +175,7 @@ export class Bar extends Layout {
                     :
                     {
                         x: {
-                            signal: `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(bin.field)}])`
+                            signal: `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(binField)}])`
                         },
                         y: {
                             signal: `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(aggregation)}])`
@@ -206,11 +207,11 @@ export class Bar extends Layout {
             sizeSignals: orientation === 'horizontal' ?
                 {
                     height: names.bandWidth,
-                    width: `scale(${JSON.stringify(names.xScale)}, data('pivot')[0][datum[${JSON.stringify(bin.field)}]])`
+                    width: `scale(${JSON.stringify(names.xScale)}, data('pivot')[0][datum[${JSON.stringify(binField)}]])`
                 }
                 :
                 {
-                    height: `${parent.sizeSignals.height} - scale(${JSON.stringify(names.yScale)}, data('pivot')[0][datum[${JSON.stringify(bin.field)}]])`,
+                    height: `${parent.sizeSignals.height} - scale(${JSON.stringify(names.yScale)}, data('pivot')[0][datum[${JSON.stringify(binField)}]])`,
                     width: names.bandWidth
                 },
             globalScales: {
@@ -235,6 +236,7 @@ export class Bar extends Layout {
     private getScales(prefix: string, bin: Binnable, minBandWidth: number) {
         const { names } = this;
         const { global, groupings, orientation, parent } = this.props;
+        const binField = bin.fields[0];
 
         const accumulative = `${prefix}_accumulative`;
         global.scope.data.push({
@@ -272,7 +274,7 @@ export class Bar extends Layout {
                 padding: 0.1,
                 domain: {
                     data: bin.domainDataName,
-                    field: bin.field,
+                    field: binField,
                     sort: true
                 }
             };
@@ -325,7 +327,7 @@ export class Bar extends Layout {
                 padding: 0.1,
                 domain: {
                     data: bin.domainDataName,
-                    field: bin.field,
+                    field: binField,
                     sort: true
                 }
             };

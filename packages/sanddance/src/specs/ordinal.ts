@@ -8,7 +8,7 @@ export interface OrdinalResult {
     lookupField: string;
 }
 
-export function createOrdinalsForFacet(source: string, prefix: string, binField: string): OrdinalResult {
+export function createOrdinalsForFacet(source: string, prefix: string, binFields: string[]): OrdinalResult {
     const lookupField = 'ordinal';
     const dataName = `${prefix}_bin_order`;
     const data: Data = {
@@ -17,13 +17,13 @@ export function createOrdinalsForFacet(source: string, prefix: string, binField:
         transform: [
             {
                 type: 'aggregate',
-                groupby: [binField]
+                groupby: binFields
             },
             {
                 type: 'collect',
                 sort: {
-                    field: binField,
-                    order: 'ascending'
+                    field: binFields,
+                    order: binFields.map(f => 'ascending')
                 }
             },
             {
@@ -38,7 +38,7 @@ export function createOrdinalsForFacet(source: string, prefix: string, binField:
         name: `${prefix}_order`,
         domain: {
             data: dataName,
-            field: binField
+            field: binFields[0]
         },
         range: {
             data: dataName,

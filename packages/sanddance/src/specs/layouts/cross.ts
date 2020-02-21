@@ -21,7 +21,7 @@ export class Cross extends Layout {
     }
 
     public getGrouping() {
-        return [this.binX.field, this.binY.field];
+        return this.binX.fields.concat(this.binY.fields);
     }
 
 }

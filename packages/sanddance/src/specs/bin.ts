@@ -10,7 +10,7 @@ import {
 import { DiscreteColumn } from './interfaces';
 
 export interface BaseBinnable {
-    field: string;
+    fields: string[];
     domainDataName: string;
 }
 
@@ -32,6 +32,7 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
     const { column, maxbins, maxbinsSignalDisplayName, maxbinsSignalName } = discreteColumn;
     if (column.quantitative) {
         const field = `${prefix}_bin_${column.name}`;
+        const fieldEnd = `${field}_end`;
         const binSignal = `${field}_bins`;
         const extentSignal = `${field}_bin_extent`;
         domainDataName = `${field}_sequence`;   //override the data name
@@ -57,7 +58,7 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
             field: column.name,
             as: [
                 field,
-                `${field}_end`,
+                fieldEnd,
             ],
             signal: binSignal,
             extent: {
@@ -92,7 +93,7 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
         return {
             native: false,
             transforms: [extentTransform, binTransform],
-            field,
+            fields: [field, fieldEnd],
             binSignal,
             dataSequence,
             domainDataName,
@@ -101,7 +102,7 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
     } else {
         return {
             native: true,
-            field: column.name,
+            fields: [column.name],
             domainDataName
         };
     }

@@ -47,7 +47,7 @@ export class Square extends Layout {
     }
 
     public getGrouping() {
-        return this.bin ? [this.bin.field] : null;
+        return this.bin ? this.bin.fields : null;
     }
 
     public build(): InnerScope {
@@ -98,7 +98,7 @@ export class Square extends Layout {
                 push(global.scope.data[0].transform, bin.transforms);
                 global.scope.data.push(bin.dataSequence);
             }
-            const ord = createOrdinalsForFacet(parent.dataName, prefix, bin.field);
+            const ord = createOrdinalsForFacet(parent.dataName, prefix, bin.fields);
             groupMark.data = [ord.data];
             groupMark.scales = [ord.scale];
             const childMark: GroupMark = {
@@ -107,7 +107,7 @@ export class Square extends Layout {
                     facet: {
                         name: names.facetData,
                         data: names.dataName,
-                        groupby: bin.field
+                        groupby: bin.fields
                     }
                 }
             };

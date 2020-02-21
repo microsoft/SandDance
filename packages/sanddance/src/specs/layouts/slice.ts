@@ -21,7 +21,7 @@ export class Slice extends Layout {
     }
 
     public getGrouping() {
-        return [this.bin.field];
+        return this.bin.fields;
     }
 
     public build(): InnerScope {
@@ -42,7 +42,7 @@ export class Slice extends Layout {
                 facet: {
                     name: facetDataName,
                     data: parent.dataName,
-                    groupby: bin.field
+                    groupby: bin.fields
                 }
             },
             encode: {
