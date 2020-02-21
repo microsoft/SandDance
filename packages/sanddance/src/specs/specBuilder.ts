@@ -127,13 +127,15 @@ export class SpecBuilder {
                 vegaSpec.signals.push(
                     {
                         name: 'h2',
-                        value: 300
+                        update: 'height'
                     },
                     {
                         name: 'w2',
-                        value: 300
+                        update: 'width'
                     }
                 );
+                vegaSpec.height = insight.size.height;
+                vegaSpec.width = insight.size.width;
             } else {
                 vegaSpec.signals.push(
                     {
