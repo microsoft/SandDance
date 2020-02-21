@@ -6,6 +6,7 @@ import { DiscreteColumn, InnerScope } from '../interfaces';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { GroupMark } from 'vega-typings';
 import { push } from '../../array';
+import { facetPadding } from '../defaults';
 
 export interface WrapProps extends LayoutProps {
     groupby: DiscreteColumn;
@@ -29,6 +30,7 @@ export class Wrap extends Layout {
         const { global, parent } = props;
         const facetDataName = `data_${prefix}_facet`;
         const sortedDataName = `data_${prefix}_sort`;
+        const rowColumnDataName = `data_${prefix}_row_col`;
         const mincell = `${prefix}_mincell`;
         const cellHeight = `${prefix}_cellHeight`;
         const cellWidth = `${prefix}_cellWidth`;
@@ -38,6 +40,14 @@ export class Wrap extends Layout {
         const aspect = `${prefix}_aspect`;
         const idealAspect = `${prefix}_idealAspect`;
         const dataLength = `${prefix}_dataLength`;
+        const rxc0 = `${prefix}_rxc0`;
+        const rxc1 = `${prefix}_rxc1`;
+        const rxc2 = `${prefix}_rxc2`;
+        const rxc = `${prefix}_rxc`;
+        const growCellCount = `${prefix}_growCellCount`;
+        const growCellWidth = `${prefix}_growCellWidth`;
+        const fitsArea = `${prefix}_fitsArea`;
+        const cellCount = `${prefix}_cellCount`;
 
         if (bin.native === false) {
             global.scope.signals.push(bin.maxbinsSignal);
@@ -51,112 +61,112 @@ export class Wrap extends Layout {
         //need to sort by the bin, since there is no scale for positioning
         parent.scope.data.push.apply(parent.scope.data, [
             {
-                name: "fit0",
+                name: rxc0,
                 transform: [
                     {
-                        type: "sequence",
+                        type: 'sequence',
                         start: 1,
                         stop: {
                             signal: `ceil(sqrt(${dataLength})) + 1`
                         }
                     },
                     {
-                        type: "formula",
+                        type: 'formula',
                         expr: `ceil(${dataLength}/datum.data)`,
-                        as: "complement"
+                        as: 'complement'
                     }
                 ]
             },
             {
-                name: "fit1",
-                source: "fit0",
+                name: rxc1,
+                source: rxc0,
                 transform: [
                     {
-                        type: "project",
-                        fields: ["data"],
-                        as: ["cols"]
+                        type: 'project',
+                        fields: ['data'],
+                        as: ['cols']
                     }
                 ]
             },
             {
-                name: "fit2",
-                source: "fit0",
+                name: rxc2,
+                source: rxc0,
                 transform: [
                     {
-                        type: "project",
-                        fields: ["complement"],
-                        as: ["cols"]
+                        type: 'project',
+                        fields: ['complement'],
+                        as: ['cols']
                     }
                 ]
             },
             {
-                name: "fit",
-                source: ["fit1", "fit2"],
+                name: rxc,
+                source: [rxc1, rxc2],
                 transform: [
                     {
-                        type: "formula",
+                        type: 'formula',
                         expr: `ceil(${dataLength}/datum.cols)`,
-                        as: "rows"
+                        as: 'rows'
                     },
                     {
-                        type: "formula",
-                        expr: "w2/datum.cols",
-                        as: "cellw"
+                        type: 'formula',
+                        expr: 'w2/datum.cols',
+                        as: 'cellw'
                     },
                     {
-                        type: "formula",
-                        expr: "h2/datum.rows",
-                        as: "cellh"
+                        type: 'formula',
+                        expr: 'h2/datum.rows',
+                        as: 'cellh'
                     },
                     {
-                        type: "formula",
+                        type: 'formula',
                         expr: `datum.cellw >=${mincell} && datum.cellh >=${mincell}`,
-                        as: "meetsmin"
+                        as: 'meetsmin'
                     },
                     {
-                        type: "filter",
-                        expr: "datum.meetsmin"
+                        type: 'filter',
+                        expr: 'datum.meetsmin'
                     },
                     {
-                        type: "formula",
-                        expr: "datum.cellw/datum.cellh",
+                        type: 'formula',
+                        expr: 'datum.cellw/datum.cellh',
                         as: aspect
                     },
                     {
-                        type: "formula",
+                        type: 'formula',
                         expr: `abs(datum.${aspect} - ${target})`,
                         as: idealAspect
                     },
                     {
-                        type: "formula",
+                        type: 'formula',
                         expr: `${dataLength}/(datum.cols*datum.rows)`,
-                        as: "coverage"
+                        as: 'coverage'
                     },
                     {
-                        type: "collect",
+                        type: 'collect',
                         sort: {
-                            field: [idealAspect, "coverage"],
-                            order: ["ascending", "descending"]
+                            field: [idealAspect, 'coverage'],
+                            order: ['ascending', 'descending']
                         }
                     }
                 ]
             },
             {
-                name: "data2",
+                name: rowColumnDataName,
                 source: ord.data.name,
                 transform: [
                     {
-                        type: "window",
-                        ops: ["row_number"]
+                        type: 'window',
+                        ops: ['row_number']
                     },
                     {
-                        type: "formula",
-                        expr: "floor((datum.row_number-1)/cellCount)",
+                        type: 'formula',
+                        expr: `floor((datum.row_number-1) / ${cellCount})`,
                         as: 'r'
                     },
                     {
-                        type: "formula",
-                        expr: "(datum.row_number-1)%cellCount",
+                        type: 'formula',
+                        expr: `(datum.row_number-1) % ${cellCount}`,
                         as: 'c'
                     }
                 ]
@@ -173,7 +183,7 @@ export class Wrap extends Layout {
                     },
                     {
                         type: 'lookup',
-                        from: 'data2',
+                        from: rowColumnDataName,
                         key: bin.field,
                         fields: [bin.field],
                         values: ['r', 'c']
@@ -201,47 +211,39 @@ export class Wrap extends Layout {
             },
             {
                 name: aspect,
-                update: "w2/h2"
+                update: 'w2/h2'
             },
             {
                 name: dataLength,
                 update: `data(${JSON.stringify(ord.data.name)}).length`
             },
             {
-                name: "growCellWidthCalc",
-                update: `w2 / ${mincell}`
-            },
-            {
-                name: "growCellCount",
+                name: growCellCount,
                 update: `max(floor(w2/${mincell}), 1)`
             },
             {
-                name: "growCellWidth",
-                update: "w2 / growCellCount"
+                name: growCellWidth,
+                update: `w2 / ${growCellCount}`
             },
             {
-                name: "growRowCount",
-                update: `ceil(${dataLength}/growCellCount)`
-            },
-            {
-                name: "fitsArea",
+                name: fitsArea,
                 update: `((${dataLength} * ${minArea}) <= (w2 * h2))`
             },
             {
                 name: fits,
-                update: "fitsArea && length(data('fit'))>0"
+                update: `${fitsArea} && length(data(${JSON.stringify(rxc)})) > 0`
             },
             {
-                name: "cellCount",
-                update: `${fits} ? data('fit')[0].cols : growCellCount`
+                name: cellCount,
+                update: `${fits} ? data(${JSON.stringify(rxc)})[0].cols : ${growCellCount}`
             },
             {
                 name: cellWidth,
-                update: `${fits} ? data('fit')[0].cellw : growCellWidth`
+                update: `${fits} ? data(${JSON.stringify(rxc)})[0].cellw : ${growCellWidth}`
             },
             {
                 name: cellHeight,
-                update: `${fits} ? data('fit')[0].cellh : ${mincell}`
+                update: `${fits} ? data(${JSON.stringify(rxc)})[0].cellh : ${mincell}`
             }
         ]);
 
@@ -259,13 +261,13 @@ export class Wrap extends Layout {
             encode: {
                 update: {
                     height: {
-                        signal: cellHeight
+                        signal: `${cellHeight} - ${facetPadding}`
                     },
                     width: {
-                        signal: cellWidth
+                        signal: `${cellWidth} - ${facetPadding}`
                     },
                     x: {
-                        signal: `datum.c * ${cellWidth}`
+                        signal: `datum.c * ${cellWidth} + ${facetPadding}`
                     },
                     y: {
                         signal: `datum.r * ${cellHeight}`
@@ -294,8 +296,8 @@ export class Wrap extends Layout {
             dataName: facetDataName,
             scope: mark,
             sizeSignals: {
-                height: cellHeight,
-                width: cellWidth
+                height: `(${cellHeight} - ${facetPadding})`,
+                width: `(${cellWidth} - ${facetPadding})`
             }
         };
     }

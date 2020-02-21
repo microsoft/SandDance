@@ -8,3 +8,5 @@ export const maxbins = 50;
 export const minBarBandWidth = 10;
 
 export const minFacetSize = 100;
+
+export const facetPadding = 20;
