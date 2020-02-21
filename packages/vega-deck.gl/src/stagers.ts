@@ -57,10 +57,10 @@ const group: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scen
         }
         if (g.stroke) {
             const facetRect: FacetRect = {
+                datum: g.datum,
                 lines: box(gx + x, gy + y, g.height, g.width, g.stroke, groupStrokeWidth)
             };
             stage.facets.push(facetRect);
-            options.currFacetRect = facetRect;
         }
 
         groupType = convertGroupRole(g) || groupType;

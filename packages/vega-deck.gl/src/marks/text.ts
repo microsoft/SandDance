@@ -47,9 +47,6 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
             options.currAxis.tickText.push(tickText);
         } else if (item.mark.role === 'axis-title') {
             options.currAxis.title = textItem;
-        } else if (options.currFacetRect && !options.currFacetRect.facetTitle) {
-            options.currFacetRect.facetTitle = textItem;
-            textItem.position = [x, ty * (y + offsetYCenter), 0];
         } else {
             stage.textData.push(textItem);
         }

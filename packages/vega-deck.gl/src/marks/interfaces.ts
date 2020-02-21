@@ -14,7 +14,6 @@ export enum GroupType {
 export interface MarkStagerOptions {
     maxOrdinal: number;
     currAxis: Axis;
-    currFacetRect: FacetRect;
     defaultCubeColor: Color;
     assignCubeOrdinal: (d: object) => number | undefined;
 }

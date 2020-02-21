@@ -43,7 +43,6 @@ export function getLayers(
     if (stage.facets) {
         stage.facets.forEach(f => {
             if (f.lines) lines.push.apply(lines, f.lines);
-            if (f.facetTitle) texts.push(f.facetTitle);
         });
     }
     const lineLayer = newLineLayer(layerNames.lines, lines);

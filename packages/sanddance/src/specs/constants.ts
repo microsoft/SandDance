@@ -19,6 +19,7 @@ export const FieldNames = {
     DensityXBin1: '__SandDance__DensityXBin1',
     DensityYBin0: '__SandDance__DensityYBin0',
     DensityYBin1: '__SandDance__DensityYBin1',
+    FacetRange: '__SandDance__FacetRange',
     FacetBin0: '__SandDance__FacetBin0',
     FacetBin1: '__SandDance__FacetBin1',
     GridIndex: '__SandDance__GridIndex',

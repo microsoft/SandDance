@@ -63,7 +63,7 @@ export interface Scene3d extends Scene {
  * Rect area and title for a facet.
  */
 export interface FacetRect {
-    facetTitle?: TextLayerDatum;
+    datum: any;
     lines: StyledLine[];
 }
 

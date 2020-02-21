@@ -8,8 +8,9 @@ import {
     SpecCapabilities,
     SpecColumns
 } from './specs/types';
+import { FieldNames } from './specs/constants';
 import { LayerInputHandler } from '@deck.gl/core/lib/layer';
-import { SearchExpressionGroup } from './searchExpression/types';
+import { SearchExpressionGroup, SearchExpressionValue } from './searchExpression/types';
 import {
     selectBetweenAxis,
     selectBetweenFacet,
@@ -120,11 +121,12 @@ function facetSelectionPolygons(facetRects: VegaDeckGl.types.FacetRect[], facetC
     facetRects.forEach((facetRect, i) => {
         //take any 2 lines to get a box dimension
         const [x, y] = minMaxPoints(facetRect.lines.slice(2));
-        const search: SearchExpressionGroup = facetRect.facetTitle ?
+        const facetRange: SearchExpressionValue[] = facetRect.datum && facetRect.datum[FieldNames.FacetRange];
+        const search: SearchExpressionGroup = facetRange ?
             facetColumn.quantitative ?
-                selectBetweenFacet(facetColumn, facetRect.facetTitle.text, i === 0, i === facetRects.length - 1)
+                selectBetweenFacet(facetColumn, facetRange, i === 0, i === facetRects.length - 1)
                 :
-                { expressions: [selectExact(facetColumn, facetRect.facetTitle.text)] }
+                { expressions: [selectExact(facetColumn, facetRange[0])] }
             :
             { expressions: [selectNullOrEmpty(facetColumn)] };
         polygons.push({

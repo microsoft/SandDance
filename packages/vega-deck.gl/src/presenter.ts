@@ -157,7 +157,6 @@ export class Presenter {
         let options: MarkStagerOptions = {
             maxOrdinal: 0,
             currAxis: null,
-            currFacetRect: null,
             defaultCubeColor: this.style.defaultCubeColor,
             assignCubeOrdinal: (config && config.onSceneRectAssignCubeOrdinal) || (() => options.maxOrdinal++)
         };

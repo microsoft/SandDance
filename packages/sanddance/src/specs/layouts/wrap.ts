@@ -3,10 +3,11 @@
 import { binnable, Binnable } from '../bin';
 import { createOrdinalsForFacet } from '../ordinal';
 import { DiscreteColumn, InnerScope } from '../interfaces';
-import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { GroupMark } from 'vega-typings';
-import { push } from '../../array';
 import { facetPadding } from '../defaults';
+import { FieldNames } from '../constants';
+import { GroupMark } from 'vega-typings';
+import { Layout, LayoutBuildProps, LayoutProps } from './layout';
+import { push } from '../../array';
 
 export interface WrapProps extends LayoutProps {
     groupby: DiscreteColumn;
@@ -182,6 +183,11 @@ export class Wrap extends Layout {
                         }
                     },
                     {
+                        type: 'formula',
+                        expr: `[${bin.fields.map(f => `datum[${JSON.stringify(f)}]`).join()}]`,
+                        as: FieldNames.FacetRange
+                    },
+                    {
                         type: 'lookup',
                         from: rowColumnDataName,
                         key: bin.fields[0],
@@ -255,7 +261,7 @@ export class Wrap extends Layout {
                 facet: {
                     name: facetDataName,
                     data: sortedDataName,
-                    groupby: bin.fields.concat(['r', 'c'])
+                    groupby: bin.fields.concat(['r', 'c', FieldNames.FacetRange])
                 }
             },
             encode: {
