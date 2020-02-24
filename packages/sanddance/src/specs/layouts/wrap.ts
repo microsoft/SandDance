@@ -45,10 +45,10 @@ export class Wrap extends Layout {
         const rxc1 = `${prefix}_rxc1`;
         const rxc2 = `${prefix}_rxc2`;
         const rxc = `${prefix}_rxc`;
-        const growCellCount = `${prefix}_growCellCount`;
+        const growColCount = `${prefix}_growColCount`;
         const growCellWidth = `${prefix}_growCellWidth`;
         const fitsArea = `${prefix}_fitsArea`;
-        const cellCount = `${prefix}_cellCount`;
+        const colCount = `${prefix}_colCount`;
 
         if (bin.native === false) {
             global.scope.signals.push(bin.maxbinsSignal);
@@ -162,12 +162,12 @@ export class Wrap extends Layout {
                     },
                     {
                         type: 'formula',
-                        expr: `floor((datum.row_number - 1) / ${cellCount})`,
+                        expr: `floor((datum.row_number - 1) / ${colCount})`,
                         as: 'r'
                     },
                     {
                         type: 'formula',
-                        expr: `(datum.row_number - 1) % ${cellCount}`,
+                        expr: `(datum.row_number - 1) % ${colCount}`,
                         as: 'c'
                     }
                 ]
@@ -224,12 +224,12 @@ export class Wrap extends Layout {
                 update: `data(${JSON.stringify(ord.data.name)}).length`
             },
             {
-                name: growCellCount,
+                name: growColCount,
                 update: `max(floor(${SignalNames.ViewportX} / ${SignalNames.MinCellX}), 1)`
             },
             {
                 name: growCellWidth,
-                update: `${SignalNames.ViewportX} / ${growCellCount}`
+                update: `${SignalNames.ViewportX} / ${growColCount}`
             },
             {
                 name: fitsArea,
@@ -240,8 +240,8 @@ export class Wrap extends Layout {
                 update: `${fitsArea} && length(data(${JSON.stringify(rxc)})) > 0`
             },
             {
-                name: cellCount,
-                update: `${fits} ? data(${JSON.stringify(rxc)})[0].cols : ${growCellCount}`
+                name: colCount,
+                update: `${fits} ? data(${JSON.stringify(rxc)})[0].cols : ${growColCount}`
             },
             {
                 name: cellWidth,
@@ -288,8 +288,10 @@ export class Wrap extends Layout {
             dataName: facetDataName,
             scope: mark,
             sizeSignals: {
-                height: `(${cellHeight} - ${facetPadding})`,
-                width: `(${cellWidth} - ${facetPadding})`
+                facetHeight: `(${cellHeight} - ${facetPadding})`,
+                facetWidth: `(${cellWidth} - ${facetPadding})`,
+                totalHeight: `(${cellHeight} * ceil(${dataLength} / ${colCount}))`,
+                totalWidth: `(${cellWidth} * ${colCount})`
             }
         };
     }

@@ -197,7 +197,7 @@ export class Bar extends Layout {
                             signal: `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(aggregation)}])`
                         },
                         height: {
-                            signal: `${parent.sizeSignals.height} - scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(aggregation)}])`
+                            signal: `${parent.sizeSignals.facetHeight} - scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(aggregation)}])`
                         },
                         width: {
                             signal: names.bandWidth
@@ -216,9 +216,9 @@ export class Bar extends Layout {
                 ?
                 `scale(${JSON.stringify(names.xScale)}, ${names.globalAggregateMaxExtentSignal})`
                 :
-                `(${parent.sizeSignals.height} - scale(${JSON.stringify(names.yScale)}, ${names.globalAggregateMaxExtentSignal}))`,
+                `(${parent.sizeSignals.facetHeight} - scale(${JSON.stringify(names.yScale)}, ${names.globalAggregateMaxExtentSignal}))`,
             bandWidth: names.bandWidth,
-            parentSize: orientation === 'horizontal' ? parent.sizeSignals.width : parent.sizeSignals.height
+            parentSize: orientation === 'horizontal' ? parent.sizeSignals.facetWidth : parent.sizeSignals.facetHeight
         });
 
         return {
@@ -226,13 +226,13 @@ export class Bar extends Layout {
             scope: mark,
             sizeSignals: orientation === 'horizontal' ?
                 {
-                    height: names.bandWidth,
-                    width: `scale(${JSON.stringify(names.xScale)}, data('pivot')[0][datum[${JSON.stringify(binField)}]])`
+                    facetHeight: names.bandWidth,
+                    facetWidth: `scale(${JSON.stringify(names.xScale)}, data('pivot')[0][datum[${JSON.stringify(binField)}]])`
                 }
                 :
                 {
-                    height: `${parent.sizeSignals.height} - scale(${JSON.stringify(names.yScale)}, data('pivot')[0][datum[${JSON.stringify(binField)}]])`,
-                    width: names.bandWidth
+                    facetHeight: `${parent.sizeSignals.facetHeight} - scale(${JSON.stringify(names.yScale)}, data('pivot')[0][datum[${JSON.stringify(binField)}]])`,
+                    facetWidth: names.bandWidth
                 },
             globalScales: {
                 x: xScale,
@@ -267,7 +267,7 @@ export class Bar extends Layout {
                 range: [
                     0,
                     {
-                        signal: parent.sizeSignals.width
+                        signal: parent.sizeSignals.facetWidth
                     }
                 ],
                 padding: 0.1,
@@ -288,7 +288,7 @@ export class Bar extends Layout {
                 ],
                 range: [
                     {
-                        signal: parent.sizeSignals.height
+                        signal: parent.sizeSignals.facetHeight
                     },
                     0
                 ],
@@ -308,7 +308,7 @@ export class Bar extends Layout {
                 range: [
                     0,
                     {
-                        signal: parent.sizeSignals.width
+                        signal: parent.sizeSignals.facetWidth
                     }
                 ],
                 nice: true,
@@ -320,7 +320,7 @@ export class Bar extends Layout {
                 range: [
                     0,
                     {
-                        signal: parent.sizeSignals.height
+                        signal: parent.sizeSignals.facetHeight
                     }
                 ],
                 padding: 0.1,

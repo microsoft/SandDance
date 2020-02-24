@@ -23,8 +23,10 @@ export interface SpecCreator {
 }
 
 export interface SizeSignals {
-    height: string;
-    width: string;
+    facetHeight: string;
+    facetWidth: string;
+    totalHeight?: string;
+    totalWidth?: string;
 }
 
 export interface InnerScope {

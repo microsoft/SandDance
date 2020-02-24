@@ -125,13 +125,13 @@ export class SpecBuilder {
                 sizeSignals: insight.columns.facet
                     ?
                     {
-                        height: minCellY.name,
-                        width: minCellX.name
+                        facetHeight: minCellY.name,
+                        facetWidth: minCellX.name
                     }
                     :
                     {
-                        height: SignalNames.ViewportY,
-                        width: SignalNames.ViewportX
+                        facetHeight: SignalNames.ViewportY,
+                        facetWidth: SignalNames.ViewportX
                     }
                 ,
                 signals: {
@@ -159,6 +159,17 @@ export class SpecBuilder {
                 push(vegaSpec.signals, facetLayout.signals);
                 push(vegaSpec.scales, facetLayout.scales);
                 layouts = [facetLayout.layoutPair, ...layouts];
+            } else {
+                vegaSpec.signals.push(
+                    {
+                        name: 'height',
+                        update: SignalNames.ViewportY
+                    },
+                    {
+                        name: 'width',
+                        update: SignalNames.ViewportX
+                    }
+                );
             }
 
             let parentScope: InnerScope = this.globalScope;
@@ -195,6 +206,21 @@ export class SpecBuilder {
                 if (childScope) {
                     if (props.addScaleAxes && childScope.globalScales) {
                         this.addGlobalScales(childScope.globalScales, layoutBuildProps.axesScales);
+                    }
+                    //the first layout when faceting may determine the overall height
+                    if (i === 0 && insight.columns.facet) {
+                        if (childScope.sizeSignals.totalHeight) {
+                            vegaSpec.signals.push({
+                                name: 'height',
+                                update: childScope.sizeSignals.totalHeight
+                            });
+                        }
+                        if (childScope.sizeSignals.totalWidth) {
+                            vegaSpec.signals.push({
+                                name: 'width',
+                                update: childScope.sizeSignals.totalWidth
+                            });
+                        }
                     }
                 }
                 parentScope = childScope;
