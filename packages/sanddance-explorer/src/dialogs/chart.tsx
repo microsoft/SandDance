@@ -119,7 +119,7 @@ export class Chart extends React.Component<Props, State> {
                                         <Dropdown
                                             disabled={!props.insightColumns.facet}
                                             collapseLabel={props.collapseLabels}
-                                            label={'Facet behavior'}
+                                            label={strings.labelColumnFacetLayout}
                                             calloutProps={{ style: { minWidth: '18em' } }}
                                             options={[
                                                 {
