@@ -38,6 +38,7 @@ export class Wrap extends Layout {
         const target = `${prefix}_target`;
         const minArea = `${prefix}_minArea`;
         const aspect = `${prefix}_aspect`;
+        const minAspect = `${prefix}_minAspect`;
         const idealAspect = `${prefix}_idealAspect`;
         const dataLength = `${prefix}_dataLength`;
         const rxc0 = `${prefix}_rxc0`;
@@ -110,12 +111,12 @@ export class Wrap extends Layout {
                     },
                     {
                         type: 'formula',
-                        expr: 'w2/datum.cols',
+                        expr: `${SignalNames.ViewportX} / datum.cols`,
                         as: 'cellw'
                     },
                     {
                         type: 'formula',
-                        expr: 'h2/datum.rows',
+                        expr: `${SignalNames.ViewportY} / datum.rows`,
                         as: 'cellh'
                     },
                     {
@@ -203,8 +204,12 @@ export class Wrap extends Layout {
         parent.scope.signals = parent.scope.signals || [];
         parent.scope.signals.push.apply(parent.scope.signals, [
             {
+                name: minAspect,
+                update: `${SignalNames.MinCellX} / ${SignalNames.MinCellY}`
+            },
+            {
                 name: target,
-                value: 1.2
+                update: `${minAspect} === 1 ? ${1.2} : ${minAspect}`
             },
             {
                 name: minArea,
@@ -212,7 +217,7 @@ export class Wrap extends Layout {
             },
             {
                 name: aspect,
-                update: 'w2 / h2'
+                update: `${SignalNames.ViewportX} / ${SignalNames.ViewportY}`
             },
             {
                 name: dataLength,
@@ -220,15 +225,15 @@ export class Wrap extends Layout {
             },
             {
                 name: growCellCount,
-                update: `max(floor(w2 / ${SignalNames.MinCellX}), 1)`
+                update: `max(floor(${SignalNames.ViewportX} / ${SignalNames.MinCellX}), 1)`
             },
             {
                 name: growCellWidth,
-                update: `w2 / ${growCellCount}`
+                update: `${SignalNames.ViewportX} / ${growCellCount}`
             },
             {
                 name: fitsArea,
-                update: `((${dataLength} * ${minArea}) <= (w2 * h2))`
+                update: `((${dataLength} * ${minArea}) <= (${SignalNames.ViewportX} * ${SignalNames.ViewportY}))`
             },
             {
                 name: fits,

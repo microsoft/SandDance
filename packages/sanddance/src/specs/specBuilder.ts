@@ -103,15 +103,15 @@ export class SpecBuilder {
                 data: [{ name: dataName, transform: [] }],
                 marks: [],
                 scales: [],
-                signals: textSignals(specContext, 'h2').concat([
+                signals: textSignals(specContext, SignalNames.ViewportY).concat([
                     minCellX,
                     minCellY,
                     {
-                        name: 'h2',
+                        name: SignalNames.ViewportY,
                         update: `max(${SignalNames.MinCellY}, ${insight.size.height.toString()})`
                     },
                     {
-                        name: 'w2',
+                        name: SignalNames.ViewportX,
                         update: `max(${SignalNames.MinCellX}, ${insight.size.width.toString()})`
                     },
                 ])
@@ -130,8 +130,8 @@ export class SpecBuilder {
                     }
                     :
                     {
-                        height: 'h2',
-                        width: 'w2'
+                        height: SignalNames.ViewportY,
+                        width: SignalNames.ViewportX
                     }
                 ,
                 signals: {

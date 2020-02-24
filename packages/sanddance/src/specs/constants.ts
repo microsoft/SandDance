@@ -57,6 +57,8 @@ export const ScaleNames = {
 
 //Signal names
 export const SignalNames = {
+    ViewportX: 'ViewportX',
+    ViewportY: 'ViewportY',
     MinCellX: `MinCellX`,
     MinCellY: `MinCellY`,
     ColorBinCount: 'RoleColor_BinCountSignal',
