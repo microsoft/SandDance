@@ -26,7 +26,6 @@
             }
         },
         "x": {
-            "field": "Survived",
             "type": "quantitative",
             "aggregate": "count"
         }
