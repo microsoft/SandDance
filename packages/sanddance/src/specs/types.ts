@@ -257,6 +257,11 @@ export interface SpecLanguage {
     count: string;
 
     /**
+     * Label for a sum axis.
+     */
+    sum: string;
+
+    /**
      * Label for treemap method dropdown.
      */
     treeMapMethod: string;

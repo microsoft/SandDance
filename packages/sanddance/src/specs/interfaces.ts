@@ -48,8 +48,10 @@ export type Orientation = 'horizontal' | 'vertical';
 
 export type Aggregate = 'count' | 'sum' | 'percent';
 
+export type AxisScaleType = 'discrete' | 'continuous' | 'continuousAggregate' | 'zFloor' | 'zFree' | 'zDiscrete';
+
 export interface AxisScale {
-    type: 'discrete' | 'continuous' | 'continuousAggregate' | 'zFloor' | 'zFree' | 'zDiscrete';
+    type: AxisScaleType;
 
     /**
      * Only used when type = continuousAggregate

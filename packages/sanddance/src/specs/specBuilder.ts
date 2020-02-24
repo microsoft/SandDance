@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import {
-    AxisOrient,
+    Axis,
     NewSignal,
     Scale,
     Signal,
@@ -18,8 +18,15 @@ import {
 import { binnableColorScale } from './scales';
 import { colorBinCountSignal, colorReverseSignal, textSignals } from './signals';
 import { ColorScaleNone, ScaleNames, SignalNames } from './constants';
+import {
+    Column,
+    FacetStyle,
+    SpecCapabilities,
+    SpecColumns,
+    SpecContext,
+    SpecViewOptions
+} from './types';
 import { Cross, CrossProps } from './layouts/cross';
-import { FacetStyle, SpecCapabilities, SpecContext } from './types';
 import { fill, opacity } from './fill';
 import { getLegends } from './legends';
 import { LayoutBuildProps, LayoutPair, LayoutProps } from './layouts/layout';
@@ -27,6 +34,7 @@ import { minFacetSize } from './defaults';
 import { push } from '../array';
 import { Slice, SliceProps } from './layouts/slice';
 import { topLookup } from './top';
+import { util } from '@msrvida/vega-deck.gl';
 import { Wrap, WrapProps } from './layouts/wrap';
 
 export interface SpecBuilderProps {
@@ -205,7 +213,7 @@ export class SpecBuilder {
                 }
                 if (childScope) {
                     if (props.addScaleAxes && childScope.globalScales) {
-                        this.addGlobalScales(childScope.globalScales, layoutBuildProps.axesScales);
+                        this.addGlobalScales(childScope.globalScales, layoutBuildProps.axesScales, specColumns, specViewOptions);
                     }
                     //the first layout when faceting may determine the overall height
                     if (i === 0 && insight.columns.facet) {
@@ -287,15 +295,16 @@ export class SpecBuilder {
         return { topColorField, colorDataName };
     }
 
-    private addGlobalScales(globalScales: { x?: Scale, y?: Scale, z?: Scale }, axisScales: AxisScales) {
+    private addGlobalScales(globalScales: { x?: Scale, y?: Scale, z?: Scale }, axisScales: AxisScales, specColumns: SpecColumns, specViewOptions: SpecViewOptions) {
 
-        const add = (axisScale: AxisScale, scale: Scale, orient: AxisOrient) => {
+        // const add = (axisScale: AxisScale, scale: Scale, column: Column, orient: AxisOrient) => {
+        //     const pa = partialAxes(specViewOptions, AxisType.quantitative, columnToAxisType(column));
 
-        };
+        // };
 
-        add(axisScales.x, globalScales.x, 'bottom');
-        add(axisScales.y, globalScales.y, 'left');
-        add(axisScales.z, globalScales.z, 'left');
+        // add(axisScales.x, globalScales.x, specColumns.x, 'bottom');
+        // add(axisScales.y, globalScales.y, specColumns.y, 'left');
+        // add(axisScales.z, globalScales.z, specColumns.z, 'left');
 
         const { scope } = this.globalScope; //TODO if faceting, scope shoule be each facet!!
 
@@ -309,15 +318,43 @@ export class SpecBuilder {
                 if (axisScales) {
                     let axisScale: AxisScale = axisScales[s];
                     if (axisScale) {
+                        const lineColor = util.colorToString(specViewOptions.colors.axisLine);
                         switch (axisScale.type) {
                             //band scale
                             //continuous scale
                             //etc
                         }
-                        scope.axes.push({
+                        //const pa = partialAxes(specViewOptions, AxisType.quantitative, columnToAxisType(specColumns[s]));
+                        const horizontal = s === 'x';
+                        const column: Column = specColumns[s];
+                        const axis: Axis = {
                             scale: scale.name,
-                            orient: s === 'x' ? 'bottom' : 'left'
-                        });
+                            orient: horizontal ? 'bottom' : 'left',
+                            title: axisScale.aggregate ? 'TODO aggtitle' : column.name,
+                            labelAlign: horizontal ? 'left' : 'right',
+                            labelAngle: {
+                                signal: horizontal ? SignalNames.TextAngleX : SignalNames.TextAngleY
+                            },
+                            labelFontSize: {
+                                signal: SignalNames.TextSize
+                            },
+                            titleAngle: {
+                                signal: horizontal ? SignalNames.TextAngleX : SignalNames.TextAngleY
+                            },
+                            titleAlign: horizontal ? 'left' : 'right',
+                            titleFontSize: {
+                                signal: SignalNames.TextTitleSize
+                            },
+                            titleColor: util.colorToString(specViewOptions.colors.axisText),
+                            tickSize: specViewOptions.tickSize,
+                            domainColor: lineColor,
+                            tickColor: lineColor,
+                            labelColor: util.colorToString(specViewOptions.colors.axisText)
+                        };
+                        if (column.quantitative) {
+                            axis.format = '~r';
+                        }
+                        scope.axes.push(axis);
                     }
                 }
             }
