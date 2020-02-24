@@ -3,10 +3,10 @@
 import { Column, SpecCapabilities, SpecContext } from './types';
 import {
     Mark,
+    NewSignal,
     Scale,
     Scope,
-    Spec,
-    Transforms
+    Spec
 } from 'vega-typings';
 
 /**
@@ -33,6 +33,13 @@ export interface InnerScope {
     mark?: Mark;
     globalScales?: { x?: Scale, y?: Scale, z?: Scale };
     sizeSignals: SizeSignals;
+}
+
+export interface GlobalScope extends InnerScope {
+    signals: {
+        minCellX: NewSignal,
+        minCellY: NewSignal
+    }
 }
 
 export type Orientation = 'horizontal' | 'vertical';

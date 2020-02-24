@@ -4,7 +4,7 @@ import { binnable, Binnable } from '../bin';
 import { createOrdinalsForFacet } from '../ordinal';
 import { DiscreteColumn, InnerScope } from '../interfaces';
 import { facetPadding } from '../defaults';
-import { FieldNames } from '../constants';
+import { FieldNames, SignalNames } from '../constants';
 import { GroupMark } from 'vega-typings';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { push } from '../../array';
@@ -32,7 +32,6 @@ export class Wrap extends Layout {
         const facetDataName = `data_${prefix}_facet`;
         const sortedDataName = `data_${prefix}_sort`;
         const rowColumnDataName = `data_${prefix}_row_col`;
-        const mincell = `${prefix}_mincell`;
         const cellHeight = `${prefix}_cellHeight`;
         const cellWidth = `${prefix}_cellWidth`;
         const fits = `${prefix}_fits`;
@@ -121,7 +120,7 @@ export class Wrap extends Layout {
                     },
                     {
                         type: 'formula',
-                        expr: `datum.cellw >= ${mincell} && datum.cellh >= ${mincell}`,
+                        expr: `(datum.cols === 1 || datum.rows === 1) || (datum.cellw >= ${SignalNames.MinCellX} && datum.cellh >= ${SignalNames.MinCellY})`,
                         as: 'meetsmin'
                     },
                     {
@@ -204,16 +203,12 @@ export class Wrap extends Layout {
         parent.scope.signals = parent.scope.signals || [];
         parent.scope.signals.push.apply(parent.scope.signals, [
             {
-                name: mincell,
-                value: 100
-            },
-            {
                 name: target,
                 value: 1.2
             },
             {
                 name: minArea,
-                update: `${mincell}*${mincell}`
+                update: `${SignalNames.MinCellX}*${SignalNames.MinCellY}`
             },
             {
                 name: aspect,
@@ -225,7 +220,7 @@ export class Wrap extends Layout {
             },
             {
                 name: growCellCount,
-                update: `max(floor(w2 / ${mincell}), 1)`
+                update: `max(floor(w2 / ${SignalNames.MinCellX}), 1)`
             },
             {
                 name: growCellWidth,
@@ -249,7 +244,7 @@ export class Wrap extends Layout {
             },
             {
                 name: cellHeight,
-                update: `${fits} ? data(${JSON.stringify(rxc)})[0].cellh : ${mincell}`
+                update: `${fits} ? data(${JSON.stringify(rxc)})[0].cellh : ${SignalNames.MinCellY}`
             }
         ]);
 

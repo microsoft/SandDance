@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { AxisScales, InnerScope } from '../interfaces';
+import { AxisScales, GlobalScope, InnerScope } from '../interfaces';
 
 export interface LayoutProps {
     addScaleAxes?: boolean;
@@ -13,7 +13,7 @@ export interface LayoutPair {
 
 export interface LayoutBuildProps {
     axesScales: AxisScales;
-    global: InnerScope;
+    global: GlobalScope;
     parent: InnerScope;
     groupings: string[][];
     id: number;

@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import {
     AxisOrient,
+    NewSignal,
     Scale,
     Signal,
     Spec
@@ -10,6 +11,7 @@ import {
     AxisScale,
     AxisScales,
     DiscreteColumn,
+    GlobalScope,
     InnerScope,
     SpecResult
 } from './interfaces';
@@ -21,6 +23,7 @@ import { FacetStyle, SpecCapabilities, SpecContext } from './types';
 import { fill, opacity } from './fill';
 import { getLegends } from './legends';
 import { LayoutBuildProps, LayoutPair, LayoutProps } from './layouts/layout';
+import { minFacetSize } from './defaults';
 import { push } from '../array';
 import { Slice, SliceProps } from './layouts/slice';
 import { topLookup } from './top';
@@ -35,7 +38,7 @@ export interface SpecBuilderProps {
 }
 
 export class SpecBuilder {
-    public globalScope: InnerScope;
+    public globalScope: GlobalScope;
 
     constructor(public props: SpecBuilderProps & { specContext: SpecContext }) {
     }
@@ -82,6 +85,17 @@ export class SpecBuilder {
         } else {
             const { specContext } = this.props;
             const { insight, specColumns, specViewOptions } = specContext;
+
+            const minCellX: NewSignal = {
+                name: SignalNames.MinCellX,
+                update: `${minFacetSize}`
+            };
+
+            const minCellY: NewSignal = {
+                name: SignalNames.MinCellY,
+                update: `${minFacetSize}`
+            };
+
             let dataName = 'data_source';
             const vegaSpec: Spec = {
                 $schema: 'https://vega.github.io/schema/vega/v5.json',
@@ -89,7 +103,18 @@ export class SpecBuilder {
                 data: [{ name: dataName, transform: [] }],
                 marks: [],
                 scales: [],
-                signals: textSignals(specContext, 'h2')
+                signals: textSignals(specContext, 'h2').concat([
+                    minCellX,
+                    minCellY,
+                    {
+                        name: 'h2',
+                        update: `max(${SignalNames.MinCellY}, ${insight.size.height.toString()})`
+                    },
+                    {
+                        name: 'w2',
+                        update: `max(${SignalNames.MinCellX}, ${insight.size.width.toString()})`
+                    },
+                ])
             };
 
             const { topColorField, colorDataName } = this.addColor(vegaSpec, dataName);
@@ -97,9 +122,10 @@ export class SpecBuilder {
             this.globalScope = {
                 dataName: colorDataName,
                 scope: vegaSpec,
-                sizeSignals: {
-                    height: 'h2',
-                    width: 'w2'
+                sizeSignals: null,
+                signals: {
+                    minCellX,
+                    minCellY
                 }
             };
 
@@ -123,36 +149,22 @@ export class SpecBuilder {
                 push(vegaSpec.scales, manifold.scales);
                 layouts = [manifold.layoutPair, ...layouts];
 
-                //TODO figure out tile size for facets
-                vegaSpec.signals.push(
-                    {
-                        name: 'h2',
-                        update: 'height'
-                    },
-                    {
-                        name: 'w2',
-                        update: 'width'
-                    }
-                );
-                vegaSpec.height = insight.size.height;
-                vegaSpec.width = insight.size.width;
+                this.globalScope.sizeSignals = {
+                    height: minCellY.name,
+                    width: minCellX.name
+                };
+
             } else {
-                vegaSpec.signals.push(
-                    {
-                        name: 'h2',
-                        update: 'height'
-                    },
-                    {
-                        name: 'w2',
-                        update: 'width'
-                    }
-                );
-                vegaSpec.height = insight.size.height;
-                vegaSpec.width = insight.size.width;
+
+                this.globalScope.sizeSignals = {
+                    height: 'h2',
+                    width: 'w2'
+                };
+
                 //vegaSpec.autosize = 'fit';
             }
 
-            let parentScope = this.globalScope;
+            let parentScope: InnerScope = this.globalScope;
             let childScope: InnerScope;
             const groupings: string[][] = [];
             for (let i = 0; i < layouts.length; i++) {

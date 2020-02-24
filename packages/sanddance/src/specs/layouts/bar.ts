@@ -16,6 +16,7 @@ import {
 import { binnable, Binnable } from '../bin';
 import { Column } from '../types';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
+import { modifySignal } from '../signals';
 import { push } from '../../array';
 
 export interface BarBuild {
@@ -37,7 +38,6 @@ export class Bar extends Layout {
     private bin: Binnable;
     private names: {
         barCount: string,
-        minSize: string,
         facetData: string,
         globalAggregateData: string,
         globalAggregateExtentSignal: string,
@@ -45,7 +45,8 @@ export class Bar extends Layout {
         xScale: string,
         yScale: string,
         bandWidth: string,
-        scaledSize: string
+        scaledSize: string,
+        accumulative: string
     };
 
     constructor(public props: BarProps & LayoutBuildProps) {
@@ -64,7 +65,6 @@ export class Bar extends Layout {
         const aggregation = this.getAgregation();
         this.names = {
             barCount: `${prefix}_count`,
-            minSize: `${prefix}_minsize`,
             facetData: `facet_${prefix}`,
             globalAggregateData: `${prefix}_aggregate_${aggregation}`,
             globalAggregateExtentSignal: `${prefix}_${aggregation}_extent`,
@@ -73,6 +73,7 @@ export class Bar extends Layout {
             yScale: `${prefix}_scale_y`,
             bandWidth: `${prefix}_bandwidth`,
             scaledSize: `${prefix}_scaled_size`,
+            accumulative: `${prefix}_accumulative`
         };
         const { names } = this;
         const binField = bin.fields[0];
@@ -110,24 +111,39 @@ export class Bar extends Layout {
             }
         );
         //this needs to be global since the scale depends on it
-        global.scope.data.push({
-            name: names.globalAggregateData,
-            source: global.dataName,
-            transform: [
-                {
-                    ...this.getTransforms(
-                        aggregation,
-                        groupings.concat(this.getGrouping()).reduce((acc, val) => acc.concat(val), [])
-                    ),
-                    as: [aggregation]
-                },
-                {
-                    type: 'extent',
-                    field: aggregation,
-                    signal: names.globalAggregateExtentSignal
-                }
-            ]
-        });
+        global.scope.data.push(
+            {
+                name: names.globalAggregateData,
+                source: global.dataName,
+                transform: [
+                    {
+                        ...this.getTransforms(
+                            aggregation,
+                            groupings.concat(this.getGrouping()).reduce((acc, val) => acc.concat(val), [])
+                        ),
+                        as: [aggregation]
+                    },
+                    {
+                        type: 'extent',
+                        field: aggregation,
+                        signal: names.globalAggregateExtentSignal
+                    }
+                ]
+            },
+            {
+                name: names.accumulative,
+                source: global.dataName,
+                transform: [
+                    {
+                        type: 'aggregate',
+                        groupby: this.getGrouping(),
+                        ops: ['count']
+                    }
+                ]
+            }
+        );
+        const s = (orientation === 'vertical') ? props.global.signals.minCellX : props.global.signals.minCellY;
+        modifySignal(s, 'max', `length(data(${JSON.stringify(names.accumulative)}))*${minBandWidth}`);
         push(global.scope.signals,
             [
                 {
@@ -192,11 +208,15 @@ export class Bar extends Layout {
         };
         parent.scope.marks.push(mark);
 
-        const { xScale, yScale } = this.getScales(prefix, bin, minBandWidth);
+        const { xScale, yScale } = this.getScales(bin);
 
         props.onBuild && props.onBuild({
             globalAggregateMaxExtentSignal: names.globalAggregateMaxExtentSignal,
-            globalAggregateMaxExtentScaledSignal: orientation === 'horizontal' ? `scale(${JSON.stringify(names.xScale)}, ${names.globalAggregateMaxExtentSignal})` : `(${parent.sizeSignals.height} - scale(${JSON.stringify(names.yScale)}, ${names.globalAggregateMaxExtentSignal}))`,
+            globalAggregateMaxExtentScaledSignal: orientation === 'horizontal'
+                ?
+                `scale(${JSON.stringify(names.xScale)}, ${names.globalAggregateMaxExtentSignal})`
+                :
+                `(${parent.sizeSignals.height} - scale(${JSON.stringify(names.yScale)}, ${names.globalAggregateMaxExtentSignal}))`,
             bandWidth: names.bandWidth,
             parentSize: orientation === 'horizontal' ? parent.sizeSignals.width : parent.sizeSignals.height
         });
@@ -233,30 +253,10 @@ export class Bar extends Layout {
         return trans;
     }
 
-    private getScales(prefix: string, bin: Binnable, minBandWidth: number) {
+    private getScales(bin: Binnable) {
         const { names } = this;
-        const { global, groupings, orientation, parent } = this.props;
+        const { orientation, parent } = this.props;
         const binField = bin.fields[0];
-
-        const accumulative = `${prefix}_accumulative`;
-        global.scope.data.push({
-            name: accumulative,
-            source: global.dataName,
-            transform: [
-                {
-                    type: 'aggregate',
-                    groupby: groupings.concat(this.getGrouping()).reduce((acc, val) => acc.concat(val), []),
-                    ops: ['count']
-                }
-            ]
-        });
-
-        global.scope.signals.push(
-            {
-                name: names.minSize,
-                update: `length(data(${JSON.stringify(accumulative)}))*${minBandWidth}`
-            }
-        );
 
         let xScale: Scale;
         let yScale: Scale;
@@ -267,8 +267,7 @@ export class Bar extends Layout {
                 range: [
                     0,
                     {
-                        //signal: `max(${parent.sizeSignals.width},${names.minSize})`   //for minumum size of bar
-                        signal: `${parent.sizeSignals.width}`
+                        signal: parent.sizeSignals.width
                     }
                 ],
                 padding: 0.1,
@@ -321,7 +320,7 @@ export class Bar extends Layout {
                 range: [
                     0,
                     {
-                        signal: `max(${parent.sizeSignals.height},${names.minSize})`
+                        signal: parent.sizeSignals.height
                     }
                 ],
                 padding: 0.1,

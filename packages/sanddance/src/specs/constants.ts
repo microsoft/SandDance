@@ -57,6 +57,8 @@ export const ScaleNames = {
 
 //Signal names
 export const SignalNames = {
+    MinCellX: `MinCellX`,
+    MinCellY: `MinCellY`,
     ColorBinCount: 'RoleColor_BinCountSignal',
     ColorReverse: 'RoleColor_ReverseSignal',
     FacetColumns: 'RoleFacet_ColumnsSignal',

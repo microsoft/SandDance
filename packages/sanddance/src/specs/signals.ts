@@ -113,3 +113,7 @@ export function colorReverseSignal(context: SpecContext) {
     };
     return signal;
 }
+
+export function modifySignal(s: NewSignal, fn: string, update: string) {
+    s.update = `${fn}((${s.update}), (${update}))`;
+}
