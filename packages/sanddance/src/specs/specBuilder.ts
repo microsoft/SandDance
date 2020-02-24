@@ -122,7 +122,18 @@ export class SpecBuilder {
             this.globalScope = {
                 dataName: colorDataName,
                 scope: vegaSpec,
-                sizeSignals: null,
+                sizeSignals: insight.columns.facet
+                    ?
+                    {
+                        height: minCellY.name,
+                        width: minCellX.name
+                    }
+                    :
+                    {
+                        height: 'h2',
+                        width: 'w2'
+                    }
+                ,
                 signals: {
                     minCellX,
                     minCellY
@@ -144,24 +155,10 @@ export class SpecBuilder {
                     maxbinsSignalDisplayName: 'TODO facetV',
                     maxbinsSignalName: 'TODO facetV'
                 };
-                const manifold = this.getManifoldLayout(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn);
-                push(vegaSpec.signals, manifold.signals);
-                push(vegaSpec.scales, manifold.scales);
-                layouts = [manifold.layoutPair, ...layouts];
-
-                this.globalScope.sizeSignals = {
-                    height: minCellY.name,
-                    width: minCellX.name
-                };
-
-            } else {
-
-                this.globalScope.sizeSignals = {
-                    height: 'h2',
-                    width: 'w2'
-                };
-
-                //vegaSpec.autosize = 'fit';
+                const facetLayout = this.getFacetLayout(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn);
+                push(vegaSpec.signals, facetLayout.signals);
+                push(vegaSpec.scales, facetLayout.scales);
+                layouts = [facetLayout.layoutPair, ...layouts];
             }
 
             let parentScope: InnerScope = this.globalScope;
@@ -301,7 +298,7 @@ export class SpecBuilder {
         }
     }
 
-    private getManifoldLayout(facetStyle: FacetStyle, facetColumn: DiscreteColumn, facetVColumn: DiscreteColumn) {
+    private getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColumn, facetVColumn: DiscreteColumn) {
         let layoutPair: LayoutPair;
         const scales: Scale[] = [];
         const signals: Signal[] = [];
