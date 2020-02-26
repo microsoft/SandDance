@@ -54,4 +54,3 @@ export function addColor(scope: Scope, dataSource: string, specContext: SpecCont
 
     return { topColorField, colorDataName };
 }
-
