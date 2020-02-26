@@ -328,7 +328,8 @@ export class Bar extends Layout {
                     data: bin.domainDataName,
                     field: binField,
                     sort: true
-                }
+                },
+                reverse: true
             };
         }
         return { xScale, yScale };
