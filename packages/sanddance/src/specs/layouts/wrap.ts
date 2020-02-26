@@ -122,6 +122,11 @@ export class Wrap extends Layout {
                     },
                     {
                         type: 'formula',
+                        expr: `datum.rows === 1 ? max(datum.cellh, ${SignalNames.MinCellHeight}) : datum.cellh`,
+                        as: 'cellh'
+                    },
+                    {
+                        type: 'formula',
                         expr: `(datum.cellw >= ${SignalNames.MinCellWidth} && datum.cellh >= ${SignalNames.MinCellHeight})`,
                         as: 'meetsmin'
                     },
