@@ -7,6 +7,7 @@ import { facetPadding } from '../defaults';
 import { FieldNames, SignalNames } from '../constants';
 import { GroupMark } from 'vega-typings';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
+import { modifySignal } from '../signals';
 import { push } from '../../array';
 
 export interface WrapProps extends LayoutProps {
@@ -56,11 +57,11 @@ export class Wrap extends Layout {
             global.scope.data.push(bin.dataSequence);
         }
         const ord = createOrdinalsForFacet(parent.dataName, prefix, bin.fields);
-        parent.scope.data = parent.scope.data || [];
-        parent.scope.data.push(ord.data);
+        global.scope.data = global.scope.data || [];
+        global.scope.data.push(ord.data);
 
         //need to sort by the bin, since there is no scale for positioning
-        parent.scope.data.push.apply(parent.scope.data, [
+        global.scope.data.push.apply(global.scope.data, [
             {
                 name: rxc0,
                 transform: [
@@ -111,17 +112,17 @@ export class Wrap extends Layout {
                     },
                     {
                         type: 'formula',
-                        expr: `${SignalNames.ViewportX} / datum.cols`,
+                        expr: `${parent.sizeSignals.layoutWidth} / datum.cols`,
                         as: 'cellw'
                     },
                     {
                         type: 'formula',
-                        expr: `${SignalNames.ViewportY} / datum.rows`,
+                        expr: `${parent.sizeSignals.layoutHeight} / datum.rows`,
                         as: 'cellh'
                     },
                     {
                         type: 'formula',
-                        expr: `(datum.cols === 1 || datum.rows === 1) || (datum.cellw >= ${SignalNames.MinCellX} && datum.cellh >= ${SignalNames.MinCellY})`,
+                        expr: `(datum.cols === 1 || datum.rows === 1) || (datum.cellw >= ${SignalNames.MinCellWidth} && datum.cellh >= ${SignalNames.MinCellHeight})`,
                         as: 'meetsmin'
                     },
                     {
@@ -198,14 +199,14 @@ export class Wrap extends Layout {
             }
         ]);
 
-        parent.scope.scales = parent.scope.scales || [];
-        parent.scope.scales.push(ord.scale);
+        global.scope.scales = global.scope.scales || [];
+        global.scope.scales.push(ord.scale);
 
-        parent.scope.signals = parent.scope.signals || [];
-        parent.scope.signals.push.apply(parent.scope.signals, [
+        global.scope.signals = global.scope.signals || [];
+        global.scope.signals.push.apply(global.scope.signals, [
             {
                 name: minAspect,
-                update: `${SignalNames.MinCellX} / ${SignalNames.MinCellY}`
+                update: `${SignalNames.MinCellWidth} / ${SignalNames.MinCellHeight}`
             },
             {
                 name: target,
@@ -213,11 +214,11 @@ export class Wrap extends Layout {
             },
             {
                 name: minArea,
-                update: `${SignalNames.MinCellX}*${SignalNames.MinCellY}`
+                update: `${SignalNames.MinCellWidth}*${SignalNames.MinCellHeight}`
             },
             {
                 name: aspect,
-                update: `${SignalNames.ViewportX} / ${SignalNames.ViewportY}`
+                update: `${parent.sizeSignals.layoutWidth} / ${parent.sizeSignals.layoutHeight}`
             },
             {
                 name: dataLength,
@@ -225,15 +226,15 @@ export class Wrap extends Layout {
             },
             {
                 name: growColCount,
-                update: `max(floor(${SignalNames.ViewportX} / ${SignalNames.MinCellX}), 1)`
+                update: `max(floor(${parent.sizeSignals.layoutWidth} / ${SignalNames.MinCellWidth}), 1)`
             },
             {
                 name: growCellWidth,
-                update: `${SignalNames.ViewportX} / ${growColCount}`
+                update: `${parent.sizeSignals.layoutWidth} / ${growColCount}`
             },
             {
                 name: fitsArea,
-                update: `((${dataLength} * ${minArea}) <= (${SignalNames.ViewportX} * ${SignalNames.ViewportY}))`
+                update: `((${dataLength} * ${minArea}) <= (${parent.sizeSignals.layoutWidth} * ${parent.sizeSignals.layoutHeight}))`
             },
             {
                 name: fits,
@@ -249,9 +250,12 @@ export class Wrap extends Layout {
             },
             {
                 name: cellHeight,
-                update: `${fits} ? data(${JSON.stringify(rxc)})[0].cellh : ${SignalNames.MinCellY}`
+                update: `${fits} ? data(${JSON.stringify(rxc)})[0].cellh : ${SignalNames.MinCellHeight}`
             }
         ]);
+
+        modifySignal(global.signals.plotHeightOut, 'max', `(${cellHeight} * ceil(${dataLength} / ${colCount}))`);
+        modifySignal(global.signals.plotWidthOut, 'max', `(${cellWidth} * ${colCount})`);
 
         const mark: GroupMark = {
             style: 'cell',
@@ -288,10 +292,8 @@ export class Wrap extends Layout {
             dataName: facetDataName,
             scope: mark,
             sizeSignals: {
-                facetHeight: `(${cellHeight} - ${facetPadding})`,
-                facetWidth: `(${cellWidth} - ${facetPadding})`,
-                totalHeight: `(${cellHeight} * ceil(${dataLength} / ${colCount}))`,
-                totalWidth: `(${cellWidth} * ${colCount})`
+                layoutHeight: `(${cellHeight} - ${facetPadding})`,
+                layoutWidth: `(${cellWidth} - ${facetPadding})`
             }
         };
     }

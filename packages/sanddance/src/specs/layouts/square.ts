@@ -123,8 +123,8 @@ export class Square extends Layout {
             scope,
             mark: !groupby && mark as RectMark,
             sizeSignals: {
-                facetHeight: names.size,
-                facetWidth: names.size
+                layoutHeight: names.size,
+                layoutWidth: names.size
             }
         };
     }
@@ -133,9 +133,9 @@ export class Square extends Layout {
         const { sizeSignals } = this.props.parent;
         switch (this.props.fillDirection) {
             case 'down-right':
-                return sizeSignals.facetHeight;
+                return sizeSignals.layoutHeight;
             default:
-                return sizeSignals.facetWidth;
+                return sizeSignals.layoutWidth;
         }
     }
 
@@ -172,7 +172,7 @@ export class Square extends Layout {
             maxGroupedUnits = `length(data(${JSON.stringify(parent.dataName)}))`;
         }
         if (!maxGroupedFillSize) {
-            maxGroupedFillSize = fillDirection === 'down-right' ? parent.sizeSignals.facetWidth : parent.sizeSignals.facetHeight;
+            maxGroupedFillSize = fillDirection === 'down-right' ? parent.sizeSignals.layoutWidth : parent.sizeSignals.layoutHeight;
         }
 
         const aspect = `((${names.bandWidth})/(${maxGroupedFillSize}))`;
@@ -181,7 +181,7 @@ export class Square extends Layout {
         push(parent.scope.signals, [
             {
                 name: names.aspect,
-                update: aspect || `${global.sizeSignals.facetWidth}/${props.fillDirection === 'down-right' ? global.sizeSignals.facetWidth : global.sizeSignals.facetHeight}`
+                update: aspect || `${global.sizeSignals.layoutWidth}/${props.fillDirection === 'down-right' ? global.sizeSignals.layoutWidth : global.sizeSignals.layoutHeight}`
             },
             {
                 name: names.squaresPerBand,
@@ -228,7 +228,7 @@ export class Square extends Layout {
                         signal: compartment
                     },
                     y: {
-                        signal: `(${parent.sizeSignals.facetHeight})-${names.levelSize}-${level}*(${names.levelSize}+${names.gap})`
+                        signal: `(${parent.sizeSignals.layoutHeight})-${names.levelSize}-${level}*(${names.levelSize}+${names.gap})`
                     }
                 };
             }

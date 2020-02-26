@@ -142,7 +142,7 @@ export class Bar extends Layout {
                 ]
             }
         );
-        const s = (orientation === 'vertical') ? props.global.signals.minCellX : props.global.signals.minCellY;
+        const s = (orientation === 'vertical') ? props.global.signals.minCellWidth : props.global.signals.minCellHeight;
         modifySignal(s, 'max', `length(data(${JSON.stringify(names.accumulative)}))*${minBandWidth}`);
         push(global.scope.signals,
             [
@@ -197,7 +197,7 @@ export class Bar extends Layout {
                             signal: `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(aggregation)}])`
                         },
                         height: {
-                            signal: `${parent.sizeSignals.facetHeight} - scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(aggregation)}])`
+                            signal: `${parent.sizeSignals.layoutHeight} - scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(aggregation)}])`
                         },
                         width: {
                             signal: names.bandWidth
@@ -216,9 +216,9 @@ export class Bar extends Layout {
                 ?
                 `scale(${JSON.stringify(names.xScale)}, ${names.globalAggregateMaxExtentSignal})`
                 :
-                `(${parent.sizeSignals.facetHeight} - scale(${JSON.stringify(names.yScale)}, ${names.globalAggregateMaxExtentSignal}))`,
+                `(${parent.sizeSignals.layoutHeight} - scale(${JSON.stringify(names.yScale)}, ${names.globalAggregateMaxExtentSignal}))`,
             bandWidth: names.bandWidth,
-            parentSize: orientation === 'horizontal' ? parent.sizeSignals.facetWidth : parent.sizeSignals.facetHeight
+            parentSize: orientation === 'horizontal' ? parent.sizeSignals.layoutWidth : parent.sizeSignals.layoutHeight
         });
 
         return {
@@ -226,13 +226,13 @@ export class Bar extends Layout {
             scope: mark,
             sizeSignals: orientation === 'horizontal' ?
                 {
-                    facetHeight: names.bandWidth,
-                    facetWidth: `scale(${JSON.stringify(names.xScale)}, data('pivot')[0][datum[${JSON.stringify(binField)}]])`
+                    layoutHeight: names.bandWidth,
+                    layoutWidth: `scale(${JSON.stringify(names.xScale)}, data('pivot')[0][datum[${JSON.stringify(binField)}]])`
                 }
                 :
                 {
-                    facetHeight: `${parent.sizeSignals.facetHeight} - scale(${JSON.stringify(names.yScale)}, data('pivot')[0][datum[${JSON.stringify(binField)}]])`,
-                    facetWidth: names.bandWidth
+                    layoutHeight: `${parent.sizeSignals.layoutHeight} - scale(${JSON.stringify(names.yScale)}, data('pivot')[0][datum[${JSON.stringify(binField)}]])`,
+                    layoutWidth: names.bandWidth
                 },
             globalScales: {
                 x: xScale,
@@ -267,7 +267,7 @@ export class Bar extends Layout {
                 range: [
                     0,
                     {
-                        signal: parent.sizeSignals.facetWidth
+                        signal: parent.sizeSignals.layoutWidth
                     }
                 ],
                 padding: 0.1,
@@ -288,7 +288,7 @@ export class Bar extends Layout {
                 ],
                 range: [
                     {
-                        signal: parent.sizeSignals.facetHeight
+                        signal: parent.sizeSignals.layoutHeight
                     },
                     0
                 ],
@@ -308,7 +308,7 @@ export class Bar extends Layout {
                 range: [
                     0,
                     {
-                        signal: parent.sizeSignals.facetWidth
+                        signal: parent.sizeSignals.layoutWidth
                     }
                 ],
                 nice: true,
@@ -320,7 +320,7 @@ export class Bar extends Layout {
                 range: [
                     0,
                     {
-                        signal: parent.sizeSignals.facetHeight
+                        signal: parent.sizeSignals.layoutHeight
                     }
                 ],
                 padding: 0.1,

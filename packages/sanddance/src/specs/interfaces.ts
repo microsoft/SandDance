@@ -23,10 +23,8 @@ export interface SpecCreator {
 }
 
 export interface SizeSignals {
-    facetHeight: string;
-    facetWidth: string;
-    totalHeight?: string;
-    totalWidth?: string;
+    layoutHeight: string;
+    layoutWidth: string;
 }
 
 export interface InnerScope {
@@ -39,8 +37,10 @@ export interface InnerScope {
 
 export interface GlobalScope extends InnerScope {
     signals: {
-        minCellX: NewSignal,
-        minCellY: NewSignal
+        minCellWidth: NewSignal;
+        minCellHeight: NewSignal;
+        plotHeightOut: NewSignal;
+        plotWidthOut: NewSignal;
     }
 }
 

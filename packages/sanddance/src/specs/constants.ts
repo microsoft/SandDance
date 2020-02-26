@@ -57,10 +57,15 @@ export const ScaleNames = {
 
 //Signal names
 export const SignalNames = {
-    ViewportX: 'ViewportX',
-    ViewportY: 'ViewportY',
-    MinCellX: `MinCellX`,
-    MinCellY: `MinCellY`,
+    ViewportOffsetX: 'ViewportOffsetX',
+    ViewportWidth: 'ViewportWidth',
+    ViewportHeight: 'ViewportHeight',
+    MinCellWidth: 'MinCellWidth',
+    MinCellHeight: 'MinCellHeight',
+    PlotHeightIn: 'PlotHeightIn',
+    PlotWidthIn: 'PlotWidthIn',
+    PlotHeightOut: 'PlotHeightOut',
+    PlotWidthOut: 'PlotWidthOut',
     ColorBinCount: 'RoleColor_BinCountSignal',
     ColorReverse: 'RoleColor_ReverseSignal',
     FacetColumns: 'RoleFacet_ColumnsSignal',

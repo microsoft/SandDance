@@ -68,7 +68,7 @@ export class Slice extends Layout {
         return {
             dataName: facetDataName,
             scope: mark,
-            sizeSignals: { facetHeight: 'TODO', facetWidth: 'TODO' }
+            sizeSignals: { layoutHeight: 'TODO', layoutWidth: 'TODO' }
         };
 
     }

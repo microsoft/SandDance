@@ -2,8 +2,10 @@
 // Licensed under the MIT license.
 import {
     Axis,
+    GroupMark,
     NewSignal,
     Scale,
+    Scope,
     Signal,
     Spec
 } from 'vega-typings';
@@ -94,34 +96,98 @@ export class SpecBuilder {
             const { specContext } = this.props;
             const { insight, specColumns, specViewOptions } = specContext;
 
-            const minCellX: NewSignal = {
-                name: SignalNames.MinCellX,
+            const minCellWidth: NewSignal = {
+                name: SignalNames.MinCellWidth,
                 update: `${minFacetSize}`
             };
 
-            const minCellY: NewSignal = {
-                name: SignalNames.MinCellY,
+            const minCellHeight: NewSignal = {
+                name: SignalNames.MinCellHeight,
                 update: `${minFacetSize}`
+            };
+
+            const plotHeightOut: NewSignal = {
+                name: SignalNames.PlotHeightOut,
+                update: SignalNames.PlotHeightIn
+            };
+
+            const plotWidthOut: NewSignal = {
+                name: SignalNames.PlotWidthOut,
+                update: SignalNames.PlotWidthIn
             };
 
             let dataName = 'data_source';
             const vegaSpec: Spec = {
                 $schema: 'https://vega.github.io/schema/vega/v5.json',
-                axes: [],
-                data: [{ name: dataName, transform: [] }],
-                marks: [],
+                data: [
+                    {
+                        name: dataName,
+                        transform: []
+                    }
+                ],
+                style: 'cell',
+                marks: [
+                    {
+                        type: 'group',
+                        role: '',
+                        style: 'cell',
+                        encode: {
+                            update: {
+                                x: {
+                                    signal: SignalNames.ViewportOffsetX
+                                },
+                                y: {
+                                    value: 0
+                                },
+                                height: {
+                                    signal: SignalNames.PlotHeightOut
+                                },
+                                width: {
+                                    signal: SignalNames.PlotWidthOut
+                                }
+                            }
+                        },
+                        marks: [],
+                        axes: [],
+                        scales: [],
+                        data: [],
+                        signals: []
+                    }
+                ],
                 scales: [],
-                signals: textSignals(specContext, SignalNames.ViewportY).concat([
-                    minCellX,
-                    minCellY,
+                signals: textSignals(specContext, SignalNames.ViewportHeight).concat([
+                    minCellWidth,
+                    minCellHeight,
                     {
-                        name: SignalNames.ViewportY,
-                        update: `max(${SignalNames.MinCellY}, ${insight.size.height.toString()})`
+                        name: SignalNames.ViewportOffsetX,
+                        update: `200`
                     },
                     {
-                        name: SignalNames.ViewportX,
-                        update: `max(${SignalNames.MinCellX}, ${insight.size.width.toString()})`
+                        name: SignalNames.ViewportHeight,
+                        update: `max(${SignalNames.MinCellHeight}, ${insight.size.height})`
                     },
+                    {
+                        name: SignalNames.ViewportWidth,
+                        update: `max(${SignalNames.MinCellWidth}, ${insight.size.width})`
+                    },
+                    {
+                        name: SignalNames.PlotHeightIn,
+                        update: `${SignalNames.ViewportHeight} - 200`
+                    },
+                    {
+                        name: SignalNames.PlotWidthIn,
+                        update: `${SignalNames.ViewportWidth} - 200`
+                    },
+                    plotHeightOut,
+                    plotWidthOut,
+                    {
+                        name: 'height',
+                        update: `${SignalNames.PlotHeightOut} + 200`
+                    },
+                    {
+                        name: 'width',
+                        update: `${SignalNames.PlotWidthOut} + 200`
+                    }
                 ])
             };
 
@@ -130,21 +196,15 @@ export class SpecBuilder {
             this.globalScope = {
                 dataName: colorDataName,
                 scope: vegaSpec,
-                sizeSignals: insight.columns.facet
-                    ?
-                    {
-                        facetHeight: minCellY.name,
-                        facetWidth: minCellX.name
-                    }
-                    :
-                    {
-                        facetHeight: SignalNames.ViewportY,
-                        facetWidth: SignalNames.ViewportX
-                    }
-                ,
+                sizeSignals: {
+                    layoutHeight: SignalNames.PlotHeightIn,
+                    layoutWidth: SignalNames.PlotWidthIn
+                },
                 signals: {
-                    minCellX,
-                    minCellY
+                    minCellWidth,
+                    minCellHeight,
+                    plotHeightOut,
+                    plotWidthOut
                 }
             };
 
@@ -167,20 +227,15 @@ export class SpecBuilder {
                 push(vegaSpec.signals, facetLayout.signals);
                 push(vegaSpec.scales, facetLayout.scales);
                 layouts = [facetLayout.layoutPair, ...layouts];
-            } else {
-                vegaSpec.signals.push(
-                    {
-                        name: 'height',
-                        update: SignalNames.ViewportY
-                    },
-                    {
-                        name: 'width',
-                        update: SignalNames.ViewportX
-                    }
-                );
             }
 
-            let parentScope: InnerScope = this.globalScope;
+            const group1 = vegaSpec.marks[0] as GroupMark;
+
+            let parentScope: InnerScope = {
+                dataName: colorDataName,
+                sizeSignals: this.globalScope.sizeSignals,
+                scope: group1
+            };
             let childScope: InnerScope;
             const groupings: string[][] = [];
             for (let i = 0; i < layouts.length; i++) {
@@ -213,23 +268,24 @@ export class SpecBuilder {
                 }
                 if (childScope) {
                     if (props.addScaleAxes && childScope.globalScales) {
-                        this.addGlobalScales(childScope.globalScales, layoutBuildProps.axesScales, specColumns, specViewOptions);
+                        this.addGlobalScales(childScope.globalScales, layoutBuildProps.axesScales, specColumns, specViewOptions, group1.axes);
                     }
-                    //the first layout when faceting may determine the overall height
-                    if (i === 0 && insight.columns.facet) {
-                        if (childScope.sizeSignals.totalHeight) {
-                            vegaSpec.signals.push({
-                                name: 'height',
-                                update: childScope.sizeSignals.totalHeight
-                            });
-                        }
-                        if (childScope.sizeSignals.totalWidth) {
-                            vegaSpec.signals.push({
-                                name: 'width',
-                                update: childScope.sizeSignals.totalWidth
-                            });
-                        }
-                    }
+                    // //the first layout when faceting may determine the overall height
+                    // if (i === 0 && insight.columns.facet) {
+                    //     if (childScope.sizeSignals.totalHeight) {
+                    //         modifySignal plotHeightOut
+                    //         group1.signals.push({
+                    //             name: 'height',
+                    //             update: childScope.sizeSignals.totalHeight
+                    //         });
+                    //     }
+                    //     if (childScope.sizeSignals.totalWidth) {
+                    //         group1.signals.push({
+                    //             name: 'width',
+                    //             update: childScope.sizeSignals.totalWidth
+                    //         });
+                    //     }
+                    // }
                 }
                 parentScope = childScope;
             }
@@ -248,28 +304,28 @@ export class SpecBuilder {
         }
     }
 
-    private addColor(vegaSpec: Spec, dataSource: string) {
+    private addColor(scope: Scope, dataSource: string) {
         let colorDataName = dataSource;
         const { specContext } = this.props;
         const { insight, specColumns, specViewOptions } = specContext;
         const legends = getLegends(specContext);
         if (legends) {
-            vegaSpec.legends = legends;
+            scope.legends = legends;
         }
 
         const topColorField = 'top_color';
         const categoricalColor = specColumns.color && !specColumns.color.quantitative;
         if (categoricalColor) {
             const legendName = 'data_legend';
-            push(vegaSpec.data, topLookup(specColumns.color, specViewOptions.maxLegends, dataSource, legendName, 'top_colors', topColorField));
+            push(scope.data, topLookup(specColumns.color, specViewOptions.maxLegends, dataSource, legendName, 'top_colors', topColorField));
             colorDataName = legendName;
         }
 
         if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
             if (specColumns.color.quantitative) {
-                vegaSpec.scales.push(binnableColorScale(insight.colorBin, dataSource, specColumns.color.name, insight.scheme));
+                scope.scales.push(binnableColorScale(insight.colorBin, dataSource, specColumns.color.name, insight.scheme));
             } else {
-                vegaSpec.scales.push(
+                scope.scales.push(
                     {
                         name: ScaleNames.Color,
                         type: 'ordinal',
@@ -287,7 +343,7 @@ export class SpecBuilder {
             }
         }
 
-        push(vegaSpec.signals, [
+        push(scope.signals, [
             colorBinCountSignal(specContext),
             colorReverseSignal(specContext)
         ]);
@@ -295,7 +351,7 @@ export class SpecBuilder {
         return { topColorField, colorDataName };
     }
 
-    private addGlobalScales(globalScales: { x?: Scale, y?: Scale, z?: Scale }, axisScales: AxisScales, specColumns: SpecColumns, specViewOptions: SpecViewOptions) {
+    private addGlobalScales(globalScales: { x?: Scale, y?: Scale, z?: Scale }, axisScales: AxisScales, specColumns: SpecColumns, specViewOptions: SpecViewOptions, axes: Axis[]) {
 
         // const add = (axisScale: AxisScale, scale: Scale, column: Column, orient: AxisOrient) => {
         //     const pa = partialAxes(specViewOptions, AxisType.quantitative, columnToAxisType(column));
@@ -354,7 +410,7 @@ export class SpecBuilder {
                         if (column.quantitative) {
                             axis.format = '~r';
                         }
-                        scope.axes.push(axis);
+                        axes.push(axis);
                     }
                 }
             }
