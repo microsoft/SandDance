@@ -12,6 +12,7 @@ import { DiscreteColumn } from './interfaces';
 export interface BaseBinnable {
     fields: string[];
     domainDataName: string;
+    fullScaleDataname: string;
 }
 
 export interface NativeBinnable extends BaseBinnable {
@@ -97,13 +98,15 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
             binSignal,
             dataSequence,
             domainDataName,
-            maxbinsSignal
+            maxbinsSignal,
+            fullScaleDataname: dataSequence.name
         };
     } else {
         return {
             native: true,
             fields: [column.name],
-            domainDataName
+            domainDataName,
+            fullScaleDataname: domainDataName
         };
     }
 }

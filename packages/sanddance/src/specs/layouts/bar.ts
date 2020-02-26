@@ -132,7 +132,7 @@ export class Bar extends Layout {
             },
             {
                 name: names.accumulative,
-                source: global.dataName,
+                source: bin.fullScaleDataname,
                 transform: [
                     {
                         type: 'aggregate',
