@@ -42,7 +42,7 @@ export class Square extends Layout {
         super(props);
         this.prefix = `square_${this.id}`;
         if (props.groupby) {
-            this.bin = binnable(this.prefix, props.global.dataName, props.groupby);
+            this.bin = binnable(this.prefix, props.globalScope.dataName, props.groupby);
         }
     }
 
@@ -52,7 +52,7 @@ export class Square extends Layout {
 
     public build(): InnerScope {
         const { props } = this;
-        const { fillDirection, global, groupby, parent } = props;
+        const { fillDirection, globalScope, groupby, parentScope } = props;
         const prefix = `square_${this.id}`;
         this.names = {
             dataName: `data_${prefix}`,
@@ -85,7 +85,7 @@ export class Square extends Layout {
                 }
             }
         };
-        parent.scope.marks.push(mark);
+        parentScope.scope.marks.push(mark);
 
         let dataName: string
         let scope: Scope;
@@ -94,11 +94,11 @@ export class Square extends Layout {
             const groupMark = mark as GroupMark;
             const { bin } = this;
             if (bin.native === false) {
-                global.scope.signals.push(bin.maxbinsSignal);
-                push(global.scope.data[0].transform, bin.transforms);
-                global.scope.data.push(bin.dataSequence);
+                globalScope.scope.signals.push(bin.maxbinsSignal);
+                push(globalScope.scope.data[0].transform, bin.transforms);
+                globalScope.scope.data.push(bin.dataSequence);
             }
-            const ord = createOrdinalsForFacet(parent.dataName, prefix, bin.fields);
+            const ord = createOrdinalsForFacet(parentScope.dataName, prefix, bin.fields);
             groupMark.data = [ord.data];
             groupMark.scales = [ord.scale];
             const childMark: GroupMark = {
@@ -130,7 +130,7 @@ export class Square extends Layout {
     }
 
     private getBandWidth() {
-        const { sizeSignals } = this.props.parent;
+        const { sizeSignals } = this.props.parentScope;
         switch (this.props.fillDirection) {
             case 'down-right':
                 return sizeSignals.layoutHeight;
@@ -140,7 +140,7 @@ export class Square extends Layout {
     }
 
     private addData() {
-        const { parent, sortBy } = this.props;
+        const { parentScope, sortBy } = this.props;
         const { names } = this;
         const transform: Transforms[] = [
             {
@@ -155,33 +155,33 @@ export class Square extends Layout {
                 sort: { field: sortBy.name }
             });
         }
-        parent.scope.data = parent.scope.data || [];
-        parent.scope.data.push({
+        parentScope.scope.data = parentScope.scope.data || [];
+        parentScope.scope.data.push({
             name: names.dataName,
-            source: parent.dataName,
+            source: parentScope.dataName,
             transform
         });
     }
 
     private addSignals() {
         const { names, props } = this;
-        const { fillDirection, global, parent } = props;
+        const { fillDirection, globalScope, parentScope } = props;
         let { maxGroupedFillSize, maxGroupedUnits } = props;
 
         if (!maxGroupedUnits) {
-            maxGroupedUnits = `length(data(${JSON.stringify(parent.dataName)}))`;
+            maxGroupedUnits = `length(data(${JSON.stringify(parentScope.dataName)}))`;
         }
         if (!maxGroupedFillSize) {
-            maxGroupedFillSize = fillDirection === 'down-right' ? parent.sizeSignals.layoutWidth : parent.sizeSignals.layoutHeight;
+            maxGroupedFillSize = fillDirection === 'down-right' ? parentScope.sizeSignals.layoutWidth : parentScope.sizeSignals.layoutHeight;
         }
 
         const aspect = `((${names.bandWidth})/(${maxGroupedFillSize}))`;
 
-        parent.scope.signals = parent.scope.signals || [];
-        push(parent.scope.signals, [
+        parentScope.scope.signals = parentScope.scope.signals || [];
+        push(parentScope.scope.signals, [
             {
                 name: names.aspect,
-                update: aspect || `${global.sizeSignals.layoutWidth}/${props.fillDirection === 'down-right' ? global.sizeSignals.layoutWidth : global.sizeSignals.layoutHeight}`
+                update: aspect || `${globalScope.sizeSignals.layoutWidth}/${props.fillDirection === 'down-right' ? globalScope.sizeSignals.layoutWidth : globalScope.sizeSignals.layoutHeight}`
             },
             {
                 name: names.squaresPerBand,
@@ -210,7 +210,7 @@ export class Square extends Layout {
         const { names } = this;
         const compartment = `${names.bandWidth}/${names.squaresPerBand}*((datum[${JSON.stringify(names.index)}]-1)%${names.squaresPerBand})`;
         const level = `floor((datum[${JSON.stringify(names.index)}]-1)/${names.squaresPerBand})`;
-        const { fillDirection, parent } = this.props;
+        const { fillDirection, parentScope } = this.props;
         switch (fillDirection) {
             case 'down-right': {
                 return {
@@ -228,7 +228,7 @@ export class Square extends Layout {
                         signal: compartment
                     },
                     y: {
-                        signal: `(${parent.sizeSignals.layoutHeight})-${names.levelSize}-${level}*(${names.levelSize}+${names.gap})`
+                        signal: `(${parentScope.sizeSignals.layoutHeight})-${names.levelSize}-${level}*(${names.levelSize}+${names.gap})`
                     }
                 };
             }

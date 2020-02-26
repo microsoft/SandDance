@@ -21,8 +21,8 @@ export class Density extends Layout {
     constructor(public props: DensityProps & LayoutBuildProps) {
         super(props);
         this.prefix = `density_${this.id}`;
-        this.binX = binnable(this.prefix, props.global.dataName, props.groupbyX);
-        this.binY = binnable(this.prefix, props.global.dataName, props.groupbyY);
+        this.binX = binnable(this.prefix, props.globalScope.dataName, props.groupbyX);
+        this.binY = binnable(this.prefix, props.globalScope.dataName, props.groupbyY);
     }
 
     public getGrouping() {

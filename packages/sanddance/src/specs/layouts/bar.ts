@@ -52,7 +52,7 @@ export class Bar extends Layout {
     constructor(public props: BarProps & LayoutBuildProps) {
         super(props);
         this.prefix = `bar_${this.id}`;
-        this.bin = binnable(this.prefix, props.global.dataName, props.groupby);
+        this.bin = binnable(this.prefix, props.globalScope.dataName, props.groupby);
     }
 
     public getGrouping() {
@@ -61,7 +61,7 @@ export class Bar extends Layout {
 
     public build(): InnerScope {
         const { bin, prefix, props } = this;
-        const { global, groupings, minBandWidth, orientation, parent, sumBy } = props;
+        const { globalScope, groupings, minBandWidth, orientation, parentScope, sumBy } = props;
         const aggregation = this.getAgregation();
         this.names = {
             barCount: `${prefix}_count`,
@@ -78,16 +78,16 @@ export class Bar extends Layout {
         const { names } = this;
         const binField = bin.fields[0];
         if (bin.native === false) {
-            global.scope.signals.push(bin.maxbinsSignal);
-            push(global.scope.data[0].transform, bin.transforms);
-            global.scope.data.push(bin.dataSequence);
+            globalScope.scope.signals.push(bin.maxbinsSignal);
+            push(globalScope.scope.data[0].transform, bin.transforms);
+            globalScope.scope.data.push(bin.dataSequence);
         }
 
-        parent.scope.data = parent.scope.data || [];
-        parent.scope.data.push(
+        parentScope.scope.data = parentScope.scope.data || [];
+        parentScope.scope.data.push(
             {
                 name: 'local',  //TODO
-                source: parent.dataName,
+                source: parentScope.dataName,
                 transform: [
                     {
                         ...this.getTransforms(
@@ -111,10 +111,10 @@ export class Bar extends Layout {
             }
         );
         //this needs to be global since the scale depends on it
-        global.scope.data.push(
+        globalScope.scope.data.push(
             {
                 name: names.globalAggregateData,
-                source: global.dataName,
+                source: globalScope.dataName,
                 transform: [
                     {
                         ...this.getTransforms(
@@ -142,9 +142,9 @@ export class Bar extends Layout {
                 ]
             }
         );
-        const s = (orientation === 'vertical') ? props.global.signals.minCellWidth : props.global.signals.minCellHeight;
+        const s = (orientation === 'vertical') ? props.globalScope.signals.minCellWidth : props.globalScope.signals.minCellHeight;
         modifySignal(s, 'max', `length(data(${JSON.stringify(names.accumulative)}))*${minBandWidth}`);
-        push(global.scope.signals,
+        push(globalScope.scope.signals,
             [
                 {
                     name: names.globalAggregateMaxExtentSignal,
@@ -163,7 +163,7 @@ export class Bar extends Layout {
             from: {
                 facet: {
                     name: names.facetData,
-                    data: parent.dataName,
+                    data: parentScope.dataName,
                     groupby: bin.fields,
                     aggregate: {
                         fields: [aggregation === 'sum' ? sumBy.name : null],
@@ -197,7 +197,7 @@ export class Bar extends Layout {
                             signal: `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(aggregation)}])`
                         },
                         height: {
-                            signal: `${parent.sizeSignals.layoutHeight} - scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(aggregation)}])`
+                            signal: `${parentScope.sizeSignals.layoutHeight} - scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(aggregation)}])`
                         },
                         width: {
                             signal: names.bandWidth
@@ -206,7 +206,7 @@ export class Bar extends Layout {
             },
             marks: []
         };
-        parent.scope.marks.push(mark);
+        parentScope.scope.marks.push(mark);
 
         const { xScale, yScale } = this.getScales(bin);
 
@@ -216,9 +216,9 @@ export class Bar extends Layout {
                 ?
                 `scale(${JSON.stringify(names.xScale)}, ${names.globalAggregateMaxExtentSignal})`
                 :
-                `(${parent.sizeSignals.layoutHeight} - scale(${JSON.stringify(names.yScale)}, ${names.globalAggregateMaxExtentSignal}))`,
+                `(${parentScope.sizeSignals.layoutHeight} - scale(${JSON.stringify(names.yScale)}, ${names.globalAggregateMaxExtentSignal}))`,
             bandWidth: names.bandWidth,
-            parentSize: orientation === 'horizontal' ? parent.sizeSignals.layoutWidth : parent.sizeSignals.layoutHeight
+            parentSize: orientation === 'horizontal' ? parentScope.sizeSignals.layoutWidth : parentScope.sizeSignals.layoutHeight
         });
 
         return {
@@ -231,7 +231,7 @@ export class Bar extends Layout {
                 }
                 :
                 {
-                    layoutHeight: `${parent.sizeSignals.layoutHeight} - scale(${JSON.stringify(names.yScale)}, data('pivot')[0][datum[${JSON.stringify(binField)}]])`,
+                    layoutHeight: `${parentScope.sizeSignals.layoutHeight} - scale(${JSON.stringify(names.yScale)}, data('pivot')[0][datum[${JSON.stringify(binField)}]])`,
                     layoutWidth: names.bandWidth
                 },
             globalScales: {
@@ -255,7 +255,7 @@ export class Bar extends Layout {
 
     private getScales(bin: Binnable) {
         const { names } = this;
-        const { orientation, parent } = this.props;
+        const { orientation, parentScope } = this.props;
         const binField = bin.fields[0];
 
         let xScale: Scale;
@@ -267,7 +267,7 @@ export class Bar extends Layout {
                 range: [
                     0,
                     {
-                        signal: parent.sizeSignals.layoutWidth
+                        signal: parentScope.sizeSignals.layoutWidth
                     }
                 ],
                 padding: 0.1,
@@ -288,7 +288,7 @@ export class Bar extends Layout {
                 ],
                 range: [
                     {
-                        signal: parent.sizeSignals.layoutHeight
+                        signal: parentScope.sizeSignals.layoutHeight
                     },
                     0
                 ],
@@ -308,7 +308,7 @@ export class Bar extends Layout {
                 range: [
                     0,
                     {
-                        signal: parent.sizeSignals.layoutWidth
+                        signal: parentScope.sizeSignals.layoutWidth
                     }
                 ],
                 nice: true,
@@ -320,7 +320,7 @@ export class Bar extends Layout {
                 range: [
                     0,
                     {
-                        signal: parent.sizeSignals.layoutHeight
+                        signal: parentScope.sizeSignals.layoutHeight
                     }
                 ],
                 padding: 0.1,

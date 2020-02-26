@@ -13,7 +13,7 @@ export class Treemap extends Layout {
 
     public build(): InnerScope {
         const { props } = this;
-        const { global, parent } = props;
+        const { globalScope, parentScope } = props;
         const prefix = `square_${this.id}`;
         const facetDataName = `facet_${prefix}`;
         const mark: Mark = {
@@ -21,7 +21,7 @@ export class Treemap extends Layout {
             name: 'X',
             type: 'group',
             from: {
-                data: parent.dataName
+                data: parentScope.dataName
             },
 
             //TODO implement corner
@@ -30,12 +30,12 @@ export class Treemap extends Layout {
             },
             marks: []
         };
-        parent.scope.marks.push(mark);
+        parentScope.scope.marks.push(mark);
 
         return {
             dataName: facetDataName,
             scope: mark,
-            sizeSignals: parent.sizeSignals
+            sizeSignals: parentScope.sizeSignals
         };
     }
 

@@ -26,7 +26,7 @@ export class Scatter extends Layout {
         // filterInvalidWhenNumeric(specColumns.z),
 
         //TODO use main scales 
-        const { scales, signals } = this.props.global.scope;
+        const { scales, signals } = this.props.globalScope.scope;
         //push(scales, getScales(specContext));
         //push(signals, getSignals(specContext));
 

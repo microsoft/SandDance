@@ -13,8 +13,8 @@ export interface LayoutPair {
 
 export interface LayoutBuildProps {
     axesScales: AxisScales;
-    global: GlobalScope;
-    parent: InnerScope;
+    globalScope: GlobalScope;
+    parentScope: InnerScope;
     groupings: string[][];
     id: number;
 }

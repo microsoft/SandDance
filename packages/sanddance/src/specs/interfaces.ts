@@ -29,11 +29,17 @@ export interface SizeSignals {
     rowCount?: string;
 }
 
+export interface GlobalScales {
+    x?: Scale;
+    y?: Scale;
+    z?: Scale;
+}
+
 export interface InnerScope {
     dataName: string;
     scope?: Scope;
     mark?: Mark;
-    globalScales?: { x?: Scale, y?: Scale, z?: Scale };
+    globalScales?: GlobalScales;
     sizeSignals: SizeSignals;
 }
 

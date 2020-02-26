@@ -17,7 +17,7 @@ export class Slice extends Layout {
     constructor(public props: SliceProps & LayoutBuildProps) {
         super(props);
         this.prefix = `slice_${this.id}`;
-        this.bin = binnable(this.prefix, props.global.dataName, props.groupby);
+        this.bin = binnable(this.prefix, props.globalScope.dataName, props.groupby);
     }
 
     public getGrouping() {
@@ -26,13 +26,13 @@ export class Slice extends Layout {
 
     public build(): InnerScope {
         const { bin, prefix, props } = this;
-        const { global, parent } = props;
+        const { globalScope, parentScope } = props;
         const facetDataName = `data_${prefix}_facet`;
 
         if (bin.native === false) {
-            global.scope.signals.push(bin.maxbinsSignal);
-            push(global.scope.data[0].transform, bin.transforms);
-            global.scope.data.push(bin.dataSequence);
+            globalScope.scope.signals.push(bin.maxbinsSignal);
+            push(globalScope.scope.data[0].transform, bin.transforms);
+            globalScope.scope.data.push(bin.dataSequence);
         }
         const mark: Mark = {
             style: 'cell',
@@ -41,7 +41,7 @@ export class Slice extends Layout {
             from: {
                 facet: {
                     name: facetDataName,
-                    data: parent.dataName,
+                    data: parentScope.dataName,
                     groupby: bin.fields
                 }
             },
@@ -63,7 +63,7 @@ export class Slice extends Layout {
                 }
             ]
         };
-        parent.scope.marks.push(mark);
+        parentScope.scope.marks.push(mark);
 
         return {
             dataName: facetDataName,

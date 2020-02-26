@@ -20,7 +20,7 @@ export class Wrap extends Layout {
     constructor(public props: WrapProps & LayoutBuildProps) {
         super(props);
         this.prefix = `wrap_${this.id}`;
-        this.bin = binnable(this.prefix, props.global.dataName, props.groupby);
+        this.bin = binnable(this.prefix, props.globalScope.dataName, props.groupby);
     }
 
     public getGrouping() {
@@ -29,7 +29,7 @@ export class Wrap extends Layout {
 
     public build(): InnerScope {
         const { bin, prefix, props } = this;
-        const { global, parent } = props;
+        const { globalScope, parentScope } = props;
         const facetDataName = `data_${prefix}_facet`;
         const sortedDataName = `data_${prefix}_sort`;
         const rowColumnDataName = `data_${prefix}_row_col`;
@@ -52,16 +52,16 @@ export class Wrap extends Layout {
         const colCount = `${prefix}_colCount`;
 
         if (bin.native === false) {
-            global.scope.signals.push(bin.maxbinsSignal);
-            push(global.scope.data[0].transform, bin.transforms);
-            global.scope.data.push(bin.dataSequence);
+            globalScope.scope.signals.push(bin.maxbinsSignal);
+            push(globalScope.scope.data[0].transform, bin.transforms);
+            globalScope.scope.data.push(bin.dataSequence);
         }
-        const ord = createOrdinalsForFacet(parent.dataName, prefix, bin.fields);
-        global.scope.data = global.scope.data || [];
-        global.scope.data.push(ord.data);
+        const ord = createOrdinalsForFacet(parentScope.dataName, prefix, bin.fields);
+        globalScope.scope.data = globalScope.scope.data || [];
+        globalScope.scope.data.push(ord.data);
 
         //need to sort by the bin, since there is no scale for positioning
-        global.scope.data.push.apply(global.scope.data, [
+        globalScope.scope.data.push.apply(globalScope.scope.data, [
             {
                 name: rxc0,
                 transform: [
@@ -112,12 +112,12 @@ export class Wrap extends Layout {
                     },
                     {
                         type: 'formula',
-                        expr: `${parent.sizeSignals.layoutWidth} / datum.cols`,
+                        expr: `${parentScope.sizeSignals.layoutWidth} / datum.cols`,
                         as: 'cellw'
                     },
                     {
                         type: 'formula',
-                        expr: `${parent.sizeSignals.layoutHeight} / datum.rows`,
+                        expr: `${parentScope.sizeSignals.layoutHeight} / datum.rows`,
                         as: 'cellh'
                     },
                     {
@@ -175,7 +175,7 @@ export class Wrap extends Layout {
             },
             {
                 name: sortedDataName,
-                source: parent.dataName,
+                source: parentScope.dataName,
                 transform: [
                     {
                         type: 'collect',
@@ -199,11 +199,11 @@ export class Wrap extends Layout {
             }
         ]);
 
-        global.scope.scales = global.scope.scales || [];
-        global.scope.scales.push(ord.scale);
+        globalScope.scope.scales = globalScope.scope.scales || [];
+        globalScope.scope.scales.push(ord.scale);
 
-        global.scope.signals = global.scope.signals || [];
-        global.scope.signals.push.apply(global.scope.signals, [
+        globalScope.scope.signals = globalScope.scope.signals || [];
+        globalScope.scope.signals.push.apply(globalScope.scope.signals, [
             {
                 name: minAspect,
                 update: `${SignalNames.MinCellWidth} / ${SignalNames.MinCellHeight}`
@@ -218,7 +218,7 @@ export class Wrap extends Layout {
             },
             {
                 name: aspect,
-                update: `${parent.sizeSignals.layoutWidth} / ${parent.sizeSignals.layoutHeight}`
+                update: `${parentScope.sizeSignals.layoutWidth} / ${parentScope.sizeSignals.layoutHeight}`
             },
             {
                 name: dataLength,
@@ -226,15 +226,15 @@ export class Wrap extends Layout {
             },
             {
                 name: growColCount,
-                update: `max(floor(${parent.sizeSignals.layoutWidth} / ${SignalNames.MinCellWidth}), 1)`
+                update: `max(floor(${parentScope.sizeSignals.layoutWidth} / ${SignalNames.MinCellWidth}), 1)`
             },
             {
                 name: growCellWidth,
-                update: `${parent.sizeSignals.layoutWidth} / ${growColCount}`
+                update: `${parentScope.sizeSignals.layoutWidth} / ${growColCount}`
             },
             {
                 name: fitsArea,
-                update: `((${dataLength} * ${minArea}) <= (${parent.sizeSignals.layoutWidth} * ${parent.sizeSignals.layoutHeight}))`
+                update: `((${dataLength} * ${minArea}) <= (${parentScope.sizeSignals.layoutWidth} * ${parentScope.sizeSignals.layoutHeight}))`
             },
             {
                 name: fits,
@@ -254,8 +254,8 @@ export class Wrap extends Layout {
             }
         ]);
 
-        modifySignal(global.signals.plotHeightOut, 'max', `(${cellHeight} * ceil(${dataLength} / ${colCount}))`);
-        modifySignal(global.signals.plotWidthOut, 'max', `(${cellWidth} * ${colCount})`);
+        modifySignal(globalScope.signals.plotHeightOut, 'max', `(${cellHeight} * ceil(${dataLength} / ${colCount}))`);
+        modifySignal(globalScope.signals.plotWidthOut, 'max', `(${cellWidth} * ${colCount})`);
 
         const mark: GroupMark = {
             style: 'cell',
@@ -286,7 +286,7 @@ export class Wrap extends Layout {
             },
             marks: []
         };
-        parent.scope.marks.push(mark);
+        parentScope.scope.marks.push(mark);
 
         return {
             dataName: facetDataName,

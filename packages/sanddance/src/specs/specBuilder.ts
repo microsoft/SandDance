@@ -5,6 +5,7 @@ import { addGlobalScales } from './globalScales';
 import {
     AxisScales,
     DiscreteColumn,
+    GlobalScales,
     GlobalScope,
     InnerScope,
     SpecResult
@@ -119,9 +120,21 @@ export class SpecBuilder {
                 push(vegaSpec.scales, facetLayout.scales);
                 this.props.layouts = [facetLayout.layoutPair, ...this.props.layouts];
             }
-            const { finalScope, specResult } = this.iterateLayouts(globalScope, groupMark, colorDataName);
+            const { finalScope, specResult, allGlobalScales } = this.iterateLayouts(globalScope, groupMark, colorDataName);
             if (specResult) {
                 return specResult;
+            }
+            if (allGlobalScales.length > 0) {
+                addGlobalScales(
+                    globalScope,
+                    allGlobalScales[0], //only use the first
+                    this.props.axisScales,
+                    { x: this.plotOffsetX, y: this.plotOffsetY },
+                    specColumns,
+                    specViewOptions,
+                    groupMark.axes
+                );
+
             }
             //add mark to the final scope
             if (finalScope.mark) {
@@ -227,23 +240,19 @@ export class SpecBuilder {
         };
         let childScope: InnerScope;
         const groupings: string[][] = [];
-        let { layouts, specCapabilities, specContext } = this.props;
-        const { specColumns, specViewOptions } = specContext;
-        const { plotOffsetX, plotOffsetY } = this;
+        let { layouts, specCapabilities } = this.props;
+        const allGlobalScales: GlobalScales[] = [];
         for (let i = 0; i < layouts.length; i++) {
             if (!parentScope) continue;
             if (!parentScope.scope) break;
-            let { layoutClass, props } = layouts[i];
-            let layoutBuildProps: LayoutProps & LayoutBuildProps = {
-                ...props,
-                global: globalScope,
-                parent: parentScope,
+            let buildProps: LayoutBuildProps = {
+                globalScope,
+                parentScope,
                 axesScales: this.props.axisScales,
                 groupings,
                 id: i
             };
-            let layout = new layoutClass(layoutBuildProps);
-            layout.id = i;
+            let { layout, addScaleAxes } = this.createLayout(layouts[i], buildProps);
             try {
                 childScope = layout.build();
                 let grouping = layout.getGrouping();
@@ -259,21 +268,23 @@ export class SpecBuilder {
                 };
                 break;
             }
-            if (childScope) {
-                if (props.addScaleAxes && childScope.globalScales) {
-                    addGlobalScales(
-                        globalScope,
-                        childScope.globalScales,
-                        layoutBuildProps.axesScales,
-                        { x: plotOffsetX, y: plotOffsetY },
-                        specColumns,
-                        specViewOptions,
-                        scope.axes
-                    );
-                }
+            if (childScope && addScaleAxes && childScope.globalScales) {
+                allGlobalScales.push(childScope.globalScales);
             }
             parentScope = childScope;
         }
-        return { finalScope: parentScope, specResult };
+        return { finalScope: parentScope, specResult, allGlobalScales };
+    }
+
+    private createLayout(layoutPair: LayoutPair, buildProps: LayoutBuildProps) {
+        const { layoutClass, props } = layoutPair;
+        const { addScaleAxes } = props;
+        const layoutBuildProps: LayoutProps & LayoutBuildProps = {
+            ...props,
+            ...buildProps
+        };
+        const layout = new layoutClass(layoutBuildProps);
+        layout.id = buildProps.id;
+        return { layout, addScaleAxes };
     }
 }
