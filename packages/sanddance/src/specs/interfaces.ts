@@ -25,6 +25,8 @@ export interface SpecCreator {
 export interface SizeSignals {
     layoutHeight: string;
     layoutWidth: string;
+    colCount?: string;
+    rowCount?: string;
 }
 
 export interface InnerScope {

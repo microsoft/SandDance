@@ -293,7 +293,9 @@ export class Wrap extends Layout {
             scope: mark,
             sizeSignals: {
                 layoutHeight: `(${cellHeight} - ${facetPadding})`,
-                layoutWidth: `(${cellWidth} - ${facetPadding})`
+                layoutWidth: `(${cellWidth} - ${facetPadding})`,
+                colCount,
+                rowCount: `ceil(${dataLength} / ${colCount}))`
             }
         };
     }

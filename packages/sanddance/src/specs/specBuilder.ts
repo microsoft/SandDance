@@ -1,43 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { addColor } from './color';
+import { addGlobalScales } from './globalScales';
 import {
-    Axis,
-    GroupMark,
-    NewSignal,
-    Scale,
-    Scope,
-    Signal,
-    Spec
-} from 'vega-typings';
-import {
-    AxisScale,
     AxisScales,
     DiscreteColumn,
     GlobalScope,
     InnerScope,
     SpecResult
 } from './interfaces';
-import { binnableColorScale } from './scales';
-import { colorBinCountSignal, colorReverseSignal, textSignals } from './signals';
-import { ColorScaleNone, ScaleNames, SignalNames } from './constants';
-import {
-    Column,
-    FacetStyle,
-    SpecCapabilities,
-    SpecColumns,
-    SpecContext,
-    SpecViewOptions
-} from './types';
-import { Cross, CrossProps } from './layouts/cross';
 import { fill, opacity } from './fill';
-import { getLegends } from './legends';
+import { getFacetLayout } from './facetLayout';
+import { GroupMark, NewSignal, Spec } from 'vega-typings';
 import { LayoutBuildProps, LayoutPair, LayoutProps } from './layouts/layout';
 import { minFacetSize } from './defaults';
 import { push } from '../array';
-import { Slice, SliceProps } from './layouts/slice';
-import { topLookup } from './top';
-import { util } from '@msrvida/vega-deck.gl';
-import { Wrap, WrapProps } from './layouts/wrap';
+import { SignalNames } from './constants';
+import { SpecCapabilities, SpecContext } from './types';
+import { textSignals } from './signals';
 
 export interface SpecBuilderProps {
     axisScales?: AxisScales;
@@ -198,7 +178,7 @@ export class SpecBuilder {
                 ])
             };
 
-            const { topColorField, colorDataName } = this.addColor(vegaSpec, dataName);
+            const { topColorField, colorDataName } = addColor(vegaSpec, dataName, specContext);
 
             this.globalScope = {
                 dataName: colorDataName,
@@ -230,7 +210,7 @@ export class SpecBuilder {
                     maxbinsSignalDisplayName: 'TODO facetV',
                     maxbinsSignalName: 'TODO facetV'
                 };
-                const facetLayout = this.getFacetLayout(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn);
+                const facetLayout = getFacetLayout(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn);
                 push(vegaSpec.signals, facetLayout.signals);
                 push(vegaSpec.scales, facetLayout.scales);
                 layouts = [facetLayout.layoutPair, ...layouts];
@@ -275,7 +255,8 @@ export class SpecBuilder {
                 }
                 if (childScope) {
                     if (props.addScaleAxes && childScope.globalScales) {
-                        this.addGlobalScales(
+                        addGlobalScales(
+                            this.globalScope,
                             childScope.globalScales,
                             layoutBuildProps.axesScales,
                             {
@@ -305,179 +286,4 @@ export class SpecBuilder {
         }
     }
 
-    private addColor(scope: Scope, dataSource: string) {
-        let colorDataName = dataSource;
-        const { specContext } = this.props;
-        const { insight, specColumns, specViewOptions } = specContext;
-        const legends = getLegends(specContext);
-        if (legends) {
-            scope.legends = legends;
-        }
-
-        const topColorField = 'top_color';
-        const categoricalColor = specColumns.color && !specColumns.color.quantitative;
-        if (categoricalColor) {
-            const legendName = 'data_legend';
-            push(scope.data, topLookup(specColumns.color, specViewOptions.maxLegends, dataSource, legendName, 'top_colors', topColorField));
-            colorDataName = legendName;
-        }
-
-        if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
-            if (specColumns.color.quantitative) {
-                scope.scales.push(binnableColorScale(insight.colorBin, dataSource, specColumns.color.name, insight.scheme));
-            } else {
-                scope.scales.push(
-                    {
-                        name: ScaleNames.Color,
-                        type: 'ordinal',
-                        domain: {
-                            data: colorDataName,
-                            field: topColorField,
-                            sort: true
-                        },
-                        range: {
-                            scheme: insight.scheme || ColorScaleNone
-                        },
-                        reverse: { signal: SignalNames.ColorReverse }
-                    }
-                );
-            }
-        }
-
-        push(scope.signals, [
-            colorBinCountSignal(specContext),
-            colorReverseSignal(specContext)
-        ]);
-
-        return { topColorField, colorDataName };
-    }
-
-    private addGlobalScales(
-        globalScales: { x?: Scale, y?: Scale, z?: Scale },
-        axisScales: AxisScales,
-        plotOffsetSignals: { x: NewSignal, y: NewSignal },
-        specColumns: SpecColumns,
-        specViewOptions: SpecViewOptions,
-        axes: Axis[]) {
-
-        // const add = (axisScale: AxisScale, scale: Scale, column: Column, orient: AxisOrient) => {
-        //     const pa = partialAxes(specViewOptions, AxisType.quantitative, columnToAxisType(column));
-
-        // };
-
-        // add(axisScales.x, globalScales.x, specColumns.x, 'bottom');
-        // add(axisScales.y, globalScales.y, specColumns.y, 'left');
-        // add(axisScales.z, globalScales.z, specColumns.z, 'left');
-
-        const { scope } = this.globalScope; //TODO if faceting, scope shoule be each facet!!
-
-        //TODO always add Z scale to global scope
-
-        for (let s in globalScales) {
-            let scale: Scale = globalScales[s];
-            if (scale) {
-                //TODO check to see if scale exists in global scope
-                scope.scales.push(scale);
-                if (axisScales) {
-                    let axisScale: AxisScale = axisScales[s];
-                    if (axisScale) {
-                        const lineColor = util.colorToString(specViewOptions.colors.axisLine);
-                        switch (axisScale.type) {
-                            //band scale
-                            //continuous scale
-                            //etc
-                        }
-                        //const pa = partialAxes(specViewOptions, AxisType.quantitative, columnToAxisType(specColumns[s]));
-                        const horizontal = s === 'x';
-                        const column: Column = specColumns[s];
-                        const axis: Axis = {
-                            scale: scale.name,
-                            orient: horizontal ? 'bottom' : 'left',
-                            title: axisScale.aggregate ? 'TODO aggtitle' : column.name,
-                            labelAlign: horizontal ? 'left' : 'right',
-                            labelAngle: {
-                                signal: horizontal ? SignalNames.TextAngleX : SignalNames.TextAngleY
-                            },
-                            labelFontSize: {
-                                signal: SignalNames.TextSize
-                            },
-                            titleAngle: {
-                                signal: horizontal ? SignalNames.TextAngleX : SignalNames.TextAngleY
-                            },
-                            titleAlign: horizontal ? 'left' : 'right',
-                            titleFontSize: {
-                                signal: SignalNames.TextTitleSize
-                            },
-                            titleColor: util.colorToString(specViewOptions.colors.axisText),
-                            tickSize: specViewOptions.tickSize,
-                            domainColor: lineColor,
-                            tickColor: lineColor,
-                            labelColor: util.colorToString(specViewOptions.colors.axisText)
-                        };
-                        if (column.quantitative) {
-                            axis.format = '~r';
-                        }
-                        axes.push(axis);
-                        if (plotOffsetSignals[s]) {
-                            const plotOffsetSignal = plotOffsetSignals[s] as NewSignal;
-                            plotOffsetSignal.update = `200`; //TODO measure axis text????
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColumn, facetVColumn: DiscreteColumn) {
-        let layoutPair: LayoutPair;
-        const scales: Scale[] = [];
-        const signals: Signal[] = [];
-        const groupby = facetColumn;
-        switch (facetStyle) {
-            case 'horizontal': {
-                const props: SliceProps = {
-                    orientation: 'horizontal',
-                    groupby
-                };
-                layoutPair = {
-                    layoutClass: Slice,
-                    props
-                };
-                break;
-            }
-            case 'vertical': {
-                const props: SliceProps = {
-                    orientation: 'vertical',
-                    groupby
-                };
-                layoutPair = {
-                    layoutClass: Slice,
-                    props
-                };
-                break;
-            }
-            case 'cross': {
-                const props: CrossProps = {
-                    groupbyX: groupby,
-                    groupbyY: facetVColumn
-                };
-                layoutPair = {
-                    layoutClass: Cross,
-                    props
-                };
-                break;
-            }
-            case 'wrap':
-            default:
-                const props: WrapProps = {
-                    groupby
-                };
-                layoutPair = {
-                    layoutClass: Wrap,
-                    props
-                };
-                break;
-        }
-        return { layoutPair, scales, signals };
-    }
 }
