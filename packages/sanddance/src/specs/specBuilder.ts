@@ -236,12 +236,12 @@ export class SpecBuilder {
                 layouts = [facetLayout.layoutPair, ...layouts];
             }
 
-            const group1 = vegaSpec.marks[0] as GroupMark;
+            const groupMark = vegaSpec.marks[0] as GroupMark;
 
             let parentScope: InnerScope = {
                 dataName: colorDataName,
                 sizeSignals: this.globalScope.sizeSignals,
-                scope: group1
+                scope: groupMark
             };
             let childScope: InnerScope;
             const groupings: string[][] = [];
@@ -284,25 +284,9 @@ export class SpecBuilder {
                             },
                             specColumns,
                             specViewOptions,
-                            group1.axes
+                            groupMark.axes
                         );
                     }
-                    // //the first layout when faceting may determine the overall height
-                    // if (i === 0 && insight.columns.facet) {
-                    //     if (childScope.sizeSignals.totalHeight) {
-                    //         modifySignal plotHeightOut
-                    //         group1.signals.push({
-                    //             name: 'height',
-                    //             update: childScope.sizeSignals.totalHeight
-                    //         });
-                    //     }
-                    //     if (childScope.sizeSignals.totalWidth) {
-                    //         group1.signals.push({
-                    //             name: 'width',
-                    //             update: childScope.sizeSignals.totalWidth
-                    //         });
-                    //     }
-                    // }
                 }
                 parentScope = childScope;
             }
