@@ -122,7 +122,7 @@ export class Wrap extends Layout {
                     },
                     {
                         type: 'formula',
-                        expr: `(datum.cols === 1 || datum.rows === 1) || (datum.cellw >= ${SignalNames.MinCellWidth} && datum.cellh >= ${SignalNames.MinCellHeight})`,
+                        expr: `(datum.cellw >= ${SignalNames.MinCellWidth} && datum.cellh >= ${SignalNames.MinCellHeight})`,
                         as: 'meetsmin'
                     },
                     {
