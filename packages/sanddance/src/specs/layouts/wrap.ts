@@ -117,6 +117,11 @@ export class Wrap extends Layout {
                     },
                     {
                         type: 'formula',
+                        expr: `datum.cols === 1 ? max(datum.cellw, ${SignalNames.MinCellWidth}) : datum.cellw`,
+                        as: 'cellw'
+                    },
+                    {
+                        type: 'formula',
                         expr: `${parentScope.sizeSignals.layoutHeight} / datum.rows`,
                         as: 'cellh'
                     },
