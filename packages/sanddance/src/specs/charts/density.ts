@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { AxisScales } from '../interfaces';
+import { defaultBins, maxbins } from '../defaults';
 import { Density, DensityProps } from '../layouts/density';
-import { maxbins } from '../defaults';
 import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
@@ -19,12 +19,14 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         mode: 'square',
         groupbyX: {
             column: specColumns.x,
+            defaultBins,
             maxbins,
             maxbinsSignalDisplayName: 'TODO maxbins x',
             maxbinsSignalName: 'TODO maxbins x'
         },
         groupbyY: {
             column: specColumns.y,
+            defaultBins,
             maxbins,
             maxbinsSignalDisplayName: 'TODO maxbins y',
             maxbinsSignalName: 'TODO maxbins y'

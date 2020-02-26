@@ -272,14 +272,24 @@ export interface SpecLanguage {
     scatterPointSize: string;
 
     /**
-     * Label for bar x axis bin size slider.
+     * Label for bar facet max bins slider.
      */
-    XBinSize: string;
+    FacetMaxBins: string;
 
     /**
-     * Label for bar y axis bin size slider.
+     * Label for bar facetV max bins slider.
      */
-    YBinSize: string;
+    FacetVMaxBins: string;
+
+    /**
+     * Label for bar x axis max bins slider.
+     */
+    XMaxBins: string;
+
+    /**
+     * Label for bar y axis max bins slider.
+     */
+    YMaxBins: string;
 
     /**
      * Label for bar x grid size slider.

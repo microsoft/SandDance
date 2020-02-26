@@ -49,7 +49,7 @@ export default function (context: SpecContext) {
                 name: SignalNames.XBins,
                 value: 30,
                 bind: {
-                    name: specViewOptions.language.XBinSize,
+                    name: specViewOptions.language.XMaxBins,
                     input: 'range',
                     min: 1,
                     max: 60,
@@ -60,7 +60,7 @@ export default function (context: SpecContext) {
                 name: SignalNames.YBins,
                 value: 30,
                 bind: {
-                    name: specViewOptions.language.YBinSize,
+                    name: specViewOptions.language.YMaxBins,
                     input: 'range',
                     min: 1,
                     max: 60,

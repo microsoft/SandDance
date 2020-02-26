@@ -29,7 +29,7 @@ export interface AugmentBinnable extends BaseBinnable {
 export type Binnable = NativeBinnable | AugmentBinnable;
 
 export function binnable(prefix: string, domainDataName: string, discreteColumn: DiscreteColumn): Binnable {
-    const { column, maxbins, maxbinsSignalDisplayName, maxbinsSignalName } = discreteColumn;
+    const { column, defaultBins, maxbins, maxbinsSignalDisplayName, maxbinsSignalName } = discreteColumn;
     if (column.quantitative) {
         const field = `${prefix}_bin_${column.name}`;
         const fieldEnd = `${field}_end`;
@@ -43,7 +43,7 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
         };
         const maxbinsSignal: Signal = {
             name: maxbinsSignalName,
-            value: maxbins,
+            value: defaultBins,
             bind: {
                 name: maxbinsSignalDisplayName,
                 debounce: 50,

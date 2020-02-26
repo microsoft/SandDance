@@ -69,6 +69,7 @@ export interface AxisScales {
 
 export interface DiscreteColumn {
     column: Column;
+    defaultBins: number;
     maxbins: number;
     maxbinsSignalName: string;
     maxbinsSignalDisplayName: string;

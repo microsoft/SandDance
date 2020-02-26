@@ -69,6 +69,8 @@ export const SignalNames = {
     PlotWidthOut: 'PlotWidthOut',
     ColorBinCount: 'RoleColor_BinCountSignal',
     ColorReverse: 'RoleColor_ReverseSignal',
+    FacetBins: 'RoleFacet_BinsSignal',
+    FacetVBins: 'RoleFacetV_BinsSignal',
     FacetColumns: 'RoleFacet_ColumnsSignal',
     FacetRows: 'RoleFacet_RowsSignal',
     InnerPadding: 'Chart_InnerPadding',

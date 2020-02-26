@@ -9,9 +9,15 @@ import {
     InnerScope,
     SpecResult
 } from './interfaces';
+import { defaultBins, maxbins } from './defaults';
 import { fill, opacity } from './fill';
 import { getFacetLayout } from './facetLayout';
-import { GroupMark, NewSignal, Spec, Scope } from 'vega-typings';
+import {
+    GroupMark,
+    NewSignal,
+    Scope,
+    Spec
+} from 'vega-typings';
 import { LayoutBuildProps, LayoutPair, LayoutProps } from './layouts/layout';
 import { minFacetSize } from './defaults';
 import { push } from '../array';
@@ -28,7 +34,6 @@ export interface SpecBuilderProps {
 }
 
 export class SpecBuilder {
-    public globalScope: GlobalScope;
     private minCellWidth: NewSignal;
     private minCellHeight: NewSignal;
     private plotOffsetX: NewSignal;
@@ -89,44 +94,32 @@ export class SpecBuilder {
             }
         } else {
             const { specContext } = this.props;
-            const { insight, specColumns } = specContext;
-            let dataName = 'data_source';
+            const { insight, specColumns, specViewOptions } = specContext;
+            const dataName = 'data_source';
             const { vegaSpec, groupMark } = this.initSpec(dataName);
             const { topColorField, colorDataName } = addColor(vegaSpec, dataName, specContext);
-            const { minCellWidth, minCellHeight, plotHeightOut, plotWidthOut } = this;
-            this.globalScope = {
-                dataName: colorDataName,
-                scope: vegaSpec,
-                sizeSignals: {
-                    layoutHeight: SignalNames.PlotHeightIn,
-                    layoutWidth: SignalNames.PlotWidthIn
-                },
-                signals: {
-                    minCellWidth,
-                    minCellHeight,
-                    plotHeightOut,
-                    plotWidthOut
-                }
-            };
+            const globalScope = this.createGlobalScope(colorDataName, vegaSpec);
             if (insight.columns.facet) {
                 const discreteFacetColumn: DiscreteColumn = {
                     column: specColumns.facet,
-                    maxbins: 30,
-                    maxbinsSignalDisplayName: 'TODO facet',
-                    maxbinsSignalName: 'TODO facet'
+                    defaultBins,
+                    maxbins,
+                    maxbinsSignalDisplayName: specViewOptions.language.FacetMaxBins,
+                    maxbinsSignalName: SignalNames.FacetBins
                 };
                 const discreteFacetVColumn: DiscreteColumn = {
                     column: specColumns.facetV,
-                    maxbins: 30,
-                    maxbinsSignalDisplayName: 'TODO facetV',
-                    maxbinsSignalName: 'TODO facetV'
+                    defaultBins,
+                    maxbins,
+                    maxbinsSignalDisplayName: specViewOptions.language.FacetVMaxBins,
+                    maxbinsSignalName: SignalNames.FacetVBins
                 };
                 const facetLayout = getFacetLayout(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn);
                 push(vegaSpec.signals, facetLayout.signals);
                 push(vegaSpec.scales, facetLayout.scales);
                 this.props.layouts = [facetLayout.layoutPair, ...this.props.layouts];
             }
-            const { finalScope, specResult } = this.iterateLayouts(groupMark, colorDataName);
+            const { finalScope, specResult } = this.iterateLayouts(globalScope, groupMark, colorDataName);
             if (specResult) {
                 return specResult;
             }
@@ -141,6 +134,25 @@ export class SpecBuilder {
                 vegaSpec
             }
         }
+    }
+
+    private createGlobalScope(dataName: string, scope: Spec) {
+        const { minCellWidth, minCellHeight, plotHeightOut, plotWidthOut } = this;
+        const globalScope: GlobalScope = {
+            dataName,
+            scope,
+            sizeSignals: {
+                layoutHeight: SignalNames.PlotHeightIn,
+                layoutWidth: SignalNames.PlotWidthIn
+            },
+            signals: {
+                minCellWidth,
+                minCellHeight,
+                plotHeightOut,
+                plotWidthOut
+            }
+        };
+        return globalScope;
     }
 
     private initSpec(dataName: string) {
@@ -206,11 +218,11 @@ export class SpecBuilder {
         return { vegaSpec, groupMark };
     }
 
-    private iterateLayouts(scope: Scope, dataName: string) {
+    private iterateLayouts(globalScope: GlobalScope, scope: Scope, dataName: string) {
         let specResult: SpecResult;
         let parentScope: InnerScope = {
             dataName,
-            sizeSignals: this.globalScope.sizeSignals,
+            sizeSignals: globalScope.sizeSignals,
             scope
         };
         let childScope: InnerScope;
@@ -224,7 +236,7 @@ export class SpecBuilder {
             let { layoutClass, props } = layouts[i];
             let layoutBuildProps: LayoutProps & LayoutBuildProps = {
                 ...props,
-                global: this.globalScope,
+                global: globalScope,
                 parent: parentScope,
                 axesScales: this.props.axisScales,
                 groupings,
@@ -250,7 +262,7 @@ export class SpecBuilder {
             if (childScope) {
                 if (props.addScaleAxes && childScope.globalScales) {
                     addGlobalScales(
-                        this.globalScope,
+                        globalScope,
                         childScope.globalScales,
                         layoutBuildProps.axesScales,
                         { x: plotOffsetX, y: plotOffsetY },

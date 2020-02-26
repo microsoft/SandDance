@@ -21,7 +21,7 @@ export default function (context: SpecContext): Signal[] {
                 name: SignalNames.XBins,
                 value: 7,
                 bind: {
-                    name: specViewOptions.language.XBinSize,
+                    name: specViewOptions.language.XMaxBins,
                     input: 'range',
                     min: 1,
                     max: 20,

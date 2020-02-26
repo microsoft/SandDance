@@ -2,8 +2,8 @@
 // Licensed under the MIT license.
 import { AxisScale, AxisScales } from '../interfaces';
 import { Bar, BarProps } from '../layouts/bar';
+import { defaultBins, maxbins, minBarBandWidth } from '../defaults';
 import { Layout, LayoutProps } from '../layouts/layout';
-import { maxbins, minBarBandWidth } from '../defaults';
 import { SignalNames } from '../constants';
 import { Slice, SliceProps } from '../layouts/slice';
 import { SpecBuilderProps } from '../specBuilder';
@@ -19,8 +19,9 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         orientation: 'horizontal',
         groupby: {
             column: specColumns.y,
-            maxbinsSignalName: 'TODO maxbins',
-            maxbinsSignalDisplayName: 'TODO maxbins',
+            defaultBins,
+            maxbinsSignalName: SignalNames.YBins,
+            maxbinsSignalDisplayName: specContext.specViewOptions.language.YMaxBins,
             maxbins
         },
         sumBy: specColumns.sum,
@@ -112,11 +113,13 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 },
                 {
                     role: 'facet',
-                    allowNone: true
+                    allowNone: true,
+                    signals: [SignalNames.FacetBins]
                 },
                 {
                     role: 'facetV',
-                    allowNone: true
+                    allowNone: true,
+                    signals: [SignalNames.FacetVBins]
                 }
             ]
         }
