@@ -106,6 +106,16 @@ export class SpecBuilder {
                 update: `${minFacetSize}`
             };
 
+            const plotOffsetX: NewSignal = {
+                name: SignalNames.PlotOffsetX,
+                update: `0`
+            };
+
+            const plotOffsetY: NewSignal = {
+                name: SignalNames.PlotOffsetY,
+                update: `0`
+            };
+
             const plotHeightOut: NewSignal = {
                 name: SignalNames.PlotHeightOut,
                 update: SignalNames.PlotHeightIn
@@ -129,12 +139,11 @@ export class SpecBuilder {
                 marks: [
                     {
                         type: 'group',
-                        role: '',
                         style: 'cell',
                         encode: {
                             update: {
                                 x: {
-                                    signal: SignalNames.ViewportOffsetX
+                                    signal: SignalNames.PlotOffsetX
                                 },
                                 y: {
                                     value: 0
@@ -159,10 +168,6 @@ export class SpecBuilder {
                     minCellWidth,
                     minCellHeight,
                     {
-                        name: SignalNames.ViewportOffsetX,
-                        update: `200`
-                    },
-                    {
                         name: SignalNames.ViewportHeight,
                         update: `max(${SignalNames.MinCellHeight}, ${insight.size.height})`
                     },
@@ -170,23 +175,25 @@ export class SpecBuilder {
                         name: SignalNames.ViewportWidth,
                         update: `max(${SignalNames.MinCellWidth}, ${insight.size.width})`
                     },
+                    plotOffsetX,
+                    plotOffsetY,
                     {
                         name: SignalNames.PlotHeightIn,
-                        update: `${SignalNames.ViewportHeight} - 200`
+                        update: `${SignalNames.ViewportHeight} - ${SignalNames.PlotOffsetY}`
                     },
                     {
                         name: SignalNames.PlotWidthIn,
-                        update: `${SignalNames.ViewportWidth} - 200`
+                        update: `${SignalNames.ViewportWidth} - ${SignalNames.PlotOffsetX}`
                     },
                     plotHeightOut,
                     plotWidthOut,
                     {
                         name: 'height',
-                        update: `${SignalNames.PlotHeightOut} + 200`
+                        update: `${SignalNames.PlotHeightOut} + ${SignalNames.PlotOffsetY}`
                     },
                     {
                         name: 'width',
-                        update: `${SignalNames.PlotWidthOut} + 200`
+                        update: `${SignalNames.PlotWidthOut} + ${SignalNames.PlotOffsetX}`
                     }
                 ])
             };
@@ -268,7 +275,17 @@ export class SpecBuilder {
                 }
                 if (childScope) {
                     if (props.addScaleAxes && childScope.globalScales) {
-                        this.addGlobalScales(childScope.globalScales, layoutBuildProps.axesScales, specColumns, specViewOptions, group1.axes);
+                        this.addGlobalScales(
+                            childScope.globalScales,
+                            layoutBuildProps.axesScales,
+                            {
+                                x: plotOffsetX,
+                                y: plotOffsetY
+                            },
+                            specColumns,
+                            specViewOptions,
+                            group1.axes
+                        );
                     }
                     // //the first layout when faceting may determine the overall height
                     // if (i === 0 && insight.columns.facet) {
@@ -351,7 +368,13 @@ export class SpecBuilder {
         return { topColorField, colorDataName };
     }
 
-    private addGlobalScales(globalScales: { x?: Scale, y?: Scale, z?: Scale }, axisScales: AxisScales, specColumns: SpecColumns, specViewOptions: SpecViewOptions, axes: Axis[]) {
+    private addGlobalScales(
+        globalScales: { x?: Scale, y?: Scale, z?: Scale },
+        axisScales: AxisScales,
+        plotOffsetSignals: { x: NewSignal, y: NewSignal },
+        specColumns: SpecColumns,
+        specViewOptions: SpecViewOptions,
+        axes: Axis[]) {
 
         // const add = (axisScale: AxisScale, scale: Scale, column: Column, orient: AxisOrient) => {
         //     const pa = partialAxes(specViewOptions, AxisType.quantitative, columnToAxisType(column));
@@ -411,6 +434,10 @@ export class SpecBuilder {
                             axis.format = '~r';
                         }
                         axes.push(axis);
+                        if (plotOffsetSignals[s]) {
+                            const plotOffsetSignal = plotOffsetSignals[s] as NewSignal;
+                            plotOffsetSignal.update = `200`; //TODO measure axis text????
+                        }
                     }
                 }
             }

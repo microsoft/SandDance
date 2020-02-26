@@ -57,11 +57,12 @@ export const ScaleNames = {
 
 //Signal names
 export const SignalNames = {
-    ViewportOffsetX: 'ViewportOffsetX',
     ViewportWidth: 'ViewportWidth',
     ViewportHeight: 'ViewportHeight',
     MinCellWidth: 'MinCellWidth',
     MinCellHeight: 'MinCellHeight',
+    PlotOffsetX: 'PlotOffsetX',
+    PlotOffsetY: 'PlotOffsetY',
     PlotHeightIn: 'PlotHeightIn',
     PlotWidthIn: 'PlotWidthIn',
     PlotHeightOut: 'PlotHeightOut',
