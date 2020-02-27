@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { addData, addMarks, addSignal, addTransforms } from '../scope';
 import { binnable, Binnable } from '../bin';
 import { Column } from '../types';
 import { createOrdinalsForFacet } from '../ordinal';
@@ -12,7 +13,6 @@ import {
     Transforms
 } from 'vega-typings';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { push } from '../../array';
 
 export interface SquareProps extends LayoutProps {
     sortBy: Column;
@@ -85,7 +85,7 @@ export class Square extends Layout {
                 }
             }
         };
-        parentScope.scope.marks.push(mark);
+        addMarks(parentScope.scope, mark);
 
         let dataName: string
         let scope: Scope;
@@ -94,9 +94,9 @@ export class Square extends Layout {
             const groupMark = mark as GroupMark;
             const { bin } = this;
             if (bin.native === false) {
-                globalScope.scope.signals.push(bin.maxbinsSignal);
-                push(globalScope.scope.data[0].transform, bin.transforms);
-                globalScope.scope.data.push(bin.dataSequence);
+                addSignal(globalScope.scope, bin.maxbinsSignal);
+                addTransforms(globalScope.scope.data[0], ...bin.transforms);
+                addData(globalScope.scope, bin.dataSequence);
             }
             const ord = createOrdinalsForFacet(parentScope.dataName, prefix, bin.fields);
             groupMark.data = [ord.data];
@@ -155,8 +155,7 @@ export class Square extends Layout {
                 sort: { field: sortBy.name }
             });
         }
-        parentScope.scope.data = parentScope.scope.data || [];
-        parentScope.scope.data.push({
+        addData(parentScope.scope, {
             name: names.dataName,
             source: parentScope.dataName,
             transform
@@ -177,8 +176,7 @@ export class Square extends Layout {
 
         const aspect = `((${names.bandWidth})/(${maxGroupedFillSize}))`;
 
-        parentScope.scope.signals = parentScope.scope.signals || [];
-        push(parentScope.scope.signals, [
+        addSignal(parentScope.scope,
             {
                 name: names.aspect,
                 update: aspect || `${globalScope.sizeSignals.layoutWidth}/${props.fillDirection === 'down-right' ? globalScope.sizeSignals.layoutWidth : globalScope.sizeSignals.layoutHeight}`
@@ -203,7 +201,7 @@ export class Square extends Layout {
                 name: names.levelSize,
                 update: `((${maxGroupedFillSize})/${names.levels})-${names.gap}`
             }
-        ]);
+        );
     }
 
     private encodeXY(): GroupEncodeEntry {

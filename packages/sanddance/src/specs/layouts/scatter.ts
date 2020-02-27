@@ -11,7 +11,6 @@ import { columnToAxisType, partialAxes } from '../axes';
 import { DataNames, ScaleNames, SignalNames } from '../constants';
 import { fill, opacity } from '../fill';
 import { linearScale, pointScale } from '../scales';
-import { push } from '../../array';
 import { SpecContext } from '../types';
 import { testForCollapseSelection } from '../selection';
 import { Layout } from './layout';

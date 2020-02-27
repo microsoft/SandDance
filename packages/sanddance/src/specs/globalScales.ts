@@ -1,8 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { addAxes, addScale } from './scope';
+import {
+    Axis,
+    NewSignal,
+    Scale,
+    Scope
+} from 'vega-typings';
 import { AxisScale, AxisScales, GlobalScope } from './interfaces';
 import { Column, SpecColumns, SpecViewOptions } from './types';
-import { Axis, NewSignal, Scale } from 'vega-typings';
 import { SignalNames } from './constants';
 import { util } from '@msrvida/vega-deck.gl';
 
@@ -13,7 +19,7 @@ export function addGlobalScales(
     plotOffsetSignals: { x: NewSignal, y: NewSignal },
     specColumns: SpecColumns,
     specViewOptions: SpecViewOptions,
-    axes: Axis[]) {
+    axesScope: Scope) {
 
     // const add = (axisScale: AxisScale, scale: Scale, column: Column, orient: AxisOrient) => {
     //     const pa = partialAxes(specViewOptions, AxisType.quantitative, columnToAxisType(column));
@@ -24,7 +30,7 @@ export function addGlobalScales(
     // add(axisScales.y, globalScales.y, specColumns.y, 'left');
     // add(axisScales.z, globalScales.z, specColumns.z, 'left');
 
-    const { scope } = globalScope; 
+    const { scope } = globalScope;
 
     //TODO always add Z scale to global scope
 
@@ -32,7 +38,7 @@ export function addGlobalScales(
         let scale: Scale = globalScales[s];
         if (scale) {
             //TODO check to see if scale exists in global scope
-            scope.scales.push(scale);
+            addScale(scope, scale);
             if (axisScales) {
                 let axisScale: AxisScale = axisScales[s];
                 if (axisScale) {
@@ -72,7 +78,7 @@ export function addGlobalScales(
                     if (column.quantitative) {
                         axis.format = '~r';
                     }
-                    axes.push(axis);
+                    addAxes(axesScope, axis);
                     if (plotOffsetSignals[s]) {
                         const plotOffsetSignal = plotOffsetSignals[s] as NewSignal;
                         plotOffsetSignal.update = `200`; //TODO measure axis text????

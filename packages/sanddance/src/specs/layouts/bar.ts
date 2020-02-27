@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { addData, addMarks, addSignal, addTransforms } from '../scope';
 import {
     AggregateTransform,
     BandScale,
@@ -17,7 +18,6 @@ import { binnable, Binnable } from '../bin';
 import { Column } from '../types';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { modifySignal } from '../signals';
-import { push } from '../../array';
 
 export interface BarBuild {
     globalAggregateMaxExtentSignal: string;
@@ -78,13 +78,11 @@ export class Bar extends Layout {
         const { names } = this;
         const binField = bin.fields[0];
         if (bin.native === false) {
-            globalScope.scope.signals.push(bin.maxbinsSignal);
-            push(globalScope.scope.data[0].transform, bin.transforms);
-            globalScope.scope.data.push(bin.dataSequence);
+            addSignal(globalScope.scope, bin.maxbinsSignal);
+            addTransforms(globalScope.scope.data[0], ...bin.transforms);
+            addData(globalScope.scope, bin.dataSequence);
         }
-
-        parentScope.scope.data = parentScope.scope.data || [];
-        parentScope.scope.data.push(
+        addData(parentScope.scope,
             {
                 name: 'local',  //TODO
                 source: parentScope.dataName,
@@ -111,7 +109,7 @@ export class Bar extends Layout {
             }
         );
         //this needs to be global since the scale depends on it
-        globalScope.scope.data.push(
+        addData(globalScope.scope,
             {
                 name: names.globalAggregateData,
                 source: globalScope.dataName,
@@ -144,17 +142,15 @@ export class Bar extends Layout {
         );
         const s = (orientation === 'vertical') ? props.globalScope.signals.minCellWidth : props.globalScope.signals.minCellHeight;
         modifySignal(s, 'max', `length(data(${JSON.stringify(names.accumulative)}))*${minBandWidth}`);
-        push(globalScope.scope.signals,
-            [
-                {
-                    name: names.globalAggregateMaxExtentSignal,
-                    update: `${names.globalAggregateExtentSignal}[1]`
-                },
-                {
-                    name: names.bandWidth,
-                    update: `bandwidth(${JSON.stringify(orientation === 'horizontal' ? names.yScale : names.xScale)})`
-                }
-            ]
+        addSignal(globalScope.scope,
+            {
+                name: names.globalAggregateMaxExtentSignal,
+                update: `${names.globalAggregateExtentSignal}[1]`
+            },
+            {
+                name: names.bandWidth,
+                update: `bandwidth(${JSON.stringify(orientation === 'horizontal' ? names.yScale : names.xScale)})`
+            }
         );
         const mark: Mark = {
             style: 'cell',
@@ -203,10 +199,9 @@ export class Bar extends Layout {
                             signal: names.bandWidth
                         },
                     }
-            },
-            marks: []
+            }
         };
-        parentScope.scope.marks.push(mark);
+        addMarks(parentScope.scope, mark);
 
         const { xScale, yScale } = this.getScales(bin);
 

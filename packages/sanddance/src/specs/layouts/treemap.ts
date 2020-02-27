@@ -3,6 +3,7 @@
 import { InnerScope } from '../interfaces';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { Mark } from 'vega-typings';
+import { addMarks } from '../scope';
 
 export interface TreemapProps extends LayoutProps {
     corner: 'top-left' | 'bottom-left';
@@ -27,10 +28,9 @@ export class Treemap extends Layout {
             //TODO implement corner
 
             encode: {
-            },
-            marks: []
+            }
         };
-        parentScope.scope.marks.push(mark);
+        addMarks(parentScope.scope, mark);
 
         return {
             dataName: facetDataName,

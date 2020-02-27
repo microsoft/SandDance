@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { addData, addScale, addSignal, addMarks, addTransforms } from '../scope';
 import { binnable, Binnable } from '../bin';
 import { createOrdinalsForFacet } from '../ordinal';
 import { DiscreteColumn, InnerScope } from '../interfaces';
@@ -8,7 +9,6 @@ import { FieldNames, SignalNames } from '../constants';
 import { GroupMark } from 'vega-typings';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { modifySignal } from '../signals';
-import { push } from '../../array';
 
 export interface WrapProps extends LayoutProps {
     groupby: DiscreteColumn;
@@ -52,16 +52,13 @@ export class Wrap extends Layout {
         const colCount = `${prefix}_colCount`;
 
         if (bin.native === false) {
-            globalScope.scope.signals.push(bin.maxbinsSignal);
-            push(globalScope.scope.data[0].transform, bin.transforms);
-            globalScope.scope.data.push(bin.dataSequence);
+            addSignal(globalScope.scope, bin.maxbinsSignal);
+            addTransforms(globalScope.scope.data[0], ...bin.transforms);
+            addData(globalScope.scope, bin.dataSequence);
         }
         const ord = createOrdinalsForFacet(parentScope.dataName, prefix, bin.fields);
-        globalScope.scope.data = globalScope.scope.data || [];
-        globalScope.scope.data.push(ord.data);
-
-        //need to sort by the bin, since there is no scale for positioning
-        globalScope.scope.data.push.apply(globalScope.scope.data, [
+        addData(globalScope.scope,
+            ord.data,
             {
                 name: rxc0,
                 transform: [
@@ -184,7 +181,7 @@ export class Wrap extends Layout {
                 ]
             },
             {
-                name: sortedDataName,
+                name: sortedDataName,           //need to sort by the bin, since there is no scale for positioning
                 source: parentScope.dataName,
                 transform: [
                     {
@@ -207,13 +204,11 @@ export class Wrap extends Layout {
                     }
                 ]
             }
-        ]);
+        );
 
-        globalScope.scope.scales = globalScope.scope.scales || [];
-        globalScope.scope.scales.push(ord.scale);
+        addScale(globalScope.scope, ord.scale);
 
-        globalScope.scope.signals = globalScope.scope.signals || [];
-        globalScope.scope.signals.push.apply(globalScope.scope.signals, [
+        addSignal(globalScope.scope,
             {
                 name: minAspect,
                 update: `${SignalNames.MinCellWidth} / ${SignalNames.MinCellHeight}`
@@ -262,7 +257,7 @@ export class Wrap extends Layout {
                 name: cellHeight,
                 update: `${fits} ? data(${JSON.stringify(rxc)})[0].cellh : ${SignalNames.MinCellHeight}`
             }
-        ]);
+        );
 
         modifySignal(globalScope.signals.plotHeightOut, 'max', `(${cellHeight} * ceil(${dataLength} / ${colCount}))`);
         modifySignal(globalScope.signals.plotWidthOut, 'max', `(${cellWidth} * ${colCount})`);
@@ -293,10 +288,9 @@ export class Wrap extends Layout {
                         signal: `datum.r * ${cellHeight}`
                     }
                 }
-            },
-            marks: []
+            }
         };
-        parentScope.scope.marks.push(mark);
+        addMarks(parentScope.scope, mark);
 
         return {
             dataName: facetDataName,

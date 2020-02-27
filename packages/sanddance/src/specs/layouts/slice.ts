@@ -4,7 +4,7 @@ import { binnable, Binnable } from '../bin';
 import { DiscreteColumn, InnerScope, Orientation } from '../interfaces';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { Mark } from 'vega-typings';
-import { push } from '../../array';
+import { addTransforms } from '../scope';
 
 export interface SliceProps extends LayoutProps {
     groupby: DiscreteColumn;
@@ -31,7 +31,7 @@ export class Slice extends Layout {
 
         if (bin.native === false) {
             globalScope.scope.signals.push(bin.maxbinsSignal);
-            push(globalScope.scope.data[0].transform, bin.transforms);
+            addTransforms(globalScope.scope.data[0], ...bin.transforms);
             globalScope.scope.data.push(bin.dataSequence);
         }
         const mark: Mark = {

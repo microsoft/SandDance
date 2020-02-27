@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import { addColor } from './color';
 import { addGlobalScales } from './globalScales';
+import { addScale, addSignal } from './scope';
 import {
     AxisScales,
     DiscreteColumn,
@@ -21,7 +22,6 @@ import {
 } from 'vega-typings';
 import { LayoutBuildProps, LayoutPair, LayoutProps } from './layouts/layout';
 import { minFacetSize } from './defaults';
-import { push } from '../array';
 import { SignalNames } from './constants';
 import { SpecCapabilities, SpecContext } from './types';
 import { textSignals } from './signals';
@@ -116,15 +116,19 @@ export class SpecBuilder {
                     maxbinsSignalName: SignalNames.FacetVBins
                 };
                 const facetLayout = getFacetLayout(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn);
-                push(vegaSpec.signals, facetLayout.signals);
-                push(vegaSpec.scales, facetLayout.scales);
+                addSignal(vegaSpec, ...facetLayout.signals);
+                addScale(vegaSpec, ...facetLayout.scales);
                 this.props.layouts = [facetLayout.layoutPair, ...this.props.layouts];
             }
-            const { finalScope, specResult, allGlobalScales } = this.iterateLayouts(globalScope, groupMark, colorDataName);
+            const { firstScope, finalScope, specResult, allGlobalScales } = this.iterateLayouts(globalScope, groupMark, colorDataName);
             if (specResult) {
                 return specResult;
             }
             if (allGlobalScales.length > 0) {
+                if (insight.columns.facet) {
+                    //create data sequences based on rows / cols
+                    //create group marks based on data sequences
+                }
                 addGlobalScales(
                     globalScope,
                     allGlobalScales[0], //only use the first
@@ -132,7 +136,7 @@ export class SpecBuilder {
                     { x: this.plotOffsetX, y: this.plotOffsetY },
                     specColumns,
                     specViewOptions,
-                    groupMark.axes
+                    insight.columns.facet ? firstScope.scope : groupMark
                 );
 
             }
@@ -182,19 +186,13 @@ export class SpecBuilder {
                     height: { signal: SignalNames.PlotHeightOut },
                     width: { signal: SignalNames.PlotWidthOut }
                 }
-            },
-            marks: [],
-            axes: [],
-            scales: [],
-            data: [],
-            signals: []
+            }
         };
         const vegaSpec: Spec = {
             $schema: 'https://vega.github.io/schema/vega/v5.json',
             data: [{ name: dataName, transform: [] }],
             style: 'cell',
             marks: [groupMark],
-            scales: [],
             signals: textSignals(specContext, SignalNames.ViewportHeight).concat([
                 minCellWidth,
                 minCellHeight,
@@ -238,6 +236,7 @@ export class SpecBuilder {
             sizeSignals: globalScope.sizeSignals,
             scope
         };
+        let firstScope: InnerScope;
         let childScope: InnerScope;
         const groupings: string[][] = [];
         let { layouts, specCapabilities } = this.props;
@@ -245,6 +244,9 @@ export class SpecBuilder {
         for (let i = 0; i < layouts.length; i++) {
             if (!parentScope) continue;
             if (!parentScope.scope) break;
+            if (!parentScope.scope.marks) {
+                parentScope.scope.marks = [];
+            }
             let buildProps: LayoutBuildProps = {
                 globalScope,
                 parentScope,
@@ -271,9 +273,12 @@ export class SpecBuilder {
             if (childScope && addScaleAxes && childScope.globalScales) {
                 allGlobalScales.push(childScope.globalScales);
             }
+            if (i === 0) {
+                firstScope = childScope;
+            }
             parentScope = childScope;
         }
-        return { finalScope: parentScope, specResult, allGlobalScales };
+        return { firstScope, finalScope: parentScope, specResult, allGlobalScales };
     }
 
     private createLayout(layoutPair: LayoutPair, buildProps: LayoutBuildProps) {
