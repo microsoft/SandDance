@@ -12,6 +12,15 @@ import { Column, SpecColumns, SpecViewOptions } from './types';
 import { SignalNames } from './constants';
 import { util } from '@msrvida/vega-deck.gl';
 
+export interface AxesScope {
+    scope: Scope;
+    labels: boolean;
+}
+
+export interface AxesScopeMap {
+    [key: string]: AxesScope;
+}
+
 export function addGlobalScales(
     globalScope: GlobalScope,          //TODO if faceting, scope shoule be each facet!!
     globalScales: { x?: Scale, y?: Scale, z?: Scale },
@@ -19,7 +28,7 @@ export function addGlobalScales(
     plotOffsetSignals: { x: NewSignal, y: NewSignal },
     specColumns: SpecColumns,
     specViewOptions: SpecViewOptions,
-    axesScope: Scope) {
+    axesScopes: AxesScopeMap) {
 
     // const add = (axisScale: AxisScale, scale: Scale, column: Column, orient: AxisOrient) => {
     //     const pa = partialAxes(specViewOptions, AxisType.quantitative, columnToAxisType(column));
@@ -51,34 +60,10 @@ export function addGlobalScales(
                     //const pa = partialAxes(specViewOptions, AxisType.quantitative, columnToAxisType(specColumns[s]));
                     const horizontal = s === 'x';
                     const column: Column = specColumns[s];
-                    const axis: Axis = {
-                        scale: scale.name,
-                        orient: horizontal ? 'bottom' : 'left',
-                        title: axisScale.aggregate ? 'TODO aggtitle' : column.name,
-                        labelAlign: horizontal ? 'left' : 'right',
-                        labelAngle: {
-                            signal: horizontal ? SignalNames.TextAngleX : SignalNames.TextAngleY
-                        },
-                        labelFontSize: {
-                            signal: SignalNames.TextSize
-                        },
-                        titleAngle: {
-                            signal: horizontal ? SignalNames.TextAngleX : SignalNames.TextAngleY
-                        },
-                        titleAlign: horizontal ? 'left' : 'right',
-                        titleFontSize: {
-                            signal: SignalNames.TextTitleSize
-                        },
-                        titleColor: util.colorToString(specViewOptions.colors.axisText),
-                        tickSize: specViewOptions.tickSize,
-                        domainColor: lineColor,
-                        tickColor: lineColor,
-                        labelColor: util.colorToString(specViewOptions.colors.axisText)
-                    };
-                    if (column.quantitative) {
-                        axis.format = '~r';
+                    addAxes(axesScopes['main'].scope, createAxis(scale, horizontal, axisScale, column, specViewOptions, lineColor, axesScopes['main'].labels));
+                    if (axesScopes[s]) {
+                        addAxes(axesScopes[s].scope, createAxis(scale, horizontal, axisScale, column, specViewOptions, lineColor, axesScopes[s].labels));
                     }
-                    addAxes(axesScope, axis);
                     if (plotOffsetSignals[s]) {
                         const plotOffsetSignal = plotOffsetSignals[s] as NewSignal;
                         plotOffsetSignal.update = `200`; //TODO measure axis text????
@@ -87,4 +72,38 @@ export function addGlobalScales(
             }
         }
     }
+}
+
+function createAxis(scale: Scale, horizontal: boolean, axisScale: AxisScale, column: Column, specViewOptions: SpecViewOptions, lineColor: string, labels: boolean) {
+    const axis: Axis = {
+        scale: scale.name,
+        orient: horizontal ? 'bottom' : 'left',
+        domainColor: lineColor,
+        tickColor: lineColor,
+        tickSize: specViewOptions.tickSize,
+        labels,
+        ...labels && {
+            title: axisScale.aggregate ? 'TODO aggtitle' : column.name,
+            labelAlign: horizontal ? 'left' : 'right',
+            labelAngle: {
+                signal: horizontal ? SignalNames.TextAngleX : SignalNames.TextAngleY
+            },
+            labelFontSize: {
+                signal: SignalNames.TextSize
+            },
+            titleAngle: {
+                signal: horizontal ? SignalNames.TextAngleX : SignalNames.TextAngleY
+            },
+            titleAlign: horizontal ? 'left' : 'right',
+            titleFontSize: {
+                signal: SignalNames.TextTitleSize
+            },
+            titleColor: util.colorToString(specViewOptions.colors.axisText),
+            labelColor: util.colorToString(specViewOptions.colors.axisText)
+        }
+    };
+    if (column.quantitative) {
+        axis.format = '~r';
+    }
+    return axis;
 }

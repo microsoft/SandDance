@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { addColor } from './color';
-import { addGlobalScales } from './globalScales';
+import { addFacetAxesMarks, getFacetLayout } from './facetLayout';
+import { addGlobalScales, AxesScopeMap } from './globalScales';
 import { addScale, addSignal } from './scope';
 import {
     AxisScales,
@@ -13,7 +14,6 @@ import {
 } from './interfaces';
 import { defaultBins, maxbins } from './defaults';
 import { fill, opacity } from './fill';
-import { getFacetLayout } from './facetLayout';
 import {
     GroupMark,
     NewSignal,
@@ -125,10 +125,15 @@ export class SpecBuilder {
                 return specResult;
             }
             if (allGlobalScales.length > 0) {
-                if (insight.columns.facet) {
-                    //create data sequences based on rows / cols
-                    //create group marks based on data sequences
-                }
+                let axesScopeMap: AxesScopeMap = insight.columns.facet ?
+                    addFacetAxesMarks(globalScope.scope, firstScope)
+                    :
+                    {
+                        main: {
+                            scope: groupMark,
+                            labels: true
+                        }
+                    };
                 addGlobalScales(
                     globalScope,
                     allGlobalScales[0], //only use the first
@@ -136,7 +141,7 @@ export class SpecBuilder {
                     { x: this.plotOffsetX, y: this.plotOffsetY },
                     specColumns,
                     specViewOptions,
-                    insight.columns.facet ? firstScope.scope : groupMark
+                    axesScopeMap
                 );
 
             }
@@ -178,7 +183,6 @@ export class SpecBuilder {
         const { insight } = specContext;
         const groupMark: GroupMark = {
             type: 'group',
-            style: 'cell',
             encode: {
                 update: {
                     x: { signal: SignalNames.PlotOffsetX },
@@ -191,7 +195,6 @@ export class SpecBuilder {
         const vegaSpec: Spec = {
             $schema: 'https://vega.github.io/schema/vega/v5.json',
             data: [{ name: dataName, transform: [] }],
-            style: 'cell',
             marks: [groupMark],
             signals: textSignals(specContext, SignalNames.ViewportHeight).concat([
                 minCellWidth,

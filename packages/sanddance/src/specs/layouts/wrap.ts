@@ -299,7 +299,7 @@ export class Wrap extends Layout {
                 layoutHeight: `(${cellHeight} - ${facetPadding})`,
                 layoutWidth: `(${cellWidth} - ${facetPadding})`,
                 colCount,
-                rowCount: `ceil(${dataLength} / ${colCount}))`
+                rowCount: `ceil(${dataLength} / ${colCount})`
             }
         };
     }
