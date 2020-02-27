@@ -157,7 +157,7 @@ export class Bar extends Layout {
             }
         );
         const mark: Mark = {
-            style: 'cell',
+            //style: 'cell',
             name: prefix,
             type: 'group',
             from: {

@@ -5,6 +5,14 @@ import { addFacetAxesMarks, addFacetTitles, getFacetLayout } from './facetLayout
 import { addGlobalScales, AxesScopeMap } from './globalScales';
 import { addScale, addSignal } from './scope';
 import {
+    axesOffsetX,
+    axesOffsetY,
+    axesTitlePaddingX,
+    axesTitlePaddingY,
+    defaultBins,
+    maxbins
+} from './defaults';
+import {
     AxisScales,
     DiscreteColumn,
     GlobalScales,
@@ -12,7 +20,6 @@ import {
     InnerScope,
     SpecResult
 } from './interfaces';
-import { defaultBins, maxbins } from './defaults';
 import { fill, opacity } from './fill';
 import {
     GroupMark,
@@ -144,6 +151,8 @@ export class SpecBuilder {
                     allGlobalScales[0], //only use the first
                     this.props.axisScales,
                     { x: this.plotOffsetLeft, y: this.plotOffsetBottom },
+                    { x: axesOffsetX, y: axesOffsetY },
+                    { x: axesTitlePaddingX, y: axesTitlePaddingY },
                     specColumns,
                     specViewOptions,
                     axesScopeMap
