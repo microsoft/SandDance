@@ -11,4 +11,6 @@ export const minBarBandWidth = 10;
 
 export const minFacetSize = 100;
 
-export const facetPadding = 20;
+export const facetPaddingLeft = 40;
+export const facetPaddingTop = 40;
+export const facetPaddingBottom = 20;

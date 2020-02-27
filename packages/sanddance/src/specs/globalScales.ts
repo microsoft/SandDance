@@ -66,7 +66,7 @@ export function addGlobalScales(
                     }
                     if (plotOffsetSignals[s]) {
                         const plotOffsetSignal = plotOffsetSignals[s] as NewSignal;
-                        plotOffsetSignal.update = `200`; //TODO measure axis text????
+                        plotOffsetSignal.update = `120`; //TODO measure axis text????
                     }
                 }
             }

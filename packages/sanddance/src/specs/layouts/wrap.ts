@@ -4,7 +4,7 @@ import { addData, addScale, addSignal, addMarks, addTransforms } from '../scope'
 import { binnable, Binnable } from '../bin';
 import { createOrdinalsForFacet } from '../ordinal';
 import { DiscreteColumn, InnerScope } from '../interfaces';
-import { facetPadding } from '../defaults';
+import { facetPaddingBottom, facetPaddingLeft, facetPaddingTop } from '../defaults';
 import { FieldNames, SignalNames } from '../constants';
 import { GroupMark } from 'vega-typings';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
@@ -276,16 +276,16 @@ export class Wrap extends Layout {
             encode: {
                 update: {
                     height: {
-                        signal: `${cellHeight} - ${facetPadding}`
+                        signal: `${cellHeight} - ${facetPaddingTop} - ${facetPaddingBottom}`
                     },
                     width: {
-                        signal: `${cellWidth} - ${facetPadding}`
+                        signal: `${cellWidth} - ${facetPaddingLeft}`
                     },
                     x: {
-                        signal: `datum.c * ${cellWidth} + ${facetPadding}`
+                        signal: `datum.c * ${cellWidth} + ${facetPaddingLeft}`
                     },
                     y: {
-                        signal: `datum.r * ${cellHeight}`
+                        signal: `datum.r * ${cellHeight} + ${facetPaddingTop}`
                     }
                 }
             }
@@ -296,8 +296,8 @@ export class Wrap extends Layout {
             dataName: facetDataName,
             scope: mark,
             sizeSignals: {
-                layoutHeight: `(${cellHeight} - ${facetPadding})`,
-                layoutWidth: `(${cellWidth} - ${facetPadding})`,
+                layoutHeight: `(${cellHeight} - ${facetPaddingTop} - ${facetPaddingBottom})`,
+                layoutWidth: `(${cellWidth} - ${facetPaddingLeft})`,
                 colCount,
                 rowCount: `ceil(${dataLength} / ${colCount})`
             }

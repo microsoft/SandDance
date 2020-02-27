@@ -37,8 +37,9 @@ export interface SpecBuilderProps {
 export class SpecBuilder {
     private minCellWidth: NewSignal;
     private minCellHeight: NewSignal;
-    private plotOffsetX: NewSignal;
-    private plotOffsetY: NewSignal;
+    private plotOffsetLeft: NewSignal;
+    private plotOffsetTop: NewSignal;
+    private plotOffsetBottom: NewSignal;
     private plotHeightOut: NewSignal;
     private plotWidthOut: NewSignal;
 
@@ -48,8 +49,9 @@ export class SpecBuilder {
             update: `${minFacetSize}`
         };
         this.minCellHeight = { name: SignalNames.MinCellHeight, update: `${minFacetSize}` };
-        this.plotOffsetX = { name: SignalNames.PlotOffsetX, update: `0` };
-        this.plotOffsetY = { name: SignalNames.PlotOffsetY, update: `0` };
+        this.plotOffsetLeft = { name: SignalNames.PlotOffsetLeft, update: `0` };
+        this.plotOffsetTop = { name: SignalNames.PlotOffsetTop, update: `0` };
+        this.plotOffsetBottom = { name: SignalNames.PlotOffsetBottom, update: `0` };
         this.plotHeightOut = { name: SignalNames.PlotHeightOut, update: SignalNames.PlotHeightIn };
         this.plotWidthOut = { name: SignalNames.PlotWidthOut, update: SignalNames.PlotWidthIn };
     }
@@ -126,7 +128,7 @@ export class SpecBuilder {
             }
             if (allGlobalScales.length > 0) {
                 let axesScopeMap: AxesScopeMap = insight.columns.facet ?
-                    addFacetAxesMarks(globalScope.scope, firstScope)
+                    addFacetAxesMarks(globalScope.scope, firstScope, specViewOptions, specColumns.facet)
                     :
                     {
                         main: {
@@ -138,7 +140,7 @@ export class SpecBuilder {
                     globalScope,
                     allGlobalScales[0], //only use the first
                     this.props.axisScales,
-                    { x: this.plotOffsetX, y: this.plotOffsetY },
+                    { x: this.plotOffsetLeft, y: this.plotOffsetBottom },
                     specColumns,
                     specViewOptions,
                     axesScopeMap
@@ -178,15 +180,16 @@ export class SpecBuilder {
     }
 
     private initSpec(dataName: string) {
-        const { minCellWidth, minCellHeight, plotOffsetX, plotOffsetY, plotHeightOut, plotWidthOut } = this;
+        const { minCellWidth, minCellHeight, plotOffsetLeft, plotOffsetBottom, plotOffsetTop, plotHeightOut, plotWidthOut } = this;
         const { specContext } = this.props;
         const { insight } = specContext;
         const groupMark: GroupMark = {
             type: 'group',
+            //style: 'cell',
             encode: {
                 update: {
-                    x: { signal: SignalNames.PlotOffsetX },
-                    y: { value: 0 },
+                    x: { signal: SignalNames.PlotOffsetLeft },
+                    y: { signal: SignalNames.PlotOffsetTop },
                     height: { signal: SignalNames.PlotHeightOut },
                     width: { signal: SignalNames.PlotWidthOut }
                 }
@@ -194,6 +197,7 @@ export class SpecBuilder {
         };
         const vegaSpec: Spec = {
             $schema: 'https://vega.github.io/schema/vega/v5.json',
+            //style: 'cell',
             data: [{ name: dataName, transform: [] }],
             marks: [groupMark],
             signals: textSignals(specContext, SignalNames.ViewportHeight).concat([
@@ -207,25 +211,26 @@ export class SpecBuilder {
                     name: SignalNames.ViewportWidth,
                     update: `max(${SignalNames.MinCellWidth}, ${insight.size.width})`
                 },
-                plotOffsetX,
-                plotOffsetY,
+                plotOffsetLeft,
+                plotOffsetTop,
+                plotOffsetBottom,
                 {
                     name: SignalNames.PlotHeightIn,
-                    update: `${SignalNames.ViewportHeight} - ${SignalNames.PlotOffsetY}`
+                    update: `${SignalNames.ViewportHeight} - ${SignalNames.PlotOffsetBottom}`
                 },
                 {
                     name: SignalNames.PlotWidthIn,
-                    update: `${SignalNames.ViewportWidth} - ${SignalNames.PlotOffsetX}`
+                    update: `${SignalNames.ViewportWidth} - ${SignalNames.PlotOffsetLeft}`
                 },
                 plotHeightOut,
                 plotWidthOut,
                 {
                     name: 'height',
-                    update: `${SignalNames.PlotHeightOut} + ${SignalNames.PlotOffsetY}`
+                    update: `${SignalNames.PlotOffsetTop} + ${SignalNames.PlotHeightOut} + ${SignalNames.PlotOffsetBottom}`
                 },
                 {
                     name: 'width',
-                    update: `${SignalNames.PlotWidthOut} + ${SignalNames.PlotOffsetX}`
+                    update: `${SignalNames.PlotWidthOut} + ${SignalNames.PlotOffsetLeft}`
                 }
             ])
         };

@@ -2,20 +2,21 @@
 // Licensed under the MIT license.
 import { addData, addMarks } from './scope';
 import { AxesScopeMap } from './globalScales';
+import { Column, FacetStyle, SpecViewOptions } from './types';
 import { Cross, CrossProps } from './layouts/cross';
-import { DiscreteColumn, InnerScope } from './interfaces';
-import { facetPadding } from './defaults';
-import { FacetStyle } from './types';
 import {
+    Data,
     GroupMark,
     Scale,
     Scope,
-    Signal,
-    Data
+    Signal
 } from 'vega-typings';
+import { DiscreteColumn, InnerScope } from './interfaces';
+import { facetPaddingBottom, facetPaddingLeft, facetPaddingTop } from './defaults';
+import { FieldNames, SignalNames } from './constants';
 import { LayoutPair } from './layouts/layout';
-import { SignalNames } from './constants';
 import { Slice, SliceProps } from './layouts/slice';
+import { util } from '@msrvida/vega-deck.gl';
 import { Wrap, WrapProps } from './layouts/wrap';
 
 export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColumn, facetVColumn: DiscreteColumn) {
@@ -71,8 +72,44 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
     return { layoutPair, scales, signals };
 }
 
-export function addFacetAxesMarks(globalScope: Scope, facetScope: InnerScope) {
+export function addFacetAxesMarks(globalScope: Scope, facetScope: InnerScope, specViewOptions: SpecViewOptions, column: Column) {
     const { scope, sizeSignals } = facetScope;
+    const field = `parent[${JSON.stringify(FieldNames.FacetRange)}]`;
+    addMarks(facetScope.scope, {
+        type: 'text',
+        encode: {
+            enter: {
+                align: {
+                    value: 'center'
+                },
+                baseline: {
+                    value: 'bottom'
+                },
+                limit: {
+                    signal: facetScope.sizeSignals.layoutWidth
+                },
+                color: util.colorToString(specViewOptions.colors.axisText) as any,
+                fontSize: {
+                    signal: SignalNames.TextSize
+                },
+                y: {
+                    value: -facetPaddingTop / 2
+                }
+            },
+            update: {
+                x: {
+                    signal: `(${facetScope.sizeSignals.layoutWidth}) / 2`
+                },
+                text: {
+                    signal: column.quantitative ?
+                        `format(${field}[0], '~r') + ' - ' + format(${field}[1], '~r')`
+                        :
+                        `${field}[0]`
+                }
+            }
+        }
+    });
+
     const colSeqName = 'TODOCOLS';
     const rowSeqName = 'TODOROWS';
 
@@ -87,10 +124,10 @@ export function addFacetAxesMarks(globalScope: Scope, facetScope: InnerScope) {
         encode: {
             update: {
                 x: {
-                    signal: `datum.data * (${sizeSignals.layoutWidth} + ${facetPadding}) + ${facetPadding} + ${SignalNames.PlotOffsetX}`
+                    signal: `datum.data * (${sizeSignals.layoutWidth} + ${facetPaddingLeft}) + ${facetPaddingLeft} + ${SignalNames.PlotOffsetLeft}`
                 },
                 y: {
-                    signal: SignalNames.PlotHeightOut
+                    signal: `${SignalNames.PlotOffsetTop} + ${SignalNames.PlotHeightOut}`
                 },
                 width: {
                     signal: `${sizeSignals.layoutWidth}`
@@ -106,10 +143,10 @@ export function addFacetAxesMarks(globalScope: Scope, facetScope: InnerScope) {
         encode: {
             update: {
                 x: {
-                    signal: SignalNames.PlotOffsetX
+                    signal: SignalNames.PlotOffsetLeft
                 },
                 y: {
-                    signal: `datum.data * (${sizeSignals.layoutHeight} + ${facetPadding})`
+                    signal: `${SignalNames.PlotOffsetTop} + ${facetPaddingTop} + datum.data * (${sizeSignals.layoutHeight} + ${facetPaddingTop} + ${facetPaddingBottom})`
                 },
                 height: {
                     signal: `${sizeSignals.layoutHeight}`
