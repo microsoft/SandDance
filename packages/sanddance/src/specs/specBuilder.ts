@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { addColor } from './color';
-import { addFacetAxesMarks, getFacetLayout } from './facetLayout';
+import { addFacetAxesMarks, addFacetTitles, getFacetLayout } from './facetLayout';
 import { addGlobalScales, AxesScopeMap } from './globalScales';
 import { addScale, addSignal } from './scope';
 import {
@@ -126,9 +126,12 @@ export class SpecBuilder {
             if (specResult) {
                 return specResult;
             }
+            if (insight.columns.facet) {
+                addFacetTitles(firstScope, specViewOptions, specColumns.facet)
+            }
             if (allGlobalScales.length > 0) {
                 let axesScopeMap: AxesScopeMap = insight.columns.facet ?
-                    addFacetAxesMarks(globalScope.scope, firstScope, specViewOptions, specColumns.facet)
+                    addFacetAxesMarks(globalScope.scope, firstScope)
                     :
                     {
                         main: {

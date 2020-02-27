@@ -72,8 +72,7 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
     return { layoutPair, scales, signals };
 }
 
-export function addFacetAxesMarks(globalScope: Scope, facetScope: InnerScope, specViewOptions: SpecViewOptions, column: Column) {
-    const { scope, sizeSignals } = facetScope;
+export function addFacetTitles(facetScope: InnerScope, specViewOptions: SpecViewOptions, column: Column) {
     const field = `parent[${JSON.stringify(FieldNames.FacetRange)}]`;
     addMarks(facetScope.scope, {
         type: 'text',
@@ -109,7 +108,10 @@ export function addFacetAxesMarks(globalScope: Scope, facetScope: InnerScope, sp
             }
         }
     });
+}
 
+export function addFacetAxesMarks(globalScope: Scope, facetScope: InnerScope) {
+    const { scope, sizeSignals } = facetScope;
     const colSeqName = 'TODOCOLS';
     const rowSeqName = 'TODOROWS';
 
