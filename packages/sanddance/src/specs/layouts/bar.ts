@@ -46,7 +46,9 @@ export class Bar extends Layout {
         yScale: string,
         bandWidth: string,
         scaledSize: string,
-        accumulative: string
+        accumulative: string,
+        localAggregation: string,
+        pivot: string
     };
 
     constructor(public props: BarProps & LayoutBuildProps) {
@@ -73,7 +75,9 @@ export class Bar extends Layout {
             yScale: `${prefix}_scale_y`,
             bandWidth: `${prefix}_bandwidth`,
             scaledSize: `${prefix}_scaled_size`,
-            accumulative: `${prefix}_accumulative`
+            accumulative: `${prefix}_accumulative`,
+            localAggregation: `data_${prefix}_localAggregation`,
+            pivot: `data_${prefix}_pivot`
         };
         const { names } = this;
         const binField = bin.fields[0];
@@ -84,7 +88,7 @@ export class Bar extends Layout {
         }
         addData(parentScope.scope,
             {
-                name: 'local',  //TODO
+                name: names.localAggregation,
                 source: parentScope.dataName,
                 transform: [
                     {
@@ -97,8 +101,8 @@ export class Bar extends Layout {
                 ]
             },
             {
-                name: 'pivot', //TODO
-                source: 'local',
+                name: names.pivot,
+                source: names.localAggregation,
                 transform: [
                     {
                         type: 'pivot',
@@ -222,11 +226,11 @@ export class Bar extends Layout {
             sizeSignals: orientation === 'horizontal' ?
                 {
                     layoutHeight: names.bandWidth,
-                    layoutWidth: `scale(${JSON.stringify(names.xScale)}, data('pivot')[0][datum[${JSON.stringify(binField)}]])`
+                    layoutWidth: `scale(${JSON.stringify(names.xScale)}, data(${JSON.stringify(names.pivot)})[0][datum[${JSON.stringify(binField)}]])`
                 }
                 :
                 {
-                    layoutHeight: `${parentScope.sizeSignals.layoutHeight} - scale(${JSON.stringify(names.yScale)}, data('pivot')[0][datum[${JSON.stringify(binField)}]])`,
+                    layoutHeight: `${parentScope.sizeSignals.layoutHeight} - scale(${JSON.stringify(names.yScale)}, data(${JSON.stringify(names.pivot)})[0][datum[${JSON.stringify(binField)}]])`,
                     layoutWidth: names.bandWidth
                 },
             globalScales: {
