@@ -183,7 +183,14 @@ export function addFacetAxesGroupMarks(globalScope: Scope, plotScope: Scope, fac
     addScale(globalScope, colTitleScale, rowTitleScale);
 
     const map: AxesScopeMap = {
-        main: [],
+        main: [
+            {
+                scope,
+                lines: true,
+                labels: false,
+                title: false
+            }
+        ],
         x: [
             {
                 scope: cellsColFooter,
