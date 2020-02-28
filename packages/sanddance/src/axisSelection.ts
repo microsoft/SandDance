@@ -118,17 +118,32 @@ function axisSelectionPolygons(axis: VegaDeckGl.types.Axis, vertical: boolean, a
 
 function facetSelectionPolygons(facetRects: VegaDeckGl.types.FacetRect[], facetColumn: Column) {
     const polygons: SelectPolygon[] = [];
-    facetRects.forEach((facetRect, i) => {
+    let linesAndSearches: { lines: VegaDeckGl.types.StyledLine[], search: SearchExpressionGroup }[];
+    if (facetColumn.quantitative) {
+        const linesAndRanges = facetRects.map(({ datum, lines }, i) => {
+            const facetRange: number[] = datum && datum[FieldNames.FacetRange];
+            return {
+                lines,
+                facetRange
+            };
+        });
+        linesAndRanges.sort((a, b) => a.facetRange[0] - b.facetRange[0]);
+        linesAndSearches = linesAndRanges.map((lineAndSearch, i) => ({
+            lines: lineAndSearch.lines,
+            search: selectBetweenFacet(facetColumn, lineAndSearch.facetRange, i === 0, i === facetRects.length - 1)
+        }));
+    } else {
+        linesAndSearches = facetRects.map(({ datum, lines }, i) => {
+            const facetRange: string[] = datum && datum[FieldNames.FacetRange];
+            return {
+                lines,
+                search: { expressions: [selectExact(facetColumn, facetRange[0])] }
+            };
+        });
+    }
+    linesAndSearches.forEach(({ lines, search }, i) => {
         //take any 2 lines to get a box dimension
-        const [x, y] = minMaxPoints(facetRect.lines.slice(2));
-        const facetRange: SearchExpressionValue[] = facetRect.datum && facetRect.datum[FieldNames.FacetRange];
-        const search: SearchExpressionGroup = facetRange ?
-            facetColumn.quantitative ?
-                selectBetweenFacet(facetColumn, facetRange, i === 0, i === facetRects.length - 1)
-                :
-                { expressions: [selectExact(facetColumn, facetRange[0])] }
-            :
-            { expressions: [selectNullOrEmpty(facetColumn)] };
+        const [x, y] = minMaxPoints(lines.slice(2));
         polygons.push({
             search,
             polygon: [[x.min, y.min], [x.max, y.min], [x.max, y.max], [x.min, y.max]]
