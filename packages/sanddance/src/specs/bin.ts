@@ -88,6 +88,11 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
                     type: 'formula',
                     expr: 'datum.data',
                     as: field
+                },
+                {
+                    type: 'formula',
+                    expr: `datum.data + ${binSignal}.step`,
+                    as: fieldEnd
                 }
             ]
         };
