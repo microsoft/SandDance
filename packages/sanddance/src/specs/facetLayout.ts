@@ -90,6 +90,9 @@ export function addFacetTitles(scope: Scope, sizeSignals: SizeSignals, specViewO
                 baseline: {
                     value: 'bottom'
                 },
+                fill: {
+                    value: util.colorToString(specViewOptions.colors.axisText)
+                },
                 limit: {
                     signal: sizeSignals.layoutWidth
                 },
@@ -101,7 +104,6 @@ export function addFacetTitles(scope: Scope, sizeSignals: SizeSignals, specViewO
                 }
             },
             update: {
-                color: util.colorToString(specViewOptions.colors.axisText) as any,
                 x: {
                     signal: `(${sizeSignals.layoutWidth}) / 2`
                 },
