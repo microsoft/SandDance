@@ -168,7 +168,7 @@ export class Square extends Layout {
         let { maxGroupedFillSize, maxGroupedUnits } = props;
 
         if (!maxGroupedUnits) {
-            maxGroupedUnits = `length(data(${JSON.stringify(parentScope.dataName)}))`;
+            maxGroupedUnits = `length(data(${JSON.stringify(globalScope.dataName)}))`;
         }
         if (!maxGroupedFillSize) {
             maxGroupedFillSize = fillDirection === 'down-right' ? parentScope.sizeSignals.layoutWidth : parentScope.sizeSignals.layoutHeight;
