@@ -3,7 +3,7 @@
 import { addScale, addSignal, addData } from './scope';
 import { binnableColorScale } from './scales';
 import { colorBinCountSignal, colorReverseSignal } from './signals';
-import { ColorScaleNone, ScaleNames, SignalNames } from './constants';
+import { ColorScaleNone, ScaleNames, SignalNames, FieldNames, DataNames } from './constants';
 import { getLegends } from './legends';
 import { Scope } from 'vega-typings';
 import { SpecContext } from './types';
@@ -17,11 +17,10 @@ export function addColor(scope: Scope, dataSource: string, specContext: SpecCont
         scope.legends = legends;
     }
 
-    const topColorField = 'top_color';
     const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     if (categoricalColor) {
-        const legendName = 'data_legend';
-        addData(scope, ...topLookup(specColumns.color, specViewOptions.maxLegends, dataSource, legendName, 'top_colors', topColorField));
+        const legendName = DataNames.Legend;
+        addData(scope, ...topLookup(specColumns.color, specViewOptions.maxLegends, dataSource, legendName, DataNames.TopLookup, FieldNames.TopColor));
         colorDataName = legendName;
     }
 
@@ -34,7 +33,7 @@ export function addColor(scope: Scope, dataSource: string, specContext: SpecCont
                 type: 'ordinal',
                 domain: {
                     data: colorDataName,
-                    field: topColorField,
+                    field: FieldNames.TopColor,
                     sort: true
                 },
                 range: {
@@ -50,5 +49,5 @@ export function addColor(scope: Scope, dataSource: string, specContext: SpecCont
         colorReverseSignal(specContext)
     );
 
-    return { topColorField, colorDataName };
+    return { topColorField: FieldNames.TopColor, colorDataName };
 }

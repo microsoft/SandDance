@@ -38,6 +38,7 @@ export interface GlobalScales {
 export interface InnerScope {
     dataName: string;
     scope?: Scope;
+    emptyScope?: Scope;
     mark?: Mark;
     globalScales?: GlobalScales;
     sizeSignals: SizeSignals;

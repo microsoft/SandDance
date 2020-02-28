@@ -1,15 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Data, Scale, OrdinalScale } from "vega-typings";
+import { FieldNames } from "./constants";
 
 export interface OrdinalResult {
     data: Data;
     scale: Scale;
-    lookupField: string;
 }
 
 export function createOrdinalsForFacet(source: string, prefix: string, binFields: string[]): OrdinalResult {
-    const lookupField = 'ordinal';
     const dataName = `${prefix}_bin_order`;
     const data: Data = {
         name: dataName,
@@ -29,7 +28,7 @@ export function createOrdinalsForFacet(source: string, prefix: string, binFields
             {
                 type: 'window',
                 ops: ['row_number'],
-                as: [lookupField]
+                as: [FieldNames.Ordinal]
             }
         ]
     };
@@ -42,12 +41,11 @@ export function createOrdinalsForFacet(source: string, prefix: string, binFields
         },
         range: {
             data: dataName,
-            field: lookupField
+            field: FieldNames.Ordinal
         }
     };
     return {
         data,
-        scale,
-        lookupField
+        scale
     };
 }

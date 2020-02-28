@@ -8,6 +8,7 @@ import {
     Transforms
 } from 'vega-typings';
 import { DiscreteColumn } from './interfaces';
+import { FieldNames } from './constants';
 
 export interface BaseBinnable {
     fields: string[];
@@ -93,6 +94,11 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
                     type: 'formula',
                     expr: `datum.data + ${binSignal}.step`,
                     as: fieldEnd
+                },
+                {
+                    type: 'window',
+                    ops: ['row_number'],
+                    as: [FieldNames.Ordinal]
                 }
             ]
         };

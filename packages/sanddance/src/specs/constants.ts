@@ -4,8 +4,10 @@
 export const FieldNames = {
     Active: '__SandDance__Active',
     Collapsed: '__SandDance__Collapsed',
+    Contains: '__SandDance__Contains',
     Selected: '__SandDance__Selected',
     Top: '__SandDance__Top',
+    TopColor: '__SandDance__TopColor',
     TopIndex: '__SandDance__TopIndex',
     Index: '__SandDance__Index',
     PowerBISelectionId: '__SandDance__PowerBISelectionId',
@@ -23,6 +25,7 @@ export const FieldNames = {
     FacetBin0: '__SandDance__FacetBin0',
     FacetBin1: '__SandDance__FacetBin1',
     GridIndex: '__SandDance__GridIndex',
+    Ordinal: '__SandDance__Ordinal',
     StacksLatBin0: '__SandDance__StacksLatBin0',
     StacksLatBin1: '__SandDance__StacksLatBin1',
     StacksLongBin0: '__SandDance__StacksLongBin0',
@@ -35,6 +38,8 @@ export const FieldNames = {
     TreemapStackX1: '__SandDance__TreemapStackX1',
     TreemapStackY0: '__SandDance__TreemapStackY0',
     TreemapStackY1: '__SandDance__TreemapStackY1',
+    WrapCol: '__SandDance__WrapCol',
+    WrapRow: '__SandDance__WrapRow'
 };
 
 export const DataNames = {

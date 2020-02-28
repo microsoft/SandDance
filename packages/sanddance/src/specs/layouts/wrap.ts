@@ -1,12 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { addData, addScale, addSignal, addMarks, addTransforms } from '../scope';
+import {
+    addData,
+    addMarks,
+    addSignal,
+    addTransforms
+} from '../scope';
 import { binnable, Binnable } from '../bin';
 import { createOrdinalsForFacet } from '../ordinal';
 import { DiscreteColumn, InnerScope } from '../interfaces';
 import { facetPaddingBottom, facetPaddingLeft, facetPaddingTop } from '../defaults';
 import { FieldNames, SignalNames } from '../constants';
-import { GroupMark } from 'vega-typings';
+import { GroupEncodeEntry, GroupMark } from 'vega-typings';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { modifySignal } from '../signals';
 
@@ -31,6 +36,8 @@ export class Wrap extends Layout {
         const { bin, prefix, props } = this;
         const { globalScope, parentScope } = props;
         const facetDataName = `data_${prefix}_facet`;
+        const emptyDataName = `data_${prefix}_empty`;
+        const emptyMarkName = `${prefix}_empty`;
         const sortedDataName = `data_${prefix}_sort`;
         const rowColumnDataName = `data_${prefix}_row_col`;
         const cellHeight = `${prefix}_cellHeight`;
@@ -51,14 +58,25 @@ export class Wrap extends Layout {
         const fitsArea = `${prefix}_fitsArea`;
         const colCount = `${prefix}_colCount`;
 
+        let ordinalBinData: string;
+
         if (bin.native === false) {
             addSignal(globalScope.scope, bin.maxbinsSignal);
             addTransforms(globalScope.scope.data[0], ...bin.transforms);
             addData(globalScope.scope, bin.dataSequence);
+            addTransforms(bin.dataSequence, {
+                type: 'formula',
+                expr: `indata(${JSON.stringify(parentScope.dataName)}, ${JSON.stringify(bin.fields[0])}, datum[${JSON.stringify(bin.fields[0])}])`,
+                as: FieldNames.Contains
+            });
+            ordinalBinData = bin.dataSequence.name;
+        } else {
+            const ord = createOrdinalsForFacet(parentScope.dataName, prefix, bin.fields);
+            addData(globalScope.scope, ord.data);
+            ordinalBinData = ord.data.name
         }
-        const ord = createOrdinalsForFacet(parentScope.dataName, prefix, bin.fields);
+
         addData(globalScope.scope,
-            ord.data,
             {
                 name: rxc0,
                 transform: [
@@ -162,21 +180,17 @@ export class Wrap extends Layout {
             },
             {
                 name: rowColumnDataName,
-                source: ord.data.name,
+                source: ordinalBinData,
                 transform: [
                     {
-                        type: 'window',
-                        ops: ['row_number']
+                        type: 'formula',
+                        expr: `floor((datum[${JSON.stringify(FieldNames.Ordinal)}] - 1) / ${colCount})`,
+                        as: FieldNames.WrapRow
                     },
                     {
                         type: 'formula',
-                        expr: `floor((datum.row_number - 1) / ${colCount})`,
-                        as: 'r'
-                    },
-                    {
-                        type: 'formula',
-                        expr: `(datum.row_number - 1) % ${colCount}`,
-                        as: 'c'
+                        expr: `(datum[${JSON.stringify(FieldNames.Ordinal)}] - 1) % ${colCount}`,
+                        as: FieldNames.WrapCol
                     }
                 ]
             },
@@ -200,13 +214,26 @@ export class Wrap extends Layout {
                         from: rowColumnDataName,
                         key: bin.fields[0],
                         fields: [bin.fields[0]],
-                        values: ['r', 'c']
+                        values: [FieldNames.WrapRow, FieldNames.WrapCol]
+                    }
+                ]
+            },
+            {
+                name: emptyDataName,
+                source: rowColumnDataName,
+                transform: [
+                    {
+                        type: 'filter',
+                        expr: `!datum[${JSON.stringify(FieldNames.Contains)}]`
+                    },
+                    {
+                        type: 'formula',
+                        expr: `[${bin.fields.map(f => `datum[${JSON.stringify(f)}]`).join()}]`,
+                        as: FieldNames.FacetRange
                     }
                 ]
             }
         );
-
-        addScale(globalScope.scope, ord.scale);
 
         addSignal(globalScope.scope,
             {
@@ -227,7 +254,7 @@ export class Wrap extends Layout {
             },
             {
                 name: dataLength,
-                update: `data(${JSON.stringify(ord.data.name)}).length`
+                update: `data(${JSON.stringify(ordinalBinData)}).length`
             },
             {
                 name: growColCount,
@@ -262,6 +289,21 @@ export class Wrap extends Layout {
         modifySignal(globalScope.signals.plotHeightOut, 'max', `(${cellHeight} * ceil(${dataLength} / ${colCount}))`);
         modifySignal(globalScope.signals.plotWidthOut, 'max', `(${cellWidth} * ${colCount})`);
 
+        const update: GroupEncodeEntry = {
+            height: {
+                signal: `${cellHeight} - ${facetPaddingTop} - ${facetPaddingBottom}`
+            },
+            width: {
+                signal: `${cellWidth} - ${facetPaddingLeft}`
+            },
+            x: {
+                signal: `datum[${JSON.stringify(FieldNames.WrapCol)}] * ${cellWidth} + ${facetPaddingLeft}`
+            },
+            y: {
+                signal: `datum[${JSON.stringify(FieldNames.WrapRow)}] * ${cellHeight} + ${facetPaddingTop}`
+            }
+        };
+
         const mark: GroupMark = {
             style: 'cell',
             name: prefix,
@@ -270,31 +312,26 @@ export class Wrap extends Layout {
                 facet: {
                     name: facetDataName,
                     data: sortedDataName,
-                    groupby: bin.fields.concat(['r', 'c', FieldNames.FacetRange])
+                    groupby: bin.fields.concat([FieldNames.WrapRow, FieldNames.WrapCol, FieldNames.FacetRange])
                 }
             },
-            encode: {
-                update: {
-                    height: {
-                        signal: `${cellHeight} - ${facetPaddingTop} - ${facetPaddingBottom}`
-                    },
-                    width: {
-                        signal: `${cellWidth} - ${facetPaddingLeft}`
-                    },
-                    x: {
-                        signal: `datum.c * ${cellWidth} + ${facetPaddingLeft}`
-                    },
-                    y: {
-                        signal: `datum.r * ${cellHeight} + ${facetPaddingTop}`
-                    }
-                }
-            }
+            encode: { update }
         };
-        addMarks(parentScope.scope, mark);
+        const emptymark: GroupMark = {
+            style: 'cell',
+            name: emptyMarkName,
+            type: 'group',
+            from: {
+                data: emptyDataName
+            },
+            encode: { update }
+        };
+        addMarks(parentScope.scope, mark, emptymark);
 
         return {
             dataName: facetDataName,
             scope: mark,
+            emptyScope: emptymark,
             sizeSignals: {
                 layoutHeight: `(${cellHeight} - ${facetPaddingTop} - ${facetPaddingBottom})`,
                 layoutWidth: `(${cellWidth} - ${facetPaddingLeft})`,

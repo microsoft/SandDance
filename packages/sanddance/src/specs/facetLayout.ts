@@ -11,7 +11,7 @@ import {
     Scope,
     Signal
 } from 'vega-typings';
-import { DiscreteColumn, InnerScope } from './interfaces';
+import { DiscreteColumn, InnerScope, SizeSignals } from './interfaces';
 import { facetPaddingBottom, facetPaddingLeft, facetPaddingTop } from './defaults';
 import { FieldNames, SignalNames } from './constants';
 import { LayoutPair } from './layouts/layout';
@@ -72,9 +72,9 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
     return { layoutPair, scales, signals };
 }
 
-export function addFacetTitles(facetScope: InnerScope, specViewOptions: SpecViewOptions, column: Column) {
+export function addFacetTitles(scope: Scope, sizeSignals: SizeSignals, specViewOptions: SpecViewOptions, column: Column) {
     const field = `parent[${JSON.stringify(FieldNames.FacetRange)}]`;
-    addMarks(facetScope.scope, {
+    addMarks(scope, {
         type: 'text',
         encode: {
             enter: {
@@ -85,7 +85,7 @@ export function addFacetTitles(facetScope: InnerScope, specViewOptions: SpecView
                     value: 'bottom'
                 },
                 limit: {
-                    signal: facetScope.sizeSignals.layoutWidth
+                    signal: sizeSignals.layoutWidth
                 },
                 color: util.colorToString(specViewOptions.colors.axisText) as any,
                 fontSize: {
@@ -97,7 +97,7 @@ export function addFacetTitles(facetScope: InnerScope, specViewOptions: SpecView
             },
             update: {
                 x: {
-                    signal: `(${facetScope.sizeSignals.layoutWidth}) / 2`
+                    signal: `(${sizeSignals.layoutWidth}) / 2`
                 },
                 text: {
                     signal: column.quantitative ?

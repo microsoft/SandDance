@@ -134,7 +134,10 @@ export class SpecBuilder {
                 return specResult;
             }
             if (insight.columns.facet) {
-                addFacetTitles(firstScope, specViewOptions, specColumns.facet)
+                addFacetTitles(firstScope.scope, firstScope.sizeSignals, specViewOptions, specColumns.facet);
+                if (firstScope.emptyScope) {
+                    addFacetTitles(firstScope.emptyScope, firstScope.sizeSignals, specViewOptions, specColumns.facet);
+                }
             }
             if (allGlobalScales.length > 0) {
                 let axesScopeMap: AxesScopeMap = insight.columns.facet ?
