@@ -13,7 +13,7 @@ export const minFacetSize = 100;
 
 export const facetPaddingLeft = 40;
 export const facetPaddingTop = 40;
-export const facetPaddingBottom = 20;
+export const facetPaddingBottom = 40;
 
 export const axesLabelLimit = 10;
 export const axesTitleLimit = 10;

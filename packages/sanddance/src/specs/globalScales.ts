@@ -6,7 +6,8 @@ import {
     Axis,
     NewSignal,
     Scale,
-    Scope
+    Scope,
+    TextBaselineValue
 } from 'vega-typings';
 import { AxisScale, AxisScales, GlobalScope } from './interfaces';
 import { Column, SpecColumns, SpecViewOptions } from './types';
@@ -29,6 +30,7 @@ export function addGlobalScales(
     plotOffsetSignals: { x: NewSignal, y: NewSignal },
     axesOffsets: { x: number, y: number },
     axesTitlePadding: { x: number, y: number },
+    labelBaseline: { x: TextBaselineValue, y: TextBaselineValue },
     specColumns: SpecColumns,
     specViewOptions: SpecViewOptions,
     axesScopes: AxesScopeMap) {
@@ -58,9 +60,9 @@ export function addGlobalScales(
                     //const pa = partialAxes(specViewOptions, AxisType.quantitative, columnToAxisType(specColumns[s]));
                     const horizontal = s === 'x';
                     const column: Column = specColumns[s];
-                    addAxes(axesScopes['main'].scope, createAxis(scale, horizontal, axisScale, column, specViewOptions, lineColor, axesScopes['main'].labels, axesTitlePadding[s]));
+                    addAxes(axesScopes['main'].scope, createAxis(scale, horizontal, axisScale, column, specViewOptions, lineColor, axesScopes['main'].labels, axesTitlePadding[s], labelBaseline[s]));
                     if (axesScopes[s]) {
-                        addAxes(axesScopes[s].scope, createAxis(scale, horizontal, axisScale, column, specViewOptions, lineColor, axesScopes[s].labels, axesTitlePadding[s]));
+                        addAxes(axesScopes[s].scope, createAxis(scale, horizontal, axisScale, column, specViewOptions, lineColor, axesScopes[s].labels, axesTitlePadding[s], labelBaseline[s]));
                     }
                     if (plotOffsetSignals[s] && axesOffsets[s]) {
                         const plotOffsetSignal = plotOffsetSignals[s] as NewSignal;
@@ -72,7 +74,7 @@ export function addGlobalScales(
     }
 }
 
-function createAxis(scale: Scale, horizontal: boolean, axisScale: AxisScale, column: Column, specViewOptions: SpecViewOptions, lineColor: string, labels: boolean, titlePadding: number) {
+function createAxis(scale: Scale, horizontal: boolean, axisScale: AxisScale, column: Column, specViewOptions: SpecViewOptions, lineColor: string, labels: boolean, titlePadding: number, labelBaseline: TextBaselineValue) {
     const axis: Axis = {
         scale: scale.name,
         orient: horizontal ? 'bottom' : 'left',
@@ -93,6 +95,7 @@ function createAxis(scale: Scale, horizontal: boolean, axisScale: AxisScale, col
             titleLimit: axesTitleLimit,
             titlePadding,
             labelAlign: horizontal ? 'left' : 'right',
+            labelBaseline,
             labelAngle: {
                 signal: horizontal ? SignalNames.TextAngleX : SignalNames.TextAngleY
             },

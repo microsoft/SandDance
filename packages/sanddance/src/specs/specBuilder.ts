@@ -153,6 +153,7 @@ export class SpecBuilder {
                     { x: this.plotOffsetLeft, y: this.plotOffsetBottom },
                     { x: axesOffsetX, y: axesOffsetY },
                     { x: axesTitlePaddingX, y: axesTitlePaddingY },
+                    { x: 'top', y: 'middle' },
                     specColumns,
                     specViewOptions,
                     axesScopeMap
