@@ -29,11 +29,14 @@ import { util } from '@msrvida/vega-deck.gl';
 
 export interface AxesScope {
     scope: Scope;
+    scale?: string;
+    title: boolean;
     labels: boolean;
+    lines: boolean;
 }
 
 export interface AxesScopeMap {
-    [key: string]: AxesScope;
+    [key: string]: AxesScope[];
 }
 
 export function addGlobalScales(
@@ -74,10 +77,33 @@ export function addGlobalScales(
                     const horizontal = s === 'x';
                     const column: Column = specColumns[s];
                     const title = aggregateTitle(axisScale.aggregate, specViewOptions.language, column);
-                    addAxes(axesScopes['main'].scope, createAxis(scale, title, horizontal, column, specViewOptions, lineColor, axesScopes['main'].labels, axesTitlePadding[s], labelBaseline[s]));
-                    if (axesScopes[s]) {
-                        addAxes(axesScopes[s].scope, createAxis(scale, title, horizontal, column, specViewOptions, lineColor, axesScopes[s].labels, axesTitlePadding[s], labelBaseline[s]));
+                    const props: AxisProps = {
+                        title,
+                        horizontal,
+                        column,
+                        specViewOptions,
+                        lineColor,
+                        titlePadding: axesTitlePadding[s],
+                        labelBaseline: labelBaseline[s]
                     }
+                    axesScopes['main'].forEach(a => addAxes(a.scope, createAxis({
+                        ...props,
+                        scale: a.scale || scale.name,
+                        showTitle: a.title,
+                        showLabels: a.labels,
+                        showLines: a.lines
+                    })));
+
+                    if (axesScopes[s]) {
+                        axesScopes[s].forEach(a => addAxes(a.scope, createAxis({
+                            ...props,
+                            scale: a.scale || scale.name,
+                            showTitle: a.title,
+                            showLabels: a.labels,
+                            showLines: a.lines
+                        })));
+                    }
+
                     if (plotOffsetSignals[s] && axesOffsets[s]) {
                         const plotOffsetSignal = plotOffsetSignals[s] as NewSignal;
                         plotOffsetSignal.update = `${axesOffsets[s]}`;
@@ -98,15 +124,33 @@ function aggregateTitle(aggregate: Aggregate, language: SpecLanguage, column: Co
     }
 }
 
-function createAxis(scale: Scale, title: string, horizontal: boolean, column: Column, specViewOptions: SpecViewOptions, lineColor: string, labels: boolean, titlePadding: number, labelBaseline: TextBaselineValue) {
+interface AxisProps {
+    scale?: string;
+    title: string;
+    horizontal: boolean;
+    column: Column;
+    specViewOptions: SpecViewOptions;
+    lineColor: string;
+    showLines?: boolean;
+    showTitle?: boolean;
+    showLabels?: boolean;
+    titlePadding: number;
+    labelBaseline: TextBaselineValue;
+}
+
+function createAxis(props: AxisProps) {
+    const { column, horizontal, labelBaseline, lineColor, scale, showLabels, showTitle, showLines, specViewOptions, title, titlePadding } = props;
     const axis: Axis = {
-        scale: scale.name,
+        scale,
         orient: horizontal ? 'bottom' : 'left',
-        domainColor: lineColor,
-        tickColor: lineColor,
-        tickSize: specViewOptions.tickSize,
-        labels,
-        ...labels && {
+        domain: showLines,
+        ticks: showLines,
+        ...showLines && {
+            domainColor: lineColor,
+            tickColor: lineColor,
+            tickSize: specViewOptions.tickSize
+        },
+        ...showTitle && {
             title,
             titleAlign: horizontal ? 'left' : 'right',
             titleAngle: {
@@ -117,7 +161,10 @@ function createAxis(scale: Scale, title: string, horizontal: boolean, column: Co
                 signal: SignalNames.TextTitleSize
             },
             titleLimit: axesTitleLimit,
-            titlePadding,
+            titlePadding
+        },
+        labels: showLabels,
+        ...showLabels && {
             labelAlign: horizontal ? 'left' : 'right',
             labelBaseline,
             labelAngle: {

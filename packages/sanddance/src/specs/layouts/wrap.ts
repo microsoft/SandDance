@@ -217,21 +217,6 @@ export class Wrap extends Layout {
                         values: [FieldNames.WrapRow, FieldNames.WrapCol]
                     }
                 ]
-            },
-            {
-                name: emptyDataName,
-                source: rowColumnDataName,
-                transform: [
-                    {
-                        type: 'filter',
-                        expr: `!datum[${JSON.stringify(FieldNames.Contains)}]`
-                    },
-                    {
-                        type: 'formula',
-                        expr: `[${bin.fields.map(f => `datum[${JSON.stringify(f)}]`).join()}]`,
-                        as: FieldNames.FacetRange
-                    }
-                ]
             }
         );
 
@@ -317,16 +302,39 @@ export class Wrap extends Layout {
             },
             encode: { update }
         };
-        const emptymark: GroupMark = {
-            style: 'cell',
-            name: emptyMarkName,
-            type: 'group',
-            from: {
-                data: emptyDataName
-            },
-            encode: { update }
-        };
-        addMarks(parentScope.scope, mark, emptymark);
+        addMarks(parentScope.scope, mark);
+
+        let emptymark: GroupMark;
+        if (bin.native === false) {
+            addData(globalScope.scope,
+                {
+                    name: emptyDataName,
+                    source: rowColumnDataName,
+                    transform: [
+                        {
+                            type: 'filter',
+                            expr: `!datum[${JSON.stringify(FieldNames.Contains)}]`
+                        },
+                        {
+                            type: 'formula',
+                            expr: `[${bin.fields.map(f => `datum[${JSON.stringify(f)}]`).join()}]`,
+                            as: FieldNames.FacetRange
+                        }
+                    ]
+                }
+            );
+            emptymark = {
+                style: 'cell',
+                name: emptyMarkName,
+                type: 'group',
+                from: {
+                    data: emptyDataName
+                },
+                encode: { update }
+            };
+            addMarks(parentScope.scope, emptymark);
+        }
+
 
         return {
             dataName: facetDataName,

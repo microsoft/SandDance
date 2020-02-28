@@ -22,5 +22,8 @@ export const axesTitleLimit = 10;
 export const axesTitlePaddingX = 30;
 export const axesTitlePaddingY = 60;
 
+export const axesTitlePaddingFacetX = 69;
+export const axesTitlePaddingFacetY = 92;
+
 export const axesOffsetX = 120;
 export const axesOffsetY = 120;

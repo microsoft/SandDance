@@ -50,11 +50,15 @@ export const DataNames = {
     Legend: 'LegendData',
     FacetGroupCell: 'FacetGroupCellData',
     FacetCellTitles: 'FacetCellTitlesData',
+    FacetCellColTitles: 'data_FacetCellColTitles',
+    FacetCellRowTitles: 'data_FacetCellRowTitles',
     QuantitativeData: 'QuantitativeData'
 };
 
 export const ScaleNames = {
     Color: 'ColorScale',
+    RowTitle: 'RowTitle',
+    ColTitle: 'ColTitle',
     X: 'MainXScale',
     Y: 'MainYScale',
     Z: 'MainZScale'

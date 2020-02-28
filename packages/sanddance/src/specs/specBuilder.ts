@@ -1,12 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { addColor } from './color';
-import { addFacetAxesMarks, addFacetTitles, getFacetLayout } from './facetLayout';
+import { addFacetAxesGroupMarks, addFacetTitles, getFacetLayout } from './facetLayout';
 import { addGlobalScales, AxesScopeMap } from './globalScales';
 import { addScale, addSignal } from './scope';
 import {
     axesOffsetX,
     axesOffsetY,
+    axesTitlePaddingFacetX,
+    axesTitlePaddingFacetY,
     axesTitlePaddingX,
     axesTitlePaddingY,
     defaultBins,
@@ -28,7 +30,7 @@ import {
     Spec
 } from 'vega-typings';
 import { LayoutBuildProps, LayoutPair, LayoutProps } from './layouts/layout';
-import { minFacetWidth, minFacetHeight } from './defaults';
+import { minFacetHeight, minFacetWidth } from './defaults';
 import { SignalNames } from './constants';
 import { SpecCapabilities, SpecContext } from './types';
 import { textSignals } from './signals';
@@ -141,13 +143,15 @@ export class SpecBuilder {
             }
             if (allGlobalScales.length > 0) {
                 let axesScopeMap: AxesScopeMap = insight.columns.facet ?
-                    addFacetAxesMarks(globalScope.scope, firstScope)
+                    addFacetAxesGroupMarks(globalScope.scope, groupMark, firstScope, this.plotHeightOut.name, this.plotWidthOut.name)
                     :
                     {
-                        main: {
+                        main: [{
                             scope: groupMark,
-                            labels: true
-                        }
+                            lines: true,
+                            labels: true,
+                            title: true
+                        }]
                     };
                 addGlobalScales(
                     globalScope,
@@ -155,7 +159,7 @@ export class SpecBuilder {
                     this.props.axisScales,
                     { x: this.plotOffsetLeft, y: this.plotOffsetBottom },
                     { x: axesOffsetX, y: axesOffsetY },
-                    { x: axesTitlePaddingX, y: axesTitlePaddingY },
+                    insight.columns.facet ? { x: axesTitlePaddingFacetX, y: axesTitlePaddingFacetY } : { x: axesTitlePaddingX, y: axesTitlePaddingY },
                     { x: 'top', y: 'middle' },
                     specColumns,
                     specViewOptions,
