@@ -1,7 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { addAxes, addScale } from './scope';
-import { axesLabelLimit, axesTitleLimit, axesTitlePaddingX, axesTitlePaddingY } from './defaults';
+import {
+    Aggregate,
+    AxisScale,
+    AxisScales,
+    GlobalScope
+} from './interfaces';
+import {
+    axesLabelLimit,
+    axesTitleLimit
+} from './defaults';
 import {
     Axis,
     NewSignal,
@@ -9,8 +18,12 @@ import {
     Scope,
     TextBaselineValue
 } from 'vega-typings';
-import { AxisScale, AxisScales, GlobalScope } from './interfaces';
-import { Column, SpecColumns, SpecViewOptions } from './types';
+import {
+    Column,
+    SpecColumns,
+    SpecLanguage,
+    SpecViewOptions
+} from './types';
 import { SignalNames } from './constants';
 import { util } from '@msrvida/vega-deck.gl';
 
@@ -60,9 +73,10 @@ export function addGlobalScales(
                     //const pa = partialAxes(specViewOptions, AxisType.quantitative, columnToAxisType(specColumns[s]));
                     const horizontal = s === 'x';
                     const column: Column = specColumns[s];
-                    addAxes(axesScopes['main'].scope, createAxis(scale, horizontal, axisScale, column, specViewOptions, lineColor, axesScopes['main'].labels, axesTitlePadding[s], labelBaseline[s]));
+                    const title = aggregateTitle(axisScale.aggregate, specViewOptions.language, column);
+                    addAxes(axesScopes['main'].scope, createAxis(scale, title, horizontal, column, specViewOptions, lineColor, axesScopes['main'].labels, axesTitlePadding[s], labelBaseline[s]));
                     if (axesScopes[s]) {
-                        addAxes(axesScopes[s].scope, createAxis(scale, horizontal, axisScale, column, specViewOptions, lineColor, axesScopes[s].labels, axesTitlePadding[s], labelBaseline[s]));
+                        addAxes(axesScopes[s].scope, createAxis(scale, title, horizontal, column, specViewOptions, lineColor, axesScopes[s].labels, axesTitlePadding[s], labelBaseline[s]));
                     }
                     if (plotOffsetSignals[s] && axesOffsets[s]) {
                         const plotOffsetSignal = plotOffsetSignals[s] as NewSignal;
@@ -74,7 +88,17 @@ export function addGlobalScales(
     }
 }
 
-function createAxis(scale: Scale, horizontal: boolean, axisScale: AxisScale, column: Column, specViewOptions: SpecViewOptions, lineColor: string, labels: boolean, titlePadding: number, labelBaseline: TextBaselineValue) {
+function aggregateTitle(aggregate: Aggregate, language: SpecLanguage, column: Column) {
+    switch (aggregate) {
+        case 'count': return language.count;
+        case 'percent': return language.percent;
+        case 'sum': return language.sum;
+        default:
+            return column.name;
+    }
+}
+
+function createAxis(scale: Scale, title: string, horizontal: boolean, column: Column, specViewOptions: SpecViewOptions, lineColor: string, labels: boolean, titlePadding: number, labelBaseline: TextBaselineValue) {
     const axis: Axis = {
         scale: scale.name,
         orient: horizontal ? 'bottom' : 'left',
@@ -83,7 +107,7 @@ function createAxis(scale: Scale, horizontal: boolean, axisScale: AxisScale, col
         tickSize: specViewOptions.tickSize,
         labels,
         ...labels && {
-            title: axisScale.aggregate ? 'TODO aggtitle' : column.name,
+            title,
             titleAlign: horizontal ? 'left' : 'right',
             titleAngle: {
                 signal: horizontal ? SignalNames.TextAngleX : SignalNames.TextAngleY

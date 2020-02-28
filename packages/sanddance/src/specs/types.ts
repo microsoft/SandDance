@@ -262,6 +262,11 @@ export interface SpecLanguage {
     sum: string;
 
     /**
+     * Label for a percentage axis.
+     */
+    percent: string;
+
+    /**
      * Label for treemap method dropdown.
      */
     treeMapMethod: string;

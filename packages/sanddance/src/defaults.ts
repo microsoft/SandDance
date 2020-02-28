@@ -42,6 +42,7 @@ export const defaultViewerOptions: ViewerOptions = {
         colorBinCount: 'Color bin count',
         colorReverse: 'Color reverse',
         count: 'Count',
+        percent: 'Percent',
         sum: 'Sum',
         scatterPointSize: 'Point size',
         FacetMaxBins: 'Facet max bins',
