@@ -7,7 +7,7 @@ export const defaultBins = 10;
 
 export const maxbins = 100;
 
-export const minBarBandWidth = 10;
+export const minBarBandWidth = 15;
 
 export const minFacetWidth = 140;
 export const minFacetHeight = 180;
