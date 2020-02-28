@@ -121,7 +121,7 @@ function facetSelectionPolygons(facetRects: VegaDeckGl.types.FacetRect[], facetC
     let linesAndSearches: { lines: VegaDeckGl.types.StyledLine[], search: SearchExpressionGroup }[];
     if (facetColumn.quantitative) {
         const linesAndRanges = facetRects.map(({ datum, lines }, i) => {
-            const facetRange: number[] = datum && datum[FieldNames.FacetRange];
+            const facetRange: number[] = datum && datum[FieldNames.FacetRange] || [-1, -1];
             return {
                 lines,
                 facetRange
@@ -134,7 +134,7 @@ function facetSelectionPolygons(facetRects: VegaDeckGl.types.FacetRect[], facetC
         }));
     } else {
         linesAndSearches = facetRects.map(({ datum, lines }, i) => {
-            const facetRange: string[] = datum && datum[FieldNames.FacetRange];
+            const facetRange: string[] = datum && datum[FieldNames.FacetRange] || [''];
             return {
                 lines,
                 search: { expressions: [selectExact(facetColumn, facetRange[0])] }
