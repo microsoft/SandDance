@@ -28,7 +28,7 @@ import {
     Spec
 } from 'vega-typings';
 import { LayoutBuildProps, LayoutPair, LayoutProps } from './layouts/layout';
-import { minFacetSize } from './defaults';
+import { minFacetWidth, minFacetHeight } from './defaults';
 import { SignalNames } from './constants';
 import { SpecCapabilities, SpecContext } from './types';
 import { textSignals } from './signals';
@@ -53,9 +53,9 @@ export class SpecBuilder {
     constructor(public props: SpecBuilderProps & { specContext: SpecContext }) {
         this.minCellWidth = {
             name: SignalNames.MinCellWidth,
-            update: `${minFacetSize}`
+            update: `${minFacetWidth}`
         };
-        this.minCellHeight = { name: SignalNames.MinCellHeight, update: `${minFacetSize}` };
+        this.minCellHeight = { name: SignalNames.MinCellHeight, update: `${minFacetHeight}` };
         this.plotOffsetLeft = { name: SignalNames.PlotOffsetLeft, update: `0` };
         this.plotOffsetTop = { name: SignalNames.PlotOffsetTop, update: `0` };
         this.plotOffsetBottom = { name: SignalNames.PlotOffsetBottom, update: `0` };
