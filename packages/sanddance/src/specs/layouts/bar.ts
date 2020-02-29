@@ -1,11 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { addData, addMarks, addSignal, addTransforms } from '../scope';
+import {
+    addData,
+    addMarks,
+    addSignal,
+    addTransforms
+} from '../scope';
 import {
     AggregateTransform,
     BandScale,
+    GroupMark,
     LinearScale,
-    Mark,
     Scale
 } from 'vega-typings';
 import {
@@ -36,6 +41,7 @@ export interface BarProps extends LayoutProps {
 
 export class Bar extends Layout {
     private bin: Binnable;
+    private aggregation: 'sum' | 'count';
     private names: {
         barCount: string,
         facetData: string,
@@ -53,7 +59,22 @@ export class Bar extends Layout {
 
     constructor(public props: BarProps & LayoutBuildProps) {
         super(props);
-        this.prefix = `bar_${this.id}`;
+        let a = this.aggregation = this.getAgregation();
+        let p = this.prefix = `bar_${this.id}`;
+        this.names = {
+            barCount: `${p}_count`,
+            facetData: `facet_${p}`,
+            globalAggregateData: `${p}_aggregate_${a}`,
+            globalAggregateExtentSignal: `${p}_${a}_extent`,
+            globalAggregateMaxExtentSignal: `${p}_${a}_max`,
+            xScale: `${p}_scale_x`,
+            yScale: `${p}_scale_y`,
+            bandWidth: `${p}_bandwidth`,
+            scaledSize: `${p}_scaled_size`,
+            accumulative: `${p}_accumulative`,
+            localAggregation: `data_${p}_localAggregation`,
+            pivot: `data_${p}_pivot`
+        };
         this.bin = binnable(this.prefix, props.globalScope.dataName, props.groupby);
     }
 
@@ -62,24 +83,8 @@ export class Bar extends Layout {
     }
 
     public build(): InnerScope {
-        const { bin, prefix, props } = this;
+        const { aggregation, bin, names, props } = this;
         const { globalScope, groupings, minBandWidth, orientation, parentScope, sumBy } = props;
-        const aggregation = this.getAgregation();
-        this.names = {
-            barCount: `${prefix}_count`,
-            facetData: `facet_${prefix}`,
-            globalAggregateData: `${prefix}_aggregate_${aggregation}`,
-            globalAggregateExtentSignal: `${prefix}_${aggregation}_extent`,
-            globalAggregateMaxExtentSignal: `${prefix}_${aggregation}_max`,
-            xScale: `${prefix}_scale_x`,
-            yScale: `${prefix}_scale_y`,
-            bandWidth: `${prefix}_bandwidth`,
-            scaledSize: `${prefix}_scaled_size`,
-            accumulative: `${prefix}_accumulative`,
-            localAggregation: `data_${prefix}_localAggregation`,
-            pivot: `data_${prefix}_pivot`
-        };
-        const { names } = this;
         const binField = bin.fields[0];
         if (bin.native === false) {
             addSignal(globalScope.scope, bin.maxbinsSignal);
@@ -144,8 +149,8 @@ export class Bar extends Layout {
                 ]
             }
         );
-        const s = (orientation === 'vertical') ? props.globalScope.signals.minCellWidth : props.globalScope.signals.minCellHeight;
-        modifySignal(s, 'max', `length(data(${JSON.stringify(names.accumulative)}))*${minBandWidth}`);
+        const minCellSignal = (orientation === 'vertical') ? props.globalScope.signals.minCellWidth : props.globalScope.signals.minCellHeight;
+        modifySignal(minCellSignal, 'max', `length(data(${JSON.stringify(names.accumulative)})) * ${minBandWidth}`);
         addSignal(globalScope.scope,
             {
                 name: names.globalAggregateMaxExtentSignal,
@@ -156,59 +161,7 @@ export class Bar extends Layout {
                 update: `bandwidth(${JSON.stringify(orientation === 'horizontal' ? names.yScale : names.xScale)})`
             }
         );
-        const mark: Mark = {
-            //style: 'cell',
-            name: prefix,
-            type: 'group',
-            from: {
-                facet: {
-                    name: names.facetData,
-                    data: parentScope.dataName,
-                    groupby: bin.fields,
-                    aggregate: {
-                        fields: [aggregation === 'sum' ? sumBy.name : null],
-                        ops: [aggregation],
-                        as: [aggregation]
-                    }
-                }
-            },
-            encode: {
-                update: orientation === 'horizontal' ?
-                    {
-                        x: {
-                            value: 0
-                        },
-                        y: {
-                            scale:names.yScale,
-                            field: binField
-                        },
-                        height: {
-                            signal: names.bandWidth
-                        },
-                        width: {
-                            scale: names.xScale,
-                            field: aggregation
-                        }
-                    }
-                    :
-                    {
-                        x: {
-                            scale: names.xScale,
-                            field: binField
-                        },
-                        y: {
-                            scale: names.yScale,
-                            field: aggregation
-                        },
-                        height: {
-                            signal: `${parentScope.sizeSignals.layoutHeight} - scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(aggregation)}])`
-                        },
-                        width: {
-                            signal: names.bandWidth
-                        },
-                    }
-            }
-        };
+        const mark = this.getMark(parentScope, sumBy, orientation, binField);
         addMarks(parentScope.scope, mark);
 
         const { xScale, yScale } = this.getScales(bin);
@@ -240,6 +193,62 @@ export class Bar extends Layout {
             globalScales: {
                 x: xScale,
                 y: yScale
+            }
+        };
+    }
+
+    private getMark(parentScope: InnerScope, sumBy: Column, orientation: string, binField: string): GroupMark {
+        const { aggregation, bin, names, prefix } = this;
+        return {
+            name: prefix,
+            type: 'group',
+            from: {
+                facet: {
+                    name: names.facetData,
+                    data: parentScope.dataName,
+                    groupby: bin.fields,
+                    aggregate: {
+                        fields: [aggregation === 'sum' ? sumBy.name : null],
+                        ops: [aggregation],
+                        as: [aggregation]
+                    }
+                }
+            },
+            encode: {
+                update: orientation === 'horizontal' ?
+                    {
+                        x: {
+                            value: 0
+                        },
+                        y: {
+                            scale: names.yScale,
+                            field: binField
+                        },
+                        height: {
+                            signal: names.bandWidth
+                        },
+                        width: {
+                            scale: names.xScale,
+                            field: aggregation
+                        }
+                    }
+                    :
+                    {
+                        x: {
+                            scale: names.xScale,
+                            field: binField
+                        },
+                        y: {
+                            scale: names.yScale,
+                            field: aggregation
+                        },
+                        height: {
+                            signal: `${parentScope.sizeSignals.layoutHeight} - scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(aggregation)}])`
+                        },
+                        width: {
+                            signal: names.bandWidth
+                        },
+                    }
             }
         };
     }
