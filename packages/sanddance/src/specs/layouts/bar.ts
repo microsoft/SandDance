@@ -179,22 +179,26 @@ export class Bar extends Layout {
                             value: 0
                         },
                         y: {
-                            signal: `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(binField)}])`
+                            scale:names.yScale,
+                            field: binField
                         },
                         height: {
                             signal: names.bandWidth
                         },
                         width: {
-                            signal: `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(aggregation)}])`
+                            scale: names.xScale,
+                            field: aggregation
                         }
                     }
                     :
                     {
                         x: {
-                            signal: `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(binField)}])`
+                            scale: names.xScale,
+                            field: binField
                         },
                         y: {
-                            signal: `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(aggregation)}])`
+                            scale: names.yScale,
+                            field: aggregation
                         },
                         height: {
                             signal: `${parentScope.sizeSignals.layoutHeight} - scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(aggregation)}])`
