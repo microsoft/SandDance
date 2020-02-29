@@ -96,9 +96,6 @@ export function addFacetTitles(scope: Scope, sizeSignals: SizeSignals, specViewO
                 limit: {
                     signal: sizeSignals.layoutWidth
                 },
-                fontSize: {
-                    signal: SignalNames.TextSize
-                },
                 y: {
                     value: -facetPaddingTop / 2
                 }
@@ -112,6 +109,9 @@ export function addFacetTitles(scope: Scope, sizeSignals: SizeSignals, specViewO
                         `format(${field}[0], '~r') + ' - ' + format(${field}[1], '~r')`
                         :
                         `${field}[0]`
+                },
+                fontSize: {
+                    signal: SignalNames.TextSize
                 }
             }
         }
