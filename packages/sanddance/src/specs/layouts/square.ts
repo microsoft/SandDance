@@ -35,7 +35,9 @@ export class Square extends Layout {
         size: string,
         levels: string,
         levelSize: string,
-        facetData: string
+        facetData: string,
+        grouping: string,
+        maxGroup: string
     }
 
     constructor(public props: SquareProps & LayoutBuildProps) {
@@ -64,7 +66,9 @@ export class Square extends Layout {
             size: `${prefix}_size`,
             levels: `${prefix}_levels`,
             levelSize: `${prefix}_levelsize`,
-            facetData: `facet_${prefix}`
+            facetData: `facet_${prefix}`,
+            grouping: `data_${prefix}_grouping`,
+            maxGroup: `${prefix}_max_grouping`
         };
         const { names } = this;
         const mark: RectMark | GroupMark = {
@@ -171,24 +175,23 @@ export class Square extends Layout {
             if (groupings) {
                 addData(globalScope.scope,
                     {
-                        name: 'TODO DOESNT MATTER?',
+                        name: names.grouping,
                         source: globalScope.dataName,
                         transform: [
                             {
                                 type: 'aggregate',
                                 groupby: groupings.reduce((acc, val) => acc.concat(val), []),
-                                ops: ['count'],
-                                as: ['TODO count']
+                                ops: ['count']
                             },
                             {
                                 type: 'extent',
-                                field: 'TODO count',
-                                signal: 'TODOSIG'
+                                field: 'count',
+                                signal: names.maxGroup
                             }
                         ]
                     }
                 );
-                maxGroupedUnits = `(TODOSIG[1])`;
+                maxGroupedUnits = `(${names.maxGroup}[1])`;
             } else {
                 maxGroupedUnits = `length(data(${JSON.stringify(globalScope.dataName)}))`;
             }
