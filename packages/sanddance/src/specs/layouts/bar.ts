@@ -59,8 +59,8 @@ export class Bar extends Layout {
 
     constructor(public props: BarProps & LayoutBuildProps) {
         super(props);
-        let a = this.aggregation = this.getAgregation();
-        let p = this.prefix = `bar_${this.id}`;
+        const a = this.aggregation = this.getAgregation();
+        const p = this.prefix = `bar_${this.id}`;
         this.names = {
             barCount: `${p}_count`,
             facetData: `facet_${p}`,

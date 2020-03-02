@@ -164,11 +164,34 @@ export class Square extends Layout {
 
     private addSignals() {
         const { names, props } = this;
-        const { fillDirection, globalScope, parentScope } = props;
+        const { fillDirection, globalScope, groupings, parentScope } = props;
         let { maxGroupedFillSize, maxGroupedUnits } = props;
 
         if (!maxGroupedUnits) {
-            maxGroupedUnits = `length(data(${JSON.stringify(globalScope.dataName)}))`;
+            if (groupings) {
+                addData(globalScope.scope,
+                    {
+                        name: 'TODO DOESNT MATTER?',
+                        source: globalScope.dataName,
+                        transform: [
+                            {
+                                type: 'aggregate',
+                                groupby: groupings.reduce((acc, val) => acc.concat(val), []),
+                                ops: ['count'],
+                                as: ['TODO count']
+                            },
+                            {
+                                type: 'extent',
+                                field: 'TODO count',
+                                signal: 'TODOSIG'
+                            }
+                        ]
+                    }
+                );
+                maxGroupedUnits = `(TODOSIG[1])`;
+            } else {
+                maxGroupedUnits = `length(data(${JSON.stringify(globalScope.dataName)}))`;
+            }
         }
         if (!maxGroupedFillSize) {
             maxGroupedFillSize = fillDirection === 'down-right' ? parentScope.sizeSignals.layoutWidth : parentScope.sizeSignals.layoutHeight;
