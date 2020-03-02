@@ -104,7 +104,6 @@ export class Square extends Layout {
             }
             const ord = createOrdinalsForFacet(parentScope.dataName, prefix, bin.fields);
             groupMark.data = [ord.data];
-            groupMark.scales = [ord.scale];
             const childMark: GroupMark = {
                 type: 'group',
                 from: {
