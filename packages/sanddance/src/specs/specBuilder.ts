@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { addColor } from './color';
 import { addFacetAxesGroupMarks, addFacetTitles, getFacetLayout } from './facetLayout';
-import { addGlobalScales, AxesScopeMap } from './globalScales';
+import { addGlobalAxes, AxesScopeMap } from './axes';
 import { addScale, addSignal } from './scope';
 import {
     axesOffsetX,
@@ -153,7 +153,7 @@ export class SpecBuilder {
                             title: true
                         }]
                     };
-                addGlobalScales(
+                addGlobalAxes(
                     globalScope,
                     allGlobalScales[0], //only use the first
                     this.props.axisScales,

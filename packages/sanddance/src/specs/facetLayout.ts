@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { addData, addMarks, addScale } from './scope';
-import { AxesScopeMap } from './globalScales';
+import { AxesScopeMap } from './axes';
 import { Column, FacetStyle, SpecViewOptions } from './types';
 import { Cross, CrossProps } from './layouts/cross';
 import {
