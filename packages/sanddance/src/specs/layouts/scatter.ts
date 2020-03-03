@@ -8,7 +8,7 @@ import {
     RectMark,
     LinearScale
 } from 'vega-typings';
-import { DataNames, ScaleNames, SignalNames } from '../constants';
+import { ScaleNames, SignalNames } from '../constants';
 import { fill, opacity } from '../fill';
 import { linearScale, pointScale } from '../scales';
 import { SpecContext, Column } from '../types';

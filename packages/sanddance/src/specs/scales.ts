@@ -1,12 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { ColorBin, Column } from './types';
-import {
-    ColorScaleNone,
-    DataNames,
-    ScaleNames,
-    SignalNames
-} from './constants';
+import { ColorBin } from './types';
+import { ColorScaleNone, SignalNames } from './constants';
 import {
     LinearScale,
     PointScale,

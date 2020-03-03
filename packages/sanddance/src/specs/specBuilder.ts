@@ -158,7 +158,9 @@ export class SpecBuilder {
                         plotHeightOut: this.plotHeightOut.name,
                         plotWidthOut: this.plotWidthOut.name,
                         colTitleScaleName: 'scale_facet_col_title',
-                        rowTitleScaleName: 'scale_facet_row_title'
+                        rowTitleScaleName: 'scale_facet_row_title',
+                        colSeqName: 'data_FacetCellColTitles',
+                        rowSeqName: 'data_FacetCellRowTitles'
                     })
                     :
                     {

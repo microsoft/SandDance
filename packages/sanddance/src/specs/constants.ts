@@ -16,14 +16,6 @@ export const FieldNames = {
     WrapRow: '__SandDance__WrapRow'
 };
 
-export const DataNames = {
-    Main: 'MainData',
-    EmptyBin: 'EmptyBinsData',
-    FacetCellColTitles: 'data_FacetCellColTitles',
-    FacetCellRowTitles: 'data_FacetCellRowTitles',
-    QuantitativeData: 'QuantitativeData'
-};
-
 export const ScaleNames = {
     Color: 'scale_color',
     X: 'scale_x',

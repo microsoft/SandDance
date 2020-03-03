@@ -12,14 +12,9 @@ import {
     Scope,
     Signal
 } from 'vega-typings';
-import {
-    DataNames,
-    FieldNames,
-    ScaleNames,
-    SignalNames
-} from './constants';
 import { DiscreteColumn, InnerScope, SizeSignals } from './interfaces';
 import { facetPaddingBottom, facetPaddingLeft, facetPaddingTop } from './defaults';
+import { FieldNames, SignalNames } from './constants';
 import { LayoutPair } from './layouts/layout';
 import { Slice, SliceProps } from './layouts/slice';
 import { util } from '@msrvida/vega-deck.gl';
@@ -126,13 +121,13 @@ interface Props {
     plotWidthOut: string;
     colTitleScaleName: string;
     rowTitleScaleName: string;
+    colSeqName: string;
+    rowSeqName: string;
 }
 
 export function addFacetAxesGroupMarks(props: Props) {
-    const { colTitleScaleName, globalScope, facetScope, plotHeightOut, plotScope, plotWidthOut, rowTitleScaleName } = props;
+    const { colSeqName, colTitleScaleName, globalScope, facetScope, plotHeightOut, plotScope, plotWidthOut, rowSeqName, rowTitleScaleName } = props;
     const { scope, sizeSignals } = facetScope;
-    const colSeqName = DataNames.FacetCellColTitles;
-    const rowSeqName = DataNames.FacetCellRowTitles;
 
     //create data sequences based on rows / cols
     addData(globalScope, createSequence(colSeqName, sizeSignals.colCount));
