@@ -99,12 +99,3 @@ export function binnableColorScale(scaleName: string, colorBin: ColorBin, data: 
         }
     }
 }
-
-export function getZScale(zColumn: Column) {
-    const zRange: RangeScheme = [0, { signal: SignalNames.ZHeight }];
-    return zColumn.quantitative ?
-        linearScale(ScaleNames.Z, DataNames.Main, zColumn.name, zRange, false, false)
-        :
-        pointScale(ScaleNames.Z, DataNames.Main, zRange, zColumn.name)
-        ;
-}
