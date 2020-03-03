@@ -19,20 +19,16 @@ export const FieldNames = {
 export const DataNames = {
     Main: 'MainData',
     EmptyBin: 'EmptyBinsData',
-    TopLookup: 'TopData',
-    Legend: 'LegendData',
     FacetCellColTitles: 'data_FacetCellColTitles',
     FacetCellRowTitles: 'data_FacetCellRowTitles',
     QuantitativeData: 'QuantitativeData'
 };
 
 export const ScaleNames = {
-    Color: 'ColorScale',
-    RowTitle: 'RowTitle',
-    ColTitle: 'ColTitle',
-    X: 'MainXScale',
-    Y: 'MainYScale',
-    Z: 'MainZScale'
+    Color: 'scale_color',
+    X: 'scale_x',
+    Y: 'scale_y',
+    Z: 'scale_z'
 };
 
 //Signal names
@@ -52,10 +48,6 @@ export const SignalNames = {
     ColorReverse: 'RoleColor_ReverseSignal',
     FacetBins: 'RoleFacet_BinsSignal',
     FacetVBins: 'RoleFacetV_BinsSignal',
-    FacetColumns: 'RoleFacet_ColumnsSignal',
-    FacetRows: 'RoleFacet_RowsSignal',
-    InnerPadding: 'Chart_InnerPadding',
-    OuterPadding: 'Chart_OuterPadding',
     MarkOpacity: 'Mark_OpacitySignal',
     PointSize: 'Chart_PointSizeSignal',
     TextAngleX: 'Text_AngleXSignal',
@@ -64,12 +56,8 @@ export const SignalNames = {
     TextSize: 'Text_SizeSignal',
     TextTitleSize: 'Text_TitleSizeSignal',
     TreeMapMethod: 'Chart_TreeMapMethodSignal',
-    XDomain: 'RoleX_DomainSignal',
     XBins: 'RoleX_BinsSignal',
-    XGridSize: 'Chart_XGridSize',
     YBins: 'RoleY_BinsSignal',
-    YDomain: 'RoleY_DomainSignal',
-    YGridSize: 'Chart_YGridSize',
     ZHeight: 'RoleZ_HeightSignal',
     ZProportion: 'RoleZ_ProportionSignal'
 };

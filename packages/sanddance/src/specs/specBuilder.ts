@@ -31,7 +31,7 @@ import {
 } from 'vega-typings';
 import { LayoutBuildProps, LayoutPair, LayoutProps } from './layouts/layout';
 import { minFacetHeight, minFacetWidth } from './defaults';
-import { SignalNames, ScaleNames } from './constants';
+import { ScaleNames, SignalNames } from './constants';
 import { SpecCapabilities, SpecContext } from './types';
 import { textSignals } from './signals';
 
@@ -109,7 +109,15 @@ export class SpecBuilder {
             const { insight, specColumns, specViewOptions } = specContext;
             const dataName = 'data_source';
             const { vegaSpec, groupMark } = this.initSpec(dataName);
-            const { topColorField, colorDataName } = addColor(vegaSpec, dataName, specContext, ScaleNames.Color);
+            const { topColorField, colorDataName } = addColor({
+                scope: vegaSpec,
+                dataName,
+                specContext,
+                scaleName: ScaleNames.Color,
+                legendDataName: 'data_legend',
+                topLookupName: 'data_topcolorlookup',
+                colorReverseSignalName: SignalNames.ColorReverse
+            });
             const globalScope = this.createGlobalScope(colorDataName, vegaSpec);
             if (insight.columns.facet) {
                 const discreteFacetColumn: DiscreteColumn = {
@@ -143,7 +151,15 @@ export class SpecBuilder {
             }
             if (allGlobalScales.length > 0) {
                 let axesScopeMap: AxesScopeMap = insight.columns.facet ?
-                    addFacetAxesGroupMarks(globalScope.scope, groupMark, firstScope, this.plotHeightOut.name, this.plotWidthOut.name)
+                    addFacetAxesGroupMarks({
+                        globalScope: globalScope.scope,
+                        plotScope: groupMark,
+                        facetScope: firstScope,
+                        plotHeightOut: this.plotHeightOut.name,
+                        plotWidthOut: this.plotWidthOut.name,
+                        colTitleScaleName: 'scale_facet_col_title',
+                        rowTitleScaleName: 'scale_facet_row_title'
+                    })
                     :
                     {
                         main: [{

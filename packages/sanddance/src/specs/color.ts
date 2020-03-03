@@ -1,16 +1,27 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { addScale, addSignal, addData } from './scope';
+import { addData, addScale, addSignal } from './scope';
 import { binnableColorScale } from './scales';
 import { colorBinCountSignal, colorReverseSignal } from './signals';
-import { ColorScaleNone, ScaleNames, SignalNames, FieldNames, DataNames } from './constants';
+import { ColorScaleNone, FieldNames } from './constants';
 import { getLegends } from './legends';
 import { Scope } from 'vega-typings';
 import { SpecContext } from './types';
 import { topLookup } from './top';
 
-export function addColor(scope: Scope, dataSource: string, specContext: SpecContext, scaleName: string) {
-    let colorDataName = dataSource;
+export interface Props {
+    scope: Scope;
+    dataName: string;
+    specContext: SpecContext;
+    scaleName: string;
+    legendDataName: string;
+    topLookupName: string;
+    colorReverseSignalName: string;
+}
+
+export function addColor(props: Props) {
+    const { colorReverseSignalName, dataName, scope, legendDataName, scaleName, specContext, topLookupName } = props;
+    let colorDataName = dataName;
     const { insight, specColumns, specViewOptions } = specContext;
     const legends = getLegends(specContext, scaleName);
     if (legends) {
@@ -19,14 +30,13 @@ export function addColor(scope: Scope, dataSource: string, specContext: SpecCont
 
     const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     if (categoricalColor) {
-        const legendName = DataNames.Legend;
-        addData(scope, ...topLookup(specColumns.color, specViewOptions.maxLegends, dataSource, legendName, DataNames.TopLookup, FieldNames.TopColor, FieldNames.TopIndex));
-        colorDataName = legendName;
+        addData(scope, ...topLookup(specColumns.color, specViewOptions.maxLegends, dataName, legendDataName, topLookupName, FieldNames.TopColor, FieldNames.TopIndex));
+        colorDataName = legendDataName;
     }
 
     if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
         if (specColumns.color.quantitative) {
-            addScale(scope, binnableColorScale(scaleName, insight.colorBin, dataSource, specColumns.color.name, insight.scheme));
+            addScale(scope, binnableColorScale(scaleName, insight.colorBin, dataName, specColumns.color.name, insight.scheme));
         } else {
             addScale(scope, {
                 name: scaleName,
@@ -39,7 +49,7 @@ export function addColor(scope: Scope, dataSource: string, specContext: SpecCont
                 range: {
                     scheme: insight.scheme || ColorScaleNone
                 },
-                reverse: { signal: SignalNames.ColorReverse }
+                reverse: { signal: colorReverseSignalName }
             });
         }
     }

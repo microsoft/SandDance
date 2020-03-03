@@ -118,7 +118,18 @@ export function addFacetTitles(scope: Scope, sizeSignals: SizeSignals, specViewO
     });
 }
 
-export function addFacetAxesGroupMarks(globalScope: Scope, plotScope: Scope, facetScope: InnerScope, plotHeightOut: string, plotWidthOut: string) {
+interface Props {
+    globalScope: Scope;
+    plotScope: Scope;
+    facetScope: InnerScope;
+    plotHeightOut: string;
+    plotWidthOut: string;
+    colTitleScaleName: string;
+    rowTitleScaleName: string;
+}
+
+export function addFacetAxesGroupMarks(props: Props) {
+    const { colTitleScaleName, globalScope, facetScope, plotHeightOut, plotScope, plotWidthOut, rowTitleScaleName } = props;
     const { scope, sizeSignals } = facetScope;
     const colSeqName = DataNames.FacetCellColTitles;
     const rowSeqName = DataNames.FacetCellRowTitles;
@@ -168,14 +179,14 @@ export function addFacetAxesGroupMarks(globalScope: Scope, plotScope: Scope, fac
 
     const colTitleScale: LinearScale = {
         type: 'linear',
-        name: ScaleNames.ColTitle,
+        name: colTitleScaleName,
         domain: [0, 1],
         range: [0, { signal: plotWidthOut }]
     };
 
     const rowTitleScale: LinearScale = {
         type: 'linear',
-        name: ScaleNames.RowTitle,
+        name: rowTitleScaleName,
         domain: [0, 1],
         range: [{ signal: plotHeightOut }, 0]
     };
@@ -200,7 +211,7 @@ export function addFacetAxesGroupMarks(globalScope: Scope, plotScope: Scope, fac
             },
             {
                 scope: plotScope,
-                scale: colTitleScale.name,
+                scale: colTitleScaleName,
                 lines: false,
                 labels: false,
                 title: true
@@ -215,7 +226,7 @@ export function addFacetAxesGroupMarks(globalScope: Scope, plotScope: Scope, fac
             },
             {
                 scope: plotScope,
-                scale: rowTitleScale.name,
+                scale: rowTitleScaleName,
                 lines: false,
                 labels: false,
                 title: true
