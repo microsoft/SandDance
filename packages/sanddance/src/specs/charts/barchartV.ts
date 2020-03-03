@@ -13,7 +13,8 @@ import { Strip, StripProps } from '../layouts/strip';
 import { Treemap, TreemapProps } from '../layouts/treemap';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
-    const { insight, specColumns } = specContext;
+    const { insight, specColumns, specViewOptions } = specContext;
+    const { language } = specViewOptions;
     let footprintClass: typeof Layout = Bar;
     const barProps: BarProps = {
         orientation: 'vertical',
@@ -30,15 +31,16 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     let footprintProps: LayoutProps = barProps;
     let unitLayoutClass: typeof Layout;
     let unitLayoutProps: LayoutProps;
-    const y: AxisScale = { type: 'continuousAggregate' };
+    const y: AxisScale = { title: null };
     const axisScales: AxisScales = {
-        x: { type: 'discrete' },
+        x: { title: specColumns.x && specColumns.x.name },
         y,
-        z: { type: 'zFloor' }
+        z: { title: specColumns.z && specColumns.z.name }
     };
     switch (insight.sumStyle) {
         case 'treemap': {
             y.aggregate = 'sum';
+            y.title = language.sum;
             unitLayoutClass = Treemap;
             const treemapProps: TreemapProps = { corner: 'bottom-left' };
             unitLayoutProps = treemapProps;
@@ -46,6 +48,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         }
         case 'strip': {
             y.aggregate = 'sum';
+            y.title = language.sum;
             unitLayoutClass = Strip;
             const stripProps: StripProps = { orientation: 'horizontal' };
             unitLayoutProps = stripProps;
@@ -53,6 +56,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         }
         case 'strip-percent': {
             y.aggregate = 'percent';
+            y.title = language.percent;
             footprintClass = Slice;
             const sliceProps: SliceProps = { orientation: 'vertical', groupby: barProps.groupby };
             footprintProps = sliceProps;
@@ -63,6 +67,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         }
         default: {
             y.aggregate = 'count';
+            y.title = language.count;
             unitLayoutClass = Square;
             const squareProps: SquareProps = { sortBy: specColumns.sort, fillDirection: 'right-up' };
             barProps.onBuild = barBuild => {

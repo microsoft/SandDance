@@ -2,13 +2,9 @@
 // Licensed under the MIT license.
 import { Column } from './types';
 import { Data } from 'vega-typings';
-import {
-    DataNames,
-    Other,
-    FieldNames
-} from './constants';
+import { Other } from './constants';
 
-export function topLookup(column: Column, count: number, source = DataNames.Main, legend = DataNames.Legend, lookupName = DataNames.TopLookup, fieldName = FieldNames.Top, indexName = FieldNames.TopIndex) {
+export function topLookup(column: Column, count: number, source: string, legend: string, lookupName: string, fieldName: string, indexName: string) {
     const data: Data[] = [
         {
             name: lookupName,
@@ -20,7 +16,7 @@ export function topLookup(column: Column, count: number, source = DataNames.Main
                     ops: ['count'],
                     as: [indexName]
                 },
-                { type: 'filter', expr: `datum.${indexName} <= ${count}` }
+                { type: 'filter', expr: `datum[${JSON.stringify(indexName)}] <= ${count}` }
             ]
         },
         {
@@ -37,7 +33,7 @@ export function topLookup(column: Column, count: number, source = DataNames.Main
                 },
                 {
                     type: 'formula',
-                    expr: `datum.${fieldName} == null ? '${Other}' : datum.${fieldName}`,
+                    expr: `datum[${JSON.stringify(fieldName)}] == null ? '${Other}' : datum[${JSON.stringify(fieldName)}]`,
                     as: fieldName
                 }
             ]

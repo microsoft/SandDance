@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { ColorBin, Column, Insight } from './types';
+import { ColorBin, Column } from './types';
 import {
     ColorScaleNone,
     DataNames,
-    FieldNames,
     ScaleNames,
     SignalNames
 } from './constants';
@@ -15,7 +14,6 @@ import {
     QuantizeScale,
     RangeBand,
     RangeScheme,
-    Scale,
     ScaleData,
     SignalRef
 } from 'vega-typings';
@@ -54,8 +52,6 @@ export function pointScale(name: string, data: string, range: RangeBand, field: 
     }
     return scale;
 }
-
-//TODO should this be exported
 
 export function binnableColorScale(colorBin: ColorBin, data: string, field: string, scheme?: string) {
     scheme = scheme || ColorScaleNone;

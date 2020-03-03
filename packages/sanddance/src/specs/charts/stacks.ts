@@ -11,9 +11,8 @@ import { Stack } from '../layouts/stack';
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns } = specContext;
     const axisScales: AxisScales = {
-        x: { type: 'discrete' },
-        y: { type: 'discrete' },
-        z: { type: 'zDiscrete' }
+        x: { title: specColumns.x && specColumns.x.name },
+        y: { title: specColumns.y && specColumns.y.name }
     };
     const densityProps: DensityProps = {
         mode: 'cube',

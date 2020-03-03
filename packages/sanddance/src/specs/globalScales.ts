@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 import { addAxes, addScale } from './scope';
 import {
-    Aggregate,
     AxisScale,
     AxisScales,
     GlobalScope
@@ -21,7 +20,6 @@ import {
 import {
     Column,
     SpecColumns,
-    SpecLanguage,
     SpecViewOptions
 } from './types';
 import { SignalNames } from './constants';
@@ -51,13 +49,7 @@ export function addGlobalScales(
     specViewOptions: SpecViewOptions,
     axesScopes: AxesScopeMap) {
 
-    // add(axisScales.x, globalScales.x, specColumns.x, 'bottom');
-    // add(axisScales.y, globalScales.y, specColumns.y, 'left');
-    // add(axisScales.z, globalScales.z, specColumns.z, 'left');
-
     const { scope } = globalScope;
-
-    //TODO always add Z scale to global scope
 
     for (let s in globalScales) {
         let scale: Scale = globalScales[s];
@@ -68,15 +60,9 @@ export function addGlobalScales(
                 let axisScale: AxisScale = axisScales[s];
                 if (axisScale) {
                     const lineColor = util.colorToString(specViewOptions.colors.axisLine);
-                    switch (axisScale.type) {
-                        //band scale
-                        //continuous scale
-                        //etc
-                    }
-                    //const pa = partialAxes(specViewOptions, AxisType.quantitative, columnToAxisType(specColumns[s]));
                     const horizontal = s === 'x';
                     const column: Column = specColumns[s];
-                    const title = aggregateTitle(axisScale.aggregate, specViewOptions.language, column);
+                    const title = axisScale.title;
                     const props: AxisProps = {
                         title,
                         horizontal,
@@ -111,16 +97,6 @@ export function addGlobalScales(
                 }
             }
         }
-    }
-}
-
-function aggregateTitle(aggregate: Aggregate, language: SpecLanguage, column: Column) {
-    switch (aggregate) {
-        case 'count': return language.count;
-        case 'percent': return language.percent;
-        case 'sum': return language.sum;
-        default:
-            return column.name;
     }
 }
 

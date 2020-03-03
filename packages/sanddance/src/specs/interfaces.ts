@@ -60,11 +60,8 @@ export type Aggregate = 'count' | 'sum' | 'percent';
 export type AxisScaleType = 'discrete' | 'continuous' | 'continuousAggregate' | 'zFloor' | 'zFree' | 'zDiscrete';
 
 export interface AxisScale {
-    type: AxisScaleType;
+    title: string;
 
-    /**
-     * Only used when type = continuousAggregate
-     */
     aggregate?: Aggregate;
 }
 

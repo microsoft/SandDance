@@ -11,9 +11,9 @@ import { Square } from '../layouts/square';
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns } = specContext;
     const axisScales: AxisScales = {
-        x: { type: 'discrete' },
-        y: { type: 'discrete' },
-        z: { type: 'zFloor' }
+        x: { title: specColumns.x && specColumns.x.name },
+        y: { title: specColumns.y && specColumns.y.name },
+        z: { title: specColumns.z && specColumns.z.name }
     };
     const densityProps: DensityProps = {
         mode: 'square',

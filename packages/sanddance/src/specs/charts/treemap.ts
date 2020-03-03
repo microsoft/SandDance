@@ -7,9 +7,10 @@ import { SpecContext } from '../types';
 import { Treemap, TreemapProps } from '../layouts/treemap';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
+    const { specColumns } = specContext;
     const treemapProps: TreemapProps = { corner: 'top-left' };
     const axisScales: AxisScales = {
-        z: { type: 'zFloor' }
+        z: { title: specColumns.z && specColumns.z.name }
     };
     return {
         axisScales,

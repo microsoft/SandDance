@@ -9,47 +9,18 @@ export const FieldNames = {
     Top: '__SandDance__Top',
     TopColor: '__SandDance__TopColor',
     TopIndex: '__SandDance__TopIndex',
-    Index: '__SandDance__Index',
     PowerBISelectionId: '__SandDance__PowerBISelectionId',
-    BarChartBin0: '__SandDance__BarChartBin0',
-    BarChartBin1: '__SandDance__BarChartBin1',
-    BarChartStack0: '__SandDance__BarChartStack0',
-    BarChartStack1: '__SandDance__BarChartStack1',
-    DensityCount: '__SandDance__DensityCount',
-    DensityRow: '__SandDance__DensityRow',
-    DensityXBin0: '__SandDance__DensityXBin0',
-    DensityXBin1: '__SandDance__DensityXBin1',
-    DensityYBin0: '__SandDance__DensityYBin0',
-    DensityYBin1: '__SandDance__DensityYBin1',
     FacetRange: '__SandDance__FacetRange',
-    FacetBin0: '__SandDance__FacetBin0',
-    FacetBin1: '__SandDance__FacetBin1',
-    GridIndex: '__SandDance__GridIndex',
     Ordinal: '__SandDance__Ordinal',
-    StacksLatBin0: '__SandDance__StacksLatBin0',
-    StacksLatBin1: '__SandDance__StacksLatBin1',
-    StacksLongBin0: '__SandDance__StacksLongBin0',
-    StacksLongBin1: '__SandDance__StacksLongBin1',
-    StacksStart: '__SandDance__StacksStart',
-    StacksEnd: '__SandDance__StacksEnd',
-    TreemapStackChildren: '__SandDance__TreemapStackChildren',
-    TreemapStackDepth: '__SandDance__TreemapStackDepth',
-    TreemapStackX0: '__SandDance__TreemapStackX0',
-    TreemapStackX1: '__SandDance__TreemapStackX1',
-    TreemapStackY0: '__SandDance__TreemapStackY0',
-    TreemapStackY1: '__SandDance__TreemapStackY1',
     WrapCol: '__SandDance__WrapCol',
     WrapRow: '__SandDance__WrapRow'
 };
 
 export const DataNames = {
-    Pre: 'PreData',
     Main: 'MainData',
     EmptyBin: 'EmptyBinsData',
     TopLookup: 'TopData',
     Legend: 'LegendData',
-    FacetGroupCell: 'FacetGroupCellData',
-    FacetCellTitles: 'FacetCellTitlesData',
     FacetCellColTitles: 'data_FacetCellColTitles',
     FacetCellRowTitles: 'data_FacetCellRowTitles',
     QuantitativeData: 'QuantitativeData'
@@ -101,21 +72,6 @@ export const SignalNames = {
     YGridSize: 'Chart_YGridSize',
     ZHeight: 'RoleZ_HeightSignal',
     ZProportion: 'RoleZ_ProportionSignal'
-};
-
-export const BarChartScaleNames = {
-    bucketScale: 'bucketScale',
-    levelScale: 'levelScale',
-    compartmentScale: 'compartmentScale'
-};
-
-export const BarChartSignalNames = {
-    aspectRatioSignal: 'aspectRatioSignal',
-    compartmentsPerLevelSignal: 'compartmentsPerLevelSignal',
-    compartmentHeightSignal: 'compartmentHeightSignal',
-    compartmentWidthSignal: 'compartmentWidthSignal',
-    levelExtentSignal: 'levelExtentSignal',
-    quantitativeBinSignal: 'quantitativeBinSignal'
 };
 
 //These are special formulaic data values

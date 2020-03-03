@@ -1,24 +1,30 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { AxisScales } from '../interfaces';
-import { Scatter } from '../layouts/scatter';
+import { Scatter, ScatterProps } from '../layouts/scatter';
 import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns } = specContext;
+    const scatterProps: ScatterProps = {
+        x: specColumns.x,
+        y: specColumns.y,
+        z: specColumns.z,
+        addScaleAxes: true
+    };
     const axisScales: AxisScales = {
-        x: { type: 'continuous' },
-        y: { type: 'continuous' },
-        z: { type: 'zFree' }
+        x: { title: specColumns.x && specColumns.x.name },
+        y: { title: specColumns.y && specColumns.y.name },
+        z: { title: specColumns.z && specColumns.z.name }
     };
     return {
         axisScales,
         layouts: [
             {
                 layoutClass: Scatter,
-                props: { addScaleAxes: true }
+                props: scatterProps
             }
         ],
         specCapabilities: {

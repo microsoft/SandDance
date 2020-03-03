@@ -20,7 +20,7 @@ export function addColor(scope: Scope, dataSource: string, specContext: SpecCont
     const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     if (categoricalColor) {
         const legendName = DataNames.Legend;
-        addData(scope, ...topLookup(specColumns.color, specViewOptions.maxLegends, dataSource, legendName, DataNames.TopLookup, FieldNames.TopColor));
+        addData(scope, ...topLookup(specColumns.color, specViewOptions.maxLegends, dataSource, legendName, DataNames.TopLookup, FieldNames.TopColor, FieldNames.TopIndex));
         colorDataName = legendName;
     }
 
