@@ -1,15 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { addAxes, addScale } from './scope';
-import {
-    AxisScale,
-    AxisScales,
-    GlobalScope
-} from './interfaces';
-import {
-    axesLabelLimit,
-    axesTitleLimit
-} from './defaults';
+import { axesLabelLimit, axesTitleLimit } from './defaults';
 import {
     Axis,
     NewSignal,
@@ -17,11 +9,8 @@ import {
     Scope,
     TextBaselineValue
 } from 'vega-typings';
-import {
-    Column,
-    SpecColumns,
-    SpecViewOptions
-} from './types';
+import { AxisScale, AxisScales, GlobalScope } from './interfaces';
+import { Column, SpecColumns, SpecViewOptions } from './types';
 import { SignalNames } from './constants';
 import { util } from '@msrvida/vega-deck.gl';
 
@@ -37,7 +26,7 @@ export interface AxesScopeMap {
     [key: string]: AxesScope[];
 }
 
-export function addGlobalAxes(
+interface Props {
     globalScope: GlobalScope,
     globalScales: { x?: Scale, y?: Scale, z?: Scale },
     axisScales: AxisScales,
@@ -47,8 +36,11 @@ export function addGlobalAxes(
     labelBaseline: { x: TextBaselineValue, y: TextBaselineValue },
     specColumns: SpecColumns,
     specViewOptions: SpecViewOptions,
-    axesScopes: AxesScopeMap) {
+    axesScopes: AxesScopeMap
+}
 
+export function addGlobalAxes(props: Props) {
+    const { axesOffsets, axisScales, axesScopes, axesTitlePadding, globalScales, globalScope, labelBaseline, plotOffsetSignals, specColumns, specViewOptions } = props;
     const { scope } = globalScope;
 
     for (let s in globalScales) {

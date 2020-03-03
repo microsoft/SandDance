@@ -150,7 +150,7 @@ export class SpecBuilder {
                 }
             }
             if (allGlobalScales.length > 0) {
-                let axesScopeMap: AxesScopeMap = insight.columns.facet ?
+                let axesScopes: AxesScopeMap = insight.columns.facet ?
                     addFacetAxesGroupMarks({
                         globalScope: globalScope.scope,
                         plotScope: groupMark,
@@ -169,18 +169,18 @@ export class SpecBuilder {
                             title: true
                         }]
                     };
-                addGlobalAxes(
+                addGlobalAxes({
                     globalScope,
-                    allGlobalScales[0], //only use the first
-                    this.props.axisScales,
-                    { x: this.plotOffsetLeft, y: this.plotOffsetBottom },
-                    { x: axesOffsetX, y: axesOffsetY },
-                    insight.columns.facet ? { x: axesTitlePaddingFacetX, y: axesTitlePaddingFacetY } : { x: axesTitlePaddingX, y: axesTitlePaddingY },
-                    { x: 'top', y: 'middle' },
+                    globalScales: allGlobalScales[0], //only use the first
+                    axisScales: this.props.axisScales,
+                    plotOffsetSignals: { x: this.plotOffsetLeft, y: this.plotOffsetBottom },
+                    axesOffsets: { x: axesOffsetX, y: axesOffsetY },
+                    axesTitlePadding: insight.columns.facet ? { x: axesTitlePaddingFacetX, y: axesTitlePaddingFacetY } : { x: axesTitlePaddingX, y: axesTitlePaddingY },
+                    labelBaseline: { x: 'top', y: 'middle' },
                     specColumns,
                     specViewOptions,
-                    axesScopeMap
-                );
+                    axesScopes
+                });
 
             }
             //add mark to the final scope
