@@ -57,11 +57,8 @@ export type Orientation = 'horizontal' | 'vertical';
 
 export type Aggregate = 'count' | 'sum' | 'percent';
 
-export type AxisScaleType = 'discrete' | 'continuous' | 'continuousAggregate' | 'zFloor' | 'zFree' | 'zDiscrete';
-
 export interface AxisScale {
     title: string;
-
     aggregate?: Aggregate;
 }
 
