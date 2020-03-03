@@ -181,7 +181,6 @@ export class SpecBuilder {
                     specViewOptions,
                     axesScopes
                 });
-
             }
             //add mark to the final scope
             if (finalScope.mark) {
