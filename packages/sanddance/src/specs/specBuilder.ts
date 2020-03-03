@@ -31,7 +31,7 @@ import {
 } from 'vega-typings';
 import { LayoutBuildProps, LayoutPair, LayoutProps } from './layouts/layout';
 import { minFacetHeight, minFacetWidth } from './defaults';
-import { SignalNames } from './constants';
+import { SignalNames, ScaleNames } from './constants';
 import { SpecCapabilities, SpecContext } from './types';
 import { textSignals } from './signals';
 
@@ -109,7 +109,7 @@ export class SpecBuilder {
             const { insight, specColumns, specViewOptions } = specContext;
             const dataName = 'data_source';
             const { vegaSpec, groupMark } = this.initSpec(dataName);
-            const { topColorField, colorDataName } = addColor(vegaSpec, dataName, specContext);
+            const { topColorField, colorDataName } = addColor(vegaSpec, dataName, specContext, ScaleNames.Color);
             const globalScope = this.createGlobalScope(colorDataName, vegaSpec);
             if (insight.columns.facet) {
                 const discreteFacetColumn: DiscreteColumn = {
@@ -170,7 +170,7 @@ export class SpecBuilder {
             //add mark to the final scope
             if (finalScope.mark) {
                 const { update } = finalScope.mark.encode;
-                update.fill = fill(specContext, topColorField);
+                update.fill = fill(specContext, topColorField, ScaleNames.Color);
                 update.opacity = opacity(specContext);
             }
             return {

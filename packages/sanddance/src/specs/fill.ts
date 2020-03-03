@@ -5,7 +5,7 @@ import { ScaleNames, SignalNames } from './constants';
 import { SpecContext } from './types';
 import { util } from '@msrvida/vega-deck.gl';
 
-export function fill(context: SpecContext, colorFieldName: string): ProductionRule<ColorValueRef> {
+export function fill(context: SpecContext, colorFieldName: string, scale: string): ProductionRule<ColorValueRef> {
     const { specColumns, insight, specViewOptions } = context;
     const colorColumn = specColumns.color;
     return colorColumn ?
@@ -15,7 +15,7 @@ export function fill(context: SpecContext, colorFieldName: string): ProductionRu
             }
             :
             {
-                scale: ScaleNames.Color,
+                scale,
                 field: colorColumn.quantitative ? colorColumn.name : colorFieldName
             }
         :

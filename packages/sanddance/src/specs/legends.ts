@@ -2,13 +2,12 @@
 // Licensed under the MIT license.
 import { Column, SpecContext } from './types';
 import { Legend } from 'vega-typings';
-import { ScaleNames } from './constants';
 
-function legend(column: Column) {
+function legend(column: Column, fill: string) {
     const legend: Legend = {
         orient: 'none',
         title: column.name,
-        fill: ScaleNames.Color,
+        fill,
         encode: {
             symbols: {
                 update: {
@@ -26,9 +25,9 @@ function legend(column: Column) {
     return legend;
 }
 
-export function getLegends(context: SpecContext) {
+export function getLegends(context: SpecContext, fill: string) {
     const { specColumns, insight } = context;
     if (specColumns.color && !insight.hideLegend && !insight.directColor && !specColumns.color.isColorData) {
-        return [legend(specColumns.color)];
+        return [legend(specColumns.color, fill)];
     }
 }

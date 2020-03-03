@@ -9,10 +9,10 @@ import { Scope } from 'vega-typings';
 import { SpecContext } from './types';
 import { topLookup } from './top';
 
-export function addColor(scope: Scope, dataSource: string, specContext: SpecContext) {
+export function addColor(scope: Scope, dataSource: string, specContext: SpecContext, scaleName: string) {
     let colorDataName = dataSource;
     const { insight, specColumns, specViewOptions } = specContext;
-    const legends = getLegends(specContext);
+    const legends = getLegends(specContext, scaleName);
     if (legends) {
         scope.legends = legends;
     }
@@ -26,10 +26,10 @@ export function addColor(scope: Scope, dataSource: string, specContext: SpecCont
 
     if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
         if (specColumns.color.quantitative) {
-            addScale(scope, binnableColorScale(insight.colorBin, dataSource, specColumns.color.name, insight.scheme));
+            addScale(scope, binnableColorScale(scaleName, insight.colorBin, dataSource, specColumns.color.name, insight.scheme));
         } else {
             addScale(scope, {
-                name: ScaleNames.Color,
+                name: scaleName,
                 type: 'ordinal',
                 domain: {
                     data: colorDataName,
