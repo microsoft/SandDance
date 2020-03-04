@@ -1,17 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { addData, addMarks, addSignal, addTransforms } from '../scope';
-import { binnable, Binnable } from '../bin';
+import { addData, addMarks, addSignal } from '../scope';
 import { Column } from '../types';
-import { createOrdinalsForFacet } from '../ordinal';
-import { DiscreteColumn, InnerScope } from '../interfaces';
 import {
     GroupEncodeEntry,
-    GroupMark,
     RectMark,
     Scope,
     Transforms
 } from 'vega-typings';
+import { InnerScope } from '../interfaces';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 
 export interface SquareProps extends LayoutProps {
@@ -19,12 +16,9 @@ export interface SquareProps extends LayoutProps {
     fillDirection: 'right-down' | 'right-up' | 'down-right';
     maxGroupedUnits?: string;
     maxGroupedFillSize?: string;
-    groupby?: DiscreteColumn;
 }
 
 export class Square extends Layout {
-    private bin: Binnable;
-
     private names: {
         dataName: string,
         aspect: string,
@@ -42,38 +36,29 @@ export class Square extends Layout {
 
     constructor(public props: SquareProps & LayoutBuildProps) {
         super(props);
-        this.prefix = `square_${this.id}`;
-        if (props.groupby) {
-            this.bin = binnable(this.prefix, props.globalScope.dataName, props.groupby);
-        }
-    }
-
-    public getGrouping() {
-        return this.bin ? this.bin.fields : null;
+        const p = this.prefix = `square_${this.id}`;
+        this.names = {
+            dataName: `data_${p}`,
+            aspect: `${p}_aspect`,
+            bandWidth: this.getBandWidth(),
+            squaresPerBand: `${p}_squares_per_band`,
+            index: `${p}_index`,
+            gap: `${p}_gap`,
+            size: `${p}_size`,
+            levels: `${p}_levels`,
+            levelSize: `${p}_levelsize`,
+            facetData: `facet_${p}`,
+            grouping: `data_${p}_grouping`,
+            maxGroup: `${p}_max_grouping`
+        };
     }
 
     public build(): InnerScope {
-        const { props } = this;
-        const { fillDirection, globalScope, groupby, parentScope } = props;
-        const prefix = `square_${this.id}`;
-        this.names = {
-            dataName: `data_${prefix}`,
-            aspect: `${prefix}_aspect`,
-            bandWidth: this.getBandWidth(),
-            squaresPerBand: `${prefix}_squares_per_band`,
-            index: `${prefix}_index`,
-            gap: `${prefix}_gap`,
-            size: `${prefix}_size`,
-            levels: `${prefix}_levels`,
-            levelSize: `${prefix}_levelsize`,
-            facetData: `facet_${prefix}`,
-            grouping: `data_${prefix}_grouping`,
-            maxGroup: `${prefix}_max_grouping`
-        };
-        const { names } = this;
-        const mark: RectMark | GroupMark = {
+        const { fillDirection, parentScope } = this.props;
+        const { names, prefix } = this;
+        const mark: RectMark = {
             name: prefix,
-            type: groupby ? 'group' : 'rect',
+            type: 'rect',
             from: {
                 data: names.dataName
             },
@@ -93,30 +78,6 @@ export class Square extends Layout {
 
         let dataName: string
         let scope: Scope;
-        if (this.bin) {
-            dataName = names.facetData;
-            const groupMark = mark as GroupMark;
-            const { bin } = this;
-            if (bin.native === false) {
-                addSignal(globalScope.scope, bin.maxbinsSignal);
-                addTransforms(globalScope.scope.data[0], ...bin.transforms);
-                addData(globalScope.scope, bin.dataSequence);
-            }
-            const ord = createOrdinalsForFacet(parentScope.dataName, prefix, bin.fields);
-            groupMark.data = [ord.data];
-            const childMark: GroupMark = {
-                type: 'group',
-                from: {
-                    facet: {
-                        name: names.facetData,
-                        data: names.dataName,
-                        groupby: bin.fields
-                    }
-                }
-            };
-            groupMark.marks = [childMark];
-            scope = childMark;
-        }
 
         this.addData();
         this.addSignals();
@@ -124,7 +85,7 @@ export class Square extends Layout {
         return {
             dataName,
             scope,
-            mark: !groupby && mark as RectMark,
+            mark,
             sizeSignals: {
                 layoutHeight: names.size,
                 layoutWidth: names.size
