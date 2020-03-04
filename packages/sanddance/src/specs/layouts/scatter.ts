@@ -1,247 +1,148 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import {
-    Mark,
-    RangeScheme,
-    Scale,
-    Signal,
-    RectMark,
-    LinearScale
-} from 'vega-typings';
-import { ScaleNames, SignalNames } from '../constants';
-import { fill, opacity } from '../fill';
+    addData,
+    addMarks,
+    addSignal
+} from '../scope';
+import { Column } from '../types';
+import { GlobalScales, InnerScope } from '../interfaces';
+import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { linearScale, pointScale } from '../scales';
-import { SpecContext, Column } from '../types';
-import { testForCollapseSelection } from '../selection';
-import { Layout, LayoutProps, LayoutBuildProps } from './layout';
-import { InnerScope, DiscreteColumn } from '../interfaces';
-import { addScale, addData } from '../scope';
+import {
+    RectEncodeEntry,
+    RectMark,
+    Scale,
+    Transforms
+} from 'vega-typings';
+import { SignalNames } from '../constants';
 
 export interface ScatterProps extends LayoutProps {
     x: Column;
     y: Column;
     z: Column;
+    scatterPointSizeDisplay: string
 }
 
 export class Scatter extends Layout {
     private names: {
+        aggregateData: string,
         xScale: string,
-        yScale: string
+        yScale: string,
+        zScale: string,
+        validData: string
     };
 
     constructor(public props: ScatterProps & LayoutBuildProps) {
         super(props);
         const p = this.prefix = `scatter_${this.id}`;
         this.names = {
-            xScale: `${p}_scale_x`,
-            yScale: `${p}_scale_y`
+            aggregateData: `data_${p}_aggregate`,
+            xScale: `scale_${p}_x`,
+            yScale: `scale_${p}_y`,
+            zScale: `scale_${p}_z`,
+            validData: `data_${p}_valid`
         };
     }
 
-//     public build(): InnerScope {
-//         const { globalScope, parentScope } = this.props;
+    public build(): InnerScope {
+        const { names, props } = this;
+        const { globalScope, parentScope, scatterPointSizeDisplay, x, y, z } = props;
 
-        //TODO clean data in global scope
-        // filterInvalidWhenNumeric(specColumns.x),
-        // filterInvalidWhenNumeric(specColumns.y),
-        // filterInvalidWhenNumeric(specColumns.z),
+        addSignal(globalScope.scope, {
+            name: SignalNames.PointSize,
+            value: 5,
+            bind: {
+                name: scatterPointSizeDisplay,
+                debounce: 50,
+                input: 'range',
+                min: 1,
+                max: 25,
+                step: 1
+            }
+        });
+        addData(parentScope.scope, {
+            name: names.validData,
+            source: parentScope.dataName,
+            transform: [x, y, z].map(c => {
+                if (!c || !c.quantitative) return;
+                const t: Transforms = {
+                    type: 'filter',
+                    expr: `isValid(datum[${JSON.stringify(c.name)}])`
+                };
+                return t;
+            }).filter(Boolean)
+        });
 
-//         //this needs to be global since the scale depends on it
-//         // addData(globalScope.scope,
-//         //     {
-//         //         name: names.globalAggregateData,
-//         //         source: globalScope.dataName,
-//         //         transform: [
-//         //             {
-//         //                 type: 'extent',
-//         //                 field: aggregation,
-//         //                 signal: names.globalAggregateExtentSignal
-//         //             }
-//         //         ]
-//         //     },
-//         //     {
-//         //         name: names.accumulative,
-//         //         source: bin.fullScaleDataname,
-//         //         transform: [
-//         //             {
-//         //                 type: 'aggregate',
-//         //                 groupby: this.getGrouping(),
-//         //                 ops: ['count']
-//         //             }
-//         //         ]
-//         //     }
-//         // );
+        const globalScales: GlobalScales = {};
+        const update: RectEncodeEntry = {
+            height: {
+                signal: SignalNames.PointSize
+            },
+            width: {
+                signal: SignalNames.PointSize
+            }
+        };
 
-//         //TODO use main scales 
-// //        addScale(this.getScales())
-//         //push(scales, getScales(specContext));
-//         //push(signals, getSignals(specContext));
+        const columnSignals: {
+            column: Column,
+            xyz: 'x' | 'y' | 'z',
+            scaleName: string,
+            reverse: boolean,
+            signal: string
+        }[] = [
+                { column: x, xyz: 'x', scaleName: names.xScale, reverse: false, signal: parentScope.sizeSignals.layoutWidth },
+                { column: y, xyz: 'y', scaleName: names.yScale, reverse: true, signal: parentScope.sizeSignals.layoutHeight },
+                { column: z, xyz: 'z', scaleName: names.zScale, reverse: true, signal: parentScope.sizeSignals.layoutHeight }
+            ];
+        columnSignals.forEach(cs => {
+            const { column, reverse, scaleName, signal, xyz } = cs;
+            if (!column) return;
+            let scale: Scale;
+            if (column.quantitative) {
+                scale = linearScale(
+                    scaleName,
+                    globalScope.dataName,
+                    column.name,
+                    [0, { signal }],
+                    reverse,
+                    false
+                );
+            } else {
+                scale = pointScale(
+                    scaleName,
+                    globalScope.dataName,
+                    [0, { signal }],
+                    column.name,
+                    reverse
+                );
+            }
+            globalScales[xyz] = scale;
+            update[xyz] = {
+                scale: scaleName,
+                field: column.name
+            };
+        });
 
-//         //const mark = getMark(specContext, this.props.parent.dataName);
-//         //this.props.parent.scope.marks = [mark];
+        const mark: RectMark = {
+            type: 'rect',
+            from: {
+                data: names.validData
+            },
+            encode: {
+                update
+            }
+        };
+        addMarks(parentScope.scope, mark)
 
-//         // const mark: RectMark = {
-//         //     name: this.prefix,
-//         //     type: 'rect',
-//         //     from: {
-//         //         data: parentScope.dataName
-//         //     },
-//         //     encode: {
-//         //         update: {
-//         //             x: {
-//         //                 scale: 
-//         //             }
-//         //             height: {
-//         //                 signal: fillDirection === 'down-right' ? names.size : names.levelSize
-//         //             },
-//         //             width: {
-//         //                 signal: fillDirection === 'down-right' ? names.levelSize : names.size
-//         //             }
-//         //         }
-//         //     }
-//         // };
-
-//         return {
-//             dataName: null,
-//             sizeSignals: {
-//                 layoutHeight: null,
-//                 layoutWidth: null
-//             },
-//             globalScales: {
-//                 x: null,
-//                 y: null,
-//                 z: null
-//             },
-//             mark
-//         };
-//     }
-
-//     private getScales() {
-//         const { names } = this;
-//         const xScale: LinearScale = {
-//             type: 'linear',
-//             name: names.yScale,
-//             domain: [
-//                 0,
-//                 {
-//                     signal: names.globalAggregateMaxExtentSignal
-//                 }
-//             ],
-//             range: [
-//                 {
-//                     signal: parentScope.sizeSignals.layoutHeight
-//                 },
-//                 0
-//             ],
-//             nice: true,
-//             zero: true
-//         };
-//     }
+        return {
+            dataName: null,
+            sizeSignals: {
+                layoutHeight: null,
+                layoutWidth: null
+            },
+            globalScales,
+            mark
+        };
+    }
 }
-
-// function getMark(source: string) {
-//     const mark: Mark = {
-//         type: 'group',
-//         from: {
-//             facet: {
-//                 name: 'f1',
-//                 data: dataSource,
-//                 groupby: ['x', 'y']
-//             }
-//         },
-//         encode: {
-//             update: {
-//                 x: {
-//                     scale: ScaleNames.X,
-//                     field: specColumns.x.name,
-//                     offset: 1
-//                 },
-//                 width: { signal: SignalNames.PointSize },
-//                 y: [
-//                     {
-//                         scale: ScaleNames.Y,
-//                         test: testForCollapseSelection(),
-//                         signal: `${SignalNames.YDomain}[0]`
-//                     },
-//                     {
-//                         scale: ScaleNames.Y,
-//                         field: specColumns.y.name,
-//                         offset: {
-//                             signal: `-${SignalNames.PointSize}`
-//                         }
-//                     }
-//                 ],
-//                 height: [
-//                     {
-//                         test: testForCollapseSelection(),
-//                         value: 0
-//                     },
-//                     {
-//                         signal: SignalNames.PointSize
-//                     }
-//                 ],
-//                 fill: fill(context),
-//                 opacity: opacity(context)
-//             }
-//         }
-//     };
-//     if (specColumns.z) {
-//         const update = mark.encode.update;
-//         update.z = [
-//             {
-//                 test: testForCollapseSelection(),
-//                 value: 0
-//             },
-//             {
-//                 scale: ScaleNames.Z,
-//                 field: specColumns.z.name
-//             }
-//         ];
-//         update.depth = { signal: SignalNames.PointSize };
-//     }
-//     return mark;
-// }
-
-// function getScales(context: SpecContext) {
-//     const { specColumns } = context;
-//     const heightRange: RangeScheme = [{ signal: 'child_height' }, 0];
-//     const widthRange: RangeScheme = [0, { signal: 'child_width' }];
-//     const scales: Scale[] = [
-//         (
-//             specColumns.x.quantitative ?
-//                 linearScale(ScaleNames.X, DataNames.Main, specColumns.x.name, widthRange, false, false)
-//                 :
-//                 pointScale(ScaleNames.X, DataNames.Main, widthRange, specColumns.x.name)
-//         ),
-//         (
-//             specColumns.y.quantitative ?
-//                 linearScale(ScaleNames.Y, DataNames.Main, specColumns.y.name, heightRange, false, false)
-//                 :
-//                 pointScale(ScaleNames.Y, DataNames.Main, heightRange, specColumns.y.name, true)
-//         )
-//     ];
-//     return scales;
-// }
-
-// function getSignals(context: SpecContext) {
-//     const { specViewOptions } = context;
-//     const signals: Signal[] = [
-//         {
-//             name: SignalNames.YDomain,
-//             update: `domain('${ScaleNames.Y}')`
-//         },
-//         {
-//             name: SignalNames.PointSize,
-//             value: 5,
-//             bind: {
-//                 name: specViewOptions.language.scatterPointSize,
-//                 debounce: 50,
-//                 input: 'range',
-//                 min: 1,
-//                 max: 25,
-//                 step: 1
-//             }
-//         }
-//     ];
-//     return signals;
-// }
