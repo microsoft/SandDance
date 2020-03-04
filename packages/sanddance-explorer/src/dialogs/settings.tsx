@@ -57,6 +57,8 @@ function filterSignals(signal: NewSignal) {
     switch (signal.name) {
         case SandDance.constants.SignalNames.XBins:
         case SandDance.constants.SignalNames.YBins:
+        case SandDance.constants.SignalNames.FacetBins:
+        case SandDance.constants.SignalNames.FacetVBins:
         case SandDance.constants.SignalNames.ColorBinCount:
         case SandDance.constants.SignalNames.ColorReverse:
         case SandDance.constants.SignalNames.PointSize:
