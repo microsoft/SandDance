@@ -6,7 +6,7 @@ import { SpecContext } from './types';
 
 export const defaultZProportion = 0.6;
 
-export function textSignals(context: SpecContext, heightSignal = 'height') {
+export function textSignals(context: SpecContext, heightSignal: string) {
     const { specViewOptions } = context;
     const signals: NewSignal[] = [
         {
