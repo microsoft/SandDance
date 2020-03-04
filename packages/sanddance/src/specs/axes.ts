@@ -48,7 +48,7 @@ export function addGlobalAxes(props: Props) {
         if (scale) {
             //TODO check to see if scale exists in global scope
             addScale(scope, scale);
-            if (axisScales) {
+            if (axisScales && s !== 'z') {
                 let axisScale: AxisScale = axisScales[s];
                 if (axisScale) {
                     const lineColor = util.colorToString(specViewOptions.colors.axisLine);
