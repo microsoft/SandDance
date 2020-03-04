@@ -7,12 +7,13 @@ import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
-    const { specColumns } = specContext;
+    const { specColumns, specViewOptions } = specContext;
     const scatterProps: ScatterProps = {
         x: specColumns.x,
         y: specColumns.y,
         z: specColumns.z,
-        addScaleAxes: true
+        addScaleAxes: true,
+        scatterPointSizeDisplay: specViewOptions.language.scatterPointSize
     };
     const axisScales: AxisScales = {
         x: { title: specColumns.x && specColumns.x.name },
@@ -47,11 +48,13 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 },
                 {
                     role: 'facet',
-                    allowNone: true
+                    allowNone: true,
+                    signals: [SignalNames.FacetBins]
                 },
                 {
                     role: 'facetV',
-                    allowNone: true
+                    allowNone: true,
+                    signals: [SignalNames.FacetVBins]
                 }
             ],
             signals: [SignalNames.PointSize]
