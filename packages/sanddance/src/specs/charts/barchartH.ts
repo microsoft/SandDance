@@ -34,8 +34,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     const x: AxisScale = {  title: null };
     const axisScales: AxisScales = {
         x,
-        y: {  title: specColumns.y.name },
-        z: {  title: specColumns.z.name }
+        y: {  title: specColumns.y && specColumns.y.name },
+        z: {  title: specColumns.z && specColumns.z.name }
     };
     switch (insight.sumStyle) {
         case 'treemap': {
