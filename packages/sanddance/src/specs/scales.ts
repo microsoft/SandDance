@@ -74,7 +74,7 @@ export function binnableColorScale(scaleName: string, colorBin: ColorBin, data: 
         }
         case 'quantile': {
             const quantileScale: QuantileScale = {
-                name,
+                name: scaleName,
                 type: 'quantile',
                 domain,
                 range,
@@ -84,7 +84,7 @@ export function binnableColorScale(scaleName: string, colorBin: ColorBin, data: 
         }
         default: {
             const quantizeScale: QuantizeScale = {
-                name,
+                name: scaleName,
                 type: 'quantize',
                 domain,
                 range,
