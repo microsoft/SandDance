@@ -1,10 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import {
-    addData,
-    addMarks,
-    addSignal
-} from '../scope';
+import { addData, addMarks, addSignal } from '../scope';
 import { Column } from '../types';
 import { GlobalScales, InnerScope } from '../interfaces';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
@@ -16,6 +12,7 @@ import {
     Transforms
 } from 'vega-typings';
 import { SignalNames } from '../constants';
+import { testForCollapseSelection } from '../selection';
 
 export interface ScatterProps extends LayoutProps {
     x: Column;
@@ -76,11 +73,56 @@ export class Scatter extends Layout {
 
         const globalScales: GlobalScales = {};
         const update: RectEncodeEntry = {
-            height: {
-                signal: SignalNames.PointSize
-            },
+            height: [
+                {
+                    test: testForCollapseSelection(),
+                    value: 0
+                },
+                {
+                    signal: SignalNames.PointSize
+                }
+            ],
             width: {
                 signal: SignalNames.PointSize
+            },
+            x: {
+                scale: names.xScale,
+                field: x.name
+            },
+            y: [
+                {
+                    scale: names.yScale,
+                    test: testForCollapseSelection(),
+                    value: 0
+                },
+                {
+                    scale: names.yScale,
+                    field: y.name,
+                    offset: {
+                        signal: `-${SignalNames.PointSize}`
+                    }
+                }
+            ],
+            ...z && {
+                z: [
+                    {
+                        test: testForCollapseSelection(),
+                        value: 0
+                    },
+                    {
+                        scale: names.zScale,
+                        field: z && z.name
+                    }
+                ],
+                depth: [
+                    {
+                        test: testForCollapseSelection(),
+                        value: 0
+                    },
+                    {
+                        signal: SignalNames.PointSize
+                    }
+                ]
             }
         };
 
@@ -93,7 +135,7 @@ export class Scatter extends Layout {
         }[] = [
                 { column: x, xyz: 'x', scaleName: names.xScale, reverse: false, signal: parentScope.sizeSignals.layoutWidth },
                 { column: y, xyz: 'y', scaleName: names.yScale, reverse: true, signal: parentScope.sizeSignals.layoutHeight },
-                { column: z, xyz: 'z', scaleName: names.zScale, reverse: false, signal: parentScope.sizeSignals.layoutHeight }
+                { column: z, xyz: 'z', scaleName: names.zScale, reverse: false, signal: `${parentScope.sizeSignals.layoutHeight}*${SignalNames.ZProportion}` }
             ];
         columnSignals.forEach(cs => {
             const { column, reverse, scaleName, signal, xyz } = cs;
@@ -118,20 +160,12 @@ export class Scatter extends Layout {
                 );
             }
             globalScales[xyz] = scale;
-            update[xyz] = {
-                scale: scaleName,
-                field: column.name
-            };
         });
 
         const mark: RectMark = {
             type: 'rect',
-            from: {
-                data: names.validData
-            },
-            encode: {
-                update
-            }
+            from: { data: names.validData },
+            encode: { update }
         };
         addMarks(parentScope.scope, mark)
 
