@@ -9,8 +9,9 @@ import { Square, SquareProps } from '../layouts/square';
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns } = specContext;
     const squareProps: SquareProps = {
-        sortBy: specContext.specColumns.sort,
-        fillDirection: 'right-down'
+        sortBy: specColumns.sort,
+        fillDirection: 'right-down',
+        z: specColumns.z
     };
     const axisScales: AxisScales = {
         z: { title: specColumns.z && specColumns.z.name }

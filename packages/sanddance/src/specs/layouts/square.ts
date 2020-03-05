@@ -1,21 +1,32 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { addData, addMarks, addSignal } from '../scope';
+import {
+    addData,
+    addMarks,
+    addScale,
+    addSignal
+} from '../scope';
 import { Column } from '../types';
 import {
     GroupEncodeEntry,
+    RangeScheme,
     RectMark,
     Scope,
     Transforms
 } from 'vega-typings';
 import { InnerScope } from '../interfaces';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
+import { linearScale, pointScale } from '../scales';
+import { SignalNames } from '../constants';
+import { testForCollapseSelection } from '../selection';
 
 export interface SquareProps extends LayoutProps {
     sortBy: Column;
+    z: Column;
     fillDirection: 'right-down' | 'right-up' | 'down-right';
     maxGroupedUnits?: string;
     maxGroupedFillSize?: string;
+    zSize?: string;
 }
 
 export class Square extends Layout {
@@ -31,7 +42,8 @@ export class Square extends Layout {
         levelSize: string,
         facetData: string,
         grouping: string,
-        maxGroup: string
+        maxGroup: string,
+        zScaleName: string
     }
 
     constructor(public props: SquareProps & LayoutBuildProps) {
@@ -49,13 +61,39 @@ export class Square extends Layout {
             levelSize: `${p}_levelsize`,
             facetData: `facet_${p}`,
             grouping: `data_${p}_grouping`,
-            maxGroup: `${p}_max_grouping`
+            maxGroup: `${p}_max_grouping`,
+            zScaleName: `scale_${p}_z`
         };
     }
 
     public build(): InnerScope {
-        const { fillDirection, parentScope } = this.props;
+        const { fillDirection, globalScope, parentScope, z } = this.props;
+        let { zSize } = this.props;
         const { names, prefix } = this;
+        if (z) {
+            if (!zSize) {
+                zSize = parentScope.sizeSignals.layoutHeight;
+            }
+            const zRange: RangeScheme = [0, { signal: `(${zSize}) * ${SignalNames.ZProportion}` }];
+            addScale(globalScope.scope, z.quantitative
+                ?
+                linearScale(
+                    names.zScaleName,
+                    globalScope.dataName,
+                    z.name,
+                    zRange,
+                    false,
+                    true)
+                :
+                pointScale(
+                    names.zScaleName,
+                    globalScope.dataName,
+                    zRange,
+                    z.name,
+                    false
+                )
+            );
+        }
         const mark: RectMark = {
             name: prefix,
             type: 'rect',
@@ -70,6 +108,21 @@ export class Square extends Layout {
                     },
                     width: {
                         signal: fillDirection === 'down-right' ? names.levelSize : names.size
+                    },
+                    ...z && {
+                        z: {
+                            value: 0
+                        },
+                        depth: [
+                            {
+                                test: testForCollapseSelection(),
+                                value: 0
+                            },
+                            {
+                                scale: names.zScaleName,
+                                field: z.name
+                            }
+                        ]
                     }
                 }
             }

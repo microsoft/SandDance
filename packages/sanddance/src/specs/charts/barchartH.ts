@@ -31,11 +31,11 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     let footprintProps: LayoutProps = barProps;
     let unitLayoutClass: typeof Layout;
     let unitLayoutProps: LayoutProps;
-    const x: AxisScale = {  title: null };
+    const x: AxisScale = { title: null };
     const axisScales: AxisScales = {
         x,
-        y: {  title: specColumns.y && specColumns.y.name },
-        z: {  title: specColumns.z && specColumns.z.name }
+        y: { title: specColumns.y && specColumns.y.name },
+        z: { title: specColumns.z && specColumns.z.name }
     };
     switch (insight.sumStyle) {
         case 'treemap': {
@@ -69,10 +69,16 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             x.aggregate = 'count';
             x.title = language.count;
             unitLayoutClass = Square;
-            const squareProps: SquareProps = { sortBy: specColumns.sort, fillDirection: 'down-right' };
+            const squareProps: SquareProps = {
+                sortBy: specColumns.sort,
+                fillDirection: 'down-right',
+                z: specColumns.z,
+                zSize: null
+            };
             barProps.onBuild = barBuild => {
                 squareProps.maxGroupedUnits = barBuild.globalAggregateMaxExtentSignal;
                 squareProps.maxGroupedFillSize = `(${barBuild.globalAggregateMaxExtentScaledSignal})`;
+                squareProps.zSize = barBuild.parentSize;
             };
             unitLayoutProps = squareProps;
             break;
