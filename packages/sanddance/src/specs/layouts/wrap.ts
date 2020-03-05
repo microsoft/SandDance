@@ -21,11 +21,59 @@ export interface WrapProps extends LayoutProps {
 
 export class Wrap extends Layout {
     private bin: Binnable;
+    private names: {
+        facetDataName: string,
+        emptyDataName: string,
+        emptyMarkName: string,
+        sortedDataName: string,
+        rowColumnDataName: string,
+        cellHeight: string,
+        cellWidth: string,
+        fits: string,
+        target: string,
+        minArea: string,
+        aspect: string,
+        minAspect: string,
+        idealAspect: string,
+        dataLength: string,
+        rxc0: string,
+        rxc1: string,
+        rxc2: string,
+        rxc: string,
+        growColCount: string,
+        growCellWidth: string,
+        fitsArea: string,
+        colCount: string
+    };
 
     constructor(public props: WrapProps & LayoutBuildProps) {
         super(props);
-        this.prefix = `wrap_${this.id}`;
+        const p = this.prefix = `wrap_${this.id}`;
         this.bin = binnable(this.prefix, props.globalScope.dataName, props.groupby);
+        this.names = {
+            facetDataName: `data_${p}_facet`,
+            emptyDataName: `data_${p}_empty`,
+            emptyMarkName: `${p}_empty`,
+            sortedDataName: `data_${p}_sort`,
+            rowColumnDataName: `data_${p}_row_col`,
+            cellHeight: `${p}_cellHeight`,
+            cellWidth: `${p}_cellWidth`,
+            fits: `${p}_fits`,
+            target: `${p}_target`,
+            minArea: `${p}_minArea`,
+            aspect: `${p}_aspect`,
+            minAspect: `${p}_minAspect`,
+            idealAspect: `${p}_idealAspect`,
+            dataLength: `${p}_dataLength`,
+            rxc0: `${p}_rxc0`,
+            rxc1: `${p}_rxc1`,
+            rxc2: `${p}_rxc2`,
+            rxc: `${p}_rxc`,
+            growColCount: `${p}_growColCount`,
+            growCellWidth: `${p}_growCellWidth`,
+            fitsArea: `${p}_fitsArea`,
+            colCount: `${p}_colCount`
+        };
     }
 
     public getGrouping() {
@@ -33,30 +81,8 @@ export class Wrap extends Layout {
     }
 
     public build(): InnerScope {
-        const { bin, prefix, props } = this;
+        const { bin, names, prefix, props } = this;
         const { globalScope, parentScope } = props;
-        const facetDataName = `data_${prefix}_facet`;
-        const emptyDataName = `data_${prefix}_empty`;
-        const emptyMarkName = `${prefix}_empty`;
-        const sortedDataName = `data_${prefix}_sort`;
-        const rowColumnDataName = `data_${prefix}_row_col`;
-        const cellHeight = `${prefix}_cellHeight`;
-        const cellWidth = `${prefix}_cellWidth`;
-        const fits = `${prefix}_fits`;
-        const target = `${prefix}_target`;
-        const minArea = `${prefix}_minArea`;
-        const aspect = `${prefix}_aspect`;
-        const minAspect = `${prefix}_minAspect`;
-        const idealAspect = `${prefix}_idealAspect`;
-        const dataLength = `${prefix}_dataLength`;
-        const rxc0 = `${prefix}_rxc0`;
-        const rxc1 = `${prefix}_rxc1`;
-        const rxc2 = `${prefix}_rxc2`;
-        const rxc = `${prefix}_rxc`;
-        const growColCount = `${prefix}_growColCount`;
-        const growCellWidth = `${prefix}_growCellWidth`;
-        const fitsArea = `${prefix}_fitsArea`;
-        const colCount = `${prefix}_colCount`;
 
         let ordinalBinData: string;
 
@@ -78,25 +104,25 @@ export class Wrap extends Layout {
 
         addData(globalScope.scope,
             {
-                name: rxc0,
+                name: names.rxc0,
                 transform: [
                     {
                         type: 'sequence',
                         start: 1,
                         stop: {
-                            signal: `ceil(sqrt(${dataLength})) + 1`
+                            signal: `ceil(sqrt(${names.dataLength})) + 1`
                         }
                     },
                     {
                         type: 'formula',
-                        expr: `ceil(${dataLength} / datum.data)`,
+                        expr: `ceil(${names.dataLength} / datum.data)`,
                         as: 'complement'
                     }
                 ]
             },
             {
-                name: rxc1,
-                source: rxc0,
+                name: names.rxc1,
+                source: names.rxc0,
                 transform: [
                     {
                         type: 'project',
@@ -106,8 +132,8 @@ export class Wrap extends Layout {
                 ]
             },
             {
-                name: rxc2,
-                source: rxc0,
+                name: names.rxc2,
+                source: names.rxc0,
                 transform: [
                     {
                         type: 'project',
@@ -117,12 +143,12 @@ export class Wrap extends Layout {
                 ]
             },
             {
-                name: rxc,
-                source: [rxc1, rxc2],
+                name: names.rxc,
+                source: [names.rxc1, names.rxc2],
                 transform: [
                     {
                         type: 'formula',
-                        expr: `ceil(${dataLength} / datum.cols)`,
+                        expr: `ceil(${names.dataLength} / datum.cols)`,
                         as: 'rows'
                     },
                     {
@@ -157,45 +183,45 @@ export class Wrap extends Layout {
                     {
                         type: 'formula',
                         expr: 'datum.cellw / datum.cellh',
-                        as: aspect
+                        as: names.aspect
                     },
                     {
                         type: 'formula',
-                        expr: `abs(datum.${aspect} - ${target})`,
-                        as: idealAspect
+                        expr: `abs(datum.${names.aspect} - ${names.target})`,
+                        as: names.idealAspect
                     },
                     {
                         type: 'formula',
-                        expr: `${dataLength} / (datum.cols * datum.rows)`,
+                        expr: `${names.dataLength} / (datum.cols * datum.rows)`,
                         as: 'coverage'
                     },
                     {
                         type: 'collect',
                         sort: {
-                            field: [idealAspect, 'coverage'],
+                            field: [names.idealAspect, 'coverage'],
                             order: ['ascending', 'descending']
                         }
                     }
                 ]
             },
             {
-                name: rowColumnDataName,
+                name: names.rowColumnDataName,
                 source: ordinalBinData,
                 transform: [
                     {
                         type: 'formula',
-                        expr: `floor((datum[${JSON.stringify(FieldNames.Ordinal)}] - 1) / ${colCount})`,
+                        expr: `floor((datum[${JSON.stringify(FieldNames.Ordinal)}] - 1) / ${names.colCount})`,
                         as: FieldNames.WrapRow
                     },
                     {
                         type: 'formula',
-                        expr: `(datum[${JSON.stringify(FieldNames.Ordinal)}] - 1) % ${colCount}`,
+                        expr: `(datum[${JSON.stringify(FieldNames.Ordinal)}] - 1) % ${names.colCount}`,
                         as: FieldNames.WrapCol
                     }
                 ]
             },
             {
-                name: sortedDataName,           //need to sort by the bin, since there is no scale for positioning
+                name: names.sortedDataName,           //need to sort by the bin, since there is no scale for positioning
                 source: parentScope.dataName,
                 transform: [
                     {
@@ -211,7 +237,7 @@ export class Wrap extends Layout {
                     },
                     {
                         type: 'lookup',
-                        from: rowColumnDataName,
+                        from: names.rowColumnDataName,
                         key: bin.fields[0],
                         fields: [bin.fields[0]],
                         values: [FieldNames.WrapRow, FieldNames.WrapCol]
@@ -222,70 +248,70 @@ export class Wrap extends Layout {
 
         addSignal(globalScope.scope,
             {
-                name: minAspect,
+                name: names.minAspect,
                 update: `${SignalNames.MinCellWidth} / ${SignalNames.MinCellHeight}`
             },
             {
-                name: target,
-                update: `${minAspect} === 1 ? ${1.2} : ${minAspect}`
+                name: names.target,
+                update: `${names.minAspect} === 1 ? ${1.2} : ${names.minAspect}`
             },
             {
-                name: minArea,
+                name: names.minArea,
                 update: `${SignalNames.MinCellWidth}*${SignalNames.MinCellHeight}`
             },
             {
-                name: aspect,
+                name: names.aspect,
                 update: `${parentScope.sizeSignals.layoutWidth} / ${parentScope.sizeSignals.layoutHeight}`
             },
             {
-                name: dataLength,
+                name: names.dataLength,
                 update: `data(${JSON.stringify(ordinalBinData)}).length`
             },
             {
-                name: growColCount,
+                name: names.growColCount,
                 update: `max(floor(${parentScope.sizeSignals.layoutWidth} / ${SignalNames.MinCellWidth}), 1)`
             },
             {
-                name: growCellWidth,
-                update: `${parentScope.sizeSignals.layoutWidth} / ${growColCount}`
+                name: names.growCellWidth,
+                update: `${parentScope.sizeSignals.layoutWidth} / ${names.growColCount}`
             },
             {
-                name: fitsArea,
-                update: `((${dataLength} * ${minArea}) <= (${parentScope.sizeSignals.layoutWidth} * ${parentScope.sizeSignals.layoutHeight}))`
+                name: names.fitsArea,
+                update: `((${names.dataLength} * ${names.minArea}) <= (${parentScope.sizeSignals.layoutWidth} * ${parentScope.sizeSignals.layoutHeight}))`
             },
             {
-                name: fits,
-                update: `${fitsArea} && length(data(${JSON.stringify(rxc)})) > 0`
+                name: names.fits,
+                update: `${names.fitsArea} && length(data(${JSON.stringify(names.rxc)})) > 0`
             },
             {
-                name: colCount,
-                update: `${fits} ? data(${JSON.stringify(rxc)})[0].cols : ${growColCount}`
+                name: names.colCount,
+                update: `${names.fits} ? data(${JSON.stringify(names.rxc)})[0].cols : ${names.growColCount}`
             },
             {
-                name: cellWidth,
-                update: `${fits} ? data(${JSON.stringify(rxc)})[0].cellw : ${growCellWidth}`
+                name: names.cellWidth,
+                update: `${names.fits} ? data(${JSON.stringify(names.rxc)})[0].cellw : ${names.growCellWidth}`
             },
             {
-                name: cellHeight,
-                update: `${fits} ? data(${JSON.stringify(rxc)})[0].cellh : ${SignalNames.MinCellHeight}`
+                name: names.cellHeight,
+                update: `${names.fits} ? data(${JSON.stringify(names.rxc)})[0].cellh : ${SignalNames.MinCellHeight}`
             }
         );
 
-        modifySignal(globalScope.signals.plotHeightOut, 'max', `(${cellHeight} * ceil(${dataLength} / ${colCount}))`);
-        modifySignal(globalScope.signals.plotWidthOut, 'max', `(${cellWidth} * ${colCount})`);
+        modifySignal(globalScope.signals.plotHeightOut, 'max', `(${names.cellHeight} * ceil(${names.dataLength} / ${names.colCount}))`);
+        modifySignal(globalScope.signals.plotWidthOut, 'max', `(${names.cellWidth} * ${names.colCount})`);
 
         const update: GroupEncodeEntry = {
             height: {
-                signal: `${cellHeight} - ${facetPaddingTop} - ${facetPaddingBottom}`
+                signal: `${names.cellHeight} - ${facetPaddingTop} - ${facetPaddingBottom}`
             },
             width: {
-                signal: `${cellWidth} - ${facetPaddingLeft}`
+                signal: `${names.cellWidth} - ${facetPaddingLeft}`
             },
             x: {
-                signal: `datum[${JSON.stringify(FieldNames.WrapCol)}] * ${cellWidth} + ${facetPaddingLeft}`
+                signal: `datum[${JSON.stringify(FieldNames.WrapCol)}] * ${names.cellWidth} + ${facetPaddingLeft}`
             },
             y: {
-                signal: `datum[${JSON.stringify(FieldNames.WrapRow)}] * ${cellHeight} + ${facetPaddingTop}`
+                signal: `datum[${JSON.stringify(FieldNames.WrapRow)}] * ${names.cellHeight} + ${facetPaddingTop}`
             }
         };
 
@@ -295,8 +321,8 @@ export class Wrap extends Layout {
             type: 'group',
             from: {
                 facet: {
-                    name: facetDataName,
-                    data: sortedDataName,
+                    name: names.facetDataName,
+                    data: names.sortedDataName,
                     groupby: bin.fields.concat([FieldNames.WrapRow, FieldNames.WrapCol, FieldNames.FacetRange])
                 }
             },
@@ -308,8 +334,8 @@ export class Wrap extends Layout {
         if (bin.native === false) {
             addData(globalScope.scope,
                 {
-                    name: emptyDataName,
-                    source: rowColumnDataName,
+                    name: names.emptyDataName,
+                    source: names.rowColumnDataName,
                     transform: [
                         {
                             type: 'filter',
@@ -325,10 +351,10 @@ export class Wrap extends Layout {
             );
             emptymark = {
                 style: 'cell',
-                name: emptyMarkName,
+                name: names.emptyMarkName,
                 type: 'group',
                 from: {
-                    data: emptyDataName
+                    data: names.emptyDataName
                 },
                 encode: { update }
             };
@@ -337,14 +363,14 @@ export class Wrap extends Layout {
 
 
         return {
-            dataName: facetDataName,
+            dataName: names.facetDataName,
             scope: mark,
             emptyScope: emptymark,
             sizeSignals: {
-                layoutHeight: `(${cellHeight} - ${facetPaddingTop} - ${facetPaddingBottom})`,
-                layoutWidth: `(${cellWidth} - ${facetPaddingLeft})`,
-                colCount,
-                rowCount: `ceil(${dataLength} / ${colCount})`
+                layoutHeight: `(${names.cellHeight} - ${facetPaddingTop} - ${facetPaddingBottom})`,
+                layoutWidth: `(${names.cellWidth} - ${facetPaddingLeft})`,
+                colCount: names.colCount,
+                rowCount: `ceil(${names.dataLength} / ${names.colCount})`
             }
         };
     }
