@@ -1,13 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import {
+    addData,
+    addMarks,
+    addScale,
+    addSignal,
+    addTransforms
+} from '../scope';
 import { Binnable, binnable } from '../bin';
+import { createOrdinalsForFacet } from '../ordinal';
 import { DiscreteColumn, InnerScope } from '../interfaces';
-import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { GroupMark, GroupEncodeEntry } from '@msrvida/vega-deck.gl/node_modules/vega-typings/types';
-import { addMarks, addData, addScale, addSignal, addTransforms } from '../scope';
+import { facetPaddingBottom, facetPaddingLeft, facetPaddingTop } from '../defaults';
 import { FieldNames } from '../constants';
+import { GroupEncodeEntry, GroupMark } from '@msrvida/vega-deck.gl/node_modules/vega-typings/types';
+import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { modifySignal } from '../signals';
-import { facetPaddingTop, facetPaddingBottom, facetPaddingLeft } from '../defaults';
 
 export interface CrossProps extends LayoutProps {
     groupbyX: DiscreteColumn;
@@ -64,7 +71,7 @@ export class Cross extends Layout {
             },
         };
 
-        const ordinalBinScales = [
+        const dimensions = [
             {
                 dim: 'x',
                 bin: binX,
@@ -85,7 +92,7 @@ export class Cross extends Layout {
             }
         ];
 
-        ordinalBinScales.forEach(o => {
+        dimensions.forEach(o => {
             const { bin, dim, offset } = o;
             let data: string;
             let countSignal: string;
@@ -101,20 +108,10 @@ export class Cross extends Layout {
                 data = bin.dataSequence.name;
                 countSignal = `length(data(${JSON.stringify(data)}))`;
             } else {
-                const cat = `${names.dimCategorical}_${dim}`
                 data = globalScope.dataName;
-                addData(globalScope.scope, {
-                    name: cat,
-                    source: data,
-                    transform: [
-                        {
-                            type: 'aggregate',
-                            groupby: bin.fields,
-                            ops: ['count']
-                        }
-                    ]
-                });
-                countSignal = `length(data(${JSON.stringify(cat)}))`;
+                const ord = createOrdinalsForFacet(data, `${prefix}_${dim}`, bin.fields);
+                addData(globalScope.scope, ord.data);
+                countSignal = `length(data(${JSON.stringify(ord.data.name)}))`;
             }
             const scaleName = `${names.dimScale}_${dim}`;
             addScale(globalScope.scope, {
