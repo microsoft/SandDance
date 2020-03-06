@@ -361,14 +361,13 @@ export class Wrap extends Layout {
             addMarks(parentScope.scope, emptymark);
         }
 
-
         return {
             dataName: names.facetDataName,
             scope: mark,
             emptyScope: emptymark,
             sizeSignals: {
-                layoutHeight: `(${names.cellHeight} - ${facetPaddingTop} - ${facetPaddingBottom})`,
-                layoutWidth: `(${names.cellWidth} - ${facetPaddingLeft})`,
+                    layoutHeight: `(${names.cellHeight} - ${facetPaddingTop} - ${facetPaddingBottom})`,
+                    layoutWidth: `(${names.cellWidth} - ${facetPaddingLeft})`,
                 colCount: names.colCount,
                 rowCount: `ceil(${names.dataLength} / ${names.colCount})`
             }
