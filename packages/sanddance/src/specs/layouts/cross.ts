@@ -8,11 +8,11 @@ import {
     addTransforms
 } from '../scope';
 import { Binnable, binnable } from '../bin';
-import { createOrdinalsForFacet } from '../ordinal';
+import { createOrdinalsForFacet, ordinalScale } from '../ordinal';
 import { DiscreteColumn, InnerScope } from '../interfaces';
 import { facetPaddingBottom, facetPaddingLeft, facetPaddingTop } from '../defaults';
 import { FieldNames } from '../constants';
-import { GroupEncodeEntry, GroupMark } from '@msrvida/vega-deck.gl/node_modules/vega-typings/types';
+import { GroupEncodeEntry, GroupMark, OrdinalScale } from '@msrvida/vega-deck.gl/node_modules/vega-typings/types';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { modifySignal } from '../signals';
 
@@ -39,8 +39,8 @@ export class Cross extends Layout {
     constructor(public props: CrossProps & LayoutBuildProps) {
         super(props);
         const p = this.prefix = `cross_${this.id}`;
-        this.binX = binnable(this.prefix, props.globalScope.dataName, props.groupbyX);
-        this.binY = binnable(this.prefix, props.globalScope.dataName, props.groupbyY);
+        this.binX = binnable(`${p}_x`, props.globalScope.dataName, props.groupbyX);
+        this.binY = binnable(`${p}_y`, props.globalScope.dataName, props.groupbyY);
         this.names = {
             crossData: `data_${p}_cross`,
             facetDataName: `data_${p}_facet`,
@@ -61,16 +61,14 @@ export class Cross extends Layout {
     public build(): InnerScope {
         const { binX, binY, names, prefix, props } = this;
         const { globalScope, parentScope } = props;
-
         const update: GroupEncodeEntry = {
             height: {
-                signal: `${names.dimCellSize}_y - ${facetPaddingTop} - ${facetPaddingBottom}`
+                signal: `${names.dimCellSize}_y`
             },
             width: {
-                signal: `${names.dimCellSize}_x - ${facetPaddingLeft}`
+                signal: `${names.dimCellSize}_x`
             },
         };
-
         const dimensions = [
             {
                 dim: 'x',
@@ -79,7 +77,8 @@ export class Cross extends Layout {
                 layout: parentScope.sizeSignals.layoutWidth,
                 min: globalScope.signals.minCellWidth.name,
                 out: globalScope.signals.plotWidthOut,
-                offset: facetPaddingLeft
+                offset: facetPaddingLeft,
+                padding: facetPaddingLeft
             },
             {
                 dim: 'y',
@@ -88,14 +87,15 @@ export class Cross extends Layout {
                 layout: parentScope.sizeSignals.layoutHeight,
                 min: globalScope.signals.minCellHeight.name,
                 out: globalScope.signals.plotHeightOut,
-                offset: facetPaddingTop
+                offset: facetPaddingTop,
+                padding: `(${facetPaddingTop} + ${facetPaddingBottom})`
             }
         ];
-
         dimensions.forEach(o => {
-            const { bin, dim, offset } = o;
+            const { bin, dim, offset, padding } = o;
             let data: string;
             let countSignal: string;
+            let scale: OrdinalScale;
             if (bin.native === false) {
                 addSignal(globalScope.scope, bin.maxbinsSignal);
                 addTransforms(globalScope.scope.data[0], ...bin.transforms);
@@ -107,25 +107,15 @@ export class Cross extends Layout {
                 });
                 data = bin.dataSequence.name;
                 countSignal = `length(data(${JSON.stringify(data)}))`;
+                scale = ordinalScale(data, `${names.dimScale}_${dim}`, bin.fields);
             } else {
                 data = globalScope.dataName;
                 const ord = createOrdinalsForFacet(data, `${prefix}_${dim}`, bin.fields);
                 addData(globalScope.scope, ord.data);
                 countSignal = `length(data(${JSON.stringify(ord.data.name)}))`;
+                scale = ord.scale;
             }
-            const scaleName = `${names.dimScale}_${dim}`;
-            addScale(globalScope.scope, {
-                name: scaleName,
-                type: 'point',
-                domain: {
-                    data,
-                    field: bin.fields[0]
-                },
-                range: [
-                    0,
-                    { signal: o.out.name }
-                ]
-            });
+            addScale(globalScope.scope, scale);
             const count = `${names.dimCount}_${dim}`;
             const calc = `${names.dimCellSizeCalc}_${dim}`;
             const size = `${names.dimCellSize}_${dim}`;
@@ -137,14 +127,12 @@ export class Cross extends Layout {
                 },
                 {
                     name: size,
-                    update: `max(${o.min}, ${calc})`
+                    update: `max(${o.min}, (${calc} - ${padding}))`
                 }
             )
-            modifySignal(o.out, 'max', `(${size} * ${count})`);
+            modifySignal(o.out, 'max', `((${size} + ${padding}) * ${count})`);
             update[dim] = {
-                scale: `${names.dimScale}_${dim}`,
-                field: bin.fields[0],
-                offset
+                signal: `${offset} + (scale(${JSON.stringify(scale.name)}, datum[${JSON.stringify(bin.fields[0])}]) - 1) * (${size} + ${padding})`
             };
         });
 
@@ -154,7 +142,7 @@ export class Cross extends Layout {
             transform: [
                 {
                     type: 'formula',
-                    expr: `['?']`,
+                    expr: `['?', 77]`,
                     as: FieldNames.FacetRange
                 }
             ]
