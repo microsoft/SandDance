@@ -3,7 +3,7 @@
 import { Binnable, binnable } from '../bin';
 import { DiscreteColumn, InnerScope } from '../interfaces';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { GroupMark } from '@msrvida/vega-deck.gl/node_modules/vega-typings/types';
+import { GroupMark, GroupEncodeEntry } from '@msrvida/vega-deck.gl/node_modules/vega-typings/types';
 import { addMarks, addData, addScale, addSignal, addTransforms } from '../scope';
 import { FieldNames } from '../constants';
 import { modifySignal } from '../signals';
@@ -22,16 +22,11 @@ export class Cross extends Layout {
         facetDataName: string,
         emptyDataName: string,
         emptyMarkName: string,
-        xScale: string,
-        yScale: string,
-        xCount: string,
-        yCount: string,
-        xCategorical: string,
-        yCategorical: string,
-        cellWidthCalc: string,
-        cellHeightCalc: string,
-        cellWidth: string,
-        cellHeight: string
+        dimScale: string,
+        dimCount: string,
+        dimCategorical: string,
+        dimCellSizeCalc: string,
+        dimCellSize: string
     };
 
     constructor(public props: CrossProps & LayoutBuildProps) {
@@ -44,16 +39,11 @@ export class Cross extends Layout {
             facetDataName: `data_${p}_facet`,
             emptyDataName: `data_${p}_empty`,
             emptyMarkName: `${p}_empty`,
-            xScale: `scale_${p}_x`,
-            yScale: `scale_${p}_y`,
-            xCount: `${p}_x_count`,
-            yCount: `${p}_y_count`,
-            xCategorical: `data_${p}_cat_x`,
-            yCategorical: `data_${p}_cat_y`,
-            cellHeight: `${p}_cell_height`,
-            cellHeightCalc: `${p}_cell_height_calc`,
-            cellWidth: `${p}_cell_width`,
-            cellWidthCalc: `${p}_cell_width_calc`
+            dimScale: `scale_${p}`,
+            dimCount: `${p}_count`,
+            dimCategorical: `data_${p}_cat`,
+            dimCellSize: `${p}_cell_size`,
+            dimCellSizeCalc: `${p}_cell_calc`
         };
     }
 
@@ -64,37 +54,41 @@ export class Cross extends Layout {
     public build(): InnerScope {
         const { binX, binY, names, prefix, props } = this;
         const { globalScope, parentScope } = props;
+
+        const update: GroupEncodeEntry = {
+            height: {
+                signal: `${names.dimCellSize}_y - ${facetPaddingTop} - ${facetPaddingBottom}`
+            },
+            width: {
+                signal: `${names.dimCellSize}_x - ${facetPaddingLeft}`
+            },
+        };
+
         const ordinalBinScales = [
             {
+                dim: 'x',
                 bin: binX,
-                scaleName: names.xScale,
                 size: parentScope.sizeSignals.layoutWidth,
-                count: names.xCount,
-                cat: names.xCategorical,
-                size2: names.cellWidth,
-                calc: names.cellWidthCalc,
                 layout: parentScope.sizeSignals.layoutWidth,
                 min: globalScope.signals.minCellWidth.name,
-                out: globalScope.signals.plotWidthOut
+                out: globalScope.signals.plotWidthOut,
+                offset: facetPaddingLeft
             },
             {
+                dim: 'y',
                 bin: binY,
-                scaleName: names.yScale,
                 size: parentScope.sizeSignals.layoutHeight,
-                count: names.yCount,
-                cat: names.yCategorical,
-                size2: names.cellHeight,
-                calc: names.cellHeightCalc,
                 layout: parentScope.sizeSignals.layoutHeight,
                 min: globalScope.signals.minCellHeight.name,
-                out: globalScope.signals.plotHeightOut
+                out: globalScope.signals.plotHeightOut,
+                offset: facetPaddingTop
             }
         ];
 
         ordinalBinScales.forEach(o => {
-            const { bin, cat, count, scaleName, size } = o;
+            const { bin, dim, offset } = o;
             let data: string;
-            let update: string;
+            let countSignal: string;
             if (bin.native === false) {
                 addSignal(globalScope.scope, bin.maxbinsSignal);
                 addTransforms(globalScope.scope.data[0], ...bin.transforms);
@@ -105,8 +99,9 @@ export class Cross extends Layout {
                     as: FieldNames.Contains
                 });
                 data = bin.dataSequence.name;
-                update = `length(data(${JSON.stringify(data)}))`;
+                countSignal = `length(data(${JSON.stringify(data)}))`;
             } else {
+                const cat = `${names.dimCategorical}_${dim}`
                 data = globalScope.dataName;
                 addData(globalScope.scope, {
                     name: cat,
@@ -119,8 +114,9 @@ export class Cross extends Layout {
                         }
                     ]
                 });
-                update = `length(data(${JSON.stringify(cat)}))`;
+                countSignal = `length(data(${JSON.stringify(cat)}))`;
             }
+            const scaleName = `${names.dimScale}_${dim}`;
             addScale(globalScope.scope, {
                 name: scaleName,
                 type: 'point',
@@ -133,18 +129,26 @@ export class Cross extends Layout {
                     { signal: o.out.name }
                 ]
             });
-            addSignal(globalScope.scope, { name: count, update });
+            const count = `${names.dimCount}_${dim}`;
+            const calc = `${names.dimCellSizeCalc}_${dim}`;
+            const size = `${names.dimCellSize}_${dim}`;
+            addSignal(globalScope.scope, { name: count, update: countSignal });
             addSignal(globalScope.scope,
                 {
-                    name: o.calc,
-                    update: `${o.layout} / ${o.count}`
+                    name: calc,
+                    update: `${o.layout} / ${count}`
                 },
                 {
-                    name: o.size2,
-                    update: `max(${o.min}, ${o.calc})`
+                    name: size,
+                    update: `max(${o.min}, ${calc})`
                 }
             )
-            modifySignal(o.out, 'max', `(${o.size2} * ${o.count})`);
+            modifySignal(o.out, 'max', `(${size} * ${count})`);
+            update[dim] = {
+                scale: `${names.dimScale}_${dim}`,
+                field: bin.fields[0],
+                offset
+            };
         });
 
         addData(globalScope.scope, {
@@ -159,7 +163,6 @@ export class Cross extends Layout {
             ]
         });
 
-
         const mark: GroupMark = {
             style: 'cell',
             name: prefix,
@@ -172,24 +175,7 @@ export class Cross extends Layout {
                 }
             },
             encode: {
-                update: {
-                    x: {
-                        scale: names.xScale,
-                        field: binX.fields[0],
-                        offset: facetPaddingLeft
-                    },
-                    y: {
-                        scale: names.yScale,
-                        field: binY.fields[0],
-                        offset: facetPaddingTop
-                    },
-                    height: {
-                        signal: `${names.cellHeight} - ${facetPaddingTop} - ${facetPaddingBottom}`
-                    },
-                    width: {
-                        signal: `${names.cellWidth} - ${facetPaddingLeft}`
-                    },
-                }
+                update
             }
         };
 
@@ -200,10 +186,10 @@ export class Cross extends Layout {
             scope: mark,
             emptyScope: null,
             sizeSignals: {
-                layoutHeight: names.cellHeight,
-                layoutWidth: names.cellWidth,
-                colCount: names.xCount,
-                rowCount: names.yCount
+                layoutHeight: `${names.dimCellSize}_y`,
+                layoutWidth: `${names.dimCellSize}_x`,
+                colCount: `${names.dimCount}_x`,
+                rowCount: `${names.dimCount}_y`
             }
         };
     }
