@@ -149,7 +149,7 @@ export class Bar extends Layout {
                 ]
             }
         );
-        const minCellSignal = (orientation === 'vertical') ? props.globalScope.signals.minCellWidth : props.globalScope.signals.minCellHeight;
+        const minCellSignal = (orientation === 'vertical') ? globalScope.signals.minCellWidth : globalScope.signals.minCellHeight;
         modifySignal(minCellSignal, 'max', `length(data(${JSON.stringify(names.accumulative)})) * ${minBandWidth}`);
         addSignal(globalScope.scope,
             {
