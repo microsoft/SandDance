@@ -35,10 +35,21 @@ export interface GlobalScales {
     z?: Scale;
 }
 
+export interface TitleSource {
+    dataName: string;
+    quantitative: boolean;
+}
+
+export interface Titles {
+    x: TitleSource;
+    y: TitleSource;
+}
+
 export interface InnerScope {
     dataName: string;
     scope?: Scope;
     emptyScope?: Scope;
+    titles?: Titles;
     mark?: Mark;
     globalScales?: GlobalScales;
     sizeSignals: SizeSignals;

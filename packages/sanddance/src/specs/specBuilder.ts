@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { addColor } from './color';
-import { addFacetAxesGroupMarks, addFacetCellTitles, getFacetLayout } from './facetLayout';
+import { addFacetAxesGroupMarks, addFacetCellTitles, getFacetLayout, FacetLayout, addFacetColRowTitles } from './facetLayout';
 import { addGlobalAxes, AxesScopeMap } from './axes';
 import { addScale, addSignal } from './scope';
 import {
@@ -121,7 +121,7 @@ export class SpecBuilder {
                 colorReverseSignalName: SignalNames.ColorReverse
             });
             const globalScope = this.createGlobalScope(colorDataName, vegaSpec);
-            let shouldAddFacetCellTitles = false;
+            let facetLayout: FacetLayout;
             if (insight.columns.facet) {
                 const discreteFacetColumn: DiscreteColumn = {
                     column: specColumns.facet,
@@ -137,11 +137,10 @@ export class SpecBuilder {
                     maxbinsSignalDisplayName: specViewOptions.language.FacetVMaxBins,
                     maxbinsSignalName: SignalNames.FacetVBins
                 };
-                const facetLayout = getFacetLayout(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn);
+                facetLayout = getFacetLayout(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn);
                 addSignal(vegaSpec, ...facetLayout.signals);
                 addScale(vegaSpec, ...facetLayout.scales);
                 this.props.layouts = [facetLayout.layoutPair, ...this.props.layouts];
-                shouldAddFacetCellTitles = facetLayout.facetCellTitles;
                 this.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
                 this.plotOffsetRight.update = `${facetLayout.plotPadding.x}`
             }
@@ -149,14 +148,17 @@ export class SpecBuilder {
             if (specResult) {
                 return specResult;
             }
-            if (shouldAddFacetCellTitles && insight.columns.facet) {
+            if (facetLayout && facetLayout.cellTitles) {
                 addFacetCellTitles(firstScope.scope, firstScope.sizeSignals, specViewOptions, specColumns.facet);
                 if (firstScope.emptyScope) {
                     addFacetCellTitles(firstScope.emptyScope, firstScope.sizeSignals, specViewOptions, specColumns.facet);
                 }
             }
+            if (facetLayout && facetLayout.colRowTitles && firstScope.titles) {
+                addFacetColRowTitles(globalScope.scope, firstScope.titles.x, firstScope.titles.y, firstScope.sizeSignals);
+            }
             if (allGlobalScales.length > 0) {
-                let axesScopes: AxesScopeMap = insight.columns.facet ?
+                let axesScopes: AxesScopeMap = facetLayout ?
                     addFacetAxesGroupMarks({
                         globalScope: globalScope.scope,
                         plotScope: groupMark,
@@ -183,7 +185,7 @@ export class SpecBuilder {
                     axisScales: this.props.axisScales,
                     plotOffsetSignals: { x: this.plotOffsetLeft, y: this.plotOffsetBottom },
                     axesOffsets: { x: axesOffsetX, y: axesOffsetY },
-                    axesTitlePadding: insight.columns.facet ? { x: axesTitlePaddingFacetX, y: axesTitlePaddingFacetY } : { x: axesTitlePaddingX, y: axesTitlePaddingY },
+                    axesTitlePadding: facetLayout ? { x: axesTitlePaddingFacetX, y: axesTitlePaddingFacetY } : { x: axesTitlePaddingX, y: axesTitlePaddingY },
                     labelBaseline: { x: 'top', y: 'middle' },
                     specColumns,
                     specViewOptions,

@@ -12,7 +12,7 @@ import {
     Scope,
     Signal
 } from 'vega-typings';
-import { DiscreteColumn, InnerScope, SizeSignals } from './interfaces';
+import { DiscreteColumn, InnerScope, SizeSignals, TitleSource } from './interfaces';
 import { facetPaddingBottom, facetPaddingLeft, facetPaddingTop, facetPaddingRight } from './defaults';
 import { FieldNames, SignalNames } from './constants';
 import { LayoutPair } from './layouts/layout';
@@ -20,11 +20,21 @@ import { Slice, SliceProps } from './layouts/slice';
 import { util } from '@msrvida/vega-deck.gl';
 import { Wrap, WrapProps } from './layouts/wrap';
 
-export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColumn, facetVColumn: DiscreteColumn) {
+export interface FacetLayout {
+    cellTitles: boolean;
+    colRowTitles: boolean;
+    layoutPair: LayoutPair;
+    plotPadding: { x: number, y: number };
+    scales: Scale[];
+    signals: Signal[];
+};
+
+export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColumn, facetVColumn: DiscreteColumn): FacetLayout {
     let layoutPair: LayoutPair;
     const scales: Scale[] = [];
     let signals: Signal[];
-    let facetCellTitles: boolean;
+    let cellTitles: boolean;
+    let colRowTitles: boolean;
     const groupby = facetColumn;
     const plotPadding = {
         x: 0,
@@ -76,7 +86,7 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
                     update: `0`
                 }
             ];
-            facetCellTitles = false;
+            colRowTitles = true;
             plotPadding.y = facetPaddingTop;
             plotPadding.x = facetPaddingRight;
             break;
@@ -104,10 +114,48 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
                     update: `${facetPaddingTop}`
                 }
             ];
-            facetCellTitles = true;
+            cellTitles = true;
             break;
     }
-    return { facetCellTitles, layoutPair, plotPadding, scales, signals };
+    return { cellTitles, colRowTitles, layoutPair, plotPadding, scales, signals };
+}
+
+export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSource, rowTitleSource: TitleSource, sizeSignals: SizeSignals) {
+    const field = `parent[${JSON.stringify(FieldNames.FacetRange)}]`;
+    const index = `datum[${JSON.stringify(FieldNames.Ordinal)}] - 1`;
+    const col = facetColumnHeaderFooter(colTitleSource.dataName, sizeSignals, index);
+    const row = facetRowHeaderFooter(rowTitleSource.dataName, sizeSignals, index);
+    addMarks(globalScope, col.header, row.footer);
+    addMarks(col.header,
+        {
+            type: 'text',
+            encode: {
+                update: {
+                    x: {
+                        signal: `${sizeSignals.layoutWidth} / 2`
+                    },
+                    limit: {
+                        signal: sizeSignals.layoutWidth
+                    },
+                    fontSize: {
+                        signal: SignalNames.TextSize
+                    },
+                    text: {
+                        signal: colTitleSource.quantitative ?
+                            `format(${field}[0], '~r') + ' - ' + format(${field}[1], '~r')`
+                            :
+                            `${field}[0]`
+                    },
+                    baseline: {
+                        value: 'middle'
+                    },
+                    align: {
+                        value: 'center'
+                    }
+                }
+            }
+        }
+    );
 }
 
 export function addFacetCellTitles(scope: Scope, sizeSignals: SizeSignals, specViewOptions: SpecViewOptions, column: Column) {
@@ -166,48 +214,15 @@ export function addFacetAxesGroupMarks(props: Props) {
     const { colSeqName, colTitleScaleName, globalScope, facetScope, plotHeightOut, plotScope, plotWidthOut, rowSeqName, rowTitleScaleName } = props;
     const { scope, sizeSignals } = facetScope;
 
-    //create data sequences based on rows / cols
-    addData(globalScope, createSequence(colSeqName, sizeSignals.colCount));
-    addData(globalScope, createSequence(rowSeqName, sizeSignals.rowCount));
+    const colSequence = createSequence(colSeqName, sizeSignals.colCount);
+    const rowSequence = createSequence(rowSeqName, sizeSignals.rowCount);
 
-    //create group marks based on data sequences
-    const cellsColFooter: GroupMark = {
-        type: 'group',
-        from: { data: colSeqName },
-        encode: {
-            update: {
-                x: {
-                    signal: `datum.data * (${sizeSignals.layoutWidth} + ${SignalNames.FacetPaddingLeft}) + ${SignalNames.FacetPaddingLeft} + ${SignalNames.PlotOffsetLeft}`
-                },
-                y: {
-                    signal: `${SignalNames.PlotOffsetTop} + ${SignalNames.PlotHeightOut}`
-                },
-                width: {
-                    signal: `${sizeSignals.layoutWidth}`
-                }
-            }
-        }
-    };
+    const index = 'datum.data';
+    const col = facetColumnHeaderFooter(colSeqName, sizeSignals, index);
+    const row = facetRowHeaderFooter(rowSeqName, sizeSignals, index);
 
-    const cellsRowHeader: GroupMark = {
-        type: 'group',
-        from: { data: rowSeqName },
-        encode: {
-            update: {
-                x: {
-                    signal: SignalNames.PlotOffsetLeft
-                },
-                y: {
-                    signal: `${SignalNames.PlotOffsetTop} + ${SignalNames.FacetPaddingTop} + datum.data * (${sizeSignals.layoutHeight} + ${SignalNames.FacetPaddingTop} + ${SignalNames.FacetPaddingBottom})`
-                },
-                height: {
-                    signal: `${sizeSignals.layoutHeight}`
-                }
-            }
-        }
-    };
-
-    addMarks(globalScope, cellsColFooter, cellsRowHeader);
+    addData(globalScope, colSequence, rowSequence);
+    addMarks(globalScope, col.footer, row.header);
 
     const colTitleScale: LinearScale = {
         type: 'linear',
@@ -236,7 +251,7 @@ export function addFacetAxesGroupMarks(props: Props) {
         ],
         x: [
             {
-                scope: cellsColFooter,
+                scope: col.footer,
                 lines: true,
                 labels: true,
                 title: false
@@ -251,7 +266,7 @@ export function addFacetAxesGroupMarks(props: Props) {
         ],
         y: [
             {
-                scope: cellsRowHeader,
+                scope: row.header,
                 lines: true,
                 labels: true,
                 title: false
@@ -266,6 +281,49 @@ export function addFacetAxesGroupMarks(props: Props) {
         ]
     };
     return map;
+}
+
+export function facetRowHeaderFooter(data: string, sizeSignals: SizeSignals, index: string) {
+    const rowFn = (xSignal: string) => {
+        return <GroupMark>{
+            type: 'group',
+            from: { data },
+            encode: {
+                update: {
+                    x: { signal: xSignal },
+                    y: {
+                        signal: `${SignalNames.PlotOffsetTop} + ${SignalNames.FacetPaddingTop} + (${index}) * (${sizeSignals.layoutHeight} + ${SignalNames.FacetPaddingTop} + ${SignalNames.FacetPaddingBottom})`
+                    },
+                    height: { signal: sizeSignals.layoutHeight }
+                }
+            }
+        };
+    };
+    const header = rowFn(SignalNames.PlotOffsetLeft);
+    const footer = rowFn(`${SignalNames.PlotOffsetLeft} + ${SignalNames.PlotWidthOut} + ${SignalNames.PlotOffsetRight} / 2`);
+    return { header, footer };
+}
+
+export function facetColumnHeaderFooter(data: string, sizeSignals: SizeSignals, index: string) {
+    const colFn = (ySignal: string) => {
+        return <GroupMark>{
+            type: 'group',
+            from: { data },
+            encode: {
+                update: {
+                    x: {
+                        signal: `(${index}) * (${sizeSignals.layoutWidth} + ${SignalNames.FacetPaddingLeft}) + ${SignalNames.FacetPaddingLeft} + ${SignalNames.PlotOffsetLeft}`
+                    },
+                    y: { signal: ySignal },
+                    width: { signal: sizeSignals.layoutWidth }
+                }
+            }
+        };
+    };
+    //create group marks based on data sequences
+    const header = colFn(`${SignalNames.PlotOffsetTop} / 2`);
+    const footer = colFn(`${SignalNames.PlotOffsetTop} + ${SignalNames.PlotHeightOut}`);
+    return { header, footer };
 }
 
 function createSequence(dataName: string, countSignal: string): Data {

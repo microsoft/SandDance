@@ -14,6 +14,7 @@ export interface BaseBinnable {
     fields: string[];
     domainDataName: string;
     fullScaleDataname: string;
+    discreteColumn: DiscreteColumn;
 }
 
 export interface NativeBinnable extends BaseBinnable {
@@ -103,6 +104,7 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
             ]
         };
         return {
+            discreteColumn,
             native: false,
             transforms: [extentTransform, binTransform],
             fields: [field, fieldEnd],
@@ -114,6 +116,7 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
         };
     } else {
         return {
+            discreteColumn,
             native: true,
             fields: [column.name],
             domainDataName,

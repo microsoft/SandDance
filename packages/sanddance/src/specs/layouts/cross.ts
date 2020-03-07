@@ -9,9 +9,9 @@ import {
 } from '../scope';
 import { Binnable, binnable } from '../bin';
 import { createOrdinalsForFacet, ordinalScale } from '../ordinal';
-import { DiscreteColumn, InnerScope } from '../interfaces';
+import { DiscreteColumn, InnerScope, Titles, TitleSource } from '../interfaces';
 import { FieldNames, SignalNames } from '../constants';
-import { GroupEncodeEntry, GroupMark, OrdinalScale } from '@msrvida/vega-deck.gl/node_modules/vega-typings/types';
+import { GroupEncodeEntry, GroupMark, OrdinalScale, Data } from '@msrvida/vega-deck.gl/node_modules/vega-typings/types';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { modifySignal } from '../signals';
 
@@ -60,6 +60,7 @@ export class Cross extends Layout {
     public build(): InnerScope {
         const { binX, binY, names, prefix, props } = this;
         const { globalScope, parentScope } = props;
+        const titles: Titles = { x: { dataName: null, quantitative: null }, y: { dataName: null, quantitative: null } };
         const update: GroupEncodeEntry = {
             height: {
                 signal: `${names.dimCellSize}_y`
@@ -92,28 +93,42 @@ export class Cross extends Layout {
         ];
         dimensions.forEach(o => {
             const { bin, dim, offset, padding } = o;
-            let data: string;
+            let data: Data;
+            let dataName: string;
             let countSignal: string;
             let scale: OrdinalScale;
+            const titleSource: TitleSource = titles[dim];
             if (bin.native === false) {
                 addSignal(globalScope.scope, bin.maxbinsSignal);
                 addTransforms(globalScope.scope.data[0], ...bin.transforms);
                 addData(globalScope.scope, bin.dataSequence);
-                addTransforms(bin.dataSequence, {
-                    type: 'formula',
-                    expr: `indata(${JSON.stringify(parentScope.dataName)}, ${JSON.stringify(bin.fields[0])}, datum[${JSON.stringify(bin.fields[0])}])`,
-                    as: FieldNames.Contains
-                });
-                data = bin.dataSequence.name;
-                countSignal = `length(data(${JSON.stringify(data)}))`;
-                scale = ordinalScale(data, `${names.dimScale}_${dim}`, bin.fields);
+                addTransforms(bin.dataSequence,
+                    {
+                        type: 'formula',
+                        expr: `indata(${JSON.stringify(parentScope.dataName)}, ${JSON.stringify(bin.fields[0])}, datum[${JSON.stringify(bin.fields[0])}])`,
+                        as: FieldNames.Contains
+                    }
+                );
+                data = bin.dataSequence;
+                dataName = bin.dataSequence.name;
+                countSignal = `length(data(${JSON.stringify(dataName)}))`;
+                scale = ordinalScale(dataName, `${names.dimScale}_${dim}`, bin.fields);
+                titleSource.dataName = bin.dataSequence.name;
             } else {
-                data = globalScope.dataName;
-                const ord = createOrdinalsForFacet(data, `${prefix}_${dim}`, bin.fields);
+                dataName = globalScope.dataName;
+                const ord = createOrdinalsForFacet(dataName, `${prefix}_${dim}`, bin.fields);
+                data = ord.data;
                 addData(globalScope.scope, ord.data);
                 countSignal = `length(data(${JSON.stringify(ord.data.name)}))`;
                 scale = ord.scale;
+                titleSource.dataName = ord.data.name;
             }
+            titleSource.quantitative = bin.discreteColumn.column.quantitative;
+            addTransforms(data, {
+                type: 'formula',
+                expr: `[${bin.fields.map(f => `datum[${JSON.stringify(f)}]`).join()}]`,
+                as: FieldNames.FacetRange
+            });
             addScale(globalScope.scope, scale);
             const count = `${names.dimCount}_${dim}`;
             const calc = `${names.dimCellSizeCalc}_${dim}`;
@@ -174,7 +189,8 @@ export class Cross extends Layout {
                 layoutWidth: `${names.dimCellSize}_x`,
                 colCount: `${names.dimCount}_x`,
                 rowCount: `${names.dimCount}_y`
-            }
+            },
+            titles
         };
     }
 }
