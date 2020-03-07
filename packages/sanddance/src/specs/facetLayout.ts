@@ -156,6 +156,36 @@ export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSo
             }
         }
     );
+    addMarks(row.footer,
+        {
+            type: 'text',
+            encode: {
+                update: {
+                    y: {
+                        signal: `${sizeSignals.layoutHeight} / 2`
+                    },
+                    limit: {
+                        signal: SignalNames.PlotOffsetRight
+                    },
+                    fontSize: {
+                        signal: SignalNames.TextSize
+                    },
+                    text: {
+                        signal: rowTitleSource.quantitative ?
+                            `format(${field}[0], '~r') + ' - ' + format(${field}[1], '~r')`
+                            :
+                            `${field}[0]`
+                    },
+                    baseline: {
+                        value: 'middle'
+                    },
+                    align: {
+                        value: 'left'
+                    }
+                }
+            }
+        }
+    );
 }
 
 export function addFacetCellTitles(scope: Scope, sizeSignals: SizeSignals, specViewOptions: SpecViewOptions, column: Column) {
