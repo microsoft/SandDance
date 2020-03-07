@@ -10,8 +10,7 @@ import {
 import { Binnable, binnable } from '../bin';
 import { createOrdinalsForFacet, ordinalScale } from '../ordinal';
 import { DiscreteColumn, InnerScope } from '../interfaces';
-import { facetPaddingBottom, facetPaddingLeft, facetPaddingTop } from '../defaults';
-import { FieldNames } from '../constants';
+import { FieldNames, SignalNames } from '../constants';
 import { GroupEncodeEntry, GroupMark, OrdinalScale } from '@msrvida/vega-deck.gl/node_modules/vega-typings/types';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { modifySignal } from '../signals';
@@ -77,8 +76,8 @@ export class Cross extends Layout {
                 layout: parentScope.sizeSignals.layoutWidth,
                 min: globalScope.signals.minCellWidth.name,
                 out: globalScope.signals.plotWidthOut,
-                offset: facetPaddingLeft,
-                padding: facetPaddingLeft
+                offset: SignalNames.FacetPaddingLeft,
+                padding: SignalNames.FacetPaddingLeft
             },
             {
                 dim: 'y',
@@ -87,8 +86,8 @@ export class Cross extends Layout {
                 layout: parentScope.sizeSignals.layoutHeight,
                 min: globalScope.signals.minCellHeight.name,
                 out: globalScope.signals.plotHeightOut,
-                offset: facetPaddingTop,
-                padding: `(${facetPaddingTop} + ${facetPaddingBottom})`
+                offset: SignalNames.FacetPaddingTop,
+                padding: `(${SignalNames.FacetPaddingTop} + ${SignalNames.FacetPaddingBottom})`
             }
         ];
         dimensions.forEach(o => {

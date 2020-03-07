@@ -5,7 +5,7 @@ import { FieldNames } from "./constants";
 
 export interface OrdinalResult {
     data: Data;
-    scale: Scale;
+    scale: OrdinalScale;
 }
 
 export function createOrdinalsForFacet(source: string, prefix: string, binFields: string[]): OrdinalResult {
@@ -32,9 +32,16 @@ export function createOrdinalsForFacet(source: string, prefix: string, binFields
             }
         ]
     };
-    const scale: OrdinalScale = {
+    return {
+        data,
+        scale: ordinalScale(dataName, `scale_${prefix}_order`, binFields)
+    };
+}
+
+export function ordinalScale(dataName: string, scaleName: string, binFields: string[]): OrdinalScale {
+    return {
         type: 'ordinal',
-        name: `${prefix}_order`,
+        name: scaleName,
         domain: {
             data: dataName,
             field: binFields[0]
@@ -44,8 +51,5 @@ export function createOrdinalsForFacet(source: string, prefix: string, binFields
             field: FieldNames.Ordinal
         }
     };
-    return {
-        data,
-        scale
-    };
 }
+

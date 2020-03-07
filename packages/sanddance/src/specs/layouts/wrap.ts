@@ -9,7 +9,6 @@ import {
 import { binnable, Binnable } from '../bin';
 import { createOrdinalsForFacet } from '../ordinal';
 import { DiscreteColumn, InnerScope } from '../interfaces';
-import { facetPaddingBottom, facetPaddingLeft, facetPaddingTop } from '../defaults';
 import { FieldNames, SignalNames } from '../constants';
 import { GroupEncodeEntry, GroupMark } from 'vega-typings';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
@@ -302,16 +301,16 @@ export class Wrap extends Layout {
 
         const update: GroupEncodeEntry = {
             height: {
-                signal: `${names.cellHeight} - ${facetPaddingTop} - ${facetPaddingBottom}`
+                signal: `${names.cellHeight} - ${SignalNames.FacetPaddingTop} - ${SignalNames.FacetPaddingBottom}`
             },
             width: {
-                signal: `${names.cellWidth} - ${facetPaddingLeft}`
+                signal: `${names.cellWidth} - ${SignalNames.FacetPaddingLeft}`
             },
             x: {
-                signal: `datum[${JSON.stringify(FieldNames.WrapCol)}] * ${names.cellWidth} + ${facetPaddingLeft}`
+                signal: `datum[${JSON.stringify(FieldNames.WrapCol)}] * ${names.cellWidth} + ${SignalNames.FacetPaddingLeft}`
             },
             y: {
-                signal: `datum[${JSON.stringify(FieldNames.WrapRow)}] * ${names.cellHeight} + ${facetPaddingTop}`
+                signal: `datum[${JSON.stringify(FieldNames.WrapRow)}] * ${names.cellHeight} + ${SignalNames.FacetPaddingTop}`
             }
         };
 
@@ -366,8 +365,8 @@ export class Wrap extends Layout {
             scope: mark,
             emptyScope: emptymark,
             sizeSignals: {
-                    layoutHeight: `(${names.cellHeight} - ${facetPaddingTop} - ${facetPaddingBottom})`,
-                    layoutWidth: `(${names.cellWidth} - ${facetPaddingLeft})`,
+                    layoutHeight: `(${names.cellHeight} - ${SignalNames.FacetPaddingTop} - ${SignalNames.FacetPaddingBottom})`,
+                    layoutWidth: `(${names.cellWidth} - ${SignalNames.FacetPaddingLeft})`,
                 colCount: names.colCount,
                 rowCount: `ceil(${names.dataLength} / ${names.colCount})`
             }

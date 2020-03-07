@@ -119,6 +119,7 @@ export class SpecBuilder {
                 colorReverseSignalName: SignalNames.ColorReverse
             });
             const globalScope = this.createGlobalScope(colorDataName, vegaSpec);
+            let shouldAddFacetTitles = false;
             if (insight.columns.facet) {
                 const discreteFacetColumn: DiscreteColumn = {
                     column: specColumns.facet,
@@ -138,12 +139,13 @@ export class SpecBuilder {
                 addSignal(vegaSpec, ...facetLayout.signals);
                 addScale(vegaSpec, ...facetLayout.scales);
                 this.props.layouts = [facetLayout.layoutPair, ...this.props.layouts];
+                shouldAddFacetTitles = facetLayout.facetTitles;
             }
             const { firstScope, finalScope, specResult, allGlobalScales } = this.iterateLayouts(globalScope, groupMark, colorDataName);
             if (specResult) {
                 return specResult;
             }
-            if (insight.columns.facet) {
+            if (shouldAddFacetTitles && insight.columns.facet) {
                 addFacetTitles(firstScope.scope, firstScope.sizeSignals, specViewOptions, specColumns.facet);
                 if (firstScope.emptyScope) {
                     addFacetTitles(firstScope.emptyScope, firstScope.sizeSignals, specViewOptions, specColumns.facet);
@@ -222,7 +224,7 @@ export class SpecBuilder {
         const { insight } = specContext;
         const groupMark: GroupMark = {
             type: 'group',
-            //style: 'cell',
+            style: 'cell',
             encode: {
                 update: {
                     x: { signal: SignalNames.PlotOffsetLeft },

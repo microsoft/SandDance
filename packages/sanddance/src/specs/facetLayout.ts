@@ -23,7 +23,8 @@ import { Wrap, WrapProps } from './layouts/wrap';
 export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColumn, facetVColumn: DiscreteColumn) {
     let layoutPair: LayoutPair;
     const scales: Scale[] = [];
-    const signals: Signal[] = [];
+    let signals: Signal[];
+    let facetTitles: boolean;
     const groupby = facetColumn;
     switch (facetStyle) {
         case 'horizontal': {
@@ -57,6 +58,21 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
                 layoutClass: Cross,
                 props
             };
+            signals = [
+                {
+                    name: SignalNames.FacetPaddingBottom,
+                    update: `${facetPaddingBottom}`
+                },
+                {
+                    name: SignalNames.FacetPaddingLeft,
+                    update: `${facetPaddingLeft}`
+                },
+                {
+                    name: SignalNames.FacetPaddingTop,
+                    update: `0`
+                }
+            ];
+            facetTitles = false;
             break;
         }
         case 'wrap':
@@ -68,9 +84,24 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
                 layoutClass: Wrap,
                 props
             };
+            signals = [
+                {
+                    name: SignalNames.FacetPaddingBottom,
+                    update: `${facetPaddingBottom}`
+                },
+                {
+                    name: SignalNames.FacetPaddingLeft,
+                    update: `${facetPaddingLeft}`
+                },
+                {
+                    name: SignalNames.FacetPaddingTop,
+                    update: `${facetPaddingTop}`
+                }
+            ];
+            facetTitles = true;
             break;
     }
-    return { layoutPair, scales, signals };
+    return { facetTitles, layoutPair, scales, signals };
 }
 
 export function addFacetTitles(scope: Scope, sizeSignals: SizeSignals, specViewOptions: SpecViewOptions, column: Column) {
@@ -92,7 +123,7 @@ export function addFacetTitles(scope: Scope, sizeSignals: SizeSignals, specViewO
                     signal: sizeSignals.layoutWidth
                 },
                 y: {
-                    value: -facetPaddingTop / 2
+                    signal: `-${SignalNames.FacetPaddingTop} / 2`
                 }
             },
             update: {
@@ -140,7 +171,7 @@ export function addFacetAxesGroupMarks(props: Props) {
         encode: {
             update: {
                 x: {
-                    signal: `datum.data * (${sizeSignals.layoutWidth} + ${facetPaddingLeft}) + ${facetPaddingLeft} + ${SignalNames.PlotOffsetLeft}`
+                    signal: `datum.data * (${sizeSignals.layoutWidth} + ${SignalNames.FacetPaddingLeft}) + ${SignalNames.FacetPaddingLeft} + ${SignalNames.PlotOffsetLeft}`
                 },
                 y: {
                     signal: `${SignalNames.PlotOffsetTop} + ${SignalNames.PlotHeightOut}`
@@ -161,7 +192,7 @@ export function addFacetAxesGroupMarks(props: Props) {
                     signal: SignalNames.PlotOffsetLeft
                 },
                 y: {
-                    signal: `${SignalNames.PlotOffsetTop} + ${facetPaddingTop} + datum.data * (${sizeSignals.layoutHeight} + ${facetPaddingTop} + ${facetPaddingBottom})`
+                    signal: `${SignalNames.PlotOffsetTop} + ${SignalNames.FacetPaddingTop} + datum.data * (${sizeSignals.layoutHeight} + ${SignalNames.FacetPaddingTop} + ${SignalNames.FacetPaddingBottom})`
                 },
                 height: {
                     signal: `${sizeSignals.layoutHeight}`
