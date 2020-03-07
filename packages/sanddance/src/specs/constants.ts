@@ -11,6 +11,7 @@ export const FieldNames = {
     TopIndex: '__SandDance__TopIndex',
     PowerBISelectionId: '__SandDance__PowerBISelectionId',
     FacetRange: '__SandDance__FacetRange',
+    FacetTitle: '__SandDance__FacetTitle',
     Ordinal: '__SandDance__Ordinal',
     WrapCol: '__SandDance__WrapCol',
     WrapRow: '__SandDance__WrapRow'

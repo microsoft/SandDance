@@ -121,7 +121,7 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
 }
 
 export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSource, rowTitleSource: TitleSource, sizeSignals: SizeSignals) {
-    const field = `parent[${JSON.stringify(FieldNames.FacetRange)}]`;
+    const titleSignal = `parent[${JSON.stringify(FieldNames.FacetTitle)}]`;
     const index = `datum[${JSON.stringify(FieldNames.Ordinal)}] - 1`;
     const col = facetColumnHeaderFooter(colTitleSource.dataName, sizeSignals, index);
     const row = facetRowHeaderFooter(rowTitleSource.dataName, sizeSignals, index);
@@ -141,10 +141,7 @@ export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSo
                         signal: SignalNames.TextSize
                     },
                     text: {
-                        signal: colTitleSource.quantitative ?
-                            `format(${field}[0], '~r') + ' - ' + format(${field}[1], '~r')`
-                            :
-                            `${field}[0]`
+                        signal: titleSignal
                     },
                     baseline: {
                         value: 'middle'
@@ -171,10 +168,7 @@ export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSo
                         signal: SignalNames.TextSize
                     },
                     text: {
-                        signal: rowTitleSource.quantitative ?
-                            `format(${field}[0], '~r') + ' - ' + format(${field}[1], '~r')`
-                            :
-                            `${field}[0]`
+                        signal: titleSignal
                     },
                     baseline: {
                         value: 'middle'
@@ -189,7 +183,6 @@ export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSo
 }
 
 export function addFacetCellTitles(scope: Scope, sizeSignals: SizeSignals, specViewOptions: SpecViewOptions, column: Column) {
-    const field = `parent[${JSON.stringify(FieldNames.FacetRange)}]`;
     addMarks(scope, {
         type: 'text',
         encode: {
@@ -215,10 +208,7 @@ export function addFacetCellTitles(scope: Scope, sizeSignals: SizeSignals, specV
                     signal: `(${sizeSignals.layoutWidth}) / 2`
                 },
                 text: {
-                    signal: column.quantitative ?
-                        `format(${field}[0], '~r') + ' - ' + format(${field}[1], '~r')`
-                        :
-                        `${field}[0]`
+                    signal: `parent[${JSON.stringify(FieldNames.FacetTitle)}]`
                 },
                 fontSize: {
                     signal: SignalNames.TextSize

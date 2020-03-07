@@ -9,6 +9,7 @@ import {
 import { binnable, Binnable } from '../bin';
 import { createOrdinalsForFacet } from '../ordinal';
 import { DiscreteColumn, InnerScope } from '../interfaces';
+import { displayBin, serializeAsVegaExpression } from '../facetTitle';
 import { FieldNames, SignalNames } from '../constants';
 import { GroupEncodeEntry, GroupMark } from 'vega-typings';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
@@ -231,8 +232,13 @@ export class Wrap extends Layout {
                     },
                     {
                         type: 'formula',
-                        expr: `[${bin.fields.map(f => `datum[${JSON.stringify(f)}]`).join()}]`,
+                        expr: serializeAsVegaExpression(bin),
                         as: FieldNames.FacetRange
+                    },
+                    {
+                        type: 'formula',
+                        expr: displayBin(bin),
+                        as: FieldNames.FacetTitle
                     },
                     {
                         type: 'lookup',
@@ -322,7 +328,7 @@ export class Wrap extends Layout {
                 facet: {
                     name: names.facetDataName,
                     data: names.sortedDataName,
-                    groupby: bin.fields.concat([FieldNames.WrapRow, FieldNames.WrapCol, FieldNames.FacetRange])
+                    groupby: bin.fields.concat([FieldNames.WrapRow, FieldNames.WrapCol, FieldNames.FacetRange, FieldNames.FacetTitle])
                 }
             },
             encode: { update }
@@ -342,8 +348,13 @@ export class Wrap extends Layout {
                         },
                         {
                             type: 'formula',
-                            expr: `[${bin.fields.map(f => `datum[${JSON.stringify(f)}]`).join()}]`,
+                            expr: serializeAsVegaExpression(bin),
                             as: FieldNames.FacetRange
+                        },
+                        {
+                            type: 'formula',
+                            expr: displayBin(bin),
+                            as: FieldNames.FacetTitle
                         }
                     ]
                 }
@@ -365,8 +376,8 @@ export class Wrap extends Layout {
             scope: mark,
             emptyScope: emptymark,
             sizeSignals: {
-                    layoutHeight: `(${names.cellHeight} - ${SignalNames.FacetPaddingTop} - ${SignalNames.FacetPaddingBottom})`,
-                    layoutWidth: `(${names.cellWidth} - ${SignalNames.FacetPaddingLeft})`,
+                layoutHeight: `(${names.cellHeight} - ${SignalNames.FacetPaddingTop} - ${SignalNames.FacetPaddingBottom})`,
+                layoutWidth: `(${names.cellWidth} - ${SignalNames.FacetPaddingLeft})`,
                 colCount: names.colCount,
                 rowCount: `ceil(${names.dataLength} / ${names.colCount})`
             }

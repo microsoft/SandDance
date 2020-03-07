@@ -9,9 +9,20 @@ import {
 } from '../scope';
 import { Binnable, binnable } from '../bin';
 import { createOrdinalsForFacet, ordinalScale } from '../ordinal';
-import { DiscreteColumn, InnerScope, Titles, TitleSource } from '../interfaces';
+import {
+    Data,
+    GroupEncodeEntry,
+    GroupMark,
+    OrdinalScale
+} from 'vega-typings';
+import {
+    DiscreteColumn,
+    InnerScope,
+    Titles,
+    TitleSource
+} from '../interfaces';
+import { displayBin, serializeAsVegaExpression } from '../facetTitle';
 import { FieldNames, SignalNames } from '../constants';
-import { GroupEncodeEntry, GroupMark, OrdinalScale, Data } from '@msrvida/vega-deck.gl/node_modules/vega-typings/types';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { modifySignal } from '../signals';
 
@@ -124,11 +135,18 @@ export class Cross extends Layout {
                 titleSource.dataName = ord.data.name;
             }
             titleSource.quantitative = bin.discreteColumn.column.quantitative;
-            addTransforms(data, {
-                type: 'formula',
-                expr: `[${bin.fields.map(f => `datum[${JSON.stringify(f)}]`).join()}]`,
-                as: FieldNames.FacetRange
-            });
+            addTransforms(data,
+                {
+                    type: 'formula',
+                    expr: serializeAsVegaExpression(bin),
+                    as: FieldNames.FacetRange
+                },
+                {
+                    type: 'formula',
+                    expr: displayBin(bin),
+                    as: FieldNames.FacetTitle
+                }
+            );
             addScale(globalScope.scope, scale);
             const count = `${names.dimCount}_${dim}`;
             const calc = `${names.dimCellSizeCalc}_${dim}`;
