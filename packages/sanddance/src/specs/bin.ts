@@ -100,6 +100,16 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
                     type: 'window',
                     ops: ['row_number'],
                     as: [FieldNames.Ordinal]
+                },
+                {
+                    type: 'formula',
+                    expr: `datum.data === ${binSignal}.start`,
+                    as: FieldNames.First
+                },
+                {
+                    type: 'formula',
+                    expr: `datum.data === ${binSignal}.stop - ${binSignal}.step`,
+                    as: FieldNames.Last
                 }
             ]
         };

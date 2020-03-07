@@ -6,6 +6,8 @@ export const FieldNames = {
     Collapsed: '__SandDance__Collapsed',
     Contains: '__SandDance__Contains',
     Selected: '__SandDance__Selected',
+    First: '__SandDance__First',
+    Last: '__SandDance__Last',
     Top: '__SandDance__Top',
     TopColor: '__SandDance__TopColor',
     TopIndex: '__SandDance__TopIndex',
