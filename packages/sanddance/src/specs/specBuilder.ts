@@ -230,7 +230,7 @@ export class SpecBuilder {
         const { insight } = specContext;
         const groupMark: GroupMark = {
             type: 'group',
-            style: 'cell',
+            //style: 'cell',
             encode: {
                 update: {
                     x: { signal: SignalNames.PlotOffsetLeft },
@@ -242,7 +242,7 @@ export class SpecBuilder {
         };
         const vegaSpec: Spec = {
             $schema: 'https://vega.github.io/schema/vega/v5.json',
-            style: 'cell',
+            //style: 'cell',
             data: [{ name: dataName, transform: [] }],
             marks: [groupMark],
             signals: textSignals(specContext, SignalNames.ViewportHeight).concat([
