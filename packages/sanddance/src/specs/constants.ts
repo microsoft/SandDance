@@ -32,6 +32,7 @@ export const SignalNames = {
     PlotOffsetLeft: 'PlotOffsetLeft',
     PlotOffsetTop: 'PlotOffsetTop',
     PlotOffsetBottom: 'PlotOffsetBottom',
+    PlotOffsetRight: 'PlotOffsetRight',
     PlotHeightIn: 'PlotHeightIn',
     PlotWidthIn: 'PlotWidthIn',
     PlotHeightOut: 'PlotHeightOut',

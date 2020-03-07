@@ -13,7 +13,7 @@ import {
     Signal
 } from 'vega-typings';
 import { DiscreteColumn, InnerScope, SizeSignals } from './interfaces';
-import { facetPaddingBottom, facetPaddingLeft, facetPaddingTop } from './defaults';
+import { facetPaddingBottom, facetPaddingLeft, facetPaddingTop, facetPaddingRight } from './defaults';
 import { FieldNames, SignalNames } from './constants';
 import { LayoutPair } from './layouts/layout';
 import { Slice, SliceProps } from './layouts/slice';
@@ -24,8 +24,12 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
     let layoutPair: LayoutPair;
     const scales: Scale[] = [];
     let signals: Signal[];
-    let facetTitles: boolean;
+    let facetCellTitles: boolean;
     const groupby = facetColumn;
+    const plotPadding = {
+        x: 0,
+        y: 0
+    };
     switch (facetStyle) {
         case 'horizontal': {
             const props: SliceProps = {
@@ -72,7 +76,9 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
                     update: `0`
                 }
             ];
-            facetTitles = false;
+            facetCellTitles = false;
+            plotPadding.y = facetPaddingTop;
+            plotPadding.x = facetPaddingRight;
             break;
         }
         case 'wrap':
@@ -98,13 +104,13 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
                     update: `${facetPaddingTop}`
                 }
             ];
-            facetTitles = true;
+            facetCellTitles = true;
             break;
     }
-    return { facetTitles, layoutPair, scales, signals };
+    return { facetCellTitles, layoutPair, plotPadding, scales, signals };
 }
 
-export function addFacetTitles(scope: Scope, sizeSignals: SizeSignals, specViewOptions: SpecViewOptions, column: Column) {
+export function addFacetCellTitles(scope: Scope, sizeSignals: SizeSignals, specViewOptions: SpecViewOptions, column: Column) {
     const field = `parent[${JSON.stringify(FieldNames.FacetRange)}]`;
     addMarks(scope, {
         type: 'text',

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { addColor } from './color';
-import { addFacetAxesGroupMarks, addFacetTitles, getFacetLayout } from './facetLayout';
+import { addFacetAxesGroupMarks, addFacetCellTitles, getFacetLayout } from './facetLayout';
 import { addGlobalAxes, AxesScopeMap } from './axes';
 import { addScale, addSignal } from './scope';
 import {
@@ -49,6 +49,7 @@ export class SpecBuilder {
     private plotOffsetLeft: NewSignal;
     private plotOffsetTop: NewSignal;
     private plotOffsetBottom: NewSignal;
+    private plotOffsetRight: NewSignal;
     private plotHeightOut: NewSignal;
     private plotWidthOut: NewSignal;
 
@@ -61,6 +62,7 @@ export class SpecBuilder {
         this.plotOffsetLeft = { name: SignalNames.PlotOffsetLeft, update: `0` };
         this.plotOffsetTop = { name: SignalNames.PlotOffsetTop, update: `0` };
         this.plotOffsetBottom = { name: SignalNames.PlotOffsetBottom, update: `0` };
+        this.plotOffsetRight = { name: SignalNames.PlotOffsetRight, update: `0` };
         this.plotHeightOut = { name: SignalNames.PlotHeightOut, update: SignalNames.PlotHeightIn };
         this.plotWidthOut = { name: SignalNames.PlotWidthOut, update: SignalNames.PlotWidthIn };
     }
@@ -119,7 +121,7 @@ export class SpecBuilder {
                 colorReverseSignalName: SignalNames.ColorReverse
             });
             const globalScope = this.createGlobalScope(colorDataName, vegaSpec);
-            let shouldAddFacetTitles = false;
+            let shouldAddFacetCellTitles = false;
             if (insight.columns.facet) {
                 const discreteFacetColumn: DiscreteColumn = {
                     column: specColumns.facet,
@@ -139,16 +141,18 @@ export class SpecBuilder {
                 addSignal(vegaSpec, ...facetLayout.signals);
                 addScale(vegaSpec, ...facetLayout.scales);
                 this.props.layouts = [facetLayout.layoutPair, ...this.props.layouts];
-                shouldAddFacetTitles = facetLayout.facetTitles;
+                shouldAddFacetCellTitles = facetLayout.facetCellTitles;
+                this.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
+                this.plotOffsetRight.update = `${facetLayout.plotPadding.x}`
             }
             const { firstScope, finalScope, specResult, allGlobalScales } = this.iterateLayouts(globalScope, groupMark, colorDataName);
             if (specResult) {
                 return specResult;
             }
-            if (shouldAddFacetTitles && insight.columns.facet) {
-                addFacetTitles(firstScope.scope, firstScope.sizeSignals, specViewOptions, specColumns.facet);
+            if (shouldAddFacetCellTitles && insight.columns.facet) {
+                addFacetCellTitles(firstScope.scope, firstScope.sizeSignals, specViewOptions, specColumns.facet);
                 if (firstScope.emptyScope) {
-                    addFacetTitles(firstScope.emptyScope, firstScope.sizeSignals, specViewOptions, specColumns.facet);
+                    addFacetCellTitles(firstScope.emptyScope, firstScope.sizeSignals, specViewOptions, specColumns.facet);
                 }
             }
             if (allGlobalScales.length > 0) {
@@ -219,7 +223,7 @@ export class SpecBuilder {
     }
 
     private initSpec(dataName: string) {
-        const { minCellWidth, minCellHeight, plotOffsetLeft, plotOffsetBottom, plotOffsetTop, plotHeightOut, plotWidthOut } = this;
+        const { minCellWidth, minCellHeight, plotOffsetLeft, plotOffsetBottom, plotOffsetTop, plotOffsetRight, plotHeightOut, plotWidthOut } = this;
         const { specContext } = this.props;
         const { insight } = specContext;
         const groupMark: GroupMark = {
@@ -236,7 +240,7 @@ export class SpecBuilder {
         };
         const vegaSpec: Spec = {
             $schema: 'https://vega.github.io/schema/vega/v5.json',
-            //style: 'cell',
+            style: 'cell',
             data: [{ name: dataName, transform: [] }],
             marks: [groupMark],
             signals: textSignals(specContext, SignalNames.ViewportHeight).concat([
@@ -253,13 +257,14 @@ export class SpecBuilder {
                 plotOffsetLeft,
                 plotOffsetTop,
                 plotOffsetBottom,
+                plotOffsetRight,
                 {
                     name: SignalNames.PlotHeightIn,
                     update: `${SignalNames.ViewportHeight} - ${SignalNames.PlotOffsetBottom}`
                 },
                 {
                     name: SignalNames.PlotWidthIn,
-                    update: `${SignalNames.ViewportWidth} - ${SignalNames.PlotOffsetLeft}`
+                    update: `${SignalNames.ViewportWidth} - ${SignalNames.PlotOffsetLeft} - ${SignalNames.PlotOffsetRight}`
                 },
                 plotHeightOut,
                 plotWidthOut,
@@ -269,7 +274,7 @@ export class SpecBuilder {
                 },
                 {
                     name: 'width',
-                    update: `${SignalNames.PlotWidthOut} + ${SignalNames.PlotOffsetLeft}`
+                    update: `${SignalNames.PlotWidthOut} + ${SignalNames.PlotOffsetLeft} + ${SignalNames.PlotOffsetRight}`
                 }
             ])
         };
