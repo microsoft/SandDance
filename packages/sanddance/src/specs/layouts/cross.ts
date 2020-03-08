@@ -5,7 +5,8 @@ import {
     addMarks,
     addScale,
     addSignal,
-    addTransforms
+    addTransforms,
+    getDataByName
 } from '../scope';
 import { Binnable, binnable } from '../bin';
 import { createOrdinalsForFacet, ordinalScale } from '../ordinal';
@@ -114,7 +115,7 @@ export class Cross extends Layout {
             const titleSource: TitleSource = titles[dim];
             if (bin.native === false) {
                 addSignal(globalScope.scope, bin.maxbinsSignal);
-                addTransforms(globalScope.scope.data[0], ...bin.transforms);
+                addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName), ...bin.transforms);
                 addData(globalScope.scope, bin.dataSequence);
                 addTransforms(bin.dataSequence,
                     {

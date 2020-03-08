@@ -4,7 +4,8 @@ import {
     addData,
     addMarks,
     addSignal,
-    addTransforms
+    addTransforms,
+    getDataByName
 } from '../scope';
 import { binnable, Binnable } from '../bin';
 import { createOrdinalsForFacet } from '../ordinal';
@@ -88,7 +89,7 @@ export class Wrap extends Layout {
 
         if (bin.native === false) {
             addSignal(globalScope.scope, bin.maxbinsSignal);
-            addTransforms(globalScope.scope.data[0], ...bin.transforms);
+            addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName), ...bin.transforms);
             addData(globalScope.scope, bin.dataSequence);
             addTransforms(bin.dataSequence, {
                 type: 'formula',

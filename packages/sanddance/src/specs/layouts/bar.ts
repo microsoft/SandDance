@@ -4,7 +4,8 @@ import {
     addData,
     addMarks,
     addSignal,
-    addTransforms
+    addTransforms,
+    getDataByName
 } from '../scope';
 import {
     AggregateTransform,
@@ -88,7 +89,7 @@ export class Bar extends Layout {
         const binField = bin.fields[0];
         if (bin.native === false) {
             addSignal(globalScope.scope, bin.maxbinsSignal);
-            addTransforms(globalScope.scope.data[0], ...bin.transforms);
+            addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName), ...bin.transforms);
             addData(globalScope.scope, bin.dataSequence);
         }
         addData(parentScope.scope,

@@ -240,10 +240,11 @@ export class SpecBuilder {
                 }
             }
         };
+        const source = 'origin';
         const vegaSpec: Spec = {
             $schema: 'https://vega.github.io/schema/vega/v5.json',
             //style: 'cell',
-            data: [{ name: dataName, transform: [] }],
+            data: [{ name: source }, { name: dataName, source, transform: [] }],
             marks: [groupMark],
             signals: textSignals(specContext, SignalNames.ViewportHeight).concat([
                 minCellWidth,
