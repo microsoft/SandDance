@@ -8,6 +8,7 @@ import {
     addTransforms
 } from '../scope';
 import { Binnable, binnable } from '../bin';
+import { compoundExpression, displayBin, serializeAsVegaExpression } from '../facetTitle';
 import { createOrdinalsForFacet, ordinalScale } from '../ordinal';
 import {
     Data,
@@ -21,7 +22,6 @@ import {
     Titles,
     TitleSource
 } from '../interfaces';
-import { displayBin, serializeAsVegaExpression } from '../facetTitle';
 import { FieldNames, SignalNames } from '../constants';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { modifySignal } from '../signals';
@@ -174,7 +174,7 @@ export class Cross extends Layout {
             transform: [
                 {
                     type: 'formula',
-                    expr: `['?', 77]`,
+                    expr: compoundExpression([binX, binY]),
                     as: FieldNames.FacetRange
                 }
             ]
