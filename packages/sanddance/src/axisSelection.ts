@@ -8,14 +8,14 @@ import {
     SpecCapabilities,
     SpecColumns
 } from './specs/types';
-import { cleanSearchExpression } from './searchExpression/group';
 import { FieldNames } from './specs/constants';
 import { LayerInputHandler } from '@deck.gl/core/lib/layer';
-import { Search, SearchExpressionGroup } from './searchExpression/types';
+import { push } from './array';
+import { SearchExpressionGroup } from './searchExpression/types';
 import { selectBetweenAxis, selectExactAxis } from './expression';
 
 export interface AxisSelectionHandler {
-    (event: TouchEvent | MouseEvent | PointerEvent, search: Search): void;
+    (event: TouchEvent | MouseEvent | PointerEvent, search: SearchExpressionGroup): void;
 }
 
 export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabilities: SpecCapabilities, columns: SpecColumns, stage: VegaDeckGl.types.Stage, clickHandler: AxisSelectionHandler, highlightColor: number[], polygonZ: number): PolygonLayer {
@@ -33,7 +33,7 @@ export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabili
         });
     }
     if (stage.facets && columns.facet) {
-        polygons.push.apply(polygons, facetSelectionPolygons(stage.facets, columns.facet));
+        polygons.push.apply(polygons, facetSelectionPolygons(stage.facets));
     }
     //move polygons to Z
     polygons.forEach(datum => {
@@ -67,7 +67,7 @@ export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabili
 }
 
 interface SelectPolygon extends PolygonLayerDatum {
-    search: Search;
+    search: SearchExpressionGroup;
 }
 
 function axisSelectionPolygons(axis: VegaDeckGl.types.Axis, vertical: boolean, axisSelectionType: AxisSelectionType, column: Column) {
@@ -111,13 +111,26 @@ function axisSelectionPolygons(axis: VegaDeckGl.types.Axis, vertical: boolean, a
     return polygons;
 }
 
-function facetSelectionPolygons(facetRects: VegaDeckGl.types.FacetRect[], facetColumn: Column) {
+function facetSelectionPolygons(facetRects: VegaDeckGl.types.FacetRect[]) {
     const polygons: SelectPolygon[] = [];
-    let linesAndSearches: { lines: VegaDeckGl.types.StyledLine[], search: Search }[];
+    let linesAndSearches: { lines: VegaDeckGl.types.StyledLine[], search: SearchExpressionGroup }[];
     linesAndSearches = facetRects.map(({ datum, lines }, i) => {
+        let group: SearchExpressionGroup;
+        const vegaSearch: SearchExpressionGroup | SearchExpressionGroup[] = datum[FieldNames.FacetSearch];
+        if (Array.isArray(vegaSearch)) {
+            //flatten into one group
+            group = { expressions: [] };
+            vegaSearch.forEach((g, gi) => {
+                const clonedExpressions = VegaDeckGl.util.clone(g.expressions).filter(Boolean);
+                clonedExpressions[0].clause = '&&';
+                push(group.expressions, clonedExpressions);
+            });
+        } else {
+            group = vegaSearch;
+        }
         return {
             lines,
-            search: cleanSearchExpression(datum[FieldNames.FacetSearch])
+            search: group
         };
     });
     linesAndSearches.forEach(({ lines, search }, i) => {
