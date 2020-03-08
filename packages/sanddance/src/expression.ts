@@ -98,7 +98,3 @@ export function selectBetweenAxis(axis: VegaDeckGl.types.Axis, column: Column, i
     const high = tickValue(axis, i + 1);
     return selectBetween(column, low.value, high.value);
 }
-
-export function selectBetweenFacet(column: Column, facetRange: any[], isFirst: boolean, isLast: boolean) {
-    return selectBetween(column, isFirst ? undefined : facetRange[0], isLast ? undefined : facetRange[1]);
-}

@@ -61,6 +61,7 @@ export class Exec {
     constructor(search: Search, private columns: Column[]) {
         this.groups = VegaDeckGl.util.clone(ensureSearchExpressionGroupArray(search)) as SearchExpressionGroup<SearchExpressionLowercase>[];
         this.groups.forEach(group => {
+            group.expressions = group.expressions.filter(Boolean);
             group.expressions.forEach(ex => {
                 ex.column = this.getColumn(ex.name);
                 ex.valueBool = valueToBoolean(ex.value);
@@ -145,8 +146,8 @@ export class Exec {
         }
     }
 
-    private runGroup(datum: object, group: SearchExpressionGroup<SearchExpressionLowercase>) {
-        let accumulator = this.runExpression(datum, group.expressions[0]);
+    private runGroup(datum: object, group: SearchExpressionGroup<SearchExpressionLowercase>): boolean {
+        let accumulator: boolean = this.runExpression(datum, group.expressions[0]);
         for (let i = 1; i < group.expressions.length; i++) {
             let ex = group.expressions[i];
             switch (ex.clause) {

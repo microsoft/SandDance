@@ -11,39 +11,37 @@ export function displayBin(bin: Binnable) {
         val(0);
 }
 
-export function serializeAsVegaExpression(bin: Binnable) {
-    let nameValues: string[];
-    if (bin.discreteColumn.column.quantitative) {
-        //between
-        //column: Column, facetRange: any[], isFirst: boolean, isLast: boolean
-        nameValues = [
-            `op:'between'`,
-            `col:${JSON.stringify(bin.discreteColumn.column.name)}`,
-            `val:[datum[${JSON.stringify(bin.fields[0])}], datum[${JSON.stringify(bin.fields[1])}]]`,
-            `first:datum[${JSON.stringify(FieldNames.First)}]`,
-            `last:datum[${JSON.stringify(FieldNames.Last)}]`
-        ];
-    } else {
-        //exact
-        //column: Column, value: SearchExpressionValue
-        nameValues = [
-            `op:'exact'`,
-            `col:${JSON.stringify(bin.discreteColumn.column.name)}`,
-            `val:datum[${JSON.stringify(bin.fields[0])}]`
-        ];
+function obj(nameValues: string[], clause?: string) {
+    if (clause) {
+        nameValues = [clause, ...nameValues];
     }
     return `{${nameValues.join()}}`;
 }
 
-export function compoundExpression(bins: Binnable[]) {
-    const binsString = bins.map(bin => serializeAsVegaExpression(bin));
-    const nameValues = [
-        `op:'and'`,
-        `exs:[${binsString.join()}]`
-    ];
-    return `{${nameValues.join()}}`;
-}
-
-export function deserializeAsSearchExpression() {
-
+export function serializeAsVegaExpression(bin: Binnable, clause?: string) {
+    if (bin.discreteColumn.column.quantitative) {
+        const low = [
+            `name:${JSON.stringify(bin.discreteColumn.column.name)}`,
+            `operator:'>='`,
+            `value:datum[${JSON.stringify(bin.fields[0])}]`
+        ];
+        const high = [
+            `clause:'&&'`,
+            `name:${JSON.stringify(bin.discreteColumn.column.name)}`,
+            `operator:'<'`,
+            `value:datum[${JSON.stringify(bin.fields[1])}]`
+        ];
+        return obj([
+            `expressions:[ datum[${JSON.stringify(FieldNames.First)}] ? null : ${obj(low)}, datum[${JSON.stringify(FieldNames.Last)}] ? null : ${obj(high)}]`
+        ], clause);
+    } else {
+        const exact = [
+            `name:${JSON.stringify(bin.discreteColumn.column.name)}`,
+            `operator:'=='`,
+            `value:datum[${JSON.stringify(bin.fields[0])}]`
+        ];
+        return obj([
+            `expressions:[${obj(exact)}]`
+        ], clause);
+    }
 }

@@ -29,3 +29,11 @@ export function ensureSearchExpressionGroupArray(search: Search): SearchExpressi
         return [createGroupFromExpression(search as SearchExpression)];
     }
 }
+
+export function cleanSearchExpression(search: Search): SearchExpressionGroup[] {
+    const groups = ensureSearchExpressionGroupArray(search).filter(Boolean);
+    groups.forEach(group => {
+        group.expressions = group.expressions.filter(Boolean);
+    });
+    return groups;
+}

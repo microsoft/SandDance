@@ -8,7 +8,6 @@ import {
     addTransforms
 } from '../scope';
 import { Binnable, binnable } from '../bin';
-import { compoundExpression, displayBin, serializeAsVegaExpression } from '../facetTitle';
 import { createOrdinalsForFacet, ordinalScale } from '../ordinal';
 import {
     Data,
@@ -22,6 +21,7 @@ import {
     Titles,
     TitleSource
 } from '../interfaces';
+import { displayBin, serializeAsVegaExpression } from '../facetTitle';
 import { FieldNames, SignalNames } from '../constants';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { modifySignal } from '../signals';
@@ -89,7 +89,8 @@ export class Cross extends Layout {
                 min: globalScope.signals.minCellWidth.name,
                 out: globalScope.signals.plotWidthOut,
                 offset: SignalNames.FacetPaddingLeft,
-                padding: SignalNames.FacetPaddingLeft
+                padding: SignalNames.FacetPaddingLeft,
+                dataOut: <Data>null
             },
             {
                 dim: 'y',
@@ -99,7 +100,8 @@ export class Cross extends Layout {
                 min: globalScope.signals.minCellHeight.name,
                 out: globalScope.signals.plotHeightOut,
                 offset: SignalNames.FacetPaddingTop,
-                padding: `(${SignalNames.FacetPaddingTop} + ${SignalNames.FacetPaddingBottom})`
+                padding: `(${SignalNames.FacetPaddingTop} + ${SignalNames.FacetPaddingBottom})`,
+                dataOut: <Data>null
             }
         ];
         dimensions.forEach(o => {
@@ -135,6 +137,7 @@ export class Cross extends Layout {
                 titleSource.dataName = ord.data.name;
             }
             titleSource.quantitative = bin.discreteColumn.column.quantitative;
+            o.dataOut = data;
             addTransforms(data,
                 {
                     type: 'formula',
@@ -173,8 +176,24 @@ export class Cross extends Layout {
             source: parentScope.dataName,
             transform: [
                 {
+                    type: 'lookup',
+                    from: dimensions[0].dataOut.name,
+                    key: binX.fields[0],
+                    fields: [binX.fields[0]],
+                    values: [FieldNames.FacetRange],
+                    as: ['FRX']
+                },
+                {
+                    type: 'lookup',
+                    from: dimensions[1].dataOut.name,
+                    key: binY.fields[0],
+                    fields: [binY.fields[0]],
+                    values: [FieldNames.FacetRange],
+                    as: ['FRY']
+                },
+                {
                     type: 'formula',
-                    expr: compoundExpression([binX, binY]),
+                    expr: `[datum.FRX, merge(datum.FRY, { clause: '&&'})]`,
                     as: FieldNames.FacetRange
                 }
             ]

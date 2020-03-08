@@ -8,19 +8,14 @@ import {
     SpecCapabilities,
     SpecColumns
 } from './specs/types';
+import { cleanSearchExpression } from './searchExpression/group';
 import { FieldNames } from './specs/constants';
 import { LayerInputHandler } from '@deck.gl/core/lib/layer';
-import { SearchExpressionGroup, SearchExpressionValue } from './searchExpression/types';
-import {
-    selectBetweenAxis,
-    selectBetweenFacet,
-    selectExact,
-    selectExactAxis,
-    selectNullOrEmpty
-} from './expression';
+import { Search, SearchExpressionGroup } from './searchExpression/types';
+import { selectBetweenAxis, selectExactAxis } from './expression';
 
 export interface AxisSelectionHandler {
-    (event: TouchEvent | MouseEvent | PointerEvent, search: SearchExpressionGroup): void;
+    (event: TouchEvent | MouseEvent | PointerEvent, search: Search): void;
 }
 
 export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabilities: SpecCapabilities, columns: SpecColumns, stage: VegaDeckGl.types.Stage, clickHandler: AxisSelectionHandler, highlightColor: number[], polygonZ: number): PolygonLayer {
@@ -72,7 +67,7 @@ export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabili
 }
 
 interface SelectPolygon extends PolygonLayerDatum {
-    search: SearchExpressionGroup;
+    search: Search;
 }
 
 function axisSelectionPolygons(axis: VegaDeckGl.types.Axis, vertical: boolean, axisSelectionType: AxisSelectionType, column: Column) {
@@ -118,29 +113,13 @@ function axisSelectionPolygons(axis: VegaDeckGl.types.Axis, vertical: boolean, a
 
 function facetSelectionPolygons(facetRects: VegaDeckGl.types.FacetRect[], facetColumn: Column) {
     const polygons: SelectPolygon[] = [];
-    let linesAndSearches: { lines: VegaDeckGl.types.StyledLine[], search: SearchExpressionGroup }[];
-    if (facetColumn.quantitative) {
-        const linesAndRanges = facetRects.map(({ datum, lines }, i) => {
-            const facetRange: number[] = datum && datum[FieldNames.FacetRange] || [-1, -1];
-            return {
-                lines,
-                facetRange
-            };
-        });
-        linesAndRanges.sort((a, b) => a.facetRange[0] - b.facetRange[0]);
-        linesAndSearches = linesAndRanges.map((lineAndSearch, i) => ({
-            lines: lineAndSearch.lines,
-            search: selectBetweenFacet(facetColumn, lineAndSearch.facetRange, i === 0, i === facetRects.length - 1)
-        }));
-    } else {
-        linesAndSearches = facetRects.map(({ datum, lines }, i) => {
-            const facetRange: string[] = datum && datum[FieldNames.FacetRange] || [''];
-            return {
-                lines,
-                search: { expressions: [selectExact(facetColumn, facetRange[0])] }
-            };
-        });
-    }
+    let linesAndSearches: { lines: VegaDeckGl.types.StyledLine[], search: Search }[];
+    linesAndSearches = facetRects.map(({ datum, lines }, i) => {
+        return {
+            lines,
+            search: cleanSearchExpression(datum[FieldNames.FacetRange])
+        };
+    });
     linesAndSearches.forEach(({ lines, search }, i) => {
         //take any 2 lines to get a box dimension
         const [x, y] = minMaxPoints(lines.slice(2));
