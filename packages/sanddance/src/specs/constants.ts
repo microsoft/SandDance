@@ -12,7 +12,7 @@ export const FieldNames = {
     TopColor: '__SandDance__TopColor',
     TopIndex: '__SandDance__TopIndex',
     PowerBISelectionId: '__SandDance__PowerBISelectionId',
-    FacetRange: '__SandDance__FacetRange',
+    FacetSearch: '__SandDance__FacetSearch',
     FacetTitle: '__SandDance__FacetTitle',
     Ordinal: '__SandDance__Ordinal',
     WrapCol: '__SandDance__WrapCol',

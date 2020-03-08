@@ -117,7 +117,7 @@ function facetSelectionPolygons(facetRects: VegaDeckGl.types.FacetRect[], facetC
     linesAndSearches = facetRects.map(({ datum, lines }, i) => {
         return {
             lines,
-            search: cleanSearchExpression(datum[FieldNames.FacetRange])
+            search: cleanSearchExpression(datum[FieldNames.FacetSearch])
         };
     });
     linesAndSearches.forEach(({ lines, search }, i) => {

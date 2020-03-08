@@ -233,7 +233,7 @@ export class Wrap extends Layout {
                     {
                         type: 'formula',
                         expr: serializeAsVegaExpression(bin),
-                        as: FieldNames.FacetRange
+                        as: FieldNames.FacetSearch
                     },
                     {
                         type: 'formula',
@@ -328,7 +328,7 @@ export class Wrap extends Layout {
                 facet: {
                     name: names.facetDataName,
                     data: names.sortedDataName,
-                    groupby: bin.fields.concat([FieldNames.WrapRow, FieldNames.WrapCol, FieldNames.FacetRange, FieldNames.FacetTitle])
+                    groupby: bin.fields.concat([FieldNames.WrapRow, FieldNames.WrapCol, FieldNames.FacetSearch, FieldNames.FacetTitle])
                 }
             },
             encode: { update }
@@ -349,7 +349,7 @@ export class Wrap extends Layout {
                         {
                             type: 'formula',
                             expr: serializeAsVegaExpression(bin),
-                            as: FieldNames.FacetRange
+                            as: FieldNames.FacetSearch
                         },
                         {
                             type: 'formula',

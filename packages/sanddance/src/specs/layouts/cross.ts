@@ -13,7 +13,8 @@ import {
     Data,
     GroupEncodeEntry,
     GroupMark,
-    OrdinalScale
+    OrdinalScale,
+    LookupTransform
 } from 'vega-typings';
 import {
     DiscreteColumn,
@@ -104,8 +105,8 @@ export class Cross extends Layout {
                 dataOut: <Data>null
             }
         ];
-        dimensions.forEach(o => {
-            const { bin, dim, offset, padding } = o;
+        dimensions.forEach(d => {
+            const { bin, dim, offset, padding } = d;
             let data: Data;
             let dataName: string;
             let countSignal: string;
@@ -137,12 +138,12 @@ export class Cross extends Layout {
                 titleSource.dataName = ord.data.name;
             }
             titleSource.quantitative = bin.discreteColumn.column.quantitative;
-            o.dataOut = data;
+            d.dataOut = data;
             addTransforms(data,
                 {
                     type: 'formula',
                     expr: serializeAsVegaExpression(bin),
-                    as: FieldNames.FacetRange
+                    as: FieldNames.FacetSearch
                 },
                 {
                     type: 'formula',
@@ -158,14 +159,14 @@ export class Cross extends Layout {
             addSignal(globalScope.scope,
                 {
                     name: calc,
-                    update: `${o.layout} / ${count}`
+                    update: `${d.layout} / ${count}`
                 },
                 {
                     name: size,
-                    update: `max(${o.min}, (${calc} - ${padding}))`
+                    update: `max(${d.min}, (${calc} - ${padding}))`
                 }
             )
-            modifySignal(o.out, 'max', `((${size} + ${padding}) * ${count})`);
+            modifySignal(d.out, 'max', `((${size} + ${padding}) * ${count})`);
             update[dim] = {
                 signal: `${offset} + (scale(${JSON.stringify(scale.name)}, datum[${JSON.stringify(bin.fields[0])}]) - 1) * (${size} + ${padding})`
             };
@@ -175,26 +176,20 @@ export class Cross extends Layout {
             name: names.crossData,
             source: parentScope.dataName,
             transform: [
-                {
-                    type: 'lookup',
-                    from: dimensions[0].dataOut.name,
-                    key: binX.fields[0],
-                    fields: [binX.fields[0]],
-                    values: [FieldNames.FacetRange],
-                    as: ['FRX']
-                },
-                {
-                    type: 'lookup',
-                    from: dimensions[1].dataOut.name,
-                    key: binY.fields[0],
-                    fields: [binY.fields[0]],
-                    values: [FieldNames.FacetRange],
-                    as: ['FRY']
-                },
+                ...dimensions.map(d => {
+                    return <LookupTransform>{
+                        type: 'lookup',
+                        from: d.dataOut.name,
+                        key: d.bin.fields[0],
+                        fields: [d.bin.fields[0]],
+                        values: [FieldNames.FacetSearch],
+                        as: [`${FieldNames.FacetSearch}_${d.dim}`]
+                    };
+                }),
                 {
                     type: 'formula',
-                    expr: `[datum.FRX, merge(datum.FRY, { clause: '&&'})]`,
-                    as: FieldNames.FacetRange
+                    expr: `[datum[${JSON.stringify(`${FieldNames.FacetSearch}_x`)}], merge(datum[${JSON.stringify(`${FieldNames.FacetSearch}_y`)}], { clause: '&&'})]`,
+                    as: FieldNames.FacetSearch
                 }
             ]
         });
@@ -207,7 +202,7 @@ export class Cross extends Layout {
                 facet: {
                     name: names.facetDataName,
                     data: names.crossData,
-                    groupby: binX.fields.concat(binY.fields).concat([FieldNames.FacetRange])
+                    groupby: binX.fields.concat(binY.fields).concat([FieldNames.FacetSearch])
                 }
             },
             encode: {
