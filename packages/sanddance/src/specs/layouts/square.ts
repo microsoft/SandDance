@@ -9,6 +9,7 @@ import {
 import { Column } from '../types';
 import {
     GroupEncodeEntry,
+    NumericValueRef,
     RangeScheme,
     RectMark,
     Scope,
@@ -27,6 +28,7 @@ export interface SquareProps extends LayoutProps {
     maxGroupedUnits?: string;
     maxGroupedFillSize?: string;
     zSize?: string;
+    collapseYHeight?: boolean
 }
 
 export class Square extends Layout {
@@ -67,7 +69,7 @@ export class Square extends Layout {
     }
 
     public build(): InnerScope {
-        const { fillDirection, globalScope, parentScope, z } = this.props;
+        const { fillDirection, globalScope, parentScope, z, collapseYHeight } = this.props;
         let { zSize } = this.props;
         const { names, prefix } = this;
         if (z) {
@@ -94,6 +96,19 @@ export class Square extends Layout {
                 )
             );
         }
+        const xy = this.encodeXY();
+        if (collapseYHeight) {
+            xy.y = [
+                {
+                    test: testForCollapseSelection(),
+                    value: 0
+                },
+                xy.y as NumericValueRef
+            ];
+        }
+        const heightSignal = {
+            signal: fillDirection === 'down-right' ? names.size : names.levelSize
+        };
         const mark: RectMark = {
             name: prefix,
             type: 'rect',
@@ -102,17 +117,22 @@ export class Square extends Layout {
             },
             encode: {
                 update: {
-                    ...this.encodeXY(),
-                    height: {
-                        signal: fillDirection === 'down-right' ? names.size : names.levelSize
-                    },
+                    ...xy,
+                    height: collapseYHeight ?
+                        [
+                            {
+                                test: testForCollapseSelection(),
+                                value: 0
+                            },
+                            heightSignal
+                        ]
+                        :
+                        heightSignal,
                     width: {
                         signal: fillDirection === 'down-right' ? names.levelSize : names.size
                     },
                     ...z && {
-                        z: {
-                            value: 0
-                        },
+                        z: { value: 0 },
                         depth: [
                             {
                                 test: testForCollapseSelection(),

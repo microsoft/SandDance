@@ -1,7 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { addColor } from './color';
-import { addFacetAxesGroupMarks, addFacetCellTitles, getFacetLayout, FacetLayout, addFacetColRowTitles } from './facetLayout';
+import {
+    addFacetAxesGroupMarks,
+    addFacetCellTitles,
+    addFacetColRowTitles,
+    FacetLayout,
+    getFacetLayout
+} from './facetLayout';
 import { addGlobalAxes, AxesScopeMap } from './axes';
 import { addScale, addSignal } from './scope';
 import {
@@ -17,6 +23,7 @@ import {
 import {
     AxisScales,
     DiscreteColumn,
+    EncodingRule,
     GlobalScales,
     GlobalScope,
     InnerScope,
@@ -144,7 +151,7 @@ export class SpecBuilder {
                 this.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
                 this.plotOffsetRight.update = `${facetLayout.plotPadding.x}`
             }
-            const { firstScope, finalScope, specResult, allGlobalScales } = this.iterateLayouts(globalScope, groupMark, colorDataName);
+            const { firstScope, finalScope, specResult, allGlobalScales, allEncodingRules } = this.iterateLayouts(globalScope, groupMark, colorDataName);
             if (specResult) {
                 return specResult;
             }
@@ -195,6 +202,25 @@ export class SpecBuilder {
             //add mark to the final scope
             if (finalScope.mark) {
                 const { update } = finalScope.mark.encode;
+
+                allEncodingRules.forEach(map => {
+                    for (let key in map) {
+                        if (update[key]) {
+                            let arrIn = map[key];
+                            if (!Array.isArray(update[key])) {
+                                let value = update[key];
+                                let arrOut = [];
+                                update[key] = arrOut;
+                                arrIn.forEach(rule => arrOut.push(rule));
+                                arrOut.push(value);
+                            } else {
+                                let arrOut = update[key] as {}[];
+                                arrIn.forEach(rule => arrOut.unshift(rule));
+                            }
+                        }
+                    }
+                });
+
                 update.fill = fill(specContext, topColorField, ScaleNames.Color);
                 update.opacity = opacity(specContext);
             }
@@ -296,6 +322,7 @@ export class SpecBuilder {
         const groupings: string[][] = [];
         let { layouts, specCapabilities } = this.props;
         const allGlobalScales: GlobalScales[] = [];
+        const allEncodingRules: { [key: string]: EncodingRule[] }[] = [];
         for (let i = 0; i < layouts.length; i++) {
             if (!parentScope) continue;
             if (!parentScope.scope) break;
@@ -328,12 +355,15 @@ export class SpecBuilder {
             if (childScope && addScaleAxes && childScope.globalScales) {
                 allGlobalScales.push(childScope.globalScales);
             }
+            if (childScope.encodingRuleMap) {
+                allEncodingRules.push(childScope.encodingRuleMap);
+            }
             if (i === 0) {
                 firstScope = childScope;
             }
             parentScope = childScope;
         }
-        return { firstScope, finalScope: parentScope, specResult, allGlobalScales };
+        return { firstScope, finalScope: parentScope, specResult, allGlobalScales, allEncodingRules };
     }
 
     private createLayout(layoutPair: LayoutPair, buildProps: LayoutBuildProps) {

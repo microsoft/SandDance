@@ -4,6 +4,7 @@ import { Column, SpecCapabilities, SpecContext } from './types';
 import {
     Mark,
     NewSignal,
+    NumericValueRef,
     Scale,
     Scope,
     Spec
@@ -45,6 +46,8 @@ export interface Titles {
     y: TitleSource;
 }
 
+export type EncodingRule = { test?: string } & NumericValueRef;
+
 export interface InnerScope {
     dataName: string;
     scope?: Scope;
@@ -52,6 +55,7 @@ export interface InnerScope {
     titles?: Titles;
     mark?: Mark;
     globalScales?: GlobalScales;
+    encodingRuleMap?: { [key: string]: EncodingRule[] };
     sizeSignals: SizeSignals;
 }
 

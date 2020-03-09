@@ -24,6 +24,7 @@ import { binnable, Binnable } from '../bin';
 import { Column } from '../types';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { modifySignal } from '../signals';
+import { testForCollapseSelection } from '../selection';
 
 export interface BarBuild {
     globalAggregateMaxExtentSignal: string;
@@ -178,6 +179,8 @@ export class Bar extends Layout {
             parentSize: orientation === 'horizontal' ? parentScope.sizeSignals.layoutWidth : parentScope.sizeSignals.layoutHeight
         });
 
+        const verticalLayoutHeight = `${parentScope.sizeSignals.layoutHeight} - scale(${JSON.stringify(names.yScale)}, data(${JSON.stringify(names.pivot)})[0][datum[${JSON.stringify(binField)}]])`;
+
         return {
             dataName: names.facetData,
             scope: mark,
@@ -188,13 +191,43 @@ export class Bar extends Layout {
                 }
                 :
                 {
-                    layoutHeight: `${parentScope.sizeSignals.layoutHeight} - scale(${JSON.stringify(names.yScale)}, data(${JSON.stringify(names.pivot)})[0][datum[${JSON.stringify(binField)}]])`,
+                    layoutHeight: verticalLayoutHeight,
                     layoutWidth: names.bandWidth
                 },
             globalScales: {
                 x: xScale,
                 y: yScale
-            }
+            },
+            encodingRuleMap: orientation === 'horizontal' ?
+                {
+                    x: [
+                        {
+                            test: testForCollapseSelection(),
+                            value: 0
+                        }
+                    ],
+                    width: [
+                        {
+                            test: testForCollapseSelection(),
+                            value: 0
+                        }
+                    ]
+                }
+                :
+                {
+                    y: [
+                        {
+                            test: testForCollapseSelection(),
+                            signal: verticalLayoutHeight
+                        }
+                    ],
+                    height: [
+                        {
+                            test: testForCollapseSelection(),
+                            value: 0
+                        }
+                    ]
+                }
         };
     }
 
@@ -248,7 +281,7 @@ export class Bar extends Layout {
                         },
                         width: {
                             signal: names.bandWidth
-                        },
+                        }
                     }
             }
         };

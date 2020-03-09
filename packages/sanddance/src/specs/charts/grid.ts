@@ -11,7 +11,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     const squareProps: SquareProps = {
         sortBy: specColumns.sort,
         fillDirection: 'right-down',
-        z: specColumns.z
+        z: specColumns.z,
+        collapseYHeight: true
     };
     const axisScales: AxisScales = {
         z: { title: specColumns.z && specColumns.z.name }
