@@ -229,7 +229,7 @@ export class Cross extends Layout {
                     ...dimensions.map(d => {
                         return <FormulaTransform>{
                             type: 'formula',
-                            expr: `scale(${JSON.stringify(d.scaleName)}, datum[${JSON.stringify(d.bin.fields[0])}]) - 1`,
+                            expr: `scale(${JSON.stringify(d.scaleName)}, datum[${JSON.stringify(d.bin.fields[0])}])`,
                             as: d.dim
                         };
                     }),
@@ -252,12 +252,12 @@ export class Cross extends Layout {
                     },
                     {
                         type: 'formula',
-                        expr: `datum.data % ${names.dimCount}_x`,
+                        expr: `datum.data % ${names.dimCount}_x + 1`,
                         as: `x`
                     },
                     {
                         type: 'formula',
-                        expr: `floor((datum.data) / ${names.dimCount}_x)`,
+                        expr: `floor(datum.data / ${names.dimCount}_x) + 1`,
                         as: `y`
                     },
                     {
@@ -301,7 +301,7 @@ export class Cross extends Layout {
 
         dimensions.forEach(d => {
             emptyUpdate[d.dim] = {
-                signal: `${d.offset} + datum.${d.dim} * (${names.dimCellSize}_${d.dim} + ${d.padding})`
+                signal: `${d.offset} + (datum.${d.dim} - 1) * (${names.dimCellSize}_${d.dim} + ${d.padding})`
             }
         });
 
