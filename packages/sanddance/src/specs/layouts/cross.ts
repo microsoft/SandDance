@@ -42,11 +42,12 @@ export class Cross extends Layout {
         facetDataName: string,
         emptyDataName: string,
         emptyMarkName: string,
+        fullDataName: string,
         dimScale: string,
         dimCount: string,
         dimCategorical: string,
         dimCellSizeCalc: string,
-        dimCellSize: string
+        dimCellSize: string,
     };
 
     constructor(public props: CrossProps & LayoutBuildProps) {
@@ -59,6 +60,7 @@ export class Cross extends Layout {
             facetDataName: `data_${p}_facet`,
             emptyDataName: `data_${p}_empty`,
             emptyMarkName: `${p}_empty`,
+            fullDataName: `data_${p}_full`,
             dimScale: `scale_${p}`,
             dimCount: `${p}_count`,
             dimCategorical: `data_${p}_cat`,
@@ -219,9 +221,12 @@ export class Cross extends Layout {
 
         addMarks(parentScope.scope, mark);
 
+        const xy = 'xy';
+        const fieldFull = 'full';
+
         addData(globalScope.scope,
             {
-                name: 'TODOfull',
+                name: names.fullDataName,
                 source: names.crossData,
                 transform: [
                     {
@@ -238,12 +243,12 @@ export class Cross extends Layout {
                     {
                         type: 'formula',
                         expr: 'join([datum.x, datum.y])',
-                        as: 'xy'
+                        as: xy
                     }
                 ]
             },
             {
-                name: 'TODOempty',
+                name: names.emptyDataName,
                 transform: [
                     {
                         type: 'sequence',
@@ -265,19 +270,19 @@ export class Cross extends Layout {
                     {
                         type: 'formula',
                         expr: 'join([datum.x, datum.y])',
-                        as: 'xy'
+                        as: xy
                     },
                     {
                         type: 'lookup',
-                        from: 'TODOfull',
-                        key: 'xy',
-                        fields: ['xy'],
-                        values: ['xy'],
-                        as: ['TODOother']
+                        from: names.fullDataName,
+                        key: xy,
+                        fields: [xy],
+                        values: [xy],
+                        as: [fieldFull]
                     },
                     {
                         type: 'filter',
-                        expr: 'datum.TODOother === null'
+                        expr: `datum[${JSON.stringify(fieldFull)}] === null`
                     },
                     ...dimensions.map(d => {
                         return <LookupTransform>{
@@ -331,10 +336,11 @@ export class Cross extends Layout {
         });
 
         addMarks(parentScope.scope, {
+            name: names.emptyMarkName,
             style: 'cell',
             type: 'group',
             from: {
-                data: 'TODOempty'
+                data: names.emptyDataName
             },
             encode: {
                 update: emptyUpdate
