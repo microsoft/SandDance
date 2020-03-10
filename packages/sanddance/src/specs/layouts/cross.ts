@@ -12,10 +12,11 @@ import { Binnable, binnable } from '../bin';
 import { createOrdinalsForFacet, ordinalScale } from '../ordinal';
 import {
     Data,
+    FormulaTransform,
     GroupEncodeEntry,
     GroupMark,
-    OrdinalScale,
-    LookupTransform
+    LookupTransform,
+    OrdinalScale
 } from 'vega-typings';
 import {
     DiscreteColumn,
@@ -80,7 +81,7 @@ export class Cross extends Layout {
             },
             width: {
                 signal: `${names.dimCellSize}_x`
-            },
+            }
         };
         const dimensions = [
             {
@@ -92,7 +93,8 @@ export class Cross extends Layout {
                 out: globalScope.signals.plotWidthOut,
                 offset: SignalNames.FacetPaddingLeft,
                 padding: SignalNames.FacetPaddingLeft,
-                dataOut: <Data>null
+                dataOut: <Data>null,
+                scaleName: <string>null
             },
             {
                 dim: 'y',
@@ -103,7 +105,8 @@ export class Cross extends Layout {
                 out: globalScope.signals.plotHeightOut,
                 offset: SignalNames.FacetPaddingTop,
                 padding: `(${SignalNames.FacetPaddingTop} + ${SignalNames.FacetPaddingBottom})`,
-                dataOut: <Data>null
+                dataOut: <Data>null,
+                scaleName: <string>null
             }
         ];
         dimensions.forEach(d => {
@@ -140,6 +143,7 @@ export class Cross extends Layout {
             }
             titleSource.quantitative = bin.discreteColumn.column.quantitative;
             d.dataOut = data;
+            d.scaleName = scale.name;
             addTransforms(data,
                 {
                     type: 'formula',
@@ -212,6 +216,105 @@ export class Cross extends Layout {
         };
 
         addMarks(parentScope.scope, mark);
+
+        addData(globalScope.scope,
+            {
+                name: 'TODOfull',
+                source: names.crossData,
+                transform: [
+                    {
+                        type: 'aggregate',
+                        groupby: binX.fields.concat(binY.fields)
+                    },
+                    ...dimensions.map(d => {
+                        return <FormulaTransform>{
+                            type: 'formula',
+                            expr: `scale(${JSON.stringify(d.scaleName)}, datum[${JSON.stringify(d.bin.fields[0])}]) - 1`,
+                            as: d.dim
+                        };
+                    }),
+                    {
+                        type: 'formula',
+                        expr: 'join([datum.x, datum.y])',
+                        as: 'xy'
+                    }
+                ]
+            },
+            {
+                name: 'TODOempty',
+                transform: [
+                    {
+                        type: 'sequence',
+                        start: 0,
+                        stop: {
+                            signal: `${dimensions.map(d => `${names.dimCount}_${d.dim}`).join(' * ')}`
+                        }
+                    },
+                    {
+                        type: 'formula',
+                        expr: `datum.data % ${names.dimCount}_x`,
+                        as: `x`
+                    },
+                    {
+                        type: 'formula',
+                        expr: `floor((datum.data) / ${names.dimCount}_x)`,
+                        as: `y`
+                    },
+                    {
+                        type: 'formula',
+                        expr: 'join([datum.x, datum.y])',
+                        as: 'xy'
+                    },
+                    {
+                        type: 'lookup',
+                        from: 'TODOfull',
+                        key: 'xy',
+                        fields: ['xy'],
+                        values: ['xy'],
+                        as: ['TODOother']
+                    },
+                    {
+                        type: 'filter',
+                        expr: 'datum.TODOother === null'
+                    },
+                    ...dimensions.map(d => {
+                        return <LookupTransform>{
+                            type: 'lookup',
+                            from: d.dataOut.name,
+                            key: FieldNames.Ordinal,
+                            fields: [d.dim],
+                            values: [d.bin.fields[0]]
+                        };
+                    })
+                ]
+            }
+        );
+
+        const emptyUpdate: GroupEncodeEntry = {
+            height: {
+                signal: `${names.dimCellSize}_y`
+            },
+            width: {
+                signal: `${names.dimCellSize}_x`
+            }
+        };
+
+        dimensions.forEach(d => {
+            emptyUpdate[d.dim] = {
+                signal: `${d.offset} + datum.${d.dim} * (${names.dimCellSize}_${d.dim} + ${d.padding})`
+            }
+        });
+
+        addMarks(parentScope.scope, {
+            style: 'cell',
+            type: 'group',
+            from: {
+                data: 'TODOempty'
+            },
+            encode: {
+                update: emptyUpdate
+            }
+        });
 
         return {
             dataName: names.facetDataName,
