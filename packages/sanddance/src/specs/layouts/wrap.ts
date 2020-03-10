@@ -232,6 +232,13 @@ export class Wrap extends Layout {
                         }
                     },
                     {
+                        type: 'lookup',
+                        from: names.rowColumnDataName,
+                        key: bin.fields[0],
+                        fields: [bin.fields[0]],
+                        values: [FieldNames.WrapRow, FieldNames.WrapCol, FieldNames.First, FieldNames.Last]
+                    },
+                    {
                         type: 'formula',
                         expr: serializeAsVegaExpression(bin, FieldNames.First, FieldNames.Last),
                         as: FieldNames.FacetSearch
@@ -240,13 +247,6 @@ export class Wrap extends Layout {
                         type: 'formula',
                         expr: displayBin(bin),
                         as: FieldNames.FacetTitle
-                    },
-                    {
-                        type: 'lookup',
-                        from: names.rowColumnDataName,
-                        key: bin.fields[0],
-                        fields: [bin.fields[0]],
-                        values: [FieldNames.WrapRow, FieldNames.WrapCol]
                     }
                 ]
             }
