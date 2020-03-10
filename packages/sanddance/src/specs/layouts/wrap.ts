@@ -233,7 +233,7 @@ export class Wrap extends Layout {
                     },
                     {
                         type: 'formula',
-                        expr: serializeAsVegaExpression(bin),
+                        expr: serializeAsVegaExpression(bin, FieldNames.First, FieldNames.Last),
                         as: FieldNames.FacetSearch
                     },
                     {
@@ -349,7 +349,7 @@ export class Wrap extends Layout {
                         },
                         {
                             type: 'formula',
-                            expr: serializeAsVegaExpression(bin),
+                            expr: serializeAsVegaExpression(bin, FieldNames.First, FieldNames.Last),
                             as: FieldNames.FacetSearch
                         },
                         {

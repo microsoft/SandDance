@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Binnable } from "./bin";
-import { FieldNames } from "./constants";
 
 export function displayBin(bin: Binnable) {
     const val = (index: number) => `datum[${JSON.stringify(bin.fields[index])}]`;
@@ -18,7 +17,7 @@ function obj(nameValues: string[], clause?: string) {
     return `{${nameValues.join()}}`;
 }
 
-export function serializeAsVegaExpression(bin: Binnable, clause?: string) {
+export function serializeAsVegaExpression(bin: Binnable, firstFieldName: string, lastFieldName: string, clause?: string) {
     if (bin.discreteColumn.column.quantitative) {
         const low = [
             `name:${JSON.stringify(bin.discreteColumn.column.name)}`,
@@ -32,7 +31,7 @@ export function serializeAsVegaExpression(bin: Binnable, clause?: string) {
             `value:datum[${JSON.stringify(bin.fields[1])}]`
         ];
         return obj([
-            `expressions:[ datum[${JSON.stringify(FieldNames.First)}] ? null : ${obj(low)}, datum[${JSON.stringify(FieldNames.Last)}] ? null : ${obj(high)}]`
+            `expressions:[ datum[${JSON.stringify(firstFieldName)}] ? null : ${obj(low)}, datum[${JSON.stringify(lastFieldName)}] ? null : ${obj(high)}]`
         ], clause);
     } else {
         const exact = [

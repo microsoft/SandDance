@@ -147,7 +147,7 @@ export class Cross extends Layout {
             addTransforms(data,
                 {
                     type: 'formula',
-                    expr: serializeAsVegaExpression(bin),
+                    expr: serializeAsVegaExpression(bin, FieldNames.First, FieldNames.Last),
                     as: FieldNames.FacetSearch
                 },
                 {
@@ -177,6 +177,12 @@ export class Cross extends Layout {
             };
         });
 
+        const facetSearchUnion: FormulaTransform = {
+            type: 'formula',
+            expr: `[datum[${JSON.stringify(`${FieldNames.FacetSearch}_x`)}], merge(datum[${JSON.stringify(`${FieldNames.FacetSearch}_y`)}], { clause: '&&'})]`,
+            as: FieldNames.FacetSearch
+        };
+
         addData(globalScope.scope, {
             name: names.crossData,
             source: parentScope.dataName,
@@ -191,11 +197,7 @@ export class Cross extends Layout {
                         as: [`${FieldNames.FacetSearch}_${d.dim}`]
                     };
                 }),
-                {
-                    type: 'formula',
-                    expr: `[datum[${JSON.stringify(`${FieldNames.FacetSearch}_x`)}], merge(datum[${JSON.stringify(`${FieldNames.FacetSearch}_y`)}], { clause: '&&'})]`,
-                    as: FieldNames.FacetSearch
-                }
+                facetSearchUnion
             ]
         });
 
@@ -285,7 +287,30 @@ export class Cross extends Layout {
                             fields: [d.dim],
                             values: [d.bin.fields[0]]
                         };
-                    })
+                    }),
+                    ...dimensions.map(d => {
+                        return <LookupTransform>{
+                            type: 'lookup',
+                            from: d.dataOut.name,
+                            key: FieldNames.Ordinal,
+                            fields: [d.dim],
+                            values: d.bin.discreteColumn.column.quantitative ?
+                                d.bin.fields.concat([FieldNames.First, FieldNames.Last])
+                                :
+                                d.bin.fields,
+                            as: d.bin.discreteColumn.column.quantitative ?
+                                d.bin.fields.concat([`${FieldNames.First}_${d.dim}`, `${FieldNames.Last}_${d.dim}`])
+                                : d.bin.fields
+                        };
+                    }),
+                    ...dimensions.map(d => {
+                        return <FormulaTransform>{
+                            type: 'formula',
+                            expr: serializeAsVegaExpression(d.bin, `${FieldNames.First}_${d.dim}`, `${FieldNames.Last}_${d.dim}`),
+                            as: `${FieldNames.FacetSearch}_${d.dim}`
+                        };
+                    }),
+                    facetSearchUnion
                 ]
             }
         );
