@@ -91,7 +91,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 squareProps.maxGroupedUnits = barBuild.globalAggregateMaxExtentSignal;
                 squareProps.maxGroupedFillSize = `(${barBuild.globalAggregateMaxExtentScaledSignal})`;
                 squareProps.zSize = barBuild.parentSize;
-            }
+            };
             unitLayoutProps = squareProps;
             break;
         }
