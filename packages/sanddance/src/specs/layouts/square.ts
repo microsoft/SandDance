@@ -1,25 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import {
-    addData,
-    addMarks,
-    addScale,
-    addSignal
-} from '../scope';
+import { addData, addMarks, addSignal } from '../scope';
 import { Column } from '../types';
 import {
     GroupEncodeEntry,
     NumericValueRef,
-    RangeScheme,
     RectMark,
     Scope,
     Transforms
 } from 'vega-typings';
 import { InnerScope } from '../interfaces';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { linearScale, pointScale } from '../scales';
-import { SignalNames } from '../constants';
 import { testForCollapseSelection } from '../selection';
+import { addZScale } from '../zBase';
 
 export interface SquareProps extends LayoutProps {
     sortBy: Column;
@@ -69,33 +62,11 @@ export class Square extends Layout {
     }
 
     public build(): InnerScope {
-        const { fillDirection, globalScope, parentScope, z, collapseYHeight } = this.props;
+        const { fillDirection, globalScope, parentScope, collapseYHeight, z } = this.props;
         let { zSize } = this.props;
         const { names, prefix } = this;
-        if (z) {
-            if (!zSize) {
-                zSize = parentScope.sizeSignals.layoutHeight;
-            }
-            const zRange: RangeScheme = [0, { signal: `(${zSize}) * ${SignalNames.ZProportion}` }];
-            addScale(globalScope.scope, z.quantitative
-                ?
-                linearScale(
-                    names.zScaleName,
-                    globalScope.dataName,
-                    z.name,
-                    zRange,
-                    false,
-                    true)
-                :
-                pointScale(
-                    names.zScaleName,
-                    globalScope.dataName,
-                    zRange,
-                    z.name,
-                    false
-                )
-            );
-        }
+        zSize = zSize || parentScope.sizeSignals.layoutHeight;
+        addZScale(z, zSize, globalScope, names.zScaleName);
         const xy = this.encodeXY();
         if (collapseYHeight) {
             xy.y = [
@@ -303,3 +274,4 @@ export class Square extends Layout {
         }
     }
 }
+

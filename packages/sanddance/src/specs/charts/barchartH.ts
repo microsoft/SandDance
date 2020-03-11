@@ -42,7 +42,18 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             x.aggregate = 'sum';
             x.title = language.sum;
             unitLayoutClass = Treemap;
-            const treemapProps: TreemapProps = { corner: 'top-left' };
+            const treemapProps: TreemapProps = { 
+                corner: 'top-left',
+                size: specColumns.sum,
+                treeMapMethod: specViewOptions.language.treeMapMethod,
+                z: specColumns.z,
+                zSize: null
+             };
+             barProps.onBuild = barBuild => {
+                //treemapProps.maxGroupedUnits = barBuild.globalAggregateMaxExtentSignal;
+                //treemapProps.maxGroupedFillSize = `(${barBuild.globalAggregateMaxExtentScaledSignal})`;
+                treemapProps.zSize = barBuild.parentSize;
+            }
             unitLayoutProps = treemapProps;
             break;
         }
@@ -129,7 +140,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 },
                 {
                     role: 'facetV',
-                    allowNone: true,
+                    allowNone: false,
                     signals: [SignalNames.FacetVBins]
                 }
             ]
