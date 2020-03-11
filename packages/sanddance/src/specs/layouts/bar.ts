@@ -60,7 +60,7 @@ export class Bar extends Layout {
 
     constructor(public props: BarProps & LayoutBuildProps) {
         super(props);
-        const a = this.aggregation = this.getAgregation();
+        const a = this.aggregation = this.getAggregation();
         const p = this.prefix = `bar_${this.id}`;
         this.names = {
             barCount: `${p}_count`,
@@ -199,20 +199,16 @@ export class Bar extends Layout {
     }
 
     private getMark(parentScope: InnerScope, sumBy: Column, orientation: string, binField: string): GroupMark {
-        const { aggregation, bin, names, prefix } = this;
+        const { bin, names, prefix } = this;
         return {
+            style: 'cell',
             name: prefix,
             type: 'group',
             from: {
                 facet: {
                     name: names.facetData,
                     data: parentScope.dataName,
-                    groupby: bin.fields,
-                    aggregate: {
-                        fields: [aggregation === 'sum' ? sumBy.name : null],
-                        ops: [aggregation],
-                        as: [aggregation]
-                    }
+                    groupby: bin.fields.concat([names.aggregateField])
                 }
             },
             encode: {
@@ -230,7 +226,7 @@ export class Bar extends Layout {
                         },
                         width: {
                             scale: names.xScale,
-                            field: aggregation
+                            field: names.aggregateField
                         }
                     }
                     :
@@ -241,10 +237,10 @@ export class Bar extends Layout {
                         },
                         y: {
                             scale: names.yScale,
-                            field: aggregation
+                            field: names.aggregateField
                         },
                         height: {
-                            signal: `${parentScope.sizeSignals.layoutHeight} - scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(aggregation)}])`
+                            signal: `${parentScope.sizeSignals.layoutHeight} - scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(names.aggregateField)}])`
                         },
                         width: {
                             signal: names.bandWidth
@@ -253,14 +249,9 @@ export class Bar extends Layout {
             },
             data: [
                 {
-                    name: 'zzz',
+                    name: 'temp',
                     source: names.facetData,
                     transform: [
-                        {
-                            type: 'formula',
-                            expr: `datum[${JSON.stringify(aggregation)}]`,
-                            as: 'v2'
-                        },
                         {
                             type: 'extent',
                             field: names.aggregateField,
@@ -366,7 +357,7 @@ export class Bar extends Layout {
         return { xScale, yScale };
     }
 
-    private getAgregation() {
+    private getAggregation() {
         const { props } = this;
         let s: AxisScale;
         if (props.orientation === 'vertical') {
