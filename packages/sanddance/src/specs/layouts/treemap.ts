@@ -86,16 +86,27 @@ export class Treemap extends Layout {
             ]
         });
 
+        const subtract = (...fields: string[]) => {
+            return fields.map(n => `datum[${JSON.stringify(n)}]`).join(' - ');
+        };
+
         const mark: RectMark = {
             type: 'rect',
             from: { data: names.dataName },
             encode: {
                 update: {
-                    //TODO collapse
-                    x: { field: names.fieldX0 },
-                    y: { field: names.fieldY0 },
-                    x2: { field: names.fieldX1 },
-                    y2: { field: names.fieldY1 },
+                    x: {
+                        field: names.fieldX0
+                    },
+                    y: {
+                        field: names.fieldY0
+                    },
+                    width: {
+                        signal: subtract(names.fieldX1, names.fieldX0)
+                    },
+                    height: {
+                        signal: subtract(names.fieldY1, names.fieldY0)
+                    },
                     ...z && {
                         z: { value: 0 },
                         depth: [
