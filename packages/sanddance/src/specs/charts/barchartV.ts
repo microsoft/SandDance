@@ -39,6 +39,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     };
     switch (insight.sumStyle) {
         case 'treemap': {
+            //TODO disable sort
             y.aggregate = 'sum';
             y.title = language.sum;
             unitLayoutClass = Treemap;
@@ -140,7 +141,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 },
                 {
                     role: 'facetV',
-                    allowNone: false,
+                    allowNone: true,
                     signals: [SignalNames.FacetVBins]
                 }
             ]

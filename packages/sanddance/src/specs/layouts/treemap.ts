@@ -67,7 +67,8 @@ export class Treemap extends Layout {
                     sort: { field: 'value', order: 'descending' },
                     round: true,
                     method: { signal: SignalNames.TreeMapMethod },
-                    padding: 1,
+                    paddingInner: 1,
+                    paddingOuter: 0,
                     size: [
                         //TODO same global scale
                         { signal: parentScope.sizeSignals.layoutWidth },
@@ -90,6 +91,7 @@ export class Treemap extends Layout {
             from: { data: names.dataName },
             encode: {
                 update: {
+                    //TODO collapse
                     x: { field: names.fieldX0 },
                     y: { field: names.fieldY0 },
                     x2: { field: names.fieldX1 },

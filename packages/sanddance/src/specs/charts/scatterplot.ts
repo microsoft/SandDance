@@ -53,7 +53,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 },
                 {
                     role: 'facetV',
-                    allowNone: false,
+                    allowNone: true,
                     signals: [SignalNames.FacetVBins]
                 }
             ],

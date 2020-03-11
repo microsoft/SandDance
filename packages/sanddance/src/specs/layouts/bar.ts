@@ -201,7 +201,6 @@ export class Bar extends Layout {
     private getMark(parentScope: InnerScope, sumBy: Column, orientation: string, binField: string): GroupMark {
         const { bin, names, prefix } = this;
         return {
-            style: 'cell',
             name: prefix,
             type: 'group',
             from: {
