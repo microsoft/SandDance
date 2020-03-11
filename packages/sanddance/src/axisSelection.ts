@@ -126,7 +126,9 @@ function facetSelectionPolygons(facetRects: VegaDeckGl.types.FacetRect[]) {
                 push(group.expressions, clonedExpressions);
             });
         } else {
-            group = { expressions: vegaSearch.expressions.filter(Boolean) };
+            group = vegaSearch ?
+                { expressions: vegaSearch.expressions.filter(Boolean) }
+                : null;
         }
         return {
             lines,
