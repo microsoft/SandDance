@@ -8,18 +8,18 @@ import {
     getDataByName
 } from '../scope';
 import {
-    AggregateTransform,
-    BandScale,
-    GroupMark,
-    LinearScale,
-    Scale
-} from 'vega-typings';
-import {
     AxisScale,
     DiscreteColumn,
     InnerScope,
     Orientation
 } from '../interfaces';
+import {
+    BandScale,
+    GroupMark,
+    JoinAggregateTransform,
+    LinearScale,
+    Scale
+} from 'vega-typings';
 import { binnable, Binnable } from '../bin';
 import { Column } from '../types';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
@@ -47,7 +47,7 @@ export class Bar extends Layout {
     private names: {
         barCount: string,
         facetData: string,
-        globalAggregateData: string,
+        aggregateField: string,
         globalAggregateExtentSignal: string,
         globalAggregateMaxExtentSignal: string,
         xScale: string,
@@ -55,8 +55,7 @@ export class Bar extends Layout {
         bandWidth: string,
         scaledSize: string,
         accumulative: string,
-        localAggregation: string,
-        pivot: string
+        localAggregateExtentSignal: string,
     };
 
     constructor(public props: BarProps & LayoutBuildProps) {
@@ -66,7 +65,7 @@ export class Bar extends Layout {
         this.names = {
             barCount: `${p}_count`,
             facetData: `facet_${p}`,
-            globalAggregateData: `${p}_aggregate_${a}`,
+            aggregateField: `${p}_aggregate_value`,
             globalAggregateExtentSignal: `${p}_${a}_extent`,
             globalAggregateMaxExtentSignal: `${p}_${a}_max`,
             xScale: `scale_${p}_x`,
@@ -74,8 +73,7 @@ export class Bar extends Layout {
             bandWidth: `${p}_bandwidth`,
             scaledSize: `${p}_scaled_size`,
             accumulative: `${p}_accumulative`,
-            localAggregation: `data_${p}_localAggregation`,
-            pivot: `data_${p}_pivot`
+            localAggregateExtentSignal: `${p}_local_extent`
         };
         this.bin = binnable(this.prefix, props.globalScope.dataName, props.groupby);
     }
@@ -93,63 +91,32 @@ export class Bar extends Layout {
             addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName), ...bin.transforms);
             addData(globalScope.scope, bin.dataSequence);
         }
-        addData(parentScope.scope,
+        //this needs to be global since the scale depends on it
+        addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName),
             {
-                name: names.localAggregation,
-                source: parentScope.dataName,
-                transform: [
-                    {
-                        ...this.getTransforms(
-                            aggregation,
-                            this.bin.fields
-                        ),
-                        as: [aggregation]
-                    }
-                ]
+                ...this.getTransforms(
+                    aggregation,
+                    groupings.concat(this.getGrouping()).reduce((acc, val) => acc.concat(val), [])
+                ),
+                as: [names.aggregateField]
             },
             {
-                name: names.pivot,
-                source: names.localAggregation,
-                transform: [
-                    {
-                        type: 'pivot',
-                        field: binField,
-                        value: aggregation
-                    }
-                ]
+                type: 'extent',
+                field: names.aggregateField,
+                signal: names.globalAggregateExtentSignal
             }
         );
-        //this needs to be global since the scale depends on it
-        addData(globalScope.scope,
-            {
-                name: names.globalAggregateData,
-                source: globalScope.dataName,
-                transform: [
-                    {
-                        ...this.getTransforms(
-                            aggregation,
-                            groupings.concat(this.getGrouping()).reduce((acc, val) => acc.concat(val), [])
-                        ),
-                        as: [aggregation]
-                    },
-                    {
-                        type: 'extent',
-                        field: aggregation,
-                        signal: names.globalAggregateExtentSignal
-                    }
-                ]
-            },
-            {
-                name: names.accumulative,
-                source: bin.fullScaleDataname,
-                transform: [
-                    {
-                        type: 'aggregate',
-                        groupby: this.getGrouping(),
-                        ops: ['count']
-                    }
-                ]
-            }
+        addData(globalScope.scope, {
+            name: names.accumulative,
+            source: bin.fullScaleDataname,
+            transform: [
+                {
+                    type: 'aggregate',
+                    groupby: this.getGrouping(),
+                    ops: ['count']
+                }
+            ]
+        }
         );
         const minCellSignal = (orientation === 'vertical') ? globalScope.signals.minCellWidth : globalScope.signals.minCellHeight;
         modifySignal(minCellSignal, 'max', `length(data(${JSON.stringify(names.accumulative)})) * ${minBandWidth}`);
@@ -179,7 +146,7 @@ export class Bar extends Layout {
             parentSize: orientation === 'horizontal' ? parentScope.sizeSignals.layoutWidth : parentScope.sizeSignals.layoutHeight
         });
 
-        const verticalLayoutHeight = `${parentScope.sizeSignals.layoutHeight} - scale(${JSON.stringify(names.yScale)}, data(${JSON.stringify(names.pivot)})[0][datum[${JSON.stringify(binField)}]])`;
+        const verticalLayoutHeight = `${parentScope.sizeSignals.layoutHeight} - scale(${JSON.stringify(names.yScale)}, ${names.localAggregateExtentSignal}[0])`;
 
         return {
             dataName: names.facetData,
@@ -187,7 +154,7 @@ export class Bar extends Layout {
             sizeSignals: orientation === 'horizontal' ?
                 {
                     layoutHeight: names.bandWidth,
-                    layoutWidth: `scale(${JSON.stringify(names.xScale)}, data(${JSON.stringify(names.pivot)})[0][datum[${JSON.stringify(binField)}]])`
+                    layoutWidth: `scale(${JSON.stringify(names.xScale)}, ${names.localAggregateExtentSignal}[0])`
                 }
                 :
                 {
@@ -283,13 +250,31 @@ export class Bar extends Layout {
                             signal: names.bandWidth
                         }
                     }
-            }
+            },
+            data: [
+                {
+                    name: 'zzz',
+                    source: names.facetData,
+                    transform: [
+                        {
+                            type: 'formula',
+                            expr: `datum[${JSON.stringify(aggregation)}]`,
+                            as: 'v2'
+                        },
+                        {
+                            type: 'extent',
+                            field: names.aggregateField,
+                            signal: names.localAggregateExtentSignal
+                        }
+                    ]
+                }
+            ]
         };
     }
 
     private getTransforms(aggregation: 'count' | 'sum', groupby: string[]) {
-        const trans: AggregateTransform = {
-            type: 'aggregate',
+        const trans: JoinAggregateTransform = {
+            type: 'joinaggregate',
             groupby,
             ops: [aggregation]
         };
