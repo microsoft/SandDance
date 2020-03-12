@@ -203,6 +203,7 @@ export function ColumnMap(props: Props) {
                     explorer={props.explorer}
                     signal={signal}
                     onChange={value => props.onChangeSignal && props.onChangeSignal(signal.name, value)}
+                    collapseLabel={props.collapseLabel}
                 />
             ))}
             {props.suffix}

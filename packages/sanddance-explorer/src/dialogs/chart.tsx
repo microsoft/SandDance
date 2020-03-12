@@ -97,6 +97,7 @@ export class Chart extends React.Component<Props, State> {
                                 signal={signal}
                                 explorer={props.explorer}
                                 disabled={props.disabled}
+                                collapseLabel={props.collapseLabels}
                             />
                         ))}
                     </Group>

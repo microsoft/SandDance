@@ -61,6 +61,7 @@ export function Color(props: Props) {
                     signal={props.colorReverseSignal}
                     explorer={props.explorer}
                     onChange={props.onColorReverseChange}
+                    collapseLabel={props.compactUI}
                 />}
             </Group>
             {colorColumn && !colorColumn.isColorData && <Group label={strings.labelColorBin}>
@@ -95,6 +96,7 @@ export function Color(props: Props) {
                     signal={props.colorBinSignal}
                     explorer={props.explorer}
                     onChange={props.onColorBinCountChange}
+                    collapseLabel={props.compactUI}
                 />
             </Group>}
             {colorColumn && !colorColumn.isColorData && <Group label={strings.labelColorOptions}>
