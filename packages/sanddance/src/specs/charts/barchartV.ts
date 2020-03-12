@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { AggregateContainer, AggregateContainerProps } from '../layouts/aggregateContainer';
 import { AxisScale, AxisScales } from '../interfaces';
-import { Bar, BarProps } from '../layouts/bar';
+import { Band, BandProps } from '../layouts/band';
 import { defaultBins, maxbins, minBarBandWidth } from '../defaults';
 import { Layout, LayoutProps } from '../layouts/layout';
 import { SignalNames } from '../constants';
@@ -15,8 +16,9 @@ import { Treemap, TreemapProps } from '../layouts/treemap';
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns, specViewOptions } = specContext;
     const { language } = specViewOptions;
-    let footprintClass: typeof Layout = Bar;
-    const barProps: BarProps = {
+    let footprintClass: typeof Layout = AggregateContainer;
+    const bandProps: BandProps = {
+        addScaleAxes: true,
         orientation: 'vertical',
         groupby: {
             column: specColumns.x,
@@ -25,8 +27,15 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             maxbinsSignalDisplayName: specContext.specViewOptions.language.XMaxBins,
             maxbins
         },
-        sumBy: specColumns.sum,
         minBandWidth: minBarBandWidth
+    };
+    const barProps: AggregateContainerProps = {
+        addScaleAxes: true,
+        globalAggregateMaxExtentSignal: 'globalAggregateMaxExtent',
+        globalAggregateMaxExtentScaledSignal: 'globalAggregateMaxExtentScaled',
+        parentSize: 'parentSize',
+        orientation: 'vertical',
+        sumBy: specColumns.sum
     };
     let footprintProps: LayoutProps = barProps;
     let unitLayoutClass: typeof Layout;
@@ -50,11 +59,11 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 z: specColumns.z,
                 zSize: null
             };
-            barProps.onBuild = barBuild => {
-                //treemapProps.maxGroupedUnits = barBuild.globalAggregateMaxExtentSignal;
-                //treemapProps.maxGroupedFillSize = `(${barBuild.globalAggregateMaxExtentScaledSignal})`;
-                treemapProps.zSize = barBuild.parentSize;
-            }
+            // barProps.onBuild = barBuild => {
+            //     //treemapProps.maxGroupedUnits = barBuild.globalAggregateMaxExtentSignal;
+            //     //treemapProps.maxGroupedFillSize = `(${barBuild.globalAggregateMaxExtentScaledSignal})`;
+            //     treemapProps.zSize = barBuild.parentSize;
+            // }
             unitLayoutProps = treemapProps;
             break;
         }
@@ -70,8 +79,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             y.aggregate = 'percent';
             y.title = language.percent;
             footprintClass = Slice;
-            const sliceProps: SliceProps = { orientation: 'vertical', groupby: barProps.groupby };
-            footprintProps = sliceProps;
+            //const sliceProps: SliceProps = { orientation: 'vertical', groupby: barProps.groupby };
+            //footprintProps = sliceProps;
             unitLayoutClass = Strip;
             const stripProps: StripProps = { orientation: 'horizontal' };
             unitLayoutProps = stripProps;
@@ -85,13 +94,16 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 sortBy: specColumns.sort,
                 fillDirection: 'right-up',
                 z: specColumns.z,
-                zSize: null
+                maxGroupedUnits: barProps.globalAggregateMaxExtentSignal,
+                maxGroupedFillSize: barProps.globalAggregateMaxExtentScaledSignal,
+                zSize: barProps.parentSize,
+
             };
-            barProps.onBuild = barBuild => {
-                squareProps.maxGroupedUnits = barBuild.globalAggregateMaxExtentSignal;
-                squareProps.maxGroupedFillSize = `(${barBuild.globalAggregateMaxExtentScaledSignal})`;
-                squareProps.zSize = barBuild.parentSize;
-            };
+            // barProps.onBuild = barBuild => {
+            //     squareProps.maxGroupedUnits = barBuild.globalAggregateMaxExtentSignal;
+            //     squareProps.maxGroupedFillSize = `(${barBuild.globalAggregateMaxExtentScaledSignal})`;
+            //     squareProps.zSize = barBuild.parentSize;
+            // };
             unitLayoutProps = squareProps;
             break;
         }
@@ -100,6 +112,10 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     return {
         axisScales,
         layouts: [
+            {
+                layoutClass: Band,
+                props: bandProps
+            },
             {
                 layoutClass: footprintClass,
                 props: footprintProps
