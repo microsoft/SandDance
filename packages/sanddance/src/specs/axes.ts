@@ -9,7 +9,12 @@ import {
     Scope,
     TextBaselineValue
 } from 'vega-typings';
-import { AxisScale, AxisScales, GlobalScope } from './interfaces';
+import {
+    AxisScale,
+    AxisScales,
+    GlobalScales,
+    GlobalScope
+} from './interfaces';
 import { Column, SpecColumns, SpecViewOptions } from './types';
 import { SignalNames } from './constants';
 import { util } from '@msrvida/vega-deck.gl';
@@ -28,7 +33,7 @@ export interface AxesScopeMap {
 
 interface Props {
     globalScope: GlobalScope,
-    globalScales: { x?: Scale, y?: Scale, z?: Scale },
+    globalScales: GlobalScales[],
     axisScales: AxisScales,
     plotOffsetSignals: { x: NewSignal, y: NewSignal },
     axesOffsets: { x: number, y: number },
@@ -43,53 +48,55 @@ export function addGlobalAxes(props: Props) {
     const { axesOffsets, axisScales, axesScopes, axesTitlePadding, globalScales, globalScope, labelBaseline, plotOffsetSignals, specColumns, specViewOptions } = props;
     const { scope } = globalScope;
 
-    for (let s in globalScales) {
-        let scale: Scale = globalScales[s];
-        if (scale) {
-            //TODO check to see if scale exists in global scope
-            addScale(scope, scale);
-            if (axisScales && s !== 'z') {
-                let axisScale: AxisScale = axisScales[s];
-                if (axisScale) {
-                    const lineColor = util.colorToString(specViewOptions.colors.axisLine);
-                    const horizontal = s === 'x';
-                    const column: Column = specColumns[s];
-                    const title = axisScale.title;
-                    const props: AxisProps = {
-                        title,
-                        horizontal,
-                        column,
-                        specViewOptions,
-                        lineColor,
-                        titlePadding: axesTitlePadding[s],
-                        labelBaseline: labelBaseline[s]
-                    }
-                    axesScopes['main'].forEach(a => addAxes(a.scope, createAxis({
-                        ...props,
-                        scale: a.scale || scale.name,
-                        showTitle: a.title,
-                        showLabels: a.labels,
-                        showLines: a.lines
-                    })));
-
-                    if (axesScopes[s]) {
-                        axesScopes[s].forEach(a => addAxes(a.scope, createAxis({
+    globalScales.forEach(gs => {
+        for (let s in gs) {
+            let scale: Scale = gs[s];
+            if (scale) {
+                //TODO check to see if scale exists in global scope
+                addScale(scope, scale);
+                if (axisScales && s !== 'z') {
+                    let axisScale: AxisScale = axisScales[s];
+                    if (axisScale) {
+                        const lineColor = util.colorToString(specViewOptions.colors.axisLine);
+                        const horizontal = s === 'x';
+                        const column: Column = specColumns[s];
+                        const title = axisScale.title;
+                        const props: AxisProps = {
+                            title,
+                            horizontal,
+                            column,
+                            specViewOptions,
+                            lineColor,
+                            titlePadding: axesTitlePadding[s],
+                            labelBaseline: labelBaseline[s]
+                        }
+                        axesScopes['main'].forEach(a => addAxes(a.scope, createAxis({
                             ...props,
                             scale: a.scale || scale.name,
                             showTitle: a.title,
                             showLabels: a.labels,
                             showLines: a.lines
                         })));
-                    }
 
-                    if (plotOffsetSignals[s] && axesOffsets[s]) {
-                        const plotOffsetSignal = plotOffsetSignals[s] as NewSignal;
-                        plotOffsetSignal.update = `${axesOffsets[s]}`;
+                        if (axesScopes[s]) {
+                            axesScopes[s].forEach(a => addAxes(a.scope, createAxis({
+                                ...props,
+                                scale: a.scale || scale.name,
+                                showTitle: a.title,
+                                showLabels: a.labels,
+                                showLines: a.lines
+                            })));
+                        }
+
+                        if (plotOffsetSignals[s] && axesOffsets[s]) {
+                            const plotOffsetSignal = plotOffsetSignals[s] as NewSignal;
+                            plotOffsetSignal.update = `${axesOffsets[s]}`;
+                        }
                     }
                 }
             }
         }
-    }
+    })
 }
 
 interface AxisProps {
