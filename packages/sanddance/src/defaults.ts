@@ -53,7 +53,7 @@ export const defaultViewerOptions: ViewerOptions = {
         YGridSize: 'Y grid size',
         InnerPaddingSize: 'Inner padding size',
         OuterPaddingSize: 'Outer padding size',
-        treeMapMethod: 'Method',
+        treeMapMethod: 'Treemap layout',
         facetColumns: 'Facet columns',
         facetRows: 'Facet rows',
         markOpacitySignal: 'Mark opacity',

@@ -132,7 +132,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 {
                     role: 'sum',
                     allowNone: false,
-                    excludeCategoric: true
+                    excludeCategoric: true,
+                    signals: [SignalNames.TreeMapMethod]
                 },
                 {
                     role: 'facet',

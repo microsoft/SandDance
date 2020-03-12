@@ -46,11 +46,13 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 },
                 {
                     role: 'facet',
-                    allowNone: true
+                    allowNone: true,
+                    signals: [SignalNames.FacetBins]
                 },
                 {
                     role: 'facetV',
-                    allowNone: true
+                    allowNone: true,
+                    signals: [SignalNames.FacetVBins]
                 }
             ],
             signals: [SignalNames.TreeMapMethod]

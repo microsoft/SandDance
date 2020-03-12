@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { addData, addMarks, addSignal } from '../scope';
+import { addZScale } from '../zBase';
+import { Column } from '../types';
 import { InnerScope } from '../interfaces';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { Data, Mark, RectMark } from 'vega-typings';
-import { addMarks, addTransforms, getDataByName, addSignal, addData } from '../scope';
-import { Column } from '../types';
+import { RectMark } from 'vega-typings';
 import { SignalNames } from '../constants';
 import { testForCollapseSelection } from '../selection';
-import { addZScale } from '../zBase';
 
 export interface TreemapProps extends LayoutProps {
     corner: 'top-left' | 'bottom-left';
@@ -91,6 +91,7 @@ export class Treemap extends Layout {
         };
 
         const mark: RectMark = {
+            name: prefix,
             type: 'rect',
             from: { data: names.dataName },
             encode: {
