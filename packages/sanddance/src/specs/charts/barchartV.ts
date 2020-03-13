@@ -88,7 +88,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 y.aggregate = 'sum';
                 y.title = language.sum;
                 const stripProps: StripProps = {
-                    orientation: 'horizontal',
+                    orientation: 'vertical',
                     size: specColumns.size,
                     sort: specColumns.sort,
                     z: specColumns.z,

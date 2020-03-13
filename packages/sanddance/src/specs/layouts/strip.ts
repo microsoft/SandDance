@@ -6,7 +6,7 @@ import { Column } from '../types';
 import { FieldNames } from '../constants';
 import { InnerScope, Orientation } from '../interfaces';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { LinearScale, RectMark } from 'vega-typings';
+import { LinearScale, RectMark, Transforms } from 'vega-typings';
 import { testForCollapseSelection } from '../selection';
 
 export interface StripProps extends LayoutProps {
@@ -45,21 +45,31 @@ export class Strip extends Layout {
 
         const horizontal = orientation === 'horizontal';
 
+        const transform: Transforms[] = [
+            {
+                type: 'stack',
+                field: size.name,
+                offset: 'normalize',
+                as: [FieldNames.First, FieldNames.Last]
+            }
+        ];
+
+        if (sort) {
+            transform.unshift({
+                type: 'collect',
+                sort: {
+                    field: sort.name
+                }
+            });
+        }
+
         addData(parentScope.scope, {
             name: names.dataName,
             source: parentScope.dataName,
-            transform: [
-                {
-                    type: 'stack',
-                    field: size.name,
-                    offset: 'normalize',
-                    sort: sort && {
-                        field: sort.name
-                    },
-                    as: [FieldNames.First, FieldNames.Last]
-                }
-            ]
+            transform
         });
+
+        const span = [FieldNames.Last, FieldNames.First].map(f => `datum[${JSON.stringify(f)}]`).join(' - ');
 
         const mark: RectMark = {
             name: prefix,
@@ -67,11 +77,31 @@ export class Strip extends Layout {
             from: { data: names.dataName },
             encode: {
                 update: {
+                    x: horizontal ?
+                        {
+                            signal: `datum[${JSON.stringify(FieldNames.First)}] * (${parentScope.sizeSignals.layoutWidth})`
+                        }
+                        :
+                        {
+                            value: 0
+                        },
+                    y: horizontal ?
+                        {
+                            value: 0
+                        }
+                        :
+                        {
+                            signal: `datum[${JSON.stringify(FieldNames.First)}] * (${parentScope.sizeSignals.layoutHeight})`
+                        },
                     height: {
-                        signal: `50`
+                        signal: horizontal
+                            ? parentScope.sizeSignals.layoutHeight
+                            : `(${span}) * (${parentScope.sizeSignals.layoutHeight})`
                     },
                     width: {
-                        signal: `50`
+                        signal: horizontal
+                            ? `(${span}) * (${parentScope.sizeSignals.layoutWidth})`
+                            : parentScope.sizeSignals.layoutWidth
                     },
                     ...z && {
                         z: { value: 0 },
@@ -91,8 +121,6 @@ export class Strip extends Layout {
         };
 
         addMarks(parentScope.scope, mark);
-
-        //TODO production rules for selection collapse
 
         let percentageScale: LinearScale;
         if (addPercentageScale) {
