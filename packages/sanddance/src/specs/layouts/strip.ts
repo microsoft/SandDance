@@ -1,22 +1,26 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Orientation, InnerScope } from '../interfaces';
-import { LayoutProps, Layout, LayoutBuildProps } from './layout';
+import { addData, addMarks } from '../scope';
+import { addZScale } from '../zBase';
 import { Column } from '../types';
+import { FieldNames } from '../constants';
+import { InnerScope, Orientation } from '../interfaces';
+import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { LinearScale, RectMark } from 'vega-typings';
 import { testForCollapseSelection } from '../selection';
-import { addMarks } from '../scope';
-import { addZScale } from '../zBase';
 
 export interface StripProps extends LayoutProps {
     addPercentageScale?: boolean;
     orientation: Orientation;
+    size: Column;
+    sort: Column;
     z: Column;
     zSize?: string;
 }
 
 export class Strip extends Layout {
     private names: {
+        dataName: string,
         scale: string,
         zScale: string
     }
@@ -25,6 +29,7 @@ export class Strip extends Layout {
         super(props);
         const p = this.prefix = `strip_${this.id}`;
         this.names = {
+            dataName: `data_${p}`,
             scale: `scale_${p}`,
             zScale: `scale_${p}_z`
         };
@@ -32,7 +37,7 @@ export class Strip extends Layout {
 
     public build(): InnerScope {
         const { names, prefix, props } = this;
-        const { addPercentageScale, globalScope, orientation, parentScope, z } = props;
+        const { addPercentageScale, globalScope, orientation, size, sort, parentScope, z } = props;
 
         let { zSize } = props;
         zSize = zSize || parentScope.sizeSignals.layoutHeight;
@@ -40,41 +45,33 @@ export class Strip extends Layout {
 
         const horizontal = orientation === 'horizontal';
 
-        let scale: LinearScale;
-
-        if (addPercentageScale) {
-            scale = {
-                type: 'linear',
-                name: names.scale,
-                domain: [0, 100],
-                range: horizontal ?
-                    [
-                        0,
-                        {
-                            signal: parentScope.sizeSignals.layoutWidth
-                        }
-                    ]
-                    :
-                    [
-                        {
-                            signal: parentScope.sizeSignals.layoutHeight
-                        },
-                        0
-                    ]
-            };
-        }
+        addData(parentScope.scope, {
+            name: names.dataName,
+            source: parentScope.dataName,
+            transform: [
+                {
+                    type: 'stack',
+                    field: size.name,
+                    offset: 'normalize',
+                    sort: sort && {
+                        field: sort.name
+                    },
+                    as: [FieldNames.First, FieldNames.Last]
+                }
+            ]
+        });
 
         const mark: RectMark = {
             name: prefix,
             type: 'rect',
-            from: { data: parentScope.dataName },
+            from: { data: names.dataName },
             encode: {
                 update: {
                     height: {
-                        value: 50
+                        signal: `50`
                     },
                     width: {
-                        value: 50
+                        signal: `50`
                     },
                     ...z && {
                         z: { value: 0 },
@@ -97,13 +94,36 @@ export class Strip extends Layout {
 
         //TODO production rules for selection collapse
 
+        let percentageScale: LinearScale;
+        if (addPercentageScale) {
+            percentageScale = {
+                type: 'linear',
+                name: names.scale,
+                domain: [0, 100],
+                range: horizontal ?
+                    [
+                        0,
+                        {
+                            signal: parentScope.sizeSignals.layoutWidth
+                        }
+                    ]
+                    :
+                    [
+                        {
+                            signal: parentScope.sizeSignals.layoutHeight
+                        },
+                        0
+                    ]
+            };
+        }
+
         return {
             dataName: prefix,
             globalScales: {
                 showAxes: true,
                 scales: {
-                    x: horizontal ? scale : undefined,
-                    y: horizontal ? undefined : scale
+                    x: horizontal ? percentageScale : undefined,
+                    y: horizontal ? undefined : percentageScale
                 }
             },
             sizeSignals: {

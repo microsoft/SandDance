@@ -44,6 +44,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         const stripProps: StripProps = {
             addPercentageScale: true,
             orientation: 'horizontal',
+            size: specColumns.size,
+            sort: specColumns.sort,
             z: specColumns.z,
             zSize: bandProps.parentHeight
         };
@@ -87,6 +89,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 x.title = language.sum;
                 const stripProps: StripProps = {
                     orientation: 'vertical',
+                    size: specColumns.size,
+                    sort: specColumns.sort,
                     z: specColumns.z,
                     zSize: aggProps.parentHeight
                 };
