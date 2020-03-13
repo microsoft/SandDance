@@ -63,7 +63,6 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         });
         switch (insight.sumStyle) {
             case 'treemap': {
-                //TODO disable sort
                 x.aggregate = 'sum';
                 x.title = language.sum;
                 const treemapProps: TreemapProps = {

@@ -202,7 +202,8 @@ export class Chart extends React.Component<Props, State> {
                             let disabled = props.disabled
                                 || (props.view === '2d' && specRole.role === 'z')
                                 || (specRole.role === 'size' && props.chart !== 'treemap' && !props.sumStyle)
-                                || (specRole.role === 'facetV' && (!props.insightColumns.facet || props.facetStyle !== 'cross'));
+                                || (specRole.role === 'facetV' && (!props.insightColumns.facet || props.facetStyle !== 'cross'))
+                                || (specRole.role === 'sort' && props.sumStyle === 'treemap');
                             return (
                                 <ColumnMap
                                     {...props}
