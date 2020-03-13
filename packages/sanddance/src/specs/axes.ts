@@ -59,7 +59,7 @@ export function addGlobalAxes(props: Props) {
                     if (axisScale) {
                         const lineColor = util.colorToString(specViewOptions.colors.axisLine);
                         const horizontal = s === 'x';
-                        const column: Column = specColumns[s];
+                        const column: Column = specColumns[s] || { quantitative: true };
                         const title = axisScale.title;
                         const props: AxisProps = {
                             title,
