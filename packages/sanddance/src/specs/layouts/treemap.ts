@@ -27,7 +27,7 @@ export class Treemap extends Layout {
         fieldY1: string,
         fieldDepth: string,
         fieldChildren: string,
-        zScaleName: string
+        zScale: string
     };
 
     constructor(public props: TreemapProps & LayoutBuildProps) {
@@ -41,7 +41,7 @@ export class Treemap extends Layout {
             fieldX1: `${p}_x1`,
             fieldY0: `${p}_y0`,
             fieldY1: `${p}_y1`,
-            zScaleName: `scale_${p}_z`
+            zScale: `scale_${p}_z`
         };
     }
 
@@ -51,7 +51,7 @@ export class Treemap extends Layout {
         let { zSize } = props;
 
         zSize = zSize || parentScope.sizeSignals.layoutHeight;
-        addZScale(z, zSize, globalScope, names.zScaleName);
+        addZScale(z, zSize, globalScope, names.zScale);
 
         addData(parentScope.scope, {
             name: names.dataName,
@@ -115,7 +115,7 @@ export class Treemap extends Layout {
                                 value: 0
                             },
                             {
-                                scale: names.zScaleName,
+                                scale: names.zScale,
                                 field: z.name
                             }
                         ]

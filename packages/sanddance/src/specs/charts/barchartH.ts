@@ -25,7 +25,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             maxbins
         },
         minBandWidth: minBarBandWidth,
-        showAxes: true
+        showAxes: true,
+        parentHeight: 'bandParentHeight'
     };
     const x: AxisScale = { title: null };
     const axisScales: AxisScales = {
@@ -33,16 +34,19 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         y: { title: specColumns.y && specColumns.y.name },
         z: { title: specColumns.z && specColumns.z.name }
     };
-    const layouts: LayoutPair[] = [
-        {
-            layoutClass: Band,
-            props: bandProps
-        }
-    ];
+    const layouts: LayoutPair[] = [{
+        layoutClass: Band,
+        props: bandProps
+    }];
     if (insight.sumStyle === 'strip-percent') {
         x.aggregate = 'percent';
         x.title = language.percent;
-        const stripProps: StripProps = { orientation: 'vertical' };
+        const stripProps: StripProps = {
+            addPercentageScale: true,
+            orientation: 'horizontal',
+            z: specColumns.z,
+            zSize: bandProps.parentHeight
+        };
         layouts.push({
             layoutClass: Strip,
             props: stripProps
@@ -51,9 +55,9 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         const aggProps: AggregateContainerProps = {
             niceScale: true,
             dock: 'left',
-            globalAggregateMaxExtentSignal: 'globalAggregateMaxExtent',
-            globalAggregateMaxExtentScaledSignal: 'globalAggregateMaxExtentScaled',
-            parentHeight: 'parentSize',
+            globalAggregateMaxExtentSignal: 'aggMaxExtent',
+            globalAggregateMaxExtentScaledSignal: 'aggMaxExtentScaled',
+            parentHeight: 'aggParentHeight',
             sumBy: specColumns.size,
             showAxes: true
         };
@@ -81,7 +85,11 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             case 'strip': {
                 x.aggregate = 'sum';
                 x.title = language.sum;
-                const stripProps: StripProps = { orientation: 'vertical' };
+                const stripProps: StripProps = {
+                    orientation: 'vertical',
+                    z: specColumns.z,
+                    zSize: aggProps.parentHeight
+                };
                 layouts.push({
                     layoutClass: Strip,
                     props: stripProps

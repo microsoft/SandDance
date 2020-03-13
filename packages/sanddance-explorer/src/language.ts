@@ -95,6 +95,7 @@ export const strings = {
     labelColorScheme: 'Scheme',
     labelTotal: 'Total by',
     labelTotalByCount: 'Count (Grid layout)',
+    labelTotalByCountStrip: 'Count (Strip layout)',
     labelTotalBySumTreemap: 'Sum (Treemap layout)',
     labelTotalBySumStripPercent: 'Sum as percentage (Strip layout)',
     labelColumnColor: 'Color by',

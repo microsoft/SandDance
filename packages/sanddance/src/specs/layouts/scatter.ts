@@ -43,7 +43,7 @@ export class Scatter extends Layout {
     }
 
     public build(): InnerScope {
-        const { names, props } = this;
+        const { names, prefix, props } = this;
         const { globalScope, parentScope, scatterPointSizeDisplay, x, y, z } = props;
 
         addSignal(globalScope.scope, {
@@ -180,6 +180,7 @@ export class Scatter extends Layout {
         });
 
         const mark: RectMark = {
+            name: prefix,
             type: 'rect',
             from: { data: names.validData },
             encode: { update }
@@ -187,7 +188,7 @@ export class Scatter extends Layout {
         addMarks(parentScope.scope, mark)
 
         return {
-            dataName: null,
+            dataName: prefix,
             sizeSignals: {
                 layoutHeight: null,
                 layoutWidth: null

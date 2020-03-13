@@ -52,7 +52,7 @@ export class AggregateContainer extends Layout {
 
     public build(): InnerScope {
         const { aggregation, names, prefix, props } = this;
-        const { dock, globalScope, groupings, niceScale, parentScope, showAxes } = props;
+        const { dock, globalScope, groupings, niceScale, parentHeight, parentScope, showAxes } = props;
 
         //this needs to be global since the scale depends on it
         addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName),
@@ -168,7 +168,7 @@ export class AggregateContainer extends Layout {
                     : globalAggregateMaxExtentScaledValue
             },
             {
-                name: props.parentHeight,
+                name: parentHeight,
                 update: parentScope.sizeSignals.layoutHeight
             }
         );

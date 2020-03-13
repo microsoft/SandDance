@@ -169,6 +169,12 @@ export class Chart extends React.Component<Props, State> {
                                                     selected: !props.sumStyle
                                                 },
                                                 {
+                                                    key: 'strip',
+                                                    text: strings.labelTotalByCountStrip,
+                                                    data: 'strip',
+                                                    selected: props.sumStyle === 'strip'
+                                                },
+                                                {
                                                     key: 'sum-treemap',
                                                     text: strings.labelTotalBySumTreemap,
                                                     data: 'treemap',

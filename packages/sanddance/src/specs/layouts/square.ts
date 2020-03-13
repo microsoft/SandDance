@@ -6,7 +6,6 @@ import {
     GroupEncodeEntry,
     NumericValueRef,
     RectMark,
-    Scope,
     Transforms
 } from 'vega-typings';
 import { InnerScope } from '../interfaces';
@@ -38,7 +37,7 @@ export class Square extends Layout {
         facetData: string,
         grouping: string,
         maxGroup: string,
-        zScaleName: string
+        zScale: string
     }
 
     constructor(public props: SquareProps & LayoutBuildProps) {
@@ -57,16 +56,16 @@ export class Square extends Layout {
             facetData: `facet_${p}`,
             grouping: `data_${p}_grouping`,
             maxGroup: `${p}_max_grouping`,
-            zScaleName: `scale_${p}_z`
+            zScale: `scale_${p}_z`
         };
     }
 
     public build(): InnerScope {
-        const { fillDirection, globalScope, parentScope, collapseYHeight, z } = this.props;
-        let { zSize } = this.props;
-        const { names, prefix } = this;
+        const { names, prefix, props } = this;
+        const { fillDirection, globalScope, parentScope, collapseYHeight, z } = props;
+        let { zSize } = props;
         zSize = zSize || parentScope.sizeSignals.layoutHeight;
-        addZScale(z, zSize, globalScope, names.zScaleName);
+        addZScale(z, zSize, globalScope, names.zScale);
         const xy = this.encodeXY();
         if (collapseYHeight) {
             xy.y = [
@@ -110,7 +109,7 @@ export class Square extends Layout {
                                 value: 0
                             },
                             {
-                                scale: names.zScaleName,
+                                scale: names.zScale,
                                 field: z.name
                             }
                         ]
@@ -120,15 +119,11 @@ export class Square extends Layout {
         };
         addMarks(parentScope.scope, mark);
 
-        let dataName: string
-        let scope: Scope;
-
         this.addData();
         this.addSignals();
 
         return {
-            dataName,
-            scope,
+            dataName: prefix,
             mark,
             sizeSignals: {
                 layoutHeight: names.size,
