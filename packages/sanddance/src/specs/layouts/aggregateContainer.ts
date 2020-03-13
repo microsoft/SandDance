@@ -54,8 +54,6 @@ export class AggregateContainer extends Layout {
         const { aggregation, names, prefix, props } = this;
         const { dock, globalScope, groupings, niceScale, parentScope, showAxes } = props;
 
-        console.log(groupings);
-
         //this needs to be global since the scale depends on it
         addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName),
             {
@@ -225,7 +223,6 @@ export class AggregateContainer extends Layout {
     }
 
     private getTransforms(aggregation: 'count' | 'sum', groupby: string[]) {
-        console.log('groupby', groupby);
         const trans: JoinAggregateTransform = {
             type: 'joinaggregate',
             groupby,

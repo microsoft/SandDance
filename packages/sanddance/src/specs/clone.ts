@@ -24,8 +24,6 @@ export function cloneVegaSpecWithData(context: SpecContext, currData: object[]):
     const specBuilder = getSpecBuilderForChart(context);
     if (specBuilder) {
         const specResult = specBuilder.build();
-        console.log(specResult.vegaSpec);
-
         if (!specResult.errors) {
             const data0 = specResult.vegaSpec.data[0] as ValuesData;
             data0.values = currData;
