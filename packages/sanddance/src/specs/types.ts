@@ -136,7 +136,6 @@ export interface Insight {
     view?: VegaDeckGl.types.View;
     filter?: Search;
     facetStyle?: FacetStyle;
-    facets?: Facets;            //TODO: deprecate
     sumStyle?: SumStyle;
 
     /**
@@ -175,7 +174,7 @@ export interface Insight {
     transform?: Transforms[];
 }
 
-export type InsightColumnRoles = 'uid' | 'x' | 'y' | 'z' | 'group' | 'size' | 'color' | 'facet' | 'facetV' | 'sort' | 'sum';
+export type InsightColumnRoles = 'uid' | 'x' | 'y' | 'z' | 'group' | 'size' | 'color' | 'facet' | 'facetV' | 'sort';
 
 export interface InsightColumns {
     uid?: string;
@@ -188,7 +187,6 @@ export interface InsightColumns {
     sort?: string;
     facet?: string;
     facetV?: string;
-    sum?: string;
 }
 
 export interface SpecRoleCapabilities {
@@ -418,11 +416,6 @@ export interface SpecColumns {
      * Column to use for sorting a visualization, not applicable to scatterplot.
      */
     sort?: Column;
-
-    /**
-     * Column to use for summing a visualization.
-     */
-    sum?: Column;
 
     /**
      * Column to use for faceting a visualization.

@@ -124,7 +124,7 @@ export class Chart extends React.Component<Props, State> {
                                             calloutProps={{ style: { minWidth: '18em' } }}
                                             options={[
                                                 {
-                                                    key: 'wrap',                                                    
+                                                    key: 'wrap',
                                                     text: 'Wrap',
                                                     data: 'wrap',
                                                     selected: !props.facetStyle || props.facetStyle === 'wrap'
@@ -155,8 +155,8 @@ export class Chart extends React.Component<Props, State> {
                                     );
                                     break;
                                 }
-                                case 'sum': {                                    
-                                    prefix = (
+                                case 'size': {
+                                    prefix = props.chart === 'treemap' ? null : (
                                         <Dropdown
                                             collapseLabel={props.collapseLabels}
                                             label={strings.labelTotal}
@@ -184,7 +184,7 @@ export class Chart extends React.Component<Props, State> {
                                                 }
                                             ]}
                                             onChange={(e, o) =>
-                                                props.changeColumnMapping('sum', 'sum', { sumStyle: o.data })
+                                                props.changeColumnMapping('size', 'size', { sumStyle: o.data })
                                             }
                                         />
                                     );
@@ -201,7 +201,7 @@ export class Chart extends React.Component<Props, State> {
                             }
                             let disabled = props.disabled
                                 || (props.view === '2d' && specRole.role === 'z')
-                                || (specRole.role === 'sum' && !props.sumStyle)
+                                || (specRole.role === 'size' && props.chart !== 'treemap' && !props.sumStyle)
                                 || (specRole.role === 'facetV' && (!props.insightColumns.facet || props.facetStyle !== 'cross'));
                             return (
                                 <ColumnMap

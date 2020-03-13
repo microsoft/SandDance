@@ -40,11 +40,11 @@ export function ensureColumnsPopulated(chart: SandDance.types.Chart, insightColu
         case 'barchart':
         case 'barchartV':
             ensureColumn('x');
-            ensureColumn('sum', true);
+            ensureColumn('size', true);
             break;
         case 'barchartH':
             ensureColumn('y');
-            ensureColumn('sum', true);
+            ensureColumn('size', true);
             break;
         case 'density':
         case 'scatterplot':

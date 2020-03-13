@@ -54,7 +54,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             globalAggregateMaxExtentSignal: 'globalAggregateMaxExtent',
             globalAggregateMaxExtentScaledSignal: 'globalAggregateMaxExtentScaled',
             parentHeight: 'parentSize',
-            sumBy: specColumns.sum,
+            sumBy: specColumns.size,
             showAxes: true
         };
         layouts.push({
@@ -68,7 +68,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 x.title = language.sum;
                 const treemapProps: TreemapProps = {
                     corner: 'top-left',
-                    size: specColumns.sum,
+                    size: specColumns.size,
                     treeMapMethod: specViewOptions.language.treeMapMethod,
                     z: specColumns.z,
                     zSize: aggProps.parentHeight
@@ -132,8 +132,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     allowNone: true
                 },
                 {
-                    role: 'sum',
-                    allowNone: false,
+                    role: 'size',
+                    allowNone: true,
                     excludeCategoric: true,
                     signals: [SignalNames.TreeMapMethod]
                 },
