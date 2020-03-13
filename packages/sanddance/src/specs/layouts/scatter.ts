@@ -71,7 +71,7 @@ export class Scatter extends Layout {
             }).filter(Boolean)
         });
 
-        const globalScales: GlobalScales = {};
+        const globalScales: GlobalScales = { showAxes: true, globalScales: {} };
         const update: RectEncodeEntry = {
             height: [
                 {
@@ -92,7 +92,7 @@ export class Scatter extends Layout {
             y: [
                 {
                     test: testForCollapseSelection(),
-                    signal: parentScope.sizeSignals.layoutHeight 
+                    signal: parentScope.sizeSignals.layoutHeight
                 },
                 {
                     scale: names.yScale,

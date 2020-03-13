@@ -336,7 +336,7 @@ export class SpecBuilder {
                 groupings,
                 id: i
             };
-            let { layout, addScaleAxes } = this.createLayout(layouts[i], buildProps);
+            let layout = this.createLayout(layouts[i], buildProps);
             try {
                 childScope = layout.build();
                 let grouping = layout.getGrouping();
@@ -352,7 +352,7 @@ export class SpecBuilder {
                 };
                 break;
             }
-            if (childScope && addScaleAxes && childScope.globalScales) {
+            if (childScope && childScope.globalScales) {
                 allGlobalScales.push(childScope.globalScales);
             }
             if (childScope.encodingRuleMap) {
@@ -368,13 +368,12 @@ export class SpecBuilder {
 
     private createLayout(layoutPair: LayoutPair, buildProps: LayoutBuildProps) {
         const { layoutClass, props } = layoutPair;
-        const { addScaleAxes } = props;
         const layoutBuildProps: LayoutProps & LayoutBuildProps = {
             ...props,
             ...buildProps
         };
         const layout = new layoutClass(layoutBuildProps);
         layout.id = buildProps.id;
-        return { layout, addScaleAxes };
+        return layout;
     }
 }

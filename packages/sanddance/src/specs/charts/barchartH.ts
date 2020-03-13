@@ -96,7 +96,6 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             break;
         }
     }
-    footprintProps.addScaleAxes = true;
     return {
         axisScales,
         layouts: [

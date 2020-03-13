@@ -162,8 +162,11 @@ export class Bar extends Layout {
                     layoutWidth: names.bandWidth
                 },
             globalScales: {
-                x: xScale,
-                y: yScale
+                showAxes: true,
+                globalScales: {
+                    x: xScale,
+                    y: yScale
+                }
             },
             encodingRuleMap: orientation === 'horizontal' ?
                 {

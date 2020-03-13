@@ -12,7 +12,6 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         x: specColumns.x,
         y: specColumns.y,
         z: specColumns.z,
-        addScaleAxes: true,
         scatterPointSizeDisplay: specViewOptions.language.scatterPointSize
     };
     const axisScales: AxisScales = {

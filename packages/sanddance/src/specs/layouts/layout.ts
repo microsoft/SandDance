@@ -3,7 +3,6 @@
 import { AxisScales, GlobalScope, InnerScope } from '../interfaces';
 
 export interface LayoutProps {
-    addScaleAxes?: boolean;
 }
 
 export interface LayoutPair {

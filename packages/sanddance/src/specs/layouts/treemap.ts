@@ -70,7 +70,6 @@ export class Treemap extends Layout {
                     paddingInner: 1,
                     paddingOuter: 0,
                     size: [
-                        //TODO same global scale
                         { signal: parentScope.sizeSignals.layoutWidth },
                         { signal: parentScope.sizeSignals.layoutHeight }
                     ],

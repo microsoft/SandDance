@@ -5,6 +5,8 @@ import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
 import { Treemap, TreemapProps } from '../layouts/treemap';
+import { LayoutPair } from '../layouts/layout';
+import { AggregateContainer, AggregateContainerProps } from '../layouts/aggregateContainer';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns, specViewOptions } = specContext;
@@ -18,14 +20,37 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     const axisScales: AxisScales = {
         z: { title: specColumns.z && specColumns.z.name }
     };
+    const layouts: LayoutPair[] = [];
+    if (specColumns.facet) {
+        axisScales.y = {
+            title: null,
+            aggregate: 'sum'
+        };
+        const globalAggregateMaxExtentScaledSignal = 'globalAggregateMaxExtentScaledSignal';
+        const globalAggregateMaxExtentSignal = 'globalAggregateMaxExtentSignal';
+        const parentHeight = 'parentHeight';
+        const props: AggregateContainerProps = {
+            dock: 'top',
+            niceScale: false,
+            globalAggregateMaxExtentScaledSignal,
+            globalAggregateMaxExtentSignal,
+            parentHeight,
+            sumBy: specColumns.size,
+            showAxes: false
+        };
+        treemapProps.zSize = props.parentHeight;
+        layouts.push({
+            layoutClass: AggregateContainer,
+            props
+        });
+    }
+    layouts.push({
+        layoutClass: Treemap,
+        props: treemapProps
+    });
     return {
         axisScales,
-        layouts: [
-            {
-                layoutClass: Treemap,
-                props: treemapProps
-            }
-        ],
+        layouts,
         specCapabilities: {
             roles: [
                 {

@@ -18,6 +18,7 @@ export interface BandProps extends LayoutProps {
     groupby: DiscreteColumn;
     minBandWidth: number;
     orientation: Orientation;
+    showAxes: boolean;
 }
 
 export class Band extends Layout {
@@ -49,7 +50,7 @@ export class Band extends Layout {
 
     public build(): InnerScope {
         const { bin, names, props } = this;
-        const { globalScope, minBandWidth, orientation, parentScope } = props;
+        const { globalScope, minBandWidth, orientation, parentScope, showAxes } = props;
         const binField = bin.fields[0];
         if (bin.native === false) {
             addSignal(globalScope.scope, bin.maxbinsSignal);
@@ -95,8 +96,11 @@ export class Band extends Layout {
                     layoutWidth: names.bandWidth
                 },
             globalScales: {
-                x: horizontal ? undefined : scale,
-                y: horizontal ? scale : undefined
+                showAxes,
+                globalScales: {
+                    x: horizontal ? undefined : scale,
+                    y: horizontal ? scale : undefined
+                }
             },
             encodingRuleMap: horizontal ?
                 {

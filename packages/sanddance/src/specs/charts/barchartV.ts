@@ -16,7 +16,6 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns, specViewOptions } = specContext;
     const { language } = specViewOptions;
     const bandProps: BandProps = {
-        addScaleAxes: true,
         orientation: 'vertical',
         groupby: {
             column: specColumns.x,
@@ -25,7 +24,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             maxbinsSignalDisplayName: specContext.specViewOptions.language.XMaxBins,
             maxbins
         },
-        minBandWidth: minBarBandWidth
+        minBandWidth: minBarBandWidth,
+        showAxes: true
     };
     const y: AxisScale = { title: null };
     const axisScales: AxisScales = {
@@ -49,12 +49,13 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         });
     } else {
         const aggProps: AggregateContainerProps = {
-            addScaleAxes: true,
+            niceScale: true,
             dock: 'bottom',
             globalAggregateMaxExtentSignal: 'globalAggregateMaxExtent',
             globalAggregateMaxExtentScaledSignal: 'globalAggregateMaxExtentScaled',
             parentHeight: 'parentSize',
-            sumBy: specColumns.sum
+            sumBy: specColumns.sum,
+            showAxes: true
         };
         layouts.push({
             layoutClass: AggregateContainer,

@@ -30,8 +30,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             maxbins,
             maxbinsSignalDisplayName: 'TODO maxbins y',
             maxbinsSignalName: 'TODO maxbins y'
-        },
-        addScaleAxes: true
+        }
     };
     return {
         axisScales,

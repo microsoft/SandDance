@@ -19,6 +19,8 @@ export interface AggregateContainerProps extends LayoutProps {
     globalAggregateMaxExtentSignal: string;
     globalAggregateMaxExtentScaledSignal: string;
     parentHeight: string;
+    niceScale: boolean;
+    showAxes: boolean;
 }
 
 export class AggregateContainer extends Layout {
@@ -46,7 +48,7 @@ export class AggregateContainer extends Layout {
 
     public build(): InnerScope {
         const { aggregation, names, prefix, props } = this;
-        const { dock, globalScope, groupings, parentScope } = props;
+        const { dock, globalScope, groupings, niceScale, parentScope, showAxes } = props;
 
         console.log(groupings);
 
@@ -139,7 +141,7 @@ export class AggregateContainer extends Layout {
                         : parentScope.sizeSignals.layoutHeight
                 }
             ],
-            nice: true,
+            nice: niceScale,
             zero: true
         };
 
@@ -168,8 +170,11 @@ export class AggregateContainer extends Layout {
                     layoutWidth: parentScope.sizeSignals.layoutWidth
                 },
             globalScales: {
-                x: horizontal ? scale : undefined,
-                y: horizontal ? undefined : scale
+                showAxes,
+                globalScales: {
+                    x: horizontal ? scale : undefined,
+                    y: horizontal ? undefined : scale
+                }
             },
             encodingRuleMap: horizontal ?
                 {

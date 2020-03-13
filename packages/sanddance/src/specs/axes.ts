@@ -48,13 +48,13 @@ export function addGlobalAxes(props: Props) {
     const { axesOffsets, axisScales, axesScopes, axesTitlePadding, globalScales, globalScope, labelBaseline, plotOffsetSignals, specColumns, specViewOptions } = props;
     const { scope } = globalScope;
 
-    globalScales.forEach(gs => {
-        for (let s in gs) {
-            let scale: Scale = gs[s];
+    globalScales.forEach(gsp => {
+        const { globalScales } = gsp;
+        for (let s in globalScales) {
+            let scale: Scale = globalScales[s];
             if (scale) {
-                //TODO check to see if scale exists in global scope
                 addScale(scope, scale);
-                if (axisScales && s !== 'z') {
+                if (gsp.showAxes && axisScales && s !== 'z') {
                     let axisScale: AxisScale = axisScales[s];
                     if (axisScale) {
                         const lineColor = util.colorToString(specViewOptions.colors.axisLine);
