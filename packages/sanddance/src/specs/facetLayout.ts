@@ -120,7 +120,7 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
     return { cellTitles, colRowTitles, layoutPair, plotPadding, scales, signals };
 }
 
-export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSource, rowTitleSource: TitleSource, sizeSignals: SizeSignals) {
+export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSource, rowTitleSource: TitleSource, sizeSignals: SizeSignals, specViewOptions: SpecViewOptions) {
     const titleSignal = `parent[${JSON.stringify(FieldNames.FacetTitle)}]`;
     const index = `datum[${JSON.stringify(FieldNames.Ordinal)}] - 1`;
     const col = facetColumnHeaderFooter(colTitleSource.dataName, sizeSignals, index);
@@ -130,6 +130,17 @@ export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSo
         {
             type: 'text',
             encode: {
+                enter: {
+                    align: {
+                        value: 'center'
+                    },
+                    baseline: {
+                        value: 'middle'
+                    },
+                    fill: {
+                        value: util.colorToString(specViewOptions.colors.axisText)
+                    }
+                },
                 update: {
                     x: {
                         signal: `${sizeSignals.layoutWidth} / 2`
@@ -142,12 +153,6 @@ export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSo
                     },
                     text: {
                         signal: titleSignal
-                    },
-                    baseline: {
-                        value: 'middle'
-                    },
-                    align: {
-                        value: 'center'
                     }
                 }
             }
@@ -157,6 +162,17 @@ export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSo
         {
             type: 'text',
             encode: {
+                enter: {
+                    align: {
+                        value: 'left'
+                    },
+                    baseline: {
+                        value: 'middle'
+                    },
+                    fill: {
+                        value: util.colorToString(specViewOptions.colors.axisText)
+                    }
+                },
                 update: {
                     y: {
                         signal: `${sizeSignals.layoutHeight} / 2`
@@ -169,12 +185,6 @@ export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSo
                     },
                     text: {
                         signal: titleSignal
-                    },
-                    baseline: {
-                        value: 'middle'
-                    },
-                    align: {
-                        value: 'left'
                     }
                 }
             }
@@ -182,7 +192,7 @@ export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSo
     );
 }
 
-export function addFacetCellTitles(scope: Scope, sizeSignals: SizeSignals, specViewOptions: SpecViewOptions, column: Column) {
+export function addFacetCellTitles(scope: Scope, sizeSignals: SizeSignals, specViewOptions: SpecViewOptions) {
     addMarks(scope, {
         type: 'text',
         encode: {
@@ -195,12 +205,6 @@ export function addFacetCellTitles(scope: Scope, sizeSignals: SizeSignals, specV
                 },
                 fill: {
                     value: util.colorToString(specViewOptions.colors.axisText)
-                },
-                limit: {
-                    signal: sizeSignals.layoutWidth
-                },
-                y: {
-                    signal: `-${SignalNames.FacetPaddingTop} / 2`
                 }
             },
             update: {
@@ -212,6 +216,12 @@ export function addFacetCellTitles(scope: Scope, sizeSignals: SizeSignals, specV
                 },
                 fontSize: {
                     signal: SignalNames.TextSize
+                },
+                limit: {
+                    signal: sizeSignals.layoutWidth
+                },
+                y: {
+                    signal: `-${SignalNames.FacetPaddingTop} / 2`
                 }
             }
         }

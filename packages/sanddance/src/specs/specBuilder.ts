@@ -156,13 +156,13 @@ export class SpecBuilder {
                 return specResult;
             }
             if (facetLayout && facetLayout.cellTitles) {
-                addFacetCellTitles(firstScope.scope, firstScope.sizeSignals, specViewOptions, specColumns.facet);
+                addFacetCellTitles(firstScope.scope, firstScope.sizeSignals, specViewOptions);
                 if (firstScope.emptyScope) {
-                    addFacetCellTitles(firstScope.emptyScope, firstScope.sizeSignals, specViewOptions, specColumns.facet);
+                    addFacetCellTitles(firstScope.emptyScope, firstScope.sizeSignals, specViewOptions);
                 }
             }
             if (facetLayout && facetLayout.colRowTitles && firstScope.titles) {
-                addFacetColRowTitles(globalScope.scope, firstScope.titles.x, firstScope.titles.y, firstScope.sizeSignals);
+                addFacetColRowTitles(globalScope.scope, firstScope.titles.x, firstScope.titles.y, firstScope.sizeSignals, specViewOptions);
             }
             if (allGlobalScales.length > 0) {
                 let axesScopes: AxesScopeMap = facetLayout ?
