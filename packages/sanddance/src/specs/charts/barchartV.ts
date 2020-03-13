@@ -4,9 +4,8 @@ import { AggregateContainer, AggregateContainerProps } from '../layouts/aggregat
 import { AxisScale, AxisScales } from '../interfaces';
 import { Band, BandProps } from '../layouts/band';
 import { defaultBins, maxbins, minBarBandWidth } from '../defaults';
-import { Layout, LayoutProps } from '../layouts/layout';
+import { LayoutPair } from '../layouts/layout';
 import { SignalNames } from '../constants';
-import { Slice, SliceProps } from '../layouts/slice';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
 import { Square, SquareProps } from '../layouts/square';
@@ -16,7 +15,6 @@ import { Treemap, TreemapProps } from '../layouts/treemap';
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns, specViewOptions } = specContext;
     const { language } = specViewOptions;
-    let footprintClass: typeof Layout = AggregateContainer;
     const bandProps: BandProps = {
         addScaleAxes: true,
         orientation: 'vertical',
@@ -29,102 +27,89 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         },
         minBandWidth: minBarBandWidth
     };
-    const barProps: AggregateContainerProps = {
-        addScaleAxes: true,
-        globalAggregateMaxExtentSignal: 'globalAggregateMaxExtent',
-        globalAggregateMaxExtentScaledSignal: 'globalAggregateMaxExtentScaled',
-        parentSize: 'parentSize',
-        orientation: 'vertical',
-        sumBy: specColumns.sum
-    };
-    let footprintProps: LayoutProps = barProps;
-    let unitLayoutClass: typeof Layout;
-    let unitLayoutProps: LayoutProps;
     const y: AxisScale = { title: null };
     const axisScales: AxisScales = {
         x: { title: specColumns.x && specColumns.x.name },
         y,
         z: { title: specColumns.z && specColumns.z.name }
     };
-    switch (insight.sumStyle) {
-        case 'treemap': {
-            //TODO disable sort
-            y.aggregate = 'sum';
-            y.title = language.sum;
-            unitLayoutClass = Treemap;
-            const treemapProps: TreemapProps = {
-                corner: 'bottom-left',
-                size: specColumns.sum,
-                treeMapMethod: specViewOptions.language.treeMapMethod,
-                z: specColumns.z,
-                zSize: null
-            };
-            // barProps.onBuild = barBuild => {
-            //     //treemapProps.maxGroupedUnits = barBuild.globalAggregateMaxExtentSignal;
-            //     //treemapProps.maxGroupedFillSize = `(${barBuild.globalAggregateMaxExtentScaledSignal})`;
-            //     treemapProps.zSize = barBuild.parentSize;
-            // }
-            unitLayoutProps = treemapProps;
-            break;
+    const layouts: LayoutPair[] = [
+        {
+            layoutClass: Band,
+            props: bandProps
         }
-        case 'strip': {
-            y.aggregate = 'sum';
-            y.title = language.sum;
-            unitLayoutClass = Strip;
-            const stripProps: StripProps = { orientation: 'horizontal' };
-            unitLayoutProps = stripProps;
-            break;
-        }
-        case 'strip-percent': {
-            y.aggregate = 'percent';
-            y.title = language.percent;
-            footprintClass = Slice;
-            //const sliceProps: SliceProps = { orientation: 'vertical', groupby: barProps.groupby };
-            //footprintProps = sliceProps;
-            unitLayoutClass = Strip;
-            const stripProps: StripProps = { orientation: 'horizontal' };
-            unitLayoutProps = stripProps;
-            break;
-        }
-        default: {
-            y.aggregate = 'count';
-            y.title = language.count;
-            unitLayoutClass = Square;
-            const squareProps: SquareProps = {
-                sortBy: specColumns.sort,
-                fillDirection: 'right-up',
-                z: specColumns.z,
-                maxGroupedUnits: barProps.globalAggregateMaxExtentSignal,
-                maxGroupedFillSize: barProps.globalAggregateMaxExtentScaledSignal,
-                zSize: barProps.parentSize,
-
-            };
-            // barProps.onBuild = barBuild => {
-            //     squareProps.maxGroupedUnits = barBuild.globalAggregateMaxExtentSignal;
-            //     squareProps.maxGroupedFillSize = `(${barBuild.globalAggregateMaxExtentScaledSignal})`;
-            //     squareProps.zSize = barBuild.parentSize;
-            // };
-            unitLayoutProps = squareProps;
-            break;
+    ];
+    if (insight.sumStyle === 'strip-percent') {
+        y.aggregate = 'percent';
+        y.title = language.percent;
+        const stripProps: StripProps = { orientation: 'horizontal' };
+        layouts.push({
+            layoutClass: Strip,
+            props: stripProps
+        });
+    } else {
+        const aggProps: AggregateContainerProps = {
+            addScaleAxes: true,
+            dock: 'bottom',
+            globalAggregateMaxExtentSignal: 'globalAggregateMaxExtent',
+            globalAggregateMaxExtentScaledSignal: 'globalAggregateMaxExtentScaled',
+            parentHeight: 'parentSize',
+            sumBy: specColumns.sum
+        };
+        layouts.push({
+            layoutClass: AggregateContainer,
+            props: aggProps
+        });
+        switch (insight.sumStyle) {
+            case 'treemap': {
+                //TODO disable sort
+                y.aggregate = 'sum';
+                y.title = language.sum;
+                const treemapProps: TreemapProps = {
+                    corner: 'bottom-left',
+                    size: specColumns.sum,
+                    treeMapMethod: specViewOptions.language.treeMapMethod,
+                    z: specColumns.z,
+                    zSize: aggProps.parentHeight
+                };
+                layouts.push({
+                    layoutClass: Treemap,
+                    props: treemapProps
+                });
+                break;
+            }
+            case 'strip': {
+                y.aggregate = 'sum';
+                y.title = language.sum;
+                const stripProps: StripProps = { orientation: 'horizontal' };
+                layouts.push({
+                    layoutClass: Strip,
+                    props: stripProps
+                });
+                break;
+            }
+            default: {
+                y.aggregate = 'count';
+                y.title = language.count;
+                const squareProps: SquareProps = {
+                    sortBy: specColumns.sort,
+                    fillDirection: 'right-up',
+                    z: specColumns.z,
+                    maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
+                    maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal,
+                    zSize: aggProps.parentHeight
+                };
+                layouts.push({
+                    layoutClass: Square,
+                    props: squareProps
+                })
+                break;
+            }
         }
     }
-    footprintProps.addScaleAxes = true;
     return {
         axisScales,
-        layouts: [
-            {
-                layoutClass: Band,
-                props: bandProps
-            },
-            {
-                layoutClass: footprintClass,
-                props: footprintProps
-            },
-            {
-                layoutClass: unitLayoutClass,
-                props: unitLayoutProps
-            }
-        ],
+        layouts,
         specCapabilities: {
             roles: [
                 {

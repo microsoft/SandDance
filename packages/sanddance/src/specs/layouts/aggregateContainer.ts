@@ -7,18 +7,18 @@ import {
     addTransforms,
     getDataByName
 } from '../scope';
-import { AxisScale, InnerScope, Orientation } from '../interfaces';
+import { AxisScale, InnerScope } from '../interfaces';
 import { Column } from '../types';
 import { GroupMark, JoinAggregateTransform, LinearScale } from 'vega-typings';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { testForCollapseSelection } from '../selection';
 
 export interface AggregateContainerProps extends LayoutProps {
+    dock: 'bottom' | 'top' | 'left';
     sumBy: Column;
-    orientation: Orientation;
     globalAggregateMaxExtentSignal: string;
     globalAggregateMaxExtentScaledSignal: string;
-    parentSize: string;
+    parentHeight: string;
 }
 
 export class AggregateContainer extends Layout {
@@ -46,7 +46,7 @@ export class AggregateContainer extends Layout {
 
     public build(): InnerScope {
         const { aggregation, names, prefix, props } = this;
-        const { globalScope, groupings, orientation, parentScope } = props;
+        const { dock, globalScope, groupings, parentScope } = props;
 
         console.log(groupings);
 
@@ -82,43 +82,42 @@ export class AggregateContainer extends Layout {
                 update: `${names.globalAggregateExtentSignal}[1]`
             }
         );
-        const horizontal = orientation === 'horizontal';
         const scaledAggregateValue = `scale(${JSON.stringify(names.scale)}, ${names.localAggregateExtentSignal}[0])`;
+        const horizontal = dock === 'left';
         const mark: GroupMark = {
             style: 'cell',
             name: prefix,
             type: 'group',
             encode: {
-                update: horizontal ?
-                    {
-                        x: {
+                update: {
+                    x: {
+                        value: 0
+                    },
+                    y: dock === 'bottom' ?
+                        {
+                            signal: `${parentScope.sizeSignals.layoutHeight} - ${scaledAggregateValue}`
+                        }
+                        :
+                        {
                             value: 0
                         },
-                        y: {
-                            value: 0
-                        },
-                        height: {
+                    height: horizontal ?
+                        {
                             signal: parentScope.sizeSignals.layoutHeight
+                        }
+                        :
+                        {
+                            signal: scaledAggregateValue
                         },
-                        width: {
+                    width: horizontal ?
+                        {
                             signal: scaledAggregateValue
                         }
-                    }
-                    :
-                    {
-                        x: {
-                            value: 0
-                        },
-                        y: {
-                            value: 0
-                        },
-                        height: {
-                            signal: scaledAggregateValue
-                        },
-                        width: {
+                        :
+                        {
                             signal: parentScope.sizeSignals.layoutWidth
                         }
-                    }
+                }
             }
         };
         addMarks(parentScope.scope, mark);
@@ -135,14 +134,14 @@ export class AggregateContainer extends Layout {
             range: [
                 0,
                 {
-                    signal: horizontal ? parentScope.sizeSignals.layoutWidth : parentScope.sizeSignals.layoutHeight
+                    signal: horizontal
+                        ? parentScope.sizeSignals.layoutWidth
+                        : parentScope.sizeSignals.layoutHeight
                 }
             ],
             nice: true,
             zero: true
         };
-
-        const verticalLayoutHeight = `${parentScope.sizeSignals.layoutHeight} - scale(${JSON.stringify(names.scale)}, ${names.localAggregateExtentSignal}[0])`;
 
         addSignal(globalScope.scope,
             {
@@ -150,57 +149,49 @@ export class AggregateContainer extends Layout {
                 update: `scale(${JSON.stringify(names.scale)}, ${props.globalAggregateMaxExtentSignal})`
             },
             {
-                name: props.parentSize,
-                update: horizontal ? parentScope.sizeSignals.layoutWidth : parentScope.sizeSignals.layoutHeight
+                name: props.parentHeight,
+                update: parentScope.sizeSignals.layoutHeight
             }
         );
 
         return {
             dataName: parentScope.dataName,
             scope: mark,
-            sizeSignals: orientation === 'horizontal' ?
+            sizeSignals: horizontal ?
                 {
                     layoutHeight: parentScope.sizeSignals.layoutHeight,
-                    layoutWidth: `scale(${JSON.stringify(names.scale)}, ${names.localAggregateExtentSignal}[0])`
+                    layoutWidth: scaledAggregateValue
                 }
                 :
                 {
-                    layoutHeight: verticalLayoutHeight,
+                    layoutHeight: scaledAggregateValue,
                     layoutWidth: parentScope.sizeSignals.layoutWidth
                 },
             globalScales: {
                 x: horizontal ? scale : undefined,
                 y: horizontal ? undefined : scale
             },
-            encodingRuleMap: orientation === 'horizontal' ?
+            encodingRuleMap: horizontal ?
                 {
-                    x: [
-                        {
-                            test: testForCollapseSelection(),
-                            value: 0
-                        }
-                    ],
-                    width: [
-                        {
-                            test: testForCollapseSelection(),
-                            value: 0
-                        }
-                    ]
+                    x: [{
+                        test: testForCollapseSelection(),
+                        value: 0
+                    }],
+                    width: [{
+                        test: testForCollapseSelection(),
+                        value: 0
+                    }]
                 }
                 :
                 {
-                    y: [
-                        {
-                            test: testForCollapseSelection(),
-                            signal: verticalLayoutHeight
-                        }
-                    ],
-                    height: [
-                        {
-                            test: testForCollapseSelection(),
-                            value: 0
-                        }
-                    ]
+                    y: [{
+                        test: testForCollapseSelection(),
+                        signal: scaledAggregateValue
+                    }],
+                    height: [{
+                        test: testForCollapseSelection(),
+                        value: 0
+                    }]
                 }
         };
     }
@@ -221,10 +212,10 @@ export class AggregateContainer extends Layout {
     private getAggregation() {
         const { props } = this;
         let s: AxisScale;
-        if (props.orientation === 'vertical') {
-            s = props.axesScales.y;
-        } else {
+        if (props.dock === 'left') {
             s = props.axesScales.x;
+        } else {
+            s = props.axesScales.y;
         }
         switch (s.aggregate) {
             case 'sum':
