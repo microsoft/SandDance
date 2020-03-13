@@ -31,6 +31,8 @@ export class AggregateContainer extends Layout {
         globalAggregateExtentSignal: string,
         scale: string,
         localAggregateExtentSignal: string,
+        localScaled: string,
+        extentData: string
     };
 
     constructor(public props: AggregateContainerProps & LayoutBuildProps) {
@@ -42,7 +44,9 @@ export class AggregateContainer extends Layout {
             aggregateField: `${p}_aggregate_value`,
             globalAggregateExtentSignal: `${p}_${a}_extent`,
             scale: `scale_${p}`,
-            localAggregateExtentSignal: `${p}_local_extent`
+            localAggregateExtentSignal: `${p}_local_extent`,
+            localScaled: `${p}_local_scaled`,
+            extentData: `data_${p}_extent`
         };
     }
 
@@ -68,7 +72,7 @@ export class AggregateContainer extends Layout {
             }
         );
         addData(parentScope.scope, {
-            name: 'TODOtemp',
+            name: names.extentData,
             source: parentScope.dataName,
             transform: [
                 {
@@ -84,10 +88,12 @@ export class AggregateContainer extends Layout {
                 update: `${names.globalAggregateExtentSignal}[1]`
             }
         );
-        const scaledAggregateValue = `scale(${JSON.stringify(names.scale)}, ${names.localAggregateExtentSignal}[0])`;
+        addSignal(parentScope.scope, {
+            name: names.localScaled,
+            update: `scale(${JSON.stringify(names.scale)}, ${names.localAggregateExtentSignal}[0])`
+        });
         const horizontal = dock === 'left';
         const mark: GroupMark = {
-            style: 'cell',
             name: prefix,
             type: 'group',
             encode: {
@@ -97,7 +103,7 @@ export class AggregateContainer extends Layout {
                     },
                     y: dock === 'bottom' ?
                         {
-                            signal: `${parentScope.sizeSignals.layoutHeight} - ${scaledAggregateValue}`
+                            signal: names.localScaled
                         }
                         :
                         {
@@ -109,11 +115,13 @@ export class AggregateContainer extends Layout {
                         }
                         :
                         {
-                            signal: scaledAggregateValue
+                            signal: dock === 'top'
+                                ? names.localScaled
+                                : `${parentScope.sizeSignals.layoutHeight} - ${names.localScaled}`
                         },
                     width: horizontal ?
                         {
-                            signal: scaledAggregateValue
+                            signal: names.localScaled
                         }
                         :
                         {
@@ -133,22 +141,33 @@ export class AggregateContainer extends Layout {
                     signal: props.globalAggregateMaxExtentSignal
                 }
             ],
-            range: [
-                0,
-                {
-                    signal: horizontal
-                        ? parentScope.sizeSignals.layoutWidth
-                        : parentScope.sizeSignals.layoutHeight
-                }
-            ],
+            range: horizontal ?
+                [
+                    0,
+                    {
+                        signal: parentScope.sizeSignals.layoutWidth
+                    }
+                ]
+                :
+                [
+                    {
+                        signal: parentScope.sizeSignals.layoutHeight
+                    },
+                    0
+                ],
             nice: niceScale,
-            zero: true
+            zero: true,
+            reverse: dock === 'top'
         };
+
+        const globalAggregateMaxExtentScaledValue = `scale(${JSON.stringify(names.scale)}, ${props.globalAggregateMaxExtentSignal})`;
 
         addSignal(globalScope.scope,
             {
                 name: props.globalAggregateMaxExtentScaledSignal,
-                update: `scale(${JSON.stringify(names.scale)}, ${props.globalAggregateMaxExtentSignal})`
+                update: dock === 'bottom'
+                    ? `${parentScope.sizeSignals.layoutHeight} - ${globalAggregateMaxExtentScaledValue}`
+                    : globalAggregateMaxExtentScaledValue
             },
             {
                 name: props.parentHeight,
@@ -162,11 +181,13 @@ export class AggregateContainer extends Layout {
             sizeSignals: horizontal ?
                 {
                     layoutHeight: parentScope.sizeSignals.layoutHeight,
-                    layoutWidth: scaledAggregateValue
+                    layoutWidth: names.localScaled
                 }
                 :
                 {
-                    layoutHeight: scaledAggregateValue,
+                    layoutHeight: dock === 'top'
+                        ? names.localScaled
+                        : `${parentScope.sizeSignals.layoutHeight} - ${names.localScaled}`,
                     layoutWidth: parentScope.sizeSignals.layoutWidth
                 },
             globalScales: {
@@ -191,7 +212,9 @@ export class AggregateContainer extends Layout {
                 {
                     y: [{
                         test: testForCollapseSelection(),
-                        signal: scaledAggregateValue
+                        signal: dock === 'top'
+                            ? '0'
+                            : `${parentScope.sizeSignals.layoutHeight} - ${names.localScaled}`
                     }],
                     height: [{
                         test: testForCollapseSelection(),

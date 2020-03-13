@@ -138,7 +138,6 @@ export class Band extends Layout {
     private getMark(parentScope: InnerScope, horizontal: boolean, binField: string): GroupMark {
         const { bin, names, prefix } = this;
         return {
-            style: 'cell',
             name: prefix,
             type: 'group',
             from: {
