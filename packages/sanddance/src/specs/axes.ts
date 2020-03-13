@@ -33,7 +33,7 @@ export interface AxesScopeMap {
 
 interface Props {
     globalScope: GlobalScope,
-    globalScales: GlobalScales[],
+    allGlobalScales: GlobalScales[],
     axisScales: AxisScales,
     plotOffsetSignals: { x: NewSignal, y: NewSignal },
     axesOffsets: { x: number, y: number },
@@ -45,16 +45,16 @@ interface Props {
 }
 
 export function addGlobalAxes(props: Props) {
-    const { axesOffsets, axisScales, axesScopes, axesTitlePadding, globalScales, globalScope, labelBaseline, plotOffsetSignals, specColumns, specViewOptions } = props;
+    const { axesOffsets, axisScales, axesScopes, axesTitlePadding, allGlobalScales, globalScope, labelBaseline, plotOffsetSignals, specColumns, specViewOptions } = props;
     const { scope } = globalScope;
 
-    globalScales.forEach(gsp => {
-        const { globalScales } = gsp;
-        for (let s in globalScales) {
-            let scale: Scale = globalScales[s];
+    allGlobalScales.forEach(globalScales => {
+        const { scales } = globalScales;
+        for (let s in scales) {
+            let scale: Scale = scales[s];
             if (scale) {
                 addScale(scope, scale);
-                if (gsp.showAxes && axisScales && s !== 'z') {
+                if (globalScales.showAxes && axisScales && s !== 'z') {
                     let axisScale: AxisScale = axisScales[s];
                     if (axisScale) {
                         const lineColor = util.colorToString(specViewOptions.colors.axisLine);

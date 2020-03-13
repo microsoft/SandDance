@@ -97,7 +97,7 @@ export class Band extends Layout {
                 },
             globalScales: {
                 showAxes,
-                globalScales: {
+                scales: {
                     x: horizontal ? undefined : scale,
                     y: horizontal ? scale : undefined
                 }

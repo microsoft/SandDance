@@ -71,7 +71,7 @@ export class Scatter extends Layout {
             }).filter(Boolean)
         });
 
-        const globalScales: GlobalScales = { showAxes: true, globalScales: {} };
+        const globalScales: GlobalScales = { showAxes: true, scales: {} };
         const update: RectEncodeEntry = {
             height: [
                 {

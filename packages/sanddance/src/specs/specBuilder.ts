@@ -188,7 +188,7 @@ export class SpecBuilder {
                     };
                 addGlobalAxes({
                     globalScope,
-                    globalScales: allGlobalScales,
+                    allGlobalScales,
                     axisScales: this.props.axisScales,
                     plotOffsetSignals: { x: this.plotOffsetLeft, y: this.plotOffsetBottom },
                     axesOffsets: { x: axesOffsetX, y: axesOffsetY },

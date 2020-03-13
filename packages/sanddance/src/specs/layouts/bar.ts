@@ -163,7 +163,7 @@ export class Bar extends Layout {
                 },
             globalScales: {
                 showAxes: true,
-                globalScales: {
+                scales: {
                     x: xScale,
                     y: yScale
                 }

@@ -171,7 +171,7 @@ export class AggregateContainer extends Layout {
                 },
             globalScales: {
                 showAxes,
-                globalScales: {
+                scales: {
                     x: horizontal ? scale : undefined,
                     y: horizontal ? undefined : scale
                 }

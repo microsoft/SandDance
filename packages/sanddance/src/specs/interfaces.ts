@@ -32,13 +32,11 @@ export interface SizeSignals {
 
 export interface GlobalScales {
     showAxes: boolean;
-    globalScales: GlobalScales2;
-}
-
-export interface GlobalScales2 {
-    x?: Scale;
-    y?: Scale;
-    z?: Scale;
+    scales: {
+        x?: Scale;
+        y?: Scale;
+        z?: Scale;
+    }
 }
 
 export interface TitleSource {
