@@ -103,7 +103,7 @@ export class Cross extends Layout {
             {
                 dim: 'y',
                 bin: binY,
-                sortOrder: <SortOrder>'descending',
+                sortOrder: <SortOrder>'ascending',
                 size: parentScope.sizeSignals.layoutHeight,
                 layout: parentScope.sizeSignals.layoutHeight,
                 min: globalScope.signals.minCellHeight.name,
