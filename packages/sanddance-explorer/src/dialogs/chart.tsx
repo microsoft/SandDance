@@ -169,12 +169,6 @@ export class Chart extends React.Component<Props, State> {
                                                     selected: !props.sumStyle
                                                 },
                                                 {
-                                                    key: 'strip',
-                                                    text: strings.labelTotalByCountStrip,
-                                                    data: 'strip',
-                                                    selected: props.sumStyle === 'strip'
-                                                },
-                                                {
                                                     key: 'sum-treemap',
                                                     text: strings.labelTotalBySumTreemap,
                                                     data: 'treemap',
@@ -182,7 +176,13 @@ export class Chart extends React.Component<Props, State> {
                                                     disabled: props.quantitativeColumns.length === 0
                                                 },
                                                 {
-                                                    key: 'sum-percent',
+                                                    key: 'strip',
+                                                    text: strings.labelTotalByCountStrip,
+                                                    data: 'strip',
+                                                    selected: props.sumStyle === 'strip'
+                                                },
+                                                {
+                                                    key: 'strip-percent',
                                                     text: strings.labelTotalBySumStripPercent,
                                                     data: 'strip-percent',
                                                     selected: props.sumStyle === 'strip-percent',
