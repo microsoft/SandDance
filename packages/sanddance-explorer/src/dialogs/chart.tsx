@@ -74,6 +74,10 @@ export class Chart extends React.Component<Props, State> {
                                     text: strings.chartTypeTreeMap
                                 },
                                 {
+                                    key: 'strips',
+                                    text: strings.chartTypeStrips
+                                },
+                                {
                                     key: 'stacks',
                                     text: strings.chartTypeStacks
                                 }

@@ -6,6 +6,7 @@ import density from './density';
 import grid from './grid';
 import scatterplot from './scatterplot';
 import stacks from './stacks';
+import strips from './strips';
 import treemap from './treemap';
 import { SpecBuilder, SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
@@ -18,6 +19,7 @@ const map: { [chart: string]: (specContext: SpecContext) => SpecBuilderProps } =
     grid,
     scatterplot,
     stacks,
+    strips,
     treemap
 };
 

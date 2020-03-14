@@ -45,6 +45,7 @@ export const strings = {
     chartTypeGrid: 'Grid',
     chartTypeScatterPlot: 'Scatter',
     chartTypeStacks: 'Stacks',
+    chartTypeStrips: 'Strips',
     chartTypeTreeMap: 'Treemap',
     defaultFileName: 'sanddance-data',
     errorExportFilenameEmpty: 'Filename cannot be blank',
