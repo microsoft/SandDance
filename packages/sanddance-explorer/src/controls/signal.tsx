@@ -13,6 +13,7 @@ import { Explorer } from '../explorer';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 
 export interface Props {
+    newViewStateTarget?: boolean;
     collapseLabel?: boolean;
     explorer: Explorer;
     signal: NewSignal;
@@ -43,7 +44,7 @@ export function Signal(props: Props) {
                     initialValue,
                     (value) => {
                         props.onChange && props.onChange(value);
-                        props.explorer.signal(props.signal.name, value);
+                        props.explorer.signal(props.signal.name, value, props.newViewStateTarget);
                     },
                     props.disabled,
                     props.collapseLabel

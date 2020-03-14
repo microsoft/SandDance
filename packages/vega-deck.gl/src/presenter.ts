@@ -249,12 +249,18 @@ export class Presenter {
             || this.deckgl.props.viewState;
 
         if (!viewState || newBounds || config.shouldViewstateTransition && config.shouldViewstateTransition()) {
+            let newViewStateTarget = true;
             if (config && config.onTargetViewState) {
-                const size = config.onTargetViewState(height, width);
-                height = size.height;
-                width = size.width;
+                const result = config.onTargetViewState(height, width);
+                height = result.height;
+                width = result.width;
+                if (result.newViewStateTarget !== undefined) {
+                    newViewStateTarget = result.newViewStateTarget;
+                }
             }
-            viewState = targetViewState(height, width, stage.view);
+            if (!viewState || newViewStateTarget) {
+                viewState = targetViewState(height, width, stage.view);
+            }
             const oldCubeLayer = getCubeLayer(this.deckgl.props) as CubeLayer_Class;
             if (oldCubeLayer) {
                 linearInterpolator = new LinearInterpolator(viewStateProps);

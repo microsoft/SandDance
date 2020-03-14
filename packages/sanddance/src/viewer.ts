@@ -634,7 +634,11 @@ export class Viewer {
             },
             onTargetViewState: (h, w) => {
                 const { height, width } = this.insight.size;
-                return { height, width };
+                let newViewStateTarget: boolean;
+                if (this.options.onNewViewStateTarget) {
+                    newViewStateTarget = this.options.onNewViewStateTarget();
+                }
+                return { height, width, newViewStateTarget };
             }
         };
         if (this.options.onBeforeCreateLayers) {

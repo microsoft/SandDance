@@ -144,6 +144,7 @@ export class Explorer extends React.Component<Props, State> {
     private ignoreSelectionChange: boolean;
     private snapshotEditor: SnapshotEditor;
     private scrollSnapshotTimer: number;
+    private newViewStateTarget: boolean;
 
     public viewer: SandDance.Viewer;
     public viewerOptions: Partial<SandDance.types.ViewerOptions>;
@@ -302,7 +303,8 @@ export class Explorer extends React.Component<Props, State> {
                         this.setState({ positionedColumnMapProps: null });
                     }
                 }
-            }
+            },
+            onNewViewStateTarget: () => this.newViewStateTarget
         };
         if (this.viewer && this.viewer.presenter) {
             const newPresenterStyle = SandDance.util.getPresenterStyle(this.viewerOptions as SandDance.types.ViewerOptions);
@@ -312,7 +314,7 @@ export class Explorer extends React.Component<Props, State> {
         }
     }
 
-    signal(signalName: string, signalValue: any) {
+    signal(signalName: string, signalValue: any, newViewStateTarget?: boolean) {
         switch (signalName) {
             case SandDance.constants.SignalNames.ColorBinCount:
             case SandDance.constants.SignalNames.ColorReverse:
@@ -320,9 +322,11 @@ export class Explorer extends React.Component<Props, State> {
                 this.discardColorContextUpdates = false;
                 break;
         }
+        this.newViewStateTarget = newViewStateTarget;
         this.viewer.vegaViewGl.signal(signalName, signalValue);
         this.viewer.vegaViewGl.runAsync().then(() => {
             this.discardColorContextUpdates = true;
+            this.newViewStateTarget = undefined;
             this.props.onSignalChanged && this.props.onSignalChanged();
         });
     }

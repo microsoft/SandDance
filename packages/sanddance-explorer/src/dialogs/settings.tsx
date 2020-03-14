@@ -203,6 +203,7 @@ export class Settings extends React.Component<Props, State> {
                                             key={i}
                                             signal={signal}
                                             explorer={props.explorer}
+                                            newViewStateTarget={false}
                                         />
                                     ))}
                                 </Group>
