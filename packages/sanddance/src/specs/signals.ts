@@ -32,9 +32,9 @@ export function textSignals(context: SpecContext, heightSignal: string) {
                 name: specViewOptions.language.textScaleSignal,
                 debounce: 50,
                 input: 'range',
-                min: 1,
+                min: 0.5,
                 max: 5,
-                step: 0.5
+                step: 0.1
             }
         },
         {
