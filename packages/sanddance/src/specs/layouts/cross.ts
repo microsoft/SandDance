@@ -16,7 +16,8 @@ import {
     GroupEncodeEntry,
     GroupMark,
     LookupTransform,
-    OrdinalScale
+    OrdinalScale,
+    SortOrder
 } from 'vega-typings';
 import {
     DiscreteColumn,
@@ -89,6 +90,7 @@ export class Cross extends Layout {
             {
                 dim: 'x',
                 bin: binX,
+                sortOrder: <SortOrder>'ascending',
                 size: parentScope.sizeSignals.layoutWidth,
                 layout: parentScope.sizeSignals.layoutWidth,
                 min: globalScope.signals.minCellWidth.name,
@@ -101,6 +103,7 @@ export class Cross extends Layout {
             {
                 dim: 'y',
                 bin: binY,
+                sortOrder: <SortOrder>'descending',
                 size: parentScope.sizeSignals.layoutHeight,
                 layout: parentScope.sizeSignals.layoutHeight,
                 min: globalScope.signals.minCellHeight.name,
@@ -112,7 +115,7 @@ export class Cross extends Layout {
             }
         ];
         dimensions.forEach(d => {
-            const { bin, dim, offset, padding } = d;
+            const { bin, dim, offset, padding, sortOrder } = d;
             let data: Data;
             let dataName: string;
             let countSignal: string;
@@ -136,7 +139,7 @@ export class Cross extends Layout {
                 titleSource.dataName = bin.dataSequence.name;
             } else {
                 dataName = globalScope.dataName;
-                const ord = createOrdinalsForFacet(dataName, `${prefix}_${dim}`, bin.fields);
+                const ord = createOrdinalsForFacet(dataName, `${prefix}_${dim}`, bin.fields, sortOrder);
                 data = ord.data;
                 addData(globalScope.scope, ord.data);
                 countSignal = `length(data(${JSON.stringify(ord.data.name)}))`;

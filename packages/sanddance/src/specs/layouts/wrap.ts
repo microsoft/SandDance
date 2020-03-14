@@ -98,7 +98,7 @@ export class Wrap extends Layout {
             });
             ordinalBinData = bin.dataSequence.name;
         } else {
-            const ord = createOrdinalsForFacet(parentScope.dataName, prefix, bin.fields);
+            const ord = createOrdinalsForFacet(parentScope.dataName, prefix, bin.fields, 'ascending');
             addData(globalScope.scope, ord.data);
             ordinalBinData = ord.data.name
         }

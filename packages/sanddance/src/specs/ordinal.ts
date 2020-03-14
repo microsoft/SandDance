@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Data, Scale, OrdinalScale } from "vega-typings";
+import { Data, Scale, OrdinalScale, SortOrder } from "vega-typings";
 import { FieldNames } from "./constants";
 
 export interface OrdinalResult {
@@ -8,7 +8,7 @@ export interface OrdinalResult {
     scale: OrdinalScale;
 }
 
-export function createOrdinalsForFacet(source: string, prefix: string, binFields: string[]): OrdinalResult {
+export function createOrdinalsForFacet(source: string, prefix: string, binFields: string[], sortOrder: SortOrder): OrdinalResult {
     const dataName = `${prefix}_bin_order`;
     const data: Data = {
         name: dataName,
@@ -22,7 +22,7 @@ export function createOrdinalsForFacet(source: string, prefix: string, binFields
                 type: 'collect',
                 sort: {
                     field: binFields,
-                    order: binFields.map(f => 'ascending')
+                    order: binFields.map(f => sortOrder)
                 }
             },
             {
