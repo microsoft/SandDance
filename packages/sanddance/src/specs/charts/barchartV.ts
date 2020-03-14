@@ -47,7 +47,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             size: specColumns.size,
             sort: specColumns.sort,
             z: specColumns.z,
-            zSize: bandProps.parentHeight,
+            zSize: bandProps.parentHeight
         };
         layouts.push({
             layoutClass: Strip,
