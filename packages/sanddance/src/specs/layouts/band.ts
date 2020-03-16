@@ -20,6 +20,7 @@ export interface BandProps extends LayoutProps {
     orientation: Orientation;
     showAxes: boolean;
     parentHeight: string;
+    style?: string;
 }
 
 export class Band extends Layout {
@@ -51,7 +52,7 @@ export class Band extends Layout {
 
     public build(): InnerScope {
         const { bin, names, props } = this;
-        const { globalScope, minBandWidth, orientation, parentHeight, parentScope, showAxes } = props;
+        const { globalScope, minBandWidth, orientation, parentHeight, parentScope, showAxes, style } = props;
         const binField = bin.fields[0];
         if (bin.native === false) {
             addSignal(globalScope.scope, bin.maxbinsSignal);
@@ -82,7 +83,7 @@ export class Band extends Layout {
                 update: parentScope.sizeSignals.layoutHeight
             }
         );
-        const mark = this.getMark(parentScope, horizontal, binField);
+        const mark = this.getMark(parentScope, horizontal, binField, style);
         addMarks(parentScope.scope, mark);
 
         const scale = this.getScale(bin, horizontal);
@@ -140,9 +141,10 @@ export class Band extends Layout {
         };
     }
 
-    private getMark(parentScope: InnerScope, horizontal: boolean, binField: string): GroupMark {
+    private getMark(parentScope: InnerScope, horizontal: boolean, binField: string, style: string): GroupMark {
         const { bin, names, prefix } = this;
         return {
+            style,
             name: prefix,
             type: 'group',
             from: {
