@@ -1,12 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { AxisScales } from '../interfaces';
-import { defaultBins, maxbins } from '../defaults';
+import { defaultBins, maxbins, minBarBandWidth } from '../defaults';
 import { Density, DensityProps } from '../layouts/density';
 import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
-import { Square } from '../layouts/square';
+import { Square, SquareProps } from '../layouts/square';
+import { BandProps, Band } from '../layouts/band';
+import { AggregateContainerProps, AggregateContainer } from '../layouts/aggregateContainer';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns } = specContext;
@@ -15,32 +17,69 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         y: { title: specColumns.y && specColumns.y.name },
         z: { title: specColumns.z && specColumns.z.name }
     };
-    const densityProps: DensityProps = {
-        mode: 'square',
-        groupbyX: {
-            column: specColumns.x,
-            defaultBins,
-            maxbins,
-            maxbinsSignalDisplayName: 'TODO maxbins x',
-            maxbinsSignalName: 'TODO maxbins x'
-        },
-        groupbyY: {
+    const hBandProps: BandProps = {
+        style: 'cell',
+        orientation: 'horizontal',
+        groupby: {
             column: specColumns.y,
             defaultBins,
-            maxbins,
-            maxbinsSignalDisplayName: 'TODO maxbins y',
-            maxbinsSignalName: 'TODO maxbins y'
-        }
+            maxbinsSignalName: SignalNames.YBins,
+            maxbinsSignalDisplayName: specContext.specViewOptions.language.YMaxBins,
+            maxbins
+        },
+        minBandWidth: minBarBandWidth,
+        showAxes: true,
+        parentHeight: 'hBandParentHeight'
     };
+    const vBandProps: BandProps = {
+        orientation: 'vertical',
+        groupby: {
+            column: specColumns.x,
+            defaultBins,
+            maxbinsSignalName: SignalNames.XBins,
+            maxbinsSignalDisplayName: specContext.specViewOptions.language.XMaxBins,
+            maxbins
+        },
+        minBandWidth: minBarBandWidth,
+        showAxes: true,
+        parentHeight: 'vBandParentHeight'
+    };
+    const aggProps: AggregateContainerProps = {
+        niceScale: true,
+        dock: 'top',
+        globalAggregateMaxExtentSignal: 'aggMaxExtent',
+        globalAggregateMaxExtentScaledSignal: 'aggMaxExtentScaled',
+        parentHeight: 'aggParentHeight',
+        sumBy: specColumns.size,
+        showAxes: false
+    };
+    const squareProps: SquareProps = {
+        sortBy: specColumns.sort,
+        fillDirection: 'right-down',
+        z: specColumns.z,
+        maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
+        maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal,
+        zSize: aggProps.parentHeight
+    };
+
     return {
         axisScales,
         layouts: [
             {
-                layoutClass: Density,
-                props: densityProps
+                layoutClass: Band,
+                props: vBandProps
             },
             {
-                layoutClass: Square
+                layoutClass: Band,
+                props: hBandProps
+            },
+            {
+                layoutClass: AggregateContainer,
+                props: aggProps
+            },
+            {
+                layoutClass: Square,
+                props: squareProps
             }
         ],
         specCapabilities: {
