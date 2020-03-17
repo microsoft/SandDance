@@ -9,12 +9,18 @@ import {
 } from '../scope';
 import { BandScale, GroupMark } from 'vega-typings';
 import { binnable, Binnable } from '../bin';
-import { DiscreteColumn, InnerScope, Orientation } from '../interfaces';
+import {
+    DiscreteColumn,
+    EncodingRule,
+    InnerScope,
+    Orientation
+} from '../interfaces';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { modifySignal } from '../signals';
 import { testForCollapseSelection } from '../selection';
 
 export interface BandProps extends LayoutProps {
+    excludeEncodingRuleMap?: boolean;
     groupby: DiscreteColumn;
     minBandWidth: number;
     orientation: Orientation;
@@ -88,27 +94,9 @@ export class Band extends Layout {
 
         const scale = this.getScale(bin, horizontal);
 
-        return {
-            dataName: names.facetData,
-            scope: mark,
-            sizeSignals: horizontal ?
-                {
-                    layoutHeight: names.bandWidth,
-                    layoutWidth: parentScope.sizeSignals.layoutWidth
-                }
-                :
-                {
-                    layoutHeight: parentScope.sizeSignals.layoutHeight,
-                    layoutWidth: names.bandWidth
-                },
-            globalScales: {
-                showAxes,
-                scales: {
-                    x: horizontal ? undefined : scale,
-                    y: horizontal ? scale : undefined
-                }
-            },
-            encodingRuleMap: horizontal ?
+        let encodingRuleMap: { [key: string]: EncodingRule[] };
+        if (!props.excludeEncodingRuleMap) {
+            encodingRuleMap = horizontal ?
                 {
                     x: [
                         {
@@ -138,6 +126,29 @@ export class Band extends Layout {
                         }
                     ]
                 }
+        }
+
+        return {
+            dataName: names.facetData,
+            scope: mark,
+            sizeSignals: horizontal ?
+                {
+                    layoutHeight: names.bandWidth,
+                    layoutWidth: parentScope.sizeSignals.layoutWidth
+                }
+                :
+                {
+                    layoutHeight: parentScope.sizeSignals.layoutHeight,
+                    layoutWidth: names.bandWidth
+                },
+            globalScales: {
+                showAxes,
+                scales: {
+                    x: horizontal ? undefined : scale,
+                    y: horizontal ? scale : undefined
+                }
+            },
+            encodingRuleMap
         };
     }
 

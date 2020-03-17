@@ -17,6 +17,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         z: { title: specColumns.z && specColumns.z.name }
     };
     const hBandProps: BandProps = {
+        excludeEncodingRuleMap: true,
         orientation: 'horizontal',
         groupby: {
             column: specColumns.y,
@@ -30,6 +31,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         parentHeight: 'hBandParentHeight'
     };
     const vBandProps: BandProps = {
+        excludeEncodingRuleMap: true,
         orientation: 'vertical',
         groupby: {
             column: specColumns.x,
