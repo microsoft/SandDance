@@ -114,7 +114,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 layouts.push({
                     layoutClass: Square,
                     props: squareProps
-                })
+                });
                 break;
             }
         }

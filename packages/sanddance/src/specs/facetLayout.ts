@@ -27,7 +27,7 @@ export interface FacetLayout {
     plotPadding: { x: number, y: number };
     scales: Scale[];
     signals: Signal[];
-};
+}
 
 export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColumn, facetVColumn: DiscreteColumn): FacetLayout {
     let layoutPair: LayoutPair;
@@ -83,7 +83,7 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
                 },
                 {
                     name: SignalNames.FacetPaddingTop,
-                    update: `0`
+                    update: '0'
                 }
             ];
             colRowTitles = true;

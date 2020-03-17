@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Axis, Scope, Scale, Signal, Data, Mark, Transforms } from "vega-typings";
+import { Axis, Scope, Scale, Signal, Data, Mark, Transforms } from 'vega-typings';
 
 export function addAxes(scope: Scope, ...axis: Axis[]) {
     if (!scope.axes) {

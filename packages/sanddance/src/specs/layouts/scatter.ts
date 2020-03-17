@@ -132,28 +132,28 @@ export class Scatter extends Layout {
             reverse: boolean,
             signal: string
         }[] = [
-                {
-                    column: x,
-                    xyz: 'x',
-                    scaleName: names.xScale,
-                    reverse: false,
-                    signal: parentScope.sizeSignals.layoutWidth
-                },
-                {
-                    column: y,
-                    xyz: 'y',
-                    scaleName: names.yScale,
-                    reverse: true,
-                    signal: parentScope.sizeSignals.layoutHeight
-                },
-                {
-                    column: z,
-                    xyz: 'z',
-                    scaleName: names.zScale,
-                    reverse: false,
-                    signal: `${parentScope.sizeSignals.layoutHeight}*${SignalNames.ZProportion}`
-                }
-            ];
+            {
+                column: x,
+                xyz: 'x',
+                scaleName: names.xScale,
+                reverse: false,
+                signal: parentScope.sizeSignals.layoutWidth
+            },
+            {
+                column: y,
+                xyz: 'y',
+                scaleName: names.yScale,
+                reverse: true,
+                signal: parentScope.sizeSignals.layoutHeight
+            },
+            {
+                column: z,
+                xyz: 'z',
+                scaleName: names.zScale,
+                reverse: false,
+                signal: `${parentScope.sizeSignals.layoutHeight}*${SignalNames.ZProportion}`
+            }
+        ];
         columnSignals.forEach(cs => {
             const { column, reverse, scaleName, signal, xyz } = cs;
             if (!column) return;
@@ -185,7 +185,7 @@ export class Scatter extends Layout {
             from: { data: names.validData },
             encode: { update }
         };
-        addMarks(parentScope.scope, mark)
+        addMarks(parentScope.scope, mark);
 
         return {
             dataName: prefix,

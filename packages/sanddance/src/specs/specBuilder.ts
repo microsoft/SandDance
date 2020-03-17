@@ -66,10 +66,10 @@ export class SpecBuilder {
             update: `${minFacetWidth}`
         };
         this.minCellHeight = { name: SignalNames.MinCellHeight, update: `${minFacetHeight}` };
-        this.plotOffsetLeft = { name: SignalNames.PlotOffsetLeft, update: `0` };
-        this.plotOffsetTop = { name: SignalNames.PlotOffsetTop, update: `0` };
-        this.plotOffsetBottom = { name: SignalNames.PlotOffsetBottom, update: `0` };
-        this.plotOffsetRight = { name: SignalNames.PlotOffsetRight, update: `0` };
+        this.plotOffsetLeft = { name: SignalNames.PlotOffsetLeft, update: '0' };
+        this.plotOffsetTop = { name: SignalNames.PlotOffsetTop, update: '0' };
+        this.plotOffsetBottom = { name: SignalNames.PlotOffsetBottom, update: '0' };
+        this.plotOffsetRight = { name: SignalNames.PlotOffsetRight, update: '0' };
         this.plotHeightOut = { name: SignalNames.PlotHeightOut, update: SignalNames.PlotHeightIn };
         this.plotWidthOut = { name: SignalNames.PlotWidthOut, update: SignalNames.PlotWidthIn };
     }
@@ -112,7 +112,7 @@ export class SpecBuilder {
                 errors,
                 specCapabilities,
                 vegaSpec: null
-            }
+            };
         } else {
             const { specContext } = this.props;
             const { insight, specColumns, specViewOptions } = specContext;
@@ -149,7 +149,7 @@ export class SpecBuilder {
                 addScale(vegaSpec, ...facetLayout.scales);
                 this.props.layouts = [facetLayout.layoutPair, ...this.props.layouts];
                 this.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
-                this.plotOffsetRight.update = `${facetLayout.plotPadding.x}`
+                this.plotOffsetRight.update = `${facetLayout.plotPadding.x}`;
             }
             const { firstScope, finalScope, specResult, allGlobalScales, allEncodingRules } = this.iterateLayouts(globalScope, groupMark, colorDataName);
             if (specResult) {
@@ -227,7 +227,7 @@ export class SpecBuilder {
             return {
                 specCapabilities,
                 vegaSpec
-            }
+            };
         }
     }
 

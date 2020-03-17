@@ -53,7 +53,7 @@ export class SandDanceReact extends Component<Props, State> {
           this.props.onView && this.props.onView(renderResult);
       }).catch(e => {
       //console.log('viewer error');
-      this.props.onError && this.props.onError(e);
+          this.props.onError && this.props.onError(e);
       });
   }
 

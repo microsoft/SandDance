@@ -69,7 +69,7 @@ export function addGlobalAxes(props: Props) {
                             lineColor,
                             titlePadding: axesTitlePadding[s],
                             labelBaseline: labelBaseline[s]
-                        }
+                        };
                         axesScopes['main'].forEach(a => addAxes(a.scope, createAxis({
                             ...props,
                             scale: a.scale || scale.name,
@@ -96,7 +96,7 @@ export function addGlobalAxes(props: Props) {
                 }
             }
         }
-    })
+    });
 }
 
 interface AxisProps {

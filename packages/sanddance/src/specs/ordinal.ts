@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Data, Scale, OrdinalScale, SortOrder } from "vega-typings";
-import { FieldNames } from "./constants";
+import { Data, Scale, OrdinalScale, SortOrder } from 'vega-typings';
+import { FieldNames } from './constants';
 
 export interface OrdinalResult {
     data: Data;

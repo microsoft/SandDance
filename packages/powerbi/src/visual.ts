@@ -154,8 +154,8 @@ export class Visual implements IVisual {
     }
 
     applyFilters(filters: powerbiModels.IFilter[]) {
-        this.host.applyJsonFilter(null, "general", "filter", powerbiVisualsApi.FilterAction.merge);
-        this.host.applyJsonFilter(filters, "general", "filter", powerbiVisualsApi.FilterAction.merge);
+        this.host.applyJsonFilter(null, 'general', 'filter', powerbiVisualsApi.FilterAction.merge);
+        this.host.applyJsonFilter(filters, 'general', 'filter', powerbiVisualsApi.FilterAction.merge);
     }
 
     clearFilter() {

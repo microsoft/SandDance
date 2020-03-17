@@ -100,7 +100,7 @@ export class Wrap extends Layout {
         } else {
             const ord = createOrdinalsForFacet(parentScope.dataName, prefix, bin.fields, 'ascending');
             addData(globalScope.scope, ord.data);
-            ordinalBinData = ord.data.name
+            ordinalBinData = ord.data.name;
         }
 
         addData(globalScope.scope,

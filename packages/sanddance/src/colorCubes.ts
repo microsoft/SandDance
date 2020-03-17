@@ -7,7 +7,7 @@ import {
     ColorMappedItem,
     ColorMethod,
     ViewerOptions
-    } from './types';
+} from './types';
 import { FieldNames } from './specs/constants';
 import { GL_ORDINAL } from './constants';
 

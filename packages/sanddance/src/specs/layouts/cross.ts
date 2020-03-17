@@ -175,7 +175,7 @@ export class Cross extends Layout {
                     name: size,
                     update: `max(${d.min}, (${calc} - ${padding}))`
                 }
-            )
+            );
             modifySignal(d.out, 'max', `((${size} + ${padding}) * ${count})`);
             update[dim] = {
                 signal: `${offset} + (scale(${JSON.stringify(scale.name)}, datum[${JSON.stringify(bin.fields[0])}]) - 1) * (${size} + ${padding})`
@@ -263,12 +263,12 @@ export class Cross extends Layout {
                     {
                         type: 'formula',
                         expr: `datum.data % ${names.dimCount}_x + 1`,
-                        as: `x`
+                        as: 'x'
                     },
                     {
                         type: 'formula',
                         expr: `floor(datum.data / ${names.dimCount}_x) + 1`,
-                        as: `y`
+                        as: 'y'
                     },
                     {
                         type: 'formula',
@@ -335,7 +335,7 @@ export class Cross extends Layout {
         dimensions.forEach(d => {
             emptyUpdate[d.dim] = {
                 signal: `${d.offset} + (datum.${d.dim} - 1) * (${names.dimCellSize}_${d.dim} + ${d.padding})`
-            }
+            };
         });
 
         addMarks(parentScope.scope, {

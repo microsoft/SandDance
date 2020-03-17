@@ -398,7 +398,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                 >
                 </Explorer>
                 <DataSourcePicker
-                    ref={dsp => { if (dsp && !this.dataSourcePicker) this.dataSourcePicker = dsp }}
+                    ref={dsp => { if (dsp && !this.dataSourcePicker) this.dataSourcePicker = dsp; }}
                     theme={theme}
                     {...dataSourceProps}
                 />

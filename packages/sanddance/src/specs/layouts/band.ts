@@ -125,7 +125,7 @@ export class Band extends Layout {
                             value: 0
                         }
                     ]
-                }
+                };
         }
 
         return {

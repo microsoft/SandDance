@@ -34,6 +34,6 @@ export function cloneVegaSpecWithData(context: SpecContext, currData: object[]):
             specCapabilities: null,
             vegaSpec: null,
             errors: [`coulr not build spec for ${context.insight.chart}`]
-        }
+        };
     }
 }
