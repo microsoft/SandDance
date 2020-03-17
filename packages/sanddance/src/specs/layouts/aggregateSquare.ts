@@ -15,8 +15,8 @@ import { testForCollapseSelection } from '../selection';
 
 export interface AggregateSquareProps extends LayoutProps {
     sumBy: Column;
-    globalAggregateMaxExtentSignal: string;
-    globalAggregateMaxExtentScaledSignal: string;
+    localAggregateMaxExtentSignal: string;
+    localAggregateMaxExtentScaledSignal: string;
     parentHeight: string;
 }
 
@@ -86,10 +86,6 @@ export class AggregateSquare extends Layout {
         });
         addSignal(globalScope.scope,
             {
-                name: props.globalAggregateMaxExtentSignal,
-                update: `${names.globalAggregateExtentSignal}[1]`
-            },
-            {
                 name: names.squareMaxSide,
                 update: `min((${sizeSignals.layoutHeight}), (${sizeSignals.layoutWidth}))`
             },
@@ -100,8 +96,12 @@ export class AggregateSquare extends Layout {
         );
         addSignal(parentScope.scope,
             {
+                name: props.localAggregateMaxExtentSignal,
+                update: `${names.localAggregateExtentSignal}[0]`
+            },
+            {
                 name: names.shrinkRatio,
-                update: `${names.localAggregateExtentSignal}[0] / ${props.globalAggregateMaxExtentSignal}`
+                update: `${props.localAggregateMaxExtentSignal} / ${names.globalAggregateExtentSignal}[1]`
             },
             {
                 name: names.squareArea,
@@ -110,7 +110,12 @@ export class AggregateSquare extends Layout {
             {
                 name: names.squareSide,
                 update: `sqrt(${names.squareArea})`
+            },
+            {
+                name: props.localAggregateMaxExtentScaledSignal,
+                update: names.squareSide
             }
+
         );
         const mark: GroupMark = {
             style: 'cell',
@@ -136,10 +141,6 @@ export class AggregateSquare extends Layout {
         addMarks(parentScope.scope, mark);
 
         addSignal(globalScope.scope,
-            {
-                name: props.globalAggregateMaxExtentScaledSignal,
-                update: names.squareMaxSide
-            },
             {
                 name: parentHeight,
                 update: sizeSignals.layoutHeight
