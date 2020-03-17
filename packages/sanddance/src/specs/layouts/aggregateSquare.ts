@@ -118,16 +118,15 @@ export class AggregateSquare extends Layout {
 
         );
         const mark: GroupMark = {
-            style: 'cell',
             name: prefix,
             type: 'group',
             encode: {
                 update: {
                     x: {
-                        value: 0
+                        signal: `(${parentScope.sizeSignals.layoutWidth} - ${names.squareSide}) / 2`
                     },
                     y: {
-                        value: 0
+                        signal: `(${parentScope.sizeSignals.layoutHeight} - ${names.squareSide}) / 2`
                     },
                     height: {
                         signal: names.squareSide
