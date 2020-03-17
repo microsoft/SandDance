@@ -199,46 +199,46 @@ export class Square extends Layout {
             maxGroupedFillSize = fillDirection === 'down-right' ? parentScope.sizeSignals.layoutWidth : parentScope.sizeSignals.layoutHeight;
         }
 
-        const aspect = `((${names.bandWidth})/(${maxGroupedFillSize}))`;
+        const aspect = `((${names.bandWidth}) / (${maxGroupedFillSize}))`;
 
         addSignal(parentScope.scope,
             {
                 name: names.aspect,
-                update: aspect || `${globalScope.sizeSignals.layoutWidth}/${props.fillDirection === 'down-right' ? globalScope.sizeSignals.layoutWidth : globalScope.sizeSignals.layoutHeight}`
+                update: aspect || `${globalScope.sizeSignals.layoutWidth} / ${props.fillDirection === 'down-right' ? globalScope.sizeSignals.layoutWidth : globalScope.sizeSignals.layoutHeight}`
             },
             {
                 name: names.squaresPerBand,
-                update: `ceil(sqrt(${maxGroupedUnits}*${names.aspect}))`
+                update: `ceil(sqrt(${maxGroupedUnits} * ${names.aspect}))`
             },
             {
                 name: names.gap,
-                update: `min(0.1*(${names.bandWidth}/(${names.squaresPerBand}-1)),1)`
+                update: `min(0.1 * (${names.bandWidth} / (${names.squaresPerBand} - 1)), 1)`
             },
             {
                 name: names.size,
-                update: `${names.bandWidth}/${names.squaresPerBand}-${names.gap}`
+                update: `${names.bandWidth} / ${names.squaresPerBand} - ${names.gap}`
             },
             {
                 name: names.levels,
-                update: `ceil(${maxGroupedUnits}/${names.squaresPerBand})`
+                update: `ceil(${maxGroupedUnits} / ${names.squaresPerBand})`
             },
             {
                 name: names.levelSize,
-                update: `((${maxGroupedFillSize})/${names.levels})-${names.gap}`
+                update: `((${maxGroupedFillSize}) / ${names.levels}) - ${names.gap}`
             }
         );
     }
 
     private encodeXY(): GroupEncodeEntry {
         const { names } = this;
-        const compartment = `${names.bandWidth}/${names.squaresPerBand}*((datum[${JSON.stringify(names.index)}]-1)%${names.squaresPerBand})`;
-        const level = `floor((datum[${JSON.stringify(names.index)}]-1)/${names.squaresPerBand})`;
+        const compartment = `${names.bandWidth} / ${names.squaresPerBand} * ((datum[${JSON.stringify(names.index)}] - 1) % ${names.squaresPerBand})`;
+        const level = `floor((datum[${JSON.stringify(names.index)}] - 1) / ${names.squaresPerBand})`;
         const { fillDirection, parentScope } = this.props;
         switch (fillDirection) {
             case 'down-right': {
                 return {
                     x: {
-                        signal: `${level}*(${names.levelSize}+${names.gap})`
+                        signal: `${level} * (${names.levelSize} + ${names.gap})`
                     },
                     y: {
                         signal: compartment
@@ -251,7 +251,7 @@ export class Square extends Layout {
                         signal: compartment
                     },
                     y: {
-                        signal: `(${parentScope.sizeSignals.layoutHeight})-${names.levelSize}-${level}*(${names.levelSize}+${names.gap})`
+                        signal: `(${parentScope.sizeSignals.layoutHeight}) - ${names.levelSize} - ${level} * (${names.levelSize} + ${names.gap})`
                     }
                 };
             }
@@ -262,11 +262,10 @@ export class Square extends Layout {
                         signal: compartment
                     },
                     y: {
-                        signal: `${level}*(${names.levelSize}+${names.gap})`
+                        signal: `${level} * (${names.levelSize} + ${names.gap})`
                     }
                 };
             }
         }
     }
 }
-
