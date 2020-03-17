@@ -17,7 +17,6 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         z: { title: specColumns.z && specColumns.z.name }
     };
     const hBandProps: BandProps = {
-        style: 'cell',
         orientation: 'horizontal',
         groupby: {
             column: specColumns.y,
@@ -106,11 +105,13 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 },
                 {
                     role: 'facet',
-                    allowNone: true
+                    allowNone: true,
+                    signals: [SignalNames.FacetBins]
                 },
                 {
                     role: 'facetV',
-                    allowNone: true
+                    allowNone: true,
+                    signals: [SignalNames.FacetVBins]
                 }
             ]
         }
