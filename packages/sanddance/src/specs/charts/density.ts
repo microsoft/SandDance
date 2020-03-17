@@ -48,8 +48,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         globalAggregateMaxExtentSignal: 'aggMaxExtent',
         globalAggregateMaxExtentScaledSignal: 'aggMaxExtentScaled',
         parentHeight: 'aggParentHeight',
-        sumBy: specColumns.size,
-        showAxes: false
+        sumBy: specColumns.size
     };
     const squareProps: SquareProps = {
         sortBy: specColumns.sort,
