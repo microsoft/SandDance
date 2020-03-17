@@ -9,7 +9,7 @@ import {
 } from '../scope';
 import { AxisScale, InnerScope } from '../interfaces';
 import { Column } from '../types';
-import { GroupMark, JoinAggregateTransform, LinearScale } from 'vega-typings';
+import { GroupMark, JoinAggregateTransform } from 'vega-typings';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { testForCollapseSelection } from '../selection';
 
@@ -26,10 +26,13 @@ export class AggregateSquare extends Layout {
         barCount: string,
         aggregateField: string,
         globalAggregateExtentSignal: string,
-        scale: string,
         localAggregateExtentSignal: string,
-        localScaled: string,
-        extentData: string
+        extentData: string,
+        squareMaxArea: string,
+        squareMaxSide: string,
+        squareArea: string,
+        squareSide: string,
+        shrinkRatio: string
     };
 
     constructor(public props: AggregateSquareProps & LayoutBuildProps) {
@@ -40,16 +43,20 @@ export class AggregateSquare extends Layout {
             barCount: `${p}_count`,
             aggregateField: `${p}_aggregate_value`,
             globalAggregateExtentSignal: `${p}_${a}_extent`,
-            scale: `scale_${p}`,
             localAggregateExtentSignal: `${p}_local_extent`,
-            localScaled: `${p}_local_scaled`,
-            extentData: `data_${p}_extent`
+            extentData: `data_${p}_extent`,
+            squareMaxArea: `${p}_square_max_area`,
+            squareMaxSide: `${p}_square_max_side`,
+            squareArea: `${p}_square_area`,
+            squareSide: `${p}_square_side`,
+            shrinkRatio: `${p}_shrink_ratio`
         };
     }
 
     public build(): InnerScope {
         const { aggregation, names, prefix, props } = this;
         const { globalScope, groupings, parentHeight, parentScope } = props;
+        const { sizeSignals } = parentScope;
 
         //this needs to be global since the scale depends on it
         addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName),
@@ -81,13 +88,32 @@ export class AggregateSquare extends Layout {
             {
                 name: props.globalAggregateMaxExtentSignal,
                 update: `${names.globalAggregateExtentSignal}[1]`
+            },
+            {
+                name: names.squareMaxSide,
+                update: `min((${sizeSignals.layoutHeight}), (${sizeSignals.layoutWidth}))`
+            },
+            {
+                name: names.squareMaxArea,
+                update: [names.squareMaxSide, names.squareMaxSide].join(' * ')
             }
         );
-        addSignal(parentScope.scope, {
-            name: names.localScaled,
-            update: `scale(${JSON.stringify(names.scale)}, ${names.localAggregateExtentSignal}[0])`
-        });
+        addSignal(parentScope.scope,
+            {
+                name: names.shrinkRatio,
+                update: `${names.localAggregateExtentSignal}[0] / ${props.globalAggregateMaxExtentSignal}`
+            },
+            {
+                name: names.squareArea,
+                update: [names.squareMaxArea, names.shrinkRatio].join(' * ')
+            },
+            {
+                name: names.squareSide,
+                update: `sqrt(${names.squareArea})`
+            }
+        );
         const mark: GroupMark = {
+            style: 'cell',
             name: prefix,
             type: 'group',
             encode: {
@@ -99,46 +125,24 @@ export class AggregateSquare extends Layout {
                         value: 0
                     },
                     height: {
-                        signal: names.localScaled
+                        signal: names.squareSide
                     },
                     width: {
-                        signal: parentScope.sizeSignals.layoutWidth
+                        signal: names.squareSide
                     }
                 }
             }
         };
         addMarks(parentScope.scope, mark);
 
-        const scale: LinearScale = {
-            type: 'linear',
-            name: names.scale,
-            domain: [
-                0,
-                {
-                    signal: props.globalAggregateMaxExtentSignal
-                }
-            ],
-            range: [
-                {
-                    signal: parentScope.sizeSignals.layoutHeight
-                },
-                0
-            ],
-            nice: true,
-            zero: true,
-            reverse: true
-        };
-
-        const globalAggregateMaxExtentScaledValue = `scale(${JSON.stringify(names.scale)}, ${props.globalAggregateMaxExtentSignal})`;
-
         addSignal(globalScope.scope,
             {
                 name: props.globalAggregateMaxExtentScaledSignal,
-                update: globalAggregateMaxExtentScaledValue
+                update: names.squareMaxSide
             },
             {
                 name: parentHeight,
-                update: parentScope.sizeSignals.layoutHeight
+                update: sizeSignals.layoutHeight
             }
         );
 
@@ -146,15 +150,12 @@ export class AggregateSquare extends Layout {
             dataName: parentScope.dataName,
             scope: mark,
             sizeSignals: {
-                layoutHeight: names.localScaled,
-                layoutWidth: parentScope.sizeSignals.layoutWidth
+                layoutHeight: names.squareSide,
+                layoutWidth: names.squareSide
             },
             globalScales: {
                 showAxes: false,
-                scales: {
-                    x: undefined,
-                    y: scale
-                }
+                scales: {}
             },
             encodingRuleMap: {
                 y: [{
