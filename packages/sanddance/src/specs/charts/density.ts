@@ -45,7 +45,6 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     };
     const aggProps: AggregateSquareProps = {
         niceScale: true,
-        dock: 'top',
         globalAggregateMaxExtentSignal: 'aggMaxExtent',
         globalAggregateMaxExtentScaledSignal: 'aggMaxExtentScaled',
         parentHeight: 'aggParentHeight',

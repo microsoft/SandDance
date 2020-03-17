@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { AxisScales } from '../interfaces';
 import { defaultBins, maxbins } from '../defaults';
-import { Density, DensityProps } from '../layouts/density';
+//import { Density, DensityProps } from '../layouts/density';
 import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
@@ -14,31 +14,10 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         x: { title: specColumns.x && specColumns.x.name },
         y: { title: specColumns.y && specColumns.y.name }
     };
-    const densityProps: DensityProps = {
-        mode: 'cube',
-        groupbyX: {
-            column: specColumns.x,
-            defaultBins,
-            maxbins,
-            maxbinsSignalDisplayName: 'TODO maxbins x',
-            maxbinsSignalName: 'TODO maxbins x'
-        },
-        groupbyY: {
-            column: specColumns.y,
-            defaultBins,
-            maxbins,
-            maxbinsSignalDisplayName: 'TODO maxbins y',
-            maxbinsSignalName: 'TODO maxbins y'
-        }
-    };
     return {
         axisScales,
         customZScale: true,
         layouts: [
-            {
-                layoutClass: Density,
-                props: densityProps,
-            },
             {
                 layoutClass: Stack
             }

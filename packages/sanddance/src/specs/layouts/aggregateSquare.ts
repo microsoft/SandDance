@@ -14,7 +14,6 @@ import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { testForCollapseSelection } from '../selection';
 
 export interface AggregateSquareProps extends LayoutProps {
-    dock: 'bottom' | 'top' | 'left';
     sumBy: Column;
     globalAggregateMaxExtentSignal: string;
     globalAggregateMaxExtentScaledSignal: string;
@@ -52,7 +51,7 @@ export class AggregateSquare extends Layout {
 
     public build(): InnerScope {
         const { aggregation, names, prefix, props } = this;
-        const { dock, globalScope, groupings, niceScale, parentHeight, parentScope, showAxes } = props;
+        const { globalScope, groupings, niceScale, parentHeight, parentScope, showAxes } = props;
 
         //this needs to be global since the scale depends on it
         addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName),
@@ -90,7 +89,6 @@ export class AggregateSquare extends Layout {
             name: names.localScaled,
             update: `scale(${JSON.stringify(names.scale)}, ${names.localAggregateExtentSignal}[0])`
         });
-        const horizontal = dock === 'left';
         const mark: GroupMark = {
             name: prefix,
             type: 'group',
@@ -99,32 +97,15 @@ export class AggregateSquare extends Layout {
                     x: {
                         value: 0
                     },
-                    y: dock === 'bottom' ?
-                        {
-                            signal: names.localScaled
-                        }
-                        :
-                        {
-                            value: 0
-                        },
-                    height: horizontal ?
-                        {
-                            signal: parentScope.sizeSignals.layoutHeight
-                        }
-                        :
-                        {
-                            signal: dock === 'top'
-                                ? names.localScaled
-                                : `${parentScope.sizeSignals.layoutHeight} - ${names.localScaled}`
-                        },
-                    width: horizontal ?
-                        {
-                            signal: names.localScaled
-                        }
-                        :
-                        {
-                            signal: parentScope.sizeSignals.layoutWidth
-                        }
+                    y: {
+                        value: 0
+                    },
+                    height: {
+                        signal: names.localScaled
+                    },
+                    width: {
+                        signal: parentScope.sizeSignals.layoutWidth
+                    }
                 }
             }
         };
@@ -139,23 +120,15 @@ export class AggregateSquare extends Layout {
                     signal: props.globalAggregateMaxExtentSignal
                 }
             ],
-            range: horizontal ?
-                [
-                    0,
-                    {
-                        signal: parentScope.sizeSignals.layoutWidth
-                    }
-                ]
-                :
-                [
-                    {
-                        signal: parentScope.sizeSignals.layoutHeight
-                    },
-                    0
-                ],
+            range: [
+                {
+                    signal: parentScope.sizeSignals.layoutHeight
+                },
+                0
+            ],
             nice: niceScale,
             zero: true,
-            reverse: dock === 'top'
+            reverse: true
         };
 
         const globalAggregateMaxExtentScaledValue = `scale(${JSON.stringify(names.scale)}, ${props.globalAggregateMaxExtentSignal})`;
@@ -163,9 +136,7 @@ export class AggregateSquare extends Layout {
         addSignal(globalScope.scope,
             {
                 name: props.globalAggregateMaxExtentScaledSignal,
-                update: dock === 'bottom'
-                    ? `${parentScope.sizeSignals.layoutHeight} - ${globalAggregateMaxExtentScaledValue}`
-                    : globalAggregateMaxExtentScaledValue
+                update: globalAggregateMaxExtentScaledValue
             },
             {
                 name: parentHeight,
@@ -176,49 +147,27 @@ export class AggregateSquare extends Layout {
         return {
             dataName: parentScope.dataName,
             scope: mark,
-            sizeSignals: horizontal ?
-                {
-                    layoutHeight: parentScope.sizeSignals.layoutHeight,
-                    layoutWidth: names.localScaled
-                }
-                :
-                {
-                    layoutHeight: dock === 'top'
-                        ? names.localScaled
-                        : `${parentScope.sizeSignals.layoutHeight} - ${names.localScaled}`,
-                    layoutWidth: parentScope.sizeSignals.layoutWidth
-                },
+            sizeSignals: {
+                layoutHeight: names.localScaled,
+                layoutWidth: parentScope.sizeSignals.layoutWidth
+            },
             globalScales: {
                 showAxes,
                 scales: {
-                    x: horizontal ? scale : undefined,
-                    y: horizontal ? undefined : scale
+                    x: undefined,
+                    y: scale
                 }
             },
-            encodingRuleMap: horizontal ?
-                {
-                    x: [{
-                        test: testForCollapseSelection(),
-                        value: 0
-                    }],
-                    width: [{
-                        test: testForCollapseSelection(),
-                        value: 0
-                    }]
-                }
-                :
-                {
-                    y: [{
-                        test: testForCollapseSelection(),
-                        signal: dock === 'top'
-                            ? '0'
-                            : `${parentScope.sizeSignals.layoutHeight} - ${names.localScaled}`
-                    }],
-                    height: [{
-                        test: testForCollapseSelection(),
-                        value: 0
-                    }]
-                }
+            encodingRuleMap: {
+                y: [{
+                    test: testForCollapseSelection(),
+                    signal: '0'
+                }],
+                height: [{
+                    test: testForCollapseSelection(),
+                    value: 0
+                }]
+            }
         };
     }
 
@@ -237,11 +186,7 @@ export class AggregateSquare extends Layout {
     private getAggregation() {
         const { props } = this;
         let s: AxisScale;
-        if (props.dock === 'left') {
-            s = props.axesScales.x;
-        } else {
-            s = props.axesScales.y;
-        }
+        s = props.axesScales.y;
         switch (s.aggregate) {
             case 'sum':
                 return 'sum';
