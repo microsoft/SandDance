@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { AggregateSquare, AggregateSquareProps } from '../layouts/aggregateSquare';
 import { AxisScales } from '../interfaces';
+import { Band, BandProps } from '../layouts/band';
 import { defaultBins, maxbins, minBarBandWidth } from '../defaults';
-import { Density, DensityProps } from '../layouts/density';
 import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
 import { Square, SquareProps } from '../layouts/square';
-import { BandProps, Band } from '../layouts/band';
-import { AggregateContainerProps, AggregateContainer } from '../layouts/aggregateContainer';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns } = specContext;
@@ -44,7 +43,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         showAxes: true,
         parentHeight: 'vBandParentHeight'
     };
-    const aggProps: AggregateContainerProps = {
+    const aggProps: AggregateSquareProps = {
         niceScale: true,
         dock: 'top',
         globalAggregateMaxExtentSignal: 'aggMaxExtent',
@@ -74,7 +73,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 props: hBandProps
             },
             {
-                layoutClass: AggregateContainer,
+                layoutClass: AggregateSquare,
                 props: aggProps
             },
             {
