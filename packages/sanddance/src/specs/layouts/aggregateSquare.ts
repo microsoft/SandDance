@@ -18,7 +18,6 @@ export interface AggregateSquareProps extends LayoutProps {
     globalAggregateMaxExtentSignal: string;
     globalAggregateMaxExtentScaledSignal: string;
     parentHeight: string;
-    niceScale: boolean;
 }
 
 export class AggregateSquare extends Layout {
@@ -50,7 +49,7 @@ export class AggregateSquare extends Layout {
 
     public build(): InnerScope {
         const { aggregation, names, prefix, props } = this;
-        const { globalScope, groupings, niceScale, parentHeight, parentScope } = props;
+        const { globalScope, groupings, parentHeight, parentScope } = props;
 
         //this needs to be global since the scale depends on it
         addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName),
@@ -125,7 +124,7 @@ export class AggregateSquare extends Layout {
                 },
                 0
             ],
-            nice: niceScale,
+            nice: true,
             zero: true,
             reverse: true
         };

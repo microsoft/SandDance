@@ -44,7 +44,6 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         parentHeight: 'vBandParentHeight'
     };
     const aggProps: AggregateSquareProps = {
-        niceScale: true,
         globalAggregateMaxExtentSignal: 'aggMaxExtent',
         globalAggregateMaxExtentScaledSignal: 'aggMaxExtentScaled',
         parentHeight: 'aggParentHeight',
