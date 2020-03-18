@@ -92,7 +92,7 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
             break;
         }
         case 'wrap':
-        default:
+        default: {
             const props: WrapProps = {
                 groupby
             };
@@ -116,6 +116,7 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
             ];
             cellTitles = true;
             break;
+        }
     }
     return { cellTitles, colRowTitles, layoutPair, plotPadding, scales, signals };
 }
