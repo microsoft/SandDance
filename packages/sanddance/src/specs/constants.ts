@@ -59,6 +59,7 @@ export const SignalNames = {
     XBins: 'RoleX_BinsSignal',
     YBins: 'RoleY_BinsSignal',
     ZHeight: 'RoleZ_HeightSignal',
+    ZGrounded: 'RoleZ_Grounded',
     ZProportion: 'RoleZ_ProportionSignal'
 };
 

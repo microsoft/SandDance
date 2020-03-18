@@ -18,7 +18,8 @@ export interface ScatterProps extends LayoutProps {
     x: Column;
     y: Column;
     z: Column;
-    scatterPointSizeDisplay: string
+    scatterPointSizeDisplay: string;
+    zGrounded: string;
 }
 
 export class Scatter extends Layout {
@@ -44,20 +45,30 @@ export class Scatter extends Layout {
 
     public build(): InnerScope {
         const { names, prefix, props } = this;
-        const { globalScope, parentScope, scatterPointSizeDisplay, x, y, z } = props;
+        const { globalScope, parentScope, scatterPointSizeDisplay, x, y, z, zGrounded } = props;
 
-        addSignal(globalScope.scope, {
-            name: SignalNames.PointSize,
-            value: 5,
-            bind: {
-                name: scatterPointSizeDisplay,
-                debounce: 50,
-                input: 'range',
-                min: 1,
-                max: 25,
-                step: 1
+        addSignal(globalScope.scope,
+            {
+                name: SignalNames.PointSize,
+                value: 5,
+                bind: {
+                    name: scatterPointSizeDisplay,
+                    debounce: 50,
+                    input: 'range',
+                    min: 1,
+                    max: 25,
+                    step: 1
+                }
+            },
+            {
+                name: SignalNames.ZGrounded,
+                value: false,
+                bind: {
+                    name: zGrounded,
+                    input: 'checkbox'
+                }
             }
-        });
+        );
         addData(parentScope.scope, {
             name: names.validData,
             source: parentScope.dataName,
@@ -72,6 +83,7 @@ export class Scatter extends Layout {
         });
 
         const globalScales: GlobalScales = { showAxes: true, scales: {} };
+        const zValue = z ? `scale(${JSON.stringify(names.zScale)}, datum[${JSON.stringify(z.name)}])` : null;
         const update: RectEncodeEntry = {
             height: [
                 {
@@ -109,8 +121,7 @@ export class Scatter extends Layout {
                         value: 0
                     },
                     {
-                        scale: names.zScale,
-                        field: z && z.name
+                        signal: `${SignalNames.ZGrounded} ? 0 : ${zValue}`
                     }
                 ],
                 depth: [
@@ -119,7 +130,7 @@ export class Scatter extends Layout {
                         value: 0
                     },
                     {
-                        signal: SignalNames.PointSize
+                        signal: `${SignalNames.ZGrounded} ? ${zValue} : ${SignalNames.PointSize}`
                     }
                 ]
             }
@@ -132,28 +143,28 @@ export class Scatter extends Layout {
             reverse: boolean,
             signal: string
         }[] = [
-            {
-                column: x,
-                xyz: 'x',
-                scaleName: names.xScale,
-                reverse: false,
-                signal: parentScope.sizeSignals.layoutWidth
-            },
-            {
-                column: y,
-                xyz: 'y',
-                scaleName: names.yScale,
-                reverse: true,
-                signal: parentScope.sizeSignals.layoutHeight
-            },
-            {
-                column: z,
-                xyz: 'z',
-                scaleName: names.zScale,
-                reverse: false,
-                signal: `${parentScope.sizeSignals.layoutHeight}*${SignalNames.ZProportion}`
-            }
-        ];
+                {
+                    column: x,
+                    xyz: 'x',
+                    scaleName: names.xScale,
+                    reverse: false,
+                    signal: parentScope.sizeSignals.layoutWidth
+                },
+                {
+                    column: y,
+                    xyz: 'y',
+                    scaleName: names.yScale,
+                    reverse: true,
+                    signal: parentScope.sizeSignals.layoutHeight
+                },
+                {
+                    column: z,
+                    xyz: 'z',
+                    scaleName: names.zScale,
+                    reverse: false,
+                    signal: `${parentScope.sizeSignals.layoutHeight}*${SignalNames.ZProportion}`
+                }
+            ];
         columnSignals.forEach(cs => {
             const { column, reverse, scaleName, signal, xyz } = cs;
             if (!column) return;

@@ -367,6 +367,11 @@ export interface SpecLanguage {
      * Label for z scale proportion slider.
      */
     zScaleProportion: string;
+
+    /**
+     * Label for z grounded toggle.
+     */
+    zGrounded: string;
 }
 
 export interface SignalValues {

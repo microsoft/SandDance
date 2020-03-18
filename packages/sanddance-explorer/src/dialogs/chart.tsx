@@ -9,6 +9,7 @@ import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { Group } from '../controls/group';
 import { SandDance } from '@msrvida/sanddance-react';
 import { Signal } from '../controls/signal';
+import { Signal as VegaSignal } from 'vega-typings';
 import { strings } from '../language';
 import { ToggleColumns } from '../controls/toggleColumns';
 
@@ -95,19 +96,6 @@ export class Chart extends React.Component<Props, State> {
                         />
                     </div>
                 </Group>
-                {signals && (
-                    <Group label={strings.labelChartTypeOptions}>
-                        {signals.map((signal, i) => (
-                            <Signal
-                                key={i}
-                                signal={signal}
-                                explorer={explorer}
-                                disabled={props.disabled}
-                                collapseLabel={props.collapseLabels}
-                            />
-                        ))}
-                    </Group>
-                )}
                 <Group label={strings.labelColumnMapping}>
                     <div>
                         {specCapabilities && specCapabilities.roles.map((specRole, i) => {
@@ -247,6 +235,20 @@ export class Chart extends React.Component<Props, State> {
                         </div>
                     </div>
                 </Group>
+                {signals && (
+                    <Group label={strings.labelChartTypeOptions}>
+                        {signals.map((signal, i) => (
+                            <Signal
+                                key={i}
+                                signal={signal}
+                                explorer={explorer}
+                                disabled={props.disabled || this.disableSignal(signal)}
+                                collapseLabel={props.collapseLabels}
+                                newViewStateTarget={false}
+                            />
+                        ))}
+                    </Group>
+                )}
                 <Dialog
                     hidden={!this.state.showTooltipDialog}
                     onDismiss={() => this.setState({ showTooltipDialog: false })}
@@ -261,4 +263,12 @@ export class Chart extends React.Component<Props, State> {
             </div>
         );
     }
+
+    private disableSignal(signal: VegaSignal) {
+        if (this.props.view === '2d' && signal.name === SandDance.constants.SignalNames.ZGrounded) {
+            return true;
+        }
+        return false;
+    }
+
 }

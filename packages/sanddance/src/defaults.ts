@@ -60,6 +60,7 @@ export const defaultViewerOptions: ViewerOptions = {
         textScaleSignal: 'Text scale',
         xAxisTextAngleSignal: 'X axis text angle',
         yAxisTextAngleSignal: 'Y axis text angle',
+        zGrounded: 'Z grounded',
         zScaleProportion: 'Z scale proportion to Y',
         selectionCount: count => `${count} items selected`
     },
