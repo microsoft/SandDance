@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { AxisScales } from '../interfaces';
-import { defaultBins, maxbins } from '../defaults';
-//import { Density, DensityProps } from '../layouts/density';
+import { Band, BandProps } from '../layouts/band';
+import { defaultBins, maxbins, minBarBandWidth } from '../defaults';
 import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
-import { Stack } from '../layouts/stack';
+import { Stack, StackProps } from '../layouts/stack';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns } = specContext;
@@ -14,12 +14,52 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         x: { title: specColumns.x && specColumns.x.name },
         y: { title: specColumns.y && specColumns.y.name }
     };
+    const hBandProps: BandProps = {
+        excludeEncodingRuleMap: true,
+        orientation: 'horizontal',
+        groupby: {
+            column: specColumns.y,
+            defaultBins,
+            maxbinsSignalName: SignalNames.YBins,
+            maxbinsSignalDisplayName: specContext.specViewOptions.language.YMaxBins,
+            maxbins
+        },
+        minBandWidth: minBarBandWidth,
+        showAxes: true,
+        parentHeight: 'hBandParentHeight'
+    };
+    const vBandProps: BandProps = {
+        excludeEncodingRuleMap: true,
+        orientation: 'vertical',
+        groupby: {
+            column: specColumns.x,
+            defaultBins,
+            maxbinsSignalName: SignalNames.XBins,
+            maxbinsSignalDisplayName: specContext.specViewOptions.language.XMaxBins,
+            maxbins
+        },
+        minBandWidth: minBarBandWidth,
+        showAxes: true,
+        parentHeight: 'vBandParentHeight'
+    };
+    const stackProps: StackProps = {
+        sort: specColumns.sort
+    };
     return {
         axisScales,
         customZScale: true,
         layouts: [
             {
-                layoutClass: Stack
+                layoutClass: Band,
+                props: vBandProps
+            },
+            {
+                layoutClass: Band,
+                props: hBandProps
+            },
+            {
+                layoutClass: Stack,
+                props: stackProps
             }
         ],
         specCapabilities: {
@@ -38,10 +78,6 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     signals: [SignalNames.YBins]
                 },
                 {
-                    role: 'z',
-                    allowNone: true
-                },
-                {
                     role: 'color',
                     allowNone: true
                 },
@@ -51,11 +87,13 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 },
                 {
                     role: 'facet',
-                    allowNone: true
+                    allowNone: true,
+                    signals: [SignalNames.FacetBins]
                 },
                 {
                     role: 'facetV',
-                    allowNone: true
+                    allowNone: true,
+                    signals: [SignalNames.FacetVBins]
                 }
             ]
         }
