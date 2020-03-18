@@ -14,6 +14,7 @@ import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { testForCollapseSelection } from '../selection';
 
 export interface AggregateSquareProps extends LayoutProps {
+    aggregation: 'sum' | 'count';
     sumBy: Column;
     localAggregateMaxExtentSignal: string;
     localAggregateMaxExtentScaledSignal: string;
@@ -21,7 +22,6 @@ export interface AggregateSquareProps extends LayoutProps {
 }
 
 export class AggregateSquare extends Layout {
-    private aggregation: 'sum' | 'count';
     private names: {
         barCount: string,
         aggregateField: string,
@@ -37,7 +37,7 @@ export class AggregateSquare extends Layout {
 
     constructor(public props: AggregateSquareProps & LayoutBuildProps) {
         super(props);
-        const a = this.aggregation = this.getAggregation();
+        const a = this.props.aggregation;
         const p = this.prefix = `agg_${this.id}`;
         this.names = {
             barCount: `${p}_count`,
@@ -54,8 +54,8 @@ export class AggregateSquare extends Layout {
     }
 
     public build(): InnerScope {
-        const { aggregation, names, prefix, props } = this;
-        const { globalScope, groupings, parentHeight, parentScope } = props;
+        const { names, prefix, props } = this;
+        const { aggregation, globalScope, groupings, parentHeight, parentScope } = props;
         const { sizeSignals } = parentScope;
 
         //this needs to be global since the scale depends on it
@@ -180,17 +180,5 @@ export class AggregateSquare extends Layout {
             trans.fields = [this.props.sumBy.name];
         }
         return trans;
-    }
-
-    private getAggregation() {
-        const { props } = this;
-        let s: AxisScale;
-        s = props.axesScales.y;
-        switch (s.aggregate) {
-            case 'sum':
-                return 'sum';
-            default:
-                return 'count';
-        }
     }
 }

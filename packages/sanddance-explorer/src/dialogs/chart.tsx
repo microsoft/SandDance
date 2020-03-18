@@ -5,6 +5,7 @@ import { base } from '../base';
 import { ColumnMap, ColumnMapBaseProps } from '../controls/columnMap';
 import { Dialog } from '../controls/dialog';
 import { Dropdown } from '../controls/dropdown';
+import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { Group } from '../controls/group';
 import { SandDance } from '@msrvida/sanddance-react';
 import { Signal } from '../controls/signal';
@@ -36,12 +37,13 @@ export class Chart extends React.Component<Props, State> {
     }
 
     render() {
-        const props = this.props;
-        const signals = props.explorer.viewer &&
-            props.explorer.viewer.vegaSpec &&
-            props.specCapabilities &&
-            props.specCapabilities.signals &&
-            props.explorer.viewer.vegaSpec.signals.filter(s => props.specCapabilities.signals.indexOf(s.name) >= 0);
+        const { props } = this;
+        const { explorer, specCapabilities } = props;
+        const signals = explorer.viewer &&
+            explorer.viewer.vegaSpec &&
+            specCapabilities &&
+            specCapabilities.signals &&
+            explorer.viewer.vegaSpec.signals.filter(s => specCapabilities.signals.indexOf(s.name) >= 0);
         return (
             <div>
                 <Group label={strings.labelChart}>
@@ -99,7 +101,7 @@ export class Chart extends React.Component<Props, State> {
                             <Signal
                                 key={i}
                                 signal={signal}
-                                explorer={props.explorer}
+                                explorer={explorer}
                                 disabled={props.disabled}
                                 collapseLabel={props.collapseLabels}
                             />
@@ -108,7 +110,7 @@ export class Chart extends React.Component<Props, State> {
                 )}
                 <Group label={strings.labelColumnMapping}>
                     <div>
-                        {props.specCapabilities && props.specCapabilities.roles.map((specRole, i) => {
+                        {specCapabilities && specCapabilities.roles.map((specRole, i) => {
                             const specColumnInRole = props.insightColumns[specRole.role];
                             const selectedColumnName = specColumnInRole;
                             let disabledColumnName: string;
@@ -166,45 +168,49 @@ export class Chart extends React.Component<Props, State> {
                                     break;
                                 }
                                 case 'size': {
-                                    prefix = !props.specCapabilities.countsAndSums ? null : (
+                                    const options: FabricTypes.IDropdownOption[] = [
+                                        {
+                                            key: 'count-square',
+                                            text: strings.labelTotalByCountSquare,
+                                            data: 'count-square',
+                                            selected: !totalStyle || totalStyle === 'count-square'
+                                        },
+                                        {
+                                            key: 'count-strip',
+                                            text: strings.labelTotalByCountStrip,
+                                            data: 'count-strip',
+                                            selected: totalStyle === 'count-strip'
+                                        },
+                                        {
+                                            key: 'sum-strip',
+                                            text: strings.labelTotalBySumStrip,
+                                            data: 'sum-strip',
+                                            selected: totalStyle === 'sum-strip'
+                                        },
+                                        {
+                                            key: 'sum-treemap',
+                                            text: strings.labelTotalBySumTreemap,
+                                            data: 'sum-treemap',
+                                            selected: totalStyle === 'sum-treemap',
+                                            disabled: props.quantitativeColumns.length === 0
+                                        }
+                                    ];
+                                    if (specCapabilities.percentage) {
+                                        options.push(
+                                            {
+                                                key: 'sum-strip-percent',
+                                                text: strings.labelTotalBySumStripPercent,
+                                                data: 'sum-strip-percent',
+                                                selected: totalStyle === 'sum-strip-percent',
+                                                disabled: props.quantitativeColumns.length === 0
+                                            });
+                                    }
+                                    prefix = !specCapabilities.countsAndSums ? null : (
                                         <Dropdown
                                             collapseLabel={props.collapseLabels}
                                             label={strings.labelTotal}
                                             calloutProps={{ style: { minWidth: '18em' } }}
-                                            options={[
-                                                {
-                                                    key: 'count-square',
-                                                    text: strings.labelTotalByCountSquare,
-                                                    data: 'count-square',
-                                                    selected: !totalStyle || totalStyle === 'count-square'
-                                                },
-                                                {
-                                                    key: 'count-strip',
-                                                    text: strings.labelTotalByCountStrip,
-                                                    data: 'count-strip',
-                                                    selected: totalStyle === 'count-strip'
-                                                },
-                                                {
-                                                    key: 'sum-strip',
-                                                    text: strings.labelTotalBySumStrip,
-                                                    data: 'sum-strip',
-                                                    selected: totalStyle === 'sum-strip'
-                                                },
-                                                {
-                                                    key: 'sum-treemap',
-                                                    text: strings.labelTotalBySumTreemap,
-                                                    data: 'sum-treemap',
-                                                    selected: totalStyle === 'sum-treemap',
-                                                    disabled: props.quantitativeColumns.length === 0
-                                                },
-                                                {
-                                                    key: 'sum-strip-percent',
-                                                    text: strings.labelTotalBySumStripPercent,
-                                                    data: 'sum-strip-percent',
-                                                    selected: totalStyle === 'sum-strip-percent',
-                                                    disabled: props.quantitativeColumns.length === 0
-                                                }
-                                            ]}
+                                            options={options}
                                             onChange={(e, o) =>
                                                 props.changeColumnMapping('size', 'size', { totalStyle: o.data })
                                             }
@@ -215,7 +221,7 @@ export class Chart extends React.Component<Props, State> {
                             }
                             let disabled = props.disabled
                                 || (props.view === '2d' && specRole.role === 'z')
-                                || (specRole.role === 'size' && !(!props.specCapabilities.countsAndSums || totalStyle.indexOf('sum-') === 0))
+                                || (specRole.role === 'size' && !(!specCapabilities.countsAndSums || totalStyle.indexOf('sum-') === 0))
                                 || (specRole.role === 'facetV' && (!props.insightColumns.facet || props.facetStyle !== 'cross'))
                                 || (specRole.role === 'sort' && totalStyle === 'sum-treemap');
                             return (

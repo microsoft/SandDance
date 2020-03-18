@@ -212,6 +212,11 @@ export interface SpecCapabilities {
     countsAndSums: boolean;
 
     /**
+     * Capability of showing as percentage
+     */
+    percentage?: boolean;
+
+    /**
      * Roles to map columns.
      */
     roles: SpecRoleCapabilities[];

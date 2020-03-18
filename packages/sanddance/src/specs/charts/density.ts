@@ -4,13 +4,16 @@ import { AggregateSquare, AggregateSquareProps } from '../layouts/aggregateSquar
 import { AxisScales } from '../interfaces';
 import { Band, BandProps } from '../layouts/band';
 import { defaultBins, maxbins, minBarBandWidth } from '../defaults';
+import { LayoutPair } from '../layouts/layout';
 import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
 import { Square, SquareProps } from '../layouts/square';
+import { Strip, StripProps } from '../layouts/strip';
+import { Treemap, TreemapProps } from '../layouts/treemap';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
-    const { specColumns } = specContext;
+    const { insight, specColumns, specViewOptions } = specContext;
     const axisScales: AxisScales = {
         x: { title: specColumns.x && specColumns.x.name },
         y: { title: specColumns.y && specColumns.y.name },
@@ -48,37 +51,90 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         localAggregateMaxExtentSignal: 'aggMaxExtent',
         localAggregateMaxExtentScaledSignal: 'aggMaxExtentScaled',
         parentHeight: 'aggParentHeight',
+        aggregation: null,
         sumBy: specColumns.size
     };
-    const squareProps: SquareProps = {
-        sortBy: specColumns.sort,
-        fillDirection: 'right-down',
-        z: specColumns.z,
-        maxGroupedUnits: aggProps.localAggregateMaxExtentSignal,
-        maxGroupedFillSize: aggProps.localAggregateMaxExtentScaledSignal,
-        zSize: aggProps.parentHeight
-    };
-
-    return {
-        axisScales,
-        layouts: [
-            {
-                layoutClass: Band,
-                props: vBandProps
-            },
-            {
-                layoutClass: Band,
-                props: hBandProps
-            },
-            {
-                layoutClass: AggregateSquare,
-                props: aggProps
-            },
-            {
+    const layouts: LayoutPair[] = [
+        {
+            layoutClass: Band,
+            props: vBandProps
+        },
+        {
+            layoutClass: Band,
+            props: hBandProps
+        },
+        {
+            layoutClass: AggregateSquare,
+            props: aggProps
+        }
+    ];
+    switch (insight.totalStyle) {
+        case 'sum-treemap': {
+            aggProps.aggregation = 'sum';
+            const treemapProps: TreemapProps = {
+                corner: 'bottom-left',
+                size: specColumns.size,
+                treeMapMethod: specViewOptions.language.treeMapMethod,
+                z: specColumns.z,
+                zSize: aggProps.parentHeight
+            };
+            layouts.push({
+                layoutClass: Treemap,
+                props: treemapProps
+            });
+            break;
+        }
+        case 'sum-strip': {
+            aggProps.aggregation = 'sum';
+            const stripProps: StripProps = {
+                sortOrder: 'ascending',
+                orientation: 'vertical',
+                size: specColumns.size,
+                sort: specColumns.sort,
+                z: specColumns.z,
+                zSize: aggProps.parentHeight
+            };
+            layouts.push({
+                layoutClass: Strip,
+                props: stripProps
+            });
+            break;
+        }
+        case 'count-strip': {
+            aggProps.aggregation = 'count';
+            const stripProps: StripProps = {
+                sortOrder: 'ascending',
+                orientation: 'vertical',
+                sort: specColumns.sort,
+                z: specColumns.z,
+                zSize: aggProps.parentHeight
+            };
+            layouts.push({
+                layoutClass: Strip,
+                props: stripProps
+            });
+            break;
+        }
+        default: {
+            aggProps.aggregation = 'count';
+            const squareProps: SquareProps = {
+                sortBy: specColumns.sort,
+                fillDirection: 'right-down',
+                z: specColumns.z,
+                maxGroupedUnits: aggProps.localAggregateMaxExtentSignal,
+                maxGroupedFillSize: aggProps.localAggregateMaxExtentScaledSignal,
+                zSize: aggProps.parentHeight
+            };
+            layouts.push({
                 layoutClass: Square,
                 props: squareProps
-            }
-        ],
+            });
+            break;
+        }
+    }
+    return {
+        axisScales,
+        layouts,
         specCapabilities: {
             countsAndSums: true,
             roles: [
@@ -105,6 +161,12 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 {
                     role: 'sort',
                     allowNone: true
+                },
+                {
+                    role: 'size',
+                    allowNone: true,
+                    excludeCategoric: true,
+                    signals: [SignalNames.TreeMapMethod]
                 },
                 {
                     role: 'facet',

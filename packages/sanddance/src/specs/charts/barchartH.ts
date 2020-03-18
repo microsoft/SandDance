@@ -143,6 +143,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         layouts,
         specCapabilities: {
             countsAndSums: true,
+            percentage: true,
             roles: [
                 {
                     role: 'y',
