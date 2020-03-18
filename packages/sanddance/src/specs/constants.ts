@@ -5,6 +5,7 @@ export const FieldNames = {
     Active: '__SandDance__Active',
     Collapsed: '__SandDance__Collapsed',
     Contains: '__SandDance__Contains',
+    Count: '__SandDance__Count',
     Selected: '__SandDance__Selected',
     First: '__SandDance__First',
     Last: '__SandDance__Last',

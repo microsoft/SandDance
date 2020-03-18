@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { addData, addMarks, addSignal } from '../scope';
+import { addZScale } from '../zBase';
 import { Column } from '../types';
+import { FieldNames } from '../constants';
 import {
     GroupEncodeEntry,
     NumericValueRef,
@@ -11,7 +13,6 @@ import {
 import { InnerScope } from '../interfaces';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { testForCollapseSelection } from '../selection';
-import { addZScale } from '../zBase';
 
 export interface SquareProps extends LayoutProps {
     sortBy: Column;
@@ -180,11 +181,12 @@ export class Square extends Layout {
                             {
                                 type: 'aggregate',
                                 groupby: groupings.reduce((acc, val) => acc.concat(val), []),
-                                ops: ['count']
+                                ops: ['count'],
+                                as: [FieldNames.Count]
                             },
                             {
                                 type: 'extent',
-                                field: 'count',
+                                field: FieldNames.Count,
                                 signal: names.maxGroup
                             }
                         ]
