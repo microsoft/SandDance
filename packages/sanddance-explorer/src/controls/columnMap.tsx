@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import * as React from 'react';
 import { base } from '../base';
+import { ChangeColumnMappingOptions } from '../interfaces';
 import { Dropdown } from './dropdown';
 import { Explorer } from '../explorer';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
@@ -15,6 +16,7 @@ const maxFacets = 50;
 const roleLabels: { [role in SandDance.types.InsightColumnRoles]: string } = {
     color: strings.labelColumnColor,
     facet: strings.labelColumnFacet,
+    facetV: strings.labelColumnFacetV,
     group: strings.labelColumnGroup,
     size: strings.labelColumnSize,
     sort: strings.labelColumnSort,
@@ -27,6 +29,7 @@ const roleLabels: { [role in SandDance.types.InsightColumnRoles]: string } = {
 const aliasLabels: { [role in SandDance.types.InsightColumnRoles]: string } = {
     color: strings.labelAliasColor,
     facet: strings.labelAliasFacet,
+    facetV: strings.labelAliasFacetV,
     group: strings.labelAliasGroup,
     size: strings.labelAliasSize,
     sort: strings.labelAliasSort,
@@ -40,7 +43,9 @@ export interface ColumnMapBaseProps {
     allColumns: SandDance.types.Column[];
     quantitativeColumns: SandDance.types.Column[];
     categoricalColumns: SandDance.types.Column[];
-    changeColumnMapping: { (role: SandDance.types.InsightColumnRoles, columnOrRole: SandDance.types.Column | string): void };
+    changeColumnMapping: (role: SandDance.types.InsightColumnRoles, columnOrRole: SandDance.types.Column | string, options?: ChangeColumnMappingOptions) => void;
+    facetStyle: SandDance.types.FacetStyle;
+    sumStyle: SandDance.types.SumStyle;
     explorer: Explorer;
     specCapabilities: SandDance.types.SpecCapabilities;
 }
@@ -49,8 +54,11 @@ export interface Props extends ColumnMapBaseProps {
     collapseLabel: boolean;
     componentRef?: React.RefObject<FabricTypes.IDropdown>;
     hideSignals?: boolean;
+    prefix?: JSX.Element;
+    suffix?: JSX.Element;
     disabled?: boolean;
     specRole: SandDance.types.SpecRoleCapabilities;
+    disabledColumnName?: string
     selectedColumnName?: string
     onChangeSignal?: (name: string, value: any) => void;
     onDismiss?: () => void;
@@ -59,6 +67,7 @@ export interface Props extends ColumnMapBaseProps {
 function filterColumnList(context: SandDance.types.InsightColumnRoles, columns: SandDance.types.Column[]) {
     switch (context) {
         case 'facet':
+        case 'facetV':
             return columns.filter(
                 column =>
                     column.quantitative ||
@@ -70,14 +79,15 @@ function filterColumnList(context: SandDance.types.InsightColumnRoles, columns: 
     }
 }
 
-function optionsForSpecColumn(sectionName: string, columns: SandDance.types.Column[], role: SandDance.types.InsightColumnRoles, selectedColumnName?: string) {
+function optionsForSpecColumn(sectionName: string, columns: SandDance.types.Column[], role: SandDance.types.InsightColumnRoles, disabledColumnName: string, selectedColumnName: string) {
     const filtered = filterColumnList(role, columns);
     const options = filtered.map(column => {
         const option: FabricTypes.IDropdownOption = {
             key: `column:${column.name}`,
             text: column.name,
             data: column,
-            selected: selectedColumnName === column.name
+            selected: selectedColumnName === column.name,
+            disabled: disabledColumnName === column.name
         };
         return option;
     });
@@ -131,7 +141,7 @@ export function ColumnMap(props: Props) {
     if (props.specRole.role === 'color') {
         categoricalColumns = props.categoricalColumns.filter(c => !c.isColorData);
         directColorColumns = props.categoricalColumns.filter(c => c.isColorData);
-        directColorGroup = optionsForSpecColumn(strings.selectDirectColor, directColorColumns, 'color', props.selectedColumnName);
+        directColorGroup = optionsForSpecColumn(strings.selectDirectColor, directColorColumns, 'color', props.disabledColumnName, props.selectedColumnName);
     } else {
         categoricalColumns = props.categoricalColumns;
     }
@@ -141,8 +151,8 @@ export function ColumnMap(props: Props) {
         referenceGroup = optionsForReference(strings.selectReference, others);
     }
 
-    const quantitativeGroup = optionsForSpecColumn(strings.selectNumeric, props.quantitativeColumns, props.specRole.role, props.selectedColumnName);
-    const categoricGroup = props.specRole.excludeCategoric ? null : optionsForSpecColumn(strings.selectNonNumeric, categoricalColumns, props.specRole.role, props.selectedColumnName);
+    const quantitativeGroup = optionsForSpecColumn(strings.selectNumeric, props.quantitativeColumns, props.specRole.role, props.disabledColumnName, props.selectedColumnName);
+    const categoricGroup = props.specRole.excludeCategoric ? null : optionsForSpecColumn(strings.selectNonNumeric, categoricalColumns, props.specRole.role, props.disabledColumnName, props.selectedColumnName);
 
     const options = referenceGroup.concat(quantitativeGroup).concat(categoricGroup).concat(directColorGroup).filter(Boolean);
     if (props.specRole.allowNone) {
@@ -164,10 +174,16 @@ export function ColumnMap(props: Props) {
         }
     }
     const label = roleLabels[props.specRole.role];
+
+    if (props.specRole.role === 'facetV') {
+        console.log('facetV options', options);
+    }
+
     return (
         <div
             className="sanddance-columnMap"
         >
+            {props.prefix}
             <Dropdown
                 componentRef={props.componentRef}
                 collapseLabel={props.collapseLabel}
@@ -185,8 +201,10 @@ export function ColumnMap(props: Props) {
                     explorer={props.explorer}
                     signal={signal}
                     onChange={value => props.onChangeSignal && props.onChangeSignal(signal.name, value)}
+                    collapseLabel={props.collapseLabel}
                 />
             ))}
+            {props.suffix}
         </div>
     );
 }

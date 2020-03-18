@@ -16,7 +16,7 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
         x2 = item.x2 != null ? item.x2 : x1;
         y2 = item.y2 != null ? item.y2 : y1;
 
-        const lineItem = styledLine(x1 + x - options.offsetX, y1 + y - options.offsetY, x2 + x - options.offsetX, y2 + y - options.offsetY, item.stroke, item.strokeWidth);
+        const lineItem = styledLine(x1 + x, y1 + y, x2 + x, y2 + y, item.stroke, item.strokeWidth);
 
         if (item.mark.role === 'axis-tick') {
             options.currAxis.ticks.push(lineItem);

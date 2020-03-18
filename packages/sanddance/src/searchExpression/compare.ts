@@ -31,6 +31,8 @@ export function compareGroup(a: SearchExpressionGroup, b: SearchExpressionGroup)
         let key = groupKeys[k];
         if (a[key] != b[key]) return false;
     }
+    if (!a.expressions && !b.expressions) return true;
+    if (!a.expressions || !b.expressions) return false;
     if (a.expressions.length != b.expressions.length) return false;
     for (let i = 0; i < a.expressions.length; i++) {
         if (!compareExpression(a.expressions[i], b.expressions[i])) return false;

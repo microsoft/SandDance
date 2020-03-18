@@ -5,9 +5,8 @@ import { applyColorButtons } from './colorMap';
 import { AutoCompleteDistinctValues, InputSearchExpression } from './controls/searchTerm';
 import { base } from './base';
 import { bestColorScheme } from './colorScheme';
-import { Chart } from './dialogs/chart';
-import { Color } from './dialogs/color';
 import {
+    ChangeColumnMappingOptions,
     ColorSettings,
     DataContent,
     DataExportHandler,
@@ -17,6 +16,8 @@ import {
     Snapshot,
     SnapshotProps
 } from './interfaces';
+import { Chart } from './dialogs/chart';
+import { Color } from './dialogs/color';
 import { ColumnMapBaseProps } from './controls/columnMap';
 import {
     copyPrefToNewState,
@@ -143,6 +144,7 @@ export class Explorer extends React.Component<Props, State> {
     private ignoreSelectionChange: boolean;
     private snapshotEditor: SnapshotEditor;
     private scrollSnapshotTimer: number;
+    private newViewStateTarget: boolean;
 
     public viewer: SandDance.Viewer;
     public viewerOptions: Partial<SandDance.types.ViewerOptions>;
@@ -161,7 +163,8 @@ export class Explorer extends React.Component<Props, State> {
             dataContent: null,
             dataFile: null,
             search: null,
-            facets: null,
+            sumStyle: null,
+            facetStyle: 'wrap',
             filter: null,
             filteredData: null,
             specCapabilities: null,
@@ -300,7 +303,8 @@ export class Explorer extends React.Component<Props, State> {
                         this.setState({ positionedColumnMapProps: null });
                     }
                 }
-            }
+            },
+            onNewViewStateTarget: () => this.newViewStateTarget
         };
         if (this.viewer && this.viewer.presenter) {
             const newPresenterStyle = SandDance.util.getPresenterStyle(this.viewerOptions as SandDance.types.ViewerOptions);
@@ -310,7 +314,7 @@ export class Explorer extends React.Component<Props, State> {
         }
     }
 
-    signal(signalName: string, signalValue: any) {
+    signal(signalName: string, signalValue: any, newViewStateTarget?: boolean) {
         switch (signalName) {
             case SandDance.constants.SignalNames.ColorBinCount:
             case SandDance.constants.SignalNames.ColorReverse:
@@ -318,10 +322,13 @@ export class Explorer extends React.Component<Props, State> {
                 this.discardColorContextUpdates = false;
                 break;
         }
+        this.newViewStateTarget = newViewStateTarget;
         this.viewer.vegaViewGl.signal(signalName, signalValue);
-        this.viewer.vegaViewGl.run();
-        this.discardColorContextUpdates = true;
-        this.props.onSignalChanged && this.props.onSignalChanged();
+        this.viewer.vegaViewGl.runAsync().then(() => {
+            this.discardColorContextUpdates = true;
+            this.newViewStateTarget = undefined;
+            this.props.onSignalChanged && this.props.onSignalChanged();
+        });
     }
 
     private manageColorToolbar() {
@@ -437,6 +444,8 @@ export class Explorer extends React.Component<Props, State> {
                     dataContent,
                     snapshots: dataContent.snapshots || this.state.snapshots,
                     autoCompleteDistinctValues: {},
+                    sumStyle: null,
+                    facetStyle: 'wrap',
                     filter: null,
                     filteredData: null,
                     transform: null,
@@ -523,7 +532,12 @@ export class Explorer extends React.Component<Props, State> {
     //state members which change the insight
     changeInsight(newState: Partial<State>) {
         if (!newState.signalValues) {
-            newState.signalValues = null;
+            if (this.viewer) {
+                const { signalValues } = this.viewer.getInsight();
+                newState.signalValues = signalValues;
+            } else {
+                newState.signalValues = null;
+            }
         }
         if (newState.chart === 'barchart') {
             newState.chart = 'barchartV';
@@ -537,7 +551,7 @@ export class Explorer extends React.Component<Props, State> {
         this.setState({ specCapabilities });
     }
 
-    changeColumnMapping(role: SandDance.types.InsightColumnRoles, column: SandDance.types.Column, options?: { scheme?: string }) {
+    changeColumnMapping(role: SandDance.types.InsightColumnRoles, column: SandDance.types.Column, options?: ChangeColumnMappingOptions) {
         const columns = { ...this.state.columns };
         const final = () => {
             columns[role] = column && column.name;
@@ -546,83 +560,57 @@ export class Explorer extends React.Component<Props, State> {
         if (column) {
             switch (role) {
                 case 'facet': {
-                    (() => {
-                        const facetColumn = column;
-                        let facets: SandDance.types.Facets;
-                        if (facetColumn.quantitative) {
-                            facets = {
-                                columns: 3, //TODO: calculate grid from aspect ratio
-                                rows: 3
-                            };
-                        } else {
-                            switch (facetColumn.stats.distinctValueCount) {
-                                case 2: {
-                                    facets = {
-                                        columns: 2,
-                                        rows: 1
-                                    };
-                                    break;
-                                }
-                                default: {
-                                    facets = {
-                                        columns: null,
-                                        rows: null
-                                    };
-                                    let square = 1;
-                                    while (square * square < facetColumn.stats.distinctValueCount) {
-                                        square++;
-                                    }
-                                    facets.columns = facets.rows = square;
-                                }
-                            }
-                        }
-                        columns['facet'] = column.name;
-                        this.changeInsight({ facets, columns });
-                    })();
+                    const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'facet', column.name);
+                    const newState: Partial<State> = { columns, ...partialInsight, facetStyle: options ? options.facetStyle : this.state.facetStyle };
+                    columns['facet'] = column.name;
+                    this.changeInsight(newState as any);
                     break;
                 }
                 case 'color': {
-                    (() => {
-                        let newState: Partial<State> = { scheme: options && options.scheme, columns, colorBin: this.state.colorBin };
-                        if (!newState.scheme) {
-                            const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'color', column.name);
-                            newState = { ...newState, ...partialInsight };
+                    let newState: Partial<State> = { scheme: options && options.scheme, columns, colorBin: this.state.colorBin };
+                    if (!newState.scheme) {
+                        const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'color', column.name);
+                        newState = { ...newState, ...partialInsight };
+                    }
+                    if (!newState.scheme) {
+                        newState.scheme = bestColorScheme(column, null, this.state.scheme);
+                    }
+                    if (!column.stats.hasColorData) {
+                        newState.directColor = false;
+                        if (this.state.directColor !== newState.directColor) {
+                            newState.calculating = () => this._resize();
                         }
-                        if (!newState.scheme) {
-                            newState.scheme = bestColorScheme(column, null, this.state.scheme);
+                    }
+                    if (this.state.columns && this.state.columns.color && this.state.columns.color !== column.name) {
+                        const currColorColumn = this.state.dataContent.columns.filter(c => c.name === this.state.columns.color)[0];
+                        if (column.isColorData != currColorColumn.isColorData) {
+                            newState.calculating = () => this._resize();
                         }
-                        if (!column.stats.hasColorData) {
-                            newState.directColor = false;
-                            if (this.state.directColor !== newState.directColor) {
-                                newState.calculating = () => this._resize();
-                            }
-                        }
-                        if (this.state.columns && this.state.columns.color && this.state.columns.color !== column.name) {
-                            const currColorColumn = this.state.dataContent.columns.filter(c => c.name === this.state.columns.color)[0];
-                            if (column.isColorData != currColorColumn.isColorData) {
-                                newState.calculating = () => this._resize();
-                            }
-                        }
-                        this.ignoreSelectionChange = true;
-                        this.viewer.deselect().then(() => {
-                            this.ignoreSelectionChange = false;
-                            //allow deselection to render
-                            requestAnimationFrame(() => {
-                                columns['color'] = column.name;
-                                this.getColorContext = null;
-                                this.changeInsight(newState as any);
-                            });
+                    }
+                    this.ignoreSelectionChange = true;
+                    this.viewer.deselect().then(() => {
+                        this.ignoreSelectionChange = false;
+                        //allow deselection to render
+                        requestAnimationFrame(() => {
+                            columns['color'] = column.name;
+                            this.getColorContext = null;
+                            this.changeInsight(newState as any);
                         });
-                    })();
+                    });
                     break;
                 }
                 case 'x': {
-                    (() => {
-                        const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'x', column.name);
-                        const newState: Partial<State> = { columns, ...partialInsight };
-                        columns['x'] = column.name;
-                        this.changeInsight(newState as any);
-                    })();
+                    const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'x', column.name);
+                    const newState: Partial<State> = { columns, ...partialInsight };
+                    columns['x'] = column.name;
+                    this.changeInsight(newState as any);
+                    break;
+                }
+                case 'size': {
+                    const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'size', column.name);
+                    const newState: Partial<State> = { columns, ...partialInsight, sumStyle: options ? options.sumStyle : this.state.sumStyle };
+                    columns['size'] = column.name;
+                    this.changeInsight(newState as any);
                     break;
                 }
                 default: {
@@ -631,7 +619,18 @@ export class Explorer extends React.Component<Props, State> {
                 }
             }
         } else {
-            final();
+            switch (role) {
+                case 'facet': {
+                    columns.facet = null;
+                    columns.facetV = null;
+                    this.changeInsight({ columns });
+                    break;
+                }
+                default: {
+                    final();
+                    break;
+                }
+            }
         }
     }
 
@@ -819,18 +818,23 @@ export class Explorer extends React.Component<Props, State> {
     }
 
     render() {
-        const { colorBin, columns, directColor, facets, filter, hideAxes, hideLegend, scheme, signalValues, size, transform, chart, view } = this.state;
+        const { colorBin, columns, directColor, facetStyle, filter, hideAxes, hideLegend, scheme, size, sumStyle, transform, chart, view } = this.state;
+        let { signalValues } = this.state;
+        if (this.viewer) {
+            signalValues = { ...signalValues, ...this.viewer.getInsight().signalValues };
+        }
         const insight: SandDance.types.Insight = {
             colorBin,
             columns,
             directColor,
-            facets,
+            facetStyle,
             filter,
             hideAxes,
             hideLegend,
             scheme,
             signalValues,
             size,
+            sumStyle,
             transform,
             chart,
             view
@@ -1280,7 +1284,7 @@ export class Explorer extends React.Component<Props, State> {
         const quantitativeColumns = allColumns && allColumns.filter(c => c.quantitative);
         const categoricalColumns = allColumns && allColumns.filter(c => !c.quantitative);
         const props: ColumnMapBaseProps = {
-            changeColumnMapping: (role, columnOrRole) => {
+            changeColumnMapping: (role, columnOrRole, options) => {
                 let column: SandDance.types.Column;
                 if (typeof columnOrRole === 'string') {
                     //look up current insight
@@ -1289,8 +1293,10 @@ export class Explorer extends React.Component<Props, State> {
                 } else {
                     column = columnOrRole;
                 }
-                this.changeColumnMapping(role, column);
+                this.changeColumnMapping(role, column, options);
             },
+            facetStyle: this.state.facetStyle,
+            sumStyle: this.state.sumStyle,
             allColumns,
             quantitativeColumns,
             categoricalColumns,

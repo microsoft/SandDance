@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { ColorValueRef, NumericValueRef, ProductionRule } from 'vega-typings';
-import { FieldNames, ScaleNames, SignalNames } from './constants';
+import { ScaleNames, SignalNames } from './constants';
 import { SpecContext } from './types';
 import { util } from '@msrvida/vega-deck.gl';
 
-export function fill(context: SpecContext): ProductionRule<ColorValueRef> {
+export function fill(context: SpecContext, colorFieldName: string, scale: string): ProductionRule<ColorValueRef> {
     const { specColumns, insight, specViewOptions } = context;
     const colorColumn = specColumns.color;
     return colorColumn ?
@@ -15,8 +15,8 @@ export function fill(context: SpecContext): ProductionRule<ColorValueRef> {
             }
             :
             {
-                scale: ScaleNames.Color,
-                field: colorColumn.quantitative ? colorColumn.name : FieldNames.Top
+                scale,
+                field: colorColumn.quantitative ? colorColumn.name : colorFieldName
             }
         :
         {

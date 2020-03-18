@@ -63,7 +63,7 @@ export interface Scene3d extends Scene {
  * Rect area and title for a facet.
  */
 export interface FacetRect {
-    facetTitle?: TextLayerDatum;
+    datum: any;
     lines: StyledLine[];
 }
 
@@ -141,6 +141,8 @@ export interface PresenterConfig {
     onTextHover?: (e: MouseEvent | PointerEvent | TouchEvent, t: TextLayerDatum) => boolean;
     getTextColor?: (o: TextLayerDatum) => Color;
     getTextHighlightColor?: (o: TextLayerDatum) => Color;
+    onSceneRectAssignCubeOrdinal?: (d: object) => number | undefined;
+    onTargetViewState?: (height: number, width: number) => { height: number, width: number, newViewStateTarget?: boolean };
 }
 
 export interface PresenterStyle {

@@ -12,13 +12,10 @@ export enum GroupType {
 }
 
 export interface MarkStagerOptions {
-    offsetX: number;
-    offsetY: number;
     maxOrdinal: number;
-    ordinalsSpecified: boolean;
     currAxis: Axis;
-    currFacetRect: FacetRect;
-    defaultCubeColor: Color
+    defaultCubeColor: Color;
+    assignCubeOrdinal: (d: object) => number | undefined;
 }
 
 //TODO - use vega-typings below

@@ -15,7 +15,8 @@
   "devDependencies": {
     "@types/react": "16.4.7",
     "@types/react-dom": "16.0.6",
-    "@msrvida/office-ui-fabric-react-cdn-typings": "^1"
+    "@msrvida/office-ui-fabric-react-cdn-typings": "^1",
+    "vega-typings": "^0.12.4"
   },
   "alias": {
     "react": "./alias/react-external.js",
@@ -27,6 +28,6 @@
     "luma.gl": "6.4",
     "office-ui-fabric-react": "6.204.4",
     "@msrvida/sanddance-explorer": "^2",
-    "vega": "^5.8"
+    "vega": "^5.9"
   }
 }

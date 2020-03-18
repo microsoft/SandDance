@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { ColorBin } from './types';
-import { ColorScaleNone, ScaleNames, SignalNames } from './constants';
+import { ColorScaleNone, SignalNames } from './constants';
 import {
     LinearScale,
     PointScale,
@@ -13,9 +13,9 @@ import {
     SignalRef
 } from 'vega-typings';
 
-export function linearScale(name: string, data: string, field: string, range: RangeScheme, reverse: boolean, zero: boolean) {
+export function linearScale(scaleName: string, data: string, field: string, range: RangeScheme, reverse: boolean, zero: boolean) {
     const scale: LinearScale = {
-        name,
+        name: scaleName,
         type: 'linear',
         range,
         round: true,
@@ -30,9 +30,9 @@ export function linearScale(name: string, data: string, field: string, range: Ra
     return scale;
 }
 
-export function pointScale(name: string, data: string, range: RangeBand, field: string, reverse?: boolean) {
+export function pointScale(scaleName: string, data: string, range: RangeBand, field: string, reverse?: boolean) {
     const scale: PointScale = {
-        name,
+        name: scaleName,
         type: 'point',
         range,
         domain: {
@@ -48,9 +48,8 @@ export function pointScale(name: string, data: string, range: RangeBand, field: 
     return scale;
 }
 
-export function binnableColorScale(colorBin: ColorBin, data: string, field: string, scheme?: string) {
+export function binnableColorScale(scaleName: string, colorBin: ColorBin, data: string, field: string, scheme?: string) {
     scheme = scheme || ColorScaleNone;
-    const name = ScaleNames.Color;
     const domain: ScaleData = {
         data,
         field
@@ -65,7 +64,7 @@ export function binnableColorScale(colorBin: ColorBin, data: string, field: stri
     switch (colorBin) {
         case 'continuous': {
             const sequentialScale: LinearScale = {
-                name,
+                name: scaleName,
                 type: 'linear',
                 domain,
                 range,
@@ -75,7 +74,7 @@ export function binnableColorScale(colorBin: ColorBin, data: string, field: stri
         }
         case 'quantile': {
             const quantileScale: QuantileScale = {
-                name,
+                name: scaleName,
                 type: 'quantile',
                 domain,
                 range,
@@ -85,7 +84,7 @@ export function binnableColorScale(colorBin: ColorBin, data: string, field: stri
         }
         default: {
             const quantizeScale: QuantizeScale = {
-                name,
+                name: scaleName,
                 type: 'quantize',
                 domain,
                 range,

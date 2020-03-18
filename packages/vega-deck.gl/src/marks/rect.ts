@@ -8,15 +8,13 @@ import { GroupType, MarkStager, MarkStagerOptions } from './interfaces';
 import { min3dDepth } from '../defaults';
 
 type SceneCube = SceneRect & {
-    datum: Datum & { GL_ORDINAL: number };
+    datum: Datum;
     depth: number;
     opacity: number;
     z: number;
 }
 
 const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scene, x: number, y: number, groupType: GroupType) => {
-
-    let i = 0;
 
     base.vega.sceneVisit(scene, function (item: SceneCube) {
 
@@ -27,28 +25,25 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
         //change direction of y from SVG to GL
         const ty = -1;
 
-        let ordinal = i;
-        if (item.datum.GL_ORDINAL !== void 0) {
-            options.ordinalsSpecified = true;
-
-            ordinal = item.datum.GL_ORDINAL;
-            if (ordinal > options.maxOrdinal) {
-                options.maxOrdinal = ordinal;
-            }
+        let ordinal = options.assignCubeOrdinal(item.datum);
+        if (ordinal > options.maxOrdinal) {
+            options.maxOrdinal = ordinal;
         }
+        if (ordinal === undefined) {
+            //TODO add to polygons
+            //console.log('not a cube');
+        } else {
+            const cube: Cube = {
+                ordinal,
+                size: [item.width, item.height, depth],
+                position: [x + (item.x || 0), ty * (y + (item.y || 0)) - item.height, z],
+                color: colorFromString(item.fill) || options.defaultCubeColor || [128, 128, 128, 128]
+            };
 
-        const cube: Cube = {
-            ordinal,
-            size: [item.width, item.height, depth],
-            position: [x + (item.x || 0) - options.offsetX, ty * (y + (item.y || 0) - options.offsetY) - item.height, z],
-            color: colorFromString(item.fill) || options.defaultCubeColor || [128, 128, 128, 128]
-        };
+            cube.color[3] = item.opacity === undefined ? 255 : 255 * item.opacity;
 
-        cube.color[3] = item.opacity === undefined ? 255 : 255 * item.opacity;
-
-        stage.cubeData.push(cube);
-
-        i++;
+            stage.cubeData.push(cube);
+        }
     });
 
 };

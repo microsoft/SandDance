@@ -26,7 +26,7 @@ export function Dropdown(props: Props) {
                     {newProps.label}: {(a[0] as FabricTypes.IDropdownOption).text}
                 </span>
             );
-        })
+        });
     }
     return (
         <base.fabric.Dropdown

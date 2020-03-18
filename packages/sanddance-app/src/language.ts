@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { DataSource } from "./types";
+import { DataSource } from './types';
 
 export const strings = {
     buttonLoadData: 'Load data',

@@ -25,20 +25,26 @@ export function ensureColumnsExist(insightColumns: SandDance.types.InsightColumn
 
 export function ensureColumnsPopulated(chart: SandDance.types.Chart, insightColumns: SandDance.types.InsightColumns, actualColumns: SandDance.types.Column[]) {
     //ensure columns are populated
-    const firstColumn = actualColumns.filter(c => !SandDance.util.isInternalFieldName(c.name))[0];
+    const nonInternal = actualColumns.filter(c => !SandDance.util.isInternalFieldName(c.name));
+    const firstColumn = nonInternal[0];
     const firstColumnName = firstColumn && firstColumn.name;
-    const ensureColumn = (role: SandDance.types.InsightColumnRoles) => {
+    const firstQuantitative = nonInternal.filter(c => c.quantitative)[0];
+    const firstQuantitativeColumnName = firstQuantitative && firstQuantitative.name;
+    const ensureColumn = (role: SandDance.types.InsightColumnRoles, quantitative?: boolean) => {
         if (!insightColumns[role]) {
-            insightColumns[role] = firstColumnName;
+            insightColumns[role] = quantitative ? firstQuantitativeColumnName : firstColumnName;
         }
     };
+    ensureColumn('facetV');
     switch (chart) {
         case 'barchart':
         case 'barchartV':
             ensureColumn('x');
+            ensureColumn('size', true);
             break;
         case 'barchartH':
             ensureColumn('y');
+            ensureColumn('size', true);
             break;
         case 'density':
         case 'scatterplot':

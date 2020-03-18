@@ -13,7 +13,7 @@ export type AxisSelectionType = 'exact' | 'range';
 /**
  * Types of SandDance visualizations.
  */
-export type Chart = 'barchart' | 'barchartH' | 'barchartV' | 'density' | 'grid' | 'scatterplot' | 'stacks' | 'treemap';
+export type Chart = 'barchart' | 'barchartH' | 'barchartV' | 'density' | 'grid' | 'scatterplot' | 'stacks' | 'strips' | 'treemap';
 
 export type ColorBin = 'continuous' | 'quantize' | 'quantile';
 
@@ -101,6 +101,16 @@ export interface FacetMargins {
 }
 
 /**
+ * Layout style to use for faceting.
+ */
+export type FacetStyle = 'wrap' | 'horizontal' | 'vertical' | 'cross'; //horizontal, vertical, wrap, cross
+
+/**
+ * Layout style to use for summing.
+ */
+export type SumStyle = 'treemap' | 'strip' | 'strip-percent';
+
+/**
  * Column to use for faceting into small multiples.
  */
 export interface Facets {
@@ -125,7 +135,8 @@ export interface Insight {
     columns: InsightColumns;
     view?: VegaDeckGl.types.View;
     filter?: Search;
-    facets?: Facets;
+    facetStyle?: FacetStyle;
+    sumStyle?: SumStyle;
 
     /**
      * Type of color binning to use on color scale. Only applicable when the column in the color role is quantitative. 
@@ -163,7 +174,7 @@ export interface Insight {
     transform?: Transforms[];
 }
 
-export type InsightColumnRoles = 'uid' | 'x' | 'y' | 'z' | 'group' | 'size' | 'color' | 'facet' | 'sort';
+export type InsightColumnRoles = 'uid' | 'x' | 'y' | 'z' | 'group' | 'size' | 'color' | 'facet' | 'facetV' | 'sort';
 
 export interface InsightColumns {
     uid?: string;
@@ -175,6 +186,7 @@ export interface InsightColumns {
     color?: string;
     sort?: string;
     facet?: string;
+    facetV?: string;
 }
 
 export interface SpecRoleCapabilities {
@@ -243,6 +255,16 @@ export interface SpecLanguage {
     count: string;
 
     /**
+     * Label for a sum axis.
+     */
+    sum: string;
+
+    /**
+     * Label for a percentage axis.
+     */
+    percent: string;
+
+    /**
      * Label for treemap method dropdown.
      */
     treeMapMethod: string;
@@ -253,14 +275,24 @@ export interface SpecLanguage {
     scatterPointSize: string;
 
     /**
-     * Label for bar x axis bin size slider.
+     * Label for bar facet max bins slider.
      */
-    XBinSize: string;
+    FacetMaxBins: string;
 
     /**
-     * Label for bar y axis bin size slider.
+     * Label for bar facetV max bins slider.
      */
-    YBinSize: string;
+    FacetVMaxBins: string;
+
+    /**
+     * Label for bar x axis max bins slider.
+     */
+    XMaxBins: string;
+
+    /**
+     * Label for bar y axis max bins slider.
+     */
+    YMaxBins: string;
 
     /**
      * Label for bar x grid size slider.
@@ -389,6 +421,11 @@ export interface SpecColumns {
      * Column to use for faceting a visualization.
      */
     facet?: Column;
+
+    /**
+     * Column to use for vertically faceting a visualization.
+     */
+    facetV?: Column;
 }
 
 export interface SpecViewOptions {

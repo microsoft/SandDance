@@ -66,3 +66,9 @@ export interface SettingsGroup {
 export enum SideTabId {
   ChartType, Data, Search, Color, Snapshots, Settings, Pin, Collapse
 }
+
+export interface ChangeColumnMappingOptions {
+  scheme?: string;
+  facetStyle?: SandDance.types.FacetStyle;
+  sumStyle?: SandDance.types.SumStyle;
+}

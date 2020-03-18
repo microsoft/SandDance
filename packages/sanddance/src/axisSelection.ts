@@ -8,15 +8,11 @@ import {
     SpecCapabilities,
     SpecColumns
 } from './specs/types';
+import { FieldNames } from './specs/constants';
 import { LayerInputHandler } from '@deck.gl/core/lib/layer';
+import { push } from './array';
 import { SearchExpressionGroup } from './searchExpression/types';
-import {
-    selectBetweenAxis,
-    selectBetweenFacet,
-    selectExact,
-    selectExactAxis,
-    selectNullOrEmpty
-} from './expression';
+import { selectBetweenAxis, selectExactAxis } from './expression';
 
 export interface AxisSelectionHandler {
     (event: TouchEvent | MouseEvent | PointerEvent, search: SearchExpressionGroup): void;
@@ -36,8 +32,8 @@ export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabili
             polygons.push.apply(polygons, axisSelectionPolygons(axis, true, yRole.axisSelection, columns.y));
         });
     }
-    if (stage.facets) {
-        polygons.push.apply(polygons, facetSelectionPolygons(stage.facets, columns.facet));
+    if (stage.facets && columns.facet) {
+        polygons.push.apply(polygons, facetSelectionPolygons(stage.facets));
     }
     //move polygons to Z
     polygons.forEach(datum => {
@@ -115,18 +111,33 @@ function axisSelectionPolygons(axis: VegaDeckGl.types.Axis, vertical: boolean, a
     return polygons;
 }
 
-function facetSelectionPolygons(facetRects: VegaDeckGl.types.FacetRect[], facetColumn: Column) {
+function facetSelectionPolygons(facetRects: VegaDeckGl.types.FacetRect[]) {
     const polygons: SelectPolygon[] = [];
-    facetRects.forEach((facetRect, i) => {
+    let linesAndSearches: { lines: VegaDeckGl.types.StyledLine[], search: SearchExpressionGroup }[];
+    linesAndSearches = facetRects.map(({ datum, lines }, i) => {
+        let group: SearchExpressionGroup;
+        const vegaSearch: SearchExpressionGroup | SearchExpressionGroup[] = datum[FieldNames.FacetSearch];
+        if (Array.isArray(vegaSearch)) {
+            //flatten into one group
+            group = { expressions: [] };
+            vegaSearch.forEach((g, gi) => {
+                const clonedExpressions = VegaDeckGl.util.clone(g.expressions).filter(Boolean);
+                clonedExpressions[0].clause = '&&';
+                push(group.expressions, clonedExpressions);
+            });
+        } else {
+            group = vegaSearch ?
+                { expressions: vegaSearch.expressions.filter(Boolean) }
+                : null;
+        }
+        return {
+            lines,
+            search: group
+        };
+    });
+    linesAndSearches.forEach(({ lines, search }, i) => {
         //take any 2 lines to get a box dimension
-        const [x, y] = minMaxPoints(facetRect.lines.slice(2));
-        const search: SearchExpressionGroup = facetRect.facetTitle ?
-            facetColumn.quantitative ?
-                selectBetweenFacet(facetColumn, facetRect.facetTitle.text, i === 0, i === facetRects.length - 1)
-                :
-                { expressions: [selectExact(facetColumn, facetRect.facetTitle.text)] }
-            :
-            { expressions: [selectNullOrEmpty(facetColumn)] };
+        const [x, y] = minMaxPoints(lines.slice(2));
         polygons.push({
             search,
             polygon: [[x.min, y.min], [x.max, y.min], [x.max, y.max], [x.min, y.max]]

@@ -6,7 +6,7 @@ import { SpecContext } from './types';
 
 export const defaultZProportion = 0.6;
 
-export function textSignals(context: SpecContext) {
+export function textSignals(context: SpecContext, heightSignal: string) {
     const { specViewOptions } = context;
     const signals: NewSignal[] = [
         {
@@ -23,7 +23,7 @@ export function textSignals(context: SpecContext) {
         },
         {
             name: SignalNames.ZHeight,
-            update: `height * ${SignalNames.ZProportion}`
+            update: `${heightSignal} * ${SignalNames.ZProportion}`
         },
         {
             name: SignalNames.TextScale,
@@ -32,9 +32,9 @@ export function textSignals(context: SpecContext) {
                 name: specViewOptions.language.textScaleSignal,
                 debounce: 50,
                 input: 'range',
-                min: 1,
+                min: 0.5,
                 max: 5,
-                step: 0.5
+                step: 0.1
             }
         },
         {
@@ -112,4 +112,8 @@ export function colorReverseSignal(context: SpecContext) {
         }
     };
     return signal;
+}
+
+export function modifySignal(s: NewSignal, fn: string, update: string) {
+    s.update = `${fn}((${s.update}), (${update}))`;
 }

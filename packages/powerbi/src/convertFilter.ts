@@ -12,7 +12,7 @@ export function convertFilter(searchFilter: SandDance.types.Search, columns: pow
     groups.forEach(group =>
         group.expressions.forEach(ex => {
             if (!ex) return;
-            if (ex.name === SandDance.VegaDeckGl.constants.GL_ORDINAL) {
+            if (ex.name === SandDance.constants.GL_ORDINAL) {
                 // it would be ideal to filter to a single row identity, but the PoerBI API currently does not let us do that.
                 // so, we will filter to data points that have the same values
                 const dataPoint = getDataPoint(ex.value as number, data);
@@ -37,7 +37,7 @@ export function convertFilter(searchFilter: SandDance.types.Search, columns: pow
 
 function getDataPoint(GL_ORDINAL: number, data: object[]) {
     for (let i = 0; i < data.length; i++) {
-        if (data[i][SandDance.VegaDeckGl.constants.GL_ORDINAL] === GL_ORDINAL) {
+        if (data[i][SandDance.constants.GL_ORDINAL] === GL_ORDINAL) {
             return data[i];
         }
     }

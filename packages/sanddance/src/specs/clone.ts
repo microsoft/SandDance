@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { create } from '.';
+import { getSpecBuilderForChart } from './charts';
 import { inferAll } from './inference';
 import { SpecContext } from './types';
 import { SpecResult } from './interfaces';
@@ -11,6 +11,7 @@ export function cloneVegaSpecWithData(context: SpecContext, currData: object[]):
     const columns = [
         specColumns.color,
         specColumns.facet,
+        specColumns.facetV,
         specColumns.group,
         specColumns.size,
         specColumns.sort,
@@ -20,10 +21,19 @@ export function cloneVegaSpecWithData(context: SpecContext, currData: object[]):
     ];
     inferAll(columns, currData);
 
-    const specResult = create(context);
-    if (!specResult.errors) {
-        const data0 = specResult.vegaSpec.data[0] as ValuesData;
-        data0.values = currData;
+    const specBuilder = getSpecBuilderForChart(context);
+    if (specBuilder) {
+        const specResult = specBuilder.build();
+        if (!specResult.errors) {
+            const data0 = specResult.vegaSpec.data[0] as ValuesData;
+            data0.values = currData;
+        }
+        return specResult;
+    } else {
+        return {
+            specCapabilities: null,
+            vegaSpec: null,
+            errors: [`coulr not build spec for ${context.insight.chart}`]
+        };
     }
-    return specResult;
 }

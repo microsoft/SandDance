@@ -13,6 +13,8 @@ import { Explorer } from '../explorer';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 
 export interface Props {
+    newViewStateTarget?: boolean;
+    collapseLabel?: boolean;
     explorer: Explorer;
     signal: NewSignal;
     prefix?: string;
@@ -42,9 +44,10 @@ export function Signal(props: Props) {
                     initialValue,
                     (value) => {
                         props.onChange && props.onChange(value);
-                        props.explorer.signal(props.signal.name, value);
+                        props.explorer.signal(props.signal.name, value, props.newViewStateTarget);
                     },
-                    props.disabled
+                    props.disabled,
+                    props.collapseLabel
                 );
                 return (
                     <div className="sanddance-signal">
@@ -57,9 +60,9 @@ export function Signal(props: Props) {
     return null;
 }
 
-const map: { [input: string]: (prefix: string, bind: Binding, initialValue: any, onChange: (value: any) => void, disabled: boolean) => JSX.Element } = {};
+const map: { [input: string]: (prefix: string, bind: Binding, initialValue: any, onChange: (value: any) => void, disabled: boolean, collapseLabel: boolean) => JSX.Element } = {};
 
-map['range'] = (prefix: string, bind: BindRange, initialValue: number, onChange: (value: number) => void, disabled: boolean) => {
+map['range'] = (prefix: string, bind: BindRange, initialValue: number, onChange: (value: number) => void, disabled: boolean, collapseLabel: boolean) => {
     return (
         <base.fabric.Slider
             label={prefix + bind.name}
@@ -73,7 +76,7 @@ map['range'] = (prefix: string, bind: BindRange, initialValue: number, onChange:
     );
 };
 
-map['select'] = (prefix: string, bind: BindRadioSelect, initialValue: any, onChange: (value: any) => void, disabled: boolean) => {
+map['select'] = (prefix: string, bind: BindRadioSelect, initialValue: any, onChange: (value: any) => void, disabled: boolean, collapseLabel: boolean) => {
     const options = bind.options.map((o, i) => {
         const option: FabricTypes.IDropdownOption = {
             key: o,
@@ -81,10 +84,19 @@ map['select'] = (prefix: string, bind: BindRadioSelect, initialValue: any, onCha
         };
         return option;
     });
+    const label = prefix + bind.name;
     return (
         <base.fabric.Dropdown
+            onRenderTitle={collapseLabel ?
+                ((a, b) => (
+                    <span>
+                        {label}: {(a[0] as FabricTypes.IDropdownOption).text}
+                    </span>
+                ))
+                :
+                undefined}
             defaultSelectedKey={initialValue}
-            label={prefix + bind.name}
+            label={collapseLabel ? undefined : label}
             options={options}
             onChange={(e, o) => onChange(o.text)}
             disabled={disabled}
@@ -92,7 +104,7 @@ map['select'] = (prefix: string, bind: BindRadioSelect, initialValue: any, onCha
     );
 };
 
-map['checkbox'] = (prefix: string, bind: BindCheckbox, initialValue: boolean, onChange: (checked: boolean) => void, disabled: boolean) => {
+map['checkbox'] = (prefix: string, bind: BindCheckbox, initialValue: boolean, onChange: (checked: boolean) => void, disabled: boolean, collapseLabel: boolean) => {
     return (
         <base.fabric.Toggle
             defaultChecked={initialValue}

@@ -4,64 +4,49 @@
 export const FieldNames = {
     Active: '__SandDance__Active',
     Collapsed: '__SandDance__Collapsed',
+    Contains: '__SandDance__Contains',
     Selected: '__SandDance__Selected',
+    First: '__SandDance__First',
+    Last: '__SandDance__Last',
     Top: '__SandDance__Top',
+    TopColor: '__SandDance__TopColor',
     TopIndex: '__SandDance__TopIndex',
-    Index: '__SandDance__Index',
     PowerBISelectionId: '__SandDance__PowerBISelectionId',
-    BarChartBin0: '__SandDance__BarChartBin0',
-    BarChartBin1: '__SandDance__BarChartBin1',
-    BarChartStack0: '__SandDance__BarChartStack0',
-    BarChartStack1: '__SandDance__BarChartStack1',
-    DensityCount: '__SandDance__DensityCount',
-    DensityRow: '__SandDance__DensityRow',
-    DensityXBin0: '__SandDance__DensityXBin0',
-    DensityXBin1: '__SandDance__DensityXBin1',
-    DensityYBin0: '__SandDance__DensityYBin0',
-    DensityYBin1: '__SandDance__DensityYBin1',
-    FacetBin0: '__SandDance__FacetBin0',
-    FacetBin1: '__SandDance__FacetBin1',
-    GridIndex: '__SandDance__GridIndex',
-    StacksLatBin0: '__SandDance__StacksLatBin0',
-    StacksLatBin1: '__SandDance__StacksLatBin1',
-    StacksLongBin0: '__SandDance__StacksLongBin0',
-    StacksLongBin1: '__SandDance__StacksLongBin1',
-    StacksStart: '__SandDance__StacksStart',
-    StacksEnd: '__SandDance__StacksEnd',
-    TreemapStackChildren: '__SandDance__TreemapStackChildren',
-    TreemapStackDepth: '__SandDance__TreemapStackDepth',
-    TreemapStackX0: '__SandDance__TreemapStackX0',
-    TreemapStackX1: '__SandDance__TreemapStackX1',
-    TreemapStackY0: '__SandDance__TreemapStackY0',
-    TreemapStackY1: '__SandDance__TreemapStackY1',
-};
-
-export const DataNames = {
-    Pre: 'PreData',
-    Main: 'MainData',
-    EmptyBin: 'EmptyBinsData',
-    TopLookup: 'TopData',
-    Legend: 'LegendData',
-    FacetGroupCell: 'FacetGroupCellData',
-    FacetCellTitles: 'FacetCellTitlesData',
-    QuantitativeData: 'QuantitativeData'
+    FacetSearch: '__SandDance__FacetSearch',
+    FacetTitle: '__SandDance__FacetTitle',
+    Ordinal: '__SandDance__Ordinal',
+    WrapCol: '__SandDance__WrapCol',
+    WrapRow: '__SandDance__WrapRow'
 };
 
 export const ScaleNames = {
-    Color: 'ColorScale',
-    X: 'MainXScale',
-    Y: 'MainYScale',
-    Z: 'MainZScale'
+    Color: 'scale_color',
+    X: 'scale_x',
+    Y: 'scale_y',
+    Z: 'scale_z'
 };
 
 //Signal names
 export const SignalNames = {
+    ViewportWidth: 'ViewportWidth',
+    ViewportHeight: 'ViewportHeight',
+    MinCellWidth: 'MinCellWidth',
+    MinCellHeight: 'MinCellHeight',
+    PlotOffsetLeft: 'PlotOffsetLeft',
+    PlotOffsetTop: 'PlotOffsetTop',
+    PlotOffsetBottom: 'PlotOffsetBottom',
+    PlotOffsetRight: 'PlotOffsetRight',
+    PlotHeightIn: 'PlotHeightIn',
+    PlotWidthIn: 'PlotWidthIn',
+    PlotHeightOut: 'PlotHeightOut',
+    PlotWidthOut: 'PlotWidthOut',
     ColorBinCount: 'RoleColor_BinCountSignal',
     ColorReverse: 'RoleColor_ReverseSignal',
-    FacetColumns: 'RoleFacet_ColumnsSignal',
-    FacetRows: 'RoleFacet_RowsSignal',
-    InnerPadding: 'Chart_InnerPadding',
-    OuterPadding: 'Chart_OuterPadding',
+    FacetBins: 'RoleFacet_BinsSignal',
+    FacetVBins: 'RoleFacetV_BinsSignal',
+    FacetPaddingTop: 'FacetPaddingTop',
+    FacetPaddingBottom: 'FacetPaddingBottom',
+    FacetPaddingLeft: 'FacetPaddingLeft',
     MarkOpacity: 'Mark_OpacitySignal',
     PointSize: 'Chart_PointSizeSignal',
     TextAngleX: 'Text_AngleXSignal',
@@ -70,29 +55,10 @@ export const SignalNames = {
     TextSize: 'Text_SizeSignal',
     TextTitleSize: 'Text_TitleSizeSignal',
     TreeMapMethod: 'Chart_TreeMapMethodSignal',
-    XDomain: 'RoleX_DomainSignal',
     XBins: 'RoleX_BinsSignal',
-    XGridSize: 'Chart_XGridSize',
     YBins: 'RoleY_BinsSignal',
-    YDomain: 'RoleY_DomainSignal',
-    YGridSize: 'Chart_YGridSize',
     ZHeight: 'RoleZ_HeightSignal',
     ZProportion: 'RoleZ_ProportionSignal'
-};
-
-export const BarChartScaleNames = {
-    bucketScale: 'bucketScale',
-    levelScale: 'levelScale',
-    compartmentScale: 'compartmentScale'
-};
-
-export const BarChartSignalNames = {
-    aspectRatioSignal: 'aspectRatioSignal',
-    compartmentsPerLevelSignal: 'compartmentsPerLevelSignal',
-    compartmentHeightSignal: 'compartmentHeightSignal',
-    compartmentWidthSignal: 'compartmentWidthSignal',
-    levelExtentSignal: 'levelExtentSignal',
-    quantitativeBinSignal: 'quantitativeBinSignal'
 };
 
 //These are special formulaic data values

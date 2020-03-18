@@ -160,6 +160,11 @@ export interface ViewerOptions extends SpecViewOptions {
     onVegaSpec?: (vegaSpec: Spec) => void;
 
     /**
+     * Optional handler to reset the camera after chart is rendered.
+     */
+    onNewViewStateTarget?: () => boolean;
+
+    /**
      * Z value of selection polygons.
      */
     selectionPolygonZ: number;

@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as VegaDeckGl from '@msrvida/vega-deck.gl';
-import { FieldNames } from './specs/constants';
 import { Column, ColumnStats, ColumnTypeMap } from './specs/types';
 import { Exec } from './searchExpression/exec';
+import { FieldNames } from './specs/constants';
 import { getColumnsFromData, getStats } from './specs/inference';
+import { GL_ORDINAL } from './constants';
 import { Search } from './searchExpression/types';
 
 export interface ColumnsStatsMap {
@@ -138,7 +138,7 @@ export class DataScope {
         if (this.selection) {
             for (let i = 0; i < this.selection.included.length; i++) {
                 let datum = this.selection.included[i];
-                if (datum[VegaDeckGl.constants.GL_ORDINAL] === ordinal) {
+                if (datum[GL_ORDINAL] === ordinal) {
                     return { datum, index: i };
                 }
             }

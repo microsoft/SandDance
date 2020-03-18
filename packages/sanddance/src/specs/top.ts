@@ -2,47 +2,39 @@
 // Licensed under the MIT license.
 import { Column } from './types';
 import { Data } from 'vega-typings';
-import {
-    DataNames,
-    Other,
-    FieldNames
-} from './constants';
+import { Other } from './constants';
 
-export function topLookup(column: Column, count: number) {
+export function topLookup(column: Column, count: number, source: string, legend: string, lookupName: string, fieldName: string, indexName: string) {
     const data: Data[] = [
         {
-            name: DataNames.TopLookup,
-            source: DataNames.Main,
+            name: lookupName,
+            source,
             transform: [
                 { type: 'aggregate', groupby: [column.name] },
                 {
                     type: 'window',
-                    ops: [
-                        'count'
-                    ],
-                    as: [
-                        FieldNames.TopIndex
-                    ]
+                    ops: ['count'],
+                    as: [indexName]
                 },
-                { type: 'filter', expr: `datum.${FieldNames.TopIndex} <= ${count}` }
+                { type: 'filter', expr: `datum[${JSON.stringify(indexName)}] <= ${count}` }
             ]
         },
         {
-            name: DataNames.Legend,
-            source: DataNames.Main,
+            name: legend,
+            source,
             transform: [
                 {
                     type: 'lookup',
-                    from: DataNames.TopLookup,
+                    from: lookupName,
                     key: column.name,
                     fields: [column.name],
                     values: [column.name],
-                    as: [FieldNames.Top]
+                    as: [fieldName]
                 },
                 {
                     type: 'formula',
-                    expr: `datum.${FieldNames.Top} == null ? '${Other}' : datum.${FieldNames.Top}`,
-                    as: FieldNames.Top
+                    expr: `datum[${JSON.stringify(fieldName)}] == null ? '${Other}' : datum[${JSON.stringify(fieldName)}]`,
+                    as: fieldName
                 }
             ]
         }

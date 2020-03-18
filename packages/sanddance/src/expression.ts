@@ -2,8 +2,12 @@
 // Licensed under the MIT license.
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { Column } from './specs/types';
-import { facetTitleSeparator } from './specs/facet';
-import { SearchExpression, SearchExpressionGroup, SearchExpressionOperators } from './searchExpression/types';
+import {
+    SearchExpression,
+    SearchExpressionGroup,
+    SearchExpressionOperators,
+    SearchExpressionValue
+} from './searchExpression/types';
 
 export function notNice(niceValue: string | number) {
     //convert "nice" numbers to numeric value
@@ -12,7 +16,7 @@ export function notNice(niceValue: string | number) {
 
 function tickValue(axis: VegaDeckGl.types.Axis, i: number) {
     const tick = axis.tickText[i];
-    let value: any;
+    let value: SearchExpressionValue;
     if (tick) {
         value = axis.tickText[i].value;
     }
@@ -27,7 +31,7 @@ export function selectNullOrEmpty(column: Column) {
     return searchExpression;
 }
 
-export function selectExact(column: Column, value: string) {
+export function selectExact(column: Column, value: SearchExpressionValue) {
     if (value == null) {
         return selectNullOrEmpty(column);
     }
@@ -64,7 +68,7 @@ export function selectExactAxis(axis: VegaDeckGl.types.Axis, column: Column, i: 
     }
 }
 
-export function selectBetween(column: Column, lowValue: string, highValue: string, lowOperator: SearchExpressionOperators = '>=', highOperator: SearchExpressionOperators = '<') {
+export function selectBetween(column: Column, lowValue: SearchExpressionValue, highValue: SearchExpressionValue, lowOperator: SearchExpressionOperators = '>=', highOperator: SearchExpressionOperators = '<') {
     const expressions: SearchExpression[] = [];
     if (lowValue !== undefined) {
         expressions.push({
@@ -93,9 +97,4 @@ export function selectBetweenAxis(axis: VegaDeckGl.types.Axis, column: Column, i
     const low = tickValue(axis, i);
     const high = tickValue(axis, i + 1);
     return selectBetween(column, low.value, high.value);
-}
-
-export function selectBetweenFacet(column: Column, title: string, isFirst: boolean, isLast: boolean) {
-    const values = title.split(facetTitleSeparator);
-    return selectBetween(column, isFirst ? undefined : values[0], isLast ? undefined : values[1]);
 }

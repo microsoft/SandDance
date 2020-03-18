@@ -4,6 +4,7 @@ import * as React from 'react';
 import { base } from '../base';
 import { ColumnMap, ColumnMapBaseProps } from '../controls/columnMap';
 import { Dialog } from '../controls/dialog';
+import { Dropdown } from '../controls/dropdown';
 import { Group } from '../controls/group';
 import { SandDance } from '@msrvida/sanddance-react';
 import { Signal } from '../controls/signal';
@@ -73,6 +74,10 @@ export class Chart extends React.Component<Props, State> {
                                     text: strings.chartTypeTreeMap
                                 },
                                 {
+                                    key: 'strips',
+                                    text: strings.chartTypeStrips
+                                },
+                                {
                                     key: 'stacks',
                                     text: strings.chartTypeStacks
                                 }
@@ -81,6 +86,7 @@ export class Chart extends React.Component<Props, State> {
                                     ...o,
                                     checked: props.chart === o.key,
                                     disabled: props.disabled
+                                        || (o.key === 'treemap' && props.quantitativeColumns.length === 0)
                                 };
                             })}
                             onChange={(e, o) => props.onChangeChartType(o.key as SandDance.types.Chart)}
@@ -95,6 +101,7 @@ export class Chart extends React.Component<Props, State> {
                                 signal={signal}
                                 explorer={props.explorer}
                                 disabled={props.disabled}
+                                collapseLabel={props.collapseLabels}
                             />
                         ))}
                     </Group>
@@ -104,12 +111,111 @@ export class Chart extends React.Component<Props, State> {
                         {props.specCapabilities && props.specCapabilities.roles.map((specRole, i) => {
                             const specColumnInRole = props.insightColumns[specRole.role];
                             const selectedColumnName = specColumnInRole;
-                            let disabled = props.disabled || (props.view === '2d' && specRole.role === 'z');
+                            let disabledColumnName: string;
+                            let prefix: JSX.Element;
+                            let suffix: JSX.Element;
+                            switch (specRole.role) {
+                                case 'facet': {
+                                    suffix = (
+                                        <Dropdown
+                                            disabled={!props.insightColumns.facet}
+                                            collapseLabel={props.collapseLabels}
+                                            label={strings.labelColumnFacetLayout}
+                                            calloutProps={{ style: { minWidth: '18em' } }}
+                                            options={[
+                                                {
+                                                    key: 'wrap',
+                                                    text: 'Wrap',
+                                                    data: 'wrap',
+                                                    selected: !props.facetStyle || props.facetStyle === 'wrap'
+                                                },
+                                                {
+                                                    key: 'horizontal',
+                                                    text: 'horizontal',
+                                                    data: 'horizontal',
+                                                    selected: props.facetStyle === 'horizontal'
+                                                },
+                                                {
+                                                    key: 'vertical',
+                                                    text: 'vertical',
+                                                    data: 'vertical',
+                                                    selected: props.facetStyle === 'vertical'
+                                                },
+                                                {
+                                                    key: 'cross',
+                                                    text: 'cross',
+                                                    data: 'cross',
+                                                    selected: props.facetStyle === 'cross'
+                                                }
+                                            ]}
+                                            onChange={(e, o) =>
+                                                props.changeColumnMapping('facet', 'facet', { facetStyle: o.data })
+                                            }
+                                        />
+                                    );
+                                    disabledColumnName = props.insightColumns.facetV;
+                                    break;
+                                }
+                                case 'facetV': {
+                                    disabledColumnName = props.insightColumns.facet;
+                                    console.log('props.insightColumns', props.insightColumns);
+                                    break;
+                                }
+                                case 'size': {
+                                    prefix = props.chart === 'treemap' ? null : (
+                                        <Dropdown
+                                            collapseLabel={props.collapseLabels}
+                                            label={strings.labelTotal}
+                                            calloutProps={{ style: { minWidth: '18em' } }}
+                                            options={[
+                                                {
+                                                    key: 'count',
+                                                    text: strings.labelTotalByCount,
+                                                    data: null,
+                                                    selected: !props.sumStyle
+                                                },
+                                                {
+                                                    key: 'sum-treemap',
+                                                    text: strings.labelTotalBySumTreemap,
+                                                    data: 'treemap',
+                                                    selected: props.sumStyle === 'treemap',
+                                                    disabled: props.quantitativeColumns.length === 0
+                                                },
+                                                {
+                                                    key: 'strip',
+                                                    text: strings.labelTotalByCountStrip,
+                                                    data: 'strip',
+                                                    selected: props.sumStyle === 'strip'
+                                                },
+                                                {
+                                                    key: 'strip-percent',
+                                                    text: strings.labelTotalBySumStripPercent,
+                                                    data: 'strip-percent',
+                                                    selected: props.sumStyle === 'strip-percent',
+                                                    disabled: props.quantitativeColumns.length === 0
+                                                }
+                                            ]}
+                                            onChange={(e, o) =>
+                                                props.changeColumnMapping('size', 'size', { sumStyle: o.data })
+                                            }
+                                        />
+                                    );
+                                    break;
+                                }
+                            }
+                            let disabled = props.disabled
+                                || (props.view === '2d' && specRole.role === 'z')
+                                || (specRole.role === 'size' && props.chart !== 'treemap' && !props.sumStyle)
+                                || (specRole.role === 'facetV' && (!props.insightColumns.facet || props.facetStyle !== 'cross'))
+                                || (specRole.role === 'sort' && props.sumStyle === 'treemap');
                             return (
                                 <ColumnMap
                                     {...props}
+                                    prefix={prefix}
+                                    suffix={suffix}
                                     collapseLabel={props.collapseLabels}
                                     disabled={disabled}
+                                    disabledColumnName={disabledColumnName}
                                     selectedColumnName={selectedColumnName}
                                     specRole={specRole}
                                     key={i}
