@@ -163,7 +163,7 @@ export class Explorer extends React.Component<Props, State> {
             dataContent: null,
             dataFile: null,
             search: null,
-            sumStyle: null,
+            totalStyle: null,
             facetStyle: 'wrap',
             filter: null,
             filteredData: null,
@@ -444,7 +444,7 @@ export class Explorer extends React.Component<Props, State> {
                     dataContent,
                     snapshots: dataContent.snapshots || this.state.snapshots,
                     autoCompleteDistinctValues: {},
-                    sumStyle: null,
+                    totalStyle: null,
                     facetStyle: 'wrap',
                     filter: null,
                     filteredData: null,
@@ -608,7 +608,7 @@ export class Explorer extends React.Component<Props, State> {
                 }
                 case 'size': {
                     const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'size', column.name);
-                    const newState: Partial<State> = { columns, ...partialInsight, sumStyle: options ? options.sumStyle : this.state.sumStyle };
+                    const newState: Partial<State> = { columns, ...partialInsight, totalStyle: options ? options.totalStyle : this.state.totalStyle };
                     columns['size'] = column.name;
                     this.changeInsight(newState as any);
                     break;
@@ -818,7 +818,7 @@ export class Explorer extends React.Component<Props, State> {
     }
 
     render() {
-        const { colorBin, columns, directColor, facetStyle, filter, hideAxes, hideLegend, scheme, size, sumStyle, transform, chart, view } = this.state;
+        const { colorBin, columns, directColor, facetStyle, filter, hideAxes, hideLegend, scheme, size, totalStyle, transform, chart, view } = this.state;
         let { signalValues } = this.state;
         if (this.viewer) {
             signalValues = { ...signalValues, ...this.viewer.getInsight().signalValues };
@@ -834,7 +834,7 @@ export class Explorer extends React.Component<Props, State> {
             scheme,
             signalValues,
             size,
-            sumStyle,
+            totalStyle,
             transform,
             chart,
             view
@@ -1296,7 +1296,7 @@ export class Explorer extends React.Component<Props, State> {
                 this.changeColumnMapping(role, column, options);
             },
             facetStyle: this.state.facetStyle,
-            sumStyle: this.state.sumStyle,
+            totalStyle: this.state.totalStyle,
             allColumns,
             quantitativeColumns,
             categoricalColumns,

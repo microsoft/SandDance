@@ -114,6 +114,10 @@ export class Chart extends React.Component<Props, State> {
                             let disabledColumnName: string;
                             let prefix: JSX.Element;
                             let suffix: JSX.Element;
+                            let { totalStyle } = props;
+                            if (!totalStyle) {
+                                totalStyle = 'count-square';
+                            }
                             switch (specRole.role) {
                                 case 'facet': {
                                     suffix = (
@@ -169,34 +173,40 @@ export class Chart extends React.Component<Props, State> {
                                             calloutProps={{ style: { minWidth: '18em' } }}
                                             options={[
                                                 {
-                                                    key: 'count',
-                                                    text: strings.labelTotalByCount,
-                                                    data: null,
-                                                    selected: !props.sumStyle
+                                                    key: 'count-square',
+                                                    text: strings.labelTotalByCountSquare,
+                                                    data: 'count-square',
+                                                    selected: !totalStyle || totalStyle === 'count-square'
+                                                },
+                                                {
+                                                    key: 'count-strip',
+                                                    text: strings.labelTotalByCountStrip,
+                                                    data: 'count-strip',
+                                                    selected: totalStyle === 'count-strip'
+                                                },
+                                                {
+                                                    key: 'sum-strip',
+                                                    text: strings.labelTotalBySumStrip,
+                                                    data: 'sum-strip',
+                                                    selected: totalStyle === 'sum-strip'
                                                 },
                                                 {
                                                     key: 'sum-treemap',
                                                     text: strings.labelTotalBySumTreemap,
-                                                    data: 'treemap',
-                                                    selected: props.sumStyle === 'treemap',
+                                                    data: 'sum-treemap',
+                                                    selected: totalStyle === 'sum-treemap',
                                                     disabled: props.quantitativeColumns.length === 0
                                                 },
                                                 {
-                                                    key: 'strip',
-                                                    text: strings.labelTotalByCountStrip,
-                                                    data: 'strip',
-                                                    selected: props.sumStyle === 'strip'
-                                                },
-                                                {
-                                                    key: 'strip-percent',
+                                                    key: 'sum-strip-percent',
                                                     text: strings.labelTotalBySumStripPercent,
-                                                    data: 'strip-percent',
-                                                    selected: props.sumStyle === 'strip-percent',
+                                                    data: 'sum-strip-percent',
+                                                    selected: totalStyle === 'sum-strip-percent',
                                                     disabled: props.quantitativeColumns.length === 0
                                                 }
                                             ]}
                                             onChange={(e, o) =>
-                                                props.changeColumnMapping('size', 'size', { sumStyle: o.data })
+                                                props.changeColumnMapping('size', 'size', { totalStyle: o.data })
                                             }
                                         />
                                     );
@@ -205,9 +215,9 @@ export class Chart extends React.Component<Props, State> {
                             }
                             let disabled = props.disabled
                                 || (props.view === '2d' && specRole.role === 'z')
-                                || (specRole.role === 'size' && props.chart !== 'treemap' && !props.sumStyle)
+                                || (specRole.role === 'size' && !(props.chart === 'treemap' || totalStyle.indexOf('sum-') === 0))
                                 || (specRole.role === 'facetV' && (!props.insightColumns.facet || props.facetStyle !== 'cross'))
-                                || (specRole.role === 'sort' && props.sumStyle === 'treemap');
+                                || (specRole.role === 'sort' && totalStyle === 'sum-treemap');
                             return (
                                 <ColumnMap
                                     {...props}

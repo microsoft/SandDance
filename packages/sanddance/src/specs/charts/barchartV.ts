@@ -38,11 +38,12 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         layoutClass: Band,
         props: bandProps
     }];
-    if (insight.sumStyle === 'strip-percent') {
+    if (insight.totalStyle === 'sum-strip-percent') {
         y.aggregate = 'percent';
         y.title = language.percent;
         const stripProps: StripProps = {
             addPercentageScale: true,
+            sortOrder: 'descending',
             orientation: 'vertical',
             size: specColumns.size,
             sort: specColumns.sort,
@@ -67,8 +68,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             layoutClass: AggregateContainer,
             props: aggProps
         });
-        switch (insight.sumStyle) {
-            case 'treemap': {
+        switch (insight.totalStyle) {
+            case 'sum-treemap': {
                 y.aggregate = 'sum';
                 y.title = language.sum;
                 const treemapProps: TreemapProps = {
@@ -84,12 +85,29 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 });
                 break;
             }
-            case 'strip': {
+            case 'sum-strip': {
                 y.aggregate = 'sum';
                 y.title = language.sum;
                 const stripProps: StripProps = {
+                    sortOrder: 'descending',
                     orientation: 'vertical',
                     size: specColumns.size,
+                    sort: specColumns.sort,
+                    z: specColumns.z,
+                    zSize: aggProps.parentHeight
+                };
+                layouts.push({
+                    layoutClass: Strip,
+                    props: stripProps
+                });
+                break;
+            }
+            case 'count-strip': {
+                y.aggregate = 'count';
+                y.title = language.count;
+                const stripProps: StripProps = {
+                    sortOrder: 'descending',
+                    orientation: 'vertical',
                     sort: specColumns.sort,
                     z: specColumns.z,
                     zSize: aggProps.parentHeight

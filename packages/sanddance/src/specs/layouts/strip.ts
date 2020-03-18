@@ -6,13 +6,19 @@ import { Column } from '../types';
 import { FieldNames } from '../constants';
 import { InnerScope, Orientation } from '../interfaces';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { LinearScale, RectMark, Transforms } from 'vega-typings';
+import {
+    LinearScale,
+    RectMark,
+    SortOrder,
+    Transforms
+} from 'vega-typings';
 import { testForCollapseSelection } from '../selection';
 
 export interface StripProps extends LayoutProps {
+    sortOrder: SortOrder;
     addPercentageScale?: boolean;
     orientation: Orientation;
-    size: Column;
+    size?: Column;
     sort: Column;
     z: Column;
     zSize?: string;
@@ -37,7 +43,7 @@ export class Strip extends Layout {
 
     public build(): InnerScope {
         const { names, prefix, props } = this;
-        const { addPercentageScale, globalScope, orientation, size, sort, parentScope, z } = props;
+        const { addPercentageScale, globalScope, orientation, size, sort, sortOrder, parentScope, z } = props;
 
         let { zSize } = props;
         zSize = zSize || parentScope.sizeSignals.layoutHeight;
@@ -45,23 +51,36 @@ export class Strip extends Layout {
 
         const horizontal = orientation === 'horizontal';
 
-        const transform: Transforms[] = [
-            {
-                type: 'stack',
-                field: size.name,
-                offset: 'normalize',
-                as: [FieldNames.First, FieldNames.Last]
-            }
-        ];
+        const transform: Transforms[] = [];
 
         if (sort) {
-            transform.unshift({
+            transform.push({
                 type: 'collect',
                 sort: {
-                    field: sort.name
+                    field: sort.name,
+                    order: sortOrder
                 }
             });
         }
+
+        let field: string;
+        if (size) {
+            field = size.name;
+        } else {
+            field = FieldNames.Value;
+            transform.push({
+                type: 'formula',
+                expr: '1',
+                as: field
+            });
+        }
+
+        transform.push({
+            type: 'stack',
+            field,
+            offset: 'normalize',
+            as: [FieldNames.First, FieldNames.Last]
+        });
 
         addData(parentScope.scope, {
             name: names.dataName,

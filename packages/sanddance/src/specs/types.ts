@@ -108,7 +108,7 @@ export type FacetStyle = 'wrap' | 'horizontal' | 'vertical' | 'cross'; //horizon
 /**
  * Layout style to use for summing.
  */
-export type SumStyle = 'treemap' | 'strip' | 'strip-percent';
+export type TotalStyle = 'count-square' | 'count-strip' | 'sum-strip' | 'sum-strip-percent' | 'sum-treemap';
 
 /**
  * Column to use for faceting into small multiples.
@@ -136,7 +136,7 @@ export interface Insight {
     view?: VegaDeckGl.types.View;
     filter?: Search;
     facetStyle?: FacetStyle;
-    sumStyle?: SumStyle;
+    totalStyle?: TotalStyle;
 
     /**
      * Type of color binning to use on color scale. Only applicable when the column in the color role is quantitative. 

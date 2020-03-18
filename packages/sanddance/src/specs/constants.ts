@@ -16,7 +16,8 @@ export const FieldNames = {
     FacetTitle: '__SandDance__FacetTitle',
     Ordinal: '__SandDance__Ordinal',
     WrapCol: '__SandDance__WrapCol',
-    WrapRow: '__SandDance__WrapRow'
+    WrapRow: '__SandDance__WrapRow',
+    Value: '__SandDance__Value'
 };
 
 export const ScaleNames = {

@@ -70,5 +70,5 @@ export enum SideTabId {
 export interface ChangeColumnMappingOptions {
   scheme?: string;
   facetStyle?: SandDance.types.FacetStyle;
-  sumStyle?: SandDance.types.SumStyle;
+  totalStyle?: SandDance.types.TotalStyle;
 }

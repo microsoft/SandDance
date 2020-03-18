@@ -45,7 +45,7 @@ export interface ColumnMapBaseProps {
     categoricalColumns: SandDance.types.Column[];
     changeColumnMapping: (role: SandDance.types.InsightColumnRoles, columnOrRole: SandDance.types.Column | string, options?: ChangeColumnMappingOptions) => void;
     facetStyle: SandDance.types.FacetStyle;
-    sumStyle: SandDance.types.SumStyle;
+    totalStyle: SandDance.types.TotalStyle;
     explorer: Explorer;
     specCapabilities: SandDance.types.SpecCapabilities;
 }

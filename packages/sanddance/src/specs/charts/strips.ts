@@ -9,6 +9,7 @@ import { Strip, StripProps } from '../layouts/strip';
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns } = specContext;
     const stripProps: StripProps = {
+        sortOrder: 'ascending',
         orientation: 'vertical',
         size: specColumns.size,
         sort: specColumns.sort,
