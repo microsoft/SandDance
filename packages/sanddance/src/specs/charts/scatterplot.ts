@@ -28,6 +28,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             }
         ],
         specCapabilities: {
+            countsAndSums: false,
             roles: [
                 {
                     role: 'x',

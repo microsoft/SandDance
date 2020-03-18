@@ -166,7 +166,7 @@ export class Chart extends React.Component<Props, State> {
                                     break;
                                 }
                                 case 'size': {
-                                    prefix = props.chart === 'treemap' ? null : (
+                                    prefix = !props.specCapabilities.countsAndSums ? null : (
                                         <Dropdown
                                             collapseLabel={props.collapseLabels}
                                             label={strings.labelTotal}
@@ -215,7 +215,7 @@ export class Chart extends React.Component<Props, State> {
                             }
                             let disabled = props.disabled
                                 || (props.view === '2d' && specRole.role === 'z')
-                                || (specRole.role === 'size' && !(props.chart === 'treemap' || totalStyle.indexOf('sum-') === 0))
+                                || (specRole.role === 'size' && !(!props.specCapabilities.countsAndSums || totalStyle.indexOf('sum-') === 0))
                                 || (specRole.role === 'facetV' && (!props.insightColumns.facet || props.facetStyle !== 'cross'))
                                 || (specRole.role === 'sort' && totalStyle === 'sum-treemap');
                             return (

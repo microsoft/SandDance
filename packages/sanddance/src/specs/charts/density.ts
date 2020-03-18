@@ -80,6 +80,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             }
         ],
         specCapabilities: {
+            countsAndSums: true,
             roles: [
                 {
                     role: 'x',

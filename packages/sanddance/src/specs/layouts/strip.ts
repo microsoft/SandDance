@@ -66,6 +66,10 @@ export class Strip extends Layout {
         let field: string;
         if (size) {
             field = size.name;
+            transform.push({
+                type: 'filter',
+                expr: `datum[${JSON.stringify(size.name)}] > 0`
+            });
         } else {
             field = FieldNames.Value;
             transform.push({

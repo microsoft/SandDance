@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { AggregateContainer, AggregateContainerProps } from '../layouts/aggregateContainer';
 import { AxisScales } from '../interfaces';
+import { LayoutPair } from '../layouts/layout';
 import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
@@ -14,20 +16,49 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         size: specColumns.size,
         sort: specColumns.sort,
         z: specColumns.z
-};
+    };
     const axisScales: AxisScales = {
         z: { title: specColumns.z && specColumns.z.name }
     };
+    const layouts: LayoutPair[] = [];
+    if (specColumns.facet) {
+        axisScales.y = {
+            title: null,
+            aggregate: specColumns.size ? 'sum' : 'count'
+        };
+        const globalAggregateMaxExtentScaledSignal = 'globalAggregateMaxExtentScaledSignal';
+        const globalAggregateMaxExtentSignal = 'globalAggregateMaxExtentSignal';
+        const parentHeight = 'parentHeight';
+        const props: AggregateContainerProps = {
+            dock: 'top',
+            niceScale: false,
+            globalAggregateMaxExtentScaledSignal,
+            globalAggregateMaxExtentSignal,
+            parentHeight,
+            sumBy: specColumns.size,
+            showAxes: false
+        };
+        stripProps.zSize = props.parentHeight;
+        layouts.push({
+            layoutClass: AggregateContainer,
+            props
+        });
+    }
+    layouts.push({
+        layoutClass: Strip,
+        props: stripProps
+    });
     return {
         axisScales,
-        layouts: [
-            {
-                layoutClass: Strip,
-                props: stripProps
-            }
-        ],
+        layouts,
         specCapabilities: {
+            countsAndSums: false,
             roles: [
+                {
+                    role: 'size',
+                    allowNone: true,
+                    excludeCategoric: true
+                },
                 {
                     role: 'z',
                     allowNone: true

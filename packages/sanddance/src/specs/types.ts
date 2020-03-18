@@ -206,6 +206,10 @@ export interface SpecRoleCapabilities {
  * Interaction behavior on a visualization type.
  */
 export interface SpecCapabilities {
+    /**
+     * Capability of showing as counts or sums
+     */
+    countsAndSums: boolean;
 
     /**
      * Roles to map columns.

@@ -52,6 +52,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         axisScales,
         layouts,
         specCapabilities: {
+            countsAndSums: false,
             roles: [
                 {
                     role: 'size',
