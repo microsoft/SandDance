@@ -115,10 +115,6 @@ export class Chart extends React.Component<Props, State> {
                             let prefix: JSX.Element;
                             let suffix: JSX.Element;
                             switch (specRole.role) {
-                                case 'facetV': {
-                                    console.log('props.insightColumns', props.insightColumns);
-                                    break;
-                                }
                                 case 'facet': {
                                     suffix = (
                                         <Dropdown
@@ -157,6 +153,12 @@ export class Chart extends React.Component<Props, State> {
                                             }
                                         />
                                     );
+                                    disabledColumnName = props.insightColumns.facetV;
+                                    break;
+                                }
+                                case 'facetV': {
+                                    disabledColumnName = props.insightColumns.facet;
+                                    console.log('props.insightColumns', props.insightColumns);
                                     break;
                                 }
                                 case 'size': {
@@ -198,14 +200,6 @@ export class Chart extends React.Component<Props, State> {
                                             }
                                         />
                                     );
-                                    break;
-                                }
-                                case 'facet': {
-                                    disabledColumnName = props.insightColumns.facetV;
-                                    break;
-                                }
-                                case 'facetV': {
-                                    disabledColumnName = props.insightColumns.facet;
                                     break;
                                 }
                             }
