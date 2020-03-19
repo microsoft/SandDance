@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { AlignmentBaseline, TextAnchor, TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
+import { AlignmentBaseline, TextAnchor } from '@deck.gl/layers/text-layer/text-layer';
 import { base } from '../base';
 import { colorFromString } from '../color';
 import {
@@ -15,9 +15,10 @@ import {
     SceneTextAlign,
     SceneTextBaseline
 } from 'vega-typings';
-import { Stage, TickText } from '../interfaces';
+import { Stage, TickText, VegaTextLayerDatum } from '../interfaces';
 
 interface SceneText2 extends SceneText {
+    metaData?: any;
     ellipsis?: string;
     limit?: number;
 }
@@ -35,14 +36,15 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
         const size = item.fontSize * fontScale;
         const alignmentBaseline = convertBaseline(item.baseline);
         const yOffset = alignmentBaseline === 'top' ? item.fontSize / 2 : 0;    //fixup to get tick text correct
-        const textItem: TextLayerDatum = {
+        const textItem: VegaTextLayerDatum = {
             color: colorFromString(item.fill),
             text: base.vega.truncate(item.text, item.limit, 'right', item.ellipsis || '...'),   //use dots instead of unicode ellipsis for deck.gl's default font atlas
             position: [x + (item.x || 0), ty * (y + (item.y || 0) + yOffset), 0],
             size,
             angle: convertAngle(item.angle),
             textAnchor: convertAlignment(item.align),
-            alignmentBaseline
+            alignmentBaseline,
+            metaData: item.metaData
         };
         if (item.mark.role === 'axis-label') {
             const tickText = textItem as TickText;

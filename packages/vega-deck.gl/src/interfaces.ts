@@ -7,11 +7,15 @@ import { LineLayerDatum } from '@deck.gl/layers/line-layer/line-layer';
 import { Scene } from 'vega-typings';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 
+export interface VegaTextLayerDatum extends TextLayerDatum {
+    metaData?: any;
+}
+
 export interface StyledLine extends LineLayerDatum {
     strokeWidth?: number;
 }
 
-export interface TickText extends TextLayerDatum {
+export interface TickText extends VegaTextLayerDatum {
     value: number | string;
 }
 
@@ -19,7 +23,7 @@ export interface Axis {
     domain: StyledLine;
     ticks: StyledLine[];
     tickText: TickText[];
-    title?: TextLayerDatum;
+    title?: VegaTextLayerDatum;
 }
 
 /**
@@ -78,7 +82,7 @@ export interface Stage {
         x: Axis[];
         y: Axis[];
     };
-    textData: TextLayerDatum[];
+    textData: VegaTextLayerDatum[];
     view: View;
     gridLines?: StyledLine[];
     facets?: FacetRect[];
@@ -137,10 +141,10 @@ export interface PresenterConfig {
     onPresent?: () => void;
     shouldViewstateTransition?: () => boolean;
     preLayer?: (stage: Stage) => void;
-    onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, t: TextLayerDatum) => void;
-    onTextHover?: (e: MouseEvent | PointerEvent | TouchEvent, t: TextLayerDatum) => boolean;
-    getTextColor?: (o: TextLayerDatum) => Color;
-    getTextHighlightColor?: (o: TextLayerDatum) => Color;
+    onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, t: VegaTextLayerDatum) => void;
+    onTextHover?: (e: MouseEvent | PointerEvent | TouchEvent, t: VegaTextLayerDatum) => boolean;
+    getTextColor?: (o: VegaTextLayerDatum) => Color;
+    getTextHighlightColor?: (o: VegaTextLayerDatum) => Color;
     onSceneRectAssignCubeOrdinal?: (d: object) => number | undefined;
     onTargetViewState?: (height: number, width: number) => { height: number, width: number, newViewStateTarget?: boolean };
 }

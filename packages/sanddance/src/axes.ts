@@ -3,7 +3,6 @@
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { Color } from '@deck.gl/core/utils/color';
 import { SpecColorSettings } from './specs/types';
-import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 
 function cloneAxis(axes: VegaDeckGl.types.Axis[], axisColor: Color, axisTextColor: Color) {
     return axes.map(axis => {
@@ -16,7 +15,7 @@ function cloneAxis(axes: VegaDeckGl.types.Axis[], axisColor: Color, axisTextColo
     });
 }
 
-function cloneTextData(textData: TextLayerDatum[], color: Color) {
+function cloneTextData(textData: VegaDeckGl.types.VegaTextLayerDatum[], color: Color) {
     return textData.map(t => {
         return { ...t, color };
     });
@@ -37,7 +36,7 @@ export function recolorAxes(stage: VegaDeckGl.types.Stage, oldColors: SpecColorS
         x: VegaDeckGl.types.Axis[];
         y: VegaDeckGl.types.Axis[];
     };
-    let textData: TextLayerDatum[];
+    let textData: VegaDeckGl.types.VegaTextLayerDatum[];
 
     if (hasNewLineColor || hasNewTextColor) {
         const lineColor = newColors.axisLine || oldColors.axisLine;
