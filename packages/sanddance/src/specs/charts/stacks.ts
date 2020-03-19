@@ -26,7 +26,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         },
         minBandWidth: minBarBandWidth,
         showAxes: true,
-        parentHeight: 'hBandParentHeight'
+        parentHeight: 'hBandParentHeight',
     };
     const vBandProps: BandProps = {
         excludeEncodingRuleMap: true,
@@ -43,7 +43,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         parentHeight: 'vBandParentHeight'
     };
     const stackProps: StackProps = {
-        sort: specColumns.sort
+        sort: specColumns.sort,
+        parentHeight: vBandProps.parentHeight
     };
     return {
         axisScales,
