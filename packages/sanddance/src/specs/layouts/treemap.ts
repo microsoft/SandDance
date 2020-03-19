@@ -58,6 +58,10 @@ export class Treemap extends Layout {
             source: parentScope.dataName,
             transform: [
                 {
+                    type: 'filter',
+                    expr: `datum[${JSON.stringify(size.name)}] > 0`
+                },
+                {
                     type: 'nest',
                     keys: [(group && group.name) || '__NONE__']
                 },
