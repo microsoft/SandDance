@@ -57,6 +57,7 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
         }
         case 'cross': {
             const props: CrossProps = {
+                axisTextColor,
                 colRowTitles: true,
                 groupbyX: groupby,
                 groupbyY: facetVColumn

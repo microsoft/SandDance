@@ -150,9 +150,6 @@ export class SpecBuilder {
             if (specResult) {
                 return specResult;
             }
-            // if (facetLayout && facetLayout.colRowTitles && firstScope.titles) {
-            //     addFacetColRowTitles(globalScope.scope, firstScope.titles.x, firstScope.titles.y, firstScope.sizeSignals, specViewOptions);
-            // }
             if (allGlobalScales.length > 0) {
                 let axesScopes: AxesScopeMap = facetLayout ?
                     addFacetAxesGroupMarks({

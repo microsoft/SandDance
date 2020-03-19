@@ -11,10 +11,9 @@ import {
 } from 'vega-typings';
 import { FieldNames, SignalNames } from './constants';
 import { InnerScope, SizeSignals, TitleSource } from './interfaces';
-import { SpecViewOptions } from './types';
 import { util } from '@msrvida/vega-deck.gl';
 
-export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSource, rowTitleSource: TitleSource, sizeSignals: SizeSignals, specViewOptions: SpecViewOptions) {
+export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSource, rowTitleSource: TitleSource, sizeSignals: SizeSignals, axisTextColor: Color) {
     const titleSignal = `parent[${JSON.stringify(FieldNames.FacetTitle)}]`;
     const index = `datum[${JSON.stringify(FieldNames.Ordinal)}] - 1`;
     const col = facetColumnHeaderFooter(colTitleSource.dataName, sizeSignals, index);
@@ -32,10 +31,13 @@ export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSo
                         value: 'middle'
                     },
                     fill: {
-                        value: util.colorToString(specViewOptions.colors.axisText)
+                        value: util.colorToString(axisTextColor)
                     }
                 },
                 update: {
+                    metaData: {
+                        signal: `{search: parent[${JSON.stringify(FieldNames.FacetSearch)}]}`
+                    },
                     x: {
                         signal: `${sizeSignals.layoutWidth} / 2`
                     },
@@ -64,10 +66,13 @@ export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSo
                         value: 'middle'
                     },
                     fill: {
-                        value: util.colorToString(specViewOptions.colors.axisText)
+                        value: util.colorToString(axisTextColor)
                     }
                 },
                 update: {
+                    metaData: {
+                        signal: `{search: parent[${JSON.stringify(FieldNames.FacetSearch)}]}`
+                    },
                     y: {
                         signal: `${sizeSignals.layoutHeight} / 2`
                     },

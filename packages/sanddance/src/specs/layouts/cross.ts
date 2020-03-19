@@ -8,7 +8,9 @@ import {
     addTransforms,
     getDataByName
 } from '../scope';
+import { addFacetColRowTitles } from '../facetTitle';
 import { Binnable, binnable } from '../bin';
+import { Color } from '@deck.gl/core/utils/color';
 import { createOrdinalsForFacet, ordinalScale } from '../ordinal';
 import {
     Data,
@@ -22,6 +24,7 @@ import {
 import {
     DiscreteColumn,
     InnerScope,
+    SizeSignals,
     Titles,
     TitleSource
 } from '../interfaces';
@@ -31,6 +34,7 @@ import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { modifySignal } from '../signals';
 
 export interface CrossProps extends LayoutProps {
+    axisTextColor: Color;
     colRowTitles: boolean;
     groupbyX: DiscreteColumn;
     groupbyY: DiscreteColumn;
@@ -77,7 +81,7 @@ export class Cross extends Layout {
 
     public build(): InnerScope {
         const { binX, binY, names, prefix, props } = this;
-        const { globalScope, parentScope } = props;
+        const { axisTextColor, colRowTitles, globalScope, parentScope } = props;
         const titles: Titles = { x: { dataName: null, quantitative: null }, y: { dataName: null, quantitative: null } };
         const update: GroupEncodeEntry = {
             height: {
@@ -207,7 +211,7 @@ export class Cross extends Layout {
             ]
         });
 
-        const mark: GroupMark = {
+        const group: GroupMark = {
             style: 'cell',
             name: prefix,
             type: 'group',
@@ -223,7 +227,7 @@ export class Cross extends Layout {
             }
         };
 
-        addMarks(parentScope.scope, mark);
+        addMarks(parentScope.scope, group);
 
         const xy = 'xy';
         const fieldFull = 'full';
@@ -351,15 +355,21 @@ export class Cross extends Layout {
             }
         });
 
+        const sizeSignals: SizeSignals = {
+            layoutHeight: `${names.dimCellSize}_y`,
+            layoutWidth: `${names.dimCellSize}_x`,
+            colCount: `${names.dimCount}_x`,
+            rowCount: `${names.dimCount}_y`
+        };
+
+        if (colRowTitles) {
+            addFacetColRowTitles(globalScope.scope, titles.x, titles.y, sizeSignals, axisTextColor);
+        }
+
         return {
             dataName: names.facetDataName,
-            scope: mark,
-            sizeSignals: {
-                layoutHeight: `${names.dimCellSize}_y`,
-                layoutWidth: `${names.dimCellSize}_x`,
-                colCount: `${names.dimCount}_x`,
-                rowCount: `${names.dimCount}_y`
-            },
+            scope: group,
+            sizeSignals,
             titles
         };
     }
