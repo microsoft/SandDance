@@ -3,7 +3,7 @@
 import { addData, addMarks, addSignal } from '../scope';
 import { Column } from '../types';
 import { FieldNames } from '../constants';
-import { GroupMark, Transforms } from 'vega-typings';
+import { GroupMark, Transforms, Scope, RectMark } from 'vega-typings';
 import { InnerScope } from '../interfaces';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { testForCollapseSelection } from '../selection';
@@ -15,12 +15,15 @@ export interface StackProps extends LayoutProps {
 
 export class Stack extends Layout {
     private names: {
+        cube: string,
+        cubeX: string,
+        cubeY: string,
         globalDataName: string,
         globalExtent: string,
         levelDataName: string,
         ordinal: string,
-        outDataName: string,
         sequence: string,
+        sides: string,
         size: string,
         squared: string,
         squaredExtent: string,
@@ -31,12 +34,15 @@ export class Stack extends Layout {
         super(props);
         const p = this.prefix = `stack_${this.id}`;
         this.names = {
+            cube: `${p}_cube`,
+            cubeX: `${p}_x`,
+            cubeY: `${p}_y`,
             globalDataName: `data_${p}_count`,
             globalExtent: `${p}_global_extent`,
             levelDataName: `data_${p}_level`,
             ordinal: `${p}_ordinal`,
-            outDataName: `data_${p}_out`,
             sequence: `data_${p}_sequence`,
+            sides: `${p}_sides`,
             size: `${p}_size`,
             squared: `${p}_squared`,
             squaredExtent: `${p}_squared_extent`,
@@ -134,6 +140,14 @@ export class Stack extends Layout {
             {
                 name: names.squared,
                 update: `${names.squaredExtent}[0]`
+            },
+            {
+                name: names.sides,
+                update: `sqrt(${names.squared})`
+            },
+            {
+                name: names.cube,
+                update: `(${names.size} - (${names.sides} - 1)) / ${names.sides}`
             }
         );
 
@@ -152,8 +166,27 @@ export class Stack extends Layout {
                 type: 'formula',
                 expr: `(datum[${JSON.stringify(FieldNames.Ordinal)}] - 1) % ${names.squared}`,
                 as: names.ordinal
+            },
+            {
+                type: 'formula',
+                expr: `datum[${JSON.stringify(names.ordinal)}] % ${names.sides}`,
+                as: names.cubeX
+            },
+            {
+                type: 'formula',
+                expr: `floor(datum[${JSON.stringify(names.ordinal)}] / ${names.sides})`,
+                as: names.cubeY
             }
         ];
+
+        if (sort) {
+            transform.unshift({
+                type: 'collect',
+                sort: {
+                    field: sort.name
+                }
+            });
+        }
 
         addData(parentScope.scope, {
             name: names.levelDataName,
@@ -161,8 +194,7 @@ export class Stack extends Layout {
             transform
         });
 
-        const mark: GroupMark = {
-            style: 'cell',
+        const group: GroupMark = {
             type: 'group',
             encode: {
                 update: {
@@ -182,11 +214,14 @@ export class Stack extends Layout {
             }
         };
 
-        addMarks(parentScope.scope, mark);
+        addMarks(parentScope.scope, group);
+
+        const mark = this.addRectMarks(group);
 
         return {
             dataName: names.levelDataName,
-            scope: mark,
+            scope: group,
+            mark,
             sizeSignals: {
                 layoutHeight: names.size,
                 layoutWidth: names.size
@@ -198,6 +233,14 @@ export class Stack extends Layout {
             encodingRuleMap: {
                 y: [{
                     test: testForCollapseSelection(),
+                    signal: names.size 
+                }],
+                z: [{
+                    test: testForCollapseSelection(),
+                    value: 0
+                }],
+                depth: [{
+                    test: testForCollapseSelection(),
                     value: 0
                 }],
                 height: [{
@@ -206,5 +249,37 @@ export class Stack extends Layout {
                 }]
             }
         };
+    }
+
+    private addRectMarks(scope: Scope) {
+        const { names } = this;
+        const mark: RectMark = {
+            type: 'rect',
+            from: { data: this.names.levelDataName },
+            encode: {
+                update: {
+                    x: {
+                        signal: `datum[${JSON.stringify(names.cubeX)}] * (${names.cube} + 1)`
+                    },
+                    y: {
+                        signal: `datum[${JSON.stringify(names.cubeY)}] * (${names.cube} + 1)`
+                    },
+                    z: {
+                        signal: `datum[${JSON.stringify(names.zLevel)}] * (${names.cube} + 1)`
+                    },
+                    height: {
+                        signal: names.cube
+                    },
+                    width: {
+                        signal: names.cube
+                    },
+                    depth: {
+                        signal: names.cube
+                    }
+                }
+            }
+        };
+        addMarks(scope, mark);
+        return mark;
     }
 }
