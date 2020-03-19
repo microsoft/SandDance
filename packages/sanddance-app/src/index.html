@@ -77,10 +77,7 @@
                 "scheme": "redblue",
                 "chart": "scatterplot",
                 "view": "3d",
-                "colorBin": "quantize",
-                "signalValues": {
-                    "SandDanceColorBinCount": 2
-                }
+                "colorBin": "quantize"
             }
         };
         var options = {
@@ -90,7 +87,7 @@
                         "*": {
                             "*": {
                                 "signalValues": {
-                                    "SandDanceColorBinCount": 7
+                                    "RoleColor_BinCountSignal": 7
                                 }
                             }
                         }
@@ -114,6 +111,16 @@
                         "color": {
                             "Winner": {
                                 "scheme": "dual_bluered"
+                            }
+                        }
+                    },
+                    "stacks": {
+                        "*": {
+                            "*": {
+                                "signalValues": {
+                                    "RoleX_BinsSignal": 30,
+                                    "RoleY_BinsSignal": 30
+                                }
                             }
                         }
                     }
