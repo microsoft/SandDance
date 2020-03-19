@@ -211,7 +211,7 @@ export class Chart extends React.Component<Props, State> {
                                 || (props.view === '2d' && specRole.role === 'z')
                                 || (specRole.role === 'size' && !(!specCapabilities.countsAndSums || totalStyle.indexOf('sum-') === 0))
                                 || (specRole.role === 'facetV' && (!props.insightColumns.facet || props.facetStyle !== 'cross'))
-                                || (specRole.role === 'sort' && totalStyle === 'sum-treemap');
+                                || (specRole.role === 'sort' && specCapabilities.countsAndSums && totalStyle === 'sum-treemap');
                             return (
                                 <ColumnMap
                                     {...props}
