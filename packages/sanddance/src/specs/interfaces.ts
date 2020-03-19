@@ -54,7 +54,6 @@ export type EncodingRule = { test?: string } & NumericValueRef;
 export interface InnerScope {
     dataName: string;
     scope?: Scope;
-    emptyScope?: Scope;
     titles?: Titles;
     mark?: Mark;
     globalScales?: GlobalScales;

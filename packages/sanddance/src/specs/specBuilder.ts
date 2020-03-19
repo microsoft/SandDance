@@ -1,13 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { addColor } from './color';
-import {
-    addFacetAxesGroupMarks,
-    addFacetCellTitles,
-    addFacetColRowTitles,
-    FacetLayout,
-    getFacetLayout
-} from './facetLayout';
+import { addFacetAxesGroupMarks } from './facetTitle';
 import { addGlobalAxes, AxesScopeMap } from './axes';
 import { addScale, addSignal } from './scope';
 import {
@@ -29,6 +23,7 @@ import {
     InnerScope,
     SpecResult
 } from './interfaces';
+import { FacetLayout, getFacetLayout } from './facetLayout';
 import { fill, opacity } from './fill';
 import {
     GroupMark,
@@ -144,7 +139,7 @@ export class SpecBuilder {
                     maxbinsSignalDisplayName: specViewOptions.language.FacetVMaxBins,
                     maxbinsSignalName: SignalNames.FacetVBins
                 };
-                facetLayout = getFacetLayout(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn);
+                facetLayout = getFacetLayout(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn, specViewOptions.colors.axisText);
                 addSignal(vegaSpec, ...facetLayout.signals);
                 addScale(vegaSpec, ...facetLayout.scales);
                 this.props.layouts = [facetLayout.layoutPair, ...this.props.layouts];
@@ -155,15 +150,9 @@ export class SpecBuilder {
             if (specResult) {
                 return specResult;
             }
-            if (facetLayout && facetLayout.cellTitles) {
-                addFacetCellTitles(firstScope.scope, firstScope.sizeSignals, specViewOptions);
-                if (firstScope.emptyScope) {
-                    addFacetCellTitles(firstScope.emptyScope, firstScope.sizeSignals, specViewOptions);
-                }
-            }
-            if (facetLayout && facetLayout.colRowTitles && firstScope.titles) {
-                addFacetColRowTitles(globalScope.scope, firstScope.titles.x, firstScope.titles.y, firstScope.sizeSignals, specViewOptions);
-            }
+            // if (facetLayout && facetLayout.colRowTitles && firstScope.titles) {
+            //     addFacetColRowTitles(globalScope.scope, firstScope.titles.x, firstScope.titles.y, firstScope.sizeSignals, specViewOptions);
+            // }
             if (allGlobalScales.length > 0) {
                 let axesScopes: AxesScopeMap = facetLayout ?
                     addFacetAxesGroupMarks({

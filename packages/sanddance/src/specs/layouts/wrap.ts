@@ -7,16 +7,20 @@ import {
     addTransforms,
     getDataByName
 } from '../scope';
+import { addFacetCellTitles } from '../facetTitle';
 import { binnable, Binnable } from '../bin';
+import { Color } from '@deck.gl/core/utils/color';
 import { createOrdinalsForFacet } from '../ordinal';
-import { DiscreteColumn, InnerScope } from '../interfaces';
-import { displayBin, serializeAsVegaExpression } from '../facetTitle';
+import { DiscreteColumn, InnerScope, SizeSignals } from '../interfaces';
+import { displayBin, serializeAsVegaExpression } from '../facetSearch';
 import { FieldNames, SignalNames } from '../constants';
 import { GroupEncodeEntry, GroupMark } from 'vega-typings';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { modifySignal } from '../signals';
 
 export interface WrapProps extends LayoutProps {
+    axisTextColor: Color;
+    cellTitles: boolean;
     groupby: DiscreteColumn;
 }
 
@@ -83,7 +87,7 @@ export class Wrap extends Layout {
 
     public build(): InnerScope {
         const { bin, names, prefix, props } = this;
-        const { globalScope, parentScope } = props;
+        const { axisTextColor, cellTitles, globalScope, parentScope } = props;
 
         let ordinalBinData: string;
 
@@ -321,7 +325,7 @@ export class Wrap extends Layout {
             }
         };
 
-        const mark: GroupMark = {
+        const group: GroupMark = {
             style: 'cell',
             name: prefix,
             type: 'group',
@@ -334,9 +338,9 @@ export class Wrap extends Layout {
             },
             encode: { update }
         };
-        addMarks(parentScope.scope, mark);
+        addMarks(parentScope.scope, group);
 
-        let emptymark: GroupMark;
+        let emptyGroup: GroupMark;
         if (bin.native === false) {
             addData(globalScope.scope,
                 {
@@ -360,7 +364,7 @@ export class Wrap extends Layout {
                     ]
                 }
             );
-            emptymark = {
+            emptyGroup = {
                 style: 'cell',
                 name: names.emptyMarkName,
                 type: 'group',
@@ -369,19 +373,25 @@ export class Wrap extends Layout {
                 },
                 encode: { update }
             };
-            addMarks(parentScope.scope, emptymark);
+            addMarks(parentScope.scope, emptyGroup);
+        }
+
+        const sizeSignals: SizeSignals = {
+            layoutHeight: `(${names.cellHeight} - ${SignalNames.FacetPaddingTop} - ${SignalNames.FacetPaddingBottom})`,
+            layoutWidth: `(${names.cellWidth} - ${SignalNames.FacetPaddingLeft})`,
+            colCount: names.colCount,
+            rowCount: `ceil(${names.dataLength} / ${names.colCount})`
+        };
+
+        if (cellTitles) {
+            addFacetCellTitles(group, sizeSignals, axisTextColor);
+            addFacetCellTitles(emptyGroup, sizeSignals, axisTextColor);
         }
 
         return {
             dataName: names.facetDataName,
-            scope: mark,
-            emptyScope: emptymark,
-            sizeSignals: {
-                layoutHeight: `(${names.cellHeight} - ${SignalNames.FacetPaddingTop} - ${SignalNames.FacetPaddingBottom})`,
-                layoutWidth: `(${names.cellWidth} - ${SignalNames.FacetPaddingLeft})`,
-                colCount: names.colCount,
-                rowCount: `ceil(${names.dataLength} / ${names.colCount})`
-            }
+            scope: group,
+            sizeSignals
         };
     }
 }

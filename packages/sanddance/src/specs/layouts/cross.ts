@@ -25,12 +25,13 @@ import {
     Titles,
     TitleSource
 } from '../interfaces';
-import { displayBin, serializeAsVegaExpression } from '../facetTitle';
+import { displayBin, serializeAsVegaExpression } from '../facetSearch';
 import { FieldNames, SignalNames } from '../constants';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { modifySignal } from '../signals';
 
 export interface CrossProps extends LayoutProps {
+    colRowTitles: boolean;
     groupbyX: DiscreteColumn;
     groupbyY: DiscreteColumn;
 }
@@ -353,7 +354,6 @@ export class Cross extends Layout {
         return {
             dataName: names.facetDataName,
             scope: mark,
-            emptyScope: null,
             sizeSignals: {
                 layoutHeight: `${names.dimCellSize}_y`,
                 layoutWidth: `${names.dimCellSize}_x`,
