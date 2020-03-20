@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import * as React from 'react';
 import { base } from '../base';
-import { ColumnMap, ColumnMapBaseProps } from '../controls/columnMap';
+import { ColumnMap, ColumnMapBaseProps, getColumnMapOptions } from '../controls/columnMap';
 import { Dialog } from '../controls/dialog';
 import { Dropdown } from '../controls/dropdown';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
@@ -28,6 +28,18 @@ export interface Props extends ColumnMapBaseProps {
 export interface State {
     showTooltipDialog: boolean;
 }
+
+interface FacetData {
+    facetStyle: SandDance.types.FacetStyle;
+    text?: string;
+    column?: SandDance.types.Column;
+}
+
+const singleFacetLayouts: FacetData[] = [
+    { facetStyle: 'wrap', text: strings.labelFacetLayoutWrap },
+    { facetStyle: 'horizontal', text: strings.labelFacetLayoutHorizontal },
+    { facetStyle: 'vertical', text: strings.labelFacetLayoutVertical }
+];
 
 export class Chart extends React.Component<Props, State> {
     constructor(props: Props) {
@@ -104,9 +116,14 @@ export class Chart extends React.Component<Props, State> {
                             let disabledColumnName: string;
                             let prefix: JSX.Element;
                             let suffix: JSX.Element;
+                            let hideDropdown = false;
                             let { totalStyle } = props;
                             if (!totalStyle) {
                                 totalStyle = 'count-square';
+                            }
+                            let { facetStyle } = props;
+                            if (!facetStyle) {
+                                facetStyle = 'wrap';
                             }
                             switch (specRole.role) {
                                 case 'facet': {
@@ -114,45 +131,62 @@ export class Chart extends React.Component<Props, State> {
                                         <Dropdown
                                             disabled={!props.insightColumns.facet}
                                             collapseLabel={props.collapseLabels}
-                                            label={strings.labelColumnFacetLayout}
+                                            label={strings.labelFacetLayout}
                                             calloutProps={{ style: { minWidth: '18em' } }}
                                             options={[
                                                 {
-                                                    key: 'wrap',
-                                                    text: 'Wrap',
-                                                    data: 'wrap',
-                                                    selected: !props.facetStyle || props.facetStyle === 'wrap'
+                                                    key: 'header1',
+                                                    text: `${strings.labelFacetLayout}:`,
+                                                    itemType: base.fabric.DropdownMenuItemType.Header
+                                                },
+                                                ...singleFacetLayouts.map(f => {
+                                                    const o: FabricTypes.IDropdownOption = {
+                                                        key: f.facetStyle,
+                                                        text: f.text,
+                                                        data: f,
+                                                        selected: facetStyle === f.facetStyle
+                                                    };
+                                                    return o;
+                                                }),
+                                                {
+                                                    key: 'divider',
+                                                    text: '-',
+                                                    itemType: base.fabric.DropdownMenuItemType.Divider
                                                 },
                                                 {
-                                                    key: 'horizontal',
-                                                    text: 'horizontal',
-                                                    data: 'horizontal',
-                                                    selected: props.facetStyle === 'horizontal'
+                                                    key: 'header2',
+                                                    text: `${strings.labelColumnFacetV}:`,
+                                                    itemType: base.fabric.DropdownMenuItemType.Header
                                                 },
-                                                {
-                                                    key: 'vertical',
-                                                    text: 'vertical',
-                                                    data: 'vertical',
-                                                    selected: props.facetStyle === 'vertical'
-                                                },
-                                                {
-                                                    key: 'cross',
-                                                    text: 'cross',
-                                                    data: 'cross',
-                                                    selected: props.facetStyle === 'cross'
-                                                }
+                                                ...getColumnMapOptions({
+                                                    ...props,
+                                                    specRole,
+                                                    selectedColumnName: props.insightColumns.facetV
+                                                }).map(o => {
+                                                    if (o.itemType !== base.fabric.DropdownMenuItemType.Header) {
+                                                        const facetData: FacetData = {
+                                                            facetStyle: 'cross',
+                                                            column: o.data
+                                                        };
+                                                        o.data = facetData;
+                                                        o.text = `${strings.labelFacetLayoutCross} ${o.text}`;
+                                                    }
+                                                    return o;
+                                                })
                                             ]}
-                                            onChange={(e, o) =>
-                                                props.changeColumnMapping('facet', 'facet', { facetStyle: o.data })
-                                            }
+                                            onChange={(e, o) => {
+                                                const facetData = o.data as FacetData;
+                                                props.changeColumnMapping('facet', 'facet', { facetStyle: facetData.facetStyle });
+                                                if (facetData.facetStyle === 'cross') {
+                                                    props.changeColumnMapping('facetV', SandDance.VegaDeckGl.util.clone(facetData.column));
+                                                }
+                                            }}
                                         />
                                     );
-                                    disabledColumnName = props.insightColumns.facetV;
                                     break;
                                 }
                                 case 'facetV': {
-                                    disabledColumnName = props.insightColumns.facet;
-                                    console.log('props.insightColumns', props.insightColumns);
+                                    hideDropdown = true;
                                     break;
                                 }
                                 case 'size': {
@@ -210,7 +244,6 @@ export class Chart extends React.Component<Props, State> {
                             let disabled = props.disabled
                                 || (props.view === '2d' && specRole.role === 'z')
                                 || (specRole.role === 'size' && !(!specCapabilities.countsAndSums || totalStyle.indexOf('sum-') === 0))
-                                || (specRole.role === 'facetV' && (!props.insightColumns.facet || props.facetStyle !== 'cross'))
                                 || (specRole.role === 'sort' && specCapabilities.countsAndSums && totalStyle === 'sum-treemap');
                             return (
                                 <ColumnMap
@@ -224,6 +257,7 @@ export class Chart extends React.Component<Props, State> {
                                     specRole={specRole}
                                     key={i}
                                     onChangeSignal={(name, value) => props.onChangeSignal(specRole.role, selectedColumnName, name, value)}
+                                    hideDropdown={hideDropdown}
                                 />
                             );
                         })}

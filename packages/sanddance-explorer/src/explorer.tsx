@@ -625,7 +625,7 @@ export class Explorer extends React.Component<Props, State> {
                 case 'facet': {
                     columns.facet = null;
                     columns.facetV = null;
-                    this.changeInsight({ columns });
+                    this.changeInsight({ columns, facetStyle: 'wrap' });
                     break;
                 }
                 default: {

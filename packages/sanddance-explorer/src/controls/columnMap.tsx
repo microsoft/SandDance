@@ -63,6 +63,7 @@ export interface Props extends ColumnMapOptionsProps {
     prefix?: JSX.Element;
     suffix?: JSX.Element;
     disabled?: boolean;
+    hideDropdown?: boolean;
     onChangeSignal?: (name: string, value: any) => void;
     onDismiss?: () => void;
 }
@@ -182,31 +183,34 @@ export function ColumnMap(props: Props) {
         }
     }
     const label = roleLabels[props.specRole.role];
+    const signalElements = !props.hideSignals && signals && signals.map((signal, i) => (
+        <Signal
+            key={i}
+            explorer={props.explorer}
+            signal={signal}
+            onChange={value => props.onChangeSignal && props.onChangeSignal(signal.name, value)}
+            collapseLabel={props.collapseLabel}
+        />
+    ));
     return (
         <div
             className="sanddance-columnMap"
         >
             {props.prefix}
-            <Dropdown
-                componentRef={props.componentRef}
-                collapseLabel={props.collapseLabel}
-                disabled={props.disabled}
-                label={label}
-                options={options}
-                onChange={(e, o) =>
-                    props.changeColumnMapping(props.specRole.role, typeof o.data === 'string' ? o.data : SandDance.VegaDeckGl.util.clone(o.data))
-                }
-                onDismiss={props.onDismiss}
-            />
-            {!props.hideSignals && signals && signals.map((signal, i) => (
-                <Signal
-                    key={i}
-                    explorer={props.explorer}
-                    signal={signal}
-                    onChange={value => props.onChangeSignal && props.onChangeSignal(signal.name, value)}
+            {!props.hideDropdown && (
+                <Dropdown
+                    componentRef={props.componentRef}
                     collapseLabel={props.collapseLabel}
+                    disabled={props.disabled}
+                    label={label}
+                    options={options}
+                    onChange={(e, o) =>
+                        props.changeColumnMapping(props.specRole.role, typeof o.data === 'string' ? o.data : SandDance.VegaDeckGl.util.clone(o.data))
+                    }
+                    onDismiss={props.onDismiss}
                 />
-            ))}
+            )}
+            {signalElements}
             {props.suffix}
         </div>
     );
