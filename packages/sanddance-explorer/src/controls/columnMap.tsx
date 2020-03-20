@@ -50,16 +50,19 @@ export interface ColumnMapBaseProps {
     specCapabilities: SandDance.types.SpecCapabilities;
 }
 
-export interface Props extends ColumnMapBaseProps {
+export interface ColumnMapOptionsProps extends ColumnMapBaseProps {
+    specRole: SandDance.types.SpecRoleCapabilities;
+    disabledColumnName?: string
+    selectedColumnName?: string
+}
+
+export interface Props extends ColumnMapOptionsProps {
     collapseLabel: boolean;
     componentRef?: React.RefObject<FabricTypes.IDropdown>;
     hideSignals?: boolean;
     prefix?: JSX.Element;
     suffix?: JSX.Element;
     disabled?: boolean;
-    specRole: SandDance.types.SpecRoleCapabilities;
-    disabledColumnName?: string
-    selectedColumnName?: string
     onChangeSignal?: (name: string, value: any) => void;
     onDismiss?: () => void;
 }
@@ -130,7 +133,7 @@ function selectFirst(options: FabricTypes.IDropdownOption[]) {
     }
 }
 
-export function ColumnMap(props: Props) {
+export function getColumnMapOptions(props: ColumnMapOptionsProps) {
     if (!props.specRole) return null;
 
     let categoricalColumns: SandDance.types.Column[];
@@ -155,6 +158,11 @@ export function ColumnMap(props: Props) {
     const categoricGroup = props.specRole.excludeCategoric ? null : optionsForSpecColumn(strings.selectNonNumeric, categoricalColumns, props.specRole.role, props.disabledColumnName, props.selectedColumnName);
 
     const options = referenceGroup.concat(quantitativeGroup).concat(categoricGroup).concat(directColorGroup).filter(Boolean);
+    return options;
+}
+
+export function ColumnMap(props: Props) {
+    const options = getColumnMapOptions(props);
     if (props.specRole.allowNone) {
         options.unshift({
             key: -1,
@@ -174,11 +182,6 @@ export function ColumnMap(props: Props) {
         }
     }
     const label = roleLabels[props.specRole.role];
-
-    if (props.specRole.role === 'facetV') {
-        console.log('facetV options', options);
-    }
-
     return (
         <div
             className="sanddance-columnMap"
