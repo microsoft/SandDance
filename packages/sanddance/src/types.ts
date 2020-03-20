@@ -15,7 +15,6 @@ import { DeckProps } from '@deck.gl/core/lib/deck';
 import { Search, SearchExpressionGroup } from './searchExpression/types';
 import { Spec } from 'vega-typings';
 import { SpecResult } from './specs/interfaces';
-import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 
 export * from './searchExpression/types';
 export * from './specs/types';
@@ -127,17 +126,17 @@ export interface ViewerOptions extends SpecViewOptions {
     /**
      * Optional handler to get the color of text elements.
      */
-    getTextColor?: (t: TextLayerDatum) => Color;
+    getTextColor?: (t: VegaDeckGl.types.VegaTextLayerDatum) => Color;
 
     /**
      * Optional handler to get the highlight color of text elements.
      */
-    getTextHighlightColor?: (t: TextLayerDatum) => Color;
+    getTextHighlightColor?: (t: VegaDeckGl.types.VegaTextLayerDatum) => Color;
 
     /**
      * Optional click handler for text elements.
      */
-    onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, o: TextLayerDatum) => void;
+    onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, o: VegaDeckGl.types.VegaTextLayerDatum) => void;
 
     /**
      * Optional handler when axis is clicked.

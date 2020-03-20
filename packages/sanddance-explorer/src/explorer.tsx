@@ -241,7 +241,7 @@ export class Explorer extends React.Component<Props, State> {
             },
             onAxisClick: (e, search) => {
                 this.toggleableSearch(e, search);
-                viewerOptions && viewerOptions.onLegendRowClick && viewerOptions.onAxisClick(e, search);
+                viewerOptions && viewerOptions.onAxisClick && viewerOptions.onAxisClick(e, search);
             },
             onLegendHeaderClick: e => {
                 const pos = getPosition(e);
@@ -268,17 +268,19 @@ export class Explorer extends React.Component<Props, State> {
             },
             onBeforeCreateLayers,
             getTextColor: o => {
-                const t = o as TextWithSpecRole;
-                if (t.specRole) {
+                if ((o as TextWithSpecRole).specRole) {
                     return (this.viewerOptions.colors as ColorSettings).clickableText;
+                } else if (o.metaData && o.metaData.search) {
+                    return (this.viewerOptions.colors as ColorSettings).searchText;
                 } else {
                     return o.color;
                 }
             },
             getTextHighlightColor: o => {
-                const t = o as TextWithSpecRole;
-                if (t.specRole) {
+                if ((o as TextWithSpecRole).specRole) {
                     return (this.viewerOptions.colors as ColorSettings).clickableTextHighlight;
+                } else if (o.metaData && o.metaData.search) {
+                    return (this.viewerOptions.colors as ColorSettings).searchTextHighlight;
                 } else {
                     return o.color;
                 }

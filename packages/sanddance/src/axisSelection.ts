@@ -9,8 +9,8 @@ import {
     SpecColumns
 } from './specs/types';
 import { FieldNames } from './specs/constants';
+import { getSearchGroupFromVegaValue } from './search';
 import { LayerInputHandler } from '@deck.gl/core/lib/layer';
-import { push } from './array';
 import { SearchExpressionGroup } from './searchExpression/types';
 import { selectBetweenAxis, selectExactAxis } from './expression';
 
@@ -115,21 +115,7 @@ function facetSelectionPolygons(facetRects: VegaDeckGl.types.FacetRect[]) {
     const polygons: SelectPolygon[] = [];
     let linesAndSearches: { lines: VegaDeckGl.types.StyledLine[], search: SearchExpressionGroup }[];
     linesAndSearches = facetRects.map(({ datum, lines }, i) => {
-        let group: SearchExpressionGroup;
-        const vegaSearch: SearchExpressionGroup | SearchExpressionGroup[] = datum[FieldNames.FacetSearch];
-        if (Array.isArray(vegaSearch)) {
-            //flatten into one group
-            group = { expressions: [] };
-            vegaSearch.forEach((g, gi) => {
-                const clonedExpressions = VegaDeckGl.util.clone(g.expressions).filter(Boolean);
-                clonedExpressions[0].clause = '&&';
-                push(group.expressions, clonedExpressions);
-            });
-        } else {
-            group = vegaSearch ?
-                { expressions: vegaSearch.expressions.filter(Boolean) }
-                : null;
-        }
+        let group: SearchExpressionGroup = getSearchGroupFromVegaValue(datum[FieldNames.FacetSearch]);
         return {
             lines,
             search: group

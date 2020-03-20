@@ -105,10 +105,6 @@ function newTextLayer(presenter: Presenter, id: string, data: VegaTextLayerDatum
         getHighlightColor: config.getTextHighlightColor || (o => o.color),
         onClick: (o, e) => {
             let pe: Partial<PointerEvent> = e && e.srcEvent;
-            //handle iOS event
-            if (e.center) {
-                pe = { clientX: e.center.x, clientY: e.center.y };
-            }
             config.onTextClick && config.onTextClick(pe as PointerEvent, o.object as VegaTextLayerDatum);
         },
         onHover: (o, e) => {

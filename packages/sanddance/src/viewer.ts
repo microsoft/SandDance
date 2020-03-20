@@ -38,6 +38,8 @@ import { defaultViewerOptions, getPresenterStyle } from './defaults';
 import { Details } from './details';
 import { ensureHeaders } from './headers';
 import { finalizeLegend } from './legend';
+import { getSearchGroupFromVegaValue } from './search';
+import { GL_ORDINAL } from './constants';
 import { makeDateRange } from './date';
 import { mount } from 'tsx-create-element';
 import { recolorAxes } from './axes';
@@ -47,7 +49,6 @@ import { Spec, Transforms } from 'vega-typings';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 import { Tooltip } from './tooltip';
 import { ViewGl_Class } from '@msrvida/vega-deck.gl/dist/es6/vega-classes/viewGl';
-import { GL_ORDINAL } from './constants';
 
 const { defaultView } = VegaDeckGl.defaults;
 
@@ -604,7 +605,19 @@ export class Viewer {
         const defaultPresenterConfig: VegaDeckGl.types.PresenterConfig = {
             getTextColor,
             getTextHighlightColor,
-            onTextClick,
+            onTextClick: (e, t) => {
+                if (t.metaData && t.metaData.search) {
+                    const search = getSearchGroupFromVegaValue(t.metaData.search);
+                    if (this.options.onAxisClick) {
+                        this.options.onAxisClick(e, search);
+                    } else {
+                        this.select(search);
+                    }
+                }
+                if (onTextClick) {
+                    onTextClick(e, t);
+                }
+            },
             onCubeClick: this.onCubeClick.bind(this),
             onCubeHover: this.onCubeHover.bind(this),
             onTextHover: this.onTextHover.bind(this),

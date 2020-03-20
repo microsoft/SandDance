@@ -63,6 +63,8 @@ export function getColorSettingsFromThemePalette(themePalette: Partial<FabricTyp
         axisText: colorFromString(themePalette.black),
         hoveredCube: colorFromString(themePalette.black),
         clickableText: colorFromString(themePalette.themeDark),
-        clickableTextHighlight: colorFromString(themePalette.themeSecondary)
+        clickableTextHighlight: colorFromString(themePalette.themeSecondary),
+        searchText: colorFromString(themePalette.neutralPrimary),
+        searchTextHighlight: colorFromString(themePalette.neutralPrimaryAlt)
     };
 }

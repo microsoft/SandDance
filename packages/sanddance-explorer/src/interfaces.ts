@@ -48,6 +48,8 @@ export interface SnapshotProps extends SnapshotEditorProps, SnapshotListProps {
 export interface ColorSettings extends SandDance.types.ColorSettings {
   clickableText?: Color;
   clickableTextHighlight?: Color;
+  searchText?: Color;
+  searchTextHighlight?: Color;
 }
 
 export interface ViewerOptions extends SandDance.types.ViewerOptions {
