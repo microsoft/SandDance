@@ -385,7 +385,9 @@ export class Wrap extends Layout {
 
         if (cellTitles) {
             addFacetCellTitles(group, sizeSignals, axisTextColor);
-            addFacetCellTitles(emptyGroup, sizeSignals, axisTextColor);
+            if (emptyGroup) {
+                addFacetCellTitles(emptyGroup, sizeSignals, axisTextColor);
+            }
         }
 
         return {
