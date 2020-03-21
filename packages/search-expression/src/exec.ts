@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Column } from './column';
+import { Column } from '@msrvida/chart-types';
 import { ensureSearchExpressionGroupArray } from './group';
 import { Search, SearchExpression, SearchExpressionGroup } from './types';
 

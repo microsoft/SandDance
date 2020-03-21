@@ -47,6 +47,7 @@ import { registerColorSchemes } from './colorSchemes';
 import { Spec, Transforms } from 'vega-typings';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 import { Tooltip } from './tooltip';
+import { View } from '@msrvida/chart-types';
 import { ViewGl_Class } from '@msrvida/vega-deck.gl/dist/es6/vega-classes/viewGl';
 
 import Search = searchExpression.Search;
@@ -276,7 +277,7 @@ export class Viewer {
         return specColumns;
     }
 
-    private async renderNewLayout(presenterConfig?: VegaDeckGl.types.PresenterConfig, view?: VegaDeckGl.types.View) {
+    private async renderNewLayout(presenterConfig?: VegaDeckGl.types.PresenterConfig, view?: View) {
         const currData = this._dataScope.currentData();
         const context: SpecContext = { specColumns: this.getSpecColumnsWithFilteredStats(), insight: this.insight, specViewOptions: this.options };
         const specResult = cloneVegaSpecWithData(context, currData);
@@ -362,7 +363,7 @@ export class Viewer {
         this.vegaViewGl.presenter.rePresent(stage, this.createConfig().presenterConfig);
     }
 
-    private getView(view: VegaDeckGl.types.View) {
+    private getView(view: View) {
         if (view === undefined) {
             if (this.presenter.view === null) {
                 return defaultView;

@@ -1,7 +1,7 @@
 {
-  "name": "@msrvida/search-expression",
+  "name": "@msrvida/chart-types",
   "version": "3.0.0",
-  "description": "Search expression parser.",
+  "description": "Types for chart applications.",
   "main": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
   "files": [
@@ -16,7 +16,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@msrvida/chart-types": "^3",
     "vega-typings": "^0.14.2"
   }
 }

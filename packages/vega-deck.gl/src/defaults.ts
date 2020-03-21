@@ -4,10 +4,10 @@ import {
     Cube,
     PresenterConfig,
     PresenterStyle,
-    Stage,
-    View
+    Stage
 } from './interfaces';
 import { LightSettings } from '@deck.gl/core/lib/layer';
+import { View } from '@msrvida/chart-types';
 
 export const minHeight = '100px';
 export const minWidth = '100px';

@@ -17,8 +17,7 @@ import {
     PresenterStyle,
     QueuedAnimationOptions,
     Scene3d,
-    Stage,
-    View
+    Stage
 } from './interfaces';
 import { CubeLayer_Class, CubeLayerInterpolatedProps } from './cube-layer/cube-layer';
 import { DeckProps } from '@deck.gl/core/lib/deck';
@@ -34,6 +33,7 @@ import { patchCubeArray } from './patchedCubeArray';
 import { PresenterElement } from './enums';
 import { sceneToStage } from './stagers';
 import { targetViewState, viewStateProps } from './viewState';
+import { View } from '@msrvida/chart-types';
 
 interface IBounds {
     view: View;

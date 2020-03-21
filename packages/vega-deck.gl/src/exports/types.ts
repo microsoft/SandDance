@@ -23,8 +23,7 @@ import {
     TickText,
     TransitionDurations,
     Vec3,
-    VegaTextLayerDatum,
-    View
+    VegaTextLayerDatum
 } from '../interfaces';
 import {
     Base,
@@ -66,4 +65,4 @@ export {
 };
 
 //alphabetize types  for documentation
-export { CubeLayerProps, Vec3, View };
+export { CubeLayerProps, Vec3 };

@@ -15,6 +15,7 @@ import { LightSettings } from '@deck.gl/core/lib/layer';
 import { Search, SearchExpressionGroup } from '@msrvida/search-expression';
 import { Spec } from 'vega-typings';
 import { SpecResult } from './specs/interfaces';
+import { View } from '@msrvida/chart-types';
 
 export * from './specs/types';
 
@@ -80,7 +81,7 @@ export interface ViewerOptions extends SpecViewOptions {
     /**
      * Optional map of light settings for the visualization, per camera view type.
      */
-    lightSettings?: { [view in VegaDeckGl.types.View]: LightSettings };
+    lightSettings?: { [view in View]: LightSettings };
 
     /**
      * Lengths of time for a transition animation.

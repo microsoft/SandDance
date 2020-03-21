@@ -22,7 +22,7 @@ export interface Props {
     loaded: boolean;
     selectionState: SandDance.types.SelectionState;
     selectionSearch: Search;
-    view: SandDance.VegaDeckGl.types.View;
+    view: SandDance.types.View;
     snapshots: Snapshot[];
     onSnapshotClick: () => void;
     onSnapshotNextClick: () => void;

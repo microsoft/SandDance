@@ -68,7 +68,7 @@ export interface Props {
     searchORDisabled?: boolean;
     theme?: string;
     viewerOptions?: Partial<SandDance.types.ViewerOptions>;
-    initialView?: SandDance.VegaDeckGl.types.View;
+    initialView?: SandDance.types.View;
     mounted?: (explorer: Explorer) => any;
     datasetElement?: JSX.Element;
     dataExportHandler?: DataExportHandler;
@@ -527,7 +527,7 @@ export class Explorer extends React.Component<Props, State> {
         this.setState({ calculating });
     }
 
-    changeView(view: SandDance.VegaDeckGl.types.View) {
+    changeView(view: SandDance.types.View) {
         this.changeInsight({ view });
     }
 

@@ -6,6 +6,7 @@ import { LightSettings } from '@deck.gl/core/lib/layer';
 import { LineLayerDatum } from '@deck.gl/layers/line-layer/line-layer';
 import { Scene } from 'vega-typings';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
+import { View } from '@msrvida/chart-types';
 
 export interface VegaTextLayerDatum extends TextLayerDatum {
     metaData?: any;
@@ -50,11 +51,6 @@ export interface Cube {
     position: Vec3;
     size: Vec3;
 }
-
-/**
- * Types of camera views.
- */
-export type View = '2d' | '3d';
 
 /**
  * Vega Scene plus camera type.

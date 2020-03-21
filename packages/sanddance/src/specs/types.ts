@@ -1,16 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { Color } from '@deck.gl/core/utils/color';
 import {
     Column,
     ColumnStats,
     ColumnTypeMap,
-    Search
-} from '@msrvida/search-expression';
+    View
+} from '@msrvida/chart-types';
+import { Search } from '@msrvida/search-expression';
 import { Transforms } from 'vega-typings';
 
-export { Column, ColumnStats, ColumnTypeMap };
+export { Column, ColumnStats, ColumnTypeMap, View };
 
 /**
  * Type of selection scope on an axis.
@@ -63,7 +63,7 @@ export interface Insight {
     chart: Chart;
     size: Size;
     columns: InsightColumns;
-    view?: VegaDeckGl.types.View;
+    view?: View;
     filter?: Search;
     facetStyle?: FacetStyle;
     totalStyle?: TotalStyle;
