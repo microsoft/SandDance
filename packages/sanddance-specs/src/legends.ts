@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Column, SpecContext } from './types';
+import { Column } from '@msrvida/chart-types';
+import { SpecContext } from './types';
 import { Legend } from 'vega-typings';
 
 function legend(column: Column, fill: string) {

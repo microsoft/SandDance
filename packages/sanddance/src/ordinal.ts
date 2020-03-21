@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
-import { Column, Insight, SpecColumns } from './specs/types';
+import { Column } from '@msrvida/chart-types';
+import { Insight, SpecColumns } from '@msrvida/sanddance-specs';
 import { GL_ORDINAL } from './constants';
 import { OrdinalMap } from './types';
 

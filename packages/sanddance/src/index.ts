@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import * as constants from './constants';
 import * as searchExpression from '@msrvida/search-expression';
+import * as specs from '@msrvida/sanddance-specs';
 import * as types from './types';
 import * as util from './util';
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
@@ -15,6 +16,7 @@ export {
     colorSchemes,
     constants,
     searchExpression,
+    specs,
     types,
     use,
     util,

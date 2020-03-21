@@ -1,16 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Color } from '@deck.gl/core/utils/color';
-import {
-    Column,
-    ColumnStats,
-    ColumnTypeMap,
-    View
-} from '@msrvida/chart-types';
+import { Column, View } from '@msrvida/chart-types';
 import { Search } from '@msrvida/search-expression';
 import { Transforms } from 'vega-typings';
-
-export { Column, ColumnStats, ColumnTypeMap, View };
 
 /**
  * Type of selection scope on an axis.

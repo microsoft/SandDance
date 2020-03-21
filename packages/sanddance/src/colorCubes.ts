@@ -8,7 +8,7 @@ import {
     ColorMethod,
     ViewerOptions
 } from './types';
-import { FieldNames } from './specs/constants';
+import { FieldNames } from '@msrvida/sanddance-specs';
 import { GL_ORDINAL } from './constants';
 
 export function getSelectedColorMap(currentData: object[], showSelectedData: boolean, showActive: boolean, viewerOptions: ViewerOptions) {

@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Column, ColumnStats, ColumnTypeMap } from './specs/types';
+import { Column, ColumnStats, ColumnTypeMap } from '@msrvida/chart-types';
 import { Exec, Search } from '@msrvida/search-expression';
-import { FieldNames } from './specs/constants';
-import { getColumnsFromData, getStats } from './specs/inference';
+import { FieldNames, getColumnsFromData, getStats } from '@msrvida/sanddance-specs';
 import { GL_ORDINAL } from './constants';
 
 export interface ColumnsStatsMap {

@@ -7,12 +7,12 @@ import { SandDance } from '@msrvida/sanddance-react';
 import { MousePosition } from './mouseEvent';
 
 export interface TextWithSpecRole extends SandDance.VegaDeckGl.types.VegaTextLayerDatum {
-    specRole: SandDance.types.SpecRoleCapabilities;
+    specRole: SandDance.specs.SpecRoleCapabilities;
 }
 
 export function onBeforeCreateLayers(
     stage: SandDance.VegaDeckGl.types.Stage,
-    specCapabilities: SandDance.types.SpecCapabilities
+    specCapabilities: SandDance.specs.SpecCapabilities
 ) {
     for (let axisName in stage.axes) {
         specCapabilities.roles.forEach(specRole => {

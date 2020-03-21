@@ -28,6 +28,7 @@ import { strings } from './language';
 
 import VegaDeckGl = SandDance.VegaDeckGl;
 import types = SandDance.types;
+import specs = SandDance.specs;
 
 export interface Props {
     themeColors: { [theme: string]: ColorSettings };
@@ -175,7 +176,7 @@ export class SandDanceApp extends React.Component<Props, State> {
         }
     }
 
-    load(dataSource: DataSource, partialInsight?: Partial<types.Insight>) {
+    load(dataSource: DataSource, partialInsight?: Partial<specs.Insight>) {
         //clone so that we do not modify original object
         dataSource = VegaDeckGl.util.clone(dataSource);
         this.setState({ dataSource });

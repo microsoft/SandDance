@@ -83,7 +83,7 @@ export interface Props {
     systemInfoChildren?: React.ReactNode;
 }
 
-export interface State extends SandDance.types.Insight {
+export interface State extends SandDance.specs.Insight {
     calculating: () => void;
     errors: string[];
     autoCompleteDistinctValues: AutoCompleteDistinctValues;
@@ -93,7 +93,7 @@ export interface State extends SandDance.types.Insight {
     sidebarPinned: boolean;
     dataFile: DataFile;
     dataContent: DataContent;
-    specCapabilities: SandDance.types.SpecCapabilities;
+    specCapabilities: SandDance.specs.SpecCapabilities;
     sideTabId: SideTabId;
     dataScopeId: DataScopeId;
     selectedItemIndex: { [key: number]: number };
@@ -140,7 +140,7 @@ function createInputSearch(search: SandDance.searchExpression.Search) {
 export class Explorer extends React.Component<Props, State> {
     private layoutDivUnpinned: HTMLElement;
     private layoutDivPinned: HTMLElement;
-    private getColorContext: (oldInsight: SandDance.types.Insight, newInsight: SandDance.types.Insight) => SandDance.types.ColorContext;
+    private getColorContext: (oldInsight: SandDance.specs.Insight, newInsight: SandDance.specs.Insight) => SandDance.types.ColorContext;
     private ignoreSelectionChange: boolean;
     private snapshotEditor: SnapshotEditor;
     private scrollSnapshotTimer: number;
@@ -351,7 +351,7 @@ export class Explorer extends React.Component<Props, State> {
         return this.viewer.getInsight();
     }
 
-    setInsight(partialInsight: Partial<SandDance.types.Insight> & Partial<State> = this.viewer.getInsight(), rebaseFilter = false) {
+    setInsight(partialInsight: Partial<SandDance.specs.Insight> & Partial<State> = this.viewer.getInsight(), rebaseFilter = false) {
         const selectedItemIndex = { ...this.state.selectedItemIndex };
         selectedItemIndex[DataScopeId.AllData] = 0;
         selectedItemIndex[DataScopeId.FilteredData] = 0;
@@ -419,13 +419,13 @@ export class Explorer extends React.Component<Props, State> {
         data: DataFile | object[],
         getPartialInsight?: (
             columns: SandDance.types.Column[]
-        ) => Partial<SandDance.types.Insight>,
+        ) => Partial<SandDance.specs.Insight>,
         optionsOrPrefs?: Prefs | Options
     ) {
         this.changeInsight({ columns: null, note: null });
         return new Promise<void>((resolve, reject) => {
             const loadFinal = (dataContent: DataContent) => {
-                let partialInsight: Partial<SandDance.types.Insight>;
+                let partialInsight: Partial<SandDance.specs.Insight>;
                 this.prefs = (optionsOrPrefs && (optionsOrPrefs as Options).chartPrefs || (optionsOrPrefs as Prefs)) || {};
                 if (getPartialInsight) {
                     partialInsight = getPartialInsight(dataContent.columns);
@@ -485,7 +485,7 @@ export class Explorer extends React.Component<Props, State> {
         });
     }
 
-    changeChartType(chart: SandDance.types.Chart) {
+    changeChartType(chart: SandDance.specs.Chart) {
         const partialInsight = copyPrefToNewState(this.prefs, chart, '*', '*');
         const newState: Partial<State> = { chart, ...partialInsight };
         const columns = this.state.columns || {};
@@ -548,12 +548,12 @@ export class Explorer extends React.Component<Props, State> {
     }
 
     changespecCapabilities(
-        specCapabilities: SandDance.types.SpecCapabilities
+        specCapabilities: SandDance.specs.SpecCapabilities
     ) {
         this.setState({ specCapabilities });
     }
 
-    changeColumnMapping(role: SandDance.types.InsightColumnRoles, column: SandDance.types.Column, options?: ChangeColumnMappingOptions) {
+    changeColumnMapping(role: SandDance.specs.InsightColumnRoles, column: SandDance.types.Column, options?: ChangeColumnMappingOptions) {
         const columns = { ...this.state.columns };
         const final = () => {
             columns[role] = column && column.name;
@@ -825,7 +825,7 @@ export class Explorer extends React.Component<Props, State> {
         if (this.viewer) {
             signalValues = { ...signalValues, ...this.viewer.getInsight().signalValues };
         }
-        const insight: SandDance.types.Insight = {
+        const insight: SandDance.specs.Insight = {
             colorBin,
             columns,
             directColor,
@@ -1039,13 +1039,13 @@ export class Explorer extends React.Component<Props, State> {
                                                 savePref(this.prefs, this.state.chart, 'color', this.state.columns.color, { scheme });
                                             }}
                                             onColorBinCountChange={value => {
-                                                const signalValues: SandDance.types.SignalValues = {};
+                                                const signalValues: SandDance.specs.SignalValues = {};
                                                 signalValues[SandDance.constants.SignalNames.ColorBinCount] = value;
                                                 savePref(this.prefs, this.state.chart, 'color', this.state.columns.color, { signalValues });
                                             }}
                                             onColorReverseChange={value => {
                                                 this.getColorContext = null;
-                                                const signalValues: SandDance.types.SignalValues = {};
+                                                const signalValues: SandDance.specs.SignalValues = {};
                                                 signalValues[SandDance.constants.SignalNames.ColorReverse] = value;
                                             }}
                                             directColor={this.state.directColor}
@@ -1210,7 +1210,7 @@ export class Explorer extends React.Component<Props, State> {
                                 }}
                                 onView={renderResult => {
                                     this.changespecCapabilities(renderResult.specResult.errors ? renderResult.specResult.specCapabilities : this.viewer.specCapabilities);
-                                    this.getColorContext = (oldInsight: SandDance.types.Insight, newInsight: SandDance.types.Insight) => {
+                                    this.getColorContext = (oldInsight: SandDance.specs.Insight, newInsight: SandDance.specs.Insight) => {
                                         if (!oldInsight && !newInsight) {
                                             return null;
                                         }
@@ -1309,7 +1309,7 @@ export class Explorer extends React.Component<Props, State> {
     }
 }
 
-function colorMapping(insight: SandDance.types.Insight, columns: SandDance.types.Column[]) {
+function colorMapping(insight: SandDance.specs.Insight, columns: SandDance.types.Column[]) {
     if (columns && insight.columns && insight.columns.color) {
         return columns.filter(c => c.name === insight.columns.color)[0];
     }

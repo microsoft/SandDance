@@ -3,7 +3,7 @@
 import { SandDance } from '@msrvida/sanddance-react';
 
 export interface RolePrefs {
-  [columnName: string]: Partial<SandDance.types.Insight>;
+  [columnName: string]: Partial<SandDance.specs.Insight>;
 }
 
 export interface SpecTypePrefs {
@@ -14,13 +14,13 @@ export interface Prefs {
   [chart: string]: SpecTypePrefs;
 }
 
-export function initPrefs(prefs: Prefs, partialInsight: Partial<SandDance.types.Insight>) {
+export function initPrefs(prefs: Prefs, partialInsight: Partial<SandDance.specs.Insight>) {
     if (partialInsight) {
         const specTypePrefs = prefs[partialInsight.chart] || {};
         prefs[partialInsight.chart] = specTypePrefs;
 
         for (let _role in partialInsight.columns) {
-            let role = _role as SandDance.types.InsightColumnRoles;
+            let role = _role as SandDance.specs.InsightColumnRoles;
             if (role === 'color' || role === 'x') {
                 let rolePrefs = specTypePrefs[role] || {};
                 specTypePrefs[role] = rolePrefs;
@@ -51,19 +51,19 @@ export function initPrefs(prefs: Prefs, partialInsight: Partial<SandDance.types.
     }
 }
 
-export function saveSignalValuePref(prefs: Prefs, chart: SandDance.types.Chart, role: string, column: string, signalName: string, signalValue: string) {
+export function saveSignalValuePref(prefs: Prefs, chart: SandDance.specs.Chart, role: string, column: string, signalName: string, signalValue: string) {
     const partialInsight = savePref(prefs, chart, role, column, { signalValues: {} });
     partialInsight.signalValues[signalName] = signalValue;
 }
 
-export function copyPrefToNewState(prefs: Prefs, chart: SandDance.types.Chart, role: string, columnName: string) {
+export function copyPrefToNewState(prefs: Prefs, chart: SandDance.specs.Chart, role: string, columnName: string) {
     const specTypePrefs = SandDance.VegaDeckGl.util.deepMerge({}, prefs['*'], prefs[chart]);
     const rolePrefs = SandDance.VegaDeckGl.util.deepMerge({}, specTypePrefs['*'], specTypePrefs[role]);
     const partialInsight = SandDance.VegaDeckGl.util.deepMerge({}, rolePrefs['*'], rolePrefs[columnName]);
     return partialInsight;
 }
 
-export function savePref(prefs: Prefs, chart: SandDance.types.Chart, role: string, column: string, partialInsight: Partial<SandDance.types.Insight>) {
+export function savePref(prefs: Prefs, chart: SandDance.specs.Chart, role: string, column: string, partialInsight: Partial<SandDance.specs.Insight>) {
     const SpecTypePrefs = prefs[chart] || {};
     prefs[chart] = SpecTypePrefs;
 

@@ -15,8 +15,9 @@ import {
     GlobalScales,
     GlobalScope
 } from './interfaces';
-import { Column, SpecColumns, SpecViewOptions } from './types';
+import { Column } from '@msrvida/chart-types';
 import { SignalNames } from './constants';
+import { SpecColumns, SpecViewOptions } from './types';
 import { util } from '@msrvida/vega-deck.gl';
 
 export interface AxesScope {

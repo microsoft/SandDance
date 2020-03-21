@@ -5,7 +5,7 @@ import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from './language';
 import { Transforms } from 'vega-typings/types';
 
-export function ensureColumnsExist(insightColumns: SandDance.types.InsightColumns, actualColumns: SandDance.types.Column[], transform: Transforms[]) {
+export function ensureColumnsExist(insightColumns: SandDance.specs.InsightColumns, actualColumns: SandDance.types.Column[], transform: Transforms[]) {
     //ensure columns exist
     for (let role in insightColumns) {
         let columnName = insightColumns[role];
@@ -23,14 +23,14 @@ export function ensureColumnsExist(insightColumns: SandDance.types.InsightColumn
     }
 }
 
-export function ensureColumnsPopulated(chart: SandDance.types.Chart, insightColumns: SandDance.types.InsightColumns, actualColumns: SandDance.types.Column[]) {
+export function ensureColumnsPopulated(chart: SandDance.specs.Chart, insightColumns: SandDance.specs.InsightColumns, actualColumns: SandDance.types.Column[]) {
     //ensure columns are populated
     const nonInternal = actualColumns.filter(c => !SandDance.util.isInternalFieldName(c.name));
     const firstColumn = nonInternal[0];
     const firstColumnName = firstColumn && firstColumn.name;
     const firstQuantitative = nonInternal.filter(c => c.quantitative)[0];
     const firstQuantitativeColumnName = firstQuantitative && firstQuantitative.name;
-    const ensureColumn = (role: SandDance.types.InsightColumnRoles, quantitative?: boolean) => {
+    const ensureColumn = (role: SandDance.specs.InsightColumnRoles, quantitative?: boolean) => {
         if (!insightColumns[role]) {
             insightColumns[role] = quantitative ? firstQuantitativeColumnName : firstColumnName;
         }

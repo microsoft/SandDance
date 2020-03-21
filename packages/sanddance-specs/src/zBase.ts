@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { addScale } from './scope';
-import { Column } from './types';
+import { Column } from '@msrvida/chart-types';
 import { GlobalScope } from './interfaces';
 import { linearScale, pointScale } from './scales';
 import { RangeScheme } from 'vega-typings';

@@ -5,7 +5,7 @@ export {
     FieldNames,
     ScaleNames,
     SignalNames
-} from './specs/constants';
+} from '@msrvida/sanddance-specs';
 
 const GL_ORDINAL = 'GL_ORDINAL';
 export { GL_ORDINAL };

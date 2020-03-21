@@ -13,7 +13,7 @@ import { strings } from '../language';
 
 const maxFacets = 50;
 
-const roleLabels: { [role in SandDance.types.InsightColumnRoles]: string } = {
+const roleLabels: { [role in SandDance.specs.InsightColumnRoles]: string } = {
     color: strings.labelColumnColor,
     facet: strings.labelColumnFacet,
     facetV: strings.labelColumnFacetV,
@@ -26,7 +26,7 @@ const roleLabels: { [role in SandDance.types.InsightColumnRoles]: string } = {
     z: strings.labelColumnZ
 };
 
-const aliasLabels: { [role in SandDance.types.InsightColumnRoles]: string } = {
+const aliasLabels: { [role in SandDance.specs.InsightColumnRoles]: string } = {
     color: strings.labelAliasColor,
     facet: strings.labelAliasFacet,
     facetV: strings.labelAliasFacetV,
@@ -43,15 +43,15 @@ export interface ColumnMapBaseProps {
     allColumns: SandDance.types.Column[];
     quantitativeColumns: SandDance.types.Column[];
     categoricalColumns: SandDance.types.Column[];
-    changeColumnMapping: (role: SandDance.types.InsightColumnRoles, columnOrRole: SandDance.types.Column | string, options?: ChangeColumnMappingOptions) => void;
-    facetStyle: SandDance.types.FacetStyle;
-    totalStyle: SandDance.types.TotalStyle;
+    changeColumnMapping: (role: SandDance.specs.InsightColumnRoles, columnOrRole: SandDance.types.Column | string, options?: ChangeColumnMappingOptions) => void;
+    facetStyle: SandDance.specs.FacetStyle;
+    totalStyle: SandDance.specs.TotalStyle;
     explorer: Explorer;
-    specCapabilities: SandDance.types.SpecCapabilities;
+    specCapabilities: SandDance.specs.SpecCapabilities;
 }
 
 export interface ColumnMapOptionsProps extends ColumnMapBaseProps {
-    specRole: SandDance.types.SpecRoleCapabilities;
+    specRole: SandDance.specs.SpecRoleCapabilities;
     disabledColumnName?: string
     selectedColumnName?: string
 }
@@ -68,7 +68,7 @@ export interface Props extends ColumnMapOptionsProps {
     onDismiss?: () => void;
 }
 
-function filterColumnList(context: SandDance.types.InsightColumnRoles, columns: SandDance.types.Column[]) {
+function filterColumnList(context: SandDance.specs.InsightColumnRoles, columns: SandDance.types.Column[]) {
     switch (context) {
         case 'facet':
         case 'facetV':
@@ -83,7 +83,7 @@ function filterColumnList(context: SandDance.types.InsightColumnRoles, columns: 
     }
 }
 
-function optionsForSpecColumn(sectionName: string, columns: SandDance.types.Column[], role: SandDance.types.InsightColumnRoles, disabledColumnName: string, selectedColumnName: string) {
+function optionsForSpecColumn(sectionName: string, columns: SandDance.types.Column[], role: SandDance.specs.InsightColumnRoles, disabledColumnName: string, selectedColumnName: string) {
     const filtered = filterColumnList(role, columns);
     const options = filtered.map(column => {
         const option: FabricTypes.IDropdownOption = {
@@ -106,7 +106,7 @@ function optionsForSpecColumn(sectionName: string, columns: SandDance.types.Colu
     return options;
 }
 
-function optionsForReference(sectionName: string, specRoles: SandDance.types.SpecRoleCapabilities[]) {
+function optionsForReference(sectionName: string, specRoles: SandDance.specs.SpecRoleCapabilities[]) {
     const options = specRoles.map(specRole => {
         const option: FabricTypes.IDropdownOption = {
             key: `role:${specRole.role}`,

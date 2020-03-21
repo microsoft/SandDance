@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Column } from './types';
+import { Column } from '@msrvida/chart-types';
 import { Data } from 'vega-typings';
 import { Other } from './constants';
 

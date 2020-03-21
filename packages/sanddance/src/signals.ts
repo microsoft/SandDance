@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { NewSignal, Spec, View } from 'vega-typings';
-import { SignalValues } from './specs/types';
+import { SignalValues } from '@msrvida/sanddance-specs';
 
 export function applySignalValues(sv: SignalValues, b: Spec) {
     if (!sv || !b || !b.signals || !b.signals.length) return;

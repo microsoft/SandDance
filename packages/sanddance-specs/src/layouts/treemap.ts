@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { addData, addMarks, addSignal } from '../scope';
 import { addZScale } from '../zBase';
-import { Column } from '../types';
+import { Column } from '@msrvida/chart-types';
 import { InnerScope } from '../interfaces';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { RectMark } from 'vega-typings';

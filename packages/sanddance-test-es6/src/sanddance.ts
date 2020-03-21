@@ -30,7 +30,7 @@ SandDance.use(vega, deck, layers, luma);
 
 const viewer = new SandDance.Viewer(document.getElementById('vis'));
 
-const insight: SandDance.types.Insight = {
+const insight: SandDance.specs.Insight = {
     columns: {
         color: 'z',
         uid: 'id',

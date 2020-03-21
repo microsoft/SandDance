@@ -2,8 +2,6 @@
 // Licensed under the MIT license.
 import { DataFile, SandDance, Snapshot } from '@msrvida/sanddance-explorer';
 
-import types = SandDance.types;
-
 export type DataSourceType = 'sample' | 'local' | 'url';
 
 export interface DataSource extends DataFile {
@@ -12,7 +10,7 @@ export interface DataSource extends DataFile {
 }
 
 export interface InsightMap {
-  [id: string]: types.Insight;
+  [id: string]: SandDance.specs.Insight;
 }
 
 export interface DataSourceSnapshot extends Snapshot {

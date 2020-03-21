@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { FieldNames, GL_ORDINAL } from './constants';
 
-export { getColumnsFromData, getStats, inferAll } from './specs/inference';
+export { getColumnsFromData, getStats, inferAll } from '@msrvida/sanddance-specs';
 export { getPresenterStyle } from './defaults';
 
 export function isInternalFieldName(columnName: string, includeVegaDeckGLFields = false) {

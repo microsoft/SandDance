@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { addData, addMarks, addSignal } from '../scope';
-import { Column } from '../types';
+import { Column } from '@msrvida/chart-types';
 import { GlobalScales, InnerScope } from '../interfaces';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { linearScale, pointScale } from '../scales';

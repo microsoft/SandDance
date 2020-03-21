@@ -41,7 +41,7 @@ namespace qualBarChartTest {
         });
     }
     const glDiv = viewer.presenter.getElement(SandDance.VegaDeckGl.PresenterElement.gl);
-    const insight: SandDance.types.Insight = {
+    const insight: SandDance.specs.Insight = {
         columns: {
             color: 'myColor',
             sort: 'mySort',

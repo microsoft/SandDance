@@ -4,20 +4,23 @@ import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { Color } from '@deck.gl/core/utils/color';
 import {
     Column,
+    ColumnStats,
     ColumnTypeMap,
-    SpecCapabilities,
-    SpecColorSettings,
-    SpecLanguage,
-    SpecViewOptions
-} from './specs/types';
+    View
+} from '@msrvida/chart-types';
 import { DeckProps } from '@deck.gl/core/lib/deck';
 import { LightSettings } from '@deck.gl/core/lib/layer';
 import { Search, SearchExpressionGroup } from '@msrvida/search-expression';
 import { Spec } from 'vega-typings';
-import { SpecResult } from './specs/interfaces';
-import { View } from '@msrvida/chart-types';
+import {
+    SpecCapabilities,
+    SpecColorSettings,
+    SpecLanguage,
+    SpecResult,
+    SpecViewOptions
+} from '@msrvida/sanddance-specs';
 
-export * from './specs/types';
+export { Column, ColumnStats, ColumnTypeMap, View };
 
 /**
  * Map of ordinals per unique Id.

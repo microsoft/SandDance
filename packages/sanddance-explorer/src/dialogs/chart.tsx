@@ -18,10 +18,10 @@ export interface Props extends ColumnMapBaseProps {
     toggleTooltipExclusion: (columnName: string) => void;
     collapseLabels: boolean;
     disabled: boolean;
-    chart: SandDance.types.Chart;
-    onChangeChartType: (chart: SandDance.types.Chart) => void;
+    chart: SandDance.specs.Chart;
+    onChangeChartType: (chart: SandDance.specs.Chart) => void;
     view: SandDance.types.View;
-    insightColumns: SandDance.types.InsightColumns;
+    insightColumns: SandDance.specs.InsightColumns;
     onChangeSignal: (role: string, column: string, name: string, value: any) => void;
 }
 
@@ -30,7 +30,7 @@ export interface State {
 }
 
 interface FacetData {
-    facetStyle: SandDance.types.FacetStyle;
+    facetStyle: SandDance.specs.FacetStyle;
     text?: string;
     column?: SandDance.types.Column;
 }
@@ -104,7 +104,7 @@ export class Chart extends React.Component<Props, State> {
                                         || (o.key === 'treemap' && props.quantitativeColumns.length === 0)
                                 };
                             })}
-                            onChange={(e, o) => props.onChangeChartType(o.key as SandDance.types.Chart)}
+                            onChange={(e, o) => props.onChangeChartType(o.key as SandDance.specs.Chart)}
                         />
                     </div>
                 </Group>

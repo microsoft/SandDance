@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
-import { Column } from './specs/types';
+import { Column } from '@msrvida/chart-types';
 import {
     SearchExpression,
     SearchExpressionGroup,

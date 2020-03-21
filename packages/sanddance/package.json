@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@msrvida/chart-types": "^3",
+    "@msrvida/sanddance-specs": "^3",
     "@msrvida/search-expression": "^3",
     "@msrvida/vega-deck.gl": "^2",
     "tsx-create-element": "1.1.4",

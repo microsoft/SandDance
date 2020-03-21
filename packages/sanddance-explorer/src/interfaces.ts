@@ -32,7 +32,7 @@ export interface DataExportHandler {
 export interface Snapshot {
   title?: string;
   description?: string;
-  insight?: SandDance.types.Insight;
+  insight?: SandDance.specs.Insight;
   image?: string;
   bgColor?: string;
 }
@@ -71,6 +71,6 @@ export enum SideTabId {
 
 export interface ChangeColumnMappingOptions {
   scheme?: string;
-  facetStyle?: SandDance.types.FacetStyle;
-  totalStyle?: SandDance.types.TotalStyle;
+  facetStyle?: SandDance.specs.FacetStyle;
+  totalStyle?: SandDance.specs.TotalStyle;
 }

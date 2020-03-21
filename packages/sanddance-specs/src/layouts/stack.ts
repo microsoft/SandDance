@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { addData, addMarks, addSignal } from '../scope';
-import { Column } from '../types';
+import { Column } from '@msrvida/chart-types';
 import { FieldNames } from '../constants';
 import { GroupMark, Transforms, Scope, RectMark } from 'vega-typings';
 import { InnerScope } from '../interfaces';

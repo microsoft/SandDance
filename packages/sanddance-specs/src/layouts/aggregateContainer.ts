@@ -8,7 +8,7 @@ import {
     getDataByName
 } from '../scope';
 import { AxisScale, InnerScope } from '../interfaces';
-import { Column } from '../types';
+import { Column } from '@msrvida/chart-types';
 import { GroupMark, JoinAggregateTransform, LinearScale } from 'vega-typings';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { testForCollapseSelection } from '../selection';

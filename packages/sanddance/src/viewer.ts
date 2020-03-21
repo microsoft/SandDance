@@ -12,7 +12,14 @@ import {
 import { applySignalValues, extractSignalValuesFromView } from './signals';
 import { assignOrdinals, getDataIndexOfCube, getSpecColumns } from './ordinal';
 import { AxisSelectionHandler, axisSelectionLayer } from './axisSelection';
-import { cloneVegaSpecWithData } from './specs/clone';
+import {
+    cloneVegaSpecWithData,
+    Insight,
+    SignalValues,
+    SpecCapabilities,
+    SpecColumns,
+    SpecContext
+} from '@msrvida/sanddance-specs';
 import {
     ColorContext,
     ColorMap,
@@ -24,14 +31,7 @@ import {
     SelectionState,
     ViewerOptions
 } from './types';
-import {
-    Column,
-    Insight,
-    SignalValues,
-    SpecCapabilities,
-    SpecColumns,
-    SpecContext
-} from './specs/types';
+import { Column } from '@msrvida/chart-types';
 import { DataScope } from './dataScope';
 import { DeckProps, PickInfo } from '@deck.gl/core/lib/deck';
 import { defaultViewerOptions, getPresenterStyle } from './defaults';

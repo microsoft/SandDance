@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
-import { ColumnStats } from './specs/types';
+import { ColumnStats } from '@msrvida/chart-types';
 import { Spec } from 'vega-typings';
 
 export function makeDateRange(tickTexts: VegaDeckGl.types.TickText[], columnStats: ColumnStats) {

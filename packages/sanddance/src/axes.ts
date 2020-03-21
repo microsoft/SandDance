@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { Color } from '@deck.gl/core/utils/color';
-import { SpecColorSettings } from './specs/types';
+import { SpecColorSettings } from '@msrvida/sanddance-specs';
 
 function cloneAxis(axes: VegaDeckGl.types.Axis[], axisColor: Color, axisTextColor: Color) {
     return axes.map(axis => {

@@ -4,11 +4,11 @@ import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import PolygonLayer, { PolygonLayerDatum } from '@deck.gl/layers/polygon-layer/polygon-layer';
 import {
     AxisSelectionType,
-    Column,
+    FieldNames,
     SpecCapabilities,
     SpecColumns
-} from './specs/types';
-import { FieldNames } from './specs/constants';
+} from '@msrvida/sanddance-specs';
+import { Column } from '@msrvida/chart-types';
 import { getSearchGroupFromVegaValue } from './search';
 import { LayerInputHandler } from '@deck.gl/core/lib/layer';
 import { SearchExpressionGroup } from '@msrvida/search-expression';

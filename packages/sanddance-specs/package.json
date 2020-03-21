@@ -1,0 +1,22 @@
+{
+  "name": "@msrvida/sanddance-specs",
+  "version": "3.0.0",
+  "description": "SandDance Vega specification generator.",
+  "main": "dist/es6/index.js",
+  "types": "dist/es6/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
+    "watch-typescript": "tsc -p . -w",
+    "build-typescript": "tsc -p .",
+    "build": "npm run build-typescript"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@msrvida/chart-types": "^3",
+    "vega-typings": "^0.14.2"
+  }
+}
