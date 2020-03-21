@@ -23,6 +23,6 @@
     "@types/react-dom": "16.0.6",
     "babel-core": "^6.26.3",
     "babel-preset-react-app": "^3.1.2",
-    "vega-typings": "^0.12.4"
+    "vega-typings": "^0.14.2"
   }
 }

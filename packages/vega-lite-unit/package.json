@@ -13,6 +13,6 @@
   "license": "MIT",
   "dependencies": {
     "vega-lite": "^4.0.0-beta.11",
-    "vega-typings": "^0.11.0"
+    "vega-typings": "^0.14.2"
   }
 }
