@@ -25,6 +25,7 @@
     "@types/d3-ease": "^1.0.7"
   },
   "dependencies": {
+    "@msrvida/search-expression": "^3",
     "@msrvida/vega-deck.gl": "^2",
     "tsx-create-element": "1.1.4",
     "vega-typings": "^0.12.4"

@@ -7,19 +7,23 @@ import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
 
+import SearchExpression = SandDance.searchExpression.SearchExpression;
+import SearchExpressionClause = SandDance.searchExpression.SearchExpressionClause;
+import SearchExpressionOperators = SandDance.searchExpression.SearchExpressionOperators;
+
 export const maxAutocomplete = 100;
 
 export interface AutoCompleteDistinctValues {
     [columnName: string]: any[];
 }
 
-export interface InputSearchExpression extends SandDance.types.SearchExpression {
+export interface InputSearchExpression extends SearchExpression {
     key: number;
     unlocked?: boolean;
     errorMessage?: string;
 }
 
-export function getValidOperators(column: SandDance.types.Column): [SandDance.types.SearchExpressionOperators, string][] {
+export function getValidOperators(column: SandDance.types.Column): [SearchExpressionOperators, string][] {
     const type = column && column.type;
     switch (type) {
         case 'boolean':
@@ -68,14 +72,14 @@ export interface Props {
     column: SandDance.types.Column;
 }
 
-function getExpressionClauses(currClause: SandDance.types.SearchExpressionClause, disableOR: boolean) {
-    const keys: [SandDance.types.SearchExpressionClause, string][] = [
+function getExpressionClauses(currClause: SearchExpressionClause, disableOR: boolean) {
+    const keys: [SearchExpressionClause, string][] = [
         ['&&', strings.searchAND]
     ];
     if (!disableOR) {
         keys.push(['||', strings.searchOR]);
     }
-    return keys.map((key: [SandDance.types.SearchExpressionClause, string], i: number) => {
+    return keys.map((key: [SearchExpressionClause, string], i: number) => {
         const [clause, text] = key;
         const selected = currClause == clause; //deliberate double equal 
         const option: FabricTypes.IDropdownOption = {
@@ -154,7 +158,7 @@ export function SearchTerm(props: Props) {
                     dropdownWidth={120}
                     disabled={!ex.unlocked || props.disableOR}
                     options={getExpressionClauses(ex.clause, props.disableOR)}
-                    onChange={(e, o) => props.onUpdateExpression({ clause: (o.data as SandDance.types.SearchExpressionClause) }, props.index)}
+                    onChange={(e, o) => props.onUpdateExpression({ clause: (o.data as SearchExpressionClause) }, props.index)}
                 />
             )}
             <Dropdown
@@ -182,7 +186,7 @@ export function SearchTerm(props: Props) {
                 label={strings.labelSearchOperator}
                 dropdownWidth={120}
                 options={getOperators(ex, props.column)}
-                onChange={(e, o) => props.onUpdateExpression({ operator: (o.data) as SandDance.types.SearchExpressionOperators }, props.index)}
+                onChange={(e, o) => props.onUpdateExpression({ operator: (o.data) as SearchExpressionOperators }, props.index)}
             />
             {possibleValues.length > 0 && (
                 <base.fabric.ComboBox

@@ -1,15 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as searchExpression from './searchExpression';
 import { Animator } from './animator';
 import { controls, util } from '@msrvida/vega-deck.gl';
 import { createElement, mount } from 'tsx-create-element';
 import { cssPrefix } from './defaults';
 import { DataScope, UserSelection } from './dataScope';
 import { GL_ORDINAL } from './constants';
+import { invert, SearchExpression } from '@msrvida/search-expression';
 import { isInternalFieldName } from './util';
 import { Language } from './types';
-import { SearchExpression } from './searchExpression/types';
 
 interface State {
     remapColor?: boolean;
@@ -92,7 +91,7 @@ export class Details {
             }
             case Action.exclude: {
                 this.clearSelection();
-                p = this.animator.filter(searchExpression.invert(u.search), u.excluded, u.included);
+                p = this.animator.filter(invert(u.search), u.excluded, u.included);
                 this.state.remapColor = false;
                 break;
             }

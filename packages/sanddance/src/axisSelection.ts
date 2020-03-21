@@ -11,7 +11,7 @@ import {
 import { FieldNames } from './specs/constants';
 import { getSearchGroupFromVegaValue } from './search';
 import { LayerInputHandler } from '@deck.gl/core/lib/layer';
-import { SearchExpressionGroup } from './searchExpression/types';
+import { SearchExpressionGroup } from '@msrvida/search-expression';
 import { selectBetweenAxis, selectExactAxis } from './expression';
 
 export interface AxisSelectionHandler {

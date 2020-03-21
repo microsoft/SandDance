@@ -119,8 +119,8 @@ dataBrowserNullMessages[DataScopeId.AllData] = strings.labelDataNullAll;
 dataBrowserNullMessages[DataScopeId.FilteredData] = strings.labelDataNullFiltered;
 dataBrowserNullMessages[DataScopeId.SelectedData] = strings.labelDataNullSelection;
 
-function createInputSearch(search: SandDance.types.Search) {
-    const groups = SandDance.util.ensureSearchExpressionGroupArray(search);
+function createInputSearch(search: SandDance.searchExpression.Search) {
+    const groups = SandDance.searchExpression.ensureSearchExpressionGroupArray(search);
     const dialogSearch: InputSearchExpressionGroup[] = groups.map((group, groupIndex) => {
         return {
             key: groupIndex,
@@ -722,7 +722,7 @@ export class Explorer extends React.Component<Props, State> {
         return { height: div.offsetHeight, width: div.offsetWidth };
     }
 
-    private toggleableSearch(e: TouchEvent | MouseEvent | PointerEvent, search: SandDance.types.SearchExpressionGroup) {
+    private toggleableSearch(e: TouchEvent | MouseEvent | PointerEvent, search: SandDance.searchExpression.SearchExpressionGroup) {
         if (e.ctrlKey) {
             this.setState({ search: createInputSearch(search) });
             this.setSideTabId(SideTabId.Search);
@@ -730,7 +730,7 @@ export class Explorer extends React.Component<Props, State> {
             var oldSelection = this.viewer.getSelection();
             if (oldSelection.search) {
                 //look for matching groups and toggle them
-                const result = toggleSearch(SandDance.util.ensureSearchExpressionGroupArray(oldSelection.search), search);
+                const result = toggleSearch(SandDance.searchExpression.ensureSearchExpressionGroupArray(oldSelection.search), search);
                 if (result.found) {
                     //removing a group
                     if (result.groups.length === 0) {
@@ -769,7 +769,7 @@ export class Explorer extends React.Component<Props, State> {
         }
     }
 
-    private doFilter(search: SandDance.types.Search) {
+    private doFilter(search: SandDance.searchExpression.Search) {
         this.viewer.filter(search);
     }
 
@@ -777,7 +777,7 @@ export class Explorer extends React.Component<Props, State> {
         this.viewer.reset();
     }
 
-    private doSelect(search: SandDance.types.Search) {
+    private doSelect(search: SandDance.searchExpression.Search) {
         this.viewer.select(search);
     }
 

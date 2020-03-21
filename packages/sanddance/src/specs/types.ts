@@ -2,8 +2,15 @@
 // Licensed under the MIT license.
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { Color } from '@deck.gl/core/utils/color';
-import { Search } from '../searchExpression/types';
-import { Transforms, TypeInference } from 'vega-typings';
+import {
+    Column,
+    ColumnStats,
+    ColumnTypeMap,
+    Search
+} from '@msrvida/search-expression';
+import { Transforms } from 'vega-typings';
+
+export { Column, ColumnStats, ColumnTypeMap };
 
 /**
  * Type of selection scope on an axis.
@@ -16,83 +23,6 @@ export type AxisSelectionType = 'exact' | 'range';
 export type Chart = 'barchart' | 'barchartH' | 'barchartV' | 'density' | 'grid' | 'scatterplot' | 'stacks' | 'strips' | 'treemap';
 
 export type ColorBin = 'continuous' | 'quantize' | 'quantile';
-
-/**
- * Column information.
- */
-export interface Column {
-
-    /**
-     * Name of the column.
-     */
-    name: string;
-
-    /**
-     * Type of data in the column.
-     */
-    type: TypeInference;
-
-    /**
-     * Optional flag to specify if the column data is quantitative.
-     */
-    quantitative?: boolean;
-
-    /**
-    * Optional flag to specify if the column data is CSS colors.
-    */
-    isColorData?: boolean;
-
-    /**
-     * Optional stats object with metadata of column data content.
-     */
-    stats?: ColumnStats;
-}
-
-/**
- * Metadata about a column.
- */
-export interface ColumnStats {
-
-    /**
-     * Number of unique values in this column.
-     */
-    distinctValueCount: number;
-
-    /**
-     * Maximum value of data in this column, if column is numeric.
-     */
-    max?: number;
-
-    /**
-     * Mean value of data in this column, if column is numeric.
-     */
-    mean?: number;
-
-    /**
-     * Minimum value of data in this column, if column is numeric.
-     */
-    min?: number;
-
-    /**
-     * Optional flag to specify if the column data is sequential.
-     */
-    isSequential?: boolean;
-
-    /**
-     * Optional flag to specify if the column data contains negative numbers.
-     */
-    hasNegative?: boolean;
-
-    /**
-     * Optional flag to specify if the column data contains color data.
-     */
-    hasColorData?: boolean;
-
-}
-
-export interface ColumnTypeMap {
-    [columnName: string]: TypeInference
-}
 
 export interface FacetMargins {
     column: number;

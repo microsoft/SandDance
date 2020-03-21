@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as searchExpression from './searchExpression';
+import * as searchExpression from '@msrvida/search-expression';
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { Animator, DataLayoutChange } from './animator';
 import {
@@ -44,11 +44,14 @@ import { makeDateRange } from './date';
 import { mount } from 'tsx-create-element';
 import { recolorAxes } from './axes';
 import { registerColorSchemes } from './colorSchemes';
-import { Search, SearchExpression, SearchExpressionGroup } from './searchExpression/types';
 import { Spec, Transforms } from 'vega-typings';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 import { Tooltip } from './tooltip';
 import { ViewGl_Class } from '@msrvida/vega-deck.gl/dist/es6/vega-classes/viewGl';
+
+import Search = searchExpression.Search;
+import SearchExpression = searchExpression.SearchExpression;
+import SearchExpressionGroup = searchExpression.SearchExpressionGroup;
 
 const { defaultView } = VegaDeckGl.defaults;
 

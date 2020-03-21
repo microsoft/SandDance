@@ -16,9 +16,11 @@ import { Group } from '../controls/group';
 import { SandDance, util } from '@msrvida/sanddance-react';
 import { strings } from '../language';
 
+import SearchExpressionClause = SandDance.searchExpression.SearchExpressionClause;
+
 const maxClauses = 5;
 
-export interface InputSearchExpressionGroup extends SandDance.types.SearchExpressionGroup<InputSearchExpression> {
+export interface InputSearchExpressionGroup extends SandDance.searchExpression.SearchExpressionGroup<InputSearchExpression> {
     key: number;
 }
 
@@ -31,7 +33,7 @@ export interface Props {
     collapseLabels: boolean;
     data: object[];
     initializer: IInitializer;
-    onSelect: { (search: SandDance.types.Search): void };
+    onSelect: { (search: SandDance.searchExpression.Search): void };
     autoCompleteDistinctValues: AutoCompleteDistinctValues;
     disableExpressionOR: boolean;
     disableGroupOR: boolean;
@@ -75,8 +77,8 @@ function clearExpressionValidation(ex: InputSearchExpression) {
     }
 }
 
-function getGroupClauses(currClause: SandDance.types.SearchExpressionClause, index: number, disableGroupOR: boolean) {
-    let keys: [SandDance.types.SearchExpressionClause, string][];
+function getGroupClauses(currClause: SearchExpressionClause, index: number, disableGroupOR: boolean) {
+    let keys: [SearchExpressionClause, string][];
     if (index === 0) {
         keys = [
             [null, strings.searchWHERE]
@@ -89,7 +91,7 @@ function getGroupClauses(currClause: SandDance.types.SearchExpressionClause, ind
             keys.push(['||', strings.searchOR]);
         }
     }
-    return keys.map((key: [SandDance.types.SearchExpressionClause, string], i: number) => {
+    return keys.map((key: [SearchExpressionClause, string], i: number) => {
         const [clause, text] = key;
         const selected = currClause == clause; //deliberate double equal 
         const option: FabricTypes.IDropdownOption = {
@@ -140,7 +142,7 @@ export class Search extends React.Component<Props, State> {
         });
     }
 
-    newGroup(key: number, clause: SandDance.types.SearchExpressionClause) {
+    newGroup(key: number, clause: SearchExpressionClause) {
         const group: InputSearchExpressionGroup = {
             key,
             clause,
@@ -173,7 +175,7 @@ export class Search extends React.Component<Props, State> {
         this.setState({ groups });
     }
 
-    newExpression(key: number, clause: SandDance.types.SearchExpressionClause) {
+    newExpression(key: number, clause: SearchExpressionClause) {
         const ex: InputSearchExpression = { key, clause, name: null, operator: 'contains', value: '' };
         return ex;
     }
@@ -249,7 +251,7 @@ export class Search extends React.Component<Props, State> {
                                 disabled={groupIndex === 0 || this.props.disableGroupOR}
                                 dropdownWidth={120}
                                 options={getGroupClauses(group.clause, groupIndex, this.props.disableGroupOR)}
-                                onChange={(e, o) => this.updateGroup({ clause: (o.data as SandDance.types.SearchExpressionClause) }, groupIndex)}
+                                onChange={(e, o) => this.updateGroup({ clause: (o.data as SearchExpressionClause) }, groupIndex)}
                             />
                             <div>
                                 {group.expressions.map((ex, i) => (

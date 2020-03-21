@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
-import { LightSettings } from '@deck.gl/core/lib/layer';
 import { Color } from '@deck.gl/core/utils/color';
 import {
     Column,
@@ -12,11 +11,11 @@ import {
     SpecViewOptions
 } from './specs/types';
 import { DeckProps } from '@deck.gl/core/lib/deck';
-import { Search, SearchExpressionGroup } from './searchExpression/types';
+import { LightSettings } from '@deck.gl/core/lib/layer';
+import { Search, SearchExpressionGroup } from '@msrvida/search-expression';
 import { Spec } from 'vega-typings';
 import { SpecResult } from './specs/interfaces';
 
-export * from './searchExpression/types';
 export * from './specs/types';
 
 /**

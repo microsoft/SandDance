@@ -11,7 +11,7 @@ import {
     selectNullOrEmpty
 } from './expression';
 import { Other } from './specs/constants';
-import { SearchExpressionGroup, SearchExpressionOperators } from './searchExpression/types';
+import { SearchExpressionGroup, SearchExpressionOperators } from '@msrvida/search-expression';
 
 function legendRange(colorBinType: ColorBin, column: Column, legend: VegaDeckGl.types.Legend, clickedIndex: number): SearchExpressionGroup {
     if (column.quantitative) {

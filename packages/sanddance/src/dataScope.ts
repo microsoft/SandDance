@@ -1,11 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Column, ColumnStats, ColumnTypeMap } from './specs/types';
-import { Exec } from './searchExpression/exec';
+import { Exec, Search } from '@msrvida/search-expression';
 import { FieldNames } from './specs/constants';
 import { getColumnsFromData, getStats } from './specs/inference';
 import { GL_ORDINAL } from './constants';
-import { Search } from './searchExpression/types';
 
 export interface ColumnsStatsMap {
     [columnName: string]: ColumnStats;

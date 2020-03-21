@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as VegaDeckGl from '@msrvida/vega-deck.gl';
-import { Column } from '../specs/types';
+import { Column } from './column';
 import { ensureSearchExpressionGroupArray } from './group';
 import { Search, SearchExpression, SearchExpressionGroup } from './types';
 
@@ -59,15 +58,16 @@ export class Exec {
     private groups: SearchExpressionGroup<SearchExpressionLowercase>[];
 
     constructor(search: Search, private columns: Column[]) {
-        this.groups = VegaDeckGl.util.clone(ensureSearchExpressionGroupArray(search)) as SearchExpressionGroup<SearchExpressionLowercase>[];
-        this.groups.forEach(group => {
-            group.expressions = group.expressions.filter(Boolean);
-            group.expressions.forEach(ex => {
+        this.groups = (ensureSearchExpressionGroupArray(search) as SearchExpressionGroup<SearchExpressionLowercase>[]).map(g => {
+            const expressions = g.expressions.filter(Boolean);
+            expressions.forEach(ex => {
                 ex.column = this.getColumn(ex.name);
                 ex.valueBool = valueToBoolean(ex.value);
                 ex.valueLow = valueToString(ex.value).toLocaleLowerCase();
                 ex.stringOperation = isStringOperation(ex);
             });
+            const group = { ...g, expressions };
+            return group;
         });
     }
 

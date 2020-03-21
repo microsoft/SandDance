@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { push } from './array';
-import { SearchExpressionGroup } from './types';
+import { SearchExpressionGroup } from '@msrvida/search-expression';
 
 export function getSearchGroupFromVegaValue(search: any) {
     let group: SearchExpressionGroup;

@@ -7,7 +7,7 @@ import {
     SearchExpressionGroup,
     SearchExpressionOperators,
     SearchExpressionValue
-} from './searchExpression/types';
+} from '@msrvida/search-expression';
 
 export function notNice(niceValue: string | number) {
     //convert "nice" numbers to numeric value
