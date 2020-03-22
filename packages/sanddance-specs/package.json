@@ -17,6 +17,8 @@
   "license": "MIT",
   "dependencies": {
     "@msrvida/chart-types": "^3",
+    "@msrvida/search-expression": "^3",
+    "@msrvida/vega-deck.gl": "^2",
     "vega-typings": "^0.14.2"
   }
 }
