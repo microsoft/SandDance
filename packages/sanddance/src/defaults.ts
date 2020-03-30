@@ -73,12 +73,7 @@ export const defaultViewerOptions: ViewerOptions = {
         scope: 600
     },
     selectionPolygonZ: -1,
-    tickSize: 10,
-    facetMargins: {
-        column: 40,
-        row: 40,
-        title: 40
-    }
+    tickSize: 10
 };
 
 export function getPresenterStyle(options: ViewerOptions) {

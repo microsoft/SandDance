@@ -17,12 +17,6 @@ export type Chart = 'barchart' | 'barchartH' | 'barchartV' | 'density' | 'grid' 
 
 export type ColorBin = 'continuous' | 'quantize' | 'quantile';
 
-export interface FacetMargins {
-    column: number;
-    row: number;
-    title: number;
-}
-
 /**
  * Layout style to use for faceting.
  */
@@ -381,8 +375,6 @@ export interface SpecViewOptions {
      * Maximum number of rows in a legend.
      */
     maxLegends: number;
-
-    facetMargins: FacetMargins;
 
     tickSize: number
 }
