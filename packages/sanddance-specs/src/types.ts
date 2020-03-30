@@ -163,11 +163,6 @@ export interface SpecColorSettings {
      * Color of axes text.
      */
     axisText?: Color;
-
-    /**
-     * Color of inactive facets lines.
-     */
-    cellFillerLine?: Color;
 }
 
 /**

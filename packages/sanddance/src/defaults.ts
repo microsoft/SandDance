@@ -15,7 +15,6 @@ export const defaultViewerOptions: ViewerOptions = {
         axisSelectHighlight: [128, 128, 128, 128],
         axisLine: [0, 0, 0, 255],
         axisText: [0, 0, 0, 255],
-        cellFillerLine: [128, 128, 128, 255],
         unselectedColorMethod: (color) => {
             const c = desaturate(color, 0.05);
             c[3] = 171;
