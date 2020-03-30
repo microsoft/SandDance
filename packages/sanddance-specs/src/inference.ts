@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { Column, ColumnStats, ColumnTypeMap } from '@msrvida/chart-types';
+import { Insight, SpecColumns } from './types';
 
 function isQuantitative(column: Column) {
     return column.type === 'number' || column.type === 'integer';
@@ -24,6 +25,29 @@ export function getColumnsFromData(data: object[], columnTypes?: ColumnTypeMap) 
     });
     inferAll(columns, data);
     return columns;
+}
+
+/**
+ * Get columns associated with each Insight role.
+ * @param insight Insight to specify column roles.
+ * @param columns Array of Columns inferred from the data.
+ */
+export function getSpecColumns(insight: Insight, columns: Column[]): SpecColumns {
+    function getColumnByName(name: string) {
+        return columns.filter(c => c.name === name)[0];
+    }
+    return {
+        color: getColumnByName(insight.columns && insight.columns.color),
+        facet: getColumnByName(insight.columns && insight.columns.facet),
+        facetV: getColumnByName(insight.columns && insight.columns.facetV),
+        group: getColumnByName(insight.columns && insight.columns.group),
+        size: getColumnByName(insight.columns && insight.columns.size),
+        sort: getColumnByName(insight.columns && insight.columns.sort),
+        uid: getColumnByName(insight.columns && insight.columns.uid),
+        x: getColumnByName(insight.columns && insight.columns.x),
+        y: getColumnByName(insight.columns && insight.columns.y),
+        z: getColumnByName(insight.columns && insight.columns.z)
+    };
 }
 
 /**

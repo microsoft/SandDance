@@ -26,24 +26,6 @@ export function assignOrdinals(columns: SpecColumns, data: object[], ordinalMap?
     return ordinalMap;
 }
 
-export function getSpecColumns(insight: Insight, columns: Column[]): SpecColumns {
-    function getColumnByName(name: string) {
-        return columns.filter(c => c.name === name)[0];
-    }
-    return {
-        color: getColumnByName(insight.columns && insight.columns.color),
-        facet: getColumnByName(insight.columns && insight.columns.facet),
-        facetV: getColumnByName(insight.columns && insight.columns.facetV),
-        group: getColumnByName(insight.columns && insight.columns.group),
-        size: getColumnByName(insight.columns && insight.columns.size),
-        sort: getColumnByName(insight.columns && insight.columns.sort),
-        uid: getColumnByName(insight.columns && insight.columns.uid),
-        x: getColumnByName(insight.columns && insight.columns.x),
-        y: getColumnByName(insight.columns && insight.columns.y),
-        z: getColumnByName(insight.columns && insight.columns.z)
-    };
-}
-
 export function getDataIndexOfCube(cube: VegaDeckGl.types.Cube, data: object[]) {
     const len = data.length;
     for (let i = 0; i < len; i++) {

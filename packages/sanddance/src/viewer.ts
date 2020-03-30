@@ -10,10 +10,11 @@ import {
     populateColorContext
 } from './colorCubes';
 import { applySignalValues, extractSignalValuesFromView } from './signals';
-import { assignOrdinals, getDataIndexOfCube, getSpecColumns } from './ordinal';
+import { assignOrdinals, getDataIndexOfCube } from './ordinal';
 import { AxisSelectionHandler, axisSelectionLayer } from './axisSelection';
 import {
     cloneVegaSpecWithData,
+    getSpecColumns,
     Insight,
     SignalValues,
     SpecCapabilities,
