@@ -61,7 +61,7 @@ export class Visual implements IVisual {
     private host: powerbiVisualsApi.extensibility.visual.IVisualHost;
     private selectionManager: powerbiVisualsApi.extensibility.ISelectionManager;
     private fetchMoreTimer: number;
-    private filters: { sd: SandDance.types.Search, pbi: powerbiModels.IFilter[] };
+    private filters: { sd: SandDance.searchExpression.Search, pbi: powerbiModels.IFilter[] };
     private columns: powerbiVisualsApi.DataViewMetadataColumn[];
 
     public static fetchMoreTimeout = 5000;
@@ -238,7 +238,7 @@ export class Visual implements IVisual {
         this.app.load(data, columns => {
             if (!columns) return;
 
-            let insight: Partial<SandDance.types.Insight>;
+            let insight: Partial<SandDance.specs.Insight>;
 
             if (sandDanceConfig.insightJSON) {
                 try {

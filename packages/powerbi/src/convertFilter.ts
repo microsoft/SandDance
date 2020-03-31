@@ -5,10 +5,10 @@ import * as powerbiModels from 'powerbi-models';
 import powerbiVisualsApi from 'powerbi-visuals-api';
 import { SandDance } from '@msrvida/sanddance-explorer';
 
-export function convertFilter(searchFilter: SandDance.types.Search, columns: powerbiVisualsApi.DataViewMetadataColumn[], data: object[]) {
+export function convertFilter(searchFilter: SandDance.searchExpression.Search, columns: powerbiVisualsApi.DataViewMetadataColumn[], data: object[]) {
     const selectedIds: powerbiVisualsApi.extensibility.ISelectionId[] = [];
     const filters: powerbiModels.IFilter[] = [];
-    const groups = SandDance.util.ensureSearchExpressionGroupArray(searchFilter);
+    const groups = SandDance.searchExpression.ensureSearchExpressionGroupArray(searchFilter);
     groups.forEach(group =>
         group.expressions.forEach(ex => {
             if (!ex) return;
@@ -64,7 +64,7 @@ function createAdvancedFilter(column: powerbiVisualsApi.DataViewMetadataColumn, 
     }
 }
 
-function convertExpressionToAdvancedFilter(ex: SandDance.types.SearchExpression, column: powerbiVisualsApi.DataViewMetadataColumn): powerbiModels.AdvancedFilter {
+function convertExpressionToAdvancedFilter(ex: SandDance.searchExpression.SearchExpression, column: powerbiVisualsApi.DataViewMetadataColumn): powerbiModels.AdvancedFilter {
     return createAdvancedFilter(
         column,
         {
@@ -74,7 +74,7 @@ function convertExpressionToAdvancedFilter(ex: SandDance.types.SearchExpression,
     );
 }
 
-function convertExpressionOperator(operator: SandDance.types.SearchExpressionOperators): powerbiModels.AdvancedFilterConditionOperators {
+function convertExpressionOperator(operator: SandDance.searchExpression.SearchExpressionOperators): powerbiModels.AdvancedFilterConditionOperators {
     switch (operator) {
         case '!=': return 'IsNot';
         case '!contains': return 'DoesNotContain';
