@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Color } from '@deck.gl/core/utils/color';
 import { Cross, CrossProps } from './layouts/cross';
 import { DiscreteColumn } from './interfaces';
 import {
@@ -23,7 +22,7 @@ export interface FacetLayout {
     signals: Signal[];
 }
 
-export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColumn, facetVColumn: DiscreteColumn, axisTextColor: Color): FacetLayout {
+export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColumn, facetVColumn: DiscreteColumn, axisTextColor: string): FacetLayout {
     let layoutPair: LayoutPair;
     const scales: Scale[] = [];
     let signals: Signal[];

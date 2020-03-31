@@ -16,12 +16,12 @@ export function getSelectedColorMap(currentData: object[], showSelectedData: boo
         let item: ColorMappedItem;
         if (showSelectedData) {
             item = datum[FieldNames.Selected] ?
-                { color: viewerOptions.colors.selectedCube }
+                { color: VegaDeckGl.util.colorFromString(viewerOptions.colors.selectedCube) }
                 :
                 { unSelected: true };
         }
         if (showActive && datum[FieldNames.Active]) {
-            item = { color: viewerOptions.colors.activeCube };
+            item = { color: VegaDeckGl.util.colorFromString(viewerOptions.colors.activeCube) };
         }
         return item;
     }

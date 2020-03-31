@@ -10,7 +10,6 @@ import {
 } from '../scope';
 import { addFacetColRowTitles } from '../facetTitle';
 import { Binnable, binnable } from '../bin';
-import { Color } from '@deck.gl/core/utils/color';
 import { createOrdinalsForFacet, ordinalScale } from '../ordinal';
 import {
     Data,
@@ -34,7 +33,7 @@ import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { modifySignal } from '../signals';
 
 export interface CrossProps extends LayoutProps {
-    axisTextColor: Color;
+    axisTextColor: string;
     colRowTitles: boolean;
     groupbyX: DiscreteColumn;
     groupbyY: DiscreteColumn;

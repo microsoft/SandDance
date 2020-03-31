@@ -18,7 +18,7 @@ export interface AxisSelectionHandler {
     (event: TouchEvent | MouseEvent | PointerEvent, search: SearchExpressionGroup): void;
 }
 
-export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabilities: SpecCapabilities, columns: SpecColumns, stage: VegaDeckGl.types.Stage, clickHandler: AxisSelectionHandler, highlightColor: number[], polygonZ: number): PolygonLayer {
+export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabilities: SpecCapabilities, columns: SpecColumns, stage: VegaDeckGl.types.Stage, clickHandler: AxisSelectionHandler, highlightColor: string, polygonZ: number): PolygonLayer {
     const polygons: SelectPolygon[] = [];
     const xRole = specCapabilities.roles.filter(r => r.role === 'x')[0];
     if (xRole && xRole.axisSelection) {
@@ -47,7 +47,7 @@ export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabili
         coordinateSystem: VegaDeckGl.base.deck.COORDINATE_SYSTEM.IDENTITY,
         data: polygons,
         extruded: false,
-        highlightColor,
+        highlightColor: VegaDeckGl.util.colorFromString(highlightColor),
         id: 'selections',
         onHover: (o, e) => {
             if (o.index === -1) {

@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Color } from '@deck.gl/core/utils/color';
 import { Column, View } from '@msrvida/chart-types';
 import { Search } from '@msrvida/search-expression';
 import { Transforms } from 'vega-typings';
@@ -152,17 +151,17 @@ export interface SpecColorSettings {
     /**
      * Color of cubes when there is no coloring specified.
      */
-    defaultCube?: Color;
+    defaultCube?: string;
 
     /**
      * Color of axes lines.
      */
-    axisLine?: Color;
+    axisLine?: string;
 
     /**
      * Color of axes text.
      */
-    axisText?: Color;
+    axisText?: string;
 }
 
 /**

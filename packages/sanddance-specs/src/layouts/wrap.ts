@@ -9,7 +9,6 @@ import {
 } from '../scope';
 import { addFacetCellTitles } from '../facetTitle';
 import { binnable, Binnable } from '../bin';
-import { Color } from '@deck.gl/core/utils/color';
 import { createOrdinalsForFacet } from '../ordinal';
 import { DiscreteColumn, InnerScope, SizeSignals } from '../interfaces';
 import { displayBin, serializeAsVegaExpression } from '../facetSearch';
@@ -19,7 +18,7 @@ import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { modifySignal } from '../signals';
 
 export interface WrapProps extends LayoutProps {
-    axisTextColor: Color;
+    axisTextColor: string;
     cellTitles: boolean;
     groupby: DiscreteColumn;
 }

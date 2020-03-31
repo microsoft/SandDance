@@ -20,7 +20,7 @@ const dualPairs = [
 export const colorSchemes: ColorScheme[] = [
     {
         scheme: ColorScaleNone,
-        colors: [VegaDeckGl.util.colorToString(defaultViewerOptions.colors.defaultCube)]
+        colors: [defaultViewerOptions.colors.defaultCube]
     }
 ];
 

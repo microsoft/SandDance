@@ -269,18 +269,18 @@ export class Explorer extends React.Component<Props, State> {
             onBeforeCreateLayers,
             getTextColor: o => {
                 if ((o as TextWithSpecRole).specRole) {
-                    return (this.viewerOptions.colors as ColorSettings).clickableText;
+                    return SandDance.VegaDeckGl.util.colorFromString((this.viewerOptions.colors as ColorSettings).clickableText);
                 } else if (o.metaData && o.metaData.search) {
-                    return (this.viewerOptions.colors as ColorSettings).searchText;
+                    return SandDance.VegaDeckGl.util.colorFromString((this.viewerOptions.colors as ColorSettings).searchText);
                 } else {
                     return o.color;
                 }
             },
             getTextHighlightColor: o => {
                 if ((o as TextWithSpecRole).specRole) {
-                    return (this.viewerOptions.colors as ColorSettings).clickableTextHighlight;
+                    return SandDance.VegaDeckGl.util.colorFromString((this.viewerOptions.colors as ColorSettings).clickableTextHighlight);
                 } else if (o.metaData && o.metaData.search) {
-                    return (this.viewerOptions.colors as ColorSettings).searchTextHighlight;
+                    return SandDance.VegaDeckGl.util.colorFromString((this.viewerOptions.colors as ColorSettings).searchTextHighlight);
                 } else {
                     return o.color;
                 }

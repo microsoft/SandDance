@@ -188,22 +188,22 @@ export interface ColorSettings extends SpecColorSettings {
     /**
      * Color of the individually selected cube.
      */
-    activeCube?: Color;
+    activeCube?: string;
 
     /**
      * Color of the cube when mouse hovered.
      */
-    hoveredCube?: Color;
+    hoveredCube?: string;
 
     /**
      * Color of selected cubes.
      */
-    selectedCube?: Color;
+    selectedCube?: string;
 
     /**
      * Color of axis hover hotspots.
      */
-    axisSelectHighlight?: Color;
+    axisSelectHighlight?: string;
 
     /**
      * Method of coloring unselected cubes.

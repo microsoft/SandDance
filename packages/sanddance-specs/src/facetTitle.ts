@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 import { addData, addMarks, addScale } from './scope';
 import { AxesScopeMap } from './axes';
-import { Color } from '@deck.gl/core/utils/color';
 import {
     Data,
     GroupMark,
@@ -11,9 +10,8 @@ import {
 } from 'vega-typings';
 import { FieldNames, SignalNames } from './constants';
 import { InnerScope, SizeSignals, TitleSource } from './interfaces';
-import { util } from '@msrvida/vega-deck.gl';
 
-export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSource, rowTitleSource: TitleSource, sizeSignals: SizeSignals, axisTextColor: Color) {
+export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSource, rowTitleSource: TitleSource, sizeSignals: SizeSignals, axisTextColor: string) {
     const titleSignal = `parent[${JSON.stringify(FieldNames.FacetTitle)}]`;
     const index = `datum[${JSON.stringify(FieldNames.Ordinal)}] - 1`;
     const col = facetColumnHeaderFooter(colTitleSource.dataName, sizeSignals, index);
@@ -31,7 +29,7 @@ export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSo
                         value: 'middle'
                     },
                     fill: {
-                        value: util.colorToString(axisTextColor)
+                        value: axisTextColor
                     }
                 },
                 update: {
@@ -66,7 +64,7 @@ export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSo
                         value: 'middle'
                     },
                     fill: {
-                        value: util.colorToString(axisTextColor)
+                        value: axisTextColor
                     }
                 },
                 update: {
@@ -91,7 +89,7 @@ export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSo
     );
 }
 
-export function addFacetCellTitles(scope: Scope, sizeSignals: SizeSignals, axisTextColor: Color) {
+export function addFacetCellTitles(scope: Scope, sizeSignals: SizeSignals, axisTextColor: string) {
     addMarks(scope, {
         type: 'text',
         encode: {
@@ -103,7 +101,7 @@ export function addFacetCellTitles(scope: Scope, sizeSignals: SizeSignals, axisT
                     value: 'bottom'
                 },
                 fill: {
-                    value: util.colorToString(axisTextColor)
+                    value: axisTextColor
                 }
             },
             update: {

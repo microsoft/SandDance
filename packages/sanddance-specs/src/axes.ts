@@ -18,7 +18,6 @@ import {
 import { Column } from '@msrvida/chart-types';
 import { SignalNames } from './constants';
 import { SpecColumns, SpecViewOptions } from './types';
-import { util } from '@msrvida/vega-deck.gl';
 
 export interface AxesScope {
     scope: Scope;
@@ -58,7 +57,7 @@ export function addGlobalAxes(props: Props) {
                 if (globalScales.showAxes && axisScales && s !== 'z') {
                     let axisScale: AxisScale = axisScales[s];
                     if (axisScale) {
-                        const lineColor = util.colorToString(specViewOptions.colors.axisLine);
+                        const lineColor = specViewOptions.colors.axisLine;
                         const horizontal = s === 'x';
                         const column: Column = specColumns[s] || { quantitative: true };
                         const title = axisScale.title;
@@ -132,7 +131,7 @@ function createAxis(props: AxisProps) {
             titleAngle: {
                 signal: horizontal ? SignalNames.TextAngleX : SignalNames.TextAngleY
             },
-            titleColor: util.colorToString(specViewOptions.colors.axisText),
+            titleColor: specViewOptions.colors.axisText,
             titleFontSize: {
                 signal: SignalNames.TextTitleSize
             },
@@ -146,7 +145,7 @@ function createAxis(props: AxisProps) {
             labelAngle: {
                 signal: horizontal ? SignalNames.TextAngleX : SignalNames.TextAngleY
             },
-            labelColor: util.colorToString(specViewOptions.colors.axisText),
+            labelColor: specViewOptions.colors.axisText,
             labelFontSize: {
                 signal: SignalNames.TextSize
             },

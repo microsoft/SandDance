@@ -8,13 +8,13 @@ const { desaturate } = VegaDeckGl.util;
 
 export const defaultViewerOptions: ViewerOptions = {
     colors: {
-        activeCube: [128, 0, 128, 255], //purple
-        defaultCube: defaultPresenterStyle.defaultCubeColor,
-        hoveredCube: defaultPresenterStyle.highlightColor,
-        selectedCube: [255, 255, 0, 255],   //yellow
-        axisSelectHighlight: [128, 128, 128, 128],
-        axisLine: [0, 0, 0, 255],
-        axisText: [0, 0, 0, 255],
+        activeCube: 'purple',
+        defaultCube: VegaDeckGl.util.colorToString(defaultPresenterStyle.defaultCubeColor),
+        hoveredCube: VegaDeckGl.util.colorToString(defaultPresenterStyle.highlightColor),
+        selectedCube: 'yellow',
+        axisSelectHighlight: VegaDeckGl.util.colorToString([128, 128, 128, 128]),
+        axisLine: '#000',
+        axisText: '#000',
         unselectedColorMethod: (color) => {
             const c = desaturate(color, 0.05);
             c[3] = 171;
@@ -79,10 +79,10 @@ export function getPresenterStyle(options: ViewerOptions) {
     var style: VegaDeckGl.types.PresenterStyle = {
         cssPrefix,
         fontFamily: options.fontFamily,
-        defaultCubeColor: options.colors.defaultCube
+        defaultCubeColor: VegaDeckGl.util.colorFromString(options.colors.defaultCube)
     };
     if (options.colors.hoveredCube) {
-        style.highlightColor = options.colors.hoveredCube;
+        style.highlightColor = VegaDeckGl.util.colorFromString(options.colors.hoveredCube);
     }
     if (options.lightSettings) {
         style.lightSettings = options.lightSettings;
