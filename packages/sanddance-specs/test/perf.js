@@ -17,13 +17,40 @@ vega.loader().load('../../docs/sample-data/demovote.tsv').then(tsv_data => {
         tickSize: 10
     };
 
-    // const insight = {};
+    const insight = {
+        "columns": {
+            "x": "Longitude",
+            "y": "Latitude",
+            "color": "Obama",
+            "z": "Education",
+            "sort": "State",
+            "facet": "MedAge"
+        },
+        "facetStyle": "wrap",
+        "scheme": "redblue",
+        "size": {
+            "height": 600,
+            "width": 800
+        },
+        "chart": "stacks",
+        "view": "3d"
+    };
 
     const columns = getColumnsFromData(vega.inferTypes, data);
-    console.log(columns);
 
-    // const context = { specColumns: getSpecColumns(insight, columns), insight, specViewOptions };
+    const context = { specColumns: getSpecColumns(insight, columns), insight, specViewOptions };
 
-    // const specResult = cloneVegaSpecWithData(context, currData);
+    const specResult = cloneVegaSpecWithData(context, data);
 
+    if (specResult.errors) {
+        console.log(errors);
+    } else {
+        const runtime = vega.parse(specResult.vegaSpec);
+        const vegaView = new vega.View(runtime);
+        const startTime = new Date();
+        vegaView.runAsync().then(() => {
+            const stopTime = new Date();
+            console.log(`done in ${stopTime - startTime}`);
+        });
+    }
 });
