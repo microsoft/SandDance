@@ -11,7 +11,8 @@
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
-    "build": "npm run build-typescript"
+    "build": "npm run build-typescript",
+    "test2": "node -r esm ./test/perf.js"
   },
   "author": "",
   "license": "MIT",
@@ -20,5 +21,9 @@
     "@msrvida/search-expression": "^3",
     "@msrvida/vega-deck.gl": "^2",
     "vega-typings": "^0.14.2"
+  },
+  "devDependencies": {
+    "esm": "^3.2.25",
+    "vega-loader": "^4.2.1"
   }
 }
