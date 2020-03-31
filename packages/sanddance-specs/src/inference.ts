@@ -1,8 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
+import { color as d3color } from 'd3-color';
 import { Column, ColumnStats, ColumnTypeMap } from '@msrvida/chart-types';
 import { Insight, SpecColumns } from './types';
+
+function isColor(cssColorSpecifier: string) {
+    return !!d3color(cssColorSpecifier);
+}
 
 function isQuantitative(column: Column) {
     return column.type === 'number' || column.type === 'integer';
@@ -73,7 +78,7 @@ export function inferAll(columns: Column[], data: object[]) {
 
 function checkIsColorData(data: object[], column: Column) {
     for (let i = 0; i < data.length; i++) {
-        if (!VegaDeckGl.util.isColor(data[i][column.name])) {
+        if (!isColor(data[i][column.name])) {
             return;
         }
     }
@@ -103,7 +108,7 @@ export function getStats(data: object[], column: Column) {
         if (!isNaN(num)) {
             sum += num;
         }
-        if (column.type === 'string' && !stats.hasColorData && VegaDeckGl.util.isColor(value)) {
+        if (column.type === 'string' && !stats.hasColorData && isColor(value)) {
             stats.hasColorData = true;
         }
     }

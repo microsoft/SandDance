@@ -59,7 +59,3 @@ export function desaturate(color: Color, value: number): Color {
     const c = hslColor.rgb();
     return rgbToDeckglColor(c);
 }
-
-export function isColor(cssColorSpecifier: string) {
-    return !!d3color(cssColorSpecifier);
-}

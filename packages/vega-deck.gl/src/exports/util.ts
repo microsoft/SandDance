@@ -9,8 +9,8 @@
 import { allTruthy, concat, push } from '../array';
 import { addDiv, addEl, outerSize } from '../htmlHelpers';
 import { clone, deepMerge } from '../clone';
-import { colorFromString, colorIsEqual, colorToString, desaturate, isColor } from '../color';
+import { colorFromString, colorIsEqual, colorToString, desaturate } from '../color';
 import { getCubeLayer, getCubes } from '../layers';
 
 //alphabetize for documentation
-export { addDiv, addEl, allTruthy, clone, colorFromString, colorIsEqual, colorToString, concat, deepMerge, desaturate, isColor, getCubeLayer, getCubes, outerSize, push };
+export { addDiv, addEl, allTruthy, clone, colorFromString, colorIsEqual, colorToString, concat, deepMerge, desaturate, getCubeLayer, getCubes, outerSize, push };
