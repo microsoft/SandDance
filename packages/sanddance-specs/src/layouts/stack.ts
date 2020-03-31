@@ -100,7 +100,7 @@ export class Stack extends Layout {
                     },
                     {
                         type: 'formula',
-                        expr: `datum.side * datum.maxlevels + datum.maxlevels - 1`,
+                        expr: 'datum.side * datum.maxlevels + datum.maxlevels - 1',
                         as: 'sidecubeheight'
                     },
                     {
