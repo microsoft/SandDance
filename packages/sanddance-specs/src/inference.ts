@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { color as d3color } from 'd3-color';
 import { Column, ColumnStats, ColumnTypeMap } from '@msrvida/chart-types';
+import { inferTypes } from 'vega-typings';
 import { Insight, SpecColumns } from './types';
 
 function isColor(cssColorSpecifier: string) {
@@ -17,10 +17,10 @@ function isQuantitative(column: Column) {
  * Derive column metadata from the data array.
  * @param data Array of data objects.
  */
-export function getColumnsFromData(data: object[], columnTypes?: ColumnTypeMap) {
+export function getColumnsFromData(inferTypesFn: typeof inferTypes, data: object[], columnTypes?: ColumnTypeMap) {
     const sample = data[0];
     const fields = sample ? Object.keys(sample) : [];
-    const inferences = { ...VegaDeckGl.base.vega.inferTypes(data, fields), ...columnTypes };
+    const inferences = { ...inferTypesFn(data, fields), ...columnTypes };
     const columns = fields.map(name => {
         const column: Column = {
             name,

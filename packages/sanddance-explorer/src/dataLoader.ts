@@ -61,7 +61,7 @@ export const loadDataArray = (data: object[], type: DataFileType) => new Promise
             }
         });
     }
-    const columns = SandDance.util.getColumnsFromData(data).sort((a, b) => a.name.localeCompare(b.name));
+    const columns = SandDance.util.getColumnsFromData(SandDance.VegaDeckGl.base.vega.inferTypes, data).sort((a, b) => a.name.localeCompare(b.name));
     if (parse) {
         const booleanColumns = columns.filter(c => c.type === 'boolean');
         const dateColumns = columns.filter(c => c.type === 'date');
