@@ -14,7 +14,7 @@ function GetDataAndColumns(sampleFile) {
         fs.readFile(sampleDir + sampleFile, function (err, buffer) {
             const rawText = buffer.toString();
             const data = vega.read(rawText, { type: 'tsv', parse: "auto" });
-            const columns = SandDance.util.getColumnsFromData(data);
+            const columns = SandDance.util.getColumnsFromData(vega.inferTypes, data);
             resolve({ data, columns });
         });
     });
@@ -25,7 +25,7 @@ function FileGetDataAndColumns(sampleFile) {
         fs.readFile(sampleFile, function (err, buffer) {
             const rawText = buffer.toString();
             const data = vega.read(rawText, { type: 'tsv', parse: "auto" });
-            const columns = SandDance.util.getColumnsFromData(data);
+            const columns = SandDance.util.getColumnsFromData(vega.inferTypes, data);
             resolve({ data, columns });
         });
     });
