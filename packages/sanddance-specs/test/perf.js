@@ -38,7 +38,6 @@ vega.loader().load('../../docs/sample-data/demovote.tsv').then(tsv_data => {
                 "view": "3d"
             }
         },
-        ,
         {
             name: "stacks not faceted",
             insight: {
@@ -100,13 +99,18 @@ vega.loader().load('../../docs/sample-data/demovote.tsv').then(tsv_data => {
                 "chart": "stacks",
                 "view": "3d"
             }
-        }
+        },
     ];
 
-    insightPasses.forEach(pass => {
+    const run = i => {
+        const pass = insightPasses[i];
+        if (!pass) {
+            console.log('complete');
+            return;
+        }
+
         const { insight, name } = pass;
         const context = { specColumns: getSpecColumns(insight, columns), insight, specViewOptions };
-
         const specResult = cloneVegaSpecWithData(context, data);
 
         if (specResult.errors) {
@@ -119,17 +123,19 @@ vega.loader().load('../../docs/sample-data/demovote.tsv').then(tsv_data => {
                 const stopTime = new Date();
                 console.log(`${name} done in ${stopTime - startTime}`);
 
-                const d0 = specResult.vegaSpec.data[0];
+                // const d0 = specResult.vegaSpec.data[0];
+                // delete d0.values;
+                // d0.url = "https://sanddance.js.org/sample-data/demovote.tsv";
+                // d0.format = {
+                //     "parse": "auto",
+                //     "type": "tsv"
+                // };
+                //writeFileSync(`${name}.vg.json`, JSON.stringify(specResult.vegaSpec, null, 2), 'utf8');
 
-                delete d0.values;
-                d0.url = "https://sanddance.js.org/sample-data/demovote.tsv";
-                d0.format = {
-                    "parse": "auto",
-                    "type": "tsv"
-                };
-
-                writeFileSync(`${name}.vg.json`, JSON.stringify(specResult.vegaSpec, null, 2), 'utf8');
+                run(++i);
             });
         }
-    });
+    };
+
+    run(0);
 });
