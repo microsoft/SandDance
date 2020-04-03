@@ -11,7 +11,8 @@ declare var Fabric: _Fabric.FabricComponents;
 SandDanceExplorer.use(Fabric, vega, deck, deck, luma);
 
 function getTextcolor() {
-    return getComputedStyle(document.body).color;
+    const cssColor = getComputedStyle(document.body).color;
+    return VegaDeckGl.util.colorFromString(cssColor);;
 }
 
 function getThemePalette(darkTheme: boolean) {
