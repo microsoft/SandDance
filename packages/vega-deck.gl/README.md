@@ -71,3 +71,11 @@ var view = new VegaDeckGl.ViewGl(vega.parse(spec))
     .initialize(document.querySelector('#vis'))
     .run();
 ```
+
+## Versions
+
+### Breaking changes in v3
+
+* `Stage.TickText` now `VegaTextLayerDatum` type
+* `View` type deleted
+* `util.isColor` function deleted
