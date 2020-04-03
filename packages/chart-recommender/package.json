@@ -1,13 +1,13 @@
 {
   "name": "@msrvida/chart-recommender",
-  "version": "2.1.0",
+  "version": "3.0.0-alpha.1",
   "description": "Recommendation engine for SandDance charts",
   "main": "dist/es5/index.js",
   "files": [
     "dist"
   ],
   "dependencies": {
-    "@msrvida/sanddance": "^2"
+    "@msrvida/sanddance": "3.0.0-alpha.1"
   },
   "devDependencies": {
     "vega": "^5.9"

@@ -5,13 +5,13 @@
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "build": "tsc -p .",
-    "deploy": "parcel build ./src/sanddance.ts --no-cache --no-minify --no-source-maps --public-url . --out-dir ../../docs/tests/es6/js"
+    "deploy": "parcel build ./src/sanddance.ts --no-cache --no-minify --no-source-maps --public-url . --out-dir ../../docs/tests/v3/es6/js"
   },
   "dependencies": {
     "@deck.gl/core": "6.4",
     "@deck.gl/layers": "6.4",
     "luma.gl": "6.4",
-    "@msrvida/sanddance": "^2",
+    "@msrvida/sanddance": "3.0.0-alpha.1",
     "vega": "^5.9"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/search-expression",
-  "version": "3.0.0",
+  "version": "1.0.0",
   "description": "Search expression parser.",
   "main": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
