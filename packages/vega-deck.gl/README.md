@@ -1,4 +1,4 @@
-# msrvida/vega-deck.gl
+# @msrvida/vega-deck.gl
 
 View component for [Vega](https://vega.github.io/) visualizations, using [deck.gl](https://deck.gl/) for WebGL rendering.
 
