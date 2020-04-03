@@ -16,7 +16,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@msrvida/chart-types": "^3",
+    "@msrvida/chart-types": "^1",
     "vega-typings": "^0.14.2"
   }
 }

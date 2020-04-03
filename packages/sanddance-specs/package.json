@@ -17,7 +17,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@msrvida/chart-types": "^3",
+    "@msrvida/chart-types": "^1",
     "@msrvida/search-expression": "^3",
     "d3-color": "^1.4.0",
     "vega-typings": "^0.14.2"

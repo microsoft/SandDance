@@ -25,7 +25,7 @@
     "@types/d3-ease": "^1.0.7"
   },
   "dependencies": {
-    "@msrvida/chart-types": "^3",
+    "@msrvida/chart-types": "^1",
     "@msrvida/sanddance-specs": "^3",
     "@msrvida/search-expression": "^3",
     "@msrvida/vega-deck.gl": "^2",
