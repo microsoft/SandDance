@@ -39,6 +39,23 @@ vega.loader().load('../../docs/sample-data/demovote.tsv').then(tsv_data => {
             }
         },
         {
+            name: "column",
+            insight: {
+                "columns": {
+                    "x": "Income",
+                    "color": "Obama",
+                    "z": "Education"
+                },
+                "scheme": "redblue",
+                "size": {
+                    "height": 600,
+                    "width": 800
+                },
+                "chart": "barchartV",
+                "view": "3d"
+            }
+        },
+        {
             name: "stacks not faceted",
             insight: {
                 "columns": {
@@ -133,6 +150,8 @@ vega.loader().load('../../docs/sample-data/demovote.tsv').then(tsv_data => {
                 //writeFileSync(`${name}.vg.json`, JSON.stringify(specResult.vegaSpec, null, 2), 'utf8');
 
                 run(++i);
+            }).catch(e => {
+                console.log(`${name} error ${e}`);
             });
         }
     };
