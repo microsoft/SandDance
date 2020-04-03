@@ -32,7 +32,7 @@ const snapshotsPromise = fetchResource('titanic-snapshots').then(response => {
 export interface Snapshot {
     title?: string;
     description?: string;
-    insight: SandDance.types.Insight;
+    insight: SandDance.specs.Insight;
     image?: string;
     bgColor?: string;
 }
@@ -44,7 +44,7 @@ interface State {
     snapshots?: Snapshot[];
     insightIndex: number;
     data?: object[];
-    size: SandDance.types.Size;
+    size: SandDance.specs.Size;
 }
 
 export class Page extends React.Component<Props, State> {
@@ -92,7 +92,7 @@ export class Page extends React.Component<Props, State> {
         }
         const { insightIndex, snapshots } = this.state;
         const partialInsight = snapshots[insightIndex].insight;
-        const insight: SandDance.types.Insight = {
+        const insight: SandDance.specs.Insight = {
             ...partialInsight,
             size: this.state.size,
             view: '2d'

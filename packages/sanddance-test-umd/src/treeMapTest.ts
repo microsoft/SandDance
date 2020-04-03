@@ -12,7 +12,7 @@ namespace treeMapTest {
     export const viewer = new SandDance.Viewer(document.querySelector('#vis'));
 
     const glDiv = viewer.presenter.getElement(SandDance.VegaDeckGl.PresenterElement.gl);
-    const options: SandDance.types.Insight = {
+    const options: SandDance.specs.Insight = {
         columns: {
             color: 'Class',
             size: 'TicketCost',

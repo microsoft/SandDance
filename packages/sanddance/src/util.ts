@@ -1,12 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as VegaDeckGl from '@msrvida/vega-deck.gl';
-import { FieldNames } from './constants';
+import { FieldNames, GL_ORDINAL } from './constants';
 
-const { GL_ORDINAL } = VegaDeckGl.constants;
-
-export { getColumnsFromData, getStats, inferAll } from './specs/inference';
-export { ensureSearchExpressionGroupArray } from './searchExpression/group';
+export { getColumnsFromData, getStats, inferAll } from '@msrvida/sanddance-specs';
 export { getPresenterStyle } from './defaults';
 
 export function isInternalFieldName(columnName: string, includeVegaDeckGLFields = false) {

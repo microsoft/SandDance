@@ -28,6 +28,7 @@ import { strings } from './language';
 
 import VegaDeckGl = SandDance.VegaDeckGl;
 import types = SandDance.types;
+import specs = SandDance.specs;
 
 export interface Props {
     themeColors: { [theme: string]: ColorSettings };
@@ -175,7 +176,7 @@ export class SandDanceApp extends React.Component<Props, State> {
         }
     }
 
-    load(dataSource: DataSource, partialInsight?: Partial<types.Insight>) {
+    load(dataSource: DataSource, partialInsight?: Partial<specs.Insight>) {
         //clone so that we do not modify original object
         dataSource = VegaDeckGl.util.clone(dataSource);
         this.setState({ dataSource });
@@ -217,7 +218,7 @@ export class SandDanceApp extends React.Component<Props, State> {
 
     changeColorScheme(darkTheme: boolean) {
         this.updateExplorerViewerOptions(getViewerOptions(darkTheme, this.props.themeColors));
-        VegaDeckGl.base.vega.scheme(SandDance.constants.ColorScaleNone, x => VegaDeckGl.util.colorToString(this.explorer.viewer.options.colors.defaultCube));
+        VegaDeckGl.base.vega.scheme(SandDance.constants.ColorScaleNone, x => this.explorer.viewer.options.colors.defaultCube);
         this.explorer && this.explorer.viewer && this.explorer.viewer.render(this.explorer.viewer.insight, this.explorer.state.dataContent.data);
         base.fabric.loadTheme({ palette: this.getThemePalette(darkTheme) });
     }
@@ -398,7 +399,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                 >
                 </Explorer>
                 <DataSourcePicker
-                    ref={dsp => { if (dsp && !this.dataSourcePicker) this.dataSourcePicker = dsp }}
+                    ref={dsp => { if (dsp && !this.dataSourcePicker) this.dataSourcePicker = dsp; }}
                     theme={theme}
                     {...dataSourceProps}
                 />

@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
-import { ColorBin, Column } from './specs/types';
+import { ColorBin, Other } from '@msrvida/sanddance-specs';
+import { Column } from '@msrvida/chart-types';
 import { Language, LegendRowWithSearch } from './types';
 import {
     notNice,
@@ -10,8 +11,7 @@ import {
     selectNone,
     selectNullOrEmpty
 } from './expression';
-import { Other } from './specs/constants';
-import { SearchExpressionGroup, SearchExpressionOperators } from './searchExpression/types';
+import { SearchExpressionGroup, SearchExpressionOperators } from '@msrvida/search-expression';
 
 function legendRange(colorBinType: ColorBin, column: Column, legend: VegaDeckGl.types.Legend, clickedIndex: number): SearchExpressionGroup {
     if (column.quantitative) {
@@ -61,9 +61,9 @@ function selectQuantitative(colorBinType: ColorBin, column: Column, legend: Vega
             }
             const dash = rowText.indexOf('–');  //this is not the common dash character!
             if (dash > 0) {
-            //bug in Vega for quantize?
-            //lowOperator = '>';
-            //highOperator = '<=';
+                //bug in Vega for quantize?
+                //lowOperator = '>';
+                //highOperator = '<=';
                 lowValue = rowText.substr(0, dash);
                 highValue = rowText.substr(dash + 1);
             } else {

@@ -2,16 +2,18 @@
 // Licensed under the MIT license.
 import { SandDance } from '@msrvida/sanddance-react';
 
-function comparableGroup(group: SandDance.types.SearchExpressionGroup): SandDance.types.SearchExpressionGroup {
+import SearchExpressionGroup = SandDance.searchExpression.SearchExpressionGroup;
+
+function comparableGroup(group: SearchExpressionGroup): SearchExpressionGroup {
     return { ...group, clause: null };
 }
 
-function compareGroup(a: SandDance.types.SearchExpressionGroup, b: SandDance.types.SearchExpressionGroup) {
+function compareGroup(a: SearchExpressionGroup, b: SearchExpressionGroup) {
     return SandDance.searchExpression.compareGroup(comparableGroup(a), comparableGroup(b));
 }
 
-export function toggleSearch(haystack: SandDance.types.SearchExpressionGroup[], needle: SandDance.types.SearchExpressionGroup) {
-    const groups: SandDance.types.SearchExpressionGroup[] = [];
+export function toggleSearch(haystack: SearchExpressionGroup[], needle: SearchExpressionGroup) {
+    const groups: SearchExpressionGroup[] = [];
     let found = false;
 
     //look for item in all

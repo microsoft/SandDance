@@ -5,9 +5,8 @@ import { applyColorButtons } from './colorMap';
 import { AutoCompleteDistinctValues, InputSearchExpression } from './controls/searchTerm';
 import { base } from './base';
 import { bestColorScheme } from './colorScheme';
-import { Chart } from './dialogs/chart';
-import { Color } from './dialogs/color';
 import {
+    ChangeColumnMappingOptions,
     ColorSettings,
     DataContent,
     DataExportHandler,
@@ -17,6 +16,8 @@ import {
     Snapshot,
     SnapshotProps
 } from './interfaces';
+import { Chart } from './dialogs/chart';
+import { Color } from './dialogs/color';
 import { ColumnMapBaseProps } from './controls/columnMap';
 import {
     copyPrefToNewState,
@@ -67,7 +68,7 @@ export interface Props {
     searchORDisabled?: boolean;
     theme?: string;
     viewerOptions?: Partial<SandDance.types.ViewerOptions>;
-    initialView?: SandDance.VegaDeckGl.types.View;
+    initialView?: SandDance.types.View;
     mounted?: (explorer: Explorer) => any;
     datasetElement?: JSX.Element;
     dataExportHandler?: DataExportHandler;
@@ -82,7 +83,7 @@ export interface Props {
     systemInfoChildren?: React.ReactNode;
 }
 
-export interface State extends SandDance.types.Insight {
+export interface State extends SandDance.specs.Insight {
     calculating: () => void;
     errors: string[];
     autoCompleteDistinctValues: AutoCompleteDistinctValues;
@@ -92,7 +93,7 @@ export interface State extends SandDance.types.Insight {
     sidebarPinned: boolean;
     dataFile: DataFile;
     dataContent: DataContent;
-    specCapabilities: SandDance.types.SpecCapabilities;
+    specCapabilities: SandDance.specs.SpecCapabilities;
     sideTabId: SideTabId;
     dataScopeId: DataScopeId;
     selectedItemIndex: { [key: number]: number };
@@ -118,8 +119,8 @@ dataBrowserNullMessages[DataScopeId.AllData] = strings.labelDataNullAll;
 dataBrowserNullMessages[DataScopeId.FilteredData] = strings.labelDataNullFiltered;
 dataBrowserNullMessages[DataScopeId.SelectedData] = strings.labelDataNullSelection;
 
-function createInputSearch(search: SandDance.types.Search) {
-    const groups = SandDance.util.ensureSearchExpressionGroupArray(search);
+function createInputSearch(search: SandDance.searchExpression.Search) {
+    const groups = SandDance.searchExpression.ensureSearchExpressionGroupArray(search);
     const dialogSearch: InputSearchExpressionGroup[] = groups.map((group, groupIndex) => {
         return {
             key: groupIndex,
@@ -139,10 +140,11 @@ function createInputSearch(search: SandDance.types.Search) {
 export class Explorer extends React.Component<Props, State> {
     private layoutDivUnpinned: HTMLElement;
     private layoutDivPinned: HTMLElement;
-    private getColorContext: (oldInsight: SandDance.types.Insight, newInsight: SandDance.types.Insight) => SandDance.types.ColorContext;
+    private getColorContext: (oldInsight: SandDance.specs.Insight, newInsight: SandDance.specs.Insight) => SandDance.types.ColorContext;
     private ignoreSelectionChange: boolean;
     private snapshotEditor: SnapshotEditor;
     private scrollSnapshotTimer: number;
+    private newViewStateTarget: boolean;
 
     public viewer: SandDance.Viewer;
     public viewerOptions: Partial<SandDance.types.ViewerOptions>;
@@ -161,7 +163,8 @@ export class Explorer extends React.Component<Props, State> {
             dataContent: null,
             dataFile: null,
             search: null,
-            facets: null,
+            totalStyle: null,
+            facetStyle: 'wrap',
             filter: null,
             filteredData: null,
             specCapabilities: null,
@@ -238,7 +241,7 @@ export class Explorer extends React.Component<Props, State> {
             },
             onAxisClick: (e, search) => {
                 this.toggleableSearch(e, search);
-                viewerOptions && viewerOptions.onLegendRowClick && viewerOptions.onAxisClick(e, search);
+                viewerOptions && viewerOptions.onAxisClick && viewerOptions.onAxisClick(e, search);
             },
             onLegendHeaderClick: e => {
                 const pos = getPosition(e);
@@ -265,17 +268,19 @@ export class Explorer extends React.Component<Props, State> {
             },
             onBeforeCreateLayers,
             getTextColor: o => {
-                const t = o as TextWithSpecRole;
-                if (t.specRole) {
-                    return (this.viewerOptions.colors as ColorSettings).clickableText;
+                if ((o as TextWithSpecRole).specRole) {
+                    return SandDance.VegaDeckGl.util.colorFromString((this.viewerOptions.colors as ColorSettings).clickableText);
+                } else if (o.metaData && o.metaData.search) {
+                    return SandDance.VegaDeckGl.util.colorFromString((this.viewerOptions.colors as ColorSettings).searchText);
                 } else {
                     return o.color;
                 }
             },
             getTextHighlightColor: o => {
-                const t = o as TextWithSpecRole;
-                if (t.specRole) {
-                    return (this.viewerOptions.colors as ColorSettings).clickableTextHighlight;
+                if ((o as TextWithSpecRole).specRole) {
+                    return SandDance.VegaDeckGl.util.colorFromString((this.viewerOptions.colors as ColorSettings).clickableTextHighlight);
+                } else if (o.metaData && o.metaData.search) {
+                    return SandDance.VegaDeckGl.util.colorFromString((this.viewerOptions.colors as ColorSettings).searchTextHighlight);
                 } else {
                     return o.color;
                 }
@@ -300,7 +305,8 @@ export class Explorer extends React.Component<Props, State> {
                         this.setState({ positionedColumnMapProps: null });
                     }
                 }
-            }
+            },
+            onNewViewStateTarget: () => this.newViewStateTarget
         };
         if (this.viewer && this.viewer.presenter) {
             const newPresenterStyle = SandDance.util.getPresenterStyle(this.viewerOptions as SandDance.types.ViewerOptions);
@@ -310,7 +316,7 @@ export class Explorer extends React.Component<Props, State> {
         }
     }
 
-    signal(signalName: string, signalValue: any) {
+    signal(signalName: string, signalValue: any, newViewStateTarget?: boolean) {
         switch (signalName) {
             case SandDance.constants.SignalNames.ColorBinCount:
             case SandDance.constants.SignalNames.ColorReverse:
@@ -318,10 +324,13 @@ export class Explorer extends React.Component<Props, State> {
                 this.discardColorContextUpdates = false;
                 break;
         }
+        this.newViewStateTarget = newViewStateTarget;
         this.viewer.vegaViewGl.signal(signalName, signalValue);
-        this.viewer.vegaViewGl.run();
-        this.discardColorContextUpdates = true;
-        this.props.onSignalChanged && this.props.onSignalChanged();
+        this.viewer.vegaViewGl.runAsync().then(() => {
+            this.discardColorContextUpdates = true;
+            this.newViewStateTarget = undefined;
+            this.props.onSignalChanged && this.props.onSignalChanged();
+        });
     }
 
     private manageColorToolbar() {
@@ -342,7 +351,7 @@ export class Explorer extends React.Component<Props, State> {
         return this.viewer.getInsight();
     }
 
-    setInsight(partialInsight: Partial<SandDance.types.Insight> & Partial<State> = this.viewer.getInsight(), rebaseFilter = false) {
+    setInsight(partialInsight: Partial<SandDance.specs.Insight> & Partial<State> = this.viewer.getInsight(), rebaseFilter = false) {
         const selectedItemIndex = { ...this.state.selectedItemIndex };
         selectedItemIndex[DataScopeId.AllData] = 0;
         selectedItemIndex[DataScopeId.FilteredData] = 0;
@@ -410,13 +419,13 @@ export class Explorer extends React.Component<Props, State> {
         data: DataFile | object[],
         getPartialInsight?: (
             columns: SandDance.types.Column[]
-        ) => Partial<SandDance.types.Insight>,
+        ) => Partial<SandDance.specs.Insight>,
         optionsOrPrefs?: Prefs | Options
     ) {
         this.changeInsight({ columns: null, note: null });
         return new Promise<void>((resolve, reject) => {
             const loadFinal = (dataContent: DataContent) => {
-                let partialInsight: Partial<SandDance.types.Insight>;
+                let partialInsight: Partial<SandDance.specs.Insight>;
                 this.prefs = (optionsOrPrefs && (optionsOrPrefs as Options).chartPrefs || (optionsOrPrefs as Prefs)) || {};
                 if (getPartialInsight) {
                     partialInsight = getPartialInsight(dataContent.columns);
@@ -437,6 +446,8 @@ export class Explorer extends React.Component<Props, State> {
                     dataContent,
                     snapshots: dataContent.snapshots || this.state.snapshots,
                     autoCompleteDistinctValues: {},
+                    totalStyle: null,
+                    facetStyle: 'wrap',
                     filter: null,
                     filteredData: null,
                     transform: null,
@@ -474,7 +485,7 @@ export class Explorer extends React.Component<Props, State> {
         });
     }
 
-    changeChartType(chart: SandDance.types.Chart) {
+    changeChartType(chart: SandDance.specs.Chart) {
         const partialInsight = copyPrefToNewState(this.prefs, chart, '*', '*');
         const newState: Partial<State> = { chart, ...partialInsight };
         const columns = this.state.columns || {};
@@ -516,14 +527,19 @@ export class Explorer extends React.Component<Props, State> {
         this.setState({ calculating });
     }
 
-    changeView(view: SandDance.VegaDeckGl.types.View) {
+    changeView(view: SandDance.types.View) {
         this.changeInsight({ view });
     }
 
     //state members which change the insight
     changeInsight(newState: Partial<State>) {
         if (!newState.signalValues) {
-            newState.signalValues = null;
+            if (this.viewer) {
+                const { signalValues } = this.viewer.getInsight();
+                newState.signalValues = signalValues;
+            } else {
+                newState.signalValues = null;
+            }
         }
         if (newState.chart === 'barchart') {
             newState.chart = 'barchartV';
@@ -532,12 +548,12 @@ export class Explorer extends React.Component<Props, State> {
     }
 
     changespecCapabilities(
-        specCapabilities: SandDance.types.SpecCapabilities
+        specCapabilities: SandDance.specs.SpecCapabilities
     ) {
         this.setState({ specCapabilities });
     }
 
-    changeColumnMapping(role: SandDance.types.InsightColumnRoles, column: SandDance.types.Column, options?: { scheme?: string }) {
+    changeColumnMapping(role: SandDance.specs.InsightColumnRoles, column: SandDance.types.Column, options?: ChangeColumnMappingOptions) {
         const columns = { ...this.state.columns };
         const final = () => {
             columns[role] = column && column.name;
@@ -546,83 +562,57 @@ export class Explorer extends React.Component<Props, State> {
         if (column) {
             switch (role) {
                 case 'facet': {
-                    (() => {
-                        const facetColumn = column;
-                        let facets: SandDance.types.Facets;
-                        if (facetColumn.quantitative) {
-                            facets = {
-                                columns: 3, //TODO: calculate grid from aspect ratio
-                                rows: 3
-                            };
-                        } else {
-                            switch (facetColumn.stats.distinctValueCount) {
-                                case 2: {
-                                    facets = {
-                                        columns: 2,
-                                        rows: 1
-                                    };
-                                    break;
-                                }
-                                default: {
-                                    facets = {
-                                        columns: null,
-                                        rows: null
-                                    };
-                                    let square = 1;
-                                    while (square * square < facetColumn.stats.distinctValueCount) {
-                                        square++;
-                                    }
-                                    facets.columns = facets.rows = square;
-                                }
-                            }
-                        }
-                        columns['facet'] = column.name;
-                        this.changeInsight({ facets, columns });
-                    })();
+                    const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'facet', column.name);
+                    const newState: Partial<State> = { columns, ...partialInsight, facetStyle: options ? options.facetStyle : this.state.facetStyle };
+                    columns['facet'] = column.name;
+                    this.changeInsight(newState as any);
                     break;
                 }
                 case 'color': {
-                    (() => {
-                        let newState: Partial<State> = { scheme: options && options.scheme, columns, colorBin: this.state.colorBin };
-                        if (!newState.scheme) {
-                            const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'color', column.name);
-                            newState = { ...newState, ...partialInsight };
+                    let newState: Partial<State> = { scheme: options && options.scheme, columns, colorBin: this.state.colorBin };
+                    if (!newState.scheme) {
+                        const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'color', column.name);
+                        newState = { ...newState, ...partialInsight };
+                    }
+                    if (!newState.scheme) {
+                        newState.scheme = bestColorScheme(column, null, this.state.scheme);
+                    }
+                    if (!column.stats.hasColorData) {
+                        newState.directColor = false;
+                        if (this.state.directColor !== newState.directColor) {
+                            newState.calculating = () => this._resize();
                         }
-                        if (!newState.scheme) {
-                            newState.scheme = bestColorScheme(column, null, this.state.scheme);
+                    }
+                    if (this.state.columns && this.state.columns.color && this.state.columns.color !== column.name) {
+                        const currColorColumn = this.state.dataContent.columns.filter(c => c.name === this.state.columns.color)[0];
+                        if (column.isColorData != currColorColumn.isColorData) {
+                            newState.calculating = () => this._resize();
                         }
-                        if (!column.stats.hasColorData) {
-                            newState.directColor = false;
-                            if (this.state.directColor !== newState.directColor) {
-                                newState.calculating = () => this._resize();
-                            }
-                        }
-                        if (this.state.columns && this.state.columns.color && this.state.columns.color !== column.name) {
-                            const currColorColumn = this.state.dataContent.columns.filter(c => c.name === this.state.columns.color)[0];
-                            if (column.isColorData != currColorColumn.isColorData) {
-                                newState.calculating = () => this._resize();
-                            }
-                        }
-                        this.ignoreSelectionChange = true;
-                        this.viewer.deselect().then(() => {
-                            this.ignoreSelectionChange = false;
-                            //allow deselection to render
-                            requestAnimationFrame(() => {
-                                columns['color'] = column.name;
-                                this.getColorContext = null;
-                                this.changeInsight(newState as any);
-                            });
+                    }
+                    this.ignoreSelectionChange = true;
+                    this.viewer.deselect().then(() => {
+                        this.ignoreSelectionChange = false;
+                        //allow deselection to render
+                        requestAnimationFrame(() => {
+                            columns['color'] = column.name;
+                            this.getColorContext = null;
+                            this.changeInsight(newState as any);
                         });
-                    })();
+                    });
                     break;
                 }
                 case 'x': {
-                    (() => {
-                        const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'x', column.name);
-                        const newState: Partial<State> = { columns, ...partialInsight };
-                        columns['x'] = column.name;
-                        this.changeInsight(newState as any);
-                    })();
+                    const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'x', column.name);
+                    const newState: Partial<State> = { columns, ...partialInsight };
+                    columns['x'] = column.name;
+                    this.changeInsight(newState as any);
+                    break;
+                }
+                case 'size': {
+                    const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'size', column.name);
+                    const newState: Partial<State> = { columns, ...partialInsight, totalStyle: options ? options.totalStyle : this.state.totalStyle };
+                    columns['size'] = column.name;
+                    this.changeInsight(newState as any);
                     break;
                 }
                 default: {
@@ -631,7 +621,18 @@ export class Explorer extends React.Component<Props, State> {
                 }
             }
         } else {
-            final();
+            switch (role) {
+                case 'facet': {
+                    columns.facet = null;
+                    columns.facetV = null;
+                    this.changeInsight({ columns, facetStyle: 'wrap' });
+                    break;
+                }
+                default: {
+                    final();
+                    break;
+                }
+            }
         }
     }
 
@@ -721,7 +722,7 @@ export class Explorer extends React.Component<Props, State> {
         return { height: div.offsetHeight, width: div.offsetWidth };
     }
 
-    private toggleableSearch(e: TouchEvent | MouseEvent | PointerEvent, search: SandDance.types.SearchExpressionGroup) {
+    private toggleableSearch(e: TouchEvent | MouseEvent | PointerEvent, search: SandDance.searchExpression.SearchExpressionGroup) {
         if (e.ctrlKey) {
             this.setState({ search: createInputSearch(search) });
             this.setSideTabId(SideTabId.Search);
@@ -729,7 +730,7 @@ export class Explorer extends React.Component<Props, State> {
             var oldSelection = this.viewer.getSelection();
             if (oldSelection.search) {
                 //look for matching groups and toggle them
-                const result = toggleSearch(SandDance.util.ensureSearchExpressionGroupArray(oldSelection.search), search);
+                const result = toggleSearch(SandDance.searchExpression.ensureSearchExpressionGroupArray(oldSelection.search), search);
                 if (result.found) {
                     //removing a group
                     if (result.groups.length === 0) {
@@ -768,7 +769,7 @@ export class Explorer extends React.Component<Props, State> {
         }
     }
 
-    private doFilter(search: SandDance.types.Search) {
+    private doFilter(search: SandDance.searchExpression.Search) {
         this.viewer.filter(search);
     }
 
@@ -776,7 +777,7 @@ export class Explorer extends React.Component<Props, State> {
         this.viewer.reset();
     }
 
-    private doSelect(search: SandDance.types.Search) {
+    private doSelect(search: SandDance.searchExpression.Search) {
         this.viewer.select(search);
     }
 
@@ -819,18 +820,23 @@ export class Explorer extends React.Component<Props, State> {
     }
 
     render() {
-        const { colorBin, columns, directColor, facets, filter, hideAxes, hideLegend, scheme, signalValues, size, transform, chart, view } = this.state;
-        const insight: SandDance.types.Insight = {
+        const { colorBin, columns, directColor, facetStyle, filter, hideAxes, hideLegend, scheme, size, totalStyle, transform, chart, view } = this.state;
+        let { signalValues } = this.state;
+        if (this.viewer) {
+            signalValues = { ...signalValues, ...this.viewer.getInsight().signalValues };
+        }
+        const insight: SandDance.specs.Insight = {
             colorBin,
             columns,
             directColor,
-            facets,
+            facetStyle,
             filter,
             hideAxes,
             hideLegend,
             scheme,
             signalValues,
             size,
+            totalStyle,
             transform,
             chart,
             view
@@ -1033,13 +1039,13 @@ export class Explorer extends React.Component<Props, State> {
                                                 savePref(this.prefs, this.state.chart, 'color', this.state.columns.color, { scheme });
                                             }}
                                             onColorBinCountChange={value => {
-                                                const signalValues: SandDance.types.SignalValues = {};
+                                                const signalValues: SandDance.specs.SignalValues = {};
                                                 signalValues[SandDance.constants.SignalNames.ColorBinCount] = value;
                                                 savePref(this.prefs, this.state.chart, 'color', this.state.columns.color, { signalValues });
                                             }}
                                             onColorReverseChange={value => {
                                                 this.getColorContext = null;
-                                                const signalValues: SandDance.types.SignalValues = {};
+                                                const signalValues: SandDance.specs.SignalValues = {};
                                                 signalValues[SandDance.constants.SignalNames.ColorReverse] = value;
                                             }}
                                             directColor={this.state.directColor}
@@ -1204,7 +1210,7 @@ export class Explorer extends React.Component<Props, State> {
                                 }}
                                 onView={renderResult => {
                                     this.changespecCapabilities(renderResult.specResult.errors ? renderResult.specResult.specCapabilities : this.viewer.specCapabilities);
-                                    this.getColorContext = (oldInsight: SandDance.types.Insight, newInsight: SandDance.types.Insight) => {
+                                    this.getColorContext = (oldInsight: SandDance.specs.Insight, newInsight: SandDance.specs.Insight) => {
                                         if (!oldInsight && !newInsight) {
                                             return null;
                                         }
@@ -1280,7 +1286,7 @@ export class Explorer extends React.Component<Props, State> {
         const quantitativeColumns = allColumns && allColumns.filter(c => c.quantitative);
         const categoricalColumns = allColumns && allColumns.filter(c => !c.quantitative);
         const props: ColumnMapBaseProps = {
-            changeColumnMapping: (role, columnOrRole) => {
+            changeColumnMapping: (role, columnOrRole, options) => {
                 let column: SandDance.types.Column;
                 if (typeof columnOrRole === 'string') {
                     //look up current insight
@@ -1289,8 +1295,10 @@ export class Explorer extends React.Component<Props, State> {
                 } else {
                     column = columnOrRole;
                 }
-                this.changeColumnMapping(role, column);
+                this.changeColumnMapping(role, column, options);
             },
+            facetStyle: this.state.facetStyle,
+            totalStyle: this.state.totalStyle,
             allColumns,
             quantitativeColumns,
             categoricalColumns,
@@ -1301,7 +1309,7 @@ export class Explorer extends React.Component<Props, State> {
     }
 }
 
-function colorMapping(insight: SandDance.types.Insight, columns: SandDance.types.Column[]) {
+function colorMapping(insight: SandDance.specs.Insight, columns: SandDance.types.Column[]) {
     if (columns && insight.columns && insight.columns.color) {
         return columns.filter(c => c.name === insight.columns.color)[0];
     }

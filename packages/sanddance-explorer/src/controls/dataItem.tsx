@@ -7,6 +7,8 @@ import { InputSearchExpressionGroup } from '../dialogs/search';
 import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
 
+import SearchExpressionValue = SandDance.searchExpression.SearchExpressionValue;
+
 export interface Props {
     item: object;
     showSystemFields?: boolean;
@@ -52,7 +54,7 @@ function bingSearchLink(column: SandDance.types.Column, value: any) {
 
 interface NameValuePair {
     columnName: string;
-    value: SandDance.types.SearchExpressionValue;
+    value: SearchExpressionValue;
     bingSearch?: JSX.Element;
 }
 
@@ -61,7 +63,7 @@ interface DisplayValue {
     display: string | number;
 }
 
-function displayValue(value: SandDance.types.SearchExpressionValue | object): DisplayValue {
+function displayValue(value: SearchExpressionValue | object): DisplayValue {
     switch (value) {
         case '': {
             return { special: true, display: strings.labelBlank };
@@ -106,7 +108,7 @@ export function DataItem(props: Props) {
     }
     const nameValuePairs: NameValuePair[] = [];
     for (let columnName in props.item) {
-        if (columnName === SandDance.VegaDeckGl.constants.GL_ORDINAL && !props.showSystemFields) {
+        if (columnName === SandDance.constants.GL_ORDINAL && !props.showSystemFields) {
             continue;
         }
         if (SandDance.util.isInternalFieldName(columnName)) {

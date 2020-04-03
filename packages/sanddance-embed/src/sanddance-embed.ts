@@ -12,17 +12,17 @@ namespace SandDanceEmbed {
 
     interface DataWithInsight {
         data: object[];
-        insight: Partial<SandDance.types.Insight>;
+        insight: Partial<SandDance.specs.Insight>;
     }
 
     export let sandDanceExplorer: SandDanceExplorer.Explorer;
     export const requests: MessageRequestWithSource[] = [];
 
-    export function load(data: object[] | SandDanceExplorer.DataFile, insight?: Partial<SandDance.types.Insight>) {
+    export function load(data: object[] | SandDanceExplorer.DataFile, insight?: Partial<SandDance.specs.Insight>) {
         return new Promise((resolve) => {
 
             const innerLoad = () => {
-                let getPartialInsight: (columns: SandDance.types.Column[]) => Partial<SandDance.types.Insight>;
+                let getPartialInsight: (columns: SandDance.types.Column[]) => Partial<SandDance.specs.Insight>;
                 if (insight) {
                     //TODO make sure that insight columns exist in dataset
                     getPartialInsight = columns => insight;

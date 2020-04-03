@@ -2,8 +2,7 @@
 // Licensed under the MIT license.
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { Color } from '@deck.gl/core/utils/color';
-import { SpecColorSettings } from './specs/types';
-import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
+import { SpecColorSettings } from '@msrvida/sanddance-specs';
 
 function cloneAxis(axes: VegaDeckGl.types.Axis[], axisColor: Color, axisTextColor: Color) {
     return axes.map(axis => {
@@ -16,7 +15,7 @@ function cloneAxis(axes: VegaDeckGl.types.Axis[], axisColor: Color, axisTextColo
     });
 }
 
-function cloneTextData(textData: TextLayerDatum[], color: Color) {
+function cloneTextData(textData: VegaDeckGl.types.VegaTextLayerDatum[], color: Color) {
     return textData.map(t => {
         return { ...t, color };
     });
@@ -31,17 +30,17 @@ function colorEquals(a: Color, b: Color) {
 }
 
 export function recolorAxes(stage: VegaDeckGl.types.Stage, oldColors: SpecColorSettings, newColors: SpecColorSettings): Partial<VegaDeckGl.types.Stage> {
-    const hasNewLineColor = newColors.axisLine && !colorEquals(newColors.axisLine, oldColors.axisLine);
-    const hasNewTextColor = newColors.axisText && !colorEquals(newColors.axisText, oldColors.axisText);
+    const hasNewLineColor = newColors.axisLine && newColors.axisLine !== oldColors.axisLine;
+    const hasNewTextColor = newColors.axisText && newColors.axisText !== oldColors.axisText;
     let axes: {
         x: VegaDeckGl.types.Axis[];
         y: VegaDeckGl.types.Axis[];
     };
-    let textData: TextLayerDatum[];
+    let textData: VegaDeckGl.types.VegaTextLayerDatum[];
 
     if (hasNewLineColor || hasNewTextColor) {
-        const lineColor = newColors.axisLine || oldColors.axisLine;
-        const textColor = newColors.axisText || oldColors.axisText;
+        const lineColor = VegaDeckGl.util.colorFromString(newColors.axisLine || oldColors.axisLine);
+        const textColor = VegaDeckGl.util.colorFromString(newColors.axisText || oldColors.axisText);
         axes = {
             x: cloneAxis(stage.axes.x, lineColor, textColor),
             y: cloneAxis(stage.axes.y, lineColor, textColor)
@@ -49,7 +48,7 @@ export function recolorAxes(stage: VegaDeckGl.types.Stage, oldColors: SpecColorS
     }
 
     if (hasNewTextColor) {
-        textData = cloneTextData(stage.textData, newColors.axisText);
+        textData = cloneTextData(stage.textData, VegaDeckGl.util.colorFromString(newColors.axisText));
     }
 
     return { axes, textData };

@@ -4,11 +4,11 @@ import * as React from 'react';
 import { Component } from 'react';
 import { deepCompare } from './util';
 import { findDOMNode } from 'react-dom';
-import { types, VegaDeckGl, Viewer } from '@msrvida/sanddance';
+import { specs, types, VegaDeckGl, Viewer } from '@msrvida/sanddance';
 
 export interface Props {
   viewerOptions?: Partial<types.ViewerOptions>;
-  insight: types.Insight;
+  insight: specs.Insight;
   data: object[];
   renderOptions?: types.RenderOptions;
   onView?: (renderResult: types.RenderResult) => void;
@@ -19,8 +19,8 @@ export interface Props {
 export interface State {
 }
 
-function addNullable(insight: types.Insight, signalValues: types.SignalValues) {
-    const withNulls: types.Insight = { view: null, filter: null, ...insight, signalValues };
+function addNullable(insight: specs.Insight, signalValues: specs.SignalValues) {
+    const withNulls: specs.Insight = { view: null, filter: null, ...insight, signalValues };
     return withNulls;
 }
 
@@ -53,7 +53,7 @@ export class SandDanceReact extends Component<Props, State> {
           this.props.onView && this.props.onView(renderResult);
       }).catch(e => {
       //console.log('viewer error');
-      this.props.onError && this.props.onError(e);
+          this.props.onError && this.props.onError(e);
       });
   }
 

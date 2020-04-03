@@ -57,6 +57,8 @@ function filterSignals(signal: NewSignal) {
     switch (signal.name) {
         case SandDance.constants.SignalNames.XBins:
         case SandDance.constants.SignalNames.YBins:
+        case SandDance.constants.SignalNames.FacetBins:
+        case SandDance.constants.SignalNames.FacetVBins:
         case SandDance.constants.SignalNames.ColorBinCount:
         case SandDance.constants.SignalNames.ColorReverse:
         case SandDance.constants.SignalNames.PointSize:
@@ -201,6 +203,7 @@ export class Settings extends React.Component<Props, State> {
                                             key={i}
                                             signal={signal}
                                             explorer={props.explorer}
+                                            newViewStateTarget={false}
                                         />
                                     ))}
                                 </Group>

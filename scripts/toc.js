@@ -4,6 +4,8 @@ const unified = require('unified');
 const markdown = require('remark-parse');
 const toc = require('mdast-util-toc');
 
+const pubversion = 'v3';
+
 function removeToc(mdPath) {
     const text = fs.readFileSync(mdPath, 'utf8');
     let pos = text.search(/#\s.*Table of contents/i);
@@ -66,7 +68,7 @@ function getTree(headings) {
 }
 
 function tocFilesInPackage(packageName, packageDir) {
-    const dir = path.resolve(packageDir, 'v2/api');
+    const dir = path.resolve(packageDir, `${pubversion}/api`);
     outlines[packageName] = {};
     fs.readdirSync(dir).forEach(f => {
         const mdPath = path.resolve(dir, f);

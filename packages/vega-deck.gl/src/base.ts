@@ -24,6 +24,7 @@ import {
     renderModule,
     sceneVisit,
     scheme,
+    truncate,
     View
 } from 'vega-typings';
 import { CubeGeometry, fp64, Model, Texture2D } from 'luma.gl';
@@ -42,6 +43,7 @@ export interface VegaBase {
     Renderer: typeof Renderer,
     sceneVisit: typeof sceneVisit
     scheme: typeof scheme,
+    truncate: typeof truncate,
     View: typeof View,
 }
 
@@ -56,6 +58,7 @@ let vega: VegaBase = {
     Renderer: null,
     sceneVisit: null,
     scheme: null,
+    truncate: null,
     View: null
 };
 

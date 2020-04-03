@@ -12,8 +12,8 @@ import { strings } from '../language';
 
 export interface SnapshotEditorProps {
     modifySnapShot?: (snapshot: Snapshot) => void;
-    getTitle?: (insight: SandDance.types.Insight) => string;
-    getDescription?: (insight: SandDance.types.Insight) => string;
+    getTitle?: (insight: SandDance.specs.Insight) => string;
+    getDescription?: (insight: SandDance.specs.Insight) => string;
 }
 
 export interface Props extends SnapshotEditorProps {

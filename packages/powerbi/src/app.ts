@@ -31,8 +31,8 @@ export interface Props {
     mounted: (app: App) => void;
     onViewChange: (tooltipExclusions?: string[]) => void;
     onError: (e: any) => void;
-    onDataFilter: (filter: SandDance.types.Search, filteredData: object[]) => void;
-    onSelectionChanged: (search: SandDance.types.Search, activeIndex: number, selectedData: object[]) => void;
+    onDataFilter: (filter: SandDance.searchExpression.Search, filteredData: object[]) => void;
+    onSelectionChanged: (search: SandDance.searchExpression.Search, activeIndex: number, selectedData: object[]) => void;
 }
 
 export interface State {
@@ -66,7 +66,7 @@ export class App extends React.Component<Props, State> {
 
     private getViewerOptions(darkTheme?: boolean): Partial<SandDance.types.ViewerOptions> {
         const textColor = darkTheme ? 'white' : 'black';
-        const color = SandDance.VegaDeckGl.util.colorFromString(textColor);
+        const color = textColor;
         return {
             colors: {
                 axisLine: color,
@@ -82,7 +82,7 @@ export class App extends React.Component<Props, State> {
         return this.explorer && this.explorer.state.dataContent && this.explorer.state.dataContent.data;
     }
 
-    load(data: DataFile | object[], getPartialInsight: (columns: SandDance.types.Column[]) => Partial<SandDance.types.Insight>, tooltipExclusions?: string[]) {
+    load(data: DataFile | object[], getPartialInsight: (columns: SandDance.types.Column[]) => Partial<SandDance.specs.Insight>, tooltipExclusions?: string[]) {
         const wasLoaded = this.state.loaded;
         this.setState({ loaded: true });
         if (wasLoaded) {

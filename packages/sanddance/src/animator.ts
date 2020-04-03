@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { DataScope } from './dataScope';
-import { Search } from './searchExpression/types';
+import { Search } from '@msrvida/search-expression';
 
 export enum DataLayoutChange {
     same, reset, refine

@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/vega-deck.gl",
-  "version": "2.0.0",
+  "version": "3.0.0-alpha.1",
   "description": "Deck.gl renderer for Vega",
   "main": "dist/es6/index.js",
   "files": [
@@ -25,11 +25,12 @@
   "dependencies": {
     "@danmarshall/deckgl-typings": "^2.2.5",
     "@mapbox/tiny-sdf": "^1.1.1",
+    "@msrvida/chart-types": "^1",
     "@types/react": "16.4.7",
-    "d3-color": "^1.2.3",
+    "d3-color": "^1.4.0",
     "d3-ease": "^1.0.5",
     "deepmerge": "^2.1.1",
     "tsx-create-element": "1.1.4",
-    "vega-typings": "*"
+    "vega-typings": "^0.14.2"
   }
 }

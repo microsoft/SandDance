@@ -2,8 +2,9 @@
 // Licensed under the MIT license.
 import { base } from '../base';
 import { Presenter } from '../presenter';
-import { PresenterConfig, Scene3d, View } from '../interfaces';
+import { PresenterConfig, Scene3d } from '../interfaces';
 import { Renderer, Scene, SceneItem } from 'vega-typings';
+import { View } from '@msrvida/chart-types';
 
 //pass in the SuperClass, which should be a vega.View
 function _RendererGl(loader?: any) {

@@ -5,14 +5,14 @@ import * as powerbiModels from 'powerbi-models';
 import powerbiVisualsApi from 'powerbi-visuals-api';
 import { SandDance } from '@msrvida/sanddance-explorer';
 
-export function convertFilter(searchFilter: SandDance.types.Search, columns: powerbiVisualsApi.DataViewMetadataColumn[], data: object[]) {
+export function convertFilter(searchFilter: SandDance.searchExpression.Search, columns: powerbiVisualsApi.DataViewMetadataColumn[], data: object[]) {
     const selectedIds: powerbiVisualsApi.extensibility.ISelectionId[] = [];
     const filters: powerbiModels.IFilter[] = [];
-    const groups = SandDance.util.ensureSearchExpressionGroupArray(searchFilter);
+    const groups = SandDance.searchExpression.ensureSearchExpressionGroupArray(searchFilter);
     groups.forEach(group =>
         group.expressions.forEach(ex => {
             if (!ex) return;
-            if (ex.name === SandDance.VegaDeckGl.constants.GL_ORDINAL) {
+            if (ex.name === SandDance.constants.GL_ORDINAL) {
                 // it would be ideal to filter to a single row identity, but the PoerBI API currently does not let us do that.
                 // so, we will filter to data points that have the same values
                 const dataPoint = getDataPoint(ex.value as number, data);
@@ -37,7 +37,7 @@ export function convertFilter(searchFilter: SandDance.types.Search, columns: pow
 
 function getDataPoint(GL_ORDINAL: number, data: object[]) {
     for (let i = 0; i < data.length; i++) {
-        if (data[i][SandDance.VegaDeckGl.constants.GL_ORDINAL] === GL_ORDINAL) {
+        if (data[i][SandDance.constants.GL_ORDINAL] === GL_ORDINAL) {
             return data[i];
         }
     }
@@ -64,7 +64,7 @@ function createAdvancedFilter(column: powerbiVisualsApi.DataViewMetadataColumn, 
     }
 }
 
-function convertExpressionToAdvancedFilter(ex: SandDance.types.SearchExpression, column: powerbiVisualsApi.DataViewMetadataColumn): powerbiModels.AdvancedFilter {
+function convertExpressionToAdvancedFilter(ex: SandDance.searchExpression.SearchExpression, column: powerbiVisualsApi.DataViewMetadataColumn): powerbiModels.AdvancedFilter {
     return createAdvancedFilter(
         column,
         {
@@ -74,7 +74,7 @@ function convertExpressionToAdvancedFilter(ex: SandDance.types.SearchExpression,
     );
 }
 
-function convertExpressionOperator(operator: SandDance.types.SearchExpressionOperators): powerbiModels.AdvancedFilterConditionOperators {
+function convertExpressionOperator(operator: SandDance.searchExpression.SearchExpressionOperators): powerbiModels.AdvancedFilterConditionOperators {
     switch (operator) {
         case '!=': return 'IsNot';
         case '!contains': return 'DoesNotContain';

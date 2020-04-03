@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const rimraf = require('rimraf');
 
+const pubversion = 'v3';
+
 function replaceInfile(packageName, f) {
     const text = fs.readFileSync(f, 'utf8');
     const newText = text.replace(/index\//g, '');
@@ -15,7 +17,7 @@ function replaceInfile(packageName, f) {
 }
 
 function moveFilesInPackage(packageName, packageDir) {
-    const baseDir = path.resolve(packageDir, 'v2/api');
+    const baseDir = path.resolve(packageDir, `${pubversion}/api`);
     const indexDir = path.resolve(baseDir, 'index');
     fs.readdirSync(indexDir).forEach(f => {
         const dest = path.resolve(baseDir, f);

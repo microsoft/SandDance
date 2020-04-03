@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { strings } from "./language";
+import { strings } from './language';
 
 export function invalidUrlError(url: string) {
     if (!url) {

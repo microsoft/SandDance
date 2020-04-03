@@ -7,7 +7,8 @@ import {
     Cube,
     PresenterConfig,
     Stage,
-    StyledLine
+    StyledLine,
+    VegaTextLayerDatum
 } from './interfaces';
 import { CubeLayer, CubeLayerInterpolatedProps, CubeLayerProps } from './cube-layer/cube-layer';
 import { DeckProps } from '@deck.gl/core/lib/deck';
@@ -17,7 +18,6 @@ import { layerNames } from './constants';
 import { LayerProps, LightSettings, TransitionTiming } from '@deck.gl/core/lib/layer';
 import { LinearInterpolator_Class } from './deck.gl-classes/linearInterpolator';
 import { Presenter } from './presenter';
-import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 
 export function getLayers(
     presenter: Presenter,
@@ -43,7 +43,6 @@ export function getLayers(
     if (stage.facets) {
         stage.facets.forEach(f => {
             if (f.lines) lines.push.apply(lines, f.lines);
-            if (f.facetTitle) texts.push(f.facetTitle);
         });
     }
     const lineLayer = newLineLayer(layerNames.lines, lines);
@@ -96,7 +95,7 @@ function newLineLayer(id: string, data: StyledLine[]) {
     });
 }
 
-function newTextLayer(presenter: Presenter, id: string, data: TextLayerDatum[], config: PresenterConfig, fontFamily: string) {
+function newTextLayer(presenter: Presenter, id: string, data: VegaTextLayerDatum[], config: PresenterConfig, fontFamily: string) {
     const props: LayerProps & ChromaticTextLayerProps = {
         id,
         data,
@@ -106,17 +105,13 @@ function newTextLayer(presenter: Presenter, id: string, data: TextLayerDatum[], 
         getHighlightColor: config.getTextHighlightColor || (o => o.color),
         onClick: (o, e) => {
             let pe: Partial<PointerEvent> = e && e.srcEvent;
-            //handle iOS event
-            if (e.center) {
-                pe = { clientX: e.center.x, clientY: e.center.y };
-            }
-            config.onTextClick && config.onTextClick(pe as PointerEvent, o.object as TextLayerDatum);
+            config.onTextClick && config.onTextClick(pe as PointerEvent, o.object as VegaTextLayerDatum);
         },
         onHover: (o, e) => {
             if (o.index === -1) {
                 presenter.deckgl.interactiveState.onText = false;
             } else {
-                presenter.deckgl.interactiveState.onText = config.onTextHover ? config.onTextHover(e && e.srcEvent, o.object as TextLayerDatum) : true;
+                presenter.deckgl.interactiveState.onText = config.onTextHover ? config.onTextHover(e && e.srcEvent, o.object as VegaTextLayerDatum) : true;
             }
         },
         getColor: config.getTextColor || (o => o.color),

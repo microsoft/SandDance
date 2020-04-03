@@ -6,12 +6,17 @@ import { LightSettings } from '@deck.gl/core/lib/layer';
 import { LineLayerDatum } from '@deck.gl/layers/line-layer/line-layer';
 import { Scene } from 'vega-typings';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
+import { View } from '@msrvida/chart-types';
+
+export interface VegaTextLayerDatum extends TextLayerDatum {
+    metaData?: any;
+}
 
 export interface StyledLine extends LineLayerDatum {
     strokeWidth?: number;
 }
 
-export interface TickText extends TextLayerDatum {
+export interface TickText extends VegaTextLayerDatum {
     value: number | string;
 }
 
@@ -19,7 +24,7 @@ export interface Axis {
     domain: StyledLine;
     ticks: StyledLine[];
     tickText: TickText[];
-    title?: TextLayerDatum;
+    title?: VegaTextLayerDatum;
 }
 
 /**
@@ -48,11 +53,6 @@ export interface Cube {
 }
 
 /**
- * Types of camera views.
- */
-export type View = '2d' | '3d';
-
-/**
  * Vega Scene plus camera type.
  */
 export interface Scene3d extends Scene {
@@ -63,7 +63,7 @@ export interface Scene3d extends Scene {
  * Rect area and title for a facet.
  */
 export interface FacetRect {
-    facetTitle?: TextLayerDatum;
+    datum: any;
     lines: StyledLine[];
 }
 
@@ -78,7 +78,7 @@ export interface Stage {
         x: Axis[];
         y: Axis[];
     };
-    textData: TextLayerDatum[];
+    textData: VegaTextLayerDatum[];
     view: View;
     gridLines?: StyledLine[];
     facets?: FacetRect[];
@@ -137,10 +137,12 @@ export interface PresenterConfig {
     onPresent?: () => void;
     shouldViewstateTransition?: () => boolean;
     preLayer?: (stage: Stage) => void;
-    onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, t: TextLayerDatum) => void;
-    onTextHover?: (e: MouseEvent | PointerEvent | TouchEvent, t: TextLayerDatum) => boolean;
-    getTextColor?: (o: TextLayerDatum) => Color;
-    getTextHighlightColor?: (o: TextLayerDatum) => Color;
+    onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, t: VegaTextLayerDatum) => void;
+    onTextHover?: (e: MouseEvent | PointerEvent | TouchEvent, t: VegaTextLayerDatum) => boolean;
+    getTextColor?: (o: VegaTextLayerDatum) => Color;
+    getTextHighlightColor?: (o: VegaTextLayerDatum) => Color;
+    onSceneRectAssignCubeOrdinal?: (d: object) => number | undefined;
+    onTargetViewState?: (height: number, width: number) => { height: number, width: number, newViewStateTarget?: boolean };
 }
 
 export interface PresenterStyle {

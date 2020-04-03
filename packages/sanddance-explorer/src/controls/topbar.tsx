@@ -9,18 +9,20 @@ import { SandDance } from '@msrvida/sanddance-react';
 import { Snapshot } from '../interfaces';
 import { strings } from '../language';
 
+import Search = SandDance.searchExpression.Search;
+
 export interface Props {
     logoClickUrl: string;
     logoClickTarget: string;
     buttons?: FabricTypes.ICommandBarItemProps[];
-    doFilter: { (search: SandDance.types.Search): void };
+    doFilter: { (search: Search): void };
     doUnfilter: () => void;
     doDeselect: () => void;
-    filter: SandDance.types.Search;
+    filter: Search;
     loaded: boolean;
     selectionState: SandDance.types.SelectionState;
-    selectionSearch: SandDance.types.Search;
-    view: SandDance.VegaDeckGl.types.View;
+    selectionSearch: Search;
+    view: SandDance.types.View;
     snapshots: Snapshot[];
     onSnapshotClick: () => void;
     onSnapshotNextClick: () => void;

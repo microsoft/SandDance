@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as searchExpression from './searchExpression';
+import * as searchExpression from '@msrvida/search-expression';
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { Animator, DataLayoutChange } from './animator';
 import {
@@ -10,9 +10,17 @@ import {
     populateColorContext
 } from './colorCubes';
 import { applySignalValues, extractSignalValuesFromView } from './signals';
-import { assignOrdinals, getDataIndexOfCube, getSpecColumns } from './ordinal';
+import { assignOrdinals, getDataIndexOfCube } from './ordinal';
 import { AxisSelectionHandler, axisSelectionLayer } from './axisSelection';
-import { cloneVegaSpecWithData } from './specs/clone';
+import {
+    cloneVegaSpecWithData,
+    getSpecColumns,
+    Insight,
+    SignalValues,
+    SpecCapabilities,
+    SpecColumns,
+    SpecContext
+} from '@msrvida/sanddance-specs';
 import {
     ColorContext,
     ColorMap,
@@ -24,29 +32,28 @@ import {
     SelectionState,
     ViewerOptions
 } from './types';
-import {
-    Column,
-    Insight,
-    SignalValues,
-    SpecCapabilities,
-    SpecColumns,
-    SpecContext
-} from './specs/types';
+import { Column } from '@msrvida/chart-types';
 import { DataScope } from './dataScope';
 import { DeckProps, PickInfo } from '@deck.gl/core/lib/deck';
 import { defaultViewerOptions, getPresenterStyle } from './defaults';
 import { Details } from './details';
 import { ensureHeaders } from './headers';
 import { finalizeLegend } from './legend';
+import { getSearchGroupFromVegaValue } from './search';
+import { GL_ORDINAL } from './constants';
 import { makeDateRange } from './date';
 import { mount } from 'tsx-create-element';
 import { recolorAxes } from './axes';
 import { registerColorSchemes } from './colorSchemes';
-import { Search, SearchExpression, SearchExpressionGroup } from './searchExpression/types';
 import { Spec, Transforms } from 'vega-typings';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 import { Tooltip } from './tooltip';
+import { View } from '@msrvida/chart-types';
 import { ViewGl_Class } from '@msrvida/vega-deck.gl/dist/es6/vega-classes/viewGl';
+
+import Search = searchExpression.Search;
+import SearchExpression = searchExpression.SearchExpression;
+import SearchExpressionGroup = searchExpression.SearchExpressionGroup;
 
 const { defaultView } = VegaDeckGl.defaults;
 
@@ -259,7 +266,7 @@ export class Viewer {
         if (!this._dataScope.hasFilteredData()) {
             return this._specColumns;
         }
-        const roles = ['color', 'facet', 'group', 'size', 'sort', 'x', 'y', 'z'];
+        const roles = ['color', 'facet', 'group', 'size', 'sort', 'sum', 'x', 'y', 'z'];
         const specColumns = { ...this._specColumns };
         roles.forEach(r => {
             if (specColumns[r]) {
@@ -271,7 +278,7 @@ export class Viewer {
         return specColumns;
     }
 
-    private async renderNewLayout(c?: VegaDeckGl.types.PresenterConfig, view?: VegaDeckGl.types.View) {
+    private async renderNewLayout(presenterConfig?: VegaDeckGl.types.PresenterConfig, view?: View) {
         const currData = this._dataScope.currentData();
         const context: SpecContext = { specColumns: this.getSpecColumnsWithFilteredStats(), insight: this.insight, specViewOptions: this.options };
         const specResult = cloneVegaSpecWithData(context, currData);
@@ -282,7 +289,7 @@ export class Viewer {
             this.vegaSpec = specResult.vegaSpec;
             this.options.onVegaSpec && this.options.onVegaSpec(this.vegaSpec);
             this.specCapabilities = specResult.specCapabilities;
-            const config = this.createConfig(c);
+            const config = this.createConfig(presenterConfig);
             if (view) {
                 config.getView = () => view;
             }
@@ -357,7 +364,7 @@ export class Viewer {
         this.vegaViewGl.presenter.rePresent(stage, this.createConfig().presenterConfig);
     }
 
-    private getView(view: VegaDeckGl.types.View) {
+    private getView(view: View) {
         if (view === undefined) {
             if (this.presenter.view === null) {
                 return defaultView;
@@ -560,12 +567,12 @@ export class Viewer {
                 return;
             }
         }
-        if (hasSelectedData && this._dataScope.selection.included.length === 1 && this._dataScope.selection.included[0][VegaDeckGl.constants.GL_ORDINAL] === cube.ordinal) {
+        if (hasSelectedData && this._dataScope.selection.included.length === 1 && this._dataScope.selection.included[0][GL_ORDINAL] === cube.ordinal) {
             this.deselect();
             return;
         }
         const search: SearchExpression = {
-            name: VegaDeckGl.constants.GL_ORDINAL,
+            name: GL_ORDINAL,
             operator: '==',
             value: cube.ordinal
         };
@@ -603,7 +610,19 @@ export class Viewer {
         const defaultPresenterConfig: VegaDeckGl.types.PresenterConfig = {
             getTextColor,
             getTextHighlightColor,
-            onTextClick,
+            onTextClick: (e, t) => {
+                if (t.metaData && t.metaData.search) {
+                    const search = getSearchGroupFromVegaValue(t.metaData.search);
+                    if (this.options.onAxisClick) {
+                        this.options.onAxisClick(e, search);
+                    } else {
+                        this.select(search);
+                    }
+                }
+                if (onTextClick) {
+                    onTextClick(e, t);
+                }
+            },
             onCubeClick: this.onCubeClick.bind(this),
             onCubeHover: this.onCubeHover.bind(this),
             onTextHover: this.onTextHover.bind(this),
@@ -626,6 +645,18 @@ export class Viewer {
                     //header clicked
                     this.options.onLegendHeaderClick(e);
                 }
+            },
+            onSceneRectAssignCubeOrdinal: datum => {
+                //TODO see if datum is a facet selection rect
+                return datum[GL_ORDINAL];
+            },
+            onTargetViewState: (h, w) => {
+                const { height, width } = this.insight.size;
+                let newViewStateTarget: boolean;
+                if (this.options.onNewViewStateTarget) {
+                    newViewStateTarget = this.options.onNewViewStateTarget();
+                }
+                return { height, width, newViewStateTarget };
             }
         };
         if (this.options.onBeforeCreateLayers) {

@@ -17,8 +17,7 @@ import {
     PresenterStyle,
     QueuedAnimationOptions,
     Scene3d,
-    Stage,
-    View
+    Stage
 } from './interfaces';
 import { CubeLayer_Class, CubeLayerInterpolatedProps } from './cube-layer/cube-layer';
 import { DeckProps } from '@deck.gl/core/lib/deck';
@@ -34,6 +33,7 @@ import { patchCubeArray } from './patchedCubeArray';
 import { PresenterElement } from './enums';
 import { sceneToStage } from './stagers';
 import { targetViewState, viewStateProps } from './viewState';
+import { View } from '@msrvida/chart-types';
 
 interface IBounds {
     view: View;
@@ -155,13 +155,10 @@ export class Presenter {
         let scene = sceneOrStage as Scene3d;
         let stage: Stage;
         let options: MarkStagerOptions = {
-            offsetX: 0,
-            offsetY: 0,
-            maxOrdinal: -1,
-            ordinalsSpecified: false,
+            maxOrdinal: 0,
             currAxis: null,
-            currFacetRect: null,
-            defaultCubeColor: this.style.defaultCubeColor
+            defaultCubeColor: this.style.defaultCubeColor,
+            assignCubeOrdinal: (config && config.onSceneRectAssignCubeOrdinal) || (() => options.maxOrdinal++)
         };
         //determine if this is a vega scene
         if (scene.marktype) {
@@ -198,8 +195,8 @@ export class Presenter {
             this.deckgl = new classes.DeckGL_Class(deckProps);
         }
         let cubeCount = Math.max(this._last.cubeCount, stage.cubeData.length);
-        if (options.ordinalsSpecified) {
-            cubeCount = Math.max(cubeCount, options.maxOrdinal + 1);
+        if (options.maxOrdinal) {
+            cubeCount = Math.max(cubeCount, options.maxOrdinal);
             const empty: Partial<Cube> = {
                 isEmpty: true,
                 color: [0, 0, 0, 0] // possibly a bug in Deck.gl? set color to invisible.
@@ -252,7 +249,18 @@ export class Presenter {
             || this.deckgl.props.viewState;
 
         if (!viewState || newBounds || config.shouldViewstateTransition && config.shouldViewstateTransition()) {
-            viewState = targetViewState(height, width, stage.view);
+            let newViewStateTarget = true;
+            if (config && config.onTargetViewState) {
+                const result = config.onTargetViewState(height, width);
+                height = result.height;
+                width = result.width;
+                if (result.newViewStateTarget !== undefined) {
+                    newViewStateTarget = result.newViewStateTarget;
+                }
+            }
+            if (!viewState || newViewStateTarget) {
+                viewState = targetViewState(height, width, stage.view);
+            }
             const oldCubeLayer = getCubeLayer(this.deckgl.props) as CubeLayer_Class;
             if (oldCubeLayer) {
                 linearInterpolator = new LinearInterpolator(viewStateProps);

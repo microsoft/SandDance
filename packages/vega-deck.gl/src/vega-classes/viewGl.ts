@@ -3,10 +3,11 @@
 import { base } from '../base';
 import { defaultView } from '../defaults';
 import { Presenter } from '../presenter';
-import { PresenterConfig, View } from '../interfaces';
+import { PresenterConfig } from '../interfaces';
 import { PresenterElement } from '../enums';
 import { RendererGl, RendererGl_Class } from './rendererGl';
 import { Renderers, Runtime, View as VegaView } from 'vega-typings';
+import { View } from '@msrvida/chart-types';
 
 let registered = false;
 

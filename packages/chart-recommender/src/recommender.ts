@@ -8,7 +8,7 @@ export interface Rule {
     (column: SandDance.types.Column): boolean;
 }
 
-export interface Recommendation extends Partial<SandDance.types.Insight> {
+export interface Recommendation extends Partial<SandDance.specs.Insight> {
     score: number;
 }
 

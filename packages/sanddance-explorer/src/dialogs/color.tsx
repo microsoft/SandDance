@@ -13,15 +13,15 @@ import { Group } from '../controls/group';
 
 export interface Props extends ColumnMapBaseProps {
     compactUI: boolean;
-    specCapabilities: SandDance.types.SpecCapabilities;
+    specCapabilities: SandDance.specs.SpecCapabilities;
     scheme: string;
     colorColumn: string;
-    colorBin: SandDance.types.ColorBin;
+    colorBin: SandDance.specs.ColorBin;
     colorBinSignal: NewSignal;
     colorReverseSignal: NewSignal;
     dataContent: DataContent;
     onColorSchemeChange: (scheme: string) => void;
-    onColorBinChange: (colorBin: SandDance.types.ColorBin) => void;
+    onColorBinChange: (colorBin: SandDance.specs.ColorBin) => void;
     onColorBinCountChange: (value: number) => void;
     onColorReverseChange: (value: boolean) => void;
     disabled: boolean;
@@ -61,6 +61,7 @@ export function Color(props: Props) {
                     signal={props.colorReverseSignal}
                     explorer={props.explorer}
                     onChange={props.onColorReverseChange}
+                    collapseLabel={props.compactUI}
                 />}
             </Group>
             {colorColumn && !colorColumn.isColorData && <Group label={strings.labelColorBin}>
@@ -87,7 +88,7 @@ export function Color(props: Props) {
                         }
                     ]}
                     onChange={(e, o) => {
-                        props.onColorBinChange(o.key as SandDance.types.ColorBin);
+                        props.onColorBinChange(o.key as SandDance.specs.ColorBin);
                     }}
                 />
                 <Signal
@@ -95,6 +96,7 @@ export function Color(props: Props) {
                     signal={props.colorBinSignal}
                     explorer={props.explorer}
                     onChange={props.onColorBinCountChange}
+                    collapseLabel={props.compactUI}
                 />
             </Group>}
             {colorColumn && !colorColumn.isColorData && <Group label={strings.labelColorOptions}>

@@ -4,16 +4,15 @@ import * as React from 'react';
 import { ColumnMap, Props as ColumnMapProps } from './controls/columnMap';
 import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';
-import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 import { MousePosition } from './mouseEvent';
 
-export interface TextWithSpecRole extends TextLayerDatum {
-    specRole: SandDance.types.SpecRoleCapabilities;
+export interface TextWithSpecRole extends SandDance.VegaDeckGl.types.VegaTextLayerDatum {
+    specRole: SandDance.specs.SpecRoleCapabilities;
 }
 
 export function onBeforeCreateLayers(
     stage: SandDance.VegaDeckGl.types.Stage,
-    specCapabilities: SandDance.types.SpecCapabilities
+    specCapabilities: SandDance.specs.SpecCapabilities
 ) {
     for (let axisName in stage.axes) {
         specCapabilities.roles.forEach(specRole => {

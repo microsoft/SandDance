@@ -4,25 +4,21 @@ import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import PolygonLayer, { PolygonLayerDatum } from '@deck.gl/layers/polygon-layer/polygon-layer';
 import {
     AxisSelectionType,
-    Column,
+    FieldNames,
     SpecCapabilities,
     SpecColumns
-} from './specs/types';
+} from '@msrvida/sanddance-specs';
+import { Column } from '@msrvida/chart-types';
+import { getSearchGroupFromVegaValue } from './search';
 import { LayerInputHandler } from '@deck.gl/core/lib/layer';
-import { SearchExpressionGroup } from './searchExpression/types';
-import {
-    selectBetweenAxis,
-    selectBetweenFacet,
-    selectExact,
-    selectExactAxis,
-    selectNullOrEmpty
-} from './expression';
+import { SearchExpressionGroup } from '@msrvida/search-expression';
+import { selectBetweenAxis, selectExactAxis } from './expression';
 
 export interface AxisSelectionHandler {
     (event: TouchEvent | MouseEvent | PointerEvent, search: SearchExpressionGroup): void;
 }
 
-export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabilities: SpecCapabilities, columns: SpecColumns, stage: VegaDeckGl.types.Stage, clickHandler: AxisSelectionHandler, highlightColor: number[], polygonZ: number): PolygonLayer {
+export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabilities: SpecCapabilities, columns: SpecColumns, stage: VegaDeckGl.types.Stage, clickHandler: AxisSelectionHandler, highlightColor: string, polygonZ: number): PolygonLayer {
     const polygons: SelectPolygon[] = [];
     const xRole = specCapabilities.roles.filter(r => r.role === 'x')[0];
     if (xRole && xRole.axisSelection) {
@@ -36,8 +32,8 @@ export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabili
             polygons.push.apply(polygons, axisSelectionPolygons(axis, true, yRole.axisSelection, columns.y));
         });
     }
-    if (stage.facets) {
-        polygons.push.apply(polygons, facetSelectionPolygons(stage.facets, columns.facet));
+    if (stage.facets && columns.facet) {
+        polygons.push.apply(polygons, facetSelectionPolygons(stage.facets));
     }
     //move polygons to Z
     polygons.forEach(datum => {
@@ -51,7 +47,7 @@ export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabili
         coordinateSystem: VegaDeckGl.base.deck.COORDINATE_SYSTEM.IDENTITY,
         data: polygons,
         extruded: false,
-        highlightColor,
+        highlightColor: VegaDeckGl.util.colorFromString(highlightColor),
         id: 'selections',
         onHover: (o, e) => {
             if (o.index === -1) {
@@ -115,18 +111,19 @@ function axisSelectionPolygons(axis: VegaDeckGl.types.Axis, vertical: boolean, a
     return polygons;
 }
 
-function facetSelectionPolygons(facetRects: VegaDeckGl.types.FacetRect[], facetColumn: Column) {
+function facetSelectionPolygons(facetRects: VegaDeckGl.types.FacetRect[]) {
     const polygons: SelectPolygon[] = [];
-    facetRects.forEach((facetRect, i) => {
+    let linesAndSearches: { lines: VegaDeckGl.types.StyledLine[], search: SearchExpressionGroup }[];
+    linesAndSearches = facetRects.map(({ datum, lines }, i) => {
+        let group: SearchExpressionGroup = getSearchGroupFromVegaValue(datum[FieldNames.FacetSearch]);
+        return {
+            lines,
+            search: group
+        };
+    });
+    linesAndSearches.forEach(({ lines, search }, i) => {
         //take any 2 lines to get a box dimension
-        const [x, y] = minMaxPoints(facetRect.lines.slice(2));
-        const search: SearchExpressionGroup = facetRect.facetTitle ?
-            facetColumn.quantitative ?
-                selectBetweenFacet(facetColumn, facetRect.facetTitle.text, i === 0, i === facetRects.length - 1)
-                :
-                { expressions: [selectExact(facetColumn, facetRect.facetTitle.text)] }
-            :
-            { expressions: [selectNullOrEmpty(facetColumn)] };
+        const [x, y] = minMaxPoints(lines.slice(2));
         polygons.push({
             search,
             polygon: [[x.min, y.min], [x.max, y.min], [x.max, y.max], [x.min, y.max]]

@@ -8,14 +8,13 @@ const { desaturate } = VegaDeckGl.util;
 
 export const defaultViewerOptions: ViewerOptions = {
     colors: {
-        activeCube: [128, 0, 128, 255], //purple
-        defaultCube: defaultPresenterStyle.defaultCubeColor,
-        hoveredCube: defaultPresenterStyle.highlightColor,
-        selectedCube: [255, 255, 0, 255],   //yellow
-        axisSelectHighlight: [128, 128, 128, 128],
-        axisLine: [0, 0, 0, 255],
-        axisText: [0, 0, 0, 255],
-        cellFillerLine: [128, 128, 128, 255],
+        activeCube: 'purple',
+        defaultCube: VegaDeckGl.util.colorToString(defaultPresenterStyle.defaultCubeColor),
+        hoveredCube: VegaDeckGl.util.colorToString(defaultPresenterStyle.highlightColor),
+        selectedCube: 'yellow',
+        axisSelectHighlight: VegaDeckGl.util.colorToString([128, 128, 128, 128]),
+        axisLine: '#000',
+        axisText: '#000',
         unselectedColorMethod: (color) => {
             const c = desaturate(color, 0.05);
             c[3] = 171;
@@ -42,20 +41,25 @@ export const defaultViewerOptions: ViewerOptions = {
         colorBinCount: 'Color bin count',
         colorReverse: 'Color reverse',
         count: 'Count',
+        percent: 'Percent',
+        sum: 'Sum',
         scatterPointSize: 'Point size',
-        XBinSize: 'X axis bin size',
-        YBinSize: 'Y axis bin size',
+        FacetMaxBins: 'Facet max bins',
+        FacetVMaxBins: 'Cross facet max bins',
+        XMaxBins: 'X axis max bins',
+        YMaxBins: 'Y axis max bins',
         XGridSize: 'X grid size',
         YGridSize: 'Y grid size',
         InnerPaddingSize: 'Inner padding size',
         OuterPaddingSize: 'Outer padding size',
-        treeMapMethod: 'Method',
+        treeMapMethod: 'Treemap layout',
         facetColumns: 'Facet columns',
         facetRows: 'Facet rows',
         markOpacitySignal: 'Mark opacity',
         textScaleSignal: 'Text scale',
         xAxisTextAngleSignal: 'X axis text angle',
         yAxisTextAngleSignal: 'Y axis text angle',
+        zGrounded: 'Z grounded',
         zScaleProportion: 'Z scale proportion to Y',
         selectionCount: count => `${count} items selected`
     },
@@ -68,22 +72,17 @@ export const defaultViewerOptions: ViewerOptions = {
         scope: 600
     },
     selectionPolygonZ: -1,
-    tickSize: 10,
-    facetMargins: {
-        column: 40,
-        row: 40,
-        title: 40
-    }
+    tickSize: 10
 };
 
 export function getPresenterStyle(options: ViewerOptions) {
     var style: VegaDeckGl.types.PresenterStyle = {
         cssPrefix,
         fontFamily: options.fontFamily,
-        defaultCubeColor: options.colors.defaultCube
+        defaultCubeColor: VegaDeckGl.util.colorFromString(options.colors.defaultCube)
     };
     if (options.colors.hoveredCube) {
-        style.highlightColor = options.colors.hoveredCube;
+        style.highlightColor = VegaDeckGl.util.colorFromString(options.colors.hoveredCube);
     }
     if (options.lightSettings) {
         style.lightSettings = options.lightSettings;

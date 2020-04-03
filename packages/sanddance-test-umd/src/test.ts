@@ -23,7 +23,7 @@ namespace test {
         { myUid: 2, myColor: 2, mySort: 2, myX: 2, myY: 2, myZ: 2 }
     ];
 
-    const options: SandDance.types.Insight = {
+    const options: SandDance.specs.Insight = {
         columns: {
             color: 'myColor',
             sort: 'mySort',

@@ -1,24 +1,26 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
-import { LightSettings } from '@deck.gl/core/lib/layer';
 import { Color } from '@deck.gl/core/utils/color';
 import {
     Column,
+    ColumnStats,
     ColumnTypeMap,
+    View
+} from '@msrvida/chart-types';
+import { DeckProps } from '@deck.gl/core/lib/deck';
+import { LightSettings } from '@deck.gl/core/lib/layer';
+import { Search, SearchExpressionGroup } from '@msrvida/search-expression';
+import { Spec } from 'vega-typings';
+import {
     SpecCapabilities,
     SpecColorSettings,
     SpecLanguage,
+    SpecResult,
     SpecViewOptions
-} from './specs/types';
-import { DeckProps } from '@deck.gl/core/lib/deck';
-import { Search, SearchExpressionGroup } from './searchExpression/types';
-import { Spec } from 'vega-typings';
-import { SpecResult } from './specs/interfaces';
-import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
+} from '@msrvida/sanddance-specs';
 
-export * from './searchExpression/types';
-export * from './specs/types';
+export { Column, ColumnStats, ColumnTypeMap, View };
 
 /**
  * Map of ordinals per unique Id.
@@ -82,7 +84,7 @@ export interface ViewerOptions extends SpecViewOptions {
     /**
      * Optional map of light settings for the visualization, per camera view type.
      */
-    lightSettings?: { [view in VegaDeckGl.types.View]: LightSettings };
+    lightSettings?: { [view in View]: LightSettings };
 
     /**
      * Lengths of time for a transition animation.
@@ -127,17 +129,17 @@ export interface ViewerOptions extends SpecViewOptions {
     /**
      * Optional handler to get the color of text elements.
      */
-    getTextColor?: (t: TextLayerDatum) => Color;
+    getTextColor?: (t: VegaDeckGl.types.VegaTextLayerDatum) => Color;
 
     /**
      * Optional handler to get the highlight color of text elements.
      */
-    getTextHighlightColor?: (t: TextLayerDatum) => Color;
+    getTextHighlightColor?: (t: VegaDeckGl.types.VegaTextLayerDatum) => Color;
 
     /**
      * Optional click handler for text elements.
      */
-    onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, o: TextLayerDatum) => void;
+    onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, o: VegaDeckGl.types.VegaTextLayerDatum) => void;
 
     /**
      * Optional handler when axis is clicked.
@@ -158,6 +160,11 @@ export interface ViewerOptions extends SpecViewOptions {
      * Optional handler when Vega spec is created, prior to it being rendered.
      */
     onVegaSpec?: (vegaSpec: Spec) => void;
+
+    /**
+     * Optional handler to reset the camera after chart is rendered.
+     */
+    onNewViewStateTarget?: () => boolean;
 
     /**
      * Z value of selection polygons.
@@ -181,22 +188,22 @@ export interface ColorSettings extends SpecColorSettings {
     /**
      * Color of the individually selected cube.
      */
-    activeCube?: Color;
+    activeCube?: string;
 
     /**
      * Color of the cube when mouse hovered.
      */
-    hoveredCube?: Color;
+    hoveredCube?: string;
 
     /**
      * Color of selected cubes.
      */
-    selectedCube?: Color;
+    selectedCube?: string;
 
     /**
      * Color of axis hover hotspots.
      */
-    axisSelectHighlight?: Color;
+    axisSelectHighlight?: string;
 
     /**
      * Method of coloring unselected cubes.

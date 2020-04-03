@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
-import { ColorScaleNone } from './specs/constants';
+import { ColorScaleNone } from '@msrvida/sanddance-specs';
 import { ColorScheme } from './types';
 import { defaultViewerOptions, dualColorSchemeColors as defs } from './defaults';
 
@@ -20,7 +20,7 @@ const dualPairs = [
 export const colorSchemes: ColorScheme[] = [
     {
         scheme: ColorScaleNone,
-        colors: [VegaDeckGl.util.colorToString(defaultViewerOptions.colors.defaultCube)]
+        colors: [defaultViewerOptions.colors.defaultCube]
     }
 ];
 

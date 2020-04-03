@@ -49,5 +49,21 @@ import * as SandDance from '@msrvida/sanddance';
 SandDance.use(vega, deck, layers, luma);
 ```
 
+## Versions
+
+### Breaking changes in v3
+
+* new `searchExpression` namespace
+  * `types.Search` moved here
+  * `util.ensureSearchExpressionGroup` moved here
+* new `specs` namespace
+  * `types.Insight` moved here
+* `ViewerOptions` colors are now `string` type
+* `VegaDeckGl.View` moved to `types.View`
+
+### Breaking changes in v2
+
+* vega dependency from 4.x to 5.x
+
 ## For more information
 Please visit the [SandDance website](https://microsoft.github.io/SandDance/).

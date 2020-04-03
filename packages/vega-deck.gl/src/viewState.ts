@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { OrbitViewState } from '@deck.gl/core/views/orbit-view';
-import { View } from './interfaces';
+import { View } from '@msrvida/chart-types';
 
 export const viewStateProps = ['distance', 'fov', 'lookAt', 'rotationOrbit', 'rotationX', 'zoom'];
 
