@@ -16,7 +16,7 @@ var treeMapTest;
         },
         chart: 'treemap'
     };
-    vega.loader().load('../../sample-data/titanicmaster.tsv').then(function (text) {
+    vega.loader().load('../../../sample-data/titanicmaster.tsv').then(function (text) {
         var data = vega.read(text, { type: 'tsv' });
         treeMapTest.viewer.render(options, data);
     });

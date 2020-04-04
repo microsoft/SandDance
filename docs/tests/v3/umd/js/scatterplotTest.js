@@ -19,7 +19,7 @@ var scatterplotTest;
         },
         chart: 'scatterplot'
     };
-    vega.loader().load('../../sample-data/demovote.tsv').then(function (text) {
+    vega.loader().load('../../../sample-data/demovote.tsv').then(function (text) {
         var data = vega.read(text, { type: 'tsv' });
         scatterplotTest.viewer.render(options, data);
     });

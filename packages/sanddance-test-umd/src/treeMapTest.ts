@@ -26,7 +26,7 @@ namespace treeMapTest {
         chart: 'treemap'
     };
 
-    vega.loader().load('../../sample-data/titanicmaster.tsv').then(text => {
+    vega.loader().load('../../../sample-data/titanicmaster.tsv').then(text => {
         const data = vega.read(text, { type: 'tsv' });
         viewer.render(options, data);
     });

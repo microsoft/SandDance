@@ -29,7 +29,7 @@ namespace scatterplotTest {
         chart: 'scatterplot'
     };
 
-    vega.loader().load('../../sample-data/demovote.tsv').then(text => {
+    vega.loader().load('../../../sample-data/demovote.tsv').then(text => {
         const data = vega.read(text, { type: 'tsv' });
         viewer.render(options, data);
     });
