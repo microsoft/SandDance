@@ -29,7 +29,7 @@
     "@msrvida/sanddance-specs": "3.0.0-alpha.1",
     "@msrvida/search-expression": "^1",
     "@msrvida/vega-deck.gl": "3.0.0-alpha.1",
-    "tsx-create-element": "1.1.4",
+    "tsx-create-element": "^2.0.2",
     "vega-typings": "^0.14.2"
   }
 }
