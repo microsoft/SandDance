@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
-import { createElement } from 'tsx-create-element';
 import { GL_ORDINAL } from './constants';
 import { isInternalFieldName } from './util';
 import { TooltipOptions } from './types';

@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { Animator } from './animator';
 import { controls, util } from '@msrvida/vega-deck.gl';
-import { createElement, mount } from 'tsx-create-element';
 import { cssPrefix } from './defaults';
 import { DataScope, UserSelection } from './dataScope';
 import { GL_ORDINAL } from './constants';
@@ -143,7 +143,9 @@ export class Details {
             hasColorMaps: this.hasColorMaps() && hasRefinedData,
             remapColor: this.state.remapColor
         };
-        mount(renderDetails(renderProps), this.element);
+        const a = VegaDeckGl.util.getActiveElementInfo();
+        VegaDeckGl.util.mount(renderDetails(renderProps), this.element);
+        VegaDeckGl.util.setActiveElement(a);
     }
 }
 

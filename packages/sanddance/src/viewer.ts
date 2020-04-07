@@ -42,7 +42,6 @@ import { finalizeLegend } from './legend';
 import { getSearchGroupFromVegaValue } from './search';
 import { GL_ORDINAL } from './constants';
 import { makeDateRange } from './date';
-import { mount } from 'tsx-create-element';
 import { recolorAxes } from './axes';
 import { registerColorSchemes } from './colorSchemes';
 import { Spec, Transforms } from 'vega-typings';
@@ -155,7 +154,9 @@ export class Viewer {
     }
 
     private applyLegendColorContext(colorContext: ColorContext) {
-        mount(colorContext.legendElement, this.presenter.getElement(VegaDeckGl.PresenterElement.legend));
+        const a = VegaDeckGl.util.getActiveElementInfo();
+        VegaDeckGl.util.mount(colorContext.legendElement, this.presenter.getElement(VegaDeckGl.PresenterElement.legend));
+        VegaDeckGl.util.setActiveElement(a);
         this.presenter.stage.legend = colorContext.legend;
     }
 
