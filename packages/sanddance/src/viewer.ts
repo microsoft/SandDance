@@ -154,7 +154,9 @@ export class Viewer {
     }
 
     private applyLegendColorContext(colorContext: ColorContext) {
+        const a = VegaDeckGl.util.getActiveElementInfo();
         VegaDeckGl.util.mount(colorContext.legendElement, this.presenter.getElement(VegaDeckGl.PresenterElement.legend));
+        VegaDeckGl.util.setActiveElement(a);
         this.presenter.stage.legend = colorContext.legend;
     }
 

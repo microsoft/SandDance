@@ -23,11 +23,11 @@ import { CubeLayer_Class, CubeLayerInterpolatedProps } from './cube-layer/cube-l
 import { DeckProps } from '@deck.gl/core/lib/deck';
 import { deepMerge } from './clone';
 import { easeExpInOut } from 'd3-ease';
+import { getActiveElementInfo, mount, setActiveElement } from 'tsx-create-element';
 import { getCubeLayer, getCubes, getLayers } from './layers';
 import { LegendView } from './legend';
 import { LinearInterpolator, LinearInterpolator_Class } from './deck.gl-classes/linearInterpolator';
 import { MarkStagerOptions } from './marks/interfaces';
-import { mount } from 'tsx-create-element';
 import { OrbitController_Class } from './deck.gl-classes/orbitController';
 import { patchCubeArray } from './patchedCubeArray';
 import { PresenterElement } from './enums';
@@ -204,7 +204,11 @@ export class Presenter {
             stage.cubeData = patchCubeArray(cubeCount, empty, stage.cubeData as Cube[]);
         }
         this.setDeckProps(stage, height, width, cubeCount, config);
+
+        const a = getActiveElementInfo();
         mount(LegendView({ legend: stage.legend, onClick: config && config.onLegendClick }), this.getElement(PresenterElement.legend));
+        setActiveElement(a);
+
         if (config && config.onPresent) {
             config.onPresent();
         }

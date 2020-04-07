@@ -143,7 +143,9 @@ export class Details {
             hasColorMaps: this.hasColorMaps() && hasRefinedData,
             remapColor: this.state.remapColor
         };
+        const a = VegaDeckGl.util.getActiveElementInfo();
         VegaDeckGl.util.mount(renderDetails(renderProps), this.element);
+        VegaDeckGl.util.setActiveElement(a);
     }
 }
 

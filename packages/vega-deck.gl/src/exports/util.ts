@@ -10,8 +10,8 @@ import { allTruthy, concat, push } from '../array';
 import { addDiv, addEl, outerSize } from '../htmlHelpers';
 import { clone, deepMerge } from '../clone';
 import { colorFromString, colorIsEqual, colorToString, desaturate } from '../color';
-import { createElement, mount } from 'tsx-create-element';
+import { createElement, getActiveElementInfo, mount, setActiveElement } from 'tsx-create-element';
 import { getCubeLayer, getCubes } from '../layers';
 
 //alphabetize for documentation
-export { addDiv, addEl, allTruthy, clone, colorFromString, colorIsEqual, colorToString, concat, createElement, deepMerge, desaturate, getCubeLayer, getCubes, mount, outerSize, push };
+export { addDiv, addEl, allTruthy, clone, colorFromString, colorIsEqual, colorToString, concat, createElement, deepMerge, desaturate, getActiveElementInfo, getCubeLayer, getCubes, mount, outerSize, push, setActiveElement };
