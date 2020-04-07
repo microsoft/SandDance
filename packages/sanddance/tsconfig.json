@@ -2,7 +2,7 @@
     "compilerOptions": {
         "declaration": true,
         "jsx": "react",
-        "jsxFactory": "createElement",
+        "jsxFactory": "VegaDeckGl.util.createElement",
         "moduleResolution": "node",
         "outDir": "dist/es6",
         "skipLibCheck": true,
