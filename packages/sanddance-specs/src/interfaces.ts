@@ -61,7 +61,7 @@ export interface InnerScope {
     globalScales?: GlobalScales;
     encodingRuleMap?: { [key: string]: EncodingRule[] };
     sizeSignals: SizeSignals;
-    offsetData?: OffsetData;
+    offsetData?: OffsetData;    //TODO mandatory
 }
 
 export interface GlobalScope extends InnerScope {

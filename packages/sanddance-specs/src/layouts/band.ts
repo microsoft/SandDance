@@ -1,5 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { Layout, LayoutBuildProps, LayoutProps } from './layout';
+import { binnable, Binnable } from '../bin';
+import { FieldNames } from '../constants';
+import {
+    DiscreteColumn,
+    EncodingRule,
+    InnerScope,
+    Orientation
+} from '../interfaces';
 import {
     addData,
     addMarks,
@@ -7,17 +16,9 @@ import {
     addTransforms,
     getDataByName
 } from '../scope';
-import { BandScale, GroupMark } from 'vega-typings';
-import { binnable, Binnable } from '../bin';
-import {
-    DiscreteColumn,
-    EncodingRule,
-    InnerScope,
-    Orientation
-} from '../interfaces';
-import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { modifySignal } from '../signals';
 import { testForCollapseSelection } from '../selection';
+import { modifySignal } from '../signals';
+import { BandScale, GroupMark } from 'vega-typings';
 
 export interface BandProps extends LayoutProps {
     excludeEncodingRuleMap?: boolean;
@@ -36,7 +37,8 @@ export class Band extends Layout {
         xScale: string,
         yScale: string,
         bandWidth: string,
-        accumulative: string
+        accumulative: string,
+        offsets: string
     };
 
     constructor(public props: BandProps & LayoutBuildProps) {
@@ -47,7 +49,8 @@ export class Band extends Layout {
             xScale: `scale_${p}_x`,
             yScale: `scale_${p}_y`,
             bandWidth: `${p}_bandwidth`,
-            accumulative: `${p}_accumulative`
+            accumulative: `${p}_accumulative`,
+            offsets: `data_${p}_offsets`
         };
         this.bin = binnable(this.prefix, props.globalScope.dataName, props.groupby);
     }
@@ -92,6 +95,8 @@ export class Band extends Layout {
         const mark = this.getMark(parentScope, horizontal, binField, style);
         addMarks(parentScope.scope, mark);
 
+        this.getOffset(parentScope, horizontal, binField);
+
         const scale = this.getScale(bin, horizontal);
 
         let encodingRuleMap: { [key: string]: EncodingRule[] };
@@ -130,6 +135,10 @@ export class Band extends Layout {
 
         return {
             dataName: names.facetData,
+            offsetData: {
+                dataName: names.offsets,
+                key: binField
+            },
             scope: mark,
             sizeSignals: horizontal ?
                 {
@@ -200,6 +209,49 @@ export class Band extends Layout {
                     }
             }
         };
+    }
+
+    private getOffset(parentScope: InnerScope, horizontal: boolean, binField: string) {
+        const { id, names, props } = this;
+        const { globalScope } = props;
+        addData(globalScope.scope, {
+            name: names.offsets,
+            source: `group_${id}`,
+            transform: [
+                {
+                    type: 'formula',
+                    expr: horizontal ?
+                        `0`
+                        :
+                        `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(binField)}])`,
+                    as: FieldNames.OffsetX
+                },
+                {
+                    type: 'formula',
+                    expr: horizontal ?
+                        `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(binField)}])`
+                        :
+                        `0`,
+                    as: FieldNames.OffsetY
+                },
+                {
+                    type: 'formula',
+                    expr: horizontal ?
+                        names.bandWidth
+                        :
+                        parentScope.sizeSignals.layoutHeight,
+                    as: FieldNames.OffsetHeight
+                },
+                {
+                    type: 'formula',
+                    expr: horizontal ?
+                        parentScope.sizeSignals.layoutWidth
+                        :
+                        names.bandWidth,
+                    as: FieldNames.OffsetWidth
+                }
+            ]
+        });
     }
 
     private getScale(bin: Binnable, horizontal: boolean) {
