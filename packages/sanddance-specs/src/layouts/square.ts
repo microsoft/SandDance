@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { addData, addMarks, addSignal } from '../scope';
+import { addData, addMarks, addSignal, getGroupBy } from '../scope';
 import { addZScale } from '../zBase';
 import { Column } from '@msrvida/chart-types';
 import { FieldNames } from '../constants';
@@ -180,7 +180,7 @@ export class Square extends Layout {
                         transform: [
                             {
                                 type: 'aggregate',
-                                groupby: groupings.reduce((acc, val) => acc.concat(val), []),
+                                groupby: getGroupBy(groupings),
                                 ops: ['count'],
                                 as: [FieldNames.Count]
                             },

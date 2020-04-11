@@ -1,6 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Axis, Scope, Scale, Signal, Data, Mark, Transforms } from 'vega-typings';
+import { Grouping } from './interfaces';
+import {
+    Axis,
+    Data,
+    Mark,
+    Scale,
+    Scope,
+    Signal,
+    Transforms
+} from 'vega-typings';
 
 export function addAxes(scope: Scope, ...axis: Axis[]) {
     if (!scope.axes) {
@@ -44,8 +53,13 @@ export function addTransforms(data: Data, ...transforms: Transforms[]) {
     data.transform.push(...transforms);
 }
 
-export function getDataByName(data: Data[], dataName: string): Data {
+export function getDataByName(data: Data[], dataName: string) {
     for (let i = 0; i < data.length; i++) {
-        if (data[i].name === dataName) return data[i];
+        if (data[i].name === dataName) return { data: data[i], index: i };
     }
+}
+
+export function getGroupBy(groupings: Grouping[]) {
+    const groupby = groupings.map(g => g.groupby);
+    return groupby.reduce((acc, val) => acc.concat(val), [])
 }

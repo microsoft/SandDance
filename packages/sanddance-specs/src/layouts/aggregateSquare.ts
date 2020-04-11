@@ -5,7 +5,8 @@ import {
     addMarks,
     addSignal,
     addTransforms,
-    getDataByName
+    getDataByName,
+    getGroupBy
 } from '../scope';
 import { InnerScope } from '../interfaces';
 import { Column } from '@msrvida/chart-types';
@@ -59,11 +60,11 @@ export class AggregateSquare extends Layout {
         const { sizeSignals } = parentScope;
 
         //this needs to be global since the scale depends on it
-        addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName),
+        addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName).data,
             {
                 ...this.getTransforms(
                     aggregation,
-                    groupings.reduce((acc, val) => acc.concat(val), [])
+                    getGroupBy(groupings)
                 ),
                 as: [names.aggregateField]
             },

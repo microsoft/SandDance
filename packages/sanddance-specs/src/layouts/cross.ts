@@ -127,7 +127,7 @@ export class Cross extends Layout {
             const titleSource: TitleSource = titles[dim];
             if (bin.native === false) {
                 addSignal(globalScope.scope, bin.maxbinsSignal);
-                addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName), ...bin.transforms);
+                addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName).data, ...bin.transforms);
                 addData(globalScope.scope, bin.dataSequence);
                 addTransforms(bin.dataSequence,
                     {

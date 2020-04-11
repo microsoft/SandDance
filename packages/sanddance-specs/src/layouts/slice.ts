@@ -31,7 +31,7 @@ export class Slice extends Layout {
 
         if (bin.native === false) {
             globalScope.scope.signals.push(bin.maxbinsSignal);
-            addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName), ...bin.transforms);
+            addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName).data, ...bin.transforms);
             globalScope.scope.data.push(bin.dataSequence);
         }
         const mark: Mark = {

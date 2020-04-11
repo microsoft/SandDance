@@ -1,6 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { AxisScales, GlobalScope, InnerScope } from '../interfaces';
+import {
+    AxisScales,
+    FieldOp,
+    GlobalScope,
+    Grouping,
+    InnerScope
+} from '../interfaces';
 
 export interface LayoutProps {
 }
@@ -14,7 +20,7 @@ export interface LayoutBuildProps {
     axesScales: AxisScales;
     globalScope: GlobalScope;
     parentScope: InnerScope;
-    groupings: string[][];
+    groupings: Grouping[];
     id: number;
 }
 
@@ -27,6 +33,10 @@ export class Layout {
     }
 
     public getGrouping(): string[] {
+        return null;
+    }
+
+    public getAggregateSumOp(): FieldOp {
         return null;
     }
 

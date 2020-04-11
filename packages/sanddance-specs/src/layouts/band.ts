@@ -62,7 +62,7 @@ export class Band extends Layout {
         const binField = bin.fields[0];
         if (bin.native === false) {
             addSignal(globalScope.scope, bin.maxbinsSignal);
-            addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName), ...bin.transforms);
+            addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName).data, ...bin.transforms);
             addData(globalScope.scope, bin.dataSequence);
         }
         addData(globalScope.scope, {
