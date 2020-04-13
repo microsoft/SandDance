@@ -241,6 +241,7 @@ export class AggregateContainer extends Layout {
         return {
             dataName: parentScope.dataName,
             offsetData: {
+                id: this.id,
                 dataName: names.offsets,
                 key: offsetKey
             },

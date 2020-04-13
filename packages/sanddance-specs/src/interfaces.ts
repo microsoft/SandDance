@@ -54,6 +54,7 @@ export interface Titles {
 export type EncodingRule = { test?: string } & NumericValueRef;
 
 export interface InnerScope {
+    id?: number;
     dataName: string;
     scope?: Scope;
     titles?: Titles;
@@ -62,6 +63,7 @@ export interface InnerScope {
     encodingRuleMap?: { [key: string]: EncodingRule[] };
     sizeSignals: SizeSignals;
     offsetData?: OffsetData;    //TODO mandatory
+    markData?: string;
 }
 
 export interface GlobalScope extends InnerScope {
@@ -109,6 +111,7 @@ export interface Grouping {
 }
 
 export interface OffsetData {
+    id: number;
     dataName: string;
     key: string;
 }

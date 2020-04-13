@@ -209,35 +209,46 @@ export class SpecBuilder {
 
             this.insertDataGroupings(colorDataName, groupings, globalScope, sums);
 
-            // addData(globalScope.scope, {
-            //     name: 'TODObigtable',
-            //     source: finalScope.markData || colorDataName,
-            //     transform: [
-            //         ...offsetDatas.map((offsetData, i) => {
-            //             const t: LookupTransform = {
-            //                 type: 'lookup',
-            //                 from: offsetData.dataName,
-            //                 key: offsetData.key,
-            //                 fields: [offsetData.key],
-            //                 values: [FieldNames.OffsetX, FieldNames.OffsetY],
-            //                 as: [`${FieldNames.OffsetX}_${i}`, `${FieldNames.OffsetY}_${i}`]
-            //             };
-            //             return t;
-            //         }),
-            //         ...[FieldNames.OffsetX, FieldNames.OffsetY].map(f => {
-            //             const t: FormulaTransform = {
-            //                 type: 'formula',
-            //                 expr: offsetDatas.map((o, i) => `datum[${JSON.stringify(`${f}_${i}`)}]`).join(' + '),
-            //                 as: f
-            //             }
-            //             return t;
-            //         })
-            //     ]
-            // });
+            if (offsetDatas.length) {
+                addData(globalScope.scope, {
+                    name: 'TODObigtable',
+                    source: finalScope.markData || colorDataName,
+                    transform: [
+                        ...offsetDatas.map(offsetData => {
+                            const t: LookupTransform = {
+                                type: 'lookup',
+                                from: offsetData.dataName,
+                                key: offsetData.key,
+                                fields: [offsetData.key],
+                                values: [FieldNames.OffsetX, FieldNames.OffsetY],
+                                as: [`${FieldNames.OffsetX}_${offsetData.id}`, `${FieldNames.OffsetY}_${offsetData.id}`]
+                            };
+                            return t;
+                        }),
+                        ...[FieldNames.OffsetX, FieldNames.OffsetY].map(f => {
+                            const t: FormulaTransform = {
+                                type: 'formula',
+                                expr: offsetDatas.map(o => `datum[${JSON.stringify(`${f}_${o.id}`)}]`).concat([`datum[${JSON.stringify(`${f}_${finalScope.id}`)}]`]).join(' + '),
+                                as: f
+                            }
+                            return t;
+                        })
+                    ]
+                });
+            }
 
             //add mark to the final scope
             if (finalScope.mark) {
                 const { update } = finalScope.mark.encode;
+
+                if (offsetDatas.length) {
+                    update.x = {
+                        field: FieldNames.OffsetX
+                    };
+                    update.y = {
+                        field: FieldNames.OffsetY
+                    };
+                }
 
                 allEncodingRules.forEach(map => {
                     for (let key in map) {
@@ -432,6 +443,7 @@ export class SpecBuilder {
             let layout = this.createLayout(layouts[i], buildProps);
             try {
                 childScope = layout.build();
+                childScope.id = i;
                 if (childScope.offsetData) {
                     offsetDatas.push(childScope.offsetData);
                 }

@@ -136,6 +136,7 @@ export class Band extends Layout {
         return {
             dataName: names.facetData,
             offsetData: {
+                id: this.id,
                 dataName: names.offsets,
                 key: binField
             },
