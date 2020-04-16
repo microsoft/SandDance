@@ -221,71 +221,54 @@ export class SpecBuilder {
 
             //this.insertDataGroupings(colorDataName, groupings, globalScope, sums);
 
-            if (offsets.length) {
-                const formulas: FormulaTransform[] = [];
+            const formulas: FormulaTransform[] = [];
 
-                const outfields: OutFieldMap = {
-                    x: { field: FieldNames.OffsetX, signals: [] },
-                    y: { field: FieldNames.OffsetY, signals: [] },
-                    h: { field: FieldNames.OffsetHeight, signals: [] },
-                    w: { field: FieldNames.OffsetWidth, signals: [] }
-                };
+            const outfields: OutFieldMap = {
+                x: { field: FieldNames.OffsetX, signals: [] },
+                y: { field: FieldNames.OffsetY, signals: [] },
+                h: { field: FieldNames.OffsetHeight, signals: [] },
+                w: { field: FieldNames.OffsetWidth, signals: [] }
+            };
 
-                function add(of: OutField, prop: OffsetProp) {
-                    if (!prop || prop.passThrough) return;
-                    if (prop.formula) {
-                        of.signals.push(`datum[${JSON.stringify(prop.formula.as)}]` as string);
-                    } else {
-                        if (prop.signal !== '0') {
-                            of.signals.push(prop.signal);
-                        }
+            function add(of: OutField, prop: OffsetProp) {
+                if (!prop || prop.passThrough) return;
+                if (prop.formula) {
+                    //of.signals.push(`datum[${JSON.stringify(prop.formula.as)}]` as string);
+                    of.signals.push(prop.formula.expr);
+                } else {
+                    if (prop.signal !== '0') {
+                        of.signals.push(prop.signal);
                     }
                 }
-
-                offsets.forEach(offset => {
-                    for (let key in offset) {
-                        let prop = offset[key] as OffsetProp;
-                        if (!prop || prop.passThrough) continue;
-                        if (prop.formula) {
-                            formulas.push(prop.formula);
-                        }
-                    }
-                    add(outfields.x, offset.x);
-                    add(outfields.y, offset.y);
-                    add(outfields.h, offset.h);
-                    add(outfields.w, offset.w);
-                });
-
-                const arr = [outfields.x, outfields.y];
-
-                addData(globalScope.scope, {
-                    name: 'TODObigtable',
-                    source: finalScope.markData || colorDataName,
-                    transform: [
-                        ...formulas,
-                        ...arr.map(a => {
-                            if (!a.signals.length) return;
-                            const t: FormulaTransform = {
-                                type: 'formula',
-                                expr: a.signals.join(' + '),
-                                as: a.field
-                            };
-                            return t;
-                        }).filter(Boolean)
-                    ]
-                });
             }
+
+            offsets.forEach(offset => {
+                for (let key in offset) {
+                    let prop = offset[key] as OffsetProp;
+                    if (!prop || prop.passThrough) continue;
+                    if (prop.formula) {
+                        formulas.push(prop.formula);
+                    }
+                }
+                add(outfields.x, offset.x);
+                add(outfields.y, offset.y);
+                add(outfields.h, offset.h);
+                add(outfields.w, offset.w);
+            });
 
             //add mark to the final scope
             if (finalScope.mark) {
+
+                console.log(finalScope.mark.from.data);
+
                 const { update } = finalScope.mark.encode;
 
-                if (offsets.length) {   //TODO mandatory
+                if (offsets.length) {
                     update.x = {
-                        field: FieldNames.OffsetX
+                        signal: outfields.x.signals.join(' + ')
                     };
                     update.y = {
-                        field: FieldNames.OffsetY
+                        signal: outfields.y.signals.join(' + ')
                     };
                 }
 

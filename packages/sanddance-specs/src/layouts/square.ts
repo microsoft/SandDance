@@ -7,9 +7,11 @@ import {
     addData,
     addMarks,
     addSignal,
+    addTransforms,
+    getDataByName,
     getGroupBy,
     offsetPropValueSignal
-} from '../scope';
+    } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { addZScale } from '../zBase';
 import { Column } from '@msrvida/chart-types';
@@ -27,7 +29,6 @@ export interface SquareProps extends LayoutProps {
 
 export class Square extends Layout {
     private names: {
-        markData: string,
         aspect: string,
         bandWidth: string,
         squaresPerBand: string,
@@ -46,7 +47,6 @@ export class Square extends Layout {
         super(props);
         const p = this.prefix = `square_${this.id}`;
         this.names = {
-            markData: `data_${p}_mark`,
             aspect: `${p}_aspect`,
             bandWidth: this.getBandWidth(),
             squaresPerBand: `${p}_squares_per_band`,
@@ -69,24 +69,18 @@ export class Square extends Layout {
         zSize = zSize || parentScope.sizeSignals.layoutHeight;
         addZScale(z, zSize, globalScope, names.zScale);
 
-        addData(globalScope.scope, {
-            name: names.markData,
-            source: globalScope.dataName,
-            transform: [
-                {
-                    type: 'stack',
-                    groupby: getGroupBy(groupings),
-                    as: [names.stack0, names.stack1],
-                    ...sortBy && {
-                        sort: {
-                            field: sortBy.name,
-                            order: 'ascending'
-                        }
-                    }
+        addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName).data, {
+            type: 'stack',
+            groupby: getGroupBy(groupings),
+            as: [names.stack0, names.stack1],
+            ...sortBy && {
+                sort: {
+                    field: sortBy.name,
+                    order: 'ascending'
                 }
-            ]
+            }
         });
-
+        
         //TODO add testForCollapseSelection
 
         // const xy = this.encodeXY();
@@ -107,7 +101,7 @@ export class Square extends Layout {
             name: prefix,
             type: 'rect',
             from: {
-                data: 'TODObigtable'
+                data: globalScope.dataName
             },
             encode: {
                 update: {
@@ -149,7 +143,6 @@ export class Square extends Layout {
         return {
             prefix,
             dataName: prefix,
-            markData: names.markData,
             offsets: {
                 x: {
                     formula: tx
