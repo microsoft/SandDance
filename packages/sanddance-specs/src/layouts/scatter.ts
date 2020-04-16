@@ -69,7 +69,7 @@ export class Scatter extends Layout {
                 }
             }
         );
-        addData(parentScope.scope, {
+        addData(globalScope.scope, {
             name: names.validData,
             source: parentScope.dataName,
             transform: [x, y, z].map(c => {
@@ -196,9 +196,10 @@ export class Scatter extends Layout {
             from: { data: names.validData },
             encode: { update }
         };
-        addMarks(parentScope.scope, mark);
+        addMarks(globalScope.markGroup, mark);
 
         return {
+            prefix,
             dataName: prefix,
             sizeSignals: {
                 layoutHeight: null,

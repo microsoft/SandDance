@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Grouping } from './interfaces';
+import { Grouping, OffsetProp } from './interfaces';
 import {
     Axis,
     Data,
@@ -62,4 +62,10 @@ export function getDataByName(data: Data[], dataName: string) {
 export function getGroupBy(groupings: Grouping[]) {
     const groupby = groupings.map(g => g.groupby);
     return groupby.reduce((acc, val) => acc.concat(val), [])
+}
+
+export function offsetPropValueSignal(prop: OffsetProp) {
+    return prop.formula
+        ? `datum[${JSON.stringify(prop.formula.as)}]`
+        : prop.signal
 }

@@ -7,21 +7,13 @@ import {
     addData,
     addMarks,
     addSignal,
-    addTransforms,
-    getDataByName,
-    getGroupBy
+    getGroupBy,
+    offsetPropValueSignal
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { addZScale } from '../zBase';
 import { Column } from '@msrvida/chart-types';
-import {
-    FormulaTransform,
-    GroupEncodeEntry,
-    NumericValueRef,
-    RectMark,
-    Transforms,
-    LookupTransform
-} from 'vega-typings';
+import { FormulaTransform, RectMark } from 'vega-typings';
 
 export interface SquareProps extends LayoutProps {
     sortBy: Column;
@@ -35,17 +27,14 @@ export interface SquareProps extends LayoutProps {
 
 export class Square extends Layout {
     private names: {
-        dataName: string,
         markData: string,
         aspect: string,
         bandWidth: string,
         squaresPerBand: string,
-        index: string,
         gap: string,
         size: string,
         levels: string,
         levelSize: string,
-        facetData: string,
         grouping: string,
         maxGroup: string,
         stack0: string,
@@ -57,17 +46,14 @@ export class Square extends Layout {
         super(props);
         const p = this.prefix = `square_${this.id}`;
         this.names = {
-            dataName: `data_${p}`,
             markData: `data_${p}_mark`,
             aspect: `${p}_aspect`,
             bandWidth: this.getBandWidth(),
             squaresPerBand: `${p}_squares_per_band`,
-            index: `${p}_index`,
             gap: `${p}_gap`,
             size: `${p}_size`,
             levels: `${p}_levels`,
             levelSize: `${p}_levelsize`,
-            facetData: `facet_${p}`,
             grouping: `data_${p}_grouping`,
             maxGroup: `${p}_max_grouping`,
             stack0: `${p}_stack0`,
@@ -83,8 +69,6 @@ export class Square extends Layout {
         zSize = zSize || parentScope.sizeSignals.layoutHeight;
         addZScale(z, zSize, globalScope, names.zScale);
 
-        const lastGrouping = groupings[groupings.length - 1];
-
         addData(globalScope.scope, {
             name: names.markData,
             source: globalScope.dataName,
@@ -93,33 +77,29 @@ export class Square extends Layout {
                     type: 'stack',
                     groupby: getGroupBy(groupings),
                     as: [names.stack0, names.stack1],
-                    sort: {
-                        field: sortBy.name,
-                        order: 'ascending'
+                    ...sortBy && {
+                        sort: {
+                            field: sortBy.name,
+                            order: 'ascending'
+                        }
                     }
-                },
-                {
-                    type: 'lookup',
-                    from: parentScope.offsetData.dataName,
-                    key: lastGrouping.groupby[0],
-                    fields: [lastGrouping.groupby[0]],
-                    values: [FieldNames.OffsetHeight],
-                    as: [`parent_${FieldNames.OffsetHeight}`]
-                },
-                ...this.transformXY()
+                }
             ]
         });
 
-        const xy = this.encodeXY();
-        if (collapseYHeight) {
-            xy.y = [
-                {
-                    test: testForCollapseSelection(),
-                    value: 0
-                },
-                xy.y as NumericValueRef
-            ];
-        }
+        //TODO add testForCollapseSelection
+
+        // const xy = this.encodeXY();
+        // if (collapseYHeight) {
+        //     xy.y = [
+        //         {
+        //             test: testForCollapseSelection(),
+        //             value: 0
+        //         },
+        //         xy.y as NumericValueRef
+        //     ];
+        // }
+
         const heightSignal = {
             signal: fillDirection === 'down-right' ? names.size : names.levelSize
         };
@@ -160,14 +140,26 @@ export class Square extends Layout {
                 }
             }
         };
-        addMarks(parentScope.scope, mark);
+        addMarks(globalScope.markGroup, mark);
 
-        this.addData();
         this.addSignals();
 
+        const { tx, ty } = this.transformXY();
+
         return {
+            prefix,
             dataName: prefix,
             markData: names.markData,
+            offsets: {
+                x: {
+                    formula: tx
+                },
+                y: {
+                    formula: ty
+                },
+                h: null,
+                w: null
+            },
             mark,
             sizeSignals: {
                 layoutHeight: names.size,
@@ -184,29 +176,6 @@ export class Square extends Layout {
             default:
                 return sizeSignals.layoutWidth;
         }
-    }
-
-    private addData() {
-        const { parentScope, sortBy } = this.props;
-        const { names } = this;
-        const transform: Transforms[] = [
-            {
-                type: 'window',
-                ops: ['row_number'],
-                as: [names.index]
-            }
-        ];
-        if (sortBy) {
-            transform.unshift({
-                type: 'collect',
-                sort: { field: sortBy.name }
-            });
-        }
-        addData(parentScope.scope, {
-            name: names.dataName,
-            source: parentScope.dataName,
-            transform
-        });
     }
 
     private addSignals() {
@@ -275,19 +244,19 @@ export class Square extends Layout {
     }
 
     private transformXY() {
-        const { id, names } = this;
-        const compartment = `${names.bandWidth} / ${names.squaresPerBand} * ((datum[${JSON.stringify(names.stack0)}] - 1) % ${names.squaresPerBand})`;
-        const level = `floor((datum[${JSON.stringify(names.stack0)}] - 1) / ${names.squaresPerBand})`;
+        const { names, prefix } = this;
+        const compartment = `${names.bandWidth} / ${names.squaresPerBand} * ((datum[${JSON.stringify(names.stack0)}]) % ${names.squaresPerBand})`;
+        const level = `floor((datum[${JSON.stringify(names.stack0)}]) / ${names.squaresPerBand})`;
         const { fillDirection, parentScope } = this.props;
         const tx: FormulaTransform = {
             type: 'formula',
             expr: null,
-            as: `${FieldNames.OffsetX}_${id}`
+            as: `${prefix}_${FieldNames.OffsetX}`
         };
         const ty: FormulaTransform = {
             type: 'formula',
             expr: null,
-            as: `${FieldNames.OffsetY}_${id}`
+            as: `${prefix}_${FieldNames.OffsetY}`
         };
         switch (fillDirection) {
             case 'down-right': {
@@ -297,7 +266,7 @@ export class Square extends Layout {
             }
             case 'right-up': {
                 tx.expr = compartment;
-                ty.expr = `datum[${JSON.stringify(`parent_${FieldNames.OffsetHeight}`)}] - ${names.levelSize} - ${level} * (${names.levelSize} + ${names.gap})`;
+                ty.expr = `${offsetPropValueSignal(parentScope.offsets.h)} - ${names.levelSize} - ${level} * (${names.levelSize} + ${names.gap})`;
                 break;
             }
             case 'right-down':
@@ -307,46 +276,6 @@ export class Square extends Layout {
                 break;
             }
         }
-        return [tx, ty];
-    }
-
-    private encodeXY(): GroupEncodeEntry {
-        const { names } = this;
-        const compartment = `${names.bandWidth} / ${names.squaresPerBand} * ((datum[${JSON.stringify(names.index)}] - 1) % ${names.squaresPerBand})`;
-        const level = `floor((datum[${JSON.stringify(names.index)}] - 1) / ${names.squaresPerBand})`;
-        const { fillDirection, parentScope } = this.props;
-        switch (fillDirection) {
-            case 'down-right': {
-                return {
-                    x: {
-                        signal: `${level} * (${names.levelSize} + ${names.gap})`
-                    },
-                    y: {
-                        signal: compartment
-                    }
-                };
-            }
-            case 'right-up': {
-                return {
-                    x: {
-                        signal: compartment
-                    },
-                    y: {
-                        signal: `(${parentScope.sizeSignals.layoutHeight}) - ${names.levelSize} - ${level} * (${names.levelSize} + ${names.gap})`
-                    }
-                };
-            }
-            case 'right-down':
-            default: {
-                return {
-                    x: {
-                        signal: compartment
-                    },
-                    y: {
-                        signal: `${level} * (${names.levelSize} + ${names.gap})`
-                    }
-                };
-            }
-        }
+        return { tx, ty };
     }
 }

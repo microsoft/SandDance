@@ -25,7 +25,8 @@ import {
     GlobalScope,
     Grouping,
     InnerScope,
-    OffsetData,
+    Offset2,
+    OffsetProp,
     SpecResult
 } from './interfaces';
 import { LayoutBuildProps, LayoutPair, LayoutProps } from './layouts/layout';
@@ -42,7 +43,6 @@ import {
     ExtentTransform,
     FormulaTransform,
     GroupMark,
-    LookupTransform,
     NewSignal,
     Scope,
     Spec
@@ -54,6 +54,18 @@ export interface SpecBuilderProps {
     errors?: string[];
     specCapabilities: SpecCapabilities;
     customZScale?: boolean;
+}
+
+interface OutField {
+    field: string;
+    signals: string[];
+}
+
+interface OutFieldMap {
+    x: OutField;
+    y: OutField;
+    h: OutField;
+    w: OutField;
 }
 
 export class SpecBuilder {
@@ -133,7 +145,7 @@ export class SpecBuilder {
                 topLookupName: 'data_topcolorlookup',
                 colorReverseSignalName: SignalNames.ColorReverse
             });
-            const globalScope = this.createGlobalScope(colorDataName, vegaSpec);
+            const globalScope = this.createGlobalScope(colorDataName, vegaSpec, groupMark);
             let facetLayout: FacetLayout;
             if (insight.columns.facet) {
                 const discreteFacetColumn: DiscreteColumn = {
@@ -165,7 +177,7 @@ export class SpecBuilder {
                 allEncodingRules,
                 groupings,
                 sums,
-                offsetDatas
+                offsets
             } = this.iterateLayouts(globalScope, groupMark, colorDataName);
 
             if (specResult) {
@@ -207,32 +219,59 @@ export class SpecBuilder {
                 });
             }
 
-            this.insertDataGroupings(colorDataName, groupings, globalScope, sums);
+            //this.insertDataGroupings(colorDataName, groupings, globalScope, sums);
 
-            if (offsetDatas.length) {
+            if (offsets.length) {
+                const formulas: FormulaTransform[] = [];
+
+                const outfields: OutFieldMap = {
+                    x: { field: FieldNames.OffsetX, signals: [] },
+                    y: { field: FieldNames.OffsetY, signals: [] },
+                    h: { field: FieldNames.OffsetHeight, signals: [] },
+                    w: { field: FieldNames.OffsetWidth, signals: [] }
+                };
+
+                function add(of: OutField, prop: OffsetProp) {
+                    if (!prop || prop.passThrough) return;
+                    if (prop.formula) {
+                        of.signals.push(`datum[${JSON.stringify(prop.formula.as)}]` as string);
+                    } else {
+                        if (prop.signal !== '0') {
+                            of.signals.push(prop.signal);
+                        }
+                    }
+                }
+
+                offsets.forEach(offset => {
+                    for (let key in offset) {
+                        let prop = offset[key] as OffsetProp;
+                        if (!prop || prop.passThrough) continue;
+                        if (prop.formula) {
+                            formulas.push(prop.formula);
+                        }
+                    }
+                    add(outfields.x, offset.x);
+                    add(outfields.y, offset.y);
+                    add(outfields.h, offset.h);
+                    add(outfields.w, offset.w);
+                });
+
+                const arr = [outfields.x, outfields.y];
+
                 addData(globalScope.scope, {
                     name: 'TODObigtable',
                     source: finalScope.markData || colorDataName,
                     transform: [
-                        ...offsetDatas.map(offsetData => {
-                            const t: LookupTransform = {
-                                type: 'lookup',
-                                from: offsetData.dataName,
-                                key: offsetData.key,
-                                fields: [offsetData.key],
-                                values: [FieldNames.OffsetX, FieldNames.OffsetY],
-                                as: [`${FieldNames.OffsetX}_${offsetData.id}`, `${FieldNames.OffsetY}_${offsetData.id}`]
-                            };
-                            return t;
-                        }),
-                        ...[FieldNames.OffsetX, FieldNames.OffsetY].map(f => {
+                        ...formulas,
+                        ...arr.map(a => {
+                            if (!a.signals.length) return;
                             const t: FormulaTransform = {
                                 type: 'formula',
-                                expr: offsetDatas.map(o => `datum[${JSON.stringify(`${f}_${o.id}`)}]`).concat([`datum[${JSON.stringify(`${f}_${finalScope.id}`)}]`]).join(' + '),
-                                as: f
-                            }
+                                expr: a.signals.join(' + '),
+                                as: a.field
+                            };
                             return t;
-                        })
+                        }).filter(Boolean)
                     ]
                 });
             }
@@ -241,7 +280,7 @@ export class SpecBuilder {
             if (finalScope.mark) {
                 const { update } = finalScope.mark.encode;
 
-                if (offsetDatas.length) {
+                if (offsets.length) {   //TODO mandatory
                     update.x = {
                         field: FieldNames.OffsetX
                     };
@@ -300,11 +339,7 @@ export class SpecBuilder {
             }
         }
 
-        console.log('groupings', groupings);
-        console.log('groupings.length', groupings.length);
-
         for (let i = groupings.length; i--;) {
-            console.log(i);
             let grouping = groupings[i];
             let groupDataName = `group_${grouping.id}`;
             data.push({
@@ -333,11 +368,19 @@ export class SpecBuilder {
         globalScope.scope.data.splice(sourceData.index, 1, ...data);
     }
 
-    private createGlobalScope(dataName: string, scope: Spec) {
+    private createGlobalScope(dataName: string, scope: Spec, markGroup: Scope) {
         const { minCellWidth, minCellHeight, plotHeightOut, plotWidthOut } = this;
         const globalScope: GlobalScope = {
+            prefix: '',
             dataName,
             scope,
+            markGroup,
+            offsets: {
+                x: { signal: '0' },
+                y: { signal: '0' },
+                h: { signal: SignalNames.PlotHeightIn },
+                w: { signal: SignalNames.PlotWidthIn }
+            },
             sizeSignals: {
                 layoutHeight: SignalNames.PlotHeightIn,
                 layoutWidth: SignalNames.PlotWidthIn
@@ -415,24 +458,21 @@ export class SpecBuilder {
     private iterateLayouts(globalScope: GlobalScope, scope: Scope, dataName: string) {
         let specResult: SpecResult;
         let parentScope: InnerScope = {
+            prefix: '',
             dataName,
             sizeSignals: globalScope.sizeSignals,
-            scope
+            offsets: globalScope.offsets
         };
         let firstScope: InnerScope;
         let childScope: InnerScope;
         const groupings: Grouping[] = [];
-        const offsetDatas: OffsetData[] = [];
+        const offsets: Offset2[] = [];
         let sums = false;
         let { layouts, specCapabilities } = this.props;
         const allGlobalScales: GlobalScales[] = [];
         const allEncodingRules: { [key: string]: EncodingRule[] }[] = [];
         for (let i = 0; i < layouts.length; i++) {
             if (!parentScope) continue;
-            if (!parentScope.scope) break;
-            if (!parentScope.scope.marks) {
-                parentScope.scope.marks = [];
-            }
             let buildProps: LayoutBuildProps = {
                 globalScope,
                 parentScope,
@@ -444,8 +484,8 @@ export class SpecBuilder {
             try {
                 childScope = layout.build();
                 childScope.id = i;
-                if (childScope.offsetData) {
-                    offsetDatas.push(childScope.offsetData);
+                if (childScope.offsets) {
+                    offsets.push(childScope.offsets);
                 }
                 let groupby = layout.getGrouping();
                 if (groupby) {
@@ -482,7 +522,7 @@ export class SpecBuilder {
             }
             parentScope = childScope;
         }
-        return { firstScope, finalScope: parentScope, specResult, allGlobalScales, allEncodingRules, groupings, sums, offsetDatas };
+        return { firstScope, finalScope: parentScope, specResult, allGlobalScales, allEncodingRules, groupings, sums, offsets };
     }
 
     private createLayout(layoutPair: LayoutPair, buildProps: LayoutBuildProps) {

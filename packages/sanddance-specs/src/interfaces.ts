@@ -4,6 +4,7 @@ import { SpecCapabilities, SpecContext } from './types';
 import { Column } from '@msrvida/chart-types';
 import {
     AggregateOp,
+    FormulaTransform,
     Mark,
     NewSignal,
     NumericValueRef,
@@ -55,18 +56,20 @@ export type EncodingRule = { test?: string } & NumericValueRef;
 
 export interface InnerScope {
     id?: number;
-    dataName: string;
-    scope?: Scope;
+    prefix: string;
+    dataName: string;   //TODO remove
     titles?: Titles;
     mark?: Mark;
     globalScales?: GlobalScales;
     encodingRuleMap?: { [key: string]: EncodingRule[] };
     sizeSignals: SizeSignals;
-    offsetData?: OffsetData;    //TODO mandatory
+    offsets?: Offset2;              //TODO mandatory
     markData?: string;
 }
 
 export interface GlobalScope extends InnerScope {
+    scope?: Scope;
+    markGroup: Scope,
     signals: {
         minCellWidth: NewSignal;
         minCellHeight: NewSignal;
@@ -110,8 +113,15 @@ export interface Grouping {
     fieldOps: FieldOp[];
 }
 
-export interface OffsetData {
-    id: number;
-    dataName: string;
-    key: string;
+export interface OffsetProp {
+    passThrough?: boolean;
+    formula?: FormulaTransform;
+    signal?: string;
+}
+
+export interface Offset2 {
+    x: OffsetProp;
+    y: OffsetProp;
+    h: OffsetProp;
+    w: OffsetProp;
 }

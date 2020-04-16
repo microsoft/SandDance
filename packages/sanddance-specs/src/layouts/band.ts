@@ -7,18 +7,18 @@ import {
     DiscreteColumn,
     EncodingRule,
     InnerScope,
+    Offset2,
     Orientation
 } from '../interfaces';
 import {
     addData,
-    addMarks,
     addSignal,
     addTransforms,
     getDataByName
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { modifySignal } from '../signals';
-import { BandScale, GroupMark } from 'vega-typings';
+import { BandScale } from 'vega-typings';
 
 export interface BandProps extends LayoutProps {
     excludeEncodingRuleMap?: boolean;
@@ -33,24 +33,20 @@ export interface BandProps extends LayoutProps {
 export class Band extends Layout {
     private bin: Binnable;
     private names: {
-        facetData: string,
         xScale: string,
         yScale: string,
         bandWidth: string,
-        accumulative: string,
-        offsets: string
+        accumulative: string
     };
 
     constructor(public props: BandProps & LayoutBuildProps) {
         super(props);
         const p = this.prefix = `band_${this.id}`;
         this.names = {
-            facetData: `facet_${p}`,
             xScale: `scale_${p}_x`,
             yScale: `scale_${p}_y`,
             bandWidth: `${p}_bandwidth`,
-            accumulative: `${p}_accumulative`,
-            offsets: `data_${p}_offsets`
+            accumulative: `${p}_accumulative`
         };
         this.bin = binnable(this.prefix, props.globalScope.dataName, props.groupby);
     }
@@ -60,7 +56,7 @@ export class Band extends Layout {
     }
 
     public build(): InnerScope {
-        const { bin, names, props } = this;
+        const { bin, names, prefix, props } = this;
         const { globalScope, minBandWidth, orientation, parentHeight, parentScope, showAxes, style } = props;
         const binField = bin.fields[0];
         if (bin.native === false) {
@@ -68,6 +64,8 @@ export class Band extends Layout {
             addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName).data, ...bin.transforms);
             addData(globalScope.scope, bin.dataSequence);
         }
+
+        //TODO don't add this, use existing dataset
         addData(globalScope.scope, {
             name: names.accumulative,
             source: bin.fullScaleDataname,
@@ -92,10 +90,6 @@ export class Band extends Layout {
                 update: parentScope.sizeSignals.layoutHeight
             }
         );
-        const mark = this.getMark(parentScope, horizontal, binField, style);
-        addMarks(parentScope.scope, mark);
-
-        this.getOffset(parentScope, horizontal, binField);
 
         const scale = this.getScale(bin, horizontal);
 
@@ -134,13 +128,9 @@ export class Band extends Layout {
         }
 
         return {
-            dataName: names.facetData,
-            offsetData: {
-                id: this.id,
-                dataName: names.offsets,
-                key: binField
-            },
-            scope: mark,
+            prefix,
+            dataName: globalScope.dataName,
+            offsets: this.getOffset(horizontal, binField),
             sizeSignals: horizontal ?
                 {
                     layoutHeight: names.bandWidth,
@@ -162,97 +152,46 @@ export class Band extends Layout {
         };
     }
 
-    private getMark(parentScope: InnerScope, horizontal: boolean, binField: string, style: string): GroupMark {
-        const { bin, names, prefix } = this;
+    private getOffset(horizontal: boolean, binField: string): Offset2 {
+        const { names, prefix, props } = this;
+        const { parentScope } = props;
         return {
-            style,
-            name: prefix,
-            type: 'group',
-            from: {
-                facet: {
-                    name: names.facetData,
-                    data: parentScope.dataName,
-                    groupby: bin.fields
+            x: horizontal ?
+                { signal: '0' }
+                :
+                {
+                    formula: {
+                        type: 'formula',
+                        expr: `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(binField)}])`,
+                        as: `${prefix}_${FieldNames.OffsetX}`
+                    }
+                },
+            y: horizontal ?
+                {
+                    formula:
+                    {
+                        type: 'formula',
+                        expr: `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(binField)}])`,
+                        as: `${prefix}_${FieldNames.OffsetY}`
+                    },
                 }
-            },
-            encode: {
-                update: horizontal ?
-                    {
-                        x: {
-                            value: 0
-                        },
-                        y: {
-                            scale: names.yScale,
-                            field: binField
-                        },
-                        height: {
-                            signal: names.bandWidth
-                        },
-                        width: {
-                            signal: parentScope.sizeSignals.layoutWidth
-                        }
-                    }
-                    :
-                    {
-                        x: {
-                            scale: names.xScale,
-                            field: binField
-                        },
-                        y: {
-                            value: 0
-                        },
-                        height: {
-                            signal: parentScope.sizeSignals.layoutHeight
-                        },
-                        width: {
-                            signal: names.bandWidth
-                        }
-                    }
-            }
+                :
+                { signal: '0' },
+            h: horizontal ?
+                { signal: names.bandWidth }
+                :
+                {
+                    ...parentScope.offsets.h,
+                    passThrough: true
+                },
+            w: horizontal ?
+                {
+                    ...parentScope.offsets.w,
+                    passThrough: true
+                }
+                :
+                { signal: names.bandWidth }
         };
-    }
-
-    private getOffset(parentScope: InnerScope, horizontal: boolean, binField: string) {
-        const { id, names, props } = this;
-        const { globalScope } = props;
-        addData(globalScope.scope, {
-            name: names.offsets,
-            source: `group_${id}`,
-            transform: [
-                {
-                    type: 'formula',
-                    expr: horizontal ?
-                        `0`
-                        :
-                        `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(binField)}])`,
-                    as: FieldNames.OffsetX
-                },
-                {
-                    type: 'formula',
-                    expr: horizontal ?
-                        `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(binField)}])`
-                        :
-                        `0`,
-                    as: FieldNames.OffsetY
-                },
-                {
-                    type: 'formula',
-                    expr: horizontal ?
-                        names.bandWidth
-                        :
-                        parentScope.sizeSignals.layoutHeight,
-                    as: FieldNames.OffsetHeight
-                },
-                {
-                    type: 'formula',
-                    expr: horizontal ?
-                        parentScope.sizeSignals.layoutWidth
-                        :
-                        names.bandWidth,
-                    as: FieldNames.OffsetWidth
-                }
-            ]
-        });
     }
 
     private getScale(bin: Binnable, horizontal: boolean) {
