@@ -74,7 +74,7 @@ export class AggregateSquare extends Layout {
         );
         addData(globalScope.markGroup, {
             name: names.extentData,
-            source: parentScope.data.name,
+            source: globalScope.markDataName,
             transform: [
                 {
                     type: 'extent',
@@ -146,7 +146,6 @@ export class AggregateSquare extends Layout {
         );
 
         return {
-            data: parentScope.data,
             sizeSignals: {
                 layoutHeight: names.squareSide,
                 layoutWidth: names.squareSide

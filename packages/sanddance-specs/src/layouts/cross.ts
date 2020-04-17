@@ -131,7 +131,7 @@ export class Cross extends Layout {
                 addTransforms(bin.dataSequence,
                     {
                         type: 'formula',
-                        expr: `indata(${JSON.stringify(parentScope.data.name)}, ${JSON.stringify(bin.fields[0])}, datum[${JSON.stringify(bin.fields[0])}])`,
+                        expr: `indata(${JSON.stringify(globalScope.markDataName)}, ${JSON.stringify(bin.fields[0])}, datum[${JSON.stringify(bin.fields[0])}])`,
                         as: FieldNames.Contains
                     }
                 );
@@ -141,7 +141,7 @@ export class Cross extends Layout {
                 scale = ordinalScale(dataName, `${names.dimScale}_${dim}`, bin.fields);
                 titleSource.dataName = bin.dataSequence.name;
             } else {
-                dataName = parentScope.data.name;
+                dataName = globalScope.markDataName;
                 const ord = createOrdinalsForFacet(dataName, `${prefix}_${dim}`, bin.fields, sortOrder);
                 data = ord.data;
                 addData(globalScope.scope, ord.data);
@@ -193,7 +193,7 @@ export class Cross extends Layout {
 
         addData(globalScope.scope, {
             name: names.crossData,
-            source: parentScope.data.name,
+            source: globalScope.markDataName,
             transform: [
                 ...dimensions.map(d => {
                     return <LookupTransform>{
@@ -365,7 +365,6 @@ export class Cross extends Layout {
         }
 
         return {
-            data: parentScope.data,
             sizeSignals,
             titles
         };

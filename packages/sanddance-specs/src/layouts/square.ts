@@ -35,8 +35,8 @@ export class Square extends Layout {
         size: string,
         levels: string,
         levelSize: string,
-        grouping: string,
-        maxGroup: string,
+        maxGroupField: string,
+        maxGroupSignal: string,
         stack0: string,
         stack1: string,
         zScale: string
@@ -53,8 +53,8 @@ export class Square extends Layout {
             size: `${p}_size`,
             levels: `${p}_levels`,
             levelSize: `${p}_levelsize`,
-            grouping: `data_${p}_grouping`,
-            maxGroup: `${p}_max_grouping`,
+            maxGroupField: `${p}_max_group`,
+            maxGroupSignal: `${p}_max_grouping`,
             stack0: `${p}_stack0`,
             stack1: `${p}_stack1`,
             zScale: `scale_${p}_z`
@@ -87,7 +87,7 @@ export class Square extends Layout {
             name: prefix,
             type: 'rect',
             from: {
-                data: parentScope.data.name
+                data: globalScope.markDataName
             },
             encode: {
                 update: {
@@ -127,7 +127,6 @@ export class Square extends Layout {
         const { tx, ty } = this.transformXY();
 
         return {
-            data: parentScope.data,
             offsets: {
                 x: addOffsets(parentScope.offsets.x, tx.expr),
                 y: addOffsets(parentScope.offsets.y, ty.expr),
@@ -169,28 +168,22 @@ export class Square extends Layout {
 
         if (!maxGroupedUnits) {
             if (groupings) {
-                addData(globalScope.scope,
+                addTransforms(globalScope.data,
                     {
-                        name: names.grouping,
-                        source: parentScope.data.name,
-                        transform: [
-                            {
-                                type: 'aggregate',
-                                groupby: getGroupBy(groupings),
-                                ops: ['count'],
-                                as: [FieldNames.Count]
-                            },
-                            {
-                                type: 'extent',
-                                field: FieldNames.Count,
-                                signal: names.maxGroup
-                            }
-                        ]
+                        type: 'aggregate',
+                        groupby: getGroupBy(groupings),
+                        ops: ['count'],
+                        as: [names.maxGroupField]
+                    },
+                    {
+                        type: 'extent',
+                        field: names.maxGroupField,
+                        signal: names.maxGroupSignal
                     }
                 );
-                maxGroupedUnits = `(${names.maxGroup}[1])`;
+                maxGroupedUnits = `(${names.maxGroupSignal}[1])`;
             } else {
-                maxGroupedUnits = `length(data(${JSON.stringify(parentScope.data.name)}))`;
+                maxGroupedUnits = `length(data(${JSON.stringify(globalScope.data.name)}))`;
             }
         }
         if (!maxGroupedFillSize) {

@@ -155,7 +155,6 @@ export class AggregateContainer extends Layout {
         );
 
         return {
-            data: parentScope.data,
             offsets,
             sizeSignals: horizontal ?
                 {

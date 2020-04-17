@@ -264,6 +264,7 @@ export class SpecBuilder {
         const { minCellWidth, minCellHeight, plotHeightOut, plotWidthOut } = this;
         const globalScope: GlobalScope = {
             data: getDataByName(scope.data, dataName).data,
+            markDataName: dataName,
             scope,
             markGroup,
             offsets: {
@@ -349,7 +350,6 @@ export class SpecBuilder {
     private iterateLayouts(globalScope: GlobalScope, scope: Scope, dataName: string) {
         let specResult: SpecResult;
         let parentScope: InnerScope = {
-            data: globalScope.data,
             sizeSignals: globalScope.sizeSignals,
             offsets: globalScope.offsets
         };

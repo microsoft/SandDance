@@ -154,7 +154,7 @@ export class Scatter extends Layout {
             if (column.quantitative) {
                 scale = linearScale(
                     scaleName,
-                    parentScope.data.name,
+                    globalScope.data.name,
                     column.name,
                     [0, { signal }],
                     reverse,
@@ -163,7 +163,7 @@ export class Scatter extends Layout {
             } else {
                 scale = pointScale(
                     scaleName,
-                    parentScope.data.name,
+                    globalScope.data.name,
                     [0, { signal }],
                     column.name,
                     reverse
@@ -175,13 +175,12 @@ export class Scatter extends Layout {
         const mark: RectMark = {
             name: prefix,
             type: 'rect',
-            from: { data: parentScope.data.name },
+            from: { data: globalScope.markDataName },
             encode: { update }
         };
         addMarks(globalScope.markGroup, mark);
 
         return {
-            data: parentScope.data,
             offsets: {
                 x: addOffsets(parentScope.offsets.x, `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(x.name)}])`),
                 y: addOffsets(parentScope.offsets.y, `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(y.name)}]) - ${SignalNames.PointSize}`),

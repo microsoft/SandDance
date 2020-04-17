@@ -57,7 +57,6 @@ export type EncodingRule = { test?: string } & NumericValueRef;
 
 export interface InnerScope {
     id?: number;
-    data: Data;
     titles?: Titles;
     facetScope?: Scope;
     mark?: Mark;
@@ -70,7 +69,9 @@ export interface InnerScope {
 
 export interface GlobalScope extends InnerScope {
     scope?: Scope;
-    markGroup: Scope,
+    markGroup: Scope;
+    markDataName: string;
+    data: Data;
     signals: {
         minCellWidth: NewSignal;
         minCellHeight: NewSignal;

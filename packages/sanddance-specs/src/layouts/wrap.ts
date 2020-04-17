@@ -239,7 +239,7 @@ export class Wrap extends Layout {
 
         const dataOut: Data = {
             name: names.outputData,
-            source: parentScope.data.name,
+            source: globalScope.data.name,
             transform: [
                 {
                     type: 'lookup',
@@ -251,6 +251,7 @@ export class Wrap extends Layout {
             ]
         };
         addData(globalScope.scope, dataOut);
+        globalScope.markDataName = names.outputData;
 
         addSignal(globalScope.scope,
             {
@@ -356,7 +357,6 @@ export class Wrap extends Layout {
         }
 
         return {
-            data: dataOut,
             facetScope: group,
             sizeSignals,
             offsets

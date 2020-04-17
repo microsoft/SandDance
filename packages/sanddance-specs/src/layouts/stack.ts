@@ -58,7 +58,7 @@ export class Stack extends Layout {
         addData(globalScope.scope,
             {
                 name: names.globalDataName,
-                source: parentScope.data.name,
+                source: globalScope.data.name,
                 transform: [
                     {
                         type: 'aggregate',
@@ -190,7 +190,7 @@ export class Stack extends Layout {
 
         addData(globalScope.scope, {
             name: names.levelDataName,
-            source: parentScope.data.name,
+            source: globalScope.data.name,
             transform
         });
 
@@ -219,7 +219,6 @@ export class Stack extends Layout {
         // const mark = this.addRectMarks(group);
 
         return {
-            data: parentScope.data,
             //            mark,
             sizeSignals: {
                 layoutHeight: names.size,

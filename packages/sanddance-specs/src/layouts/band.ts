@@ -127,7 +127,6 @@ export class Band extends Layout {
         }
 
         return {
-            data: parentScope.data,
             offsets: this.getOffset(horizontal, binField),
             sizeSignals: horizontal ?
                 {

@@ -55,7 +55,7 @@ export class Treemap extends Layout {
 
         addData(globalScope.scope, {
             name: names.dataName,
-            source: parentScope.data.name,
+            source: globalScope.data.name,
             transform: [
                 {
                     type: 'filter',
@@ -145,7 +145,6 @@ export class Treemap extends Layout {
         return {
             mark,
             //dataName: null,
-            data: parentScope.data,
             sizeSignals: {
                 layoutHeight: null,
                 layoutWidth: null

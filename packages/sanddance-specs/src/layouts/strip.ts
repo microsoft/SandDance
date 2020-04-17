@@ -88,7 +88,7 @@ export class Strip extends Layout {
 
         addData(globalScope.scope, {
             name: names.dataName,
-            source: parentScope.data.name,
+            source: globalScope.data.name,
             transform
         });
 
@@ -169,7 +169,6 @@ export class Strip extends Layout {
         }
 
         return {
-            data: parentScope.data,
             globalScales: {
                 showAxes: true,
                 scales: {
