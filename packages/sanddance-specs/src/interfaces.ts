@@ -120,7 +120,7 @@ export interface OffsetProp {
     signal?: string;
 }
 
-export interface Offset2 {
+export interface Offset2 {  //TODO rename
     x: string;
     y: string;
     h: string;
