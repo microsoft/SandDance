@@ -58,13 +58,12 @@ export type EncodingRule = { test?: string } & NumericValueRef;
 export interface InnerScope {
     id?: number;
     titles?: Titles;
-    facetScope?: Scope;
+    facetScope?: Scope;             //TODO add counts
     mark?: Mark;
     globalScales?: GlobalScales;
     encodingRuleMap?: { [key: string]: EncodingRule[] };
-    sizeSignals: SizeSignals;
+    sizeSignals: SizeSignals;       //TODO remove
     offsets?: Offset2;              //TODO mandatory
-    markData?: string;
 }
 
 export interface GlobalScope extends InnerScope {
