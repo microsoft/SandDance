@@ -30,10 +30,7 @@ export interface WrapProps extends LayoutProps {
 export class Wrap extends Layout {
     private bin: Binnable;
     private names: {
-        facetDataName: string,
-        emptyDataName: string,
-        emptyMarkName: string,
-        sortedDataName: string,
+        outputData: string,
         rowColumnDataName: string,
         cellHeight: string,
         cellWidth: string,
@@ -59,10 +56,7 @@ export class Wrap extends Layout {
         const p = this.prefix = `wrap_${this.id}`;
         this.bin = binnable(this.prefix, props.globalScope.data.name, props.groupby);
         this.names = {
-            facetDataName: `data_${p}_facet`,
-            emptyDataName: `data_${p}_empty`,
-            emptyMarkName: `${p}_empty`,
-            sortedDataName: `data_${p}_sort`,
+            outputData: `data_${p}_out`,
             rowColumnDataName: `data_${p}_row_col`,
             cellHeight: `${p}_cellHeight`,
             cellWidth: `${p}_cellWidth`,
@@ -242,8 +236,8 @@ export class Wrap extends Layout {
             }
         );
 
-        const dataTODO: Data = {
-            name: `data_${prefix}_TODO`,
+        const dataOut: Data = {
+            name: names.outputData,
             source: parentScope.data.name,
             transform: [
                 {
@@ -251,11 +245,11 @@ export class Wrap extends Layout {
                     from: names.rowColumnDataName,
                     key: bin.fields[0],
                     fields: [bin.fields[0]],
-                    values: [FieldNames.WrapRow, FieldNames.WrapCol, FieldNames.First, FieldNames.Last]
+                    values: [FieldNames.WrapRow, FieldNames.WrapCol]
                 }
             ]
         };
-        addData(globalScope.scope, dataTODO);
+        addData(globalScope.scope, dataOut);
 
         addSignal(globalScope.scope,
             {
@@ -362,7 +356,7 @@ export class Wrap extends Layout {
         }
 
         return {
-            data: dataTODO,
+            data: dataOut,
             facetScope: group,
             sizeSignals,
             offsets
