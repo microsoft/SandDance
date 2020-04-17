@@ -216,41 +216,6 @@ export class SpecBuilder {
                 });
             }
 
-            const formulas: FormulaTransform[] = [];
-
-            const outfields: OutFieldMap = {
-                x: { field: FieldNames.OffsetX, signals: [] },
-                y: { field: FieldNames.OffsetY, signals: [] },
-                h: { field: FieldNames.OffsetHeight, signals: [] },
-                w: { field: FieldNames.OffsetWidth, signals: [] }
-            };
-
-            function add(of: OutField, prop: OffsetProp) {
-                if (!prop || prop.passThrough) return;
-                if (prop.formula) {
-                    //of.signals.push(`datum[${JSON.stringify(prop.formula.as)}]` as string);
-                    of.signals.push(prop.formula.expr);
-                } else {
-                    if (prop.signal !== '0') {
-                        of.signals.push(prop.signal);
-                    }
-                }
-            }
-
-            offsets.forEach(offset => {
-                for (let key in offset) {
-                    let prop = offset[key] as OffsetProp;
-                    if (!prop || prop.passThrough) continue;
-                    if (prop.formula) {
-                        formulas.push(prop.formula);
-                    }
-                }
-                add(outfields.x, offset.x);
-                add(outfields.y, offset.y);
-                add(outfields.h, offset.h);
-                add(outfields.w, offset.w);
-            });
-
             //add mark to the final scope
             if (finalScope.mark) {
 
@@ -260,10 +225,10 @@ export class SpecBuilder {
 
                 if (offsets.length) {
                     update.x = {
-                        signal: outfields.x.signals.join(' + ')
+                        signal: finalScope.offsets.x
                     };
                     update.y = {
-                        signal: outfields.y.signals.join(' + ')
+                        signal: finalScope.offsets.y
                     };
                 }
 
@@ -302,10 +267,10 @@ export class SpecBuilder {
             scope,
             markGroup,
             offsets: {
-                x: { signal: '0' },
-                y: { signal: '0' },
-                h: { signal: SignalNames.PlotHeightIn },
-                w: { signal: SignalNames.PlotWidthIn }
+                x: '0',
+                y: '0',
+                h: SignalNames.PlotHeightIn,
+                w: SignalNames.PlotWidthIn
             },
             sizeSignals: {
                 layoutHeight: SignalNames.PlotHeightIn,

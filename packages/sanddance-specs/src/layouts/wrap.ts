@@ -15,11 +15,12 @@ import { createOrdinalsForFacet } from '../ordinal';
 import {
     addData,
     addMarks,
+    addOffsets,
     addSignal,
     addTransforms
 } from '../scope';
 import { modifySignal } from '../signals';
-import { GroupEncodeEntry, GroupMark, Data } from 'vega-typings';
+import { Data, GroupEncodeEntry, GroupMark } from 'vega-typings';
 
 export interface WrapProps extends LayoutProps {
     axisTextColor: string;
@@ -305,11 +306,10 @@ export class Wrap extends Layout {
         modifySignal(globalScope.signals.plotHeightOut, 'max', `(${names.cellHeight} * ceil(${names.dataLength} / ${names.colCount}))`);
         modifySignal(globalScope.signals.plotWidthOut, 'max', `(${names.cellWidth} * ${names.colCount})`);
 
-        const signalH = `${names.cellHeight} - ${SignalNames.FacetPaddingTop} - ${SignalNames.FacetPaddingBottom}`;
-        const signalW = `${names.cellWidth} - ${SignalNames.FacetPaddingLeft}`;
-        const signalX = `datum[${JSON.stringify(FieldNames.WrapCol)}] * ${names.cellWidth} + ${SignalNames.FacetPaddingLeft}`;
-        const signalY = `datum[${JSON.stringify(FieldNames.WrapRow)}] * ${names.cellHeight} + ${SignalNames.FacetPaddingTop}`;
-
+        const signalH = [names.cellHeight, SignalNames.FacetPaddingTop, SignalNames.FacetPaddingBottom].join(' - ');
+        const signalW = [names.cellWidth, SignalNames.FacetPaddingLeft].join(' - ');
+        const signalX = addOffsets(parentScope.offsets.x, `datum[${JSON.stringify(FieldNames.WrapCol)}] * ${names.cellWidth}`, SignalNames.FacetPaddingLeft);
+        const signalY = addOffsets(parentScope.offsets.y, `datum[${JSON.stringify(FieldNames.WrapRow)}] * ${names.cellHeight}`, SignalNames.FacetPaddingTop);
 
         const update: GroupEncodeEntry = {
             height: {
@@ -327,10 +327,10 @@ export class Wrap extends Layout {
         };
 
         const offsets: Offset2 = {
-            x: { signal: signalX },
-            y: { signal: signalY },
-            h: { signal: signalH },
-            w: { signal: signalW }
+            x: signalX,
+            y: signalY,
+            h: signalH,
+            w: signalW
         };
 
         const group: GroupMark = {

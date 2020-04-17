@@ -2,12 +2,17 @@
 // Licensed under the MIT license.
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { FieldNames } from '../constants';
-import { AxisScale, FieldOp, InnerScope, Offset2 } from '../interfaces';
 import {
+    AxisScale,
+    FieldOp,
+    InnerScope,
+    Offset2
+} from '../interfaces';
+import {
+    addOffsets,
     addSignal,
     addTransforms,
-    getGroupBy,
-    offsetPropValueSignal
+    getGroupBy
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { Column } from '@msrvida/chart-types';
@@ -60,7 +65,7 @@ export class AggregateContainer extends Layout {
     }
 
     public build(): InnerScope {
-        const { aggregation, names, prefix, props } = this;
+        const { aggregation, names, props } = this;
         const { dock, globalScope, groupings, niceScale, parentHeight, parentScope, showAxes } = props;
 
         //this needs to be global since the scale depends on it
@@ -87,30 +92,24 @@ export class AggregateContainer extends Layout {
         const horizontal = dock === 'left';
         const groupScaled = `scale(${JSON.stringify(names.scale)}, datum[${JSON.stringify(names.aggregateField)}])`;
         const offsets: Offset2 = {
-            x: { signal: '0' },
-            y: dock === 'bottom' ?
-                { signal: groupScaled }
-                :
-                { signal: '0' },
+            x: parentScope.offsets.x,
+            y: addOffsets(parentScope.offsets.y,
+                dock === 'bottom' ?
+                    groupScaled
+                    :
+                    ''
+            ),
             h: horizontal ?
-                {
-                    ...parentScope.offsets.h,
-                    passThrough: true
-                }
+                parentScope.offsets.h
                 :
                 dock === 'top'
-                    ? { signal: groupScaled }
-                    : {
-                        signal: `${offsetPropValueSignal(parentScope.offsets.h)} - ${groupScaled}`
-                    }
+                    ? groupScaled
+                    : `${parentScope.offsets.h} - ${groupScaled}`
             ,
             w: horizontal ?
-                { signal: groupScaled }
+                groupScaled
                 :
-                {
-                    ...parentScope.offsets.w,
-                    passThrough: true
-                }
+                parentScope.offsets.w
         };
 
         const scale: LinearScale = {
@@ -180,7 +179,7 @@ export class AggregateContainer extends Layout {
                 {
                     x: [{
                         test: testForCollapseSelection(),
-                        value: 0
+                        value: parentScope.offsets.x
                     }],
                     width: [{
                         test: testForCollapseSelection(),
@@ -192,8 +191,8 @@ export class AggregateContainer extends Layout {
                     y: [{
                         test: testForCollapseSelection(),
                         signal: dock === 'top'
-                            ? '0'
-                            : `${parentScope.sizeSignals.layoutHeight} - ${groupScaled}`
+                            ? parentScope.offsets.y
+                            : addOffsets(parentScope.offsets.y, `${parentScope.offsets.h} - ${groupScaled}`)
                     }],
                     height: [{
                         test: testForCollapseSelection(),

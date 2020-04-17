@@ -4,7 +4,12 @@ import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { SignalNames } from '../constants';
 import { GlobalScales, InnerScope } from '../interfaces';
 import { linearScale, pointScale } from '../scales';
-import { addMarks, addSignal, addTransforms } from '../scope';
+import {
+    addMarks,
+    addOffsets,
+    addSignal,
+    addTransforms
+} from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { Column } from '@msrvida/chart-types';
 import {
@@ -178,14 +183,10 @@ export class Scatter extends Layout {
         return {
             data: parentScope.data,
             offsets: {
-                x: {
-                    signal: `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(x.name)}])`
-                },
-                y: {
-                    signal: `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(y.name)}]) - ${SignalNames.PointSize}`
-                },
-                h: null,
-                w: null
+                x: addOffsets(parentScope.offsets.x, `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(x.name)}])`),
+                y: addOffsets(parentScope.offsets.y, `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(y.name)}]) - ${SignalNames.PointSize}`),
+                h: SignalNames.PointSize,
+                w: SignalNames.PointSize
             },
             sizeSignals: {
                 layoutHeight: null,
@@ -197,7 +198,7 @@ export class Scatter extends Layout {
                 y: [
                     {
                         test: testForCollapseSelection(),
-                        signal: parentScope.sizeSignals.layoutHeight
+                        signal: addOffsets(parentScope.offsets.y, parentScope.sizeSignals.layoutHeight)
                     }
                 ]
             }

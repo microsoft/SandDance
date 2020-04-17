@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { binnable, Binnable } from '../bin';
-import { FieldNames } from '../constants';
 import {
     DiscreteColumn,
     EncodingRule,
@@ -12,6 +11,7 @@ import {
 } from '../interfaces';
 import {
     addData,
+    addOffsets,
     addSignal,
     addTransforms
 } from '../scope';
@@ -99,7 +99,7 @@ export class Band extends Layout {
                     x: [
                         {
                             test: testForCollapseSelection(),
-                            value: 0
+                            value: parentScope.offsets.x
                         }
                     ],
                     width: [
@@ -114,7 +114,7 @@ export class Band extends Layout {
                     y: [
                         {
                             test: testForCollapseSelection(),
-                            signal: parentScope.sizeSignals.layoutHeight
+                            signal: addOffsets(parentScope.offsets.y, parentScope.offsets.h)
                         }
                     ],
                     height: [
@@ -151,44 +151,29 @@ export class Band extends Layout {
     }
 
     private getOffset(horizontal: boolean, binField: string): Offset2 {
-        const { names, prefix, props } = this;
+        const { names, props } = this;
         const { parentScope } = props;
         return {
-            x: horizontal ?
-                { signal: '0' }
-                :
-                {
-                    formula: {
-                        type: 'formula',
-                        expr: `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(binField)}])`,
-                        as: `${prefix}_${FieldNames.OffsetX}`
-                    }
-                },
-            y: horizontal ?
-                {
-                    formula:
-                    {
-                        type: 'formula',
-                        expr: `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(binField)}])`,
-                        as: `${prefix}_${FieldNames.OffsetY}`
-                    },
-                }
-                :
-                { signal: '0' },
+            x: addOffsets(parentScope.offsets.x,
+                horizontal ?
+                    ''
+                    :
+                    `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(binField)}])`
+            ),
+            y: addOffsets(parentScope.offsets.y,
+                horizontal ?
+                    `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(binField)}])`
+                    :
+                    ''
+            ),
             h: horizontal ?
-                { signal: names.bandWidth }
+                names.bandWidth
                 :
-                {
-                    ...parentScope.offsets.h,
-                    passThrough: true
-                },
+                parentScope.offsets.h,
             w: horizontal ?
-                {
-                    ...parentScope.offsets.w,
-                    passThrough: true
-                }
+                parentScope.offsets.w
                 :
-                { signal: names.bandWidth }
+                names.bandWidth
         };
     }
 

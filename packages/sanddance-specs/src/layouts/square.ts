@@ -6,10 +6,10 @@ import { InnerScope } from '../interfaces';
 import {
     addData,
     addMarks,
+    addOffsets,
     addSignal,
     addTransforms,
-    getGroupBy,
-    offsetPropValueSignal
+    getGroupBy
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { addZScale } from '../zBase';
@@ -129,14 +129,10 @@ export class Square extends Layout {
         return {
             data: parentScope.data,
             offsets: {
-                x: {
-                    formula: tx
-                },
-                y: {
-                    formula: ty
-                },
-                h: null,
-                w: null
+                x: addOffsets(parentScope.offsets.x, tx.expr),
+                y: addOffsets(parentScope.offsets.y, ty.expr),
+                h: names.size,
+                w: names.size
             },
             mark,
             sizeSignals: {
@@ -148,7 +144,7 @@ export class Square extends Layout {
                     y: [
                         {
                             test: testForCollapseSelection(),
-                            value: 0
+                            value: parentScope.offsets.y
                         }
                     ]
                 }
@@ -254,7 +250,7 @@ export class Square extends Layout {
             }
             case 'right-up': {
                 tx.expr = compartment;
-                ty.expr = `${offsetPropValueSignal(parentScope.offsets.h)} - ${names.levelSize} - ${level} * (${names.levelSize} + ${names.gap})`;
+                ty.expr = `${parentScope.offsets.h} - ${names.levelSize} - ${level} * (${names.levelSize} + ${names.gap})`;
                 break;
             }
             case 'right-down':

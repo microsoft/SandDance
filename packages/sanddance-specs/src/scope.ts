@@ -64,8 +64,6 @@ export function getGroupBy(groupings: Grouping[]) {
     return groupby.reduce((acc, val) => acc.concat(val), [])
 }
 
-export function offsetPropValueSignal(prop: OffsetProp) {
-    return prop.formula
-        ? `datum[${JSON.stringify(prop.formula.as)}]`
-        : prop.signal
+export function addOffsets(...offsets: string[]) {
+    return offsets.filter(Boolean).join(' + ');
 }

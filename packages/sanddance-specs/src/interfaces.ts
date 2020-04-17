@@ -121,8 +121,8 @@ export interface OffsetProp {
 }
 
 export interface Offset2 {
-    x: OffsetProp;
-    y: OffsetProp;
-    h: OffsetProp;
-    w: OffsetProp;
+    x: string;
+    y: string;
+    h: string;
+    w: string;
 }
