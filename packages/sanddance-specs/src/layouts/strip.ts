@@ -1,18 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { addData, addMarks } from '../scope';
+import { Layout, LayoutBuildProps, LayoutProps } from './layout';
+import { FieldNames } from '../constants';
+import { InnerScope, Offset2, Orientation } from '../interfaces';
+import { addMarks, addOffsets, addTransforms, getGroupBy } from '../scope';
+import { testForCollapseSelection } from '../selection';
 import { addZScale } from '../zBase';
 import { Column } from '@msrvida/chart-types';
-import { FieldNames } from '../constants';
-import { InnerScope, Orientation } from '../interfaces';
-import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import {
     LinearScale,
     RectMark,
     SortOrder,
-    Transforms
+    Transforms,
+    StackTransform
 } from 'vega-typings';
-import { testForCollapseSelection } from '../selection';
+import { binnable } from '../bin';
 
 export interface StripProps extends LayoutProps {
     sortOrder: SortOrder;
@@ -26,7 +28,9 @@ export interface StripProps extends LayoutProps {
 
 export class Strip extends Layout {
     private names: {
-        dataName: string,
+        firstField: string,
+        lastField: string,
+        valueField: string,
         scale: string,
         zScale: string
     }
@@ -35,7 +39,9 @@ export class Strip extends Layout {
         super(props);
         const p = this.prefix = `strip_${this.id}`;
         this.names = {
-            dataName: `data_${p}`,
+            firstField: `${p}${FieldNames.First}`,
+            lastField: `${p}${FieldNames.Last}`,
+            valueField: `${p}${FieldNames.Value}`,
             scale: `scale_${p}`,
             zScale: `scale_${p}_z`
         };
@@ -43,7 +49,7 @@ export class Strip extends Layout {
 
     public build(): InnerScope {
         const { names, prefix, props } = this;
-        const { addPercentageScale, globalScope, orientation, size, sort, sortOrder, parentScope, z } = props;
+        const { addPercentageScale, globalScope, groupings, orientation, size, sort, sortOrder, parentScope, z } = props;
 
         let { zSize } = props;
         zSize = zSize || parentScope.sizeSignals.layoutHeight;
@@ -63,68 +69,69 @@ export class Strip extends Layout {
             });
         }
 
-        let field: string;
+        let stackField: string;
         if (size) {
-            field = size.name;
+            stackField = size.name;
             transform.push({
                 type: 'filter',
                 expr: `datum[${JSON.stringify(size.name)}] > 0`
             });
         } else {
-            field = FieldNames.Value;
+            stackField = names.valueField;
             transform.push({
                 type: 'formula',
                 expr: '1',
-                as: field
+                as: stackField
             });
         }
 
-        transform.push({
+        const stackTransform: StackTransform = {
             type: 'stack',
-            field,
+            field: stackField,
             offset: 'normalize',
-            as: [FieldNames.First, FieldNames.Last]
-        });
+            as: [names.firstField, names.lastField]
+        };
+        if (groupings.length) {
+            stackTransform.groupby = getGroupBy(groupings);
+        }
+        transform.push(stackTransform);
 
-        addData(globalScope.scope, {
-            name: names.dataName,
-            source: globalScope.data.name,
-            transform
-        });
+        addTransforms(globalScope.data, ...transform);
 
-        const span = [FieldNames.Last, FieldNames.First].map(f => `datum[${JSON.stringify(f)}]`).join(' - ');
+        const span = [names.lastField, names.firstField].map(f => `datum[${JSON.stringify(f)}]`).join(' - ');
+
+        const offsets: Offset2 = {
+            x: addOffsets(parentScope.offsets.x,
+                horizontal ?
+                    `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.w})`
+                    :
+                    ''
+            ),
+            y: addOffsets(parentScope.offsets.y,
+                horizontal ?
+                    ''
+                    :
+                    `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.h})`
+            ),
+            h: horizontal
+                ? parentScope.offsets.h
+                : `(${span}) * (${parentScope.offsets.h})`,
+            w: horizontal
+                ? `(${span}) * (${parentScope.offsets.w})`
+                : parentScope.offsets.w
+        };
 
         const mark: RectMark = {
             name: prefix,
             type: 'rect',
-            from: { data: names.dataName },
+            from: { data: globalScope.markDataName },
             encode: {
                 update: {
-                    x: horizontal ?
-                        {
-                            signal: `datum[${JSON.stringify(FieldNames.First)}] * (${parentScope.sizeSignals.layoutWidth})`
-                        }
-                        :
-                        {
-                            value: 0
-                        },
-                    y: horizontal ?
-                        {
-                            value: 0
-                        }
-                        :
-                        {
-                            signal: `datum[${JSON.stringify(FieldNames.First)}] * (${parentScope.sizeSignals.layoutHeight})`
-                        },
                     height: {
-                        signal: horizontal
-                            ? parentScope.sizeSignals.layoutHeight
-                            : `(${span}) * (${parentScope.sizeSignals.layoutHeight})`
+                        signal: offsets.h
                     },
                     width: {
-                        signal: horizontal
-                            ? `(${span}) * (${parentScope.sizeSignals.layoutWidth})`
-                            : parentScope.sizeSignals.layoutWidth
+                        signal: offsets.w
                     },
                     ...z && {
                         z: { value: 0 },
@@ -176,6 +183,7 @@ export class Strip extends Layout {
                     y: horizontal ? undefined : percentageScale
                 }
             },
+            offsets,
             sizeSignals: {
                 layoutHeight: null,
                 layoutWidth: null
