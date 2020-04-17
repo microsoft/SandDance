@@ -8,10 +8,9 @@ import {
     addMarks,
     addSignal,
     addTransforms,
-    getDataByName,
     getGroupBy,
     offsetPropValueSignal
-    } from '../scope';
+} from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { addZScale } from '../zBase';
 import { Column } from '@msrvida/chart-types';
@@ -69,7 +68,7 @@ export class Square extends Layout {
         zSize = zSize || parentScope.sizeSignals.layoutHeight;
         addZScale(z, zSize, globalScope, names.zScale);
 
-        addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName).data, {
+        addTransforms(globalScope.data, {
             type: 'stack',
             groupby: getGroupBy(groupings),
             as: [names.stack0, names.stack1],
@@ -80,19 +79,6 @@ export class Square extends Layout {
                 }
             }
         });
-        
-        //TODO add testForCollapseSelection
-
-        // const xy = this.encodeXY();
-        // if (collapseYHeight) {
-        //     xy.y = [
-        //         {
-        //             test: testForCollapseSelection(),
-        //             value: 0
-        //         },
-        //         xy.y as NumericValueRef
-        //     ];
-        // }
 
         const heightSignal = {
             signal: fillDirection === 'down-right' ? names.size : names.levelSize
@@ -101,7 +87,7 @@ export class Square extends Layout {
             name: prefix,
             type: 'rect',
             from: {
-                data: globalScope.dataName
+                data: parentScope.data.name
             },
             encode: {
                 update: {
@@ -141,8 +127,7 @@ export class Square extends Layout {
         const { tx, ty } = this.transformXY();
 
         return {
-            prefix,
-            dataName: prefix,
+            data: parentScope.data,
             offsets: {
                 x: {
                     formula: tx
@@ -157,6 +142,16 @@ export class Square extends Layout {
             sizeSignals: {
                 layoutHeight: names.size,
                 layoutWidth: names.size
+            },
+            ...collapseYHeight && {
+                encodingRuleMap: {
+                    y: [
+                        {
+                            test: testForCollapseSelection(),
+                            value: 0
+                        }
+                    ]
+                }
             }
         };
     }
@@ -181,7 +176,7 @@ export class Square extends Layout {
                 addData(globalScope.scope,
                     {
                         name: names.grouping,
-                        source: globalScope.dataName,
+                        source: parentScope.data.name,
                         transform: [
                             {
                                 type: 'aggregate',
@@ -199,7 +194,7 @@ export class Square extends Layout {
                 );
                 maxGroupedUnits = `(${names.maxGroup}[1])`;
             } else {
-                maxGroupedUnits = `length(data(${JSON.stringify(globalScope.dataName)}))`;
+                maxGroupedUnits = `length(data(${JSON.stringify(parentScope.data.name)}))`;
             }
         }
         if (!maxGroupedFillSize) {
