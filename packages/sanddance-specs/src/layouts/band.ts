@@ -13,8 +13,7 @@ import {
 import {
     addData,
     addSignal,
-    addTransforms,
-    getDataByName
+    addTransforms
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { modifySignal } from '../signals';
@@ -48,7 +47,7 @@ export class Band extends Layout {
             bandWidth: `${p}_bandwidth`,
             accumulative: `${p}_accumulative`
         };
-        this.bin = binnable(this.prefix, props.globalScope.dataName, props.groupby);
+        this.bin = binnable(this.prefix, props.globalScope.data.name, props.groupby);
     }
 
     public getGrouping() {
@@ -61,7 +60,7 @@ export class Band extends Layout {
         const binField = bin.fields[0];
         if (bin.native === false) {
             addSignal(globalScope.scope, bin.maxbinsSignal);
-            addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName).data, ...bin.transforms);
+            addTransforms(globalScope.data, ...bin.transforms);
             addData(globalScope.scope, bin.dataSequence);
         }
 
@@ -128,8 +127,7 @@ export class Band extends Layout {
         }
 
         return {
-            prefix,
-            dataName: globalScope.dataName,
+            data: parentScope.data,
             offsets: this.getOffset(horizontal, binField),
             sizeSignals: horizontal ?
                 {

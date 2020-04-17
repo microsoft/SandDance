@@ -5,7 +5,6 @@ import {
     addMarks,
     addSignal,
     addTransforms,
-    getDataByName,
     getGroupBy
 } from '../scope';
 import { InnerScope } from '../interfaces';
@@ -60,7 +59,7 @@ export class AggregateSquare extends Layout {
         const { sizeSignals } = parentScope;
 
         //this needs to be global since the scale depends on it
-        addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName).data,
+        addTransforms(globalScope.data,
             {
                 ...this.getTransforms(
                     aggregation,
@@ -74,9 +73,9 @@ export class AggregateSquare extends Layout {
                 signal: names.globalAggregateExtentSignal
             }
         );
-        addData(parentScope.scope, {
+        addData(globalScope.markGroup, {
             name: names.extentData,
-            source: parentScope.dataName,
+            source: parentScope.data.name,
             transform: [
                 {
                     type: 'extent',
@@ -95,7 +94,7 @@ export class AggregateSquare extends Layout {
                 update: [names.squareMaxSide, names.squareMaxSide].join(' * ')
             }
         );
-        addSignal(parentScope.scope,
+        addSignal(globalScope.scope,
             {
                 name: props.localAggregateMaxExtentSignal,
                 update: `${names.localAggregateExtentSignal}[0]`
@@ -118,27 +117,27 @@ export class AggregateSquare extends Layout {
             }
 
         );
-        const mark: GroupMark = {
-            name: prefix,
-            type: 'group',
-            encode: {
-                update: {
-                    x: {
-                        signal: `(${parentScope.sizeSignals.layoutWidth} - ${names.squareSide}) / 2`
-                    },
-                    y: {
-                        signal: `(${parentScope.sizeSignals.layoutHeight} - ${names.squareSide}) / 2`
-                    },
-                    height: {
-                        signal: names.squareSide
-                    },
-                    width: {
-                        signal: names.squareSide
-                    }
-                }
-            }
-        };
-        addMarks(parentScope.scope, mark);
+        // const mark: GroupMark = {
+        //     name: prefix,
+        //     type: 'group',
+        //     encode: {
+        //         update: {
+        //             x: {
+        //                 signal: `(${parentScope.sizeSignals.layoutWidth} - ${names.squareSide}) / 2`
+        //             },
+        //             y: {
+        //                 signal: `(${parentScope.sizeSignals.layoutHeight} - ${names.squareSide}) / 2`
+        //             },
+        //             height: {
+        //                 signal: names.squareSide
+        //             },
+        //             width: {
+        //                 signal: names.squareSide
+        //             }
+        //         }
+        //     }
+        // };
+        // addMarks(parentScope.scope, mark);
 
         addSignal(globalScope.scope,
             {
@@ -148,8 +147,7 @@ export class AggregateSquare extends Layout {
         );
 
         return {
-            dataName: parentScope.dataName,
-            scope: mark,
+            data: parentScope.data,
             sizeSignals: {
                 layoutHeight: names.squareSide,
                 layoutWidth: names.squareSide

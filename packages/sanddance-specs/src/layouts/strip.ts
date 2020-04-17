@@ -86,9 +86,9 @@ export class Strip extends Layout {
             as: [FieldNames.First, FieldNames.Last]
         });
 
-        addData(parentScope.scope, {
+        addData(globalScope.scope, {
             name: names.dataName,
-            source: parentScope.dataName,
+            source: parentScope.data.name,
             transform
         });
 
@@ -143,7 +143,7 @@ export class Strip extends Layout {
             }
         };
 
-        addMarks(parentScope.scope, mark);
+        addMarks(globalScope.markGroup, mark);
 
         let percentageScale: LinearScale;
         if (addPercentageScale) {
@@ -169,7 +169,7 @@ export class Strip extends Layout {
         }
 
         return {
-            dataName: prefix,
+            data: parentScope.data,
             globalScales: {
                 showAxes: true,
                 scales: {

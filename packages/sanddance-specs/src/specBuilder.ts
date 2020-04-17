@@ -31,16 +31,13 @@ import {
 } from './interfaces';
 import { LayoutBuildProps, LayoutPair, LayoutProps } from './layouts/layout';
 import {
-    addData,
     addScale,
     addSignal,
-    getDataByName,
-    getGroupBy
+    getDataByName
 } from './scope';
 import { textSignals } from './signals';
 import { SpecCapabilities, SpecContext } from './types';
 import {
-    ExtentTransform,
     FormulaTransform,
     GroupMark,
     NewSignal,
@@ -219,8 +216,6 @@ export class SpecBuilder {
                 });
             }
 
-            //this.insertDataGroupings(colorDataName, groupings, globalScope, sums);
-
             const formulas: FormulaTransform[] = [];
 
             const outfields: OutFieldMap = {
@@ -300,62 +295,10 @@ export class SpecBuilder {
         }
     }
 
-    private insertDataGroupings(dataName: string, groupings: Grouping[], globalScope: GlobalScope, sums: boolean) {
-        const sourceData = getDataByName(globalScope.scope.data, dataName);
-        let source = dataName;
-        const data = [sourceData.data];
-
-
-        for (let i = 0; i < groupings.length - 1; i++) {//don't apply to last element
-            let grouping = groupings[i];
-            grouping.fieldOps.push({ field: FieldNames.Count, op: 'sum', as: FieldNames.SumOfCount });
-            if (sums) {
-                grouping.fieldOps.push({ field: FieldNames.Sum, op: 'sum', as: FieldNames.SumOfSum });
-            }
-        }
-
-        for (let i = 0; i < groupings.length - 2; i++) {//don't apply to 2nd to last element
-            let grouping = groupings[i];
-            grouping.fieldOps[grouping.fieldOps.length - 1].field = FieldNames.SumOfCount;
-            if (sums) {
-                grouping.fieldOps[grouping.fieldOps.length - 1].field = FieldNames.SumOfSum;
-            }
-        }
-
-        for (let i = groupings.length; i--;) {
-            let grouping = groupings[i];
-            let groupDataName = `group_${grouping.id}`;
-            data.push({
-                name: groupDataName,
-                source,
-                transform: [
-                    {
-                        type: 'aggregate',
-                        groupby: getGroupBy(groupings.slice(0, i + 1)),
-                        ops: grouping.fieldOps.map(fo => fo.op),
-                        fields: grouping.fieldOps.map(fo => fo.field),
-                        as: grouping.fieldOps.map(fo => fo.as)
-                    },
-                    ...grouping.fieldOps.map(fo => {
-                        const t: ExtentTransform = {
-                            type: 'extent',
-                            field: fo.as,
-                            signal: `group_${grouping.id}_${fo.op}_extent`
-                        };
-                        return t;
-                    })
-                ]
-            });
-            source = groupDataName;
-        }
-        globalScope.scope.data.splice(sourceData.index, 1, ...data);
-    }
-
     private createGlobalScope(dataName: string, scope: Spec, markGroup: Scope) {
         const { minCellWidth, minCellHeight, plotHeightOut, plotWidthOut } = this;
         const globalScope: GlobalScope = {
-            prefix: '',
-            dataName,
+            data: getDataByName(scope.data, dataName).data,
             scope,
             markGroup,
             offsets: {
@@ -441,8 +384,7 @@ export class SpecBuilder {
     private iterateLayouts(globalScope: GlobalScope, scope: Scope, dataName: string) {
         let specResult: SpecResult;
         let parentScope: InnerScope = {
-            prefix: '',
-            dataName,
+            data: globalScope.data,
             sizeSignals: globalScope.sizeSignals,
             offsets: globalScope.offsets
         };

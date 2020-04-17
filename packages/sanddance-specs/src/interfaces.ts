@@ -4,6 +4,7 @@ import { SpecCapabilities, SpecContext } from './types';
 import { Column } from '@msrvida/chart-types';
 import {
     AggregateOp,
+    Data,
     FormulaTransform,
     Mark,
     NewSignal,
@@ -56,9 +57,9 @@ export type EncodingRule = { test?: string } & NumericValueRef;
 
 export interface InnerScope {
     id?: number;
-    prefix: string;
-    dataName: string;   //TODO remove
+    data: Data;
     titles?: Titles;
+    facetScope?: Scope;
     mark?: Mark;
     globalScales?: GlobalScales;
     encodingRuleMap?: { [key: string]: EncodingRule[] };

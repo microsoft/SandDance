@@ -53,9 +53,9 @@ export class Treemap extends Layout {
         zSize = zSize || parentScope.sizeSignals.layoutHeight;
         addZScale(z, zSize, globalScope, names.zScale);
 
-        addData(parentScope.scope, {
+        addData(globalScope.scope, {
             name: names.dataName,
-            source: parentScope.dataName,
+            source: parentScope.data.name,
             transform: [
                 {
                     type: 'filter',
@@ -128,7 +128,7 @@ export class Treemap extends Layout {
             }
         };
 
-        addMarks(parentScope.scope, mark);
+        addMarks(globalScope.markGroup, mark);
 
         addSignal(globalScope.scope, {
             name: SignalNames.TreeMapMethod,
@@ -144,8 +144,8 @@ export class Treemap extends Layout {
 
         return {
             mark,
-            dataName: null,
-            scope: null,
+            //dataName: null,
+            data: parentScope.data,
             sizeSignals: {
                 layoutHeight: null,
                 layoutWidth: null

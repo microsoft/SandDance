@@ -71,7 +71,7 @@ export class Scatter extends Layout {
         );
         addData(globalScope.scope, {
             name: names.validData,
-            source: parentScope.dataName,
+            source: parentScope.data.name,
             transform: [x, y, z].map(c => {
                 if (!c || !c.quantitative) return;
                 const t: Transforms = {
@@ -172,7 +172,7 @@ export class Scatter extends Layout {
             if (column.quantitative) {
                 scale = linearScale(
                     scaleName,
-                    globalScope.dataName,
+                    parentScope.data.name,
                     column.name,
                     [0, { signal }],
                     reverse,
@@ -181,7 +181,7 @@ export class Scatter extends Layout {
             } else {
                 scale = pointScale(
                     scaleName,
-                    globalScope.dataName,
+                    parentScope.data.name,
                     [0, { signal }],
                     column.name,
                     reverse
@@ -199,8 +199,7 @@ export class Scatter extends Layout {
         addMarks(globalScope.markGroup, mark);
 
         return {
-            prefix,
-            dataName: prefix,
+            data: parentScope.data,
             sizeSignals: {
                 layoutHeight: null,
                 layoutWidth: null

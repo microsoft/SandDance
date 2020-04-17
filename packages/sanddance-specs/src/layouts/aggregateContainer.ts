@@ -6,7 +6,6 @@ import { AxisScale, FieldOp, InnerScope, Offset2 } from '../interfaces';
 import {
     addSignal,
     addTransforms,
-    getDataByName,
     getGroupBy,
     offsetPropValueSignal
 } from '../scope';
@@ -61,11 +60,11 @@ export class AggregateContainer extends Layout {
     }
 
     public build(): InnerScope {
-        const { aggregation, id, names, prefix, props } = this;
+        const { aggregation, names, prefix, props } = this;
         const { dock, globalScope, groupings, niceScale, parentHeight, parentScope, showAxes } = props;
 
         //this needs to be global since the scale depends on it
-        addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName).data,
+        addTransforms(globalScope.data,
             {
                 ...this.getTransforms(
                     aggregation,
@@ -158,8 +157,7 @@ export class AggregateContainer extends Layout {
         );
 
         return {
-            prefix,
-            dataName: parentScope.dataName,
+            data: parentScope.data,
             offsets,
             sizeSignals: horizontal ?
                 {
@@ -195,7 +193,7 @@ export class AggregateContainer extends Layout {
                         test: testForCollapseSelection(),
                         signal: dock === 'top'
                             ? '0'
-                            : `${parentScope.sizeSignals.layoutHeight} - 0.0` //TODO
+                            : `${parentScope.sizeSignals.layoutHeight} - ${groupScaled}`
                     }],
                     height: [{
                         test: testForCollapseSelection(),

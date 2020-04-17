@@ -51,14 +51,14 @@ export class Stack extends Layout {
     }
 
     public build(): InnerScope {
-        const { names, props } = this;
+        const { names, prefix, props } = this;
         const { globalScope, groupings, parentHeight, parentScope, sort } = props;
         const { sizeSignals } = parentScope;
 
         addData(globalScope.scope,
             {
                 name: names.globalDataName,
-                source: globalScope.dataName,
+                source: parentScope.data.name,
                 transform: [
                     {
                         type: 'aggregate',
@@ -188,40 +188,39 @@ export class Stack extends Layout {
             });
         }
 
-        addData(parentScope.scope, {
+        addData(globalScope.scope, {
             name: names.levelDataName,
-            source: parentScope.dataName,
+            source: parentScope.data.name,
             transform
         });
 
-        const group: GroupMark = {
-            type: 'group',
-            encode: {
-                update: {
-                    x: {
-                        signal: `(${sizeSignals.layoutWidth} - ${names.size}) / 2`
-                    },
-                    y: {
-                        signal: `(${sizeSignals.layoutHeight} - ${names.size}) / 2`
-                    },
-                    height: {
-                        signal: names.size
-                    },
-                    width: {
-                        signal: names.size
-                    }
-                }
-            }
-        };
+        // const group: GroupMark = {
+        //     type: 'group',
+        //     encode: {
+        //         update: {
+        //             x: {
+        //                 signal: `(${sizeSignals.layoutWidth} - ${names.size}) / 2`
+        //             },
+        //             y: {
+        //                 signal: `(${sizeSignals.layoutHeight} - ${names.size}) / 2`
+        //             },
+        //             height: {
+        //                 signal: names.size
+        //             },
+        //             width: {
+        //                 signal: names.size
+        //             }
+        //         }
+        //     }
+        // };
 
-        addMarks(parentScope.scope, group);
+        // addMarks(parentScope.scope, group);
 
-        const mark = this.addRectMarks(group);
+        // const mark = this.addRectMarks(group);
 
         return {
-            dataName: names.levelDataName,
-            scope: group,
-            mark,
+            data: parentScope.data,
+            //            mark,
             sizeSignals: {
                 layoutHeight: names.size,
                 layoutWidth: names.size
@@ -233,7 +232,7 @@ export class Stack extends Layout {
             encodingRuleMap: {
                 y: [{
                     test: testForCollapseSelection(),
-                    signal: names.size 
+                    signal: names.size
                 }],
                 z: [{
                     test: testForCollapseSelection(),

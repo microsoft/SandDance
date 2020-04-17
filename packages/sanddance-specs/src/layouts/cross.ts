@@ -5,8 +5,7 @@ import {
     addMarks,
     addScale,
     addSignal,
-    addTransforms,
-    getDataByName
+    addTransforms
 } from '../scope';
 import { addFacetColRowTitles } from '../facetTitle';
 import { Binnable, binnable } from '../bin';
@@ -58,8 +57,8 @@ export class Cross extends Layout {
     constructor(public props: CrossProps & LayoutBuildProps) {
         super(props);
         const p = this.prefix = `cross_${this.id}`;
-        this.binX = binnable(`${p}_x`, props.globalScope.dataName, props.groupbyX);
-        this.binY = binnable(`${p}_y`, props.globalScope.dataName, props.groupbyY);
+        this.binX = binnable(`${p}_x`, props.globalScope.data.name, props.groupbyX);
+        this.binY = binnable(`${p}_y`, props.globalScope.data.name, props.groupbyY);
         this.names = {
             crossData: `data_${p}_cross`,
             facetDataName: `data_${p}_facet`,
@@ -127,12 +126,12 @@ export class Cross extends Layout {
             const titleSource: TitleSource = titles[dim];
             if (bin.native === false) {
                 addSignal(globalScope.scope, bin.maxbinsSignal);
-                addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName).data, ...bin.transforms);
+                addTransforms(globalScope.data, ...bin.transforms);
                 addData(globalScope.scope, bin.dataSequence);
                 addTransforms(bin.dataSequence,
                     {
                         type: 'formula',
-                        expr: `indata(${JSON.stringify(parentScope.dataName)}, ${JSON.stringify(bin.fields[0])}, datum[${JSON.stringify(bin.fields[0])}])`,
+                        expr: `indata(${JSON.stringify(parentScope.data.name)}, ${JSON.stringify(bin.fields[0])}, datum[${JSON.stringify(bin.fields[0])}])`,
                         as: FieldNames.Contains
                     }
                 );
@@ -142,7 +141,7 @@ export class Cross extends Layout {
                 scale = ordinalScale(dataName, `${names.dimScale}_${dim}`, bin.fields);
                 titleSource.dataName = bin.dataSequence.name;
             } else {
-                dataName = globalScope.dataName;
+                dataName = parentScope.data.name;
                 const ord = createOrdinalsForFacet(dataName, `${prefix}_${dim}`, bin.fields, sortOrder);
                 data = ord.data;
                 addData(globalScope.scope, ord.data);
@@ -194,7 +193,7 @@ export class Cross extends Layout {
 
         addData(globalScope.scope, {
             name: names.crossData,
-            source: parentScope.dataName,
+            source: parentScope.data.name,
             transform: [
                 ...dimensions.map(d => {
                     return <LookupTransform>{
@@ -210,23 +209,23 @@ export class Cross extends Layout {
             ]
         });
 
-        const group: GroupMark = {
-            style: 'cell',
-            name: prefix,
-            type: 'group',
-            from: {
-                facet: {
-                    name: names.facetDataName,
-                    data: names.crossData,
-                    groupby: binX.fields.concat(binY.fields).concat([FieldNames.FacetSearch])
-                }
-            },
-            encode: {
-                update
-            }
-        };
+        // const group: GroupMark = {
+        //     style: 'cell',
+        //     name: prefix,
+        //     type: 'group',
+        //     from: {
+        //         facet: {
+        //             name: names.facetDataName,
+        //             data: names.crossData,
+        //             groupby: binX.fields.concat(binY.fields).concat([FieldNames.FacetSearch])
+        //         }
+        //     },
+        //     encode: {
+        //         update
+        //     }
+        // };
 
-        addMarks(parentScope.scope, group);
+        // addMarks(parentScope.scope, group);
 
         const xy = 'xy';
         const fieldFull = 'full';
@@ -342,17 +341,17 @@ export class Cross extends Layout {
             };
         });
 
-        addMarks(parentScope.scope, {
-            name: names.emptyMarkName,
-            style: 'cell',
-            type: 'group',
-            from: {
-                data: names.emptyDataName
-            },
-            encode: {
-                update: emptyUpdate
-            }
-        });
+        // addMarks(parentScope.scope, {
+        //     name: names.emptyMarkName,
+        //     style: 'cell',
+        //     type: 'group',
+        //     from: {
+        //         data: names.emptyDataName
+        //     },
+        //     encode: {
+        //         update: emptyUpdate
+        //     }
+        // });
 
         const sizeSignals: SizeSignals = {
             layoutHeight: `${names.dimCellSize}_y`,
@@ -366,8 +365,7 @@ export class Cross extends Layout {
         }
 
         return {
-            dataName: names.facetDataName,
-            scope: group,
+            data: parentScope.data,
             sizeSignals,
             titles
         };
