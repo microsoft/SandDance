@@ -72,7 +72,7 @@ export class Scatter extends Layout {
                 }
             }
         );
-        addTransforms(parentScope.data, ...[x, y, z].map(c => {
+        addTransforms(globalScope.data, ...[x, y, z].map(c => {
             if (!c || !c.quantitative) return;
             const t: Transforms = {
                 type: 'filter',

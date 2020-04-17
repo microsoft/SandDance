@@ -58,7 +58,6 @@ export class AggregateSquare extends Layout {
         const { aggregation, globalScope, groupings, parentHeight, parentScope } = props;
         const { sizeSignals } = parentScope;
 
-        //this needs to be global since the scale depends on it
         addTransforms(globalScope.data,
             {
                 ...this.getTransforms(
