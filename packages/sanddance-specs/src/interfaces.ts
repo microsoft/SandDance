@@ -63,7 +63,7 @@ export interface InnerScope {
     globalScales?: GlobalScales;
     encodingRuleMap?: { [key: string]: EncodingRule[] };
     sizeSignals: SizeSignals;       //TODO remove
-    offsets?: Offset2;              //TODO mandatory
+    offsets?: LayoutOffsets;              //TODO mandatory
 }
 
 export interface GlobalScope extends InnerScope {
@@ -114,13 +114,7 @@ export interface Grouping {
     fieldOps: FieldOp[];
 }
 
-export interface OffsetProp {
-    passThrough?: boolean;
-    formula?: FormulaTransform;
-    signal?: string;
-}
-
-export interface Offset2 {  //TODO rename
+export interface LayoutOffsets {
     x: string;
     y: string;
     h: string;

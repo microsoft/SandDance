@@ -6,7 +6,7 @@ import {
     AxisScale,
     FieldOp,
     InnerScope,
-    Offset2
+    LayoutOffsets
 } from '../interfaces';
 import {
     addOffsets,
@@ -90,7 +90,7 @@ export class AggregateContainer extends Layout {
         );
         const horizontal = dock === 'left';
         const groupScaled = `scale(${JSON.stringify(names.scale)}, datum[${JSON.stringify(names.aggregateField)}])`;
-        const offsets: Offset2 = {
+        const offsets: LayoutOffsets = {
             x: parentScope.offsets.x,
             y: addOffsets(parentScope.offsets.y,
                 dock === 'bottom' ?

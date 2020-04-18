@@ -6,7 +6,7 @@ import {
     DiscreteColumn,
     EncodingRule,
     InnerScope,
-    Offset2,
+    LayoutOffsets,
     Orientation
 } from '../interfaces';
 import {
@@ -149,7 +149,7 @@ export class Band extends Layout {
         };
     }
 
-    private getOffset(horizontal: boolean, binField: string): Offset2 {
+    private getOffset(horizontal: boolean, binField: string): LayoutOffsets {
         const { names, props } = this;
         const { parentScope } = props;
         return {

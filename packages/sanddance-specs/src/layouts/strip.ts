@@ -2,8 +2,13 @@
 // Licensed under the MIT license.
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { FieldNames } from '../constants';
-import { InnerScope, Offset2, Orientation } from '../interfaces';
-import { addMarks, addOffsets, addTransforms, getGroupBy } from '../scope';
+import { InnerScope, LayoutOffsets, Orientation } from '../interfaces';
+import {
+    addMarks,
+    addOffsets,
+    addTransforms,
+    getGroupBy
+} from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { addZScale } from '../zBase';
 import { Column } from '@msrvida/chart-types';
@@ -11,10 +16,9 @@ import {
     LinearScale,
     RectMark,
     SortOrder,
-    Transforms,
-    StackTransform
+    StackTransform,
+    Transforms
 } from 'vega-typings';
-import { binnable } from '../bin';
 
 export interface StripProps extends LayoutProps {
     sortOrder: SortOrder;
@@ -100,7 +104,7 @@ export class Strip extends Layout {
 
         const span = [names.lastField, names.firstField].map(f => `datum[${JSON.stringify(f)}]`).join(' - ');
 
-        const offsets: Offset2 = {
+        const offsets: LayoutOffsets = {
             x: addOffsets(parentScope.offsets.x,
                 horizontal ?
                     `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.w})`

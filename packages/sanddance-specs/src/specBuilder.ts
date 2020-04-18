@@ -25,8 +25,7 @@ import {
     GlobalScope,
     Grouping,
     InnerScope,
-    Offset2,
-    OffsetProp,
+    LayoutOffsets,
     SpecResult
 } from './interfaces';
 import { LayoutBuildProps, LayoutPair, LayoutProps } from './layouts/layout';
@@ -356,7 +355,7 @@ export class SpecBuilder {
         let firstScope: InnerScope;
         let childScope: InnerScope;
         const groupings: Grouping[] = [];
-        const offsets: Offset2[] = [];
+        const offsets: LayoutOffsets[] = [];
         let sums = false;
         let { layouts, specCapabilities } = this.props;
         const allGlobalScales: GlobalScales[] = [];

@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { SignalNames } from '../constants';
-import { InnerScope, Offset2 } from '../interfaces';
+import { InnerScope, LayoutOffsets } from '../interfaces';
 import { addData, addMarks, addSignal, addTransforms, addOffsets, getGroupBy } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { addZScale } from '../zBase';
@@ -69,7 +69,7 @@ export class Treemap extends Layout {
         zSize = zSize || parentScope.sizeSignals.layoutHeight;
         addZScale(z, zSize, globalScope, names.zScale);
 
-        const offsets: Offset2 = {
+        const offsets: LayoutOffsets = {
             x: addOffsets(parentScope.offsets.x, fn(names.fieldX0)),
             y: addOffsets(parentScope.offsets.y, fn(names.fieldY0)),
             h: subtract(names.fieldY1, names.fieldY0),
@@ -100,7 +100,7 @@ export class Treemap extends Layout {
         };
     }
 
-    private transformedMark(offsets: Offset2) {
+    private transformedMark(offsets: LayoutOffsets) {
         const { names, props } = this;
         const { globalScope, groupings, parentScope } = props;
 
@@ -172,7 +172,7 @@ export class Treemap extends Layout {
         }
     }
 
-    private addMark(offsets: Offset2, markParent: Scope, markDataName: string) {
+    private addMark(offsets: LayoutOffsets, markParent: Scope, markDataName: string) {
         const { names, prefix, props } = this;
         const { z } = props;
         const mark: RectMark = {

@@ -8,7 +8,7 @@ import { addFacetCellTitles } from '../facetTitle';
 import {
     DiscreteColumn,
     InnerScope,
-    Offset2,
+    LayoutOffsets,
     SizeSignals
 } from '../interfaces';
 import { createOrdinalsForFacet } from '../ordinal';
@@ -327,7 +327,7 @@ export class Wrap extends Layout {
             }
         };
 
-        const offsets: Offset2 = {
+        const offsets: LayoutOffsets = {
             x: signalX,
             y: signalY,
             h: signalH,
