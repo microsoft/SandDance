@@ -5,10 +5,10 @@ import { SignalNames } from '../constants';
 import { GlobalScales, InnerScope } from '../interfaces';
 import { linearScale, pointScale } from '../scales';
 import {
+    addData,
     addMarks,
     addOffsets,
-    addSignal,
-    addTransforms
+    addSignal
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { Column } from '@msrvida/chart-types';
@@ -30,6 +30,7 @@ export interface ScatterProps extends LayoutProps {
 export class Scatter extends Layout {
     private names: {
         aggregateData: string,
+        markData: string,
         xScale: string,
         yScale: string,
         zScale: string
@@ -40,6 +41,7 @@ export class Scatter extends Layout {
         const p = this.prefix = `scatter_${this.id}`;
         this.names = {
             aggregateData: `data_${p}_aggregate`,
+            markData: `data_${p}_mark`,
             xScale: `scale_${p}_x`,
             yScale: `scale_${p}_y`,
             zScale: `scale_${p}_z`
@@ -72,14 +74,20 @@ export class Scatter extends Layout {
                 }
             }
         );
-        addTransforms(globalScope.data, ...[x, y, z].map(c => {
-            if (!c || !c.quantitative) return;
-            const t: Transforms = {
-                type: 'filter',
-                expr: `isValid(datum[${JSON.stringify(c.name)}])`
-            };
-            return t;
-        }).filter(Boolean));
+
+        addData(globalScope.scope, {
+            name: names.markData,
+            source: globalScope.markDataName,
+            transform: [x, y, z].map(c => {
+                if (!c || !c.quantitative) return;
+                const t: Transforms = {
+                    type: 'filter',
+                    expr: `isValid(datum[${JSON.stringify(c.name)}])`
+                };
+                return t;
+            }).filter(Boolean)
+        });
+        globalScope.markDataName = names.markData;
 
         const globalScales: GlobalScales = { showAxes: true, scales: {} };
         const zValue = z ? `scale(${JSON.stringify(names.zScale)}, datum[${JSON.stringify(z.name)}])` : null;
