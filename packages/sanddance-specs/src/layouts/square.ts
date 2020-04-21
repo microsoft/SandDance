@@ -170,7 +170,7 @@ export class Square extends Layout {
             if (groupings) {
                 addTransforms(globalScope.data,
                     {
-                        type: 'aggregate',
+                        type: 'joinaggregate',
                         groupby: getGroupBy(groupings),
                         ops: ['count'],
                         as: [names.maxGroupField]
