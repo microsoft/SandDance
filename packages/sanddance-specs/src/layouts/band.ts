@@ -55,8 +55,8 @@ export class Band extends Layout {
     }
 
     public build(): InnerScope {
-        const { bin, names, prefix, props } = this;
-        const { globalScope, minBandWidth, orientation, parentHeight, parentScope, showAxes, style } = props;
+        const { bin, names, props } = this;
+        const { globalScope, minBandWidth, orientation, parentHeight, parentScope, showAxes } = props;
         const binField = bin.fields[0];
         if (bin.native === false) {
             addSignal(globalScope.scope, bin.maxbinsSignal);
