@@ -217,9 +217,6 @@ export class SpecBuilder {
 
             //add mark to the final scope
             if (finalScope.mark) {
-
-                console.log(finalScope.mark.from.data);
-
                 const { update } = finalScope.mark.encode;
 
                 if (offsets.length) {

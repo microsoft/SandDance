@@ -89,8 +89,6 @@ export class Wrap extends Layout {
 
         let ordinalBinData: string;
 
-        console.log('build wrap')
-
         if (bin.native === false) {
             addSignal(globalScope.scope, bin.maxbinsSignal);
             addTransforms(globalScope.data, ...bin.transforms);
