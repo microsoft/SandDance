@@ -1,5 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { Layout, LayoutBuildProps, LayoutProps } from './layout';
+import { Binnable, binnable } from '../bin';
+import { FieldNames, SignalNames } from '../constants';
+import { displayBin, serializeAsVegaExpression } from '../facetSearch';
+import { addFacetColRowTitles } from '../facetTitle';
+import {
+    DiscreteColumn,
+    InnerScope,
+    LayoutOffsets,
+    SizeSignals,
+    Titles,
+    TitleSource
+} from '../interfaces';
+import { createOrdinalsForFacet, ordinalScale } from '../ordinal';
 import {
     addData,
     addMarks,
@@ -7,29 +21,14 @@ import {
     addSignal,
     addTransforms
 } from '../scope';
-import { addFacetColRowTitles } from '../facetTitle';
-import { Binnable, binnable } from '../bin';
-import { createOrdinalsForFacet, ordinalScale } from '../ordinal';
+import { modifySignal } from '../signals';
 import {
     Data,
-    FormulaTransform,
-    GroupEncodeEntry,
     GroupMark,
-    LookupTransform,
+    NewSignal,
     OrdinalScale,
     SortOrder
 } from 'vega-typings';
-import {
-    DiscreteColumn,
-    InnerScope,
-    SizeSignals,
-    Titles,
-    TitleSource
-} from '../interfaces';
-import { displayBin, serializeAsVegaExpression } from '../facetSearch';
-import { FieldNames, SignalNames } from '../constants';
-import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { modifySignal } from '../signals';
 
 export interface CrossProps extends LayoutProps {
     axisTextColor: string;
@@ -38,15 +37,27 @@ export interface CrossProps extends LayoutProps {
     groupbyY: DiscreteColumn;
 }
 
+interface Dimension {
+    dim: string;
+    bin: Binnable;
+    sortOrder: SortOrder;
+    size: string;
+    layout: string;
+    min: string;
+    out: NewSignal;
+    offset: string;
+    padding: string;
+    dataOut: Data;
+    scaleName: string;
+    position: string;
+}
+
 export class Cross extends Layout {
     private binX: Binnable;
     private binY: Binnable;
     private names: {
-        crossData: string,
         facetDataName: string,
-        emptyDataName: string,
-        emptyMarkName: string,
-        fullDataName: string,
+        searchUnion: string,
         dimScale: string,
         dimCount: string,
         dimCategorical: string,
@@ -60,11 +71,8 @@ export class Cross extends Layout {
         this.binX = binnable(`${p}_x`, props.globalScope.data.name, props.groupbyX);
         this.binY = binnable(`${p}_y`, props.globalScope.data.name, props.groupbyY);
         this.names = {
-            crossData: `data_${p}_cross`,
             facetDataName: `data_${p}_facet`,
-            emptyDataName: `data_${p}_empty`,
-            emptyMarkName: `${p}_empty`,
-            fullDataName: `data_${p}_full`,
+            searchUnion: `data_${p}_search`,
             dimScale: `scale_${p}`,
             dimCount: `${p}_count`,
             dimCategorical: `data_${p}_cat`,
@@ -81,44 +89,39 @@ export class Cross extends Layout {
         const { binX, binY, names, prefix, props } = this;
         const { axisTextColor, colRowTitles, globalScope, parentScope } = props;
         const titles: Titles = { x: { dataName: null, quantitative: null }, y: { dataName: null, quantitative: null } };
-        const update: GroupEncodeEntry = {
-            height: {
-                signal: `${names.dimCellSize}_y`
-            },
-            width: {
-                signal: `${names.dimCellSize}_x`
-            }
+
+        const dx: Dimension = {
+            dim: 'x',
+            bin: binX,
+            sortOrder: <SortOrder>'ascending',
+            size: parentScope.sizeSignals.layoutWidth,
+            layout: parentScope.sizeSignals.layoutWidth,
+            min: globalScope.signals.minCellWidth.name,
+            out: globalScope.signals.plotWidthOut,
+            offset: SignalNames.FacetPaddingLeft,
+            padding: SignalNames.FacetPaddingLeft,
+            dataOut: <Data>null,
+            scaleName: <string>null,
+            position: null
         };
-        const dimensions = [
-            {
-                dim: 'x',
-                bin: binX,
-                sortOrder: <SortOrder>'ascending',
-                size: parentScope.sizeSignals.layoutWidth,
-                layout: parentScope.sizeSignals.layoutWidth,
-                min: globalScope.signals.minCellWidth.name,
-                out: globalScope.signals.plotWidthOut,
-                offset: SignalNames.FacetPaddingLeft,
-                padding: SignalNames.FacetPaddingLeft,
-                dataOut: <Data>null,
-                scaleName: <string>null
-            },
-            {
-                dim: 'y',
-                bin: binY,
-                sortOrder: <SortOrder>'ascending',
-                size: parentScope.sizeSignals.layoutHeight,
-                layout: parentScope.sizeSignals.layoutHeight,
-                min: globalScope.signals.minCellHeight.name,
-                out: globalScope.signals.plotHeightOut,
-                offset: SignalNames.FacetPaddingTop,
-                padding: `(${SignalNames.FacetPaddingTop} + ${SignalNames.FacetPaddingBottom})`,
-                dataOut: <Data>null,
-                scaleName: <string>null
-            }
-        ];
+        const dy: Dimension = {
+            dim: 'y',
+            bin: binY,
+            sortOrder: <SortOrder>'ascending',
+            size: parentScope.sizeSignals.layoutHeight,
+            layout: parentScope.sizeSignals.layoutHeight,
+            min: globalScope.signals.minCellHeight.name,
+            out: globalScope.signals.plotHeightOut,
+            offset: SignalNames.FacetPaddingTop,
+            padding: `(${SignalNames.FacetPaddingTop} + ${SignalNames.FacetPaddingBottom})`,
+            dataOut: <Data>null,
+            scaleName: <string>null,
+            position: null
+        };
+
+        const dimensions = [dx, dy];
         dimensions.forEach(d => {
-            const { bin, dim, offset, padding, sortOrder } = d;
+            const { bin, dim, padding, sortOrder } = d;
             let data: Data;
             let dataName: string;
             let countSignal: string;
@@ -180,178 +183,67 @@ export class Cross extends Layout {
                 }
             );
             modifySignal(d.out, 'max', `((${size} + ${padding}) * ${count})`);
-            update[dim] = {
-                signal: `${offset} + (scale(${JSON.stringify(scale.name)}, datum[${JSON.stringify(bin.fields[0])}]) - 1) * (${size} + ${padding})`
-            };
+            d.position = this.dimensionOffset(d);
         });
 
-        const facetSearchUnion: FormulaTransform = {
-            type: 'formula',
-            expr: `[datum[${JSON.stringify(`${FieldNames.FacetSearch}_x`)}], merge(datum[${JSON.stringify(`${FieldNames.FacetSearch}_y`)}], { clause: '&&'})]`,
-            as: FieldNames.FacetSearch
-        };
-
-        addData(globalScope.scope, {
-            name: names.crossData,
-            source: globalScope.markDataName,
-            transform: [
-                ...dimensions.map(d => {
-                    return <LookupTransform>{
-                        type: 'lookup',
-                        from: d.dataOut.name,
-                        key: d.bin.fields[0],
-                        fields: [d.bin.fields[0]],
-                        values: [FieldNames.FacetSearch],
-                        as: [`${FieldNames.FacetSearch}_${d.dim}`]
-                    };
-                }),
-                facetSearchUnion
-            ]
-        });
-
-        // const group: GroupMark = {
-        //     style: 'cell',
-        //     name: prefix,
-        //     type: 'group',
-        //     from: {
-        //         facet: {
-        //             name: names.facetDataName,
-        //             data: names.crossData,
-        //             groupby: binX.fields.concat(binY.fields).concat([FieldNames.FacetSearch])
-        //         }
-        //     },
-        //     encode: {
-        //         update
-        //     }
-        // };
-
-        // addMarks(parentScope.scope, group);
-
-        const xy = 'xy';
-        const fieldFull = 'full';
-
-        addData(globalScope.scope,
-            {
-                name: names.fullDataName,
-                source: names.crossData,
-                transform: [
-                    {
-                        type: 'aggregate',
-                        groupby: binX.fields.concat(binY.fields)
-                    },
-                    ...dimensions.map(d => {
-                        return <FormulaTransform>{
-                            type: 'formula',
-                            expr: `scale(${JSON.stringify(d.scaleName)}, datum[${JSON.stringify(d.bin.fields[0])}])`,
-                            as: d.dim
-                        };
-                    }),
-                    {
-                        type: 'formula',
-                        expr: 'join([datum.x, datum.y])',
-                        as: xy
+        const groupRow: GroupMark = {
+            type: 'group',
+            encode: {
+                update: {
+                    y: {
+                        signal: dy.position
                     }
-                ]
+                }
             },
-            {
-                name: names.emptyDataName,
-                transform: [
-                    {
-                        type: 'sequence',
-                        start: 0,
-                        stop: {
-                            signal: `${dimensions.map(d => `${names.dimCount}_${d.dim}`).join(' * ')}`
-                        }
-                    },
-                    {
-                        type: 'formula',
-                        expr: `datum.data % ${names.dimCount}_x + 1`,
-                        as: 'x'
-                    },
-                    {
-                        type: 'formula',
-                        expr: `floor(datum.data / ${names.dimCount}_x) + 1`,
-                        as: 'y'
-                    },
-                    {
-                        type: 'formula',
-                        expr: 'join([datum.x, datum.y])',
-                        as: xy
-                    },
-                    {
-                        type: 'lookup',
-                        from: names.fullDataName,
-                        key: xy,
-                        fields: [xy],
-                        values: [xy],
-                        as: [fieldFull]
-                    },
-                    {
-                        type: 'filter',
-                        expr: `datum[${JSON.stringify(fieldFull)}] === null`
-                    },
-                    ...dimensions.map(d => {
-                        return <LookupTransform>{
-                            type: 'lookup',
-                            from: d.dataOut.name,
-                            key: FieldNames.Ordinal,
-                            fields: [d.dim],
-                            values: [d.bin.fields[0]]
-                        };
-                    }),
-                    ...dimensions.map(d => {
-                        return <LookupTransform>{
-                            type: 'lookup',
-                            from: d.dataOut.name,
-                            key: FieldNames.Ordinal,
-                            fields: [d.dim],
-                            values: d.bin.discreteColumn.column.quantitative ?
-                                d.bin.fields.concat([FieldNames.First, FieldNames.Last])
-                                :
-                                d.bin.fields,
-                            as: d.bin.discreteColumn.column.quantitative ?
-                                d.bin.fields.concat([`${FieldNames.First}_${d.dim}`, `${FieldNames.Last}_${d.dim}`])
-                                : d.bin.fields
-                        };
-                    }),
-                    ...dimensions.map(d => {
-                        return <FormulaTransform>{
+            from: {
+                data: dy.dataOut.name
+            },
+            data: [
+                {
+                    name: names.searchUnion,
+                    source: dx.dataOut.name,
+                    transform: [
+                        {
                             type: 'formula',
-                            expr: serializeAsVegaExpression(d.bin, `${FieldNames.First}_${d.dim}`, `${FieldNames.Last}_${d.dim}`),
-                            as: `${FieldNames.FacetSearch}_${d.dim}`
-                        };
-                    }),
-                    facetSearchUnion
-                ]
-            }
-        );
+                            expr: `[datum[${JSON.stringify(FieldNames.FacetSearch)}], merge(parent[${JSON.stringify(FieldNames.FacetSearch)}], { clause: '&&'})]`,
+                            as: FieldNames.FacetSearch
+                        }
+                    ]
+                }
+            ]
+        };
 
-        const emptyUpdate: GroupEncodeEntry = {
-            height: {
-                signal: `${names.dimCellSize}_y`
+        const groupCol: GroupMark = {
+            style: 'cell',
+            name: prefix,
+            type: 'group',
+            encode: {
+                update: {
+                    height: {
+                        signal: `${names.dimCellSize}_y`
+                    },
+                    width: {
+                        signal: `${names.dimCellSize}_x`
+                    },
+                    x: {
+                        signal: dx.position
+                    }
+                }
             },
-            width: {
-                signal: `${names.dimCellSize}_x`
+            from: {
+                data: names.searchUnion
             }
         };
 
-        dimensions.forEach(d => {
-            emptyUpdate[d.dim] = {
-                signal: `${d.offset} + (datum.${d.dim} - 1) * (${names.dimCellSize}_${d.dim} + ${d.padding})`
-            };
-        });
+        addMarks(globalScope.markGroup, groupRow);
+        addMarks(groupRow, groupCol);
 
-        // addMarks(parentScope.scope, {
-        //     name: names.emptyMarkName,
-        //     style: 'cell',
-        //     type: 'group',
-        //     from: {
-        //         data: names.emptyDataName
-        //     },
-        //     encode: {
-        //         update: emptyUpdate
-        //     }
-        // });
+        const offsets: LayoutOffsets = {
+            x: this.dimensionOffset(dx),
+            y: this.dimensionOffset(dy),
+            h: `${names.dimCellSize}_y`,
+            w: `${names.dimCellSize}_x`
+        };
 
         const sizeSignals: SizeSignals = {
             layoutHeight: `${names.dimCellSize}_y`,
@@ -365,8 +257,15 @@ export class Cross extends Layout {
         }
 
         return {
+            facetScope: groupCol,
+            offsets,
             sizeSignals,
             titles
         };
+    }
+
+    private dimensionOffset(d: Dimension) {
+        const { names } = this;
+        return `${d.offset} + (scale(${JSON.stringify(d.scaleName)}, datum[${JSON.stringify(d.bin.fields[0])}]) - 1) * (${names.dimCellSize}_${d.dim} + ${d.padding})`;
     }
 }
