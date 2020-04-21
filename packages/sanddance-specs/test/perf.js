@@ -39,6 +39,106 @@ vega.loader().load('../../docs/sample-data/demovote.tsv').then(tsv_data => {
             }
         },
         {
+            name: "scatter facet wrap",
+            insight: {
+                "columns": {
+                    "x": "Longitude",
+                    "y": "Latitude",
+                    "color": "Obama",
+                    "z": "Education",
+                    "facet": "MedAge"
+                },
+                "facetStyle": "wrap",
+                "scheme": "redblue",
+                "size": {
+                    "height": 600,
+                    "width": 800
+                },
+                "chart": "scatterplot",
+                "view": "3d"
+            }
+        },
+        {
+            name: "scatter facet cross",
+            insight: {
+                "columns": {
+                    "x": "Longitude",
+                    "y": "Latitude",
+                    "color": "Obama",
+                    "z": "Education",
+                    "facet": "MedAge",
+                    "facetV": "Income"
+                },
+                "facetStyle": "cross",
+                "scheme": "redblue",
+                "size": {
+                    "height": 600,
+                    "width": 800
+                },
+                "chart": "scatterplot",
+                "view": "3d"
+            }
+        },
+        {
+            name: "density",
+            insight: {
+                "columns": {
+                    "x": "Longitude",
+                    "y": "Latitude",
+                    "color": "Obama",
+                    "z": "Education"
+                },
+                "scheme": "redblue",
+                "size": {
+                    "height": 600,
+                    "width": 800
+                },
+                "chart": "density",
+                "view": "3d"
+            }
+        },
+        {
+            name: "density facet wrap",
+            insight: {
+                "columns": {
+                    "x": "Longitude",
+                    "y": "Latitude",
+                    "color": "Obama",
+                    "z": "Education",
+                    "facet": "MedAge"
+                },
+                "facetStyle": "wrap",
+                "scheme": "redblue",
+                "size": {
+                    "height": 600,
+                    "width": 800
+                },
+                "chart": "density",
+                "view": "3d"
+            }
+        },
+        {
+            name: "density facet cross",
+            insight: {
+                "columns": {
+                    "x": "Longitude",
+                    "y": "Latitude",
+                    "color": "Obama",
+                    "z": "Education",
+                    "facet": "MedAge",
+                    "facetV": "Income"
+                },
+                "facetStyle": "cross",
+                "scheme": "redblue",
+                "size": {
+                    "height": 600,
+                    "width": 800
+                },
+                "chart": "density",
+                "view": "3d"
+            }
+        },
+        {
             name: "column",
             insight: {
                 "columns": {
@@ -46,6 +146,45 @@ vega.loader().load('../../docs/sample-data/demovote.tsv').then(tsv_data => {
                     "color": "Obama",
                     "z": "Education"
                 },
+                "scheme": "redblue",
+                "size": {
+                    "height": 600,
+                    "width": 800
+                },
+                "chart": "barchartV",
+                "view": "3d"
+            }
+        },
+        {
+            name: "column facet wrap",
+            insight: {
+                "columns": {
+                    "x": "Income",
+                    "color": "Obama",
+                    "z": "Education",
+                    "facet": "MedAge"
+                },
+                "facetStyle": "wrap",
+                "scheme": "redblue",
+                "size": {
+                    "height": 600,
+                    "width": 800
+                },
+                "chart": "barchartV",
+                "view": "3d"
+            }
+        },
+        {
+            name: "column facet cross",
+            insight: {
+                "columns": {
+                    "x": "Income",
+                    "color": "Obama",
+                    "z": "Education",
+                    "facet": "MedAge",
+                    "facetV": "Income"
+                },
+                "facetStyle": "cross",
                 "scheme": "redblue",
                 "size": {
                     "height": 600,
@@ -116,7 +255,7 @@ vega.loader().load('../../docs/sample-data/demovote.tsv').then(tsv_data => {
                 "chart": "stacks",
                 "view": "3d"
             }
-        },
+        }
     ];
 
     const run = i => {
