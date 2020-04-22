@@ -1,24 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import {
-    addData,
-    addMarks,
     addSignal,
     addTransforms,
-    getGroupBy
+    getGroupBy,
+    addOffsets
 } from '../scope';
-import { InnerScope } from '../interfaces';
+import { InnerScope, LayoutOffsets } from '../interfaces';
 import { Column } from '@msrvida/chart-types';
-import { GroupMark, JoinAggregateTransform } from 'vega-typings';
+import { JoinAggregateTransform } from 'vega-typings';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { testForCollapseSelection } from '../selection';
+import { Transforms } from 'vega-typings';
 
 export interface AggregateSquareProps extends LayoutProps {
     aggregation: 'sum' | 'count';
     sumBy: Column;
-    localAggregateMaxExtentSignal: string;
-    localAggregateMaxExtentScaledSignal: string;
     parentHeight: string;
+    onBuild: (localAggregateMaxExtent: string, localAggregateMaxExtentScaled: string) => void;
 }
 
 export class AggregateSquare extends Layout {
@@ -26,13 +25,7 @@ export class AggregateSquare extends Layout {
         barCount: string,
         aggregateField: string,
         globalAggregateExtentSignal: string,
-        localAggregateExtentSignal: string,
-        extentData: string,
-        squareMaxArea: string,
-        squareMaxSide: string,
-        squareArea: string,
-        squareSide: string,
-        shrinkRatio: string
+        extentData: string
     };
 
     constructor(public props: AggregateSquareProps & LayoutBuildProps) {
@@ -43,19 +36,13 @@ export class AggregateSquare extends Layout {
             barCount: `${p}_count`,
             aggregateField: `${p}_aggregate_value`,
             globalAggregateExtentSignal: `${p}_${a}_extent`,
-            localAggregateExtentSignal: `${p}_local_extent`,
-            extentData: `data_${p}_extent`,
-            squareMaxArea: `${p}_square_max_area`,
-            squareMaxSide: `${p}_square_max_side`,
-            squareArea: `${p}_square_area`,
-            squareSide: `${p}_square_side`,
-            shrinkRatio: `${p}_shrink_ratio`
+            extentData: `data_${p}_extent`
         };
     }
 
     public build(): InnerScope {
-        const { names, prefix, props } = this;
-        const { aggregation, globalScope, groupings, parentHeight, parentScope } = props;
+        const { names, props } = this;
+        const { aggregation, globalScope, groupings, onBuild, parentHeight, parentScope } = props;
         const { sizeSignals } = parentScope;
 
         addTransforms(globalScope.data,
@@ -72,71 +59,19 @@ export class AggregateSquare extends Layout {
                 signal: names.globalAggregateExtentSignal
             }
         );
-        addData(globalScope.markGroup, {
-            name: names.extentData,
-            source: globalScope.markDataName,
-            transform: [
-                {
-                    type: 'extent',
-                    field: names.aggregateField,
-                    signal: names.localAggregateExtentSignal
-                }
-            ]
-        });
-        addSignal(globalScope.scope,
-            {
-                name: names.squareMaxSide,
-                update: `min((${sizeSignals.layoutHeight}), (${sizeSignals.layoutWidth}))`
-            },
-            {
-                name: names.squareMaxArea,
-                update: [names.squareMaxSide, names.squareMaxSide].join(' * ')
-            }
-        );
-        addSignal(globalScope.scope,
-            {
-                name: props.localAggregateMaxExtentSignal,
-                update: `${names.localAggregateExtentSignal}[0]`
-            },
-            {
-                name: names.shrinkRatio,
-                update: `${props.localAggregateMaxExtentSignal} / ${names.globalAggregateExtentSignal}[1]`
-            },
-            {
-                name: names.squareArea,
-                update: [names.squareMaxArea, names.shrinkRatio].join(' * ')
-            },
-            {
-                name: names.squareSide,
-                update: `sqrt(${names.squareArea})`
-            },
-            {
-                name: props.localAggregateMaxExtentScaledSignal,
-                update: names.squareSide
-            }
 
-        );
-        // const mark: GroupMark = {
-        //     name: prefix,
-        //     type: 'group',
-        //     encode: {
-        //         update: {
-        //             x: {
-        //                 signal: `(${parentScope.sizeSignals.layoutWidth} - ${names.squareSide}) / 2`
-        //             },
-        //             y: {
-        //                 signal: `(${parentScope.sizeSignals.layoutHeight} - ${names.squareSide}) / 2`
-        //             },
-        //             height: {
-        //                 signal: names.squareSide
-        //             },
-        //             width: {
-        //                 signal: names.squareSide
-        //             }
-        //         }
-        //     }
-        // };
-        // addMarks(parentScope.scope, mark);
+        const localAggregateMaxExtent = `datum[${JSON.stringify(names.aggregateField)}]`;
+
+        const squareMaxSide = `min((${sizeSignals.layoutHeight}), (${sizeSignals.layoutWidth}))`;
+        const squareMaxArea = `(${[squareMaxSide, squareMaxSide].join(' * ')})`;
+        const shrinkRatio = `((${localAggregateMaxExtent}) / (${names.globalAggregateExtentSignal}[1]))`;
+        const squareArea = `(${[squareMaxArea, shrinkRatio].join(' * ')})`;
+        const squareSide = `sqrt(${squareArea})`;
+
+
+        const localAggregateMaxExtentScaled = squareSide;
+
+        props.onBuild && props.onBuild(localAggregateMaxExtent, localAggregateMaxExtentScaled);
 
         addSignal(globalScope.scope,
             {
@@ -145,10 +80,18 @@ export class AggregateSquare extends Layout {
             }
         );
 
+        const offsets: LayoutOffsets = {
+            x: addOffsets(parentScope.offsets.x, `(${parentScope.offsets.w} - ${squareSide}) / 2`),
+            y: addOffsets(parentScope.offsets.y, `(${parentScope.offsets.h} - ${squareSide}) / 2`),
+            h: squareSide,
+            w: squareSide
+        };
+
         return {
+            offsets,
             sizeSignals: {
-                layoutHeight: names.squareSide,
-                layoutWidth: names.squareSide
+                layoutHeight: null,
+                layoutWidth: null
             },
             globalScales: {
                 showAxes: false,
@@ -157,7 +100,7 @@ export class AggregateSquare extends Layout {
             encodingRuleMap: {
                 y: [{
                     test: testForCollapseSelection(),
-                    value: 0
+                    value: parentScope.offsets.y
                 }],
                 height: [{
                     test: testForCollapseSelection(),

@@ -48,8 +48,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         parentHeight: 'vBandParentHeight'
     };
     const aggProps: AggregateSquareProps = {
-        localAggregateMaxExtentSignal: 'aggMaxExtent',
-        localAggregateMaxExtentScaledSignal: 'aggMaxExtentScaled',
+        onBuild: null,
         parentHeight: 'aggParentHeight',
         aggregation: null,
         sumBy: specColumns.size
@@ -121,9 +120,13 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 sortBy: specColumns.sort,
                 fillDirection: 'right-down',
                 z: specColumns.z,
-                maxGroupedUnits: aggProps.localAggregateMaxExtentSignal,
-                maxGroupedFillSize: aggProps.localAggregateMaxExtentScaledSignal,
+                maxGroupedUnits: null,
+                maxGroupedFillSize: null,
                 zSize: aggProps.parentHeight
+            };
+            aggProps.onBuild = (aggMaxExtent, aggMaxExtentScaled) => {
+                squareProps.maxGroupedUnits = aggMaxExtent;
+                squareProps.maxGroupedFillSize = aggMaxExtentScaled;
             };
             layouts.push({
                 layoutClass: Square,
