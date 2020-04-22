@@ -4,10 +4,8 @@ import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { FieldNames } from '../constants';
 import { InnerScope } from '../interfaces';
 import {
-    addData,
     addMarks,
     addOffsets,
-    addSignal,
     addTransforms,
     getGroupBy
 } from '../scope';
@@ -28,13 +26,7 @@ export interface SquareProps extends LayoutProps {
 
 export class Square extends Layout {
     private names: {
-        aspect: string,
         bandWidth: string,
-        squaresPerBand: string,
-        gap: string,
-        size: string,
-        levels: string,
-        levelSize: string,
         maxGroupField: string,
         maxGroupSignal: string,
         stack0: string,
@@ -46,13 +38,7 @@ export class Square extends Layout {
         super(props);
         const p = this.prefix = `square_${this.id}`;
         this.names = {
-            aspect: `${p}_aspect`,
             bandWidth: this.getBandWidth(),
-            squaresPerBand: `${p}_squares_per_band`,
-            gap: `${p}_gap`,
-            size: `${p}_size`,
-            levels: `${p}_levels`,
-            levelSize: `${p}_levelsize`,
             maxGroupField: `${p}_max_group`,
             maxGroupSignal: `${p}_max_grouping`,
             stack0: `${p}_stack0`,
@@ -80,9 +66,12 @@ export class Square extends Layout {
             }
         });
 
+        const { gap, levelSize, size, squaresPerBand } = this.addSignals();
+
         const heightSignal = {
-            signal: fillDirection === 'down-right' ? names.size : names.levelSize
+            signal: fillDirection === 'down-right' ? size : levelSize
         };
+
         const mark: RectMark = {
             name: prefix,
             type: 'rect',
@@ -102,7 +91,7 @@ export class Square extends Layout {
                         :
                         heightSignal,
                     width: {
-                        signal: fillDirection === 'down-right' ? names.levelSize : names.size
+                        signal: fillDirection === 'down-right' ? levelSize : size
                     },
                     ...z && {
                         z: { value: 0 },
@@ -122,21 +111,19 @@ export class Square extends Layout {
         };
         addMarks(globalScope.markGroup, mark);
 
-        this.addSignals();
-
-        const { tx, ty } = this.transformXY();
+        const { tx, ty } = this.transformXY(gap, levelSize, squaresPerBand);
 
         return {
             offsets: {
                 x: addOffsets(parentScope.offsets.x, tx.expr),
                 y: addOffsets(parentScope.offsets.y, ty.expr),
-                h: names.size,
-                w: names.size
+                h: size,
+                w: size
             },
             mark,
             sizeSignals: {
-                layoutHeight: names.size,
-                layoutWidth: names.size
+                layoutHeight: size,
+                layoutWidth: size
             },
             ...collapseYHeight && {
                 encodingRuleMap: {
@@ -152,12 +139,12 @@ export class Square extends Layout {
     }
 
     private getBandWidth() {
-        const { sizeSignals } = this.props.parentScope;
+        const { offsets } = this.props.parentScope;
         switch (this.props.fillDirection) {
             case 'down-right':
-                return sizeSignals.layoutHeight;
+                return offsets.h;
             default:
-                return sizeSignals.layoutWidth;
+                return offsets.w;
         }
     }
 
@@ -187,43 +174,23 @@ export class Square extends Layout {
             }
         }
         if (!maxGroupedFillSize) {
-            maxGroupedFillSize = fillDirection === 'down-right' ? parentScope.sizeSignals.layoutWidth : parentScope.sizeSignals.layoutHeight;
+            maxGroupedFillSize = fillDirection === 'down-right' ? parentScope.offsets.w : parentScope.offsets.h;
         }
 
         const aspect = `((${names.bandWidth}) / (${maxGroupedFillSize}))`;
+        const squaresPerBand = `ceil(sqrt(${maxGroupedUnits} * ${aspect}))`;
+        const gap = `min(0.1 * (${names.bandWidth} / (${squaresPerBand} - 1)), 1)`;
+        const size = `((${names.bandWidth} / ${squaresPerBand}) - ${gap})`;
+        const levels = `ceil(${maxGroupedUnits} / ${squaresPerBand})`;
+        const levelSize = `(((${maxGroupedFillSize}) / ${levels}) - ${gap})`;
 
-        addSignal(globalScope.scope,
-            {
-                name: names.aspect,
-                update: aspect || `${globalScope.sizeSignals.layoutWidth} / ${props.fillDirection === 'down-right' ? globalScope.sizeSignals.layoutWidth : globalScope.sizeSignals.layoutHeight}`
-            },
-            {
-                name: names.squaresPerBand,
-                update: `ceil(sqrt(${maxGroupedUnits} * ${names.aspect}))`
-            },
-            {
-                name: names.gap,
-                update: `min(0.1 * (${names.bandWidth} / (${names.squaresPerBand} - 1)), 1)`
-            },
-            {
-                name: names.size,
-                update: `${names.bandWidth} / ${names.squaresPerBand} - ${names.gap}`
-            },
-            {
-                name: names.levels,
-                update: `ceil(${maxGroupedUnits} / ${names.squaresPerBand})`
-            },
-            {
-                name: names.levelSize,
-                update: `((${maxGroupedFillSize}) / ${names.levels}) - ${names.gap}`
-            }
-        );
+        return { gap, levelSize, size, squaresPerBand };
     }
 
-    private transformXY() {
+    private transformXY(gap: string, levelSize: string, squaresPerBand: string) {
         const { names, prefix } = this;
-        const compartment = `${names.bandWidth} / ${names.squaresPerBand} * ((datum[${JSON.stringify(names.stack0)}]) % ${names.squaresPerBand})`;
-        const level = `floor((datum[${JSON.stringify(names.stack0)}]) / ${names.squaresPerBand})`;
+        const compartment = `${names.bandWidth} / ${squaresPerBand} * ((datum[${JSON.stringify(names.stack0)}]) % ${squaresPerBand})`;
+        const level = `floor((datum[${JSON.stringify(names.stack0)}]) / ${squaresPerBand})`;
         const { fillDirection, parentScope } = this.props;
         const tx: FormulaTransform = {
             type: 'formula',
@@ -237,19 +204,19 @@ export class Square extends Layout {
         };
         switch (fillDirection) {
             case 'down-right': {
-                tx.expr = `${level} * (${names.levelSize} + ${names.gap})`;
+                tx.expr = `${level} * (${levelSize} + ${gap})`;
                 ty.expr = compartment;
                 break;
             }
             case 'right-up': {
                 tx.expr = compartment;
-                ty.expr = `${parentScope.offsets.h} - ${names.levelSize} - ${level} * (${names.levelSize} + ${names.gap})`;
+                ty.expr = `${parentScope.offsets.h} - ${levelSize} - ${level} * (${levelSize} + ${gap})`;
                 break;
             }
             case 'right-down':
             default: {
                 tx.expr = compartment;
-                ty.expr = `${level} * (${names.levelSize} + ${names.gap})`;
+                ty.expr = `${level} * (${levelSize} + ${gap})`;
                 break;
             }
         }
