@@ -1,17 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { Layout, LayoutBuildProps, LayoutProps } from './layout';
+import { InnerScope, LayoutOffsets } from '../interfaces';
 import {
+    addOffsets,
     addSignal,
     addTransforms,
-    getGroupBy,
-    addOffsets
+    getGroupBy
 } from '../scope';
-import { InnerScope, LayoutOffsets } from '../interfaces';
+import { testForCollapseSelection } from '../selection';
 import { Column } from '@msrvida/chart-types';
 import { JoinAggregateTransform } from 'vega-typings';
-import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { testForCollapseSelection } from '../selection';
-import { Transforms } from 'vega-typings';
 
 export interface AggregateSquareProps extends LayoutProps {
     aggregation: 'sum' | 'count';
@@ -61,17 +60,14 @@ export class AggregateSquare extends Layout {
         );
 
         const localAggregateMaxExtent = `datum[${JSON.stringify(names.aggregateField)}]`;
-
         const squareMaxSide = `min((${sizeSignals.layoutHeight}), (${sizeSignals.layoutWidth}))`;
         const squareMaxArea = `(${[squareMaxSide, squareMaxSide].join(' * ')})`;
         const shrinkRatio = `((${localAggregateMaxExtent}) / (${names.globalAggregateExtentSignal}[1]))`;
         const squareArea = `(${[squareMaxArea, shrinkRatio].join(' * ')})`;
         const squareSide = `sqrt(${squareArea})`;
-
-
         const localAggregateMaxExtentScaled = squareSide;
 
-        props.onBuild && props.onBuild(localAggregateMaxExtent, localAggregateMaxExtentScaled);
+        onBuild && onBuild(localAggregateMaxExtent, localAggregateMaxExtentScaled);
 
         addSignal(globalScope.scope,
             {
