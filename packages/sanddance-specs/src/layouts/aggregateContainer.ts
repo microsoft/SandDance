@@ -177,7 +177,7 @@ export class AggregateContainer extends Layout {
                 {
                     x: [{
                         test: testForCollapseSelection(),
-                        value: parentScope.offsets.x
+                        signal: parentScope.offsets.x
                     }],
                     width: [{
                         test: testForCollapseSelection(),
@@ -190,7 +190,7 @@ export class AggregateContainer extends Layout {
                         test: testForCollapseSelection(),
                         signal: dock === 'top'
                             ? parentScope.offsets.y
-                            : addOffsets(parentScope.offsets.y, `${parentScope.offsets.h} - ${groupScaled}`)
+                            : addOffsets(parentScope.offsets.y, parentScope.offsets.h)
                     }],
                     height: [{
                         test: testForCollapseSelection(),

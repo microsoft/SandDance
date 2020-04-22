@@ -100,7 +100,7 @@ export class AggregateSquare extends Layout {
             encodingRuleMap: {
                 y: [{
                     test: testForCollapseSelection(),
-                    value: parentScope.offsets.y
+                    signal: offsets.y
                 }],
                 height: [{
                     test: testForCollapseSelection(),
