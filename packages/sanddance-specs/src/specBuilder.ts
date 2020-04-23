@@ -30,6 +30,7 @@ import {
 } from './interfaces';
 import { LayoutBuildProps, LayoutPair, LayoutProps } from './layouts/layout';
 import {
+    addData,
     addScale,
     addSignal,
     getDataByName
@@ -37,7 +38,6 @@ import {
 import { textSignals } from './signals';
 import { SpecCapabilities, SpecContext } from './types';
 import {
-    FormulaTransform,
     GroupMark,
     NewSignal,
     Scope,
@@ -220,11 +220,31 @@ export class SpecBuilder {
                 const { update } = finalScope.mark.encode;
 
                 if (offsets.length) {
+                    const outputDataName = 'output';
+                    finalScope.mark.from.data = outputDataName;
+                    addData(globalScope.scope,
+                        {
+                            name: outputDataName,
+                            source: globalScope.markDataName,
+                            transform: [
+                                {
+                                    type: 'formula',
+                                    expr: finalScope.offsets.x,
+                                    as: FieldNames.OffsetX
+                                },
+                                {
+                                    type: 'formula',
+                                    expr: finalScope.offsets.y,
+                                    as: FieldNames.OffsetY
+                                }
+                            ]
+                        }
+                    );
                     update.x = {
-                        signal: finalScope.offsets.x
+                        field: FieldNames.OffsetX
                     };
                     update.y = {
-                        signal: finalScope.offsets.y
+                        field: FieldNames.OffsetY
                     };
                 }
 
@@ -299,11 +319,11 @@ export class SpecBuilder {
                 }
             }
         };
-        const source = 'origin';
+        const inputDataname = 'input';
         const vegaSpec: Spec = {
             $schema: 'https://vega.github.io/schema/vega/v5.json',
             //style: 'cell',
-            data: [{ name: source }, { name: dataName, source, transform: [] }],
+            data: [{ name: inputDataname }, { name: dataName, source: inputDataname, transform: [] }],
             marks: [groupMark],
             signals: textSignals(specContext, SignalNames.ViewportHeight).concat([
                 minCellWidth,
