@@ -1,17 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { Layout, LayoutBuildProps, LayoutProps } from './layout';
+import { FieldNames } from '../constants';
 import {
-    addData,
-    addMarks,
+    AxisScale,
+    FieldOp,
+    InnerScope,
+    LayoutOffsets
+} from '../interfaces';
+import {
+    addOffsets,
     addSignal,
     addTransforms,
-    getDataByName
+    getGroupBy
 } from '../scope';
-import { AxisScale, InnerScope } from '../interfaces';
-import { Column } from '@msrvida/chart-types';
-import { GroupMark, JoinAggregateTransform, LinearScale } from 'vega-typings';
-import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { testForCollapseSelection } from '../selection';
+import { Column } from '@msrvida/chart-types';
+import { JoinAggregateTransform, LinearScale } from 'vega-typings';
 
 export interface AggregateContainerProps extends LayoutProps {
     dock: 'bottom' | 'top' | 'left';
@@ -30,9 +35,8 @@ export class AggregateContainer extends Layout {
         aggregateField: string,
         globalAggregateExtentSignal: string,
         scale: string,
-        localAggregateExtentSignal: string,
-        localScaled: string,
-        extentData: string
+        extentData: string,
+        offsets: string
     };
 
     constructor(public props: AggregateContainerProps & LayoutBuildProps) {
@@ -44,22 +48,31 @@ export class AggregateContainer extends Layout {
             aggregateField: `${p}_aggregate_value`,
             globalAggregateExtentSignal: `${p}_${a}_extent`,
             scale: `scale_${p}`,
-            localAggregateExtentSignal: `${p}_local_extent`,
-            localScaled: `${p}_local_scaled`,
-            extentData: `data_${p}_extent`
+            extentData: `data_${p}_extent`,
+            offsets: `data_${p}_offsets`
         };
     }
 
+    public getAggregateSumOp() {
+        if (this.aggregation === 'sum') {
+            const fieldOp: FieldOp = {
+                field: this.props.sumBy.name,
+                op: 'sum',
+                as: FieldNames.Sum
+            };
+            return fieldOp;
+        }
+    }
+
     public build(): InnerScope {
-        const { aggregation, names, prefix, props } = this;
+        const { aggregation, names, props } = this;
         const { dock, globalScope, groupings, niceScale, parentHeight, parentScope, showAxes } = props;
 
-        //this needs to be global since the scale depends on it
-        addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName),
+        addTransforms(globalScope.data,
             {
                 ...this.getTransforms(
                     aggregation,
-                    groupings.reduce((acc, val) => acc.concat(val), [])
+                    getGroupBy(groupings)
                 ),
                 as: [names.aggregateField]
             },
@@ -69,66 +82,34 @@ export class AggregateContainer extends Layout {
                 signal: names.globalAggregateExtentSignal
             }
         );
-        addData(parentScope.scope, {
-            name: names.extentData,
-            source: parentScope.dataName,
-            transform: [
-                {
-                    type: 'extent',
-                    field: names.aggregateField,
-                    signal: names.localAggregateExtentSignal
-                }
-            ]
-        });
         addSignal(globalScope.scope,
             {
                 name: props.globalAggregateMaxExtentSignal,
                 update: `${names.globalAggregateExtentSignal}[1]`
             }
         );
-        addSignal(parentScope.scope, {
-            name: names.localScaled,
-            update: `scale(${JSON.stringify(names.scale)}, ${names.localAggregateExtentSignal}[0])`
-        });
         const horizontal = dock === 'left';
-        const mark: GroupMark = {
-            name: prefix,
-            type: 'group',
-            encode: {
-                update: {
-                    x: {
-                        value: 0
-                    },
-                    y: dock === 'bottom' ?
-                        {
-                            signal: names.localScaled
-                        }
-                        :
-                        {
-                            value: 0
-                        },
-                    height: horizontal ?
-                        {
-                            signal: parentScope.sizeSignals.layoutHeight
-                        }
-                        :
-                        {
-                            signal: dock === 'top'
-                                ? names.localScaled
-                                : `${parentScope.sizeSignals.layoutHeight} - ${names.localScaled}`
-                        },
-                    width: horizontal ?
-                        {
-                            signal: names.localScaled
-                        }
-                        :
-                        {
-                            signal: parentScope.sizeSignals.layoutWidth
-                        }
-                }
-            }
+        const groupScaled = `scale(${JSON.stringify(names.scale)}, datum[${JSON.stringify(names.aggregateField)}])`;
+        const offsets: LayoutOffsets = {
+            x: parentScope.offsets.x,
+            y: addOffsets(parentScope.offsets.y,
+                dock === 'bottom' ?
+                    groupScaled
+                    :
+                    ''
+            ),
+            h: horizontal ?
+                parentScope.offsets.h
+                :
+                dock === 'top'
+                    ? groupScaled
+                    : `${parentScope.offsets.h} - ${groupScaled}`
+            ,
+            w: horizontal ?
+                groupScaled
+                :
+                parentScope.offsets.w
         };
-        addMarks(parentScope.scope, mark);
 
         const scale: LinearScale = {
             type: 'linear',
@@ -174,18 +155,15 @@ export class AggregateContainer extends Layout {
         );
 
         return {
-            dataName: parentScope.dataName,
-            scope: mark,
+            offsets,
             sizeSignals: horizontal ?
                 {
                     layoutHeight: parentScope.sizeSignals.layoutHeight,
-                    layoutWidth: names.localScaled
+                    layoutWidth: null
                 }
                 :
                 {
-                    layoutHeight: dock === 'top'
-                        ? names.localScaled
-                        : `${parentScope.sizeSignals.layoutHeight} - ${names.localScaled}`,
+                    layoutHeight: null,
                     layoutWidth: parentScope.sizeSignals.layoutWidth
                 },
             globalScales: {
@@ -199,7 +177,7 @@ export class AggregateContainer extends Layout {
                 {
                     x: [{
                         test: testForCollapseSelection(),
-                        value: 0
+                        signal: parentScope.offsets.x
                     }],
                     width: [{
                         test: testForCollapseSelection(),
@@ -211,8 +189,8 @@ export class AggregateContainer extends Layout {
                     y: [{
                         test: testForCollapseSelection(),
                         signal: dock === 'top'
-                            ? '0'
-                            : `${parentScope.sizeSignals.layoutHeight} - ${names.localScaled}`
+                            ? parentScope.offsets.y
+                            : addOffsets(parentScope.offsets.y, parentScope.offsets.h)
                     }],
                     height: [{
                         test: testForCollapseSelection(),

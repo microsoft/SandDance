@@ -6,6 +6,9 @@ export const FieldNames = {
     Collapsed: '__SandDance__Collapsed',
     Contains: '__SandDance__Contains',
     Count: '__SandDance__Count',
+    Sum: '__SandDance__Sum',
+    SumOfCount: '__SandDance__CountSum',
+    SumOfSum: '__SandDance__SumSum',
     Selected: '__SandDance__Selected',
     First: '__SandDance__First',
     Last: '__SandDance__Last',
@@ -18,7 +21,11 @@ export const FieldNames = {
     Ordinal: '__SandDance__Ordinal',
     WrapCol: '__SandDance__WrapCol',
     WrapRow: '__SandDance__WrapRow',
-    Value: '__SandDance__Value'
+    Value: '__SandDance__Value',
+    OffsetX: '__SandDance__X',
+    OffsetY: '__SandDance__Y',
+    OffsetHeight: '__SandDance__H',
+    OffsetWidth: '__SandDance__W'
 };
 
 export const ScaleNames = {

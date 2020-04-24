@@ -1,18 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { addData, addMarks, addSignal } from '../scope';
-import { Column } from '@msrvida/chart-types';
-import { GlobalScales, InnerScope } from '../interfaces';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
+import { SignalNames } from '../constants';
+import { GlobalScales, InnerScope } from '../interfaces';
 import { linearScale, pointScale } from '../scales';
+import {
+    addData,
+    addMarks,
+    addOffsets,
+    addSignal
+} from '../scope';
+import { testForCollapseSelection } from '../selection';
+import { Column } from '@msrvida/chart-types';
 import {
     RectEncodeEntry,
     RectMark,
     Scale,
     Transforms
 } from 'vega-typings';
-import { SignalNames } from '../constants';
-import { testForCollapseSelection } from '../selection';
 
 export interface ScatterProps extends LayoutProps {
     x: Column;
@@ -25,10 +30,10 @@ export interface ScatterProps extends LayoutProps {
 export class Scatter extends Layout {
     private names: {
         aggregateData: string,
+        markData: string,
         xScale: string,
         yScale: string,
-        zScale: string,
-        validData: string
+        zScale: string
     };
 
     constructor(public props: ScatterProps & LayoutBuildProps) {
@@ -36,10 +41,10 @@ export class Scatter extends Layout {
         const p = this.prefix = `scatter_${this.id}`;
         this.names = {
             aggregateData: `data_${p}_aggregate`,
+            markData: `data_${p}_mark`,
             xScale: `scale_${p}_x`,
             yScale: `scale_${p}_y`,
-            zScale: `scale_${p}_z`,
-            validData: `data_${p}_valid`
+            zScale: `scale_${p}_z`
         };
     }
 
@@ -69,9 +74,10 @@ export class Scatter extends Layout {
                 }
             }
         );
-        addData(parentScope.scope, {
-            name: names.validData,
-            source: parentScope.dataName,
+
+        addData(globalScope.scope, {
+            name: names.markData,
+            source: globalScope.markDataName,
             transform: [x, y, z].map(c => {
                 if (!c || !c.quantitative) return;
                 const t: Transforms = {
@@ -81,6 +87,7 @@ export class Scatter extends Layout {
                 return t;
             }).filter(Boolean)
         });
+        globalScope.markDataName = names.markData;
 
         const globalScales: GlobalScales = { showAxes: true, scales: {} };
         const zValue = z ? `scale(${JSON.stringify(names.zScale)}, datum[${JSON.stringify(z.name)}])` : null;
@@ -97,23 +104,6 @@ export class Scatter extends Layout {
             width: {
                 signal: SignalNames.PointSize
             },
-            x: {
-                scale: names.xScale,
-                field: x.name
-            },
-            y: [
-                {
-                    test: testForCollapseSelection(),
-                    signal: parentScope.sizeSignals.layoutHeight
-                },
-                {
-                    scale: names.yScale,
-                    field: y.name,
-                    offset: {
-                        signal: `-${SignalNames.PointSize}`
-                    }
-                }
-            ],
             ...z && {
                 z: [
                     {
@@ -143,28 +133,28 @@ export class Scatter extends Layout {
             reverse: boolean,
             signal: string
         }[] = [
-            {
-                column: x,
-                xyz: 'x',
-                scaleName: names.xScale,
-                reverse: false,
-                signal: parentScope.sizeSignals.layoutWidth
-            },
-            {
-                column: y,
-                xyz: 'y',
-                scaleName: names.yScale,
-                reverse: true,
-                signal: parentScope.sizeSignals.layoutHeight
-            },
-            {
-                column: z,
-                xyz: 'z',
-                scaleName: names.zScale,
-                reverse: false,
-                signal: `${parentScope.sizeSignals.layoutHeight}*${SignalNames.ZProportion}`
-            }
-        ];
+                {
+                    column: x,
+                    xyz: 'x',
+                    scaleName: names.xScale,
+                    reverse: false,
+                    signal: parentScope.sizeSignals.layoutWidth
+                },
+                {
+                    column: y,
+                    xyz: 'y',
+                    scaleName: names.yScale,
+                    reverse: true,
+                    signal: parentScope.sizeSignals.layoutHeight
+                },
+                {
+                    column: z,
+                    xyz: 'z',
+                    scaleName: names.zScale,
+                    reverse: false,
+                    signal: `${parentScope.sizeSignals.layoutHeight}*${SignalNames.ZProportion}`
+                }
+            ];
         columnSignals.forEach(cs => {
             const { column, reverse, scaleName, signal, xyz } = cs;
             if (!column) return;
@@ -172,7 +162,7 @@ export class Scatter extends Layout {
             if (column.quantitative) {
                 scale = linearScale(
                     scaleName,
-                    globalScope.dataName,
+                    globalScope.data.name,
                     column.name,
                     [0, { signal }],
                     reverse,
@@ -181,7 +171,7 @@ export class Scatter extends Layout {
             } else {
                 scale = pointScale(
                     scaleName,
-                    globalScope.dataName,
+                    globalScope.data.name,
                     [0, { signal }],
                     column.name,
                     reverse
@@ -193,19 +183,32 @@ export class Scatter extends Layout {
         const mark: RectMark = {
             name: prefix,
             type: 'rect',
-            from: { data: names.validData },
+            from: { data: globalScope.markDataName },
             encode: { update }
         };
-        addMarks(parentScope.scope, mark);
+        addMarks(globalScope.markGroup, mark);
 
         return {
-            dataName: prefix,
+            offsets: {
+                x: addOffsets(parentScope.offsets.x, `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(x.name)}])`),
+                y: addOffsets(parentScope.offsets.y, `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(y.name)}]) - ${SignalNames.PointSize}`),
+                h: SignalNames.PointSize,
+                w: SignalNames.PointSize
+            },
             sizeSignals: {
                 layoutHeight: null,
                 layoutWidth: null
             },
             globalScales,
-            mark
+            mark,
+            encodingRuleMap: {
+                y: [
+                    {
+                        test: testForCollapseSelection(),
+                        signal: addOffsets(parentScope.offsets.y, parentScope.sizeSignals.layoutHeight)
+                    }
+                ]
+            }
         };
     }
 }

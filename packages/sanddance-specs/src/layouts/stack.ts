@@ -1,12 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { addData, addMarks, addSignal } from '../scope';
-import { Column } from '@msrvida/chart-types';
-import { FieldNames } from '../constants';
-import { GroupMark, Transforms, Scope, RectMark } from 'vega-typings';
-import { InnerScope } from '../interfaces';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
+import { InnerScope, LayoutOffsets } from '../interfaces';
+import {
+    addData,
+    addMarks,
+    addOffsets,
+    addSignal,
+    addTransforms,
+    getGroupBy
+} from '../scope';
 import { testForCollapseSelection } from '../selection';
+import { Column } from '@msrvida/chart-types';
+import { RectMark } from 'vega-typings';
 
 export interface StackProps extends LayoutProps {
     sort: Column;
@@ -16,18 +22,17 @@ export interface StackProps extends LayoutProps {
 export class Stack extends Layout {
     private names: {
         cube: string,
-        cubeX: string,
-        cubeY: string,
         globalDataName: string,
         globalExtent: string,
         levelDataName: string,
-        ordinal: string,
+        count: string,
+        stack0: string,
+        stack1: string,
         sequence: string,
         sides: string,
         size: string,
         squared: string,
-        squaredExtent: string,
-        zLevel: string
+        squaredExtent: string
     };
 
     constructor(public props: StackProps & LayoutBuildProps) {
@@ -35,18 +40,17 @@ export class Stack extends Layout {
         const p = this.prefix = `stack_${this.id}`;
         this.names = {
             cube: `${p}_cube`,
-            cubeX: `${p}_x`,
-            cubeY: `${p}_y`,
             globalDataName: `data_${p}_count`,
             globalExtent: `${p}_global_extent`,
             levelDataName: `data_${p}_level`,
-            ordinal: `${p}_ordinal`,
+            count: `${p}_count`,
+            stack0: `${p}_stack0`,
+            stack1: `${p}_stack1`,
             sequence: `data_${p}_sequence`,
             sides: `${p}_sides`,
             size: `${p}_size`,
             squared: `${p}_squared`,
-            squaredExtent: `${p}_squared_extent`,
-            zLevel: `${p}_zLevel`
+            squaredExtent: `${p}_squared_extent`
         };
     }
 
@@ -55,24 +59,32 @@ export class Stack extends Layout {
         const { globalScope, groupings, parentHeight, parentScope, sort } = props;
         const { sizeSignals } = parentScope;
 
-        addData(globalScope.scope,
+        addTransforms(globalScope.data,
             {
-                name: names.globalDataName,
-                source: globalScope.dataName,
-                transform: [
-                    {
-                        type: 'aggregate',
-                        groupby: groupings.reduce((acc, val) => acc.concat(val), []),
-                        ops: ['count'],
-                        as: [FieldNames.Count]
-                    },
-                    {
-                        type: 'extent',
-                        field: FieldNames.Count,
-                        signal: names.globalExtent
-                    }
-                ]
+                type: 'joinaggregate',
+                groupby: getGroupBy(groupings),
+                ops: ['count'],
+                as: [names.count]
             },
+            {
+                type: 'extent',
+                field: names.count,
+                signal: names.globalExtent
+            },
+            {
+                type: 'stack',
+                groupby: getGroupBy(groupings),
+                as: [names.stack0, names.stack1],
+                ...sort && {
+                    sort: {
+                        field: sort.name,
+                        order: 'ascending'
+                    }
+                }
+            }
+        );
+
+        addData(globalScope.scope,
             {
                 name: names.sequence,
                 transform: [
@@ -151,76 +163,44 @@ export class Stack extends Layout {
             }
         );
 
-        const transform: Transforms[] = [
-            {
-                type: 'window',
-                ops: ['row_number'],
-                as: [FieldNames.Ordinal]
-            },
-            {
-                type: 'formula',
-                expr: `floor((datum[${JSON.stringify(FieldNames.Ordinal)}] - 1) / ${names.squared})`,
-                as: names.zLevel
-            },
-            {
-                type: 'formula',
-                expr: `(datum[${JSON.stringify(FieldNames.Ordinal)}] - 1) % ${names.squared}`,
-                as: names.ordinal
-            },
-            {
-                type: 'formula',
-                expr: `datum[${JSON.stringify(names.ordinal)}] % ${names.sides}`,
-                as: names.cubeX
-            },
-            {
-                type: 'formula',
-                expr: `floor(datum[${JSON.stringify(names.ordinal)}] / ${names.sides})`,
-                as: names.cubeY
-            }
-        ];
+        const zLevel = `floor(datum[${JSON.stringify(names.stack0)}] / ${names.squared})`;
+        const layerOrdinal = `(datum[${JSON.stringify(names.stack0)}] % ${names.squared})`;
+        const cubeX = `(${layerOrdinal} % ${names.sides})`;
+        const cubeY = `floor(${layerOrdinal} / ${names.sides})`;
+        const groupX = `(${sizeSignals.layoutWidth} - ${names.size}) / 2`;
+        const groupY = `(${sizeSignals.layoutHeight} - ${names.size}) / 2`;
 
-        if (sort) {
-            transform.unshift({
-                type: 'collect',
-                sort: {
-                    field: sort.name
-                }
-            });
-        }
+        const offsets: LayoutOffsets = {
+            x: addOffsets(parentScope.offsets.x, groupX, `${cubeX} * (${names.cube} + 1)`),
+            y: addOffsets(parentScope.offsets.y, groupY, `${cubeY} * (${names.cube} + 1)`),
+            h: names.size,
+            w: names.size
+        };
 
-        addData(parentScope.scope, {
-            name: names.levelDataName,
-            source: parentScope.dataName,
-            transform
-        });
-
-        const group: GroupMark = {
-            type: 'group',
+        const mark: RectMark = {
+            type: 'rect',
+            from: { data: this.names.levelDataName },
             encode: {
                 update: {
-                    x: {
-                        signal: `(${sizeSignals.layoutWidth} - ${names.size}) / 2`
-                    },
-                    y: {
-                        signal: `(${sizeSignals.layoutHeight} - ${names.size}) / 2`
+                    z: {
+                        signal: `${zLevel} * (${names.cube} + 1)`
                     },
                     height: {
-                        signal: names.size
+                        signal: names.cube
                     },
                     width: {
-                        signal: names.size
+                        signal: names.cube
+                    },
+                    depth: {
+                        signal: names.cube
                     }
                 }
             }
         };
-
-        addMarks(parentScope.scope, group);
-
-        const mark = this.addRectMarks(group);
+        addMarks(globalScope.markGroup, mark);
 
         return {
-            dataName: names.levelDataName,
-            scope: group,
+            offsets,
             mark,
             sizeSignals: {
                 layoutHeight: names.size,
@@ -233,7 +213,7 @@ export class Stack extends Layout {
             encodingRuleMap: {
                 y: [{
                     test: testForCollapseSelection(),
-                    signal: names.size 
+                    signal: parentScope.offsets.y
                 }],
                 z: [{
                     test: testForCollapseSelection(),
@@ -249,37 +229,5 @@ export class Stack extends Layout {
                 }]
             }
         };
-    }
-
-    private addRectMarks(scope: Scope) {
-        const { names } = this;
-        const mark: RectMark = {
-            type: 'rect',
-            from: { data: this.names.levelDataName },
-            encode: {
-                update: {
-                    x: {
-                        signal: `datum[${JSON.stringify(names.cubeX)}] * (${names.cube} + 1)`
-                    },
-                    y: {
-                        signal: `datum[${JSON.stringify(names.cubeY)}] * (${names.cube} + 1)`
-                    },
-                    z: {
-                        signal: `datum[${JSON.stringify(names.zLevel)}] * (${names.cube} + 1)`
-                    },
-                    height: {
-                        signal: names.cube
-                    },
-                    width: {
-                        signal: names.cube
-                    },
-                    depth: {
-                        signal: names.cube
-                    }
-                }
-            }
-        };
-        addMarks(scope, mark);
-        return mark;
     }
 }

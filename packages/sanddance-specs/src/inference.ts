@@ -66,19 +66,24 @@ export function inferAll(columns: Column[], data: object[]) {
             if (typeof column.quantitative !== 'boolean') {
                 column.quantitative = isQuantitative(column);
             }
-            if (column.type === 'string') {
-                checkIsColorData(data, column);
-            }
             if (!column.stats) {
                 column.stats = getStats(data, column);
+            }
+            if (column.type === 'string' && typeof column.isColorData !== 'boolean') {
+                checkIsColorData(data, column);
             }
         }
     });
 }
 
 function checkIsColorData(data: object[], column: Column) {
+    if (!column.stats.hasColorData) {
+        column.isColorData = false;
+        return;
+    }
     for (let i = 0; i < data.length; i++) {
         if (!isColor(data[i][column.name])) {
+            column.isColorData = false;
             return;
         }
     }

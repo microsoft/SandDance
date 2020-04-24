@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { addColor } from './color';
-import { addFacetAxesGroupMarks } from './facetTitle';
 import { addGlobalAxes, AxesScopeMap } from './axes';
-import { addScale, addSignal } from './scope';
+import { addColor } from './color';
+import { FieldNames, ScaleNames, SignalNames } from './constants';
 import {
     axesOffsetX,
     axesOffsetY,
@@ -14,28 +13,36 @@ import {
     defaultBins,
     maxbins
 } from './defaults';
+import { minFacetHeight, minFacetWidth } from './defaults';
+import { FacetLayout, getFacetLayout } from './facetLayout';
+import { addFacetAxesGroupMarks } from './facetTitle';
+import { fill, opacity } from './fill';
 import {
     AxisScales,
     DiscreteColumn,
     EncodingRule,
     GlobalScales,
     GlobalScope,
+    Grouping,
     InnerScope,
+    LayoutOffsets,
     SpecResult
 } from './interfaces';
-import { FacetLayout, getFacetLayout } from './facetLayout';
-import { fill, opacity } from './fill';
+import { LayoutBuildProps, LayoutPair, LayoutProps } from './layouts/layout';
+import {
+    addData,
+    addScale,
+    addSignal,
+    getDataByName
+} from './scope';
+import { textSignals } from './signals';
+import { SpecCapabilities, SpecContext } from './types';
 import {
     GroupMark,
     NewSignal,
     Scope,
     Spec
 } from 'vega-typings';
-import { LayoutBuildProps, LayoutPair, LayoutProps } from './layouts/layout';
-import { minFacetHeight, minFacetWidth } from './defaults';
-import { ScaleNames, SignalNames } from './constants';
-import { SpecCapabilities, SpecContext } from './types';
-import { textSignals } from './signals';
 
 export interface SpecBuilderProps {
     axisScales?: AxisScales;
@@ -43,6 +50,18 @@ export interface SpecBuilderProps {
     errors?: string[];
     specCapabilities: SpecCapabilities;
     customZScale?: boolean;
+}
+
+interface OutField {
+    field: string;
+    signals: string[];
+}
+
+interface OutFieldMap {
+    x: OutField;
+    y: OutField;
+    h: OutField;
+    w: OutField;
 }
 
 export class SpecBuilder {
@@ -122,7 +141,7 @@ export class SpecBuilder {
                 topLookupName: 'data_topcolorlookup',
                 colorReverseSignalName: SignalNames.ColorReverse
             });
-            const globalScope = this.createGlobalScope(colorDataName, vegaSpec);
+            const globalScope = this.createGlobalScope(colorDataName, vegaSpec, groupMark);
             let facetLayout: FacetLayout;
             if (insight.columns.facet) {
                 const discreteFacetColumn: DiscreteColumn = {
@@ -146,7 +165,17 @@ export class SpecBuilder {
                 this.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
                 this.plotOffsetRight.update = `${facetLayout.plotPadding.x}`;
             }
-            const { firstScope, finalScope, specResult, allGlobalScales, allEncodingRules } = this.iterateLayouts(globalScope, groupMark, colorDataName);
+            const {
+                firstScope,
+                finalScope,
+                specResult,
+                allGlobalScales,
+                allEncodingRules,
+                groupings,
+                sums,
+                offsets
+            } = this.iterateLayouts(globalScope, groupMark, colorDataName);
+
             if (specResult) {
                 return specResult;
             }
@@ -185,9 +214,39 @@ export class SpecBuilder {
                     axesScopes
                 });
             }
+
             //add mark to the final scope
             if (finalScope.mark) {
                 const { update } = finalScope.mark.encode;
+
+                if (offsets.length) {
+                    const outputDataName = 'output';
+                    finalScope.mark.from.data = outputDataName;
+                    addData(globalScope.scope,
+                        {
+                            name: outputDataName,
+                            source: globalScope.markDataName,
+                            transform: [
+                                {
+                                    type: 'formula',
+                                    expr: finalScope.offsets.x,
+                                    as: FieldNames.OffsetX
+                                },
+                                {
+                                    type: 'formula',
+                                    expr: finalScope.offsets.y,
+                                    as: FieldNames.OffsetY
+                                }
+                            ]
+                        }
+                    );
+                    update.x = {
+                        field: FieldNames.OffsetX
+                    };
+                    update.y = {
+                        field: FieldNames.OffsetY
+                    };
+                }
 
                 allEncodingRules.forEach(map => {
                     for (let key in map) {
@@ -217,11 +276,19 @@ export class SpecBuilder {
         }
     }
 
-    private createGlobalScope(dataName: string, scope: Spec) {
+    private createGlobalScope(dataName: string, scope: Spec, markGroup: Scope) {
         const { minCellWidth, minCellHeight, plotHeightOut, plotWidthOut } = this;
         const globalScope: GlobalScope = {
-            dataName,
+            data: getDataByName(scope.data, dataName).data,
+            markDataName: dataName,
             scope,
+            markGroup,
+            offsets: {
+                x: '0',
+                y: '0',
+                h: SignalNames.PlotHeightIn,
+                w: SignalNames.PlotWidthIn
+            },
             sizeSignals: {
                 layoutHeight: SignalNames.PlotHeightIn,
                 layoutWidth: SignalNames.PlotWidthIn
@@ -252,11 +319,11 @@ export class SpecBuilder {
                 }
             }
         };
-        const source = 'origin';
+        const inputDataname = 'input';
         const vegaSpec: Spec = {
             $schema: 'https://vega.github.io/schema/vega/v5.json',
             //style: 'cell',
-            data: [{ name: source }, { name: dataName, source, transform: [] }],
+            data: [{ name: inputDataname }, { name: dataName, source: inputDataname, transform: [] }],
             marks: [groupMark],
             signals: textSignals(specContext, SignalNames.ViewportHeight).concat([
                 minCellWidth,
@@ -299,22 +366,19 @@ export class SpecBuilder {
     private iterateLayouts(globalScope: GlobalScope, scope: Scope, dataName: string) {
         let specResult: SpecResult;
         let parentScope: InnerScope = {
-            dataName,
             sizeSignals: globalScope.sizeSignals,
-            scope
+            offsets: globalScope.offsets
         };
         let firstScope: InnerScope;
         let childScope: InnerScope;
-        const groupings: string[][] = [];
+        const groupings: Grouping[] = [];
+        const offsets: LayoutOffsets[] = [];
+        let sums = false;
         let { layouts, specCapabilities } = this.props;
         const allGlobalScales: GlobalScales[] = [];
         const allEncodingRules: { [key: string]: EncodingRule[] }[] = [];
         for (let i = 0; i < layouts.length; i++) {
             if (!parentScope) continue;
-            if (!parentScope.scope) break;
-            if (!parentScope.scope.marks) {
-                parentScope.scope.marks = [];
-            }
             let buildProps: LayoutBuildProps = {
                 globalScope,
                 parentScope,
@@ -325,9 +389,24 @@ export class SpecBuilder {
             let layout = this.createLayout(layouts[i], buildProps);
             try {
                 childScope = layout.build();
-                let grouping = layout.getGrouping();
-                if (grouping) {
-                    groupings.push(grouping);
+                childScope.id = i;
+                if (childScope.offsets) {
+                    offsets.push(childScope.offsets);
+                }
+                let groupby = layout.getGrouping();
+                if (groupby) {
+                    groupings.push({
+                        id: i,
+                        groupby,
+                        fieldOps: [
+                            { field: null, op: 'count', as: FieldNames.Count }
+                        ]
+                    });
+                }
+                let sumOp = layout.getAggregateSumOp();
+                if (sumOp) {
+                    groupings[groupings.length - 1].fieldOps.push(sumOp);
+                    sums = true;
                 }
             }
             catch (e) {
@@ -349,7 +428,7 @@ export class SpecBuilder {
             }
             parentScope = childScope;
         }
-        return { firstScope, finalScope: parentScope, specResult, allGlobalScales, allEncodingRules };
+        return { firstScope, finalScope: parentScope, specResult, allGlobalScales, allEncodingRules, groupings, sums, offsets };
     }
 
     private createLayout(layoutPair: LayoutPair, buildProps: LayoutBuildProps) {

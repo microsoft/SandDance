@@ -142,7 +142,7 @@ interface Props {
 
 export function addFacetAxesGroupMarks(props: Props) {
     const { colSeqName, colTitleScaleName, globalScope, facetScope, plotHeightOut, plotScope, plotWidthOut, rowSeqName, rowTitleScaleName } = props;
-    const { scope, sizeSignals } = facetScope;
+    const { sizeSignals } = facetScope;
 
     const colSequence = createSequence(colSeqName, sizeSignals.colCount);
     const rowSequence = createSequence(rowSeqName, sizeSignals.rowCount);
@@ -173,7 +173,7 @@ export function addFacetAxesGroupMarks(props: Props) {
     const map: AxesScopeMap = {
         main: [
             {
-                scope,
+                scope: facetScope.facetScope,
                 lines: true,
                 labels: false,
                 title: false

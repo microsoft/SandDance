@@ -1,23 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import {
-    addData,
-    addMarks,
-    addSignal,
-    addTransforms,
-    getDataByName
-} from '../scope';
-import { BandScale, GroupMark } from 'vega-typings';
+import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { binnable, Binnable } from '../bin';
 import {
     DiscreteColumn,
     EncodingRule,
     InnerScope,
+    LayoutOffsets,
     Orientation
 } from '../interfaces';
-import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { modifySignal } from '../signals';
+import {
+    addData,
+    addOffsets,
+    addSignal,
+    addTransforms
+} from '../scope';
 import { testForCollapseSelection } from '../selection';
+import { modifySignal } from '../signals';
+import { BandScale } from 'vega-typings';
 
 export interface BandProps extends LayoutProps {
     excludeEncodingRuleMap?: boolean;
@@ -32,7 +32,6 @@ export interface BandProps extends LayoutProps {
 export class Band extends Layout {
     private bin: Binnable;
     private names: {
-        facetData: string,
         xScale: string,
         yScale: string,
         bandWidth: string,
@@ -43,13 +42,12 @@ export class Band extends Layout {
         super(props);
         const p = this.prefix = `band_${this.id}`;
         this.names = {
-            facetData: `facet_${p}`,
             xScale: `scale_${p}_x`,
             yScale: `scale_${p}_y`,
             bandWidth: `${p}_bandwidth`,
             accumulative: `${p}_accumulative`
         };
-        this.bin = binnable(this.prefix, props.globalScope.dataName, props.groupby);
+        this.bin = binnable(this.prefix, props.globalScope.data.name, props.groupby);
     }
 
     public getGrouping() {
@@ -58,13 +56,15 @@ export class Band extends Layout {
 
     public build(): InnerScope {
         const { bin, names, props } = this;
-        const { globalScope, minBandWidth, orientation, parentHeight, parentScope, showAxes, style } = props;
+        const { globalScope, minBandWidth, orientation, parentHeight, parentScope, showAxes } = props;
         const binField = bin.fields[0];
         if (bin.native === false) {
             addSignal(globalScope.scope, bin.maxbinsSignal);
-            addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName), ...bin.transforms);
+            addTransforms(globalScope.data, ...bin.transforms);
             addData(globalScope.scope, bin.dataSequence);
         }
+
+        //TODO don't add this, use existing dataset
         addData(globalScope.scope, {
             name: names.accumulative,
             source: bin.fullScaleDataname,
@@ -89,8 +89,6 @@ export class Band extends Layout {
                 update: parentScope.sizeSignals.layoutHeight
             }
         );
-        const mark = this.getMark(parentScope, horizontal, binField, style);
-        addMarks(parentScope.scope, mark);
 
         const scale = this.getScale(bin, horizontal);
 
@@ -101,7 +99,7 @@ export class Band extends Layout {
                     x: [
                         {
                             test: testForCollapseSelection(),
-                            value: 0
+                            value: parentScope.offsets.x
                         }
                     ],
                     width: [
@@ -116,7 +114,7 @@ export class Band extends Layout {
                     y: [
                         {
                             test: testForCollapseSelection(),
-                            signal: parentScope.sizeSignals.layoutHeight
+                            signal: addOffsets(parentScope.offsets.y, parentScope.offsets.h)
                         }
                     ],
                     height: [
@@ -129,8 +127,7 @@ export class Band extends Layout {
         }
 
         return {
-            dataName: names.facetData,
-            scope: mark,
+            offsets: this.getOffset(horizontal, binField),
             sizeSignals: horizontal ?
                 {
                     layoutHeight: names.bandWidth,
@@ -152,53 +149,30 @@ export class Band extends Layout {
         };
     }
 
-    private getMark(parentScope: InnerScope, horizontal: boolean, binField: string, style: string): GroupMark {
-        const { bin, names, prefix } = this;
+    private getOffset(horizontal: boolean, binField: string): LayoutOffsets {
+        const { names, props } = this;
+        const { parentScope } = props;
         return {
-            style,
-            name: prefix,
-            type: 'group',
-            from: {
-                facet: {
-                    name: names.facetData,
-                    data: parentScope.dataName,
-                    groupby: bin.fields
-                }
-            },
-            encode: {
-                update: horizontal ?
-                    {
-                        x: {
-                            value: 0
-                        },
-                        y: {
-                            scale: names.yScale,
-                            field: binField
-                        },
-                        height: {
-                            signal: names.bandWidth
-                        },
-                        width: {
-                            signal: parentScope.sizeSignals.layoutWidth
-                        }
-                    }
+            x: addOffsets(parentScope.offsets.x,
+                horizontal ?
+                    ''
                     :
-                    {
-                        x: {
-                            scale: names.xScale,
-                            field: binField
-                        },
-                        y: {
-                            value: 0
-                        },
-                        height: {
-                            signal: parentScope.sizeSignals.layoutHeight
-                        },
-                        width: {
-                            signal: names.bandWidth
-                        }
-                    }
-            }
+                    `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(binField)}])`
+            ),
+            y: addOffsets(parentScope.offsets.y,
+                horizontal ?
+                    `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(binField)}])`
+                    :
+                    ''
+            ),
+            h: horizontal ?
+                names.bandWidth
+                :
+                parentScope.offsets.h,
+            w: horizontal ?
+                parentScope.offsets.w
+                :
+                names.bandWidth
         };
     }
 

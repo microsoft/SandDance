@@ -12,8 +12,8 @@ export function addZScale(z: Column, zSize: string, globalScope: GlobalScope, zS
         const zRange: RangeScheme = [0, { signal: `(${zSize}) * ${SignalNames.ZProportion}` }];
         addScale(globalScope.scope, z.quantitative
             ?
-            linearScale(zScaleName, globalScope.dataName, z.name, zRange, false, true)
+            linearScale(zScaleName, globalScope.data.name, z.name, zRange, false, true)
             :
-            pointScale(zScaleName, globalScope.dataName, zRange, z.name, false));
+            pointScale(zScaleName, globalScope.data.name, zRange, z.name, false));
     }
 }

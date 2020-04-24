@@ -1,21 +1,26 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { Layout, LayoutBuildProps, LayoutProps } from './layout';
+import { binnable, Binnable } from '../bin';
+import { FieldNames, SignalNames } from '../constants';
+import { displayBin, serializeAsVegaExpression } from '../facetSearch';
+import { addFacetCellTitles } from '../facetTitle';
+import {
+    DiscreteColumn,
+    InnerScope,
+    LayoutOffsets,
+    SizeSignals
+} from '../interfaces';
+import { createOrdinalsForFacet } from '../ordinal';
 import {
     addData,
     addMarks,
+    addOffsets,
     addSignal,
-    addTransforms,
-    getDataByName
+    addTransforms
 } from '../scope';
-import { addFacetCellTitles } from '../facetTitle';
-import { binnable, Binnable } from '../bin';
-import { createOrdinalsForFacet } from '../ordinal';
-import { DiscreteColumn, InnerScope, SizeSignals } from '../interfaces';
-import { displayBin, serializeAsVegaExpression } from '../facetSearch';
-import { FieldNames, SignalNames } from '../constants';
-import { GroupEncodeEntry, GroupMark } from 'vega-typings';
-import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { modifySignal } from '../signals';
+import { Data, GroupEncodeEntry, GroupMark } from 'vega-typings';
 
 export interface WrapProps extends LayoutProps {
     axisTextColor: string;
@@ -26,10 +31,7 @@ export interface WrapProps extends LayoutProps {
 export class Wrap extends Layout {
     private bin: Binnable;
     private names: {
-        facetDataName: string,
-        emptyDataName: string,
-        emptyMarkName: string,
-        sortedDataName: string,
+        outputData: string,
         rowColumnDataName: string,
         cellHeight: string,
         cellWidth: string,
@@ -53,12 +55,9 @@ export class Wrap extends Layout {
     constructor(public props: WrapProps & LayoutBuildProps) {
         super(props);
         const p = this.prefix = `wrap_${this.id}`;
-        this.bin = binnable(this.prefix, props.globalScope.dataName, props.groupby);
+        this.bin = binnable(this.prefix, props.globalScope.data.name, props.groupby);
         this.names = {
-            facetDataName: `data_${p}_facet`,
-            emptyDataName: `data_${p}_empty`,
-            emptyMarkName: `${p}_empty`,
-            sortedDataName: `data_${p}_sort`,
+            outputData: `data_${p}_out`,
             rowColumnDataName: `data_${p}_row_col`,
             cellHeight: `${p}_cellHeight`,
             cellWidth: `${p}_cellWidth`,
@@ -92,16 +91,16 @@ export class Wrap extends Layout {
 
         if (bin.native === false) {
             addSignal(globalScope.scope, bin.maxbinsSignal);
-            addTransforms(getDataByName(globalScope.scope.data, globalScope.dataName), ...bin.transforms);
+            addTransforms(globalScope.data, ...bin.transforms);
             addData(globalScope.scope, bin.dataSequence);
             addTransforms(bin.dataSequence, {
                 type: 'formula',
-                expr: `indata(${JSON.stringify(parentScope.dataName)}, ${JSON.stringify(bin.fields[0])}, datum[${JSON.stringify(bin.fields[0])}])`,
+                expr: `indata(${JSON.stringify(globalScope.data.name)}, ${JSON.stringify(bin.fields[0])}, datum[${JSON.stringify(bin.fields[0])}])`,
                 as: FieldNames.Contains
             });
             ordinalBinData = bin.dataSequence.name;
         } else {
-            const ord = createOrdinalsForFacet(parentScope.dataName, prefix, bin.fields, 'ascending');
+            const ord = createOrdinalsForFacet(globalScope.data.name, prefix, bin.fields, 'ascending');
             addData(globalScope.scope, ord.data);
             ordinalBinData = ord.data.name;
         }
@@ -221,25 +220,6 @@ export class Wrap extends Layout {
                         type: 'formula',
                         expr: `(datum[${JSON.stringify(FieldNames.Ordinal)}] - 1) % ${names.colCount}`,
                         as: FieldNames.WrapCol
-                    }
-                ]
-            },
-            {
-                name: names.sortedDataName,           //need to sort by the bin, since there is no scale for positioning
-                source: parentScope.dataName,
-                transform: [
-                    {
-                        type: 'collect',
-                        sort: {
-                            field: bin.fields
-                        }
-                    },
-                    {
-                        type: 'lookup',
-                        from: names.rowColumnDataName,
-                        key: bin.fields[0],
-                        fields: [bin.fields[0]],
-                        values: [FieldNames.WrapRow, FieldNames.WrapCol, FieldNames.First, FieldNames.Last]
                     },
                     {
                         type: 'formula',
@@ -254,6 +234,22 @@ export class Wrap extends Layout {
                 ]
             }
         );
+
+        const dataOut: Data = {
+            name: names.outputData,
+            source: globalScope.data.name,
+            transform: [
+                {
+                    type: 'lookup',
+                    from: names.rowColumnDataName,
+                    key: bin.fields[0],
+                    fields: [bin.fields[0]],
+                    values: [FieldNames.WrapRow, FieldNames.WrapCol]
+                }
+            ]
+        };
+        addData(globalScope.scope, dataOut);
+        globalScope.markDataName = names.outputData;
 
         addSignal(globalScope.scope,
             {
@@ -309,19 +305,31 @@ export class Wrap extends Layout {
         modifySignal(globalScope.signals.plotHeightOut, 'max', `(${names.cellHeight} * ceil(${names.dataLength} / ${names.colCount}))`);
         modifySignal(globalScope.signals.plotWidthOut, 'max', `(${names.cellWidth} * ${names.colCount})`);
 
+        const signalH = [names.cellHeight, SignalNames.FacetPaddingTop, SignalNames.FacetPaddingBottom].join(' - ');
+        const signalW = [names.cellWidth, SignalNames.FacetPaddingLeft].join(' - ');
+        const signalX = addOffsets(parentScope.offsets.x, `datum[${JSON.stringify(FieldNames.WrapCol)}] * ${names.cellWidth}`, SignalNames.FacetPaddingLeft);
+        const signalY = addOffsets(parentScope.offsets.y, `datum[${JSON.stringify(FieldNames.WrapRow)}] * ${names.cellHeight}`, SignalNames.FacetPaddingTop);
+
         const update: GroupEncodeEntry = {
             height: {
-                signal: `${names.cellHeight} - ${SignalNames.FacetPaddingTop} - ${SignalNames.FacetPaddingBottom}`
+                signal: signalH
             },
             width: {
-                signal: `${names.cellWidth} - ${SignalNames.FacetPaddingLeft}`
+                signal: signalW
             },
             x: {
-                signal: `datum[${JSON.stringify(FieldNames.WrapCol)}] * ${names.cellWidth} + ${SignalNames.FacetPaddingLeft}`
+                signal: signalX
             },
             y: {
-                signal: `datum[${JSON.stringify(FieldNames.WrapRow)}] * ${names.cellHeight} + ${SignalNames.FacetPaddingTop}`
+                signal: signalY
             }
+        };
+
+        const offsets: LayoutOffsets = {
+            x: signalX,
+            y: signalY,
+            h: signalH,
+            w: signalW
         };
 
         const group: GroupMark = {
@@ -329,51 +337,11 @@ export class Wrap extends Layout {
             name: prefix,
             type: 'group',
             from: {
-                facet: {
-                    name: names.facetDataName,
-                    data: names.sortedDataName,
-                    groupby: bin.fields.concat([FieldNames.WrapRow, FieldNames.WrapCol, FieldNames.FacetSearch, FieldNames.FacetTitle])
-                }
+                data: names.rowColumnDataName
             },
             encode: { update }
         };
-        addMarks(parentScope.scope, group);
-
-        let emptyGroup: GroupMark;
-        if (bin.native === false) {
-            addData(globalScope.scope,
-                {
-                    name: names.emptyDataName,
-                    source: names.rowColumnDataName,
-                    transform: [
-                        {
-                            type: 'filter',
-                            expr: `!datum[${JSON.stringify(FieldNames.Contains)}]`
-                        },
-                        {
-                            type: 'formula',
-                            expr: serializeAsVegaExpression(bin, FieldNames.First, FieldNames.Last),
-                            as: FieldNames.FacetSearch
-                        },
-                        {
-                            type: 'formula',
-                            expr: displayBin(bin),
-                            as: FieldNames.FacetTitle
-                        }
-                    ]
-                }
-            );
-            emptyGroup = {
-                style: 'cell',
-                name: names.emptyMarkName,
-                type: 'group',
-                from: {
-                    data: names.emptyDataName
-                },
-                encode: { update }
-            };
-            addMarks(parentScope.scope, emptyGroup);
-        }
+        addMarks(globalScope.markGroup, group);
 
         const sizeSignals: SizeSignals = {
             layoutHeight: `(${names.cellHeight} - ${SignalNames.FacetPaddingTop} - ${SignalNames.FacetPaddingBottom})`,
@@ -384,15 +352,12 @@ export class Wrap extends Layout {
 
         if (cellTitles) {
             addFacetCellTitles(group, sizeSignals, axisTextColor);
-            if (emptyGroup) {
-                addFacetCellTitles(emptyGroup, sizeSignals, axisTextColor);
-            }
         }
 
         return {
-            dataName: names.facetDataName,
-            scope: group,
-            sizeSignals
+            facetScope: group,
+            sizeSignals,
+            offsets
         };
     }
 }

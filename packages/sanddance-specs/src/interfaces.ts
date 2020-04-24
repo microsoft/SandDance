@@ -1,8 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Column } from '@msrvida/chart-types';
 import { SpecCapabilities, SpecContext } from './types';
+import { Column } from '@msrvida/chart-types';
 import {
+    AggregateOp,
+    Data,
+    FormulaTransform,
     Mark,
     NewSignal,
     NumericValueRef,
@@ -53,16 +56,21 @@ export interface Titles {
 export type EncodingRule = { test?: string } & NumericValueRef;
 
 export interface InnerScope {
-    dataName: string;
-    scope?: Scope;
+    id?: number;
     titles?: Titles;
+    facetScope?: Scope;             //TODO add counts
     mark?: Mark;
     globalScales?: GlobalScales;
     encodingRuleMap?: { [key: string]: EncodingRule[] };
-    sizeSignals: SizeSignals;
+    sizeSignals: SizeSignals;       //TODO remove
+    offsets?: LayoutOffsets;              //TODO mandatory
 }
 
 export interface GlobalScope extends InnerScope {
+    scope?: Scope;
+    markGroup: Scope;
+    markDataName: string;
+    data: Data;
     signals: {
         minCellWidth: NewSignal;
         minCellHeight: NewSignal;
@@ -92,4 +100,23 @@ export interface DiscreteColumn {
     maxbins: number;
     maxbinsSignalName: string;
     maxbinsSignalDisplayName: string;
+}
+
+export interface FieldOp {
+    field: string;
+    op: AggregateOp;
+    as: string;
+}
+
+export interface Grouping {
+    id: number;
+    groupby: string[];
+    fieldOps: FieldOp[];
+}
+
+export interface LayoutOffsets {
+    x: string;
+    y: string;
+    h: string;
+    w: string;
 }
