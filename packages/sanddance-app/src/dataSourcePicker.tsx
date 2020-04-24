@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as React from 'react';
 import { base } from './base';
-import { DataFileType } from '@msrvida/sanddance-explorer';
-import { DataSource, DataSourceType, DataSourceSnapshot } from './types';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
-import { invalidUrlError } from './url';
 import { strings } from './language';
+import { DataSource, DataSourceSnapshot, DataSourceType } from './types';
+import { invalidUrlError } from './url';
+import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { DataFileType } from '@msrvida/sanddance-explorer';
+import * as React from 'react';
 
 export interface Props {
     dataSource: DataSource;

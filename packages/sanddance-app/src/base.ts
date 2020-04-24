@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as SandDanceExplorer from '@msrvida/sanddance-explorer';
 import { FabricComponents } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import * as SandDanceExplorer from '@msrvida/sanddance-explorer';
 import { SandDance } from '@msrvida/sanddance-explorer';
 
 import types = SandDance.VegaDeckGl.types;
@@ -10,7 +10,7 @@ import types = SandDance.VegaDeckGl.types;
  * References to dependency libraries.
  */
 export interface Base {
-  fabric: FabricComponents;
+    fabric: FabricComponents;
 }
 
 export const base: Base = {

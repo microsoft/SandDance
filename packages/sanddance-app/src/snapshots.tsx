@@ -1,17 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as React from 'react';
 import { base } from './base';
-import { DataSource, DataSourceSnapshot } from './types';
 import { downloadData } from './download';
+import { strings } from './language';
+import { DataSource, DataSourceSnapshot } from './types';
+import { invalidUrlError } from './url';
 import {
     Explorer,
     getEmbedHTML,
     SandDance,
     Snapshot
 } from '@msrvida/sanddance-explorer';
-import { invalidUrlError } from './url';
-import { strings } from './language';
+import * as React from 'react';
 
 import VegaDeckGl = SandDance.VegaDeckGl;
 import util = VegaDeckGl.util;
