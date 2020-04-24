@@ -22,18 +22,29 @@ export function cloneVegaSpecWithData(context: SpecContext, currData: object[]):
     inferAll(columns, currData);
 
     const specBuilder = getSpecBuilderForChart(context);
+    let specResult: SpecResult
+
     if (specBuilder) {
-        const specResult = specBuilder.build();
+        try {
+            specResult = specBuilder.build();
+        }
+        catch (e) {
+            specResult = {
+                specCapabilities: null,
+                vegaSpec: null,
+                errors: [e.stack]
+            };
+        }
         if (!specResult.errors) {
             const data0 = specResult.vegaSpec.data[0] as ValuesData;
             data0.values = currData;
         }
-        return specResult;
     } else {
-        return {
+        specResult = {
             specCapabilities: null,
             vegaSpec: null,
             errors: [`could not build spec for ${context.insight.chart}`]
         };
     }
+    return specResult;
 }
