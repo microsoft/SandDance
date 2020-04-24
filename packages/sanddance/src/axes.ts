@@ -21,14 +21,6 @@ function cloneTextData(textData: VegaDeckGl.types.VegaTextLayerDatum[], color: C
     });
 }
 
-function colorEquals(a: Color, b: Color) {
-    if (a.length !== b.length) return false;
-    for (let i = 0; i < a.length; i++) {
-        if (a[i] !== b[i]) return false;
-    }
-    return true;
-}
-
 export function recolorAxes(stage: VegaDeckGl.types.Stage, oldColors: SpecColorSettings, newColors: SpecColorSettings): Partial<VegaDeckGl.types.Stage> {
     const hasNewLineColor = newColors.axisLine && newColors.axisLine !== oldColors.axisLine;
     const hasNewTextColor = newColors.axisText && newColors.axisText !== oldColors.axisText;
