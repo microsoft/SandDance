@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance-specs",
-  "version": "3.0.0-alpha.1",
+  "version": "3.0.0-alpha.2",
   "description": "SandDance Vega specification generator.",
   "main": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
