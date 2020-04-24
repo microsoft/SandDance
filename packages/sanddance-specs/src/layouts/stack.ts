@@ -213,7 +213,7 @@ export class Stack extends Layout {
             encodingRuleMap: {
                 y: [{
                     test: testForCollapseSelection(),
-                    signal: names.size
+                    signal: parentScope.offsets.y
                 }],
                 z: [{
                     test: testForCollapseSelection(),
