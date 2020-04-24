@@ -1,26 +1,26 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as searchExpression from '@msrvida/search-expression';
-import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { Animator, DataLayoutChange } from './animator';
+import { recolorAxes } from './axes';
+import { AxisSelectionHandler, axisSelectionLayer } from './axisSelection';
 import {
     applyColorMapToCubes,
     colorMapFromCubes,
     getSelectedColorMap,
     populateColorContext
 } from './colorCubes';
-import { applySignalValues, extractSignalValuesFromView } from './signals';
+import { registerColorSchemes } from './colorSchemes';
+import { GL_ORDINAL } from './constants';
+import { DataScope } from './dataScope';
+import { makeDateRange } from './date';
+import { defaultViewerOptions, getPresenterStyle } from './defaults';
+import { Details } from './details';
+import { ensureHeaders } from './headers';
+import { finalizeLegend } from './legend';
 import { assignOrdinals, getDataIndexOfCube } from './ordinal';
-import { AxisSelectionHandler, axisSelectionLayer } from './axisSelection';
-import {
-    cloneVegaSpecWithData,
-    getSpecColumns,
-    Insight,
-    SignalValues,
-    SpecCapabilities,
-    SpecColumns,
-    SpecContext
-} from '@msrvida/sanddance-specs';
+import { getSearchGroupFromVegaValue } from './search';
+import { applySignalValues, extractSignalValuesFromView } from './signals';
+import { Tooltip } from './tooltip';
 import {
     ColorContext,
     ColorMap,
@@ -32,23 +32,23 @@ import {
     SelectionState,
     ViewerOptions
 } from './types';
-import { Column } from '@msrvida/chart-types';
-import { DataScope } from './dataScope';
 import { DeckProps, PickInfo } from '@deck.gl/core/lib/deck';
-import { defaultViewerOptions, getPresenterStyle } from './defaults';
-import { Details } from './details';
-import { ensureHeaders } from './headers';
-import { finalizeLegend } from './legend';
-import { getSearchGroupFromVegaValue } from './search';
-import { GL_ORDINAL } from './constants';
-import { makeDateRange } from './date';
-import { recolorAxes } from './axes';
-import { registerColorSchemes } from './colorSchemes';
-import { Spec, Transforms } from 'vega-typings';
 import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
-import { Tooltip } from './tooltip';
+import { Column } from '@msrvida/chart-types';
 import { View } from '@msrvida/chart-types';
+import {
+    cloneVegaSpecWithData,
+    getSpecColumns,
+    Insight,
+    SignalValues,
+    SpecCapabilities,
+    SpecColumns,
+    SpecContext
+} from '@msrvida/sanddance-specs';
+import * as searchExpression from '@msrvida/search-expression';
+import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { ViewGl_Class } from '@msrvida/vega-deck.gl/dist/es6/vega-classes/viewGl';
+import { Spec, Transforms } from 'vega-typings';
 
 import Search = searchExpression.Search;
 import SearchExpression = searchExpression.SearchExpression;
@@ -343,6 +343,7 @@ export class Viewer {
         if (newViewerOptions) {
             if (newViewerOptions.colors) {
                 recoloredAxes = recolorAxes(this.presenter.stage, this._lastColorOptions, newViewerOptions.colors);
+                this._lastColorOptions = VegaDeckGl.util.clone(newViewerOptions.colors);
                 axes = recoloredAxes.axes || axes;
                 textData = recoloredAxes.textData || textData;
             }
