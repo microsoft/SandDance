@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance-explorer",
-  "version": "3.0.0-alpha.1",
+  "version": "3.0.0-alpha.2",
   "description": "SandDance data exploration React component.",
   "main": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
@@ -27,9 +27,9 @@
     "vega-typings": "^0.14.2"
   },
   "dependencies": {
-    "@msrvida/chart-recommender": "3.0.0-alpha.1",
+    "@msrvida/chart-recommender": "3.0.0-alpha.2",
     "@msrvida/office-ui-fabric-react-cdn-typings": "^1",
-    "@msrvida/sanddance-react": "3.0.0-alpha.1",
+    "@msrvida/sanddance-react": "3.0.0-alpha.2",
     "d3-format": "^1.3.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
