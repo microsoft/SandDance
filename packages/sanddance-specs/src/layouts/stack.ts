@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { addData, addMarks, addSignal, getGroupBy } from '../scope';
+import { addData, addMarks, addSignal, getGroupBy, addTransforms } from '../scope';
 import { Column } from '@msrvida/chart-types';
 import { FieldNames } from '../constants';
-import { GroupMark, Transforms, Scope, RectMark } from 'vega-typings';
-import { InnerScope } from '../interfaces';
+import { GroupMark, Transforms, RectMark } from 'vega-typings';
+import { InnerScope, LayoutOffsets } from '../interfaces';
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { testForCollapseSelection } from '../selection';
 
@@ -21,7 +21,10 @@ export class Stack extends Layout {
         globalDataName: string,
         globalExtent: string,
         levelDataName: string,
-        ordinal: string,
+        count: string,
+        stack0: string,
+        stack1: string,
+        layerOrdinal: string,
         sequence: string,
         sides: string,
         size: string,
@@ -40,7 +43,10 @@ export class Stack extends Layout {
             globalDataName: `data_${p}_count`,
             globalExtent: `${p}_global_extent`,
             levelDataName: `data_${p}_level`,
-            ordinal: `${p}_ordinal`,
+            count: `${p}_count`,
+            stack0: `${p}_stack0`,
+            stack1: `${p}_stack1`,
+            layerOrdinal: `${p}_layerOrdinal`,
             sequence: `data_${p}_sequence`,
             sides: `${p}_sides`,
             size: `${p}_size`,
@@ -51,28 +57,36 @@ export class Stack extends Layout {
     }
 
     public build(): InnerScope {
-        const { names, prefix, props } = this;
+        const { names, props } = this;
         const { globalScope, groupings, parentHeight, parentScope, sort } = props;
         const { sizeSignals } = parentScope;
 
-        addData(globalScope.scope,
+        addTransforms(globalScope.data,
             {
-                name: names.globalDataName,
-                source: globalScope.data.name,
-                transform: [
-                    {
-                        type: 'aggregate',
-                        groupby: getGroupBy(groupings),
-                        ops: ['count'],
-                        as: [FieldNames.Count]
-                    },
-                    {
-                        type: 'extent',
-                        field: FieldNames.Count,
-                        signal: names.globalExtent
-                    }
-                ]
+                type: 'joinaggregate',
+                groupby: getGroupBy(groupings),
+                ops: ['count'],
+                as: [names.count]
             },
+            {
+                type: 'extent',
+                field: names.count,
+                signal: names.globalExtent
+            },
+            {
+                type: 'stack',
+                groupby: getGroupBy(groupings),
+                as: [names.stack0, names.stack1],
+                ...sort && {
+                    sort: {
+                        field: sort.name,
+                        order: 'ascending'
+                    }
+                }
+            }
+        );
+
+        addData(globalScope.scope,
             {
                 name: names.sequence,
                 transform: [
@@ -151,47 +165,31 @@ export class Stack extends Layout {
             }
         );
 
-        const transform: Transforms[] = [
-            {
-                type: 'window',
-                ops: ['row_number'],
-                as: [FieldNames.Ordinal]
-            },
-            {
-                type: 'formula',
-                expr: `floor((datum[${JSON.stringify(FieldNames.Ordinal)}] - 1) / ${names.squared})`,
-                as: names.zLevel
-            },
-            {
-                type: 'formula',
-                expr: `(datum[${JSON.stringify(FieldNames.Ordinal)}] - 1) % ${names.squared}`,
-                as: names.ordinal
-            },
-            {
-                type: 'formula',
-                expr: `datum[${JSON.stringify(names.ordinal)}] % ${names.sides}`,
-                as: names.cubeX
-            },
-            {
-                type: 'formula',
-                expr: `floor(datum[${JSON.stringify(names.ordinal)}] / ${names.sides})`,
-                as: names.cubeY
-            }
-        ];
-
-        if (sort) {
-            transform.unshift({
-                type: 'collect',
-                sort: {
-                    field: sort.name
-                }
-            });
-        }
-
         addData(globalScope.scope, {
             name: names.levelDataName,
             source: globalScope.data.name,
-            transform
+            transform: [
+                {
+                    type: 'formula',
+                    expr: `floor(datum[${JSON.stringify(names.stack0)}] / ${names.squared})`,
+                    as: names.zLevel
+                },
+                {
+                    type: 'formula',
+                    expr: `datum[${JSON.stringify(names.stack0)}] % ${names.squared}`,
+                    as: names.layerOrdinal
+                },
+                {
+                    type: 'formula',
+                    expr: `datum[${JSON.stringify(names.layerOrdinal)}] % ${names.sides}`,
+                    as: names.cubeX
+                },
+                {
+                    type: 'formula',
+                    expr: `floor(datum[${JSON.stringify(names.layerOrdinal)}] / ${names.sides})`,
+                    as: names.cubeY
+                }
+            ]
         });
 
         // const group: GroupMark = {
@@ -216,10 +214,18 @@ export class Stack extends Layout {
 
         // addMarks(parentScope.scope, group);
 
-        // const mark = this.addRectMarks(group);
+        const mark = this.addRectMarks();
+
+        const offsets: LayoutOffsets = {
+            x: null,
+            y: null,
+            h: null,
+            w: null
+        };
 
         return {
-            //            mark,
+            offsets,
+            mark,
             sizeSignals: {
                 layoutHeight: names.size,
                 layoutWidth: names.size
@@ -249,8 +255,9 @@ export class Stack extends Layout {
         };
     }
 
-    private addRectMarks(scope: Scope) {
-        const { names } = this;
+    private addRectMarks() {
+        const { names, props } = this;
+        const { globalScope } = props;
         const mark: RectMark = {
             type: 'rect',
             from: { data: this.names.levelDataName },
@@ -277,7 +284,7 @@ export class Stack extends Layout {
                 }
             }
         };
-        addMarks(scope, mark);
+        addMarks(globalScope.markGroup, mark);
         return mark;
     }
 }
