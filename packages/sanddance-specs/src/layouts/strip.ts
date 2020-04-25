@@ -27,7 +27,6 @@ export interface StripProps extends LayoutProps {
     size?: Column;
     sort: Column;
     z: Column;
-    zSize?: string;
 }
 
 export class Strip extends Layout {
@@ -55,9 +54,7 @@ export class Strip extends Layout {
         const { names, prefix, props } = this;
         const { addPercentageScale, globalScope, groupings, orientation, size, sort, sortOrder, parentScope, z } = props;
 
-        let { zSize } = props;
-        zSize = zSize || parentScope.sizeSignals.layoutHeight;
-        addZScale(z, zSize, globalScope, names.zScale);
+        addZScale(z, globalScope.zSize, globalScope, names.zScale);
 
         const horizontal = orientation === 'horizontal';
 

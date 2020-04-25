@@ -152,7 +152,7 @@ export class Scatter extends Layout {
                     xyz: 'z',
                     scaleName: names.zScale,
                     reverse: false,
-                    signal: `${parentScope.sizeSignals.layoutHeight}*${SignalNames.ZProportion}`
+                    signal: `(${globalScope.zSize}) * ${SignalNames.ZProportion}`
                 }
             ];
         columnSignals.forEach(cs => {

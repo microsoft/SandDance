@@ -15,7 +15,6 @@ export interface TreemapProps extends LayoutProps {
     size: Column;
     treeMapMethod: string;
     z: Column;
-    zSize?: string;
 }
 
 export class Treemap extends Layout {
@@ -64,10 +63,8 @@ export class Treemap extends Layout {
     public build(): InnerScope {
         const { names, props } = this;
         const { globalScope, parentScope, treeMapMethod, z } = props;
-        let { zSize } = props;
 
-        zSize = zSize || parentScope.sizeSignals.layoutHeight;
-        addZScale(z, zSize, globalScope, names.zScale);
+        addZScale(z, globalScope.zSize, globalScope, names.zScale);
 
         const offsets: LayoutOffsets = {
             x: addOffsets(parentScope.offsets.x, fn(names.fieldX0)),
@@ -164,6 +161,10 @@ export class Treemap extends Layout {
             globalScope.markDataName = names.dataFacetMark;
 
             addMarks(globalScope.markGroup, facets);
+
+            //assign new markgroup after adding mark to original group
+            globalScope.markGroup = facets;
+
             this.treemapTransform(treemapData, `${names.widthExtent}[0]`, `${names.heightExtent}[0]`);
             return this.addMark(offsets, facets, globalScope.markDataName);
         } else {

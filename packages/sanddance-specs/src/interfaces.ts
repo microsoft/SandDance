@@ -5,7 +5,6 @@ import { Column } from '@msrvida/chart-types';
 import {
     AggregateOp,
     Data,
-    FormulaTransform,
     Mark,
     NewSignal,
     NumericValueRef,
@@ -63,7 +62,7 @@ export interface InnerScope {
     globalScales?: GlobalScales;
     encodingRuleMap?: { [key: string]: EncodingRule[] };
     sizeSignals: SizeSignals;       //TODO remove
-    offsets?: LayoutOffsets;              //TODO mandatory
+    offsets: LayoutOffsets;
 }
 
 export interface GlobalScope extends InnerScope {
@@ -76,7 +75,8 @@ export interface GlobalScope extends InnerScope {
         minCellHeight: NewSignal;
         plotHeightOut: NewSignal;
         plotWidthOut: NewSignal;
-    }
+    },
+    zSize: string;
 }
 
 export type Orientation = 'horizontal' | 'vertical';

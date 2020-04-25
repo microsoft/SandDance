@@ -66,6 +66,7 @@ export class Slice extends Layout {
         // parentScope.scope.marks.push(mark);
 
         return {
+            offsets: null,
             sizeSignals: { layoutHeight: 'TODO', layoutWidth: 'TODO' }
         };
 

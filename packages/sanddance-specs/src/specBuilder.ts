@@ -171,10 +171,12 @@ export class SpecBuilder {
                 specResult,
                 allGlobalScales,
                 allEncodingRules,
-                groupings,
-                sums,
                 offsets
-            } = this.iterateLayouts(globalScope, groupMark, colorDataName);
+            } = this.iterateLayouts(globalScope, (i, innerScope) => {
+                if (facetLayout && i === 0) {
+                    globalScope.zSize = innerScope.offsets.h;
+                }
+            });
 
             if (specResult) {
                 return specResult;
@@ -219,34 +221,32 @@ export class SpecBuilder {
             if (finalScope.mark) {
                 const { update } = finalScope.mark.encode;
 
-                if (offsets.length) {
-                    const outputDataName = 'output';
-                    finalScope.mark.from.data = outputDataName;
-                    addData(globalScope.scope,
-                        {
-                            name: outputDataName,
-                            source: globalScope.markDataName,
-                            transform: [
-                                {
-                                    type: 'formula',
-                                    expr: finalScope.offsets.x,
-                                    as: FieldNames.OffsetX
-                                },
-                                {
-                                    type: 'formula',
-                                    expr: finalScope.offsets.y,
-                                    as: FieldNames.OffsetY
-                                }
-                            ]
-                        }
-                    );
-                    update.x = {
-                        field: FieldNames.OffsetX
-                    };
-                    update.y = {
-                        field: FieldNames.OffsetY
-                    };
-                }
+                const outputDataName = 'output';
+                finalScope.mark.from.data = outputDataName;
+                addData(globalScope.markGroup,
+                    {
+                        name: outputDataName,
+                        source: globalScope.markDataName,
+                        transform: [
+                            {
+                                type: 'formula',
+                                expr: finalScope.offsets.x,
+                                as: FieldNames.OffsetX
+                            },
+                            {
+                                type: 'formula',
+                                expr: finalScope.offsets.y,
+                                as: FieldNames.OffsetY
+                            }
+                        ]
+                    }
+                );
+                update.x = {
+                    field: FieldNames.OffsetX
+                };
+                update.y = {
+                    field: FieldNames.OffsetY
+                };
 
                 allEncodingRules.forEach(map => {
                     for (let key in map) {
@@ -298,7 +298,8 @@ export class SpecBuilder {
                 minCellHeight,
                 plotHeightOut,
                 plotWidthOut
-            }
+            },
+            zSize: SignalNames.PlotHeightIn
         };
         return globalScope;
     }
@@ -363,7 +364,7 @@ export class SpecBuilder {
         return { vegaSpec, groupMark };
     }
 
-    private iterateLayouts(globalScope: GlobalScope, scope: Scope, dataName: string) {
+    private iterateLayouts(globalScope: GlobalScope, onLayoutBuild: (i: number, innerScope: InnerScope) => void) {
         let specResult: SpecResult;
         let parentScope: InnerScope = {
             sizeSignals: globalScope.sizeSignals,
@@ -373,7 +374,6 @@ export class SpecBuilder {
         let childScope: InnerScope;
         const groupings: Grouping[] = [];
         const offsets: LayoutOffsets[] = [];
-        let sums = false;
         let { layouts, specCapabilities } = this.props;
         const allGlobalScales: GlobalScales[] = [];
         const allEncodingRules: { [key: string]: EncodingRule[] }[] = [];
@@ -406,8 +406,8 @@ export class SpecBuilder {
                 let sumOp = layout.getAggregateSumOp();
                 if (sumOp) {
                     groupings[groupings.length - 1].fieldOps.push(sumOp);
-                    sums = true;
                 }
+                onLayoutBuild(i, childScope);
             }
             catch (e) {
                 specResult = {
@@ -428,7 +428,7 @@ export class SpecBuilder {
             }
             parentScope = childScope;
         }
-        return { firstScope, finalScope: parentScope, specResult, allGlobalScales, allEncodingRules, groupings, sums, offsets };
+        return { firstScope, finalScope: parentScope, specResult, allGlobalScales, allEncodingRules, offsets };
     }
 
     private createLayout(layoutPair: LayoutPair, buildProps: LayoutBuildProps) {
