@@ -158,12 +158,12 @@ export class Treemap extends Layout {
                 ]
             };
 
-            globalScope.markDataName = names.dataFacetMark;
+            globalScope.setMarkDataName(names.dataFacetMark);
 
             addMarks(globalScope.markGroup, facets);
 
             //assign new markgroup after adding mark to original group
-            globalScope.markGroup = facets;
+            globalScope.setMarkGroup(facets);
 
             this.treemapTransform(treemapData, `${names.widthExtent}[0]`, `${names.heightExtent}[0]`);
             return this.addMark(offsets, facets, globalScope.markDataName);

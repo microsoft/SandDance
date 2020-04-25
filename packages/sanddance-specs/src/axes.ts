@@ -1,7 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { addAxes, addScale } from './scope';
+import { SignalNames } from './constants';
 import { axesLabelLimit, axesTitleLimit } from './defaults';
+import { GlobalScope } from './globalScope';
+import { AxisScale, AxisScales, GlobalScales } from './interfaces';
+import { addAxes, addScale } from './scope';
+import { SpecColumns, SpecViewOptions } from './types';
+import { Column } from '@msrvida/chart-types';
 import {
     Axis,
     NewSignal,
@@ -9,15 +14,6 @@ import {
     Scope,
     TextBaselineValue
 } from 'vega-typings';
-import {
-    AxisScale,
-    AxisScales,
-    GlobalScales,
-    GlobalScope
-} from './interfaces';
-import { Column } from '@msrvida/chart-types';
-import { SignalNames } from './constants';
-import { SpecColumns, SpecViewOptions } from './types';
 
 export interface AxesScope {
     scope: Scope;

@@ -249,7 +249,7 @@ export class Wrap extends Layout {
             ]
         };
         addData(globalScope.scope, dataOut);
-        globalScope.markDataName = names.outputData;
+        globalScope.setMarkDataName(names.outputData);
 
         addSignal(globalScope.scope,
             {

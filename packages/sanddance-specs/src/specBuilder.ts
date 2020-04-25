@@ -17,12 +17,12 @@ import { minFacetHeight, minFacetWidth } from './defaults';
 import { FacetLayout, getFacetLayout } from './facetLayout';
 import { addFacetAxesGroupMarks } from './facetTitle';
 import { fill, opacity } from './fill';
+import { GlobalScope, GlobalSignals } from './globalScope';
 import {
     AxisScales,
     DiscreteColumn,
     EncodingRule,
     GlobalScales,
-    GlobalScope,
     Grouping,
     InnerScope,
     LayoutOffsets,
@@ -32,15 +32,12 @@ import { LayoutBuildProps, LayoutPair, LayoutProps } from './layouts/layout';
 import {
     addData,
     addScale,
-    addSignal,
-    getDataByName
+    addSignal
 } from './scope';
 import { textSignals } from './signals';
 import { SpecCapabilities, SpecContext } from './types';
 import {
     GroupMark,
-    NewSignal,
-    Scope,
     Spec
 } from 'vega-typings';
 
@@ -52,40 +49,23 @@ export interface SpecBuilderProps {
     customZScale?: boolean;
 }
 
-interface OutField {
-    field: string;
-    signals: string[];
-}
-
-interface OutFieldMap {
-    x: OutField;
-    y: OutField;
-    h: OutField;
-    w: OutField;
-}
-
 export class SpecBuilder {
-    private minCellWidth: NewSignal;
-    private minCellHeight: NewSignal;
-    private plotOffsetLeft: NewSignal;
-    private plotOffsetTop: NewSignal;
-    private plotOffsetBottom: NewSignal;
-    private plotOffsetRight: NewSignal;
-    private plotHeightOut: NewSignal;
-    private plotWidthOut: NewSignal;
+    private globalSignals: GlobalSignals;
 
     constructor(public props: SpecBuilderProps & { specContext: SpecContext }) {
-        this.minCellWidth = {
-            name: SignalNames.MinCellWidth,
-            update: `${minFacetWidth}`
+        this.globalSignals = {
+            minCellWidth: {
+                name: SignalNames.MinCellWidth,
+                update: `${minFacetWidth}`
+            },
+            minCellHeight: { name: SignalNames.MinCellHeight, update: `${minFacetHeight}` },
+            plotOffsetLeft: { name: SignalNames.PlotOffsetLeft, update: '0' },
+            plotOffsetTop: { name: SignalNames.PlotOffsetTop, update: '0' },
+            plotOffsetBottom: { name: SignalNames.PlotOffsetBottom, update: '0' },
+            plotOffsetRight: { name: SignalNames.PlotOffsetRight, update: '0' },
+            plotHeightOut: { name: SignalNames.PlotHeightOut, update: SignalNames.PlotHeightIn },
+            plotWidthOut: { name: SignalNames.PlotWidthOut, update: SignalNames.PlotWidthIn }
         };
-        this.minCellHeight = { name: SignalNames.MinCellHeight, update: `${minFacetHeight}` };
-        this.plotOffsetLeft = { name: SignalNames.PlotOffsetLeft, update: '0' };
-        this.plotOffsetTop = { name: SignalNames.PlotOffsetTop, update: '0' };
-        this.plotOffsetBottom = { name: SignalNames.PlotOffsetBottom, update: '0' };
-        this.plotOffsetRight = { name: SignalNames.PlotOffsetRight, update: '0' };
-        this.plotHeightOut = { name: SignalNames.PlotHeightOut, update: SignalNames.PlotHeightIn };
-        this.plotWidthOut = { name: SignalNames.PlotWidthOut, update: SignalNames.PlotWidthIn };
     }
 
     public validate() {
@@ -141,7 +121,12 @@ export class SpecBuilder {
                 topLookupName: 'data_topcolorlookup',
                 colorReverseSignalName: SignalNames.ColorReverse
             });
-            const globalScope = this.createGlobalScope(colorDataName, vegaSpec, groupMark);
+            const globalScope = new GlobalScope({
+                dataName: colorDataName,
+                markGroup: groupMark,
+                scope: vegaSpec,
+                signals: this.globalSignals
+            });
             let facetLayout: FacetLayout;
             if (insight.columns.facet) {
                 const discreteFacetColumn: DiscreteColumn = {
@@ -162,16 +147,15 @@ export class SpecBuilder {
                 addSignal(vegaSpec, ...facetLayout.signals);
                 addScale(vegaSpec, ...facetLayout.scales);
                 this.props.layouts = [facetLayout.layoutPair, ...this.props.layouts];
-                this.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
-                this.plotOffsetRight.update = `${facetLayout.plotPadding.x}`;
+                this.globalSignals.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
+                this.globalSignals.plotOffsetRight.update = `${facetLayout.plotPadding.x}`;
             }
             const {
                 firstScope,
                 finalScope,
                 specResult,
                 allGlobalScales,
-                allEncodingRules,
-                offsets
+                allEncodingRules
             } = this.iterateLayouts(globalScope, (i, innerScope) => {
                 if (facetLayout && i === 0) {
                     globalScope.zSize = innerScope.offsets.h;
@@ -187,8 +171,8 @@ export class SpecBuilder {
                         globalScope: globalScope.scope,
                         plotScope: groupMark,
                         facetScope: firstScope,
-                        plotHeightOut: this.plotHeightOut.name,
-                        plotWidthOut: this.plotWidthOut.name,
+                        plotHeightOut: this.globalSignals.plotHeightOut.name,
+                        plotWidthOut: this.globalSignals.plotWidthOut.name,
                         colTitleScaleName: 'scale_facet_col_title',
                         rowTitleScaleName: 'scale_facet_row_title',
                         colSeqName: 'data_FacetCellColTitles',
@@ -207,7 +191,7 @@ export class SpecBuilder {
                     globalScope,
                     allGlobalScales,
                     axisScales: this.props.axisScales,
-                    plotOffsetSignals: { x: this.plotOffsetLeft, y: this.plotOffsetBottom },
+                    plotOffsetSignals: { x: this.globalSignals.plotOffsetLeft, y: this.globalSignals.plotOffsetBottom },
                     axesOffsets: { x: axesOffsetX, y: axesOffsetY },
                     axesTitlePadding: facetLayout ? { x: axesTitlePaddingFacetX, y: axesTitlePaddingFacetY } : { x: axesTitlePaddingX, y: axesTitlePaddingY },
                     labelBaseline: { x: 'top', y: 'middle' },
@@ -276,36 +260,9 @@ export class SpecBuilder {
         }
     }
 
-    private createGlobalScope(dataName: string, scope: Spec, markGroup: Scope) {
-        const { minCellWidth, minCellHeight, plotHeightOut, plotWidthOut } = this;
-        const globalScope: GlobalScope = {
-            data: getDataByName(scope.data, dataName).data,
-            markDataName: dataName,
-            scope,
-            markGroup,
-            offsets: {
-                x: '0',
-                y: '0',
-                h: SignalNames.PlotHeightIn,
-                w: SignalNames.PlotWidthIn
-            },
-            sizeSignals: {
-                layoutHeight: SignalNames.PlotHeightIn,
-                layoutWidth: SignalNames.PlotWidthIn
-            },
-            signals: {
-                minCellWidth,
-                minCellHeight,
-                plotHeightOut,
-                plotWidthOut
-            },
-            zSize: SignalNames.PlotHeightIn
-        };
-        return globalScope;
-    }
-
     private initSpec(dataName: string) {
-        const { minCellWidth, minCellHeight, plotOffsetLeft, plotOffsetBottom, plotOffsetTop, plotOffsetRight, plotHeightOut, plotWidthOut } = this;
+        const { globalSignals } = this;
+        const { minCellWidth, minCellHeight, plotOffsetLeft, plotOffsetBottom, plotOffsetTop, plotOffsetRight, plotHeightOut, plotWidthOut } = globalSignals;
         const { specContext } = this.props;
         const { insight } = specContext;
         const groupMark: GroupMark = {
@@ -373,7 +330,6 @@ export class SpecBuilder {
         let firstScope: InnerScope;
         let childScope: InnerScope;
         const groupings: Grouping[] = [];
-        const offsets: LayoutOffsets[] = [];
         let { layouts, specCapabilities } = this.props;
         const allGlobalScales: GlobalScales[] = [];
         const allEncodingRules: { [key: string]: EncodingRule[] }[] = [];
@@ -390,9 +346,6 @@ export class SpecBuilder {
             try {
                 childScope = layout.build();
                 childScope.id = i;
-                if (childScope.offsets) {
-                    offsets.push(childScope.offsets);
-                }
                 let groupby = layout.getGrouping();
                 if (groupby) {
                     groupings.push({
@@ -428,7 +381,7 @@ export class SpecBuilder {
             }
             parentScope = childScope;
         }
-        return { firstScope, finalScope: parentScope, specResult, allGlobalScales, allEncodingRules, offsets };
+        return { firstScope, finalScope: parentScope, specResult, allGlobalScales, allEncodingRules };
     }
 
     private createLayout(layoutPair: LayoutPair, buildProps: LayoutBuildProps) {

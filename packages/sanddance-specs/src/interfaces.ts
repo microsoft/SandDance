@@ -65,20 +65,6 @@ export interface InnerScope {
     offsets: LayoutOffsets;
 }
 
-export interface GlobalScope extends InnerScope {
-    scope?: Scope;
-    markGroup: Scope;
-    markDataName: string;
-    data: Data;
-    signals: {
-        minCellWidth: NewSignal;
-        minCellHeight: NewSignal;
-        plotHeightOut: NewSignal;
-        plotWidthOut: NewSignal;
-    },
-    zSize: string;
-}
-
 export type Orientation = 'horizontal' | 'vertical';
 
 export type Aggregate = 'count' | 'sum' | 'percent';
