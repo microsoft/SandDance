@@ -6,29 +6,29 @@ import {
     PresenterStyle,
     Stage
 } from './interfaces';
-import { LightSettings } from '@deck.gl/core/lib/layer';
+//import { LightSettings } from '@deck.gl/core/lib/layer';
 import { View } from '@msrvida/chart-types';
 
 export const minHeight = '100px';
 export const minWidth = '100px';
 
-const lightSettings: { [view in View]: LightSettings } = {
-    '2d': {},
-    '3d': {
-        lightsPosition: [-122.45, 37.66, 8000, -122.0, 38.0, 8000],
-        ambientRatio: 0.3,
-        diffuseRatio: 0.6,
-        specularRatio: 0.4,
-        lightsStrength: [0.3, 0.0, 0.8, 0.0],
-        numberOfLights: 2
-    }
-};
+// const lightSettings: { [view in View]: LightSettings } = {
+//     '2d': {},
+//     '3d': {
+//         lightsPosition: [-122.45, 37.66, 8000, -122.0, 38.0, 8000],
+//         ambientRatio: 0.3,
+//         diffuseRatio: 0.6,
+//         specularRatio: 0.4,
+//         lightsStrength: [0.3, 0.0, 0.8, 0.0],
+//         numberOfLights: 2
+//     }
+// };
 
 export const defaultPresenterStyle: PresenterStyle = {
     cssPrefix: 'vega-deckgl-',
     defaultCubeColor: [128, 128, 128, 255],
     highlightColor: [0, 0, 0, 255],
-    lightSettings
+    //lightSettings
 };
 
 export const defaultPresenterConfig: PresenterConfig = {

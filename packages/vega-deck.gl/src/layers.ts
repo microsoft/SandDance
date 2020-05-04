@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { base } from './base';
-import { ChromaticTextLayer, ChromaticTextLayerProps } from './chromatic-text-layer/chromatic-text-layer';
 import { concat } from './array';
+import { base } from './base';
+import { layerNames } from './constants';
+import { CubeLayer, CubeLayerInterpolatedProps, CubeLayerProps } from './cube-layer/cube-layer';
+import { LinearInterpolator_Class } from './deck.gl-classes/linearInterpolator';
 import {
     Cube,
     PresenterConfig,
@@ -10,24 +12,24 @@ import {
     StyledLine,
     VegaTextLayerDatum
 } from './interfaces';
-import { CubeLayer, CubeLayerInterpolatedProps, CubeLayerProps } from './cube-layer/cube-layer';
+import { Presenter } from './presenter';
+import { RGBAColor } from '@deck.gl/core/utils/color';
 import { DeckProps } from '@deck.gl/core/lib/deck';
+import { InterpolationTransitionTiming } from '@deck.gl/core/lib/layer';
 import { easeExpInOut } from 'd3-ease';
 import { Layer } from 'deck.gl';
-import { layerNames } from './constants';
-import { LayerProps, LightSettings, TransitionTiming } from '@deck.gl/core/lib/layer';
-import { LinearInterpolator_Class } from './deck.gl-classes/linearInterpolator';
-import { Presenter } from './presenter';
+import { TextLayerProps } from '@deck.gl/layers/text-layer/text-layer';
+
 
 export function getLayers(
     presenter: Presenter,
     config: PresenterConfig,
     stage: Stage,
-    lightSettings: LightSettings,
+    lightSettings: any /*LightSettings*/,
     lightingMix: number,
     interpolator: LinearInterpolator_Class<CubeLayerInterpolatedProps>,
     guideLines: StyledLine[]
-): Layer[] {
+): Layer<any>[] {
     const cubeLayer = newCubeLayer(presenter, config, stage.cubeData, presenter.style.highlightColor, lightSettings, lightingMix, interpolator);
     const { x, y } = stage.axes;
     const lines = concat(stage.gridLines, guideLines);
@@ -50,7 +52,7 @@ export function getLayers(
     return [textLayer, cubeLayer, lineLayer];
 }
 
-function newCubeLayer(presenter: Presenter, config: PresenterConfig, cubeData: Cube[], highlightColor: number[], lightSettings: LightSettings, lightingMix: number, interpolator?: LinearInterpolator_Class<CubeLayerInterpolatedProps>) {
+function newCubeLayer(presenter: Presenter, config: PresenterConfig, cubeData: Cube[], highlightColor: RGBAColor, lightSettings: any /*LightSettings*/, lightingMix: number, interpolator?: LinearInterpolator_Class<CubeLayerInterpolatedProps>) {
     const getPosition = getTiming(config.transitionDurations.position, easeExpInOut);
     const getSize = getTiming(config.transitionDurations.size, easeExpInOut);
     const getColor = getTiming(config.transitionDurations.color);
@@ -59,7 +61,7 @@ function newCubeLayer(presenter: Presenter, config: PresenterConfig, cubeData: C
         lightingMix,
         id: layerNames.cubes,
         data: cubeData,
-        coordinateSystem: base.deck.COORDINATE_SYSTEM.IDENTITY,
+        coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
         pickable: true,
         autoHighlight: true,
         highlightColor,
@@ -75,7 +77,7 @@ function newCubeLayer(presenter: Presenter, config: PresenterConfig, cubeData: C
                 config.onCubeHover(e && e.srcEvent, o.object as Cube);
             }
         },
-        lightSettings,
+        //lightSettings,
         transitions: {
             getPosition,
             getColor,
@@ -89,20 +91,22 @@ function newLineLayer(id: string, data: StyledLine[]) {
     return new base.layers.LineLayer({
         id,
         data,
-        coordinateSystem: base.deck.COORDINATE_SYSTEM.IDENTITY,
+        widthUnits: 'pixels',
+        coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
         getColor: (o: StyledLine) => o.color,
-        getStrokeWidth: (o: StyledLine) => o.strokeWidth
+        getWidth: (o: StyledLine) => o.strokeWidth
     });
 }
 
 function newTextLayer(presenter: Presenter, id: string, data: VegaTextLayerDatum[], config: PresenterConfig, fontFamily: string) {
-    const props: LayerProps & ChromaticTextLayerProps = {
+    const props: TextLayerProps<VegaTextLayerDatum> = {
         id,
         data,
-        coordinateSystem: base.deck.COORDINATE_SYSTEM.IDENTITY,
+        coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
+        sizeUnits: 'pixels',
         autoHighlight: true,
         pickable: true,
-        getHighlightColor: config.getTextHighlightColor || (o => o.color),
+        //getHighlightColor: config.getTextHighlightColor || (o => o.color),
         onClick: (o, e) => {
             let pe: Partial<PointerEvent> = e && e.srcEvent;
             config.onTextClick && config.onTextClick(pe as PointerEvent, o.object as VegaTextLayerDatum);
@@ -127,14 +131,15 @@ function newTextLayer(presenter: Presenter, id: string, data: VegaTextLayerDatum
     if (fontFamily) {
         props.fontFamily = fontFamily;
     }
-    return new ChromaticTextLayer(props);
+    return new base.layers.TextLayer(props);
 }
 
 function getTiming(duration: number, easing?: (t: number) => number) {
-    let timing: TransitionTiming;
+    let timing: InterpolationTransitionTiming;
     if (duration) {
         timing = {
-            duration
+            duration,
+            type: 'interpolation'
         };
         if (easing) {
             timing.easing = easing;
@@ -143,13 +148,13 @@ function getTiming(duration: number, easing?: (t: number) => number) {
     return timing;
 }
 
-export function getCubeLayer(deckProps: DeckProps) {
-    return deckProps.layers.filter(layer => layer.id === layerNames.cubes)[0];
+export function getCubeLayer(deckProps: Partial<DeckProps>) {
+    return deckProps.layers.filter(layer => layer && layer.id === layerNames.cubes)[0];
 }
 
-export function getCubes(deckProps: DeckProps) {
+export function getCubes(deckProps: Partial<DeckProps>) {
     const cubeLayer = getCubeLayer(deckProps);
     if (!cubeLayer) return;
     const cubeLayerProps = cubeLayer.props as CubeLayerProps;
-    return cubeLayerProps.data;
+    return cubeLayerProps.data as Cube[];
 }

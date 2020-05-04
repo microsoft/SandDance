@@ -10,7 +10,7 @@ namespace cubeTest {
 
     SandDance.use(null, deck, deck, luma);
 
-    const colors: { [name: string]: deck.Color } = {
+    const colors: { [name: string]: deck.RGBAColor } = {
         red: [255, 0, 0],
         green: [0, 255, 0],
         blue: [0, 0, 255],
@@ -64,9 +64,7 @@ namespace cubeTest {
     presenter.present(stage, 200, 400);
 
     var orbitViewState: deck.OrbitViewState = {
-        distance: 10,
-        fov: 60,
-        lookAt: [90, 15, 23, 1],
+        target: [90, 15, 23],
         rotationOrbit: -45,
         rotationX: 67,
         zoom: 0.01

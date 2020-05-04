@@ -33,7 +33,6 @@ import {
     ViewerOptions
 } from './types';
 import { DeckProps, PickInfo } from '@deck.gl/core/lib/deck';
-import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
 import { Column } from '@msrvida/chart-types';
 import { View } from '@msrvida/chart-types';
 import {
@@ -601,7 +600,7 @@ export class Viewer {
         }
     }
 
-    private onTextHover(e: MouseEvent | PointerEvent | TouchEvent, t: TextLayerDatum) {
+    private onTextHover(e: MouseEvent | PointerEvent | TouchEvent, t: VegaDeckGl.types.VegaTextLayerDatum) {
         //return true if highlight color is different
         if (!t || !this.options.getTextColor || !this.options.getTextHighlightColor) return false;
         return !VegaDeckGl.util.colorIsEqual(this.options.getTextColor(t), this.options.getTextHighlightColor(t));
@@ -630,8 +629,8 @@ export class Viewer {
             onTextHover: this.onTextHover.bind(this),
             preStage: this.preStage.bind(this),
             onPresent: this.options.onPresent,
-            onLayerClick: (info: PickInfo, pickedInfos: PickInfo[], e: MouseEvent) => {
-                if (!info) {
+            onLayerClick: (info: PickInfo<any>, e: MouseEvent) => {
+                if (!info || !info.object) {
                     this.deselect();
                 }
             },

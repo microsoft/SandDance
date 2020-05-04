@@ -23,7 +23,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@danmarshall/deckgl-typings": "^2.2.5",
+    "@danmarshall/deckgl-typings": "^4.1.4",
     "@mapbox/tiny-sdf": "^1.1.1",
     "@msrvida/chart-types": "^1",
     "@types/react": "16.4.7",
@@ -32,5 +32,10 @@
     "deepmerge": "^2.1.1",
     "tsx-create-element": "^2.1.0",
     "vega-typings": "^0.14.2"
+  },
+  "devDependencies": {
+    "@deck.gl/core": "^8.1.4",
+    "@deck.gl/layers": "^8.1.4",
+    "@luma.gl/core": "^8.1.2"
   }
 }

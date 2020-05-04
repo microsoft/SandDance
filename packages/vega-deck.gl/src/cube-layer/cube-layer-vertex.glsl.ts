@@ -27,27 +27,33 @@ attribute vec3 positions;
 attribute vec3 normals;
 
 attribute vec3 instancePositions;
-attribute vec2 instancePositions64xyLow;
+attribute vec3 instancePositions64Low;
 attribute vec3 instanceSizes;
 attribute vec4 instanceColors;
 attribute vec3 instancePickingColors;
 
 // Custom uniforms
 uniform float lightingMix;
+uniform bool is2d;
 
 // Result
 varying vec4 vColor;
+varying float visible;
 
 void main(void) {
+
+  //if (is2d) {
+    //visible = step(positions.z, 0.0);
+  //}
 
   float x = instanceSizes.x > 0.0 ? max(instanceSizes.x, ${minPixelSize.toFixed(1)}) : 0.0;
   float y = instanceSizes.y > 0.0 ? max(instanceSizes.y, ${minPixelSize.toFixed(1)}) : 0.0;
 
   // if alpha == 0.0, do not render element
   float noRender = float(instanceColors.a == 0.0);
-  float finalXScale = project_scale(x) * mix(1.0, 0.0, noRender);
-  float finalYScale = project_scale(y) * mix(1.0, 0.0, noRender);
-  float finalZScale = project_scale(instanceSizes.z) * mix(1.0, 0.0, noRender);
+  float finalXScale = project_size(x) * mix(1.0, 0.0, noRender);
+  float finalYScale = project_size(y) * mix(1.0, 0.0, noRender);
+  float finalZScale = project_size(instanceSizes.z) * mix(1.0, 0.0, noRender);
 
   // cube geometry vertics are between -1 to 1, scale and transform it to between 0, 1
   vec3 offset = vec3(
@@ -57,16 +63,13 @@ void main(void) {
 
   // extrude positions
   vec4 position_worldspace;
-  gl_Position = project_position_to_clipspace(instancePositions, instancePositions64xyLow, offset, position_worldspace);
+  gl_Position = project_position_to_clipspace(instancePositions, instancePositions64Low, offset, position_worldspace);
 
   float lightWeight = 1.0;
   
   //allow for a small amount of error around the min3dDepth 
   if (instanceSizes.z >= ${min3dDepth.toFixed(4)} - 0.0001) {
-    lightWeight = lighting_getLightWeight(
-      position_worldspace.xyz, // the w component is always 1.0
-      normals
-    );
+    lightWeight = 1.0;
   }
 
   vec3 lightWeightedColor = lightWeight * instanceColors.rgb;

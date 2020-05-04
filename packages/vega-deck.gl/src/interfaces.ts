@@ -1,19 +1,29 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Color } from '@deck.gl/core/utils/color';
 import { DeckProps, PickInfo } from '@deck.gl/core/lib/deck';
-import { LightSettings } from '@deck.gl/core/lib/layer';
-import { LineLayerDatum } from '@deck.gl/layers/line-layer/line-layer';
-import { Scene } from 'vega-typings';
-import { TextLayerDatum } from '@deck.gl/layers/text-layer/text-layer';
+import { RGBAColor } from '@deck.gl/core/utils/color';
+import { Position } from '@deck.gl/core/utils/positions';
+import { AlignmentBaseline, TextAnchor } from '@deck.gl/layers/text-layer/text-layer';
 import { View } from '@msrvida/chart-types';
+import { Scene } from 'vega-typings';
+//import { LightSettings } from '@deck.gl/core/lib/layer';
 
-export interface VegaTextLayerDatum extends TextLayerDatum {
+export interface VegaTextLayerDatum {
+    color: RGBAColor;
+    text: string;
+    position: Position;
+    size: number;
+    angle?: number;
+    textAnchor?: TextAnchor;
+    alignmentBaseline?: AlignmentBaseline;
     metaData?: any;
 }
 
-export interface StyledLine extends LineLayerDatum {
+export interface StyledLine {
+    color?: RGBAColor;
+    sourcePosition: Vec3;
     strokeWidth?: number;
+    targetPosition: Vec3;
 }
 
 export interface TickText extends VegaTextLayerDatum {
@@ -47,7 +57,7 @@ export interface Cube {
      */
     isEmpty?: boolean;
 
-    color: Color;
+    color: RGBAColor;
     position: Vec3;
     size: Vec3;
 }
@@ -71,7 +81,7 @@ export interface FacetRect {
  * Data structure containing all that is necessary to present a chart.
  */
 export interface Stage {
-    backgroundColor?: Color;
+    backgroundColor?: RGBAColor;
     cubeData: Cube[];
     legend?: Legend;
     axes: {
@@ -110,7 +120,7 @@ export interface LegendRowSymbol {
  * Function that can be called prior to presenting the stage.
  */
 export interface PreStage {
-    (stage: Stage, deckProps: DeckProps): void;
+    (stage: Stage, deckProps: Partial<DeckProps>): void;
 }
 
 /**
@@ -132,24 +142,24 @@ export interface PresenterConfig {
     redraw?: () => void;
     onCubeHover?: (e: MouseEvent | PointerEvent | TouchEvent, cube: Cube) => void;
     onCubeClick?: (e: MouseEvent | PointerEvent | TouchEvent, cube: Cube) => void;
-    onLayerClick?: (info: PickInfo, pickedInfos: PickInfo[], e: MouseEvent) => any;
+    onLayerClick?: (info: PickInfo<any>, e: MouseEvent) => any;
     onLegendClick?: (e: MouseEvent | PointerEvent | TouchEvent, legend: Legend, clickedIndex: number) => void;
     onPresent?: () => void;
     shouldViewstateTransition?: () => boolean;
     preLayer?: (stage: Stage) => void;
     onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, t: VegaTextLayerDatum) => void;
     onTextHover?: (e: MouseEvent | PointerEvent | TouchEvent, t: VegaTextLayerDatum) => boolean;
-    getTextColor?: (o: VegaTextLayerDatum) => Color;
-    getTextHighlightColor?: (o: VegaTextLayerDatum) => Color;
+    getTextColor?: (o: VegaTextLayerDatum) => RGBAColor;
+    getTextHighlightColor?: (o: VegaTextLayerDatum) => RGBAColor;
     onSceneRectAssignCubeOrdinal?: (d: object) => number | undefined;
     onTargetViewState?: (height: number, width: number) => { height: number, width: number, newViewStateTarget?: boolean };
 }
 
 export interface PresenterStyle {
     cssPrefix?: string;
-    defaultCubeColor?: Color;
-    highlightColor?: Color;
-    lightSettings?: { [view in View]: LightSettings };
+    defaultCubeColor?: RGBAColor;
+    highlightColor?: RGBAColor;
+    //    lightSettings?: { [view in View]: LightSettings };
     fontFamily?: string;
 }
 

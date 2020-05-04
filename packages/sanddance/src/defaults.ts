@@ -84,9 +84,9 @@ export function getPresenterStyle(options: ViewerOptions) {
     if (options.colors.hoveredCube) {
         style.highlightColor = VegaDeckGl.util.colorFromString(options.colors.hoveredCube);
     }
-    if (options.lightSettings) {
-        style.lightSettings = options.lightSettings;
-    }
+    //if (options.lightSettings) {
+       // style.lightSettings = options.lightSettings;
+    //}
     return style;
 }
 

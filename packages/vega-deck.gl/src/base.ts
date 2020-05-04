@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import {
-    _OrbitController,
+    OrbitController,
     CompositeLayer,
     COORDINATE_SYSTEM,
     Deck,
@@ -11,6 +11,9 @@ import {
     LineLayer,
     OrbitView,
     PolygonLayer,
+    gouraudLighting,
+    picking,
+    project32,
     TextLayer
 } from 'deck.gl';
 import {
@@ -27,7 +30,7 @@ import {
     truncate,
     View
 } from 'vega-typings';
-import { CubeGeometry, fp64, Model, Texture2D } from 'luma.gl';
+import { CubeGeometry, Model, Texture2D } from '@luma.gl/core';
 
 /**
  * Vega library dependency.
@@ -72,7 +75,10 @@ export interface DeckBase {
     Layer: typeof Layer;
     LinearInterpolator: typeof LinearInterpolator;
     OrbitView: typeof OrbitView;
-    _OrbitController: typeof _OrbitController;
+    OrbitController: typeof OrbitController;
+    gouraudLighting: typeof gouraudLighting;
+    picking: typeof picking;
+    project32: typeof project32;
 }
 
 /**
@@ -92,7 +98,10 @@ let deck: DeckBase = {
     Layer: null,
     LinearInterpolator: null,
     OrbitView: null,
-    _OrbitController: null
+    OrbitController: null,
+    gouraudLighting: null,
+    picking: null,
+    project32:  null
 };
 
 let layers: DeckLayerBase = {
@@ -107,14 +116,12 @@ let layers: DeckLayerBase = {
  */
 export interface LumaBase {
     CubeGeometry: typeof CubeGeometry;
-    fp64: typeof fp64;
     Model: typeof Model;
     Texture2D: typeof Texture2D
 }
 
 let luma: LumaBase = {
     CubeGeometry: null,
-    fp64: null,
     Model: null,
     Texture2D: null
 };

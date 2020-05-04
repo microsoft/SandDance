@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Axis, FacetRect, Stage } from '../interfaces';
-import { Color } from '@deck.gl/core/utils/color';
+import { Axis, Stage } from '../interfaces';
+import { RGBAColor } from '@deck.gl/core/utils/color';
 import { Scene, SceneGroup } from 'vega-typings';
 
 export enum GroupType {
@@ -14,7 +14,7 @@ export enum GroupType {
 export interface MarkStagerOptions {
     maxOrdinal: number;
     currAxis: Axis;
-    defaultCubeColor: Color;
+    defaultCubeColor: RGBAColor;
     assignCubeOrdinal: (d: object) => number | undefined;
 }
 

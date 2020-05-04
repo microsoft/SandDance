@@ -23,38 +23,36 @@
 import fs from './cube-layer-fragment.glsl';
 import vs from './cube-layer-vertex.glsl';
 import { base } from '../base';
-import { Cube } from '../interfaces';
-import { Layer } from 'deck.gl';
-import { LayerProps } from '@deck.gl/core/lib/layer';
 import { LinearInterpolator_Class } from '../deck.gl-classes/linearInterpolator';
+import { Cube } from '../interfaces';
+import { LayerProps } from '@deck.gl/core/lib/layer';
+import { RGBAColor } from '@deck.gl/core/utils/color';
+import { Layer } from 'deck.gl';
 
 export interface CubeLayerDefaultProps {
-  lightingMix: number;
-  fp64?: boolean;
-  getColor?: (o: Cube) => number[];
-  getSize?: (o: Cube) => number[];
-  getPosition?: (o: Cube) => number[];
+    lightingMix: number;
+    getColor?: (o: Cube) => number[];
+    getSize?: (o: Cube) => number[];
+    getPosition?: (o: Cube) => number[];
 }
 
 export interface CubeLayerDataProps {
-  data: Cube[];
-  interpolator?: LinearInterpolator_Class<CubeLayerInterpolatedProps>;
+    interpolator?: LinearInterpolator_Class<CubeLayerInterpolatedProps>;
 }
 
 export interface CubeLayerInterpolatedProps {
-  lightingMix: number;
+    lightingMix: number;
 }
 
-export type CubeLayerProps = LayerProps & CubeLayerDefaultProps & CubeLayerDataProps;
+export type CubeLayerProps = LayerProps<Cube> & CubeLayerDefaultProps & CubeLayerDataProps;
 
 //https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants
 const UNSIGNED_BYTE = 0x1401;
 
-const DEFAULT_COLOR = [255, 0, 255, 255];
+const DEFAULT_COLOR: RGBAColor = [255, 0, 255, 255];
 
 const defaultProps: CubeLayerDefaultProps = {
     lightingMix: 0.5,
-    fp64: false,
     getSize: x => x.size,
     getPosition: x => x.position,
     getColor: x => x.color
@@ -63,105 +61,82 @@ const defaultProps: CubeLayerDefaultProps = {
 function _CubeLayer(props?: CubeLayerProps) {
 
     //dynamic superclass, since we don't know have deck.Layer in the declaration phase
-    class __CubeLayer extends base.deck.Layer {
+    class __CubeLayer extends base.deck.Layer<Cube> {
 
-    static layerName = 'CubeLayer';
-    static defaultProps = defaultProps;
+        static layerName = 'CubeLayer';
+        static defaultProps = defaultProps;
 
-    public id: string;
-    public props: CubeLayerProps;
+        public id: string;
+        public props: CubeLayerProps;
 
-    getShaders() {
-        const projectModule = this.use64bitProjection() ? 'project64' : 'project32';
-        return { vs, fs, modules: [projectModule, 'lighting', 'picking'] };
-    }
+        getShaders() {
+            return { vs, fs, modules: [base.deck.project32, base.deck.gouraudLighting, base.deck.picking] };
+        }
 
-    initializeState() {
-        const attributeManager = this.getAttributeManager();
-        attributeManager.addInstanced({
-            instancePositions: {
-                size: 3,
-                transition: true,
-                accessor: 'getPosition'
-            },
-            instancePositions64xyLow: {
-                size: 3,
-                accessor: 'getPosition',
-                update: this.calculateInstancePositions64xyLow
-            },
-            instanceSizes: {
-                size: 3,
-                transition: true,
-                accessor: 'getSize'
-            },
-            instanceColors: {
-                size: 4,
-                type: UNSIGNED_BYTE,
-                transition: true,
-                accessor: 'getColor',
-                defaultValue: DEFAULT_COLOR
+        initializeState() {
+            const attributeManager = this.getAttributeManager();
+            attributeManager.addInstanced({
+                instancePositions: {
+                    size: 3,
+                    type: 0x140a,
+                    transition: true,
+                    accessor: 'getPosition'
+                },
+                instanceSizes: {
+                    size: 3,
+                    transition: true,
+                    accessor: 'getSize'
+                },
+                instanceColors: {
+                    size: 4,
+                    type: UNSIGNED_BYTE,
+                    transition: true,
+                    accessor: 'getColor',
+                    defaultValue: DEFAULT_COLOR
+                }
+            });
+        }
+
+        updateState({ props, oldProps, changeFlags }) {
+            super.updateState({ props, oldProps, changeFlags } as any); //TODO add parameter type to deck.gl-typings
+            // Re-generate model if geometry changed
+            //if (props.fp64 !== oldProps.fp64) {
+                const { gl } = this.context;
+                if (this.state.model) {
+                    this.state.model.delete();
+                }
+                this.setState({ model: this._getModel(gl) });
+                this.getAttributeManager().invalidateAll();
+            //}
+        }
+
+        _getModel(gl) {
+            return new base.luma.Model(
+                gl,
+                Object.assign({}, this.getShaders(), {
+                    id: this.props.id,
+                    geometry: new base.luma.CubeGeometry(),
+                    isInstanced: true,
+                    //shaderCache: this.context['shaderCache']
+                })
+            );
+        }
+
+        draw({ uniforms }) {
+            let { lightingMix } = this.props;
+            if (this.props.interpolator && this.props.interpolator.layerInterpolatedProps) {
+                lightingMix = this.props.interpolator.layerInterpolatedProps.lightingMix;
             }
-        });
-    }
-
-    updateState({ props, oldProps, changeFlags }) {
-        super.updateState({ props, oldProps, changeFlags } as any); //TODO add parameter type to deck.gl-typings
-        // Re-generate model if geometry changed
-        if (props.fp64 !== oldProps.fp64) {
-            const { gl } = this.context;
-            if (this.state.model) {
-                this.state.model.delete();
-            }
-            this.setState({ model: this._getModel(gl) });
-            this.getAttributeManager().invalidateAll();
+            this.state.model.setUniforms(
+                Object.assign({}, uniforms, {
+                    is2d: false, //TODO use lighting
+                    lightingMix
+                })
+            ).draw();
         }
     }
 
-    _getModel(gl) {
-        return new base.luma.Model(
-            gl,
-            Object.assign({}, this.getShaders(), {
-                id: this.props.id,
-                geometry: new base.luma.CubeGeometry(),
-                isInstanced: true,
-                shaderCache: this.context.shaderCache
-            })
-        );
-    }
-
-    draw({ uniforms }) {
-        let { lightingMix } = this.props;
-        if (this.props.interpolator && this.props.interpolator.layerInterpolatedProps) {
-            lightingMix = this.props.interpolator.layerInterpolatedProps.lightingMix;
-        }
-        this.state.model.render(
-            Object.assign({}, uniforms, {
-                lightingMix
-            })
-        );
-    }
-
-    calculateInstancePositions64xyLow(attribute) {
-        const isFP64 = this.use64bitPositions();
-        attribute.constant = !isFP64;
-
-        if (!isFP64) {
-            attribute.value = new Float32Array(2);
-            return;
-        }
-
-        const { data, getPosition } = this.props;
-        const { value } = attribute;
-        let i = 0;
-        for (const point of data) {
-            const position = getPosition(point);
-            value[i++] = base.luma.fp64.fp64LowPart(position[0]);
-            value[i++] = base.luma.fp64.fp64LowPart(position[1]);
-        }
-    }
-    }
-
-    const instance = new __CubeLayer(props) as Layer;
+    const instance = new __CubeLayer(props) as Layer<Cube>;
 
     return instance;
 }
@@ -179,7 +154,7 @@ export const CubeLayer: typeof CubeLayer_Class = _CubeLayer as any;
  * CubeLayer - a Deck.gl layer to render cuboids.
  * This is not instantiatable, it is the TypeScript declaration of the type.
  */
-export declare class CubeLayer_Class extends base.deck.Layer {
-  id: string;
-  props: CubeLayerProps;
+export declare class CubeLayer_Class extends base.deck.Layer<Cube> {
+    id: string;
+    props: CubeLayerProps;
 }

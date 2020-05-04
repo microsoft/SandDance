@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
-import { Color } from '@deck.gl/core/utils/color';
+import { RGBAColor } from '@deck.gl/core/utils/color';
 import {
     Column,
     ColumnStats,
@@ -9,7 +9,7 @@ import {
     View
 } from '@msrvida/chart-types';
 import { DeckProps } from '@deck.gl/core/lib/deck';
-import { LightSettings } from '@deck.gl/core/lib/layer';
+//import { LightSettings } from '@deck.gl/core/lib/layer';
 import { Search, SearchExpressionGroup } from '@msrvida/search-expression';
 import { Spec } from 'vega-typings';
 import {
@@ -84,7 +84,7 @@ export interface ViewerOptions extends SpecViewOptions {
     /**
      * Optional map of light settings for the visualization, per camera view type.
      */
-    lightSettings?: { [view in View]: LightSettings };
+//    lightSettings?: { [view in View]: LightSettings };
 
     /**
      * Lengths of time for a transition animation.
@@ -114,7 +114,7 @@ export interface ViewerOptions extends SpecViewOptions {
     /**
      * Optional handler when data is on stage.
      */
-    onStage?: (stage: VegaDeckGl.types.Stage, deckProps: DeckProps) => void;
+    onStage?: (stage: VegaDeckGl.types.Stage, deckProps: Partial<DeckProps>) => void;
 
     /**
      * Optional handler when chart is presented.
@@ -129,12 +129,12 @@ export interface ViewerOptions extends SpecViewOptions {
     /**
      * Optional handler to get the color of text elements.
      */
-    getTextColor?: (t: VegaDeckGl.types.VegaTextLayerDatum) => Color;
+    getTextColor?: (t: VegaDeckGl.types.VegaTextLayerDatum) => RGBAColor;
 
     /**
      * Optional handler to get the highlight color of text elements.
      */
-    getTextHighlightColor?: (t: VegaDeckGl.types.VegaTextLayerDatum) => Color;
+    getTextHighlightColor?: (t: VegaDeckGl.types.VegaTextLayerDatum) => RGBAColor;
 
     /**
      * Optional click handler for text elements.
@@ -320,7 +320,7 @@ export interface ColorScheme {
 }
 
 export interface ColorMappedItem {
-    color?: Color;
+    color?: RGBAColor;
     unSelected?: boolean;
 }
 
@@ -341,7 +341,7 @@ export interface ColorContext {
 }
 
 export interface ColorMethod {
-    (color: Color): Color;
+    (color: RGBAColor): RGBAColor;
 }
 
 export interface LegendRowWithSearch extends VegaDeckGl.types.LegendRow {

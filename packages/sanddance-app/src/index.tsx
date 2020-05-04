@@ -13,7 +13,7 @@ import {
     Explorer,
     Prefs
 } from '@msrvida/sanddance-explorer';
-import * as luma from 'luma.gl';
+import * as luma from '@luma.gl/core';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as vega from 'vega';
