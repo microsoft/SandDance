@@ -78,7 +78,7 @@ export function createDeckGLClassesForPresenter(factoryOptions: OrbitControllerC
             private onViewStateChange;
             public interactiveState: InteractiveState;
 
-            constructor(props: DeckGLInternalProps = {}) {
+            constructor(props: DeckGLInternalProps) {
                 if (typeof document === 'undefined') {
                     // Not browser
                     throw Error('Deck can only be used in the browser');
