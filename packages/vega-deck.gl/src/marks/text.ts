@@ -26,7 +26,7 @@ interface SceneText2 extends SceneText {
 const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scene, x: number, y: number, groupType: GroupType) => {
 
     //scale Deck.Gl text to Vega size
-    const fontScale = 6;
+    const fontScale = 1;
 
     //change direction of y from SVG to GL
     const ty = -1;
