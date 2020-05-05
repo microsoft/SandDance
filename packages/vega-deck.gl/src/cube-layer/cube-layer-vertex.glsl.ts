@@ -34,17 +34,11 @@ attribute vec3 instancePickingColors;
 
 // Custom uniforms
 uniform float lightingMix;
-uniform bool is2d;
 
 // Result
 varying vec4 vColor;
-varying float visible;
 
 void main(void) {
-
-  //if (is2d) {
-    //visible = step(positions.z, 0.0);
-  //}
 
   float x = instanceSizes.x > 0.0 ? max(instanceSizes.x, ${minPixelSize.toFixed(1)}) : 0.0;
   float y = instanceSizes.y > 0.0 ? max(instanceSizes.y, ${minPixelSize.toFixed(1)}) : 0.0;
@@ -64,16 +58,9 @@ void main(void) {
   // extrude positions
   vec4 position_worldspace;
   gl_Position = project_position_to_clipspace(instancePositions, instancePositions64Low, offset, position_worldspace);
-
-  float lightWeight = 1.0;
   
-  //allow for a small amount of error around the min3dDepth 
-  if (instanceSizes.z >= ${min3dDepth.toFixed(4)} - 0.0001) {
-    lightWeight = 1.0;
-  }
-
-  vec3 lightWeightedColor = lightWeight * instanceColors.rgb;
-  vec3 mixedLight = mix(instanceColors.rgb, lightWeightedColor, lightingMix);
+  vec3 lightColor = lighting_getLightColor(instanceColors.rgb, project_uCameraPosition, position_worldspace.xyz, project_normal(normals));
+  vec3 mixedLight = mix(instanceColors.rgb, lightColor, lightingMix);
   vec4 color = vec4(mixedLight, instanceColors.a) / 255.0;
   vColor = color;
 

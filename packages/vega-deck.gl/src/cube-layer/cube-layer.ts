@@ -34,6 +34,7 @@ export interface CubeLayerDefaultProps {
     getColor?: (o: Cube) => number[];
     getSize?: (o: Cube) => number[];
     getPosition?: (o: Cube) => number[];
+    material?: any;
 }
 
 export interface CubeLayerDataProps {
@@ -55,7 +56,8 @@ const defaultProps: CubeLayerDefaultProps = {
     lightingMix: 0.5,
     getSize: x => x.size,
     getPosition: x => x.position,
-    getColor: x => x.color
+    getColor: x => x.color,
+    material: true
 };
 
 function _CubeLayer(props?: CubeLayerProps) {
@@ -129,7 +131,6 @@ function _CubeLayer(props?: CubeLayerProps) {
             }
             this.state.model.setUniforms(
                 Object.assign({}, uniforms, {
-                    is2d: false, //TODO use lighting
                     lightingMix
                 })
             ).draw();

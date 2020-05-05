@@ -24,12 +24,8 @@ export default `\
 precision highp float;
 
 varying vec4 vColor;
-varying float visible;
 
 void main(void) {
-  if (visible < 1.0) {
-    //discard;
-  }
   gl_FragColor = vColor;
 
   // use highlight color if this fragment belongs to the selected object.
