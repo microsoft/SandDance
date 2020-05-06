@@ -7,8 +7,12 @@ import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 function cloneAxis(axes: VegaDeckGl.types.Axis[], axisColor: RGBAColor, axisTextColor: RGBAColor) {
     return axes.map(axis => {
         const newAxis = VegaDeckGl.util.deepMerge(axis);
-        newAxis.domain.color = axisColor;
-        newAxis.title.color = axisTextColor;
+        if (newAxis.domain) {
+            newAxis.domain.color = axisColor;
+        }
+        if (newAxis.title) {
+            newAxis.title.color = axisTextColor;
+        }
         newAxis.ticks.forEach(t => { t.color = axisColor; });
         newAxis.tickText.forEach(t => { t.color = axisTextColor; });
         return newAxis;
