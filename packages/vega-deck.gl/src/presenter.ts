@@ -94,7 +94,6 @@ export class Presenter {
     constructor(public el: HTMLElement, style?: PresenterStyle) {
         this.style = deepMerge<PresenterStyle>(defaultPresenterStyle, style);
         initializePanel(this);
-        this._showGuides = true;
         this._last = { view: null, height: null, width: null, cubeCount: null, stage: null };
     }
 
