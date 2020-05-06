@@ -4,9 +4,7 @@ import { SpecCapabilities, SpecContext } from './types';
 import { Column } from '@msrvida/chart-types';
 import {
     AggregateOp,
-    Data,
     Mark,
-    NewSignal,
     NumericValueRef,
     Scale,
     Scope,
@@ -61,7 +59,7 @@ export interface InnerScope {
     mark?: Mark;
     globalScales?: GlobalScales;
     encodingRuleMap?: { [key: string]: EncodingRule[] };
-    sizeSignals: SizeSignals;       //TODO remove
+    sizeSignals: SizeSignals;
     offsets: LayoutOffsets;
 }
 
