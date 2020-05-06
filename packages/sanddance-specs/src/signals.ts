@@ -27,13 +27,13 @@ export function textSignals(context: SpecContext, heightSignal: string) {
         },
         {
             name: SignalNames.TextScale,
-            value: 2,
+            value: 1.2,
             bind: {
                 name: specViewOptions.language.textScaleSignal,
                 debounce: 50,
                 input: 'range',
                 min: 0.5,
-                max: 5,
+                max: 2,
                 step: 0.1
             }
         },
