@@ -298,7 +298,7 @@ export class Presenter {
         if (config && config.preStage) {
             config.preStage(stage, deckProps);
         }
-        this.deckgl.setProps(deckProps);
+        requestAnimationFrame(() => this.deckgl.setProps(deckProps));
         delete stage.cubeData;
         this._last = {
             cubeCount,
