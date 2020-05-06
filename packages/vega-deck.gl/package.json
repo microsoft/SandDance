@@ -7,6 +7,7 @@
     "dist"
   ],
   "scripts": {
+    "cubetest": "parcel serve ./test/cubeTest.html --port 8087 --open --no-hmr --global cubeTest",
     "docs": "npx -p @danmarshall/ts-docs-gen ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/vega-deck.gl/v2/",
     "deploy": "node ./scripts/deploy.js",
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
@@ -23,7 +24,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@danmarshall/deckgl-typings": "^4.1.4",
+    "@danmarshall/deckgl-typings": "^4.1.5",
     "@mapbox/tiny-sdf": "^1.1.1",
     "@msrvida/chart-types": "^1",
     "@types/react": "16.4.7",
