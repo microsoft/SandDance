@@ -15,7 +15,7 @@ Add these to the `dependencies` section of your `package.json`, then run `npm in
 "@deck.gl/layers": "6.4",
 "@msrvida/sanddance-react": "^2",
 "luma.gl": "6.4",
-"vega": "^5.8"
+"vega": "^5.11"
 ```
 
 Import these in your JavaScript:

@@ -12,9 +12,9 @@
     "@deck.gl/layers": "6.4",
     "luma.gl": "6.4",
     "@msrvida/sanddance": "3.0.0-alpha.2",
-    "vega": "^5.9"
+    "vega": "^5.11"
   },
   "devDependencies": {
-    "vega-typings": "^0.14.2"
+    "vega-typings": "^0.16.0"
   }
 }
