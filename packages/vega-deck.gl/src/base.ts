@@ -1,14 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import {
-    OrbitController,
+    _CameraLight,
+    AmbientLight,
     CompositeLayer,
     COORDINATE_SYSTEM,
     Deck,
+    DirectionalLight,
     IconLayer,
     Layer,
+    LightingEffect,
     LinearInterpolator,
     LineLayer,
+    OrbitController,
     OrbitView,
     PolygonLayer,
     gouraudLighting,
@@ -69,10 +73,14 @@ let vega: VegaBase = {
  * deck.gl/core dependency.
  */
 export interface DeckBase {
+    _CameraLight: typeof _CameraLight,
+    AmbientLight: typeof AmbientLight,
     CompositeLayer: typeof CompositeLayer;
     COORDINATE_SYSTEM: typeof COORDINATE_SYSTEM;
     Deck: typeof Deck;
+    DirectionalLight: typeof DirectionalLight;
     Layer: typeof Layer;
+    LightingEffect: typeof LightingEffect;
     LinearInterpolator: typeof LinearInterpolator;
     OrbitView: typeof OrbitView;
     OrbitController: typeof OrbitController;
@@ -92,10 +100,14 @@ export interface DeckLayerBase {
 }
 
 let deck: DeckBase = {
+    _CameraLight: null,
+    AmbientLight: null,
     CompositeLayer: null,
     COORDINATE_SYSTEM: null,
     Deck: null,
+    DirectionalLight: null,
     Layer: null,
+    LightingEffect: null,
     LinearInterpolator: null,
     OrbitView: null,
     OrbitController: null,
@@ -158,4 +170,6 @@ export function use(vega: VegaBase, deck: DeckBase, layers: DeckLayerBase, luma:
     base.layers = layers;
     base.luma = luma;
     base.vega = vega;
+
+    window['deck'] = deck;
 }

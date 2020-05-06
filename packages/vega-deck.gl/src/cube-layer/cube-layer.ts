@@ -57,7 +57,7 @@ const defaultProps: CubeLayerDefaultProps = {
     getSize: x => x.size,
     getPosition: x => x.position,
     getColor: x => x.color,
-    material: true
+    material: { ambient: 0.5, diffuse: 1 }
 };
 
 function _CubeLayer(props?: CubeLayerProps) {
@@ -103,12 +103,12 @@ function _CubeLayer(props?: CubeLayerProps) {
             super.updateState({ props, oldProps, changeFlags } as any); //TODO add parameter type to deck.gl-typings
             // Re-generate model if geometry changed
             //if (props.fp64 !== oldProps.fp64) {
-                const { gl } = this.context;
-                if (this.state.model) {
-                    this.state.model.delete();
-                }
-                this.setState({ model: this._getModel(gl) });
-                this.getAttributeManager().invalidateAll();
+            const { gl } = this.context;
+            if (this.state.model) {
+                this.state.model.delete();
+            }
+            this.setState({ model: this._getModel(gl) });
+            this.getAttributeManager().invalidateAll();
             //}
         }
 

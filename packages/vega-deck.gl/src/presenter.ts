@@ -1,16 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { base } from './base';
-import { box } from './marks/rule';
-import { className, initializePanel } from './panel';
+import { deepMerge } from './clone';
 import { colorToString } from './color';
+import { CubeLayer_Class, CubeLayerInterpolatedProps } from './cube-layer/cube-layer';
 import {
     createDeckGLClassesForPresenter,
     DeckGL_Class,
     DeckGLInternalProps,
     InteractiveState
 } from './deck.gl-classes/deckgl';
+import { LinearInterpolator, LinearInterpolator_Class } from './deck.gl-classes/linearInterpolator';
+import { OrbitController_Class } from './deck.gl-classes/orbitController';
 import { createStage, defaultPresenterConfig, defaultPresenterStyle } from './defaults';
+import { lightingEffects } from './effects';
+import { PresenterElement } from './enums';
 import {
     Cube,
     PresenterConfig,
@@ -19,21 +23,18 @@ import {
     Scene3d,
     Stage
 } from './interfaces';
-import { CubeLayer_Class, CubeLayerInterpolatedProps } from './cube-layer/cube-layer';
-import { DeckProps } from '@deck.gl/core/lib/deck';
-import { deepMerge } from './clone';
-import { easeExpInOut } from 'd3-ease';
-import { getActiveElementInfo, mount, setActiveElement } from 'tsx-create-element';
 import { getCubeLayer, getCubes, getLayers } from './layers';
 import { LegendView } from './legend';
-import { LinearInterpolator, LinearInterpolator_Class } from './deck.gl-classes/linearInterpolator';
 import { MarkStagerOptions } from './marks/interfaces';
-import { OrbitController_Class } from './deck.gl-classes/orbitController';
+import { box } from './marks/rule';
+import { className, initializePanel } from './panel';
 import { patchCubeArray } from './patchedCubeArray';
-import { PresenterElement } from './enums';
 import { sceneToStage } from './stagers';
 import { targetViewState, viewStateProps } from './viewState';
+import { DeckProps } from '@deck.gl/core/lib/deck';
 import { View } from '@msrvida/chart-types';
+import { easeExpInOut } from 'd3-ease';
+import { getActiveElementInfo, mount, setActiveElement } from 'tsx-create-element';
 
 interface IBounds {
     view: View;
@@ -180,7 +181,7 @@ export class Presenter {
             const deckProps: DeckGLInternalProps = {
                 height: null,
                 width: null,
-                effects: [],
+                effects: lightingEffects(),
                 layers: [],
                 onClick: config && config.onLayerClick,
                 views: [new base.deck.OrbitView({ controller: base.deck.OrbitController })],
@@ -289,7 +290,7 @@ export class Presenter {
         config.preLayer && config.preLayer(stage);
         const layers = getLayers(this, config, stage, /*lightSettings*/null, lightingMix, linearInterpolator, guideLines);
         const deckProps: Partial<DeckProps> = {
-            effects: [],
+            effects: lightingEffects(),
             views: [new base.deck.OrbitView({ controller: base.deck.OrbitController })],
             initialViewState: viewState,
             layers
@@ -317,7 +318,7 @@ export class Presenter {
         viewState.transitionEasing = easeExpInOut;
         viewState.transitionInterpolator = new LinearInterpolator(viewStateProps);
         const deckProps: Partial<DeckProps> = {
-            effects: [],
+            effects: lightingEffects(),
             views: this.deckgl.props.views,
             initialViewState: viewState,
             layers: this.deckgl.props.layers
