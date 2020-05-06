@@ -7,6 +7,7 @@
     "dist"
   ],
   "scripts": {
+    "vegatest": "parcel serve ./test/vegaspec/vega-deck.gl.test.html --port 8087 --open --no-hmr --global vegaTest --no-autoinstall",
     "cubetest": "parcel serve ./test/cubeTest.html --port 8087 --open --no-hmr --global cubeTest",
     "docs": "npx -p @danmarshall/ts-docs-gen ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/vega-deck.gl/v2/",
     "deploy": "node ./scripts/deploy.js",
@@ -31,12 +32,14 @@
     "d3-color": "^1.4.0",
     "d3-ease": "^1.0.5",
     "deepmerge": "^2.1.1",
+    "luma.gl": "^7.3.2",
     "tsx-create-element": "^2.1.0",
     "vega-typings": "^0.16.0"
   },
   "devDependencies": {
     "@deck.gl/core": "^8.1.4",
     "@deck.gl/layers": "^8.1.4",
-    "@luma.gl/core": "^8.1.2"
+    "@luma.gl/core": "^8.1.2",
+    "vega": "^5.11.1"
   }
 }
