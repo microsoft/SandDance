@@ -94,6 +94,7 @@ export class Presenter {
     constructor(public el: HTMLElement, style?: PresenterStyle) {
         this.style = deepMerge<PresenterStyle>(defaultPresenterStyle, style);
         initializePanel(this);
+        this._showGuides = true;
         this._last = { view: null, height: null, width: null, cubeCount: null, stage: null };
     }
 
@@ -175,14 +176,16 @@ export class Presenter {
             });
             this.OrbitControllerClass = classes.OrbitControllerClass;
 
+            const initialViewState = targetViewState(height, width, stage.view);
+
             const deckProps: DeckGLInternalProps = {
-                height,
-                width,
+                height: null,
+                width: null,
                 effects: [],
                 layers: [],
                 onClick: config && config.onLayerClick,
                 views: [new base.deck.OrbitView({ controller: base.deck.OrbitController })],
-                initialViewState: {},
+                initialViewState,
                 container: this.getElement(PresenterElement.gl) as HTMLCanvasElement,
                 getCursor: (interactiveState: InteractiveState) => {
                     if (interactiveState.onText || interactiveState.onAxisSelection) {
