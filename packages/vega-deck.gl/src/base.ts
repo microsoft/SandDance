@@ -170,6 +170,4 @@ export function use(vega: VegaBase, deck: DeckBase, layers: DeckLayerBase, luma:
     base.layers = layers;
     base.luma = luma;
     base.vega = vega;
-
-    window['deck'] = deck;
 }
