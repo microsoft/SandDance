@@ -24,7 +24,7 @@ You will need to consider how to load the libraries that `vega-deck.gl` depends 
 This is the quickest installation option. You can load scripts from a CDN, or you can serve them from your own website. In your HTML, add these tags:
 
 ```html
-<script src="https://unpkg.com/vega@^5.8/build/vega.js" charset="utf-8"></script>
+<script src="https://unpkg.com/vega@^5.11/build/vega.js" charset="utf-8"></script>
 <script src="https://unpkg.com/deck.gl@~6.4/deckgl.min.js"></script>
 <script src="https://unpkg.com/@msrvida/vega-deck.gl@^2/dist/umd/vega-deck.gl.js"></script>
 ```
@@ -46,7 +46,7 @@ Add these to the `dependencies` section of your `package.json`, then run `npm in
 "@deck.gl/layers": "6.4",
 "luma.gl": "6.4",
 "@msrvida/vega-deck.gl": "^2",
-"vega": "^5.8"
+"vega": "^5.11"
 ```
 
 Import these in your JavaScript, then call the `use()` function to pass the dependency libraries to `VegaDeckGl`:

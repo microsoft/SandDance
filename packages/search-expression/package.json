@@ -17,6 +17,6 @@
   "license": "MIT",
   "dependencies": {
     "@msrvida/chart-types": "^1",
-    "vega-typings": "^0.14.2"
+    "vega-typings": "^0.16.0"
   }
 }
