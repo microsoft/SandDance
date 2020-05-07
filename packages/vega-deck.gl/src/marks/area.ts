@@ -42,7 +42,7 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
                 fillColor: scene.items[0].fill,                
                 strokeOpacity: 1.0,
                 //positions:  scene.items.map( (it)=>{return([it.x, ty*it.y, it.z ? it.z : 0.0, it.x2? it.x2 : it.x, it.y2?ty*it.y2: it.y, it.z2?it.z2:(it.z ? it.z:0) ])})
-                positions:  scene.items.map( (it)=>{return([it.x, -1*it.y, it.z, it.x2,-1*it.y2, it.z2)})
+                positions:  scene.items.map( (it)=>{return[it.x, -1*it.y, it.z, it.x2,-1*it.y2, it.z2]})
             };        
 
         stage.polygonData.push(polygon);        
