@@ -85,7 +85,6 @@ export interface DeckBase {
     LinearInterpolator: typeof LinearInterpolator;
     OrbitView: typeof OrbitView;
     OrbitController: typeof OrbitController;
-    PathLayer: typeof PathLayer;
     gouraudLighting: typeof gouraudLighting;
     picking: typeof picking;
     project32: typeof project32;
@@ -97,6 +96,7 @@ export interface DeckBase {
 export interface DeckLayerBase {
     IconLayer: typeof IconLayer;
     LineLayer: typeof LineLayer;
+    PathLayer: typeof PathLayer;
     PolygonLayer: typeof PolygonLayer;
     TextLayer: typeof TextLayer;
 }
@@ -113,7 +113,6 @@ let deck: DeckBase = {
     LinearInterpolator: null,
     OrbitView: null,
     OrbitController: null,
-    PathLayer: null,
     gouraudLighting: null,
     picking: null,
     project32:  null
@@ -122,6 +121,7 @@ let deck: DeckBase = {
 let layers: DeckLayerBase = {
     IconLayer: null,
     LineLayer: null,
+    PathLayer: null,
     PolygonLayer: null,
     TextLayer: null
 };
