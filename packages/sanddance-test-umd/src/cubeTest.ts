@@ -5,10 +5,11 @@
 
 namespace cubeTest {
 
-    declare var deck: SandDance.VegaDeckGl.types.DeckBase & SandDance.VegaDeckGl.types.DeckLayerBase;
-    declare var luma: SandDance.VegaDeckGl.types.LumaBase;
+    import VegaDeckGl = SandDance.VegaDeckGl;
+    declare var deck: VegaDeckGl.types.DeckBase & VegaDeckGl.types.DeckLayerBase;
+    declare var luma: VegaDeckGl.types.LumaBase;
 
-    SandDance.use(null, deck, deck, luma);
+    VegaDeckGl.use(null, deck, deck, luma);
 
     const colors: { [name: string]: deck.RGBAColor } = {
         red: [255, 0, 0],
@@ -17,8 +18,8 @@ namespace cubeTest {
         gray: [128, 128, 128]
     };
 
-    export var presenter = new SandDance.VegaDeckGl.Presenter(document.querySelector('#vis'));
-    var stage: SandDance.VegaDeckGl.types.Stage = {
+    export var presenter = new VegaDeckGl.Presenter(document.querySelector('#vis'));
+    var stage: VegaDeckGl.types.Stage = {
         cubeData: [
             {
                 color: colors.red,
@@ -40,6 +41,7 @@ namespace cubeTest {
         axes: {
             x: [{
                 domain: {
+                    color: [0, 0, 0, 255],
                     sourcePosition: [0, 0, 0],
                     targetPosition: [400, 0, 0],
                     strokeWidth: 10
@@ -49,6 +51,7 @@ namespace cubeTest {
             }],
             y: [{
                 domain: {
+                    color: [0, 0, 0, 255],
                     sourcePosition: [0, 0, 0],
                     targetPosition: [0, 200, 0],
                     strokeWidth: 10
@@ -70,7 +73,7 @@ namespace cubeTest {
         zoom: 0.01
     };
 
-    presenter.deckgl.setProps({ viewState: orbitViewState });
+    presenter.deckgl.setProps({ initialViewState: orbitViewState });
 
     document.getElementById('animate').addEventListener('click', e => {
 

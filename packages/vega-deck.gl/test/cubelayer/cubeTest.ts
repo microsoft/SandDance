@@ -4,7 +4,7 @@ import * as deck from '@deck.gl/core';
 import * as layers from '@deck.gl/layers';
 import * as luma from '@luma.gl/core';
 
-import * as VegaDeckGl from '../src/index';
+import * as VegaDeckGl from '../../src/index';
 
 VegaDeckGl.use(null, deck, layers, luma);
 
