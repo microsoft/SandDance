@@ -98,16 +98,16 @@ export interface FacetRect {
  */
 export interface Stage {
     backgroundColor?: RGBAColor;
-    cubeData: Cube[];
-    pathData: Path[];
-    polygonData: Polygon[];
+    cubeData?: Cube[];
+    pathData?: Path[];
+    polygonData?: Polygon[];
     legend?: Legend;
-    axes: {
-        x: Axis[];
-        y: Axis[];
+    axes?: {
+        x?: Axis[];
+        y?: Axis[];
     };
-    textData: VegaTextLayerDatum[];
-    view: View;
+    textData?: VegaTextLayerDatum[];
+    view?: View;
     gridLines?: StyledLine[];
     facets?: FacetRect[];
 }
