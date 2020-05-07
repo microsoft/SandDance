@@ -20,7 +20,6 @@ import { easeExpInOut } from 'd3-ease';
 import { Layer } from 'deck.gl';
 import { TextLayerProps } from '@deck.gl/layers/text-layer/text-layer';
 
-
 export function getLayers(
     presenter: Presenter,
     config: PresenterConfig,
