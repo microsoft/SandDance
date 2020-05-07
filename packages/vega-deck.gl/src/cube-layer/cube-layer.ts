@@ -49,6 +49,7 @@ export type CubeLayerProps = LayerProps<Cube> & CubeLayerDefaultProps & CubeLaye
 
 //https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants
 const UNSIGNED_BYTE = 0x1401;
+const DOUBLE = 0x140a;
 
 const DEFAULT_COLOR: RGBAColor = [255, 0, 255, 255];
 
@@ -80,7 +81,7 @@ function _CubeLayer(props?: CubeLayerProps) {
             attributeManager.addInstanced({
                 instancePositions: {
                     size: 3,
-                    type: 0x140a,
+                    type: DOUBLE,
                     transition: true,
                     accessor: 'getPosition'
                 },
