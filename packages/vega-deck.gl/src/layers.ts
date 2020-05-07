@@ -105,7 +105,13 @@ function newTextLayer(presenter: Presenter, id: string, data: VegaTextLayerDatum
         sizeUnits: 'pixels',
         autoHighlight: true,
         pickable: true,
-        //getHighlightColor: config.getTextHighlightColor || (o => o.color),
+        highlightColor: p => {
+            if (config.getTextHighlightColor) {
+                return config.getTextHighlightColor(p.object);
+            } else {
+                return [0, 0, 0, 0];
+            }
+        },
         onClick: (o, e) => {
             let pe: Partial<PointerEvent> = e && e.srcEvent;
             config.onTextClick && config.onTextClick(pe as PointerEvent, o.object as VegaTextLayerDatum);
