@@ -37,8 +37,8 @@
     "vega-typings": "^0.16.0"
   },
   "devDependencies": {
-    "@deck.gl/core": "^8.1.4",
-    "@deck.gl/layers": "^8.1.4",
+    "@deck.gl/core": "^8.1.5",
+    "@deck.gl/layers": "^8.1.5",
     "@luma.gl/core": "^8.1.2",
     "vega": "^5.11.1"
   }

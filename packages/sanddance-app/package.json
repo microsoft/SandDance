@@ -23,8 +23,8 @@
     "react-dom": "./alias/react-dom-external.js"
   },
   "dependencies": {
-    "@deck.gl/core": "^8.1.4",
-    "@deck.gl/layers": "^8.1.4",
+    "@deck.gl/core": "^8.1.5",
+    "@deck.gl/layers": "^8.1.5",
     "@luma.gl/core": "^8.1.2",
     "office-ui-fabric-react": "6.204.4",
     "@msrvida/sanddance-explorer": "3.0.0-alpha.2",
