@@ -1,13 +1,14 @@
 var cubeTest;
 (function (cubeTest) {
-    SandDance.use(null, deck, deck, luma);
+    var VegaDeckGl = SandDance.VegaDeckGl;
+    VegaDeckGl.use(null, deck, deck, luma);
     var colors = {
         red: [255, 0, 0],
         green: [0, 255, 0],
         blue: [0, 0, 255],
         gray: [128, 128, 128]
     };
-    cubeTest.presenter = new SandDance.VegaDeckGl.Presenter(document.querySelector('#vis'));
+    cubeTest.presenter = new VegaDeckGl.Presenter(document.querySelector('#vis'));
     var stage = {
         cubeData: [
             {
@@ -30,6 +31,7 @@ var cubeTest;
         axes: {
             x: [{
                     domain: {
+                        color: [0, 0, 0, 255],
                         sourcePosition: [0, 0, 0],
                         targetPosition: [400, 0, 0],
                         strokeWidth: 10
@@ -39,6 +41,7 @@ var cubeTest;
                 }],
             y: [{
                     domain: {
+                        color: [0, 0, 0, 255],
                         sourcePosition: [0, 0, 0],
                         targetPosition: [0, 200, 0],
                         strokeWidth: 10
@@ -57,7 +60,7 @@ var cubeTest;
         rotationX: 67,
         zoom: 0.01
     };
-    cubeTest.presenter.deckgl.setProps({ viewState: orbitViewState });
+    cubeTest.presenter.deckgl.setProps({ initialViewState: orbitViewState });
     document.getElementById('animate').addEventListener('click', function (e) {
         stage.cubeData = [
             {
