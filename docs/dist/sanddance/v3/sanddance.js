@@ -177,7 +177,7 @@
         }
         build() {
             const { aggregation, names, props } = this;
-            const { dock, globalScope, groupings, niceScale, parentHeight, parentScope, showAxes } = props;
+            const { dock, globalScope, groupings, niceScale, parentScope, showAxes } = props;
             addTransforms(globalScope.data, Object.assign(Object.assign({}, this.getTransforms(aggregation, getGroupBy(groupings))), { as: [names.aggregateField] }), {
                 type: 'extent',
                 field: names.aggregateField,
@@ -239,9 +239,6 @@
                 update: dock === 'bottom'
                     ? `${parentScope.sizeSignals.layoutHeight} - ${globalAggregateMaxExtentScaledValue}`
                     : globalAggregateMaxExtentScaledValue
-            }, {
-                name: parentHeight,
-                update: parentScope.sizeSignals.layoutHeight
             });
             return {
                 offsets,
@@ -444,13 +441,13 @@
             },
             {
                 name: SignalNames.TextScale,
-                value: 2,
+                value: 1.2,
                 bind: {
                     name: specViewOptions.language.textScaleSignal,
                     debounce: 50,
                     input: 'range',
                     min: 0.5,
-                    max: 5,
+                    max: 2,
                     step: 0.1
                 }
             },
@@ -551,7 +548,7 @@
         }
         build() {
             const { bin, names, props } = this;
-            const { globalScope, minBandWidth, orientation, parentHeight, parentScope, showAxes } = props;
+            const { globalScope, minBandWidth, orientation, parentScope, showAxes } = props;
             const binField = bin.fields[0];
             if (bin.native === false) {
                 addSignal(globalScope.scope, bin.maxbinsSignal);
@@ -576,9 +573,6 @@
             addSignal(globalScope.scope, {
                 name: names.bandWidth,
                 update: `bandwidth(${JSON.stringify(horizontal ? names.yScale : names.xScale)})`
-            }, {
-                name: parentHeight,
-                update: parentScope.sizeSignals.layoutHeight
             });
             const scale = this.getScale(bin, horizontal);
             let encodingRuleMap;
@@ -716,8 +710,8 @@
     const facetPaddingTop = 40;
     const facetPaddingBottom = 40;
     const facetPaddingRight = 40;
-    const axesLabelLimit = 10;
-    const axesTitleLimit = 10;
+    const axesLabelLimit = 100;
+    const axesTitleLimit = 100;
     const axesTitlePaddingX = 30;
     const axesTitlePaddingY = 60;
     const axesTitlePaddingFacetX = 69;
@@ -835,9 +829,7 @@
         build() {
             const { names, prefix, props } = this;
             const { fillDirection, globalScope, groupings, parentScope, collapseYHeight, sortBy, z } = props;
-            let { zSize } = props;
-            zSize = zSize || parentScope.sizeSignals.layoutHeight;
-            addZScale(z, zSize, globalScope, names.zScale);
+            addZScale(z, globalScope.zSize, globalScope, names.zScale);
             addTransforms(globalScope.data, Object.assign({ type: 'stack', groupby: getGroupBy(groupings), as: [names.stack0, names.stack1] }, sortBy && {
                 sort: {
                     field: sortBy.name,
@@ -998,9 +990,7 @@
         build() {
             const { names, prefix, props } = this;
             const { addPercentageScale, globalScope, groupings, orientation, size, sort, sortOrder, parentScope, z } = props;
-            let { zSize } = props;
-            zSize = zSize || parentScope.sizeSignals.layoutHeight;
-            addZScale(z, zSize, globalScope, names.zScale);
+            addZScale(z, globalScope.zSize, globalScope, names.zScale);
             const horizontal = orientation === 'horizontal';
             const transform = [];
             if (sort) {
@@ -1149,9 +1139,7 @@
         build() {
             const { names, props } = this;
             const { globalScope, parentScope, treeMapMethod, z } = props;
-            let { zSize } = props;
-            zSize = zSize || parentScope.sizeSignals.layoutHeight;
-            addZScale(z, zSize, globalScope, names.zScale);
+            addZScale(z, globalScope.zSize, globalScope, names.zScale);
             const offsets = {
                 x: addOffsets(parentScope.offsets.x, fn(names.fieldX0)),
                 y: addOffsets(parentScope.offsets.y, fn(names.fieldY0)),
@@ -1233,8 +1221,10 @@
                         treemapData
                     ]
                 };
-                globalScope.markDataName = names.dataFacetMark;
+                globalScope.setMarkDataName(names.dataFacetMark);
                 addMarks(globalScope.markGroup, facets);
+                //assign new markgroup after adding mark to original group
+                globalScope.setMarkGroup(facets);
                 this.treemapTransform(treemapData, `${names.widthExtent}[0]`, `${names.heightExtent}[0]`);
                 return this.addMark(offsets, facets, globalScope.markDataName);
             }
@@ -1326,8 +1316,7 @@
                 maxbins
             },
             minBandWidth: minBarBandWidth,
-            showAxes: true,
-            parentHeight: 'bandParentHeight'
+            showAxes: true
         };
         const x = { title: null };
         const axisScales = {
@@ -1348,8 +1337,7 @@
                 orientation: 'horizontal',
                 size: specColumns.size,
                 sort: specColumns.sort,
-                z: specColumns.z,
-                zSize: bandProps.parentHeight
+                z: specColumns.z
             };
             layouts.push({
                 layoutClass: Strip,
@@ -1362,7 +1350,6 @@
                 dock: 'left',
                 globalAggregateMaxExtentSignal: 'aggMaxExtent',
                 globalAggregateMaxExtentScaledSignal: 'aggMaxExtentScaled',
-                parentHeight: 'aggParentHeight',
                 sumBy: specColumns.size,
                 showAxes: true
             };
@@ -1378,8 +1365,7 @@
                         corner: 'top-left',
                         size: specColumns.size,
                         treeMapMethod: specViewOptions.language.treeMapMethod,
-                        z: specColumns.z,
-                        zSize: aggProps.parentHeight
+                        z: specColumns.z
                     };
                     layouts.push({
                         layoutClass: Treemap,
@@ -1395,8 +1381,7 @@
                         orientation: 'horizontal',
                         size: specColumns.size,
                         sort: specColumns.sort,
-                        z: specColumns.z,
-                        zSize: aggProps.parentHeight
+                        z: specColumns.z
                     };
                     layouts.push({
                         layoutClass: Strip,
@@ -1412,8 +1397,7 @@
                         orientation: 'horizontal',
                         size: specColumns.size,
                         sort: specColumns.sort,
-                        z: specColumns.z,
-                        zSize: aggProps.parentHeight
+                        z: specColumns.z
                     };
                     layouts.push({
                         layoutClass: Strip,
@@ -1429,8 +1413,7 @@
                         fillDirection: 'down-right',
                         z: specColumns.z,
                         maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
-                        maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal,
-                        zSize: aggProps.parentHeight
+                        maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal
                     };
                     layouts.push({
                         layoutClass: Square,
@@ -1500,8 +1483,7 @@
                 maxbins
             },
             minBandWidth: minBarBandWidth,
-            showAxes: true,
-            parentHeight: 'bandParentHeight'
+            showAxes: true
         };
         const y = { title: null };
         const axisScales = {
@@ -1522,8 +1504,7 @@
                 orientation: 'vertical',
                 size: specColumns.size,
                 sort: specColumns.sort,
-                z: specColumns.z,
-                zSize: bandProps.parentHeight
+                z: specColumns.z
             };
             layouts.push({
                 layoutClass: Strip,
@@ -1536,7 +1517,6 @@
                 dock: 'bottom',
                 globalAggregateMaxExtentSignal: 'aggMaxExtent',
                 globalAggregateMaxExtentScaledSignal: 'aggMaxExtentScaled',
-                parentHeight: 'aggParentHeight',
                 sumBy: specColumns.size,
                 showAxes: true
             };
@@ -1552,8 +1532,7 @@
                         corner: 'bottom-left',
                         size: specColumns.size,
                         treeMapMethod: specViewOptions.language.treeMapMethod,
-                        z: specColumns.z,
-                        zSize: aggProps.parentHeight
+                        z: specColumns.z
                     };
                     layouts.push({
                         layoutClass: Treemap,
@@ -1569,8 +1548,7 @@
                         orientation: 'vertical',
                         size: specColumns.size,
                         sort: specColumns.sort,
-                        z: specColumns.z,
-                        zSize: aggProps.parentHeight
+                        z: specColumns.z
                     };
                     layouts.push({
                         layoutClass: Strip,
@@ -1585,8 +1563,7 @@
                         sortOrder: 'descending',
                         orientation: 'vertical',
                         sort: specColumns.sort,
-                        z: specColumns.z,
-                        zSize: aggProps.parentHeight
+                        z: specColumns.z
                     };
                     layouts.push({
                         layoutClass: Strip,
@@ -1602,8 +1579,7 @@
                         fillDirection: 'right-up',
                         z: specColumns.z,
                         maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
-                        maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal,
-                        zSize: aggProps.parentHeight
+                        maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal
                     };
                     layouts.push({
                         layoutClass: Square,
@@ -1675,7 +1651,7 @@
         }
         build() {
             const { names, props } = this;
-            const { aggregation, globalScope, groupings, onBuild, parentHeight, parentScope } = props;
+            const { aggregation, globalScope, groupings, onBuild, parentScope } = props;
             const { sizeSignals } = parentScope;
             addTransforms(globalScope.data, Object.assign(Object.assign({}, this.getTransforms(aggregation, getGroupBy(groupings))), { as: [names.aggregateField] }), {
                 type: 'extent',
@@ -1690,10 +1666,6 @@
             const squareSide = `sqrt(${squareArea})`;
             const localAggregateMaxExtentScaled = squareSide;
             onBuild && onBuild(localAggregateMaxExtent, localAggregateMaxExtentScaled);
-            addSignal(globalScope.scope, {
-                name: parentHeight,
-                update: sizeSignals.layoutHeight
-            });
             const offsets = {
                 x: addOffsets(parentScope.offsets.x, `(${parentScope.offsets.w} - ${squareSide}) / 2`),
                 y: addOffsets(parentScope.offsets.y, `(${parentScope.offsets.h} - ${squareSide}) / 2`),
@@ -1754,8 +1726,7 @@
                 maxbins
             },
             minBandWidth: minBarBandWidth,
-            showAxes: true,
-            parentHeight: 'hBandParentHeight'
+            showAxes: true
         };
         const vBandProps = {
             excludeEncodingRuleMap: true,
@@ -1768,12 +1739,10 @@
                 maxbins
             },
             minBandWidth: minBarBandWidth,
-            showAxes: true,
-            parentHeight: 'vBandParentHeight'
+            showAxes: true
         };
         const aggProps = {
             onBuild: null,
-            parentHeight: 'aggParentHeight',
             aggregation: null,
             sumBy: specColumns.size
         };
@@ -1798,8 +1767,7 @@
                     corner: 'bottom-left',
                     size: specColumns.size,
                     treeMapMethod: specViewOptions.language.treeMapMethod,
-                    z: specColumns.z,
-                    zSize: aggProps.parentHeight
+                    z: specColumns.z
                 };
                 layouts.push({
                     layoutClass: Treemap,
@@ -1814,8 +1782,7 @@
                     orientation: 'vertical',
                     size: specColumns.size,
                     sort: specColumns.sort,
-                    z: specColumns.z,
-                    zSize: aggProps.parentHeight
+                    z: specColumns.z
                 };
                 layouts.push({
                     layoutClass: Strip,
@@ -1829,8 +1796,7 @@
                     sortOrder: 'ascending',
                     orientation: 'vertical',
                     sort: specColumns.sort,
-                    z: specColumns.z,
-                    zSize: aggProps.parentHeight
+                    z: specColumns.z
                 };
                 layouts.push({
                     layoutClass: Strip,
@@ -1845,8 +1811,7 @@
                     fillDirection: 'right-down',
                     z: specColumns.z,
                     maxGroupedUnits: null,
-                    maxGroupedFillSize: null,
-                    zSize: aggProps.parentHeight
+                    maxGroupedFillSize: null
                 };
                 aggProps.onBuild = (aggMaxExtent, aggMaxExtentScaled) => {
                     squareProps.maxGroupedUnits = aggMaxExtent;
@@ -2008,7 +1973,7 @@
                     return t;
                 }).filter(Boolean)
             });
-            globalScope.markDataName = names.markData;
+            globalScope.setMarkDataName(names.markData);
             const globalScales = { showAxes: true, scales: {} };
             const zValue = z ? `scale(${JSON.stringify(names.zScale)}, datum[${JSON.stringify(z.name)}])` : null;
             const update = Object.assign({ height: [
@@ -2061,7 +2026,7 @@
                     xyz: 'z',
                     scaleName: names.zScale,
                     reverse: false,
-                    signal: `${parentScope.sizeSignals.layoutHeight}*${SignalNames.ZProportion}`
+                    signal: `(${globalScope.zSize}) * ${SignalNames.ZProportion}`
                 }
             ];
             columnSignals.forEach(cs => {
@@ -2189,7 +2154,7 @@
         }
         build() {
             const { names, props } = this;
-            const { globalScope, groupings, parentHeight, parentScope, sort } = props;
+            const { globalScope, groupings, parentScope, sort } = props;
             const { sizeSignals } = parentScope;
             addTransforms(globalScope.data, {
                 type: 'joinaggregate',
@@ -2238,7 +2203,7 @@
                     },
                     {
                         type: 'formula',
-                        expr: `abs(${parentHeight} - datum.sidecubeheight)`,
+                        expr: `abs(${globalScope.zSize} - datum.sidecubeheight)`,
                         as: 'heightmatch'
                     },
                     {
@@ -2359,8 +2324,7 @@
                 maxbins
             },
             minBandWidth: minBarBandWidth,
-            showAxes: true,
-            parentHeight: 'hBandParentHeight',
+            showAxes: true
         };
         const vBandProps = {
             excludeEncodingRuleMap: true,
@@ -2373,12 +2337,10 @@
                 maxbins
             },
             minBandWidth: minBarBandWidth,
-            showAxes: true,
-            parentHeight: 'vBandParentHeight'
+            showAxes: true
         };
         const stackProps = {
-            sort: specColumns.sort,
-            parentHeight: vBandProps.parentHeight
+            sort: specColumns.sort
         };
         return {
             axisScales,
@@ -2456,17 +2418,14 @@
             };
             const globalAggregateMaxExtentScaledSignal = 'globalAggregateMaxExtentScaledSignal';
             const globalAggregateMaxExtentSignal = 'globalAggregateMaxExtentSignal';
-            const parentHeight = 'parentHeight';
             const props = {
                 dock: 'top',
                 niceScale: false,
                 globalAggregateMaxExtentScaledSignal,
                 globalAggregateMaxExtentSignal,
-                parentHeight,
                 sumBy: specColumns.size,
                 showAxes: false
             };
-            stripProps.zSize = props.parentHeight;
             layouts.push({
                 layoutClass: AggregateContainer,
                 props
@@ -2534,17 +2493,14 @@
             };
             const globalAggregateMaxExtentScaledSignal = 'globalAggregateMaxExtentScaledSignal';
             const globalAggregateMaxExtentSignal = 'globalAggregateMaxExtentSignal';
-            const parentHeight = 'parentHeight';
             const props = {
                 dock: 'top',
                 niceScale: false,
                 globalAggregateMaxExtentScaledSignal,
                 globalAggregateMaxExtentSignal,
-                parentHeight,
                 sumBy: specColumns.size,
                 showAxes: false
             };
-            treemapProps.zSize = props.parentHeight;
             layouts.push({
                 layoutClass: AggregateContainer,
                 props
@@ -3330,6 +3286,7 @@
             // };
             // parentScope.scope.marks.push(mark);
             return {
+                offsets: null,
                 sizeSignals: { layoutHeight: 'TODO', layoutWidth: 'TODO' }
             };
         }
@@ -3524,7 +3481,7 @@
                 ]
             };
             addData(globalScope.scope, dataOut);
-            globalScope.markDataName = names.outputData;
+            globalScope.setMarkDataName(names.outputData);
             addSignal(globalScope.scope, {
                 name: names.minAspect,
                 update: `${SignalNames.MinCellWidth} / ${SignalNames.MinCellHeight}`
@@ -3734,20 +3691,57 @@
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
+    class GlobalScope {
+        constructor(props) {
+            const { dataName, markGroup, scope, signals } = props;
+            this.scope = scope;
+            this._markGroup = markGroup;
+            this.signals = signals;
+            this.data = getDataByName(scope.data, dataName).data;
+            this._markDataName = dataName;
+            this.offsets = {
+                x: '0',
+                y: '0',
+                h: SignalNames.PlotHeightIn,
+                w: SignalNames.PlotWidthIn
+            };
+            this.sizeSignals = {
+                layoutHeight: SignalNames.PlotHeightIn,
+                layoutWidth: SignalNames.PlotWidthIn
+            };
+            this.zSize = SignalNames.PlotHeightIn;
+        }
+        get markDataName() {
+            return this._markDataName;
+        }
+        setMarkDataName(markDataName) {
+            this._markDataName = markDataName;
+        }
+        get markGroup() {
+            return this._markGroup;
+        }
+        setMarkGroup(markGroup) {
+            this._markGroup = markGroup;
+        }
+    }
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
     class SpecBuilder {
         constructor(props) {
             this.props = props;
-            this.minCellWidth = {
-                name: SignalNames.MinCellWidth,
-                update: `${minFacetWidth}`
+            this.globalSignals = {
+                minCellWidth: {
+                    name: SignalNames.MinCellWidth,
+                    update: `${minFacetWidth}`
+                },
+                minCellHeight: { name: SignalNames.MinCellHeight, update: `${minFacetHeight}` },
+                plotOffsetLeft: { name: SignalNames.PlotOffsetLeft, update: '0' },
+                plotOffsetTop: { name: SignalNames.PlotOffsetTop, update: '0' },
+                plotOffsetBottom: { name: SignalNames.PlotOffsetBottom, update: '0' },
+                plotOffsetRight: { name: SignalNames.PlotOffsetRight, update: '0' },
+                plotHeightOut: { name: SignalNames.PlotHeightOut, update: SignalNames.PlotHeightIn },
+                plotWidthOut: { name: SignalNames.PlotWidthOut, update: SignalNames.PlotWidthIn }
             };
-            this.minCellHeight = { name: SignalNames.MinCellHeight, update: `${minFacetHeight}` };
-            this.plotOffsetLeft = { name: SignalNames.PlotOffsetLeft, update: '0' };
-            this.plotOffsetTop = { name: SignalNames.PlotOffsetTop, update: '0' };
-            this.plotOffsetBottom = { name: SignalNames.PlotOffsetBottom, update: '0' };
-            this.plotOffsetRight = { name: SignalNames.PlotOffsetRight, update: '0' };
-            this.plotHeightOut = { name: SignalNames.PlotHeightOut, update: SignalNames.PlotHeightIn };
-            this.plotWidthOut = { name: SignalNames.PlotWidthOut, update: SignalNames.PlotWidthIn };
         }
         validate() {
             const { specCapabilities, specContext } = this.props;
@@ -3798,7 +3792,12 @@
                     topLookupName: 'data_topcolorlookup',
                     colorReverseSignalName: SignalNames.ColorReverse
                 });
-                const globalScope = this.createGlobalScope(colorDataName, vegaSpec, groupMark);
+                const globalScope = new GlobalScope({
+                    dataName: colorDataName,
+                    markGroup: groupMark,
+                    scope: vegaSpec,
+                    signals: this.globalSignals
+                });
                 let facetLayout;
                 if (insight.columns.facet) {
                     const discreteFacetColumn = {
@@ -3819,10 +3818,14 @@
                     addSignal(vegaSpec, ...facetLayout.signals);
                     addScale(vegaSpec, ...facetLayout.scales);
                     this.props.layouts = [facetLayout.layoutPair, ...this.props.layouts];
-                    this.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
-                    this.plotOffsetRight.update = `${facetLayout.plotPadding.x}`;
+                    this.globalSignals.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
+                    this.globalSignals.plotOffsetRight.update = `${facetLayout.plotPadding.x}`;
                 }
-                const { firstScope, finalScope, specResult, allGlobalScales, allEncodingRules, groupings, sums, offsets } = this.iterateLayouts(globalScope, groupMark, colorDataName);
+                const { firstScope, finalScope, specResult, allGlobalScales, allEncodingRules } = this.iterateLayouts(globalScope, (i, innerScope) => {
+                    if (facetLayout && i === 0) {
+                        globalScope.zSize = innerScope.offsets.h;
+                    }
+                });
                 if (specResult) {
                     return specResult;
                 }
@@ -3832,8 +3835,8 @@
                             globalScope: globalScope.scope,
                             plotScope: groupMark,
                             facetScope: firstScope,
-                            plotHeightOut: this.plotHeightOut.name,
-                            plotWidthOut: this.plotWidthOut.name,
+                            plotHeightOut: this.globalSignals.plotHeightOut.name,
+                            plotWidthOut: this.globalSignals.plotWidthOut.name,
                             colTitleScaleName: 'scale_facet_col_title',
                             rowTitleScaleName: 'scale_facet_row_title',
                             colSeqName: 'data_FacetCellColTitles',
@@ -3852,7 +3855,7 @@
                         globalScope,
                         allGlobalScales,
                         axisScales: this.props.axisScales,
-                        plotOffsetSignals: { x: this.plotOffsetLeft, y: this.plotOffsetBottom },
+                        plotOffsetSignals: { x: this.globalSignals.plotOffsetLeft, y: this.globalSignals.plotOffsetBottom },
                         axesOffsets: { x: axesOffsetX, y: axesOffsetY },
                         axesTitlePadding: facetLayout ? { x: axesTitlePaddingFacetX, y: axesTitlePaddingFacetY } : { x: axesTitlePaddingX, y: axesTitlePaddingY },
                         labelBaseline: { x: 'top', y: 'middle' },
@@ -3864,32 +3867,30 @@
                 //add mark to the final scope
                 if (finalScope.mark) {
                     const { update } = finalScope.mark.encode;
-                    if (offsets.length) {
-                        const outputDataName = 'output';
-                        finalScope.mark.from.data = outputDataName;
-                        addData(globalScope.scope, {
-                            name: outputDataName,
-                            source: globalScope.markDataName,
-                            transform: [
-                                {
-                                    type: 'formula',
-                                    expr: finalScope.offsets.x,
-                                    as: FieldNames.OffsetX
-                                },
-                                {
-                                    type: 'formula',
-                                    expr: finalScope.offsets.y,
-                                    as: FieldNames.OffsetY
-                                }
-                            ]
-                        });
-                        update.x = {
-                            field: FieldNames.OffsetX
-                        };
-                        update.y = {
-                            field: FieldNames.OffsetY
-                        };
-                    }
+                    const outputDataName = 'output';
+                    finalScope.mark.from.data = outputDataName;
+                    addData(globalScope.markGroup, {
+                        name: outputDataName,
+                        source: globalScope.markDataName,
+                        transform: [
+                            {
+                                type: 'formula',
+                                expr: finalScope.offsets.x,
+                                as: FieldNames.OffsetX
+                            },
+                            {
+                                type: 'formula',
+                                expr: finalScope.offsets.y,
+                                as: FieldNames.OffsetY
+                            }
+                        ]
+                    });
+                    update.x = {
+                        field: FieldNames.OffsetX
+                    };
+                    update.y = {
+                        field: FieldNames.OffsetY
+                    };
                     allEncodingRules.forEach(map => {
                         for (let key in map) {
                             if (update[key]) {
@@ -3917,34 +3918,9 @@
                 };
             }
         }
-        createGlobalScope(dataName, scope, markGroup) {
-            const { minCellWidth, minCellHeight, plotHeightOut, plotWidthOut } = this;
-            const globalScope = {
-                data: getDataByName(scope.data, dataName).data,
-                markDataName: dataName,
-                scope,
-                markGroup,
-                offsets: {
-                    x: '0',
-                    y: '0',
-                    h: SignalNames.PlotHeightIn,
-                    w: SignalNames.PlotWidthIn
-                },
-                sizeSignals: {
-                    layoutHeight: SignalNames.PlotHeightIn,
-                    layoutWidth: SignalNames.PlotWidthIn
-                },
-                signals: {
-                    minCellWidth,
-                    minCellHeight,
-                    plotHeightOut,
-                    plotWidthOut
-                }
-            };
-            return globalScope;
-        }
         initSpec(dataName) {
-            const { minCellWidth, minCellHeight, plotOffsetLeft, plotOffsetBottom, plotOffsetTop, plotOffsetRight, plotHeightOut, plotWidthOut } = this;
+            const { globalSignals } = this;
+            const { minCellWidth, minCellHeight, plotOffsetLeft, plotOffsetBottom, plotOffsetTop, plotOffsetRight, plotHeightOut, plotWidthOut } = globalSignals;
             const { specContext } = this.props;
             const { insight } = specContext;
             const groupMark = {
@@ -4002,7 +3978,7 @@
             };
             return { vegaSpec, groupMark };
         }
-        iterateLayouts(globalScope, scope, dataName) {
+        iterateLayouts(globalScope, onLayoutBuild) {
             let specResult;
             let parentScope = {
                 sizeSignals: globalScope.sizeSignals,
@@ -4011,8 +3987,6 @@
             let firstScope;
             let childScope;
             const groupings = [];
-            const offsets = [];
-            let sums = false;
             let { layouts, specCapabilities } = this.props;
             const allGlobalScales = [];
             const allEncodingRules = [];
@@ -4030,9 +4004,6 @@
                 try {
                     childScope = layout.build();
                     childScope.id = i;
-                    if (childScope.offsets) {
-                        offsets.push(childScope.offsets);
-                    }
                     let groupby = layout.getGrouping();
                     if (groupby) {
                         groupings.push({
@@ -4046,8 +4017,8 @@
                     let sumOp = layout.getAggregateSumOp();
                     if (sumOp) {
                         groupings[groupings.length - 1].fieldOps.push(sumOp);
-                        sums = true;
                     }
+                    onLayoutBuild(i, childScope);
                 }
                 catch (e) {
                     specResult = {
@@ -4068,7 +4039,7 @@
                 }
                 parentScope = childScope;
             }
-            return { firstScope, finalScope: parentScope, specResult, allGlobalScales, allEncodingRules, groupings, sums, offsets };
+            return { firstScope, finalScope: parentScope, specResult, allGlobalScales, allEncodingRules };
         }
         createLayout(layoutPair, buildProps) {
             const { layoutClass, props } = layoutPair;
@@ -4310,8 +4281,8 @@
       format = (format + "").trim().toLowerCase();
       return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
           : l === 3 ? new Rgb((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
-          : l === 8 ? new Rgb(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-          : l === 4 ? new Rgb((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+          : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+          : l === 4 ? rgba((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
           : null) // invalid hex
           : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
           : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
@@ -5989,8 +5960,8 @@
       format = (format + "").trim().toLowerCase();
       return (m = reHex$1.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$1(m) // #ff0000
           : l === 3 ? new Rgb$1((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
-          : l === 8 ? new Rgb$1(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-          : l === 4 ? new Rgb$1((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+          : l === 8 ? rgba$1(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+          : l === 4 ? rgba$1((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
           : null) // invalid hex
           : (m = reRgbInteger$1.exec(format)) ? new Rgb$1(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
           : (m = reRgbPercent$1.exec(format)) ? new Rgb$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
@@ -6339,8 +6310,8 @@
     }
     /**
      * Compares 2 colors to see if they are equal.
-     * @param a Color to compare
-     * @param b Color to compare
+     * @param a RGBAColor to compare
+     * @param b RGBAColor to compare
      * @returns True if colors are equal.
      */
     function colorIsEqual(a, b) {
@@ -6353,7 +6324,7 @@
         return true;
     }
     /**
-     * Convert a CSS color string to a Deck.gl Color array - (The rgba color of each object, in r, g, b, [a]. Each component is in the 0-255 range.).
+     * Convert a CSS color string to a Deck.gl RGBAColor array - (The rgba color of each object, in r, g, b, [a]. Each component is in the 0-255 range.).
      * @param cssColorSpecifier A CSS Color Module Level 3 specifier string.
      */
     function colorFromString(cssColorSpecifier) {
@@ -6367,7 +6338,7 @@
     }
     /**
      * Convert a Deck.gl color to a CSS rgba() string.
-     * @param color A Deck.gl Color array - (The rgba color of each object, in r, g, b, [a]. Each component is in the 0-255 range.)
+     * @param color A Deck.gl RGBAColor array - (The rgba color of each object, in r, g, b, [a]. Each component is in the 0-255 range.)
      */
     function colorToString(color$$1) {
         const c = [...color$$1];
@@ -6399,23 +6370,30 @@
         View: null
     };
     let deck = {
+        _CameraLight: null,
+        AmbientLight: null,
         CompositeLayer: null,
         COORDINATE_SYSTEM: null,
         Deck: null,
+        DirectionalLight: null,
         Layer: null,
+        LightingEffect: null,
         LinearInterpolator: null,
         OrbitView: null,
-        _OrbitController: null
+        OrbitController: null,
+        gouraudLighting: null,
+        picking: null,
+        project32: null
     };
     let layers = {
         IconLayer: null,
         LineLayer: null,
+        PathLayer: null,
         PolygonLayer: null,
         TextLayer: null
     };
     let luma = {
         CubeGeometry: null,
-        fp64: null,
         Model: null,
         Texture2D: null
     };
@@ -6442,224 +6420,6 @@
         base.vega = vega;
     }
 
-    var tinySdf = TinySDF;
-    var default_1 = TinySDF;
-
-    var INF = 1e20;
-
-    function TinySDF(fontSize, buffer, radius, cutoff, fontFamily, fontWeight) {
-        this.fontSize = fontSize || 24;
-        this.buffer = buffer === undefined ? 3 : buffer;
-        this.cutoff = cutoff || 0.25;
-        this.fontFamily = fontFamily || 'sans-serif';
-        this.fontWeight = fontWeight || 'normal';
-        this.radius = radius || 8;
-        var size = this.size = this.fontSize + this.buffer * 2;
-
-        this.canvas = document.createElement('canvas');
-        this.canvas.width = this.canvas.height = size;
-
-        this.ctx = this.canvas.getContext('2d');
-        this.ctx.font = this.fontWeight + ' ' + this.fontSize + 'px ' + this.fontFamily;
-        this.ctx.textBaseline = 'middle';
-        this.ctx.fillStyle = 'black';
-
-        // temporary arrays for the distance transform
-        this.gridOuter = new Float64Array(size * size);
-        this.gridInner = new Float64Array(size * size);
-        this.f = new Float64Array(size);
-        this.d = new Float64Array(size);
-        this.z = new Float64Array(size + 1);
-        this.v = new Int16Array(size);
-
-        // hack around https://bugzilla.mozilla.org/show_bug.cgi?id=737852
-        this.middle = Math.round((size / 2) * (navigator.userAgent.indexOf('Gecko/') >= 0 ? 1.2 : 1));
-    }
-
-    TinySDF.prototype.draw = function (char) {
-        this.ctx.clearRect(0, 0, this.size, this.size);
-        this.ctx.fillText(char, this.buffer, this.middle);
-
-        var imgData = this.ctx.getImageData(0, 0, this.size, this.size);
-        var alphaChannel = new Uint8ClampedArray(this.size * this.size);
-
-        for (var i = 0; i < this.size * this.size; i++) {
-            var a = imgData.data[i * 4 + 3] / 255; // alpha value
-            this.gridOuter[i] = a === 1 ? 0 : a === 0 ? INF : Math.pow(Math.max(0, 0.5 - a), 2);
-            this.gridInner[i] = a === 1 ? INF : a === 0 ? 0 : Math.pow(Math.max(0, a - 0.5), 2);
-        }
-
-        edt(this.gridOuter, this.size, this.size, this.f, this.d, this.v, this.z);
-        edt(this.gridInner, this.size, this.size, this.f, this.d, this.v, this.z);
-
-        for (i = 0; i < this.size * this.size; i++) {
-            var d = this.gridOuter[i] - this.gridInner[i];
-            alphaChannel[i] = Math.max(0, Math.min(255, Math.round(255 - 255 * (d / this.radius + this.cutoff))));
-        }
-
-        return alphaChannel;
-    };
-
-    // 2D Euclidean distance transform by Felzenszwalb & Huttenlocher https://cs.brown.edu/~pff/papers/dt-final.pdf
-    function edt(data, width, height, f, d, v, z) {
-        for (var x = 0; x < width; x++) {
-            for (var y = 0; y < height; y++) {
-                f[y] = data[y * width + x];
-            }
-            edt1d(f, d, v, z, height);
-            for (y = 0; y < height; y++) {
-                data[y * width + x] = d[y];
-            }
-        }
-        for (y = 0; y < height; y++) {
-            for (x = 0; x < width; x++) {
-                f[x] = data[y * width + x];
-            }
-            edt1d(f, d, v, z, width);
-            for (x = 0; x < width; x++) {
-                data[y * width + x] = Math.sqrt(d[x]);
-            }
-        }
-    }
-
-    // 1D squared distance transform
-    function edt1d(f, d, v, z, n) {
-        v[0] = 0;
-        z[0] = -INF;
-        z[1] = +INF;
-
-        for (var q = 1, k = 0; q < n; q++) {
-            var s = ((f[q] + q * q) - (f[v[k]] + v[k] * v[k])) / (2 * q - 2 * v[k]);
-            while (s <= z[k]) {
-                k--;
-                s = ((f[q] + q * q) - (f[v[k]] + v[k] * v[k])) / (2 * q - 2 * v[k]);
-            }
-            k++;
-            v[k] = q;
-            z[k] = s;
-            z[k + 1] = +INF;
-        }
-
-        for (q = 0, k = 0; q < n; q++) {
-            while (z[k + 1] < q) k++;
-            d[q] = (q - v[k]) * (q - v[k]) + f[v[k]];
-        }
-    }
-    tinySdf.default = default_1;
-
-    //from https://github.com/uber/deck.gl/blob/6.4-release/modules/layers/src/text-layer/font-atlas.js
-    const GL_TEXTURE_WRAP_S = 0x2802;
-    const GL_TEXTURE_WRAP_T = 0x2803;
-    const GL_CLAMP_TO_EDGE = 0x812f;
-    const MAX_CANVAS_WIDTH = 1024;
-    const BASELINE_SCALE = 0.9;
-    const HEIGHT_SCALE = 1.2;
-    function getDefaultCharacterSet() {
-        const charSet = [];
-        for (let i = 32; i < 128; i++) {
-            charSet.push(String.fromCharCode(i));
-        }
-        return charSet;
-    }
-    const DEFAULT_CHAR_SET = getDefaultCharacterSet();
-    const DEFAULT_FONT_FAMILY = 'Monaco, monospace';
-    const DEFAULT_FONT_WEIGHT = 'normal';
-    const DEFAULT_FONT_SETTINGS = {
-        fontSize: 64,
-        buffer: 2,
-        sdf: false,
-        cutoff: 0.25,
-        radius: 3
-    };
-    function populateAlphaChannel(alphaChannel, imageData) {
-        // populate distance value from tinySDF to image alpha channel	
-        for (let i = 0; i < alphaChannel.length; i++) {
-            imageData.data[4 * i + 3] = alphaChannel[i];
-        }
-    }
-    function setTextStyle(ctx, fontFamily, fontSize, fontWeight) {
-        ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
-        ctx.fillStyle = '#000';
-        ctx.textBaseline = 'alphabetic';
-        ctx.textAlign = 'left';
-    }
-    function buildMapping({ ctx, fontHeight, buffer, characterSet, maxCanvasWidth }) {
-        const mapping = {};
-        let row = 0;
-        let x = 0;
-        Array.from(characterSet).forEach(char => {
-            // measure texts
-            // TODO - use Advanced text metrics when they are adopted:
-            // https://developer.mozilla.org/en-US/docs/Web/API/TextMetrics
-            const { width } = ctx.measureText(char);
-            if (x + width + buffer * 2 > maxCanvasWidth) {
-                x = 0;
-                row++;
-            }
-            mapping[char] = {
-                x: x + buffer,
-                y: row * (fontHeight + buffer * 2) + buffer,
-                width,
-                height: fontHeight,
-                mask: true
-            };
-            x += width + buffer * 2;
-        });
-        const canvasHeight = (row + 1) * (fontHeight + buffer * 2);
-        return { mapping, canvasHeight };
-    }
-    function makeFontAtlas(gl, fontSettings) {
-        const mergedFontSettings = Object.assign({
-            fontFamily: DEFAULT_FONT_FAMILY,
-            fontWeight: DEFAULT_FONT_WEIGHT,
-            characterSet: DEFAULT_CHAR_SET
-        }, DEFAULT_FONT_SETTINGS, fontSettings);
-        const { fontFamily, fontWeight, characterSet, fontSize, buffer, sdf, radius, cutoff } = mergedFontSettings;
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        // build mapping
-        setTextStyle(ctx, fontFamily, fontSize, fontWeight);
-        const fontHeight = fontSize * HEIGHT_SCALE;
-        const { canvasHeight, mapping } = buildMapping({
-            ctx,
-            fontHeight,
-            buffer,
-            characterSet,
-            maxCanvasWidth: MAX_CANVAS_WIDTH
-        });
-        canvas.width = MAX_CANVAS_WIDTH;
-        canvas.height = canvasHeight;
-        setTextStyle(ctx, fontFamily, fontSize, fontWeight);
-        // layout characters
-        if (sdf) {
-            const tinySDF = new tinySdf(fontSize, buffer, radius, cutoff, fontFamily, fontWeight);
-            // used to store distance values from tinySDF	
-            const imageData = ctx.createImageData(tinySDF.size, tinySDF.size);
-            for (const char of characterSet) {
-                populateAlphaChannel(tinySDF.draw(char), imageData);
-                ctx.putImageData(imageData, mapping[char].x - buffer, mapping[char].y - buffer);
-            }
-        }
-        else {
-            for (const char of characterSet) {
-                ctx.fillText(char, mapping[char].x, mapping[char].y + fontSize * BASELINE_SCALE);
-            }
-        }
-        return {
-            scale: HEIGHT_SCALE,
-            mapping,
-            texture: new base.luma.Texture2D(gl, {
-                pixels: canvas,
-                // padding is added only between the characters but not for borders
-                // enforce CLAMP_TO_EDGE to avoid any artifacts.
-                parameters: {
-                    [GL_TEXTURE_WRAP_S]: GL_CLAMP_TO_EDGE,
-                    [GL_TEXTURE_WRAP_T]: GL_CLAMP_TO_EDGE
-                }
-            })
-        };
-    }
-
     // Copyright (c) 2015 - 2017 Uber Technologies, Inc.
     //
     // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -6679,487 +6439,7 @@
     // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     // THE SOFTWARE.
-    //adapted from https://github.com/uber/deck.gl/blob/6.4-release/modules/layers/src/text-layer/multi-icon-layer/multi-icon-layer-fragment.glsl.js
     var fs = `\
-#define SHADER_NAME multi-icon-layer-fragment-shader
-
-precision highp float;
-
-uniform sampler2D iconsTexture;
-uniform float buffer;
-uniform bool sdf;
-
-varying vec4 vColor;
-varying vec2 vTextureCoords;
-varying float vGamma;
-varying vec4 vHighlightColor;
-
-const float MIN_ALPHA = 0.05;
-
-void main(void) {
-  vec4 texColor = texture2D(iconsTexture, vTextureCoords);
-  
-  float alpha = texColor.a;
-
-  // if enable sdf (signed distance fields)	
-  if (sdf) {	
-    float distance = texture2D(iconsTexture, vTextureCoords).a;	
-    alpha = smoothstep(buffer - vGamma, buffer + vGamma, distance);	
-  }
-
-  // Take the global opacity and the alpha from vColor into account for the alpha component
-  float a = alpha * vColor.a;
-
-  if (picking_uActive) {
-
-    // use picking color for entire rectangle
-    gl_FragColor = vec4(picking_vRGBcolor_Aselected.rgb, 1.0);
-  
-  } else {
-
-    if (a < MIN_ALPHA) {
-      discard;
-    } else {
-
-      gl_FragColor = vec4(vColor.rgb, a);
-
-      // use highlight color if this fragment belongs to the selected object.
-      bool selected = bool(picking_vRGBcolor_Aselected.a);
-      if (selected) {
-        gl_FragColor = vec4(vHighlightColor.rgb, a);
-      }
-    }
-  }
-}
-`;
-
-    // Copyright (c) 2015 - 2017 Uber Technologies, Inc.
-    //
-    // Permission is hereby granted, free of charge, to any person obtaining a copy
-    // of this software and associated documentation files (the "Software"), to deal
-    // in the Software without restriction, including without limitation the rights
-    // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    // copies of the Software, and to permit persons to whom the Software is
-    // furnished to do so, subject to the following conditions:
-    //
-    // The above copyright notice and this permission notice shall be included in
-    // all copies or substantial portions of the Software.
-    //
-    // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    // THE SOFTWARE.
-    //adapted from https://github.com/uber/deck.gl/blob/6.4-release/modules/layers/src/text-layer/multi-icon-layer/multi-icon-layer-vertex.glsl.js
-    var vs = `\
-#define SHADER_NAME multi-icon-layer-vertex-shader
-
-attribute vec2 positions;
-
-attribute vec3 instancePositions;
-attribute vec2 instancePositions64xyLow;
-attribute float instanceSizes;
-attribute float instanceAngles;
-attribute vec4 instanceColors;
-attribute vec3 instancePickingColors;
-attribute vec4 instanceIconFrames;
-attribute float instanceColorModes;
-attribute vec2 instanceOffsets;
-
-// the following three attributes are for the multi-icon layer
-attribute vec2 instancePixelOffset;
-attribute vec4 instanceHighlightColors;
-
-uniform float sizeScale;
-uniform vec2 iconsTextureDim;
-uniform float gamma;
-uniform float opacity;
-
-varying float vColorMode;
-varying vec4 vColor;
-varying vec2 vTextureCoords;
-varying float vGamma;
-varying vec4 vHighlightColor;
-
-vec2 rotate_by_angle(vec2 vertex, float angle) {
-  float angle_radian = angle * PI / 180.0;
-  float cos_angle = cos(angle_radian);
-  float sin_angle = sin(angle_radian);
-  mat2 rotationMatrix = mat2(cos_angle, -sin_angle, sin_angle, cos_angle);
-  return rotationMatrix * vertex;
-}
-
-void main(void) {
-  vec2 iconSize = instanceIconFrames.zw;
-  // scale icon height to match instanceSize
-  float instanceScale = iconSize.y == 0.0 ? 0.0 : instanceSizes / iconSize.y;
-
-  // scale and rotate vertex in "pixel" value and convert back to fraction in clipspace
-  vec2 pixelOffset = positions / 2.0 * iconSize + instanceOffsets;
-
-  pixelOffset = rotate_by_angle(pixelOffset, instanceAngles) * sizeScale * instanceScale;
-  pixelOffset += instancePixelOffset;
-  pixelOffset.y *= -1.0;
-
-  gl_Position = project_position_to_clipspace(instancePositions, instancePositions64xyLow, vec3(0.0));
-  gl_Position += project_pixel_to_clipspace(pixelOffset);
-
-  vTextureCoords = mix(
-    instanceIconFrames.xy,
-    instanceIconFrames.xy + iconSize,
-    (positions.xy + 1.0) / 2.0
-  ) / iconsTextureDim;
-
-  vTextureCoords.y = 1.0 - vTextureCoords.y;
-
-  vColor = vec4(instanceColors.rgb, instanceColors.a * opacity) / 255.;
-  vHighlightColor = vec4(instanceHighlightColors.rgb, instanceHighlightColors.a * opacity) / 255.;
-
-  picking_setPickingColor(instancePickingColors);
-
-  vGamma = gamma / (sizeScale * iconSize.y);
-}
-`;
-
-    // Copyright (c) 2015 - 2017 Uber Technologies, Inc.
-    // TODO expose as layer properties
-    const DEFAULT_GAMMA = 0.2;
-    const DEFAULT_BUFFER = 192.0 / 256;
-    const defaultProps = {
-        getShiftInQueue: { type: 'accessor', value: x => x.shift || 0 },
-        getLengthOfQueue: { type: 'accessor', value: x => x.len || 1 },
-        // 1: left, 0: middle, -1: right
-        getAnchorX: { type: 'accessor', value: x => x.anchorX || 0 },
-        // 1: top, 0: center, -1: bottom
-        getAnchorY: { type: 'accessor', value: x => x.anchorY || 0 },
-        getPixelOffset: { type: 'accessor', value: [0, 0] },
-        // object with the same pickingIndex will be picked when any one of them is being picked
-        getPickingIndex: { type: 'accessor', value: x => x.objectIndex }
-    };
-    //https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants
-    const UNSIGNED_BYTE = 0x1401;
-    function _MultiIconLayer(...props) {
-        class __MultiIconLayer extends base.layers.IconLayer {
-            constructor(...props) {
-                super(...arguments);
-            }
-            getShaders() {
-                return Object.assign({}, super.getShaders(), {
-                    vs,
-                    fs
-                });
-            }
-            initializeState() {
-                super.initializeState();
-                const attributeManager = this.getAttributeManager();
-                attributeManager.addInstanced({
-                    instancePixelOffset: {
-                        size: 2,
-                        transition: true,
-                        accessor: 'getPixelOffset'
-                    },
-                    instanceHighlightColors: {
-                        size: 4,
-                        type: UNSIGNED_BYTE,
-                        transition: true,
-                        accessor: 'getHighlightColor',
-                        defaultValue: [0, 255, 0, 255]
-                    }
-                });
-            }
-            updateState(updateParams) {
-                super.updateState(updateParams);
-                const { changeFlags } = updateParams;
-                if (changeFlags.updateTriggersChanged &&
-                    (changeFlags.updateTriggersChanged.getAnchorX || changeFlags.updateTriggersChanged.getAnchorY)) {
-                    this.getAttributeManager().invalidate('instanceOffsets');
-                }
-            }
-            draw({ uniforms }) {
-                const { sdf } = this.props;
-                super.draw({
-                    uniforms: Object.assign({}, uniforms, {
-                        // Refer the following doc about gamma and buffer
-                        // https://blog.mapbox.com/drawing-text-with-signed-distance-fields-in-mapbox-gl-b0933af6f817
-                        buffer: DEFAULT_BUFFER,
-                        gamma: DEFAULT_GAMMA,
-                        sdf: Boolean(sdf)
-                    })
-                });
-            }
-            calculateInstanceOffsets(attribute) {
-                const { data, iconMapping, getIcon, getAnchorX, getAnchorY, getLengthOfQueue, getShiftInQueue } = this.props;
-                const { value } = attribute;
-                let i = 0;
-                for (const object of data) {
-                    const icon = getIcon(object);
-                    const rect = iconMapping[icon] || {};
-                    const len = getLengthOfQueue(object);
-                    const shiftX = getShiftInQueue(object);
-                    value[i++] = ((getAnchorX(object) - 1) * len) / 2 + rect.width / 2 + shiftX || 0;
-                    value[i++] = (rect.height / 2) * getAnchorY(object) || 0;
-                }
-            }
-            calculateInstancePickingColors(attribute) {
-                const { data, getPickingIndex } = this.props;
-                const { value } = attribute;
-                let i = 0;
-                const pickingColor = [];
-                for (const point of data) {
-                    const index = getPickingIndex(point);
-                    this.encodePickingColor(index, pickingColor);
-                    value[i++] = pickingColor[0];
-                    value[i++] = pickingColor[1];
-                    value[i++] = pickingColor[2];
-                }
-            }
-        }
-        __MultiIconLayer.layerName = 'MultiIconLayer';
-        __MultiIconLayer.defaultProps = defaultProps;
-        const instance = new __MultiIconLayer(...arguments);
-        return instance;
-    }
-    //signature to allow this function to be used with the 'new' keyword.
-    //need to trick the compiler by casting to 'any'.
-    /**
-     * CubeLayer - a Deck.gl layer to render cuboids.
-     * This is instantiatable by calling `new MultiIconLayer()`.
-     */
-    const MultiIconLayer = _MultiIconLayer;
-
-    // Copyright (c) 2015 - 2017 Uber Technologies, Inc.
-    const TEXT_ANCHOR = {
-        start: 1,
-        middle: 0,
-        end: -1
-    };
-    const ALIGNMENT_BASELINE = {
-        top: 1,
-        center: 0,
-        bottom: -1
-    };
-    const DEFAULT_COLOR = [0, 0, 0, 255];
-    const MISSING_CHAR_WIDTH = 32;
-    const FONT_SETTINGS_PROPS = ['fontSize', 'buffer', 'sdf', 'radius', 'cutoff'];
-    const defaultProps$1 = {
-        fp64: false,
-        sizeScale: 1,
-        characterSet: DEFAULT_CHAR_SET,
-        fontFamily: DEFAULT_FONT_FAMILY,
-        fontWeight: DEFAULT_FONT_WEIGHT,
-        fontSettings: {},
-        getText: { type: 'accessor', value: x => x.text },
-        getPosition: { type: 'accessor', value: x => x.position },
-        getColor: { type: 'accessor', value: DEFAULT_COLOR },
-        getSize: { type: 'accessor', value: 32 },
-        getAngle: { type: 'accessor', value: 0 },
-        getHighlightColor: { type: 'accessor', value: DEFAULT_COLOR },
-        getTextAnchor: { type: 'accessor', value: 'middle' },
-        getAlignmentBaseline: { type: 'accessor', value: 'center' },
-        getPixelOffset: { type: 'accessor', value: [0, 0] }
-    };
-    function _ChromaticTextLayer(props) {
-        class __ChromaticTextLayer extends base.deck.CompositeLayer {
-            updateState({ props, oldProps, changeFlags }) {
-                const fontChanged = this.fontChanged(oldProps, props);
-                if (fontChanged) {
-                    this.updateFontAtlas();
-                }
-                if (changeFlags.dataChanged ||
-                    fontChanged ||
-                    (changeFlags.updateTriggersChanged &&
-                        (changeFlags.updateTriggersChanged.all || changeFlags.updateTriggersChanged.getText))) {
-                    this.transformStringToLetters();
-                }
-            }
-            updateFontAtlas() {
-                const { gl } = this.context;
-                const { fontSettings, fontFamily, fontWeight, characterSet } = this.props;
-                const mergedFontSettings = Object.assign({}, DEFAULT_FONT_SETTINGS, fontSettings, {
-                    fontFamily,
-                    fontWeight,
-                    characterSet
-                });
-                const { scale, mapping, texture } = makeFontAtlas(gl, mergedFontSettings);
-                this.setState({
-                    scale,
-                    iconAtlas: texture,
-                    iconMapping: mapping
-                });
-            }
-            fontChanged(oldProps, props) {
-                if (oldProps.fontFamily !== props.fontFamily ||
-                    oldProps.characterSet !== props.characterSet ||
-                    oldProps.fontWeight !== props.fontWeight) {
-                    return true;
-                }
-                if (oldProps.fontSettings === props.fontSettings) {
-                    return false;
-                }
-                const oldFontSettings = oldProps.fontSettings || {};
-                const fontSettings = props.fontSettings || {};
-                return FONT_SETTINGS_PROPS.some(prop => oldFontSettings[prop] !== fontSettings[prop]);
-            }
-            getPickingInfo({ info }) {
-                // because `TextLayer` assign the same pickingInfoIndex for one text label,
-                // here info.index refers the index of text label in props.data
-                return Object.assign(info, {
-                    // override object with original data
-                    object: info.index >= 0 ? this.props.data[info.index] : null
-                });
-            }
-            /* eslint-disable no-loop-func */
-            transformStringToLetters() {
-                const { data, getText } = this.props;
-                const { iconMapping } = this.state;
-                const transformedData = [];
-                let objectIndex = 0;
-                for (const val of data) {
-                    const text = getText(val);
-                    if (text) {
-                        const letters = Array.from(text);
-                        const offsets = [0];
-                        let offsetLeft = 0;
-                        letters.forEach((letter, i) => {
-                            const datum = {
-                                text: letter,
-                                index: i,
-                                offsets,
-                                len: text.length,
-                                // reference of original object and object index
-                                object: val,
-                                objectIndex
-                            };
-                            const frame = iconMapping[letter];
-                            if (frame) {
-                                offsetLeft += frame.width;
-                            }
-                            else {
-                                //log.warn(`Missing character: ${letter}`)();
-                                offsetLeft += MISSING_CHAR_WIDTH;
-                            }
-                            offsets.push(offsetLeft);
-                            transformedData.push(datum);
-                        });
-                    }
-                    objectIndex++;
-                }
-                this.setState({ data: transformedData });
-            }
-            /* eslint-enable no-loop-func */
-            getLetterOffset(datum) {
-                return datum.offsets[datum.index];
-            }
-            getTextLength(datum) {
-                return datum.offsets[datum.offsets.length - 1];
-            }
-            _getAccessor(accessor) {
-                if (typeof accessor === 'function') {
-                    return x => accessor(x.object);
-                }
-                return accessor;
-            }
-            getAnchorXFromTextAnchor(getTextAnchor) {
-                return x => {
-                    const textAnchor = typeof getTextAnchor === 'function' ? getTextAnchor(x.object) : getTextAnchor;
-                    if (!TEXT_ANCHOR.hasOwnProperty(textAnchor)) {
-                        throw new Error(`Invalid text anchor parameter: ${textAnchor}`);
-                    }
-                    return TEXT_ANCHOR[textAnchor];
-                };
-            }
-            getAnchorYFromAlignmentBaseline(getAlignmentBaseline) {
-                return x => {
-                    const alignmentBaseline = typeof getAlignmentBaseline === 'function'
-                        ? getAlignmentBaseline(x.object)
-                        : getAlignmentBaseline;
-                    if (!ALIGNMENT_BASELINE.hasOwnProperty(alignmentBaseline)) {
-                        throw new Error(`Invalid alignment baseline parameter: ${alignmentBaseline}`);
-                    }
-                    return ALIGNMENT_BASELINE[alignmentBaseline];
-                };
-            }
-            renderLayers() {
-                const { data, scale, iconAtlas, iconMapping } = this.state;
-                const { getPosition, getColor, getSize, getAngle, getHighlightColor, getTextAnchor, getAlignmentBaseline, getPixelOffset, fp64, sdf, sizeScale, transitions, updateTriggers } = this.props;
-                const SubLayerClass = this.getSubLayerClass('characters', MultiIconLayer);
-                return new SubLayerClass({
-                    sdf,
-                    iconAtlas,
-                    iconMapping,
-                    getPosition: d => getPosition(d.object),
-                    getColor: this._getAccessor(getColor),
-                    getSize: this._getAccessor(getSize),
-                    getAngle: this._getAccessor(getAngle),
-                    getHighlightColor: this._getAccessor(getHighlightColor),
-                    getAnchorX: this.getAnchorXFromTextAnchor(getTextAnchor),
-                    getAnchorY: this.getAnchorYFromAlignmentBaseline(getAlignmentBaseline),
-                    getPixelOffset: this._getAccessor(getPixelOffset),
-                    fp64,
-                    sizeScale: sizeScale * scale,
-                    transitions: transitions && {
-                        getPosition: transitions.getPosition,
-                        getAngle: transitions.getAngle,
-                        getHighlightColor: transitions.getHighlightColor,
-                        getColor: transitions.getColor,
-                        getSize: transitions.getSize,
-                        getPixelOffset: updateTriggers.getPixelOffset
-                    }
-                }, this.getSubLayerProps({
-                    id: 'characters',
-                    updateTriggers: {
-                        getPosition: updateTriggers.getPosition,
-                        getAngle: updateTriggers.getAngle,
-                        getHighlightColor: updateTriggers.getHighlightColor,
-                        getColor: updateTriggers.getColor,
-                        getSize: updateTriggers.getSize,
-                        getPixelOffset: updateTriggers.getPixelOffset,
-                        getAnchorX: updateTriggers.getTextAnchor,
-                        getAnchorY: updateTriggers.getAlignmentBaseline
-                    }
-                }), {
-                    data,
-                    getIcon: d => d.text,
-                    getShiftInQueue: d => this.getLetterOffset(d),
-                    getLengthOfQueue: d => this.getTextLength(d)
-                });
-            }
-        }
-        __ChromaticTextLayer.layerName = 'TextLayer';
-        __ChromaticTextLayer.defaultProps = defaultProps$1;
-        const instance = new __ChromaticTextLayer(props);
-        return instance;
-    }
-    //signature to allow this function to be used with the 'new' keyword.
-    //need to trick the compiler by casting to 'any'.
-    /**
-     * TextLayer - a modification of deck.gl's TextLayer.
-     * This is instantiatable by calling `new TextLayer()`.
-     */
-    const ChromaticTextLayer = _ChromaticTextLayer;
-
-    // Copyright (c) 2015 - 2017 Uber Technologies, Inc.
-    //
-    // Permission is hereby granted, free of charge, to any person obtaining a copy
-    // of this software and associated documentation files (the "Software"), to deal
-    // in the Software without restriction, including without limitation the rights
-    // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    // copies of the Software, and to permit persons to whom the Software is
-    // furnished to do so, subject to the following conditions:
-    //
-    // The above copyright notice and this permission notice shall be included in
-    // all copies or substantial portions of the Software.
-    //
-    // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    // THE SOFTWARE.
-    var fs$1 = `\
 #define SHADER_NAME cube-layer-fragment-shader
 
 precision highp float;
@@ -7179,22 +6459,21 @@ void main(void) {
 
     const minHeight = '100px';
     const minWidth = '100px';
-    const lightSettings = {
-        '2d': {},
-        '3d': {
-            lightsPosition: [-122.45, 37.66, 8000, -122.0, 38.0, 8000],
-            ambientRatio: 0.3,
-            diffuseRatio: 0.6,
-            specularRatio: 0.4,
-            lightsStrength: [0.3, 0.0, 0.8, 0.0],
-            numberOfLights: 2
-        }
-    };
+    // const lightSettings: { [view in View]: LightSettings } = {
+    //     '2d': {},
+    //     '3d': {
+    //         lightsPosition: [-122.45, 37.66, 8000, -122.0, 38.0, 8000],
+    //         ambientRatio: 0.3,
+    //         diffuseRatio: 0.6,
+    //         specularRatio: 0.4,
+    //         lightsStrength: [0.3, 0.0, 0.8, 0.0],
+    //         numberOfLights: 2
+    //     }
+    // };
     const defaultPresenterStyle = {
         cssPrefix: 'vega-deckgl-',
         defaultCubeColor: [128, 128, 128, 255],
         highlightColor: [0, 0, 0, 255],
-        lightSettings
     };
     const defaultPresenterConfig = {
         onCubeClick: (e, cube) => { },
@@ -7243,14 +6522,14 @@ void main(void) {
     });
 
     // Copyright (c) 2015 - 2017 Uber Technologies, Inc.
-    var vs$1 = `\
+    var vs = `\
 #define SHADER_NAME cube-layer-vertex-shader
 
 attribute vec3 positions;
 attribute vec3 normals;
 
 attribute vec3 instancePositions;
-attribute vec2 instancePositions64xyLow;
+attribute vec3 instancePositions64Low;
 attribute vec3 instanceSizes;
 attribute vec4 instanceColors;
 attribute vec3 instancePickingColors;
@@ -7268,9 +6547,9 @@ void main(void) {
 
   // if alpha == 0.0, do not render element
   float noRender = float(instanceColors.a == 0.0);
-  float finalXScale = project_scale(x) * mix(1.0, 0.0, noRender);
-  float finalYScale = project_scale(y) * mix(1.0, 0.0, noRender);
-  float finalZScale = project_scale(instanceSizes.z) * mix(1.0, 0.0, noRender);
+  float finalXScale = project_size(x) * mix(1.0, 0.0, noRender);
+  float finalYScale = project_size(y) * mix(1.0, 0.0, noRender);
+  float finalZScale = project_size(instanceSizes.z) * mix(1.0, 0.0, noRender);
 
   // cube geometry vertics are between -1 to 1, scale and transform it to between 0, 1
   vec3 offset = vec3(
@@ -7280,20 +6559,10 @@ void main(void) {
 
   // extrude positions
   vec4 position_worldspace;
-  gl_Position = project_position_to_clipspace(instancePositions, instancePositions64xyLow, offset, position_worldspace);
-
-  float lightWeight = 1.0;
+  gl_Position = project_position_to_clipspace(instancePositions, instancePositions64Low, offset, position_worldspace);
   
-  //allow for a small amount of error around the min3dDepth 
-  if (instanceSizes.z >= ${min3dDepth.toFixed(4)} - 0.0001) {
-    lightWeight = lighting_getLightWeight(
-      position_worldspace.xyz, // the w component is always 1.0
-      normals
-    );
-  }
-
-  vec3 lightWeightedColor = lightWeight * instanceColors.rgb;
-  vec3 mixedLight = mix(instanceColors.rgb, lightWeightedColor, lightingMix);
+  vec3 lightColor = lighting_getLightColor(instanceColors.rgb, project_uCameraPosition, position_worldspace.xyz, project_normal(normals));
+  vec3 mixedLight = mix(instanceColors.rgb, lightColor, lightingMix);
   vec4 color = vec4(mixedLight, instanceColors.a) / 255.0;
   vColor = color;
 
@@ -7304,34 +6573,30 @@ void main(void) {
 
     // Copyright (c) 2015 - 2017 Uber Technologies, Inc.
     //https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants
-    const UNSIGNED_BYTE$1 = 0x1401;
-    const DEFAULT_COLOR$1 = [255, 0, 255, 255];
-    const defaultProps$2 = {
+    const UNSIGNED_BYTE = 0x1401;
+    const DOUBLE = 0x140a;
+    const DEFAULT_COLOR = [255, 0, 255, 255];
+    const defaultProps = {
         lightingMix: 0.5,
-        fp64: false,
         getSize: x => x.size,
         getPosition: x => x.position,
-        getColor: x => x.color
+        getColor: x => x.color,
+        material: { ambient: 0.5, diffuse: 1 }
     };
     function _CubeLayer(props) {
         //dynamic superclass, since we don't know have deck.Layer in the declaration phase
         class __CubeLayer extends base.deck.Layer {
             getShaders() {
-                const projectModule = this.use64bitProjection() ? 'project64' : 'project32';
-                return { vs: vs$1, fs: fs$1, modules: [projectModule, 'lighting', 'picking'] };
+                return { vs, fs, modules: [base.deck.project32, base.deck.gouraudLighting, base.deck.picking] };
             }
             initializeState() {
                 const attributeManager = this.getAttributeManager();
                 attributeManager.addInstanced({
                     instancePositions: {
                         size: 3,
+                        type: DOUBLE,
                         transition: true,
                         accessor: 'getPosition'
-                    },
-                    instancePositions64xyLow: {
-                        size: 3,
-                        accessor: 'getPosition',
-                        update: this.calculateInstancePositions64xyLow
                     },
                     instanceSizes: {
                         size: 3,
@@ -7340,31 +6605,30 @@ void main(void) {
                     },
                     instanceColors: {
                         size: 4,
-                        type: UNSIGNED_BYTE$1,
+                        type: UNSIGNED_BYTE,
                         transition: true,
                         accessor: 'getColor',
-                        defaultValue: DEFAULT_COLOR$1
+                        defaultValue: DEFAULT_COLOR
                     }
                 });
             }
             updateState({ props, oldProps, changeFlags }) {
                 super.updateState({ props, oldProps, changeFlags }); //TODO add parameter type to deck.gl-typings
                 // Re-generate model if geometry changed
-                if (props.fp64 !== oldProps.fp64) {
-                    const { gl } = this.context;
-                    if (this.state.model) {
-                        this.state.model.delete();
-                    }
-                    this.setState({ model: this._getModel(gl) });
-                    this.getAttributeManager().invalidateAll();
+                //if (props.fp64 !== oldProps.fp64) {
+                const { gl } = this.context;
+                if (this.state.model) {
+                    this.state.model.delete();
                 }
+                this.setState({ model: this._getModel(gl) });
+                this.getAttributeManager().invalidateAll();
+                //}
             }
             _getModel(gl) {
                 return new base.luma.Model(gl, Object.assign({}, this.getShaders(), {
                     id: this.props.id,
                     geometry: new base.luma.CubeGeometry(),
                     isInstanced: true,
-                    shaderCache: this.context.shaderCache
                 }));
             }
             draw({ uniforms }) {
@@ -7372,29 +6636,13 @@ void main(void) {
                 if (this.props.interpolator && this.props.interpolator.layerInterpolatedProps) {
                     lightingMix = this.props.interpolator.layerInterpolatedProps.lightingMix;
                 }
-                this.state.model.render(Object.assign({}, uniforms, {
+                this.state.model.setUniforms(Object.assign({}, uniforms, {
                     lightingMix
-                }));
-            }
-            calculateInstancePositions64xyLow(attribute) {
-                const isFP64 = this.use64bitPositions();
-                attribute.constant = !isFP64;
-                if (!isFP64) {
-                    attribute.value = new Float32Array(2);
-                    return;
-                }
-                const { data, getPosition } = this.props;
-                const { value } = attribute;
-                let i = 0;
-                for (const point of data) {
-                    const position = getPosition(point);
-                    value[i++] = base.luma.fp64.fp64LowPart(position[0]);
-                    value[i++] = base.luma.fp64.fp64LowPart(position[1]);
-                }
+                })).draw();
             }
         }
         __CubeLayer.layerName = 'CubeLayer';
-        __CubeLayer.defaultProps = defaultProps$2;
+        __CubeLayer.defaultProps = defaultProps;
         const instance = new __CubeLayer(props);
         return instance;
     }
@@ -7415,7 +6663,7 @@ void main(void) {
     var tau = 2 * Math.PI;
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getLayers(presenter, config, stage, lightSettings, lightingMix, interpolator, guideLines) {
+    function getLayers(presenter, config, stage, lightSettings /*LightSettings*/, lightingMix, interpolator, guideLines) {
         const cubeLayer = newCubeLayer(presenter, config, stage.cubeData, presenter.style.highlightColor, lightSettings, lightingMix, interpolator);
         const { x, y } = stage.axes;
         const lines = concat(stage.gridLines, guideLines);
@@ -7442,7 +6690,7 @@ void main(void) {
         const textLayer = newTextLayer(presenter, layerNames.text, texts, config, presenter.style.fontFamily);
         return [textLayer, cubeLayer, lineLayer];
     }
-    function newCubeLayer(presenter, config, cubeData, highlightColor, lightSettings, lightingMix, interpolator) {
+    function newCubeLayer(presenter, config, cubeData, highlightColor, lightSettings /*LightSettings*/, lightingMix, interpolator) {
         const getPosition = getTiming(config.transitionDurations.position, expInOut);
         const getSize = getTiming(config.transitionDurations.size, expInOut);
         const getColor = getTiming(config.transitionDurations.color);
@@ -7451,7 +6699,7 @@ void main(void) {
             lightingMix,
             id: layerNames.cubes,
             data: cubeData,
-            coordinateSystem: base.deck.COORDINATE_SYSTEM.IDENTITY,
+            coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
             pickable: true,
             autoHighlight: true,
             highlightColor,
@@ -7468,7 +6716,7 @@ void main(void) {
                     config.onCubeHover(e && e.srcEvent, o.object);
                 }
             },
-            lightSettings,
+            //lightSettings,
             transitions: {
                 getPosition,
                 getColor,
@@ -7481,19 +6729,28 @@ void main(void) {
         return new base.layers.LineLayer({
             id,
             data,
-            coordinateSystem: base.deck.COORDINATE_SYSTEM.IDENTITY,
+            widthUnits: 'pixels',
+            coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
             getColor: (o) => o.color,
-            getStrokeWidth: (o) => o.strokeWidth
+            getWidth: (o) => o.strokeWidth
         });
     }
     function newTextLayer(presenter, id, data, config, fontFamily) {
         const props = {
             id,
             data,
-            coordinateSystem: base.deck.COORDINATE_SYSTEM.IDENTITY,
+            coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
+            sizeUnits: 'pixels',
             autoHighlight: true,
             pickable: true,
-            getHighlightColor: config.getTextHighlightColor || (o => o.color),
+            highlightColor: p => {
+                if (config.getTextHighlightColor) {
+                    return config.getTextHighlightColor(p.object);
+                }
+                else {
+                    return [0, 0, 0, 0];
+                }
+            },
             onClick: (o, e) => {
                 let pe = e && e.srcEvent;
                 config.onTextClick && config.onTextClick(pe, o.object);
@@ -7519,13 +6776,14 @@ void main(void) {
         if (fontFamily) {
             props.fontFamily = fontFamily;
         }
-        return new ChromaticTextLayer(props);
+        return new base.layers.TextLayer(props);
     }
     function getTiming(duration, easing) {
         let timing;
         if (duration) {
             timing = {
-                duration
+                duration,
+                type: 'interpolation'
             };
             if (easing) {
                 timing.easing = easing;
@@ -7534,7 +6792,7 @@ void main(void) {
         return timing;
     }
     function getCubeLayer(deckProps) {
-        return deckProps.layers.filter(layer => layer.id === layerNames.cubes)[0];
+        return deckProps.layers.filter(layer => layer && layer.id === layerNames.cubes)[0];
     }
     function getCubes(deckProps) {
         const cubeLayer = getCubeLayer(deckProps);
@@ -7567,96 +6825,20 @@ void main(void) {
         setActiveElement: setActiveElement
     });
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
-    const markStager = (options, stage, scene, x, y, groupType) => {
-        base.vega.sceneVisit(scene, function (item) {
-            var x1, y1, x2, y2;
-            x1 = item.x || 0;
-            y1 = item.y || 0;
-            x2 = item.x2 != null ? item.x2 : x1;
-            y2 = item.y2 != null ? item.y2 : y1;
-            const lineItem = styledLine(x1 + x, y1 + y, x2 + x, y2 + y, item.stroke, item.strokeWidth);
-            if (item.mark.role === 'axis-tick') {
-                options.currAxis.ticks.push(lineItem);
-            }
-            else if (item.mark.role === 'axis-domain') {
-                options.currAxis.domain = lineItem;
-            }
-            else {
-                stage.gridLines.push(lineItem);
-            }
-        });
-    };
-    function styledLine(x1, y1, x2, y2, stroke, strokeWidth) {
-        const line = {
-            sourcePosition: [x1, -y1, lineZ],
-            targetPosition: [x2, -y2, lineZ],
-            color: colorFromString(stroke),
-            strokeWidth: strokeWidth * 10 //translate width to deck.gl
-        };
-        return line;
-    }
-    function box(gx, gy, height, width, stroke, strokeWidth, diagonals = false) {
-        const lines = [
-            styledLine(gx, gy, gx + width, gy, stroke, strokeWidth),
-            styledLine(gx + width, gy, gx + width, gy + height, stroke, strokeWidth),
-            styledLine(gx + width, gy + height, gx, gy + height, stroke, strokeWidth),
-            styledLine(gx, gy + height, gx, gy, stroke, strokeWidth)
-        ];
-        if (diagonals) {
-            lines.push(styledLine(gx, gy, gx + width, gy + height, stroke, strokeWidth));
-            lines.push(styledLine(gx, gy + height, gx + width, gy, stroke, strokeWidth));
-        }
-        return lines;
-    }
-
-    // Copyright (c) Microsoft Corporation. All rights reserved.
-    // Licensed under the MIT license.
-    /**
-     * HTML elements outputted by the presenter.
-     */
-    var PresenterElement;
-    (function (PresenterElement) {
-        PresenterElement[PresenterElement["root"] = 0] = "root";
-        PresenterElement[PresenterElement["gl"] = 1] = "gl";
-        PresenterElement[PresenterElement["panel"] = 2] = "panel";
-        PresenterElement[PresenterElement["legend"] = 3] = "legend";
-        PresenterElement[PresenterElement["vegaControls"] = 4] = "vegaControls";
-    })(PresenterElement || (PresenterElement = {}));
-
-    // Copyright (c) Microsoft Corporation. All rights reserved.
-    function initializePanel(presenter) {
-        const rootDiv = (createElement("div", { className: className(PresenterElement.root, presenter) },
-            createElement("div", { className: className(PresenterElement.gl, presenter), style: { minHeight, minWidth } }),
-            createElement("div", { className: className(PresenterElement.panel, presenter) },
-                createElement("div", { className: className(PresenterElement.vegaControls, presenter) }),
-                createElement("div", { className: className(PresenterElement.legend, presenter) }))));
-        mount(rootDiv, presenter.el);
-    }
-    function className(type, presenter) {
-        return `${presenter.style.cssPrefix}${PresenterElement[type]}`;
-    }
-
     function createOrbitControllerClass(factoryOptions) {
         function wrapper(props) {
-            class OrbitControllerInternal extends base.deck._OrbitController {
+            class OrbitControllerInternal extends base.deck.OrbitController {
                 constructor(props) {
                     super(props);
                     this.invertPan = true;
                 }
-                _onDoubleTap(event) {
-                    if (factoryOptions && factoryOptions.doubleClickHandler) {
-                        factoryOptions.doubleClickHandler(event, this);
+                handleEvent(event) {
+                    if (event.type === 'doubletap') {
+                        if (factoryOptions && factoryOptions.doubleClickHandler) {
+                            return factoryOptions.doubleClickHandler(event, this);
+                        }
                     }
-                    else {
-                        super._onDoubleTap(event);
-                    }
-                }
-                _onPanRotate(event) {
-                    if (!this.dragRotate) {
-                        return false;
-                    }
-                    return this._onPanRotateStandard(event);
+                    return super.handleEvent(event);
                 }
             }
             const instance = new OrbitControllerInternal(props);
@@ -7706,7 +6888,7 @@ void main(void) {
              * @params controller (Object) - Controller class. Leave empty for auto detection
              */
             class DeckGLInternal extends base.deck.Deck {
-                constructor(props = {}) {
+                constructor(props) {
                     if (typeof document === 'undefined') {
                         // Not browser
                         throw Error('Deck can only be used in the browser');
@@ -7748,6 +6930,56 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
+    function wrapper(props) {
+        class LinearInterpolatorInternal extends base.deck.LinearInterpolator {
+            constructor(transitionProps) {
+                super(transitionProps);
+            }
+            interpolateProps(viewStateStartProps, viewStateEndProps, t) {
+                if (this.layerStartProps && this.layerEndProps) {
+                    this.layerInterpolatedProps = super.interpolateProps(this.layerStartProps, this.layerEndProps, t);
+                }
+                return super.interpolateProps(viewStateStartProps, viewStateEndProps, t);
+            }
+        }
+        const instance = new LinearInterpolatorInternal(props);
+        return instance;
+    }
+    const LinearInterpolator = wrapper;
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    function lightingEffects() {
+        const ambientLight = new base.deck.AmbientLight({
+            color: [255, 255, 255],
+            intensity: 0.3
+        });
+        const cameraLight = new base.deck._CameraLight({
+            color: [255, 255, 255],
+            intensity: 1
+        });
+        // const directionalLight = new base.deck.DirectionalLight({
+        //     color: [255, 255, 255],
+        //     direction: [0, 0, -1],
+        //     intensity: 0.2
+        //   });
+        return [new base.deck.LightingEffect({ ambientLight, cameraLight })];
+    }
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    // Licensed under the MIT license.
+    /**
+     * HTML elements outputted by the presenter.
+     */
+    var PresenterElement;
+    (function (PresenterElement) {
+        PresenterElement[PresenterElement["root"] = 0] = "root";
+        PresenterElement[PresenterElement["gl"] = 1] = "gl";
+        PresenterElement[PresenterElement["panel"] = 2] = "panel";
+        PresenterElement[PresenterElement["legend"] = 3] = "legend";
+        PresenterElement[PresenterElement["vegaControls"] = 4] = "vegaControls";
+    })(PresenterElement || (PresenterElement = {}));
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
     const LegendView = (props) => {
         const rows = [];
         const addRow = (row, i) => {
@@ -7786,22 +7018,60 @@ void main(void) {
     };
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function wrapper(props) {
-        class LinearInterpolatorInternal extends base.deck.LinearInterpolator {
-            constructor(transitionProps) {
-                super(transitionProps);
+    const markStager = (options, stage, scene, x, y, groupType) => {
+        base.vega.sceneVisit(scene, function (item) {
+            var x1, y1, x2, y2;
+            x1 = item.x || 0;
+            y1 = item.y || 0;
+            x2 = item.x2 != null ? item.x2 : x1;
+            y2 = item.y2 != null ? item.y2 : y1;
+            const lineItem = styledLine(x1 + x, y1 + y, x2 + x, y2 + y, item.stroke, item.strokeWidth);
+            if (item.mark.role === 'axis-tick') {
+                options.currAxis.ticks.push(lineItem);
             }
-            interpolateProps(viewStateStartProps, viewStateEndProps, t) {
-                if (this.layerStartProps && this.layerEndProps) {
-                    this.layerInterpolatedProps = super.interpolateProps(this.layerStartProps, this.layerEndProps, t);
-                }
-                return super.interpolateProps(viewStateStartProps, viewStateEndProps, t);
+            else if (item.mark.role === 'axis-domain') {
+                options.currAxis.domain = lineItem;
             }
-        }
-        const instance = new LinearInterpolatorInternal(props);
-        return instance;
+            else {
+                stage.gridLines.push(lineItem);
+            }
+        });
+    };
+    function styledLine(x1, y1, x2, y2, stroke, strokeWidth) {
+        const line = {
+            sourcePosition: [x1, -y1, lineZ],
+            targetPosition: [x2, -y2, lineZ],
+            color: colorFromString(stroke),
+            strokeWidth: strokeWidth
+        };
+        return line;
     }
-    const LinearInterpolator = wrapper;
+    function box(gx, gy, height, width, stroke, strokeWidth, diagonals = false) {
+        const lines = [
+            styledLine(gx, gy, gx + width, gy, stroke, strokeWidth),
+            styledLine(gx + width, gy, gx + width, gy + height, stroke, strokeWidth),
+            styledLine(gx + width, gy + height, gx, gy + height, stroke, strokeWidth),
+            styledLine(gx, gy + height, gx, gy, stroke, strokeWidth)
+        ];
+        if (diagonals) {
+            lines.push(styledLine(gx, gy, gx + width, gy + height, stroke, strokeWidth));
+            lines.push(styledLine(gx, gy + height, gx + width, gy, stroke, strokeWidth));
+        }
+        return lines;
+    }
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    function initializePanel(presenter) {
+        const rootDiv = (createElement("div", { className: className(PresenterElement.root, presenter) },
+            createElement("div", { className: className(PresenterElement.gl, presenter), style: { minHeight, minWidth } }),
+            createElement("div", { className: className(PresenterElement.panel, presenter) },
+                createElement("div", { className: className(PresenterElement.vegaControls, presenter) }),
+                createElement("div", { className: className(PresenterElement.legend, presenter) }))));
+        mount(rootDiv, presenter.el);
+    }
+    function className(type, presenter) {
+        return `${presenter.style.cssPrefix}${PresenterElement[type]}`;
+    }
 
     function patchCubeArray(allocatedSize, empty, cubes) {
         const patched = new Array(allocatedSize);
@@ -7868,7 +7138,7 @@ void main(void) {
 
     const markStager$3 = (options, stage, scene, x, y, groupType) => {
         //scale Deck.Gl text to Vega size
-        const fontScale = 6;
+        const fontScale = 1;
         //change direction of y from SVG to GL
         const ty = -1;
         base.vega.sceneVisit(scene, function (item) {
@@ -8026,31 +7296,23 @@ void main(void) {
         }
     }
 
-    const viewStateProps = ['distance', 'fov', 'lookAt', 'rotationOrbit', 'rotationX', 'zoom'];
+    const viewStateProps = ['target', 'rotationOrbit', 'rotationX', 'zoom'];
     function targetViewState(height, width, view) {
-        const distance = 10;
-        const fov = 60;
-        const lookAt = [width / 2, -height / 2, 0];
-        //add a 4th dimension to make transitions work
-        lookAt.push(1);
+        const target = [width / 2, -height / 2, 0];
         if (view === '2d') {
             return {
-                distance,
-                fov,
-                lookAt,
+                target,
                 rotationOrbit: 0,
-                rotationX: 0,
-                zoom: 10 / height
+                rotationX: 90,
+                zoom: -0.2
             };
         }
         else {
             return {
-                distance,
-                fov,
-                lookAt,
-                rotationOrbit: -25,
-                rotationX: 60,
-                zoom: 9 / height
+                target,
+                rotationOrbit: 25,
+                rotationX: 30,
+                zoom: -0.4
             };
         }
     }
@@ -8158,9 +7420,15 @@ void main(void) {
                     }
                 });
                 this.OrbitControllerClass = classes.OrbitControllerClass;
+                const initialViewState = targetViewState(height, width, stage.view);
                 const deckProps = {
-                    onLayerClick: config && config.onLayerClick,
-                    views: [new base.deck.OrbitView({ controller: this.OrbitControllerClass })],
+                    height: null,
+                    width: null,
+                    effects: lightingEffects(),
+                    layers: [],
+                    onClick: config && config.onLayerClick,
+                    views: [new base.deck.OrbitView({ controller: base.deck.OrbitController })],
+                    initialViewState,
                     container: this.getElement(PresenterElement.gl),
                     getCursor: (interactiveState) => {
                         if (interactiveState.onText || interactiveState.onAxisSelection) {
@@ -8225,7 +7493,7 @@ void main(void) {
         setDeckProps(stage, height, width, cubeCount, modifyConfig) {
             const config = deepMerge(defaultPresenterConfig, modifyConfig);
             const newBounds = this.isNewBounds(stage.view, height, width, cubeCount);
-            let lightSettings = this.style.lightSettings[stage.view];
+            //let lightSettings = this.style.lightSettings[stage.view];
             let lightingMix = stage.view === '3d' ? 1.0 : 0.0;
             let linearInterpolator;
             //choose the current OrbitView viewstate if possible
@@ -8254,22 +7522,21 @@ void main(void) {
                     viewState.transitionEasing = expInOut;
                     viewState.transitionInterpolator = linearInterpolator;
                 }
-                if (stage.view === '2d') {
-                    lightSettings = this.style.lightSettings['3d'];
-                }
+                if (stage.view === '2d') ;
             }
             const guideLines = this._showGuides && box(0, 0, height, width, '#0f0', 1, true);
             config.preLayer && config.preLayer(stage);
-            const layers = getLayers(this, config, stage, lightSettings, lightingMix, linearInterpolator, guideLines);
+            const layers = getLayers(this, config, stage, /*lightSettings*/ null, lightingMix, linearInterpolator, guideLines);
             const deckProps = {
-                views: [new base.deck.OrbitView({ controller: this.OrbitControllerClass })],
-                viewState,
+                effects: lightingEffects(),
+                views: [new base.deck.OrbitView({ controller: base.deck.OrbitController })],
+                initialViewState: viewState,
                 layers
             };
             if (config && config.preStage) {
                 config.preStage(stage, deckProps);
             }
-            this.deckgl.setProps(deckProps);
+            requestAnimationFrame(() => this.deckgl.setProps(deckProps));
             delete stage.cubeData;
             this._last = {
                 cubeCount,
@@ -8288,8 +7555,9 @@ void main(void) {
             viewState.transitionEasing = expInOut;
             viewState.transitionInterpolator = new LinearInterpolator(viewStateProps);
             const deckProps = {
+                effects: lightingEffects(),
                 views: this.deckgl.props.views,
-                viewState,
+                initialViewState: viewState,
                 layers: this.deckgl.props.layers
             };
             this.deckgl.setProps(deckProps);
@@ -8505,9 +7773,9 @@ void main(void) {
         if (options.colors.hoveredCube) {
             style.highlightColor = colorFromString(options.colors.hoveredCube);
         }
-        if (options.lightSettings) {
-            style.lightSettings = options.lightSettings;
-        }
+        //if (options.lightSettings) {
+        // style.lightSettings = options.lightSettings;
+        //}
         return style;
     }
     const cssPrefix = 'sanddance-';
@@ -8648,146 +7916,42 @@ void main(void) {
         }
     }
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getSelectedColorMap(currentData, showSelectedData, showActive, viewerOptions) {
-        function getSelectionColorItem(datum) {
-            let item;
-            if (showSelectedData) {
-                item = datum[FieldNames.Selected] ?
-                    { color: colorFromString(viewerOptions.colors.selectedCube) }
-                    :
-                        { unSelected: true };
+    function cloneAxis(axes, axisColor, axisTextColor) {
+        return axes.map(axis => {
+            const newAxis = deepMerge(axis);
+            if (newAxis.domain) {
+                newAxis.domain.color = axisColor;
             }
-            if (showActive && datum[FieldNames.Active]) {
-                item = { color: colorFromString(viewerOptions.colors.activeCube) };
+            if (newAxis.title) {
+                newAxis.title.color = axisTextColor;
             }
-            return item;
-        }
-        const colorMap = {};
-        currentData.forEach(datum => {
-            const selectionColor = getSelectionColorItem(datum);
-            if (selectionColor) {
-                const ordinal = datum[GL_ORDINAL];
-                colorMap[ordinal] = selectionColor;
-            }
-        });
-        return colorMap;
-    }
-    function colorMapFromCubes(cubes) {
-        const map = {};
-        cubes.forEach(cube => {
-            map[cube.ordinal] = { color: cube.color };
-        });
-        return map;
-    }
-    function populateColorContext(colorContext, presenter) {
-        if (!colorContext.colorMap) {
-            const cubes = presenter.getCubeData();
-            colorContext.colorMap = colorMapFromCubes(cubes);
-        }
-        colorContext.legend = clone(presenter.stage.legend);
-        colorContext.legendElement = presenter.getElement(PresenterElement.legend).children[0];
-    }
-    function applyColorMapToCubes(maps, cubes, unselectedColorMethod) {
-        Object.keys(maps[0]).forEach(ordinal => {
-            const cube = cubes[+ordinal];
-            if (cube && !cube.isEmpty) {
-                const actualColorMappedItem = maps[0][ordinal];
-                if (maps.length > 1) {
-                    const selectedColorMappedItem = maps[1][ordinal];
-                    if (selectedColorMappedItem) {
-                        if (selectedColorMappedItem.unSelected && unselectedColorMethod) {
-                            cube.color = unselectedColorMethod(actualColorMappedItem.color);
-                        }
-                        else {
-                            cube.color = selectedColorMappedItem.color;
-                        }
-                        return;
-                    }
-                }
-                cube.color = actualColorMappedItem.color;
-            }
+            newAxis.ticks.forEach(t => { t.color = axisColor; });
+            newAxis.tickText.forEach(t => { t.color = axisTextColor; });
+            return newAxis;
         });
     }
-
-    function applySignalValues(sv, b) {
-        if (!sv || !b || !b.signals || !b.signals.length)
-            return;
-        for (let key in sv) {
-            let value = sv[key];
-            let signalB = b.signals.filter(signal => signal.name === key)[0];
-            if (signalB && signalB.bind) {
-                signalB.value = value;
-            }
-        }
-    }
-    function extractSignalValuesFromView(view, spec) {
-        if (!view || !spec || !spec.signals || !spec.signals.length)
-            return;
-        const result = {};
-        spec.signals.forEach((signalA) => {
-            //bound to a UI control
-            if (signalA.bind) {
-                try {
-                    result[signalA.name] = view.signal(signalA.name);
-                }
-                catch (e) {
-                    // continue regardless of error
-                }
-            }
+    function cloneTextData(textData, color) {
+        return textData.map(t => {
+            return Object.assign(Object.assign({}, t), { color });
         });
-        return result;
     }
-
-    function assignOrdinals(columns, data, ordinalMap) {
-        const uCol = columns.uid && columns.uid.name;
-        if (ordinalMap) {
-            data.forEach((d, i) => {
-                const key = uCol ? d[uCol] : i;
-                d[GL_ORDINAL] = ordinalMap[key];
-            });
+    function recolorAxes(stage, oldColors, newColors) {
+        const hasNewLineColor = newColors.axisLine && newColors.axisLine !== oldColors.axisLine;
+        const hasNewTextColor = newColors.axisText && newColors.axisText !== oldColors.axisText;
+        let axes;
+        let textData;
+        if (hasNewLineColor || hasNewTextColor) {
+            const lineColor = colorFromString(newColors.axisLine || oldColors.axisLine);
+            const textColor = colorFromString(newColors.axisText || oldColors.axisText);
+            axes = {
+                x: cloneAxis(stage.axes.x, lineColor, textColor),
+                y: cloneAxis(stage.axes.y, lineColor, textColor)
+            };
         }
-        else {
-            ordinalMap = {};
-            data.forEach((d, i) => {
-                d[GL_ORDINAL] = i;
-                const uColValue = uCol ? d[uCol] : i;
-                ordinalMap[uColValue] = i;
-            });
+        if (hasNewTextColor) {
+            textData = cloneTextData(stage.textData, colorFromString(newColors.axisText));
         }
-        return ordinalMap;
-    }
-    function getDataIndexOfCube(cube, data) {
-        const len = data.length;
-        for (let i = 0; i < len; i++) {
-            if (data[i][GL_ORDINAL] === cube.ordinal) {
-                return i;
-            }
-        }
-    }
-
-    // Copyright (c) Microsoft Corporation. All rights reserved.
-    const { allTruthy: allTruthy$1, concat: concat$1, push: push$1 } = util;
-
-    // Copyright (c) Microsoft Corporation. All rights reserved.
-    function getSearchGroupFromVegaValue(search) {
-        let group;
-        const vegaSearch = search;
-        if (Array.isArray(vegaSearch)) {
-            //flatten into one group
-            group = { expressions: [] };
-            vegaSearch.forEach(g => {
-                const clonedExpressions = clone(g.expressions).filter(Boolean);
-                clonedExpressions[0].clause = '&&';
-                push$1(group.expressions, clonedExpressions);
-            });
-        }
-        else {
-            group = vegaSearch ?
-                { expressions: vegaSearch.expressions.filter(Boolean) }
-                : null;
-        }
-        return group;
+        return { axes, textData };
     }
 
     function notNice(niceValue) {
@@ -8874,6 +8038,30 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
+    const { allTruthy: allTruthy$1, concat: concat$1, push: push$1 } = util;
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    function getSearchGroupFromVegaValue(search) {
+        let group;
+        const vegaSearch = search;
+        if (Array.isArray(vegaSearch)) {
+            //flatten into one group
+            group = { expressions: [] };
+            vegaSearch.forEach(g => {
+                const clonedExpressions = clone(g.expressions).filter(Boolean);
+                clonedExpressions[0].clause = '&&';
+                push$1(group.expressions, clonedExpressions);
+            });
+        }
+        else {
+            group = vegaSearch ?
+                { expressions: vegaSearch.expressions.filter(Boolean) }
+                : null;
+        }
+        return group;
+    }
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
     function axisSelectionLayer(presenter, specCapabilities, columns, stage, clickHandler, highlightColor, polygonZ) {
         const polygons = [];
         const xRole = specCapabilities.roles.filter(r => r.role === 'x')[0];
@@ -8900,7 +8088,7 @@ void main(void) {
         const onClick = (o, e) => clickHandler(e.srcEvent, o.object.search);
         const polygonLayer = new base.layers.PolygonLayer({
             autoHighlight: true,
-            coordinateSystem: base.deck.COORDINATE_SYSTEM.IDENTITY,
+            coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
             data: polygons,
             extruded: false,
             highlightColor: colorFromString(highlightColor),
@@ -8943,7 +8131,7 @@ void main(void) {
                 divisions = ticks.slice(1, -1).map(tick => tick.sourcePosition[dim]);
             }
             const add = (p2, i) => {
-                var coords = [[p1, q1], [p2, q1], [p2, q2], [p1, q2]];
+                const coords = [[p1, q1], [p2, q1], [p2, q2], [p1, q2]];
                 polygons.push({
                     search: getSearch(axis, column, i),
                     polygon: vertical ? coords.map(xy => xy.reverse()) : coords
@@ -9002,6 +8190,68 @@ void main(void) {
                 }
             });
             return minMax;
+        });
+    }
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    function getSelectedColorMap(currentData, showSelectedData, showActive, viewerOptions) {
+        function getSelectionColorItem(datum) {
+            let item;
+            if (showSelectedData) {
+                item = datum[FieldNames.Selected] ?
+                    { color: colorFromString(viewerOptions.colors.selectedCube) }
+                    :
+                        { unSelected: true };
+            }
+            if (showActive && datum[FieldNames.Active]) {
+                item = { color: colorFromString(viewerOptions.colors.activeCube) };
+            }
+            return item;
+        }
+        const colorMap = {};
+        currentData.forEach(datum => {
+            const selectionColor = getSelectionColorItem(datum);
+            if (selectionColor) {
+                const ordinal = datum[GL_ORDINAL];
+                colorMap[ordinal] = selectionColor;
+            }
+        });
+        return colorMap;
+    }
+    function colorMapFromCubes(cubes) {
+        const map = {};
+        cubes.forEach(cube => {
+            map[cube.ordinal] = { color: cube.color };
+        });
+        return map;
+    }
+    function populateColorContext(colorContext, presenter) {
+        if (!colorContext.colorMap) {
+            const cubes = presenter.getCubeData();
+            colorContext.colorMap = colorMapFromCubes(cubes);
+        }
+        colorContext.legend = clone(presenter.stage.legend);
+        colorContext.legendElement = presenter.getElement(PresenterElement.legend).children[0];
+    }
+    function applyColorMapToCubes(maps, cubes, unselectedColorMethod) {
+        Object.keys(maps[0]).forEach(ordinal => {
+            const cube = cubes[+ordinal];
+            if (cube && !cube.isEmpty) {
+                const actualColorMappedItem = maps[0][ordinal];
+                if (maps.length > 1) {
+                    const selectedColorMappedItem = maps[1][ordinal];
+                    if (selectedColorMappedItem) {
+                        if (selectedColorMappedItem.unSelected && unselectedColorMethod) {
+                            cube.color = unselectedColorMethod(actualColorMappedItem.color);
+                        }
+                        else {
+                            cube.color = selectedColorMappedItem.color;
+                        }
+                        return;
+                    }
+                }
+                cube.color = actualColorMappedItem.color;
+            }
         });
     }
 
@@ -9415,39 +8665,60 @@ void main(void) {
         }
     }
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
-    function cloneAxis(axes, axisColor, axisTextColor) {
-        return axes.map(axis => {
-            const newAxis = deepMerge(axis);
-            newAxis.domain.color = axisColor;
-            newAxis.title.color = axisTextColor;
-            newAxis.ticks.forEach(t => { t.color = axisColor; });
-            newAxis.tickText.forEach(t => { t.color = axisTextColor; });
-            return newAxis;
-        });
-    }
-    function cloneTextData(textData, color) {
-        return textData.map(t => {
-            return Object.assign(Object.assign({}, t), { color });
-        });
-    }
-    function recolorAxes(stage, oldColors, newColors) {
-        const hasNewLineColor = newColors.axisLine && newColors.axisLine !== oldColors.axisLine;
-        const hasNewTextColor = newColors.axisText && newColors.axisText !== oldColors.axisText;
-        let axes;
-        let textData;
-        if (hasNewLineColor || hasNewTextColor) {
-            const lineColor = colorFromString(newColors.axisLine || oldColors.axisLine);
-            const textColor = colorFromString(newColors.axisText || oldColors.axisText);
-            axes = {
-                x: cloneAxis(stage.axes.x, lineColor, textColor),
-                y: cloneAxis(stage.axes.y, lineColor, textColor)
-            };
+    function assignOrdinals(columns, data, ordinalMap) {
+        const uCol = columns.uid && columns.uid.name;
+        if (ordinalMap) {
+            data.forEach((d, i) => {
+                const key = uCol ? d[uCol] : i;
+                d[GL_ORDINAL] = ordinalMap[key];
+            });
         }
-        if (hasNewTextColor) {
-            textData = cloneTextData(stage.textData, colorFromString(newColors.axisText));
+        else {
+            ordinalMap = {};
+            data.forEach((d, i) => {
+                d[GL_ORDINAL] = i;
+                const uColValue = uCol ? d[uCol] : i;
+                ordinalMap[uColValue] = i;
+            });
         }
-        return { axes, textData };
+        return ordinalMap;
+    }
+    function getDataIndexOfCube(cube, data) {
+        const len = data.length;
+        for (let i = 0; i < len; i++) {
+            if (data[i][GL_ORDINAL] === cube.ordinal) {
+                return i;
+            }
+        }
+    }
+
+    function applySignalValues(sv, b) {
+        if (!sv || !b || !b.signals || !b.signals.length)
+            return;
+        for (let key in sv) {
+            let value = sv[key];
+            let signalB = b.signals.filter(signal => signal.name === key)[0];
+            if (signalB && signalB.bind) {
+                signalB.value = value;
+            }
+        }
+    }
+    function extractSignalValuesFromView(view, spec) {
+        if (!view || !spec || !spec.signals || !spec.signals.length)
+            return;
+        const result = {};
+        spec.signals.forEach((signalA) => {
+            //bound to a UI control
+            if (signalA.bind) {
+                try {
+                    result[signalA.name] = view.signal(signalA.name);
+                }
+                catch (e) {
+                    // continue regardless of error
+                }
+            }
+        });
+        return result;
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -9771,6 +9042,7 @@ void main(void) {
             if (newViewerOptions) {
                 if (newViewerOptions.colors) {
                     recoloredAxes = recolorAxes(this.presenter.stage, this._lastColorOptions, newViewerOptions.colors);
+                    this._lastColorOptions = clone(newViewerOptions.colors);
                     axes = recoloredAxes.axes || axes;
                     textData = recoloredAxes.textData || textData;
                 }
@@ -10056,8 +9328,8 @@ void main(void) {
                 onTextHover: this.onTextHover.bind(this),
                 preStage: this.preStage.bind(this),
                 onPresent: this.options.onPresent,
-                onLayerClick: (info, pickedInfos, e) => {
-                    if (!info) {
+                onLayerClick: (info, e) => {
+                    if (!info || !info.object) {
                         this.deselect();
                     }
                 },
@@ -10244,7 +9516,7 @@ void main(void) {
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
-    const version = '3.0.0-alpha.2';
+    const version = '3.0.0-alpha.3';
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     const use$1 = use;

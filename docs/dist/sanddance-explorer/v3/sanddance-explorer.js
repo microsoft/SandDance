@@ -900,7 +900,6 @@ class AggregateContainer extends _layout.Layout {
       globalScope,
       groupings,
       niceScale,
-      parentHeight,
       parentScope,
       showAxes
     } = props;
@@ -942,9 +941,6 @@ class AggregateContainer extends _layout.Layout {
     (0, _scope.addSignal)(globalScope.scope, {
       name: props.globalAggregateMaxExtentScaledSignal,
       update: dock === 'bottom' ? `${parentScope.sizeSignals.layoutHeight} - ${globalAggregateMaxExtentScaledValue}` : globalAggregateMaxExtentScaledValue
-    }, {
-      name: parentHeight,
-      update: parentScope.sizeSignals.layoutHeight
     });
     return {
       offsets,
@@ -1170,13 +1166,13 @@ function textSignals(context, heightSignal) {
     update: `${heightSignal} * ${_constants.SignalNames.ZProportion}`
   }, {
     name: _constants.SignalNames.TextScale,
-    value: 2,
+    value: 1.2,
     bind: {
       name: specViewOptions.language.textScaleSignal,
       debounce: 50,
       input: 'range',
       min: 0.5,
-      max: 5,
+      max: 2,
       step: 0.1
     }
   }, {
@@ -1306,7 +1302,6 @@ class Band extends _layout.Layout {
       globalScope,
       minBandWidth,
       orientation,
-      parentHeight,
       parentScope,
       showAxes
     } = props;
@@ -1334,9 +1329,6 @@ class Band extends _layout.Layout {
     (0, _scope.addSignal)(globalScope.scope, {
       name: names.bandWidth,
       update: `bandwidth(${JSON.stringify(horizontal ? names.yScale : names.xScale)})`
-    }, {
-      name: parentHeight,
-      update: parentScope.sizeSignals.layoutHeight
     });
     const scale = this.getScale(bin, horizontal);
     let encodingRuleMap;
@@ -1474,9 +1466,9 @@ const facetPaddingBottom = 40;
 exports.facetPaddingBottom = facetPaddingBottom;
 const facetPaddingRight = 40;
 exports.facetPaddingRight = facetPaddingRight;
-const axesLabelLimit = 10;
+const axesLabelLimit = 100;
 exports.axesLabelLimit = axesLabelLimit;
-const axesTitleLimit = 10;
+const axesTitleLimit = 100;
 exports.axesTitleLimit = axesTitleLimit;
 const axesTitlePaddingX = 30;
 exports.axesTitlePaddingX = axesTitlePaddingX;
@@ -1604,11 +1596,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.addZScale = addZScale;
 
-var _scope = require("./scope");
+var _constants = require("./constants");
 
 var _scales = require("./scales");
 
-var _constants = require("./constants");
+var _scope = require("./scope");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -1620,7 +1612,7 @@ function addZScale(z, zSize, globalScope, zScaleName) {
     (0, _scope.addScale)(globalScope.scope, z.quantitative ? (0, _scales.linearScale)(zScaleName, globalScope.data.name, z.name, zRange, false, true) : (0, _scales.pointScale)(zScaleName, globalScope.data.name, zRange, z.name, false));
   }
 }
-},{"./scope":"Nfxo","./scales":"mxMR","./constants":"kNZP"}],"Jhnx":[function(require,module,exports) {
+},{"./constants":"kNZP","./scales":"mxMR","./scope":"Nfxo"}],"Jhnx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1670,11 +1662,7 @@ class Square extends _layout.Layout {
       sortBy,
       z
     } = props;
-    let {
-      zSize
-    } = props;
-    zSize = zSize || parentScope.sizeSignals.layoutHeight;
-    (0, _zBase.addZScale)(z, zSize, globalScope, names.zScale);
+    (0, _zBase.addZScale)(z, globalScope.zSize, globalScope, names.zScale);
     (0, _scope.addTransforms)(globalScope.data, Object.assign({
       type: 'stack',
       groupby: (0, _scope.getGroupBy)(groupings),
@@ -1922,11 +1910,7 @@ class Strip extends _layout.Layout {
       parentScope,
       z
     } = props;
-    let {
-      zSize
-    } = props;
-    zSize = zSize || parentScope.sizeSignals.layoutHeight;
-    (0, _zBase.addZScale)(z, zSize, globalScope, names.zScale);
+    (0, _zBase.addZScale)(z, globalScope.zSize, globalScope, names.zScale);
     const horizontal = orientation === 'horizontal';
     const transform = [];
 
@@ -2097,11 +2081,7 @@ class Treemap extends _layout.Layout {
       treeMapMethod,
       z
     } = props;
-    let {
-      zSize
-    } = props;
-    zSize = zSize || parentScope.sizeSignals.layoutHeight;
-    (0, _zBase.addZScale)(z, zSize, globalScope, names.zScale);
+    (0, _zBase.addZScale)(z, globalScope.zSize, globalScope, names.zScale);
     const offsets = {
       x: (0, _scope.addOffsets)(parentScope.offsets.x, fn(names.fieldX0)),
       y: (0, _scope.addOffsets)(parentScope.offsets.y, fn(names.fieldY0)),
@@ -2181,8 +2161,10 @@ class Treemap extends _layout.Layout {
           }]
         }, treemapData]
       };
-      globalScope.markDataName = names.dataFacetMark;
-      (0, _scope.addMarks)(globalScope.markGroup, facets);
+      globalScope.setMarkDataName(names.dataFacetMark);
+      (0, _scope.addMarks)(globalScope.markGroup, facets); //assign new markgroup after adding mark to original group
+
+      globalScope.setMarkGroup(facets);
       this.treemapTransform(treemapData, `${names.widthExtent}[0]`, `${names.heightExtent}[0]`);
       return this.addMark(offsets, facets, globalScope.markDataName);
     } else {
@@ -2323,8 +2305,7 @@ function _default(specContext) {
       maxbins: _defaults.maxbins
     },
     minBandWidth: _defaults.minBarBandWidth,
-    showAxes: true,
-    parentHeight: 'bandParentHeight'
+    showAxes: true
   };
   const x = {
     title: null
@@ -2352,8 +2333,7 @@ function _default(specContext) {
       orientation: 'horizontal',
       size: specColumns.size,
       sort: specColumns.sort,
-      z: specColumns.z,
-      zSize: bandProps.parentHeight
+      z: specColumns.z
     };
     layouts.push({
       layoutClass: _strip.Strip,
@@ -2365,7 +2345,6 @@ function _default(specContext) {
       dock: 'left',
       globalAggregateMaxExtentSignal: 'aggMaxExtent',
       globalAggregateMaxExtentScaledSignal: 'aggMaxExtentScaled',
-      parentHeight: 'aggParentHeight',
       sumBy: specColumns.size,
       showAxes: true
     };
@@ -2383,8 +2362,7 @@ function _default(specContext) {
             corner: 'top-left',
             size: specColumns.size,
             treeMapMethod: specViewOptions.language.treeMapMethod,
-            z: specColumns.z,
-            zSize: aggProps.parentHeight
+            z: specColumns.z
           };
           layouts.push({
             layoutClass: _treemap.Treemap,
@@ -2402,8 +2380,7 @@ function _default(specContext) {
             orientation: 'horizontal',
             size: specColumns.size,
             sort: specColumns.sort,
-            z: specColumns.z,
-            zSize: aggProps.parentHeight
+            z: specColumns.z
           };
           layouts.push({
             layoutClass: _strip.Strip,
@@ -2421,8 +2398,7 @@ function _default(specContext) {
             orientation: 'horizontal',
             size: specColumns.size,
             sort: specColumns.sort,
-            z: specColumns.z,
-            zSize: aggProps.parentHeight
+            z: specColumns.z
           };
           layouts.push({
             layoutClass: _strip.Strip,
@@ -2440,8 +2416,7 @@ function _default(specContext) {
             fillDirection: 'down-right',
             z: specColumns.z,
             maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
-            maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal,
-            zSize: aggProps.parentHeight
+            maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal
           };
           layouts.push({
             layoutClass: _square.Square,
@@ -2532,8 +2507,7 @@ function _default(specContext) {
       maxbins: _defaults.maxbins
     },
     minBandWidth: _defaults.minBarBandWidth,
-    showAxes: true,
-    parentHeight: 'bandParentHeight'
+    showAxes: true
   };
   const y = {
     title: null
@@ -2561,8 +2535,7 @@ function _default(specContext) {
       orientation: 'vertical',
       size: specColumns.size,
       sort: specColumns.sort,
-      z: specColumns.z,
-      zSize: bandProps.parentHeight
+      z: specColumns.z
     };
     layouts.push({
       layoutClass: _strip.Strip,
@@ -2574,7 +2547,6 @@ function _default(specContext) {
       dock: 'bottom',
       globalAggregateMaxExtentSignal: 'aggMaxExtent',
       globalAggregateMaxExtentScaledSignal: 'aggMaxExtentScaled',
-      parentHeight: 'aggParentHeight',
       sumBy: specColumns.size,
       showAxes: true
     };
@@ -2592,8 +2564,7 @@ function _default(specContext) {
             corner: 'bottom-left',
             size: specColumns.size,
             treeMapMethod: specViewOptions.language.treeMapMethod,
-            z: specColumns.z,
-            zSize: aggProps.parentHeight
+            z: specColumns.z
           };
           layouts.push({
             layoutClass: _treemap.Treemap,
@@ -2611,8 +2582,7 @@ function _default(specContext) {
             orientation: 'vertical',
             size: specColumns.size,
             sort: specColumns.sort,
-            z: specColumns.z,
-            zSize: aggProps.parentHeight
+            z: specColumns.z
           };
           layouts.push({
             layoutClass: _strip.Strip,
@@ -2629,8 +2599,7 @@ function _default(specContext) {
             sortOrder: 'descending',
             orientation: 'vertical',
             sort: specColumns.sort,
-            z: specColumns.z,
-            zSize: aggProps.parentHeight
+            z: specColumns.z
           };
           layouts.push({
             layoutClass: _strip.Strip,
@@ -2648,8 +2617,7 @@ function _default(specContext) {
             fillDirection: 'right-up',
             z: specColumns.z,
             maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
-            maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal,
-            zSize: aggProps.parentHeight
+            maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal
           };
           layouts.push({
             layoutClass: _square.Square,
@@ -2737,7 +2705,6 @@ class AggregateSquare extends _layout.Layout {
       globalScope,
       groupings,
       onBuild,
-      parentHeight,
       parentScope
     } = props;
     const {
@@ -2758,10 +2725,6 @@ class AggregateSquare extends _layout.Layout {
     const squareSide = `sqrt(${squareArea})`;
     const localAggregateMaxExtentScaled = squareSide;
     onBuild && onBuild(localAggregateMaxExtent, localAggregateMaxExtentScaled);
-    (0, _scope.addSignal)(globalScope.scope, {
-      name: parentHeight,
-      update: sizeSignals.layoutHeight
-    });
     const offsets = {
       x: (0, _scope.addOffsets)(parentScope.offsets.x, `(${parentScope.offsets.w} - ${squareSide}) / 2`),
       y: (0, _scope.addOffsets)(parentScope.offsets.y, `(${parentScope.offsets.h} - ${squareSide}) / 2`),
@@ -2860,8 +2823,7 @@ function _default(specContext) {
       maxbins: _defaults.maxbins
     },
     minBandWidth: _defaults.minBarBandWidth,
-    showAxes: true,
-    parentHeight: 'hBandParentHeight'
+    showAxes: true
   };
   const vBandProps = {
     excludeEncodingRuleMap: true,
@@ -2874,12 +2836,10 @@ function _default(specContext) {
       maxbins: _defaults.maxbins
     },
     minBandWidth: _defaults.minBarBandWidth,
-    showAxes: true,
-    parentHeight: 'vBandParentHeight'
+    showAxes: true
   };
   const aggProps = {
     onBuild: null,
-    parentHeight: 'aggParentHeight',
     aggregation: null,
     sumBy: specColumns.size
   };
@@ -2902,8 +2862,7 @@ function _default(specContext) {
           corner: 'bottom-left',
           size: specColumns.size,
           treeMapMethod: specViewOptions.language.treeMapMethod,
-          z: specColumns.z,
-          zSize: aggProps.parentHeight
+          z: specColumns.z
         };
         layouts.push({
           layoutClass: _treemap.Treemap,
@@ -2920,8 +2879,7 @@ function _default(specContext) {
           orientation: 'vertical',
           size: specColumns.size,
           sort: specColumns.sort,
-          z: specColumns.z,
-          zSize: aggProps.parentHeight
+          z: specColumns.z
         };
         layouts.push({
           layoutClass: _strip.Strip,
@@ -2937,8 +2895,7 @@ function _default(specContext) {
           sortOrder: 'ascending',
           orientation: 'vertical',
           sort: specColumns.sort,
-          z: specColumns.z,
-          zSize: aggProps.parentHeight
+          z: specColumns.z
         };
         layouts.push({
           layoutClass: _strip.Strip,
@@ -2955,8 +2912,7 @@ function _default(specContext) {
           fillDirection: 'right-down',
           z: specColumns.z,
           maxGroupedUnits: null,
-          maxGroupedFillSize: null,
-          zSize: aggProps.parentHeight
+          maxGroupedFillSize: null
         };
 
         aggProps.onBuild = (aggMaxExtent, aggMaxExtentScaled) => {
@@ -3149,7 +3105,7 @@ class Scatter extends _layout.Layout {
         return t;
       }).filter(Boolean)
     });
-    globalScope.markDataName = names.markData;
+    globalScope.setMarkDataName(names.markData);
     const globalScales = {
       showAxes: true,
       scales: {}
@@ -3196,7 +3152,7 @@ class Scatter extends _layout.Layout {
       xyz: 'z',
       scaleName: names.zScale,
       reverse: false,
-      signal: `${parentScope.sizeSignals.layoutHeight}*${_constants.SignalNames.ZProportion}`
+      signal: `(${globalScope.zSize}) * ${_constants.SignalNames.ZProportion}`
     }];
     columnSignals.forEach(cs => {
       const {
@@ -3370,7 +3326,6 @@ class Stack extends _layout.Layout {
     const {
       globalScope,
       groupings,
-      parentHeight,
       parentScope,
       sort
     } = props;
@@ -3422,7 +3377,7 @@ class Stack extends _layout.Layout {
         as: 'sidecubeheight'
       }, {
         type: 'formula',
-        expr: `abs(${parentHeight} - datum.sidecubeheight)`,
+        expr: `abs(${globalScope.zSize} - datum.sidecubeheight)`,
         as: 'heightmatch'
       }, {
         type: 'collect',
@@ -3564,8 +3519,7 @@ function _default(specContext) {
       maxbins: _defaults.maxbins
     },
     minBandWidth: _defaults.minBarBandWidth,
-    showAxes: true,
-    parentHeight: 'hBandParentHeight'
+    showAxes: true
   };
   const vBandProps = {
     excludeEncodingRuleMap: true,
@@ -3578,12 +3532,10 @@ function _default(specContext) {
       maxbins: _defaults.maxbins
     },
     minBandWidth: _defaults.minBarBandWidth,
-    showAxes: true,
-    parentHeight: 'vBandParentHeight'
+    showAxes: true
   };
   const stackProps = {
-    sort: specColumns.sort,
-    parentHeight: vBandProps.parentHeight
+    sort: specColumns.sort
   };
   return {
     axisScales,
@@ -3669,17 +3621,14 @@ function _default(specContext) {
     };
     const globalAggregateMaxExtentScaledSignal = 'globalAggregateMaxExtentScaledSignal';
     const globalAggregateMaxExtentSignal = 'globalAggregateMaxExtentSignal';
-    const parentHeight = 'parentHeight';
     const props = {
       dock: 'top',
       niceScale: false,
       globalAggregateMaxExtentScaledSignal,
       globalAggregateMaxExtentSignal,
-      parentHeight,
       sumBy: specColumns.size,
       showAxes: false
     };
-    stripProps.zSize = props.parentHeight;
     layouts.push({
       layoutClass: _aggregateContainer.AggregateContainer,
       props
@@ -3760,17 +3709,14 @@ function _default(specContext) {
     };
     const globalAggregateMaxExtentScaledSignal = 'globalAggregateMaxExtentScaledSignal';
     const globalAggregateMaxExtentSignal = 'globalAggregateMaxExtentSignal';
-    const parentHeight = 'parentHeight';
     const props = {
       dock: 'top',
       niceScale: false,
       globalAggregateMaxExtentScaledSignal,
       globalAggregateMaxExtentSignal,
-      parentHeight,
       sumBy: specColumns.size,
       showAxes: false
     };
-    treemapProps.zSize = props.parentHeight;
     layouts.push({
       layoutClass: _aggregateContainer.AggregateContainer,
       props
@@ -3819,11 +3765,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.addGlobalAxes = addGlobalAxes;
 
-var _scope = require("./scope");
+var _constants = require("./constants");
 
 var _defaults = require("./defaults");
 
-var _constants = require("./constants");
+var _scope = require("./scope");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -3956,7 +3902,7 @@ function createAxis(props) {
 
   return axis;
 }
-},{"./scope":"Nfxo","./defaults":"visW","./constants":"kNZP"}],"xnEZ":[function(require,module,exports) {
+},{"./constants":"kNZP","./defaults":"visW","./scope":"Nfxo"}],"xnEZ":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4809,6 +4755,7 @@ class Slice extends _layout.Layout {
 
 
     return {
+      offsets: null,
       sizeSignals: {
         layoutHeight: 'TODO',
         layoutWidth: 'TODO'
@@ -5020,7 +4967,7 @@ class Wrap extends _layout.Layout {
       }]
     };
     (0, _scope.addData)(globalScope.scope, dataOut);
-    globalScope.markDataName = names.outputData;
+    globalScope.setMarkDataName(names.outputData);
     (0, _scope.addSignal)(globalScope.scope, {
       name: names.minAspect,
       update: `${_constants.SignalNames.MinCellWidth} / ${_constants.SignalNames.MinCellHeight}`
@@ -5268,7 +5215,66 @@ function opacity(context) {
   };
   return result;
 }
-},{"./constants":"kNZP"}],"hPp4":[function(require,module,exports) {
+},{"./constants":"kNZP"}],"O5yf":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.GlobalScope = void 0;
+
+var _constants = require("./constants");
+
+var _scope = require("./scope");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+class GlobalScope {
+  constructor(props) {
+    const {
+      dataName,
+      markGroup,
+      scope,
+      signals
+    } = props;
+    this.scope = scope;
+    this._markGroup = markGroup;
+    this.signals = signals;
+    this.data = (0, _scope.getDataByName)(scope.data, dataName).data;
+    this._markDataName = dataName;
+    this.offsets = {
+      x: '0',
+      y: '0',
+      h: _constants.SignalNames.PlotHeightIn,
+      w: _constants.SignalNames.PlotWidthIn
+    };
+    this.sizeSignals = {
+      layoutHeight: _constants.SignalNames.PlotHeightIn,
+      layoutWidth: _constants.SignalNames.PlotWidthIn
+    };
+    this.zSize = _constants.SignalNames.PlotHeightIn;
+  }
+
+  get markDataName() {
+    return this._markDataName;
+  }
+
+  setMarkDataName(markDataName) {
+    this._markDataName = markDataName;
+  }
+
+  get markGroup() {
+    return this._markGroup;
+  }
+
+  setMarkGroup(markGroup) {
+    this._markGroup = markGroup;
+  }
+
+}
+
+exports.GlobalScope = GlobalScope;
+},{"./constants":"kNZP","./scope":"Nfxo"}],"hPp4":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5290,6 +5296,8 @@ var _facetTitle = require("./facetTitle");
 
 var _fill = require("./fill");
 
+var _globalScope = require("./globalScope");
+
 var _scope = require("./scope");
 
 var _signals = require("./signals");
@@ -5299,37 +5307,39 @@ var _signals = require("./signals");
 class SpecBuilder {
   constructor(props) {
     this.props = props;
-    this.minCellWidth = {
-      name: _constants.SignalNames.MinCellWidth,
-      update: `${_defaults.minFacetWidth}`
-    };
-    this.minCellHeight = {
-      name: _constants.SignalNames.MinCellHeight,
-      update: `${_defaults.minFacetHeight}`
-    };
-    this.plotOffsetLeft = {
-      name: _constants.SignalNames.PlotOffsetLeft,
-      update: '0'
-    };
-    this.plotOffsetTop = {
-      name: _constants.SignalNames.PlotOffsetTop,
-      update: '0'
-    };
-    this.plotOffsetBottom = {
-      name: _constants.SignalNames.PlotOffsetBottom,
-      update: '0'
-    };
-    this.plotOffsetRight = {
-      name: _constants.SignalNames.PlotOffsetRight,
-      update: '0'
-    };
-    this.plotHeightOut = {
-      name: _constants.SignalNames.PlotHeightOut,
-      update: _constants.SignalNames.PlotHeightIn
-    };
-    this.plotWidthOut = {
-      name: _constants.SignalNames.PlotWidthOut,
-      update: _constants.SignalNames.PlotWidthIn
+    this.globalSignals = {
+      minCellWidth: {
+        name: _constants.SignalNames.MinCellWidth,
+        update: `${_defaults.minFacetWidth}`
+      },
+      minCellHeight: {
+        name: _constants.SignalNames.MinCellHeight,
+        update: `${_defaults.minFacetHeight}`
+      },
+      plotOffsetLeft: {
+        name: _constants.SignalNames.PlotOffsetLeft,
+        update: '0'
+      },
+      plotOffsetTop: {
+        name: _constants.SignalNames.PlotOffsetTop,
+        update: '0'
+      },
+      plotOffsetBottom: {
+        name: _constants.SignalNames.PlotOffsetBottom,
+        update: '0'
+      },
+      plotOffsetRight: {
+        name: _constants.SignalNames.PlotOffsetRight,
+        update: '0'
+      },
+      plotHeightOut: {
+        name: _constants.SignalNames.PlotHeightOut,
+        update: _constants.SignalNames.PlotHeightIn
+      },
+      plotWidthOut: {
+        name: _constants.SignalNames.PlotWidthOut,
+        update: _constants.SignalNames.PlotWidthIn
+      }
     };
   }
 
@@ -5397,7 +5407,12 @@ class SpecBuilder {
         topLookupName: 'data_topcolorlookup',
         colorReverseSignalName: _constants.SignalNames.ColorReverse
       });
-      const globalScope = this.createGlobalScope(colorDataName, vegaSpec, groupMark);
+      const globalScope = new _globalScope.GlobalScope({
+        dataName: colorDataName,
+        markGroup: groupMark,
+        scope: vegaSpec,
+        signals: this.globalSignals
+      });
       let facetLayout;
 
       if (insight.columns.facet) {
@@ -5419,8 +5434,8 @@ class SpecBuilder {
         (0, _scope.addSignal)(vegaSpec, ...facetLayout.signals);
         (0, _scope.addScale)(vegaSpec, ...facetLayout.scales);
         this.props.layouts = [facetLayout.layoutPair, ...this.props.layouts];
-        this.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
-        this.plotOffsetRight.update = `${facetLayout.plotPadding.x}`;
+        this.globalSignals.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
+        this.globalSignals.plotOffsetRight.update = `${facetLayout.plotPadding.x}`;
       }
 
       const {
@@ -5428,11 +5443,12 @@ class SpecBuilder {
         finalScope,
         specResult,
         allGlobalScales,
-        allEncodingRules,
-        groupings,
-        sums,
-        offsets
-      } = this.iterateLayouts(globalScope, groupMark, colorDataName);
+        allEncodingRules
+      } = this.iterateLayouts(globalScope, (i, innerScope) => {
+        if (facetLayout && i === 0) {
+          globalScope.zSize = innerScope.offsets.h;
+        }
+      });
 
       if (specResult) {
         return specResult;
@@ -5443,8 +5459,8 @@ class SpecBuilder {
           globalScope: globalScope.scope,
           plotScope: groupMark,
           facetScope: firstScope,
-          plotHeightOut: this.plotHeightOut.name,
-          plotWidthOut: this.plotWidthOut.name,
+          plotHeightOut: this.globalSignals.plotHeightOut.name,
+          plotWidthOut: this.globalSignals.plotWidthOut.name,
           colTitleScaleName: 'scale_facet_col_title',
           rowTitleScaleName: 'scale_facet_row_title',
           colSeqName: 'data_FacetCellColTitles',
@@ -5462,8 +5478,8 @@ class SpecBuilder {
           allGlobalScales,
           axisScales: this.props.axisScales,
           plotOffsetSignals: {
-            x: this.plotOffsetLeft,
-            y: this.plotOffsetBottom
+            x: this.globalSignals.plotOffsetLeft,
+            y: this.globalSignals.plotOffsetBottom
           },
           axesOffsets: {
             x: _defaults.axesOffsetX,
@@ -5491,31 +5507,27 @@ class SpecBuilder {
         const {
           update
         } = finalScope.mark.encode;
-
-        if (offsets.length) {
-          const outputDataName = 'output';
-          finalScope.mark.from.data = outputDataName;
-          (0, _scope.addData)(globalScope.scope, {
-            name: outputDataName,
-            source: globalScope.markDataName,
-            transform: [{
-              type: 'formula',
-              expr: finalScope.offsets.x,
-              as: _constants.FieldNames.OffsetX
-            }, {
-              type: 'formula',
-              expr: finalScope.offsets.y,
-              as: _constants.FieldNames.OffsetY
-            }]
-          });
-          update.x = {
-            field: _constants.FieldNames.OffsetX
-          };
-          update.y = {
-            field: _constants.FieldNames.OffsetY
-          };
-        }
-
+        const outputDataName = 'output';
+        finalScope.mark.from.data = outputDataName;
+        (0, _scope.addData)(globalScope.markGroup, {
+          name: outputDataName,
+          source: globalScope.markDataName,
+          transform: [{
+            type: 'formula',
+            expr: finalScope.offsets.x,
+            as: _constants.FieldNames.OffsetX
+          }, {
+            type: 'formula',
+            expr: finalScope.offsets.y,
+            as: _constants.FieldNames.OffsetY
+          }]
+        });
+        update.x = {
+          field: _constants.FieldNames.OffsetX
+        };
+        update.y = {
+          field: _constants.FieldNames.OffsetY
+        };
         allEncodingRules.forEach(map => {
           for (let key in map) {
             if (update[key]) {
@@ -5545,39 +5557,10 @@ class SpecBuilder {
     }
   }
 
-  createGlobalScope(dataName, scope, markGroup) {
-    const {
-      minCellWidth,
-      minCellHeight,
-      plotHeightOut,
-      plotWidthOut
-    } = this;
-    const globalScope = {
-      data: (0, _scope.getDataByName)(scope.data, dataName).data,
-      markDataName: dataName,
-      scope,
-      markGroup,
-      offsets: {
-        x: '0',
-        y: '0',
-        h: _constants.SignalNames.PlotHeightIn,
-        w: _constants.SignalNames.PlotWidthIn
-      },
-      sizeSignals: {
-        layoutHeight: _constants.SignalNames.PlotHeightIn,
-        layoutWidth: _constants.SignalNames.PlotWidthIn
-      },
-      signals: {
-        minCellWidth,
-        minCellHeight,
-        plotHeightOut,
-        plotWidthOut
-      }
-    };
-    return globalScope;
-  }
-
   initSpec(dataName) {
+    const {
+      globalSignals
+    } = this;
     const {
       minCellWidth,
       minCellHeight,
@@ -5587,7 +5570,7 @@ class SpecBuilder {
       plotOffsetRight,
       plotHeightOut,
       plotWidthOut
-    } = this;
+    } = globalSignals;
     const {
       specContext
     } = this.props;
@@ -5652,7 +5635,7 @@ class SpecBuilder {
     };
   }
 
-  iterateLayouts(globalScope, scope, dataName) {
+  iterateLayouts(globalScope, onLayoutBuild) {
     let specResult;
     let parentScope = {
       sizeSignals: globalScope.sizeSignals,
@@ -5661,8 +5644,6 @@ class SpecBuilder {
     let firstScope;
     let childScope;
     const groupings = [];
-    const offsets = [];
-    let sums = false;
     let {
       layouts,
       specCapabilities
@@ -5684,11 +5665,6 @@ class SpecBuilder {
       try {
         childScope = layout.build();
         childScope.id = i;
-
-        if (childScope.offsets) {
-          offsets.push(childScope.offsets);
-        }
-
         let groupby = layout.getGrouping();
 
         if (groupby) {
@@ -5707,8 +5683,9 @@ class SpecBuilder {
 
         if (sumOp) {
           groupings[groupings.length - 1].fieldOps.push(sumOp);
-          sums = true;
         }
+
+        onLayoutBuild(i, childScope);
       } catch (e) {
         specResult = {
           errors: [e.stack],
@@ -5738,10 +5715,7 @@ class SpecBuilder {
       finalScope: parentScope,
       specResult,
       allGlobalScales,
-      allEncodingRules,
-      groupings,
-      sums,
-      offsets
+      allEncodingRules
     };
   }
 
@@ -5759,7 +5733,7 @@ class SpecBuilder {
 }
 
 exports.SpecBuilder = SpecBuilder;
-},{"./axes":"Zzpz","./color":"MIbS","./constants":"kNZP","./defaults":"visW","./facetLayout":"gUMf","./facetTitle":"xF0Y","./fill":"qyiT","./scope":"Nfxo","./signals":"TTOO"}],"HWtS":[function(require,module,exports) {
+},{"./axes":"Zzpz","./color":"MIbS","./constants":"kNZP","./defaults":"visW","./facetLayout":"gUMf","./facetTitle":"xF0Y","./fill":"qyiT","./globalScope":"O5yf","./scope":"Nfxo","./signals":"TTOO"}],"HWtS":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6056,8 +6030,8 @@ function color(format) {
   format = (format + "").trim().toLowerCase();
   return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
   : l === 3 ? new Rgb(m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, (m & 0xf) << 4 | m & 0xf, 1) // #f00
-  : l === 8 ? new Rgb(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-  : l === 4 ? new Rgb(m >> 12 & 0xf | m >> 8 & 0xf0, m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, ((m & 0xf) << 4 | m & 0xf) / 0xff) // #f000
+  : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+  : l === 4 ? rgba(m >> 12 & 0xf | m >> 8 & 0xf0, m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, ((m & 0xf) << 4 | m & 0xf) / 0xff) // #f000
   : null // invalid hex
   ) : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
   : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
@@ -8073,8 +8047,8 @@ function color(format) {
   format = (format + "").trim().toLowerCase();
   return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
   : l === 3 ? new Rgb(m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, (m & 0xf) << 4 | m & 0xf, 1) // #f00
-  : l === 8 ? new Rgb(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-  : l === 4 ? new Rgb(m >> 12 & 0xf | m >> 8 & 0xf0, m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, ((m & 0xf) << 4 | m & 0xf) / 0xff) // #f000
+  : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+  : l === 4 ? rgba(m >> 12 & 0xf | m >> 8 & 0xf0, m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, ((m & 0xf) << 4 | m & 0xf) / 0xff) // #f000
   : null // invalid hex
   ) : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
   : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
@@ -8522,8 +8496,8 @@ function rgbToDeckglColor(c) {
 }
 /**
  * Compares 2 colors to see if they are equal.
- * @param a Color to compare
- * @param b Color to compare
+ * @param a RGBAColor to compare
+ * @param b RGBAColor to compare
  * @returns True if colors are equal.
  */
 
@@ -8538,7 +8512,7 @@ function colorIsEqual(a, b) {
   return true;
 }
 /**
- * Convert a CSS color string to a Deck.gl Color array - (The rgba color of each object, in r, g, b, [a]. Each component is in the 0-255 range.).
+ * Convert a CSS color string to a Deck.gl RGBAColor array - (The rgba color of each object, in r, g, b, [a]. Each component is in the 0-255 range.).
  * @param cssColorSpecifier A CSS Color Module Level 3 specifier string.
  */
 
@@ -8555,7 +8529,7 @@ function colorFromString(cssColorSpecifier) {
 }
 /**
  * Convert a Deck.gl color to a CSS rgba() string.
- * @param color A Deck.gl Color array - (The rgba color of each object, in r, g, b, [a]. Each component is in the 0-255 range.)
+ * @param color A Deck.gl RGBAColor array - (The rgba color of each object, in r, g, b, [a]. Each component is in the 0-255 range.)
  */
 
 
@@ -8599,23 +8573,30 @@ let vega = {
   View: null
 };
 let deck = {
+  _CameraLight: null,
+  AmbientLight: null,
   CompositeLayer: null,
   COORDINATE_SYSTEM: null,
   Deck: null,
+  DirectionalLight: null,
   Layer: null,
+  LightingEffect: null,
   LinearInterpolator: null,
   OrbitView: null,
-  _OrbitController: null
+  OrbitController: null,
+  gouraudLighting: null,
+  picking: null,
+  project32: null
 };
 let layers = {
   IconLayer: null,
   LineLayer: null,
+  PathLayer: null,
   PolygonLayer: null,
   TextLayer: null
 };
 let luma = {
   CubeGeometry: null,
-  fp64: null,
   Model: null,
   Texture2D: null
 };
@@ -8645,989 +8626,7 @@ function use(vega, deck, layers, luma) {
   base.luma = luma;
   base.vega = vega;
 }
-},{}],"jBdf":[function(require,module,exports) {
-'use strict';
-
-module.exports = TinySDF;
-module.exports.default = TinySDF;
-
-var INF = 1e20;
-
-function TinySDF(fontSize, buffer, radius, cutoff, fontFamily, fontWeight) {
-    this.fontSize = fontSize || 24;
-    this.buffer = buffer === undefined ? 3 : buffer;
-    this.cutoff = cutoff || 0.25;
-    this.fontFamily = fontFamily || 'sans-serif';
-    this.fontWeight = fontWeight || 'normal';
-    this.radius = radius || 8;
-    var size = this.size = this.fontSize + this.buffer * 2;
-
-    this.canvas = document.createElement('canvas');
-    this.canvas.width = this.canvas.height = size;
-
-    this.ctx = this.canvas.getContext('2d');
-    this.ctx.font = this.fontWeight + ' ' + this.fontSize + 'px ' + this.fontFamily;
-    this.ctx.textBaseline = 'middle';
-    this.ctx.fillStyle = 'black';
-
-    // temporary arrays for the distance transform
-    this.gridOuter = new Float64Array(size * size);
-    this.gridInner = new Float64Array(size * size);
-    this.f = new Float64Array(size);
-    this.d = new Float64Array(size);
-    this.z = new Float64Array(size + 1);
-    this.v = new Int16Array(size);
-
-    // hack around https://bugzilla.mozilla.org/show_bug.cgi?id=737852
-    this.middle = Math.round((size / 2) * (navigator.userAgent.indexOf('Gecko/') >= 0 ? 1.2 : 1));
-}
-
-TinySDF.prototype.draw = function (char) {
-    this.ctx.clearRect(0, 0, this.size, this.size);
-    this.ctx.fillText(char, this.buffer, this.middle);
-
-    var imgData = this.ctx.getImageData(0, 0, this.size, this.size);
-    var alphaChannel = new Uint8ClampedArray(this.size * this.size);
-
-    for (var i = 0; i < this.size * this.size; i++) {
-        var a = imgData.data[i * 4 + 3] / 255; // alpha value
-        this.gridOuter[i] = a === 1 ? 0 : a === 0 ? INF : Math.pow(Math.max(0, 0.5 - a), 2);
-        this.gridInner[i] = a === 1 ? INF : a === 0 ? 0 : Math.pow(Math.max(0, a - 0.5), 2);
-    }
-
-    edt(this.gridOuter, this.size, this.size, this.f, this.d, this.v, this.z);
-    edt(this.gridInner, this.size, this.size, this.f, this.d, this.v, this.z);
-
-    for (i = 0; i < this.size * this.size; i++) {
-        var d = this.gridOuter[i] - this.gridInner[i];
-        alphaChannel[i] = Math.max(0, Math.min(255, Math.round(255 - 255 * (d / this.radius + this.cutoff))));
-    }
-
-    return alphaChannel;
-};
-
-// 2D Euclidean distance transform by Felzenszwalb & Huttenlocher https://cs.brown.edu/~pff/papers/dt-final.pdf
-function edt(data, width, height, f, d, v, z) {
-    for (var x = 0; x < width; x++) {
-        for (var y = 0; y < height; y++) {
-            f[y] = data[y * width + x];
-        }
-        edt1d(f, d, v, z, height);
-        for (y = 0; y < height; y++) {
-            data[y * width + x] = d[y];
-        }
-    }
-    for (y = 0; y < height; y++) {
-        for (x = 0; x < width; x++) {
-            f[x] = data[y * width + x];
-        }
-        edt1d(f, d, v, z, width);
-        for (x = 0; x < width; x++) {
-            data[y * width + x] = Math.sqrt(d[x]);
-        }
-    }
-}
-
-// 1D squared distance transform
-function edt1d(f, d, v, z, n) {
-    v[0] = 0;
-    z[0] = -INF;
-    z[1] = +INF;
-
-    for (var q = 1, k = 0; q < n; q++) {
-        var s = ((f[q] + q * q) - (f[v[k]] + v[k] * v[k])) / (2 * q - 2 * v[k]);
-        while (s <= z[k]) {
-            k--;
-            s = ((f[q] + q * q) - (f[v[k]] + v[k] * v[k])) / (2 * q - 2 * v[k]);
-        }
-        k++;
-        v[k] = q;
-        z[k] = s;
-        z[k + 1] = +INF;
-    }
-
-    for (q = 0, k = 0; q < n; q++) {
-        while (z[k + 1] < q) k++;
-        d[q] = (q - v[k]) * (q - v[k]) + f[v[k]];
-    }
-}
-
-},{}],"HKAP":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.makeFontAtlas = makeFontAtlas;
-exports.DEFAULT_FONT_SETTINGS = exports.DEFAULT_FONT_WEIGHT = exports.DEFAULT_FONT_FAMILY = exports.DEFAULT_CHAR_SET = void 0;
-
-var _tinySdf = _interopRequireDefault(require("@mapbox/tiny-sdf"));
-
-var _base = require("../base");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-//from https://github.com/uber/deck.gl/blob/6.4-release/modules/layers/src/text-layer/font-atlas.js
-
-/* global document */
-const GL_TEXTURE_WRAP_S = 0x2802;
-const GL_TEXTURE_WRAP_T = 0x2803;
-const GL_CLAMP_TO_EDGE = 0x812f;
-const MAX_CANVAS_WIDTH = 1024;
-const BASELINE_SCALE = 0.9;
-const HEIGHT_SCALE = 1.2;
-
-function getDefaultCharacterSet() {
-  const charSet = [];
-
-  for (let i = 32; i < 128; i++) {
-    charSet.push(String.fromCharCode(i));
-  }
-
-  return charSet;
-}
-
-const DEFAULT_CHAR_SET = getDefaultCharacterSet();
-exports.DEFAULT_CHAR_SET = DEFAULT_CHAR_SET;
-const DEFAULT_FONT_FAMILY = 'Monaco, monospace';
-exports.DEFAULT_FONT_FAMILY = DEFAULT_FONT_FAMILY;
-const DEFAULT_FONT_WEIGHT = 'normal';
-exports.DEFAULT_FONT_WEIGHT = DEFAULT_FONT_WEIGHT;
-const DEFAULT_FONT_SETTINGS = {
-  fontSize: 64,
-  buffer: 2,
-  sdf: false,
-  cutoff: 0.25,
-  radius: 3
-};
-exports.DEFAULT_FONT_SETTINGS = DEFAULT_FONT_SETTINGS;
-
-function populateAlphaChannel(alphaChannel, imageData) {
-  // populate distance value from tinySDF to image alpha channel	
-  for (let i = 0; i < alphaChannel.length; i++) {
-    imageData.data[4 * i + 3] = alphaChannel[i];
-  }
-}
-
-function setTextStyle(ctx, fontFamily, fontSize, fontWeight) {
-  ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
-  ctx.fillStyle = '#000';
-  ctx.textBaseline = 'alphabetic';
-  ctx.textAlign = 'left';
-}
-
-function buildMapping({
-  ctx,
-  fontHeight,
-  buffer,
-  characterSet,
-  maxCanvasWidth
-}) {
-  const mapping = {};
-  let row = 0;
-  let x = 0;
-  Array.from(characterSet).forEach(char => {
-    // measure texts
-    // TODO - use Advanced text metrics when they are adopted:
-    // https://developer.mozilla.org/en-US/docs/Web/API/TextMetrics
-    const {
-      width
-    } = ctx.measureText(char);
-
-    if (x + width + buffer * 2 > maxCanvasWidth) {
-      x = 0;
-      row++;
-    }
-
-    mapping[char] = {
-      x: x + buffer,
-      y: row * (fontHeight + buffer * 2) + buffer,
-      width,
-      height: fontHeight,
-      mask: true
-    };
-    x += width + buffer * 2;
-  });
-  const canvasHeight = (row + 1) * (fontHeight + buffer * 2);
-  return {
-    mapping,
-    canvasHeight
-  };
-}
-
-function makeFontAtlas(gl, fontSettings) {
-  const mergedFontSettings = Object.assign({
-    fontFamily: DEFAULT_FONT_FAMILY,
-    fontWeight: DEFAULT_FONT_WEIGHT,
-    characterSet: DEFAULT_CHAR_SET
-  }, DEFAULT_FONT_SETTINGS, fontSettings);
-  const {
-    fontFamily,
-    fontWeight,
-    characterSet,
-    fontSize,
-    buffer,
-    sdf,
-    radius,
-    cutoff
-  } = mergedFontSettings;
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d'); // build mapping
-
-  setTextStyle(ctx, fontFamily, fontSize, fontWeight);
-  const fontHeight = fontSize * HEIGHT_SCALE;
-  const {
-    canvasHeight,
-    mapping
-  } = buildMapping({
-    ctx,
-    fontHeight,
-    buffer,
-    characterSet,
-    maxCanvasWidth: MAX_CANVAS_WIDTH
-  });
-  canvas.width = MAX_CANVAS_WIDTH;
-  canvas.height = canvasHeight;
-  setTextStyle(ctx, fontFamily, fontSize, fontWeight); // layout characters
-
-  if (sdf) {
-    const tinySDF = new _tinySdf.default(fontSize, buffer, radius, cutoff, fontFamily, fontWeight); // used to store distance values from tinySDF	
-
-    const imageData = ctx.createImageData(tinySDF.size, tinySDF.size);
-
-    for (const char of characterSet) {
-      populateAlphaChannel(tinySDF.draw(char), imageData);
-      ctx.putImageData(imageData, mapping[char].x - buffer, mapping[char].y - buffer);
-    }
-  } else {
-    for (const char of characterSet) {
-      ctx.fillText(char, mapping[char].x, mapping[char].y + fontSize * BASELINE_SCALE);
-    }
-  }
-
-  return {
-    scale: HEIGHT_SCALE,
-    mapping,
-    texture: new _base.base.luma.Texture2D(gl, {
-      pixels: canvas,
-      // padding is added only between the characters but not for borders
-      // enforce CLAMP_TO_EDGE to avoid any artifacts.
-      parameters: {
-        [GL_TEXTURE_WRAP_S]: GL_CLAMP_TO_EDGE,
-        [GL_TEXTURE_WRAP_T]: GL_CLAMP_TO_EDGE
-      }
-    })
-  };
-}
-},{"@mapbox/tiny-sdf":"jBdf","../base":"To8D"}],"w4G4":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-// Copyright (c) 2015 - 2017 Uber Technologies, Inc.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-//adapted from https://github.com/uber/deck.gl/blob/6.4-release/modules/layers/src/text-layer/multi-icon-layer/multi-icon-layer-fragment.glsl.js
-var _default = `\
-#define SHADER_NAME multi-icon-layer-fragment-shader
-
-precision highp float;
-
-uniform sampler2D iconsTexture;
-uniform float buffer;
-uniform bool sdf;
-
-varying vec4 vColor;
-varying vec2 vTextureCoords;
-varying float vGamma;
-varying vec4 vHighlightColor;
-
-const float MIN_ALPHA = 0.05;
-
-void main(void) {
-  vec4 texColor = texture2D(iconsTexture, vTextureCoords);
-  
-  float alpha = texColor.a;
-
-  // if enable sdf (signed distance fields)	
-  if (sdf) {	
-    float distance = texture2D(iconsTexture, vTextureCoords).a;	
-    alpha = smoothstep(buffer - vGamma, buffer + vGamma, distance);	
-  }
-
-  // Take the global opacity and the alpha from vColor into account for the alpha component
-  float a = alpha * vColor.a;
-
-  if (picking_uActive) {
-
-    // use picking color for entire rectangle
-    gl_FragColor = vec4(picking_vRGBcolor_Aselected.rgb, 1.0);
-  
-  } else {
-
-    if (a < MIN_ALPHA) {
-      discard;
-    } else {
-
-      gl_FragColor = vec4(vColor.rgb, a);
-
-      // use highlight color if this fragment belongs to the selected object.
-      bool selected = bool(picking_vRGBcolor_Aselected.a);
-      if (selected) {
-        gl_FragColor = vec4(vHighlightColor.rgb, a);
-      }
-    }
-  }
-}
-`;
-exports.default = _default;
-},{}],"t88C":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-// Copyright (c) 2015 - 2017 Uber Technologies, Inc.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-//adapted from https://github.com/uber/deck.gl/blob/6.4-release/modules/layers/src/text-layer/multi-icon-layer/multi-icon-layer-vertex.glsl.js
-var _default = `\
-#define SHADER_NAME multi-icon-layer-vertex-shader
-
-attribute vec2 positions;
-
-attribute vec3 instancePositions;
-attribute vec2 instancePositions64xyLow;
-attribute float instanceSizes;
-attribute float instanceAngles;
-attribute vec4 instanceColors;
-attribute vec3 instancePickingColors;
-attribute vec4 instanceIconFrames;
-attribute float instanceColorModes;
-attribute vec2 instanceOffsets;
-
-// the following three attributes are for the multi-icon layer
-attribute vec2 instancePixelOffset;
-attribute vec4 instanceHighlightColors;
-
-uniform float sizeScale;
-uniform vec2 iconsTextureDim;
-uniform float gamma;
-uniform float opacity;
-
-varying float vColorMode;
-varying vec4 vColor;
-varying vec2 vTextureCoords;
-varying float vGamma;
-varying vec4 vHighlightColor;
-
-vec2 rotate_by_angle(vec2 vertex, float angle) {
-  float angle_radian = angle * PI / 180.0;
-  float cos_angle = cos(angle_radian);
-  float sin_angle = sin(angle_radian);
-  mat2 rotationMatrix = mat2(cos_angle, -sin_angle, sin_angle, cos_angle);
-  return rotationMatrix * vertex;
-}
-
-void main(void) {
-  vec2 iconSize = instanceIconFrames.zw;
-  // scale icon height to match instanceSize
-  float instanceScale = iconSize.y == 0.0 ? 0.0 : instanceSizes / iconSize.y;
-
-  // scale and rotate vertex in "pixel" value and convert back to fraction in clipspace
-  vec2 pixelOffset = positions / 2.0 * iconSize + instanceOffsets;
-
-  pixelOffset = rotate_by_angle(pixelOffset, instanceAngles) * sizeScale * instanceScale;
-  pixelOffset += instancePixelOffset;
-  pixelOffset.y *= -1.0;
-
-  gl_Position = project_position_to_clipspace(instancePositions, instancePositions64xyLow, vec3(0.0));
-  gl_Position += project_pixel_to_clipspace(pixelOffset);
-
-  vTextureCoords = mix(
-    instanceIconFrames.xy,
-    instanceIconFrames.xy + iconSize,
-    (positions.xy + 1.0) / 2.0
-  ) / iconsTextureDim;
-
-  vTextureCoords.y = 1.0 - vTextureCoords.y;
-
-  vColor = vec4(instanceColors.rgb, instanceColors.a * opacity) / 255.;
-  vHighlightColor = vec4(instanceHighlightColors.rgb, instanceHighlightColors.a * opacity) / 255.;
-
-  picking_setPickingColor(instancePickingColors);
-
-  vGamma = gamma / (sizeScale * iconSize.y);
-}
-`;
-exports.default = _default;
-},{}],"Pvx6":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.MultiIconLayer = void 0;
-
-var _chromaticMultiIconLayerFragment = _interopRequireDefault(require("./chromatic-multi-icon-layer-fragment.glsl"));
-
-var _chromaticMultiIconLayerVertex = _interopRequireDefault(require("./chromatic-multi-icon-layer-vertex.glsl"));
-
-var _base = require("../../base");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// Copyright (c) 2015 - 2017 Uber Technologies, Inc.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-//adapted from https://github.com/uber/deck.gl/blob/6.4-release/modules/layers/src/text-layer/multi-icon-layer/multi-icon-layer.js
-// TODO expose as layer properties
-const DEFAULT_GAMMA = 0.2;
-const DEFAULT_BUFFER = 192.0 / 256;
-const defaultProps = {
-  getShiftInQueue: {
-    type: 'accessor',
-    value: x => x.shift || 0
-  },
-  getLengthOfQueue: {
-    type: 'accessor',
-    value: x => x.len || 1
-  },
-  // 1: left, 0: middle, -1: right
-  getAnchorX: {
-    type: 'accessor',
-    value: x => x.anchorX || 0
-  },
-  // 1: top, 0: center, -1: bottom
-  getAnchorY: {
-    type: 'accessor',
-    value: x => x.anchorY || 0
-  },
-  getPixelOffset: {
-    type: 'accessor',
-    value: [0, 0]
-  },
-  // object with the same pickingIndex will be picked when any one of them is being picked
-  getPickingIndex: {
-    type: 'accessor',
-    value: x => x.objectIndex
-  }
-}; //https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants
-
-const UNSIGNED_BYTE = 0x1401;
-
-function _MultiIconLayer(...props) {
-  class __MultiIconLayer extends _base.base.layers.IconLayer {
-    constructor(...props) {
-      super(...arguments);
-    }
-
-    getShaders() {
-      return Object.assign({}, super.getShaders(), {
-        vs: _chromaticMultiIconLayerVertex.default,
-        fs: _chromaticMultiIconLayerFragment.default
-      });
-    }
-
-    initializeState() {
-      super.initializeState();
-      const attributeManager = this.getAttributeManager();
-      attributeManager.addInstanced({
-        instancePixelOffset: {
-          size: 2,
-          transition: true,
-          accessor: 'getPixelOffset'
-        },
-        instanceHighlightColors: {
-          size: 4,
-          type: UNSIGNED_BYTE,
-          transition: true,
-          accessor: 'getHighlightColor',
-          defaultValue: [0, 255, 0, 255]
-        }
-      });
-    }
-
-    updateState(updateParams) {
-      super.updateState(updateParams);
-      const {
-        changeFlags
-      } = updateParams;
-
-      if (changeFlags.updateTriggersChanged && (changeFlags.updateTriggersChanged.getAnchorX || changeFlags.updateTriggersChanged.getAnchorY)) {
-        this.getAttributeManager().invalidate('instanceOffsets');
-      }
-    }
-
-    draw({
-      uniforms
-    }) {
-      const {
-        sdf
-      } = this.props;
-      super.draw({
-        uniforms: Object.assign({}, uniforms, {
-          // Refer the following doc about gamma and buffer
-          // https://blog.mapbox.com/drawing-text-with-signed-distance-fields-in-mapbox-gl-b0933af6f817
-          buffer: DEFAULT_BUFFER,
-          gamma: DEFAULT_GAMMA,
-          sdf: Boolean(sdf)
-        })
-      });
-    }
-
-    calculateInstanceOffsets(attribute) {
-      const {
-        data,
-        iconMapping,
-        getIcon,
-        getAnchorX,
-        getAnchorY,
-        getLengthOfQueue,
-        getShiftInQueue
-      } = this.props;
-      const {
-        value
-      } = attribute;
-      let i = 0;
-
-      for (const object of data) {
-        const icon = getIcon(object);
-        const rect = iconMapping[icon] || {};
-        const len = getLengthOfQueue(object);
-        const shiftX = getShiftInQueue(object);
-        value[i++] = (getAnchorX(object) - 1) * len / 2 + rect.width / 2 + shiftX || 0;
-        value[i++] = rect.height / 2 * getAnchorY(object) || 0;
-      }
-    }
-
-    calculateInstancePickingColors(attribute) {
-      const {
-        data,
-        getPickingIndex
-      } = this.props;
-      const {
-        value
-      } = attribute;
-      let i = 0;
-      const pickingColor = [];
-
-      for (const point of data) {
-        const index = getPickingIndex(point);
-        this.encodePickingColor(index, pickingColor);
-        value[i++] = pickingColor[0];
-        value[i++] = pickingColor[1];
-        value[i++] = pickingColor[2];
-      }
-    }
-
-  }
-
-  __MultiIconLayer.layerName = 'MultiIconLayer';
-  __MultiIconLayer.defaultProps = defaultProps;
-  const instance = new __MultiIconLayer(...arguments);
-  return instance;
-} //signature to allow this function to be used with the 'new' keyword.
-//need to trick the compiler by casting to 'any'.
-
-/**
- * CubeLayer - a Deck.gl layer to render cuboids.
- * This is instantiatable by calling `new MultiIconLayer()`.
- */
-
-
-const MultiIconLayer = _MultiIconLayer;
-exports.MultiIconLayer = MultiIconLayer;
-},{"./chromatic-multi-icon-layer-fragment.glsl":"w4G4","./chromatic-multi-icon-layer-vertex.glsl":"t88C","../../base":"To8D"}],"VizX":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.ChromaticTextLayer = void 0;
-
-var _base = require("../base");
-
-var _fontAtlas = require("./font-atlas");
-
-var _chromaticMultiIconLayer = require("./chromatic-multi-icon-layer/chromatic-multi-icon-layer");
-
-// Copyright (c) 2015 - 2017 Uber Technologies, Inc.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-//adapted from https://github.com/uber/deck.gl/blob/6.4-release/modules/layers/src/text-layer/text-layer.js
-const TEXT_ANCHOR = {
-  start: 1,
-  middle: 0,
-  end: -1
-};
-const ALIGNMENT_BASELINE = {
-  top: 1,
-  center: 0,
-  bottom: -1
-};
-const DEFAULT_COLOR = [0, 0, 0, 255];
-const MISSING_CHAR_WIDTH = 32;
-const FONT_SETTINGS_PROPS = ['fontSize', 'buffer', 'sdf', 'radius', 'cutoff'];
-const defaultProps = {
-  fp64: false,
-  sizeScale: 1,
-  characterSet: _fontAtlas.DEFAULT_CHAR_SET,
-  fontFamily: _fontAtlas.DEFAULT_FONT_FAMILY,
-  fontWeight: _fontAtlas.DEFAULT_FONT_WEIGHT,
-  fontSettings: {},
-  getText: {
-    type: 'accessor',
-    value: x => x.text
-  },
-  getPosition: {
-    type: 'accessor',
-    value: x => x.position
-  },
-  getColor: {
-    type: 'accessor',
-    value: DEFAULT_COLOR
-  },
-  getSize: {
-    type: 'accessor',
-    value: 32
-  },
-  getAngle: {
-    type: 'accessor',
-    value: 0
-  },
-  getHighlightColor: {
-    type: 'accessor',
-    value: DEFAULT_COLOR
-  },
-  getTextAnchor: {
-    type: 'accessor',
-    value: 'middle'
-  },
-  getAlignmentBaseline: {
-    type: 'accessor',
-    value: 'center'
-  },
-  getPixelOffset: {
-    type: 'accessor',
-    value: [0, 0]
-  }
-};
-
-function _ChromaticTextLayer(props) {
-  class __ChromaticTextLayer extends _base.base.deck.CompositeLayer {
-    updateState({
-      props,
-      oldProps,
-      changeFlags
-    }) {
-      const fontChanged = this.fontChanged(oldProps, props);
-
-      if (fontChanged) {
-        this.updateFontAtlas();
-      }
-
-      if (changeFlags.dataChanged || fontChanged || changeFlags.updateTriggersChanged && (changeFlags.updateTriggersChanged.all || changeFlags.updateTriggersChanged.getText)) {
-        this.transformStringToLetters();
-      }
-    }
-
-    updateFontAtlas() {
-      const {
-        gl
-      } = this.context;
-      const {
-        fontSettings,
-        fontFamily,
-        fontWeight,
-        characterSet
-      } = this.props;
-      const mergedFontSettings = Object.assign({}, _fontAtlas.DEFAULT_FONT_SETTINGS, fontSettings, {
-        fontFamily,
-        fontWeight,
-        characterSet
-      });
-      const {
-        scale,
-        mapping,
-        texture
-      } = (0, _fontAtlas.makeFontAtlas)(gl, mergedFontSettings);
-      this.setState({
-        scale,
-        iconAtlas: texture,
-        iconMapping: mapping
-      });
-    }
-
-    fontChanged(oldProps, props) {
-      if (oldProps.fontFamily !== props.fontFamily || oldProps.characterSet !== props.characterSet || oldProps.fontWeight !== props.fontWeight) {
-        return true;
-      }
-
-      if (oldProps.fontSettings === props.fontSettings) {
-        return false;
-      }
-
-      const oldFontSettings = oldProps.fontSettings || {};
-      const fontSettings = props.fontSettings || {};
-      return FONT_SETTINGS_PROPS.some(prop => oldFontSettings[prop] !== fontSettings[prop]);
-    }
-
-    getPickingInfo({
-      info
-    }) {
-      // because `TextLayer` assign the same pickingInfoIndex for one text label,
-      // here info.index refers the index of text label in props.data
-      return Object.assign(info, {
-        // override object with original data
-        object: info.index >= 0 ? this.props.data[info.index] : null
-      });
-    }
-    /* eslint-disable no-loop-func */
-
-
-    transformStringToLetters() {
-      const {
-        data,
-        getText
-      } = this.props;
-      const {
-        iconMapping
-      } = this.state;
-      const transformedData = [];
-      let objectIndex = 0;
-
-      for (const val of data) {
-        const text = getText(val);
-
-        if (text) {
-          const letters = Array.from(text);
-          const offsets = [0];
-          let offsetLeft = 0;
-          letters.forEach((letter, i) => {
-            const datum = {
-              text: letter,
-              index: i,
-              offsets,
-              len: text.length,
-              // reference of original object and object index
-              object: val,
-              objectIndex
-            };
-            const frame = iconMapping[letter];
-
-            if (frame) {
-              offsetLeft += frame.width;
-            } else {
-              //log.warn(`Missing character: ${letter}`)();
-              offsetLeft += MISSING_CHAR_WIDTH;
-            }
-
-            offsets.push(offsetLeft);
-            transformedData.push(datum);
-          });
-        }
-
-        objectIndex++;
-      }
-
-      this.setState({
-        data: transformedData
-      });
-    }
-    /* eslint-enable no-loop-func */
-
-
-    getLetterOffset(datum) {
-      return datum.offsets[datum.index];
-    }
-
-    getTextLength(datum) {
-      return datum.offsets[datum.offsets.length - 1];
-    }
-
-    _getAccessor(accessor) {
-      if (typeof accessor === 'function') {
-        return x => accessor(x.object);
-      }
-
-      return accessor;
-    }
-
-    getAnchorXFromTextAnchor(getTextAnchor) {
-      return x => {
-        const textAnchor = typeof getTextAnchor === 'function' ? getTextAnchor(x.object) : getTextAnchor;
-
-        if (!TEXT_ANCHOR.hasOwnProperty(textAnchor)) {
-          throw new Error(`Invalid text anchor parameter: ${textAnchor}`);
-        }
-
-        return TEXT_ANCHOR[textAnchor];
-      };
-    }
-
-    getAnchorYFromAlignmentBaseline(getAlignmentBaseline) {
-      return x => {
-        const alignmentBaseline = typeof getAlignmentBaseline === 'function' ? getAlignmentBaseline(x.object) : getAlignmentBaseline;
-
-        if (!ALIGNMENT_BASELINE.hasOwnProperty(alignmentBaseline)) {
-          throw new Error(`Invalid alignment baseline parameter: ${alignmentBaseline}`);
-        }
-
-        return ALIGNMENT_BASELINE[alignmentBaseline];
-      };
-    }
-
-    renderLayers() {
-      const {
-        data,
-        scale,
-        iconAtlas,
-        iconMapping
-      } = this.state;
-      const {
-        getPosition,
-        getColor,
-        getSize,
-        getAngle,
-        getHighlightColor,
-        getTextAnchor,
-        getAlignmentBaseline,
-        getPixelOffset,
-        fp64,
-        sdf,
-        sizeScale,
-        transitions,
-        updateTriggers
-      } = this.props;
-      const SubLayerClass = this.getSubLayerClass('characters', _chromaticMultiIconLayer.MultiIconLayer);
-      return new SubLayerClass({
-        sdf,
-        iconAtlas,
-        iconMapping,
-        getPosition: d => getPosition(d.object),
-        getColor: this._getAccessor(getColor),
-        getSize: this._getAccessor(getSize),
-        getAngle: this._getAccessor(getAngle),
-        getHighlightColor: this._getAccessor(getHighlightColor),
-        getAnchorX: this.getAnchorXFromTextAnchor(getTextAnchor),
-        getAnchorY: this.getAnchorYFromAlignmentBaseline(getAlignmentBaseline),
-        getPixelOffset: this._getAccessor(getPixelOffset),
-        fp64,
-        sizeScale: sizeScale * scale,
-        transitions: transitions && {
-          getPosition: transitions.getPosition,
-          getAngle: transitions.getAngle,
-          getHighlightColor: transitions.getHighlightColor,
-          getColor: transitions.getColor,
-          getSize: transitions.getSize,
-          getPixelOffset: updateTriggers.getPixelOffset
-        }
-      }, this.getSubLayerProps({
-        id: 'characters',
-        updateTriggers: {
-          getPosition: updateTriggers.getPosition,
-          getAngle: updateTriggers.getAngle,
-          getHighlightColor: updateTriggers.getHighlightColor,
-          getColor: updateTriggers.getColor,
-          getSize: updateTriggers.getSize,
-          getPixelOffset: updateTriggers.getPixelOffset,
-          getAnchorX: updateTriggers.getTextAnchor,
-          getAnchorY: updateTriggers.getAlignmentBaseline
-        }
-      }), {
-        data,
-        getIcon: d => d.text,
-        getShiftInQueue: d => this.getLetterOffset(d),
-        getLengthOfQueue: d => this.getTextLength(d)
-      });
-    }
-
-  }
-
-  __ChromaticTextLayer.layerName = 'TextLayer';
-  __ChromaticTextLayer.defaultProps = defaultProps;
-  const instance = new __ChromaticTextLayer(props);
-  return instance;
-} //signature to allow this function to be used with the 'new' keyword.
-//need to trick the compiler by casting to 'any'.
-
-/**
- * TextLayer - a modification of deck.gl's TextLayer.
- * This is instantiatable by calling `new TextLayer()`.
- */
-
-
-const ChromaticTextLayer = _ChromaticTextLayer;
-exports.ChromaticTextLayer = ChromaticTextLayer;
-},{"../base":"To8D","./font-atlas":"HKAP","./chromatic-multi-icon-layer/chromatic-multi-icon-layer":"Pvx6"}],"mHNm":[function(require,module,exports) {
+},{}],"mHNm":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9681,24 +8680,23 @@ exports.createStage = createStage;
 exports.minPixelSize = exports.min3dDepth = exports.defaultView = exports.lineZ = exports.groupStrokeWidth = exports.defaultPresenterConfig = exports.defaultPresenterStyle = exports.minWidth = exports.minHeight = void 0;
 const minHeight = '100px';
 exports.minHeight = minHeight;
-const minWidth = '100px';
+const minWidth = '100px'; // const lightSettings: { [view in View]: LightSettings } = {
+//     '2d': {},
+//     '3d': {
+//         lightsPosition: [-122.45, 37.66, 8000, -122.0, 38.0, 8000],
+//         ambientRatio: 0.3,
+//         diffuseRatio: 0.6,
+//         specularRatio: 0.4,
+//         lightsStrength: [0.3, 0.0, 0.8, 0.0],
+//         numberOfLights: 2
+//     }
+// };
+
 exports.minWidth = minWidth;
-const lightSettings = {
-  '2d': {},
-  '3d': {
-    lightsPosition: [-122.45, 37.66, 8000, -122.0, 38.0, 8000],
-    ambientRatio: 0.3,
-    diffuseRatio: 0.6,
-    specularRatio: 0.4,
-    lightsStrength: [0.3, 0.0, 0.8, 0.0],
-    numberOfLights: 2
-  }
-};
 const defaultPresenterStyle = {
   cssPrefix: 'vega-deckgl-',
   defaultCubeColor: [128, 128, 128, 255],
-  highlightColor: [0, 0, 0, 255],
-  lightSettings
+  highlightColor: [0, 0, 0, 255]
 };
 exports.defaultPresenterStyle = defaultPresenterStyle;
 const defaultPresenterConfig = {
@@ -9777,7 +8775,7 @@ attribute vec3 positions;
 attribute vec3 normals;
 
 attribute vec3 instancePositions;
-attribute vec2 instancePositions64xyLow;
+attribute vec3 instancePositions64Low;
 attribute vec3 instanceSizes;
 attribute vec4 instanceColors;
 attribute vec3 instancePickingColors;
@@ -9795,9 +8793,9 @@ void main(void) {
 
   // if alpha == 0.0, do not render element
   float noRender = float(instanceColors.a == 0.0);
-  float finalXScale = project_scale(x) * mix(1.0, 0.0, noRender);
-  float finalYScale = project_scale(y) * mix(1.0, 0.0, noRender);
-  float finalZScale = project_scale(instanceSizes.z) * mix(1.0, 0.0, noRender);
+  float finalXScale = project_size(x) * mix(1.0, 0.0, noRender);
+  float finalYScale = project_size(y) * mix(1.0, 0.0, noRender);
+  float finalZScale = project_size(instanceSizes.z) * mix(1.0, 0.0, noRender);
 
   // cube geometry vertics are between -1 to 1, scale and transform it to between 0, 1
   vec3 offset = vec3(
@@ -9807,20 +8805,10 @@ void main(void) {
 
   // extrude positions
   vec4 position_worldspace;
-  gl_Position = project_position_to_clipspace(instancePositions, instancePositions64xyLow, offset, position_worldspace);
-
-  float lightWeight = 1.0;
+  gl_Position = project_position_to_clipspace(instancePositions, instancePositions64Low, offset, position_worldspace);
   
-  //allow for a small amount of error around the min3dDepth 
-  if (instanceSizes.z >= ${_defaults.min3dDepth.toFixed(4)} - 0.0001) {
-    lightWeight = lighting_getLightWeight(
-      position_worldspace.xyz, // the w component is always 1.0
-      normals
-    );
-  }
-
-  vec3 lightWeightedColor = lightWeight * instanceColors.rgb;
-  vec3 mixedLight = mix(instanceColors.rgb, lightWeightedColor, lightingMix);
+  vec3 lightColor = lighting_getLightColor(instanceColors.rgb, project_uCameraPosition, position_worldspace.xyz, project_normal(normals));
+  vec3 mixedLight = mix(instanceColors.rgb, lightColor, lightingMix);
   vec4 color = vec4(mixedLight, instanceColors.a) / 255.0;
   vColor = color;
 
@@ -9867,24 +8855,27 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // Adapted from https://github.com/uber/deck.gl/blob/5.3-release/modules/layers/src/grid-cell-layer/grid-cell-layer.js
 //https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants
 const UNSIGNED_BYTE = 0x1401;
+const DOUBLE = 0x140a;
 const DEFAULT_COLOR = [255, 0, 255, 255];
 const defaultProps = {
   lightingMix: 0.5,
-  fp64: false,
   getSize: x => x.size,
   getPosition: x => x.position,
-  getColor: x => x.color
+  getColor: x => x.color,
+  material: {
+    ambient: 0.5,
+    diffuse: 1
+  }
 };
 
 function _CubeLayer(props) {
   //dynamic superclass, since we don't know have deck.Layer in the declaration phase
   class __CubeLayer extends _base.base.deck.Layer {
     getShaders() {
-      const projectModule = this.use64bitProjection() ? 'project64' : 'project32';
       return {
         vs: _cubeLayerVertex.default,
         fs: _cubeLayerFragment.default,
-        modules: [projectModule, 'lighting', 'picking']
+        modules: [_base.base.deck.project32, _base.base.deck.gouraudLighting, _base.base.deck.picking]
       };
     }
 
@@ -9893,13 +8884,9 @@ function _CubeLayer(props) {
       attributeManager.addInstanced({
         instancePositions: {
           size: 3,
+          type: DOUBLE,
           transition: true,
           accessor: 'getPosition'
-        },
-        instancePositions64xyLow: {
-          size: 3,
-          accessor: 'getPosition',
-          update: this.calculateInstancePositions64xyLow
         },
         instanceSizes: {
           size: 3,
@@ -9927,29 +8914,27 @@ function _CubeLayer(props) {
         changeFlags
       }); //TODO add parameter type to deck.gl-typings
       // Re-generate model if geometry changed
+      //if (props.fp64 !== oldProps.fp64) {
 
-      if (props.fp64 !== oldProps.fp64) {
-        const {
-          gl
-        } = this.context;
+      const {
+        gl
+      } = this.context;
 
-        if (this.state.model) {
-          this.state.model.delete();
-        }
-
-        this.setState({
-          model: this._getModel(gl)
-        });
-        this.getAttributeManager().invalidateAll();
+      if (this.state.model) {
+        this.state.model.delete();
       }
+
+      this.setState({
+        model: this._getModel(gl)
+      });
+      this.getAttributeManager().invalidateAll(); //}
     }
 
     _getModel(gl) {
       return new _base.base.luma.Model(gl, Object.assign({}, this.getShaders(), {
         id: this.props.id,
         geometry: new _base.base.luma.CubeGeometry(),
-        isInstanced: true,
-        shaderCache: this.context.shaderCache
+        isInstanced: true
       }));
     }
 
@@ -9964,34 +8949,9 @@ function _CubeLayer(props) {
         lightingMix = this.props.interpolator.layerInterpolatedProps.lightingMix;
       }
 
-      this.state.model.render(Object.assign({}, uniforms, {
+      this.state.model.setUniforms(Object.assign({}, uniforms, {
         lightingMix
-      }));
-    }
-
-    calculateInstancePositions64xyLow(attribute) {
-      const isFP64 = this.use64bitPositions();
-      attribute.constant = !isFP64;
-
-      if (!isFP64) {
-        attribute.value = new Float32Array(2);
-        return;
-      }
-
-      const {
-        data,
-        getPosition
-      } = this.props;
-      const {
-        value
-      } = attribute;
-      let i = 0;
-
-      for (const point of data) {
-        const position = getPosition(point);
-        value[i++] = _base.base.luma.fp64.fp64LowPart(position[0]);
-        value[i++] = _base.base.luma.fp64.fp64LowPart(position[1]);
-      }
+      })).draw();
     }
 
   }
@@ -10582,21 +9542,21 @@ exports.getLayers = getLayers;
 exports.getCubeLayer = getCubeLayer;
 exports.getCubes = getCubes;
 
+var _array = require("./array");
+
 var _base = require("./base");
 
-var _chromaticTextLayer = require("./chromatic-text-layer/chromatic-text-layer");
-
-var _array = require("./array");
+var _constants = require("./constants");
 
 var _cubeLayer = require("./cube-layer/cube-layer");
 
 var _d3Ease = require("d3-ease");
 
-var _constants = require("./constants");
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function getLayers(presenter, config, stage, lightSettings, lightingMix, interpolator, guideLines) {
+function getLayers(presenter, config, stage, lightSettings
+/*LightSettings*/
+, lightingMix, interpolator, guideLines) {
   const cubeLayer = newCubeLayer(presenter, config, stage.cubeData, presenter.style.highlightColor, lightSettings, lightingMix, interpolator);
   const {
     x,
@@ -10624,7 +9584,9 @@ function getLayers(presenter, config, stage, lightSettings, lightingMix, interpo
   return [textLayer, cubeLayer, lineLayer];
 }
 
-function newCubeLayer(presenter, config, cubeData, highlightColor, lightSettings, lightingMix, interpolator) {
+function newCubeLayer(presenter, config, cubeData, highlightColor, lightSettings
+/*LightSettings*/
+, lightingMix, interpolator) {
   const getPosition = getTiming(config.transitionDurations.position, _d3Ease.easeExpInOut);
   const getSize = getTiming(config.transitionDurations.size, _d3Ease.easeExpInOut);
   const getColor = getTiming(config.transitionDurations.color);
@@ -10633,7 +9595,7 @@ function newCubeLayer(presenter, config, cubeData, highlightColor, lightSettings
     lightingMix,
     id: _constants.layerNames.cubes,
     data: cubeData,
-    coordinateSystem: _base.base.deck.COORDINATE_SYSTEM.IDENTITY,
+    coordinateSystem: _base.base.deck.COORDINATE_SYSTEM.CARTESIAN,
     pickable: true,
     autoHighlight: true,
     highlightColor,
@@ -10649,7 +9611,7 @@ function newCubeLayer(presenter, config, cubeData, highlightColor, lightSettings
         config.onCubeHover(e && e.srcEvent, o.object);
       }
     },
-    lightSettings,
+    //lightSettings,
     transitions: {
       getPosition,
       getColor,
@@ -10663,9 +9625,10 @@ function newLineLayer(id, data) {
   return new _base.base.layers.LineLayer({
     id,
     data,
-    coordinateSystem: _base.base.deck.COORDINATE_SYSTEM.IDENTITY,
+    widthUnits: 'pixels',
+    coordinateSystem: _base.base.deck.COORDINATE_SYSTEM.CARTESIAN,
     getColor: o => o.color,
-    getStrokeWidth: o => o.strokeWidth
+    getWidth: o => o.strokeWidth
   });
 }
 
@@ -10673,10 +9636,17 @@ function newTextLayer(presenter, id, data, config, fontFamily) {
   const props = {
     id,
     data,
-    coordinateSystem: _base.base.deck.COORDINATE_SYSTEM.IDENTITY,
+    coordinateSystem: _base.base.deck.COORDINATE_SYSTEM.CARTESIAN,
+    sizeUnits: 'pixels',
     autoHighlight: true,
     pickable: true,
-    getHighlightColor: config.getTextHighlightColor || (o => o.color),
+    highlightColor: p => {
+      if (config.getTextHighlightColor) {
+        return config.getTextHighlightColor(p.object);
+      } else {
+        return [0, 0, 0, 0];
+      }
+    },
     onClick: (o, e) => {
       let pe = e && e.srcEvent;
       config.onTextClick && config.onTextClick(pe, o.object);
@@ -10703,7 +9673,7 @@ function newTextLayer(presenter, id, data, config, fontFamily) {
     props.fontFamily = fontFamily;
   }
 
-  return new _chromaticTextLayer.ChromaticTextLayer(props);
+  return new _base.base.layers.TextLayer(props);
 }
 
 function getTiming(duration, easing) {
@@ -10711,7 +9681,8 @@ function getTiming(duration, easing) {
 
   if (duration) {
     timing = {
-      duration
+      duration,
+      type: 'interpolation'
     };
 
     if (easing) {
@@ -10723,7 +9694,7 @@ function getTiming(duration, easing) {
 }
 
 function getCubeLayer(deckProps) {
-  return deckProps.layers.filter(layer => layer.id === _constants.layerNames.cubes)[0];
+  return deckProps.layers.filter(layer => layer && layer.id === _constants.layerNames.cubes)[0];
 }
 
 function getCubes(deckProps) {
@@ -10732,7 +9703,7 @@ function getCubes(deckProps) {
   const cubeLayerProps = cubeLayer.props;
   return cubeLayerProps.data;
 }
-},{"./base":"To8D","./chromatic-text-layer/chromatic-text-layer":"VizX","./array":"Oim5","./cube-layer/cube-layer":"gZmI","d3-ease":"id0f","./constants":"Fy6F"}],"WeBf":[function(require,module,exports) {
+},{"./array":"Oim5","./base":"To8D","./constants":"Fy6F","./cube-layer/cube-layer":"gZmI","d3-ease":"id0f"}],"WeBf":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10858,129 +9829,7 @@ var _color = require("../color");
 var _tsxCreateElement = require("tsx-create-element");
 
 var _layers = require("../layers");
-},{"../array":"Oim5","../htmlHelpers":"i6BN","../clone":"Jcn2","../color":"j7Ij","tsx-create-element":"YitK","../layers":"U4xU"}],"YfRA":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.box = box;
-exports.default = void 0;
-
-var _base = require("../base");
-
-var _color = require("../color");
-
-var _defaults = require("../defaults");
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-const markStager = (options, stage, scene, x, y, groupType) => {
-  _base.base.vega.sceneVisit(scene, function (item) {
-    var x1, y1, x2, y2;
-    x1 = item.x || 0;
-    y1 = item.y || 0;
-    x2 = item.x2 != null ? item.x2 : x1;
-    y2 = item.y2 != null ? item.y2 : y1;
-    const lineItem = styledLine(x1 + x, y1 + y, x2 + x, y2 + y, item.stroke, item.strokeWidth);
-
-    if (item.mark.role === 'axis-tick') {
-      options.currAxis.ticks.push(lineItem);
-    } else if (item.mark.role === 'axis-domain') {
-      options.currAxis.domain = lineItem;
-    } else {
-      stage.gridLines.push(lineItem);
-    }
-  });
-};
-
-function styledLine(x1, y1, x2, y2, stroke, strokeWidth) {
-  const line = {
-    sourcePosition: [x1, -y1, _defaults.lineZ],
-    targetPosition: [x2, -y2, _defaults.lineZ],
-    color: (0, _color.colorFromString)(stroke),
-    strokeWidth: strokeWidth * 10 //translate width to deck.gl
-
-  };
-  return line;
-}
-
-function box(gx, gy, height, width, stroke, strokeWidth, diagonals = false) {
-  const lines = [styledLine(gx, gy, gx + width, gy, stroke, strokeWidth), styledLine(gx + width, gy, gx + width, gy + height, stroke, strokeWidth), styledLine(gx + width, gy + height, gx, gy + height, stroke, strokeWidth), styledLine(gx, gy + height, gx, gy, stroke, strokeWidth)];
-
-  if (diagonals) {
-    lines.push(styledLine(gx, gy, gx + width, gy + height, stroke, strokeWidth));
-    lines.push(styledLine(gx, gy + height, gx + width, gy, stroke, strokeWidth));
-  }
-
-  return lines;
-}
-
-var _default = markStager;
-exports.default = _default;
-},{"../base":"To8D","../color":"j7Ij","../defaults":"jQIe"}],"qyL6":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.PresenterElement = void 0;
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-
-/**
- * HTML elements outputted by the presenter.
- */
-var PresenterElement;
-exports.PresenterElement = PresenterElement;
-
-(function (PresenterElement) {
-  PresenterElement[PresenterElement["root"] = 0] = "root";
-  PresenterElement[PresenterElement["gl"] = 1] = "gl";
-  PresenterElement[PresenterElement["panel"] = 2] = "panel";
-  PresenterElement[PresenterElement["legend"] = 3] = "legend";
-  PresenterElement[PresenterElement["vegaControls"] = 4] = "vegaControls";
-})(PresenterElement || (exports.PresenterElement = PresenterElement = {}));
-},{}],"qkJA":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.initializePanel = initializePanel;
-exports.className = className;
-
-var _tsxCreateElement = require("tsx-create-element");
-
-var _defaults = require("./defaults");
-
-var _enums = require("./enums");
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function initializePanel(presenter) {
-  const rootDiv = (0, _tsxCreateElement.createElement)("div", {
-    className: className(_enums.PresenterElement.root, presenter)
-  }, (0, _tsxCreateElement.createElement)("div", {
-    className: className(_enums.PresenterElement.gl, presenter),
-    style: {
-      minHeight: _defaults.minHeight,
-      minWidth: _defaults.minWidth
-    }
-  }), (0, _tsxCreateElement.createElement)("div", {
-    className: className(_enums.PresenterElement.panel, presenter)
-  }, (0, _tsxCreateElement.createElement)("div", {
-    className: className(_enums.PresenterElement.vegaControls, presenter)
-  }), (0, _tsxCreateElement.createElement)("div", {
-    className: className(_enums.PresenterElement.legend, presenter)
-  })));
-  (0, _tsxCreateElement.mount)(rootDiv, presenter.el);
-}
-
-function className(type, presenter) {
-  return `${presenter.style.cssPrefix}${_enums.PresenterElement[type]}`;
-}
-},{"tsx-create-element":"YitK","./defaults":"jQIe","./enums":"qyL6"}],"gyzW":[function(require,module,exports) {
+},{"../array":"Oim5","../htmlHelpers":"i6BN","../clone":"Jcn2","../color":"j7Ij","tsx-create-element":"YitK","../layers":"U4xU"}],"gyzW":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10992,26 +9841,20 @@ var _base = require("../base");
 
 function createOrbitControllerClass(factoryOptions) {
   function wrapper(props) {
-    class OrbitControllerInternal extends _base.base.deck._OrbitController {
+    class OrbitControllerInternal extends _base.base.deck.OrbitController {
       constructor(props) {
         super(props);
         this.invertPan = true;
       }
 
-      _onDoubleTap(event) {
-        if (factoryOptions && factoryOptions.doubleClickHandler) {
-          factoryOptions.doubleClickHandler(event, this);
-        } else {
-          super._onDoubleTap(event);
-        }
-      }
-
-      _onPanRotate(event) {
-        if (!this.dragRotate) {
-          return false;
+      handleEvent(event) {
+        if (event.type === 'doubletap') {
+          if (factoryOptions && factoryOptions.doubleClickHandler) {
+            return factoryOptions.doubleClickHandler(event, this);
+          }
         }
 
-        return this._onPanRotateStandard(event);
+        return super.handleEvent(event);
       }
 
     }
@@ -11087,7 +9930,7 @@ function createDeckGLClassesForPresenter(factoryOptions) {
      * @params controller (Object) - Controller class. Leave empty for auto detection
      */
     class DeckGLInternal extends _base.base.deck.Deck {
-      constructor(props = {}) {
+      constructor(props) {
         if (typeof document === 'undefined') {
           // Not browser
           throw Error('Deck can only be used in the browser');
@@ -11135,7 +9978,95 @@ function createDeckGLClassesForPresenter(factoryOptions) {
     DeckGL_Class: wrapper
   };
 }
-},{"../base":"To8D","./orbitController":"gyzW"}],"zxV0":[function(require,module,exports) {
+},{"../base":"To8D","./orbitController":"gyzW"}],"BfWC":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.LinearInterpolator = void 0;
+
+var _base = require("../base");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function wrapper(props) {
+  class LinearInterpolatorInternal extends _base.base.deck.LinearInterpolator {
+    constructor(transitionProps) {
+      super(transitionProps);
+    }
+
+    interpolateProps(viewStateStartProps, viewStateEndProps, t) {
+      if (this.layerStartProps && this.layerEndProps) {
+        this.layerInterpolatedProps = super.interpolateProps(this.layerStartProps, this.layerEndProps, t);
+      }
+
+      return super.interpolateProps(viewStateStartProps, viewStateEndProps, t);
+    }
+
+  }
+
+  const instance = new LinearInterpolatorInternal(props);
+  return instance;
+}
+
+const LinearInterpolator = wrapper;
+exports.LinearInterpolator = LinearInterpolator;
+},{"../base":"To8D"}],"ZnxW":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.lightingEffects = lightingEffects;
+
+var _base = require("./base");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function lightingEffects() {
+  const ambientLight = new _base.base.deck.AmbientLight({
+    color: [255, 255, 255],
+    intensity: 0.3
+  });
+  const cameraLight = new _base.base.deck._CameraLight({
+    color: [255, 255, 255],
+    intensity: 1
+  }); // const directionalLight = new base.deck.DirectionalLight({
+  //     color: [255, 255, 255],
+  //     direction: [0, 0, -1],
+  //     intensity: 0.2
+  //   });
+
+  return [new _base.base.deck.LightingEffect({
+    ambientLight,
+    cameraLight
+  })];
+}
+},{"./base":"To8D"}],"qyL6":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.PresenterElement = void 0;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
+/**
+ * HTML elements outputted by the presenter.
+ */
+var PresenterElement;
+exports.PresenterElement = PresenterElement;
+
+(function (PresenterElement) {
+  PresenterElement[PresenterElement["root"] = 0] = "root";
+  PresenterElement[PresenterElement["gl"] = 1] = "gl";
+  PresenterElement[PresenterElement["panel"] = 2] = "panel";
+  PresenterElement[PresenterElement["legend"] = 3] = "legend";
+  PresenterElement[PresenterElement["vegaControls"] = 4] = "vegaControls";
+})(PresenterElement || (exports.PresenterElement = PresenterElement = {}));
+},{}],"zxV0":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11203,41 +10134,105 @@ const symbolMap = {
     });
   }
 };
-},{"tsx-create-element":"YitK","./controls":"KmGS"}],"BfWC":[function(require,module,exports) {
+},{"tsx-create-element":"YitK","./controls":"KmGS"}],"YfRA":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.LinearInterpolator = void 0;
+exports.box = box;
+exports.default = void 0;
 
 var _base = require("../base");
 
+var _color = require("../color");
+
+var _defaults = require("../defaults");
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function wrapper(props) {
-  class LinearInterpolatorInternal extends _base.base.deck.LinearInterpolator {
-    constructor(transitionProps) {
-      super(transitionProps);
+const markStager = (options, stage, scene, x, y, groupType) => {
+  _base.base.vega.sceneVisit(scene, function (item) {
+    var x1, y1, x2, y2;
+    x1 = item.x || 0;
+    y1 = item.y || 0;
+    x2 = item.x2 != null ? item.x2 : x1;
+    y2 = item.y2 != null ? item.y2 : y1;
+    const lineItem = styledLine(x1 + x, y1 + y, x2 + x, y2 + y, item.stroke, item.strokeWidth);
+
+    if (item.mark.role === 'axis-tick') {
+      options.currAxis.ticks.push(lineItem);
+    } else if (item.mark.role === 'axis-domain') {
+      options.currAxis.domain = lineItem;
+    } else {
+      stage.gridLines.push(lineItem);
     }
+  });
+};
 
-    interpolateProps(viewStateStartProps, viewStateEndProps, t) {
-      if (this.layerStartProps && this.layerEndProps) {
-        this.layerInterpolatedProps = super.interpolateProps(this.layerStartProps, this.layerEndProps, t);
-      }
-
-      return super.interpolateProps(viewStateStartProps, viewStateEndProps, t);
-    }
-
-  }
-
-  const instance = new LinearInterpolatorInternal(props);
-  return instance;
+function styledLine(x1, y1, x2, y2, stroke, strokeWidth) {
+  const line = {
+    sourcePosition: [x1, -y1, _defaults.lineZ],
+    targetPosition: [x2, -y2, _defaults.lineZ],
+    color: (0, _color.colorFromString)(stroke),
+    strokeWidth: strokeWidth
+  };
+  return line;
 }
 
-const LinearInterpolator = wrapper;
-exports.LinearInterpolator = LinearInterpolator;
-},{"../base":"To8D"}],"sE6a":[function(require,module,exports) {
+function box(gx, gy, height, width, stroke, strokeWidth, diagonals = false) {
+  const lines = [styledLine(gx, gy, gx + width, gy, stroke, strokeWidth), styledLine(gx + width, gy, gx + width, gy + height, stroke, strokeWidth), styledLine(gx + width, gy + height, gx, gy + height, stroke, strokeWidth), styledLine(gx, gy + height, gx, gy, stroke, strokeWidth)];
+
+  if (diagonals) {
+    lines.push(styledLine(gx, gy, gx + width, gy + height, stroke, strokeWidth));
+    lines.push(styledLine(gx, gy + height, gx + width, gy, stroke, strokeWidth));
+  }
+
+  return lines;
+}
+
+var _default = markStager;
+exports.default = _default;
+},{"../base":"To8D","../color":"j7Ij","../defaults":"jQIe"}],"qkJA":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.initializePanel = initializePanel;
+exports.className = className;
+
+var _tsxCreateElement = require("tsx-create-element");
+
+var _defaults = require("./defaults");
+
+var _enums = require("./enums");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function initializePanel(presenter) {
+  const rootDiv = (0, _tsxCreateElement.createElement)("div", {
+    className: className(_enums.PresenterElement.root, presenter)
+  }, (0, _tsxCreateElement.createElement)("div", {
+    className: className(_enums.PresenterElement.gl, presenter),
+    style: {
+      minHeight: _defaults.minHeight,
+      minWidth: _defaults.minWidth
+    }
+  }), (0, _tsxCreateElement.createElement)("div", {
+    className: className(_enums.PresenterElement.panel, presenter)
+  }, (0, _tsxCreateElement.createElement)("div", {
+    className: className(_enums.PresenterElement.vegaControls, presenter)
+  }), (0, _tsxCreateElement.createElement)("div", {
+    className: className(_enums.PresenterElement.legend, presenter)
+  })));
+  (0, _tsxCreateElement.mount)(rootDiv, presenter.el);
+}
+
+function className(type, presenter) {
+  return `${presenter.style.cssPrefix}${_enums.PresenterElement[type]}`;
+}
+},{"tsx-create-element":"YitK","./defaults":"jQIe","./enums":"qyL6"}],"sE6a":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11365,7 +10360,7 @@ var _color = require("../color");
 
 const markStager = (options, stage, scene, x, y, groupType) => {
   //scale Deck.Gl text to Vega size
-  const fontScale = 6; //change direction of y from SVG to GL
+  const fontScale = 1; //change direction of y from SVG to GL
 
   const ty = -1;
 
@@ -11600,33 +10595,25 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.targetViewState = targetViewState;
 exports.viewStateProps = void 0;
-const viewStateProps = ['distance', 'fov', 'lookAt', 'rotationOrbit', 'rotationX', 'zoom'];
+const viewStateProps = ['target', 'rotationOrbit', 'rotationX', 'zoom'];
 exports.viewStateProps = viewStateProps;
 
 function targetViewState(height, width, view) {
-  const distance = 10;
-  const fov = 60;
-  const lookAt = [width / 2, -height / 2, 0]; //add a 4th dimension to make transitions work
-
-  lookAt.push(1);
+  const target = [width / 2, -height / 2, 0];
 
   if (view === '2d') {
     return {
-      distance,
-      fov,
-      lookAt,
+      target,
       rotationOrbit: 0,
-      rotationX: 0,
-      zoom: 10 / height
+      rotationX: 90,
+      zoom: -0.2
     };
   } else {
     return {
-      distance,
-      fov,
-      lookAt,
-      rotationOrbit: -25,
-      rotationX: 60,
-      zoom: 9 / height
+      target,
+      rotationOrbit: 25,
+      rotationX: 30,
+      zoom: -0.4
     };
   }
 }
@@ -11640,35 +10627,37 @@ exports.Presenter = void 0;
 
 var _base = require("./base");
 
-var _rule = require("./marks/rule");
-
-var _panel = require("./panel");
+var _clone = require("./clone");
 
 var _color = require("./color");
 
 var _deckgl = require("./deck.gl-classes/deckgl");
 
+var _linearInterpolator = require("./deck.gl-classes/linearInterpolator");
+
 var _defaults = require("./defaults");
 
-var _clone = require("./clone");
+var _effects = require("./effects");
 
-var _d3Ease = require("d3-ease");
-
-var _tsxCreateElement = require("tsx-create-element");
+var _enums = require("./enums");
 
 var _layers = require("./layers");
 
 var _legend = require("./legend");
 
-var _linearInterpolator = require("./deck.gl-classes/linearInterpolator");
+var _rule = require("./marks/rule");
+
+var _panel = require("./panel");
 
 var _patchedCubeArray = require("./patchedCubeArray");
-
-var _enums = require("./enums");
 
 var _stagers = require("./stagers");
 
 var _viewState = require("./viewState");
+
+var _d3Ease = require("d3-ease");
+
+var _tsxCreateElement = require("tsx-create-element");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -11798,11 +10787,17 @@ class Presenter {
         }
       });
       this.OrbitControllerClass = classes.OrbitControllerClass;
+      const initialViewState = (0, _viewState.targetViewState)(height, width, stage.view);
       const deckProps = {
-        onLayerClick: config && config.onLayerClick,
+        height: null,
+        width: null,
+        effects: (0, _effects.lightingEffects)(),
+        layers: [],
+        onClick: config && config.onLayerClick,
         views: [new _base.base.deck.OrbitView({
-          controller: this.OrbitControllerClass
+          controller: _base.base.deck.OrbitController
         })],
+        initialViewState,
         container: this.getElement(_enums.PresenterElement.gl),
         getCursor: interactiveState => {
           if (interactiveState.onText || interactiveState.onAxisSelection) {
@@ -11897,8 +10892,8 @@ class Presenter {
 
   setDeckProps(stage, height, width, cubeCount, modifyConfig) {
     const config = (0, _clone.deepMerge)(_defaults.defaultPresenterConfig, modifyConfig);
-    const newBounds = this.isNewBounds(stage.view, height, width, cubeCount);
-    let lightSettings = this.style.lightSettings[stage.view];
+    const newBounds = this.isNewBounds(stage.view, height, width, cubeCount); //let lightSettings = this.style.lightSettings[stage.view];
+
     let lightingMix = stage.view === '3d' ? 1.0 : 0.0;
     let linearInterpolator; //choose the current OrbitView viewstate if possible
 
@@ -11937,19 +10932,21 @@ class Presenter {
         viewState.transitionInterpolator = linearInterpolator;
       }
 
-      if (stage.view === '2d') {
-        lightSettings = this.style.lightSettings['3d'];
+      if (stage.view === '2d') {//lightSettings = this.style.lightSettings['3d'];
       }
     }
 
     const guideLines = this._showGuides && (0, _rule.box)(0, 0, height, width, '#0f0', 1, true);
     config.preLayer && config.preLayer(stage);
-    const layers = (0, _layers.getLayers)(this, config, stage, lightSettings, lightingMix, linearInterpolator, guideLines);
+    const layers = (0, _layers.getLayers)(this, config, stage,
+    /*lightSettings*/
+    null, lightingMix, linearInterpolator, guideLines);
     const deckProps = {
+      effects: (0, _effects.lightingEffects)(),
       views: [new _base.base.deck.OrbitView({
-        controller: this.OrbitControllerClass
+        controller: _base.base.deck.OrbitController
       })],
-      viewState,
+      initialViewState: viewState,
       layers
     };
 
@@ -11957,7 +10954,7 @@ class Presenter {
       config.preStage(stage, deckProps);
     }
 
-    this.deckgl.setProps(deckProps);
+    requestAnimationFrame(() => this.deckgl.setProps(deckProps));
     delete stage.cubeData;
     this._last = {
       cubeCount,
@@ -11978,8 +10975,9 @@ class Presenter {
     viewState.transitionEasing = _d3Ease.easeExpInOut;
     viewState.transitionInterpolator = new _linearInterpolator.LinearInterpolator(_viewState.viewStateProps);
     const deckProps = {
+      effects: (0, _effects.lightingEffects)(),
       views: this.deckgl.props.views,
-      viewState,
+      initialViewState: viewState,
       layers: this.deckgl.props.layers
     };
     this.deckgl.setProps(deckProps);
@@ -12019,7 +11017,7 @@ class Presenter {
 }
 
 exports.Presenter = Presenter;
-},{"./base":"To8D","./marks/rule":"YfRA","./panel":"qkJA","./color":"j7Ij","./deck.gl-classes/deckgl":"NGGy","./defaults":"jQIe","./clone":"Jcn2","d3-ease":"id0f","tsx-create-element":"YitK","./layers":"U4xU","./legend":"zxV0","./deck.gl-classes/linearInterpolator":"BfWC","./patchedCubeArray":"sE6a","./enums":"qyL6","./stagers":"yA2f","./viewState":"sOaQ"}],"wGit":[function(require,module,exports) {
+},{"./base":"To8D","./clone":"Jcn2","./color":"j7Ij","./deck.gl-classes/deckgl":"NGGy","./deck.gl-classes/linearInterpolator":"BfWC","./defaults":"jQIe","./effects":"ZnxW","./enums":"qyL6","./layers":"U4xU","./legend":"zxV0","./marks/rule":"YfRA","./panel":"qkJA","./patchedCubeArray":"sE6a","./stagers":"yA2f","./viewState":"sOaQ","d3-ease":"id0f","tsx-create-element":"YitK"}],"wGit":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12349,11 +11347,10 @@ function getPresenterStyle(options) {
 
   if (options.colors.hoveredCube) {
     style.highlightColor = VegaDeckGl.util.colorFromString(options.colors.hoveredCube);
-  }
+  } //if (options.lightSettings) {
+  // style.lightSettings = options.lightSettings;
+  //}
 
-  if (options.lightSettings) {
-    style.lightSettings = options.lightSettings;
-  }
 
   return style;
 }
@@ -12553,244 +11550,75 @@ class Animator {
 }
 
 exports.Animator = Animator;
-},{}],"PfBA":[function(require,module,exports) {
+},{}],"A7xy":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getSelectedColorMap = getSelectedColorMap;
-exports.colorMapFromCubes = colorMapFromCubes;
-exports.populateColorContext = populateColorContext;
-exports.applyColorMapToCubes = applyColorMapToCubes;
+exports.recolorAxes = recolorAxes;
 
 var VegaDeckGl = _interopRequireWildcard(require("@msrvida/vega-deck.gl"));
-
-var _sanddanceSpecs = require("@msrvida/sanddance-specs");
-
-var _constants = require("./constants");
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function getSelectedColorMap(currentData, showSelectedData, showActive, viewerOptions) {
-  function getSelectionColorItem(datum) {
-    let item;
+function cloneAxis(axes, axisColor, axisTextColor) {
+  return axes.map(axis => {
+    const newAxis = VegaDeckGl.util.deepMerge(axis);
 
-    if (showSelectedData) {
-      item = datum[_sanddanceSpecs.FieldNames.Selected] ? {
-        color: VegaDeckGl.util.colorFromString(viewerOptions.colors.selectedCube)
-      } : {
-        unSelected: true
-      };
+    if (newAxis.domain) {
+      newAxis.domain.color = axisColor;
     }
 
-    if (showActive && datum[_sanddanceSpecs.FieldNames.Active]) {
-      item = {
-        color: VegaDeckGl.util.colorFromString(viewerOptions.colors.activeCube)
-      };
+    if (newAxis.title) {
+      newAxis.title.color = axisTextColor;
     }
 
-    return item;
-  }
-
-  const colorMap = {};
-  currentData.forEach(datum => {
-    const selectionColor = getSelectionColorItem(datum);
-
-    if (selectionColor) {
-      const ordinal = datum[_constants.GL_ORDINAL];
-      colorMap[ordinal] = selectionColor;
-    }
+    newAxis.ticks.forEach(t => {
+      t.color = axisColor;
+    });
+    newAxis.tickText.forEach(t => {
+      t.color = axisTextColor;
+    });
+    return newAxis;
   });
-  return colorMap;
 }
 
-function colorMapFromCubes(cubes) {
-  const map = {};
-  cubes.forEach(cube => {
-    map[cube.ordinal] = {
-      color: cube.color
+function cloneTextData(textData, color) {
+  return textData.map(t => {
+    return Object.assign(Object.assign({}, t), {
+      color
+    });
+  });
+}
+
+function recolorAxes(stage, oldColors, newColors) {
+  const hasNewLineColor = newColors.axisLine && newColors.axisLine !== oldColors.axisLine;
+  const hasNewTextColor = newColors.axisText && newColors.axisText !== oldColors.axisText;
+  let axes;
+  let textData;
+
+  if (hasNewLineColor || hasNewTextColor) {
+    const lineColor = VegaDeckGl.util.colorFromString(newColors.axisLine || oldColors.axisLine);
+    const textColor = VegaDeckGl.util.colorFromString(newColors.axisText || oldColors.axisText);
+    axes = {
+      x: cloneAxis(stage.axes.x, lineColor, textColor),
+      y: cloneAxis(stage.axes.y, lineColor, textColor)
     };
-  });
-  return map;
-}
-
-function populateColorContext(colorContext, presenter) {
-  if (!colorContext.colorMap) {
-    const cubes = presenter.getCubeData();
-    colorContext.colorMap = colorMapFromCubes(cubes);
   }
 
-  colorContext.legend = VegaDeckGl.util.clone(presenter.stage.legend);
-  colorContext.legendElement = presenter.getElement(VegaDeckGl.PresenterElement.legend).children[0];
-}
-
-function applyColorMapToCubes(maps, cubes, unselectedColorMethod) {
-  Object.keys(maps[0]).forEach(ordinal => {
-    const cube = cubes[+ordinal];
-
-    if (cube && !cube.isEmpty) {
-      const actualColorMappedItem = maps[0][ordinal];
-
-      if (maps.length > 1) {
-        const selectedColorMappedItem = maps[1][ordinal];
-
-        if (selectedColorMappedItem) {
-          if (selectedColorMappedItem.unSelected && unselectedColorMethod) {
-            cube.color = unselectedColorMethod(actualColorMappedItem.color);
-          } else {
-            cube.color = selectedColorMappedItem.color;
-          }
-
-          return;
-        }
-      }
-
-      cube.color = actualColorMappedItem.color;
-    }
-  });
-}
-},{"@msrvida/vega-deck.gl":"eFEk","@msrvida/sanddance-specs":"gl1V","./constants":"Syc7"}],"jmI2":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.applySignalValues = applySignalValues;
-exports.extractSignalValuesFromView = extractSignalValuesFromView;
-
-function applySignalValues(sv, b) {
-  if (!sv || !b || !b.signals || !b.signals.length) return;
-
-  for (let key in sv) {
-    let value = sv[key];
-    let signalB = b.signals.filter(signal => signal.name === key)[0];
-
-    if (signalB && signalB.bind) {
-      signalB.value = value;
-    }
-  }
-}
-
-function extractSignalValuesFromView(view, spec) {
-  if (!view || !spec || !spec.signals || !spec.signals.length) return;
-  const result = {};
-  spec.signals.forEach(signalA => {
-    //bound to a UI control
-    if (signalA.bind) {
-      try {
-        result[signalA.name] = view.signal(signalA.name);
-      } catch (e) {// continue regardless of error
-      }
-    }
-  });
-  return result;
-}
-},{}],"dxn8":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.assignOrdinals = assignOrdinals;
-exports.getDataIndexOfCube = getDataIndexOfCube;
-
-var _constants = require("./constants");
-
-function assignOrdinals(columns, data, ordinalMap) {
-  const uCol = columns.uid && columns.uid.name;
-
-  if (ordinalMap) {
-    data.forEach((d, i) => {
-      const key = uCol ? d[uCol] : i;
-      d[_constants.GL_ORDINAL] = ordinalMap[key];
-    });
-  } else {
-    ordinalMap = {};
-    data.forEach((d, i) => {
-      d[_constants.GL_ORDINAL] = i;
-      const uColValue = uCol ? d[uCol] : i;
-      ordinalMap[uColValue] = i;
-    });
+  if (hasNewTextColor) {
+    textData = cloneTextData(stage.textData, VegaDeckGl.util.colorFromString(newColors.axisText));
   }
 
-  return ordinalMap;
+  return {
+    axes,
+    textData
+  };
 }
-
-function getDataIndexOfCube(cube, data) {
-  const len = data.length;
-
-  for (let i = 0; i < len; i++) {
-    if (data[i][_constants.GL_ORDINAL] === cube.ordinal) {
-      return i;
-    }
-  }
-}
-},{"./constants":"Syc7"}],"bPo5":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.push = exports.concat = exports.allTruthy = void 0;
-
-var _vegaDeck = require("@msrvida/vega-deck.gl");
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-const {
-  allTruthy,
-  concat,
-  push
-} = _vegaDeck.util;
-exports.push = push;
-exports.concat = concat;
-exports.allTruthy = allTruthy;
-},{"@msrvida/vega-deck.gl":"eFEk"}],"KytA":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.getSearchGroupFromVegaValue = getSearchGroupFromVegaValue;
-
-var VegaDeckGl = _interopRequireWildcard(require("@msrvida/vega-deck.gl"));
-
-var _array = require("./array");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function getSearchGroupFromVegaValue(search) {
-  let group;
-  const vegaSearch = search;
-
-  if (Array.isArray(vegaSearch)) {
-    //flatten into one group
-    group = {
-      expressions: []
-    };
-    vegaSearch.forEach(g => {
-      const clonedExpressions = VegaDeckGl.util.clone(g.expressions).filter(Boolean);
-      clonedExpressions[0].clause = '&&';
-      (0, _array.push)(group.expressions, clonedExpressions);
-    });
-  } else {
-    group = vegaSearch ? {
-      expressions: vegaSearch.expressions.filter(Boolean)
-    } : null;
-  }
-
-  return group;
-}
-},{"@msrvida/vega-deck.gl":"eFEk","./array":"bPo5"}],"JTcr":[function(require,module,exports) {
+},{"@msrvida/vega-deck.gl":"eFEk"}],"JTcr":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12906,7 +11734,67 @@ function selectBetweenAxis(axis, column, i) {
   const high = tickValue(axis, i + 1);
   return selectBetween(column, low.value, high.value);
 }
-},{}],"oIzg":[function(require,module,exports) {
+},{}],"bPo5":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.push = exports.concat = exports.allTruthy = void 0;
+
+var _vegaDeck = require("@msrvida/vega-deck.gl");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+const {
+  allTruthy,
+  concat,
+  push
+} = _vegaDeck.util;
+exports.push = push;
+exports.concat = concat;
+exports.allTruthy = allTruthy;
+},{"@msrvida/vega-deck.gl":"eFEk"}],"KytA":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getSearchGroupFromVegaValue = getSearchGroupFromVegaValue;
+
+var VegaDeckGl = _interopRequireWildcard(require("@msrvida/vega-deck.gl"));
+
+var _array = require("./array");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function getSearchGroupFromVegaValue(search) {
+  let group;
+  const vegaSearch = search;
+
+  if (Array.isArray(vegaSearch)) {
+    //flatten into one group
+    group = {
+      expressions: []
+    };
+    vegaSearch.forEach(g => {
+      const clonedExpressions = VegaDeckGl.util.clone(g.expressions).filter(Boolean);
+      clonedExpressions[0].clause = '&&';
+      (0, _array.push)(group.expressions, clonedExpressions);
+    });
+  } else {
+    group = vegaSearch ? {
+      expressions: vegaSearch.expressions.filter(Boolean)
+    } : null;
+  }
+
+  return group;
+}
+},{"@msrvida/vega-deck.gl":"eFEk","./array":"bPo5"}],"oIzg":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12914,13 +11802,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.axisSelectionLayer = axisSelectionLayer;
 
-var VegaDeckGl = _interopRequireWildcard(require("@msrvida/vega-deck.gl"));
-
-var _sanddanceSpecs = require("@msrvida/sanddance-specs");
+var _expression = require("./expression");
 
 var _search = require("./search");
 
-var _expression = require("./expression");
+var _sanddanceSpecs = require("@msrvida/sanddance-specs");
+
+var VegaDeckGl = _interopRequireWildcard(require("@msrvida/vega-deck.gl"));
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
@@ -12961,7 +11849,7 @@ function axisSelectionLayer(presenter, specCapabilities, columns, stage, clickHa
 
   const polygonLayer = new VegaDeckGl.base.layers.PolygonLayer({
     autoHighlight: true,
-    coordinateSystem: VegaDeckGl.base.deck.COORDINATE_SYSTEM.IDENTITY,
+    coordinateSystem: VegaDeckGl.base.deck.COORDINATE_SYSTEM.CARTESIAN,
     data: polygons,
     extruded: false,
     highlightColor: VegaDeckGl.util.colorFromString(highlightColor),
@@ -13009,7 +11897,7 @@ function axisSelectionPolygons(axis, vertical, axisSelectionType, column) {
     }
 
     const add = (p2, i) => {
-      var coords = [[p1, q1], [p2, q1], [p2, q2], [p1, q2]];
+      const coords = [[p1, q1], [p2, q1], [p2, q2], [p1, q2]];
       polygons.push({
         search: getSearch(axis, column, i),
         polygon: vertical ? coords.map(xy => xy.reverse()) : coords
@@ -13082,7 +11970,108 @@ function minMaxPoints(lines) {
     return minMax;
   });
 }
-},{"@msrvida/vega-deck.gl":"eFEk","@msrvida/sanddance-specs":"gl1V","./search":"KytA","./expression":"JTcr"}],"MJ1d":[function(require,module,exports) {
+},{"./expression":"JTcr","./search":"KytA","@msrvida/sanddance-specs":"gl1V","@msrvida/vega-deck.gl":"eFEk"}],"PfBA":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getSelectedColorMap = getSelectedColorMap;
+exports.colorMapFromCubes = colorMapFromCubes;
+exports.populateColorContext = populateColorContext;
+exports.applyColorMapToCubes = applyColorMapToCubes;
+
+var VegaDeckGl = _interopRequireWildcard(require("@msrvida/vega-deck.gl"));
+
+var _sanddanceSpecs = require("@msrvida/sanddance-specs");
+
+var _constants = require("./constants");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function getSelectedColorMap(currentData, showSelectedData, showActive, viewerOptions) {
+  function getSelectionColorItem(datum) {
+    let item;
+
+    if (showSelectedData) {
+      item = datum[_sanddanceSpecs.FieldNames.Selected] ? {
+        color: VegaDeckGl.util.colorFromString(viewerOptions.colors.selectedCube)
+      } : {
+        unSelected: true
+      };
+    }
+
+    if (showActive && datum[_sanddanceSpecs.FieldNames.Active]) {
+      item = {
+        color: VegaDeckGl.util.colorFromString(viewerOptions.colors.activeCube)
+      };
+    }
+
+    return item;
+  }
+
+  const colorMap = {};
+  currentData.forEach(datum => {
+    const selectionColor = getSelectionColorItem(datum);
+
+    if (selectionColor) {
+      const ordinal = datum[_constants.GL_ORDINAL];
+      colorMap[ordinal] = selectionColor;
+    }
+  });
+  return colorMap;
+}
+
+function colorMapFromCubes(cubes) {
+  const map = {};
+  cubes.forEach(cube => {
+    map[cube.ordinal] = {
+      color: cube.color
+    };
+  });
+  return map;
+}
+
+function populateColorContext(colorContext, presenter) {
+  if (!colorContext.colorMap) {
+    const cubes = presenter.getCubeData();
+    colorContext.colorMap = colorMapFromCubes(cubes);
+  }
+
+  colorContext.legend = VegaDeckGl.util.clone(presenter.stage.legend);
+  colorContext.legendElement = presenter.getElement(VegaDeckGl.PresenterElement.legend).children[0];
+}
+
+function applyColorMapToCubes(maps, cubes, unselectedColorMethod) {
+  Object.keys(maps[0]).forEach(ordinal => {
+    const cube = cubes[+ordinal];
+
+    if (cube && !cube.isEmpty) {
+      const actualColorMappedItem = maps[0][ordinal];
+
+      if (maps.length > 1) {
+        const selectedColorMappedItem = maps[1][ordinal];
+
+        if (selectedColorMappedItem) {
+          if (selectedColorMappedItem.unSelected && unselectedColorMethod) {
+            cube.color = unselectedColorMethod(actualColorMappedItem.color);
+          } else {
+            cube.color = selectedColorMappedItem.color;
+          }
+
+          return;
+        }
+      }
+
+      cube.color = actualColorMappedItem.color;
+    }
+  });
+}
+},{"@msrvida/vega-deck.gl":"eFEk","@msrvida/sanddance-specs":"gl1V","./constants":"Syc7"}],"MJ1d":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13663,80 +12652,83 @@ function finalizeLegend(colorBinType, colorColumn, legend, language) {
     }
   }
 }
-},{"@msrvida/sanddance-specs":"gl1V","./expression":"JTcr"}],"A7xy":[function(require,module,exports) {
+},{"@msrvida/sanddance-specs":"gl1V","./expression":"JTcr"}],"dxn8":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.recolorAxes = recolorAxes;
+exports.assignOrdinals = assignOrdinals;
+exports.getDataIndexOfCube = getDataIndexOfCube;
 
-var VegaDeckGl = _interopRequireWildcard(require("@msrvida/vega-deck.gl"));
+var _constants = require("./constants");
 
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+function assignOrdinals(columns, data, ordinalMap) {
+  const uCol = columns.uid && columns.uid.name;
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function cloneAxis(axes, axisColor, axisTextColor) {
-  return axes.map(axis => {
-    const newAxis = VegaDeckGl.util.deepMerge(axis);
-    newAxis.domain.color = axisColor;
-    newAxis.title.color = axisTextColor;
-    newAxis.ticks.forEach(t => {
-      t.color = axisColor;
+  if (ordinalMap) {
+    data.forEach((d, i) => {
+      const key = uCol ? d[uCol] : i;
+      d[_constants.GL_ORDINAL] = ordinalMap[key];
     });
-    newAxis.tickText.forEach(t => {
-      t.color = axisTextColor;
+  } else {
+    ordinalMap = {};
+    data.forEach((d, i) => {
+      d[_constants.GL_ORDINAL] = i;
+      const uColValue = uCol ? d[uCol] : i;
+      ordinalMap[uColValue] = i;
     });
-    return newAxis;
+  }
+
+  return ordinalMap;
+}
+
+function getDataIndexOfCube(cube, data) {
+  const len = data.length;
+
+  for (let i = 0; i < len; i++) {
+    if (data[i][_constants.GL_ORDINAL] === cube.ordinal) {
+      return i;
+    }
+  }
+}
+},{"./constants":"Syc7"}],"jmI2":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.applySignalValues = applySignalValues;
+exports.extractSignalValuesFromView = extractSignalValuesFromView;
+
+function applySignalValues(sv, b) {
+  if (!sv || !b || !b.signals || !b.signals.length) return;
+
+  for (let key in sv) {
+    let value = sv[key];
+    let signalB = b.signals.filter(signal => signal.name === key)[0];
+
+    if (signalB && signalB.bind) {
+      signalB.value = value;
+    }
+  }
+}
+
+function extractSignalValuesFromView(view, spec) {
+  if (!view || !spec || !spec.signals || !spec.signals.length) return;
+  const result = {};
+  spec.signals.forEach(signalA => {
+    //bound to a UI control
+    if (signalA.bind) {
+      try {
+        result[signalA.name] = view.signal(signalA.name);
+      } catch (e) {// continue regardless of error
+      }
+    }
   });
+  return result;
 }
-
-function cloneTextData(textData, color) {
-  return textData.map(t => {
-    return Object.assign(Object.assign({}, t), {
-      color
-    });
-  });
-}
-
-function colorEquals(a, b) {
-  if (a.length !== b.length) return false;
-
-  for (let i = 0; i < a.length; i++) {
-    if (a[i] !== b[i]) return false;
-  }
-
-  return true;
-}
-
-function recolorAxes(stage, oldColors, newColors) {
-  const hasNewLineColor = newColors.axisLine && newColors.axisLine !== oldColors.axisLine;
-  const hasNewTextColor = newColors.axisText && newColors.axisText !== oldColors.axisText;
-  let axes;
-  let textData;
-
-  if (hasNewLineColor || hasNewTextColor) {
-    const lineColor = VegaDeckGl.util.colorFromString(newColors.axisLine || oldColors.axisLine);
-    const textColor = VegaDeckGl.util.colorFromString(newColors.axisText || oldColors.axisText);
-    axes = {
-      x: cloneAxis(stage.axes.x, lineColor, textColor),
-      y: cloneAxis(stage.axes.y, lineColor, textColor)
-    };
-  }
-
-  if (hasNewTextColor) {
-    textData = cloneTextData(stage.textData, VegaDeckGl.util.colorFromString(newColors.axisText));
-  }
-
-  return {
-    axes,
-    textData
-  };
-}
-},{"@msrvida/vega-deck.gl":"eFEk"}],"bkgF":[function(require,module,exports) {
+},{}],"bkgF":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13889,21 +12881,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Viewer = void 0;
 
-var searchExpression = _interopRequireWildcard(require("@msrvida/search-expression"));
-
-var VegaDeckGl = _interopRequireWildcard(require("@msrvida/vega-deck.gl"));
-
 var _animator = require("./animator");
 
-var _colorCubes = require("./colorCubes");
-
-var _signals = require("./signals");
-
-var _ordinal = require("./ordinal");
+var _axes = require("./axes");
 
 var _axisSelection = require("./axisSelection");
 
-var _sanddanceSpecs = require("@msrvida/sanddance-specs");
+var _colorCubes = require("./colorCubes");
+
+var _colorSchemes = require("./colorSchemes");
+
+var _constants = require("./constants");
 
 var _dataScope = require("./dataScope");
 
@@ -13915,15 +12903,19 @@ var _headers = require("./headers");
 
 var _legend = require("./legend");
 
+var _ordinal = require("./ordinal");
+
 var _search = require("./search");
 
-var _constants = require("./constants");
-
-var _axes = require("./axes");
-
-var _colorSchemes = require("./colorSchemes");
+var _signals = require("./signals");
 
 var _tooltip = require("./tooltip");
+
+var _sanddanceSpecs = require("@msrvida/sanddance-specs");
+
+var searchExpression = _interopRequireWildcard(require("@msrvida/search-expression"));
+
+var VegaDeckGl = _interopRequireWildcard(require("@msrvida/vega-deck.gl"));
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
@@ -14221,6 +13213,7 @@ class Viewer {
     if (newViewerOptions) {
       if (newViewerOptions.colors) {
         recoloredAxes = (0, _axes.recolorAxes)(this.presenter.stage, this._lastColorOptions, newViewerOptions.colors);
+        this._lastColorOptions = VegaDeckGl.util.clone(newViewerOptions.colors);
         axes = recoloredAxes.axes || axes;
         textData = recoloredAxes.textData || textData;
       }
@@ -14559,8 +13552,8 @@ class Viewer {
       onTextHover: this.onTextHover.bind(this),
       preStage: this.preStage.bind(this),
       onPresent: this.options.onPresent,
-      onLayerClick: (info, pickedInfos, e) => {
-        if (!info) {
+      onLayerClick: (info, e) => {
+        if (!info || !info.object) {
           this.deselect();
         }
       },
@@ -14783,7 +13776,7 @@ class Viewer {
 
 exports.Viewer = Viewer;
 Viewer.defaultViewerOptions = _defaults.defaultViewerOptions;
-},{"@msrvida/search-expression":"VB4o","@msrvida/vega-deck.gl":"eFEk","./animator":"U1OZ","./colorCubes":"PfBA","./signals":"jmI2","./ordinal":"dxn8","./axisSelection":"oIzg","@msrvida/sanddance-specs":"gl1V","./dataScope":"MJ1d","./defaults":"G0Md","./details":"KCB5","./headers":"nQLz","./legend":"rI67","./search":"KytA","./constants":"Syc7","./axes":"A7xy","./colorSchemes":"kNpg","./tooltip":"bkgF"}],"DZif":[function(require,module,exports) {
+},{"./animator":"U1OZ","./axes":"A7xy","./axisSelection":"oIzg","./colorCubes":"PfBA","./colorSchemes":"kNpg","./constants":"Syc7","./dataScope":"MJ1d","./defaults":"G0Md","./details":"KCB5","./headers":"nQLz","./legend":"rI67","./ordinal":"dxn8","./search":"KytA","./signals":"jmI2","./tooltip":"bkgF","@msrvida/sanddance-specs":"gl1V","@msrvida/search-expression":"VB4o","@msrvida/vega-deck.gl":"eFEk"}],"DZif":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14792,7 +13785,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = '3.0.0-alpha.2';
+const version = '3.0.0-alpha.3';
 exports.version = version;
 },{}],"rZaE":[function(require,module,exports) {
 "use strict";
@@ -15951,7 +14944,7 @@ exports.embedHtml = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var embedHtml = function embedHtml(title, embed) {
-  return "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>".concat(title, "</title>\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-embed@3.0.0-alpha.2/dist/css/sanddance-embed.css\" />\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-explorer@3.0.0-alpha.2/dist/css/sanddance-explorer.css\" />\n</head>\n\n<body>\n    <script src=\"https://unpkg.com/react@16/umd/react.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/react-dom@16/umd/react-dom.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/deck.gl@6/deckgl.min.js\"></script>\n    <script src=\"https://unpkg.com/vega@5.9/build/vega.min.js\"></script>\n    <script src=\"https://unpkg.com/office-ui-fabric-react@6.204.4/dist/office-ui-fabric-react.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-explorer@3.0.0-alpha.2/dist/umd/sanddance-explorer.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-embed@3.0.0-alpha.2/dist/umd/sanddance-embed.js\"></script>\n\n    <div id=\"app\"></div>\n\n    ").concat(embed, "\n\n</body>\n\n</html>");
+  return "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>".concat(title, "</title>\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-embed@3.0.0-alpha.3/dist/css/sanddance-embed.css\" />\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-explorer@3.0.0-alpha.3/dist/css/sanddance-explorer.css\" />\n</head>\n\n<body>\n    <script src=\"https://unpkg.com/react@16/umd/react.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/react-dom@16/umd/react-dom.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/deck.gl@6/deckgl.min.js\"></script>\n    <script src=\"https://unpkg.com/vega@5.9/build/vega.min.js\"></script>\n    <script src=\"https://unpkg.com/office-ui-fabric-react@6.204.4/dist/office-ui-fabric-react.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-explorer@3.0.0-alpha.3/dist/umd/sanddance-explorer.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-embed@3.0.0-alpha.3/dist/umd/sanddance-embed.js\"></script>\n\n    <div id=\"app\"></div>\n\n    ").concat(embed, "\n\n</body>\n\n</html>");
 };
 
 exports.embedHtml = embedHtml;
@@ -23189,7 +22182,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var version = '3.0.0-alpha.2';
+var version = '3.0.0-alpha.3';
 exports.version = version;
 },{}],"zKGJ":[function(require,module,exports) {
 "use strict";
@@ -24749,7 +23742,7 @@ function (_React$Component) {
           } else if (o.metaData && o.metaData.search) {
             return _sanddanceReact.SandDance.VegaDeckGl.util.colorFromString(_this2.viewerOptions.colors.searchTextHighlight);
           } else {
-            return o.color;
+            return [0, 0, 0, 0];
           }
         },
         onTextClick: function onTextClick(e, text) {

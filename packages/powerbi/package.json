@@ -15,7 +15,7 @@
     "@babel/runtime-corejs2": "^7.5.5",
     "@deck.gl/core": "6.4",
     "@deck.gl/layers": "6.4",
-    "@msrvida/sanddance-explorer": "3.0.0-alpha.2",
+    "@msrvida/sanddance-explorer": "3.0.0-alpha.3",
     "core-js": "3.2.1",
     "luma.gl": "6.4",
     "office-ui-fabric-react": "6.204.4",
