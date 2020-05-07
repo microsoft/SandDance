@@ -42,6 +42,8 @@ export interface Axis {
  */
 export type Vec3 = [number, number, number];
 
+export type Vec6 = [number, number, number, number, number, number];
+
 /**
  * Cuboid information. The cube does not need to have equal dimensions.
  */
@@ -62,6 +64,20 @@ export interface Cube {
     size: Vec3;
 }
 
+export interface Path {
+    positions: Vec3[];
+    strokeColor: RGBAColor;
+    strokeWidth: number;
+    strokeOpacity: number;
+}
+
+export interface Polygon {
+    positions: Vec6[];    
+    strokeColor: RGBAColor;
+    fillColor: RGBAColor;
+    strokeWidth: number;
+    strokeOpacity: number;
+}
 /**
  * Vega Scene plus camera type.
  */
@@ -83,6 +99,8 @@ export interface FacetRect {
 export interface Stage {
     backgroundColor?: RGBAColor;
     cubeData: Cube[];
+    pathData: Path[];
+    polygonData: Polygon[];
     legend?: Legend;
     axes: {
         x: Axis[];

@@ -164,8 +164,14 @@ export const spec: vega.Spec = {
         "type": "log",
         "base": 10,
         "domain": {"data": "rankedCovid", "field": "Value"},
-        "range": [{"signal": "height"}, 0],
+        "range": [0, {"signal": "height"}],
         "nice": true
+      },
+      {
+        "name": "z",
+        "type": "linear",        
+        "domain": {"data": "forLegend", "field": "rank"},
+        "range": [0, {"signal": "height"}]        
       },
       {
         "name": "color",
@@ -181,64 +187,8 @@ export const spec: vega.Spec = {
       }
     ],
     "axes": [
-      {
-        "scale": "x",
-        "orient": "bottom",
-        "gridScale": "y",
-        "grid": true,
-        "tickCount": {"signal": "ceil(width/40)"},
-        "domain": false,
-        "labels": false,
-        "maxExtent": 0,
-        "minExtent": 0,
-        "ticks": false,
-        "zindex": 0
-      },
-      {
-        "scale": "y",
-        "orient": "left",
-        "gridScale": "x",
-        "grid": true,
-        "tickCount": {"signal": "ceil(height/40)"},
-        "domain": false,
-        "labels": false,
-        "maxExtent": 0,
-        "minExtent": 0,
-        "ticks": false,
-        "zindex": 0
-      },
-      {
-        "scale": "x",
-        "orient": "bottom",
-        "grid": false,
-        "title": "Date",
-        "titleFontSize": {"value": 18},
-        "labelFlush": true,
-        "labelOverlap": true,
-        "tickCount": {"signal": "ceil(width/40)"},
-        "encode": {
-          "labels": {
-            "update": {
-              "text": {
-                "signal": "utcFormat(datum.value, timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
-              },
-              "fontSize": {"value": 10}
-            }
-          }
-        },
-        "zindex": 0
-      },
-      {
-        "scale": "y",
-        "orient": "left",
-        "grid": false,
-        "title": {"signal": "axislabel"},
-        "titleFontSize": {"value": 18},
-        "labelOverlap": true,
-        "tickCount": {"signal": "ceil(height/40)"},
-        "zindex": 0,
-        "labelFontSize": {"value": 14}
-      }
+     
+
     ],
     "legends": [
       {
@@ -285,8 +235,32 @@ export const spec: vega.Spec = {
                   "signal": "{\"Date (year-month-date)\": timeFormat(datum[\"utcyearmonthdate_Date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"Value\": format(datum[\"Value\"], \"\"), \"StateName\": ''+scale('fipslookup',datum[\"fips\"])}"
                 },
                 "stroke": {"scale": "color", "field": "fips"},
+                "strokeWidth": {"value":5},
                 "x": {"scale": "x", "field": "utcyearmonthdate_Date"},
-                "y": {"scale": "y", "field": "Value"}
+                "y": {"scale": "y", "field": "Value"},
+                "z": {"scale": "z", "field": "rank"}
+              }
+            }
+          },
+          {
+            "name": "areamarks",
+            "type": "area",
+            "style": ["area"],
+            "sort": {"field": "datum[\"utcyearmonthdate_Date\"]"},
+            "from": {"data": "series"},
+            "encode": {
+              "update": {
+                "tooltip": {
+                  "signal": "{\"Date (year-month-date)\": timeFormat(datum[\"utcyearmonthdate_Date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"Value\": format(datum[\"Value\"], \"\"), \"StateName\": ''+scale('fipslookup',datum[\"fips\"])}"
+                },
+                "stroke": {"scale": "color", "field": "fips"},
+                "x": {"scale": "x", "field": "utcyearmonthdate_Date"},
+                "y": {"scale": "y", "field": "Value"},                
+                "z": {"scale": "z", "field": "rank"},
+                "x2": {"scale": "x", "field": "utcyearmonthdate_Date"},
+                "y2": {"value": 0},
+                "z2": {"scale": "z", "field": "rank"},
+                
               }
             }
           },
@@ -304,31 +278,21 @@ export const spec: vega.Spec = {
                 "stroke": {"value": "black"},
                 "x": {"scale": "x", "field": "utcyearmonthdate_Date"},
                 "y": {"scale": "y", "field": "Value"},
+                "z": {"scale": "z", "field": "rank"}
   "width": {"value": 5},
-  "height": {"value": 5}
+  "height": {"value": 5},
+  "depth": {"value": 5}
   
               }
             }
           }
         ]
-      },
-      {
-        "type": "rule",
-        "encode": {
-          "update": {
-            "x": {"scale": "x", "signal": "indexDate", "offset": 1.5},
-            "y": {"value": 0},
-            "y2": {"field": {"group": "height"}},
-            "stroke": {"value": "firebrick"}
-          }
-        }
       }
-  
     ]
   };
 /* eslint-enable */
 
-export const view = new VegaDeckGl.ViewGl(vega.parse(spec), { getView: () => '2d' })
+export const view = new VegaDeckGl.ViewGl(vega.parse(spec), { getView: () => '3d' })
     .renderer('deck.gl')
     .initialize(document.querySelector('#vis'))
     .run();
