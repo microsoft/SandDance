@@ -1,16 +1,24 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import {
-    _OrbitController,
+    _CameraLight,
+    AmbientLight,
     CompositeLayer,
     COORDINATE_SYSTEM,
     Deck,
+    DirectionalLight,
     IconLayer,
     Layer,
+    LightingEffect,
     LinearInterpolator,
     LineLayer,
+    OrbitController,
     OrbitView,
+    PathLayer,
     PolygonLayer,
+    gouraudLighting,
+    picking,
+    project32,
     TextLayer
 } from 'deck.gl';
 import {
@@ -27,7 +35,7 @@ import {
     truncate,
     View
 } from 'vega-typings';
-import { CubeGeometry, fp64, Model, Texture2D } from 'luma.gl';
+import { CubeGeometry, Model, Texture2D } from '@luma.gl/core';
 
 /**
  * Vega library dependency.
@@ -66,13 +74,20 @@ let vega: VegaBase = {
  * deck.gl/core dependency.
  */
 export interface DeckBase {
+    _CameraLight: typeof _CameraLight,
+    AmbientLight: typeof AmbientLight,
     CompositeLayer: typeof CompositeLayer;
     COORDINATE_SYSTEM: typeof COORDINATE_SYSTEM;
     Deck: typeof Deck;
+    DirectionalLight: typeof DirectionalLight;
     Layer: typeof Layer;
+    LightingEffect: typeof LightingEffect;
     LinearInterpolator: typeof LinearInterpolator;
     OrbitView: typeof OrbitView;
-    _OrbitController: typeof _OrbitController;
+    OrbitController: typeof OrbitController;
+    gouraudLighting: typeof gouraudLighting;
+    picking: typeof picking;
+    project32: typeof project32;
 }
 
 /**
@@ -81,23 +96,32 @@ export interface DeckBase {
 export interface DeckLayerBase {
     IconLayer: typeof IconLayer;
     LineLayer: typeof LineLayer;
+    PathLayer: typeof PathLayer;
     PolygonLayer: typeof PolygonLayer;
     TextLayer: typeof TextLayer;
 }
 
 let deck: DeckBase = {
+    _CameraLight: null,
+    AmbientLight: null,
     CompositeLayer: null,
     COORDINATE_SYSTEM: null,
     Deck: null,
+    DirectionalLight: null,
     Layer: null,
+    LightingEffect: null,
     LinearInterpolator: null,
     OrbitView: null,
-    _OrbitController: null
+    OrbitController: null,
+    gouraudLighting: null,
+    picking: null,
+    project32:  null
 };
 
 let layers: DeckLayerBase = {
     IconLayer: null,
     LineLayer: null,
+    PathLayer: null,
     PolygonLayer: null,
     TextLayer: null
 };
@@ -107,14 +131,12 @@ let layers: DeckLayerBase = {
  */
 export interface LumaBase {
     CubeGeometry: typeof CubeGeometry;
-    fp64: typeof fp64;
     Model: typeof Model;
     Texture2D: typeof Texture2D
 }
 
 let luma: LumaBase = {
     CubeGeometry: null,
-    fp64: null,
     Model: null,
     Texture2D: null
 };

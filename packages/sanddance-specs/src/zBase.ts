@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { SignalNames } from './constants';
+import { GlobalScope } from './globalScope';
+import { linearScale, pointScale } from './scales';
 import { addScale } from './scope';
 import { Column } from '@msrvida/chart-types';
-import { GlobalScope } from './interfaces';
-import { linearScale, pointScale } from './scales';
 import { RangeScheme } from 'vega-typings';
-import { SignalNames } from './constants';
 
 export function addZScale(z: Column, zSize: string, globalScope: GlobalScope, zScaleName: string) {
     if (z) {

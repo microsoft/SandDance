@@ -52,9 +52,7 @@ var cubeTest;
     };
     cubeTest.presenter.present(stage, 200, 400);
     var orbitViewState = {
-        distance: 10,
-        fov: 60,
-        lookAt: [90, 15, 23, 1],
+        target: [90, 15, 23],
         rotationOrbit: -45,
         rotationX: 67,
         zoom: 0.01

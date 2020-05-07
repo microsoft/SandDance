@@ -1,32 +1,28 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as VegaDeckGl from '@msrvida/vega-deck.gl';
-import { Color } from '@deck.gl/core/utils/color';
+import { RGBAColor } from '@deck.gl/core/utils/color';
 import { SpecColorSettings } from '@msrvida/sanddance-specs';
+import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 
-function cloneAxis(axes: VegaDeckGl.types.Axis[], axisColor: Color, axisTextColor: Color) {
+function cloneAxis(axes: VegaDeckGl.types.Axis[], axisColor: RGBAColor, axisTextColor: RGBAColor) {
     return axes.map(axis => {
         const newAxis = VegaDeckGl.util.deepMerge(axis);
-        newAxis.domain.color = axisColor;
-        newAxis.title.color = axisTextColor;
+        if (newAxis.domain) {
+            newAxis.domain.color = axisColor;
+        }
+        if (newAxis.title) {
+            newAxis.title.color = axisTextColor;
+        }
         newAxis.ticks.forEach(t => { t.color = axisColor; });
         newAxis.tickText.forEach(t => { t.color = axisTextColor; });
         return newAxis;
     });
 }
 
-function cloneTextData(textData: VegaDeckGl.types.VegaTextLayerDatum[], color: Color) {
+function cloneTextData(textData: VegaDeckGl.types.VegaTextLayerDatum[], color: RGBAColor) {
     return textData.map(t => {
         return { ...t, color };
     });
-}
-
-function colorEquals(a: Color, b: Color) {
-    if (a.length !== b.length) return false;
-    for (let i = 0; i < a.length; i++) {
-        if (a[i] !== b[i]) return false;
-    }
-    return true;
 }
 
 export function recolorAxes(stage: VegaDeckGl.types.Stage, oldColors: SpecColorSettings, newColors: SpecColorSettings): Partial<VegaDeckGl.types.Stage> {

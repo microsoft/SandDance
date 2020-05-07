@@ -25,8 +25,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             maxbins
         },
         minBandWidth: minBarBandWidth,
-        showAxes: true,
-        parentHeight: 'bandParentHeight'
+        showAxes: true
     };
     const x: AxisScale = { title: null };
     const axisScales: AxisScales = {
@@ -47,8 +46,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             orientation: 'horizontal',
             size: specColumns.size,
             sort: specColumns.sort,
-            z: specColumns.z,
-            zSize: bandProps.parentHeight
+            z: specColumns.z
         };
         layouts.push({
             layoutClass: Strip,
@@ -60,7 +58,6 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             dock: 'left',
             globalAggregateMaxExtentSignal: 'aggMaxExtent',
             globalAggregateMaxExtentScaledSignal: 'aggMaxExtentScaled',
-            parentHeight: 'aggParentHeight',
             sumBy: specColumns.size,
             showAxes: true
         };
@@ -76,8 +73,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     corner: 'top-left',
                     size: specColumns.size,
                     treeMapMethod: specViewOptions.language.treeMapMethod,
-                    z: specColumns.z,
-                    zSize: aggProps.parentHeight
+                    z: specColumns.z
                 };
                 layouts.push({
                     layoutClass: Treemap,
@@ -93,8 +89,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     orientation: 'horizontal',
                     size: specColumns.size,
                     sort: specColumns.sort,
-                    z: specColumns.z,
-                    zSize: aggProps.parentHeight
+                    z: specColumns.z
                 };
                 layouts.push({
                     layoutClass: Strip,
@@ -110,8 +105,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     orientation: 'horizontal',
                     size: specColumns.size,
                     sort: specColumns.sort,
-                    z: specColumns.z,
-                    zSize: aggProps.parentHeight
+                    z: specColumns.z
                 };
                 layouts.push({
                     layoutClass: Strip,
@@ -127,8 +121,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     fillDirection: 'down-right',
                     z: specColumns.z,
                     maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
-                    maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal,
-                    zSize: aggProps.parentHeight
+                    maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal
                 };
                 layouts.push({
                     layoutClass: Square,

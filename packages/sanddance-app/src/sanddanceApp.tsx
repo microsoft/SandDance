@@ -1,7 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as React from 'react';
 import { base } from './base';
+import { DataSourceButton, DataSourcePicker, Props as DataSourceProps } from './dataSourcePicker';
+import { downloadData } from './download';
+import { strings } from './language';
+import {
+    downloadSnapshotsJSON,
+    serializeSnapshot,
+    SnapshotExport,
+    SnapshotImportLocal,
+    SnapshotImportRemote,
+    validSnapshots
+} from './snapshots';
+import { DataSource, DataSourceSnapshot, InsightMap } from './types';
+import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
 import {
     ColorSettings,
     Explorer,
@@ -12,19 +24,7 @@ import {
     themePalettes,
     ViewerOptions
 } from '@msrvida/sanddance-explorer';
-import { DataSource, DataSourceSnapshot, InsightMap } from './types';
-import { DataSourcePicker, DataSourceButton, Props as DataSourceProps } from './dataSourcePicker';
-import { downloadData } from './download';
-import {
-    downloadSnapshotsJSON,
-    serializeSnapshot,
-    SnapshotExport,
-    SnapshotImportLocal,
-    SnapshotImportRemote,
-    validSnapshots
-} from './snapshots';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
-import { strings } from './language';
+import * as React from 'react';
 
 import VegaDeckGl = SandDance.VegaDeckGl;
 import types = SandDance.types;
@@ -219,7 +219,7 @@ export class SandDanceApp extends React.Component<Props, State> {
     changeColorScheme(darkTheme: boolean) {
         this.updateExplorerViewerOptions(getViewerOptions(darkTheme, this.props.themeColors));
         VegaDeckGl.base.vega.scheme(SandDance.constants.ColorScaleNone, x => this.explorer.viewer.options.colors.defaultCube);
-        this.explorer && this.explorer.viewer && this.explorer.viewer.render(this.explorer.viewer.insight, this.explorer.state.dataContent.data);
+        this.explorer && this.explorer.viewer && this.explorer.viewer.renderSameLayout(this.viewerOptions);
         base.fabric.loadTheme({ palette: this.getThemePalette(darkTheme) });
     }
 

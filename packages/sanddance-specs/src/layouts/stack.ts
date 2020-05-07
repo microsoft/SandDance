@@ -16,7 +16,6 @@ import { RectMark } from 'vega-typings';
 
 export interface StackProps extends LayoutProps {
     sort: Column;
-    parentHeight: string;
 }
 
 export class Stack extends Layout {
@@ -56,7 +55,7 @@ export class Stack extends Layout {
 
     public build(): InnerScope {
         const { names, props } = this;
-        const { globalScope, groupings, parentHeight, parentScope, sort } = props;
+        const { globalScope, groupings, parentScope, sort } = props;
         const { sizeSignals } = parentScope;
 
         addTransforms(globalScope.data,
@@ -117,7 +116,7 @@ export class Stack extends Layout {
                     },
                     {
                         type: 'formula',
-                        expr: `abs(${parentHeight} - datum.sidecubeheight)`,
+                        expr: `abs(${globalScope.zSize} - datum.sidecubeheight)`,
                         as: 'heightmatch'
                     },
                     {

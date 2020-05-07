@@ -33,7 +33,7 @@ function styledLine(x1: number, y1: number, x2: number, y2: number, stroke: stri
         sourcePosition: [x1, -y1, lineZ], //-1 = change direction of y from SVG to GL
         targetPosition: [x2, -y2, lineZ],
         color: colorFromString(stroke),
-        strokeWidth: strokeWidth * 10    //translate width to deck.gl
+        strokeWidth: strokeWidth
     };
     return line;
 }

@@ -15,7 +15,6 @@ import { JoinAggregateTransform } from 'vega-typings';
 export interface AggregateSquareProps extends LayoutProps {
     aggregation: 'sum' | 'count';
     sumBy: Column;
-    parentHeight: string;
     onBuild: (localAggregateMaxExtent: string, localAggregateMaxExtentScaled: string) => void;
 }
 
@@ -41,7 +40,7 @@ export class AggregateSquare extends Layout {
 
     public build(): InnerScope {
         const { names, props } = this;
-        const { aggregation, globalScope, groupings, onBuild, parentHeight, parentScope } = props;
+        const { aggregation, globalScope, groupings, onBuild, parentScope } = props;
         const { sizeSignals } = parentScope;
 
         addTransforms(globalScope.data,
@@ -68,13 +67,6 @@ export class AggregateSquare extends Layout {
         const localAggregateMaxExtentScaled = squareSide;
 
         onBuild && onBuild(localAggregateMaxExtent, localAggregateMaxExtentScaled);
-
-        addSignal(globalScope.scope,
-            {
-                name: parentHeight,
-                update: sizeSignals.layoutHeight
-            }
-        );
 
         const offsets: LayoutOffsets = {
             x: addOffsets(parentScope.offsets.x, `(${parentScope.offsets.w} - ${squareSide}) / 2`),

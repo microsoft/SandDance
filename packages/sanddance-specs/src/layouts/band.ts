@@ -25,7 +25,6 @@ export interface BandProps extends LayoutProps {
     minBandWidth: number;
     orientation: Orientation;
     showAxes: boolean;
-    parentHeight: string;
     style?: string;
 }
 
@@ -56,7 +55,7 @@ export class Band extends Layout {
 
     public build(): InnerScope {
         const { bin, names, props } = this;
-        const { globalScope, minBandWidth, orientation, parentHeight, parentScope, showAxes } = props;
+        const { globalScope, minBandWidth, orientation, parentScope, showAxes } = props;
         const binField = bin.fields[0];
         if (bin.native === false) {
             addSignal(globalScope.scope, bin.maxbinsSignal);
@@ -83,10 +82,6 @@ export class Band extends Layout {
             {
                 name: names.bandWidth,
                 update: `bandwidth(${JSON.stringify(horizontal ? names.yScale : names.xScale)})`
-            },
-            {
-                name: parentHeight,
-                update: parentScope.sizeSignals.layoutHeight
             }
         );
 

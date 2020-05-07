@@ -1,24 +1,25 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as VegaDeckGl from '@msrvida/vega-deck.gl';
-import PolygonLayer, { PolygonLayerDatum } from '@deck.gl/layers/polygon-layer/polygon-layer';
+import { selectBetweenAxis, selectExactAxis } from './expression';
+import { getSearchGroupFromVegaValue } from './search';
+import { LayerInputHandler } from '@deck.gl/core/lib/layer';
+import { Position } from '@deck.gl/core/utils/positions';
+import PolygonLayer from '@deck.gl/layers/polygon-layer/polygon-layer';
+import { Column } from '@msrvida/chart-types';
 import {
     AxisSelectionType,
     FieldNames,
     SpecCapabilities,
     SpecColumns
 } from '@msrvida/sanddance-specs';
-import { Column } from '@msrvida/chart-types';
-import { getSearchGroupFromVegaValue } from './search';
-import { LayerInputHandler } from '@deck.gl/core/lib/layer';
 import { SearchExpressionGroup } from '@msrvida/search-expression';
-import { selectBetweenAxis, selectExactAxis } from './expression';
+import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 
 export interface AxisSelectionHandler {
     (event: TouchEvent | MouseEvent | PointerEvent, search: SearchExpressionGroup): void;
 }
 
-export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabilities: SpecCapabilities, columns: SpecColumns, stage: VegaDeckGl.types.Stage, clickHandler: AxisSelectionHandler, highlightColor: string, polygonZ: number): PolygonLayer {
+export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabilities: SpecCapabilities, columns: SpecColumns, stage: VegaDeckGl.types.Stage, clickHandler: AxisSelectionHandler, highlightColor: string, polygonZ: number): PolygonLayer<SelectPolygon> {
     const polygons: SelectPolygon[] = [];
     const xRole = specCapabilities.roles.filter(r => r.role === 'x')[0];
     if (xRole && xRole.axisSelection) {
@@ -44,7 +45,7 @@ export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabili
     const onClick: LayerInputHandler = (o, e) => clickHandler(e.srcEvent, (o.object as SelectPolygon).search);
     const polygonLayer = new VegaDeckGl.base.layers.PolygonLayer({
         autoHighlight: true,
-        coordinateSystem: VegaDeckGl.base.deck.COORDINATE_SYSTEM.IDENTITY,
+        coordinateSystem: VegaDeckGl.base.deck.COORDINATE_SYSTEM.CARTESIAN,
         data: polygons,
         extruded: false,
         highlightColor: VegaDeckGl.util.colorFromString(highlightColor),
@@ -66,7 +67,8 @@ export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabili
     return polygonLayer;
 }
 
-interface SelectPolygon extends PolygonLayerDatum {
+interface SelectPolygon {
+    polygon: Position[]
     search: SearchExpressionGroup;
 }
 
@@ -93,10 +95,10 @@ function axisSelectionPolygons(axis: VegaDeckGl.types.Axis, vertical: boolean, a
         }
 
         const add = (p2: number, i: number) => {
-            var coords = [[p1, q1], [p2, q1], [p2, q2], [p1, q2]];
+            const coords: Position[] = [[p1, q1], [p2, q1], [p2, q2], [p1, q2]];
             polygons.push({
                 search: getSearch(axis, column, i),
-                polygon: vertical ? coords.map(xy => xy.reverse()) : coords
+                polygon: vertical ? coords.map(xy => xy.reverse() as Position) : coords
             });
             p1 = p2;
         };

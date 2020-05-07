@@ -4,10 +4,7 @@ import { SpecCapabilities, SpecContext } from './types';
 import { Column } from '@msrvida/chart-types';
 import {
     AggregateOp,
-    Data,
-    FormulaTransform,
     Mark,
-    NewSignal,
     NumericValueRef,
     Scale,
     Scope,
@@ -62,21 +59,8 @@ export interface InnerScope {
     mark?: Mark;
     globalScales?: GlobalScales;
     encodingRuleMap?: { [key: string]: EncodingRule[] };
-    sizeSignals: SizeSignals;       //TODO remove
-    offsets?: LayoutOffsets;              //TODO mandatory
-}
-
-export interface GlobalScope extends InnerScope {
-    scope?: Scope;
-    markGroup: Scope;
-    markDataName: string;
-    data: Data;
-    signals: {
-        minCellWidth: NewSignal;
-        minCellHeight: NewSignal;
-        plotHeightOut: NewSignal;
-        plotWidthOut: NewSignal;
-    }
+    sizeSignals: SizeSignals;
+    offsets: LayoutOffsets;
 }
 
 export type Orientation = 'horizontal' | 'vertical';

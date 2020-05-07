@@ -14,7 +14,7 @@ You will need to consider how to load the libraries that `sanddance` depends on,
 
 Load dependencies via `<script>` tags in your HTML:
 ```html
-<script src="https://unpkg.com/vega@^5.8/build/vega.js" charset="utf-8"></script>
+<script src="https://unpkg.com/vega@^5.11/build/vega.js" charset="utf-8"></script>
 <script src="https://unpkg.com/deck.gl@~6.4/deckgl.min.js"></script>
 <script src="https://unpkg.com/@msrvida/sanddance@^2/dist/umd/sanddance.js"></script>
 ```
@@ -34,7 +34,7 @@ Add these to the `dependencies` section of your `package.json`, then run `npm in
 "@deck.gl/layers": "6.4",
 "@msrvida/sanddance": "^2",
 "luma.gl": "6.4",
-"vega": "^5.8"
+"vega": "^5.11"
 ```
 
 Import these in your JavaScript, then call the `use()` function to pass the dependency libraries to `SandDance.VegaDeckGl`:

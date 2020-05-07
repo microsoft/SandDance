@@ -27,7 +27,7 @@ attribute vec3 positions;
 attribute vec3 normals;
 
 attribute vec3 instancePositions;
-attribute vec2 instancePositions64xyLow;
+attribute vec3 instancePositions64Low;
 attribute vec3 instanceSizes;
 attribute vec4 instanceColors;
 attribute vec3 instancePickingColors;
@@ -45,9 +45,9 @@ void main(void) {
 
   // if alpha == 0.0, do not render element
   float noRender = float(instanceColors.a == 0.0);
-  float finalXScale = project_scale(x) * mix(1.0, 0.0, noRender);
-  float finalYScale = project_scale(y) * mix(1.0, 0.0, noRender);
-  float finalZScale = project_scale(instanceSizes.z) * mix(1.0, 0.0, noRender);
+  float finalXScale = project_size(x) * mix(1.0, 0.0, noRender);
+  float finalYScale = project_size(y) * mix(1.0, 0.0, noRender);
+  float finalZScale = project_size(instanceSizes.z) * mix(1.0, 0.0, noRender);
 
   // cube geometry vertics are between -1 to 1, scale and transform it to between 0, 1
   vec3 offset = vec3(
@@ -57,20 +57,10 @@ void main(void) {
 
   // extrude positions
   vec4 position_worldspace;
-  gl_Position = project_position_to_clipspace(instancePositions, instancePositions64xyLow, offset, position_worldspace);
-
-  float lightWeight = 1.0;
+  gl_Position = project_position_to_clipspace(instancePositions, instancePositions64Low, offset, position_worldspace);
   
-  //allow for a small amount of error around the min3dDepth 
-  if (instanceSizes.z >= ${min3dDepth.toFixed(4)} - 0.0001) {
-    lightWeight = lighting_getLightWeight(
-      position_worldspace.xyz, // the w component is always 1.0
-      normals
-    );
-  }
-
-  vec3 lightWeightedColor = lightWeight * instanceColors.rgb;
-  vec3 mixedLight = mix(instanceColors.rgb, lightWeightedColor, lightingMix);
+  vec3 lightColor = lighting_getLightColor(instanceColors.rgb, project_uCameraPosition, position_worldspace.xyz, project_normal(normals));
+  vec3 mixedLight = mix(instanceColors.rgb, lightColor, lightingMix);
   vec4 color = vec4(mixedLight, instanceColors.a) / 255.0;
   vColor = color;
 

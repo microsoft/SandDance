@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { GlobalScope } from '../globalScope';
 import {
     AxisScales,
     FieldOp,
-    GlobalScope,
     Grouping,
     InnerScope
 } from '../interfaces';

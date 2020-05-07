@@ -17,7 +17,7 @@ Add these to the `dependencies` section of your `package.json`, then run `npm in
 "@msrvida/sanddance-explorer": "^2",
 "luma.gl": "6.4",
 "office-ui-fabric-react": "6.204.4",
-"vega": "^5.8"
+"vega": "^5.11"
 ```
 
 Import these in your JavaScript:

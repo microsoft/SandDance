@@ -17,8 +17,8 @@ export const facetPaddingTop = 40;
 export const facetPaddingBottom = 40;
 export const facetPaddingRight = 40;
 
-export const axesLabelLimit = 10;
-export const axesTitleLimit = 10;
+export const axesLabelLimit = 100;
+export const axesTitleLimit = 100;
 
 export const axesTitlePaddingX = 30;
 export const axesTitlePaddingY = 60;

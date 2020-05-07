@@ -28,17 +28,14 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         };
         const globalAggregateMaxExtentScaledSignal = 'globalAggregateMaxExtentScaledSignal';
         const globalAggregateMaxExtentSignal = 'globalAggregateMaxExtentSignal';
-        const parentHeight = 'parentHeight';
         const props: AggregateContainerProps = {
             dock: 'top',
             niceScale: false,
             globalAggregateMaxExtentScaledSignal,
             globalAggregateMaxExtentSignal,
-            parentHeight,
             sumBy: specColumns.size,
             showAxes: false
         };
-        treemapProps.zSize = props.parentHeight;
         layouts.push({
             layoutClass: AggregateContainer,
             props

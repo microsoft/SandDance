@@ -87,7 +87,7 @@ export class Scatter extends Layout {
                 return t;
             }).filter(Boolean)
         });
-        globalScope.markDataName = names.markData;
+        globalScope.setMarkDataName(names.markData);
 
         const globalScales: GlobalScales = { showAxes: true, scales: {} };
         const zValue = z ? `scale(${JSON.stringify(names.zScale)}, datum[${JSON.stringify(z.name)}])` : null;
@@ -152,7 +152,7 @@ export class Scatter extends Layout {
                     xyz: 'z',
                     scaleName: names.zScale,
                     reverse: false,
-                    signal: `${parentScope.sizeSignals.layoutHeight}*${SignalNames.ZProportion}`
+                    signal: `(${globalScope.zSize}) * ${SignalNames.ZProportion}`
                 }
             ];
         columnSignals.forEach(cs => {

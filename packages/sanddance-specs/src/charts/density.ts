@@ -30,8 +30,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             maxbins
         },
         minBandWidth: minBarBandWidth,
-        showAxes: true,
-        parentHeight: 'hBandParentHeight'
+        showAxes: true
     };
     const vBandProps: BandProps = {
         excludeEncodingRuleMap: true,
@@ -44,12 +43,10 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             maxbins
         },
         minBandWidth: minBarBandWidth,
-        showAxes: true,
-        parentHeight: 'vBandParentHeight'
+        showAxes: true
     };
     const aggProps: AggregateSquareProps = {
         onBuild: null,
-        parentHeight: 'aggParentHeight',
         aggregation: null,
         sumBy: specColumns.size
     };
@@ -74,8 +71,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 corner: 'bottom-left',
                 size: specColumns.size,
                 treeMapMethod: specViewOptions.language.treeMapMethod,
-                z: specColumns.z,
-                zSize: aggProps.parentHeight
+                z: specColumns.z
             };
             layouts.push({
                 layoutClass: Treemap,
@@ -90,8 +86,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 orientation: 'vertical',
                 size: specColumns.size,
                 sort: specColumns.sort,
-                z: specColumns.z,
-                zSize: aggProps.parentHeight
+                z: specColumns.z
             };
             layouts.push({
                 layoutClass: Strip,
@@ -105,8 +100,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 sortOrder: 'ascending',
                 orientation: 'vertical',
                 sort: specColumns.sort,
-                z: specColumns.z,
-                zSize: aggProps.parentHeight
+                z: specColumns.z
             };
             layouts.push({
                 layoutClass: Strip,
@@ -121,8 +115,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 fillDirection: 'right-down',
                 z: specColumns.z,
                 maxGroupedUnits: null,
-                maxGroupedFillSize: null,
-                zSize: aggProps.parentHeight
+                maxGroupedFillSize: null
             };
             aggProps.onBuild = (aggMaxExtent, aggMaxExtentScaled) => {
                 squareProps.maxGroupedUnits = aggMaxExtent;

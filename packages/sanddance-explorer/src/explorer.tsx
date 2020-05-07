@@ -282,7 +282,7 @@ export class Explorer extends React.Component<Props, State> {
                 } else if (o.metaData && o.metaData.search) {
                     return SandDance.VegaDeckGl.util.colorFromString((this.viewerOptions.colors as ColorSettings).searchTextHighlight);
                 } else {
-                    return o.color;
+                    return [0, 0, 0, 0];
                 }
             },
             onTextClick: (e, text) => {
