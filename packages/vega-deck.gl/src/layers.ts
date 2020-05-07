@@ -5,12 +5,15 @@ import { base } from './base';
 import { layerNames } from './constants';
 import { CubeLayer, CubeLayerInterpolatedProps, CubeLayerProps } from './cube-layer/cube-layer';
 import { LinearInterpolator_Class } from './deck.gl-classes/linearInterpolator';
+import {rgb} from 'd3-color';
 import {
     Cube,
     PresenterConfig,
     Stage,
     StyledLine,
-    VegaTextLayerDatum
+    VegaTextLayerDatum,
+    Path,
+    Polygon
 } from './interfaces';
 import { Presenter } from './presenter';
 import { RGBAColor } from '@deck.gl/core/utils/color';
@@ -19,6 +22,7 @@ import { InterpolationTransitionTiming } from '@deck.gl/core/lib/layer';
 import { easeExpInOut } from 'd3-ease';
 import { Layer } from 'deck.gl';
 import { TextLayerProps } from '@deck.gl/layers/text-layer/text-layer';
+import { groupStrokeWidth } from './defaults';
 
 export function getLayers(
     presenter: Presenter,
@@ -48,7 +52,9 @@ export function getLayers(
     }
     const lineLayer = newLineLayer(layerNames.lines, lines);
     const textLayer = newTextLayer(presenter, layerNames.text, texts, config, presenter.style.fontFamily);
-    return [textLayer, cubeLayer, lineLayer];
+    const pathLayer = newPathLayer(layerNames.paths, stage.pathData);
+    const polygonLayer = newPolygonLayer(layerNames.polygons, stage.polygonData);
+    return [textLayer, cubeLayer, lineLayer, pathLayer, polygonLayer];
 }
 
 function newCubeLayer(presenter: Presenter, config: PresenterConfig, cubeData: Cube[], highlightColor: RGBAColor, lightSettings: any /*LightSettings*/, lightingMix: number, interpolator?: LinearInterpolator_Class<CubeLayerInterpolatedProps>) {
@@ -94,6 +100,74 @@ function newLineLayer(id: string, data: StyledLine[]) {
         coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
         getColor: (o: StyledLine) => o.color,
         getWidth: (o: StyledLine) => o.strokeWidth
+    });
+}
+
+
+function colorToRGBArray(color) {
+    if (Array.isArray(color)) {
+      return color.slice(0, 4);
+    }
+    const c = rgb(color);
+    return [c.r, c.g, c.b, 255];
+  }
+
+function newPathLayer(id: string, mdata: Path[]) {
+    console.log("new path layer", mdata);
+    const data = mdata.map((p)=>{return({path: p.positions, name:'id', color: colorToRGBArray(p.strokeColor),strokeWidth:5.0 })});
+    
+    return new base.layers.PathLayer({
+        id,
+        data,
+        billboard: true,
+        widthScale: 1,
+        widthMinPixels: 2,
+        widthUnits: 'pixels',
+        coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
+        getPath: (o)=> o.path,
+        getColor: (o) =>  o.color,
+        getWidth: (o) => o.strokeWidth
+    });
+}
+
+function newPolygonLayer(id: string, mdata: Polygon[]) {
+    console.log("new area layer", mdata);
+    //
+    //const data = mdata.map((p)=>{return({contour: p.positions, name:'id', color: colorToRGBArray(p.strokeColor),strokeWidth:5.0 })});
+
+    
+     
+    const data = mdata.map( (areas)=> {
+        return ({
+            contour: 
+                areas.positions.map( (p,i,elements)=> {
+                    if (i< (elements.length-1)) {
+                        return (
+                        [
+                            [p[0], p[1], p[2]],
+                            [elements[i+1][0], elements[i+1][1], elements[i+1][2]],
+                            [elements[i+1][3], elements[i+1][4], elements[i+1][5]],
+                            [p[3], p[4], p[5]]
+                        ])
+                    }
+                }).slice(0,-1),
+            color: colorToRGBArray(areas.strokeColor)
+        })});    
+    console.log("area data", data);
+    return new base.layers.PolygonLayer({
+        id,
+        data,                
+        lineWidthMinPixels: 1,        
+        coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
+        getPolygon: (o)=> o.contour,
+        getFillColor: (o) =>  o.color,
+        getLineColor: (o) =>  o.color,
+        wireframe: true,
+        getLineWidth: 1,
+        filled: true,
+        stroked: true,
+        pickable: true,
+        getWidth: (o) => o.strokeWidth
     });
 }
 
