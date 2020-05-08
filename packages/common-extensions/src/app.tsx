@@ -12,7 +12,7 @@ SandDanceExplorer.use(Fabric, vega, deck, deck, luma);
 
 function getTextcolor() {
     const cssColor = getComputedStyle(document.body).color;
-    return VegaDeckGl.util.colorFromString(cssColor);;
+    return VegaDeckGl.util.colorFromString(cssColor);
 }
 
 function getThemePalette(darkTheme: boolean) {

@@ -172,28 +172,28 @@ export class Scatter extends Layout {
             reverse: boolean,
             signal: string
         }[] = [
-                {
-                    column: x,
-                    xyz: 'x',
-                    scaleName: names.xScale,
-                    reverse: false,
-                    signal: parentScope.sizeSignals.layoutWidth
-                },
-                {
-                    column: y,
-                    xyz: 'y',
-                    scaleName: names.yScale,
-                    reverse: true,
-                    signal: parentScope.sizeSignals.layoutHeight
-                },
-                {
-                    column: z,
-                    xyz: 'z',
-                    scaleName: names.zScale,
-                    reverse: false,
-                    signal: `(${globalScope.zSize}) * ${SignalNames.ZProportion}`
-                }
-            ];
+            {
+                column: x,
+                xyz: 'x',
+                scaleName: names.xScale,
+                reverse: false,
+                signal: parentScope.sizeSignals.layoutWidth
+            },
+            {
+                column: y,
+                xyz: 'y',
+                scaleName: names.yScale,
+                reverse: true,
+                signal: parentScope.sizeSignals.layoutHeight
+            },
+            {
+                column: z,
+                xyz: 'z',
+                scaleName: names.zScale,
+                reverse: false,
+                signal: `(${globalScope.zSize}) * ${SignalNames.ZProportion}`
+            }
+        ];
         columnSignals.forEach(cs => {
             const { column, reverse, scaleName, signal, xyz } = cs;
             if (!column) return;

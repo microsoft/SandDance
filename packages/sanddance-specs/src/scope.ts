@@ -61,7 +61,7 @@ export function getDataByName(data: Data[], dataName: string) {
 
 export function getGroupBy(groupings: Grouping[]) {
     const groupby = groupings.map(g => g.groupby);
-    return groupby.reduce((acc, val) => acc.concat(val), [])
+    return groupby.reduce((acc, val) => acc.concat(val), []);
 }
 
 export function addOffsets(...offsets: string[]) {
