@@ -10,7 +10,7 @@ import {
 } from '../interfaces';
 import {
     addOffsets,
-    addSignal,
+    addSignals,
     addTransforms,
     getGroupBy
 } from '../scope';
@@ -81,7 +81,7 @@ export class AggregateContainer extends Layout {
                 signal: names.globalAggregateExtentSignal
             }
         );
-        addSignal(globalScope.scope,
+        addSignals(globalScope.scope,
             {
                 name: props.globalAggregateMaxExtentSignal,
                 update: `${names.globalAggregateExtentSignal}[1]`
@@ -140,7 +140,7 @@ export class AggregateContainer extends Layout {
 
         const globalAggregateMaxExtentScaledValue = `scale(${JSON.stringify(names.scale)}, ${props.globalAggregateMaxExtentSignal})`;
 
-        addSignal(globalScope.scope,
+        addSignals(globalScope.scope,
             {
                 name: props.globalAggregateMaxExtentScaledSignal,
                 update: dock === 'bottom'

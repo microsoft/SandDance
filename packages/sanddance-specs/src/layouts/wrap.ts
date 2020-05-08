@@ -11,12 +11,12 @@ import {
     LayoutOffsets,
     SizeSignals
 } from '../interfaces';
-import { createOrdinalsForFacet } from '../ordinal';
+import { createOrdinals } from '../ordinal';
 import {
     addData,
     addMarks,
     addOffsets,
-    addSignal,
+    addSignals,
     addTransforms
 } from '../scope';
 import { modifySignal } from '../signals';
@@ -90,7 +90,7 @@ export class Wrap extends Layout {
         let ordinalBinData: string;
 
         if (bin.native === false) {
-            addSignal(globalScope.scope, bin.maxbinsSignal);
+            addSignals(globalScope.scope, bin.maxbinsSignal);
             addTransforms(globalScope.data, ...bin.transforms);
             addData(globalScope.scope, bin.dataSequence);
             addTransforms(bin.dataSequence, {
@@ -100,7 +100,7 @@ export class Wrap extends Layout {
             });
             ordinalBinData = bin.dataSequence.name;
         } else {
-            const ord = createOrdinalsForFacet(globalScope.data.name, prefix, bin.fields, 'ascending');
+            const ord = createOrdinals(globalScope.data.name, prefix, bin.fields, 'ascending');
             addData(globalScope.scope, ord.data);
             ordinalBinData = ord.data.name;
         }
@@ -251,7 +251,7 @@ export class Wrap extends Layout {
         addData(globalScope.scope, dataOut);
         globalScope.setMarkDataName(names.outputData);
 
-        addSignal(globalScope.scope,
+        addSignals(globalScope.scope,
             {
                 name: names.minAspect,
                 update: `${SignalNames.MinCellWidth} / ${SignalNames.MinCellHeight}`

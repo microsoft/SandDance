@@ -3,7 +3,7 @@
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { SignalNames } from '../constants';
 import { InnerScope, LayoutOffsets } from '../interfaces';
-import { addData, addMarks, addSignal, addTransforms, addOffsets, getGroupBy } from '../scope';
+import { addData, addMarks, addSignals, addTransforms, addOffsets, getGroupBy } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { addZScale } from '../zBase';
 import { Column } from '@msrvida/chart-types';
@@ -75,7 +75,7 @@ export class Treemap extends Layout {
 
         const mark = this.transformedMark(offsets);
 
-        addSignal(globalScope.scope, {
+        addSignals(globalScope.scope, {
             name: SignalNames.TreeMapMethod,
             value: 'squarify',
             bind: {

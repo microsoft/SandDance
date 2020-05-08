@@ -4,7 +4,7 @@ import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { InnerScope, LayoutOffsets } from '../interfaces';
 import {
     addOffsets,
-    addSignal,
+    addSignals,
     addTransforms,
     getGroupBy
 } from '../scope';

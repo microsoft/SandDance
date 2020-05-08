@@ -13,12 +13,12 @@ import {
     Titles,
     TitleSource
 } from '../interfaces';
-import { createOrdinalsForFacet, ordinalScale } from '../ordinal';
+import { createOrdinals, ordinalScale } from '../ordinal';
 import {
     addData,
     addMarks,
-    addScale,
-    addSignal,
+    addScales,
+    addSignals,
     addTransforms
 } from '../scope';
 import { modifySignal } from '../signals';
@@ -128,7 +128,7 @@ export class Cross extends Layout {
             let scale: OrdinalScale;
             const titleSource: TitleSource = titles[dim];
             if (bin.native === false) {
-                addSignal(globalScope.scope, bin.maxbinsSignal);
+                addSignals(globalScope.scope, bin.maxbinsSignal);
                 addTransforms(globalScope.data, ...bin.transforms);
                 addData(globalScope.scope, bin.dataSequence);
                 addTransforms(bin.dataSequence,
@@ -145,7 +145,7 @@ export class Cross extends Layout {
                 titleSource.dataName = bin.dataSequence.name;
             } else {
                 dataName = globalScope.markDataName;
-                const ord = createOrdinalsForFacet(dataName, `${prefix}_${dim}`, bin.fields, sortOrder);
+                const ord = createOrdinals(dataName, `${prefix}_${dim}`, bin.fields, sortOrder);
                 data = ord.data;
                 addData(globalScope.scope, ord.data);
                 countSignal = `length(data(${JSON.stringify(ord.data.name)}))`;
@@ -167,12 +167,12 @@ export class Cross extends Layout {
                     as: FieldNames.FacetTitle
                 }
             );
-            addScale(globalScope.scope, scale);
+            addScales(globalScope.scope, scale);
             const count = `${names.dimCount}_${dim}`;
             const calc = `${names.dimCellSizeCalc}_${dim}`;
             const size = `${names.dimCellSize}_${dim}`;
-            addSignal(globalScope.scope, { name: count, update: countSignal });
-            addSignal(globalScope.scope,
+            addSignals(globalScope.scope, { name: count, update: countSignal });
+            addSignals(globalScope.scope,
                 {
                     name: calc,
                     update: `${d.layout} / ${count}`

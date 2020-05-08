@@ -190,9 +190,9 @@ export interface SpecLanguage {
     treeMapMethod: string;
 
     /**
-     * Label for scatterPlot point size slider.
+     * Label for scatterPlot point scale slider.
      */
-    scatterPointSize: string;
+    scatterPointScale: string;
 
     /**
      * Label for bar facet max bins slider.

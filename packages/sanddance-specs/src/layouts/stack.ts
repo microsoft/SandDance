@@ -6,7 +6,7 @@ import {
     addData,
     addMarks,
     addOffsets,
-    addSignal,
+    addSignals,
     addTransforms,
     getGroupBy
 } from '../scope';
@@ -143,7 +143,7 @@ export class Stack extends Layout {
             }
         );
 
-        addSignal(globalScope.scope,
+        addSignals(globalScope.scope,
             {
                 name: names.size,
                 update: `min((${sizeSignals.layoutHeight}), (${sizeSignals.layoutWidth}))`
