@@ -728,7 +728,7 @@ const SignalNames = {
   FacetPaddingBottom: 'FacetPaddingBottom',
   FacetPaddingLeft: 'FacetPaddingLeft',
   MarkOpacity: 'Mark_OpacitySignal',
-  PointSize: 'Chart_PointSizeSignal',
+  PointScale: 'Chart_PointScaleSignal',
   TextAngleX: 'Text_AngleXSignal',
   TextAngleY: 'Text_AngleYSignal',
   TextScale: 'Text_ScaleSignal',
@@ -757,8 +757,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.addAxes = addAxes;
 exports.addData = addData;
 exports.addMarks = addMarks;
-exports.addScale = addScale;
-exports.addSignal = addSignal;
+exports.addScales = addScales;
+exports.addSignals = addSignals;
 exports.addTransforms = addTransforms;
 exports.getDataByName = getDataByName;
 exports.getGroupBy = getGroupBy;
@@ -788,7 +788,7 @@ function addMarks(scope, ...marks) {
   scope.marks.push(...marks);
 }
 
-function addScale(scope, ...scale) {
+function addScales(scope, ...scale) {
   if (!scope.scales) {
     scope.scales = [];
   }
@@ -796,7 +796,7 @@ function addScale(scope, ...scale) {
   scope.scales.push(...scale);
 }
 
-function addSignal(scope, ...signal) {
+function addSignals(scope, ...signal) {
   if (!scope.signals) {
     scope.signals = [];
   }
@@ -910,7 +910,7 @@ class AggregateContainer extends _layout.Layout {
       field: names.aggregateField,
       signal: names.globalAggregateExtentSignal
     });
-    (0, _scope.addSignal)(globalScope.scope, {
+    (0, _scope.addSignals)(globalScope.scope, {
       name: props.globalAggregateMaxExtentSignal,
       update: `${names.globalAggregateExtentSignal}[1]`
     });
@@ -938,7 +938,7 @@ class AggregateContainer extends _layout.Layout {
       reverse: dock === 'top'
     };
     const globalAggregateMaxExtentScaledValue = `scale(${JSON.stringify(names.scale)}, ${props.globalAggregateMaxExtentSignal})`;
-    (0, _scope.addSignal)(globalScope.scope, {
+    (0, _scope.addSignals)(globalScope.scope, {
       name: props.globalAggregateMaxExtentScaledSignal,
       update: dock === 'bottom' ? `${parentScope.sizeSignals.layoutHeight} - ${globalAggregateMaxExtentScaledValue}` : globalAggregateMaxExtentScaledValue
     });
@@ -1308,7 +1308,7 @@ class Band extends _layout.Layout {
     const binField = bin.fields[0];
 
     if (bin.native === false) {
-      (0, _scope.addSignal)(globalScope.scope, bin.maxbinsSignal);
+      (0, _scope.addSignals)(globalScope.scope, bin.maxbinsSignal);
       (0, _scope.addTransforms)(globalScope.data, ...bin.transforms);
       (0, _scope.addData)(globalScope.scope, bin.dataSequence);
     } //TODO don't add this, use existing dataset
@@ -1326,7 +1326,7 @@ class Band extends _layout.Layout {
     const horizontal = orientation === 'horizontal';
     const minCellSignal = horizontal ? globalScope.signals.minCellHeight : globalScope.signals.minCellWidth;
     (0, _signals.modifySignal)(minCellSignal, 'max', `length(data(${JSON.stringify(names.accumulative)})) * ${minBandWidth}`);
-    (0, _scope.addSignal)(globalScope.scope, {
+    (0, _scope.addSignals)(globalScope.scope, {
       name: names.bandWidth,
       update: `bandwidth(${JSON.stringify(horizontal ? names.yScale : names.xScale)})`
     });
@@ -1444,7 +1444,7 @@ exports.Band = Band;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.axesOffsetY = exports.axesOffsetX = exports.axesTitlePaddingFacetY = exports.axesTitlePaddingFacetX = exports.axesTitlePaddingY = exports.axesTitlePaddingX = exports.axesTitleLimit = exports.axesLabelLimit = exports.facetPaddingRight = exports.facetPaddingBottom = exports.facetPaddingTop = exports.facetPaddingLeft = exports.minFacetHeight = exports.minFacetWidth = exports.minBarBandWidth = exports.maxbins = exports.defaultBins = void 0;
+exports.scatterSizedDiv = exports.scatterSizedMin = exports.axesOffsetY = exports.axesOffsetX = exports.axesTitlePaddingFacetY = exports.axesTitlePaddingFacetX = exports.axesTitlePaddingY = exports.axesTitlePaddingX = exports.axesTitleLimit = exports.axesLabelLimit = exports.facetPaddingRight = exports.facetPaddingBottom = exports.facetPaddingTop = exports.facetPaddingLeft = exports.minFacetHeight = exports.minFacetWidth = exports.minBarBandWidth = exports.maxbins = exports.defaultBins = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 //TODO move these to options
@@ -1482,6 +1482,10 @@ const axesOffsetX = 120;
 exports.axesOffsetX = axesOffsetX;
 const axesOffsetY = 120;
 exports.axesOffsetY = axesOffsetY;
+const scatterSizedMin = 10;
+exports.scatterSizedMin = scatterSizedMin;
+const scatterSizedDiv = 20;
+exports.scatterSizedDiv = scatterSizedDiv;
 },{}],"mxMR":[function(require,module,exports) {
 "use strict";
 
@@ -1609,7 +1613,7 @@ function addZScale(z, zSize, globalScope, zScaleName) {
     const zRange = [0, {
       signal: `(${zSize}) * ${_constants.SignalNames.ZProportion}`
     }];
-    (0, _scope.addScale)(globalScope.scope, z.quantitative ? (0, _scales.linearScale)(zScaleName, globalScope.data.name, z.name, zRange, false, true) : (0, _scales.pointScale)(zScaleName, globalScope.data.name, zRange, z.name, false));
+    (0, _scope.addScales)(globalScope.scope, z.quantitative ? (0, _scales.linearScale)(zScaleName, globalScope.data.name, z.name, zRange, false, true) : (0, _scales.pointScale)(zScaleName, globalScope.data.name, zRange, z.name, false));
   }
 }
 },{"./constants":"kNZP","./scales":"mxMR","./scope":"Nfxo"}],"Jhnx":[function(require,module,exports) {
@@ -2089,7 +2093,7 @@ class Treemap extends _layout.Layout {
       w: subtract(names.fieldX1, names.fieldX0)
     };
     const mark = this.transformedMark(offsets);
-    (0, _scope.addSignal)(globalScope.scope, {
+    (0, _scope.addSignals)(globalScope.scope, {
       name: _constants.SignalNames.TreeMapMethod,
       value: 'squarify',
       bind: {
@@ -3037,6 +3041,8 @@ var _layout = require("./layout");
 
 var _constants = require("../constants");
 
+var _defaults = require("../defaults");
+
 var _scales = require("../scales");
 
 var _scope = require("../scope");
@@ -3053,6 +3059,9 @@ class Scatter extends _layout.Layout {
     this.names = {
       aggregateData: `data_${p}_aggregate`,
       markData: `data_${p}_mark`,
+      sizeExtent: `${p}_sizeExtent`,
+      sizeRange: `${p}_sizeRange`,
+      sizeScale: `${p}_sizeScale`,
       xScale: `scale_${p}_x`,
       yScale: `scale_${p}_y`,
       zScale: `scale_${p}_z`
@@ -3068,21 +3077,23 @@ class Scatter extends _layout.Layout {
     const {
       globalScope,
       parentScope,
-      scatterPointSizeDisplay,
+      scatterPointScaleDisplay,
+      size,
       x,
       y,
       z,
       zGrounded
     } = props;
-    (0, _scope.addSignal)(globalScope.scope, {
-      name: _constants.SignalNames.PointSize,
+    const qsize = size && size.quantitative && size;
+    (0, _scope.addSignals)(globalScope.scope, {
+      name: _constants.SignalNames.PointScale,
       value: 5,
       bind: {
-        name: scatterPointSizeDisplay,
+        name: scatterPointScaleDisplay,
         debounce: 50,
         input: 'range',
         min: 1,
-        max: 25,
+        max: 10,
         step: 1
       }
     }, {
@@ -3093,6 +3104,29 @@ class Scatter extends _layout.Layout {
         input: 'checkbox'
       }
     });
+
+    if (qsize) {
+      (0, _scope.addTransforms)(globalScope.data, {
+        type: 'extent',
+        field: qsize.name,
+        signal: names.sizeExtent
+      });
+      (0, _scope.addScales)(globalScope.scope, {
+        name: names.sizeScale,
+        type: 'linear',
+        domain: [0, {
+          signal: `${names.sizeExtent}[1]`
+        }],
+        range: [0, {
+          signal: names.sizeRange
+        }]
+      });
+      (0, _scope.addSignals)(globalScope.scope, {
+        name: names.sizeRange,
+        update: `min(${parentScope.sizeSignals.layoutHeight}, ${parentScope.sizeSignals.layoutWidth}) / ${_defaults.scatterSizedDiv}`
+      });
+    }
+
     (0, _scope.addData)(globalScope.scope, {
       name: names.markData,
       source: globalScope.markDataName,
@@ -3111,15 +3145,16 @@ class Scatter extends _layout.Layout {
       scales: {}
     };
     const zValue = z ? `scale(${JSON.stringify(names.zScale)}, datum[${JSON.stringify(z.name)}])` : null;
+    const sizeValueSignal = qsize ? `scale(${JSON.stringify(names.sizeScale)}, datum[${JSON.stringify(qsize.name)}]) * ${_constants.SignalNames.PointScale}` : _constants.SignalNames.PointScale;
     const update = Object.assign({
       height: [{
         test: (0, _selection.testForCollapseSelection)(),
         value: 0
       }, {
-        signal: _constants.SignalNames.PointSize
+        signal: sizeValueSignal
       }],
       width: {
-        signal: _constants.SignalNames.PointSize
+        signal: sizeValueSignal
       }
     }, z && {
       z: [{
@@ -3132,7 +3167,7 @@ class Scatter extends _layout.Layout {
         test: (0, _selection.testForCollapseSelection)(),
         value: 0
       }, {
-        signal: `${_constants.SignalNames.ZGrounded} ? ${zValue} : ${_constants.SignalNames.PointSize}`
+        signal: `${_constants.SignalNames.ZGrounded} ? ${zValue} : ${sizeValueSignal}`
       }]
     });
     const columnSignals = [{
@@ -3191,9 +3226,9 @@ class Scatter extends _layout.Layout {
     return {
       offsets: {
         x: (0, _scope.addOffsets)(parentScope.offsets.x, `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(x.name)}])`),
-        y: (0, _scope.addOffsets)(parentScope.offsets.y, `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(y.name)}]) - ${_constants.SignalNames.PointSize}`),
-        h: _constants.SignalNames.PointSize,
-        w: _constants.SignalNames.PointSize
+        y: (0, _scope.addOffsets)(parentScope.offsets.y, `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(y.name)}]) - ${sizeValueSignal}`),
+        h: sizeValueSignal,
+        w: sizeValueSignal
       },
       sizeSignals: {
         layoutHeight: null,
@@ -3213,7 +3248,7 @@ class Scatter extends _layout.Layout {
 }
 
 exports.Scatter = Scatter;
-},{"./layout":"GfLt","../constants":"kNZP","../scales":"mxMR","../scope":"Nfxo","../selection":"inPN"}],"mVfN":[function(require,module,exports) {
+},{"./layout":"GfLt","../constants":"kNZP","../defaults":"visW","../scales":"mxMR","../scope":"Nfxo","../selection":"inPN"}],"mVfN":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3234,7 +3269,8 @@ function _default(specContext) {
     x: specColumns.x,
     y: specColumns.y,
     z: specColumns.z,
-    scatterPointSizeDisplay: specViewOptions.language.scatterPointSize,
+    size: specColumns.size,
+    scatterPointScaleDisplay: specViewOptions.language.scatterPointScale,
     zGrounded: specViewOptions.language.zGrounded
   };
   const axisScales = {
@@ -3269,6 +3305,10 @@ function _default(specContext) {
         role: 'color',
         allowNone: true
       }, {
+        role: 'size',
+        excludeCategoric: true,
+        allowNone: true
+      }, {
         role: 'facet',
         allowNone: true,
         signals: [_constants.SignalNames.FacetBins]
@@ -3277,7 +3317,7 @@ function _default(specContext) {
         allowNone: true,
         signals: [_constants.SignalNames.FacetVBins]
       }],
-      signals: [_constants.SignalNames.PointSize, _constants.SignalNames.ZGrounded]
+      signals: [_constants.SignalNames.PointScale, _constants.SignalNames.ZGrounded]
     }
   };
 }
@@ -3397,7 +3437,7 @@ class Stack extends _layout.Layout {
         signal: names.squaredExtent
       }]
     });
-    (0, _scope.addSignal)(globalScope.scope, {
+    (0, _scope.addSignals)(globalScope.scope, {
       name: names.size,
       update: `min((${sizeSignals.layoutHeight}), (${sizeSignals.layoutWidth}))`
     }, {
@@ -3798,7 +3838,7 @@ function addGlobalAxes(props) {
       let scale = scales[s];
 
       if (scale) {
-        (0, _scope.addScale)(scope, scale);
+        (0, _scope.addScales)(scope, scale);
 
         if (globalScales.showAxes && axisScales && s !== 'z') {
           let axisScale = axisScales[s];
@@ -4040,9 +4080,9 @@ function addColor(props) {
 
   if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
     if (specColumns.color.quantitative) {
-      (0, _scope.addScale)(scope, (0, _scales.binnableColorScale)(scaleName, insight.colorBin, dataName, specColumns.color.name, insight.scheme));
+      (0, _scope.addScales)(scope, (0, _scales.binnableColorScale)(scaleName, insight.colorBin, dataName, specColumns.color.name, insight.scheme));
     } else {
-      (0, _scope.addScale)(scope, {
+      (0, _scope.addScales)(scope, {
         name: scaleName,
         type: 'ordinal',
         domain: {
@@ -4060,7 +4100,7 @@ function addColor(props) {
     }
   }
 
-  (0, _scope.addSignal)(scope, (0, _signals.colorBinCountSignal)(specContext), (0, _signals.colorReverseSignal)(specContext));
+  (0, _scope.addSignals)(scope, (0, _signals.colorBinCountSignal)(specContext), (0, _signals.colorReverseSignal)(specContext));
   return {
     topColorField: _constants.FieldNames.TopColor,
     colorDataName
@@ -4268,7 +4308,7 @@ function addFacetAxesGroupMarks(props) {
       signal: plotHeightOut
     }, 0]
   };
-  (0, _scope.addScale)(globalScope, colTitleScale, rowTitleScale);
+  (0, _scope.addScales)(globalScope, colTitleScale, rowTitleScale);
   const map = {
     main: [{
       scope: facetScope.facetScope,
@@ -4385,12 +4425,14 @@ function createSequence(dataName, countSignal) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createOrdinalsForFacet = createOrdinalsForFacet;
+exports.createOrdinals = createOrdinals;
 exports.ordinalScale = ordinalScale;
 
 var _constants = require("./constants");
 
-function createOrdinalsForFacet(source, prefix, binFields, sortOrder) {
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function createOrdinals(source, prefix, binFields, sortOrder) {
   const dataName = `${prefix}_bin_order`;
   const data = {
     name: dataName,
@@ -4545,7 +4587,7 @@ class Cross extends _layout.Layout {
       const titleSource = titles[dim];
 
       if (bin.native === false) {
-        (0, _scope.addSignal)(globalScope.scope, bin.maxbinsSignal);
+        (0, _scope.addSignals)(globalScope.scope, bin.maxbinsSignal);
         (0, _scope.addTransforms)(globalScope.data, ...bin.transforms);
         (0, _scope.addData)(globalScope.scope, bin.dataSequence);
         (0, _scope.addTransforms)(bin.dataSequence, {
@@ -4560,7 +4602,7 @@ class Cross extends _layout.Layout {
         titleSource.dataName = bin.dataSequence.name;
       } else {
         dataName = globalScope.markDataName;
-        const ord = (0, _ordinal.createOrdinalsForFacet)(dataName, `${prefix}_${dim}`, bin.fields, sortOrder);
+        const ord = (0, _ordinal.createOrdinals)(dataName, `${prefix}_${dim}`, bin.fields, sortOrder);
         data = ord.data;
         (0, _scope.addData)(globalScope.scope, ord.data);
         countSignal = `length(data(${JSON.stringify(ord.data.name)}))`;
@@ -4580,15 +4622,15 @@ class Cross extends _layout.Layout {
         expr: (0, _facetSearch.displayBin)(bin),
         as: _constants.FieldNames.FacetTitle
       });
-      (0, _scope.addScale)(globalScope.scope, scale);
+      (0, _scope.addScales)(globalScope.scope, scale);
       const count = `${names.dimCount}_${dim}`;
       const calc = `${names.dimCellSizeCalc}_${dim}`;
       const size = `${names.dimCellSize}_${dim}`;
-      (0, _scope.addSignal)(globalScope.scope, {
+      (0, _scope.addSignals)(globalScope.scope, {
         name: count,
         update: countSignal
       });
-      (0, _scope.addSignal)(globalScope.scope, {
+      (0, _scope.addSignals)(globalScope.scope, {
         name: calc,
         update: `${d.layout} / ${count}`
       }, {
@@ -4841,7 +4883,7 @@ class Wrap extends _layout.Layout {
     let ordinalBinData;
 
     if (bin.native === false) {
-      (0, _scope.addSignal)(globalScope.scope, bin.maxbinsSignal);
+      (0, _scope.addSignals)(globalScope.scope, bin.maxbinsSignal);
       (0, _scope.addTransforms)(globalScope.data, ...bin.transforms);
       (0, _scope.addData)(globalScope.scope, bin.dataSequence);
       (0, _scope.addTransforms)(bin.dataSequence, {
@@ -4851,7 +4893,7 @@ class Wrap extends _layout.Layout {
       });
       ordinalBinData = bin.dataSequence.name;
     } else {
-      const ord = (0, _ordinal.createOrdinalsForFacet)(globalScope.data.name, prefix, bin.fields, 'ascending');
+      const ord = (0, _ordinal.createOrdinals)(globalScope.data.name, prefix, bin.fields, 'ascending');
       (0, _scope.addData)(globalScope.scope, ord.data);
       ordinalBinData = ord.data.name;
     }
@@ -4968,7 +5010,7 @@ class Wrap extends _layout.Layout {
     };
     (0, _scope.addData)(globalScope.scope, dataOut);
     globalScope.setMarkDataName(names.outputData);
-    (0, _scope.addSignal)(globalScope.scope, {
+    (0, _scope.addSignals)(globalScope.scope, {
       name: names.minAspect,
       update: `${_constants.SignalNames.MinCellWidth} / ${_constants.SignalNames.MinCellHeight}`
     }, {
@@ -5431,8 +5473,8 @@ class SpecBuilder {
           maxbinsSignalName: _constants.SignalNames.FacetVBins
         };
         facetLayout = (0, _facetLayout.getFacetLayout)(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn, specViewOptions.colors.axisText);
-        (0, _scope.addSignal)(vegaSpec, ...facetLayout.signals);
-        (0, _scope.addScale)(vegaSpec, ...facetLayout.scales);
+        (0, _scope.addSignals)(vegaSpec, ...facetLayout.signals);
+        (0, _scope.addScales)(vegaSpec, ...facetLayout.scales);
         this.props.layouts = [facetLayout.layoutPair, ...this.props.layouts];
         this.globalSignals.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
         this.globalSignals.plotOffsetRight.update = `${facetLayout.plotPadding.x}`;
@@ -11307,7 +11349,7 @@ const defaultViewerOptions = {
     count: 'Count',
     percent: 'Percent',
     sum: 'Sum',
-    scatterPointSize: 'Point size',
+    scatterPointScale: 'Point scale',
     FacetMaxBins: 'Facet max bins',
     FacetVMaxBins: 'Cross facet max bins',
     XMaxBins: 'X axis max bins',
@@ -22251,7 +22293,7 @@ function filterSignals(signal) {
     case SandDance.constants.SignalNames.FacetVBins:
     case SandDance.constants.SignalNames.ColorBinCount:
     case SandDance.constants.SignalNames.ColorReverse:
-    case SandDance.constants.SignalNames.PointSize:
+    case SandDance.constants.SignalNames.PointScale:
     case SandDance.constants.SignalNames.TreeMapMethod:
       return false;
 
@@ -24006,7 +24048,9 @@ function (_React$Component) {
       var newState = Object.assign({
         chart: chart
       }, partialInsight);
-      var columns = this.state.columns || {};
+
+      var columns = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, partialInsight.columns, this.state.columns);
+
       newState.columns = Object.assign({}, columns); //special case mappings when switching chart type
 
       if (this.state.chart === 'scatterplot' && (chart === 'barchart' || chart === 'barchartV')) {
@@ -24022,7 +24066,21 @@ function (_React$Component) {
 
         if (!columns.size) {
           //make sure size exists and is numeric
-          var sizeColumnName = (0, _chartRecommender.preferredColumnForTreemapSize)(this.state.dataContent.columns, true);
+          var sizeColumnName; //first check prefs
+
+          if (partialInsight && partialInsight.columns && partialInsight.columns.size) {
+            var prefSizeColumn = this.state.dataContent.columns.filter(function (c) {
+              return c.name === partialInsight.columns.size;
+            })[0];
+
+            if (prefSizeColumn && prefSizeColumn.quantitative) {
+              sizeColumnName = prefSizeColumn.name;
+            }
+          }
+
+          if (!sizeColumnName) {
+            sizeColumnName = (0, _chartRecommender.preferredColumnForTreemapSize)(this.state.dataContent.columns, true);
+          }
 
           if (!sizeColumnName) {
             sizeColumnName = (0, _chartRecommender.preferredColumnForTreemapSize)(this.state.dataContent.columns, false);
@@ -24107,7 +24165,18 @@ function (_React$Component) {
         });
       };
 
+      var _changeInsight = function _changeInsight(newState, pref, columnUpdate) {
+        newState.columns = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, columns, pref, columnUpdate);
+        (0, _partialInsight4.savePref)(_this8.prefs, _this8.state.chart, '*', '*', {
+          columns: columnUpdate
+        });
+
+        _this8.changeInsight(newState);
+      };
+
       if (column) {
+        var columnUpdate;
+
         switch (role) {
           case 'facet':
             {
@@ -24117,8 +24186,12 @@ function (_React$Component) {
               }, partialInsight), {
                 facetStyle: options ? options.facetStyle : this.state.facetStyle
               });
-              columns['facet'] = column.name;
-              this.changeInsight(newState);
+              columnUpdate = {
+                facet: column.name
+              };
+
+              _changeInsight(newState, partialInsight.columns, columnUpdate);
+
               break;
             }
 
@@ -24167,10 +24240,12 @@ function (_React$Component) {
                 _this8.ignoreSelectionChange = false; //allow deselection to render
 
                 requestAnimationFrame(function () {
-                  columns['color'] = column.name;
+                  columnUpdate = {
+                    color: column.name
+                  };
                   _this8.getColorContext = null;
 
-                  _this8.changeInsight(_newState);
+                  _changeInsight(_newState, null, columnUpdate);
                 });
               });
               break;
@@ -24184,8 +24259,12 @@ function (_React$Component) {
                 columns: columns
               }, _partialInsight2);
 
-              columns['x'] = column.name;
-              this.changeInsight(_newState2);
+              columnUpdate = {
+                x: column.name
+              };
+
+              _changeInsight(_newState2, _partialInsight2.columns, columnUpdate);
+
               break;
             }
 
@@ -24193,14 +24272,16 @@ function (_React$Component) {
             {
               var _partialInsight3 = (0, _partialInsight4.copyPrefToNewState)(this.prefs, this.state.chart, 'size', column.name);
 
-              var _newState3 = Object.assign(Object.assign({
-                columns: columns
-              }, _partialInsight3), {
+              var _newState3 = Object.assign(Object.assign({}, _partialInsight3), {
                 totalStyle: options ? options.totalStyle : this.state.totalStyle
               });
 
-              columns['size'] = column.name;
-              this.changeInsight(_newState3);
+              columnUpdate = {
+                size: column.name
+              };
+
+              _changeInsight(_newState3, _partialInsight3.columns, columnUpdate);
+
               break;
             }
 

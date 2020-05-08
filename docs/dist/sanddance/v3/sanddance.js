@@ -76,7 +76,7 @@
         FacetPaddingBottom: 'FacetPaddingBottom',
         FacetPaddingLeft: 'FacetPaddingLeft',
         MarkOpacity: 'Mark_OpacitySignal',
-        PointSize: 'Chart_PointSizeSignal',
+        PointScale: 'Chart_PointScaleSignal',
         TextAngleX: 'Text_AngleXSignal',
         TextAngleY: 'Text_AngleYSignal',
         TextScale: 'Text_ScaleSignal',
@@ -112,13 +112,13 @@
         }
         scope.marks.push(...marks);
     }
-    function addScale(scope, ...scale) {
+    function addScales(scope, ...scale) {
         if (!scope.scales) {
             scope.scales = [];
         }
         scope.scales.push(...scale);
     }
-    function addSignal(scope, ...signal) {
+    function addSignals(scope, ...signal) {
         if (!scope.signals) {
             scope.signals = [];
         }
@@ -183,7 +183,7 @@
                 field: names.aggregateField,
                 signal: names.globalAggregateExtentSignal
             });
-            addSignal(globalScope.scope, {
+            addSignals(globalScope.scope, {
                 name: props.globalAggregateMaxExtentSignal,
                 update: `${names.globalAggregateExtentSignal}[1]`
             });
@@ -234,7 +234,7 @@
                 reverse: dock === 'top'
             };
             const globalAggregateMaxExtentScaledValue = `scale(${JSON.stringify(names.scale)}, ${props.globalAggregateMaxExtentSignal})`;
-            addSignal(globalScope.scope, {
+            addSignals(globalScope.scope, {
                 name: props.globalAggregateMaxExtentScaledSignal,
                 update: dock === 'bottom'
                     ? `${parentScope.sizeSignals.layoutHeight} - ${globalAggregateMaxExtentScaledValue}`
@@ -551,7 +551,7 @@
             const { globalScope, minBandWidth, orientation, parentScope, showAxes } = props;
             const binField = bin.fields[0];
             if (bin.native === false) {
-                addSignal(globalScope.scope, bin.maxbinsSignal);
+                addSignals(globalScope.scope, bin.maxbinsSignal);
                 addTransforms(globalScope.data, ...bin.transforms);
                 addData(globalScope.scope, bin.dataSequence);
             }
@@ -570,7 +570,7 @@
             const horizontal = orientation === 'horizontal';
             const minCellSignal = (horizontal) ? globalScope.signals.minCellHeight : globalScope.signals.minCellWidth;
             modifySignal(minCellSignal, 'max', `length(data(${JSON.stringify(names.accumulative)})) * ${minBandWidth}`);
-            addSignal(globalScope.scope, {
+            addSignals(globalScope.scope, {
                 name: names.bandWidth,
                 update: `bandwidth(${JSON.stringify(horizontal ? names.yScale : names.xScale)})`
             });
@@ -718,6 +718,7 @@
     const axesTitlePaddingFacetY = 92;
     const axesOffsetX = 120;
     const axesOffsetY = 120;
+    const scatterSizedDiv = 20;
 
     function linearScale(scaleName, data, field, range, reverse, zero) {
         const scale = {
@@ -803,7 +804,7 @@
     function addZScale(z, zSize, globalScope, zScaleName) {
         if (z) {
             const zRange = [0, { signal: `(${zSize}) * ${SignalNames.ZProportion}` }];
-            addScale(globalScope.scope, z.quantitative
+            addScales(globalScope.scope, z.quantitative
                 ?
                     linearScale(zScaleName, globalScope.data.name, z.name, zRange, false, true)
                 :
@@ -1147,7 +1148,7 @@
                 w: subtract(names.fieldX1, names.fieldX0)
             };
             const mark = this.transformedMark(offsets);
-            addSignal(globalScope.scope, {
+            addSignals(globalScope.scope, {
                 name: SignalNames.TreeMapMethod,
                 value: 'squarify',
                 bind: {
@@ -1933,6 +1934,9 @@
             this.names = {
                 aggregateData: `data_${p}_aggregate`,
                 markData: `data_${p}_mark`,
+                sizeExtent: `${p}_sizeExtent`,
+                sizeRange: `${p}_sizeRange`,
+                sizeScale: `${p}_sizeScale`,
                 xScale: `scale_${p}_x`,
                 yScale: `scale_${p}_y`,
                 zScale: `scale_${p}_z`
@@ -1940,16 +1944,17 @@
         }
         build() {
             const { names, prefix, props } = this;
-            const { globalScope, parentScope, scatterPointSizeDisplay, x, y, z, zGrounded } = props;
-            addSignal(globalScope.scope, {
-                name: SignalNames.PointSize,
+            const { globalScope, parentScope, scatterPointScaleDisplay, size, x, y, z, zGrounded } = props;
+            const qsize = size && size.quantitative && size;
+            addSignals(globalScope.scope, {
+                name: SignalNames.PointScale,
                 value: 5,
                 bind: {
-                    name: scatterPointSizeDisplay,
+                    name: scatterPointScaleDisplay,
                     debounce: 50,
                     input: 'range',
                     min: 1,
-                    max: 25,
+                    max: 10,
                     step: 1
                 }
             }, {
@@ -1960,6 +1965,23 @@
                     input: 'checkbox'
                 }
             });
+            if (qsize) {
+                addTransforms(globalScope.data, {
+                    type: 'extent',
+                    field: qsize.name,
+                    signal: names.sizeExtent
+                });
+                addScales(globalScope.scope, {
+                    name: names.sizeScale,
+                    type: 'linear',
+                    domain: [0, { signal: `${names.sizeExtent}[1]` }],
+                    range: [0, { signal: names.sizeRange }]
+                });
+                addSignals(globalScope.scope, {
+                    name: names.sizeRange,
+                    update: `min(${parentScope.sizeSignals.layoutHeight}, ${parentScope.sizeSignals.layoutWidth}) / ${scatterSizedDiv}`
+                });
+            }
             addData(globalScope.scope, {
                 name: names.markData,
                 source: globalScope.markDataName,
@@ -1976,16 +1998,19 @@
             globalScope.setMarkDataName(names.markData);
             const globalScales = { showAxes: true, scales: {} };
             const zValue = z ? `scale(${JSON.stringify(names.zScale)}, datum[${JSON.stringify(z.name)}])` : null;
+            const sizeValueSignal = qsize ?
+                `scale(${JSON.stringify(names.sizeScale)}, datum[${JSON.stringify(qsize.name)}]) * ${SignalNames.PointScale}`
+                : SignalNames.PointScale;
             const update = Object.assign({ height: [
                     {
                         test: testForCollapseSelection(),
                         value: 0
                     },
                     {
-                        signal: SignalNames.PointSize
+                        signal: sizeValueSignal
                     }
                 ], width: {
-                    signal: SignalNames.PointSize
+                    signal: sizeValueSignal
                 } }, z && {
                 z: [
                     {
@@ -2002,7 +2027,7 @@
                         value: 0
                     },
                     {
-                        signal: `${SignalNames.ZGrounded} ? ${zValue} : ${SignalNames.PointSize}`
+                        signal: `${SignalNames.ZGrounded} ? ${zValue} : ${sizeValueSignal}`
                     }
                 ]
             });
@@ -2052,9 +2077,9 @@
             return {
                 offsets: {
                     x: addOffsets(parentScope.offsets.x, `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(x.name)}])`),
-                    y: addOffsets(parentScope.offsets.y, `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(y.name)}]) - ${SignalNames.PointSize}`),
-                    h: SignalNames.PointSize,
-                    w: SignalNames.PointSize
+                    y: addOffsets(parentScope.offsets.y, `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(y.name)}]) - ${sizeValueSignal}`),
+                    h: sizeValueSignal,
+                    w: sizeValueSignal
                 },
                 sizeSignals: {
                     layoutHeight: null,
@@ -2080,7 +2105,8 @@
             x: specColumns.x,
             y: specColumns.y,
             z: specColumns.z,
-            scatterPointSizeDisplay: specViewOptions.language.scatterPointSize,
+            size: specColumns.size,
+            scatterPointScaleDisplay: specViewOptions.language.scatterPointScale,
             zGrounded: specViewOptions.language.zGrounded
         };
         const axisScales = {
@@ -2116,6 +2142,11 @@
                         allowNone: true
                     },
                     {
+                        role: 'size',
+                        excludeCategoric: true,
+                        allowNone: true
+                    },
+                    {
                         role: 'facet',
                         allowNone: true,
                         signals: [SignalNames.FacetBins]
@@ -2126,7 +2157,7 @@
                         signals: [SignalNames.FacetVBins]
                     }
                 ],
-                signals: [SignalNames.PointSize, SignalNames.ZGrounded]
+                signals: [SignalNames.PointScale, SignalNames.ZGrounded]
             }
         };
     }
@@ -2228,7 +2259,7 @@
                     }
                 ]
             });
-            addSignal(globalScope.scope, {
+            addSignals(globalScope.scope, {
                 name: names.size,
                 update: `min((${sizeSignals.layoutHeight}), (${sizeSignals.layoutWidth}))`
             }, {
@@ -2557,7 +2588,7 @@
             for (let s in scales) {
                 let scale = scales[s];
                 if (scale) {
-                    addScale(scope, scale);
+                    addScales(scope, scale);
                     if (globalScales.showAxes && axisScales && s !== 'z') {
                         let axisScale = axisScales[s];
                         if (axisScale) {
@@ -2706,10 +2737,10 @@
         }
         if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
             if (specColumns.color.quantitative) {
-                addScale(scope, binnableColorScale(scaleName, insight.colorBin, dataName, specColumns.color.name, insight.scheme));
+                addScales(scope, binnableColorScale(scaleName, insight.colorBin, dataName, specColumns.color.name, insight.scheme));
             }
             else {
-                addScale(scope, {
+                addScales(scope, {
                     name: scaleName,
                     type: 'ordinal',
                     domain: {
@@ -2724,7 +2755,7 @@
                 });
             }
         }
-        addSignal(scope, colorBinCountSignal(specContext), colorReverseSignal(specContext));
+        addSignals(scope, colorBinCountSignal(specContext), colorReverseSignal(specContext));
         return { topColorField: FieldNames.TopColor, colorDataName };
     }
 
@@ -2904,7 +2935,7 @@
             domain: [0, 1],
             range: [{ signal: plotHeightOut }, 0]
         };
-        addScale(globalScope, colTitleScale, rowTitleScale);
+        addScales(globalScope, colTitleScale, rowTitleScale);
         const map = {
             main: [
                 {
@@ -3003,7 +3034,8 @@
         };
     }
 
-    function createOrdinalsForFacet(source, prefix, binFields, sortOrder) {
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    function createOrdinals(source, prefix, binFields, sortOrder) {
         const dataName = `${prefix}_bin_order`;
         const data = {
             name: dataName,
@@ -3109,7 +3141,7 @@
                 let scale;
                 const titleSource = titles[dim];
                 if (bin.native === false) {
-                    addSignal(globalScope.scope, bin.maxbinsSignal);
+                    addSignals(globalScope.scope, bin.maxbinsSignal);
                     addTransforms(globalScope.data, ...bin.transforms);
                     addData(globalScope.scope, bin.dataSequence);
                     addTransforms(bin.dataSequence, {
@@ -3125,7 +3157,7 @@
                 }
                 else {
                     dataName = globalScope.markDataName;
-                    const ord = createOrdinalsForFacet(dataName, `${prefix}_${dim}`, bin.fields, sortOrder);
+                    const ord = createOrdinals(dataName, `${prefix}_${dim}`, bin.fields, sortOrder);
                     data = ord.data;
                     addData(globalScope.scope, ord.data);
                     countSignal = `length(data(${JSON.stringify(ord.data.name)}))`;
@@ -3144,12 +3176,12 @@
                     expr: displayBin(bin),
                     as: FieldNames.FacetTitle
                 });
-                addScale(globalScope.scope, scale);
+                addScales(globalScope.scope, scale);
                 const count = `${names.dimCount}_${dim}`;
                 const calc = `${names.dimCellSizeCalc}_${dim}`;
                 const size = `${names.dimCellSize}_${dim}`;
-                addSignal(globalScope.scope, { name: count, update: countSignal });
-                addSignal(globalScope.scope, {
+                addSignals(globalScope.scope, { name: count, update: countSignal });
+                addSignals(globalScope.scope, {
                     name: calc,
                     update: `${d.layout} / ${count}`
                 }, {
@@ -3329,7 +3361,7 @@
             const { axisTextColor, cellTitles, globalScope, parentScope } = props;
             let ordinalBinData;
             if (bin.native === false) {
-                addSignal(globalScope.scope, bin.maxbinsSignal);
+                addSignals(globalScope.scope, bin.maxbinsSignal);
                 addTransforms(globalScope.data, ...bin.transforms);
                 addData(globalScope.scope, bin.dataSequence);
                 addTransforms(bin.dataSequence, {
@@ -3340,7 +3372,7 @@
                 ordinalBinData = bin.dataSequence.name;
             }
             else {
-                const ord = createOrdinalsForFacet(globalScope.data.name, prefix, bin.fields, 'ascending');
+                const ord = createOrdinals(globalScope.data.name, prefix, bin.fields, 'ascending');
                 addData(globalScope.scope, ord.data);
                 ordinalBinData = ord.data.name;
             }
@@ -3482,7 +3514,7 @@
             };
             addData(globalScope.scope, dataOut);
             globalScope.setMarkDataName(names.outputData);
-            addSignal(globalScope.scope, {
+            addSignals(globalScope.scope, {
                 name: names.minAspect,
                 update: `${SignalNames.MinCellWidth} / ${SignalNames.MinCellHeight}`
             }, {
@@ -3815,8 +3847,8 @@
                         maxbinsSignalName: SignalNames.FacetVBins
                     };
                     facetLayout = getFacetLayout(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn, specViewOptions.colors.axisText);
-                    addSignal(vegaSpec, ...facetLayout.signals);
-                    addScale(vegaSpec, ...facetLayout.scales);
+                    addSignals(vegaSpec, ...facetLayout.signals);
+                    addScales(vegaSpec, ...facetLayout.scales);
                     this.props.layouts = [facetLayout.layoutPair, ...this.props.layouts];
                     this.globalSignals.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
                     this.globalSignals.plotOffsetRight.update = `${facetLayout.plotPadding.x}`;
@@ -7736,7 +7768,7 @@ void main(void) {
             count: 'Count',
             percent: 'Percent',
             sum: 'Sum',
-            scatterPointSize: 'Point size',
+            scatterPointScale: 'Point scale',
             FacetMaxBins: 'Facet max bins',
             FacetVMaxBins: 'Cross facet max bins',
             XMaxBins: 'X axis max bins',
