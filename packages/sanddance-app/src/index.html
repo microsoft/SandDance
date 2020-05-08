@@ -37,10 +37,10 @@
 
 <body>
     <!-- link to JSON files so we can get a url from the bundler -->
-    <a class="sanddance-app-static-content" id="titanic" data-display-name="Titanic" data-type="tsv"
-        href="../../../docs/sample-data/titanicmaster.tsv"></a>
     <a class="sanddance-app-static-content" id="demovote" data-display-name="Demo Vote" data-type="tsv"
         href="../../../docs/sample-data/demovote.tsv"></a>
+    <a class="sanddance-app-static-content" id="titanic" data-display-name="Titanic" data-type="tsv"
+        href="../../../docs/sample-data/titanicmaster.tsv"></a>
 
     <script>
         var themeColors = {
@@ -112,6 +112,15 @@
                         "color": {
                             "Winner": {
                                 "scheme": "dual_bluered"
+                            }
+                        }
+                    },
+                    "treemap": {
+                        "*": {
+                            "*": {
+                                "columns": {
+                                    "size": "TotalPop"
+                                }
                             }
                         }
                     },
