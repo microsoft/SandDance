@@ -61,6 +61,7 @@ export class Scatter extends Layout {
     public build(): InnerScope {
         const { names, prefix, props } = this;
         const { globalScope, parentScope, scatterPointScaleDisplay, size, x, y, z, zGrounded } = props;
+        const qsize = size && size.quantitative && size;
 
         addSignals(globalScope.scope,
             {
@@ -85,33 +86,22 @@ export class Scatter extends Layout {
             }
         );
 
-        if (size) {
-            if (size.quantitative) {
-                addTransforms(globalScope.data,
-                    {
-                        type: 'extent',
-                        field: size.name,
-                        signal: names.sizeExtent
-                    }
-                );
-                addScales(globalScope.scope,
-                    {
-                        name: names.sizeScale,
-                        type: 'linear',
-                        domain: [0, { signal: `${names.sizeExtent}[1]` }],
-                        range: [0, { signal: names.sizeRange }]
-                    }
-                );
-            } else {
-                addScales(globalScope.scope,
-                    {
-                        name: names.sizeScale,
-                        type: 'point',
-                        domain: { data: globalScope.data.name, field: size.name },
-                        range: [scatterSizedMin, { signal: names.sizeRange }]
-                    }
-                );
-            }
+        if (qsize) {
+            addTransforms(globalScope.data,
+                {
+                    type: 'extent',
+                    field: qsize.name,
+                    signal: names.sizeExtent
+                }
+            );
+            addScales(globalScope.scope,
+                {
+                    name: names.sizeScale,
+                    type: 'linear',
+                    domain: [0, { signal: `${names.sizeExtent}[1]` }],
+                    range: [0, { signal: names.sizeRange }]
+                }
+            );
             addSignals(globalScope.scope,
                 {
                     name: names.sizeRange,
@@ -136,8 +126,8 @@ export class Scatter extends Layout {
 
         const globalScales: GlobalScales = { showAxes: true, scales: {} };
         const zValue = z ? `scale(${JSON.stringify(names.zScale)}, datum[${JSON.stringify(z.name)}])` : null;
-        const sizeValueSignal = size ?
-            `scale(${JSON.stringify(names.sizeScale)}, datum[${JSON.stringify(size.name)}]) * ${SignalNames.PointScale}`
+        const sizeValueSignal = qsize ?
+            `scale(${JSON.stringify(names.sizeScale)}, datum[${JSON.stringify(qsize.name)}]) * ${SignalNames.PointScale}`
             : SignalNames.PointScale;
 
         const update: RectEncodeEntry = {
