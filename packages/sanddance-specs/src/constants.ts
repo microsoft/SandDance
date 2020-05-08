@@ -19,7 +19,6 @@ export const FieldNames = {
     FacetSearch: '__SandDance__FacetSearch',
     FacetTitle: '__SandDance__FacetTitle',
     Ordinal: '__SandDance__Ordinal',
-    ScaledOrdinal: '__SandDance__ScaledOrdinal',
     WrapCol: '__SandDance__WrapCol',
     WrapRow: '__SandDance__WrapRow',
     Value: '__SandDance__Value',
