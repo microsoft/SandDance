@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { addData, addMarks, addScale } from './scope';
+import { addData, addMarks, addScales } from './scope';
 import { AxesScopeMap } from './axes';
 import {
     Data,
@@ -168,7 +168,7 @@ export function addFacetAxesGroupMarks(props: Props) {
         range: [{ signal: plotHeightOut }, 0]
     };
 
-    addScale(globalScope, colTitleScale, rowTitleScale);
+    addScales(globalScope, colTitleScale, rowTitleScale);
 
     const map: AxesScopeMap = {
         main: [

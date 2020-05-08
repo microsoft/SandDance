@@ -31,8 +31,8 @@ import {
 import { LayoutBuildProps, LayoutPair, LayoutProps } from './layouts/layout';
 import {
     addData,
-    addScale,
-    addSignal
+    addScales,
+    addSignals
 } from './scope';
 import { textSignals } from './signals';
 import { SpecCapabilities, SpecContext } from './types';
@@ -144,8 +144,8 @@ export class SpecBuilder {
                     maxbinsSignalName: SignalNames.FacetVBins
                 };
                 facetLayout = getFacetLayout(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn, specViewOptions.colors.axisText);
-                addSignal(vegaSpec, ...facetLayout.signals);
-                addScale(vegaSpec, ...facetLayout.scales);
+                addSignals(vegaSpec, ...facetLayout.signals);
+                addScales(vegaSpec, ...facetLayout.scales);
                 this.props.layouts = [facetLayout.layoutPair, ...this.props.layouts];
                 this.globalSignals.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
                 this.globalSignals.plotOffsetRight.update = `${facetLayout.plotPadding.x}`;

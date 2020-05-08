@@ -28,3 +28,6 @@ export const axesTitlePaddingFacetY = 92;
 
 export const axesOffsetX = 120;
 export const axesOffsetY = 120;
+
+export const scatterSizedMin = 10;
+export const scatterSizedDiv = 20;

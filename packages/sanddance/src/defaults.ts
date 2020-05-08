@@ -43,7 +43,7 @@ export const defaultViewerOptions: ViewerOptions = {
         count: 'Count',
         percent: 'Percent',
         sum: 'Sum',
-        scatterPointSize: 'Point size',
+        scatterPointScale: 'Point scale',
         FacetMaxBins: 'Facet max bins',
         FacetVMaxBins: 'Cross facet max bins',
         XMaxBins: 'X axis max bins',

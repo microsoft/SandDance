@@ -12,7 +12,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         x: specColumns.x,
         y: specColumns.y,
         z: specColumns.z,
-        scatterPointSizeDisplay: specViewOptions.language.scatterPointSize,
+        size: specColumns.size,
+        scatterPointScaleDisplay: specViewOptions.language.scatterPointScale,
         zGrounded: specViewOptions.language.zGrounded
     };
     const axisScales: AxisScales = {
@@ -48,6 +49,10 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     allowNone: true
                 },
                 {
+                    role: 'size',
+                    allowNone: true
+                },
+                {
                     role: 'facet',
                     allowNone: true,
                     signals: [SignalNames.FacetBins]
@@ -58,7 +63,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     signals: [SignalNames.FacetVBins]
                 }
             ],
-            signals: [SignalNames.PointSize, SignalNames.ZGrounded]
+            signals: [SignalNames.PointScale, SignalNames.ZGrounded]
         }
     };
 }

@@ -12,7 +12,7 @@ import {
 import {
     addData,
     addOffsets,
-    addSignal,
+    addSignals,
     addTransforms
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
@@ -58,7 +58,7 @@ export class Band extends Layout {
         const { globalScope, minBandWidth, orientation, parentScope, showAxes } = props;
         const binField = bin.fields[0];
         if (bin.native === false) {
-            addSignal(globalScope.scope, bin.maxbinsSignal);
+            addSignals(globalScope.scope, bin.maxbinsSignal);
             addTransforms(globalScope.data, ...bin.transforms);
             addData(globalScope.scope, bin.dataSequence);
         }
@@ -78,7 +78,7 @@ export class Band extends Layout {
         const horizontal = orientation === 'horizontal';
         const minCellSignal = (horizontal) ? globalScope.signals.minCellHeight : globalScope.signals.minCellWidth;
         modifySignal(minCellSignal, 'max', `length(data(${JSON.stringify(names.accumulative)})) * ${minBandWidth}`);
-        addSignal(globalScope.scope,
+        addSignals(globalScope.scope,
             {
                 name: names.bandWidth,
                 update: `bandwidth(${JSON.stringify(horizontal ? names.yScale : names.xScale)})`

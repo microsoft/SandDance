@@ -61,7 +61,7 @@ function filterSignals(signal: NewSignal) {
         case SandDance.constants.SignalNames.FacetVBins:
         case SandDance.constants.SignalNames.ColorBinCount:
         case SandDance.constants.SignalNames.ColorReverse:
-        case SandDance.constants.SignalNames.PointSize:
+        case SandDance.constants.SignalNames.PointScale:
         case SandDance.constants.SignalNames.TreeMapMethod:
             return false;
         default:

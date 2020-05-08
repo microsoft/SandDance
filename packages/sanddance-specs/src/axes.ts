@@ -4,7 +4,7 @@ import { SignalNames } from './constants';
 import { axesLabelLimit, axesTitleLimit } from './defaults';
 import { GlobalScope } from './globalScope';
 import { AxisScale, AxisScales, GlobalScales } from './interfaces';
-import { addAxes, addScale } from './scope';
+import { addAxes, addScales } from './scope';
 import { SpecColumns, SpecViewOptions } from './types';
 import { Column } from '@msrvida/chart-types';
 import {
@@ -49,7 +49,7 @@ export function addGlobalAxes(props: Props) {
         for (let s in scales) {
             let scale: Scale = scales[s];
             if (scale) {
-                addScale(scope, scale);
+                addScales(scope, scale);
                 if (globalScales.showAxes && axisScales && s !== 'z') {
                     let axisScale: AxisScale = axisScales[s];
                     if (axisScale) {
