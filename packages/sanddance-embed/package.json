@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@types/react-dom": "16.0.6",
-    "@msrvida/office-ui-fabric-react-cdn-typings": "*"
+    "@msrvida/fluentui-react-cdn-typings": "*"
   },
   "author": "",
   "license": "MIT"

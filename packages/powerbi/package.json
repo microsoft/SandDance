@@ -28,7 +28,7 @@
     "vega": "^5.11"
   },
   "devDependencies": {
-    "@msrvida/office-ui-fabric-react-cdn-typings": "^1",
+    "@msrvida/fluentui-react-cdn-typings": "^1",
     "@types/react-dom": "^16.8.4",
     "powerbi-visuals-tools": "^3.1.5",
     "ts-loader": "6.0.4",
