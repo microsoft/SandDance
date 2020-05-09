@@ -22,8 +22,8 @@
   },
   "devDependencies": {
     "@types/d3-format": "^1.3.1",
-    "@types/react": "16.4.7",
-    "@types/react-dom": "16.0.6",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.7",
     "vega-typings": "^0.16.0"
   },
   "dependencies": {
@@ -31,8 +31,8 @@
     "@msrvida/fluentui-react-cdn-typings": "^1",
     "@msrvida/sanddance-react": "3.0.0-alpha.3",
     "d3-format": "^1.3.2",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   },
   "license": "MIT"
 }
