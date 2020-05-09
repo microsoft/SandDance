@@ -12,7 +12,7 @@ import { ChoiceGroup } from '@fluentui/react/lib/ChoiceGroup';
 import { ComboBox } from '@fluentui/react/lib/ComboBox';
 import { CommandBar } from '@fluentui/react/lib/CommandBar';
 import { ContextualMenuItemType } from '@fluentui/react/lib/ContextualMenu';
-import { Customizer } from '@uifabric/utilities';
+import { Customizer } from '@fluentui/react/lib/utilities';
 import { Dialog, DialogFooter, DialogType } from '@fluentui/react/lib/Dialog';
 import { Dropdown, DropdownMenuItemType } from '@fluentui/react/lib/Dropdown';
 import { getFocusStyle, getTheme, loadTheme } from '@fluentui/react/lib/Styling';
