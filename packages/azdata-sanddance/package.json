@@ -93,12 +93,6 @@
         "@types/mocha": "^2.2.42",
         "@types/node": "^8.10.25",
         "common-extensions": "*",
-        "deck.gl": "6.4",
-        "luma.gl": "6.4",
-        "office-ui-fabric-react": "6.204.4",
-        "react": "^16.6.0",
-        "react-dom": "^16.6.0",
-        "vega": "^5.11",
         "vscode": "^1.1.21"
     },
     "dependencies": {
