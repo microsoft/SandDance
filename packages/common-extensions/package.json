@@ -22,7 +22,10 @@
   "homepage": "https://github.com/Microsoft/SandDance#readme",
   "dependencies": {
     "@fluentui/react": "^7.111.0",
-    "deck.gl": "8.1.5"
+    "deck.gl": "8.1.5",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "vega": "^5.11"
   },
   "devDependencies": {
     "@msrvida/sanddance-explorer": "3.0.0-alpha.3",
