@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { FabricComponents } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUIComponents } from '@msrvida/fluentui-react-cdn-typings';
 import * as SandDanceExplorer from '@msrvida/sanddance-explorer';
 import { SandDance } from '@msrvida/sanddance-explorer';
 
@@ -10,24 +10,28 @@ import types = SandDance.VegaDeckGl.types;
  * References to dependency libraries.
  */
 export interface Base {
-    fabric: FabricComponents;
+    fluentUI: FluentUIComponents;
 }
 
 export const base: Base = {
-    fabric: null
+    fluentUI: null
 };
 
 /**
  * Specify the dependency libraries to use for rendering.
- * @param fabric Office UI Fabric React library.
+ * @param fluentUI FluentUI React library.
+ * @param vega Vega library.
+ * @param deck @deck.gl/core library.
+ * @param layers @deck.gl/layers library.
+ * @param luma @luma.gl/core library.
  */
 export function use(
-    fabric: FabricComponents,
+    fluentUI: FluentUIComponents,
     vega: types.VegaBase,
     deck: types.DeckBase,
     layers: types.DeckLayerBase,
     luma: types.LumaBase
 ) {
-    SandDanceExplorer.use(fabric, vega, deck, layers, luma);
-    base.fabric = fabric;
+    SandDanceExplorer.use(fluentUI, vega, deck, layers, luma);
+    base.fluentUI = fluentUI;
 }

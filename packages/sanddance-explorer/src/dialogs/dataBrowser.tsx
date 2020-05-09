@@ -6,7 +6,7 @@ import { DataExportPicker, removeExtensions } from '../controls/dataExporter';
 import { DataItem } from '../controls/dataItem';
 import { DataScopeId } from '../controls/dataScope';
 import { Dropdown } from '../controls/dropdown';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { Group } from '../controls/group';
 import { IconButton } from '../controls/iconButton';
 import { InputSearchExpressionGroup } from './search';
@@ -26,7 +26,7 @@ export interface Props {
     zeroMessage: string;
     itemVisible: boolean;
     theme: string;
-    themePalette: Partial<FabricTypes.IPalette>;
+    themePalette: Partial<FluentUITypes.IPalette>;
     dataExportHandler: DataExportHandler;
     selectedDataScope: DataScopeId;
     onDataScopeClick: (dataScopeId: DataScopeId) => void;

@@ -5,7 +5,7 @@ import { base } from '../base';
 import { ChangeColumnMappingOptions } from '../interfaces';
 import { Dropdown } from './dropdown';
 import { Explorer } from '../explorer';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { NewSignal } from 'vega-typings/types';
 import { SandDance } from '@msrvida/sanddance-react';
 import { Signal } from './signal';
@@ -58,7 +58,7 @@ export interface ColumnMapOptionsProps extends ColumnMapBaseProps {
 
 export interface Props extends ColumnMapOptionsProps {
     collapseLabel: boolean;
-    componentRef?: React.RefObject<FabricTypes.IDropdown>;
+    componentRef?: React.RefObject<FluentUITypes.IDropdown>;
     hideSignals?: boolean;
     prefix?: JSX.Element;
     suffix?: JSX.Element;
@@ -86,7 +86,7 @@ function filterColumnList(context: SandDance.specs.InsightColumnRoles, columns: 
 function optionsForSpecColumn(sectionName: string, columns: SandDance.types.Column[], role: SandDance.specs.InsightColumnRoles, disabledColumnName: string, selectedColumnName: string) {
     const filtered = filterColumnList(role, columns);
     const options = filtered.map(column => {
-        const option: FabricTypes.IDropdownOption = {
+        const option: FluentUITypes.IDropdownOption = {
             key: `column:${column.name}`,
             text: column.name,
             data: column,
@@ -96,10 +96,10 @@ function optionsForSpecColumn(sectionName: string, columns: SandDance.types.Colu
         return option;
     });
     if (options.length) {
-        const option: FabricTypes.IDropdownOption = {
+        const option: FluentUITypes.IDropdownOption = {
             key: sectionName,
             text: sectionName,
-            itemType: base.fabric.DropdownMenuItemType.Header
+            itemType: base.fluentUI.DropdownMenuItemType.Header
         };
         options.unshift(option);
     }
@@ -108,7 +108,7 @@ function optionsForSpecColumn(sectionName: string, columns: SandDance.types.Colu
 
 function optionsForReference(sectionName: string, specRoles: SandDance.specs.SpecRoleCapabilities[]) {
     const options = specRoles.map(specRole => {
-        const option: FabricTypes.IDropdownOption = {
+        const option: FluentUITypes.IDropdownOption = {
             key: `role:${specRole.role}`,
             text: aliasLabels[specRole.role],
             data: specRole.role
@@ -116,19 +116,19 @@ function optionsForReference(sectionName: string, specRoles: SandDance.specs.Spe
         return option;
     }).sort((a, b) => a.text.localeCompare(b.text));
     if (options.length) {
-        const option: FabricTypes.IDropdownOption = {
+        const option: FluentUITypes.IDropdownOption = {
             key: sectionName,
             text: sectionName,
-            itemType: base.fabric.DropdownMenuItemType.Header
+            itemType: base.fluentUI.DropdownMenuItemType.Header
         };
         options.unshift(option);
     }
     return options;
 }
 
-function selectFirst(options: FabricTypes.IDropdownOption[]) {
+function selectFirst(options: FluentUITypes.IDropdownOption[]) {
     for (let i = 0; i < options.length; i++) {
-        if (options[i].itemType === base.fabric.DropdownMenuItemType.Header) continue;
+        if (options[i].itemType === base.fluentUI.DropdownMenuItemType.Header) continue;
         options[i].selected = true;
         return;
     }
@@ -139,8 +139,8 @@ export function getColumnMapOptions(props: ColumnMapOptionsProps) {
 
     let categoricalColumns: SandDance.types.Column[];
     let directColorColumns: SandDance.types.Column[];
-    let directColorGroup: FabricTypes.IDropdownOption[];
-    let referenceGroup: FabricTypes.IDropdownOption[] = [];
+    let directColorGroup: FluentUITypes.IDropdownOption[];
+    let referenceGroup: FluentUITypes.IDropdownOption[] = [];
 
     if (props.specRole.role === 'color') {
         categoricalColumns = props.categoricalColumns.filter(c => !c.isColorData);

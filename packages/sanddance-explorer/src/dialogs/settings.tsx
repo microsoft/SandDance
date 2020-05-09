@@ -8,7 +8,7 @@ import { DataFile, SettingsGroup } from '../interfaces';
 import { Dialog } from '../controls/dialog';
 import { Dropdown } from '../controls/dropdown';
 import { Explorer } from '../explorer';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { Group } from '../controls/group';
 import {
     LinearScale,
@@ -165,7 +165,7 @@ export class Settings extends React.Component<Props, State> {
     render() {
         const { props, state } = this;
         if (!props.explorer.viewer || !props.explorer.viewer.vegaSpec) return null;
-        const options: FabricTypes.IDropdownOption[] = [
+        const options: FluentUITypes.IDropdownOption[] = [
             {
                 key: DataRefType.none,
                 text: strings.selectVegaSpecDataNone,
@@ -212,19 +212,19 @@ export class Settings extends React.Component<Props, State> {
                     }
                 })}
                 <Group label={strings.labelChartCanvas}>
-                    <base.fabric.Toggle
+                    <base.fluentUI.Toggle
                         label={strings.labelShowAxes}
                         defaultChecked={!props.hideAxes}
                         onChange={(e, checked?) => props.onToggleAxes(!checked)}
                     />
-                    <base.fabric.Toggle
+                    <base.fluentUI.Toggle
                         label={strings.labelShowLegend}
                         defaultChecked={!props.hideLegend}
                         onChange={(e, checked?) => props.onToggleLegend(!checked)}
                     />
                 </Group>
                 <Group label={strings.labelTools}>
-                    <base.fabric.DefaultButton
+                    <base.fluentUI.DefaultButton
                         text={strings.buttonShowVegaSpec}
                         onClick={() => this.setState({
                             showVegaDialog: true,
@@ -233,7 +233,7 @@ export class Settings extends React.Component<Props, State> {
                     />
                 </Group>
                 <Group label={strings.labelSnapshots}>
-                    <base.fabric.Slider
+                    <base.fluentUI.Slider
                         label={strings.labelSnapshotSettingThumbnailWidth}
                         onChange={value => {
                             this.props.explorer.snapshotThumbWidth = value;
@@ -244,7 +244,7 @@ export class Settings extends React.Component<Props, State> {
                     />
                 </Group>
                 <Group label={strings.labelTransitionDurations}>
-                    <base.fabric.Slider
+                    <base.fluentUI.Slider
                         label={strings.labelTransitionColor}
                         onChange={value => {
                             this.props.explorer.viewerOptions.transitionDurations.color = value;
@@ -253,7 +253,7 @@ export class Settings extends React.Component<Props, State> {
                         max={10000}
                         defaultValue={this.props.explorer.viewerOptions.transitionDurations.color}
                     />
-                    <base.fabric.Slider
+                    <base.fluentUI.Slider
                         label={strings.labelTransitionPosition}
                         onChange={value => {
                             this.props.explorer.viewerOptions.transitionDurations.position = value;
@@ -262,7 +262,7 @@ export class Settings extends React.Component<Props, State> {
                         max={10000}
                         defaultValue={this.props.explorer.viewerOptions.transitionDurations.position}
                     />
-                    <base.fabric.Slider
+                    <base.fluentUI.Slider
                         label={strings.labelTransitionSize}
                         onChange={value => {
                             this.props.explorer.viewerOptions.transitionDurations.size = value;
@@ -271,7 +271,7 @@ export class Settings extends React.Component<Props, State> {
                         max={10000}
                         defaultValue={this.props.explorer.viewerOptions.transitionDurations.size}
                     />
-                    <base.fabric.Slider
+                    <base.fluentUI.Slider
                         label={strings.labelTransitionCamera}
                         onChange={value => {
                             this.props.explorer.viewerOptions.transitionDurations.view = value;
@@ -287,7 +287,7 @@ export class Settings extends React.Component<Props, State> {
                     </Group>
                 ))}
                 <Group label={strings.labelSystem}>
-                    <base.fabric.DefaultButton
+                    <base.fluentUI.DefaultButton
                         text={strings.labelSystemInfo}
                         onClick={() => this.setState({ showSystemDialog: true })}
                     />
@@ -299,7 +299,7 @@ export class Settings extends React.Component<Props, State> {
                     title={strings.labelVegaSpec}
                     buttons={[
                         (
-                            <base.fabric.PrimaryButton
+                            <base.fluentUI.PrimaryButton
                                 key="copy"
                                 iconProps={{ iconName: 'Copy' }}
                                 text={strings.buttonCopyToClipboard}
@@ -315,7 +315,7 @@ export class Settings extends React.Component<Props, State> {
                             />
                         ),
                         (
-                            <base.fabric.DefaultButton
+                            <base.fluentUI.DefaultButton
                                 key="edit"
                                 iconProps={{ iconName: 'OpenInNewWindow' }}
                                 text={strings.buttonLaunchVegaEditor}

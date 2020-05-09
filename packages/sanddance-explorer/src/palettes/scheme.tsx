@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 
-export interface ISchemeOption extends FabricTypes.IDropdownOption {
+export interface ISchemeOption extends FluentUITypes.IDropdownOption {
     scheme: string;
     children: React.ReactNode;
 }

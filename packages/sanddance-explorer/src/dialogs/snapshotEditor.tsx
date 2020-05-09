@@ -4,7 +4,7 @@ import * as React from 'react';
 import { base } from '../base';
 import { Dialog } from '../controls/dialog';
 import { Explorer } from '../explorer';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { getCanvas } from '../canvas';
 import { SandDance, util } from '@msrvida/sanddance-react';
 import { Snapshot } from '../interfaces';
@@ -19,7 +19,7 @@ export interface SnapshotEditorProps {
 export interface Props extends SnapshotEditorProps {
     explorer: Explorer;
     onWriteSnapshot: (snapshot: Snapshot, editIndex: number) => void;
-    themePalette: Partial<FabricTypes.IPalette>;
+    themePalette: Partial<FluentUITypes.IPalette>;
 }
 
 export interface Confirmation {
@@ -91,7 +91,7 @@ export class SnapshotEditor extends React.Component<Props, State>{
                 onDismiss={() => this.setState({ showEditFormDialog: false })}
                 title={this.state.editIndex >= 0 ? strings.buttonEditSnapshot : strings.buttonCreateSnapshot}
                 buttons={(
-                    <base.fabric.PrimaryButton
+                    <base.fluentUI.PrimaryButton
                         disabled={!this.state.image || !this.state.title}
                         key={0}
                         onClick={e => {
@@ -110,19 +110,19 @@ export class SnapshotEditor extends React.Component<Props, State>{
                     />
                 )}
             >
-                <base.fabric.TextField
+                <base.fluentUI.TextField
                     label={strings.labelSnapshotTitle}
                     onChange={(e, title) => this.setState({ title })}
                     value={this.state.title}
                 />
-                <base.fabric.TextField
+                <base.fluentUI.TextField
                     label={strings.labelSnapshotDescription}
                     onChange={(e, description) => this.setState({ description })}
                     value={this.state.description}
                     multiline={true}
                 />
                 <div className='thumbnail'>
-                    {!this.state.image && <base.fabric.Spinner />}
+                    {!this.state.image && <base.fluentUI.Spinner />}
                     {this.state.image && <img src={this.state.image} style={{ backgroundColor: this.state.bgColor }} />}
                 </div>
                 {this.props.explorer.viewer && this.props.explorer.viewer.colorContexts && this.props.explorer.viewer.colorContexts.length > 1 && <div>{strings.labelColorFilter}</div>}

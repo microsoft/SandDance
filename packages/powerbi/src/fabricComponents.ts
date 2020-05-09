@@ -13,7 +13,7 @@ import { ContextualMenuItemType } from 'office-ui-fabric-react/lib/components/Co
 import { Customizer } from '@uifabric/utilities';
 import { Dialog, DialogFooter, DialogType } from 'office-ui-fabric-react/lib/Dialog';
 import { Dropdown, DropdownMenuItemType } from 'office-ui-fabric-react/lib/components/Dropdown';
-import { FabricComponents } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUIComponents } from '@msrvida/fluentui-react-cdn-typings';
 import { getFocusStyle, getTheme, loadTheme } from 'office-ui-fabric-react/lib/Styling';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
@@ -26,7 +26,7 @@ import { Toggle } from 'office-ui-fabric-react/lib/Toggle';
 
 initializeIcons();
 
-export const fabric: FabricComponents = {
+export const fabric: FluentUIComponents = {
     ActionButton: ActionButton as any,
     ChoiceGroup: ChoiceGroup as any,
     ComboBox: ComboBox as any,

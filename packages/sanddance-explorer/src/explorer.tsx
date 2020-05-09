@@ -31,7 +31,7 @@ import { DataScopeId } from './controls/dataScope';
 import { defaultViewerOptions, snapshotThumbWidth } from './defaults';
 import { Dialog } from './controls/dialog';
 import { ensureColumnsExist, ensureColumnsPopulated } from './columns';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { getPosition } from './mouseEvent';
 import { IconButton } from './controls/iconButton';
 import { InputSearchExpressionGroup, Search } from './dialogs/search';
@@ -72,7 +72,7 @@ export interface Props {
     mounted?: (explorer: Explorer) => any;
     datasetElement?: JSX.Element;
     dataExportHandler?: DataExportHandler;
-    topBarButtonProps?: FabricTypes.ICommandBarItemProps[];
+    topBarButtonProps?: FluentUITypes.ICommandBarItemProps[];
     snapshotProps?: SnapshotProps;
     onSnapshotClick?: (snapshot: Snapshot, selectedSnaphotIndex: number) => void | boolean;
     onView?: () => void;
@@ -945,8 +945,8 @@ export class Explorer extends React.Component<Props, State> {
                     <div ref={div => { if (div && !this.layoutDivPinned) this.layoutDivPinned = div; }} className="sanddance-layout-pinned"></div>
                     {!loaded && (
                         <div className="loading">
-                            <base.fabric.Spinner
-                                size={base.fabric.SpinnerSize.large}
+                            <base.fluentUI.Spinner
+                                size={base.fluentUI.SpinnerSize.large}
                                 label={strings.loading}
                             />
                         </div>

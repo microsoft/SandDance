@@ -4,7 +4,7 @@ import * as React from 'react';
 import { base } from '../base';
 import { Dialog } from '../controls/dialog';
 import { Explorer } from '../explorer';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { Group } from '../controls/group';
 import { IconButton } from '../controls/iconButton';
 import { util } from '@msrvida/sanddance-react';
@@ -13,7 +13,7 @@ import { strings } from '../language';
 import { SnapshotEditor } from './snapshotEditor';
 
 export interface SnapshotListProps {
-    getTopActions?: (snapshots: Snapshot[]) => FabricTypes.IContextualMenuItem[];
+    getTopActions?: (snapshots: Snapshot[]) => FluentUITypes.IContextualMenuItem[];
     getActions?: (snapshot: Snapshot, snapshotIndex: number) => SnapshotAction[];
     getChildren?: (snapshots: Snapshot[]) => React.ReactNode;
 }
@@ -29,7 +29,7 @@ export interface Props extends SnapshotListProps {
     onMoveUp: (i: number) => void;
     onMoveDown: (i: number) => void;
     onSnapshotClick?: (snapshot: Snapshot, index: number) => void;
-    themePalette: Partial<FabricTypes.IPalette>;
+    themePalette: Partial<FluentUITypes.IPalette>;
 }
 
 export interface Confirmation {
@@ -55,7 +55,7 @@ export class Snapshots extends React.Component<Props, State>{
     }
 
     render() {
-        const items: FabricTypes.IContextualMenuItem[] = [
+        const items: FluentUITypes.IContextualMenuItem[] = [
             {
                 key: 'clear',
                 text: strings.buttonClearSnapshots,
@@ -74,7 +74,7 @@ export class Snapshots extends React.Component<Props, State>{
         return (
             <Group className="sanddance-snapshots" label={strings.labelSnapshots}>
                 <div>
-                    <base.fabric.PrimaryButton
+                    <base.fluentUI.PrimaryButton
                         text={strings.buttonCreateSnapshot}
                         onClick={e => this.props.editor.editSnapshot()}
                         split
@@ -87,7 +87,7 @@ export class Snapshots extends React.Component<Props, State>{
                         <Dialog
                             hidden={false}
                             buttons={(
-                                <base.fabric.PrimaryButton
+                                <base.fluentUI.PrimaryButton
                                     key={0}
                                     onClick={e => {
                                         this.setState({ confirmation: null });

@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { IconButton } from './controls/iconButton';
 import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from './language';
@@ -32,11 +32,11 @@ export interface Props {
   canRemap?: boolean;
   colorMapHandler: { (remap: boolean): void };
   isRemap: boolean;
-  themePalette: Partial<FabricTypes.IPalette>;
+  themePalette: Partial<FluentUITypes.IPalette>;
 }
 
 function ColorMap(props: Props) {
-    const menuProps: FabricTypes.IContextualMenuProps = {
+    const menuProps: FluentUITypes.IContextualMenuProps = {
         items: [
             {
                 key: 'new',

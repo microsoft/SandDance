@@ -6,13 +6,12 @@ import VegaDeckGl = SandDance.VegaDeckGl;
 declare var vega: VegaDeckGl.types.VegaBase;
 declare var deck: VegaDeckGl.types.DeckBase & VegaDeckGl.types.DeckLayerBase;
 declare var luma: VegaDeckGl.types.LumaBase;
-declare var Fabric: _Fabric.FabricComponents;
+declare var FluentUIReact: _FluentUI.FluentUIComponents;
 
-SandDanceExplorer.use(Fabric, vega, deck, deck, luma);
+SandDanceExplorer.use(FluentUIReact, vega, deck, deck, luma);
 
 function getTextcolor() {
-    const cssColor = getComputedStyle(document.body).color;
-    return VegaDeckGl.util.colorFromString(cssColor);
+    return getComputedStyle(document.body).color;
 }
 
 function getThemePalette(darkTheme: boolean) {
@@ -102,7 +101,7 @@ class App extends React.Component<{}, State> {
                 this.explorer.viewer.renderSameLayout(this.explorer.viewerOptions);
             }
         }
-        Fabric.loadTheme({ palette: getThemePalette(darkTheme) });
+        FluentUIReact.loadTheme({ palette: getThemePalette(darkTheme) });
         this.setState({ darkTheme });
     }
 

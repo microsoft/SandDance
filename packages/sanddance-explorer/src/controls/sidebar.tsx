@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { base } from '../base';
 import { DataScope, Props as DataScopeProps } from './dataScope';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { IconButton } from './iconButton';
 import { Scrollable } from './scrollable';
 import { SideTabId } from '../interfaces';
@@ -20,7 +20,7 @@ export interface Props {
     dataScopeProps: DataScopeProps;
     closed: boolean;
     pinned: boolean;
-    themePalette: Partial<FabricTypes.IPalette>;
+    themePalette: Partial<FluentUITypes.IPalette>;
 }
 
 export function Sidebar(props: Props) {
@@ -97,8 +97,8 @@ export function Sidebar(props: Props) {
                 </Scrollable>
                 {props.calculating && (
                     <div className="calculating">
-                        <base.fabric.Spinner
-                            size={base.fabric.SpinnerSize.large}
+                        <base.fluentUI.Spinner
+                            size={base.fluentUI.SpinnerSize.large}
                         />
                     </div>
                 )}
@@ -112,7 +112,7 @@ export interface SidebuttonProps {
     title: string;
     sideTabId: SideTabId;
     badgeText?: string;
-    themePalette?: Partial<FabricTypes.IPalette>;
+    themePalette?: Partial<FluentUITypes.IPalette>;
 }
 
 export function Sidebutton(props: SidebuttonProps & Props) {

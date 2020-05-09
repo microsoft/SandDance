@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import * as React from 'react';
 import { base } from '../base';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 
 export interface IconButtonProps {
     className?: string;
@@ -10,14 +10,14 @@ export interface IconButtonProps {
     iconName: string;
     onClick: { (event: React.MouseEvent<{}>): void };
     onMouseOver?: { (event: React.MouseEvent<{}>): void };
-    menuProps?: FabricTypes.IContextualMenuProps;
+    menuProps?: FluentUITypes.IContextualMenuProps;
     title: string;
-    themePalette: Partial<FabricTypes.IPalette>;
+    themePalette: Partial<FluentUITypes.IPalette>;
 }
 
 export function IconButton(props: IconButtonProps) {
     return (
-        <base.fabric.IconButton
+        <base.fluentUI.IconButton
             {...props}
             styles={{
                 rootHovered: {
