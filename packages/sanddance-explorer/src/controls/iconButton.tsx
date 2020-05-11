@@ -20,8 +20,15 @@ export function IconButton(props: IconButtonProps) {
         <base.fluentUI.IconButton
             {...props}
             styles={{
+                root: {
+                    color: props.themePalette.black
+                },
                 rootHovered: {
+                    background: 'transparent',
                     color: props.themePalette.themePrimary
+                },
+                rootPressed: {
+                    background: 'transparent'
                 },
                 menuIcon: {
                     display: 'none'
