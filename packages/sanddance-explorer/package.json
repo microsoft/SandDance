@@ -34,5 +34,9 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
+  "alias": {
+    "react": "./alias/react-external.js",
+    "react-dom": "./alias/react-dom-external.js"
+  },
   "license": "MIT"
 }
