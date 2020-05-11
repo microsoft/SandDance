@@ -5,28 +5,28 @@ import {
     DefaultButton,
     IconButton,
     PrimaryButton
-} from 'office-ui-fabric-react/lib/components/Button';
-import { ChoiceGroup } from 'office-ui-fabric-react/lib/ChoiceGroup';
-import { ComboBox } from 'office-ui-fabric-react/lib/components/ComboBox';
-import { CommandBar } from 'office-ui-fabric-react/lib/components/CommandBar';
-import { ContextualMenuItemType } from 'office-ui-fabric-react/lib/components/ContextualMenu';
-import { Customizer } from '@uifabric/utilities';
-import { Dialog, DialogFooter, DialogType } from 'office-ui-fabric-react/lib/Dialog';
-import { Dropdown, DropdownMenuItemType } from 'office-ui-fabric-react/lib/components/Dropdown';
+} from '@fluentui/react/lib/Button';
+import { ChoiceGroup } from '@fluentui/react/lib/ChoiceGroup';
+import { ComboBox } from '@fluentui/react/lib/ComboBox';
+import { CommandBar } from '@fluentui/react/lib/CommandBar';
+import { ContextualMenuItemType } from '@fluentui/react/lib/ContextualMenu';
+import { Customizer } from '@fluentui/react/lib/Utilities';
+import { Dialog, DialogFooter, DialogType } from '@fluentui/react/lib/Dialog';
+import { Dropdown, DropdownMenuItemType } from '@fluentui/react/lib/Dropdown';
 import { FluentUIComponents } from '@msrvida/fluentui-react-cdn-typings';
-import { getFocusStyle, getTheme, loadTheme } from 'office-ui-fabric-react/lib/Styling';
-import { Icon } from 'office-ui-fabric-react/lib/Icon';
-import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
-import { Label } from 'office-ui-fabric-react/lib/Label';
-import { Modal } from 'office-ui-fabric-react/lib/components/Modal';
-import { Slider } from 'office-ui-fabric-react/lib/Slider';
-import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
-import { TextField } from 'office-ui-fabric-react/lib/TextField';
-import { Toggle } from 'office-ui-fabric-react/lib/Toggle';
+import { getFocusStyle, getTheme, loadTheme } from '@fluentui/react/lib/Styling';
+import { Icon } from '@fluentui/react/lib/Icon';
+import { initializeIcons } from '@fluentui/react/lib/Icons';
+import { Label } from '@fluentui/react/lib/Label';
+import { Modal } from '@fluentui/react/lib/Modal';
+import { Slider } from '@fluentui/react/lib/Slider';
+import { Spinner, SpinnerSize } from '@fluentui/react/lib/Spinner';
+import { TextField } from '@fluentui/react/lib/TextField';
+import { Toggle } from '@fluentui/react/lib/Toggle';
 
 initializeIcons();
 
-export const fabric: FluentUIComponents = {
+export const fluentUI: FluentUIComponents = {
     ActionButton: ActionButton as any,
     ChoiceGroup: ChoiceGroup as any,
     ComboBox: ComboBox as any,
