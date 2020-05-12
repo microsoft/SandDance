@@ -1,7 +1,7 @@
 {
   "name": "scroll-story",
   "private": true,
-  "version": "3.0.0-alpha.3",
+  "version": "3.0.0-beta.1",
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "build": "tsc -p .",
@@ -14,7 +14,7 @@
     "@luma.gl/core": "^8.1.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "@msrvida/sanddance-react": "3.0.0-alpha.3",
+    "@msrvida/sanddance-react": "3.0.0-beta.1",
     "vega": "^5.11"
   },
   "devDependencies": {
