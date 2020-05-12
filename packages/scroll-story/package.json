@@ -9,18 +9,18 @@
   },
   "dependencies": {
     "@mdx-js/tag": "^0.15.0",
-    "@deck.gl/core": "6.4",
-    "@deck.gl/layers": "6.4",
-    "luma.gl": "6.4",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
+    "@deck.gl/core": "^8.1.5",
+    "@deck.gl/layers": "^8.1.5",
+    "@luma.gl/core": "^8.1.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "@msrvida/sanddance-react": "3.0.0-alpha.3",
     "vega": "^5.11"
   },
   "devDependencies": {
     "@mdx-js/parcel-plugin-mdx": "^0.15.4",
-    "@types/react": "16.4.7",
-    "@types/react-dom": "16.0.6",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.7",
     "babel-core": "^6.26.3",
     "babel-preset-react-app": "^3.1.2",
     "vega-typings": "^0.16.0"

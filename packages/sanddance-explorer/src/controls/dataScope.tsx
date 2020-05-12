@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import * as React from 'react';
 import { Button } from './button';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { format } from 'd3-format';
 import { strings } from '../language';
 import { util } from '@msrvida/sanddance-react';
@@ -26,7 +26,7 @@ export interface Props {
     active: boolean;
     disabled: boolean;
     compact: boolean;
-    themePalette: Partial<FabricTypes.IPalette>;
+    themePalette: Partial<FluentUITypes.IPalette>;
 }
 
 const shortFormat = format('.2~s');

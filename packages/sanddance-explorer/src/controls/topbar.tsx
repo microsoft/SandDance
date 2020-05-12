@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { base } from '../base';
 import { CommandBarButtonStyles } from './CommandBarButton.styles';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { Logo } from './logo';
 import { SandDance } from '@msrvida/sanddance-react';
 import { Snapshot } from '../interfaces';
@@ -14,7 +14,7 @@ import Search = SandDance.searchExpression.Search;
 export interface Props {
     logoClickUrl: string;
     logoClickTarget: string;
-    buttons?: FabricTypes.ICommandBarItemProps[];
+    buttons?: FluentUITypes.ICommandBarItemProps[];
     doFilter: { (search: Search): void };
     doUnfilter: () => void;
     doDeselect: () => void;
@@ -29,13 +29,13 @@ export interface Props {
     onSnapshotPreviousClick: () => void;
     onViewClick: () => void;
     onHomeClick: () => void;
-    themePalette: Partial<FabricTypes.IPalette>;
+    themePalette: Partial<FluentUITypes.IPalette>;
 }
 
 export function Topbar(props: Props) {
     const zeroResults = props.selectionState.selectedData && props.selectionState.selectedData.length === 0;
     const disabled = !props.loaded;
-    const items: FabricTypes.ICommandBarItemProps[] = [
+    const items: FluentUITypes.ICommandBarItemProps[] = [
         {
             key: 'deselect',
             name: strings.buttonDeselect,
@@ -76,7 +76,7 @@ export function Topbar(props: Props) {
     if (props.buttons) {
         items.push.apply(items, props.buttons);
     }
-    const farItems: FabricTypes.ICommandBarItemProps[] = [
+    const farItems: FluentUITypes.ICommandBarItemProps[] = [
         {
             key: 'previous-snapshot',
             iconProps: {
@@ -131,17 +131,17 @@ export function Topbar(props: Props) {
                 <a href={props.logoClickUrl || '/'} target={props.logoClickTarget || '_blank'}>{strings.appName}</a>
             </div>
             <div className="sanddance-explorer-commandbar">
-                <base.fabric.Customizer
+                <base.fluentUI.Customizer
                     scopedSettings={{
                         CommandBarButton: {
-                            styles: (buttonProps: FabricTypes.IButtonProps) => {
-                                buttonProps.theme.palette = props.themePalette as FabricTypes.IPalette;
+                            styles: (buttonProps: FluentUITypes.IButtonProps) => {
+                                buttonProps.theme.palette = props.themePalette as FluentUITypes.IPalette;
                                 return CommandBarButtonStyles(buttonProps);
                             }
                         }
                     }}
                 >
-                    <base.fabric.CommandBar
+                    <base.fluentUI.CommandBar
                         items={items}
                         farItems={farItems}
                         styles={{
@@ -153,7 +153,7 @@ export function Topbar(props: Props) {
                             }
                         }}
                     />
-                </base.fabric.Customizer>
+                </base.fluentUI.Customizer>
             </div>
         </div>
     );

@@ -115,12 +115,12 @@ export class SnapshotImportLocal extends React.Component<ImportProps, ImportStat
     render() {
         return (
             <div>
-                <base.fabric.Dialog
+                <base.fluentUI.Dialog
                     hidden={false}
                     onDismiss={this.props.onDismiss}
                     dialogContentProps={{
                         className: `sanddance-dialog ${this.props.theme}`,
-                        type: base.fabric.DialogType.normal,
+                        type: base.fluentUI.DialogType.normal,
                         title: strings.dialogTitleSnapshotsLocal,
                         subText: strings.dialogSubtextSnapshotsLocal
                     }}
@@ -135,10 +135,10 @@ export class SnapshotImportLocal extends React.Component<ImportProps, ImportStat
                             <div className="error">{this.state.fileFormatError}</div>
                         )}
                     </section>
-                    <base.fabric.DialogFooter>
-                        <base.fabric.DefaultButton onClick={this.props.onDismiss} text={strings.dialogCloseButton} />
-                    </base.fabric.DialogFooter>
-                </base.fabric.Dialog>
+                    <base.fluentUI.DialogFooter>
+                        <base.fluentUI.DefaultButton onClick={this.props.onDismiss} text={strings.dialogCloseButton} />
+                    </base.fluentUI.DialogFooter>
+                </base.fluentUI.Dialog>
             </div>
         );
     }
@@ -208,17 +208,17 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
         }
         return (
             <div>
-                <base.fabric.Dialog
+                <base.fluentUI.Dialog
                     hidden={false}
                     onDismiss={this.props.onDismiss}
                     dialogContentProps={{
                         className: `sanddance-dialog ${this.props.theme}`,
-                        type: base.fabric.DialogType.normal,
+                        type: base.fluentUI.DialogType.normal,
                         title: strings.dialogTitleSnapshotsUrl
                     }}
                 >
                     <section>
-                        <base.fabric.TextField
+                        <base.fluentUI.TextField
                             label={strings.labelUrl}
                             placeholder={strings.urlInputPlaceholder}
                             onKeyUp={e => e.keyCode === 13 && this.loadUrl()}
@@ -243,16 +243,16 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
                             </section>
                         )
                     }
-                    <base.fabric.DialogFooter>
-                        <base.fabric.PrimaryButton
+                    <base.fluentUI.DialogFooter>
+                        <base.fluentUI.PrimaryButton
                             disabled={!this.state.url || !!this.state.urlError}
                             key={0}
                             onClick={e => this.loadUrl()}
                             text={strings.dialogLoadButton}
                         />
-                        <base.fabric.DefaultButton onClick={this.props.onDismiss} text={strings.dialogCloseButton} />
-                    </base.fabric.DialogFooter>
-                </base.fabric.Dialog>
+                        <base.fluentUI.DefaultButton onClick={this.props.onDismiss} text={strings.dialogCloseButton} />
+                    </base.fluentUI.DialogFooter>
+                </base.fluentUI.Dialog>
             </div>
         );
     }
@@ -267,12 +267,12 @@ export interface ExportProps {
 
 export function SnapshotExport(props: ExportProps) {
     return (
-        <base.fabric.Dialog
+        <base.fluentUI.Dialog
             hidden={false}
             onDismiss={props.onDismiss}
             dialogContentProps={{
                 className: `sanddance-dialog ${this.props.theme} sanddance-export`,
-                type: base.fabric.DialogType.normal,
+                type: base.fluentUI.DialogType.normal,
                 title: strings.dialogTitleSnapshotsExport
             }}
         >
@@ -282,7 +282,7 @@ export function SnapshotExport(props: ExportProps) {
                     <div>
                         {strings.labelSnapshotsExportHTMLDescription}
                     </div>
-                    <base.fabric.PrimaryButton
+                    <base.fluentUI.PrimaryButton
                         text={`${strings.buttonExport} ${strings.labelSnapshotsExportHTMLTitle}`}
                         onClick={e => {
                             const clean = cleanSnapshots(props.snapshots);
@@ -296,7 +296,7 @@ export function SnapshotExport(props: ExportProps) {
                     <div>
                         {strings.labelSnapshotsExportMarkdownDescription}
                     </div>
-                    <base.fabric.PrimaryButton
+                    <base.fluentUI.PrimaryButton
                         text={`${strings.buttonExport} ${strings.labelSnapshotsExportMarkdownTitle}`}
                         onClick={e => {
                             const sections = props.snapshots.map(snapshot => {
@@ -313,9 +313,9 @@ export function SnapshotExport(props: ExportProps) {
                     />
                 </li>
             </ul>
-            <base.fabric.DialogFooter>
-                <base.fabric.DefaultButton onClick={props.onDismiss} text={strings.dialogCloseButton} />
-            </base.fabric.DialogFooter>
-        </base.fabric.Dialog>
+            <base.fluentUI.DialogFooter>
+                <base.fluentUI.DefaultButton onClick={props.onDismiss} text={strings.dialogCloseButton} />
+            </base.fluentUI.DialogFooter>
+        </base.fluentUI.Dialog>
     );
 }

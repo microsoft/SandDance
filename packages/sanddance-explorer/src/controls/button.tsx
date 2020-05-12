@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import * as React from 'react';
 import { base } from '../base';
-import { IButtonProps, ICSSRule, ICSSPixelUnitRule, IPalette } from '@msrvida/office-ui-fabric-react-cdn-typings/types';
+import { IButtonProps, ICSSRule, ICSSPixelUnitRule, IPalette } from '@msrvida/fluentui-react-cdn-typings/types';
 
 export interface Props extends IButtonProps {
     iconName?: string;
@@ -14,7 +14,7 @@ export interface Props extends IButtonProps {
 
 export function Button(props: Props) {
     return (
-        <base.fabric.DefaultButton
+        <base.fluentUI.DefaultButton
             {...props}
             styles={{
                 root: {

@@ -6,7 +6,7 @@ import { categorical } from './categorical';
 import { diverging } from './diverging';
 import { Dropdown } from '../controls/dropdown';
 import { dual } from './dual';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { ISchemeOption, schemesJSX } from './scheme';
 import { SandDance, util } from '@msrvida/sanddance-react';
 import { sequentialMultiHue } from './sequentialMultiHue';
@@ -48,13 +48,13 @@ export function Palette(props: Props) {
 
     const selected = props.scheme;
 
-    const options: FabricTypes.IDropdownOption[] = [];
+    const options: FluentUITypes.IDropdownOption[] = [];
 
     function menu(name: string, opts: ISchemeOption[]) {
         options.push({
             key: name,
             text: name,
-            itemType: base.fabric.DropdownMenuItemType.Header
+            itemType: base.fluentUI.DropdownMenuItemType.Header
         });
         options.push.apply(options, opts);
     }
@@ -84,7 +84,7 @@ export function Palette(props: Props) {
                 dropdownWidth={400}
                 label={strings.labelColorScheme}
                 onRenderOption={(option: ISchemeOption): JSX.Element => {
-                    if (option.itemType === base.fabric.DropdownMenuItemType.Header) {
+                    if (option.itemType === base.fluentUI.DropdownMenuItemType.Header) {
                         return <span>{option.text}</span>;
                     } else {
                         return (

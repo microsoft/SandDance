@@ -6,7 +6,7 @@ import VegaDeckGl = SandDance.VegaDeckGl;
 declare var vega: VegaDeckGl.types.VegaBase;
 declare var deck: VegaDeckGl.types.DeckBase & VegaDeckGl.types.DeckLayerBase;
 declare var luma: VegaDeckGl.types.LumaBase;
-declare var Fabric: _Fabric.FabricComponents;
+declare var FluentUIReact: _FluentUI.FluentUIComponents;
 
 namespace SandDanceEmbed {
 
@@ -31,7 +31,7 @@ namespace SandDanceEmbed {
             };
 
             const create = () => {
-                SandDanceExplorer.use(Fabric, vega, deck, deck, luma);
+                SandDanceExplorer.use(FluentUIReact, vega, deck, deck, luma);
                 const explorerProps: SandDanceExplorer.Props = {
                     logoClickUrl: 'https://microsoft.github.io/SandDance/',
                     mounted: explorer => {

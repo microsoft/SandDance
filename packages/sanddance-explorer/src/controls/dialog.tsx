@@ -2,10 +2,10 @@
 // Licensed under the MIT license.
 import * as React from 'react';
 import { base } from '../base';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { strings } from '../language';
 
-export interface Props extends FabricTypes.IDialogProps {
+export interface Props extends FluentUITypes.IDialogProps {
     title?: string;
     children?: React.ReactNode;
     buttons?: JSX.Element | JSX.Element[];
@@ -13,19 +13,19 @@ export interface Props extends FabricTypes.IDialogProps {
 
 export function Dialog(props: Props) {
     return (
-        <base.fabric.Dialog
+        <base.fluentUI.Dialog
             {...props}
             dialogContentProps={{
-                type: base.fabric.DialogType.normal,
+                type: base.fluentUI.DialogType.normal,
                 title: props.title
             }}
         >
             {props.children}
-            <base.fabric.DialogFooter>
+            <base.fluentUI.DialogFooter>
                 {props.buttons}
-                <base.fabric.DefaultButton onClick={props.onDismiss} text={strings.buttonClose} />
-            </base.fabric.DialogFooter>
-        </base.fabric.Dialog>
+                <base.fluentUI.DefaultButton onClick={props.onDismiss} text={strings.buttonClose} />
+            </base.fluentUI.DialogFooter>
+        </base.fluentUI.Dialog>
 
     );
 }

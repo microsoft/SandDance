@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { base } from '../base';
 import { Dropdown, dropdownWidth } from './dropdown';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
 
@@ -82,7 +82,7 @@ function getExpressionClauses(currClause: SearchExpressionClause, disableOR: boo
     return keys.map((key: [SearchExpressionClause, string], i: number) => {
         const [clause, text] = key;
         const selected = currClause == clause; //deliberate double equal 
-        const option: FabricTypes.IDropdownOption = {
+        const option: FluentUITypes.IDropdownOption = {
             key: i,
             text,
             data: clause,
@@ -99,7 +99,7 @@ function getOperators(ex: InputSearchExpression, column: SandDance.types.Column)
         const [op, text] = validoperator;
         const selected = ex.operator === op;
         anySelected = anySelected || selected;
-        const option: FabricTypes.IDropdownOption = {
+        const option: FluentUITypes.IDropdownOption = {
             key: op,
             text,
             data: op,
@@ -123,7 +123,7 @@ function getDistinctValues(data: object[], columnName: string) {
     return Object.keys(distinctMap).sort();
 }
 
-function getValues(ex: InputSearchExpression, column: SandDance.types.Column, data: object[], autoCompleteDistinctValues: { [columnName: string]: any[] }): FabricTypes.IComboBoxOption[] {
+function getValues(ex: InputSearchExpression, column: SandDance.types.Column, data: object[], autoCompleteDistinctValues: { [columnName: string]: any[] }): FluentUITypes.IComboBoxOption[] {
     const stats = column && column.stats;
     if (stats && stats.distinctValueCount < maxAutocomplete) {
         if (!autoCompleteDistinctValues[column.name]) {
@@ -132,7 +132,7 @@ function getValues(ex: InputSearchExpression, column: SandDance.types.Column, da
         return autoCompleteDistinctValues[column.name].map((v, i) => ({
             key: i,
             text: v
-        } as FabricTypes.IComboBoxOption));
+        } as FluentUITypes.IComboBoxOption));
     }
     return [];
 }
@@ -189,7 +189,7 @@ export function SearchTerm(props: Props) {
                 onChange={(e, o) => props.onUpdateExpression({ operator: (o.data) as SearchExpressionOperators }, props.index)}
             />
             {possibleValues.length > 0 && (
-                <base.fabric.ComboBox
+                <base.fluentUI.ComboBox
                     className="search-field"
                     label={props.collapseLabels ? null : strings.labelSearchValue}
                     placeholder={strings.labelSearchValuePlaceholder}
@@ -202,8 +202,8 @@ export function SearchTerm(props: Props) {
                     options={getValues(ex, props.column, props.data, props.autoCompleteDistinctValues)}
                     onChange={
                         (
-                            e: React.FormEvent<FabricTypes.IComboBox>,
-                            o?: FabricTypes.IComboBoxOption,
+                            e: React.FormEvent<FluentUITypes.IComboBox>,
+                            o?: FluentUITypes.IComboBoxOption,
                             i?: number,
                             value?: string
                         ) => {
@@ -216,7 +216,7 @@ export function SearchTerm(props: Props) {
                 />
             )}
             {possibleValues.length === 0 && (
-                <base.fabric.TextField
+                <base.fluentUI.TextField
                     className="search-field"
                     label={props.collapseLabels ? null : strings.labelSearchValue}
                     placeholder={strings.labelSearchValuePlaceholder}

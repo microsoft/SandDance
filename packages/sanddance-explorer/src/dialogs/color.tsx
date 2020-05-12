@@ -66,7 +66,7 @@ export function Color(props: Props) {
             </Group>
             {colorColumn && !colorColumn.isColorData && <Group label={strings.labelColorBin}>
                 <div className="sanddance-explanation">{strings.labelColorBinExplanation}</div>
-                <base.fabric.ChoiceGroup
+                <base.fluentUI.ChoiceGroup
                     options={[
                         {
                             key: 'continuous',
@@ -100,7 +100,7 @@ export function Color(props: Props) {
                 />
             </Group>}
             {colorColumn && !colorColumn.isColorData && <Group label={strings.labelColorOptions}>
-                <base.fabric.Toggle
+                <base.fluentUI.Toggle
                     label={strings.selectDirectColor}
                     disabled={!colorColumn.stats.hasColorData}
                     checked={!!(colorColumn.stats.hasColorData && props.directColor)}

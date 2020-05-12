@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import * as React from 'react';
 import { ColumnMap, Props as ColumnMapProps } from './controls/columnMap';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';
 import { MousePosition } from './mouseEvent';
 
@@ -40,7 +40,7 @@ export interface PositionedColumnMapProps extends ColumnMapProps, MousePosition 
 export interface PositionedColumnMapState extends MousePosition { }
 
 export class PositionedColumnMap extends React.Component<PositionedColumnMapProps, PositionedColumnMapState> {
-    private dropdownRef?: React.RefObject<FabricTypes.IDropdown>;
+    private dropdownRef?: React.RefObject<FluentUITypes.IDropdown>;
     private focused: boolean;
     private div: HTMLDivElement;
 
@@ -48,7 +48,7 @@ export class PositionedColumnMap extends React.Component<PositionedColumnMapProp
         super(props);
         const { left, top } = props;
         this.state = { left, top };
-        this.dropdownRef = React.createRef<FabricTypes.IDropdown>();
+        this.dropdownRef = React.createRef<FluentUITypes.IDropdown>();
     }
 
     focus() {

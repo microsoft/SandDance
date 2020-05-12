@@ -16,7 +16,7 @@ export function ToggleColumns(props: Props) {
             {props.allColumns.map((c, i) => (
                 <div key={c.name}>
                     <label>
-                        <base.fabric.Toggle
+                        <base.fluentUI.Toggle
                             checked={props.exclusions.indexOf(c.name) < 0}
                             inlineLabel={true}
                             label={c.name}

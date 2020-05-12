@@ -2,11 +2,11 @@
 // Licensed under the MIT license.
 import * as React from 'react';
 import { base } from '../base';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 
 export const dropdownWidth = 200;
 
-export interface Props extends FabricTypes.IDropdownProps {
+export interface Props extends FluentUITypes.IDropdownProps {
     collapseLabel?: boolean;
 }
 
@@ -23,13 +23,13 @@ export function Dropdown(props: Props) {
         newProps.onRenderTitle = ((a, b) => {
             return (
                 <span>
-                    {newProps.label}: {(a[0] as FabricTypes.IDropdownOption).text}
+                    {newProps.label}: {(a[0] as FluentUITypes.IDropdownOption).text}
                 </span>
             );
         });
     }
     return (
-        <base.fabric.Dropdown
+        <base.fluentUI.Dropdown
             dropdownWidth={dropdownWidth}
             {...newProps}
             label={newProps.collapseLabel ? null : newProps.label}
