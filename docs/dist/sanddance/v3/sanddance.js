@@ -7568,7 +7568,11 @@ void main(void) {
             if (config && config.preStage) {
                 config.preStage(stage, deckProps);
             }
-            requestAnimationFrame(() => this.deckgl.setProps(deckProps));
+            requestAnimationFrame(() => this.deckgl.setProps(Object.assign(Object.assign({}, deckProps), { onAfterRender: () => {
+                    if (this._afterRenderHandler) {
+                        this._afterRenderHandler();
+                    }
+                } })));
             delete stage.cubeData;
             this._last = {
                 cubeCount,
@@ -7577,6 +7581,15 @@ void main(void) {
                 stage: stage,
                 view: stage.view
             };
+        }
+        canvasToDataURL() {
+            return new Promise((resolve, reject) => {
+                this._afterRenderHandler = () => {
+                    this._afterRenderHandler = null;
+                    const png = this.deckgl.canvas.toDataURL('image/png');
+                    resolve(png);
+                };
+            });
         }
         /**
          * Home the camera to the last initial position.
