@@ -22,7 +22,8 @@ import { easeExpInOut } from 'd3-ease';
 import { Layer } from 'deck.gl';
 import { TextLayerProps } from '@deck.gl/layers/text-layer/text-layer';
 import { groupStrokeWidth } from './defaults';
-import { colorToString } from './color';
+import { colorToString, colorFromString } from './color';
+import { array } from 'vega-typings/types';
 
 export function getLayers(
     presenter: Presenter,
@@ -124,30 +125,70 @@ function newPathLayer(id: string, mdata: Path[]) {
 }
 
 function newPolygonLayer(id: string, mdata: Polygon[]) {
-    console.log("new area layer", mdata);
+    // console.log("new area layer", mdata);
     if (!mdata) return null;
     //
     //const data = mdata.map((p)=>{return({contour: p.positions, name:'id', color: colorToRGBArray(p.strokeColor),strokeWidth:5.0 })});
+    // we can make this much better! sdrucker
 
 
-
-    const data = mdata.map((areas) => {
-        return ({
-            contour:
-                areas.positions.map((p, i, elements) => {
-                    if (i < (elements.length - 1)) {
-                        return (
-                            [
-                                [p[0], p[1], p[2]],
-                                [elements[i + 1][0], elements[i + 1][1], elements[i + 1][2]],
-                                [elements[i + 1][3], elements[i + 1][4], elements[i + 1][5]],
-                                [p[3], p[4], p[5]]
-                            ])
-                    }
-                }).slice(0, -1),
-            color: colorToString(areas.strokeColor)
-        })
+    const pdata = mdata.map((areas) => {
+        return (areas.positions.map((p, i, elements) => {
+            if (i < (elements.length - 1)) {
+                return (
+                    [
+                        [p[0], p[1], p[2]],
+                        [elements[i + 1][0], elements[i + 1][1], elements[i + 1][2]],
+                        [elements[i + 1][3], elements[i + 1][4], elements[i + 1][5]],
+                        [p[3], p[4], p[5]]
+                    ])
+            }
+        }).slice(0, -1))
     });
+    
+    const cdata = mdata.map((areas) => {
+        return (areas.positions.map((p, i, elements) => {
+            if (i < (elements.length - 1)) {
+                return (
+                    [ 
+                        {
+                            strokeColor: areas.strokeColor,
+                            fillColor: areas.fillColor,
+                            strokeOpacity: areas.strokeOpacity
+                        }
+                    ]
+                )
+            }
+        }).slice(0, -1))
+    });
+        
+    
+    const flatdata = [].concat.apply([],pdata);
+    const flatcolordata = [].concat.apply([],cdata);
+    // console.log("flatdata ", flatdata);
+    // console.log("flatcolordata ", flatcolordata);
+    const data = flatdata.map((p,i) => {
+        return({
+            contour: p,
+            color: flatcolordata[i][0].fillColor
+        })});    
+    
+    // return ({
+    //     contour:
+    //         areas.positions.map((p, i, elements) => {
+    //             if (i < (elements.length - 1)) {
+    //                 return (
+    //                     [
+    //                         [p[0], p[1], p[2]],
+    //                         [elements[i + 1][0], elements[i + 1][1], elements[i + 1][2]],
+    //                         [elements[i + 1][3], elements[i + 1][4], elements[i + 1][5]],
+    //                         [p[3], p[4], p[5]]
+    //                     ])
+    //             }
+    //         }).slice(0, -1),
+    //     color: colorToString(areas.strokeColor)
+    // })
+    //});
     console.log("area data", data);
     return new base.layers.PolygonLayer<any>({
         id,
@@ -161,7 +202,8 @@ function newPolygonLayer(id: string, mdata: Polygon[]) {
         filled: true,
         stroked: true,
         pickable: true,
-        extruded: false,
+        extruded: true,
+        getElevation: 2,
         getLineWidth: (o) => o.strokeWidth
     });
 }
