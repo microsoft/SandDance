@@ -1,6 +1,7 @@
 {
   "lerna": "2.8.0",
   "packages": [
+    "extensions/*",
     "packages/*"
   ],
   "version": "independent"
