@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/vega-deck.gl",
-  "version": "3.0.0-alpha.3",
+  "version": "3.0.0-beta.1",
   "description": "Deck.gl renderer for Vega",
   "main": "dist/es6/index.js",
   "files": [
@@ -25,7 +25,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@danmarshall/deckgl-typings": "^4.1.7",
+    "@danmarshall/deckgl-typings": "^4.1.8",
     "@msrvida/chart-types": "^1",
     "@types/react": "^16.9.34",
     "d3-color": "^1.4.0",

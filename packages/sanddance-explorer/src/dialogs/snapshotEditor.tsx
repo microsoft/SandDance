@@ -76,7 +76,9 @@ export class SnapshotEditor extends React.Component<Props, State>{
 
                 //allow deselection to render
                 setTimeout(() => {
-                    this.resize(canvas && canvas.toDataURL('image/png'), this.props.explorer.snapshotThumbWidth);
+                    this.props.explorer.viewer.presenter.canvasToDataURL().then(dataUrl => {
+                        this.resize(dataUrl, this.props.explorer.snapshotThumbWidth);
+                    });
                 }, 500);
             });
         }
