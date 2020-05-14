@@ -14605,7 +14605,7 @@ map['range'] = function (prefix, bind, initialValue, onChange, disabled, collaps
     max: bind.max,
     min: bind.min,
     step: bind.step,
-    value: initialValue,
+    defaultValue: initialValue,
     onChange: onChange,
     disabled: disabled
   });
