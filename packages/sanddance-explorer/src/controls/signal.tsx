@@ -69,7 +69,7 @@ map['range'] = (prefix: string, bind: BindRange, initialValue: number, onChange:
             max={bind.max}
             min={bind.min}
             step={bind.step}
-            value={initialValue}
+            defaultValue={initialValue}
             onChange={onChange}
             disabled={disabled}
         />
