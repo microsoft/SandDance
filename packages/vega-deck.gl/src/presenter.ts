@@ -290,7 +290,6 @@ export class Presenter {
         const guideLines = this._showGuides && box(0, 0, height, width, '#0f0', 1, true);
         config.preLayer && config.preLayer(stage);
         const layers = getLayers(this, config, stage, /*lightSettings*/null, lightingMix, linearInterpolator, guideLines);
-        console.log("setDeckProps ", layers);
         const deckProps: Partial<DeckProps> = {
             effects: lightingEffects(),
             views: [new base.deck.OrbitView({ controller: base.deck.OrbitController })],
