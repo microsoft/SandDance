@@ -86,6 +86,7 @@ export class Presenter {
     private queuedAnimationOptions: QueuedAnimationOptions;
     private _last: IBounds & { stage: Stage };
     private _showGuides: boolean;
+    private _afterRenderHandler: () => void;
 
     /**
      * Instantiate a new Presenter.
@@ -299,7 +300,14 @@ export class Presenter {
         if (config && config.preStage) {
             config.preStage(stage, deckProps);
         }
-        requestAnimationFrame(() => this.deckgl.setProps(deckProps));
+        requestAnimationFrame(() => this.deckgl.setProps({
+            ...deckProps,
+            onAfterRender: () => {
+                if (this._afterRenderHandler) {
+                    this._afterRenderHandler();
+                }
+            }
+        }));
         delete stage.cubeData;
         this._last = {
             cubeCount,
@@ -308,6 +316,16 @@ export class Presenter {
             stage: stage,
             view: stage.view
         };
+    }
+
+    public canvasToDataURL() {
+        return new Promise<string>((resolve, reject) => {
+            this._afterRenderHandler = () => {
+                this._afterRenderHandler = null;
+                const png = this.deckgl.canvas.toDataURL('image/png');
+                resolve(png);
+            };
+        });
     }
 
     /**

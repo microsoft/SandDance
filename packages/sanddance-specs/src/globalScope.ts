@@ -56,7 +56,7 @@ export class GlobalScope implements InnerScope {
             layoutHeight: SignalNames.PlotHeightIn,
             layoutWidth: SignalNames.PlotWidthIn
         };
-        this.zSize = SignalNames.PlotHeightIn
+        this.zSize = SignalNames.PlotHeightIn;
     }
 
     get markDataName(): string {

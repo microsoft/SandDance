@@ -4,7 +4,7 @@ import { base } from './base';
 import { strings } from './language';
 import { DataSource, DataSourceSnapshot, DataSourceType } from './types';
 import { invalidUrlError } from './url';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { DataFileType } from '@msrvida/sanddance-explorer';
 import * as React from 'react';
 
@@ -21,15 +21,15 @@ export interface ButtonProps extends Props {
 export function DataSourceButton(props: ButtonProps) {
     const picker = props.getPicker();
     if (!picker) return null;
-    const menuProps: FabricTypes.IContextualMenuProps = {
+    const menuProps: FluentUITypes.IContextualMenuProps = {
         items: [
             {
                 key: 'sample-section',
-                itemType: base.fabric.ContextualMenuItemType.Section,
+                itemType: base.fluentUI.ContextualMenuItemType.Section,
                 sectionProps: {
                     title: strings.sampleDataPrefix,
                     items: props.dataSources.map((ds, i) => {
-                        const item: FabricTypes.IContextualMenuItem = {
+                        const item: FluentUITypes.IContextualMenuItem = {
                             key: ds.id,
                             text: ds.displayName,
                             onClick: e => {
@@ -42,7 +42,7 @@ export function DataSourceButton(props: ButtonProps) {
             },
             {
                 key: 'user-section',
-                itemType: base.fabric.ContextualMenuItemType.Section,
+                itemType: base.fluentUI.ContextualMenuItemType.Section,
                 sectionProps: {
                     topDivider: true,
                     title: strings.menuUserData,
@@ -63,7 +63,7 @@ export function DataSourceButton(props: ButtonProps) {
         ]
     };
     return (
-        <base.fabric.PrimaryButton
+        <base.fluentUI.PrimaryButton
             className="sanddance-datasource-picker"
             text={dataSourcePrefix(props.dataSource.dataSourceType, props.dataSource.displayName)}
             menuProps={menuProps}
@@ -191,13 +191,13 @@ export class DataSourcePicker extends React.Component<DialogProps, State> {
             shortcut = this.getUrlShortcut(this.state.url, this.state.urlType);
         }
         return [(
-            <base.fabric.Dialog
+            <base.fluentUI.Dialog
                 key='local'
                 hidden={!(this.state.dialogMode === 'local')}
                 onDismiss={closeDialog}
                 dialogContentProps={{
                     className: `sanddance-dialog ${this.props.theme}`,
-                    type: base.fabric.DialogType.normal,
+                    type: base.fluentUI.DialogType.normal,
                     title: strings.dialogTitleLocal,
                     subText: strings.dialogSubtextLocal
                 }}
@@ -210,20 +210,20 @@ export class DataSourcePicker extends React.Component<DialogProps, State> {
                 {this.state.uploadFormatError && (
                     <div className="error">{this.state.uploadFormatError}</div>
                 )}
-            </base.fabric.Dialog>
+            </base.fluentUI.Dialog>
         ), (
-            <base.fabric.Dialog
+            <base.fluentUI.Dialog
                 key='url'
                 hidden={!(this.state.dialogMode === 'url')}
                 onDismiss={closeDialog}
                 dialogContentProps={{
                     className: `sanddance-dialog ${this.props.theme}`,
-                    type: base.fabric.DialogType.normal,
+                    type: base.fluentUI.DialogType.normal,
                     title: strings.dialogTitleUrl
                 }}
             >
                 <section>
-                    <base.fabric.TextField
+                    <base.fluentUI.TextField
                         label={strings.labelUrl}
                         placeholder={strings.urlInputPlaceholder}
                         onKeyUp={e => e.keyCode === 13 && this.loadUrl()}
@@ -238,7 +238,7 @@ export class DataSourcePicker extends React.Component<DialogProps, State> {
                     )}
                 </section>
                 <section>
-                    <base.fabric.ChoiceGroup
+                    <base.fluentUI.ChoiceGroup
                         options={
                             DataSourcePicker.urlTypes.map((urlType, i) => {
                                 return {
@@ -246,10 +246,10 @@ export class DataSourcePicker extends React.Component<DialogProps, State> {
                                     text: urlType,
                                     disabled: this.state.working,
                                     checked: i === 0
-                                } as FabricTypes.IChoiceGroupOption;
+                                } as FluentUITypes.IChoiceGroupOption;
                             })
                         }
-                        onChange={(ev: React.FormEvent<HTMLInputElement>, option: FabricTypes.IChoiceGroupOption) =>
+                        onChange={(ev: React.FormEvent<HTMLInputElement>, option: FluentUITypes.IChoiceGroupOption) =>
                             this.setState({ urlType: option.text as DataFileType, urlError: '' })
                         }
                         label={strings.labelDataFormat}
@@ -262,11 +262,11 @@ export class DataSourcePicker extends React.Component<DialogProps, State> {
                         aria-label={strings.labelLinkDescription}
                     >{strings.labelLink}</a>
                 </section>
-                <base.fabric.DialogFooter>
-                    <base.fabric.PrimaryButton onClick={e => this.loadUrl()} text={strings.dialogLoadButton} disabled={this.state.working} />
-                    <base.fabric.DefaultButton onClick={closeDialog} text={strings.dialogCloseButton} />
-                </base.fabric.DialogFooter>
-            </base.fabric.Dialog>
+                <base.fluentUI.DialogFooter>
+                    <base.fluentUI.PrimaryButton onClick={e => this.loadUrl()} text={strings.dialogLoadButton} disabled={this.state.working} />
+                    <base.fluentUI.DefaultButton onClick={closeDialog} text={strings.dialogCloseButton} />
+                </base.fluentUI.DialogFooter>
+            </base.fluentUI.Dialog>
         )];
     }
 }

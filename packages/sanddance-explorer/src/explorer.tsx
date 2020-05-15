@@ -31,7 +31,7 @@ import { DataScopeId } from './controls/dataScope';
 import { defaultViewerOptions, snapshotThumbWidth } from './defaults';
 import { Dialog } from './controls/dialog';
 import { ensureColumnsExist, ensureColumnsPopulated } from './columns';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { getPosition } from './mouseEvent';
 import { IconButton } from './controls/iconButton';
 import { InputSearchExpressionGroup, Search } from './dialogs/search';
@@ -72,7 +72,7 @@ export interface Props {
     mounted?: (explorer: Explorer) => any;
     datasetElement?: JSX.Element;
     dataExportHandler?: DataExportHandler;
-    topBarButtonProps?: FabricTypes.ICommandBarItemProps[];
+    topBarButtonProps?: FluentUITypes.ICommandBarItemProps[];
     snapshotProps?: SnapshotProps;
     onSnapshotClick?: (snapshot: Snapshot, selectedSnaphotIndex: number) => void | boolean;
     onView?: () => void;
@@ -488,7 +488,7 @@ export class Explorer extends React.Component<Props, State> {
     changeChartType(chart: SandDance.specs.Chart) {
         const partialInsight = copyPrefToNewState(this.prefs, chart, '*', '*');
         const newState: Partial<State> = { chart, ...partialInsight };
-        const columns = this.state.columns || {};
+        const columns = SandDance.VegaDeckGl.util.deepMerge({}, partialInsight.columns, this.state.columns);
         newState.columns = { ...columns };
 
         //special case mappings when switching chart type
@@ -500,7 +500,17 @@ export class Explorer extends React.Component<Props, State> {
             newState.view = '2d';
             if (!columns.size) {
                 //make sure size exists and is numeric
-                let sizeColumnName = preferredColumnForTreemapSize(this.state.dataContent.columns, true);
+                let sizeColumnName: string;
+                //first check prefs
+                if (partialInsight && partialInsight.columns && partialInsight.columns.size) {
+                    const prefSizeColumn = this.state.dataContent.columns.filter(c => c.name === partialInsight.columns.size)[0];
+                    if (prefSizeColumn && prefSizeColumn.quantitative) {
+                        sizeColumnName = prefSizeColumn.name;
+                    }
+                }
+                if (!sizeColumnName) {
+                    sizeColumnName = preferredColumnForTreemapSize(this.state.dataContent.columns, true);
+                }
                 if (!sizeColumnName) {
                     sizeColumnName = preferredColumnForTreemapSize(this.state.dataContent.columns, false);
                 }
@@ -559,13 +569,24 @@ export class Explorer extends React.Component<Props, State> {
             columns[role] = column && column.name;
             this.changeInsight({ columns });
         };
+        const _changeInsight = (newState: Partial<State>, pref: SandDance.specs.InsightColumns, columnUpdate: SandDance.specs.InsightColumns) => {
+            newState.columns = SandDance.VegaDeckGl.util.deepMerge(
+                {},
+                columns,
+                pref,
+                columnUpdate
+            );
+            savePref(this.prefs, this.state.chart, '*', '*', { columns: columnUpdate });
+            this.changeInsight(newState);
+        };
         if (column) {
+            let columnUpdate: SandDance.specs.InsightColumns;
             switch (role) {
                 case 'facet': {
                     const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'facet', column.name);
                     const newState: Partial<State> = { columns, ...partialInsight, facetStyle: options ? options.facetStyle : this.state.facetStyle };
-                    columns['facet'] = column.name;
-                    this.changeInsight(newState as any);
+                    columnUpdate = { facet: column.name };
+                    _changeInsight(newState, partialInsight.columns, columnUpdate);
                     break;
                 }
                 case 'color': {
@@ -594,9 +615,9 @@ export class Explorer extends React.Component<Props, State> {
                         this.ignoreSelectionChange = false;
                         //allow deselection to render
                         requestAnimationFrame(() => {
-                            columns['color'] = column.name;
+                            columnUpdate = { color: column.name };
                             this.getColorContext = null;
-                            this.changeInsight(newState as any);
+                            _changeInsight(newState, null, columnUpdate);
                         });
                     });
                     break;
@@ -604,15 +625,15 @@ export class Explorer extends React.Component<Props, State> {
                 case 'x': {
                     const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'x', column.name);
                     const newState: Partial<State> = { columns, ...partialInsight };
-                    columns['x'] = column.name;
-                    this.changeInsight(newState as any);
+                    columnUpdate = { x: column.name };
+                    _changeInsight(newState, partialInsight.columns, columnUpdate);
                     break;
                 }
                 case 'size': {
                     const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'size', column.name);
-                    const newState: Partial<State> = { columns, ...partialInsight, totalStyle: options ? options.totalStyle : this.state.totalStyle };
-                    columns['size'] = column.name;
-                    this.changeInsight(newState as any);
+                    const newState: Partial<State> = { ...partialInsight, totalStyle: options ? options.totalStyle : this.state.totalStyle };
+                    columnUpdate = { size: column.name };
+                    _changeInsight(newState, partialInsight.columns, columnUpdate);
                     break;
                 }
                 default: {
@@ -924,8 +945,8 @@ export class Explorer extends React.Component<Props, State> {
                     <div ref={div => { if (div && !this.layoutDivPinned) this.layoutDivPinned = div; }} className="sanddance-layout-pinned"></div>
                     {!loaded && (
                         <div className="loading">
-                            <base.fabric.Spinner
-                                size={base.fabric.SpinnerSize.large}
+                            <base.fluentUI.Spinner
+                                size={base.fluentUI.SpinnerSize.large}
                                 label={strings.loading}
                             />
                         </div>

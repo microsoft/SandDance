@@ -10,7 +10,7 @@ import {
     NewSignal
 } from 'vega-typings';
 import { Explorer } from '../explorer';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 
 export interface Props {
     newViewStateTarget?: boolean;
@@ -64,12 +64,12 @@ const map: { [input: string]: (prefix: string, bind: Binding, initialValue: any,
 
 map['range'] = (prefix: string, bind: BindRange, initialValue: number, onChange: (value: number) => void, disabled: boolean, collapseLabel: boolean) => {
     return (
-        <base.fabric.Slider
+        <base.fluentUI.Slider
             label={prefix + bind.name}
             max={bind.max}
             min={bind.min}
             step={bind.step}
-            value={initialValue}
+            defaultValue={initialValue}
             onChange={onChange}
             disabled={disabled}
         />
@@ -78,7 +78,7 @@ map['range'] = (prefix: string, bind: BindRange, initialValue: number, onChange:
 
 map['select'] = (prefix: string, bind: BindRadioSelect, initialValue: any, onChange: (value: any) => void, disabled: boolean, collapseLabel: boolean) => {
     const options = bind.options.map((o, i) => {
-        const option: FabricTypes.IDropdownOption = {
+        const option: FluentUITypes.IDropdownOption = {
             key: o,
             text: o
         };
@@ -86,11 +86,11 @@ map['select'] = (prefix: string, bind: BindRadioSelect, initialValue: any, onCha
     });
     const label = prefix + bind.name;
     return (
-        <base.fabric.Dropdown
+        <base.fluentUI.Dropdown
             onRenderTitle={collapseLabel ?
                 ((a, b) => (
                     <span>
-                        {label}: {(a[0] as FabricTypes.IDropdownOption).text}
+                        {label}: {(a[0] as FluentUITypes.IDropdownOption).text}
                     </span>
                 ))
                 :
@@ -106,7 +106,7 @@ map['select'] = (prefix: string, bind: BindRadioSelect, initialValue: any, onCha
 
 map['checkbox'] = (prefix: string, bind: BindCheckbox, initialValue: boolean, onChange: (checked: boolean) => void, disabled: boolean, collapseLabel: boolean) => {
     return (
-        <base.fabric.Toggle
+        <base.fluentUI.Toggle
             defaultChecked={initialValue}
             label={prefix + bind.name}
             onChange={(e, checked?: boolean) => onChange(checked)}

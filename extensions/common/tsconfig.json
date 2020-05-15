@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "lib": [
+            "dom",
+            "es2015"
+        ],
+        "skipLibCheck": true,
+        "outDir": "dist"
+    },
+    "include": [
+        "src"
+    ]
+}

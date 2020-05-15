@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Data, Scale, OrdinalScale, SortOrder } from 'vega-typings';
 import { FieldNames } from './constants';
+import { Data, OrdinalScale, SortOrder } from 'vega-typings';
 
 export interface OrdinalResult {
     data: Data;
     scale: OrdinalScale;
 }
 
-export function createOrdinalsForFacet(source: string, prefix: string, binFields: string[], sortOrder: SortOrder): OrdinalResult {
+export function createOrdinals(source: string, prefix: string, binFields: string[], sortOrder: SortOrder): OrdinalResult {
     const dataName = `${prefix}_bin_order`;
     const data: Data = {
         name: dataName,

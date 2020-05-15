@@ -13,7 +13,7 @@ import {
     validSnapshots
 } from './snapshots';
 import { DataSource, DataSourceSnapshot, InsightMap } from './types';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import {
     ColorSettings,
     Explorer,
@@ -220,7 +220,7 @@ export class SandDanceApp extends React.Component<Props, State> {
         this.updateExplorerViewerOptions(getViewerOptions(darkTheme, this.props.themeColors));
         VegaDeckGl.base.vega.scheme(SandDance.constants.ColorScaleNone, x => this.explorer.viewer.options.colors.defaultCube);
         this.explorer && this.explorer.viewer && this.explorer.viewer.renderSameLayout(this.viewerOptions);
-        base.fabric.loadTheme({ palette: this.getThemePalette(darkTheme) });
+        base.fluentUI.loadTheme({ palette: this.getThemePalette(darkTheme) });
     }
 
     render() {
@@ -248,7 +248,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                             snapshot.dataSource = this.state.dataSource;
                         },
                         getTopActions: snapshots => {
-                            const items: FabricTypes.IContextualMenuItem[] = [
+                            const items: FluentUITypes.IContextualMenuItem[] = [
                                 {
                                     key: 'import',
                                     text: strings.menuSnapshotsImport,
@@ -380,7 +380,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                         {
                             groupLabel: strings.labelPreferences,
                             children: (
-                                <base.fabric.Toggle
+                                <base.fluentUI.Toggle
                                     label={strings.labelCompactUI}
                                     title={strings.labelCompactUIDescription}
                                     checked={this.state.compactUI}

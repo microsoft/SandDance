@@ -4,9 +4,9 @@
 //adapted from https://github.com/OfficeDev/office-ui-fabric-react/blob/master/packages/fluent-theme/src/fluent/styles/CommandBarButton.styles.ts
 
 import { base } from '../base';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 
-export const CommandBarButtonStyles = (props: FabricTypes.IButtonProps): Partial<FabricTypes.IButtonStyles> => {
+export const CommandBarButtonStyles = (props: FluentUITypes.IButtonProps): Partial<FluentUITypes.IButtonStyles> => {
     const { theme } = props;
     if (!theme) {
         throw new Error('Theme is undefined or null.');
@@ -17,7 +17,7 @@ export const CommandBarButtonStyles = (props: FabricTypes.IButtonProps): Partial
 
     return {
         root: [
-            { ...base.fabric.getFocusStyle(theme, { inset: 2 }) },
+            { ...base.fluentUI.getFocusStyle(theme, { inset: 2 }) },
             {
                 backgroundColor: palette.white
             }

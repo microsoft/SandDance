@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { addData, addScale, addSignal } from './scope';
+import { addData, addScales, addSignals } from './scope';
 import { binnableColorScale } from './scales';
 import { colorBinCountSignal, colorReverseSignal } from './signals';
 import { ColorScaleNone, FieldNames } from './constants';
@@ -36,9 +36,9 @@ export function addColor(props: Props) {
 
     if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
         if (specColumns.color.quantitative) {
-            addScale(scope, binnableColorScale(scaleName, insight.colorBin, dataName, specColumns.color.name, insight.scheme));
+            addScales(scope, binnableColorScale(scaleName, insight.colorBin, dataName, specColumns.color.name, insight.scheme));
         } else {
-            addScale(scope, {
+            addScales(scope, {
                 name: scaleName,
                 type: 'ordinal',
                 domain: {
@@ -54,7 +54,7 @@ export function addColor(props: Props) {
         }
     }
 
-    addSignal(scope,
+    addSignals(scope,
         colorBinCountSignal(specContext),
         colorReverseSignal(specContext)
     );

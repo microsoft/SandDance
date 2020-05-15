@@ -11,7 +11,7 @@ import {
 import { base } from '../base';
 import { Button } from '../controls/button';
 import { Dropdown } from '../controls/dropdown';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { Group } from '../controls/group';
 import { SandDance, util } from '@msrvida/sanddance-react';
 import { strings } from '../language';
@@ -38,7 +38,7 @@ export interface Props {
     disableExpressionOR: boolean;
     disableGroupOR: boolean;
     disabled: boolean;
-    themePalette: Partial<FabricTypes.IPalette>;
+    themePalette: Partial<FluentUITypes.IPalette>;
 }
 
 export interface State {
@@ -94,7 +94,7 @@ function getGroupClauses(currClause: SearchExpressionClause, index: number, disa
     return keys.map((key: [SearchExpressionClause, string], i: number) => {
         const [clause, text] = key;
         const selected = currClause == clause; //deliberate double equal 
-        const option: FabricTypes.IDropdownOption = {
+        const option: FluentUITypes.IDropdownOption = {
             key: i,
             text,
             data: clause,
@@ -316,7 +316,7 @@ export class Search extends React.Component<Props, State> {
                         </div>
                     )}
                 </div>
-                <base.fabric.PrimaryButton
+                <base.fluentUI.PrimaryButton
                     className="search-action search-bottom-action"
                     text={strings.buttonSelect}
                     onClick={() => this.validateAndSearch()}

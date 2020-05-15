@@ -5,7 +5,7 @@ import { base } from '../base';
 import { ColumnMap, ColumnMapBaseProps, getColumnMapOptions } from '../controls/columnMap';
 import { Dialog } from '../controls/dialog';
 import { Dropdown } from '../controls/dropdown';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { Group } from '../controls/group';
 import { SandDance } from '@msrvida/sanddance-react';
 import { Signal } from '../controls/signal';
@@ -61,7 +61,7 @@ export class Chart extends React.Component<Props, State> {
             <div>
                 <Group label={strings.labelChart}>
                     <div className="calculator">
-                        <base.fabric.ChoiceGroup
+                        <base.fluentUI.ChoiceGroup
                             className="sanddance-chart-type"
                             options={[
                                 {
@@ -137,10 +137,10 @@ export class Chart extends React.Component<Props, State> {
                                                 {
                                                     key: 'header1',
                                                     text: `${strings.labelFacetLayout}:`,
-                                                    itemType: base.fabric.DropdownMenuItemType.Header
+                                                    itemType: base.fluentUI.DropdownMenuItemType.Header
                                                 },
                                                 ...singleFacetLayouts.map(f => {
-                                                    const o: FabricTypes.IDropdownOption = {
+                                                    const o: FluentUITypes.IDropdownOption = {
                                                         key: f.facetStyle,
                                                         text: f.text,
                                                         data: f,
@@ -151,19 +151,19 @@ export class Chart extends React.Component<Props, State> {
                                                 {
                                                     key: 'divider',
                                                     text: '-',
-                                                    itemType: base.fabric.DropdownMenuItemType.Divider
+                                                    itemType: base.fluentUI.DropdownMenuItemType.Divider
                                                 },
                                                 {
                                                     key: 'header2',
                                                     text: `${strings.labelColumnFacetV}:`,
-                                                    itemType: base.fabric.DropdownMenuItemType.Header
+                                                    itemType: base.fluentUI.DropdownMenuItemType.Header
                                                 },
                                                 ...getColumnMapOptions({
                                                     ...props,
                                                     specRole,
                                                     selectedColumnName: props.insightColumns.facetV
                                                 }).map(o => {
-                                                    if (o.itemType !== base.fabric.DropdownMenuItemType.Header) {
+                                                    if (o.itemType !== base.fluentUI.DropdownMenuItemType.Header) {
                                                         const facetData: FacetData = {
                                                             facetStyle: 'cross',
                                                             column: o.data
@@ -190,7 +190,7 @@ export class Chart extends React.Component<Props, State> {
                                     break;
                                 }
                                 case 'size': {
-                                    const options: FabricTypes.IDropdownOption[] = [
+                                    const options: FluentUITypes.IDropdownOption[] = [
                                         {
                                             key: 'count-square',
                                             text: strings.labelTotalByCountSquare,
@@ -262,7 +262,7 @@ export class Chart extends React.Component<Props, State> {
                             );
                         })}
                         <div className="sanddance-tooltipMap">
-                            <base.fabric.DefaultButton
+                            <base.fluentUI.DefaultButton
                                 text={strings.buttonTooltipMapping}
                                 onClick={() => this.setState({ showTooltipDialog: true })}
                             />

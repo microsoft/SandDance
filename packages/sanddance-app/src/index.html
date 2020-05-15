@@ -37,10 +37,10 @@
 
 <body>
     <!-- link to JSON files so we can get a url from the bundler -->
-    <a class="sanddance-app-static-content" id="titanic" data-display-name="Titanic" data-type="tsv"
-        href="../../../docs/sample-data/titanicmaster.tsv"></a>
     <a class="sanddance-app-static-content" id="demovote" data-display-name="Demo Vote" data-type="tsv"
         href="../../../docs/sample-data/demovote.tsv"></a>
+    <a class="sanddance-app-static-content" id="titanic" data-display-name="Titanic" data-type="tsv"
+        href="../../../docs/sample-data/titanicmaster.tsv"></a>
 
     <script>
         var themeColors = {
@@ -115,6 +115,15 @@
                             }
                         }
                     },
+                    "treemap": {
+                        "*": {
+                            "*": {
+                                "columns": {
+                                    "size": "TotalPop"
+                                }
+                            }
+                        }
+                    },
                     "stacks": {
                         "*": {
                             "*": {
@@ -133,8 +142,8 @@
 
     <main id="app"></main>
 
-    <script src="https://unpkg.com/react@16.4.2/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@16.4.2/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react@16.13.1/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16.13.1/umd/react-dom.development.js" crossorigin></script>
     <script src="index.tsx"></script>
 
 </body>

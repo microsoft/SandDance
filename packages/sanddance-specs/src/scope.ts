@@ -32,14 +32,14 @@ export function addMarks(scope: Scope, ...marks: Mark[]) {
     scope.marks.push(...marks);
 }
 
-export function addScale(scope: Scope, ...scale: Scale[]) {
+export function addScales(scope: Scope, ...scale: Scale[]) {
     if (!scope.scales) {
         scope.scales = [];
     }
     scope.scales.push(...scale);
 }
 
-export function addSignal(scope: Scope, ...signal: Signal[]) {
+export function addSignals(scope: Scope, ...signal: Signal[]) {
     if (!scope.signals) {
         scope.signals = [];
     }
@@ -61,7 +61,7 @@ export function getDataByName(data: Data[], dataName: string) {
 
 export function getGroupBy(groupings: Grouping[]) {
     const groupby = groupings.map(g => g.groupby);
-    return groupby.reduce((acc, val) => acc.concat(val), [])
+    return groupby.reduce((acc, val) => acc.concat(val), []);
 }
 
 export function addOffsets(...offsets: string[]) {

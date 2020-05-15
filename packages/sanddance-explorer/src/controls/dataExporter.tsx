@@ -5,7 +5,7 @@ import { base } from '../base';
 import { convertToDelimited } from '../exportDelimited';
 import { DataExportHandler, DataExportType, DataFile, Snapshot } from '../interfaces';
 import { embedHtml } from './dataExporterHtml';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { SandDance, util } from '@msrvida/sanddance-react';
 import { strings } from '../language';
 
@@ -111,22 +111,22 @@ export class DataExportPicker extends React.Component<Props, State> {
 
         return (
             <div className="sanddance-dataExporter">
-                <base.fabric.DefaultButton
+                <base.fluentUI.DefaultButton
                     className="search-action search-bottom-action"
                     text={strings.buttonExportCount(this.props.data.length)}
                     onClick={() => this.setState({ dialogHidden: false })}
                     disabled={this.props.disabled}
                 />
-                <base.fabric.Dialog
+                <base.fluentUI.Dialog
                     hidden={this.state.dialogHidden}
                     onDismiss={closeDialog}
                     dialogContentProps={{
                         className: `sanddance-dialog ${this.props.theme}`,
-                        type: base.fabric.DialogType.normal,
+                        type: base.fluentUI.DialogType.normal,
                         title: strings.labelExport
                     }}
                 >
-                    <base.fabric.TextField
+                    <base.fluentUI.TextField
                         label={strings.labelExportFileName}
                         onChange={(e, displayName) => {
                             const displayNameError = getFileNameError(displayName);
@@ -135,7 +135,7 @@ export class DataExportPicker extends React.Component<Props, State> {
                         errorMessage={this.state.fileNameError}
                         value={this.state.fileName}
                     />
-                    <base.fabric.ChoiceGroup
+                    <base.fluentUI.ChoiceGroup
                         className="sanddance-form-separate"
                         disabled={disabled}
                         options={
@@ -145,16 +145,16 @@ export class DataExportPicker extends React.Component<Props, State> {
                                     text,
                                     disabled: false,
                                     checked: exportType === this.state.exportType
-                                } as FabricTypes.IChoiceGroupOption;
+                                } as FluentUITypes.IChoiceGroupOption;
                             })
                         }
-                        onChange={(ev: React.FormEvent<HTMLInputElement>, option: FabricTypes.IChoiceGroupOption) =>
+                        onChange={(ev: React.FormEvent<HTMLInputElement>, option: FluentUITypes.IChoiceGroupOption) =>
                             this.setState({ exportType: option.key as DataExportType })
                         }
                         label={strings.labelExportFormat}
                     />
-                    <base.fabric.DialogFooter>
-                        <base.fabric.PrimaryButton
+                    <base.fluentUI.DialogFooter>
+                        <base.fluentUI.PrimaryButton
                             disabled={disabled || !!this.state.fileNameError}
                             onClick={e => this.setState({
                                 delayAction: () => this.createExport(this.state.exportType, this.state.fileName),
@@ -162,11 +162,11 @@ export class DataExportPicker extends React.Component<Props, State> {
                             })}
                             text={strings.buttonExport}
                         />
-                        <base.fabric.DefaultButton
+                        <base.fluentUI.DefaultButton
                             onClick={closeDialog} text={strings.buttonClose}
                         />
-                    </base.fabric.DialogFooter>
-                </base.fabric.Dialog>
+                    </base.fluentUI.DialogFooter>
+                </base.fluentUI.Dialog>
             </div>
         );
     }

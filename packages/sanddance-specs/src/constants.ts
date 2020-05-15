@@ -57,7 +57,7 @@ export const SignalNames = {
     FacetPaddingBottom: 'FacetPaddingBottom',
     FacetPaddingLeft: 'FacetPaddingLeft',
     MarkOpacity: 'Mark_OpacitySignal',
-    PointSize: 'Chart_PointSizeSignal',
+    PointScale: 'Chart_PointScaleSignal',
     TextAngleX: 'Text_AngleXSignal',
     TextAngleY: 'Text_AngleYSignal',
     TextScale: 'Text_ScaleSignal',

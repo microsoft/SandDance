@@ -46,8 +46,7 @@
                     "y": "Latitude",
                     "color": "Obama",
                     "z": "Education",
-                    "sort": "State",
-                    "size": "TotalPop"
+                    "sort": "State"
                 },
                 "scheme": "redblue",
                 "chart": "scatterplot",
@@ -86,6 +85,15 @@
                         "color": {
                             "Winner": {
                                 "scheme": "dual_bluered"
+                            }
+                        }
+                    },
+                    "treemap": {
+                        "*": {
+                            "*": {
+                                "columns": {
+                                    "size": "TotalPop"
+                                }
                             }
                         }
                     },

@@ -43,7 +43,7 @@ export const defaultViewerOptions: ViewerOptions = {
         count: 'Count',
         percent: 'Percent',
         sum: 'Sum',
-        scatterPointSize: 'Point size',
+        scatterPointScale: 'Point scale',
         FacetMaxBins: 'Facet max bins',
         FacetVMaxBins: 'Cross facet max bins',
         XMaxBins: 'X axis max bins',
@@ -85,7 +85,7 @@ export function getPresenterStyle(options: ViewerOptions) {
         style.highlightColor = VegaDeckGl.util.colorFromString(options.colors.hoveredCube);
     }
     //if (options.lightSettings) {
-       // style.lightSettings = options.lightSettings;
+    // style.lightSettings = options.lightSettings;
     //}
     return style;
 }

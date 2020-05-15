@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { ColorSettings } from './interfaces';
-import { FabricTypes } from '@msrvida/office-ui-fabric-react-cdn-typings';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 
-export const themePalettes: { [theme: string]: Partial<FabricTypes.IPalette> } = {};
+export const themePalettes: { [theme: string]: Partial<FluentUITypes.IPalette> } = {};
 
 themePalettes[''] = {
     themePrimary: '#0078d4',
@@ -55,7 +55,7 @@ themePalettes['dark-theme'] = {
     white: '#000000'
 };
 
-export function getColorSettingsFromThemePalette(themePalette: Partial<FabricTypes.IPalette>): Partial<ColorSettings> {
+export function getColorSettingsFromThemePalette(themePalette: Partial<FluentUITypes.IPalette>): Partial<ColorSettings> {
     return {
         axisLine: themePalette.black,
         axisText: themePalette.black,

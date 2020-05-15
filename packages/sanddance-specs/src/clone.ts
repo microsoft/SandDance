@@ -22,7 +22,7 @@ export function cloneVegaSpecWithData(context: SpecContext, currData: object[]):
     inferAll(columns, currData);
 
     const specBuilder = getSpecBuilderForChart(context);
-    let specResult: SpecResult
+    let specResult: SpecResult;
 
     if (specBuilder) {
         try {
