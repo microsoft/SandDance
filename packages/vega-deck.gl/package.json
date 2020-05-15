@@ -24,6 +24,11 @@
   ],
   "author": "",
   "license": "MIT",
+  "alias": {
+    "@deck.gl/core": "./alias/deck-external.js",
+    "@deck.gl/layers": "./alias/deck-external.js",
+    "@luma.gl/core": "./alias/luma-external.js"
+  },
   "dependencies": {
     "@danmarshall/deckgl-typings": "^4.1.8",
     "@msrvida/chart-types": "^1",
