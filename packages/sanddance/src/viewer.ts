@@ -298,6 +298,9 @@ export class Viewer {
                 didRegisterColorSchemes = true;
             }
             try {
+                if (this.vegaViewGl) {
+                    this.vegaViewGl.finalize();
+                }
                 const runtime = VegaDeckGl.base.vega.parse(this.vegaSpec);
                 this.vegaViewGl = new VegaDeckGl.ViewGl(runtime, config)
                     .renderer('deck.gl')
