@@ -123,8 +123,7 @@ let layers: DeckLayerBase = {
     LineLayer: null,
     PathLayer: null,
     PolygonLayer: null,
-    TextLayer: null,
-    
+    TextLayer: null
 };
 
 /**
