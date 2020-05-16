@@ -223,25 +223,25 @@ export const spec: vega.Spec = {
           "facet": {"name": "series", "data": "rankedCovid", "groupby": "fips"}
         },
         "marks": [
-          // {
-          //   "name": "linemarks",
-          //   "type": "line",
-          //   "style": ["line"],
-          //   "sort": {"field": "datum[\"utcyearmonthdate_Date\"]"},
-          //   "from": {"data": "series"},
-          //   "encode": {
-          //     "update": {
-          //       "tooltip": {
-          //         "signal": "{\"Date (year-month-date)\": timeFormat(datum[\"utcyearmonthdate_Date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"Value\": format(datum[\"Value\"], \"\"), \"StateName\": ''+scale('fipslookup',datum[\"fips\"])}"
-          //       },
-          //       "stroke": {"scale": "color", "field": "fips"},
-          //       "strokeWidth": {"value":5},
-          //       "x": {"scale": "x", "field": "utcyearmonthdate_Date"},
-          //       "y": {"scale": "y", "field": "Value"},
-          //       "z": {"scale": "z", "field": "rank"}
-          //     }
-          //   }
-          // },
+          {
+            "name": "linemarks",
+            "type": "line",
+            "style": ["line"],
+            "sort": {"field": "datum[\"utcyearmonthdate_Date\"]"},
+            "from": {"data": "series"},
+            "encode": {
+              "update": {
+                "tooltip": {
+                  "signal": "{\"Date (year-month-date)\": timeFormat(datum[\"utcyearmonthdate_Date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"Value\": format(datum[\"Value\"], \"\"), \"StateName\": ''+scale('fipslookup',datum[\"fips\"])}"
+                },
+                "stroke": {"scale": "color", "field": "fips"},
+                "strokeWidth": {"value":5},
+                "x": {"scale": "x", "field": "utcyearmonthdate_Date"},
+                "y": {"scale": "y", "field": "Value"},
+                "z": {"scale": "z", "field": "rank"}
+              }
+            }
+          },
           {
             "name": "areamarks",
             "type": "area",
@@ -259,7 +259,7 @@ export const spec: vega.Spec = {
                 "y": {"scale": "y", "field": "Value"},                
                 "z": {"scale": "z", "field": "rank"},
                 "x2": {"scale": "x", "field": "utcyearmonthdate_Date"},
-                "y2": {"value": 0},
+                "y2": {"signal" : "0.5 * scale('y', datum.Value)"},                
                 "z2": {"scale": "z", "field": "rank"},
                 
               }
