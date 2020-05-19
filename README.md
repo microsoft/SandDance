@@ -27,6 +27,7 @@ SandDance is an offering of several JavaScript components:
 
 * [sanddance](packages/sanddance/README.md) - the core SandDance visualization canvas.
 * [sanddance-react](packages/sanddance-react/README.md) - the core SandDance visualization canvas for use in React based applications.
+* [sanddance-vue](packages/sanddance-vue/README.md) - the core SandDance visualization canvas for use in Vue based applications.
 * [sanddance-explorer](packages/sanddance-explorer/README.md) - the core SandDance visualization canvas with UI to enable data exploration, for use in React based applications.
 
 ## Changelog
