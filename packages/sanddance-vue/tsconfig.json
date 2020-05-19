@@ -1,9 +1,8 @@
 {
     "compilerOptions": {
-        "declaration": true,
         "jsx": "react",
+        "rootDir": "src",
         "moduleResolution": "node",
-        "outDir": "dist/es6",
         "skipLibCheck": true,
         "target": "es6"
     },
