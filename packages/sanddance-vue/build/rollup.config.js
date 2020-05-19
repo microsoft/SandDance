@@ -1,6 +1,6 @@
-import commonjs from 'rollup-plugin-commonjs';
+import commonjs from '@rollup/plugin-commonjs';
 import vue from 'rollup-plugin-vue';
-import buble from 'rollup-plugin-buble';
+import buble from '@rollup/plugin-buble';
 import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 
@@ -18,6 +18,10 @@ export default {
             compileTemplate: true,
         }),
         resolve(),
-        buble(),
+        buble({
+            transforms: {
+                generator: false
+            }
+        }),
     ],
 };
