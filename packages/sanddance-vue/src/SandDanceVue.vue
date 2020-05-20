@@ -8,7 +8,7 @@
 @import "../../node_modules/@msrvida/sanddance/dist/css/sanddance";
 </style>
 
-<script>
+<script lang="ts">
 export default {
   name: 'SandDanceVue',
   props: {

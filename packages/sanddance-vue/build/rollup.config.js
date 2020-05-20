@@ -11,13 +11,13 @@ export default {
         exports: 'named',
     },
     plugins: [
-        typescript(),
         commonjs(),
         vue({
             css: true,
             compileTemplate: true,
         }),
         resolve(),
+        typescript(),
         buble({
             transforms: {
                 generator: false
