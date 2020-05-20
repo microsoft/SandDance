@@ -15,9 +15,6 @@
     "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/SandDanceVue.min.js"
   },
   "devDependencies": {
-    "@rollup/plugin-buble": "^0.21.3",
-    "@rollup/plugin-typescript": "^4.1.1",
-    "rollup-plugin-vue": "^5.0.1",
     "vue": "^2.6.10",
     "vue-template-compiler": "^2.6.10"
   },
