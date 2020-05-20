@@ -27,4 +27,4 @@ if (GlobalVue) {
     GlobalVue.use(plugin);
 }
 
-export { SandDanceVue };
+export default SandDanceVue;

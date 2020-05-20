@@ -2,6 +2,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import vue from 'rollup-plugin-vue';
 import buble from '@rollup/plugin-buble';
 import typescript from '@rollup/plugin-typescript';
+import postcss from 'rollup-plugin-postcss';
 
 export default {
     input: 'src/wrapper.js',
@@ -25,10 +26,14 @@ export default {
             compileTemplate: true,
         }),
         typescript(),
+        postcss(),
         buble({
             transforms: {
                 generator: false
-            }
+            },
+            exclude: [
+                '**/*.css'
+            ],
         }),
     ],
 };
