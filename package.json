@@ -64,7 +64,8 @@
     "rollup-plugin-vue": "^5.0.1",
     "typescript": "^3.5",
     "unified": "^7.0.2",
-    "vsce": "^1.66.0"
+    "vsce": "^1.66.0",
+    "vue-template-compiler": "^2.6.11"
   },
   "babel": {
     "presets": [
