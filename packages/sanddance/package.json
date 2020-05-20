@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@msrvida/chart-types": "^1",
-    "@msrvida/sanddance-specs": "3.0.0-beta.1",
+    "@msrvida/sanddance-specs": "^1",
     "@msrvida/search-expression": "^1",
     "@msrvida/vega-deck.gl": "3.0.0-beta.1",
     "vega-typings": "^0.16.0"
