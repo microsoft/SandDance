@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sanddance-specs demo</title>
+    <script src="https://unpkg.com/vega@^5.11/build/vega.js" charset="utf-8"></script>
+    <script src="https://unpkg.com/@msrvida/sanddance-specs@1/dist/umd/sanddance-specs.js" charset="utf-8"></script>
+</head>
+
+<body>
+    <div id="view"></div>
+    <script>
+        vega.loader().load('https://sanddance.js.org/sample-data/titanicmaster.tsv').then(tsv_data => {
+            const data = vega.read(tsv_data, { type: 'tsv', parse: 'auto' });
+
+            const insight = {
+                "colorBin": "quantize",
+                "columns": {
+                    "x": "Gender",
+                    "color": "Survived",
+                    "sort": "Survived",
+                    "facet": "Age"
+                },
+                "scheme": "set1",   //see https://vega.github.io/vega/docs/schemes/#reference
+                "facetStyle": "wrap",
+                "size": {
+                    "height": 600,
+                    "width": 800
+                },
+                "chart": "barchartV"
+            };
+
+            const columns = SandDanceSpecs.getColumnsFromData(vega.inferTypes, data);
+            const specColumns = SandDanceSpecs.getSpecColumns(insight, columns);
+            const specViewOptions = {
+                colors: {
+                    defaultCube: "steelblue",
+                    axisLine: "#000",
+                    axisText: "#000"
+                },
+                language: {
+                    count: "Count"
+                },
+                maxLegends: 20,
+                tickSize: 10
+            };
+            const context = { specColumns, insight, specViewOptions };
+            const specResult = SandDanceSpecs.build(context, data);
+
+            if (specResult.errors) {
+                console.log(specResult.errors);
+            } else {
+                console.log(specResult.vegaSpec);
+            }
+
+            const runtime = vega.parse(specResult.vegaSpec);
+            const vegaView = new vega.View(runtime, {
+                renderer: 'canvas',  // renderer (canvas or svg)
+                container: '#view',   // parent DOM container
+            });
+            vegaView.runAsync().then(() => {
+                console.log(`done`);
+            }).catch(e => {
+                console.log(`error ${e}`);
+            });
+
+        });
+    </script>
+</body>
+
+</html>
