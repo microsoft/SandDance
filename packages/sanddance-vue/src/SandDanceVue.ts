@@ -13,8 +13,14 @@ export default Vue.extend({
     name: 'SandDanceVue',
     props: {
         viewerOptions: Object as PropType<Partial<types.ViewerOptions>>,
-        insight: Object as PropType<specs.Insight>,
-        data: Array as PropType<Object[]>,
+        insight: {
+            type: Object as PropType<specs.Insight>,
+            required: true,
+        },
+        data: {
+            type: Array as PropType<Object[]>,
+            required: true,
+        },
         renderOptions: Object as PropType<types.RenderOptions>,
     },
     data: function () {
