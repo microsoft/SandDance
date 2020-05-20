@@ -1,17 +1,9 @@
 <template>
-    <div>
-
-    </div>
+    <div className="sanddance-VueViewer" ref="viewerDiv" />
 </template>
 
 <style type="text/css">
 @import "../../node_modules/@msrvida/sanddance/dist/css/sanddance";
 </style>
 
-<script lang="ts">
-export default {
-  name: 'SandDanceVue',
-  props: {
-  },
-};
-</script>
+<script lang="ts" src="./SandDanceVue.ts"></script>
