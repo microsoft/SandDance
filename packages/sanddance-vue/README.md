@@ -13,7 +13,7 @@ Add these to the `dependencies` section of your `package.json`, then run `npm in
 ```json
 "@deck.gl/core": "6.4",
 "@deck.gl/layers": "6.4",
-"@msrvida/sanddance-vue": "^2",
+"@msrvida/sanddance-vue": "^3",
 "luma.gl": "6.4",
 "vega": "^5.11"
 ```
@@ -25,7 +25,7 @@ import * as deck from "@deck.gl/core";
 import * as layers from "@deck.gl/layers";
 import * as luma from "luma.gl";
 import * as vega from "vega";
-import { SandDance, SandDanceReact } from "@msrvida/sanddance-react";
+import SandDanceVue, { SandDance } from "@msrvida/sanddance-vue";
 
 SandDance.use(vega, deck, layers, luma);
 ```
