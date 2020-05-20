@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { cloneVegaSpecWithData, getColumnsFromData, getSpecColumns } from '../dist/es6';
+import { build, getColumnsFromData, getSpecColumns } from '../dist/es6';
 import * as vega from 'vega';
 import { writeFileSync } from 'fs';
 
@@ -267,7 +267,7 @@ vega.loader().load('../../docs/sample-data/demovote.tsv').then(tsv_data => {
 
         const { insight, name } = pass;
         const context = { specColumns: getSpecColumns(insight, columns), insight, specViewOptions };
-        const specResult = cloneVegaSpecWithData(context, data);
+        const specResult = build(context, data);
 
         if (specResult.errors) {
             console.log(errors);

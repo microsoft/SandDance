@@ -6,7 +6,7 @@ import { SpecContext } from './types';
 import { SpecResult } from './interfaces';
 import { ValuesData } from 'vega-typings';
 
-export function cloneVegaSpecWithData(context: SpecContext, currData: object[]): SpecResult {
+export function build(context: SpecContext, currData: object[]): SpecResult {
     const { specColumns } = context;
     const columns = [
         specColumns.color,

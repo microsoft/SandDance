@@ -36,7 +36,7 @@ import { DeckProps, PickInfo } from '@deck.gl/core/lib/deck';
 import { Column } from '@msrvida/chart-types';
 import { View } from '@msrvida/chart-types';
 import {
-    cloneVegaSpecWithData,
+    build,
     getSpecColumns,
     Insight,
     SignalValues,
@@ -281,7 +281,7 @@ export class Viewer {
     private async renderNewLayout(presenterConfig?: VegaDeckGl.types.PresenterConfig, view?: View) {
         const currData = this._dataScope.currentData();
         const context: SpecContext = { specColumns: this.getSpecColumnsWithFilteredStats(), insight: this.insight, specViewOptions: this.options };
-        const specResult = cloneVegaSpecWithData(context, currData);
+        const specResult = build(context, currData);
         if (!specResult.errors) {
             const uiValues = extractSignalValuesFromView(this.vegaViewGl, this.vegaSpec);
             this._signalValues = { ...this._signalValues, ...uiValues, ...this.insight.signalValues };
