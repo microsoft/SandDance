@@ -9,7 +9,6 @@
     "./sfc": "src/SandDanceVue.vue"
   },
   "scripts": {
-    "prepare": "npm run build",
     "build": "npm run build:umd & npm run build:es & npm run build:unpkg",
     "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/SandDanceVue.umd.js",
     "build:es": "rollup --config build/rollup.config.js --format es --file dist/SandDanceVue.esm.js",
@@ -17,9 +16,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-buble": "^0.21.3",
-    "@rollup/plugin-commonjs": "^11.1.0",
     "@rollup/plugin-typescript": "^4.1.1",
-    "rollup": "^1.17.0",
     "rollup-plugin-vue": "^5.0.1",
     "vue": "^2.6.10",
     "vue-template-compiler": "^2.6.10"
