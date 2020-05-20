@@ -20,13 +20,17 @@ function GetDataAndColumns(sampleFile) {
     });
 }
 
+function RawDataAndColumns(data) {
+    const columns = SandDance.util.getColumnsFromData(vega.inferTypes, data);
+    return { data, columns };
+}
+
 function FileGetDataAndColumns(sampleFile) {
     return new Promise((resolve, reject) => {
         fs.readFile(sampleFile, function (err, buffer) {
             const rawText = buffer.toString();
             const data = vega.read(rawText, { type: 'tsv', parse: "auto" });
-            const columns = SandDance.util.getColumnsFromData(vega.inferTypes, data);
-            resolve({ data, columns });
+            resolve(RawDataAndColumns(data));
         });
     });
 }
@@ -46,6 +50,17 @@ describe('Recommender', function () {
         });
     });
 
+    it(`x/y: recommends scatter plot`, function (done) {
+        const data = [
+            { x: 0, y: 0 }
+        ];
+        const dataAndColumns = RawDataAndColumns(data);
+        var r = new recommender.RecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
+        var rec = r.recommend();
+        assert.ok(rec.chart === 'scatterplot');
+        done();
+    });
+
     it(`longitude/latitude: recommends scatter plot`, function (done) {
         let filePath = '../../docs/sample-data/demovote.tsv';
         var dataAndColumnsPromise = FileGetDataAndColumns(filePath);
@@ -58,7 +73,7 @@ describe('Recommender', function () {
     });
 
     it(`test-barchart: recommends bar chart`, function (done) {
-        let filePath =  '../../docs/sample-data/titanicmaster.tsv';
+        let filePath = '../../docs/sample-data/titanicmaster.tsv';
         var dataAndColumnsPromise = FileGetDataAndColumns(filePath);
         dataAndColumnsPromise.then(function (dataAndColumns) {
             var r = new recommender.RecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
