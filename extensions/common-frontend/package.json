@@ -1,8 +1,8 @@
 {
-  "name": "common-extensions",
+  "name": "common-frontend",
   "private": true,
   "version": "1.0.0",
-  "description": "Common code for vscode-extension based projects",
+  "description": "Common frontend code for vscode-extension based projects",
   "main": "index.js",
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
