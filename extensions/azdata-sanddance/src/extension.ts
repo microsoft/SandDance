@@ -7,13 +7,9 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import * as azdata from 'azdata';
 import * as tempWrite from 'temp-write';
-import { getWebviewContent } from './html';
+import { newPanel, WebViewWithUri } from 'common-backend';
 import { MssqlExtensionApi, IFileNode } from './mssqlapis';
 
-interface WebViewWithUri {
-    panel: vscode.WebviewPanel;
-    uriFsPath: string;
-}
 let current: WebViewWithUri | undefined = undefined;
 
 export function activate(context: vscode.ExtensionContext) {
@@ -149,7 +145,7 @@ function queryViewInSandance(fileUri: vscode.Uri, context: vscode.ExtensionConte
     else {
         // Otherwise, create a new panel
         const uriTabName = editorUri.uri;
-        current = newPanelQuery(context, uriFsPath, uriTabName);
+        current = newPanel(context, uriFsPath, uriTabName);
         current.panel.onDidDispose(() => {
             current = undefined;
         }, null, context.subscriptions);
@@ -201,44 +197,3 @@ export function deactivate() {
     vscode.commands.executeCommand('setContext', 'showVisualizer', false);
 }
 
-function newPanel(context: vscode.ExtensionContext, uriFsPath: string) {
-    const webViewWithUri: WebViewWithUri = {
-        panel: vscode.window.createWebviewPanel(
-            'sandDance',
-            `SandDance: ${path.basename(uriFsPath)}`,
-            vscode.ViewColumn.One,
-            {
-                enableScripts: true,
-                // Only allow the webview to access resources in our extension's media directory
-                localResourceRoots: [
-                    vscode.Uri.file(path.join(context.extensionPath, 'resources'))
-                ],
-                retainContextWhenHidden: true
-            }
-        ),
-        uriFsPath
-    };
-    webViewWithUri.panel.webview.html = getWebviewContent(context.extensionPath, uriFsPath);
-    return webViewWithUri;
-}
-
-function newPanelQuery(context: vscode.ExtensionContext, uriFsPath: string, uriTabName: string) {
-    const webViewWithUri: WebViewWithUri = {
-        panel: vscode.window.createWebviewPanel(
-            'sandDance',
-            `SandDance: ${path.basename(uriTabName)}`,
-            vscode.ViewColumn.One,
-            {
-                enableScripts: true,
-                // Only allow the webview to access resources in our extension's media directory
-                localResourceRoots: [
-                    vscode.Uri.file(path.join(context.extensionPath, 'resources'))
-                ],
-                retainContextWhenHidden: true
-            }
-        ),
-        uriFsPath
-    };
-    webViewWithUri.panel.webview.html = getWebviewContent(context.extensionPath, uriFsPath);
-    return webViewWithUri;
-}

@@ -5,12 +5,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { getWebviewContent } from './html';
-
-interface WebViewWithUri {
-    panel: vscode.WebviewPanel;
-    uriFsPath: string;
-}
+import { newPanel, WebViewWithUri } from 'common-backend';
 
 export function activate(context: vscode.ExtensionContext) {
     let current: WebViewWithUri | undefined = undefined;
@@ -64,25 +59,4 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {
-}
-
-function newPanel(context: vscode.ExtensionContext, uriFsPath: string) {
-    const webViewWithUri: WebViewWithUri = {
-        panel: vscode.window.createWebviewPanel(
-            'sandDance',
-            `SandDance: ${path.basename(uriFsPath)}`,
-            vscode.ViewColumn.One,
-            {
-                enableScripts: true,
-                // Only allow the webview to access resources in our extension's media directory
-                localResourceRoots: [
-                    vscode.Uri.file(path.join(context.extensionPath, 'resources'))
-                ],
-                retainContextWhenHidden: true
-            }
-        ),
-        uriFsPath
-    };
-    webViewWithUri.panel.webview.html = getWebviewContent(context.extensionPath, uriFsPath);
-    return webViewWithUri;
 }

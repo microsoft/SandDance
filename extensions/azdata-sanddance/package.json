@@ -11,7 +11,7 @@
         "url": "https://github.com/Microsoft/Sanddance"
     },
     "engines": {
-        "vscode": "^1.28.0",
+        "vscode": "^1.45.1",
         "azdata": "*"
     },
     "categories": [
@@ -81,7 +81,7 @@
         "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
         "clean": "rimraf ./resources/*.*",
         "vscode:prepublish": "npm run compile",
-        "resources": "node ./resources.js",
+        "resources": "node ./node_modules/common-frontend/scripts/resources.js",
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
         "build": "npm run compile && npm run resources",
@@ -89,11 +89,12 @@
         "package": "vsce package"
     },
     "devDependencies": {
-        "@types/azdata": "^1.15.1",
-        "@types/mocha": "^2.2.42",
+        "@types/azdata": "^1.15.2",
         "@types/node": "^8.10.25",
-        "common-extensions": "*",
-        "vscode": "^1.1.21"
+        "@types/vscode": "^1.45.1",
+        "common-backend": "*",
+        "common-frontend": "*",
+        "vscode-test": "^1.3.0"
     },
     "dependencies": {
         "@types/temp-write": "^3.3.0",
