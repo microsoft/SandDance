@@ -9,6 +9,7 @@
     "./sfc": "src/SandDanceVue.vue"
   },
   "scripts": {
+    "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "build": "npm run build:umd & npm run build:es & npm run build:unpkg",
     "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/SandDanceVue.umd.js",
     "build:es": "rollup --config build/rollup.config.js --format es --file dist/SandDanceVue.esm.js",
