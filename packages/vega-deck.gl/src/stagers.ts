@@ -33,7 +33,8 @@ interface VegaAxisDatum {
 function convertGroupRole(group: SceneGroup2): GroupType {
     if (group.mark.role === 'legend') return GroupType.legend;
     if (group.mark.role === 'axis') {
-        var vegaAxisDatum = group.datum as VegaAxisDatum;
+        if (group.context)
+        var vegaAxisDatum = group as unknown as VegaAxisDatum;
         if (vegaAxisDatum) {
             switch (vegaAxisDatum.orient) {
                 case 'bottom':
