@@ -7,7 +7,7 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import * as azdata from 'azdata';
 import * as tempWrite from 'temp-write';
-import { getWebviewContent } from './html';
+import { getWebviewContent } from 'common-backend';
 import { MssqlExtensionApi, IFileNode } from './mssqlapis';
 
 interface WebViewWithUri {
@@ -149,7 +149,7 @@ function queryViewInSandance(fileUri: vscode.Uri, context: vscode.ExtensionConte
     else {
         // Otherwise, create a new panel
         const uriTabName = editorUri.uri;
-        current = newPanelQuery(context, uriFsPath, uriTabName);
+        current = newPanel(context, uriFsPath, uriTabName);
         current.panel.onDidDispose(() => {
             current = undefined;
         }, null, context.subscriptions);
@@ -201,11 +201,11 @@ export function deactivate() {
     vscode.commands.executeCommand('setContext', 'showVisualizer', false);
 }
 
-function newPanel(context: vscode.ExtensionContext, uriFsPath: string) {
+function newPanel(context: vscode.ExtensionContext, uriFsPath: string, uriTabName?: string) {
     const webViewWithUri: WebViewWithUri = {
         panel: vscode.window.createWebviewPanel(
             'sandDance',
-            `SandDance: ${path.basename(uriFsPath)}`,
+            `SandDance: ${path.basename(uriTabName || uriFsPath)}`,
             vscode.ViewColumn.One,
             {
                 enableScripts: true,
@@ -218,27 +218,7 @@ function newPanel(context: vscode.ExtensionContext, uriFsPath: string) {
         ),
         uriFsPath
     };
-    webViewWithUri.panel.webview.html = getWebviewContent(context.extensionPath, uriFsPath);
-    return webViewWithUri;
-}
-
-function newPanelQuery(context: vscode.ExtensionContext, uriFsPath: string, uriTabName: string) {
-    const webViewWithUri: WebViewWithUri = {
-        panel: vscode.window.createWebviewPanel(
-            'sandDance',
-            `SandDance: ${path.basename(uriTabName)}`,
-            vscode.ViewColumn.One,
-            {
-                enableScripts: true,
-                // Only allow the webview to access resources in our extension's media directory
-                localResourceRoots: [
-                    vscode.Uri.file(path.join(context.extensionPath, 'resources'))
-                ],
-                retainContextWhenHidden: true
-            }
-        ),
-        uriFsPath
-    };
-    webViewWithUri.panel.webview.html = getWebviewContent(context.extensionPath, uriFsPath);
+    const webView = webViewWithUri.panel.webview;
+    webViewWithUri.panel.webview.html = getWebviewContent(webView, context.extensionPath, uriFsPath);
     return webViewWithUri;
 }

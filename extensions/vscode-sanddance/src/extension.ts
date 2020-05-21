@@ -5,7 +5,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { getWebviewContent } from './html';
+import { getWebviewContent } from 'common-backend';
 
 interface WebViewWithUri {
     panel: vscode.WebviewPanel;
@@ -83,6 +83,7 @@ function newPanel(context: vscode.ExtensionContext, uriFsPath: string) {
         ),
         uriFsPath
     };
-    webViewWithUri.panel.webview.html = getWebviewContent(context.extensionPath, uriFsPath);
+    const webView = webViewWithUri.panel.webview;
+    webViewWithUri.panel.webview.html = getWebviewContent(webView, context.extensionPath, uriFsPath);
     return webViewWithUri;
 }
