@@ -81,7 +81,7 @@
         "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
         "clean": "rimraf ./resources/*.*",
         "vscode:prepublish": "npm run compile",
-        "resources": "node ./resources.js",
+        "resources": "node ./node_modules/common-frontend/scripts/resources.js",
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
         "build": "npm run compile && npm run resources",
