@@ -3,7 +3,6 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 
-
 export function getWebviewContent(webView: vscode.Webview, extensionPath: string, fileUriFsPath: string) {
 
     function resourceUrl(resource: string) {
