@@ -1,7 +1,7 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
     typeof define === 'function' && define.amd ? define(['exports'], factory) :
-    (factory((global.SandDance = {})));
+    (global = global || self, factory(global.SandDance = {}));
 }(this, (function (exports) { 'use strict';
 
     class Layout {
@@ -3942,7 +3942,7 @@
                         }
                     });
                     update.fill = fill(specContext, topColorField, ScaleNames.Color);
-                    update.opacity = opacity(specContext);
+                    update.opacity = opacity();
                 }
                 return {
                     specCapabilities,
@@ -4485,179 +4485,6 @@
           : m1) * 255;
     }
 
-    var deg2rad = Math.PI / 180;
-    var rad2deg = 180 / Math.PI;
-
-    // https://observablehq.com/@mbostock/lab-and-rgb
-    var K = 18,
-        Xn = 0.96422,
-        Yn = 1,
-        Zn = 0.82521,
-        t0 = 4 / 29,
-        t1 = 6 / 29,
-        t2 = 3 * t1 * t1,
-        t3 = t1 * t1 * t1;
-
-    function labConvert(o) {
-      if (o instanceof Lab) return new Lab(o.l, o.a, o.b, o.opacity);
-      if (o instanceof Hcl) return hcl2lab(o);
-      if (!(o instanceof Rgb)) o = rgbConvert(o);
-      var r = rgb2lrgb(o.r),
-          g = rgb2lrgb(o.g),
-          b = rgb2lrgb(o.b),
-          y = xyz2lab((0.2225045 * r + 0.7168786 * g + 0.0606169 * b) / Yn), x, z;
-      if (r === g && g === b) x = z = y; else {
-        x = xyz2lab((0.4360747 * r + 0.3850649 * g + 0.1430804 * b) / Xn);
-        z = xyz2lab((0.0139322 * r + 0.0971045 * g + 0.7141733 * b) / Zn);
-      }
-      return new Lab(116 * y - 16, 500 * (x - y), 200 * (y - z), o.opacity);
-    }
-
-    function lab(l, a, b, opacity) {
-      return arguments.length === 1 ? labConvert(l) : new Lab(l, a, b, opacity == null ? 1 : opacity);
-    }
-
-    function Lab(l, a, b, opacity) {
-      this.l = +l;
-      this.a = +a;
-      this.b = +b;
-      this.opacity = +opacity;
-    }
-
-    define(Lab, lab, extend(Color, {
-      brighter: function(k) {
-        return new Lab(this.l + K * (k == null ? 1 : k), this.a, this.b, this.opacity);
-      },
-      darker: function(k) {
-        return new Lab(this.l - K * (k == null ? 1 : k), this.a, this.b, this.opacity);
-      },
-      rgb: function() {
-        var y = (this.l + 16) / 116,
-            x = isNaN(this.a) ? y : y + this.a / 500,
-            z = isNaN(this.b) ? y : y - this.b / 200;
-        x = Xn * lab2xyz(x);
-        y = Yn * lab2xyz(y);
-        z = Zn * lab2xyz(z);
-        return new Rgb(
-          lrgb2rgb( 3.1338561 * x - 1.6168667 * y - 0.4906146 * z),
-          lrgb2rgb(-0.9787684 * x + 1.9161415 * y + 0.0334540 * z),
-          lrgb2rgb( 0.0719453 * x - 0.2289914 * y + 1.4052427 * z),
-          this.opacity
-        );
-      }
-    }));
-
-    function xyz2lab(t) {
-      return t > t3 ? Math.pow(t, 1 / 3) : t / t2 + t0;
-    }
-
-    function lab2xyz(t) {
-      return t > t1 ? t * t * t : t2 * (t - t0);
-    }
-
-    function lrgb2rgb(x) {
-      return 255 * (x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
-    }
-
-    function rgb2lrgb(x) {
-      return (x /= 255) <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
-    }
-
-    function hclConvert(o) {
-      if (o instanceof Hcl) return new Hcl(o.h, o.c, o.l, o.opacity);
-      if (!(o instanceof Lab)) o = labConvert(o);
-      if (o.a === 0 && o.b === 0) return new Hcl(NaN, 0 < o.l && o.l < 100 ? 0 : NaN, o.l, o.opacity);
-      var h = Math.atan2(o.b, o.a) * rad2deg;
-      return new Hcl(h < 0 ? h + 360 : h, Math.sqrt(o.a * o.a + o.b * o.b), o.l, o.opacity);
-    }
-
-    function hcl(h, c, l, opacity) {
-      return arguments.length === 1 ? hclConvert(h) : new Hcl(h, c, l, opacity == null ? 1 : opacity);
-    }
-
-    function Hcl(h, c, l, opacity) {
-      this.h = +h;
-      this.c = +c;
-      this.l = +l;
-      this.opacity = +opacity;
-    }
-
-    function hcl2lab(o) {
-      if (isNaN(o.h)) return new Lab(o.l, 0, 0, o.opacity);
-      var h = o.h * deg2rad;
-      return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
-    }
-
-    define(Hcl, hcl, extend(Color, {
-      brighter: function(k) {
-        return new Hcl(this.h, this.c, this.l + K * (k == null ? 1 : k), this.opacity);
-      },
-      darker: function(k) {
-        return new Hcl(this.h, this.c, this.l - K * (k == null ? 1 : k), this.opacity);
-      },
-      rgb: function() {
-        return hcl2lab(this).rgb();
-      }
-    }));
-
-    var A = -0.14861,
-        B = +1.78277,
-        C = -0.29227,
-        D = -0.90649,
-        E = +1.97294,
-        ED = E * D,
-        EB = E * B,
-        BC_DA = B * C - D * A;
-
-    function cubehelixConvert(o) {
-      if (o instanceof Cubehelix) return new Cubehelix(o.h, o.s, o.l, o.opacity);
-      if (!(o instanceof Rgb)) o = rgbConvert(o);
-      var r = o.r / 255,
-          g = o.g / 255,
-          b = o.b / 255,
-          l = (BC_DA * b + ED * r - EB * g) / (BC_DA + ED - EB),
-          bl = b - l,
-          k = (E * (g - l) - C * bl) / D,
-          s = Math.sqrt(k * k + bl * bl) / (E * l * (1 - l)), // NaN if l=0 or l=1
-          h = s ? Math.atan2(k, bl) * rad2deg - 120 : NaN;
-      return new Cubehelix(h < 0 ? h + 360 : h, s, l, o.opacity);
-    }
-
-    function cubehelix(h, s, l, opacity) {
-      return arguments.length === 1 ? cubehelixConvert(h) : new Cubehelix(h, s, l, opacity == null ? 1 : opacity);
-    }
-
-    function Cubehelix(h, s, l, opacity) {
-      this.h = +h;
-      this.s = +s;
-      this.l = +l;
-      this.opacity = +opacity;
-    }
-
-    define(Cubehelix, cubehelix, extend(Color, {
-      brighter: function(k) {
-        k = k == null ? brighter : Math.pow(brighter, k);
-        return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
-      },
-      darker: function(k) {
-        k = k == null ? darker : Math.pow(darker, k);
-        return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
-      },
-      rgb: function() {
-        var h = isNaN(this.h) ? 0 : (this.h + 120) * deg2rad,
-            l = +this.l,
-            a = isNaN(this.s) ? 0 : this.s * l * (1 - l),
-            cosh = Math.cos(h),
-            sinh = Math.sin(h);
-        return new Rgb(
-          255 * (l + a * (A * cosh + B * sinh)),
-          255 * (l + a * (C * cosh + D * sinh)),
-          255 * (l + a * (E * cosh)),
-          this.opacity
-        );
-      }
-    }));
-
     // Copyright (c) Microsoft Corporation. All rights reserved.
     function isColor(cssColorSpecifier) {
         return !!color(cssColorSpecifier);
@@ -4794,7 +4621,7 @@
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function cloneVegaSpecWithData(context, currData) {
+    function build(context, currData) {
         const { specColumns } = context;
         const columns = [
             specColumns.color,
@@ -4839,7 +4666,8 @@
     // Copyright (c) Microsoft Corporation. All rights reserved.
 
     var index = /*#__PURE__*/Object.freeze({
-        cloneVegaSpecWithData: cloneVegaSpecWithData,
+        __proto__: null,
+        build: build,
         FieldNames: FieldNames,
         ScaleNames: ScaleNames,
         SignalNames: SignalNames,
@@ -4855,6 +4683,7 @@
     const GL_ORDINAL = 'GL_ORDINAL';
 
     var constants = /*#__PURE__*/Object.freeze({
+        __proto__: null,
         GL_ORDINAL: GL_ORDINAL,
         ColorScaleNone: ColorScaleNone,
         FieldNames: FieldNames,
@@ -5179,6 +5008,7 @@
     // Copyright (c) Microsoft Corporation. All rights reserved.
 
     var index$1 = /*#__PURE__*/Object.freeze({
+        __proto__: null,
         compareExpression: compareExpression,
         compareGroup: compareGroup,
         compare: compare,
@@ -5194,7 +5024,7 @@
 
 
     var types = /*#__PURE__*/Object.freeze({
-
+        __proto__: null
     });
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -5206,6 +5036,7 @@
     };
 
     var constants$1 = /*#__PURE__*/Object.freeze({
+        __proto__: null,
         layerNames: layerNames
     });
 
@@ -5331,7 +5162,8 @@
     ];
 
     var htmlTags$1 = /*#__PURE__*/Object.freeze({
-        default: htmlTags
+        __proto__: null,
+        'default': htmlTags
     });
 
     function getCjsExportFromNamespace (n) {
@@ -5426,7 +5258,8 @@
     ];
 
     var svgTags$1 = /*#__PURE__*/Object.freeze({
-        default: svgTags
+        __proto__: null,
+        'default': svgTags
     });
 
     var require$$0$1 = getCjsExportFromNamespace(svgTags$1);
@@ -5611,6 +5444,7 @@
     // Copyright (c) Microsoft Corporation. All rights reserved.
 
     var controls = /*#__PURE__*/Object.freeze({
+        __proto__: null,
         Table: Table
     });
 
@@ -5618,7 +5452,7 @@
     // Licensed under the MIT license.
 
     var types$1 = /*#__PURE__*/Object.freeze({
-
+        __proto__: null
     });
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -5767,7 +5601,8 @@
     var deepmerge_1 = deepmerge;
 
     var _deepmerge = /*#__PURE__*/Object.freeze({
-        default: deepmerge_1
+        __proto__: null,
+        'default': deepmerge_1
     });
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -6164,179 +5999,6 @@
           : m1) * 255;
     }
 
-    var deg2rad$1 = Math.PI / 180;
-    var rad2deg$1 = 180 / Math.PI;
-
-    // https://observablehq.com/@mbostock/lab-and-rgb
-    var K$1 = 18,
-        Xn$1 = 0.96422,
-        Yn$1 = 1,
-        Zn$1 = 0.82521,
-        t0$1 = 4 / 29,
-        t1$1 = 6 / 29,
-        t2$1 = 3 * t1$1 * t1$1,
-        t3$1 = t1$1 * t1$1 * t1$1;
-
-    function labConvert$1(o) {
-      if (o instanceof Lab$1) return new Lab$1(o.l, o.a, o.b, o.opacity);
-      if (o instanceof Hcl$1) return hcl2lab$1(o);
-      if (!(o instanceof Rgb$1)) o = rgbConvert$1(o);
-      var r = rgb2lrgb$1(o.r),
-          g = rgb2lrgb$1(o.g),
-          b = rgb2lrgb$1(o.b),
-          y = xyz2lab$1((0.2225045 * r + 0.7168786 * g + 0.0606169 * b) / Yn$1), x, z;
-      if (r === g && g === b) x = z = y; else {
-        x = xyz2lab$1((0.4360747 * r + 0.3850649 * g + 0.1430804 * b) / Xn$1);
-        z = xyz2lab$1((0.0139322 * r + 0.0971045 * g + 0.7141733 * b) / Zn$1);
-      }
-      return new Lab$1(116 * y - 16, 500 * (x - y), 200 * (y - z), o.opacity);
-    }
-
-    function lab$1(l, a, b, opacity) {
-      return arguments.length === 1 ? labConvert$1(l) : new Lab$1(l, a, b, opacity == null ? 1 : opacity);
-    }
-
-    function Lab$1(l, a, b, opacity) {
-      this.l = +l;
-      this.a = +a;
-      this.b = +b;
-      this.opacity = +opacity;
-    }
-
-    define$1(Lab$1, lab$1, extend$1(Color$1, {
-      brighter: function(k) {
-        return new Lab$1(this.l + K$1 * (k == null ? 1 : k), this.a, this.b, this.opacity);
-      },
-      darker: function(k) {
-        return new Lab$1(this.l - K$1 * (k == null ? 1 : k), this.a, this.b, this.opacity);
-      },
-      rgb: function() {
-        var y = (this.l + 16) / 116,
-            x = isNaN(this.a) ? y : y + this.a / 500,
-            z = isNaN(this.b) ? y : y - this.b / 200;
-        x = Xn$1 * lab2xyz$1(x);
-        y = Yn$1 * lab2xyz$1(y);
-        z = Zn$1 * lab2xyz$1(z);
-        return new Rgb$1(
-          lrgb2rgb$1( 3.1338561 * x - 1.6168667 * y - 0.4906146 * z),
-          lrgb2rgb$1(-0.9787684 * x + 1.9161415 * y + 0.0334540 * z),
-          lrgb2rgb$1( 0.0719453 * x - 0.2289914 * y + 1.4052427 * z),
-          this.opacity
-        );
-      }
-    }));
-
-    function xyz2lab$1(t) {
-      return t > t3$1 ? Math.pow(t, 1 / 3) : t / t2$1 + t0$1;
-    }
-
-    function lab2xyz$1(t) {
-      return t > t1$1 ? t * t * t : t2$1 * (t - t0$1);
-    }
-
-    function lrgb2rgb$1(x) {
-      return 255 * (x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
-    }
-
-    function rgb2lrgb$1(x) {
-      return (x /= 255) <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
-    }
-
-    function hclConvert$1(o) {
-      if (o instanceof Hcl$1) return new Hcl$1(o.h, o.c, o.l, o.opacity);
-      if (!(o instanceof Lab$1)) o = labConvert$1(o);
-      if (o.a === 0 && o.b === 0) return new Hcl$1(NaN, 0 < o.l && o.l < 100 ? 0 : NaN, o.l, o.opacity);
-      var h = Math.atan2(o.b, o.a) * rad2deg$1;
-      return new Hcl$1(h < 0 ? h + 360 : h, Math.sqrt(o.a * o.a + o.b * o.b), o.l, o.opacity);
-    }
-
-    function hcl$1(h, c, l, opacity) {
-      return arguments.length === 1 ? hclConvert$1(h) : new Hcl$1(h, c, l, opacity == null ? 1 : opacity);
-    }
-
-    function Hcl$1(h, c, l, opacity) {
-      this.h = +h;
-      this.c = +c;
-      this.l = +l;
-      this.opacity = +opacity;
-    }
-
-    function hcl2lab$1(o) {
-      if (isNaN(o.h)) return new Lab$1(o.l, 0, 0, o.opacity);
-      var h = o.h * deg2rad$1;
-      return new Lab$1(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
-    }
-
-    define$1(Hcl$1, hcl$1, extend$1(Color$1, {
-      brighter: function(k) {
-        return new Hcl$1(this.h, this.c, this.l + K$1 * (k == null ? 1 : k), this.opacity);
-      },
-      darker: function(k) {
-        return new Hcl$1(this.h, this.c, this.l - K$1 * (k == null ? 1 : k), this.opacity);
-      },
-      rgb: function() {
-        return hcl2lab$1(this).rgb();
-      }
-    }));
-
-    var A$1 = -0.14861,
-        B$1 = +1.78277,
-        C$1 = -0.29227,
-        D$1 = -0.90649,
-        E$1 = +1.97294,
-        ED$1 = E$1 * D$1,
-        EB$1 = E$1 * B$1,
-        BC_DA$1 = B$1 * C$1 - D$1 * A$1;
-
-    function cubehelixConvert$1(o) {
-      if (o instanceof Cubehelix$1) return new Cubehelix$1(o.h, o.s, o.l, o.opacity);
-      if (!(o instanceof Rgb$1)) o = rgbConvert$1(o);
-      var r = o.r / 255,
-          g = o.g / 255,
-          b = o.b / 255,
-          l = (BC_DA$1 * b + ED$1 * r - EB$1 * g) / (BC_DA$1 + ED$1 - EB$1),
-          bl = b - l,
-          k = (E$1 * (g - l) - C$1 * bl) / D$1,
-          s = Math.sqrt(k * k + bl * bl) / (E$1 * l * (1 - l)), // NaN if l=0 or l=1
-          h = s ? Math.atan2(k, bl) * rad2deg$1 - 120 : NaN;
-      return new Cubehelix$1(h < 0 ? h + 360 : h, s, l, o.opacity);
-    }
-
-    function cubehelix$1(h, s, l, opacity) {
-      return arguments.length === 1 ? cubehelixConvert$1(h) : new Cubehelix$1(h, s, l, opacity == null ? 1 : opacity);
-    }
-
-    function Cubehelix$1(h, s, l, opacity) {
-      this.h = +h;
-      this.s = +s;
-      this.l = +l;
-      this.opacity = +opacity;
-    }
-
-    define$1(Cubehelix$1, cubehelix$1, extend$1(Color$1, {
-      brighter: function(k) {
-        k = k == null ? brighter$1 : Math.pow(brighter$1, k);
-        return new Cubehelix$1(this.h, this.s, this.l * k, this.opacity);
-      },
-      darker: function(k) {
-        k = k == null ? darker$1 : Math.pow(darker$1, k);
-        return new Cubehelix$1(this.h, this.s, this.l * k, this.opacity);
-      },
-      rgb: function() {
-        var h = isNaN(this.h) ? 0 : (this.h + 120) * deg2rad$1,
-            l = +this.l,
-            a = isNaN(this.s) ? 0 : this.s * l * (1 - l),
-            cosh = Math.cos(h),
-            sinh = Math.sin(h);
-        return new Rgb$1(
-          255 * (l + a * (A$1 * cosh + B$1 * sinh)),
-          255 * (l + a * (C$1 * cosh + D$1 * sinh)),
-          255 * (l + a * (E$1 * cosh)),
-          this.opacity
-        );
-      }
-    }));
-
     function rgbToDeckglColor(c) {
         return [c.r, c.g, c.b, c.opacity * 255];
     }
@@ -6372,16 +6034,16 @@
      * Convert a Deck.gl color to a CSS rgba() string.
      * @param color A Deck.gl RGBAColor array - (The rgba color of each object, in r, g, b, [a]. Each component is in the 0-255 range.)
      */
-    function colorToString(color$$1) {
-        const c = [...color$$1];
+    function colorToString(color) {
+        const c = [...color];
         if (c.length > 3) {
             c[3] /= 255;
         }
         return `rgba(${c.join(',')})`;
     }
-    function desaturate(color$$1, value) {
-        const rgb$$1 = rgb$1(color$$1[0], color$$1[1], color$$1[2], color$$1[3] / 255);
-        const hslColor = hsl$1(rgb$$1);
+    function desaturate(color, value) {
+        const rgb = rgb$1(color[0], color[1], color[2], color[3] / 255);
+        const hslColor = hsl$1(rgb);
         hslColor.s = value;
         const c = hslColor.rgb();
         return rgbToDeckglColor(c);
@@ -6541,6 +6203,7 @@ void main(void) {
     const minPixelSize = 0.5;
 
     var defaults = /*#__PURE__*/Object.freeze({
+        __proto__: null,
         minHeight: minHeight,
         minWidth: minWidth,
         defaultPresenterStyle: defaultPresenterStyle,
@@ -6686,13 +6349,9 @@ void main(void) {
      */
     const CubeLayer = _CubeLayer;
 
-    var pi = Math.PI;
-
     function expInOut(t) {
       return ((t *= 2) <= 1 ? Math.pow(2, 10 * t - 10) : 2 - Math.pow(2, 10 - 10 * t)) / 2;
     }
-
-    var tau = 2 * Math.PI;
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     function getLayers(presenter, config, stage, lightSettings /*LightSettings*/, lightingMix, interpolator, guideLines) {
@@ -6837,6 +6496,7 @@ void main(void) {
     // Copyright (c) Microsoft Corporation. All rights reserved.
 
     var util = /*#__PURE__*/Object.freeze({
+        __proto__: null,
         addDiv: addDiv,
         addEl: addEl,
         allTruthy: allTruthy,
@@ -7032,7 +6692,7 @@ void main(void) {
             });
         };
         var sorted = Object.keys(props.legend.rows).sort((a, b) => +a - +b);
-        sorted.forEach(i => addRow(props.legend.rows[i], +i));
+        sorted.forEach(i => addRow(props.legend.rows[i]));
         if (sorted.length) {
             return (createElement(Table, { rows: rows, rowClassName: "legend-row", onRowClick: (e, i) => props.onClick(e, props.legend, i) }, props.legend.title !== void 0 && createElement("tr", { onClick: e => props.onClick(e, props.legend, null) },
                 createElement("th", { colSpan: 2 }, props.legend.title))));
@@ -7236,7 +6896,8 @@ void main(void) {
         if (group.mark.role === 'legend')
             return GroupType.legend;
         if (group.mark.role === 'axis') {
-            var vegaAxisDatum = group.datum;
+            if (group.context)
+                var vegaAxisDatum = group;
             if (vegaAxisDatum) {
                 switch (vegaAxisDatum.orient) {
                     case 'bottom':
@@ -7298,12 +6959,12 @@ void main(void) {
     };
     var mainStager = (options, stage, scene, x, y, groupType) => {
         if (scene.marktype !== 'group' && groupType === GroupType.legend) {
-            markStager$1(options, stage, scene, x, y, groupType);
+            markStager$1(options, stage, scene);
         }
         else {
-            var markStager$$1 = markStagers[scene.marktype];
-            if (markStager$$1) {
-                markStager$$1(options, stage, scene, x, y, groupType);
+            var markStager = markStagers[scene.marktype];
+            if (markStager) {
+                markStager(options, stage, scene, x, y, groupType);
             }
         }
     };
@@ -7729,6 +7390,7 @@ void main(void) {
     // Copyright (c) Microsoft Corporation. All rights reserved.
 
     var index$2 = /*#__PURE__*/Object.freeze({
+        __proto__: null,
         constants: constants$1,
         controls: controls,
         defaults: defaults,
@@ -7847,6 +7509,7 @@ void main(void) {
     }
 
     var util$1 = /*#__PURE__*/Object.freeze({
+        __proto__: null,
         isInternalFieldName: isInternalFieldName,
         getColumnsFromData: getColumnsFromData,
         getStats: getStats,
@@ -9029,7 +8692,7 @@ void main(void) {
             return __awaiter(this, void 0, void 0, function* () {
                 const currData = this._dataScope.currentData();
                 const context = { specColumns: this.getSpecColumnsWithFilteredStats(), insight: this.insight, specViewOptions: this.options };
-                const specResult = cloneVegaSpecWithData(context, currData);
+                const specResult = build(context, currData);
                 if (!specResult.errors) {
                     const uiValues = extractSignalValuesFromView(this.vegaViewGl, this.vegaSpec);
                     this._signalValues = Object.assign(Object.assign(Object.assign({}, this._signalValues), uiValues), this.insight.signalValues);
@@ -9046,6 +8709,9 @@ void main(void) {
                         didRegisterColorSchemes = true;
                     }
                     try {
+                        if (this.vegaViewGl) {
+                            this.vegaViewGl.finalize();
+                        }
                         const runtime = base.vega.parse(this.vegaSpec);
                         this.vegaViewGl = new ViewGl(runtime, config)
                             .renderer('deck.gl')
@@ -9351,7 +9017,7 @@ void main(void) {
         }
         createConfig(c) {
             const { getTextColor, getTextHighlightColor, onTextClick } = this.options;
-            const defaultPresenterConfig$$1 = {
+            const defaultPresenterConfig = {
                 getTextColor,
                 getTextHighlightColor,
                 onTextClick: (e, t) => {
@@ -9407,11 +9073,11 @@ void main(void) {
                 }
             };
             if (this.options.onBeforeCreateLayers) {
-                defaultPresenterConfig$$1.preLayer = stage => this.options.onBeforeCreateLayers(stage, this.specCapabilities);
+                defaultPresenterConfig.preLayer = stage => this.options.onBeforeCreateLayers(stage, this.specCapabilities);
             }
             const config = {
                 presenter: this.presenter,
-                presenterConfig: Object.assign(defaultPresenterConfig$$1, c)
+                presenterConfig: Object.assign(defaultPresenterConfig, c)
             };
             if (this.options.transitionDurations) {
                 config.presenterConfig.transitionDurations = this.options.transitionDurations;
@@ -9566,6 +9232,8 @@ void main(void) {
     // Copyright (c) Microsoft Corporation. All rights reserved.
     const use$1 = use;
 
+    exports.VegaDeckGl = index$2;
+    exports.Viewer = Viewer;
     exports.colorSchemes = colorSchemes;
     exports.constants = constants;
     exports.searchExpression = index$1;
@@ -9573,8 +9241,6 @@ void main(void) {
     exports.types = types;
     exports.use = use$1;
     exports.util = util$1;
-    exports.VegaDeckGl = index$2;
-    exports.Viewer = Viewer;
     exports.version = version;
 
     Object.defineProperty(exports, '__esModule', { value: true });

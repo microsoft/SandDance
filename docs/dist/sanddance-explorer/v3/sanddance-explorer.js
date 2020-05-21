@@ -6172,13 +6172,13 @@ function detectSequentialColumn(column, data) {
 
   return true;
 }
-},{"d3-color":"mFud"}],"rWkQ":[function(require,module,exports) {
+},{"d3-color":"mFud"}],"EPvd":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.cloneVegaSpecWithData = cloneVegaSpecWithData;
+exports.build = build;
 
 var _charts = require("./charts");
 
@@ -6186,7 +6186,7 @@ var _inference = require("./inference");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function cloneVegaSpecWithData(context, currData) {
+function build(context, currData) {
   const {
     specColumns
   } = context;
@@ -6227,14 +6227,14 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _clone = require("./clone");
+var _build = require("./build");
 
-Object.keys(_clone).forEach(function (key) {
+Object.keys(_build).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function () {
-      return _clone[key];
+      return _build[key];
     }
   });
 });
@@ -6262,7 +6262,7 @@ Object.keys(_inference).forEach(function (key) {
     }
   });
 });
-},{"./clone":"rWkQ","./constants":"kNZP","./inference":"x9Lc"}],"Syc7":[function(require,module,exports) {
+},{"./build":"EPvd","./constants":"kNZP","./inference":"x9Lc"}],"Syc7":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10006,7 +10006,7 @@ function convertGroupRole(group) {
   if (group.mark.role === 'legend') return _interfaces.GroupType.legend;
 
   if (group.mark.role === 'axis') {
-    var vegaAxisDatum = group.datum;
+    if (group.context) var vegaAxisDatum = group;
 
     if (vegaAxisDatum) {
       switch (vegaAxisDatum.orient) {
@@ -12689,7 +12689,7 @@ class Viewer {
         insight: this.insight,
         specViewOptions: this.options
       };
-      const specResult = (0, _sanddanceSpecs.cloneVegaSpecWithData)(context, currData);
+      const specResult = (0, _sanddanceSpecs.build)(context, currData);
 
       if (!specResult.errors) {
         const uiValues = (0, _signals.extractSignalValuesFromView)(this.vegaViewGl, this.vegaSpec);
@@ -12710,6 +12710,10 @@ class Viewer {
         }
 
         try {
+          if (this.vegaViewGl) {
+            this.vegaViewGl.finalize();
+          }
+
           const runtime = VegaDeckGl.base.vega.parse(this.vegaSpec);
           this.vegaViewGl = new VegaDeckGl.ViewGl(runtime, config).renderer('deck.gl').initialize(this.element);
           yield this.vegaViewGl.runAsync(); //capture new color color contexts via signals
