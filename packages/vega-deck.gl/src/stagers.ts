@@ -30,13 +30,19 @@ interface VegaAxisDatum {
     title: boolean;
 }
 
+function getOrientItem(group: SceneGroup2): { orient?: 'bottom' | 'left' | 'right' | 'top'; } {
+    if (group.orient) {
+        return group;
+    }
+    return group.datum as VegaAxisDatum;
+}
+
 function convertGroupRole(group: SceneGroup2): GroupType {
     if (group.mark.role === 'legend') return GroupType.legend;
     if (group.mark.role === 'axis') {
-        if (group.context)
-        var vegaAxisDatum = group as unknown as VegaAxisDatum;
-        if (vegaAxisDatum) {
-            switch (vegaAxisDatum.orient) {
+        const orientItem = getOrientItem(group);
+        if (orientItem) {
+            switch (orientItem.orient) {
                 case 'bottom':
                 case 'top':
                     return GroupType.xAxis;

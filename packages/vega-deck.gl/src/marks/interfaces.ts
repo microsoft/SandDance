@@ -21,6 +21,7 @@ export interface MarkStagerOptions {
 //TODO - use vega-typings below
 export type SceneGroup2 = SceneGroup & {
     datum?: any;
+    orient?: 'bottom' | 'left' | 'right' | 'top';
 };
 export interface LabelDatum {
     value: any;

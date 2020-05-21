@@ -6892,14 +6892,19 @@ void main(void) {
     })(GroupType || (GroupType = {}));
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
+    function getOrientItem(group) {
+        if (group.orient) {
+            return group;
+        }
+        return group.datum;
+    }
     function convertGroupRole(group) {
         if (group.mark.role === 'legend')
             return GroupType.legend;
         if (group.mark.role === 'axis') {
-            if (group.context)
-                var vegaAxisDatum = group;
-            if (vegaAxisDatum) {
-                switch (vegaAxisDatum.orient) {
+            const orientItem = getOrientItem(group);
+            if (orientItem) {
+                switch (orientItem.orient) {
                     case 'bottom':
                     case 'top':
                         return GroupType.xAxis;

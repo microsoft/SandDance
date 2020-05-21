@@ -10002,14 +10002,22 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+function getOrientItem(group) {
+  if (group.orient) {
+    return group;
+  }
+
+  return group.datum;
+}
+
 function convertGroupRole(group) {
   if (group.mark.role === 'legend') return _interfaces.GroupType.legend;
 
   if (group.mark.role === 'axis') {
-    if (group.context) var vegaAxisDatum = group;
+    const orientItem = getOrientItem(group);
 
-    if (vegaAxisDatum) {
-      switch (vegaAxisDatum.orient) {
+    if (orientItem) {
+      switch (orientItem.orient) {
         case 'bottom':
         case 'top':
           return _interfaces.GroupType.xAxis;
