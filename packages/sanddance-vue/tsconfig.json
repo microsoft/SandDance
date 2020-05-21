@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "rootDir": "src",
+        "moduleResolution": "node",
+        "skipLibCheck": true,
+        "target": "es6"
+    },
+    "include": [
+        "src"
+    ]
+}
