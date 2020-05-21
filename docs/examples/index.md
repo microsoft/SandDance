@@ -15,6 +15,7 @@ layout: page
 
 ## Sanddance
 * [simple scatterplot](../tests/v3/umd/test.html) using UMD/CDN
+* [scatterplot fetch + transform](../tests/v3/umd/transforms.html) using UMD/CDN
 * [scatterplot](../tests/v3/es6/sanddance.html) using bundled ES6
 * [demovote scatterplot](../tests/v3/umd/scatterplotTest.html) using UMD/CDN
 * [qualitative barchart](../tests/v3/umd/qualBarChartTest.html) using UMD/CDN
