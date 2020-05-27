@@ -23,7 +23,11 @@ export function Dialog(props: Props) {
             {props.children}
             <base.fluentUI.DialogFooter>
                 {props.buttons}
-                <base.fluentUI.DefaultButton onClick={props.onDismiss} text={strings.buttonClose} />
+                <base.fluentUI.DefaultButton
+                    iconProps={{ iconName: 'Cancel' }}
+                    onClick={props.onDismiss}
+                    text={strings.buttonClose}
+                />
             </base.fluentUI.DialogFooter>
         </base.fluentUI.Dialog>
 

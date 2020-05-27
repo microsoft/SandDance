@@ -210,6 +210,13 @@ export class DataSourcePicker extends React.Component<DialogProps, State> {
                 {this.state.uploadFormatError && (
                     <div className="error">{this.state.uploadFormatError}</div>
                 )}
+                <base.fluentUI.DialogFooter>
+                    <base.fluentUI.DefaultButton
+                        onClick={closeDialog}
+                        iconProps={{ iconName: 'Cancel' }}
+                        text={strings.dialogCloseButton}
+                    />
+                </base.fluentUI.DialogFooter>
             </base.fluentUI.Dialog>
         ), (
             <base.fluentUI.Dialog
@@ -263,8 +270,17 @@ export class DataSourcePicker extends React.Component<DialogProps, State> {
                     >{strings.labelLink}</a>
                 </section>
                 <base.fluentUI.DialogFooter>
-                    <base.fluentUI.PrimaryButton onClick={e => this.loadUrl()} text={strings.dialogLoadButton} disabled={this.state.working} />
-                    <base.fluentUI.DefaultButton onClick={closeDialog} text={strings.dialogCloseButton} />
+                    <base.fluentUI.PrimaryButton
+                        onClick={e => this.loadUrl()}
+                        iconProps={{ iconName: 'CloudDownload' }}
+                        text={strings.dialogLoadButton}
+                        disabled={this.state.working}
+                    />
+                    <base.fluentUI.DefaultButton
+                        onClick={closeDialog}
+                        iconProps={{ iconName: 'Cancel' }}
+                        text={strings.dialogCloseButton}
+                    />
                 </base.fluentUI.DialogFooter>
             </base.fluentUI.Dialog>
         )];

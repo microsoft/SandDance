@@ -136,7 +136,11 @@ export class SnapshotImportLocal extends React.Component<ImportProps, ImportStat
                         )}
                     </section>
                     <base.fluentUI.DialogFooter>
-                        <base.fluentUI.DefaultButton onClick={this.props.onDismiss} text={strings.dialogCloseButton} />
+                        <base.fluentUI.DefaultButton
+                            onClick={this.props.onDismiss}
+                            iconProps={{ iconName: 'Cancel' }}
+                            text={strings.dialogCloseButton}
+                        />
                     </base.fluentUI.DialogFooter>
                 </base.fluentUI.Dialog>
             </div>
@@ -248,9 +252,14 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
                             disabled={!this.state.url || !!this.state.urlError}
                             key={0}
                             onClick={e => this.loadUrl()}
+                            iconProps={{ iconName: 'CloudDownload' }}
                             text={strings.dialogLoadButton}
                         />
-                        <base.fluentUI.DefaultButton onClick={this.props.onDismiss} text={strings.dialogCloseButton} />
+                        <base.fluentUI.DefaultButton
+                            onClick={this.props.onDismiss}
+                            iconProps={{ iconName: 'Cancel' }}
+                            text={strings.dialogCloseButton}
+                        />
                     </base.fluentUI.DialogFooter>
                 </base.fluentUI.Dialog>
             </div>
@@ -263,6 +272,7 @@ export interface ExportProps {
     onDismiss: () => void;
     dataSource: DataSource;
     snapshots: Snapshot[];
+    theme: string;
 }
 
 export function SnapshotExport(props: ExportProps) {
@@ -271,7 +281,7 @@ export function SnapshotExport(props: ExportProps) {
             hidden={false}
             onDismiss={props.onDismiss}
             dialogContentProps={{
-                className: `sanddance-dialog ${this.props.theme} sanddance-export`,
+                className: `sanddance-dialog ${props.theme} sanddance-export`,
                 type: base.fluentUI.DialogType.normal,
                 title: strings.dialogTitleSnapshotsExport
             }}
@@ -283,6 +293,7 @@ export function SnapshotExport(props: ExportProps) {
                         {strings.labelSnapshotsExportHTMLDescription}
                     </div>
                     <base.fluentUI.PrimaryButton
+                        iconProps={{ iconName: 'Download' }}
                         text={`${strings.buttonExport} ${strings.labelSnapshotsExportHTMLTitle}`}
                         onClick={e => {
                             const clean = cleanSnapshots(props.snapshots);
@@ -297,6 +308,7 @@ export function SnapshotExport(props: ExportProps) {
                         {strings.labelSnapshotsExportMarkdownDescription}
                     </div>
                     <base.fluentUI.PrimaryButton
+                        iconProps={{ iconName: 'Download' }}
                         text={`${strings.buttonExport} ${strings.labelSnapshotsExportMarkdownTitle}`}
                         onClick={e => {
                             const sections = props.snapshots.map(snapshot => {
@@ -314,7 +326,11 @@ export function SnapshotExport(props: ExportProps) {
                 </li>
             </ul>
             <base.fluentUI.DialogFooter>
-                <base.fluentUI.DefaultButton onClick={props.onDismiss} text={strings.dialogCloseButton} />
+                <base.fluentUI.DefaultButton
+                    onClick={props.onDismiss}
+                    iconProps={{ iconName: 'Cancel' }}
+                    text={strings.dialogCloseButton}
+                />
             </base.fluentUI.DialogFooter>
         </base.fluentUI.Dialog>
     );

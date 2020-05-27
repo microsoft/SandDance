@@ -108,6 +108,7 @@ export class SnapshotEditor extends React.Component<Props, State>{
                             this.props.onWriteSnapshot(snapshot, this.state.editIndex);
                             this.setState({ showEditFormDialog: false, title: '', description: '', image: null });
                         }}
+                        iconProps={{ iconName: 'Camera' }}
                         text={this.state.editIndex >= 0 ? strings.buttonUpdateSnapshot : strings.buttonCreateSnapshot}
                     />
                 )}

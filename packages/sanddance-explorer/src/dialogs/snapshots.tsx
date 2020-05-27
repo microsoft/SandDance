@@ -93,6 +93,7 @@ export class Snapshots extends React.Component<Props, State>{
                                         this.setState({ confirmation: null });
                                         this.state.confirmation.handler();
                                     }}
+                                    iconProps={{iconName:'Delete'}}
                                     text={this.state.confirmation.buttonText}
                                 />
                             )}
