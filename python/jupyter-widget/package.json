@@ -1,7 +1,7 @@
 {
   "name": "@msrvida/sanddance-jupyter",
   "version": "0.0.1",
-  "description": "Custom Jupyter Widget for SanfDance",
+  "description": "Custom Jupyter Widget for SandDance",
   "keywords": [
     "jupyter",
     "jupyterlab",
