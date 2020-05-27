@@ -1,10 +1,32 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as React from 'react';
-import { applyColorButtons } from './colorMap';
-import { AutoCompleteDistinctValues, InputSearchExpression } from './controls/searchTerm';
 import { base } from './base';
+import { removeTabIndex } from './canvas';
+import {
+    onBeforeCreateLayers,
+    PositionedColumnMap,
+    PositionedColumnMapProps,
+    TextWithSpecRole
+} from './clickableTextLayer';
+import { applyColorButtons } from './colorMap';
 import { bestColorScheme } from './colorScheme';
+import { ensureColumnsExist, ensureColumnsPopulated } from './columns';
+import { ColumnMapBaseProps } from './controls/columnMap';
+import { DataScopeId } from './controls/dataScope';
+import { Dialog } from './controls/dialog';
+import { IconButton } from './controls/iconButton';
+import { AutoCompleteDistinctValues, InputSearchExpression } from './controls/searchTerm';
+import { Sidebar } from './controls/sidebar';
+import { Topbar } from './controls/topbar';
+import { loadDataArray, loadDataFile } from './dataLoader';
+import { defaultViewerOptions, snapshotThumbWidth } from './defaults';
+import { Chart } from './dialogs/chart';
+import { Color } from './dialogs/color';
+import { DataBrowser } from './dialogs/dataBrowser';
+import { InputSearchExpressionGroup, Search } from './dialogs/search';
+import { Settings } from './dialogs/settings';
+import { SnapshotEditor } from './dialogs/snapshotEditor';
+import { Snapshots } from './dialogs/snapshots';
 import {
     ChangeColumnMappingOptions,
     ColorSettings,
@@ -16,9 +38,8 @@ import {
     Snapshot,
     SnapshotProps
 } from './interfaces';
-import { Chart } from './dialogs/chart';
-import { Color } from './dialogs/color';
-import { ColumnMapBaseProps } from './controls/columnMap';
+import { strings } from './language';
+import { getPosition } from './mouseEvent';
 import {
     copyPrefToNewState,
     initPrefs,
@@ -26,33 +47,12 @@ import {
     savePref,
     saveSignalValuePref
 } from './partialInsight';
-import { DataBrowser } from './dialogs/dataBrowser';
-import { DataScopeId } from './controls/dataScope';
-import { defaultViewerOptions, snapshotThumbWidth } from './defaults';
-import { Dialog } from './controls/dialog';
-import { ensureColumnsExist, ensureColumnsPopulated } from './columns';
-import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
-import { getPosition } from './mouseEvent';
-import { IconButton } from './controls/iconButton';
-import { InputSearchExpressionGroup, Search } from './dialogs/search';
-import { loadDataArray, loadDataFile } from './dataLoader';
-import {
-    onBeforeCreateLayers,
-    PositionedColumnMap,
-    PositionedColumnMapProps,
-    TextWithSpecRole
-} from './clickableTextLayer';
-import { preferredColumnForTreemapSize, RecommenderSummary } from '@msrvida/chart-recommender';
-import { removeTabIndex } from './canvas';
-import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
-import { Settings } from './dialogs/settings';
-import { Sidebar } from './controls/sidebar';
-import { SnapshotEditor } from './dialogs/snapshotEditor';
-import { Snapshots } from './dialogs/snapshots';
-import { strings } from './language';
 import { themePalettes } from './themes';
 import { toggleSearch } from './toggleSearch';
-import { Topbar } from './controls/topbar';
+import { preferredColumnForTreemapSize, RecommenderSummary } from '@msrvida/chart-recommender';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
+import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
+import * as React from 'react';
 
 export interface Options {
     chartPrefs?: Prefs;
