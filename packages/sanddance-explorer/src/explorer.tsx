@@ -20,7 +20,7 @@ import { Sidebar } from './controls/sidebar';
 import { Topbar } from './controls/topbar';
 import { loadDataArray, loadDataFile } from './dataLoader';
 import { defaultViewerOptions, snapshotThumbWidth } from './defaults';
-import { Chart } from './dialogs/chart';
+import { Chart, chartLabel } from './dialogs/chart';
 import { Color } from './dialogs/color';
 import { DataBrowser } from './dialogs/dataBrowser';
 import { History } from './dialogs/history';
@@ -157,7 +157,7 @@ export class Explorer extends React.Component<Props, State> {
     private layoutDivUnpinned: HTMLElement;
     private layoutDivPinned: HTMLElement;
     private getColorContext: (oldInsight: SandDance.specs.Insight, newInsight: SandDance.specs.Insight) => SandDance.types.ColorContext;
-    private historicFilterChange: boolean;
+    private historicFilterChange: string;
     private rebaseFilter: boolean;
     private ignoreSelectionChange: boolean;
     private snapshotEditor: SnapshotEditor;
@@ -239,8 +239,8 @@ export class Explorer extends React.Component<Props, State> {
             onDataFilter: (filter, filteredData) => {
                 const selectedItemIndex = { ...this.state.selectedItemIndex };
                 selectedItemIndex[DataScopeId.FilteredData] = 0;
-                this.changeInsight({ filter }, { label: filter ? 'TODO onDataFilter' : 'TODO clear filter', omit: !this.historicFilterChange });
-                this.historicFilterChange = false;
+                this.changeInsight({ filter }, { label: this.historicFilterChange, omit: !this.historicFilterChange });
+                this.historicFilterChange = null;
                 this.setState({ filteredData, selectedItemIndex });
                 if (this.state.sideTabId === SideTabId.Data && this.state.dataScopeId === DataScopeId.FilteredData) {
                     //make sure item is active
@@ -431,11 +431,11 @@ export class Explorer extends React.Component<Props, State> {
                 newState.sideTabId = SideTabId.Snapshots;
                 this.scrollSnapshotIntoView(selectedSnapshotIndex);
             }
-            this.setInsight({ label: 'TODO revive snapshot index' }, newState, snapshot.insight, true);
+            this.setInsight({ label: strings.labelHistoryReviveSnapshot }, newState, snapshot.insight, true);
         } else {
             const snapshot = snapshotOrIndex as Snapshot;
             if (snapshot.insight) {
-                this.setInsight({ label: 'TODO revive snapshot object' }, { note: snapshot.description, selectedSnapshotIndex: -1 }, snapshot.insight, true); //don't navigate to sideTab
+                this.setInsight({ label: strings.labelHistoryReviveSnapshot }, { note: snapshot.description, selectedSnapshotIndex: -1 }, snapshot.insight, true); //don't navigate to sideTab
             } else {
                 this.setState({ note: snapshot.description, selectedSnapshotIndex: -1 });
             }
@@ -450,7 +450,7 @@ export class Explorer extends React.Component<Props, State> {
         optionsOrPrefs?: Prefs | Options
     ) {
         this.setState({ historyIndex: -1, historyItems: [] });
-        this.changeInsight({ columns: null }, { label: 'TODO reset history', omit: true });
+        this.changeInsight({ columns: null }, { label: null, omit: true });
         this.setState({ note: null });
         return new Promise<void>((resolve, reject) => {
             const loadFinal = (dataContent: DataContent) => {
@@ -494,7 +494,7 @@ export class Explorer extends React.Component<Props, State> {
                 newState.errors = errors;
                 this.setState(newState as State);
                 //change insight
-                this.changeInsight(partialInsight, { label: 'TODO initialize history', insert: true });
+                this.changeInsight(partialInsight, { label: strings.labelHistoryInit, insert: true });
                 //make sure item is active
                 this.activateDataBrowserItem(sideTabId, this.state.dataScopeId);
                 resolve();
@@ -568,7 +568,7 @@ export class Explorer extends React.Component<Props, State> {
             if (errors) {
                 this.setState({ errors });
             }
-            this.changeInsight(insight, { label: 'todo change chart type' });
+            this.changeInsight(insight, { label: strings.labelHistoryChangeChartType(chartLabel(chart)) });
         });
     }
 
@@ -577,7 +577,7 @@ export class Explorer extends React.Component<Props, State> {
     }
 
     changeView(view: SandDance.types.View) {
-        this.changeInsight({ view }, { label: 'TODO change view' });
+        this.changeInsight({ view }, { label: view === '2d' ? strings.labelViewType2d : strings.labelViewType3d });
     }
 
     //state members which change the insight
@@ -660,9 +660,10 @@ export class Explorer extends React.Component<Props, State> {
 
     changeColumnMapping(role: SandDance.specs.InsightColumnRoles, column: SandDance.types.Column, options?: ChangeColumnMappingOptions) {
         const columns = { ...this.state.columns };
+        const label = column ? strings.labelHistoryMapColumn(role) : strings.labelHistoryUnMapColumn(role);
         const final = () => {
             columns[role] = column && column.name;
-            this.changeInsight({ columns }, { label: 'TODO change column mapping' });
+            this.changeInsight({ columns }, { label });
         };
         const _changeInsight = (newInsight: Partial<HistoricInsight>, pref: SandDance.specs.InsightColumns, columnUpdate: SandDance.specs.InsightColumns, historyAction: HistoryAction) => {
             newInsight.columns = SandDance.VegaDeckGl.util.deepMerge(
@@ -681,7 +682,7 @@ export class Explorer extends React.Component<Props, State> {
                     const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'facet', column.name);
                     const historicInsight: Partial<HistoricInsight> = { columns, ...partialInsight, facetStyle: options ? options.facetStyle : this.state.facetStyle };
                     columnUpdate = { facet: column.name };
-                    _changeInsight(historicInsight, partialInsight.columns, columnUpdate, { label: 'TODO change facet' });
+                    _changeInsight(historicInsight, partialInsight.columns, columnUpdate, { label });
                     break;
                 }
                 case 'color': {
@@ -714,7 +715,7 @@ export class Explorer extends React.Component<Props, State> {
                             columnUpdate = { color: column.name };
                             this.getColorContext = null;
                             this.setState({ calculating });
-                            _changeInsight(historicInsight, null, columnUpdate, { label: 'TODO change color' });
+                            _changeInsight(historicInsight, null, columnUpdate, { label });
                         });
                     });
                     break;
@@ -723,14 +724,14 @@ export class Explorer extends React.Component<Props, State> {
                     const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'x', column.name);
                     const historicInsight: Partial<HistoricInsight> = { columns, ...partialInsight };
                     columnUpdate = { x: column.name };
-                    _changeInsight(historicInsight, partialInsight.columns, columnUpdate, { label: 'TODO change x column' });
+                    _changeInsight(historicInsight, partialInsight.columns, columnUpdate, { label });
                     break;
                 }
                 case 'size': {
                     const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'size', column.name);
                     const historicInsight: Partial<HistoricInsight> = { ...partialInsight, totalStyle: options ? options.totalStyle : this.state.totalStyle };
                     columnUpdate = { size: column.name };
-                    _changeInsight(historicInsight, partialInsight.columns, columnUpdate, { label: 'TODO change size column' });
+                    _changeInsight(historicInsight, partialInsight.columns, columnUpdate, { label });
                     break;
                 }
                 default: {
@@ -743,7 +744,7 @@ export class Explorer extends React.Component<Props, State> {
                 case 'facet': {
                     columns.facet = null;
                     columns.facetV = null;
-                    this.changeInsight({ columns, facetStyle: 'wrap' }, { label: 'TODO remove facet column' });
+                    this.changeInsight({ columns, facetStyle: 'wrap' }, { label });
                     break;
                 }
                 default: {
@@ -887,13 +888,13 @@ export class Explorer extends React.Component<Props, State> {
         }
     }
 
-    private doFilter(search: SandDance.searchExpression.Search) {
-        this.historicFilterChange = true;
+    private doFilter(search: SandDance.searchExpression.Search, historicFilterChange: string) {
+        this.historicFilterChange = historicFilterChange;
         this.viewer.filter(search)
     }
 
-    private doUnfilter() {
-        this.historicFilterChange = true;
+    private doUnfilter(historicFilterChange: string) {
+        this.historicFilterChange = historicFilterChange;
         this.viewer.reset()
     }
 
@@ -1039,7 +1040,7 @@ export class Explorer extends React.Component<Props, State> {
                     }}
                     onViewClick={() => {
                         const view = this.state.view === '2d' ? '3d' : '2d';
-                        this.changeInsight({ view }, { label: 'TODO change view' });
+                        this.changeInsight({ view }, { label: view === '2d' ? strings.labelViewType2d : strings.labelViewType3d });
                     }}
                     onHomeClick={() => this.viewer.presenter.homeCamera()}
                 />
@@ -1067,7 +1068,7 @@ export class Explorer extends React.Component<Props, State> {
                             onCompactClick: () => {
                                 this.changeInsight({
                                     size: this.getLayoutDivSize(this.state.sidebarPinned, false)
-                                }, { label: 'TODO compact resize', omit: true });
+                                }, { label: null, omit: true });
                                 this.setState({
                                     sidebarClosed: false,
                                 });
@@ -1093,7 +1094,7 @@ export class Explorer extends React.Component<Props, State> {
                                 sidebarClosed = !this.state.sidebarClosed;
                                 this.changeInsight({
                                     size: this.getLayoutDivSize(this.state.sidebarPinned, sidebarClosed)
-                                }, { label: 'TODO toggle sidebar', omit: true });
+                                }, { label: null, omit: true });
                                 this.setState({
                                     dataScopeId,
                                     sidebarClosed,
@@ -1101,7 +1102,7 @@ export class Explorer extends React.Component<Props, State> {
                             } else if (sideTabId === SideTabId.Pin) {
                                 this.changeInsight({
                                     size: this.getLayoutDivSize(!this.state.sidebarPinned, this.state.sidebarClosed)
-                                }, { label: 'TODO change sidetab', omit: true });
+                                }, { label: null, omit: true });
                                 this.setState({ sidebarPinned: !this.state.sidebarPinned });
                             } else {
                                 this.setSideTabId(sideTabId);
@@ -1157,7 +1158,7 @@ export class Explorer extends React.Component<Props, State> {
                                                     //allow deselection to render
                                                     requestAnimationFrame(() => {
                                                         this.getColorContext = null;
-                                                        this.changeInsight({ colorBin }, { label: 'TODO change color bin' });
+                                                        this.changeInsight({ colorBin }, { label: strings.labelHistoryColorBin });
                                                         savePref(this.prefs, this.state.chart, 'color', this.state.columns.color, { colorBin });
                                                     });
                                                 });
@@ -1178,7 +1179,7 @@ export class Explorer extends React.Component<Props, State> {
                                             }}
                                             directColor={this.state.directColor}
                                             onDirectColorChange={directColor => {
-                                                this.changeInsight({ directColor }, { label: 'TODO change direct color' });
+                                                this.changeInsight({ directColor }, { label: strings.labelHistoryDirectColor });
                                                 this.setState({ calculating: () => this._resize() });
                                             }}
                                         />

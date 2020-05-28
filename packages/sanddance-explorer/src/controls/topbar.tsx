@@ -16,8 +16,8 @@ export interface Props {
     logoClickUrl: string;
     logoClickTarget: string;
     buttons?: FluentUITypes.ICommandBarItemProps[];
-    doFilter: { (search: Search): void };
-    doUnfilter: () => void;
+    doFilter: { (search: Search, historicFilterChange: string): void };
+    doUnfilter: (historicFilterChange: string) => void;
     doDeselect: () => void;
     filter: Search;
     loaded: boolean;
@@ -75,7 +75,7 @@ export function Topbar(props: Props) {
                 iconName: 'Filter'
             },
             disabled: disabled || !props.selectionSearch || zeroResults,
-            onClick: () => props.doFilter(props.selectionSearch)
+            onClick: () => props.doFilter(props.selectionSearch, strings.labelHistoryFilterIsolate)
         },
         {
             key: 'exclude',
@@ -84,7 +84,7 @@ export function Topbar(props: Props) {
                 iconName: 'ClearFilter'
             },
             disabled: disabled || !props.selectionSearch || zeroResults,
-            onClick: () => props.doFilter(SandDance.searchExpression.invert(props.selectionSearch))
+            onClick: () => props.doFilter(SandDance.searchExpression.invert(props.selectionSearch), strings.labelHistoryFilterIExclude)
         },
         {
             key: 'reset',
@@ -93,7 +93,7 @@ export function Topbar(props: Props) {
                 iconName: 'RemoveFilter'
             },
             disabled: disabled || !props.filter,
-            onClick: props.doUnfilter
+            onClick: ()=> props.doUnfilter(strings.labelHistoryFilterClear)
         }
     ];
     if (props.buttons) {
@@ -132,7 +132,7 @@ export function Topbar(props: Props) {
             iconProps: {
                 iconName: props.view === '2d' ? 'Product' : 'Page'
             },
-            title: props.view === '2d' ? strings.labelViewType3d : strings.lavelViewType2d,
+            title: props.view === '2d' ? strings.labelViewType3d : strings.labelViewType2d,
             onClick: props.onViewClick,
             disabled: !props.loaded
         },
