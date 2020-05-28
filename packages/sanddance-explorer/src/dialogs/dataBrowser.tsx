@@ -14,7 +14,6 @@ import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
 
 export interface Props {
-    title: string;
     data: object[];
     index: number;
     onActivate: { (row: object, index: number): void };
