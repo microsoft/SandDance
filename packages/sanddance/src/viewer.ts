@@ -414,7 +414,7 @@ export class Viewer {
                 //refining
                 result = await this._render(insight, data, options);
                 this.presenter.animationQueue(() => {
-                    this.filter(insight.filter);
+                    this.filter(insight.filter, options.rebaseFilter && options.rebaseFilter());
                 }, allowAsyncRenderTime, { waitingLabel: 'layout before refine', handlerLabel: 'refine after layout' });
             } else {
                 //not refining
@@ -679,11 +679,12 @@ export class Viewer {
     /**
      * Filter the data and animate.
      * @param search Filter expression, see https://vega.github.io/vega/docs/expressions/
+     * @param rebase Optional flag to apply to entire dataset. A false value will apply the filter upon any existing filter. 
      */
-    filter(search: Search) {
-        const u = this._dataScope.createUserSelection(search, false);
+    filter(search: Search, rebase = false) {
+        const u = this._dataScope.createUserSelection(search, false, rebase);
         return new Promise<void>((resolve, reject) => {
-            this._animator.filter(search, u.included, u.excluded).then(() => {
+            this._animator.filter(search, u.included, u.excluded, rebase).then(() => {
                 this._details.clear();
                 this._details.clearSelection();
                 this._details.populate(this._dataScope.selection);
