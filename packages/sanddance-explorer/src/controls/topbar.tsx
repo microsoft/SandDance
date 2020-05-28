@@ -40,7 +40,6 @@ export interface Props {
 export function Topbar(props: Props) {
     const zeroResults = props.selectionState.selectedData && props.selectionState.selectedData.length === 0;
     const disabled = !props.loaded;
-    console.log(props.historyIndex > props.historyItems.length - 1);
     const items: FluentUITypes.ICommandBarItemProps[] = [
         {
             key: 'undo',

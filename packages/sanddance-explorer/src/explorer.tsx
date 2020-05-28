@@ -107,7 +107,11 @@ export interface UIState {
     historyItems: HistoryItem[];
 }
 
-export interface State extends SandDance.specs.Insight, UIState {
+export interface HistoricInsight extends SandDance.specs.Insight {
+    rebaseFilter?: boolean;
+}
+
+export interface State extends HistoricInsight, UIState {
 }
 
 export interface HistoryAction {
@@ -118,7 +122,7 @@ export interface HistoryAction {
 
 export interface HistoryItem {
     label: string;
-    partialInsight: Partial<SandDance.specs.Insight>;
+    historicInsight: Partial<HistoricInsight>;
 }
 
 const dataBrowserZeroMessages: { [key: number]: string } = {};
@@ -233,7 +237,6 @@ export class Explorer extends React.Component<Props, State> {
             },
             onColorContextChange: () => this.manageColorToolbar(),
             onDataFilter: (dataFilter, filteredData) => {
-                console.log('how did i get here');
                 const selectedItemIndex = { ...this.state.selectedItemIndex };
                 selectedItemIndex[DataScopeId.FilteredData] = 0;
                 this.changeInsight({ filter: dataFilter }, { label: 'TODO onDataFilter', omit: !this.historicFilterChange });
@@ -375,31 +378,32 @@ export class Explorer extends React.Component<Props, State> {
         selectedItemIndex[DataScopeId.AllData] = 0;
         selectedItemIndex[DataScopeId.FilteredData] = 0;
         selectedItemIndex[DataScopeId.SelectedData] = 0;
-        const newInsight: Partial<SandDance.specs.Insight> = {
+        const historicInsight: Partial<HistoricInsight> = {
             chart: null,
             scheme: null,
             columns: null,
             filter: null,
+            rebaseFilter,
             ...partialInsight
         };
         const state: Partial<UIState> = {
             filteredData: null,
             selectedItemIndex,
-            search: createInputSearch(newInsight.filter),
+            search: createInputSearch(historicInsight.filter),
             ...newState
         }
         const changeInsight = () => {
             this.getColorContext = null;
             this.setState(state as UIState);
             if (callChangeInsight) {
-                this.changeInsight(newInsight, historyAction);
+                this.changeInsight(historicInsight, historyAction);
             } else {
-                this.setState(newInsight as State);
+                this.setState(historicInsight as State);
             }
         };
         const currentFilter = this.viewer.getInsight().filter;
-        if (rebaseFilter && currentFilter && newInsight.filter) {
-            if (SandDance.searchExpression.startsWith(newInsight.filter, currentFilter)) {
+        if (rebaseFilter && currentFilter && historicInsight.filter) {
+            if (SandDance.searchExpression.startsWith(historicInsight.filter, currentFilter)) {
                 changeInsight();
             } else {
                 this.viewer.reset()
@@ -520,17 +524,17 @@ export class Explorer extends React.Component<Props, State> {
 
     changeChartType(chart: SandDance.specs.Chart) {
         const partialInsight = copyPrefToNewState(this.prefs, chart, '*', '*');
-        const newInsight: Partial<SandDance.specs.Insight> = { chart, ...partialInsight };
+        const historicInsight: Partial<HistoricInsight> = { chart, ...partialInsight };
         const columns = SandDance.VegaDeckGl.util.deepMerge({}, partialInsight.columns, this.state.columns);
-        newInsight.columns = { ...columns };
+        historicInsight.columns = { ...columns };
 
         //special case mappings when switching chart type
         if (this.state.chart === 'scatterplot' && (chart === 'barchart' || chart === 'barchartV')) {
-            newInsight.columns = { ...columns, sort: columns.y };
+            historicInsight.columns = { ...columns, sort: columns.y };
         } else if (this.state.chart === 'scatterplot' && chart === 'barchartH') {
-            newInsight.columns = { ...columns, sort: columns.x };
+            historicInsight.columns = { ...columns, sort: columns.x };
         } else if (chart === 'treemap') {
-            newInsight.view = '2d';
+            historicInsight.view = '2d';
             if (!columns.size) {
                 //make sure size exists and is numeric
                 let sizeColumnName: string;
@@ -550,21 +554,21 @@ export class Explorer extends React.Component<Props, State> {
                 if (!sizeColumnName) {
                     //TODO error - no numeric columns
                 } else {
-                    newInsight.columns = { ...columns, size: sizeColumnName };
+                    historicInsight.columns = { ...columns, size: sizeColumnName };
                 }
             }
         } else if (chart === 'stacks') {
-            newInsight.view = '3d';
+            historicInsight.view = '3d';
         }
 
-        ensureColumnsExist(newInsight.columns, this.state.dataContent.columns, this.state.transform);
-        const errors = ensureColumnsPopulated(chart, newInsight.columns, this.state.dataContent.columns);
+        ensureColumnsExist(historicInsight.columns, this.state.dataContent.columns, this.state.transform);
+        const errors = ensureColumnsPopulated(chart, historicInsight.columns, this.state.dataContent.columns);
 
         this.calculate(() => {
             if (errors) {
                 this.setState({ errors });
             }
-            this.changeInsight(newInsight, { label: 'todo change chart type' });
+            this.changeInsight(historicInsight, { label: 'todo change chart type' });
         });
     }
 
@@ -589,57 +593,63 @@ export class Explorer extends React.Component<Props, State> {
         if (partialInsight.chart === 'barchart') {
             partialInsight.chart = 'barchartV';
         }
-        if (historyAction.omit) {
-            this.setState(partialInsight as State);
-        } else {
-            this.addHistory(partialInsight, historyAction);
-        }
+        this.addHistory(partialInsight, historyAction);
     }
 
-    addHistory(partialInsight: Partial<SandDance.specs.Insight>, historyAction: HistoryAction) {
+    addHistory(historicInsight: Partial<HistoricInsight>, historyAction: HistoryAction) {
+
+        const setCleanState = (newState: State) => {
+            const cleanState = { ...newState };
+            delete cleanState.rebaseFilter;
+            this.setState(cleanState);
+        }
+
+        if (historyAction.omit) {
+            setCleanState(historicInsight as State);
+            return;
+        }
         const historyItems = this.state.historyItems.slice(0, this.state.historyIndex + 1);
         const historyIndex = historyItems.length;
-        historyItems.push({ label: historyAction.label, partialInsight });
+        historyItems.push({ label: historyAction.label, historicInsight });
         if (historyAction.insert) {
-            this.setState({ historyIndex, historyItems });
+            setCleanState({ historyIndex, historyItems } as State);
         } else {
-            const newState = { ...partialInsight, historyIndex, historyItems } as State;
-            this.setState(newState);
+            setCleanState({ ...historicInsight, historyIndex, historyItems } as State);
         }
     }
 
     private replay(index: number) {
         let filter: SandDance.searchExpression.Search = null;
-        let partialInsight: Partial<SandDance.specs.Insight> = {};
+        let historicInsight: Partial<HistoricInsight> = {};
         for (let i = 0; i < index + 1; i++) {
             const historyItem = this.state.historyItems[i];
-            if (historyItem.partialInsight.filter) {
-                filter = SandDance.searchExpression.narrow(filter, historyItem.partialInsight.filter);
-            } else if (historyItem.partialInsight.filter === null) {
-                filter = null;
+            if (historyItem) {
+                if (historyItem.historicInsight.filter === null) {
+                    filter = null;
+                } else if (historyItem.historicInsight.rebaseFilter) {
+                    filter = historyItem.historicInsight.filter;
+                } else if (historyItem.historicInsight.filter) {
+                    filter = SandDance.searchExpression.narrow(filter, historyItem.historicInsight.filter);
+                }
+                historicInsight = { ...historicInsight, ...historyItem.historicInsight };
             }
-            partialInsight = { ...partialInsight, ...historyItem.partialInsight };
         }
-        return { ...partialInsight, filter };
+        return { ...historicInsight, filter };
     }
 
     undo() {
         //TODO bounds
         const historyIndex = this.state.historyIndex - 1
         const newState = this.replay(historyIndex);
-        console.log(`undo new state`, newState);
         this.rebaseFilter = true;
         this.setState({ ...newState as State, historyIndex });
-        //this.setInsight(null, { historyIndex }, newState, true, false);
     }
 
     redo(historyIndex = this.state.historyIndex + 1) {
         //TODO bounds
         const newState = this.replay(historyIndex);
-        console.log(`redo new state`, newState);
         this.rebaseFilter = true;
         this.setState({ ...newState as State, historyIndex });
-        //this.setInsight(null, { historyIndex }, newState, true, false);
     }
 
     changespecCapabilities(
@@ -654,7 +664,7 @@ export class Explorer extends React.Component<Props, State> {
             columns[role] = column && column.name;
             this.changeInsight({ columns }, { label: 'TODO change column mapping' });
         };
-        const _changeInsight = (newInsight: Partial<SandDance.specs.Insight>, pref: SandDance.specs.InsightColumns, columnUpdate: SandDance.specs.InsightColumns, historyAction: HistoryAction) => {
+        const _changeInsight = (newInsight: Partial<HistoricInsight>, pref: SandDance.specs.InsightColumns, columnUpdate: SandDance.specs.InsightColumns, historyAction: HistoryAction) => {
             newInsight.columns = SandDance.VegaDeckGl.util.deepMerge(
                 {},
                 columns,
@@ -669,24 +679,24 @@ export class Explorer extends React.Component<Props, State> {
             switch (role) {
                 case 'facet': {
                     const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'facet', column.name);
-                    const newInsight: Partial<SandDance.specs.Insight> = { columns, ...partialInsight, facetStyle: options ? options.facetStyle : this.state.facetStyle };
+                    const historicInsight: Partial<HistoricInsight> = { columns, ...partialInsight, facetStyle: options ? options.facetStyle : this.state.facetStyle };
                     columnUpdate = { facet: column.name };
-                    _changeInsight(newInsight, partialInsight.columns, columnUpdate, { label: 'TODO change facet' });
+                    _changeInsight(historicInsight, partialInsight.columns, columnUpdate, { label: 'TODO change facet' });
                     break;
                 }
                 case 'color': {
                     let calculating: () => void = null;
-                    let newInsight: Partial<SandDance.specs.Insight> = { scheme: options && options.scheme, columns, colorBin: this.state.colorBin };
-                    if (!newInsight.scheme) {
+                    let historicInsight: Partial<HistoricInsight> = { scheme: options && options.scheme, columns, colorBin: this.state.colorBin };
+                    if (!historicInsight.scheme) {
                         const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'color', column.name);
-                        newInsight = { ...newInsight, ...partialInsight };
+                        historicInsight = { ...historicInsight, ...partialInsight };
                     }
-                    if (!newInsight.scheme) {
-                        newInsight.scheme = bestColorScheme(column, null, this.state.scheme);
+                    if (!historicInsight.scheme) {
+                        historicInsight.scheme = bestColorScheme(column, null, this.state.scheme);
                     }
                     if (!column.stats.hasColorData) {
-                        newInsight.directColor = false;
-                        if (this.state.directColor !== newInsight.directColor) {
+                        historicInsight.directColor = false;
+                        if (this.state.directColor !== historicInsight.directColor) {
                             calculating = () => this._resize();
                         }
                     }
@@ -704,23 +714,23 @@ export class Explorer extends React.Component<Props, State> {
                             columnUpdate = { color: column.name };
                             this.getColorContext = null;
                             this.setState({ calculating });
-                            _changeInsight(newInsight, null, columnUpdate, { label: 'TODO change color' });
+                            _changeInsight(historicInsight, null, columnUpdate, { label: 'TODO change color' });
                         });
                     });
                     break;
                 }
                 case 'x': {
                     const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'x', column.name);
-                    const newInsight: Partial<SandDance.specs.Insight> = { columns, ...partialInsight };
+                    const historicInsight: Partial<HistoricInsight> = { columns, ...partialInsight };
                     columnUpdate = { x: column.name };
-                    _changeInsight(newInsight, partialInsight.columns, columnUpdate, { label: 'TODO change x column' });
+                    _changeInsight(historicInsight, partialInsight.columns, columnUpdate, { label: 'TODO change x column' });
                     break;
                 }
                 case 'size': {
                     const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'size', column.name);
-                    const newInsight: Partial<SandDance.specs.Insight> = { ...partialInsight, totalStyle: options ? options.totalStyle : this.state.totalStyle };
+                    const historicInsight: Partial<HistoricInsight> = { ...partialInsight, totalStyle: options ? options.totalStyle : this.state.totalStyle };
                     columnUpdate = { size: column.name };
-                    _changeInsight(newInsight, partialInsight.columns, columnUpdate, { label: 'TODO change size column' });
+                    _changeInsight(historicInsight, partialInsight.columns, columnUpdate, { label: 'TODO change size column' });
                     break;
                 }
                 default: {
@@ -1345,7 +1355,6 @@ export class Explorer extends React.Component<Props, State> {
                                     }
                                 }}
                                 onView={renderResult => {
-                                    console.log('onview')
                                     this.changespecCapabilities(renderResult.specResult.errors ? renderResult.specResult.specCapabilities : this.viewer.specCapabilities);
                                     this.getColorContext = (oldInsight: SandDance.specs.Insight, newInsight: SandDance.specs.Insight) => {
                                         if (!oldInsight && !newInsight) {
