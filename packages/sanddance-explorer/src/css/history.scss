@@ -1,0 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+@mixin history(
+) {
+    .sanddance-history {
+        .selected {
+            font-weight: bold;;
+        }
+    }
+}

@@ -23,6 +23,7 @@ import { defaultViewerOptions, snapshotThumbWidth } from './defaults';
 import { Chart } from './dialogs/chart';
 import { Color } from './dialogs/color';
 import { DataBrowser } from './dialogs/dataBrowser';
+import { History } from './dialogs/history';
 import { InputSearchExpressionGroup, Search } from './dialogs/search';
 import { Settings } from './dialogs/settings';
 import { SnapshotEditor } from './dialogs/snapshotEditor';
@@ -83,7 +84,7 @@ export interface Props {
     systemInfoChildren?: React.ReactNode;
 }
 
-export interface State extends SandDance.specs.Insight {
+export interface UIState {
     calculating: () => void;
     errors: string[];
     autoCompleteDistinctValues: AutoCompleteDistinctValues;
@@ -102,12 +103,23 @@ export interface State extends SandDance.specs.Insight {
     tooltipExclusions: string[];
     positionedColumnMapProps: PositionedColumnMapProps;
     note: string;
+    historyIndex: number;
+    historyItems: HistoryItem[];
 }
 
-const dataBrowserTitles: { [key: number]: string } = {};
-dataBrowserTitles[DataScopeId.AllData] = strings.selectDataSpanAll;
-dataBrowserTitles[DataScopeId.FilteredData] = strings.selectDataSpanFilter;
-dataBrowserTitles[DataScopeId.SelectedData] = strings.selectDataSpanSelection;
+export interface State extends SandDance.specs.Insight, UIState {
+}
+
+export interface HistoryAction {
+    insert?: boolean;
+    omit?: boolean;
+    label: string;
+}
+
+export interface HistoryItem {
+    label: string;
+    partialInsight: Partial<SandDance.specs.Insight>;
+}
 
 const dataBrowserZeroMessages: { [key: number]: string } = {};
 dataBrowserZeroMessages[DataScopeId.AllData] = strings.labelZeroAll;
@@ -141,6 +153,8 @@ export class Explorer extends React.Component<Props, State> {
     private layoutDivUnpinned: HTMLElement;
     private layoutDivPinned: HTMLElement;
     private getColorContext: (oldInsight: SandDance.specs.Insight, newInsight: SandDance.specs.Insight) => SandDance.types.ColorContext;
+    private historicFilterChange: boolean;
+    private rebaseFilter: boolean;
     private ignoreSelectionChange: boolean;
     private snapshotEditor: SnapshotEditor;
     private scrollSnapshotTimer: number;
@@ -189,7 +203,9 @@ export class Explorer extends React.Component<Props, State> {
             selectedSnapshotIndex: -1,
             tooltipExclusions: [],
             positionedColumnMapProps: null,
-            note: null
+            note: null,
+            historyIndex: -1,
+            historyItems: []
         };
 
         this.state.selectedItemIndex[DataScopeId.AllData] = 0;
@@ -217,9 +233,12 @@ export class Explorer extends React.Component<Props, State> {
             },
             onColorContextChange: () => this.manageColorToolbar(),
             onDataFilter: (dataFilter, filteredData) => {
+                console.log('how did i get here');
                 const selectedItemIndex = { ...this.state.selectedItemIndex };
                 selectedItemIndex[DataScopeId.FilteredData] = 0;
-                this.changeInsight({ filter: dataFilter, filteredData, selectedItemIndex });
+                this.changeInsight({ filter: dataFilter }, { label: 'TODO onDataFilter', omit: !this.historicFilterChange });
+                this.historicFilterChange = false;
+                this.setState({ filteredData, selectedItemIndex });
                 if (this.state.sideTabId === SideTabId.Data && this.state.dataScopeId === DataScopeId.FilteredData) {
                     //make sure item is active
                     requestAnimationFrame(() => filteredData && this.silentActivation(filteredData[0]));
@@ -351,28 +370,36 @@ export class Explorer extends React.Component<Props, State> {
         return this.viewer.getInsight();
     }
 
-    setInsight(partialInsight: Partial<SandDance.specs.Insight> & Partial<State> = this.viewer.getInsight(), rebaseFilter = false) {
+    setInsight(historyAction: HistoryAction, newState: Partial<UIState> = {}, partialInsight: Partial<SandDance.specs.Insight> = this.viewer.getInsight(), rebaseFilter = false, callChangeInsight = true) {
         const selectedItemIndex = { ...this.state.selectedItemIndex };
         selectedItemIndex[DataScopeId.AllData] = 0;
         selectedItemIndex[DataScopeId.FilteredData] = 0;
         selectedItemIndex[DataScopeId.SelectedData] = 0;
-        let newState: Partial<State> = {
+        const newInsight: Partial<SandDance.specs.Insight> = {
             chart: null,
             scheme: null,
             columns: null,
             filter: null,
-            filteredData: null,
-            selectedItemIndex,
             ...partialInsight
         };
-        newState.search = createInputSearch(newState.filter);
+        const state: Partial<UIState> = {
+            filteredData: null,
+            selectedItemIndex,
+            search: createInputSearch(newInsight.filter),
+            ...newState
+        }
         const changeInsight = () => {
             this.getColorContext = null;
-            this.changeInsight(newState as State);
+            this.setState(state as UIState);
+            if (callChangeInsight) {
+                this.changeInsight(newInsight, historyAction);
+            } else {
+                this.setState(newInsight as State);
+            }
         };
         const currentFilter = this.viewer.getInsight().filter;
-        if (rebaseFilter && currentFilter && newState.filter) {
-            if (SandDance.searchExpression.startsWith(newState.filter, currentFilter)) {
+        if (rebaseFilter && currentFilter && newInsight.filter) {
+            if (SandDance.searchExpression.startsWith(newInsight.filter, currentFilter)) {
                 changeInsight();
             } else {
                 this.viewer.reset()
@@ -399,16 +426,16 @@ export class Explorer extends React.Component<Props, State> {
         if (typeof snapshotOrIndex === 'number') {
             const selectedSnapshotIndex = snapshotOrIndex as number;
             const snapshot = this.state.snapshots[selectedSnapshotIndex];
-            const newState: Partial<State> = { ...snapshot.insight, note: snapshot.description, selectedSnapshotIndex };
+            const newState: Partial<UIState> = { note: snapshot.description, selectedSnapshotIndex };
             if (!this.state.sidebarClosed) {
                 newState.sideTabId = SideTabId.Snapshots;
                 this.scrollSnapshotIntoView(selectedSnapshotIndex);
             }
-            this.setInsight(newState, true);
+            this.setInsight({ label: 'TODO revive snapshot index' }, newState, snapshot.insight, true);
         } else {
             const snapshot = snapshotOrIndex as Snapshot;
             if (snapshot.insight) {
-                this.setInsight({ ...snapshot.insight, note: snapshot.description, selectedSnapshotIndex: -1 }, true); //don't navigate to sideTab
+                this.setInsight({ label: 'TODO revive snapshot object' }, { note: snapshot.description, selectedSnapshotIndex: -1 }, snapshot.insight, true); //don't navigate to sideTab
             } else {
                 this.setState({ note: snapshot.description, selectedSnapshotIndex: -1 });
             }
@@ -422,7 +449,9 @@ export class Explorer extends React.Component<Props, State> {
         ) => Partial<SandDance.specs.Insight>,
         optionsOrPrefs?: Prefs | Options
     ) {
-        this.changeInsight({ columns: null, note: null });
+        this.setState({ historyIndex: -1, historyItems: [] });
+        this.changeInsight({ columns: null }, { label: 'TODO reset history', omit: true });
+        this.setState({ note: null });
         return new Promise<void>((resolve, reject) => {
             const loadFinal = (dataContent: DataContent) => {
                 let partialInsight: Partial<SandDance.specs.Insight>;
@@ -436,6 +465,13 @@ export class Explorer extends React.Component<Props, State> {
                     let r = new RecommenderSummary(dataContent.columns, dataContent.data);
                     partialInsight = r.recommend();
                 }
+                partialInsight = {
+                    facetStyle: 'wrap',
+                    filter: null,
+                    totalStyle: null,
+                    transform: null,
+                    ...partialInsight
+                };
                 const selectedItemIndex = { ...this.state.selectedItemIndex };
                 const sideTabId = SideTabId.ChartType;
                 selectedItemIndex[DataScopeId.AllData] = 0;
@@ -446,11 +482,7 @@ export class Explorer extends React.Component<Props, State> {
                     dataContent,
                     snapshots: dataContent.snapshots || this.state.snapshots,
                     autoCompleteDistinctValues: {},
-                    totalStyle: null,
-                    facetStyle: 'wrap',
-                    filter: null,
                     filteredData: null,
-                    transform: null,
                     tooltipExclusions: (optionsOrPrefs && (optionsOrPrefs as Options).tooltipExclusions) || [],
                     selectedItemIndex,
                     sideTabId,
@@ -460,8 +492,9 @@ export class Explorer extends React.Component<Props, State> {
                 ensureColumnsExist(newState.columns, dataContent.columns, newState.transform);
                 const errors = ensureColumnsPopulated(partialInsight ? partialInsight.chart : null, newState.columns, dataContent.columns);
                 newState.errors = errors;
+                this.setState(newState as State);
                 //change insight
-                this.changeInsight(newState as State);
+                this.changeInsight(partialInsight, { label: 'TODO initialize history', insert: true });
                 //make sure item is active
                 this.activateDataBrowserItem(sideTabId, this.state.dataScopeId);
                 resolve();
@@ -487,17 +520,17 @@ export class Explorer extends React.Component<Props, State> {
 
     changeChartType(chart: SandDance.specs.Chart) {
         const partialInsight = copyPrefToNewState(this.prefs, chart, '*', '*');
-        const newState: Partial<State> = { chart, ...partialInsight };
+        const newInsight: Partial<SandDance.specs.Insight> = { chart, ...partialInsight };
         const columns = SandDance.VegaDeckGl.util.deepMerge({}, partialInsight.columns, this.state.columns);
-        newState.columns = { ...columns };
+        newInsight.columns = { ...columns };
 
         //special case mappings when switching chart type
         if (this.state.chart === 'scatterplot' && (chart === 'barchart' || chart === 'barchartV')) {
-            newState.columns = { ...columns, sort: columns.y };
+            newInsight.columns = { ...columns, sort: columns.y };
         } else if (this.state.chart === 'scatterplot' && chart === 'barchartH') {
-            newState.columns = { ...columns, sort: columns.x };
+            newInsight.columns = { ...columns, sort: columns.x };
         } else if (chart === 'treemap') {
-            newState.view = '2d';
+            newInsight.view = '2d';
             if (!columns.size) {
                 //make sure size exists and is numeric
                 let sizeColumnName: string;
@@ -517,20 +550,22 @@ export class Explorer extends React.Component<Props, State> {
                 if (!sizeColumnName) {
                     //TODO error - no numeric columns
                 } else {
-                    newState.columns = { ...columns, size: sizeColumnName };
+                    newInsight.columns = { ...columns, size: sizeColumnName };
                 }
             }
         } else if (chart === 'stacks') {
-            newState.view = '3d';
+            newInsight.view = '3d';
         }
 
-        ensureColumnsExist(newState.columns, this.state.dataContent.columns, this.state.transform);
-        const errors = ensureColumnsPopulated(chart, newState.columns, this.state.dataContent.columns);
-        if (errors) {
-            newState.errors = errors;
-        }
+        ensureColumnsExist(newInsight.columns, this.state.dataContent.columns, this.state.transform);
+        const errors = ensureColumnsPopulated(chart, newInsight.columns, this.state.dataContent.columns);
 
-        this.calculate(() => this.changeInsight(newState as any));
+        this.calculate(() => {
+            if (errors) {
+                this.setState({ errors });
+            }
+            this.changeInsight(newInsight, { label: 'todo change chart type' });
+        });
     }
 
     calculate(calculating: () => any) {
@@ -538,23 +573,73 @@ export class Explorer extends React.Component<Props, State> {
     }
 
     changeView(view: SandDance.types.View) {
-        this.changeInsight({ view });
+        this.changeInsight({ view }, { label: 'TODO change view' });
     }
 
     //state members which change the insight
-    changeInsight(newState: Partial<State>) {
-        if (!newState.signalValues) {
+    changeInsight(partialInsight: Partial<SandDance.specs.Insight>, historyAction: HistoryAction) {
+        if (!partialInsight.signalValues) {
             if (this.viewer) {
                 const { signalValues } = this.viewer.getInsight();
-                newState.signalValues = signalValues;
+                partialInsight.signalValues = signalValues;
             } else {
-                newState.signalValues = null;
+                partialInsight.signalValues = null;
             }
         }
-        if (newState.chart === 'barchart') {
-            newState.chart = 'barchartV';
+        if (partialInsight.chart === 'barchart') {
+            partialInsight.chart = 'barchartV';
         }
-        this.setState(newState as State);
+        if (historyAction.omit) {
+            this.setState(partialInsight as State);
+        } else {
+            this.addHistory(partialInsight, historyAction);
+        }
+    }
+
+    addHistory(partialInsight: Partial<SandDance.specs.Insight>, historyAction: HistoryAction) {
+        const historyItems = this.state.historyItems.slice(0, this.state.historyIndex + 1);
+        const historyIndex = historyItems.length;
+        historyItems.push({ label: historyAction.label, partialInsight });
+        if (historyAction.insert) {
+            this.setState({ historyIndex, historyItems });
+        } else {
+            const newState = { ...partialInsight, historyIndex, historyItems } as State;
+            this.setState(newState);
+        }
+    }
+
+    private replay(index: number) {
+        let filter: SandDance.searchExpression.Search = null;
+        let partialInsight: Partial<SandDance.specs.Insight> = {};
+        for (let i = 0; i < index + 1; i++) {
+            const historyItem = this.state.historyItems[i];
+            if (historyItem.partialInsight.filter) {
+                filter = SandDance.searchExpression.narrow(filter, historyItem.partialInsight.filter);
+            } else if (historyItem.partialInsight.filter === null) {
+                filter = null;
+            }
+            partialInsight = { ...partialInsight, ...historyItem.partialInsight };
+        }
+        return { ...partialInsight, filter };
+    }
+
+    undo() {
+        //TODO bounds
+        const historyIndex = this.state.historyIndex - 1
+        const newState = this.replay(historyIndex);
+        console.log(`undo new state`, newState);
+        this.rebaseFilter = true;
+        this.setState({ ...newState as State, historyIndex });
+        //this.setInsight(null, { historyIndex }, newState, true, false);
+    }
+
+    redo(historyIndex = this.state.historyIndex + 1) {
+        //TODO bounds
+        const newState = this.replay(historyIndex);
+        console.log(`redo new state`, newState);
+        this.rebaseFilter = true;
+        this.setState({ ...newState as State, historyIndex });
+        //this.setInsight(null, { historyIndex }, newState, true, false);
     }
 
     changespecCapabilities(
@@ -567,47 +652,48 @@ export class Explorer extends React.Component<Props, State> {
         const columns = { ...this.state.columns };
         const final = () => {
             columns[role] = column && column.name;
-            this.changeInsight({ columns });
+            this.changeInsight({ columns }, { label: 'TODO change column mapping' });
         };
-        const _changeInsight = (newState: Partial<State>, pref: SandDance.specs.InsightColumns, columnUpdate: SandDance.specs.InsightColumns) => {
-            newState.columns = SandDance.VegaDeckGl.util.deepMerge(
+        const _changeInsight = (newInsight: Partial<SandDance.specs.Insight>, pref: SandDance.specs.InsightColumns, columnUpdate: SandDance.specs.InsightColumns, historyAction: HistoryAction) => {
+            newInsight.columns = SandDance.VegaDeckGl.util.deepMerge(
                 {},
                 columns,
                 pref,
                 columnUpdate
             );
             savePref(this.prefs, this.state.chart, '*', '*', { columns: columnUpdate });
-            this.changeInsight(newState);
+            this.changeInsight(newInsight, historyAction);
         };
         if (column) {
             let columnUpdate: SandDance.specs.InsightColumns;
             switch (role) {
                 case 'facet': {
                     const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'facet', column.name);
-                    const newState: Partial<State> = { columns, ...partialInsight, facetStyle: options ? options.facetStyle : this.state.facetStyle };
+                    const newInsight: Partial<SandDance.specs.Insight> = { columns, ...partialInsight, facetStyle: options ? options.facetStyle : this.state.facetStyle };
                     columnUpdate = { facet: column.name };
-                    _changeInsight(newState, partialInsight.columns, columnUpdate);
+                    _changeInsight(newInsight, partialInsight.columns, columnUpdate, { label: 'TODO change facet' });
                     break;
                 }
                 case 'color': {
-                    let newState: Partial<State> = { scheme: options && options.scheme, columns, colorBin: this.state.colorBin };
-                    if (!newState.scheme) {
+                    let calculating: () => void = null;
+                    let newInsight: Partial<SandDance.specs.Insight> = { scheme: options && options.scheme, columns, colorBin: this.state.colorBin };
+                    if (!newInsight.scheme) {
                         const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'color', column.name);
-                        newState = { ...newState, ...partialInsight };
+                        newInsight = { ...newInsight, ...partialInsight };
                     }
-                    if (!newState.scheme) {
-                        newState.scheme = bestColorScheme(column, null, this.state.scheme);
+                    if (!newInsight.scheme) {
+                        newInsight.scheme = bestColorScheme(column, null, this.state.scheme);
                     }
                     if (!column.stats.hasColorData) {
-                        newState.directColor = false;
-                        if (this.state.directColor !== newState.directColor) {
-                            newState.calculating = () => this._resize();
+                        newInsight.directColor = false;
+                        if (this.state.directColor !== newInsight.directColor) {
+                            calculating = () => this._resize();
                         }
                     }
                     if (this.state.columns && this.state.columns.color && this.state.columns.color !== column.name) {
                         const currColorColumn = this.state.dataContent.columns.filter(c => c.name === this.state.columns.color)[0];
                         if (column.isColorData != currColorColumn.isColorData) {
-                            newState.calculating = () => this._resize();
+                            calculating = () => this._resize();
                         }
                     }
                     this.ignoreSelectionChange = true;
@@ -617,23 +703,24 @@ export class Explorer extends React.Component<Props, State> {
                         requestAnimationFrame(() => {
                             columnUpdate = { color: column.name };
                             this.getColorContext = null;
-                            _changeInsight(newState, null, columnUpdate);
+                            this.setState({ calculating });
+                            _changeInsight(newInsight, null, columnUpdate, { label: 'TODO change color' });
                         });
                     });
                     break;
                 }
                 case 'x': {
                     const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'x', column.name);
-                    const newState: Partial<State> = { columns, ...partialInsight };
+                    const newInsight: Partial<SandDance.specs.Insight> = { columns, ...partialInsight };
                     columnUpdate = { x: column.name };
-                    _changeInsight(newState, partialInsight.columns, columnUpdate);
+                    _changeInsight(newInsight, partialInsight.columns, columnUpdate, { label: 'TODO change x column' });
                     break;
                 }
                 case 'size': {
                     const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'size', column.name);
-                    const newState: Partial<State> = { ...partialInsight, totalStyle: options ? options.totalStyle : this.state.totalStyle };
+                    const newInsight: Partial<SandDance.specs.Insight> = { ...partialInsight, totalStyle: options ? options.totalStyle : this.state.totalStyle };
                     columnUpdate = { size: column.name };
-                    _changeInsight(newState, partialInsight.columns, columnUpdate);
+                    _changeInsight(newInsight, partialInsight.columns, columnUpdate, { label: 'TODO change size column' });
                     break;
                 }
                 default: {
@@ -646,7 +733,7 @@ export class Explorer extends React.Component<Props, State> {
                 case 'facet': {
                     columns.facet = null;
                     columns.facetV = null;
-                    this.changeInsight({ columns, facetStyle: 'wrap' });
+                    this.changeInsight({ columns, facetStyle: 'wrap' }, { label: 'TODO remove facet column' });
                     break;
                 }
                 default: {
@@ -728,7 +815,7 @@ export class Explorer extends React.Component<Props, State> {
     }
 
     private _resize() {
-        this.changeInsight({ size: this.getLayoutDivSize(this.state.sidebarPinned, this.state.sidebarClosed) });
+        this.changeInsight({ size: this.getLayoutDivSize(this.state.sidebarPinned, this.state.sidebarClosed) }, { label: 'resize', omit: true });
     }
 
     private viewerMounted(glDiv: HTMLElement) {
@@ -791,11 +878,13 @@ export class Explorer extends React.Component<Props, State> {
     }
 
     private doFilter(search: SandDance.searchExpression.Search) {
-        this.viewer.filter(search);
+        this.historicFilterChange = true;
+        this.viewer.filter(search)
     }
 
     private doUnfilter() {
-        this.viewer.reset();
+        this.historicFilterChange = true;
+        this.viewer.reset()
     }
 
     private doSelect(search: SandDance.searchExpression.Search) {
@@ -894,6 +983,10 @@ export class Explorer extends React.Component<Props, State> {
                 className={util.classList('sanddance-explorer', this.props.theme)}
             >
                 <Topbar
+                    historyIndex={this.state.historyIndex}
+                    historyItems={this.state.historyItems}
+                    undo={() => this.undo()}
+                    redo={() => this.redo()}
                     logoClickUrl={this.props.logoClickUrl}
                     logoClickTarget={this.props.logoClickTarget}
                     themePalette={themePalette}
@@ -936,7 +1029,7 @@ export class Explorer extends React.Component<Props, State> {
                     }}
                     onViewClick={() => {
                         const view = this.state.view === '2d' ? '3d' : '2d';
-                        this.changeInsight({ view });
+                        this.changeInsight({ view }, { label: 'TODO change view' });
                     }}
                     onHomeClick={() => this.viewer.presenter.homeCamera()}
                 />
@@ -963,8 +1056,10 @@ export class Explorer extends React.Component<Props, State> {
                             compact: this.state.sidebarClosed,
                             onCompactClick: () => {
                                 this.changeInsight({
-                                    sidebarClosed: false,
                                     size: this.getLayoutDivSize(this.state.sidebarPinned, false)
+                                }, { label: 'TODO compact resize', omit: true });
+                                this.setState({
+                                    sidebarClosed: false,
                                 });
                             },
                             dataSet: this.props.datasetElement,
@@ -987,15 +1082,17 @@ export class Explorer extends React.Component<Props, State> {
                                 }
                                 sidebarClosed = !this.state.sidebarClosed;
                                 this.changeInsight({
+                                    size: this.getLayoutDivSize(this.state.sidebarPinned, sidebarClosed)
+                                }, { label: 'TODO toggle sidebar', omit: true });
+                                this.setState({
                                     dataScopeId,
                                     sidebarClosed,
-                                    size: this.getLayoutDivSize(this.state.sidebarPinned, sidebarClosed)
                                 });
                             } else if (sideTabId === SideTabId.Pin) {
                                 this.changeInsight({
-                                    sidebarPinned: !this.state.sidebarPinned,
                                     size: this.getLayoutDivSize(!this.state.sidebarPinned, this.state.sidebarClosed)
-                                });
+                                }, { label: 'TODO change sidetab', omit: true });
+                                this.setState({ sidebarPinned: !this.state.sidebarPinned });
                             } else {
                                 this.setSideTabId(sideTabId);
                             }
@@ -1050,7 +1147,7 @@ export class Explorer extends React.Component<Props, State> {
                                                     //allow deselection to render
                                                     requestAnimationFrame(() => {
                                                         this.getColorContext = null;
-                                                        this.changeInsight({ colorBin });
+                                                        this.changeInsight({ colorBin }, { label: 'TODO change color bin' });
                                                         savePref(this.prefs, this.state.chart, 'color', this.state.columns.color, { colorBin });
                                                     });
                                                 });
@@ -1071,7 +1168,8 @@ export class Explorer extends React.Component<Props, State> {
                                             }}
                                             directColor={this.state.directColor}
                                             onDirectColorChange={directColor => {
-                                                this.changeInsight({ directColor, calculating: () => this._resize() });
+                                                this.changeInsight({ directColor }, { label: 'TODO change direct color' });
+                                                this.setState({ calculating: () => this._resize() });
                                             }}
                                         />
                                     );
@@ -1093,7 +1191,6 @@ export class Explorer extends React.Component<Props, State> {
                                             columns={this.state.dataContent && this.state.dataContent.columns}
                                             data={data}
                                             displayName={(this.state.dataFile && this.state.dataFile.displayName) || strings.defaultFileName}
-                                            title={dataBrowserTitles[this.state.dataScopeId]}
                                             nullMessage={dataBrowserNullMessages[this.state.dataScopeId]}
                                             zeroMessage={dataBrowserZeroMessages[this.state.dataScopeId]}
                                             index={this.state.selectedItemIndex[this.state.dataScopeId]}
@@ -1197,6 +1294,17 @@ export class Explorer extends React.Component<Props, State> {
                                         />
                                     );
                                 }
+                                case SideTabId.History: {
+                                    return (
+                                        <History
+                                            theme={theme}
+                                            themePalette={themePalette}
+                                            historyIndex={this.state.historyIndex}
+                                            historyItems={this.state.historyItems}
+                                            redo={i => this.redo(i)}
+                                        />
+                                    );
+                                }
                                 case SideTabId.Settings: {
                                     return (
                                         <Settings
@@ -1220,6 +1328,13 @@ export class Explorer extends React.Component<Props, State> {
                         <div className="sanddance-view">
                             <SandDanceReact
                                 renderOptions={{
+                                    rebaseFilter: () => {
+                                        const { rebaseFilter } = this;
+                                        if (rebaseFilter) {
+                                            this.rebaseFilter = false;
+                                        }
+                                        return rebaseFilter;
+                                    },
                                     initialColorContext: this.getColorContext && this.getColorContext(this.viewer.insight, insight),
                                     discardColorContextUpdates: () => this.discardColorContextUpdates
                                 }}
@@ -1230,6 +1345,7 @@ export class Explorer extends React.Component<Props, State> {
                                     }
                                 }}
                                 onView={renderResult => {
+                                    console.log('onview')
                                     this.changespecCapabilities(renderResult.specResult.errors ? renderResult.specResult.specCapabilities : this.viewer.specCapabilities);
                                     this.getColorContext = (oldInsight: SandDance.specs.Insight, newInsight: SandDance.specs.Insight) => {
                                         if (!oldInsight && !newInsight) {

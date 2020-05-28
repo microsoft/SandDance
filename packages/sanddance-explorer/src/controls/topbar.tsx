@@ -1,13 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as React from 'react';
-import { base } from '../base';
 import { CommandBarButtonStyles } from './CommandBarButton.styles';
-import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { Logo } from './logo';
-import { SandDance } from '@msrvida/sanddance-react';
+import { base } from '../base';
+import { HistoryItem } from '../explorer';
 import { Snapshot } from '../interfaces';
 import { strings } from '../language';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
+import { SandDance } from '@msrvida/sanddance-react';
+import * as React from 'react';
 
 import Search = SandDance.searchExpression.Search;
 
@@ -30,12 +31,35 @@ export interface Props {
     onViewClick: () => void;
     onHomeClick: () => void;
     themePalette: Partial<FluentUITypes.IPalette>;
+    historyIndex: number;
+    historyItems: HistoryItem[];
+    undo: () => void;
+    redo: () => void;
 }
 
 export function Topbar(props: Props) {
     const zeroResults = props.selectionState.selectedData && props.selectionState.selectedData.length === 0;
     const disabled = !props.loaded;
+    console.log(props.historyIndex > props.historyItems.length - 1);
     const items: FluentUITypes.ICommandBarItemProps[] = [
+        {
+            key: 'undo',
+            name: strings.buttonUndo,
+            iconProps: {
+                iconName: 'Undo'
+            },
+            disabled: disabled || props.historyItems.length === 0 || props.historyIndex === 0,
+            onClick: props.undo
+        },
+        {
+            key: 'redo',
+            name: strings.buttonRedo,
+            iconProps: {
+                iconName: 'Redo'
+            },
+            disabled: disabled || props.historyItems.length <= 1 || props.historyIndex >= props.historyItems.length - 1,
+            onClick: props.redo
+        },
         {
             key: 'deselect',
             name: strings.buttonDeselect,
