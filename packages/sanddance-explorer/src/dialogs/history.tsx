@@ -20,7 +20,7 @@ export interface Props {
 export function History(props: Props) {
     return (
         <Group label={strings.labelHistory} className="sanddance-history">
-            <ul>
+            <ol>
                 {props.historyItems.map((hi, i) => (
                     <li
                         key={i}
@@ -34,7 +34,7 @@ export function History(props: Props) {
                         tabIndex={0}
                     >{hi.label}</li>
                 ))}
-            </ul>
+            </ol>
         </Group>
     );
 }

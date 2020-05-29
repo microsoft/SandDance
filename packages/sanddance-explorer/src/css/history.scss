@@ -3,10 +3,19 @@
 @mixin history(
 ) {
     .sanddance-history {
+        ol {
+            padding-left: 20px;
+        }
         li {
+            border: 1px solid transparent;
             cursor: pointer;
+            padding: 2px;
+
             &.selected {
                 font-weight: bold;
+            }
+            &:hover {
+                border-color: $highlight-color;
             }
         }
     }
