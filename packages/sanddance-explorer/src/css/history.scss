@@ -3,8 +3,11 @@
 @mixin history(
 ) {
     .sanddance-history {
-        .selected {
-            font-weight: bold;;
+        li {
+            cursor: pointer;
+            &.selected {
+                font-weight: bold;
+            }
         }
     }
 }
