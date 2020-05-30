@@ -6,13 +6,14 @@ import * as layers from '@deck.gl/layers';
 import * as luma from 'luma.gl';
 import * as fabric from 'office-ui-fabric-react';
 import * as vega from 'vega';
-import { Explorer, use } from '@msrvida/sanddance-explorer';
+import { Explorer, use, Snapshot } from '@msrvida/sanddance-explorer';
 import ReactDOM from 'react-dom';
 import React from 'react';
 
 import '../css/tweak.css';
 import '@msrvida/sanddance-explorer/dist/css/sanddance-explorer.css';
 
+// any can be removed with sanddance-explorer@3.0.0-beta.1
 use(fabric as any, vega, deck as any, layers, luma);
 fabric.initializeIcons();
 
@@ -26,7 +27,7 @@ export class SandDanceModel extends DOMWidgetModel {
             _view_name: SandDanceModel.view_name,
             _view_module: SandDanceModel.view_module,
             _view_module_version: SandDanceModel.view_module_version,
-            data : '[]', 
+            data : '[]',
             width : '100%',
             heigth : '60vh',
             snapshots: [],
@@ -47,10 +48,8 @@ export class SandDanceModel extends DOMWidgetModel {
 
 
 export class SandDanceView extends DOMWidgetView {
-  private intervalID?: NodeJS.Timeout
   private explorer?: Explorer
   private wrapper?: React.DetailedReactHTMLElement<any, HTMLElement>
-
 
   render () {
       const explorerProps = {
@@ -58,17 +57,32 @@ export class SandDanceView extends DOMWidgetView {
           compactUI: true,
           mounted: (explorer: Explorer) => {
               this.explorer = explorer;
+
+              // restore previous snapshots
+              const snapshots = this.model.get('snapshots');
+              this.explorer.setState({snapshots});
+
               this.model.on('change:data', this.data_changed, this);
 
+              // TODO
+              // avoid error
+              // LAYER_TEXT-characters-program  Bad uniform project_uViewProjectionMatrix
               setTimeout(() => {
                   this.data_changed();
-              }, 1);
+              }, 0);
           },
-          // TODO
-          ref: (ref: any) => {
-          // restore previoous snapshot states
-              ref.state.snapshots = this.model.get('snapshots');
-              this.intervalID = this.autosaveSnapshots(ref);
+          snapshotProps: {
+              getTopActions: (snapshots: Snapshot[]) => {
+                  const items = [
+                      {
+                          key: 'saveAsWidgetState',
+                          text: 'Save as Widget State',
+                          disabled: snapshots.length === 0,
+                          onClick: () => this.saveSnapshots(snapshots),
+                      },
+                  ];
+                  return items;
+              }
           },
           key: 'explorer-key'
       };
@@ -90,12 +104,9 @@ export class SandDanceView extends DOMWidgetView {
       this.model.on('change:height', this.size_changed, this);
   }
 
-  // TODO
-  autosaveSnapshots (ref: any) {
-      return setInterval(() => {
-          this.model.set('snapshots', ref.state.snapshots);
-          this.model.save_changes();
-      }, 1000 * 10);
+  private saveSnapshots (snapshots: Snapshot[]) {
+      this.model.set('snapshots', snapshots);
+      this.model.save_changes();
   }
 
   size_changed () {
@@ -116,12 +127,5 @@ export class SandDanceView extends DOMWidgetView {
       }
 
       this.explorer.load(JSON.parse(this.model.get('data')));
-  }
-
-  remove() {
-      if (this.intervalID) {
-          clearInterval(this.intervalID);
-      }
-      super.remove();
   }
 }
