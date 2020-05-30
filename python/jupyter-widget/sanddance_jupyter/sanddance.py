@@ -25,13 +25,13 @@ class SandDanceWidget(DOMWidget):
     _model_name = Unicode('SandDanceModel').tag(sync=True)
 
     # Name of the front-end module containing widget view
-    _view_module = Unicode('sanddance-jupyter').tag(sync=True)
+    _view_module = Unicode(module_name).tag(sync=True)
 
     # Name of the front-end module containing widget model
-    _model_module = Unicode('sanddance-jupyter').tag(sync=True)
+    _model_module = Unicode(module_name).tag(sync=True)
 
-    _view_module_version = Unicode('^0.0.1').tag(sync=True)
-    _model_module_version = Unicode('^0.0.1').tag(sync=True)
+    _view_module_version = Unicode(module_version).tag(sync=True)
+    _model_module_version = Unicode(module_version).tag(sync=True)
 
     data = Unicode(defaults['data']).tag(sync=True)
 

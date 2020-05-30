@@ -6,7 +6,7 @@ define(function() {
     window['requirejs'].config({
         map: {
             '*': {
-                'sanddance-jupyter': 'nbextensions/sanddance_jupyter/index',
+                '@msrvida/sanddance-jupyter': 'nbextensions/sanddance_jupyter/index',
             },
         }
     });
