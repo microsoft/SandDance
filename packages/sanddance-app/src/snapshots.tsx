@@ -6,6 +6,7 @@ import { strings } from './language';
 import { DataSource, DataSourceSnapshot } from './types';
 import { invalidUrlError } from './url';
 import {
+    controls,
     Explorer,
     getEmbedHTML,
     SandDance,
@@ -115,7 +116,7 @@ export class SnapshotImportLocal extends React.Component<ImportProps, ImportStat
     render() {
         return (
             <div>
-                <base.fluentUI.Dialog
+                <controls.Dialog
                     hidden={false}
                     onDismiss={this.props.onDismiss}
                     dialogContentProps={{
@@ -135,14 +136,7 @@ export class SnapshotImportLocal extends React.Component<ImportProps, ImportStat
                             <div className="error">{this.state.fileFormatError}</div>
                         )}
                     </section>
-                    <base.fluentUI.DialogFooter>
-                        <base.fluentUI.DefaultButton
-                            onClick={this.props.onDismiss}
-                            iconProps={{ iconName: 'Cancel' }}
-                            text={strings.dialogCloseButton}
-                        />
-                    </base.fluentUI.DialogFooter>
-                </base.fluentUI.Dialog>
+                </controls.Dialog>
             </div>
         );
     }
@@ -212,7 +206,7 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
         }
         return (
             <div>
-                <base.fluentUI.Dialog
+                <controls.Dialog
                     hidden={false}
                     onDismiss={this.props.onDismiss}
                     dialogContentProps={{
@@ -220,6 +214,17 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
                         type: base.fluentUI.DialogType.normal,
                         title: strings.dialogTitleSnapshotsUrl
                     }}
+                    buttons={[
+                        (
+                            <base.fluentUI.PrimaryButton
+                                disabled={!this.state.url || !!this.state.urlError}
+                                key={0}
+                                onClick={e => this.loadUrl()}
+                                iconProps={{ iconName: 'CloudDownload' }}
+                                text={strings.dialogLoadButton}
+                            />
+                        )
+                    ]}
                 >
                     <section>
                         <base.fluentUI.TextField
@@ -247,21 +252,7 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
                             </section>
                         )
                     }
-                    <base.fluentUI.DialogFooter>
-                        <base.fluentUI.PrimaryButton
-                            disabled={!this.state.url || !!this.state.urlError}
-                            key={0}
-                            onClick={e => this.loadUrl()}
-                            iconProps={{ iconName: 'CloudDownload' }}
-                            text={strings.dialogLoadButton}
-                        />
-                        <base.fluentUI.DefaultButton
-                            onClick={this.props.onDismiss}
-                            iconProps={{ iconName: 'Cancel' }}
-                            text={strings.dialogCloseButton}
-                        />
-                    </base.fluentUI.DialogFooter>
-                </base.fluentUI.Dialog>
+                </controls.Dialog>
             </div>
         );
     }
@@ -277,7 +268,7 @@ export interface ExportProps {
 
 export function SnapshotExport(props: ExportProps) {
     return (
-        <base.fluentUI.Dialog
+        <controls.Dialog
             hidden={false}
             onDismiss={props.onDismiss}
             dialogContentProps={{
@@ -325,13 +316,6 @@ export function SnapshotExport(props: ExportProps) {
                     />
                 </li>
             </ul>
-            <base.fluentUI.DialogFooter>
-                <base.fluentUI.DefaultButton
-                    onClick={props.onDismiss}
-                    iconProps={{ iconName: 'Cancel' }}
-                    text={strings.dialogCloseButton}
-                />
-            </base.fluentUI.DialogFooter>
-        </base.fluentUI.Dialog>
+        </controls.Dialog>
     );
 }

@@ -5,7 +5,7 @@ import { strings } from './language';
 import { DataSource, DataSourceSnapshot, DataSourceType } from './types';
 import { invalidUrlError } from './url';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
-import { DataFileType } from '@msrvida/sanddance-explorer';
+import { controls, DataFileType } from '@msrvida/sanddance-explorer';
 import * as React from 'react';
 
 export interface Props {
@@ -191,7 +191,7 @@ export class DataSourcePicker extends React.Component<DialogProps, State> {
             shortcut = this.getUrlShortcut(this.state.url, this.state.urlType);
         }
         return [(
-            <base.fluentUI.Dialog
+            <controls.Dialog
                 key='local'
                 hidden={!(this.state.dialogMode === 'local')}
                 onDismiss={closeDialog}
@@ -210,16 +210,9 @@ export class DataSourcePicker extends React.Component<DialogProps, State> {
                 {this.state.uploadFormatError && (
                     <div className="error">{this.state.uploadFormatError}</div>
                 )}
-                <base.fluentUI.DialogFooter>
-                    <base.fluentUI.DefaultButton
-                        onClick={closeDialog}
-                        iconProps={{ iconName: 'Cancel' }}
-                        text={strings.dialogCloseButton}
-                    />
-                </base.fluentUI.DialogFooter>
-            </base.fluentUI.Dialog>
+            </controls.Dialog>
         ), (
-            <base.fluentUI.Dialog
+            <controls.Dialog
                 key='url'
                 hidden={!(this.state.dialogMode === 'url')}
                 onDismiss={closeDialog}
@@ -228,6 +221,17 @@ export class DataSourcePicker extends React.Component<DialogProps, State> {
                     type: base.fluentUI.DialogType.normal,
                     title: strings.dialogTitleUrl
                 }}
+                buttons={[
+                    (
+                        <base.fluentUI.PrimaryButton
+                            key={0}
+                            onClick={e => this.loadUrl()}
+                            iconProps={{ iconName: 'CloudDownload' }}
+                            text={strings.dialogLoadButton}
+                            disabled={this.state.working}
+                        />
+                    )
+                ]}
             >
                 <section>
                     <base.fluentUI.TextField
@@ -269,20 +273,7 @@ export class DataSourcePicker extends React.Component<DialogProps, State> {
                         aria-label={strings.labelLinkDescription}
                     >{strings.labelLink}</a>
                 </section>
-                <base.fluentUI.DialogFooter>
-                    <base.fluentUI.PrimaryButton
-                        onClick={e => this.loadUrl()}
-                        iconProps={{ iconName: 'CloudDownload' }}
-                        text={strings.dialogLoadButton}
-                        disabled={this.state.working}
-                    />
-                    <base.fluentUI.DefaultButton
-                        onClick={closeDialog}
-                        iconProps={{ iconName: 'Cancel' }}
-                        text={strings.dialogCloseButton}
-                    />
-                </base.fluentUI.DialogFooter>
-            </base.fluentUI.Dialog>
+            </controls.Dialog>
         )];
     }
 }

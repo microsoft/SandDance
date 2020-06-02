@@ -6,11 +6,11 @@ import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 
 export const dropdownWidth = 200;
 
-export interface Props extends FluentUITypes.IDropdownProps {
+export interface IDropdownProps extends FluentUITypes.IDropdownProps {
     collapseLabel?: boolean;
 }
 
-export function Dropdown(props: Props) {
+export function Dropdown(props: IDropdownProps) {
     const newProps = { ...props };
     let selectedKey: string | number = null;
     if (newProps.options && newProps.options.length > 1) {

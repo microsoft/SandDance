@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as React from 'react';
-import { base } from '../base';
 import { Dropdown, dropdownWidth } from './dropdown';
+import { TextField } from './textfield';
+import { base } from '../base';
+import { strings } from '../language';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';
-import { strings } from '../language';
+import * as React from 'react';
 
 import SearchExpression = SandDance.searchExpression.SearchExpression;
 import SearchExpressionClause = SandDance.searchExpression.SearchExpressionClause;
@@ -216,7 +217,7 @@ export function SearchTerm(props: Props) {
                 />
             )}
             {possibleValues.length === 0 && (
-                <base.fluentUI.TextField
+                <TextField
                     className="search-field"
                     label={props.collapseLabels ? null : strings.labelSearchValue}
                     placeholder={strings.labelSearchValuePlaceholder}

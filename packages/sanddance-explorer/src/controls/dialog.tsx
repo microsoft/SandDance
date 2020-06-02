@@ -5,22 +5,31 @@ import { base } from '../base';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { strings } from '../language';
 
-export interface Props extends FluentUITypes.IDialogProps {
+export interface IDialogProps extends FluentUITypes.IDialogProps {
     title?: string;
     children?: React.ReactNode;
     buttons?: JSX.Element | JSX.Element[];
 }
 
-export function Dialog(props: Props) {
+export function Dialog(props: IDialogProps) {
     return (
         <base.fluentUI.Dialog
             {...props}
             dialogContentProps={{
-                type: base.fluentUI.DialogType.normal,
-                title: props.title
+                ...{
+                    type: base.fluentUI.DialogType.normal,
+                    title: props.title,
+                },
+                ...props.dialogContentProps
             }}
         >
-            {props.children}
+            <div
+                onKeyUp={e => {
+                    e.nativeEvent.stopImmediatePropagation();
+                }}
+            >
+                {props.children}
+            </div>
             <base.fluentUI.DialogFooter>
                 {props.buttons}
                 <base.fluentUI.DefaultButton
