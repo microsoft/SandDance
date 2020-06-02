@@ -638,15 +638,15 @@ export class Explorer extends React.Component<Props, State> {
     }
 
     undo() {
-        //TODO bounds
         const historyIndex = this.state.historyIndex - 1
+        if (historyIndex < 0) return;
         const newState = this.replay(historyIndex);
         this.rebaseFilter = true;
         this.setState({ ...newState as State, historyIndex });
     }
 
     redo(historyIndex = this.state.historyIndex + 1) {
-        //TODO bounds
+        if (historyIndex >= this.state.historyItems.length) return;
         const newState = this.replay(historyIndex);
         this.rebaseFilter = true;
         this.setState({ ...newState as State, historyIndex });
