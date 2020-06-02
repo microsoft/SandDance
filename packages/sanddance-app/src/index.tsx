@@ -62,3 +62,17 @@ ReactDOM.render(
     />,
     document.getElementById('app')
 );
+
+const z = 'z'.charCodeAt(0);
+const Z = 'Z'.charCodeAt(0);
+
+document.onkeyup = e => {
+    //look for CTRL Z or CTRL SHIFT Z
+    if (e.ctrlKey && (e.keyCode === z || e.keyCode === Z)) {
+        if (e.shiftKey) {
+            explorer.redo();
+        } else {
+            explorer.undo();
+        }
+    }
+};
