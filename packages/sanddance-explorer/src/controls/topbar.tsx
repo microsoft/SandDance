@@ -13,6 +13,7 @@ import * as React from 'react';
 import Search = SandDance.searchExpression.Search;
 
 export interface Props {
+    collapseLabels: boolean;
     logoClickUrl: string;
     logoClickTarget: string;
     buttons?: FluentUITypes.ICommandBarItemProps[];
@@ -93,11 +94,14 @@ export function Topbar(props: Props) {
                 iconName: 'RemoveFilter'
             },
             disabled: disabled || !props.filter,
-            onClick: ()=> props.doUnfilter(strings.labelHistoryFilterClear)
+            onClick: () => props.doUnfilter(strings.labelHistoryFilterClear)
         }
     ];
     if (props.buttons) {
         items.push.apply(items, props.buttons);
+    }
+    if (props.collapseLabels) {
+        items.forEach(item => item.iconOnly = true);
     }
     const farItems: FluentUITypes.ICommandBarItemProps[] = [
         {

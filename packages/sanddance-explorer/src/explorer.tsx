@@ -994,6 +994,7 @@ export class Explorer extends React.Component<Props, State> {
                 className={util.classList('sanddance-explorer', this.props.theme)}
             >
                 <Topbar
+                    collapseLabels={this.props.compactUI}
                     historyIndex={this.state.historyIndex}
                     historyItems={this.state.historyItems}
                     undo={() => this.undo()}
