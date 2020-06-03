@@ -6,9 +6,13 @@
             "es2015"
         ],
         "skipLibCheck": true,
-        "outDir": "dist"
+        "outFile": "dist/app.js"
     },
-    "include": [
-        "src"
+    "files": [
+        "src/fluentui.d.ts",
+        "src/interfaces.d.ts",
+        "src/sanddance-explorer.d.ts",
+        "src/language.ts",
+        "src/app.tsx"
     ]
 }
