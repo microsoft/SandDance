@@ -464,6 +464,9 @@ export class Explorer extends React.Component<Props, State> {
                     //load recommendation
                     let r = new RecommenderSummary(dataContent.columns, dataContent.data);
                     partialInsight = r.recommend();
+                    if (partialInsight.chart === 'barchart') {
+                        partialInsight.chart = 'barchartV';
+                    }
                 }
                 partialInsight = {
                     facetStyle: 'wrap',
