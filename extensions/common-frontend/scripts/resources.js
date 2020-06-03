@@ -2,7 +2,6 @@ const path = require('path');
 const fs = require('fs');
 
 const resources = [
-    "./node_modules/common-frontend/dist/app-test.js",
     "./node_modules/common-frontend/dist/app.css",
     "./node_modules/common-frontend/dist/app.js",
     "./node_modules/common-frontend/node_modules/@msrvida/sanddance-explorer/dist/umd/sanddance-explorer.js",
