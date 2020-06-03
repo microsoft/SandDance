@@ -4,6 +4,7 @@ interface Message {
     command: string;
     text?: string;
     dataFile?: SandDanceExplorer.DataFile;
+    compactUI?: boolean;
 }
 
 interface VsCode {

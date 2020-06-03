@@ -8,14 +8,25 @@
     <title>SandDance test</title>
     <link rel="stylesheet" type="text/css" href="../dist/app.css" />
     <script>
+        let compactUI = false;
         function acquireVsCodeApi() {
             return {
                 postMessage: m => {
                     if (m && m.command && m.command === 'getFileContent') {
-                        self.postMessage({
-                            command: 'gotFileContent',
-                            dataFile: sampleData()
-                        });
+                        switch (m.command) {
+                            case 'getFileContent': {
+                                self.postMessage({
+                                    command: 'gotFileContent',
+                                    dataFile: sampleData(),
+                                    compactUI
+                                });
+                                break;
+                            }
+                            case 'setCompactUI': {
+                                compactUI = m.compactUI;
+                                break;
+                            }
+                        }
                     }
                 }
             };

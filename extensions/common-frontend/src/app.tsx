@@ -59,12 +59,15 @@ namespace SandDanceApp {
         private viewerOptions: Partial<SandDance.types.ViewerOptions>;
         private handlers: Handlers;
         public explorer: SandDanceExplorer.Explorer;
+        public vscode: VsCode;
 
         constructor(props: {}) {
             super(props);
 
+            this.vscode = acquireVsCodeApi();
+
             this.state = {
-                compactUI: false,   //TODO get memento
+                compactUI: false,
                 darkTheme: null
             };
             this.viewerOptions = getViewerOptions(this.state.darkTheme);
@@ -76,10 +79,12 @@ namespace SandDanceApp {
 
                     switch (message.command) {
                         case 'gotFileContent':
-                            this.explorer && this.explorer.load(message.dataFile);
+                            if (this.explorer) {
+                                this.explorer.load(message.dataFile);
+                                this.setState({ compactUI: message.compactUI });
+                            }
 
                             //TODO: hydrate state
-
                             break;
                     }
                 },
@@ -128,9 +133,7 @@ namespace SandDanceApp {
 
             this.wireEventHandlers(true);
 
-            const vscode = acquireVsCodeApi();
-
-            vscode.postMessage({
+            this.vscode.postMessage({
                 command: 'getFileContent'
             });
 
@@ -159,11 +162,10 @@ namespace SandDanceApp {
                                     title={strings.labelCompactUIDescription}
                                     checked={this.state.compactUI}
                                     onChange={(e, checked?) => {
-                                        if (checked) {
-                                            localStorage.setItem('compactUI', 'true');
-                                        } else {
-                                            localStorage.removeItem('compactUI');
-                                        }
+                                        this.vscode.postMessage({
+                                            command: 'setCompactUI',
+                                            compactUI: checked
+                                        });
                                         this.setState({ compactUI: checked });
                                     }}
                                 />
