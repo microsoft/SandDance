@@ -1281,8 +1281,8 @@ class Square extends _layout.Layout {
 
     const aspect = `((${names.bandWidth}) / (${maxGroupedFillSize}))`;
     const squaresPerBand = `ceil(sqrt(${maxGroupedUnits} * ${aspect}))`;
-    const gap = `min(0.1 * (${names.bandWidth} / (${squaresPerBand} - 1)), 1)`;
-    const size = `((${names.bandWidth} / ${squaresPerBand}) - ${gap})`;
+    const gap = `min(0.1 * ((${names.bandWidth}) / (${squaresPerBand} - 1)), 1)`;
+    const size = `(((${names.bandWidth}) / ${squaresPerBand}) - ${gap})`;
     const levels = `ceil(${maxGroupedUnits} / ${squaresPerBand})`;
     const levelSize = `(((${maxGroupedFillSize}) / ${levels}) - ${gap})`;
     return {
@@ -1298,7 +1298,7 @@ class Square extends _layout.Layout {
       names,
       prefix
     } = this;
-    const compartment = `${names.bandWidth} / ${squaresPerBand} * ((datum[${JSON.stringify(names.stack0)}]) % ${squaresPerBand})`;
+    const compartment = `(${names.bandWidth}) / ${squaresPerBand} * ((datum[${JSON.stringify(names.stack0)}]) % ${squaresPerBand})`;
     const level = `floor((datum[${JSON.stringify(names.stack0)}]) / ${squaresPerBand})`;
     const {
       fillDirection,
@@ -11058,7 +11058,11 @@ class Animator {
     });
   }
 
-  filter(search, keepData, collapseData) {
+  filter(search, keepData, collapseData, rebase) {
+    if (rebase) {
+      this.dataScope.collapse(false, keepData);
+    }
+
     this.dataScope.collapse(true, collapseData);
     return new Promise((resolve, reject) => {
       this.props.onAnimateDataChange(DataLayoutChange.refine, 'before refine', 'refine').then(() => {
@@ -11185,7 +11189,7 @@ exports.selectBetweenAxis = selectBetweenAxis;
 
 function notNice(niceValue) {
   //convert "nice" numbers to numeric value
-  return (niceValue + '').replace(/,/g, '');
+  return (niceValue + '').replace(/[\s,]/g, '');
 }
 
 function tickValue(axis, i) {
@@ -11696,7 +11700,7 @@ class DataScope {
     this.deselect();
 
     if (search) {
-      this.selection = this.createUserSelection(search, true);
+      this.selection = this.createUserSelection(search, true, false);
 
       if (this.selection.included.length) {
         this.activate(this.selection.included[0]);
@@ -11704,14 +11708,15 @@ class DataScope {
     }
   }
 
-  createUserSelection(search, assign) {
+  createUserSelection(search, assign, rebase) {
     const exec = new _searchExpression.Exec(search, this.getColumns());
     const s = {
       search,
       included: [],
       excluded: []
     };
-    this.currentData().forEach(datum => {
+    const data = rebase ? this.data : this.currentData();
+    data.forEach(datum => {
       if (exec.run(datum)) {
         if (assign) {
           datum[_sanddanceSpecs.FieldNames.Selected] = true;
@@ -11902,7 +11907,7 @@ class Details {
       case Action.exclude:
         {
           this.clearSelection();
-          p = this.animator.filter((0, _searchExpression.invert)(u.search), u.excluded, u.included);
+          p = this.animator.filter((0, _searchExpression.invert)(u.search), u.excluded, u.included, false);
           this.state.remapColor = false;
           break;
         }
@@ -11910,7 +11915,7 @@ class Details {
       case Action.isolate:
         {
           this.clearSelection();
-          p = this.animator.filter(u.search, u.included, u.excluded);
+          p = this.animator.filter(u.search, u.included, u.excluded, false);
           this.state.remapColor = false;
           break;
         }
@@ -12184,7 +12189,14 @@ function selectQuantitative(colorBinType, column, legend, clickedIndex) {
 
   if (lowValue) lowValue = (0, _expression.notNice)(lowValue);
   if (highValue) highValue = (0, _expression.notNice)(highValue);
-  return (0, _expression.selectBetween)(column, lowValue, highValue, lowOperator, highOperator);
+
+  if (lowValue === highValue) {
+    return {
+      expressions: [(0, _expression.selectExact)(column, lowValue)]
+    };
+  } else {
+    return (0, _expression.selectBetween)(column, lowValue, highValue, lowOperator, highOperator);
+  }
 }
 
 function finalizeLegend(colorBinType, colorColumn, legend, language) {
@@ -12196,8 +12208,6 @@ function finalizeLegend(colorBinType, colorColumn, legend, language) {
 
     if (row.value === _sanddanceSpecs.Other) {
       row.label = language.legendOther;
-    } else if (rowTexts.indexOf(row.value) >= 0) {
-      delete legend.rows[i];
     } else {
       rowTexts.push(row.value);
     }
@@ -12846,7 +12856,7 @@ class Viewer {
           //refining
           result = yield this._render(insight, data, options);
           this.presenter.animationQueue(() => {
-            this.filter(insight.filter);
+            this.filter(insight.filter, options.rebaseFilter && options.rebaseFilter());
           }, allowAsyncRenderTime, {
             waitingLabel: 'layout before refine',
             handlerLabel: 'refine after layout'
@@ -13167,14 +13177,15 @@ class Viewer {
   /**
    * Filter the data and animate.
    * @param search Filter expression, see https://vega.github.io/vega/docs/expressions/
+   * @param rebase Optional flag to apply to entire dataset. A false value will apply the filter upon any existing filter.
    */
 
 
-  filter(search) {
-    const u = this._dataScope.createUserSelection(search, false);
+  filter(search, rebase = false) {
+    const u = this._dataScope.createUserSelection(search, false, rebase);
 
     return new Promise((resolve, reject) => {
-      this._animator.filter(search, u.included, u.excluded).then(() => {
+      this._animator.filter(search, u.included, u.excluded, rebase).then(() => {
         this._details.clear();
 
         this._details.clearSelection();
@@ -13340,7 +13351,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = '3.0.0-beta.1';
+const version = '3.0.0-beta.2';
 exports.version = version;
 },{}],"rZaE":[function(require,module,exports) {
 "use strict";
@@ -13676,56 +13687,7 @@ function use(fluentUI, vega, deck, layers, luma) {
 
   base.fluentUI = fluentUI;
 }
-},{"@msrvida/sanddance-react":"MjKu"}],"pP3Y":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.convertToDelimited = convertToDelimited;
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function convertToDelimited(data, delimiter) {
-  var fields = Object.keys(data[0]);
-  var file = data.map(function (row) {
-    return fields.map(function (fieldName) {
-      var value = row[fieldName];
-
-      if (typeof value === 'number') {
-        return value;
-      }
-
-      if (typeof value === 'string') {
-        if (value.indexOf(delimiter) >= 0) {
-          return "\"".concat(value.replace(/"/g, '""'), "\"");
-        } else {
-          return value;
-        }
-      }
-
-      return '';
-    }).join(delimiter);
-  });
-  file.unshift(fields.join(delimiter));
-  return file.join('\n');
-}
-},{}],"fOIZ":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.embedHtml = void 0;
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var embedHtml = function embedHtml(title, embed) {
-  return "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>".concat(title, "</title>\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-embed@3.0.0-beta.1/dist/css/sanddance-embed.css\" />\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-explorer@3.0.0-beta.1/dist/css/sanddance-explorer.css\" />\n</head>\n\n<body>\n    <script src=\"https://unpkg.com/react@16.13/umd/react.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/react-dom@16.13/umd/react-dom.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/deck.gl@8.1.5/dist.min.js\"></script>\n    <script src=\"https://unpkg.com/vega@5.11/build/vega.min.js\"></script>\n    <script src=\"https://unpkg.com/@fluentui/react@7.111/dist/fluentui-react.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-explorer@3.0.0-beta.1/dist/umd/sanddance-explorer.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-embed@3.0.0-beta.1/dist/umd/sanddance-embed.js\"></script>\n\n    <div id=\"app\"></div>\n\n    ").concat(embed, "\n\n</body>\n\n</html>");
-};
-
-exports.embedHtml = embedHtml;
-},{}],"hk5u":[function(require,module,exports) {
+},{"@msrvida/sanddance-react":"MjKu"}],"hk5u":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13777,6 +13739,8 @@ var strings = {
   buttonLaunchVegaEditor: 'Open Vega Editor',
   buttonCameraHome: 'Center chart in window',
   buttonTooltipMapping: 'Tooltip columns...',
+  buttonUndo: 'Undo',
+  buttonRedo: 'Redo',
   chartTypeBarChartH: 'Bar',
   chartTypeBarChartV: 'Column',
   chartTypeDensity: 'Density',
@@ -13805,6 +13769,7 @@ var strings = {
   labelExportHTML: '.HTML - A SandDance html page embedding this data',
   labelExportJSON: '.JSON - JavaScript object notation',
   labelExportTSV: '.TSV - Tab separated values',
+  labelHistory: 'History',
   labelTools: 'Tools',
   labelVegaSpec: 'Vega specification',
   labelColor: 'Chart color',
@@ -13866,6 +13831,22 @@ var strings = {
   labelAliasSize: 'Size',
   labelAliasGroup: 'Group',
   labelDataItemIsFiltered: 'Item is filtered from view',
+  labelHistoryInit: 'Initial view',
+  labelHistoryFilterClear: 'Clear filter',
+  labelHistoryFilterIExclude: 'Exclude filter',
+  labelHistoryFilterIsolate: 'Isolate filter',
+  labelHistoryChangeChartType: function labelHistoryChangeChartType(chart) {
+    return "Change chart type to ".concat(chart);
+  },
+  labelHistoryMapColumn: function labelHistoryMapColumn(column) {
+    return "Map ".concat(column, " role");
+  },
+  labelHistoryUnMapColumn: function labelHistoryUnMapColumn(column) {
+    return "Unmap ".concat(column, " role");
+  },
+  labelHistoryReviveSnapshot: 'Revive snapshot',
+  labelHistoryColorBin: 'Change color binning',
+  labelHistoryDirectColor: 'Change direct color',
   labelShowLegend: 'Show legend',
   labelShowAxes: 'Show axes',
   labelSnapshotTitle: 'Title',
@@ -13919,7 +13900,7 @@ var strings = {
   },
   labelRequired: 'required',
   labelSystem: 'System',
-  lavelViewType2d: 'View in 2D',
+  labelViewType2d: 'View in 2D',
   labelViewType3d: 'View in 3D',
   labelDataColors: 'Enabled if this data column contains any CSS color values.',
   labelDataNullAll: 'Loading data...',
@@ -13960,6 +13941,111 @@ var strings = {
   }]
 };
 exports.strings = strings;
+},{}],"cFWm":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Dialog = Dialog;
+
+var React = _interopRequireWildcard(require("react"));
+
+var _base = require("../base");
+
+var _language = require("../language");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function Dialog(props) {
+  return React.createElement(_base.base.fluentUI.Dialog, Object.assign({}, props, {
+    dialogContentProps: Object.assign({
+      type: _base.base.fluentUI.DialogType.normal,
+      title: props.title
+    }, props.dialogContentProps)
+  }), React.createElement("div", {
+    onKeyUp: function onKeyUp(e) {
+      e.nativeEvent.stopImmediatePropagation();
+    }
+  }, props.children), React.createElement(_base.base.fluentUI.DialogFooter, null, props.buttons, React.createElement(_base.base.fluentUI.DefaultButton, {
+    iconProps: {
+      iconName: 'Cancel'
+    },
+    onClick: props.onDismiss,
+    text: _language.strings.buttonClose
+  })));
+}
+},{"react":"mpTF","../base":"Vlbn","../language":"hk5u"}],"nQgO":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _dialog = require("./dialog");
+
+Object.keys(_dialog).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _dialog[key];
+    }
+  });
+});
+},{"./dialog":"cFWm"}],"fOIZ":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.embedHtml = void 0;
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+var embedHtml = function embedHtml(title, embed) {
+  return "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>".concat(title, "</title>\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-embed@3.0.0-beta.2/dist/css/sanddance-embed.css\" />\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-explorer@3.0.0-beta.2/dist/css/sanddance-explorer.css\" />\n</head>\n\n<body>\n    <script src=\"https://unpkg.com/react@16.13/umd/react.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/react-dom@16.13/umd/react-dom.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/deck.gl@8.1.5/dist.min.js\"></script>\n    <script src=\"https://unpkg.com/vega@5.11/build/vega.min.js\"></script>\n    <script src=\"https://unpkg.com/@fluentui/react@7.111/dist/fluentui-react.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-explorer@3.0.0-beta.2/dist/umd/sanddance-explorer.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-embed@3.0.0-beta.2/dist/umd/sanddance-embed.js\"></script>\n\n    <div id=\"app\"></div>\n\n    ").concat(embed, "\n\n</body>\n\n</html>");
+};
+
+exports.embedHtml = embedHtml;
+},{}],"pP3Y":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.convertToDelimited = convertToDelimited;
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function convertToDelimited(data, delimiter) {
+  var fields = Object.keys(data[0]);
+  var file = data.map(function (row) {
+    return fields.map(function (fieldName) {
+      var value = row[fieldName];
+
+      if (typeof value === 'number') {
+        return value;
+      }
+
+      if (typeof value === 'string') {
+        if (value.indexOf(delimiter) >= 0) {
+          return "\"".concat(value.replace(/"/g, '""'), "\"");
+        } else {
+          return value;
+        }
+      }
+
+      return '';
+    }).join(delimiter);
+  });
+  file.unshift(fields.join(delimiter));
+  return file.join('\n');
+}
 },{}],"l7po":[function(require,module,exports) {
 "use strict";
 
@@ -13970,17 +14056,19 @@ exports.removeExtensions = removeExtensions;
 exports.getEmbedHTML = getEmbedHTML;
 exports.DataExportPicker = void 0;
 
-var React = _interopRequireWildcard(require("react"));
+var _dataExporterHtml = require("./dataExporterHtml");
+
+var _dialog = require("./dialog");
 
 var _base = require("../base");
 
 var _exportDelimited = require("../exportDelimited");
 
-var _dataExporterHtml = require("./dataExporterHtml");
+var _language = require("../language");
 
 var _sanddanceReact = require("@msrvida/sanddance-react");
 
-var _language = require("../language");
+var React = _interopRequireWildcard(require("react"));
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
@@ -14132,14 +14220,30 @@ function (_React$Component) {
           });
         },
         disabled: this.props.disabled
-      }), React.createElement(_base.base.fluentUI.Dialog, {
+      }), React.createElement(_dialog.Dialog, {
         hidden: this.state.dialogHidden,
         onDismiss: closeDialog,
         dialogContentProps: {
           className: "sanddance-dialog ".concat(this.props.theme),
           type: _base.base.fluentUI.DialogType.normal,
           title: _language.strings.labelExport
-        }
+        },
+        buttons: [React.createElement(_base.base.fluentUI.PrimaryButton, {
+          key: 0,
+          disabled: disabled || !!this.state.fileNameError,
+          onClick: function onClick(e) {
+            return _this3.setState({
+              delayAction: function delayAction() {
+                return _this3.createExport(_this3.state.exportType, _this3.state.fileName);
+              },
+              working: true
+            });
+          },
+          text: _language.strings.buttonExport,
+          iconProps: {
+            iconName: 'Download'
+          }
+        })]
       }, React.createElement(_base.base.fluentUI.TextField, {
         label: _language.strings.labelExportFileName,
         onChange: function onChange(e, displayName) {
@@ -14173,21 +14277,7 @@ function (_React$Component) {
           });
         },
         label: _language.strings.labelExportFormat
-      }), React.createElement(_base.base.fluentUI.DialogFooter, null, React.createElement(_base.base.fluentUI.PrimaryButton, {
-        disabled: disabled || !!this.state.fileNameError,
-        onClick: function onClick(e) {
-          return _this3.setState({
-            delayAction: function delayAction() {
-              return _this3.createExport(_this3.state.exportType, _this3.state.fileName);
-            },
-            working: true
-          });
-        },
-        text: _language.strings.buttonExport
-      }), React.createElement(_base.base.fluentUI.DefaultButton, {
-        onClick: closeDialog,
-        text: _language.strings.buttonClose
-      }))));
+      })));
     }
   }]);
 
@@ -14243,7 +14333,7 @@ function getEmbedHTML(data, displayName, snapshots) {
   var html = (0, _dataExporterHtml.embedHtml)("".concat(_language.strings.appName, " - ").concat(escape(displayName)), embedScript(csv, displayName, snapshots));
   return html;
 }
-},{"react":"mpTF","../base":"Vlbn","../exportDelimited":"pP3Y","./dataExporterHtml":"fOIZ","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"h2T5":[function(require,module,exports) {
+},{"./dataExporterHtml":"fOIZ","./dialog":"cFWm","../base":"Vlbn","../exportDelimited":"pP3Y","../language":"hk5u","@msrvida/sanddance-react":"MjKu","react":"mpTF"}],"h2T5":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14259,9 +14349,10 @@ exports.SideTabId = SideTabId;
   SideTabId[SideTabId["Search"] = 2] = "Search";
   SideTabId[SideTabId["Color"] = 3] = "Color";
   SideTabId[SideTabId["Snapshots"] = 4] = "Snapshots";
-  SideTabId[SideTabId["Settings"] = 5] = "Settings";
-  SideTabId[SideTabId["Pin"] = 6] = "Pin";
-  SideTabId[SideTabId["Collapse"] = 7] = "Collapse";
+  SideTabId[SideTabId["History"] = 5] = "History";
+  SideTabId[SideTabId["Settings"] = 6] = "Settings";
+  SideTabId[SideTabId["Pin"] = 7] = "Pin";
+  SideTabId[SideTabId["Collapse"] = 8] = "Collapse";
 })(SideTabId || (exports.SideTabId = SideTabId = {}));
 },{}],"Dryx":[function(require,module,exports) {
 "use strict";
@@ -14367,146 +14458,6 @@ function getColorSettingsFromThemePalette(themePalette) {
     searchText: themePalette.neutralPrimary,
     searchTextHighlight: themePalette.neutralPrimaryAlt
   };
-}
-},{}],"dQNc":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.IconButton = IconButton;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _base = require("../base");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function IconButton(props) {
-  return React.createElement(_base.base.fluentUI.IconButton, Object.assign({}, props, {
-    styles: {
-      root: {
-        color: props.themePalette.black
-      },
-      rootHovered: {
-        background: 'transparent',
-        color: props.themePalette.themePrimary
-      },
-      rootPressed: {
-        background: 'transparent'
-      },
-      menuIcon: {
-        display: 'none'
-      }
-    },
-    iconProps: {
-      iconName: props.iconName
-    },
-    menuProps: props.menuProps
-  }));
-}
-},{"react":"mpTF","../base":"Vlbn"}],"E67y":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.applyColorButtons = applyColorButtons;
-
-var React = _interopRequireWildcard(require("react"));
-
-var ReactDOM = _interopRequireWildcard(require("react-dom"));
-
-var _iconButton = require("./controls/iconButton");
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-var _language = require("./language");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var className = 'sanddance-panel-tools';
-
-function ensureToolbar(panel) {
-  var existing = panel.getElementsByClassName(className);
-
-  if (existing.length > 0) {
-    return existing[0];
-  } else {
-    var div = _sanddanceReact.SandDance.VegaDeckGl.util.addDiv(panel, className);
-
-    panel.insertAdjacentElement('afterbegin', div);
-    return div;
-  }
-}
-
-function applyColorButtons(presenter, showLegend, props) {
-  var panel = presenter.getElement(_sanddanceReact.SandDance.VegaDeckGl.PresenterElement.panel);
-  var div = ensureToolbar(panel);
-  ReactDOM.render(ColorMap(props), div);
-  panel.style.display = showLegend ? '' : 'none';
-}
-
-function ColorMap(props) {
-  var menuProps = {
-    items: [{
-      key: 'new',
-      text: _language.strings.buttonColorSchemeRemap,
-      disabled: !props.canRemap || props.isRemap,
-      onClick: function onClick() {
-        return props.colorMapHandler(true);
-      }
-    }, {
-      key: 'old',
-      text: _language.strings.buttonColorSchemeKeep,
-      disabled: !props.canRemap || !props.isRemap,
-      onClick: function onClick() {
-        return props.colorMapHandler(false);
-      }
-    }]
-  };
-  return React.createElement("div", null, React.createElement(_iconButton.IconButton, {
-    themePalette: props.themePalette,
-    title: _language.strings.buttonColorSchemeMap,
-    onClick: null,
-    iconName: props.canRemap ? 'FiltersSolid' : 'Filters',
-    menuProps: menuProps
-  }));
-}
-},{"react":"mpTF","react-dom":"J77C","./controls/iconButton":"dQNc","@msrvida/sanddance-react":"MjKu","./language":"hk5u"}],"L8O2":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.bestColorScheme = bestColorScheme;
-
-function bestColorScheme(newColumn, oldColumn, oldScheme) {
-  if (oldColumn && oldColumn.quantitative === newColumn.quantitative && defaultColorScheme(oldColumn) === defaultColorScheme(newColumn)) {
-    return oldScheme;
-  }
-
-  return defaultColorScheme(newColumn);
-}
-
-function defaultColorScheme(c) {
-  if (c.quantitative) {
-    return 'redyellowgreen';
-  } else if (c.stats.distinctValueCount === 2) {
-    return 'dual_redgreen';
-  } else if (c.stats.distinctValueCount <= 10) {
-    return 'category10';
-  }
-
-  return 'category20';
 }
 },{}],"Uyrp":[function(require,module,exports) {
 "use strict";
@@ -14865,19 +14816,162 @@ function ColumnMap(props) {
     onDismiss: props.onDismiss
   }), signalElements, props.suffix);
 }
-},{"react":"mpTF","../base":"Vlbn","./dropdown":"Uyrp","@msrvida/sanddance-react":"MjKu","./signal":"OWDI","../language":"hk5u"}],"cFWm":[function(require,module,exports) {
+},{"react":"mpTF","../base":"Vlbn","./dropdown":"Uyrp","@msrvida/sanddance-react":"MjKu","./signal":"OWDI","../language":"hk5u"}],"UUG7":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Dialog = Dialog;
+exports.onBeforeCreateLayers = onBeforeCreateLayers;
+exports.PositionedColumnMap = void 0;
+
+var React = _interopRequireWildcard(require("react"));
+
+var _columnMap = require("./controls/columnMap");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function onBeforeCreateLayers(stage, specCapabilities) {
+  var _loop = function _loop(axisName) {
+    specCapabilities.roles.forEach(function (specRole) {
+      if (specRole.role === axisName) {
+        var axes = stage.axes[axisName];
+        axes.forEach(function (axis) {
+          if (axis.title) {
+            var textItem = axis.title;
+            textItem.specRole = specRole;
+          }
+        });
+      }
+    });
+  };
+
+  for (var axisName in stage.axes) {
+    _loop(axisName);
+  }
+}
+
+function px(n) {
+  return n + 'px';
+}
+
+var PositionedColumnMap =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(PositionedColumnMap, _React$Component);
+
+  function PositionedColumnMap(props) {
+    var _this;
+
+    _classCallCheck(this, PositionedColumnMap);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(PositionedColumnMap).call(this, props));
+    var left = props.left,
+        top = props.top;
+    _this.state = {
+      left: left,
+      top: top
+    };
+    _this.dropdownRef = React.createRef();
+    return _this;
+  }
+
+  _createClass(PositionedColumnMap, [{
+    key: "focus",
+    value: function focus() {
+      if (!this.focused) {
+        this.focused = true;
+        this.dropdownRef.current.focus(true);
+      }
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var size = _sanddanceReact.SandDance.VegaDeckGl.util.outerSize(this.div);
+
+      var over = {
+        left: Math.max(0, this.state.left + size.width - this.props.container.offsetWidth),
+        top: Math.max(0, this.state.top + size.height - this.props.container.offsetHeight)
+      };
+
+      if (over.left || over.top) {
+        var _this$state = this.state,
+            left = _this$state.left,
+            top = _this$state.top;
+        left -= over.left;
+        top -= over.top;
+        this.setState({
+          left: left,
+          top: top
+        });
+      } else {
+        this.focus();
+      }
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      this.focus();
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      return React.createElement("div", {
+        ref: function ref(div) {
+          if (div) _this2.div = div;
+        },
+        className: "sanddance-columnMap-absolute",
+        style: {
+          position: 'absolute',
+          left: px(this.state.left),
+          top: px(this.state.top)
+        }
+      }, React.createElement(_columnMap.ColumnMap, Object.assign({}, this.props, {
+        componentRef: this.dropdownRef,
+        hideSignals: true
+      })));
+    }
+  }]);
+
+  return PositionedColumnMap;
+}(React.Component);
+
+exports.PositionedColumnMap = PositionedColumnMap;
+},{"react":"mpTF","./controls/columnMap":"DSho","@msrvida/sanddance-react":"MjKu"}],"dQNc":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.IconButton = IconButton;
 
 var React = _interopRequireWildcard(require("react"));
 
 var _base = require("../base");
-
-var _language = require("../language");
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
@@ -14885,18 +14979,1778 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function Dialog(props) {
-  return React.createElement(_base.base.fluentUI.Dialog, Object.assign({}, props, {
-    dialogContentProps: {
-      type: _base.base.fluentUI.DialogType.normal,
-      title: props.title
-    }
-  }), props.children, React.createElement(_base.base.fluentUI.DialogFooter, null, props.buttons, React.createElement(_base.base.fluentUI.DefaultButton, {
-    onClick: props.onDismiss,
-    text: _language.strings.buttonClose
-  })));
+function IconButton(props) {
+  return React.createElement(_base.base.fluentUI.IconButton, Object.assign({}, props, {
+    styles: {
+      root: {
+        color: props.themePalette.black
+      },
+      rootHovered: {
+        background: 'transparent',
+        color: props.themePalette.themePrimary
+      },
+      rootPressed: {
+        background: 'transparent'
+      },
+      menuIcon: {
+        display: 'none'
+      }
+    },
+    iconProps: {
+      iconName: props.iconName
+    },
+    menuProps: props.menuProps
+  }));
 }
-},{"react":"mpTF","../base":"Vlbn","../language":"hk5u"}],"Q3hf":[function(require,module,exports) {
+},{"react":"mpTF","../base":"Vlbn"}],"E67y":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.applyColorButtons = applyColorButtons;
+
+var React = _interopRequireWildcard(require("react"));
+
+var ReactDOM = _interopRequireWildcard(require("react-dom"));
+
+var _iconButton = require("./controls/iconButton");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var _language = require("./language");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+var className = 'sanddance-panel-tools';
+
+function ensureToolbar(panel) {
+  var existing = panel.getElementsByClassName(className);
+
+  if (existing.length > 0) {
+    return existing[0];
+  } else {
+    var div = _sanddanceReact.SandDance.VegaDeckGl.util.addDiv(panel, className);
+
+    panel.insertAdjacentElement('afterbegin', div);
+    return div;
+  }
+}
+
+function applyColorButtons(presenter, showLegend, props) {
+  var panel = presenter.getElement(_sanddanceReact.SandDance.VegaDeckGl.PresenterElement.panel);
+  var div = ensureToolbar(panel);
+  ReactDOM.render(ColorMap(props), div);
+  panel.style.display = showLegend ? '' : 'none';
+}
+
+function ColorMap(props) {
+  var menuProps = {
+    items: [{
+      key: 'new',
+      text: _language.strings.buttonColorSchemeRemap,
+      disabled: !props.canRemap || props.isRemap,
+      onClick: function onClick() {
+        return props.colorMapHandler(true);
+      }
+    }, {
+      key: 'old',
+      text: _language.strings.buttonColorSchemeKeep,
+      disabled: !props.canRemap || !props.isRemap,
+      onClick: function onClick() {
+        return props.colorMapHandler(false);
+      }
+    }]
+  };
+  return React.createElement("div", null, React.createElement(_iconButton.IconButton, {
+    themePalette: props.themePalette,
+    title: _language.strings.buttonColorSchemeMap,
+    onClick: null,
+    iconName: props.canRemap ? 'FiltersSolid' : 'Filters',
+    menuProps: menuProps
+  }));
+}
+},{"react":"mpTF","react-dom":"J77C","./controls/iconButton":"dQNc","@msrvida/sanddance-react":"MjKu","./language":"hk5u"}],"L8O2":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.bestColorScheme = bestColorScheme;
+
+function bestColorScheme(newColumn, oldColumn, oldScheme) {
+  if (oldColumn && oldColumn.quantitative === newColumn.quantitative && defaultColorScheme(oldColumn) === defaultColorScheme(newColumn)) {
+    return oldScheme;
+  }
+
+  return defaultColorScheme(newColumn);
+}
+
+function defaultColorScheme(c) {
+  if (c.quantitative) {
+    return 'redyellowgreen';
+  } else if (c.stats.distinctValueCount === 2) {
+    return 'dual_redgreen';
+  } else if (c.stats.distinctValueCount <= 10) {
+    return 'category10';
+  }
+
+  return 'category20';
+}
+},{}],"ENdt":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.maxCategoricalColors = 20;
+var Recommender = /** @class */ (function () {
+    function Recommender(columns, data) {
+    }
+    return Recommender;
+}());
+exports.Recommender = Recommender;
+function defaultColorScheme(c) {
+    if (c.quantitative) {
+        return 'redyellowgreen';
+    }
+    else if (c.stats.distinctValueCount === 2) {
+        return 'dual_redgreen';
+    }
+    else if (c.stats.distinctValueCount <= 10) {
+        return 'category10';
+    }
+    return 'category20';
+}
+exports.defaultColorScheme = defaultColorScheme;
+
+},{}],"oxgd":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var recommender_1 = require("./recommender");
+var maxDistinctVal = 20;
+var minDistinctVal = 2;
+var BarChartRecommenderSummary = /** @class */ (function () {
+    function BarChartRecommenderSummary(columns, data) {
+        var score = -1;
+        for (var i = 0; i < columns.length; i++) {
+            var recommendation = new BarChartRecommender(columns[i], data).recommend();
+            if (recommendation.score > score) {
+                this.best = recommendation;
+                score = recommendation.score;
+            }
+            if (score === 1)
+                break;
+        }
+        for (var k = 0; k < columns.length; k++) {
+            var column = columns[k];
+            if (column.name === this.best.columns.x || column.stats.isSequential)
+                continue;
+            if (column.quantitative || (column.stats.distinctValueCount < recommender_1.maxCategoricalColors && column.stats.distinctValueCount > 1)) {
+                this.best.columns.color = this.best.columns.sort = column.name;
+                this.best.scheme = recommender_1.defaultColorScheme(column);
+                if (column.quantitative) {
+                    this.best.colorBin = 'quantile';
+                }
+                break;
+            }
+        }
+    }
+    BarChartRecommenderSummary.prototype.recommend = function () {
+        return this.best;
+    };
+    return BarChartRecommenderSummary;
+}());
+exports.BarChartRecommenderSummary = BarChartRecommenderSummary;
+var BarChartRecommender = /** @class */ (function () {
+    function BarChartRecommender(column, data) {
+        this.score = 0;
+        this.column = column;
+        //the total score for bar chart is 1
+        this.rules = [
+            function (column) {
+                if (column.stats.isSequential)
+                    return false;
+                else if (column.quantitative) {
+                    return true;
+                }
+                else if (!column.quantitative && column.stats.distinctValueCount <= maxDistinctVal && column.stats.distinctValueCount >= minDistinctVal) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        ];
+        for (var i = 0; i < this.rules.length; i++) {
+            if (this.rules[i](column))
+                this.score++;
+        }
+    }
+    BarChartRecommender.prototype.recommend = function () {
+        var rec = {
+            chart: 'barchart',
+            columns: {
+                x: this.column.name
+            },
+            score: this.score,
+            scheme: undefined,
+            view: '2d'
+        };
+        return rec;
+    };
+    return BarChartRecommender;
+}());
+exports.BarChartRecommender = BarChartRecommender;
+
+},{"./recommender":"ENdt"}],"O4ew":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+//TODO: languages other than english
+var longitudeNames = ['lon', 'long', 'longitude'];
+var latitudeNames = ['lat', 'latitude'];
+function isSpec(names, limits, column, data) {
+    var is = false;
+    var cname = column.name.toLowerCase();
+    for (var i = 0; i < names.length; i++) {
+        if (names[i] === cname) {
+            is = true;
+            break;
+        }
+    }
+    if (data) {
+        //TODO: spin through data to see if it is within limits
+    }
+    return is;
+}
+function isLongitude(column, data) {
+    return isSpec(longitudeNames, [-180, 180], column, data);
+}
+exports.isLongitude = isLongitude;
+function isLatitude(column, data) {
+    return isSpec(latitudeNames, [-90, 90], column, data);
+}
+exports.isLatitude = isLatitude;
+function isGeo(column, data) {
+    return isLatitude(column, data) || isLongitude(column, data);
+}
+exports.isGeo = isGeo;
+
+},{}],"iBe2":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var recommender_1 = require("./recommender");
+var geo_1 = require("./geo");
+var ScatterPlotRecommenderSummary = /** @class */ (function () {
+    function ScatterPlotRecommenderSummary(columns, data) {
+        var rec = {
+            chart: 'scatterplot',
+            score: undefined,
+            columns: {},
+            scheme: undefined,
+            view: '2d'
+        };
+        columns.forEach(function (column) {
+            if (!rec.columns.x) {
+                if (column.name.toLowerCase() === 'x') {
+                    return rec.columns.x = column.name;
+                }
+                else if (geo_1.isLongitude(column)) {
+                    return rec.columns.x = column.name;
+                }
+            }
+            if (!rec.columns.y) {
+                if (column.name.toLowerCase() === 'y') {
+                    return rec.columns.y = column.name;
+                }
+                else if (geo_1.isLatitude(column)) {
+                    return rec.columns.y = column.name;
+                }
+            }
+            if (!rec.columns.color && !column.stats.isSequential) {
+                if (column.quantitative || column.stats.distinctValueCount < recommender_1.maxCategoricalColors) {
+                    rec.columns.color = rec.columns.sort = column.name;
+                    rec.scheme = recommender_1.defaultColorScheme(column);
+                    if (column.quantitative) {
+                        rec.colorBin = 'quantile';
+                    }
+                    return;
+                }
+            }
+        });
+        if (rec.columns.x && rec.columns.y) {
+            this.best = rec;
+        }
+    }
+    ScatterPlotRecommenderSummary.prototype.recommend = function () {
+        return this.best;
+    };
+    return ScatterPlotRecommenderSummary;
+}());
+exports.ScatterPlotRecommenderSummary = ScatterPlotRecommenderSummary;
+
+},{"./recommender":"ENdt","./geo":"O4ew"}],"At4q":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var geo_1 = require("./geo");
+function preferredColumnForTreemapSize(columns, strict) {
+    for (var i = 0; i < columns.length; i++) {
+        var c = columns[i];
+        if (c.quantitative) {
+            if (strict && c.stats.hasNegative)
+                continue;
+            if (strict && c.stats.isSequential)
+                continue;
+            if (strict && geo_1.isGeo(c))
+                continue;
+            return c.name;
+        }
+    }
+}
+exports.preferredColumnForTreemapSize = preferredColumnForTreemapSize;
+
+},{"./geo":"O4ew"}],"fB3P":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var barChart_1 = require("./barChart");
+var scatterPlot_1 = require("./scatterPlot");
+var RecommenderSummary = /** @class */ (function () {
+    function RecommenderSummary(columns, data) {
+        var quickRec = new scatterPlot_1.ScatterPlotRecommenderSummary(columns, data).recommend();
+        if (quickRec) {
+            this.rec = quickRec;
+        }
+        else {
+            var barChartrec = new barChart_1.BarChartRecommenderSummary(columns, data).recommend();
+            if (barChartrec && barChartrec.score >= 1) {
+                this.rec = barChartrec;
+            }
+            else {
+                this.rec = {
+                    chart: 'grid',
+                    columns: {},
+                    score: 1
+                };
+            }
+        }
+    }
+    RecommenderSummary.prototype.recommend = function () {
+        return this.rec;
+    };
+    return RecommenderSummary;
+}());
+exports.RecommenderSummary = RecommenderSummary;
+
+},{"./barChart":"oxgd","./scatterPlot":"iBe2"}],"i6UQ":[function(require,module,exports) {
+"use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+__export(require("./barChart"));
+__export(require("./geo"));
+__export(require("./scatterPlot"));
+__export(require("./treemap"));
+__export(require("./recommenderSummary"));
+
+},{"./barChart":"oxgd","./geo":"O4ew","./scatterPlot":"iBe2","./treemap":"At4q","./recommenderSummary":"fB3P"}],"f8v0":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ensureColumnsExist = ensureColumnsExist;
+exports.ensureColumnsPopulated = ensureColumnsPopulated;
+
+var _chartRecommender = require("@msrvida/chart-recommender");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var _language = require("./language");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function ensureColumnsExist(insightColumns, actualColumns, transform) {
+  var _loop = function _loop(role) {
+    var columnName = insightColumns[role];
+    var column = actualColumns.filter(function (c) {
+      return c.name === columnName;
+    })[0];
+    var transformColumn = transform ? transform.filter(function (t) {
+      switch (t.type) {
+        case 'formula':
+          {
+            return t.as === columnName;
+          }
+      }
+    })[0] : null;
+
+    if (!(column || transformColumn)) {
+      delete insightColumns[role];
+    }
+  };
+
+  //ensure columns exist
+  for (var role in insightColumns) {
+    _loop(role);
+  }
+}
+
+function ensureColumnsPopulated(chart, insightColumns, actualColumns) {
+  //ensure columns are populated
+  var nonInternal = actualColumns.filter(function (c) {
+    return !_sanddanceReact.SandDance.util.isInternalFieldName(c.name);
+  });
+  var firstColumn = nonInternal[0];
+  var firstColumnName = firstColumn && firstColumn.name;
+  var firstQuantitative = nonInternal.filter(function (c) {
+    return c.quantitative;
+  })[0];
+  var firstQuantitativeColumnName = firstQuantitative && firstQuantitative.name;
+
+  var ensureColumn = function ensureColumn(role, quantitative) {
+    if (!insightColumns[role]) {
+      insightColumns[role] = quantitative ? firstQuantitativeColumnName : firstColumnName;
+    }
+  };
+
+  switch (chart) {
+    case 'barchart':
+    case 'barchartV':
+      ensureColumn('x');
+      ensureColumn('size', true);
+      break;
+
+    case 'barchartH':
+      ensureColumn('y');
+      ensureColumn('size', true);
+      break;
+
+    case 'density':
+    case 'scatterplot':
+    case 'stacks':
+      ensureColumn('x');
+      ensureColumn('y');
+      break;
+
+    case 'treemap':
+      if (!insightColumns.size) {
+        insightColumns.size = (0, _chartRecommender.preferredColumnForTreemapSize)(actualColumns, true);
+
+        if (!insightColumns.size) {
+          insightColumns.size = (0, _chartRecommender.preferredColumnForTreemapSize)(actualColumns, false);
+        }
+      }
+
+      if (!insightColumns.size) {
+        //error - no numeric column
+        return [_language.strings.errorColumnMustBeNumeric];
+      }
+
+      break;
+  }
+}
+},{"@msrvida/chart-recommender":"i6UQ","@msrvida/sanddance-react":"MjKu","./language":"hk5u"}],"eqtW":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Button = Button;
+
+var React = _interopRequireWildcard(require("react"));
+
+var _base = require("../base");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function Button(props) {
+  return React.createElement(_base.base.fluentUI.DefaultButton, Object.assign({}, props, {
+    styles: {
+      root: {
+        backgroundColor: 'transparent',
+        height: '30px',
+        width: props.width,
+        padding: 0
+      },
+      rootDisabled: {
+        backgroundColor: 'transparent'
+      },
+      icon: {
+        color: props.themePalette.themePrimary
+      },
+      label: {
+        fontWeight: '400',
+        textAlign: props.textAlign || 'left'
+      }
+    },
+    iconProps: {
+      iconName: props.iconName
+    }
+  }));
+}
+},{"react":"mpTF","../base":"Vlbn"}],"fiGR":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+// Computes the decimal coefficient and exponent of the specified number x with
+// significant digits p, where x is positive and p is in [1, 21] or undefined.
+// For example, formatDecimal(1.23) returns ["123", 0].
+function _default(x, p) {
+  if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
+
+  var i,
+      coefficient = x.slice(0, i); // The string returned by toExponential either has the form \d\.\d+e[-+]\d+
+  // (e.g., 1.2e+3) or the form \de[-+]\d+ (e.g., 1e+3).
+
+  return [coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient, +x.slice(i + 1)];
+}
+},{}],"G46r":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+var _formatDecimal = _interopRequireDefault(require("./formatDecimal.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _default(x) {
+  return x = (0, _formatDecimal.default)(Math.abs(x)), x ? x[1] : NaN;
+}
+},{"./formatDecimal.js":"fiGR"}],"CupU":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+function _default(grouping, thousands) {
+  return function (value, width) {
+    var i = value.length,
+        t = [],
+        j = 0,
+        g = grouping[0],
+        length = 0;
+
+    while (i > 0 && g > 0) {
+      if (length + g + 1 > width) g = Math.max(1, width - length);
+      t.push(value.substring(i -= g, i + g));
+      if ((length += g + 1) > width) break;
+      g = grouping[j = (j + 1) % grouping.length];
+    }
+
+    return t.reverse().join(thousands);
+  };
+}
+},{}],"mUgz":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+function _default(numerals) {
+  return function (value) {
+    return value.replace(/[0-9]/g, function (i) {
+      return numerals[+i];
+    });
+  };
+}
+},{}],"Nf4q":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = formatSpecifier;
+exports.FormatSpecifier = FormatSpecifier;
+// [[fill]align][sign][symbol][0][width][,][.precision][~][type]
+var re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
+
+function formatSpecifier(specifier) {
+  if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
+  var match;
+  return new FormatSpecifier({
+    fill: match[1],
+    align: match[2],
+    sign: match[3],
+    symbol: match[4],
+    zero: match[5],
+    width: match[6],
+    comma: match[7],
+    precision: match[8] && match[8].slice(1),
+    trim: match[9],
+    type: match[10]
+  });
+}
+
+formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
+
+function FormatSpecifier(specifier) {
+  this.fill = specifier.fill === undefined ? " " : specifier.fill + "";
+  this.align = specifier.align === undefined ? ">" : specifier.align + "";
+  this.sign = specifier.sign === undefined ? "-" : specifier.sign + "";
+  this.symbol = specifier.symbol === undefined ? "" : specifier.symbol + "";
+  this.zero = !!specifier.zero;
+  this.width = specifier.width === undefined ? undefined : +specifier.width;
+  this.comma = !!specifier.comma;
+  this.precision = specifier.precision === undefined ? undefined : +specifier.precision;
+  this.trim = !!specifier.trim;
+  this.type = specifier.type === undefined ? "" : specifier.type + "";
+}
+
+FormatSpecifier.prototype.toString = function () {
+  return this.fill + this.align + this.sign + this.symbol + (this.zero ? "0" : "") + (this.width === undefined ? "" : Math.max(1, this.width | 0)) + (this.comma ? "," : "") + (this.precision === undefined ? "" : "." + Math.max(0, this.precision | 0)) + (this.trim ? "~" : "") + this.type;
+};
+},{}],"sIkL":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+// Trims insignificant zeros, e.g., replaces 1.2000k with 1.2k.
+function _default(s) {
+  out: for (var n = s.length, i = 1, i0 = -1, i1; i < n; ++i) {
+    switch (s[i]) {
+      case ".":
+        i0 = i1 = i;
+        break;
+
+      case "0":
+        if (i0 === 0) i0 = i;
+        i1 = i;
+        break;
+
+      default:
+        if (!+s[i]) break out;
+        if (i0 > 0) i0 = 0;
+        break;
+    }
+  }
+
+  return i0 > 0 ? s.slice(0, i0) + s.slice(i1 + 1) : s;
+}
+},{}],"WMxc":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+exports.prefixExponent = void 0;
+
+var _formatDecimal = _interopRequireDefault(require("./formatDecimal.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var prefixExponent;
+exports.prefixExponent = prefixExponent;
+
+function _default(x, p) {
+  var d = (0, _formatDecimal.default)(x, p);
+  if (!d) return x + "";
+  var coefficient = d[0],
+      exponent = d[1],
+      i = exponent - (exports.prefixExponent = prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1,
+      n = coefficient.length;
+  return i === n ? coefficient : i > n ? coefficient + new Array(i - n + 1).join("0") : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i) : "0." + new Array(1 - i).join("0") + (0, _formatDecimal.default)(x, Math.max(0, p + i - 1))[0]; // less than 1y!
+}
+},{"./formatDecimal.js":"fiGR"}],"gMFS":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+var _formatDecimal = _interopRequireDefault(require("./formatDecimal.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _default(x, p) {
+  var d = (0, _formatDecimal.default)(x, p);
+  if (!d) return x + "";
+  var coefficient = d[0],
+      exponent = d[1];
+  return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1) : coefficient + new Array(exponent - coefficient.length + 2).join("0");
+}
+},{"./formatDecimal.js":"fiGR"}],"w40g":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _formatPrefixAuto = _interopRequireDefault(require("./formatPrefixAuto.js"));
+
+var _formatRounded = _interopRequireDefault(require("./formatRounded.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = {
+  "%": function (x, p) {
+    return (x * 100).toFixed(p);
+  },
+  "b": function (x) {
+    return Math.round(x).toString(2);
+  },
+  "c": function (x) {
+    return x + "";
+  },
+  "d": function (x) {
+    return Math.round(x).toString(10);
+  },
+  "e": function (x, p) {
+    return x.toExponential(p);
+  },
+  "f": function (x, p) {
+    return x.toFixed(p);
+  },
+  "g": function (x, p) {
+    return x.toPrecision(p);
+  },
+  "o": function (x) {
+    return Math.round(x).toString(8);
+  },
+  "p": function (x, p) {
+    return (0, _formatRounded.default)(x * 100, p);
+  },
+  "r": _formatRounded.default,
+  "s": _formatPrefixAuto.default,
+  "X": function (x) {
+    return Math.round(x).toString(16).toUpperCase();
+  },
+  "x": function (x) {
+    return Math.round(x).toString(16);
+  }
+};
+exports.default = _default;
+},{"./formatPrefixAuto.js":"WMxc","./formatRounded.js":"gMFS"}],"Ecm4":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+function _default(x) {
+  return x;
+}
+},{}],"Iakc":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+var _exponent = _interopRequireDefault(require("./exponent.js"));
+
+var _formatGroup = _interopRequireDefault(require("./formatGroup.js"));
+
+var _formatNumerals = _interopRequireDefault(require("./formatNumerals.js"));
+
+var _formatSpecifier = _interopRequireDefault(require("./formatSpecifier.js"));
+
+var _formatTrim = _interopRequireDefault(require("./formatTrim.js"));
+
+var _formatTypes = _interopRequireDefault(require("./formatTypes.js"));
+
+var _formatPrefixAuto = require("./formatPrefixAuto.js");
+
+var _identity = _interopRequireDefault(require("./identity.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var map = Array.prototype.map,
+    prefixes = ["y", "z", "a", "f", "p", "n", "µ", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y"];
+
+function _default(locale) {
+  var group = locale.grouping === undefined || locale.thousands === undefined ? _identity.default : (0, _formatGroup.default)(map.call(locale.grouping, Number), locale.thousands + ""),
+      currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "",
+      currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "",
+      decimal = locale.decimal === undefined ? "." : locale.decimal + "",
+      numerals = locale.numerals === undefined ? _identity.default : (0, _formatNumerals.default)(map.call(locale.numerals, String)),
+      percent = locale.percent === undefined ? "%" : locale.percent + "",
+      minus = locale.minus === undefined ? "-" : locale.minus + "",
+      nan = locale.nan === undefined ? "NaN" : locale.nan + "";
+
+  function newFormat(specifier) {
+    specifier = (0, _formatSpecifier.default)(specifier);
+    var fill = specifier.fill,
+        align = specifier.align,
+        sign = specifier.sign,
+        symbol = specifier.symbol,
+        zero = specifier.zero,
+        width = specifier.width,
+        comma = specifier.comma,
+        precision = specifier.precision,
+        trim = specifier.trim,
+        type = specifier.type; // The "n" type is an alias for ",g".
+
+    if (type === "n") comma = true, type = "g"; // The "" type, and any invalid type, is an alias for ".12~g".
+    else if (!_formatTypes.default[type]) precision === undefined && (precision = 12), trim = true, type = "g"; // If zero fill is specified, padding goes after sign and before digits.
+
+    if (zero || fill === "0" && align === "=") zero = true, fill = "0", align = "="; // Compute the prefix and suffix.
+    // For SI-prefix, the suffix is lazily computed.
+
+    var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "",
+        suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type) ? percent : ""; // What format function should we use?
+    // Is this an integer type?
+    // Can this type generate exponential notation?
+
+    var formatType = _formatTypes.default[type],
+        maybeSuffix = /[defgprs%]/.test(type); // Set the default precision if not specified,
+    // or clamp the specified precision to the supported range.
+    // For significant precision, it must be in [1, 21].
+    // For fixed precision, it must be in [0, 20].
+
+    precision = precision === undefined ? 6 : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision)) : Math.max(0, Math.min(20, precision));
+
+    function format(value) {
+      var valuePrefix = prefix,
+          valueSuffix = suffix,
+          i,
+          n,
+          c;
+
+      if (type === "c") {
+        valueSuffix = formatType(value) + valueSuffix;
+        value = "";
+      } else {
+        value = +value; // Determine the sign. -0 is not less than 0, but 1 / -0 is!
+
+        var valueNegative = value < 0 || 1 / value < 0; // Perform the initial formatting.
+
+        value = isNaN(value) ? nan : formatType(Math.abs(value), precision); // Trim insignificant zeros.
+
+        if (trim) value = (0, _formatTrim.default)(value); // If a negative value rounds to zero after formatting, and no explicit positive sign is requested, hide the sign.
+
+        if (valueNegative && +value === 0 && sign !== "+") valueNegative = false; // Compute the prefix and suffix.
+
+        valuePrefix = (valueNegative ? sign === "(" ? sign : minus : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
+        valueSuffix = (type === "s" ? prefixes[8 + _formatPrefixAuto.prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : ""); // Break the formatted value into the integer “value” part that can be
+        // grouped, and fractional or exponential “suffix” part that is not.
+
+        if (maybeSuffix) {
+          i = -1, n = value.length;
+
+          while (++i < n) {
+            if (c = value.charCodeAt(i), 48 > c || c > 57) {
+              valueSuffix = (c === 46 ? decimal + value.slice(i + 1) : value.slice(i)) + valueSuffix;
+              value = value.slice(0, i);
+              break;
+            }
+          }
+        }
+      } // If the fill character is not "0", grouping is applied before padding.
+
+
+      if (comma && !zero) value = group(value, Infinity); // Compute the padding.
+
+      var length = valuePrefix.length + value.length + valueSuffix.length,
+          padding = length < width ? new Array(width - length + 1).join(fill) : ""; // If the fill character is "0", grouping is applied after padding.
+
+      if (comma && zero) value = group(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = ""; // Reconstruct the final output based on the desired alignment.
+
+      switch (align) {
+        case "<":
+          value = valuePrefix + value + valueSuffix + padding;
+          break;
+
+        case "=":
+          value = valuePrefix + padding + value + valueSuffix;
+          break;
+
+        case "^":
+          value = padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length);
+          break;
+
+        default:
+          value = padding + valuePrefix + value + valueSuffix;
+          break;
+      }
+
+      return numerals(value);
+    }
+
+    format.toString = function () {
+      return specifier + "";
+    };
+
+    return format;
+  }
+
+  function formatPrefix(specifier, value) {
+    var f = newFormat((specifier = (0, _formatSpecifier.default)(specifier), specifier.type = "f", specifier)),
+        e = Math.max(-8, Math.min(8, Math.floor((0, _exponent.default)(value) / 3))) * 3,
+        k = Math.pow(10, -e),
+        prefix = prefixes[8 + e / 3];
+    return function (value) {
+      return f(k * value) + prefix;
+    };
+  }
+
+  return {
+    format: newFormat,
+    formatPrefix: formatPrefix
+  };
+}
+},{"./exponent.js":"G46r","./formatGroup.js":"CupU","./formatNumerals.js":"mUgz","./formatSpecifier.js":"Nf4q","./formatTrim.js":"sIkL","./formatTypes.js":"w40g","./formatPrefixAuto.js":"WMxc","./identity.js":"Ecm4"}],"VIed":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = defaultLocale;
+exports.formatPrefix = exports.format = void 0;
+
+var _locale = _interopRequireDefault(require("./locale.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var locale;
+var format;
+exports.format = format;
+var formatPrefix;
+exports.formatPrefix = formatPrefix;
+defaultLocale({
+  decimal: ".",
+  thousands: ",",
+  grouping: [3],
+  currency: ["$", ""],
+  minus: "-"
+});
+
+function defaultLocale(definition) {
+  locale = (0, _locale.default)(definition);
+  exports.format = format = locale.format;
+  exports.formatPrefix = formatPrefix = locale.formatPrefix;
+  return locale;
+}
+},{"./locale.js":"Iakc"}],"cTEw":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+var _exponent = _interopRequireDefault(require("./exponent.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _default(step) {
+  return Math.max(0, -(0, _exponent.default)(Math.abs(step)));
+}
+},{"./exponent.js":"G46r"}],"aFxy":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+var _exponent = _interopRequireDefault(require("./exponent.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _default(step, value) {
+  return Math.max(0, Math.max(-8, Math.min(8, Math.floor((0, _exponent.default)(value) / 3))) * 3 - (0, _exponent.default)(Math.abs(step)));
+}
+},{"./exponent.js":"G46r"}],"we8G":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+var _exponent = _interopRequireDefault(require("./exponent.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _default(step, max) {
+  step = Math.abs(step), max = Math.abs(max) - step;
+  return Math.max(0, (0, _exponent.default)(max) - (0, _exponent.default)(step)) + 1;
+}
+},{"./exponent.js":"G46r"}],"SA6z":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "formatDefaultLocale", {
+  enumerable: true,
+  get: function () {
+    return _defaultLocale.default;
+  }
+});
+Object.defineProperty(exports, "format", {
+  enumerable: true,
+  get: function () {
+    return _defaultLocale.format;
+  }
+});
+Object.defineProperty(exports, "formatPrefix", {
+  enumerable: true,
+  get: function () {
+    return _defaultLocale.formatPrefix;
+  }
+});
+Object.defineProperty(exports, "formatLocale", {
+  enumerable: true,
+  get: function () {
+    return _locale.default;
+  }
+});
+Object.defineProperty(exports, "formatSpecifier", {
+  enumerable: true,
+  get: function () {
+    return _formatSpecifier.default;
+  }
+});
+Object.defineProperty(exports, "FormatSpecifier", {
+  enumerable: true,
+  get: function () {
+    return _formatSpecifier.FormatSpecifier;
+  }
+});
+Object.defineProperty(exports, "precisionFixed", {
+  enumerable: true,
+  get: function () {
+    return _precisionFixed.default;
+  }
+});
+Object.defineProperty(exports, "precisionPrefix", {
+  enumerable: true,
+  get: function () {
+    return _precisionPrefix.default;
+  }
+});
+Object.defineProperty(exports, "precisionRound", {
+  enumerable: true,
+  get: function () {
+    return _precisionRound.default;
+  }
+});
+
+var _defaultLocale = _interopRequireWildcard(require("./defaultLocale.js"));
+
+var _locale = _interopRequireDefault(require("./locale.js"));
+
+var _formatSpecifier = _interopRequireWildcard(require("./formatSpecifier.js"));
+
+var _precisionFixed = _interopRequireDefault(require("./precisionFixed.js"));
+
+var _precisionPrefix = _interopRequireDefault(require("./precisionPrefix.js"));
+
+var _precisionRound = _interopRequireDefault(require("./precisionRound.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+},{"./defaultLocale.js":"VIed","./locale.js":"Iakc","./formatSpecifier.js":"Nf4q","./precisionFixed.js":"cTEw","./precisionPrefix.js":"aFxy","./precisionRound.js":"we8G"}],"OsNT":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.DataScope = DataScope;
+exports.DataScopeId = void 0;
+
+var React = _interopRequireWildcard(require("react"));
+
+var _button = require("./button");
+
+var _d3Format = require("d3-format");
+
+var _language = require("../language");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+var DataScopeId;
+exports.DataScopeId = DataScopeId;
+
+(function (DataScopeId) {
+  DataScopeId[DataScopeId["AllData"] = 0] = "AllData";
+  DataScopeId[DataScopeId["SelectedData"] = 1] = "SelectedData";
+  DataScopeId[DataScopeId["FilteredData"] = 2] = "FilteredData";
+})(DataScopeId || (exports.DataScopeId = DataScopeId = {}));
+
+var shortFormat = (0, _d3Format.format)('.2~s');
+
+function short(n) {
+  return n === -1 ? '--' : n ? n < 1000 ? n.toString() : shortFormat(n) : '0';
+}
+
+function DataScope(props) {
+  var dataCount = Object.assign({
+    all: -1,
+    filtered: -1,
+    selected: -1
+  }, props.dataCount);
+  return props.compact ? React.createElement("div", {
+    className: _sanddanceReact.util.classList('sanddance-datascope', 'compact'),
+    onClick: props.onCompactClick
+  }, React.createElement(Compact, Object.assign({}, props, {
+    dataScopeId: DataScopeId.AllData,
+    text: _language.strings.selectDataSpanAll,
+    count: dataCount.all
+  })), React.createElement(Compact, Object.assign({}, props, {
+    dataScopeId: DataScopeId.FilteredData,
+    text: _language.strings.selectDataSpanFilter,
+    count: dataCount.filtered
+  })), React.createElement(Compact, Object.assign({}, props, {
+    dataScopeId: DataScopeId.SelectedData,
+    text: _language.strings.selectDataSpanSelection,
+    count: dataCount.selected
+  }))) : React.createElement("div", {
+    className: _sanddanceReact.util.classList('sanddance-datascope', 'extended', props.active && 'active')
+  }, React.createElement("div", null, React.createElement("div", null, props.dataSet), React.createElement("div", {
+    className: "datascope-buttons"
+  }, React.createElement(DataScopeButton, Object.assign({}, props, {
+    dataScopeId: DataScopeId.AllData,
+    text: _language.strings.selectDataSpanAll,
+    count: dataCount.all
+  })), React.createElement(DataScopeButton, Object.assign({}, props, {
+    dataScopeId: DataScopeId.FilteredData,
+    text: _language.strings.selectDataSpanFilter,
+    count: dataCount.filtered
+  })), React.createElement(DataScopeButton, Object.assign({}, props, {
+    dataScopeId: DataScopeId.SelectedData,
+    text: _language.strings.selectDataSpanSelection,
+    count: dataCount.selected
+  })))));
+}
+
+function Compact(props) {
+  return React.createElement("div", {
+    title: props.text,
+    onClick: function onClick() {
+      props.onDataScopeClick(props.dataScopeId);
+    }
+  }, short(props.count));
+}
+
+function DataScopeButton(props) {
+  return React.createElement(_button.Button, {
+    themePalette: props.themePalette,
+    className: _sanddanceReact.util.classList('datascope-button', props.selectedDataScope === props.dataScopeId && 'selected'),
+    disabled: props.disabled,
+    text: props.text,
+    onClick: function onClick() {
+      props.onDataScopeClick(props.dataScopeId);
+    },
+    onRenderText: function onRenderText() {
+      return React.createElement("div", {
+        title: props.count > 0 ? props.count.toString() : ''
+      }, React.createElement("label", null, props.text), React.createElement("div", null, short(props.count)));
+    },
+    onRenderIcon: function onRenderIcon() {
+      return null;
+    }
+  });
+}
+},{"react":"mpTF","./button":"eqtW","d3-format":"SA6z","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"GuKX":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Scrollable = Scrollable;
+
+var React = _interopRequireWildcard(require("react"));
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function Scrollable(props) {
+  return React.createElement("div", {
+    className: _sanddanceReact.util.classList('scrollable-container', props.className),
+    role: props.role
+  }, React.createElement("div", {
+    className: "scrollable"
+  }, props.children));
+}
+},{"react":"mpTF","@msrvida/sanddance-react":"MjKu"}],"f8Jx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Sidebar = Sidebar;
+exports.Sidebutton = Sidebutton;
+
+var React = _interopRequireWildcard(require("react"));
+
+var _base = require("../base");
+
+var _dataScope = require("./dataScope");
+
+var _iconButton = require("./iconButton");
+
+var _scrollable = require("./scrollable");
+
+var _interfaces = require("../interfaces");
+
+var _language = require("../language");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function Sidebar(props) {
+  var sidebuttons = [{
+    sideTabId: _interfaces.SideTabId.ChartType,
+    iconName: 'BIDashboard',
+    title: _language.strings.labelChart
+  }, {
+    sideTabId: _interfaces.SideTabId.Color,
+    iconName: 'Color',
+    title: _language.strings.labelColor
+  }, {
+    sideTabId: _interfaces.SideTabId.Data,
+    iconName: 'Table',
+    title: _language.strings.labelDataBrowser
+  }, {
+    sideTabId: _interfaces.SideTabId.Search,
+    iconName: 'Search',
+    title: _language.strings.labelSearch
+  }, {
+    sideTabId: _interfaces.SideTabId.Snapshots,
+    iconName: 'Camera',
+    title: _language.strings.labelSnapshots
+  }, {
+    sideTabId: _interfaces.SideTabId.History,
+    iconName: 'History',
+    title: _language.strings.labelHistory
+  }, {
+    sideTabId: _interfaces.SideTabId.Settings,
+    iconName: 'Settings',
+    title: _language.strings.labelChartSettings
+  }];
+  return React.createElement("div", {
+    className: _sanddanceReact.util.classList('sanddance-sidebar', 'calculator', props.pinned && 'pinned', props.closed && 'closed')
+  }, React.createElement("div", {
+    className: "sidebar-content"
+  }, React.createElement(_dataScope.DataScope, Object.assign({}, props.dataScopeProps)), React.createElement("div", {
+    className: "vbuttons",
+    role: 'tablist'
+  }, React.createElement("div", {
+    className: "sidebar-dialogs"
+  }, sidebuttons.map(function (sidebutton, i) {
+    return React.createElement(Sidebutton, Object.assign({
+      key: i
+    }, props, sidebutton, {
+      themePalette: props.themePalette
+    }));
+  })), !props.hideSidebarControls && React.createElement("div", {
+    className: "sidebar-controls"
+  }, React.createElement(Sidebutton, Object.assign({}, props, {
+    sideTabId: _interfaces.SideTabId.Pin,
+    iconName: props.pinned ? 'Pinned' : 'Pin',
+    title: props.pinned ? _language.strings.buttonToolbarFloat : _language.strings.buttonToolbarDock
+  })), React.createElement(Sidebutton, Object.assign({}, props, {
+    sideTabId: _interfaces.SideTabId.Collapse,
+    iconName: props.closed ? 'DoubleChevronRight12' : 'DoubleChevronLeft12',
+    title: props.closed ? _language.strings.buttonToolbarShow : _language.strings.buttonToolbarHide
+  })))), React.createElement(_scrollable.Scrollable, {
+    role: 'tabpanel'
+  }, React.createElement("div", {
+    className: "sidetab"
+  }, props.children)), props.calculating && React.createElement("div", {
+    className: "calculating"
+  }, React.createElement(_base.base.fluentUI.Spinner, {
+    size: _base.base.fluentUI.SpinnerSize.large
+  }))));
+}
+
+function Sidebutton(props) {
+  var selected = !props.closed && props.selectedSideTab === props.sideTabId;
+  return React.createElement("div", {
+    className: _sanddanceReact.util.classList('vbutton', selected && 'selected'),
+    role: 'tab',
+    "aria-selected": selected
+  }, props.badgeText && React.createElement("div", {
+    className: "count"
+  }, props.badgeText), React.createElement(_iconButton.IconButton, {
+    themePalette: props.themePalette,
+    className: "vbutton",
+    iconName: props.iconName,
+    title: props.title,
+    onClick: function onClick() {
+      props.onSideTabClick(props.sideTabId);
+    }
+  }));
+}
+},{"react":"mpTF","../base":"Vlbn","./dataScope":"OsNT","./iconButton":"dQNc","./scrollable":"GuKX","../interfaces":"h2T5","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"hH4t":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CommandBarButtonStyles = void 0;
+
+var _base = require("../base");
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var CommandBarButtonStyles = function CommandBarButtonStyles(props) {
+  var theme = props.theme;
+
+  if (!theme) {
+    throw new Error('Theme is undefined or null.');
+  }
+
+  var palette = theme.palette,
+      semanticColors = theme.semanticColors;
+  var BUTTON_ICON_CLASSNAME = '.ms-Button-icon';
+  return {
+    root: [Object.assign({}, _base.base.fluentUI.getFocusStyle(theme, {
+      inset: 2
+    })), {
+      backgroundColor: palette.white
+    }],
+    rootHovered: {
+      backgroundColor: palette.neutralLighter,
+      selectors: _defineProperty({}, BUTTON_ICON_CLASSNAME, {
+        color: palette.themeDarkAlt
+      })
+    },
+    rootPressed: {
+      backgroundColor: palette.neutralLight,
+      color: palette.neutralDark,
+      selectors: _defineProperty({}, BUTTON_ICON_CLASSNAME, {
+        color: palette.themeDark
+      })
+    },
+    rootChecked: {
+      backgroundColor: palette.neutralLight,
+      color: palette.neutralDark,
+      selectors: _defineProperty({}, BUTTON_ICON_CLASSNAME, {
+        color: palette.themeDark
+      })
+    },
+    rootCheckedHovered: {
+      backgroundColor: palette.neutralQuaternaryAlt,
+      color: palette.neutralDark
+    },
+    rootExpanded: {
+      color: palette.neutralDark,
+      backgroundColor: palette.neutralLight,
+      selectors: _defineProperty({}, BUTTON_ICON_CLASSNAME, {
+        color: palette.themeDark
+      })
+    },
+    rootExpandedHovered: {
+      background: palette.neutralQuaternaryAlt
+    },
+    rootDisabled: {
+      backgroundColor: palette.white,
+      selectors: _defineProperty({}, BUTTON_ICON_CLASSNAME, {
+        color: semanticColors.disabledBodySubtext
+      })
+    },
+    splitButtonMenuButton: {
+      backgroundColor: palette.white,
+      color: palette.neutralSecondary,
+      selectors: {
+        ':hover': {
+          backgroundColor: palette.neutralLighter,
+          selectors: _defineProperty({}, BUTTON_ICON_CLASSNAME, {
+            color: palette.neutralPrimary
+          })
+        },
+        ':active': {
+          backgroundColor: palette.neutralLight,
+          selectors: _defineProperty({}, BUTTON_ICON_CLASSNAME, {
+            color: palette.neutralPrimary
+          })
+        }
+      }
+    },
+    splitButtonMenuButtonDisabled: {
+      backgroundColor: palette.white
+    },
+    icon: {
+      color: palette.themePrimary
+    }
+  };
+};
+
+exports.CommandBarButtonStyles = CommandBarButtonStyles;
+},{"../base":"Vlbn"}],"GBuN":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Logo = Logo;
+
+var React = _interopRequireWildcard(require("react"));
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+var s = "\n ......\n.......\n...\n......\n ......\n    ...\n.......\n......\n";
+var d = s.split('\n').map(function (row, irow) {
+  return row.length ? row.split('').map(function (char, icol) {
+    return char.trim() ? "M".concat(2 * icol + 1, " ").concat(2 * (irow - 1) + 1, " v1 h1 v-1 Z") : '';
+  }).join(' ') : '';
+}).join('\n');
+
+function Logo() {
+  return React.createElement("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 16 16"
+  }, React.createElement("path", {
+    d: d
+  }));
+}
+},{"react":"mpTF"}],"Afi9":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Topbar = Topbar;
+
+var _CommandBarButton = require("./CommandBarButton.styles");
+
+var _logo = require("./logo");
+
+var _base = require("../base");
+
+var _language = require("../language");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var React = _interopRequireWildcard(require("react"));
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function Topbar(props) {
+  var zeroResults = props.selectionState.selectedData && props.selectionState.selectedData.length === 0;
+  var disabled = !props.loaded;
+  var items = [{
+    key: 'undo',
+    name: _language.strings.buttonUndo,
+    iconProps: {
+      iconName: 'Undo'
+    },
+    disabled: disabled || props.historyItems.length === 0 || props.historyIndex === 0,
+    onClick: props.undo
+  }, {
+    key: 'redo',
+    name: _language.strings.buttonRedo,
+    iconProps: {
+      iconName: 'Redo'
+    },
+    disabled: disabled || props.historyItems.length <= 1 || props.historyIndex >= props.historyItems.length - 1,
+    onClick: props.redo
+  }, {
+    key: 'deselect',
+    name: _language.strings.buttonDeselect,
+    iconProps: {
+      iconName: 'Cancel'
+    },
+    disabled: disabled || !props.selectionSearch,
+    onClick: props.doDeselect
+  }, {
+    key: 'isolate',
+    name: _language.strings.buttonIsolate,
+    iconProps: {
+      iconName: 'Filter'
+    },
+    disabled: disabled || !props.selectionSearch || zeroResults,
+    onClick: function onClick() {
+      return props.doFilter(props.selectionSearch, _language.strings.labelHistoryFilterIsolate);
+    }
+  }, {
+    key: 'exclude',
+    name: _language.strings.buttonExclude,
+    iconProps: {
+      iconName: 'ClearFilter'
+    },
+    disabled: disabled || !props.selectionSearch || zeroResults,
+    onClick: function onClick() {
+      return props.doFilter(_sanddanceReact.SandDance.searchExpression.invert(props.selectionSearch), _language.strings.labelHistoryFilterIExclude);
+    }
+  }, {
+    key: 'reset',
+    name: _language.strings.buttonReset,
+    iconProps: {
+      iconName: 'RemoveFilter'
+    },
+    disabled: disabled || !props.filter,
+    onClick: function onClick() {
+      return props.doUnfilter(_language.strings.labelHistoryFilterClear);
+    }
+  }];
+
+  if (props.buttons) {
+    items.push.apply(items, props.buttons);
+  }
+
+  if (props.collapseLabels) {
+    items.forEach(function (item) {
+      return item.iconOnly = true;
+    });
+  }
+
+  var farItems = [{
+    key: 'previous-snapshot',
+    iconProps: {
+      iconName: 'Previous'
+    },
+    title: _language.strings.buttonPrevSnapshot,
+    onClick: props.onSnapshotPreviousClick,
+    disabled: props.snapshots.length < 2
+  }, {
+    key: 'snapshot',
+    iconProps: {
+      iconName: 'Camera'
+    },
+    title: _language.strings.buttonCreateSnapshot,
+    onClick: props.onSnapshotClick,
+    disabled: !props.loaded
+  }, {
+    key: 'next-snapshot',
+    iconProps: {
+      iconName: 'Next'
+    },
+    title: _language.strings.buttonNextSnapshot,
+    onClick: props.onSnapshotNextClick,
+    disabled: props.snapshots.length < 2
+  }, {
+    key: 'view',
+    iconProps: {
+      iconName: props.view === '2d' ? 'Product' : 'Page'
+    },
+    title: props.view === '2d' ? _language.strings.labelViewType3d : _language.strings.labelViewType2d,
+    onClick: props.onViewClick,
+    disabled: !props.loaded
+  }, {
+    key: 'home',
+    iconProps: {
+      iconName: 'PicturePosition'
+    },
+    title: _language.strings.buttonCameraHome,
+    onClick: props.onHomeClick,
+    disabled: !props.loaded
+  }];
+  return React.createElement("div", {
+    className: "sanddance-explorer-topbar"
+  }, React.createElement("div", {
+    className: "logo"
+  }, React.createElement(_logo.Logo, null), React.createElement("a", {
+    href: props.logoClickUrl || '/',
+    target: props.logoClickTarget || '_blank'
+  }, _language.strings.appName)), React.createElement("div", {
+    className: "sanddance-explorer-commandbar"
+  }, React.createElement(_base.base.fluentUI.Customizer, {
+    scopedSettings: {
+      CommandBarButton: {
+        styles: function styles(buttonProps) {
+          buttonProps.theme.palette = props.themePalette;
+          return (0, _CommandBarButton.CommandBarButtonStyles)(buttonProps);
+        }
+      }
+    }
+  }, React.createElement(_base.base.fluentUI.CommandBar, {
+    items: items,
+    farItems: farItems,
+    styles: {
+      root: {
+        backgroundColor: 'transparent',
+        height: 'unset',
+        paddingLeft: 0,
+        paddingRight: 0
+      }
+    }
+  }))));
+}
+},{"./CommandBarButton.styles":"hH4t","./logo":"GBuN","../base":"Vlbn","../language":"hk5u","@msrvida/sanddance-react":"MjKu","react":"mpTF"}],"f19h":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.loadDataArray = exports.loadDataFile = void 0;
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var loadDataFile = function loadDataFile(dataFile) {
+  return new Promise(function (resolve, reject) {
+    var vega = _sanddanceReact.SandDance.VegaDeckGl.base.vega;
+    var loader = vega.loader();
+
+    function handleRawText(text) {
+      var data;
+
+      try {
+        data = vega.read(text, {
+          type: dataFile.type,
+          parse: {}
+        });
+      } catch (e) {
+        reject(e);
+      }
+
+      if (data) {
+        loadDataArray(data, dataFile.type).then(function (dc) {
+          if (dataFile.snapshotsUrl) {
+            fetch(dataFile.snapshotsUrl).then(function (response) {
+              return response.json();
+            }).then(function (snapshots) {
+              dc.snapshots = snapshots;
+              resolve(dc);
+            }).catch(reject);
+          } else if (dataFile.snapshots) {
+            dc.snapshots = dataFile.snapshots;
+            resolve(dc);
+          } else {
+            resolve(dc);
+          }
+        }).catch(reject);
+      }
+    }
+
+    if (dataFile.dataUrl) {
+      loader.load(dataFile.dataUrl).then(handleRawText).catch(reject);
+    } else if (dataFile.rawText) {
+      handleRawText(dataFile.rawText);
+    } else {
+      reject('dataFile object must have either dataUrl or rawText property set.');
+    }
+  });
+};
+
+exports.loadDataFile = loadDataFile;
+
+var loadDataArray = function loadDataArray(data, type) {
+  return new Promise(function (resolve, reject) {
+    var parse = type === 'csv' || type === 'tsv';
+
+    if (parse) {
+      //convert empty strings to null so that vega.inferType will get dates
+      data.forEach(function (row) {
+        for (var column in row) {
+          if (row[column] === '') {
+            row[column] = null;
+          }
+        }
+      });
+    }
+
+    var columns = _sanddanceReact.SandDance.util.getColumnsFromData(_sanddanceReact.SandDance.VegaDeckGl.base.vega.inferTypes, data).sort(function (a, b) {
+      return a.name.localeCompare(b.name);
+    });
+
+    if (parse) {
+      var booleanColumns = columns.filter(function (c) {
+        return c.type === 'boolean';
+      });
+      var dateColumns = columns.filter(function (c) {
+        return c.type === 'date';
+      });
+      var numericColumns = columns.filter(function (c) {
+        return c.type === 'integer' || c.type === 'number';
+      });
+      data.forEach(function (obj) {
+        booleanColumns.forEach(function (c) {
+          obj[c.name] = ('' + obj[c.name]).toLowerCase() === 'true';
+        });
+        dateColumns.forEach(function (c) {
+          var input = obj[c.name];
+
+          if (input !== null) {
+            var d = new Date(input);
+            d.input = input;
+            obj[c.name] = d;
+          }
+        });
+        numericColumns.forEach(function (c) {
+          var n = parseFloat(obj[c.name]);
+          obj[c.name] = isNaN(n) ? null : n;
+        });
+      });
+    }
+
+    resolve({
+      data: data,
+      columns: columns
+    });
+  });
+};
+
+exports.loadDataArray = loadDataArray;
+},{"@msrvida/sanddance-react":"MjKu"}],"Tl9z":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.snapshotThumbWidth = exports.defaultViewerOptions = exports.fontFamily = void 0;
+
+var _themes = require("./themes");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+var fontFamily = 'Segoe UI, sans-serif';
+exports.fontFamily = fontFamily;
+var defaultViewerOptions = {
+  colors: (0, _themes.getColorSettingsFromThemePalette)(_themes.themePalettes['']),
+  fontFamily: fontFamily
+};
+exports.defaultViewerOptions = defaultViewerOptions;
+var snapshotThumbWidth = 300;
+exports.snapshotThumbWidth = snapshotThumbWidth;
+},{"./themes":"CgE3"}],"Q3hf":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14963,7 +16817,8 @@ function ToggleColumns(props) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Chart = void 0;
+exports.chartLabel = chartLabel;
+exports.Chart = exports.chartLabelMap = void 0;
 
 var React = _interopRequireWildcard(require("react"));
 
@@ -15025,6 +16880,40 @@ var singleFacetLayouts = [{
   facetStyle: 'vertical',
   text: _language.strings.labelFacetLayoutVertical
 }];
+var chartLabelMap = [{
+  key: 'grid',
+  text: _language.strings.chartTypeGrid
+}, {
+  key: 'scatterplot',
+  text: _language.strings.chartTypeScatterPlot
+}, {
+  key: 'density',
+  text: _language.strings.chartTypeDensity
+}, {
+  key: 'barchartV',
+  text: _language.strings.chartTypeBarChartV
+}, {
+  key: 'barchartH',
+  text: _language.strings.chartTypeBarChartH
+}, {
+  key: 'treemap',
+  text: _language.strings.chartTypeTreeMap
+}, {
+  key: 'strips',
+  text: _language.strings.chartTypeStrips
+}, {
+  key: 'stacks',
+  text: _language.strings.chartTypeStacks
+}];
+exports.chartLabelMap = chartLabelMap;
+
+function chartLabel(key) {
+  for (var i = 0; i < chartLabelMap.length; i++) {
+    if (key === chartLabelMap[i].key) {
+      return chartLabelMap[i].text;
+    }
+  }
+}
 
 var Chart =
 /*#__PURE__*/
@@ -15060,31 +16949,7 @@ function (_React$Component) {
         className: "calculator"
       }, React.createElement(_base.base.fluentUI.ChoiceGroup, {
         className: "sanddance-chart-type",
-        options: [{
-          key: 'grid',
-          text: _language.strings.chartTypeGrid
-        }, {
-          key: 'scatterplot',
-          text: _language.strings.chartTypeScatterPlot
-        }, {
-          key: 'density',
-          text: _language.strings.chartTypeDensity
-        }, {
-          key: 'barchartV',
-          text: _language.strings.chartTypeBarChartV
-        }, {
-          key: 'barchartH',
-          text: _language.strings.chartTypeBarChartH
-        }, {
-          key: 'treemap',
-          text: _language.strings.chartTypeTreeMap
-        }, {
-          key: 'strips',
-          text: _language.strings.chartTypeStrips
-        }, {
-          key: 'stacks',
-          text: _language.strings.chartTypeStacks
-        }].map(function (o) {
+        options: chartLabelMap.map(function (o) {
           return Object.assign(Object.assign({}, o), {
             checked: props.chart === o.key,
             disabled: props.disabled || o.key === 'treemap' && props.quantitativeColumns.length === 0
@@ -18202,88 +20067,20 @@ function Color(props) {
     }
   })));
 }
-},{"react":"mpTF","../base":"Vlbn","../controls/columnMap":"DSho","../palettes":"otJp","../controls/signal":"OWDI","../language":"hk5u","../controls/group":"Q3hf"}],"tb7d":[function(require,module,exports) {
+},{"react":"mpTF","../base":"Vlbn","../controls/columnMap":"DSho","../palettes":"otJp","../controls/signal":"OWDI","../language":"hk5u","../controls/group":"Q3hf"}],"XFNl":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.initPrefs = initPrefs;
-exports.saveSignalValuePref = saveSignalValuePref;
-exports.copyPrefToNewState = copyPrefToNewState;
-exports.savePref = savePref;
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
+exports.KeyCodes = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function initPrefs(prefs, partialInsight) {
-  if (partialInsight) {
-    var specTypePrefs = prefs[partialInsight.chart] || {};
-    prefs[partialInsight.chart] = specTypePrefs;
-
-    for (var _role in partialInsight.columns) {
-      var role = _role;
-
-      if (role === 'color' || role === 'x') {
-        (function () {
-          var rolePrefs = specTypePrefs[role] || {};
-          specTypePrefs[role] = rolePrefs;
-          var column = partialInsight.columns[role];
-
-          var copySignalValue = function copySignalValue(signalName) {
-            if (partialInsight.signalValues && partialInsight.signalValues[signalName] && rolePrefs[column]) {
-              var signalValues = rolePrefs[column].signalValues || {};
-              signalValues[signalName] = partialInsight.signalValues[signalName];
-              rolePrefs[column].signalValues = signalValues;
-            }
-          };
-
-          switch (role) {
-            case 'color':
-              rolePrefs[column] = {
-                scheme: partialInsight.scheme,
-                colorBin: partialInsight.colorBin
-              };
-              copySignalValue(_sanddanceReact.SandDance.constants.SignalNames.ColorBinCount);
-              break;
-
-            case 'x':
-              copySignalValue(_sanddanceReact.SandDance.constants.SignalNames.XBins);
-              break;
-          }
-        })();
-      }
-    }
-  }
-}
-
-function saveSignalValuePref(prefs, chart, role, column, signalName, signalValue) {
-  var partialInsight = savePref(prefs, chart, role, column, {
-    signalValues: {}
-  });
-  partialInsight.signalValues[signalName] = signalValue;
-}
-
-function copyPrefToNewState(prefs, chart, role, columnName) {
-  var specTypePrefs = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, prefs['*'], prefs[chart]);
-
-  var rolePrefs = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, specTypePrefs['*'], specTypePrefs[role]);
-
-  var partialInsight = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, rolePrefs['*'], rolePrefs[columnName]);
-
-  return partialInsight;
-}
-
-function savePref(prefs, chart, role, column, partialInsight) {
-  var SpecTypePrefs = prefs[chart] || {};
-  prefs[chart] = SpecTypePrefs;
-  var rolePrefs = SpecTypePrefs[role] || {};
-  SpecTypePrefs[role] = rolePrefs;
-  rolePrefs[column] = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, rolePrefs[column], partialInsight);
-  return rolePrefs[column];
-}
-},{"@msrvida/sanddance-react":"MjKu"}],"Gai8":[function(require,module,exports) {
+var KeyCodes = {
+  ENTER: 13
+};
+exports.KeyCodes = KeyCodes;
+},{}],"Gai8":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18291,11 +20088,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DataItem = DataItem;
 
-var React = _interopRequireWildcard(require("react"));
+var _keycodes = require("../keycodes");
+
+var _language = require("../language");
 
 var _sanddanceReact = require("@msrvida/sanddance-react");
 
-var _language = require("../language");
+var React = _interopRequireWildcard(require("react"));
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
@@ -18403,10 +20202,6 @@ function displayValueElement(nvp) {
   return d.display;
 }
 
-var KeyCodes = {
-  ENTER: 13
-};
-
 function DataItem(props) {
   if (!props.item) {
     return null;
@@ -18473,7 +20268,7 @@ function DataItem(props) {
       onClick: !props.disabled ? searchClick : null,
       title: title,
       onKeyUp: function onKeyUp(e) {
-        if (e.keyCode === KeyCodes.ENTER) {
+        if (e.keyCode === _keycodes.KeyCodes.ENTER) {
           searchClick(e);
         }
       },
@@ -18486,733 +20281,7 @@ function DataItem(props) {
     }, displayValueElement(nameValuePair)), nameValuePair.bingSearch);
   }));
 }
-},{"react":"mpTF","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"eqtW":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Button = Button;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _base = require("../base");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function Button(props) {
-  return React.createElement(_base.base.fluentUI.DefaultButton, Object.assign({}, props, {
-    styles: {
-      root: {
-        backgroundColor: 'transparent',
-        height: '30px',
-        width: props.width,
-        padding: 0
-      },
-      rootDisabled: {
-        backgroundColor: 'transparent'
-      },
-      icon: {
-        color: props.themePalette.themePrimary
-      },
-      label: {
-        fontWeight: '400',
-        textAlign: props.textAlign || 'left'
-      }
-    },
-    iconProps: {
-      iconName: props.iconName
-    }
-  }));
-}
-},{"react":"mpTF","../base":"Vlbn"}],"fiGR":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = _default;
-
-// Computes the decimal coefficient and exponent of the specified number x with
-// significant digits p, where x is positive and p is in [1, 21] or undefined.
-// For example, formatDecimal(1.23) returns ["123", 0].
-function _default(x, p) {
-  if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
-
-  var i,
-      coefficient = x.slice(0, i); // The string returned by toExponential either has the form \d\.\d+e[-+]\d+
-  // (e.g., 1.2e+3) or the form \de[-+]\d+ (e.g., 1e+3).
-
-  return [coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient, +x.slice(i + 1)];
-}
-},{}],"G46r":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = _default;
-
-var _formatDecimal = _interopRequireDefault(require("./formatDecimal.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _default(x) {
-  return x = (0, _formatDecimal.default)(Math.abs(x)), x ? x[1] : NaN;
-}
-},{"./formatDecimal.js":"fiGR"}],"CupU":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = _default;
-
-function _default(grouping, thousands) {
-  return function (value, width) {
-    var i = value.length,
-        t = [],
-        j = 0,
-        g = grouping[0],
-        length = 0;
-
-    while (i > 0 && g > 0) {
-      if (length + g + 1 > width) g = Math.max(1, width - length);
-      t.push(value.substring(i -= g, i + g));
-      if ((length += g + 1) > width) break;
-      g = grouping[j = (j + 1) % grouping.length];
-    }
-
-    return t.reverse().join(thousands);
-  };
-}
-},{}],"mUgz":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = _default;
-
-function _default(numerals) {
-  return function (value) {
-    return value.replace(/[0-9]/g, function (i) {
-      return numerals[+i];
-    });
-  };
-}
-},{}],"Nf4q":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = formatSpecifier;
-exports.FormatSpecifier = FormatSpecifier;
-// [[fill]align][sign][symbol][0][width][,][.precision][~][type]
-var re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
-
-function formatSpecifier(specifier) {
-  if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
-  var match;
-  return new FormatSpecifier({
-    fill: match[1],
-    align: match[2],
-    sign: match[3],
-    symbol: match[4],
-    zero: match[5],
-    width: match[6],
-    comma: match[7],
-    precision: match[8] && match[8].slice(1),
-    trim: match[9],
-    type: match[10]
-  });
-}
-
-formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
-
-function FormatSpecifier(specifier) {
-  this.fill = specifier.fill === undefined ? " " : specifier.fill + "";
-  this.align = specifier.align === undefined ? ">" : specifier.align + "";
-  this.sign = specifier.sign === undefined ? "-" : specifier.sign + "";
-  this.symbol = specifier.symbol === undefined ? "" : specifier.symbol + "";
-  this.zero = !!specifier.zero;
-  this.width = specifier.width === undefined ? undefined : +specifier.width;
-  this.comma = !!specifier.comma;
-  this.precision = specifier.precision === undefined ? undefined : +specifier.precision;
-  this.trim = !!specifier.trim;
-  this.type = specifier.type === undefined ? "" : specifier.type + "";
-}
-
-FormatSpecifier.prototype.toString = function () {
-  return this.fill + this.align + this.sign + this.symbol + (this.zero ? "0" : "") + (this.width === undefined ? "" : Math.max(1, this.width | 0)) + (this.comma ? "," : "") + (this.precision === undefined ? "" : "." + Math.max(0, this.precision | 0)) + (this.trim ? "~" : "") + this.type;
-};
-},{}],"sIkL":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = _default;
-
-// Trims insignificant zeros, e.g., replaces 1.2000k with 1.2k.
-function _default(s) {
-  out: for (var n = s.length, i = 1, i0 = -1, i1; i < n; ++i) {
-    switch (s[i]) {
-      case ".":
-        i0 = i1 = i;
-        break;
-
-      case "0":
-        if (i0 === 0) i0 = i;
-        i1 = i;
-        break;
-
-      default:
-        if (!+s[i]) break out;
-        if (i0 > 0) i0 = 0;
-        break;
-    }
-  }
-
-  return i0 > 0 ? s.slice(0, i0) + s.slice(i1 + 1) : s;
-}
-},{}],"WMxc":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = _default;
-exports.prefixExponent = void 0;
-
-var _formatDecimal = _interopRequireDefault(require("./formatDecimal.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var prefixExponent;
-exports.prefixExponent = prefixExponent;
-
-function _default(x, p) {
-  var d = (0, _formatDecimal.default)(x, p);
-  if (!d) return x + "";
-  var coefficient = d[0],
-      exponent = d[1],
-      i = exponent - (exports.prefixExponent = prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1,
-      n = coefficient.length;
-  return i === n ? coefficient : i > n ? coefficient + new Array(i - n + 1).join("0") : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i) : "0." + new Array(1 - i).join("0") + (0, _formatDecimal.default)(x, Math.max(0, p + i - 1))[0]; // less than 1y!
-}
-},{"./formatDecimal.js":"fiGR"}],"gMFS":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = _default;
-
-var _formatDecimal = _interopRequireDefault(require("./formatDecimal.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _default(x, p) {
-  var d = (0, _formatDecimal.default)(x, p);
-  if (!d) return x + "";
-  var coefficient = d[0],
-      exponent = d[1];
-  return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1) : coefficient + new Array(exponent - coefficient.length + 2).join("0");
-}
-},{"./formatDecimal.js":"fiGR"}],"w40g":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _formatPrefixAuto = _interopRequireDefault(require("./formatPrefixAuto.js"));
-
-var _formatRounded = _interopRequireDefault(require("./formatRounded.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var _default = {
-  "%": function (x, p) {
-    return (x * 100).toFixed(p);
-  },
-  "b": function (x) {
-    return Math.round(x).toString(2);
-  },
-  "c": function (x) {
-    return x + "";
-  },
-  "d": function (x) {
-    return Math.round(x).toString(10);
-  },
-  "e": function (x, p) {
-    return x.toExponential(p);
-  },
-  "f": function (x, p) {
-    return x.toFixed(p);
-  },
-  "g": function (x, p) {
-    return x.toPrecision(p);
-  },
-  "o": function (x) {
-    return Math.round(x).toString(8);
-  },
-  "p": function (x, p) {
-    return (0, _formatRounded.default)(x * 100, p);
-  },
-  "r": _formatRounded.default,
-  "s": _formatPrefixAuto.default,
-  "X": function (x) {
-    return Math.round(x).toString(16).toUpperCase();
-  },
-  "x": function (x) {
-    return Math.round(x).toString(16);
-  }
-};
-exports.default = _default;
-},{"./formatPrefixAuto.js":"WMxc","./formatRounded.js":"gMFS"}],"Ecm4":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = _default;
-
-function _default(x) {
-  return x;
-}
-},{}],"Iakc":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = _default;
-
-var _exponent = _interopRequireDefault(require("./exponent.js"));
-
-var _formatGroup = _interopRequireDefault(require("./formatGroup.js"));
-
-var _formatNumerals = _interopRequireDefault(require("./formatNumerals.js"));
-
-var _formatSpecifier = _interopRequireDefault(require("./formatSpecifier.js"));
-
-var _formatTrim = _interopRequireDefault(require("./formatTrim.js"));
-
-var _formatTypes = _interopRequireDefault(require("./formatTypes.js"));
-
-var _formatPrefixAuto = require("./formatPrefixAuto.js");
-
-var _identity = _interopRequireDefault(require("./identity.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var map = Array.prototype.map,
-    prefixes = ["y", "z", "a", "f", "p", "n", "µ", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y"];
-
-function _default(locale) {
-  var group = locale.grouping === undefined || locale.thousands === undefined ? _identity.default : (0, _formatGroup.default)(map.call(locale.grouping, Number), locale.thousands + ""),
-      currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "",
-      currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "",
-      decimal = locale.decimal === undefined ? "." : locale.decimal + "",
-      numerals = locale.numerals === undefined ? _identity.default : (0, _formatNumerals.default)(map.call(locale.numerals, String)),
-      percent = locale.percent === undefined ? "%" : locale.percent + "",
-      minus = locale.minus === undefined ? "-" : locale.minus + "",
-      nan = locale.nan === undefined ? "NaN" : locale.nan + "";
-
-  function newFormat(specifier) {
-    specifier = (0, _formatSpecifier.default)(specifier);
-    var fill = specifier.fill,
-        align = specifier.align,
-        sign = specifier.sign,
-        symbol = specifier.symbol,
-        zero = specifier.zero,
-        width = specifier.width,
-        comma = specifier.comma,
-        precision = specifier.precision,
-        trim = specifier.trim,
-        type = specifier.type; // The "n" type is an alias for ",g".
-
-    if (type === "n") comma = true, type = "g"; // The "" type, and any invalid type, is an alias for ".12~g".
-    else if (!_formatTypes.default[type]) precision === undefined && (precision = 12), trim = true, type = "g"; // If zero fill is specified, padding goes after sign and before digits.
-
-    if (zero || fill === "0" && align === "=") zero = true, fill = "0", align = "="; // Compute the prefix and suffix.
-    // For SI-prefix, the suffix is lazily computed.
-
-    var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "",
-        suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type) ? percent : ""; // What format function should we use?
-    // Is this an integer type?
-    // Can this type generate exponential notation?
-
-    var formatType = _formatTypes.default[type],
-        maybeSuffix = /[defgprs%]/.test(type); // Set the default precision if not specified,
-    // or clamp the specified precision to the supported range.
-    // For significant precision, it must be in [1, 21].
-    // For fixed precision, it must be in [0, 20].
-
-    precision = precision === undefined ? 6 : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision)) : Math.max(0, Math.min(20, precision));
-
-    function format(value) {
-      var valuePrefix = prefix,
-          valueSuffix = suffix,
-          i,
-          n,
-          c;
-
-      if (type === "c") {
-        valueSuffix = formatType(value) + valueSuffix;
-        value = "";
-      } else {
-        value = +value; // Determine the sign. -0 is not less than 0, but 1 / -0 is!
-
-        var valueNegative = value < 0 || 1 / value < 0; // Perform the initial formatting.
-
-        value = isNaN(value) ? nan : formatType(Math.abs(value), precision); // Trim insignificant zeros.
-
-        if (trim) value = (0, _formatTrim.default)(value); // If a negative value rounds to zero after formatting, and no explicit positive sign is requested, hide the sign.
-
-        if (valueNegative && +value === 0 && sign !== "+") valueNegative = false; // Compute the prefix and suffix.
-
-        valuePrefix = (valueNegative ? sign === "(" ? sign : minus : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
-        valueSuffix = (type === "s" ? prefixes[8 + _formatPrefixAuto.prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : ""); // Break the formatted value into the integer “value” part that can be
-        // grouped, and fractional or exponential “suffix” part that is not.
-
-        if (maybeSuffix) {
-          i = -1, n = value.length;
-
-          while (++i < n) {
-            if (c = value.charCodeAt(i), 48 > c || c > 57) {
-              valueSuffix = (c === 46 ? decimal + value.slice(i + 1) : value.slice(i)) + valueSuffix;
-              value = value.slice(0, i);
-              break;
-            }
-          }
-        }
-      } // If the fill character is not "0", grouping is applied before padding.
-
-
-      if (comma && !zero) value = group(value, Infinity); // Compute the padding.
-
-      var length = valuePrefix.length + value.length + valueSuffix.length,
-          padding = length < width ? new Array(width - length + 1).join(fill) : ""; // If the fill character is "0", grouping is applied after padding.
-
-      if (comma && zero) value = group(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = ""; // Reconstruct the final output based on the desired alignment.
-
-      switch (align) {
-        case "<":
-          value = valuePrefix + value + valueSuffix + padding;
-          break;
-
-        case "=":
-          value = valuePrefix + padding + value + valueSuffix;
-          break;
-
-        case "^":
-          value = padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length);
-          break;
-
-        default:
-          value = padding + valuePrefix + value + valueSuffix;
-          break;
-      }
-
-      return numerals(value);
-    }
-
-    format.toString = function () {
-      return specifier + "";
-    };
-
-    return format;
-  }
-
-  function formatPrefix(specifier, value) {
-    var f = newFormat((specifier = (0, _formatSpecifier.default)(specifier), specifier.type = "f", specifier)),
-        e = Math.max(-8, Math.min(8, Math.floor((0, _exponent.default)(value) / 3))) * 3,
-        k = Math.pow(10, -e),
-        prefix = prefixes[8 + e / 3];
-    return function (value) {
-      return f(k * value) + prefix;
-    };
-  }
-
-  return {
-    format: newFormat,
-    formatPrefix: formatPrefix
-  };
-}
-},{"./exponent.js":"G46r","./formatGroup.js":"CupU","./formatNumerals.js":"mUgz","./formatSpecifier.js":"Nf4q","./formatTrim.js":"sIkL","./formatTypes.js":"w40g","./formatPrefixAuto.js":"WMxc","./identity.js":"Ecm4"}],"VIed":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = defaultLocale;
-exports.formatPrefix = exports.format = void 0;
-
-var _locale = _interopRequireDefault(require("./locale.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var locale;
-var format;
-exports.format = format;
-var formatPrefix;
-exports.formatPrefix = formatPrefix;
-defaultLocale({
-  decimal: ".",
-  thousands: ",",
-  grouping: [3],
-  currency: ["$", ""],
-  minus: "-"
-});
-
-function defaultLocale(definition) {
-  locale = (0, _locale.default)(definition);
-  exports.format = format = locale.format;
-  exports.formatPrefix = formatPrefix = locale.formatPrefix;
-  return locale;
-}
-},{"./locale.js":"Iakc"}],"cTEw":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = _default;
-
-var _exponent = _interopRequireDefault(require("./exponent.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _default(step) {
-  return Math.max(0, -(0, _exponent.default)(Math.abs(step)));
-}
-},{"./exponent.js":"G46r"}],"aFxy":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = _default;
-
-var _exponent = _interopRequireDefault(require("./exponent.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _default(step, value) {
-  return Math.max(0, Math.max(-8, Math.min(8, Math.floor((0, _exponent.default)(value) / 3))) * 3 - (0, _exponent.default)(Math.abs(step)));
-}
-},{"./exponent.js":"G46r"}],"we8G":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = _default;
-
-var _exponent = _interopRequireDefault(require("./exponent.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _default(step, max) {
-  step = Math.abs(step), max = Math.abs(max) - step;
-  return Math.max(0, (0, _exponent.default)(max) - (0, _exponent.default)(step)) + 1;
-}
-},{"./exponent.js":"G46r"}],"SA6z":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "formatDefaultLocale", {
-  enumerable: true,
-  get: function () {
-    return _defaultLocale.default;
-  }
-});
-Object.defineProperty(exports, "format", {
-  enumerable: true,
-  get: function () {
-    return _defaultLocale.format;
-  }
-});
-Object.defineProperty(exports, "formatPrefix", {
-  enumerable: true,
-  get: function () {
-    return _defaultLocale.formatPrefix;
-  }
-});
-Object.defineProperty(exports, "formatLocale", {
-  enumerable: true,
-  get: function () {
-    return _locale.default;
-  }
-});
-Object.defineProperty(exports, "formatSpecifier", {
-  enumerable: true,
-  get: function () {
-    return _formatSpecifier.default;
-  }
-});
-Object.defineProperty(exports, "FormatSpecifier", {
-  enumerable: true,
-  get: function () {
-    return _formatSpecifier.FormatSpecifier;
-  }
-});
-Object.defineProperty(exports, "precisionFixed", {
-  enumerable: true,
-  get: function () {
-    return _precisionFixed.default;
-  }
-});
-Object.defineProperty(exports, "precisionPrefix", {
-  enumerable: true,
-  get: function () {
-    return _precisionPrefix.default;
-  }
-});
-Object.defineProperty(exports, "precisionRound", {
-  enumerable: true,
-  get: function () {
-    return _precisionRound.default;
-  }
-});
-
-var _defaultLocale = _interopRequireWildcard(require("./defaultLocale.js"));
-
-var _locale = _interopRequireDefault(require("./locale.js"));
-
-var _formatSpecifier = _interopRequireWildcard(require("./formatSpecifier.js"));
-
-var _precisionFixed = _interopRequireDefault(require("./precisionFixed.js"));
-
-var _precisionPrefix = _interopRequireDefault(require("./precisionPrefix.js"));
-
-var _precisionRound = _interopRequireDefault(require("./precisionRound.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-},{"./defaultLocale.js":"VIed","./locale.js":"Iakc","./formatSpecifier.js":"Nf4q","./precisionFixed.js":"cTEw","./precisionPrefix.js":"aFxy","./precisionRound.js":"we8G"}],"OsNT":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.DataScope = DataScope;
-exports.DataScopeId = void 0;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _button = require("./button");
-
-var _d3Format = require("d3-format");
-
-var _language = require("../language");
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var DataScopeId;
-exports.DataScopeId = DataScopeId;
-
-(function (DataScopeId) {
-  DataScopeId[DataScopeId["AllData"] = 0] = "AllData";
-  DataScopeId[DataScopeId["SelectedData"] = 1] = "SelectedData";
-  DataScopeId[DataScopeId["FilteredData"] = 2] = "FilteredData";
-})(DataScopeId || (exports.DataScopeId = DataScopeId = {}));
-
-var shortFormat = (0, _d3Format.format)('.2~s');
-
-function short(n) {
-  return n === -1 ? '--' : n ? n < 1000 ? n.toString() : shortFormat(n) : '0';
-}
-
-function DataScope(props) {
-  var dataCount = Object.assign({
-    all: -1,
-    filtered: -1,
-    selected: -1
-  }, props.dataCount);
-  return props.compact ? React.createElement("div", {
-    className: _sanddanceReact.util.classList('sanddance-datascope', 'compact'),
-    onClick: props.onCompactClick
-  }, React.createElement(Compact, Object.assign({}, props, {
-    dataScopeId: DataScopeId.AllData,
-    text: _language.strings.selectDataSpanAll,
-    count: dataCount.all
-  })), React.createElement(Compact, Object.assign({}, props, {
-    dataScopeId: DataScopeId.FilteredData,
-    text: _language.strings.selectDataSpanFilter,
-    count: dataCount.filtered
-  })), React.createElement(Compact, Object.assign({}, props, {
-    dataScopeId: DataScopeId.SelectedData,
-    text: _language.strings.selectDataSpanSelection,
-    count: dataCount.selected
-  }))) : React.createElement("div", {
-    className: _sanddanceReact.util.classList('sanddance-datascope', 'extended', props.active && 'active')
-  }, React.createElement("div", null, React.createElement("div", null, props.dataSet), React.createElement("div", {
-    className: "datascope-buttons"
-  }, React.createElement(DataScopeButton, Object.assign({}, props, {
-    dataScopeId: DataScopeId.AllData,
-    text: _language.strings.selectDataSpanAll,
-    count: dataCount.all
-  })), React.createElement(DataScopeButton, Object.assign({}, props, {
-    dataScopeId: DataScopeId.FilteredData,
-    text: _language.strings.selectDataSpanFilter,
-    count: dataCount.filtered
-  })), React.createElement(DataScopeButton, Object.assign({}, props, {
-    dataScopeId: DataScopeId.SelectedData,
-    text: _language.strings.selectDataSpanSelection,
-    count: dataCount.selected
-  })))));
-}
-
-function Compact(props) {
-  return React.createElement("div", {
-    title: props.text,
-    onClick: function onClick() {
-      props.onDataScopeClick(props.dataScopeId);
-    }
-  }, short(props.count));
-}
-
-function DataScopeButton(props) {
-  return React.createElement(_button.Button, {
-    themePalette: props.themePalette,
-    className: _sanddanceReact.util.classList('datascope-button', props.selectedDataScope === props.dataScopeId && 'selected'),
-    disabled: props.disabled,
-    text: props.text,
-    onClick: function onClick() {
-      props.onDataScopeClick(props.dataScopeId);
-    },
-    onRenderText: function onRenderText() {
-      return React.createElement("div", {
-        title: props.count > 0 ? props.count.toString() : ''
-      }, React.createElement("label", null, props.text), React.createElement("div", null, short(props.count)));
-    },
-    onRenderIcon: function onRenderIcon() {
-      return null;
-    }
-  });
-}
-},{"react":"mpTF","./button":"eqtW","d3-format":"SA6z","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"pJLc":[function(require,module,exports) {
+},{"../keycodes":"XFNl","../language":"hk5u","@msrvida/sanddance-react":"MjKu","react":"mpTF"}],"pJLc":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19311,418 +20380,76 @@ function DataBrowser(props) {
     disabled: props.disabled
   }));
 }
-},{"react":"mpTF","../controls/dataExporter":"l7po","../controls/dataItem":"Gai8","../controls/dataScope":"OsNT","../controls/dropdown":"Uyrp","../controls/group":"Q3hf","../controls/iconButton":"dQNc","../language":"hk5u"}],"Tl9z":[function(require,module,exports) {
+},{"react":"mpTF","../controls/dataExporter":"l7po","../controls/dataItem":"Gai8","../controls/dataScope":"OsNT","../controls/dropdown":"Uyrp","../controls/group":"Q3hf","../controls/iconButton":"dQNc","../language":"hk5u"}],"YVpI":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.snapshotThumbWidth = exports.defaultViewerOptions = exports.fontFamily = void 0;
+exports.History = History;
 
-var _themes = require("./themes");
+var _group = require("../controls/group");
 
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var fontFamily = 'Segoe UI, sans-serif';
-exports.fontFamily = fontFamily;
-var defaultViewerOptions = {
-  colors: (0, _themes.getColorSettingsFromThemePalette)(_themes.themePalettes['']),
-  fontFamily: fontFamily
-};
-exports.defaultViewerOptions = defaultViewerOptions;
-var snapshotThumbWidth = 300;
-exports.snapshotThumbWidth = snapshotThumbWidth;
-},{"./themes":"CgE3"}],"ENdt":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.maxCategoricalColors = 20;
-var Recommender = /** @class */ (function () {
-    function Recommender(columns, data) {
-    }
-    return Recommender;
-}());
-exports.Recommender = Recommender;
-function defaultColorScheme(c) {
-    if (c.quantitative) {
-        return 'redyellowgreen';
-    }
-    else if (c.stats.distinctValueCount === 2) {
-        return 'dual_redgreen';
-    }
-    else if (c.stats.distinctValueCount <= 10) {
-        return 'category10';
-    }
-    return 'category20';
-}
-exports.defaultColorScheme = defaultColorScheme;
+var _keycodes = require("../keycodes");
 
-},{}],"oxgd":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var recommender_1 = require("./recommender");
-var maxDistinctVal = 20;
-var minDistinctVal = 2;
-var BarChartRecommenderSummary = /** @class */ (function () {
-    function BarChartRecommenderSummary(columns, data) {
-        var score = -1;
-        for (var i = 0; i < columns.length; i++) {
-            var recommendation = new BarChartRecommender(columns[i], data).recommend();
-            if (recommendation.score > score) {
-                this.best = recommendation;
-                score = recommendation.score;
-            }
-            if (score === 1)
-                break;
-        }
-        for (var k = 0; k < columns.length; k++) {
-            var column = columns[k];
-            if (column.name === this.best.columns.x || column.stats.isSequential)
-                continue;
-            if (column.quantitative || (column.stats.distinctValueCount < recommender_1.maxCategoricalColors && column.stats.distinctValueCount > 1)) {
-                this.best.columns.color = this.best.columns.sort = column.name;
-                this.best.scheme = recommender_1.defaultColorScheme(column);
-                if (column.quantitative) {
-                    this.best.colorBin = 'quantile';
-                }
-                break;
-            }
-        }
-    }
-    BarChartRecommenderSummary.prototype.recommend = function () {
-        return this.best;
-    };
-    return BarChartRecommenderSummary;
-}());
-exports.BarChartRecommenderSummary = BarChartRecommenderSummary;
-var BarChartRecommender = /** @class */ (function () {
-    function BarChartRecommender(column, data) {
-        this.score = 0;
-        this.column = column;
-        //the total score for bar chart is 1
-        this.rules = [
-            function (column) {
-                if (column.stats.isSequential)
-                    return false;
-                else if (column.quantitative) {
-                    return true;
-                }
-                else if (!column.quantitative && column.stats.distinctValueCount <= maxDistinctVal && column.stats.distinctValueCount >= minDistinctVal) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-        ];
-        for (var i = 0; i < this.rules.length; i++) {
-            if (this.rules[i](column))
-                this.score++;
-        }
-    }
-    BarChartRecommender.prototype.recommend = function () {
-        var rec = {
-            chart: 'barchart',
-            columns: {
-                x: this.column.name
-            },
-            score: this.score,
-            scheme: undefined,
-            view: '2d'
-        };
-        return rec;
-    };
-    return BarChartRecommender;
-}());
-exports.BarChartRecommender = BarChartRecommender;
-
-},{"./recommender":"ENdt"}],"O4ew":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-//TODO: languages other than english
-var longitudeNames = ['lon', 'long', 'longitude'];
-var latitudeNames = ['lat', 'latitude'];
-function isSpec(names, limits, column, data) {
-    var is = false;
-    var cname = column.name.toLowerCase();
-    for (var i = 0; i < names.length; i++) {
-        if (names[i] === cname) {
-            is = true;
-            break;
-        }
-    }
-    if (data) {
-        //TODO: spin through data to see if it is within limits
-    }
-    return is;
-}
-function isLongitude(column, data) {
-    return isSpec(longitudeNames, [-180, 180], column, data);
-}
-exports.isLongitude = isLongitude;
-function isLatitude(column, data) {
-    return isSpec(latitudeNames, [-90, 90], column, data);
-}
-exports.isLatitude = isLatitude;
-function isGeo(column, data) {
-    return isLatitude(column, data) || isLongitude(column, data);
-}
-exports.isGeo = isGeo;
-
-},{}],"iBe2":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var recommender_1 = require("./recommender");
-var geo_1 = require("./geo");
-var ScatterPlotRecommenderSummary = /** @class */ (function () {
-    function ScatterPlotRecommenderSummary(columns, data) {
-        var rec = {
-            chart: 'scatterplot',
-            score: undefined,
-            columns: {},
-            scheme: undefined,
-            view: '2d'
-        };
-        columns.forEach(function (column) {
-            if (!rec.columns.x) {
-                if (column.name.toLowerCase() === 'x') {
-                    return rec.columns.x = column.name;
-                }
-                else if (geo_1.isLongitude(column)) {
-                    return rec.columns.x = column.name;
-                }
-            }
-            if (!rec.columns.y) {
-                if (column.name.toLowerCase() === 'y') {
-                    return rec.columns.y = column.name;
-                }
-                else if (geo_1.isLatitude(column)) {
-                    return rec.columns.y = column.name;
-                }
-            }
-            if (!rec.columns.color && !column.stats.isSequential) {
-                if (column.quantitative || column.stats.distinctValueCount < recommender_1.maxCategoricalColors) {
-                    rec.columns.color = rec.columns.sort = column.name;
-                    rec.scheme = recommender_1.defaultColorScheme(column);
-                    if (column.quantitative) {
-                        rec.colorBin = 'quantile';
-                    }
-                    return;
-                }
-            }
-        });
-        if (rec.columns.x && rec.columns.y) {
-            this.best = rec;
-        }
-    }
-    ScatterPlotRecommenderSummary.prototype.recommend = function () {
-        return this.best;
-    };
-    return ScatterPlotRecommenderSummary;
-}());
-exports.ScatterPlotRecommenderSummary = ScatterPlotRecommenderSummary;
-
-},{"./recommender":"ENdt","./geo":"O4ew"}],"At4q":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var geo_1 = require("./geo");
-function preferredColumnForTreemapSize(columns, strict) {
-    for (var i = 0; i < columns.length; i++) {
-        var c = columns[i];
-        if (c.quantitative) {
-            if (strict && c.stats.hasNegative)
-                continue;
-            if (strict && c.stats.isSequential)
-                continue;
-            if (strict && geo_1.isGeo(c))
-                continue;
-            return c.name;
-        }
-    }
-}
-exports.preferredColumnForTreemapSize = preferredColumnForTreemapSize;
-
-},{"./geo":"O4ew"}],"fB3P":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var barChart_1 = require("./barChart");
-var scatterPlot_1 = require("./scatterPlot");
-var RecommenderSummary = /** @class */ (function () {
-    function RecommenderSummary(columns, data) {
-        var quickRec = new scatterPlot_1.ScatterPlotRecommenderSummary(columns, data).recommend();
-        if (quickRec) {
-            this.rec = quickRec;
-        }
-        else {
-            var barChartrec = new barChart_1.BarChartRecommenderSummary(columns, data).recommend();
-            if (barChartrec && barChartrec.score >= 1) {
-                this.rec = barChartrec;
-            }
-            else {
-                this.rec = {
-                    chart: 'grid',
-                    columns: {},
-                    score: 1
-                };
-            }
-        }
-    }
-    RecommenderSummary.prototype.recommend = function () {
-        return this.rec;
-    };
-    return RecommenderSummary;
-}());
-exports.RecommenderSummary = RecommenderSummary;
-
-},{"./barChart":"oxgd","./scatterPlot":"iBe2"}],"i6UQ":[function(require,module,exports) {
-"use strict";
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-__export(require("./barChart"));
-__export(require("./geo"));
-__export(require("./scatterPlot"));
-__export(require("./treemap"));
-__export(require("./recommenderSummary"));
-
-},{"./barChart":"oxgd","./geo":"O4ew","./scatterPlot":"iBe2","./treemap":"At4q","./recommenderSummary":"fB3P"}],"f8v0":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.ensureColumnsExist = ensureColumnsExist;
-exports.ensureColumnsPopulated = ensureColumnsPopulated;
-
-var _chartRecommender = require("@msrvida/chart-recommender");
+var _language = require("../language");
 
 var _sanddanceReact = require("@msrvida/sanddance-react");
 
-var _language = require("./language");
+var React = _interopRequireWildcard(require("react"));
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function ensureColumnsExist(insightColumns, actualColumns, transform) {
-  var _loop = function _loop(role) {
-    var columnName = insightColumns[role];
-    var column = actualColumns.filter(function (c) {
-      return c.name === columnName;
-    })[0];
-    var transformColumn = transform ? transform.filter(function (t) {
-      switch (t.type) {
-        case 'formula':
-          {
-            return t.as === columnName;
-          }
-      }
-    })[0] : null;
-
-    if (!(column || transformColumn)) {
-      delete insightColumns[role];
-    }
-  };
-
-  //ensure columns exist
-  for (var role in insightColumns) {
-    _loop(role);
-  }
-}
-
-function ensureColumnsPopulated(chart, insightColumns, actualColumns) {
-  //ensure columns are populated
-  var nonInternal = actualColumns.filter(function (c) {
-    return !_sanddanceReact.SandDance.util.isInternalFieldName(c.name);
-  });
-  var firstColumn = nonInternal[0];
-  var firstColumnName = firstColumn && firstColumn.name;
-  var firstQuantitative = nonInternal.filter(function (c) {
-    return c.quantitative;
-  })[0];
-  var firstQuantitativeColumnName = firstQuantitative && firstQuantitative.name;
-
-  var ensureColumn = function ensureColumn(role, quantitative) {
-    if (!insightColumns[role]) {
-      insightColumns[role] = quantitative ? firstQuantitativeColumnName : firstColumnName;
-    }
-  };
-
-  switch (chart) {
-    case 'barchart':
-    case 'barchartV':
-      ensureColumn('x');
-      ensureColumn('size', true);
-      break;
-
-    case 'barchartH':
-      ensureColumn('y');
-      ensureColumn('size', true);
-      break;
-
-    case 'density':
-    case 'scatterplot':
-    case 'stacks':
-      ensureColumn('x');
-      ensureColumn('y');
-      break;
-
-    case 'treemap':
-      if (!insightColumns.size) {
-        insightColumns.size = (0, _chartRecommender.preferredColumnForTreemapSize)(actualColumns, true);
-
-        if (!insightColumns.size) {
-          insightColumns.size = (0, _chartRecommender.preferredColumnForTreemapSize)(actualColumns, false);
+function History(props) {
+  return React.createElement(_group.Group, {
+    label: _language.strings.labelHistory,
+    className: "sanddance-history"
+  }, React.createElement("ol", null, props.historyItems.map(function (hi, i) {
+    return React.createElement("li", {
+      key: i,
+      className: _sanddanceReact.util.classList(i === props.historyIndex && 'selected'),
+      onKeyUp: function onKeyUp(e) {
+        if (e.keyCode === _keycodes.KeyCodes.ENTER) {
+          props.redo(i);
         }
-      }
-
-      if (!insightColumns.size) {
-        //error - no numeric column
-        return [_language.strings.errorColumnMustBeNumeric];
-      }
-
-      break;
-  }
+      },
+      onClick: function onClick() {
+        return props.redo(i);
+      },
+      tabIndex: 0
+    }, hi.label);
+  })));
 }
-},{"@msrvida/chart-recommender":"i6UQ","@msrvida/sanddance-react":"MjKu","./language":"hk5u"}],"yvMl":[function(require,module,exports) {
+},{"../controls/group":"Q3hf","../keycodes":"XFNl","../language":"hk5u","@msrvida/sanddance-react":"MjKu","react":"mpTF"}],"qO9b":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getPosition = getPosition;
+exports.TextField = TextField;
+
+var React = _interopRequireWildcard(require("react"));
+
+var _base = require("../base");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function hasClientXY(e) {
-  if (e && e.clientX !== undefined && e.clientX !== undefined) {
-    return {
-      top: e.clientY,
-      left: e.clientX
-    };
-  }
-}
-
-function getPosition(e) {
-  var xy = hasClientXY(e);
-
-  if (xy) {
-    return xy;
-  }
-
-  var te = e;
-
-  if (te) {
-    for (var i = 0; i < te.touches.length; i++) {
-      var _xy = hasClientXY(te.touches[i]);
-
-      if (_xy) {
-        return _xy;
-      }
+function TextField(props) {
+  return React.createElement(_base.base.fluentUI.TextField, Object.assign({
+    onKeyUp: function onKeyUp(e) {
+      e.nativeEvent.stopImmediatePropagation();
     }
-  }
+  }, props));
 }
-},{}],"xBH3":[function(require,module,exports) {
+},{"react":"mpTF","../base":"Vlbn"}],"xBH3":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19733,13 +20460,15 @@ exports.getText = getText;
 exports.SearchTerm = SearchTerm;
 exports.maxAutocomplete = void 0;
 
-var React = _interopRequireWildcard(require("react"));
+var _dropdown = require("./dropdown");
+
+var _textfield = require("./textfield");
 
 var _base = require("../base");
 
-var _dropdown = require("./dropdown");
-
 var _language = require("../language");
+
+var React = _interopRequireWildcard(require("react"));
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
@@ -19929,7 +20658,7 @@ function SearchTerm(props) {
         value: value
       }, props.index);
     }
-  }), possibleValues.length === 0 && React.createElement(_base.base.fluentUI.TextField, {
+  }), possibleValues.length === 0 && React.createElement(_textfield.TextField, {
     className: "search-field",
     label: props.collapseLabels ? null : _language.strings.labelSearchValue,
     placeholder: _language.strings.labelSearchValuePlaceholder,
@@ -19943,7 +20672,7 @@ function SearchTerm(props) {
     }
   }));
 }
-},{"react":"mpTF","../base":"Vlbn","./dropdown":"Uyrp","../language":"hk5u"}],"ozxe":[function(require,module,exports) {
+},{"./dropdown":"Uyrp","./textfield":"qO9b","../base":"Vlbn","../language":"hk5u","react":"mpTF"}],"ozxe":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20357,267 +21086,7 @@ function (_React$Component) {
 }(React.Component);
 
 exports.Search = Search;
-},{"react":"mpTF","../controls/searchTerm":"xBH3","../base":"Vlbn","../controls/button":"eqtW","../controls/dropdown":"Uyrp","../controls/group":"Q3hf","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"f19h":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.loadDataArray = exports.loadDataFile = void 0;
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-var loadDataFile = function loadDataFile(dataFile) {
-  return new Promise(function (resolve, reject) {
-    var vega = _sanddanceReact.SandDance.VegaDeckGl.base.vega;
-    var loader = vega.loader();
-
-    function handleRawText(text) {
-      var data;
-
-      try {
-        data = vega.read(text, {
-          type: dataFile.type,
-          parse: {}
-        });
-      } catch (e) {
-        reject(e);
-      }
-
-      if (data) {
-        loadDataArray(data, dataFile.type).then(function (dc) {
-          if (dataFile.snapshotsUrl) {
-            fetch(dataFile.snapshotsUrl).then(function (response) {
-              return response.json();
-            }).then(function (snapshots) {
-              dc.snapshots = snapshots;
-              resolve(dc);
-            }).catch(reject);
-          } else if (dataFile.snapshots) {
-            dc.snapshots = dataFile.snapshots;
-            resolve(dc);
-          } else {
-            resolve(dc);
-          }
-        }).catch(reject);
-      }
-    }
-
-    if (dataFile.dataUrl) {
-      loader.load(dataFile.dataUrl).then(handleRawText).catch(reject);
-    } else if (dataFile.rawText) {
-      handleRawText(dataFile.rawText);
-    } else {
-      reject('dataFile object must have either dataUrl or rawText property set.');
-    }
-  });
-};
-
-exports.loadDataFile = loadDataFile;
-
-var loadDataArray = function loadDataArray(data, type) {
-  return new Promise(function (resolve, reject) {
-    var parse = type === 'csv' || type === 'tsv';
-
-    if (parse) {
-      //convert empty strings to null so that vega.inferType will get dates
-      data.forEach(function (row) {
-        for (var column in row) {
-          if (row[column] === '') {
-            row[column] = null;
-          }
-        }
-      });
-    }
-
-    var columns = _sanddanceReact.SandDance.util.getColumnsFromData(_sanddanceReact.SandDance.VegaDeckGl.base.vega.inferTypes, data).sort(function (a, b) {
-      return a.name.localeCompare(b.name);
-    });
-
-    if (parse) {
-      var booleanColumns = columns.filter(function (c) {
-        return c.type === 'boolean';
-      });
-      var dateColumns = columns.filter(function (c) {
-        return c.type === 'date';
-      });
-      var numericColumns = columns.filter(function (c) {
-        return c.type === 'integer' || c.type === 'number';
-      });
-      data.forEach(function (obj) {
-        booleanColumns.forEach(function (c) {
-          obj[c.name] = ('' + obj[c.name]).toLowerCase() === 'true';
-        });
-        dateColumns.forEach(function (c) {
-          var input = obj[c.name];
-
-          if (input !== null) {
-            var d = new Date(input);
-            d.input = input;
-            obj[c.name] = d;
-          }
-        });
-        numericColumns.forEach(function (c) {
-          var n = parseFloat(obj[c.name]);
-          obj[c.name] = isNaN(n) ? null : n;
-        });
-      });
-    }
-
-    resolve({
-      data: data,
-      columns: columns
-    });
-  });
-};
-
-exports.loadDataArray = loadDataArray;
-},{"@msrvida/sanddance-react":"MjKu"}],"UUG7":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.onBeforeCreateLayers = onBeforeCreateLayers;
-exports.PositionedColumnMap = void 0;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _columnMap = require("./controls/columnMap");
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function onBeforeCreateLayers(stage, specCapabilities) {
-  var _loop = function _loop(axisName) {
-    specCapabilities.roles.forEach(function (specRole) {
-      if (specRole.role === axisName) {
-        var axes = stage.axes[axisName];
-        axes.forEach(function (axis) {
-          if (axis.title) {
-            var textItem = axis.title;
-            textItem.specRole = specRole;
-          }
-        });
-      }
-    });
-  };
-
-  for (var axisName in stage.axes) {
-    _loop(axisName);
-  }
-}
-
-function px(n) {
-  return n + 'px';
-}
-
-var PositionedColumnMap =
-/*#__PURE__*/
-function (_React$Component) {
-  _inherits(PositionedColumnMap, _React$Component);
-
-  function PositionedColumnMap(props) {
-    var _this;
-
-    _classCallCheck(this, PositionedColumnMap);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(PositionedColumnMap).call(this, props));
-    var left = props.left,
-        top = props.top;
-    _this.state = {
-      left: left,
-      top: top
-    };
-    _this.dropdownRef = React.createRef();
-    return _this;
-  }
-
-  _createClass(PositionedColumnMap, [{
-    key: "focus",
-    value: function focus() {
-      if (!this.focused) {
-        this.focused = true;
-        this.dropdownRef.current.focus(true);
-      }
-    }
-  }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var size = _sanddanceReact.SandDance.VegaDeckGl.util.outerSize(this.div);
-
-      var over = {
-        left: Math.max(0, this.state.left + size.width - this.props.container.offsetWidth),
-        top: Math.max(0, this.state.top + size.height - this.props.container.offsetHeight)
-      };
-
-      if (over.left || over.top) {
-        var _this$state = this.state,
-            left = _this$state.left,
-            top = _this$state.top;
-        left -= over.left;
-        top -= over.top;
-        this.setState({
-          left: left,
-          top: top
-        });
-      } else {
-        this.focus();
-      }
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate() {
-      this.focus();
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this2 = this;
-
-      return React.createElement("div", {
-        ref: function ref(div) {
-          if (div) _this2.div = div;
-        },
-        className: "sanddance-columnMap-absolute",
-        style: {
-          position: 'absolute',
-          left: px(this.state.left),
-          top: px(this.state.top)
-        }
-      }, React.createElement(_columnMap.ColumnMap, Object.assign({}, this.props, {
-        componentRef: this.dropdownRef,
-        hideSignals: true
-      })));
-    }
-  }]);
-
-  return PositionedColumnMap;
-}(React.Component);
-
-exports.PositionedColumnMap = PositionedColumnMap;
-},{"react":"mpTF","./controls/columnMap":"DSho","@msrvida/sanddance-react":"MjKu"}],"RvaL":[function(require,module,exports) {
+},{"react":"mpTF","../controls/searchTerm":"xBH3","../base":"Vlbn","../controls/button":"eqtW","../controls/dropdown":"Uyrp","../controls/group":"Q3hf","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"RvaL":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20626,7 +21095,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var version = '3.0.0-beta.1';
+var version = '3.0.0-beta.2';
 exports.version = version;
 },{}],"zKGJ":[function(require,module,exports) {
 "use strict";
@@ -21014,144 +21483,7 @@ function (_React$Component) {
 }(React.Component);
 
 exports.Settings = Settings;
-},{"react":"mpTF","@msrvida/sanddance-react":"MjKu","../base":"Vlbn","../canvas":"Dryx","../controls/dialog":"cFWm","../controls/dropdown":"Uyrp","../controls/group":"Q3hf","../controls/signal":"OWDI","../language":"hk5u","../version":"RvaL"}],"GuKX":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Scrollable = Scrollable;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function Scrollable(props) {
-  return React.createElement("div", {
-    className: _sanddanceReact.util.classList('scrollable-container', props.className),
-    role: props.role
-  }, React.createElement("div", {
-    className: "scrollable"
-  }, props.children));
-}
-},{"react":"mpTF","@msrvida/sanddance-react":"MjKu"}],"f8Jx":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Sidebar = Sidebar;
-exports.Sidebutton = Sidebutton;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _base = require("../base");
-
-var _dataScope = require("./dataScope");
-
-var _iconButton = require("./iconButton");
-
-var _scrollable = require("./scrollable");
-
-var _interfaces = require("../interfaces");
-
-var _language = require("../language");
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function Sidebar(props) {
-  var sidebuttons = [{
-    sideTabId: _interfaces.SideTabId.ChartType,
-    iconName: 'BIDashboard',
-    title: _language.strings.labelChart
-  }, {
-    sideTabId: _interfaces.SideTabId.Color,
-    iconName: 'Color',
-    title: _language.strings.labelColor
-  }, {
-    sideTabId: _interfaces.SideTabId.Data,
-    iconName: 'Table',
-    title: _language.strings.labelDataBrowser
-  }, {
-    sideTabId: _interfaces.SideTabId.Search,
-    iconName: 'Search',
-    title: _language.strings.labelSearch
-  }, {
-    sideTabId: _interfaces.SideTabId.Snapshots,
-    iconName: 'Camera',
-    title: _language.strings.labelSnapshots
-  }, {
-    sideTabId: _interfaces.SideTabId.Settings,
-    iconName: 'Settings',
-    title: _language.strings.labelChartSettings
-  }];
-  return React.createElement("div", {
-    className: _sanddanceReact.util.classList('sanddance-sidebar', 'calculator', props.pinned && 'pinned', props.closed && 'closed')
-  }, React.createElement("div", {
-    className: "sidebar-content"
-  }, React.createElement(_dataScope.DataScope, Object.assign({}, props.dataScopeProps)), React.createElement("div", {
-    className: "vbuttons",
-    role: 'tablist'
-  }, React.createElement("div", {
-    className: "sidebar-dialogs"
-  }, sidebuttons.map(function (sidebutton, i) {
-    return React.createElement(Sidebutton, Object.assign({
-      key: i
-    }, props, sidebutton, {
-      themePalette: props.themePalette
-    }));
-  })), !props.hideSidebarControls && React.createElement("div", {
-    className: "sidebar-controls"
-  }, React.createElement(Sidebutton, Object.assign({}, props, {
-    sideTabId: _interfaces.SideTabId.Pin,
-    iconName: props.pinned ? 'Pinned' : 'Pin',
-    title: props.pinned ? _language.strings.buttonToolbarFloat : _language.strings.buttonToolbarDock
-  })), React.createElement(Sidebutton, Object.assign({}, props, {
-    sideTabId: _interfaces.SideTabId.Collapse,
-    iconName: props.closed ? 'DoubleChevronRight12' : 'DoubleChevronLeft12',
-    title: props.closed ? _language.strings.buttonToolbarShow : _language.strings.buttonToolbarHide
-  })))), React.createElement(_scrollable.Scrollable, {
-    role: 'tabpanel'
-  }, React.createElement("div", {
-    className: "sidetab"
-  }, props.children)), props.calculating && React.createElement("div", {
-    className: "calculating"
-  }, React.createElement(_base.base.fluentUI.Spinner, {
-    size: _base.base.fluentUI.SpinnerSize.large
-  }))));
-}
-
-function Sidebutton(props) {
-  var selected = !props.closed && props.selectedSideTab === props.sideTabId;
-  return React.createElement("div", {
-    className: _sanddanceReact.util.classList('vbutton', selected && 'selected'),
-    role: 'tab',
-    "aria-selected": selected
-  }, props.badgeText && React.createElement("div", {
-    className: "count"
-  }, props.badgeText), React.createElement(_iconButton.IconButton, {
-    themePalette: props.themePalette,
-    className: "vbutton",
-    iconName: props.iconName,
-    title: props.title,
-    onClick: function onClick() {
-      props.onSideTabClick(props.sideTabId);
-    }
-  }));
-}
-},{"react":"mpTF","../base":"Vlbn","./dataScope":"OsNT","./iconButton":"dQNc","./scrollable":"GuKX","../interfaces":"h2T5","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"dSzJ":[function(require,module,exports) {
+},{"react":"mpTF","@msrvida/sanddance-react":"MjKu","../base":"Vlbn","../canvas":"Dryx","../controls/dialog":"cFWm","../controls/dropdown":"Uyrp","../controls/group":"Q3hf","../controls/signal":"OWDI","../language":"hk5u","../version":"RvaL"}],"dSzJ":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21322,6 +21654,9 @@ function (_React$Component) {
               image: null
             });
           },
+          iconProps: {
+            iconName: 'Camera'
+          },
           text: this.state.editIndex >= 0 ? _language.strings.buttonUpdateSnapshot : _language.strings.buttonCreateSnapshot
         })
       }, React.createElement(_base.base.fluentUI.TextField, {
@@ -21470,6 +21805,9 @@ function (_React$Component) {
 
             _this2.state.confirmation.handler();
           },
+          iconProps: {
+            iconName: 'Delete'
+          },
           text: this.state.confirmation.buttonText
         }),
         onDismiss: function onDismiss() {
@@ -21576,7 +21914,126 @@ function Actions(props) {
     }
   }));
 }
-},{"react":"mpTF","../base":"Vlbn","../controls/dialog":"cFWm","../controls/group":"Q3hf","../controls/iconButton":"dQNc","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"yzxM":[function(require,module,exports) {
+},{"react":"mpTF","../base":"Vlbn","../controls/dialog":"cFWm","../controls/group":"Q3hf","../controls/iconButton":"dQNc","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"yvMl":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getPosition = getPosition;
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function hasClientXY(e) {
+  if (e && e.clientX !== undefined && e.clientX !== undefined) {
+    return {
+      top: e.clientY,
+      left: e.clientX
+    };
+  }
+}
+
+function getPosition(e) {
+  var xy = hasClientXY(e);
+
+  if (xy) {
+    return xy;
+  }
+
+  var te = e;
+
+  if (te) {
+    for (var i = 0; i < te.touches.length; i++) {
+      var _xy = hasClientXY(te.touches[i]);
+
+      if (_xy) {
+        return _xy;
+      }
+    }
+  }
+}
+},{}],"tb7d":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.initPrefs = initPrefs;
+exports.saveSignalValuePref = saveSignalValuePref;
+exports.copyPrefToNewState = copyPrefToNewState;
+exports.savePref = savePref;
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function initPrefs(prefs, partialInsight) {
+  if (partialInsight) {
+    var specTypePrefs = prefs[partialInsight.chart] || {};
+    prefs[partialInsight.chart] = specTypePrefs;
+
+    for (var _role in partialInsight.columns) {
+      var role = _role;
+
+      if (role === 'color' || role === 'x') {
+        (function () {
+          var rolePrefs = specTypePrefs[role] || {};
+          specTypePrefs[role] = rolePrefs;
+          var column = partialInsight.columns[role];
+
+          var copySignalValue = function copySignalValue(signalName) {
+            if (partialInsight.signalValues && partialInsight.signalValues[signalName] && rolePrefs[column]) {
+              var signalValues = rolePrefs[column].signalValues || {};
+              signalValues[signalName] = partialInsight.signalValues[signalName];
+              rolePrefs[column].signalValues = signalValues;
+            }
+          };
+
+          switch (role) {
+            case 'color':
+              rolePrefs[column] = {
+                scheme: partialInsight.scheme,
+                colorBin: partialInsight.colorBin
+              };
+              copySignalValue(_sanddanceReact.SandDance.constants.SignalNames.ColorBinCount);
+              break;
+
+            case 'x':
+              copySignalValue(_sanddanceReact.SandDance.constants.SignalNames.XBins);
+              break;
+          }
+        })();
+      }
+    }
+  }
+}
+
+function saveSignalValuePref(prefs, chart, role, column, signalName, signalValue) {
+  var partialInsight = savePref(prefs, chart, role, column, {
+    signalValues: {}
+  });
+  partialInsight.signalValues[signalName] = signalValue;
+}
+
+function copyPrefToNewState(prefs, chart, role, columnName) {
+  var specTypePrefs = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, prefs['*'], prefs[chart]);
+
+  var rolePrefs = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, specTypePrefs['*'], specTypePrefs[role]);
+
+  var partialInsight = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, rolePrefs['*'], rolePrefs[columnName]);
+
+  return partialInsight;
+}
+
+function savePref(prefs, chart, role, column, partialInsight) {
+  var SpecTypePrefs = prefs[chart] || {};
+  prefs[chart] = SpecTypePrefs;
+  var rolePrefs = SpecTypePrefs[role] || {};
+  SpecTypePrefs[role] = rolePrefs;
+  rolePrefs[column] = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, rolePrefs[column], partialInsight);
+  return rolePrefs[column];
+}
+},{"@msrvida/sanddance-react":"MjKu"}],"yzxM":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21615,277 +22072,7 @@ function toggleSearch(haystack, needle) {
     found: found
   };
 }
-},{"@msrvida/sanddance-react":"MjKu"}],"hH4t":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.CommandBarButtonStyles = void 0;
-
-var _base = require("../base");
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var CommandBarButtonStyles = function CommandBarButtonStyles(props) {
-  var theme = props.theme;
-
-  if (!theme) {
-    throw new Error('Theme is undefined or null.');
-  }
-
-  var palette = theme.palette,
-      semanticColors = theme.semanticColors;
-  var BUTTON_ICON_CLASSNAME = '.ms-Button-icon';
-  return {
-    root: [Object.assign({}, _base.base.fluentUI.getFocusStyle(theme, {
-      inset: 2
-    })), {
-      backgroundColor: palette.white
-    }],
-    rootHovered: {
-      backgroundColor: palette.neutralLighter,
-      selectors: _defineProperty({}, BUTTON_ICON_CLASSNAME, {
-        color: palette.themeDarkAlt
-      })
-    },
-    rootPressed: {
-      backgroundColor: palette.neutralLight,
-      color: palette.neutralDark,
-      selectors: _defineProperty({}, BUTTON_ICON_CLASSNAME, {
-        color: palette.themeDark
-      })
-    },
-    rootChecked: {
-      backgroundColor: palette.neutralLight,
-      color: palette.neutralDark,
-      selectors: _defineProperty({}, BUTTON_ICON_CLASSNAME, {
-        color: palette.themeDark
-      })
-    },
-    rootCheckedHovered: {
-      backgroundColor: palette.neutralQuaternaryAlt,
-      color: palette.neutralDark
-    },
-    rootExpanded: {
-      color: palette.neutralDark,
-      backgroundColor: palette.neutralLight,
-      selectors: _defineProperty({}, BUTTON_ICON_CLASSNAME, {
-        color: palette.themeDark
-      })
-    },
-    rootExpandedHovered: {
-      background: palette.neutralQuaternaryAlt
-    },
-    rootDisabled: {
-      backgroundColor: palette.white,
-      selectors: _defineProperty({}, BUTTON_ICON_CLASSNAME, {
-        color: semanticColors.disabledBodySubtext
-      })
-    },
-    splitButtonMenuButton: {
-      backgroundColor: palette.white,
-      color: palette.neutralSecondary,
-      selectors: {
-        ':hover': {
-          backgroundColor: palette.neutralLighter,
-          selectors: _defineProperty({}, BUTTON_ICON_CLASSNAME, {
-            color: palette.neutralPrimary
-          })
-        },
-        ':active': {
-          backgroundColor: palette.neutralLight,
-          selectors: _defineProperty({}, BUTTON_ICON_CLASSNAME, {
-            color: palette.neutralPrimary
-          })
-        }
-      }
-    },
-    splitButtonMenuButtonDisabled: {
-      backgroundColor: palette.white
-    },
-    icon: {
-      color: palette.themePrimary
-    }
-  };
-};
-
-exports.CommandBarButtonStyles = CommandBarButtonStyles;
-},{"../base":"Vlbn"}],"GBuN":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Logo = Logo;
-
-var React = _interopRequireWildcard(require("react"));
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var s = "\n ......\n.......\n...\n......\n ......\n    ...\n.......\n......\n";
-var d = s.split('\n').map(function (row, irow) {
-  return row.length ? row.split('').map(function (char, icol) {
-    return char.trim() ? "M".concat(2 * icol + 1, " ").concat(2 * (irow - 1) + 1, " v1 h1 v-1 Z") : '';
-  }).join(' ') : '';
-}).join('\n');
-
-function Logo() {
-  return React.createElement("svg", {
-    xmlns: "http://www.w3.org/2000/svg",
-    viewBox: "0 0 16 16"
-  }, React.createElement("path", {
-    d: d
-  }));
-}
-},{"react":"mpTF"}],"Afi9":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Topbar = Topbar;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _base = require("../base");
-
-var _CommandBarButton = require("./CommandBarButton.styles");
-
-var _logo = require("./logo");
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-var _language = require("../language");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function Topbar(props) {
-  var zeroResults = props.selectionState.selectedData && props.selectionState.selectedData.length === 0;
-  var disabled = !props.loaded;
-  var items = [{
-    key: 'deselect',
-    name: _language.strings.buttonDeselect,
-    iconProps: {
-      iconName: 'Cancel'
-    },
-    disabled: disabled || !props.selectionSearch,
-    onClick: props.doDeselect
-  }, {
-    key: 'isolate',
-    name: _language.strings.buttonIsolate,
-    iconProps: {
-      iconName: 'Filter'
-    },
-    disabled: disabled || !props.selectionSearch || zeroResults,
-    onClick: function onClick() {
-      return props.doFilter(props.selectionSearch);
-    }
-  }, {
-    key: 'exclude',
-    name: _language.strings.buttonExclude,
-    iconProps: {
-      iconName: 'ClearFilter'
-    },
-    disabled: disabled || !props.selectionSearch || zeroResults,
-    onClick: function onClick() {
-      return props.doFilter(_sanddanceReact.SandDance.searchExpression.invert(props.selectionSearch));
-    }
-  }, {
-    key: 'reset',
-    name: _language.strings.buttonReset,
-    iconProps: {
-      iconName: 'RemoveFilter'
-    },
-    disabled: disabled || !props.filter,
-    onClick: props.doUnfilter
-  }];
-
-  if (props.buttons) {
-    items.push.apply(items, props.buttons);
-  }
-
-  var farItems = [{
-    key: 'previous-snapshot',
-    iconProps: {
-      iconName: 'Previous'
-    },
-    title: _language.strings.buttonPrevSnapshot,
-    onClick: props.onSnapshotPreviousClick,
-    disabled: props.snapshots.length < 2
-  }, {
-    key: 'snapshot',
-    iconProps: {
-      iconName: 'Camera'
-    },
-    title: _language.strings.buttonCreateSnapshot,
-    onClick: props.onSnapshotClick,
-    disabled: !props.loaded
-  }, {
-    key: 'next-snapshot',
-    iconProps: {
-      iconName: 'Next'
-    },
-    title: _language.strings.buttonNextSnapshot,
-    onClick: props.onSnapshotNextClick,
-    disabled: props.snapshots.length < 2
-  }, {
-    key: 'view',
-    iconProps: {
-      iconName: props.view === '2d' ? 'Product' : 'Page'
-    },
-    title: props.view === '2d' ? _language.strings.labelViewType3d : _language.strings.lavelViewType2d,
-    onClick: props.onViewClick,
-    disabled: !props.loaded
-  }, {
-    key: 'home',
-    iconProps: {
-      iconName: 'PicturePosition'
-    },
-    title: _language.strings.buttonCameraHome,
-    onClick: props.onHomeClick,
-    disabled: !props.loaded
-  }];
-  return React.createElement("div", {
-    className: "sanddance-explorer-topbar"
-  }, React.createElement("div", {
-    className: "logo"
-  }, React.createElement(_logo.Logo, null), React.createElement("a", {
-    href: props.logoClickUrl || '/',
-    target: props.logoClickTarget || '_blank'
-  }, _language.strings.appName)), React.createElement("div", {
-    className: "sanddance-explorer-commandbar"
-  }, React.createElement(_base.base.fluentUI.Customizer, {
-    scopedSettings: {
-      CommandBarButton: {
-        styles: function styles(buttonProps) {
-          buttonProps.theme.palette = props.themePalette;
-          return (0, _CommandBarButton.CommandBarButtonStyles)(buttonProps);
-        }
-      }
-    }
-  }, React.createElement(_base.base.fluentUI.CommandBar, {
-    items: items,
-    farItems: farItems,
-    styles: {
-      root: {
-        backgroundColor: 'transparent',
-        height: 'unset',
-        paddingLeft: 0,
-        paddingRight: 0
-      }
-    }
-  }))));
-}
-},{"react":"mpTF","../base":"Vlbn","./CommandBarButton.styles":"hH4t","./logo":"GBuN","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"KeW6":[function(require,module,exports) {
+},{"@msrvida/sanddance-react":"MjKu"}],"KeW6":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21893,63 +22080,65 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Explorer = void 0;
 
-var React = _interopRequireWildcard(require("react"));
+var _base = require("./base");
+
+var _canvas = require("./canvas");
+
+var _clickableTextLayer = require("./clickableTextLayer");
 
 var _colorMap = require("./colorMap");
 
-var _base = require("./base");
-
 var _colorScheme = require("./colorScheme");
 
-var _interfaces = require("./interfaces");
+var _columns = require("./columns");
+
+var _dataScope = require("./controls/dataScope");
+
+var _dialog = require("./controls/dialog");
+
+var _iconButton = require("./controls/iconButton");
+
+var _sidebar = require("./controls/sidebar");
+
+var _topbar = require("./controls/topbar");
+
+var _dataLoader = require("./dataLoader");
+
+var _defaults = require("./defaults");
 
 var _chart = require("./dialogs/chart");
 
 var _color = require("./dialogs/color");
 
-var _partialInsight4 = require("./partialInsight");
-
 var _dataBrowser = require("./dialogs/dataBrowser");
 
-var _dataScope = require("./controls/dataScope");
-
-var _defaults = require("./defaults");
-
-var _dialog = require("./controls/dialog");
-
-var _columns = require("./columns");
-
-var _mouseEvent = require("./mouseEvent");
-
-var _iconButton = require("./controls/iconButton");
+var _history = require("./dialogs/history");
 
 var _search = require("./dialogs/search");
 
-var _dataLoader = require("./dataLoader");
-
-var _clickableTextLayer = require("./clickableTextLayer");
-
-var _chartRecommender = require("@msrvida/chart-recommender");
-
-var _canvas = require("./canvas");
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
 var _settings = require("./dialogs/settings");
-
-var _sidebar = require("./controls/sidebar");
 
 var _snapshotEditor = require("./dialogs/snapshotEditor");
 
 var _snapshots = require("./dialogs/snapshots");
 
+var _interfaces = require("./interfaces");
+
 var _language = require("./language");
+
+var _mouseEvent = require("./mouseEvent");
+
+var _partialInsight4 = require("./partialInsight");
 
 var _themes = require("./themes");
 
 var _toggleSearch = require("./toggleSearch");
 
-var _topbar = require("./controls/topbar");
+var _chartRecommender = require("@msrvida/chart-recommender");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var React = _interopRequireWildcard(require("react"));
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
@@ -21981,10 +22170,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var dataBrowserTitles = {};
-dataBrowserTitles[_dataScope.DataScopeId.AllData] = _language.strings.selectDataSpanAll;
-dataBrowserTitles[_dataScope.DataScopeId.FilteredData] = _language.strings.selectDataSpanFilter;
-dataBrowserTitles[_dataScope.DataScopeId.SelectedData] = _language.strings.selectDataSpanSelection;
 var dataBrowserZeroMessages = {};
 dataBrowserZeroMessages[_dataScope.DataScopeId.AllData] = _language.strings.labelZeroAll;
 dataBrowserZeroMessages[_dataScope.DataScopeId.FilteredData] = null; //empty array is not used
@@ -22058,7 +22243,9 @@ function (_React$Component) {
       selectedSnapshotIndex: -1,
       tooltipExclusions: [],
       positionedColumnMapProps: null,
-      note: null
+      note: null,
+      historyIndex: -1,
+      historyItems: []
     };
     _this.state.selectedItemIndex[_dataScope.DataScopeId.AllData] = 0;
     _this.state.selectedItemIndex[_dataScope.DataScopeId.FilteredData] = 0;
@@ -22090,12 +22277,20 @@ function (_React$Component) {
         onColorContextChange: function onColorContextChange() {
           return _this2.manageColorToolbar();
         },
-        onDataFilter: function onDataFilter(dataFilter, filteredData) {
+        onDataFilter: function onDataFilter(filter, filteredData) {
           var selectedItemIndex = Object.assign({}, _this2.state.selectedItemIndex);
           selectedItemIndex[_dataScope.DataScopeId.FilteredData] = 0;
 
           _this2.changeInsight({
-            filter: dataFilter,
+            filter: filter
+          }, {
+            label: _this2.historicFilterChange,
+            omit: !_this2.historicFilterChange
+          });
+
+          _this2.historicFilterChange = null;
+
+          _this2.setState({
             filteredData: filteredData,
             selectedItemIndex: selectedItemIndex
           });
@@ -22107,7 +22302,7 @@ function (_React$Component) {
             });
           }
 
-          viewerOptions && viewerOptions.onDataFilter && viewerOptions.onDataFilter(dataFilter, filteredData);
+          viewerOptions && viewerOptions.onDataFilter && viewerOptions.onDataFilter(filter, filteredData);
         },
         onSelectionChanged: function onSelectionChanged(newSearch, index, selectedData) {
           if (_this2.ignoreSelectionChange) return;
@@ -22281,35 +22476,41 @@ function (_React$Component) {
     }
   }, {
     key: "setInsight",
-    value: function setInsight() {
+    value: function setInsight(historyAction) {
       var _this5 = this;
 
-      var partialInsight = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.viewer.getInsight();
-      var rebaseFilter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var newState = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var partialInsight = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.viewer.getInsight();
+      var rebaseFilter = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
       var selectedItemIndex = Object.assign({}, this.state.selectedItemIndex);
       selectedItemIndex[_dataScope.DataScopeId.AllData] = 0;
       selectedItemIndex[_dataScope.DataScopeId.FilteredData] = 0;
       selectedItemIndex[_dataScope.DataScopeId.SelectedData] = 0;
-      var newState = Object.assign({
+      var historicInsight = Object.assign({
         chart: null,
         scheme: null,
         columns: null,
         filter: null,
-        filteredData: null,
-        selectedItemIndex: selectedItemIndex
+        rebaseFilter: rebaseFilter
       }, partialInsight);
-      newState.search = createInputSearch(newState.filter);
+      var state = Object.assign({
+        filteredData: null,
+        selectedItemIndex: selectedItemIndex,
+        search: createInputSearch(historicInsight.filter)
+      }, newState);
 
       var changeInsight = function changeInsight() {
         _this5.getColorContext = null;
 
-        _this5.changeInsight(newState);
+        _this5.setState(state);
+
+        _this5.changeInsight(historicInsight, historyAction);
       };
 
       var currentFilter = this.viewer.getInsight().filter;
 
-      if (rebaseFilter && currentFilter && newState.filter) {
-        if (_sanddanceReact.SandDance.searchExpression.startsWith(newState.filter, currentFilter)) {
+      if (rebaseFilter && currentFilter && historicInsight.filter) {
+        if (_sanddanceReact.SandDance.searchExpression.startsWith(historicInsight.filter, currentFilter)) {
           changeInsight();
         } else {
           this.viewer.reset().then(function () {
@@ -22344,25 +22545,29 @@ function (_React$Component) {
       if (typeof snapshotOrIndex === 'number') {
         var selectedSnapshotIndex = snapshotOrIndex;
         var snapshot = this.state.snapshots[selectedSnapshotIndex];
-        var newState = Object.assign(Object.assign({}, snapshot.insight), {
+        var newState = {
           note: snapshot.description,
           selectedSnapshotIndex: selectedSnapshotIndex
-        });
+        };
 
         if (!this.state.sidebarClosed) {
           newState.sideTabId = _interfaces.SideTabId.Snapshots;
           this.scrollSnapshotIntoView(selectedSnapshotIndex);
         }
 
-        this.setInsight(newState, true);
+        this.setInsight({
+          label: _language.strings.labelHistoryReviveSnapshot
+        }, newState, snapshot.insight, true);
       } else {
         var _snapshot = snapshotOrIndex;
 
         if (_snapshot.insight) {
-          this.setInsight(Object.assign(Object.assign({}, _snapshot.insight), {
+          this.setInsight({
+            label: _language.strings.labelHistoryReviveSnapshot
+          }, {
             note: _snapshot.description,
             selectedSnapshotIndex: -1
-          }), true); //don't navigate to sideTab
+          }, _snapshot.insight, true); //don't navigate to sideTab
         } else {
           this.setState({
             note: _snapshot.description,
@@ -22376,8 +22581,17 @@ function (_React$Component) {
     value: function load(data, getPartialInsight, optionsOrPrefs) {
       var _this6 = this;
 
+      this.setState({
+        historyIndex: -1,
+        historyItems: []
+      });
       this.changeInsight({
-        columns: null,
+        columns: null
+      }, {
+        label: null,
+        omit: true
+      });
+      this.setState({
         note: null
       });
       return new Promise(function (resolve, reject) {
@@ -22394,8 +22608,18 @@ function (_React$Component) {
             //load recommendation
             var r = new _chartRecommender.RecommenderSummary(dataContent.columns, dataContent.data);
             partialInsight = r.recommend();
+
+            if (partialInsight.chart === 'barchart') {
+              partialInsight.chart = 'barchartV';
+            }
           }
 
+          partialInsight = Object.assign({
+            facetStyle: 'wrap',
+            filter: null,
+            totalStyle: null,
+            transform: null
+          }, partialInsight);
           var selectedItemIndex = Object.assign({}, _this6.state.selectedItemIndex);
           var sideTabId = _interfaces.SideTabId.ChartType;
           selectedItemIndex[_dataScope.DataScopeId.AllData] = 0;
@@ -22406,11 +22630,7 @@ function (_React$Component) {
             dataContent: dataContent,
             snapshots: dataContent.snapshots || _this6.state.snapshots,
             autoCompleteDistinctValues: {},
-            totalStyle: null,
-            facetStyle: 'wrap',
-            filter: null,
             filteredData: null,
-            transform: null,
             tooltipExclusions: optionsOrPrefs && optionsOrPrefs.tooltipExclusions || [],
             selectedItemIndex: selectedItemIndex,
             sideTabId: sideTabId
@@ -22418,9 +22638,15 @@ function (_React$Component) {
           _this6.getColorContext = null;
           (0, _columns.ensureColumnsExist)(newState.columns, dataContent.columns, newState.transform);
           var errors = (0, _columns.ensureColumnsPopulated)(partialInsight ? partialInsight.chart : null, newState.columns, dataContent.columns);
-          newState.errors = errors; //change insight
+          newState.errors = errors;
 
-          _this6.changeInsight(newState); //make sure item is active
+          _this6.setState(newState); //change insight
+
+
+          _this6.changeInsight(partialInsight, {
+            label: _language.strings.labelHistoryInit,
+            insert: true
+          }); //make sure item is active
 
 
           _this6.activateDataBrowserItem(sideTabId, _this6.state.dataScopeId);
@@ -22449,24 +22675,24 @@ function (_React$Component) {
       var _this7 = this;
 
       var partialInsight = (0, _partialInsight4.copyPrefToNewState)(this.prefs, chart, '*', '*');
-      var newState = Object.assign({
+      var insight = Object.assign({
         chart: chart
       }, partialInsight);
 
       var columns = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, partialInsight.columns, this.state.columns);
 
-      newState.columns = Object.assign({}, columns); //special case mappings when switching chart type
+      insight.columns = Object.assign({}, columns); //special case mappings when switching chart type
 
       if (this.state.chart === 'scatterplot' && (chart === 'barchart' || chart === 'barchartV')) {
-        newState.columns = Object.assign(Object.assign({}, columns), {
+        insight.columns = Object.assign(Object.assign({}, columns), {
           sort: columns.y
         });
       } else if (this.state.chart === 'scatterplot' && chart === 'barchartH') {
-        newState.columns = Object.assign(Object.assign({}, columns), {
+        insight.columns = Object.assign(Object.assign({}, columns), {
           sort: columns.x
         });
       } else if (chart === 'treemap') {
-        newState.view = '2d';
+        insight.view = '2d';
 
         if (!columns.size) {
           //make sure size exists and is numeric
@@ -22492,24 +22718,33 @@ function (_React$Component) {
 
           if (!sizeColumnName) {//TODO error - no numeric columns
           } else {
-            newState.columns = Object.assign(Object.assign({}, columns), {
+            insight.columns = Object.assign(Object.assign({}, columns), {
               size: sizeColumnName
             });
           }
         }
       } else if (chart === 'stacks') {
-        newState.view = '3d';
+        insight.view = '3d';
+      } else if (chart === 'scatterplot' && this.state.columns.size) {
+        var _this$viewer$getInsig = this.viewer.getInsight(),
+            signalValues = _this$viewer$getInsig.signalValues;
+
+        signalValues[_sanddanceReact.SandDance.specs.SignalNames.PointScale] = 1;
+        insight.signalValues = signalValues;
       }
 
-      (0, _columns.ensureColumnsExist)(newState.columns, this.state.dataContent.columns, this.state.transform);
-      var errors = (0, _columns.ensureColumnsPopulated)(chart, newState.columns, this.state.dataContent.columns);
-
-      if (errors) {
-        newState.errors = errors;
-      }
-
+      (0, _columns.ensureColumnsExist)(insight.columns, this.state.dataContent.columns, this.state.transform);
+      var errors = (0, _columns.ensureColumnsPopulated)(chart, insight.columns, this.state.dataContent.columns);
       this.calculate(function () {
-        return _this7.changeInsight(newState);
+        if (errors) {
+          _this7.setState({
+            errors: errors
+          });
+        }
+
+        _this7.changeInsight(insight, {
+          label: _language.strings.labelHistoryChangeChartType((0, _chart.chartLabel)(chart))
+        });
       });
     }
   }, {
@@ -22524,28 +22759,114 @@ function (_React$Component) {
     value: function changeView(view) {
       this.changeInsight({
         view: view
+      }, {
+        label: view === '2d' ? _language.strings.labelViewType2d : _language.strings.labelViewType3d
       });
     } //state members which change the insight
 
   }, {
     key: "changeInsight",
-    value: function changeInsight(newState) {
-      if (!newState.signalValues) {
+    value: function changeInsight(partialInsight, historyAction) {
+      if (!partialInsight.signalValues) {
         if (this.viewer) {
-          var _this$viewer$getInsig = this.viewer.getInsight(),
-              signalValues = _this$viewer$getInsig.signalValues;
+          var _this$viewer$getInsig2 = this.viewer.getInsight(),
+              signalValues = _this$viewer$getInsig2.signalValues;
 
-          newState.signalValues = signalValues;
+          partialInsight.signalValues = signalValues;
         } else {
-          newState.signalValues = null;
+          partialInsight.signalValues = null;
         }
       }
 
-      if (newState.chart === 'barchart') {
-        newState.chart = 'barchartV';
+      if (partialInsight.chart === 'barchart') {
+        partialInsight.chart = 'barchartV';
       }
 
-      this.setState(newState);
+      this.addHistory(partialInsight, historyAction);
+    }
+  }, {
+    key: "addHistory",
+    value: function addHistory(historicInsight, historyAction) {
+      var _this8 = this;
+
+      var setCleanState = function setCleanState(newState) {
+        var cleanState = Object.assign({}, newState);
+        delete cleanState.rebaseFilter;
+
+        _this8.setState(cleanState);
+      };
+
+      if (historyAction.omit) {
+        setCleanState(historicInsight);
+        return;
+      }
+
+      var historyItems = this.state.historyItems.slice(0, this.state.historyIndex + 1);
+      var historyIndex = historyItems.length;
+      historyItems.push({
+        label: historyAction.label,
+        historicInsight: historicInsight
+      });
+
+      if (historyAction.insert) {
+        setCleanState({
+          historyIndex: historyIndex,
+          historyItems: historyItems
+        });
+      } else {
+        setCleanState(Object.assign(Object.assign({}, historicInsight), {
+          historyIndex: historyIndex,
+          historyItems: historyItems
+        }));
+      }
+    }
+  }, {
+    key: "replay",
+    value: function replay(index) {
+      var filter = null;
+      var historicInsight = {};
+
+      for (var i = 0; i < index + 1; i++) {
+        var historyItem = this.state.historyItems[i];
+
+        if (historyItem) {
+          if (historyItem.historicInsight.filter === null) {
+            filter = null;
+          } else if (historyItem.historicInsight.rebaseFilter) {
+            filter = historyItem.historicInsight.filter;
+          } else if (historyItem.historicInsight.filter) {
+            filter = _sanddanceReact.SandDance.searchExpression.narrow(filter, historyItem.historicInsight.filter);
+          }
+
+          historicInsight = Object.assign(Object.assign({}, historicInsight), historyItem.historicInsight);
+        }
+      }
+
+      return Object.assign(Object.assign({}, historicInsight), {
+        filter: filter
+      });
+    }
+  }, {
+    key: "undo",
+    value: function undo() {
+      var historyIndex = this.state.historyIndex - 1;
+      if (historyIndex < 0) return;
+      var newState = this.replay(historyIndex);
+      this.rebaseFilter = true;
+      this.setState(Object.assign(Object.assign({}, newState), {
+        historyIndex: historyIndex
+      }));
+    }
+  }, {
+    key: "redo",
+    value: function redo() {
+      var historyIndex = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.state.historyIndex + 1;
+      if (historyIndex >= this.state.historyItems.length) return;
+      var newState = this.replay(historyIndex);
+      this.rebaseFilter = true;
+      this.setState(Object.assign(Object.assign({}, newState), {
+        historyIndex: historyIndex
+      }));
     }
   }, {
     key: "changespecCapabilities",
@@ -22557,25 +22878,28 @@ function (_React$Component) {
   }, {
     key: "changeColumnMapping",
     value: function changeColumnMapping(role, column, options) {
-      var _this8 = this;
+      var _this9 = this;
 
       var columns = Object.assign({}, this.state.columns);
+      var label = column ? _language.strings.labelHistoryMapColumn(role) : _language.strings.labelHistoryUnMapColumn(role);
 
       var final = function final() {
         columns[role] = column && column.name;
 
-        _this8.changeInsight({
+        _this9.changeInsight({
           columns: columns
+        }, {
+          label: label
         });
       };
 
-      var _changeInsight = function _changeInsight(newState, pref, columnUpdate) {
-        newState.columns = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, columns, pref, columnUpdate);
-        (0, _partialInsight4.savePref)(_this8.prefs, _this8.state.chart, '*', '*', {
+      var _changeInsight = function _changeInsight(newInsight, pref, columnUpdate, historyAction) {
+        newInsight.columns = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, columns, pref, columnUpdate);
+        (0, _partialInsight4.savePref)(_this9.prefs, _this9.state.chart, '*', '*', {
           columns: columnUpdate
         });
 
-        _this8.changeInsight(newState);
+        _this9.changeInsight(newInsight, historyAction);
       };
 
       if (column) {
@@ -22585,7 +22909,7 @@ function (_React$Component) {
           case 'facet':
             {
               var partialInsight = (0, _partialInsight4.copyPrefToNewState)(this.prefs, this.state.chart, 'facet', column.name);
-              var newState = Object.assign(Object.assign({
+              var historicInsight = Object.assign(Object.assign({
                 columns: columns
               }, partialInsight), {
                 facetStyle: options ? options.facetStyle : this.state.facetStyle
@@ -22594,62 +22918,71 @@ function (_React$Component) {
                 facet: column.name
               };
 
-              _changeInsight(newState, partialInsight.columns, columnUpdate);
+              _changeInsight(historicInsight, partialInsight.columns, columnUpdate, {
+                label: label
+              });
 
               break;
             }
 
           case 'color':
             {
-              var _newState = {
+              var calculating = null;
+              var _historicInsight = {
                 scheme: options && options.scheme,
                 columns: columns,
                 colorBin: this.state.colorBin
               };
 
-              if (!_newState.scheme) {
+              if (!_historicInsight.scheme) {
                 var _partialInsight = (0, _partialInsight4.copyPrefToNewState)(this.prefs, this.state.chart, 'color', column.name);
 
-                _newState = Object.assign(Object.assign({}, _newState), _partialInsight);
+                _historicInsight = Object.assign(Object.assign({}, _historicInsight), _partialInsight);
               }
 
-              if (!_newState.scheme) {
-                _newState.scheme = (0, _colorScheme.bestColorScheme)(column, null, this.state.scheme);
+              if (!_historicInsight.scheme) {
+                _historicInsight.scheme = (0, _colorScheme.bestColorScheme)(column, null, this.state.scheme);
               }
 
               if (!column.stats.hasColorData) {
-                _newState.directColor = false;
+                _historicInsight.directColor = false;
 
-                if (this.state.directColor !== _newState.directColor) {
-                  _newState.calculating = function () {
-                    return _this8._resize();
+                if (this.state.directColor !== _historicInsight.directColor) {
+                  calculating = function calculating() {
+                    return _this9._resize();
                   };
                 }
               }
 
               if (this.state.columns && this.state.columns.color && this.state.columns.color !== column.name) {
                 var currColorColumn = this.state.dataContent.columns.filter(function (c) {
-                  return c.name === _this8.state.columns.color;
+                  return c.name === _this9.state.columns.color;
                 })[0];
 
                 if (column.isColorData != currColorColumn.isColorData) {
-                  _newState.calculating = function () {
-                    return _this8._resize();
+                  calculating = function calculating() {
+                    return _this9._resize();
                   };
                 }
               }
 
               this.ignoreSelectionChange = true;
               this.viewer.deselect().then(function () {
-                _this8.ignoreSelectionChange = false; //allow deselection to render
+                _this9.ignoreSelectionChange = false; //allow deselection to render
 
                 requestAnimationFrame(function () {
                   columnUpdate = {
                     color: column.name
                   };
-                  _this8.getColorContext = null;
+                  _this9.getColorContext = null;
 
-                  _changeInsight(_newState, null, columnUpdate);
+                  _this9.setState({
+                    calculating: calculating
+                  });
+
+                  _changeInsight(_historicInsight, null, columnUpdate, {
+                    label: label
+                  });
                 });
               });
               break;
@@ -22659,7 +22992,7 @@ function (_React$Component) {
             {
               var _partialInsight2 = (0, _partialInsight4.copyPrefToNewState)(this.prefs, this.state.chart, 'x', column.name);
 
-              var _newState2 = Object.assign({
+              var _historicInsight2 = Object.assign({
                 columns: columns
               }, _partialInsight2);
 
@@ -22667,7 +23000,9 @@ function (_React$Component) {
                 x: column.name
               };
 
-              _changeInsight(_newState2, _partialInsight2.columns, columnUpdate);
+              _changeInsight(_historicInsight2, _partialInsight2.columns, columnUpdate, {
+                label: label
+              });
 
               break;
             }
@@ -22676,7 +23011,7 @@ function (_React$Component) {
             {
               var _partialInsight3 = (0, _partialInsight4.copyPrefToNewState)(this.prefs, this.state.chart, 'size', column.name);
 
-              var _newState3 = Object.assign(Object.assign({}, _partialInsight3), {
+              var _historicInsight3 = Object.assign(Object.assign({}, _partialInsight3), {
                 totalStyle: options ? options.totalStyle : this.state.totalStyle
               });
 
@@ -22684,7 +23019,9 @@ function (_React$Component) {
                 size: column.name
               };
 
-              _changeInsight(_newState3, _partialInsight3.columns, columnUpdate);
+              _changeInsight(_historicInsight3, _partialInsight3.columns, columnUpdate, {
+                label: label
+              });
 
               break;
             }
@@ -22704,6 +23041,8 @@ function (_React$Component) {
               this.changeInsight({
                 columns: columns,
                 facetStyle: 'wrap'
+              }, {
+                label: label
               });
               break;
             }
@@ -22785,12 +23124,12 @@ function (_React$Component) {
   }, {
     key: "silentActivation",
     value: function silentActivation(itemToActivate) {
-      var _this9 = this;
+      var _this10 = this;
 
       this.ignoreSelectionChange = true;
 
       var done = function done() {
-        _this9.ignoreSelectionChange = false;
+        _this10.ignoreSelectionChange = false;
       };
 
       if (itemToActivate) {
@@ -22810,11 +23149,11 @@ function (_React$Component) {
   }, {
     key: "resize",
     value: function resize() {
-      var _this10 = this;
+      var _this11 = this;
 
       this.setState({
         calculating: function calculating() {
-          return _this10._resize();
+          return _this11._resize();
         }
       });
     }
@@ -22823,6 +23162,9 @@ function (_React$Component) {
     value: function _resize() {
       this.changeInsight({
         size: this.getLayoutDivSize(this.state.sidebarPinned, this.state.sidebarClosed)
+      }, {
+        label: 'resize',
+        omit: true
       });
     }
   }, {
@@ -22899,12 +23241,14 @@ function (_React$Component) {
     }
   }, {
     key: "doFilter",
-    value: function doFilter(search) {
+    value: function doFilter(search, historicFilterChange) {
+      this.historicFilterChange = historicFilterChange;
       this.viewer.filter(search);
     }
   }, {
     key: "doUnfilter",
-    value: function doUnfilter() {
+    value: function doUnfilter(historicFilterChange) {
+      this.historicFilterChange = historicFilterChange;
       this.viewer.reset();
     }
   }, {
@@ -22950,11 +23294,11 @@ function (_React$Component) {
   }, {
     key: "scrollSnapshotIntoView",
     value: function scrollSnapshotIntoView(selectedSnapshotIndex) {
-      var _this11 = this;
+      var _this12 = this;
 
       clearTimeout(this.scrollSnapshotTimer);
       this.scrollSnapshotTimer = setTimeout(function () {
-        var selectedSnapshotElement = _this11.div.querySelector(".snapshot:nth-child(".concat(selectedSnapshotIndex + 1, ")"));
+        var selectedSnapshotElement = _this12.div.querySelector(".snapshot:nth-child(".concat(selectedSnapshotIndex + 1, ")"));
 
         if (selectedSnapshotElement) {
           selectedSnapshotElement.scrollIntoView({
@@ -22974,7 +23318,7 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this12 = this;
+      var _this13 = this;
 
       var _this$state = this.state,
           colorBin = _this$state.colorBin,
@@ -23024,10 +23368,10 @@ function (_React$Component) {
       if (this.state.calculating) {
         requestAnimationFrame(function () {
           //allow render to complete
-          if (_this12.state.calculating) {
-            _this12.state.calculating();
+          if (_this13.state.calculating) {
+            _this13.state.calculating();
 
-            _this12.setState({
+            _this13.setState({
               calculating: null
             });
           }
@@ -23038,10 +23382,19 @@ function (_React$Component) {
       var themePalette = _themes.themePalettes[theme];
       return React.createElement("div", {
         ref: function ref(div) {
-          if (div) _this12.div = div;
+          if (div) _this13.div = div;
         },
         className: _sanddanceReact.util.classList('sanddance-explorer', this.props.theme)
       }, React.createElement(_topbar.Topbar, {
+        collapseLabels: this.props.compactUI,
+        historyIndex: this.state.historyIndex,
+        historyItems: this.state.historyItems,
+        undo: function undo() {
+          return _this13.undo();
+        },
+        redo: function redo() {
+          return _this13.redo();
+        },
         logoClickUrl: this.props.logoClickUrl,
         logoClickTarget: this.props.logoClickTarget,
         themePalette: themePalette,
@@ -23058,58 +23411,60 @@ function (_React$Component) {
         onSnapshotPreviousClick: function onSnapshotPreviousClick() {
           var selectedSnapshotIndex;
 
-          if (_this12.state.selectedSnapshotIndex === -1) {
-            selectedSnapshotIndex = _this12.state.snapshots.length - 1;
+          if (_this13.state.selectedSnapshotIndex === -1) {
+            selectedSnapshotIndex = _this13.state.snapshots.length - 1;
           } else {
-            selectedSnapshotIndex = _this12.state.selectedSnapshotIndex;
+            selectedSnapshotIndex = _this13.state.selectedSnapshotIndex;
             selectedSnapshotIndex--;
 
             if (selectedSnapshotIndex < 0) {
-              selectedSnapshotIndex = _this12.state.snapshots.length - 1;
+              selectedSnapshotIndex = _this13.state.snapshots.length - 1;
             }
           }
 
-          _this12.handleReviveSnapshot(_this12.state.snapshots[selectedSnapshotIndex], selectedSnapshotIndex);
+          _this13.handleReviveSnapshot(_this13.state.snapshots[selectedSnapshotIndex], selectedSnapshotIndex);
         },
         onSnapshotClick: function onSnapshotClick() {
-          return _this12.snapshotEditor.editSnapshot();
+          return _this13.snapshotEditor.editSnapshot();
         },
         onSnapshotNextClick: function onSnapshotNextClick() {
           var selectedSnapshotIndex;
 
-          if (_this12.state.selectedSnapshotIndex === -1) {
+          if (_this13.state.selectedSnapshotIndex === -1) {
             selectedSnapshotIndex = 0;
           } else {
-            selectedSnapshotIndex = _this12.state.selectedSnapshotIndex;
+            selectedSnapshotIndex = _this13.state.selectedSnapshotIndex;
             selectedSnapshotIndex++;
 
-            if (selectedSnapshotIndex > _this12.state.snapshots.length - 1) {
+            if (selectedSnapshotIndex > _this13.state.snapshots.length - 1) {
               selectedSnapshotIndex = 0;
             }
           }
 
-          _this12.handleReviveSnapshot(_this12.state.snapshots[selectedSnapshotIndex], selectedSnapshotIndex);
+          _this13.handleReviveSnapshot(_this13.state.snapshots[selectedSnapshotIndex], selectedSnapshotIndex);
         },
         onViewClick: function onViewClick() {
-          var view = _this12.state.view === '2d' ? '3d' : '2d';
+          var view = _this13.state.view === '2d' ? '3d' : '2d';
 
-          _this12.changeInsight({
+          _this13.changeInsight({
             view: view
+          }, {
+            label: view === '2d' ? _language.strings.labelViewType2d : _language.strings.labelViewType3d
           });
         },
         onHomeClick: function onHomeClick() {
-          return _this12.viewer.presenter.homeCamera();
+          return _this13.viewer.presenter.homeCamera();
         }
       }), React.createElement("div", {
         className: _sanddanceReact.util.classList('sanddance-main', this.state.sidebarPinned && 'pinned', this.state.sidebarClosed && 'closed', (insight.hideLegend || insight.directColor || !colorMapping(insight, this.state.dataContent && this.state.dataContent.columns)) && 'hide-legend')
       }, React.createElement("div", {
         ref: function ref(div) {
-          if (div && !_this12.layoutDivUnpinned) _this12.layoutDivUnpinned = div;
+          if (div && !_this13.layoutDivUnpinned) _this13.layoutDivUnpinned = div;
         },
         className: "sanddance-layout-unpinned"
       }), React.createElement("div", {
         ref: function ref(div) {
-          if (div && !_this12.layoutDivPinned) _this12.layoutDivPinned = div;
+          if (div && !_this13.layoutDivPinned) _this13.layoutDivPinned = div;
         },
         className: "sanddance-layout-pinned"
       }), !loaded && React.createElement("div", {
@@ -23128,9 +23483,15 @@ function (_React$Component) {
           themePalette: themePalette,
           compact: this.state.sidebarClosed,
           onCompactClick: function onCompactClick() {
-            _this12.changeInsight({
-              sidebarClosed: false,
-              size: _this12.getLayoutDivSize(_this12.state.sidebarPinned, false)
+            _this13.changeInsight({
+              size: _this13.getLayoutDivSize(_this13.state.sidebarPinned, false)
+            }, {
+              label: null,
+              omit: true
+            });
+
+            _this13.setState({
+              sidebarClosed: false
             });
           },
           dataSet: this.props.datasetElement,
@@ -23141,48 +23502,60 @@ function (_React$Component) {
           },
           active: this.state.sideTabId === _interfaces.SideTabId.Data,
           onDataScopeClick: function onDataScopeClick(dataScopeId) {
-            return _this12.setSideTabId(_interfaces.SideTabId.Data, dataScopeId);
+            return _this13.setSideTabId(_interfaces.SideTabId.Data, dataScopeId);
           },
           selectedDataScope: this.state.dataScopeId,
           disabled: !loaded
         },
         onSideTabClick: function onSideTabClick(sideTabId) {
           //collapse or toggle
-          if (sideTabId === _interfaces.SideTabId.Collapse || _this12.state.sideTabId === sideTabId) {
-            var _this12$state = _this12.state,
-                dataScopeId = _this12$state.dataScopeId,
-                sidebarClosed = _this12$state.sidebarClosed;
+          if (sideTabId === _interfaces.SideTabId.Collapse || _this13.state.sideTabId === sideTabId) {
+            var _this13$state = _this13.state,
+                dataScopeId = _this13$state.dataScopeId,
+                sidebarClosed = _this13$state.sidebarClosed;
 
             if (sidebarClosed && sideTabId === _interfaces.SideTabId.Data) {
-              dataScopeId = _this12.getBestDataScopeId();
+              dataScopeId = _this13.getBestDataScopeId();
             }
 
-            sidebarClosed = !_this12.state.sidebarClosed;
+            sidebarClosed = !_this13.state.sidebarClosed;
 
-            _this12.changeInsight({
+            _this13.changeInsight({
+              size: _this13.getLayoutDivSize(_this13.state.sidebarPinned, sidebarClosed)
+            }, {
+              label: null,
+              omit: true
+            });
+
+            _this13.setState({
               dataScopeId: dataScopeId,
-              sidebarClosed: sidebarClosed,
-              size: _this12.getLayoutDivSize(_this12.state.sidebarPinned, sidebarClosed)
+              sidebarClosed: sidebarClosed
             });
           } else if (sideTabId === _interfaces.SideTabId.Pin) {
-            _this12.changeInsight({
-              sidebarPinned: !_this12.state.sidebarPinned,
-              size: _this12.getLayoutDivSize(!_this12.state.sidebarPinned, _this12.state.sidebarClosed)
+            _this13.changeInsight({
+              size: _this13.getLayoutDivSize(!_this13.state.sidebarPinned, _this13.state.sidebarClosed)
+            }, {
+              label: null,
+              omit: true
+            });
+
+            _this13.setState({
+              sidebarPinned: !_this13.state.sidebarPinned
             });
           } else {
-            _this12.setSideTabId(sideTabId);
+            _this13.setSideTabId(sideTabId);
           }
         },
         selectedSideTab: this.state.sideTabId
       }, loaded && function () {
-        switch (_this12.state.sideTabId) {
+        switch (_this13.state.sideTabId) {
           case _interfaces.SideTabId.ChartType:
             {
               return React.createElement(_chart.Chart, Object.assign({
-                collapseLabels: _this12.props.compactUI,
-                tooltipExclusions: _this12.state.tooltipExclusions,
+                collapseLabels: _this13.props.compactUI,
+                tooltipExclusions: _this13.state.tooltipExclusions,
                 toggleTooltipExclusion: function toggleTooltipExclusion(columnName) {
-                  var tooltipExclusions = _toConsumableArray(_this12.state.tooltipExclusions);
+                  var tooltipExclusions = _toConsumableArray(_this13.state.tooltipExclusions);
 
                   var i = tooltipExclusions.indexOf(columnName);
 
@@ -23192,22 +23565,22 @@ function (_React$Component) {
                     tooltipExclusions.splice(i, 1);
                   }
 
-                  _this12.setState({
+                  _this13.setState({
                     tooltipExclusions: tooltipExclusions
                   });
 
-                  _this12.props.onTooltipExclusionsChanged && _this12.props.onTooltipExclusionsChanged(tooltipExclusions);
+                  _this13.props.onTooltipExclusionsChanged && _this13.props.onTooltipExclusionsChanged(tooltipExclusions);
                 },
-                disabled: !loaded || _this12.state.sidebarClosed
+                disabled: !loaded || _this13.state.sidebarClosed
               }, columnMapProps, {
-                chart: _this12.state.chart,
-                view: _this12.state.view,
+                chart: _this13.state.chart,
+                view: _this13.state.view,
                 onChangeChartType: function onChangeChartType(chart) {
-                  return _this12.changeChartType(chart);
+                  return _this13.changeChartType(chart);
                 },
-                insightColumns: _this12.state.columns,
+                insightColumns: _this13.state.columns,
                 onChangeSignal: function onChangeSignal(role, column, name, value) {
-                  return (0, _partialInsight4.saveSignalValuePref)(_this12.prefs, _this12.state.chart, role, column, name, value);
+                  return (0, _partialInsight4.saveSignalValuePref)(_this13.prefs, _this13.state.chart, role, column, name, value);
                 }
               }));
             }
@@ -23215,68 +23588,75 @@ function (_React$Component) {
           case _interfaces.SideTabId.Color:
             {
               return React.createElement(_color.Color, Object.assign({
-                compactUI: _this12.props.compactUI,
-                specCapabilities: _this12.state.specCapabilities,
-                disabled: !loaded || _this12.state.sidebarClosed
+                compactUI: _this13.props.compactUI,
+                specCapabilities: _this13.state.specCapabilities,
+                disabled: !loaded || _this13.state.sidebarClosed
               }, columnMapProps, {
-                dataContent: _this12.state.dataContent,
-                scheme: _this12.state.scheme,
-                colorBin: _this12.state.colorBin,
-                colorBinSignal: _this12.viewer && _this12.viewer.vegaSpec && _this12.viewer.vegaSpec.signals.filter(function (s) {
+                dataContent: _this13.state.dataContent,
+                scheme: _this13.state.scheme,
+                colorBin: _this13.state.colorBin,
+                colorBinSignal: _this13.viewer && _this13.viewer.vegaSpec && _this13.viewer.vegaSpec.signals.filter(function (s) {
                   return s.name === _sanddanceReact.SandDance.constants.SignalNames.ColorBinCount;
                 })[0],
-                colorReverseSignal: _this12.viewer && _this12.viewer.vegaSpec && _this12.viewer.vegaSpec.signals.filter(function (s) {
+                colorReverseSignal: _this13.viewer && _this13.viewer.vegaSpec && _this13.viewer.vegaSpec.signals.filter(function (s) {
                   return s.name === _sanddanceReact.SandDance.constants.SignalNames.ColorReverse;
                 })[0],
-                colorColumn: _this12.state.columns.color,
+                colorColumn: _this13.state.columns.color,
                 onColorBinChange: function onColorBinChange(colorBin) {
-                  _this12.ignoreSelectionChange = true;
+                  _this13.ignoreSelectionChange = true;
 
-                  _this12.viewer.deselect().then(function () {
-                    _this12.ignoreSelectionChange = false; //allow deselection to render
+                  _this13.viewer.deselect().then(function () {
+                    _this13.ignoreSelectionChange = false; //allow deselection to render
 
                     requestAnimationFrame(function () {
-                      _this12.getColorContext = null;
+                      _this13.getColorContext = null;
 
-                      _this12.changeInsight({
+                      _this13.changeInsight({
                         colorBin: colorBin
+                      }, {
+                        label: _language.strings.labelHistoryColorBin
                       });
 
-                      (0, _partialInsight4.savePref)(_this12.prefs, _this12.state.chart, 'color', _this12.state.columns.color, {
+                      (0, _partialInsight4.savePref)(_this13.prefs, _this13.state.chart, 'color', _this13.state.columns.color, {
                         colorBin: colorBin
                       });
                     });
                   });
                 },
                 onColorSchemeChange: function onColorSchemeChange(scheme) {
-                  _this12.changeColumnMapping('color', _this12.state.dataContent.columns.filter(function (c) {
-                    return c.name === _this12.state.columns.color;
+                  _this13.changeColumnMapping('color', _this13.state.dataContent.columns.filter(function (c) {
+                    return c.name === _this13.state.columns.color;
                   })[0], {
                     scheme: scheme
                   });
 
-                  (0, _partialInsight4.savePref)(_this12.prefs, _this12.state.chart, 'color', _this12.state.columns.color, {
+                  (0, _partialInsight4.savePref)(_this13.prefs, _this13.state.chart, 'color', _this13.state.columns.color, {
                     scheme: scheme
                   });
                 },
                 onColorBinCountChange: function onColorBinCountChange(value) {
                   var signalValues = {};
                   signalValues[_sanddanceReact.SandDance.constants.SignalNames.ColorBinCount] = value;
-                  (0, _partialInsight4.savePref)(_this12.prefs, _this12.state.chart, 'color', _this12.state.columns.color, {
+                  (0, _partialInsight4.savePref)(_this13.prefs, _this13.state.chart, 'color', _this13.state.columns.color, {
                     signalValues: signalValues
                   });
                 },
                 onColorReverseChange: function onColorReverseChange(value) {
-                  _this12.getColorContext = null;
+                  _this13.getColorContext = null;
                   var signalValues = {};
                   signalValues[_sanddanceReact.SandDance.constants.SignalNames.ColorReverse] = value;
                 },
-                directColor: _this12.state.directColor,
+                directColor: _this13.state.directColor,
                 onDirectColorChange: function onDirectColorChange(directColor) {
-                  _this12.changeInsight({
-                    directColor: directColor,
+                  _this13.changeInsight({
+                    directColor: directColor
+                  }, {
+                    label: _language.strings.labelHistoryDirectColor
+                  });
+
+                  _this13.setState({
                     calculating: function calculating() {
-                      return _this12._resize();
+                      return _this13._resize();
                     }
                   });
                 }
@@ -23285,100 +23665,99 @@ function (_React$Component) {
 
           case _interfaces.SideTabId.Data:
             {
-              var data = datas[_this12.state.dataScopeId];
+              var data = datas[_this13.state.dataScopeId];
               var itemVisible = true;
 
-              switch (_this12.state.dataScopeId) {
+              switch (_this13.state.dataScopeId) {
                 case _dataScope.DataScopeId.AllData:
                   {
-                    var item = _this12.state.selectedItemIndex[_this12.state.dataScopeId];
-                    itemVisible = _this12.state.dataContent && !_this12.state.filteredData || _this12.state.filteredData.indexOf(data[item]) >= 0;
+                    var item = _this13.state.selectedItemIndex[_this13.state.dataScopeId];
+                    itemVisible = _this13.state.dataContent && !_this13.state.filteredData || _this13.state.filteredData.indexOf(data[item]) >= 0;
                   }
               }
 
               return React.createElement(_dataBrowser.DataBrowser, {
-                theme: _this12.props.theme,
+                theme: _this13.props.theme,
                 themePalette: themePalette,
-                disabled: !loaded || _this12.state.sidebarClosed,
-                columns: _this12.state.dataContent && _this12.state.dataContent.columns,
+                disabled: !loaded || _this13.state.sidebarClosed,
+                columns: _this13.state.dataContent && _this13.state.dataContent.columns,
                 data: data,
-                displayName: _this12.state.dataFile && _this12.state.dataFile.displayName || _language.strings.defaultFileName,
-                title: dataBrowserTitles[_this12.state.dataScopeId],
-                nullMessage: dataBrowserNullMessages[_this12.state.dataScopeId],
-                zeroMessage: dataBrowserZeroMessages[_this12.state.dataScopeId],
-                index: _this12.state.selectedItemIndex[_this12.state.dataScopeId],
+                displayName: _this13.state.dataFile && _this13.state.dataFile.displayName || _language.strings.defaultFileName,
+                nullMessage: dataBrowserNullMessages[_this13.state.dataScopeId],
+                zeroMessage: dataBrowserZeroMessages[_this13.state.dataScopeId],
+                index: _this13.state.selectedItemIndex[_this13.state.dataScopeId],
                 itemVisible: itemVisible,
-                dataExportHandler: _this12.props.dataExportHandler,
-                selectedDataScope: _this12.state.dataScopeId,
+                dataExportHandler: _this13.props.dataExportHandler,
+                selectedDataScope: _this13.state.dataScopeId,
                 onDataScopeClick: function onDataScopeClick(dataScopeId) {
-                  return _this12.setSideTabId(_interfaces.SideTabId.Data, dataScopeId);
+                  return _this13.setSideTabId(_interfaces.SideTabId.Data, dataScopeId);
                 },
                 onActivate: function onActivate(row, index) {
-                  var selectedItemIndex = Object.assign({}, _this12.state.selectedItemIndex);
-                  selectedItemIndex[_this12.state.dataScopeId] = index;
+                  var selectedItemIndex = Object.assign({}, _this13.state.selectedItemIndex);
+                  selectedItemIndex[_this13.state.dataScopeId] = index;
 
-                  _this12.setState({
+                  _this13.setState({
                     selectedItemIndex: selectedItemIndex
                   });
 
-                  _this12.silentActivation(row);
+                  _this13.silentActivation(row);
                 },
                 onSearch: function onSearch(e, search) {
                   if (e.ctrlKey) {
-                    _this12.setState({
+                    _this13.setState({
                       sideTabId: _interfaces.SideTabId.Search,
                       search: search
                     });
                   } else {
-                    _this12.doSelect(search);
+                    _this13.doSelect(search);
                   }
                 },
-                bingSearchDisabled: _this12.props.bingSearchDisabled
+                bingSearchDisabled: _this13.props.bingSearchDisabled
               });
             }
 
           case _interfaces.SideTabId.Search:
             {
               return React.createElement(_search.Search, {
-                collapseLabels: _this12.props.compactUI,
+                collapseLabels: _this13.props.compactUI,
                 themePalette: themePalette,
-                disabled: !loaded || _this12.state.sidebarClosed,
-                disableGroupOR: _this12.props.searchORDisabled,
-                disableExpressionOR: _this12.props.searchORDisabled,
+                disabled: !loaded || _this13.state.sidebarClosed,
+                disableGroupOR: _this13.props.searchORDisabled,
+                disableExpressionOR: _this13.props.searchORDisabled,
                 initializer: {
                   columns: columnMapProps.allColumns,
-                  search: _this12.state.search
+                  search: _this13.state.search
                 },
-                autoCompleteDistinctValues: _this12.state.autoCompleteDistinctValues,
+                autoCompleteDistinctValues: _this13.state.autoCompleteDistinctValues,
                 onSelect: function onSelect(expr) {
-                  return _this12.doSelect(expr);
+                  return _this13.doSelect(expr);
                 },
-                data: _this12.state.dataContent.data
+                data: _this13.state.dataContent.data
               });
             }
 
           case _interfaces.SideTabId.Snapshots:
             {
-              return React.createElement(_snapshots.Snapshots, Object.assign({}, _this12.props.snapshotProps, {
-                editor: _this12.snapshotEditor,
+              return React.createElement(_snapshots.Snapshots, Object.assign({}, _this13.props.snapshotProps, {
+                editor: _this13.snapshotEditor,
                 themePalette: themePalette,
-                explorer: _this12,
-                snapshots: _this12.state.snapshots,
-                selectedSnapshotIndex: _this12.state.selectedSnapshotIndex,
+                explorer: _this13,
+                snapshots: _this13.state.snapshots,
+                selectedSnapshotIndex: _this13.state.selectedSnapshotIndex,
                 onClearSnapshots: function onClearSnapshots() {
-                  return _this12.setState({
+                  return _this13.setState({
                     snapshots: [],
                     selectedSnapshotIndex: -1
                   });
                 },
                 onWriteSnapshot: function onWriteSnapshot(s, i) {
-                  return _this12.writeSnapshot(s, i);
+                  return _this13.writeSnapshot(s, i);
                 },
                 onRemoveSnapshot: function onRemoveSnapshot(i) {
-                  var snapshots = _toConsumableArray(_this12.state.snapshots);
+                  var snapshots = _toConsumableArray(_this13.state.snapshots);
 
                   snapshots.splice(i, 1);
-                  var selectedSnapshotIndex = _this12.state.selectedSnapshotIndex;
+                  var selectedSnapshotIndex = _this13.state.selectedSnapshotIndex;
 
                   if (i === selectedSnapshotIndex) {
                     selectedSnapshotIndex = -1;
@@ -23386,28 +23765,28 @@ function (_React$Component) {
                     selectedSnapshotIndex--;
                   }
 
-                  _this12.setState({
+                  _this13.setState({
                     snapshots: snapshots,
                     selectedSnapshotIndex: selectedSnapshotIndex
                   });
                 },
                 onSnapshotClick: function onSnapshotClick(snapshot, selectedSnapshotIndex) {
-                  _this12.setState({
+                  _this13.setState({
                     selectedSnapshotIndex: selectedSnapshotIndex
                   });
 
-                  _this12.calculate(function () {
-                    _this12.handleReviveSnapshot(snapshot, selectedSnapshotIndex);
+                  _this13.calculate(function () {
+                    _this13.handleReviveSnapshot(snapshot, selectedSnapshotIndex);
                   });
                 },
                 onMoveUp: function onMoveUp(i) {
                   if (i > 0) {
-                    var snapshots = _toConsumableArray(_this12.state.snapshots);
+                    var snapshots = _toConsumableArray(_this13.state.snapshots);
 
                     var temp = snapshots[i - 1];
                     snapshots[i - 1] = snapshots[i];
                     snapshots[i] = temp;
-                    var selectedSnapshotIndex = _this12.state.selectedSnapshotIndex;
+                    var selectedSnapshotIndex = _this13.state.selectedSnapshotIndex;
 
                     if (i === selectedSnapshotIndex) {
                       selectedSnapshotIndex = i - 1;
@@ -23415,20 +23794,20 @@ function (_React$Component) {
                       selectedSnapshotIndex = i;
                     }
 
-                    _this12.setState({
+                    _this13.setState({
                       snapshots: snapshots,
                       selectedSnapshotIndex: selectedSnapshotIndex
                     });
                   }
                 },
                 onMoveDown: function onMoveDown(i) {
-                  if (i < _this12.state.snapshots.length - 1) {
-                    var snapshots = _toConsumableArray(_this12.state.snapshots);
+                  if (i < _this13.state.snapshots.length - 1) {
+                    var snapshots = _toConsumableArray(_this13.state.snapshots);
 
                     var temp = snapshots[i + 1];
                     snapshots[i + 1] = snapshots[i];
                     snapshots[i] = temp;
-                    var selectedSnapshotIndex = _this12.state.selectedSnapshotIndex;
+                    var selectedSnapshotIndex = _this13.state.selectedSnapshotIndex;
 
                     if (i === selectedSnapshotIndex) {
                       selectedSnapshotIndex = i + 1;
@@ -23436,7 +23815,7 @@ function (_React$Component) {
                       selectedSnapshotIndex = i;
                     }
 
-                    _this12.setState({
+                    _this13.setState({
                       snapshots: snapshots,
                       selectedSnapshotIndex: selectedSnapshotIndex
                     });
@@ -23445,54 +23824,76 @@ function (_React$Component) {
               }));
             }
 
+          case _interfaces.SideTabId.History:
+            {
+              return React.createElement(_history.History, {
+                theme: theme,
+                themePalette: themePalette,
+                historyIndex: _this13.state.historyIndex,
+                historyItems: _this13.state.historyItems,
+                redo: function redo(i) {
+                  return _this13.redo(i);
+                }
+              });
+            }
+
           case _interfaces.SideTabId.Settings:
             {
               return React.createElement(_settings.Settings, {
-                explorer: _this12,
-                dataFile: _this12.state.dataFile,
-                scheme: _this12.state.scheme,
-                hideLegend: _this12.state.hideLegend,
+                explorer: _this13,
+                dataFile: _this13.state.dataFile,
+                scheme: _this13.state.scheme,
+                hideLegend: _this13.state.hideLegend,
                 onToggleLegend: function onToggleLegend(hideLegend) {
-                  return _this12.setState({
+                  return _this13.setState({
                     hideLegend: hideLegend,
                     calculating: function calculating() {
-                      return _this12._resize();
+                      return _this13._resize();
                     }
                   });
                 },
-                hideAxes: _this12.state.hideAxes,
+                hideAxes: _this13.state.hideAxes,
                 onToggleAxes: function onToggleAxes(hideAxes) {
-                  return _this12.setState({
+                  return _this13.setState({
                     calculating: function calculating() {
-                      return _this12.setState({
+                      return _this13.setState({
                         hideAxes: hideAxes
                       });
                     }
                   });
                 },
-                additionalSettings: _this12.props.additionalSettings
-              }, _this12.props.systemInfoChildren);
+                additionalSettings: _this13.props.additionalSettings
+              }, _this13.props.systemInfoChildren);
             }
         }
       }()), loaded && React.createElement("div", {
         className: "sanddance-view"
       }, React.createElement(_sanddanceReact.SandDanceReact, {
         renderOptions: {
+          rebaseFilter: function rebaseFilter() {
+            var rebaseFilter = _this13.rebaseFilter;
+
+            if (rebaseFilter) {
+              _this13.rebaseFilter = false;
+            }
+
+            return rebaseFilter;
+          },
           initialColorContext: this.getColorContext && this.getColorContext(this.viewer.insight, insight),
           discardColorContextUpdates: function discardColorContextUpdates() {
-            return _this12.discardColorContextUpdates;
+            return _this13.discardColorContextUpdates;
           }
         },
         viewerOptions: this.viewerOptions,
         ref: function ref(reactViewer) {
           if (reactViewer) {
-            _this12.viewer = reactViewer.viewer;
+            _this13.viewer = reactViewer.viewer;
           }
         },
         onView: function onView(renderResult) {
-          _this12.changespecCapabilities(renderResult.specResult.errors ? renderResult.specResult.specCapabilities : _this12.viewer.specCapabilities);
+          _this13.changespecCapabilities(renderResult.specResult.errors ? renderResult.specResult.specCapabilities : _this13.viewer.specCapabilities);
 
-          _this12.getColorContext = function (oldInsight, newInsight) {
+          _this13.getColorContext = function (oldInsight, newInsight) {
             if (!oldInsight && !newInsight) {
               return null;
             }
@@ -23513,20 +23914,20 @@ function (_React$Component) {
               return null;
             }
 
-            return _this12.viewer.colorContexts && _this12.viewer.colorContexts[_this12.viewer.currentColorContext];
+            return _this13.viewer.colorContexts && _this13.viewer.colorContexts[_this13.viewer.currentColorContext];
           }; //don't allow tabbing to the canvas
 
 
-          (0, _canvas.removeTabIndex)(_this12.viewer);
-          _this12.props.onView && _this12.props.onView();
+          (0, _canvas.removeTabIndex)(_this13.viewer);
+          _this13.props.onView && _this13.props.onView();
         },
         onError: function onError(e) {
-          _this12.props.onError && _this12.props.onError(e);
+          _this13.props.onError && _this13.props.onError(e);
         },
         data: this.state.dataContent.data,
         insight: insight,
         onMount: function onMount(el) {
-          return _this12.viewerMounted(el);
+          return _this13.viewerMounted(el);
         }
       }), this.state.note && React.createElement("div", {
         className: 'sanddance-note'
@@ -23536,7 +23937,7 @@ function (_React$Component) {
         title: _language.strings.buttonClose,
         iconName: 'Cancel',
         onClick: function onClick() {
-          return _this12.setState({
+          return _this13.setState({
             note: null
           });
         }
@@ -23544,7 +23945,7 @@ function (_React$Component) {
         title: _language.strings.labelError,
         hidden: !this.state.errors,
         onDismiss: function onDismiss() {
-          _this12.setState({
+          _this13.setState({
             errors: null
           });
         }
@@ -23554,12 +23955,12 @@ function (_React$Component) {
         }, error);
       })), React.createElement(_snapshotEditor.SnapshotEditor, Object.assign({
         ref: function ref(se) {
-          return _this12.snapshotEditor = se;
+          return _this13.snapshotEditor = se;
         }
       }, this.props.snapshotProps, {
         explorer: this,
         onWriteSnapshot: function onWriteSnapshot(s, i) {
-          return _this12.writeSnapshot(s, i);
+          return _this13.writeSnapshot(s, i);
         },
         themePalette: themePalette
       }))), this.state.positionedColumnMapProps && React.createElement(_clickableTextLayer.PositionedColumnMap, Object.assign({}, this.state.positionedColumnMapProps)));
@@ -23567,7 +23968,7 @@ function (_React$Component) {
   }, {
     key: "getColumnMapBaseProps",
     value: function getColumnMapBaseProps() {
-      var _this13 = this;
+      var _this14 = this;
 
       var allColumns = this.state.dataContent && this.state.dataContent.columns.filter(function (c) {
         return !_sanddanceReact.SandDance.util.isInternalFieldName(c.name, true);
@@ -23584,7 +23985,7 @@ function (_React$Component) {
 
           if (typeof columnOrRole === 'string') {
             //look up current insight
-            var columnName = _this13.state.columns[columnOrRole];
+            var columnName = _this14.state.columns[columnOrRole];
             column = allColumns.filter(function (c) {
               return c.name === columnName;
             })[0];
@@ -23592,7 +23993,7 @@ function (_React$Component) {
             column = columnOrRole;
           }
 
-          _this13.changeColumnMapping(role, column, options);
+          _this14.changeColumnMapping(role, column, options);
         },
         facetStyle: this.state.facetStyle,
         totalStyle: this.state.totalStyle,
@@ -23618,13 +24019,14 @@ function colorMapping(insight, columns) {
     })[0];
   }
 }
-},{"react":"mpTF","./colorMap":"E67y","./base":"Vlbn","./colorScheme":"L8O2","./interfaces":"h2T5","./dialogs/chart":"NGSt","./dialogs/color":"N8IJ","./partialInsight":"tb7d","./dialogs/dataBrowser":"pJLc","./controls/dataScope":"OsNT","./defaults":"Tl9z","./controls/dialog":"cFWm","./columns":"f8v0","./mouseEvent":"yvMl","./controls/iconButton":"dQNc","./dialogs/search":"ozxe","./dataLoader":"f19h","./clickableTextLayer":"UUG7","@msrvida/chart-recommender":"i6UQ","./canvas":"Dryx","@msrvida/sanddance-react":"MjKu","./dialogs/settings":"zKGJ","./controls/sidebar":"f8Jx","./dialogs/snapshotEditor":"dSzJ","./dialogs/snapshots":"oc9r","./language":"hk5u","./themes":"CgE3","./toggleSearch":"yzxM","./controls/topbar":"Afi9"}],"Focm":[function(require,module,exports) {
+},{"./base":"Vlbn","./canvas":"Dryx","./clickableTextLayer":"UUG7","./colorMap":"E67y","./colorScheme":"L8O2","./columns":"f8v0","./controls/dataScope":"OsNT","./controls/dialog":"cFWm","./controls/iconButton":"dQNc","./controls/sidebar":"f8Jx","./controls/topbar":"Afi9","./dataLoader":"f19h","./defaults":"Tl9z","./dialogs/chart":"NGSt","./dialogs/color":"N8IJ","./dialogs/dataBrowser":"pJLc","./dialogs/history":"YVpI","./dialogs/search":"ozxe","./dialogs/settings":"zKGJ","./dialogs/snapshotEditor":"dSzJ","./dialogs/snapshots":"oc9r","./interfaces":"h2T5","./language":"hk5u","./mouseEvent":"yvMl","./partialInsight":"tb7d","./themes":"CgE3","./toggleSearch":"yzxM","@msrvida/chart-recommender":"i6UQ","@msrvida/sanddance-react":"MjKu","react":"mpTF"}],"Focm":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var _exportNames = {
+  controls: true,
   getEmbedHTML: true,
   SideTabId: true,
   use: true,
@@ -23689,6 +24091,11 @@ Object.defineProperty(exports, "version", {
     return _version.version;
   }
 });
+exports.controls = void 0;
+
+var controls = _interopRequireWildcard(require("./controls"));
+
+exports.controls = controls;
 
 var _dataExporter = require("./controls/dataExporter");
 
@@ -23716,4 +24123,8 @@ Object.keys(_explorer).forEach(function (key) {
 var _sanddanceReact = require("@msrvida/sanddance-react");
 
 var _version = require("./version");
-},{"./controls/dataExporter":"l7po","./interfaces":"h2T5","./base":"Vlbn","./canvas":"Dryx","./themes":"CgE3","./explorer":"KeW6","@msrvida/sanddance-react":"MjKu","./version":"RvaL"}]},{},["Focm"], "SandDanceExplorer")
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+},{"./controls":"nQgO","./controls/dataExporter":"l7po","./interfaces":"h2T5","./base":"Vlbn","./canvas":"Dryx","./themes":"CgE3","./explorer":"KeW6","@msrvida/sanddance-react":"MjKu","./version":"RvaL"}]},{},["Focm"], "SandDanceExplorer")

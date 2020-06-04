@@ -931,15 +931,15 @@
             }
             const aspect = `((${names.bandWidth}) / (${maxGroupedFillSize}))`;
             const squaresPerBand = `ceil(sqrt(${maxGroupedUnits} * ${aspect}))`;
-            const gap = `min(0.1 * (${names.bandWidth} / (${squaresPerBand} - 1)), 1)`;
-            const size = `((${names.bandWidth} / ${squaresPerBand}) - ${gap})`;
+            const gap = `min(0.1 * ((${names.bandWidth}) / (${squaresPerBand} - 1)), 1)`;
+            const size = `(((${names.bandWidth}) / ${squaresPerBand}) - ${gap})`;
             const levels = `ceil(${maxGroupedUnits} / ${squaresPerBand})`;
             const levelSize = `(((${maxGroupedFillSize}) / ${levels}) - ${gap})`;
             return { gap, levelSize, size, squaresPerBand };
         }
         transformXY(gap, levelSize, squaresPerBand) {
             const { names, prefix } = this;
-            const compartment = `${names.bandWidth} / ${squaresPerBand} * ((datum[${JSON.stringify(names.stack0)}]) % ${squaresPerBand})`;
+            const compartment = `(${names.bandWidth}) / ${squaresPerBand} * ((datum[${JSON.stringify(names.stack0)}]) % ${squaresPerBand})`;
             const level = `floor((datum[${JSON.stringify(names.stack0)}]) / ${squaresPerBand})`;
             const { fillDirection, parentScope } = this.props;
             const tx = {
@@ -7591,7 +7591,10 @@ void main(void) {
                 resolve();
             });
         }
-        filter(search, keepData, collapseData) {
+        filter(search, keepData, collapseData, rebase) {
+            if (rebase) {
+                this.dataScope.collapse(false, keepData);
+            }
             this.dataScope.collapse(true, collapseData);
             return new Promise((resolve, reject) => {
                 this.props.onAnimateDataChange(DataLayoutChange.refine, 'before refine', 'refine').then(() => {
@@ -7669,7 +7672,7 @@ void main(void) {
 
     function notNice(niceValue) {
         //convert "nice" numbers to numeric value
-        return (niceValue + '').replace(/,/g, '');
+        return (niceValue + '').replace(/[\s,]/g, '');
     }
     function tickValue(axis, i) {
         const tick = axis.tickText[i];
@@ -8009,20 +8012,21 @@ void main(void) {
         select(search) {
             this.deselect();
             if (search) {
-                this.selection = this.createUserSelection(search, true);
+                this.selection = this.createUserSelection(search, true, false);
                 if (this.selection.included.length) {
                     this.activate(this.selection.included[0]);
                 }
             }
         }
-        createUserSelection(search, assign) {
+        createUserSelection(search, assign, rebase) {
             const exec = new Exec(search, this.getColumns());
             const s = {
                 search,
                 included: [],
                 excluded: []
             };
-            this.currentData().forEach(datum => {
+            const data = rebase ? this.data : this.currentData();
+            data.forEach(datum => {
                 if (exec.run(datum)) {
                     if (assign) {
                         datum[FieldNames.Selected] = true;
@@ -8158,13 +8162,13 @@ void main(void) {
                 }
                 case Action.exclude: {
                     this.clearSelection();
-                    p = this.animator.filter(invert(u.search), u.excluded, u.included);
+                    p = this.animator.filter(invert(u.search), u.excluded, u.included, false);
                     this.state.remapColor = false;
                     break;
                 }
                 case Action.isolate: {
                     this.clearSelection();
-                    p = this.animator.filter(u.search, u.included, u.excluded);
+                    p = this.animator.filter(u.search, u.included, u.excluded, false);
                     this.state.remapColor = false;
                     break;
                 }
@@ -8359,7 +8363,12 @@ void main(void) {
             lowValue = notNice(lowValue);
         if (highValue)
             highValue = notNice(highValue);
-        return selectBetween(column, lowValue, highValue, lowOperator, highOperator);
+        if (lowValue === highValue) {
+            return { expressions: [selectExact(column, lowValue)] };
+        }
+        else {
+            return selectBetween(column, lowValue, highValue, lowOperator, highOperator);
+        }
     }
     function finalizeLegend(colorBinType, colorColumn, legend, language) {
         const rowTexts = [];
@@ -8368,9 +8377,6 @@ void main(void) {
             row.search = legendRange(colorBinType, colorColumn, legend, +i);
             if (row.value === Other) {
                 row.label = language.legendOther;
-            }
-            else if (rowTexts.indexOf(row.value) >= 0) {
-                delete legend.rows[i];
             }
             else {
                 rowTexts.push(row.value);
@@ -8824,7 +8830,7 @@ void main(void) {
                         //refining
                         result = yield this._render(insight, data, options);
                         this.presenter.animationQueue(() => {
-                            this.filter(insight.filter);
+                            this.filter(insight.filter, options.rebaseFilter && options.rebaseFilter());
                         }, allowAsyncRenderTime, { waitingLabel: 'layout before refine', handlerLabel: 'refine after layout' });
                     }
                     else {
@@ -9092,11 +9098,12 @@ void main(void) {
         /**
          * Filter the data and animate.
          * @param search Filter expression, see https://vega.github.io/vega/docs/expressions/
+         * @param rebase Optional flag to apply to entire dataset. A false value will apply the filter upon any existing filter.
          */
-        filter(search) {
-            const u = this._dataScope.createUserSelection(search, false);
+        filter(search, rebase = false) {
+            const u = this._dataScope.createUserSelection(search, false, rebase);
             return new Promise((resolve, reject) => {
-                this._animator.filter(search, u.included, u.excluded).then(() => {
+                this._animator.filter(search, u.included, u.excluded, rebase).then(() => {
                     this._details.clear();
                     this._details.clearSelection();
                     this._details.populate(this._dataScope.selection);
@@ -9232,7 +9239,7 @@ void main(void) {
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
-    const version = '3.0.0-beta.1';
+    const version = '3.0.0-beta.2';
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     const use$1 = use;
