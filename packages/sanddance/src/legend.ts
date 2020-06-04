@@ -13,7 +13,7 @@ import {
 } from './expression';
 import { SearchExpressionGroup, SearchExpressionOperators } from '@msrvida/search-expression';
 
-function legendRange(colorBinType: ColorBin, column: Column, legend: VegaDeckGl.types.Legend, clickedIndex: number) {
+function legendRange(colorBinType: ColorBin, column: Column, legend: VegaDeckGl.types.Legend, clickedIndex: number): SearchExpressionGroup {
     if (column.quantitative) {
         return selectQuantitative(colorBinType, column, legend, clickedIndex);
     } else {
@@ -37,7 +37,7 @@ function selectCategorical(column: Column, legend: VegaDeckGl.types.Legend, clic
     }
 }
 
-function selectQuantitative(colorBinType: ColorBin, column: Column, legend: VegaDeckGl.types.Legend, clickedIndex: number) {
+function selectQuantitative(colorBinType: ColorBin, column: Column, legend: VegaDeckGl.types.Legend, clickedIndex: number): SearchExpressionGroup {
     const keys = Object.keys(legend.rows).map(key => +key).sort((a, b) => +a - +b);
     let lowValue: string;
     let lowOperator: SearchExpressionOperators;
@@ -80,7 +80,7 @@ function selectQuantitative(colorBinType: ColorBin, column: Column, legend: Vega
     if (lowValue) lowValue = notNice(lowValue);
     if (highValue) highValue = notNice(highValue);
     if (lowValue === highValue) {
-        return selectExact(column, lowValue);
+        return { expressions: [selectExact(column, lowValue)] };
     } else {
         return selectBetween(column, lowValue, highValue, lowOperator, highOperator);
     }

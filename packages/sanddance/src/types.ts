@@ -346,7 +346,7 @@ export interface ColorMethod {
 }
 
 export interface LegendRowWithSearch extends VegaDeckGl.types.LegendRow {
-    search: Search;
+    search: SearchExpressionGroup;
 }
 
 export interface SelectionState {
