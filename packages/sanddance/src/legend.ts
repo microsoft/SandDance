@@ -13,7 +13,7 @@ import {
 } from './expression';
 import { SearchExpressionGroup, SearchExpressionOperators } from '@msrvida/search-expression';
 
-function legendRange(colorBinType: ColorBin, column: Column, legend: VegaDeckGl.types.Legend, clickedIndex: number): SearchExpressionGroup {
+function legendRange(colorBinType: ColorBin, column: Column, legend: VegaDeckGl.types.Legend, clickedIndex: number) {
     if (column.quantitative) {
         return selectQuantitative(colorBinType, column, legend, clickedIndex);
     } else {
