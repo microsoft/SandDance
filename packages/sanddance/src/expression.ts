@@ -11,7 +11,7 @@ import {
 
 export function notNice(niceValue: string | number) {
     //convert "nice" numbers to numeric value
-    return (niceValue + '').replace(/,/g, '');
+    return (niceValue + '').replace(/[\s,]/g, '');
 }
 
 function tickValue(axis: VegaDeckGl.types.Axis, i: number) {
