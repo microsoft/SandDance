@@ -79,7 +79,11 @@ function selectQuantitative(colorBinType: ColorBin, column: Column, legend: Vega
     }
     if (lowValue) lowValue = notNice(lowValue);
     if (highValue) highValue = notNice(highValue);
-    return selectBetween(column, lowValue, highValue, lowOperator, highOperator);
+    if (lowValue === highValue) {
+        return selectExact(column, lowValue);
+    } else {
+        return selectBetween(column, lowValue, highValue, lowOperator, highOperator);
+    }
 }
 
 export function finalizeLegend(colorBinType: ColorBin, colorColumn: Column, legend: VegaDeckGl.types.Legend, language: Language) {
