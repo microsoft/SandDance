@@ -89,8 +89,6 @@ export function finalizeLegend(colorBinType: ColorBin, colorColumn: Column, lege
         row.search = legendRange(colorBinType, colorColumn, legend, +i);
         if (row.value === Other) {
             row.label = language.legendOther;
-        } else if (rowTexts.indexOf(row.value) >= 0) {
-            delete legend.rows[i];
         } else {
             rowTexts.push(row.value);
         }
