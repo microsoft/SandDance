@@ -51,6 +51,11 @@ export function Sidebar(props: Props) {
             title: strings.labelSnapshots
         },
         {
+            sideTabId: SideTabId.History,
+            iconName: 'History',
+            title: strings.labelHistory
+        },
+        {
             sideTabId: SideTabId.Settings,
             iconName: 'Settings',
             title: strings.labelChartSettings

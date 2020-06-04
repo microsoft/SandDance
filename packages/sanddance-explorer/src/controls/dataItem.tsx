@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as React from 'react';
-import { DateWithSource } from '../interfaces';
 import { InputSearchExpression } from './searchTerm';
 import { InputSearchExpressionGroup } from '../dialogs/search';
-import { SandDance } from '@msrvida/sanddance-react';
+import { DateWithSource } from '../interfaces';
+import { KeyCodes } from '../keycodes';
 import { strings } from '../language';
+import { SandDance } from '@msrvida/sanddance-react';
+import * as React from 'react';
 
 import SearchExpressionValue = SandDance.searchExpression.SearchExpressionValue;
 
@@ -98,10 +99,6 @@ function displayValueElement(nvp: NameValuePair) {
     return d.display;
 }
 
-const KeyCodes = {
-    ENTER: 13
-};
-
 export function DataItem(props: Props) {
     if (!props.item) {
         return null;
@@ -150,7 +147,7 @@ export function DataItem(props: Props) {
                         onClick={!props.disabled ? searchClick : null}
                         title={title}
                         onKeyUp={e => {
-                            if (e.keyCode === KeyCodes.ENTER ) {
+                            if (e.keyCode === KeyCodes.ENTER) {
                                 searchClick(e as any);
                             }
                         }}

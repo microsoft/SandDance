@@ -89,7 +89,7 @@ async function downloadAndViewInSandance(commandContext: azdata.ObjectExplorerCo
     }
 }
 
-function viewInSandance(fileUri: vscode.Uri, context: vscode.ExtensionContext): void {
+function viewInSandance(fileUri: vscode.Uri, context: vscode.ExtensionContext, uriTabName?: string | undefined): void {
     const columnToShowIn = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
     const uriFsPath = fileUri.fsPath;
     //only allow one SandDance at a time
@@ -104,47 +104,6 @@ function viewInSandance(fileUri: vscode.Uri, context: vscode.ExtensionContext): 
     }
     else {
         // Otherwise, create a new panel
-        current = newPanel(context, uriFsPath);
-        current.panel.onDidDispose(() => {
-            current = undefined;
-        }, null, context.subscriptions);
-        // Handle messages from the webview
-        current.panel.webview.onDidReceiveMessage(message => {
-            switch (message.command) {
-                case 'getFileContent':
-                    fs.readFile(uriFsPath, (err, data) => {
-                        if (current && current.panel.visible) {
-                        //TODO string type of dataFile
-                            const dataFile = {
-                                type: path.extname(uriFsPath).substring(1),
-                                rawText: data.toString('utf8')
-                            };
-                            current.panel.webview.postMessage({ command: 'gotFileContent', dataFile });
-                        }
-                    });
-                    break;
-            }
-        }, undefined, context.subscriptions);
-    }
-}
-
-// View in SandDance for SQL query editor
-function queryViewInSandance(fileUri: vscode.Uri, context: vscode.ExtensionContext, editorUri: azdata.queryeditor.QueryDocument): void {
-    const columnToShowIn = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
-    const uriFsPath = fileUri.fsPath;
-    //only allow one SandDance at a time
-    if (current && current.uriFsPath !== uriFsPath) {
-        current.panel.dispose();
-        current = undefined;
-    }
-    if (current) {
-        //TODO: registerWebviewPanelSerializer to hydrate state
-        // If we already have a panel, show it in the target column
-        current.panel.reveal(columnToShowIn);
-    }
-    else {
-        // Otherwise, create a new panel
-        const uriTabName = editorUri.uri;
         current = newPanel(context, uriFsPath, uriTabName);
         current.panel.onDidDispose(() => {
             current = undefined;
@@ -152,21 +111,33 @@ function queryViewInSandance(fileUri: vscode.Uri, context: vscode.ExtensionConte
         // Handle messages from the webview
         current.panel.webview.onDidReceiveMessage(message => {
             switch (message.command) {
-                case 'getFileContent':
+                case 'getFileContent': {
                     fs.readFile(uriFsPath, (err, data) => {
                         if (current && current.panel.visible) {
-                        //TODO string type of dataFile
+                            //TODO string type of dataFile
                             const dataFile = {
                                 type: path.extname(uriFsPath).substring(1),
                                 rawText: data.toString('utf8')
                             };
-                            current.panel.webview.postMessage({ command: 'gotFileContent', dataFile });
+                            const compactUI = context.globalState.get('compactUI');
+                            current.panel.webview.postMessage({ command: 'gotFileContent', dataFile, compactUI });
                         }
                     });
                     break;
+                }
+                case 'setCompactUI': {
+                    context.globalState.update('compactUI', message.compactUI);
+                    break;
+                }
             }
         }, undefined, context.subscriptions);
     }
+}
+
+// View in SandDance for SQL query editor
+function queryViewInSandance(fileUri: vscode.Uri, context: vscode.ExtensionContext, editorUri: azdata.queryeditor.QueryDocument): void {
+    const uriTabName = editorUri.uri;
+    viewInSandance(fileUri, context, uriTabName);
 }
 
 

@@ -311,6 +311,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                                         dataSource={this.state.dataSource}
                                         snapshots={snapshots}
                                         onDismiss={() => this.setState({ dialogMode: null })}
+                                        theme={theme}
                                     />
                                 )}
                             </div>

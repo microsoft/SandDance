@@ -1,13 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>SandDance test</title>
     <link rel="stylesheet" type="text/css" href="../dist/app.css" />
+    <script>
+        let compactUI = false;
+        function acquireVsCodeApi() {
+            return {
+                postMessage: m => {
+                    if (m && m.command && m.command === 'getFileContent') {
+                        switch (m.command) {
+                            case 'getFileContent': {
+                                self.postMessage({
+                                    command: 'gotFileContent',
+                                    dataFile: sampleData(),
+                                    compactUI
+                                });
+                                break;
+                            }
+                            case 'setCompactUI': {
+                                compactUI = m.compactUI;
+                                break;
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        function sampleData() {
+            var data = [];
+            var size = 100;
+            for (var x = 0; x < size; x++) {
+                for (var y = 0; y < size; y++) {
+                    var id = x * y;
+                    var z_1 = Math.random() * size * (x % 10) * (y % 10);
+                    var w = Math.random() * size;
+                    data.push({ id: id, x: x, y: y, z: z_1, w: w });
+                }
+            }
+            return data;
+        }
+    </script>
 </head>
-<body>
+
+<body class="vscode-light">
 
     <div id="app"></div>
 
@@ -17,7 +58,7 @@
     <script src="../node_modules/vega/build/vega.js"></script>
     <script src="../node_modules/@fluentui/react/dist/fluentui-react.js"></script>
     <script src="../node_modules/@msrvida/sanddance-explorer/dist/umd/sanddance-explorer.js"></script>
-    <script src="../dist/app-test.js"></script>
-    
+    <script src="../dist/app.js"></script>
 </body>
+
 </html>

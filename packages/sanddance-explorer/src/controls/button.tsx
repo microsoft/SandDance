@@ -2,9 +2,9 @@
 // Licensed under the MIT license.
 import * as React from 'react';
 import { base } from '../base';
-import { IButtonProps, ICSSRule, ICSSPixelUnitRule, IPalette } from '@msrvida/fluentui-react-cdn-typings/types';
+import { IButtonProps as _IButtonProps, ICSSRule, ICSSPixelUnitRule, IPalette } from '@msrvida/fluentui-react-cdn-typings/types';
 
-export interface Props extends IButtonProps {
+export interface IButtonProps extends _IButtonProps {
     iconName?: string;
     onClick: { (event: React.MouseEvent<{}>): void };
     textAlign?: string;
@@ -12,7 +12,7 @@ export interface Props extends IButtonProps {
     themePalette: Partial<IPalette>;
 }
 
-export function Button(props: Props) {
+export function Button(props: IButtonProps) {
     return (
         <base.fluentUI.DefaultButton
             {...props}

@@ -3,19 +3,21 @@
 export { IChoiceGroupOption } from '@fluentui/react/lib/ChoiceGroup';
 
 export {
-    IButtonProps,
-    IButtonStyles
+  IButtonProps,
+  IButtonStyles
 } from '@fluentui/react/lib/Button';
 
 export {
-    IContextualMenuItem,
-    IContextualMenuProps,
-    IContextualMenuRenderItem
+  IContextualMenuItem,
+  IContextualMenuProps,
+  IContextualMenuRenderItem
 } from '@fluentui/react/lib/ContextualMenu';
 
 export { IDropdown, IDropdownProps, IDropdownOption } from '@fluentui/react/lib/Dropdown';
 
 export { IComboBox, IComboBoxProps, IComboBoxOption } from '@fluentui/react/lib/ComboBox';
+
+export { ITextField, ITextFieldProps } from '@fluentui/react/lib/TextField';
 
 export { ICommandBarItemProps, ICommandBarProps } from '@fluentui/react/lib/CommandBar';
 

@@ -84,7 +84,7 @@ export interface ViewerOptions extends SpecViewOptions {
     /**
      * Optional map of light settings for the visualization, per camera view type.
      */
-//    lightSettings?: { [view in View]: LightSettings };
+    //    lightSettings?: { [view in View]: LightSettings };
 
     /**
      * Lengths of time for a transition animation.
@@ -173,6 +173,7 @@ export interface ViewerOptions extends SpecViewOptions {
 }
 
 export interface RenderOptions {
+    rebaseFilter?: () => boolean;
     columns?: Column[];
     columnTypes?: ColumnTypeMap;
     ordinalMap?: OrdinalMap;

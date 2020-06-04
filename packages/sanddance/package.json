@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance",
-  "version": "3.0.0-beta.1",
+  "version": "3.0.0-beta.2",
   "description": "SandDance visualization canvas component.",
   "main": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
@@ -28,7 +28,7 @@
     "@msrvida/chart-types": "^1",
     "@msrvida/sanddance-specs": "^1",
     "@msrvida/search-expression": "^1",
-    "@msrvida/vega-deck.gl": "3.0.0-beta.1",
+    "@msrvida/vega-deck.gl": "3.0.0-beta.2",
     "vega-typings": "^0.16.0"
   }
 }

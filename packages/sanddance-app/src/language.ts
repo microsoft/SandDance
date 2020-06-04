@@ -20,7 +20,6 @@ export const strings = {
     dialogTitleSnapshotsLocal: 'Use a snapshots file from your computer',
     dialogSubtextSnapshotsLocal: 'Use a file that was previously exported snapshots file. Your file will not be uploaded, it is only used by the browser on this computer.',
     dialogTitleSnapshotsUrl: 'Use a snapshots file via URL',
-    dialogCloseButton: 'Close',
     dialogLoadButton: 'Load',
     labelLocal: '[local]',
     labelColorFilter: 'Note: Colors will be re-mapped to the filter when viewing this saved chart.',

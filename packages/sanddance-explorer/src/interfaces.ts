@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { IconButtonProps } from './controls/iconButton';
+import { IIconButtonProps } from './controls/iconButton';
 import { SandDance } from '@msrvida/sanddance-react';
 import { SnapshotEditorProps } from './dialogs/snapshotEditor';
 import { SnapshotListProps } from './dialogs/snapshots';
@@ -38,7 +38,7 @@ export interface Snapshot {
 
 export interface SnapshotAction {
   element?: JSX.Element;
-  iconButtonProps?: IconButtonProps;
+  iconButtonProps?: IIconButtonProps;
 }
 
 export interface SnapshotProps extends SnapshotEditorProps, SnapshotListProps {
@@ -65,7 +65,7 @@ export interface SettingsGroup {
 }
 
 export enum SideTabId {
-  ChartType, Data, Search, Color, Snapshots, Settings, Pin, Collapse
+  ChartType, Data, Search, Color, Snapshots, History, Settings, Pin, Collapse
 }
 
 export interface ChangeColumnMappingOptions {

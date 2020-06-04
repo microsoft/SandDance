@@ -41,6 +41,49 @@ const singleFacetLayouts: FacetData[] = [
     { facetStyle: 'vertical', text: strings.labelFacetLayoutVertical }
 ];
 
+export const chartLabelMap: { key: SandDance.specs.Chart, text: string }[] = [
+    {
+        key: 'grid',
+        text: strings.chartTypeGrid
+    },
+    {
+        key: 'scatterplot',
+        text: strings.chartTypeScatterPlot
+    },
+    {
+        key: 'density',
+        text: strings.chartTypeDensity
+    },
+    {
+        key: 'barchartV',
+        text: strings.chartTypeBarChartV
+    },
+    {
+        key: 'barchartH',
+        text: strings.chartTypeBarChartH
+    },
+    {
+        key: 'treemap',
+        text: strings.chartTypeTreeMap
+    },
+    {
+        key: 'strips',
+        text: strings.chartTypeStrips
+    },
+    {
+        key: 'stacks',
+        text: strings.chartTypeStacks
+    }
+];
+
+export function chartLabel(key: SandDance.specs.Chart) {
+    for (let i = 0; i < chartLabelMap.length; i++) {
+        if (key === chartLabelMap[i].key) {
+            return chartLabelMap[i].text;
+        }
+    }
+}
+
 export class Chart extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
@@ -63,40 +106,7 @@ export class Chart extends React.Component<Props, State> {
                     <div className="calculator">
                         <base.fluentUI.ChoiceGroup
                             className="sanddance-chart-type"
-                            options={[
-                                {
-                                    key: 'grid',
-                                    text: strings.chartTypeGrid
-                                },
-                                {
-                                    key: 'scatterplot',
-                                    text: strings.chartTypeScatterPlot
-                                },
-                                {
-                                    key: 'density',
-                                    text: strings.chartTypeDensity
-                                },
-                                {
-                                    key: 'barchartV',
-                                    text: strings.chartTypeBarChartV
-                                },
-                                {
-                                    key: 'barchartH',
-                                    text: strings.chartTypeBarChartH
-                                },
-                                {
-                                    key: 'treemap',
-                                    text: strings.chartTypeTreeMap
-                                },
-                                {
-                                    key: 'strips',
-                                    text: strings.chartTypeStrips
-                                },
-                                {
-                                    key: 'stacks',
-                                    text: strings.chartTypeStacks
-                                }
-                            ].map(o => {
+                            options={chartLabelMap.map(o => {
                                 return {
                                     ...o,
                                     checked: props.chart === o.key,

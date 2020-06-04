@@ -1,13 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as React from 'react';
+import { embedHtml } from './dataExporterHtml';
+import { Dialog } from './dialog';
 import { base } from '../base';
 import { convertToDelimited } from '../exportDelimited';
-import { DataExportHandler, DataExportType, DataFile, Snapshot } from '../interfaces';
-import { embedHtml } from './dataExporterHtml';
+import {
+    DataExportHandler,
+    DataExportType,
+    DataFile,
+    Snapshot
+} from '../interfaces';
+import { strings } from '../language';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { SandDance, util } from '@msrvida/sanddance-react';
-import { strings } from '../language';
+import * as React from 'react';
 
 export interface IInitializer {
     fileName: string;
@@ -117,7 +123,7 @@ export class DataExportPicker extends React.Component<Props, State> {
                     onClick={() => this.setState({ dialogHidden: false })}
                     disabled={this.props.disabled}
                 />
-                <base.fluentUI.Dialog
+                <Dialog
                     hidden={this.state.dialogHidden}
                     onDismiss={closeDialog}
                     dialogContentProps={{
@@ -125,6 +131,22 @@ export class DataExportPicker extends React.Component<Props, State> {
                         type: base.fluentUI.DialogType.normal,
                         title: strings.labelExport
                     }}
+                    buttons={[
+                        (
+                            <base.fluentUI.PrimaryButton
+                                key={0}
+                                disabled={disabled || !!this.state.fileNameError}
+                                onClick={e => this.setState({
+                                    delayAction: () => this.createExport(this.state.exportType, this.state.fileName),
+                                    working: true
+                                })}
+                                text={strings.buttonExport}
+                                iconProps={{
+                                    iconName: 'Download'
+                                }}
+                            />
+                        )
+                    ]}
                 >
                     <base.fluentUI.TextField
                         label={strings.labelExportFileName}
@@ -153,20 +175,7 @@ export class DataExportPicker extends React.Component<Props, State> {
                         }
                         label={strings.labelExportFormat}
                     />
-                    <base.fluentUI.DialogFooter>
-                        <base.fluentUI.PrimaryButton
-                            disabled={disabled || !!this.state.fileNameError}
-                            onClick={e => this.setState({
-                                delayAction: () => this.createExport(this.state.exportType, this.state.fileName),
-                                working: true
-                            })}
-                            text={strings.buttonExport}
-                        />
-                        <base.fluentUI.DefaultButton
-                            onClick={closeDialog} text={strings.buttonClose}
-                        />
-                    </base.fluentUI.DialogFooter>
-                </base.fluentUI.Dialog>
+                </Dialog>
             </div>
         );
     }

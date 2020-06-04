@@ -51,5 +51,12 @@ const explorerProps = {
 ReactDOM.render(React.createElement(Explorer, explorerProps), document.getElementById('app'));
 ```
 
+## Versions
+
+### Breaking changes in v3
+
+* deck.gl dependency from 6.4 to 8.1
+* fluentui-react 7.x (formerly office-ui-fabric-react 6.x)
+
 ## For more information
 Please visit the [SandDance website](https://microsoft.github.io/SandDance/).
