@@ -53,6 +53,7 @@ SandDance.use(vega, deck, layers, luma);
 
 ### Breaking changes in v3
 
+* deck.gl dependency from 6.4 to 8.1
 * new `searchExpression` namespace
   * `types.Search` moved here
   * `util.ensureSearchExpressionGroup` moved here
