@@ -14,16 +14,16 @@ let current: WebViewWithUri | undefined = undefined;
 
 export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
-        vscode.commands.registerCommand('sandance.view', (commandContext: vscode.Uri | azdata.ObjectExplorerContext) => {
+        vscode.commands.registerCommand('sanddance.view', (commandContext: vscode.Uri | azdata.ObjectExplorerContext) => {
             if (!commandContext) {
-                vscode.window.showErrorMessage('No file was specified for the View in Sandance command');
+                vscode.window.showErrorMessage('No file was specified for the View in SandDance command');
                 return;
             }
             if (commandContext instanceof vscode.Uri) {
-                viewInSandance(<vscode.Uri>commandContext, context);
+                viewInSandDance(<vscode.Uri>commandContext, context);
             } else if (commandContext.nodeInfo) {
                 // This is a call from the object explorer right-click.
-                downloadAndViewInSandance(commandContext, context);
+                downloadAndViewInSandDance(commandContext, context);
             }
         }
         )
@@ -72,24 +72,24 @@ export function activate(context: vscode.ExtensionContext) {
 
                 let json = JSON.stringify(jsonArray);
                 let fileuri = saveTemp(json);
-                queryViewInSandance(fileuri, context, document);
+                queryViewInSandDance(fileuri, context, document);
             }
         }
     });
 }
 
-async function downloadAndViewInSandance(commandContext: azdata.ObjectExplorerContext, context: vscode.ExtensionContext): Promise<void> {
+async function downloadAndViewInSandDance(commandContext: azdata.ObjectExplorerContext, context: vscode.ExtensionContext): Promise<void> {
     try {
         let fileUri = await saveHdfsFileToTempLocation(commandContext);
         if (fileUri) {
-            viewInSandance(fileUri, context);
+            viewInSandDance(fileUri, context);
         }
     } catch (error) {
-        vscode.window.showErrorMessage(`Error viewing in Sandance: ${error.message ? error.message : error}`);
+        vscode.window.showErrorMessage(`Error viewing in sanddance: ${error.message ? error.message : error}`);
     }
 }
 
-function viewInSandance(fileUri: vscode.Uri, context: vscode.ExtensionContext, uriTabName?: string | undefined): void {
+function viewInSandDance(fileUri: vscode.Uri, context: vscode.ExtensionContext, uriTabName?: string | undefined): void {
     const columnToShowIn = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
     const uriFsPath = fileUri.fsPath;
     //only allow one SandDance at a time
@@ -135,9 +135,9 @@ function viewInSandance(fileUri: vscode.Uri, context: vscode.ExtensionContext, u
 }
 
 // View in SandDance for SQL query editor
-function queryViewInSandance(fileUri: vscode.Uri, context: vscode.ExtensionContext, editorUri: azdata.queryeditor.QueryDocument): void {
+function queryViewInSandDance(fileUri: vscode.Uri, context: vscode.ExtensionContext, editorUri: azdata.queryeditor.QueryDocument): void {
     const uriTabName = editorUri.uri;
-    viewInSandance(fileUri, context, uriTabName);
+    viewInSandDance(fileUri, context, uriTabName);
 }
 
 

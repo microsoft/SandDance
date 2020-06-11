@@ -16,13 +16,13 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:sandance.view"
+        "onCommand:sanddance.view"
     ],
     "main": "./out/extension",
     "contributes": {
         "commands": [
             {
-                "command": "sandance.view",
+                "command": "sanddance.view",
                 "title": "View in SandDance"
             }
         ],
@@ -43,27 +43,27 @@
         "menus": {
             "commandPalette": [
                 {
-                    "command": "sandance.view",
+                    "command": "sanddance.view",
                     "when": "false"
                 }
             ],
             "explorer/context": [
                 {
-                    "command": "sandance.view",
+                    "command": "sanddance.view",
                     "when": "resourceLangId == csv"
                 },
                 {
-                    "command": "sandance.view",
+                    "command": "sanddance.view",
                     "when": "resourceLangId == tsv"
                 }
             ],
             "editor/title/context": [
                 {
-                    "command": "sandance.view",
+                    "command": "sanddance.view",
                     "when": "resourceLangId == csv"
                 },
                 {
-                    "command": "sandance.view",
+                    "command": "sanddance.view",
                     "when": "resourceLangId == tsv"
                 }
             ]
