@@ -39,7 +39,7 @@ module.exports = [
   },
 
   /**
-   * Embeddable sanddance-jupyter bundle
+   * Embeddable sanddance-jupyter-widget bundle
    *
    * This bundle is almost identical to the notebook extension bundle. The only
    * difference is in the configuration of the webpack public path for the
@@ -54,7 +54,7 @@ module.exports = [
         filename: 'index.js',
         path: path.resolve(__dirname, 'dist'),
         libraryTarget: 'amd',
-        library: "@msrvida/sanddance-jupyter",
+        library: "@msrvida/sanddance-jupyter-widget",
         publicPath: 'https://unpkg.com/@msrvida/sanddance-jupyter@' + version + '/dist/'
     },
     devtool: 'source-map',
