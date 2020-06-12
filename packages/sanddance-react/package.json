@@ -14,7 +14,7 @@
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "build-css": "node-sass ./src/css -o ./dist/css",
-    "build": "npm run build-typescript && node ../../scripts/version.js && npm run build-css",
+    "build:sanddance-core": "npm run build-typescript && node ../../scripts/version.js && npm run build-css",
     "watch-css": "node-sass ./src/css -o ./dist/css --watch"
   },
   "keywords": [],

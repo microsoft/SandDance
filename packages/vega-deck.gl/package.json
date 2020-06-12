@@ -15,7 +15,7 @@
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "bundle": "rollup -c",
-    "build": "npm run build-typescript && npm run bundle"
+    "build:sanddance-core": "npm run build-typescript && npm run bundle"
   },
   "keywords": [
     "vega",

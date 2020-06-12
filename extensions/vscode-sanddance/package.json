@@ -76,7 +76,7 @@
         "resources": "node ./node_modules/common-frontend/scripts/resources.js",
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
-        "build": "npm run compile && npm run resources",
+        "build:sanddance-integration": "npm run compile && npm run resources",
         "x-test": "npm run compile && node ./out/test/runTest.js",
         "package": "vsce package"
     },

@@ -20,7 +20,7 @@
   "repository": { },
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "build": "npm run build:lib && npm run build:nbextension",
+    "build:sanddance-integration": "npm run build:lib && npm run build:nbextension",
     "build:labextension": "npm run clean:labextension && mkdirp sanddance_jupyter/labextension && cd sanddance_jupyter/labextension && npm pack ../..",
     "build:lib": "tsc",
     "build:nbextension": "webpack -p",

@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "build": "tsc -p .",
+    "build:sanddance-core": "tsc -p .",
     "deploy": "parcel build ./src/sanddance.ts --no-cache --no-minify --no-source-maps --public-url . --out-dir ../../docs/tests/v3/es6/js"
   },
   "dependencies": {

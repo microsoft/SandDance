@@ -6,7 +6,7 @@
   "main": "dist/es6/index.js",
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "build": "tsc -p ."
+    "build:sanddance-integration": "tsc -p ."
   },
   "repository": {
     "type": "git",

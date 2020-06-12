@@ -11,7 +11,7 @@
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
-    "build": "npm run build-typescript",
+    "build:sanddance-core": "npm run build-typescript",
     "bundle": "rollup -c",
     "test2": "node -r esm ./test/perf.js"
   },
