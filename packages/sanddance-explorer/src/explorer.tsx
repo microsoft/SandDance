@@ -668,11 +668,10 @@ export class Explorer extends React.Component<Props, State> {
             columns[role] = column && column.name;
             this.changeInsight({ columns }, { label });
         };
-        const _changeInsight = (newInsight: Partial<HistoricInsight>, pref: SandDance.specs.InsightColumns, columnUpdate: SandDance.specs.InsightColumns, historyAction: HistoryAction) => {
+        const _changeInsight = (newInsight: Partial<HistoricInsight>, columnUpdate: SandDance.specs.InsightColumns, historyAction: HistoryAction) => {
             newInsight.columns = SandDance.VegaDeckGl.util.deepMerge(
                 {},
                 columns,
-                pref,
                 columnUpdate
             );
             savePref(this.prefs, this.state.chart, '*', '*', { columns: columnUpdate });
@@ -682,18 +681,17 @@ export class Explorer extends React.Component<Props, State> {
             let columnUpdate: SandDance.specs.InsightColumns;
             switch (role) {
                 case 'facet': {
-                    const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'facet', column.name);
-                    const historicInsight: Partial<HistoricInsight> = { columns, ...partialInsight, facetStyle: options ? options.facetStyle : this.state.facetStyle };
+                    copyPrefToNewState(this.prefs, this.state.chart, 'facet', column.name);
+                    const historicInsight: Partial<HistoricInsight> = { columns, facetStyle: options ? options.facetStyle : this.state.facetStyle };
                     columnUpdate = { facet: column.name };
-                    _changeInsight(historicInsight, partialInsight.columns, columnUpdate, { label });
+                    _changeInsight(historicInsight, columnUpdate, { label });
                     break;
                 }
                 case 'color': {
                     let calculating: () => void = null;
                     let historicInsight: Partial<HistoricInsight> = { scheme: options && options.scheme, columns, colorBin: this.state.colorBin };
                     if (!historicInsight.scheme) {
-                        const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'color', column.name);
-                        historicInsight = { ...historicInsight, ...partialInsight };
+                        copyPrefToNewState(this.prefs, this.state.chart, 'color', column.name);
                     }
                     if (!historicInsight.scheme) {
                         historicInsight.scheme = bestColorScheme(column, null, this.state.scheme);
@@ -718,23 +716,23 @@ export class Explorer extends React.Component<Props, State> {
                             columnUpdate = { color: column.name };
                             this.getColorContext = null;
                             this.setState({ calculating });
-                            _changeInsight(historicInsight, null, columnUpdate, { label });
+                            _changeInsight(historicInsight, columnUpdate, { label });
                         });
                     });
                     break;
                 }
                 case 'x': {
-                    const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'x', column.name);
-                    const historicInsight: Partial<HistoricInsight> = { columns, ...partialInsight };
+                    copyPrefToNewState(this.prefs, this.state.chart, 'x', column.name);
+                    const historicInsight: Partial<HistoricInsight> = { columns };
                     columnUpdate = { x: column.name };
-                    _changeInsight(historicInsight, partialInsight.columns, columnUpdate, { label });
+                    _changeInsight(historicInsight, columnUpdate, { label });
                     break;
                 }
                 case 'size': {
-                    const partialInsight = copyPrefToNewState(this.prefs, this.state.chart, 'size', column.name);
-                    const historicInsight: Partial<HistoricInsight> = { ...partialInsight, totalStyle: options ? options.totalStyle : this.state.totalStyle };
+                    copyPrefToNewState(this.prefs, this.state.chart, 'size', column.name);
+                    const historicInsight: Partial<HistoricInsight> = { totalStyle: options ? options.totalStyle : this.state.totalStyle };
                     columnUpdate = { size: column.name };
-                    _changeInsight(historicInsight, partialInsight.columns, columnUpdate, { label });
+                    _changeInsight(historicInsight, columnUpdate, { label });
                     break;
                 }
                 default: {
