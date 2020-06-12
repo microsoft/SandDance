@@ -1,14 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
-import { RGBAColor } from '@deck.gl/core/utils/color';
 import {
     Column,
     ColumnStats,
     ColumnTypeMap,
     View
 } from '@msrvida/chart-types';
-import { DeckProps } from '@deck.gl/core/lib/deck';
 //import { LightSettings } from '@deck.gl/core/lib/layer';
 import { Search, SearchExpressionGroup } from '@msrvida/search-expression';
 import { Spec } from 'vega-typings';
@@ -114,7 +112,7 @@ export interface ViewerOptions extends SpecViewOptions {
     /**
      * Optional handler when data is on stage.
      */
-    onStage?: (stage: VegaDeckGl.types.Stage, deckProps: Partial<DeckProps>) => void;
+    onStage?: (stage: VegaDeckGl.types.Stage, deckProps: Partial<VegaDeckGl.DeckProps>) => void;
 
     /**
      * Optional handler when chart is presented.
@@ -129,12 +127,12 @@ export interface ViewerOptions extends SpecViewOptions {
     /**
      * Optional handler to get the color of text elements.
      */
-    getTextColor?: (t: VegaDeckGl.types.VegaTextLayerDatum) => RGBAColor;
+    getTextColor?: (t: VegaDeckGl.types.VegaTextLayerDatum) => VegaDeckGl.RGBAColor;
 
     /**
      * Optional handler to get the highlight color of text elements.
      */
-    getTextHighlightColor?: (t: VegaDeckGl.types.VegaTextLayerDatum) => RGBAColor;
+    getTextHighlightColor?: (t: VegaDeckGl.types.VegaTextLayerDatum) => VegaDeckGl.RGBAColor;
 
     /**
      * Optional click handler for text elements.
@@ -321,7 +319,7 @@ export interface ColorScheme {
 }
 
 export interface ColorMappedItem {
-    color?: RGBAColor;
+    color?: VegaDeckGl.RGBAColor;
     unSelected?: boolean;
 }
 
@@ -342,7 +340,7 @@ export interface ColorContext {
 }
 
 export interface ColorMethod {
-    (color: RGBAColor): RGBAColor;
+    (color: VegaDeckGl.RGBAColor): VegaDeckGl.RGBAColor;
 }
 
 export interface LegendRowWithSearch extends VegaDeckGl.types.LegendRow {
