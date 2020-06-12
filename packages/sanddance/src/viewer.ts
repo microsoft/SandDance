@@ -32,7 +32,6 @@ import {
     SelectionState,
     ViewerOptions
 } from './types';
-import { DeckProps, PickInfo } from '@deck.gl/core/lib/deck';
 import { Column } from '@msrvida/chart-types';
 import { View } from '@msrvida/chart-types';
 import {
@@ -208,7 +207,7 @@ export class Viewer {
                 const oldColorContext = this.colorContexts[this.currentColorContext];
                 let colorMap: ColorMap;
                 await this.renderNewLayout({
-                    preStage: (stage: VegaDeckGl.types.Stage, deckProps: DeckProps) => {
+                    preStage: (stage: VegaDeckGl.types.Stage, deckProps: VegaDeckGl.DeckProps) => {
                         //save off the spec colors
                         colorMap = colorMapFromCubes(stage.cubeData);
                         applyColorMapToCubes([oldColorContext.colorMap], VegaDeckGl.util.getCubes(deckProps));
@@ -447,7 +446,7 @@ export class Viewer {
         };
 
         //now be ready to capture color changing signals 
-        presenterConfig.preStage = (stage: VegaDeckGl.types.Stage, deckProps: DeckProps) => {
+        presenterConfig.preStage = (stage: VegaDeckGl.types.Stage, deckProps: VegaDeckGl.DeckProps) => {
             if (this._shouldSaveColorContext()) {
                 //save off the colors from Vega layout
                 colorContext.colorMap = colorMapFromCubes(stage.cubeData);
@@ -486,7 +485,7 @@ export class Viewer {
         };
         const specResult = await this.renderNewLayout(
             {
-                preStage: (stage: VegaDeckGl.types.Stage, deckProps: DeckProps) => {
+                preStage: (stage: VegaDeckGl.types.Stage, deckProps: VegaDeckGl.DeckProps) => {
                     if (this._shouldSaveColorContext()) {
                         //save off the colors from Vega layout
                         colorContext.colorMap = colorMapFromCubes(stage.cubeData);
@@ -538,7 +537,7 @@ export class Viewer {
         // }
     }
 
-    private preStage(stage: VegaDeckGl.types.Stage, deckProps: DeckProps) {
+    private preStage(stage: VegaDeckGl.types.Stage, deckProps: VegaDeckGl.DeckProps) {
         const onClick: AxisSelectionHandler = (e, search: SearchExpressionGroup) => {
             if (this.options.onAxisClick) {
                 this.options.onAxisClick(e, search);
@@ -632,7 +631,7 @@ export class Viewer {
             onTextHover: this.onTextHover.bind(this),
             preStage: this.preStage.bind(this),
             onPresent: this.options.onPresent,
-            onLayerClick: (info: PickInfo<any>, e: MouseEvent) => {
+            onLayerClick: (info: VegaDeckGl.PickInfo<any>, e: MouseEvent) => {
                 if (!info || !info.object) {
                     this.deselect();
                 }

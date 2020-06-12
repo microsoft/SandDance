@@ -10,7 +10,7 @@ import { newPanel, WebViewWithUri } from 'common-backend';
 export function activate(context: vscode.ExtensionContext) {
     let current: WebViewWithUri | undefined = undefined;
     context.subscriptions.push(
-        vscode.commands.registerCommand('sandance.view',
+        vscode.commands.registerCommand('sanddance.view',
             (fileUri: vscode.Uri) => {
                 const columnToShowIn = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
                 const uriFsPath = fileUri.fsPath;

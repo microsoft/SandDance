@@ -17,7 +17,7 @@
     "test": "mocha",
     "build-typescript": "tsc -p .",
     "watch-typescript": "tsc -p . -w",
-    "build": "npm run build-typescript"
+    "build:sanddance-core": "npm run build-typescript"
   },
   "author": "",
   "license": "MIT"

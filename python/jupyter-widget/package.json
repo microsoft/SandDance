@@ -1,5 +1,5 @@
 {
-  "name": "@msrvida/sanddance-jupyter",
+  "name": "@msrvida/sanddance-jupyter-widget",
   "version": "0.0.1",
   "description": "Custom Jupyter Widget for SandDance",
   "keywords": [
@@ -20,7 +20,7 @@
   "repository": { },
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "build": "npm run build:lib && npm run build:nbextension",
+    "build:sanddance-integration-python": "npm run build:lib && npm run build:nbextension",
     "build:labextension": "npm run clean:labextension && mkdirp sanddance_jupyter/labextension && cd sanddance_jupyter/labextension && npm pack ../..",
     "build:lib": "tsc",
     "build:nbextension": "webpack -p",
@@ -36,17 +36,17 @@
     "watch:nbextension": "webpack --watch"
   },
   "dependencies": {
-    "@deck.gl/core": "6.4",
-    "@deck.gl/layers": "6.4",
+    "@deck.gl/core": "^8.1.5",
+    "@deck.gl/layers": "^8.1.5",
+    "@fluentui/react": "^7.111.0",
+    "@luma.gl/core": "^8.1.2",
     "@jupyter-widgets/base": "^3",
-    "@msrvida/sanddance-explorer": "^2",
-    "luma.gl": "6.4",
-    "office-ui-fabric-react": "6.204.4",
-    "react-dom": ">=16.9.0 <16.10.0",
-    "vega": "5.11.1"
+    "@msrvida/sanddance-explorer": "3.0.0-beta.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "vega": "^5.11"
   },
   "devDependencies": {
-    "@danmarshall/deckgl-typings": "^4.1.8",
     "@phosphor/application": "^1.6.0",
     "@phosphor/widgets": "^1.6.0",
     "@types/expect.js": "^0.3.29",
@@ -64,7 +64,6 @@
     "style-loader": "^1.0.0",
     "ts-loader": "^5.2.1",
     "typescript": "3.9.2",
-    "vega-typings": "0.16.0",
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2"
   },

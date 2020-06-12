@@ -6,6 +6,7 @@
         "target": "es6",
         "sourceMap": true,
         "outDir": "./.tmp/build/",
+        "skipLibCheck": true,
         "moduleResolution": "node",
         "declaration": true,
         "lib": [

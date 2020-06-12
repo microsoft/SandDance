@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { RGBAColor } from '@deck.gl/core/utils/color';
 import { SpecColorSettings } from '@msrvida/sanddance-specs';
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 
-function cloneAxis(axes: VegaDeckGl.types.Axis[], axisColor: RGBAColor, axisTextColor: RGBAColor) {
+function cloneAxis(axes: VegaDeckGl.types.Axis[], axisColor: VegaDeckGl.RGBAColor, axisTextColor: VegaDeckGl.RGBAColor) {
     return axes.map(axis => {
         const newAxis = VegaDeckGl.util.deepMerge(axis);
         if (newAxis.domain) {
@@ -19,7 +18,7 @@ function cloneAxis(axes: VegaDeckGl.types.Axis[], axisColor: RGBAColor, axisText
     });
 }
 
-function cloneTextData(textData: VegaDeckGl.types.VegaTextLayerDatum[], color: RGBAColor) {
+function cloneTextData(textData: VegaDeckGl.types.VegaTextLayerDatum[], color: VegaDeckGl.RGBAColor) {
     return textData.map(t => {
         return { ...t, color };
     });

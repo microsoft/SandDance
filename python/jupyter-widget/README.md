@@ -1,4 +1,4 @@
-# sanddance-jupyter
+# sanddance-jupyter-widget
 
 Custom Jupyter Widget with [SandDance](https://github.com/microsoft/SandDance)
 
@@ -17,7 +17,7 @@ pip install sanddance_jupyter
 If you use jupyterlab:
 
 ```bash
-jupyter labextension install @msrvida/sanddance-jupyter
+jupyter labextension install @msrvida/sanddance-jupyter-widget
 jupyter labextension install @jupyter-widgets/jupyterlab-manager
 ```
 

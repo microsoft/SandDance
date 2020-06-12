@@ -16,13 +16,13 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:sandance.view"
+        "onCommand:sanddance.view"
     ],
     "main": "./out/extension",
     "contributes": {
         "commands": [
             {
-                "command": "sandance.view",
+                "command": "sanddance.view",
                 "title": "View in SandDance"
             }
         ],
@@ -43,27 +43,27 @@
         "menus": {
             "commandPalette": [
                 {
-                    "command": "sandance.view",
+                    "command": "sanddance.view",
                     "when": "false"
                 }
             ],
             "explorer/context": [
                 {
-                    "command": "sandance.view",
+                    "command": "sanddance.view",
                     "when": "resourceLangId == csv"
                 },
                 {
-                    "command": "sandance.view",
+                    "command": "sanddance.view",
                     "when": "resourceLangId == tsv"
                 }
             ],
             "editor/title/context": [
                 {
-                    "command": "sandance.view",
+                    "command": "sanddance.view",
                     "when": "resourceLangId == csv"
                 },
                 {
-                    "command": "sandance.view",
+                    "command": "sanddance.view",
                     "when": "resourceLangId == tsv"
                 }
             ]
@@ -76,7 +76,7 @@
         "resources": "node ./node_modules/common-frontend/scripts/resources.js",
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
-        "build": "npm run compile && npm run resources",
+        "build:sanddance-integration": "npm run compile && npm run resources",
         "x-test": "npm run compile && node ./out/test/runTest.js",
         "package": "vsce package"
     },

@@ -8,7 +8,7 @@
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "build-css": "node-sass ./src/css -o ./dist/",
     "build-ui": "tsc -p .",
-    "build": "npm run build-css && npm run build-ui"
+    "build:sanddance-integration": "npm run build-css && npm run build-ui"
   },
   "repository": {
     "type": "git",

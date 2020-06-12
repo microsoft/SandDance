@@ -61,14 +61,14 @@ cmdclass['jsdeps'] = combine_commands(
 
 setup_args = dict(
     name            = name,
-    description     = 'Custom Jupyter Widget for SanDance',
+    description     = 'Custom Jupyter Widget for SandDance',
     version         = version,
     scripts         = glob(pjoin('scripts', '*')),
     cmdclass        = cmdclass,
     packages        = find_packages(),
     author          = '',
     author_email    = '',
-    url             = 'https://github.com/microsoft/SandDance/python/jupyter-widget/sanddance-jupyter',
+    url             = 'https://github.com/microsoft/SandDance/python/jupyter-widget',
     license         = 'BSD',
     platforms       = "Linux, Mac OS X, Windows",
     keywords        = ['Jupyter', 'Widgets', 'IPython'],

@@ -8,7 +8,7 @@
     "build-typescript": "tsc -p .",
     "watch-typescript": "tsc -p . -w",
     "build-css": "node-sass ./src/css -o ./dist/css",
-    "build": "npm run build-typescript && npm run bundle && npm run build-css",
+    "build:sanddance-core": "npm run build-typescript && npm run bundle && npm run build-css",
     "bundle": "parcel build ./dist/es6/index.js --out-dir ./dist/umd/ --out-file sanddance-app.js --no-minify --no-source-maps --global SandDanceApp",
     "start": "parcel serve ./src/index.html --port 8085 --open --no-hmr --global SandDanceApp"
   },
