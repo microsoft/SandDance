@@ -17,5 +17,6 @@ steps:
 
 - script: |
     npm install
-    npm run build
+    npm run build:sanddance-core
+    npm run build:sanddance-integration
   displayName: 'npm install and build'
