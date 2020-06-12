@@ -4,7 +4,7 @@ import { MODULE_NAME, MODULE_VERSION } from './version';
 import * as deck from '@deck.gl/core';
 import * as layers from '@deck.gl/layers';
 import * as luma from '@luma.gl/core';
-import * as fabric from '@fluentui/react';
+import { fluentUI } from './fluentUIComponents';
 import * as vega from 'vega';
 import { Explorer, use, Snapshot } from '@msrvida/sanddance-explorer';
 import ReactDOM from 'react-dom';
@@ -13,9 +13,7 @@ import React from 'react';
 import '../css/tweak.css';
 import '@msrvida/sanddance-explorer/dist/css/sanddance-explorer.css';
 
-// any can be removed with sanddance-explorer@3.0.0-beta.1
-use(fabric as any, vega, deck as any, layers, luma);
-fabric.initializeIcons();
+use(fluentUI, vega, deck as any, layers, luma);
 
 export class SandDanceModel extends DOMWidgetModel {
     defaults() {

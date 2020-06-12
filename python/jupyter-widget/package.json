@@ -47,6 +47,7 @@
     "vega": "^5.11"
   },
   "devDependencies": {
+    "@msrvida/fluentui-react-cdn-typings": "^1",
     "@phosphor/application": "^1.6.0",
     "@phosphor/widgets": "^1.6.0",
     "@types/expect.js": "^0.3.29",
