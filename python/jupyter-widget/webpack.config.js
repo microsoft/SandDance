@@ -5,7 +5,7 @@ const version = require('./package.json').version;
 const rules = [
   { test: /\.ts$/, loader: 'ts-loader' },
   { test: /\.js$/, loader: 'source-map-loader' },
-  { test: /\.css$/, use: ['style-loader', 'css-loader']}
+  { test: /\.css$/, use: ['style-loader', 'css-loader'] }
 ];
 
 // Packages that shouldn't be bundled but loaded at runtime
@@ -36,6 +36,9 @@ module.exports = [
     devtool: 'source-map',
     externals,
     resolve,
+    optimization: {
+      minimize: false
+    }
   },
 
   /**
@@ -51,18 +54,21 @@ module.exports = [
   {
     entry: './src/index.ts',
     output: {
-        filename: 'index.js',
-        path: path.resolve(__dirname, 'dist'),
-        libraryTarget: 'amd',
-        library: "@msrvida/sanddance-jupyter-widget",
-        publicPath: 'https://unpkg.com/@msrvida/sanddance-jupyter@' + version + '/dist/'
+      filename: 'index.js',
+      path: path.resolve(__dirname, 'dist'),
+      libraryTarget: 'amd',
+      library: "@msrvida/sanddance-jupyter-widget",
+      publicPath: 'https://unpkg.com/@msrvida/sanddance-jupyter@' + version + '/dist/'
     },
     devtool: 'source-map',
     module: {
-        rules: rules
+      rules: rules
     },
     externals,
     resolve,
+    optimization: {
+      minimize: false
+    }
   },
 
 
@@ -85,6 +91,9 @@ module.exports = [
     devtool: 'source-map',
     externals,
     resolve,
+    optimization: {
+      minimize: false
+    }
   }
 
 ];
