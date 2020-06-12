@@ -27,3 +27,7 @@ steps:
 - script: |
     npm run build:sanddance-integration
   displayName: 'npm build:sanddance-integration'
+
+- script: |
+    npm run build:sanddance-integration-python
+  displayName: 'npm build:sanddance-integration-python'
