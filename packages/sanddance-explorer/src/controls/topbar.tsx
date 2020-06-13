@@ -134,7 +134,7 @@ export function Topbar(props: Props) {
         {
             key: 'view',
             iconProps: {
-                iconName: props.view === '2d' ? 'Product' : 'Page'
+                iconName: props.view === '2d' ? 'CubeShape' : 'Page'
             },
             title: props.view === '2d' ? strings.labelViewType3d : strings.labelViewType2d,
             onClick: props.onViewClick,
