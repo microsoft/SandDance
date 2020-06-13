@@ -239,7 +239,10 @@ export class Explorer extends React.Component<Props, State> {
             onDataFilter: (filter, filteredData) => {
                 const selectedItemIndex = { ...this.state.selectedItemIndex };
                 selectedItemIndex[DataScopeId.FilteredData] = 0;
-                this.changeInsight({ filter }, { label: this.historicFilterChange, omit: !this.historicFilterChange });
+                this.changeInsight(
+                    { filter },
+                    { label: this.historicFilterChange, omit: !this.historicFilterChange }
+                );
                 this.historicFilterChange = null;
                 this.setState({ filteredData, selectedItemIndex });
                 if (this.state.sideTabId === SideTabId.Data && this.state.dataScopeId === DataScopeId.FilteredData) {
@@ -394,8 +397,7 @@ export class Explorer extends React.Component<Props, State> {
         }
         const changeInsight = () => {
             this.getColorContext = null;
-            this.setState(state as UIState);
-            this.changeInsight(historicInsight, historyAction);
+            this.changeInsight(historicInsight, historyAction, state);
         };
         const currentFilter = this.viewer.getInsight().filter;
         if (rebaseFilter && currentFilter && historicInsight.filter) {
@@ -450,8 +452,11 @@ export class Explorer extends React.Component<Props, State> {
         optionsOrPrefs?: Prefs | Options
     ) {
         this.setState({ historyIndex: -1, historyItems: [] });
-        this.changeInsight({ columns: null }, { label: null, omit: true });
-        this.setState({ note: null });
+        this.changeInsight(
+            { columns: null },
+            { label: null, omit: true },
+            { note: null }
+        );
         return new Promise<void>((resolve, reject) => {
             const loadFinal = (dataContent: DataContent) => {
                 let partialInsight: Partial<SandDance.specs.Insight>;
@@ -495,9 +500,12 @@ export class Explorer extends React.Component<Props, State> {
                 ensureColumnsExist(newState.columns, dataContent.columns, newState.transform);
                 const errors = ensureColumnsPopulated(partialInsight ? partialInsight.chart : null, newState.columns, dataContent.columns);
                 newState.errors = errors;
-                this.setState(newState as State);
                 //change insight
-                this.changeInsight(partialInsight, { label: strings.labelHistoryInit, insert: true });
+                this.changeInsight(
+                    partialInsight,
+                    { label: strings.labelHistoryInit, insert: true },
+                    newState as State
+                );
                 //make sure item is active
                 this.activateDataBrowserItem(sideTabId, this.state.dataScopeId);
                 resolve();
@@ -568,10 +576,11 @@ export class Explorer extends React.Component<Props, State> {
         const errors = ensureColumnsPopulated(chart, insight.columns, this.state.dataContent.columns);
 
         this.calculate(() => {
-            if (errors) {
-                this.setState({ errors });
-            }
-            this.changeInsight(insight, { label: strings.labelHistoryChangeChartType(chartLabel(chart)) });
+            this.changeInsight(
+                insight,
+                { label: strings.labelHistoryChangeChartType(chartLabel(chart)) },
+                errors ? { errors } : null
+            );
         });
     }
 
@@ -580,25 +589,30 @@ export class Explorer extends React.Component<Props, State> {
     }
 
     changeView(view: SandDance.types.View) {
-        this.changeInsight({ view }, { label: view === '2d' ? strings.labelViewType2d : strings.labelViewType3d });
+        this.changeInsight(
+            { view },
+            { label: view === '2d' ? strings.labelViewType2d : strings.labelViewType3d }
+        );
     }
 
     //state members which change the insight
-    changeInsight(partialInsight: Partial<SandDance.specs.Insight>, historyAction: HistoryAction) {
+    changeInsight(partialInsight: Partial<SandDance.specs.Insight>, historyAction: HistoryAction, additionalUIState?: Partial<UIState>) {
         if (!partialInsight.signalValues) {
             partialInsight.signalValues = null;
         }
-
         if (partialInsight.chart === 'barchart') {
             partialInsight.chart = 'barchartV';
         }
-        this.addHistory(partialInsight, historyAction);
+        this.addHistory(partialInsight, historyAction, additionalUIState);
     }
 
-    addHistory(historicInsight: Partial<HistoricInsight>, historyAction: HistoryAction) {
+    addHistory(historicInsight: Partial<HistoricInsight>, historyAction: HistoryAction, additionalUIState?: Partial<UIState>) {
 
         const setCleanState = (newState: State) => {
-            const cleanState = { ...newState };
+            const cleanState = { ...newState, ...additionalUIState };
+            if (!cleanState.note) {
+                cleanState.note = null;
+            }
             delete cleanState.rebaseFilter;
             this.setState(cleanState);
         }
@@ -662,7 +676,10 @@ export class Explorer extends React.Component<Props, State> {
         const label = column ? strings.labelHistoryMapColumn(role) : strings.labelHistoryUnMapColumn(role);
         const final = () => {
             columns[role] = column && column.name;
-            this.changeInsight({ columns }, { label });
+            this.changeInsight(
+                { columns },
+                { label }
+            );
         };
         const _changeInsight = (newInsight: Partial<HistoricInsight>, columnUpdate: SandDance.specs.InsightColumns, historyAction: HistoryAction) => {
             newInsight.columns = SandDance.VegaDeckGl.util.deepMerge(
@@ -741,7 +758,10 @@ export class Explorer extends React.Component<Props, State> {
                 case 'facet': {
                     columns.facet = null;
                     columns.facetV = null;
-                    this.changeInsight({ columns, facetStyle: 'wrap' }, { label });
+                    this.changeInsight(
+                        { columns, facetStyle: 'wrap' },
+                        { label }
+                    );
                     break;
                 }
                 default: {
@@ -823,7 +843,10 @@ export class Explorer extends React.Component<Props, State> {
     }
 
     private _resize() {
-        this.changeInsight({ size: this.getLayoutDivSize(this.state.sidebarPinned, this.state.sidebarClosed) }, { label: 'resize', omit: true });
+        this.changeInsight(
+            { size: this.getLayoutDivSize(this.state.sidebarPinned, this.state.sidebarClosed) },
+            { label: 'resize', omit: true }
+        );
     }
 
     private viewerMounted(glDiv: HTMLElement) {
@@ -921,7 +944,7 @@ export class Explorer extends React.Component<Props, State> {
         }
     }
 
-    private scrollSnapshotIntoView(selectedSnapshotIndex: number) {
+    public scrollSnapshotIntoView(selectedSnapshotIndex: number) {
         clearTimeout(this.scrollSnapshotTimer);
         this.scrollSnapshotTimer = setTimeout(() => {
             const selectedSnapshotElement = this.div.querySelector(`.snapshot:nth-child(${selectedSnapshotIndex + 1})`) as HTMLElement;
@@ -1034,7 +1057,10 @@ export class Explorer extends React.Component<Props, State> {
                     }}
                     onViewClick={() => {
                         const view = this.state.view === '2d' ? '3d' : '2d';
-                        this.changeInsight({ view }, { label: view === '2d' ? strings.labelViewType2d : strings.labelViewType3d });
+                        this.changeInsight(
+                            { view },
+                            { label: view === '2d' ? strings.labelViewType2d : strings.labelViewType3d }
+                        );
                     }}
                     onHomeClick={() => this.viewer.presenter.homeCamera()}
                 />
@@ -1060,12 +1086,17 @@ export class Explorer extends React.Component<Props, State> {
                             themePalette,
                             compact: this.state.sidebarClosed,
                             onCompactClick: () => {
-                                this.changeInsight({
-                                    size: this.getLayoutDivSize(this.state.sidebarPinned, false)
-                                }, { label: null, omit: true });
-                                this.setState({
-                                    sidebarClosed: false,
-                                });
+                                this.changeInsight(
+                                    {
+                                        size: this.getLayoutDivSize(this.state.sidebarPinned, false)
+                                    },
+                                    {
+                                        label: null, omit: true
+                                    },
+                                    {
+                                        sidebarClosed: false,
+                                    }
+                                );
                             },
                             dataSet: this.props.datasetElement,
                             dataCount: loaded && {
@@ -1086,18 +1117,30 @@ export class Explorer extends React.Component<Props, State> {
                                     dataScopeId = this.getBestDataScopeId();
                                 }
                                 sidebarClosed = !this.state.sidebarClosed;
-                                this.changeInsight({
-                                    size: this.getLayoutDivSize(this.state.sidebarPinned, sidebarClosed)
-                                }, { label: null, omit: true });
-                                this.setState({
-                                    dataScopeId,
-                                    sidebarClosed,
-                                });
+                                this.changeInsight(
+                                    {
+                                        size: this.getLayoutDivSize(this.state.sidebarPinned, sidebarClosed)
+                                    },
+                                    {
+                                        label: null, omit: true
+                                    },
+                                    {
+                                        dataScopeId,
+                                        sidebarClosed,
+                                    }
+                                );
                             } else if (sideTabId === SideTabId.Pin) {
-                                this.changeInsight({
-                                    size: this.getLayoutDivSize(!this.state.sidebarPinned, this.state.sidebarClosed)
-                                }, { label: null, omit: true });
-                                this.setState({ sidebarPinned: !this.state.sidebarPinned });
+                                this.changeInsight(
+                                    {
+                                        size: this.getLayoutDivSize(!this.state.sidebarPinned, this.state.sidebarClosed)
+                                    },
+                                    {
+                                        label: null, omit: true
+                                    },
+                                    {
+                                        sidebarPinned: !this.state.sidebarPinned
+                                    }
+                                );
                             } else {
                                 this.setSideTabId(sideTabId);
                             }
@@ -1152,7 +1195,10 @@ export class Explorer extends React.Component<Props, State> {
                                                     //allow deselection to render
                                                     requestAnimationFrame(() => {
                                                         this.getColorContext = null;
-                                                        this.changeInsight({ colorBin }, { label: strings.labelHistoryColorBin });
+                                                        this.changeInsight(
+                                                            { colorBin },
+                                                            { label: strings.labelHistoryColorBin }
+                                                        );
                                                         savePref(this.prefs, this.state.chart, 'color', this.state.columns.color, { colorBin });
                                                     });
                                                 });
@@ -1171,8 +1217,11 @@ export class Explorer extends React.Component<Props, State> {
                                             }}
                                             directColor={this.state.directColor}
                                             onDirectColorChange={directColor => {
-                                                this.changeInsight({ directColor }, { label: strings.labelHistoryDirectColor });
-                                                this.setState({ calculating: () => this._resize() });
+                                                this.changeInsight(
+                                                    { directColor },
+                                                    { label: strings.labelHistoryDirectColor },
+                                                    { calculating: () => this._resize() }
+                                                );
                                             }}
                                         />
                                     );
@@ -1387,7 +1436,7 @@ export class Explorer extends React.Component<Props, State> {
                                         iconName='Cancel'
                                         onClick={() => this.setState({ note: null })}
                                     />
-                                    {this.state.note}
+                                    <div>{this.state.note}</div>
                                 </div>
                             )}
                         </div>

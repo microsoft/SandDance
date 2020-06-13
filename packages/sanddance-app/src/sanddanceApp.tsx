@@ -166,7 +166,8 @@ export class SandDanceApp extends React.Component<Props, State> {
                     };
                 } else {
                     this.load(snapshot.dataSource, snapshot.insight).then(() => {
-                        this.explorer.setState({ sideTabId: SideTabId.Snapshots });
+                        this.explorer.setState({ sideTabId: SideTabId.Snapshots, note: snapshot.description });
+                        this.explorer.scrollSnapshotIntoView(selectedSnapshotIndex);
                     }).catch(e => {
                         this.loadError(snapshot.dataSource);
                     });
