@@ -586,13 +586,9 @@ export class Explorer extends React.Component<Props, State> {
     //state members which change the insight
     changeInsight(partialInsight: Partial<SandDance.specs.Insight>, historyAction: HistoryAction) {
         if (!partialInsight.signalValues) {
-            if (this.viewer) {
-                const { signalValues } = this.viewer.getInsight();
-                partialInsight.signalValues = signalValues;
-            } else {
-                partialInsight.signalValues = null;
-            }
+            partialInsight.signalValues = null;
         }
+
         if (partialInsight.chart === 'barchart') {
             partialInsight.chart = 'barchartV';
         }
@@ -942,11 +938,7 @@ export class Explorer extends React.Component<Props, State> {
     }
 
     render() {
-        const { colorBin, columns, directColor, facetStyle, filter, hideAxes, hideLegend, scheme, size, totalStyle, transform, chart, view } = this.state;
-        let { signalValues } = this.state;
-        if (this.viewer) {
-            signalValues = { ...signalValues, ...this.viewer.getInsight().signalValues };
-        }
+        const { colorBin, columns, directColor, facetStyle, filter, hideAxes, hideLegend, scheme, signalValues, size, totalStyle, transform, chart, view } = this.state;
         const insight: SandDance.specs.Insight = {
             colorBin,
             columns,
@@ -1176,8 +1168,6 @@ export class Explorer extends React.Component<Props, State> {
                                             }}
                                             onColorReverseChange={value => {
                                                 this.getColorContext = null;
-                                                const signalValues: SandDance.specs.SignalValues = {};
-                                                signalValues[SandDance.constants.SignalNames.ColorReverse] = value;
                                             }}
                                             directColor={this.state.directColor}
                                             onDirectColorChange={directColor => {
