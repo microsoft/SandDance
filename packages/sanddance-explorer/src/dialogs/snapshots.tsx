@@ -7,10 +7,12 @@ import { Explorer } from '../explorer';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { Group } from '../controls/group';
 import { IconButton } from '../controls/iconButton';
-import { util } from '@msrvida/sanddance-react';
-import { Snapshot, SnapshotAction } from '../interfaces';
+import { SandDance, util } from '@msrvida/sanddance-react';
+import { SnapshotAction } from '../interfaces';
 import { strings } from '../language';
 import { SnapshotEditor } from './snapshotEditor';
+
+import Snapshot = SandDance.types.Snapshot;
 
 export interface SnapshotListProps {
     getTopActions?: (snapshots: Snapshot[]) => FluentUITypes.IContextualMenuItem[];

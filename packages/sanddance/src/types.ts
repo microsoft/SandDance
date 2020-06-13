@@ -11,6 +11,7 @@ import {
 import { Search, SearchExpressionGroup } from '@msrvida/search-expression';
 import { Spec } from 'vega-typings';
 import {
+    Insight,
     SpecCapabilities,
     SpecColorSettings,
     SpecLanguage,
@@ -356,4 +357,15 @@ export interface SelectionState {
 export interface TooltipOptions {
     exclude?: (columnName: string) => boolean;
     displayValue?: (value: any) => string;
+}
+
+/**
+ * Saved metadata about an Insight.
+ */
+export interface Snapshot {
+    title?: string;
+    description?: string;
+    insight?: Insight;
+    image?: string;
+    bgColor?: string;
 }

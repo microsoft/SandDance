@@ -7,8 +7,9 @@ import { Explorer } from '../explorer';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { getCanvas } from '../canvas';
 import { SandDance, util } from '@msrvida/sanddance-react';
-import { Snapshot } from '../interfaces';
 import { strings } from '../language';
+
+import Snapshot = SandDance.types.Snapshot;
 
 export interface SnapshotEditorProps {
     modifySnapShot?: (snapshot: Snapshot) => void;

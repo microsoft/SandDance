@@ -5,6 +5,8 @@ import { SandDance } from '@msrvida/sanddance-react';
 import { SnapshotEditorProps } from './dialogs/snapshotEditor';
 import { SnapshotListProps } from './dialogs/snapshots';
 
+import Snapshot = SandDance.types.Snapshot;
+
 export type DataFileType = 'json' | 'csv' | 'tsv' | 'topojson';
 
 export interface DataFile {
@@ -26,14 +28,6 @@ export type DataExportType = DataFileType | 'html';
 
 export interface DataExportHandler {
   (data: any, datatype: DataExportType, displayName: string): void;
-}
-
-export interface Snapshot {
-  title?: string;
-  description?: string;
-  insight?: SandDance.specs.Insight;
-  image?: string;
-  bgColor?: string;
 }
 
 export interface SnapshotAction {

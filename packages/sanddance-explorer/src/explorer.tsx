@@ -36,7 +36,6 @@ import {
     DataFile,
     SettingsGroup,
     SideTabId,
-    Snapshot,
     SnapshotProps
 } from './interfaces';
 import { strings } from './language';
@@ -54,6 +53,8 @@ import { preferredColumnForTreemapSize, RecommenderSummary } from '@msrvida/char
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
 import * as React from 'react';
+
+import Snapshot = SandDance.types.Snapshot;
 
 export interface Options {
     chartPrefs?: Prefs;

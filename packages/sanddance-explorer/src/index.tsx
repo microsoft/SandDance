@@ -4,7 +4,7 @@ import * as controls from './controls';
 
 export {controls};
 export { getEmbedHTML } from './controls/dataExporter';
-export { ColorSettings, DataContent, DataExportType, DataFile, DataFileType, SettingsGroup, SideTabId, Snapshot, ViewerOptions } from './interfaces';
+export { ColorSettings, DataContent, DataExportType, DataFile, DataFileType, SettingsGroup, SideTabId, ViewerOptions } from './interfaces';
 export { use } from './base';
 export { capabilities } from './canvas';
 export { Prefs } from './partialInsight';

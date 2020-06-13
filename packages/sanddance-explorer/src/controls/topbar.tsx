@@ -4,7 +4,6 @@ import { CommandBarButtonStyles } from './CommandBarButton.styles';
 import { Logo } from './logo';
 import { base } from '../base';
 import { HistoryItem } from '../explorer';
-import { Snapshot } from '../interfaces';
 import { strings } from '../language';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';
@@ -25,7 +24,7 @@ export interface Props {
     selectionState: SandDance.types.SelectionState;
     selectionSearch: Search;
     view: SandDance.types.View;
-    snapshots: Snapshot[];
+    snapshots: SandDance.types.Snapshot[];
     onSnapshotClick: () => void;
     onSnapshotNextClick: () => void;
     onSnapshotPreviousClick: () => void;

@@ -9,11 +9,11 @@ import {
     controls,
     Explorer,
     getEmbedHTML,
-    SandDance,
-    Snapshot
+    SandDance
 } from '@msrvida/sanddance-explorer';
 import * as React from 'react';
 
+import Snapshot = SandDance.types.Snapshot;
 import VegaDeckGl = SandDance.VegaDeckGl;
 import util = VegaDeckGl.util;
 

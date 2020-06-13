@@ -6,7 +6,7 @@ import * as layers from '@deck.gl/layers';
 import * as luma from '@luma.gl/core';
 import { fluentUI } from './fluentUIComponents';
 import * as vega from 'vega';
-import { Explorer, use, Snapshot } from '@msrvida/sanddance-explorer';
+import { Explorer, SandDance, use } from '@msrvida/sanddance-explorer';
 import ReactDOM from 'react-dom';
 import React from 'react';
 
@@ -70,7 +70,7 @@ export class SandDanceView extends DOMWidgetView {
               }, 0);
           },
           snapshotProps: {
-              getTopActions: (snapshots: Snapshot[]) => {
+              getTopActions: (snapshots: SandDance.types.Snapshot[]) => {
                   const items = [
                       {
                           key: 'saveAsWidgetState',
@@ -102,7 +102,7 @@ export class SandDanceView extends DOMWidgetView {
       this.model.on('change:height', this.size_changed, this);
   }
 
-  private saveSnapshots (snapshots: Snapshot[]) {
+  private saveSnapshots (snapshots: SandDance.types.Snapshot[]) {
       this.model.set('snapshots', snapshots);
       this.model.save_changes();
   }

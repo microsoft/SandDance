@@ -7,13 +7,14 @@ import { convertToDelimited } from '../exportDelimited';
 import {
     DataExportHandler,
     DataExportType,
-    DataFile,
-    Snapshot
+    DataFile
 } from '../interfaces';
 import { strings } from '../language';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { SandDance, util } from '@msrvida/sanddance-react';
 import * as React from 'react';
+
+import Snapshot = SandDance.types.Snapshot;
 
 export interface IInitializer {
     fileName: string;
