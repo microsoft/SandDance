@@ -938,15 +938,14 @@ export class Explorer extends React.Component<Props, State> {
             const note = snapshot.description;
             snapshots = this.state.snapshots.concat(snapshot);
             selectedSnapshotIndex = snapshots.length - 1;
-            if (!this.state.sidebarClosed) {
-                this.scrollSnapshotIntoView(selectedSnapshotIndex);
-            }
+            this.scrollSnapshotIntoView(selectedSnapshotIndex);
             this.setState({ sideTabId: SideTabId.Snapshots, snapshots, selectedSnapshotIndex, note });
         }
     }
 
     public scrollSnapshotIntoView(selectedSnapshotIndex: number) {
         clearTimeout(this.scrollSnapshotTimer);
+        if (this.state.sidebarClosed) return;
         this.scrollSnapshotTimer = setTimeout(() => {
             const selectedSnapshotElement = this.div.querySelector(`.snapshot:nth-child(${selectedSnapshotIndex + 1})`) as HTMLElement;
             if (selectedSnapshotElement) {
