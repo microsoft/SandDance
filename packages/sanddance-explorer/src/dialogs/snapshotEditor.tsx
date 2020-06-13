@@ -71,6 +71,7 @@ export class SnapshotEditor extends React.Component<Props, State>{
                 const bgColor = canvas && window.getComputedStyle(canvas).backgroundColor;
                 const insight = SandDance.VegaDeckGl.util.clone(this.props.explorer.viewer.getInsight());
                 delete insight.size;
+                insight.signalValues = this.props.explorer.viewer.getSignalValues();
                 const title = this.props.getTitle && this.props.getTitle(insight) || '';
                 const description = this.props.getDescription && this.props.getDescription(insight) || '';
                 this.setState({ showEditFormDialog: true, bgColor, title, description, insight, image: null, editIndex });
