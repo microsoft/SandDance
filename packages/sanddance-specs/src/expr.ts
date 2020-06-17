@@ -9,3 +9,11 @@
 export function safeFieldName(field: string) {
     return field.replace('.', '\\.').replace('[', '\\[').replace(']', '\\]');
 }
+
+/**
+ * Make sure the field name is usable in a Vega expression
+ */
+export function exprSafeFieldName(field: string) {
+    //remove whitespace, period, accessors and logical modifiers
+    return field.replace(/[\.\,:;\+\=\-\/<>\{\}|~!@#\$%\^\*\[\]\`\'\"\(\)\?\s\\]/g, '');
+}

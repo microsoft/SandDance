@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { FieldNames } from './constants';
-import { safeFieldName } from './expr';
+import { exprSafeFieldName, safeFieldName } from './expr';
 import { DiscreteColumn } from './interfaces';
 import {
     BinTransform,
@@ -35,7 +35,7 @@ export type Binnable = NativeBinnable | AugmentBinnable;
 export function binnable(prefix: string, domainDataName: string, discreteColumn: DiscreteColumn): Binnable {
     const { column, defaultBins, maxbins, maxbinsSignalDisplayName, maxbinsSignalName } = discreteColumn;
     if (column.quantitative) {
-        const field = `${prefix}_bin_${column.name}`;
+        const field = `${prefix}_bin_${exprSafeFieldName(column.name)}`;
         const fieldEnd = `${field}_end`;
         const binSignal = `${field}_bins`;
         const extentSignal = `${field}_bin_extent`;
