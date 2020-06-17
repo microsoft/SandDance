@@ -51,5 +51,5 @@ export const fluentUI: FluentUIComponents = {
     Spinner: Spinner as any,
     SpinnerSize,
     TextField: TextField as any,
-    Toggle
+    Toggle: Toggle as any
 };
