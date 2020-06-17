@@ -7,8 +7,5 @@
  * examples: "source.x", "target['x']", "[my.field]"
  */
 export function safeFieldName(field: string) {
-
-    //"source.x", "target['x']"
-
-    return field.replace('.', '\\.');
+    return field.replace('.', '\\.').replace('[', '\\[').replace(']', '\\]');
 }
