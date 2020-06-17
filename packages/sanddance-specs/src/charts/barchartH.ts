@@ -158,7 +158,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 },
                 {
                     role: 'size',
-                    allowNone: true,
+                    allowNone: false,
                     excludeCategoric: true,
                     signals: [SignalNames.TreeMapMethod]
                 },
