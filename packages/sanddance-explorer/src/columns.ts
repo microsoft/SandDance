@@ -46,6 +46,7 @@ export function ensureColumnsPopulated(chart: SandDance.specs.Chart, insightColu
             ensureColumn('size', true);
             break;
         case 'density':
+            ensureColumn('size', true);
         case 'scatterplot':
         case 'stacks':
             ensureColumn('x');
