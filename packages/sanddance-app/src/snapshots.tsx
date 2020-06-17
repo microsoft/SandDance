@@ -248,7 +248,7 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
                                     href={shortcut}
                                     title={strings.labelLinkDescription}
                                     aria-label={strings.labelLinkDescription}
-                                >{strings.labelLink}</a>
+                                >{strings.labelShare}</a>
                             </section>
                         )
                     }

@@ -330,7 +330,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                                         href={url}
                                         title={strings.labelLinkDescription}
                                         aria-label={strings.labelLinkDescription}
-                                    >{strings.labelLink}</a>
+                                    >{strings.labelShare}</a>
                                 );
                             }
                             return [{ element }];
