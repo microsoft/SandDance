@@ -108,7 +108,7 @@ export interface InsightColumns {
 export interface SpecRoleCapabilities {
     role: InsightColumnRoles;
     excludeCategoric?: boolean;
-    allowNone?: boolean;
+    allowNone?: boolean | ((specContext: SpecContext) => boolean);
     binnable?: boolean;
     axisSelection?: AxisSelectionType;
 
