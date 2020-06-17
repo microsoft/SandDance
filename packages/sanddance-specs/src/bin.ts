@@ -1,5 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { FieldNames } from './constants';
+import { safeFieldName } from './expr';
+import { DiscreteColumn } from './interfaces';
 import {
     BinTransform,
     Data,
@@ -7,8 +10,6 @@ import {
     Signal,
     Transforms
 } from 'vega-typings';
-import { DiscreteColumn } from './interfaces';
-import { FieldNames } from './constants';
 
 export interface BaseBinnable {
     fields: string[];
@@ -41,7 +42,7 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
         domainDataName = `${field}_sequence`;   //override the data name
         const extentTransform: ExtentTransform = {
             type: 'extent',
-            field: column.name,
+            field: safeFieldName(column.name),
             signal: extentSignal
         };
         const maxbinsSignal: Signal = {
@@ -58,7 +59,7 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
         };
         const binTransform: BinTransform = {
             type: 'bin',
-            field: column.name,
+            field: safeFieldName(column.name),
             as: [
                 field,
                 fieldEnd,

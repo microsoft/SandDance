@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { ColorBin } from './types';
 import { ColorScaleNone, SignalNames } from './constants';
+import { safeFieldName } from './expr';
+import { ColorBin } from './types';
 import {
     LinearScale,
     PointScale,
@@ -22,7 +23,7 @@ export function linearScale(scaleName: string, data: string, field: string, rang
         reverse,
         domain: {
             data,
-            field
+            field: safeFieldName(field)
         },
         zero,
         nice: true
@@ -37,7 +38,7 @@ export function pointScale(scaleName: string, data: string, range: RangeBand, fi
         range,
         domain: {
             data,
-            field,
+            field: safeFieldName(field),
             sort: true
         },
         padding: 0.5
@@ -52,7 +53,7 @@ export function binnableColorScale(scaleName: string, colorBin: ColorBin, data: 
     scheme = scheme || ColorScaleNone;
     const domain: ScaleData = {
         data,
-        field
+        field: safeFieldName(field)
     };
     const range: RangeScheme = {
         scheme

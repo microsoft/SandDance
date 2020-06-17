@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
+import { safeFieldName } from '../expr';
 import { InnerScope, LayoutOffsets } from '../interfaces';
 import {
     addOffsets,
-    addSignals,
     addTransforms,
     getGroupBy
 } from '../scope';
@@ -53,7 +53,7 @@ export class AggregateSquare extends Layout {
             },
             {
                 type: 'extent',
-                field: names.aggregateField,
+                field: safeFieldName(names.aggregateField),
                 signal: names.globalAggregateExtentSignal
             }
         );
@@ -101,11 +101,11 @@ export class AggregateSquare extends Layout {
     private getTransforms(aggregation: 'count' | 'sum', groupby: string[]) {
         const trans: JoinAggregateTransform = {
             type: 'joinaggregate',
-            groupby,
+            groupby: groupby.map(safeFieldName),
             ops: [aggregation]
         };
         if (aggregation === 'sum') {
-            trans.fields = [this.props.sumBy.name];
+            trans.fields = [this.props.sumBy.name].map(safeFieldName);
         }
         return trans;
     }
