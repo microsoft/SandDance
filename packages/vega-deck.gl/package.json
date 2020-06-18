@@ -37,7 +37,7 @@
     "@deck.gl/core": "^8.1.5",
     "@deck.gl/layers": "^8.1.5",
     "@luma.gl/core": "^8.1.2",
-    "@types/react": "^16.9.34",
+    "@types/react": "16.9.34",
     "vega": "^5.11.1"
   }
 }
