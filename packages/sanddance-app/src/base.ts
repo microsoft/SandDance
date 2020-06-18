@@ -3,6 +3,8 @@
 import { FluentUIComponents } from '@msrvida/fluentui-react-cdn-typings';
 import * as SandDanceExplorer from '@msrvida/sanddance-explorer';
 import { SandDance } from '@msrvida/sanddance-explorer';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
 import types = SandDance.VegaDeckGl.types;
 
@@ -32,6 +34,6 @@ export function use(
     layers: types.DeckLayerBase,
     luma: types.LumaBase
 ) {
-    SandDanceExplorer.use(fluentUI, vega, deck, layers, luma);
+    SandDanceExplorer.use(fluentUI, React, ReactDOM, vega, deck, layers, luma);
     base.fluentUI = fluentUI;
 }

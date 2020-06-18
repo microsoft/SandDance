@@ -6,14 +6,14 @@ import * as layers from '@deck.gl/layers';
 import * as luma from '@luma.gl/core';
 import { fluentUI } from './fluentUIComponents';
 import * as vega from 'vega';
-import { Explorer, SandDance, use } from '@msrvida/sanddance-explorer';
+import { Explorer, SandDance, use, Explorer_Class } from '@msrvida/sanddance-explorer';
 import ReactDOM from 'react-dom';
 import React from 'react';
 
 import '../css/tweak.css';
 import '@msrvida/sanddance-explorer/dist/css/sanddance-explorer.css';
 
-use(fluentUI, vega, deck as any, layers, luma);
+use(fluentUI, React as any, ReactDOM, vega, deck as any, layers, luma);
 
 export class SandDanceModel extends DOMWidgetModel {
     defaults() {
@@ -46,14 +46,14 @@ export class SandDanceModel extends DOMWidgetModel {
 
 
 export class SandDanceView extends DOMWidgetView {
-  private explorer?: Explorer
+  private explorer?: Explorer_Class
   private wrapper?: React.DetailedReactHTMLElement<any, HTMLElement>
 
   render () {
       const explorerProps = {
           logoClickUrl: 'https://microsoft.github.io/SandDance/',
           compactUI: true,
-          mounted: (explorer: Explorer) => {
+          mounted: (explorer: Explorer_Class) => {
               this.explorer = explorer;
 
               // restore previous snapshots

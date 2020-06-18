@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as React from 'react';
 import { base } from '../base';
 import {
     BindCheckbox,
@@ -9,13 +8,13 @@ import {
     BindRange,
     NewSignal
 } from 'vega-typings';
-import { Explorer } from '../explorer';
+import { Explorer_Class } from '../explorer';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 
 export interface Props {
     newViewStateTarget?: boolean;
     collapseLabel?: boolean;
-    explorer: Explorer;
+    explorer: Explorer_Class;
     signal: NewSignal;
     prefix?: string;
     disabled?: boolean;

@@ -12,8 +12,8 @@
   "dependencies": {
     "@fluentui/react": "^7.111.0"
   },
-  "devDependencies": {
-    "@types/react": "^16.9.34"
+  "peerDependencies": {
+    "@types/react": "16.9.34"
   },
   "license": "MIT"
 }

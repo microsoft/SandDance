@@ -13,8 +13,8 @@
     "start": "parcel serve ./src/index.html --port 8085 --open --no-hmr --global SandDanceApp"
   },
   "devDependencies": {
-    "@types/react": "^16.9.34",
-    "@types/react-dom": "^16.9.7",
+    "@types/react": "16.9.34",
+    "@types/react-dom": "16.9.7",
     "@msrvida/fluentui-react-cdn-typings": "^1",
     "vega-typings": "^0.16.0"
   },

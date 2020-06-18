@@ -17,6 +17,7 @@ import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import {
     ColorSettings,
     Explorer,
+    Explorer_Class,
     getColorSettingsFromThemePalette,
     Options,
     SandDance,
@@ -88,7 +89,7 @@ export class SandDanceApp extends React.Component<Props, State> {
     private dataSourcePicker: DataSourcePicker;
     private postLoad: (dataSource: DataSource) => void;
 
-    public explorer: Explorer;
+    public explorer: Explorer_Class;
 
     constructor(props: Props) {
         super(props);

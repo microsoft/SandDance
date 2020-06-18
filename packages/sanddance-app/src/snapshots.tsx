@@ -7,7 +7,7 @@ import { DataSource, DataSourceSnapshot } from './types';
 import { invalidUrlError } from './url';
 import {
     controls,
-    Explorer,
+    Explorer_Class,
     getEmbedHTML,
     SandDance
 } from '@msrvida/sanddance-explorer';
@@ -259,7 +259,7 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
 }
 
 export interface ExportProps {
-    explorer: Explorer;
+    explorer: Explorer_Class;
     onDismiss: () => void;
     dataSource: DataSource;
     snapshots: Snapshot[];

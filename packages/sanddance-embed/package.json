@@ -16,7 +16,8 @@
     "@msrvida/sanddance-explorer": "3.0.0-beta.2"
   },
   "devDependencies": {
-    "@types/react-dom": "^16.9.7",
+    "@types/react": "16.9.34",
+    "@types/react-dom": "16.9.7",
     "@msrvida/fluentui-react-cdn-typings": "*"
   },
   "author": "",

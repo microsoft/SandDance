@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as React from 'react';
 import { base } from '../base';
 import { IButtonProps as _IButtonProps, ICSSRule, ICSSPixelUnitRule, IPalette } from '@msrvida/fluentui-react-cdn-typings/types';
 

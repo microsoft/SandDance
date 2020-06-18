@@ -28,7 +28,7 @@ initializeIcons();
 
 export const fluentUI: FluentUIComponents = {
     ActionButton: ActionButton as any,
-    ChoiceGroup,
+    ChoiceGroup: ChoiceGroup as any,
     ComboBox: ComboBox as any,
     CommandBar: CommandBar as any,
     ContextualMenuItemType,
@@ -39,17 +39,17 @@ export const fluentUI: FluentUIComponents = {
     DialogType,
     Dropdown: Dropdown as any,
     DropdownMenuItemType,
-    Icon,
+    Icon: Icon as any,
     IconButton: IconButton as any,
     getFocusStyle,
     getTheme,
-    Label,
+    Label: Label as any,
     loadTheme,
     Modal: Modal as any,
     PrimaryButton: PrimaryButton as any,
     Slider: Slider as any,
-    Spinner,
+    Spinner: Spinner as any,
     SpinnerSize,
-    TextField,
-    Toggle
+    TextField: TextField as any,
+    Toggle: Toggle as any
 };

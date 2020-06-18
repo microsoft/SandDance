@@ -9,7 +9,7 @@ declare var luma: VegaDeckGl.types.LumaBase;
 declare var FluentUIReact: _FluentUI.FluentUIComponents;
 
 namespace SandDanceApp {
-    SandDanceExplorer.use(FluentUIReact, vega, deck, deck, luma);
+    SandDanceExplorer.use(FluentUIReact, React, ReactDOM, vega, deck, deck, luma);
 
     function getTextcolor() {
         return getComputedStyle(document.body).color;
@@ -58,7 +58,7 @@ namespace SandDanceApp {
     export class App extends React.Component<{}, State> {
         private viewerOptions: Partial<SandDance.types.ViewerOptions>;
         private handlers: Handlers;
-        public explorer: SandDanceExplorer.Explorer;
+        public explorer: SandDanceExplorer.Explorer_Class;
         public vscode: VsCode;
 
         constructor(props: {}) {
@@ -128,7 +128,7 @@ namespace SandDanceApp {
             this.setState({ darkTheme });
         }
 
-        mounted(explorer: SandDanceExplorer.Explorer) {
+        mounted(explorer: SandDanceExplorer.Explorer_Class) {
             this.explorer = explorer;
 
             this.wireEventHandlers(true);

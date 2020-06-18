@@ -5,11 +5,13 @@ import { fluentUI } from './fluentUIComponents';
 import * as layers from '@deck.gl/layers';
 import * as luma from '@luma.gl/core';
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import * as vega from 'vega';
 import {
     capabilities,
     DataFile,
     Explorer,
+    Explorer_Class,
     Props as ExplorerProps,
     SandDance,
     themePalettes,
@@ -20,7 +22,7 @@ import { Logo } from '@msrvida/sanddance-explorer/dist/es6/controls/logo';
 import { strings } from './language';
 import { version } from './version';
 
-use(fluentUI, vega, deck, layers, luma);
+use(fluentUI, React as any, ReactDOM as any, vega, deck, layers, luma);
 
 function getThemePalette(darkTheme: boolean) {
     const theme = darkTheme ? 'dark-theme' : '';
@@ -45,7 +47,7 @@ export interface State {
 
 export class App extends React.Component<Props, State> {
     private viewerOptions: Partial<SandDance.types.ViewerOptions>;
-    public explorer: Explorer;
+    public explorer: Explorer_Class;
 
     constructor(props: Props) {
         super(props);
