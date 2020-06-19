@@ -35,6 +35,7 @@ export interface Props {
     onError: (e: any) => void;
     onDataFilter: (filter: SandDance.searchExpression.Search, filteredData: object[]) => void;
     onSelectionChanged: (search: SandDance.searchExpression.Search, activeIndex: number, selectedData: object[]) => void;
+    onSnapshotsChanged: (snapshots: SandDance.types.Snapshot[]) => void;
 }
 
 export interface State {
@@ -84,17 +85,19 @@ export class App extends React.Component<Props, State> {
         return this.explorer && this.explorer.state.dataContent && this.explorer.state.dataContent.data;
     }
 
-    load(data: DataFile | object[], getPartialInsight: (columns: SandDance.types.Column[]) => Partial<SandDance.specs.Insight>, tooltipExclusions?: string[]) {
+    load(data: DataFile | object[], getPartialInsight: (columns: SandDance.types.Column[]) => Partial<SandDance.specs.Insight>, snapshots: SandDance.types.Snapshot[], tooltipExclusions: string[]) {
         const wasLoaded = this.state.loaded;
         this.setState({ loaded: true });
         if (wasLoaded) {
             this.explorer.setState({
                 calculating: () => {
                     this.explorer.load(data, getPartialInsight, { tooltipExclusions });
+                    this.explorer.setState({ snapshots });
                 }
             });
         } else {
             this.explorer.load(data, getPartialInsight, { tooltipExclusions });
+            this.explorer.setState({ snapshots });
         }
     }
 
@@ -119,6 +122,7 @@ export class App extends React.Component<Props, State> {
     }
 
     setChromeless(chromeless: boolean) {
+        if (chromeless === this.state.chromeless) return;
         this.setState({ chromeless });
         this.explorer.sidebar(chromeless, !chromeless);
         this.explorer.resize();
@@ -139,10 +143,12 @@ export class App extends React.Component<Props, State> {
             viewerOptions: this.viewerOptions,
             initialView: '2d',
             mounted: explorer => {
+                explorer.snapshotThumbWidth = 240;
                 this.explorer = explorer;
                 this.props.mounted(this);
             },
             onSignalChanged: this.props.onViewChange,
+            onSnapshotsChanged: this.props.onSnapshotsChanged,
             onTooltipExclusionsChanged: tooltipExclusions => this.props.onViewChange(tooltipExclusions),
             onView: this.props.onViewChange,
             onError: this.props.onError,

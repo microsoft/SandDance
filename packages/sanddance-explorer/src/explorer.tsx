@@ -76,6 +76,7 @@ export interface Props {
     topBarButtonProps?: FluentUITypes.ICommandBarItemProps[];
     snapshotProps?: SnapshotProps;
     onSnapshotClick?: (snapshot: Snapshot, selectedSnaphotIndex: number) => void | boolean;
+    onSnapshotsChanged?: (snapshots: Snapshot[]) => void;
     onView?: () => void;
     onError?: (e: any) => void;
     onSignalChanged?: () => void;
@@ -941,6 +942,7 @@ function _Explorer(props: Props) {
                 this.scrollSnapshotIntoView(selectedSnapshotIndex);
                 this.setState({ sideTabId: SideTabId.Snapshots, snapshots, selectedSnapshotIndex, note });
             }
+            this.props.onSnapshotsChanged && this.props.onSnapshotsChanged(snapshots);
         }
 
         public scrollSnapshotIntoView(selectedSnapshotIndex: number) {
@@ -1294,7 +1296,11 @@ function _Explorer(props: Props) {
                                                 explorer={this as any as Explorer_Class}
                                                 snapshots={this.state.snapshots}
                                                 selectedSnapshotIndex={this.state.selectedSnapshotIndex}
-                                                onClearSnapshots={() => this.setState({ snapshots: [], selectedSnapshotIndex: -1 })}
+                                                onClearSnapshots={() => {
+                                                    const snapshots = [];
+                                                    this.setState({ snapshots, selectedSnapshotIndex: -1 });
+                                                    this.props.onSnapshotsChanged && this.props.onSnapshotsChanged(snapshots);
+                                                }}
                                                 onWriteSnapshot={(s, i) => this.writeSnapshot(s, i)}
                                                 onRemoveSnapshot={i => {
                                                     const snapshots = [...this.state.snapshots];
@@ -1306,6 +1312,7 @@ function _Explorer(props: Props) {
                                                         selectedSnapshotIndex--;
                                                     }
                                                     this.setState({ snapshots, selectedSnapshotIndex });
+                                                    this.props.onSnapshotsChanged && this.props.onSnapshotsChanged(snapshots);
                                                 }}
                                                 onSnapshotClick={(snapshot, selectedSnapshotIndex) => {
                                                     this.setState({ selectedSnapshotIndex });
@@ -1326,6 +1333,7 @@ function _Explorer(props: Props) {
                                                             selectedSnapshotIndex = i;
                                                         }
                                                         this.setState({ snapshots, selectedSnapshotIndex });
+                                                        this.props.onSnapshotsChanged && this.props.onSnapshotsChanged(snapshots);
                                                     }
                                                 }}
                                                 onMoveDown={i => {
@@ -1341,6 +1349,7 @@ function _Explorer(props: Props) {
                                                             selectedSnapshotIndex = i;
                                                         }
                                                         this.setState({ snapshots, selectedSnapshotIndex });
+                                                        this.props.onSnapshotsChanged && this.props.onSnapshotsChanged(snapshots);
                                                     }
                                                 }}
                                             />

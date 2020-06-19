@@ -83,23 +83,15 @@ export class Visual implements IVisual {
                     this.app = app;
                 },
                 onViewChange: (tooltipExclusions: string[]) => {
-                    // console.log('onViewChange');
+                    // console.log('onViewChange', this.renderingOptions);
                     if (this.renderingOptions) {
                         this.events.renderingFinished(this.renderingOptions);
-                        this.renderingOptions = null;
-                    }
 
-                    if (this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.Edit || this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.InFocusEdit) {
-                        const insight = this.app.explorer.viewer.getInsight();
-                        tooltipExclusions = tooltipExclusions || this.app.explorer.state.tooltipExclusions;
-                        cleanInsight(insight);
-                        const config: SandDanceConfig = {
-                            insightJSON: JSON.stringify(insight),
-                            tooltipExclusionsJSON: JSON.stringify(tooltipExclusions)
-                        };
-                        const properties = config as any;
-                        this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
+                        this.persist('onViewChange', tooltipExclusions, null);
                     }
+                },
+                onSnapshotsChanged: snapshots => {
+                    this.persist('onSnapshotsChanged', null, snapshots);
                 },
                 onError: (e: any) => {
                     if (this.renderingOptions) {
@@ -138,6 +130,23 @@ export class Visual implements IVisual {
                 }
             };
             render(createElement(App, props), this.viewElement);
+        }
+    }
+
+    private persist(reason: string, tooltipExclusions: string[], snapshots: SandDance.types.Snapshot[]) {
+        if (this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.Edit || this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.InFocusEdit) {
+            const insight = this.app.explorer.viewer.getInsight();
+            tooltipExclusions = tooltipExclusions || this.app.explorer.state.tooltipExclusions;
+            snapshots = snapshots || this.app.explorer.state.snapshots;
+            cleanInsight(insight);
+            const config: SandDanceConfig = {
+                insightJSON: JSON.stringify(insight),
+                snapshotsJSON: JSON.stringify(snapshots || []),
+                tooltipExclusionsJSON: JSON.stringify(tooltipExclusions)
+            };
+            const properties = config as any;
+            //console.log(`persist ${reason}`, config);
+            this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
         }
     }
 
@@ -225,8 +234,16 @@ export class Visual implements IVisual {
 
         const { sandDanceConfig } = this.settings;
 
-        let tooltipExclusions: string[] = [];
+        let snapshots: SandDance.types.Snapshot[] = [];
+        if (sandDanceConfig.snapshotsJSON) {
+            try {
+                snapshots = JSON.parse(sandDanceConfig.snapshotsJSON);
+            } catch (e) {
+                // continue regardless of error
+            }
+        }
 
+        let tooltipExclusions: string[] = [];
         if (sandDanceConfig.tooltipExclusionsJSON) {
             try {
                 tooltipExclusions = JSON.parse(sandDanceConfig.tooltipExclusionsJSON);
@@ -235,26 +252,38 @@ export class Visual implements IVisual {
             }
         }
 
-        this.app.load(data, columns => {
-            if (!columns) return;
+        this.app.load(
+            data,
+            columns => {
+                if (!columns) return;
 
-            let insight: Partial<SandDance.specs.Insight>;
-
-            if (sandDanceConfig.insightJSON) {
-                try {
-                    insight = JSON.parse(sandDanceConfig.insightJSON);
-                    delete insight.size;
-                } catch (e) {
-                    // continue regardless of error
+                //remove column which contains powerbi selectionId
+                for (let i = 0; i < columns.length; i++) {
+                    if (SandDance.util.isInternalFieldName(columns[i].name)) {
+                        columns.splice(i, 1);
+                        i--;
+                    }
                 }
-            }
 
-            if (this.filters) {
-                insight.filter = this.filters.sd;
-            }
+                let insight: Partial<SandDance.specs.Insight>;
 
-            return insight;
-        }, tooltipExclusions);
+                if (sandDanceConfig.insightJSON) {
+                    try {
+                        insight = JSON.parse(sandDanceConfig.insightJSON);
+                        delete insight.size;
+                    } catch (e) {
+                        // continue regardless of error
+                    }
+                }
+
+                if (this.filters) {
+                    insight.filter = this.filters.sd;
+                }
+
+                return insight;
+            },
+            snapshots,
+            tooltipExclusions);
 
     }
 
