@@ -42,9 +42,9 @@ This option is for those who are using a script bundler such as [WebPack](https:
 Add these to the `dependencies` section of your `package.json`, then run `npm install`:
 
 ```json
-"@deck.gl/core": "6.4",
-"@deck.gl/layers": "6.4",
-"luma.gl": "6.4",
+"@deck.gl/core": "^8.1.5",
+"@deck.gl/layers": "^8.1.5",
+"@luma.gl/core": "^8.1.2",
 "@msrvida/vega-deck.gl": "^2",
 "vega": "^5.11"
 ```
