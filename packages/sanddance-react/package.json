@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance-react",
-  "version": "3.0.0-beta.2",
+  "version": "3.0.0",
   "description": "SandDance visualization canvas React component",
   "main": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
@@ -22,7 +22,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@msrvida/sanddance": "3.0.0-beta.2",
+    "@msrvida/sanddance": "^3",
     "just-compare": "^1.3.0"
   },
   "peerDependencies": {

@@ -8,6 +8,6 @@
     "watch-typescript": "tsc -p . -w"
   },
   "dependencies": {
-    "@msrvida/sanddance": "3.0.0-beta.2"
+    "@msrvida/sanddance": "^3"
   }
 }

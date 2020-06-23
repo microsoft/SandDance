@@ -11,7 +11,7 @@
     "@deck.gl/core": "^8.1.5",
     "@deck.gl/layers": "^8.1.5",
     "@luma.gl/core": "^8.1.2",
-    "@msrvida/sanddance": "3.0.0-beta.2",
+    "@msrvida/sanddance": "^3",
     "vega": "^5.11"
   },
   "devDependencies": {
