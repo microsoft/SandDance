@@ -102,6 +102,8 @@ function packageDirs(root) {
 const outlines = {};
 const tree = {};
 
+console.log('Generating table of contents...');
+
 packageDirs('./docs/docs');
 
 fs.writeFileSync('./docs/_data/outlines.json', JSON.stringify(outlines, null, 2), 'utf8');

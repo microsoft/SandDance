@@ -56,4 +56,6 @@ function packageDirs(root) {
     })
 }
 
+console.log('Moving docs...');
+
 packageDirs('./docs/docs');
