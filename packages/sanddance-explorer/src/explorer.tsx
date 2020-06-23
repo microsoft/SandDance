@@ -79,7 +79,7 @@ export interface Props {
     onSnapshotsChanged?: (snapshots: Snapshot[]) => void;
     onView?: () => void;
     onError?: (e: any) => void;
-    onSignalChanged?: () => void;
+    onSignalChanged?: (signalName: string, signalValue: any) => void;
     onTooltipExclusionsChanged?: (tooltipExclusions: string[]) => void;
     additionalSettings?: SettingsGroup[];
     systemInfoChildren?: React.ReactNode;
@@ -354,9 +354,15 @@ function _Explorer(props: Props) {
             this.newViewStateTarget = newViewStateTarget;
             this.viewer.vegaViewGl.signal(signalName, signalValue);
             this.viewer.vegaViewGl.runAsync().then(() => {
+
+                //deeply set the state without a state change. This prevents a redraw if re-rendered
+                if (this.state.signalValues) {
+                    this.state.signalValues[signalName] = signalValue;
+                }
+                
                 this.discardColorContextUpdates = true;
                 this.newViewStateTarget = undefined;
-                this.props.onSignalChanged && this.props.onSignalChanged();
+                this.props.onSignalChanged && this.props.onSignalChanged(signalName, signalValue);
             });
         }
 

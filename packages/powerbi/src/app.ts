@@ -29,9 +29,14 @@ function getThemePalette(darkTheme: boolean) {
     return themePalettes[theme];
 }
 
+export interface ViewChangeOptions {
+    signalChange?: boolean;
+    tooltipExclusions?: string[];
+}
+
 export interface Props {
     mounted: (app: App) => void;
-    onViewChange: (tooltipExclusions?: string[]) => void;
+    onViewChange: (viewChangeOptions: ViewChangeOptions) => void;
     onError: (e: any) => void;
     onDataFilter: (filter: SandDance.searchExpression.Search, filteredData: object[]) => void;
     onSelectionChanged: (search: SandDance.searchExpression.Search, activeIndex: number, selectedData: object[]) => void;
@@ -48,6 +53,7 @@ export interface State {
 
 export class App extends React.Component<Props, State> {
     private viewerOptions: Partial<SandDance.types.ViewerOptions>;
+    private signalChanged: boolean;
     public explorer: Explorer_Class;
 
     constructor(props: Props) {
@@ -143,14 +149,20 @@ export class App extends React.Component<Props, State> {
             viewerOptions: this.viewerOptions,
             initialView: '2d',
             mounted: explorer => {
-                explorer.snapshotThumbWidth = 240;
+                //explorer.snapshotThumbWidth = 240;
                 this.explorer = explorer;
                 this.props.mounted(this);
             },
-            onSignalChanged: this.props.onViewChange,
+            onSignalChanged: (signalName, signalValue) => {
+                this.props.onViewChange({ signalChange: true });
+                this.signalChanged = true;
+            },
             onSnapshotsChanged: this.props.onSnapshotsChanged,
-            onTooltipExclusionsChanged: tooltipExclusions => this.props.onViewChange(tooltipExclusions),
-            onView: this.props.onViewChange,
+            onTooltipExclusionsChanged: tooltipExclusions => this.props.onViewChange({ tooltipExclusions }),
+            onView: () => {
+                this.props.onViewChange({ signalChange: this.signalChanged });
+                this.signalChanged = false;
+            },
             onError: this.props.onError,
             systemInfoChildren: [
                 React.createElement('li', null, `${strings.powerBiCustomVisual}: ${version}`)

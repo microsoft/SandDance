@@ -43,12 +43,20 @@ import { capabilities, SandDance } from '@msrvida/sanddance-explorer';
 import { convertFilter } from './convertFilter';
 import { createElement } from 'react';
 import { render } from 'react-dom';
-import { App, Props } from './app';
+import { App, Props, ViewChangeOptions } from './app';
 import { convertTableToObjectArray } from './convertTableToObjectArray';
 import { cleanInsight } from './cleanInsight';
 import { VisualSettings, SandDanceConfig, IVisualSettings } from './settings';
 
 const { util } = SandDance.VegaDeckGl;
+
+interface PersistAction {
+    signalChange?: boolean;
+}
+
+interface PersistOptions extends ViewChangeOptions {
+    reason: string;
+}
 
 export class Visual implements IVisual {
     private settings: VisualSettings;
@@ -63,6 +71,7 @@ export class Visual implements IVisual {
     private fetchMoreTimer: number;
     private filters: { sd: SandDance.searchExpression.Search, pbi: powerbiModels.IFilter[] };
     private columns: powerbiVisualsApi.DataViewMetadataColumn[];
+    private persistAction: PersistAction;
 
     public static fetchMoreTimeout = 5000;
 
@@ -71,6 +80,7 @@ export class Visual implements IVisual {
         this.host = options.host;
         this.events = this.host.eventService;
         this.selectionManager = this.host.createSelectionManager();
+        this.persistAction = {};
 
         if (typeof document !== 'undefined') {
             options.element.style.position = 'relative';
@@ -82,16 +92,16 @@ export class Visual implements IVisual {
                 mounted: (app: App) => {
                     this.app = app;
                 },
-                onViewChange: (tooltipExclusions: string[]) => {
+                onViewChange: viewChangeOptions => {
                     // console.log('onViewChange', this.renderingOptions);
                     if (this.renderingOptions) {
                         this.events.renderingFinished(this.renderingOptions);
 
-                        this.persist('onViewChange', tooltipExclusions, null);
+                        this.persist({ reason: 'onViewChange', ...viewChangeOptions }, null);
                     }
                 },
                 onSnapshotsChanged: snapshots => {
-                    this.persist('onSnapshotsChanged', null, snapshots);
+                    this.persist({ reason: 'onSnapshotsChanged' }, snapshots);
                 },
                 onError: (e: any) => {
                     if (this.renderingOptions) {
@@ -133,10 +143,11 @@ export class Visual implements IVisual {
         }
     }
 
-    private persist(reason: string, tooltipExclusions: string[], snapshots: SandDance.types.Snapshot[]) {
+    private persist(options: PersistOptions, snapshots: SandDance.types.Snapshot[]) {
         if (this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.Edit || this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.InFocusEdit) {
+            this.persistAction = { signalChange: options.signalChange };
             const insight = this.app.explorer.viewer.getInsight();
-            tooltipExclusions = tooltipExclusions || this.app.explorer.state.tooltipExclusions;
+            const tooltipExclusions = options.tooltipExclusions || this.app.explorer.state.tooltipExclusions;
             snapshots = snapshots || this.app.explorer.state.snapshots;
             cleanInsight(insight);
             const config: SandDanceConfig = {
@@ -145,7 +156,7 @@ export class Visual implements IVisual {
                 tooltipExclusionsJSON: JSON.stringify(tooltipExclusions)
             };
             const properties = config as any;
-            //console.log(`persist ${reason}`, config);
+            //console.log(`persist ${options.reason}`, config, this.persistAction);
             this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
         }
     }
@@ -225,9 +236,12 @@ export class Visual implements IVisual {
 
         this.app.setChromeless(!this.settings.sandDanceMainSettings.showchrome);
 
+        const wasSignalChange = this.persistAction.signalChange;
+        this.persistAction = {};
+
         this.prevSettings = util.clone(this.settings);
 
-        if (!different) {
+        if (!different || wasSignalChange) {
             // console.log('Visual update - not different');
             return;
         }
