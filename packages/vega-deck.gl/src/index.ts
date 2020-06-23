@@ -15,9 +15,9 @@ export { constants, controls, defaults, types, util };
 
 //export deck.gl types
 export {
-  DeckProps,
-  LayerInputHandler,
-  PickInfo,
-  Position,
-  RGBAColor,
+    DeckProps,
+    LayerInputHandler,
+    PickInfo,
+    Position,
+    RGBAColor,
 } from 'deck.gl';

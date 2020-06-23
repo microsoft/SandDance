@@ -3,14 +3,14 @@
 export { IChoiceGroupOption } from '@fluentui/react/lib/ChoiceGroup';
 
 export {
-  IButtonProps,
-  IButtonStyles
+    IButtonProps,
+    IButtonStyles
 } from '@fluentui/react/lib/Button';
 
 export {
-  IContextualMenuItem,
-  IContextualMenuProps,
-  IContextualMenuRenderItem
+    IContextualMenuItem,
+    IContextualMenuProps,
+    IContextualMenuRenderItem
 } from '@fluentui/react/lib/ContextualMenu';
 
 export { IDropdown, IDropdownProps, IDropdownOption } from '@fluentui/react/lib/Dropdown';
