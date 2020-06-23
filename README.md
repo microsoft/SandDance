@@ -32,6 +32,7 @@ SandDance is an offering of several JavaScript components:
 
 ## Changelog
 
+* June 2020 - Major version bump to v3: Now using Deck.gl@8.
 * December 2019 - Major version bump to v2: Now using Vega@5.
 * August 2019 - Initial release to AppSource (Power BI marketplace).
 * April 2019 - Initial release to GitHub.
@@ -45,7 +46,7 @@ SandDance is an offering of several JavaScript components:
 * ~~PowerBI custom visual based on this new architecture.~~ done!
 * ~~Additional views, such as stacks.~~ done!
 * Code examples and tutorials.
-* Faceting for all chart types.
+* ~~Faceting for all chart types.~~ done!
 * Better date handling.
 
 ## Dependencies
