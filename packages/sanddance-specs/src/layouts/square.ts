@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { FieldNames } from '../constants';
+import { safeFieldName } from '../expr';
 import { InnerScope } from '../interfaces';
 import {
     addMarks,
@@ -53,11 +54,11 @@ export class Square extends Layout {
 
         addTransforms(globalScope.data, {
             type: 'stack',
-            groupby: getGroupBy(groupings),
+            groupby: getGroupBy(groupings).map(safeFieldName),
             as: [names.stack0, names.stack1],
             ...sortBy && {
                 sort: {
-                    field: sortBy.name,
+                    field: safeFieldName(sortBy.name),
                     order: 'ascending'
                 }
             }
@@ -99,7 +100,7 @@ export class Square extends Layout {
                             },
                             {
                                 scale: names.zScale,
-                                field: z.name
+                                field: safeFieldName(z.name)
                             }
                         ]
                     }
@@ -155,7 +156,7 @@ export class Square extends Layout {
                 addTransforms(globalScope.data,
                     {
                         type: 'joinaggregate',
-                        groupby: getGroupBy(groupings),
+                        groupby: getGroupBy(groupings).map(safeFieldName),
                         ops: ['count'],
                         as: [names.maxGroupField]
                     },

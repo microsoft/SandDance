@@ -71,7 +71,16 @@ export class SpecBuilder {
     public validate() {
         const { specCapabilities, specContext } = this.props;
         const { roles } = specCapabilities;
-        const required = roles.filter(r => !r.allowNone);
+        const required = roles.filter(r => {
+            switch (typeof r.allowNone) {
+                case 'boolean':
+                    return !r.allowNone;
+                case 'undefined':
+                    return true;
+                case 'function':
+                    return !r.allowNone(specContext);
+            }
+        });
         const numeric = roles.filter(r => r.excludeCategoric);
         const errors = required
             .map(

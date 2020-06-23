@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { base } from '../base';
 import { Group } from '../controls/group';
 import { HistoryItem } from '../explorer';
 import { KeyCodes } from '../keycodes';
 import { strings } from '../language';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { util } from '@msrvida/sanddance-react';
-import * as React from 'react';
 
 export interface Props {
     disabled?: boolean;

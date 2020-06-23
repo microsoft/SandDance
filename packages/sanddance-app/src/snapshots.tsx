@@ -7,13 +7,13 @@ import { DataSource, DataSourceSnapshot } from './types';
 import { invalidUrlError } from './url';
 import {
     controls,
-    Explorer,
+    Explorer_Class,
     getEmbedHTML,
-    SandDance,
-    Snapshot
+    SandDance
 } from '@msrvida/sanddance-explorer';
 import * as React from 'react';
 
+import Snapshot = SandDance.types.Snapshot;
 import VegaDeckGl = SandDance.VegaDeckGl;
 import util = VegaDeckGl.util;
 
@@ -248,7 +248,7 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
                                     href={shortcut}
                                     title={strings.labelLinkDescription}
                                     aria-label={strings.labelLinkDescription}
-                                >{strings.labelLink}</a>
+                                >{strings.labelShare}</a>
                             </section>
                         )
                     }
@@ -259,7 +259,7 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
 }
 
 export interface ExportProps {
-    explorer: Explorer;
+    explorer: Explorer_Class;
     onDismiss: () => void;
     dataSource: DataSource;
     snapshots: Snapshot[];

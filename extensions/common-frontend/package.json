@@ -28,8 +28,8 @@
     "vega": "^5.11"
   },
   "devDependencies": {
-    "@msrvida/sanddance-explorer": "3.0.0-beta.2",
-    "@types/react": "^16.9.34",
-    "@types/react-dom": "^16.9.7"
+    "@msrvida/sanddance-explorer": "^3",
+    "@types/react": "16.9.34",
+    "@types/react-dom": "16.9.7"
   }
 }

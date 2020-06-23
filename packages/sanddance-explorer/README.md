@@ -12,10 +12,10 @@ Visually explore, understand, and present your data.
 Add these to the `dependencies` section of your `package.json`, then run `npm install`:
 
 ```json
-"@deck.gl/core": "6.4",
-"@deck.gl/layers": "6.4",
+"@deck.gl/core": "^8.1.5",
+"@deck.gl/layers": "^8.1.5",
 "@msrvida/sanddance-explorer": "^2",
-"luma.gl": "6.4",
+"@luma.gl/core": "^8.1.2",
 "office-ui-fabric-react": "6.204.4",
 "vega": "^5.11"
 ```
@@ -28,11 +28,13 @@ import * as layers from '@deck.gl/layers';
 import * as luma from 'luma.gl';
 import * as fabric from 'office-ui-fabric-react';
 import * as vega from 'vega';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { Explorer, use } from '@msrvida/sanddance-explorer';
 
 fabric.initializeIcons();
 
-use(fabric, vega, deck, layers, luma);
+use(fabric, React, ReactDOM, vega, deck, layers, luma);
 
 const data = [
   { a: 1, b: "c1" },

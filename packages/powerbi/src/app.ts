@@ -5,11 +5,13 @@ import { fluentUI } from './fluentUIComponents';
 import * as layers from '@deck.gl/layers';
 import * as luma from '@luma.gl/core';
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import * as vega from 'vega';
 import {
     capabilities,
     DataFile,
     Explorer,
+    Explorer_Class,
     Props as ExplorerProps,
     SandDance,
     themePalettes,
@@ -20,19 +22,25 @@ import { Logo } from '@msrvida/sanddance-explorer/dist/es6/controls/logo';
 import { strings } from './language';
 import { version } from './version';
 
-use(fluentUI, vega, deck, layers, luma);
+use(fluentUI, React as any, ReactDOM as any, vega, deck, layers, luma);
 
 function getThemePalette(darkTheme: boolean) {
     const theme = darkTheme ? 'dark-theme' : '';
     return themePalettes[theme];
 }
 
+export interface ViewChangeOptions {
+    signalChange?: boolean;
+    tooltipExclusions?: string[];
+}
+
 export interface Props {
     mounted: (app: App) => void;
-    onViewChange: (tooltipExclusions?: string[]) => void;
+    onViewChange: (viewChangeOptions: ViewChangeOptions) => void;
     onError: (e: any) => void;
     onDataFilter: (filter: SandDance.searchExpression.Search, filteredData: object[]) => void;
     onSelectionChanged: (search: SandDance.searchExpression.Search, activeIndex: number, selectedData: object[]) => void;
+    onSnapshotsChanged: (snapshots: SandDance.types.Snapshot[]) => void;
 }
 
 export interface State {
@@ -45,7 +53,8 @@ export interface State {
 
 export class App extends React.Component<Props, State> {
     private viewerOptions: Partial<SandDance.types.ViewerOptions>;
-    public explorer: Explorer;
+    private signalChanged: boolean;
+    public explorer: Explorer_Class;
 
     constructor(props: Props) {
         super(props);
@@ -82,17 +91,19 @@ export class App extends React.Component<Props, State> {
         return this.explorer && this.explorer.state.dataContent && this.explorer.state.dataContent.data;
     }
 
-    load(data: DataFile | object[], getPartialInsight: (columns: SandDance.types.Column[]) => Partial<SandDance.specs.Insight>, tooltipExclusions?: string[]) {
+    load(data: DataFile | object[], getPartialInsight: (columns: SandDance.types.Column[]) => Partial<SandDance.specs.Insight>, snapshots: SandDance.types.Snapshot[], tooltipExclusions: string[]) {
         const wasLoaded = this.state.loaded;
         this.setState({ loaded: true });
         if (wasLoaded) {
             this.explorer.setState({
                 calculating: () => {
                     this.explorer.load(data, getPartialInsight, { tooltipExclusions });
+                    this.explorer.setState({ snapshots });
                 }
             });
         } else {
             this.explorer.load(data, getPartialInsight, { tooltipExclusions });
+            this.explorer.setState({ snapshots });
         }
     }
 
@@ -117,6 +128,7 @@ export class App extends React.Component<Props, State> {
     }
 
     setChromeless(chromeless: boolean) {
+        if (chromeless === this.state.chromeless) return;
         this.setState({ chromeless });
         this.explorer.sidebar(chromeless, !chromeless);
         this.explorer.resize();
@@ -137,12 +149,20 @@ export class App extends React.Component<Props, State> {
             viewerOptions: this.viewerOptions,
             initialView: '2d',
             mounted: explorer => {
+                //explorer.snapshotThumbWidth = 240;
                 this.explorer = explorer;
                 this.props.mounted(this);
             },
-            onSignalChanged: this.props.onViewChange,
-            onTooltipExclusionsChanged: tooltipExclusions => this.props.onViewChange(tooltipExclusions),
-            onView: this.props.onViewChange,
+            onSignalChanged: (signalName, signalValue) => {
+                this.props.onViewChange({ signalChange: true });
+                this.signalChanged = true;
+            },
+            onSnapshotsChanged: this.props.onSnapshotsChanged,
+            onTooltipExclusionsChanged: tooltipExclusions => this.props.onViewChange({ tooltipExclusions }),
+            onView: () => {
+                this.props.onViewChange({ signalChange: this.signalChanged });
+                this.signalChanged = false;
+            },
             onError: this.props.onError,
             systemInfoChildren: [
                 React.createElement('li', null, `${strings.powerBiCustomVisual}: ${version}`)

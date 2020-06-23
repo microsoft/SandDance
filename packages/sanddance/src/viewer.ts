@@ -107,7 +107,6 @@ export class Viewer {
     public currentColorContext: number;
 
     private _specColumns: SpecColumns;
-    private _signalValues: SignalValues;
     private _dataScope: DataScope;
     private _animator: Animator;
     private _details: Details;
@@ -142,7 +141,6 @@ export class Viewer {
             () => this.insight && this.insight.columns && !!this.insight.columns.color && this.colorContexts && this.colorContexts.length > 1
         );
         this.insight = {} as Insight;
-        this._signalValues = {};
     }
 
     private changeColorContexts(colorContexts: ColorContext[]) {
@@ -164,7 +162,7 @@ export class Viewer {
             if (dataChange === DataLayoutChange.refine) {
                 const oldColorContext = this.colorContexts[this.currentColorContext];
                 innerPromise = new Promise<void>(innerResolve => {
-                    this.renderNewLayout({
+                    this.renderNewLayout({}, {
                         preStage: (stage, deckProps) => {
                             finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                             this.overrideAxisLabels(stage);
@@ -180,7 +178,7 @@ export class Viewer {
                     });
                 });
             } else {
-                innerPromise = this.renderNewLayout({
+                innerPromise = this.renderNewLayout({}, {
                     preStage: (stage, deckProps) => {
                         finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                         this.overrideAxisLabels(stage);
@@ -206,7 +204,7 @@ export class Viewer {
                 //save cube colors
                 const oldColorContext = this.colorContexts[this.currentColorContext];
                 let colorMap: ColorMap;
-                await this.renderNewLayout({
+                await this.renderNewLayout({}, {
                     preStage: (stage: VegaDeckGl.types.Stage, deckProps: VegaDeckGl.DeckProps) => {
                         //save off the spec colors
                         colorMap = colorMapFromCubes(stage.cubeData);
@@ -242,7 +240,7 @@ export class Viewer {
                     legendElement: null
                 };
                 this.changeColorContexts([colorContext]);
-                await this.renderNewLayout({
+                await this.renderNewLayout({}, {
                     onPresent: () => {
                         populateColorContext(colorContext, this.presenter);
                     }
@@ -277,14 +275,13 @@ export class Viewer {
         return specColumns;
     }
 
-    private async renderNewLayout(presenterConfig?: VegaDeckGl.types.PresenterConfig, view?: View) {
+    private async renderNewLayout(signalValues: SignalValues, presenterConfig?: VegaDeckGl.types.PresenterConfig, view?: View) {
         const currData = this._dataScope.currentData();
         const context: SpecContext = { specColumns: this.getSpecColumnsWithFilteredStats(), insight: this.insight, specViewOptions: this.options };
         const specResult = build(context, currData);
         if (!specResult.errors) {
             const uiValues = extractSignalValuesFromView(this.vegaViewGl, this.vegaSpec);
-            this._signalValues = { ...this._signalValues, ...uiValues, ...this.insight.signalValues };
-            applySignalValues(this._signalValues, specResult.vegaSpec);
+            applySignalValues({ ...uiValues, ...signalValues }, specResult.vegaSpec);
             this.vegaSpec = specResult.vegaSpec;
             this.options.onVegaSpec && this.options.onVegaSpec(this.vegaSpec);
             this.specCapabilities = specResult.specCapabilities;
@@ -468,8 +465,6 @@ export class Viewer {
             this._tooltip = null;
         }
         if (this._dataScope.setData(data, options.columns)) {
-            //data is different, reset the signal value cache
-            this._signalValues = {};
             //apply transform to the data
             this.transformData(data, insight.transform);
         }
@@ -484,6 +479,7 @@ export class Viewer {
             legendElement: null
         };
         const specResult = await this.renderNewLayout(
+            insight.signalValues,
             {
                 preStage: (stage: VegaDeckGl.types.Stage, deckProps: VegaDeckGl.DeckProps) => {
                     if (this._shouldSaveColorContext()) {

@@ -4,11 +4,9 @@ import { CommandBarButtonStyles } from './CommandBarButton.styles';
 import { Logo } from './logo';
 import { base } from '../base';
 import { HistoryItem } from '../explorer';
-import { Snapshot } from '../interfaces';
 import { strings } from '../language';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';
-import * as React from 'react';
 
 import Search = SandDance.searchExpression.Search;
 
@@ -25,7 +23,7 @@ export interface Props {
     selectionState: SandDance.types.SelectionState;
     selectionSearch: Search;
     view: SandDance.types.View;
-    snapshots: Snapshot[];
+    snapshots: SandDance.types.Snapshot[];
     onSnapshotClick: () => void;
     onSnapshotNextClick: () => void;
     onSnapshotPreviousClick: () => void;
@@ -134,7 +132,7 @@ export function Topbar(props: Props) {
         {
             key: 'view',
             iconProps: {
-                iconName: props.view === '2d' ? 'Product' : 'Page'
+                iconName: props.view === '2d' ? 'CubeShape' : 'Page'
             },
             title: props.view === '2d' ? strings.labelViewType3d : strings.labelViewType2d,
             onClick: props.onViewClick,

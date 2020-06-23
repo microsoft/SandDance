@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as React from 'react';
 import { Button } from './button';
-import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
-import { format } from 'd3-format';
+import { base } from '../base';
 import { strings } from '../language';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { util } from '@msrvida/sanddance-react';
+import { format } from 'd3-format';
 
 export enum DataScopeId {
     AllData, SelectedData, FilteredData

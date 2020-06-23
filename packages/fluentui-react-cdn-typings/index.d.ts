@@ -27,29 +27,29 @@ import { Toggle } from '@fluentui/react/lib/Toggle';
 export { FluentUITypes };
 
 export interface FluentUIComponents {
-  ActionButton: FluentUITypes.IReactCast<FluentUITypes.IButtonProps>;
+  ActionButton: typeof ActionButton;
   ChoiceGroup: typeof ChoiceGroup;
-  ComboBox: FluentUITypes.IReactCast<FluentUITypes.IComboBoxProps>;
+  ComboBox: typeof ComboBox;
   CommandBar: typeof CommandBar;
   ContextualMenuItemType: typeof ContextualMenuItemType;
   Customizer: typeof Customizer;
-  DefaultButton: FluentUITypes.IReactCast<FluentUITypes.IButtonProps>;
+  DefaultButton: typeof DefaultButton;
   Dialog: typeof Dialog;
-  DialogFooter: FluentUITypes.IReactCast<{}>;
+  DialogFooter: typeof DialogFooter;
   DialogType: typeof DialogType;
   Dropdown: typeof Dropdown;
   DropdownMenuItemType: typeof DropdownMenuItemType;
   Icon: typeof Icon;
-  IconButton: FluentUITypes.IReactCast<FluentUITypes.IButtonProps>;
+  IconButton: typeof IconButton;
   getFocusStyle: typeof getFocusStyle;
   getTheme: typeof getTheme;
   Label: typeof Label;
   loadTheme: typeof loadTheme;
   Modal: typeof Modal;
-  PrimaryButton: FluentUITypes.IReactCast<FluentUITypes.IButtonProps>;
+  PrimaryButton: typeof PrimaryButton;
   Slider: typeof Slider;
   Spinner: typeof Spinner;
   SpinnerSize: typeof SpinnerSize;
   TextField: typeof TextField;
-  Toggle: FluentUITypes.IReactCast<FluentUITypes.IToggleProps>;
+  Toggle: typeof Toggle;
 }

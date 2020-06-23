@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { FieldNames } from './constants';
+import { safeFieldName } from './expr';
 import { Data, OrdinalScale, SortOrder } from 'vega-typings';
 
 export interface OrdinalResult {
@@ -9,6 +10,7 @@ export interface OrdinalResult {
 }
 
 export function createOrdinals(source: string, prefix: string, binFields: string[], sortOrder: SortOrder): OrdinalResult {
+    const _binFields = binFields.map(safeFieldName);
     const dataName = `${prefix}_bin_order`;
     const data: Data = {
         name: dataName,
@@ -16,13 +18,13 @@ export function createOrdinals(source: string, prefix: string, binFields: string
         transform: [
             {
                 type: 'aggregate',
-                groupby: binFields
+                groupby: _binFields
             },
             {
                 type: 'collect',
                 sort: {
-                    field: binFields,
-                    order: binFields.map(f => sortOrder)
+                    field: _binFields,
+                    order: _binFields.map(f => sortOrder)
                 }
             },
             {
@@ -44,7 +46,7 @@ export function ordinalScale(dataName: string, scaleName: string, binFields: str
         name: scaleName,
         domain: {
             data: dataName,
-            field: binFields[0]
+            field: safeFieldName(binFields[0])
         },
         range: {
             data: dataName,

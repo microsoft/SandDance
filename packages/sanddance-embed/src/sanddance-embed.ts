@@ -15,7 +15,7 @@ namespace SandDanceEmbed {
         insight: Partial<SandDance.specs.Insight>;
     }
 
-    export let sandDanceExplorer: SandDanceExplorer.Explorer;
+    export let sandDanceExplorer: SandDanceExplorer.Explorer_Class;
     export const requests: MessageRequestWithSource[] = [];
 
     export function load(data: object[] | SandDanceExplorer.DataFile, insight?: Partial<SandDance.specs.Insight>) {
@@ -31,7 +31,7 @@ namespace SandDanceEmbed {
             };
 
             const create = () => {
-                SandDanceExplorer.use(FluentUIReact, vega, deck, deck, luma);
+                SandDanceExplorer.use(FluentUIReact, React, ReactDOM, vega, deck, deck, luma);
                 const explorerProps: SandDanceExplorer.Props = {
                     logoClickUrl: 'https://microsoft.github.io/SandDance/',
                     mounted: explorer => {

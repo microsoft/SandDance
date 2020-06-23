@@ -16,7 +16,7 @@
     "@babel/runtime-corejs2": "^7.5.5",
     "@deck.gl/core": "^8.1.5",
     "@deck.gl/layers": "^8.1.5",
-    "@msrvida/sanddance-explorer": "3.0.0-beta.2",
+    "@msrvida/sanddance-explorer": "^3",
     "core-js": "3.2.1",
     "@luma.gl/core": "^8.1.2",
     "@fluentui/react": "^7.111.0",
@@ -30,7 +30,8 @@
   },
   "devDependencies": {
     "@msrvida/fluentui-react-cdn-typings": "^1",
-    "@types/react-dom": "^16.9.7",
+    "@types/react": "16.9.34",
+    "@types/react-dom": "16.9.7",
     "powerbi-visuals-tools": "^3.1.5",
     "ts-loader": "6.0.4",
     "tslint": "^5.20.1"

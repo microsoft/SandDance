@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { ColorValueRef, NumericValueRef, ProductionRule } from 'vega-typings';
 import { SignalNames } from './constants';
+import { safeFieldName } from './expr';
 import { SpecContext } from './types';
+import { ColorValueRef, NumericValueRef, ProductionRule } from 'vega-typings';
 
 export function fill(context: SpecContext, colorFieldName: string, scale: string): ProductionRule<ColorValueRef> {
     const { specColumns, insight, specViewOptions } = context;
@@ -10,12 +11,12 @@ export function fill(context: SpecContext, colorFieldName: string, scale: string
     return colorColumn ?
         colorColumn.isColorData || insight.directColor ?
             {
-                field: colorColumn.name
+                field: safeFieldName(colorColumn.name)
             }
             :
             {
                 scale,
-                field: colorColumn.quantitative ? colorColumn.name : colorFieldName
+                field: colorColumn.quantitative ? safeFieldName(colorColumn.name) : colorFieldName
             }
         :
         {

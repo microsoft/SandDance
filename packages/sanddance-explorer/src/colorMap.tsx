@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import { base } from './base';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { IconButton } from './controls/iconButton';
 import { SandDance } from '@msrvida/sanddance-react';
@@ -23,7 +22,7 @@ function ensureToolbar(panel: HTMLElement) {
 export function applyColorButtons(presenter: SandDance.VegaDeckGl.Presenter, showLegend: boolean, props: Props) {
     const panel = presenter.getElement(SandDance.VegaDeckGl.PresenterElement.panel);
     const div = ensureToolbar(panel);
-    ReactDOM.render(ColorMap(props), div);
+    base.reactDOM.render(ColorMap(props), div);
 
     panel.style.display = showLegend ? '' : 'none';
 }

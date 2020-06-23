@@ -3,6 +3,7 @@
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { binnable, Binnable } from '../bin';
 import { FieldNames, SignalNames } from '../constants';
+import { safeFieldName } from '../expr';
 import { displayBin, serializeAsVegaExpression } from '../facetSearch';
 import { addFacetCellTitles } from '../facetTitle';
 import {
@@ -242,8 +243,8 @@ export class Wrap extends Layout {
                 {
                     type: 'lookup',
                     from: names.rowColumnDataName,
-                    key: bin.fields[0],
-                    fields: [bin.fields[0]],
+                    key: safeFieldName(bin.fields[0]),
+                    fields: [bin.fields[0]].map(safeFieldName),
                     values: [FieldNames.WrapRow, FieldNames.WrapCol]
                 }
             ]

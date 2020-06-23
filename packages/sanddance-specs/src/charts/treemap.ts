@@ -53,7 +53,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             roles: [
                 {
                     role: 'size',
-                    excludeCategoric: true
+                    excludeCategoric: true,
                 },
                 {
                     role: 'group',

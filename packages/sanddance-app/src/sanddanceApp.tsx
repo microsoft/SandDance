@@ -17,6 +17,7 @@ import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import {
     ColorSettings,
     Explorer,
+    Explorer_Class,
     getColorSettingsFromThemePalette,
     Options,
     SandDance,
@@ -88,7 +89,7 @@ export class SandDanceApp extends React.Component<Props, State> {
     private dataSourcePicker: DataSourcePicker;
     private postLoad: (dataSource: DataSource) => void;
 
-    public explorer: Explorer;
+    public explorer: Explorer_Class;
 
     constructor(props: Props) {
         super(props);
@@ -166,7 +167,8 @@ export class SandDanceApp extends React.Component<Props, State> {
                     };
                 } else {
                     this.load(snapshot.dataSource, snapshot.insight).then(() => {
-                        this.explorer.setState({ sideTabId: SideTabId.Snapshots });
+                        this.explorer.setState({ sideTabId: SideTabId.Snapshots, note: snapshot.description });
+                        this.explorer.scrollSnapshotIntoView(selectedSnapshotIndex);
                     }).catch(e => {
                         this.loadError(snapshot.dataSource);
                     });
@@ -329,7 +331,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                                         href={url}
                                         title={strings.labelLinkDescription}
                                         aria-label={strings.labelLinkDescription}
-                                    >{strings.labelLink}</a>
+                                    >{strings.labelShare}</a>
                                 );
                             }
                             return [{ element }];

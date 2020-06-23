@@ -1,13 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as React from 'react';
 import * as SandDanceReact from '@msrvida/sanddance-react';
 import { base } from '../base';
 import { capabilities } from '../canvas';
 import { DataFile, SettingsGroup } from '../interfaces';
 import { Dialog } from '../controls/dialog';
 import { Dropdown } from '../controls/dropdown';
-import { Explorer } from '../explorer';
+import { Explorer_Class } from '../explorer';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { Group } from '../controls/group';
 import {
@@ -33,7 +32,7 @@ type ScalesWithRange = QuantileScale | QuantizeScale | OrdinalScale | LinearScal
 
 export interface Props {
     additionalSettings: SettingsGroup[];
-    explorer: Explorer;
+    explorer: Explorer_Class;
     dataFile: DataFile;
     scheme: string;
     hideLegend: boolean;
@@ -156,216 +155,224 @@ function vegaSignalGroups(vegaSignals: VegaSignal[]) {
     return signalGroupMap;
 }
 
-export class Settings extends React.Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
-        this.state = initState(props);
-    }
+function _Settings(props: Props) {
+    class __Settings extends base.react.Component<Props, State> {
+        constructor(props: Props) {
+            super(props);
+            this.state = initState(props);
+        }
 
-    render() {
-        const { props, state } = this;
-        if (!props.explorer.viewer || !props.explorer.viewer.vegaSpec) return null;
-        const options: FluentUITypes.IDropdownOption[] = [
-            {
-                key: DataRefType.none,
-                text: strings.selectVegaSpecDataNone,
-                selected: this.state.dataRefType === DataRefType.none,
-                data: DataRefType.none
-            },
-            !props.dataFile.rawText && {
-                key: DataRefType.url,
-                text: strings.selectVegaSpecDataUrl,
-                selected: this.state.dataRefType === DataRefType.url,
-                data: DataRefType.url
-            },
-            {
-                key: DataRefType.inline,
-                text: strings.selectVegaSpecDataInline,
-                selected: this.state.dataRefType === DataRefType.inline,
-                data: DataRefType.inline
-            }
-        ].filter(Boolean);
-        const signalGroupMap = vegaSignalGroups(props.explorer.viewer.vegaSpec.signals);
-        return (
-            <div>
-                {strings.signalGroups.map((sg: { prefix: string, label: string }) => {
-                    const vegaSignals = signalGroupMap[sg.prefix];
-                    if (vegaSignals) {
-                        const filteredVegaSignals = vegaSignals.filter(filterSignals);
-                        if (filteredVegaSignals.length > 0) {
-                            return (
-                                <Group
-                                    key={sg.prefix}
-                                    label={sg.label}
-                                >
-                                    {filteredVegaSignals.map((signal, i) => (
-                                        <Signal
-                                            key={i}
-                                            signal={signal}
-                                            explorer={props.explorer}
-                                            newViewStateTarget={false}
-                                        />
-                                    ))}
-                                </Group>
-                            );
+        render() {
+            const { props, state } = this;
+            if (!props.explorer.viewer || !props.explorer.viewer.vegaSpec) return null;
+            const options: FluentUITypes.IDropdownOption[] = [
+                {
+                    key: DataRefType.none,
+                    text: strings.selectVegaSpecDataNone,
+                    selected: this.state.dataRefType === DataRefType.none,
+                    data: DataRefType.none
+                },
+                !props.dataFile.rawText && {
+                    key: DataRefType.url,
+                    text: strings.selectVegaSpecDataUrl,
+                    selected: this.state.dataRefType === DataRefType.url,
+                    data: DataRefType.url
+                },
+                {
+                    key: DataRefType.inline,
+                    text: strings.selectVegaSpecDataInline,
+                    selected: this.state.dataRefType === DataRefType.inline,
+                    data: DataRefType.inline
+                }
+            ].filter(Boolean);
+            const signalGroupMap = vegaSignalGroups(props.explorer.viewer.vegaSpec.signals);
+            return (
+                <div>
+                    {strings.signalGroups.map((sg: { prefix: string, label: string }) => {
+                        const vegaSignals = signalGroupMap[sg.prefix];
+                        if (vegaSignals) {
+                            const filteredVegaSignals = vegaSignals.filter(filterSignals);
+                            if (filteredVegaSignals.length > 0) {
+                                return (
+                                    <Group
+                                        key={sg.prefix}
+                                        label={sg.label}
+                                    >
+                                        {filteredVegaSignals.map((signal, i) => (
+                                            <Signal
+                                                key={i}
+                                                signal={signal}
+                                                explorer={props.explorer}
+                                                newViewStateTarget={false}
+                                            />
+                                        ))}
+                                    </Group>
+                                );
+                            }
                         }
-                    }
-                })}
-                <Group label={strings.labelChartCanvas}>
-                    <base.fluentUI.Toggle
-                        label={strings.labelShowAxes}
-                        defaultChecked={!props.hideAxes}
-                        onChange={(e, checked?) => props.onToggleAxes(!checked)}
-                    />
-                    <base.fluentUI.Toggle
-                        label={strings.labelShowLegend}
-                        defaultChecked={!props.hideLegend}
-                        onChange={(e, checked?) => props.onToggleLegend(!checked)}
-                    />
-                </Group>
-                <Group label={strings.labelTools}>
-                    <base.fluentUI.DefaultButton
-                        text={strings.buttonShowVegaSpec}
-                        onClick={() => this.setState({
-                            showVegaDialog: true,
-                            spec: serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, this.state.dataRefType, props.explorer.viewer.getInsight().transform, this.props.scheme)
-                        })}
-                    />
-                </Group>
-                <Group label={strings.labelSnapshots}>
-                    <base.fluentUI.Slider
-                        label={strings.labelSnapshotSettingThumbnailWidth}
-                        onChange={value => {
-                            this.props.explorer.snapshotThumbWidth = value;
-                        }}
-                        min={100}
-                        max={800}
-                        defaultValue={this.props.explorer.snapshotThumbWidth}
-                    />
-                </Group>
-                <Group label={strings.labelTransitionDurations}>
-                    <base.fluentUI.Slider
-                        label={strings.labelTransitionColor}
-                        onChange={value => {
-                            this.props.explorer.viewerOptions.transitionDurations.color = value;
-                        }}
-                        min={0}
-                        max={10000}
-                        defaultValue={this.props.explorer.viewerOptions.transitionDurations.color}
-                    />
-                    <base.fluentUI.Slider
-                        label={strings.labelTransitionPosition}
-                        onChange={value => {
-                            this.props.explorer.viewerOptions.transitionDurations.position = value;
-                        }}
-                        min={0}
-                        max={10000}
-                        defaultValue={this.props.explorer.viewerOptions.transitionDurations.position}
-                    />
-                    <base.fluentUI.Slider
-                        label={strings.labelTransitionSize}
-                        onChange={value => {
-                            this.props.explorer.viewerOptions.transitionDurations.size = value;
-                        }}
-                        min={0}
-                        max={10000}
-                        defaultValue={this.props.explorer.viewerOptions.transitionDurations.size}
-                    />
-                    <base.fluentUI.Slider
-                        label={strings.labelTransitionCamera}
-                        onChange={value => {
-                            this.props.explorer.viewerOptions.transitionDurations.view = value;
-                        }}
-                        min={0}
-                        max={10000}
-                        defaultValue={this.props.explorer.viewerOptions.transitionDurations.view}
-                    />
-                </Group>
-                {props.additionalSettings && props.additionalSettings.map((g, i) => (
-                    <Group key={i} label={g.groupLabel}>
-                        {g.children}
+                    })}
+                    <Group label={strings.labelChartCanvas}>
+                        <base.fluentUI.Toggle
+                            label={strings.labelShowAxes}
+                            defaultChecked={!props.hideAxes}
+                            onChange={(e, checked?) => props.onToggleAxes(!checked)}
+                        />
+                        <base.fluentUI.Toggle
+                            label={strings.labelShowLegend}
+                            defaultChecked={!props.hideLegend}
+                            onChange={(e, checked?) => props.onToggleLegend(!checked)}
+                        />
                     </Group>
-                ))}
-                <Group label={strings.labelSystem}>
-                    <base.fluentUI.DefaultButton
-                        text={strings.labelSystemInfo}
-                        onClick={() => this.setState({ showSystemDialog: true })}
-                    />
-                </Group>
-                <Dialog
-                    hidden={!state.showVegaDialog}
-                    onDismiss={() => this.setState(initState(this.props))}
-                    minWidth="80%"
-                    title={strings.labelVegaSpec}
-                    buttons={[
-                        (
-                            <base.fluentUI.PrimaryButton
-                                key="copy"
-                                iconProps={{ iconName: 'Copy' }}
-                                text={strings.buttonCopyToClipboard}
-                                onClick={() => {
-                                    var pre = document.getElementById('sanddance-vega-spec') as HTMLPreElement;
-                                    var range = document.createRange();
-                                    range.selectNode(pre);
-                                    const selection = window.getSelection();
-                                    selection.removeAllRanges();
-                                    selection.addRange(range);
-                                    document.execCommand('copy');
-                                }}
-                            />
-                        ),
-                        (
-                            <base.fluentUI.DefaultButton
-                                key="edit"
-                                iconProps={{ iconName: 'OpenInNewWindow' }}
-                                text={strings.buttonLaunchVegaEditor}
-                                onClick={() => {
-                                    window.open('https://vega.github.io/editor/', '_blank');
-                                }}
-                            />
-                        )
-                    ]}
-                >
-                    <Dropdown
-                        label={strings.labelVegaSpecData}
-                        options={options}
-                        onChange={(e, o) => this.setState({
-                            dataRefType: o.data,
-                            spec: serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, o.data, props.explorer.viewer.getInsight().transform, this.props.scheme)
-                        })}
-                    />
-                    <pre id="sanddance-vega-spec">
-                        {JSON.stringify(this.state.spec, null, 2)}
-                    </pre>
-                    <div>
-                        {strings.labelVegaSpecNotes}
-                    </div>
-                </Dialog>
-                <Dialog
-                    hidden={!state.showSystemDialog}
-                    onDismiss={() => this.setState(initState(this.props))}
-                    title={strings.labelSystemInfo}
-                >
-                    <ul>
-                        {this.props.children}
-                        <li>
-                            SandDanceExplorer version: {version}
-                        </li>
-                        <li>
-                            SandDanceReact version: {SandDanceReact.version}
-                        </li>
-                        <li>
-                            SandDance version: {SandDance.version}
-                        </li>
-                        <li>
-                            WebGL enabled: {capabilities.webgl ? strings.labelYes : strings.labelNo}
-                        </li>
-                        <li>
-                            WebGL2 enabled: {capabilities.webgl2 ? strings.labelYes : strings.labelNo}
-                        </li>
-                    </ul>
-                </Dialog>
-            </div>
-        );
+                    <Group label={strings.labelTools}>
+                        <base.fluentUI.DefaultButton
+                            text={strings.buttonShowVegaSpec}
+                            onClick={() => this.setState({
+                                showVegaDialog: true,
+                                spec: serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, this.state.dataRefType, props.explorer.viewer.getInsight().transform, this.props.scheme)
+                            })}
+                        />
+                    </Group>
+                    <Group label={strings.labelSnapshots}>
+                        <base.fluentUI.Slider
+                            label={strings.labelSnapshotSettingThumbnailWidth}
+                            onChange={value => {
+                                this.props.explorer.snapshotThumbWidth = value;
+                            }}
+                            min={100}
+                            max={800}
+                            defaultValue={this.props.explorer.snapshotThumbWidth}
+                        />
+                    </Group>
+                    <Group label={strings.labelTransitionDurations}>
+                        <base.fluentUI.Slider
+                            label={strings.labelTransitionColor}
+                            onChange={value => {
+                                this.props.explorer.viewerOptions.transitionDurations.color = value;
+                            }}
+                            min={0}
+                            max={10000}
+                            defaultValue={this.props.explorer.viewerOptions.transitionDurations.color}
+                        />
+                        <base.fluentUI.Slider
+                            label={strings.labelTransitionPosition}
+                            onChange={value => {
+                                this.props.explorer.viewerOptions.transitionDurations.position = value;
+                            }}
+                            min={0}
+                            max={10000}
+                            defaultValue={this.props.explorer.viewerOptions.transitionDurations.position}
+                        />
+                        <base.fluentUI.Slider
+                            label={strings.labelTransitionSize}
+                            onChange={value => {
+                                this.props.explorer.viewerOptions.transitionDurations.size = value;
+                            }}
+                            min={0}
+                            max={10000}
+                            defaultValue={this.props.explorer.viewerOptions.transitionDurations.size}
+                        />
+                        <base.fluentUI.Slider
+                            label={strings.labelTransitionCamera}
+                            onChange={value => {
+                                this.props.explorer.viewerOptions.transitionDurations.view = value;
+                            }}
+                            min={0}
+                            max={10000}
+                            defaultValue={this.props.explorer.viewerOptions.transitionDurations.view}
+                        />
+                    </Group>
+                    {props.additionalSettings && props.additionalSettings.map((g, i) => (
+                        <Group key={i} label={g.groupLabel}>
+                            {g.children}
+                        </Group>
+                    ))}
+                    <Group label={strings.labelSystem}>
+                        <base.fluentUI.DefaultButton
+                            text={strings.labelSystemInfo}
+                            onClick={() => this.setState({ showSystemDialog: true })}
+                        />
+                    </Group>
+                    <Dialog
+                        hidden={!state.showVegaDialog}
+                        onDismiss={() => this.setState(initState(this.props))}
+                        minWidth="80%"
+                        title={strings.labelVegaSpec}
+                        buttons={[
+                            (
+                                <base.fluentUI.PrimaryButton
+                                    key="copy"
+                                    iconProps={{ iconName: 'Copy' }}
+                                    text={strings.buttonCopyToClipboard}
+                                    onClick={() => {
+                                        var pre = document.getElementById('sanddance-vega-spec') as HTMLPreElement;
+                                        var range = document.createRange();
+                                        range.selectNode(pre);
+                                        const selection = window.getSelection();
+                                        selection.removeAllRanges();
+                                        selection.addRange(range);
+                                        document.execCommand('copy');
+                                    }}
+                                />
+                            ),
+                            (
+                                <base.fluentUI.DefaultButton
+                                    key="edit"
+                                    iconProps={{ iconName: 'OpenInNewWindow' }}
+                                    text={strings.buttonLaunchVegaEditor}
+                                    onClick={() => {
+                                        window.open('https://vega.github.io/editor/', '_blank');
+                                    }}
+                                />
+                            )
+                        ]}
+                    >
+                        <Dropdown
+                            label={strings.labelVegaSpecData}
+                            options={options}
+                            onChange={(e, o) => this.setState({
+                                dataRefType: o.data,
+                                spec: serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, o.data, props.explorer.viewer.getInsight().transform, this.props.scheme)
+                            })}
+                        />
+                        <pre id="sanddance-vega-spec">
+                            {JSON.stringify(this.state.spec, null, 2)}
+                        </pre>
+                        <div>
+                            {strings.labelVegaSpecNotes}
+                        </div>
+                    </Dialog>
+                    <Dialog
+                        hidden={!state.showSystemDialog}
+                        onDismiss={() => this.setState(initState(this.props))}
+                        title={strings.labelSystemInfo}
+                    >
+                        <ul>
+                            {this.props.children}
+                            <li>
+                                SandDanceExplorer version: {version}
+                            </li>
+                            <li>
+                                SandDanceReact version: {SandDanceReact.version}
+                            </li>
+                            <li>
+                                SandDance version: {SandDance.version}
+                            </li>
+                            <li>
+                                WebGL enabled: {capabilities.webgl ? strings.labelYes : strings.labelNo}
+                            </li>
+                            <li>
+                                WebGL2 enabled: {capabilities.webgl2 ? strings.labelYes : strings.labelNo}
+                            </li>
+                        </ul>
+                    </Dialog>
+                </div>
+            );
+        }
     }
+    return new __Settings(props);
+}
+
+export const Settings: typeof Settings_Class = _Settings as any;
+
+export declare class Settings_Class extends base.react.Component<Props, State> {
 }

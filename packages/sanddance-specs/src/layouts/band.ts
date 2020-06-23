@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { binnable, Binnable } from '../bin';
+import { safeFieldName } from '../expr';
 import {
     DiscreteColumn,
     EncodingRule,
@@ -70,7 +71,7 @@ export class Band extends Layout {
             transform: [
                 {
                     type: 'aggregate',
-                    groupby: this.getGrouping(),
+                    groupby: this.getGrouping().map(safeFieldName),
                     ops: ['count']
                 }
             ]
@@ -174,7 +175,7 @@ export class Band extends Layout {
     private getScale(bin: Binnable, horizontal: boolean) {
         const { names } = this;
         const { parentScope } = this.props;
-        const binField = bin.fields[0];
+        const binField = safeFieldName(bin.fields[0]);
 
         let scale: BandScale;
         if (horizontal) {

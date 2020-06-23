@@ -1,7 +1,7 @@
 {
   "name": "@msrvida/sanddance-app",
   "private": true,
-  "version": "3.0.0-beta.2",
+  "version": "3.0.0",
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "deploy": "npm run bundle && node ./scripts/deploy.js",
@@ -13,8 +13,8 @@
     "start": "parcel serve ./src/index.html --port 8085 --open --no-hmr --global SandDanceApp"
   },
   "devDependencies": {
-    "@types/react": "^16.9.34",
-    "@types/react-dom": "^16.9.7",
+    "@types/react": "16.9.34",
+    "@types/react-dom": "16.9.7",
     "@msrvida/fluentui-react-cdn-typings": "^1",
     "vega-typings": "^0.16.0"
   },
@@ -27,7 +27,7 @@
     "@deck.gl/layers": "^8.1.5",
     "@luma.gl/core": "^8.1.2",
     "@fluentui/react": "^7.111.0",
-    "@msrvida/sanddance-explorer": "3.0.0-beta.2",
+    "@msrvida/sanddance-explorer": "^3",
     "vega": "^5.11"
   }
 }

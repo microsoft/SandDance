@@ -2,12 +2,25 @@
 // Licensed under the MIT license.
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { SignalNames } from '../constants';
+import { safeFieldName } from '../expr';
 import { InnerScope, LayoutOffsets } from '../interfaces';
-import { addData, addMarks, addSignals, addTransforms, addOffsets, getGroupBy } from '../scope';
+import {
+    addData,
+    addMarks,
+    addOffsets,
+    addSignals,
+    addTransforms,
+    getGroupBy
+} from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { addZScale } from '../zBase';
 import { Column } from '@msrvida/chart-types';
-import { RectMark, Scope, GroupMark, Data } from 'vega-typings';
+import {
+    Data,
+    GroupMark,
+    RectMark,
+    Scope
+} from 'vega-typings';
 
 export interface TreemapProps extends LayoutProps {
     corner: 'top-left' | 'bottom-left';
@@ -134,7 +147,7 @@ export class Treemap extends Layout {
                     facet: {
                         name: names.dataFacet,
                         data: names.dataHeightWidth,
-                        groupby: getGroupBy(groupings)
+                        groupby: getGroupBy(groupings).map(safeFieldName)
                     }
                 },
                 data: [
@@ -197,7 +210,7 @@ export class Treemap extends Layout {
                             },
                             {
                                 scale: names.zScale,
-                                field: z.name
+                                field: safeFieldName(z.name)
                             }
                         ]
                     }
@@ -222,7 +235,7 @@ export class Treemap extends Layout {
             },
             {
                 type: 'treemap',
-                field: size.name,
+                field: safeFieldName(size.name),
                 sort: { field: 'value', order: 'descending' },
                 round: true,
                 method: { signal: SignalNames.TreeMapMethod },

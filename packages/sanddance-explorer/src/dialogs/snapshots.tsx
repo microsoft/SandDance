@@ -1,16 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as React from 'react';
 import { base } from '../base';
 import { Dialog } from '../controls/dialog';
-import { Explorer } from '../explorer';
+import { Explorer_Class } from '../explorer';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { Group } from '../controls/group';
 import { IconButton } from '../controls/iconButton';
-import { util } from '@msrvida/sanddance-react';
-import { Snapshot, SnapshotAction } from '../interfaces';
+import { SandDance, util } from '@msrvida/sanddance-react';
+import { SnapshotAction } from '../interfaces';
 import { strings } from '../language';
-import { SnapshotEditor } from './snapshotEditor';
+import { SnapshotEditor_Class } from './snapshotEditor';
+
+import Snapshot = SandDance.types.Snapshot;
 
 export interface SnapshotListProps {
     getTopActions?: (snapshots: Snapshot[]) => FluentUITypes.IContextualMenuItem[];
@@ -19,8 +20,8 @@ export interface SnapshotListProps {
 }
 
 export interface Props extends SnapshotListProps {
-    explorer: Explorer;
-    editor: SnapshotEditor;
+    explorer: Explorer_Class;
+    editor: SnapshotEditor_Class;
     snapshots: Snapshot[];
     selectedSnapshotIndex: number;
     onClearSnapshots: () => void;
@@ -40,143 +41,150 @@ export interface Confirmation {
 export interface State extends Snapshot {
     confirmation: Confirmation;
 }
-
-export class Snapshots extends React.Component<Props, State>{
-    constructor(props: Props) {
-        super(props);
-        this.state = {
-            confirmation: null,
-            title: '',
-            description: '',
-            image: null,
-            bgColor: null,
-            insight: null
-        };
-    }
-
-    render() {
-        const items: FluentUITypes.IContextualMenuItem[] = [
-            {
-                key: 'clear',
-                text: strings.buttonClearSnapshots,
-                onClick: () => this.setState({
-                    confirmation: {
-                        buttonText: strings.buttonClearSnapshots,
-                        handler: () => this.props.onClearSnapshots()
-                    }
-                }),
-                disabled: this.props.snapshots.length === 0
-            }
-        ];
-        if (this.props.getTopActions) {
-            items.push.apply(items, this.props.getTopActions(this.props.snapshots));
+function _Snapshots(props: Props) {
+    class __Snapshots extends base.react.Component<Props, State>{
+        constructor(props: Props) {
+            super(props);
+            this.state = {
+                confirmation: null,
+                title: '',
+                description: '',
+                image: null,
+                bgColor: null,
+                insight: null
+            };
         }
-        return (
-            <Group className="sanddance-snapshots" label={strings.labelSnapshots}>
-                <div>
-                    <base.fluentUI.PrimaryButton
-                        text={strings.buttonCreateSnapshot}
-                        onClick={e => this.props.editor.editSnapshot()}
-                        split
-                        menuProps={{
-                            items
-                        }}
-                    />
-                    {this.props.getChildren && this.props.getChildren(this.props.snapshots)}
-                    {this.state.confirmation && (
-                        <Dialog
-                            hidden={false}
-                            buttons={(
-                                <base.fluentUI.PrimaryButton
-                                    key={0}
-                                    onClick={e => {
-                                        this.setState({ confirmation: null });
-                                        this.state.confirmation.handler();
-                                    }}
-                                    iconProps={{iconName:'Delete'}}
-                                    text={this.state.confirmation.buttonText}
-                                />
-                            )}
-                            onDismiss={() => this.setState({ confirmation: null })}
-                        >
-                            {strings.labelConfirmation}
-                        </Dialog>
-                    )}
+
+        render() {
+            const items: FluentUITypes.IContextualMenuItem[] = [
+                {
+                    key: 'clear',
+                    text: strings.buttonClearSnapshots,
+                    onClick: () => this.setState({
+                        confirmation: {
+                            buttonText: strings.buttonClearSnapshots,
+                            handler: () => this.props.onClearSnapshots()
+                        }
+                    }),
+                    disabled: this.props.snapshots.length === 0
+                }
+            ];
+            if (this.props.getTopActions) {
+                items.push.apply(items, this.props.getTopActions(this.props.snapshots));
+            }
+            return (
+                <Group className="sanddance-snapshots" label={strings.labelSnapshots}>
                     <div>
-                        {this.props.snapshots.map((snapshot, i) => {
-                            const actions: SnapshotAction[] = this.props.getActions && this.props.getActions(snapshot, i) || [];
-                            actions.push(
-                                {
-                                    iconButtonProps: {
-                                        themePalette: this.props.themePalette,
-                                        title: strings.buttonEditSnapshot,
-                                        onClick: e => this.props.editor.editSnapshot(snapshot, i),
-                                        iconName: 'Edit'
-                                    }
-                                }
-                            );
-                            if (this.props.snapshots.length > 1) {
+                        <base.fluentUI.PrimaryButton
+                            text={strings.buttonCreateSnapshot}
+                            onClick={e => this.props.editor.editSnapshot()}
+                            split
+                            menuProps={{
+                                items
+                            }}
+                        />
+                        {this.props.getChildren && this.props.getChildren(this.props.snapshots)}
+                        {this.state.confirmation && (
+                            <Dialog
+                                hidden={false}
+                                buttons={(
+                                    <base.fluentUI.PrimaryButton
+                                        key={0}
+                                        onClick={e => {
+                                            this.setState({ confirmation: null });
+                                            this.state.confirmation.handler();
+                                        }}
+                                        iconProps={{ iconName: 'Delete' }}
+                                        text={this.state.confirmation.buttonText}
+                                    />
+                                )}
+                                onDismiss={() => this.setState({ confirmation: null })}
+                            >
+                                {strings.labelConfirmation}
+                            </Dialog>
+                        )}
+                        <div>
+                            {this.props.snapshots.map((snapshot, i) => {
+                                const actions: SnapshotAction[] = this.props.getActions && this.props.getActions(snapshot, i) || [];
                                 actions.push(
                                     {
                                         iconButtonProps: {
-                                            disabled: i === 0,
                                             themePalette: this.props.themePalette,
-                                            title: strings.buttonMoveUp,
-                                            onClick: e => this.props.onMoveUp(i),
-                                            iconName: 'SortUp'
-                                        }
-                                    },
-                                    {
-                                        iconButtonProps: {
-                                            disabled: i > this.props.snapshots.length - 2,
-                                            themePalette: this.props.themePalette,
-                                            title: strings.buttonMoveDown,
-                                            onClick: e => this.props.onMoveDown(i),
-                                            iconName: 'SortDown'
+                                            title: strings.buttonEditSnapshot,
+                                            onClick: e => this.props.editor.editSnapshot(snapshot, i),
+                                            iconName: 'Edit'
                                         }
                                     }
                                 );
-                            }
-                            actions.push(
-                                {
-                                    iconButtonProps: {
-                                        themePalette: this.props.themePalette,
-                                        title: strings.buttonDeleteSnapshot,
-                                        onClick: () =>
-                                            this.setState({
-                                                confirmation: {
-                                                    buttonText: strings.buttonDeleteSnapshot,
-                                                    handler: () => this.props.onRemoveSnapshot(i)
-                                                }
-                                            }),
-                                        iconName: 'Delete'
-                                    }
+                                if (this.props.snapshots.length > 1) {
+                                    actions.push(
+                                        {
+                                            iconButtonProps: {
+                                                disabled: i === 0,
+                                                themePalette: this.props.themePalette,
+                                                title: strings.buttonMoveUp,
+                                                onClick: e => this.props.onMoveUp(i),
+                                                iconName: 'SortUp'
+                                            }
+                                        },
+                                        {
+                                            iconButtonProps: {
+                                                disabled: i > this.props.snapshots.length - 2,
+                                                themePalette: this.props.themePalette,
+                                                title: strings.buttonMoveDown,
+                                                onClick: e => this.props.onMoveDown(i),
+                                                iconName: 'SortDown'
+                                            }
+                                        }
+                                    );
                                 }
-                            );
-                            return (
-                                <div key={i} className={util.classList('snapshot', i === this.props.selectedSnapshotIndex && 'selected')}>
-                                    <div
-                                        onClick={e => this.props.onSnapshotClick(snapshot, i)}
-                                    >
-                                        <div className='title'>
-                                            {snapshot.title}
+                                actions.push(
+                                    {
+                                        iconButtonProps: {
+                                            themePalette: this.props.themePalette,
+                                            title: strings.buttonDeleteSnapshot,
+                                            onClick: () =>
+                                                this.setState({
+                                                    confirmation: {
+                                                        buttonText: strings.buttonDeleteSnapshot,
+                                                        handler: () => this.props.onRemoveSnapshot(i)
+                                                    }
+                                                }),
+                                            iconName: 'Delete'
+                                        }
+                                    }
+                                );
+                                return (
+                                    <div key={i} className={util.classList('snapshot', i === this.props.selectedSnapshotIndex && 'selected')}>
+                                        <div
+                                            onClick={e => this.props.onSnapshotClick(snapshot, i)}
+                                        >
+                                            <div className='title'>
+                                                {snapshot.title}
+                                            </div>
+                                            <div className='thumbnail'>
+                                                <img title={snapshot.description} src={snapshot.image} style={{ backgroundColor: snapshot.bgColor }} />
+                                            </div>
                                         </div>
-                                        <div className='thumbnail'>
-                                            <img title={snapshot.description} src={snapshot.image} style={{ backgroundColor: snapshot.bgColor }} />
-                                        </div>
+                                        <Actions
+                                            actions={actions}
+                                            snapshot={snapshot}
+                                        />
                                     </div>
-                                    <Actions
-                                        actions={actions}
-                                        snapshot={snapshot}
-                                    />
-                                </div>
-                            );
-                        })}
+                                );
+                            })}
+                        </div>
                     </div>
-                </div>
-            </Group>
-        );
+                </Group>
+            );
+        }
     }
+    return new __Snapshots(props);
+}
+
+export const Snapshots: typeof Snapshots_Class = _Snapshots as any;
+
+export declare class Snapshots_Class extends base.react.Component<Props, State> {
 }
 
 interface ActionsProps {

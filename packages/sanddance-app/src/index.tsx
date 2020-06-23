@@ -11,7 +11,7 @@ import * as SandDanceExplorer from '@msrvida/sanddance-explorer';
 import {
     ColorSettings,
     DataFileType,
-    Explorer,
+    Explorer_Class,
     Prefs
 } from '@msrvida/sanddance-explorer';
 import * as React from 'react';
@@ -36,7 +36,7 @@ const dataSets = staticContent.filter(f => f.id).map<DataSource>(n => {
     };
 });
 
-export let explorer: Explorer;
+export let explorer: Explorer_Class;
 
 export { SandDanceExplorer };
 

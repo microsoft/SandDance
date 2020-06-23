@@ -4,16 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "install-peers": "npm install --no-save --no-package-lock @types/react@16.9.34",
     "eslint": "eslint -c ../../.eslintrc.json --fix ./*.d.ts",
-    "test": "tsc index.d.ts --lib es6 --skipLibCheck true"
+    "test": "tsc index.d.ts --lib es6 --skipLibCheck true",
+    "build:sanddance-core": "npm run install-peers"
   },
   "keywords": [],
   "author": "",
   "dependencies": {
     "@fluentui/react": "^7.111.0"
   },
-  "devDependencies": {
-    "@types/react": "^16.9.34"
+  "peerDependencies": {
+    "@types/react": "16.9.34"
   },
   "license": "MIT"
 }

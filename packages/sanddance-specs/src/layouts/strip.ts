@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { FieldNames } from '../constants';
+import { safeFieldName } from '../expr';
 import { InnerScope, LayoutOffsets, Orientation } from '../interfaces';
 import {
     addMarks,
@@ -64,7 +65,7 @@ export class Strip extends Layout {
             transform.push({
                 type: 'collect',
                 sort: {
-                    field: sort.name,
+                    field: safeFieldName(sort.name),
                     order: sortOrder
                 }
             });
@@ -88,12 +89,12 @@ export class Strip extends Layout {
 
         const stackTransform: StackTransform = {
             type: 'stack',
-            field: stackField,
+            field: safeFieldName(stackField),
             offset: 'normalize',
             as: [names.firstField, names.lastField]
         };
         if (groupings.length) {
-            stackTransform.groupby = getGroupBy(groupings);
+            stackTransform.groupby = getGroupBy(groupings).map(safeFieldName);
         }
         transform.push(stackTransform);
 
@@ -143,7 +144,7 @@ export class Strip extends Layout {
                             },
                             {
                                 scale: names.zScale,
-                                field: z.name
+                                field: safeFieldName(z.name)
                             }
                         ]
                     }

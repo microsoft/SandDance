@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance-react",
-  "version": "3.0.0-beta.2",
+  "version": "3.0.0",
   "description": "SandDance visualization canvas React component",
   "main": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
@@ -8,25 +8,26 @@
     "dist"
   ],
   "scripts": {
+    "install-peers": "npm install --no-save --no-package-lock @types/react@16.9.34 @types/react-dom@16.9.7",
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "docs": "npx -p @danmarshall/ts-docs-gen ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/sanddance-react/v3/",
     "postdocs": "node ./scripts/docs.js",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "build-css": "node-sass ./src/css -o ./dist/css",
-    "build:sanddance-core": "npm run build-typescript && node ../../scripts/version.js && npm run build-css",
+    "build:sanddance-core": "npm run install-peers && npm run build-typescript && node ../../scripts/version.js && npm run build-css",
     "watch-css": "node-sass ./src/css -o ./dist/css --watch"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
-  "devDependencies": {
-    "@types/react": "^16.9.34",
-    "@types/react-dom": "^16.9.7"
-  },
   "dependencies": {
-    "@msrvida/sanddance": "3.0.0-beta.2",
-    "just-compare": "^1.3.0",
+    "@msrvida/sanddance": "^3",
+    "just-compare": "^1.3.0"
+  },
+  "peerDependencies": {
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }

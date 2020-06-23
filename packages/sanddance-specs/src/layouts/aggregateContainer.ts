@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { FieldNames } from '../constants';
+import { safeFieldName } from '../expr';
 import {
     AxisScale,
     FieldOp,
@@ -55,7 +56,7 @@ export class AggregateContainer extends Layout {
     public getAggregateSumOp() {
         if (this.aggregation === 'sum') {
             const fieldOp: FieldOp = {
-                field: this.props.sumBy.name,
+                field: safeFieldName(this.props.sumBy.name),
                 op: 'sum',
                 as: FieldNames.Sum
             };
@@ -77,7 +78,7 @@ export class AggregateContainer extends Layout {
             },
             {
                 type: 'extent',
-                field: names.aggregateField,
+                field: safeFieldName(names.aggregateField),
                 signal: names.globalAggregateExtentSignal
             }
         );
@@ -198,11 +199,11 @@ export class AggregateContainer extends Layout {
     private getTransforms(aggregation: 'count' | 'sum', groupby: string[]) {
         const trans: JoinAggregateTransform = {
             type: 'joinaggregate',
-            groupby,
+            groupby: groupby.map(safeFieldName),
             ops: [aggregation]
         };
         if (aggregation === 'sum') {
-            trans.fields = [this.props.sumBy.name];
+            trans.fields = [this.props.sumBy.name].map(safeFieldName);
         }
         return trans;
     }

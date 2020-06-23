@@ -6,7 +6,6 @@ import { base } from '../base';
 import { strings } from '../language';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';
-import * as React from 'react';
 
 import SearchExpression = SandDance.searchExpression.SearchExpression;
 import SearchExpressionClause = SandDance.searchExpression.SearchExpressionClause;
