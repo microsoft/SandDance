@@ -10,7 +10,7 @@
   "scripts": {
     "install-peers": "npm install --no-save --no-package-lock @types/react@16.9.34 @types/react-dom@16.9.7",
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "docs": "npx -p @danmarshall/ts-docs-gen ts-docs-gen --entryFile src/index.tsx -o ../../docs/docs/sanddance-explorer/v3/",
+    "docs": "npx -p @danmarshall/ts-docs-gen ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/sanddance-explorer/v3/",
     "postdocs": "node ./scripts/docs.js",
     "build-typescript": "tsc -p .",
     "watch-typescript": "tsc -p . -w",
