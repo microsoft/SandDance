@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { SandDanceReact } from './viewer';
 import * as SandDance from '@msrvida/sanddance';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -36,4 +37,7 @@ export function use(
     SandDance.VegaDeckGl.use(vega, deck, layers, luma);
     base.react = react;
     base.reactDOM = reactDOM;
+
+    //inform React that we are using a dynamic base class
+    SandDanceReact.prototype = react.Component.prototype as any;
 }
