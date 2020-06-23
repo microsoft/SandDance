@@ -22,24 +22,20 @@ function addNullable(insight: specs.Insight, signalValues: specs.SignalValues) {
     return withNulls;
 }
 
+export function compareProps(viewer: Viewer, insight: specs.Insight) {
+    const currentInsight = viewer.getInsight();
+    const a = addNullable(currentInsight, { ...viewer.insight.signalValues, ...currentInsight.signalValues });
+    const b = addNullable(insight, { ...a.signalValues, ...insight.signalValues });
+    const compare = deepCompare(a, b);
+    return { a, b, compare };
+}
+
 function _SandDanceReact(props: Props) {
 
     class __SandDanceReact extends base.react.Component<Props, State> {
         public viewer: Viewer;
         private viewerDiv: React.ReactInstance;
         private lastData: object[];
-
-        private areLayoutPropsSame() {
-            const currentInsight = this.viewer.getInsight();
-            const a = addNullable(currentInsight, { ...this.viewer.insight.signalValues, ...currentInsight.signalValues });
-            const b = addNullable(this.props.insight, { ...a.signalValues, ...this.props.insight.signalValues });
-            const compare = deepCompare(a, b);
-            return compare && (this.props.data === this.lastData);
-        }
-
-        private needsLayout() {
-            return this.props.insight && this.props.data && !this.areLayoutPropsSame();
-        }
 
         private layout() {
             this.lastData = this.props.data;
@@ -58,9 +54,12 @@ function _SandDanceReact(props: Props) {
         }
 
         private view() {
-            const needsLayout = this.needsLayout();
-            if (needsLayout) {
-                this.layout();
+            if (this.props.insight && this.props.data) {
+                const c = compareProps(this.viewer, this.props.insight);
+                const sameDataRef = this.props.data === this.lastData;
+                if (!c.compare || !sameDataRef) {
+                    this.layout();
+                }
             }
         }
 
