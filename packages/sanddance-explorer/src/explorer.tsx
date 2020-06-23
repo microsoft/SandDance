@@ -402,7 +402,7 @@ function _Explorer(props: Props) {
                 selectedItemIndex,
                 search: createInputSearch(historicInsight.filter),
                 ...newState
-            }
+            };
             const changeInsight = () => {
                 this.getColorContext = null;
                 this.changeInsight(historicInsight, historyAction, state);
@@ -623,7 +623,7 @@ function _Explorer(props: Props) {
                 }
                 delete cleanState.rebaseFilter;
                 this.setState(cleanState);
-            }
+            };
 
             if (historyAction.omit) {
                 setCleanState(historicInsight as State);
@@ -659,7 +659,7 @@ function _Explorer(props: Props) {
         }
 
         public undo() {
-            const historyIndex = this.state.historyIndex - 1
+            const historyIndex = this.state.historyIndex - 1;
             if (historyIndex < 0) return;
             const newState = this.replay(historyIndex);
             this.rebaseFilter = true;
@@ -918,12 +918,12 @@ function _Explorer(props: Props) {
 
         private doFilter(search: SandDance.searchExpression.Search, historicFilterChange: string) {
             this.historicFilterChange = historicFilterChange;
-            this.viewer.filter(search)
+            this.viewer.filter(search);
         }
 
         private doUnfilter(historicFilterChange: string) {
             this.historicFilterChange = historicFilterChange;
-            this.viewer.reset()
+            this.viewer.reset();
         }
 
         private doSelect(search: SandDance.searchExpression.Search) {

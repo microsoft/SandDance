@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { SpecContext } from "./types";
+import { SpecContext } from './types';
 
 export function allowNoneForSize(specContext: SpecContext) {
     switch (specContext.insight.totalStyle) {

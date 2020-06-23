@@ -183,7 +183,7 @@ function _DataExportPicker(props: Props) {
         }
     }
 
-    return new __DataExportPicker(props);;
+    return new __DataExportPicker(props);
 }
 
 export const DataExportPicker: typeof DataExportPicker_Class = _DataExportPicker as any;
