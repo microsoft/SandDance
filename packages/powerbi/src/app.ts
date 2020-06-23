@@ -149,7 +149,7 @@ export class App extends React.Component<Props, State> {
             viewerOptions: this.viewerOptions,
             initialView: '2d',
             mounted: explorer => {
-                //explorer.snapshotThumbWidth = 240;
+                // explorer.snapshotThumbWidth = 240;
                 this.explorer = explorer;
                 this.props.mounted(this);
             },

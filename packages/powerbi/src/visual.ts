@@ -156,7 +156,7 @@ export class Visual implements IVisual {
                 tooltipExclusionsJSON: JSON.stringify(tooltipExclusions)
             };
             const properties = config as any;
-            //console.log(`persist ${options.reason}`, config, this.persistAction);
+            // console.log(`persist ${options.reason}`, config, this.persistAction);
             this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
         }
     }
@@ -271,7 +271,7 @@ export class Visual implements IVisual {
             columns => {
                 if (!columns) return;
 
-                //remove column which contains powerbi selectionId
+                // remove column which contains powerbi selectionId
                 for (let i = 0; i < columns.length; i++) {
                     if (SandDance.util.isInternalFieldName(columns[i].name)) {
                         columns.splice(i, 1);
