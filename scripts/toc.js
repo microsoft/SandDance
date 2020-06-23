@@ -69,6 +69,10 @@ function getTree(headings) {
 
 function tocFilesInPackage(packageName, packageDir) {
     const dir = path.resolve(packageDir, `${pubversion}/api`);
+    if (!fs.existsSync(dir)) {
+        console.log(`no api folder @ ${dir}`);
+        return;
+    }
     outlines[packageName] = {};
     fs.readdirSync(dir).forEach(f => {
         const mdPath = path.resolve(dir, f);
