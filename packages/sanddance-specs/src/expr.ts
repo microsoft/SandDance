@@ -15,5 +15,5 @@ export function safeFieldName(field: string) {
  */
 export function exprSafeFieldName(field: string) {
     //remove whitespace, period, accessors and logical modifiers
-    return field.replace(/[\.\,:;\+\=\-\/<>\{\}|~!@#\$%\^\*\[\]\`\'\"\(\)\?\s\\]/g, '');
+    return field.replace(/[.,:;+=\-/<>{}|~!@#$%^*[\]`'"()?\s\\]/g, '');
 }
