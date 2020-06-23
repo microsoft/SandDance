@@ -4,22 +4,6 @@
     (global = global || self, factory(global.SandDance = {}));
 }(this, (function (exports) { 'use strict';
 
-    class Layout {
-        constructor(props) {
-            this.props = props;
-            this.id = props.id;
-        }
-        getGrouping() {
-            return null;
-        }
-        getAggregateSumOp() {
-            return null;
-        }
-        build() {
-            throw 'Not implemented';
-        }
-    }
-
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
     const FieldNames = {
@@ -93,6 +77,62 @@
     const Other = '__Other';
     //name of the "no-color" palette
     const ColorScaleNone = 'none';
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    // Licensed under the MIT license.
+    //TODO move these to options
+    const defaultBins = 10;
+    const maxbins = 100;
+    const minBarBandWidth = 15;
+    const minFacetWidth = 140;
+    const minFacetHeight = 180;
+    const facetPaddingLeft = 40;
+    const facetPaddingTop = 40;
+    const facetPaddingBottom = 40;
+    const facetPaddingRight = 40;
+    const axesLabelLimit = 100;
+    const axesTitleLimit = 100;
+    const axesTitlePaddingX = 30;
+    const axesTitlePaddingY = 60;
+    const axesTitlePaddingFacetX = 69;
+    const axesTitlePaddingFacetY = 92;
+    const axesOffsetX = 120;
+    const axesOffsetY = 120;
+    const scatterSizedDiv = 20;
+
+    class Layout {
+        constructor(props) {
+            this.props = props;
+            this.id = props.id;
+        }
+        getGrouping() {
+            return null;
+        }
+        getAggregateSumOp() {
+            return null;
+        }
+        build() {
+            throw 'Not implemented';
+        }
+    }
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    // Licensed under the MIT license.
+    /**
+     * Make sure that the field name is accessible via Vega's Field type
+     * https://vega.github.io/vega/docs/types/#Field
+     * examples: "source.x", "target['x']", "[my.field]"
+     */
+    function safeFieldName(field) {
+        return field.replace('.', '\\.').replace('[', '\\[').replace(']', '\\]');
+    }
+    /**
+     * Make sure the field name is usable in a Vega expression
+     */
+    function exprSafeFieldName(field) {
+        //remove whitespace, period, accessors and logical modifiers
+        return field.replace(/[\.\,:;\+\=\-\/<>\{\}|~!@#\$%\^\*\[\]\`\'\"\(\)\?\s\\]/g, '');
+    }
 
     function addAxes(scope, ...axis) {
         if (!scope.axes) {
@@ -168,7 +208,7 @@
         getAggregateSumOp() {
             if (this.aggregation === 'sum') {
                 const fieldOp = {
-                    field: this.props.sumBy.name,
+                    field: safeFieldName(this.props.sumBy.name),
                     op: 'sum',
                     as: FieldNames.Sum
                 };
@@ -180,7 +220,7 @@
             const { dock, globalScope, groupings, niceScale, parentScope, showAxes } = props;
             addTransforms(globalScope.data, Object.assign(Object.assign({}, this.getTransforms(aggregation, getGroupBy(groupings))), { as: [names.aggregateField] }), {
                 type: 'extent',
-                field: names.aggregateField,
+                field: safeFieldName(names.aggregateField),
                 signal: names.globalAggregateExtentSignal
             });
             addSignals(globalScope.scope, {
@@ -288,11 +328,11 @@
         getTransforms(aggregation, groupby) {
             const trans = {
                 type: 'joinaggregate',
-                groupby,
+                groupby: groupby.map(safeFieldName),
                 ops: [aggregation]
             };
             if (aggregation === 'sum') {
-                trans.fields = [this.props.sumBy.name];
+                trans.fields = [this.props.sumBy.name].map(safeFieldName);
             }
             return trans;
         }
@@ -314,17 +354,18 @@
         }
     }
 
+    // Copyright (c) Microsoft Corporation. All rights reserved.
     function binnable(prefix, domainDataName, discreteColumn) {
         const { column, defaultBins, maxbins, maxbinsSignalDisplayName, maxbinsSignalName } = discreteColumn;
         if (column.quantitative) {
-            const field = `${prefix}_bin_${column.name}`;
+            const field = `${prefix}_bin_${exprSafeFieldName(column.name)}`;
             const fieldEnd = `${field}_end`;
             const binSignal = `${field}_bins`;
             const extentSignal = `${field}_bin_extent`;
             domainDataName = `${field}_sequence`; //override the data name
             const extentTransform = {
                 type: 'extent',
-                field: column.name,
+                field: safeFieldName(column.name),
                 signal: extentSignal
             };
             const maxbinsSignal = {
@@ -341,7 +382,7 @@
             };
             const binTransform = {
                 type: 'bin',
-                field: column.name,
+                field: safeFieldName(column.name),
                 as: [
                     field,
                     fieldEnd,
@@ -562,7 +603,7 @@
                 transform: [
                     {
                         type: 'aggregate',
-                        groupby: this.getGrouping(),
+                        groupby: this.getGrouping().map(safeFieldName),
                         ops: ['count']
                     }
                 ]
@@ -655,7 +696,7 @@
         getScale(bin, horizontal) {
             const { names } = this;
             const { parentScope } = this.props;
-            const binField = bin.fields[0];
+            const binField = safeFieldName(bin.fields[0]);
             let scale;
             if (horizontal) {
                 scale = {
@@ -699,27 +740,6 @@
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    // Licensed under the MIT license.
-    //TODO move these to options
-    const defaultBins = 10;
-    const maxbins = 100;
-    const minBarBandWidth = 15;
-    const minFacetWidth = 140;
-    const minFacetHeight = 180;
-    const facetPaddingLeft = 40;
-    const facetPaddingTop = 40;
-    const facetPaddingBottom = 40;
-    const facetPaddingRight = 40;
-    const axesLabelLimit = 100;
-    const axesTitleLimit = 100;
-    const axesTitlePaddingX = 30;
-    const axesTitlePaddingY = 60;
-    const axesTitlePaddingFacetX = 69;
-    const axesTitlePaddingFacetY = 92;
-    const axesOffsetX = 120;
-    const axesOffsetY = 120;
-    const scatterSizedDiv = 20;
-
     function linearScale(scaleName, data, field, range, reverse, zero) {
         const scale = {
             name: scaleName,
@@ -729,7 +749,7 @@
             reverse,
             domain: {
                 data,
-                field
+                field: safeFieldName(field)
             },
             zero,
             nice: true
@@ -743,7 +763,7 @@
             range,
             domain: {
                 data,
-                field,
+                field: safeFieldName(field),
                 sort: true
             },
             padding: 0.5
@@ -757,7 +777,7 @@
         scheme = scheme || ColorScaleNone;
         const domain = {
             data,
-            field
+            field: safeFieldName(field)
         };
         const range = {
             scheme
@@ -831,9 +851,9 @@
             const { names, prefix, props } = this;
             const { fillDirection, globalScope, groupings, parentScope, collapseYHeight, sortBy, z } = props;
             addZScale(z, globalScope.zSize, globalScope, names.zScale);
-            addTransforms(globalScope.data, Object.assign({ type: 'stack', groupby: getGroupBy(groupings), as: [names.stack0, names.stack1] }, sortBy && {
+            addTransforms(globalScope.data, Object.assign({ type: 'stack', groupby: getGroupBy(groupings).map(safeFieldName), as: [names.stack0, names.stack1] }, sortBy && {
                 sort: {
-                    field: sortBy.name,
+                    field: safeFieldName(sortBy.name),
                     order: 'ascending'
                 }
             }));
@@ -868,7 +888,7 @@
                             },
                             {
                                 scale: names.zScale,
-                                field: z.name
+                                field: safeFieldName(z.name)
                             }
                         ]
                     })
@@ -912,7 +932,7 @@
                 if (groupings) {
                     addTransforms(globalScope.data, {
                         type: 'joinaggregate',
-                        groupby: getGroupBy(groupings),
+                        groupby: getGroupBy(groupings).map(safeFieldName),
                         ops: ['count'],
                         as: [names.maxGroupField]
                     }, {
@@ -998,7 +1018,7 @@
                 transform.push({
                     type: 'collect',
                     sort: {
-                        field: sort.name,
+                        field: safeFieldName(sort.name),
                         order: sortOrder
                     }
                 });
@@ -1021,12 +1041,12 @@
             }
             const stackTransform = {
                 type: 'stack',
-                field: stackField,
+                field: safeFieldName(stackField),
                 offset: 'normalize',
                 as: [names.firstField, names.lastField]
             };
             if (groupings.length) {
-                stackTransform.groupby = getGroupBy(groupings);
+                stackTransform.groupby = getGroupBy(groupings).map(safeFieldName);
             }
             transform.push(stackTransform);
             addTransforms(globalScope.data, ...transform);
@@ -1065,7 +1085,7 @@
                             },
                             {
                                 scale: names.zScale,
-                                field: z.name
+                                field: safeFieldName(z.name)
                             }
                         ]
                     })
@@ -1199,7 +1219,7 @@
                         facet: {
                             name: names.dataFacet,
                             data: names.dataHeightWidth,
-                            groupby: getGroupBy(groupings)
+                            groupby: getGroupBy(groupings).map(safeFieldName)
                         }
                     },
                     data: [
@@ -1255,7 +1275,7 @@
                             },
                             {
                                 scale: names.zScale,
-                                field: z.name
+                                field: safeFieldName(z.name)
                             }
                         ]
                     })
@@ -1275,7 +1295,7 @@
                 keys: [(group && group.name) || '__NONE__']
             }, {
                 type: 'treemap',
-                field: size.name,
+                field: safeFieldName(size.name),
                 sort: { field: 'value', order: 'descending' },
                 round: true,
                 method: { signal: SignalNames.TreeMapMethod },
@@ -1301,6 +1321,18 @@
     }
     function subtract(...fields) {
         return fields.map(n => fn(n)).join(' - ');
+    }
+
+    function allowNoneForSize(specContext) {
+        switch (specContext.insight.totalStyle) {
+            case 'sum-strip':
+            case 'sum-strip-percent':
+            case 'sum-treemap':
+                return false;
+            default:
+                //if totalStyle is blank, count is assumed
+                return true;
+        }
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -1451,7 +1483,7 @@
                     },
                     {
                         role: 'size',
-                        allowNone: true,
+                        allowNone: allowNoneForSize,
                         excludeCategoric: true,
                         signals: [SignalNames.TreeMapMethod]
                     },
@@ -1617,7 +1649,7 @@
                     },
                     {
                         role: 'size',
-                        allowNone: true,
+                        allowNone: allowNoneForSize,
                         excludeCategoric: true,
                         signals: [SignalNames.TreeMapMethod]
                     },
@@ -1656,7 +1688,7 @@
             const { sizeSignals } = parentScope;
             addTransforms(globalScope.data, Object.assign(Object.assign({}, this.getTransforms(aggregation, getGroupBy(groupings))), { as: [names.aggregateField] }), {
                 type: 'extent',
-                field: names.aggregateField,
+                field: safeFieldName(names.aggregateField),
                 signal: names.globalAggregateExtentSignal
             });
             const localAggregateMaxExtent = `datum[${JSON.stringify(names.aggregateField)}]`;
@@ -1698,11 +1730,11 @@
         getTransforms(aggregation, groupby) {
             const trans = {
                 type: 'joinaggregate',
-                groupby,
+                groupby: groupby.map(safeFieldName),
                 ops: [aggregation]
             };
             if (aggregation === 'sum') {
-                trans.fields = [this.props.sumBy.name];
+                trans.fields = [this.props.sumBy.name].map(safeFieldName);
             }
             return trans;
         }
@@ -1857,7 +1889,7 @@
                     },
                     {
                         role: 'size',
-                        allowNone: true,
+                        allowNone: allowNoneForSize,
                         excludeCategoric: true,
                         signals: [SignalNames.TreeMapMethod]
                     },
@@ -1968,7 +2000,7 @@
             if (qsize) {
                 addTransforms(globalScope.data, {
                     type: 'extent',
-                    field: qsize.name,
+                    field: safeFieldName(qsize.name),
                     signal: names.sizeExtent
                 });
                 addScales(globalScope.scope, {
@@ -2189,16 +2221,16 @@
             const { sizeSignals } = parentScope;
             addTransforms(globalScope.data, {
                 type: 'joinaggregate',
-                groupby: getGroupBy(groupings),
+                groupby: getGroupBy(groupings).map(safeFieldName),
                 ops: ['count'],
                 as: [names.count]
             }, {
                 type: 'extent',
                 field: names.count,
                 signal: names.globalExtent
-            }, Object.assign({ type: 'stack', groupby: getGroupBy(groupings), as: [names.stack0, names.stack1] }, sort && {
+            }, Object.assign({ type: 'stack', groupby: getGroupBy(groupings).map(safeFieldName), as: [names.stack0, names.stack1] }, sort && {
                 sort: {
-                    field: sort.name,
+                    field: safeFieldName(sort.name),
                     order: 'ascending'
                 }
             }));
@@ -2549,7 +2581,7 @@
                 roles: [
                     {
                         role: 'size',
-                        excludeCategoric: true
+                        excludeCategoric: true,
                     },
                     {
                         role: 'group',
@@ -2683,19 +2715,26 @@
         }
     }
 
+    // Copyright (c) Microsoft Corporation. All rights reserved.
     function topLookup(column, count, source, legend, lookupName, fieldName, indexName) {
         const data = [
             {
                 name: lookupName,
                 source,
                 transform: [
-                    { type: 'aggregate', groupby: [column.name] },
+                    {
+                        type: 'aggregate',
+                        groupby: [safeFieldName(column.name)]
+                    },
                     {
                         type: 'window',
                         ops: ['count'],
                         as: [indexName]
                     },
-                    { type: 'filter', expr: `datum[${JSON.stringify(indexName)}] <= ${count}` }
+                    {
+                        type: 'filter',
+                        expr: `datum[${JSON.stringify(indexName)}] <= ${count}`
+                    }
                 ]
             },
             {
@@ -2705,9 +2744,9 @@
                     {
                         type: 'lookup',
                         from: lookupName,
-                        key: column.name,
-                        fields: [column.name],
-                        values: [column.name],
+                        key: safeFieldName(column.name),
+                        fields: [column.name].map(safeFieldName),
+                        values: [column.name].map(safeFieldName),
                         as: [fieldName]
                     },
                     {
@@ -3036,6 +3075,7 @@
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     function createOrdinals(source, prefix, binFields, sortOrder) {
+        const _binFields = binFields.map(safeFieldName);
         const dataName = `${prefix}_bin_order`;
         const data = {
             name: dataName,
@@ -3043,13 +3083,13 @@
             transform: [
                 {
                     type: 'aggregate',
-                    groupby: binFields
+                    groupby: _binFields
                 },
                 {
                     type: 'collect',
                     sort: {
-                        field: binFields,
-                        order: binFields.map(f => sortOrder)
+                        field: _binFields,
+                        order: _binFields.map(f => sortOrder)
                     }
                 },
                 {
@@ -3070,7 +3110,7 @@
             name: scaleName,
             domain: {
                 data: dataName,
-                field: binFields[0]
+                field: safeFieldName(binFields[0])
             },
             range: {
                 data: dataName,
@@ -3506,8 +3546,8 @@
                     {
                         type: 'lookup',
                         from: names.rowColumnDataName,
-                        key: bin.fields[0],
-                        fields: [bin.fields[0]],
+                        key: safeFieldName(bin.fields[0]),
+                        fields: [bin.fields[0]].map(safeFieldName),
                         values: [FieldNames.WrapRow, FieldNames.WrapCol]
                     }
                 ]
@@ -3697,18 +3737,19 @@
         return { layoutPair, plotPadding, scales, signals };
     }
 
+    // Copyright (c) Microsoft Corporation. All rights reserved.
     function fill(context, colorFieldName, scale) {
         const { specColumns, insight, specViewOptions } = context;
         const colorColumn = specColumns.color;
         return colorColumn ?
             colorColumn.isColorData || insight.directColor ?
                 {
-                    field: colorColumn.name
+                    field: safeFieldName(colorColumn.name)
                 }
                 :
                     {
                         scale,
-                        field: colorColumn.quantitative ? colorColumn.name : colorFieldName
+                        field: colorColumn.quantitative ? safeFieldName(colorColumn.name) : colorFieldName
                     }
             :
                 {
@@ -3778,7 +3819,16 @@
         validate() {
             const { specCapabilities, specContext } = this.props;
             const { roles } = specCapabilities;
-            const required = roles.filter(r => !r.allowNone);
+            const required = roles.filter(r => {
+                switch (typeof r.allowNone) {
+                    case 'boolean':
+                        return !r.allowNone;
+                    case 'undefined':
+                        return true;
+                    case 'function':
+                        return !r.allowNone(specContext);
+                }
+            });
             const numeric = roles.filter(r => r.excludeCategoric);
             const errors = required
                 .map(r => {
@@ -8569,7 +8619,6 @@ void main(void) {
                 this.renderSameLayout();
             }, () => this.insight && this.insight.columns && !!this.insight.columns.color && this.colorContexts && this.colorContexts.length > 1);
             this.insight = {};
-            this._signalValues = {};
         }
         changeColorContexts(colorContexts) {
             this.colorContexts = colorContexts;
@@ -8588,7 +8637,7 @@ void main(void) {
                 if (dataChange === DataLayoutChange.refine) {
                     const oldColorContext = this.colorContexts[this.currentColorContext];
                     innerPromise = new Promise(innerResolve => {
-                        this.renderNewLayout({
+                        this.renderNewLayout({}, {
                             preStage: (stage, deckProps) => {
                                 finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                                 this.overrideAxisLabels(stage);
@@ -8605,7 +8654,7 @@ void main(void) {
                     });
                 }
                 else {
-                    innerPromise = this.renderNewLayout({
+                    innerPromise = this.renderNewLayout({}, {
                         preStage: (stage, deckProps) => {
                             finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                             this.overrideAxisLabels(stage);
@@ -8631,7 +8680,7 @@ void main(void) {
                         //save cube colors
                         const oldColorContext = this.colorContexts[this.currentColorContext];
                         let colorMap;
-                        yield this.renderNewLayout({
+                        yield this.renderNewLayout({}, {
                             preStage: (stage, deckProps) => {
                                 //save off the spec colors
                                 colorMap = colorMapFromCubes(stage.cubeData);
@@ -8666,7 +8715,7 @@ void main(void) {
                             legendElement: null
                         };
                         this.changeColorContexts([colorContext]);
-                        yield this.renderNewLayout({
+                        yield this.renderNewLayout({}, {
                             onPresent: () => {
                                 populateColorContext(colorContext, this.presenter);
                             }
@@ -8699,15 +8748,14 @@ void main(void) {
             });
             return specColumns;
         }
-        renderNewLayout(presenterConfig, view) {
+        renderNewLayout(signalValues, presenterConfig, view) {
             return __awaiter(this, void 0, void 0, function* () {
                 const currData = this._dataScope.currentData();
                 const context = { specColumns: this.getSpecColumnsWithFilteredStats(), insight: this.insight, specViewOptions: this.options };
                 const specResult = build(context, currData);
                 if (!specResult.errors) {
                     const uiValues = extractSignalValuesFromView(this.vegaViewGl, this.vegaSpec);
-                    this._signalValues = Object.assign(Object.assign(Object.assign({}, this._signalValues), uiValues), this.insight.signalValues);
-                    applySignalValues(this._signalValues, specResult.vegaSpec);
+                    applySignalValues(Object.assign(Object.assign({}, uiValues), signalValues), specResult.vegaSpec);
                     this.vegaSpec = specResult.vegaSpec;
                     this.options.onVegaSpec && this.options.onVegaSpec(this.vegaSpec);
                     this.specCapabilities = specResult.specCapabilities;
@@ -8890,8 +8938,6 @@ void main(void) {
                     this._tooltip = null;
                 }
                 if (this._dataScope.setData(data, options.columns)) {
-                    //data is different, reset the signal value cache
-                    this._signalValues = {};
                     //apply transform to the data
                     this.transformData(data, insight.transform);
                 }
@@ -8905,7 +8951,7 @@ void main(void) {
                     legend: null,
                     legendElement: null
                 };
-                const specResult = yield this.renderNewLayout({
+                const specResult = yield this.renderNewLayout(insight.signalValues, {
                     preStage: (stage, deckProps) => {
                         if (this._shouldSaveColorContext()) {
                             //save off the colors from Vega layout
@@ -9239,7 +9285,7 @@ void main(void) {
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
-    const version = '3.0.0-beta.2';
+    const version = '3.0.0';
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     const use$1 = use;

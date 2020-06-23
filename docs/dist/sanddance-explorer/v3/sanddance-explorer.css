@@ -475,6 +475,8 @@
     position: absolute;
     right: -1px;
     top: -1px; }
+    .sanddance-note .cancel i {
+      color: #333; }
 
 .sanddance-columnMap {
   position: relative; }
