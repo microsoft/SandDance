@@ -349,7 +349,7 @@ function safeFieldName(field) {
 
 function exprSafeFieldName(field) {
   //remove whitespace, period, accessors and logical modifiers
-  return field.replace(/[\.\,:;\+\=\-\/<>\{\}|~!@#\$%\^\*\[\]\`\'\"\(\)\?\s\\]/g, '');
+  return field.replace(/[.,:;+=\-/<>{}|~!@#$%^*[\]`'"()?\s\\]/g, '');
 }
 },{}],"Nfxo":[function(require,module,exports) {
 "use strict";
@@ -4333,95 +4333,7 @@ class Cross extends _layout.Layout {
 }
 
 exports.Cross = Cross;
-},{"./layout":"GfLt","../bin":"HtEf","../constants":"kNZP","../facetSearch":"keY5","../facetTitle":"xF0Y","../ordinal":"F91X","../scope":"Nfxo","../signals":"TTOO"}],"QgJa":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Slice = void 0;
-
-var _layout = require("./layout");
-
-var _bin = require("../bin");
-
-var _scope = require("../scope");
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-class Slice extends _layout.Layout {
-  constructor(props) {
-    super(props);
-    this.props = props;
-    this.prefix = `slice_${this.id}`;
-    this.bin = (0, _bin.binnable)(this.prefix, props.globalScope.data.name, props.groupby);
-  }
-
-  getGrouping() {
-    return this.bin.fields;
-  }
-
-  build() {
-    const {
-      bin,
-      prefix,
-      props
-    } = this;
-    const {
-      globalScope,
-      parentScope
-    } = props;
-    const facetDataName = `data_${prefix}_facet`;
-
-    if (bin.native === false) {
-      globalScope.scope.signals.push(bin.maxbinsSignal);
-      (0, _scope.addTransforms)(globalScope.data, ...bin.transforms);
-      globalScope.scope.data.push(bin.dataSequence);
-    } // const mark: Mark = {
-    //     style: 'cell',
-    //     name: prefix,
-    //     type: 'group',
-    //     from: {
-    //         facet: {
-    //             name: facetDataName,
-    //             data: parentScope.dataName,
-    //             groupby: bin.fields
-    //         }
-    //     },
-    //     encode: {
-    //     },
-    //     marks: [
-    //         {
-    //             type: 'text',
-    //             encode: {
-    //                 update: {
-    //                     text: {
-    //                         signal: `length(data(${JSON.stringify(facetDataName)}))`
-    //                     },
-    //                     fontSize: {
-    //                         value: 20
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     ]
-    // };
-    // parentScope.scope.marks.push(mark);
-
-
-    return {
-      offsets: null,
-      sizeSignals: {
-        layoutHeight: 'TODO',
-        layoutWidth: 'TODO'
-      }
-    };
-  }
-
-}
-
-exports.Slice = Slice;
-},{"./layout":"GfLt","../bin":"HtEf","../scope":"Nfxo"}],"bQXK":[function(require,module,exports) {
+},{"./layout":"GfLt","../bin":"HtEf","../constants":"kNZP","../facetSearch":"keY5","../facetTitle":"xF0Y","../ordinal":"F91X","../scope":"Nfxo","../signals":"TTOO"}],"bQXK":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4735,8 +4647,6 @@ var _defaults = require("./defaults");
 
 var _constants = require("./constants");
 
-var _slice = require("./layouts/slice");
-
 var _wrap = require("./layouts/wrap");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -4752,32 +4662,6 @@ function getFacetLayout(facetStyle, facetColumn, facetVColumn, axisTextColor) {
   };
 
   switch (facetStyle) {
-    case 'horizontal':
-      {
-        const props = {
-          orientation: 'horizontal',
-          groupby
-        };
-        layoutPair = {
-          layoutClass: _slice.Slice,
-          props
-        };
-        break;
-      }
-
-    case 'vertical':
-      {
-        const props = {
-          orientation: 'vertical',
-          groupby
-        };
-        layoutPair = {
-          layoutClass: _slice.Slice,
-          props
-        };
-        break;
-      }
-
     case 'cross':
       {
         const props = {
@@ -4838,7 +4722,7 @@ function getFacetLayout(facetStyle, facetColumn, facetVColumn, axisTextColor) {
     signals
   };
 }
-},{"./layouts/cross":"MA9m","./defaults":"visW","./constants":"kNZP","./layouts/slice":"QgJa","./layouts/wrap":"bQXK"}],"qyiT":[function(require,module,exports) {
+},{"./layouts/cross":"MA9m","./defaults":"visW","./constants":"kNZP","./layouts/wrap":"bQXK"}],"qyiT":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14066,8 +13950,8 @@ var strings = {
   labelColumnFacet: 'Facet by',
   labelFacetLayout: 'Facet layout',
   labelFacetLayoutWrap: 'Wrap',
-  labelFacetLayoutHorizontal: 'Horizontal',
-  labelFacetLayoutVertical: 'Vertical',
+  // labelFacetLayoutHorizontal: 'Horizontal',
+  // labelFacetLayoutVertical: 'Vertical',
   labelFacetLayoutCross: '⊞',
   labelColumnFacetV: 'Cross facet by',
   labelColumnSort: 'Sort by',
@@ -14828,7 +14712,6 @@ function _DataExportPicker(props) {
   }(_base.base.react.Component);
 
   return new __DataExportPicker(props);
-  ;
 }
 
 var DataExportPicker = _DataExportPicker;
@@ -14988,12 +14871,6 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 var singleFacetLayouts = [{
   facetStyle: 'wrap',
   text: _language.strings.labelFacetLayoutWrap
-}, {
-  facetStyle: 'horizontal',
-  text: _language.strings.labelFacetLayoutHorizontal
-}, {
-  facetStyle: 'vertical',
-  text: _language.strings.labelFacetLayoutVertical
 }];
 var chartLabelMap = [{
   key: 'grid',
@@ -16014,7 +15891,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var version = '3.0.0';
+var version = '3.0.1';
 exports.version = version;
 },{}],"zKGJ":[function(require,module,exports) {
 "use strict";

@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance-explorer",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "SandDance data exploration React component.",
   "main": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",

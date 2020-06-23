@@ -12,7 +12,6 @@ import { FacetStyle } from './types';
 import { LayoutPair } from './layouts/layout';
 import { Scale, Signal } from 'vega-typings';
 import { SignalNames } from './constants';
-import { Slice, SliceProps } from './layouts/slice';
 import { Wrap, WrapProps } from './layouts/wrap';
 
 export interface FacetLayout {
@@ -32,28 +31,6 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
         y: 0
     };
     switch (facetStyle) {
-        case 'horizontal': {
-            const props: SliceProps = {
-                orientation: 'horizontal',
-                groupby
-            };
-            layoutPair = {
-                layoutClass: Slice,
-                props
-            };
-            break;
-        }
-        case 'vertical': {
-            const props: SliceProps = {
-                orientation: 'vertical',
-                groupby
-            };
-            layoutPair = {
-                layoutClass: Slice,
-                props
-            };
-            break;
-        }
         case 'cross': {
             const props: CrossProps = {
                 axisTextColor,

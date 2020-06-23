@@ -36,8 +36,8 @@ interface FacetData {
 
 const singleFacetLayouts: FacetData[] = [
     { facetStyle: 'wrap', text: strings.labelFacetLayoutWrap },
-    { facetStyle: 'horizontal', text: strings.labelFacetLayoutHorizontal },
-    { facetStyle: 'vertical', text: strings.labelFacetLayoutVertical }
+    //{ facetStyle: 'horizontal', text: strings.labelFacetLayoutHorizontal },
+    //{ facetStyle: 'vertical', text: strings.labelFacetLayoutVertical }
 ];
 
 export const chartLabelMap: { key: SandDance.specs.Chart, text: string }[] = [

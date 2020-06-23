@@ -131,7 +131,7 @@
      */
     function exprSafeFieldName(field) {
         //remove whitespace, period, accessors and logical modifiers
-        return field.replace(/[\.\,:;\+\=\-\/<>\{\}|~!@#\$%\^\*\[\]\`\'\"\(\)\?\s\\]/g, '');
+        return field.replace(/[.,:;+=\-/<>{}|~!@#$%^*[\]`'"()?\s\\]/g, '');
     }
 
     function addAxes(scope, ...axis) {
@@ -3309,62 +3309,6 @@
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    class Slice extends Layout {
-        constructor(props) {
-            super(props);
-            this.props = props;
-            this.prefix = `slice_${this.id}`;
-            this.bin = binnable(this.prefix, props.globalScope.data.name, props.groupby);
-        }
-        getGrouping() {
-            return this.bin.fields;
-        }
-        build() {
-            const { bin, prefix, props } = this;
-            const { globalScope, parentScope } = props;
-            if (bin.native === false) {
-                globalScope.scope.signals.push(bin.maxbinsSignal);
-                addTransforms(globalScope.data, ...bin.transforms);
-                globalScope.scope.data.push(bin.dataSequence);
-            }
-            // const mark: Mark = {
-            //     style: 'cell',
-            //     name: prefix,
-            //     type: 'group',
-            //     from: {
-            //         facet: {
-            //             name: facetDataName,
-            //             data: parentScope.dataName,
-            //             groupby: bin.fields
-            //         }
-            //     },
-            //     encode: {
-            //     },
-            //     marks: [
-            //         {
-            //             type: 'text',
-            //             encode: {
-            //                 update: {
-            //                     text: {
-            //                         signal: `length(data(${JSON.stringify(facetDataName)}))`
-            //                     },
-            //                     fontSize: {
-            //                         value: 20
-            //                     }
-            //                 }
-            //             }
-            //         }
-            //     ]
-            // };
-            // parentScope.scope.marks.push(mark);
-            return {
-                offsets: null,
-                sizeSignals: { layoutHeight: 'TODO', layoutWidth: 'TODO' }
-            };
-        }
-    }
-
-    // Copyright (c) Microsoft Corporation. All rights reserved.
     class Wrap extends Layout {
         constructor(props) {
             super(props);
@@ -3655,28 +3599,6 @@
             y: 0
         };
         switch (facetStyle) {
-            case 'horizontal': {
-                const props = {
-                    orientation: 'horizontal',
-                    groupby
-                };
-                layoutPair = {
-                    layoutClass: Slice,
-                    props
-                };
-                break;
-            }
-            case 'vertical': {
-                const props = {
-                    orientation: 'vertical',
-                    groupby
-                };
-                layoutPair = {
-                    layoutClass: Slice,
-                    props
-                };
-                break;
-            }
             case 'cross': {
                 const props = {
                     axisTextColor,
