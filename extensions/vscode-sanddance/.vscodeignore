@@ -1,9 +1,9 @@
 .vscode/**
 .vscode-test/**
-out/test/**
-out/**/*.map
+dist/**/*.map
+node_modules/**
 src/**
 .gitignore
 tsconfig.json
-vsc-extension-quickstart.md
-tslint.json
+*.vsix
+webpack.config.js

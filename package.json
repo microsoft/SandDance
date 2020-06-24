@@ -29,7 +29,9 @@
     "package": "lerna run package --parallel",
     "dev": "lerna run dev --scope dev --parallel",
     "build-rec": "lerna run build --scope @msrvida/chart-recommender",
-    "test-rec": "lerna run test --scope @msrvida/chart-recommender"
+    "test-rec": "lerna run test --scope @msrvida/chart-recommender",
+    "azdata-webpack-extension": "lerna run webpack --scope azdata-sanddance --parallel",
+    "vscode-webpack-extension": "lerna run webpack --scope vscode-sanddance --parallel"
   },
   "repository": {
     "type": "git",

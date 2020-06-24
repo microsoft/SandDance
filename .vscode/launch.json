@@ -4,18 +4,34 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-
         {
             "name": "Azure Data Studio",
             "type": "sqlopsExtensionHost",
             "request": "launch",
             "runtimeExecutable": "${workspaceRoot}",
-            "args": ["--extensionDevelopmentPath=${workspaceRoot}/packages/azdata-sanddance" ],
+            "args": [
+                "--extensionDevelopmentPath=${workspaceRoot}/extensions/azdata-sanddance"
+            ],
             "stopOnEntry": false,
             "sourceMaps": true,
-            "outFiles": [ "${workspaceRoot}/packages/azdata-sanddance/out/**/*.js" ],
-            "preLaunchTask": "",
-            "timeout": 60000
+            "outFiles": [
+                "${workspaceRoot}/extensions/azdata-sanddance/out/**/*.js"
+            ],
+            "preLaunchTask": "azdata-webpack-extension"
+        },
+        {
+            "name": "VsCode Extension",
+            "type": "extensionHost",
+            "request": "launch",
+            "runtimeExecutable": "${workspaceRoot}",
+            "args": [
+                "--extensionDevelopmentPath=${workspaceRoot}/extensions/vscode-sanddance"
+            ],
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceRoot}/extensions/vscode-sanddance/dist/**/*.js"
+            ],
+            "preLaunchTask": "vscode-webpack-extension"
         },
     ]
 }
