@@ -13376,7 +13376,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = '3.0.0';
+const version = '3.0.1';
 exports.version = version;
 },{}],"rZaE":[function(require,module,exports) {
 "use strict";
@@ -13690,7 +13690,18 @@ function _SandDanceReact(props) {
 
 const SandDanceReact = _SandDanceReact;
 exports.SandDanceReact = SandDanceReact;
-},{"./base":"X6sm","./util":"HI4Z","@msrvida/sanddance":"rZaE"}],"MjKu":[function(require,module,exports) {
+},{"./base":"X6sm","./util":"HI4Z","@msrvida/sanddance":"rZaE"}],"TN0H":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.version = void 0;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+const version = '3.0.0';
+exports.version = version;
+},{}],"MjKu":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13733,7 +13744,7 @@ var _version = require("./version");
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-},{"@msrvida/sanddance":"rZaE","./util":"HI4Z","./viewer":"qyfj","./base":"X6sm","./version":"DZif"}],"OWDI":[function(require,module,exports) {
+},{"@msrvida/sanddance":"rZaE","./util":"HI4Z","./viewer":"qyfj","./base":"X6sm","./version":"TN0H"}],"OWDI":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

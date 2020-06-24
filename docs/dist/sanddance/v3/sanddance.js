@@ -9207,7 +9207,7 @@ void main(void) {
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
-    const version = '3.0.0';
+    const version = '3.0.1';
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     const use$1 = use;
