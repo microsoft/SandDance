@@ -66,10 +66,13 @@
     "rimraf": "^2.6.2",
     "rollup": "^1.32.1",
     "rollup-plugin-vue": "^5.0.1",
+    "ts-loader": "^7.0.5",
     "typescript": "^3.5",
     "unified": "^7.0.2",
     "vsce": "^1.66.0",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
   },
   "babel": {
     "presets": [
