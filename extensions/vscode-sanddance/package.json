@@ -18,7 +18,7 @@
     "activationEvents": [
         "onCommand:sanddance.view"
     ],
-    "main": "./out/extension",
+    "main": "./dist/extension-bundle",
     "contributes": {
         "commands": [
             {
@@ -72,10 +72,11 @@
     "scripts": {
         "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
         "clean": "rimraf ./resources/*.*",
-        "vscode:prepublish": "npm run compile",
+        "vscode:prepublish": "webpack --mode production",
+        "webpack": "webpack --mode development",
+        "webpack-dev": "webpack --mode development --watch",
         "resources": "node ./node_modules/common-frontend/scripts/resources.js",
         "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
         "build:sanddance-integration": "npm run compile && npm run resources",
         "x-test": "npm run compile && node ./out/test/runTest.js",
         "package": "vsce package"

@@ -24,6 +24,10 @@
         .column-name {
             font-weight: 500;
         }
+        .column-value {
+            max-height: 20em;
+            overflow: auto;
+        }
         .bing-search {
             text-align: right;
         }
