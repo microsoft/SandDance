@@ -92,7 +92,10 @@
         position: absolute;
     }
     td {
+        max-width: 16em;
+        overflow: hidden;
         text-align: left;
+        text-overflow: ellipsis;
         vertical-align: top;
         width: 75%;
         &:first-child {
