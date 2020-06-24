@@ -18,7 +18,7 @@
     "activationEvents": [
         "onCommand:sanddance.view"
     ],
-    "main": "./dist/extension",
+    "main": "./dist/extension-bundle",
     "contributes": {
         "commands": [
             {
