@@ -95,6 +95,7 @@ interface ViewerOptions extends SpecViewOptions {
     onLegendRowClick?: (e: TouchEvent | MouseEvent | PointerEvent, legendRow: LegendRowWithSearch) => void;
     onVegaSpec?: (vegaSpec: Spec) => void;
     onNewViewStateTarget?: () => boolean;
+    preserveDrawingBuffer?: boolean;
     selectionPolygonZ: number;
 }
 ```
@@ -127,6 +128,7 @@ SpecViewOptions
 | onLegendRowClick      | (e: TouchEvent &#124; MouseEvent &#124; PointerEvent, legendRow: LegendRowWithSearch) => void                 | true     | Optional handler when legend row is clicked.                              |
 | onVegaSpec            | (vegaSpec: Spec) => void                                                                                    | true     | Optional handler when Vega spec is created, prior to it being rendered.   |
 | onNewViewStateTarget  | () => boolean                                                                                                 | true     | Optional handler to reset the camera after chart is rendered.             |
+| preserveDrawingBuffer | boolean                                                                                                       | true     | Optional flag to preserve the WebGL canvas.                               |
 | selectionPolygonZ     | number                                                                                                        | false    | Z value of selection polygons.                                            |
 
 ----------

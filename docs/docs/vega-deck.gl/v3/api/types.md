@@ -339,6 +339,7 @@ interface PresenterConfig {
     getTextHighlightColor?: (o: VegaTextLayerDatum) => RGBAColor<number, number, number, number>;
     onSceneRectAssignCubeOrdinal?: (d: object) => number | undefined;
     onTargetViewState?: (height: number, width: number) => { height: number; width: number; newViewStateTarget?: boolean; };
+    preserveDrawingBuffer?: boolean;
 }
 ```
 
@@ -362,6 +363,7 @@ interface PresenterConfig {
 | getTextHighlightColor        | (o: VegaTextLayerDatum) => RGBAColor<number, number, number, number>                                | true     |
 | onSceneRectAssignCubeOrdinal | (d: object) => number &#124; undefined                                                              | true     |
 | onTargetViewState            | (height: number, width: number) => { height: number; width: number; newViewStateTarget?: boolean; } | true     |
+| preserveDrawingBuffer        | boolean                                                                                             | true     |
 
 ----------
 
