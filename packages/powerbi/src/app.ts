@@ -83,7 +83,8 @@ export class App extends React.Component<Props, State> {
                 hoveredCube: color
             },
             onDataFilter: this.props.onDataFilter,
-            onSelectionChanged: this.props.onSelectionChanged
+            onSelectionChanged: this.props.onSelectionChanged,
+            preserveDrawingBuffer: true
         };
     }
 

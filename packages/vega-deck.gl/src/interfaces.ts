@@ -153,6 +153,7 @@ export interface PresenterConfig {
     getTextHighlightColor?: (o: VegaTextLayerDatum) => RGBAColor;
     onSceneRectAssignCubeOrdinal?: (d: object) => number | undefined;
     onTargetViewState?: (height: number, width: number) => { height: number, width: number, newViewStateTarget?: boolean };
+    preserveDrawingBuffer?: boolean;
 }
 
 export interface PresenterStyle {

@@ -166,6 +166,11 @@ export interface ViewerOptions extends SpecViewOptions {
     onNewViewStateTarget?: () => boolean;
 
     /**
+     * Optional flag to preserve the WebGL canvas.
+     */
+    preserveDrawingBuffer?: boolean;
+
+    /**
      * Z value of selection polygons.
      */
     selectionPolygonZ: number;
