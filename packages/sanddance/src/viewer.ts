@@ -656,7 +656,8 @@ export class Viewer {
                     newViewStateTarget = this.options.onNewViewStateTarget();
                 }
                 return { height, width, newViewStateTarget };
-            }
+            },
+            preserveDrawingBuffer: this.options.preserveDrawingBuffer
         };
         if (this.options.onBeforeCreateLayers) {
             defaultPresenterConfig.preLayer = stage => this.options.onBeforeCreateLayers(stage, this.specCapabilities);
