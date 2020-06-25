@@ -7091,7 +7091,12 @@ void main(void) {
                 });
                 this.OrbitControllerClass = classes.OrbitControllerClass;
                 const initialViewState = targetViewState(height, width, stage.view);
+                let glOptions;
+                if (config && config.preserveDrawingBuffer) {
+                    glOptions = { preserveDrawingBuffer: true };
+                }
                 const deckProps = {
+                    glOptions,
                     height: null,
                     width: null,
                     effects: lightingEffects(),
@@ -9049,7 +9054,8 @@ void main(void) {
                         newViewStateTarget = this.options.onNewViewStateTarget();
                     }
                     return { height, width, newViewStateTarget };
-                }
+                },
+                preserveDrawingBuffer: this.options.preserveDrawingBuffer
             };
             if (this.options.onBeforeCreateLayers) {
                 defaultPresenterConfig.preLayer = stage => this.options.onBeforeCreateLayers(stage, this.specCapabilities);
@@ -9207,7 +9213,7 @@ void main(void) {
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
-    const version = '3.0.1';
+    const version = '3.0.2';
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     const use$1 = use;

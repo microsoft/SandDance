@@ -2091,7 +2091,12 @@ void main(void) {
                 });
                 this.OrbitControllerClass = classes.OrbitControllerClass;
                 const initialViewState = targetViewState(height, width, stage.view);
+                let glOptions;
+                if (config && config.preserveDrawingBuffer) {
+                    glOptions = { preserveDrawingBuffer: true };
+                }
                 const deckProps = {
+                    glOptions,
                     height: null,
                     width: null,
                     effects: lightingEffects(),
