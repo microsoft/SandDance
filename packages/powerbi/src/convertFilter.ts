@@ -45,9 +45,14 @@ function getDataPoint(GL_ORDINAL: number, data: object[]) {
 
 function filterSimilar(data: object, columns: powerbiVisualsApi.DataViewMetadataColumn[], filters: powerbiModels.IFilter[]) {
     columns.forEach(column => {
+        const value = data[column.displayName];
+
+        // TODO: booleans do not work with filter api
+        if (typeof value === 'boolean') return;
+        
         filters.push(createAdvancedFilter(column, {
             operator: 'Is',
-            value: data[column.displayName]
+            value
         }).toJSON());
     });
 }
