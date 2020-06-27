@@ -22,7 +22,6 @@ import {
     QueuedAnimationOptions,
     Scene3d,
     Stage,
-    VegaTextLayerDatum
 } from './interfaces';
 import { getCubeLayer, getCubes, getLayers } from './layers';
 import { LegendView } from './legend';
@@ -213,7 +212,6 @@ export class Presenter {
             };
             stage.cubeData = patchCubeArray(cubeCount, empty, stage.cubeData as Cube[]);
         }
-
         this.setDeckProps(stage, height, width, cubeCount, config);
 
         const a = getActiveElementInfo();
