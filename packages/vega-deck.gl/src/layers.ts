@@ -97,11 +97,6 @@ function newLineLayer(id: string, data: StyledLine[]) {
     });
 }
 
-function getCharacterSet(data: VegaTextLayerDatum[]): Set<string> {
-    const allChars = data.reduce((acc, datum) => acc + datum.text, '').split('');
-    return new Set(allChars);
-}
-
 function newTextLayer(presenter: Presenter, id: string, data: VegaTextLayerDatum[], config: PresenterConfig, fontFamily: string) {
     const props: TextLayerProps<VegaTextLayerDatum> = {
         id,
@@ -109,7 +104,6 @@ function newTextLayer(presenter: Presenter, id: string, data: VegaTextLayerDatum
         coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
         sizeUnits: 'pixels',
         autoHighlight: true,
-        characterSet: Array.from(getCharacterSet(data)),
         pickable: true,
         highlightColor: p => {
             if (config.getTextHighlightColor) {
@@ -142,6 +136,11 @@ function newTextLayer(presenter: Presenter, id: string, data: VegaTextLayerDatum
     if (fontFamily) {
         props.fontFamily = fontFamily;
     }
+
+    if (config.characterSet) {
+        props.characterSet = config.characterSet;
+    }
+
     return new base.layers.TextLayer(props);
 }
 

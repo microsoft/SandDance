@@ -21,7 +21,8 @@ import {
     PresenterStyle,
     QueuedAnimationOptions,
     Scene3d,
-    Stage
+    Stage,
+    VegaTextLayerDatum
 } from './interfaces';
 import { getCubeLayer, getCubes, getLayers } from './layers';
 import { LegendView } from './legend';
@@ -212,6 +213,19 @@ export class Presenter {
             };
             stage.cubeData = patchCubeArray(cubeCount, empty, stage.cubeData as Cube[]);
         }
+        if (config && !config.characterSet && config.defineCharacterSet) {
+            const texts = [...stage.textData];
+            const { x, y } = stage.axes;
+            [x, y].forEach(axes => {
+                axes.forEach(axis => {
+                    if (axis.tickText) texts.push.apply(texts, axis.tickText);
+                    if (axis.title) texts.push(axis.title);
+                });
+            });
+
+            config.characterSet = config.defineCharacterSet(texts);
+        }
+
         this.setDeckProps(stage, height, width, cubeCount, config);
 
         const a = getActiveElementInfo();
@@ -289,6 +303,7 @@ export class Presenter {
         }
         const guideLines = this._showGuides && box(0, 0, height, width, '#0f0', 1, true);
         config.preLayer && config.preLayer(stage);
+
         const layers = getLayers(this, config, stage, /*lightSettings*/null, lightingMix, linearInterpolator, guideLines);
         const deckProps: Partial<DeckProps> = {
             effects: lightingEffects(),
@@ -315,6 +330,11 @@ export class Presenter {
             stage: stage,
             view: stage.view
         };
+    }
+
+    private getCharacterSet(data: VegaTextLayerDatum[]): string[] {
+        const allChars = data.reduce((acc, datum) => acc + datum.text, '').split('');
+        return Array.from(new Set(allChars));
     }
 
     public canvasToDataURL() {
