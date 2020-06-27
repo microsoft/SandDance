@@ -613,10 +613,6 @@ export class Viewer {
         const defaultPresenterConfig: VegaDeckGl.types.PresenterConfig = {
             getTextColor,
             getTextHighlightColor,
-            defineCharacterSet: (texts) => {
-                const allChars = texts.reduce((acc, datum) => acc + datum.text, '').split('');
-                return Array.from(new Set(allChars));
-            },
             onTextClick: (e, t) => {
                 if (t.metaData && t.metaData.search) {
                     const search = getSearchGroupFromVegaValue(t.metaData.search);
@@ -675,6 +671,9 @@ export class Viewer {
         };
         if (this.options.transitionDurations) {
             config.presenterConfig.transitionDurations = this.options.transitionDurations;
+        }
+        if (this.options.characterSet) {
+            config.presenterConfig.characterSet = this.options.characterSet;
         }
         return config;
     }

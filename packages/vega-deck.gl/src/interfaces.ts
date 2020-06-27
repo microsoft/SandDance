@@ -140,7 +140,6 @@ export interface PresenterConfig {
     transitionDurations?: TransitionDurations;
     preStage?: PreStage;
     characterSet?: string[];
-    defineCharacterSet?: (texts: VegaTextLayerDatum[]) => string[];
     redraw?: () => void;
     onCubeHover?: (e: MouseEvent | PointerEvent | TouchEvent, cube: Cube) => void;
     onCubeClick?: (e: MouseEvent | PointerEvent | TouchEvent, cube: Cube) => void;
