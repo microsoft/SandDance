@@ -303,7 +303,6 @@ export class Presenter {
         }
         const guideLines = this._showGuides && box(0, 0, height, width, '#0f0', 1, true);
         config.preLayer && config.preLayer(stage);
-
         const layers = getLayers(this, config, stage, /*lightSettings*/null, lightingMix, linearInterpolator, guideLines);
         const deckProps: Partial<DeckProps> = {
             effects: lightingEffects(),
@@ -330,11 +329,6 @@ export class Presenter {
             stage: stage,
             view: stage.view
         };
-    }
-
-    private getCharacterSet(data: VegaTextLayerDatum[]): string[] {
-        const allChars = data.reduce((acc, datum) => acc + datum.text, '').split('');
-        return Array.from(new Set(allChars));
     }
 
     public canvasToDataURL() {
