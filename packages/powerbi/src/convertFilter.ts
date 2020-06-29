@@ -49,7 +49,7 @@ function filterSimilar(data: object, columns: powerbiVisualsApi.DataViewMetadata
 
         // TODO: booleans do not work with filter api
         if (typeof value === 'boolean') return;
-        
+
         filters.push(createAdvancedFilter(column, {
             operator: 'Is',
             value
