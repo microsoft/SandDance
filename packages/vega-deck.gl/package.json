@@ -25,7 +25,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@danmarshall/deckgl-typings": "^4.1.9",
+    "@danmarshall/deckgl-typings": "^4.1.11",
     "@msrvida/chart-types": "^1",
     "d3-color": "^1.4.0",
     "d3-ease": "^1.0.5",

@@ -26,10 +26,14 @@
 
 'use strict';
 
+import powerbiVisualsApi from 'powerbi-visuals-api';
+import DataViewPropertyValue = powerbiVisualsApi.DataViewPropertyValue;
+
 import { dataViewObjectsParser } from 'powerbi-visuals-utils-dataviewutils';
 import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 
 export class SandDanceConfig {
+  [propertyName: string]: DataViewPropertyValue;
   insightJSON: string = '';
   snapshotsJSON: string = '';
   tooltipExclusionsJSON: string = '';
