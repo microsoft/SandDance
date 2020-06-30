@@ -10,11 +10,12 @@ export function cleanInsight(insight: SandDance.specs.Insight) {
 }
 
 function visit(o: object) {
-    for (let prop in o) {
+    const props = Object.keys(o);
+    props.forEach(prop => {
         if (o[prop] === null) {
             delete o[prop];
         } else if (typeof o[prop] === 'object') {
             visit(o[prop]);
         }
-    }
+    });
 }
