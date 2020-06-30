@@ -26,7 +26,8 @@ import { Toggle } from '@fluentui/react/lib/Toggle';
 
 initializeIcons();
 
-export const fluentUI: FluentUIComponents = {
+/* tslint:disable */
+export const fluentUIComponents: FluentUIComponents = {
     ActionButton: ActionButton as any,
     ChoiceGroup: ChoiceGroup as any,
     ComboBox: ComboBox as any,

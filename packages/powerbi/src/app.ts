@@ -22,6 +22,7 @@ import { Logo } from '@msrvida/sanddance-explorer/dist/es6/controls/logo';
 import { language } from './language';
 import { version } from './version';
 
+// tslint:disable-next-line
 use(fluentUIComponents, React as any, ReactDOM as any, vega, deck, layers, luma);
 
 function getThemePalette(darkTheme: boolean) {
