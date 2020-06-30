@@ -15,11 +15,11 @@ export function convertFilter(searchFilter: SandDance.searchExpression.Search, c
             if (ex.name === SandDance.constants.GL_ORDINAL) {
                 // it would be ideal to filter to a single row identity, but the PoerBI API currently does not let us do that.
                 // so, we will filter to data points that have the same values
-                const dataPoint = getDataPoint(ex.value as number, data);
+                const dataPoint = getDataPoint(<number>ex.value, data);
                 if (dataPoint) {
                     filterSimilar(dataPoint, columns, filters);
                     // then we will select this data point
-                    selectedIds.push(dataPoint[SandDance.constants.FieldNames.PowerBISelectionId] as powerbiVisualsApi.extensibility.ISelectionId);
+                    selectedIds.push(dataPoint[SandDance.constants.FieldNames.PowerBISelectionId]);
                 }
             } else {
                 const column = columns.filter(c => c.displayName === ex.name)[0];
@@ -47,7 +47,7 @@ function filterSimilar(data: object, columns: powerbiVisualsApi.DataViewMetadata
     columns.forEach(column => {
         const value = data[column.displayName];
 
-        // TODO: booleans do not work with filter api
+        // INVESTIGATION: booleans do not work with filter api
         if (typeof value === 'boolean') return;
 
         filters.push(createAdvancedFilter(column, {
