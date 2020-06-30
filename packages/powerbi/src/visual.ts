@@ -82,7 +82,7 @@ export class Visual implements IVisual {
         this.selectionManager = this.host.createSelectionManager();
         this.persistAction = {};
 
-        if (typeof document !== 'undefined') {
+        if (document) {
             options.element.style.position = 'relative';
             this.viewElement = util.addDiv(options.element, 'sanddance-powerbi');
             this.errorElement = util.addDiv(options.element, 'sanddance-error');
@@ -155,9 +155,8 @@ export class Visual implements IVisual {
                 snapshotsJSON: JSON.stringify(snapshots || []),
                 tooltipExclusionsJSON: JSON.stringify(tooltipExclusions)
             };
-            const properties = config as any;
             // console.log(`persist ${options.reason}`, config, this.persistAction);
-            this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
+            this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties: config, selector: null }] });
         }
     }
 
@@ -302,7 +301,7 @@ export class Visual implements IVisual {
     }
 
     private static parseSettings(dataView: DataView): VisualSettings {
-        return VisualSettings.parse(dataView) as VisualSettings;
+        return VisualSettings.parse(dataView);
     }
 
     /**
