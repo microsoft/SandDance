@@ -11,7 +11,7 @@ VegaDeckGl.use(vega, deck, layers, luma);
 export { vega };
 
 /* eslint-disable */
-export const spec: vega.Spec = {
+const initspec: vega.Spec = {
     "$schema": "https://vega.github.io/schema/vega/v5.json",
     "description": "Stock prices of 5 Tech Companies over Time.",
     "background": "white",
@@ -293,7 +293,58 @@ export const spec: vega.Spec = {
   };
 /* eslint-enable */
 
-export const view = new VegaDeckGl.ViewGl(vega.parse(spec), { getView: () => '2d' })
+class SpecRenderer  {
+  viewType = '3d';
+  spec = initspec;
+  view =  null; 
+  
+  public toggleView() {
+    if (this.viewType === '3d') {
+      this.viewType = '2d';
+    } else {
+      this.viewType = '3d';
+    }
+    this.getText('text1');
+  }
+
+  public getText(textId)  {
+    var textarea = document.getElementById(textId) as any;
+    var text = textarea.value;
+    var errorDiv = document.getElementById('error');
+    var splitRight = document.getElementById('vis');
+    try {
+        var spec = JSON.parse(text);
+        splitRight.style.opacity = '1';
+        errorDiv.style.display = 'none';
+        this.update(spec);
+    }
+    catch (e) {
+        errorDiv.innerText = e;
+        errorDiv.style.display = '';
+        splitRight.style.opacity = '0.1';
+    }
+  }
+
+  public update(spec:any) {
+    // stash the view
+    if (this.view != null) {
+      const deckglviewstate = this.view.presenter.deckgl.viewState;
+      console.log("deckglviewstate",deckglviewstate);      
+    }
+    this.view = new VegaDeckGl.ViewGl(vega.parse(spec), {  getView: () => {return this.viewType as any}, presenterConfig: {onTargetViewState: (height,width)=>{return({height,width,newViewStateTarget:false }) } }} )
     .renderer('deck.gl')
-    .initialize(document.querySelector('#vis'))
-    .run();
+    .initialize(document.querySelector('#vis'));
+    console.log("vegadeckglview", this.view);
+    this.view.run();
+    
+    // this.viewer.vegaViewGl.runAsync().then(() => {
+    //   this.discardColorContextUpdates = true;
+    //   this.newViewStateTarget = undefined;
+    //   this.props.onSignalChanged && this.props.onSignalChanged();
+  // });
+  //this.view = new VegaDeckGl.ViewGl(vega.parse(spec), {  getView: () => {return this.viewType as any}, presenterConfig: {onTargetViewState: (height,width)=>{return(null)}}})
+  }
+}
+
+
+export const specRenderer = new SpecRenderer();

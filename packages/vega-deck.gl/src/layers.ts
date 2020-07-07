@@ -106,10 +106,13 @@ function newLineLayer(id: string, data: StyledLine[]) {
 
 
 function newPathLayer(id: string, mdata: Path[]) {
-    console.log("new path layer", mdata);
+ //   console.log("new path layer", mdata);
     if (!mdata) return null;
-    const data = mdata.map((p) => { return ({ path: p.positions, name: 'id', color: colorToString(p.strokeColor), strokeWidth: 5.0 }) });
+    const idata = mdata.map((p) => { return ({ path: p.positions, name: 'id', strokeColor: p.strokeColor, strokeWidth: p.strokeWidth, strokeOpacity:p.strokeOpacity }) });
 
+ //   console.log("prefilter",idata);
+    const data = idata.filter( (p) => {return(p.strokeOpacity>0.5)});
+ //   console.log("postfilter",data);
     return new base.layers.PathLayer<any>({
         id,
         data,
@@ -117,28 +120,33 @@ function newPathLayer(id: string, mdata: Path[]) {
         widthScale: 1,
         widthMinPixels: 2,
         widthUnits: 'pixels',
-        coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
+        coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,        
         getPath: (o) => o.path,
-        getColor: (o) => o.color,
+        getColor: (o) => o.strokeColor,
         getWidth: (o) => o.strokeWidth
     });
 }
 
 function newPolygonLayer(id: string, mdata: Polygon[]) {
-    // console.log("new area layer", mdata);
+     console.log("new area layer", mdata);
     if (!mdata) return null;
     //
     //const data = mdata.map((p)=>{return({contour: p.positions, name:'id', color: colorToRGBArray(p.strokeColor),strokeWidth:5.0 })});
     // we can make this much better! sdrucker
 
-    const data = mdata.map((areas) => {        
+    const data = mdata.map((areas) => {                
         let contourdata:Position3D[] = [];
+
+        let startpoint = [areas.positions[0][0],areas.positions[0][1],areas.positions[0][2]] as Position3D;
         areas.positions.forEach((p, i, elements) => {
                 contourdata.push([p[0], p[1], p[2]]);                        
-            });
+            });            
         areas.positions.reverse().forEach((p, i, elements) => {
             contourdata.push([p[3], p[4], p[5]]);                        
         }); 
+        contourdata.push(startpoint);
+
+
         return( 
             {   contour: contourdata,
                 color: areas.fillColor                
@@ -148,7 +156,7 @@ function newPolygonLayer(id: string, mdata: Polygon[]) {
     
   
     console.log("area data", data);
-    return new base.layers.PolygonLayer<any>({
+    let newlayer = new base.layers.PolygonLayer<any>({
         id,
         data,
         lineWidthMinPixels: 1,
@@ -160,10 +168,12 @@ function newPolygonLayer(id: string, mdata: Polygon[]) {
         filled: true,
         stroked: true,
         pickable: true,
-        extruded: true,
-        getElevation: 2,
+        extruded: false,
+        getElevation: 0,
         getLineWidth: (o) => o.strokeWidth
     });
+    console.log("polygon layer",newlayer);
+    return newlayer;
 }
 
 function newTextLayer(presenter: Presenter, id: string, data: VegaTextLayerDatum[], config: PresenterConfig, fontFamily: string) {

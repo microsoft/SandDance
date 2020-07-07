@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "vegatest": "parcel serve ./test/vegaspec/vega-deck.gl.test.html --port 8087 --open --no-hmr --global vegaTest --no-autoinstall",
+    "vegaspec": "parcel serve ./test/vegatextspec/vega-deck.gl.text.test.html --port 8087 --open --no-hmr --global vegaSpec --no-autoinstall",
     "cubetest": "parcel serve ./test/cubelayer/cubeTest.html --port 8087 --open --no-hmr --global cubeTest",
     "docs": "npx -p @danmarshall/ts-docs-gen ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/vega-deck.gl/v2/",
     "deploy": "node ./scripts/deploy.js",

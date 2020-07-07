@@ -28,7 +28,7 @@ type GroupItem = SceneGroup & {
 
 
 const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scene, x: number, y: number, groupType: GroupType) => {
-    console.log("in area stager ", scene);
+ //   console.log("in area stager ", scene);
 
 
     //    base.vega.sceneVisit(scene, function (item: GroupItem) {
@@ -48,9 +48,9 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
         strokeWidth: 2,
         strokeColor: colorFromString(g1.stroke),
         fillColor: colorFromString(g1.fill),
-        strokeOpacity: 1.0,
-        //positions:  scene.items.map( (it)=>{return([it.x, ty*it.y, it.z ? it.z : 0.0, it.x2? it.x2 : it.x, it.y2?ty*it.y2: it.y, it.z2?it.z2:(it.z ? it.z:0) ])})
-        positions: scene.items.map((it: GroupItem) => { return [it.x, -1 * it.y, it.z, it.x2, -1 * it.y2, it.z2] })
+        strokeOpacity: 1.0,        
+        positions: scene.items.map((it: GroupItem) => { return [it.x, -1 * it.y, 'z' in it ?it.z:0, 'x2' in it ?it.x2:it.x, 'y2' in it? -1 * it.y2: -1*it.y, 'z2' in it ?it.z2:('z' in it ? it.z:0)] })
+        //positions: scene.items.map((it: GroupItem) => { return [it.x, it.y, 'z' in it ?it.z:0, 'x2' in it ?it.x2:it.x, 'y2' in it? it.y2: it.y, 'z2' in it ?it.z2:('z' in it ? it.z:0)] })
     };
 
     stage.polygonData.push(polygon);

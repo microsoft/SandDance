@@ -20,11 +20,12 @@ type GroupItem = SceneGroup & {
     depth: number;
     opacity: number;
     z: number;
-    strokeWidth: number;
+    strokeWidth: number,
+    strokeOpacity: number;
 }
 
 const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scene, x: number, y: number, groupType: GroupType) => {
-    console.log("in line stager ", scene);
+//    console.log("in line stager ", scene);
 
     //    base.vega.sceneVisit(scene, function (item: GroupItem) {
 
@@ -39,10 +40,10 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
 
     const path: Path = {
         // strokeWidth: item.items[0].strokeWidth,
-        strokeWidth: g1.strokeWidth ? g1.strokeWidth : 1,
+        strokeWidth: 'strokeWidth' in g1 ? g1.strokeWidth : 1,
         strokeColor: colorFromString(g1.stroke),
-        strokeOpacity: 1.0,
-        positions: scene.items.map((it: GroupItem) => { return ([it.x, ty * it.y, it.z ? it.z : 0.0]) })
+        strokeOpacity: 'strokeOpacity' in g1 ? g1.strokeOpacity : 1.0,
+        positions: scene.items.map((it: GroupItem) => { return ([it.x, ty * it.y, 'z' in it ? it.z : 0.0]) })
     };
 
     stage.pathData.push(path);

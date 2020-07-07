@@ -5,6 +5,7 @@
   "description": "SandDance development monorepo.",
   "scripts": {
     "vegatest": "lerna run vegatest --parallel",
+    "vegaspec": "lerna run vegaspec --parallel",
     "eslint": "lerna run eslint --parallel",
     "build-az": "lerna run build --scope azdata-sanddance",
     "postinstall": "node ./scripts/copy_inuitcss.js",
