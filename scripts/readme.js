@@ -43,6 +43,7 @@ const map = {
     "https://microsoft.github.io/SandDance": "",
     "dev.md": "https://github.com/Microsoft/SandDance/blob/master/dev.md",
     "packages/sanddance/README.md": `/docs/sanddance/${pubversion}/`,
+    "packages/sanddance-vue/README.md": `/docs/sanddance-vue/${pubversion}/`,
     "packages/sanddance-react/README.md": `/docs/sanddance-react/${pubversion}/`,
     "packages/sanddance-explorer/README.md": `/docs/sanddance-explorer/${pubversion}/`
 };

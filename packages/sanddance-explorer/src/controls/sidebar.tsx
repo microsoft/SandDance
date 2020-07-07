@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as React from 'react';
 import { base } from '../base';
 import { DataScope, Props as DataScopeProps } from './dataScope';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
@@ -49,6 +48,11 @@ export function Sidebar(props: Props) {
             sideTabId: SideTabId.Snapshots,
             iconName: 'Camera',
             title: strings.labelSnapshots
+        },
+        {
+            sideTabId: SideTabId.History,
+            iconName: 'History',
+            title: strings.labelHistory
         },
         {
             sideTabId: SideTabId.Settings,

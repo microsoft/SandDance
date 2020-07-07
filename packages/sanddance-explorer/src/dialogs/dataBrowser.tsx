@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as React from 'react';
+import { base } from '../base';
 import { DataExportHandler } from '../interfaces';
 import { DataExportPicker, removeExtensions } from '../controls/dataExporter';
 import { DataItem } from '../controls/dataItem';
@@ -14,7 +14,6 @@ import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
 
 export interface Props {
-    title: string;
     data: object[];
     index: number;
     onActivate: { (row: object, index: number): void };

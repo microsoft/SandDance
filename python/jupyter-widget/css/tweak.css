@@ -1,0 +1,9 @@
+/* height is needed to specify */
+.sanddance-explorer {
+    height: 100%;
+}
+
+/* override jupyter's style */
+.sanddance-legend .label {
+  color: #1b1e23;
+}

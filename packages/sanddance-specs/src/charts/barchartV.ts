@@ -1,16 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { AggregateContainer, AggregateContainerProps } from '../layouts/aggregateContainer';
-import { AxisScale, AxisScales } from '../interfaces';
-import { Band, BandProps } from '../layouts/band';
-import { defaultBins, maxbins, minBarBandWidth } from '../defaults';
-import { LayoutPair } from '../layouts/layout';
 import { SignalNames } from '../constants';
-import { SpecBuilderProps } from '../specBuilder';
-import { SpecContext } from '../types';
+import { defaultBins, maxbins, minBarBandWidth } from '../defaults';
+import { AxisScale, AxisScales } from '../interfaces';
+import { AggregateContainer, AggregateContainerProps } from '../layouts/aggregateContainer';
+import { Band, BandProps } from '../layouts/band';
+import { LayoutPair } from '../layouts/layout';
 import { Square, SquareProps } from '../layouts/square';
 import { Strip, StripProps } from '../layouts/strip';
 import { Treemap, TreemapProps } from '../layouts/treemap';
+import { allowNoneForSize } from '../size';
+import { SpecBuilderProps } from '../specBuilder';
+import { SpecContext } from '../types';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns, specViewOptions } = specContext;
@@ -157,7 +158,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 },
                 {
                     role: 'size',
-                    allowNone: true,
+                    allowNone: allowNoneForSize,
                     excludeCategoric: true,
                     signals: [SignalNames.TreeMapMethod]
                 },

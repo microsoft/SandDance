@@ -16,19 +16,23 @@
   "Components": [
     {
       "tree": "sanddance",
-      "url": "/docs/sanddance/v2"
+      "url": "/docs/sanddance/v3"
     },
     {
       "tree": "sanddance-react",
-      "url": "/docs/sanddance-react/v2"
+      "url": "/docs/sanddance-react/v3"
     },
     {
       "tree": "sanddance-explorer",
-      "url": "/docs/sanddance-explorer/v2"
+      "url": "/docs/sanddance-explorer/v3"
+    },
+    {
+      "tree": "sanddance-vue",
+      "url": "/docs/sanddance-vue/v3"
     },
     {
       "tree": "vega-deck.gl",
-      "url": "/docs/vega-deck.gl/v2"
+      "url": "/docs/vega-deck.gl/v3"
     }
   ],
   "Resources": [

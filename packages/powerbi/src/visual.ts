@@ -43,12 +43,20 @@ import { capabilities, SandDance } from '@msrvida/sanddance-explorer';
 import { convertFilter } from './convertFilter';
 import { createElement } from 'react';
 import { render } from 'react-dom';
-import { App, Props } from './app';
+import { App, Props, ViewChangeOptions } from './app';
 import { convertTableToObjectArray } from './convertTableToObjectArray';
 import { cleanInsight } from './cleanInsight';
 import { VisualSettings, SandDanceConfig, IVisualSettings } from './settings';
 
 const { util } = SandDance.VegaDeckGl;
+
+interface PersistAction {
+    signalChange?: boolean;
+}
+
+interface PersistOptions extends ViewChangeOptions {
+    reason: string;
+}
 
 export class Visual implements IVisual {
     private settings: VisualSettings;
@@ -63,6 +71,7 @@ export class Visual implements IVisual {
     private fetchMoreTimer: number;
     private filters: { sd: SandDance.searchExpression.Search, pbi: powerbiModels.IFilter[] };
     private columns: powerbiVisualsApi.DataViewMetadataColumn[];
+    private persistAction: PersistAction;
 
     public static fetchMoreTimeout = 5000;
 
@@ -71,8 +80,9 @@ export class Visual implements IVisual {
         this.host = options.host;
         this.events = this.host.eventService;
         this.selectionManager = this.host.createSelectionManager();
+        this.persistAction = {};
 
-        if (typeof document !== 'undefined') {
+        if (document) {
             options.element.style.position = 'relative';
             this.viewElement = util.addDiv(options.element, 'sanddance-powerbi');
             this.errorElement = util.addDiv(options.element, 'sanddance-error');
@@ -82,24 +92,16 @@ export class Visual implements IVisual {
                 mounted: (app: App) => {
                     this.app = app;
                 },
-                onViewChange: (tooltipExclusions: string[]) => {
-                    // console.log('onViewChange');
+                onViewChange: viewChangeOptions => {
+                    // console.log('onViewChange', this.renderingOptions);
                     if (this.renderingOptions) {
                         this.events.renderingFinished(this.renderingOptions);
-                        this.renderingOptions = null;
-                    }
 
-                    if (this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.Edit || this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.InFocusEdit) {
-                        const insight = this.app.explorer.viewer.getInsight();
-                        tooltipExclusions = tooltipExclusions || this.app.explorer.state.tooltipExclusions;
-                        cleanInsight(insight);
-                        const config: SandDanceConfig = {
-                            insightJSON: JSON.stringify(insight),
-                            tooltipExclusionsJSON: JSON.stringify(tooltipExclusions)
-                        };
-                        const properties = config as any;
-                        this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties, selector: null }] });
+                        this.persist({ reason: 'onViewChange', ...viewChangeOptions }, null);
                     }
+                },
+                onSnapshotsChanged: snapshots => {
+                    this.persist({ reason: 'onSnapshotsChanged' }, snapshots);
                 },
                 onError: (e: any) => {
                     if (this.renderingOptions) {
@@ -138,6 +140,23 @@ export class Visual implements IVisual {
                 }
             };
             render(createElement(App, props), this.viewElement);
+        }
+    }
+
+    private persist(options: PersistOptions, snapshots: SandDance.types.Snapshot[]) {
+        if (this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.Edit || this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.InFocusEdit) {
+            this.persistAction = { signalChange: options.signalChange };
+            const insight = this.app.explorer.viewer.getInsight();
+            const tooltipExclusions = options.tooltipExclusions || this.app.explorer.state.tooltipExclusions;
+            snapshots = snapshots || this.app.explorer.state.snapshots;
+            cleanInsight(insight);
+            const config: SandDanceConfig = {
+                insightJSON: JSON.stringify(insight),
+                snapshotsJSON: JSON.stringify(snapshots || []),
+                tooltipExclusionsJSON: JSON.stringify(tooltipExclusions)
+            };
+            // console.log(`persist ${options.reason}`, config, this.persistAction);
+            this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties: config, selector: null }] });
         }
     }
 
@@ -216,17 +235,28 @@ export class Visual implements IVisual {
 
         this.app.setChromeless(!this.settings.sandDanceMainSettings.showchrome);
 
+        const wasSignalChange = this.persistAction.signalChange;
+        this.persistAction = {};
+
         this.prevSettings = util.clone(this.settings);
 
-        if (!different) {
+        if (!different || wasSignalChange) {
             // console.log('Visual update - not different');
             return;
         }
 
         const { sandDanceConfig } = this.settings;
 
-        let tooltipExclusions: string[] = [];
+        let snapshots: SandDance.types.Snapshot[] = [];
+        if (sandDanceConfig.snapshotsJSON) {
+            try {
+                snapshots = JSON.parse(sandDanceConfig.snapshotsJSON);
+            } catch (e) {
+                // continue regardless of error
+            }
+        }
 
+        let tooltipExclusions: string[] = [];
         if (sandDanceConfig.tooltipExclusionsJSON) {
             try {
                 tooltipExclusions = JSON.parse(sandDanceConfig.tooltipExclusionsJSON);
@@ -235,31 +265,43 @@ export class Visual implements IVisual {
             }
         }
 
-        this.app.load(data, columns => {
-            if (!columns) return;
+        this.app.load(
+            data,
+            columns => {
+                if (!columns) return;
 
-            let insight: Partial<SandDance.specs.Insight>;
-
-            if (sandDanceConfig.insightJSON) {
-                try {
-                    insight = JSON.parse(sandDanceConfig.insightJSON);
-                    delete insight.size;
-                } catch (e) {
-                    // continue regardless of error
+                // remove column which contains powerbi selectionId
+                for (let i = 0; i < columns.length; i++) {
+                    if (SandDance.util.isInternalFieldName(columns[i].name)) {
+                        columns.splice(i, 1);
+                        i--;
+                    }
                 }
-            }
 
-            if (this.filters) {
-                insight.filter = this.filters.sd;
-            }
+                let insight: Partial<SandDance.specs.Insight>;
 
-            return insight;
-        }, tooltipExclusions);
+                if (sandDanceConfig.insightJSON) {
+                    try {
+                        insight = JSON.parse(sandDanceConfig.insightJSON);
+                        delete insight.size;
+                    } catch (e) {
+                        // continue regardless of error
+                    }
+                }
+
+                if (this.filters) {
+                    insight.filter = this.filters.sd;
+                }
+
+                return insight;
+            },
+            snapshots,
+            tooltipExclusions);
 
     }
 
     private static parseSettings(dataView: DataView): VisualSettings {
-        return VisualSettings.parse(dataView) as VisualSettings;
+        return VisualSettings.parse(dataView);
     }
 
     /**

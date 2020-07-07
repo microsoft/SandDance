@@ -1,24 +1,8 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
     typeof define === 'function' && define.amd ? define(['exports'], factory) :
-    (factory((global.SandDance = {})));
+    (global = global || self, factory(global.SandDance = {}));
 }(this, (function (exports) { 'use strict';
-
-    class Layout {
-        constructor(props) {
-            this.props = props;
-            this.id = props.id;
-        }
-        getGrouping() {
-            return null;
-        }
-        getAggregateSumOp() {
-            return null;
-        }
-        build() {
-            throw 'Not implemented';
-        }
-    }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
@@ -94,6 +78,62 @@
     //name of the "no-color" palette
     const ColorScaleNone = 'none';
 
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    // Licensed under the MIT license.
+    //TODO move these to options
+    const defaultBins = 10;
+    const maxbins = 100;
+    const minBarBandWidth = 15;
+    const minFacetWidth = 140;
+    const minFacetHeight = 180;
+    const facetPaddingLeft = 40;
+    const facetPaddingTop = 40;
+    const facetPaddingBottom = 40;
+    const facetPaddingRight = 40;
+    const axesLabelLimit = 100;
+    const axesTitleLimit = 100;
+    const axesTitlePaddingX = 30;
+    const axesTitlePaddingY = 60;
+    const axesTitlePaddingFacetX = 69;
+    const axesTitlePaddingFacetY = 92;
+    const axesOffsetX = 120;
+    const axesOffsetY = 120;
+    const scatterSizedDiv = 20;
+
+    class Layout {
+        constructor(props) {
+            this.props = props;
+            this.id = props.id;
+        }
+        getGrouping() {
+            return null;
+        }
+        getAggregateSumOp() {
+            return null;
+        }
+        build() {
+            throw 'Not implemented';
+        }
+    }
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
+    // Licensed under the MIT license.
+    /**
+     * Make sure that the field name is accessible via Vega's Field type
+     * https://vega.github.io/vega/docs/types/#Field
+     * examples: "source.x", "target['x']", "[my.field]"
+     */
+    function safeFieldName(field) {
+        return field.replace('.', '\\.').replace('[', '\\[').replace(']', '\\]');
+    }
+    /**
+     * Make sure the field name is usable in a Vega expression
+     */
+    function exprSafeFieldName(field) {
+        //remove whitespace, period, accessors and logical modifiers
+        return field.replace(/[.,:;+=\-/<>{}|~!@#$%^*[\]`'"()?\s\\]/g, '');
+    }
+
     function addAxes(scope, ...axis) {
         if (!scope.axes) {
             scope.axes = [];
@@ -168,7 +208,7 @@
         getAggregateSumOp() {
             if (this.aggregation === 'sum') {
                 const fieldOp = {
-                    field: this.props.sumBy.name,
+                    field: safeFieldName(this.props.sumBy.name),
                     op: 'sum',
                     as: FieldNames.Sum
                 };
@@ -180,7 +220,7 @@
             const { dock, globalScope, groupings, niceScale, parentScope, showAxes } = props;
             addTransforms(globalScope.data, Object.assign(Object.assign({}, this.getTransforms(aggregation, getGroupBy(groupings))), { as: [names.aggregateField] }), {
                 type: 'extent',
-                field: names.aggregateField,
+                field: safeFieldName(names.aggregateField),
                 signal: names.globalAggregateExtentSignal
             });
             addSignals(globalScope.scope, {
@@ -288,11 +328,11 @@
         getTransforms(aggregation, groupby) {
             const trans = {
                 type: 'joinaggregate',
-                groupby,
+                groupby: groupby.map(safeFieldName),
                 ops: [aggregation]
             };
             if (aggregation === 'sum') {
-                trans.fields = [this.props.sumBy.name];
+                trans.fields = [this.props.sumBy.name].map(safeFieldName);
             }
             return trans;
         }
@@ -314,17 +354,18 @@
         }
     }
 
+    // Copyright (c) Microsoft Corporation. All rights reserved.
     function binnable(prefix, domainDataName, discreteColumn) {
         const { column, defaultBins, maxbins, maxbinsSignalDisplayName, maxbinsSignalName } = discreteColumn;
         if (column.quantitative) {
-            const field = `${prefix}_bin_${column.name}`;
+            const field = `${prefix}_bin_${exprSafeFieldName(column.name)}`;
             const fieldEnd = `${field}_end`;
             const binSignal = `${field}_bins`;
             const extentSignal = `${field}_bin_extent`;
             domainDataName = `${field}_sequence`; //override the data name
             const extentTransform = {
                 type: 'extent',
-                field: column.name,
+                field: safeFieldName(column.name),
                 signal: extentSignal
             };
             const maxbinsSignal = {
@@ -341,7 +382,7 @@
             };
             const binTransform = {
                 type: 'bin',
-                field: column.name,
+                field: safeFieldName(column.name),
                 as: [
                     field,
                     fieldEnd,
@@ -562,7 +603,7 @@
                 transform: [
                     {
                         type: 'aggregate',
-                        groupby: this.getGrouping(),
+                        groupby: this.getGrouping().map(safeFieldName),
                         ops: ['count']
                     }
                 ]
@@ -655,7 +696,7 @@
         getScale(bin, horizontal) {
             const { names } = this;
             const { parentScope } = this.props;
-            const binField = bin.fields[0];
+            const binField = safeFieldName(bin.fields[0]);
             let scale;
             if (horizontal) {
                 scale = {
@@ -699,27 +740,6 @@
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    // Licensed under the MIT license.
-    //TODO move these to options
-    const defaultBins = 10;
-    const maxbins = 100;
-    const minBarBandWidth = 15;
-    const minFacetWidth = 140;
-    const minFacetHeight = 180;
-    const facetPaddingLeft = 40;
-    const facetPaddingTop = 40;
-    const facetPaddingBottom = 40;
-    const facetPaddingRight = 40;
-    const axesLabelLimit = 100;
-    const axesTitleLimit = 100;
-    const axesTitlePaddingX = 30;
-    const axesTitlePaddingY = 60;
-    const axesTitlePaddingFacetX = 69;
-    const axesTitlePaddingFacetY = 92;
-    const axesOffsetX = 120;
-    const axesOffsetY = 120;
-    const scatterSizedDiv = 20;
-
     function linearScale(scaleName, data, field, range, reverse, zero) {
         const scale = {
             name: scaleName,
@@ -729,7 +749,7 @@
             reverse,
             domain: {
                 data,
-                field
+                field: safeFieldName(field)
             },
             zero,
             nice: true
@@ -743,7 +763,7 @@
             range,
             domain: {
                 data,
-                field,
+                field: safeFieldName(field),
                 sort: true
             },
             padding: 0.5
@@ -757,7 +777,7 @@
         scheme = scheme || ColorScaleNone;
         const domain = {
             data,
-            field
+            field: safeFieldName(field)
         };
         const range = {
             scheme
@@ -831,9 +851,9 @@
             const { names, prefix, props } = this;
             const { fillDirection, globalScope, groupings, parentScope, collapseYHeight, sortBy, z } = props;
             addZScale(z, globalScope.zSize, globalScope, names.zScale);
-            addTransforms(globalScope.data, Object.assign({ type: 'stack', groupby: getGroupBy(groupings), as: [names.stack0, names.stack1] }, sortBy && {
+            addTransforms(globalScope.data, Object.assign({ type: 'stack', groupby: getGroupBy(groupings).map(safeFieldName), as: [names.stack0, names.stack1] }, sortBy && {
                 sort: {
-                    field: sortBy.name,
+                    field: safeFieldName(sortBy.name),
                     order: 'ascending'
                 }
             }));
@@ -868,7 +888,7 @@
                             },
                             {
                                 scale: names.zScale,
-                                field: z.name
+                                field: safeFieldName(z.name)
                             }
                         ]
                     })
@@ -912,7 +932,7 @@
                 if (groupings) {
                     addTransforms(globalScope.data, {
                         type: 'joinaggregate',
-                        groupby: getGroupBy(groupings),
+                        groupby: getGroupBy(groupings).map(safeFieldName),
                         ops: ['count'],
                         as: [names.maxGroupField]
                     }, {
@@ -931,15 +951,15 @@
             }
             const aspect = `((${names.bandWidth}) / (${maxGroupedFillSize}))`;
             const squaresPerBand = `ceil(sqrt(${maxGroupedUnits} * ${aspect}))`;
-            const gap = `min(0.1 * (${names.bandWidth} / (${squaresPerBand} - 1)), 1)`;
-            const size = `((${names.bandWidth} / ${squaresPerBand}) - ${gap})`;
+            const gap = `min(0.1 * ((${names.bandWidth}) / (${squaresPerBand} - 1)), 1)`;
+            const size = `(((${names.bandWidth}) / ${squaresPerBand}) - ${gap})`;
             const levels = `ceil(${maxGroupedUnits} / ${squaresPerBand})`;
             const levelSize = `(((${maxGroupedFillSize}) / ${levels}) - ${gap})`;
             return { gap, levelSize, size, squaresPerBand };
         }
         transformXY(gap, levelSize, squaresPerBand) {
             const { names, prefix } = this;
-            const compartment = `${names.bandWidth} / ${squaresPerBand} * ((datum[${JSON.stringify(names.stack0)}]) % ${squaresPerBand})`;
+            const compartment = `(${names.bandWidth}) / ${squaresPerBand} * ((datum[${JSON.stringify(names.stack0)}]) % ${squaresPerBand})`;
             const level = `floor((datum[${JSON.stringify(names.stack0)}]) / ${squaresPerBand})`;
             const { fillDirection, parentScope } = this.props;
             const tx = {
@@ -998,7 +1018,7 @@
                 transform.push({
                     type: 'collect',
                     sort: {
-                        field: sort.name,
+                        field: safeFieldName(sort.name),
                         order: sortOrder
                     }
                 });
@@ -1021,12 +1041,12 @@
             }
             const stackTransform = {
                 type: 'stack',
-                field: stackField,
+                field: safeFieldName(stackField),
                 offset: 'normalize',
                 as: [names.firstField, names.lastField]
             };
             if (groupings.length) {
-                stackTransform.groupby = getGroupBy(groupings);
+                stackTransform.groupby = getGroupBy(groupings).map(safeFieldName);
             }
             transform.push(stackTransform);
             addTransforms(globalScope.data, ...transform);
@@ -1065,7 +1085,7 @@
                             },
                             {
                                 scale: names.zScale,
-                                field: z.name
+                                field: safeFieldName(z.name)
                             }
                         ]
                     })
@@ -1199,7 +1219,7 @@
                         facet: {
                             name: names.dataFacet,
                             data: names.dataHeightWidth,
-                            groupby: getGroupBy(groupings)
+                            groupby: getGroupBy(groupings).map(safeFieldName)
                         }
                     },
                     data: [
@@ -1255,7 +1275,7 @@
                             },
                             {
                                 scale: names.zScale,
-                                field: z.name
+                                field: safeFieldName(z.name)
                             }
                         ]
                     })
@@ -1275,7 +1295,7 @@
                 keys: [(group && group.name) || '__NONE__']
             }, {
                 type: 'treemap',
-                field: size.name,
+                field: safeFieldName(size.name),
                 sort: { field: 'value', order: 'descending' },
                 round: true,
                 method: { signal: SignalNames.TreeMapMethod },
@@ -1301,6 +1321,18 @@
     }
     function subtract(...fields) {
         return fields.map(n => fn(n)).join(' - ');
+    }
+
+    function allowNoneForSize(specContext) {
+        switch (specContext.insight.totalStyle) {
+            case 'sum-strip':
+            case 'sum-strip-percent':
+            case 'sum-treemap':
+                return false;
+            default:
+                //if totalStyle is blank, count is assumed
+                return true;
+        }
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -1451,7 +1483,7 @@
                     },
                     {
                         role: 'size',
-                        allowNone: true,
+                        allowNone: allowNoneForSize,
                         excludeCategoric: true,
                         signals: [SignalNames.TreeMapMethod]
                     },
@@ -1617,7 +1649,7 @@
                     },
                     {
                         role: 'size',
-                        allowNone: true,
+                        allowNone: allowNoneForSize,
                         excludeCategoric: true,
                         signals: [SignalNames.TreeMapMethod]
                     },
@@ -1656,7 +1688,7 @@
             const { sizeSignals } = parentScope;
             addTransforms(globalScope.data, Object.assign(Object.assign({}, this.getTransforms(aggregation, getGroupBy(groupings))), { as: [names.aggregateField] }), {
                 type: 'extent',
-                field: names.aggregateField,
+                field: safeFieldName(names.aggregateField),
                 signal: names.globalAggregateExtentSignal
             });
             const localAggregateMaxExtent = `datum[${JSON.stringify(names.aggregateField)}]`;
@@ -1698,11 +1730,11 @@
         getTransforms(aggregation, groupby) {
             const trans = {
                 type: 'joinaggregate',
-                groupby,
+                groupby: groupby.map(safeFieldName),
                 ops: [aggregation]
             };
             if (aggregation === 'sum') {
-                trans.fields = [this.props.sumBy.name];
+                trans.fields = [this.props.sumBy.name].map(safeFieldName);
             }
             return trans;
         }
@@ -1857,7 +1889,7 @@
                     },
                     {
                         role: 'size',
-                        allowNone: true,
+                        allowNone: allowNoneForSize,
                         excludeCategoric: true,
                         signals: [SignalNames.TreeMapMethod]
                     },
@@ -1968,7 +2000,7 @@
             if (qsize) {
                 addTransforms(globalScope.data, {
                     type: 'extent',
-                    field: qsize.name,
+                    field: safeFieldName(qsize.name),
                     signal: names.sizeExtent
                 });
                 addScales(globalScope.scope, {
@@ -2189,16 +2221,16 @@
             const { sizeSignals } = parentScope;
             addTransforms(globalScope.data, {
                 type: 'joinaggregate',
-                groupby: getGroupBy(groupings),
+                groupby: getGroupBy(groupings).map(safeFieldName),
                 ops: ['count'],
                 as: [names.count]
             }, {
                 type: 'extent',
                 field: names.count,
                 signal: names.globalExtent
-            }, Object.assign({ type: 'stack', groupby: getGroupBy(groupings), as: [names.stack0, names.stack1] }, sort && {
+            }, Object.assign({ type: 'stack', groupby: getGroupBy(groupings).map(safeFieldName), as: [names.stack0, names.stack1] }, sort && {
                 sort: {
-                    field: sort.name,
+                    field: safeFieldName(sort.name),
                     order: 'ascending'
                 }
             }));
@@ -2549,7 +2581,7 @@
                 roles: [
                     {
                         role: 'size',
-                        excludeCategoric: true
+                        excludeCategoric: true,
                     },
                     {
                         role: 'group',
@@ -2683,19 +2715,26 @@
         }
     }
 
+    // Copyright (c) Microsoft Corporation. All rights reserved.
     function topLookup(column, count, source, legend, lookupName, fieldName, indexName) {
         const data = [
             {
                 name: lookupName,
                 source,
                 transform: [
-                    { type: 'aggregate', groupby: [column.name] },
+                    {
+                        type: 'aggregate',
+                        groupby: [safeFieldName(column.name)]
+                    },
                     {
                         type: 'window',
                         ops: ['count'],
                         as: [indexName]
                     },
-                    { type: 'filter', expr: `datum[${JSON.stringify(indexName)}] <= ${count}` }
+                    {
+                        type: 'filter',
+                        expr: `datum[${JSON.stringify(indexName)}] <= ${count}`
+                    }
                 ]
             },
             {
@@ -2705,9 +2744,9 @@
                     {
                         type: 'lookup',
                         from: lookupName,
-                        key: column.name,
-                        fields: [column.name],
-                        values: [column.name],
+                        key: safeFieldName(column.name),
+                        fields: [column.name].map(safeFieldName),
+                        values: [column.name].map(safeFieldName),
                         as: [fieldName]
                     },
                     {
@@ -3036,6 +3075,7 @@
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     function createOrdinals(source, prefix, binFields, sortOrder) {
+        const _binFields = binFields.map(safeFieldName);
         const dataName = `${prefix}_bin_order`;
         const data = {
             name: dataName,
@@ -3043,13 +3083,13 @@
             transform: [
                 {
                     type: 'aggregate',
-                    groupby: binFields
+                    groupby: _binFields
                 },
                 {
                     type: 'collect',
                     sort: {
-                        field: binFields,
-                        order: binFields.map(f => sortOrder)
+                        field: _binFields,
+                        order: _binFields.map(f => sortOrder)
                     }
                 },
                 {
@@ -3070,7 +3110,7 @@
             name: scaleName,
             domain: {
                 data: dataName,
-                field: binFields[0]
+                field: safeFieldName(binFields[0])
             },
             range: {
                 data: dataName,
@@ -3269,62 +3309,6 @@
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    class Slice extends Layout {
-        constructor(props) {
-            super(props);
-            this.props = props;
-            this.prefix = `slice_${this.id}`;
-            this.bin = binnable(this.prefix, props.globalScope.data.name, props.groupby);
-        }
-        getGrouping() {
-            return this.bin.fields;
-        }
-        build() {
-            const { bin, prefix, props } = this;
-            const { globalScope, parentScope } = props;
-            if (bin.native === false) {
-                globalScope.scope.signals.push(bin.maxbinsSignal);
-                addTransforms(globalScope.data, ...bin.transforms);
-                globalScope.scope.data.push(bin.dataSequence);
-            }
-            // const mark: Mark = {
-            //     style: 'cell',
-            //     name: prefix,
-            //     type: 'group',
-            //     from: {
-            //         facet: {
-            //             name: facetDataName,
-            //             data: parentScope.dataName,
-            //             groupby: bin.fields
-            //         }
-            //     },
-            //     encode: {
-            //     },
-            //     marks: [
-            //         {
-            //             type: 'text',
-            //             encode: {
-            //                 update: {
-            //                     text: {
-            //                         signal: `length(data(${JSON.stringify(facetDataName)}))`
-            //                     },
-            //                     fontSize: {
-            //                         value: 20
-            //                     }
-            //                 }
-            //             }
-            //         }
-            //     ]
-            // };
-            // parentScope.scope.marks.push(mark);
-            return {
-                offsets: null,
-                sizeSignals: { layoutHeight: 'TODO', layoutWidth: 'TODO' }
-            };
-        }
-    }
-
-    // Copyright (c) Microsoft Corporation. All rights reserved.
     class Wrap extends Layout {
         constructor(props) {
             super(props);
@@ -3506,8 +3490,8 @@
                     {
                         type: 'lookup',
                         from: names.rowColumnDataName,
-                        key: bin.fields[0],
-                        fields: [bin.fields[0]],
+                        key: safeFieldName(bin.fields[0]),
+                        fields: [bin.fields[0]].map(safeFieldName),
                         values: [FieldNames.WrapRow, FieldNames.WrapCol]
                     }
                 ]
@@ -3615,28 +3599,6 @@
             y: 0
         };
         switch (facetStyle) {
-            case 'horizontal': {
-                const props = {
-                    orientation: 'horizontal',
-                    groupby
-                };
-                layoutPair = {
-                    layoutClass: Slice,
-                    props
-                };
-                break;
-            }
-            case 'vertical': {
-                const props = {
-                    orientation: 'vertical',
-                    groupby
-                };
-                layoutPair = {
-                    layoutClass: Slice,
-                    props
-                };
-                break;
-            }
             case 'cross': {
                 const props = {
                     axisTextColor,
@@ -3697,18 +3659,19 @@
         return { layoutPair, plotPadding, scales, signals };
     }
 
+    // Copyright (c) Microsoft Corporation. All rights reserved.
     function fill(context, colorFieldName, scale) {
         const { specColumns, insight, specViewOptions } = context;
         const colorColumn = specColumns.color;
         return colorColumn ?
             colorColumn.isColorData || insight.directColor ?
                 {
-                    field: colorColumn.name
+                    field: safeFieldName(colorColumn.name)
                 }
                 :
                     {
                         scale,
-                        field: colorColumn.quantitative ? colorColumn.name : colorFieldName
+                        field: colorColumn.quantitative ? safeFieldName(colorColumn.name) : colorFieldName
                     }
             :
                 {
@@ -3778,7 +3741,16 @@
         validate() {
             const { specCapabilities, specContext } = this.props;
             const { roles } = specCapabilities;
-            const required = roles.filter(r => !r.allowNone);
+            const required = roles.filter(r => {
+                switch (typeof r.allowNone) {
+                    case 'boolean':
+                        return !r.allowNone;
+                    case 'undefined':
+                        return true;
+                    case 'function':
+                        return !r.allowNone(specContext);
+                }
+            });
             const numeric = roles.filter(r => r.excludeCategoric);
             const errors = required
                 .map(r => {
@@ -3942,7 +3914,7 @@
                         }
                     });
                     update.fill = fill(specContext, topColorField, ScaleNames.Color);
-                    update.opacity = opacity(specContext);
+                    update.opacity = opacity();
                 }
                 return {
                     specCapabilities,
@@ -4485,179 +4457,6 @@
           : m1) * 255;
     }
 
-    var deg2rad = Math.PI / 180;
-    var rad2deg = 180 / Math.PI;
-
-    // https://observablehq.com/@mbostock/lab-and-rgb
-    var K = 18,
-        Xn = 0.96422,
-        Yn = 1,
-        Zn = 0.82521,
-        t0 = 4 / 29,
-        t1 = 6 / 29,
-        t2 = 3 * t1 * t1,
-        t3 = t1 * t1 * t1;
-
-    function labConvert(o) {
-      if (o instanceof Lab) return new Lab(o.l, o.a, o.b, o.opacity);
-      if (o instanceof Hcl) return hcl2lab(o);
-      if (!(o instanceof Rgb)) o = rgbConvert(o);
-      var r = rgb2lrgb(o.r),
-          g = rgb2lrgb(o.g),
-          b = rgb2lrgb(o.b),
-          y = xyz2lab((0.2225045 * r + 0.7168786 * g + 0.0606169 * b) / Yn), x, z;
-      if (r === g && g === b) x = z = y; else {
-        x = xyz2lab((0.4360747 * r + 0.3850649 * g + 0.1430804 * b) / Xn);
-        z = xyz2lab((0.0139322 * r + 0.0971045 * g + 0.7141733 * b) / Zn);
-      }
-      return new Lab(116 * y - 16, 500 * (x - y), 200 * (y - z), o.opacity);
-    }
-
-    function lab(l, a, b, opacity) {
-      return arguments.length === 1 ? labConvert(l) : new Lab(l, a, b, opacity == null ? 1 : opacity);
-    }
-
-    function Lab(l, a, b, opacity) {
-      this.l = +l;
-      this.a = +a;
-      this.b = +b;
-      this.opacity = +opacity;
-    }
-
-    define(Lab, lab, extend(Color, {
-      brighter: function(k) {
-        return new Lab(this.l + K * (k == null ? 1 : k), this.a, this.b, this.opacity);
-      },
-      darker: function(k) {
-        return new Lab(this.l - K * (k == null ? 1 : k), this.a, this.b, this.opacity);
-      },
-      rgb: function() {
-        var y = (this.l + 16) / 116,
-            x = isNaN(this.a) ? y : y + this.a / 500,
-            z = isNaN(this.b) ? y : y - this.b / 200;
-        x = Xn * lab2xyz(x);
-        y = Yn * lab2xyz(y);
-        z = Zn * lab2xyz(z);
-        return new Rgb(
-          lrgb2rgb( 3.1338561 * x - 1.6168667 * y - 0.4906146 * z),
-          lrgb2rgb(-0.9787684 * x + 1.9161415 * y + 0.0334540 * z),
-          lrgb2rgb( 0.0719453 * x - 0.2289914 * y + 1.4052427 * z),
-          this.opacity
-        );
-      }
-    }));
-
-    function xyz2lab(t) {
-      return t > t3 ? Math.pow(t, 1 / 3) : t / t2 + t0;
-    }
-
-    function lab2xyz(t) {
-      return t > t1 ? t * t * t : t2 * (t - t0);
-    }
-
-    function lrgb2rgb(x) {
-      return 255 * (x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
-    }
-
-    function rgb2lrgb(x) {
-      return (x /= 255) <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
-    }
-
-    function hclConvert(o) {
-      if (o instanceof Hcl) return new Hcl(o.h, o.c, o.l, o.opacity);
-      if (!(o instanceof Lab)) o = labConvert(o);
-      if (o.a === 0 && o.b === 0) return new Hcl(NaN, 0 < o.l && o.l < 100 ? 0 : NaN, o.l, o.opacity);
-      var h = Math.atan2(o.b, o.a) * rad2deg;
-      return new Hcl(h < 0 ? h + 360 : h, Math.sqrt(o.a * o.a + o.b * o.b), o.l, o.opacity);
-    }
-
-    function hcl(h, c, l, opacity) {
-      return arguments.length === 1 ? hclConvert(h) : new Hcl(h, c, l, opacity == null ? 1 : opacity);
-    }
-
-    function Hcl(h, c, l, opacity) {
-      this.h = +h;
-      this.c = +c;
-      this.l = +l;
-      this.opacity = +opacity;
-    }
-
-    function hcl2lab(o) {
-      if (isNaN(o.h)) return new Lab(o.l, 0, 0, o.opacity);
-      var h = o.h * deg2rad;
-      return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
-    }
-
-    define(Hcl, hcl, extend(Color, {
-      brighter: function(k) {
-        return new Hcl(this.h, this.c, this.l + K * (k == null ? 1 : k), this.opacity);
-      },
-      darker: function(k) {
-        return new Hcl(this.h, this.c, this.l - K * (k == null ? 1 : k), this.opacity);
-      },
-      rgb: function() {
-        return hcl2lab(this).rgb();
-      }
-    }));
-
-    var A = -0.14861,
-        B = +1.78277,
-        C = -0.29227,
-        D = -0.90649,
-        E = +1.97294,
-        ED = E * D,
-        EB = E * B,
-        BC_DA = B * C - D * A;
-
-    function cubehelixConvert(o) {
-      if (o instanceof Cubehelix) return new Cubehelix(o.h, o.s, o.l, o.opacity);
-      if (!(o instanceof Rgb)) o = rgbConvert(o);
-      var r = o.r / 255,
-          g = o.g / 255,
-          b = o.b / 255,
-          l = (BC_DA * b + ED * r - EB * g) / (BC_DA + ED - EB),
-          bl = b - l,
-          k = (E * (g - l) - C * bl) / D,
-          s = Math.sqrt(k * k + bl * bl) / (E * l * (1 - l)), // NaN if l=0 or l=1
-          h = s ? Math.atan2(k, bl) * rad2deg - 120 : NaN;
-      return new Cubehelix(h < 0 ? h + 360 : h, s, l, o.opacity);
-    }
-
-    function cubehelix(h, s, l, opacity) {
-      return arguments.length === 1 ? cubehelixConvert(h) : new Cubehelix(h, s, l, opacity == null ? 1 : opacity);
-    }
-
-    function Cubehelix(h, s, l, opacity) {
-      this.h = +h;
-      this.s = +s;
-      this.l = +l;
-      this.opacity = +opacity;
-    }
-
-    define(Cubehelix, cubehelix, extend(Color, {
-      brighter: function(k) {
-        k = k == null ? brighter : Math.pow(brighter, k);
-        return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
-      },
-      darker: function(k) {
-        k = k == null ? darker : Math.pow(darker, k);
-        return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
-      },
-      rgb: function() {
-        var h = isNaN(this.h) ? 0 : (this.h + 120) * deg2rad,
-            l = +this.l,
-            a = isNaN(this.s) ? 0 : this.s * l * (1 - l),
-            cosh = Math.cos(h),
-            sinh = Math.sin(h);
-        return new Rgb(
-          255 * (l + a * (A * cosh + B * sinh)),
-          255 * (l + a * (C * cosh + D * sinh)),
-          255 * (l + a * (E * cosh)),
-          this.opacity
-        );
-      }
-    }));
-
     // Copyright (c) Microsoft Corporation. All rights reserved.
     function isColor(cssColorSpecifier) {
         return !!color(cssColorSpecifier);
@@ -4794,7 +4593,7 @@
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    function cloneVegaSpecWithData(context, currData) {
+    function build(context, currData) {
         const { specColumns } = context;
         const columns = [
             specColumns.color,
@@ -4839,7 +4638,8 @@
     // Copyright (c) Microsoft Corporation. All rights reserved.
 
     var index = /*#__PURE__*/Object.freeze({
-        cloneVegaSpecWithData: cloneVegaSpecWithData,
+        __proto__: null,
+        build: build,
         FieldNames: FieldNames,
         ScaleNames: ScaleNames,
         SignalNames: SignalNames,
@@ -4855,6 +4655,7 @@
     const GL_ORDINAL = 'GL_ORDINAL';
 
     var constants = /*#__PURE__*/Object.freeze({
+        __proto__: null,
         GL_ORDINAL: GL_ORDINAL,
         ColorScaleNone: ColorScaleNone,
         FieldNames: FieldNames,
@@ -5179,6 +4980,7 @@
     // Copyright (c) Microsoft Corporation. All rights reserved.
 
     var index$1 = /*#__PURE__*/Object.freeze({
+        __proto__: null,
         compareExpression: compareExpression,
         compareGroup: compareGroup,
         compare: compare,
@@ -5194,7 +4996,7 @@
 
 
     var types = /*#__PURE__*/Object.freeze({
-
+        __proto__: null
     });
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -5206,6 +5008,7 @@
     };
 
     var constants$1 = /*#__PURE__*/Object.freeze({
+        __proto__: null,
         layerNames: layerNames
     });
 
@@ -5331,7 +5134,8 @@
     ];
 
     var htmlTags$1 = /*#__PURE__*/Object.freeze({
-        default: htmlTags
+        __proto__: null,
+        'default': htmlTags
     });
 
     function getCjsExportFromNamespace (n) {
@@ -5426,7 +5230,8 @@
     ];
 
     var svgTags$1 = /*#__PURE__*/Object.freeze({
-        default: svgTags
+        __proto__: null,
+        'default': svgTags
     });
 
     var require$$0$1 = getCjsExportFromNamespace(svgTags$1);
@@ -5611,6 +5416,7 @@
     // Copyright (c) Microsoft Corporation. All rights reserved.
 
     var controls = /*#__PURE__*/Object.freeze({
+        __proto__: null,
         Table: Table
     });
 
@@ -5618,7 +5424,7 @@
     // Licensed under the MIT license.
 
     var types$1 = /*#__PURE__*/Object.freeze({
-
+        __proto__: null
     });
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -5767,7 +5573,8 @@
     var deepmerge_1 = deepmerge;
 
     var _deepmerge = /*#__PURE__*/Object.freeze({
-        default: deepmerge_1
+        __proto__: null,
+        'default': deepmerge_1
     });
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -6164,179 +5971,6 @@
           : m1) * 255;
     }
 
-    var deg2rad$1 = Math.PI / 180;
-    var rad2deg$1 = 180 / Math.PI;
-
-    // https://observablehq.com/@mbostock/lab-and-rgb
-    var K$1 = 18,
-        Xn$1 = 0.96422,
-        Yn$1 = 1,
-        Zn$1 = 0.82521,
-        t0$1 = 4 / 29,
-        t1$1 = 6 / 29,
-        t2$1 = 3 * t1$1 * t1$1,
-        t3$1 = t1$1 * t1$1 * t1$1;
-
-    function labConvert$1(o) {
-      if (o instanceof Lab$1) return new Lab$1(o.l, o.a, o.b, o.opacity);
-      if (o instanceof Hcl$1) return hcl2lab$1(o);
-      if (!(o instanceof Rgb$1)) o = rgbConvert$1(o);
-      var r = rgb2lrgb$1(o.r),
-          g = rgb2lrgb$1(o.g),
-          b = rgb2lrgb$1(o.b),
-          y = xyz2lab$1((0.2225045 * r + 0.7168786 * g + 0.0606169 * b) / Yn$1), x, z;
-      if (r === g && g === b) x = z = y; else {
-        x = xyz2lab$1((0.4360747 * r + 0.3850649 * g + 0.1430804 * b) / Xn$1);
-        z = xyz2lab$1((0.0139322 * r + 0.0971045 * g + 0.7141733 * b) / Zn$1);
-      }
-      return new Lab$1(116 * y - 16, 500 * (x - y), 200 * (y - z), o.opacity);
-    }
-
-    function lab$1(l, a, b, opacity) {
-      return arguments.length === 1 ? labConvert$1(l) : new Lab$1(l, a, b, opacity == null ? 1 : opacity);
-    }
-
-    function Lab$1(l, a, b, opacity) {
-      this.l = +l;
-      this.a = +a;
-      this.b = +b;
-      this.opacity = +opacity;
-    }
-
-    define$1(Lab$1, lab$1, extend$1(Color$1, {
-      brighter: function(k) {
-        return new Lab$1(this.l + K$1 * (k == null ? 1 : k), this.a, this.b, this.opacity);
-      },
-      darker: function(k) {
-        return new Lab$1(this.l - K$1 * (k == null ? 1 : k), this.a, this.b, this.opacity);
-      },
-      rgb: function() {
-        var y = (this.l + 16) / 116,
-            x = isNaN(this.a) ? y : y + this.a / 500,
-            z = isNaN(this.b) ? y : y - this.b / 200;
-        x = Xn$1 * lab2xyz$1(x);
-        y = Yn$1 * lab2xyz$1(y);
-        z = Zn$1 * lab2xyz$1(z);
-        return new Rgb$1(
-          lrgb2rgb$1( 3.1338561 * x - 1.6168667 * y - 0.4906146 * z),
-          lrgb2rgb$1(-0.9787684 * x + 1.9161415 * y + 0.0334540 * z),
-          lrgb2rgb$1( 0.0719453 * x - 0.2289914 * y + 1.4052427 * z),
-          this.opacity
-        );
-      }
-    }));
-
-    function xyz2lab$1(t) {
-      return t > t3$1 ? Math.pow(t, 1 / 3) : t / t2$1 + t0$1;
-    }
-
-    function lab2xyz$1(t) {
-      return t > t1$1 ? t * t * t : t2$1 * (t - t0$1);
-    }
-
-    function lrgb2rgb$1(x) {
-      return 255 * (x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
-    }
-
-    function rgb2lrgb$1(x) {
-      return (x /= 255) <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
-    }
-
-    function hclConvert$1(o) {
-      if (o instanceof Hcl$1) return new Hcl$1(o.h, o.c, o.l, o.opacity);
-      if (!(o instanceof Lab$1)) o = labConvert$1(o);
-      if (o.a === 0 && o.b === 0) return new Hcl$1(NaN, 0 < o.l && o.l < 100 ? 0 : NaN, o.l, o.opacity);
-      var h = Math.atan2(o.b, o.a) * rad2deg$1;
-      return new Hcl$1(h < 0 ? h + 360 : h, Math.sqrt(o.a * o.a + o.b * o.b), o.l, o.opacity);
-    }
-
-    function hcl$1(h, c, l, opacity) {
-      return arguments.length === 1 ? hclConvert$1(h) : new Hcl$1(h, c, l, opacity == null ? 1 : opacity);
-    }
-
-    function Hcl$1(h, c, l, opacity) {
-      this.h = +h;
-      this.c = +c;
-      this.l = +l;
-      this.opacity = +opacity;
-    }
-
-    function hcl2lab$1(o) {
-      if (isNaN(o.h)) return new Lab$1(o.l, 0, 0, o.opacity);
-      var h = o.h * deg2rad$1;
-      return new Lab$1(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
-    }
-
-    define$1(Hcl$1, hcl$1, extend$1(Color$1, {
-      brighter: function(k) {
-        return new Hcl$1(this.h, this.c, this.l + K$1 * (k == null ? 1 : k), this.opacity);
-      },
-      darker: function(k) {
-        return new Hcl$1(this.h, this.c, this.l - K$1 * (k == null ? 1 : k), this.opacity);
-      },
-      rgb: function() {
-        return hcl2lab$1(this).rgb();
-      }
-    }));
-
-    var A$1 = -0.14861,
-        B$1 = +1.78277,
-        C$1 = -0.29227,
-        D$1 = -0.90649,
-        E$1 = +1.97294,
-        ED$1 = E$1 * D$1,
-        EB$1 = E$1 * B$1,
-        BC_DA$1 = B$1 * C$1 - D$1 * A$1;
-
-    function cubehelixConvert$1(o) {
-      if (o instanceof Cubehelix$1) return new Cubehelix$1(o.h, o.s, o.l, o.opacity);
-      if (!(o instanceof Rgb$1)) o = rgbConvert$1(o);
-      var r = o.r / 255,
-          g = o.g / 255,
-          b = o.b / 255,
-          l = (BC_DA$1 * b + ED$1 * r - EB$1 * g) / (BC_DA$1 + ED$1 - EB$1),
-          bl = b - l,
-          k = (E$1 * (g - l) - C$1 * bl) / D$1,
-          s = Math.sqrt(k * k + bl * bl) / (E$1 * l * (1 - l)), // NaN if l=0 or l=1
-          h = s ? Math.atan2(k, bl) * rad2deg$1 - 120 : NaN;
-      return new Cubehelix$1(h < 0 ? h + 360 : h, s, l, o.opacity);
-    }
-
-    function cubehelix$1(h, s, l, opacity) {
-      return arguments.length === 1 ? cubehelixConvert$1(h) : new Cubehelix$1(h, s, l, opacity == null ? 1 : opacity);
-    }
-
-    function Cubehelix$1(h, s, l, opacity) {
-      this.h = +h;
-      this.s = +s;
-      this.l = +l;
-      this.opacity = +opacity;
-    }
-
-    define$1(Cubehelix$1, cubehelix$1, extend$1(Color$1, {
-      brighter: function(k) {
-        k = k == null ? brighter$1 : Math.pow(brighter$1, k);
-        return new Cubehelix$1(this.h, this.s, this.l * k, this.opacity);
-      },
-      darker: function(k) {
-        k = k == null ? darker$1 : Math.pow(darker$1, k);
-        return new Cubehelix$1(this.h, this.s, this.l * k, this.opacity);
-      },
-      rgb: function() {
-        var h = isNaN(this.h) ? 0 : (this.h + 120) * deg2rad$1,
-            l = +this.l,
-            a = isNaN(this.s) ? 0 : this.s * l * (1 - l),
-            cosh = Math.cos(h),
-            sinh = Math.sin(h);
-        return new Rgb$1(
-          255 * (l + a * (A$1 * cosh + B$1 * sinh)),
-          255 * (l + a * (C$1 * cosh + D$1 * sinh)),
-          255 * (l + a * (E$1 * cosh)),
-          this.opacity
-        );
-      }
-    }));
-
     function rgbToDeckglColor(c) {
         return [c.r, c.g, c.b, c.opacity * 255];
     }
@@ -6372,16 +6006,16 @@
      * Convert a Deck.gl color to a CSS rgba() string.
      * @param color A Deck.gl RGBAColor array - (The rgba color of each object, in r, g, b, [a]. Each component is in the 0-255 range.)
      */
-    function colorToString(color$$1) {
-        const c = [...color$$1];
+    function colorToString(color) {
+        const c = [...color];
         if (c.length > 3) {
             c[3] /= 255;
         }
         return `rgba(${c.join(',')})`;
     }
-    function desaturate(color$$1, value) {
-        const rgb$$1 = rgb$1(color$$1[0], color$$1[1], color$$1[2], color$$1[3] / 255);
-        const hslColor = hsl$1(rgb$$1);
+    function desaturate(color, value) {
+        const rgb = rgb$1(color[0], color[1], color[2], color[3] / 255);
+        const hslColor = hsl$1(rgb);
         hslColor.s = value;
         const c = hslColor.rgb();
         return rgbToDeckglColor(c);
@@ -6541,6 +6175,7 @@ void main(void) {
     const minPixelSize = 0.5;
 
     var defaults = /*#__PURE__*/Object.freeze({
+        __proto__: null,
         minHeight: minHeight,
         minWidth: minWidth,
         defaultPresenterStyle: defaultPresenterStyle,
@@ -6686,13 +6321,9 @@ void main(void) {
      */
     const CubeLayer = _CubeLayer;
 
-    var pi = Math.PI;
-
     function expInOut(t) {
       return ((t *= 2) <= 1 ? Math.pow(2, 10 * t - 10) : 2 - Math.pow(2, 10 - 10 * t)) / 2;
     }
-
-    var tau = 2 * Math.PI;
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     function getLayers(presenter, config, stage, lightSettings /*LightSettings*/, lightingMix, interpolator, guideLines) {
@@ -6837,6 +6468,7 @@ void main(void) {
     // Copyright (c) Microsoft Corporation. All rights reserved.
 
     var util = /*#__PURE__*/Object.freeze({
+        __proto__: null,
         addDiv: addDiv,
         addEl: addEl,
         allTruthy: allTruthy,
@@ -7032,7 +6664,7 @@ void main(void) {
             });
         };
         var sorted = Object.keys(props.legend.rows).sort((a, b) => +a - +b);
-        sorted.forEach(i => addRow(props.legend.rows[i], +i));
+        sorted.forEach(i => addRow(props.legend.rows[i]));
         if (sorted.length) {
             return (createElement(Table, { rows: rows, rowClassName: "legend-row", onRowClick: (e, i) => props.onClick(e, props.legend, i) }, props.legend.title !== void 0 && createElement("tr", { onClick: e => props.onClick(e, props.legend, null) },
                 createElement("th", { colSpan: 2 }, props.legend.title))));
@@ -7232,13 +6864,19 @@ void main(void) {
     })(GroupType || (GroupType = {}));
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
+    function getOrientItem(group) {
+        if (group.orient) {
+            return group;
+        }
+        return group.datum;
+    }
     function convertGroupRole(group) {
         if (group.mark.role === 'legend')
             return GroupType.legend;
         if (group.mark.role === 'axis') {
-            var vegaAxisDatum = group.datum;
-            if (vegaAxisDatum) {
-                switch (vegaAxisDatum.orient) {
+            const orientItem = getOrientItem(group);
+            if (orientItem) {
+                switch (orientItem.orient) {
                     case 'bottom':
                     case 'top':
                         return GroupType.xAxis;
@@ -7298,12 +6936,12 @@ void main(void) {
     };
     var mainStager = (options, stage, scene, x, y, groupType) => {
         if (scene.marktype !== 'group' && groupType === GroupType.legend) {
-            markStager$1(options, stage, scene, x, y, groupType);
+            markStager$1(options, stage, scene);
         }
         else {
-            var markStager$$1 = markStagers[scene.marktype];
-            if (markStager$$1) {
-                markStager$$1(options, stage, scene, x, y, groupType);
+            var markStager = markStagers[scene.marktype];
+            if (markStager) {
+                markStager(options, stage, scene, x, y, groupType);
             }
         }
     };
@@ -7453,7 +7091,12 @@ void main(void) {
                 });
                 this.OrbitControllerClass = classes.OrbitControllerClass;
                 const initialViewState = targetViewState(height, width, stage.view);
+                let glOptions;
+                if (config && config.preserveDrawingBuffer) {
+                    glOptions = { preserveDrawingBuffer: true };
+                }
                 const deckProps = {
+                    glOptions,
                     height: null,
                     width: null,
                     effects: lightingEffects(),
@@ -7729,6 +7372,7 @@ void main(void) {
     // Copyright (c) Microsoft Corporation. All rights reserved.
 
     var index$2 = /*#__PURE__*/Object.freeze({
+        __proto__: null,
         constants: constants$1,
         controls: controls,
         defaults: defaults,
@@ -7847,6 +7491,7 @@ void main(void) {
     }
 
     var util$1 = /*#__PURE__*/Object.freeze({
+        __proto__: null,
         isInternalFieldName: isInternalFieldName,
         getColumnsFromData: getColumnsFromData,
         getStats: getStats,
@@ -7923,7 +7568,10 @@ void main(void) {
                 resolve();
             });
         }
-        filter(search, keepData, collapseData) {
+        filter(search, keepData, collapseData, rebase) {
+            if (rebase) {
+                this.dataScope.collapse(false, keepData);
+            }
             this.dataScope.collapse(true, collapseData);
             return new Promise((resolve, reject) => {
                 this.props.onAnimateDataChange(DataLayoutChange.refine, 'before refine', 'refine').then(() => {
@@ -8001,7 +7649,7 @@ void main(void) {
 
     function notNice(niceValue) {
         //convert "nice" numbers to numeric value
-        return (niceValue + '').replace(/,/g, '');
+        return (niceValue + '').replace(/[\s,]/g, '');
     }
     function tickValue(axis, i) {
         const tick = axis.tickText[i];
@@ -8341,20 +7989,21 @@ void main(void) {
         select(search) {
             this.deselect();
             if (search) {
-                this.selection = this.createUserSelection(search, true);
+                this.selection = this.createUserSelection(search, true, false);
                 if (this.selection.included.length) {
                     this.activate(this.selection.included[0]);
                 }
             }
         }
-        createUserSelection(search, assign) {
+        createUserSelection(search, assign, rebase) {
             const exec = new Exec(search, this.getColumns());
             const s = {
                 search,
                 included: [],
                 excluded: []
             };
-            this.currentData().forEach(datum => {
+            const data = rebase ? this.data : this.currentData();
+            data.forEach(datum => {
                 if (exec.run(datum)) {
                     if (assign) {
                         datum[FieldNames.Selected] = true;
@@ -8490,13 +8139,13 @@ void main(void) {
                 }
                 case Action.exclude: {
                     this.clearSelection();
-                    p = this.animator.filter(invert(u.search), u.excluded, u.included);
+                    p = this.animator.filter(invert(u.search), u.excluded, u.included, false);
                     this.state.remapColor = false;
                     break;
                 }
                 case Action.isolate: {
                     this.clearSelection();
-                    p = this.animator.filter(u.search, u.included, u.excluded);
+                    p = this.animator.filter(u.search, u.included, u.excluded, false);
                     this.state.remapColor = false;
                     break;
                 }
@@ -8691,7 +8340,12 @@ void main(void) {
             lowValue = notNice(lowValue);
         if (highValue)
             highValue = notNice(highValue);
-        return selectBetween(column, lowValue, highValue, lowOperator, highOperator);
+        if (lowValue === highValue) {
+            return { expressions: [selectExact(column, lowValue)] };
+        }
+        else {
+            return selectBetween(column, lowValue, highValue, lowOperator, highOperator);
+        }
     }
     function finalizeLegend(colorBinType, colorColumn, legend, language) {
         const rowTexts = [];
@@ -8700,9 +8354,6 @@ void main(void) {
             row.search = legendRange(colorBinType, colorColumn, legend, +i);
             if (row.value === Other) {
                 row.label = language.legendOther;
-            }
-            else if (rowTexts.indexOf(row.value) >= 0) {
-                delete legend.rows[i];
             }
             else {
                 rowTexts.push(row.value);
@@ -8895,7 +8546,6 @@ void main(void) {
                 this.renderSameLayout();
             }, () => this.insight && this.insight.columns && !!this.insight.columns.color && this.colorContexts && this.colorContexts.length > 1);
             this.insight = {};
-            this._signalValues = {};
         }
         changeColorContexts(colorContexts) {
             this.colorContexts = colorContexts;
@@ -8914,7 +8564,7 @@ void main(void) {
                 if (dataChange === DataLayoutChange.refine) {
                     const oldColorContext = this.colorContexts[this.currentColorContext];
                     innerPromise = new Promise(innerResolve => {
-                        this.renderNewLayout({
+                        this.renderNewLayout({}, {
                             preStage: (stage, deckProps) => {
                                 finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                                 this.overrideAxisLabels(stage);
@@ -8931,7 +8581,7 @@ void main(void) {
                     });
                 }
                 else {
-                    innerPromise = this.renderNewLayout({
+                    innerPromise = this.renderNewLayout({}, {
                         preStage: (stage, deckProps) => {
                             finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                             this.overrideAxisLabels(stage);
@@ -8957,7 +8607,7 @@ void main(void) {
                         //save cube colors
                         const oldColorContext = this.colorContexts[this.currentColorContext];
                         let colorMap;
-                        yield this.renderNewLayout({
+                        yield this.renderNewLayout({}, {
                             preStage: (stage, deckProps) => {
                                 //save off the spec colors
                                 colorMap = colorMapFromCubes(stage.cubeData);
@@ -8992,7 +8642,7 @@ void main(void) {
                             legendElement: null
                         };
                         this.changeColorContexts([colorContext]);
-                        yield this.renderNewLayout({
+                        yield this.renderNewLayout({}, {
                             onPresent: () => {
                                 populateColorContext(colorContext, this.presenter);
                             }
@@ -9025,15 +8675,14 @@ void main(void) {
             });
             return specColumns;
         }
-        renderNewLayout(presenterConfig, view) {
+        renderNewLayout(signalValues, presenterConfig, view) {
             return __awaiter(this, void 0, void 0, function* () {
                 const currData = this._dataScope.currentData();
                 const context = { specColumns: this.getSpecColumnsWithFilteredStats(), insight: this.insight, specViewOptions: this.options };
-                const specResult = cloneVegaSpecWithData(context, currData);
+                const specResult = build(context, currData);
                 if (!specResult.errors) {
                     const uiValues = extractSignalValuesFromView(this.vegaViewGl, this.vegaSpec);
-                    this._signalValues = Object.assign(Object.assign(Object.assign({}, this._signalValues), uiValues), this.insight.signalValues);
-                    applySignalValues(this._signalValues, specResult.vegaSpec);
+                    applySignalValues(Object.assign(Object.assign({}, uiValues), signalValues), specResult.vegaSpec);
                     this.vegaSpec = specResult.vegaSpec;
                     this.options.onVegaSpec && this.options.onVegaSpec(this.vegaSpec);
                     this.specCapabilities = specResult.specCapabilities;
@@ -9046,6 +8695,9 @@ void main(void) {
                         didRegisterColorSchemes = true;
                     }
                     try {
+                        if (this.vegaViewGl) {
+                            this.vegaViewGl.finalize();
+                        }
                         const runtime = base.vega.parse(this.vegaSpec);
                         this.vegaViewGl = new ViewGl(runtime, config)
                             .renderer('deck.gl')
@@ -9153,7 +8805,7 @@ void main(void) {
                         //refining
                         result = yield this._render(insight, data, options);
                         this.presenter.animationQueue(() => {
-                            this.filter(insight.filter);
+                            this.filter(insight.filter, options.rebaseFilter && options.rebaseFilter());
                         }, allowAsyncRenderTime, { waitingLabel: 'layout before refine', handlerLabel: 'refine after layout' });
                     }
                     else {
@@ -9213,8 +8865,6 @@ void main(void) {
                     this._tooltip = null;
                 }
                 if (this._dataScope.setData(data, options.columns)) {
-                    //data is different, reset the signal value cache
-                    this._signalValues = {};
                     //apply transform to the data
                     this.transformData(data, insight.transform);
                 }
@@ -9228,7 +8878,7 @@ void main(void) {
                     legend: null,
                     legendElement: null
                 };
-                const specResult = yield this.renderNewLayout({
+                const specResult = yield this.renderNewLayout(insight.signalValues, {
                     preStage: (stage, deckProps) => {
                         if (this._shouldSaveColorContext()) {
                             //save off the colors from Vega layout
@@ -9351,7 +9001,7 @@ void main(void) {
         }
         createConfig(c) {
             const { getTextColor, getTextHighlightColor, onTextClick } = this.options;
-            const defaultPresenterConfig$$1 = {
+            const defaultPresenterConfig = {
                 getTextColor,
                 getTextHighlightColor,
                 onTextClick: (e, t) => {
@@ -9404,14 +9054,15 @@ void main(void) {
                         newViewStateTarget = this.options.onNewViewStateTarget();
                     }
                     return { height, width, newViewStateTarget };
-                }
+                },
+                preserveDrawingBuffer: this.options.preserveDrawingBuffer
             };
             if (this.options.onBeforeCreateLayers) {
-                defaultPresenterConfig$$1.preLayer = stage => this.options.onBeforeCreateLayers(stage, this.specCapabilities);
+                defaultPresenterConfig.preLayer = stage => this.options.onBeforeCreateLayers(stage, this.specCapabilities);
             }
             const config = {
                 presenter: this.presenter,
-                presenterConfig: Object.assign(defaultPresenterConfig$$1, c)
+                presenterConfig: Object.assign(defaultPresenterConfig, c)
             };
             if (this.options.transitionDurations) {
                 config.presenterConfig.transitionDurations = this.options.transitionDurations;
@@ -9421,11 +9072,12 @@ void main(void) {
         /**
          * Filter the data and animate.
          * @param search Filter expression, see https://vega.github.io/vega/docs/expressions/
+         * @param rebase Optional flag to apply to entire dataset. A false value will apply the filter upon any existing filter.
          */
-        filter(search) {
-            const u = this._dataScope.createUserSelection(search, false);
+        filter(search, rebase = false) {
+            const u = this._dataScope.createUserSelection(search, false, rebase);
             return new Promise((resolve, reject) => {
-                this._animator.filter(search, u.included, u.excluded).then(() => {
+                this._animator.filter(search, u.included, u.excluded, rebase).then(() => {
                     this._details.clear();
                     this._details.clearSelection();
                     this._details.populate(this._dataScope.selection);
@@ -9561,11 +9213,13 @@ void main(void) {
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
-    const version = '3.0.0-beta.1';
+    const version = '3.0.2';
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     const use$1 = use;
 
+    exports.VegaDeckGl = index$2;
+    exports.Viewer = Viewer;
     exports.colorSchemes = colorSchemes;
     exports.constants = constants;
     exports.searchExpression = index$1;
@@ -9573,8 +9227,6 @@ void main(void) {
     exports.types = types;
     exports.use = use$1;
     exports.util = util$1;
-    exports.VegaDeckGl = index$2;
-    exports.Viewer = Viewer;
     exports.version = version;
 
     Object.defineProperty(exports, '__esModule', { value: true });

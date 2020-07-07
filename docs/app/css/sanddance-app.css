@@ -85,7 +85,10 @@
   position: absolute; }
 
 .sanddance-tooltip td {
+  max-width: 16em;
+  overflow: hidden;
   text-align: left;
+  text-overflow: ellipsis;
   vertical-align: top;
   width: 75%; }
 
@@ -368,6 +371,10 @@
 .sanddance-dataItem .column-name {
   font-weight: 500; }
 
+.sanddance-dataItem .column-value {
+  max-height: 20em;
+  overflow: auto; }
+
 .sanddance-dataItem .bing-search {
   text-align: right; }
 
@@ -518,6 +525,20 @@
 .dark-theme.sanddance-snapshot-dialog .thumbnail {
   border-color: rgba(255, 255, 255, 0.2); }
 
+.sanddance-history ol {
+  padding-left: 20px; }
+
+.sanddance-history li {
+  border: 1px solid transparent;
+  cursor: pointer;
+  padding: 2px; }
+
+.sanddance-history li.selected {
+  font-weight: bold; }
+
+.sanddance-history li:hover {
+  border-color: #0078d4; }
+
 .sanddance-note {
   background-color: #fffacd;
   border: 1px solid #333;
@@ -533,6 +554,9 @@
   position: absolute;
   right: -1px;
   top: -1px; }
+
+.sanddance-note .cancel i {
+  color: #333; }
 
 .sanddance-columnMap {
   position: relative; }

@@ -91,13 +91,13 @@ export class Details {
             }
             case Action.exclude: {
                 this.clearSelection();
-                p = this.animator.filter(invert(u.search), u.excluded, u.included);
+                p = this.animator.filter(invert(u.search), u.excluded, u.included, false);
                 this.state.remapColor = false;
                 break;
             }
             case Action.isolate: {
                 this.clearSelection();
-                p = this.animator.filter(u.search, u.included, u.excluded);
+                p = this.animator.filter(u.search, u.included, u.excluded, false);
                 this.state.remapColor = false;
                 break;
             }

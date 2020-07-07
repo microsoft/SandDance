@@ -37,7 +37,7 @@ function selectCategorical(column: Column, legend: VegaDeckGl.types.Legend, clic
     }
 }
 
-function selectQuantitative(colorBinType: ColorBin, column: Column, legend: VegaDeckGl.types.Legend, clickedIndex: number) {
+function selectQuantitative(colorBinType: ColorBin, column: Column, legend: VegaDeckGl.types.Legend, clickedIndex: number): SearchExpressionGroup {
     const keys = Object.keys(legend.rows).map(key => +key).sort((a, b) => +a - +b);
     let lowValue: string;
     let lowOperator: SearchExpressionOperators;
@@ -79,7 +79,11 @@ function selectQuantitative(colorBinType: ColorBin, column: Column, legend: Vega
     }
     if (lowValue) lowValue = notNice(lowValue);
     if (highValue) highValue = notNice(highValue);
-    return selectBetween(column, lowValue, highValue, lowOperator, highOperator);
+    if (lowValue === highValue) {
+        return { expressions: [selectExact(column, lowValue)] };
+    } else {
+        return selectBetween(column, lowValue, highValue, lowOperator, highOperator);
+    }
 }
 
 export function finalizeLegend(colorBinType: ColorBin, colorColumn: Column, legend: VegaDeckGl.types.Legend, language: Language) {
@@ -89,8 +93,6 @@ export function finalizeLegend(colorBinType: ColorBin, colorColumn: Column, lege
         row.search = legendRange(colorBinType, colorColumn, legend, +i);
         if (row.value === Other) {
             row.label = language.legendOther;
-        } else if (rowTexts.indexOf(row.value) >= 0) {
-            delete legend.rows[i];
         } else {
             rowTexts.push(row.value);
         }

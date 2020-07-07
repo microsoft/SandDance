@@ -36,6 +36,11 @@
                         "text": true
                     }
                 },
+                "snapshotsJSON": {
+                    "type": {
+                        "text": true
+                    }
+                },
                 "tooltipExclusionsJSON": {
                     "type": {
                         "text": true

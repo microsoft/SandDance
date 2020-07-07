@@ -179,7 +179,13 @@ export class Presenter {
 
             const initialViewState = targetViewState(height, width, stage.view);
 
+            let glOptions: WebGLContextAttributes;
+            if (config && config.preserveDrawingBuffer) {
+                glOptions = { preserveDrawingBuffer: true }
+            }
+
             const deckProps: DeckGLInternalProps = {
+                glOptions,
                 height: null,
                 width: null,
                 effects: lightingEffects(),

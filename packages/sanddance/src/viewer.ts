@@ -32,11 +32,10 @@ import {
     SelectionState,
     ViewerOptions
 } from './types';
-import { DeckProps, PickInfo } from '@deck.gl/core/lib/deck';
 import { Column } from '@msrvida/chart-types';
 import { View } from '@msrvida/chart-types';
 import {
-    cloneVegaSpecWithData,
+    build,
     getSpecColumns,
     Insight,
     SignalValues,
@@ -108,7 +107,6 @@ export class Viewer {
     public currentColorContext: number;
 
     private _specColumns: SpecColumns;
-    private _signalValues: SignalValues;
     private _dataScope: DataScope;
     private _animator: Animator;
     private _details: Details;
@@ -143,7 +141,6 @@ export class Viewer {
             () => this.insight && this.insight.columns && !!this.insight.columns.color && this.colorContexts && this.colorContexts.length > 1
         );
         this.insight = {} as Insight;
-        this._signalValues = {};
     }
 
     private changeColorContexts(colorContexts: ColorContext[]) {
@@ -165,7 +162,7 @@ export class Viewer {
             if (dataChange === DataLayoutChange.refine) {
                 const oldColorContext = this.colorContexts[this.currentColorContext];
                 innerPromise = new Promise<void>(innerResolve => {
-                    this.renderNewLayout({
+                    this.renderNewLayout({}, {
                         preStage: (stage, deckProps) => {
                             finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                             this.overrideAxisLabels(stage);
@@ -181,7 +178,7 @@ export class Viewer {
                     });
                 });
             } else {
-                innerPromise = this.renderNewLayout({
+                innerPromise = this.renderNewLayout({}, {
                     preStage: (stage, deckProps) => {
                         finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                         this.overrideAxisLabels(stage);
@@ -207,8 +204,8 @@ export class Viewer {
                 //save cube colors
                 const oldColorContext = this.colorContexts[this.currentColorContext];
                 let colorMap: ColorMap;
-                await this.renderNewLayout({
-                    preStage: (stage: VegaDeckGl.types.Stage, deckProps: DeckProps) => {
+                await this.renderNewLayout({}, {
+                    preStage: (stage: VegaDeckGl.types.Stage, deckProps: VegaDeckGl.DeckProps) => {
                         //save off the spec colors
                         colorMap = colorMapFromCubes(stage.cubeData);
                         applyColorMapToCubes([oldColorContext.colorMap], VegaDeckGl.util.getCubes(deckProps));
@@ -243,7 +240,7 @@ export class Viewer {
                     legendElement: null
                 };
                 this.changeColorContexts([colorContext]);
-                await this.renderNewLayout({
+                await this.renderNewLayout({}, {
                     onPresent: () => {
                         populateColorContext(colorContext, this.presenter);
                     }
@@ -278,14 +275,13 @@ export class Viewer {
         return specColumns;
     }
 
-    private async renderNewLayout(presenterConfig?: VegaDeckGl.types.PresenterConfig, view?: View) {
+    private async renderNewLayout(signalValues: SignalValues, presenterConfig?: VegaDeckGl.types.PresenterConfig, view?: View) {
         const currData = this._dataScope.currentData();
         const context: SpecContext = { specColumns: this.getSpecColumnsWithFilteredStats(), insight: this.insight, specViewOptions: this.options };
-        const specResult = cloneVegaSpecWithData(context, currData);
+        const specResult = build(context, currData);
         if (!specResult.errors) {
             const uiValues = extractSignalValuesFromView(this.vegaViewGl, this.vegaSpec);
-            this._signalValues = { ...this._signalValues, ...uiValues, ...this.insight.signalValues };
-            applySignalValues(this._signalValues, specResult.vegaSpec);
+            applySignalValues({ ...uiValues, ...signalValues }, specResult.vegaSpec);
             this.vegaSpec = specResult.vegaSpec;
             this.options.onVegaSpec && this.options.onVegaSpec(this.vegaSpec);
             this.specCapabilities = specResult.specCapabilities;
@@ -414,7 +410,7 @@ export class Viewer {
                 //refining
                 result = await this._render(insight, data, options);
                 this.presenter.animationQueue(() => {
-                    this.filter(insight.filter);
+                    this.filter(insight.filter, options.rebaseFilter && options.rebaseFilter());
                 }, allowAsyncRenderTime, { waitingLabel: 'layout before refine', handlerLabel: 'refine after layout' });
             } else {
                 //not refining
@@ -447,7 +443,7 @@ export class Viewer {
         };
 
         //now be ready to capture color changing signals 
-        presenterConfig.preStage = (stage: VegaDeckGl.types.Stage, deckProps: DeckProps) => {
+        presenterConfig.preStage = (stage: VegaDeckGl.types.Stage, deckProps: VegaDeckGl.DeckProps) => {
             if (this._shouldSaveColorContext()) {
                 //save off the colors from Vega layout
                 colorContext.colorMap = colorMapFromCubes(stage.cubeData);
@@ -469,8 +465,6 @@ export class Viewer {
             this._tooltip = null;
         }
         if (this._dataScope.setData(data, options.columns)) {
-            //data is different, reset the signal value cache
-            this._signalValues = {};
             //apply transform to the data
             this.transformData(data, insight.transform);
         }
@@ -485,8 +479,9 @@ export class Viewer {
             legendElement: null
         };
         const specResult = await this.renderNewLayout(
+            insight.signalValues,
             {
-                preStage: (stage: VegaDeckGl.types.Stage, deckProps: DeckProps) => {
+                preStage: (stage: VegaDeckGl.types.Stage, deckProps: VegaDeckGl.DeckProps) => {
                     if (this._shouldSaveColorContext()) {
                         //save off the colors from Vega layout
                         colorContext.colorMap = colorMapFromCubes(stage.cubeData);
@@ -538,7 +533,7 @@ export class Viewer {
         // }
     }
 
-    private preStage(stage: VegaDeckGl.types.Stage, deckProps: DeckProps) {
+    private preStage(stage: VegaDeckGl.types.Stage, deckProps: VegaDeckGl.DeckProps) {
         const onClick: AxisSelectionHandler = (e, search: SearchExpressionGroup) => {
             if (this.options.onAxisClick) {
                 this.options.onAxisClick(e, search);
@@ -632,7 +627,7 @@ export class Viewer {
             onTextHover: this.onTextHover.bind(this),
             preStage: this.preStage.bind(this),
             onPresent: this.options.onPresent,
-            onLayerClick: (info: PickInfo<any>, e: MouseEvent) => {
+            onLayerClick: (info: VegaDeckGl.PickInfo<any>, e: MouseEvent) => {
                 if (!info || !info.object) {
                     this.deselect();
                 }
@@ -661,7 +656,8 @@ export class Viewer {
                     newViewStateTarget = this.options.onNewViewStateTarget();
                 }
                 return { height, width, newViewStateTarget };
-            }
+            },
+            preserveDrawingBuffer: this.options.preserveDrawingBuffer
         };
         if (this.options.onBeforeCreateLayers) {
             defaultPresenterConfig.preLayer = stage => this.options.onBeforeCreateLayers(stage, this.specCapabilities);
@@ -679,11 +675,12 @@ export class Viewer {
     /**
      * Filter the data and animate.
      * @param search Filter expression, see https://vega.github.io/vega/docs/expressions/
+     * @param rebase Optional flag to apply to entire dataset. A false value will apply the filter upon any existing filter. 
      */
-    filter(search: Search) {
-        const u = this._dataScope.createUserSelection(search, false);
+    filter(search: Search, rebase = false) {
+        const u = this._dataScope.createUserSelection(search, false, rebase);
         return new Promise<void>((resolve, reject) => {
-            this._animator.filter(search, u.included, u.excluded).then(() => {
+            this._animator.filter(search, u.included, u.excluded, rebase).then(() => {
                 this._details.clear();
                 this._details.clearSelection();
                 this._details.populate(this._dataScope.selection);

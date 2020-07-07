@@ -12,3 +12,12 @@ export { ViewGl } from './vega-classes/viewGl';
 
 export * from './enums';
 export { constants, controls, defaults, types, util };
+
+//export deck.gl types
+export {
+    DeckProps,
+    LayerInputHandler,
+    PickInfo,
+    Position,
+    RGBAColor,
+} from 'deck.gl';

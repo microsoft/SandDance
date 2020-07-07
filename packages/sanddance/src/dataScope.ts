@@ -70,21 +70,22 @@ export class DataScope {
     public select(search: Search) {
         this.deselect();
         if (search) {
-            this.selection = this.createUserSelection(search, true);
+            this.selection = this.createUserSelection(search, true, false);
             if (this.selection.included.length) {
                 this.activate(this.selection.included[0]);
             }
         }
     }
 
-    public createUserSelection(search: Search, assign: boolean) {
+    public createUserSelection(search: Search, assign: boolean, rebase: boolean) {
         const exec = new Exec(search, this.getColumns());
         const s: UserSelection = {
             search,
             included: [],
             excluded: []
         };
-        this.currentData().forEach(datum => {
+        const data = rebase ? this.data : this.currentData();
+        data.forEach(datum => {
             if (exec.run(datum)) {
                 if (assign) {
                     datum[FieldNames.Selected] = true;

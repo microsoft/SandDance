@@ -53,7 +53,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             roles: [
                 {
                     role: 'size',
-                    allowNone: true,
+                    allowNone: true,        //size by none is a count
                     excludeCategoric: true
                 },
                 {

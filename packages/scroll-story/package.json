@@ -1,10 +1,10 @@
 {
   "name": "scroll-story",
   "private": true,
-  "version": "3.0.0-beta.1",
+  "version": "3.0.0",
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "build": "tsc -p .",
+    "build:sanddance-integration": "tsc -p .",
     "start": "parcel serve ./src/index.html --port 8086 --no-hmr"
   },
   "dependencies": {
@@ -14,13 +14,13 @@
     "@luma.gl/core": "^8.1.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "@msrvida/sanddance-react": "3.0.0-beta.1",
+    "@msrvida/sanddance-react": "^3",
     "vega": "^5.11"
   },
   "devDependencies": {
     "@mdx-js/parcel-plugin-mdx": "^0.15.4",
-    "@types/react": "^16.9.34",
-    "@types/react-dom": "^16.9.7",
+    "@types/react": "16.9.34",
+    "@types/react-dom": "16.9.7",
     "babel-core": "^6.26.3",
     "babel-preset-react-app": "^3.1.2",
     "vega-typings": "^0.16.0"

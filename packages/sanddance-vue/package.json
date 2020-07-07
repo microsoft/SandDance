@@ -1,0 +1,30 @@
+{
+  "name": "@msrvida/sanddance-vue",
+  "version": "3.0.0",
+  "description": "SandDance visualization canvas Vue component",
+  "main": "dist/SandDanceVue.umd.js",
+  "module": "dist/SandDanceVue.esm.js",
+  "unpkg": "dist/SandDanceVue.min.js",
+  "browser": {
+    "./sfc": "src/SandDanceVue.vue"
+  },
+  "scripts": {
+    "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
+    "build:sanddance-integration": "npm run build:umd & npm run build:es & npm run build:unpkg",
+    "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/SandDanceVue.umd.js",
+    "build:es": "rollup --config build/rollup.config.js --format es --file dist/SandDanceVue.esm.js",
+    "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/SandDanceVue.min.js"
+  },
+  "devDependencies": {
+    "vue": "^2.6.10",
+    "vue-template-compiler": "^2.6.10"
+  },
+  "dependencies": {
+    "@msrvida/sanddance": "^3",
+    "just-compare": "^1.3.0",
+    "rollup-plugin-postcss": "^3.1.1"
+  },
+  "author": "",
+  "license": "MIT",
+  "keywords": []
+}

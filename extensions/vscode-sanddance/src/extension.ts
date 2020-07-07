@@ -5,17 +5,12 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { getWebviewContent } from './html';
-
-interface WebViewWithUri {
-    panel: vscode.WebviewPanel;
-    uriFsPath: string;
-}
+import { newPanel, WebViewWithUri } from 'common-backend';
 
 export function activate(context: vscode.ExtensionContext) {
     let current: WebViewWithUri | undefined = undefined;
     context.subscriptions.push(
-        vscode.commands.registerCommand('sandance.view',
+        vscode.commands.registerCommand('sanddance.view',
             (fileUri: vscode.Uri) => {
                 const columnToShowIn = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
                 const uriFsPath = fileUri.fsPath;
@@ -42,7 +37,7 @@ export function activate(context: vscode.ExtensionContext) {
                     // Handle messages from the webview
                     current.panel.webview.onDidReceiveMessage(message => {
                         switch (message.command) {
-                            case 'getFileContent':
+                            case 'getFileContent': {
                                 fs.readFile(uriFsPath, (err, data) => {
                                     if (current && current.panel.visible) {
 
@@ -51,10 +46,16 @@ export function activate(context: vscode.ExtensionContext) {
                                             type: path.extname(uriFsPath).substring(1),
                                             rawText: data.toString('utf8')
                                         };
-                                        current.panel.webview.postMessage({ command: 'gotFileContent', dataFile });
+                                        const compactUI = context.globalState.get('compactUI');
+                                        current.panel.webview.postMessage({ command: 'gotFileContent', dataFile, compactUI });
                                     }
                                 });
                                 break;
+                            }
+                            case 'setCompactUI': {
+                                context.globalState.update('compactUI', message.compactUI);
+                                break;
+                            }
                         }
                     }, undefined, context.subscriptions);
                 }
@@ -64,25 +65,4 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {
-}
-
-function newPanel(context: vscode.ExtensionContext, uriFsPath: string) {
-    const webViewWithUri: WebViewWithUri = {
-        panel: vscode.window.createWebviewPanel(
-            'sandDance',
-            `SandDance: ${path.basename(uriFsPath)}`,
-            vscode.ViewColumn.One,
-            {
-                enableScripts: true,
-                // Only allow the webview to access resources in our extension's media directory
-                localResourceRoots: [
-                    vscode.Uri.file(path.join(context.extensionPath, 'resources'))
-                ],
-                retainContextWhenHidden: true
-            }
-        ),
-        uriFsPath
-    };
-    webViewWithUri.panel.webview.html = getWebviewContent(context.extensionPath, uriFsPath);
-    return webViewWithUri;
 }

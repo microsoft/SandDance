@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/vega-deck.gl",
-  "version": "3.0.0-beta.1",
+  "version": "3.0.1",
   "description": "Deck.gl renderer for Vega",
   "main": "dist/es6/index.js",
   "files": [
@@ -10,13 +10,13 @@
     "vegatest": "parcel serve ./test/vegaspec/vega-deck.gl.test.html --port 8087 --open --no-hmr --global vegaTest --no-autoinstall",
     "vegaspec": "parcel serve ./test/vegatextspec/vega-deck.gl.text.test.html --port 8087 --open --no-hmr --global vegaSpec --no-autoinstall",
     "cubetest": "parcel serve ./test/cubelayer/cubeTest.html --port 8087 --open --no-hmr --global cubeTest",
-    "docs": "npx -p @danmarshall/ts-docs-gen ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/vega-deck.gl/v2/",
+    "docs": "npx -p @danmarshall/ts-docs-gen ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/vega-deck.gl/v3/",
     "deploy": "node ./scripts/deploy.js",
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "bundle": "rollup -c",
-    "build": "npm run build-typescript && npm run bundle"
+    "build:sanddance-core": "npm run build-typescript && npm run bundle"
   },
   "keywords": [
     "vega",
@@ -31,9 +31,8 @@
     "@luma.gl/core": "./alias/luma-external.js"
   },
   "dependencies": {
-    "@danmarshall/deckgl-typings": "^4.1.8",
+    "@danmarshall/deckgl-typings": "^4.1.11",
     "@msrvida/chart-types": "^1",
-    "@types/react": "^16.9.34",
     "d3-color": "^1.4.0",
     "d3-ease": "^1.0.5",
     "deepmerge": "^2.1.1",
@@ -44,6 +43,7 @@
     "@deck.gl/core": "^8.1.5",
     "@deck.gl/layers": "^8.1.5",
     "@luma.gl/core": "^8.1.2",
+    "@types/react": "16.9.34",
     "vega": "^5.11.1"
   }
 }

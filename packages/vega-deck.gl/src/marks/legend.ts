@@ -36,7 +36,7 @@ const legendMap: { [role: string]: (legend: Legend, item: SceneItem) => void } =
         legend.rows[i] = legend.rows[i] || {};
         const row = legend.rows[i];
         row.label = label.text;
-        row.value = (label.datum as LabelDatum).value;
+        row.value = (label.datum as unknown as LabelDatum).value;
     }
 
 };

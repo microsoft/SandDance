@@ -2,7 +2,8 @@
 // Licensed under the MIT license.
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { SignalNames } from '../constants';
-import { scatterSizedDiv, scatterSizedMin } from '../defaults';
+import { scatterSizedDiv } from '../defaults';
+import { safeFieldName } from '../expr';
 import { GlobalScales, InnerScope } from '../interfaces';
 import { linearScale, pointScale } from '../scales';
 import {
@@ -90,7 +91,7 @@ export class Scatter extends Layout {
             addTransforms(globalScope.data,
                 {
                     type: 'extent',
-                    field: qsize.name,
+                    field: safeFieldName(qsize.name),
                     signal: names.sizeExtent
                 }
             );

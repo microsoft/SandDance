@@ -117,38 +117,50 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"mpTF":[function(require,module,exports) {
-module.exports = React;
-},{}],"GfLt":[function(require,module,exports) {
+})({"Uyrp":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Layout = void 0;
+exports.Dropdown = Dropdown;
+exports.dropdownWidth = void 0;
 
-class Layout {
-  constructor(props) {
-    this.props = props;
-    this.id = props.id;
+var _base = require("../base");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+var dropdownWidth = 200;
+exports.dropdownWidth = dropdownWidth;
+
+function Dropdown(props) {
+  var newProps = Object.assign({}, props);
+  var selectedKey = null;
+
+  if (newProps.options && newProps.options.length > 1) {
+    var selectedOptions = newProps.options.filter(function (option) {
+      return option.selected;
+    });
+
+    if (selectedOptions && selectedOptions.length > 0) {
+      selectedKey = selectedOptions[0].key;
+    }
   }
 
-  getGrouping() {
-    return null;
+  if (newProps.collapseLabel) {
+    newProps.onRenderTitle = function (a, b) {
+      return _base.base.react.createElement("span", null, newProps.label, ": ", a[0].text);
+    };
   }
 
-  getAggregateSumOp() {
-    return null;
-  }
-
-  build() {
-    throw 'Not implemented';
-  }
-
+  return _base.base.react.createElement(_base.base.fluentUI.Dropdown, Object.assign({
+    dropdownWidth: dropdownWidth
+  }, newProps, {
+    label: newProps.collapseLabel ? null : newProps.label,
+    selectedKey: selectedKey
+  }));
 }
-
-exports.Layout = Layout;
-},{}],"kNZP":[function(require,module,exports) {
+},{"../base":"Vlbn"}],"kNZP":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -233,6 +245,112 @@ const Other = '__Other'; //name of the "no-color" palette
 exports.Other = Other;
 const ColorScaleNone = 'none';
 exports.ColorScaleNone = ColorScaleNone;
+},{}],"visW":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.scatterSizedDiv = exports.scatterSizedMin = exports.axesOffsetY = exports.axesOffsetX = exports.axesTitlePaddingFacetY = exports.axesTitlePaddingFacetX = exports.axesTitlePaddingY = exports.axesTitlePaddingX = exports.axesTitleLimit = exports.axesLabelLimit = exports.facetPaddingRight = exports.facetPaddingBottom = exports.facetPaddingTop = exports.facetPaddingLeft = exports.minFacetHeight = exports.minFacetWidth = exports.minBarBandWidth = exports.maxbins = exports.defaultBins = void 0;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+//TODO move these to options
+const defaultBins = 10;
+exports.defaultBins = defaultBins;
+const maxbins = 100;
+exports.maxbins = maxbins;
+const minBarBandWidth = 15;
+exports.minBarBandWidth = minBarBandWidth;
+const minFacetWidth = 140;
+exports.minFacetWidth = minFacetWidth;
+const minFacetHeight = 180;
+exports.minFacetHeight = minFacetHeight;
+const facetPaddingLeft = 40;
+exports.facetPaddingLeft = facetPaddingLeft;
+const facetPaddingTop = 40;
+exports.facetPaddingTop = facetPaddingTop;
+const facetPaddingBottom = 40;
+exports.facetPaddingBottom = facetPaddingBottom;
+const facetPaddingRight = 40;
+exports.facetPaddingRight = facetPaddingRight;
+const axesLabelLimit = 100;
+exports.axesLabelLimit = axesLabelLimit;
+const axesTitleLimit = 100;
+exports.axesTitleLimit = axesTitleLimit;
+const axesTitlePaddingX = 30;
+exports.axesTitlePaddingX = axesTitlePaddingX;
+const axesTitlePaddingY = 60;
+exports.axesTitlePaddingY = axesTitlePaddingY;
+const axesTitlePaddingFacetX = 69;
+exports.axesTitlePaddingFacetX = axesTitlePaddingFacetX;
+const axesTitlePaddingFacetY = 92;
+exports.axesTitlePaddingFacetY = axesTitlePaddingFacetY;
+const axesOffsetX = 120;
+exports.axesOffsetX = axesOffsetX;
+const axesOffsetY = 120;
+exports.axesOffsetY = axesOffsetY;
+const scatterSizedMin = 10;
+exports.scatterSizedMin = scatterSizedMin;
+const scatterSizedDiv = 20;
+exports.scatterSizedDiv = scatterSizedDiv;
+},{}],"GfLt":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Layout = void 0;
+
+class Layout {
+  constructor(props) {
+    this.props = props;
+    this.id = props.id;
+  }
+
+  getGrouping() {
+    return null;
+  }
+
+  getAggregateSumOp() {
+    return null;
+  }
+
+  build() {
+    throw 'Not implemented';
+  }
+
+}
+
+exports.Layout = Layout;
+},{}],"IeV1":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.safeFieldName = safeFieldName;
+exports.exprSafeFieldName = exprSafeFieldName;
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
+/**
+ * Make sure that the field name is accessible via Vega's Field type
+ * https://vega.github.io/vega/docs/types/#Field
+ * examples: "source.x", "target['x']", "[my.field]"
+ */
+function safeFieldName(field) {
+  return field.replace('.', '\\.').replace('[', '\\[').replace(']', '\\]');
+}
+/**
+ * Make sure the field name is usable in a Vega expression
+ */
+
+
+function exprSafeFieldName(field) {
+  //remove whitespace, period, accessors and logical modifiers
+  return field.replace(/[.,:;+=\-/<>{}|~!@#$%^*[\]`'"()?\s\\]/g, '');
+}
 },{}],"Nfxo":[function(require,module,exports) {
 "use strict";
 
@@ -341,6 +459,8 @@ var _layout = require("./layout");
 
 var _constants = require("../constants");
 
+var _expr = require("../expr");
+
 var _scope = require("../scope");
 
 var _selection = require("../selection");
@@ -366,7 +486,7 @@ class AggregateContainer extends _layout.Layout {
   getAggregateSumOp() {
     if (this.aggregation === 'sum') {
       const fieldOp = {
-        field: this.props.sumBy.name,
+        field: (0, _expr.safeFieldName)(this.props.sumBy.name),
         op: 'sum',
         as: _constants.FieldNames.Sum
       };
@@ -392,7 +512,7 @@ class AggregateContainer extends _layout.Layout {
       as: [names.aggregateField]
     }), {
       type: 'extent',
-      field: names.aggregateField,
+      field: (0, _expr.safeFieldName)(names.aggregateField),
       signal: names.globalAggregateExtentSignal
     });
     (0, _scope.addSignals)(globalScope.scope, {
@@ -468,12 +588,12 @@ class AggregateContainer extends _layout.Layout {
   getTransforms(aggregation, groupby) {
     const trans = {
       type: 'joinaggregate',
-      groupby,
+      groupby: groupby.map(_expr.safeFieldName),
       ops: [aggregation]
     };
 
     if (aggregation === 'sum') {
-      trans.fields = [this.props.sumBy.name];
+      trans.fields = [this.props.sumBy.name].map(_expr.safeFieldName);
     }
 
     return trans;
@@ -503,7 +623,7 @@ class AggregateContainer extends _layout.Layout {
 }
 
 exports.AggregateContainer = AggregateContainer;
-},{"./layout":"GfLt","../constants":"kNZP","../scope":"Nfxo","../selection":"inPN"}],"HtEf":[function(require,module,exports) {
+},{"./layout":"GfLt","../constants":"kNZP","../expr":"IeV1","../scope":"Nfxo","../selection":"inPN"}],"HtEf":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -513,6 +633,10 @@ exports.binnable = binnable;
 
 var _constants = require("./constants");
 
+var _expr = require("./expr");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 function binnable(prefix, domainDataName, discreteColumn) {
   const {
     column,
@@ -523,7 +647,7 @@ function binnable(prefix, domainDataName, discreteColumn) {
   } = discreteColumn;
 
   if (column.quantitative) {
-    const field = `${prefix}_bin_${column.name}`;
+    const field = `${prefix}_bin_${(0, _expr.exprSafeFieldName)(column.name)}`;
     const fieldEnd = `${field}_end`;
     const binSignal = `${field}_bins`;
     const extentSignal = `${field}_bin_extent`;
@@ -531,7 +655,7 @@ function binnable(prefix, domainDataName, discreteColumn) {
 
     const extentTransform = {
       type: 'extent',
-      field: column.name,
+      field: (0, _expr.safeFieldName)(column.name),
       signal: extentSignal
     };
     const maxbinsSignal = {
@@ -548,7 +672,7 @@ function binnable(prefix, domainDataName, discreteColumn) {
     };
     const binTransform = {
       type: 'bin',
-      field: column.name,
+      field: (0, _expr.safeFieldName)(column.name),
       as: [field, fieldEnd],
       signal: binSignal,
       extent: {
@@ -614,7 +738,7 @@ function binnable(prefix, domainDataName, discreteColumn) {
     };
   }
 }
-},{"./constants":"kNZP"}],"TTOO":[function(require,module,exports) {
+},{"./constants":"kNZP","./expr":"IeV1"}],"TTOO":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -751,6 +875,8 @@ var _layout = require("./layout");
 
 var _bin = require("../bin");
 
+var _expr = require("../expr");
+
 var _scope = require("../scope");
 
 var _selection = require("../selection");
@@ -804,7 +930,7 @@ class Band extends _layout.Layout {
       source: bin.fullScaleDataname,
       transform: [{
         type: 'aggregate',
-        groupby: this.getGrouping(),
+        groupby: this.getGrouping().map(_expr.safeFieldName),
         ops: ['count']
       }]
     });
@@ -883,7 +1009,7 @@ class Band extends _layout.Layout {
     const {
       parentScope
     } = this.props;
-    const binField = bin.fields[0];
+    const binField = (0, _expr.safeFieldName)(bin.fields[0]);
     let scale;
 
     if (horizontal) {
@@ -923,55 +1049,7 @@ class Band extends _layout.Layout {
 }
 
 exports.Band = Band;
-},{"./layout":"GfLt","../bin":"HtEf","../scope":"Nfxo","../selection":"inPN","../signals":"TTOO"}],"visW":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.scatterSizedDiv = exports.scatterSizedMin = exports.axesOffsetY = exports.axesOffsetX = exports.axesTitlePaddingFacetY = exports.axesTitlePaddingFacetX = exports.axesTitlePaddingY = exports.axesTitlePaddingX = exports.axesTitleLimit = exports.axesLabelLimit = exports.facetPaddingRight = exports.facetPaddingBottom = exports.facetPaddingTop = exports.facetPaddingLeft = exports.minFacetHeight = exports.minFacetWidth = exports.minBarBandWidth = exports.maxbins = exports.defaultBins = void 0;
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-//TODO move these to options
-const defaultBins = 10;
-exports.defaultBins = defaultBins;
-const maxbins = 100;
-exports.maxbins = maxbins;
-const minBarBandWidth = 15;
-exports.minBarBandWidth = minBarBandWidth;
-const minFacetWidth = 140;
-exports.minFacetWidth = minFacetWidth;
-const minFacetHeight = 180;
-exports.minFacetHeight = minFacetHeight;
-const facetPaddingLeft = 40;
-exports.facetPaddingLeft = facetPaddingLeft;
-const facetPaddingTop = 40;
-exports.facetPaddingTop = facetPaddingTop;
-const facetPaddingBottom = 40;
-exports.facetPaddingBottom = facetPaddingBottom;
-const facetPaddingRight = 40;
-exports.facetPaddingRight = facetPaddingRight;
-const axesLabelLimit = 100;
-exports.axesLabelLimit = axesLabelLimit;
-const axesTitleLimit = 100;
-exports.axesTitleLimit = axesTitleLimit;
-const axesTitlePaddingX = 30;
-exports.axesTitlePaddingX = axesTitlePaddingX;
-const axesTitlePaddingY = 60;
-exports.axesTitlePaddingY = axesTitlePaddingY;
-const axesTitlePaddingFacetX = 69;
-exports.axesTitlePaddingFacetX = axesTitlePaddingFacetX;
-const axesTitlePaddingFacetY = 92;
-exports.axesTitlePaddingFacetY = axesTitlePaddingFacetY;
-const axesOffsetX = 120;
-exports.axesOffsetX = axesOffsetX;
-const axesOffsetY = 120;
-exports.axesOffsetY = axesOffsetY;
-const scatterSizedMin = 10;
-exports.scatterSizedMin = scatterSizedMin;
-const scatterSizedDiv = 20;
-exports.scatterSizedDiv = scatterSizedDiv;
-},{}],"mxMR":[function(require,module,exports) {
+},{"./layout":"GfLt","../bin":"HtEf","../expr":"IeV1","../scope":"Nfxo","../selection":"inPN","../signals":"TTOO"}],"mxMR":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -983,6 +1061,10 @@ exports.binnableColorScale = binnableColorScale;
 
 var _constants = require("./constants");
 
+var _expr = require("./expr");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 function linearScale(scaleName, data, field, range, reverse, zero) {
   const scale = {
     name: scaleName,
@@ -992,7 +1074,7 @@ function linearScale(scaleName, data, field, range, reverse, zero) {
     reverse,
     domain: {
       data,
-      field
+      field: (0, _expr.safeFieldName)(field)
     },
     zero,
     nice: true
@@ -1007,7 +1089,7 @@ function pointScale(scaleName, data, range, field, reverse) {
     range,
     domain: {
       data,
-      field,
+      field: (0, _expr.safeFieldName)(field),
       sort: true
     },
     padding: 0.5
@@ -1024,7 +1106,7 @@ function binnableColorScale(scaleName, colorBin, data, field, scheme) {
   scheme = scheme || _constants.ColorScaleNone;
   const domain = {
     data,
-    field
+    field: (0, _expr.safeFieldName)(field)
   };
   const range = {
     scheme
@@ -1077,7 +1159,7 @@ function binnableColorScale(scaleName, colorBin, data, field, scheme) {
       }
   }
 }
-},{"./constants":"kNZP"}],"GmqS":[function(require,module,exports) {
+},{"./constants":"kNZP","./expr":"IeV1"}],"GmqS":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1112,6 +1194,8 @@ exports.Square = void 0;
 var _layout = require("./layout");
 
 var _constants = require("../constants");
+
+var _expr = require("../expr");
 
 var _scope = require("../scope");
 
@@ -1154,11 +1238,11 @@ class Square extends _layout.Layout {
     (0, _zBase.addZScale)(z, globalScope.zSize, globalScope, names.zScale);
     (0, _scope.addTransforms)(globalScope.data, Object.assign({
       type: 'stack',
-      groupby: (0, _scope.getGroupBy)(groupings),
+      groupby: (0, _scope.getGroupBy)(groupings).map(_expr.safeFieldName),
       as: [names.stack0, names.stack1]
     }, sortBy && {
       sort: {
-        field: sortBy.name,
+        field: (0, _expr.safeFieldName)(sortBy.name),
         order: 'ascending'
       }
     }));
@@ -1195,7 +1279,7 @@ class Square extends _layout.Layout {
             value: 0
           }, {
             scale: names.zScale,
-            field: z.name
+            field: (0, _expr.safeFieldName)(z.name)
           }]
         })
       }
@@ -1261,7 +1345,7 @@ class Square extends _layout.Layout {
       if (groupings) {
         (0, _scope.addTransforms)(globalScope.data, {
           type: 'joinaggregate',
-          groupby: (0, _scope.getGroupBy)(groupings),
+          groupby: (0, _scope.getGroupBy)(groupings).map(_expr.safeFieldName),
           ops: ['count'],
           as: [names.maxGroupField]
         }, {
@@ -1281,8 +1365,8 @@ class Square extends _layout.Layout {
 
     const aspect = `((${names.bandWidth}) / (${maxGroupedFillSize}))`;
     const squaresPerBand = `ceil(sqrt(${maxGroupedUnits} * ${aspect}))`;
-    const gap = `min(0.1 * (${names.bandWidth} / (${squaresPerBand} - 1)), 1)`;
-    const size = `((${names.bandWidth} / ${squaresPerBand}) - ${gap})`;
+    const gap = `min(0.1 * ((${names.bandWidth}) / (${squaresPerBand} - 1)), 1)`;
+    const size = `(((${names.bandWidth}) / ${squaresPerBand}) - ${gap})`;
     const levels = `ceil(${maxGroupedUnits} / ${squaresPerBand})`;
     const levelSize = `(((${maxGroupedFillSize}) / ${levels}) - ${gap})`;
     return {
@@ -1298,7 +1382,7 @@ class Square extends _layout.Layout {
       names,
       prefix
     } = this;
-    const compartment = `${names.bandWidth} / ${squaresPerBand} * ((datum[${JSON.stringify(names.stack0)}]) % ${squaresPerBand})`;
+    const compartment = `(${names.bandWidth}) / ${squaresPerBand} * ((datum[${JSON.stringify(names.stack0)}]) % ${squaresPerBand})`;
     const level = `floor((datum[${JSON.stringify(names.stack0)}]) / ${squaresPerBand})`;
     const {
       fillDirection,
@@ -1348,7 +1432,7 @@ class Square extends _layout.Layout {
 }
 
 exports.Square = Square;
-},{"./layout":"GfLt","../constants":"kNZP","../scope":"Nfxo","../selection":"inPN","../zBase":"GmqS"}],"vr0D":[function(require,module,exports) {
+},{"./layout":"GfLt","../constants":"kNZP","../expr":"IeV1","../scope":"Nfxo","../selection":"inPN","../zBase":"GmqS"}],"vr0D":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1359,6 +1443,8 @@ exports.Strip = void 0;
 var _layout = require("./layout");
 
 var _constants = require("../constants");
+
+var _expr = require("../expr");
 
 var _scope = require("../scope");
 
@@ -1407,7 +1493,7 @@ class Strip extends _layout.Layout {
       transform.push({
         type: 'collect',
         sort: {
-          field: sort.name,
+          field: (0, _expr.safeFieldName)(sort.name),
           order: sortOrder
         }
       });
@@ -1432,13 +1518,13 @@ class Strip extends _layout.Layout {
 
     const stackTransform = {
       type: 'stack',
-      field: stackField,
+      field: (0, _expr.safeFieldName)(stackField),
       offset: 'normalize',
       as: [names.firstField, names.lastField]
     };
 
     if (groupings.length) {
-      stackTransform.groupby = (0, _scope.getGroupBy)(groupings);
+      stackTransform.groupby = (0, _scope.getGroupBy)(groupings).map(_expr.safeFieldName);
     }
 
     transform.push(stackTransform);
@@ -1473,7 +1559,7 @@ class Strip extends _layout.Layout {
             value: 0
           }, {
             scale: names.zScale,
-            field: z.name
+            field: (0, _expr.safeFieldName)(z.name)
           }]
         })
       }
@@ -1514,7 +1600,7 @@ class Strip extends _layout.Layout {
 }
 
 exports.Strip = Strip;
-},{"./layout":"GfLt","../constants":"kNZP","../scope":"Nfxo","../selection":"inPN","../zBase":"GmqS"}],"utMY":[function(require,module,exports) {
+},{"./layout":"GfLt","../constants":"kNZP","../expr":"IeV1","../scope":"Nfxo","../selection":"inPN","../zBase":"GmqS"}],"utMY":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1525,6 +1611,8 @@ exports.Treemap = void 0;
 var _layout = require("./layout");
 
 var _constants = require("../constants");
+
+var _expr = require("../expr");
 
 var _scope = require("../scope");
 
@@ -1633,7 +1721,7 @@ class Treemap extends _layout.Layout {
           facet: {
             name: names.dataFacet,
             data: names.dataHeightWidth,
-            groupby: (0, _scope.getGroupBy)(groupings)
+            groupby: (0, _scope.getGroupBy)(groupings).map(_expr.safeFieldName)
           }
         },
         data: [{
@@ -1694,7 +1782,7 @@ class Treemap extends _layout.Layout {
             value: 0
           }, {
             scale: names.zScale,
-            field: z.name
+            field: (0, _expr.safeFieldName)(z.name)
           }]
         })
       }
@@ -1720,7 +1808,7 @@ class Treemap extends _layout.Layout {
       keys: [group && group.name || '__NONE__']
     }, {
       type: 'treemap',
-      field: size.name,
+      field: (0, _expr.safeFieldName)(size.name),
       sort: {
         field: 'value',
         order: 'descending'
@@ -1751,7 +1839,27 @@ function fn(n) {
 function subtract(...fields) {
   return fields.map(n => fn(n)).join(' - ');
 }
-},{"./layout":"GfLt","../constants":"kNZP","../scope":"Nfxo","../selection":"inPN","../zBase":"GmqS"}],"PsHp":[function(require,module,exports) {
+},{"./layout":"GfLt","../constants":"kNZP","../expr":"IeV1","../scope":"Nfxo","../selection":"inPN","../zBase":"GmqS"}],"a0oX":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.allowNoneForSize = allowNoneForSize;
+
+function allowNoneForSize(specContext) {
+  switch (specContext.insight.totalStyle) {
+    case 'sum-strip':
+    case 'sum-strip-percent':
+    case 'sum-treemap':
+      return false;
+
+    default:
+      //if totalStyle is blank, count is assumed
+      return true;
+  }
+}
+},{}],"PsHp":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1759,19 +1867,21 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
-var _aggregateContainer = require("../layouts/aggregateContainer");
-
-var _band = require("../layouts/band");
+var _constants = require("../constants");
 
 var _defaults = require("../defaults");
 
-var _constants = require("../constants");
+var _aggregateContainer = require("../layouts/aggregateContainer");
+
+var _band = require("../layouts/band");
 
 var _square = require("../layouts/square");
 
 var _strip = require("../layouts/strip");
 
 var _treemap = require("../layouts/treemap");
+
+var _size = require("../size");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -1938,7 +2048,7 @@ function _default(specContext) {
         allowNone: true
       }, {
         role: 'size',
-        allowNone: true,
+        allowNone: _size.allowNoneForSize,
         excludeCategoric: true,
         signals: [_constants.SignalNames.TreeMapMethod]
       }, {
@@ -1953,7 +2063,7 @@ function _default(specContext) {
     }
   };
 }
-},{"../layouts/aggregateContainer":"UF7t","../layouts/band":"xuzw","../defaults":"visW","../constants":"kNZP","../layouts/square":"Jhnx","../layouts/strip":"vr0D","../layouts/treemap":"utMY"}],"AVzi":[function(require,module,exports) {
+},{"../constants":"kNZP","../defaults":"visW","../layouts/aggregateContainer":"UF7t","../layouts/band":"xuzw","../layouts/square":"Jhnx","../layouts/strip":"vr0D","../layouts/treemap":"utMY","../size":"a0oX"}],"AVzi":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1961,19 +2071,21 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
-var _aggregateContainer = require("../layouts/aggregateContainer");
-
-var _band = require("../layouts/band");
+var _constants = require("../constants");
 
 var _defaults = require("../defaults");
 
-var _constants = require("../constants");
+var _aggregateContainer = require("../layouts/aggregateContainer");
+
+var _band = require("../layouts/band");
 
 var _square = require("../layouts/square");
 
 var _strip = require("../layouts/strip");
 
 var _treemap = require("../layouts/treemap");
+
+var _size = require("../size");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -2139,7 +2251,7 @@ function _default(specContext) {
         allowNone: true
       }, {
         role: 'size',
-        allowNone: true,
+        allowNone: _size.allowNoneForSize,
         excludeCategoric: true,
         signals: [_constants.SignalNames.TreeMapMethod]
       }, {
@@ -2154,7 +2266,7 @@ function _default(specContext) {
     }
   };
 }
-},{"../layouts/aggregateContainer":"UF7t","../layouts/band":"xuzw","../defaults":"visW","../constants":"kNZP","../layouts/square":"Jhnx","../layouts/strip":"vr0D","../layouts/treemap":"utMY"}],"xftz":[function(require,module,exports) {
+},{"../constants":"kNZP","../defaults":"visW","../layouts/aggregateContainer":"UF7t","../layouts/band":"xuzw","../layouts/square":"Jhnx","../layouts/strip":"vr0D","../layouts/treemap":"utMY","../size":"a0oX"}],"xftz":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2163,6 +2275,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.AggregateSquare = void 0;
 
 var _layout = require("./layout");
+
+var _expr = require("../expr");
 
 var _scope = require("../scope");
 
@@ -2203,7 +2317,7 @@ class AggregateSquare extends _layout.Layout {
       as: [names.aggregateField]
     }), {
       type: 'extent',
-      field: names.aggregateField,
+      field: (0, _expr.safeFieldName)(names.aggregateField),
       signal: names.globalAggregateExtentSignal
     });
     const localAggregateMaxExtent = `datum[${JSON.stringify(names.aggregateField)}]`;
@@ -2246,12 +2360,12 @@ class AggregateSquare extends _layout.Layout {
   getTransforms(aggregation, groupby) {
     const trans = {
       type: 'joinaggregate',
-      groupby,
+      groupby: groupby.map(_expr.safeFieldName),
       ops: [aggregation]
     };
 
     if (aggregation === 'sum') {
-      trans.fields = [this.props.sumBy.name];
+      trans.fields = [this.props.sumBy.name].map(_expr.safeFieldName);
     }
 
     return trans;
@@ -2260,7 +2374,7 @@ class AggregateSquare extends _layout.Layout {
 }
 
 exports.AggregateSquare = AggregateSquare;
-},{"./layout":"GfLt","../scope":"Nfxo","../selection":"inPN"}],"PDD1":[function(require,module,exports) {
+},{"./layout":"GfLt","../expr":"IeV1","../scope":"Nfxo","../selection":"inPN"}],"PDD1":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2268,19 +2382,21 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
-var _aggregateSquare = require("../layouts/aggregateSquare");
-
-var _band = require("../layouts/band");
+var _constants = require("../constants");
 
 var _defaults = require("../defaults");
 
-var _constants = require("../constants");
+var _aggregateSquare = require("../layouts/aggregateSquare");
+
+var _band = require("../layouts/band");
 
 var _square = require("../layouts/square");
 
 var _strip = require("../layouts/strip");
 
 var _treemap = require("../layouts/treemap");
+
+var _size = require("../size");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -2443,7 +2559,7 @@ function _default(specContext) {
         allowNone: true
       }, {
         role: 'size',
-        allowNone: true,
+        allowNone: _size.allowNoneForSize,
         excludeCategoric: true,
         signals: [_constants.SignalNames.TreeMapMethod]
       }, {
@@ -2458,7 +2574,7 @@ function _default(specContext) {
     }
   };
 }
-},{"../layouts/aggregateSquare":"xftz","../layouts/band":"xuzw","../defaults":"visW","../constants":"kNZP","../layouts/square":"Jhnx","../layouts/strip":"vr0D","../layouts/treemap":"utMY"}],"ys7l":[function(require,module,exports) {
+},{"../constants":"kNZP","../defaults":"visW","../layouts/aggregateSquare":"xftz","../layouts/band":"xuzw","../layouts/square":"Jhnx","../layouts/strip":"vr0D","../layouts/treemap":"utMY","../size":"a0oX"}],"ys7l":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2528,6 +2644,8 @@ var _constants = require("../constants");
 
 var _defaults = require("../defaults");
 
+var _expr = require("../expr");
+
 var _scales = require("../scales");
 
 var _scope = require("../scope");
@@ -2593,7 +2711,7 @@ class Scatter extends _layout.Layout {
     if (qsize) {
       (0, _scope.addTransforms)(globalScope.data, {
         type: 'extent',
-        field: qsize.name,
+        field: (0, _expr.safeFieldName)(qsize.name),
         signal: names.sizeExtent
       });
       (0, _scope.addScales)(globalScope.scope, {
@@ -2733,7 +2851,7 @@ class Scatter extends _layout.Layout {
 }
 
 exports.Scatter = Scatter;
-},{"./layout":"GfLt","../constants":"kNZP","../defaults":"visW","../scales":"mxMR","../scope":"Nfxo","../selection":"inPN"}],"mVfN":[function(require,module,exports) {
+},{"./layout":"GfLt","../constants":"kNZP","../defaults":"visW","../expr":"IeV1","../scales":"mxMR","../scope":"Nfxo","../selection":"inPN"}],"mVfN":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2816,6 +2934,8 @@ exports.Stack = void 0;
 
 var _layout = require("./layout");
 
+var _expr = require("../expr");
+
 var _scope = require("../scope");
 
 var _selection = require("../selection");
@@ -2859,7 +2979,7 @@ class Stack extends _layout.Layout {
     } = parentScope;
     (0, _scope.addTransforms)(globalScope.data, {
       type: 'joinaggregate',
-      groupby: (0, _scope.getGroupBy)(groupings),
+      groupby: (0, _scope.getGroupBy)(groupings).map(_expr.safeFieldName),
       ops: ['count'],
       as: [names.count]
     }, {
@@ -2868,11 +2988,11 @@ class Stack extends _layout.Layout {
       signal: names.globalExtent
     }, Object.assign({
       type: 'stack',
-      groupby: (0, _scope.getGroupBy)(groupings),
+      groupby: (0, _scope.getGroupBy)(groupings).map(_expr.safeFieldName),
       as: [names.stack0, names.stack1]
     }, sort && {
       sort: {
-        field: sort.name,
+        field: (0, _expr.safeFieldName)(sort.name),
         order: 'ascending'
       }
     }));
@@ -3005,7 +3125,7 @@ class Stack extends _layout.Layout {
 }
 
 exports.Stack = Stack;
-},{"./layout":"GfLt","../scope":"Nfxo","../selection":"inPN"}],"Fc39":[function(require,module,exports) {
+},{"./layout":"GfLt","../expr":"IeV1","../scope":"Nfxo","../selection":"inPN"}],"Fc39":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3479,13 +3599,17 @@ exports.topLookup = topLookup;
 
 var _constants = require("./constants");
 
+var _expr = require("./expr");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 function topLookup(column, count, source, legend, lookupName, fieldName, indexName) {
   const data = [{
     name: lookupName,
     source,
     transform: [{
       type: 'aggregate',
-      groupby: [column.name]
+      groupby: [(0, _expr.safeFieldName)(column.name)]
     }, {
       type: 'window',
       ops: ['count'],
@@ -3500,9 +3624,9 @@ function topLookup(column, count, source, legend, lookupName, fieldName, indexNa
     transform: [{
       type: 'lookup',
       from: lookupName,
-      key: column.name,
-      fields: [column.name],
-      values: [column.name],
+      key: (0, _expr.safeFieldName)(column.name),
+      fields: [column.name].map(_expr.safeFieldName),
+      values: [column.name].map(_expr.safeFieldName),
       as: [fieldName]
     }, {
       type: 'formula',
@@ -3512,7 +3636,7 @@ function topLookup(column, count, source, legend, lookupName, fieldName, indexNa
   }];
   return data;
 }
-},{"./constants":"kNZP"}],"MIbS":[function(require,module,exports) {
+},{"./constants":"kNZP","./expr":"IeV1"}],"MIbS":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3915,21 +4039,25 @@ exports.ordinalScale = ordinalScale;
 
 var _constants = require("./constants");
 
+var _expr = require("./expr");
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 function createOrdinals(source, prefix, binFields, sortOrder) {
+  const _binFields = binFields.map(_expr.safeFieldName);
+
   const dataName = `${prefix}_bin_order`;
   const data = {
     name: dataName,
     source,
     transform: [{
       type: 'aggregate',
-      groupby: binFields
+      groupby: _binFields
     }, {
       type: 'collect',
       sort: {
-        field: binFields,
-        order: binFields.map(f => sortOrder)
+        field: _binFields,
+        order: _binFields.map(f => sortOrder)
       }
     }, {
       type: 'window',
@@ -3949,7 +4077,7 @@ function ordinalScale(dataName, scaleName, binFields) {
     name: scaleName,
     domain: {
       data: dataName,
-      field: binFields[0]
+      field: (0, _expr.safeFieldName)(binFields[0])
     },
     range: {
       data: dataName,
@@ -3957,7 +4085,7 @@ function ordinalScale(dataName, scaleName, binFields) {
     }
   };
 }
-},{"./constants":"kNZP"}],"MA9m":[function(require,module,exports) {
+},{"./constants":"kNZP","./expr":"IeV1"}],"MA9m":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4205,95 +4333,7 @@ class Cross extends _layout.Layout {
 }
 
 exports.Cross = Cross;
-},{"./layout":"GfLt","../bin":"HtEf","../constants":"kNZP","../facetSearch":"keY5","../facetTitle":"xF0Y","../ordinal":"F91X","../scope":"Nfxo","../signals":"TTOO"}],"QgJa":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Slice = void 0;
-
-var _layout = require("./layout");
-
-var _bin = require("../bin");
-
-var _scope = require("../scope");
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-class Slice extends _layout.Layout {
-  constructor(props) {
-    super(props);
-    this.props = props;
-    this.prefix = `slice_${this.id}`;
-    this.bin = (0, _bin.binnable)(this.prefix, props.globalScope.data.name, props.groupby);
-  }
-
-  getGrouping() {
-    return this.bin.fields;
-  }
-
-  build() {
-    const {
-      bin,
-      prefix,
-      props
-    } = this;
-    const {
-      globalScope,
-      parentScope
-    } = props;
-    const facetDataName = `data_${prefix}_facet`;
-
-    if (bin.native === false) {
-      globalScope.scope.signals.push(bin.maxbinsSignal);
-      (0, _scope.addTransforms)(globalScope.data, ...bin.transforms);
-      globalScope.scope.data.push(bin.dataSequence);
-    } // const mark: Mark = {
-    //     style: 'cell',
-    //     name: prefix,
-    //     type: 'group',
-    //     from: {
-    //         facet: {
-    //             name: facetDataName,
-    //             data: parentScope.dataName,
-    //             groupby: bin.fields
-    //         }
-    //     },
-    //     encode: {
-    //     },
-    //     marks: [
-    //         {
-    //             type: 'text',
-    //             encode: {
-    //                 update: {
-    //                     text: {
-    //                         signal: `length(data(${JSON.stringify(facetDataName)}))`
-    //                     },
-    //                     fontSize: {
-    //                         value: 20
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     ]
-    // };
-    // parentScope.scope.marks.push(mark);
-
-
-    return {
-      offsets: null,
-      sizeSignals: {
-        layoutHeight: 'TODO',
-        layoutWidth: 'TODO'
-      }
-    };
-  }
-
-}
-
-exports.Slice = Slice;
-},{"./layout":"GfLt","../bin":"HtEf","../scope":"Nfxo"}],"bQXK":[function(require,module,exports) {
+},{"./layout":"GfLt","../bin":"HtEf","../constants":"kNZP","../facetSearch":"keY5","../facetTitle":"xF0Y","../ordinal":"F91X","../scope":"Nfxo","../signals":"TTOO"}],"bQXK":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4306,6 +4346,8 @@ var _layout = require("./layout");
 var _bin = require("../bin");
 
 var _constants = require("../constants");
+
+var _expr = require("../expr");
 
 var _facetSearch = require("../facetSearch");
 
@@ -4488,8 +4530,8 @@ class Wrap extends _layout.Layout {
       transform: [{
         type: 'lookup',
         from: names.rowColumnDataName,
-        key: bin.fields[0],
-        fields: [bin.fields[0]],
+        key: (0, _expr.safeFieldName)(bin.fields[0]),
+        fields: [bin.fields[0]].map(_expr.safeFieldName),
         values: [_constants.FieldNames.WrapRow, _constants.FieldNames.WrapCol]
       }]
     };
@@ -4591,7 +4633,7 @@ class Wrap extends _layout.Layout {
 }
 
 exports.Wrap = Wrap;
-},{"./layout":"GfLt","../bin":"HtEf","../constants":"kNZP","../facetSearch":"keY5","../facetTitle":"xF0Y","../ordinal":"F91X","../scope":"Nfxo","../signals":"TTOO"}],"gUMf":[function(require,module,exports) {
+},{"./layout":"GfLt","../bin":"HtEf","../constants":"kNZP","../expr":"IeV1","../facetSearch":"keY5","../facetTitle":"xF0Y","../ordinal":"F91X","../scope":"Nfxo","../signals":"TTOO"}],"gUMf":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4604,8 +4646,6 @@ var _cross = require("./layouts/cross");
 var _defaults = require("./defaults");
 
 var _constants = require("./constants");
-
-var _slice = require("./layouts/slice");
 
 var _wrap = require("./layouts/wrap");
 
@@ -4622,32 +4662,6 @@ function getFacetLayout(facetStyle, facetColumn, facetVColumn, axisTextColor) {
   };
 
   switch (facetStyle) {
-    case 'horizontal':
-      {
-        const props = {
-          orientation: 'horizontal',
-          groupby
-        };
-        layoutPair = {
-          layoutClass: _slice.Slice,
-          props
-        };
-        break;
-      }
-
-    case 'vertical':
-      {
-        const props = {
-          orientation: 'vertical',
-          groupby
-        };
-        layoutPair = {
-          layoutClass: _slice.Slice,
-          props
-        };
-        break;
-      }
-
     case 'cross':
       {
         const props = {
@@ -4708,7 +4722,7 @@ function getFacetLayout(facetStyle, facetColumn, facetVColumn, axisTextColor) {
     signals
   };
 }
-},{"./layouts/cross":"MA9m","./defaults":"visW","./constants":"kNZP","./layouts/slice":"QgJa","./layouts/wrap":"bQXK"}],"qyiT":[function(require,module,exports) {
+},{"./layouts/cross":"MA9m","./defaults":"visW","./constants":"kNZP","./layouts/wrap":"bQXK"}],"qyiT":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4719,6 +4733,10 @@ exports.opacity = opacity;
 
 var _constants = require("./constants");
 
+var _expr = require("./expr");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 function fill(context, colorFieldName, scale) {
   const {
     specColumns,
@@ -4727,10 +4745,10 @@ function fill(context, colorFieldName, scale) {
   } = context;
   const colorColumn = specColumns.color;
   return colorColumn ? colorColumn.isColorData || insight.directColor ? {
-    field: colorColumn.name
+    field: (0, _expr.safeFieldName)(colorColumn.name)
   } : {
     scale,
-    field: colorColumn.quantitative ? colorColumn.name : colorFieldName
+    field: colorColumn.quantitative ? (0, _expr.safeFieldName)(colorColumn.name) : colorFieldName
   } : {
     value: specViewOptions.colors.defaultCube
   };
@@ -4742,7 +4760,7 @@ function opacity(context) {
   };
   return result;
 }
-},{"./constants":"kNZP"}],"O5yf":[function(require,module,exports) {
+},{"./constants":"kNZP","./expr":"IeV1"}],"O5yf":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4878,7 +4896,18 @@ class SpecBuilder {
     const {
       roles
     } = specCapabilities;
-    const required = roles.filter(r => !r.allowNone);
+    const required = roles.filter(r => {
+      switch (typeof r.allowNone) {
+        case 'boolean':
+          return !r.allowNone;
+
+        case 'undefined':
+          return true;
+
+        case 'function':
+          return !r.allowNone(specContext);
+      }
+    });
     const numeric = roles.filter(r => r.excludeCategoric);
     const errors = required.map(r => {
       if (specContext.specColumns[r.role]) {
@@ -6172,13 +6201,13 @@ function detectSequentialColumn(column, data) {
 
   return true;
 }
-},{"d3-color":"mFud"}],"rWkQ":[function(require,module,exports) {
+},{"d3-color":"mFud"}],"EPvd":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.cloneVegaSpecWithData = cloneVegaSpecWithData;
+exports.build = build;
 
 var _charts = require("./charts");
 
@@ -6186,7 +6215,7 @@ var _inference = require("./inference");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function cloneVegaSpecWithData(context, currData) {
+function build(context, currData) {
   const {
     specColumns
   } = context;
@@ -6227,14 +6256,14 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _clone = require("./clone");
+var _build = require("./build");
 
-Object.keys(_clone).forEach(function (key) {
+Object.keys(_build).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function () {
-      return _clone[key];
+      return _build[key];
     }
   });
 });
@@ -6262,7 +6291,7 @@ Object.keys(_inference).forEach(function (key) {
     }
   });
 });
-},{"./clone":"rWkQ","./constants":"kNZP","./inference":"x9Lc"}],"Syc7":[function(require,module,exports) {
+},{"./build":"EPvd","./constants":"kNZP","./inference":"x9Lc"}],"Syc7":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10002,14 +10031,22 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+function getOrientItem(group) {
+  if (group.orient) {
+    return group;
+  }
+
+  return group.datum;
+}
+
 function convertGroupRole(group) {
   if (group.mark.role === 'legend') return _interfaces.GroupType.legend;
 
   if (group.mark.role === 'axis') {
-    var vegaAxisDatum = group.datum;
+    const orientItem = getOrientItem(group);
 
-    if (vegaAxisDatum) {
-      switch (vegaAxisDatum.orient) {
+    if (orientItem) {
+      switch (orientItem.orient) {
         case 'bottom':
         case 'top':
           return _interfaces.GroupType.xAxis;
@@ -10315,7 +10352,16 @@ class Presenter {
       });
       this.OrbitControllerClass = classes.OrbitControllerClass;
       const initialViewState = (0, _viewState.targetViewState)(height, width, stage.view);
+      let glOptions;
+
+      if (config && config.preserveDrawingBuffer) {
+        glOptions = {
+          preserveDrawingBuffer: true
+        };
+      }
+
       const deckProps = {
+        glOptions,
         height: null,
         width: null,
         effects: (0, _effects.lightingEffects)(),
@@ -11050,7 +11096,11 @@ class Animator {
     });
   }
 
-  filter(search, keepData, collapseData) {
+  filter(search, keepData, collapseData, rebase) {
+    if (rebase) {
+      this.dataScope.collapse(false, keepData);
+    }
+
     this.dataScope.collapse(true, collapseData);
     return new Promise((resolve, reject) => {
       this.props.onAnimateDataChange(DataLayoutChange.refine, 'before refine', 'refine').then(() => {
@@ -11177,7 +11227,7 @@ exports.selectBetweenAxis = selectBetweenAxis;
 
 function notNice(niceValue) {
   //convert "nice" numbers to numeric value
-  return (niceValue + '').replace(/,/g, '');
+  return (niceValue + '').replace(/[\s,]/g, '');
 }
 
 function tickValue(axis, i) {
@@ -11688,7 +11738,7 @@ class DataScope {
     this.deselect();
 
     if (search) {
-      this.selection = this.createUserSelection(search, true);
+      this.selection = this.createUserSelection(search, true, false);
 
       if (this.selection.included.length) {
         this.activate(this.selection.included[0]);
@@ -11696,14 +11746,15 @@ class DataScope {
     }
   }
 
-  createUserSelection(search, assign) {
+  createUserSelection(search, assign, rebase) {
     const exec = new _searchExpression.Exec(search, this.getColumns());
     const s = {
       search,
       included: [],
       excluded: []
     };
-    this.currentData().forEach(datum => {
+    const data = rebase ? this.data : this.currentData();
+    data.forEach(datum => {
       if (exec.run(datum)) {
         if (assign) {
           datum[_sanddanceSpecs.FieldNames.Selected] = true;
@@ -11894,7 +11945,7 @@ class Details {
       case Action.exclude:
         {
           this.clearSelection();
-          p = this.animator.filter((0, _searchExpression.invert)(u.search), u.excluded, u.included);
+          p = this.animator.filter((0, _searchExpression.invert)(u.search), u.excluded, u.included, false);
           this.state.remapColor = false;
           break;
         }
@@ -11902,7 +11953,7 @@ class Details {
       case Action.isolate:
         {
           this.clearSelection();
-          p = this.animator.filter(u.search, u.included, u.excluded);
+          p = this.animator.filter(u.search, u.included, u.excluded, false);
           this.state.remapColor = false;
           break;
         }
@@ -12176,7 +12227,14 @@ function selectQuantitative(colorBinType, column, legend, clickedIndex) {
 
   if (lowValue) lowValue = (0, _expression.notNice)(lowValue);
   if (highValue) highValue = (0, _expression.notNice)(highValue);
-  return (0, _expression.selectBetween)(column, lowValue, highValue, lowOperator, highOperator);
+
+  if (lowValue === highValue) {
+    return {
+      expressions: [(0, _expression.selectExact)(column, lowValue)]
+    };
+  } else {
+    return (0, _expression.selectBetween)(column, lowValue, highValue, lowOperator, highOperator);
+  }
 }
 
 function finalizeLegend(colorBinType, colorColumn, legend, language) {
@@ -12188,8 +12246,6 @@ function finalizeLegend(colorBinType, colorColumn, legend, language) {
 
     if (row.value === _sanddanceSpecs.Other) {
       row.label = language.legendOther;
-    } else if (rowTexts.indexOf(row.value) >= 0) {
-      delete legend.rows[i];
     } else {
       rowTexts.push(row.value);
     }
@@ -12526,7 +12582,6 @@ class Viewer {
       this.renderSameLayout();
     }, () => this.insight && this.insight.columns && !!this.insight.columns.color && this.colorContexts && this.colorContexts.length > 1);
     this.insight = {};
-    this._signalValues = {};
   }
 
   changeColorContexts(colorContexts) {
@@ -12549,7 +12604,7 @@ class Viewer {
       if (dataChange === _animator.DataLayoutChange.refine) {
         const oldColorContext = this.colorContexts[this.currentColorContext];
         innerPromise = new Promise(innerResolve => {
-          this.renderNewLayout({
+          this.renderNewLayout({}, {
             preStage: (stage, deckProps) => {
               (0, _legend.finalizeLegend)(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
               this.overrideAxisLabels(stage);
@@ -12566,7 +12621,7 @@ class Viewer {
           });
         });
       } else {
-        innerPromise = this.renderNewLayout({
+        innerPromise = this.renderNewLayout({}, {
           preStage: (stage, deckProps) => {
             (0, _legend.finalizeLegend)(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
             this.overrideAxisLabels(stage);
@@ -12602,7 +12657,7 @@ class Viewer {
             //save cube colors
             const oldColorContext = this.colorContexts[this.currentColorContext];
             let colorMap;
-            yield this.renderNewLayout({
+            yield this.renderNewLayout({}, {
               preStage: (stage, deckProps) => {
                 //save off the spec colors
                 colorMap = (0, _colorCubes.colorMapFromCubes)(stage.cubeData);
@@ -12641,7 +12696,7 @@ class Viewer {
               legendElement: null
             };
             this.changeColorContexts([colorContext]);
-            yield this.renderNewLayout({
+            yield this.renderNewLayout({}, {
               onPresent: () => {
                 (0, _colorCubes.populateColorContext)(colorContext, this.presenter);
               }
@@ -12680,7 +12735,7 @@ class Viewer {
     return specColumns;
   }
 
-  renderNewLayout(presenterConfig, view) {
+  renderNewLayout(signalValues, presenterConfig, view) {
     return __awaiter(this, void 0, void 0, function* () {
       const currData = this._dataScope.currentData();
 
@@ -12689,12 +12744,11 @@ class Viewer {
         insight: this.insight,
         specViewOptions: this.options
       };
-      const specResult = (0, _sanddanceSpecs.cloneVegaSpecWithData)(context, currData);
+      const specResult = (0, _sanddanceSpecs.build)(context, currData);
 
       if (!specResult.errors) {
         const uiValues = (0, _signals.extractSignalValuesFromView)(this.vegaViewGl, this.vegaSpec);
-        this._signalValues = Object.assign(Object.assign(Object.assign({}, this._signalValues), uiValues), this.insight.signalValues);
-        (0, _signals.applySignalValues)(this._signalValues, specResult.vegaSpec);
+        (0, _signals.applySignalValues)(Object.assign(Object.assign({}, uiValues), signalValues), specResult.vegaSpec);
         this.vegaSpec = specResult.vegaSpec;
         this.options.onVegaSpec && this.options.onVegaSpec(this.vegaSpec);
         this.specCapabilities = specResult.specCapabilities;
@@ -12710,6 +12764,10 @@ class Viewer {
         }
 
         try {
+          if (this.vegaViewGl) {
+            this.vegaViewGl.finalize();
+          }
+
           const runtime = VegaDeckGl.base.vega.parse(this.vegaSpec);
           this.vegaViewGl = new VegaDeckGl.ViewGl(runtime, config).renderer('deck.gl').initialize(this.element);
           yield this.vegaViewGl.runAsync(); //capture new color color contexts via signals
@@ -12834,7 +12892,7 @@ class Viewer {
           //refining
           result = yield this._render(insight, data, options);
           this.presenter.animationQueue(() => {
-            this.filter(insight.filter);
+            this.filter(insight.filter, options.rebaseFilter && options.rebaseFilter());
           }, allowAsyncRenderTime, {
             waitingLabel: 'layout before refine',
             handlerLabel: 'refine after layout'
@@ -12903,9 +12961,7 @@ class Viewer {
       }
 
       if (this._dataScope.setData(data, options.columns)) {
-        //data is different, reset the signal value cache
-        this._signalValues = {}; //apply transform to the data
-
+        //apply transform to the data
         this.transformData(data, insight.transform);
       }
 
@@ -12921,7 +12977,7 @@ class Viewer {
         legend: null,
         legendElement: null
       };
-      const specResult = yield this.renderNewLayout({
+      const specResult = yield this.renderNewLayout(insight.signalValues, {
         preStage: (stage, deckProps) => {
           if (this._shouldSaveColorContext()) {
             //save off the colors from Vega layout
@@ -13134,7 +13190,8 @@ class Viewer {
           width,
           newViewStateTarget
         };
-      }
+      },
+      preserveDrawingBuffer: this.options.preserveDrawingBuffer
     };
 
     if (this.options.onBeforeCreateLayers) {
@@ -13155,14 +13212,15 @@ class Viewer {
   /**
    * Filter the data and animate.
    * @param search Filter expression, see https://vega.github.io/vega/docs/expressions/
+   * @param rebase Optional flag to apply to entire dataset. A false value will apply the filter upon any existing filter.
    */
 
 
-  filter(search) {
-    const u = this._dataScope.createUserSelection(search, false);
+  filter(search, rebase = false) {
+    const u = this._dataScope.createUserSelection(search, false, rebase);
 
     return new Promise((resolve, reject) => {
-      this._animator.filter(search, u.included, u.excluded).then(() => {
+      this._animator.filter(search, u.included, u.excluded, rebase).then(() => {
         this._details.clear();
 
         this._details.clearSelection();
@@ -13328,7 +13386,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = '3.0.0-beta.1';
+const version = '3.0.2';
 exports.version = version;
 },{}],"rZaE":[function(require,module,exports) {
 "use strict";
@@ -13500,27 +13558,61 @@ const classList = (...args) => {
 exports.classList = classList;
 const deepCompare = compare.default || compare;
 exports.deepCompare = deepCompare;
-},{"just-compare":"wkaK"}],"J77C":[function(require,module,exports) {
-module.exports = ReactDOM;
-},{}],"qyfj":[function(require,module,exports) {
+},{"just-compare":"wkaK"}],"X6sm":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SandDanceReact = void 0;
+exports.use = use;
+exports.base = void 0;
 
-var React = _interopRequireWildcard(require("react"));
+var _viewer = require("./viewer");
 
-var _util = require("./util");
-
-var _reactDom = require("react-dom");
-
-var _sanddance = require("@msrvida/sanddance");
+var SandDance = _interopRequireWildcard(require("@msrvida/sanddance"));
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+const base = {
+  react: null,
+  reactDOM: null
+};
+/**
+ * Specify the dependency libraries to use for rendering.
+ * @param react React library.
+ * @param vega Vega library.
+ * @param deck @deck.gl/core library.
+ * @param layers @deck.gl/layers library.
+ * @param luma @luma.gl/core library.
+ */
+
+exports.base = base;
+
+function use(react, reactDOM, vega, deck, layers, luma) {
+  SandDance.VegaDeckGl.use(vega, deck, layers, luma);
+  base.react = react;
+  base.reactDOM = reactDOM; //inform React that we are using a dynamic base class
+
+  _viewer.SandDanceReact.prototype = react.Component.prototype;
+}
+},{"./viewer":"qyfj","@msrvida/sanddance":"rZaE"}],"qyfj":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.compareProps = compareProps;
+exports.SandDanceReact = void 0;
+
+var _base = require("./base");
+
+var _util = require("./util");
+
+var _sanddance = require("@msrvida/sanddance");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -13534,72 +13626,92 @@ function addNullable(insight, signalValues) {
   return withNulls;
 }
 
-class SandDanceReact extends React.Component {
-  areLayoutPropsSame() {
-    const currentInsight = this.viewer.getInsight();
-    const a = addNullable(currentInsight, Object.assign(Object.assign({}, this.viewer.insight.signalValues), currentInsight.signalValues));
-    const b = addNullable(this.props.insight, Object.assign(Object.assign({}, a.signalValues), this.props.insight.signalValues));
-    const compare = (0, _util.deepCompare)(a, b);
-    return compare && this.props.data === this.lastData;
-  }
-
-  needsLayout() {
-    return this.props.insight && this.props.data && !this.areLayoutPropsSame();
-  }
-
-  layout() {
-    this.lastData = this.props.data;
-    this.viewer.render(this.props.insight, this.props.data, this.props.renderOptions).then(renderResult => {
-      //TODO: show errors if any
-      //console.log('viewer render');
-      this.props.onView && this.props.onView(renderResult);
-    }).catch(e => {
-      //console.log('viewer error');
-      this.props.onError && this.props.onError(e);
-    });
-  }
-
-  view() {
-    const needsLayout = this.needsLayout();
-
-    if (needsLayout) {
-      this.layout();
-    }
-  }
-
-  componentDidMount() {
-    const element = (0, _reactDom.findDOMNode)(this.viewerDiv);
-    this.viewer = new _sanddance.Viewer(element, this.props.viewerOptions);
-
-    if (this.props.onMount) {
-      if (this.props.onMount(this.viewer.presenter.getElement(_sanddance.VegaDeckGl.PresenterElement.gl))) {
-        this.view();
-      }
-    } else {
-      this.view();
-    }
-  }
-
-  componentDidUpdate() {
-    this.viewer.options = _sanddance.VegaDeckGl.util.deepMerge(this.viewer.options, this.props.viewerOptions);
-    this.view();
-  }
-
-  componentWillUnmount() {
-    this.viewer.finalize();
-  }
-
-  render() {
-    return React.createElement("div", {
-      className: "sanddance-ReactViewer",
-      ref: div => this.viewerDiv = div
-    });
-  }
-
+function compareProps(viewer, insight) {
+  const currentInsight = viewer.getInsight();
+  const a = addNullable(currentInsight, Object.assign(Object.assign({}, viewer.insight.signalValues), currentInsight.signalValues));
+  const b = addNullable(insight, Object.assign(Object.assign({}, a.signalValues), insight.signalValues));
+  const compare = (0, _util.deepCompare)(a, b);
+  return {
+    a,
+    b,
+    compare
+  };
 }
 
+function _SandDanceReact(props) {
+  class __SandDanceReact extends _base.base.react.Component {
+    layout() {
+      this.lastData = this.props.data;
+      this.viewer.render(this.props.insight, this.props.data, this.props.renderOptions).then(renderResult => {
+        //TODO: show errors if any
+        //console.log('viewer render');
+        this.props.onView && this.props.onView(renderResult);
+      }).catch(e => {
+        //console.log('viewer error');
+        this.props.onError && this.props.onError(e);
+      });
+    }
+
+    view() {
+      if (this.props.insight && this.props.data) {
+        const c = compareProps(this.viewer, this.props.insight);
+        const sameDataRef = this.props.data === this.lastData;
+
+        if (!c.compare || !sameDataRef) {
+          this.layout();
+        }
+      }
+    }
+
+    componentDidMount() {
+      const element = _base.base.reactDOM.findDOMNode(this.viewerDiv);
+
+      this.viewer = new _sanddance.Viewer(element, this.props.viewerOptions);
+
+      if (this.props.onMount) {
+        if (this.props.onMount(this.viewer.presenter.getElement(_sanddance.VegaDeckGl.PresenterElement.gl))) {
+          this.view();
+        }
+      } else {
+        this.view();
+      }
+    }
+
+    componentDidUpdate() {
+      this.viewer.options = _sanddance.VegaDeckGl.util.deepMerge(this.viewer.options, this.props.viewerOptions);
+      this.view();
+    }
+
+    componentWillUnmount() {
+      this.viewer.finalize();
+    }
+
+    render() {
+      return _base.base.react.createElement("div", {
+        className: "sanddance-ReactViewer",
+        ref: div => this.viewerDiv = div
+      });
+    }
+
+  }
+
+  return new __SandDanceReact(props);
+}
+
+const SandDanceReact = _SandDanceReact;
 exports.SandDanceReact = SandDanceReact;
-},{"react":"mpTF","./util":"HI4Z","react-dom":"J77C","@msrvida/sanddance":"rZaE"}],"MjKu":[function(require,module,exports) {
+},{"./base":"X6sm","./util":"HI4Z","@msrvida/sanddance":"rZaE"}],"TN0H":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.version = void 0;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+const version = '3.0.0';
+exports.version = version;
+},{}],"MjKu":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13609,6 +13721,12 @@ Object.defineProperty(exports, "SandDanceReact", {
   enumerable: true,
   get: function () {
     return _viewer.SandDanceReact;
+  }
+});
+Object.defineProperty(exports, "use", {
+  enumerable: true,
+  get: function () {
+    return _base.use;
   }
 });
 Object.defineProperty(exports, "version", {
@@ -13629,91 +13747,107 @@ exports.util = util;
 
 var _viewer = require("./viewer");
 
+var _base = require("./base");
+
 var _version = require("./version");
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-},{"@msrvida/sanddance":"rZaE","./util":"HI4Z","./viewer":"qyfj","./version":"DZif"}],"Vlbn":[function(require,module,exports) {
+},{"@msrvida/sanddance":"rZaE","./util":"HI4Z","./viewer":"qyfj","./base":"X6sm","./version":"TN0H"}],"OWDI":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.use = use;
-exports.base = void 0;
+exports.Signal = Signal;
 
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-var base = {
-  fluentUI: null
-};
-/**
- * Specify the dependency libraries to use for rendering.
- * @param fluentUI FluentUI React library.
- * @param vega Vega library.
- * @param deck @deck.gl/core library.
- * @param layers @deck.gl/layers library.
- * @param luma @luma.gl/core library.
- */
-
-exports.base = base;
-
-function use(fluentUI, vega, deck, layers, luma) {
-  _sanddanceReact.SandDance.VegaDeckGl.use(vega, deck, layers, luma);
-
-  base.fluentUI = fluentUI;
-}
-},{"@msrvida/sanddance-react":"MjKu"}],"pP3Y":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.convertToDelimited = convertToDelimited;
+var _base = require("../base");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function convertToDelimited(data, delimiter) {
-  var fields = Object.keys(data[0]);
-  var file = data.map(function (row) {
-    return fields.map(function (fieldName) {
-      var value = row[fieldName];
+function Signal(props) {
+  if (!props.explorer.viewer || !props.signal) {
+    return null;
+  }
 
-      if (typeof value === 'number') {
-        return value;
-      }
+  if (props.signal.bind) {
+    var input = props.signal.bind.input;
 
-      if (typeof value === 'string') {
-        if (value.indexOf(delimiter) >= 0) {
-          return "\"".concat(value.replace(/"/g, '""'), "\"");
-        } else {
-          return value;
+    if (input) {
+      var fn = map[input];
+
+      if (fn) {
+        var prefix = props.prefix ? "".concat(props.prefix, " ") : '';
+        var initialValue;
+
+        try {
+          initialValue = props.explorer.viewer.vegaViewGl.signal(props.signal.name);
+        } catch (error) {// continue regardless of error
         }
+
+        var control = fn(prefix, props.signal.bind, initialValue, function (value) {
+          props.onChange && props.onChange(value);
+          props.explorer.signal(props.signal.name, value, props.newViewStateTarget);
+        }, props.disabled, props.collapseLabel);
+        return _base.base.react.createElement("div", {
+          className: "sanddance-signal"
+        }, control);
       }
+    }
+  }
 
-      return '';
-    }).join(delimiter);
-  });
-  file.unshift(fields.join(delimiter));
-  return file.join('\n');
+  return null;
 }
-},{}],"fOIZ":[function(require,module,exports) {
-"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.embedHtml = void 0;
+var map = {};
 
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var embedHtml = function embedHtml(title, embed) {
-  return "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>".concat(title, "</title>\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-embed@3.0.0-beta.1/dist/css/sanddance-embed.css\" />\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-explorer@3.0.0-beta.1/dist/css/sanddance-explorer.css\" />\n</head>\n\n<body>\n    <script src=\"https://unpkg.com/react@16.13/umd/react.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/react-dom@16.13/umd/react-dom.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/deck.gl@8.1.5/dist.min.js\"></script>\n    <script src=\"https://unpkg.com/vega@5.11/build/vega.min.js\"></script>\n    <script src=\"https://unpkg.com/@fluentui/react@7.111/dist/fluentui-react.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-explorer@3.0.0-beta.1/dist/umd/sanddance-explorer.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-embed@3.0.0-beta.1/dist/umd/sanddance-embed.js\"></script>\n\n    <div id=\"app\"></div>\n\n    ").concat(embed, "\n\n</body>\n\n</html>");
+map['range'] = function (prefix, bind, initialValue, onChange, disabled, collapseLabel) {
+  return _base.base.react.createElement(_base.base.fluentUI.Slider, {
+    label: prefix + bind.name,
+    max: bind.max,
+    min: bind.min,
+    step: bind.step,
+    defaultValue: initialValue,
+    onChange: onChange,
+    disabled: disabled
+  });
 };
 
-exports.embedHtml = embedHtml;
-},{}],"hk5u":[function(require,module,exports) {
+map['select'] = function (prefix, bind, initialValue, _onChange, disabled, collapseLabel) {
+  var options = bind.options.map(function (o, i) {
+    var option = {
+      key: o,
+      text: o
+    };
+    return option;
+  });
+  var label = prefix + bind.name;
+  return _base.base.react.createElement(_base.base.fluentUI.Dropdown, {
+    onRenderTitle: collapseLabel ? function (a, b) {
+      return _base.base.react.createElement("span", null, label, ": ", a[0].text);
+    } : undefined,
+    defaultSelectedKey: initialValue,
+    label: collapseLabel ? undefined : label,
+    options: options,
+    onChange: function onChange(e, o) {
+      return _onChange(o.text);
+    },
+    disabled: disabled
+  });
+};
+
+map['checkbox'] = function (prefix, bind, initialValue, _onChange2, disabled, collapseLabel) {
+  return _base.base.react.createElement(_base.base.fluentUI.Toggle, {
+    defaultChecked: initialValue,
+    label: prefix + bind.name,
+    onChange: function onChange(e, checked) {
+      return _onChange2(checked);
+    },
+    disabled: disabled
+  });
+}; //TODO other signal types
+},{"../base":"Vlbn"}],"hk5u":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13765,6 +13899,8 @@ var strings = {
   buttonLaunchVegaEditor: 'Open Vega Editor',
   buttonCameraHome: 'Center chart in window',
   buttonTooltipMapping: 'Tooltip columns...',
+  buttonUndo: 'Undo',
+  buttonRedo: 'Redo',
   chartTypeBarChartH: 'Bar',
   chartTypeBarChartV: 'Column',
   chartTypeDensity: 'Density',
@@ -13793,6 +13929,7 @@ var strings = {
   labelExportHTML: '.HTML - A SandDance html page embedding this data',
   labelExportJSON: '.JSON - JavaScript object notation',
   labelExportTSV: '.TSV - Tab separated values',
+  labelHistory: 'History',
   labelTools: 'Tools',
   labelVegaSpec: 'Vega specification',
   labelColor: 'Chart color',
@@ -13834,8 +13971,8 @@ var strings = {
   labelColumnFacet: 'Facet by',
   labelFacetLayout: 'Facet layout',
   labelFacetLayoutWrap: 'Wrap',
-  labelFacetLayoutHorizontal: 'Horizontal',
-  labelFacetLayoutVertical: 'Vertical',
+  // labelFacetLayoutHorizontal: 'Horizontal',
+  // labelFacetLayoutVertical: 'Vertical',
   labelFacetLayoutCross: '⊞',
   labelColumnFacetV: 'Cross facet by',
   labelColumnSort: 'Sort by',
@@ -13854,6 +13991,22 @@ var strings = {
   labelAliasSize: 'Size',
   labelAliasGroup: 'Group',
   labelDataItemIsFiltered: 'Item is filtered from view',
+  labelHistoryInit: 'Initial view',
+  labelHistoryFilterClear: 'Clear filter',
+  labelHistoryFilterIExclude: 'Exclude filter',
+  labelHistoryFilterIsolate: 'Isolate filter',
+  labelHistoryChangeChartType: function labelHistoryChangeChartType(chart) {
+    return "Change chart type to ".concat(chart);
+  },
+  labelHistoryMapColumn: function labelHistoryMapColumn(column) {
+    return "Map ".concat(column, " role");
+  },
+  labelHistoryUnMapColumn: function labelHistoryUnMapColumn(column) {
+    return "Unmap ".concat(column, " role");
+  },
+  labelHistoryReviveSnapshot: 'Revive snapshot',
+  labelHistoryColorBin: 'Change color binning',
+  labelHistoryDirectColor: 'Change direct color',
   labelShowLegend: 'Show legend',
   labelShowAxes: 'Show axes',
   labelSnapshotTitle: 'Title',
@@ -13907,7 +14060,7 @@ var strings = {
   },
   labelRequired: 'required',
   labelSystem: 'System',
-  lavelViewType2d: 'View in 2D',
+  labelViewType2d: 'View in 2D',
   labelViewType3d: 'View in 3D',
   labelDataColors: 'Enabled if this data column contains any CSS color values.',
   labelDataNullAll: 'Loading data...',
@@ -13948,703 +14101,7 @@ var strings = {
   }]
 };
 exports.strings = strings;
-},{}],"l7po":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.removeExtensions = removeExtensions;
-exports.getEmbedHTML = getEmbedHTML;
-exports.DataExportPicker = void 0;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _base = require("../base");
-
-var _exportDelimited = require("../exportDelimited");
-
-var _dataExporterHtml = require("./dataExporterHtml");
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-var _language = require("../language");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-var exportTypes = [['json', _language.strings.labelExportJSON], ['csv', _language.strings.labelExportCSV], ['tsv', _language.strings.labelExportTSV], ['html', _language.strings.labelExportHTML]];
-
-var DataExportPicker =
-/*#__PURE__*/
-function (_React$Component) {
-  _inherits(DataExportPicker, _React$Component);
-
-  function DataExportPicker(props) {
-    var _this;
-
-    _classCallCheck(this, DataExportPicker);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(DataExportPicker).call(this, props));
-    _this.state = _this.getInitialState(_this.props);
-    return _this;
-  }
-
-  _createClass(DataExportPicker, [{
-    key: "getInitialState",
-    value: function getInitialState(props) {
-      var initialState = {
-        initializer: props.initializer,
-        dialogHidden: true,
-        exportType: exportTypes[0][0],
-        fileName: props.initializer.fileName,
-        fileNameError: '',
-        working: false
-      };
-      return initialState;
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate() {
-      if (!_sanddanceReact.util.deepCompare(this.props.initializer, this.state.initializer)) {
-        this.setState(this.getInitialState(this.props));
-      }
-    } // Converts to dataExport type and calls dataExportHandler to deal with data
-
-  }, {
-    key: "createExport",
-    value: function createExport(exportType, displayName) {
-      var _this2 = this;
-
-      var final = function final(data) {
-        _this2.props.dataExportHandler(data, exportType, displayName);
-
-        _this2.close();
-      };
-
-      var json = JSON.stringify(this.props.data, columnReplacer);
-
-      switch (exportType) {
-        case 'json':
-          {
-            final(json);
-            break;
-          }
-
-        case 'csv':
-          {
-            final((0, _exportDelimited.convertToDelimited)(JSON.parse(json), ','));
-            break;
-          }
-
-        case 'tsv':
-          {
-            final((0, _exportDelimited.convertToDelimited)(JSON.parse(json), '\t'));
-            break;
-          }
-
-        case 'html':
-          {
-            var csv = (0, _exportDelimited.convertToDelimited)(JSON.parse(json), ',');
-            var html = (0, _dataExporterHtml.embedHtml)("".concat(_language.strings.appName, " - ").concat(escape(displayName)), embedScript(csv, displayName));
-            final(html);
-          }
-      }
-    }
-  }, {
-    key: "close",
-    value: function close() {
-      this.setState({
-        dialogHidden: true,
-        working: false
-      });
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this3 = this;
-
-      var closeDialog = function closeDialog() {
-        return _this3.close();
-      };
-
-      if (this.state.delayAction) {
-        requestAnimationFrame(function () {
-          //allow render to complete
-          if (_this3.state.delayAction) {
-            _this3.state.delayAction();
-
-            _this3.setState({
-              delayAction: null
-            });
-          }
-        });
-      }
-
-      var disabled = this.state.working || this.state.dialogHidden;
-      return React.createElement("div", {
-        className: "sanddance-dataExporter"
-      }, React.createElement(_base.base.fluentUI.DefaultButton, {
-        className: "search-action search-bottom-action",
-        text: _language.strings.buttonExportCount(this.props.data.length),
-        onClick: function onClick() {
-          return _this3.setState({
-            dialogHidden: false
-          });
-        },
-        disabled: this.props.disabled
-      }), React.createElement(_base.base.fluentUI.Dialog, {
-        hidden: this.state.dialogHidden,
-        onDismiss: closeDialog,
-        dialogContentProps: {
-          className: "sanddance-dialog ".concat(this.props.theme),
-          type: _base.base.fluentUI.DialogType.normal,
-          title: _language.strings.labelExport
-        }
-      }, React.createElement(_base.base.fluentUI.TextField, {
-        label: _language.strings.labelExportFileName,
-        onChange: function onChange(e, displayName) {
-          var displayNameError = getFileNameError(displayName);
-
-          _this3.setState({
-            fileName: displayName,
-            fileNameError: displayNameError
-          });
-        },
-        errorMessage: this.state.fileNameError,
-        value: this.state.fileName
-      }), React.createElement(_base.base.fluentUI.ChoiceGroup, {
-        className: "sanddance-form-separate",
-        disabled: disabled,
-        options: exportTypes.map(function (_ref) {
-          var _ref2 = _slicedToArray(_ref, 2),
-              exportType = _ref2[0],
-              text = _ref2[1];
-
-          return {
-            key: exportType,
-            text: text,
-            disabled: false,
-            checked: exportType === _this3.state.exportType
-          };
-        }),
-        onChange: function onChange(ev, option) {
-          return _this3.setState({
-            exportType: option.key
-          });
-        },
-        label: _language.strings.labelExportFormat
-      }), React.createElement(_base.base.fluentUI.DialogFooter, null, React.createElement(_base.base.fluentUI.PrimaryButton, {
-        disabled: disabled || !!this.state.fileNameError,
-        onClick: function onClick(e) {
-          return _this3.setState({
-            delayAction: function delayAction() {
-              return _this3.createExport(_this3.state.exportType, _this3.state.fileName);
-            },
-            working: true
-          });
-        },
-        text: _language.strings.buttonExport
-      }), React.createElement(_base.base.fluentUI.DefaultButton, {
-        onClick: closeDialog,
-        text: _language.strings.buttonClose
-      }))));
-    }
-  }]);
-
-  return DataExportPicker;
-}(React.Component);
-
-exports.DataExportPicker = DataExportPicker;
-var illegalChars = '\\/:*?"<>|';
-
-function getFileNameError(displayName) {
-  if (!displayName) {
-    return _language.strings.errorExportFilenameEmpty;
-  }
-
-  for (var i = 0; i < illegalChars.length; i++) {
-    if (displayName.indexOf(illegalChars[i]) >= 0) {
-      return _language.strings.errorExportFilenameCharacters(illegalChars);
-    }
-  }
-}
-
-function removeExtensions(fileName) {
-  exportTypes.forEach(function (_ref3) {
-    var _ref4 = _slicedToArray(_ref3, 1),
-        exportType = _ref4[0];
-
-    var re = new RegExp("\\.".concat(exportType), 'ig');
-    fileName = fileName.replace(re, '');
-  });
-  return fileName;
-}
-
-function columnReplacer(name, value) {
-  if (_sanddanceReact.SandDance.util.isInternalFieldName(name, true)) {
-    return undefined;
-  }
-
-  return value === null ? '' : value;
-}
-
-function embedScript(csv, displayName, snapshots) {
-  var dataFile = {
-    type: 'csv',
-    displayName: displayName,
-    snapshots: snapshots
-  };
-  return "<pre id='csv-data' style='display:none'>".concat(csv, "</pre>\n    <script>SandDanceEmbed.load(Object.assign({rawText: document.getElementById('csv-data').innerText}, ").concat(JSON.stringify(dataFile), "))</script>");
-}
-
-function getEmbedHTML(data, displayName, snapshots) {
-  var json = JSON.stringify(data, columnReplacer);
-  var csv = (0, _exportDelimited.convertToDelimited)(JSON.parse(json), ',');
-  var html = (0, _dataExporterHtml.embedHtml)("".concat(_language.strings.appName, " - ").concat(escape(displayName)), embedScript(csv, displayName, snapshots));
-  return html;
-}
-},{"react":"mpTF","../base":"Vlbn","../exportDelimited":"pP3Y","./dataExporterHtml":"fOIZ","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"h2T5":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.SideTabId = void 0;
-var SideTabId;
-exports.SideTabId = SideTabId;
-
-(function (SideTabId) {
-  SideTabId[SideTabId["ChartType"] = 0] = "ChartType";
-  SideTabId[SideTabId["Data"] = 1] = "Data";
-  SideTabId[SideTabId["Search"] = 2] = "Search";
-  SideTabId[SideTabId["Color"] = 3] = "Color";
-  SideTabId[SideTabId["Snapshots"] = 4] = "Snapshots";
-  SideTabId[SideTabId["Settings"] = 5] = "Settings";
-  SideTabId[SideTabId["Pin"] = 6] = "Pin";
-  SideTabId[SideTabId["Collapse"] = 7] = "Collapse";
-})(SideTabId || (exports.SideTabId = SideTabId = {}));
-},{}],"Dryx":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.getCanvas = getCanvas;
-exports.removeTabIndex = removeTabIndex;
-exports.capabilities = void 0;
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-var PresenterElement = _sanddanceReact.SandDance.VegaDeckGl.PresenterElement;
-
-function getCanvas(viewer) {
-  var tags = viewer.presenter.getElement(PresenterElement.gl).getElementsByTagName('canvas');
-
-  if (tags) {
-    return tags[0];
-  }
-}
-
-function removeTabIndex(viewer) {
-  var canvas = getCanvas(viewer);
-
-  if (canvas) {
-    canvas.tabIndex = -1;
-  }
-}
-
-var capabilities = {
-  webgl: !!document.createElement('canvas').getContext('webgl'),
-  webgl2: !!document.createElement('canvas').getContext('webgl2')
-};
-exports.capabilities = capabilities;
-},{"@msrvida/sanddance-react":"MjKu"}],"CgE3":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.getColorSettingsFromThemePalette = getColorSettingsFromThemePalette;
-exports.themePalettes = void 0;
-var themePalettes = {};
-exports.themePalettes = themePalettes;
-themePalettes[''] = {
-  themePrimary: '#0078d4',
-  themeLighterAlt: '#eff6fc',
-  themeLighter: '#deecf9',
-  themeLight: '#c7e0f4',
-  themeTertiary: '#71afe5',
-  themeSecondary: '#2b88d8',
-  themeDarkAlt: '#106ebe',
-  themeDark: '#005a9e',
-  themeDarker: '#004578',
-  neutralLighterAlt: '#f8f8f8',
-  neutralLighter: '#f4f4f4',
-  neutralLight: '#eaeaea',
-  neutralQuaternaryAlt: '#dadada',
-  neutralQuaternary: '#d0d0d0',
-  neutralTertiaryAlt: '#c8c8c8',
-  neutralTertiary: '#c2c2c2',
-  neutralSecondary: '#858585',
-  neutralPrimaryAlt: '#4b4b4b',
-  neutralPrimary: '#333333',
-  neutralDark: '#272727',
-  black: '#1d1d1d',
-  white: '#ffffff'
-};
-themePalettes['dark-theme'] = {
-  themePrimary: '#00b4f0',
-  themeLighterAlt: '#00070a',
-  themeLighter: '#001d26',
-  themeLight: '#003648',
-  themeTertiary: '#006c90',
-  themeSecondary: '#009ed3',
-  themeDarkAlt: '#18bbf1',
-  themeDark: '#3ac5f3',
-  themeDarker: '#6cd4f6',
-  neutralLighterAlt: '#0b0b0b',
-  neutralLighter: '#151515',
-  neutralLight: '#252525',
-  neutralQuaternaryAlt: '#2f2f2f',
-  neutralQuaternary: '#373737',
-  neutralTertiaryAlt: '#595959',
-  neutralTertiary: '#929292',
-  neutralSecondary: '#a7a7a7',
-  neutralPrimaryAlt: '#b4b4b4',
-  neutralPrimary: '#cccccc',
-  neutralDark: '#d8d8d8',
-  black: '#f5f5f5',
-  white: '#000000'
-};
-
-function getColorSettingsFromThemePalette(themePalette) {
-  return {
-    axisLine: themePalette.black,
-    axisText: themePalette.black,
-    hoveredCube: themePalette.black,
-    clickableText: themePalette.themeDark,
-    clickableTextHighlight: themePalette.themeSecondary,
-    searchText: themePalette.neutralPrimary,
-    searchTextHighlight: themePalette.neutralPrimaryAlt
-  };
-}
-},{}],"dQNc":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.IconButton = IconButton;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _base = require("../base");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function IconButton(props) {
-  return React.createElement(_base.base.fluentUI.IconButton, Object.assign({}, props, {
-    styles: {
-      root: {
-        color: props.themePalette.black
-      },
-      rootHovered: {
-        background: 'transparent',
-        color: props.themePalette.themePrimary
-      },
-      rootPressed: {
-        background: 'transparent'
-      },
-      menuIcon: {
-        display: 'none'
-      }
-    },
-    iconProps: {
-      iconName: props.iconName
-    },
-    menuProps: props.menuProps
-  }));
-}
-},{"react":"mpTF","../base":"Vlbn"}],"E67y":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.applyColorButtons = applyColorButtons;
-
-var React = _interopRequireWildcard(require("react"));
-
-var ReactDOM = _interopRequireWildcard(require("react-dom"));
-
-var _iconButton = require("./controls/iconButton");
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-var _language = require("./language");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var className = 'sanddance-panel-tools';
-
-function ensureToolbar(panel) {
-  var existing = panel.getElementsByClassName(className);
-
-  if (existing.length > 0) {
-    return existing[0];
-  } else {
-    var div = _sanddanceReact.SandDance.VegaDeckGl.util.addDiv(panel, className);
-
-    panel.insertAdjacentElement('afterbegin', div);
-    return div;
-  }
-}
-
-function applyColorButtons(presenter, showLegend, props) {
-  var panel = presenter.getElement(_sanddanceReact.SandDance.VegaDeckGl.PresenterElement.panel);
-  var div = ensureToolbar(panel);
-  ReactDOM.render(ColorMap(props), div);
-  panel.style.display = showLegend ? '' : 'none';
-}
-
-function ColorMap(props) {
-  var menuProps = {
-    items: [{
-      key: 'new',
-      text: _language.strings.buttonColorSchemeRemap,
-      disabled: !props.canRemap || props.isRemap,
-      onClick: function onClick() {
-        return props.colorMapHandler(true);
-      }
-    }, {
-      key: 'old',
-      text: _language.strings.buttonColorSchemeKeep,
-      disabled: !props.canRemap || !props.isRemap,
-      onClick: function onClick() {
-        return props.colorMapHandler(false);
-      }
-    }]
-  };
-  return React.createElement("div", null, React.createElement(_iconButton.IconButton, {
-    themePalette: props.themePalette,
-    title: _language.strings.buttonColorSchemeMap,
-    onClick: null,
-    iconName: props.canRemap ? 'FiltersSolid' : 'Filters',
-    menuProps: menuProps
-  }));
-}
-},{"react":"mpTF","react-dom":"J77C","./controls/iconButton":"dQNc","@msrvida/sanddance-react":"MjKu","./language":"hk5u"}],"L8O2":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.bestColorScheme = bestColorScheme;
-
-function bestColorScheme(newColumn, oldColumn, oldScheme) {
-  if (oldColumn && oldColumn.quantitative === newColumn.quantitative && defaultColorScheme(oldColumn) === defaultColorScheme(newColumn)) {
-    return oldScheme;
-  }
-
-  return defaultColorScheme(newColumn);
-}
-
-function defaultColorScheme(c) {
-  if (c.quantitative) {
-    return 'redyellowgreen';
-  } else if (c.stats.distinctValueCount === 2) {
-    return 'dual_redgreen';
-  } else if (c.stats.distinctValueCount <= 10) {
-    return 'category10';
-  }
-
-  return 'category20';
-}
-},{}],"Uyrp":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Dropdown = Dropdown;
-exports.dropdownWidth = void 0;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _base = require("../base");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var dropdownWidth = 200;
-exports.dropdownWidth = dropdownWidth;
-
-function Dropdown(props) {
-  var newProps = Object.assign({}, props);
-  var selectedKey = null;
-
-  if (newProps.options && newProps.options.length > 1) {
-    var selectedOptions = newProps.options.filter(function (option) {
-      return option.selected;
-    });
-
-    if (selectedOptions && selectedOptions.length > 0) {
-      selectedKey = selectedOptions[0].key;
-    }
-  }
-
-  if (newProps.collapseLabel) {
-    newProps.onRenderTitle = function (a, b) {
-      return React.createElement("span", null, newProps.label, ": ", a[0].text);
-    };
-  }
-
-  return React.createElement(_base.base.fluentUI.Dropdown, Object.assign({
-    dropdownWidth: dropdownWidth
-  }, newProps, {
-    label: newProps.collapseLabel ? null : newProps.label,
-    selectedKey: selectedKey
-  }));
-}
-},{"react":"mpTF","../base":"Vlbn"}],"OWDI":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Signal = Signal;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _base = require("../base");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function Signal(props) {
-  if (!props.explorer.viewer || !props.signal) {
-    return null;
-  }
-
-  if (props.signal.bind) {
-    var input = props.signal.bind.input;
-
-    if (input) {
-      var fn = map[input];
-
-      if (fn) {
-        var prefix = props.prefix ? "".concat(props.prefix, " ") : '';
-        var initialValue;
-
-        try {
-          initialValue = props.explorer.viewer.vegaViewGl.signal(props.signal.name);
-        } catch (error) {// continue regardless of error
-        }
-
-        var control = fn(prefix, props.signal.bind, initialValue, function (value) {
-          props.onChange && props.onChange(value);
-          props.explorer.signal(props.signal.name, value, props.newViewStateTarget);
-        }, props.disabled, props.collapseLabel);
-        return React.createElement("div", {
-          className: "sanddance-signal"
-        }, control);
-      }
-    }
-  }
-
-  return null;
-}
-
-var map = {};
-
-map['range'] = function (prefix, bind, initialValue, onChange, disabled, collapseLabel) {
-  return React.createElement(_base.base.fluentUI.Slider, {
-    label: prefix + bind.name,
-    max: bind.max,
-    min: bind.min,
-    step: bind.step,
-    defaultValue: initialValue,
-    onChange: onChange,
-    disabled: disabled
-  });
-};
-
-map['select'] = function (prefix, bind, initialValue, _onChange, disabled, collapseLabel) {
-  var options = bind.options.map(function (o, i) {
-    var option = {
-      key: o,
-      text: o
-    };
-    return option;
-  });
-  var label = prefix + bind.name;
-  return React.createElement(_base.base.fluentUI.Dropdown, {
-    onRenderTitle: collapseLabel ? function (a, b) {
-      return React.createElement("span", null, label, ": ", a[0].text);
-    } : undefined,
-    defaultSelectedKey: initialValue,
-    label: collapseLabel ? undefined : label,
-    options: options,
-    onChange: function onChange(e, o) {
-      return _onChange(o.text);
-    },
-    disabled: disabled
-  });
-};
-
-map['checkbox'] = function (prefix, bind, initialValue, _onChange2, disabled, collapseLabel) {
-  return React.createElement(_base.base.fluentUI.Toggle, {
-    defaultChecked: initialValue,
-    label: prefix + bind.name,
-    onChange: function onChange(e, checked) {
-      return _onChange2(checked);
-    },
-    disabled: disabled
-  });
-}; //TODO other signal types
-},{"react":"mpTF","../base":"Vlbn"}],"DSho":[function(require,module,exports) {
+},{}],"DSho":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14652,8 +14109,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getColumnMapOptions = getColumnMapOptions;
 exports.ColumnMap = ColumnMap;
-
-var React = _interopRequireWildcard(require("react"));
 
 var _base = require("../base");
 
@@ -14664,10 +14119,6 @@ var _sanddanceReact = require("@msrvida/sanddance-react");
 var _signal = require("./signal");
 
 var _language = require("../language");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -14829,7 +14280,7 @@ function ColumnMap(props) {
 
   var label = roleLabels[props.specRole.role];
   var signalElements = !props.hideSignals && signals && signals.map(function (signal, i) {
-    return React.createElement(_signal.Signal, {
+    return _base.base.react.createElement(_signal.Signal, {
       key: i,
       explorer: props.explorer,
       signal: signal,
@@ -14839,9 +14290,9 @@ function ColumnMap(props) {
       collapseLabel: props.collapseLabel
     });
   });
-  return React.createElement("div", {
+  return _base.base.react.createElement("div", {
     className: "sanddance-columnMap"
-  }, props.prefix, !props.hideDropdown && React.createElement(_dropdown.Dropdown, {
+  }, props.prefix, !props.hideDropdown && _base.base.react.createElement(_dropdown.Dropdown, {
     componentRef: props.componentRef,
     collapseLabel: props.collapseLabel,
     disabled: props.disabled,
@@ -14853,38 +14304,488 @@ function ColumnMap(props) {
     onDismiss: props.onDismiss
   }), signalElements, props.suffix);
 }
-},{"react":"mpTF","../base":"Vlbn","./dropdown":"Uyrp","@msrvida/sanddance-react":"MjKu","./signal":"OWDI","../language":"hk5u"}],"cFWm":[function(require,module,exports) {
+},{"../base":"Vlbn","./dropdown":"Uyrp","@msrvida/sanddance-react":"MjKu","./signal":"OWDI","../language":"hk5u"}],"UUG7":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Dialog = Dialog;
+exports.onBeforeCreateLayers = onBeforeCreateLayers;
+exports.PositionedColumnMap = void 0;
 
-var React = _interopRequireWildcard(require("react"));
+var _base = require("./base");
 
-var _base = require("../base");
+var _columnMap = require("./controls/columnMap");
 
-var _language = require("../language");
+var _sanddanceReact = require("@msrvida/sanddance-react");
 
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function onBeforeCreateLayers(stage, specCapabilities) {
+  var _loop = function _loop(axisName) {
+    specCapabilities.roles.forEach(function (specRole) {
+      if (specRole.role === axisName) {
+        var axes = stage.axes[axisName];
+        axes.forEach(function (axis) {
+          if (axis.title) {
+            var textItem = axis.title;
+            textItem.specRole = specRole;
+          }
+        });
+      }
+    });
+  };
+
+  for (var axisName in stage.axes) {
+    _loop(axisName);
+  }
+}
+
+function px(n) {
+  return n + 'px';
+}
+
+function _PositionedColumnMap(props) {
+  var __PositionedColumnMap =
+  /*#__PURE__*/
+  function (_base$react$Component) {
+    _inherits(__PositionedColumnMap, _base$react$Component);
+
+    function __PositionedColumnMap(props) {
+      var _this;
+
+      _classCallCheck(this, __PositionedColumnMap);
+
+      _this = _possibleConstructorReturn(this, _getPrototypeOf(__PositionedColumnMap).call(this, props));
+      var left = props.left,
+          top = props.top;
+      _this.state = {
+        left: left,
+        top: top
+      };
+      _this.dropdownRef = _base.base.react.createRef();
+      return _this;
+    }
+
+    _createClass(__PositionedColumnMap, [{
+      key: "focus",
+      value: function focus() {
+        if (!this.focused) {
+          this.focused = true;
+          this.dropdownRef.current.focus(true);
+        }
+      }
+    }, {
+      key: "componentDidMount",
+      value: function componentDidMount() {
+        var size = _sanddanceReact.SandDance.VegaDeckGl.util.outerSize(this.div);
+
+        var over = {
+          left: Math.max(0, this.state.left + size.width - this.props.container.offsetWidth),
+          top: Math.max(0, this.state.top + size.height - this.props.container.offsetHeight)
+        };
+
+        if (over.left || over.top) {
+          var _this$state = this.state,
+              left = _this$state.left,
+              top = _this$state.top;
+          left -= over.left;
+          top -= over.top;
+          this.setState({
+            left: left,
+            top: top
+          });
+        } else {
+          this.focus();
+        }
+      }
+    }, {
+      key: "componentDidUpdate",
+      value: function componentDidUpdate() {
+        this.focus();
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        var _this2 = this;
+
+        return _base.base.react.createElement("div", {
+          ref: function ref(div) {
+            if (div) _this2.div = div;
+          },
+          className: "sanddance-columnMap-absolute",
+          style: {
+            position: 'absolute',
+            left: px(this.state.left),
+            top: px(this.state.top)
+          }
+        }, _base.base.react.createElement(_columnMap.ColumnMap, Object.assign({}, this.props, {
+          componentRef: this.dropdownRef,
+          hideSignals: true
+        })));
+      }
+    }]);
+
+    return __PositionedColumnMap;
+  }(_base.base.react.Component);
+
+  return new __PositionedColumnMap(props);
+}
+
+var PositionedColumnMap = _PositionedColumnMap;
+exports.PositionedColumnMap = PositionedColumnMap;
+},{"./base":"Vlbn","./controls/columnMap":"DSho","@msrvida/sanddance-react":"MjKu"}],"fOIZ":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.embedHtml = void 0;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function Dialog(props) {
-  return React.createElement(_base.base.fluentUI.Dialog, Object.assign({}, props, {
-    dialogContentProps: {
-      type: _base.base.fluentUI.DialogType.normal,
-      title: props.title
-    }
-  }), props.children, React.createElement(_base.base.fluentUI.DialogFooter, null, props.buttons, React.createElement(_base.base.fluentUI.DefaultButton, {
-    onClick: props.onDismiss,
-    text: _language.strings.buttonClose
-  })));
+var embedHtml = function embedHtml(title, embed) {
+  return "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>".concat(title, "</title>\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-embed@3/dist/css/sanddance-embed.css\" />\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-explorer@3/dist/css/sanddance-explorer.css\" />\n</head>\n\n<body>\n    <script src=\"https://unpkg.com/react@16.13/umd/react.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/react-dom@16.13/umd/react-dom.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/deck.gl@8.1.5/dist.min.js\"></script>\n    <script src=\"https://unpkg.com/vega@5.11/build/vega.min.js\"></script>\n    <script src=\"https://unpkg.com/@fluentui/react@7.111/dist/fluentui-react.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-explorer@3/dist/umd/sanddance-explorer.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-embed@3/dist/umd/sanddance-embed.js\"></script>\n\n    <div id=\"app\"></div>\n\n    ").concat(embed, "\n\n</body>\n\n</html>");
+};
+
+exports.embedHtml = embedHtml;
+},{}],"pP3Y":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.convertToDelimited = convertToDelimited;
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function convertToDelimited(data, delimiter) {
+  var fields = Object.keys(data[0]);
+  var file = data.map(function (row) {
+    return fields.map(function (fieldName) {
+      var value = row[fieldName];
+
+      if (typeof value === 'number') {
+        return value;
+      }
+
+      if (typeof value === 'string') {
+        if (value.indexOf(delimiter) >= 0) {
+          return "\"".concat(value.replace(/"/g, '""'), "\"");
+        } else {
+          return value;
+        }
+      }
+
+      return '';
+    }).join(delimiter);
+  });
+  file.unshift(fields.join(delimiter));
+  return file.join('\n');
 }
-},{"react":"mpTF","../base":"Vlbn","../language":"hk5u"}],"Q3hf":[function(require,module,exports) {
+},{}],"l7po":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.removeExtensions = removeExtensions;
+exports.getEmbedHTML = getEmbedHTML;
+exports.DataExportPicker = void 0;
+
+var _dataExporterHtml = require("./dataExporterHtml");
+
+var _dialog = require("./dialog");
+
+var _base = require("../base");
+
+var _exportDelimited = require("../exportDelimited");
+
+var _language = require("../language");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var exportTypes = [['json', _language.strings.labelExportJSON], ['csv', _language.strings.labelExportCSV], ['tsv', _language.strings.labelExportTSV], ['html', _language.strings.labelExportHTML]];
+
+function _DataExportPicker(props) {
+  var __DataExportPicker =
+  /*#__PURE__*/
+  function (_base$react$Component) {
+    _inherits(__DataExportPicker, _base$react$Component);
+
+    function __DataExportPicker(props) {
+      var _this;
+
+      _classCallCheck(this, __DataExportPicker);
+
+      _this = _possibleConstructorReturn(this, _getPrototypeOf(__DataExportPicker).call(this, props));
+      _this.state = _this.getInitialState(_this.props);
+      return _this;
+    }
+
+    _createClass(__DataExportPicker, [{
+      key: "getInitialState",
+      value: function getInitialState(props) {
+        var initialState = {
+          initializer: props.initializer,
+          dialogHidden: true,
+          exportType: exportTypes[0][0],
+          fileName: props.initializer.fileName,
+          fileNameError: '',
+          working: false
+        };
+        return initialState;
+      }
+    }, {
+      key: "componentDidUpdate",
+      value: function componentDidUpdate() {
+        if (!_sanddanceReact.util.deepCompare(this.props.initializer, this.state.initializer)) {
+          this.setState(this.getInitialState(this.props));
+        }
+      } // Converts to dataExport type and calls dataExportHandler to deal with data
+
+    }, {
+      key: "createExport",
+      value: function createExport(exportType, displayName) {
+        var _this2 = this;
+
+        var final = function final(data) {
+          _this2.props.dataExportHandler(data, exportType, displayName);
+
+          _this2.close();
+        };
+
+        var json = JSON.stringify(this.props.data, columnReplacer);
+
+        switch (exportType) {
+          case 'json':
+            {
+              final(json);
+              break;
+            }
+
+          case 'csv':
+            {
+              final((0, _exportDelimited.convertToDelimited)(JSON.parse(json), ','));
+              break;
+            }
+
+          case 'tsv':
+            {
+              final((0, _exportDelimited.convertToDelimited)(JSON.parse(json), '\t'));
+              break;
+            }
+
+          case 'html':
+            {
+              var csv = (0, _exportDelimited.convertToDelimited)(JSON.parse(json), ',');
+              var html = (0, _dataExporterHtml.embedHtml)("".concat(_language.strings.appName, " - ").concat(escape(displayName)), embedScript(csv, displayName));
+              final(html);
+            }
+        }
+      }
+    }, {
+      key: "close",
+      value: function close() {
+        this.setState({
+          dialogHidden: true,
+          working: false
+        });
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        var _this3 = this;
+
+        var closeDialog = function closeDialog() {
+          return _this3.close();
+        };
+
+        if (this.state.delayAction) {
+          requestAnimationFrame(function () {
+            //allow render to complete
+            if (_this3.state.delayAction) {
+              _this3.state.delayAction();
+
+              _this3.setState({
+                delayAction: null
+              });
+            }
+          });
+        }
+
+        var disabled = this.state.working || this.state.dialogHidden;
+        return _base.base.react.createElement("div", {
+          className: "sanddance-dataExporter"
+        }, _base.base.react.createElement(_base.base.fluentUI.DefaultButton, {
+          className: "search-action search-bottom-action",
+          text: _language.strings.buttonExportCount(this.props.data.length),
+          onClick: function onClick() {
+            return _this3.setState({
+              dialogHidden: false
+            });
+          },
+          disabled: this.props.disabled
+        }), _base.base.react.createElement(_dialog.Dialog, {
+          hidden: this.state.dialogHidden,
+          onDismiss: closeDialog,
+          dialogContentProps: {
+            className: "sanddance-dialog ".concat(this.props.theme),
+            type: _base.base.fluentUI.DialogType.normal,
+            title: _language.strings.labelExport
+          },
+          buttons: [_base.base.react.createElement(_base.base.fluentUI.PrimaryButton, {
+            key: 0,
+            disabled: disabled || !!this.state.fileNameError,
+            onClick: function onClick(e) {
+              return _this3.setState({
+                delayAction: function delayAction() {
+                  return _this3.createExport(_this3.state.exportType, _this3.state.fileName);
+                },
+                working: true
+              });
+            },
+            text: _language.strings.buttonExport,
+            iconProps: {
+              iconName: 'Download'
+            }
+          })]
+        }, _base.base.react.createElement(_base.base.fluentUI.TextField, {
+          label: _language.strings.labelExportFileName,
+          onChange: function onChange(e, displayName) {
+            var displayNameError = getFileNameError(displayName);
+
+            _this3.setState({
+              fileName: displayName,
+              fileNameError: displayNameError
+            });
+          },
+          errorMessage: this.state.fileNameError,
+          value: this.state.fileName
+        }), _base.base.react.createElement(_base.base.fluentUI.ChoiceGroup, {
+          className: "sanddance-form-separate",
+          disabled: disabled,
+          options: exportTypes.map(function (_ref) {
+            var _ref2 = _slicedToArray(_ref, 2),
+                exportType = _ref2[0],
+                text = _ref2[1];
+
+            return {
+              key: exportType,
+              text: text,
+              disabled: false,
+              checked: exportType === _this3.state.exportType
+            };
+          }),
+          onChange: function onChange(ev, option) {
+            return _this3.setState({
+              exportType: option.key
+            });
+          },
+          label: _language.strings.labelExportFormat
+        })));
+      }
+    }]);
+
+    return __DataExportPicker;
+  }(_base.base.react.Component);
+
+  return new __DataExportPicker(props);
+}
+
+var DataExportPicker = _DataExportPicker;
+exports.DataExportPicker = DataExportPicker;
+var illegalChars = '\\/:*?"<>|';
+
+function getFileNameError(displayName) {
+  if (!displayName) {
+    return _language.strings.errorExportFilenameEmpty;
+  }
+
+  for (var i = 0; i < illegalChars.length; i++) {
+    if (displayName.indexOf(illegalChars[i]) >= 0) {
+      return _language.strings.errorExportFilenameCharacters(illegalChars);
+    }
+  }
+}
+
+function removeExtensions(fileName) {
+  exportTypes.forEach(function (_ref3) {
+    var _ref4 = _slicedToArray(_ref3, 1),
+        exportType = _ref4[0];
+
+    var re = new RegExp("\\.".concat(exportType), 'ig');
+    fileName = fileName.replace(re, '');
+  });
+  return fileName;
+}
+
+function columnReplacer(name, value) {
+  if (_sanddanceReact.SandDance.util.isInternalFieldName(name, true)) {
+    return undefined;
+  }
+
+  return value === null ? '' : value;
+}
+
+function embedScript(csv, displayName, snapshots) {
+  var dataFile = {
+    type: 'csv',
+    displayName: displayName,
+    snapshots: snapshots
+  };
+  return "<pre id='csv-data' style='display:none'>".concat(csv, "</pre>\n    <script>SandDanceEmbed.load(Object.assign({rawText: document.getElementById('csv-data').innerText}, ").concat(JSON.stringify(dataFile), "))</script>");
+}
+
+function getEmbedHTML(data, displayName, snapshots) {
+  var json = JSON.stringify(data, columnReplacer);
+  var csv = (0, _exportDelimited.convertToDelimited)(JSON.parse(json), ',');
+  var html = (0, _dataExporterHtml.embedHtml)("".concat(_language.strings.appName, " - ").concat(escape(displayName)), embedScript(csv, displayName, snapshots));
+  return html;
+}
+},{"./dataExporterHtml":"fOIZ","./dialog":"cFWm","../base":"Vlbn","../exportDelimited":"pP3Y","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"Q3hf":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14892,28 +14793,24 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Group = Group;
 
-var React = _interopRequireWildcard(require("react"));
+var _base = require("../base");
 
 var _sanddanceReact = require("@msrvida/sanddance-react");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 function Group(props) {
-  return React.createElement("div", {
+  return _base.base.react.createElement("div", {
     className: _sanddanceReact.util.classList('sanddance-group', props.className)
-  }, React.createElement("div", {
+  }, _base.base.react.createElement("div", {
     className: "group-head"
-  }, React.createElement("label", null, props.label), props.labelCount && React.createElement("span", {
+  }, _base.base.react.createElement("label", null, props.label), props.labelCount && _base.base.react.createElement("span", {
     className: "count"
-  }, "(", props.labelCount, ")")), props.children && React.createElement("div", {
+  }, "(", props.labelCount, ")")), props.children && _base.base.react.createElement("div", {
     className: "group-body"
   }, props.children));
 }
-},{"react":"mpTF","@msrvida/sanddance-react":"MjKu"}],"ZOmP":[function(require,module,exports) {
+},{"../base":"Vlbn","@msrvida/sanddance-react":"MjKu"}],"ZOmP":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14921,21 +14818,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ToggleColumns = ToggleColumns;
 
-var React = _interopRequireWildcard(require("react"));
-
 var _base = require("../base");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 function ToggleColumns(props) {
-  return React.createElement("div", null, props.allColumns.map(function (c, i) {
-    return React.createElement("div", {
+  return _base.base.react.createElement("div", null, props.allColumns.map(function (c, i) {
+    return _base.base.react.createElement("div", {
       key: c.name
-    }, React.createElement("label", null, React.createElement(_base.base.fluentUI.Toggle, {
+    }, _base.base.react.createElement("label", null, _base.base.react.createElement(_base.base.fluentUI.Toggle, {
       checked: props.exclusions.indexOf(c.name) < 0,
       inlineLabel: true,
       label: c.name,
@@ -14945,15 +14836,14 @@ function ToggleColumns(props) {
     })));
   }));
 }
-},{"react":"mpTF","../base":"Vlbn"}],"NGSt":[function(require,module,exports) {
+},{"../base":"Vlbn"}],"NGSt":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Chart = void 0;
-
-var React = _interopRequireWildcard(require("react"));
+exports.chartLabel = chartLabel;
+exports.Chart = exports.chartLabelMap = void 0;
 
 var _base = require("../base");
 
@@ -14972,10 +14862,6 @@ var _signal = require("../controls/signal");
 var _language = require("../language");
 
 var _toggleColumns = require("../controls/toggleColumns");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -15006,3475 +14892,533 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 var singleFacetLayouts = [{
   facetStyle: 'wrap',
   text: _language.strings.labelFacetLayoutWrap
-}, {
-  facetStyle: 'horizontal',
-  text: _language.strings.labelFacetLayoutHorizontal
-}, {
-  facetStyle: 'vertical',
-  text: _language.strings.labelFacetLayoutVertical
 }];
+var chartLabelMap = [{
+  key: 'grid',
+  text: _language.strings.chartTypeGrid
+}, {
+  key: 'scatterplot',
+  text: _language.strings.chartTypeScatterPlot
+}, {
+  key: 'density',
+  text: _language.strings.chartTypeDensity
+}, {
+  key: 'barchartV',
+  text: _language.strings.chartTypeBarChartV
+}, {
+  key: 'barchartH',
+  text: _language.strings.chartTypeBarChartH
+}, {
+  key: 'treemap',
+  text: _language.strings.chartTypeTreeMap
+}, {
+  key: 'strips',
+  text: _language.strings.chartTypeStrips
+}, {
+  key: 'stacks',
+  text: _language.strings.chartTypeStacks
+}];
+exports.chartLabelMap = chartLabelMap;
 
-var Chart =
-/*#__PURE__*/
-function (_React$Component) {
-  _inherits(Chart, _React$Component);
-
-  function Chart(props) {
-    var _this;
-
-    _classCallCheck(this, Chart);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Chart).call(this, props));
-    _this.state = {
-      showTooltipDialog: false
-    };
-    return _this;
+function chartLabel(key) {
+  for (var i = 0; i < chartLabelMap.length; i++) {
+    if (key === chartLabelMap[i].key) {
+      return chartLabelMap[i].text;
+    }
   }
+}
 
-  _createClass(Chart, [{
-    key: "render",
-    value: function render() {
-      var _this2 = this;
+function _Chart(props) {
+  var __Chart =
+  /*#__PURE__*/
+  function (_base$react$Component) {
+    _inherits(__Chart, _base$react$Component);
 
-      var props = this.props;
-      var explorer = props.explorer,
-          specCapabilities = props.specCapabilities;
-      var signals = explorer.viewer && explorer.viewer.vegaSpec && specCapabilities && specCapabilities.signals && explorer.viewer.vegaSpec.signals.filter(function (s) {
-        return specCapabilities.signals.indexOf(s.name) >= 0;
-      });
-      return React.createElement("div", null, React.createElement(_group.Group, {
-        label: _language.strings.labelChart
-      }, React.createElement("div", {
-        className: "calculator"
-      }, React.createElement(_base.base.fluentUI.ChoiceGroup, {
-        className: "sanddance-chart-type",
-        options: [{
-          key: 'grid',
-          text: _language.strings.chartTypeGrid
-        }, {
-          key: 'scatterplot',
-          text: _language.strings.chartTypeScatterPlot
-        }, {
-          key: 'density',
-          text: _language.strings.chartTypeDensity
-        }, {
-          key: 'barchartV',
-          text: _language.strings.chartTypeBarChartV
-        }, {
-          key: 'barchartH',
-          text: _language.strings.chartTypeBarChartH
-        }, {
-          key: 'treemap',
-          text: _language.strings.chartTypeTreeMap
-        }, {
-          key: 'strips',
-          text: _language.strings.chartTypeStrips
-        }, {
-          key: 'stacks',
-          text: _language.strings.chartTypeStacks
-        }].map(function (o) {
-          return Object.assign(Object.assign({}, o), {
-            checked: props.chart === o.key,
-            disabled: props.disabled || o.key === 'treemap' && props.quantitativeColumns.length === 0
-          });
-        }),
-        onChange: function onChange(e, o) {
-          return props.onChangeChartType(o.key);
-        }
-      }))), React.createElement(_group.Group, {
-        label: _language.strings.labelColumnMapping
-      }, React.createElement("div", null, specCapabilities && specCapabilities.roles.map(function (specRole, i) {
-        var specColumnInRole = props.insightColumns[specRole.role];
-        var selectedColumnName = specColumnInRole;
-        var disabledColumnName;
-        var prefix;
-        var suffix;
-        var hideDropdown = false;
-        var totalStyle = props.totalStyle;
+    function __Chart(props) {
+      var _this;
 
-        if (!totalStyle) {
-          totalStyle = 'count-square';
-        }
+      _classCallCheck(this, __Chart);
 
-        var facetStyle = props.facetStyle;
+      _this = _possibleConstructorReturn(this, _getPrototypeOf(__Chart).call(this, props));
+      _this.state = {
+        showTooltipDialog: false
+      };
+      return _this;
+    }
 
-        if (!facetStyle) {
-          facetStyle = 'wrap';
-        }
+    _createClass(__Chart, [{
+      key: "render",
+      value: function render() {
+        var _this2 = this;
 
-        switch (specRole.role) {
-          case 'facet':
-            {
-              suffix = React.createElement(_dropdown.Dropdown, {
-                disabled: !props.insightColumns.facet,
-                collapseLabel: props.collapseLabels,
-                label: _language.strings.labelFacetLayout,
-                calloutProps: {
-                  style: {
-                    minWidth: '18em'
-                  }
-                },
-                options: [{
-                  key: 'header1',
-                  text: "".concat(_language.strings.labelFacetLayout, ":"),
-                  itemType: _base.base.fluentUI.DropdownMenuItemType.Header
-                }].concat(_toConsumableArray(singleFacetLayouts.map(function (f) {
-                  var o = {
-                    key: f.facetStyle,
-                    text: f.text,
-                    data: f,
-                    selected: facetStyle === f.facetStyle
-                  };
-                  return o;
-                })), [{
-                  key: 'divider',
-                  text: '-',
-                  itemType: _base.base.fluentUI.DropdownMenuItemType.Divider
-                }, {
-                  key: 'header2',
-                  text: "".concat(_language.strings.labelColumnFacetV, ":"),
-                  itemType: _base.base.fluentUI.DropdownMenuItemType.Header
-                }], _toConsumableArray((0, _columnMap.getColumnMapOptions)(Object.assign(Object.assign({}, props), {
-                  specRole: specRole,
-                  selectedColumnName: props.insightColumns.facetV
-                })).map(function (o) {
-                  if (o.itemType !== _base.base.fluentUI.DropdownMenuItemType.Header) {
-                    var facetData = {
-                      facetStyle: 'cross',
-                      column: o.data
+        var props = this.props;
+        var explorer = props.explorer,
+            specCapabilities = props.specCapabilities;
+        var signals = explorer.viewer && explorer.viewer.vegaSpec && specCapabilities && specCapabilities.signals && explorer.viewer.vegaSpec.signals.filter(function (s) {
+          return specCapabilities.signals.indexOf(s.name) >= 0;
+        });
+        return _base.base.react.createElement("div", null, _base.base.react.createElement(_group.Group, {
+          label: _language.strings.labelChart
+        }, _base.base.react.createElement("div", {
+          className: "calculator"
+        }, _base.base.react.createElement(_base.base.fluentUI.ChoiceGroup, {
+          className: "sanddance-chart-type",
+          options: chartLabelMap.map(function (o) {
+            return Object.assign(Object.assign({}, o), {
+              checked: props.chart === o.key,
+              disabled: props.disabled || o.key === 'treemap' && props.quantitativeColumns.length === 0
+            });
+          }),
+          onChange: function onChange(e, o) {
+            return props.onChangeChartType(o.key);
+          }
+        }))), _base.base.react.createElement(_group.Group, {
+          label: _language.strings.labelColumnMapping
+        }, _base.base.react.createElement("div", null, specCapabilities && specCapabilities.roles.map(function (specRole, i) {
+          var specColumnInRole = props.insightColumns[specRole.role];
+          var selectedColumnName = specColumnInRole;
+          var disabledColumnName;
+          var prefix;
+          var suffix;
+          var hideDropdown = false;
+          var totalStyle = props.totalStyle;
+
+          if (!totalStyle) {
+            totalStyle = 'count-square';
+          }
+
+          var facetStyle = props.facetStyle;
+
+          if (!facetStyle) {
+            facetStyle = 'wrap';
+          }
+
+          switch (specRole.role) {
+            case 'facet':
+              {
+                suffix = _base.base.react.createElement(_dropdown.Dropdown, {
+                  disabled: !props.insightColumns.facet,
+                  collapseLabel: props.collapseLabels,
+                  label: _language.strings.labelFacetLayout,
+                  calloutProps: {
+                    style: {
+                      minWidth: '18em'
+                    }
+                  },
+                  options: [{
+                    key: 'header1',
+                    text: "".concat(_language.strings.labelFacetLayout, ":"),
+                    itemType: _base.base.fluentUI.DropdownMenuItemType.Header
+                  }].concat(_toConsumableArray(singleFacetLayouts.map(function (f) {
+                    var o = {
+                      key: f.facetStyle,
+                      text: f.text,
+                      data: f,
+                      selected: facetStyle === f.facetStyle
                     };
-                    o.data = facetData;
-                    o.text = "".concat(_language.strings.labelFacetLayoutCross, " ").concat(o.text);
+                    return o;
+                  })), [{
+                    key: 'divider',
+                    text: '-',
+                    itemType: _base.base.fluentUI.DropdownMenuItemType.Divider
+                  }, {
+                    key: 'header2',
+                    text: "".concat(_language.strings.labelColumnFacetV, ":"),
+                    itemType: _base.base.fluentUI.DropdownMenuItemType.Header
+                  }], _toConsumableArray((0, _columnMap.getColumnMapOptions)(Object.assign(Object.assign({}, props), {
+                    specRole: specRole,
+                    selectedColumnName: props.insightColumns.facetV
+                  })).map(function (o) {
+                    if (o.itemType !== _base.base.fluentUI.DropdownMenuItemType.Header) {
+                      var facetData = {
+                        facetStyle: 'cross',
+                        column: o.data
+                      };
+                      o.data = facetData;
+                      o.text = "".concat(_language.strings.labelFacetLayoutCross, " ").concat(o.text);
+                    }
+
+                    return o;
+                  }))),
+                  onChange: function onChange(e, o) {
+                    var facetData = o.data;
+                    props.changeColumnMapping('facet', 'facet', {
+                      facetStyle: facetData.facetStyle
+                    });
+
+                    if (facetData.facetStyle === 'cross') {
+                      props.changeColumnMapping('facetV', _sanddanceReact.SandDance.VegaDeckGl.util.clone(facetData.column));
+                    }
                   }
-
-                  return o;
-                }))),
-                onChange: function onChange(e, o) {
-                  var facetData = o.data;
-                  props.changeColumnMapping('facet', 'facet', {
-                    facetStyle: facetData.facetStyle
-                  });
-
-                  if (facetData.facetStyle === 'cross') {
-                    props.changeColumnMapping('facetV', _sanddanceReact.SandDance.VegaDeckGl.util.clone(facetData.column));
-                  }
-                }
-              });
-              break;
-            }
-
-          case 'facetV':
-            {
-              hideDropdown = true;
-              break;
-            }
-
-          case 'size':
-            {
-              var options = [{
-                key: 'count-square',
-                text: _language.strings.labelTotalByCountSquare,
-                data: 'count-square',
-                selected: !totalStyle || totalStyle === 'count-square'
-              }, {
-                key: 'count-strip',
-                text: _language.strings.labelTotalByCountStrip,
-                data: 'count-strip',
-                selected: totalStyle === 'count-strip'
-              }, {
-                key: 'sum-strip',
-                text: _language.strings.labelTotalBySumStrip,
-                data: 'sum-strip',
-                selected: totalStyle === 'sum-strip'
-              }, {
-                key: 'sum-treemap',
-                text: _language.strings.labelTotalBySumTreemap,
-                data: 'sum-treemap',
-                selected: totalStyle === 'sum-treemap',
-                disabled: props.quantitativeColumns.length === 0
-              }];
-
-              if (specCapabilities.percentage) {
-                options.push({
-                  key: 'sum-strip-percent',
-                  text: _language.strings.labelTotalBySumStripPercent,
-                  data: 'sum-strip-percent',
-                  selected: totalStyle === 'sum-strip-percent',
-                  disabled: props.quantitativeColumns.length === 0
                 });
+                break;
               }
 
-              prefix = !specCapabilities.countsAndSums ? null : React.createElement(_dropdown.Dropdown, {
-                collapseLabel: props.collapseLabels,
-                label: _language.strings.labelTotal,
-                calloutProps: {
-                  style: {
-                    minWidth: '18em'
-                  }
-                },
-                options: options,
-                onChange: function onChange(e, o) {
-                  return props.changeColumnMapping('size', 'size', {
-                    totalStyle: o.data
+            case 'facetV':
+              {
+                hideDropdown = true;
+                break;
+              }
+
+            case 'size':
+              {
+                var options = [{
+                  key: 'count-square',
+                  text: _language.strings.labelTotalByCountSquare,
+                  data: 'count-square',
+                  selected: !totalStyle || totalStyle === 'count-square'
+                }, {
+                  key: 'count-strip',
+                  text: _language.strings.labelTotalByCountStrip,
+                  data: 'count-strip',
+                  selected: totalStyle === 'count-strip'
+                }, {
+                  key: 'sum-strip',
+                  text: _language.strings.labelTotalBySumStrip,
+                  data: 'sum-strip',
+                  selected: totalStyle === 'sum-strip'
+                }, {
+                  key: 'sum-treemap',
+                  text: _language.strings.labelTotalBySumTreemap,
+                  data: 'sum-treemap',
+                  selected: totalStyle === 'sum-treemap',
+                  disabled: props.quantitativeColumns.length === 0
+                }];
+
+                if (specCapabilities.percentage) {
+                  options.push({
+                    key: 'sum-strip-percent',
+                    text: _language.strings.labelTotalBySumStripPercent,
+                    data: 'sum-strip-percent',
+                    selected: totalStyle === 'sum-strip-percent',
+                    disabled: props.quantitativeColumns.length === 0
                   });
                 }
-              });
-              break;
-            }
-        }
 
-        var disabled = props.disabled || props.view === '2d' && specRole.role === 'z' || specRole.role === 'size' && !(!specCapabilities.countsAndSums || totalStyle.indexOf('sum-') === 0) || specRole.role === 'sort' && specCapabilities.countsAndSums && totalStyle === 'sum-treemap';
-        return React.createElement(_columnMap.ColumnMap, Object.assign({}, props, {
-          prefix: prefix,
-          suffix: suffix,
-          collapseLabel: props.collapseLabels,
-          disabled: disabled,
-          disabledColumnName: disabledColumnName,
-          selectedColumnName: selectedColumnName,
-          specRole: specRole,
-          key: i,
-          onChangeSignal: function onChangeSignal(name, value) {
-            return props.onChangeSignal(specRole.role, selectedColumnName, name, value);
+                prefix = !specCapabilities.countsAndSums ? null : _base.base.react.createElement(_dropdown.Dropdown, {
+                  collapseLabel: props.collapseLabels,
+                  label: _language.strings.labelTotal,
+                  calloutProps: {
+                    style: {
+                      minWidth: '18em'
+                    }
+                  },
+                  options: options,
+                  onChange: function onChange(e, o) {
+                    return props.changeColumnMapping('size', 'size', {
+                      totalStyle: o.data
+                    });
+                  }
+                });
+                break;
+              }
+          }
+
+          var disabled = props.disabled || props.view === '2d' && specRole.role === 'z' || specRole.role === 'size' && !(!specCapabilities.countsAndSums || totalStyle.indexOf('sum-') === 0) || specRole.role === 'sort' && specCapabilities.countsAndSums && totalStyle === 'sum-treemap';
+          return _base.base.react.createElement(_columnMap.ColumnMap, Object.assign({}, props, {
+            prefix: prefix,
+            suffix: suffix,
+            collapseLabel: props.collapseLabels,
+            disabled: disabled,
+            disabledColumnName: disabledColumnName,
+            selectedColumnName: selectedColumnName,
+            specRole: specRole,
+            key: i,
+            onChangeSignal: function onChangeSignal(name, value) {
+              return props.onChangeSignal(specRole.role, selectedColumnName, name, value);
+            },
+            hideDropdown: hideDropdown
+          }));
+        }), _base.base.react.createElement("div", {
+          className: "sanddance-tooltipMap"
+        }, _base.base.react.createElement(_base.base.fluentUI.DefaultButton, {
+          text: _language.strings.buttonTooltipMapping,
+          onClick: function onClick() {
+            return _this2.setState({
+              showTooltipDialog: true
+            });
+          }
+        })))), signals && _base.base.react.createElement(_group.Group, {
+          label: _language.strings.labelChartTypeOptions
+        }, signals.map(function (signal, i) {
+          return _base.base.react.createElement(_signal.Signal, {
+            key: i,
+            signal: signal,
+            explorer: explorer,
+            disabled: props.disabled || _this2.disableSignal(signal),
+            collapseLabel: props.collapseLabels,
+            newViewStateTarget: false
+          });
+        })), _base.base.react.createElement(_dialog.Dialog, {
+          hidden: !this.state.showTooltipDialog,
+          onDismiss: function onDismiss() {
+            return _this2.setState({
+              showTooltipDialog: false
+            });
           },
-          hideDropdown: hideDropdown
-        }));
-      }), React.createElement("div", {
-        className: "sanddance-tooltipMap"
-      }, React.createElement(_base.base.fluentUI.DefaultButton, {
-        text: _language.strings.buttonTooltipMapping,
-        onClick: function onClick() {
-          return _this2.setState({
-            showTooltipDialog: true
-          });
+          title: _language.strings.labelTooltipMapping
+        }, _base.base.react.createElement(_toggleColumns.ToggleColumns, {
+          allColumns: props.allColumns,
+          exclusions: props.tooltipExclusions,
+          toggleExclusion: props.toggleTooltipExclusion
+        })));
+      }
+    }, {
+      key: "disableSignal",
+      value: function disableSignal(signal) {
+        if (this.props.view === '2d' && signal.name === _sanddanceReact.SandDance.constants.SignalNames.ZGrounded) {
+          return true;
         }
-      })))), signals && React.createElement(_group.Group, {
-        label: _language.strings.labelChartTypeOptions
-      }, signals.map(function (signal, i) {
-        return React.createElement(_signal.Signal, {
-          key: i,
-          signal: signal,
-          explorer: explorer,
-          disabled: props.disabled || _this2.disableSignal(signal),
-          collapseLabel: props.collapseLabels,
-          newViewStateTarget: false
-        });
-      })), React.createElement(_dialog.Dialog, {
-        hidden: !this.state.showTooltipDialog,
-        onDismiss: function onDismiss() {
-          return _this2.setState({
-            showTooltipDialog: false
-          });
-        },
-        title: _language.strings.labelTooltipMapping
-      }, React.createElement(_toggleColumns.ToggleColumns, {
-        allColumns: props.allColumns,
-        exclusions: props.tooltipExclusions,
-        toggleExclusion: props.toggleTooltipExclusion
-      })));
-    }
-  }, {
-    key: "disableSignal",
-    value: function disableSignal(signal) {
-      if (this.props.view === '2d' && signal.name === _sanddanceReact.SandDance.constants.SignalNames.ZGrounded) {
-        return true;
+
+        return false;
       }
+    }]);
 
-      return false;
-    }
-  }]);
+    return __Chart;
+  }(_base.base.react.Component);
 
-  return Chart;
-}(React.Component);
+  return new __Chart(props);
+}
 
+var Chart = _Chart;
 exports.Chart = Chart;
-},{"react":"mpTF","../base":"Vlbn","../controls/columnMap":"DSho","../controls/dialog":"cFWm","../controls/dropdown":"Uyrp","../controls/group":"Q3hf","@msrvida/sanddance-react":"MjKu","../controls/signal":"OWDI","../language":"hk5u","../controls/toggleColumns":"ZOmP"}],"BSWy":[function(require,module,exports) {
+},{"../base":"Vlbn","../controls/columnMap":"DSho","../controls/dialog":"cFWm","../controls/dropdown":"Uyrp","../controls/group":"Q3hf","@msrvida/sanddance-react":"MjKu","../controls/signal":"OWDI","../language":"hk5u","../controls/toggleColumns":"ZOmP"}],"qO9b":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.schemeOption = schemeOption;
-exports.schemesJSX = void 0;
-
-function schemeOption(selected, scheme) {
-  return {
-    key: scheme,
-    text: scheme,
-    selected: selected === scheme,
-    scheme: scheme,
-    children: schemesJSX[scheme]
-  };
-}
-
-var schemesJSX = {};
-exports.schemesJSX = schemesJSX;
-},{}],"JrIT":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.categorical = categorical;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _scheme = require("./scheme");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var p8 = "".concat(100 / 8, "%");
-var p9 = "".concat(100 / 9, "%");
-var p10 = "".concat(100 / 10, "%");
-var p12 = "".concat(100 / 12, "%");
-var p20 = "".concat(100 / 20, "%");
-_scheme.schemesJSX['accent'] = React.createElement("div", {
-  className: "swatch"
-}, React.createElement("div", {
-  title: "#7fc97f",
-  style: {
-    width: p8,
-    background: 'rgb(127, 201, 127)'
-  }
-}), React.createElement("div", {
-  title: "#beaed4",
-  style: {
-    width: p8,
-    background: 'rgb(190, 174, 212)'
-  }
-}), React.createElement("div", {
-  title: "#fdc086",
-  style: {
-    width: p8,
-    background: 'rgb(253, 192, 134)'
-  }
-}), React.createElement("div", {
-  title: "#ffff99",
-  style: {
-    width: p8,
-    background: 'rgb(255, 255, 153)'
-  }
-}), React.createElement("div", {
-  title: "#386cb0",
-  style: {
-    width: p8,
-    background: 'rgb(56, 108, 176)'
-  }
-}), React.createElement("div", {
-  title: "#f0027f",
-  style: {
-    width: p8,
-    background: 'rgb(240, 2, 127)'
-  }
-}), React.createElement("div", {
-  title: "#bf5b17",
-  style: {
-    width: p8,
-    background: 'rgb(191, 91, 23)'
-  }
-}), React.createElement("div", {
-  title: "#666666",
-  style: {
-    width: p8,
-    background: 'rgb(102, 102, 102)'
-  }
-}));
-_scheme.schemesJSX['category10'] = React.createElement("div", {
-  className: "swatch"
-}, React.createElement("div", {
-  title: "#1f77b4",
-  style: {
-    width: p10,
-    background: 'rgb(31, 119, 180)'
-  }
-}), React.createElement("div", {
-  title: "#ff7f0e",
-  style: {
-    width: p10,
-    background: 'rgb(255, 127, 14)'
-  }
-}), React.createElement("div", {
-  title: "#2ca02c",
-  style: {
-    width: p10,
-    background: 'rgb(44, 160, 44)'
-  }
-}), React.createElement("div", {
-  title: "#d62728",
-  style: {
-    width: p10,
-    background: 'rgb(214, 39, 40)'
-  }
-}), React.createElement("div", {
-  title: "#9467bd",
-  style: {
-    width: p10,
-    background: 'rgb(148, 103, 189)'
-  }
-}), React.createElement("div", {
-  title: "#8c564b",
-  style: {
-    width: p10,
-    background: 'rgb(140, 86, 75)'
-  }
-}), React.createElement("div", {
-  title: "#e377c2",
-  style: {
-    width: p10,
-    background: 'rgb(227, 119, 194)'
-  }
-}), React.createElement("div", {
-  title: "#7f7f7f",
-  style: {
-    width: p10,
-    background: 'rgb(127, 127, 127)'
-  }
-}), React.createElement("div", {
-  title: "#bcbd22",
-  style: {
-    width: p10,
-    background: 'rgb(188, 189, 34)'
-  }
-}), React.createElement("div", {
-  title: "#17becf",
-  style: {
-    width: p10,
-    background: 'rgb(23, 190, 207)'
-  }
-}));
-_scheme.schemesJSX['category20'] = React.createElement("div", {
-  className: "swatch"
-}, React.createElement("div", {
-  title: "#1f77b4",
-  style: {
-    width: p20,
-    background: 'rgb(31, 119, 180)'
-  }
-}), React.createElement("div", {
-  title: "#aec7e8",
-  style: {
-    width: p20,
-    background: 'rgb(174, 199, 232)'
-  }
-}), React.createElement("div", {
-  title: "#ff7f0e",
-  style: {
-    width: p20,
-    background: 'rgb(255, 127, 14)'
-  }
-}), React.createElement("div", {
-  title: "#ffbb78",
-  style: {
-    width: p20,
-    background: 'rgb(255, 187, 120)'
-  }
-}), React.createElement("div", {
-  title: "#2ca02c",
-  style: {
-    width: p20,
-    background: 'rgb(44, 160, 44)'
-  }
-}), React.createElement("div", {
-  title: "#98df8a",
-  style: {
-    width: p20,
-    background: 'rgb(152, 223, 138)'
-  }
-}), React.createElement("div", {
-  title: "#d62728",
-  style: {
-    width: p20,
-    background: 'rgb(214, 39, 40)'
-  }
-}), React.createElement("div", {
-  title: "#ff9896",
-  style: {
-    width: p20,
-    background: 'rgb(255, 152, 150)'
-  }
-}), React.createElement("div", {
-  title: "#9467bd",
-  style: {
-    width: p20,
-    background: 'rgb(148, 103, 189)'
-  }
-}), React.createElement("div", {
-  title: "#c5b0d5",
-  style: {
-    width: p20,
-    background: 'rgb(197, 176, 213)'
-  }
-}), React.createElement("div", {
-  title: "#8c564b",
-  style: {
-    width: p20,
-    background: 'rgb(140, 86, 75)'
-  }
-}), React.createElement("div", {
-  title: "#c49c94",
-  style: {
-    width: p20,
-    background: 'rgb(196, 156, 148)'
-  }
-}), React.createElement("div", {
-  title: "#e377c2",
-  style: {
-    width: p20,
-    background: 'rgb(227, 119, 194)'
-  }
-}), React.createElement("div", {
-  title: "#f7b6d2",
-  style: {
-    width: p20,
-    background: 'rgb(247, 182, 210)'
-  }
-}), React.createElement("div", {
-  title: "#7f7f7f",
-  style: {
-    width: p20,
-    background: 'rgb(127, 127, 127)'
-  }
-}), React.createElement("div", {
-  title: "#c7c7c7",
-  style: {
-    width: p20,
-    background: 'rgb(199, 199, 199)'
-  }
-}), React.createElement("div", {
-  title: "#bcbd22",
-  style: {
-    width: p20,
-    background: 'rgb(188, 189, 34)'
-  }
-}), React.createElement("div", {
-  title: "#dbdb8d",
-  style: {
-    width: p20,
-    background: 'rgb(219, 219, 141)'
-  }
-}), React.createElement("div", {
-  title: "#17becf",
-  style: {
-    width: p20,
-    background: 'rgb(23, 190, 207)'
-  }
-}), React.createElement("div", {
-  title: "#9edae5",
-  style: {
-    width: p20,
-    background: 'rgb(158, 218, 229)'
-  }
-}));
-_scheme.schemesJSX['category20b'] = React.createElement("div", {
-  className: "swatch"
-}, React.createElement("div", {
-  title: "#393b79",
-  style: {
-    width: p20,
-    background: 'rgb(57, 59, 121)'
-  }
-}), React.createElement("div", {
-  title: "#5254a3",
-  style: {
-    width: p20,
-    background: 'rgb(82, 84, 163)'
-  }
-}), React.createElement("div", {
-  title: "#6b6ecf",
-  style: {
-    width: p20,
-    background: 'rgb(107, 110, 207)'
-  }
-}), React.createElement("div", {
-  title: "#9c9ede",
-  style: {
-    width: p20,
-    background: 'rgb(156, 158, 222)'
-  }
-}), React.createElement("div", {
-  title: "#637939",
-  style: {
-    width: p20,
-    background: 'rgb(99, 121, 57)'
-  }
-}), React.createElement("div", {
-  title: "#8ca252",
-  style: {
-    width: p20,
-    background: 'rgb(140, 162, 82)'
-  }
-}), React.createElement("div", {
-  title: "#b5cf6b",
-  style: {
-    width: p20,
-    background: 'rgb(181, 207, 107)'
-  }
-}), React.createElement("div", {
-  title: "#cedb9c",
-  style: {
-    width: p20,
-    background: 'rgb(206, 219, 156)'
-  }
-}), React.createElement("div", {
-  title: "#8c6d31",
-  style: {
-    width: p20,
-    background: 'rgb(140, 109, 49)'
-  }
-}), React.createElement("div", {
-  title: "#bd9e39",
-  style: {
-    width: p20,
-    background: 'rgb(189, 158, 57)'
-  }
-}), React.createElement("div", {
-  title: "#e7ba52",
-  style: {
-    width: p20,
-    background: 'rgb(231, 186, 82)'
-  }
-}), React.createElement("div", {
-  title: "#e7cb94",
-  style: {
-    width: p20,
-    background: 'rgb(231, 203, 148)'
-  }
-}), React.createElement("div", {
-  title: "#843c39",
-  style: {
-    width: p20,
-    background: 'rgb(132, 60, 57)'
-  }
-}), React.createElement("div", {
-  title: "#ad494a",
-  style: {
-    width: p20,
-    background: 'rgb(173, 73, 74)'
-  }
-}), React.createElement("div", {
-  title: "#d6616b",
-  style: {
-    width: p20,
-    background: 'rgb(214, 97, 107)'
-  }
-}), React.createElement("div", {
-  title: "#e7969c",
-  style: {
-    width: p20,
-    background: 'rgb(231, 150, 156)'
-  }
-}), React.createElement("div", {
-  title: "#7b4173",
-  style: {
-    width: p20,
-    background: 'rgb(123, 65, 115)'
-  }
-}), React.createElement("div", {
-  title: "#a55194",
-  style: {
-    width: p20,
-    background: 'rgb(165, 81, 148)'
-  }
-}), React.createElement("div", {
-  title: "#ce6dbd",
-  style: {
-    width: p20,
-    background: 'rgb(206, 109, 189)'
-  }
-}), React.createElement("div", {
-  title: "#de9ed6",
-  style: {
-    width: p20,
-    background: 'rgb(222, 158, 214)'
-  }
-}));
-_scheme.schemesJSX['category20c'] = React.createElement("div", {
-  className: "swatch"
-}, React.createElement("div", {
-  title: "#3182bd",
-  style: {
-    width: p20,
-    background: 'rgb(49, 130, 189)'
-  }
-}), React.createElement("div", {
-  title: "#6baed6",
-  style: {
-    width: p20,
-    background: 'rgb(107, 174, 214)'
-  }
-}), React.createElement("div", {
-  title: "#9ecae1",
-  style: {
-    width: p20,
-    background: 'rgb(158, 202, 225)'
-  }
-}), React.createElement("div", {
-  title: "#c6dbef",
-  style: {
-    width: p20,
-    background: 'rgb(198, 219, 239)'
-  }
-}), React.createElement("div", {
-  title: "#e6550d",
-  style: {
-    width: p20,
-    background: 'rgb(230, 85, 13)'
-  }
-}), React.createElement("div", {
-  title: "#fd8d3c",
-  style: {
-    width: p20,
-    background: 'rgb(253, 141, 60)'
-  }
-}), React.createElement("div", {
-  title: "#fdae6b",
-  style: {
-    width: p20,
-    background: 'rgb(253, 174, 107)'
-  }
-}), React.createElement("div", {
-  title: "#fdd0a2",
-  style: {
-    width: p20,
-    background: 'rgb(253, 208, 162)'
-  }
-}), React.createElement("div", {
-  title: "#31a354",
-  style: {
-    width: p20,
-    background: 'rgb(49, 163, 84)'
-  }
-}), React.createElement("div", {
-  title: "#74c476",
-  style: {
-    width: p20,
-    background: 'rgb(116, 196, 118)'
-  }
-}), React.createElement("div", {
-  title: "#a1d99b",
-  style: {
-    width: p20,
-    background: 'rgb(161, 217, 155)'
-  }
-}), React.createElement("div", {
-  title: "#c7e9c0",
-  style: {
-    width: p20,
-    background: 'rgb(199, 233, 192)'
-  }
-}), React.createElement("div", {
-  title: "#756bb1",
-  style: {
-    width: p20,
-    background: 'rgb(117, 107, 177)'
-  }
-}), React.createElement("div", {
-  title: "#9e9ac8",
-  style: {
-    width: p20,
-    background: 'rgb(158, 154, 200)'
-  }
-}), React.createElement("div", {
-  title: "#bcbddc",
-  style: {
-    width: p20,
-    background: 'rgb(188, 189, 220)'
-  }
-}), React.createElement("div", {
-  title: "#dadaeb",
-  style: {
-    width: p20,
-    background: 'rgb(218, 218, 235)'
-  }
-}), React.createElement("div", {
-  title: "#636363",
-  style: {
-    width: p20,
-    background: 'rgb(99, 99, 99)'
-  }
-}), React.createElement("div", {
-  title: "#969696",
-  style: {
-    width: p20,
-    background: 'rgb(150, 150, 150)'
-  }
-}), React.createElement("div", {
-  title: "#bdbdbd",
-  style: {
-    width: p20,
-    background: 'rgb(189, 189, 189)'
-  }
-}), React.createElement("div", {
-  title: "#d9d9d9",
-  style: {
-    width: p20,
-    background: 'rgb(217, 217, 217)'
-  }
-}));
-_scheme.schemesJSX['dark2'] = React.createElement("div", {
-  className: "swatch"
-}, React.createElement("div", {
-  title: "#1b9e77",
-  style: {
-    width: p8,
-    background: 'rgb(27, 158, 119)'
-  }
-}), React.createElement("div", {
-  title: "#d95f02",
-  style: {
-    width: p8,
-    background: 'rgb(217, 95, 2)'
-  }
-}), React.createElement("div", {
-  title: "#7570b3",
-  style: {
-    width: p8,
-    background: 'rgb(117, 112, 179)'
-  }
-}), React.createElement("div", {
-  title: "#e7298a",
-  style: {
-    width: p8,
-    background: 'rgb(231, 41, 138)'
-  }
-}), React.createElement("div", {
-  title: "#66a61e",
-  style: {
-    width: p8,
-    background: 'rgb(102, 166, 30)'
-  }
-}), React.createElement("div", {
-  title: "#e6ab02",
-  style: {
-    width: p8,
-    background: 'rgb(230, 171, 2)'
-  }
-}), React.createElement("div", {
-  title: "#a6761d",
-  style: {
-    width: p8,
-    background: 'rgb(166, 118, 29)'
-  }
-}), React.createElement("div", {
-  title: "#666666",
-  style: {
-    width: p8,
-    background: 'rgb(102, 102, 102)'
-  }
-}));
-_scheme.schemesJSX['paired'] = React.createElement("div", {
-  className: "swatch"
-}, React.createElement("div", {
-  title: "#a6cee3",
-  style: {
-    width: p12,
-    background: 'rgb(166, 206, 227)'
-  }
-}), React.createElement("div", {
-  title: "#1f78b4",
-  style: {
-    width: p12,
-    background: 'rgb(31, 120, 180)'
-  }
-}), React.createElement("div", {
-  title: "#b2df8a",
-  style: {
-    width: p12,
-    background: 'rgb(178, 223, 138)'
-  }
-}), React.createElement("div", {
-  title: "#33a02c",
-  style: {
-    width: p12,
-    background: 'rgb(51, 160, 44)'
-  }
-}), React.createElement("div", {
-  title: "#fb9a99",
-  style: {
-    width: p12,
-    background: 'rgb(251, 154, 153)'
-  }
-}), React.createElement("div", {
-  title: "#e31a1c",
-  style: {
-    width: p12,
-    background: 'rgb(227, 26, 28)'
-  }
-}), React.createElement("div", {
-  title: "#fdbf6f",
-  style: {
-    width: p12,
-    background: 'rgb(253, 191, 111)'
-  }
-}), React.createElement("div", {
-  title: "#ff7f00",
-  style: {
-    width: p12,
-    background: 'rgb(255, 127, 0)'
-  }
-}), React.createElement("div", {
-  title: "#cab2d6",
-  style: {
-    width: p12,
-    background: 'rgb(202, 178, 214)'
-  }
-}), React.createElement("div", {
-  title: "#6a3d9a",
-  style: {
-    width: p12,
-    background: 'rgb(106, 61, 154)'
-  }
-}), React.createElement("div", {
-  title: "#ffff99",
-  style: {
-    width: p12,
-    background: 'rgb(255, 255, 153)'
-  }
-}), React.createElement("div", {
-  title: "#b15928",
-  style: {
-    width: p12,
-    background: 'rgb(177, 89, 40)'
-  }
-}));
-_scheme.schemesJSX['pastel1'] = React.createElement("div", {
-  className: "swatch"
-}, React.createElement("div", {
-  title: "#fbb4ae",
-  style: {
-    width: p9,
-    background: 'rgb(251, 180, 174)'
-  }
-}), React.createElement("div", {
-  title: "#b3cde3",
-  style: {
-    width: p9,
-    background: 'rgb(179, 205, 227)'
-  }
-}), React.createElement("div", {
-  title: "#ccebc5",
-  style: {
-    width: p9,
-    background: 'rgb(204, 235, 197)'
-  }
-}), React.createElement("div", {
-  title: "#decbe4",
-  style: {
-    width: p9,
-    background: 'rgb(222, 203, 228)'
-  }
-}), React.createElement("div", {
-  title: "#fed9a6",
-  style: {
-    width: p9,
-    background: 'rgb(254, 217, 166)'
-  }
-}), React.createElement("div", {
-  title: "#ffffcc",
-  style: {
-    width: p9,
-    background: 'rgb(255, 255, 204)'
-  }
-}), React.createElement("div", {
-  title: "#e5d8bd",
-  style: {
-    width: p9,
-    background: 'rgb(229, 216, 189)'
-  }
-}), React.createElement("div", {
-  title: "#fddaec",
-  style: {
-    width: p9,
-    background: 'rgb(253, 218, 236)'
-  }
-}), React.createElement("div", {
-  title: "#f2f2f2",
-  style: {
-    width: p9,
-    background: 'rgb(242, 242, 242)'
-  }
-}));
-_scheme.schemesJSX['pastel2'] = React.createElement("div", {
-  className: "swatch"
-}, React.createElement("div", {
-  title: "#b3e2cd",
-  style: {
-    width: p8,
-    background: 'rgb(179, 226, 205)'
-  }
-}), React.createElement("div", {
-  title: "#fdcdac",
-  style: {
-    width: p8,
-    background: 'rgb(253, 205, 172)'
-  }
-}), React.createElement("div", {
-  title: "#cbd5e8",
-  style: {
-    width: p8,
-    background: 'rgb(203, 213, 232)'
-  }
-}), React.createElement("div", {
-  title: "#f4cae4",
-  style: {
-    width: p8,
-    background: 'rgb(244, 202, 228)'
-  }
-}), React.createElement("div", {
-  title: "#e6f5c9",
-  style: {
-    width: p8,
-    background: 'rgb(230, 245, 201)'
-  }
-}), React.createElement("div", {
-  title: "#fff2ae",
-  style: {
-    width: p8,
-    background: 'rgb(255, 242, 174)'
-  }
-}), React.createElement("div", {
-  title: "#f1e2cc",
-  style: {
-    width: p8,
-    background: 'rgb(241, 226, 204)'
-  }
-}), React.createElement("div", {
-  title: "#cccccc",
-  style: {
-    width: p8,
-    background: 'rgb(204, 204, 204)'
-  }
-}));
-_scheme.schemesJSX['set1'] = React.createElement("div", {
-  className: "swatch"
-}, React.createElement("div", {
-  title: "#e41a1c",
-  style: {
-    width: p9,
-    background: 'rgb(228, 26, 28)'
-  }
-}), React.createElement("div", {
-  title: "#377eb8",
-  style: {
-    width: p9,
-    background: 'rgb(55, 126, 184)'
-  }
-}), React.createElement("div", {
-  title: "#4daf4a",
-  style: {
-    width: p9,
-    background: 'rgb(77, 175, 74)'
-  }
-}), React.createElement("div", {
-  title: "#984ea3",
-  style: {
-    width: p9,
-    background: 'rgb(152, 78, 163)'
-  }
-}), React.createElement("div", {
-  title: "#ff7f00",
-  style: {
-    width: p9,
-    background: 'rgb(255, 127, 0)'
-  }
-}), React.createElement("div", {
-  title: "#ffff33",
-  style: {
-    width: p9,
-    background: 'rgb(255, 255, 51)'
-  }
-}), React.createElement("div", {
-  title: "#a65628",
-  style: {
-    width: p9,
-    background: 'rgb(166, 86, 40)'
-  }
-}), React.createElement("div", {
-  title: "#f781bf",
-  style: {
-    width: p9,
-    background: 'rgb(247, 129, 191)'
-  }
-}), React.createElement("div", {
-  title: "#999999",
-  style: {
-    width: p9,
-    background: 'rgb(153, 153, 153)'
-  }
-}));
-_scheme.schemesJSX['set2'] = React.createElement("div", {
-  className: "swatch"
-}, React.createElement("div", {
-  title: "#66c2a5",
-  style: {
-    width: p8,
-    background: 'rgb(102, 194, 165)'
-  }
-}), React.createElement("div", {
-  title: "#fc8d62",
-  style: {
-    width: p8,
-    background: 'rgb(252, 141, 98)'
-  }
-}), React.createElement("div", {
-  title: "#8da0cb",
-  style: {
-    width: p8,
-    background: 'rgb(141, 160, 203)'
-  }
-}), React.createElement("div", {
-  title: "#e78ac3",
-  style: {
-    width: p8,
-    background: 'rgb(231, 138, 195)'
-  }
-}), React.createElement("div", {
-  title: "#a6d854",
-  style: {
-    width: p8,
-    background: 'rgb(166, 216, 84)'
-  }
-}), React.createElement("div", {
-  title: "#ffd92f",
-  style: {
-    width: p8,
-    background: 'rgb(255, 217, 47)'
-  }
-}), React.createElement("div", {
-  title: "#e5c494",
-  style: {
-    width: p8,
-    background: 'rgb(229, 196, 148)'
-  }
-}), React.createElement("div", {
-  title: "#b3b3b3",
-  style: {
-    width: p8,
-    background: 'rgb(179, 179, 179)'
-  }
-}));
-_scheme.schemesJSX['set3'] = React.createElement("div", {
-  className: "swatch"
-}, React.createElement("div", {
-  title: "#8dd3c7",
-  style: {
-    width: p12,
-    background: 'rgb(141, 211, 199)'
-  }
-}), React.createElement("div", {
-  title: "#ffffb3",
-  style: {
-    width: p12,
-    background: 'rgb(255, 255, 179)'
-  }
-}), React.createElement("div", {
-  title: "#bebada",
-  style: {
-    width: p12,
-    background: 'rgb(190, 186, 218)'
-  }
-}), React.createElement("div", {
-  title: "#fb8072",
-  style: {
-    width: p12,
-    background: 'rgb(251, 128, 114)'
-  }
-}), React.createElement("div", {
-  title: "#80b1d3",
-  style: {
-    width: p12,
-    background: 'rgb(128, 177, 211)'
-  }
-}), React.createElement("div", {
-  title: "#fdb462",
-  style: {
-    width: p12,
-    background: 'rgb(253, 180, 98)'
-  }
-}), React.createElement("div", {
-  title: "#b3de69",
-  style: {
-    width: p12,
-    background: 'rgb(179, 222, 105)'
-  }
-}), React.createElement("div", {
-  title: "#fccde5",
-  style: {
-    width: p12,
-    background: 'rgb(252, 205, 229)'
-  }
-}), React.createElement("div", {
-  title: "#d9d9d9",
-  style: {
-    width: p12,
-    background: 'rgb(217, 217, 217)'
-  }
-}), React.createElement("div", {
-  title: "#bc80bd",
-  style: {
-    width: p12,
-    background: 'rgb(188, 128, 189)'
-  }
-}), React.createElement("div", {
-  title: "#ccebc5",
-  style: {
-    width: p12,
-    background: 'rgb(204, 235, 197)'
-  }
-}), React.createElement("div", {
-  title: "#ffed6f",
-  style: {
-    width: p12,
-    background: 'rgb(255, 237, 111)'
-  }
-}));
-_scheme.schemesJSX['tableau10'] = React.createElement("div", {
-  className: "swatch"
-}, React.createElement("div", {
-  title: "#4c78a8",
-  style: {
-    width: p10,
-    background: 'rgb(76, 120, 168)'
-  }
-}), React.createElement("div", {
-  title: "#f58518",
-  style: {
-    width: p10,
-    background: 'rgb(245, 133, 24)'
-  }
-}), React.createElement("div", {
-  title: "#e45756",
-  style: {
-    width: p10,
-    background: 'rgb(228, 87, 86)'
-  }
-}), React.createElement("div", {
-  title: "#72b7b2",
-  style: {
-    width: p10,
-    background: 'rgb(114, 183, 178)'
-  }
-}), React.createElement("div", {
-  title: "#54a24b",
-  style: {
-    width: p10,
-    background: 'rgb(84, 162, 75)'
-  }
-}), React.createElement("div", {
-  title: "#eeca3b",
-  style: {
-    width: p10,
-    background: 'rgb(238, 202, 59)'
-  }
-}), React.createElement("div", {
-  title: "#b279a2",
-  style: {
-    width: p10,
-    background: 'rgb(178, 121, 162)'
-  }
-}), React.createElement("div", {
-  title: "#ff9da6",
-  style: {
-    width: p10,
-    background: 'rgb(255, 157, 166)'
-  }
-}), React.createElement("div", {
-  title: "#9d755d",
-  style: {
-    width: p10,
-    background: 'rgb(157, 117, 93)'
-  }
-}), React.createElement("div", {
-  title: "#bab0ac",
-  style: {
-    width: p10,
-    background: 'rgb(186, 176, 172)'
-  }
-}));
-_scheme.schemesJSX['tableau20'] = React.createElement("div", {
-  className: "swatch"
-}, React.createElement("div", {
-  title: "#4c78a8",
-  style: {
-    width: p20,
-    background: 'rgb(76, 120, 168)'
-  }
-}), React.createElement("div", {
-  title: "#9ecae9",
-  style: {
-    width: p20,
-    background: 'rgb(158, 202, 233)'
-  }
-}), React.createElement("div", {
-  title: "#f58518",
-  style: {
-    width: p20,
-    background: 'rgb(245, 133, 24)'
-  }
-}), React.createElement("div", {
-  title: "#ffbf79",
-  style: {
-    width: p20,
-    background: 'rgb(255, 191, 121)'
-  }
-}), React.createElement("div", {
-  title: "#54a24b",
-  style: {
-    width: p20,
-    background: 'rgb(84, 162, 75)'
-  }
-}), React.createElement("div", {
-  title: "#88d27a",
-  style: {
-    width: p20,
-    background: 'rgb(136, 210, 122)'
-  }
-}), React.createElement("div", {
-  title: "#b79a20",
-  style: {
-    width: p20,
-    background: 'rgb(183, 154, 32)'
-  }
-}), React.createElement("div", {
-  title: "#f2cf5b",
-  style: {
-    width: p20,
-    background: 'rgb(242, 207, 91)'
-  }
-}), React.createElement("div", {
-  title: "#439894",
-  style: {
-    width: p20,
-    background: 'rgb(67, 152, 148)'
-  }
-}), React.createElement("div", {
-  title: "#83bcb6",
-  style: {
-    width: p20,
-    background: 'rgb(131, 188, 182)'
-  }
-}), React.createElement("div", {
-  title: "#e45756",
-  style: {
-    width: p20,
-    background: 'rgb(228, 87, 86)'
-  }
-}), React.createElement("div", {
-  title: "#ff9d98",
-  style: {
-    width: p20,
-    background: 'rgb(255, 157, 152)'
-  }
-}), React.createElement("div", {
-  title: "#79706e",
-  style: {
-    width: p20,
-    background: 'rgb(121, 112, 110)'
-  }
-}), React.createElement("div", {
-  title: "#bab0ac",
-  style: {
-    width: p20,
-    background: 'rgb(186, 176, 172)'
-  }
-}), React.createElement("div", {
-  title: "#d67195",
-  style: {
-    width: p20,
-    background: 'rgb(214, 113, 149)'
-  }
-}), React.createElement("div", {
-  title: "#fcbfd2",
-  style: {
-    width: p20,
-    background: 'rgb(252, 191, 210)'
-  }
-}), React.createElement("div", {
-  title: "#b279a2",
-  style: {
-    width: p20,
-    background: 'rgb(178, 121, 162)'
-  }
-}), React.createElement("div", {
-  title: "#d6a5c9",
-  style: {
-    width: p20,
-    background: 'rgb(214, 165, 201)'
-  }
-}), React.createElement("div", {
-  title: "#9e765f",
-  style: {
-    width: p20,
-    background: 'rgb(158, 118, 95)'
-  }
-}), React.createElement("div", {
-  title: "#d8b5a5",
-  style: {
-    width: p20,
-    background: 'rgb(216, 181, 165)'
-  }
-}));
-
-function categorical(selected) {
-  return [(0, _scheme.schemeOption)(selected, 'accent'), (0, _scheme.schemeOption)(selected, 'category10'), (0, _scheme.schemeOption)(selected, 'category20'), (0, _scheme.schemeOption)(selected, 'category20b'), (0, _scheme.schemeOption)(selected, 'category20c'), (0, _scheme.schemeOption)(selected, 'dark2'), (0, _scheme.schemeOption)(selected, 'paired'), (0, _scheme.schemeOption)(selected, 'pastel1'), (0, _scheme.schemeOption)(selected, 'pastel2'), (0, _scheme.schemeOption)(selected, 'set1'), (0, _scheme.schemeOption)(selected, 'set2'), (0, _scheme.schemeOption)(selected, 'set3'), (0, _scheme.schemeOption)(selected, 'tableau10'), (0, _scheme.schemeOption)(selected, 'tableau20')];
-}
-},{"react":"mpTF","./scheme":"BSWy"}],"wtjh":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.diverging = diverging;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _scheme = require("./scheme");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-_scheme.schemesJSX['blueorange'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-blueorange"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(5, 48, 97)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(34, 101, 163)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(75, 148, 196)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(143, 194, 221)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(205, 227, 238)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(242, 240, 235)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(253, 221, 179)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(248, 182, 100)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(221, 132, 31)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(178, 90, 9)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(127, 59, 8)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-blueorange)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['brownbluegreen'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-brownbluegreen"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(84, 48, 5)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(139, 84, 15)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(188, 132, 53)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(222, 190, 123)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(242, 228, 192)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(238, 241, 234)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(195, 231, 226)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(127, 201, 191)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(57, 152, 143)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(10, 103, 95)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(0, 60, 48)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-brownbluegreen)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['purplegreen'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-purplegreen"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(64, 0, 75)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(115, 47, 128)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(154, 109, 170)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(193, 164, 205)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(228, 210, 230)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(239, 240, 239)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(214, 238, 209)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(162, 215, 158)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(92, 173, 101)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(33, 120, 57)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(0, 68, 27)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-purplegreen)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['pinkyellowgreen'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-pinkyellowgreen"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(142, 1, 82)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(192, 38, 126)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(221, 114, 173)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(240, 179, 214)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(250, 221, 237)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(245, 243, 239)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(225, 242, 202)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(182, 222, 135)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(128, 187, 71)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(79, 145, 37)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(39, 100, 25)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-pinkyellowgreen)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['purpleorange'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-purpleorange"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(45, 0, 75)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(85, 45, 132)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(129, 112, 172)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(176, 170, 208)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(215, 215, 233)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(243, 238, 234)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(253, 221, 179)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(248, 182, 100)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(221, 132, 31)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(178, 90, 9)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(127, 59, 8)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-purpleorange)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['redblue'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-redblue"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(103, 0, 31)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(172, 32, 47)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(213, 96, 80)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(241, 163, 133)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(251, 215, 196)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(242, 239, 238)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(205, 227, 238)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(143, 194, 221)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(75, 148, 196)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(34, 101, 163)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(5, 48, 97)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-redblue)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['redgrey'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-redgrey"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(103, 0, 31)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(172, 32, 47)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(213, 96, 80)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(241, 163, 133)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(252, 216, 197)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(250, 244, 241)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(223, 223, 223)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(184, 184, 184)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(134, 134, 134)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(78, 78, 78)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(26, 26, 26)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-redgrey)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['redyellowblue'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-redyellowblue"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(165, 0, 38)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(212, 50, 44)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(241, 110, 67)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(252, 172, 100)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(254, 221, 144)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(250, 248, 193)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(220, 241, 236)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(171, 214, 232)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(117, 171, 208)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(74, 116, 180)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(49, 54, 149)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-redyellowblue)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['redyellowgreen'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-redyellowgreen"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(165, 0, 38)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(212, 50, 44)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(241, 110, 67)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(252, 172, 99)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(254, 221, 141)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(249, 247, 174)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(215, 238, 142)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(164, 216, 110)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(100, 188, 97)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(34, 150, 79)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(0, 104, 55)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-redyellowgreen)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['spectral'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-spectral"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(158, 1, 66)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(209, 60, 75)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(240, 112, 74)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(252, 172, 99)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(254, 221, 141)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(251, 248, 176)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(224, 243, 161)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(169, 221, 162)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(105, 189, 169)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(66, 136, 181)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(94, 79, 162)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-spectral)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-
-function diverging(selected) {
-  return [(0, _scheme.schemeOption)(selected, 'blueorange'), (0, _scheme.schemeOption)(selected, 'brownbluegreen'), (0, _scheme.schemeOption)(selected, 'purplegreen'), (0, _scheme.schemeOption)(selected, 'pinkyellowgreen'), (0, _scheme.schemeOption)(selected, 'purpleorange'), (0, _scheme.schemeOption)(selected, 'redblue'), (0, _scheme.schemeOption)(selected, 'redgrey'), (0, _scheme.schemeOption)(selected, 'redyellowblue'), (0, _scheme.schemeOption)(selected, 'redyellowgreen'), (0, _scheme.schemeOption)(selected, 'spectral')];
-}
-},{"react":"mpTF","./scheme":"BSWy"}],"uM5k":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.dual = dual;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-var _scheme = require("./scheme");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-_sanddanceReact.SandDance.colorSchemes.filter(function (cs) {
-  return cs.colors.length === 2;
-}).map(function (binaryScheme, i) {
-  _scheme.schemesJSX[binaryScheme.scheme] = React.createElement("div", {
-    className: "swatch"
-  }, binaryScheme.colors.map(function (color, j) {
-    return React.createElement("div", {
-      key: j,
-      title: color,
-      style: {
-        width: '50%',
-        backgroundColor: color
-      }
-    });
-  }));
-});
-
-function dual(selected) {
-  return _sanddanceReact.SandDance.colorSchemes.filter(function (cs) {
-    return cs.colors.length === 2;
-  }).map(function (binaryScheme, i) {
-    return (0, _scheme.schemeOption)(selected, binaryScheme.scheme);
-  });
-}
-},{"react":"mpTF","@msrvida/sanddance-react":"MjKu","./scheme":"BSWy"}],"rVQa":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.sequentialMultiHue = sequentialMultiHue;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _scheme = require("./scheme");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-_scheme.schemesJSX['viridis'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-viridis"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "#440154"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "#482475"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "#414487"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "#355f8d"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "#2a788e"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "#21918c"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "#22a884"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "#44bf70"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "#7ad151"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "#bddf26"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "#fde725"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-viridis)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['inferno'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-inferno"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "#000004"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "#160b39"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "#420a68"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "#6a176e"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "#932667"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "#bc3754"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "#dd513a"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "#f37819"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "#fca50a"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "#f6d746"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "#fcffa4"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-inferno)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['magma'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-magma"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "#000004"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "#140e36"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "#3b0f70"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "#641a80"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "#8c2981"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "#b73779"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "#de4968"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "#f7705c"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "#fe9f6d"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "#fecf92"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "#fcfdbf"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-magma)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['plasma'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-plasma"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "#0d0887"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "#41049d"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "#6a00a8"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "#8f0da4"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "#b12a90"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "#cc4778"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "#e16462"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "#f2844b"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "#fca636"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "#fcce25"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "#f0f921"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-plasma)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['bluegreen'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-bluegreen"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(247, 252, 253)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(232, 246, 249)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(213, 239, 237)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(183, 228, 218)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(143, 211, 193)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(104, 194, 163)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(73, 177, 127)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(47, 153, 89)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(21, 127, 60)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(3, 100, 41)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(0, 68, 27)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-bluegreen)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['bluepurple'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-bluepurple"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(247, 252, 253)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(228, 238, 245)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(204, 221, 236)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(178, 202, 225)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(156, 179, 213)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(143, 149, 198)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(140, 116, 181)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(137, 82, 165)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(133, 45, 143)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(115, 15, 113)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(77, 0, 75)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-bluepurple)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['greenblue'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-greenblue"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(247, 252, 240)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(229, 245, 223)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(211, 238, 206)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(189, 229, 191)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(158, 217, 187)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(123, 203, 196)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(88, 183, 205)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(57, 156, 198)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(29, 126, 183)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(11, 96, 161)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(8, 64, 129)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-greenblue)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['orangered'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-orangered"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(255, 247, 236)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(254, 235, 207)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(253, 220, 175)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(253, 202, 148)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(253, 176, 122)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(250, 142, 93)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(241, 108, 73)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(224, 69, 48)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(200, 29, 19)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(167, 4, 3)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(127, 0, 0)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-orangered)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['purplebluegreen'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-purplebluegreen"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(255, 247, 251)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(239, 231, 242)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(219, 216, 234)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(190, 201, 226)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(152, 185, 217)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(105, 168, 207)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(64, 150, 192)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(25, 135, 159)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(3, 120, 119)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(1, 99, 83)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(1, 70, 54)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-purplebluegreen)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['purpleblue'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-purpleblue"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(255, 247, 251)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(239, 234, 244)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(219, 218, 235)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(191, 201, 226)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(155, 185, 217)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(114, 168, 207)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(67, 148, 195)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(26, 125, 182)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(6, 103, 161)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(4, 82, 129)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(2, 56, 88)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-purpleblue)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['purplered'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-purplered"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(247, 244, 249)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(234, 227, 240)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(220, 201, 226)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(208, 170, 210)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(208, 138, 194)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(221, 99, 174)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(227, 56, 144)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(215, 28, 108)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(183, 11, 79)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(143, 2, 58)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(103, 0, 31)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-purplered)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['redpurple'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-redpurple"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(255, 247, 243)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(253, 228, 225)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(252, 207, 204)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(251, 181, 188)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(249, 147, 176)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(243, 105, 163)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(224, 62, 152)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(192, 23, 136)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(153, 3, 124)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(112, 1, 116)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(73, 0, 106)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-redpurple)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['yellowgreenblue'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-yellowgreenblue"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(255, 255, 217)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(239, 249, 189)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(213, 238, 179)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(169, 221, 183)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(115, 201, 189)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(69, 180, 194)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(40, 151, 191)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(32, 115, 178)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(35, 78, 160)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(28, 49, 133)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(8, 29, 88)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-yellowgreenblue)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['yellowgreen'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-yellowgreen"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(255, 255, 229)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(247, 252, 196)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(228, 244, 172)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(199, 232, 155)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(162, 216, 138)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(120, 197, 120)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(78, 175, 99)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(47, 148, 78)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(21, 121, 63)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(3, 96, 52)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(0, 69, 41)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-yellowgreen)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['yelloworangebrown'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-yelloworangebrown"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(255, 255, 229)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(255, 248, 196)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(254, 234, 161)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(254, 214, 118)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(254, 186, 74)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(251, 153, 44)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(238, 121, 24)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(216, 91, 10)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(183, 67, 4)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(143, 50, 4)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(102, 37, 6)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-yelloworangebrown)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['yelloworangered'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-yelloworangered"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(255, 255, 204)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(255, 240, 169)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(254, 224, 135)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(254, 201, 101)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(254, 171, 75)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(253, 137, 60)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(250, 92, 46)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(236, 48, 35)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(211, 17, 33)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(175, 2, 37)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(128, 0, 38)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-yelloworangered)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-
-function sequentialMultiHue(selected) {
-  return [(0, _scheme.schemeOption)(selected, 'viridis'), (0, _scheme.schemeOption)(selected, 'inferno'), (0, _scheme.schemeOption)(selected, 'magma'), (0, _scheme.schemeOption)(selected, 'plasma'), (0, _scheme.schemeOption)(selected, 'bluegreen'), (0, _scheme.schemeOption)(selected, 'bluepurple'), (0, _scheme.schemeOption)(selected, 'greenblue'), (0, _scheme.schemeOption)(selected, 'orangered'), (0, _scheme.schemeOption)(selected, 'purplebluegreen'), (0, _scheme.schemeOption)(selected, 'purpleblue'), (0, _scheme.schemeOption)(selected, 'purplered'), (0, _scheme.schemeOption)(selected, 'redpurple'), (0, _scheme.schemeOption)(selected, 'yellowgreenblue'), (0, _scheme.schemeOption)(selected, 'yellowgreen'), (0, _scheme.schemeOption)(selected, 'yelloworangebrown'), (0, _scheme.schemeOption)(selected, 'yelloworangered')];
-}
-},{"react":"mpTF","./scheme":"BSWy"}],"Prvn":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.sequentialSingleHue = sequentialSingleHue;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _scheme = require("./scheme");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-_scheme.schemesJSX['blues'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-blues"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(247, 251, 255)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(227, 238, 249)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(207, 225, 242)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(181, 212, 233)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(147, 195, 223)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(109, 174, 213)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(75, 151, 201)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(47, 126, 188)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(24, 100, 170)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(10, 74, 144)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(8, 48, 107)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-blues)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['greens'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-greens"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(247, 252, 245)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(232, 246, 227)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(211, 238, 205)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(183, 226, 177)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(151, 212, 148)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(115, 195, 120)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(77, 175, 98)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(47, 152, 79)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(21, 127, 59)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(3, 100, 41)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(0, 68, 27)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-greens)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['greys'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-greys"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(255, 255, 255)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(242, 242, 242)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(226, 226, 226)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(206, 206, 206)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(180, 180, 180)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(151, 151, 151)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(122, 122, 122)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(95, 95, 95)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(64, 64, 64)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(30, 30, 30)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(0, 0, 0)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-greys)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['purples'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-purples"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(252, 251, 253)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(241, 239, 246)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(226, 225, 239)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(206, 206, 229)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(182, 181, 216)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(158, 155, 201)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(135, 130, 188)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(115, 99, 172)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(97, 64, 155)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(80, 31, 140)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(63, 0, 125)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-purples)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['reds'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-reds"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(255, 245, 240)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(254, 227, 214)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(253, 201, 180)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(252, 170, 142)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(252, 138, 107)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(249, 105, 76)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(239, 69, 51)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(217, 39, 35)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(187, 21, 26)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(151, 11, 19)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(103, 0, 13)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-reds)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-_scheme.schemesJSX['oranges'] = React.createElement("svg", {
-  viewBox: "0,0,1,1",
-  preserveAspectRatio: "none"
-}, React.createElement("defs", null, React.createElement("linearGradient", {
-  id: "gradient-oranges"
-}, React.createElement("stop", {
-  offset: "0%",
-  stopColor: "rgb(255, 245, 235)"
-}), React.createElement("stop", {
-  offset: "10%",
-  stopColor: "rgb(254, 232, 211)"
-}), React.createElement("stop", {
-  offset: "20%",
-  stopColor: "rgb(253, 216, 179)"
-}), React.createElement("stop", {
-  offset: "30%",
-  stopColor: "rgb(253, 194, 140)"
-}), React.createElement("stop", {
-  offset: "40%",
-  stopColor: "rgb(253, 167, 98)"
-}), React.createElement("stop", {
-  offset: "50%",
-  stopColor: "rgb(251, 141, 61)"
-}), React.createElement("stop", {
-  offset: "60%",
-  stopColor: "rgb(242, 112, 29)"
-}), React.createElement("stop", {
-  offset: "70%",
-  stopColor: "rgb(226, 86, 9)"
-}), React.createElement("stop", {
-  offset: "80%",
-  stopColor: "rgb(196, 65, 3)"
-}), React.createElement("stop", {
-  offset: "90%",
-  stopColor: "rgb(159, 51, 3)"
-}), React.createElement("stop", {
-  offset: "100%",
-  stopColor: "rgb(127, 39, 4)"
-}))), React.createElement("rect", {
-  fill: "url(#gradient-oranges)",
-  x: "0",
-  y: "0",
-  width: "1",
-  height: "1"
-}));
-
-function sequentialSingleHue(selected) {
-  return [(0, _scheme.schemeOption)(selected, 'blues'), (0, _scheme.schemeOption)(selected, 'greens'), (0, _scheme.schemeOption)(selected, 'greys'), (0, _scheme.schemeOption)(selected, 'purples'), (0, _scheme.schemeOption)(selected, 'reds'), (0, _scheme.schemeOption)(selected, 'oranges')];
-}
-},{"react":"mpTF","./scheme":"BSWy"}],"otJp":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Palette = Palette;
-
-var React = _interopRequireWildcard(require("react"));
+exports.TextField = TextField;
 
 var _base = require("../base");
 
-var _categorical = require("./categorical");
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function TextField(props) {
+  return _base.base.react.createElement(_base.base.fluentUI.TextField, Object.assign({
+    onKeyUp: function onKeyUp(e) {
+      e.nativeEvent.stopImmediatePropagation();
+    }
+  }, props));
+}
+},{"../base":"Vlbn"}],"xBH3":[function(require,module,exports) {
+"use strict";
 
-var _diverging = require("./diverging");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getValidOperators = getValidOperators;
+exports.getText = getText;
+exports.SearchTerm = SearchTerm;
+exports.maxAutocomplete = void 0;
 
-var _dropdown = require("../controls/dropdown");
+var _dropdown = require("./dropdown");
 
-var _dual = require("./dual");
+var _textfield = require("./textfield");
 
-var _scheme = require("./scheme");
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-var _sequentialMultiHue = require("./sequentialMultiHue");
-
-var _sequentialSingleHue = require("./sequentialSingleHue");
+var _base = require("../base");
 
 var _language = require("../language");
 
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
 
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var maxDistinctColors = 20;
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
-function Palette(props) {
-  var distinctValueCount = props.colorColumn.stats.distinctValueCount;
-  var isDual = distinctValueCount === 2;
-  var categoricalNumeric = distinctValueCount > 0 && distinctValueCount < maxDistinctColors;
-  var isQualitative = false;
-  var isQuantitative = false;
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-  switch (props.colorColumn.type) {
+var maxAutocomplete = 100;
+exports.maxAutocomplete = maxAutocomplete;
+
+function getValidOperators(column) {
+  var type = column && column.type;
+
+  switch (type) {
     case 'boolean':
-    case 'string':
-      isQualitative = true;
-      break;
-
-    case 'number':
-      isQuantitative = true;
-      break;
+      return [['==', _language.strings.searchEQ], ['!=', _language.strings.searchNEQ], ['isnullorEmpty', _language.strings.searchNULL]];
 
     case 'date':
     case 'integer':
-      isQuantitative = true;
-      isQualitative = categoricalNumeric;
-  }
+    case 'number':
+      return [['==', _language.strings.searchEQ], ['!=', _language.strings.searchNEQ], ['>', _language.strings.searchGT], ['>=', _language.strings.searchGTE], ['<', _language.strings.searchLT], ['<=', _language.strings.searchLTE], ['isnullorEmpty', _language.strings.searchNULL]];
 
-  var selected = props.scheme;
-  var options = [];
-
-  function menu(name, opts) {
-    options.push({
-      key: name,
-      text: name,
-      itemType: _base.base.fluentUI.DropdownMenuItemType.Header
-    });
-    options.push.apply(options, opts);
-  }
-
-  isQualitative && menu(_language.strings.schemeCategorical, (0, _categorical.categorical)(selected));
-  isQuantitative && menu(_language.strings.schemeSequentialSingleHue, (0, _sequentialSingleHue.sequentialSingleHue)(selected));
-  isQuantitative && menu(_language.strings.schemeSequentialMultiHue, (0, _sequentialMultiHue.sequentialMultiHue)(selected));
-  isQuantitative && menu(_language.strings.schemeDiverging, (0, _diverging.diverging)(selected));
-  isDual && menu(_language.strings.schemeDual, (0, _dual.dual)(selected));
-  return React.createElement("div", {
-    className: "sanddance-palette"
-  }, React.createElement("div", {
-    className: "sanddance-explanation",
-    dangerouslySetInnerHTML: {
-      __html: _language.strings.labelColorFieldInfo(props.colorColumn.name, props.colorColumn.type, categoricalNumeric, distinctValueCount)
-    }
-  }), React.createElement(_dropdown.Dropdown, {
-    collapseLabel: props.collapseLabel,
-    disabled: props.disabled,
-    dropdownWidth: 400,
-    label: _language.strings.labelColorScheme,
-    onRenderOption: function onRenderOption(option) {
-      if (option.itemType === _base.base.fluentUI.DropdownMenuItemType.Header) {
-        return React.createElement("span", null, option.text);
-      } else {
-        return React.createElement("div", {
-          className: "sanddance-scheme option"
-        }, React.createElement("span", {
-          className: "name"
-        }, option.scheme), option.children);
-      }
-    },
-    options: options,
-    onChange: function onChange(e, o) {
-      props.changeColorScheme(o.scheme);
-    }
-  }), React.createElement("div", {
-    className: _sanddanceReact.util.classList('sanddance-scheme', props.disabled && 'disabled')
-  }, props.scheme && _scheme.schemesJSX[props.scheme]));
-}
-},{"react":"mpTF","../base":"Vlbn","./categorical":"JrIT","./diverging":"wtjh","../controls/dropdown":"Uyrp","./dual":"uM5k","./scheme":"BSWy","@msrvida/sanddance-react":"MjKu","./sequentialMultiHue":"rVQa","./sequentialSingleHue":"Prvn","../language":"hk5u"}],"N8IJ":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Color = Color;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _base = require("../base");
-
-var _columnMap = require("../controls/columnMap");
-
-var _palettes = require("../palettes");
-
-var _signal = require("../controls/signal");
-
-var _language = require("../language");
-
-var _group = require("../controls/group");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function Color(props) {
-  var colorColumn = props.dataContent.columns.filter(function (c) {
-    return c.name === props.colorColumn;
-  })[0];
-  var disabledColorBin = !colorColumn || !colorColumn.quantitative || props.directColor;
-  var colorBin = props.colorBin || 'quantize';
-  return React.createElement("div", {
-    className: "sanddance-color-dialog"
-  }, React.createElement(_group.Group, {
-    label: _language.strings.labelColor
-  }, React.createElement(_columnMap.ColumnMap, Object.assign({}, props, {
-    collapseLabel: props.compactUI,
-    selectedColumnName: props.colorColumn,
-    specRole: props.specCapabilities && props.specCapabilities.roles.filter(function (r) {
-      return r.role === 'color';
-    })[0],
-    key: 0
-  })), colorColumn && colorColumn.isColorData && React.createElement("div", {
-    className: "sanddance-explanation",
-    dangerouslySetInnerHTML: {
-      __html: _language.strings.labelColorFieldIsColorData(colorColumn.name)
-    }
-  }), colorColumn && !colorColumn.isColorData && React.createElement(_palettes.Palette, {
-    collapseLabel: props.compactUI,
-    scheme: props.scheme,
-    colorColumn: colorColumn,
-    changeColorScheme: function changeColorScheme(scheme) {
-      props.onColorSchemeChange(scheme);
-    },
-    disabled: props.disabled || props.directColor || colorColumn && colorColumn.isColorData
-  }), colorColumn && !colorColumn.isColorData && React.createElement(_signal.Signal, {
-    disabled: props.disabled || !colorColumn || props.directColor || colorColumn && colorColumn.isColorData,
-    signal: props.colorReverseSignal,
-    explorer: props.explorer,
-    onChange: props.onColorReverseChange,
-    collapseLabel: props.compactUI
-  })), colorColumn && !colorColumn.isColorData && React.createElement(_group.Group, {
-    label: _language.strings.labelColorBin
-  }, React.createElement("div", {
-    className: "sanddance-explanation"
-  }, _language.strings.labelColorBinExplanation), React.createElement(_base.base.fluentUI.ChoiceGroup, {
-    options: [{
-      key: 'continuous',
-      text: _language.strings.labelColorBinNone,
-      checked: colorBin === 'continuous',
-      disabled: disabledColorBin
-    }, {
-      key: 'quantize',
-      text: _language.strings.labelColorBinQuantize,
-      checked: colorBin === 'quantize',
-      disabled: disabledColorBin
-    }, {
-      key: 'quantile',
-      text: _language.strings.labelColorBinQuantile,
-      checked: colorBin === 'quantile',
-      disabled: disabledColorBin
-    }],
-    onChange: function onChange(e, o) {
-      props.onColorBinChange(o.key);
-    }
-  }), React.createElement(_signal.Signal, {
-    disabled: props.disabled || disabledColorBin || props.colorBin === 'continuous',
-    signal: props.colorBinSignal,
-    explorer: props.explorer,
-    onChange: props.onColorBinCountChange,
-    collapseLabel: props.compactUI
-  })), colorColumn && !colorColumn.isColorData && React.createElement(_group.Group, {
-    label: _language.strings.labelColorOptions
-  }, React.createElement(_base.base.fluentUI.Toggle, {
-    label: _language.strings.selectDirectColor,
-    disabled: !colorColumn.stats.hasColorData,
-    checked: !!(colorColumn.stats.hasColorData && props.directColor),
-    onChange: function onChange(e, checked) {
-      return props.onDirectColorChange(checked);
-    }
-  }), React.createElement("div", {
-    className: "sanddance-explanation",
-    dangerouslySetInnerHTML: {
-      __html: _language.strings.labelDataColors
-    }
-  })));
-}
-},{"react":"mpTF","../base":"Vlbn","../controls/columnMap":"DSho","../palettes":"otJp","../controls/signal":"OWDI","../language":"hk5u","../controls/group":"Q3hf"}],"tb7d":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.initPrefs = initPrefs;
-exports.saveSignalValuePref = saveSignalValuePref;
-exports.copyPrefToNewState = copyPrefToNewState;
-exports.savePref = savePref;
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function initPrefs(prefs, partialInsight) {
-  if (partialInsight) {
-    var specTypePrefs = prefs[partialInsight.chart] || {};
-    prefs[partialInsight.chart] = specTypePrefs;
-
-    for (var _role in partialInsight.columns) {
-      var role = _role;
-
-      if (role === 'color' || role === 'x') {
-        (function () {
-          var rolePrefs = specTypePrefs[role] || {};
-          specTypePrefs[role] = rolePrefs;
-          var column = partialInsight.columns[role];
-
-          var copySignalValue = function copySignalValue(signalName) {
-            if (partialInsight.signalValues && partialInsight.signalValues[signalName] && rolePrefs[column]) {
-              var signalValues = rolePrefs[column].signalValues || {};
-              signalValues[signalName] = partialInsight.signalValues[signalName];
-              rolePrefs[column].signalValues = signalValues;
-            }
-          };
-
-          switch (role) {
-            case 'color':
-              rolePrefs[column] = {
-                scheme: partialInsight.scheme,
-                colorBin: partialInsight.colorBin
-              };
-              copySignalValue(_sanddanceReact.SandDance.constants.SignalNames.ColorBinCount);
-              break;
-
-            case 'x':
-              copySignalValue(_sanddanceReact.SandDance.constants.SignalNames.XBins);
-              break;
-          }
-        })();
-      }
-    }
-  }
-}
-
-function saveSignalValuePref(prefs, chart, role, column, signalName, signalValue) {
-  var partialInsight = savePref(prefs, chart, role, column, {
-    signalValues: {}
-  });
-  partialInsight.signalValues[signalName] = signalValue;
-}
-
-function copyPrefToNewState(prefs, chart, role, columnName) {
-  var specTypePrefs = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, prefs['*'], prefs[chart]);
-
-  var rolePrefs = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, specTypePrefs['*'], specTypePrefs[role]);
-
-  var partialInsight = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, rolePrefs['*'], rolePrefs[columnName]);
-
-  return partialInsight;
-}
-
-function savePref(prefs, chart, role, column, partialInsight) {
-  var SpecTypePrefs = prefs[chart] || {};
-  prefs[chart] = SpecTypePrefs;
-  var rolePrefs = SpecTypePrefs[role] || {};
-  SpecTypePrefs[role] = rolePrefs;
-  rolePrefs[column] = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, rolePrefs[column], partialInsight);
-  return rolePrefs[column];
-}
-},{"@msrvida/sanddance-react":"MjKu"}],"Gai8":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.DataItem = DataItem;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-var _language = require("../language");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function isNumber(value) {
-  if (typeof value === 'number') return true;
-  if (!isNaN(value)) return true;
-  return false;
-}
-
-function isBoolean(value) {
-  if (typeof value === 'boolean') return true;
-
-  if (typeof value === 'string') {
-    switch (value.toLowerCase()) {
-      case true + '':
-      case false + '':
-        return true;
-    }
-  }
-
-  return false;
-}
-
-function bingSearchLink(column, value) {
-  if (isNumber(value)) return null;
-  if (isBoolean(value)) return null;
-  if (column && column.stats.distinctValueCount === 2) return null;
-  return React.createElement("div", {
-    className: 'bing-search'
-  }, React.createElement("a", {
-    href: "https://www.bing.com/search?q=".concat(encodeURIComponent(value)),
-    target: '_blank',
-    title: _language.strings.bingsearchDescription(value),
-    "aria-label": _language.strings.bingsearchDescription(value)
-  }, _language.strings.bingsearch));
-}
-
-function displayValue(value) {
-  switch (value) {
-    case '':
-      {
-        return {
-          special: true,
-          display: _language.strings.labelBlank
-        };
-      }
-
-    case null:
-      {
-        return {
-          special: true,
-          display: _language.strings.labelNull
-        };
-      }
-
-    case true:
-      {
-        return {
-          special: true,
-          display: _language.strings.labelTrue
-        };
-      }
-
-    case false:
-      {
-        return {
-          special: true,
-          display: _language.strings.labelFalse
-        };
-      }
-
+    case 'string':
     default:
-      {
-        if (_typeof(value) === 'object') {
-          if (value instanceof Date) {
-            var d = value;
-            return displayValue(d.input);
-          }
-
-          return {
-            special: false,
-            display: value.toLocaleString()
-          };
-        }
-
-        return {
-          special: false,
-          display: value
-        };
-      }
+      return [['==', _language.strings.searchEQ], ['!=', _language.strings.searchNEQ], ['>', _language.strings.searchGT], ['>=', _language.strings.searchGTE], ['<', _language.strings.searchLT], ['<=', _language.strings.searchLTE], ['contains', _language.strings.searchIN], ['starts', _language.strings.searchSW], ['isnullorEmpty', _language.strings.searchNULL]];
   }
 }
 
-function displayValueElement(nvp) {
-  var d = displayValue(nvp.value);
+function getExpressionClauses(currClause, disableOR) {
+  var keys = [['&&', _language.strings.searchAND]];
 
-  if (d.special) {
-    return React.createElement("i", null, d.display);
+  if (!disableOR) {
+    keys.push(['||', _language.strings.searchOR]);
   }
 
-  return d.display;
-}
+  return keys.map(function (key, i) {
+    var _key = _slicedToArray(key, 2),
+        clause = _key[0],
+        text = _key[1];
 
-var KeyCodes = {
-  ENTER: 13
-};
+    var selected = currClause == clause; //deliberate double equal 
 
-function DataItem(props) {
-  if (!props.item) {
-    return null;
-  }
-
-  var nameValuePairs = [];
-
-  var _loop = function _loop(columnName) {
-    if (columnName === _sanddanceReact.SandDance.constants.GL_ORDINAL && !props.showSystemFields) {
-      return "continue";
-    }
-
-    if (_sanddanceReact.SandDance.util.isInternalFieldName(columnName)) {
-      return "continue";
-    }
-
-    var nameValuePair = {
-      columnName: columnName,
-      value: props.item[columnName]
-    };
-
-    if (!props.bingSearchDisabled) {
-      nameValuePair.bingSearch = bingSearchLink(props.columns.filter(function (c) {
-        return c.name === columnName;
-      })[0], props.item[columnName]);
-    }
-
-    nameValuePairs.push(nameValuePair);
-  };
-
-  for (var columnName in props.item) {
-    var _ret = _loop(columnName);
-
-    if (_ret === "continue") continue;
-  }
-
-  return React.createElement("div", {
-    className: "sanddance-dataItem"
-  }, nameValuePairs.map(function (nameValuePair, i) {
-    var ex = {
-      key: 0,
-      name: nameValuePair.columnName,
-      operator: '==',
-      value: nameValuePair.value
-    };
-
-    if (nameValuePair.value === null || nameValuePair.value === '') {
-      ex.operator = 'isnullorEmpty';
-      delete ex.value;
-    }
-
-    var searchClick = function searchClick(e) {
-      var search = {
-        key: 0,
-        expressions: [ex]
-      };
-      props.onSearch(e, [search]);
-    };
-
-    var title = _language.strings.tooltipSearch(nameValuePair.columnName, displayValue(nameValuePair.value).display);
-
-    return React.createElement("div", {
+    var option = {
       key: i,
-      onClick: !props.disabled ? searchClick : null,
-      title: title,
-      onKeyUp: function onKeyUp(e) {
-        if (e.keyCode === KeyCodes.ENTER) {
-          searchClick(e);
-        }
-      },
-      tabIndex: 0,
-      className: "name-value"
-    }, React.createElement("div", {
-      className: "column-name"
-    }, nameValuePair.columnName), React.createElement("div", {
-      className: "column-value"
-    }, displayValueElement(nameValuePair)), nameValuePair.bingSearch);
+      text: text,
+      data: clause,
+      selected: selected
+    };
+    return option;
+  });
+}
+
+function getOperators(ex, column) {
+  var anySelected = false;
+  var validOperators = getValidOperators(column);
+  var options = validOperators.map(function (validoperator) {
+    var _validoperator = _slicedToArray(validoperator, 2),
+        op = _validoperator[0],
+        text = _validoperator[1];
+
+    var selected = ex.operator === op;
+    anySelected = anySelected || selected;
+    var option = {
+      key: op,
+      text: text,
+      data: op,
+      selected: selected
+    };
+    return option;
+  });
+
+  if (!anySelected) {
+    options[0].selected = true;
+  }
+
+  return options;
+}
+
+function getDistinctValues(data, columnName) {
+  var distinctMap = {};
+
+  for (var i = 0; i < data.length; i++) {
+    var row = data[i];
+    var value = row[columnName];
+    distinctMap[value] = true;
+  }
+
+  return Object.keys(distinctMap).sort();
+}
+
+function getValues(ex, column, data, autoCompleteDistinctValues) {
+  var stats = column && column.stats;
+
+  if (stats && stats.distinctValueCount < maxAutocomplete) {
+    if (!autoCompleteDistinctValues[column.name]) {
+      autoCompleteDistinctValues[column.name] = getDistinctValues(data, column.name);
+    }
+
+    return autoCompleteDistinctValues[column.name].map(function (v, i) {
+      return {
+        key: i,
+        text: v
+      };
+    });
+  }
+
+  return [];
+}
+
+function getText(ex) {
+  if (ex.operator === 'isnullorEmpty') return '';
+  return typeof ex.value === 'string' ? ex.value : ex.value == null ? '' : ex.value.toString();
+}
+
+function SearchTerm(props) {
+  var ex = props.searchExpression;
+  var possibleValues = getValues(ex, props.column, props.data, props.autoCompleteDistinctValues); //TODO better date handling with calendar picker
+
+  return _base.base.react.createElement("div", null, props.index > 0 && _base.base.react.createElement(_dropdown.Dropdown, {
+    collapseLabel: props.collapseLabels,
+    className: "search-field",
+    label: _language.strings.labelSearchClause,
+    dropdownWidth: 120,
+    disabled: !ex.unlocked || props.disableOR,
+    options: getExpressionClauses(ex.clause, props.disableOR),
+    onChange: function onChange(e, o) {
+      return props.onUpdateExpression({
+        clause: o.data
+      }, props.index);
+    }
+  }), _base.base.react.createElement(_dropdown.Dropdown, {
+    collapseLabel: props.collapseLabels,
+    className: "search-field",
+    label: _language.strings.labelSearchColumn,
+    options: [{
+      key: '',
+      text: _language.strings.selectAny,
+      data: null,
+      selected: ex.name === null
+    }].concat(props.columns.map(function (c, i) {
+      return {
+        key: c.name,
+        text: c.name,
+        data: c,
+        selected: c.name === ex.name
+      };
+    })),
+    onChange: function onChange(e, o) {
+      return props.onUpdateExpression({
+        name: o.data && o.data.name || null
+      }, props.index);
+    }
+  }), _base.base.react.createElement(_dropdown.Dropdown, {
+    collapseLabel: props.collapseLabels,
+    className: "search-field",
+    label: _language.strings.labelSearchOperator,
+    dropdownWidth: 120,
+    options: getOperators(ex, props.column),
+    onChange: function onChange(e, o) {
+      return props.onUpdateExpression({
+        operator: o.data
+      }, props.index);
+    }
+  }), possibleValues.length > 0 && _base.base.react.createElement(_base.base.fluentUI.ComboBox, {
+    className: "search-field",
+    label: props.collapseLabels ? null : _language.strings.labelSearchValue,
+    placeholder: _language.strings.labelSearchValuePlaceholder,
+    disabled: ex.operator === 'isnullorEmpty',
+    dropdownWidth: _dropdown.dropdownWidth,
+    allowFreeform: true,
+    autoComplete: "on",
+    errorMessage: ex.errorMessage,
+    text: getText(ex),
+    options: getValues(ex, props.column, props.data, props.autoCompleteDistinctValues),
+    onChange: function onChange(e, o, i, value) {
+      if (o) {
+        value = o.text;
+      }
+
+      props.onUpdateExpression({
+        value: value
+      }, props.index);
+    }
+  }), possibleValues.length === 0 && _base.base.react.createElement(_textfield.TextField, {
+    className: "search-field",
+    label: props.collapseLabels ? null : _language.strings.labelSearchValue,
+    placeholder: _language.strings.labelSearchValuePlaceholder,
+    disabled: ex.operator === 'isnullorEmpty',
+    errorMessage: ex.errorMessage,
+    value: getText(ex),
+    onChange: function onChange(e, v) {
+      return props.onUpdateExpression({
+        value: v
+      }, props.index);
+    }
   }));
 }
-},{"react":"mpTF","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"eqtW":[function(require,module,exports) {
+},{"./dropdown":"Uyrp","./textfield":"qO9b","../base":"Vlbn","../language":"hk5u"}],"eqtW":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18482,18 +15426,12 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Button = Button;
 
-var React = _interopRequireWildcard(require("react"));
-
 var _base = require("../base");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 function Button(props) {
-  return React.createElement(_base.base.fluentUI.DefaultButton, Object.assign({}, props, {
+  return _base.base.react.createElement(_base.base.fluentUI.DefaultButton, Object.assign({}, props, {
     styles: {
       root: {
         backgroundColor: 'transparent',
@@ -18517,7 +15455,1773 @@ function Button(props) {
     }
   }));
 }
-},{"react":"mpTF","../base":"Vlbn"}],"fiGR":[function(require,module,exports) {
+},{"../base":"Vlbn"}],"ozxe":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Search = void 0;
+
+var _searchTerm = require("../controls/searchTerm");
+
+var _base = require("../base");
+
+var _button = require("../controls/button");
+
+var _dropdown = require("../controls/dropdown");
+
+var _group = require("../controls/group");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var _language = require("../language");
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var maxClauses = 5;
+
+function getColumnWithName(columnName, columns) {
+  for (var i = 0; i < columns.length; i++) {
+    if (columns[i].name === columnName) return columns[i];
+  }
+}
+
+function validateExpression(ex) {
+  if (ex.operator === 'isnullorEmpty') {
+    ex.errorMessage = null;
+    return;
+  }
+
+  var s = (0, _searchTerm.getText)(ex);
+
+  if (s.length === 0) {
+    ex.errorMessage = _language.strings.labelRequired;
+  } else {
+    ex.errorMessage = null;
+  }
+}
+
+function clearExpressionValidation(ex) {
+  if (ex.operator === 'isnullorEmpty') {
+    ex.errorMessage = null;
+    return;
+  }
+
+  var s = (0, _searchTerm.getText)(ex);
+
+  if (s.length !== 0) {
+    ex.errorMessage = null;
+  }
+}
+
+function getGroupClauses(currClause, index, disableGroupOR) {
+  var keys;
+
+  if (index === 0) {
+    keys = [[null, _language.strings.searchWHERE]];
+  } else {
+    keys = [['&&', _language.strings.searchAND]];
+
+    if (!disableGroupOR) {
+      keys.push(['||', _language.strings.searchOR]);
+    }
+  }
+
+  return keys.map(function (key, i) {
+    var _key = _slicedToArray(key, 2),
+        clause = _key[0],
+        text = _key[1];
+
+    var selected = currClause == clause; //deliberate double equal 
+
+    var option = {
+      key: i,
+      text: text,
+      data: clause,
+      selected: selected
+    };
+    return option;
+  });
+}
+
+function _Search(props) {
+  var __Search =
+  /*#__PURE__*/
+  function (_base$react$Component) {
+    _inherits(__Search, _base$react$Component);
+
+    function __Search(props) {
+      var _this;
+
+      _classCallCheck(this, __Search);
+
+      _this = _possibleConstructorReturn(this, _getPrototypeOf(__Search).call(this, props));
+      _this.state = _this.getInitialState(_this.props);
+      return _this;
+    }
+
+    _createClass(__Search, [{
+      key: "getInitialState",
+      value: function getInitialState(props) {
+        var initialState = {
+          groups: props.initializer.search || [this.newGroup(0, null)],
+          sortedColumns: _toConsumableArray(props.initializer.columns).sort(function (a, b) {
+            return a.name.localeCompare(b.name);
+          }),
+          initializer: props.initializer
+        };
+        initialState.groups.forEach(function (group) {
+          group.expressions.forEach(function (ex) {
+            return ex.unlocked = group.expressions.length <= 2;
+          });
+        });
+        return initialState;
+      }
+    }, {
+      key: "componentDidUpdate",
+      value: function componentDidUpdate() {
+        if (!_sanddanceReact.util.deepCompare(this.props.initializer, this.state.initializer)) {
+          this.setState(this.getInitialState(this.props));
+        }
+      }
+    }, {
+      key: "validateAndSearch",
+      value: function validateAndSearch() {
+        var _this2 = this;
+
+        var groups = _toConsumableArray(this.state.groups);
+
+        groups.forEach(function (group) {
+          group.expressions.forEach(validateExpression);
+          var errors = group.expressions.reduce(function (p, c) {
+            return p || c.errorMessage;
+          }, '');
+
+          if (errors) {
+            _this2.setState({
+              groups: groups
+            });
+          } else {
+            _this2.props.onSelect(_this2.state.groups);
+          }
+        });
+      }
+    }, {
+      key: "newGroup",
+      value: function newGroup(key, clause) {
+        var group = {
+          key: key,
+          clause: clause,
+          expressions: [this.newExpression(0, null)]
+        };
+        return group;
+      }
+    }, {
+      key: "updateGroup",
+      value: function updateGroup(partialGroup, groupIndex) {
+        var groups = _toConsumableArray(this.state.groups);
+
+        var group = Object.assign(Object.assign({}, groups[groupIndex]), partialGroup);
+        groups[groupIndex] = group;
+        this.setState({
+          groups: groups
+        });
+      }
+    }, {
+      key: "addGroup",
+      value: function addGroup() {
+        var groups = _toConsumableArray(this.state.groups);
+
+        var maxKey = groups.reduce(function (max, p) {
+          return p.key > max ? p.key : max;
+        }, groups[0].key);
+        var newGroup = this.newGroup(maxKey + 1, '&&');
+        groups.push(newGroup);
+        this.setState({
+          groups: groups
+        });
+      }
+    }, {
+      key: "deleteGroup",
+      value: function deleteGroup(groupIndex) {
+        var groups = _toConsumableArray(this.state.groups);
+
+        groups.splice(groupIndex, 1);
+        this.setState({
+          groups: groups
+        });
+      }
+    }, {
+      key: "newExpression",
+      value: function newExpression(key, clause) {
+        var ex = {
+          key: key,
+          clause: clause,
+          name: null,
+          operator: 'contains',
+          value: ''
+        };
+        return ex;
+      }
+    }, {
+      key: "addExpression",
+      value: function addExpression(groupIndex) {
+        var groups = _toConsumableArray(this.state.groups);
+
+        var group = groups[groupIndex];
+        var maxKey = group.expressions.reduce(function (max, p) {
+          return p.key > max ? p.key : max;
+        }, group.expressions[0].key);
+        var newEx = this.newExpression(maxKey + 1, '&&');
+        group.expressions.push(newEx);
+
+        if (group.expressions.length === 2) {
+          newEx.unlocked = true;
+        } else {
+          group.expressions.forEach(function (ex) {
+            return ex.unlocked = false;
+          });
+          newEx.clause = group.expressions[1].clause;
+        }
+
+        this.setState({
+          groups: groups
+        });
+      }
+    }, {
+      key: "updateExpression",
+      value: function updateExpression(partialEx, groupIndex, index) {
+        var groups = _toConsumableArray(this.state.groups);
+
+        var group = groups[groupIndex];
+
+        var ex = _sanddanceReact.SandDance.VegaDeckGl.util.clone(group.expressions[index]);
+
+        if (ex.name !== partialEx.name) {
+          //choose an appropriate operator when switching data type
+          var oldColumn = getColumnWithName(ex.name, this.state.sortedColumns);
+          var newColumn = getColumnWithName(partialEx.name, this.state.sortedColumns);
+          var oldType = oldColumn && oldColumn.type;
+          var newType = newColumn && newColumn.type;
+
+          if (oldType !== newType) {
+            var newOperators = (0, _searchTerm.getValidOperators)(newColumn).map(function (validOperator) {
+              return validOperator[0];
+            }); //see if old operator is compatible
+
+            if (newOperators.indexOf(ex.operator) < 0) {
+              //not compatible, so choose "equal"
+              partialEx.operator = '==';
+            }
+          }
+        }
+
+        Object.assign(ex, partialEx);
+        clearExpressionValidation(ex);
+        group.expressions[index] = ex;
+        this.setState({
+          groups: groups
+        });
+      }
+    }, {
+      key: "deleteExpression",
+      value: function deleteExpression(groupIndex, index) {
+        var groups = _toConsumableArray(this.state.groups);
+
+        var group = groups[groupIndex];
+
+        var expressions = _toConsumableArray(group.expressions);
+
+        expressions.splice(index, 1);
+
+        if (expressions.length === 2) {
+          expressions[1].unlocked = true;
+        }
+
+        group.expressions = expressions;
+        this.setState({
+          groups: groups
+        });
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        var _this3 = this;
+
+        return _base.base.react.createElement(_group.Group, {
+          className: "sanddance-search",
+          label: _language.strings.labelSearch
+        }, _base.base.react.createElement("div", null, this.state.groups.map(function (group, groupIndex) {
+          return _base.base.react.createElement("div", {
+            className: "sanddance-search-group",
+            key: group.key
+          }, _base.base.react.createElement(_dropdown.Dropdown, {
+            collapseLabel: _this3.props.collapseLabels,
+            className: "search-group-clause",
+            label: _language.strings.labelSearchClause,
+            disabled: groupIndex === 0 || _this3.props.disableGroupOR,
+            dropdownWidth: 120,
+            options: getGroupClauses(group.clause, groupIndex, _this3.props.disableGroupOR),
+            onChange: function onChange(e, o) {
+              return _this3.updateGroup({
+                clause: o.data
+              }, groupIndex);
+            }
+          }), _base.base.react.createElement("div", null, group.expressions.map(function (ex, i) {
+            return _base.base.react.createElement("div", {
+              className: "sanddance-search-expression",
+              key: ex.key
+            }, _base.base.react.createElement(_searchTerm.SearchTerm, {
+              collapseLabels: _this3.props.collapseLabels,
+              onUpdateExpression: function onUpdateExpression(ex, i) {
+                return _this3.updateExpression(ex, groupIndex, i);
+              },
+              autoCompleteDistinctValues: _this3.props.autoCompleteDistinctValues,
+              index: i,
+              columns: _this3.state.sortedColumns,
+              data: _this3.props.data,
+              searchExpression: ex,
+              disableOR: _this3.props.disableExpressionOR,
+              column: getColumnWithName(ex.name, _this3.state.sortedColumns)
+            }), group.expressions.length > 1 && _base.base.react.createElement(_button.Button, {
+              themePalette: _this3.props.themePalette,
+              className: "search-action",
+              iconName: "Cancel",
+              onClick: function onClick() {
+                return _this3.deleteExpression(groupIndex, i);
+              },
+              text: _language.strings.buttonDeleteExpression
+            }));
+          })), group.expressions.length < maxClauses && _base.base.react.createElement("div", null, _base.base.react.createElement(_button.Button, {
+            themePalette: _this3.props.themePalette,
+            className: "search-action",
+            iconName: "Add",
+            onClick: function onClick() {
+              return _this3.addExpression(groupIndex);
+            },
+            text: _language.strings.buttonAddExpression
+          })), _this3.state.groups.length > 1 && _base.base.react.createElement(_button.Button, {
+            themePalette: _this3.props.themePalette,
+            className: "search-action",
+            iconName: "Cancel",
+            onClick: function onClick() {
+              return _this3.deleteGroup(groupIndex);
+            },
+            text: _language.strings.buttonDeleteExpressionGroup
+          }));
+        }), this.state.groups.length < maxClauses && _base.base.react.createElement("div", null, _base.base.react.createElement(_button.Button, {
+          themePalette: this.props.themePalette,
+          className: "search-action search-bottom-action",
+          iconName: "Add",
+          onClick: function onClick() {
+            return _this3.addGroup();
+          },
+          text: _language.strings.buttonAddExpressionGroup
+        }))), _base.base.react.createElement(_base.base.fluentUI.PrimaryButton, {
+          className: "search-action search-bottom-action",
+          text: _language.strings.buttonSelect,
+          onClick: function onClick() {
+            return _this3.validateAndSearch();
+          }
+        }));
+      }
+    }]);
+
+    return __Search;
+  }(_base.base.react.Component);
+
+  return new __Search(props);
+}
+
+var Search = _Search;
+exports.Search = Search;
+},{"../controls/searchTerm":"xBH3","../base":"Vlbn","../controls/button":"eqtW","../controls/dropdown":"Uyrp","../controls/group":"Q3hf","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"Dryx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getCanvas = getCanvas;
+exports.removeTabIndex = removeTabIndex;
+exports.capabilities = void 0;
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var PresenterElement = _sanddanceReact.SandDance.VegaDeckGl.PresenterElement;
+
+function getCanvas(viewer) {
+  var tags = viewer.presenter.getElement(PresenterElement.gl).getElementsByTagName('canvas');
+
+  if (tags) {
+    return tags[0];
+  }
+}
+
+function removeTabIndex(viewer) {
+  var canvas = getCanvas(viewer);
+
+  if (canvas) {
+    canvas.tabIndex = -1;
+  }
+}
+
+var capabilities = {
+  webgl: !!document.createElement('canvas').getContext('webgl'),
+  webgl2: !!document.createElement('canvas').getContext('webgl2')
+};
+exports.capabilities = capabilities;
+},{"@msrvida/sanddance-react":"MjKu"}],"RvaL":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.version = void 0;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+var version = '3.0.1';
+exports.version = version;
+},{}],"zKGJ":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Settings = void 0;
+
+var SandDanceReact = _interopRequireWildcard(require("@msrvida/sanddance-react"));
+
+var _base = require("../base");
+
+var _canvas = require("../canvas");
+
+var _dialog = require("../controls/dialog");
+
+var _dropdown = require("../controls/dropdown");
+
+var _group = require("../controls/group");
+
+var _signal = require("../controls/signal");
+
+var _language = require("../language");
+
+var _version = require("../version");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var SandDance = SandDanceReact.SandDance;
+var DataRefType;
+
+(function (DataRefType) {
+  DataRefType[DataRefType["none"] = 0] = "none";
+  DataRefType[DataRefType["inline"] = 1] = "inline";
+  DataRefType[DataRefType["url"] = 2] = "url";
+})(DataRefType || (DataRefType = {}));
+
+function filterSignals(signal) {
+  switch (signal.name) {
+    case SandDance.constants.SignalNames.XBins:
+    case SandDance.constants.SignalNames.YBins:
+    case SandDance.constants.SignalNames.FacetBins:
+    case SandDance.constants.SignalNames.FacetVBins:
+    case SandDance.constants.SignalNames.ColorBinCount:
+    case SandDance.constants.SignalNames.ColorReverse:
+    case SandDance.constants.SignalNames.PointScale:
+    case SandDance.constants.SignalNames.TreeMapMethod:
+      return false;
+
+    default:
+      return !!signal.bind;
+  }
+}
+
+function cloneData(vegaSpec) {
+  var data0 = vegaSpec.data[0];
+  var valuesData = data0;
+  var values = valuesData.values;
+  delete valuesData.values;
+  var data = SandDance.VegaDeckGl.util.clone(vegaSpec.data);
+  valuesData.values = values;
+  return {
+    data: data,
+    values: values
+  };
+}
+
+function cloneScales(vegaSpec) {
+  return SandDance.VegaDeckGl.util.clone(vegaSpec.scales);
+}
+
+function serializeSpec(vegaSpec, datafile, dataRefType, transform, scheme) {
+  var scales = cloneScales(vegaSpec);
+  var colorScale = scales.filter(function (scale) {
+    return scale.name === SandDance.constants.ScaleNames.Color;
+  })[0];
+
+  if (scheme.indexOf('dual_') >= 0) {
+    colorScale.range = SandDance.colorSchemes.filter(function (cs) {
+      return cs.scheme === scheme;
+    })[0].colors;
+  }
+
+  var clone = cloneData(vegaSpec);
+  var data0 = clone.data[0];
+
+  if (dataRefType === DataRefType.inline) {
+    var valuesData = data0;
+    valuesData.format = {
+      parse: 'auto',
+      type: 'json'
+    };
+    valuesData.values = clone.values;
+  } else if (dataRefType === DataRefType.none) {
+    var _valuesData = data0;
+    _valuesData.values = [];
+
+    if (transform) {
+      if (_valuesData.transform) {
+        _valuesData.transform.push.apply(_valuesData.transform, transform);
+      } else {
+        _valuesData.transform = transform;
+      }
+    }
+  } else if (dataRefType === DataRefType.url) {
+    var urlData = data0;
+    urlData.url = datafile.dataUrl;
+    urlData.format = {
+      parse: 'auto',
+      type: datafile.type
+    };
+
+    if (transform) {
+      if (urlData.transform) {
+        urlData.transform.push.apply(urlData.transform, transform);
+      } else {
+        urlData.transform = transform;
+      }
+    }
+  }
+
+  return Object.assign(Object.assign({}, vegaSpec), {
+    data: clone.data,
+    scales: scales
+  });
+}
+
+function defaultDataRefType(datafile) {
+  if (datafile.dataUrl) {
+    return DataRefType.url;
+  }
+
+  return DataRefType.none;
+}
+
+function initState(props) {
+  return {
+    showSystemDialog: false,
+    showVegaDialog: false,
+    dataRefType: defaultDataRefType(props.dataFile),
+    spec: null
+  };
+}
+
+function signalGroupKey(key) {
+  for (var i = 0; i < _language.strings.signalGroups.length; i++) {
+    if (_language.strings.signalGroups[i].prefix === key) {
+      return key;
+    }
+  }
+
+  return '*';
+}
+
+function vegaSignalGroups(vegaSignals) {
+  var signalGroupMap = {};
+  vegaSignals.forEach(function (vs) {
+    var split = vs.name.split('_');
+    var key = signalGroupKey(split[0]);
+    signalGroupMap[key] = signalGroupMap[key] || [];
+    signalGroupMap[key].push(vs);
+  });
+  return signalGroupMap;
+}
+
+function _Settings(props) {
+  var __Settings =
+  /*#__PURE__*/
+  function (_base$react$Component) {
+    _inherits(__Settings, _base$react$Component);
+
+    function __Settings(props) {
+      var _this;
+
+      _classCallCheck(this, __Settings);
+
+      _this = _possibleConstructorReturn(this, _getPrototypeOf(__Settings).call(this, props));
+      _this.state = initState(props);
+      return _this;
+    }
+
+    _createClass(__Settings, [{
+      key: "render",
+      value: function render() {
+        var _this2 = this;
+
+        var props = this.props,
+            state = this.state;
+        if (!props.explorer.viewer || !props.explorer.viewer.vegaSpec) return null;
+        var options = [{
+          key: DataRefType.none,
+          text: _language.strings.selectVegaSpecDataNone,
+          selected: this.state.dataRefType === DataRefType.none,
+          data: DataRefType.none
+        }, !props.dataFile.rawText && {
+          key: DataRefType.url,
+          text: _language.strings.selectVegaSpecDataUrl,
+          selected: this.state.dataRefType === DataRefType.url,
+          data: DataRefType.url
+        }, {
+          key: DataRefType.inline,
+          text: _language.strings.selectVegaSpecDataInline,
+          selected: this.state.dataRefType === DataRefType.inline,
+          data: DataRefType.inline
+        }].filter(Boolean);
+        var signalGroupMap = vegaSignalGroups(props.explorer.viewer.vegaSpec.signals);
+        return _base.base.react.createElement("div", null, _language.strings.signalGroups.map(function (sg) {
+          var vegaSignals = signalGroupMap[sg.prefix];
+
+          if (vegaSignals) {
+            var filteredVegaSignals = vegaSignals.filter(filterSignals);
+
+            if (filteredVegaSignals.length > 0) {
+              return _base.base.react.createElement(_group.Group, {
+                key: sg.prefix,
+                label: sg.label
+              }, filteredVegaSignals.map(function (signal, i) {
+                return _base.base.react.createElement(_signal.Signal, {
+                  key: i,
+                  signal: signal,
+                  explorer: props.explorer,
+                  newViewStateTarget: false
+                });
+              }));
+            }
+          }
+        }), _base.base.react.createElement(_group.Group, {
+          label: _language.strings.labelChartCanvas
+        }, _base.base.react.createElement(_base.base.fluentUI.Toggle, {
+          label: _language.strings.labelShowAxes,
+          defaultChecked: !props.hideAxes,
+          onChange: function onChange(e, checked) {
+            return props.onToggleAxes(!checked);
+          }
+        }), _base.base.react.createElement(_base.base.fluentUI.Toggle, {
+          label: _language.strings.labelShowLegend,
+          defaultChecked: !props.hideLegend,
+          onChange: function onChange(e, checked) {
+            return props.onToggleLegend(!checked);
+          }
+        })), _base.base.react.createElement(_group.Group, {
+          label: _language.strings.labelTools
+        }, _base.base.react.createElement(_base.base.fluentUI.DefaultButton, {
+          text: _language.strings.buttonShowVegaSpec,
+          onClick: function onClick() {
+            return _this2.setState({
+              showVegaDialog: true,
+              spec: serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, _this2.state.dataRefType, props.explorer.viewer.getInsight().transform, _this2.props.scheme)
+            });
+          }
+        })), _base.base.react.createElement(_group.Group, {
+          label: _language.strings.labelSnapshots
+        }, _base.base.react.createElement(_base.base.fluentUI.Slider, {
+          label: _language.strings.labelSnapshotSettingThumbnailWidth,
+          onChange: function onChange(value) {
+            _this2.props.explorer.snapshotThumbWidth = value;
+          },
+          min: 100,
+          max: 800,
+          defaultValue: this.props.explorer.snapshotThumbWidth
+        })), _base.base.react.createElement(_group.Group, {
+          label: _language.strings.labelTransitionDurations
+        }, _base.base.react.createElement(_base.base.fluentUI.Slider, {
+          label: _language.strings.labelTransitionColor,
+          onChange: function onChange(value) {
+            _this2.props.explorer.viewerOptions.transitionDurations.color = value;
+          },
+          min: 0,
+          max: 10000,
+          defaultValue: this.props.explorer.viewerOptions.transitionDurations.color
+        }), _base.base.react.createElement(_base.base.fluentUI.Slider, {
+          label: _language.strings.labelTransitionPosition,
+          onChange: function onChange(value) {
+            _this2.props.explorer.viewerOptions.transitionDurations.position = value;
+          },
+          min: 0,
+          max: 10000,
+          defaultValue: this.props.explorer.viewerOptions.transitionDurations.position
+        }), _base.base.react.createElement(_base.base.fluentUI.Slider, {
+          label: _language.strings.labelTransitionSize,
+          onChange: function onChange(value) {
+            _this2.props.explorer.viewerOptions.transitionDurations.size = value;
+          },
+          min: 0,
+          max: 10000,
+          defaultValue: this.props.explorer.viewerOptions.transitionDurations.size
+        }), _base.base.react.createElement(_base.base.fluentUI.Slider, {
+          label: _language.strings.labelTransitionCamera,
+          onChange: function onChange(value) {
+            _this2.props.explorer.viewerOptions.transitionDurations.view = value;
+          },
+          min: 0,
+          max: 10000,
+          defaultValue: this.props.explorer.viewerOptions.transitionDurations.view
+        })), props.additionalSettings && props.additionalSettings.map(function (g, i) {
+          return _base.base.react.createElement(_group.Group, {
+            key: i,
+            label: g.groupLabel
+          }, g.children);
+        }), _base.base.react.createElement(_group.Group, {
+          label: _language.strings.labelSystem
+        }, _base.base.react.createElement(_base.base.fluentUI.DefaultButton, {
+          text: _language.strings.labelSystemInfo,
+          onClick: function onClick() {
+            return _this2.setState({
+              showSystemDialog: true
+            });
+          }
+        })), _base.base.react.createElement(_dialog.Dialog, {
+          hidden: !state.showVegaDialog,
+          onDismiss: function onDismiss() {
+            return _this2.setState(initState(_this2.props));
+          },
+          minWidth: "80%",
+          title: _language.strings.labelVegaSpec,
+          buttons: [_base.base.react.createElement(_base.base.fluentUI.PrimaryButton, {
+            key: "copy",
+            iconProps: {
+              iconName: 'Copy'
+            },
+            text: _language.strings.buttonCopyToClipboard,
+            onClick: function onClick() {
+              var pre = document.getElementById('sanddance-vega-spec');
+              var range = document.createRange();
+              range.selectNode(pre);
+              var selection = window.getSelection();
+              selection.removeAllRanges();
+              selection.addRange(range);
+              document.execCommand('copy');
+            }
+          }), _base.base.react.createElement(_base.base.fluentUI.DefaultButton, {
+            key: "edit",
+            iconProps: {
+              iconName: 'OpenInNewWindow'
+            },
+            text: _language.strings.buttonLaunchVegaEditor,
+            onClick: function onClick() {
+              window.open('https://vega.github.io/editor/', '_blank');
+            }
+          })]
+        }, _base.base.react.createElement(_dropdown.Dropdown, {
+          label: _language.strings.labelVegaSpecData,
+          options: options,
+          onChange: function onChange(e, o) {
+            return _this2.setState({
+              dataRefType: o.data,
+              spec: serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, o.data, props.explorer.viewer.getInsight().transform, _this2.props.scheme)
+            });
+          }
+        }), _base.base.react.createElement("pre", {
+          id: "sanddance-vega-spec"
+        }, JSON.stringify(this.state.spec, null, 2)), _base.base.react.createElement("div", null, _language.strings.labelVegaSpecNotes)), _base.base.react.createElement(_dialog.Dialog, {
+          hidden: !state.showSystemDialog,
+          onDismiss: function onDismiss() {
+            return _this2.setState(initState(_this2.props));
+          },
+          title: _language.strings.labelSystemInfo
+        }, _base.base.react.createElement("ul", null, this.props.children, _base.base.react.createElement("li", null, "SandDanceExplorer version: ", _version.version), _base.base.react.createElement("li", null, "SandDanceReact version: ", SandDanceReact.version), _base.base.react.createElement("li", null, "SandDance version: ", SandDance.version), _base.base.react.createElement("li", null, "WebGL enabled: ", _canvas.capabilities.webgl ? _language.strings.labelYes : _language.strings.labelNo), _base.base.react.createElement("li", null, "WebGL2 enabled: ", _canvas.capabilities.webgl2 ? _language.strings.labelYes : _language.strings.labelNo))));
+      }
+    }]);
+
+    return __Settings;
+  }(_base.base.react.Component);
+
+  return new __Settings(props);
+}
+
+var Settings = _Settings;
+exports.Settings = Settings;
+},{"@msrvida/sanddance-react":"MjKu","../base":"Vlbn","../canvas":"Dryx","../controls/dialog":"cFWm","../controls/dropdown":"Uyrp","../controls/group":"Q3hf","../controls/signal":"OWDI","../language":"hk5u","../version":"RvaL"}],"dSzJ":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SnapshotEditor = void 0;
+
+var _base = require("../base");
+
+var _dialog = require("../controls/dialog");
+
+var _canvas = require("../canvas");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var _language = require("../language");
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _SnapshotEditor(props) {
+  var __SnapshotEditor =
+  /*#__PURE__*/
+  function (_base$react$Component) {
+    _inherits(__SnapshotEditor, _base$react$Component);
+
+    function __SnapshotEditor(props) {
+      var _this;
+
+      _classCallCheck(this, __SnapshotEditor);
+
+      _this = _possibleConstructorReturn(this, _getPrototypeOf(__SnapshotEditor).call(this, props));
+      _this.state = {
+        showEditFormDialog: false,
+        title: '',
+        description: '',
+        image: null,
+        bgColor: null,
+        insight: null,
+        editIndex: -1
+      };
+      return _this;
+    }
+
+    _createClass(__SnapshotEditor, [{
+      key: "resize",
+      value: function resize(src, thumbWidth) {
+        var _this2 = this;
+
+        if (!src) return;
+        var img = new Image();
+
+        img.onload = function () {
+          var canvas = document.createElement('canvas'),
+              ctx = canvas.getContext('2d');
+          var ratio = img.width / thumbWidth;
+          canvas.height = img.height / ratio;
+          canvas.width = thumbWidth;
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          var image = canvas.toDataURL();
+
+          _this2.setState({
+            image: image
+          });
+        };
+
+        img.src = src;
+      }
+    }, {
+      key: "editSnapshot",
+      value: function editSnapshot(snapshot) {
+        var _this3 = this;
+
+        var editIndex = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
+
+        if (snapshot) {
+          this.setState(Object.assign(Object.assign({
+            showEditFormDialog: true
+          }, snapshot), {
+            editIndex: editIndex
+          }));
+        } else {
+          var signalValues = this.props.explorer.viewer.getSignalValues();
+          this.props.explorer.viewer.deselect().then(function () {
+            var canvas = (0, _canvas.getCanvas)(_this3.props.explorer.viewer);
+            var bgColor = canvas && window.getComputedStyle(canvas).backgroundColor;
+
+            var insight = _sanddanceReact.SandDance.VegaDeckGl.util.clone(_this3.props.explorer.viewer.getInsight());
+
+            delete insight.size;
+            insight.signalValues = signalValues;
+            var title = _this3.props.getTitle && _this3.props.getTitle(insight) || '';
+            var description = _this3.props.getDescription && _this3.props.getDescription(insight) || '';
+
+            _this3.setState({
+              showEditFormDialog: true,
+              bgColor: bgColor,
+              title: title,
+              description: description,
+              insight: insight,
+              image: null,
+              editIndex: editIndex
+            }); //allow deselection to render
+
+
+            setTimeout(function () {
+              _this3.props.explorer.viewer.presenter.canvasToDataURL().then(function (dataUrl) {
+                _this3.resize(dataUrl, _this3.props.explorer.snapshotThumbWidth);
+              });
+            }, 500);
+          });
+        }
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        var _this4 = this;
+
+        return _base.base.react.createElement(_dialog.Dialog, {
+          modalProps: {
+            className: _sanddanceReact.util.classList('sanddance-snapshot-dialog', this.props.theme)
+          },
+          minWidth: "".concat(this.props.explorer.snapshotThumbWidth + 64, "px"),
+          hidden: !this.state.showEditFormDialog,
+          onDismiss: function onDismiss() {
+            return _this4.setState({
+              showEditFormDialog: false
+            });
+          },
+          title: this.state.editIndex >= 0 ? _language.strings.buttonEditSnapshot : _language.strings.buttonCreateSnapshot,
+          buttons: _base.base.react.createElement(_base.base.fluentUI.PrimaryButton, {
+            disabled: !this.state.image || !this.state.title,
+            key: 0,
+            onClick: function onClick(e) {
+              var snapshot = {
+                title: _this4.state.title,
+                description: _this4.state.description,
+                insight: _this4.state.insight,
+                image: _this4.state.image,
+                bgColor: _this4.state.bgColor
+              };
+              _this4.props.modifySnapShot && _this4.props.modifySnapShot(snapshot);
+
+              _this4.props.onWriteSnapshot(snapshot, _this4.state.editIndex);
+
+              _this4.setState({
+                showEditFormDialog: false,
+                title: '',
+                description: '',
+                image: null
+              });
+            },
+            iconProps: {
+              iconName: 'Camera'
+            },
+            text: this.state.editIndex >= 0 ? _language.strings.buttonUpdateSnapshot : _language.strings.buttonCreateSnapshot
+          })
+        }, _base.base.react.createElement(_base.base.fluentUI.TextField, {
+          label: _language.strings.labelSnapshotTitle,
+          onChange: function onChange(e, title) {
+            return _this4.setState({
+              title: title
+            });
+          },
+          value: this.state.title
+        }), _base.base.react.createElement(_base.base.fluentUI.TextField, {
+          label: _language.strings.labelSnapshotDescription,
+          onChange: function onChange(e, description) {
+            return _this4.setState({
+              description: description
+            });
+          },
+          value: this.state.description,
+          multiline: true
+        }), _base.base.react.createElement("div", {
+          className: 'thumbnail'
+        }, !this.state.image && _base.base.react.createElement(_base.base.fluentUI.Spinner, null), this.state.image && _base.base.react.createElement("img", {
+          src: this.state.image,
+          style: {
+            backgroundColor: this.state.bgColor
+          }
+        })), this.props.explorer.viewer && this.props.explorer.viewer.colorContexts && this.props.explorer.viewer.colorContexts.length > 1 && _base.base.react.createElement("div", null, _language.strings.labelColorFilter));
+      }
+    }]);
+
+    return __SnapshotEditor;
+  }(_base.base.react.Component);
+
+  return new __SnapshotEditor(props);
+}
+
+var SnapshotEditor = _SnapshotEditor;
+exports.SnapshotEditor = SnapshotEditor;
+},{"../base":"Vlbn","../controls/dialog":"cFWm","../canvas":"Dryx","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"dQNc":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.IconButton = IconButton;
+
+var _base = require("../base");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function IconButton(props) {
+  return _base.base.react.createElement(_base.base.fluentUI.IconButton, Object.assign({}, props, {
+    styles: {
+      root: {
+        color: props.themePalette.black
+      },
+      rootHovered: {
+        background: 'transparent',
+        color: props.themePalette.themePrimary
+      },
+      rootPressed: {
+        background: 'transparent'
+      },
+      menuIcon: {
+        display: 'none'
+      }
+    },
+    iconProps: {
+      iconName: props.iconName
+    },
+    menuProps: props.menuProps
+  }));
+}
+},{"../base":"Vlbn"}],"oc9r":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Snapshots = void 0;
+
+var _base = require("../base");
+
+var _dialog = require("../controls/dialog");
+
+var _group = require("../controls/group");
+
+var _iconButton = require("../controls/iconButton");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var _language = require("../language");
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _Snapshots(props) {
+  var __Snapshots =
+  /*#__PURE__*/
+  function (_base$react$Component) {
+    _inherits(__Snapshots, _base$react$Component);
+
+    function __Snapshots(props) {
+      var _this;
+
+      _classCallCheck(this, __Snapshots);
+
+      _this = _possibleConstructorReturn(this, _getPrototypeOf(__Snapshots).call(this, props));
+      _this.state = {
+        confirmation: null,
+        title: '',
+        description: '',
+        image: null,
+        bgColor: null,
+        insight: null
+      };
+      return _this;
+    }
+
+    _createClass(__Snapshots, [{
+      key: "render",
+      value: function render() {
+        var _this2 = this;
+
+        var items = [{
+          key: 'clear',
+          text: _language.strings.buttonClearSnapshots,
+          onClick: function onClick() {
+            return _this2.setState({
+              confirmation: {
+                buttonText: _language.strings.buttonClearSnapshots,
+                handler: function handler() {
+                  return _this2.props.onClearSnapshots();
+                }
+              }
+            });
+          },
+          disabled: this.props.snapshots.length === 0
+        }];
+
+        if (this.props.getTopActions) {
+          items.push.apply(items, this.props.getTopActions(this.props.snapshots));
+        }
+
+        return _base.base.react.createElement(_group.Group, {
+          className: "sanddance-snapshots",
+          label: _language.strings.labelSnapshots
+        }, _base.base.react.createElement("div", null, _base.base.react.createElement(_base.base.fluentUI.PrimaryButton, {
+          text: _language.strings.buttonCreateSnapshot,
+          onClick: function onClick(e) {
+            return _this2.props.editor.editSnapshot();
+          },
+          split: true,
+          menuProps: {
+            items: items
+          }
+        }), this.props.getChildren && this.props.getChildren(this.props.snapshots), this.state.confirmation && _base.base.react.createElement(_dialog.Dialog, {
+          hidden: false,
+          buttons: _base.base.react.createElement(_base.base.fluentUI.PrimaryButton, {
+            key: 0,
+            onClick: function onClick(e) {
+              _this2.setState({
+                confirmation: null
+              });
+
+              _this2.state.confirmation.handler();
+            },
+            iconProps: {
+              iconName: 'Delete'
+            },
+            text: this.state.confirmation.buttonText
+          }),
+          onDismiss: function onDismiss() {
+            return _this2.setState({
+              confirmation: null
+            });
+          }
+        }, _language.strings.labelConfirmation), _base.base.react.createElement("div", null, this.props.snapshots.map(function (snapshot, i) {
+          var actions = _this2.props.getActions && _this2.props.getActions(snapshot, i) || [];
+          actions.push({
+            iconButtonProps: {
+              themePalette: _this2.props.themePalette,
+              title: _language.strings.buttonEditSnapshot,
+              onClick: function onClick(e) {
+                return _this2.props.editor.editSnapshot(snapshot, i);
+              },
+              iconName: 'Edit'
+            }
+          });
+
+          if (_this2.props.snapshots.length > 1) {
+            actions.push({
+              iconButtonProps: {
+                disabled: i === 0,
+                themePalette: _this2.props.themePalette,
+                title: _language.strings.buttonMoveUp,
+                onClick: function onClick(e) {
+                  return _this2.props.onMoveUp(i);
+                },
+                iconName: 'SortUp'
+              }
+            }, {
+              iconButtonProps: {
+                disabled: i > _this2.props.snapshots.length - 2,
+                themePalette: _this2.props.themePalette,
+                title: _language.strings.buttonMoveDown,
+                onClick: function onClick(e) {
+                  return _this2.props.onMoveDown(i);
+                },
+                iconName: 'SortDown'
+              }
+            });
+          }
+
+          actions.push({
+            iconButtonProps: {
+              themePalette: _this2.props.themePalette,
+              title: _language.strings.buttonDeleteSnapshot,
+              onClick: function onClick() {
+                return _this2.setState({
+                  confirmation: {
+                    buttonText: _language.strings.buttonDeleteSnapshot,
+                    handler: function handler() {
+                      return _this2.props.onRemoveSnapshot(i);
+                    }
+                  }
+                });
+              },
+              iconName: 'Delete'
+            }
+          });
+          return _base.base.react.createElement("div", {
+            key: i,
+            className: _sanddanceReact.util.classList('snapshot', i === _this2.props.selectedSnapshotIndex && 'selected')
+          }, _base.base.react.createElement("div", {
+            onClick: function onClick(e) {
+              return _this2.props.onSnapshotClick(snapshot, i);
+            }
+          }, _base.base.react.createElement("div", {
+            className: 'title'
+          }, snapshot.title), _base.base.react.createElement("div", {
+            className: 'thumbnail'
+          }, _base.base.react.createElement("img", {
+            title: snapshot.description,
+            src: snapshot.image,
+            style: {
+              backgroundColor: snapshot.bgColor
+            }
+          }))), _base.base.react.createElement(Actions, {
+            actions: actions,
+            snapshot: snapshot
+          }));
+        }))));
+      }
+    }]);
+
+    return __Snapshots;
+  }(_base.base.react.Component);
+
+  return new __Snapshots(props);
+}
+
+var Snapshots = _Snapshots;
+exports.Snapshots = Snapshots;
+
+function Actions(props) {
+  return _base.base.react.createElement("div", {
+    className: "actions"
+  }, props.actions.map(function (action, i) {
+    if (action.iconButtonProps) {
+      return _base.base.react.createElement(_iconButton.IconButton, Object.assign({
+        key: i
+      }, action.iconButtonProps));
+    }
+
+    if (action.element) {
+      return action.element;
+    }
+  }));
+}
+},{"../base":"Vlbn","../controls/dialog":"cFWm","../controls/group":"Q3hf","../controls/iconButton":"dQNc","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"E67y":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.applyColorButtons = applyColorButtons;
+
+var _base = require("./base");
+
+var _iconButton = require("./controls/iconButton");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var _language = require("./language");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+var className = 'sanddance-panel-tools';
+
+function ensureToolbar(panel) {
+  var existing = panel.getElementsByClassName(className);
+
+  if (existing.length > 0) {
+    return existing[0];
+  } else {
+    var div = _sanddanceReact.SandDance.VegaDeckGl.util.addDiv(panel, className);
+
+    panel.insertAdjacentElement('afterbegin', div);
+    return div;
+  }
+}
+
+function applyColorButtons(presenter, showLegend, props) {
+  var panel = presenter.getElement(_sanddanceReact.SandDance.VegaDeckGl.PresenterElement.panel);
+  var div = ensureToolbar(panel);
+
+  _base.base.reactDOM.render(ColorMap(props), div);
+
+  panel.style.display = showLegend ? '' : 'none';
+}
+
+function ColorMap(props) {
+  var menuProps = {
+    items: [{
+      key: 'new',
+      text: _language.strings.buttonColorSchemeRemap,
+      disabled: !props.canRemap || props.isRemap,
+      onClick: function onClick() {
+        return props.colorMapHandler(true);
+      }
+    }, {
+      key: 'old',
+      text: _language.strings.buttonColorSchemeKeep,
+      disabled: !props.canRemap || !props.isRemap,
+      onClick: function onClick() {
+        return props.colorMapHandler(false);
+      }
+    }]
+  };
+  return _base.base.react.createElement("div", null, _base.base.react.createElement(_iconButton.IconButton, {
+    themePalette: props.themePalette,
+    title: _language.strings.buttonColorSchemeMap,
+    onClick: null,
+    iconName: props.canRemap ? 'FiltersSolid' : 'Filters',
+    menuProps: menuProps
+  }));
+}
+},{"./base":"Vlbn","./controls/iconButton":"dQNc","@msrvida/sanddance-react":"MjKu","./language":"hk5u"}],"L8O2":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.bestColorScheme = bestColorScheme;
+
+function bestColorScheme(newColumn, oldColumn, oldScheme) {
+  if (oldColumn && oldColumn.quantitative === newColumn.quantitative && defaultColorScheme(oldColumn) === defaultColorScheme(newColumn)) {
+    return oldScheme;
+  }
+
+  return defaultColorScheme(newColumn);
+}
+
+function defaultColorScheme(c) {
+  if (c.quantitative) {
+    return 'redyellowgreen';
+  } else if (c.stats.distinctValueCount === 2) {
+    return 'dual_redgreen';
+  } else if (c.stats.distinctValueCount <= 10) {
+    return 'category10';
+  }
+
+  return 'category20';
+}
+},{}],"ENdt":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.maxCategoricalColors = 20;
+var Recommender = /** @class */ (function () {
+    function Recommender(columns, data) {
+    }
+    return Recommender;
+}());
+exports.Recommender = Recommender;
+function defaultColorScheme(c) {
+    if (c.quantitative) {
+        return 'redyellowgreen';
+    }
+    else if (c.stats.distinctValueCount === 2) {
+        return 'dual_redgreen';
+    }
+    else if (c.stats.distinctValueCount <= 10) {
+        return 'category10';
+    }
+    return 'category20';
+}
+exports.defaultColorScheme = defaultColorScheme;
+
+},{}],"oxgd":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var recommender_1 = require("./recommender");
+var maxDistinctVal = 20;
+var minDistinctVal = 2;
+var BarChartRecommenderSummary = /** @class */ (function () {
+    function BarChartRecommenderSummary(columns, data) {
+        var score = -1;
+        for (var i = 0; i < columns.length; i++) {
+            var recommendation = new BarChartRecommender(columns[i], data).recommend();
+            if (recommendation.score > score) {
+                this.best = recommendation;
+                score = recommendation.score;
+            }
+            if (score === 1)
+                break;
+        }
+        for (var k = 0; k < columns.length; k++) {
+            var column = columns[k];
+            if (column.name === this.best.columns.x || column.stats.isSequential)
+                continue;
+            if (column.quantitative || (column.stats.distinctValueCount < recommender_1.maxCategoricalColors && column.stats.distinctValueCount > 1)) {
+                this.best.columns.color = this.best.columns.sort = column.name;
+                this.best.scheme = recommender_1.defaultColorScheme(column);
+                if (column.quantitative) {
+                    this.best.colorBin = 'quantile';
+                }
+                break;
+            }
+        }
+    }
+    BarChartRecommenderSummary.prototype.recommend = function () {
+        return this.best;
+    };
+    return BarChartRecommenderSummary;
+}());
+exports.BarChartRecommenderSummary = BarChartRecommenderSummary;
+var BarChartRecommender = /** @class */ (function () {
+    function BarChartRecommender(column, data) {
+        this.score = 0;
+        this.column = column;
+        //the total score for bar chart is 1
+        this.rules = [
+            function (column) {
+                if (column.stats.isSequential)
+                    return false;
+                else if (column.quantitative) {
+                    return true;
+                }
+                else if (!column.quantitative && column.stats.distinctValueCount <= maxDistinctVal && column.stats.distinctValueCount >= minDistinctVal) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        ];
+        for (var i = 0; i < this.rules.length; i++) {
+            if (this.rules[i](column))
+                this.score++;
+        }
+    }
+    BarChartRecommender.prototype.recommend = function () {
+        var rec = {
+            chart: 'barchart',
+            columns: {
+                x: this.column.name
+            },
+            score: this.score,
+            scheme: undefined,
+            view: '2d'
+        };
+        return rec;
+    };
+    return BarChartRecommender;
+}());
+exports.BarChartRecommender = BarChartRecommender;
+
+},{"./recommender":"ENdt"}],"O4ew":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+//TODO: languages other than english
+var longitudeNames = ['lon', 'long', 'longitude'];
+var latitudeNames = ['lat', 'latitude'];
+function isSpec(names, limits, column, data) {
+    var is = false;
+    var cname = column.name.toLowerCase();
+    for (var i = 0; i < names.length; i++) {
+        if (names[i] === cname) {
+            is = true;
+            break;
+        }
+    }
+    if (data) {
+        //TODO: spin through data to see if it is within limits
+    }
+    return is;
+}
+function isLongitude(column, data) {
+    return isSpec(longitudeNames, [-180, 180], column, data);
+}
+exports.isLongitude = isLongitude;
+function isLatitude(column, data) {
+    return isSpec(latitudeNames, [-90, 90], column, data);
+}
+exports.isLatitude = isLatitude;
+function isGeo(column, data) {
+    return isLatitude(column, data) || isLongitude(column, data);
+}
+exports.isGeo = isGeo;
+
+},{}],"iBe2":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var recommender_1 = require("./recommender");
+var geo_1 = require("./geo");
+var ScatterPlotRecommenderSummary = /** @class */ (function () {
+    function ScatterPlotRecommenderSummary(columns, data) {
+        var rec = {
+            chart: 'scatterplot',
+            score: undefined,
+            columns: {},
+            scheme: undefined,
+            view: '2d'
+        };
+        columns.forEach(function (column) {
+            if (!rec.columns.x) {
+                if (column.name.toLowerCase() === 'x') {
+                    return rec.columns.x = column.name;
+                }
+                else if (geo_1.isLongitude(column)) {
+                    return rec.columns.x = column.name;
+                }
+            }
+            if (!rec.columns.y) {
+                if (column.name.toLowerCase() === 'y') {
+                    return rec.columns.y = column.name;
+                }
+                else if (geo_1.isLatitude(column)) {
+                    return rec.columns.y = column.name;
+                }
+            }
+            if (!rec.columns.color && !column.stats.isSequential) {
+                if (column.quantitative || column.stats.distinctValueCount < recommender_1.maxCategoricalColors) {
+                    rec.columns.color = rec.columns.sort = column.name;
+                    rec.scheme = recommender_1.defaultColorScheme(column);
+                    if (column.quantitative) {
+                        rec.colorBin = 'quantile';
+                    }
+                    return;
+                }
+            }
+        });
+        if (rec.columns.x && rec.columns.y) {
+            this.best = rec;
+        }
+    }
+    ScatterPlotRecommenderSummary.prototype.recommend = function () {
+        return this.best;
+    };
+    return ScatterPlotRecommenderSummary;
+}());
+exports.ScatterPlotRecommenderSummary = ScatterPlotRecommenderSummary;
+
+},{"./recommender":"ENdt","./geo":"O4ew"}],"At4q":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var geo_1 = require("./geo");
+function preferredColumnForTreemapSize(columns, strict) {
+    for (var i = 0; i < columns.length; i++) {
+        var c = columns[i];
+        if (c.quantitative) {
+            if (strict && c.stats.hasNegative)
+                continue;
+            if (strict && c.stats.isSequential)
+                continue;
+            if (strict && geo_1.isGeo(c))
+                continue;
+            return c.name;
+        }
+    }
+}
+exports.preferredColumnForTreemapSize = preferredColumnForTreemapSize;
+
+},{"./geo":"O4ew"}],"fB3P":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var barChart_1 = require("./barChart");
+var scatterPlot_1 = require("./scatterPlot");
+var RecommenderSummary = /** @class */ (function () {
+    function RecommenderSummary(columns, data) {
+        var quickRec = new scatterPlot_1.ScatterPlotRecommenderSummary(columns, data).recommend();
+        if (quickRec) {
+            this.rec = quickRec;
+        }
+        else {
+            var barChartrec = new barChart_1.BarChartRecommenderSummary(columns, data).recommend();
+            if (barChartrec && barChartrec.score >= 1) {
+                this.rec = barChartrec;
+            }
+            else {
+                this.rec = {
+                    chart: 'grid',
+                    columns: {},
+                    score: 1
+                };
+            }
+        }
+    }
+    RecommenderSummary.prototype.recommend = function () {
+        return this.rec;
+    };
+    return RecommenderSummary;
+}());
+exports.RecommenderSummary = RecommenderSummary;
+
+},{"./barChart":"oxgd","./scatterPlot":"iBe2"}],"i6UQ":[function(require,module,exports) {
+"use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+__export(require("./barChart"));
+__export(require("./geo"));
+__export(require("./scatterPlot"));
+__export(require("./treemap"));
+__export(require("./recommenderSummary"));
+
+},{"./barChart":"oxgd","./geo":"O4ew","./scatterPlot":"iBe2","./treemap":"At4q","./recommenderSummary":"fB3P"}],"f8v0":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ensureColumnsExist = ensureColumnsExist;
+exports.ensureColumnsPopulated = ensureColumnsPopulated;
+
+var _chartRecommender = require("@msrvida/chart-recommender");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var _language = require("./language");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function ensureColumnsExist(insightColumns, actualColumns, transform) {
+  var _loop = function _loop(role) {
+    var columnName = insightColumns[role];
+    var column = actualColumns.filter(function (c) {
+      return c.name === columnName;
+    })[0];
+    var transformColumn = transform ? transform.filter(function (t) {
+      switch (t.type) {
+        case 'formula':
+          {
+            return t.as === columnName;
+          }
+      }
+    })[0] : null;
+
+    if (!(column || transformColumn)) {
+      delete insightColumns[role];
+    }
+  };
+
+  //ensure columns exist
+  for (var role in insightColumns) {
+    _loop(role);
+  }
+}
+
+function ensureColumnsPopulated(chart, insightColumns, actualColumns) {
+  //ensure columns are populated
+  var nonInternal = actualColumns.filter(function (c) {
+    return !_sanddanceReact.SandDance.util.isInternalFieldName(c.name);
+  });
+  var firstColumn = nonInternal[0];
+  var firstColumnName = firstColumn && firstColumn.name;
+  var firstQuantitative = nonInternal.filter(function (c) {
+    return c.quantitative;
+  })[0];
+  var firstQuantitativeColumnName = firstQuantitative && firstQuantitative.name;
+
+  var ensureColumn = function ensureColumn(role, quantitative) {
+    if (!insightColumns[role]) {
+      insightColumns[role] = quantitative ? firstQuantitativeColumnName : firstColumnName;
+    }
+  };
+
+  switch (chart) {
+    case 'barchart':
+    case 'barchartV':
+      ensureColumn('x');
+      ensureColumn('size', true);
+      break;
+
+    case 'barchartH':
+      ensureColumn('y');
+      ensureColumn('size', true);
+      break;
+
+    case 'density':
+      ensureColumn('x');
+      ensureColumn('y');
+      ensureColumn('size', true);
+      break;
+
+    case 'scatterplot':
+    case 'stacks':
+      ensureColumn('x');
+      ensureColumn('y');
+      break;
+
+    case 'treemap':
+      if (!insightColumns.size) {
+        insightColumns.size = (0, _chartRecommender.preferredColumnForTreemapSize)(actualColumns, true);
+
+        if (!insightColumns.size) {
+          insightColumns.size = (0, _chartRecommender.preferredColumnForTreemapSize)(actualColumns, false);
+        }
+      }
+
+      if (!insightColumns.size) {
+        //error - no numeric column
+        return [_language.strings.errorColumnMustBeNumeric];
+      }
+
+      break;
+  }
+}
+},{"@msrvida/chart-recommender":"i6UQ","@msrvida/sanddance-react":"MjKu","./language":"hk5u"}],"fiGR":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19101,19 +17805,15 @@ Object.defineProperty(exports, "__esModule", {
 exports.DataScope = DataScope;
 exports.DataScopeId = void 0;
 
-var React = _interopRequireWildcard(require("react"));
-
 var _button = require("./button");
 
-var _d3Format = require("d3-format");
+var _base = require("../base");
 
 var _language = require("../language");
 
 var _sanddanceReact = require("@msrvida/sanddance-react");
 
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var _d3Format = require("d3-format");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -19138,34 +17838,34 @@ function DataScope(props) {
     filtered: -1,
     selected: -1
   }, props.dataCount);
-  return props.compact ? React.createElement("div", {
+  return props.compact ? _base.base.react.createElement("div", {
     className: _sanddanceReact.util.classList('sanddance-datascope', 'compact'),
     onClick: props.onCompactClick
-  }, React.createElement(Compact, Object.assign({}, props, {
+  }, _base.base.react.createElement(Compact, Object.assign({}, props, {
     dataScopeId: DataScopeId.AllData,
     text: _language.strings.selectDataSpanAll,
     count: dataCount.all
-  })), React.createElement(Compact, Object.assign({}, props, {
+  })), _base.base.react.createElement(Compact, Object.assign({}, props, {
     dataScopeId: DataScopeId.FilteredData,
     text: _language.strings.selectDataSpanFilter,
     count: dataCount.filtered
-  })), React.createElement(Compact, Object.assign({}, props, {
+  })), _base.base.react.createElement(Compact, Object.assign({}, props, {
     dataScopeId: DataScopeId.SelectedData,
     text: _language.strings.selectDataSpanSelection,
     count: dataCount.selected
-  }))) : React.createElement("div", {
+  }))) : _base.base.react.createElement("div", {
     className: _sanddanceReact.util.classList('sanddance-datascope', 'extended', props.active && 'active')
-  }, React.createElement("div", null, React.createElement("div", null, props.dataSet), React.createElement("div", {
+  }, _base.base.react.createElement("div", null, _base.base.react.createElement("div", null, props.dataSet), _base.base.react.createElement("div", {
     className: "datascope-buttons"
-  }, React.createElement(DataScopeButton, Object.assign({}, props, {
+  }, _base.base.react.createElement(DataScopeButton, Object.assign({}, props, {
     dataScopeId: DataScopeId.AllData,
     text: _language.strings.selectDataSpanAll,
     count: dataCount.all
-  })), React.createElement(DataScopeButton, Object.assign({}, props, {
+  })), _base.base.react.createElement(DataScopeButton, Object.assign({}, props, {
     dataScopeId: DataScopeId.FilteredData,
     text: _language.strings.selectDataSpanFilter,
     count: dataCount.filtered
-  })), React.createElement(DataScopeButton, Object.assign({}, props, {
+  })), _base.base.react.createElement(DataScopeButton, Object.assign({}, props, {
     dataScopeId: DataScopeId.SelectedData,
     text: _language.strings.selectDataSpanSelection,
     count: dataCount.selected
@@ -19173,7 +17873,7 @@ function DataScope(props) {
 }
 
 function Compact(props) {
-  return React.createElement("div", {
+  return _base.base.react.createElement("div", {
     title: props.text,
     onClick: function onClick() {
       props.onDataScopeClick(props.dataScopeId);
@@ -19182,7 +17882,7 @@ function Compact(props) {
 }
 
 function DataScopeButton(props) {
-  return React.createElement(_button.Button, {
+  return _base.base.react.createElement(_button.Button, {
     themePalette: props.themePalette,
     className: _sanddanceReact.util.classList('datascope-button', props.selectedDataScope === props.dataScopeId && 'selected'),
     disabled: props.disabled,
@@ -19191,1818 +17891,16 @@ function DataScopeButton(props) {
       props.onDataScopeClick(props.dataScopeId);
     },
     onRenderText: function onRenderText() {
-      return React.createElement("div", {
+      return _base.base.react.createElement("div", {
         title: props.count > 0 ? props.count.toString() : ''
-      }, React.createElement("label", null, props.text), React.createElement("div", null, short(props.count)));
+      }, _base.base.react.createElement("label", null, props.text), _base.base.react.createElement("div", null, short(props.count)));
     },
     onRenderIcon: function onRenderIcon() {
       return null;
     }
   });
 }
-},{"react":"mpTF","./button":"eqtW","d3-format":"SA6z","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"pJLc":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.DataBrowser = DataBrowser;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _dataExporter = require("../controls/dataExporter");
-
-var _dataItem = require("../controls/dataItem");
-
-var _dataScope = require("../controls/dataScope");
-
-var _dropdown = require("../controls/dropdown");
-
-var _group = require("../controls/group");
-
-var _iconButton = require("../controls/iconButton");
-
-var _language = require("../language");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function DataBrowser(props) {
-  function activateRecord(newIndex) {
-    props.onActivate(props.data[newIndex], newIndex);
-  }
-
-  var index = props.index;
-  var length = props.data && props.data.length || 0;
-  return React.createElement(_group.Group, {
-    label: _language.strings.labelDataBrowser,
-    className: "sanddance-dataIndex"
-  }, React.createElement(_dropdown.Dropdown, {
-    label: _language.strings.labelDataScope,
-    collapseLabel: true,
-    options: [{
-      key: _dataScope.DataScopeId.AllData,
-      text: _language.strings.selectDataSpanAll,
-      isSelected: props.selectedDataScope === _dataScope.DataScopeId.AllData
-    }, {
-      key: _dataScope.DataScopeId.FilteredData,
-      text: _language.strings.selectDataSpanFilter,
-      isSelected: props.selectedDataScope === _dataScope.DataScopeId.FilteredData
-    }, {
-      key: _dataScope.DataScopeId.SelectedData,
-      text: _language.strings.selectDataSpanSelection,
-      isSelected: props.selectedDataScope === _dataScope.DataScopeId.SelectedData
-    }],
-    onChange: function onChange(e, o) {
-      props.onDataScopeClick(o.key);
-    }
-  }), !props.data && React.createElement("div", {
-    dangerouslySetInnerHTML: {
-      __html: props.nullMessage
-    }
-  }), props.data && !props.data.length && React.createElement("div", null, props.zeroMessage), !!length && React.createElement("div", null, React.createElement("div", {
-    className: "index"
-  }, React.createElement(_iconButton.IconButton, {
-    themePalette: props.themePalette,
-    iconName: "ChevronLeftMed",
-    onClick: function onClick(e) {
-      return activateRecord(index <= 0 ? length - 1 : index - 1);
-    },
-    disabled: props.disabled || length === 1,
-    title: _language.strings.buttonPrevDataItem
-  }), React.createElement("span", null, _language.strings.record(index + 1, length)), React.createElement(_iconButton.IconButton, {
-    themePalette: props.themePalette,
-    iconName: "ChevronRightMed",
-    onClick: function onClick(e) {
-      return activateRecord(index >= length - 1 ? 0 : index + 1);
-    },
-    disabled: props.disabled || length === 1,
-    title: _language.strings.buttonNextDataItem
-  })), !props.itemVisible && React.createElement("div", {
-    className: "item-filtered"
-  }, _language.strings.labelDataItemIsFiltered), React.createElement(_dataItem.DataItem, {
-    columns: props.columns,
-    item: props.data[index],
-    disabled: props.disabled,
-    onSearch: props.onSearch,
-    bingSearchDisabled: props.bingSearchDisabled
-  })), props.dataExportHandler && props.data && React.createElement(_dataExporter.DataExportPicker, {
-    theme: props.theme,
-    initializer: {
-      fileName: "".concat((0, _dataExporter.removeExtensions)(props.displayName), " (").concat(props.data.length, ")")
-    },
-    data: props.data,
-    dataExportHandler: props.dataExportHandler,
-    disabled: props.disabled
-  }));
-}
-},{"react":"mpTF","../controls/dataExporter":"l7po","../controls/dataItem":"Gai8","../controls/dataScope":"OsNT","../controls/dropdown":"Uyrp","../controls/group":"Q3hf","../controls/iconButton":"dQNc","../language":"hk5u"}],"Tl9z":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.snapshotThumbWidth = exports.defaultViewerOptions = exports.fontFamily = void 0;
-
-var _themes = require("./themes");
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var fontFamily = 'Segoe UI, sans-serif';
-exports.fontFamily = fontFamily;
-var defaultViewerOptions = {
-  colors: (0, _themes.getColorSettingsFromThemePalette)(_themes.themePalettes['']),
-  fontFamily: fontFamily
-};
-exports.defaultViewerOptions = defaultViewerOptions;
-var snapshotThumbWidth = 300;
-exports.snapshotThumbWidth = snapshotThumbWidth;
-},{"./themes":"CgE3"}],"ENdt":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.maxCategoricalColors = 20;
-var Recommender = /** @class */ (function () {
-    function Recommender(columns, data) {
-    }
-    return Recommender;
-}());
-exports.Recommender = Recommender;
-function defaultColorScheme(c) {
-    if (c.quantitative) {
-        return 'redyellowgreen';
-    }
-    else if (c.stats.distinctValueCount === 2) {
-        return 'dual_redgreen';
-    }
-    else if (c.stats.distinctValueCount <= 10) {
-        return 'category10';
-    }
-    return 'category20';
-}
-exports.defaultColorScheme = defaultColorScheme;
-
-},{}],"oxgd":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var recommender_1 = require("./recommender");
-var maxDistinctVal = 20;
-var minDistinctVal = 2;
-var BarChartRecommenderSummary = /** @class */ (function () {
-    function BarChartRecommenderSummary(columns, data) {
-        var score = -1;
-        for (var i = 0; i < columns.length; i++) {
-            var recommendation = new BarChartRecommender(columns[i], data).recommend();
-            if (recommendation.score > score) {
-                this.best = recommendation;
-                score = recommendation.score;
-            }
-            if (score === 1)
-                break;
-        }
-        for (var k = 0; k < columns.length; k++) {
-            var column = columns[k];
-            if (column.name === this.best.columns.x || column.stats.isSequential)
-                continue;
-            if (column.quantitative || (column.stats.distinctValueCount < recommender_1.maxCategoricalColors && column.stats.distinctValueCount > 1)) {
-                this.best.columns.color = this.best.columns.sort = column.name;
-                this.best.scheme = recommender_1.defaultColorScheme(column);
-                if (column.quantitative) {
-                    this.best.colorBin = 'quantile';
-                }
-                break;
-            }
-        }
-    }
-    BarChartRecommenderSummary.prototype.recommend = function () {
-        return this.best;
-    };
-    return BarChartRecommenderSummary;
-}());
-exports.BarChartRecommenderSummary = BarChartRecommenderSummary;
-var BarChartRecommender = /** @class */ (function () {
-    function BarChartRecommender(column, data) {
-        this.score = 0;
-        this.column = column;
-        //the total score for bar chart is 1
-        this.rules = [
-            function (column) {
-                if (column.stats.isSequential)
-                    return false;
-                else if (column.quantitative) {
-                    return true;
-                }
-                else if (!column.quantitative && column.stats.distinctValueCount <= maxDistinctVal && column.stats.distinctValueCount >= minDistinctVal) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-        ];
-        for (var i = 0; i < this.rules.length; i++) {
-            if (this.rules[i](column))
-                this.score++;
-        }
-    }
-    BarChartRecommender.prototype.recommend = function () {
-        var rec = {
-            chart: 'barchart',
-            columns: {
-                x: this.column.name
-            },
-            score: this.score,
-            scheme: undefined,
-            view: '2d'
-        };
-        return rec;
-    };
-    return BarChartRecommender;
-}());
-exports.BarChartRecommender = BarChartRecommender;
-
-},{"./recommender":"ENdt"}],"O4ew":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-//TODO: languages other than english
-var longitudeNames = ['lon', 'long', 'longitude'];
-var latitudeNames = ['lat', 'latitude'];
-function isSpec(names, limits, column, data) {
-    var is = false;
-    var cname = column.name.toLowerCase();
-    for (var i = 0; i < names.length; i++) {
-        if (names[i] === cname) {
-            is = true;
-            break;
-        }
-    }
-    if (data) {
-        //TODO: spin through data to see if it is within limits
-    }
-    return is;
-}
-function isLongitude(column, data) {
-    return isSpec(longitudeNames, [-180, 180], column, data);
-}
-exports.isLongitude = isLongitude;
-function isLatitude(column, data) {
-    return isSpec(latitudeNames, [-90, 90], column, data);
-}
-exports.isLatitude = isLatitude;
-function isGeo(column, data) {
-    return isLatitude(column, data) || isLongitude(column, data);
-}
-exports.isGeo = isGeo;
-
-},{}],"iBe2":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var recommender_1 = require("./recommender");
-var geo_1 = require("./geo");
-var ScatterPlotRecommenderSummary = /** @class */ (function () {
-    function ScatterPlotRecommenderSummary(columns, data) {
-        var rec = {
-            chart: 'scatterplot',
-            score: undefined,
-            columns: {},
-            scheme: undefined,
-            view: '2d'
-        };
-        columns.forEach(function (column) {
-            if (!rec.columns.x) {
-                if (column.name.toLowerCase() === 'x') {
-                    return rec.columns.x = column.name;
-                }
-                else if (geo_1.isLongitude(column)) {
-                    return rec.columns.x = column.name;
-                }
-            }
-            if (!rec.columns.y) {
-                if (column.name.toLowerCase() === 'y') {
-                    return rec.columns.y = column.name;
-                }
-                else if (geo_1.isLatitude(column)) {
-                    return rec.columns.y = column.name;
-                }
-            }
-            if (!rec.columns.color && !column.stats.isSequential) {
-                if (column.quantitative || column.stats.distinctValueCount < recommender_1.maxCategoricalColors) {
-                    rec.columns.color = rec.columns.sort = column.name;
-                    rec.scheme = recommender_1.defaultColorScheme(column);
-                    if (column.quantitative) {
-                        rec.colorBin = 'quantile';
-                    }
-                    return;
-                }
-            }
-        });
-        if (rec.columns.x && rec.columns.y) {
-            this.best = rec;
-        }
-    }
-    ScatterPlotRecommenderSummary.prototype.recommend = function () {
-        return this.best;
-    };
-    return ScatterPlotRecommenderSummary;
-}());
-exports.ScatterPlotRecommenderSummary = ScatterPlotRecommenderSummary;
-
-},{"./recommender":"ENdt","./geo":"O4ew"}],"At4q":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var geo_1 = require("./geo");
-function preferredColumnForTreemapSize(columns, strict) {
-    for (var i = 0; i < columns.length; i++) {
-        var c = columns[i];
-        if (c.quantitative) {
-            if (strict && c.stats.hasNegative)
-                continue;
-            if (strict && c.stats.isSequential)
-                continue;
-            if (strict && geo_1.isGeo(c))
-                continue;
-            return c.name;
-        }
-    }
-}
-exports.preferredColumnForTreemapSize = preferredColumnForTreemapSize;
-
-},{"./geo":"O4ew"}],"fB3P":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var barChart_1 = require("./barChart");
-var scatterPlot_1 = require("./scatterPlot");
-var RecommenderSummary = /** @class */ (function () {
-    function RecommenderSummary(columns, data) {
-        var quickRec = new scatterPlot_1.ScatterPlotRecommenderSummary(columns, data).recommend();
-        if (quickRec) {
-            this.rec = quickRec;
-        }
-        else {
-            var barChartrec = new barChart_1.BarChartRecommenderSummary(columns, data).recommend();
-            if (barChartrec && barChartrec.score >= 1) {
-                this.rec = barChartrec;
-            }
-            else {
-                this.rec = {
-                    chart: 'grid',
-                    columns: {},
-                    score: 1
-                };
-            }
-        }
-    }
-    RecommenderSummary.prototype.recommend = function () {
-        return this.rec;
-    };
-    return RecommenderSummary;
-}());
-exports.RecommenderSummary = RecommenderSummary;
-
-},{"./barChart":"oxgd","./scatterPlot":"iBe2"}],"i6UQ":[function(require,module,exports) {
-"use strict";
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-__export(require("./barChart"));
-__export(require("./geo"));
-__export(require("./scatterPlot"));
-__export(require("./treemap"));
-__export(require("./recommenderSummary"));
-
-},{"./barChart":"oxgd","./geo":"O4ew","./scatterPlot":"iBe2","./treemap":"At4q","./recommenderSummary":"fB3P"}],"f8v0":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.ensureColumnsExist = ensureColumnsExist;
-exports.ensureColumnsPopulated = ensureColumnsPopulated;
-
-var _chartRecommender = require("@msrvida/chart-recommender");
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-var _language = require("./language");
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function ensureColumnsExist(insightColumns, actualColumns, transform) {
-  var _loop = function _loop(role) {
-    var columnName = insightColumns[role];
-    var column = actualColumns.filter(function (c) {
-      return c.name === columnName;
-    })[0];
-    var transformColumn = transform ? transform.filter(function (t) {
-      switch (t.type) {
-        case 'formula':
-          {
-            return t.as === columnName;
-          }
-      }
-    })[0] : null;
-
-    if (!(column || transformColumn)) {
-      delete insightColumns[role];
-    }
-  };
-
-  //ensure columns exist
-  for (var role in insightColumns) {
-    _loop(role);
-  }
-}
-
-function ensureColumnsPopulated(chart, insightColumns, actualColumns) {
-  //ensure columns are populated
-  var nonInternal = actualColumns.filter(function (c) {
-    return !_sanddanceReact.SandDance.util.isInternalFieldName(c.name);
-  });
-  var firstColumn = nonInternal[0];
-  var firstColumnName = firstColumn && firstColumn.name;
-  var firstQuantitative = nonInternal.filter(function (c) {
-    return c.quantitative;
-  })[0];
-  var firstQuantitativeColumnName = firstQuantitative && firstQuantitative.name;
-
-  var ensureColumn = function ensureColumn(role, quantitative) {
-    if (!insightColumns[role]) {
-      insightColumns[role] = quantitative ? firstQuantitativeColumnName : firstColumnName;
-    }
-  };
-
-  switch (chart) {
-    case 'barchart':
-    case 'barchartV':
-      ensureColumn('x');
-      ensureColumn('size', true);
-      break;
-
-    case 'barchartH':
-      ensureColumn('y');
-      ensureColumn('size', true);
-      break;
-
-    case 'density':
-    case 'scatterplot':
-    case 'stacks':
-      ensureColumn('x');
-      ensureColumn('y');
-      break;
-
-    case 'treemap':
-      if (!insightColumns.size) {
-        insightColumns.size = (0, _chartRecommender.preferredColumnForTreemapSize)(actualColumns, true);
-
-        if (!insightColumns.size) {
-          insightColumns.size = (0, _chartRecommender.preferredColumnForTreemapSize)(actualColumns, false);
-        }
-      }
-
-      if (!insightColumns.size) {
-        //error - no numeric column
-        return [_language.strings.errorColumnMustBeNumeric];
-      }
-
-      break;
-  }
-}
-},{"@msrvida/chart-recommender":"i6UQ","@msrvida/sanddance-react":"MjKu","./language":"hk5u"}],"yvMl":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.getPosition = getPosition;
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function hasClientXY(e) {
-  if (e && e.clientX !== undefined && e.clientX !== undefined) {
-    return {
-      top: e.clientY,
-      left: e.clientX
-    };
-  }
-}
-
-function getPosition(e) {
-  var xy = hasClientXY(e);
-
-  if (xy) {
-    return xy;
-  }
-
-  var te = e;
-
-  if (te) {
-    for (var i = 0; i < te.touches.length; i++) {
-      var _xy = hasClientXY(te.touches[i]);
-
-      if (_xy) {
-        return _xy;
-      }
-    }
-  }
-}
-},{}],"xBH3":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.getValidOperators = getValidOperators;
-exports.getText = getText;
-exports.SearchTerm = SearchTerm;
-exports.maxAutocomplete = void 0;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _base = require("../base");
-
-var _dropdown = require("./dropdown");
-
-var _language = require("../language");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-var maxAutocomplete = 100;
-exports.maxAutocomplete = maxAutocomplete;
-
-function getValidOperators(column) {
-  var type = column && column.type;
-
-  switch (type) {
-    case 'boolean':
-      return [['==', _language.strings.searchEQ], ['!=', _language.strings.searchNEQ], ['isnullorEmpty', _language.strings.searchNULL]];
-
-    case 'date':
-    case 'integer':
-    case 'number':
-      return [['==', _language.strings.searchEQ], ['!=', _language.strings.searchNEQ], ['>', _language.strings.searchGT], ['>=', _language.strings.searchGTE], ['<', _language.strings.searchLT], ['<=', _language.strings.searchLTE], ['isnullorEmpty', _language.strings.searchNULL]];
-
-    case 'string':
-    default:
-      return [['==', _language.strings.searchEQ], ['!=', _language.strings.searchNEQ], ['>', _language.strings.searchGT], ['>=', _language.strings.searchGTE], ['<', _language.strings.searchLT], ['<=', _language.strings.searchLTE], ['contains', _language.strings.searchIN], ['starts', _language.strings.searchSW], ['isnullorEmpty', _language.strings.searchNULL]];
-  }
-}
-
-function getExpressionClauses(currClause, disableOR) {
-  var keys = [['&&', _language.strings.searchAND]];
-
-  if (!disableOR) {
-    keys.push(['||', _language.strings.searchOR]);
-  }
-
-  return keys.map(function (key, i) {
-    var _key = _slicedToArray(key, 2),
-        clause = _key[0],
-        text = _key[1];
-
-    var selected = currClause == clause; //deliberate double equal 
-
-    var option = {
-      key: i,
-      text: text,
-      data: clause,
-      selected: selected
-    };
-    return option;
-  });
-}
-
-function getOperators(ex, column) {
-  var anySelected = false;
-  var validOperators = getValidOperators(column);
-  var options = validOperators.map(function (validoperator) {
-    var _validoperator = _slicedToArray(validoperator, 2),
-        op = _validoperator[0],
-        text = _validoperator[1];
-
-    var selected = ex.operator === op;
-    anySelected = anySelected || selected;
-    var option = {
-      key: op,
-      text: text,
-      data: op,
-      selected: selected
-    };
-    return option;
-  });
-
-  if (!anySelected) {
-    options[0].selected = true;
-  }
-
-  return options;
-}
-
-function getDistinctValues(data, columnName) {
-  var distinctMap = {};
-
-  for (var i = 0; i < data.length; i++) {
-    var row = data[i];
-    var value = row[columnName];
-    distinctMap[value] = true;
-  }
-
-  return Object.keys(distinctMap).sort();
-}
-
-function getValues(ex, column, data, autoCompleteDistinctValues) {
-  var stats = column && column.stats;
-
-  if (stats && stats.distinctValueCount < maxAutocomplete) {
-    if (!autoCompleteDistinctValues[column.name]) {
-      autoCompleteDistinctValues[column.name] = getDistinctValues(data, column.name);
-    }
-
-    return autoCompleteDistinctValues[column.name].map(function (v, i) {
-      return {
-        key: i,
-        text: v
-      };
-    });
-  }
-
-  return [];
-}
-
-function getText(ex) {
-  if (ex.operator === 'isnullorEmpty') return '';
-  return typeof ex.value === 'string' ? ex.value : ex.value == null ? '' : ex.value.toString();
-}
-
-function SearchTerm(props) {
-  var ex = props.searchExpression;
-  var possibleValues = getValues(ex, props.column, props.data, props.autoCompleteDistinctValues); //TODO better date handling with calendar picker
-
-  return React.createElement("div", null, props.index > 0 && React.createElement(_dropdown.Dropdown, {
-    collapseLabel: props.collapseLabels,
-    className: "search-field",
-    label: _language.strings.labelSearchClause,
-    dropdownWidth: 120,
-    disabled: !ex.unlocked || props.disableOR,
-    options: getExpressionClauses(ex.clause, props.disableOR),
-    onChange: function onChange(e, o) {
-      return props.onUpdateExpression({
-        clause: o.data
-      }, props.index);
-    }
-  }), React.createElement(_dropdown.Dropdown, {
-    collapseLabel: props.collapseLabels,
-    className: "search-field",
-    label: _language.strings.labelSearchColumn,
-    options: [{
-      key: '',
-      text: _language.strings.selectAny,
-      data: null,
-      selected: ex.name === null
-    }].concat(props.columns.map(function (c, i) {
-      return {
-        key: c.name,
-        text: c.name,
-        data: c,
-        selected: c.name === ex.name
-      };
-    })),
-    onChange: function onChange(e, o) {
-      return props.onUpdateExpression({
-        name: o.data && o.data.name || null
-      }, props.index);
-    }
-  }), React.createElement(_dropdown.Dropdown, {
-    collapseLabel: props.collapseLabels,
-    className: "search-field",
-    label: _language.strings.labelSearchOperator,
-    dropdownWidth: 120,
-    options: getOperators(ex, props.column),
-    onChange: function onChange(e, o) {
-      return props.onUpdateExpression({
-        operator: o.data
-      }, props.index);
-    }
-  }), possibleValues.length > 0 && React.createElement(_base.base.fluentUI.ComboBox, {
-    className: "search-field",
-    label: props.collapseLabels ? null : _language.strings.labelSearchValue,
-    placeholder: _language.strings.labelSearchValuePlaceholder,
-    disabled: ex.operator === 'isnullorEmpty',
-    dropdownWidth: _dropdown.dropdownWidth,
-    allowFreeform: true,
-    autoComplete: "on",
-    errorMessage: ex.errorMessage,
-    text: getText(ex),
-    options: getValues(ex, props.column, props.data, props.autoCompleteDistinctValues),
-    onChange: function onChange(e, o, i, value) {
-      if (o) {
-        value = o.text;
-      }
-
-      props.onUpdateExpression({
-        value: value
-      }, props.index);
-    }
-  }), possibleValues.length === 0 && React.createElement(_base.base.fluentUI.TextField, {
-    className: "search-field",
-    label: props.collapseLabels ? null : _language.strings.labelSearchValue,
-    placeholder: _language.strings.labelSearchValuePlaceholder,
-    disabled: ex.operator === 'isnullorEmpty',
-    errorMessage: ex.errorMessage,
-    value: getText(ex),
-    onChange: function onChange(e, v) {
-      return props.onUpdateExpression({
-        value: v
-      }, props.index);
-    }
-  }));
-}
-},{"react":"mpTF","../base":"Vlbn","./dropdown":"Uyrp","../language":"hk5u"}],"ozxe":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Search = void 0;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _searchTerm = require("../controls/searchTerm");
-
-var _base = require("../base");
-
-var _button = require("../controls/button");
-
-var _dropdown = require("../controls/dropdown");
-
-var _group = require("../controls/group");
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-var _language = require("../language");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-var maxClauses = 5;
-
-function getColumnWithName(columnName, columns) {
-  for (var i = 0; i < columns.length; i++) {
-    if (columns[i].name === columnName) return columns[i];
-  }
-}
-
-function validateExpression(ex) {
-  if (ex.operator === 'isnullorEmpty') {
-    ex.errorMessage = null;
-    return;
-  }
-
-  var s = (0, _searchTerm.getText)(ex);
-
-  if (s.length === 0) {
-    ex.errorMessage = _language.strings.labelRequired;
-  } else {
-    ex.errorMessage = null;
-  }
-}
-
-function clearExpressionValidation(ex) {
-  if (ex.operator === 'isnullorEmpty') {
-    ex.errorMessage = null;
-    return;
-  }
-
-  var s = (0, _searchTerm.getText)(ex);
-
-  if (s.length !== 0) {
-    ex.errorMessage = null;
-  }
-}
-
-function getGroupClauses(currClause, index, disableGroupOR) {
-  var keys;
-
-  if (index === 0) {
-    keys = [[null, _language.strings.searchWHERE]];
-  } else {
-    keys = [['&&', _language.strings.searchAND]];
-
-    if (!disableGroupOR) {
-      keys.push(['||', _language.strings.searchOR]);
-    }
-  }
-
-  return keys.map(function (key, i) {
-    var _key = _slicedToArray(key, 2),
-        clause = _key[0],
-        text = _key[1];
-
-    var selected = currClause == clause; //deliberate double equal 
-
-    var option = {
-      key: i,
-      text: text,
-      data: clause,
-      selected: selected
-    };
-    return option;
-  });
-}
-
-var Search =
-/*#__PURE__*/
-function (_React$Component) {
-  _inherits(Search, _React$Component);
-
-  function Search(props) {
-    var _this;
-
-    _classCallCheck(this, Search);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Search).call(this, props));
-    _this.state = _this.getInitialState(_this.props);
-    return _this;
-  }
-
-  _createClass(Search, [{
-    key: "getInitialState",
-    value: function getInitialState(props) {
-      var initialState = {
-        groups: props.initializer.search || [this.newGroup(0, null)],
-        sortedColumns: _toConsumableArray(props.initializer.columns).sort(function (a, b) {
-          return a.name.localeCompare(b.name);
-        }),
-        initializer: props.initializer
-      };
-      initialState.groups.forEach(function (group) {
-        group.expressions.forEach(function (ex) {
-          return ex.unlocked = group.expressions.length <= 2;
-        });
-      });
-      return initialState;
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate() {
-      if (!_sanddanceReact.util.deepCompare(this.props.initializer, this.state.initializer)) {
-        this.setState(this.getInitialState(this.props));
-      }
-    }
-  }, {
-    key: "validateAndSearch",
-    value: function validateAndSearch() {
-      var _this2 = this;
-
-      var groups = _toConsumableArray(this.state.groups);
-
-      groups.forEach(function (group) {
-        group.expressions.forEach(validateExpression);
-        var errors = group.expressions.reduce(function (p, c) {
-          return p || c.errorMessage;
-        }, '');
-
-        if (errors) {
-          _this2.setState({
-            groups: groups
-          });
-        } else {
-          _this2.props.onSelect(_this2.state.groups);
-        }
-      });
-    }
-  }, {
-    key: "newGroup",
-    value: function newGroup(key, clause) {
-      var group = {
-        key: key,
-        clause: clause,
-        expressions: [this.newExpression(0, null)]
-      };
-      return group;
-    }
-  }, {
-    key: "updateGroup",
-    value: function updateGroup(partialGroup, groupIndex) {
-      var groups = _toConsumableArray(this.state.groups);
-
-      var group = Object.assign(Object.assign({}, groups[groupIndex]), partialGroup);
-      groups[groupIndex] = group;
-      this.setState({
-        groups: groups
-      });
-    }
-  }, {
-    key: "addGroup",
-    value: function addGroup() {
-      var groups = _toConsumableArray(this.state.groups);
-
-      var maxKey = groups.reduce(function (max, p) {
-        return p.key > max ? p.key : max;
-      }, groups[0].key);
-      var newGroup = this.newGroup(maxKey + 1, '&&');
-      groups.push(newGroup);
-      this.setState({
-        groups: groups
-      });
-    }
-  }, {
-    key: "deleteGroup",
-    value: function deleteGroup(groupIndex) {
-      var groups = _toConsumableArray(this.state.groups);
-
-      groups.splice(groupIndex, 1);
-      this.setState({
-        groups: groups
-      });
-    }
-  }, {
-    key: "newExpression",
-    value: function newExpression(key, clause) {
-      var ex = {
-        key: key,
-        clause: clause,
-        name: null,
-        operator: 'contains',
-        value: ''
-      };
-      return ex;
-    }
-  }, {
-    key: "addExpression",
-    value: function addExpression(groupIndex) {
-      var groups = _toConsumableArray(this.state.groups);
-
-      var group = groups[groupIndex];
-      var maxKey = group.expressions.reduce(function (max, p) {
-        return p.key > max ? p.key : max;
-      }, group.expressions[0].key);
-      var newEx = this.newExpression(maxKey + 1, '&&');
-      group.expressions.push(newEx);
-
-      if (group.expressions.length === 2) {
-        newEx.unlocked = true;
-      } else {
-        group.expressions.forEach(function (ex) {
-          return ex.unlocked = false;
-        });
-        newEx.clause = group.expressions[1].clause;
-      }
-
-      this.setState({
-        groups: groups
-      });
-    }
-  }, {
-    key: "updateExpression",
-    value: function updateExpression(partialEx, groupIndex, index) {
-      var groups = _toConsumableArray(this.state.groups);
-
-      var group = groups[groupIndex];
-
-      var ex = _sanddanceReact.SandDance.VegaDeckGl.util.clone(group.expressions[index]);
-
-      if (ex.name !== partialEx.name) {
-        //choose an appropriate operator when switching data type
-        var oldColumn = getColumnWithName(ex.name, this.state.sortedColumns);
-        var newColumn = getColumnWithName(partialEx.name, this.state.sortedColumns);
-        var oldType = oldColumn && oldColumn.type;
-        var newType = newColumn && newColumn.type;
-
-        if (oldType !== newType) {
-          var newOperators = (0, _searchTerm.getValidOperators)(newColumn).map(function (validOperator) {
-            return validOperator[0];
-          }); //see if old operator is compatible
-
-          if (newOperators.indexOf(ex.operator) < 0) {
-            //not compatible, so choose "equal"
-            partialEx.operator = '==';
-          }
-        }
-      }
-
-      Object.assign(ex, partialEx);
-      clearExpressionValidation(ex);
-      group.expressions[index] = ex;
-      this.setState({
-        groups: groups
-      });
-    }
-  }, {
-    key: "deleteExpression",
-    value: function deleteExpression(groupIndex, index) {
-      var groups = _toConsumableArray(this.state.groups);
-
-      var group = groups[groupIndex];
-
-      var expressions = _toConsumableArray(group.expressions);
-
-      expressions.splice(index, 1);
-
-      if (expressions.length === 2) {
-        expressions[1].unlocked = true;
-      }
-
-      group.expressions = expressions;
-      this.setState({
-        groups: groups
-      });
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this3 = this;
-
-      return React.createElement(_group.Group, {
-        className: "sanddance-search",
-        label: _language.strings.labelSearch
-      }, React.createElement("div", null, this.state.groups.map(function (group, groupIndex) {
-        return React.createElement("div", {
-          className: "sanddance-search-group",
-          key: group.key
-        }, React.createElement(_dropdown.Dropdown, {
-          collapseLabel: _this3.props.collapseLabels,
-          className: "search-group-clause",
-          label: _language.strings.labelSearchClause,
-          disabled: groupIndex === 0 || _this3.props.disableGroupOR,
-          dropdownWidth: 120,
-          options: getGroupClauses(group.clause, groupIndex, _this3.props.disableGroupOR),
-          onChange: function onChange(e, o) {
-            return _this3.updateGroup({
-              clause: o.data
-            }, groupIndex);
-          }
-        }), React.createElement("div", null, group.expressions.map(function (ex, i) {
-          return React.createElement("div", {
-            className: "sanddance-search-expression",
-            key: ex.key
-          }, React.createElement(_searchTerm.SearchTerm, {
-            collapseLabels: _this3.props.collapseLabels,
-            onUpdateExpression: function onUpdateExpression(ex, i) {
-              return _this3.updateExpression(ex, groupIndex, i);
-            },
-            autoCompleteDistinctValues: _this3.props.autoCompleteDistinctValues,
-            index: i,
-            columns: _this3.state.sortedColumns,
-            data: _this3.props.data,
-            searchExpression: ex,
-            disableOR: _this3.props.disableExpressionOR,
-            column: getColumnWithName(ex.name, _this3.state.sortedColumns)
-          }), group.expressions.length > 1 && React.createElement(_button.Button, {
-            themePalette: _this3.props.themePalette,
-            className: "search-action",
-            iconName: "Cancel",
-            onClick: function onClick() {
-              return _this3.deleteExpression(groupIndex, i);
-            },
-            text: _language.strings.buttonDeleteExpression
-          }));
-        })), group.expressions.length < maxClauses && React.createElement("div", null, React.createElement(_button.Button, {
-          themePalette: _this3.props.themePalette,
-          className: "search-action",
-          iconName: "Add",
-          onClick: function onClick() {
-            return _this3.addExpression(groupIndex);
-          },
-          text: _language.strings.buttonAddExpression
-        })), _this3.state.groups.length > 1 && React.createElement(_button.Button, {
-          themePalette: _this3.props.themePalette,
-          className: "search-action",
-          iconName: "Cancel",
-          onClick: function onClick() {
-            return _this3.deleteGroup(groupIndex);
-          },
-          text: _language.strings.buttonDeleteExpressionGroup
-        }));
-      }), this.state.groups.length < maxClauses && React.createElement("div", null, React.createElement(_button.Button, {
-        themePalette: this.props.themePalette,
-        className: "search-action search-bottom-action",
-        iconName: "Add",
-        onClick: function onClick() {
-          return _this3.addGroup();
-        },
-        text: _language.strings.buttonAddExpressionGroup
-      }))), React.createElement(_base.base.fluentUI.PrimaryButton, {
-        className: "search-action search-bottom-action",
-        text: _language.strings.buttonSelect,
-        onClick: function onClick() {
-          return _this3.validateAndSearch();
-        }
-      }));
-    }
-  }]);
-
-  return Search;
-}(React.Component);
-
-exports.Search = Search;
-},{"react":"mpTF","../controls/searchTerm":"xBH3","../base":"Vlbn","../controls/button":"eqtW","../controls/dropdown":"Uyrp","../controls/group":"Q3hf","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"f19h":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.loadDataArray = exports.loadDataFile = void 0;
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-var loadDataFile = function loadDataFile(dataFile) {
-  return new Promise(function (resolve, reject) {
-    var vega = _sanddanceReact.SandDance.VegaDeckGl.base.vega;
-    var loader = vega.loader();
-
-    function handleRawText(text) {
-      var data;
-
-      try {
-        data = vega.read(text, {
-          type: dataFile.type,
-          parse: {}
-        });
-      } catch (e) {
-        reject(e);
-      }
-
-      if (data) {
-        loadDataArray(data, dataFile.type).then(function (dc) {
-          if (dataFile.snapshotsUrl) {
-            fetch(dataFile.snapshotsUrl).then(function (response) {
-              return response.json();
-            }).then(function (snapshots) {
-              dc.snapshots = snapshots;
-              resolve(dc);
-            }).catch(reject);
-          } else if (dataFile.snapshots) {
-            dc.snapshots = dataFile.snapshots;
-            resolve(dc);
-          } else {
-            resolve(dc);
-          }
-        }).catch(reject);
-      }
-    }
-
-    if (dataFile.dataUrl) {
-      loader.load(dataFile.dataUrl).then(handleRawText).catch(reject);
-    } else if (dataFile.rawText) {
-      handleRawText(dataFile.rawText);
-    } else {
-      reject('dataFile object must have either dataUrl or rawText property set.');
-    }
-  });
-};
-
-exports.loadDataFile = loadDataFile;
-
-var loadDataArray = function loadDataArray(data, type) {
-  return new Promise(function (resolve, reject) {
-    var parse = type === 'csv' || type === 'tsv';
-
-    if (parse) {
-      //convert empty strings to null so that vega.inferType will get dates
-      data.forEach(function (row) {
-        for (var column in row) {
-          if (row[column] === '') {
-            row[column] = null;
-          }
-        }
-      });
-    }
-
-    var columns = _sanddanceReact.SandDance.util.getColumnsFromData(_sanddanceReact.SandDance.VegaDeckGl.base.vega.inferTypes, data).sort(function (a, b) {
-      return a.name.localeCompare(b.name);
-    });
-
-    if (parse) {
-      var booleanColumns = columns.filter(function (c) {
-        return c.type === 'boolean';
-      });
-      var dateColumns = columns.filter(function (c) {
-        return c.type === 'date';
-      });
-      var numericColumns = columns.filter(function (c) {
-        return c.type === 'integer' || c.type === 'number';
-      });
-      data.forEach(function (obj) {
-        booleanColumns.forEach(function (c) {
-          obj[c.name] = ('' + obj[c.name]).toLowerCase() === 'true';
-        });
-        dateColumns.forEach(function (c) {
-          var input = obj[c.name];
-
-          if (input !== null) {
-            var d = new Date(input);
-            d.input = input;
-            obj[c.name] = d;
-          }
-        });
-        numericColumns.forEach(function (c) {
-          var n = parseFloat(obj[c.name]);
-          obj[c.name] = isNaN(n) ? null : n;
-        });
-      });
-    }
-
-    resolve({
-      data: data,
-      columns: columns
-    });
-  });
-};
-
-exports.loadDataArray = loadDataArray;
-},{"@msrvida/sanddance-react":"MjKu"}],"UUG7":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.onBeforeCreateLayers = onBeforeCreateLayers;
-exports.PositionedColumnMap = void 0;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _columnMap = require("./controls/columnMap");
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function onBeforeCreateLayers(stage, specCapabilities) {
-  var _loop = function _loop(axisName) {
-    specCapabilities.roles.forEach(function (specRole) {
-      if (specRole.role === axisName) {
-        var axes = stage.axes[axisName];
-        axes.forEach(function (axis) {
-          if (axis.title) {
-            var textItem = axis.title;
-            textItem.specRole = specRole;
-          }
-        });
-      }
-    });
-  };
-
-  for (var axisName in stage.axes) {
-    _loop(axisName);
-  }
-}
-
-function px(n) {
-  return n + 'px';
-}
-
-var PositionedColumnMap =
-/*#__PURE__*/
-function (_React$Component) {
-  _inherits(PositionedColumnMap, _React$Component);
-
-  function PositionedColumnMap(props) {
-    var _this;
-
-    _classCallCheck(this, PositionedColumnMap);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(PositionedColumnMap).call(this, props));
-    var left = props.left,
-        top = props.top;
-    _this.state = {
-      left: left,
-      top: top
-    };
-    _this.dropdownRef = React.createRef();
-    return _this;
-  }
-
-  _createClass(PositionedColumnMap, [{
-    key: "focus",
-    value: function focus() {
-      if (!this.focused) {
-        this.focused = true;
-        this.dropdownRef.current.focus(true);
-      }
-    }
-  }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var size = _sanddanceReact.SandDance.VegaDeckGl.util.outerSize(this.div);
-
-      var over = {
-        left: Math.max(0, this.state.left + size.width - this.props.container.offsetWidth),
-        top: Math.max(0, this.state.top + size.height - this.props.container.offsetHeight)
-      };
-
-      if (over.left || over.top) {
-        var _this$state = this.state,
-            left = _this$state.left,
-            top = _this$state.top;
-        left -= over.left;
-        top -= over.top;
-        this.setState({
-          left: left,
-          top: top
-        });
-      } else {
-        this.focus();
-      }
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate() {
-      this.focus();
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this2 = this;
-
-      return React.createElement("div", {
-        ref: function ref(div) {
-          if (div) _this2.div = div;
-        },
-        className: "sanddance-columnMap-absolute",
-        style: {
-          position: 'absolute',
-          left: px(this.state.left),
-          top: px(this.state.top)
-        }
-      }, React.createElement(_columnMap.ColumnMap, Object.assign({}, this.props, {
-        componentRef: this.dropdownRef,
-        hideSignals: true
-      })));
-    }
-  }]);
-
-  return PositionedColumnMap;
-}(React.Component);
-
-exports.PositionedColumnMap = PositionedColumnMap;
-},{"react":"mpTF","./controls/columnMap":"DSho","@msrvida/sanddance-react":"MjKu"}],"RvaL":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.version = void 0;
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var version = '3.0.0-beta.1';
-exports.version = version;
-},{}],"zKGJ":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Settings = void 0;
-
-var React = _interopRequireWildcard(require("react"));
-
-var SandDanceReact = _interopRequireWildcard(require("@msrvida/sanddance-react"));
-
-var _base = require("../base");
-
-var _canvas = require("../canvas");
-
-var _dialog = require("../controls/dialog");
-
-var _dropdown = require("../controls/dropdown");
-
-var _group = require("../controls/group");
-
-var _signal = require("../controls/signal");
-
-var _language = require("../language");
-
-var _version = require("../version");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-var SandDance = SandDanceReact.SandDance;
-var DataRefType;
-
-(function (DataRefType) {
-  DataRefType[DataRefType["none"] = 0] = "none";
-  DataRefType[DataRefType["inline"] = 1] = "inline";
-  DataRefType[DataRefType["url"] = 2] = "url";
-})(DataRefType || (DataRefType = {}));
-
-function filterSignals(signal) {
-  switch (signal.name) {
-    case SandDance.constants.SignalNames.XBins:
-    case SandDance.constants.SignalNames.YBins:
-    case SandDance.constants.SignalNames.FacetBins:
-    case SandDance.constants.SignalNames.FacetVBins:
-    case SandDance.constants.SignalNames.ColorBinCount:
-    case SandDance.constants.SignalNames.ColorReverse:
-    case SandDance.constants.SignalNames.PointScale:
-    case SandDance.constants.SignalNames.TreeMapMethod:
-      return false;
-
-    default:
-      return !!signal.bind;
-  }
-}
-
-function cloneData(vegaSpec) {
-  var data0 = vegaSpec.data[0];
-  var valuesData = data0;
-  var values = valuesData.values;
-  delete valuesData.values;
-  var data = SandDance.VegaDeckGl.util.clone(vegaSpec.data);
-  valuesData.values = values;
-  return {
-    data: data,
-    values: values
-  };
-}
-
-function cloneScales(vegaSpec) {
-  return SandDance.VegaDeckGl.util.clone(vegaSpec.scales);
-}
-
-function serializeSpec(vegaSpec, datafile, dataRefType, transform, scheme) {
-  var scales = cloneScales(vegaSpec);
-  var colorScale = scales.filter(function (scale) {
-    return scale.name === SandDance.constants.ScaleNames.Color;
-  })[0];
-
-  if (scheme.indexOf('dual_') >= 0) {
-    colorScale.range = SandDance.colorSchemes.filter(function (cs) {
-      return cs.scheme === scheme;
-    })[0].colors;
-  }
-
-  var clone = cloneData(vegaSpec);
-  var data0 = clone.data[0];
-
-  if (dataRefType === DataRefType.inline) {
-    var valuesData = data0;
-    valuesData.format = {
-      parse: 'auto',
-      type: 'json'
-    };
-    valuesData.values = clone.values;
-  } else if (dataRefType === DataRefType.none) {
-    var _valuesData = data0;
-    _valuesData.values = [];
-
-    if (transform) {
-      if (_valuesData.transform) {
-        _valuesData.transform.push.apply(_valuesData.transform, transform);
-      } else {
-        _valuesData.transform = transform;
-      }
-    }
-  } else if (dataRefType === DataRefType.url) {
-    var urlData = data0;
-    urlData.url = datafile.dataUrl;
-    urlData.format = {
-      parse: 'auto',
-      type: datafile.type
-    };
-
-    if (transform) {
-      if (urlData.transform) {
-        urlData.transform.push.apply(urlData.transform, transform);
-      } else {
-        urlData.transform = transform;
-      }
-    }
-  }
-
-  return Object.assign(Object.assign({}, vegaSpec), {
-    data: clone.data,
-    scales: scales
-  });
-}
-
-function defaultDataRefType(datafile) {
-  if (datafile.dataUrl) {
-    return DataRefType.url;
-  }
-
-  return DataRefType.none;
-}
-
-function initState(props) {
-  return {
-    showSystemDialog: false,
-    showVegaDialog: false,
-    dataRefType: defaultDataRefType(props.dataFile),
-    spec: null
-  };
-}
-
-function signalGroupKey(key) {
-  for (var i = 0; i < _language.strings.signalGroups.length; i++) {
-    if (_language.strings.signalGroups[i].prefix === key) {
-      return key;
-    }
-  }
-
-  return '*';
-}
-
-function vegaSignalGroups(vegaSignals) {
-  var signalGroupMap = {};
-  vegaSignals.forEach(function (vs) {
-    var split = vs.name.split('_');
-    var key = signalGroupKey(split[0]);
-    signalGroupMap[key] = signalGroupMap[key] || [];
-    signalGroupMap[key].push(vs);
-  });
-  return signalGroupMap;
-}
-
-var Settings =
-/*#__PURE__*/
-function (_React$Component) {
-  _inherits(Settings, _React$Component);
-
-  function Settings(props) {
-    var _this;
-
-    _classCallCheck(this, Settings);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Settings).call(this, props));
-    _this.state = initState(props);
-    return _this;
-  }
-
-  _createClass(Settings, [{
-    key: "render",
-    value: function render() {
-      var _this2 = this;
-
-      var props = this.props,
-          state = this.state;
-      if (!props.explorer.viewer || !props.explorer.viewer.vegaSpec) return null;
-      var options = [{
-        key: DataRefType.none,
-        text: _language.strings.selectVegaSpecDataNone,
-        selected: this.state.dataRefType === DataRefType.none,
-        data: DataRefType.none
-      }, !props.dataFile.rawText && {
-        key: DataRefType.url,
-        text: _language.strings.selectVegaSpecDataUrl,
-        selected: this.state.dataRefType === DataRefType.url,
-        data: DataRefType.url
-      }, {
-        key: DataRefType.inline,
-        text: _language.strings.selectVegaSpecDataInline,
-        selected: this.state.dataRefType === DataRefType.inline,
-        data: DataRefType.inline
-      }].filter(Boolean);
-      var signalGroupMap = vegaSignalGroups(props.explorer.viewer.vegaSpec.signals);
-      return React.createElement("div", null, _language.strings.signalGroups.map(function (sg) {
-        var vegaSignals = signalGroupMap[sg.prefix];
-
-        if (vegaSignals) {
-          var filteredVegaSignals = vegaSignals.filter(filterSignals);
-
-          if (filteredVegaSignals.length > 0) {
-            return React.createElement(_group.Group, {
-              key: sg.prefix,
-              label: sg.label
-            }, filteredVegaSignals.map(function (signal, i) {
-              return React.createElement(_signal.Signal, {
-                key: i,
-                signal: signal,
-                explorer: props.explorer,
-                newViewStateTarget: false
-              });
-            }));
-          }
-        }
-      }), React.createElement(_group.Group, {
-        label: _language.strings.labelChartCanvas
-      }, React.createElement(_base.base.fluentUI.Toggle, {
-        label: _language.strings.labelShowAxes,
-        defaultChecked: !props.hideAxes,
-        onChange: function onChange(e, checked) {
-          return props.onToggleAxes(!checked);
-        }
-      }), React.createElement(_base.base.fluentUI.Toggle, {
-        label: _language.strings.labelShowLegend,
-        defaultChecked: !props.hideLegend,
-        onChange: function onChange(e, checked) {
-          return props.onToggleLegend(!checked);
-        }
-      })), React.createElement(_group.Group, {
-        label: _language.strings.labelTools
-      }, React.createElement(_base.base.fluentUI.DefaultButton, {
-        text: _language.strings.buttonShowVegaSpec,
-        onClick: function onClick() {
-          return _this2.setState({
-            showVegaDialog: true,
-            spec: serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, _this2.state.dataRefType, props.explorer.viewer.getInsight().transform, _this2.props.scheme)
-          });
-        }
-      })), React.createElement(_group.Group, {
-        label: _language.strings.labelSnapshots
-      }, React.createElement(_base.base.fluentUI.Slider, {
-        label: _language.strings.labelSnapshotSettingThumbnailWidth,
-        onChange: function onChange(value) {
-          _this2.props.explorer.snapshotThumbWidth = value;
-        },
-        min: 100,
-        max: 800,
-        defaultValue: this.props.explorer.snapshotThumbWidth
-      })), React.createElement(_group.Group, {
-        label: _language.strings.labelTransitionDurations
-      }, React.createElement(_base.base.fluentUI.Slider, {
-        label: _language.strings.labelTransitionColor,
-        onChange: function onChange(value) {
-          _this2.props.explorer.viewerOptions.transitionDurations.color = value;
-        },
-        min: 0,
-        max: 10000,
-        defaultValue: this.props.explorer.viewerOptions.transitionDurations.color
-      }), React.createElement(_base.base.fluentUI.Slider, {
-        label: _language.strings.labelTransitionPosition,
-        onChange: function onChange(value) {
-          _this2.props.explorer.viewerOptions.transitionDurations.position = value;
-        },
-        min: 0,
-        max: 10000,
-        defaultValue: this.props.explorer.viewerOptions.transitionDurations.position
-      }), React.createElement(_base.base.fluentUI.Slider, {
-        label: _language.strings.labelTransitionSize,
-        onChange: function onChange(value) {
-          _this2.props.explorer.viewerOptions.transitionDurations.size = value;
-        },
-        min: 0,
-        max: 10000,
-        defaultValue: this.props.explorer.viewerOptions.transitionDurations.size
-      }), React.createElement(_base.base.fluentUI.Slider, {
-        label: _language.strings.labelTransitionCamera,
-        onChange: function onChange(value) {
-          _this2.props.explorer.viewerOptions.transitionDurations.view = value;
-        },
-        min: 0,
-        max: 10000,
-        defaultValue: this.props.explorer.viewerOptions.transitionDurations.view
-      })), props.additionalSettings && props.additionalSettings.map(function (g, i) {
-        return React.createElement(_group.Group, {
-          key: i,
-          label: g.groupLabel
-        }, g.children);
-      }), React.createElement(_group.Group, {
-        label: _language.strings.labelSystem
-      }, React.createElement(_base.base.fluentUI.DefaultButton, {
-        text: _language.strings.labelSystemInfo,
-        onClick: function onClick() {
-          return _this2.setState({
-            showSystemDialog: true
-          });
-        }
-      })), React.createElement(_dialog.Dialog, {
-        hidden: !state.showVegaDialog,
-        onDismiss: function onDismiss() {
-          return _this2.setState(initState(_this2.props));
-        },
-        minWidth: "80%",
-        title: _language.strings.labelVegaSpec,
-        buttons: [React.createElement(_base.base.fluentUI.PrimaryButton, {
-          key: "copy",
-          iconProps: {
-            iconName: 'Copy'
-          },
-          text: _language.strings.buttonCopyToClipboard,
-          onClick: function onClick() {
-            var pre = document.getElementById('sanddance-vega-spec');
-            var range = document.createRange();
-            range.selectNode(pre);
-            var selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            document.execCommand('copy');
-          }
-        }), React.createElement(_base.base.fluentUI.DefaultButton, {
-          key: "edit",
-          iconProps: {
-            iconName: 'OpenInNewWindow'
-          },
-          text: _language.strings.buttonLaunchVegaEditor,
-          onClick: function onClick() {
-            window.open('https://vega.github.io/editor/', '_blank');
-          }
-        })]
-      }, React.createElement(_dropdown.Dropdown, {
-        label: _language.strings.labelVegaSpecData,
-        options: options,
-        onChange: function onChange(e, o) {
-          return _this2.setState({
-            dataRefType: o.data,
-            spec: serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, o.data, props.explorer.viewer.getInsight().transform, _this2.props.scheme)
-          });
-        }
-      }), React.createElement("pre", {
-        id: "sanddance-vega-spec"
-      }, JSON.stringify(this.state.spec, null, 2)), React.createElement("div", null, _language.strings.labelVegaSpecNotes)), React.createElement(_dialog.Dialog, {
-        hidden: !state.showSystemDialog,
-        onDismiss: function onDismiss() {
-          return _this2.setState(initState(_this2.props));
-        },
-        title: _language.strings.labelSystemInfo
-      }, React.createElement("ul", null, this.props.children, React.createElement("li", null, "SandDanceExplorer version: ", _version.version), React.createElement("li", null, "SandDanceReact version: ", SandDanceReact.version), React.createElement("li", null, "SandDance version: ", SandDance.version), React.createElement("li", null, "WebGL enabled: ", _canvas.capabilities.webgl ? _language.strings.labelYes : _language.strings.labelNo), React.createElement("li", null, "WebGL2 enabled: ", _canvas.capabilities.webgl2 ? _language.strings.labelYes : _language.strings.labelNo))));
-    }
-  }]);
-
-  return Settings;
-}(React.Component);
-
-exports.Settings = Settings;
-},{"react":"mpTF","@msrvida/sanddance-react":"MjKu","../base":"Vlbn","../canvas":"Dryx","../controls/dialog":"cFWm","../controls/dropdown":"Uyrp","../controls/group":"Q3hf","../controls/signal":"OWDI","../language":"hk5u","../version":"RvaL"}],"GuKX":[function(require,module,exports) {
+},{"./button":"eqtW","../base":"Vlbn","../language":"hk5u","@msrvida/sanddance-react":"MjKu","d3-format":"SA6z"}],"GuKX":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21010,25 +17908,42 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Scrollable = Scrollable;
 
-var React = _interopRequireWildcard(require("react"));
+var _base = require("../base");
 
 var _sanddanceReact = require("@msrvida/sanddance-react");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 function Scrollable(props) {
-  return React.createElement("div", {
+  return _base.base.react.createElement("div", {
     className: _sanddanceReact.util.classList('scrollable-container', props.className),
     role: props.role
-  }, React.createElement("div", {
+  }, _base.base.react.createElement("div", {
     className: "scrollable"
   }, props.children));
 }
-},{"react":"mpTF","@msrvida/sanddance-react":"MjKu"}],"f8Jx":[function(require,module,exports) {
+},{"../base":"Vlbn","@msrvida/sanddance-react":"MjKu"}],"h2T5":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SideTabId = void 0;
+var SideTabId;
+exports.SideTabId = SideTabId;
+
+(function (SideTabId) {
+  SideTabId[SideTabId["ChartType"] = 0] = "ChartType";
+  SideTabId[SideTabId["Data"] = 1] = "Data";
+  SideTabId[SideTabId["Search"] = 2] = "Search";
+  SideTabId[SideTabId["Color"] = 3] = "Color";
+  SideTabId[SideTabId["Snapshots"] = 4] = "Snapshots";
+  SideTabId[SideTabId["History"] = 5] = "History";
+  SideTabId[SideTabId["Settings"] = 6] = "Settings";
+  SideTabId[SideTabId["Pin"] = 7] = "Pin";
+  SideTabId[SideTabId["Collapse"] = 8] = "Collapse";
+})(SideTabId || (exports.SideTabId = SideTabId = {}));
+},{}],"f8Jx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21036,8 +17951,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Sidebar = Sidebar;
 exports.Sidebutton = Sidebutton;
-
-var React = _interopRequireWildcard(require("react"));
 
 var _base = require("../base");
 
@@ -21052,10 +17965,6 @@ var _interfaces = require("../interfaces");
 var _language = require("../language");
 
 var _sanddanceReact = require("@msrvida/sanddance-react");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -21081,55 +17990,59 @@ function Sidebar(props) {
     iconName: 'Camera',
     title: _language.strings.labelSnapshots
   }, {
+    sideTabId: _interfaces.SideTabId.History,
+    iconName: 'History',
+    title: _language.strings.labelHistory
+  }, {
     sideTabId: _interfaces.SideTabId.Settings,
     iconName: 'Settings',
     title: _language.strings.labelChartSettings
   }];
-  return React.createElement("div", {
+  return _base.base.react.createElement("div", {
     className: _sanddanceReact.util.classList('sanddance-sidebar', 'calculator', props.pinned && 'pinned', props.closed && 'closed')
-  }, React.createElement("div", {
+  }, _base.base.react.createElement("div", {
     className: "sidebar-content"
-  }, React.createElement(_dataScope.DataScope, Object.assign({}, props.dataScopeProps)), React.createElement("div", {
+  }, _base.base.react.createElement(_dataScope.DataScope, Object.assign({}, props.dataScopeProps)), _base.base.react.createElement("div", {
     className: "vbuttons",
     role: 'tablist'
-  }, React.createElement("div", {
+  }, _base.base.react.createElement("div", {
     className: "sidebar-dialogs"
   }, sidebuttons.map(function (sidebutton, i) {
-    return React.createElement(Sidebutton, Object.assign({
+    return _base.base.react.createElement(Sidebutton, Object.assign({
       key: i
     }, props, sidebutton, {
       themePalette: props.themePalette
     }));
-  })), !props.hideSidebarControls && React.createElement("div", {
+  })), !props.hideSidebarControls && _base.base.react.createElement("div", {
     className: "sidebar-controls"
-  }, React.createElement(Sidebutton, Object.assign({}, props, {
+  }, _base.base.react.createElement(Sidebutton, Object.assign({}, props, {
     sideTabId: _interfaces.SideTabId.Pin,
     iconName: props.pinned ? 'Pinned' : 'Pin',
     title: props.pinned ? _language.strings.buttonToolbarFloat : _language.strings.buttonToolbarDock
-  })), React.createElement(Sidebutton, Object.assign({}, props, {
+  })), _base.base.react.createElement(Sidebutton, Object.assign({}, props, {
     sideTabId: _interfaces.SideTabId.Collapse,
     iconName: props.closed ? 'DoubleChevronRight12' : 'DoubleChevronLeft12',
     title: props.closed ? _language.strings.buttonToolbarShow : _language.strings.buttonToolbarHide
-  })))), React.createElement(_scrollable.Scrollable, {
+  })))), _base.base.react.createElement(_scrollable.Scrollable, {
     role: 'tabpanel'
-  }, React.createElement("div", {
+  }, _base.base.react.createElement("div", {
     className: "sidetab"
-  }, props.children)), props.calculating && React.createElement("div", {
+  }, props.children)), props.calculating && _base.base.react.createElement("div", {
     className: "calculating"
-  }, React.createElement(_base.base.fluentUI.Spinner, {
+  }, _base.base.react.createElement(_base.base.fluentUI.Spinner, {
     size: _base.base.fluentUI.SpinnerSize.large
   }))));
 }
 
 function Sidebutton(props) {
   var selected = !props.closed && props.selectedSideTab === props.sideTabId;
-  return React.createElement("div", {
+  return _base.base.react.createElement("div", {
     className: _sanddanceReact.util.classList('vbutton', selected && 'selected'),
     role: 'tab',
     "aria-selected": selected
-  }, props.badgeText && React.createElement("div", {
+  }, props.badgeText && _base.base.react.createElement("div", {
     className: "count"
-  }, props.badgeText), React.createElement(_iconButton.IconButton, {
+  }, props.badgeText), _base.base.react.createElement(_iconButton.IconButton, {
     themePalette: props.themePalette,
     className: "vbutton",
     iconName: props.iconName,
@@ -21139,471 +18052,7 @@ function Sidebutton(props) {
     }
   }));
 }
-},{"react":"mpTF","../base":"Vlbn","./dataScope":"OsNT","./iconButton":"dQNc","./scrollable":"GuKX","../interfaces":"h2T5","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"dSzJ":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.SnapshotEditor = void 0;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _base = require("../base");
-
-var _dialog = require("../controls/dialog");
-
-var _canvas = require("../canvas");
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-var _language = require("../language");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-var SnapshotEditor =
-/*#__PURE__*/
-function (_React$Component) {
-  _inherits(SnapshotEditor, _React$Component);
-
-  function SnapshotEditor(props) {
-    var _this;
-
-    _classCallCheck(this, SnapshotEditor);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(SnapshotEditor).call(this, props));
-    _this.state = {
-      showEditFormDialog: false,
-      title: '',
-      description: '',
-      image: null,
-      bgColor: null,
-      insight: null,
-      editIndex: -1
-    };
-    return _this;
-  }
-
-  _createClass(SnapshotEditor, [{
-    key: "resize",
-    value: function resize(src, thumbWidth) {
-      var _this2 = this;
-
-      if (!src) return;
-      var img = new Image();
-
-      img.onload = function () {
-        var canvas = document.createElement('canvas'),
-            ctx = canvas.getContext('2d');
-        var ratio = img.width / thumbWidth;
-        canvas.height = img.height / ratio;
-        canvas.width = thumbWidth;
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        var image = canvas.toDataURL();
-
-        _this2.setState({
-          image: image
-        });
-      };
-
-      img.src = src;
-    }
-  }, {
-    key: "editSnapshot",
-    value: function editSnapshot(snapshot) {
-      var _this3 = this;
-
-      var editIndex = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
-
-      if (snapshot) {
-        this.setState(Object.assign(Object.assign({
-          showEditFormDialog: true
-        }, snapshot), {
-          editIndex: editIndex
-        }));
-      } else {
-        this.props.explorer.viewer.deselect().then(function () {
-          var canvas = (0, _canvas.getCanvas)(_this3.props.explorer.viewer);
-          var bgColor = canvas && window.getComputedStyle(canvas).backgroundColor;
-
-          var insight = _sanddanceReact.SandDance.VegaDeckGl.util.clone(_this3.props.explorer.viewer.getInsight());
-
-          delete insight.size;
-          var title = _this3.props.getTitle && _this3.props.getTitle(insight) || '';
-          var description = _this3.props.getDescription && _this3.props.getDescription(insight) || '';
-
-          _this3.setState({
-            showEditFormDialog: true,
-            bgColor: bgColor,
-            title: title,
-            description: description,
-            insight: insight,
-            image: null,
-            editIndex: editIndex
-          }); //allow deselection to render
-
-
-          setTimeout(function () {
-            _this3.props.explorer.viewer.presenter.canvasToDataURL().then(function (dataUrl) {
-              _this3.resize(dataUrl, _this3.props.explorer.snapshotThumbWidth);
-            });
-          }, 500);
-        });
-      }
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this4 = this;
-
-      return React.createElement(_dialog.Dialog, {
-        modalProps: {
-          className: _sanddanceReact.util.classList('sanddance-snapshot-dialog', this.props.explorer.props.theme)
-        },
-        minWidth: "".concat(this.props.explorer.snapshotThumbWidth + 64, "px"),
-        hidden: !this.state.showEditFormDialog,
-        onDismiss: function onDismiss() {
-          return _this4.setState({
-            showEditFormDialog: false
-          });
-        },
-        title: this.state.editIndex >= 0 ? _language.strings.buttonEditSnapshot : _language.strings.buttonCreateSnapshot,
-        buttons: React.createElement(_base.base.fluentUI.PrimaryButton, {
-          disabled: !this.state.image || !this.state.title,
-          key: 0,
-          onClick: function onClick(e) {
-            var snapshot = {
-              title: _this4.state.title,
-              description: _this4.state.description,
-              insight: _this4.state.insight,
-              image: _this4.state.image,
-              bgColor: _this4.state.bgColor
-            };
-            _this4.props.modifySnapShot && _this4.props.modifySnapShot(snapshot);
-
-            _this4.props.onWriteSnapshot(snapshot, _this4.state.editIndex);
-
-            _this4.setState({
-              showEditFormDialog: false,
-              title: '',
-              description: '',
-              image: null
-            });
-          },
-          text: this.state.editIndex >= 0 ? _language.strings.buttonUpdateSnapshot : _language.strings.buttonCreateSnapshot
-        })
-      }, React.createElement(_base.base.fluentUI.TextField, {
-        label: _language.strings.labelSnapshotTitle,
-        onChange: function onChange(e, title) {
-          return _this4.setState({
-            title: title
-          });
-        },
-        value: this.state.title
-      }), React.createElement(_base.base.fluentUI.TextField, {
-        label: _language.strings.labelSnapshotDescription,
-        onChange: function onChange(e, description) {
-          return _this4.setState({
-            description: description
-          });
-        },
-        value: this.state.description,
-        multiline: true
-      }), React.createElement("div", {
-        className: 'thumbnail'
-      }, !this.state.image && React.createElement(_base.base.fluentUI.Spinner, null), this.state.image && React.createElement("img", {
-        src: this.state.image,
-        style: {
-          backgroundColor: this.state.bgColor
-        }
-      })), this.props.explorer.viewer && this.props.explorer.viewer.colorContexts && this.props.explorer.viewer.colorContexts.length > 1 && React.createElement("div", null, _language.strings.labelColorFilter));
-    }
-  }]);
-
-  return SnapshotEditor;
-}(React.Component);
-
-exports.SnapshotEditor = SnapshotEditor;
-},{"react":"mpTF","../base":"Vlbn","../controls/dialog":"cFWm","../canvas":"Dryx","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"oc9r":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Snapshots = void 0;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _base = require("../base");
-
-var _dialog = require("../controls/dialog");
-
-var _group = require("../controls/group");
-
-var _iconButton = require("../controls/iconButton");
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-var _language = require("../language");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-var Snapshots =
-/*#__PURE__*/
-function (_React$Component) {
-  _inherits(Snapshots, _React$Component);
-
-  function Snapshots(props) {
-    var _this;
-
-    _classCallCheck(this, Snapshots);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Snapshots).call(this, props));
-    _this.state = {
-      confirmation: null,
-      title: '',
-      description: '',
-      image: null,
-      bgColor: null,
-      insight: null
-    };
-    return _this;
-  }
-
-  _createClass(Snapshots, [{
-    key: "render",
-    value: function render() {
-      var _this2 = this;
-
-      var items = [{
-        key: 'clear',
-        text: _language.strings.buttonClearSnapshots,
-        onClick: function onClick() {
-          return _this2.setState({
-            confirmation: {
-              buttonText: _language.strings.buttonClearSnapshots,
-              handler: function handler() {
-                return _this2.props.onClearSnapshots();
-              }
-            }
-          });
-        },
-        disabled: this.props.snapshots.length === 0
-      }];
-
-      if (this.props.getTopActions) {
-        items.push.apply(items, this.props.getTopActions(this.props.snapshots));
-      }
-
-      return React.createElement(_group.Group, {
-        className: "sanddance-snapshots",
-        label: _language.strings.labelSnapshots
-      }, React.createElement("div", null, React.createElement(_base.base.fluentUI.PrimaryButton, {
-        text: _language.strings.buttonCreateSnapshot,
-        onClick: function onClick(e) {
-          return _this2.props.editor.editSnapshot();
-        },
-        split: true,
-        menuProps: {
-          items: items
-        }
-      }), this.props.getChildren && this.props.getChildren(this.props.snapshots), this.state.confirmation && React.createElement(_dialog.Dialog, {
-        hidden: false,
-        buttons: React.createElement(_base.base.fluentUI.PrimaryButton, {
-          key: 0,
-          onClick: function onClick(e) {
-            _this2.setState({
-              confirmation: null
-            });
-
-            _this2.state.confirmation.handler();
-          },
-          text: this.state.confirmation.buttonText
-        }),
-        onDismiss: function onDismiss() {
-          return _this2.setState({
-            confirmation: null
-          });
-        }
-      }, _language.strings.labelConfirmation), React.createElement("div", null, this.props.snapshots.map(function (snapshot, i) {
-        var actions = _this2.props.getActions && _this2.props.getActions(snapshot, i) || [];
-        actions.push({
-          iconButtonProps: {
-            themePalette: _this2.props.themePalette,
-            title: _language.strings.buttonEditSnapshot,
-            onClick: function onClick(e) {
-              return _this2.props.editor.editSnapshot(snapshot, i);
-            },
-            iconName: 'Edit'
-          }
-        });
-
-        if (_this2.props.snapshots.length > 1) {
-          actions.push({
-            iconButtonProps: {
-              disabled: i === 0,
-              themePalette: _this2.props.themePalette,
-              title: _language.strings.buttonMoveUp,
-              onClick: function onClick(e) {
-                return _this2.props.onMoveUp(i);
-              },
-              iconName: 'SortUp'
-            }
-          }, {
-            iconButtonProps: {
-              disabled: i > _this2.props.snapshots.length - 2,
-              themePalette: _this2.props.themePalette,
-              title: _language.strings.buttonMoveDown,
-              onClick: function onClick(e) {
-                return _this2.props.onMoveDown(i);
-              },
-              iconName: 'SortDown'
-            }
-          });
-        }
-
-        actions.push({
-          iconButtonProps: {
-            themePalette: _this2.props.themePalette,
-            title: _language.strings.buttonDeleteSnapshot,
-            onClick: function onClick() {
-              return _this2.setState({
-                confirmation: {
-                  buttonText: _language.strings.buttonDeleteSnapshot,
-                  handler: function handler() {
-                    return _this2.props.onRemoveSnapshot(i);
-                  }
-                }
-              });
-            },
-            iconName: 'Delete'
-          }
-        });
-        return React.createElement("div", {
-          key: i,
-          className: _sanddanceReact.util.classList('snapshot', i === _this2.props.selectedSnapshotIndex && 'selected')
-        }, React.createElement("div", {
-          onClick: function onClick(e) {
-            return _this2.props.onSnapshotClick(snapshot, i);
-          }
-        }, React.createElement("div", {
-          className: 'title'
-        }, snapshot.title), React.createElement("div", {
-          className: 'thumbnail'
-        }, React.createElement("img", {
-          title: snapshot.description,
-          src: snapshot.image,
-          style: {
-            backgroundColor: snapshot.bgColor
-          }
-        }))), React.createElement(Actions, {
-          actions: actions,
-          snapshot: snapshot
-        }));
-      }))));
-    }
-  }]);
-
-  return Snapshots;
-}(React.Component);
-
-exports.Snapshots = Snapshots;
-
-function Actions(props) {
-  return React.createElement("div", {
-    className: "actions"
-  }, props.actions.map(function (action, i) {
-    if (action.iconButtonProps) {
-      return React.createElement(_iconButton.IconButton, Object.assign({
-        key: i
-      }, action.iconButtonProps));
-    }
-
-    if (action.element) {
-      return action.element;
-    }
-  }));
-}
-},{"react":"mpTF","../base":"Vlbn","../controls/dialog":"cFWm","../controls/group":"Q3hf","../controls/iconButton":"dQNc","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"yzxM":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.toggleSearch = toggleSearch;
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function comparableGroup(group) {
-  return Object.assign(Object.assign({}, group), {
-    clause: null
-  });
-}
-
-function compareGroup(a, b) {
-  return _sanddanceReact.SandDance.searchExpression.compareGroup(comparableGroup(a), comparableGroup(b));
-}
-
-function toggleSearch(haystack, needle) {
-  var groups = [];
-  var found = false; //look for item in all
-
-  haystack.forEach(function (group) {
-    if (compareGroup(group, needle)) {
-      //if it exists, don't add it
-      found = true;
-    } else {
-      groups.push(group);
-    }
-  });
-  return {
-    groups: groups,
-    found: found
-  };
-}
-},{"@msrvida/sanddance-react":"MjKu"}],"hH4t":[function(require,module,exports) {
+},{"../base":"Vlbn","./dataScope":"OsNT","./iconButton":"dQNc","./scrollable":"GuKX","../interfaces":"h2T5","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"hH4t":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21707,11 +18156,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Logo = Logo;
 
-var React = _interopRequireWildcard(require("react"));
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var _base = require("../base");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -21723,14 +18168,14 @@ var d = s.split('\n').map(function (row, irow) {
 }).join('\n');
 
 function Logo() {
-  return React.createElement("svg", {
+  return _base.base.react.createElement("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     viewBox: "0 0 16 16"
-  }, React.createElement("path", {
+  }, _base.base.react.createElement("path", {
     d: d
   }));
 }
-},{"react":"mpTF"}],"Afi9":[function(require,module,exports) {
+},{"../base":"Vlbn"}],"Afi9":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21738,21 +18183,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Topbar = Topbar;
 
-var React = _interopRequireWildcard(require("react"));
-
-var _base = require("../base");
-
 var _CommandBarButton = require("./CommandBarButton.styles");
 
 var _logo = require("./logo");
 
-var _sanddanceReact = require("@msrvida/sanddance-react");
+var _base = require("../base");
 
 var _language = require("../language");
 
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var _sanddanceReact = require("@msrvida/sanddance-react");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -21760,6 +18199,22 @@ function Topbar(props) {
   var zeroResults = props.selectionState.selectedData && props.selectionState.selectedData.length === 0;
   var disabled = !props.loaded;
   var items = [{
+    key: 'undo',
+    name: _language.strings.buttonUndo,
+    iconProps: {
+      iconName: 'Undo'
+    },
+    disabled: disabled || props.historyItems.length === 0 || props.historyIndex === 0,
+    onClick: props.undo
+  }, {
+    key: 'redo',
+    name: _language.strings.buttonRedo,
+    iconProps: {
+      iconName: 'Redo'
+    },
+    disabled: disabled || props.historyItems.length <= 1 || props.historyIndex >= props.historyItems.length - 1,
+    onClick: props.redo
+  }, {
     key: 'deselect',
     name: _language.strings.buttonDeselect,
     iconProps: {
@@ -21775,7 +18230,7 @@ function Topbar(props) {
     },
     disabled: disabled || !props.selectionSearch || zeroResults,
     onClick: function onClick() {
-      return props.doFilter(props.selectionSearch);
+      return props.doFilter(props.selectionSearch, _language.strings.labelHistoryFilterIsolate);
     }
   }, {
     key: 'exclude',
@@ -21785,7 +18240,7 @@ function Topbar(props) {
     },
     disabled: disabled || !props.selectionSearch || zeroResults,
     onClick: function onClick() {
-      return props.doFilter(_sanddanceReact.SandDance.searchExpression.invert(props.selectionSearch));
+      return props.doFilter(_sanddanceReact.SandDance.searchExpression.invert(props.selectionSearch), _language.strings.labelHistoryFilterIExclude);
     }
   }, {
     key: 'reset',
@@ -21794,11 +18249,19 @@ function Topbar(props) {
       iconName: 'RemoveFilter'
     },
     disabled: disabled || !props.filter,
-    onClick: props.doUnfilter
+    onClick: function onClick() {
+      return props.doUnfilter(_language.strings.labelHistoryFilterClear);
+    }
   }];
 
   if (props.buttons) {
     items.push.apply(items, props.buttons);
+  }
+
+  if (props.collapseLabels) {
+    items.forEach(function (item) {
+      return item.iconOnly = true;
+    });
   }
 
   var farItems = [{
@@ -21828,9 +18291,9 @@ function Topbar(props) {
   }, {
     key: 'view',
     iconProps: {
-      iconName: props.view === '2d' ? 'Product' : 'Page'
+      iconName: props.view === '2d' ? 'CubeShape' : 'Page'
     },
-    title: props.view === '2d' ? _language.strings.labelViewType3d : _language.strings.lavelViewType2d,
+    title: props.view === '2d' ? _language.strings.labelViewType3d : _language.strings.labelViewType2d,
     onClick: props.onViewClick,
     disabled: !props.loaded
   }, {
@@ -21842,16 +18305,16 @@ function Topbar(props) {
     onClick: props.onHomeClick,
     disabled: !props.loaded
   }];
-  return React.createElement("div", {
+  return _base.base.react.createElement("div", {
     className: "sanddance-explorer-topbar"
-  }, React.createElement("div", {
+  }, _base.base.react.createElement("div", {
     className: "logo"
-  }, React.createElement(_logo.Logo, null), React.createElement("a", {
+  }, _base.base.react.createElement(_logo.Logo, null), _base.base.react.createElement("a", {
     href: props.logoClickUrl || '/',
     target: props.logoClickTarget || '_blank'
-  }, _language.strings.appName)), React.createElement("div", {
+  }, _language.strings.appName)), _base.base.react.createElement("div", {
     className: "sanddance-explorer-commandbar"
-  }, React.createElement(_base.base.fluentUI.Customizer, {
+  }, _base.base.react.createElement(_base.base.fluentUI.Customizer, {
     scopedSettings: {
       CommandBarButton: {
         styles: function styles(buttonProps) {
@@ -21860,7 +18323,7 @@ function Topbar(props) {
         }
       }
     }
-  }, React.createElement(_base.base.fluentUI.CommandBar, {
+  }, _base.base.react.createElement(_base.base.fluentUI.CommandBar, {
     items: items,
     farItems: farItems,
     styles: {
@@ -21873,7 +18336,3620 @@ function Topbar(props) {
     }
   }))));
 }
-},{"react":"mpTF","../base":"Vlbn","./CommandBarButton.styles":"hH4t","./logo":"GBuN","@msrvida/sanddance-react":"MjKu","../language":"hk5u"}],"KeW6":[function(require,module,exports) {
+},{"./CommandBarButton.styles":"hH4t","./logo":"GBuN","../base":"Vlbn","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"f19h":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.loadDataArray = exports.loadDataFile = void 0;
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var loadDataFile = function loadDataFile(dataFile) {
+  return new Promise(function (resolve, reject) {
+    var vega = _sanddanceReact.SandDance.VegaDeckGl.base.vega;
+    var loader = vega.loader();
+
+    function handleRawText(text) {
+      var data;
+
+      try {
+        data = vega.read(text, {
+          type: dataFile.type,
+          parse: {}
+        });
+      } catch (e) {
+        reject(e);
+      }
+
+      if (data) {
+        loadDataArray(data, dataFile.type).then(function (dc) {
+          if (dataFile.snapshotsUrl) {
+            fetch(dataFile.snapshotsUrl).then(function (response) {
+              return response.json();
+            }).then(function (snapshots) {
+              dc.snapshots = snapshots;
+              resolve(dc);
+            }).catch(reject);
+          } else if (dataFile.snapshots) {
+            dc.snapshots = dataFile.snapshots;
+            resolve(dc);
+          } else {
+            resolve(dc);
+          }
+        }).catch(reject);
+      }
+    }
+
+    if (dataFile.dataUrl) {
+      loader.load(dataFile.dataUrl).then(handleRawText).catch(reject);
+    } else if (dataFile.rawText) {
+      handleRawText(dataFile.rawText);
+    } else {
+      reject('dataFile object must have either dataUrl or rawText property set.');
+    }
+  });
+};
+
+exports.loadDataFile = loadDataFile;
+
+var loadDataArray = function loadDataArray(data, type) {
+  return new Promise(function (resolve, reject) {
+    var parse = type === 'csv' || type === 'tsv';
+
+    if (parse) {
+      //convert empty strings to null so that vega.inferType will get dates
+      data.forEach(function (row) {
+        for (var column in row) {
+          if (row[column] === '') {
+            row[column] = null;
+          }
+        }
+      });
+    }
+
+    var columns = _sanddanceReact.SandDance.util.getColumnsFromData(_sanddanceReact.SandDance.VegaDeckGl.base.vega.inferTypes, data).filter(function (c) {
+      return c.name && c.name.trim();
+    }).sort(function (a, b) {
+      return a.name.localeCompare(b.name);
+    });
+
+    if (parse) {
+      var booleanColumns = columns.filter(function (c) {
+        return c.type === 'boolean';
+      });
+      var dateColumns = columns.filter(function (c) {
+        return c.type === 'date';
+      });
+      var numericColumns = columns.filter(function (c) {
+        return c.type === 'integer' || c.type === 'number';
+      });
+      data.forEach(function (obj) {
+        booleanColumns.forEach(function (c) {
+          obj[c.name] = ('' + obj[c.name]).toLowerCase() === 'true';
+        });
+        dateColumns.forEach(function (c) {
+          var input = obj[c.name];
+
+          if (input !== null) {
+            var d = new Date(input);
+            d.input = input;
+            obj[c.name] = d;
+          }
+        });
+        numericColumns.forEach(function (c) {
+          var n = parseFloat(obj[c.name]);
+          obj[c.name] = isNaN(n) ? null : n;
+        });
+      });
+    }
+
+    resolve({
+      data: data,
+      columns: columns
+    });
+  });
+};
+
+exports.loadDataArray = loadDataArray;
+},{"@msrvida/sanddance-react":"MjKu"}],"CgE3":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getColorSettingsFromThemePalette = getColorSettingsFromThemePalette;
+exports.themePalettes = void 0;
+var themePalettes = {};
+exports.themePalettes = themePalettes;
+themePalettes[''] = {
+  themePrimary: '#0078d4',
+  themeLighterAlt: '#eff6fc',
+  themeLighter: '#deecf9',
+  themeLight: '#c7e0f4',
+  themeTertiary: '#71afe5',
+  themeSecondary: '#2b88d8',
+  themeDarkAlt: '#106ebe',
+  themeDark: '#005a9e',
+  themeDarker: '#004578',
+  neutralLighterAlt: '#f8f8f8',
+  neutralLighter: '#f4f4f4',
+  neutralLight: '#eaeaea',
+  neutralQuaternaryAlt: '#dadada',
+  neutralQuaternary: '#d0d0d0',
+  neutralTertiaryAlt: '#c8c8c8',
+  neutralTertiary: '#c2c2c2',
+  neutralSecondary: '#858585',
+  neutralPrimaryAlt: '#4b4b4b',
+  neutralPrimary: '#333333',
+  neutralDark: '#272727',
+  black: '#1d1d1d',
+  white: '#ffffff'
+};
+themePalettes['dark-theme'] = {
+  themePrimary: '#00b4f0',
+  themeLighterAlt: '#00070a',
+  themeLighter: '#001d26',
+  themeLight: '#003648',
+  themeTertiary: '#006c90',
+  themeSecondary: '#009ed3',
+  themeDarkAlt: '#18bbf1',
+  themeDark: '#3ac5f3',
+  themeDarker: '#6cd4f6',
+  neutralLighterAlt: '#0b0b0b',
+  neutralLighter: '#151515',
+  neutralLight: '#252525',
+  neutralQuaternaryAlt: '#2f2f2f',
+  neutralQuaternary: '#373737',
+  neutralTertiaryAlt: '#595959',
+  neutralTertiary: '#929292',
+  neutralSecondary: '#a7a7a7',
+  neutralPrimaryAlt: '#b4b4b4',
+  neutralPrimary: '#cccccc',
+  neutralDark: '#d8d8d8',
+  black: '#f5f5f5',
+  white: '#000000'
+};
+
+function getColorSettingsFromThemePalette(themePalette) {
+  return {
+    axisLine: themePalette.black,
+    axisText: themePalette.black,
+    hoveredCube: themePalette.black,
+    clickableText: themePalette.themeDark,
+    clickableTextHighlight: themePalette.themeSecondary,
+    searchText: themePalette.neutralPrimary,
+    searchTextHighlight: themePalette.neutralPrimaryAlt
+  };
+}
+},{}],"Tl9z":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.snapshotThumbWidth = exports.defaultViewerOptions = exports.fontFamily = void 0;
+
+var _themes = require("./themes");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+var fontFamily = 'Segoe UI, sans-serif';
+exports.fontFamily = fontFamily;
+var defaultViewerOptions = {
+  colors: (0, _themes.getColorSettingsFromThemePalette)(_themes.themePalettes['']),
+  fontFamily: fontFamily
+};
+exports.defaultViewerOptions = defaultViewerOptions;
+var snapshotThumbWidth = 300;
+exports.snapshotThumbWidth = snapshotThumbWidth;
+},{"./themes":"CgE3"}],"BSWy":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.schemeOption = schemeOption;
+exports.schemesJSX = void 0;
+
+function schemeOption(selected, scheme) {
+  return {
+    key: scheme,
+    text: scheme,
+    selected: selected === scheme,
+    scheme: scheme,
+    children: schemesJSX[scheme]
+  };
+}
+
+var schemesJSX = {};
+exports.schemesJSX = schemesJSX;
+},{}],"JrIT":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.categorical = categorical;
+
+var _base = require("../base");
+
+var _scheme = require("./scheme");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+var p8 = "".concat(100 / 8, "%");
+var p9 = "".concat(100 / 9, "%");
+var p10 = "".concat(100 / 10, "%");
+var p12 = "".concat(100 / 12, "%");
+var p20 = "".concat(100 / 20, "%");
+var loaded = false;
+
+function load() {
+  _scheme.schemesJSX['accent'] = _base.base.react.createElement("div", {
+    className: "swatch"
+  }, _base.base.react.createElement("div", {
+    title: "#7fc97f",
+    style: {
+      width: p8,
+      background: 'rgb(127, 201, 127)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#beaed4",
+    style: {
+      width: p8,
+      background: 'rgb(190, 174, 212)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#fdc086",
+    style: {
+      width: p8,
+      background: 'rgb(253, 192, 134)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#ffff99",
+    style: {
+      width: p8,
+      background: 'rgb(255, 255, 153)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#386cb0",
+    style: {
+      width: p8,
+      background: 'rgb(56, 108, 176)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#f0027f",
+    style: {
+      width: p8,
+      background: 'rgb(240, 2, 127)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#bf5b17",
+    style: {
+      width: p8,
+      background: 'rgb(191, 91, 23)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#666666",
+    style: {
+      width: p8,
+      background: 'rgb(102, 102, 102)'
+    }
+  }));
+  _scheme.schemesJSX['category10'] = _base.base.react.createElement("div", {
+    className: "swatch"
+  }, _base.base.react.createElement("div", {
+    title: "#1f77b4",
+    style: {
+      width: p10,
+      background: 'rgb(31, 119, 180)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#ff7f0e",
+    style: {
+      width: p10,
+      background: 'rgb(255, 127, 14)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#2ca02c",
+    style: {
+      width: p10,
+      background: 'rgb(44, 160, 44)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#d62728",
+    style: {
+      width: p10,
+      background: 'rgb(214, 39, 40)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#9467bd",
+    style: {
+      width: p10,
+      background: 'rgb(148, 103, 189)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#8c564b",
+    style: {
+      width: p10,
+      background: 'rgb(140, 86, 75)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#e377c2",
+    style: {
+      width: p10,
+      background: 'rgb(227, 119, 194)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#7f7f7f",
+    style: {
+      width: p10,
+      background: 'rgb(127, 127, 127)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#bcbd22",
+    style: {
+      width: p10,
+      background: 'rgb(188, 189, 34)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#17becf",
+    style: {
+      width: p10,
+      background: 'rgb(23, 190, 207)'
+    }
+  }));
+  _scheme.schemesJSX['category20'] = _base.base.react.createElement("div", {
+    className: "swatch"
+  }, _base.base.react.createElement("div", {
+    title: "#1f77b4",
+    style: {
+      width: p20,
+      background: 'rgb(31, 119, 180)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#aec7e8",
+    style: {
+      width: p20,
+      background: 'rgb(174, 199, 232)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#ff7f0e",
+    style: {
+      width: p20,
+      background: 'rgb(255, 127, 14)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#ffbb78",
+    style: {
+      width: p20,
+      background: 'rgb(255, 187, 120)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#2ca02c",
+    style: {
+      width: p20,
+      background: 'rgb(44, 160, 44)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#98df8a",
+    style: {
+      width: p20,
+      background: 'rgb(152, 223, 138)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#d62728",
+    style: {
+      width: p20,
+      background: 'rgb(214, 39, 40)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#ff9896",
+    style: {
+      width: p20,
+      background: 'rgb(255, 152, 150)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#9467bd",
+    style: {
+      width: p20,
+      background: 'rgb(148, 103, 189)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#c5b0d5",
+    style: {
+      width: p20,
+      background: 'rgb(197, 176, 213)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#8c564b",
+    style: {
+      width: p20,
+      background: 'rgb(140, 86, 75)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#c49c94",
+    style: {
+      width: p20,
+      background: 'rgb(196, 156, 148)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#e377c2",
+    style: {
+      width: p20,
+      background: 'rgb(227, 119, 194)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#f7b6d2",
+    style: {
+      width: p20,
+      background: 'rgb(247, 182, 210)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#7f7f7f",
+    style: {
+      width: p20,
+      background: 'rgb(127, 127, 127)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#c7c7c7",
+    style: {
+      width: p20,
+      background: 'rgb(199, 199, 199)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#bcbd22",
+    style: {
+      width: p20,
+      background: 'rgb(188, 189, 34)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#dbdb8d",
+    style: {
+      width: p20,
+      background: 'rgb(219, 219, 141)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#17becf",
+    style: {
+      width: p20,
+      background: 'rgb(23, 190, 207)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#9edae5",
+    style: {
+      width: p20,
+      background: 'rgb(158, 218, 229)'
+    }
+  }));
+  _scheme.schemesJSX['category20b'] = _base.base.react.createElement("div", {
+    className: "swatch"
+  }, _base.base.react.createElement("div", {
+    title: "#393b79",
+    style: {
+      width: p20,
+      background: 'rgb(57, 59, 121)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#5254a3",
+    style: {
+      width: p20,
+      background: 'rgb(82, 84, 163)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#6b6ecf",
+    style: {
+      width: p20,
+      background: 'rgb(107, 110, 207)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#9c9ede",
+    style: {
+      width: p20,
+      background: 'rgb(156, 158, 222)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#637939",
+    style: {
+      width: p20,
+      background: 'rgb(99, 121, 57)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#8ca252",
+    style: {
+      width: p20,
+      background: 'rgb(140, 162, 82)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#b5cf6b",
+    style: {
+      width: p20,
+      background: 'rgb(181, 207, 107)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#cedb9c",
+    style: {
+      width: p20,
+      background: 'rgb(206, 219, 156)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#8c6d31",
+    style: {
+      width: p20,
+      background: 'rgb(140, 109, 49)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#bd9e39",
+    style: {
+      width: p20,
+      background: 'rgb(189, 158, 57)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#e7ba52",
+    style: {
+      width: p20,
+      background: 'rgb(231, 186, 82)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#e7cb94",
+    style: {
+      width: p20,
+      background: 'rgb(231, 203, 148)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#843c39",
+    style: {
+      width: p20,
+      background: 'rgb(132, 60, 57)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#ad494a",
+    style: {
+      width: p20,
+      background: 'rgb(173, 73, 74)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#d6616b",
+    style: {
+      width: p20,
+      background: 'rgb(214, 97, 107)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#e7969c",
+    style: {
+      width: p20,
+      background: 'rgb(231, 150, 156)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#7b4173",
+    style: {
+      width: p20,
+      background: 'rgb(123, 65, 115)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#a55194",
+    style: {
+      width: p20,
+      background: 'rgb(165, 81, 148)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#ce6dbd",
+    style: {
+      width: p20,
+      background: 'rgb(206, 109, 189)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#de9ed6",
+    style: {
+      width: p20,
+      background: 'rgb(222, 158, 214)'
+    }
+  }));
+  _scheme.schemesJSX['category20c'] = _base.base.react.createElement("div", {
+    className: "swatch"
+  }, _base.base.react.createElement("div", {
+    title: "#3182bd",
+    style: {
+      width: p20,
+      background: 'rgb(49, 130, 189)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#6baed6",
+    style: {
+      width: p20,
+      background: 'rgb(107, 174, 214)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#9ecae1",
+    style: {
+      width: p20,
+      background: 'rgb(158, 202, 225)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#c6dbef",
+    style: {
+      width: p20,
+      background: 'rgb(198, 219, 239)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#e6550d",
+    style: {
+      width: p20,
+      background: 'rgb(230, 85, 13)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#fd8d3c",
+    style: {
+      width: p20,
+      background: 'rgb(253, 141, 60)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#fdae6b",
+    style: {
+      width: p20,
+      background: 'rgb(253, 174, 107)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#fdd0a2",
+    style: {
+      width: p20,
+      background: 'rgb(253, 208, 162)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#31a354",
+    style: {
+      width: p20,
+      background: 'rgb(49, 163, 84)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#74c476",
+    style: {
+      width: p20,
+      background: 'rgb(116, 196, 118)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#a1d99b",
+    style: {
+      width: p20,
+      background: 'rgb(161, 217, 155)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#c7e9c0",
+    style: {
+      width: p20,
+      background: 'rgb(199, 233, 192)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#756bb1",
+    style: {
+      width: p20,
+      background: 'rgb(117, 107, 177)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#9e9ac8",
+    style: {
+      width: p20,
+      background: 'rgb(158, 154, 200)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#bcbddc",
+    style: {
+      width: p20,
+      background: 'rgb(188, 189, 220)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#dadaeb",
+    style: {
+      width: p20,
+      background: 'rgb(218, 218, 235)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#636363",
+    style: {
+      width: p20,
+      background: 'rgb(99, 99, 99)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#969696",
+    style: {
+      width: p20,
+      background: 'rgb(150, 150, 150)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#bdbdbd",
+    style: {
+      width: p20,
+      background: 'rgb(189, 189, 189)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#d9d9d9",
+    style: {
+      width: p20,
+      background: 'rgb(217, 217, 217)'
+    }
+  }));
+  _scheme.schemesJSX['dark2'] = _base.base.react.createElement("div", {
+    className: "swatch"
+  }, _base.base.react.createElement("div", {
+    title: "#1b9e77",
+    style: {
+      width: p8,
+      background: 'rgb(27, 158, 119)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#d95f02",
+    style: {
+      width: p8,
+      background: 'rgb(217, 95, 2)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#7570b3",
+    style: {
+      width: p8,
+      background: 'rgb(117, 112, 179)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#e7298a",
+    style: {
+      width: p8,
+      background: 'rgb(231, 41, 138)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#66a61e",
+    style: {
+      width: p8,
+      background: 'rgb(102, 166, 30)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#e6ab02",
+    style: {
+      width: p8,
+      background: 'rgb(230, 171, 2)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#a6761d",
+    style: {
+      width: p8,
+      background: 'rgb(166, 118, 29)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#666666",
+    style: {
+      width: p8,
+      background: 'rgb(102, 102, 102)'
+    }
+  }));
+  _scheme.schemesJSX['paired'] = _base.base.react.createElement("div", {
+    className: "swatch"
+  }, _base.base.react.createElement("div", {
+    title: "#a6cee3",
+    style: {
+      width: p12,
+      background: 'rgb(166, 206, 227)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#1f78b4",
+    style: {
+      width: p12,
+      background: 'rgb(31, 120, 180)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#b2df8a",
+    style: {
+      width: p12,
+      background: 'rgb(178, 223, 138)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#33a02c",
+    style: {
+      width: p12,
+      background: 'rgb(51, 160, 44)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#fb9a99",
+    style: {
+      width: p12,
+      background: 'rgb(251, 154, 153)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#e31a1c",
+    style: {
+      width: p12,
+      background: 'rgb(227, 26, 28)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#fdbf6f",
+    style: {
+      width: p12,
+      background: 'rgb(253, 191, 111)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#ff7f00",
+    style: {
+      width: p12,
+      background: 'rgb(255, 127, 0)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#cab2d6",
+    style: {
+      width: p12,
+      background: 'rgb(202, 178, 214)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#6a3d9a",
+    style: {
+      width: p12,
+      background: 'rgb(106, 61, 154)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#ffff99",
+    style: {
+      width: p12,
+      background: 'rgb(255, 255, 153)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#b15928",
+    style: {
+      width: p12,
+      background: 'rgb(177, 89, 40)'
+    }
+  }));
+  _scheme.schemesJSX['pastel1'] = _base.base.react.createElement("div", {
+    className: "swatch"
+  }, _base.base.react.createElement("div", {
+    title: "#fbb4ae",
+    style: {
+      width: p9,
+      background: 'rgb(251, 180, 174)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#b3cde3",
+    style: {
+      width: p9,
+      background: 'rgb(179, 205, 227)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#ccebc5",
+    style: {
+      width: p9,
+      background: 'rgb(204, 235, 197)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#decbe4",
+    style: {
+      width: p9,
+      background: 'rgb(222, 203, 228)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#fed9a6",
+    style: {
+      width: p9,
+      background: 'rgb(254, 217, 166)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#ffffcc",
+    style: {
+      width: p9,
+      background: 'rgb(255, 255, 204)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#e5d8bd",
+    style: {
+      width: p9,
+      background: 'rgb(229, 216, 189)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#fddaec",
+    style: {
+      width: p9,
+      background: 'rgb(253, 218, 236)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#f2f2f2",
+    style: {
+      width: p9,
+      background: 'rgb(242, 242, 242)'
+    }
+  }));
+  _scheme.schemesJSX['pastel2'] = _base.base.react.createElement("div", {
+    className: "swatch"
+  }, _base.base.react.createElement("div", {
+    title: "#b3e2cd",
+    style: {
+      width: p8,
+      background: 'rgb(179, 226, 205)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#fdcdac",
+    style: {
+      width: p8,
+      background: 'rgb(253, 205, 172)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#cbd5e8",
+    style: {
+      width: p8,
+      background: 'rgb(203, 213, 232)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#f4cae4",
+    style: {
+      width: p8,
+      background: 'rgb(244, 202, 228)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#e6f5c9",
+    style: {
+      width: p8,
+      background: 'rgb(230, 245, 201)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#fff2ae",
+    style: {
+      width: p8,
+      background: 'rgb(255, 242, 174)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#f1e2cc",
+    style: {
+      width: p8,
+      background: 'rgb(241, 226, 204)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#cccccc",
+    style: {
+      width: p8,
+      background: 'rgb(204, 204, 204)'
+    }
+  }));
+  _scheme.schemesJSX['set1'] = _base.base.react.createElement("div", {
+    className: "swatch"
+  }, _base.base.react.createElement("div", {
+    title: "#e41a1c",
+    style: {
+      width: p9,
+      background: 'rgb(228, 26, 28)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#377eb8",
+    style: {
+      width: p9,
+      background: 'rgb(55, 126, 184)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#4daf4a",
+    style: {
+      width: p9,
+      background: 'rgb(77, 175, 74)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#984ea3",
+    style: {
+      width: p9,
+      background: 'rgb(152, 78, 163)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#ff7f00",
+    style: {
+      width: p9,
+      background: 'rgb(255, 127, 0)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#ffff33",
+    style: {
+      width: p9,
+      background: 'rgb(255, 255, 51)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#a65628",
+    style: {
+      width: p9,
+      background: 'rgb(166, 86, 40)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#f781bf",
+    style: {
+      width: p9,
+      background: 'rgb(247, 129, 191)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#999999",
+    style: {
+      width: p9,
+      background: 'rgb(153, 153, 153)'
+    }
+  }));
+  _scheme.schemesJSX['set2'] = _base.base.react.createElement("div", {
+    className: "swatch"
+  }, _base.base.react.createElement("div", {
+    title: "#66c2a5",
+    style: {
+      width: p8,
+      background: 'rgb(102, 194, 165)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#fc8d62",
+    style: {
+      width: p8,
+      background: 'rgb(252, 141, 98)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#8da0cb",
+    style: {
+      width: p8,
+      background: 'rgb(141, 160, 203)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#e78ac3",
+    style: {
+      width: p8,
+      background: 'rgb(231, 138, 195)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#a6d854",
+    style: {
+      width: p8,
+      background: 'rgb(166, 216, 84)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#ffd92f",
+    style: {
+      width: p8,
+      background: 'rgb(255, 217, 47)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#e5c494",
+    style: {
+      width: p8,
+      background: 'rgb(229, 196, 148)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#b3b3b3",
+    style: {
+      width: p8,
+      background: 'rgb(179, 179, 179)'
+    }
+  }));
+  _scheme.schemesJSX['set3'] = _base.base.react.createElement("div", {
+    className: "swatch"
+  }, _base.base.react.createElement("div", {
+    title: "#8dd3c7",
+    style: {
+      width: p12,
+      background: 'rgb(141, 211, 199)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#ffffb3",
+    style: {
+      width: p12,
+      background: 'rgb(255, 255, 179)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#bebada",
+    style: {
+      width: p12,
+      background: 'rgb(190, 186, 218)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#fb8072",
+    style: {
+      width: p12,
+      background: 'rgb(251, 128, 114)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#80b1d3",
+    style: {
+      width: p12,
+      background: 'rgb(128, 177, 211)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#fdb462",
+    style: {
+      width: p12,
+      background: 'rgb(253, 180, 98)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#b3de69",
+    style: {
+      width: p12,
+      background: 'rgb(179, 222, 105)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#fccde5",
+    style: {
+      width: p12,
+      background: 'rgb(252, 205, 229)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#d9d9d9",
+    style: {
+      width: p12,
+      background: 'rgb(217, 217, 217)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#bc80bd",
+    style: {
+      width: p12,
+      background: 'rgb(188, 128, 189)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#ccebc5",
+    style: {
+      width: p12,
+      background: 'rgb(204, 235, 197)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#ffed6f",
+    style: {
+      width: p12,
+      background: 'rgb(255, 237, 111)'
+    }
+  }));
+  _scheme.schemesJSX['tableau10'] = _base.base.react.createElement("div", {
+    className: "swatch"
+  }, _base.base.react.createElement("div", {
+    title: "#4c78a8",
+    style: {
+      width: p10,
+      background: 'rgb(76, 120, 168)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#f58518",
+    style: {
+      width: p10,
+      background: 'rgb(245, 133, 24)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#e45756",
+    style: {
+      width: p10,
+      background: 'rgb(228, 87, 86)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#72b7b2",
+    style: {
+      width: p10,
+      background: 'rgb(114, 183, 178)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#54a24b",
+    style: {
+      width: p10,
+      background: 'rgb(84, 162, 75)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#eeca3b",
+    style: {
+      width: p10,
+      background: 'rgb(238, 202, 59)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#b279a2",
+    style: {
+      width: p10,
+      background: 'rgb(178, 121, 162)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#ff9da6",
+    style: {
+      width: p10,
+      background: 'rgb(255, 157, 166)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#9d755d",
+    style: {
+      width: p10,
+      background: 'rgb(157, 117, 93)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#bab0ac",
+    style: {
+      width: p10,
+      background: 'rgb(186, 176, 172)'
+    }
+  }));
+  _scheme.schemesJSX['tableau20'] = _base.base.react.createElement("div", {
+    className: "swatch"
+  }, _base.base.react.createElement("div", {
+    title: "#4c78a8",
+    style: {
+      width: p20,
+      background: 'rgb(76, 120, 168)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#9ecae9",
+    style: {
+      width: p20,
+      background: 'rgb(158, 202, 233)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#f58518",
+    style: {
+      width: p20,
+      background: 'rgb(245, 133, 24)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#ffbf79",
+    style: {
+      width: p20,
+      background: 'rgb(255, 191, 121)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#54a24b",
+    style: {
+      width: p20,
+      background: 'rgb(84, 162, 75)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#88d27a",
+    style: {
+      width: p20,
+      background: 'rgb(136, 210, 122)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#b79a20",
+    style: {
+      width: p20,
+      background: 'rgb(183, 154, 32)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#f2cf5b",
+    style: {
+      width: p20,
+      background: 'rgb(242, 207, 91)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#439894",
+    style: {
+      width: p20,
+      background: 'rgb(67, 152, 148)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#83bcb6",
+    style: {
+      width: p20,
+      background: 'rgb(131, 188, 182)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#e45756",
+    style: {
+      width: p20,
+      background: 'rgb(228, 87, 86)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#ff9d98",
+    style: {
+      width: p20,
+      background: 'rgb(255, 157, 152)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#79706e",
+    style: {
+      width: p20,
+      background: 'rgb(121, 112, 110)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#bab0ac",
+    style: {
+      width: p20,
+      background: 'rgb(186, 176, 172)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#d67195",
+    style: {
+      width: p20,
+      background: 'rgb(214, 113, 149)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#fcbfd2",
+    style: {
+      width: p20,
+      background: 'rgb(252, 191, 210)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#b279a2",
+    style: {
+      width: p20,
+      background: 'rgb(178, 121, 162)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#d6a5c9",
+    style: {
+      width: p20,
+      background: 'rgb(214, 165, 201)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#9e765f",
+    style: {
+      width: p20,
+      background: 'rgb(158, 118, 95)'
+    }
+  }), _base.base.react.createElement("div", {
+    title: "#d8b5a5",
+    style: {
+      width: p20,
+      background: 'rgb(216, 181, 165)'
+    }
+  }));
+  loaded = true;
+}
+
+function categorical(selected) {
+  if (!loaded) load();
+  return [(0, _scheme.schemeOption)(selected, 'accent'), (0, _scheme.schemeOption)(selected, 'category10'), (0, _scheme.schemeOption)(selected, 'category20'), (0, _scheme.schemeOption)(selected, 'category20b'), (0, _scheme.schemeOption)(selected, 'category20c'), (0, _scheme.schemeOption)(selected, 'dark2'), (0, _scheme.schemeOption)(selected, 'paired'), (0, _scheme.schemeOption)(selected, 'pastel1'), (0, _scheme.schemeOption)(selected, 'pastel2'), (0, _scheme.schemeOption)(selected, 'set1'), (0, _scheme.schemeOption)(selected, 'set2'), (0, _scheme.schemeOption)(selected, 'set3'), (0, _scheme.schemeOption)(selected, 'tableau10'), (0, _scheme.schemeOption)(selected, 'tableau20')];
+}
+},{"../base":"Vlbn","./scheme":"BSWy"}],"wtjh":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.diverging = diverging;
+
+var _base = require("../base");
+
+var _scheme = require("./scheme");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+var loaded = false;
+
+function load() {
+  _scheme.schemesJSX['blueorange'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-blueorange"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(5, 48, 97)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(34, 101, 163)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(75, 148, 196)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(143, 194, 221)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(205, 227, 238)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(242, 240, 235)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(253, 221, 179)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(248, 182, 100)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(221, 132, 31)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(178, 90, 9)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(127, 59, 8)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-blueorange)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['brownbluegreen'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-brownbluegreen"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(84, 48, 5)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(139, 84, 15)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(188, 132, 53)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(222, 190, 123)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(242, 228, 192)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(238, 241, 234)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(195, 231, 226)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(127, 201, 191)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(57, 152, 143)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(10, 103, 95)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(0, 60, 48)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-brownbluegreen)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['purplegreen'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-purplegreen"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(64, 0, 75)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(115, 47, 128)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(154, 109, 170)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(193, 164, 205)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(228, 210, 230)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(239, 240, 239)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(214, 238, 209)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(162, 215, 158)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(92, 173, 101)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(33, 120, 57)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(0, 68, 27)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-purplegreen)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['pinkyellowgreen'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-pinkyellowgreen"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(142, 1, 82)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(192, 38, 126)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(221, 114, 173)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(240, 179, 214)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(250, 221, 237)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(245, 243, 239)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(225, 242, 202)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(182, 222, 135)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(128, 187, 71)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(79, 145, 37)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(39, 100, 25)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-pinkyellowgreen)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['purpleorange'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-purpleorange"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(45, 0, 75)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(85, 45, 132)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(129, 112, 172)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(176, 170, 208)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(215, 215, 233)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(243, 238, 234)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(253, 221, 179)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(248, 182, 100)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(221, 132, 31)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(178, 90, 9)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(127, 59, 8)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-purpleorange)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['redblue'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-redblue"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(103, 0, 31)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(172, 32, 47)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(213, 96, 80)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(241, 163, 133)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(251, 215, 196)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(242, 239, 238)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(205, 227, 238)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(143, 194, 221)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(75, 148, 196)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(34, 101, 163)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(5, 48, 97)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-redblue)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['redgrey'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-redgrey"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(103, 0, 31)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(172, 32, 47)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(213, 96, 80)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(241, 163, 133)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(252, 216, 197)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(250, 244, 241)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(223, 223, 223)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(184, 184, 184)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(134, 134, 134)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(78, 78, 78)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(26, 26, 26)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-redgrey)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['redyellowblue'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-redyellowblue"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(165, 0, 38)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(212, 50, 44)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(241, 110, 67)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(252, 172, 100)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(254, 221, 144)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(250, 248, 193)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(220, 241, 236)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(171, 214, 232)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(117, 171, 208)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(74, 116, 180)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(49, 54, 149)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-redyellowblue)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['redyellowgreen'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-redyellowgreen"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(165, 0, 38)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(212, 50, 44)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(241, 110, 67)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(252, 172, 99)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(254, 221, 141)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(249, 247, 174)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(215, 238, 142)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(164, 216, 110)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(100, 188, 97)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(34, 150, 79)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(0, 104, 55)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-redyellowgreen)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['spectral'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-spectral"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(158, 1, 66)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(209, 60, 75)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(240, 112, 74)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(252, 172, 99)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(254, 221, 141)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(251, 248, 176)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(224, 243, 161)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(169, 221, 162)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(105, 189, 169)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(66, 136, 181)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(94, 79, 162)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-spectral)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  loaded = true;
+}
+
+function diverging(selected) {
+  if (!loaded) load();
+  return [(0, _scheme.schemeOption)(selected, 'blueorange'), (0, _scheme.schemeOption)(selected, 'brownbluegreen'), (0, _scheme.schemeOption)(selected, 'purplegreen'), (0, _scheme.schemeOption)(selected, 'pinkyellowgreen'), (0, _scheme.schemeOption)(selected, 'purpleorange'), (0, _scheme.schemeOption)(selected, 'redblue'), (0, _scheme.schemeOption)(selected, 'redgrey'), (0, _scheme.schemeOption)(selected, 'redyellowblue'), (0, _scheme.schemeOption)(selected, 'redyellowgreen'), (0, _scheme.schemeOption)(selected, 'spectral')];
+}
+},{"../base":"Vlbn","./scheme":"BSWy"}],"uM5k":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.dual = dual;
+
+var _base = require("../base");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var _scheme = require("./scheme");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+var loaded = false;
+
+function load() {
+  _sanddanceReact.SandDance.colorSchemes.filter(function (cs) {
+    return cs.colors.length === 2;
+  }).map(function (binaryScheme, i) {
+    _scheme.schemesJSX[binaryScheme.scheme] = _base.base.react.createElement("div", {
+      className: "swatch"
+    }, binaryScheme.colors.map(function (color, j) {
+      return _base.base.react.createElement("div", {
+        key: j,
+        title: color,
+        style: {
+          width: '50%',
+          backgroundColor: color
+        }
+      });
+    }));
+  });
+
+  loaded = true;
+}
+
+function dual(selected) {
+  if (!loaded) load();
+  return _sanddanceReact.SandDance.colorSchemes.filter(function (cs) {
+    return cs.colors.length === 2;
+  }).map(function (binaryScheme, i) {
+    return (0, _scheme.schemeOption)(selected, binaryScheme.scheme);
+  });
+}
+},{"../base":"Vlbn","@msrvida/sanddance-react":"MjKu","./scheme":"BSWy"}],"rVQa":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.sequentialMultiHue = sequentialMultiHue;
+
+var _base = require("../base");
+
+var _scheme = require("./scheme");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+var loaded = false;
+
+function load() {
+  _scheme.schemesJSX['viridis'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-viridis"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "#440154"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "#482475"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "#414487"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "#355f8d"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "#2a788e"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "#21918c"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "#22a884"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "#44bf70"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "#7ad151"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "#bddf26"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "#fde725"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-viridis)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['inferno'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-inferno"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "#000004"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "#160b39"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "#420a68"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "#6a176e"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "#932667"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "#bc3754"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "#dd513a"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "#f37819"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "#fca50a"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "#f6d746"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "#fcffa4"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-inferno)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['magma'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-magma"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "#000004"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "#140e36"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "#3b0f70"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "#641a80"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "#8c2981"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "#b73779"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "#de4968"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "#f7705c"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "#fe9f6d"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "#fecf92"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "#fcfdbf"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-magma)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['plasma'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-plasma"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "#0d0887"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "#41049d"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "#6a00a8"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "#8f0da4"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "#b12a90"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "#cc4778"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "#e16462"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "#f2844b"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "#fca636"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "#fcce25"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "#f0f921"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-plasma)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['bluegreen'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-bluegreen"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(247, 252, 253)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(232, 246, 249)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(213, 239, 237)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(183, 228, 218)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(143, 211, 193)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(104, 194, 163)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(73, 177, 127)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(47, 153, 89)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(21, 127, 60)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(3, 100, 41)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(0, 68, 27)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-bluegreen)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['bluepurple'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-bluepurple"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(247, 252, 253)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(228, 238, 245)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(204, 221, 236)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(178, 202, 225)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(156, 179, 213)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(143, 149, 198)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(140, 116, 181)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(137, 82, 165)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(133, 45, 143)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(115, 15, 113)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(77, 0, 75)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-bluepurple)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['greenblue'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-greenblue"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(247, 252, 240)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(229, 245, 223)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(211, 238, 206)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(189, 229, 191)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(158, 217, 187)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(123, 203, 196)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(88, 183, 205)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(57, 156, 198)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(29, 126, 183)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(11, 96, 161)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(8, 64, 129)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-greenblue)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['orangered'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-orangered"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(255, 247, 236)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(254, 235, 207)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(253, 220, 175)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(253, 202, 148)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(253, 176, 122)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(250, 142, 93)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(241, 108, 73)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(224, 69, 48)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(200, 29, 19)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(167, 4, 3)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(127, 0, 0)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-orangered)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['purplebluegreen'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-purplebluegreen"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(255, 247, 251)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(239, 231, 242)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(219, 216, 234)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(190, 201, 226)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(152, 185, 217)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(105, 168, 207)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(64, 150, 192)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(25, 135, 159)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(3, 120, 119)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(1, 99, 83)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(1, 70, 54)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-purplebluegreen)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['purpleblue'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-purpleblue"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(255, 247, 251)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(239, 234, 244)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(219, 218, 235)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(191, 201, 226)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(155, 185, 217)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(114, 168, 207)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(67, 148, 195)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(26, 125, 182)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(6, 103, 161)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(4, 82, 129)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(2, 56, 88)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-purpleblue)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['purplered'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-purplered"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(247, 244, 249)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(234, 227, 240)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(220, 201, 226)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(208, 170, 210)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(208, 138, 194)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(221, 99, 174)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(227, 56, 144)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(215, 28, 108)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(183, 11, 79)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(143, 2, 58)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(103, 0, 31)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-purplered)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['redpurple'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-redpurple"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(255, 247, 243)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(253, 228, 225)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(252, 207, 204)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(251, 181, 188)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(249, 147, 176)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(243, 105, 163)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(224, 62, 152)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(192, 23, 136)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(153, 3, 124)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(112, 1, 116)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(73, 0, 106)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-redpurple)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['yellowgreenblue'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-yellowgreenblue"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(255, 255, 217)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(239, 249, 189)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(213, 238, 179)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(169, 221, 183)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(115, 201, 189)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(69, 180, 194)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(40, 151, 191)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(32, 115, 178)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(35, 78, 160)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(28, 49, 133)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(8, 29, 88)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-yellowgreenblue)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['yellowgreen'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-yellowgreen"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(255, 255, 229)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(247, 252, 196)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(228, 244, 172)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(199, 232, 155)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(162, 216, 138)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(120, 197, 120)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(78, 175, 99)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(47, 148, 78)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(21, 121, 63)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(3, 96, 52)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(0, 69, 41)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-yellowgreen)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['yelloworangebrown'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-yelloworangebrown"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(255, 255, 229)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(255, 248, 196)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(254, 234, 161)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(254, 214, 118)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(254, 186, 74)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(251, 153, 44)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(238, 121, 24)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(216, 91, 10)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(183, 67, 4)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(143, 50, 4)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(102, 37, 6)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-yelloworangebrown)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['yelloworangered'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-yelloworangered"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(255, 255, 204)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(255, 240, 169)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(254, 224, 135)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(254, 201, 101)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(254, 171, 75)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(253, 137, 60)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(250, 92, 46)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(236, 48, 35)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(211, 17, 33)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(175, 2, 37)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(128, 0, 38)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-yelloworangered)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  loaded = true;
+}
+
+function sequentialMultiHue(selected) {
+  if (!loaded) load();
+  return [(0, _scheme.schemeOption)(selected, 'viridis'), (0, _scheme.schemeOption)(selected, 'inferno'), (0, _scheme.schemeOption)(selected, 'magma'), (0, _scheme.schemeOption)(selected, 'plasma'), (0, _scheme.schemeOption)(selected, 'bluegreen'), (0, _scheme.schemeOption)(selected, 'bluepurple'), (0, _scheme.schemeOption)(selected, 'greenblue'), (0, _scheme.schemeOption)(selected, 'orangered'), (0, _scheme.schemeOption)(selected, 'purplebluegreen'), (0, _scheme.schemeOption)(selected, 'purpleblue'), (0, _scheme.schemeOption)(selected, 'purplered'), (0, _scheme.schemeOption)(selected, 'redpurple'), (0, _scheme.schemeOption)(selected, 'yellowgreenblue'), (0, _scheme.schemeOption)(selected, 'yellowgreen'), (0, _scheme.schemeOption)(selected, 'yelloworangebrown'), (0, _scheme.schemeOption)(selected, 'yelloworangered')];
+}
+},{"../base":"Vlbn","./scheme":"BSWy"}],"Prvn":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.sequentialSingleHue = sequentialSingleHue;
+
+var _base = require("../base");
+
+var _scheme = require("./scheme");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+var loaded = false;
+
+function load() {
+  _scheme.schemesJSX['blues'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-blues"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(247, 251, 255)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(227, 238, 249)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(207, 225, 242)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(181, 212, 233)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(147, 195, 223)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(109, 174, 213)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(75, 151, 201)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(47, 126, 188)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(24, 100, 170)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(10, 74, 144)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(8, 48, 107)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-blues)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['greens'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-greens"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(247, 252, 245)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(232, 246, 227)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(211, 238, 205)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(183, 226, 177)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(151, 212, 148)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(115, 195, 120)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(77, 175, 98)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(47, 152, 79)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(21, 127, 59)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(3, 100, 41)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(0, 68, 27)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-greens)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['greys'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-greys"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(255, 255, 255)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(242, 242, 242)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(226, 226, 226)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(206, 206, 206)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(180, 180, 180)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(151, 151, 151)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(122, 122, 122)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(95, 95, 95)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(64, 64, 64)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(30, 30, 30)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(0, 0, 0)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-greys)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['purples'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-purples"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(252, 251, 253)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(241, 239, 246)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(226, 225, 239)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(206, 206, 229)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(182, 181, 216)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(158, 155, 201)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(135, 130, 188)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(115, 99, 172)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(97, 64, 155)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(80, 31, 140)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(63, 0, 125)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-purples)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['reds'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-reds"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(255, 245, 240)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(254, 227, 214)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(253, 201, 180)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(252, 170, 142)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(252, 138, 107)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(249, 105, 76)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(239, 69, 51)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(217, 39, 35)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(187, 21, 26)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(151, 11, 19)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(103, 0, 13)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-reds)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  _scheme.schemesJSX['oranges'] = _base.base.react.createElement("svg", {
+    viewBox: "0,0,1,1",
+    preserveAspectRatio: "none"
+  }, _base.base.react.createElement("defs", null, _base.base.react.createElement("linearGradient", {
+    id: "gradient-oranges"
+  }, _base.base.react.createElement("stop", {
+    offset: "0%",
+    stopColor: "rgb(255, 245, 235)"
+  }), _base.base.react.createElement("stop", {
+    offset: "10%",
+    stopColor: "rgb(254, 232, 211)"
+  }), _base.base.react.createElement("stop", {
+    offset: "20%",
+    stopColor: "rgb(253, 216, 179)"
+  }), _base.base.react.createElement("stop", {
+    offset: "30%",
+    stopColor: "rgb(253, 194, 140)"
+  }), _base.base.react.createElement("stop", {
+    offset: "40%",
+    stopColor: "rgb(253, 167, 98)"
+  }), _base.base.react.createElement("stop", {
+    offset: "50%",
+    stopColor: "rgb(251, 141, 61)"
+  }), _base.base.react.createElement("stop", {
+    offset: "60%",
+    stopColor: "rgb(242, 112, 29)"
+  }), _base.base.react.createElement("stop", {
+    offset: "70%",
+    stopColor: "rgb(226, 86, 9)"
+  }), _base.base.react.createElement("stop", {
+    offset: "80%",
+    stopColor: "rgb(196, 65, 3)"
+  }), _base.base.react.createElement("stop", {
+    offset: "90%",
+    stopColor: "rgb(159, 51, 3)"
+  }), _base.base.react.createElement("stop", {
+    offset: "100%",
+    stopColor: "rgb(127, 39, 4)"
+  }))), _base.base.react.createElement("rect", {
+    fill: "url(#gradient-oranges)",
+    x: "0",
+    y: "0",
+    width: "1",
+    height: "1"
+  }));
+  loaded = true;
+}
+
+function sequentialSingleHue(selected) {
+  if (!loaded) load();
+  return [(0, _scheme.schemeOption)(selected, 'blues'), (0, _scheme.schemeOption)(selected, 'greens'), (0, _scheme.schemeOption)(selected, 'greys'), (0, _scheme.schemeOption)(selected, 'purples'), (0, _scheme.schemeOption)(selected, 'reds'), (0, _scheme.schemeOption)(selected, 'oranges')];
+}
+},{"../base":"Vlbn","./scheme":"BSWy"}],"otJp":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Palette = Palette;
+
+var _base = require("../base");
+
+var _categorical = require("./categorical");
+
+var _diverging = require("./diverging");
+
+var _dropdown = require("../controls/dropdown");
+
+var _dual = require("./dual");
+
+var _scheme = require("./scheme");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var _sequentialMultiHue = require("./sequentialMultiHue");
+
+var _sequentialSingleHue = require("./sequentialSingleHue");
+
+var _language = require("../language");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+var maxDistinctColors = 20;
+
+function Palette(props) {
+  var distinctValueCount = props.colorColumn.stats.distinctValueCount;
+  var isDual = distinctValueCount === 2;
+  var categoricalNumeric = distinctValueCount > 0 && distinctValueCount < maxDistinctColors;
+  var isQualitative = false;
+  var isQuantitative = false;
+
+  switch (props.colorColumn.type) {
+    case 'boolean':
+    case 'string':
+      isQualitative = true;
+      break;
+
+    case 'number':
+      isQuantitative = true;
+      break;
+
+    case 'date':
+    case 'integer':
+      isQuantitative = true;
+      isQualitative = categoricalNumeric;
+  }
+
+  var selected = props.scheme;
+  var options = [];
+
+  function menu(name, opts) {
+    options.push({
+      key: name,
+      text: name,
+      itemType: _base.base.fluentUI.DropdownMenuItemType.Header
+    });
+    options.push.apply(options, opts);
+  }
+
+  isQualitative && menu(_language.strings.schemeCategorical, (0, _categorical.categorical)(selected));
+  isQuantitative && menu(_language.strings.schemeSequentialSingleHue, (0, _sequentialSingleHue.sequentialSingleHue)(selected));
+  isQuantitative && menu(_language.strings.schemeSequentialMultiHue, (0, _sequentialMultiHue.sequentialMultiHue)(selected));
+  isQuantitative && menu(_language.strings.schemeDiverging, (0, _diverging.diverging)(selected));
+  isDual && menu(_language.strings.schemeDual, (0, _dual.dual)(selected));
+  return _base.base.react.createElement("div", {
+    className: "sanddance-palette"
+  }, _base.base.react.createElement("div", {
+    className: "sanddance-explanation",
+    dangerouslySetInnerHTML: {
+      __html: _language.strings.labelColorFieldInfo(props.colorColumn.name, props.colorColumn.type, categoricalNumeric, distinctValueCount)
+    }
+  }), _base.base.react.createElement(_dropdown.Dropdown, {
+    collapseLabel: props.collapseLabel,
+    disabled: props.disabled,
+    dropdownWidth: 400,
+    label: _language.strings.labelColorScheme,
+    onRenderOption: function onRenderOption(option) {
+      if (option.itemType === _base.base.fluentUI.DropdownMenuItemType.Header) {
+        return _base.base.react.createElement("span", null, option.text);
+      } else {
+        return _base.base.react.createElement("div", {
+          className: "sanddance-scheme option"
+        }, _base.base.react.createElement("span", {
+          className: "name"
+        }, option.scheme), option.children);
+      }
+    },
+    options: options,
+    onChange: function onChange(e, o) {
+      props.changeColorScheme(o.scheme);
+    }
+  }), _base.base.react.createElement("div", {
+    className: _sanddanceReact.util.classList('sanddance-scheme', props.disabled && 'disabled')
+  }, props.scheme && _scheme.schemesJSX[props.scheme]));
+}
+},{"../base":"Vlbn","./categorical":"JrIT","./diverging":"wtjh","../controls/dropdown":"Uyrp","./dual":"uM5k","./scheme":"BSWy","@msrvida/sanddance-react":"MjKu","./sequentialMultiHue":"rVQa","./sequentialSingleHue":"Prvn","../language":"hk5u"}],"N8IJ":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Color = Color;
+
+var _base = require("../base");
+
+var _columnMap = require("../controls/columnMap");
+
+var _palettes = require("../palettes");
+
+var _signal = require("../controls/signal");
+
+var _language = require("../language");
+
+var _group = require("../controls/group");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function Color(props) {
+  var colorColumn = props.dataContent.columns.filter(function (c) {
+    return c.name === props.colorColumn;
+  })[0];
+  var disabledColorBin = !colorColumn || !colorColumn.quantitative || props.directColor;
+  var colorBin = props.colorBin || 'quantize';
+  return _base.base.react.createElement("div", {
+    className: "sanddance-color-dialog"
+  }, _base.base.react.createElement(_group.Group, {
+    label: _language.strings.labelColor
+  }, _base.base.react.createElement(_columnMap.ColumnMap, Object.assign({}, props, {
+    collapseLabel: props.compactUI,
+    selectedColumnName: props.colorColumn,
+    specRole: props.specCapabilities && props.specCapabilities.roles.filter(function (r) {
+      return r.role === 'color';
+    })[0],
+    key: 0
+  })), colorColumn && colorColumn.isColorData && _base.base.react.createElement("div", {
+    className: "sanddance-explanation",
+    dangerouslySetInnerHTML: {
+      __html: _language.strings.labelColorFieldIsColorData(colorColumn.name)
+    }
+  }), colorColumn && !colorColumn.isColorData && _base.base.react.createElement(_palettes.Palette, {
+    collapseLabel: props.compactUI,
+    scheme: props.scheme,
+    colorColumn: colorColumn,
+    changeColorScheme: function changeColorScheme(scheme) {
+      props.onColorSchemeChange(scheme);
+    },
+    disabled: props.disabled || props.directColor || colorColumn && colorColumn.isColorData
+  }), colorColumn && !colorColumn.isColorData && _base.base.react.createElement(_signal.Signal, {
+    disabled: props.disabled || !colorColumn || props.directColor || colorColumn && colorColumn.isColorData,
+    signal: props.colorReverseSignal,
+    explorer: props.explorer,
+    onChange: props.onColorReverseChange,
+    collapseLabel: props.compactUI
+  })), colorColumn && !colorColumn.isColorData && _base.base.react.createElement(_group.Group, {
+    label: _language.strings.labelColorBin
+  }, _base.base.react.createElement("div", {
+    className: "sanddance-explanation"
+  }, _language.strings.labelColorBinExplanation), _base.base.react.createElement(_base.base.fluentUI.ChoiceGroup, {
+    options: [{
+      key: 'continuous',
+      text: _language.strings.labelColorBinNone,
+      checked: colorBin === 'continuous',
+      disabled: disabledColorBin
+    }, {
+      key: 'quantize',
+      text: _language.strings.labelColorBinQuantize,
+      checked: colorBin === 'quantize',
+      disabled: disabledColorBin
+    }, {
+      key: 'quantile',
+      text: _language.strings.labelColorBinQuantile,
+      checked: colorBin === 'quantile',
+      disabled: disabledColorBin
+    }],
+    onChange: function onChange(e, o) {
+      props.onColorBinChange(o.key);
+    }
+  }), _base.base.react.createElement(_signal.Signal, {
+    disabled: props.disabled || disabledColorBin || props.colorBin === 'continuous',
+    signal: props.colorBinSignal,
+    explorer: props.explorer,
+    onChange: props.onColorBinCountChange,
+    collapseLabel: props.compactUI
+  })), colorColumn && !colorColumn.isColorData && _base.base.react.createElement(_group.Group, {
+    label: _language.strings.labelColorOptions
+  }, _base.base.react.createElement(_base.base.fluentUI.Toggle, {
+    label: _language.strings.selectDirectColor,
+    disabled: !colorColumn.stats.hasColorData,
+    checked: !!(colorColumn.stats.hasColorData && props.directColor),
+    onChange: function onChange(e, checked) {
+      return props.onDirectColorChange(checked);
+    }
+  }), _base.base.react.createElement("div", {
+    className: "sanddance-explanation",
+    dangerouslySetInnerHTML: {
+      __html: _language.strings.labelDataColors
+    }
+  })));
+}
+},{"../base":"Vlbn","../controls/columnMap":"DSho","../palettes":"otJp","../controls/signal":"OWDI","../language":"hk5u","../controls/group":"Q3hf"}],"XFNl":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.KeyCodes = void 0;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+var KeyCodes = {
+  ENTER: 13
+};
+exports.KeyCodes = KeyCodes;
+},{}],"Gai8":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.DataItem = DataItem;
+
+var _base = require("../base");
+
+var _keycodes = require("../keycodes");
+
+var _language = require("../language");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function isNumber(value) {
+  if (typeof value === 'number') return true;
+  if (!isNaN(value)) return true;
+  return false;
+}
+
+function isBoolean(value) {
+  if (typeof value === 'boolean') return true;
+
+  if (typeof value === 'string') {
+    switch (value.toLowerCase()) {
+      case true + '':
+      case false + '':
+        return true;
+    }
+  }
+
+  return false;
+}
+
+function bingSearchLink(column, value) {
+  if (isNumber(value)) return null;
+  if (isBoolean(value)) return null;
+  if (column && column.stats.distinctValueCount === 2) return null;
+  return _base.base.react.createElement("div", {
+    className: 'bing-search'
+  }, _base.base.react.createElement("a", {
+    href: "https://www.bing.com/search?q=".concat(encodeURIComponent(value)),
+    target: '_blank',
+    title: _language.strings.bingsearchDescription(value),
+    "aria-label": _language.strings.bingsearchDescription(value)
+  }, _language.strings.bingsearch));
+}
+
+function displayValue(value) {
+  switch (value) {
+    case '':
+      {
+        return {
+          special: true,
+          display: _language.strings.labelBlank
+        };
+      }
+
+    case null:
+      {
+        return {
+          special: true,
+          display: _language.strings.labelNull
+        };
+      }
+
+    case true:
+      {
+        return {
+          special: true,
+          display: _language.strings.labelTrue
+        };
+      }
+
+    case false:
+      {
+        return {
+          special: true,
+          display: _language.strings.labelFalse
+        };
+      }
+
+    default:
+      {
+        if (_typeof(value) === 'object') {
+          if (value instanceof Date) {
+            var d = value;
+            return displayValue(d.input);
+          }
+
+          return {
+            special: false,
+            display: value.toLocaleString()
+          };
+        }
+
+        return {
+          special: false,
+          display: value
+        };
+      }
+  }
+}
+
+function displayValueElement(nvp) {
+  var d = displayValue(nvp.value);
+
+  if (d.special) {
+    return _base.base.react.createElement("i", null, d.display);
+  }
+
+  return d.display;
+}
+
+function DataItem(props) {
+  if (!props.item) {
+    return null;
+  }
+
+  var nameValuePairs = [];
+
+  var _loop = function _loop(columnName) {
+    if (columnName === _sanddanceReact.SandDance.constants.GL_ORDINAL && !props.showSystemFields) {
+      return "continue";
+    }
+
+    if (_sanddanceReact.SandDance.util.isInternalFieldName(columnName)) {
+      return "continue";
+    }
+
+    var nameValuePair = {
+      columnName: columnName,
+      value: props.item[columnName]
+    };
+
+    if (!props.bingSearchDisabled) {
+      nameValuePair.bingSearch = bingSearchLink(props.columns.filter(function (c) {
+        return c.name === columnName;
+      })[0], props.item[columnName]);
+    }
+
+    nameValuePairs.push(nameValuePair);
+  };
+
+  for (var columnName in props.item) {
+    var _ret = _loop(columnName);
+
+    if (_ret === "continue") continue;
+  }
+
+  return _base.base.react.createElement("div", {
+    className: "sanddance-dataItem"
+  }, nameValuePairs.map(function (nameValuePair, i) {
+    var ex = {
+      key: 0,
+      name: nameValuePair.columnName,
+      operator: '==',
+      value: nameValuePair.value
+    };
+
+    if (nameValuePair.value === null || nameValuePair.value === '') {
+      ex.operator = 'isnullorEmpty';
+      delete ex.value;
+    }
+
+    var searchClick = function searchClick(e) {
+      var search = {
+        key: 0,
+        expressions: [ex]
+      };
+      props.onSearch(e, [search]);
+    };
+
+    var title = _language.strings.tooltipSearch(nameValuePair.columnName, displayValue(nameValuePair.value).display);
+
+    return _base.base.react.createElement("div", {
+      key: i,
+      onClick: !props.disabled ? searchClick : null,
+      title: title,
+      onKeyUp: function onKeyUp(e) {
+        if (e.keyCode === _keycodes.KeyCodes.ENTER) {
+          searchClick(e);
+        }
+      },
+      tabIndex: 0,
+      className: "name-value"
+    }, _base.base.react.createElement("div", {
+      className: "column-name"
+    }, nameValuePair.columnName), _base.base.react.createElement("div", {
+      className: "column-value"
+    }, displayValueElement(nameValuePair)), nameValuePair.bingSearch);
+  }));
+}
+},{"../base":"Vlbn","../keycodes":"XFNl","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"pJLc":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.DataBrowser = DataBrowser;
+
+var _base = require("../base");
+
+var _dataExporter = require("../controls/dataExporter");
+
+var _dataItem = require("../controls/dataItem");
+
+var _dataScope = require("../controls/dataScope");
+
+var _dropdown = require("../controls/dropdown");
+
+var _group = require("../controls/group");
+
+var _iconButton = require("../controls/iconButton");
+
+var _language = require("../language");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function DataBrowser(props) {
+  function activateRecord(newIndex) {
+    props.onActivate(props.data[newIndex], newIndex);
+  }
+
+  var index = props.index;
+  var length = props.data && props.data.length || 0;
+  return _base.base.react.createElement(_group.Group, {
+    label: _language.strings.labelDataBrowser,
+    className: "sanddance-dataIndex"
+  }, _base.base.react.createElement(_dropdown.Dropdown, {
+    label: _language.strings.labelDataScope,
+    collapseLabel: true,
+    options: [{
+      key: _dataScope.DataScopeId.AllData,
+      text: _language.strings.selectDataSpanAll,
+      isSelected: props.selectedDataScope === _dataScope.DataScopeId.AllData
+    }, {
+      key: _dataScope.DataScopeId.FilteredData,
+      text: _language.strings.selectDataSpanFilter,
+      isSelected: props.selectedDataScope === _dataScope.DataScopeId.FilteredData
+    }, {
+      key: _dataScope.DataScopeId.SelectedData,
+      text: _language.strings.selectDataSpanSelection,
+      isSelected: props.selectedDataScope === _dataScope.DataScopeId.SelectedData
+    }],
+    onChange: function onChange(e, o) {
+      props.onDataScopeClick(o.key);
+    }
+  }), !props.data && _base.base.react.createElement("div", {
+    dangerouslySetInnerHTML: {
+      __html: props.nullMessage
+    }
+  }), props.data && !props.data.length && _base.base.react.createElement("div", null, props.zeroMessage), !!length && _base.base.react.createElement("div", null, _base.base.react.createElement("div", {
+    className: "index"
+  }, _base.base.react.createElement(_iconButton.IconButton, {
+    themePalette: props.themePalette,
+    iconName: "ChevronLeftMed",
+    onClick: function onClick(e) {
+      return activateRecord(index <= 0 ? length - 1 : index - 1);
+    },
+    disabled: props.disabled || length === 1,
+    title: _language.strings.buttonPrevDataItem
+  }), _base.base.react.createElement("span", null, _language.strings.record(index + 1, length)), _base.base.react.createElement(_iconButton.IconButton, {
+    themePalette: props.themePalette,
+    iconName: "ChevronRightMed",
+    onClick: function onClick(e) {
+      return activateRecord(index >= length - 1 ? 0 : index + 1);
+    },
+    disabled: props.disabled || length === 1,
+    title: _language.strings.buttonNextDataItem
+  })), !props.itemVisible && _base.base.react.createElement("div", {
+    className: "item-filtered"
+  }, _language.strings.labelDataItemIsFiltered), _base.base.react.createElement(_dataItem.DataItem, {
+    columns: props.columns,
+    item: props.data[index],
+    disabled: props.disabled,
+    onSearch: props.onSearch,
+    bingSearchDisabled: props.bingSearchDisabled
+  })), props.dataExportHandler && props.data && _base.base.react.createElement(_dataExporter.DataExportPicker, {
+    theme: props.theme,
+    initializer: {
+      fileName: "".concat((0, _dataExporter.removeExtensions)(props.displayName), " (").concat(props.data.length, ")")
+    },
+    data: props.data,
+    dataExportHandler: props.dataExportHandler,
+    disabled: props.disabled
+  }));
+}
+},{"../base":"Vlbn","../controls/dataExporter":"l7po","../controls/dataItem":"Gai8","../controls/dataScope":"OsNT","../controls/dropdown":"Uyrp","../controls/group":"Q3hf","../controls/iconButton":"dQNc","../language":"hk5u"}],"YVpI":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.History = History;
+
+var _base = require("../base");
+
+var _group = require("../controls/group");
+
+var _keycodes = require("../keycodes");
+
+var _language = require("../language");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function History(props) {
+  return _base.base.react.createElement(_group.Group, {
+    label: _language.strings.labelHistory,
+    className: "sanddance-history"
+  }, _base.base.react.createElement("ol", null, props.historyItems.map(function (hi, i) {
+    return _base.base.react.createElement("li", {
+      key: i,
+      className: _sanddanceReact.util.classList(i === props.historyIndex && 'selected'),
+      onKeyUp: function onKeyUp(e) {
+        if (e.keyCode === _keycodes.KeyCodes.ENTER) {
+          props.redo(i);
+        }
+      },
+      onClick: function onClick() {
+        return props.redo(i);
+      },
+      tabIndex: 0
+    }, hi.label);
+  })));
+}
+},{"../base":"Vlbn","../controls/group":"Q3hf","../keycodes":"XFNl","../language":"hk5u","@msrvida/sanddance-react":"MjKu"}],"yvMl":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getPosition = getPosition;
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function hasClientXY(e) {
+  if (e && e.clientX !== undefined && e.clientX !== undefined) {
+    return {
+      top: e.clientY,
+      left: e.clientX
+    };
+  }
+}
+
+function getPosition(e) {
+  var xy = hasClientXY(e);
+
+  if (xy) {
+    return xy;
+  }
+
+  var te = e;
+
+  if (te) {
+    for (var i = 0; i < te.touches.length; i++) {
+      var _xy = hasClientXY(te.touches[i]);
+
+      if (_xy) {
+        return _xy;
+      }
+    }
+  }
+}
+},{}],"tb7d":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.initPrefs = initPrefs;
+exports.saveSignalValuePref = saveSignalValuePref;
+exports.copyPrefToNewState = copyPrefToNewState;
+exports.savePref = savePref;
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function initPrefs(prefs, partialInsight) {
+  if (partialInsight) {
+    var specTypePrefs = prefs[partialInsight.chart] || {};
+    prefs[partialInsight.chart] = specTypePrefs;
+
+    for (var _role in partialInsight.columns) {
+      var role = _role;
+
+      if (role === 'color' || role === 'x') {
+        (function () {
+          var rolePrefs = specTypePrefs[role] || {};
+          specTypePrefs[role] = rolePrefs;
+          var column = partialInsight.columns[role];
+
+          var copySignalValue = function copySignalValue(signalName) {
+            if (partialInsight.signalValues && partialInsight.signalValues[signalName] && rolePrefs[column]) {
+              var signalValues = rolePrefs[column].signalValues || {};
+              signalValues[signalName] = partialInsight.signalValues[signalName];
+              rolePrefs[column].signalValues = signalValues;
+            }
+          };
+
+          switch (role) {
+            case 'color':
+              rolePrefs[column] = {
+                scheme: partialInsight.scheme,
+                colorBin: partialInsight.colorBin
+              };
+              copySignalValue(_sanddanceReact.SandDance.constants.SignalNames.ColorBinCount);
+              break;
+
+            case 'x':
+              copySignalValue(_sanddanceReact.SandDance.constants.SignalNames.XBins);
+              break;
+          }
+        })();
+      }
+    }
+  }
+}
+
+function saveSignalValuePref(prefs, chart, role, column, signalName, signalValue) {
+  var partialInsight = savePref(prefs, chart, role, column, {
+    signalValues: {}
+  });
+  partialInsight.signalValues[signalName] = signalValue;
+}
+
+function copyPrefToNewState(prefs, chart, role, columnName) {
+  var specTypePrefs = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, prefs['*'], prefs[chart]);
+
+  var rolePrefs = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, specTypePrefs['*'], specTypePrefs[role]);
+
+  var partialInsight = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, rolePrefs['*'], rolePrefs[columnName]);
+
+  return partialInsight;
+}
+
+function savePref(prefs, chart, role, column, partialInsight) {
+  var SpecTypePrefs = prefs[chart] || {};
+  prefs[chart] = SpecTypePrefs;
+  var rolePrefs = SpecTypePrefs[role] || {};
+  SpecTypePrefs[role] = rolePrefs;
+  rolePrefs[column] = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, rolePrefs[column], partialInsight);
+  return rolePrefs[column];
+}
+},{"@msrvida/sanddance-react":"MjKu"}],"yzxM":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.toggleSearch = toggleSearch;
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function comparableGroup(group) {
+  return Object.assign(Object.assign({}, group), {
+    clause: null
+  });
+}
+
+function compareGroup(a, b) {
+  return _sanddanceReact.SandDance.searchExpression.compareGroup(comparableGroup(a), comparableGroup(b));
+}
+
+function toggleSearch(haystack, needle) {
+  var groups = [];
+  var found = false; //look for item in all
+
+  haystack.forEach(function (group) {
+    if (compareGroup(group, needle)) {
+      //if it exists, don't add it
+      found = true;
+    } else {
+      groups.push(group);
+    }
+  });
+  return {
+    groups: groups,
+    found: found
+  };
+}
+},{"@msrvida/sanddance-react":"MjKu"}],"KeW6":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21881,67 +21957,63 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Explorer = void 0;
 
-var React = _interopRequireWildcard(require("react"));
+var _base = require("./base");
+
+var _canvas = require("./canvas");
+
+var _clickableTextLayer = require("./clickableTextLayer");
 
 var _colorMap = require("./colorMap");
 
-var _base = require("./base");
-
 var _colorScheme = require("./colorScheme");
 
-var _interfaces = require("./interfaces");
+var _columns = require("./columns");
+
+var _dataScope = require("./controls/dataScope");
+
+var _dialog = require("./controls/dialog");
+
+var _iconButton = require("./controls/iconButton");
+
+var _sidebar = require("./controls/sidebar");
+
+var _topbar = require("./controls/topbar");
+
+var _dataLoader = require("./dataLoader");
+
+var _defaults = require("./defaults");
 
 var _chart = require("./dialogs/chart");
 
 var _color = require("./dialogs/color");
 
-var _partialInsight4 = require("./partialInsight");
-
 var _dataBrowser = require("./dialogs/dataBrowser");
 
-var _dataScope = require("./controls/dataScope");
-
-var _defaults = require("./defaults");
-
-var _dialog = require("./controls/dialog");
-
-var _columns = require("./columns");
-
-var _mouseEvent = require("./mouseEvent");
-
-var _iconButton = require("./controls/iconButton");
+var _history = require("./dialogs/history");
 
 var _search = require("./dialogs/search");
 
-var _dataLoader = require("./dataLoader");
-
-var _clickableTextLayer = require("./clickableTextLayer");
-
-var _chartRecommender = require("@msrvida/chart-recommender");
-
-var _canvas = require("./canvas");
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
 var _settings = require("./dialogs/settings");
-
-var _sidebar = require("./controls/sidebar");
 
 var _snapshotEditor = require("./dialogs/snapshotEditor");
 
 var _snapshots = require("./dialogs/snapshots");
 
+var _interfaces = require("./interfaces");
+
 var _language = require("./language");
+
+var _mouseEvent = require("./mouseEvent");
+
+var _partialInsight = require("./partialInsight");
 
 var _themes = require("./themes");
 
 var _toggleSearch = require("./toggleSearch");
 
-var _topbar = require("./controls/topbar");
+var _chartRecommender = require("@msrvida/chart-recommender");
 
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var _sanddanceReact = require("@msrvida/sanddance-react");
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -21969,10 +22041,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var dataBrowserTitles = {};
-dataBrowserTitles[_dataScope.DataScopeId.AllData] = _language.strings.selectDataSpanAll;
-dataBrowserTitles[_dataScope.DataScopeId.FilteredData] = _language.strings.selectDataSpanFilter;
-dataBrowserTitles[_dataScope.DataScopeId.SelectedData] = _language.strings.selectDataSpanSelection;
 var dataBrowserZeroMessages = {};
 dataBrowserZeroMessages[_dataScope.DataScopeId.AllData] = _language.strings.labelZeroAll;
 dataBrowserZeroMessages[_dataScope.DataScopeId.FilteredData] = null; //empty array is not used
@@ -22001,1602 +22069,1804 @@ function createInputSearch(search) {
   return dialogSearch;
 }
 
-var Explorer =
-/*#__PURE__*/
-function (_React$Component) {
-  _inherits(Explorer, _React$Component);
+function _Explorer(props) {
+  var __Explorer =
+  /*#__PURE__*/
+  function (_base$react$Component) {
+    _inherits(__Explorer, _base$react$Component);
 
-  function Explorer(props) {
-    var _this;
+    function __Explorer(props) {
+      var _this;
 
-    _classCallCheck(this, Explorer);
+      _classCallCheck(this, __Explorer);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Explorer).call(this, props));
-    _this.state = {
-      calculating: null,
-      errors: null,
-      autoCompleteDistinctValues: {},
-      colorBin: null,
-      dataContent: null,
-      dataFile: null,
-      search: null,
-      totalStyle: null,
-      facetStyle: 'wrap',
-      filter: null,
-      filteredData: null,
-      specCapabilities: null,
-      size: {
-        height: null,
-        width: null
-      },
-      scheme: null,
-      transform: null,
-      columns: null,
-      chart: 'grid',
-      signalValues: null,
-      hideAxes: false,
-      hideLegend: false,
-      sideTabId: _interfaces.SideTabId.ChartType,
-      dataScopeId: _dataScope.DataScopeId.AllData,
-      selectedItemIndex: {},
-      sidebarClosed: false,
-      sidebarPinned: true,
-      view: props.initialView || '2d',
-      snapshots: [],
-      selectedSnapshotIndex: -1,
-      tooltipExclusions: [],
-      positionedColumnMapProps: null,
-      note: null
-    };
-    _this.state.selectedItemIndex[_dataScope.DataScopeId.AllData] = 0;
-    _this.state.selectedItemIndex[_dataScope.DataScopeId.FilteredData] = 0;
-    _this.state.selectedItemIndex[_dataScope.DataScopeId.SelectedData] = 0;
-    _this.snapshotThumbWidth = _defaults.snapshotThumbWidth;
-    _this.discardColorContextUpdates = true;
-
-    _this.updateViewerOptions(Object.assign(Object.assign({}, _sanddanceReact.SandDance.VegaDeckGl.util.clone(_sanddanceReact.SandDance.Viewer.defaultViewerOptions)), props.viewerOptions));
-
-    return _this;
-  }
-
-  _createClass(Explorer, [{
-    key: "finalize",
-    value: function finalize() {
-      if (this.viewer) this.viewer.finalize();
-    }
-  }, {
-    key: "updateViewerOptions",
-    value: function updateViewerOptions(viewerOptions) {
-      var _this2 = this;
-
-      this.viewerOptions = Object.assign(Object.assign({}, _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge(_defaults.defaultViewerOptions, this.viewerOptions, viewerOptions)), {
-        tooltipOptions: {
-          exclude: function exclude(columnName) {
-            return _this2.state.tooltipExclusions.indexOf(columnName) >= 0;
-          }
-        },
-        onColorContextChange: function onColorContextChange() {
-          return _this2.manageColorToolbar();
-        },
-        onDataFilter: function onDataFilter(dataFilter, filteredData) {
-          var selectedItemIndex = Object.assign({}, _this2.state.selectedItemIndex);
-          selectedItemIndex[_dataScope.DataScopeId.FilteredData] = 0;
-
-          _this2.changeInsight({
-            filter: dataFilter,
-            filteredData: filteredData,
-            selectedItemIndex: selectedItemIndex
-          });
-
-          if (_this2.state.sideTabId === _interfaces.SideTabId.Data && _this2.state.dataScopeId === _dataScope.DataScopeId.FilteredData) {
-            //make sure item is active
-            requestAnimationFrame(function () {
-              return filteredData && _this2.silentActivation(filteredData[0]);
-            });
-          }
-
-          viewerOptions && viewerOptions.onDataFilter && viewerOptions.onDataFilter(dataFilter, filteredData);
-        },
-        onSelectionChanged: function onSelectionChanged(newSearch, index, selectedData) {
-          if (_this2.ignoreSelectionChange) return;
-          var selectedItemIndex = Object.assign({}, _this2.state.selectedItemIndex);
-          selectedItemIndex[_dataScope.DataScopeId.SelectedData] = index || 0;
-          var _this2$state = _this2.state,
-              search = _this2$state.search,
-              sideTabId = _this2$state.sideTabId;
-
-          if (newSearch) {
-            search = createInputSearch(newSearch); //} else {
-            //sideTabId = SideTabId.ChartType;
-          }
-
-          _this2.setState({
-            search: search,
-            selectedItemIndex: selectedItemIndex,
-            sideTabId: sideTabId
-          });
-
-          viewerOptions && viewerOptions.onSelectionChanged && viewerOptions.onSelectionChanged(newSearch, index, selectedData);
-        },
-        onAxisClick: function onAxisClick(e, search) {
-          _this2.toggleableSearch(e, search);
-
-          viewerOptions && viewerOptions.onAxisClick && viewerOptions.onAxisClick(e, search);
-        },
-        onLegendHeaderClick: function onLegendHeaderClick(e) {
-          var pos = (0, _mouseEvent.getPosition)(e);
-
-          var specRole = _this2.state.specCapabilities && _this2.state.specCapabilities.roles.filter(function (r) {
-            return r.role === 'color';
-          })[0];
-
-          var positionedColumnMapProps = Object.assign(Object.assign({}, _this2.getColumnMapBaseProps()), {
-            collapseLabel: true,
-            container: _this2.div,
-            selectedColumnName: _this2.state.columns['color'],
-            onDismiss: function onDismiss() {
-              _this2.setState({
-                positionedColumnMapProps: null
-              });
-            },
-            specRole: specRole,
-            left: pos.left - _this2.div.clientLeft,
-            top: pos.top - _this2.div.clientTop
-          });
-
-          _this2.setState({
-            positionedColumnMapProps: positionedColumnMapProps
-          });
-        },
-        onLegendRowClick: function onLegendRowClick(e, legendRow) {
-          _this2.toggleableSearch(e, legendRow.search);
-
-          viewerOptions && viewerOptions.onLegendRowClick && viewerOptions.onLegendRowClick(e, legendRow);
-        },
-        onError: function onError(errors) {
-          _this2.setState({
-            errors: errors
-          });
-
-          viewerOptions && viewerOptions.onError && viewerOptions.onError(errors);
-        },
-        onBeforeCreateLayers: _clickableTextLayer.onBeforeCreateLayers,
-        getTextColor: function getTextColor(o) {
-          if (o.specRole) {
-            return _sanddanceReact.SandDance.VegaDeckGl.util.colorFromString(_this2.viewerOptions.colors.clickableText);
-          } else if (o.metaData && o.metaData.search) {
-            return _sanddanceReact.SandDance.VegaDeckGl.util.colorFromString(_this2.viewerOptions.colors.searchText);
-          } else {
-            return o.color;
-          }
-        },
-        getTextHighlightColor: function getTextHighlightColor(o) {
-          if (o.specRole) {
-            return _sanddanceReact.SandDance.VegaDeckGl.util.colorFromString(_this2.viewerOptions.colors.clickableTextHighlight);
-          } else if (o.metaData && o.metaData.search) {
-            return _sanddanceReact.SandDance.VegaDeckGl.util.colorFromString(_this2.viewerOptions.colors.searchTextHighlight);
-          } else {
-            return [0, 0, 0, 0];
-          }
-        },
-        onTextClick: function onTextClick(e, text) {
-          if (e && text) {
-            var pos = (0, _mouseEvent.getPosition)(e);
-            var specRole = text.specRole;
-
-            if (pos && specRole) {
-              var positionedColumnMapProps = Object.assign(Object.assign({}, _this2.getColumnMapBaseProps()), {
-                collapseLabel: true,
-                container: _this2.div,
-                selectedColumnName: _this2.state.columns[specRole.role],
-                onDismiss: function onDismiss() {
-                  _this2.setState({
-                    positionedColumnMapProps: null
-                  });
-                },
-                specRole: specRole,
-                left: pos.left - _this2.div.clientLeft,
-                top: pos.top - _this2.div.clientTop
-              });
-
-              _this2.setState({
-                positionedColumnMapProps: positionedColumnMapProps
-              });
-            } else {
-              _this2.setState({
-                positionedColumnMapProps: null
-              });
-            }
-          }
-        },
-        onNewViewStateTarget: function onNewViewStateTarget() {
-          return _this2.newViewStateTarget;
-        }
-      });
-
-      if (this.viewer && this.viewer.presenter) {
-        var newPresenterStyle = _sanddanceReact.SandDance.util.getPresenterStyle(this.viewerOptions);
-
-        var mergePrenterStyle = Object.assign(Object.assign({}, this.viewer.presenter.style), newPresenterStyle);
-        this.viewer.presenter.style = mergePrenterStyle;
-        this.viewer.options = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge(this.viewer.options, this.props.viewerOptions, this.viewerOptions);
-      }
-    }
-  }, {
-    key: "signal",
-    value: function signal(signalName, signalValue, newViewStateTarget) {
-      var _this3 = this;
-
-      switch (signalName) {
-        case _sanddanceReact.SandDance.constants.SignalNames.ColorBinCount:
-        case _sanddanceReact.SandDance.constants.SignalNames.ColorReverse:
-        case _sanddanceReact.SandDance.constants.SignalNames.MarkOpacity:
-          this.discardColorContextUpdates = false;
-          break;
-      }
-
-      this.newViewStateTarget = newViewStateTarget;
-      this.viewer.vegaViewGl.signal(signalName, signalValue);
-      this.viewer.vegaViewGl.runAsync().then(function () {
-        _this3.discardColorContextUpdates = true;
-        _this3.newViewStateTarget = undefined;
-        _this3.props.onSignalChanged && _this3.props.onSignalChanged();
-      });
-    }
-  }, {
-    key: "manageColorToolbar",
-    value: function manageColorToolbar() {
-      var _this4 = this;
-
-      var canRemap = this.viewer.colorContexts && this.viewer.colorContexts.length > 1;
-      (0, _colorMap.applyColorButtons)(this.viewer.presenter, !!this.state.columns.color, {
-        themePalette: _themes.themePalettes[this.props.theme || ''],
-        canRemap: canRemap,
-        isRemap: canRemap && this.viewer.currentColorContext > 0,
-        colorMapHandler: function colorMapHandler(remap) {
-          _this4.viewer.currentColorContext = ~~remap;
-
-          _this4.viewer.renderSameLayout();
-
-          _this4.manageColorToolbar();
-        }
-      });
-    }
-  }, {
-    key: "getInsight",
-    value: function getInsight() {
-      return this.viewer.getInsight();
-    }
-  }, {
-    key: "setInsight",
-    value: function setInsight() {
-      var _this5 = this;
-
-      var partialInsight = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.viewer.getInsight();
-      var rebaseFilter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-      var selectedItemIndex = Object.assign({}, this.state.selectedItemIndex);
-      selectedItemIndex[_dataScope.DataScopeId.AllData] = 0;
-      selectedItemIndex[_dataScope.DataScopeId.FilteredData] = 0;
-      selectedItemIndex[_dataScope.DataScopeId.SelectedData] = 0;
-      var newState = Object.assign({
-        chart: null,
-        scheme: null,
-        columns: null,
+      _this = _possibleConstructorReturn(this, _getPrototypeOf(__Explorer).call(this, props));
+      _this.state = {
+        calculating: null,
+        errors: null,
+        autoCompleteDistinctValues: {},
+        colorBin: null,
+        dataContent: null,
+        dataFile: null,
+        search: null,
+        totalStyle: null,
+        facetStyle: 'wrap',
         filter: null,
         filteredData: null,
-        selectedItemIndex: selectedItemIndex
-      }, partialInsight);
-      newState.search = createInputSearch(newState.filter);
-
-      var changeInsight = function changeInsight() {
-        _this5.getColorContext = null;
-
-        _this5.changeInsight(newState);
-      };
-
-      var currentFilter = this.viewer.getInsight().filter;
-
-      if (rebaseFilter && currentFilter && newState.filter) {
-        if (_sanddanceReact.SandDance.searchExpression.startsWith(newState.filter, currentFilter)) {
-          changeInsight();
-        } else {
-          this.viewer.reset().then(function () {
-            return new Promise(function (resolve, reject) {
-              setTimeout(resolve, _this5.viewer.options.transitionDurations.scope);
-            });
-          }).then(changeInsight);
-        }
-      } else {
-        changeInsight();
-      }
-    }
-  }, {
-    key: "handleReviveSnapshot",
-    value: function handleReviveSnapshot(snapshot, selectedSnapshotIndex) {
-      var handled = false;
-
-      if (this.props.onSnapshotClick) {
-        this.setState({
-          selectedSnapshotIndex: selectedSnapshotIndex
-        });
-        handled = this.props.onSnapshotClick(snapshot, selectedSnapshotIndex);
-      }
-
-      if (!handled) {
-        this.reviveSnapshot(selectedSnapshotIndex);
-      }
-    }
-  }, {
-    key: "reviveSnapshot",
-    value: function reviveSnapshot(snapshotOrIndex) {
-      if (typeof snapshotOrIndex === 'number') {
-        var selectedSnapshotIndex = snapshotOrIndex;
-        var snapshot = this.state.snapshots[selectedSnapshotIndex];
-        var newState = Object.assign(Object.assign({}, snapshot.insight), {
-          note: snapshot.description,
-          selectedSnapshotIndex: selectedSnapshotIndex
-        });
-
-        if (!this.state.sidebarClosed) {
-          newState.sideTabId = _interfaces.SideTabId.Snapshots;
-          this.scrollSnapshotIntoView(selectedSnapshotIndex);
-        }
-
-        this.setInsight(newState, true);
-      } else {
-        var _snapshot = snapshotOrIndex;
-
-        if (_snapshot.insight) {
-          this.setInsight(Object.assign(Object.assign({}, _snapshot.insight), {
-            note: _snapshot.description,
-            selectedSnapshotIndex: -1
-          }), true); //don't navigate to sideTab
-        } else {
-          this.setState({
-            note: _snapshot.description,
-            selectedSnapshotIndex: -1
-          });
-        }
-      }
-    }
-  }, {
-    key: "load",
-    value: function load(data, getPartialInsight, optionsOrPrefs) {
-      var _this6 = this;
-
-      this.changeInsight({
+        specCapabilities: null,
+        size: {
+          height: null,
+          width: null
+        },
+        scheme: null,
+        transform: null,
         columns: null,
-        note: null
-      });
-      return new Promise(function (resolve, reject) {
-        var loadFinal = function loadFinal(dataContent) {
-          var partialInsight;
-          _this6.prefs = optionsOrPrefs && optionsOrPrefs.chartPrefs || optionsOrPrefs || {};
+        chart: 'grid',
+        signalValues: null,
+        hideAxes: false,
+        hideLegend: false,
+        sideTabId: _interfaces.SideTabId.ChartType,
+        dataScopeId: _dataScope.DataScopeId.AllData,
+        selectedItemIndex: {},
+        sidebarClosed: false,
+        sidebarPinned: true,
+        view: props.initialView || '2d',
+        snapshots: [],
+        selectedSnapshotIndex: -1,
+        tooltipExclusions: [],
+        positionedColumnMapProps: null,
+        note: null,
+        historyIndex: -1,
+        historyItems: []
+      };
+      _this.state.selectedItemIndex[_dataScope.DataScopeId.AllData] = 0;
+      _this.state.selectedItemIndex[_dataScope.DataScopeId.FilteredData] = 0;
+      _this.state.selectedItemIndex[_dataScope.DataScopeId.SelectedData] = 0;
+      _this.snapshotThumbWidth = _defaults.snapshotThumbWidth;
+      _this.discardColorContextUpdates = true;
 
-          if (getPartialInsight) {
-            partialInsight = getPartialInsight(dataContent.columns);
-            (0, _partialInsight4.initPrefs)(_this6.prefs, partialInsight);
-          }
+      _this.updateViewerOptions(Object.assign(Object.assign({}, _sanddanceReact.SandDance.VegaDeckGl.util.clone(_sanddanceReact.SandDance.Viewer.defaultViewerOptions)), props.viewerOptions));
 
-          if (!partialInsight) {
-            //load recommendation
-            var r = new _chartRecommender.RecommenderSummary(dataContent.columns, dataContent.data);
-            partialInsight = r.recommend();
-          }
-
-          var selectedItemIndex = Object.assign({}, _this6.state.selectedItemIndex);
-          var sideTabId = _interfaces.SideTabId.ChartType;
-          selectedItemIndex[_dataScope.DataScopeId.AllData] = 0;
-          selectedItemIndex[_dataScope.DataScopeId.FilteredData] = 0;
-          selectedItemIndex[_dataScope.DataScopeId.SelectedData] = 0;
-          var newState = Object.assign({
-            dataFile: dataFile,
-            dataContent: dataContent,
-            snapshots: dataContent.snapshots || _this6.state.snapshots,
-            autoCompleteDistinctValues: {},
-            totalStyle: null,
-            facetStyle: 'wrap',
-            filter: null,
-            filteredData: null,
-            transform: null,
-            tooltipExclusions: optionsOrPrefs && optionsOrPrefs.tooltipExclusions || [],
-            selectedItemIndex: selectedItemIndex,
-            sideTabId: sideTabId
-          }, partialInsight);
-          _this6.getColorContext = null;
-          (0, _columns.ensureColumnsExist)(newState.columns, dataContent.columns, newState.transform);
-          var errors = (0, _columns.ensureColumnsPopulated)(partialInsight ? partialInsight.chart : null, newState.columns, dataContent.columns);
-          newState.errors = errors; //change insight
-
-          _this6.changeInsight(newState); //make sure item is active
-
-
-          _this6.activateDataBrowserItem(sideTabId, _this6.state.dataScopeId);
-
-          resolve();
-        };
-
-        var dataFile;
-
-        if (Array.isArray(data)) {
-          return (0, _dataLoader.loadDataArray)(data, 'json').then(function (result) {
-            dataFile = {
-              type: 'json'
-            };
-            loadFinal(result);
-          }).catch(reject);
-        } else {
-          dataFile = data;
-          return (0, _dataLoader.loadDataFile)(dataFile).then(loadFinal).catch(reject);
-        }
-      });
+      return _this;
     }
-  }, {
-    key: "changeChartType",
-    value: function changeChartType(chart) {
-      var _this7 = this;
 
-      var partialInsight = (0, _partialInsight4.copyPrefToNewState)(this.prefs, chart, '*', '*');
-      var newState = Object.assign({
-        chart: chart
-      }, partialInsight);
+    _createClass(__Explorer, [{
+      key: "finalize",
+      value: function finalize() {
+        if (this.viewer) this.viewer.finalize();
+      }
+    }, {
+      key: "updateViewerOptions",
+      value: function updateViewerOptions(viewerOptions) {
+        var _this2 = this;
 
-      var columns = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, partialInsight.columns, this.state.columns);
+        this.viewerOptions = Object.assign(Object.assign({}, _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge(_defaults.defaultViewerOptions, this.viewerOptions, viewerOptions)), {
+          tooltipOptions: {
+            exclude: function exclude(columnName) {
+              return _this2.state.tooltipExclusions.indexOf(columnName) >= 0;
+            }
+          },
+          onColorContextChange: function onColorContextChange() {
+            return _this2.manageColorToolbar();
+          },
+          onDataFilter: function onDataFilter(filter, filteredData) {
+            var selectedItemIndex = Object.assign({}, _this2.state.selectedItemIndex);
+            selectedItemIndex[_dataScope.DataScopeId.FilteredData] = 0;
 
-      newState.columns = Object.assign({}, columns); //special case mappings when switching chart type
+            _this2.changeInsight({
+              filter: filter
+            }, {
+              label: _this2.historicFilterChange,
+              omit: !_this2.historicFilterChange
+            });
 
-      if (this.state.chart === 'scatterplot' && (chart === 'barchart' || chart === 'barchartV')) {
-        newState.columns = Object.assign(Object.assign({}, columns), {
-          sort: columns.y
-        });
-      } else if (this.state.chart === 'scatterplot' && chart === 'barchartH') {
-        newState.columns = Object.assign(Object.assign({}, columns), {
-          sort: columns.x
-        });
-      } else if (chart === 'treemap') {
-        newState.view = '2d';
+            _this2.historicFilterChange = null;
 
-        if (!columns.size) {
-          //make sure size exists and is numeric
-          var sizeColumnName; //first check prefs
+            _this2.setState({
+              filteredData: filteredData,
+              selectedItemIndex: selectedItemIndex
+            });
 
-          if (partialInsight && partialInsight.columns && partialInsight.columns.size) {
-            var prefSizeColumn = this.state.dataContent.columns.filter(function (c) {
-              return c.name === partialInsight.columns.size;
+            if (_this2.state.sideTabId === _interfaces.SideTabId.Data && _this2.state.dataScopeId === _dataScope.DataScopeId.FilteredData) {
+              //make sure item is active
+              requestAnimationFrame(function () {
+                return filteredData && _this2.silentActivation(filteredData[0]);
+              });
+            }
+
+            viewerOptions && viewerOptions.onDataFilter && viewerOptions.onDataFilter(filter, filteredData);
+          },
+          onSelectionChanged: function onSelectionChanged(newSearch, index, selectedData) {
+            if (_this2.ignoreSelectionChange) return;
+            var selectedItemIndex = Object.assign({}, _this2.state.selectedItemIndex);
+            selectedItemIndex[_dataScope.DataScopeId.SelectedData] = index || 0;
+            var _this2$state = _this2.state,
+                search = _this2$state.search,
+                sideTabId = _this2$state.sideTabId;
+
+            if (newSearch) {
+              search = createInputSearch(newSearch); //} else {
+              //sideTabId = SideTabId.ChartType;
+            }
+
+            _this2.setState({
+              search: search,
+              selectedItemIndex: selectedItemIndex,
+              sideTabId: sideTabId
+            });
+
+            viewerOptions && viewerOptions.onSelectionChanged && viewerOptions.onSelectionChanged(newSearch, index, selectedData);
+          },
+          onAxisClick: function onAxisClick(e, search) {
+            _this2.toggleableSearch(e, search);
+
+            viewerOptions && viewerOptions.onAxisClick && viewerOptions.onAxisClick(e, search);
+          },
+          onLegendHeaderClick: function onLegendHeaderClick(e) {
+            var pos = (0, _mouseEvent.getPosition)(e);
+
+            var specRole = _this2.state.specCapabilities && _this2.state.specCapabilities.roles.filter(function (r) {
+              return r.role === 'color';
             })[0];
 
-            if (prefSizeColumn && prefSizeColumn.quantitative) {
-              sizeColumnName = prefSizeColumn.name;
+            var positionedColumnMapProps = Object.assign(Object.assign({}, _this2.getColumnMapBaseProps()), {
+              collapseLabel: true,
+              container: _this2.div,
+              selectedColumnName: _this2.state.columns['color'],
+              onDismiss: function onDismiss() {
+                _this2.setState({
+                  positionedColumnMapProps: null
+                });
+              },
+              specRole: specRole,
+              left: pos.left - _this2.div.clientLeft,
+              top: pos.top - _this2.div.clientTop
+            });
+
+            _this2.setState({
+              positionedColumnMapProps: positionedColumnMapProps
+            });
+          },
+          onLegendRowClick: function onLegendRowClick(e, legendRow) {
+            _this2.toggleableSearch(e, legendRow.search);
+
+            viewerOptions && viewerOptions.onLegendRowClick && viewerOptions.onLegendRowClick(e, legendRow);
+          },
+          onError: function onError(errors) {
+            _this2.setState({
+              errors: errors
+            });
+
+            viewerOptions && viewerOptions.onError && viewerOptions.onError(errors);
+          },
+          onBeforeCreateLayers: _clickableTextLayer.onBeforeCreateLayers,
+          getTextColor: function getTextColor(o) {
+            if (o.specRole) {
+              return _sanddanceReact.SandDance.VegaDeckGl.util.colorFromString(_this2.viewerOptions.colors.clickableText);
+            } else if (o.metaData && o.metaData.search) {
+              return _sanddanceReact.SandDance.VegaDeckGl.util.colorFromString(_this2.viewerOptions.colors.searchText);
+            } else {
+              return o.color;
             }
+          },
+          getTextHighlightColor: function getTextHighlightColor(o) {
+            if (o.specRole) {
+              return _sanddanceReact.SandDance.VegaDeckGl.util.colorFromString(_this2.viewerOptions.colors.clickableTextHighlight);
+            } else if (o.metaData && o.metaData.search) {
+              return _sanddanceReact.SandDance.VegaDeckGl.util.colorFromString(_this2.viewerOptions.colors.searchTextHighlight);
+            } else {
+              return [0, 0, 0, 0];
+            }
+          },
+          onTextClick: function onTextClick(e, text) {
+            if (e && text) {
+              var pos = (0, _mouseEvent.getPosition)(e);
+              var specRole = text.specRole;
+
+              if (pos && specRole) {
+                var positionedColumnMapProps = Object.assign(Object.assign({}, _this2.getColumnMapBaseProps()), {
+                  collapseLabel: true,
+                  container: _this2.div,
+                  selectedColumnName: _this2.state.columns[specRole.role],
+                  onDismiss: function onDismiss() {
+                    _this2.setState({
+                      positionedColumnMapProps: null
+                    });
+                  },
+                  specRole: specRole,
+                  left: pos.left - _this2.div.clientLeft,
+                  top: pos.top - _this2.div.clientTop
+                });
+
+                _this2.setState({
+                  positionedColumnMapProps: positionedColumnMapProps
+                });
+              } else {
+                _this2.setState({
+                  positionedColumnMapProps: null
+                });
+              }
+            }
+          },
+          onNewViewStateTarget: function onNewViewStateTarget() {
+            return _this2.newViewStateTarget;
+          }
+        });
+
+        if (this.viewer && this.viewer.presenter) {
+          var newPresenterStyle = _sanddanceReact.SandDance.util.getPresenterStyle(this.viewerOptions);
+
+          var mergePrenterStyle = Object.assign(Object.assign({}, this.viewer.presenter.style), newPresenterStyle);
+          this.viewer.presenter.style = mergePrenterStyle;
+          this.viewer.options = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge(this.viewer.options, this.props.viewerOptions, this.viewerOptions);
+        }
+      }
+    }, {
+      key: "signal",
+      value: function signal(signalName, signalValue, newViewStateTarget) {
+        var _this3 = this;
+
+        switch (signalName) {
+          case _sanddanceReact.SandDance.constants.SignalNames.ColorBinCount:
+          case _sanddanceReact.SandDance.constants.SignalNames.ColorReverse:
+          case _sanddanceReact.SandDance.constants.SignalNames.MarkOpacity:
+            this.discardColorContextUpdates = false;
+            break;
+        }
+
+        this.newViewStateTarget = newViewStateTarget;
+        this.viewer.vegaViewGl.signal(signalName, signalValue);
+        this.viewer.vegaViewGl.runAsync().then(function () {
+          //deeply set the state without a state change. This prevents a redraw if re-rendered
+          if (_this3.state.signalValues) {
+            _this3.state.signalValues[signalName] = signalValue;
           }
 
-          if (!sizeColumnName) {
-            sizeColumnName = (0, _chartRecommender.preferredColumnForTreemapSize)(this.state.dataContent.columns, true);
-          }
+          _this3.discardColorContextUpdates = true;
+          _this3.newViewStateTarget = undefined;
+          _this3.props.onSignalChanged && _this3.props.onSignalChanged(signalName, signalValue);
+        });
+      }
+    }, {
+      key: "manageColorToolbar",
+      value: function manageColorToolbar() {
+        var _this4 = this;
 
-          if (!sizeColumnName) {
-            sizeColumnName = (0, _chartRecommender.preferredColumnForTreemapSize)(this.state.dataContent.columns, false);
-          }
+        var canRemap = this.viewer.colorContexts && this.viewer.colorContexts.length > 1;
+        (0, _colorMap.applyColorButtons)(this.viewer.presenter, !!this.state.columns.color, {
+          themePalette: _themes.themePalettes[this.props.theme || ''],
+          canRemap: canRemap,
+          isRemap: canRemap && this.viewer.currentColorContext > 0,
+          colorMapHandler: function colorMapHandler(remap) {
+            _this4.viewer.currentColorContext = ~~remap;
 
-          if (!sizeColumnName) {//TODO error - no numeric columns
+            _this4.viewer.renderSameLayout();
+
+            _this4.manageColorToolbar();
+          }
+        });
+      }
+    }, {
+      key: "getInsight",
+      value: function getInsight() {
+        return this.viewer.getInsight();
+      }
+    }, {
+      key: "setInsight",
+      value: function setInsight(historyAction) {
+        var _this5 = this;
+
+        var newState = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+        var partialInsight = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.viewer.getInsight();
+        var rebaseFilter = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+        var selectedItemIndex = Object.assign({}, this.state.selectedItemIndex);
+        selectedItemIndex[_dataScope.DataScopeId.AllData] = 0;
+        selectedItemIndex[_dataScope.DataScopeId.FilteredData] = 0;
+        selectedItemIndex[_dataScope.DataScopeId.SelectedData] = 0;
+        var historicInsight = Object.assign({
+          chart: null,
+          scheme: null,
+          columns: null,
+          filter: null,
+          rebaseFilter: rebaseFilter
+        }, partialInsight);
+        var state = Object.assign({
+          filteredData: null,
+          selectedItemIndex: selectedItemIndex,
+          search: createInputSearch(historicInsight.filter)
+        }, newState);
+
+        var changeInsight = function changeInsight() {
+          _this5.getColorContext = null;
+
+          _this5.changeInsight(historicInsight, historyAction, state);
+        };
+
+        var currentFilter = this.viewer.getInsight().filter;
+
+        if (rebaseFilter && currentFilter && historicInsight.filter) {
+          if (_sanddanceReact.SandDance.searchExpression.startsWith(historicInsight.filter, currentFilter)) {
+            changeInsight();
           } else {
-            newState.columns = Object.assign(Object.assign({}, columns), {
-              size: sizeColumnName
+            this.viewer.reset().then(function () {
+              return new Promise(function (resolve, reject) {
+                setTimeout(resolve, _this5.viewer.options.transitionDurations.scope);
+              });
+            }).then(changeInsight);
+          }
+        } else {
+          changeInsight();
+        }
+      }
+    }, {
+      key: "handleReviveSnapshot",
+      value: function handleReviveSnapshot(snapshot, selectedSnapshotIndex) {
+        var handled = false;
+
+        if (this.props.onSnapshotClick) {
+          this.setState({
+            selectedSnapshotIndex: selectedSnapshotIndex
+          });
+          handled = this.props.onSnapshotClick(snapshot, selectedSnapshotIndex);
+        }
+
+        if (!handled) {
+          this.reviveSnapshot(selectedSnapshotIndex);
+        }
+      }
+    }, {
+      key: "reviveSnapshot",
+      value: function reviveSnapshot(snapshotOrIndex) {
+        if (typeof snapshotOrIndex === 'number') {
+          var selectedSnapshotIndex = snapshotOrIndex;
+          var snapshot = this.state.snapshots[selectedSnapshotIndex];
+          var newState = {
+            note: snapshot.description,
+            selectedSnapshotIndex: selectedSnapshotIndex
+          };
+
+          if (!this.state.sidebarClosed) {
+            newState.sideTabId = _interfaces.SideTabId.Snapshots;
+            this.scrollSnapshotIntoView(selectedSnapshotIndex);
+          }
+
+          this.setInsight({
+            label: _language.strings.labelHistoryReviveSnapshot
+          }, newState, snapshot.insight, true);
+        } else {
+          var _snapshot = snapshotOrIndex;
+
+          if (_snapshot.insight) {
+            this.setInsight({
+              label: _language.strings.labelHistoryReviveSnapshot
+            }, {
+              note: _snapshot.description,
+              selectedSnapshotIndex: -1
+            }, _snapshot.insight, true); //don't navigate to sideTab
+          } else {
+            this.setState({
+              note: _snapshot.description,
+              selectedSnapshotIndex: -1
             });
           }
         }
-      } else if (chart === 'stacks') {
-        newState.view = '3d';
       }
+    }, {
+      key: "load",
+      value: function load(data, getPartialInsight, optionsOrPrefs) {
+        var _this6 = this;
 
-      (0, _columns.ensureColumnsExist)(newState.columns, this.state.dataContent.columns, this.state.transform);
-      var errors = (0, _columns.ensureColumnsPopulated)(chart, newState.columns, this.state.dataContent.columns);
+        this.setState({
+          historyIndex: -1,
+          historyItems: []
+        });
+        this.changeInsight({
+          columns: null
+        }, {
+          label: null,
+          omit: true
+        }, {
+          note: null
+        });
+        return new Promise(function (resolve, reject) {
+          var loadFinal = function loadFinal(dataContent) {
+            var partialInsight;
+            _this6.prefs = optionsOrPrefs && optionsOrPrefs.chartPrefs || optionsOrPrefs || {};
 
-      if (errors) {
-        newState.errors = errors;
+            if (getPartialInsight) {
+              partialInsight = getPartialInsight(dataContent.columns);
+              (0, _partialInsight.initPrefs)(_this6.prefs, partialInsight);
+            }
+
+            if (!partialInsight) {
+              //load recommendation
+              var r = new _chartRecommender.RecommenderSummary(dataContent.columns, dataContent.data);
+              partialInsight = r.recommend();
+
+              if (partialInsight.chart === 'barchart') {
+                partialInsight.chart = 'barchartV';
+              }
+            }
+
+            partialInsight = Object.assign({
+              facetStyle: 'wrap',
+              filter: null,
+              totalStyle: null,
+              transform: null
+            }, partialInsight);
+            var selectedItemIndex = Object.assign({}, _this6.state.selectedItemIndex);
+            var sideTabId = _interfaces.SideTabId.ChartType;
+            selectedItemIndex[_dataScope.DataScopeId.AllData] = 0;
+            selectedItemIndex[_dataScope.DataScopeId.FilteredData] = 0;
+            selectedItemIndex[_dataScope.DataScopeId.SelectedData] = 0;
+            var newState = Object.assign({
+              dataFile: dataFile,
+              dataContent: dataContent,
+              snapshots: dataContent.snapshots || _this6.state.snapshots,
+              autoCompleteDistinctValues: {},
+              filteredData: null,
+              tooltipExclusions: optionsOrPrefs && optionsOrPrefs.tooltipExclusions || [],
+              selectedItemIndex: selectedItemIndex,
+              sideTabId: sideTabId
+            }, partialInsight);
+            _this6.getColorContext = null;
+            (0, _columns.ensureColumnsExist)(newState.columns, dataContent.columns, newState.transform);
+            var errors = (0, _columns.ensureColumnsPopulated)(partialInsight ? partialInsight.chart : null, newState.columns, dataContent.columns);
+            newState.errors = errors; //change insight
+
+            _this6.changeInsight(partialInsight, {
+              label: _language.strings.labelHistoryInit,
+              insert: true
+            }, newState); //make sure item is active
+
+
+            _this6.activateDataBrowserItem(sideTabId, _this6.state.dataScopeId);
+
+            resolve();
+          };
+
+          var dataFile;
+
+          if (Array.isArray(data)) {
+            return (0, _dataLoader.loadDataArray)(data, 'json').then(function (result) {
+              dataFile = {
+                type: 'json'
+              };
+              loadFinal(result);
+            }).catch(reject);
+          } else {
+            dataFile = data;
+            return (0, _dataLoader.loadDataFile)(dataFile).then(loadFinal).catch(reject);
+          }
+        });
       }
+    }, {
+      key: "changeChartType",
+      value: function changeChartType(chart) {
+        var _this7 = this;
 
-      this.calculate(function () {
-        return _this7.changeInsight(newState);
-      });
-    }
-  }, {
-    key: "calculate",
-    value: function calculate(calculating) {
-      this.setState({
-        calculating: calculating
-      });
-    }
-  }, {
-    key: "changeView",
-    value: function changeView(view) {
-      this.changeInsight({
-        view: view
-      });
-    } //state members which change the insight
+        var partialInsight = (0, _partialInsight.copyPrefToNewState)(this.prefs, chart, '*', '*');
+        var insight = Object.assign({
+          chart: chart
+        }, partialInsight);
 
-  }, {
-    key: "changeInsight",
-    value: function changeInsight(newState) {
-      if (!newState.signalValues) {
-        if (this.viewer) {
+        var columns = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, partialInsight.columns, this.state.columns);
+
+        insight.columns = Object.assign({}, columns); //special case mappings when switching chart type
+
+        if (this.state.chart === 'scatterplot' && (chart === 'barchart' || chart === 'barchartV')) {
+          insight.columns = Object.assign(Object.assign({}, columns), {
+            sort: columns.y
+          });
+        } else if (this.state.chart === 'scatterplot' && chart === 'barchartH') {
+          insight.columns = Object.assign(Object.assign({}, columns), {
+            sort: columns.x
+          });
+        } else if (chart === 'treemap') {
+          insight.view = '2d';
+
+          if (!columns.size) {
+            //make sure size exists and is numeric
+            var sizeColumnName; //first check prefs
+
+            if (partialInsight && partialInsight.columns && partialInsight.columns.size) {
+              var prefSizeColumn = this.state.dataContent.columns.filter(function (c) {
+                return c.name === partialInsight.columns.size;
+              })[0];
+
+              if (prefSizeColumn && prefSizeColumn.quantitative) {
+                sizeColumnName = prefSizeColumn.name;
+              }
+            }
+
+            if (!sizeColumnName) {
+              sizeColumnName = (0, _chartRecommender.preferredColumnForTreemapSize)(this.state.dataContent.columns, true);
+            }
+
+            if (!sizeColumnName) {
+              sizeColumnName = (0, _chartRecommender.preferredColumnForTreemapSize)(this.state.dataContent.columns, false);
+            }
+
+            if (!sizeColumnName) {//TODO error - no numeric columns
+            } else {
+              insight.columns = Object.assign(Object.assign({}, columns), {
+                size: sizeColumnName
+              });
+            }
+          }
+        } else if (chart === 'stacks') {
+          insight.view = '3d';
+        } else if (chart === 'scatterplot' && this.state.columns.size) {
           var _this$viewer$getInsig = this.viewer.getInsight(),
               signalValues = _this$viewer$getInsig.signalValues;
 
-          newState.signalValues = signalValues;
-        } else {
-          newState.signalValues = null;
+          signalValues[_sanddanceReact.SandDance.specs.SignalNames.PointScale] = 1;
+          insight.signalValues = signalValues;
         }
-      }
 
-      if (newState.chart === 'barchart') {
-        newState.chart = 'barchartV';
-      }
-
-      this.setState(newState);
-    }
-  }, {
-    key: "changespecCapabilities",
-    value: function changespecCapabilities(specCapabilities) {
-      this.setState({
-        specCapabilities: specCapabilities
-      });
-    }
-  }, {
-    key: "changeColumnMapping",
-    value: function changeColumnMapping(role, column, options) {
-      var _this8 = this;
-
-      var columns = Object.assign({}, this.state.columns);
-
-      var final = function final() {
-        columns[role] = column && column.name;
-
-        _this8.changeInsight({
-          columns: columns
+        (0, _columns.ensureColumnsExist)(insight.columns, this.state.dataContent.columns, this.state.transform);
+        var errors = (0, _columns.ensureColumnsPopulated)(chart, insight.columns, this.state.dataContent.columns);
+        this.calculate(function () {
+          _this7.changeInsight(insight, {
+            label: _language.strings.labelHistoryChangeChartType((0, _chart.chartLabel)(chart))
+          }, errors ? {
+            errors: errors
+          } : null);
         });
-      };
-
-      var _changeInsight = function _changeInsight(newState, pref, columnUpdate) {
-        newState.columns = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, columns, pref, columnUpdate);
-        (0, _partialInsight4.savePref)(_this8.prefs, _this8.state.chart, '*', '*', {
-          columns: columnUpdate
-        });
-
-        _this8.changeInsight(newState);
-      };
-
-      if (column) {
-        var columnUpdate;
-
-        switch (role) {
-          case 'facet':
-            {
-              var partialInsight = (0, _partialInsight4.copyPrefToNewState)(this.prefs, this.state.chart, 'facet', column.name);
-              var newState = Object.assign(Object.assign({
-                columns: columns
-              }, partialInsight), {
-                facetStyle: options ? options.facetStyle : this.state.facetStyle
-              });
-              columnUpdate = {
-                facet: column.name
-              };
-
-              _changeInsight(newState, partialInsight.columns, columnUpdate);
-
-              break;
-            }
-
-          case 'color':
-            {
-              var _newState = {
-                scheme: options && options.scheme,
-                columns: columns,
-                colorBin: this.state.colorBin
-              };
-
-              if (!_newState.scheme) {
-                var _partialInsight = (0, _partialInsight4.copyPrefToNewState)(this.prefs, this.state.chart, 'color', column.name);
-
-                _newState = Object.assign(Object.assign({}, _newState), _partialInsight);
-              }
-
-              if (!_newState.scheme) {
-                _newState.scheme = (0, _colorScheme.bestColorScheme)(column, null, this.state.scheme);
-              }
-
-              if (!column.stats.hasColorData) {
-                _newState.directColor = false;
-
-                if (this.state.directColor !== _newState.directColor) {
-                  _newState.calculating = function () {
-                    return _this8._resize();
-                  };
-                }
-              }
-
-              if (this.state.columns && this.state.columns.color && this.state.columns.color !== column.name) {
-                var currColorColumn = this.state.dataContent.columns.filter(function (c) {
-                  return c.name === _this8.state.columns.color;
-                })[0];
-
-                if (column.isColorData != currColorColumn.isColorData) {
-                  _newState.calculating = function () {
-                    return _this8._resize();
-                  };
-                }
-              }
-
-              this.ignoreSelectionChange = true;
-              this.viewer.deselect().then(function () {
-                _this8.ignoreSelectionChange = false; //allow deselection to render
-
-                requestAnimationFrame(function () {
-                  columnUpdate = {
-                    color: column.name
-                  };
-                  _this8.getColorContext = null;
-
-                  _changeInsight(_newState, null, columnUpdate);
-                });
-              });
-              break;
-            }
-
-          case 'x':
-            {
-              var _partialInsight2 = (0, _partialInsight4.copyPrefToNewState)(this.prefs, this.state.chart, 'x', column.name);
-
-              var _newState2 = Object.assign({
-                columns: columns
-              }, _partialInsight2);
-
-              columnUpdate = {
-                x: column.name
-              };
-
-              _changeInsight(_newState2, _partialInsight2.columns, columnUpdate);
-
-              break;
-            }
-
-          case 'size':
-            {
-              var _partialInsight3 = (0, _partialInsight4.copyPrefToNewState)(this.prefs, this.state.chart, 'size', column.name);
-
-              var _newState3 = Object.assign(Object.assign({}, _partialInsight3), {
-                totalStyle: options ? options.totalStyle : this.state.totalStyle
-              });
-
-              columnUpdate = {
-                size: column.name
-              };
-
-              _changeInsight(_newState3, _partialInsight3.columns, columnUpdate);
-
-              break;
-            }
-
-          default:
-            {
-              final();
-              break;
-            }
-        }
-      } else {
-        switch (role) {
-          case 'facet':
-            {
-              columns.facet = null;
-              columns.facetV = null;
-              this.changeInsight({
-                columns: columns,
-                facetStyle: 'wrap'
-              });
-              break;
-            }
-
-          default:
-            {
-              final();
-              break;
-            }
-        }
       }
-    }
-  }, {
-    key: "setSideTabId",
-    value: function setSideTabId(sideTabId, dataScopeId) {
-      if (sideTabId === _interfaces.SideTabId.Data && dataScopeId == null) {
-        //choose most relevant DataScopeId
-        dataScopeId = this.getBestDataScopeId();
-      }
-
-      if (dataScopeId == null) {
-        dataScopeId = this.state.dataScopeId;
-      }
-
-      this.setState({
-        sideTabId: sideTabId,
-        dataScopeId: dataScopeId,
-        sidebarClosed: false
-      });
-      this.activateDataBrowserItem(sideTabId, dataScopeId);
-    }
-  }, {
-    key: "getBestDataScopeId",
-    value: function getBestDataScopeId() {
-      var dataScopeId;
-      var selectionState = this.viewer && this.viewer.getSelection();
-
-      if (selectionState && selectionState.selectedData && selectionState.selectedData.length) {
-        dataScopeId = _dataScope.DataScopeId.SelectedData;
-      } else if (this.state.filteredData) {
-        dataScopeId = _dataScope.DataScopeId.FilteredData;
-      } else {
-        dataScopeId = _dataScope.DataScopeId.AllData;
-      }
-
-      return dataScopeId;
-    }
-  }, {
-    key: "activateDataBrowserItem",
-    value: function activateDataBrowserItem(sideTabId, dataScopeId) {
-      if (!this.viewer) return;
-      var itemToActivate;
-
-      if (sideTabId === _interfaces.SideTabId.Data) {
-        switch (dataScopeId) {
-          case _dataScope.DataScopeId.AllData:
-            {
-              itemToActivate = this.state.dataContent && this.state.dataContent.data[this.state.selectedItemIndex[_dataScope.DataScopeId.AllData]];
-              break;
-            }
-
-          case _dataScope.DataScopeId.FilteredData:
-            {
-              itemToActivate = this.state.filteredData && this.state.filteredData[this.state.selectedItemIndex[_dataScope.DataScopeId.FilteredData]];
-              break;
-            }
-
-          case _dataScope.DataScopeId.SelectedData:
-            {
-              var selection = this.viewer.getSelection() || {};
-              itemToActivate = selection.selectedData && selection.selectedData[this.state.selectedItemIndex[_dataScope.DataScopeId.SelectedData]];
-              break;
-            }
-        }
-      }
-
-      this.silentActivation(itemToActivate);
-    }
-  }, {
-    key: "silentActivation",
-    value: function silentActivation(itemToActivate) {
-      var _this9 = this;
-
-      this.ignoreSelectionChange = true;
-
-      var done = function done() {
-        _this9.ignoreSelectionChange = false;
-      };
-
-      if (itemToActivate) {
-        return this.viewer.activate(itemToActivate).then(done);
-      } else {
-        return this.viewer.deActivate().then(done);
-      }
-    }
-  }, {
-    key: "sidebar",
-    value: function sidebar(sidebarClosed, sidebarPinned) {
-      this.setState({
-        sidebarClosed: sidebarClosed,
-        sidebarPinned: sidebarPinned
-      });
-    }
-  }, {
-    key: "resize",
-    value: function resize() {
-      var _this10 = this;
-
-      this.setState({
-        calculating: function calculating() {
-          return _this10._resize();
-        }
-      });
-    }
-  }, {
-    key: "_resize",
-    value: function _resize() {
-      this.changeInsight({
-        size: this.getLayoutDivSize(this.state.sidebarPinned, this.state.sidebarClosed)
-      });
-    }
-  }, {
-    key: "viewerMounted",
-    value: function viewerMounted(glDiv) {
-      this.setState({
-        size: this.getLayoutDivSize(this.state.sidebarPinned, this.state.sidebarClosed),
-        signalValues: this.state.signalValues //keep initialized signalValues
-
-      });
-    }
-  }, {
-    key: "getLayoutDivSize",
-    value: function getLayoutDivSize(pinned, closed) {
-      var div = pinned && !closed ? this.layoutDivPinned : this.layoutDivUnpinned;
-      return {
-        height: div.offsetHeight,
-        width: div.offsetWidth
-      };
-    }
-  }, {
-    key: "toggleableSearch",
-    value: function toggleableSearch(e, search) {
-      if (e.ctrlKey) {
+    }, {
+      key: "calculate",
+      value: function calculate(calculating) {
         this.setState({
-          search: createInputSearch(search)
+          calculating: calculating
         });
-        this.setSideTabId(_interfaces.SideTabId.Search);
-      } else {
-        var oldSelection = this.viewer.getSelection();
+      }
+    }, {
+      key: "changeView",
+      value: function changeView(view) {
+        this.changeInsight({
+          view: view
+        }, {
+          label: view === '2d' ? _language.strings.labelViewType2d : _language.strings.labelViewType3d
+        });
+      } //state members which change the insight
 
-        if (oldSelection.search) {
-          //look for matching groups and toggle them
-          var result = (0, _toggleSearch.toggleSearch)(_sanddanceReact.SandDance.searchExpression.ensureSearchExpressionGroupArray(oldSelection.search), search);
+    }, {
+      key: "changeInsight",
+      value: function changeInsight(partialInsight, historyAction, additionalUIState) {
+        if (!partialInsight.signalValues) {
+          partialInsight.signalValues = null;
+        }
 
-          if (result.found) {
-            //removing a group
-            if (result.groups.length === 0) {
-              this.doDeselect();
-            } else {
-              //select with new search removed
-              this.doSelect(result.groups);
+        if (partialInsight.chart === 'barchart') {
+          partialInsight.chart = 'barchartV';
+        }
+
+        this.addHistory(partialInsight, historyAction, additionalUIState);
+      }
+    }, {
+      key: "addHistory",
+      value: function addHistory(historicInsight, historyAction, additionalUIState) {
+        var _this8 = this;
+
+        var setCleanState = function setCleanState(newState) {
+          var cleanState = Object.assign(Object.assign({}, newState), additionalUIState);
+
+          if (!cleanState.note) {
+            cleanState.note = null;
+          }
+
+          delete cleanState.rebaseFilter;
+
+          _this8.setState(cleanState);
+        };
+
+        if (historyAction.omit) {
+          setCleanState(historicInsight);
+          return;
+        }
+
+        var historyItems = this.state.historyItems.slice(0, this.state.historyIndex + 1);
+        var historyIndex = historyItems.length;
+        historyItems.push({
+          label: historyAction.label,
+          historicInsight: historicInsight
+        });
+
+        if (historyAction.insert) {
+          setCleanState({
+            historyIndex: historyIndex,
+            historyItems: historyItems
+          });
+        } else {
+          setCleanState(Object.assign(Object.assign({}, historicInsight), {
+            historyIndex: historyIndex,
+            historyItems: historyItems
+          }));
+        }
+      }
+    }, {
+      key: "replay",
+      value: function replay(index) {
+        var filter = null;
+        var historicInsight = {};
+
+        for (var i = 0; i < index + 1; i++) {
+          var historyItem = this.state.historyItems[i];
+
+          if (historyItem) {
+            if (historyItem.historicInsight.filter === null) {
+              filter = null;
+            } else if (historyItem.historicInsight.rebaseFilter) {
+              filter = historyItem.historicInsight.filter;
+            } else if (historyItem.historicInsight.filter) {
+              filter = _sanddanceReact.SandDance.searchExpression.narrow(filter, historyItem.historicInsight.filter);
             }
-          } else {
-            //adding a new group
-            if (e.altKey || e.shiftKey) {
-              var group = true;
 
-              if (e.altKey) {
-                search.clause = '&&';
-              } else if (e.shiftKey) {
-                if (this.props.searchORDisabled) {
-                  group = false;
-                } else {
-                  search.clause = '||';
-                }
+            historicInsight = Object.assign(Object.assign({}, historicInsight), historyItem.historicInsight);
+          }
+        }
+
+        return Object.assign(Object.assign({}, historicInsight), {
+          filter: filter
+        });
+      }
+    }, {
+      key: "undo",
+      value: function undo() {
+        var historyIndex = this.state.historyIndex - 1;
+        if (historyIndex < 0) return;
+        var newState = this.replay(historyIndex);
+        this.rebaseFilter = true;
+        this.setState(Object.assign(Object.assign({}, newState), {
+          historyIndex: historyIndex
+        }));
+      }
+    }, {
+      key: "redo",
+      value: function redo() {
+        var historyIndex = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.state.historyIndex + 1;
+        if (historyIndex >= this.state.historyItems.length) return;
+        var newState = this.replay(historyIndex);
+        this.rebaseFilter = true;
+        this.setState(Object.assign(Object.assign({}, newState), {
+          historyIndex: historyIndex
+        }));
+      }
+    }, {
+      key: "changespecCapabilities",
+      value: function changespecCapabilities(specCapabilities) {
+        this.setState({
+          specCapabilities: specCapabilities
+        });
+      }
+    }, {
+      key: "changeColumnMapping",
+      value: function changeColumnMapping(role, column, options) {
+        var _this9 = this;
+
+        var columns = Object.assign({}, this.state.columns);
+        var label = column ? _language.strings.labelHistoryMapColumn(role) : _language.strings.labelHistoryUnMapColumn(role);
+
+        var final = function final() {
+          columns[role] = column && column.name;
+
+          _this9.changeInsight({
+            columns: columns
+          }, {
+            label: label
+          });
+        };
+
+        var _changeInsight = function _changeInsight(newInsight, columnUpdate, historyAction) {
+          newInsight.columns = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, columns, columnUpdate);
+          (0, _partialInsight.savePref)(_this9.prefs, _this9.state.chart, '*', '*', {
+            columns: columnUpdate
+          });
+
+          _this9.changeInsight(newInsight, historyAction);
+        };
+
+        if (column) {
+          var columnUpdate;
+
+          switch (role) {
+            case 'facet':
+              {
+                (0, _partialInsight.copyPrefToNewState)(this.prefs, this.state.chart, 'facet', column.name);
+                var historicInsight = {
+                  columns: columns,
+                  facetStyle: options ? options.facetStyle : this.state.facetStyle
+                };
+                columnUpdate = {
+                  facet: column.name
+                };
+
+                _changeInsight(historicInsight, columnUpdate, {
+                  label: label
+                });
+
+                break;
               }
 
-              if (group) {
-                result.groups.push(search);
-                this.doSelect(result.groups);
+            case 'color':
+              {
+                var calculating = null;
+                var _historicInsight = {
+                  scheme: options && options.scheme,
+                  columns: columns,
+                  colorBin: this.state.colorBin
+                };
+
+                if (!_historicInsight.scheme) {
+                  (0, _partialInsight.copyPrefToNewState)(this.prefs, this.state.chart, 'color', column.name);
+                }
+
+                if (!_historicInsight.scheme) {
+                  _historicInsight.scheme = (0, _colorScheme.bestColorScheme)(column, null, this.state.scheme);
+                }
+
+                if (!column.stats.hasColorData) {
+                  _historicInsight.directColor = false;
+
+                  if (this.state.directColor !== _historicInsight.directColor) {
+                    calculating = function calculating() {
+                      return _this9._resize();
+                    };
+                  }
+                }
+
+                if (this.state.columns && this.state.columns.color && this.state.columns.color !== column.name) {
+                  var currColorColumn = this.state.dataContent.columns.filter(function (c) {
+                    return c.name === _this9.state.columns.color;
+                  })[0];
+
+                  if (column.isColorData != currColorColumn.isColorData) {
+                    calculating = function calculating() {
+                      return _this9._resize();
+                    };
+                  }
+                }
+
+                this.ignoreSelectionChange = true;
+                this.viewer.deselect().then(function () {
+                  _this9.ignoreSelectionChange = false; //allow deselection to render
+
+                  requestAnimationFrame(function () {
+                    columnUpdate = {
+                      color: column.name
+                    };
+                    _this9.getColorContext = null;
+
+                    _this9.setState({
+                      calculating: calculating
+                    });
+
+                    _changeInsight(_historicInsight, columnUpdate, {
+                      label: label
+                    });
+                  });
+                });
+                break;
+              }
+
+            case 'x':
+              {
+                (0, _partialInsight.copyPrefToNewState)(this.prefs, this.state.chart, 'x', column.name);
+                var _historicInsight2 = {
+                  columns: columns
+                };
+                columnUpdate = {
+                  x: column.name
+                };
+
+                _changeInsight(_historicInsight2, columnUpdate, {
+                  label: label
+                });
+
+                break;
+              }
+
+            case 'size':
+              {
+                (0, _partialInsight.copyPrefToNewState)(this.prefs, this.state.chart, 'size', column.name);
+                var _historicInsight3 = {
+                  totalStyle: options ? options.totalStyle : this.state.totalStyle
+                };
+                columnUpdate = {
+                  size: column.name
+                };
+
+                _changeInsight(_historicInsight3, columnUpdate, {
+                  label: label
+                });
+
+                break;
+              }
+
+            default:
+              {
+                final();
+                break;
+              }
+          }
+        } else {
+          switch (role) {
+            case 'facet':
+              {
+                columns.facet = null;
+                columns.facetV = null;
+                this.changeInsight({
+                  columns: columns,
+                  facetStyle: 'wrap'
+                }, {
+                  label: label
+                });
+                break;
+              }
+
+            default:
+              {
+                final();
+                break;
+              }
+          }
+        }
+      }
+    }, {
+      key: "setSideTabId",
+      value: function setSideTabId(sideTabId, dataScopeId) {
+        if (sideTabId === _interfaces.SideTabId.Data && dataScopeId == null) {
+          //choose most relevant DataScopeId
+          dataScopeId = this.getBestDataScopeId();
+        }
+
+        if (dataScopeId == null) {
+          dataScopeId = this.state.dataScopeId;
+        }
+
+        this.setState({
+          sideTabId: sideTabId,
+          dataScopeId: dataScopeId,
+          sidebarClosed: false
+        });
+        this.activateDataBrowserItem(sideTabId, dataScopeId);
+      }
+    }, {
+      key: "getBestDataScopeId",
+      value: function getBestDataScopeId() {
+        var dataScopeId;
+        var selectionState = this.viewer && this.viewer.getSelection();
+
+        if (selectionState && selectionState.selectedData && selectionState.selectedData.length) {
+          dataScopeId = _dataScope.DataScopeId.SelectedData;
+        } else if (this.state.filteredData) {
+          dataScopeId = _dataScope.DataScopeId.FilteredData;
+        } else {
+          dataScopeId = _dataScope.DataScopeId.AllData;
+        }
+
+        return dataScopeId;
+      }
+    }, {
+      key: "activateDataBrowserItem",
+      value: function activateDataBrowserItem(sideTabId, dataScopeId) {
+        if (!this.viewer) return;
+        var itemToActivate;
+
+        if (sideTabId === _interfaces.SideTabId.Data) {
+          switch (dataScopeId) {
+            case _dataScope.DataScopeId.AllData:
+              {
+                itemToActivate = this.state.dataContent && this.state.dataContent.data[this.state.selectedItemIndex[_dataScope.DataScopeId.AllData]];
+                break;
+              }
+
+            case _dataScope.DataScopeId.FilteredData:
+              {
+                itemToActivate = this.state.filteredData && this.state.filteredData[this.state.selectedItemIndex[_dataScope.DataScopeId.FilteredData]];
+                break;
+              }
+
+            case _dataScope.DataScopeId.SelectedData:
+              {
+                var selection = this.viewer.getSelection() || {};
+                itemToActivate = selection.selectedData && selection.selectedData[this.state.selectedItemIndex[_dataScope.DataScopeId.SelectedData]];
+                break;
+              }
+          }
+        }
+
+        this.silentActivation(itemToActivate);
+      }
+    }, {
+      key: "silentActivation",
+      value: function silentActivation(itemToActivate) {
+        var _this10 = this;
+
+        this.ignoreSelectionChange = true;
+
+        var done = function done() {
+          _this10.ignoreSelectionChange = false;
+        };
+
+        if (itemToActivate) {
+          return this.viewer.activate(itemToActivate).then(done);
+        } else {
+          return this.viewer.deActivate().then(done);
+        }
+      }
+    }, {
+      key: "sidebar",
+      value: function sidebar(sidebarClosed, sidebarPinned) {
+        this.setState({
+          sidebarClosed: sidebarClosed,
+          sidebarPinned: sidebarPinned
+        });
+      }
+    }, {
+      key: "resize",
+      value: function resize() {
+        var _this11 = this;
+
+        this.setState({
+          calculating: function calculating() {
+            return _this11._resize();
+          }
+        });
+      }
+    }, {
+      key: "_resize",
+      value: function _resize() {
+        this.changeInsight({
+          size: this.getLayoutDivSize(this.state.sidebarPinned, this.state.sidebarClosed)
+        }, {
+          label: 'resize',
+          omit: true
+        });
+      }
+    }, {
+      key: "viewerMounted",
+      value: function viewerMounted(glDiv) {
+        this.setState({
+          size: this.getLayoutDivSize(this.state.sidebarPinned, this.state.sidebarClosed),
+          signalValues: this.state.signalValues //keep initialized signalValues
+
+        });
+      }
+    }, {
+      key: "getLayoutDivSize",
+      value: function getLayoutDivSize(pinned, closed) {
+        var div = pinned && !closed ? this.layoutDivPinned : this.layoutDivUnpinned;
+        return {
+          height: div.offsetHeight,
+          width: div.offsetWidth
+        };
+      }
+    }, {
+      key: "toggleableSearch",
+      value: function toggleableSearch(e, search) {
+        if (e.ctrlKey) {
+          this.setState({
+            search: createInputSearch(search)
+          });
+          this.setSideTabId(_interfaces.SideTabId.Search);
+        } else {
+          var oldSelection = this.viewer.getSelection();
+
+          if (oldSelection.search) {
+            //look for matching groups and toggle them
+            var result = (0, _toggleSearch.toggleSearch)(_sanddanceReact.SandDance.searchExpression.ensureSearchExpressionGroupArray(oldSelection.search), search);
+
+            if (result.found) {
+              //removing a group
+              if (result.groups.length === 0) {
+                this.doDeselect();
               } else {
+                //select with new search removed
+                this.doSelect(result.groups);
+              }
+            } else {
+              //adding a new group
+              if (e.altKey || e.shiftKey) {
+                var group = true;
+
+                if (e.altKey) {
+                  search.clause = '&&';
+                } else if (e.shiftKey) {
+                  if (this.props.searchORDisabled) {
+                    group = false;
+                  } else {
+                    search.clause = '||';
+                  }
+                }
+
+                if (group) {
+                  result.groups.push(search);
+                  this.doSelect(result.groups);
+                } else {
+                  this.doSelect(search);
+                }
+              } else {
+                //replace
                 this.doSelect(search);
               }
-            } else {
-              //replace
-              this.doSelect(search);
             }
+          } else {
+            this.doSelect(search);
           }
+        }
+      }
+    }, {
+      key: "doFilter",
+      value: function doFilter(search, historicFilterChange) {
+        this.historicFilterChange = historicFilterChange;
+        this.viewer.filter(search);
+      }
+    }, {
+      key: "doUnfilter",
+      value: function doUnfilter(historicFilterChange) {
+        this.historicFilterChange = historicFilterChange;
+        this.viewer.reset();
+      }
+    }, {
+      key: "doSelect",
+      value: function doSelect(search) {
+        this.viewer.select(search);
+      }
+    }, {
+      key: "doDeselect",
+      value: function doDeselect() {
+        return this.viewer.deselect();
+      }
+    }, {
+      key: "writeSnapshot",
+      value: function writeSnapshot(snapshot, editIndex) {
+        var selectedSnapshotIndex = this.state.selectedSnapshotIndex;
+        var snapshots;
+
+        if (editIndex >= 0) {
+          snapshots = _toConsumableArray(this.state.snapshots);
+          snapshots[editIndex] = snapshot;
+          this.setState({
+            snapshots: snapshots,
+            selectedSnapshotIndex: selectedSnapshotIndex
+          });
         } else {
-          this.doSelect(search);
-        }
-      }
-    }
-  }, {
-    key: "doFilter",
-    value: function doFilter(search) {
-      this.viewer.filter(search);
-    }
-  }, {
-    key: "doUnfilter",
-    value: function doUnfilter() {
-      this.viewer.reset();
-    }
-  }, {
-    key: "doSelect",
-    value: function doSelect(search) {
-      this.viewer.select(search);
-    }
-  }, {
-    key: "doDeselect",
-    value: function doDeselect() {
-      return this.viewer.deselect();
-    }
-  }, {
-    key: "writeSnapshot",
-    value: function writeSnapshot(snapshot, editIndex) {
-      var selectedSnapshotIndex = this.state.selectedSnapshotIndex;
-      var snapshots;
-
-      if (editIndex >= 0) {
-        snapshots = _toConsumableArray(this.state.snapshots);
-        snapshots[editIndex] = snapshot;
-        this.setState({
-          snapshots: snapshots,
-          selectedSnapshotIndex: selectedSnapshotIndex
-        });
-      } else {
-        var note = snapshot.description;
-        snapshots = this.state.snapshots.concat(snapshot);
-        selectedSnapshotIndex = snapshots.length - 1;
-
-        if (!this.state.sidebarClosed) {
+          var note = snapshot.description;
+          snapshots = this.state.snapshots.concat(snapshot);
+          selectedSnapshotIndex = snapshots.length - 1;
           this.scrollSnapshotIntoView(selectedSnapshotIndex);
-        }
-
-        this.setState({
-          sideTabId: _interfaces.SideTabId.Snapshots,
-          snapshots: snapshots,
-          selectedSnapshotIndex: selectedSnapshotIndex,
-          note: note
-        });
-      }
-    }
-  }, {
-    key: "scrollSnapshotIntoView",
-    value: function scrollSnapshotIntoView(selectedSnapshotIndex) {
-      var _this11 = this;
-
-      clearTimeout(this.scrollSnapshotTimer);
-      this.scrollSnapshotTimer = setTimeout(function () {
-        var selectedSnapshotElement = _this11.div.querySelector(".snapshot:nth-child(".concat(selectedSnapshotIndex + 1, ")"));
-
-        if (selectedSnapshotElement) {
-          selectedSnapshotElement.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest'
+          this.setState({
+            sideTabId: _interfaces.SideTabId.Snapshots,
+            snapshots: snapshots,
+            selectedSnapshotIndex: selectedSnapshotIndex,
+            note: note
           });
         }
-      }, 500);
-    }
-  }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      if (this.props.mounted) {
-        this.props.mounted(this);
+
+        this.props.onSnapshotsChanged && this.props.onSnapshotsChanged(snapshots);
       }
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this12 = this;
+    }, {
+      key: "scrollSnapshotIntoView",
+      value: function scrollSnapshotIntoView(selectedSnapshotIndex) {
+        var _this12 = this;
 
-      var _this$state = this.state,
-          colorBin = _this$state.colorBin,
-          columns = _this$state.columns,
-          directColor = _this$state.directColor,
-          facetStyle = _this$state.facetStyle,
-          filter = _this$state.filter,
-          hideAxes = _this$state.hideAxes,
-          hideLegend = _this$state.hideLegend,
-          scheme = _this$state.scheme,
-          size = _this$state.size,
-          totalStyle = _this$state.totalStyle,
-          transform = _this$state.transform,
-          chart = _this$state.chart,
-          view = _this$state.view;
-      var signalValues = this.state.signalValues;
+        clearTimeout(this.scrollSnapshotTimer);
+        if (this.state.sidebarClosed) return;
+        this.scrollSnapshotTimer = setTimeout(function () {
+          var selectedSnapshotElement = _this12.div.querySelector(".snapshot:nth-child(".concat(selectedSnapshotIndex + 1, ")"));
 
-      if (this.viewer) {
-        signalValues = Object.assign(Object.assign({}, signalValues), this.viewer.getInsight().signalValues);
-      }
-
-      var insight = {
-        colorBin: colorBin,
-        columns: columns,
-        directColor: directColor,
-        facetStyle: facetStyle,
-        filter: filter,
-        hideAxes: hideAxes,
-        hideLegend: hideLegend,
-        scheme: scheme,
-        signalValues: signalValues,
-        size: size,
-        totalStyle: totalStyle,
-        transform: transform,
-        chart: chart,
-        view: view
-      };
-      var loaded = !!(this.state.columns && this.state.dataContent);
-      var selectionState = this.viewer && this.viewer.getSelection() || {};
-      var selectionSearch = selectionState && selectionState.search;
-      var columnMapProps = this.getColumnMapBaseProps();
-      var datas = {};
-      datas[_dataScope.DataScopeId.AllData] = this.state.dataContent && this.state.dataContent.data;
-      datas[_dataScope.DataScopeId.FilteredData] = this.state.filteredData;
-      datas[_dataScope.DataScopeId.SelectedData] = selectionState && selectionState.selectedData;
-
-      if (this.state.calculating) {
-        requestAnimationFrame(function () {
-          //allow render to complete
-          if (_this12.state.calculating) {
-            _this12.state.calculating();
-
-            _this12.setState({
-              calculating: null
+          if (selectedSnapshotElement) {
+            selectedSnapshotElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'nearest'
             });
           }
-        });
+        }, 500);
       }
-
-      var theme = this.props.theme || '';
-      var themePalette = _themes.themePalettes[theme];
-      return React.createElement("div", {
-        ref: function ref(div) {
-          if (div) _this12.div = div;
-        },
-        className: _sanddanceReact.util.classList('sanddance-explorer', this.props.theme)
-      }, React.createElement(_topbar.Topbar, {
-        logoClickUrl: this.props.logoClickUrl,
-        logoClickTarget: this.props.logoClickTarget,
-        themePalette: themePalette,
-        loaded: loaded,
-        doDeselect: this.doDeselect.bind(this),
-        doFilter: this.doFilter.bind(this),
-        doUnfilter: this.doUnfilter.bind(this),
-        filter: this.state.filter,
-        selectionSearch: selectionSearch,
-        selectionState: selectionState,
-        buttons: this.props.topBarButtonProps,
-        view: this.state.view,
-        snapshots: this.state.snapshots,
-        onSnapshotPreviousClick: function onSnapshotPreviousClick() {
-          var selectedSnapshotIndex;
-
-          if (_this12.state.selectedSnapshotIndex === -1) {
-            selectedSnapshotIndex = _this12.state.snapshots.length - 1;
-          } else {
-            selectedSnapshotIndex = _this12.state.selectedSnapshotIndex;
-            selectedSnapshotIndex--;
-
-            if (selectedSnapshotIndex < 0) {
-              selectedSnapshotIndex = _this12.state.snapshots.length - 1;
-            }
-          }
-
-          _this12.handleReviveSnapshot(_this12.state.snapshots[selectedSnapshotIndex], selectedSnapshotIndex);
-        },
-        onSnapshotClick: function onSnapshotClick() {
-          return _this12.snapshotEditor.editSnapshot();
-        },
-        onSnapshotNextClick: function onSnapshotNextClick() {
-          var selectedSnapshotIndex;
-
-          if (_this12.state.selectedSnapshotIndex === -1) {
-            selectedSnapshotIndex = 0;
-          } else {
-            selectedSnapshotIndex = _this12.state.selectedSnapshotIndex;
-            selectedSnapshotIndex++;
-
-            if (selectedSnapshotIndex > _this12.state.snapshots.length - 1) {
-              selectedSnapshotIndex = 0;
-            }
-          }
-
-          _this12.handleReviveSnapshot(_this12.state.snapshots[selectedSnapshotIndex], selectedSnapshotIndex);
-        },
-        onViewClick: function onViewClick() {
-          var view = _this12.state.view === '2d' ? '3d' : '2d';
-
-          _this12.changeInsight({
-            view: view
-          });
-        },
-        onHomeClick: function onHomeClick() {
-          return _this12.viewer.presenter.homeCamera();
+    }, {
+      key: "componentDidMount",
+      value: function componentDidMount() {
+        if (this.props.mounted) {
+          this.props.mounted(this);
         }
-      }), React.createElement("div", {
-        className: _sanddanceReact.util.classList('sanddance-main', this.state.sidebarPinned && 'pinned', this.state.sidebarClosed && 'closed', (insight.hideLegend || insight.directColor || !colorMapping(insight, this.state.dataContent && this.state.dataContent.columns)) && 'hide-legend')
-      }, React.createElement("div", {
-        ref: function ref(div) {
-          if (div && !_this12.layoutDivUnpinned) _this12.layoutDivUnpinned = div;
-        },
-        className: "sanddance-layout-unpinned"
-      }), React.createElement("div", {
-        ref: function ref(div) {
-          if (div && !_this12.layoutDivPinned) _this12.layoutDivPinned = div;
-        },
-        className: "sanddance-layout-pinned"
-      }), !loaded && React.createElement("div", {
-        className: "loading"
-      }, React.createElement(_base.base.fluentUI.Spinner, {
-        size: _base.base.fluentUI.SpinnerSize.large,
-        label: _language.strings.loading
-      })), React.createElement(_sidebar.Sidebar, {
-        themePalette: themePalette,
-        calculating: !!this.state.calculating,
-        closed: this.state.sidebarClosed,
-        hideSidebarControls: this.props.hideSidebarControls,
-        pinned: this.state.sidebarPinned,
-        disabled: !loaded,
-        dataScopeProps: {
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        var _this13 = this;
+
+        var _this$state = this.state,
+            colorBin = _this$state.colorBin,
+            columns = _this$state.columns,
+            directColor = _this$state.directColor,
+            facetStyle = _this$state.facetStyle,
+            filter = _this$state.filter,
+            hideAxes = _this$state.hideAxes,
+            hideLegend = _this$state.hideLegend,
+            scheme = _this$state.scheme,
+            signalValues = _this$state.signalValues,
+            size = _this$state.size,
+            totalStyle = _this$state.totalStyle,
+            transform = _this$state.transform,
+            chart = _this$state.chart,
+            view = _this$state.view;
+        var insight = {
+          colorBin: colorBin,
+          columns: columns,
+          directColor: directColor,
+          facetStyle: facetStyle,
+          filter: filter,
+          hideAxes: hideAxes,
+          hideLegend: hideLegend,
+          scheme: scheme,
+          signalValues: signalValues,
+          size: size,
+          totalStyle: totalStyle,
+          transform: transform,
+          chart: chart,
+          view: view
+        };
+        var loaded = !!(this.state.columns && this.state.dataContent);
+        var selectionState = this.viewer && this.viewer.getSelection() || {};
+        var selectionSearch = selectionState && selectionState.search;
+        var columnMapProps = this.getColumnMapBaseProps();
+        var datas = {};
+        datas[_dataScope.DataScopeId.AllData] = this.state.dataContent && this.state.dataContent.data;
+        datas[_dataScope.DataScopeId.FilteredData] = this.state.filteredData;
+        datas[_dataScope.DataScopeId.SelectedData] = selectionState && selectionState.selectedData;
+
+        if (this.state.calculating) {
+          requestAnimationFrame(function () {
+            //allow render to complete
+            if (_this13.state.calculating) {
+              _this13.state.calculating();
+
+              _this13.setState({
+                calculating: null
+              });
+            }
+          });
+        }
+
+        var theme = this.props.theme || '';
+        var themePalette = _themes.themePalettes[theme];
+        return _base.base.react.createElement("div", {
+          ref: function ref(div) {
+            if (div) _this13.div = div;
+          },
+          className: _sanddanceReact.util.classList('sanddance-explorer', this.props.theme)
+        }, _base.base.react.createElement(_topbar.Topbar, {
+          collapseLabels: this.props.compactUI,
+          historyIndex: this.state.historyIndex,
+          historyItems: this.state.historyItems,
+          undo: function undo() {
+            return _this13.undo();
+          },
+          redo: function redo() {
+            return _this13.redo();
+          },
+          logoClickUrl: this.props.logoClickUrl,
+          logoClickTarget: this.props.logoClickTarget,
           themePalette: themePalette,
-          compact: this.state.sidebarClosed,
-          onCompactClick: function onCompactClick() {
-            _this12.changeInsight({
-              sidebarClosed: false,
-              size: _this12.getLayoutDivSize(_this12.state.sidebarPinned, false)
-            });
-          },
-          dataSet: this.props.datasetElement,
-          dataCount: loaded && {
-            all: this.state.dataContent && this.state.dataContent.data.length,
-            filtered: this.state.filteredData && this.state.filteredData.length,
-            selected: selectionState && selectionState.selectedData && selectionState.selectedData.length
-          },
-          active: this.state.sideTabId === _interfaces.SideTabId.Data,
-          onDataScopeClick: function onDataScopeClick(dataScopeId) {
-            return _this12.setSideTabId(_interfaces.SideTabId.Data, dataScopeId);
-          },
-          selectedDataScope: this.state.dataScopeId,
-          disabled: !loaded
-        },
-        onSideTabClick: function onSideTabClick(sideTabId) {
-          //collapse or toggle
-          if (sideTabId === _interfaces.SideTabId.Collapse || _this12.state.sideTabId === sideTabId) {
-            var _this12$state = _this12.state,
-                dataScopeId = _this12$state.dataScopeId,
-                sidebarClosed = _this12$state.sidebarClosed;
+          loaded: loaded,
+          doDeselect: this.doDeselect.bind(this),
+          doFilter: this.doFilter.bind(this),
+          doUnfilter: this.doUnfilter.bind(this),
+          filter: this.state.filter,
+          selectionSearch: selectionSearch,
+          selectionState: selectionState,
+          buttons: this.props.topBarButtonProps,
+          view: this.state.view,
+          snapshots: this.state.snapshots,
+          onSnapshotPreviousClick: function onSnapshotPreviousClick() {
+            var selectedSnapshotIndex;
 
-            if (sidebarClosed && sideTabId === _interfaces.SideTabId.Data) {
-              dataScopeId = _this12.getBestDataScopeId();
+            if (_this13.state.selectedSnapshotIndex === -1) {
+              selectedSnapshotIndex = _this13.state.snapshots.length - 1;
+            } else {
+              selectedSnapshotIndex = _this13.state.selectedSnapshotIndex;
+              selectedSnapshotIndex--;
+
+              if (selectedSnapshotIndex < 0) {
+                selectedSnapshotIndex = _this13.state.snapshots.length - 1;
+              }
             }
 
-            sidebarClosed = !_this12.state.sidebarClosed;
+            _this13.handleReviveSnapshot(_this13.state.snapshots[selectedSnapshotIndex], selectedSnapshotIndex);
+          },
+          onSnapshotClick: function onSnapshotClick() {
+            return _this13.snapshotEditor.editSnapshot();
+          },
+          onSnapshotNextClick: function onSnapshotNextClick() {
+            var selectedSnapshotIndex;
 
-            _this12.changeInsight({
-              dataScopeId: dataScopeId,
-              sidebarClosed: sidebarClosed,
-              size: _this12.getLayoutDivSize(_this12.state.sidebarPinned, sidebarClosed)
+            if (_this13.state.selectedSnapshotIndex === -1) {
+              selectedSnapshotIndex = 0;
+            } else {
+              selectedSnapshotIndex = _this13.state.selectedSnapshotIndex;
+              selectedSnapshotIndex++;
+
+              if (selectedSnapshotIndex > _this13.state.snapshots.length - 1) {
+                selectedSnapshotIndex = 0;
+              }
+            }
+
+            _this13.handleReviveSnapshot(_this13.state.snapshots[selectedSnapshotIndex], selectedSnapshotIndex);
+          },
+          onViewClick: function onViewClick() {
+            var view = _this13.state.view === '2d' ? '3d' : '2d';
+
+            _this13.changeInsight({
+              view: view
+            }, {
+              label: view === '2d' ? _language.strings.labelViewType2d : _language.strings.labelViewType3d
             });
-          } else if (sideTabId === _interfaces.SideTabId.Pin) {
-            _this12.changeInsight({
-              sidebarPinned: !_this12.state.sidebarPinned,
-              size: _this12.getLayoutDivSize(!_this12.state.sidebarPinned, _this12.state.sidebarClosed)
-            });
-          } else {
-            _this12.setSideTabId(sideTabId);
+          },
+          onHomeClick: function onHomeClick() {
+            return _this13.viewer.presenter.homeCamera();
           }
-        },
-        selectedSideTab: this.state.sideTabId
-      }, loaded && function () {
-        switch (_this12.state.sideTabId) {
-          case _interfaces.SideTabId.ChartType:
-            {
-              return React.createElement(_chart.Chart, Object.assign({
-                collapseLabels: _this12.props.compactUI,
-                tooltipExclusions: _this12.state.tooltipExclusions,
-                toggleTooltipExclusion: function toggleTooltipExclusion(columnName) {
-                  var tooltipExclusions = _toConsumableArray(_this12.state.tooltipExclusions);
+        }), _base.base.react.createElement("div", {
+          className: _sanddanceReact.util.classList('sanddance-main', this.state.sidebarPinned && 'pinned', this.state.sidebarClosed && 'closed', (insight.hideLegend || insight.directColor || !colorMapping(insight, this.state.dataContent && this.state.dataContent.columns)) && 'hide-legend')
+        }, _base.base.react.createElement("div", {
+          ref: function ref(div) {
+            if (div && !_this13.layoutDivUnpinned) _this13.layoutDivUnpinned = div;
+          },
+          className: "sanddance-layout-unpinned"
+        }), _base.base.react.createElement("div", {
+          ref: function ref(div) {
+            if (div && !_this13.layoutDivPinned) _this13.layoutDivPinned = div;
+          },
+          className: "sanddance-layout-pinned"
+        }), !loaded && _base.base.react.createElement("div", {
+          className: "loading"
+        }, _base.base.react.createElement(_base.base.fluentUI.Spinner, {
+          size: _base.base.fluentUI.SpinnerSize.large,
+          label: _language.strings.loading
+        })), _base.base.react.createElement(_sidebar.Sidebar, {
+          themePalette: themePalette,
+          calculating: !!this.state.calculating,
+          closed: this.state.sidebarClosed,
+          hideSidebarControls: this.props.hideSidebarControls,
+          pinned: this.state.sidebarPinned,
+          disabled: !loaded,
+          dataScopeProps: {
+            themePalette: themePalette,
+            compact: this.state.sidebarClosed,
+            onCompactClick: function onCompactClick() {
+              _this13.changeInsight({
+                size: _this13.getLayoutDivSize(_this13.state.sidebarPinned, false)
+              }, {
+                label: null,
+                omit: true
+              }, {
+                sidebarClosed: false
+              });
+            },
+            dataSet: this.props.datasetElement,
+            dataCount: loaded && {
+              all: this.state.dataContent && this.state.dataContent.data.length,
+              filtered: this.state.filteredData && this.state.filteredData.length,
+              selected: selectionState && selectionState.selectedData && selectionState.selectedData.length
+            },
+            active: this.state.sideTabId === _interfaces.SideTabId.Data,
+            onDataScopeClick: function onDataScopeClick(dataScopeId) {
+              return _this13.setSideTabId(_interfaces.SideTabId.Data, dataScopeId);
+            },
+            selectedDataScope: this.state.dataScopeId,
+            disabled: !loaded
+          },
+          onSideTabClick: function onSideTabClick(sideTabId) {
+            //collapse or toggle
+            if (sideTabId === _interfaces.SideTabId.Collapse || _this13.state.sideTabId === sideTabId) {
+              var _this13$state = _this13.state,
+                  dataScopeId = _this13$state.dataScopeId,
+                  sidebarClosed = _this13$state.sidebarClosed;
 
-                  var i = tooltipExclusions.indexOf(columnName);
-
-                  if (i < 0) {
-                    tooltipExclusions.push(columnName);
-                  } else {
-                    tooltipExclusions.splice(i, 1);
-                  }
-
-                  _this12.setState({
-                    tooltipExclusions: tooltipExclusions
-                  });
-
-                  _this12.props.onTooltipExclusionsChanged && _this12.props.onTooltipExclusionsChanged(tooltipExclusions);
-                },
-                disabled: !loaded || _this12.state.sidebarClosed
-              }, columnMapProps, {
-                chart: _this12.state.chart,
-                view: _this12.state.view,
-                onChangeChartType: function onChangeChartType(chart) {
-                  return _this12.changeChartType(chart);
-                },
-                insightColumns: _this12.state.columns,
-                onChangeSignal: function onChangeSignal(role, column, name, value) {
-                  return (0, _partialInsight4.saveSignalValuePref)(_this12.prefs, _this12.state.chart, role, column, name, value);
-                }
-              }));
-            }
-
-          case _interfaces.SideTabId.Color:
-            {
-              return React.createElement(_color.Color, Object.assign({
-                compactUI: _this12.props.compactUI,
-                specCapabilities: _this12.state.specCapabilities,
-                disabled: !loaded || _this12.state.sidebarClosed
-              }, columnMapProps, {
-                dataContent: _this12.state.dataContent,
-                scheme: _this12.state.scheme,
-                colorBin: _this12.state.colorBin,
-                colorBinSignal: _this12.viewer && _this12.viewer.vegaSpec && _this12.viewer.vegaSpec.signals.filter(function (s) {
-                  return s.name === _sanddanceReact.SandDance.constants.SignalNames.ColorBinCount;
-                })[0],
-                colorReverseSignal: _this12.viewer && _this12.viewer.vegaSpec && _this12.viewer.vegaSpec.signals.filter(function (s) {
-                  return s.name === _sanddanceReact.SandDance.constants.SignalNames.ColorReverse;
-                })[0],
-                colorColumn: _this12.state.columns.color,
-                onColorBinChange: function onColorBinChange(colorBin) {
-                  _this12.ignoreSelectionChange = true;
-
-                  _this12.viewer.deselect().then(function () {
-                    _this12.ignoreSelectionChange = false; //allow deselection to render
-
-                    requestAnimationFrame(function () {
-                      _this12.getColorContext = null;
-
-                      _this12.changeInsight({
-                        colorBin: colorBin
-                      });
-
-                      (0, _partialInsight4.savePref)(_this12.prefs, _this12.state.chart, 'color', _this12.state.columns.color, {
-                        colorBin: colorBin
-                      });
-                    });
-                  });
-                },
-                onColorSchemeChange: function onColorSchemeChange(scheme) {
-                  _this12.changeColumnMapping('color', _this12.state.dataContent.columns.filter(function (c) {
-                    return c.name === _this12.state.columns.color;
-                  })[0], {
-                    scheme: scheme
-                  });
-
-                  (0, _partialInsight4.savePref)(_this12.prefs, _this12.state.chart, 'color', _this12.state.columns.color, {
-                    scheme: scheme
-                  });
-                },
-                onColorBinCountChange: function onColorBinCountChange(value) {
-                  var signalValues = {};
-                  signalValues[_sanddanceReact.SandDance.constants.SignalNames.ColorBinCount] = value;
-                  (0, _partialInsight4.savePref)(_this12.prefs, _this12.state.chart, 'color', _this12.state.columns.color, {
-                    signalValues: signalValues
-                  });
-                },
-                onColorReverseChange: function onColorReverseChange(value) {
-                  _this12.getColorContext = null;
-                  var signalValues = {};
-                  signalValues[_sanddanceReact.SandDance.constants.SignalNames.ColorReverse] = value;
-                },
-                directColor: _this12.state.directColor,
-                onDirectColorChange: function onDirectColorChange(directColor) {
-                  _this12.changeInsight({
-                    directColor: directColor,
-                    calculating: function calculating() {
-                      return _this12._resize();
-                    }
-                  });
-                }
-              }));
-            }
-
-          case _interfaces.SideTabId.Data:
-            {
-              var data = datas[_this12.state.dataScopeId];
-              var itemVisible = true;
-
-              switch (_this12.state.dataScopeId) {
-                case _dataScope.DataScopeId.AllData:
-                  {
-                    var item = _this12.state.selectedItemIndex[_this12.state.dataScopeId];
-                    itemVisible = _this12.state.dataContent && !_this12.state.filteredData || _this12.state.filteredData.indexOf(data[item]) >= 0;
-                  }
+              if (sidebarClosed && sideTabId === _interfaces.SideTabId.Data) {
+                dataScopeId = _this13.getBestDataScopeId();
               }
 
-              return React.createElement(_dataBrowser.DataBrowser, {
-                theme: _this12.props.theme,
-                themePalette: themePalette,
-                disabled: !loaded || _this12.state.sidebarClosed,
-                columns: _this12.state.dataContent && _this12.state.dataContent.columns,
-                data: data,
-                displayName: _this12.state.dataFile && _this12.state.dataFile.displayName || _language.strings.defaultFileName,
-                title: dataBrowserTitles[_this12.state.dataScopeId],
-                nullMessage: dataBrowserNullMessages[_this12.state.dataScopeId],
-                zeroMessage: dataBrowserZeroMessages[_this12.state.dataScopeId],
-                index: _this12.state.selectedItemIndex[_this12.state.dataScopeId],
-                itemVisible: itemVisible,
-                dataExportHandler: _this12.props.dataExportHandler,
-                selectedDataScope: _this12.state.dataScopeId,
-                onDataScopeClick: function onDataScopeClick(dataScopeId) {
-                  return _this12.setSideTabId(_interfaces.SideTabId.Data, dataScopeId);
-                },
-                onActivate: function onActivate(row, index) {
-                  var selectedItemIndex = Object.assign({}, _this12.state.selectedItemIndex);
-                  selectedItemIndex[_this12.state.dataScopeId] = index;
+              sidebarClosed = !_this13.state.sidebarClosed;
 
-                  _this12.setState({
-                    selectedItemIndex: selectedItemIndex
-                  });
-
-                  _this12.silentActivation(row);
-                },
-                onSearch: function onSearch(e, search) {
-                  if (e.ctrlKey) {
-                    _this12.setState({
-                      sideTabId: _interfaces.SideTabId.Search,
-                      search: search
-                    });
-                  } else {
-                    _this12.doSelect(search);
-                  }
-                },
-                bingSearchDisabled: _this12.props.bingSearchDisabled
+              _this13.changeInsight({
+                size: _this13.getLayoutDivSize(_this13.state.sidebarPinned, sidebarClosed)
+              }, {
+                label: null,
+                omit: true
+              }, {
+                dataScopeId: dataScopeId,
+                sidebarClosed: sidebarClosed
               });
-            }
-
-          case _interfaces.SideTabId.Search:
-            {
-              return React.createElement(_search.Search, {
-                collapseLabels: _this12.props.compactUI,
-                themePalette: themePalette,
-                disabled: !loaded || _this12.state.sidebarClosed,
-                disableGroupOR: _this12.props.searchORDisabled,
-                disableExpressionOR: _this12.props.searchORDisabled,
-                initializer: {
-                  columns: columnMapProps.allColumns,
-                  search: _this12.state.search
-                },
-                autoCompleteDistinctValues: _this12.state.autoCompleteDistinctValues,
-                onSelect: function onSelect(expr) {
-                  return _this12.doSelect(expr);
-                },
-                data: _this12.state.dataContent.data
+            } else if (sideTabId === _interfaces.SideTabId.Pin) {
+              _this13.changeInsight({
+                size: _this13.getLayoutDivSize(!_this13.state.sidebarPinned, _this13.state.sidebarClosed)
+              }, {
+                label: null,
+                omit: true
+              }, {
+                sidebarPinned: !_this13.state.sidebarPinned
               });
+            } else {
+              _this13.setSideTabId(sideTabId);
             }
+          },
+          selectedSideTab: this.state.sideTabId
+        }, loaded && function () {
+          switch (_this13.state.sideTabId) {
+            case _interfaces.SideTabId.ChartType:
+              {
+                return _base.base.react.createElement(_chart.Chart, Object.assign({
+                  collapseLabels: _this13.props.compactUI,
+                  tooltipExclusions: _this13.state.tooltipExclusions,
+                  toggleTooltipExclusion: function toggleTooltipExclusion(columnName) {
+                    var tooltipExclusions = _toConsumableArray(_this13.state.tooltipExclusions);
 
-          case _interfaces.SideTabId.Snapshots:
-            {
-              return React.createElement(_snapshots.Snapshots, Object.assign({}, _this12.props.snapshotProps, {
-                editor: _this12.snapshotEditor,
-                themePalette: themePalette,
-                explorer: _this12,
-                snapshots: _this12.state.snapshots,
-                selectedSnapshotIndex: _this12.state.selectedSnapshotIndex,
-                onClearSnapshots: function onClearSnapshots() {
-                  return _this12.setState({
-                    snapshots: [],
-                    selectedSnapshotIndex: -1
-                  });
-                },
-                onWriteSnapshot: function onWriteSnapshot(s, i) {
-                  return _this12.writeSnapshot(s, i);
-                },
-                onRemoveSnapshot: function onRemoveSnapshot(i) {
-                  var snapshots = _toConsumableArray(_this12.state.snapshots);
+                    var i = tooltipExclusions.indexOf(columnName);
 
-                  snapshots.splice(i, 1);
-                  var selectedSnapshotIndex = _this12.state.selectedSnapshotIndex;
-
-                  if (i === selectedSnapshotIndex) {
-                    selectedSnapshotIndex = -1;
-                  } else if (selectedSnapshotIndex > i) {
-                    selectedSnapshotIndex--;
-                  }
-
-                  _this12.setState({
-                    snapshots: snapshots,
-                    selectedSnapshotIndex: selectedSnapshotIndex
-                  });
-                },
-                onSnapshotClick: function onSnapshotClick(snapshot, selectedSnapshotIndex) {
-                  _this12.setState({
-                    selectedSnapshotIndex: selectedSnapshotIndex
-                  });
-
-                  _this12.calculate(function () {
-                    _this12.handleReviveSnapshot(snapshot, selectedSnapshotIndex);
-                  });
-                },
-                onMoveUp: function onMoveUp(i) {
-                  if (i > 0) {
-                    var snapshots = _toConsumableArray(_this12.state.snapshots);
-
-                    var temp = snapshots[i - 1];
-                    snapshots[i - 1] = snapshots[i];
-                    snapshots[i] = temp;
-                    var selectedSnapshotIndex = _this12.state.selectedSnapshotIndex;
-
-                    if (i === selectedSnapshotIndex) {
-                      selectedSnapshotIndex = i - 1;
-                    } else if (i - 1 === selectedSnapshotIndex) {
-                      selectedSnapshotIndex = i;
+                    if (i < 0) {
+                      tooltipExclusions.push(columnName);
+                    } else {
+                      tooltipExclusions.splice(i, 1);
                     }
 
-                    _this12.setState({
-                      snapshots: snapshots,
-                      selectedSnapshotIndex: selectedSnapshotIndex
+                    _this13.setState({
+                      tooltipExclusions: tooltipExclusions
                     });
+
+                    _this13.props.onTooltipExclusionsChanged && _this13.props.onTooltipExclusionsChanged(tooltipExclusions);
+                  },
+                  disabled: !loaded || _this13.state.sidebarClosed
+                }, columnMapProps, {
+                  chart: _this13.state.chart,
+                  view: _this13.state.view,
+                  onChangeChartType: function onChangeChartType(chart) {
+                    return _this13.changeChartType(chart);
+                  },
+                  insightColumns: _this13.state.columns,
+                  onChangeSignal: function onChangeSignal(role, column, name, value) {
+                    return (0, _partialInsight.saveSignalValuePref)(_this13.prefs, _this13.state.chart, role, column, name, value);
                   }
-                },
-                onMoveDown: function onMoveDown(i) {
-                  if (i < _this12.state.snapshots.length - 1) {
-                    var snapshots = _toConsumableArray(_this12.state.snapshots);
+                }));
+              }
 
-                    var temp = snapshots[i + 1];
-                    snapshots[i + 1] = snapshots[i];
-                    snapshots[i] = temp;
-                    var selectedSnapshotIndex = _this12.state.selectedSnapshotIndex;
+            case _interfaces.SideTabId.Color:
+              {
+                return _base.base.react.createElement(_color.Color, Object.assign({
+                  compactUI: _this13.props.compactUI,
+                  specCapabilities: _this13.state.specCapabilities,
+                  disabled: !loaded || _this13.state.sidebarClosed
+                }, columnMapProps, {
+                  dataContent: _this13.state.dataContent,
+                  scheme: _this13.state.scheme,
+                  colorBin: _this13.state.colorBin,
+                  colorBinSignal: _this13.viewer && _this13.viewer.vegaSpec && _this13.viewer.vegaSpec.signals.filter(function (s) {
+                    return s.name === _sanddanceReact.SandDance.constants.SignalNames.ColorBinCount;
+                  })[0],
+                  colorReverseSignal: _this13.viewer && _this13.viewer.vegaSpec && _this13.viewer.vegaSpec.signals.filter(function (s) {
+                    return s.name === _sanddanceReact.SandDance.constants.SignalNames.ColorReverse;
+                  })[0],
+                  colorColumn: _this13.state.columns.color,
+                  onColorBinChange: function onColorBinChange(colorBin) {
+                    _this13.ignoreSelectionChange = true;
 
-                    if (i === selectedSnapshotIndex) {
-                      selectedSnapshotIndex = i + 1;
-                    } else if (i + 1 === selectedSnapshotIndex) {
-                      selectedSnapshotIndex = i;
-                    }
+                    _this13.viewer.deselect().then(function () {
+                      _this13.ignoreSelectionChange = false; //allow deselection to render
 
-                    _this12.setState({
-                      snapshots: snapshots,
-                      selectedSnapshotIndex: selectedSnapshotIndex
-                    });
-                  }
-                }
-              }));
-            }
+                      requestAnimationFrame(function () {
+                        _this13.getColorContext = null;
 
-          case _interfaces.SideTabId.Settings:
-            {
-              return React.createElement(_settings.Settings, {
-                explorer: _this12,
-                dataFile: _this12.state.dataFile,
-                scheme: _this12.state.scheme,
-                hideLegend: _this12.state.hideLegend,
-                onToggleLegend: function onToggleLegend(hideLegend) {
-                  return _this12.setState({
-                    hideLegend: hideLegend,
-                    calculating: function calculating() {
-                      return _this12._resize();
-                    }
-                  });
-                },
-                hideAxes: _this12.state.hideAxes,
-                onToggleAxes: function onToggleAxes(hideAxes) {
-                  return _this12.setState({
-                    calculating: function calculating() {
-                      return _this12.setState({
-                        hideAxes: hideAxes
+                        _this13.changeInsight({
+                          colorBin: colorBin
+                        }, {
+                          label: _language.strings.labelHistoryColorBin
+                        });
+
+                        (0, _partialInsight.savePref)(_this13.prefs, _this13.state.chart, 'color', _this13.state.columns.color, {
+                          colorBin: colorBin
+                        });
                       });
+                    });
+                  },
+                  onColorSchemeChange: function onColorSchemeChange(scheme) {
+                    _this13.changeColumnMapping('color', _this13.state.dataContent.columns.filter(function (c) {
+                      return c.name === _this13.state.columns.color;
+                    })[0], {
+                      scheme: scheme
+                    });
+
+                    (0, _partialInsight.savePref)(_this13.prefs, _this13.state.chart, 'color', _this13.state.columns.color, {
+                      scheme: scheme
+                    });
+                  },
+                  onColorBinCountChange: function onColorBinCountChange(value) {
+                    var signalValues = {};
+                    signalValues[_sanddanceReact.SandDance.constants.SignalNames.ColorBinCount] = value;
+                    (0, _partialInsight.savePref)(_this13.prefs, _this13.state.chart, 'color', _this13.state.columns.color, {
+                      signalValues: signalValues
+                    });
+                  },
+                  onColorReverseChange: function onColorReverseChange(value) {
+                    _this13.getColorContext = null;
+                  },
+                  directColor: _this13.state.directColor,
+                  onDirectColorChange: function onDirectColorChange(directColor) {
+                    _this13.changeInsight({
+                      directColor: directColor
+                    }, {
+                      label: _language.strings.labelHistoryDirectColor
+                    }, {
+                      calculating: function calculating() {
+                        return _this13._resize();
+                      }
+                    });
+                  }
+                }));
+              }
+
+            case _interfaces.SideTabId.Data:
+              {
+                var data = datas[_this13.state.dataScopeId];
+                var itemVisible = true;
+
+                switch (_this13.state.dataScopeId) {
+                  case _dataScope.DataScopeId.AllData:
+                    {
+                      var item = _this13.state.selectedItemIndex[_this13.state.dataScopeId];
+                      itemVisible = _this13.state.dataContent && !_this13.state.filteredData || _this13.state.filteredData.indexOf(data[item]) >= 0;
                     }
-                  });
-                },
-                additionalSettings: _this12.props.additionalSettings
-              }, _this12.props.systemInfoChildren);
-            }
-        }
-      }()), loaded && React.createElement("div", {
-        className: "sanddance-view"
-      }, React.createElement(_sanddanceReact.SandDanceReact, {
-        renderOptions: {
-          initialColorContext: this.getColorContext && this.getColorContext(this.viewer.insight, insight),
-          discardColorContextUpdates: function discardColorContextUpdates() {
-            return _this12.discardColorContextUpdates;
+                }
+
+                return _base.base.react.createElement(_dataBrowser.DataBrowser, {
+                  theme: _this13.props.theme,
+                  themePalette: themePalette,
+                  disabled: !loaded || _this13.state.sidebarClosed,
+                  columns: _this13.state.dataContent && _this13.state.dataContent.columns,
+                  data: data,
+                  displayName: _this13.state.dataFile && _this13.state.dataFile.displayName || _language.strings.defaultFileName,
+                  nullMessage: dataBrowserNullMessages[_this13.state.dataScopeId],
+                  zeroMessage: dataBrowserZeroMessages[_this13.state.dataScopeId],
+                  index: _this13.state.selectedItemIndex[_this13.state.dataScopeId],
+                  itemVisible: itemVisible,
+                  dataExportHandler: _this13.props.dataExportHandler,
+                  selectedDataScope: _this13.state.dataScopeId,
+                  onDataScopeClick: function onDataScopeClick(dataScopeId) {
+                    return _this13.setSideTabId(_interfaces.SideTabId.Data, dataScopeId);
+                  },
+                  onActivate: function onActivate(row, index) {
+                    var selectedItemIndex = Object.assign({}, _this13.state.selectedItemIndex);
+                    selectedItemIndex[_this13.state.dataScopeId] = index;
+
+                    _this13.setState({
+                      selectedItemIndex: selectedItemIndex
+                    });
+
+                    _this13.silentActivation(row);
+                  },
+                  onSearch: function onSearch(e, search) {
+                    if (e.ctrlKey) {
+                      _this13.setState({
+                        sideTabId: _interfaces.SideTabId.Search,
+                        search: search
+                      });
+                    } else {
+                      _this13.doSelect(search);
+                    }
+                  },
+                  bingSearchDisabled: _this13.props.bingSearchDisabled
+                });
+              }
+
+            case _interfaces.SideTabId.Search:
+              {
+                return _base.base.react.createElement(_search.Search, {
+                  collapseLabels: _this13.props.compactUI,
+                  themePalette: themePalette,
+                  disabled: !loaded || _this13.state.sidebarClosed,
+                  disableGroupOR: _this13.props.searchORDisabled,
+                  disableExpressionOR: _this13.props.searchORDisabled,
+                  initializer: {
+                    columns: columnMapProps.allColumns,
+                    search: _this13.state.search
+                  },
+                  autoCompleteDistinctValues: _this13.state.autoCompleteDistinctValues,
+                  onSelect: function onSelect(expr) {
+                    return _this13.doSelect(expr);
+                  },
+                  data: _this13.state.dataContent.data
+                });
+              }
+
+            case _interfaces.SideTabId.Snapshots:
+              {
+                return _base.base.react.createElement(_snapshots.Snapshots, Object.assign({}, _this13.props.snapshotProps, {
+                  editor: _this13.snapshotEditor,
+                  themePalette: themePalette,
+                  explorer: _this13,
+                  snapshots: _this13.state.snapshots,
+                  selectedSnapshotIndex: _this13.state.selectedSnapshotIndex,
+                  onClearSnapshots: function onClearSnapshots() {
+                    var snapshots = [];
+
+                    _this13.setState({
+                      snapshots: snapshots,
+                      selectedSnapshotIndex: -1
+                    });
+
+                    _this13.props.onSnapshotsChanged && _this13.props.onSnapshotsChanged(snapshots);
+                  },
+                  onWriteSnapshot: function onWriteSnapshot(s, i) {
+                    return _this13.writeSnapshot(s, i);
+                  },
+                  onRemoveSnapshot: function onRemoveSnapshot(i) {
+                    var snapshots = _toConsumableArray(_this13.state.snapshots);
+
+                    snapshots.splice(i, 1);
+                    var selectedSnapshotIndex = _this13.state.selectedSnapshotIndex;
+
+                    if (i === selectedSnapshotIndex) {
+                      selectedSnapshotIndex = -1;
+                    } else if (selectedSnapshotIndex > i) {
+                      selectedSnapshotIndex--;
+                    }
+
+                    _this13.setState({
+                      snapshots: snapshots,
+                      selectedSnapshotIndex: selectedSnapshotIndex
+                    });
+
+                    _this13.props.onSnapshotsChanged && _this13.props.onSnapshotsChanged(snapshots);
+                  },
+                  onSnapshotClick: function onSnapshotClick(snapshot, selectedSnapshotIndex) {
+                    _this13.setState({
+                      selectedSnapshotIndex: selectedSnapshotIndex
+                    });
+
+                    _this13.calculate(function () {
+                      _this13.handleReviveSnapshot(snapshot, selectedSnapshotIndex);
+                    });
+                  },
+                  onMoveUp: function onMoveUp(i) {
+                    if (i > 0) {
+                      var snapshots = _toConsumableArray(_this13.state.snapshots);
+
+                      var temp = snapshots[i - 1];
+                      snapshots[i - 1] = snapshots[i];
+                      snapshots[i] = temp;
+                      var selectedSnapshotIndex = _this13.state.selectedSnapshotIndex;
+
+                      if (i === selectedSnapshotIndex) {
+                        selectedSnapshotIndex = i - 1;
+                      } else if (i - 1 === selectedSnapshotIndex) {
+                        selectedSnapshotIndex = i;
+                      }
+
+                      _this13.setState({
+                        snapshots: snapshots,
+                        selectedSnapshotIndex: selectedSnapshotIndex
+                      });
+
+                      _this13.props.onSnapshotsChanged && _this13.props.onSnapshotsChanged(snapshots);
+                    }
+                  },
+                  onMoveDown: function onMoveDown(i) {
+                    if (i < _this13.state.snapshots.length - 1) {
+                      var snapshots = _toConsumableArray(_this13.state.snapshots);
+
+                      var temp = snapshots[i + 1];
+                      snapshots[i + 1] = snapshots[i];
+                      snapshots[i] = temp;
+                      var selectedSnapshotIndex = _this13.state.selectedSnapshotIndex;
+
+                      if (i === selectedSnapshotIndex) {
+                        selectedSnapshotIndex = i + 1;
+                      } else if (i + 1 === selectedSnapshotIndex) {
+                        selectedSnapshotIndex = i;
+                      }
+
+                      _this13.setState({
+                        snapshots: snapshots,
+                        selectedSnapshotIndex: selectedSnapshotIndex
+                      });
+
+                      _this13.props.onSnapshotsChanged && _this13.props.onSnapshotsChanged(snapshots);
+                    }
+                  }
+                }));
+              }
+
+            case _interfaces.SideTabId.History:
+              {
+                return _base.base.react.createElement(_history.History, {
+                  theme: theme,
+                  themePalette: themePalette,
+                  historyIndex: _this13.state.historyIndex,
+                  historyItems: _this13.state.historyItems,
+                  redo: function redo(i) {
+                    return _this13.redo(i);
+                  }
+                });
+              }
+
+            case _interfaces.SideTabId.Settings:
+              {
+                return _base.base.react.createElement(_settings.Settings, {
+                  explorer: _this13,
+                  dataFile: _this13.state.dataFile,
+                  scheme: _this13.state.scheme,
+                  hideLegend: _this13.state.hideLegend,
+                  onToggleLegend: function onToggleLegend(hideLegend) {
+                    return _this13.setState({
+                      hideLegend: hideLegend,
+                      calculating: function calculating() {
+                        return _this13._resize();
+                      }
+                    });
+                  },
+                  hideAxes: _this13.state.hideAxes,
+                  onToggleAxes: function onToggleAxes(hideAxes) {
+                    return _this13.setState({
+                      calculating: function calculating() {
+                        return _this13.setState({
+                          hideAxes: hideAxes
+                        });
+                      }
+                    });
+                  },
+                  additionalSettings: _this13.props.additionalSettings
+                }, _this13.props.systemInfoChildren);
+              }
           }
-        },
-        viewerOptions: this.viewerOptions,
-        ref: function ref(reactViewer) {
-          if (reactViewer) {
-            _this12.viewer = reactViewer.viewer;
+        }()), loaded && _base.base.react.createElement("div", {
+          className: "sanddance-view"
+        }, _base.base.react.createElement(_sanddanceReact.SandDanceReact, {
+          renderOptions: {
+            rebaseFilter: function rebaseFilter() {
+              var rebaseFilter = _this13.rebaseFilter;
+
+              if (rebaseFilter) {
+                _this13.rebaseFilter = false;
+              }
+
+              return rebaseFilter;
+            },
+            initialColorContext: this.getColorContext && this.getColorContext(this.viewer.insight, insight),
+            discardColorContextUpdates: function discardColorContextUpdates() {
+              return _this13.discardColorContextUpdates;
+            }
+          },
+          viewerOptions: this.viewerOptions,
+          ref: function ref(reactViewer) {
+            if (reactViewer) {
+              _this13.viewer = reactViewer.viewer;
+            }
+          },
+          onView: function onView(renderResult) {
+            _this13.changespecCapabilities(renderResult.specResult.errors ? renderResult.specResult.specCapabilities : _this13.viewer.specCapabilities);
+
+            _this13.getColorContext = function (oldInsight, newInsight) {
+              if (!oldInsight && !newInsight) {
+                return null;
+              }
+
+              if (!oldInsight || !newInsight) {
+                return null;
+              }
+
+              if (oldInsight.scheme !== newInsight.scheme) {
+                return null;
+              }
+
+              if (oldInsight.columns.color !== newInsight.columns.color) {
+                return null;
+              }
+
+              if (oldInsight.directColor != newInsight.directColor) {
+                return null;
+              }
+
+              return _this13.viewer.colorContexts && _this13.viewer.colorContexts[_this13.viewer.currentColorContext];
+            }; //don't allow tabbing to the canvas
+
+
+            (0, _canvas.removeTabIndex)(_this13.viewer);
+            _this13.props.onView && _this13.props.onView();
+          },
+          onError: function onError(e) {
+            _this13.props.onError && _this13.props.onError(e);
+          },
+          data: this.state.dataContent.data,
+          insight: insight,
+          onMount: function onMount(el) {
+            return _this13.viewerMounted(el);
           }
-        },
-        onView: function onView(renderResult) {
-          _this12.changespecCapabilities(renderResult.specResult.errors ? renderResult.specResult.specCapabilities : _this12.viewer.specCapabilities);
-
-          _this12.getColorContext = function (oldInsight, newInsight) {
-            if (!oldInsight && !newInsight) {
-              return null;
-            }
-
-            if (!oldInsight || !newInsight) {
-              return null;
-            }
-
-            if (oldInsight.scheme !== newInsight.scheme) {
-              return null;
-            }
-
-            if (oldInsight.columns.color !== newInsight.columns.color) {
-              return null;
-            }
-
-            if (oldInsight.directColor != newInsight.directColor) {
-              return null;
-            }
-
-            return _this12.viewer.colorContexts && _this12.viewer.colorContexts[_this12.viewer.currentColorContext];
-          }; //don't allow tabbing to the canvas
-
-
-          (0, _canvas.removeTabIndex)(_this12.viewer);
-          _this12.props.onView && _this12.props.onView();
-        },
-        onError: function onError(e) {
-          _this12.props.onError && _this12.props.onError(e);
-        },
-        data: this.state.dataContent.data,
-        insight: insight,
-        onMount: function onMount(el) {
-          return _this12.viewerMounted(el);
-        }
-      }), this.state.note && React.createElement("div", {
-        className: 'sanddance-note'
-      }, React.createElement(_iconButton.IconButton, {
-        className: 'cancel',
-        themePalette: themePalette,
-        title: _language.strings.buttonClose,
-        iconName: 'Cancel',
-        onClick: function onClick() {
-          return _this12.setState({
-            note: null
-          });
-        }
-      }), this.state.note)), React.createElement(_dialog.Dialog, {
-        title: _language.strings.labelError,
-        hidden: !this.state.errors,
-        onDismiss: function onDismiss() {
-          _this12.setState({
-            errors: null
-          });
-        }
-      }, this.state.errors && this.state.errors.map(function (error, i) {
-        return React.createElement("div", {
-          key: i
-        }, error);
-      })), React.createElement(_snapshotEditor.SnapshotEditor, Object.assign({
-        ref: function ref(se) {
-          return _this12.snapshotEditor = se;
-        }
-      }, this.props.snapshotProps, {
-        explorer: this,
-        onWriteSnapshot: function onWriteSnapshot(s, i) {
-          return _this12.writeSnapshot(s, i);
-        },
-        themePalette: themePalette
-      }))), this.state.positionedColumnMapProps && React.createElement(_clickableTextLayer.PositionedColumnMap, Object.assign({}, this.state.positionedColumnMapProps)));
-    }
-  }, {
-    key: "getColumnMapBaseProps",
-    value: function getColumnMapBaseProps() {
-      var _this13 = this;
-
-      var allColumns = this.state.dataContent && this.state.dataContent.columns.filter(function (c) {
-        return !_sanddanceReact.SandDance.util.isInternalFieldName(c.name, true);
-      });
-      var quantitativeColumns = allColumns && allColumns.filter(function (c) {
-        return c.quantitative;
-      });
-      var categoricalColumns = allColumns && allColumns.filter(function (c) {
-        return !c.quantitative;
-      });
-      var props = {
-        changeColumnMapping: function changeColumnMapping(role, columnOrRole, options) {
-          var column;
-
-          if (typeof columnOrRole === 'string') {
-            //look up current insight
-            var columnName = _this13.state.columns[columnOrRole];
-            column = allColumns.filter(function (c) {
-              return c.name === columnName;
-            })[0];
-          } else {
-            column = columnOrRole;
+        }), this.state.note && _base.base.react.createElement("div", {
+          className: 'sanddance-note'
+        }, _base.base.react.createElement(_iconButton.IconButton, {
+          className: 'cancel',
+          themePalette: themePalette,
+          title: _language.strings.buttonClose,
+          iconName: 'Cancel',
+          onClick: function onClick() {
+            return _this13.setState({
+              note: null
+            });
           }
+        }), _base.base.react.createElement("div", null, this.state.note))), _base.base.react.createElement(_dialog.Dialog, {
+          title: _language.strings.labelError,
+          hidden: !this.state.errors,
+          onDismiss: function onDismiss() {
+            _this13.setState({
+              errors: null
+            });
+          }
+        }, this.state.errors && this.state.errors.map(function (error, i) {
+          return _base.base.react.createElement("div", {
+            key: i
+          }, error);
+        })), _base.base.react.createElement(_snapshotEditor.SnapshotEditor, Object.assign({
+          ref: function ref(se) {
+            return _this13.snapshotEditor = se;
+          }
+        }, this.props.snapshotProps, {
+          explorer: this,
+          onWriteSnapshot: function onWriteSnapshot(s, i) {
+            return _this13.writeSnapshot(s, i);
+          },
+          theme: this.props.theme,
+          themePalette: themePalette
+        }))), this.state.positionedColumnMapProps && _base.base.react.createElement(_clickableTextLayer.PositionedColumnMap, Object.assign({}, this.state.positionedColumnMapProps)));
+      }
+    }, {
+      key: "getColumnMapBaseProps",
+      value: function getColumnMapBaseProps() {
+        var _this14 = this;
 
-          _this13.changeColumnMapping(role, column, options);
-        },
-        facetStyle: this.state.facetStyle,
-        totalStyle: this.state.totalStyle,
-        allColumns: allColumns,
-        quantitativeColumns: quantitativeColumns,
-        categoricalColumns: categoricalColumns,
-        specCapabilities: this.state.specCapabilities,
-        explorer: this
-      };
-      return props;
-    }
-  }]);
+        var allColumns = this.state.dataContent && this.state.dataContent.columns.filter(function (c) {
+          return !_sanddanceReact.SandDance.util.isInternalFieldName(c.name, true);
+        });
+        var quantitativeColumns = allColumns && allColumns.filter(function (c) {
+          return c.quantitative;
+        });
+        var categoricalColumns = allColumns && allColumns.filter(function (c) {
+          return !c.quantitative;
+        });
+        var props = {
+          changeColumnMapping: function changeColumnMapping(role, columnOrRole, options) {
+            var column;
 
-  return Explorer;
-}(React.Component);
+            if (typeof columnOrRole === 'string') {
+              //look up current insight
+              var columnName = _this14.state.columns[columnOrRole];
+              column = allColumns.filter(function (c) {
+                return c.name === columnName;
+              })[0];
+            } else {
+              column = columnOrRole;
+            }
 
+            _this14.changeColumnMapping(role, column, options);
+          },
+          facetStyle: this.state.facetStyle,
+          totalStyle: this.state.totalStyle,
+          allColumns: allColumns,
+          quantitativeColumns: quantitativeColumns,
+          categoricalColumns: categoricalColumns,
+          specCapabilities: this.state.specCapabilities,
+          explorer: this
+        };
+        return props;
+      }
+    }]);
+
+    return __Explorer;
+  }(_base.base.react.Component);
+
+  return new __Explorer(props);
+}
+
+var Explorer = _Explorer;
 exports.Explorer = Explorer;
 
 function colorMapping(insight, columns) {
@@ -23606,13 +23876,125 @@ function colorMapping(insight, columns) {
     })[0];
   }
 }
-},{"react":"mpTF","./colorMap":"E67y","./base":"Vlbn","./colorScheme":"L8O2","./interfaces":"h2T5","./dialogs/chart":"NGSt","./dialogs/color":"N8IJ","./partialInsight":"tb7d","./dialogs/dataBrowser":"pJLc","./controls/dataScope":"OsNT","./defaults":"Tl9z","./controls/dialog":"cFWm","./columns":"f8v0","./mouseEvent":"yvMl","./controls/iconButton":"dQNc","./dialogs/search":"ozxe","./dataLoader":"f19h","./clickableTextLayer":"UUG7","@msrvida/chart-recommender":"i6UQ","./canvas":"Dryx","@msrvida/sanddance-react":"MjKu","./dialogs/settings":"zKGJ","./controls/sidebar":"f8Jx","./dialogs/snapshotEditor":"dSzJ","./dialogs/snapshots":"oc9r","./language":"hk5u","./themes":"CgE3","./toggleSearch":"yzxM","./controls/topbar":"Afi9"}],"Focm":[function(require,module,exports) {
+},{"./base":"Vlbn","./canvas":"Dryx","./clickableTextLayer":"UUG7","./colorMap":"E67y","./colorScheme":"L8O2","./columns":"f8v0","./controls/dataScope":"OsNT","./controls/dialog":"cFWm","./controls/iconButton":"dQNc","./controls/sidebar":"f8Jx","./controls/topbar":"Afi9","./dataLoader":"f19h","./defaults":"Tl9z","./dialogs/chart":"NGSt","./dialogs/color":"N8IJ","./dialogs/dataBrowser":"pJLc","./dialogs/history":"YVpI","./dialogs/search":"ozxe","./dialogs/settings":"zKGJ","./dialogs/snapshotEditor":"dSzJ","./dialogs/snapshots":"oc9r","./interfaces":"h2T5","./language":"hk5u","./mouseEvent":"yvMl","./partialInsight":"tb7d","./themes":"CgE3","./toggleSearch":"yzxM","@msrvida/chart-recommender":"i6UQ","@msrvida/sanddance-react":"MjKu"}],"Vlbn":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.use = use;
+exports.base = void 0;
+
+var _clickableTextLayer = require("./clickableTextLayer");
+
+var _dataExporter = require("./controls/dataExporter");
+
+var _chart = require("./dialogs/chart");
+
+var _search = require("./dialogs/search");
+
+var _settings = require("./dialogs/settings");
+
+var _snapshotEditor = require("./dialogs/snapshotEditor");
+
+var _snapshots = require("./dialogs/snapshots");
+
+var _explorer = require("./explorer");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+var base = {
+  fluentUI: null,
+  react: null,
+  reactDOM: null
+};
+/**
+ * Specify the dependency libraries to use for rendering.
+ * @param fluentUI FluentUI React library.
+ * @param react React library.
+ * @param vega Vega library.
+ * @param deck @deck.gl/core library.
+ * @param layers @deck.gl/layers library.
+ * @param luma @luma.gl/core library.
+ */
+
+exports.base = base;
+
+function use(fluentUI, react, reactDOM, vega, deck, layers, luma) {
+  (0, _sanddanceReact.use)(react, reactDOM, vega, deck, layers, luma);
+  base.fluentUI = fluentUI;
+  base.react = react;
+  base.reactDOM = reactDOM; //inform React that we are using a dynamic base class
+
+  _chart.Chart.prototype = react.Component.prototype;
+  _dataExporter.DataExportPicker.prototype = react.Component.prototype;
+  _explorer.Explorer.prototype = react.Component.prototype;
+  _clickableTextLayer.PositionedColumnMap.prototype = react.Component.prototype;
+  _search.Search.prototype = react.Component.prototype;
+  _snapshotEditor.SnapshotEditor.prototype = react.Component.prototype;
+  _snapshots.Snapshots.prototype = react.Component.prototype;
+  _settings.Settings.prototype = react.Component.prototype;
+}
+},{"./clickableTextLayer":"UUG7","./controls/dataExporter":"l7po","./dialogs/chart":"NGSt","./dialogs/search":"ozxe","./dialogs/settings":"zKGJ","./dialogs/snapshotEditor":"dSzJ","./dialogs/snapshots":"oc9r","./explorer":"KeW6","@msrvida/sanddance-react":"MjKu"}],"cFWm":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Dialog = Dialog;
+
+var _base = require("../base");
+
+var _language = require("../language");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function Dialog(props) {
+  return _base.base.react.createElement(_base.base.fluentUI.Dialog, Object.assign({}, props, {
+    dialogContentProps: Object.assign({
+      type: _base.base.fluentUI.DialogType.normal,
+      title: props.title
+    }, props.dialogContentProps)
+  }), _base.base.react.createElement("div", {
+    onKeyUp: function onKeyUp(e) {
+      e.nativeEvent.stopImmediatePropagation();
+    }
+  }, props.children), _base.base.react.createElement(_base.base.fluentUI.DialogFooter, null, props.buttons, _base.base.react.createElement(_base.base.fluentUI.DefaultButton, {
+    iconProps: {
+      iconName: 'Cancel'
+    },
+    onClick: props.onDismiss,
+    text: _language.strings.buttonClose
+  })));
+}
+},{"../base":"Vlbn","../language":"hk5u"}],"nQgO":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _dialog = require("./dialog");
+
+Object.keys(_dialog).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _dialog[key];
+    }
+  });
+});
+},{"./dialog":"cFWm"}],"Focm":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var _exportNames = {
+  controls: true,
   getEmbedHTML: true,
   SideTabId: true,
   use: true,
@@ -23677,6 +24059,11 @@ Object.defineProperty(exports, "version", {
     return _version.version;
   }
 });
+exports.controls = void 0;
+
+var controls = _interopRequireWildcard(require("./controls"));
+
+exports.controls = controls;
 
 var _dataExporter = require("./controls/dataExporter");
 
@@ -23704,4 +24091,8 @@ Object.keys(_explorer).forEach(function (key) {
 var _sanddanceReact = require("@msrvida/sanddance-react");
 
 var _version = require("./version");
-},{"./controls/dataExporter":"l7po","./interfaces":"h2T5","./base":"Vlbn","./canvas":"Dryx","./themes":"CgE3","./explorer":"KeW6","@msrvida/sanddance-react":"MjKu","./version":"RvaL"}]},{},["Focm"], "SandDanceExplorer")
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+},{"./controls":"nQgO","./controls/dataExporter":"l7po","./interfaces":"h2T5","./base":"Vlbn","./canvas":"Dryx","./themes":"CgE3","./explorer":"KeW6","@msrvida/sanddance-react":"MjKu","./version":"RvaL"}]},{},["Focm"], "SandDanceExplorer")

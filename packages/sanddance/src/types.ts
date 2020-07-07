@@ -1,18 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
-import { RGBAColor } from '@deck.gl/core/utils/color';
 import {
     Column,
     ColumnStats,
     ColumnTypeMap,
     View
 } from '@msrvida/chart-types';
-import { DeckProps } from '@deck.gl/core/lib/deck';
 //import { LightSettings } from '@deck.gl/core/lib/layer';
 import { Search, SearchExpressionGroup } from '@msrvida/search-expression';
 import { Spec } from 'vega-typings';
 import {
+    Insight,
     SpecCapabilities,
     SpecColorSettings,
     SpecLanguage,
@@ -84,7 +83,7 @@ export interface ViewerOptions extends SpecViewOptions {
     /**
      * Optional map of light settings for the visualization, per camera view type.
      */
-//    lightSettings?: { [view in View]: LightSettings };
+    //    lightSettings?: { [view in View]: LightSettings };
 
     /**
      * Lengths of time for a transition animation.
@@ -114,7 +113,7 @@ export interface ViewerOptions extends SpecViewOptions {
     /**
      * Optional handler when data is on stage.
      */
-    onStage?: (stage: VegaDeckGl.types.Stage, deckProps: Partial<DeckProps>) => void;
+    onStage?: (stage: VegaDeckGl.types.Stage, deckProps: Partial<VegaDeckGl.DeckProps>) => void;
 
     /**
      * Optional handler when chart is presented.
@@ -129,12 +128,12 @@ export interface ViewerOptions extends SpecViewOptions {
     /**
      * Optional handler to get the color of text elements.
      */
-    getTextColor?: (t: VegaDeckGl.types.VegaTextLayerDatum) => RGBAColor;
+    getTextColor?: (t: VegaDeckGl.types.VegaTextLayerDatum) => VegaDeckGl.RGBAColor;
 
     /**
      * Optional handler to get the highlight color of text elements.
      */
-    getTextHighlightColor?: (t: VegaDeckGl.types.VegaTextLayerDatum) => RGBAColor;
+    getTextHighlightColor?: (t: VegaDeckGl.types.VegaTextLayerDatum) => VegaDeckGl.RGBAColor;
 
     /**
      * Optional click handler for text elements.
@@ -167,12 +166,18 @@ export interface ViewerOptions extends SpecViewOptions {
     onNewViewStateTarget?: () => boolean;
 
     /**
+     * Optional flag to preserve the WebGL canvas.
+     */
+    preserveDrawingBuffer?: boolean;
+
+    /**
      * Z value of selection polygons.
      */
     selectionPolygonZ: number;
 }
 
 export interface RenderOptions {
+    rebaseFilter?: () => boolean;
     columns?: Column[];
     columnTypes?: ColumnTypeMap;
     ordinalMap?: OrdinalMap;
@@ -320,7 +325,7 @@ export interface ColorScheme {
 }
 
 export interface ColorMappedItem {
-    color?: RGBAColor;
+    color?: VegaDeckGl.RGBAColor;
     unSelected?: boolean;
 }
 
@@ -341,7 +346,7 @@ export interface ColorContext {
 }
 
 export interface ColorMethod {
-    (color: RGBAColor): RGBAColor;
+    (color: VegaDeckGl.RGBAColor): VegaDeckGl.RGBAColor;
 }
 
 export interface LegendRowWithSearch extends VegaDeckGl.types.LegendRow {
@@ -357,4 +362,15 @@ export interface SelectionState {
 export interface TooltipOptions {
     exclude?: (columnName: string) => boolean;
     displayValue?: (value: any) => string;
+}
+
+/**
+ * Saved metadata about an Insight.
+ */
+export interface Snapshot {
+    title?: string;
+    description?: string;
+    insight?: Insight;
+    image?: string;
+    bgColor?: string;
 }

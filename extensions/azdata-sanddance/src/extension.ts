@@ -7,27 +7,23 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import * as azdata from 'azdata';
 import * as tempWrite from 'temp-write';
-import { getWebviewContent } from './html';
+import { newPanel, WebViewWithUri } from 'common-backend';
 import { MssqlExtensionApi, IFileNode } from './mssqlapis';
 
-interface WebViewWithUri {
-    panel: vscode.WebviewPanel;
-    uriFsPath: string;
-}
 let current: WebViewWithUri | undefined = undefined;
 
 export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
-        vscode.commands.registerCommand('sandance.view', (commandContext: vscode.Uri | azdata.ObjectExplorerContext) => {
+        vscode.commands.registerCommand('sanddance.view', (commandContext: vscode.Uri | azdata.ObjectExplorerContext) => {
             if (!commandContext) {
-                vscode.window.showErrorMessage('No file was specified for the View in Sandance command');
+                vscode.window.showErrorMessage('No file was specified for the View in SandDance command');
                 return;
             }
             if (commandContext instanceof vscode.Uri) {
-                viewInSandance(<vscode.Uri>commandContext, context);
+                viewInSandDance(<vscode.Uri>commandContext, context);
             } else if (commandContext.nodeInfo) {
                 // This is a call from the object explorer right-click.
-                downloadAndViewInSandance(commandContext, context);
+                downloadAndViewInSandDance(commandContext, context);
             }
         }
         )
@@ -76,24 +72,24 @@ export function activate(context: vscode.ExtensionContext) {
 
                 let json = JSON.stringify(jsonArray);
                 let fileuri = saveTemp(json);
-                queryViewInSandance(fileuri, context, document);
+                queryViewInSandDance(fileuri, context, document);
             }
         }
     });
 }
 
-async function downloadAndViewInSandance(commandContext: azdata.ObjectExplorerContext, context: vscode.ExtensionContext): Promise<void> {
+async function downloadAndViewInSandDance(commandContext: azdata.ObjectExplorerContext, context: vscode.ExtensionContext): Promise<void> {
     try {
         let fileUri = await saveHdfsFileToTempLocation(commandContext);
         if (fileUri) {
-            viewInSandance(fileUri, context);
+            viewInSandDance(fileUri, context);
         }
     } catch (error) {
-        vscode.window.showErrorMessage(`Error viewing in Sandance: ${error.message ? error.message : error}`);
+        vscode.window.showErrorMessage(`Error viewing in sanddance: ${error.message ? error.message : error}`);
     }
 }
 
-function viewInSandance(fileUri: vscode.Uri, context: vscode.ExtensionContext): void {
+function viewInSandDance(fileUri: vscode.Uri, context: vscode.ExtensionContext, uriTabName?: string | undefined): void {
     const columnToShowIn = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
     const uriFsPath = fileUri.fsPath;
     //only allow one SandDance at a time
@@ -108,69 +104,40 @@ function viewInSandance(fileUri: vscode.Uri, context: vscode.ExtensionContext): 
     }
     else {
         // Otherwise, create a new panel
-        current = newPanel(context, uriFsPath);
+        current = newPanel(context, uriFsPath, uriTabName);
         current.panel.onDidDispose(() => {
             current = undefined;
         }, null, context.subscriptions);
         // Handle messages from the webview
         current.panel.webview.onDidReceiveMessage(message => {
             switch (message.command) {
-                case 'getFileContent':
+                case 'getFileContent': {
                     fs.readFile(uriFsPath, (err, data) => {
                         if (current && current.panel.visible) {
-                        //TODO string type of dataFile
+                            //TODO string type of dataFile
                             const dataFile = {
                                 type: path.extname(uriFsPath).substring(1),
                                 rawText: data.toString('utf8')
                             };
-                            current.panel.webview.postMessage({ command: 'gotFileContent', dataFile });
+                            const compactUI = context.globalState.get('compactUI');
+                            current.panel.webview.postMessage({ command: 'gotFileContent', dataFile, compactUI });
                         }
                     });
                     break;
+                }
+                case 'setCompactUI': {
+                    context.globalState.update('compactUI', message.compactUI);
+                    break;
+                }
             }
         }, undefined, context.subscriptions);
     }
 }
 
 // View in SandDance for SQL query editor
-function queryViewInSandance(fileUri: vscode.Uri, context: vscode.ExtensionContext, editorUri: azdata.queryeditor.QueryDocument): void {
-    const columnToShowIn = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
-    const uriFsPath = fileUri.fsPath;
-    //only allow one SandDance at a time
-    if (current && current.uriFsPath !== uriFsPath) {
-        current.panel.dispose();
-        current = undefined;
-    }
-    if (current) {
-        //TODO: registerWebviewPanelSerializer to hydrate state
-        // If we already have a panel, show it in the target column
-        current.panel.reveal(columnToShowIn);
-    }
-    else {
-        // Otherwise, create a new panel
-        const uriTabName = editorUri.uri;
-        current = newPanelQuery(context, uriFsPath, uriTabName);
-        current.panel.onDidDispose(() => {
-            current = undefined;
-        }, null, context.subscriptions);
-        // Handle messages from the webview
-        current.panel.webview.onDidReceiveMessage(message => {
-            switch (message.command) {
-                case 'getFileContent':
-                    fs.readFile(uriFsPath, (err, data) => {
-                        if (current && current.panel.visible) {
-                        //TODO string type of dataFile
-                            const dataFile = {
-                                type: path.extname(uriFsPath).substring(1),
-                                rawText: data.toString('utf8')
-                            };
-                            current.panel.webview.postMessage({ command: 'gotFileContent', dataFile });
-                        }
-                    });
-                    break;
-            }
-        }, undefined, context.subscriptions);
-    }
+function queryViewInSandDance(fileUri: vscode.Uri, context: vscode.ExtensionContext, editorUri: azdata.queryeditor.QueryDocument): void {
+    const uriTabName = editorUri.uri;
+    viewInSandDance(fileUri, context, uriTabName);
 }
 
 
@@ -201,44 +168,3 @@ export function deactivate() {
     vscode.commands.executeCommand('setContext', 'showVisualizer', false);
 }
 
-function newPanel(context: vscode.ExtensionContext, uriFsPath: string) {
-    const webViewWithUri: WebViewWithUri = {
-        panel: vscode.window.createWebviewPanel(
-            'sandDance',
-            `SandDance: ${path.basename(uriFsPath)}`,
-            vscode.ViewColumn.One,
-            {
-                enableScripts: true,
-                // Only allow the webview to access resources in our extension's media directory
-                localResourceRoots: [
-                    vscode.Uri.file(path.join(context.extensionPath, 'resources'))
-                ],
-                retainContextWhenHidden: true
-            }
-        ),
-        uriFsPath
-    };
-    webViewWithUri.panel.webview.html = getWebviewContent(context.extensionPath, uriFsPath);
-    return webViewWithUri;
-}
-
-function newPanelQuery(context: vscode.ExtensionContext, uriFsPath: string, uriTabName: string) {
-    const webViewWithUri: WebViewWithUri = {
-        panel: vscode.window.createWebviewPanel(
-            'sandDance',
-            `SandDance: ${path.basename(uriTabName)}`,
-            vscode.ViewColumn.One,
-            {
-                enableScripts: true,
-                // Only allow the webview to access resources in our extension's media directory
-                localResourceRoots: [
-                    vscode.Uri.file(path.join(context.extensionPath, 'resources'))
-                ],
-                retainContextWhenHidden: true
-            }
-        ),
-        uriFsPath
-    };
-    webViewWithUri.panel.webview.html = getWebviewContent(context.extensionPath, uriFsPath);
-    return webViewWithUri;
-}

@@ -1,0 +1,69 @@
+{
+  "name": "@msrvida/sanddance-jupyter-widget",
+  "version": "0.0.1",
+  "description": "Custom Jupyter Widget for SandDance",
+  "keywords": [
+    "jupyter",
+    "jupyterlab",
+    "jupyterlab-extension",
+    "widgets"
+  ],
+  "files": [
+    "lib/**/*.js",
+    "dist/*.js",
+    "css/*.css"
+  ],
+  "license": "MIT",
+  "author": "",
+  "main": "lib/index.js",
+  "types": "./lib/index.d.ts",
+  "repository": { },
+  "scripts": {
+    "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
+    "build:sanddance-integration-python": "npm run build:lib && npm run build:nbextension",
+    "build:labextension": "npm run clean:labextension && mkdirp sanddance_jupyter/labextension && cd sanddance_jupyter/labextension && npm pack ../..",
+    "build:lib": "tsc",
+    "build:nbextension": "webpack -p",
+    "build:all": "npm run build:labextension && npm run build:nbextension",
+    "clean": "npm run clean:lib && npm run clean:nbextension",
+    "clean:lib": "rimraf lib",
+    "clean:labextension": "rimraf sanddance_jupyter/labextension",
+    "clean:nbextension": "rimraf sanddance_jupyter/nbextension/static/index.js",
+    "prepack": "npm run build:lib",
+    "test": "echo TODO",
+    "watch": "npm-run-all -p watch:*",
+    "watch:lib": "tsc -w",
+    "watch:nbextension": "webpack --watch"
+  },
+  "dependencies": {
+    "@deck.gl/core": "^8.1.5",
+    "@deck.gl/layers": "^8.1.5",
+    "@fluentui/react": "^7.111.0",
+    "@luma.gl/core": "^8.1.2",
+    "@jupyter-widgets/base": "^3",
+    "@msrvida/sanddance-explorer": "^3",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "vega": "^5.11"
+  },
+  "devDependencies": {
+    "@msrvida/fluentui-react-cdn-typings": "^1",
+    "@phosphor/application": "^1.6.0",
+    "@phosphor/widgets": "^1.6.0",
+    "@types/expect.js": "^0.3.29",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.11.6",
+    "@types/react": "16.9.34",
+    "@types/react-dom": "16.9.7",
+    "@types/webpack-env": "^1.13.6",
+    "css-loader": "^3.2.0",
+    "mkdirp": "^0.5.1",
+    "mocha": "^5.2.0",
+    "source-map-loader": "^0.2.4",
+    "style-loader": "^1.0.0",
+    "typescript": "3.9.2"
+  },
+  "jupyterlab": {
+    "extension": "lib/plugin"
+  }
+}

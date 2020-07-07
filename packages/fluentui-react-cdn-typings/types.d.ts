@@ -17,6 +17,8 @@ export { IDropdown, IDropdownProps, IDropdownOption } from '@fluentui/react/lib/
 
 export { IComboBox, IComboBoxProps, IComboBoxOption } from '@fluentui/react/lib/ComboBox';
 
+export { ITextField, ITextFieldProps } from '@fluentui/react/lib/TextField';
+
 export { ICommandBarItemProps, ICommandBarProps } from '@fluentui/react/lib/CommandBar';
 
 export { IToggleProps } from '@fluentui/react/lib/Toggle';
@@ -26,7 +28,3 @@ export { IDialogProps } from '@fluentui/react/lib/Dialog';
 export { IStyle, ITheme, IPalette } from '@fluentui/react/lib/Styling';
 
 export { ICSSRule, ICSSPixelUnitRule } from '@uifabric/merge-styles/lib/IRawStyleBase';
-
-export interface IReactCast<T> {
-  (props: T & React.DOMAttributes<{}>, children: Element[]): JSX.Element
-}

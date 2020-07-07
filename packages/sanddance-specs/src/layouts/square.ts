@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { FieldNames } from '../constants';
+import { safeFieldName } from '../expr';
 import { InnerScope } from '../interfaces';
 import {
     addMarks,
@@ -53,11 +54,11 @@ export class Square extends Layout {
 
         addTransforms(globalScope.data, {
             type: 'stack',
-            groupby: getGroupBy(groupings),
+            groupby: getGroupBy(groupings).map(safeFieldName),
             as: [names.stack0, names.stack1],
             ...sortBy && {
                 sort: {
-                    field: sortBy.name,
+                    field: safeFieldName(sortBy.name),
                     order: 'ascending'
                 }
             }
@@ -99,7 +100,7 @@ export class Square extends Layout {
                             },
                             {
                                 scale: names.zScale,
-                                field: z.name
+                                field: safeFieldName(z.name)
                             }
                         ]
                     }
@@ -155,7 +156,7 @@ export class Square extends Layout {
                 addTransforms(globalScope.data,
                     {
                         type: 'joinaggregate',
-                        groupby: getGroupBy(groupings),
+                        groupby: getGroupBy(groupings).map(safeFieldName),
                         ops: ['count'],
                         as: [names.maxGroupField]
                     },
@@ -176,8 +177,8 @@ export class Square extends Layout {
 
         const aspect = `((${names.bandWidth}) / (${maxGroupedFillSize}))`;
         const squaresPerBand = `ceil(sqrt(${maxGroupedUnits} * ${aspect}))`;
-        const gap = `min(0.1 * (${names.bandWidth} / (${squaresPerBand} - 1)), 1)`;
-        const size = `((${names.bandWidth} / ${squaresPerBand}) - ${gap})`;
+        const gap = `min(0.1 * ((${names.bandWidth}) / (${squaresPerBand} - 1)), 1)`;
+        const size = `(((${names.bandWidth}) / ${squaresPerBand}) - ${gap})`;
         const levels = `ceil(${maxGroupedUnits} / ${squaresPerBand})`;
         const levelSize = `(((${maxGroupedFillSize}) / ${levels}) - ${gap})`;
 
@@ -186,7 +187,7 @@ export class Square extends Layout {
 
     private transformXY(gap: string, levelSize: string, squaresPerBand: string) {
         const { names, prefix } = this;
-        const compartment = `${names.bandWidth} / ${squaresPerBand} * ((datum[${JSON.stringify(names.stack0)}]) % ${squaresPerBand})`;
+        const compartment = `(${names.bandWidth}) / ${squaresPerBand} * ((datum[${JSON.stringify(names.stack0)}]) % ${squaresPerBand})`;
         const level = `floor((datum[${JSON.stringify(names.stack0)}]) / ${squaresPerBand})`;
         const { fillDirection, parentScope } = this.props;
         const tx: FormulaTransform = {

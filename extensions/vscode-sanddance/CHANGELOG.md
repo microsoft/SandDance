@@ -1,5 +1,15 @@
 # Change Log
 
+## [3.0.0]
+- (Major version number in sync with core components)
+- Faceting for all chart types
+- Cross faceting
+- Sum aggregation as treemaps or strips
+- Scatterplot size & z-grounding
+- 3D lighting from camera position
+- History undo / redo
+- Snapshot notes
+
 ## [1.2.11]
 - Opacity slider (for overlapping cubes)
 - Round numbers in Legend

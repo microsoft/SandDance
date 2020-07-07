@@ -21,6 +21,10 @@ See https://github.com/Microsoft/SandDance#known-issues
 
 ## Release Notes
 
+### 3.0.0
+
+Major upgrade to layout engine
+
 ### 1.0.0
 
 Initial release of azdata-sanddance

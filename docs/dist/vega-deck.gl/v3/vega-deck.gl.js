@@ -1,7 +1,7 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
     typeof define === 'function' && define.amd ? define(['exports'], factory) :
-    (factory((global.VegaDeckGl = {})));
+    (global = global || self, factory(global.VegaDeckGl = {}));
 }(this, (function (exports) { 'use strict';
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -13,6 +13,7 @@
     };
 
     var constants = /*#__PURE__*/Object.freeze({
+        __proto__: null,
         layerNames: layerNames
     });
 
@@ -138,7 +139,8 @@
     ];
 
     var htmlTags$1 = /*#__PURE__*/Object.freeze({
-        default: htmlTags
+        __proto__: null,
+        'default': htmlTags
     });
 
     function getCjsExportFromNamespace (n) {
@@ -233,7 +235,8 @@
     ];
 
     var svgTags$1 = /*#__PURE__*/Object.freeze({
-        default: svgTags
+        __proto__: null,
+        'default': svgTags
     });
 
     var require$$0$1 = getCjsExportFromNamespace(svgTags$1);
@@ -418,6 +421,7 @@
     // Copyright (c) Microsoft Corporation. All rights reserved.
 
     var controls = /*#__PURE__*/Object.freeze({
+        __proto__: null,
         Table: Table
     });
 
@@ -425,7 +429,7 @@
     // Licensed under the MIT license.
 
     var types = /*#__PURE__*/Object.freeze({
-
+        __proto__: null
     });
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -574,7 +578,8 @@
     var deepmerge_1 = deepmerge;
 
     var _deepmerge = /*#__PURE__*/Object.freeze({
-        default: deepmerge_1
+        __proto__: null,
+        'default': deepmerge_1
     });
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -971,179 +976,6 @@
           : m1) * 255;
     }
 
-    var deg2rad = Math.PI / 180;
-    var rad2deg = 180 / Math.PI;
-
-    // https://observablehq.com/@mbostock/lab-and-rgb
-    var K = 18,
-        Xn = 0.96422,
-        Yn = 1,
-        Zn = 0.82521,
-        t0 = 4 / 29,
-        t1 = 6 / 29,
-        t2 = 3 * t1 * t1,
-        t3 = t1 * t1 * t1;
-
-    function labConvert(o) {
-      if (o instanceof Lab) return new Lab(o.l, o.a, o.b, o.opacity);
-      if (o instanceof Hcl) return hcl2lab(o);
-      if (!(o instanceof Rgb)) o = rgbConvert(o);
-      var r = rgb2lrgb(o.r),
-          g = rgb2lrgb(o.g),
-          b = rgb2lrgb(o.b),
-          y = xyz2lab((0.2225045 * r + 0.7168786 * g + 0.0606169 * b) / Yn), x, z;
-      if (r === g && g === b) x = z = y; else {
-        x = xyz2lab((0.4360747 * r + 0.3850649 * g + 0.1430804 * b) / Xn);
-        z = xyz2lab((0.0139322 * r + 0.0971045 * g + 0.7141733 * b) / Zn);
-      }
-      return new Lab(116 * y - 16, 500 * (x - y), 200 * (y - z), o.opacity);
-    }
-
-    function lab(l, a, b, opacity) {
-      return arguments.length === 1 ? labConvert(l) : new Lab(l, a, b, opacity == null ? 1 : opacity);
-    }
-
-    function Lab(l, a, b, opacity) {
-      this.l = +l;
-      this.a = +a;
-      this.b = +b;
-      this.opacity = +opacity;
-    }
-
-    define(Lab, lab, extend(Color, {
-      brighter: function(k) {
-        return new Lab(this.l + K * (k == null ? 1 : k), this.a, this.b, this.opacity);
-      },
-      darker: function(k) {
-        return new Lab(this.l - K * (k == null ? 1 : k), this.a, this.b, this.opacity);
-      },
-      rgb: function() {
-        var y = (this.l + 16) / 116,
-            x = isNaN(this.a) ? y : y + this.a / 500,
-            z = isNaN(this.b) ? y : y - this.b / 200;
-        x = Xn * lab2xyz(x);
-        y = Yn * lab2xyz(y);
-        z = Zn * lab2xyz(z);
-        return new Rgb(
-          lrgb2rgb( 3.1338561 * x - 1.6168667 * y - 0.4906146 * z),
-          lrgb2rgb(-0.9787684 * x + 1.9161415 * y + 0.0334540 * z),
-          lrgb2rgb( 0.0719453 * x - 0.2289914 * y + 1.4052427 * z),
-          this.opacity
-        );
-      }
-    }));
-
-    function xyz2lab(t) {
-      return t > t3 ? Math.pow(t, 1 / 3) : t / t2 + t0;
-    }
-
-    function lab2xyz(t) {
-      return t > t1 ? t * t * t : t2 * (t - t0);
-    }
-
-    function lrgb2rgb(x) {
-      return 255 * (x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
-    }
-
-    function rgb2lrgb(x) {
-      return (x /= 255) <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
-    }
-
-    function hclConvert(o) {
-      if (o instanceof Hcl) return new Hcl(o.h, o.c, o.l, o.opacity);
-      if (!(o instanceof Lab)) o = labConvert(o);
-      if (o.a === 0 && o.b === 0) return new Hcl(NaN, 0 < o.l && o.l < 100 ? 0 : NaN, o.l, o.opacity);
-      var h = Math.atan2(o.b, o.a) * rad2deg;
-      return new Hcl(h < 0 ? h + 360 : h, Math.sqrt(o.a * o.a + o.b * o.b), o.l, o.opacity);
-    }
-
-    function hcl(h, c, l, opacity) {
-      return arguments.length === 1 ? hclConvert(h) : new Hcl(h, c, l, opacity == null ? 1 : opacity);
-    }
-
-    function Hcl(h, c, l, opacity) {
-      this.h = +h;
-      this.c = +c;
-      this.l = +l;
-      this.opacity = +opacity;
-    }
-
-    function hcl2lab(o) {
-      if (isNaN(o.h)) return new Lab(o.l, 0, 0, o.opacity);
-      var h = o.h * deg2rad;
-      return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
-    }
-
-    define(Hcl, hcl, extend(Color, {
-      brighter: function(k) {
-        return new Hcl(this.h, this.c, this.l + K * (k == null ? 1 : k), this.opacity);
-      },
-      darker: function(k) {
-        return new Hcl(this.h, this.c, this.l - K * (k == null ? 1 : k), this.opacity);
-      },
-      rgb: function() {
-        return hcl2lab(this).rgb();
-      }
-    }));
-
-    var A = -0.14861,
-        B = +1.78277,
-        C = -0.29227,
-        D = -0.90649,
-        E = +1.97294,
-        ED = E * D,
-        EB = E * B,
-        BC_DA = B * C - D * A;
-
-    function cubehelixConvert(o) {
-      if (o instanceof Cubehelix) return new Cubehelix(o.h, o.s, o.l, o.opacity);
-      if (!(o instanceof Rgb)) o = rgbConvert(o);
-      var r = o.r / 255,
-          g = o.g / 255,
-          b = o.b / 255,
-          l = (BC_DA * b + ED * r - EB * g) / (BC_DA + ED - EB),
-          bl = b - l,
-          k = (E * (g - l) - C * bl) / D,
-          s = Math.sqrt(k * k + bl * bl) / (E * l * (1 - l)), // NaN if l=0 or l=1
-          h = s ? Math.atan2(k, bl) * rad2deg - 120 : NaN;
-      return new Cubehelix(h < 0 ? h + 360 : h, s, l, o.opacity);
-    }
-
-    function cubehelix(h, s, l, opacity) {
-      return arguments.length === 1 ? cubehelixConvert(h) : new Cubehelix(h, s, l, opacity == null ? 1 : opacity);
-    }
-
-    function Cubehelix(h, s, l, opacity) {
-      this.h = +h;
-      this.s = +s;
-      this.l = +l;
-      this.opacity = +opacity;
-    }
-
-    define(Cubehelix, cubehelix, extend(Color, {
-      brighter: function(k) {
-        k = k == null ? brighter : Math.pow(brighter, k);
-        return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
-      },
-      darker: function(k) {
-        k = k == null ? darker : Math.pow(darker, k);
-        return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
-      },
-      rgb: function() {
-        var h = isNaN(this.h) ? 0 : (this.h + 120) * deg2rad,
-            l = +this.l,
-            a = isNaN(this.s) ? 0 : this.s * l * (1 - l),
-            cosh = Math.cos(h),
-            sinh = Math.sin(h);
-        return new Rgb(
-          255 * (l + a * (A * cosh + B * sinh)),
-          255 * (l + a * (C * cosh + D * sinh)),
-          255 * (l + a * (E * cosh)),
-          this.opacity
-        );
-      }
-    }));
-
     function rgbToDeckglColor(c) {
         return [c.r, c.g, c.b, c.opacity * 255];
     }
@@ -1179,16 +1011,16 @@
      * Convert a Deck.gl color to a CSS rgba() string.
      * @param color A Deck.gl RGBAColor array - (The rgba color of each object, in r, g, b, [a]. Each component is in the 0-255 range.)
      */
-    function colorToString(color$$1) {
-        const c = [...color$$1];
+    function colorToString(color) {
+        const c = [...color];
         if (c.length > 3) {
             c[3] /= 255;
         }
         return `rgba(${c.join(',')})`;
     }
-    function desaturate(color$$1, value) {
-        const rgb$$1 = rgb(color$$1[0], color$$1[1], color$$1[2], color$$1[3] / 255);
-        const hslColor = hsl(rgb$$1);
+    function desaturate(color, value) {
+        const rgb$1 = rgb(color[0], color[1], color[2], color[3] / 255);
+        const hslColor = hsl(rgb$1);
         hslColor.s = value;
         const c = hslColor.rgb();
         return rgbToDeckglColor(c);
@@ -1348,6 +1180,7 @@ void main(void) {
     const minPixelSize = 0.5;
 
     var defaults = /*#__PURE__*/Object.freeze({
+        __proto__: null,
         minHeight: minHeight,
         minWidth: minWidth,
         defaultPresenterStyle: defaultPresenterStyle,
@@ -1493,13 +1326,9 @@ void main(void) {
      */
     const CubeLayer = _CubeLayer;
 
-    var pi = Math.PI;
-
     function expInOut(t) {
       return ((t *= 2) <= 1 ? Math.pow(2, 10 * t - 10) : 2 - Math.pow(2, 10 - 10 * t)) / 2;
     }
-
-    var tau = 2 * Math.PI;
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     function getLayers(presenter, config, stage, lightSettings /*LightSettings*/, lightingMix, interpolator, guideLines) {
@@ -1644,6 +1473,7 @@ void main(void) {
     // Copyright (c) Microsoft Corporation. All rights reserved.
 
     var util = /*#__PURE__*/Object.freeze({
+        __proto__: null,
         addDiv: addDiv,
         addEl: addEl,
         allTruthy: allTruthy,
@@ -1834,7 +1664,7 @@ void main(void) {
             });
         };
         var sorted = Object.keys(props.legend.rows).sort((a, b) => +a - +b);
-        sorted.forEach(i => addRow(props.legend.rows[i], +i));
+        sorted.forEach(i => addRow(props.legend.rows[i]));
         if (sorted.length) {
             return (createElement(Table, { rows: rows, rowClassName: "legend-row", onRowClick: (e, i) => props.onClick(e, props.legend, i) }, props.legend.title !== void 0 && createElement("tr", { onClick: e => props.onClick(e, props.legend, null) },
                 createElement("th", { colSpan: 2 }, props.legend.title))));
@@ -2034,13 +1864,19 @@ void main(void) {
     })(GroupType || (GroupType = {}));
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
+    function getOrientItem(group) {
+        if (group.orient) {
+            return group;
+        }
+        return group.datum;
+    }
     function convertGroupRole(group) {
         if (group.mark.role === 'legend')
             return GroupType.legend;
         if (group.mark.role === 'axis') {
-            var vegaAxisDatum = group.datum;
-            if (vegaAxisDatum) {
-                switch (vegaAxisDatum.orient) {
+            const orientItem = getOrientItem(group);
+            if (orientItem) {
+                switch (orientItem.orient) {
                     case 'bottom':
                     case 'top':
                         return GroupType.xAxis;
@@ -2100,12 +1936,12 @@ void main(void) {
     };
     var mainStager = (options, stage, scene, x, y, groupType) => {
         if (scene.marktype !== 'group' && groupType === GroupType.legend) {
-            markStager$1(options, stage, scene, x, y, groupType);
+            markStager$1(options, stage, scene);
         }
         else {
-            var markStager$$1 = markStagers[scene.marktype];
-            if (markStager$$1) {
-                markStager$$1(options, stage, scene, x, y, groupType);
+            var markStager = markStagers[scene.marktype];
+            if (markStager) {
+                markStager(options, stage, scene, x, y, groupType);
             }
         }
     };
@@ -2255,7 +2091,12 @@ void main(void) {
                 });
                 this.OrbitControllerClass = classes.OrbitControllerClass;
                 const initialViewState = targetViewState(height, width, stage.view);
+                let glOptions;
+                if (config && config.preserveDrawingBuffer) {
+                    glOptions = { preserveDrawingBuffer: true };
+                }
                 const deckProps = {
+                    glOptions,
                     height: null,
                     width: null,
                     effects: lightingEffects(),
@@ -2528,17 +2369,15 @@ void main(void) {
      */
     const ViewGl = _ViewGl;
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
-
+    exports.Presenter = Presenter;
+    exports.ViewGl = ViewGl;
+    exports.base = base;
     exports.constants = constants;
     exports.controls = controls;
     exports.defaults = defaults;
     exports.types = types;
-    exports.util = util;
-    exports.base = base;
     exports.use = use;
-    exports.Presenter = Presenter;
-    exports.ViewGl = ViewGl;
+    exports.util = util;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

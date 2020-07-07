@@ -2,6 +2,7 @@
     "compilerOptions": {
         "declaration": true,
         "jsx": "react",
+        "jsxFactory": "base.react.createElement",
         "moduleResolution": "node",
         "outDir": "dist/es6",
         "skipLibCheck": true,

@@ -32,7 +32,10 @@ export class Animator {
         });
     }
 
-    filter(search: Search, keepData: object[], collapseData: object[]) {
+    filter(search: Search, keepData: object[], collapseData: object[], rebase: boolean) {
+        if (rebase) {
+            this.dataScope.collapse(false, keepData);    
+        }
         this.dataScope.collapse(true, collapseData);
         return new Promise<void>((resolve, reject) => {
             this.props.onAnimateDataChange(DataLayoutChange.refine, 'before refine', 'refine').then(() => {

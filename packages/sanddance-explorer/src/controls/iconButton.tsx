@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as React from 'react';
 import { base } from '../base';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 
-export interface IconButtonProps {
+export interface IIconButtonProps {
     className?: string;
     disabled?: boolean;
     iconName: string;
@@ -15,7 +14,7 @@ export interface IconButtonProps {
     themePalette: Partial<FluentUITypes.IPalette>;
 }
 
-export function IconButton(props: IconButtonProps) {
+export function IconButton(props: IIconButtonProps) {
     return (
         <base.fluentUI.IconButton
             {...props}

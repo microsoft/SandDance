@@ -18,7 +18,7 @@ layout: default
 
                     {% assign page_url = site.baseurl | append: page.url %}
 
-                    {% assign tree_url = site.baseurl | append: "/docs/" | append : tree[0] | append: "/v2/api/" %}
+                    {% assign tree_url = site.baseurl | append: "/docs/" | append : tree[0] | append: "/v3/api/" %}
 
                     <li class="c-tree__item o-list-bare__item">
                         <div class="c-tree__toggle js-tree-toggle{% if page_url == tree_url %} is-open is-active{% endif %}">
@@ -30,7 +30,7 @@ layout: default
                         <ul class="c-tree__submenu">
                             {% for branch in tree[1] %}
                             <li class="c-tree__item">
-                                <a href="{{ site.baseurl }}/docs/{{ tree[0] }}/v2/api/#{{ branch | downcase }}">
+                                <a href="{{ site.baseurl }}/docs/{{ tree[0] }}/v3/api/#{{ branch | downcase }}">
                                     {{ branch }}
                                 </a>
                             </li>

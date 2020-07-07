@@ -19,7 +19,7 @@ export type ColorBin = 'continuous' | 'quantize' | 'quantile';
 /**
  * Layout style to use for faceting.
  */
-export type FacetStyle = 'wrap' | 'horizontal' | 'vertical' | 'cross'; //horizontal, vertical, wrap, cross
+export type FacetStyle = 'wrap' | 'cross'; // | 'horizontal' | 'vertical'
 
 /**
  * Layout style to use for summing.
@@ -108,7 +108,7 @@ export interface InsightColumns {
 export interface SpecRoleCapabilities {
     role: InsightColumnRoles;
     excludeCategoric?: boolean;
-    allowNone?: boolean;
+    allowNone?: boolean | ((specContext: SpecContext) => boolean);
     binnable?: boolean;
     axisSelection?: AxisSelectionType;
 

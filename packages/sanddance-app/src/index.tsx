@@ -11,7 +11,7 @@ import * as SandDanceExplorer from '@msrvida/sanddance-explorer';
 import {
     ColorSettings,
     DataFileType,
-    Explorer,
+    Explorer_Class,
     Prefs
 } from '@msrvida/sanddance-explorer';
 import * as React from 'react';
@@ -36,7 +36,7 @@ const dataSets = staticContent.filter(f => f.id).map<DataSource>(n => {
     };
 });
 
-export let explorer: Explorer;
+export let explorer: Explorer_Class;
 
 export { SandDanceExplorer };
 
@@ -62,3 +62,17 @@ ReactDOM.render(
     />,
     document.getElementById('app')
 );
+
+const z = 'z'.charCodeAt(0);
+const Z = 'Z'.charCodeAt(0);
+
+document.onkeyup = e => {
+    //look for CTRL Z or CTRL SHIFT Z
+    if (e.ctrlKey && (e.keyCode === z || e.keyCode === Z)) {
+        if (e.shiftKey) {
+            explorer.redo();
+        } else {
+            explorer.undo();
+        }
+    }
+};

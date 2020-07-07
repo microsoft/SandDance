@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "lib": [
+            "dom",
+            "es2015"
+        ],
+        "skipLibCheck": true,
+        "outFile": "dist/app.js"
+    },
+    "files": [
+        "src/fluentui.d.ts",
+        "src/interfaces.d.ts",
+        "src/sanddance-explorer.d.ts",
+        "src/language.ts",
+        "src/app.tsx"
+    ]
+}

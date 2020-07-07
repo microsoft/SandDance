@@ -18,6 +18,10 @@ function replaceInfile(packageName, f) {
 
 function moveFilesInPackage(packageName, packageDir) {
     const baseDir = path.resolve(packageDir, `${pubversion}/api`);
+    if (!fs.existsSync(baseDir)) {
+        console.log(`no api folder @ ${baseDir}`);
+        return;
+    }
     const indexDir = path.resolve(baseDir, 'index');
     fs.readdirSync(indexDir).forEach(f => {
         const dest = path.resolve(baseDir, f);
@@ -33,7 +37,7 @@ function moveFilesInPackage(packageName, packageDir) {
 
         //remove blank typecast from output
         const text = fs.readFileSync(src, 'utf8').replace(/<>/g, '');
-        
+
         //write file in lew location
         fs.writeFileSync(dest, text);
 
@@ -55,5 +59,7 @@ function packageDirs(root) {
         }
     })
 }
+
+console.log('Moving docs...');
 
 packageDirs('./docs/docs');

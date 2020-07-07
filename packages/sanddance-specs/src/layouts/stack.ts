@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
+import { safeFieldName } from '../expr';
 import { InnerScope, LayoutOffsets } from '../interfaces';
 import {
     addData,
@@ -61,7 +62,7 @@ export class Stack extends Layout {
         addTransforms(globalScope.data,
             {
                 type: 'joinaggregate',
-                groupby: getGroupBy(groupings),
+                groupby: getGroupBy(groupings).map(safeFieldName),
                 ops: ['count'],
                 as: [names.count]
             },
@@ -72,11 +73,11 @@ export class Stack extends Layout {
             },
             {
                 type: 'stack',
-                groupby: getGroupBy(groupings),
+                groupby: getGroupBy(groupings).map(safeFieldName),
                 as: [names.stack0, names.stack1],
                 ...sort && {
                     sort: {
-                        field: sort.name,
+                        field: safeFieldName(sort.name),
                         order: 'ascending'
                     }
                 }

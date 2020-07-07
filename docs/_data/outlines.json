@@ -3,12 +3,8 @@
     "constants.md": [
       "Variables"
     ],
-    "searchexpression.md": [
-      "Functions"
-    ],
     "types.md": [
-      "Interfaces",
-      "Types"
+      "Interfaces"
     ],
     "util.md": [
       "Functions"
@@ -20,17 +16,17 @@
     ]
   },
   "sanddance-explorer": {
-    "explorer.md": [
+    "controls.md": [
+      "Functions",
+      "Interfaces"
+    ],
+    "explorer_class.md": [
       "Constructor",
       "Methods",
       "Properties"
     ]
   },
   "sanddance-react": {
-    "sanddancereact.md": [
-      "Methods",
-      "Properties"
-    ],
     "util.md": [
       "Variables"
     ]

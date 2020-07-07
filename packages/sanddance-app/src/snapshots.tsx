@@ -6,13 +6,14 @@ import { strings } from './language';
 import { DataSource, DataSourceSnapshot } from './types';
 import { invalidUrlError } from './url';
 import {
-    Explorer,
+    controls,
+    Explorer_Class,
     getEmbedHTML,
-    SandDance,
-    Snapshot
+    SandDance
 } from '@msrvida/sanddance-explorer';
 import * as React from 'react';
 
+import Snapshot = SandDance.types.Snapshot;
 import VegaDeckGl = SandDance.VegaDeckGl;
 import util = VegaDeckGl.util;
 
@@ -115,7 +116,7 @@ export class SnapshotImportLocal extends React.Component<ImportProps, ImportStat
     render() {
         return (
             <div>
-                <base.fluentUI.Dialog
+                <controls.Dialog
                     hidden={false}
                     onDismiss={this.props.onDismiss}
                     dialogContentProps={{
@@ -135,10 +136,7 @@ export class SnapshotImportLocal extends React.Component<ImportProps, ImportStat
                             <div className="error">{this.state.fileFormatError}</div>
                         )}
                     </section>
-                    <base.fluentUI.DialogFooter>
-                        <base.fluentUI.DefaultButton onClick={this.props.onDismiss} text={strings.dialogCloseButton} />
-                    </base.fluentUI.DialogFooter>
-                </base.fluentUI.Dialog>
+                </controls.Dialog>
             </div>
         );
     }
@@ -208,7 +206,7 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
         }
         return (
             <div>
-                <base.fluentUI.Dialog
+                <controls.Dialog
                     hidden={false}
                     onDismiss={this.props.onDismiss}
                     dialogContentProps={{
@@ -216,6 +214,17 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
                         type: base.fluentUI.DialogType.normal,
                         title: strings.dialogTitleSnapshotsUrl
                     }}
+                    buttons={[
+                        (
+                            <base.fluentUI.PrimaryButton
+                                disabled={!this.state.url || !!this.state.urlError}
+                                key={0}
+                                onClick={e => this.loadUrl()}
+                                iconProps={{ iconName: 'CloudDownload' }}
+                                text={strings.dialogLoadButton}
+                            />
+                        )
+                    ]}
                 >
                     <section>
                         <base.fluentUI.TextField
@@ -239,39 +248,31 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
                                     href={shortcut}
                                     title={strings.labelLinkDescription}
                                     aria-label={strings.labelLinkDescription}
-                                >{strings.labelLink}</a>
+                                >{strings.labelShare}</a>
                             </section>
                         )
                     }
-                    <base.fluentUI.DialogFooter>
-                        <base.fluentUI.PrimaryButton
-                            disabled={!this.state.url || !!this.state.urlError}
-                            key={0}
-                            onClick={e => this.loadUrl()}
-                            text={strings.dialogLoadButton}
-                        />
-                        <base.fluentUI.DefaultButton onClick={this.props.onDismiss} text={strings.dialogCloseButton} />
-                    </base.fluentUI.DialogFooter>
-                </base.fluentUI.Dialog>
+                </controls.Dialog>
             </div>
         );
     }
 }
 
 export interface ExportProps {
-    explorer: Explorer;
+    explorer: Explorer_Class;
     onDismiss: () => void;
     dataSource: DataSource;
     snapshots: Snapshot[];
+    theme: string;
 }
 
 export function SnapshotExport(props: ExportProps) {
     return (
-        <base.fluentUI.Dialog
+        <controls.Dialog
             hidden={false}
             onDismiss={props.onDismiss}
             dialogContentProps={{
-                className: `sanddance-dialog ${this.props.theme} sanddance-export`,
+                className: `sanddance-dialog ${props.theme} sanddance-export`,
                 type: base.fluentUI.DialogType.normal,
                 title: strings.dialogTitleSnapshotsExport
             }}
@@ -283,6 +284,7 @@ export function SnapshotExport(props: ExportProps) {
                         {strings.labelSnapshotsExportHTMLDescription}
                     </div>
                     <base.fluentUI.PrimaryButton
+                        iconProps={{ iconName: 'Download' }}
                         text={`${strings.buttonExport} ${strings.labelSnapshotsExportHTMLTitle}`}
                         onClick={e => {
                             const clean = cleanSnapshots(props.snapshots);
@@ -297,6 +299,7 @@ export function SnapshotExport(props: ExportProps) {
                         {strings.labelSnapshotsExportMarkdownDescription}
                     </div>
                     <base.fluentUI.PrimaryButton
+                        iconProps={{ iconName: 'Download' }}
                         text={`${strings.buttonExport} ${strings.labelSnapshotsExportMarkdownTitle}`}
                         onClick={e => {
                             const sections = props.snapshots.map(snapshot => {
@@ -313,9 +316,6 @@ export function SnapshotExport(props: ExportProps) {
                     />
                 </li>
             </ul>
-            <base.fluentUI.DialogFooter>
-                <base.fluentUI.DefaultButton onClick={props.onDismiss} text={strings.dialogCloseButton} />
-            </base.fluentUI.DialogFooter>
-        </base.fluentUI.Dialog>
+        </controls.Dialog>
     );
 }

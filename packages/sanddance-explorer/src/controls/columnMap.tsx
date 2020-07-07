@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as React from 'react';
 import { base } from '../base';
 import { ChangeColumnMappingOptions } from '../interfaces';
 import { Dropdown } from './dropdown';
-import { Explorer } from '../explorer';
+import { Explorer_Class } from '../explorer';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { NewSignal } from 'vega-typings/types';
 import { SandDance } from '@msrvida/sanddance-react';
@@ -46,7 +45,7 @@ export interface ColumnMapBaseProps {
     changeColumnMapping: (role: SandDance.specs.InsightColumnRoles, columnOrRole: SandDance.types.Column | string, options?: ChangeColumnMappingOptions) => void;
     facetStyle: SandDance.specs.FacetStyle;
     totalStyle: SandDance.specs.TotalStyle;
-    explorer: Explorer;
+    explorer: Explorer_Class;
     specCapabilities: SandDance.specs.SpecCapabilities;
 }
 

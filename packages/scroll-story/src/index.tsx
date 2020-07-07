@@ -26,22 +26,14 @@ const dataPromise = fetchResource('titanic-data').then(response => {
 const snapshotsPromise = fetchResource('titanic-snapshots').then(response => {
     return response.json();
 }).then(json => {
-    return json as Snapshot[];
+    return json as SandDance.types.Snapshot[];
 });
-
-export interface Snapshot {
-    title?: string;
-    description?: string;
-    insight: SandDance.specs.Insight;
-    image?: string;
-    bgColor?: string;
-}
 
 interface Props {
 }
 
 interface State {
-    snapshots?: Snapshot[];
+    snapshots?: SandDance.types.Snapshot[];
     insightIndex: number;
     data?: object[];
     size: SandDance.specs.Size;
@@ -59,7 +51,7 @@ export class Page extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        Promise.all([dataPromise, snapshotsPromise]).then(([data, snapshots]: [object[], Snapshot[]]) => {
+        Promise.all([dataPromise, snapshotsPromise]).then(([data, snapshots]: [object[], SandDance.types.Snapshot[]]) => {
             this.setState({ data, snapshots });
         });
     }
