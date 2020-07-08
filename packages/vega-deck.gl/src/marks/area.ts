@@ -1,18 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { base } from '../base';
-import { colorFromString } from '../color';
-import { Stage, Polygon } from '../interfaces';
-import { Datum, Scene, SceneRect, SceneGroup, AreaMark } from 'vega-typings';
 import { GroupType, MarkStager, MarkStagerOptions } from './interfaces';
-import { min3dDepth } from '../defaults';
-
-type SceneCube = SceneRect & {
-    datum: Datum;
-    depth: number;
-    opacity: number;
-    z: number;
-}
+import { colorFromString } from '../color';
+import { Polygon, Stage } from '../interfaces';
+import { Datum, Scene, SceneGroup } from 'vega-typings';
 
 type GroupItem = SceneGroup & {
     datum: Datum;
@@ -29,33 +20,48 @@ type GroupItem = SceneGroup & {
     y2: number;
 }
 
-const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scene, x: number, y: number, groupType: GroupType) => {
-    const g = scene.items[0] as GroupItem;
+//change direction of y from SVG to GL
+const ty = -1;
 
-    let { fillOpacity, opacity, strokeOpacity } = g;
-    if (fillOpacity === undefined) fillOpacity = 1;
-    if (opacity === undefined) opacity = 1;
-    if (strokeOpacity === undefined) strokeOpacity = 1;
+const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scene, x: number, y: number, groupType: GroupType) => {
+    const g: GroupItem = {
+        fillOpacity: 1,
+        opacity: 1,
+        strokeOpacity: 1,
+        ...(<GroupItem>scene.items[0])
+    };
 
     const polygon: Polygon = {
         fillColor: colorFromString(g.fill) || [0, 0, 0, 0],
-        positions: scene.items.map((it: GroupItem) => [
-            it.x,
-            -1 * it.y,
-            'z' in it ? it.z : 0,
-            'x2' in it ? it.x2 : it.x,
-            'y2' in it ? -1 * it.y2 : -1 * it.y,
-            'z2' in it ? it.z2 : ('z' in it ? it.z : 0)
-        ]),
+        positions: scene.items.map((item: GroupItem) => {
+            item = {
+                z: 0,
+                ...item
+            };
+            item = {
+                x2: item.x,
+                y2: item.y,
+                z2: item.z,
+                ...item
+            };
+            return [
+                item.x,
+                ty * item.y,
+                item.z,
+                item.x2,
+                ty * item.y2,
+                item.z2
+            ];
+        }),
         strokeColor: colorFromString(g.stroke) || [0, 0, 0, 0],
         strokeWidth: g.strokeWidth
     };
 
-    polygon.fillColor[3] *= fillOpacity;
-    polygon.fillColor[3] *= opacity;
+    polygon.fillColor[3] *= g.fillOpacity;
+    polygon.fillColor[3] *= g.opacity;
 
-    polygon.strokeColor[3] *= strokeOpacity;
-    polygon.strokeColor[3] *= opacity;
+    polygon.strokeColor[3] *= g.strokeOpacity;
+    polygon.strokeColor[3] *= g.opacity;
 
     stage.polygonData.push(polygon);
 };

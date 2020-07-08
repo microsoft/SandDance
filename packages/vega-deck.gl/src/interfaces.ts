@@ -68,7 +68,6 @@ export interface Path {
     positions: Vec3[];
     strokeColor: RGBAColor;
     strokeWidth: number;
-    strokeOpacity: number;
 }
 
 export interface Polygon {
