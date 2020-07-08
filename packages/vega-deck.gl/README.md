@@ -26,7 +26,7 @@ This is the quickest installation option. You can load scripts from a CDN, or yo
 ```html
 <script src="https://unpkg.com/vega@^5.11/build/vega.js" charset="utf-8"></script>
 <script src="https://unpkg.com/deck.gl@~6.4/deckgl.min.js"></script>
-<script src="https://unpkg.com/@msrvida/vega-deck.gl@^2/dist/umd/vega-deck.gl.js"></script>
+<script src="https://unpkg.com/@msrvida/vega-deck.gl@^3/dist/umd/vega-deck.gl.js"></script>
 ```
 
 A global variable named `VegaDeckGl` will be available to you. In your JavaScript, call the `use()` function to pass the dependency libraries to `VegaDeckGl`:
@@ -45,7 +45,7 @@ Add these to the `dependencies` section of your `package.json`, then run `npm in
 "@deck.gl/core": "^8.1.5",
 "@deck.gl/layers": "^8.1.5",
 "@luma.gl/core": "^8.1.2",
-"@msrvida/vega-deck.gl": "^2",
+"@msrvida/vega-deck.gl": "^3",
 "vega": "^5.11"
 ```
 

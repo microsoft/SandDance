@@ -16,7 +16,7 @@ Load dependencies via `<script>` tags in your HTML:
 ```html
 <script src="https://unpkg.com/vega@^5.11/build/vega.js" charset="utf-8"></script>
 <script src="https://unpkg.com/deck.gl@~6.4/deckgl.min.js"></script>
-<script src="https://unpkg.com/@msrvida/sanddance@^2/dist/umd/sanddance.js"></script>
+<script src="https://unpkg.com/@msrvida/sanddance@^3/dist/umd/sanddance.js"></script>
 ```
 
 A global variable named `SandDance` will be available to you. In your JavaScript, call the `use` function to pass the dependency libraries:
@@ -32,7 +32,7 @@ Add these to the `dependencies` section of your `package.json`, then run `npm in
 ```json
 "@deck.gl/core": "^8.1.5",
 "@deck.gl/layers": "^8.1.5",
-"@msrvida/sanddance": "^2",
+"@msrvida/sanddance": "^3",
 "@luma.gl/core": "^8.1.2",
 "vega": "^5.11"
 ```
