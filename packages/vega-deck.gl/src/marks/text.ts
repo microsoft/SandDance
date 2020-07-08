@@ -38,7 +38,7 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
         const yOffset = alignmentBaseline === 'top' ? item.fontSize / 2 : 0;    //fixup to get tick text correct
         const textItem: VegaTextLayerDatum = {
             color: colorFromString(item.fill),
-            text: base.vega.truncate(item.text, item.limit, 'right', item.ellipsis || '...'),   //use dots instead of unicode ellipsis for deck.gl's default font atlas
+            text: item.limit === undefined ? item.text : base.vega.truncate(item.text, item.limit, 'right', item.ellipsis || '...'),   //use dots instead of unicode ellipsis for deck.gl's default font atlas
             position: [x + (item.x || 0), ty * (y + (item.y || 0) + yOffset), 0],
             size,
             angle: convertAngle(item.angle),
