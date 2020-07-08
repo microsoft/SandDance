@@ -76,7 +76,6 @@ export interface Polygon {
     strokeColor: RGBAColor;
     fillColor: RGBAColor;
     strokeWidth: number;
-    strokeOpacity: number;
 }
 /**
  * Vega Scene plus camera type.
