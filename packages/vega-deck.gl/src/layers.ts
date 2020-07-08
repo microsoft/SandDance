@@ -21,9 +21,6 @@ import { InterpolationTransitionTiming } from '@deck.gl/core/lib/layer';
 import { easeExpInOut } from 'd3-ease';
 import { Layer, Position3D } from 'deck.gl';
 import { TextLayerProps } from '@deck.gl/layers/text-layer/text-layer';
-import { groupStrokeWidth } from './defaults';
-import { colorToString, colorFromString } from './color';
-import { array } from 'vega-typings/types';
 
 export function getLayers(
     presenter: Presenter,
@@ -107,12 +104,19 @@ function newLineLayer(id: string, data: StyledLine[]) {
 
 function newPathLayer(id: string, mdata: Path[]) {
     if (!mdata) return null;
-    const idata = mdata.map((p) => { return ({ path: p.positions, name: 'id', strokeColor: p.strokeColor, strokeWidth: p.strokeWidth, strokeOpacity: p.strokeOpacity }) });
 
-    const data = idata.filter((p) => { return (p.strokeOpacity > 0.5) });
+    const idata = mdata.map((p) => {
+        return ({
+            path: p.positions,
+            name: 'id',
+            strokeColor: p.strokeColor,
+            strokeWidth: p.strokeWidth
+        })
+    });
+
     return new base.layers.PathLayer<any>({
         id,
-        data,
+        data: idata,
         billboard: true,
         widthScale: 1,
         widthMinPixels: 2,
