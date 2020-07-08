@@ -277,7 +277,6 @@ export class Presenter {
                     newViewStateTarget = result.newViewStateTarget;
                 }
             }
-            console.log("setdeckprops:viewstate", viewState,newViewStateTarget);
             if (!viewState || newViewStateTarget) {
                 viewState = targetViewState(height, width, stage.view);
             }
