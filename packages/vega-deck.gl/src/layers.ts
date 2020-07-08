@@ -106,13 +106,10 @@ function newLineLayer(id: string, data: StyledLine[]) {
 
 
 function newPathLayer(id: string, mdata: Path[]) {
- //   console.log("new path layer", mdata);
     if (!mdata) return null;
-    const idata = mdata.map((p) => { return ({ path: p.positions, name: 'id', strokeColor: p.strokeColor, strokeWidth: p.strokeWidth, strokeOpacity:p.strokeOpacity }) });
+    const idata = mdata.map((p) => { return ({ path: p.positions, name: 'id', strokeColor: p.strokeColor, strokeWidth: p.strokeWidth, strokeOpacity: p.strokeOpacity }) });
 
- //   console.log("prefilter",idata);
-    const data = idata.filter( (p) => {return(p.strokeOpacity>0.5)});
- //   console.log("postfilter",data);
+    const data = idata.filter((p) => { return (p.strokeOpacity > 0.5) });
     return new base.layers.PathLayer<any>({
         id,
         data,
@@ -120,7 +117,7 @@ function newPathLayer(id: string, mdata: Path[]) {
         widthScale: 1,
         widthMinPixels: 2,
         widthUnits: 'pixels',
-        coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,        
+        coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
         getPath: (o) => o.path,
         getColor: (o) => o.strokeColor,
         getWidth: (o) => o.strokeWidth
@@ -128,34 +125,28 @@ function newPathLayer(id: string, mdata: Path[]) {
 }
 
 function newPolygonLayer(id: string, mdata: Polygon[]) {
-     console.log("new area layer", mdata);
     if (!mdata) return null;
-    //
-    //const data = mdata.map((p)=>{return({contour: p.positions, name:'id', color: colorToRGBArray(p.strokeColor),strokeWidth:5.0 })});
-    // we can make this much better! sdrucker
 
-    const data = mdata.map((areas) => {                
-        let contourdata:Position3D[] = [];
+    const data = mdata.map((areas) => {
+        let contourdata: Position3D[] = [];
 
-        let startpoint = [areas.positions[0][0],areas.positions[0][1],areas.positions[0][2]] as Position3D;
+        let startpoint = [areas.positions[0][0], areas.positions[0][1], areas.positions[0][2]] as Position3D;
         areas.positions.forEach((p, i, elements) => {
-                contourdata.push([p[0], p[1], p[2]]);                        
-            });            
+            contourdata.push([p[0], p[1], p[2]]);
+        });
         areas.positions.reverse().forEach((p, i, elements) => {
-            contourdata.push([p[3], p[4], p[5]]);                        
-        }); 
+            contourdata.push([p[3], p[4], p[5]]);
+        });
         contourdata.push(startpoint);
 
-
-        return( 
-            {   contour: contourdata,
-                color: areas.fillColor                
+        return (
+            {
+                contour: contourdata,
+                color: areas.fillColor
             }
         )
     });
-    
-  
-    console.log("area data", data);
+
     let newlayer = new base.layers.PolygonLayer<any>({
         id,
         data,
@@ -172,7 +163,6 @@ function newPolygonLayer(id: string, mdata: Polygon[]) {
         getElevation: 0,
         getLineWidth: (o) => o.strokeWidth
     });
-    console.log("polygon layer",newlayer);
     return newlayer;
 }
 
