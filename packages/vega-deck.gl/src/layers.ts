@@ -21,6 +21,8 @@ import { InterpolationTransitionTiming } from '@deck.gl/core/lib/layer';
 import { easeExpInOut } from 'd3-ease';
 import { Layer, Position3D } from 'deck.gl';
 import { TextLayerProps } from '@deck.gl/layers/text-layer/text-layer';
+import { min3dDepth } from './defaults';
+import { DeckBase } from './exports/types';
 
 export function getLayers(
     presenter: Presenter,
@@ -128,43 +130,22 @@ function newPathLayer(id: string, mdata: Path[]) {
     });
 }
 
-function newPolygonLayer(id: string, mdata: Polygon[]) {
-    if (!mdata) return null;
+function newPolygonLayer(id: string, data: Polygon[]) {
+    if (!data) return null;
 
-    const data = mdata.map((areas) => {
-        let contourdata: Position3D[] = [];
-
-        let startpoint = [areas.positions[0][0], areas.positions[0][1], areas.positions[0][2]] as Position3D;
-        areas.positions.forEach((p, i, elements) => {
-            contourdata.push([p[0], p[1], p[2]]);
-        });
-        areas.positions.reverse().forEach((p, i, elements) => {
-            contourdata.push([p[3], p[4], p[5]]);
-        });
-        contourdata.push(startpoint);
-
-        return (
-            {
-                contour: contourdata,
-                color: areas.fillColor
-            }
-        )
-    });
-
-    let newlayer = new base.layers.PolygonLayer<any>({
+    let newlayer = new base.layers.PolygonLayer<Polygon>({
         id,
         data,
-        lineWidthMinPixels: 1,
         coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
-        getPolygon: (o) => o.contour,
-        getFillColor: (o) => o.color,
-        getLineColor: (o) => o.color,
-        wireframe: true,
+        getPolygon: (o) => o.positions,
+        getFillColor: (o) => o.fillColor,
+        getLineColor: (o) => o.strokeColor,
+        wireframe: false,
         filled: true,
         stroked: true,
         pickable: true,
-        extruded: false,
-        getElevation: 0,
+        extruded: true,
+        getElevation: (o) => o.depth,
         getLineWidth: (o) => o.strokeWidth
     });
     return newlayer;

@@ -42,8 +42,6 @@ export interface Axis {
  */
 export type Vec3 = [number, number, number];
 
-export type Vec6 = [number, number, number, number, number, number];
-
 /**
  * Cuboid information. The cube does not need to have equal dimensions.
  */
@@ -65,16 +63,17 @@ export interface Cube {
 }
 
 export interface Path {
-    positions: Vec3[];
+    positions: Position[];
     strokeColor: RGBAColor;
     strokeWidth: number;
 }
 
 export interface Polygon {
-    positions: Vec6[];    
+    positions: Position[];    
     strokeColor: RGBAColor;
     fillColor: RGBAColor;
     strokeWidth: number;
+    depth: number;
 }
 /**
  * Vega Scene plus camera type.
