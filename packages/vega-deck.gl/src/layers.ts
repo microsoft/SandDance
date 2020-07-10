@@ -19,10 +19,8 @@ import { RGBAColor } from '@deck.gl/core/utils/color';
 import { DeckProps } from '@deck.gl/core/lib/deck';
 import { InterpolationTransitionTiming } from '@deck.gl/core/lib/layer';
 import { easeExpInOut } from 'd3-ease';
-import { Layer, Position3D } from 'deck.gl';
+import { Layer } from 'deck.gl';
 import { TextLayerProps } from '@deck.gl/layers/text-layer/text-layer';
-import { min3dDepth } from './defaults';
-import { DeckBase } from './exports/types';
 
 export function getLayers(
     presenter: Presenter,
@@ -104,27 +102,18 @@ function newLineLayer(id: string, data: StyledLine[]) {
 }
 
 
-function newPathLayer(id: string, mdata: Path[]) {
-    if (!mdata) return null;
+function newPathLayer(id: string, data: Path[]) {
+    if (!data) return null;
 
-    const idata = mdata.map((p) => {
-        return ({
-            path: p.positions,
-            name: 'id',
-            strokeColor: p.strokeColor,
-            strokeWidth: p.strokeWidth
-        })
-    });
-
-    return new base.layers.PathLayer<any>({
+    return new base.layers.PathLayer<Path>({
         id,
-        data: idata,
+        data,
         billboard: true,
         widthScale: 1,
         widthMinPixels: 2,
         widthUnits: 'pixels',
         coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
-        getPath: (o) => o.path,
+        getPath: (o) => o.positions,
         getColor: (o) => o.strokeColor,
         getWidth: (o) => o.strokeWidth
     });
