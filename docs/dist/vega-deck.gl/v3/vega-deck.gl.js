@@ -9,7 +9,9 @@
     const layerNames = {
         cubes: 'LAYER_CUBES',
         lines: 'LAYER_LINES',
-        text: 'LAYER_TEXT'
+        text: 'LAYER_TEXT',
+        paths: 'LAYER_PATHS',
+        polygons: 'LAYER_POLYGONS'
     };
 
     var constants = /*#__PURE__*/Object.freeze({
@@ -1160,6 +1162,8 @@ void main(void) {
         const stage = {
             view,
             cubeData: [],
+            pathData: [],
+            polygonData: [],
             axes: {
                 x: [],
                 y: []
@@ -1356,7 +1360,9 @@ void main(void) {
         }
         const lineLayer = newLineLayer(layerNames.lines, lines);
         const textLayer = newTextLayer(presenter, layerNames.text, texts, config, presenter.style.fontFamily);
-        return [textLayer, cubeLayer, lineLayer];
+        const pathLayer = newPathLayer(layerNames.paths, stage.pathData);
+        const polygonLayer = newPolygonLayer(layerNames.polygons, stage.polygonData);
+        return [textLayer, cubeLayer, lineLayer, pathLayer, polygonLayer];
     }
     function newCubeLayer(presenter, config, cubeData, highlightColor, lightSettings /*LightSettings*/, lightingMix, interpolator) {
         const getPosition = getTiming(config.transitionDurations.position, expInOut);
@@ -1402,6 +1408,42 @@ void main(void) {
             getColor: (o) => o.color,
             getWidth: (o) => o.strokeWidth
         });
+    }
+    function newPathLayer(id, data) {
+        if (!data)
+            return null;
+        return new base.layers.PathLayer({
+            id,
+            data,
+            billboard: true,
+            widthScale: 1,
+            widthMinPixels: 2,
+            widthUnits: 'pixels',
+            coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
+            getPath: (o) => o.positions,
+            getColor: (o) => o.strokeColor,
+            getWidth: (o) => o.strokeWidth
+        });
+    }
+    function newPolygonLayer(id, data) {
+        if (!data)
+            return null;
+        let newlayer = new base.layers.PolygonLayer({
+            id,
+            data,
+            coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
+            getPolygon: (o) => o.positions,
+            getFillColor: (o) => o.fillColor,
+            getLineColor: (o) => o.strokeColor,
+            wireframe: false,
+            filled: true,
+            stroked: true,
+            pickable: true,
+            extruded: true,
+            getElevation: (o) => o.depth,
+            getLineWidth: (o) => o.strokeWidth
+        });
+        return newlayer;
     }
     function newTextLayer(presenter, id, data, config, fontFamily) {
         const props = {
@@ -1800,7 +1842,25 @@ void main(void) {
         });
     };
 
+    //change direction of y from SVG to GL
+    const ty = -1;
     const markStager$3 = (options, stage, scene, x, y, groupType) => {
+        const g = Object.assign({ opacity: 1, strokeOpacity: 1, strokeWidth: 1 }, scene.items[0]);
+        const path = {
+            strokeWidth: g.strokeWidth,
+            strokeColor: colorFromString(g.stroke),
+            positions: scene.items.map((it) => [
+                it.x,
+                ty * it.y,
+                it.z || 0
+            ])
+        };
+        path.strokeColor[3] *= g.strokeOpacity;
+        path.strokeColor[3] *= g.opacity;
+        stage.pathData.push(path);
+    };
+
+    const markStager$4 = (options, stage, scene, x, y, groupType) => {
         //scale Deck.Gl text to Vega size
         const fontScale = 1;
         //change direction of y from SVG to GL
@@ -1813,7 +1873,7 @@ void main(void) {
             const yOffset = alignmentBaseline === 'top' ? item.fontSize / 2 : 0; //fixup to get tick text correct
             const textItem = {
                 color: colorFromString(item.fill),
-                text: base.vega.truncate(item.text, item.limit, 'right', item.ellipsis || '...'),
+                text: item.limit === undefined ? item.text : base.vega.truncate(item.text, item.limit, 'right', item.ellipsis || '...'),
                 position: [x + (item.x || 0), ty * (y + (item.y || 0) + yOffset), 0],
                 size,
                 angle: convertAngle(item.angle),
@@ -1854,6 +1914,45 @@ void main(void) {
         }
         return baseline || 'bottom';
     }
+
+    //change direction of y from SVG to GL
+    const ty$1 = -1;
+    const markStager$5 = (options, stage, scene, x, y, groupType) => {
+        const g = Object.assign({ fillOpacity: 1, opacity: 1, strokeOpacity: 1, strokeWidth: 0, depth: 0 }, scene.items[0]);
+        const points = scene.items.map((item) => {
+            item = Object.assign({ z: 0 }, item);
+            item = Object.assign({ x2: item.x, y2: item.y, z2: item.z }, item);
+            return [
+                item.x,
+                ty$1 * item.y,
+                item.z,
+                item.x2,
+                ty$1 * item.y2,
+                item.z2
+            ];
+        });
+        let positions = [];
+        let startpoint = [points[0][0], points[0][1], points[0][2]];
+        points.forEach(p => {
+            positions.push([p[0], p[1], p[2]]);
+        });
+        points.reverse().forEach(p => {
+            positions.push([p[3], p[4], p[5]]);
+        });
+        positions.push(startpoint);
+        const polygon = {
+            fillColor: colorFromString(g.fill) || [0, 0, 0, 0],
+            positions,
+            strokeColor: colorFromString(g.stroke) || [0, 0, 0, 0],
+            strokeWidth: g.strokeWidth,
+            depth: g.depth
+        };
+        polygon.fillColor[3] *= g.fillOpacity;
+        polygon.fillColor[3] *= g.opacity;
+        polygon.strokeColor[3] *= g.strokeOpacity;
+        polygon.strokeColor[3] *= g.opacity;
+        stage.polygonData.push(polygon);
+    };
 
     var GroupType;
     (function (GroupType) {
@@ -1932,7 +2031,9 @@ void main(void) {
         legend: markStager$1,
         rect: markStager$2,
         rule: markStager,
-        text: markStager$3
+        line: markStager$3,
+        area: markStager$5,
+        text: markStager$4
     };
     var mainStager = (options, stage, scene, x, y, groupType) => {
         if (scene.marktype !== 'group' && groupType === GroupType.legend) {
