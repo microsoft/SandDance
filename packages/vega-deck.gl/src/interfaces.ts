@@ -62,6 +62,19 @@ export interface Cube {
     size: Vec3;
 }
 
+export interface Path {
+    positions: Position[];
+    strokeColor: RGBAColor;
+    strokeWidth: number;
+}
+
+export interface Polygon {
+    positions: Position[];    
+    strokeColor: RGBAColor;
+    fillColor: RGBAColor;
+    strokeWidth: number;
+    depth: number;
+}
 /**
  * Vega Scene plus camera type.
  */
@@ -82,14 +95,16 @@ export interface FacetRect {
  */
 export interface Stage {
     backgroundColor?: RGBAColor;
-    cubeData: Cube[];
+    cubeData?: Cube[];
+    pathData?: Path[];
+    polygonData?: Polygon[];
     legend?: Legend;
-    axes: {
-        x: Axis[];
-        y: Axis[];
+    axes?: {
+        x?: Axis[];
+        y?: Axis[];
     };
-    textData: VegaTextLayerDatum[];
-    view: View;
+    textData?: VegaTextLayerDatum[];
+    view?: View;
     gridLines?: StyledLine[];
     facets?: FacetRect[];
 }

@@ -10,7 +10,9 @@ import {
     PresenterConfig,
     Stage,
     StyledLine,
-    VegaTextLayerDatum
+    VegaTextLayerDatum,
+    Path,
+    Polygon
 } from './interfaces';
 import { Presenter } from './presenter';
 import { RGBAColor } from '@deck.gl/core/utils/color';
@@ -48,7 +50,9 @@ export function getLayers(
     }
     const lineLayer = newLineLayer(layerNames.lines, lines);
     const textLayer = newTextLayer(presenter, layerNames.text, texts, config, presenter.style.fontFamily);
-    return [textLayer, cubeLayer, lineLayer];
+    const pathLayer = newPathLayer(layerNames.paths, stage.pathData);
+    const polygonLayer = newPolygonLayer(layerNames.polygons, stage.polygonData);
+    return [textLayer, cubeLayer, lineLayer, pathLayer, polygonLayer];
 }
 
 function newCubeLayer(presenter: Presenter, config: PresenterConfig, cubeData: Cube[], highlightColor: RGBAColor, lightSettings: any /*LightSettings*/, lightingMix: number, interpolator?: LinearInterpolator_Class<CubeLayerInterpolatedProps>) {
@@ -95,6 +99,45 @@ function newLineLayer(id: string, data: StyledLine[]) {
         getColor: (o: StyledLine) => o.color,
         getWidth: (o: StyledLine) => o.strokeWidth
     });
+}
+
+
+function newPathLayer(id: string, data: Path[]) {
+    if (!data) return null;
+
+    return new base.layers.PathLayer<Path>({
+        id,
+        data,
+        billboard: true,
+        widthScale: 1,
+        widthMinPixels: 2,
+        widthUnits: 'pixels',
+        coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
+        getPath: (o) => o.positions,
+        getColor: (o) => o.strokeColor,
+        getWidth: (o) => o.strokeWidth
+    });
+}
+
+function newPolygonLayer(id: string, data: Polygon[]) {
+    if (!data) return null;
+
+    let newlayer = new base.layers.PolygonLayer<Polygon>({
+        id,
+        data,
+        coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
+        getPolygon: (o) => o.positions,
+        getFillColor: (o) => o.fillColor,
+        getLineColor: (o) => o.strokeColor,
+        wireframe: false,
+        filled: true,
+        stroked: true,
+        pickable: true,
+        extruded: true,
+        getElevation: (o) => o.depth,
+        getLineWidth: (o) => o.strokeWidth
+    });
+    return newlayer;
 }
 
 function newTextLayer(presenter: Presenter, id: string, data: VegaTextLayerDatum[], config: PresenterConfig, fontFamily: string) {
