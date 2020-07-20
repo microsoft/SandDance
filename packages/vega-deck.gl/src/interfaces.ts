@@ -154,6 +154,7 @@ export interface TransitionDurations {
 export interface PresenterConfig {
     transitionDurations?: TransitionDurations;
     preStage?: PreStage;
+    characterSet?: string[];
     redraw?: () => void;
     onCubeHover?: (e: MouseEvent | PointerEvent | TouchEvent, cube: Cube) => void;
     onCubeClick?: (e: MouseEvent | PointerEvent | TouchEvent, cube: Cube) => void;

@@ -179,6 +179,11 @@ function newTextLayer(presenter: Presenter, id: string, data: VegaTextLayerDatum
     if (fontFamily) {
         props.fontFamily = fontFamily;
     }
+
+    if (config.characterSet) {
+        props.characterSet = config.characterSet;
+    }
+
     return new base.layers.TextLayer(props);
 }
 

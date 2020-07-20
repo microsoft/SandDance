@@ -669,6 +669,9 @@ export class Viewer {
         if (this.options.transitionDurations) {
             config.presenterConfig.transitionDurations = this.options.transitionDurations;
         }
+        if (this.options.characterSet) {
+            config.presenterConfig.characterSet = this.options.characterSet;
+        }
         return config;
     }
 
