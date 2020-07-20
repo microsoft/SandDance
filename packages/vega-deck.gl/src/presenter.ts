@@ -21,7 +21,7 @@ import {
     PresenterStyle,
     QueuedAnimationOptions,
     Scene3d,
-    Stage,
+    Stage
 } from './interfaces';
 import { getCubeLayer, getCubes, getLayers } from './layers';
 import { LegendView } from './legend';
