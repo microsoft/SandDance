@@ -5,6 +5,7 @@ import { base } from './base';
 import { layerNames } from './constants';
 import { CubeLayer, CubeLayerInterpolatedProps, CubeLayerProps } from './cube-layer/cube-layer';
 import { LinearInterpolator_Class } from './deck.gl-classes/linearInterpolator';
+import { easing } from './easing';
 import {
     Cube,
     PresenterConfig,
@@ -18,7 +19,6 @@ import { Presenter } from './presenter';
 import { RGBAColor } from '@deck.gl/core/utils/color';
 import { DeckProps } from '@deck.gl/core/lib/deck';
 import { InterpolationTransitionTiming } from '@deck.gl/core/lib/layer';
-import { easeExpInOut } from 'd3-ease';
 import { Layer } from 'deck.gl';
 import { TextLayerProps } from '@deck.gl/layers/text-layer/text-layer';
 
@@ -56,8 +56,8 @@ export function getLayers(
 }
 
 function newCubeLayer(presenter: Presenter, config: PresenterConfig, cubeData: Cube[], highlightColor: RGBAColor, lightSettings: any /*LightSettings*/, lightingMix: number, interpolator?: LinearInterpolator_Class<CubeLayerInterpolatedProps>) {
-    const getPosition = getTiming(config.transitionDurations.position, easeExpInOut);
-    const getSize = getTiming(config.transitionDurations.size, easeExpInOut);
+    const getPosition = getTiming(config.transitionDurations.position, easing);
+    const getSize = getTiming(config.transitionDurations.size, easing);
     const getColor = getTiming(config.transitionDurations.color);
     const cubeLayerProps: CubeLayerProps = {
         interpolator,
