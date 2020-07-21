@@ -13,6 +13,7 @@ import {
 import { LinearInterpolator, LinearInterpolator_Class } from './deck.gl-classes/linearInterpolator';
 import { OrbitController_Class } from './deck.gl-classes/orbitController';
 import { createStage, defaultPresenterConfig, defaultPresenterStyle } from './defaults';
+import { easing } from './easing';
 import { lightingEffects } from './effects';
 import { PresenterElement } from './enums';
 import {
@@ -33,7 +34,6 @@ import { sceneToStage } from './stagers';
 import { targetViewState, viewStateProps } from './viewState';
 import { DeckProps } from '@deck.gl/core/lib/deck';
 import { View } from '@msrvida/chart-types';
-import { easeExpInOut } from 'd3-ease';
 import { getActiveElementInfo, mount, setActiveElement } from 'tsx-create-element';
 
 interface IBounds {
@@ -286,7 +286,7 @@ export class Presenter {
                 linearInterpolator.layerStartProps = { lightingMix: oldCubeLayer.props.lightingMix };
                 linearInterpolator.layerEndProps = { lightingMix };
                 viewState.transitionDuration = config.transitionDurations.view;
-                viewState.transitionEasing = easeExpInOut;
+                viewState.transitionEasing = easing;
                 viewState.transitionInterpolator = linearInterpolator;
             }
             if (stage.view === '2d') {
@@ -339,7 +339,7 @@ export class Presenter {
     homeCamera() {
         const viewState = targetViewState(this._last.height, this._last.width, this._last.view) as any;
         viewState.transitionDuration = defaultPresenterConfig.transitionDurations.view;
-        viewState.transitionEasing = easeExpInOut;
+        viewState.transitionEasing = easing;
         viewState.transitionInterpolator = new LinearInterpolator(viewStateProps);
         const deckProps: Partial<DeckProps> = {
             effects: lightingEffects(),
