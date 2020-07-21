@@ -9,9 +9,6 @@ export class CharacterSet {
     public checkNeedsNewCharacterSet(forceNewCharacterSet: boolean, oldInsight: Insight, newInsight: Insight) {
         if (forceNewCharacterSet || needsNewCharacterSet(oldInsight, newInsight)) {
             this.chars = undefined;
-            console.log('reset char set')
-        } else {
-            console.log('using same char set')
         }
     }
 
@@ -30,7 +27,6 @@ export class CharacterSet {
                 });
             });
             this.chars = Object.keys(map);
-            console.log('gen new char set')
         }
     }
 }
