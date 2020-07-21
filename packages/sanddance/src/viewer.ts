@@ -51,6 +51,7 @@ import { Spec, Transforms } from 'vega-typings';
 import Search = searchExpression.Search;
 import SearchExpression = searchExpression.SearchExpression;
 import SearchExpressionGroup = searchExpression.SearchExpressionGroup;
+import { CharacterSet } from './characterSet';
 
 const { defaultView } = VegaDeckGl.defaults;
 
@@ -113,6 +114,7 @@ export class Viewer {
     private _tooltip: Tooltip;
     private _shouldSaveColorContext: () => boolean;
     private _lastColorOptions: ColorSettings;
+    private _characterSet: CharacterSet;
 
     /**
      * Instantiate a new Viewer.
@@ -122,6 +124,7 @@ export class Viewer {
     constructor(public element: HTMLElement, options?: Partial<ViewerOptions>) {
         this.options = VegaDeckGl.util.deepMerge<ViewerOptions>(defaultViewerOptions, options as ViewerOptions);
         this.presenter = new VegaDeckGl.Presenter(element, getPresenterStyle(this.options));
+        this._characterSet = new CharacterSet();
         this._dataScope = new DataScope();
         this._animator = new Animator(
             this._dataScope,
@@ -408,20 +411,20 @@ export class Viewer {
             const allowAsyncRenderTime = 100;
             if (insight.filter) {
                 //refining
-                result = await this._render(insight, data, options);
+                result = await this._render(insight, data, options, true);
                 this.presenter.animationQueue(() => {
                     this.filter(insight.filter, options.rebaseFilter && options.rebaseFilter());
                 }, allowAsyncRenderTime, { waitingLabel: 'layout before refine', handlerLabel: 'refine after layout' });
             } else {
                 //not refining
                 this._dataScope.setFilteredData(null);
-                result = await this._render(insight, data, options);
+                result = await this._render(insight, data, options, true);
                 this.presenter.animationQueue(() => {
                     this.reset();
                 }, allowAsyncRenderTime, { waitingLabel: 'layout before reset', handlerLabel: 'reset after layout' });
             }
         } else {
-            result = await this._render(insight, data, options);
+            result = await this._render(insight, data, options, false);
         }
         return result;
     }
@@ -459,7 +462,7 @@ export class Viewer {
         };
     }
 
-    private async _render(insight: Insight, data: object[], options: RenderOptions) {
+    private async _render(insight: Insight, data: object[], options: RenderOptions, forceNewCharacterSet: boolean) {
         if (this._tooltip) {
             this._tooltip.finalize();
             this._tooltip = null;
@@ -470,6 +473,9 @@ export class Viewer {
         }
         this._specColumns = getSpecColumns(insight, this._dataScope.getColumns(options.columnTypes));
         const ordinalMap = assignOrdinals(this._specColumns, data, options.ordinalMap);
+
+        this._characterSet.checkNeedsNewCharacterSet(forceNewCharacterSet, this.insight, insight);
+
         this.insight = VegaDeckGl.util.clone(insight);
         this._lastColorOptions = VegaDeckGl.util.clone(this.options.colors);
         this._shouldSaveColorContext = () => !options.initialColorContext;
@@ -607,6 +613,7 @@ export class Viewer {
     private createConfig(c?: VegaDeckGl.types.PresenterConfig): VegaDeckGl.types.ViewGlConfig {
         const { getTextColor, getTextHighlightColor, onTextClick } = this.options;
         const defaultPresenterConfig: VegaDeckGl.types.PresenterConfig = {
+            getCharacterSet: () => this._characterSet.chars,
             getTextColor,
             getTextHighlightColor,
             onTextClick: (e, t) => {
@@ -660,7 +667,12 @@ export class Viewer {
             preserveDrawingBuffer: this.options.preserveDrawingBuffer
         };
         if (this.options.onBeforeCreateLayers) {
-            defaultPresenterConfig.preLayer = stage => this.options.onBeforeCreateLayers(stage, this.specCapabilities);
+            defaultPresenterConfig.preLayer = stage => {
+                this._characterSet.checkGenCharacterSet(stage);
+                this.options.onBeforeCreateLayers(stage, this.specCapabilities);
+            }
+        } else {
+            defaultPresenterConfig.preLayer = stage => this._characterSet.checkGenCharacterSet(stage);
         }
         const config: VegaDeckGl.types.ViewGlConfig = {
             presenter: this.presenter,
@@ -668,9 +680,6 @@ export class Viewer {
         };
         if (this.options.transitionDurations) {
             config.presenterConfig.transitionDurations = this.options.transitionDurations;
-        }
-        if (this.options.characterSet) {
-            config.presenterConfig.characterSet = this.options.characterSet;
         }
         return config;
     }

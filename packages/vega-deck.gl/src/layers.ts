@@ -180,8 +180,8 @@ function newTextLayer(presenter: Presenter, id: string, data: VegaTextLayerDatum
         props.fontFamily = fontFamily;
     }
 
-    if (config.characterSet) {
-        props.characterSet = config.characterSet;
+    if (config.getCharacterSet) {
+        props.characterSet = config.getCharacterSet();
     }
 
     return new base.layers.TextLayer(props);

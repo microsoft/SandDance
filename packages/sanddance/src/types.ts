@@ -76,11 +76,6 @@ export interface ViewerOptions extends SpecViewOptions {
     language: Language;
 
     /**
-     * Character set for text elements
-     */
-
-    characterSet?: string[];
-    /**
      * Tooltip options
      */
     tooltipOptions?: TooltipOptions;
