@@ -474,7 +474,7 @@ export class Viewer {
         this._specColumns = getSpecColumns(insight, this._dataScope.getColumns(options.columnTypes));
         const ordinalMap = assignOrdinals(this._specColumns, data, options.ordinalMap);
 
-        this._characterSet.checkNeedsNewCharacterSet(forceNewCharacterSet, this.insight, insight);
+        this._characterSet.resetCharacterSet(forceNewCharacterSet, this.insight, insight);
 
         this.insight = VegaDeckGl.util.clone(insight);
         this._lastColorOptions = VegaDeckGl.util.clone(this.options.colors);
@@ -613,7 +613,7 @@ export class Viewer {
     private createConfig(c?: VegaDeckGl.types.PresenterConfig): VegaDeckGl.types.ViewGlConfig {
         const { getTextColor, getTextHighlightColor, onTextClick } = this.options;
         const defaultPresenterConfig: VegaDeckGl.types.PresenterConfig = {
-            getCharacterSet: () => this._characterSet.chars,
+            getCharacterSet: stage => this._characterSet.getCharacterSet(stage),
             getTextColor,
             getTextHighlightColor,
             onTextClick: (e, t) => {
@@ -668,11 +668,8 @@ export class Viewer {
         };
         if (this.options.onBeforeCreateLayers) {
             defaultPresenterConfig.preLayer = stage => {
-                this._characterSet.checkGenCharacterSet(stage);
                 this.options.onBeforeCreateLayers(stage, this.specCapabilities);
             }
-        } else {
-            defaultPresenterConfig.preLayer = stage => this._characterSet.checkGenCharacterSet(stage);
         }
         const config: VegaDeckGl.types.ViewGlConfig = {
             presenter: this.presenter,

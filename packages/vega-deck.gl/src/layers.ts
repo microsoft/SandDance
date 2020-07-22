@@ -43,13 +43,17 @@ export function getLayers(
             if (axis.title) texts.push(axis.title);
         });
     });
+    let characterSet: string[];
+    if (config.getCharacterSet) {
+        characterSet = config.getCharacterSet(stage);
+    }
     if (stage.facets) {
         stage.facets.forEach(f => {
             if (f.lines) lines.push.apply(lines, f.lines);
         });
     }
     const lineLayer = newLineLayer(layerNames.lines, lines);
-    const textLayer = newTextLayer(presenter, layerNames.text, texts, config, presenter.style.fontFamily);
+    const textLayer = newTextLayer(presenter, layerNames.text, texts, config, presenter.style.fontFamily, characterSet);
     const pathLayer = newPathLayer(layerNames.paths, stage.pathData);
     const polygonLayer = newPolygonLayer(layerNames.polygons, stage.polygonData);
     return [textLayer, cubeLayer, lineLayer, pathLayer, polygonLayer];
@@ -140,10 +144,11 @@ function newPolygonLayer(id: string, data: Polygon[]) {
     return newlayer;
 }
 
-function newTextLayer(presenter: Presenter, id: string, data: VegaTextLayerDatum[], config: PresenterConfig, fontFamily: string) {
+function newTextLayer(presenter: Presenter, id: string, data: VegaTextLayerDatum[], config: PresenterConfig, fontFamily: string, characterSet: string[]) {
     const props: TextLayerProps<VegaTextLayerDatum> = {
         id,
         data,
+        characterSet,
         coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
         sizeUnits: 'pixels',
         autoHighlight: true,
@@ -178,10 +183,6 @@ function newTextLayer(presenter: Presenter, id: string, data: VegaTextLayerDatum
     };
     if (fontFamily) {
         props.fontFamily = fontFamily;
-    }
-
-    if (config.getCharacterSet) {
-        props.characterSet = config.getCharacterSet();
     }
 
     return new base.layers.TextLayer(props);
