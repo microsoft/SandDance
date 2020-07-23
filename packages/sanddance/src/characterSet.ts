@@ -4,15 +4,15 @@ import { Insight } from '@msrvida/sanddance-specs';
 import { types } from '@msrvida/vega-deck.gl';
 
 export class CharacterSet {
-    public chars: string[];
+    private chars: string[];
 
-    public checkNeedsNewCharacterSet(forceNewCharacterSet: boolean, oldInsight: Insight, newInsight: Insight) {
+    public resetCharacterSet(forceNewCharacterSet: boolean, oldInsight: Insight, newInsight: Insight) {
         if (forceNewCharacterSet || needsNewCharacterSet(oldInsight, newInsight)) {
             this.chars = undefined;
         }
     }
 
-    public checkGenCharacterSet(stage: types.Stage) {
+    public getCharacterSet(stage: types.Stage) {
         if (!this.chars) {
             const map: { [char: string]: true } = {};
             const addText = (text: string) => {
@@ -28,6 +28,7 @@ export class CharacterSet {
             });
             this.chars = Object.keys(map);
         }
+        return this.chars;
     }
 }
 

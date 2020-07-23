@@ -359,7 +359,7 @@ function _Explorer(props: Props) {
                 if (this.state.signalValues) {
                     this.state.signalValues[signalName] = signalValue;
                 }
-                
+
                 this.discardColorContextUpdates = true;
                 this.newViewStateTarget = undefined;
                 this.props.onSignalChanged && this.props.onSignalChanged(signalName, signalValue);
@@ -477,9 +477,6 @@ function _Explorer(props: Props) {
                         //load recommendation
                         let r = new RecommenderSummary(dataContent.columns, dataContent.data);
                         partialInsight = r.recommend();
-                        if (partialInsight.chart === 'barchart') {
-                            partialInsight.chart = 'barchartV';
-                        }
                     }
                     partialInsight = {
                         facetStyle: 'wrap',
@@ -488,6 +485,9 @@ function _Explorer(props: Props) {
                         transform: null,
                         ...partialInsight
                     };
+                    if (partialInsight.chart === 'barchart') {
+                        partialInsight.chart = 'barchartV';
+                    }
                     const selectedItemIndex = { ...this.state.selectedItemIndex };
                     const sideTabId = SideTabId.ChartType;
                     selectedItemIndex[DataScopeId.AllData] = 0;
