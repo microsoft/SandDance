@@ -46,7 +46,7 @@ Import these in your JavaScript, then call the `use()` function to pass the depe
 ```js
 import * as deck from '@deck.gl/core';
 import * as layers from '@deck.gl/layers';
-import * as luma from 'luma.gl';
+import * as luma from '@luma.gl/core';
 import * as vega from 'vega';
 import * as SandDance from '@msrvida/sanddance';
 
@@ -54,6 +54,11 @@ SandDance.use(vega, deck, layers, luma);
 ```
 
 ## Versions
+
+### 3.1.0 Changes
+
+* Fix for animation easing
+* Text character set accepts all unicode
 
 ### Breaking changes in v3
 

@@ -20,7 +20,7 @@ Add these to the `dependencies` section of your `package.json`, then run `npm in
 "@deck.gl/layers": "^8.1.5",
 "@msrvida/sanddance-explorer": "^3",
 "@luma.gl/core": "^8.1.2",
-"office-ui-fabric-react": "6.204.4",
+"@fluentui/react": "^7.111.0",
 "vega": "^5.11"
 ```
 
@@ -29,16 +29,16 @@ Import these in your JavaScript:
 ```js
 import * as deck from '@deck.gl/core';
 import * as layers from '@deck.gl/layers';
-import * as luma from 'luma.gl';
-import * as fabric from 'office-ui-fabric-react';
+import * as luma from '@luma.gl/core';
+import * as fluentui from '@fluentui/react';
 import * as vega from 'vega';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Explorer, use } from '@msrvida/sanddance-explorer';
 
-fabric.initializeIcons();
+fluentui.initializeIcons();
 
-use(fabric, React, ReactDOM, vega, deck, layers, luma);
+use(fluentui, React, ReactDOM, vega, deck, layers, luma);
 
 const data = [
   { a: 1, b: "c1" },

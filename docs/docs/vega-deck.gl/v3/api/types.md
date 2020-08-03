@@ -21,10 +21,10 @@ interface Axis {
 
 | Name     | Type                                          | Optional |
 | -------- | --------------------------------------------- | -------- |
-| domain   | [StyledLine][InterfaceDeclaration-12]         | false    |
-| ticks    | [StyledLine][InterfaceDeclaration-12][]       | false    |
-| tickText | [TickText][InterfaceDeclaration-13][]         | false    |
-| title    | [VegaTextLayerDatum][InterfaceDeclaration-14] | true     |
+| domain   | [StyledLine][InterfaceDeclaration-14]         | false    |
+| ticks    | [StyledLine][InterfaceDeclaration-14][]       | false    |
+| tickText | [TickText][InterfaceDeclaration-15][]         | false    |
+| title    | [VegaTextLayerDatum][InterfaceDeclaration-16] | true     |
 
 ----------
 
@@ -204,7 +204,7 @@ interface FacetRect {
 | Name  | Type                                    | Optional |
 | ----- | --------------------------------------- | -------- |
 | datum | any                                     | false    |
-| lines | [StyledLine][InterfaceDeclaration-12][] | false    |
+| lines | [StyledLine][InterfaceDeclaration-14][] | false    |
 
 ----------
 
@@ -219,10 +219,10 @@ interface Legend {
 
 **Properties**
 
-| Name  | Type                                                      | Optional |
-| ----- | --------------------------------------------------------- | -------- |
-| title | string                                                    | true     |
-| rows  | { [index: number]: [LegendRow][InterfaceDeclaration-9]; } | false    |
+| Name  | Type                                                       | Optional |
+| ----- | ---------------------------------------------------------- | -------- |
+| title | string                                                     | true     |
+| rows  | { [index: number]: [LegendRow][InterfaceDeclaration-11]; } | false    |
 
 ----------
 
@@ -242,7 +242,7 @@ interface LegendRow {
 | ------ | ------------------------------------------ | -------- |
 | label  | string                                     | true     |
 | value  | string                                     | true     |
-| symbol | [LegendRowSymbol][InterfaceDeclaration-10] | true     |
+| symbol | [LegendRowSymbol][InterfaceDeclaration-12] | true     |
 
 ----------
 
@@ -325,6 +325,7 @@ Configuration options to be used by the Presenter.
 interface PresenterConfig {
     transitionDurations?: TransitionDurations;
     preStage?: PreStage;
+    getCharacterSet?: (stage: Stage) => string[];
     redraw?: () => void;
     onCubeHover?: (e: MouseEvent | PointerEvent | TouchEvent, cube: Cube) => void;
     onCubeClick?: (e: MouseEvent | PointerEvent | TouchEvent, cube: Cube) => void;
@@ -347,8 +348,9 @@ interface PresenterConfig {
 
 | Name                         | Type                                                                                                | Optional |
 | ---------------------------- | --------------------------------------------------------------------------------------------------- | -------- |
-| transitionDurations          | [TransitionDurations][InterfaceDeclaration-20]                                                      | true     |
-| preStage                     | [PreStage][InterfaceDeclaration-21]                                                                 | true     |
+| transitionDurations          | [TransitionDurations][InterfaceDeclaration-22]                                                      | true     |
+| preStage                     | [PreStage][InterfaceDeclaration-23]                                                                 | true     |
+| getCharacterSet              | (stage: Stage) => string[]                                                                          | true     |
 | redraw                       | () => void                                                                                          | true     |
 | onCubeHover                  | (e: MouseEvent &#124; PointerEvent &#124; TouchEvent, cube: Cube) => void                           | true     |
 | onCubeClick                  | (e: MouseEvent &#124; PointerEvent &#124; TouchEvent, cube: Cube) => void                           | true     |
@@ -440,11 +442,13 @@ Data structure containing all that is necessary to present a chart.
 ```typescript
 interface Stage {
     backgroundColor?: RGBAColor<number, number, number, number>;
-    cubeData: Cube[];
+    cubeData?: Cube[];
+    pathData?: Path[];
+    polygonData?: Polygon[];
     legend?: Legend;
-    axes: { x: Axis[]; y: Axis[]; };
-    textData: VegaTextLayerDatum[];
-    view: View;
+    axes?: { x?: Axis[]; y?: Axis[]; };
+    textData?: VegaTextLayerDatum[];
+    view?: View;
     gridLines?: StyledLine[];
     facets?: FacetRect[];
 }
@@ -452,16 +456,18 @@ interface Stage {
 
 **Properties**
 
-| Name            | Type                                                                            | Optional |
-| --------------- | ------------------------------------------------------------------------------- | -------- |
-| backgroundColor | RGBAColor<number, number, number, number>                                       | true     |
-| cubeData        | [Cube][InterfaceDeclaration-7][]                                                | false    |
-| legend          | [Legend][InterfaceDeclaration-8]                                                | true     |
-| axes            | { x: [Axis][InterfaceDeclaration-11][]; y: [Axis][InterfaceDeclaration-11][]; } | false    |
-| textData        | [VegaTextLayerDatum][InterfaceDeclaration-14][]                                 | false    |
-| view            | View                                                                            | false    |
-| gridLines       | [StyledLine][InterfaceDeclaration-12][]                                         | true     |
-| facets          | [FacetRect][InterfaceDeclaration-15][]                                          | true     |
+| Name            | Type                                                                              | Optional |
+| --------------- | --------------------------------------------------------------------------------- | -------- |
+| backgroundColor | RGBAColor<number, number, number, number>                                         | true     |
+| cubeData        | [Cube][InterfaceDeclaration-7][]                                                  | true     |
+| pathData        | Path[]                                                  | true     |
+| polygonData     | Polygon[]                                               | true     |
+| legend          | [Legend][InterfaceDeclaration-10]                                                 | true     |
+| axes            | { x?: [Axis][InterfaceDeclaration-13][]; y?: [Axis][InterfaceDeclaration-13][]; } | true     |
+| textData        | [VegaTextLayerDatum][InterfaceDeclaration-16][]                                   | true     |
+| view            | View                                                                              | true     |
+| gridLines       | [StyledLine][InterfaceDeclaration-14][]                                           | true     |
+| facets          | [FacetRect][InterfaceDeclaration-17][]                                            | true     |
 
 ----------
 
@@ -497,7 +503,7 @@ interface TickText extends VegaTextLayerDatum {
 
 **Extends**
 
-[VegaTextLayerDatum][InterfaceDeclaration-14]
+[VegaTextLayerDatum][InterfaceDeclaration-16]
 
 **Properties**
 
@@ -618,7 +624,7 @@ interface ViewGlConfig {
 | Name            | Type                                       | Optional |
 | --------------- | ------------------------------------------ | -------- |
 | presenter       | [Presenter][ClassDeclaration-0]          | true     |
-| presenterConfig | [PresenterConfig][InterfaceDeclaration-19] | true     |
+| presenterConfig | [PresenterConfig][InterfaceDeclaration-21] | true     |
 | getView         | { (): View; }                              | true     |
 
 ## Types
@@ -631,7 +637,7 @@ type CubeLayerProps = LayerProps<Cube> & CubeLayerDefaultProps & CubeLayerDataPr
 
 **Type**
 
-LayerProps<[Cube][InterfaceDeclaration-7]> & [CubeLayerDefaultProps][InterfaceDeclaration-29] & [CubeLayerDataProps][InterfaceDeclaration-26]
+LayerProps<[Cube][InterfaceDeclaration-7]> & [CubeLayerDefaultProps][InterfaceDeclaration-31] & [CubeLayerDataProps][InterfaceDeclaration-28]
 
 ----------
 
@@ -648,11 +654,11 @@ type Vec3 = [number, number, number];
 [number, number, number]
 
 [NamespaceImport-3]: types.html#types
-[InterfaceDeclaration-11]: types.html#axis
-[InterfaceDeclaration-12]: types.html#styledline
-[InterfaceDeclaration-12]: types.html#styledline
-[InterfaceDeclaration-13]: types.html#ticktext
-[InterfaceDeclaration-14]: types.html#vegatextlayerdatum
+[InterfaceDeclaration-13]: types.html#axis
+[InterfaceDeclaration-14]: types.html#styledline
+[InterfaceDeclaration-14]: types.html#styledline
+[InterfaceDeclaration-15]: types.html#ticktext
+[InterfaceDeclaration-16]: types.html#vegatextlayerdatum
 [InterfaceDeclaration-0]: types.html#base
 [InterfaceDeclaration-1]: types.html#deckbase
 [InterfaceDeclaration-2]: types.html#decklayerbase
@@ -661,47 +667,47 @@ type Vec3 = [number, number, number];
 [InterfaceDeclaration-7]: types.html#cube
 [TypeAliasDeclaration-0]: types.html#vec3
 [TypeAliasDeclaration-0]: types.html#vec3
-[InterfaceDeclaration-26]: types.html#cubelayerdataprops
-[InterfaceDeclaration-29]: types.html#cubelayerdefaultprops
+[InterfaceDeclaration-28]: types.html#cubelayerdataprops
+[InterfaceDeclaration-31]: types.html#cubelayerdefaultprops
 [InterfaceDeclaration-1]: types.html#deckbase
 [InterfaceDeclaration-2]: types.html#decklayerbase
-[InterfaceDeclaration-15]: types.html#facetrect
-[InterfaceDeclaration-12]: types.html#styledline
-[InterfaceDeclaration-8]: types.html#legend
-[InterfaceDeclaration-9]: types.html#legendrow
-[InterfaceDeclaration-9]: types.html#legendrow
-[InterfaceDeclaration-10]: types.html#legendrowsymbol
-[InterfaceDeclaration-10]: types.html#legendrowsymbol
+[InterfaceDeclaration-17]: types.html#facetrect
+[InterfaceDeclaration-14]: types.html#styledline
+[InterfaceDeclaration-10]: types.html#legend
+[InterfaceDeclaration-11]: types.html#legendrow
+[InterfaceDeclaration-11]: types.html#legendrow
+[InterfaceDeclaration-12]: types.html#legendrowsymbol
+[InterfaceDeclaration-12]: types.html#legendrowsymbol
 [InterfaceDeclaration-3]: types.html#lumabase
-[InterfaceDeclaration-21]: types.html#prestage
+[InterfaceDeclaration-23]: types.html#prestage
 [InterfaceDeclaration-6]: types.html#stage
-[InterfaceDeclaration-19]: types.html#presenterconfig
-[InterfaceDeclaration-20]: types.html#transitiondurations
-[InterfaceDeclaration-21]: types.html#prestage
-[InterfaceDeclaration-16]: types.html#presenterstyle
-[InterfaceDeclaration-17]: types.html#queuedanimationoptions
-[InterfaceDeclaration-18]: types.html#scene3d
+[InterfaceDeclaration-21]: types.html#presenterconfig
+[InterfaceDeclaration-22]: types.html#transitiondurations
+[InterfaceDeclaration-23]: types.html#prestage
+[InterfaceDeclaration-18]: types.html#presenterstyle
+[InterfaceDeclaration-19]: types.html#queuedanimationoptions
+[InterfaceDeclaration-20]: types.html#scene3d
 [InterfaceDeclaration-6]: types.html#stage
 [InterfaceDeclaration-7]: types.html#cube
-[InterfaceDeclaration-8]: types.html#legend
-[InterfaceDeclaration-11]: types.html#axis
-[InterfaceDeclaration-11]: types.html#axis
-[InterfaceDeclaration-14]: types.html#vegatextlayerdatum
-[InterfaceDeclaration-12]: types.html#styledline
-[InterfaceDeclaration-15]: types.html#facetrect
-[InterfaceDeclaration-12]: types.html#styledline
+[InterfaceDeclaration-10]: types.html#legend
+[InterfaceDeclaration-13]: types.html#axis
+[InterfaceDeclaration-13]: types.html#axis
+[InterfaceDeclaration-16]: types.html#vegatextlayerdatum
+[InterfaceDeclaration-14]: types.html#styledline
+[InterfaceDeclaration-17]: types.html#facetrect
+[InterfaceDeclaration-14]: types.html#styledline
 [TypeAliasDeclaration-0]: types.html#vec3
 [TypeAliasDeclaration-0]: types.html#vec3
-[InterfaceDeclaration-13]: types.html#ticktext
-[InterfaceDeclaration-14]: types.html#vegatextlayerdatum
-[InterfaceDeclaration-20]: types.html#transitiondurations
+[InterfaceDeclaration-15]: types.html#ticktext
+[InterfaceDeclaration-16]: types.html#vegatextlayerdatum
+[InterfaceDeclaration-22]: types.html#transitiondurations
 [InterfaceDeclaration-4]: types.html#vegabase
-[InterfaceDeclaration-14]: types.html#vegatextlayerdatum
-[InterfaceDeclaration-22]: types.html#viewglconfig
+[InterfaceDeclaration-16]: types.html#vegatextlayerdatum
+[InterfaceDeclaration-24]: types.html#viewglconfig
 [ClassDeclaration-0]: presenter.html#presenter
-[InterfaceDeclaration-19]: types.html#presenterconfig
+[InterfaceDeclaration-21]: types.html#presenterconfig
 [TypeAliasDeclaration-1]: types.html#cubelayerprops
 [InterfaceDeclaration-7]: types.html#cube
-[InterfaceDeclaration-29]: types.html#cubelayerdefaultprops
-[InterfaceDeclaration-26]: types.html#cubelayerdataprops
+[InterfaceDeclaration-31]: types.html#cubelayerdefaultprops
+[InterfaceDeclaration-28]: types.html#cubelayerdataprops
 [TypeAliasDeclaration-0]: types.html#vec3

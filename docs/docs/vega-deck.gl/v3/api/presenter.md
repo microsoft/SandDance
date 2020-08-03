@@ -24,7 +24,7 @@ public constructor(el: HTMLElement, style?: PresenterStyle);
 | Name  | Type                                      | Description                              |
 | ----- | ----------------------------------------- | ---------------------------------------- |
 | el    | HTMLElement                               | Parent HTMLElement to present within.    |
-| style | [PresenterStyle][InterfaceDeclaration-16] | Optional PresenterStyle styling options. |
+| style | [PresenterStyle][InterfaceDeclaration-18] | Optional PresenterStyle styling options. |
 
 ## Methods
 
@@ -56,7 +56,7 @@ public animationQueue(handler: () => void, timeout: number, options?: QueuedAnim
 | ------- | ------------------------------------------------- | --------------------------------------------------- |
 | handler | () => void                                        | Function to invoke when timeout is complete.        |
 | timeout | number                                            | Length of time to wait before invoking the handler. |
-| options | [QueuedAnimationOptions][InterfaceDeclaration-17] | Optional QueuedAnimationOptions object.             |
+| options | [QueuedAnimationOptions][InterfaceDeclaration-19] | Optional QueuedAnimationOptions object.             |
 
 **Return type**
 
@@ -96,10 +96,10 @@ public present(sceneOrStage: Scene3d | Stage, height: number, width: number, con
 
 | Name         | Type                                                                      | Description                                                      |
 | ------------ | ------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| sceneOrStage | [Scene3d][InterfaceDeclaration-18] &#124; [Stage][InterfaceDeclaration-6] | Vega Scene object, or Stage object containing chart layout info. |
+| sceneOrStage | [Scene3d][InterfaceDeclaration-20] &#124; [Stage][InterfaceDeclaration-6] | Vega Scene object, or Stage object containing chart layout info. |
 | height       | number                                                                    | Height of the rendering area.                                    |
 | width        | number                                                                    | Width of the rendering area.                                     |
-| config       | [PresenterConfig][InterfaceDeclaration-19]                                | Optional presentation configuration object.                      |
+| config       | [PresenterConfig][InterfaceDeclaration-21]                                | Optional presentation configuration object.                      |
 
 **Return type**
 
@@ -121,7 +121,7 @@ public rePresent(stage: Partial<Stage>, modifyConfig?: PresenterConfig): void;
 | Name         | Type                                       | Description                                          |
 | ------------ | ------------------------------------------ | ---------------------------------------------------- |
 | stage        | Partial<[Stage][InterfaceDeclaration-6]>   | Partially populated Stage object containing changes. |
-| modifyConfig | [PresenterConfig][InterfaceDeclaration-19] | Optional presentation configuration object.          |
+| modifyConfig | [PresenterConfig][InterfaceDeclaration-21] | Optional presentation configuration object.          |
 
 **Return type**
 
@@ -261,7 +261,7 @@ public style: PresenterStyle;
 
 **Type**
 
-[PresenterStyle][InterfaceDeclaration-16]
+[PresenterStyle][InterfaceDeclaration-18]
 
 ----------
 
@@ -279,19 +279,19 @@ View
 
 [ClassDeclaration-0]: presenter.html#presenter
 [Constructor-0]: presenter.html#constructorel-style
-[InterfaceDeclaration-16]: types.html#presenterstyle
+[InterfaceDeclaration-18]: types.html#presenterstyle
 [MethodDeclaration-0]: presenter.html#animationcancel
 [MethodDeclaration-1]: presenter.html#animationqueuehandler-timeout-options
-[InterfaceDeclaration-17]: types.html#queuedanimationoptions
+[InterfaceDeclaration-19]: types.html#queuedanimationoptions
 [MethodDeclaration-2]: presenter.html#getelementtype
 [EnumDeclaration-0]: ../index.html#presenterelement
 [MethodDeclaration-3]: presenter.html#presentsceneorstage-height-width-config
-[InterfaceDeclaration-18]: types.html#scene3d
+[InterfaceDeclaration-20]: types.html#scene3d
 [InterfaceDeclaration-6]: types.html#stage
-[InterfaceDeclaration-19]: types.html#presenterconfig
+[InterfaceDeclaration-21]: types.html#presenterconfig
 [MethodDeclaration-4]: presenter.html#representstage-modifyconfig
 [InterfaceDeclaration-6]: types.html#stage
-[InterfaceDeclaration-19]: types.html#presenterconfig
+[InterfaceDeclaration-21]: types.html#presenterconfig
 [MethodDeclaration-5]: presenter.html#canvastodataurl
 [MethodDeclaration-6]: presenter.html#homecamera
 [MethodDeclaration-7]: presenter.html#getcubedata
@@ -304,5 +304,5 @@ View
 [GetAccessor-0]: presenter.html#stage
 [InterfaceDeclaration-6]: types.html#stage
 [PropertyDeclaration-4]: presenter.html#style
-[InterfaceDeclaration-16]: types.html#presenterstyle
+[InterfaceDeclaration-18]: types.html#presenterstyle
 [GetAccessor-1]: presenter.html#view

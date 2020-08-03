@@ -56,7 +56,7 @@ const defaultPresenterStyle: PresenterStyle;
 
 **Type**
 
-[PresenterStyle][InterfaceDeclaration-16]
+[PresenterStyle][InterfaceDeclaration-18]
 
 ----------
 
@@ -68,7 +68,7 @@ const defaultPresenterConfig: PresenterConfig;
 
 **Type**
 
-[PresenterConfig][InterfaceDeclaration-19]
+[PresenterConfig][InterfaceDeclaration-21]
 
 ----------
 
@@ -136,9 +136,9 @@ const minPixelSize: 0.5;
 [VariableDeclaration-4]: defaults.html#minheight
 [VariableDeclaration-5]: defaults.html#minwidth
 [VariableDeclaration-6]: defaults.html#defaultpresenterstyle
-[InterfaceDeclaration-16]: types.html#presenterstyle
+[InterfaceDeclaration-18]: types.html#presenterstyle
 [VariableDeclaration-7]: defaults.html#defaultpresenterconfig
-[InterfaceDeclaration-19]: types.html#presenterconfig
+[InterfaceDeclaration-21]: types.html#presenterconfig
 [VariableDeclaration-8]: defaults.html#groupstrokewidth
 [VariableDeclaration-9]: defaults.html#linez
 [VariableDeclaration-10]: defaults.html#defaultview
