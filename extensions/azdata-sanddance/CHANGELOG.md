@@ -1,5 +1,9 @@
 # Change Log
 
+## [3.1.0]
+- Fix animation final frame 
+- Render Unicode character sets 
+
 ## [3.0.0]
 - (Major version number in sync with core components)
 - Faceting for all chart types
