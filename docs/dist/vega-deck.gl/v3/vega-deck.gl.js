@@ -1335,6 +1335,13 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
+    function easing(t) {
+        if (t === 0 || t === 1)
+            return t;
+        return expInOut(t);
+    }
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
     function getLayers(presenter, config, stage, lightSettings /*LightSettings*/, lightingMix, interpolator, guideLines) {
         const cubeLayer = newCubeLayer(presenter, config, stage.cubeData, presenter.style.highlightColor, lightSettings, lightingMix, interpolator);
         const { x, y } = stage.axes;
@@ -1352,6 +1359,10 @@ void main(void) {
                     texts.push(axis.title);
             });
         });
+        let characterSet;
+        if (config.getCharacterSet) {
+            characterSet = config.getCharacterSet(stage);
+        }
         if (stage.facets) {
             stage.facets.forEach(f => {
                 if (f.lines)
@@ -1359,14 +1370,14 @@ void main(void) {
             });
         }
         const lineLayer = newLineLayer(layerNames.lines, lines);
-        const textLayer = newTextLayer(presenter, layerNames.text, texts, config, presenter.style.fontFamily);
+        const textLayer = newTextLayer(presenter, layerNames.text, texts, config, presenter.style.fontFamily, characterSet);
         const pathLayer = newPathLayer(layerNames.paths, stage.pathData);
         const polygonLayer = newPolygonLayer(layerNames.polygons, stage.polygonData);
         return [textLayer, cubeLayer, lineLayer, pathLayer, polygonLayer];
     }
     function newCubeLayer(presenter, config, cubeData, highlightColor, lightSettings /*LightSettings*/, lightingMix, interpolator) {
-        const getPosition = getTiming(config.transitionDurations.position, expInOut);
-        const getSize = getTiming(config.transitionDurations.size, expInOut);
+        const getPosition = getTiming(config.transitionDurations.position, easing);
+        const getSize = getTiming(config.transitionDurations.size, easing);
         const getColor = getTiming(config.transitionDurations.color);
         const cubeLayerProps = {
             interpolator,
@@ -1445,10 +1456,11 @@ void main(void) {
         });
         return newlayer;
     }
-    function newTextLayer(presenter, id, data, config, fontFamily) {
+    function newTextLayer(presenter, id, data, config, fontFamily, characterSet) {
         const props = {
             id,
             data,
+            characterSet,
             coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
             sizeUnits: 'pixels',
             autoHighlight: true,
@@ -2295,7 +2307,7 @@ void main(void) {
                     linearInterpolator.layerStartProps = { lightingMix: oldCubeLayer.props.lightingMix };
                     linearInterpolator.layerEndProps = { lightingMix };
                     viewState.transitionDuration = config.transitionDurations.view;
-                    viewState.transitionEasing = expInOut;
+                    viewState.transitionEasing = easing;
                     viewState.transitionInterpolator = linearInterpolator;
                 }
                 if (stage.view === '2d') ;
@@ -2341,7 +2353,7 @@ void main(void) {
         homeCamera() {
             const viewState = targetViewState(this._last.height, this._last.width, this._last.view);
             viewState.transitionDuration = defaultPresenterConfig.transitionDurations.view;
-            viewState.transitionEasing = expInOut;
+            viewState.transitionEasing = easing;
             viewState.transitionInterpolator = new LinearInterpolator(viewStateProps);
             const deckProps = {
                 effects: lightingEffects(),

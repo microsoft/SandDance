@@ -5004,7 +5004,9 @@
     const layerNames = {
         cubes: 'LAYER_CUBES',
         lines: 'LAYER_LINES',
-        text: 'LAYER_TEXT'
+        text: 'LAYER_TEXT',
+        paths: 'LAYER_PATHS',
+        polygons: 'LAYER_POLYGONS'
     };
 
     var constants$1 = /*#__PURE__*/Object.freeze({
@@ -6155,6 +6157,8 @@ void main(void) {
         const stage = {
             view,
             cubeData: [],
+            pathData: [],
+            polygonData: [],
             axes: {
                 x: [],
                 y: []
@@ -6326,6 +6330,13 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
+    function easing(t) {
+        if (t === 0 || t === 1)
+            return t;
+        return expInOut(t);
+    }
+
+    // Copyright (c) Microsoft Corporation. All rights reserved.
     function getLayers(presenter, config, stage, lightSettings /*LightSettings*/, lightingMix, interpolator, guideLines) {
         const cubeLayer = newCubeLayer(presenter, config, stage.cubeData, presenter.style.highlightColor, lightSettings, lightingMix, interpolator);
         const { x, y } = stage.axes;
@@ -6343,6 +6354,10 @@ void main(void) {
                     texts.push(axis.title);
             });
         });
+        let characterSet;
+        if (config.getCharacterSet) {
+            characterSet = config.getCharacterSet(stage);
+        }
         if (stage.facets) {
             stage.facets.forEach(f => {
                 if (f.lines)
@@ -6350,12 +6365,14 @@ void main(void) {
             });
         }
         const lineLayer = newLineLayer(layerNames.lines, lines);
-        const textLayer = newTextLayer(presenter, layerNames.text, texts, config, presenter.style.fontFamily);
-        return [textLayer, cubeLayer, lineLayer];
+        const textLayer = newTextLayer(presenter, layerNames.text, texts, config, presenter.style.fontFamily, characterSet);
+        const pathLayer = newPathLayer(layerNames.paths, stage.pathData);
+        const polygonLayer = newPolygonLayer(layerNames.polygons, stage.polygonData);
+        return [textLayer, cubeLayer, lineLayer, pathLayer, polygonLayer];
     }
     function newCubeLayer(presenter, config, cubeData, highlightColor, lightSettings /*LightSettings*/, lightingMix, interpolator) {
-        const getPosition = getTiming(config.transitionDurations.position, expInOut);
-        const getSize = getTiming(config.transitionDurations.size, expInOut);
+        const getPosition = getTiming(config.transitionDurations.position, easing);
+        const getSize = getTiming(config.transitionDurations.size, easing);
         const getColor = getTiming(config.transitionDurations.color);
         const cubeLayerProps = {
             interpolator,
@@ -6398,10 +6415,47 @@ void main(void) {
             getWidth: (o) => o.strokeWidth
         });
     }
-    function newTextLayer(presenter, id, data, config, fontFamily) {
+    function newPathLayer(id, data) {
+        if (!data)
+            return null;
+        return new base.layers.PathLayer({
+            id,
+            data,
+            billboard: true,
+            widthScale: 1,
+            widthMinPixels: 2,
+            widthUnits: 'pixels',
+            coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
+            getPath: (o) => o.positions,
+            getColor: (o) => o.strokeColor,
+            getWidth: (o) => o.strokeWidth
+        });
+    }
+    function newPolygonLayer(id, data) {
+        if (!data)
+            return null;
+        let newlayer = new base.layers.PolygonLayer({
+            id,
+            data,
+            coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
+            getPolygon: (o) => o.positions,
+            getFillColor: (o) => o.fillColor,
+            getLineColor: (o) => o.strokeColor,
+            wireframe: false,
+            filled: true,
+            stroked: true,
+            pickable: true,
+            extruded: true,
+            getElevation: (o) => o.depth,
+            getLineWidth: (o) => o.strokeWidth
+        });
+        return newlayer;
+    }
+    function newTextLayer(presenter, id, data, config, fontFamily, characterSet) {
         const props = {
             id,
             data,
+            characterSet,
             coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
             sizeUnits: 'pixels',
             autoHighlight: true,
@@ -6800,7 +6854,25 @@ void main(void) {
         });
     };
 
+    //change direction of y from SVG to GL
+    const ty = -1;
     const markStager$3 = (options, stage, scene, x, y, groupType) => {
+        const g = Object.assign({ opacity: 1, strokeOpacity: 1, strokeWidth: 1 }, scene.items[0]);
+        const path = {
+            strokeWidth: g.strokeWidth,
+            strokeColor: colorFromString(g.stroke),
+            positions: scene.items.map((it) => [
+                it.x,
+                ty * it.y,
+                it.z || 0
+            ])
+        };
+        path.strokeColor[3] *= g.strokeOpacity;
+        path.strokeColor[3] *= g.opacity;
+        stage.pathData.push(path);
+    };
+
+    const markStager$4 = (options, stage, scene, x, y, groupType) => {
         //scale Deck.Gl text to Vega size
         const fontScale = 1;
         //change direction of y from SVG to GL
@@ -6813,7 +6885,7 @@ void main(void) {
             const yOffset = alignmentBaseline === 'top' ? item.fontSize / 2 : 0; //fixup to get tick text correct
             const textItem = {
                 color: colorFromString(item.fill),
-                text: base.vega.truncate(item.text, item.limit, 'right', item.ellipsis || '...'),
+                text: item.limit === undefined ? item.text : base.vega.truncate(item.text, item.limit, 'right', item.ellipsis || '...'),
                 position: [x + (item.x || 0), ty * (y + (item.y || 0) + yOffset), 0],
                 size,
                 angle: convertAngle(item.angle),
@@ -6854,6 +6926,45 @@ void main(void) {
         }
         return baseline || 'bottom';
     }
+
+    //change direction of y from SVG to GL
+    const ty$1 = -1;
+    const markStager$5 = (options, stage, scene, x, y, groupType) => {
+        const g = Object.assign({ fillOpacity: 1, opacity: 1, strokeOpacity: 1, strokeWidth: 0, depth: 0 }, scene.items[0]);
+        const points = scene.items.map((item) => {
+            item = Object.assign({ z: 0 }, item);
+            item = Object.assign({ x2: item.x, y2: item.y, z2: item.z }, item);
+            return [
+                item.x,
+                ty$1 * item.y,
+                item.z,
+                item.x2,
+                ty$1 * item.y2,
+                item.z2
+            ];
+        });
+        let positions = [];
+        let startpoint = [points[0][0], points[0][1], points[0][2]];
+        points.forEach(p => {
+            positions.push([p[0], p[1], p[2]]);
+        });
+        points.reverse().forEach(p => {
+            positions.push([p[3], p[4], p[5]]);
+        });
+        positions.push(startpoint);
+        const polygon = {
+            fillColor: colorFromString(g.fill) || [0, 0, 0, 0],
+            positions,
+            strokeColor: colorFromString(g.stroke) || [0, 0, 0, 0],
+            strokeWidth: g.strokeWidth,
+            depth: g.depth
+        };
+        polygon.fillColor[3] *= g.fillOpacity;
+        polygon.fillColor[3] *= g.opacity;
+        polygon.strokeColor[3] *= g.strokeOpacity;
+        polygon.strokeColor[3] *= g.opacity;
+        stage.polygonData.push(polygon);
+    };
 
     var GroupType;
     (function (GroupType) {
@@ -6932,7 +7043,9 @@ void main(void) {
         legend: markStager$1,
         rect: markStager$2,
         rule: markStager,
-        text: markStager$3
+        line: markStager$3,
+        area: markStager$5,
+        text: markStager$4
     };
     var mainStager = (options, stage, scene, x, y, groupType) => {
         if (scene.marktype !== 'group' && groupType === GroupType.legend) {
@@ -7194,7 +7307,7 @@ void main(void) {
                     linearInterpolator.layerStartProps = { lightingMix: oldCubeLayer.props.lightingMix };
                     linearInterpolator.layerEndProps = { lightingMix };
                     viewState.transitionDuration = config.transitionDurations.view;
-                    viewState.transitionEasing = expInOut;
+                    viewState.transitionEasing = easing;
                     viewState.transitionInterpolator = linearInterpolator;
                 }
                 if (stage.view === '2d') ;
@@ -7240,7 +7353,7 @@ void main(void) {
         homeCamera() {
             const viewState = targetViewState(this._last.height, this._last.width, this._last.view);
             viewState.transitionDuration = defaultPresenterConfig.transitionDurations.view;
-            viewState.transitionEasing = expInOut;
+            viewState.transitionEasing = easing;
             viewState.transitionInterpolator = new LinearInterpolator(viewStateProps);
             const deckProps = {
                 effects: lightingEffects(),
@@ -8512,6 +8625,85 @@ void main(void) {
         return props.rows.length === 0 ? null : (createElement("div", { className: `${props.cssPrefix}tooltip` }, Table$1({ rows: props.rows })));
     };
 
+    class CharacterSet {
+        resetCharacterSet(forceNewCharacterSet, oldInsight, newInsight) {
+            if (forceNewCharacterSet || needsNewCharacterSet(oldInsight, newInsight)) {
+                this.chars = undefined;
+            }
+        }
+        getCharacterSet(stage) {
+            if (!this.chars) {
+                const map = {};
+                const addText = (text) => {
+                    Array.from(text).forEach(char => { map[char] = true; });
+                };
+                stage.textData.forEach(t => addText(t.text));
+                const { x, y } = stage.axes;
+                [x, y].forEach(axes => {
+                    axes.forEach(axis => {
+                        if (axis.tickText)
+                            axis.tickText.forEach(t => addText(t.text));
+                        if (axis.title)
+                            addText(axis.title.text);
+                    });
+                });
+                this.chars = Object.keys(map);
+            }
+            return this.chars;
+        }
+    }
+    function needsNewCharacterSet(oldInsight, newInsight) {
+        if (!oldInsight)
+            return true;
+        if (oldInsight.chart !== newInsight.chart)
+            return true;
+        if (oldInsight.facetStyle !== newInsight.facetStyle)
+            return true;
+        if (oldInsight.totalStyle !== newInsight.totalStyle)
+            return true;
+        if (oldInsight.hideAxes !== newInsight.hideAxes)
+            return true;
+        if (differentObjectValues(oldInsight.signalValues, newInsight.signalValues))
+            return true;
+        if (differentObjectValues(oldInsight.size, newInsight.size))
+            return true;
+        const oldColumns = oldInsight.columns;
+        const newColumns = newInsight.columns;
+        if (oldColumns.facet !== newColumns.facet)
+            return true;
+        if (oldColumns.facetV !== newColumns.facetV)
+            return true;
+        if (oldColumns.x !== newColumns.x)
+            return true;
+        if (oldColumns.y !== newColumns.y)
+            return true;
+        if (oldColumns.z !== newColumns.z)
+            return true;
+        return false;
+    }
+    function differentObjectValues(a, b) {
+        if (!a && !b)
+            return false;
+        if (!a || !b)
+            return true;
+        const keys = Object.keys(b);
+        for (let i = 0; i < keys.length; i++) {
+            let key = keys[i];
+            let ta = typeof a;
+            let tb = typeof b;
+            if (ta !== tb)
+                return true;
+            if (ta === 'object') {
+                return differentObjectValues(a[key], b[key]);
+            }
+            else {
+                if (a[key] !== b[key])
+                    return true;
+            }
+        }
+        return false;
+    }
+
     var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
         function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
         return new (P || (P = Promise))(function (resolve, reject) {
@@ -8536,6 +8728,7 @@ void main(void) {
             this.element = element;
             this.options = deepMerge(defaultViewerOptions, options);
             this.presenter = new Presenter(element, getPresenterStyle(this.options));
+            this._characterSet = new CharacterSet();
             this._dataScope = new DataScope();
             this._animator = new Animator(this._dataScope, {
                 onDataChanged: this.onDataChanged.bind(this),
@@ -8803,7 +8996,7 @@ void main(void) {
                     const allowAsyncRenderTime = 100;
                     if (insight.filter) {
                         //refining
-                        result = yield this._render(insight, data, options);
+                        result = yield this._render(insight, data, options, true);
                         this.presenter.animationQueue(() => {
                             this.filter(insight.filter, options.rebaseFilter && options.rebaseFilter());
                         }, allowAsyncRenderTime, { waitingLabel: 'layout before refine', handlerLabel: 'refine after layout' });
@@ -8811,14 +9004,14 @@ void main(void) {
                     else {
                         //not refining
                         this._dataScope.setFilteredData(null);
-                        result = yield this._render(insight, data, options);
+                        result = yield this._render(insight, data, options, true);
                         this.presenter.animationQueue(() => {
                             this.reset();
                         }, allowAsyncRenderTime, { waitingLabel: 'layout before reset', handlerLabel: 'reset after layout' });
                     }
                 }
                 else {
-                    result = yield this._render(insight, data, options);
+                    result = yield this._render(insight, data, options, false);
                 }
                 return result;
             });
@@ -8858,7 +9051,7 @@ void main(void) {
                 }
             };
         }
-        _render(insight, data, options) {
+        _render(insight, data, options, forceNewCharacterSet) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (this._tooltip) {
                     this._tooltip.finalize();
@@ -8870,6 +9063,7 @@ void main(void) {
                 }
                 this._specColumns = getSpecColumns(insight, this._dataScope.getColumns(options.columnTypes));
                 const ordinalMap = assignOrdinals(this._specColumns, data, options.ordinalMap);
+                this._characterSet.resetCharacterSet(forceNewCharacterSet, this.insight, insight);
                 this.insight = clone(insight);
                 this._lastColorOptions = clone(this.options.colors);
                 this._shouldSaveColorContext = () => !options.initialColorContext;
@@ -9002,6 +9196,7 @@ void main(void) {
         createConfig(c) {
             const { getTextColor, getTextHighlightColor, onTextClick } = this.options;
             const defaultPresenterConfig = {
+                getCharacterSet: stage => this._characterSet.getCharacterSet(stage),
                 getTextColor,
                 getTextHighlightColor,
                 onTextClick: (e, t) => {
@@ -9058,7 +9253,9 @@ void main(void) {
                 preserveDrawingBuffer: this.options.preserveDrawingBuffer
             };
             if (this.options.onBeforeCreateLayers) {
-                defaultPresenterConfig.preLayer = stage => this.options.onBeforeCreateLayers(stage, this.specCapabilities);
+                defaultPresenterConfig.preLayer = stage => {
+                    this.options.onBeforeCreateLayers(stage, this.specCapabilities);
+                };
             }
             const config = {
                 presenter: this.presenter,
@@ -9213,7 +9410,7 @@ void main(void) {
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
-    const version = '3.0.2';
+    const version = '3.1.0';
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     const use$1 = use;

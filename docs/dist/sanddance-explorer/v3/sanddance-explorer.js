@@ -6823,7 +6823,9 @@ exports.layerNames = void 0;
 const layerNames = {
   cubes: 'LAYER_CUBES',
   lines: 'LAYER_LINES',
-  text: 'LAYER_TEXT'
+  text: 'LAYER_TEXT',
+  paths: 'LAYER_PATHS',
+  polygons: 'LAYER_POLYGONS'
 };
 exports.layerNames = layerNames;
 },{}],"yqJY":[function(require,module,exports) {
@@ -6924,6 +6926,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.createElement = createElement;
+exports.addChild = addChild;
 exports.mount = mount;
 exports.findElementByChildPositions = findElementByChildPositions;
 exports.focusActiveElement = focusActiveElement;
@@ -8271,6 +8274,8 @@ function createStage(view) {
   const stage = {
     view,
     cubeData: [],
+    pathData: [],
+    polygonData: [],
     axes: {
       x: [],
       y: []
@@ -9088,7 +9093,23 @@ var _bounce = require("./bounce.js");
 var _back = require("./back.js");
 
 var _elastic = require("./elastic.js");
-},{"./linear.js":"INt0","./quad.js":"YHiQ","./cubic.js":"qmX2","./poly.js":"dJ3h","./sin.js":"uHbA","./exp.js":"VbvH","./circle.js":"Nnyc","./bounce.js":"WDS3","./back.js":"LEz6","./elastic.js":"kSts"}],"U4xU":[function(require,module,exports) {
+},{"./linear.js":"INt0","./quad.js":"YHiQ","./cubic.js":"qmX2","./poly.js":"dJ3h","./sin.js":"uHbA","./exp.js":"VbvH","./circle.js":"Nnyc","./bounce.js":"WDS3","./back.js":"LEz6","./elastic.js":"kSts"}],"xQEf":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.easing = easing;
+
+var _d3Ease = require("d3-ease");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function easing(t) {
+  if (t === 0 || t === 1) return t;
+  return (0, _d3Ease.easeExpInOut)(t);
+}
+},{"d3-ease":"id0f"}],"U4xU":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9106,7 +9127,7 @@ var _constants = require("./constants");
 
 var _cubeLayer = require("./cube-layer/cube-layer");
 
-var _d3Ease = require("d3-ease");
+var _easing = require("./easing");
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -9128,6 +9149,11 @@ function getLayers(presenter, config, stage, lightSettings
       if (axis.title) texts.push(axis.title);
     });
   });
+  let characterSet;
+
+  if (config.getCharacterSet) {
+    characterSet = config.getCharacterSet(stage);
+  }
 
   if (stage.facets) {
     stage.facets.forEach(f => {
@@ -9136,15 +9162,17 @@ function getLayers(presenter, config, stage, lightSettings
   }
 
   const lineLayer = newLineLayer(_constants.layerNames.lines, lines);
-  const textLayer = newTextLayer(presenter, _constants.layerNames.text, texts, config, presenter.style.fontFamily);
-  return [textLayer, cubeLayer, lineLayer];
+  const textLayer = newTextLayer(presenter, _constants.layerNames.text, texts, config, presenter.style.fontFamily, characterSet);
+  const pathLayer = newPathLayer(_constants.layerNames.paths, stage.pathData);
+  const polygonLayer = newPolygonLayer(_constants.layerNames.polygons, stage.polygonData);
+  return [textLayer, cubeLayer, lineLayer, pathLayer, polygonLayer];
 }
 
 function newCubeLayer(presenter, config, cubeData, highlightColor, lightSettings
 /*LightSettings*/
 , lightingMix, interpolator) {
-  const getPosition = getTiming(config.transitionDurations.position, _d3Ease.easeExpInOut);
-  const getSize = getTiming(config.transitionDurations.size, _d3Ease.easeExpInOut);
+  const getPosition = getTiming(config.transitionDurations.position, _easing.easing);
+  const getSize = getTiming(config.transitionDurations.size, _easing.easing);
   const getColor = getTiming(config.transitionDurations.color);
   const cubeLayerProps = {
     interpolator,
@@ -9188,10 +9216,47 @@ function newLineLayer(id, data) {
   });
 }
 
-function newTextLayer(presenter, id, data, config, fontFamily) {
+function newPathLayer(id, data) {
+  if (!data) return null;
+  return new _base.base.layers.PathLayer({
+    id,
+    data,
+    billboard: true,
+    widthScale: 1,
+    widthMinPixels: 2,
+    widthUnits: 'pixels',
+    coordinateSystem: _base.base.deck.COORDINATE_SYSTEM.CARTESIAN,
+    getPath: o => o.positions,
+    getColor: o => o.strokeColor,
+    getWidth: o => o.strokeWidth
+  });
+}
+
+function newPolygonLayer(id, data) {
+  if (!data) return null;
+  let newlayer = new _base.base.layers.PolygonLayer({
+    id,
+    data,
+    coordinateSystem: _base.base.deck.COORDINATE_SYSTEM.CARTESIAN,
+    getPolygon: o => o.positions,
+    getFillColor: o => o.fillColor,
+    getLineColor: o => o.strokeColor,
+    wireframe: false,
+    filled: true,
+    stroked: true,
+    pickable: true,
+    extruded: true,
+    getElevation: o => o.depth,
+    getLineWidth: o => o.strokeWidth
+  });
+  return newlayer;
+}
+
+function newTextLayer(presenter, id, data, config, fontFamily, characterSet) {
   const props = {
     id,
     data,
+    characterSet,
     coordinateSystem: _base.base.deck.COORDINATE_SYSTEM.CARTESIAN,
     sizeUnits: 'pixels',
     autoHighlight: true,
@@ -9259,7 +9324,7 @@ function getCubes(deckProps) {
   const cubeLayerProps = cubeLayer.props;
   return cubeLayerProps.data;
 }
-},{"./array":"Oim5","./base":"To8D","./constants":"Fy6F","./cube-layer/cube-layer":"gZmI","d3-ease":"id0f"}],"WeBf":[function(require,module,exports) {
+},{"./array":"Oim5","./base":"To8D","./constants":"Fy6F","./cube-layer/cube-layer":"gZmI","./easing":"xQEf"}],"WeBf":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9902,7 +9967,38 @@ const markStager = (options, stage, scene, x, y, groupType) => {
 
 var _default = markStager;
 exports.default = _default;
-},{"../base":"To8D","../color":"j7Ij","../defaults":"jQIe"}],"ZnIC":[function(require,module,exports) {
+},{"../base":"To8D","../color":"j7Ij","../defaults":"jQIe"}],"gTQz":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _color = require("../color");
+
+//change direction of y from SVG to GL
+const ty = -1;
+
+const markStager = (options, stage, scene, x, y, groupType) => {
+  const g = Object.assign({
+    opacity: 1,
+    strokeOpacity: 1,
+    strokeWidth: 1
+  }, scene.items[0]);
+  const path = {
+    strokeWidth: g.strokeWidth,
+    strokeColor: (0, _color.colorFromString)(g.stroke),
+    positions: scene.items.map(it => [it.x, ty * it.y, it.z || 0])
+  };
+  path.strokeColor[3] *= g.strokeOpacity;
+  path.strokeColor[3] *= g.opacity;
+  stage.pathData.push(path);
+};
+
+var _default = markStager;
+exports.default = _default;
+},{"../color":"j7Ij"}],"ZnIC":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9928,7 +10024,7 @@ const markStager = (options, stage, scene, x, y, groupType) => {
 
     const textItem = {
       color: (0, _color.colorFromString)(item.fill),
-      text: _base.base.vega.truncate(item.text, item.limit, 'right', item.ellipsis || '...'),
+      text: item.limit === undefined ? item.text : _base.base.vega.truncate(item.text, item.limit, 'right', item.ellipsis || '...'),
       position: [x + (item.x || 0), ty * (y + (item.y || 0) + yOffset), 0],
       size,
       angle: convertAngle(item.angle),
@@ -9983,7 +10079,64 @@ function convertBaseline(baseline) {
 
 var _default = markStager;
 exports.default = _default;
-},{"../base":"To8D","../color":"j7Ij"}],"ESmf":[function(require,module,exports) {
+},{"../base":"To8D","../color":"j7Ij"}],"aRoq":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _color = require("../color");
+
+//change direction of y from SVG to GL
+const ty = -1;
+
+const markStager = (options, stage, scene, x, y, groupType) => {
+  const g = Object.assign({
+    fillOpacity: 1,
+    opacity: 1,
+    strokeOpacity: 1,
+    strokeWidth: 0,
+    depth: 0
+  }, scene.items[0]);
+  const points = scene.items.map(item => {
+    item = Object.assign({
+      z: 0
+    }, item);
+    item = Object.assign({
+      x2: item.x,
+      y2: item.y,
+      z2: item.z
+    }, item);
+    return [item.x, ty * item.y, item.z, item.x2, ty * item.y2, item.z2];
+  });
+  let positions = [];
+  let startpoint = [points[0][0], points[0][1], points[0][2]];
+  points.forEach(p => {
+    positions.push([p[0], p[1], p[2]]);
+  });
+  points.reverse().forEach(p => {
+    positions.push([p[3], p[4], p[5]]);
+  });
+  positions.push(startpoint);
+  const polygon = {
+    fillColor: (0, _color.colorFromString)(g.fill) || [0, 0, 0, 0],
+    positions,
+    strokeColor: (0, _color.colorFromString)(g.stroke) || [0, 0, 0, 0],
+    strokeWidth: g.strokeWidth,
+    depth: g.depth
+  };
+  polygon.fillColor[3] *= g.fillOpacity;
+  polygon.fillColor[3] *= g.opacity;
+  polygon.strokeColor[3] *= g.strokeOpacity;
+  polygon.strokeColor[3] *= g.opacity;
+  stage.polygonData.push(polygon);
+};
+
+var _default = markStager;
+exports.default = _default;
+},{"../color":"j7Ij"}],"ESmf":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10013,7 +10166,11 @@ var _rect = _interopRequireDefault(require("./marks/rect"));
 
 var _rule = _interopRequireWildcard(require("./marks/rule"));
 
+var _line = _interopRequireDefault(require("./marks/line"));
+
 var _text = _interopRequireDefault(require("./marks/text"));
+
+var _area = _interopRequireDefault(require("./marks/area"));
 
 var _base = require("./base");
 
@@ -10114,6 +10271,8 @@ const markStagers = {
   legend: _legend.default,
   rect: _rect.default,
   rule: _rule.default,
+  line: _line.default,
+  area: _area.default,
   text: _text.default
 };
 
@@ -10151,7 +10310,7 @@ function orderDomain(domain, dim) {
     domain.sourcePosition = temp;
   }
 }
-},{"./marks/legend":"KS5e","./marks/rect":"Bi9w","./marks/rule":"YfRA","./marks/text":"ZnIC","./base":"To8D","./color":"j7Ij","./defaults":"jQIe","./marks/interfaces":"ESmf"}],"sOaQ":[function(require,module,exports) {
+},{"./marks/legend":"KS5e","./marks/rect":"Bi9w","./marks/rule":"YfRA","./marks/line":"gTQz","./marks/text":"ZnIC","./marks/area":"aRoq","./base":"To8D","./color":"j7Ij","./defaults":"jQIe","./marks/interfaces":"ESmf"}],"sOaQ":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10201,6 +10360,8 @@ var _linearInterpolator = require("./deck.gl-classes/linearInterpolator");
 
 var _defaults = require("./defaults");
 
+var _easing = require("./easing");
+
 var _effects = require("./effects");
 
 var _enums = require("./enums");
@@ -10218,8 +10379,6 @@ var _patchedCubeArray = require("./patchedCubeArray");
 var _stagers = require("./stagers");
 
 var _viewState = require("./viewState");
-
-var _d3Ease = require("d3-ease");
 
 var _tsxCreateElement = require("tsx-create-element");
 
@@ -10501,7 +10660,7 @@ class Presenter {
           lightingMix
         };
         viewState.transitionDuration = config.transitionDurations.view;
-        viewState.transitionEasing = _d3Ease.easeExpInOut;
+        viewState.transitionEasing = _easing.easing;
         viewState.transitionInterpolator = linearInterpolator;
       }
 
@@ -10561,7 +10720,7 @@ class Presenter {
   homeCamera() {
     const viewState = (0, _viewState.targetViewState)(this._last.height, this._last.width, this._last.view);
     viewState.transitionDuration = _defaults.defaultPresenterConfig.transitionDurations.view;
-    viewState.transitionEasing = _d3Ease.easeExpInOut;
+    viewState.transitionEasing = _easing.easing;
     viewState.transitionInterpolator = new _linearInterpolator.LinearInterpolator(_viewState.viewStateProps);
     const deckProps = {
       effects: (0, _effects.lightingEffects)(),
@@ -10606,7 +10765,7 @@ class Presenter {
 }
 
 exports.Presenter = Presenter;
-},{"./base":"To8D","./clone":"Jcn2","./color":"j7Ij","./deck.gl-classes/deckgl":"NGGy","./deck.gl-classes/linearInterpolator":"BfWC","./defaults":"jQIe","./effects":"ZnxW","./enums":"qyL6","./layers":"U4xU","./legend":"zxV0","./marks/rule":"YfRA","./panel":"qkJA","./patchedCubeArray":"sE6a","./stagers":"yA2f","./viewState":"sOaQ","d3-ease":"id0f","tsx-create-element":"YitK"}],"wGit":[function(require,module,exports) {
+},{"./base":"To8D","./clone":"Jcn2","./color":"j7Ij","./deck.gl-classes/deckgl":"NGGy","./deck.gl-classes/linearInterpolator":"BfWC","./defaults":"jQIe","./easing":"xQEf","./effects":"ZnxW","./enums":"qyL6","./layers":"U4xU","./legend":"zxV0","./marks/rule":"YfRA","./panel":"qkJA","./patchedCubeArray":"sE6a","./stagers":"yA2f","./viewState":"sOaQ","tsx-create-element":"YitK"}],"wGit":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12472,7 +12631,91 @@ const renderTooltip = props => {
     rows: props.rows
   }));
 };
-},{"@msrvida/vega-deck.gl":"eFEk","./constants":"Syc7","./util":"BTLl"}],"CdFf":[function(require,module,exports) {
+},{"@msrvida/vega-deck.gl":"eFEk","./constants":"Syc7","./util":"BTLl"}],"J9mB":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CharacterSet = void 0;
+
+class CharacterSet {
+  resetCharacterSet(forceNewCharacterSet, oldInsight, newInsight) {
+    if (forceNewCharacterSet || needsNewCharacterSet(oldInsight, newInsight)) {
+      this.chars = undefined;
+    }
+  }
+
+  getCharacterSet(stage) {
+    if (!this.chars) {
+      const map = {};
+
+      const addText = text => {
+        Array.from(text).forEach(char => {
+          map[char] = true;
+        });
+      };
+
+      stage.textData.forEach(t => addText(t.text));
+      const {
+        x,
+        y
+      } = stage.axes;
+      [x, y].forEach(axes => {
+        axes.forEach(axis => {
+          if (axis.tickText) axis.tickText.forEach(t => addText(t.text));
+          if (axis.title) addText(axis.title.text);
+        });
+      });
+      this.chars = Object.keys(map);
+    }
+
+    return this.chars;
+  }
+
+}
+
+exports.CharacterSet = CharacterSet;
+
+function needsNewCharacterSet(oldInsight, newInsight) {
+  if (!oldInsight) return true;
+  if (oldInsight.chart !== newInsight.chart) return true;
+  if (oldInsight.facetStyle !== newInsight.facetStyle) return true;
+  if (oldInsight.totalStyle !== newInsight.totalStyle) return true;
+  if (oldInsight.hideAxes !== newInsight.hideAxes) return true;
+  if (differentObjectValues(oldInsight.signalValues, newInsight.signalValues)) return true;
+  if (differentObjectValues(oldInsight.size, newInsight.size)) return true;
+  const oldColumns = oldInsight.columns;
+  const newColumns = newInsight.columns;
+  if (oldColumns.facet !== newColumns.facet) return true;
+  if (oldColumns.facetV !== newColumns.facetV) return true;
+  if (oldColumns.x !== newColumns.x) return true;
+  if (oldColumns.y !== newColumns.y) return true;
+  if (oldColumns.z !== newColumns.z) return true;
+  return false;
+}
+
+function differentObjectValues(a, b) {
+  if (!a && !b) return false;
+  if (!a || !b) return true;
+  const keys = Object.keys(b);
+
+  for (let i = 0; i < keys.length; i++) {
+    let key = keys[i];
+    let ta = typeof a;
+    let tb = typeof b;
+    if (ta !== tb) return true;
+
+    if (ta === 'object') {
+      return differentObjectValues(a[key], b[key]);
+    } else {
+      if (a[key] !== b[key]) return true;
+    }
+  }
+
+  return false;
+}
+},{}],"CdFf":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12515,6 +12758,8 @@ var _sanddanceSpecs = require("@msrvida/sanddance-specs");
 var searchExpression = _interopRequireWildcard(require("@msrvida/search-expression"));
 
 var VegaDeckGl = _interopRequireWildcard(require("@msrvida/vega-deck.gl"));
+
+var _characterSet = require("./characterSet");
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
@@ -12572,6 +12817,7 @@ class Viewer {
     this.element = element;
     this.options = VegaDeckGl.util.deepMerge(_defaults.defaultViewerOptions, options);
     this.presenter = new VegaDeckGl.Presenter(element, (0, _defaults.getPresenterStyle)(this.options));
+    this._characterSet = new _characterSet.CharacterSet();
     this._dataScope = new _dataScope.DataScope();
     this._animator = new _animator.Animator(this._dataScope, {
       onDataChanged: this.onDataChanged.bind(this),
@@ -12890,7 +13136,7 @@ class Viewer {
 
         if (insight.filter) {
           //refining
-          result = yield this._render(insight, data, options);
+          result = yield this._render(insight, data, options, true);
           this.presenter.animationQueue(() => {
             this.filter(insight.filter, options.rebaseFilter && options.rebaseFilter());
           }, allowAsyncRenderTime, {
@@ -12901,7 +13147,7 @@ class Viewer {
           //not refining
           this._dataScope.setFilteredData(null);
 
-          result = yield this._render(insight, data, options);
+          result = yield this._render(insight, data, options, true);
           this.presenter.animationQueue(() => {
             this.reset();
           }, allowAsyncRenderTime, {
@@ -12910,7 +13156,7 @@ class Viewer {
           });
         }
       } else {
-        result = yield this._render(insight, data, options);
+        result = yield this._render(insight, data, options, false);
       }
 
       return result;
@@ -12952,7 +13198,7 @@ class Viewer {
     };
   }
 
-  _render(insight, data, options) {
+  _render(insight, data, options, forceNewCharacterSet) {
     return __awaiter(this, void 0, void 0, function* () {
       if (this._tooltip) {
         this._tooltip.finalize();
@@ -12967,6 +13213,9 @@ class Viewer {
 
       this._specColumns = (0, _sanddanceSpecs.getSpecColumns)(insight, this._dataScope.getColumns(options.columnTypes));
       const ordinalMap = (0, _ordinal.assignOrdinals)(this._specColumns, data, options.ordinalMap);
+
+      this._characterSet.resetCharacterSet(forceNewCharacterSet, this.insight, insight);
+
       this.insight = VegaDeckGl.util.clone(insight);
       this._lastColorOptions = VegaDeckGl.util.clone(this.options.colors);
 
@@ -13129,6 +13378,7 @@ class Viewer {
       onTextClick
     } = this.options;
     const defaultPresenterConfig = {
+      getCharacterSet: stage => this._characterSet.getCharacterSet(stage),
       getTextColor,
       getTextHighlightColor,
       onTextClick: (e, t) => {
@@ -13195,7 +13445,9 @@ class Viewer {
     };
 
     if (this.options.onBeforeCreateLayers) {
-      defaultPresenterConfig.preLayer = stage => this.options.onBeforeCreateLayers(stage, this.specCapabilities);
+      defaultPresenterConfig.preLayer = stage => {
+        this.options.onBeforeCreateLayers(stage, this.specCapabilities);
+      };
     }
 
     const config = {
@@ -13377,7 +13629,7 @@ class Viewer {
 
 exports.Viewer = Viewer;
 Viewer.defaultViewerOptions = _defaults.defaultViewerOptions;
-},{"./animator":"U1OZ","./axes":"A7xy","./axisSelection":"oIzg","./colorCubes":"PfBA","./colorSchemes":"kNpg","./constants":"Syc7","./dataScope":"MJ1d","./defaults":"G0Md","./details":"KCB5","./headers":"nQLz","./legend":"rI67","./ordinal":"dxn8","./search":"KytA","./signals":"jmI2","./tooltip":"bkgF","@msrvida/sanddance-specs":"gl1V","@msrvida/search-expression":"VB4o","@msrvida/vega-deck.gl":"eFEk"}],"DZif":[function(require,module,exports) {
+},{"./animator":"U1OZ","./axes":"A7xy","./axisSelection":"oIzg","./colorCubes":"PfBA","./colorSchemes":"kNpg","./constants":"Syc7","./dataScope":"MJ1d","./defaults":"G0Md","./details":"KCB5","./headers":"nQLz","./legend":"rI67","./ordinal":"dxn8","./search":"KytA","./signals":"jmI2","./tooltip":"bkgF","@msrvida/sanddance-specs":"gl1V","@msrvida/search-expression":"VB4o","@msrvida/vega-deck.gl":"eFEk","./characterSet":"J9mB"}],"DZif":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13386,7 +13638,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = '3.0.2';
+const version = '3.1.0';
 exports.version = version;
 },{}],"rZaE":[function(require,module,exports) {
 "use strict";
@@ -15912,7 +16164,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var version = '3.0.1';
+var version = '3.1.0';
 exports.version = version;
 },{}],"zKGJ":[function(require,module,exports) {
 "use strict";
@@ -22482,10 +22734,6 @@ function _Explorer(props) {
               //load recommendation
               var r = new _chartRecommender.RecommenderSummary(dataContent.columns, dataContent.data);
               partialInsight = r.recommend();
-
-              if (partialInsight.chart === 'barchart') {
-                partialInsight.chart = 'barchartV';
-              }
             }
 
             partialInsight = Object.assign({
@@ -22494,6 +22742,11 @@ function _Explorer(props) {
               totalStyle: null,
               transform: null
             }, partialInsight);
+
+            if (partialInsight.chart === 'barchart') {
+              partialInsight.chart = 'barchartV';
+            }
+
             var selectedItemIndex = Object.assign({}, _this6.state.selectedItemIndex);
             var sideTabId = _interfaces.SideTabId.ChartType;
             selectedItemIndex[_dataScope.DataScopeId.AllData] = 0;
