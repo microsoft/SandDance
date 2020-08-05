@@ -5,6 +5,7 @@
 ```bash
 pip install -e .
 ```
+*Note: on Windows, you may need to [enable long file path names](https://www.bing.com/search?q=windows+enable+long+file+path)*
 ## install python/dev dependencies
 
 ```bash
