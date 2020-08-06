@@ -7,7 +7,7 @@ import { Token } from '@phosphor/coreutils';
 import * as widgetExports from './widget';
 import { MODULE_NAME, MODULE_VERSION } from './version';
 
-const EXTENSION_ID = '@msrvida/sanddance-jupyter:plugin';
+const EXTENSION_ID = '@msrvida/sanddance-jupyter-widget:plugin';
 
 /**
  * The SandDance plugin.

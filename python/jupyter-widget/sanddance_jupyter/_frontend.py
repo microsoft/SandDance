@@ -2,5 +2,5 @@
 Information about the frontend package of the widgets.
 """
 
-module_name = "@msrvida/sanddance-jupyter"
-module_version = "^0.0.1"
+module_name = "@msrvida/sanddance-jupyter-widget"
+module_version = "^3.0.0"
