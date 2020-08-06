@@ -19,6 +19,10 @@
   "types": "./lib/index.d.ts",
   "repository": { },
   "scripts": {
+    "dev:install-src": "pip install -e .",
+    "dev:install-deps": "pip install -r requirements-dev.txt",
+    "dev:jupyternotebook": "jupyter nbextension install --sys-prefix --symlink --overwrite --py sanddance_jupyter && jupyter nbextension enable --sys-prefix --py sanddance_jupyter",
+    "dev:all": "npm run dev:install-src && npm run dev:install-deps && npm run dev:jupyternotebook",
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "build:sanddance-integration-python": "npm run build:lib && npm run build:nbextension",
     "build:labextension": "npm run clean:labextension && mkdirp sanddance_jupyter/labextension && cd sanddance_jupyter/labextension && npm pack ../..",
@@ -31,9 +35,8 @@
     "clean:nbextension": "rimraf sanddance_jupyter/nbextension/static/index.js",
     "prepack": "npm run build:lib",
     "test": "echo TODO",
-    "watch": "npm-run-all -p watch:*",
-    "watch:lib": "tsc -w",
-    "watch:nbextension": "webpack --watch"
+    "watch-typescript": "tsc -w",
+    "watch-webpack": "webpack --watch"
   },
   "dependencies": {
     "@deck.gl/core": "^8.1.5",

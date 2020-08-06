@@ -10,8 +10,8 @@ import { Explorer, SandDance, use, Explorer_Class } from '@msrvida/sanddance-exp
 import ReactDOM from 'react-dom';
 import React from 'react';
 
-import '../css/tweak.css';
 import '@msrvida/sanddance-explorer/dist/css/sanddance-explorer.css';
+import '../css/tweak.css';
 
 use(fluentUI, React as any, ReactDOM, vega, deck as any, layers, luma);
 
@@ -27,7 +27,7 @@ export class SandDanceModel extends DOMWidgetModel {
             _view_module_version: SandDanceModel.view_module_version,
             data : '[]',
             width : '100%',
-            heigth : '60vh',
+            heigth : '640px',
             snapshots: [],
         };
     }
