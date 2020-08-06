@@ -45,9 +45,9 @@ widget = SandDanceWidget()
 widget.show()
 
 df = pd.DataFrame([
-    {'x': 1, 'y': 1: 'text': 'first'},
-    {'x': 2, 'y': 2: 'text': 'second'},
-    {'x': 3, 'y': 3: 'text': 'third'},
+    {'x': 1, 'y': 1, 'text': 'first'},
+    {'x': 2, 'y': 2, 'text': 'second'},
+    {'x': 3, 'y': 3, 'text': 'third'},
 ])
 widget.load(df)
 ```
