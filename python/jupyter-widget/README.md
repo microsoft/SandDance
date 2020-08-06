@@ -4,8 +4,6 @@ Custom Jupyter Widget with [SandDance](https://github.com/microsoft/SandDance)
 
 <img src="https://user-images.githubusercontent.com/9415800/82153896-47367b00-98a5-11ea-80bb-aa42be2fc76d.gif" width="100%">
 
-_NOTE_: this widget is alpha stage for now
-
 ## Installation
 
 You can install using `pip`:
@@ -28,15 +26,15 @@ jupyter nbextension install --sys-prefix --symlink --overwrite --py sanddance_ju
 jupyter nbextension enable --py --sys-prefix sanddance_jupyter
 ```
 
-Or you can install with `conda` instead od `pip`
+Or you can install with `conda` instead of `pip`
 
 ```bash
 conda install sanddance_jupyter
 ```
 
-## Getting Started With
+## Getting Started
 
-See also example/introduction.ipynb
+See also [examples/introduction.ipynb](https://github.com/microsoft/SandDance/blob/master/python/jupyter-widget/examples/introduction.ipynb)
 
 ```python
 import pandas as pd
