@@ -58,7 +58,7 @@ module.exports = [
       path: path.resolve(__dirname, 'dist'),
       libraryTarget: 'amd',
       library: "@msrvida/sanddance-jupyter-widget",
-      publicPath: 'https://unpkg.com/@msrvida/sanddance-jupyter@' + version + '/dist/'
+      publicPath: 'https://unpkg.com/@msrvida/sanddance-jupyter-widget@' + version + '/dist/'
     },
     devtool: 'source-map',
     module: {
@@ -82,7 +82,7 @@ module.exports = [
     output: {
       filename: 'embed-bundle.js',
       path: path.resolve(__dirname, 'docs', 'source', '_static'),
-      library: "@msrvida/sanddance-jupyter",
+      library: "@msrvida/sanddance-jupyter-widget",
       libraryTarget: 'amd'
     },
     module: {
