@@ -63,7 +63,7 @@ with open("README.md", "r") as fh:
 
 setup_args = dict(
     name            = name,
-    description     = 'Custom Jupyter Widget for SandDance',
+    description     = 'SandDance data exploration Jupyter Widget',
     version         = version,
     scripts         = glob(pjoin('scripts', '*')),
     cmdclass        = cmdclass,
@@ -71,13 +71,13 @@ setup_args = dict(
     author          = '',
     author_email    = '',
     url             = 'https://github.com/microsoft/SandDance/python/jupyter-widget',
-    license         = 'BSD',
+    license         = 'MIT',
     platforms       = "Linux, Mac OS X, Windows",
     keywords        = ['Jupyter', 'Widgets', 'IPython'],
     classifiers     = [
         'Intended Audience :: Developers',
         'Intended Audience :: Science/Research',
-        'License :: OSI Approved :: BSD License',
+        'License :: MIT',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
