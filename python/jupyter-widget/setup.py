@@ -67,8 +67,6 @@ setup_args = dict(
     scripts         = glob(pjoin('scripts', '*')),
     cmdclass        = cmdclass,
     packages        = find_packages(),
-    author          = '',
-    author_email    = '',
     url             = 'https://github.com/microsoft/SandDance/python/jupyter-widget',
     license         = 'MIT',
     platforms       = "Linux, Mac OS X, Windows",
@@ -76,7 +74,7 @@ setup_args = dict(
     classifiers     = [
         'Intended Audience :: Developers',
         'Intended Audience :: Science/Research',
-        'License :: MIT',
+        'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
@@ -111,7 +109,9 @@ setup_args = dict(
     entry_points = {
     },
     long_description = long_description,
-    long_description_content_type="text/markdown"
+    long_description_content_type="text/markdown",
+    maintainer = 'MSR VIDA',
+    maintainer_email = 'msrvida@microsoft.com',
 )
 
 if __name__ == '__main__':
