@@ -44,6 +44,6 @@ jupyter lab build --dev-build=True --minimize=False
 
 ## develop with jupyter notebook
 ```bash
-jupyter nbextension install --sys-prefix --symlink --overwrite --py sanddance_jupyter 
-jupyter nbextension enable --sys-prefix --py sanddance_jupyter
+jupyter nbextension install --sys-prefix --symlink --overwrite --py sanddance 
+jupyter nbextension enable --sys-prefix --py sanddance
 ```

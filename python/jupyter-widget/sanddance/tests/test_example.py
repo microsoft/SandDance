@@ -1,8 +1,8 @@
 import pytest
 
-from ..sanddance import SandDanceWidget
+from ..sanddance import Explorer
 
 
 def test_default():
-    w = SandDanceWidget()
+    w = Explorer()
     assert w.height == '60vh'

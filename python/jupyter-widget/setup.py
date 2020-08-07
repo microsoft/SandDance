@@ -19,7 +19,7 @@ from setuptools import setup
 
 
 # The name of the project
-name = 'sanddance_jupyter'
+name = 'sanddance'
 
 # Ensure a valid python version
 ensure_python('>=3.4')
@@ -44,38 +44,37 @@ package_data_spec = {
 }
 
 data_files_spec = [
-    ('share/jupyter/nbextensions/sanddance_jupyter',
+    ('share/jupyter/nbextensions/sanddance',
         nb_path, '*.js*'),
     ('share/jupyter/lab/extensions', lab_path, '*.tgz'),
-    ('etc/jupyter/nbconfig/notebook.d' , HERE, 'sanddance_jupyter.json')
+    ('etc/jupyter/nbconfig/notebook.d' , HERE, 'sanddance.json')
 ]
 
 
 cmdclass = create_cmdclass('jsdeps', package_data_spec=package_data_spec,
     data_files_spec=data_files_spec)
 cmdclass['jsdeps'] = combine_commands(
-    install_npm(HERE, build_cmd='build:all'),
     ensure_targets(jstargets),
 )
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
 
 setup_args = dict(
     name            = name,
-    description     = 'Custom Jupyter Widget for SandDance',
+    description     = 'SandDance data exploration Jupyter Widget',
     version         = version,
     scripts         = glob(pjoin('scripts', '*')),
     cmdclass        = cmdclass,
     packages        = find_packages(),
-    author          = '',
-    author_email    = '',
     url             = 'https://github.com/microsoft/SandDance/python/jupyter-widget',
-    license         = 'BSD',
+    license         = 'MIT',
     platforms       = "Linux, Mac OS X, Windows",
     keywords        = ['Jupyter', 'Widgets', 'IPython'],
     classifiers     = [
         'Intended Audience :: Developers',
         'Intended Audience :: Science/Research',
-        'License :: OSI Approved :: BSD License',
+        'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
@@ -109,6 +108,10 @@ setup_args = dict(
     },
     entry_points = {
     },
+    long_description = long_description,
+    long_description_content_type="text/markdown",
+    maintainer = 'MSR VIDA',
+    maintainer_email = 'msrvida@microsoft.com',
 )
 
 if __name__ == '__main__':

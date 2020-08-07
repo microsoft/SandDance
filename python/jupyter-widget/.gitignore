@@ -145,15 +145,15 @@ $RECYCLE.BIN/
 # ----
 
 **/node_modules/
-sanddance_jupyter/nbextension/static/index.*
-sanddance_jupyter/labextension/*.tgz
+sanddance/nbextension/static/index.*
+sanddance/labextension/*.tgz
 
 # Coverage data
 # -------------
 **/coverage/
 
 # Packed lab extensions
-sanddance_jupyter/labextension
+sanddance/labextension
 
 
 MANIFEST

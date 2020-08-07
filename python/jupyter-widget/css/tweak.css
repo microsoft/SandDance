@@ -3,7 +3,15 @@
     height: 100%;
 }
 
+.sanddance-explorer-topbar {
+  height: 37px;
+}
+
 /* override jupyter's style */
 .sanddance-legend .label {
   color: #1b1e23;
+}
+
+.sanddance-datascope label {
+  margin-bottom: 0;
 }

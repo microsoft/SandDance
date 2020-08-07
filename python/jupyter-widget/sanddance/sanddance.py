@@ -8,6 +8,7 @@ import pandas as pd
 from IPython.core.display import display
 
 from ._frontend import module_name, module_version
+from ._version import __version__
 
 defaults = {
     'width': '100%',
@@ -15,8 +16,8 @@ defaults = {
     'data': '[]',  # json string
 }
 
-class SandDanceWidget(DOMWidget):
-    """An SandDance widget."""
+class Explorer(DOMWidget):
+    """A SandDance Explorer widget."""
 
     # Name of the widget view class in front-end
     _view_name = Unicode('SandDanceView').tag(sync=True)
@@ -38,6 +39,7 @@ class SandDanceWidget(DOMWidget):
     width = Unicode(defaults['width']).tag(sync=True)
     height = Unicode(defaults['height']).tag(sync=True)
     snapshots = List([]).tag(sync=True)
+    pyversion = Unicode(__version__).tag(sync=False)
 
     def show(self, **kwargs):
         self.width = kwargs.get('width', defaults['width'])
