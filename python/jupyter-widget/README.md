@@ -9,7 +9,7 @@ Custom Jupyter Widget with [SandDance](https://github.com/microsoft/SandDance)
 You can install using `pip`:
 
 ```bash
-pip install sanddance_jupyter
+pip install sanddance
 ```
 
 If you use jupyterlab:
@@ -22,14 +22,14 @@ jupyter labextension install @jupyter-widgets/jupyterlab-manager
 If you are using Jupyter Notebook 5.2 or earlier, you may also need to enable
 the nbextension:
 ```bash
-jupyter nbextension install --sys-prefix --symlink --overwrite --py sanddance_jupyter 
-jupyter nbextension enable --py --sys-prefix sanddance_jupyter
+jupyter nbextension install --sys-prefix --symlink --overwrite --py sanddance 
+jupyter nbextension enable --py --sys-prefix sanddance
 ```
 
 Or you can install with `conda` instead of `pip`
 
 ```bash
-conda install sanddance_jupyter
+conda install sanddance
 ```
 
 ## Getting Started
@@ -38,7 +38,7 @@ See also [examples/introduction.ipynb](https://github.com/microsoft/SandDance/bl
 
 ```python
 import pandas as pd
-from sanddance_jupyter import Explorer
+from sanddance import Explorer
 widget = Explorer()
 widget.show()
 

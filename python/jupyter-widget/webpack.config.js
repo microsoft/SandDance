@@ -27,7 +27,7 @@ module.exports = [
     entry: './src/extension.ts',
     output: {
       filename: 'index.js',
-      path: path.resolve(__dirname, 'sanddance_jupyter', 'nbextension', 'static'),
+      path: path.resolve(__dirname, 'sanddance', 'nbextension', 'static'),
       libraryTarget: 'amd'
     },
     module: {
