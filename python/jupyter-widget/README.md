@@ -39,15 +39,15 @@ See also [examples/introduction.ipynb](https://github.com/microsoft/SandDance/bl
 ```python
 import pandas as pd
 from sanddance import Explorer
-widget = Explorer()
-widget.show()
+explorer = Explorer()
+explorer.show()
 
 df = pd.DataFrame([
     {'x': 1, 'y': 1, 'text': 'first'},
     {'x': 2, 'y': 2, 'text': 'second'},
     {'x': 3, 'y': 3, 'text': 'third'},
 ])
-widget.load(df)
+explorer.load(df)
 ```
 
 Powered by [widget-ts-cookiecutter](https://github.com/jupyter-widgets/widget-ts-cookiecutter)
