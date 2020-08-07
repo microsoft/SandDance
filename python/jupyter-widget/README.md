@@ -38,8 +38,8 @@ See also [examples/introduction.ipynb](https://github.com/microsoft/SandDance/bl
 
 ```python
 import pandas as pd
-from sanddance_jupyter import SandDanceWidget
-widget = SandDanceWidget()
+from sanddance_jupyter import Explorer
+widget = Explorer()
 widget.show()
 
 df = pd.DataFrame([

@@ -16,8 +16,8 @@ defaults = {
     'data': '[]',  # json string
 }
 
-class SandDanceWidget(DOMWidget):
-    """An SandDance widget."""
+class Explorer(DOMWidget):
+    """A SandDance Explorer widget."""
 
     # Name of the widget view class in front-end
     _view_name = Unicode('SandDanceView').tag(sync=True)
