@@ -84,7 +84,7 @@ export class SandDanceView extends DOMWidgetView {
                 }
             },
             systemInfoChildren: [
-                React.createElement("li", null, "SandDance Jupyter version: ", this.model.get('pyversion')),
+                React.createElement("li", null, "SandDance (Python) version: ", this.model.get('pyversion')),
                 React.createElement("li", null, "SandDance Jupyter Widget version: ", MODULE_VERSION)
             ]
         };
