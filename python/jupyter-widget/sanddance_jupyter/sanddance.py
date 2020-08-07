@@ -8,6 +8,7 @@ import pandas as pd
 from IPython.core.display import display
 
 from ._frontend import module_name, module_version
+from ._version import __version__
 
 defaults = {
     'width': '100%',
@@ -38,6 +39,7 @@ class SandDanceWidget(DOMWidget):
     width = Unicode(defaults['width']).tag(sync=True)
     height = Unicode(defaults['height']).tag(sync=True)
     snapshots = List([]).tag(sync=True)
+    pyversion = Unicode(__version__).tag(sync=False)
 
     def show(self, **kwargs):
         self.width = kwargs.get('width', defaults['width'])
