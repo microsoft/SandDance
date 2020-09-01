@@ -19,6 +19,7 @@ SandDance was created by the [Microsoft Research VIDA Group](https://aka.ms/vida
 * [Azure Data Studio](https://docs.microsoft.com/en-us/sql/azure-data-studio/sanddance-extension?view=sql-server-2017)
 * [VSCode extension](https://marketplace.visualstudio.com/items?itemName=msrvida.vscode-sanddance)
 * [Observable](https://observablehq.com/collection/@danmarshall/sanddance)
+* [HASH Core IDE](https://core.hash.ai/) - [*see 'Step Explorer' documentation*](https://docs.hash.ai/core/views#step-explorer)
 * In your own JavaScript apps - see below
 
 ## Component architecture
