@@ -11,15 +11,17 @@ Smooth animated transitions between views help you to maintain context as you in
 
 > This new version of SandDance has been rebuilt from scratch with the goal of being modular, extensible, and embeddable into your custom applications. We are now on GitHub so that we are open and driven by the community through contributions, feature requests, and discussion.
 
-SandDance was created by the [Microsoft Research VIDA Group](https://aka.ms/vida) which explores novel technologies for visualization and immersive data analytics. 
+SandDance was created by the [Microsoft Research VIDA Group](https://aka.ms/vida) which explores novel technologies for visualization and immersive data analytics. Learn more at our webinar: [Data Visualization: Bridging the Gap Between Users and Information](https://note.microsoft.com/MSR-Webinar-Data-Visualization-Registration-On-Demand.html).
 
 ## Where can I use SandDance?
 * [Try it now on the web](https://microsoft.github.io/SandDance/app/)
-* [Power BI](https://appsource.microsoft.com/en-us/product/power-bi-visuals/WA200000430) - [*see additional info*](https://github.com/microsoft/SandDance/blob/master/powerbi.md)
-* [Azure Data Studio](https://docs.microsoft.com/en-us/sql/azure-data-studio/sanddance-extension?view=sql-server-2017)
-* [VSCode extension](https://marketplace.visualstudio.com/items?itemName=msrvida.vscode-sanddance)
-* [Observable](https://observablehq.com/collection/@danmarshall/sanddance)
-* [HASH Core IDE](https://core.hash.ai/) - [*see 'Step Explorer' documentation*](https://docs.hash.ai/core/views#step-explorer)
+* Microsoft apps:
+  * [Power BI](https://appsource.microsoft.com/en-us/product/power-bi-visuals/WA200000430) - [*see additional info*](https://github.com/microsoft/SandDance/blob/master/powerbi.md)
+  * [Azure Data Studio](https://docs.microsoft.com/en-us/sql/azure-data-studio/sanddance-extension?view=sql-server-2017)
+  * [VSCode extension](https://marketplace.visualstudio.com/items?itemName=msrvida.vscode-sanddance)
+* 3rd Party apps:
+  * [Observable](https://observablehq.com/collection/@danmarshall/sanddance)
+  * [HASH Core IDE](https://core.hash.ai/) - [*see 'Step Explorer' documentation*](https://docs.hash.ai/core/views#step-explorer)
 * In your own JavaScript apps - see below
 
 ## Component architecture
