@@ -21,6 +21,7 @@ SandDance was created by the [Microsoft Research VIDA Group](https://aka.ms/vida
   * [VSCode extension](https://marketplace.visualstudio.com/items?itemName=msrvida.vscode-sanddance)
 * 3rd Party apps:
   * [Observable](https://observablehq.com/collection/@danmarshall/sanddance)
+  * [Jupyter widget](https://github.com/microsoft/SandDance/tree/master/python/jupyter-widget#sanddance-jupyter-widget)
   * [HASH Core IDE](https://core.hash.ai/) - [*see 'Step Explorer' documentation*](https://docs.hash.ai/core/views#step-explorer)
 * In your own JavaScript apps - see below
 
