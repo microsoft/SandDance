@@ -11,7 +11,7 @@ Smooth animated transitions between views help you to maintain context as you in
 
 > This new version of SandDance has been rebuilt from scratch with the goal of being modular, extensible, and embeddable into your custom applications. We are now on GitHub so that we are open and driven by the community through contributions, feature requests, and discussion.
 
-SandDance was created by the [Microsoft Research VIDA Group](https://aka.ms/vida) which explores novel technologies for visualization and immersive data analytics. Learn more at our webinar: [Data Visualization: Bridging the Gap Between Users and Information](https://note.microsoft.com/MSR-Webinar-Data-Visualization-Registration-On-Demand.html).
+SandDance was created by the [Microsoft Research VIDA Group](https://aka.ms/vida) which explores novel technologies for visualization and immersive data analytics.
 
 ## Where can I use SandDance?
 * [Try it now on the web](https://microsoft.github.io/SandDance/app/)
@@ -33,6 +33,35 @@ SandDance is an offering of several JavaScript components:
 * [sanddance-react](packages/sanddance-react/README.md) - the core SandDance visualization canvas for use in React based applications.
 * [sanddance-vue](packages/sanddance-vue/README.md) - the core SandDance visualization canvas for use in Vue based applications.
 * [sanddance-explorer](packages/sanddance-explorer/README.md) - the core SandDance visualization canvas with UI to enable data exploration, for use in React based applications.
+
+## Publications
+
+* 2018 - [Atom: A Grammar for Unit Visualizations](https://www.microsoft.com/en-us/research/uploads/prod/2019/01/atom.pdf)
+  * Deokgun Park, Steven Drucker, Roland Fernandez, Niklas Elmqvist
+  * IEEE Transactions on Visualization and Computer Graphics | December 2018, Vol 24(12): pp. 3032-3043
+* 2015 - [A Unifying Framework for Animated and Interactive Unit Visualizations](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/sanddance.pdf)
+  * Steven Drucker, Roland Fernandez 
+  * MSR-TR-2015-65 | August 2015
+
+## Articles & videos
+
+* [SandDance project @ Microsoft Research](https://www.microsoft.com/en-us/research/project/sanddance/)
+* [Microsoft Research webinar / Data Visualization: Bridging the Gap Between Users and Information](https://note.microsoft.com/MSR-Webinar-Data-Visualization-Registration-On-Demand.html).
+* [SQL Server Blog / The August release of Azure Data Studio is now available](https://cloudblogs.microsoft.com/sqlserver/2019/08/15/the-august-release-of-azure-data-studio-is-now-available/)
+* [Open Source Blog / What’s new in SandDance 3](https://cloudblogs.microsoft.com/opensource/2020/06/23/whats-new-sanddance-3-microsoft-research/)
+* [Channel 9 - Data Exposed / Introducing SandDance: Data Visualization in Azure Data Studio](https://channel9.msdn.com/Shows/Data-Exposed/Introducing-SandDance-Data-Visualization-in-Azure-Data-Studio)
+* [Channel 9 - Data Exposed / What is SandDance?](https://channel9.msdn.com/Shows/Data-Exposed/What-is-SandDance)
+* [Hacker News / Microsoft open sources SandDance, a visual data exploration tool](https://news.ycombinator.com/item?id=21224685)
+* [analyticsindiamag.com / Visualizations With SandDance Using Visual Studio Code](https://analyticsindiamag.com/visualizations-with-sanddance-using-visual-studio-code/)
+* [codeburst.io / Exploring Titanic Dataset using Microsoft’s Sandance](https://codeburst.io/exploring-titanic-dataset-using-microsofts-sandance-175eb04b3ac2)
+* [mathkuro.com / VS Codeのイケメンすぎる分析＆可視化ツールSand Danceの使い方](https://www.mathkuro.com/vs-code/sand-dance/)
+* [mathkuro.com / 【SandDanceグラフサンプル】用途に合わせて選択しましょう◎](https://www.mathkuro.com/vs-code/sanddance-charts/)
+* [medium.com - @sefaoguzsaglam / how to start data visualizing with Microsoft’s SandDance (for beginners)](https://medium.com/@sefaoguzsaglam/how-to-start-data-visualizing-with-microsofts-sanddance-for-beginners-abe5c0552750)
+* [mssqltips.com / SandDance for Azure Data Studio](https://www.mssqltips.com/sqlservertip/6045/sanddance-for-azure-data-studio/)
+* [sqlshack.com / Exploring the SandDance Visualizations extension in Azure Data Studio](https://www.sqlshack.com/exploring-the-sanddance-visualizations-extension-in-azure-data-studio/)
+* [torbjornzetterlund.com / I got to do some SandDance visualization](https://torbjornzetterlund.com/i-got-to-do-some-sanddance-vizualisation/)
+* [YouTube - Anjani Prasad Atluri / SandDance: A tutorial](https://www.youtube.com/watch?v=sI4WIQEz07w)
+* [YouTube - BI Tracks / SandDance Visualizations Tutorial - Azure Data Studio](https://www.youtube.com/watch?v=iUhvYMggzAQ)
 
 ## Changelog
 
@@ -74,17 +103,3 @@ provided by the bot. You will only need to do this once across all repos using o
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-
-## Publications
-
-2018- Atom: A Grammar for Unit Visualizations
-* Deokgun Park, Steven Drucker, Roland Fernandez, Niklas Elmqvist
-* IEEE Transactions on Visualization and Computer Graphics | December 2018, Vol 24(12): pp. 3032-3043
-
-View Publication : https://www.microsoft.com/en-us/research/uploads/prod/2019/01/atom.pdf
-
-2015- A Unifying Framework for Animated and Interactive Unit Visualizations
-* Steven Drucker, Roland Fernandez 
-* MSR-TR-2015-65 | August 2015
-
-View Publication : https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/sanddance.pdf
