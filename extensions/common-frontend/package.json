@@ -25,7 +25,7 @@
     "deck.gl": "8.1.5",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "vega": "^5.11"
+    "vega": "^5.17.0"
   },
   "devDependencies": {
     "@msrvida/sanddance-explorer": "^3",

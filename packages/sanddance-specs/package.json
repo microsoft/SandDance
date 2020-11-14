@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance-specs",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "SandDance Vega specification generator.",
   "main": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
@@ -21,9 +21,9 @@
     "@msrvida/chart-types": "^1",
     "@msrvida/search-expression": "^1",
     "d3-color": "^1.4.0",
-    "vega-typings": "^0.16.0"
+    "vega-typings": "^0.19.0"
   },
   "devDependencies": {
-    "vega": "^5.11"
+    "vega": "^5.17"
   }
 }

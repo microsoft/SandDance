@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance-jupyter-widget",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "SandDance data exploration Jupyter Widget",
   "keywords": [
     "jupyter",
@@ -46,7 +46,7 @@
     "@msrvida/sanddance-explorer": "^3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "vega": "^5.11"
+    "vega": "^5.17.0"
   },
   "devDependencies": {
     "@msrvida/fluentui-react-cdn-typings": "^1",

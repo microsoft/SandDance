@@ -30,11 +30,11 @@ SandDance.use(vega, deck, deck, luma);
 Add these to the `dependencies` section of your `package.json`, then run `npm install`:
 
 ```json
-"@deck.gl/core": "^8.1.5",
-"@deck.gl/layers": "^8.1.5",
+"@deck.gl/core": "^8.3.6",
+"@deck.gl/layers": "^8.3.6",
 "@msrvida/sanddance": "^3",
-"@luma.gl/core": "^8.1.2",
-"vega": "^5.11"
+"@luma.gl/core": "^8.3.1",
+"vega": "^5.17.0"
 ```
 
 Import these in your JavaScript, then call the `use()` function to pass the dependency libraries to `SandDance.VegaDeckGl`:
