@@ -176,9 +176,14 @@ function newTextLayer(presenter: Presenter, id: string, data: VegaTextLayerDatum
         getSize: o => o.size,
         getAngle: o => o.angle,
         fontSettings: {
-            sdf: true,
+            sdf: false,
             fontSize: 128,
             buffer: 3
+        },
+        _subLayerProps: {
+            characters: {
+                alphaCutoff: 0.1
+            }
         }
     };
     if (fontFamily) {
