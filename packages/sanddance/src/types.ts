@@ -136,6 +136,11 @@ export interface ViewerOptions extends SpecViewOptions {
     getTextHighlightColor?: (t: VegaDeckGl.types.VegaTextLayerDatum) => VegaDeckGl.RGBAColor;
 
     /**
+     * Optional handler to get the alpha cutoff for highlight color of text elements.
+     */
+    getTextHighlightAlphaCutoff?: () => number;
+
+    /**
      * Optional click handler for text elements.
      */
     onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, o: VegaDeckGl.types.VegaTextLayerDatum) => void;

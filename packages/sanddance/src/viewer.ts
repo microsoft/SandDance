@@ -611,11 +611,12 @@ export class Viewer {
     }
 
     private createConfig(c?: VegaDeckGl.types.PresenterConfig): VegaDeckGl.types.ViewGlConfig {
-        const { getTextColor, getTextHighlightColor, onTextClick } = this.options;
+        const { getTextColor, getTextHighlightColor, getTextHighlightAlphaCutoff, onTextClick } = this.options;
         const defaultPresenterConfig: VegaDeckGl.types.PresenterConfig = {
             getCharacterSet: stage => this._characterSet.getCharacterSet(stage),
             getTextColor,
             getTextHighlightColor,
+            getTextHighlightAlphaCutoff,
             onTextClick: (e, t) => {
                 if (t.metaData && t.metaData.search) {
                     const search = getSearchGroupFromVegaValue(t.metaData.search);

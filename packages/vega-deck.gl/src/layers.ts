@@ -145,6 +145,10 @@ function newPolygonLayer(id: string, data: Polygon[]) {
 }
 
 function newTextLayer(presenter: Presenter, id: string, data: VegaTextLayerDatum[], config: PresenterConfig, fontFamily: string, characterSet: string[]) {
+    let alphaCutoff = config.getTextHighlightAlphaCutoff && config.getTextHighlightAlphaCutoff();
+    if (alphaCutoff === undefined) {
+        alphaCutoff = 0.1;
+    }
     const props: TextLayerProps<VegaTextLayerDatum> = {
         id,
         data,
@@ -180,11 +184,7 @@ function newTextLayer(presenter: Presenter, id: string, data: VegaTextLayerDatum
             fontSize: 128,
             buffer: 3
         },
-        _subLayerProps: {
-            characters: {
-                alphaCutoff: 0.1
-            }
-        }
+        _subLayerProps: { characters: { alphaCutoff } }
     };
     if (fontFamily) {
         props.fontFamily = fontFamily;

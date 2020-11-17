@@ -2,6 +2,9 @@
 // Licensed under the MIT license.
 import { ColorSettings } from './interfaces';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
+import { SandDance } from '@msrvida/sanddance-react';
+
+import util = SandDance.VegaDeckGl.util;
 
 export const themePalettes: { [theme: string]: Partial<FluentUITypes.IPalette> } = {};
 
@@ -56,12 +59,15 @@ themePalettes['dark-theme'] = {
 };
 
 export function getColorSettingsFromThemePalette(themePalette: Partial<FluentUITypes.IPalette>): Partial<ColorSettings> {
+    const c = util.colorFromString(themePalette.themeSecondary);
+    c[3] = 256 / 3; // one-third opacity background
     return {
         axisLine: themePalette.black,
         axisText: themePalette.black,
         hoveredCube: themePalette.black,
         clickableText: themePalette.themeDark,
-        clickableTextHighlight: themePalette.themeSecondary,
+        clickableTextHighlight: util.colorToString(c),
+        clickableTextHighlightAlphaCutoff: 0,
         searchText: themePalette.neutralPrimary,
         searchTextHighlight: themePalette.neutralPrimaryAlt
     };
