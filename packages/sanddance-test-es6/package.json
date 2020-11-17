@@ -8,8 +8,8 @@
     "deploy": "parcel build ./src/sanddance.ts --no-cache --no-minify --no-source-maps --public-url . --out-dir ../../docs/tests/v3/es6/js"
   },
   "dependencies": {
-    "@deck.gl/core": "^8.3.6",
-    "@deck.gl/layers": "^8.3.6",
+    "@deck.gl/core": "^8.3.7",
+    "@deck.gl/layers": "^8.3.7",
     "@luma.gl/core": "^8.3.1",
     "@msrvida/sanddance": "^3",
     "vega": "^5.17.0"

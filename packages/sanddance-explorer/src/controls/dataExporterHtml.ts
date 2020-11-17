@@ -16,9 +16,9 @@ export const embedHtml = (title: string, embed: string) => `<!DOCTYPE html>
 <body>
     <script src="https://unpkg.com/react@16.13/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@16.13/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/deck.gl@8.1.5/dist.min.js"></script>
-    <script src="https://unpkg.com/vega@5.11/build/vega.min.js"></script>
-    <script src="https://unpkg.com/@fluentui/react@7.111/dist/fluentui-react.js"></script>
+    <script src="https://unpkg.com/deck.gl@8.3.7/dist.min.js"></script>
+    <script src="https://unpkg.com/vega@5.17/build/vega.min.js"></script>
+    <script src="https://unpkg.com/@fluentui/react@7.150/dist/fluentui-react.js"></script>
     <script src="https://unpkg.com/@msrvida/sanddance-explorer@3/dist/umd/sanddance-explorer.js"></script>
     <script src="https://unpkg.com/@msrvida/sanddance-embed@3/dist/umd/sanddance-embed.js"></script>
 
