@@ -303,6 +303,7 @@ function _Explorer(props: Props) {
                         return o.color;
                     }
                 },
+                getTextHighlightAlphaCutoff: () => (this.viewerOptions.colors as ColorSettings).clickableTextHighlightAlphaCutoff,
                 getTextHighlightColor: o => {
                     if ((o as TextWithSpecRole).specRole) {
                         return SandDance.VegaDeckGl.util.colorFromString((this.viewerOptions.colors as ColorSettings).clickableTextHighlight);

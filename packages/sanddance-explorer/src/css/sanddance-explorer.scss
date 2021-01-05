@@ -197,7 +197,7 @@ $layout-margin-right: 150px; //room for legend
         color: #005a9e;
         cursor: pointer;
         &:hover {
-            color: #2b88d8;
+            background-color: rgba(43, 136, 216, (1/3));    // one-third opacity background
         }
     }
     .legend-row:hover {

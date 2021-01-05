@@ -6,15 +6,33 @@ import { Presenter } from '../presenter';
 import { PresenterConfig } from '../interfaces';
 import { PresenterElement } from '../enums';
 import { RendererGl, RendererGl_Class } from './rendererGl';
-import { Renderers, Runtime, View as VegaView } from 'vega-typings';
+import { Renderers, Runtime, View as VegaView, Color, Loader, LoggerInterface, TooltipHandler, LocaleFormatters } from 'vega-typings';
 import { View } from '@msrvida/chart-types';
 
 let registered = false;
 
 /**
+ * ViewOptions from vNext vega-typings https://github.com/vega/vega/pull/2963
+ */
+
+export interface ViewOptions {
+    background?: Color;
+    bind?: Element | string;
+    container?: Element | string;
+    hover?: boolean;
+    loader?: Loader;
+    logger?: LoggerInterface;
+    logLevel?: number;
+    renderer?: Renderers;
+    tooltip?: TooltipHandler;
+    locale?: LocaleFormatters;
+    expr?: any;
+}
+
+/**
  * Options for the View.
  */
-export interface ViewGlConfig {
+export interface ViewGlConfig extends ViewOptions {
     presenter?: Presenter;
     presenterConfig?: PresenterConfig;
     getView?: { (): View };
@@ -41,14 +59,19 @@ function _ViewGl(runtime: Runtime, config?: ViewGlConfig) {
             };
         }
 
-        renderer(renderer: Renderers | 'deck.gl') {
-
-            if (renderer === 'deck.gl' && !registered) {
-                base.vega.renderModule('deck.gl', { handler: base.vega.CanvasHandler, renderer: RendererGl });
-                registered = true;
+        renderer(): Renderers;
+        renderer(renderer: Renderers | 'deck.gl'): this;
+        renderer(...args: any[]) {
+            if (args && args.length) {
+                const renderer:Renderers | 'deck.gl' = args[0];
+                if (renderer === 'deck.gl' && !registered) {
+                    base.vega.renderModule('deck.gl', { handler: base.vega.CanvasHandler, renderer: RendererGl });
+                    registered = true;
+                }
+                return super.renderer(renderer as unknown as Renderers);
+            } else {
+                return super.renderer() as Renderers;
             }
-
-            return super.renderer(renderer as any as Renderers);
         }
 
         initialize(el: HTMLElement) {
@@ -96,5 +119,6 @@ export declare class ViewGl_Class extends base.vega.View {
     public presenter: Presenter;
     constructor(runtime: Runtime, config?: ViewGlConfig);
     renderer(renderer: Renderers | 'deck.gl'): this;
+    renderer(): Renderers;
     _renderer: RendererGl_Class;
 }

@@ -167,6 +167,7 @@ export interface PresenterConfig {
     onTextHover?: (e: MouseEvent | PointerEvent | TouchEvent, t: VegaTextLayerDatum) => boolean;
     getTextColor?: (o: VegaTextLayerDatum) => RGBAColor;
     getTextHighlightColor?: (o: VegaTextLayerDatum) => RGBAColor;
+    getTextHighlightAlphaCutoff?: () => number;
     onSceneRectAssignCubeOrdinal?: (d: object) => number | undefined;
     onTargetViewState?: (height: number, width: number) => { height: number, width: number, newViewStateTarget?: boolean };
     preserveDrawingBuffer?: boolean;
