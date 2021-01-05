@@ -9,7 +9,7 @@
         "supportUrl": "https://github.com/Microsoft/SandDance/issues",
         "gitHubUrl": "https://github.com/microsoft/SandDance"
     },
-    "apiVersion": "2.6.0",
+    "apiVersion": "3.4.0",
     "author": {
         "name": "Microsoft Research VIDA",
         "email": "msrvida@microsoft.com"
