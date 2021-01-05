@@ -8,7 +8,6 @@
     "vegatest": "lerna run vegatest --parallel",
     "eslint": "lerna run eslint --parallel",
     "build-az": "lerna run build --scope azdata-sanddance",
-    "preinstall": "npx npm-force-resolutions",
     "postinstall": "node ./scripts/copy_inuitcss.js",
     "predocs": "rimraf docs/docs/vega-deck.gl/v3 && rimraf docs/docs/sanddance/v3 && rimraf docs/docs/sanddance-explorer/v3 && rimraf docs/docs/sanddance-react/v3",
     "docs": "lerna run docs && node ./scripts/docs.js && node ./scripts/toc.js && node ./scripts/readme.js",
@@ -79,9 +78,6 @@
     "vue-template-compiler": "^2.6.11",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12"
-  },
-  "resolutions": {
-    "dot-prop": "5.2.0"
   },
   "babel": {
     "presets": [
