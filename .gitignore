@@ -63,6 +63,7 @@ typings/
 # built files
 **/src/**/*.js
 docs/**/*.map
+docs/.jekyll-metadata
 
 # powerbi builds
 .tmp
