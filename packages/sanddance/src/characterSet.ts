@@ -6,7 +6,7 @@ import { types } from '@msrvida/vega-deck.gl';
 export class CharacterSet {
     private chars: string[];
 
-    public resetCharacterSet(forceNewCharacterSet: boolean, oldInsight: Insight, newInsight: Insight) {
+    public resetCharacterSet(forceNewCharacterSet: boolean, oldInsight?: Insight, newInsight?: Insight) {
         if (forceNewCharacterSet || needsNewCharacterSet(oldInsight, newInsight)) {
             this.chars = undefined;
         }
@@ -34,6 +34,7 @@ export class CharacterSet {
 
 function needsNewCharacterSet(oldInsight: Insight, newInsight: Insight) {
     if (!oldInsight) return true;
+    if (!newInsight) return true;
     if (oldInsight.chart !== newInsight.chart) return true;
     if (oldInsight.facetStyle !== newInsight.facetStyle) return true;
     if (oldInsight.totalStyle !== newInsight.totalStyle) return true;

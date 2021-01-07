@@ -46,7 +46,7 @@ import {
 import * as searchExpression from '@msrvida/search-expression';
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 import { ViewGl_Class } from '@msrvida/vega-deck.gl/dist/es6/vega-classes/viewGl';
-import { Spec, Transforms } from 'vega-typings';
+import { Spec, Transforms, SignalListenerHandler } from 'vega-typings';
 
 import Search = searchExpression.Search;
 import SearchExpression = searchExpression.SearchExpression;
@@ -305,6 +305,14 @@ export class Viewer {
                     .renderer('deck.gl')
                     .initialize(this.element) as ViewGl_Class;
                 await this.vegaViewGl.runAsync();
+
+                const handler: SignalListenerHandler = (n, v) => {
+                    this._characterSet.resetCharacterSet(true);
+                };
+
+                this.vegaSpec.signals.forEach(s => {
+                    this.vegaViewGl.addSignalListener(s.name, handler);
+                })
 
                 //capture new color color contexts via signals
                 this.configForSignalCapture(config.presenterConfig);
