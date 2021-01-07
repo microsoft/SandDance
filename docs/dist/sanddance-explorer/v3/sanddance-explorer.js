@@ -8645,7 +8645,7 @@ var pi = Math.PI,
     halfPi = pi / 2;
 
 function sinIn(t) {
-  return 1 - Math.cos(t * halfPi);
+  return +t === 1 ? 1 : 1 - Math.cos(t * halfPi);
 }
 
 function sinOut(t) {
@@ -8654,6 +8654,18 @@ function sinOut(t) {
 
 function sinInOut(t) {
   return (1 - Math.cos(pi * t)) / 2;
+}
+},{}],"z5Tb":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.tpmt = tpmt;
+
+// tpmt is two power minus ten times t scaled to [0,1]
+function tpmt(x) {
+  return (Math.pow(2, -10 * x) - 0.0009765625) * 1.0009775171065494;
 }
 },{}],"VbvH":[function(require,module,exports) {
 "use strict";
@@ -8665,18 +8677,20 @@ exports.expIn = expIn;
 exports.expOut = expOut;
 exports.expInOut = expInOut;
 
+var _math = require("./math.js");
+
 function expIn(t) {
-  return Math.pow(2, 10 * t - 10);
+  return (0, _math.tpmt)(1 - +t);
 }
 
 function expOut(t) {
-  return 1 - Math.pow(2, -10 * t);
+  return 1 - (0, _math.tpmt)(t);
 }
 
 function expInOut(t) {
-  return ((t *= 2) <= 1 ? Math.pow(2, 10 * t - 10) : 2 - Math.pow(2, 10 - 10 * t)) / 2;
+  return ((t *= 2) <= 1 ? (0, _math.tpmt)(1 - t) : 2 - (0, _math.tpmt)(t - 1)) / 2;
 }
-},{}],"Nnyc":[function(require,module,exports) {
+},{"./math.js":"z5Tb"}],"Nnyc":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8741,7 +8755,7 @@ var backIn = function custom(s) {
   s = +s;
 
   function backIn(t) {
-    return t * t * ((s + 1) * t - s);
+    return (t = +t) * t * (s * (t - 1) + t);
   }
 
   backIn.overshoot = custom;
@@ -8754,7 +8768,7 @@ var backOut = function custom(s) {
   s = +s;
 
   function backOut(t) {
-    return --t * t * ((s + 1) * t + s) + 1;
+    return --t * t * ((t + 1) * s + t) + 1;
   }
 
   backOut.overshoot = custom;
@@ -8782,6 +8796,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.elasticInOut = exports.elasticOut = exports.elasticIn = void 0;
+
+var _math = require("./math.js");
+
 var tau = 2 * Math.PI,
     amplitude = 1,
     period = 0.3;
@@ -8790,7 +8807,7 @@ var elasticIn = function custom(a, p) {
   var s = Math.asin(1 / (a = Math.max(1, a))) * (p /= tau);
 
   function elasticIn(t) {
-    return a * Math.pow(2, 10 * --t) * Math.sin((s - t) / p);
+    return a * (0, _math.tpmt)(- --t) * Math.sin((s - t) / p);
   }
 
   elasticIn.amplitude = function (a) {
@@ -8810,7 +8827,7 @@ var elasticOut = function custom(a, p) {
   var s = Math.asin(1 / (a = Math.max(1, a))) * (p /= tau);
 
   function elasticOut(t) {
-    return 1 - a * Math.pow(2, -10 * (t = +t)) * Math.sin((t + s) / p);
+    return 1 - a * (0, _math.tpmt)(t = +t) * Math.sin((t + s) / p);
   }
 
   elasticOut.amplitude = function (a) {
@@ -8830,7 +8847,7 @@ var elasticInOut = function custom(a, p) {
   var s = Math.asin(1 / (a = Math.max(1, a))) * (p /= tau);
 
   function elasticInOut(t) {
-    return ((t = t * 2 - 1) < 0 ? a * Math.pow(2, 10 * t) * Math.sin((s - t) / p) : 2 - a * Math.pow(2, -10 * t) * Math.sin((s + t) / p)) / 2;
+    return ((t = t * 2 - 1) < 0 ? a * (0, _math.tpmt)(-t) * Math.sin((s - t) / p) : 2 - a * (0, _math.tpmt)(t) * Math.sin((s + t) / p)) / 2;
   }
 
   elasticInOut.amplitude = function (a) {
@@ -8845,7 +8862,7 @@ var elasticInOut = function custom(a, p) {
 }(amplitude, period);
 
 exports.elasticInOut = elasticInOut;
-},{}],"id0f":[function(require,module,exports) {
+},{"./math.js":"z5Tb"}],"id0f":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9153,6 +9170,9 @@ function getLayers(presenter, config, stage, lightSettings
 
   if (config.getCharacterSet) {
     characterSet = config.getCharacterSet(stage);
+  } else {
+    //Basic symbols, numbers, and uppercase / lowercase alphabet
+    characterSet = new Array(95).fill(1).map((_, i) => String.fromCharCode(32 + i));
   }
 
   if (stage.facets) {
@@ -9253,6 +9273,12 @@ function newPolygonLayer(id, data) {
 }
 
 function newTextLayer(presenter, id, data, config, fontFamily, characterSet) {
+  let alphaCutoff = config.getTextHighlightAlphaCutoff && config.getTextHighlightAlphaCutoff();
+
+  if (alphaCutoff === undefined) {
+    alphaCutoff = 0.1;
+  }
+
   const props = {
     id,
     data,
@@ -9284,9 +9310,14 @@ function newTextLayer(presenter, id, data, config, fontFamily, characterSet) {
     getSize: o => o.size,
     getAngle: o => o.angle,
     fontSettings: {
-      sdf: true,
+      sdf: false,
       fontSize: 128,
       buffer: 3
+    },
+    _subLayerProps: {
+      characters: {
+        alphaCutoff
+      }
     }
   };
 
@@ -10860,17 +10891,23 @@ function _ViewGl(runtime, config) {
       };
     }
 
-    renderer(renderer) {
-      if (renderer === 'deck.gl' && !registered) {
-        _base.base.vega.renderModule('deck.gl', {
-          handler: _base.base.vega.CanvasHandler,
-          renderer: _rendererGl.RendererGl
-        });
+    renderer(...args) {
+      if (args && args.length) {
+        const renderer = args[0];
 
-        registered = true;
+        if (renderer === 'deck.gl' && !registered) {
+          _base.base.vega.renderModule('deck.gl', {
+            handler: _base.base.vega.CanvasHandler,
+            renderer: _rendererGl.RendererGl
+          });
+
+          registered = true;
+        }
+
+        return super.renderer(renderer);
+      } else {
+        return super.renderer();
       }
-
-      return super.renderer(renderer);
     }
 
     initialize(el) {
@@ -12679,6 +12716,7 @@ exports.CharacterSet = CharacterSet;
 
 function needsNewCharacterSet(oldInsight, newInsight) {
   if (!oldInsight) return true;
+  if (!newInsight) return true;
   if (oldInsight.chart !== newInsight.chart) return true;
   if (oldInsight.facetStyle !== newInsight.facetStyle) return true;
   if (oldInsight.totalStyle !== newInsight.totalStyle) return true;
@@ -13016,7 +13054,15 @@ class Viewer {
 
           const runtime = VegaDeckGl.base.vega.parse(this.vegaSpec);
           this.vegaViewGl = new VegaDeckGl.ViewGl(runtime, config).renderer('deck.gl').initialize(this.element);
-          yield this.vegaViewGl.runAsync(); //capture new color color contexts via signals
+          yield this.vegaViewGl.runAsync();
+
+          const handler = (n, v) => {
+            this._characterSet.resetCharacterSet(true);
+          };
+
+          this.vegaSpec.signals.forEach(s => {
+            this.vegaViewGl.addSignalListener(s.name, handler);
+          }); //capture new color color contexts via signals
 
           this.configForSignalCapture(config.presenterConfig);
         } catch (e) {
@@ -13375,12 +13421,14 @@ class Viewer {
     const {
       getTextColor,
       getTextHighlightColor,
+      getTextHighlightAlphaCutoff,
       onTextClick
     } = this.options;
     const defaultPresenterConfig = {
       getCharacterSet: stage => this._characterSet.getCharacterSet(stage),
       getTextColor,
       getTextHighlightColor,
+      getTextHighlightAlphaCutoff,
       onTextClick: (e, t) => {
         if (t.metaData && t.metaData.search) {
           const search = (0, _search.getSearchGroupFromVegaValue)(t.metaData.search);
@@ -13638,7 +13686,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = '3.1.0';
+const version = '3.1.1';
 exports.version = version;
 },{}],"rZaE":[function(require,module,exports) {
 "use strict";
@@ -13961,7 +14009,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = '3.0.0';
+const version = '3.0.1';
 exports.version = version;
 },{}],"MjKu":[function(require,module,exports) {
 "use strict";
@@ -14713,7 +14761,7 @@ exports.embedHtml = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var embedHtml = function embedHtml(title, embed) {
-  return "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>".concat(title, "</title>\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-embed@3/dist/css/sanddance-embed.css\" />\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-explorer@3/dist/css/sanddance-explorer.css\" />\n</head>\n\n<body>\n    <script src=\"https://unpkg.com/react@16.13/umd/react.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/react-dom@16.13/umd/react-dom.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/deck.gl@8.1.5/dist.min.js\"></script>\n    <script src=\"https://unpkg.com/vega@5.11/build/vega.min.js\"></script>\n    <script src=\"https://unpkg.com/@fluentui/react@7.111/dist/fluentui-react.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-explorer@3/dist/umd/sanddance-explorer.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-embed@3/dist/umd/sanddance-embed.js\"></script>\n\n    <div id=\"app\"></div>\n\n    ").concat(embed, "\n\n</body>\n\n</html>");
+  return "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>".concat(title, "</title>\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-embed@3/dist/css/sanddance-embed.css\" />\n    <link rel=\"stylesheet\" type=\"text/css\"\n        href=\"https://unpkg.com/@msrvida/sanddance-explorer@3/dist/css/sanddance-explorer.css\" />\n</head>\n\n<body>\n    <script src=\"https://unpkg.com/react@16.13/umd/react.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/react-dom@16.13/umd/react-dom.production.min.js\" crossorigin></script>\n    <script src=\"https://unpkg.com/deck.gl@8.3.7/dist.min.js\"></script>\n    <script src=\"https://unpkg.com/vega@5.17/build/vega.min.js\"></script>\n    <script src=\"https://unpkg.com/@fluentui/react@7.150/dist/fluentui-react.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-explorer@3/dist/umd/sanddance-explorer.js\"></script>\n    <script src=\"https://unpkg.com/@msrvida/sanddance-embed@3/dist/umd/sanddance-embed.js\"></script>\n\n    <div id=\"app\"></div>\n\n    ").concat(embed, "\n\n</body>\n\n</html>");
 };
 
 exports.embedHtml = embedHtml;
@@ -16164,7 +16212,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var version = '3.1.0';
+var version = '3.1.1';
 exports.version = version;
 },{}],"zKGJ":[function(require,module,exports) {
 "use strict";
@@ -17480,11 +17528,16 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = _default;
+exports.formatDecimalParts = formatDecimalParts;
 
-// Computes the decimal coefficient and exponent of the specified number x with
+function _default(x) {
+  return Math.abs(x = Math.round(x)) >= 1e21 ? x.toLocaleString("en").replace(/,/g, "") : x.toString(10);
+} // Computes the decimal coefficient and exponent of the specified number x with
 // significant digits p, where x is positive and p is in [1, 21] or undefined.
-// For example, formatDecimal(1.23) returns ["123", 0].
-function _default(x, p) {
+// For example, formatDecimalParts(1.23) returns ["123", 0].
+
+
+function formatDecimalParts(x, p) {
   if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
 
   var i,
@@ -17501,12 +17554,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
-var _formatDecimal = _interopRequireDefault(require("./formatDecimal.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _formatDecimal = require("./formatDecimal.js");
 
 function _default(x) {
-  return x = (0, _formatDecimal.default)(Math.abs(x)), x ? x[1] : NaN;
+  return x = (0, _formatDecimal.formatDecimalParts)(Math.abs(x)), x ? x[1] : NaN;
 }
 },{"./formatDecimal.js":"fiGR"}],"CupU":[function(require,module,exports) {
 "use strict";
@@ -17634,21 +17685,19 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = _default;
 exports.prefixExponent = void 0;
 
-var _formatDecimal = _interopRequireDefault(require("./formatDecimal.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _formatDecimal = require("./formatDecimal.js");
 
 var prefixExponent;
 exports.prefixExponent = prefixExponent;
 
 function _default(x, p) {
-  var d = (0, _formatDecimal.default)(x, p);
+  var d = (0, _formatDecimal.formatDecimalParts)(x, p);
   if (!d) return x + "";
   var coefficient = d[0],
       exponent = d[1],
       i = exponent - (exports.prefixExponent = prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1,
       n = coefficient.length;
-  return i === n ? coefficient : i > n ? coefficient + new Array(i - n + 1).join("0") : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i) : "0." + new Array(1 - i).join("0") + (0, _formatDecimal.default)(x, Math.max(0, p + i - 1))[0]; // less than 1y!
+  return i === n ? coefficient : i > n ? coefficient + new Array(i - n + 1).join("0") : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i) : "0." + new Array(1 - i).join("0") + (0, _formatDecimal.formatDecimalParts)(x, Math.max(0, p + i - 1))[0]; // less than 1y!
 }
 },{"./formatDecimal.js":"fiGR"}],"gMFS":[function(require,module,exports) {
 "use strict";
@@ -17658,12 +17707,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
-var _formatDecimal = _interopRequireDefault(require("./formatDecimal.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _formatDecimal = require("./formatDecimal.js");
 
 function _default(x, p) {
-  var d = (0, _formatDecimal.default)(x, p);
+  var d = (0, _formatDecimal.formatDecimalParts)(x, p);
   if (!d) return x + "";
   var coefficient = d[0],
       exponent = d[1];
@@ -17676,6 +17723,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+
+var _formatDecimal = _interopRequireDefault(require("./formatDecimal.js"));
 
 var _formatPrefixAuto = _interopRequireDefault(require("./formatPrefixAuto.js"));
 
@@ -17693,9 +17742,7 @@ var _default = {
   "c": function (x) {
     return x + "";
   },
-  "d": function (x) {
-    return Math.round(x).toString(10);
-  },
+  "d": _formatDecimal.default,
   "e": function (x, p) {
     return x.toExponential(p);
   },
@@ -17721,7 +17768,7 @@ var _default = {
   }
 };
 exports.default = _default;
-},{"./formatPrefixAuto.js":"WMxc","./formatRounded.js":"gMFS"}],"Ecm4":[function(require,module,exports) {
+},{"./formatDecimal.js":"fiGR","./formatPrefixAuto.js":"WMxc","./formatRounded.js":"gMFS"}],"Ecm4":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18713,6 +18760,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getColorSettingsFromThemePalette = getColorSettingsFromThemePalette;
 exports.themePalettes = void 0;
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var util = _sanddanceReact.SandDance.VegaDeckGl.util;
 var themePalettes = {};
 exports.themePalettes = themePalettes;
 themePalettes[''] = {
@@ -18765,17 +18816,21 @@ themePalettes['dark-theme'] = {
 };
 
 function getColorSettingsFromThemePalette(themePalette) {
+  var c = util.colorFromString(themePalette.themeSecondary);
+  c[3] = 256 / 3; // one-third opacity background
+
   return {
     axisLine: themePalette.black,
     axisText: themePalette.black,
     hoveredCube: themePalette.black,
     clickableText: themePalette.themeDark,
-    clickableTextHighlight: themePalette.themeSecondary,
+    clickableTextHighlight: util.colorToString(c),
+    clickableTextHighlightAlphaCutoff: 0,
     searchText: themePalette.neutralPrimary,
     searchTextHighlight: themePalette.neutralPrimaryAlt
   };
 }
-},{}],"Tl9z":[function(require,module,exports) {
+},{"@msrvida/sanddance-react":"MjKu"}],"Tl9z":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22500,6 +22555,9 @@ function _Explorer(props) {
             } else {
               return o.color;
             }
+          },
+          getTextHighlightAlphaCutoff: function getTextHighlightAlphaCutoff() {
+            return _this2.viewerOptions.colors.clickableTextHighlightAlphaCutoff;
           },
           getTextHighlightColor: function getTextHighlightColor(o) {
             if (o.specRole) {

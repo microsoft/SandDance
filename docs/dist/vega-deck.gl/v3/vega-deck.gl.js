@@ -1330,8 +1330,13 @@ void main(void) {
      */
     const CubeLayer = _CubeLayer;
 
+    // tpmt is two power minus ten times t scaled to [0,1]
+    function tpmt(x) {
+      return (Math.pow(2, -10 * x) - 0.0009765625) * 1.0009775171065494;
+    }
+
     function expInOut(t) {
-      return ((t *= 2) <= 1 ? Math.pow(2, 10 * t - 10) : 2 - Math.pow(2, 10 - 10 * t)) / 2;
+      return ((t *= 2) <= 1 ? tpmt(1 - t) : 2 - tpmt(t - 1)) / 2;
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -1362,6 +1367,10 @@ void main(void) {
         let characterSet;
         if (config.getCharacterSet) {
             characterSet = config.getCharacterSet(stage);
+        }
+        else {
+            //Basic symbols, numbers, and uppercase / lowercase alphabet
+            characterSet = new Array(95).fill(1).map((_, i) => String.fromCharCode(32 + i));
         }
         if (stage.facets) {
             stage.facets.forEach(f => {
@@ -1457,6 +1466,10 @@ void main(void) {
         return newlayer;
     }
     function newTextLayer(presenter, id, data, config, fontFamily, characterSet) {
+        let alphaCutoff = config.getTextHighlightAlphaCutoff && config.getTextHighlightAlphaCutoff();
+        if (alphaCutoff === undefined) {
+            alphaCutoff = 0.1;
+        }
         const props = {
             id,
             data,
@@ -1490,10 +1503,11 @@ void main(void) {
             getSize: o => o.size,
             getAngle: o => o.angle,
             fontSettings: {
-                sdf: true,
+                sdf: false,
                 fontSize: 128,
                 buffer: 3
-            }
+            },
+            _subLayerProps: { characters: { alphaCutoff } }
         };
         if (fontFamily) {
             props.fontFamily = fontFamily;
@@ -2447,12 +2461,18 @@ void main(void) {
                     this.run();
                 };
             }
-            renderer(renderer) {
-                if (renderer === 'deck.gl' && !registered) {
-                    base.vega.renderModule('deck.gl', { handler: base.vega.CanvasHandler, renderer: RendererGl });
-                    registered = true;
+            renderer(...args) {
+                if (args && args.length) {
+                    const renderer = args[0];
+                    if (renderer === 'deck.gl' && !registered) {
+                        base.vega.renderModule('deck.gl', { handler: base.vega.CanvasHandler, renderer: RendererGl });
+                        registered = true;
+                    }
+                    return super.renderer(renderer);
                 }
-                return super.renderer(renderer);
+                else {
+                    return super.renderer();
+                }
             }
             initialize(el) {
                 if (!this.presenter) {

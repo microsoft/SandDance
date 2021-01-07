@@ -89,6 +89,7 @@ interface ViewerOptions extends SpecViewOptions {
     onBeforeCreateLayers?: (stage: Stage, specCapabilities: SpecCapabilities) => void;
     getTextColor?: (t: VegaTextLayerDatum) => RGBAColor<number, number, number, number>;
     getTextHighlightColor?: (t: VegaTextLayerDatum) => RGBAColor<number, number, number, number>;
+    getTextHighlightAlphaCutoff?: () => number;
     onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, o: VegaTextLayerDatum) => void;
     onAxisClick?: (e: TouchEvent | MouseEvent | PointerEvent, serch: SearchExpressionGroup<SearchExpression>) => void;
     onLegendHeaderClick?: (e: TouchEvent | MouseEvent | PointerEvent) => void;
@@ -106,30 +107,31 @@ SpecViewOptions
 
 **Properties**
 
-| Name                  | Type                                                                                                          | Optional | Description                                                               |
-| --------------------- | ------------------------------------------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------- |
-| colors                | [ColorSettings][InterfaceDeclaration-5]                                                                       | false    | Custom colors of various parts of the visualization.                      |
-| fontFamily            | string                                                                                                        | true     | Font family of text elements.                                             |
-| language              | [Language][InterfaceDeclaration-7]                                                                            | false    | Language settings for the visualization.                                  |
-| tooltipOptions        | [TooltipOptions][InterfaceDeclaration-9]                                                                      | true     | Tooltip options                                                           |
-| transitionDurations   | [TransitionDurations][InterfaceDeclaration-3]                                                                 | false    | Lengths of time for a transition animation.                               |
-| onError               | (errors: string[]) => void                                                                                    | true     | Optional error handler.                                                   |
-| onColorContextChange  | () => void                                                                                                    | true     | Optional handler when color context changes.                              |
-| onDataFilter          | (filter: Search, filteredData: object[]) => void                                                              | true     | Optional handler to be invoked when data is filtered.                     |
-| onSelectionChanged    | (search: Search, activeIndex?: number, selectedData?: object[]) => void                                       | true     | Optional handler to be invoked when selection has changed.                |
-| onStage               | (stage: Stage, deckProps: Partial<DeckProps>) => void                                                         | true     | Optional handler when data is on stage.                                   |
-| onPresent             | () => void                                                                                                    | true     | Optional handler when chart is presented.                                 |
-| onBeforeCreateLayers  | (stage: Stage, specCapabilities: SpecCapabilities) => void                                                    | true     | Optional handler to modify the stage prior to deck.gl layer construction. |
-| getTextColor          | (t: VegaTextLayerDatum) => RGBAColor<number, number, number, number>                                          | true     | Optional handler to get the color of text elements.                       |
-| getTextHighlightColor | (t: VegaTextLayerDatum) => RGBAColor<number, number, number, number>                                          | true     | Optional handler to get the highlight color of text elements.             |
-| onTextClick           | (e: MouseEvent &#124; PointerEvent &#124; TouchEvent, o: VegaTextLayerDatum) => void                          | true     | Optional click handler for text elements.                                 |
-| onAxisClick           | (e: TouchEvent &#124; MouseEvent &#124; PointerEvent, serch: SearchExpressionGroup<SearchExpression>) => void | true     | Optional handler when axis is clicked.                                    |
-| onLegendHeaderClick   | (e: TouchEvent &#124; MouseEvent &#124; PointerEvent) => void                                                 | true     | Optional handler when legend header is clicked.                           |
-| onLegendRowClick      | (e: TouchEvent &#124; MouseEvent &#124; PointerEvent, legendRow: LegendRowWithSearch) => void                 | true     | Optional handler when legend row is clicked.                              |
-| onVegaSpec            | (vegaSpec: Spec) => void                                                                                    | true     | Optional handler when Vega spec is created, prior to it being rendered.   |
-| onNewViewStateTarget  | () => boolean                                                                                                 | true     | Optional handler to reset the camera after chart is rendered.             |
-| preserveDrawingBuffer | boolean                                                                                                       | true     | Optional flag to preserve the WebGL canvas.                               |
-| selectionPolygonZ     | number                                                                                                        | false    | Z value of selection polygons.                                            |
+| Name                        | Type                                                                                                          | Optional | Description                                                                    |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------ |
+| colors                      | [ColorSettings][InterfaceDeclaration-5]                                                                       | false    | Custom colors of various parts of the visualization.                           |
+| fontFamily                  | string                                                                                                        | true     | Font family of text elements.                                                  |
+| language                    | [Language][InterfaceDeclaration-7]                                                                            | false    | Language settings for the visualization.                                       |
+| tooltipOptions              | [TooltipOptions][InterfaceDeclaration-9]                                                                      | true     | Tooltip options                                                                |
+| transitionDurations         | [TransitionDurations][InterfaceDeclaration-3]                                                                 | false    | Lengths of time for a transition animation.                                    |
+| onError                     | (errors: string[]) => void                                                                                    | true     | Optional error handler.                                                        |
+| onColorContextChange        | () => void                                                                                                    | true     | Optional handler when color context changes.                                   |
+| onDataFilter                | (filter: Search, filteredData: object[]) => void                                                              | true     | Optional handler to be invoked when data is filtered.                          |
+| onSelectionChanged          | (search: Search, activeIndex?: number, selectedData?: object[]) => void                                       | true     | Optional handler to be invoked when selection has changed.                     |
+| onStage                     | (stage: Stage, deckProps: Partial<DeckProps>) => void                                                         | true     | Optional handler when data is on stage.                                        |
+| onPresent                   | () => void                                                                                                    | true     | Optional handler when chart is presented.                                      |
+| onBeforeCreateLayers        | (stage: Stage, specCapabilities: SpecCapabilities) => void                                                    | true     | Optional handler to modify the stage prior to deck.gl layer construction.      |
+| getTextColor                | (t: VegaTextLayerDatum) => RGBAColor<number, number, number, number>                                          | true     | Optional handler to get the color of text elements.                            |
+| getTextHighlightColor       | (t: VegaTextLayerDatum) => RGBAColor<number, number, number, number>                                          | true     | Optional handler to get the highlight color of text elements.                  |
+| getTextHighlightAlphaCutoff | () => number                                                                                                  | true     | Optional handler to get the alpha cutoff for highlight color of text elements. |
+| onTextClick                 | (e: MouseEvent &#124; PointerEvent &#124; TouchEvent, o: VegaTextLayerDatum) => void                          | true     | Optional click handler for text elements.                                      |
+| onAxisClick                 | (e: TouchEvent &#124; MouseEvent &#124; PointerEvent, serch: SearchExpressionGroup<SearchExpression>) => void | true     | Optional handler when axis is clicked.                                         |
+| onLegendHeaderClick         | (e: TouchEvent &#124; MouseEvent &#124; PointerEvent) => void                                                 | true     | Optional handler when legend header is clicked.                                |
+| onLegendRowClick            | (e: TouchEvent &#124; MouseEvent &#124; PointerEvent, legendRow: LegendRowWithSearch) => void                 | true     | Optional handler when legend row is clicked.                                   |
+| onVegaSpec                  | (vegaSpec: Spec) => void                                                                                    | true     | Optional handler when Vega spec is created, prior to it being rendered.        |
+| onNewViewStateTarget        | () => boolean                                                                                                 | true     | Optional handler to reset the camera after chart is rendered.                  |
+| preserveDrawingBuffer       | boolean                                                                                                       | true     | Optional flag to preserve the WebGL canvas.                                    |
+| selectionPolygonZ           | number                                                                                                        | false    | Z value of selection polygons.                                                 |
 
 ----------
 

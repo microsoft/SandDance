@@ -229,7 +229,7 @@ RGBAColor<number, number, number, number>
 ### getCubeLayer
 
 ```typescript
-function getCubeLayer(deckProps: Partial<DeckProps>): default<any>;
+function getCubeLayer(deckProps: Partial<DeckProps>): default<any, LayerProps<any>>;
 ```
 
 **Parameters**
@@ -240,7 +240,7 @@ function getCubeLayer(deckProps: Partial<DeckProps>): default<any>;
 
 **Return type**
 
-default<any>
+default<any, LayerProps<any>>
 
 ----------
 

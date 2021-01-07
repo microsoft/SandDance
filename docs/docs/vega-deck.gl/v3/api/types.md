@@ -338,6 +338,7 @@ interface PresenterConfig {
     onTextHover?: (e: MouseEvent | PointerEvent | TouchEvent, t: VegaTextLayerDatum) => boolean;
     getTextColor?: (o: VegaTextLayerDatum) => RGBAColor<number, number, number, number>;
     getTextHighlightColor?: (o: VegaTextLayerDatum) => RGBAColor<number, number, number, number>;
+    getTextHighlightAlphaCutoff?: () => number;
     onSceneRectAssignCubeOrdinal?: (d: object) => number | undefined;
     onTargetViewState?: (height: number, width: number) => { height: number; width: number; newViewStateTarget?: boolean; };
     preserveDrawingBuffer?: boolean;
@@ -363,6 +364,7 @@ interface PresenterConfig {
 | onTextHover                  | (e: MouseEvent &#124; PointerEvent &#124; TouchEvent, t: VegaTextLayerDatum) => boolean             | true     |
 | getTextColor                 | (o: VegaTextLayerDatum) => RGBAColor<number, number, number, number>                                | true     |
 | getTextHighlightColor        | (o: VegaTextLayerDatum) => RGBAColor<number, number, number, number>                                | true     |
+| getTextHighlightAlphaCutoff  | () => number                                                                                        | true     |
 | onSceneRectAssignCubeOrdinal | (d: object) => number &#124; undefined                                                              | true     |
 | onTargetViewState            | (height: number, width: number) => { height: number; width: number; newViewStateTarget?: boolean; } | true     |
 | preserveDrawingBuffer        | boolean                                                                                             | true     |
@@ -612,12 +614,16 @@ interface VegaTextLayerDatum {
 Options for the View.
 
 ```typescript
-interface ViewGlConfig {
+interface ViewGlConfig extends ViewOptions {
     presenter?: Presenter;
     presenterConfig?: PresenterConfig;
     getView?: { (): View; };
 }
 ```
+
+**Extends**
+
+ViewOptions
 
 **Properties**
 
@@ -637,7 +643,7 @@ type CubeLayerProps = LayerProps<Cube> & CubeLayerDefaultProps & CubeLayerDataPr
 
 **Type**
 
-LayerProps<[Cube][InterfaceDeclaration-7]> & [CubeLayerDefaultProps][InterfaceDeclaration-31] & [CubeLayerDataProps][InterfaceDeclaration-28]
+LayerProps<[Cube][InterfaceDeclaration-7]> & [CubeLayerDefaultProps][InterfaceDeclaration-32] & [CubeLayerDataProps][InterfaceDeclaration-29]
 
 ----------
 
@@ -667,8 +673,8 @@ type Vec3 = [number, number, number];
 [InterfaceDeclaration-7]: types.html#cube
 [TypeAliasDeclaration-0]: types.html#vec3
 [TypeAliasDeclaration-0]: types.html#vec3
-[InterfaceDeclaration-28]: types.html#cubelayerdataprops
-[InterfaceDeclaration-31]: types.html#cubelayerdefaultprops
+[InterfaceDeclaration-29]: types.html#cubelayerdataprops
+[InterfaceDeclaration-32]: types.html#cubelayerdefaultprops
 [InterfaceDeclaration-1]: types.html#deckbase
 [InterfaceDeclaration-2]: types.html#decklayerbase
 [InterfaceDeclaration-17]: types.html#facetrect
@@ -708,6 +714,6 @@ type Vec3 = [number, number, number];
 [InterfaceDeclaration-21]: types.html#presenterconfig
 [TypeAliasDeclaration-1]: types.html#cubelayerprops
 [InterfaceDeclaration-7]: types.html#cube
-[InterfaceDeclaration-31]: types.html#cubelayerdefaultprops
-[InterfaceDeclaration-28]: types.html#cubelayerdataprops
+[InterfaceDeclaration-32]: types.html#cubelayerdefaultprops
+[InterfaceDeclaration-29]: types.html#cubelayerdataprops
 [TypeAliasDeclaration-0]: types.html#vec3

@@ -76,6 +76,7 @@ Partial<[ColorSettings][InterfaceDeclaration-1]>
 interface ColorSettings extends ColorSettings {
     clickableText?: string;
     clickableTextHighlight?: string;
+    clickableTextHighlightAlphaCutoff?: number;
     searchText?: string;
     searchTextHighlight?: string;
 }
@@ -87,12 +88,13 @@ ColorSettings
 
 **Properties**
 
-| Name                   | Type   | Optional |
-| ---------------------- | ------ | -------- |
-| clickableText          | string | true     |
-| clickableTextHighlight | string | true     |
-| searchText             | string | true     |
-| searchTextHighlight    | string | true     |
+| Name                              | Type   | Optional |
+| --------------------------------- | ------ | -------- |
+| clickableText                     | string | true     |
+| clickableTextHighlight            | string | true     |
+| clickableTextHighlightAlphaCutoff | number | true     |
+| searchText                        | string | true     |
+| searchTextHighlight               | string | true     |
 
 ----------
 

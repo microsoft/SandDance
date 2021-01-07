@@ -13,11 +13,11 @@ Visually explore, understand, and present your data.
 Add these to the `dependencies` section of your `package.json`, then run `npm install`:
 
 ```json
-"@deck.gl/core": "^8.1.5",
-"@deck.gl/layers": "^8.1.5",
+"@deck.gl/core": "^8.3.7",
+"@deck.gl/layers": "^8.3.7",
 "@msrvida/sanddance-vue": "^3",
-"@luma.gl/core": "^8.1.2",
-"vega": "^5.11"
+"@luma.gl/core": "^8.3.1",
+"vega": "^5.17.0"
 ```
 
 ## Example code

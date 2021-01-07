@@ -624,7 +624,7 @@
   color: #005a9e;
   cursor: pointer; }
   .sanddance-legend th:hover {
-    color: #2b88d8; }
+    background-color: rgba(43, 136, 216, 0.333333); }
 
 .sanddance-legend .legend-row:hover {
   background-color: #0078d4;

@@ -43,7 +43,7 @@ interface TableProps {
 | ------------ | ------------------------------------- | -------- |
 | className    | string                                | true     |
 | onRowClick   | (e: Event, index: number) => void     | true     |
-| rows         | [TableRow][InterfaceDeclaration-27][] | false    |
+| rows         | [TableRow][InterfaceDeclaration-28][] | false    |
 | rowClassName | string                                | true     |
 
 ----------
@@ -60,7 +60,7 @@ interface TableRow {
 
 | Name  | Type                                   | Optional |
 | ----- | -------------------------------------- | -------- |
-| cells | [TableCell][InterfaceDeclaration-25][] | false    |
+| cells | [TableCell][InterfaceDeclaration-26][] | false    |
 
 ## Variables
 
@@ -72,13 +72,13 @@ const Table: StatelessComponent<TableProps>;
 
 **Type**
 
-StatelessComponent<[TableProps][InterfaceDeclaration-26]>
+StatelessComponent<[TableProps][InterfaceDeclaration-27]>
 
 [NamespaceImport-1]: controls.html#controls
-[InterfaceDeclaration-25]: controls.html#tablecell
-[InterfaceDeclaration-26]: controls.html#tableprops
-[InterfaceDeclaration-27]: controls.html#tablerow
-[InterfaceDeclaration-27]: controls.html#tablerow
-[InterfaceDeclaration-25]: controls.html#tablecell
+[InterfaceDeclaration-26]: controls.html#tablecell
+[InterfaceDeclaration-27]: controls.html#tableprops
+[InterfaceDeclaration-28]: controls.html#tablerow
+[InterfaceDeclaration-28]: controls.html#tablerow
+[InterfaceDeclaration-26]: controls.html#tablecell
 [VariableDeclaration-3]: controls.html#table
-[InterfaceDeclaration-26]: controls.html#tableprops
+[InterfaceDeclaration-27]: controls.html#tableprops
