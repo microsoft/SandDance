@@ -46,6 +46,9 @@ export function getLayers(
     let characterSet: string[];
     if (config.getCharacterSet) {
         characterSet = config.getCharacterSet(stage);
+    } else {
+        //Basic symbols, numbers, and uppercase / lowercase alphabet
+        characterSet = new Array(95).fill(1).map((_, i) => String.fromCharCode(32 + i));
     }
     if (stage.facets) {
         stage.facets.forEach(f => {
