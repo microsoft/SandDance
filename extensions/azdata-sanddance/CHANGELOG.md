@@ -1,5 +1,8 @@
 # Change Log
 
+## [3.1.1]
+- Fix for fuzzy text rendering 
+
 ## [3.1.0]
 - Fix animation final frame 
 - Render Unicode character sets 
