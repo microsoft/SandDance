@@ -38,7 +38,7 @@
     "d3-color": "^1.4.0",
     "d3-ease": "^1.0.5",
     "deepmerge": "^2.1.1",
-    "tsx-create-element": "^2.1.0",
+    "tsx-create-element": "^2.2.5",
     "vega-typings": "^0.19.0"
   },
   "devDependencies": {
