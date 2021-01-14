@@ -15,7 +15,7 @@
     "build-typescript": "tsc -p .",
     "bundle": "rollup -c",
     "build:sanddance-core": "npm run build-typescript && node ../../scripts/version.js && npm run build-css && npm run bundle",
-    "watch-css": "sass ./src/css/sanddance.scss ./dist/css/sanddance.css -watch",
+    "watch-css": "sass ./src/css/sanddance.scss ./dist/css/sanddance.css --watch",
     "build-css": "sass ./src/css/sanddance.scss ./dist/css/sanddance.css"
   },
   "author": "",
