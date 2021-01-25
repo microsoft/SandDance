@@ -28,9 +28,9 @@ import * as vega from 'vega';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { SandDance, SandDanceReact } from '@msrvida/sanddance-react';
+import { use as SandDanceUse, SandDanceReact } from '@msrvida/sanddance-react';
 
-SandDance.use(React, ReactDOM, vega, deck, layers, luma);
+SandDanceUse(React, ReactDOM, vega, deck, layers, luma);
 ```
 
 ## For more information
