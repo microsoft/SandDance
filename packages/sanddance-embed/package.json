@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "build-css": "node-sass ./src/css -o ./dist/css",
+    "build-css": "sass ./src/css/sanddance-embed.scss ./dist/css/sanddance-embed.css",
     "build-typescript": "tsc -p .",
     "build:sanddance-core": "npm run build-css && npm run build-typescript"
   },
