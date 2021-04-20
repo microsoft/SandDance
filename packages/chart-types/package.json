@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/chart-types",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Types for chart applications.",
   "main": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
@@ -16,6 +16,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "vega-typings": "^0.19.0"
+    "vega-typings": ">=0.19.0"
   }
 }
