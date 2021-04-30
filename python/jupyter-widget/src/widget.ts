@@ -13,7 +13,7 @@ import React from 'react';
 import '@msrvida/sanddance-explorer/dist/css/sanddance-explorer.css';
 import '../css/tweak.css';
 
-use(fluentUI, React as any, ReactDOM, vega, deck as any, layers, luma);
+use(fluentUI as any, React as any, ReactDOM, vega, deck as any, layers, luma);
 
 export class SandDanceModel extends DOMWidgetModel {
     defaults() {
