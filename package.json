@@ -70,7 +70,7 @@
     "remark-toc": "^5.1.1",
     "rimraf": "^2.6.2",
     "rollup": "^1.32.1",
-    "rollup-plugin-vue": "^5.0.1",
+    "rollup-plugin-vue": "^5.1.7",
     "sass": "^1.32.4",
     "ts-loader": "^7.0.5",
     "typescript": "^3.5",
