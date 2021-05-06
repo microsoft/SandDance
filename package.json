@@ -81,6 +81,7 @@
     "webpack-cli": "^3.3.12"
   },
   "resolutions": {
+    "is-svg": "^4.2.2",
     "node-forge": "0.10.0"
   },
   "babel": {
