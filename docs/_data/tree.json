@@ -37,10 +37,6 @@
   ],
   "Resources": [
     {
-      "tree": "API Reference",
-      "url": "/docs/api"
-    },
-    {
       "tree": "Vega",
       "url": "https://vega.github.io/"
     },
