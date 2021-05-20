@@ -13,6 +13,8 @@
     "build-typescript": "tsc -p .",
     "build:sanddance-core": "npm run build-typescript",
     "bundle": "rollup -c",
+    "deploy": "parcel build ./uitest/sanddance-specs.ts --no-cache --no-minify --no-source-maps --public-url . --out-dir ../../docs/tests/sanddance-specs/v1/js",
+    "deploy-watch": "parcel serve ./uitest/sanddance-specs.ts --no-cache --no-source-maps --public-url . --out-dir ../../docs/tests/sanddance-specs/v1/js",
     "test2": "node -r esm ./test/perf.js"
   },
   "author": "",

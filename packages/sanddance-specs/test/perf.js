@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 import { build, getColumnsFromData, getSpecColumns } from '../dist/es6';
 import * as vega from 'vega';
-import { writeFileSync } from 'fs';
 
 vega.loader().load('../../docs/sample-data/demovote.tsv').then(tsv_data => {
     const data = vega.read(tsv_data, { type: 'tsv', parse: 'auto' });

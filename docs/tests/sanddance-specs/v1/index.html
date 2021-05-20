@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SandDance-Specs test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/vega@^5.20/build/vega.js" charset="utf-8"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        header {
+            margin-bottom: 1em;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>SandDance-Specs test</h1>
+        <label>
+            Insight file:
+            <select id="select-spec">
+                <option>column-facet-cross.json</option>
+                <option>column-facet-wrap.json</option>
+                <option>column.json</option>
+                <option>density-facet-cross.json</option>
+                <option>density-facet-wrap.json</option>
+                <option>density.json</option>
+                <option>scatter-facet-cross.json</option>
+                <option>scatter-facet-wrap.json</option>
+                <option>scatter.json</option>
+                <option>stacks-facet-cross.json</option>
+                <option>stacks-facet-wrap.json</option>
+                <option>stacks-not-faceted.json</option>
+            </select>
+        </label>
+    </header>
+
+    <div id="vis"></div>
+
+    <script src="js/sanddance-specs.js"></script>
+</body>
+
+</html>

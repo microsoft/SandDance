@@ -6,6 +6,9 @@ layout: page
 
 ## Subsystem
 
+### sanddance-specs
+* [sanddance-specs 2D vega specs tests](../tests/sanddance-specs/v1/) using UMD/CDN
+
 ### cube-layer
 * [cubeTest](../tests/v3/umd/cubeTest.html) using UMD/CDN
 
