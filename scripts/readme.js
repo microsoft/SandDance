@@ -1,41 +1,15 @@
 const fs = require('fs');
-const path = require('path');
 const marked = require('marked');
 
 const pubversion = 'v3';
 
-function liquid(layout) {
-    return `---\nlayout: ${layout}\n---\n\n`;
-}
-
-function copyReadme(packageRoot, packageDir, docRoot, version, fileNameIn, fileNameOut) {
-    const docRootPath = path.resolve(docRoot, packageDir);
-    if (!fs.existsSync(docRootPath)) return;
-    const readMePath = path.resolve(packageRoot, packageDir, fileNameIn);
-    if (!fs.existsSync(readMePath)) {
-        console.log(`no readme for ${packageDir} at ${readMePath}`);
-        return;
-    }
-    let readme = fs.readFileSync(readMePath, 'utf8');
-    readme = rewriteURLs(readme);
-    readme = liquid('docs') + readme;
-    fs.writeFileSync(path.resolve(docRootPath, version, fileNameOut), readme, 'utf8');
-    console.log(`readme copied for ${packageDir}`);
-}
-
-function packageDirs(packageRoot, docRoot) {
-    fs.readdirSync(packageRoot).forEach(packageDir => {
-        const fullPath = path.resolve(packageRoot, packageDir);
-        if (fs.statSync(fullPath).isDirectory()) {
-            //console.log(`folder: ${f}`);
-            copyReadme(packageRoot, packageDir, docRoot, pubversion, 'README.md', 'index.md');
-        }
-    })
+function liquid(layout, title) {
+    return `---\nlayout: ${layout}\ntitle: ${title}\n---\n\n`;
 }
 
 function convertHomePage() {
     const readmeMarkdown = fs.readFileSync('./README.md', 'UTF8');
-    const html = liquid('page') + rewriteURLs(marked(readmeMarkdown));
+    const html = liquid('page', 'Home') + rewriteURLs(marked(readmeMarkdown));
     fs.writeFileSync('./docs/index.html', html, 'UTF8');
 }
 
@@ -62,5 +36,4 @@ function rewriteURLs(html) {
     return html;
 }
 
-packageDirs('./packages', './docs/docs');
 convertHomePage();
