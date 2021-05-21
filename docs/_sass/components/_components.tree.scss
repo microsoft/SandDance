@@ -25,14 +25,6 @@
         }
     }
 
-    @include mq($from: tablet) {
-        position: sticky;
-        top: $spacing-huge;
-        max-height: calc(100vh - #{$spacing*7 - $spacing-small});
-        overflow-y: auto;
-        @include inuit-font-size($inuit-font-size-h4);
-    }
-
     ul {
         margin-left: 0;
         overflow: hidden;

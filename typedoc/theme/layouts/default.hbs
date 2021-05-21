@@ -10,8 +10,8 @@ title: '{{#ifCond model.name '==' project.name}}{{project.name}}{{else}}{{model.
         <div class="col-8 col-content">
             {{{contents}}}
         </div>
-        <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
-            <nav class="tsd-navigation primary">
+        <div class="col-4 col-menu menu-highlight">
+            <nav class="tsd-navigation primary c-tree">
                 <ul>
                     {{#each navigation.children}}
                         {{> navigation}}
@@ -19,7 +19,7 @@ title: '{{#ifCond model.name '==' project.name}}{{project.name}}{{else}}{{model.
                 </ul>
             </nav>
 
-            <nav class="tsd-navigation secondary menu-sticky">
+            <nav class="tsd-navigation secondary c-tree">
                 <ul class="before-current">
                     {{#each toc.children}}
                         {{> toc.root}}
