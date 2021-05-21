@@ -19,6 +19,10 @@
       "url": "/docs/sanddance/v3"
     },
     {
+      "tree": "sanddance-specs",
+      "url": "/docs/sanddance-specs/v1"
+    },
+    {
       "tree": "sanddance-react",
       "url": "/docs/sanddance-react/v3"
     },
