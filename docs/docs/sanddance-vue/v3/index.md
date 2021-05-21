@@ -1,5 +1,6 @@
 ---
 layout: docs
+title: '@msrvida/sanddance-vue'
 ---
 
 # @msrvida/sanddance-vue
