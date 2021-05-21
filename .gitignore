@@ -65,6 +65,7 @@ typings/
 docs/**/*.map
 docs/.jekyll-cache
 docs/.jekyll-metadata
+docs/docs/**/assets
 
 # powerbi builds
 .tmp

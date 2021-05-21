@@ -12,12 +12,20 @@ a {
         text-decoration: underline;
     }
 
-    .c-page-main & {
+    .c-page-main &, footer & {
         color: $ms-sky-400;
+
+        .dark-theme & {
+            color: $ms-cyan-400;
+        }
 
         &:hover,
         &:focus {
             color: $ms-sky-500;
+            
+            .dark-theme & {
+                color: $ms-cyan-200;
+            }
         }
     }
 }

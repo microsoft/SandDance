@@ -55,6 +55,7 @@ pre.highlight {
 .language-typescript:before { content: 'TypeScript'; }
 
 code {
+    padding-bottom:   $spacing-tiny;
     padding-right:  $spacing-tiny;
     padding-left:   $spacing-tiny;
     background: lighten($ms-black-100, 3%);
@@ -62,13 +63,9 @@ code {
     color: $ms-black-500;
     @include inuit-font-size($inuit-font-size-h5);
 
-    .dark-theme & {
-        background: $ms-black-600;
-        border-color: $ms-black-500;
-        color: $ms-black-100;
-    }
-
     pre & {
         border: 0;
+        display: block;
+        overflow: auto;
     }
 }

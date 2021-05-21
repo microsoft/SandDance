@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "docs": "npx -p @danmarshall/ts-docs-gen ts-docs-gen --entryFile src/index.ts -o ../../docs/docs/sanddance/v3/",
+    "docs": "typedoc src/index.ts -out ../../docs/docs/sanddance/v3 --theme ../../typedoc/theme --excludePrivate",
     "deploy": "node ./scripts/deploy.js",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
