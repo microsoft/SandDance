@@ -8,6 +8,16 @@ layout: default
     </div>
 </nav>
 
+{% assign match = '' %}
+{% for tree in site.data.tree %}
+    {% for branch in tree[1] %}
+        {% assign checkArray = page.url | split:branch.url %}                       
+        {% if checkArray[0] == '' %}
+            {% assign match = branch.url %}
+        {% endif %}
+    {% endfor %}
+{% endfor %}
+
 <section class="c-page-content">
     <div class="o-wrapper">
         <div class="o-layout o-layout--large">
@@ -41,8 +51,8 @@ layout: default
                                 {% capture branch_link %}{{ site.baseurl }}{{branch_url}}{% endcapture %}
                             {% endif %}
 
-                            <li class="c-tree__item {% if page_url == tree_url %} is-active{% endif %}">
-                                <a href="{{ branch_link }}" {% if page_url == branch_url %}class="is-active"{% endif %}>
+                            <li class="c-tree__item {% if branch.url == match %} is-active{% endif %}">
+                                <a href="{{ branch_link }}" {% if branch.url == match %}class="is-active"{% endif %}>
                                     {{ branch.tree }}
                                 </a>
                             </li>
