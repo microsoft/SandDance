@@ -6620,7 +6620,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var es6_1 = require("../dist/es6");
 
-var dataUrl = '../../../sample-data/demovote.tsv';
+var dataUrl = '/SandDance/sample-data/demovote.tsv';
 var specViewOptions = {
   colors: {
     defaultCube: "steelblue",
