@@ -29,7 +29,26 @@ let data: object[];
 let columns: Column[];
 const container = document.getElementById('vis');
 const select = document.getElementById('select-spec') as HTMLSelectElement;
+const insightTextarea = document.getElementById('insight-json') as HTMLTextAreaElement;
+const insightUdateButton = document.getElementById('insight-update') as HTMLButtonElement;
+const vegaOutput = document.getElementById('vega-spec') as HTMLTextAreaElement;
+const vegaCopy = document.getElementById('vega-spec-copy') as HTMLButtonElement;
+
 select.onchange = () => selected(select.selectedIndex);
+
+insightUdateButton.onclick = () => {
+    const insight = JSON.parse(insightTextarea.value);
+    render(insight);
+};
+
+vegaCopy.onclick = () => {
+    vegaOutput.select();
+    document.execCommand('copy');
+    vegaCopy.innerText = 'copied';
+    setTimeout(() => {
+        vegaCopy.innerText = 'copy';
+    }, 2000);
+}
 
 function selected(selectedIndex: number) {
     container.innerHTML = `loading spec...`;
@@ -44,6 +63,7 @@ function fetchInsight(specFilename: string) {
 }
 
 function render(insight: Insight) {
+    insightTextarea.value = JSON.stringify(insight, null, 2);
     const specColumns = getSpecColumns(insight, columns);
     const context: SpecContext = { specColumns, insight, specViewOptions };
     const specResult = build(context, data);
@@ -59,7 +79,17 @@ function renderVegaSpec(vegaSpec: Vega.Spec) {
     const vegaView = new vega.View(runtime, { container });
     vegaView
         .runAsync()
-        .catch(e => container.innerHTML = `error ${e}`);
+        .catch(e => container.innerHTML = `error ${e}`)
+        .then(() => {
+            const d0 = vegaSpec.data[0] as any;
+            delete d0.values;
+            d0.format = {
+                parse: 'auto',
+                type: 'tsv'
+            };
+            d0.url = 'https://microsoft.github.io' + dataUrl
+            vegaOutput.value = JSON.stringify(vegaSpec, null, 2);
+        });
 }
 
 container.innerHTML = `loading ${dataUrl}...`;
