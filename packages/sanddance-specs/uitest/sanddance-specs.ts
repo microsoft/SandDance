@@ -12,7 +12,7 @@ declare const vega: {
     View: typeof Vega.View;
 };
 
-const dataUrl = '../../../sample-data/demovote.tsv';
+const dataUrl = '/SandDance/sample-data/demovote.tsv';
 const specViewOptions: SpecViewOptions = {
     colors: {
         defaultCube: "steelblue",
