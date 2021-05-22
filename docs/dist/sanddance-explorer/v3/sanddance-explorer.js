@@ -6249,7 +6249,9 @@ function build(context, currData) {
 
   return specResult;
 }
-},{"./charts":"HWtS","./inference":"x9Lc"}],"gl1V":[function(require,module,exports) {
+},{"./charts":"HWtS","./inference":"x9Lc"}],"gUse":[function(require,module,exports) {
+
+},{}],"gl1V":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6291,7 +6293,31 @@ Object.keys(_inference).forEach(function (key) {
     }
   });
 });
-},{"./build":"EPvd","./constants":"kNZP","./inference":"x9Lc"}],"Syc7":[function(require,module,exports) {
+
+var _interfaces = require("./interfaces");
+
+Object.keys(_interfaces).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _interfaces[key];
+    }
+  });
+});
+
+var _types = require("./types");
+
+Object.keys(_types).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _types[key];
+    }
+  });
+});
+},{"./build":"EPvd","./constants":"kNZP","./inference":"x9Lc","./interfaces":"gUse","./types":"gUse"}],"Syc7":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6743,7 +6769,11 @@ function narrow(a, b) {
   arrB[0].clause = '&&';
   return arrA.concat(arrB);
 }
-},{"./group":"AN7n"}],"VB4o":[function(require,module,exports) {
+},{"./group":"AN7n"}],"YUFl":[function(require,module,exports) {
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
+},{}],"VB4o":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6809,9 +6839,19 @@ Object.keys(_narrow).forEach(function (key) {
     }
   });
 });
-},{"./compare":"RvJY","./exec":"hqwp","./group":"AN7n","./invert":"jBu6","./narrow":"YlDD"}],"JCLk":[function(require,module,exports) {
 
-},{}],"Fy6F":[function(require,module,exports) {
+var _types = require("./types");
+
+Object.keys(_types).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _types[key];
+    }
+  });
+});
+},{"./compare":"RvJY","./exec":"hqwp","./group":"AN7n","./invert":"jBu6","./narrow":"YlDD","./types":"YUFl"}],"Fy6F":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7169,11 +7209,7 @@ Object.defineProperty(exports, "Table", {
 });
 
 var _controls = require("../controls");
-},{"../controls":"KmGS"}],"dNRs":[function(require,module,exports) {
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-
-},{}],"Oim5":[function(require,module,exports) {
+},{"../controls":"KmGS"}],"Oim5":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11031,7 +11067,7 @@ Object.keys(_enums).forEach(function (key) {
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-},{"./constants":"Fy6F","./exports/controls":"kUTU","./exports/types":"dNRs","./exports/util":"WeBf","./defaults":"jQIe","./base":"To8D","./presenter":"VMtV","./vega-classes/viewGl":"FyHd","./enums":"qyL6"}],"G0Md":[function(require,module,exports) {
+},{"./constants":"Fy6F","./exports/controls":"kUTU","./exports/types":"YUFl","./exports/util":"WeBf","./defaults":"jQIe","./base":"To8D","./presenter":"VMtV","./vega-classes/viewGl":"FyHd","./enums":"qyL6"}],"G0Md":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13752,7 +13788,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 // Licensed under the MIT license.
 const use = VegaDeckGl.use;
 exports.use = use;
-},{"./constants":"Syc7","@msrvida/search-expression":"VB4o","@msrvida/sanddance-specs":"gl1V","./types":"JCLk","./util":"BTLl","@msrvida/vega-deck.gl":"eFEk","./colorSchemes":"kNpg","./viewer":"CdFf","./version":"DZif"}],"wkaK":[function(require,module,exports) {
+},{"./constants":"Syc7","@msrvida/search-expression":"VB4o","@msrvida/sanddance-specs":"gl1V","./types":"gUse","./util":"BTLl","@msrvida/vega-deck.gl":"eFEk","./colorSchemes":"kNpg","./viewer":"CdFf","./version":"DZif"}],"wkaK":[function(require,module,exports) {
 module.exports = compare;
 
 /*
@@ -17167,6 +17203,7 @@ function defaultColorScheme(c) {
 },{}],"ENdt":[function(require,module,exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.defaultColorScheme = exports.Recommender = exports.maxCategoricalColors = void 0;
 exports.maxCategoricalColors = 20;
 var Recommender = /** @class */ (function () {
     function Recommender(columns, data) {
@@ -17191,6 +17228,7 @@ exports.defaultColorScheme = defaultColorScheme;
 },{}],"oxgd":[function(require,module,exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BarChartRecommender = exports.BarChartRecommenderSummary = void 0;
 var recommender_1 = require("./recommender");
 var maxDistinctVal = 20;
 var minDistinctVal = 2;
@@ -17270,6 +17308,7 @@ exports.BarChartRecommender = BarChartRecommender;
 },{"./recommender":"ENdt"}],"O4ew":[function(require,module,exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.isGeo = exports.isLatitude = exports.isLongitude = void 0;
 //TODO: languages other than english
 var longitudeNames = ['lon', 'long', 'longitude'];
 var latitudeNames = ['lat', 'latitude'];
@@ -17303,6 +17342,7 @@ exports.isGeo = isGeo;
 },{}],"iBe2":[function(require,module,exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ScatterPlotRecommenderSummary = void 0;
 var recommender_1 = require("./recommender");
 var geo_1 = require("./geo");
 var ScatterPlotRecommenderSummary = /** @class */ (function () {
@@ -17356,6 +17396,7 @@ exports.ScatterPlotRecommenderSummary = ScatterPlotRecommenderSummary;
 },{"./recommender":"ENdt","./geo":"O4ew"}],"At4q":[function(require,module,exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.preferredColumnForTreemapSize = void 0;
 var geo_1 = require("./geo");
 function preferredColumnForTreemapSize(columns, strict) {
     for (var i = 0; i < columns.length; i++) {
@@ -17376,6 +17417,7 @@ exports.preferredColumnForTreemapSize = preferredColumnForTreemapSize;
 },{"./geo":"O4ew"}],"fB3P":[function(require,module,exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RecommenderSummary = void 0;
 var barChart_1 = require("./barChart");
 var scatterPlot_1 = require("./scatterPlot");
 var RecommenderSummary = /** @class */ (function () {
@@ -17407,17 +17449,24 @@ exports.RecommenderSummary = RecommenderSummary;
 
 },{"./barChart":"oxgd","./scatterPlot":"iBe2"}],"i6UQ":[function(require,module,exports) {
 "use strict";
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-__export(require("./barChart"));
-__export(require("./geo"));
-__export(require("./scatterPlot"));
-__export(require("./treemap"));
-__export(require("./recommenderSummary"));
+__exportStar(require("./barChart"), exports);
+__exportStar(require("./geo"), exports);
+__exportStar(require("./scatterPlot"), exports);
+__exportStar(require("./treemap"), exports);
+__exportStar(require("./recommenderSummary"), exports);
 
 },{"./barChart":"oxgd","./geo":"O4ew","./scatterPlot":"iBe2","./treemap":"At4q","./recommenderSummary":"fB3P"}],"f8v0":[function(require,module,exports) {
 "use strict";

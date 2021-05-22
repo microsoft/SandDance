@@ -9,6 +9,12 @@
     <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/main.css">
     <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/typedoc.css">
     <link rel="shortcut icon" href="{{ site.baseurl }}/favicon.ico" />
+    <script>
+        if (document.location.hostname === 'sanddance.js.org') {
+            //redirect to new domain
+            document.location.href = document.location.href.replace('sanddance.js.org', 'microsoft.github.io/SandDance');
+        }
+    </script>
 </head>
 
 <body>
@@ -20,7 +26,7 @@
                 <span></span>
             </button>
 
-            <a href="//microsoft.com" class="c-page-head__logo">
+            <a href="//opensource.microsoft.com/" class="c-page-head__logo">
                 <img alt="Microsoft logo" src="{{ site.baseurl }}/assets/images/microsoft-logo.png">
             </a>
 

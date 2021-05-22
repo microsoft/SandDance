@@ -6542,7 +6542,9 @@ function build(context, currData) {
 
   return specResult;
 }
-},{"./charts":"MZyF","./inference":"euhF"}],"St5X":[function(require,module,exports) {
+},{"./charts":"MZyF","./inference":"euhF"}],"Qjn0":[function(require,module,exports) {
+
+},{}],"St5X":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6584,7 +6586,31 @@ Object.keys(_inference).forEach(function (key) {
     }
   });
 });
-},{"./build":"Ioft","./constants":"by41","./inference":"euhF"}],"Hfbl":[function(require,module,exports) {
+
+var _interfaces = require("./interfaces");
+
+Object.keys(_interfaces).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _interfaces[key];
+    }
+  });
+});
+
+var _types = require("./types");
+
+Object.keys(_types).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _types[key];
+    }
+  });
+});
+},{"./build":"Ioft","./constants":"by41","./inference":"euhF","./interfaces":"Qjn0","./types":"Qjn0"}],"Hfbl":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6594,7 +6620,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var es6_1 = require("../dist/es6");
 
-var dataUrl = '/sample-data/demovote.tsv';
+var dataUrl = '/SandDance/sample-data/demovote.tsv';
 var specViewOptions = {
   colors: {
     defaultCube: "steelblue",
