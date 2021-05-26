@@ -22,7 +22,7 @@ SandDance was created by the [Microsoft Research VIDA Group](https://aka.ms/vida
 * 3rd Party apps:
   * [Observable](https://observablehq.com/collection/@danmarshall/sanddance)
   * [Jupyter widget](https://github.com/microsoft/SandDance/tree/master/python/jupyter-widget#sanddance-jupyter-widget)
-  * [HASH Core IDE](https://core.hash.ai/) - [*see 'Step Explorer' documentation*](https://docs.hash.ai/core/views#step-explorer)
+  * [HASH Core IDE](https://core.hash.ai/) - [*see 'Step Explorer' documentation*](https://docs.hash.ai/core/creating-simulations/views#step-explorer)
 * In your own JavaScript apps - see below
 
 ## Component architecture
