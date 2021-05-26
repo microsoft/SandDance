@@ -80,4 +80,4 @@ export default {
 
 ## For more information
 
-Please visit the [SandDance website](/).
+Please visit the [SandDance website](/SandDance/).

@@ -38,7 +38,7 @@ function convertHomePage() {
 }
 
 const map = {
-    "https://microsoft.github.io/SandDance": "",
+    "https://microsoft.github.io": "",
     "dev.md": "https://github.com/Microsoft/SandDance/blob/master/dev.md",
     "packages/sanddance/README.md": `/docs/sanddance/${pubversion}/`,
     "packages/sanddance-vue/README.md": `/docs/sanddance-vue/${pubversion}/`,
