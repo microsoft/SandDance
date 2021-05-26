@@ -194,8 +194,7 @@ export class Band extends Layout {
                         parentScope.sizeSignals.layoutWidth
                 }
             ],
-            paddingInner: 0.1,
-            paddingOuter: 0.05,
+            padding: 0.1,
             domain: {
                 data: bin.domainDataName,
                 field: binField,
