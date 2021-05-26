@@ -676,7 +676,7 @@ function binnable(prefix, domainDataName, discreteColumn) {
       as: [field, fieldEnd],
       signal: binSignal,
       extent: {
-        signal: extentSignal
+        signal: `[${extentSignal}[0], ${extentSignal}[1] + 1e-11]`
       },
       maxbins: {
         signal: maxbinsSignalName
@@ -725,7 +725,7 @@ function binnable(prefix, domainDataName, discreteColumn) {
       binSignal,
       dataSequence,
       domainDataName,
-      maxbinsSignal,
+      signals: [maxbinsSignal],
       fullScaleDataname: dataSequence.name
     };
   } else {
@@ -919,7 +919,7 @@ class Band extends _layout.Layout {
     const binField = bin.fields[0];
 
     if (bin.native === false) {
-      (0, _scope.addSignals)(globalScope.scope, bin.maxbinsSignal);
+      (0, _scope.addSignals)(globalScope.scope, ...bin.signals);
       (0, _scope.addTransforms)(globalScope.data, ...bin.transforms);
       (0, _scope.addData)(globalScope.scope, bin.dataSequence);
     } //TODO don't add this, use existing dataset
@@ -3465,7 +3465,7 @@ function addGlobalAxes(props) {
               labelBaseline: labelBaseline[s]
             };
             axesScopes['main'].forEach(a => (0, _scope.addAxes)(a.scope, createAxis(Object.assign(Object.assign({}, props), {
-              scale: a.scale || scale.name,
+              scale: a.scale || scale,
               showTitle: a.title,
               showLabels: a.labels,
               showLines: a.lines
@@ -3473,7 +3473,7 @@ function addGlobalAxes(props) {
 
             if (axesScopes[s]) {
               axesScopes[s].forEach(a => (0, _scope.addAxes)(a.scope, createAxis(Object.assign(Object.assign({}, props), {
-                scale: a.scale || scale.name,
+                scale: a.scale || scale,
                 showTitle: a.title,
                 showLabels: a.labels,
                 showLines: a.lines
@@ -3506,7 +3506,7 @@ function createAxis(props) {
     titlePadding
   } = props;
   const axis = Object.assign(Object.assign(Object.assign(Object.assign({
-    scale,
+    scale: scale.name,
     orient: horizontal ? 'bottom' : 'left',
     domain: showLines,
     ticks: showLines
@@ -3882,14 +3882,12 @@ function addFacetCellTitles(scope, sizeSignals, axisTextColor) {
 function addFacetAxesGroupMarks(props) {
   const {
     colSeqName,
-    colTitleScaleName,
+    colTitleScale,
     globalScope,
     facetScope,
-    plotHeightOut,
     plotScope,
-    plotWidthOut,
     rowSeqName,
-    rowTitleScaleName
+    rowTitleScale
   } = props;
   const {
     sizeSignals
@@ -3901,22 +3899,6 @@ function addFacetAxesGroupMarks(props) {
   const row = facetRowHeaderFooter(rowSeqName, sizeSignals, index);
   (0, _scope.addData)(globalScope, colSequence, rowSequence);
   (0, _scope.addMarks)(globalScope, col.footer, row.header);
-  const colTitleScale = {
-    type: 'linear',
-    name: colTitleScaleName,
-    domain: [0, 1],
-    range: [0, {
-      signal: plotWidthOut
-    }]
-  };
-  const rowTitleScale = {
-    type: 'linear',
-    name: rowTitleScaleName,
-    domain: [0, 1],
-    range: [{
-      signal: plotHeightOut
-    }, 0]
-  };
   (0, _scope.addScales)(globalScope, colTitleScale, rowTitleScale);
   const map = {
     main: [{
@@ -3932,7 +3914,7 @@ function addFacetAxesGroupMarks(props) {
       title: false
     }, {
       scope: plotScope,
-      scale: colTitleScaleName,
+      scale: colTitleScale,
       lines: false,
       labels: false,
       title: true
@@ -3944,7 +3926,7 @@ function addFacetAxesGroupMarks(props) {
       title: false
     }, {
       scope: plotScope,
-      scale: rowTitleScaleName,
+      scale: rowTitleScale,
       lines: false,
       labels: false,
       title: true
@@ -4200,7 +4182,7 @@ class Cross extends _layout.Layout {
       const titleSource = titles[dim];
 
       if (bin.native === false) {
-        (0, _scope.addSignals)(globalScope.scope, bin.maxbinsSignal);
+        (0, _scope.addSignals)(globalScope.scope, ...bin.signals);
         (0, _scope.addTransforms)(globalScope.data, ...bin.transforms);
         (0, _scope.addData)(globalScope.scope, bin.dataSequence);
         (0, _scope.addTransforms)(bin.dataSequence, {
@@ -4410,7 +4392,7 @@ class Wrap extends _layout.Layout {
     let ordinalBinData;
 
     if (bin.native === false) {
-      (0, _scope.addSignals)(globalScope.scope, bin.maxbinsSignal);
+      (0, _scope.addSignals)(globalScope.scope, ...bin.signals);
       (0, _scope.addTransforms)(globalScope.data, ...bin.transforms);
       (0, _scope.addData)(globalScope.scope, bin.dataSequence);
       (0, _scope.addTransforms)(bin.dataSequence, {
@@ -5011,14 +4993,30 @@ class SpecBuilder {
       }
 
       if (allGlobalScales.length > 0) {
+        const plotHeightOut = this.globalSignals.plotHeightOut.name;
+        const plotWidthOut = this.globalSignals.plotWidthOut.name;
+        const colTitleScale = {
+          type: 'linear',
+          name: 'scale_facet_col_title',
+          domain: [0, 1],
+          range: [0, {
+            signal: plotWidthOut
+          }]
+        };
+        const rowTitleScale = {
+          type: 'linear',
+          name: 'scale_facet_row_title',
+          domain: [0, 1],
+          range: [{
+            signal: plotHeightOut
+          }, 0]
+        };
         let axesScopes = facetLayout ? (0, _facetTitle.addFacetAxesGroupMarks)({
           globalScope: globalScope.scope,
           plotScope: groupMark,
           facetScope: firstScope,
-          plotHeightOut: this.globalSignals.plotHeightOut.name,
-          plotWidthOut: this.globalSignals.plotWidthOut.name,
-          colTitleScaleName: 'scale_facet_col_title',
-          rowTitleScaleName: 'scale_facet_row_title',
+          colTitleScale,
+          rowTitleScale,
           colSeqName: 'data_FacetCellColTitles',
           rowSeqName: 'data_FacetCellRowTitles'
         }) : {

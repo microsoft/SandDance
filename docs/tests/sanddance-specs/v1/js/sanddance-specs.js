@@ -719,7 +719,7 @@ function binnable(prefix, domainDataName, discreteColumn) {
       as: [field, fieldEnd],
       signal: binSignal,
       extent: {
-        signal: extentSignal
+        signal: "[".concat(extentSignal, "[0], ").concat(extentSignal, "[1] + 1e-11]")
       },
       maxbins: {
         signal: maxbinsSignalName
@@ -768,7 +768,7 @@ function binnable(prefix, domainDataName, discreteColumn) {
       binSignal: binSignal,
       dataSequence: dataSequence,
       domainDataName: domainDataName,
-      maxbinsSignal: maxbinsSignal,
+      signals: [maxbinsSignal],
       fullScaleDataname: dataSequence.name
     };
   } else {
@@ -988,7 +988,7 @@ function (_Layout) {
       var binField = bin.fields[0];
 
       if (bin.native === false) {
-        (0, _scope.addSignals)(globalScope.scope, bin.maxbinsSignal);
+        _scope.addSignals.apply(void 0, [globalScope.scope].concat(_toConsumableArray(bin.signals)));
 
         _scope.addTransforms.apply(void 0, [globalScope.data].concat(_toConsumableArray(bin.transforms)));
 
@@ -3647,7 +3647,7 @@ function addGlobalAxes(props) {
             };
             axesScopes['main'].forEach(function (a) {
               return (0, _scope.addAxes)(a.scope, createAxis(Object.assign(Object.assign({}, _props), {
-                scale: a.scale || scale.name,
+                scale: a.scale || scale,
                 showTitle: a.title,
                 showLabels: a.labels,
                 showLines: a.lines
@@ -3657,7 +3657,7 @@ function addGlobalAxes(props) {
             if (axesScopes[s]) {
               axesScopes[s].forEach(function (a) {
                 return (0, _scope.addAxes)(a.scope, createAxis(Object.assign(Object.assign({}, _props), {
-                  scale: a.scale || scale.name,
+                  scale: a.scale || scale,
                   showTitle: a.title,
                   showLabels: a.labels,
                   showLines: a.lines
@@ -3693,7 +3693,7 @@ function createAxis(props) {
       title = props.title,
       titlePadding = props.titlePadding;
   var axis = Object.assign(Object.assign(Object.assign(Object.assign({
-    scale: scale,
+    scale: scale.name,
     orient: horizontal ? 'bottom' : 'left',
     domain: showLines,
     ticks: showLines
@@ -4079,14 +4079,12 @@ function addFacetCellTitles(scope, sizeSignals, axisTextColor) {
 
 function addFacetAxesGroupMarks(props) {
   var colSeqName = props.colSeqName,
-      colTitleScaleName = props.colTitleScaleName,
+      colTitleScale = props.colTitleScale,
       globalScope = props.globalScope,
       facetScope = props.facetScope,
-      plotHeightOut = props.plotHeightOut,
       plotScope = props.plotScope,
-      plotWidthOut = props.plotWidthOut,
       rowSeqName = props.rowSeqName,
-      rowTitleScaleName = props.rowTitleScaleName;
+      rowTitleScale = props.rowTitleScale;
   var sizeSignals = facetScope.sizeSignals;
   var colSequence = createSequence(colSeqName, sizeSignals.colCount);
   var rowSequence = createSequence(rowSeqName, sizeSignals.rowCount);
@@ -4095,22 +4093,6 @@ function addFacetAxesGroupMarks(props) {
   var row = facetRowHeaderFooter(rowSeqName, sizeSignals, index);
   (0, _scope.addData)(globalScope, colSequence, rowSequence);
   (0, _scope.addMarks)(globalScope, col.footer, row.header);
-  var colTitleScale = {
-    type: 'linear',
-    name: colTitleScaleName,
-    domain: [0, 1],
-    range: [0, {
-      signal: plotWidthOut
-    }]
-  };
-  var rowTitleScale = {
-    type: 'linear',
-    name: rowTitleScaleName,
-    domain: [0, 1],
-    range: [{
-      signal: plotHeightOut
-    }, 0]
-  };
   (0, _scope.addScales)(globalScope, colTitleScale, rowTitleScale);
   var map = {
     main: [{
@@ -4126,7 +4108,7 @@ function addFacetAxesGroupMarks(props) {
       title: false
     }, {
       scope: plotScope,
-      scale: colTitleScaleName,
+      scale: colTitleScale,
       lines: false,
       labels: false,
       title: true
@@ -4138,7 +4120,7 @@ function addFacetAxesGroupMarks(props) {
       title: false
     }, {
       scope: plotScope,
-      scale: rowTitleScaleName,
+      scale: rowTitleScale,
       lines: false,
       labels: false,
       title: true
@@ -4428,7 +4410,7 @@ function (_Layout) {
         var titleSource = titles[dim];
 
         if (bin.native === false) {
-          (0, _scope.addSignals)(globalScope.scope, bin.maxbinsSignal);
+          _scope.addSignals.apply(void 0, [globalScope.scope].concat(_toConsumableArray(bin.signals)));
 
           _scope.addTransforms.apply(void 0, [globalScope.data].concat(_toConsumableArray(bin.transforms)));
 
@@ -4673,7 +4655,7 @@ function (_Layout) {
       var ordinalBinData;
 
       if (bin.native === false) {
-        (0, _scope.addSignals)(globalScope.scope, bin.maxbinsSignal);
+        _scope.addSignals.apply(void 0, [globalScope.scope].concat(_toConsumableArray(bin.signals)));
 
         _scope.addTransforms.apply(void 0, [globalScope.data].concat(_toConsumableArray(bin.transforms)));
 
@@ -5306,14 +5288,30 @@ function () {
         }
 
         if (allGlobalScales.length > 0) {
+          var plotHeightOut = this.globalSignals.plotHeightOut.name;
+          var plotWidthOut = this.globalSignals.plotWidthOut.name;
+          var colTitleScale = {
+            type: 'linear',
+            name: 'scale_facet_col_title',
+            domain: [0, 1],
+            range: [0, {
+              signal: plotWidthOut
+            }]
+          };
+          var rowTitleScale = {
+            type: 'linear',
+            name: 'scale_facet_row_title',
+            domain: [0, 1],
+            range: [{
+              signal: plotHeightOut
+            }, 0]
+          };
           var axesScopes = facetLayout ? (0, _facetTitle.addFacetAxesGroupMarks)({
             globalScope: globalScope.scope,
             plotScope: groupMark,
             facetScope: firstScope,
-            plotHeightOut: this.globalSignals.plotHeightOut.name,
-            plotWidthOut: this.globalSignals.plotWidthOut.name,
-            colTitleScaleName: 'scale_facet_col_title',
-            rowTitleScaleName: 'scale_facet_row_title',
+            colTitleScale: colTitleScale,
+            rowTitleScale: rowTitleScale,
             colSeqName: 'data_FacetCellColTitles',
             rowSeqName: 'data_FacetCellRowTitles'
           }) : {
@@ -6637,9 +6635,27 @@ var data;
 var columns;
 var container = document.getElementById('vis');
 var select = document.getElementById('select-spec');
+var insightTextarea = document.getElementById('insight-json');
+var insightUdateButton = document.getElementById('insight-update');
+var vegaOutput = document.getElementById('vega-spec');
+var vegaCopy = document.getElementById('vega-spec-copy');
 
 select.onchange = function () {
   return selected(select.selectedIndex);
+};
+
+insightUdateButton.onclick = function () {
+  var insight = JSON.parse(insightTextarea.value);
+  render(insight);
+};
+
+vegaCopy.onclick = function () {
+  vegaOutput.select();
+  document.execCommand('copy');
+  vegaCopy.innerText = 'copied';
+  setTimeout(function () {
+    vegaCopy.innerText = 'copy';
+  }, 2000);
 };
 
 function selected(selectedIndex) {
@@ -6658,6 +6674,7 @@ function fetchInsight(specFilename) {
 }
 
 function render(insight) {
+  insightTextarea.value = JSON.stringify(insight, null, 2);
   var specColumns = es6_1.getSpecColumns(insight, columns);
   var context = {
     specColumns: specColumns,
@@ -6682,6 +6699,15 @@ function renderVegaSpec(vegaSpec) {
   });
   vegaView.runAsync().catch(function (e) {
     return container.innerHTML = "error ".concat(e);
+  }).then(function () {
+    var d0 = vegaSpec.data[0];
+    delete d0.values;
+    d0.format = {
+      parse: 'auto',
+      type: 'tsv'
+    };
+    d0.url = 'https://microsoft.github.io' + dataUrl;
+    vegaOutput.value = JSON.stringify(vegaSpec, null, 2);
   });
 }
 

@@ -389,7 +389,7 @@
                 ],
                 signal: binSignal,
                 extent: {
-                    signal: extentSignal
+                    signal: `[${extentSignal}[0], ${extentSignal}[1] + 1e-11]`,
                 },
                 maxbins: {
                     signal: maxbinsSignalName
@@ -445,7 +445,7 @@
                 binSignal,
                 dataSequence,
                 domainDataName,
-                maxbinsSignal,
+                signals: [maxbinsSignal],
                 fullScaleDataname: dataSequence.name
             };
         }
@@ -592,7 +592,7 @@
             const { globalScope, minBandWidth, orientation, parentScope, showAxes } = props;
             const binField = bin.fields[0];
             if (bin.native === false) {
-                addSignals(globalScope.scope, bin.maxbinsSignal);
+                addSignals(globalScope.scope, ...bin.signals);
                 addTransforms(globalScope.data, ...bin.transforms);
                 addData(globalScope.scope, bin.dataSequence);
             }
@@ -2637,9 +2637,9 @@
                                 titlePadding: axesTitlePadding[s],
                                 labelBaseline: labelBaseline[s]
                             };
-                            axesScopes['main'].forEach(a => addAxes(a.scope, createAxis(Object.assign(Object.assign({}, props), { scale: a.scale || scale.name, showTitle: a.title, showLabels: a.labels, showLines: a.lines }))));
+                            axesScopes['main'].forEach(a => addAxes(a.scope, createAxis(Object.assign(Object.assign({}, props), { scale: a.scale || scale, showTitle: a.title, showLabels: a.labels, showLines: a.lines }))));
                             if (axesScopes[s]) {
-                                axesScopes[s].forEach(a => addAxes(a.scope, createAxis(Object.assign(Object.assign({}, props), { scale: a.scale || scale.name, showTitle: a.title, showLabels: a.labels, showLines: a.lines }))));
+                                axesScopes[s].forEach(a => addAxes(a.scope, createAxis(Object.assign(Object.assign({}, props), { scale: a.scale || scale, showTitle: a.title, showLabels: a.labels, showLines: a.lines }))));
                             }
                             if (plotOffsetSignals[s] && axesOffsets[s]) {
                                 const plotOffsetSignal = plotOffsetSignals[s];
@@ -2653,7 +2653,7 @@
     }
     function createAxis(props) {
         const { column, horizontal, labelBaseline, lineColor, scale, showLabels, showTitle, showLines, specViewOptions, title, titlePadding } = props;
-        const axis = Object.assign(Object.assign(Object.assign(Object.assign({ scale, orient: horizontal ? 'bottom' : 'left', domain: showLines, ticks: showLines }, showLines && {
+        const axis = Object.assign(Object.assign(Object.assign(Object.assign({ scale: scale.name, orient: horizontal ? 'bottom' : 'left', domain: showLines, ticks: showLines }, showLines && {
             domainColor: lineColor,
             tickColor: lineColor,
             tickSize: specViewOptions.tickSize
@@ -2953,7 +2953,7 @@
         });
     }
     function addFacetAxesGroupMarks(props) {
-        const { colSeqName, colTitleScaleName, globalScope, facetScope, plotHeightOut, plotScope, plotWidthOut, rowSeqName, rowTitleScaleName } = props;
+        const { colSeqName, colTitleScale, globalScope, facetScope, plotScope, rowSeqName, rowTitleScale } = props;
         const { sizeSignals } = facetScope;
         const colSequence = createSequence(colSeqName, sizeSignals.colCount);
         const rowSequence = createSequence(rowSeqName, sizeSignals.rowCount);
@@ -2962,18 +2962,6 @@
         const row = facetRowHeaderFooter(rowSeqName, sizeSignals, index);
         addData(globalScope, colSequence, rowSequence);
         addMarks(globalScope, col.footer, row.header);
-        const colTitleScale = {
-            type: 'linear',
-            name: colTitleScaleName,
-            domain: [0, 1],
-            range: [0, { signal: plotWidthOut }]
-        };
-        const rowTitleScale = {
-            type: 'linear',
-            name: rowTitleScaleName,
-            domain: [0, 1],
-            range: [{ signal: plotHeightOut }, 0]
-        };
         addScales(globalScope, colTitleScale, rowTitleScale);
         const map = {
             main: [
@@ -2993,7 +2981,7 @@
                 },
                 {
                     scope: plotScope,
-                    scale: colTitleScaleName,
+                    scale: colTitleScale,
                     lines: false,
                     labels: false,
                     title: true
@@ -3008,7 +2996,7 @@
                 },
                 {
                     scope: plotScope,
-                    scale: rowTitleScaleName,
+                    scale: rowTitleScale,
                     lines: false,
                     labels: false,
                     title: true
@@ -3181,7 +3169,7 @@
                 let scale;
                 const titleSource = titles[dim];
                 if (bin.native === false) {
-                    addSignals(globalScope.scope, bin.maxbinsSignal);
+                    addSignals(globalScope.scope, ...bin.signals);
                     addTransforms(globalScope.data, ...bin.transforms);
                     addData(globalScope.scope, bin.dataSequence);
                     addTransforms(bin.dataSequence, {
@@ -3345,7 +3333,7 @@
             const { axisTextColor, cellTitles, globalScope, parentScope } = props;
             let ordinalBinData;
             if (bin.native === false) {
-                addSignals(globalScope.scope, bin.maxbinsSignal);
+                addSignals(globalScope.scope, ...bin.signals);
                 addTransforms(globalScope.data, ...bin.transforms);
                 addData(globalScope.scope, bin.dataSequence);
                 addTransforms(bin.dataSequence, {
@@ -3834,15 +3822,27 @@
                     return specResult;
                 }
                 if (allGlobalScales.length > 0) {
+                    const plotHeightOut = this.globalSignals.plotHeightOut.name;
+                    const plotWidthOut = this.globalSignals.plotWidthOut.name;
+                    const colTitleScale = {
+                        type: 'linear',
+                        name: 'scale_facet_col_title',
+                        domain: [0, 1],
+                        range: [0, { signal: plotWidthOut }]
+                    };
+                    const rowTitleScale = {
+                        type: 'linear',
+                        name: 'scale_facet_row_title',
+                        domain: [0, 1],
+                        range: [{ signal: plotHeightOut }, 0]
+                    };
                     let axesScopes = facetLayout ?
                         addFacetAxesGroupMarks({
                             globalScope: globalScope.scope,
                             plotScope: groupMark,
                             facetScope: firstScope,
-                            plotHeightOut: this.globalSignals.plotHeightOut.name,
-                            plotWidthOut: this.globalSignals.plotWidthOut.name,
-                            colTitleScaleName: 'scale_facet_col_title',
-                            rowTitleScaleName: 'scale_facet_row_title',
+                            colTitleScale,
+                            rowTitleScale,
                             colSeqName: 'data_FacetCellColTitles',
                             rowSeqName: 'data_FacetCellRowTitles'
                         })
