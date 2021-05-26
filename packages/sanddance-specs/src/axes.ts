@@ -17,7 +17,7 @@ import {
 
 export interface AxesScope {
     scope: Scope;
-    scale?: string;
+    scale?: Scale;
     title: boolean;
     labels: boolean;
     lines: boolean;
@@ -68,7 +68,7 @@ export function addGlobalAxes(props: Props) {
                         };
                         axesScopes['main'].forEach(a => addAxes(a.scope, createAxis({
                             ...props,
-                            scale: a.scale || scale.name,
+                            scale: a.scale || scale,
                             showTitle: a.title,
                             showLabels: a.labels,
                             showLines: a.lines
@@ -77,7 +77,7 @@ export function addGlobalAxes(props: Props) {
                         if (axesScopes[s]) {
                             axesScopes[s].forEach(a => addAxes(a.scope, createAxis({
                                 ...props,
-                                scale: a.scale || scale.name,
+                                scale: a.scale || scale,
                                 showTitle: a.title,
                                 showLabels: a.labels,
                                 showLines: a.lines
@@ -96,7 +96,7 @@ export function addGlobalAxes(props: Props) {
 }
 
 interface AxisProps {
-    scale?: string;
+    scale?: Scale;
     title: string;
     horizontal: boolean;
     column: Column;
@@ -112,7 +112,7 @@ interface AxisProps {
 function createAxis(props: AxisProps) {
     const { column, horizontal, labelBaseline, lineColor, scale, showLabels, showTitle, showLines, specViewOptions, title, titlePadding } = props;
     const axis: Axis = {
-        scale,
+        scale: scale.name,
         orient: horizontal ? 'bottom' : 'left',
         domain: showLines,
         ticks: showLines,

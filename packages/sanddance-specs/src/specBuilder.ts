@@ -38,6 +38,7 @@ import { textSignals } from './signals';
 import { SpecCapabilities, SpecContext } from './types';
 import {
     GroupMark,
+    LinearScale,
     Spec
 } from 'vega-typings';
 
@@ -175,15 +176,30 @@ export class SpecBuilder {
                 return specResult;
             }
             if (allGlobalScales.length > 0) {
+                const plotHeightOut = this.globalSignals.plotHeightOut.name;
+                const plotWidthOut = this.globalSignals.plotWidthOut.name;
+
+                const colTitleScale: LinearScale = {
+                    type: 'linear',
+                    name: 'scale_facet_col_title',
+                    domain: [0, 1],
+                    range: [0, { signal: plotWidthOut }]
+                };
+
+                const rowTitleScale: LinearScale = {
+                    type: 'linear',
+                    name: 'scale_facet_row_title',
+                    domain: [0, 1],
+                    range: [{ signal: plotHeightOut }, 0]
+                };
+
                 let axesScopes: AxesScopeMap = facetLayout ?
                     addFacetAxesGroupMarks({
                         globalScope: globalScope.scope,
                         plotScope: groupMark,
                         facetScope: firstScope,
-                        plotHeightOut: this.globalSignals.plotHeightOut.name,
-                        plotWidthOut: this.globalSignals.plotWidthOut.name,
-                        colTitleScaleName: 'scale_facet_col_title',
-                        rowTitleScaleName: 'scale_facet_row_title',
+                        colTitleScale,
+                        rowTitleScale,
                         colSeqName: 'data_FacetCellColTitles',
                         rowSeqName: 'data_FacetCellRowTitles'
                     })

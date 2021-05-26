@@ -5,7 +5,7 @@ import { AxesScopeMap } from './axes';
 import {
     Data,
     GroupMark,
-    LinearScale,
+    Scale,
     Scope
 } from 'vega-typings';
 import { FieldNames, SignalNames } from './constants';
@@ -132,16 +132,14 @@ interface Props {
     globalScope: Scope;
     plotScope: Scope;
     facetScope: InnerScope;
-    plotHeightOut: string;
-    plotWidthOut: string;
-    colTitleScaleName: string;
-    rowTitleScaleName: string;
+    colTitleScale: Scale;
+    rowTitleScale: Scale;
     colSeqName: string;
     rowSeqName: string;
 }
 
 export function addFacetAxesGroupMarks(props: Props) {
-    const { colSeqName, colTitleScaleName, globalScope, facetScope, plotHeightOut, plotScope, plotWidthOut, rowSeqName, rowTitleScaleName } = props;
+    const { colSeqName, colTitleScale, globalScope, facetScope, plotScope, rowSeqName, rowTitleScale } = props;
     const { sizeSignals } = facetScope;
 
     const colSequence = createSequence(colSeqName, sizeSignals.colCount);
@@ -153,20 +151,6 @@ export function addFacetAxesGroupMarks(props: Props) {
 
     addData(globalScope, colSequence, rowSequence);
     addMarks(globalScope, col.footer, row.header);
-
-    const colTitleScale: LinearScale = {
-        type: 'linear',
-        name: colTitleScaleName,
-        domain: [0, 1],
-        range: [0, { signal: plotWidthOut }]
-    };
-
-    const rowTitleScale: LinearScale = {
-        type: 'linear',
-        name: rowTitleScaleName,
-        domain: [0, 1],
-        range: [{ signal: plotHeightOut }, 0]
-    };
 
     addScales(globalScope, colTitleScale, rowTitleScale);
 
@@ -188,7 +172,7 @@ export function addFacetAxesGroupMarks(props: Props) {
             },
             {
                 scope: plotScope,
-                scale: colTitleScaleName,
+                scale: colTitleScale,
                 lines: false,
                 labels: false,
                 title: true
@@ -203,7 +187,7 @@ export function addFacetAxesGroupMarks(props: Props) {
             },
             {
                 scope: plotScope,
-                scale: rowTitleScaleName,
+                scale: rowTitleScale,
                 lines: false,
                 labels: false,
                 title: true
