@@ -59,7 +59,7 @@ export class Band extends Layout {
         const { globalScope, minBandWidth, orientation, parentScope, showAxes } = props;
         const binField = bin.fields[0];
         if (bin.native === false) {
-            addSignals(globalScope.scope, bin.maxbinsSignal);
+            addSignals(globalScope.scope, ...bin.signals);
             addTransforms(globalScope.data, ...bin.transforms);
             addData(globalScope.scope, bin.dataSequence);
         }
@@ -177,43 +177,32 @@ export class Band extends Layout {
         const { parentScope } = this.props;
         const binField = safeFieldName(bin.fields[0]);
 
-        let scale: BandScale;
-        if (horizontal) {
-            scale = {
-                type: 'band',
-                name: names.yScale,
-                range: [
-                    0,
-                    {
-                        signal: parentScope.sizeSignals.layoutHeight
-                    }
-                ],
-                padding: 0.1,
-                domain: {
-                    data: bin.domainDataName,
-                    field: binField,
-                    sort: true
-                },
-                reverse: true
-            };
-        } else {
-            scale = {
-                type: 'band',
-                name: names.xScale,
-                range: [
-                    0,
-                    {
-                        signal: parentScope.sizeSignals.layoutWidth
-                    }
-                ],
-                padding: 0.1,
-                domain: {
-                    data: bin.domainDataName,
-                    field: binField,
-                    sort: true
+        let scale: BandScale = {
+            type: 'band',
+            name: horizontal
+                ?
+                names.yScale
+                :
+                names.xScale,
+            range: [
+                0,
+                {
+                    signal: horizontal
+                        ?
+                        parentScope.sizeSignals.layoutHeight
+                        :
+                        parentScope.sizeSignals.layoutWidth
                 }
-            };
-        }
+            ],
+            paddingInner: 0.1,
+            paddingOuter: 0.05,
+            domain: {
+                data: bin.domainDataName,
+                field: binField,
+                sort: true
+            },
+            reverse: horizontal
+        };
         return scale;
     }
 }

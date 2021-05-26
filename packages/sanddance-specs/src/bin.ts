@@ -26,7 +26,7 @@ export interface AugmentBinnable extends BaseBinnable {
     native: false;
     transforms: Transforms[];
     binSignal: string;
-    maxbinsSignal: Signal;
+    signals: Signal[];
     dataSequence: Data;
 }
 
@@ -66,7 +66,7 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
             ],
             signal: binSignal,
             extent: {
-                signal: extentSignal
+                signal: `[${extentSignal}[0], ${extentSignal}[1] + 1e-11]`, //add a tiny bit to the upper extent to force the extra bin - https://github.com/vega/vega/issues/2899
             },
             maxbins: {
                 signal: maxbinsSignalName
@@ -122,7 +122,7 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
             binSignal,
             dataSequence,
             domainDataName,
-            maxbinsSignal,
+            signals: [maxbinsSignal],
             fullScaleDataname: dataSequence.name
         };
     } else {
