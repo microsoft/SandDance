@@ -59,7 +59,7 @@ export class Band extends Layout {
         const { globalScope, minBandWidth, orientation, parentScope, showAxes } = props;
         const binField = bin.fields[0];
         if (bin.native === false) {
-            addSignals(globalScope.scope, bin.maxbinsSignal);
+            addSignals(globalScope.scope, ...bin.signals);
             addTransforms(globalScope.data, ...bin.transforms);
             addData(globalScope.scope, bin.dataSequence);
         }

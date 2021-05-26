@@ -30,7 +30,7 @@ export class Slice extends Layout {
         const facetDataName = `data_${prefix}_facet`;
 
         if (bin.native === false) {
-            globalScope.scope.signals.push(bin.maxbinsSignal);
+            globalScope.scope.signals.push(...bin.signals);
             addTransforms(globalScope.data, ...bin.transforms);
             globalScope.scope.data.push(bin.dataSequence);
         }

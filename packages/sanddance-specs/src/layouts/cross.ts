@@ -128,7 +128,7 @@ export class Cross extends Layout {
             let scale: OrdinalScale;
             const titleSource: TitleSource = titles[dim];
             if (bin.native === false) {
-                addSignals(globalScope.scope, bin.maxbinsSignal);
+                addSignals(globalScope.scope, ...bin.signals);
                 addTransforms(globalScope.data, ...bin.transforms);
                 addData(globalScope.scope, bin.dataSequence);
                 addTransforms(bin.dataSequence,

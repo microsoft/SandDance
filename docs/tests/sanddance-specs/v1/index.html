@@ -15,6 +15,32 @@
         header {
             margin-bottom: 1em;
         }
+        main {
+            display: grid;
+            grid-template-columns: auto 300px;
+        }
+        .sidebar label {
+            display: block;
+            padding-top: 1em;
+        }
+        textarea {
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+        }
+        .sidebar {
+            display: grid;
+            grid-template-rows: auto auto;
+        }
+        .sidebar > div {
+            display: grid;
+            grid-template-rows: 0fr auto 40px;
+        }
+        #vega-spec {
+            border: 1px solid #ccc;
+            max-height: 600px;
+            overflow: scroll;            
+        }
     </style>
 </head>
 
@@ -40,7 +66,21 @@
         </label>
     </header>
 
-    <div id="vis"></div>
+    <main>
+        <div id="vis"></div>
+        <div class="sidebar">
+            <div>
+                <label>Insight json input</label>
+                <textarea id="insight-json"></textarea>
+                <button id="insight-update">update</button>
+            </div>
+            <div>
+                <label>Vega spec output</label>
+                <textarea id="vega-spec"></textarea>
+                <button id="vega-spec-copy">copy</button>
+            </div>
+        </div>
+    </main>
 
     <script src="js/sanddance-specs.js"></script>
 </body>
