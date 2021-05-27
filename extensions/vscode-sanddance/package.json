@@ -19,6 +19,9 @@
         "onCommand:sanddance.view"
     ],
     "main": "./dist/extension-bundle",
+    "capabilities": {
+        "virtualWorkspaces": true
+    },
     "contributes": {
         "commands": [
             {
