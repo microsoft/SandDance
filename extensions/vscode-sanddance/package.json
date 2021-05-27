@@ -83,7 +83,7 @@
     },
     "devDependencies": {
         "@types/node": "^8.10.25",
-        "@types/vscode": "^1.45.1",
+        "@types/vscode": "^1.56.0",
         "common-backend": "*",
         "common-frontend": "*",
         "vscode-test": "^1.3.0"
