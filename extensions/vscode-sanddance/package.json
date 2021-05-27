@@ -10,7 +10,7 @@
         "url": "https://github.com/Microsoft/Sanddance"
     },
     "engines": {
-        "vscode": "^1.45.1"
+        "vscode": "^1.53.0"
     },
     "categories": [
         "Other"
@@ -86,7 +86,7 @@
     },
     "devDependencies": {
         "@types/node": "^8.10.25",
-        "@types/vscode": "^1.56.0",
+        "@types/vscode": "^1.53.0",
         "common-backend": "*",
         "common-frontend": "*",
         "vscode-test": "^1.3.0"
