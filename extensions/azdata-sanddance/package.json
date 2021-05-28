@@ -22,6 +22,9 @@
     ],
     "main": "./dist/extension-bundle",
     "capabilities": {
+        "untrustedWorkspaces": {
+            "supported": true
+        },
         "virtualWorkspaces": true
     },
     "contributes": {
