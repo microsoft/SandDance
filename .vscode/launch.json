@@ -8,12 +8,10 @@
             "name": "Azure Data Studio",
             "type": "sqlopsExtensionHost",
             "request": "launch",
-            "runtimeExecutable": "${workspaceRoot}",
+            "runtimeExecutable": "azuredatastudio",
             "args": [
                 "--extensionDevelopmentPath=${workspaceRoot}/extensions/azdata-sanddance"
             ],
-            "stopOnEntry": false,
-            "sourceMaps": true,
             "outFiles": [
                 "${workspaceRoot}/extensions/azdata-sanddance/out/**/*.js"
             ],
