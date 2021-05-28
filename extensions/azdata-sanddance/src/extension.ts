@@ -52,7 +52,7 @@ export function activate(context: vscode.ExtensionContext) {
                 let rowsCount = args.rowCount;
 
                 // Create Json
-                let jsonArray = [];
+                let jsonArray: jsonType[] = [];
 
                 interface jsonType {
                     [key: string]: any
@@ -69,8 +69,9 @@ export function activate(context: vscode.ExtensionContext) {
                     jsonArray.push(jsonObject);
                 }
 
-                let json = JSON.stringify(jsonArray);
-                viewInSandDance(new Promise<string>(resolve => resolve(json)), document.uri, 'json', context);
+                viewInSandDance(() => {
+                    return new Promise<string>(resolve => resolve(JSON.stringify(jsonArray)));
+                }, document.uri, 'json', context);
             }
         }
     });
@@ -81,14 +82,14 @@ async function downloadAndViewInSandDance(commandContext: azdata.ObjectExplorerC
         let file = await getHdfsFileAsString(commandContext);
         if (file) {
             const { contents } = file;
-            viewInSandDance(new Promise<string>(resolve => resolve(contents)), file.fsUriPath, path.extname(file.fsUriPath).substring(1), context);
+            viewInSandDance(() => new Promise<string>(resolve => resolve(contents)), file.fsUriPath, path.extname(file.fsUriPath).substring(1), context);
         }
     } catch (error) {
         vscode.window.showErrorMessage(`Error viewing in sanddance: ${error.message ? error.message : error}`);
     }
 }
 
-function viewInSandDance(rawTextPromise: Thenable<string>, uriFsPath: string, type: string, context: vscode.ExtensionContext, uriTabName?: string | undefined): void {
+function viewInSandDance(rawTextPromise: () => Thenable<string>, uriFsPath: string, type: string, context: vscode.ExtensionContext, uriTabName?: string | undefined): void {
     const columnToShowIn = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
     //only allow one SandDance at a time
     if (current && current.uriFsPath !== uriFsPath) {
@@ -110,7 +111,7 @@ function viewInSandDance(rawTextPromise: Thenable<string>, uriFsPath: string, ty
         current.panel.webview.onDidReceiveMessage(message => {
             switch (message.command) {
                 case 'getFileContent': {
-                    rawTextPromise.then(rawText => {
+                    rawTextPromise().then(rawText => {
                         if (current && current.panel.visible) {
                             const dataFile = {
                                 type,
@@ -132,7 +133,7 @@ function viewInSandDance(rawTextPromise: Thenable<string>, uriFsPath: string, ty
 }
 
 function viewFileUriInSandDance(fileUri: vscode.Uri, context: vscode.ExtensionContext, uriTabName?: string | undefined): void {
-    const p = new Promise<string>(resolve => {
+    const p = () => new Promise<string>(resolve => {
         vscode.workspace.fs.readFile(fileUri).then(uint8array => {
             resolve(new TextDecoder().decode(uint8array));
         });
