@@ -2,10 +2,10 @@
 // Licensed under the MIT license.
 'use strict';
 
-import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { newPanel, WebViewWithUri } from 'common-backend';
+import { TextDecoder } from 'util';
 
 export function activate(context: vscode.ExtensionContext) {
     let current: WebViewWithUri | undefined = undefined;
@@ -38,13 +38,13 @@ export function activate(context: vscode.ExtensionContext) {
                     current.panel.webview.onDidReceiveMessage(message => {
                         switch (message.command) {
                             case 'getFileContent': {
-                                fs.readFile(uriFsPath, (err, data) => {
+                                vscode.workspace.fs.readFile(fileUri).then(uint8array => {
                                     if (current && current.panel.visible) {
 
                                         //TODO string type of dataFile
                                         const dataFile = {
                                             type: path.extname(uriFsPath).substring(1),
-                                            rawText: data.toString('utf8')
+                                            rawText: new TextDecoder().decode(uint8array)
                                         };
                                         const compactUI = context.globalState.get('compactUI');
                                         current.panel.webview.postMessage({ command: 'gotFileContent', dataFile, compactUI });

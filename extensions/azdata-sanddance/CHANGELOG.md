@@ -1,5 +1,10 @@
 # Change Log
 
+## [3.2.0]
+- Fix for last bin of quantitative band scale
+- Support virtual workspaces
+- Declare support for untrusted workspaces
+
 ## [3.1.1]
 - Fix for fuzzy text rendering 
 

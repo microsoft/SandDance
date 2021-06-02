@@ -2,7 +2,7 @@
     "name": "azdata-sanddance",
     "displayName": "SandDance for Azure Data Studio",
     "description": "Visually explore, understand, and present your data.",
-    "version": "3.1.1",
+    "version": "3.2.0",
     "icon": "sanddance-logo.png",
     "preview": true,
     "publisher": "msrvida",
@@ -11,7 +11,7 @@
         "url": "https://github.com/Microsoft/Sanddance"
     },
     "engines": {
-        "vscode": "^1.45.1",
+        "vscode": "^1.53.0",
         "azdata": "*"
     },
     "categories": [
@@ -21,6 +21,12 @@
         "*"
     ],
     "main": "./dist/extension-bundle",
+    "capabilities": {
+        "untrustedWorkspaces": {
+            "supported": true
+        },
+        "virtualWorkspaces": true
+    },
     "contributes": {
         "commands": [
             {
@@ -90,9 +96,9 @@
         "package": "vsce package"
     },
     "devDependencies": {
-        "@types/azdata": "^1.15.2",
+        "@types/azdata": "^1.29.0",
         "@types/node": "^8.10.25",
-        "@types/vscode": "^1.45.1",
+        "@types/vscode": "^1.53.0",
         "common-backend": "*",
         "common-frontend": "*",
         "vscode-test": "^1.3.0"

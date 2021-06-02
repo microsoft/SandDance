@@ -2,11 +2,10 @@
 // Licensed under the MIT license.
 'use strict';
 
-import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import * as azdata from 'azdata';
-import * as tempWrite from 'temp-write';
+import { TextDecoder } from 'util';
 import { newPanel, WebViewWithUri } from 'common-backend';
 import { MssqlExtensionApi, IFileNode } from './mssqlapis';
 
@@ -20,7 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
                 return;
             }
             if (commandContext instanceof vscode.Uri) {
-                viewInSandDance(<vscode.Uri>commandContext, context);
+                viewFileUriInSandDance(<vscode.Uri>commandContext, context);
             } else if (commandContext.nodeInfo) {
                 // This is a call from the object explorer right-click.
                 downloadAndViewInSandDance(commandContext, context);
@@ -53,7 +52,7 @@ export function activate(context: vscode.ExtensionContext) {
                 let rowsCount = args.rowCount;
 
                 // Create Json
-                let jsonArray = [];
+                let jsonArray: jsonType[] = [];
 
                 interface jsonType {
                     [key: string]: any
@@ -70,9 +69,9 @@ export function activate(context: vscode.ExtensionContext) {
                     jsonArray.push(jsonObject);
                 }
 
-                let json = JSON.stringify(jsonArray);
-                let fileuri = saveTemp(json);
-                queryViewInSandDance(fileuri, context, document);
+                viewInSandDance(() => {
+                    return new Promise<string>(resolve => resolve(JSON.stringify(jsonArray)));
+                }, document.uri, 'json', context);
             }
         }
     });
@@ -80,18 +79,18 @@ export function activate(context: vscode.ExtensionContext) {
 
 async function downloadAndViewInSandDance(commandContext: azdata.ObjectExplorerContext, context: vscode.ExtensionContext): Promise<void> {
     try {
-        let fileUri = await saveHdfsFileToTempLocation(commandContext);
-        if (fileUri) {
-            viewInSandDance(fileUri, context);
+        let file = await getHdfsFileAsString(commandContext);
+        if (file) {
+            const { contents } = file;
+            viewInSandDance(() => new Promise<string>(resolve => resolve(contents)), file.fsUriPath, path.extname(file.fsUriPath).substring(1), context);
         }
     } catch (error) {
         vscode.window.showErrorMessage(`Error viewing in sanddance: ${error.message ? error.message : error}`);
     }
 }
 
-function viewInSandDance(fileUri: vscode.Uri, context: vscode.ExtensionContext, uriTabName?: string | undefined): void {
+function viewInSandDance(rawTextPromise: () => Thenable<string>, uriFsPath: string, type: string, context: vscode.ExtensionContext, uriTabName?: string | undefined): void {
     const columnToShowIn = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
-    const uriFsPath = fileUri.fsPath;
     //only allow one SandDance at a time
     if (current && current.uriFsPath !== uriFsPath) {
         current.panel.dispose();
@@ -112,12 +111,11 @@ function viewInSandDance(fileUri: vscode.Uri, context: vscode.ExtensionContext, 
         current.panel.webview.onDidReceiveMessage(message => {
             switch (message.command) {
                 case 'getFileContent': {
-                    fs.readFile(uriFsPath, (err, data) => {
+                    rawTextPromise().then(rawText => {
                         if (current && current.panel.visible) {
-                            //TODO string type of dataFile
                             const dataFile = {
-                                type: path.extname(uriFsPath).substring(1),
-                                rawText: data.toString('utf8')
+                                type,
+                                rawText
                             };
                             const compactUI = context.globalState.get('compactUI');
                             current.panel.webview.postMessage({ command: 'gotFileContent', dataFile, compactUI });
@@ -134,37 +132,31 @@ function viewInSandDance(fileUri: vscode.Uri, context: vscode.ExtensionContext, 
     }
 }
 
-// View in SandDance for SQL query editor
-function queryViewInSandDance(fileUri: vscode.Uri, context: vscode.ExtensionContext, editorUri: azdata.queryeditor.QueryDocument): void {
-    const uriTabName = editorUri.uri;
-    viewInSandDance(fileUri, context, uriTabName);
+function viewFileUriInSandDance(fileUri: vscode.Uri, context: vscode.ExtensionContext, uriTabName?: string | undefined): void {
+    const p = () => new Promise<string>(resolve => {
+        vscode.workspace.fs.readFile(fileUri).then(uint8array => {
+            resolve(new TextDecoder().decode(uint8array));
+        });
+    });
+    viewInSandDance(p, fileUri.fsPath, path.extname(fileUri.fsPath).substring(1), context, uriTabName);
 }
 
-
-export async function saveHdfsFileToTempLocation(commandContext: azdata.ObjectExplorerContext): Promise<vscode.Uri | undefined> {
+export async function getHdfsFileAsString(commandContext: azdata.ObjectExplorerContext): Promise<{ contents: string, fsUriPath: string } | undefined> {
     let extension = vscode.extensions.getExtension('Microsoft.mssql');
-    if (!extension) {
-        return undefined;
+    if (extension) {
+        let extensionApi: MssqlExtensionApi = extension.exports;
+        let browser = extensionApi.getMssqlObjectExplorerBrowser();
+        let node: IFileNode = await browser.getNode<IFileNode>(commandContext);
+        let contents = await node.getFileContentsAsString();
+        if (contents !== undefined) {
+            return {
+                contents,
+                fsUriPath: node.getNodeInfo().label
+            };
+        }
     }
-    let extensionApi: MssqlExtensionApi = extension.exports;
-    let browser = extensionApi.getMssqlObjectExplorerBrowser();
-    let node: IFileNode = await browser.getNode<IFileNode>(commandContext);
-    let contents = await node.getFileContentsAsString();
-    if (contents !== undefined) {
-        let localFile = tempWrite.sync(contents, node.getNodeInfo().label);
-        return vscode.Uri.file(localFile);
-    }   // else ignore for now
-    return undefined;
 }
-
-
-function saveTemp(data: string): vscode.Uri {
-    let localFile = tempWrite.sync(data, 'file.json');
-    return vscode.Uri.file(localFile);
-}
-
 
 export function deactivate() {
     vscode.commands.executeCommand('setContext', 'showVisualizer', false);
 }
-
