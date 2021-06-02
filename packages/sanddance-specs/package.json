@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "docs": "typedoc src/index.ts -out ../../docs/docs/sanddance-specs/v1 --theme ../../typedoc/theme --excludePrivate",
+    "docs": "typedoc src/index.ts -out ../../docs/docs/sanddance-specs/v1 --theme ../../typedoc/theme --excludePrivate --gitRevision master",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "build:sanddance-core": "npm run build-typescript",
