@@ -241,6 +241,7 @@ export class Visual implements IVisual {
         }
 
         this.app.setChromeless(!this.settings.sandDanceMainSettings.showchrome);
+        this.app.changeTheme(this.settings.sandDanceMainSettings.darktheme);
 
         const wasSignalChange = this.persistAction.signalChange;
         this.persistAction = {};
