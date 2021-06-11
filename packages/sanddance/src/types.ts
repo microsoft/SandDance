@@ -148,9 +148,14 @@ export interface ViewerOptions extends SpecViewOptions {
     /**
      * Optional handler when axis is clicked.
      */
-    onAxisClick?: (e: TouchEvent | MouseEvent | PointerEvent, serch: SearchExpressionGroup) => void;
+    onAxisClick?: (e: TouchEvent | MouseEvent | PointerEvent, search: SearchExpressionGroup) => void;
 
     /**
+     * Optional handler when cube is clicked.
+     */
+     onCubeClick?: (e: TouchEvent | MouseEvent | PointerEvent, cube: VegaDeckGl.types.Cube) => void;
+
+     /**
      * Optional handler when legend header is clicked.
      */
     onLegendHeaderClick?: (e: TouchEvent | MouseEvent | PointerEvent) => void;

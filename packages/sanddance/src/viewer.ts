@@ -566,6 +566,7 @@ export class Viewer {
     }
 
     private onCubeClick(e: MouseEvent | PointerEvent | TouchEvent, cube: VegaDeckGl.types.Cube) {
+        this.options.onCubeClick && this.options.onCubeClick(e, cube);
         const hasSelectedData = this._dataScope.hasSelectedData();
         if (hasSelectedData && this._dataScope.selection.included.length > 1) {
             //if active is within selection, keep the selection and activate the one.
