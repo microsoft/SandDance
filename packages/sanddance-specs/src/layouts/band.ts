@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { binnable, Binnable } from '../bin';
+import { AugmentBinnable, binnable, Binnable } from '../bin';
 import { safeFieldName } from '../expr';
 import {
     DiscreteColumn,
@@ -18,7 +18,7 @@ import {
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { modifySignal } from '../signals';
-import { BandScale } from 'vega-typings';
+import { BandScale, LinearScale } from 'vega-typings';
 
 export interface BandProps extends LayoutProps {
     excludeEncodingRuleMap?: boolean;
@@ -177,43 +177,86 @@ export class Band extends Layout {
         const { parentScope } = this.props;
         const binField = safeFieldName(bin.fields[0]);
 
-        let scale: BandScale;
-        if (horizontal) {
-            scale = {
-                type: 'band',
-                name: names.yScale,
-                range: [
-                    0,
-                    {
-                        signal: parentScope.sizeSignals.layoutHeight
-                    }
-                ],
-                padding: 0.1,
-                domain: {
-                    data: bin.domainDataName,
-                    field: binField,
-                    sort: true
-                },
-                reverse: true
-            };
+        if (bin.discreteColumn.column.quantitative) {
+            const { binSignal } = <AugmentBinnable>bin;
+            
+            let scale: LinearScale;
+            if (horizontal) {
+                scale = {
+                    type: 'linear',
+                    name: names.yScale,
+                    range: [
+                        0,
+                        {
+                            signal: parentScope.sizeSignals.layoutHeight
+                        }
+                    ],
+                    domain: {
+                        signal: `[${binSignal}.start, ${binSignal}.stop]`
+                    },
+                    bins: {
+                        signal: binSignal
+                    },
+                    reverse: true
+                };
+            } else {
+                scale = {
+                    type: 'linear',
+                    name: names.xScale,
+                    range: [
+                        0,
+                        {
+                            signal: parentScope.sizeSignals.layoutWidth
+                        }
+                    ],
+                    domain: {
+                        signal: `[${binSignal}.start, ${binSignal}.stop]`
+                    },
+                    bins: {
+                        signal: binSignal
+                    },
+                };
+            }
+            return scale;
         } else {
-            scale = {
-                type: 'band',
-                name: names.xScale,
-                range: [
-                    0,
-                    {
-                        signal: parentScope.sizeSignals.layoutWidth
+            let scale: BandScale;
+            if (horizontal) {
+                scale = {
+                    type: 'band',
+                    name: names.yScale,
+                    range: [
+                        0,
+                        {
+                            signal: parentScope.sizeSignals.layoutHeight
+                        }
+                    ],
+                    padding: 0.1,
+                    domain: {
+                        data: bin.domainDataName,
+                        field: binField,
+                        sort: true
+                    },
+                    reverse: true
+                };
+            } else {
+                scale = {
+                    type: 'band',
+                    name: names.xScale,
+                    range: [
+                        0,
+                        {
+                            signal: parentScope.sizeSignals.layoutWidth
+                        }
+                    ],
+                    padding: 0.1,
+                    domain: {
+                        data: bin.domainDataName,
+                        field: binField,
+                        sort: true
                     }
-                ],
-                padding: 0.1,
-                domain: {
-                    data: bin.domainDataName,
-                    field: binField,
-                    sort: true
-                }
-            };
+                };
+            }
+            return scale;
         }
-        return scale;
     }
 }
