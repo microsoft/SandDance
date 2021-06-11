@@ -114,7 +114,7 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
                 }
             ]
         };
-        return {
+        const augmentBinnable: AugmentBinnable = {
             discreteColumn,
             native: false,
             transforms: [extentTransform, binTransform],
@@ -125,13 +125,15 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
             signals: [maxbinsSignal],
             fullScaleDataname: dataSequence.name
         };
+        return augmentBinnable;
     } else {
-        return {
+        const nativeBinnable: NativeBinnable = {
             discreteColumn,
             native: true,
             fields: [column.name],
             domainDataName,
             fullScaleDataname: domainDataName
         };
+        return nativeBinnable;
     }
 }
