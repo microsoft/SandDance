@@ -41,6 +41,7 @@ export class SandDanceConfig {
 
 export class SandDanceMainSettings {
   showchrome: boolean = true;
+  darktheme: boolean = false;
 }
 
 export interface IVisualSettings {

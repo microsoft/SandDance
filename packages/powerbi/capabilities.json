@@ -26,6 +26,12 @@
                     "type": {
                         "bool": true
                     }
+                },
+                "darktheme": {
+                    "displayName": "Dark theme",
+                    "type": {
+                        "bool": true
+                    }
                 }
             }
         },
