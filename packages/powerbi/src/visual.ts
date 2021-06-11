@@ -92,6 +92,13 @@ export class Visual implements IVisual {
                 mounted: (app: App) => {
                     this.app = app;
                 },
+                onContextMenu: (e: MouseEvent | PointerEvent, selectionId?: powerbiVisualsApi.extensibility.ISelectionId) => {
+                    const position: powerbiVisualsApi.extensibility.IPoint = {
+                        x: e.clientX,
+                        y: e.clientY
+                    };
+                    this.selectionManager.showContextMenu(selectionId || {}, position);
+                },
                 onViewChange: viewChangeOptions => {
                     // console.log('onViewChange', this.renderingOptions);
                     if (this.renderingOptions) {

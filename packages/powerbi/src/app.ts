@@ -21,6 +21,7 @@ import {
 import { Logo } from '@msrvida/sanddance-explorer/dist/es6/controls/logo';
 import { language } from './language';
 import { version } from './version';
+import powerbiVisualsApi from 'powerbi-visuals-api';
 
 // tslint:disable-next-line
 use(fluentUIComponents, React as any, ReactDOM as any, vega, deck, layers, luma);
@@ -42,7 +43,10 @@ export interface Props {
     onDataFilter: (filter: SandDance.searchExpression.Search, filteredData: object[]) => void;
     onSelectionChanged: (search: SandDance.searchExpression.Search, activeIndex: number, selectedData: object[]) => void;
     onSnapshotsChanged: (snapshots: SandDance.types.Snapshot[]) => void;
+    onContextMenu: (e: MouseEvent | PointerEvent, selectionId?: powerbiVisualsApi.extensibility.ISelectionId) => void;
 }
+
+const RIGHT_MOUSE_BUTTON = 2;
 
 export interface State {
     loaded: boolean;
@@ -82,6 +86,17 @@ export class App extends React.Component<Props, State> {
                 axisLine: color,
                 axisText: color,
                 hoveredCube: color
+            },
+            onCubeClick: (e, cube) => {
+                const { button } = e as unknown as MSPointerEvent;
+                if (button === RIGHT_MOUSE_BUTTON) {
+                    const row = this.explorer.state.dataContent.data[cube.ordinal];
+                    const selectionId = row[SandDance.constants.FieldNames.PowerBISelectionId];
+                    this.props.onContextMenu(<MouseEvent>e, selectionId);
+                    e.stopPropagation();
+                    e.preventDefault();
+                    return;
+                }
             },
             onDataFilter: this.props.onDataFilter,
             onSelectionChanged: this.props.onSelectionChanged,
@@ -162,6 +177,10 @@ export class App extends React.Component<Props, State> {
             onSnapshotsChanged: this.props.onSnapshotsChanged,
             onTooltipExclusionsChanged: tooltipExclusions => this.props.onViewChange({ tooltipExclusions }),
             onView: () => {
+                this.explorer.viewer.presenter.getElement(SandDance.VegaDeckGl.PresenterElement.gl).oncontextmenu = (e) => {
+                    this.props.onContextMenu(e);
+                    return false;
+                };
                 this.props.onViewChange({ signalChange: this.signalChanged });
                 this.signalChanged = false;
             },
