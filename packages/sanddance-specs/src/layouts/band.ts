@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { binnable, Binnable } from '../bin';
+import { AugmentBinnable, binnable, Binnable } from '../bin';
 import { safeFieldName } from '../expr';
 import {
     DiscreteColumn,
@@ -18,7 +18,7 @@ import {
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { modifySignal } from '../signals';
-import { BandScale } from 'vega-typings';
+import { BandScale, LinearScale, Scale } from 'vega-typings';
 
 export interface BandProps extends LayoutProps {
     excludeEncodingRuleMap?: boolean;
@@ -86,7 +86,7 @@ export class Band extends Layout {
             }
         );
 
-        const scale = this.getScale(bin, horizontal);
+        const scales = this.getScales(bin, horizontal);
 
         let encodingRuleMap: { [key: string]: EncodingRule[] };
         if (!props.excludeEncodingRuleMap) {
@@ -137,8 +137,8 @@ export class Band extends Layout {
             globalScales: {
                 showAxes,
                 scales: {
-                    x: horizontal ? undefined : scale,
-                    y: horizontal ? scale : undefined
+                    x: horizontal ? undefined : scales,
+                    y: horizontal ? scales : undefined
                 }
             },
             encodingRuleMap
@@ -172,14 +172,64 @@ export class Band extends Layout {
         };
     }
 
-    private getScale(bin: Binnable, horizontal: boolean) {
+    private getScales(bin: Binnable, horizontal: boolean) {
         const { names } = this;
         const { parentScope } = this.props;
         const binField = safeFieldName(bin.fields[0]);
 
-        let scale: BandScale;
+        const scales: Scale[] = [];
+
+        function axisScaleName(scaleName: string) {
+            return `${scaleName}_axis`;
+        }
+
+        if (bin.discreteColumn.column.quantitative) {
+            const { binSignal } = <AugmentBinnable>bin;
+
+            let linearScale: LinearScale;
+            if (horizontal) {
+                linearScale = {
+                    type: 'linear',
+                    name: axisScaleName(names.yScale),
+                    range: [
+                        0,
+                        {
+                            signal: parentScope.sizeSignals.layoutHeight
+                        }
+                    ],
+                    domain: {
+                        signal: `[${binSignal}.start, ${binSignal}.stop]`
+                    },
+                    bins: {
+                        signal: binSignal
+                    },
+                    reverse: true,
+                    zero: false
+                };
+            } else {
+                linearScale = {
+                    type: 'linear',
+                    name: axisScaleName(names.xScale),
+                    range: [
+                        0,
+                        {
+                            signal: parentScope.sizeSignals.layoutWidth
+                        }
+                    ],
+                    domain: {
+                        signal: `[${binSignal}.start, ${binSignal}.stop]`
+                    },
+                    bins: {
+                        signal: binSignal
+                    },
+                    zero: false
+                };
+            }
+            scales.push(linearScale);
+        }
+        let bandScale: BandScale;
         if (horizontal) {
-            scale = {
+            bandScale = {
                 type: 'band',
                 name: names.yScale,
                 range: [
@@ -197,7 +247,7 @@ export class Band extends Layout {
                 reverse: true
             };
         } else {
-            scale = {
+            bandScale = {
                 type: 'band',
                 name: names.xScale,
                 range: [
@@ -214,6 +264,7 @@ export class Band extends Layout {
                 }
             };
         }
-        return scale;
+        scales.push(bandScale);
+        return scales;
     }
 }

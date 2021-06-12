@@ -34,9 +34,9 @@ export interface SizeSignals {
 export interface GlobalScales {
     showAxes: boolean;
     scales: {
-        x?: Scale;
-        y?: Scale;
-        z?: Scale;
+        x?: Scale[];
+        y?: Scale[];
+        z?: Scale[];
     }
 }
 
