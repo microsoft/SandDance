@@ -179,54 +179,54 @@ export class Band extends Layout {
 
         const scales: Scale[] = [];
 
-        function axisScaleName(scaleName: string) {
-            return `${scaleName}_axis`;
-        }
+        // function axisScaleName(scaleName: string) {
+        //     return `${scaleName}_axis`;
+        // }
 
-        if (bin.discreteColumn.column.quantitative) {
-            const { binSignal } = <AugmentBinnable>bin;
+        // if (bin.discreteColumn.column.quantitative) {
+        //     const { binSignal } = <AugmentBinnable>bin;
 
-            let linearScale: LinearScale;
-            if (horizontal) {
-                linearScale = {
-                    type: 'linear',
-                    name: axisScaleName(names.yScale),
-                    range: [
-                        0,
-                        {
-                            signal: parentScope.sizeSignals.layoutHeight
-                        }
-                    ],
-                    domain: {
-                        signal: `[${binSignal}.start, ${binSignal}.stop]`
-                    },
-                    bins: {
-                        signal: binSignal
-                    },
-                    reverse: true,
-                    zero: false
-                };
-            } else {
-                linearScale = {
-                    type: 'linear',
-                    name: axisScaleName(names.xScale),
-                    range: [
-                        0,
-                        {
-                            signal: parentScope.sizeSignals.layoutWidth
-                        }
-                    ],
-                    domain: {
-                        signal: `[${binSignal}.start, ${binSignal}.stop]`
-                    },
-                    bins: {
-                        signal: binSignal
-                    },
-                    zero: false
-                };
-            }
-            scales.push(linearScale);
-        }
+        //     let linearScale: LinearScale;
+        //     if (horizontal) {
+        //         linearScale = {
+        //             type: 'linear',
+        //             name: axisScaleName(names.yScale),
+        //             range: [
+        //                 0,
+        //                 {
+        //                     signal: parentScope.sizeSignals.layoutHeight
+        //                 }
+        //             ],
+        //             domain: {
+        //                 signal: `[${binSignal}.start, ${binSignal}.stop]`
+        //             },
+        //             bins: {
+        //                 signal: binSignal
+        //             },
+        //             reverse: true,
+        //             zero: false
+        //         };
+        //     } else {
+        //         linearScale = {
+        //             type: 'linear',
+        //             name: axisScaleName(names.xScale),
+        //             range: [
+        //                 0,
+        //                 {
+        //                     signal: parentScope.sizeSignals.layoutWidth
+        //                 }
+        //             ],
+        //             domain: {
+        //                 signal: `[${binSignal}.start, ${binSignal}.stop]`
+        //             },
+        //             bins: {
+        //                 signal: binSignal
+        //             },
+        //             zero: false
+        //         };
+        //     }
+        //     scales.push(linearScale);
+        // }
         let bandScale: BandScale;
         if (horizontal) {
             bandScale = {
