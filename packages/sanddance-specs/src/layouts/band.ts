@@ -18,7 +18,7 @@ import {
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { modifySignal } from '../signals';
-import { BandScale, LinearScale } from 'vega-typings';
+import { BandScale, LinearScale, Scale } from 'vega-typings';
 
 export interface BandProps extends LayoutProps {
     excludeEncodingRuleMap?: boolean;
@@ -86,7 +86,7 @@ export class Band extends Layout {
             }
         );
 
-        const scale = this.getScale(bin, horizontal);
+        const scales = this.getScales(bin, horizontal);
 
         let encodingRuleMap: { [key: string]: EncodingRule[] };
         if (!props.excludeEncodingRuleMap) {
@@ -137,8 +137,8 @@ export class Band extends Layout {
             globalScales: {
                 showAxes,
                 scales: {
-                    x: horizontal ? undefined : scale,
-                    y: horizontal ? scale : undefined
+                    x: horizontal ? undefined : scales,
+                    y: horizontal ? scales : undefined
                 }
             },
             encodingRuleMap
@@ -172,19 +172,25 @@ export class Band extends Layout {
         };
     }
 
-    private getScale(bin: Binnable, horizontal: boolean) {
+    private getScales(bin: Binnable, horizontal: boolean) {
         const { names } = this;
         const { parentScope } = this.props;
         const binField = safeFieldName(bin.fields[0]);
 
+        const scales: Scale[] = [];
+
+        function axisScaleName(scaleName: string) {
+            return `${scaleName}_axis`;
+        }
+
         if (bin.discreteColumn.column.quantitative) {
             const { binSignal } = <AugmentBinnable>bin;
-            
-            let scale: LinearScale;
+
+            let linearScale: LinearScale;
             if (horizontal) {
-                scale = {
+                linearScale = {
                     type: 'linear',
-                    name: names.yScale,
+                    name: axisScaleName(names.yScale),
                     range: [
                         0,
                         {
@@ -197,12 +203,13 @@ export class Band extends Layout {
                     bins: {
                         signal: binSignal
                     },
-                    reverse: true
+                    reverse: true,
+                    zero: false
                 };
             } else {
-                scale = {
+                linearScale = {
                     type: 'linear',
-                    name: names.xScale,
+                    name: axisScaleName(names.xScale),
                     range: [
                         0,
                         {
@@ -215,48 +222,49 @@ export class Band extends Layout {
                     bins: {
                         signal: binSignal
                     },
+                    zero: false
                 };
             }
-            return scale;
-        } else {
-            let scale: BandScale;
-            if (horizontal) {
-                scale = {
-                    type: 'band',
-                    name: names.yScale,
-                    range: [
-                        0,
-                        {
-                            signal: parentScope.sizeSignals.layoutHeight
-                        }
-                    ],
-                    padding: 0.1,
-                    domain: {
-                        data: bin.domainDataName,
-                        field: binField,
-                        sort: true
-                    },
-                    reverse: true
-                };
-            } else {
-                scale = {
-                    type: 'band',
-                    name: names.xScale,
-                    range: [
-                        0,
-                        {
-                            signal: parentScope.sizeSignals.layoutWidth
-                        }
-                    ],
-                    padding: 0.1,
-                    domain: {
-                        data: bin.domainDataName,
-                        field: binField,
-                        sort: true
-                    }
-                };
-            }
-            return scale;
+            scales.push(linearScale);
         }
+        let bandScale: BandScale;
+        if (horizontal) {
+            bandScale = {
+                type: 'band',
+                name: names.yScale,
+                range: [
+                    0,
+                    {
+                        signal: parentScope.sizeSignals.layoutHeight
+                    }
+                ],
+                padding: 0.1,
+                domain: {
+                    data: bin.domainDataName,
+                    field: binField,
+                    sort: true
+                },
+                reverse: true
+            };
+        } else {
+            bandScale = {
+                type: 'band',
+                name: names.xScale,
+                range: [
+                    0,
+                    {
+                        signal: parentScope.sizeSignals.layoutWidth
+                    }
+                ],
+                padding: 0.1,
+                domain: {
+                    data: bin.domainDataName,
+                    field: binField,
+                    sort: true
+                }
+            };
+        }
+        scales.push(bandScale);
+        return scales;
     }
 }

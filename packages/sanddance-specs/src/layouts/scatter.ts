@@ -217,7 +217,7 @@ export class Scatter extends Layout {
                     reverse
                 );
             }
-            globalScales.scales[xyz] = scale;
+            globalScales.scales[xyz] = [scale];
         });
 
         const mark: RectMark = {

@@ -47,9 +47,9 @@ export function addGlobalAxes(props: Props) {
     allGlobalScales.forEach(globalScales => {
         const { scales } = globalScales;
         for (let s in scales) {
-            let scale: Scale = scales[s];
-            if (scale) {
-                addScales(scope, scale);
+            let axisScales: Scale[] = scales[s];
+            if (axisScales) {
+                addScales(scope, ...axisScales);
                 if (globalScales.showAxes && axisScales && s !== 'z') {
                     let axisScale: AxisScale = axisScales[s];
                     if (axisScale) {
@@ -68,7 +68,7 @@ export function addGlobalAxes(props: Props) {
                         };
                         axesScopes['main'].forEach(a => addAxes(a.scope, createAxis({
                             ...props,
-                            scale: a.scale || scale,
+                            scale: a.scale || axisScales[0],
                             showTitle: a.title,
                             showLabels: a.labels,
                             showLines: a.lines
@@ -77,7 +77,7 @@ export function addGlobalAxes(props: Props) {
                         if (axesScopes[s]) {
                             axesScopes[s].forEach(a => addAxes(a.scope, createAxis({
                                 ...props,
-                                scale: a.scale || scale,
+                                scale: a.scale || axisScales[0],
                                 showTitle: a.title,
                                 showLabels: a.labels,
                                 showLines: a.lines

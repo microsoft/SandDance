@@ -165,8 +165,8 @@ export class AggregateContainer extends Layout {
             globalScales: {
                 showAxes,
                 scales: {
-                    x: horizontal ? scale : undefined,
-                    y: horizontal ? undefined : scale
+                    x: horizontal ? [scale] : undefined,
+                    y: horizontal ? undefined : [scale]
                 }
             },
             encodingRuleMap: horizontal ?

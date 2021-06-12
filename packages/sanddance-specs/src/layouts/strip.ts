@@ -181,8 +181,8 @@ export class Strip extends Layout {
             globalScales: {
                 showAxes: true,
                 scales: {
-                    x: horizontal ? percentageScale : undefined,
-                    y: horizontal ? undefined : percentageScale
+                    x: horizontal ? [percentageScale] : undefined,
+                    y: horizontal ? undefined : [percentageScale]
                 }
             },
             offsets,
