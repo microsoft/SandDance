@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { AxisScales } from '../interfaces';
-import { Scatter, ScatterProps } from '../layouts/scatter';
+import { ScatterProps } from '../layouts/scatter';
 import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
@@ -25,7 +25,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         axisScales,
         layouts: [
             {
-                layoutClass: Scatter,
+                layoutType: 'Scatter',
                 props: scatterProps
             }
         ],

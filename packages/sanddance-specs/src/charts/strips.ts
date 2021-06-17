@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { AggregateContainer, AggregateContainerProps } from '../layouts/aggregateContainer';
+import { AggregateContainerProps } from '../layouts/aggregateContainer';
 import { AxisScales } from '../interfaces';
 import { LayoutPair } from '../layouts/layout';
 import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
-import { Strip, StripProps } from '../layouts/strip';
+import { StripProps } from '../layouts/strip';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns } = specContext;
@@ -37,12 +37,12 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             showAxes: false
         };
         layouts.push({
-            layoutClass: AggregateContainer,
+            layoutType: 'AggregateContainer',
             props
         });
     }
     layouts.push({
-        layoutClass: Strip,
+        layoutType: 'Strip',
         props: stripProps
     });
     return {

@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { AxisScales } from '../interfaces';
-import { Band, BandProps } from '../layouts/band';
+import { BandProps } from '../layouts/band';
 import { defaultBins, maxbins, minBarBandWidth } from '../defaults';
 import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
-import { Stack, StackProps } from '../layouts/stack';
+import { StackProps } from '../layouts/stack';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns } = specContext;
@@ -48,15 +48,15 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         customZScale: true,
         layouts: [
             {
-                layoutClass: Band,
+                layoutType: 'Band',
                 props: vBandProps
             },
             {
-                layoutClass: Band,
+                layoutType: 'Band',
                 props: hBandProps
             },
             {
-                layoutClass: Stack,
+                layoutType: 'Stack',
                 props: stackProps
             }
         ],

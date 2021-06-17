@@ -3,12 +3,12 @@
 import { SignalNames } from '../constants';
 import { defaultBins, maxbins, minBarBandWidth } from '../defaults';
 import { AxisScale, AxisScales } from '../interfaces';
-import { AggregateContainer, AggregateContainerProps } from '../layouts/aggregateContainer';
-import { Band, BandProps } from '../layouts/band';
+import { AggregateContainerProps } from '../layouts/aggregateContainer';
+import { BandProps } from '../layouts/band';
 import { LayoutPair } from '../layouts/layout';
-import { Square, SquareProps } from '../layouts/square';
-import { Strip, StripProps } from '../layouts/strip';
-import { Treemap, TreemapProps } from '../layouts/treemap';
+import { SquareProps } from '../layouts/square';
+import { StripProps } from '../layouts/strip';
+import { TreemapProps } from '../layouts/treemap';
 import { allowNoneForSize } from '../size';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
@@ -35,7 +35,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         z: { title: specColumns.z && specColumns.z.name }
     };
     const layouts: LayoutPair[] = [{
-        layoutClass: Band,
+        layoutType: 'Band',
         props: bandProps
     }];
     if (insight.totalStyle === 'sum-strip-percent') {
@@ -50,7 +50,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             z: specColumns.z
         };
         layouts.push({
-            layoutClass: Strip,
+            layoutType: 'Strip',
             props: stripProps
         });
     } else {
@@ -63,7 +63,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             showAxes: true
         };
         layouts.push({
-            layoutClass: AggregateContainer,
+            layoutType: 'AggregateContainer',
             props: aggProps
         });
         switch (insight.totalStyle) {
@@ -77,7 +77,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     z: specColumns.z
                 };
                 layouts.push({
-                    layoutClass: Treemap,
+                    layoutType: 'Treemap',
                     props: treemapProps
                 });
                 break;
@@ -93,7 +93,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     z: specColumns.z
                 };
                 layouts.push({
-                    layoutClass: Strip,
+                    layoutType: 'Strip',
                     props: stripProps
                 });
                 break;
@@ -109,7 +109,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     z: specColumns.z
                 };
                 layouts.push({
-                    layoutClass: Strip,
+                    layoutType: 'Strip',
                     props: stripProps
                 });
                 break;
@@ -125,7 +125,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal
                 };
                 layouts.push({
-                    layoutClass: Square,
+                    layoutType: 'Square',
                     props: squareProps
                 });
                 break;
