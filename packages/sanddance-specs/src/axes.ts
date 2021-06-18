@@ -6,7 +6,7 @@ import { GlobalScope } from './globalScope';
 import { AxisScale, AxisScales, GlobalScales } from './interfaces';
 import { addAxes, addScales } from './scope';
 import { SpecColumns, SpecViewOptions } from './types';
-import { Column } from '@msrvida/chart-types';
+import { Column, View } from '@msrvida/chart-types';
 import {
     Axis,
     NewSignal,
@@ -28,16 +28,17 @@ export interface AxesScopeMap {
 }
 
 interface Props {
-    globalScope: GlobalScope,
-    allGlobalScales: GlobalScales[],
-    axisScales: AxisScales,
-    plotOffsetSignals: { x: NewSignal, y: NewSignal },
-    axesOffsets: { x: number, y: number },
-    axesTitlePadding: { x: number, y: number },
-    labelBaseline: { x: TextBaselineValue, y: TextBaselineValue },
-    specColumns: SpecColumns,
-    specViewOptions: SpecViewOptions,
-    axesScopes: AxesScopeMap
+    globalScope: GlobalScope;
+    allGlobalScales: GlobalScales[];
+    axisScales: AxisScales;
+    plotOffsetSignals: { x: NewSignal, y: NewSignal };
+    axesOffsets: { x: number, y: number };
+    axesTitlePadding: { x: number, y: number };
+    labelBaseline: { x: TextBaselineValue, y: TextBaselineValue };
+    specColumns: SpecColumns;
+    specViewOptions: SpecViewOptions;
+    axesScopes: AxesScopeMap;
+    view: View;
 }
 
 export function addGlobalAxes(props: Props) {
@@ -54,7 +55,7 @@ export function addGlobalAxes(props: Props) {
                 let zindex: number = undefined;
                 if (xyz === 'z') {
                     showAxes = false;
-                    if (specViewOptions.zAxisOptions) {
+                    if (props.view === '3d' && specViewOptions.zAxisOptions) {
                         if (specViewOptions.zAxisOptions.showZAxis) {
                             showAxes = true;
                             zindex = specViewOptions.zAxisOptions.zIndex;

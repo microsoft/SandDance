@@ -109,8 +109,8 @@ export class SpecBuilder {
     public build(): SpecResult {
         const { specContext } = this;
 
-        const { specCapabilities, facetLayout } = this.props;
-        const { specColumns, specViewOptions } = specContext;
+        const { facetLayout, specCapabilities  } = this.props;
+        const { insight, specColumns, specViewOptions } = specContext;
         const dataName = 'data_source';
         const { vegaSpec, groupMark } = this.initSpec(dataName);
         const { topColorField, colorDataName } = addColor({
@@ -208,7 +208,8 @@ export class SpecBuilder {
                 labelBaseline: { x: 'top', y: 'middle' },
                 specColumns,
                 specViewOptions,
-                axesScopes
+                axesScopes,
+                view: insight.view
             });
         }
 
