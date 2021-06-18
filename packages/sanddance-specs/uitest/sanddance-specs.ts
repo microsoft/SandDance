@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { build, getColumnsFromData, getSpecColumns, Insight, SpecContext, SpecResult, SpecViewOptions } from '../dist/es6';
+import { build, getColumnsFromData, getSpecColumns, Insight, SpecContext, SpecViewOptions } from '../src/index';
 import { Column } from '@msrvida/chart-types';
 import * as Vega from 'vega-typings';
 
