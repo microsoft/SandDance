@@ -42,6 +42,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 },
                 {
                     role: 'z',
+                    axisSelection: specColumns.z && specColumns.z.quantitative ? 'range' : 'exact',
                     allowNone: true
                 },
                 {
