@@ -36,7 +36,7 @@ export function addScales(scope: Scope, ...scale: Scale[]) {
     if (!scope.scales) {
         scope.scales = [];
     }
-    scope.scales.push(...scale);
+    scope.scales.push(...scale.filter(Boolean));
 }
 
 export function addSignals(scope: Scope, ...signal: Signal[]) {
