@@ -355,7 +355,6 @@ export interface SpecColumns {
 
 export interface ZAxisOptions {
     showZAxis?: boolean;
-    zAxisColor?: string;
     zIndex?: number;
 }
 

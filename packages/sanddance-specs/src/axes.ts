@@ -51,14 +51,12 @@ export function addGlobalAxes(props: Props) {
             if (_scales) {
                 addScales(scope, ..._scales);
                 let { showAxes } = globalScales;
-                let lineColor = specViewOptions.colors.axisLine;
                 let zindex: number = undefined;
                 if (xyz === 'z') {
                     showAxes = false;
                     if (specViewOptions.zAxisOptions) {
                         if (specViewOptions.zAxisOptions.showZAxis) {
                             showAxes = true;
-                            lineColor = specViewOptions.zAxisOptions.zAxisColor || lineColor;
                             zindex = specViewOptions.zAxisOptions.zIndex;
                         }
                     }
@@ -66,6 +64,7 @@ export function addGlobalAxes(props: Props) {
                 if (showAxes && axisScales) {
                     let axisScale: AxisScale = axisScales[xyz];
                     if (axisScale) {
+                        const lineColor = specViewOptions.colors.axisLine;
                         const horizontal = xyz === 'x';
                         const column: Column = specColumns[xyz] || { quantitative: true };
                         const title = axisScale.title;
