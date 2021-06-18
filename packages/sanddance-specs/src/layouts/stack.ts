@@ -216,11 +216,12 @@ export class Stack extends Layout {
                 }
             ],
             range: [
+                0,
                 {
                     signal: `${names.maxLevels} * (${names.cube} + 1) - 1`
-                },
-                0
+                }
             ],
+            nice: false
         };
 
         return {

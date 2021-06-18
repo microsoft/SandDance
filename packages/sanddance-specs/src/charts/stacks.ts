@@ -9,10 +9,11 @@ import { SpecContext } from '../types';
 import { StackProps } from '../layouts/stack';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
-    const { specColumns } = specContext;
+    const { specColumns, specViewOptions } = specContext;
     const axisScales: AxisScales = {
         x: { title: specColumns.x && specColumns.x.name },
-        y: { title: specColumns.y && specColumns.y.name }
+        y: { title: specColumns.y && specColumns.y.name },
+        z: { title: specViewOptions.language.count }
     };
     const hBandProps: BandProps = {
         excludeEncodingRuleMap: true,
