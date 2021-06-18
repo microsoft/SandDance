@@ -55,7 +55,7 @@ export class Strip extends Layout {
         const { names, prefix, props } = this;
         const { addPercentageScale, globalScope, groupings, orientation, size, sort, sortOrder, parentScope, z } = props;
 
-        addZScale(z, globalScope.zSize, globalScope, names.zScale);
+        const zScale = addZScale(z, globalScope.zSize, globalScope.data.name, names.zScale);
 
         const horizontal = orientation === 'horizontal';
 
@@ -182,7 +182,8 @@ export class Strip extends Layout {
                 showAxes: true,
                 scales: {
                     x: horizontal ? [percentageScale] : undefined,
-                    y: horizontal ? undefined : [percentageScale]
+                    y: horizontal ? undefined : [percentageScale],
+                    z: zScale && [zScale]
                 }
             },
             offsets,

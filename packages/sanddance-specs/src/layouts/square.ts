@@ -50,7 +50,7 @@ export class Square extends Layout {
     public build(): InnerScope {
         const { names, prefix, props } = this;
         const { fillDirection, globalScope, groupings, parentScope, collapseYHeight, sortBy, z } = props;
-        addZScale(z, globalScope.zSize, globalScope, names.zScale);
+        const zScale = addZScale(z, globalScope.zSize, globalScope.data.name, names.zScale);
 
         addTransforms(globalScope.data, {
             type: 'stack',
@@ -112,6 +112,14 @@ export class Square extends Layout {
         const { tx, ty } = this.transformXY(gap, levelSize, squaresPerBand);
 
         return {
+            ...z && {
+                globalScales: {
+                    showAxes: true,
+                    scales: {
+                        z: [zScale]
+                    }
+                }
+            },
             offsets: {
                 x: addOffsets(parentScope.offsets.x, tx.expr),
                 y: addOffsets(parentScope.offsets.y, ty.expr),

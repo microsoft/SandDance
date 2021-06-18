@@ -46,16 +46,28 @@ export function addGlobalAxes(props: Props) {
 
     allGlobalScales.forEach(globalScales => {
         const { scales } = globalScales;
-        for (let s in scales) {
-            let _scales: Scale[] = scales[s];
+        for (let xyz in scales) {
+            let _scales: Scale[] = scales[xyz];
             if (_scales) {
                 addScales(scope, ..._scales);
-                if (globalScales.showAxes && axisScales && s !== 'z') {
-                    let axisScale: AxisScale = axisScales[s];
+                let { showAxes } = globalScales;
+                let lineColor = specViewOptions.colors.axisLine;
+                let zindex: number = undefined;
+                if (xyz === 'z') {
+                    showAxes = false;
+                    if (specViewOptions.zAxisOptions) {
+                        if (specViewOptions.zAxisOptions.showZAxis) {
+                            showAxes = true;
+                            lineColor = specViewOptions.zAxisOptions.zAxisColor || lineColor;
+                            zindex = specViewOptions.zAxisOptions.zIndex;
+                        }
+                    }
+                }
+                if (showAxes && axisScales) {
+                    let axisScale: AxisScale = axisScales[xyz];
                     if (axisScale) {
-                        const lineColor = specViewOptions.colors.axisLine;
-                        const horizontal = s === 'x';
-                        const column: Column = specColumns[s] || { quantitative: true };
+                        const horizontal = xyz === 'x';
+                        const column: Column = specColumns[xyz] || { quantitative: true };
                         const title = axisScale.title;
                         const props: AxisProps = {
                             title,
@@ -63,8 +75,9 @@ export function addGlobalAxes(props: Props) {
                             column,
                             specViewOptions,
                             lineColor,
-                            titlePadding: axesTitlePadding[s],
-                            labelBaseline: labelBaseline[s]
+                            titlePadding: axesTitlePadding[xyz],
+                            labelBaseline: labelBaseline[xyz],
+                            zindex
                         };
                         axesScopes['main'].forEach(a => addAxes(a.scope, createAxis({
                             ...props,
@@ -74,8 +87,8 @@ export function addGlobalAxes(props: Props) {
                             showLines: a.lines
                         })));
 
-                        if (axesScopes[s]) {
-                            axesScopes[s].forEach(a => addAxes(a.scope, createAxis({
+                        if (axesScopes[xyz]) {
+                            axesScopes[xyz].forEach(a => addAxes(a.scope, createAxis({
                                 ...props,
                                 scale: a.scale || _scales[0],
                                 showTitle: a.title,
@@ -84,9 +97,9 @@ export function addGlobalAxes(props: Props) {
                             })));
                         }
 
-                        if (plotOffsetSignals[s] && axesOffsets[s]) {
-                            const plotOffsetSignal = plotOffsetSignals[s] as NewSignal;
-                            plotOffsetSignal.update = `${axesOffsets[s]}`;
+                        if (plotOffsetSignals[xyz] && axesOffsets[xyz]) {
+                            const plotOffsetSignal = plotOffsetSignals[xyz] as NewSignal;
+                            plotOffsetSignal.update = `${axesOffsets[xyz]}`;
                         }
                     }
                 }
@@ -107,11 +120,13 @@ interface AxisProps {
     showLabels?: boolean;
     titlePadding: number;
     labelBaseline: TextBaselineValue;
+    zindex: number;
 }
 
 function createAxis(props: AxisProps) {
-    const { column, horizontal, labelBaseline, lineColor, scale, showLabels, showTitle, showLines, specViewOptions, title, titlePadding } = props;
+    const { column, horizontal, labelBaseline, lineColor, scale, showLabels, showTitle, showLines, specViewOptions, title, titlePadding, zindex } = props;
     const axis: Axis = {
+        zindex,
         scale: scale.name,
         orient: horizontal ? 'bottom' : 'left',
         domain: showLines,

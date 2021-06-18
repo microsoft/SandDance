@@ -353,6 +353,12 @@ export interface SpecColumns {
     facetV?: Column;
 }
 
+export interface ZAxisOptions {
+    showZAxis?: boolean;
+    zAxisColor?: string;
+    zIndex?: number;
+}
+
 export interface SpecViewOptions {
 
     /**
@@ -370,7 +376,9 @@ export interface SpecViewOptions {
      */
     maxLegends: number;
 
-    tickSize: number
+    tickSize: number;
+
+    zAxisOptions?: ZAxisOptions;
 }
 
 export interface SpecContext {

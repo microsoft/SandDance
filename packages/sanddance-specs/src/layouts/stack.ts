@@ -207,8 +207,10 @@ export class Stack extends Layout {
                 layoutWidth: names.size
             },
             globalScales: {
-                showAxes: false,
-                scales: {}
+                showAxes: true,
+                scales: {
+                    z: []   //TODO count of max stack
+                }
             },
             encodingRuleMap: {
                 y: [{

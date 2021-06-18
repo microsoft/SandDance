@@ -77,7 +77,7 @@ export class Treemap extends Layout {
         const { names, props } = this;
         const { globalScope, parentScope, treeMapMethod, z } = props;
 
-        addZScale(z, globalScope.zSize, globalScope, names.zScale);
+        addZScale(z, globalScope.zSize, globalScope.data.name, names.zScale);
 
         const offsets: LayoutOffsets = {
             x: addOffsets(parentScope.offsets.x, fn(names.fieldX0)),
