@@ -13,7 +13,7 @@ import {
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { Column } from '@msrvida/chart-types';
-import { RectMark } from 'vega-typings';
+import { LinearScale, RectMark } from 'vega-typings';
 
 export interface StackProps extends LayoutProps {
     sort: Column;
@@ -32,7 +32,9 @@ export class Stack extends Layout {
         sides: string,
         size: string,
         squared: string,
-        squaredExtent: string
+        maxCount: string,
+        maxLevels: string,
+        zScale: string,
     };
 
     constructor(public props: StackProps & LayoutBuildProps) {
@@ -50,7 +52,9 @@ export class Stack extends Layout {
             sides: `${p}_sides`,
             size: `${p}_size`,
             squared: `${p}_squared`,
-            squaredExtent: `${p}_squared_extent`
+            maxCount: `${p}_maxCount`,
+            maxLevels: `${p}_maxLevels`,
+            zScale: `${p}_zScale`,
         };
     }
 
@@ -134,11 +138,6 @@ export class Stack extends Layout {
                     {
                         type: 'filter',
                         expr: 'datum.row_number === 1'
-                    },
-                    {
-                        type: 'extent',
-                        field: 'squared',
-                        signal: names.squaredExtent
                     }
                 ]
             }
@@ -151,7 +150,7 @@ export class Stack extends Layout {
             },
             {
                 name: names.squared,
-                update: `${names.squaredExtent}[0]`
+                update: `data('${names.sequence}')[0].squared`
             },
             {
                 name: names.sides,
@@ -160,6 +159,14 @@ export class Stack extends Layout {
             {
                 name: names.cube,
                 update: `(${names.size} - (${names.sides} - 1)) / ${names.sides}`
+            },
+            {
+                name: names.maxLevels,
+                update: `data('${names.sequence}')[0].maxlevels`
+            },
+            {
+                name: names.maxCount,
+                update: `${names.maxLevels} * ${names.squared}`
             }
         );
 
@@ -199,6 +206,23 @@ export class Stack extends Layout {
         };
         addMarks(globalScope.markGroup, mark);
 
+        const zScale: LinearScale = {
+            type: 'linear',
+            name: names.zScale,
+            domain: [
+                0,
+                {
+                    signal: names.maxCount
+                }
+            ],
+            range: [
+                {
+                    signal: `${names.maxLevels} * (${names.cube} + 1) - 1`
+                },
+                0
+            ],
+        };
+
         return {
             offsets,
             mark,
@@ -209,7 +233,7 @@ export class Stack extends Layout {
             globalScales: {
                 showAxes: true,
                 scales: {
-                    z: []   //TODO count of max stack
+                    z: [zScale]
                 }
             },
             encodingRuleMap: {
