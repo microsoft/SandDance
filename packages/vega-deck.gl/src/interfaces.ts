@@ -30,11 +30,14 @@ export interface TickText extends VegaTextLayerDatum {
     value: number | string;
 }
 
+export type AxisRole = 'x' | 'y' | 'z';
+
 export interface Axis {
     domain: StyledLine;
     ticks: StyledLine[];
     tickText: TickText[];
     title?: VegaTextLayerDatum;
+    role?: AxisRole;
 }
 
 /**
@@ -69,7 +72,7 @@ export interface Path {
 }
 
 export interface Polygon {
-    positions: Position[];    
+    positions: Position[];
     strokeColor: RGBAColor;
     fillColor: RGBAColor;
     strokeWidth: number;
@@ -102,6 +105,7 @@ export interface Stage {
     axes?: {
         x?: Axis[];
         y?: Axis[];
+        z?: Axis[];
     };
     textData?: VegaTextLayerDatum[];
     view?: View;
@@ -171,6 +175,7 @@ export interface PresenterConfig {
     onSceneRectAssignCubeOrdinal?: (d: object) => number | undefined;
     onTargetViewState?: (height: number, width: number) => { height: number, width: number, newViewStateTarget?: boolean };
     preserveDrawingBuffer?: boolean;
+    zAxisZindex?: number;
 }
 
 export interface PresenterStyle {

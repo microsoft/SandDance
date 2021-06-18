@@ -50,7 +50,8 @@ export function createStage(view: View) {
         polygonData: [],
         axes: {
             x: [],
-            y: []
+            y: [],
+            z: [],
         },
         gridLines: [],
         textData: [],

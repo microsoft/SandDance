@@ -55,6 +55,8 @@ import { CharacterSet } from './characterSet';
 
 const { defaultView } = VegaDeckGl.defaults;
 
+const zAxisZindex = 1010;
+
 let didRegisterColorSchemes = false;
 
 /**
@@ -280,7 +282,17 @@ export class Viewer {
 
     private async renderNewLayout(signalValues: SignalValues, presenterConfig?: VegaDeckGl.types.PresenterConfig, view?: View) {
         const currData = this._dataScope.currentData();
-        const context: SpecContext = { specColumns: this.getSpecColumnsWithFilteredStats(), insight: this.insight, specViewOptions: this.options };
+        const context: SpecContext = {
+            specColumns: this.getSpecColumnsWithFilteredStats(),
+            insight: this.insight,
+            specViewOptions: {
+                ...this.options,
+                zAxisOptions: {
+                    showZAxis: true,
+                    zIndex: zAxisZindex
+                }
+            }
+        };
         const specResult = build(context, currData);
         if (!specResult.errors) {
             const uiValues = extractSignalValuesFromView(this.vegaViewGl, this.vegaSpec);
@@ -622,6 +634,7 @@ export class Viewer {
     private createConfig(c?: VegaDeckGl.types.PresenterConfig): VegaDeckGl.types.ViewGlConfig {
         const { getTextColor, getTextHighlightColor, getTextHighlightAlphaCutoff, onTextClick } = this.options;
         const defaultPresenterConfig: VegaDeckGl.types.PresenterConfig = {
+            zAxisZindex,
             getCharacterSet: stage => this._characterSet.getCharacterSet(stage),
             getTextColor,
             getTextHighlightColor,

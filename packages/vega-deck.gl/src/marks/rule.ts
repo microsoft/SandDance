@@ -6,6 +6,7 @@ import { GroupType, MarkStager, MarkStagerOptions } from './interfaces';
 import { lineZ } from '../defaults';
 import { Scene, SceneLine } from 'vega-typings';
 import { Stage, StyledLine } from '../interfaces';
+import { zSwap } from '../zaxis';
 
 const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scene, x: number, y: number, groupType: GroupType) => {
 
@@ -19,8 +20,16 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
         const lineItem = styledLine(x1 + x, y1 + y, x2 + x, y2 + y, item.stroke, item.strokeWidth);
 
         if (item.mark.role === 'axis-tick') {
+            if (options.currAxis.role === 'z') {
+                zSwap(lineItem.sourcePosition);
+                zSwap(lineItem.targetPosition);
+            }
             options.currAxis.ticks.push(lineItem);
         } else if (item.mark.role === 'axis-domain') {
+            if (options.currAxis.role === 'z') {
+                zSwap(lineItem.sourcePosition);
+                zSwap(lineItem.targetPosition);
+            }
             options.currAxis.domain = lineItem;
         } else {
             stage.gridLines.push(lineItem);

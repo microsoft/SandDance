@@ -8,7 +8,8 @@ export enum GroupType {
     none = 0,
     legend = 1,
     xAxis = 2,
-    yAxis = 3
+    yAxis = 3,
+    zAxis = 4,
 }
 
 export interface MarkStagerOptions {
@@ -16,12 +17,16 @@ export interface MarkStagerOptions {
     currAxis: Axis;
     defaultCubeColor: RGBAColor;
     assignCubeOrdinal: (d: object) => number | undefined;
+    zAxisZindex: number;
 }
 
 //TODO - use vega-typings below
 export type SceneGroup2 = SceneGroup & {
     datum?: any;
     orient?: 'bottom' | 'left' | 'right' | 'top';
+    mark: {
+        zindex: number;
+    }
 };
 export interface LabelDatum {
     value: any;
