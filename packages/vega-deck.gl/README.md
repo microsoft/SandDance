@@ -74,6 +74,10 @@ var view = new VegaDeckGl.ViewGl(vega.parse(spec))
 
 ## Versions
 
+### 3.3.0 Changes
+
+* Show z-axis scale
+
 ### 3.2.0 Changes
 
 * Fix for animation easing

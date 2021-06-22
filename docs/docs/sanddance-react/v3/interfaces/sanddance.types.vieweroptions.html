@@ -63,6 +63,7 @@ title: 'ViewerOptions | @msrvida/sanddance-react'
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="sanddance.types.vieweroptions.html#onaxisclick" class="tsd-kind-icon">on<wbr>Axis<wbr>Click</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="sanddance.types.vieweroptions.html#onbeforecreatelayers" class="tsd-kind-icon">on<wbr>Before<wbr>Create<wbr>Layers</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="sanddance.types.vieweroptions.html#oncolorcontextchange" class="tsd-kind-icon">on<wbr>Color<wbr>Context<wbr>Change</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="sanddance.types.vieweroptions.html#oncubeclick" class="tsd-kind-icon">on<wbr>Cube<wbr>Click</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="sanddance.types.vieweroptions.html#ondatafilter" class="tsd-kind-icon">on<wbr>Data<wbr>Filter</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="sanddance.types.vieweroptions.html#onerror" class="tsd-kind-icon">on<wbr>Error</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="sanddance.types.vieweroptions.html#onlegendheaderclick" class="tsd-kind-icon">on<wbr>Legend<wbr>Header<wbr>Click</a></li>
@@ -78,6 +79,7 @@ title: 'ViewerOptions | @msrvida/sanddance-react'
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="sanddance.types.vieweroptions.html#ticksize" class="tsd-kind-icon">tick<wbr>Size</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="sanddance.types.vieweroptions.html#tooltipoptions" class="tsd-kind-icon">tooltip<wbr>Options</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="sanddance.types.vieweroptions.html#transitiondurations" class="tsd-kind-icon">transition<wbr>Durations</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="sanddance.types.vieweroptions.html#zaxisoptions" class="tsd-kind-icon">z<wbr>Axis<wbr>Options</a></li>
 						</ul>
 					</section>
 				</div>
@@ -241,7 +243,7 @@ title: 'ViewerOptions | @msrvida/sanddance-react'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="sanddance.specs.specviewoptions.html">SpecViewOptions</a>.<a href="sanddance.specs.specviewoptions.html#maxlegends">maxLegends</a></p>
 					<ul>
-						<li>Defined in sanddance-specs/dist/es6/types.d.ts:300</li>
+						<li>Defined in sanddance-specs/dist/es6/types.d.ts:304</li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -253,7 +255,7 @@ title: 'ViewerOptions | @msrvida/sanddance-react'
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 				<a name="onaxisclick" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> on<wbr>Axis<wbr>Click</h3>
-				<div class="tsd-signature tsd-kind-icon">on<wbr>Axis<wbr>Click<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MouseEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">PointerEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TouchEvent</span>, serch<span class="tsd-signature-symbol">: </span><a href="sanddance.searchexpression.searchexpressiongroup.html" class="tsd-signature-type" data-tsd-kind="Interface">SearchExpressionGroup</a><span class="tsd-signature-symbol">&lt;</span><a href="sanddance.searchexpression.searchexpression.html" class="tsd-signature-type" data-tsd-kind="Interface">SearchExpression</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></div>
+				<div class="tsd-signature tsd-kind-icon">on<wbr>Axis<wbr>Click<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MouseEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">PointerEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TouchEvent</span>, search<span class="tsd-signature-symbol">: </span><a href="sanddance.searchexpression.searchexpressiongroup.html" class="tsd-signature-type" data-tsd-kind="Interface">SearchExpressionGroup</a><span class="tsd-signature-symbol">&lt;</span><a href="sanddance.searchexpression.searchexpression.html" class="tsd-signature-type" data-tsd-kind="Interface">SearchExpression</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></div>
 				<aside class="tsd-sources">
 					<ul>
 						<li>Defined in sanddance/dist/es6/types.d.ts:110</li>
@@ -269,7 +271,7 @@ title: 'ViewerOptions | @msrvida/sanddance-react'
 					<ul class="tsd-parameters">
 						<li class="tsd-parameter-signature">
 							<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-interface">
-								<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MouseEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">PointerEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TouchEvent</span>, serch<span class="tsd-signature-symbol">: </span><a href="sanddance.searchexpression.searchexpressiongroup.html" class="tsd-signature-type" data-tsd-kind="Interface">SearchExpressionGroup</a><span class="tsd-signature-symbol">&lt;</span><a href="sanddance.searchexpression.searchexpression.html" class="tsd-signature-type" data-tsd-kind="Interface">SearchExpression</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+								<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MouseEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">PointerEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TouchEvent</span>, search<span class="tsd-signature-symbol">: </span><a href="sanddance.searchexpression.searchexpressiongroup.html" class="tsd-signature-type" data-tsd-kind="Interface">SearchExpressionGroup</a><span class="tsd-signature-symbol">&lt;</span><a href="sanddance.searchexpression.searchexpression.html" class="tsd-signature-type" data-tsd-kind="Interface">SearchExpression</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 							</ul>
 							<ul class="tsd-descriptions">
 								<li class="tsd-description">
@@ -279,7 +281,7 @@ title: 'ViewerOptions | @msrvida/sanddance-react'
 											<h5>e: <span class="tsd-signature-type">MouseEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">PointerEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TouchEvent</span></h5>
 										</li>
 										<li>
-											<h5>serch: <a href="sanddance.searchexpression.searchexpressiongroup.html" class="tsd-signature-type" data-tsd-kind="Interface">SearchExpressionGroup</a><span class="tsd-signature-symbol">&lt;</span><a href="sanddance.searchexpression.searchexpression.html" class="tsd-signature-type" data-tsd-kind="Interface">SearchExpression</a><span class="tsd-signature-symbol">&gt;</span></h5>
+											<h5>search: <a href="sanddance.searchexpression.searchexpressiongroup.html" class="tsd-signature-type" data-tsd-kind="Interface">SearchExpressionGroup</a><span class="tsd-signature-symbol">&lt;</span><a href="sanddance.searchexpression.searchexpression.html" class="tsd-signature-type" data-tsd-kind="Interface">SearchExpression</a><span class="tsd-signature-symbol">&gt;</span></h5>
 										</li>
 									</ul>
 									<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -351,6 +353,45 @@ title: 'ViewerOptions | @msrvida/sanddance-react'
 							</ul>
 							<ul class="tsd-descriptions">
 								<li class="tsd-description">
+									<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<a name="oncubeclick" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> on<wbr>Cube<wbr>Click</h3>
+				<div class="tsd-signature tsd-kind-icon">on<wbr>Cube<wbr>Click<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MouseEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">PointerEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TouchEvent</span>, cube<span class="tsd-signature-symbol">: </span><a href="sanddance.vegadeckgl.types.cube.html" class="tsd-signature-type" data-tsd-kind="Interface">Cube</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in sanddance/dist/es6/types.d.ts:114</li>
+					</ul>
+				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Optional handler when cube is clicked.</p>
+					</div>
+				</div>
+				<div class="tsd-type-declaration">
+					<h4>Type declaration</h4>
+					<ul class="tsd-parameters">
+						<li class="tsd-parameter-signature">
+							<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-interface">
+								<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MouseEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">PointerEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TouchEvent</span>, cube<span class="tsd-signature-symbol">: </span><a href="sanddance.vegadeckgl.types.cube.html" class="tsd-signature-type" data-tsd-kind="Interface">Cube</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+							</ul>
+							<ul class="tsd-descriptions">
+								<li class="tsd-description">
+									<h4 class="tsd-parameters-title">Parameters</h4>
+									<ul class="tsd-parameters">
+										<li>
+											<h5>e: <span class="tsd-signature-type">MouseEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">PointerEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TouchEvent</span></h5>
+										</li>
+										<li>
+											<h5>cube: <a href="sanddance.vegadeckgl.types.cube.html" class="tsd-signature-type" data-tsd-kind="Interface">Cube</a></h5>
+										</li>
+									</ul>
 									<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 								</li>
 							</ul>
@@ -439,7 +480,7 @@ title: 'ViewerOptions | @msrvida/sanddance-react'
 				<div class="tsd-signature tsd-kind-icon">on<wbr>Legend<wbr>Header<wbr>Click<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MouseEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">PointerEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TouchEvent</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in sanddance/dist/es6/types.d.ts:114</li>
+						<li>Defined in sanddance/dist/es6/types.d.ts:118</li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -475,7 +516,7 @@ title: 'ViewerOptions | @msrvida/sanddance-react'
 				<div class="tsd-signature tsd-kind-icon">on<wbr>Legend<wbr>Row<wbr>Click<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MouseEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">PointerEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TouchEvent</span>, legendRow<span class="tsd-signature-symbol">: </span><a href="sanddance.types.legendrowwithsearch.html" class="tsd-signature-type" data-tsd-kind="Interface">LegendRowWithSearch</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in sanddance/dist/es6/types.d.ts:118</li>
+						<li>Defined in sanddance/dist/es6/types.d.ts:122</li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -514,7 +555,7 @@ title: 'ViewerOptions | @msrvida/sanddance-react'
 				<div class="tsd-signature tsd-kind-icon">on<wbr>New<wbr>View<wbr>State<wbr>Target<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in sanddance/dist/es6/types.d.ts:126</li>
+						<li>Defined in sanddance/dist/es6/types.d.ts:130</li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -694,7 +735,7 @@ title: 'ViewerOptions | @msrvida/sanddance-react'
 				<div class="tsd-signature tsd-kind-icon">on<wbr>Vega<wbr>Spec<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>vegaSpec<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Spec</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in sanddance/dist/es6/types.d.ts:122</li>
+						<li>Defined in sanddance/dist/es6/types.d.ts:126</li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -730,7 +771,7 @@ title: 'ViewerOptions | @msrvida/sanddance-react'
 				<div class="tsd-signature tsd-kind-icon">preserve<wbr>Drawing<wbr>Buffer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in sanddance/dist/es6/types.d.ts:130</li>
+						<li>Defined in sanddance/dist/es6/types.d.ts:134</li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -745,7 +786,7 @@ title: 'ViewerOptions | @msrvida/sanddance-react'
 				<div class="tsd-signature tsd-kind-icon">selection<wbr>PolygonZ<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in sanddance/dist/es6/types.d.ts:134</li>
+						<li>Defined in sanddance/dist/es6/types.d.ts:138</li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -761,7 +802,7 @@ title: 'ViewerOptions | @msrvida/sanddance-react'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="sanddance.specs.specviewoptions.html">SpecViewOptions</a>.<a href="sanddance.specs.specviewoptions.html#ticksize">tickSize</a></p>
 					<ul>
-						<li>Defined in sanddance-specs/dist/es6/types.d.ts:301</li>
+						<li>Defined in sanddance-specs/dist/es6/types.d.ts:305</li>
 					</ul>
 				</aside>
 			</section>
@@ -794,6 +835,17 @@ title: 'ViewerOptions | @msrvida/sanddance-react'
 						<p>Lengths of time for a transition animation.</p>
 					</div>
 				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+				<a name="zaxisoptions" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> z<wbr>Axis<wbr>Options</h3>
+				<div class="tsd-signature tsd-kind-icon">z<wbr>Axis<wbr>Options<span class="tsd-signature-symbol">:</span> <a href="sanddance.specs.zaxisoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">ZAxisOptions</a></div>
+				<aside class="tsd-sources">
+					<p>Inherited from <a href="sanddance.specs.specviewoptions.html">SpecViewOptions</a>.<a href="sanddance.specs.specviewoptions.html#zaxisoptions">zAxisOptions</a></p>
+					<ul>
+						<li>Defined in sanddance-specs/dist/es6/types.d.ts:306</li>
+					</ul>
+				</aside>
 			</section>
 		</section>
 	</div>
@@ -926,6 +978,9 @@ title: 'ViewerOptions | @msrvida/sanddance-react'
 							<a href="sanddance.types.vieweroptions.html#oncolorcontextchange" class="tsd-kind-icon">on<wbr>Color<wbr>Context<wbr>Change</a>
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-interface">
+							<a href="sanddance.types.vieweroptions.html#oncubeclick" class="tsd-kind-icon">on<wbr>Cube<wbr>Click</a>
+						</li>
+						<li class=" tsd-kind-property tsd-parent-kind-interface">
 							<a href="sanddance.types.vieweroptions.html#ondatafilter" class="tsd-kind-icon">on<wbr>Data<wbr>Filter</a>
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-interface">
@@ -969,6 +1024,9 @@ title: 'ViewerOptions | @msrvida/sanddance-react'
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-interface">
 							<a href="sanddance.types.vieweroptions.html#transitiondurations" class="tsd-kind-icon">transition<wbr>Durations</a>
+						</li>
+						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+							<a href="sanddance.types.vieweroptions.html#zaxisoptions" class="tsd-kind-icon">z<wbr>Axis<wbr>Options</a>
 						</li>
 					</ul>
 				</li>

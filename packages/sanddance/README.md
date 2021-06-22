@@ -51,6 +51,10 @@ SandDance.use(vega, deck, layers, luma);
 
 ## Versions
 
+### 3.2.0 Changes
+
+* Show z-axis scale
+
 ### 3.1.0 Changes
 
 * Fix for animation easing
