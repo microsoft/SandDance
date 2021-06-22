@@ -1,13 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { getSpecBuilderForChart } from './charts';
+import { getSpecBuilderPropsForChart } from './charts';
 import { inferAll } from './inference';
 import { SpecContext } from './types';
 import { SpecResult } from './interfaces';
 import { ValuesData } from 'vega-typings';
+import { SpecBuilder } from './specBuilder';
 
-export function build(context: SpecContext, currData: object[]): SpecResult {
-    const { specColumns } = context;
+export function build(specContext: SpecContext, currData: object[]): SpecResult {
+    const { specColumns } = specContext;
     const columns = [
         specColumns.color,
         specColumns.facet,
@@ -21,12 +22,22 @@ export function build(context: SpecContext, currData: object[]): SpecResult {
     ];
     inferAll(columns, currData);
 
-    const specBuilder = getSpecBuilderForChart(context);
+    const specBuilderProps = getSpecBuilderPropsForChart(specContext);
+    const specBuilder = new SpecBuilder(specBuilderProps, specContext);
     let specResult: SpecResult;
 
     if (specBuilder) {
         try {
-            specResult = specBuilder.build();
+            const errors = specBuilder.validate();
+            if (errors.length) {
+                specResult = {
+                    errors,
+                    specCapabilities: specBuilderProps.specCapabilities,
+                    vegaSpec: null
+                };
+            } else {
+                specResult = specBuilder.build();
+            }
         }
         catch (e) {
             specResult = {
@@ -43,7 +54,7 @@ export function build(context: SpecContext, currData: object[]): SpecResult {
         specResult = {
             specCapabilities: null,
             vegaSpec: null,
-            errors: [`could not build spec for ${context.insight.chart}`]
+            errors: [`could not build spec for ${specContext.insight.chart}`]
         };
     }
     return specResult;

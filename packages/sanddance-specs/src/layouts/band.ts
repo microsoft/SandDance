@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { AugmentBinnable, binnable, Binnable } from '../bin';
+import { binnable, Binnable } from '../bin';
 import { safeFieldName } from '../expr';
 import {
     DiscreteColumn,
@@ -18,7 +18,7 @@ import {
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { modifySignal } from '../signals';
-import { BandScale, LinearScale, Scale } from 'vega-typings';
+import { BandScale, Scale } from 'vega-typings';
 
 export interface BandProps extends LayoutProps {
     excludeEncodingRuleMap?: boolean;
@@ -178,55 +178,6 @@ export class Band extends Layout {
         const binField = safeFieldName(bin.fields[0]);
 
         const scales: Scale[] = [];
-
-        // function axisScaleName(scaleName: string) {
-        //     return `${scaleName}_axis`;
-        // }
-
-        // if (bin.discreteColumn.column.quantitative) {
-        //     const { binSignal } = <AugmentBinnable>bin;
-
-        //     let linearScale: LinearScale;
-        //     if (horizontal) {
-        //         linearScale = {
-        //             type: 'linear',
-        //             name: axisScaleName(names.yScale),
-        //             range: [
-        //                 0,
-        //                 {
-        //                     signal: parentScope.sizeSignals.layoutHeight
-        //                 }
-        //             ],
-        //             domain: {
-        //                 signal: `[${binSignal}.start, ${binSignal}.stop]`
-        //             },
-        //             bins: {
-        //                 signal: binSignal
-        //             },
-        //             reverse: true,
-        //             zero: false
-        //         };
-        //     } else {
-        //         linearScale = {
-        //             type: 'linear',
-        //             name: axisScaleName(names.xScale),
-        //             range: [
-        //                 0,
-        //                 {
-        //                     signal: parentScope.sizeSignals.layoutWidth
-        //                 }
-        //             ],
-        //             domain: {
-        //                 signal: `[${binSignal}.start, ${binSignal}.stop]`
-        //             },
-        //             bins: {
-        //                 signal: binSignal
-        //             },
-        //             zero: false
-        //         };
-        //     }
-        //     scales.push(linearScale);
-        // }
         let bandScale: BandScale;
         if (horizontal) {
             bandScale = {

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Cross, CrossProps } from './layouts/cross';
+import { CrossProps } from './layouts/cross';
 import { DiscreteColumn } from './interfaces';
 import {
     facetPaddingBottom,
@@ -10,26 +10,32 @@ import {
 } from './defaults';
 import { FacetStyle } from './types';
 import { LayoutPair } from './layouts/layout';
-import { Scale, Signal } from 'vega-typings';
-import { SignalNames } from './constants';
-import { Wrap, WrapProps } from './layouts/wrap';
+import { WrapProps } from './layouts/wrap';
 
-export interface FacetLayout {
-    layoutPair: LayoutPair;
-    plotPadding: { x: number, y: number };
-    scales: Scale[];
-    signals: Signal[];
+export interface PlotPadding {
+    x: number;
+    y: number;
 }
 
-export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColumn, facetVColumn: DiscreteColumn, axisTextColor: string): FacetLayout {
+export interface FacetPadding {
+    top: number;
+    left: number;
+    bottom: number;
+}
+
+export interface FacetLayout {
+    facetPadding: FacetPadding;
+    plotPadding: PlotPadding;
+}
+
+export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColumn, facetVColumn: DiscreteColumn, axisTextColor: string) {
     let layoutPair: LayoutPair;
-    const scales: Scale[] = [];
-    let signals: Signal[];
     const groupby = facetColumn;
-    const plotPadding = {
+    const plotPadding: PlotPadding = {
         x: 0,
         y: 0
     };
+    let facetPadding: FacetPadding;
     switch (facetStyle) {
         case 'cross': {
             const props: CrossProps = {
@@ -39,23 +45,14 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
                 groupbyY: facetVColumn
             };
             layoutPair = {
-                layoutClass: Cross,
+                layoutType: 'Cross',
                 props
             };
-            signals = [
-                {
-                    name: SignalNames.FacetPaddingBottom,
-                    update: `${facetPaddingBottom}`
-                },
-                {
-                    name: SignalNames.FacetPaddingLeft,
-                    update: `${facetPaddingLeft}`
-                },
-                {
-                    name: SignalNames.FacetPaddingTop,
-                    update: '0'
-                }
-            ];
+            facetPadding = {
+                bottom: facetPaddingBottom,
+                left: facetPaddingLeft,
+                top: 0
+            };
             plotPadding.y = facetPaddingTop;
             plotPadding.x = facetPaddingRight;
             break;
@@ -68,26 +65,25 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
                 groupby
             };
             layoutPair = {
-                layoutClass: Wrap,
+                layoutType: 'Wrap',
                 props
             };
-            signals = [
-                {
-                    name: SignalNames.FacetPaddingBottom,
-                    update: `${facetPaddingBottom}`
-                },
-                {
-                    name: SignalNames.FacetPaddingLeft,
-                    update: `${facetPaddingLeft}`
-                },
-                {
-                    name: SignalNames.FacetPaddingTop,
-                    update: `${facetPaddingTop}`
-                }
-            ];
+            facetPadding =
+            {
+                bottom: facetPaddingBottom,
+                left: facetPaddingLeft,
+                top: facetPaddingTop
+            };
             break;
         }
     }
-    return { layoutPair, plotPadding, scales, signals };
+    const facetLayout: FacetLayout = {
+        facetPadding,
+        plotPadding
+    };
+    return {
+        layoutPair,
+        facetLayout
+    };
 }
 

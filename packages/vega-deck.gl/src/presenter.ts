@@ -160,7 +160,8 @@ export class Presenter {
             maxOrdinal: 0,
             currAxis: null,
             defaultCubeColor: this.style.defaultCubeColor,
-            assignCubeOrdinal: (config && config.onSceneRectAssignCubeOrdinal) || (() => options.maxOrdinal++)
+            assignCubeOrdinal: config?.onSceneRectAssignCubeOrdinal || (() => options.maxOrdinal++),
+            zAxisZindex: config?.zAxisZindex
         };
         //determine if this is a vega scene
         if (scene.marktype) {
@@ -181,7 +182,7 @@ export class Presenter {
 
             let glOptions: WebGLContextAttributes;
             if (config && config.preserveDrawingBuffer) {
-                glOptions = { preserveDrawingBuffer: true }
+                glOptions = { preserveDrawingBuffer: true };
             }
 
             const deckProps: DeckGLInternalProps = {

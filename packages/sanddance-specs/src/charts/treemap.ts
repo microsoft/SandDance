@@ -4,9 +4,9 @@ import { AxisScales } from '../interfaces';
 import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
-import { Treemap, TreemapProps } from '../layouts/treemap';
+import { TreemapProps } from '../layouts/treemap';
 import { LayoutPair } from '../layouts/layout';
-import { AggregateContainer, AggregateContainerProps } from '../layouts/aggregateContainer';
+import { AggregateContainerProps } from '../layouts/aggregateContainer';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns, specViewOptions } = specContext;
@@ -37,12 +37,12 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             showAxes: false
         };
         layouts.push({
-            layoutClass: AggregateContainer,
+            layoutType: 'AggregateContainer',
             props
         });
     }
     layouts.push({
-        layoutClass: Treemap,
+        layoutType: 'Treemap',
         props: treemapProps
     });
     return {
@@ -61,6 +61,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 },
                 {
                     role: 'z',
+                    axisSelection: specColumns.z && specColumns.z.quantitative ? 'range' : 'exact',
                     allowNone: true
                 },
                 {

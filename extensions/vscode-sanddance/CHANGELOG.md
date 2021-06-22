@@ -1,5 +1,8 @@
 # Change Log
 
+## [3.3.0]
+- Show the z axis scale in 3d
+
 ## [3.2.0]
 - Fix for last bin of quantitative band scale
 - Support virtual workspaces

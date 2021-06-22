@@ -16,6 +16,7 @@ import {
     SceneTextBaseline
 } from 'vega-typings';
 import { Stage, TickText, VegaTextLayerDatum } from '../interfaces';
+import { zSwap } from '../zaxis';
 
 interface SceneText2 extends SceneText {
     metaData?: any;
@@ -49,8 +50,14 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
         if (item.mark.role === 'axis-label') {
             const tickText = textItem as TickText;
             tickText.value = (item.datum as LabelDatum).value;
+            if (options.currAxis.role === 'z') {
+                zSwap(tickText.position);
+            }
             options.currAxis.tickText.push(tickText);
         } else if (item.mark.role === 'axis-title') {
+            if (options.currAxis.role === 'z') {
+                zSwap(textItem.position);
+            }
             options.currAxis.title = textItem;
         } else {
             stage.textData.push(textItem);

@@ -8,8 +8,12 @@ import scatterplot from './scatterplot';
 import stacks from './stacks';
 import strips from './strips';
 import treemap from './treemap';
-import { SpecBuilder, SpecBuilderProps } from '../specBuilder';
+import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
+import { getFacetLayout } from '../facetLayout';
+import { DiscreteColumn } from '../interfaces';
+import { SignalNames } from '../constants';
+import { defaultBins, maxbins } from '../defaults';
 
 const map: { [chart: string]: (specContext: SpecContext) => SpecBuilderProps } = {
     barchart: barchartV,
@@ -23,13 +27,30 @@ const map: { [chart: string]: (specContext: SpecContext) => SpecBuilderProps } =
     treemap
 };
 
-export function getSpecBuilderForChart(specContext: SpecContext) {
-    const { insight } = specContext;
-    let props: SpecBuilderProps;
-
+export function getSpecBuilderPropsForChart(specContext: SpecContext) {
+    const { insight, specColumns, specViewOptions } = specContext;
     const fn = map[insight.chart];
     if (fn) {
-        props = fn(specContext);
-        return new SpecBuilder({ ...props, specContext });
+        const props = fn(specContext);
+        if (insight.columns.facet) {
+            const discreteFacetColumn: DiscreteColumn = {
+                column: specColumns.facet,
+                defaultBins,
+                maxbins,
+                maxbinsSignalDisplayName: specViewOptions.language.FacetMaxBins,
+                maxbinsSignalName: SignalNames.FacetBins
+            };
+            const discreteFacetVColumn: DiscreteColumn = {
+                column: specColumns.facetV,
+                defaultBins,
+                maxbins,
+                maxbinsSignalDisplayName: specViewOptions.language.FacetVMaxBins,
+                maxbinsSignalName: SignalNames.FacetVBins
+            };
+            const { facetLayout, layoutPair } = getFacetLayout(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn, specViewOptions.colors.axisText);
+            props.layouts.unshift(layoutPair);
+            props.facetLayout = facetLayout;
+        }
+        return props;
     }
 }

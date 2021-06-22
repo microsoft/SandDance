@@ -32,10 +32,10 @@ export function getLayers(
     guideLines: StyledLine[]
 ): Layer<any>[] {
     const cubeLayer = newCubeLayer(presenter, config, stage.cubeData, presenter.style.highlightColor, lightSettings, lightingMix, interpolator);
-    const { x, y } = stage.axes;
+    const { x, y, z } = stage.axes;
     const lines = concat(stage.gridLines, guideLines);
     const texts = [...stage.textData];
-    [x, y].forEach(axes => {
+    [x, y, z].forEach(axes => {
         axes.forEach(axis => {
             if (axis.domain) lines.push(axis.domain);
             if (axis.ticks) lines.push.apply(lines, axis.ticks);

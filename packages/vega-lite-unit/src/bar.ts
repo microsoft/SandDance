@@ -70,7 +70,7 @@ export function unitizeBar(inputSpec: TopLevelUnitSpec, outputSpec: Vega.Spec, u
 
     data0.source = 'source_00';
     delete data0Url.url;
-    delete data0.format;
+    delete data0Url.format;
 
     if (info.quantitativeBand) {
         bandBinTransform = findBinTransform(data0, info.bandEncoding.field).transform;

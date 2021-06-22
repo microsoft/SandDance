@@ -30,6 +30,7 @@ export function recolorAxes(stage: VegaDeckGl.types.Stage, oldColors: SpecColorS
     let axes: {
         x: VegaDeckGl.types.Axis[];
         y: VegaDeckGl.types.Axis[];
+        z: VegaDeckGl.types.Axis[];
     };
     let textData: VegaDeckGl.types.VegaTextLayerDatum[];
 
@@ -38,7 +39,8 @@ export function recolorAxes(stage: VegaDeckGl.types.Stage, oldColors: SpecColorS
         const textColor = VegaDeckGl.util.colorFromString(newColors.axisText || oldColors.axisText);
         axes = {
             x: cloneAxis(stage.axes.x, lineColor, textColor),
-            y: cloneAxis(stage.axes.y, lineColor, textColor)
+            y: cloneAxis(stage.axes.y, lineColor, textColor),
+            z: cloneAxis(stage.axes.z, lineColor, textColor)
         };
     }
 

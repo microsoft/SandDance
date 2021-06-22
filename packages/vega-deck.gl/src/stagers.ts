@@ -9,6 +9,7 @@ import area from './marks/area';
 
 import {
     Axis,
+    AxisRole,
     FacetRect,
     Stage,
     StyledLine
@@ -20,30 +21,33 @@ import {
     GroupType,
     MarkStager,
     MarkStagerOptions,
-    SceneGroup2
+    AxisSceneGroup
 } from './marks/interfaces';
-import { Scene } from 'vega-typings';
+import { Orient, Scene, SceneGroup } from 'vega-typings';
 
 interface VegaAxisDatum {
     domain: boolean;
     grid: boolean;
     labels: boolean;
-    orient: 'bottom' | 'left' | 'right' | 'top';
+    orient: Orient;
     ticks: boolean;
     title: boolean;
 }
 
-function getOrientItem(group: SceneGroup2): { orient?: 'bottom' | 'left' | 'right' | 'top'; } {
+function getOrientItem(group: AxisSceneGroup): { orient?: Orient; } {
     if (group.orient) {
         return group;
     }
     return group.datum as VegaAxisDatum;
 }
 
-function convertGroupRole(group: SceneGroup2): GroupType {
+function convertGroupRole(group: SceneGroup, options: MarkStagerOptions): GroupType {
     if (group.mark.role === 'legend') return GroupType.legend;
     if (group.mark.role === 'axis') {
-        const orientItem = getOrientItem(group);
+        if (((group as AxisSceneGroup).mark).zindex === options.zAxisZindex && options.zAxisZindex !== undefined) {
+            return GroupType.zAxis;
+        }
+        const orientItem = getOrientItem(group as AxisSceneGroup);
         if (orientItem) {
             switch (orientItem.orient) {
                 case 'bottom':
@@ -59,7 +63,7 @@ function convertGroupRole(group: SceneGroup2): GroupType {
 
 const group: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scene, x: number, y: number, groupType: GroupType) => {
 
-    base.vega.sceneVisit(scene, function (g: SceneGroup2) {
+    base.vega.sceneVisit(scene, function (g: SceneGroup) {
 
         const gx = g.x || 0, gy = g.y || 0;
         if (g.context && g.context.background && !stage.backgroundColor) {
@@ -73,7 +77,7 @@ const group: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scen
             stage.facets.push(facetRect);
         }
 
-        groupType = convertGroupRole(g) || groupType;
+        groupType = convertGroupRole(g, options) || groupType;
         setCurrentAxis(options, stage, groupType);
 
         // draw group contents
@@ -86,12 +90,19 @@ const group: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scen
 
 function setCurrentAxis(options: MarkStagerOptions, stage: Stage, groupType: GroupType) {
     let axes: Axis[];
+    let role: AxisRole;
     switch (groupType) {
         case GroupType.xAxis:
             axes = stage.axes.x;
+            role = 'x';
             break;
         case GroupType.yAxis:
             axes = stage.axes.y;
+            role = 'y';
+            break;
+        case GroupType.zAxis:
+            axes = stage.axes.z;
+            role = 'z';
             break;
         default:
             return;
@@ -99,7 +110,8 @@ function setCurrentAxis(options: MarkStagerOptions, stage: Stage, groupType: Gro
     options.currAxis = {
         domain: null,
         tickText: [],
-        ticks: []
+        ticks: [],
+        role
     };
     axes.push(options.currAxis);
 }

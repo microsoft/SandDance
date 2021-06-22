@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { LayoutType } from './index';
 import { GlobalScope } from '../globalScope';
 import {
     AxisScales,
@@ -13,7 +14,7 @@ export interface LayoutProps {
 
 export interface LayoutPair {
     props?: LayoutProps;
-    layoutClass: typeof Layout;
+    layoutType: LayoutType;
 }
 
 export interface LayoutBuildProps {

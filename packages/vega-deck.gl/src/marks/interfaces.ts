@@ -2,13 +2,14 @@
 // Licensed under the MIT license.
 import { Axis, Stage } from '../interfaces';
 import { RGBAColor } from '@deck.gl/core/utils/color';
-import { Scene, SceneGroup } from 'vega-typings';
+import { Mark, Orient, Scene, SceneGroup } from 'vega-typings';
 
 export enum GroupType {
     none = 0,
     legend = 1,
     xAxis = 2,
-    yAxis = 3
+    yAxis = 3,
+    zAxis = 4,
 }
 
 export interface MarkStagerOptions {
@@ -16,12 +17,14 @@ export interface MarkStagerOptions {
     currAxis: Axis;
     defaultCubeColor: RGBAColor;
     assignCubeOrdinal: (d: object) => number | undefined;
+    zAxisZindex: number;
 }
 
 //TODO - use vega-typings below
-export type SceneGroup2 = SceneGroup & {
+export type AxisSceneGroup = SceneGroup & {
     datum?: any;
-    orient?: 'bottom' | 'left' | 'right' | 'top';
+    orient?: Orient;
+    mark: Mark
 };
 export interface LabelDatum {
     value: any;

@@ -81,10 +81,6 @@ export class AggregateSquare extends Layout {
                 layoutHeight: null,
                 layoutWidth: null
             },
-            globalScales: {
-                showAxes: false,
-                scales: {}
-            },
             encodingRuleMap: {
                 y: [{
                     test: testForCollapseSelection(),

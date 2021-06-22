@@ -6,7 +6,7 @@ import { GlobalScope } from './globalScope';
 import { AxisScale, AxisScales, GlobalScales } from './interfaces';
 import { addAxes, addScales } from './scope';
 import { SpecColumns, SpecViewOptions } from './types';
-import { Column } from '@msrvida/chart-types';
+import { Column, View } from '@msrvida/chart-types';
 import {
     Axis,
     NewSignal,
@@ -28,16 +28,17 @@ export interface AxesScopeMap {
 }
 
 interface Props {
-    globalScope: GlobalScope,
-    allGlobalScales: GlobalScales[],
-    axisScales: AxisScales,
-    plotOffsetSignals: { x: NewSignal, y: NewSignal },
-    axesOffsets: { x: number, y: number },
-    axesTitlePadding: { x: number, y: number },
-    labelBaseline: { x: TextBaselineValue, y: TextBaselineValue },
-    specColumns: SpecColumns,
-    specViewOptions: SpecViewOptions,
-    axesScopes: AxesScopeMap
+    globalScope: GlobalScope;
+    allGlobalScales: GlobalScales[];
+    axisScales: AxisScales;
+    plotOffsetSignals: { x: NewSignal, y: NewSignal };
+    axesOffsets: { x: number, y: number };
+    axesTitlePadding: { x: number, y: number };
+    labelBaseline: { x: TextBaselineValue, y: TextBaselineValue };
+    specColumns: SpecColumns;
+    specViewOptions: SpecViewOptions;
+    axesScopes: AxesScopeMap;
+    view: View;
 }
 
 export function addGlobalAxes(props: Props) {
@@ -46,16 +47,27 @@ export function addGlobalAxes(props: Props) {
 
     allGlobalScales.forEach(globalScales => {
         const { scales } = globalScales;
-        for (let s in scales) {
-            let _scales: Scale[] = scales[s];
+        for (let xyz in scales) {
+            let _scales: Scale[] = scales[xyz];
             if (_scales) {
                 addScales(scope, ..._scales);
-                if (globalScales.showAxes && axisScales && s !== 'z') {
-                    let axisScale: AxisScale = axisScales[s];
+                let { showAxes } = globalScales;
+                let zindex: number = undefined;
+                if (xyz === 'z') {
+                    showAxes = false;
+                    if (props.view === '3d' && specViewOptions.zAxisOptions) {
+                        if (specViewOptions.zAxisOptions.showZAxis) {
+                            showAxes = true;
+                            zindex = specViewOptions.zAxisOptions.zIndex;
+                        }
+                    }
+                }
+                if (showAxes && axisScales) {
+                    let axisScale: AxisScale = axisScales[xyz];
                     if (axisScale) {
                         const lineColor = specViewOptions.colors.axisLine;
-                        const horizontal = s === 'x';
-                        const column: Column = specColumns[s] || { quantitative: true };
+                        const horizontal = xyz === 'x';
+                        const column: Column = specColumns[xyz] || { quantitative: true };
                         const title = axisScale.title;
                         const props: AxisProps = {
                             title,
@@ -63,8 +75,9 @@ export function addGlobalAxes(props: Props) {
                             column,
                             specViewOptions,
                             lineColor,
-                            titlePadding: axesTitlePadding[s],
-                            labelBaseline: labelBaseline[s]
+                            titlePadding: axesTitlePadding[xyz],
+                            labelBaseline: labelBaseline[xyz],
+                            zindex
                         };
                         axesScopes['main'].forEach(a => addAxes(a.scope, createAxis({
                             ...props,
@@ -74,8 +87,8 @@ export function addGlobalAxes(props: Props) {
                             showLines: a.lines
                         })));
 
-                        if (axesScopes[s]) {
-                            axesScopes[s].forEach(a => addAxes(a.scope, createAxis({
+                        if (axesScopes[xyz]) {
+                            axesScopes[xyz].forEach(a => addAxes(a.scope, createAxis({
                                 ...props,
                                 scale: a.scale || _scales[0],
                                 showTitle: a.title,
@@ -84,9 +97,9 @@ export function addGlobalAxes(props: Props) {
                             })));
                         }
 
-                        if (plotOffsetSignals[s] && axesOffsets[s]) {
-                            const plotOffsetSignal = plotOffsetSignals[s] as NewSignal;
-                            plotOffsetSignal.update = `${axesOffsets[s]}`;
+                        if (plotOffsetSignals[xyz] && axesOffsets[xyz]) {
+                            const plotOffsetSignal = plotOffsetSignals[xyz] as NewSignal;
+                            plotOffsetSignal.update = `${axesOffsets[xyz]}`;
                         }
                     }
                 }
@@ -107,11 +120,13 @@ interface AxisProps {
     showLabels?: boolean;
     titlePadding: number;
     labelBaseline: TextBaselineValue;
+    zindex: number;
 }
 
 function createAxis(props: AxisProps) {
-    const { column, horizontal, labelBaseline, lineColor, scale, showLabels, showTitle, showLines, specViewOptions, title, titlePadding } = props;
+    const { column, horizontal, labelBaseline, lineColor, scale, showLabels, showTitle, showLines, specViewOptions, title, titlePadding, zindex } = props;
     const axis: Axis = {
+        zindex,
         scale: scale.name,
         orient: horizontal ? 'bottom' : 'left',
         domain: showLines,

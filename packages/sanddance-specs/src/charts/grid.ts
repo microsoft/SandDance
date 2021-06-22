@@ -4,7 +4,7 @@ import { AxisScales } from '../interfaces';
 import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
-import { Square, SquareProps } from '../layouts/square';
+import { SquareProps } from '../layouts/square';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { specColumns } = specContext;
@@ -21,7 +21,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         axisScales,
         layouts: [
             {
-                layoutClass: Square,
+                layoutType: 'Square',
                 props: squareProps
             }
         ],
@@ -30,6 +30,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             roles: [
                 {
                     role: 'z',
+                    axisSelection: specColumns.z && specColumns.z.quantitative ? 'range' : 'exact',
                     allowNone: true
                 },
                 {

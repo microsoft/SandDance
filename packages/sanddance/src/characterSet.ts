@@ -16,11 +16,11 @@ export class CharacterSet {
         if (!this.chars) {
             const map: { [char: string]: true } = {};
             const addText = (text: string) => {
-                Array.from(text).forEach(char => { map[char] = true });
+                Array.from(text).forEach(char => { map[char] = true; });
             };
             stage.textData.forEach(t => addText(t.text));
-            const { x, y } = stage.axes;
-            [x, y].forEach(axes => {
+            const { x, y, z } = stage.axes;
+            [x, y, z].forEach(axes => {
                 axes.forEach(axis => {
                     if (axis.tickText) axis.tickText.forEach(t => addText(t.text));
                     if (axis.title) addText(axis.title.text);
