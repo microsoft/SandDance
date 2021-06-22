@@ -16,7 +16,7 @@ export class CharacterSet {
         if (!this.chars) {
             const map: { [char: string]: true } = {};
             const addText = (text: string) => {
-                Array.from(text).forEach(char => { map[char] = true });
+                Array.from(text).forEach(char => { map[char] = true; });
             };
             stage.textData.forEach(t => addText(t.text));
             const { x, y, z } = stage.axes;

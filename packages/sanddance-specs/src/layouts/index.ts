@@ -1,17 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { AggregateContainer } from "./aggregateContainer";
-import { AggregateSquare } from "./aggregateSquare";
-import { Band } from "./band";
-import { Cross } from "./cross";
-import { Layout } from "./layout";
-import { Scatter } from "./scatter";
-import { Square } from "./square";
-import { Stack } from "./stack";
-import { Strip } from "./strip";
-import { Treemap } from "./treemap";
-import { Wrap } from "./wrap";
+import { AggregateContainer } from './aggregateContainer';
+import { AggregateSquare } from './aggregateSquare';
+import { Band } from './band';
+import { Cross } from './cross';
+import { Layout } from './layout';
+import { Scatter } from './scatter';
+import { Square } from './square';
+import { Stack } from './stack';
+import { Strip } from './strip';
+import { Treemap } from './treemap';
+import { Wrap } from './wrap';
 
 export type LayoutType =
     'AggregateContainer' |

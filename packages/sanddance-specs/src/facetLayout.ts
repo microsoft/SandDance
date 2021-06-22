@@ -15,13 +15,13 @@ import { WrapProps } from './layouts/wrap';
 export interface PlotPadding {
     x: number;
     y: number;
-};
+}
 
 export interface FacetPadding {
     top: number;
     left: number;
     bottom: number;
-};
+}
 
 export interface FacetLayout {
     facetPadding: FacetPadding;

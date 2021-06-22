@@ -182,7 +182,7 @@ export class Presenter {
 
             let glOptions: WebGLContextAttributes;
             if (config && config.preserveDrawingBuffer) {
-                glOptions = { preserveDrawingBuffer: true }
+                glOptions = { preserveDrawingBuffer: true };
             }
 
             const deckProps: DeckGLInternalProps = {

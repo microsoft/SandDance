@@ -324,7 +324,7 @@ export class Viewer {
 
                 this.vegaSpec.signals.forEach(s => {
                     this.vegaViewGl.addSignalListener(s.name, handler);
-                })
+                });
 
                 //capture new color color contexts via signals
                 this.configForSignalCapture(config.presenterConfig);
@@ -692,7 +692,7 @@ export class Viewer {
         if (this.options.onBeforeCreateLayers) {
             defaultPresenterConfig.preLayer = stage => {
                 this.options.onBeforeCreateLayers(stage, this.specCapabilities);
-            }
+            };
         }
         const config: VegaDeckGl.types.ViewGlConfig = {
             presenter: this.presenter,
