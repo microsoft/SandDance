@@ -577,7 +577,7 @@ function _Explorer(props: Props) {
                 insight.view = '3d';
             } else if (chart === 'scatterplot' && this.state.columns.size) {
                 const { signalValues } = this.viewer.getInsight();
-                signalValues[SandDance.specs.SignalNames.PointScale] = 1;
+                //signalValues[SandDance.specs.SignalNames.PointScale] = 1;
                 insight.signalValues = signalValues;
             }
 
