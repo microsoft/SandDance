@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { Axis, Stage } from '../interfaces';
 import { RGBAColor } from '@deck.gl/core/utils/color';
-import { Scene, SceneGroup } from 'vega-typings';
+import { Mark, Orient, Scene, SceneGroup } from 'vega-typings';
 
 export enum GroupType {
     none = 0,
@@ -21,12 +21,10 @@ export interface MarkStagerOptions {
 }
 
 //TODO - use vega-typings below
-export type SceneGroup2 = SceneGroup & {
+export type AxisSceneGroup = SceneGroup & {
     datum?: any;
-    orient?: 'bottom' | 'left' | 'right' | 'top';
-    mark: {
-        zindex: number;
-    }
+    orient?: Orient;
+    mark: Mark
 };
 export interface LabelDatum {
     value: any;
