@@ -39,6 +39,7 @@ function needsNewCharacterSet(oldInsight: Insight, newInsight: Insight) {
     if (oldInsight.facetStyle !== newInsight.facetStyle) return true;
     if (oldInsight.totalStyle !== newInsight.totalStyle) return true;
     if (oldInsight.hideAxes !== newInsight.hideAxes) return true;
+    if (oldInsight.view !== newInsight.view) return true;
     if (differentObjectValues(oldInsight.signalValues, newInsight.signalValues)) return true;
     if (differentObjectValues(oldInsight.size, newInsight.size)) return true;
     const oldColumns = oldInsight.columns;
