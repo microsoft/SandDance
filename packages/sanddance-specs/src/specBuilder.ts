@@ -209,6 +209,7 @@ export class SpecBuilder {
                 specColumns,
                 specViewOptions,
                 axesScopes,
+                faceted: !!facetLayout,
                 view: insight.view
             });
         }
