@@ -1166,7 +1166,8 @@ void main(void) {
             polygonData: [],
             axes: {
                 x: [],
-                y: []
+                y: [],
+                z: [],
             },
             gridLines: [],
             textData: [],
@@ -1349,10 +1350,10 @@ void main(void) {
     // Copyright (c) Microsoft Corporation. All rights reserved.
     function getLayers(presenter, config, stage, lightSettings /*LightSettings*/, lightingMix, interpolator, guideLines) {
         const cubeLayer = newCubeLayer(presenter, config, stage.cubeData, presenter.style.highlightColor, lightSettings, lightingMix, interpolator);
-        const { x, y } = stage.axes;
+        const { x, y, z } = stage.axes;
         const lines = concat(stage.gridLines, guideLines);
         const texts = [...stage.textData];
-        [x, y].forEach(axes => {
+        [x, y, z].forEach(axes => {
             axes.forEach(axis => {
                 if (axis.domain)
                     lines.push(axis.domain);
@@ -1749,6 +1750,15 @@ void main(void) {
         }
     };
 
+    function zSwap(v3) {
+        let temp = -v3[1]; //negeative y to positive z
+        if (v3[0] === lineZ) {
+            v3[0] = 0;
+        }
+        v3[1] = v3[2];
+        v3[2] = temp;
+    }
+
     // Copyright (c) Microsoft Corporation. All rights reserved.
     const markStager = (options, stage, scene, x, y, groupType) => {
         base.vega.sceneVisit(scene, function (item) {
@@ -1759,9 +1769,17 @@ void main(void) {
             y2 = item.y2 != null ? item.y2 : y1;
             const lineItem = styledLine(x1 + x, y1 + y, x2 + x, y2 + y, item.stroke, item.strokeWidth);
             if (item.mark.role === 'axis-tick') {
+                if (options.currAxis.role === 'z') {
+                    zSwap(lineItem.sourcePosition);
+                    zSwap(lineItem.targetPosition);
+                }
                 options.currAxis.ticks.push(lineItem);
             }
             else if (item.mark.role === 'axis-domain') {
+                if (options.currAxis.role === 'z') {
+                    zSwap(lineItem.sourcePosition);
+                    zSwap(lineItem.targetPosition);
+                }
                 options.currAxis.domain = lineItem;
             }
             else {
@@ -1910,9 +1928,15 @@ void main(void) {
             if (item.mark.role === 'axis-label') {
                 const tickText = textItem;
                 tickText.value = item.datum.value;
+                if (options.currAxis.role === 'z') {
+                    zSwap(tickText.position);
+                }
                 options.currAxis.tickText.push(tickText);
             }
             else if (item.mark.role === 'axis-title') {
+                if (options.currAxis.role === 'z') {
+                    zSwap(textItem.position);
+                }
                 options.currAxis.title = textItem;
             }
             else {
@@ -1986,6 +2010,7 @@ void main(void) {
         GroupType[GroupType["legend"] = 1] = "legend";
         GroupType[GroupType["xAxis"] = 2] = "xAxis";
         GroupType[GroupType["yAxis"] = 3] = "yAxis";
+        GroupType[GroupType["zAxis"] = 4] = "zAxis";
     })(GroupType || (GroupType = {}));
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -1995,10 +2020,13 @@ void main(void) {
         }
         return group.datum;
     }
-    function convertGroupRole(group) {
+    function convertGroupRole(group, options) {
         if (group.mark.role === 'legend')
             return GroupType.legend;
         if (group.mark.role === 'axis') {
+            if ((group.mark).zindex === options.zAxisZindex && options.zAxisZindex !== undefined) {
+                return GroupType.zAxis;
+            }
             const orientItem = getOrientItem(group);
             if (orientItem) {
                 switch (orientItem.orient) {
@@ -2025,7 +2053,7 @@ void main(void) {
                 };
                 stage.facets.push(facetRect);
             }
-            groupType = convertGroupRole(g) || groupType;
+            groupType = convertGroupRole(g, options) || groupType;
             setCurrentAxis(options, stage, groupType);
             // draw group contents
             base.vega.sceneVisit(g, function (item) {
@@ -2035,12 +2063,19 @@ void main(void) {
     };
     function setCurrentAxis(options, stage, groupType) {
         let axes;
+        let role;
         switch (groupType) {
             case GroupType.xAxis:
                 axes = stage.axes.x;
+                role = 'x';
                 break;
             case GroupType.yAxis:
                 axes = stage.axes.y;
+                role = 'y';
+                break;
+            case GroupType.zAxis:
+                axes = stage.axes.z;
+                role = 'z';
                 break;
             default:
                 return;
@@ -2048,7 +2083,8 @@ void main(void) {
         options.currAxis = {
             domain: null,
             tickText: [],
-            ticks: []
+            ticks: [],
+            role
         };
         axes.push(options.currAxis);
     }
@@ -2200,7 +2236,8 @@ void main(void) {
                 maxOrdinal: 0,
                 currAxis: null,
                 defaultCubeColor: this.style.defaultCubeColor,
-                assignCubeOrdinal: (config && config.onSceneRectAssignCubeOrdinal) || (() => options.maxOrdinal++)
+                assignCubeOrdinal: (config === null || config === void 0 ? void 0 : config.onSceneRectAssignCubeOrdinal) || (() => options.maxOrdinal++),
+                zAxisZindex: config === null || config === void 0 ? void 0 : config.zAxisZindex
             };
             //determine if this is a vega scene
             if (scene.marktype) {
