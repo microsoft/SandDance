@@ -154,9 +154,9 @@ export class Strip extends Layout {
 
         addMarks(globalScope.markGroup, mark);
 
-        let percentageScale: LinearScale;
+        let percentageScale: LinearScale[];
         if (addPercentageScale) {
-            percentageScale = {
+            percentageScale = [{
                 type: 'linear',
                 name: names.scale,
                 domain: [0, 100],
@@ -174,15 +174,15 @@ export class Strip extends Layout {
                         },
                         0
                     ]
-            };
+            }];
         }
 
         return {
             globalScales: {
                 showAxes: true,
                 scales: {
-                    x: horizontal ? [percentageScale] : undefined,
-                    y: horizontal ? undefined : [percentageScale],
+                    x: horizontal ? percentageScale : undefined,
+                    y: horizontal ? undefined : percentageScale,
                     z: zScale && [zScale]
                 }
             },
