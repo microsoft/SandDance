@@ -5156,7 +5156,7 @@ class Strip extends _layout.Layout {
     let percentageScale;
 
     if (addPercentageScale) {
-      percentageScale = {
+      percentageScale = [{
         type: 'linear',
         name: names.scale,
         domain: [0, 100],
@@ -5165,15 +5165,15 @@ class Strip extends _layout.Layout {
         }] : [{
           signal: parentScope.sizeSignals.layoutHeight
         }, 0]
-      };
+      }];
     }
 
     return {
       globalScales: {
         showAxes: true,
         scales: {
-          x: horizontal ? [percentageScale] : undefined,
-          y: horizontal ? undefined : [percentageScale],
+          x: horizontal ? percentageScale : undefined,
+          y: horizontal ? undefined : percentageScale,
           z: zScale && [zScale]
         }
       },
@@ -12883,6 +12883,7 @@ function needsNewCharacterSet(oldInsight, newInsight) {
   if (oldInsight.facetStyle !== newInsight.facetStyle) return true;
   if (oldInsight.totalStyle !== newInsight.totalStyle) return true;
   if (oldInsight.hideAxes !== newInsight.hideAxes) return true;
+  if (oldInsight.view !== newInsight.view) return true;
   if (differentObjectValues(oldInsight.signalValues, newInsight.signalValues)) return true;
   if (differentObjectValues(oldInsight.size, newInsight.size)) return true;
   const oldColumns = oldInsight.columns;
@@ -15307,7 +15308,403 @@ function ToggleColumns(props) {
     })));
   }));
 }
-},{"../base":"Vlbn"}],"NGSt":[function(require,module,exports) {
+},{"../base":"Vlbn"}],"ENdt":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.defaultColorScheme = exports.Recommender = exports.maxCategoricalColors = void 0;
+exports.maxCategoricalColors = 20;
+var Recommender = /** @class */ (function () {
+    function Recommender(columns, data) {
+    }
+    return Recommender;
+}());
+exports.Recommender = Recommender;
+function defaultColorScheme(c) {
+    if (c.quantitative) {
+        return 'redyellowgreen';
+    }
+    else if (c.stats.distinctValueCount === 2) {
+        return 'dual_redgreen';
+    }
+    else if (c.stats.distinctValueCount <= 10) {
+        return 'category10';
+    }
+    return 'category20';
+}
+exports.defaultColorScheme = defaultColorScheme;
+
+},{}],"oxgd":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BarChartRecommender = exports.BarChartRecommenderSummary = void 0;
+var recommender_1 = require("./recommender");
+var maxDistinctVal = 20;
+var minDistinctVal = 2;
+var BarChartRecommenderSummary = /** @class */ (function () {
+    function BarChartRecommenderSummary(columns, data) {
+        var score = -1;
+        for (var i = 0; i < columns.length; i++) {
+            var recommendation = new BarChartRecommender(columns[i], data).recommend();
+            if (recommendation.score > score) {
+                this.best = recommendation;
+                score = recommendation.score;
+            }
+            if (score === 1)
+                break;
+        }
+        for (var k = 0; k < columns.length; k++) {
+            var column = columns[k];
+            if (column.name === this.best.columns.x || column.stats.isSequential)
+                continue;
+            if (column.quantitative || (column.stats.distinctValueCount < recommender_1.maxCategoricalColors && column.stats.distinctValueCount > 1)) {
+                this.best.columns.color = this.best.columns.sort = column.name;
+                this.best.scheme = recommender_1.defaultColorScheme(column);
+                if (column.quantitative) {
+                    this.best.colorBin = 'quantile';
+                }
+                break;
+            }
+        }
+    }
+    BarChartRecommenderSummary.prototype.recommend = function () {
+        return this.best;
+    };
+    return BarChartRecommenderSummary;
+}());
+exports.BarChartRecommenderSummary = BarChartRecommenderSummary;
+var BarChartRecommender = /** @class */ (function () {
+    function BarChartRecommender(column, data) {
+        this.score = 0;
+        this.column = column;
+        //the total score for bar chart is 1
+        this.rules = [
+            function (column) {
+                if (column.stats.isSequential)
+                    return false;
+                else if (column.quantitative) {
+                    return true;
+                }
+                else if (!column.quantitative && column.stats.distinctValueCount <= maxDistinctVal && column.stats.distinctValueCount >= minDistinctVal) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        ];
+        for (var i = 0; i < this.rules.length; i++) {
+            if (this.rules[i](column))
+                this.score++;
+        }
+    }
+    BarChartRecommender.prototype.recommend = function () {
+        var rec = {
+            chart: 'barchart',
+            columns: {
+                x: this.column.name
+            },
+            score: this.score,
+            scheme: undefined,
+            view: '2d'
+        };
+        return rec;
+    };
+    return BarChartRecommender;
+}());
+exports.BarChartRecommender = BarChartRecommender;
+
+},{"./recommender":"ENdt"}],"O4ew":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.isGeo = exports.isLatitude = exports.isLongitude = void 0;
+//TODO: languages other than english
+var longitudeNames = ['lon', 'long', 'longitude'];
+var latitudeNames = ['lat', 'latitude'];
+function isSpec(names, limits, column, data) {
+    var is = false;
+    var cname = column.name.toLowerCase();
+    for (var i = 0; i < names.length; i++) {
+        if (names[i] === cname) {
+            is = true;
+            break;
+        }
+    }
+    if (data) {
+        //TODO: spin through data to see if it is within limits
+    }
+    return is;
+}
+function isLongitude(column, data) {
+    return isSpec(longitudeNames, [-180, 180], column, data);
+}
+exports.isLongitude = isLongitude;
+function isLatitude(column, data) {
+    return isSpec(latitudeNames, [-90, 90], column, data);
+}
+exports.isLatitude = isLatitude;
+function isGeo(column, data) {
+    return isLatitude(column, data) || isLongitude(column, data);
+}
+exports.isGeo = isGeo;
+
+},{}],"iBe2":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ScatterPlotRecommenderSummary = void 0;
+var recommender_1 = require("./recommender");
+var geo_1 = require("./geo");
+var ScatterPlotRecommenderSummary = /** @class */ (function () {
+    function ScatterPlotRecommenderSummary(columns, data) {
+        var rec = {
+            chart: 'scatterplot',
+            score: undefined,
+            columns: {},
+            scheme: undefined,
+            view: '2d'
+        };
+        columns.forEach(function (column) {
+            if (!rec.columns.x) {
+                if (column.name.toLowerCase() === 'x') {
+                    return rec.columns.x = column.name;
+                }
+                else if (geo_1.isLongitude(column)) {
+                    return rec.columns.x = column.name;
+                }
+            }
+            if (!rec.columns.y) {
+                if (column.name.toLowerCase() === 'y') {
+                    return rec.columns.y = column.name;
+                }
+                else if (geo_1.isLatitude(column)) {
+                    return rec.columns.y = column.name;
+                }
+            }
+            if (!rec.columns.color && !column.stats.isSequential) {
+                if (column.quantitative || column.stats.distinctValueCount < recommender_1.maxCategoricalColors) {
+                    rec.columns.color = rec.columns.sort = column.name;
+                    rec.scheme = recommender_1.defaultColorScheme(column);
+                    if (column.quantitative) {
+                        rec.colorBin = 'quantile';
+                    }
+                    return;
+                }
+            }
+        });
+        if (rec.columns.x && rec.columns.y) {
+            this.best = rec;
+        }
+    }
+    ScatterPlotRecommenderSummary.prototype.recommend = function () {
+        return this.best;
+    };
+    return ScatterPlotRecommenderSummary;
+}());
+exports.ScatterPlotRecommenderSummary = ScatterPlotRecommenderSummary;
+
+},{"./recommender":"ENdt","./geo":"O4ew"}],"At4q":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.preferredColumnForTreemapSize = void 0;
+var geo_1 = require("./geo");
+function preferredColumnForTreemapSize(columns, strict) {
+    for (var i = 0; i < columns.length; i++) {
+        var c = columns[i];
+        if (c.quantitative) {
+            if (strict && c.stats.hasNegative)
+                continue;
+            if (strict && c.stats.isSequential)
+                continue;
+            if (strict && geo_1.isGeo(c))
+                continue;
+            return c;
+        }
+    }
+}
+exports.preferredColumnForTreemapSize = preferredColumnForTreemapSize;
+
+},{"./geo":"O4ew"}],"fB3P":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RecommenderSummary = void 0;
+var barChart_1 = require("./barChart");
+var scatterPlot_1 = require("./scatterPlot");
+var RecommenderSummary = /** @class */ (function () {
+    function RecommenderSummary(columns, data) {
+        var quickRec = new scatterPlot_1.ScatterPlotRecommenderSummary(columns, data).recommend();
+        if (quickRec) {
+            this.rec = quickRec;
+        }
+        else {
+            var barChartrec = new barChart_1.BarChartRecommenderSummary(columns, data).recommend();
+            if (barChartrec && barChartrec.score >= 1) {
+                this.rec = barChartrec;
+            }
+            else {
+                this.rec = {
+                    chart: 'grid',
+                    columns: {},
+                    score: 1
+                };
+            }
+        }
+    }
+    RecommenderSummary.prototype.recommend = function () {
+        return this.rec;
+    };
+    return RecommenderSummary;
+}());
+exports.RecommenderSummary = RecommenderSummary;
+
+},{"./barChart":"oxgd","./scatterPlot":"iBe2"}],"i6UQ":[function(require,module,exports) {
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+__exportStar(require("./barChart"), exports);
+__exportStar(require("./geo"), exports);
+__exportStar(require("./scatterPlot"), exports);
+__exportStar(require("./treemap"), exports);
+__exportStar(require("./recommenderSummary"), exports);
+
+},{"./barChart":"oxgd","./geo":"O4ew","./scatterPlot":"iBe2","./treemap":"At4q","./recommenderSummary":"fB3P"}],"f8v0":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ensureColumnsExist = ensureColumnsExist;
+exports.ensureColumnsPopulated = ensureColumnsPopulated;
+exports.getTreemapColumn = getTreemapColumn;
+
+var _chartRecommender = require("@msrvida/chart-recommender");
+
+var _sanddanceReact = require("@msrvida/sanddance-react");
+
+var _language = require("./language");
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+function ensureColumnsExist(insightColumns, actualColumns, transform) {
+  var _loop = function _loop(role) {
+    var columnName = insightColumns[role];
+    var column = actualColumns.filter(function (c) {
+      return c.name === columnName;
+    })[0];
+    var transformColumn = transform ? transform.filter(function (t) {
+      switch (t.type) {
+        case 'formula':
+          {
+            return t.as === columnName;
+          }
+      }
+    })[0] : null;
+
+    if (!(column || transformColumn)) {
+      delete insightColumns[role];
+    }
+  };
+
+  //ensure columns exist
+  for (var role in insightColumns) {
+    _loop(role);
+  }
+}
+
+function ensureColumnsPopulated(chart, totalStyle, insightColumns, actualColumns) {
+  //ensure columns are populated
+  var nonInternal = actualColumns.filter(function (c) {
+    return !_sanddanceReact.SandDance.util.isInternalFieldName(c.name);
+  });
+  var firstColumn = nonInternal[0];
+  var firstColumnName = firstColumn && firstColumn.name;
+  var firstQuantitative = nonInternal.filter(function (c) {
+    return c.quantitative;
+  })[0];
+  var firstQuantitativeColumnName = firstQuantitative && firstQuantitative.name;
+
+  var ensureColumn = function ensureColumn(role, quantitative, treemap) {
+    if (!insightColumns[role]) {
+      if (treemap) {
+        insightColumns[role] = getTreemapColumn(actualColumns).name;
+      } else {
+        insightColumns[role] = quantitative ? firstQuantitativeColumnName : firstColumnName;
+      }
+    }
+  };
+
+  function checkRequiresSize() {
+    console.log('totalStyle', totalStyle);
+
+    switch (totalStyle) {
+      case 'sum-strip':
+      case 'sum-strip-percent':
+        ensureColumn('size', true);
+        break;
+
+      case 'sum-treemap':
+        ensureColumn('size', true, true);
+        break;
+    }
+  }
+
+  switch (chart) {
+    case 'barchart':
+    case 'barchartV':
+      ensureColumn('x');
+      checkRequiresSize();
+      break;
+
+    case 'barchartH':
+      ensureColumn('y');
+      checkRequiresSize();
+      break;
+
+    case 'density':
+      ensureColumn('x');
+      ensureColumn('y');
+      checkRequiresSize();
+      break;
+
+    case 'scatterplot':
+    case 'stacks':
+      ensureColumn('x');
+      ensureColumn('y');
+      break;
+
+    case 'treemap':
+      if (!insightColumns.size) {
+        insightColumns.size = getTreemapColumn(actualColumns).name;
+      }
+
+      if (!insightColumns.size) {
+        //error - no numeric column
+        return [_language.strings.errorColumnMustBeNumeric];
+      }
+
+      break;
+  }
+}
+
+function getTreemapColumn(columns) {
+  var column = (0, _chartRecommender.preferredColumnForTreemapSize)(columns, true);
+
+  if (!column) {
+    column = (0, _chartRecommender.preferredColumnForTreemapSize)(columns, false);
+  }
+
+  return column;
+}
+},{"@msrvida/chart-recommender":"i6UQ","@msrvida/sanddance-react":"MjKu","./language":"hk5u"}],"NGSt":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15333,6 +15730,8 @@ var _signal = require("../controls/signal");
 var _language = require("../language");
 
 var _toggleColumns = require("../controls/toggleColumns");
+
+var _columns = require("../columns");
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -15513,7 +15912,7 @@ function _Chart(props) {
                   }))),
                   onChange: function onChange(e, o) {
                     var facetData = o.data;
-                    props.changeColumnMapping('facet', 'facet', {
+                    props.changeColumnMapping('facet', 'facet', null, {
                       facetStyle: facetData.facetStyle
                     });
 
@@ -15576,8 +15975,19 @@ function _Chart(props) {
                   },
                   options: options,
                   onChange: function onChange(e, o) {
-                    return props.changeColumnMapping('size', 'size', {
-                      totalStyle: o.data
+                    var totalStyle = o.data;
+                    var defaultColumn;
+
+                    if (totalStyle.indexOf('sum-') === 0) {
+                      if (totalStyle === 'sum-treemap') {
+                        defaultColumn = (0, _columns.getTreemapColumn)(props.allColumns);
+                      }
+
+                      defaultColumn = defaultColumn || props.quantitativeColumns[0];
+                    }
+
+                    props.changeColumnMapping('size', 'size', defaultColumn, {
+                      totalStyle: totalStyle
                     });
                   }
                 });
@@ -15653,7 +16063,7 @@ function _Chart(props) {
 
 var Chart = _Chart;
 exports.Chart = Chart;
-},{"../base":"Vlbn","../controls/columnMap":"DSho","../controls/dialog":"cFWm","../controls/dropdown":"Uyrp","../controls/group":"Q3hf","@msrvida/sanddance-react":"MjKu","../controls/signal":"OWDI","../language":"hk5u","../controls/toggleColumns":"ZOmP"}],"qO9b":[function(require,module,exports) {
+},{"../base":"Vlbn","../controls/columnMap":"DSho","../controls/dialog":"cFWm","../controls/dropdown":"Uyrp","../controls/group":"Q3hf","@msrvida/sanddance-react":"MjKu","../controls/signal":"OWDI","../language":"hk5u","../controls/toggleColumns":"ZOmP","../columns":"f8v0"}],"qO9b":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16383,7 +16793,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var version = '3.1.1';
+var version = '3.2.0';
 exports.version = version;
 },{}],"zKGJ":[function(require,module,exports) {
 "use strict";
@@ -17335,377 +17745,7 @@ function defaultColorScheme(c) {
 
   return 'category20';
 }
-},{}],"ENdt":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.defaultColorScheme = exports.Recommender = exports.maxCategoricalColors = void 0;
-exports.maxCategoricalColors = 20;
-var Recommender = /** @class */ (function () {
-    function Recommender(columns, data) {
-    }
-    return Recommender;
-}());
-exports.Recommender = Recommender;
-function defaultColorScheme(c) {
-    if (c.quantitative) {
-        return 'redyellowgreen';
-    }
-    else if (c.stats.distinctValueCount === 2) {
-        return 'dual_redgreen';
-    }
-    else if (c.stats.distinctValueCount <= 10) {
-        return 'category10';
-    }
-    return 'category20';
-}
-exports.defaultColorScheme = defaultColorScheme;
-
-},{}],"oxgd":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.BarChartRecommender = exports.BarChartRecommenderSummary = void 0;
-var recommender_1 = require("./recommender");
-var maxDistinctVal = 20;
-var minDistinctVal = 2;
-var BarChartRecommenderSummary = /** @class */ (function () {
-    function BarChartRecommenderSummary(columns, data) {
-        var score = -1;
-        for (var i = 0; i < columns.length; i++) {
-            var recommendation = new BarChartRecommender(columns[i], data).recommend();
-            if (recommendation.score > score) {
-                this.best = recommendation;
-                score = recommendation.score;
-            }
-            if (score === 1)
-                break;
-        }
-        for (var k = 0; k < columns.length; k++) {
-            var column = columns[k];
-            if (column.name === this.best.columns.x || column.stats.isSequential)
-                continue;
-            if (column.quantitative || (column.stats.distinctValueCount < recommender_1.maxCategoricalColors && column.stats.distinctValueCount > 1)) {
-                this.best.columns.color = this.best.columns.sort = column.name;
-                this.best.scheme = recommender_1.defaultColorScheme(column);
-                if (column.quantitative) {
-                    this.best.colorBin = 'quantile';
-                }
-                break;
-            }
-        }
-    }
-    BarChartRecommenderSummary.prototype.recommend = function () {
-        return this.best;
-    };
-    return BarChartRecommenderSummary;
-}());
-exports.BarChartRecommenderSummary = BarChartRecommenderSummary;
-var BarChartRecommender = /** @class */ (function () {
-    function BarChartRecommender(column, data) {
-        this.score = 0;
-        this.column = column;
-        //the total score for bar chart is 1
-        this.rules = [
-            function (column) {
-                if (column.stats.isSequential)
-                    return false;
-                else if (column.quantitative) {
-                    return true;
-                }
-                else if (!column.quantitative && column.stats.distinctValueCount <= maxDistinctVal && column.stats.distinctValueCount >= minDistinctVal) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-        ];
-        for (var i = 0; i < this.rules.length; i++) {
-            if (this.rules[i](column))
-                this.score++;
-        }
-    }
-    BarChartRecommender.prototype.recommend = function () {
-        var rec = {
-            chart: 'barchart',
-            columns: {
-                x: this.column.name
-            },
-            score: this.score,
-            scheme: undefined,
-            view: '2d'
-        };
-        return rec;
-    };
-    return BarChartRecommender;
-}());
-exports.BarChartRecommender = BarChartRecommender;
-
-},{"./recommender":"ENdt"}],"O4ew":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.isGeo = exports.isLatitude = exports.isLongitude = void 0;
-//TODO: languages other than english
-var longitudeNames = ['lon', 'long', 'longitude'];
-var latitudeNames = ['lat', 'latitude'];
-function isSpec(names, limits, column, data) {
-    var is = false;
-    var cname = column.name.toLowerCase();
-    for (var i = 0; i < names.length; i++) {
-        if (names[i] === cname) {
-            is = true;
-            break;
-        }
-    }
-    if (data) {
-        //TODO: spin through data to see if it is within limits
-    }
-    return is;
-}
-function isLongitude(column, data) {
-    return isSpec(longitudeNames, [-180, 180], column, data);
-}
-exports.isLongitude = isLongitude;
-function isLatitude(column, data) {
-    return isSpec(latitudeNames, [-90, 90], column, data);
-}
-exports.isLatitude = isLatitude;
-function isGeo(column, data) {
-    return isLatitude(column, data) || isLongitude(column, data);
-}
-exports.isGeo = isGeo;
-
-},{}],"iBe2":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ScatterPlotRecommenderSummary = void 0;
-var recommender_1 = require("./recommender");
-var geo_1 = require("./geo");
-var ScatterPlotRecommenderSummary = /** @class */ (function () {
-    function ScatterPlotRecommenderSummary(columns, data) {
-        var rec = {
-            chart: 'scatterplot',
-            score: undefined,
-            columns: {},
-            scheme: undefined,
-            view: '2d'
-        };
-        columns.forEach(function (column) {
-            if (!rec.columns.x) {
-                if (column.name.toLowerCase() === 'x') {
-                    return rec.columns.x = column.name;
-                }
-                else if (geo_1.isLongitude(column)) {
-                    return rec.columns.x = column.name;
-                }
-            }
-            if (!rec.columns.y) {
-                if (column.name.toLowerCase() === 'y') {
-                    return rec.columns.y = column.name;
-                }
-                else if (geo_1.isLatitude(column)) {
-                    return rec.columns.y = column.name;
-                }
-            }
-            if (!rec.columns.color && !column.stats.isSequential) {
-                if (column.quantitative || column.stats.distinctValueCount < recommender_1.maxCategoricalColors) {
-                    rec.columns.color = rec.columns.sort = column.name;
-                    rec.scheme = recommender_1.defaultColorScheme(column);
-                    if (column.quantitative) {
-                        rec.colorBin = 'quantile';
-                    }
-                    return;
-                }
-            }
-        });
-        if (rec.columns.x && rec.columns.y) {
-            this.best = rec;
-        }
-    }
-    ScatterPlotRecommenderSummary.prototype.recommend = function () {
-        return this.best;
-    };
-    return ScatterPlotRecommenderSummary;
-}());
-exports.ScatterPlotRecommenderSummary = ScatterPlotRecommenderSummary;
-
-},{"./recommender":"ENdt","./geo":"O4ew"}],"At4q":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.preferredColumnForTreemapSize = void 0;
-var geo_1 = require("./geo");
-function preferredColumnForTreemapSize(columns, strict) {
-    for (var i = 0; i < columns.length; i++) {
-        var c = columns[i];
-        if (c.quantitative) {
-            if (strict && c.stats.hasNegative)
-                continue;
-            if (strict && c.stats.isSequential)
-                continue;
-            if (strict && geo_1.isGeo(c))
-                continue;
-            return c.name;
-        }
-    }
-}
-exports.preferredColumnForTreemapSize = preferredColumnForTreemapSize;
-
-},{"./geo":"O4ew"}],"fB3P":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.RecommenderSummary = void 0;
-var barChart_1 = require("./barChart");
-var scatterPlot_1 = require("./scatterPlot");
-var RecommenderSummary = /** @class */ (function () {
-    function RecommenderSummary(columns, data) {
-        var quickRec = new scatterPlot_1.ScatterPlotRecommenderSummary(columns, data).recommend();
-        if (quickRec) {
-            this.rec = quickRec;
-        }
-        else {
-            var barChartrec = new barChart_1.BarChartRecommenderSummary(columns, data).recommend();
-            if (barChartrec && barChartrec.score >= 1) {
-                this.rec = barChartrec;
-            }
-            else {
-                this.rec = {
-                    chart: 'grid',
-                    columns: {},
-                    score: 1
-                };
-            }
-        }
-    }
-    RecommenderSummary.prototype.recommend = function () {
-        return this.rec;
-    };
-    return RecommenderSummary;
-}());
-exports.RecommenderSummary = RecommenderSummary;
-
-},{"./barChart":"oxgd","./scatterPlot":"iBe2"}],"i6UQ":[function(require,module,exports) {
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-__exportStar(require("./barChart"), exports);
-__exportStar(require("./geo"), exports);
-__exportStar(require("./scatterPlot"), exports);
-__exportStar(require("./treemap"), exports);
-__exportStar(require("./recommenderSummary"), exports);
-
-},{"./barChart":"oxgd","./geo":"O4ew","./scatterPlot":"iBe2","./treemap":"At4q","./recommenderSummary":"fB3P"}],"f8v0":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.ensureColumnsExist = ensureColumnsExist;
-exports.ensureColumnsPopulated = ensureColumnsPopulated;
-
-var _chartRecommender = require("@msrvida/chart-recommender");
-
-var _sanddanceReact = require("@msrvida/sanddance-react");
-
-var _language = require("./language");
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-function ensureColumnsExist(insightColumns, actualColumns, transform) {
-  var _loop = function _loop(role) {
-    var columnName = insightColumns[role];
-    var column = actualColumns.filter(function (c) {
-      return c.name === columnName;
-    })[0];
-    var transformColumn = transform ? transform.filter(function (t) {
-      switch (t.type) {
-        case 'formula':
-          {
-            return t.as === columnName;
-          }
-      }
-    })[0] : null;
-
-    if (!(column || transformColumn)) {
-      delete insightColumns[role];
-    }
-  };
-
-  //ensure columns exist
-  for (var role in insightColumns) {
-    _loop(role);
-  }
-}
-
-function ensureColumnsPopulated(chart, insightColumns, actualColumns) {
-  //ensure columns are populated
-  var nonInternal = actualColumns.filter(function (c) {
-    return !_sanddanceReact.SandDance.util.isInternalFieldName(c.name);
-  });
-  var firstColumn = nonInternal[0];
-  var firstColumnName = firstColumn && firstColumn.name;
-  var firstQuantitative = nonInternal.filter(function (c) {
-    return c.quantitative;
-  })[0];
-  var firstQuantitativeColumnName = firstQuantitative && firstQuantitative.name;
-
-  var ensureColumn = function ensureColumn(role, quantitative) {
-    if (!insightColumns[role]) {
-      insightColumns[role] = quantitative ? firstQuantitativeColumnName : firstColumnName;
-    }
-  };
-
-  switch (chart) {
-    case 'barchart':
-    case 'barchartV':
-      ensureColumn('x');
-      ensureColumn('size', true);
-      break;
-
-    case 'barchartH':
-      ensureColumn('y');
-      ensureColumn('size', true);
-      break;
-
-    case 'density':
-      ensureColumn('x');
-      ensureColumn('y');
-      ensureColumn('size', true);
-      break;
-
-    case 'scatterplot':
-    case 'stacks':
-      ensureColumn('x');
-      ensureColumn('y');
-      break;
-
-    case 'treemap':
-      if (!insightColumns.size) {
-        insightColumns.size = (0, _chartRecommender.preferredColumnForTreemapSize)(actualColumns, true);
-
-        if (!insightColumns.size) {
-          insightColumns.size = (0, _chartRecommender.preferredColumnForTreemapSize)(actualColumns, false);
-        }
-      }
-
-      if (!insightColumns.size) {
-        //error - no numeric column
-        return [_language.strings.errorColumnMustBeNumeric];
-      }
-
-      break;
-  }
-}
-},{"@msrvida/chart-recommender":"i6UQ","@msrvida/sanddance-react":"MjKu","./language":"hk5u"}],"fiGR":[function(require,module,exports) {
+},{}],"fiGR":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23006,7 +23046,7 @@ function _Explorer(props) {
             }, partialInsight);
             _this6.getColorContext = null;
             (0, _columns.ensureColumnsExist)(newState.columns, dataContent.columns, newState.transform);
-            var errors = (0, _columns.ensureColumnsPopulated)(partialInsight ? partialInsight.chart : null, newState.columns, dataContent.columns);
+            var errors = (0, _columns.ensureColumnsPopulated)(partialInsight === null || partialInsight === void 0 ? void 0 : partialInsight.chart, partialInsight === null || partialInsight === void 0 ? void 0 : partialInsight.totalStyle, newState.columns, dataContent.columns);
             newState.errors = errors; //change insight
 
             _this6.changeInsight(partialInsight, {
@@ -23047,7 +23087,13 @@ function _Explorer(props) {
 
         var columns = _sanddanceReact.SandDance.VegaDeckGl.util.deepMerge({}, partialInsight.columns, this.state.columns);
 
-        insight.columns = Object.assign({}, columns); //special case mappings when switching chart type
+        var _this$viewer$getInsig = this.viewer.getInsight(),
+            signalValues = _this$viewer$getInsig.signalValues;
+
+        insight.signalValues = Object.assign(Object.assign({}, this.state.signalValues), signalValues);
+        insight.columns = Object.assign({}, columns);
+        insight.totalStyle = this.state.totalStyle;
+        var errors; //special case mappings when switching chart type
 
         if (this.state.chart === 'scatterplot' && (chart === 'barchart' || chart === 'barchartV')) {
           insight.columns = Object.assign(Object.assign({}, columns), {
@@ -23062,7 +23108,7 @@ function _Explorer(props) {
 
           if (!columns.size) {
             //make sure size exists and is numeric
-            var sizeColumnName; //first check prefs
+            var sizeColumn; //first check prefs
 
             if (partialInsight && partialInsight.columns && partialInsight.columns.size) {
               var prefSizeColumn = this.state.dataContent.columns.filter(function (c) {
@@ -23070,37 +23116,29 @@ function _Explorer(props) {
               })[0];
 
               if (prefSizeColumn && prefSizeColumn.quantitative) {
-                sizeColumnName = prefSizeColumn.name;
+                sizeColumn = prefSizeColumn;
               }
             }
 
-            if (!sizeColumnName) {
-              sizeColumnName = (0, _chartRecommender.preferredColumnForTreemapSize)(this.state.dataContent.columns, true);
+            if (!sizeColumn) {
+              sizeColumn = (0, _columns.getTreemapColumn)(this.state.dataContent.columns);
             }
 
-            if (!sizeColumnName) {
-              sizeColumnName = (0, _chartRecommender.preferredColumnForTreemapSize)(this.state.dataContent.columns, false);
-            }
-
-            if (!sizeColumnName) {//TODO error - no numeric columns
+            if (!sizeColumn) {
+              //error - no numeric columns
+              errors = [_language.strings.errorColumnMustBeNumeric];
             } else {
               insight.columns = Object.assign(Object.assign({}, columns), {
-                size: sizeColumnName
+                size: sizeColumn.name
               });
             }
           }
         } else if (chart === 'stacks') {
           insight.view = '3d';
-        } else if (chart === 'scatterplot' && this.state.columns.size) {
-          var _this$viewer$getInsig = this.viewer.getInsight(),
-              signalValues = _this$viewer$getInsig.signalValues;
-
-          signalValues[_sanddanceReact.SandDance.specs.SignalNames.PointScale] = 1;
-          insight.signalValues = signalValues;
         }
 
         (0, _columns.ensureColumnsExist)(insight.columns, this.state.dataContent.columns, this.state.transform);
-        var errors = (0, _columns.ensureColumnsPopulated)(chart, insight.columns, this.state.dataContent.columns);
+        errors = (0, _columns.ensureColumnsPopulated)(chart, insight.totalStyle, insight.columns, this.state.dataContent.columns);
         this.calculate(function () {
           _this7.changeInsight(insight, {
             label: _language.strings.labelHistoryChangeChartType((0, _chart.chartLabel)(chart))
@@ -23129,10 +23167,6 @@ function _Explorer(props) {
     }, {
       key: "changeInsight",
       value: function changeInsight(partialInsight, historyAction, additionalUIState) {
-        if (!partialInsight.signalValues) {
-          partialInsight.signalValues = null;
-        }
-
         if (partialInsight.chart === 'barchart') {
           partialInsight.chart = 'barchartV';
         }
@@ -23152,6 +23186,13 @@ function _Explorer(props) {
           }
 
           delete cleanState.rebaseFilter;
+
+          if (_this8.viewer) {
+            var _this8$viewer$getInsi = _this8.viewer.getInsight(),
+                signalValues = _this8$viewer$getInsi.signalValues;
+
+            cleanState.signalValues = Object.assign(Object.assign(Object.assign({}, _this8.state.signalValues), signalValues), cleanState.signalValues);
+          }
 
           _this8.setState(cleanState);
         };
@@ -23244,13 +23285,18 @@ function _Explorer(props) {
         var label = column ? _language.strings.labelHistoryMapColumn(role) : _language.strings.labelHistoryUnMapColumn(role);
 
         var final = function final() {
+          var partialInsight = {
+            columns: columns,
+            totalStyle: options ? options.totalStyle : _this9.state.totalStyle
+          };
+          var errors = (0, _columns.ensureColumnsPopulated)(_this9.state.chart, partialInsight.totalStyle, partialInsight.columns, _this9.state.dataContent.columns);
           columns[role] = column && column.name;
 
-          _this9.changeInsight({
-            columns: columns
-          }, {
+          _this9.changeInsight(partialInsight, {
             label: label
-          });
+          }, errors ? {
+            errors: errors
+          } : null);
         };
 
         var _changeInsight = function _changeInsight(newInsight, columnUpdate, historyAction) {
@@ -24328,7 +24374,7 @@ function _Explorer(props) {
           return !c.quantitative;
         });
         var props = {
-          changeColumnMapping: function changeColumnMapping(role, columnOrRole, options) {
+          changeColumnMapping: function changeColumnMapping(role, columnOrRole, defaultColumn, options) {
             var column;
 
             if (typeof columnOrRole === 'string') {
@@ -24336,7 +24382,7 @@ function _Explorer(props) {
               var columnName = _this14.state.columns[columnOrRole];
               column = allColumns.filter(function (c) {
                 return c.name === columnName;
-              })[0];
+              })[0] || defaultColumn;
             } else {
               column = columnOrRole;
             }

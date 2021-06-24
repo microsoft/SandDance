@@ -5419,7 +5419,7 @@ function (_layout_1$Layout) {
       var percentageScale;
 
       if (addPercentageScale) {
-        percentageScale = {
+        percentageScale = [{
           type: 'linear',
           name: names.scale,
           domain: [0, 100],
@@ -5428,15 +5428,15 @@ function (_layout_1$Layout) {
           }] : [{
             signal: parentScope.sizeSignals.layoutHeight
           }, 0]
-        };
+        }];
       }
 
       return {
         globalScales: {
           showAxes: true,
           scales: {
-            x: horizontal ? [percentageScale] : undefined,
-            y: horizontal ? undefined : [percentageScale],
+            x: horizontal ? percentageScale : undefined,
+            y: horizontal ? undefined : percentageScale,
             z: zScale && [zScale]
           }
         },

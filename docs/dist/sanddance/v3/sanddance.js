@@ -3792,32 +3792,32 @@
             addMarks(globalScope.markGroup, mark);
             let percentageScale;
             if (addPercentageScale) {
-                percentageScale = {
-                    type: 'linear',
-                    name: names.scale,
-                    domain: [0, 100],
-                    range: horizontal ?
-                        [
-                            0,
-                            {
-                                signal: parentScope.sizeSignals.layoutWidth
-                            }
-                        ]
-                        :
+                percentageScale = [{
+                        type: 'linear',
+                        name: names.scale,
+                        domain: [0, 100],
+                        range: horizontal ?
                             [
+                                0,
                                 {
-                                    signal: parentScope.sizeSignals.layoutHeight
-                                },
-                                0
+                                    signal: parentScope.sizeSignals.layoutWidth
+                                }
                             ]
-                };
+                            :
+                                [
+                                    {
+                                        signal: parentScope.sizeSignals.layoutHeight
+                                    },
+                                    0
+                                ]
+                    }];
             }
             return {
                 globalScales: {
                     showAxes: true,
                     scales: {
-                        x: horizontal ? [percentageScale] : undefined,
-                        y: horizontal ? undefined : [percentageScale],
+                        x: horizontal ? percentageScale : undefined,
+                        y: horizontal ? undefined : percentageScale,
                         z: zScale && [zScale]
                     }
                 },
@@ -8793,6 +8793,8 @@ void main(void) {
         if (oldInsight.totalStyle !== newInsight.totalStyle)
             return true;
         if (oldInsight.hideAxes !== newInsight.hideAxes)
+            return true;
+        if (oldInsight.view !== newInsight.view)
             return true;
         if (differentObjectValues(oldInsight.signalValues, newInsight.signalValues))
             return true;
