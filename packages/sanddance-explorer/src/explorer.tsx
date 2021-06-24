@@ -604,9 +604,6 @@ function _Explorer(props: Props) {
 
         //state members which change the insight
         public changeInsight(partialInsight: Partial<SandDance.specs.Insight>, historyAction: HistoryAction, additionalUIState?: Partial<UIState>) {
-            if (!partialInsight.signalValues) {
-                partialInsight.signalValues = null;
-            }
             if (partialInsight.chart === 'barchart') {
                 partialInsight.chart = 'barchartV';
             }
@@ -621,6 +618,12 @@ function _Explorer(props: Props) {
                     cleanState.note = null;
                 }
                 delete cleanState.rebaseFilter;
+
+                if (this.viewer) {
+                    const { signalValues } = this.viewer.getInsight();
+                    cleanState.signalValues = { ...this.state.signalValues, ...signalValues, ...cleanState.signalValues };
+                }
+
                 this.setState(cleanState);
             };
 
