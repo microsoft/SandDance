@@ -13858,7 +13858,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.version = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-const version = '3.2.0';
+const version = '3.2.1';
 exports.version = version;
 },{}],"rZaE":[function(require,module,exports) {
 "use strict";
