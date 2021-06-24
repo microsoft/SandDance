@@ -11,6 +11,7 @@ import { Signal } from '../controls/signal';
 import { Signal as VegaSignal } from 'vega-typings';
 import { strings } from '../language';
 import { ToggleColumns } from '../controls/toggleColumns';
+import { getTreemapColumn } from '../columns';
 
 export interface Props extends ColumnMapBaseProps {
     tooltipExclusions: string[];
@@ -186,7 +187,7 @@ function _Chart(props: Props) {
                                                 ]}
                                                 onChange={(e, o) => {
                                                     const facetData = o.data as FacetData;
-                                                    props.changeColumnMapping('facet', 'facet', { facetStyle: facetData.facetStyle });
+                                                    props.changeColumnMapping('facet', 'facet', null, { facetStyle: facetData.facetStyle });
                                                     if (facetData.facetStyle === 'cross') {
                                                         props.changeColumnMapping('facetV', SandDance.VegaDeckGl.util.clone(facetData.column));
                                                     }
@@ -243,9 +244,17 @@ function _Chart(props: Props) {
                                                 label={strings.labelTotal}
                                                 calloutProps={{ style: { minWidth: '18em' } }}
                                                 options={options}
-                                                onChange={(e, o) =>
-                                                    props.changeColumnMapping('size', 'size', { totalStyle: o.data })
-                                                }
+                                                onChange={(e, o) => {
+                                                    const totalStyle = o.data as SandDance.specs.TotalStyle
+                                                    let defaultColumn: SandDance.types.Column;
+                                                    if (totalStyle.indexOf('sum-') === 0) {
+                                                        if (totalStyle === 'sum-treemap') {
+                                                            defaultColumn = getTreemapColumn(props.allColumns);
+                                                        }
+                                                        defaultColumn = defaultColumn || props.quantitativeColumns[0];
+                                                    }
+                                                    props.changeColumnMapping('size', 'size', defaultColumn, { totalStyle });
+                                                }}
                                             />
                                         );
                                         break;
