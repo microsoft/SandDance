@@ -42,7 +42,7 @@ export interface ColumnMapBaseProps {
     allColumns: SandDance.types.Column[];
     quantitativeColumns: SandDance.types.Column[];
     categoricalColumns: SandDance.types.Column[];
-    changeColumnMapping: (role: SandDance.specs.InsightColumnRoles, columnOrRole: SandDance.types.Column | string, options?: ChangeColumnMappingOptions) => void;
+    changeColumnMapping: (role: SandDance.specs.InsightColumnRoles, columnOrRole: SandDance.types.Column | string, defaultColumn?: SandDance.types.Column, options?: ChangeColumnMappingOptions) => void;
     facetStyle: SandDance.specs.FacetStyle;
     totalStyle: SandDance.specs.TotalStyle;
     explorer: Explorer_Class;

@@ -5,6 +5,8 @@ import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from './language';
 import { Transforms } from 'vega-typings/types';
 
+import TotalStyle = SandDance.specs.TotalStyle;
+
 export function ensureColumnsExist(insightColumns: SandDance.specs.InsightColumns, actualColumns: SandDance.types.Column[], transform: Transforms[]) {
     //ensure columns exist
     for (let role in insightColumns) {
@@ -23,32 +25,48 @@ export function ensureColumnsExist(insightColumns: SandDance.specs.InsightColumn
     }
 }
 
-export function ensureColumnsPopulated(chart: SandDance.specs.Chart, insightColumns: SandDance.specs.InsightColumns, actualColumns: SandDance.types.Column[]) {
+export function ensureColumnsPopulated(chart: SandDance.specs.Chart, totalStyle: TotalStyle, insightColumns: SandDance.specs.InsightColumns, actualColumns: SandDance.types.Column[]) {
     //ensure columns are populated
     const nonInternal = actualColumns.filter(c => !SandDance.util.isInternalFieldName(c.name));
     const firstColumn = nonInternal[0];
     const firstColumnName = firstColumn && firstColumn.name;
     const firstQuantitative = nonInternal.filter(c => c.quantitative)[0];
     const firstQuantitativeColumnName = firstQuantitative && firstQuantitative.name;
-    const ensureColumn = (role: SandDance.specs.InsightColumnRoles, quantitative?: boolean) => {
+    const ensureColumn = (role: SandDance.specs.InsightColumnRoles, quantitative?: boolean, treemap?: boolean) => {
         if (!insightColumns[role]) {
-            insightColumns[role] = quantitative ? firstQuantitativeColumnName : firstColumnName;
+            if (treemap) {
+                insightColumns[role] = getTreemapColumn(actualColumns).name;
+            } else {
+                insightColumns[role] = quantitative ? firstQuantitativeColumnName : firstColumnName;
+            }
         }
     };
+    function checkRequiresSize() {
+        console.log('totalStyle', totalStyle)
+        switch (totalStyle) {
+            case 'sum-strip':
+            case 'sum-strip-percent':
+                ensureColumn('size', true);
+                break;
+            case 'sum-treemap':
+                ensureColumn('size', true, true);
+                break;
+        }
+    }
     switch (chart) {
         case 'barchart':
         case 'barchartV':
             ensureColumn('x');
-            ensureColumn('size', true);
+            checkRequiresSize();
             break;
         case 'barchartH':
             ensureColumn('y');
-            ensureColumn('size', true);
+            checkRequiresSize();
             break;
         case 'density':
             ensureColumn('x');
             ensureColumn('y');
-            ensureColumn('size', true);
+            checkRequiresSize();
             break;
         case 'scatterplot':
         case 'stacks':
@@ -57,10 +75,7 @@ export function ensureColumnsPopulated(chart: SandDance.specs.Chart, insightColu
             break;
         case 'treemap':
             if (!insightColumns.size) {
-                insightColumns.size = preferredColumnForTreemapSize(actualColumns, true);
-                if (!insightColumns.size) {
-                    insightColumns.size = preferredColumnForTreemapSize(actualColumns, false);
-                }
+                insightColumns.size = getTreemapColumn(actualColumns).name;
             }
             if (!insightColumns.size) {
                 //error - no numeric column
@@ -68,4 +83,12 @@ export function ensureColumnsPopulated(chart: SandDance.specs.Chart, insightColu
             }
             break;
     }
+}
+
+export function getTreemapColumn(columns: SandDance.types.Column[]) {
+    let column = preferredColumnForTreemapSize(columns, true);
+    if (!column) {
+        column = preferredColumnForTreemapSize(columns, false);
+    }
+    return column;
 }

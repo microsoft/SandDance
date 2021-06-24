@@ -10,7 +10,7 @@ import {
 } from './clickableTextLayer';
 import { applyColorButtons } from './colorMap';
 import { bestColorScheme } from './colorScheme';
-import { ensureColumnsExist, ensureColumnsPopulated } from './columns';
+import { ensureColumnsExist, ensureColumnsPopulated, getTreemapColumn } from './columns';
 import { ColumnMapBaseProps } from './controls/columnMap';
 import { DataScopeId } from './controls/dataScope';
 import { Dialog } from './controls/dialog';
@@ -49,7 +49,7 @@ import {
 } from './partialInsight';
 import { themePalettes } from './themes';
 import { toggleSearch } from './toggleSearch';
-import { preferredColumnForTreemapSize, RecommenderSummary } from '@msrvida/chart-recommender';
+import { RecommenderSummary } from '@msrvida/chart-recommender';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
 
@@ -507,7 +507,7 @@ function _Explorer(props: Props) {
                     };
                     this.getColorContext = null;
                     ensureColumnsExist(newState.columns, dataContent.columns, newState.transform);
-                    const errors = ensureColumnsPopulated(partialInsight ? partialInsight.chart : null, newState.columns, dataContent.columns);
+                    const errors = ensureColumnsPopulated(partialInsight?.chart, partialInsight?.totalStyle, newState.columns, dataContent.columns);
                     newState.errors = errors;
                     //change insight
                     this.changeInsight(
@@ -542,7 +542,11 @@ function _Explorer(props: Props) {
             const partialInsight = copyPrefToNewState(this.prefs, chart, '*', '*');
             const insight: Partial<HistoricInsight> = { chart, ...partialInsight };
             const columns = SandDance.VegaDeckGl.util.deepMerge({}, partialInsight.columns, this.state.columns);
+            const { signalValues } = this.viewer.getInsight();
+            insight.signalValues = { ...this.state.signalValues, ...signalValues };
             insight.columns = { ...columns };
+            insight.totalStyle = this.state.totalStyle;
+            let errors: string[];
 
             //special case mappings when switching chart type
             if (this.state.chart === 'scatterplot' && (chart === 'barchart' || chart === 'barchartV')) {
@@ -553,36 +557,30 @@ function _Explorer(props: Props) {
                 insight.view = '2d';
                 if (!columns.size) {
                     //make sure size exists and is numeric
-                    let sizeColumnName: string;
+                    let sizeColumn: SandDance.types.Column;
                     //first check prefs
                     if (partialInsight && partialInsight.columns && partialInsight.columns.size) {
                         const prefSizeColumn = this.state.dataContent.columns.filter(c => c.name === partialInsight.columns.size)[0];
                         if (prefSizeColumn && prefSizeColumn.quantitative) {
-                            sizeColumnName = prefSizeColumn.name;
+                            sizeColumn = prefSizeColumn;
                         }
                     }
-                    if (!sizeColumnName) {
-                        sizeColumnName = preferredColumnForTreemapSize(this.state.dataContent.columns, true);
+                    if (!sizeColumn) {
+                        sizeColumn = getTreemapColumn(this.state.dataContent.columns);
                     }
-                    if (!sizeColumnName) {
-                        sizeColumnName = preferredColumnForTreemapSize(this.state.dataContent.columns, false);
-                    }
-                    if (!sizeColumnName) {
-                        //TODO error - no numeric columns
+                    if (!sizeColumn) {
+                        //error - no numeric columns
+                        errors = [strings.errorColumnMustBeNumeric];
                     } else {
-                        insight.columns = { ...columns, size: sizeColumnName };
+                        insight.columns = { ...columns, size: sizeColumn.name };
                     }
                 }
             } else if (chart === 'stacks') {
                 insight.view = '3d';
-            } else if (chart === 'scatterplot' && this.state.columns.size) {
-                const { signalValues } = this.viewer.getInsight();
-                signalValues[SandDance.specs.SignalNames.PointScale] = 1;
-                insight.signalValues = signalValues;
             }
 
             ensureColumnsExist(insight.columns, this.state.dataContent.columns, this.state.transform);
-            const errors = ensureColumnsPopulated(chart, insight.columns, this.state.dataContent.columns);
+            errors = ensureColumnsPopulated(chart, insight.totalStyle, insight.columns, this.state.dataContent.columns);
 
             this.calculate(() => {
                 this.changeInsight(
@@ -606,9 +604,6 @@ function _Explorer(props: Props) {
 
         //state members which change the insight
         public changeInsight(partialInsight: Partial<SandDance.specs.Insight>, historyAction: HistoryAction, additionalUIState?: Partial<UIState>) {
-            if (!partialInsight.signalValues) {
-                partialInsight.signalValues = null;
-            }
             if (partialInsight.chart === 'barchart') {
                 partialInsight.chart = 'barchartV';
             }
@@ -623,6 +618,12 @@ function _Explorer(props: Props) {
                     cleanState.note = null;
                 }
                 delete cleanState.rebaseFilter;
+
+                if (this.viewer) {
+                    const { signalValues } = this.viewer.getInsight();
+                    cleanState.signalValues = { ...this.state.signalValues, ...signalValues, ...cleanState.signalValues };
+                }
+
                 this.setState(cleanState);
             };
 
@@ -684,10 +685,14 @@ function _Explorer(props: Props) {
             const columns = { ...this.state.columns };
             const label = column ? strings.labelHistoryMapColumn(role) : strings.labelHistoryUnMapColumn(role);
             const final = () => {
+                const partialInsight: Partial<SandDance.specs.Insight> = { columns, totalStyle: options ? options.totalStyle : this.state.totalStyle };
+                const errors = ensureColumnsPopulated(this.state.chart, partialInsight.totalStyle, partialInsight.columns, this.state.dataContent.columns);
+
                 columns[role] = column && column.name;
                 this.changeInsight(
-                    { columns },
-                    { label }
+                    partialInsight,
+                    { label },
+                    errors ? { errors } : null
                 );
             };
             const _changeInsight = (newInsight: Partial<HistoricInsight>, columnUpdate: SandDance.specs.InsightColumns, historyAction: HistoryAction) => {
@@ -1491,12 +1496,12 @@ function _Explorer(props: Props) {
             const quantitativeColumns = allColumns && allColumns.filter(c => c.quantitative);
             const categoricalColumns = allColumns && allColumns.filter(c => !c.quantitative);
             const props: ColumnMapBaseProps = {
-                changeColumnMapping: (role, columnOrRole, options) => {
+                changeColumnMapping: (role, columnOrRole, defaultColumn, options) => {
                     let column: SandDance.types.Column;
                     if (typeof columnOrRole === 'string') {
                         //look up current insight
                         const columnName = this.state.columns[columnOrRole];
-                        column = allColumns.filter(c => c.name === columnName)[0];
+                        column = allColumns.filter(c => c.name === columnName)[0] || defaultColumn;
                     } else {
                         column = columnOrRole;
                     }

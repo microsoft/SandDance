@@ -10,7 +10,7 @@ export function preferredColumnForTreemapSize(columns: SandDance.types.Column[],
             if (strict && c.stats.hasNegative) continue;
             if (strict && c.stats.isSequential) continue;
             if (strict && isGeo(c)) continue;
-            return c.name;
+            return c;
         }
     }
 }
