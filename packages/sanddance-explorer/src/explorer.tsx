@@ -542,6 +542,8 @@ function _Explorer(props: Props) {
             const partialInsight = copyPrefToNewState(this.prefs, chart, '*', '*');
             const insight: Partial<HistoricInsight> = { chart, ...partialInsight };
             const columns = SandDance.VegaDeckGl.util.deepMerge({}, partialInsight.columns, this.state.columns);
+            const { signalValues } = this.viewer.getInsight();
+            insight.signalValues = { ...this.state.signalValues, ...signalValues };
             insight.columns = { ...columns };
             insight.totalStyle = this.state.totalStyle;
             let errors: string[];
@@ -575,10 +577,6 @@ function _Explorer(props: Props) {
                 }
             } else if (chart === 'stacks') {
                 insight.view = '3d';
-            } else if (chart === 'scatterplot' && this.state.columns.size) {
-                const { signalValues } = this.viewer.getInsight();
-                //signalValues[SandDance.specs.SignalNames.PointScale] = 1;
-                insight.signalValues = signalValues;
             }
 
             ensureColumnsExist(insight.columns, this.state.dataContent.columns, this.state.transform);
