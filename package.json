@@ -79,6 +79,7 @@
         "webpack-cli": "^3.3.12"
     },
     "resolutions": {
+        "color-string": "^1.5.5",
         "is-svg": "^4.2.2",
         "node-forge": "0.10.0"
     },
