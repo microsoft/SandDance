@@ -245,7 +245,7 @@ function _Chart(props: Props) {
                                                 calloutProps={{ style: { minWidth: '18em' } }}
                                                 options={options}
                                                 onChange={(e, o) => {
-                                                    const totalStyle = o.data as SandDance.specs.TotalStyle
+                                                    const totalStyle = o.data as SandDance.specs.TotalStyle;
                                                     let defaultColumn: SandDance.types.Column;
                                                     if (totalStyle.indexOf('sum-') === 0) {
                                                         if (totalStyle === 'sum-treemap') {
