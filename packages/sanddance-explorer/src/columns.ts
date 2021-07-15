@@ -42,7 +42,6 @@ export function ensureColumnsPopulated(chart: SandDance.specs.Chart, totalStyle:
         }
     };
     function checkRequiresSize() {
-        console.log('totalStyle', totalStyle)
         switch (totalStyle) {
             case 'sum-strip':
             case 'sum-strip-percent':
