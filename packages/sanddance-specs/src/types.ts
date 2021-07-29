@@ -7,7 +7,7 @@ import { Transforms } from 'vega-typings';
 /**
  * Type of selection scope on an axis.
  */
-export type AxisSelectionType = 'exact' | 'range';
+ export type AxisSelectionType = 'exact' | 'range';
 
 /**
  * Types of SandDance visualizations.
@@ -111,6 +111,7 @@ export interface SpecRoleCapabilities {
     allowNone?: boolean | ((specContext: SpecContext) => boolean);
     binnable?: boolean;
     axisSelection?: AxisSelectionType;
+    axisSelectionBetweenTicks?: boolean;
 
     /**
      * Signals associated with this spec role.
@@ -159,6 +160,11 @@ export interface SpecColorSettings {
     axisLine?: string;
 
     /**
+     * Color of grid lines.
+     */
+     gridLine?: string;
+
+     /**
      * Color of axes text.
      */
     axisText?: string;
