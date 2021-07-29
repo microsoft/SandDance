@@ -139,12 +139,14 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     role: 'x',
                     binnable: true,
                     axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
+                    axisSelectionBetweenTicks: true,
                     signals: [SignalNames.XBins]
                 },
                 {
                     role: 'y',
                     binnable: true,
                     axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
+                    axisSelectionBetweenTicks: true,
                     signals: [SignalNames.YBins]
                 },
                 {
