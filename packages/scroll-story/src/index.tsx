@@ -4,12 +4,12 @@ import * as deck from '@deck.gl/core';
 import * as layers from '@deck.gl/layers';
 import * as luma from '@luma.gl/core';
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import * as vega from 'vega';
 import Content from './index.mdx';
-import { render } from 'react-dom';
-import { SandDance, SandDanceReact } from '@msrvida/sanddance-react';
+import { SandDance, SandDanceReact, use } from '@msrvida/sanddance-react';
 
-SandDance.use(vega, deck, layers, luma);
+use(React, ReactDOM, vega, deck, layers, luma);
 
 function fetchResource(linkId: string) {
     const link = document.querySelector<HTMLAnchorElement>('#' + linkId);
@@ -108,4 +108,4 @@ export class Page extends React.Component<Props, State> {
     }
 }
 
-render(<Page />, document.getElementById('app'));
+ReactDOM.render(<Page />, document.getElementById('app'));
