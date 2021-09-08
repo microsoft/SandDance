@@ -7,7 +7,7 @@ import { Transforms } from 'vega-typings';
 /**
  * Type of selection scope on an axis.
  */
- export type AxisSelectionType = 'exact' | 'range';
+export type AxisSelectionType = 'exact' | 'range';
 
 /**
  * Types of SandDance visualizations.
