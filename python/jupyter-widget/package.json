@@ -27,7 +27,7 @@
     "build:sanddance-integration-python": "npm run build:lib && npm run build:labextension && npm run build:nbextension",
     "build:labextension": "npm run clean:labextension && mkdirp sanddance/labextension && cd sanddance/labextension && npm pack ../..",
     "build:lib": "tsc",
-    "build:nbextension": "webpack -p",
+    "build:nbextension": "webpack --mode=production",
     "clean": "npm run clean:lib && npm run clean:nbextension",
     "clean:lib": "rimraf lib",
     "clean:labextension": "rimraf sanddance/labextension",
