@@ -5,7 +5,17 @@
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "build:sanddance-core": "tsc -p .",
-    "deploy": "parcel build ./src/sanddance.ts --no-cache --no-minify --no-source-maps --public-url . --out-dir ../../docs/tests/v3/es6/js"
+    "deploy": "parcel build ./src/sanddance.ts"
+  },
+  "umd": "../../docs/tests/v3/es6/js/sanddance.js",
+  "targets": {
+    "umd": {
+      "distDir": "../../docs/tests/v3/es6/js",
+      "includeNodeModules": {},
+      "optimize": false,
+      "scopeHoist": false,
+      "sourceMap": false
+    }
   },
   "dependencies": {
     "@deck.gl/core": "^8.3.7",
