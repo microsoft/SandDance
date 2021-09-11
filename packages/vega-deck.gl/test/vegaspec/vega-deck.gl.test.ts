@@ -4,11 +4,9 @@ import * as deck from '@deck.gl/core';
 import * as layers from '@deck.gl/layers';
 import * as luma from '@luma.gl/core';
 import * as vega from 'vega';
-import * as VegaDeckGl from '../../src/index';
+import * as VegaDeckGl from '../../dist/es6';
 
 VegaDeckGl.use(vega, deck, layers, luma);
-
-export { vega };
 
 class SpecRenderer {
   viewType = '3d';
@@ -32,7 +30,7 @@ class SpecRenderer {
   }
 
   public getTextArea() {
-    return <HTMLTextAreaElement>document.getElementsByTagName('textarea')[0];
+    return document.getElementsByTagName('textarea')[0];
   }
 
   public getText() {
@@ -82,5 +80,6 @@ class SpecRenderer {
   }
 }
 
+const specRenderer = new SpecRenderer();
 
-export const specRenderer = new SpecRenderer();
+window['vegaTest'] = { specRenderer, vega };

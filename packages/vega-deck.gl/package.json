@@ -7,8 +7,8 @@
     "dist"
   ],
   "scripts": {
-    "vegatest": "parcel serve ./test/vegaspec/vega-deck.gl.test.html --port 8087 --open --no-hmr --global vegaTest --no-autoinstall",
-    "cubetest": "parcel serve ./test/cubelayer/cubeTest.html --port 8087 --open --no-hmr --global cubeTest",
+    "vegatest": "parcel serve ./test/vegaspec/vega-deck.gl.test.html --port 8087 --open --no-hmr --no-autoinstall",
+    "cubetest": "parcel serve ./test/cubelayer/cubeTest.html --port 8087 --open --no-hmr",
     "docs": "typedoc src/index.ts -out ../../docs/docs/vega-deck.gl/v3 --theme ../../typedoc/theme --excludePrivate --gitRevision master",
     "deploy": "node ./scripts/deploy.js",
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
@@ -24,14 +24,6 @@
   ],
   "author": "",
   "license": "MIT",
-  "alias": {
-    "deck.gl": "./alias/deck-external.js",
-    "@deck.gl/core": "./alias/deck-external.js",
-    "@deck.gl/layers": "./alias/deck-external.js",
-    "@deck.gl/react": "./alias/deck-external.js",
-    "@luma.gl/core": "./alias/luma-external.js",
-    "react": "./alias/react-external.js"
-  },
   "dependencies": {
     "@danmarshall/deckgl-typings": "^4.1.11",
     "@msrvida/chart-types": "^1",
