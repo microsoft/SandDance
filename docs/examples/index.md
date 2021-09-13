@@ -26,5 +26,5 @@ title: Examples
 * [quantitative barchart](../tests/v3/umd/quanBarChartTest.html) using UMD/CDN
 * [titanic treemap](../tests/v3/umd/treeMapTest.html) using UMD/CDN
 
-## Embedding
-* [embed sample](../tests/v3/umd/embed.html) Host the SandDance Explorer via Iframe 
+## SandDance Explorer
+* [Embed the hosted SandDance Explorer via Iframe](../tests/v3/umd/embed.html)  
