@@ -41,3 +41,11 @@ steps:
 - script: |
     npm test
   displayName: 'npm test'
+
+- script: |
+    npm run deploy
+  displayName: 'deploy to website'
+
+- script: |
+    npm run docs
+  displayName: 'generate docs'
