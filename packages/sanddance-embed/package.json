@@ -1,7 +1,7 @@
 {
   "name": "@msrvida/sanddance-embed",
   "version": "3.0.0",
-  "description": "SandDance Explorer with embedded data.",
+  "description": "Embeddable SandDance Explorer.",
   "browser": "dist/umd/sanddance-embed.js",
   "files": [
     "dist"
