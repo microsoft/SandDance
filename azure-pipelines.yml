@@ -43,9 +43,9 @@ steps:
   displayName: 'npm test'
 
 - script: |
-    npm run deploy
-  displayName: 'deploy to website'
-
-- script: |
     npm run docs
   displayName: 'generate docs'
+
+- script: |
+    npm run deploy
+  displayName: 'deploy to website'
