@@ -36,9 +36,7 @@ const dataSets = staticContent.filter(f => f.id).map<DataSource>(n => {
     };
 });
 
-export let explorer: Explorer_Class;
-
-export { SandDanceExplorer };
+let explorer: Explorer_Class;
 
 declare var insights: InsightMap;
 declare var darkTheme: boolean;
@@ -76,3 +74,5 @@ document.onkeyup = e => {
         }
     }
 };
+
+window['SandDanceApp'] = { explorer, SandDanceExplorer };

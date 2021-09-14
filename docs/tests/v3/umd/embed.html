@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Embed SandDance Explorer in iframe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <header>
+        <h1>Embed SandDance Explorer in iframe</h1>
+    </header>
+
+    <!-- 
+        Reference the hosted version at https://microsoft.github.io/SandDance/embed/v3/sanddance-embed.html
+        or download it and host it on your own site.
+    -->
+    <iframe id="embed" style="width: 90%; height: 600px" src="../../../embed/v3/sanddance-embed.html"></iframe>
+
+    <script>
+        const embed = document.getElementById('embed');
+        embed.onload = () => {
+            fetch('../../../sample-data/titanicmaster.tsv')
+                .then(response => response.text())
+                .then(rawText => {
+                    const w = document.getElementById('embed').contentWindow;
+                    const message = {
+                        // action definitions: 'init' | 'load' | 'getData' | 'getInsight'
+                        // https://github.com/microsoft/SandDance/blob/master/packages/sanddance-embed/src/types/message.d.ts#L3
+                        action: 'load',
+
+                        // data property may be a raw data file description:
+                        // https://microsoft.github.io/SandDance/docs/sanddance-explorer/v3/interfaces/datafile.html
+                        data: { rawText, type: 'tsv' }
+
+                        // or it may be an array
+                        //data: [{ a: 1 }, { a: 2 }, { a: 3 },]
+                    };
+                    w.postMessage(message, '*');
+
+                    /*
+                    // here we can add a button to get the current insight from the explorer
+                    const b = document.createElement('button');
+                    b.innerText = 'log current insight to console'
+                    b.onclick = () => {
+                        w.postMessage({ action: 'getInsight' }, '*');
+                    };
+                    document.body.appendChild(b);
+                    */
+                });
+        };
+
+        window.onmessage = (e) => {
+            // message responses
+            console.log('messaged', e.data);
+        };
+    </script>
+
+</body>
+
+</html>

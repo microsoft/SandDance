@@ -27,10 +27,6 @@ import {
 } from '@msrvida/sanddance-explorer';
 import * as React from 'react';
 
-import VegaDeckGl = SandDance.VegaDeckGl;
-import types = SandDance.types;
-import specs = SandDance.specs;
-
 export interface Props {
     themeColors: { [theme: string]: ColorSettings };
     setTheme?: (darkTheme: boolean) => void;
@@ -84,7 +80,7 @@ interface Handlers {
 }
 
 export class SandDanceApp extends React.Component<Props, State> {
-    private viewerOptions: Partial<types.ViewerOptions>;
+    private viewerOptions: Partial<SandDance.types.ViewerOptions>;
     private handlers: Handlers;
     private dataSourcePicker: DataSourcePicker;
     private postLoad: (dataSource: DataSource) => void;
@@ -178,9 +174,9 @@ export class SandDanceApp extends React.Component<Props, State> {
         }
     }
 
-    load(dataSource: DataSource, partialInsight?: Partial<specs.Insight>) {
+    load(dataSource: DataSource, partialInsight?: Partial<SandDance.specs.Insight>) {
         //clone so that we do not modify original object
-        dataSource = VegaDeckGl.util.clone(dataSource);
+        dataSource = SandDance.VegaDeckGl.util.clone(dataSource);
         this.setState({ dataSource });
         document.title = `SandDance - ${dataSource.displayName}`;
         return this.explorer.load(
@@ -188,7 +184,7 @@ export class SandDanceApp extends React.Component<Props, State> {
             columns => {
                 return partialInsight || (this.props.insights && this.props.insights[dataSource.id]);
             },
-            this.props.initialOptions && VegaDeckGl.util.deepMerge({}, this.props.initialOptions['*'], this.props.initialOptions[dataSource.id])
+            this.props.initialOptions && SandDance.VegaDeckGl.util.deepMerge({}, this.props.initialOptions['*'], this.props.initialOptions[dataSource.id])
         );
     }
 
@@ -208,7 +204,7 @@ export class SandDanceApp extends React.Component<Props, State> {
         this.setState({ dataSource: { dataSourceType: null, id: null, type: null } });
     }
 
-    updateExplorerViewerOptions(viewerOptions: Partial<types.ViewerOptions>) {
+    updateExplorerViewerOptions(viewerOptions: Partial<SandDance.types.ViewerOptions>) {
         this.viewerOptions = viewerOptions;
         this.explorer && this.explorer.updateViewerOptions(this.viewerOptions);
     }
@@ -220,7 +216,7 @@ export class SandDanceApp extends React.Component<Props, State> {
 
     changeColorScheme(darkTheme: boolean) {
         this.updateExplorerViewerOptions(getViewerOptions(darkTheme, this.props.themeColors));
-        VegaDeckGl.base.vega.scheme(SandDance.constants.ColorScaleNone, x => this.explorer.viewer.options.colors.defaultCube);
+        SandDance.VegaDeckGl.base.vega.scheme(SandDance.constants.ColorScaleNone, x => this.explorer.viewer.options.colors.defaultCube);
         this.explorer && this.explorer.viewer && this.explorer.viewer.renderSameLayout(this.viewerOptions);
         base.fluentUI.loadTheme({ palette: this.getThemePalette(darkTheme) });
     }

@@ -58,7 +58,7 @@ typings/
 .env
 
 # parcel-bundler caches
-.cache
+.parcel-cache
 
 # built files
 **/src/**/*.js

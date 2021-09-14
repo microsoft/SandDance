@@ -4,7 +4,6 @@
     "version": "1.0.0",
     "description": "SandDance development monorepo.",
     "scripts": {
-        "preinstall": "npx npm-force-resolutions",
         "python:dev": "lerna run dev:all --parallel --scope @msrvida/sanddance-jupyter-widget",
         "vegatest": "lerna run vegatest --parallel",
         "eslint": "lerna run eslint --parallel",
@@ -45,6 +44,10 @@
     "license": "MIT",
     "devDependencies": {
         "@babel/helper-compilation-targets": "^7.10.2",
+        "@parcel/packager-ts": "^2.0.0-rc.0",
+        "@parcel/transformer-mdx": "^2.0.0-nightly.1687",
+        "@parcel/transformer-sass": "^2.0.0-rc.0",
+        "@parcel/transformer-typescript-types": "^2.0.0-rc.0",
         "@rollup/plugin-buble": "^0.21.3",
         "@rollup/plugin-commonjs": "^12.0.0",
         "@rollup/plugin-json": "^4.0.3",
@@ -64,7 +67,7 @@
         "mdast-util-toc": "^3.0.1",
         "mocha": "^7.1.1",
         "npm-run-all": "^4.1.5",
-        "parcel-bundler": "^1.12",
+        "parcel": "^2.0.0-rc.0",
         "rimraf": "^2.6.2",
         "rollup": "^1.32.1",
         "rollup-plugin-vue": "^5.1.7",
@@ -77,11 +80,6 @@
         "vue-template-compiler": "^2.6.11",
         "webpack": "^5.52.0",
         "webpack-cli": "^4.8.0"
-    },
-    "resolutions": {
-        "color-string": "^1.5.5",
-        "is-svg": "^4.2.2",
-        "node-forge": "0.10.0"
     },
     "babel": {
         "presets": [

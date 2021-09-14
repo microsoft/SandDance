@@ -11,14 +11,14 @@ declare var FluentUIReact: _FluentUI.FluentUIComponents;
 namespace SandDanceEmbed {
 
     interface DataWithInsight {
-        data: object[];
+        data: DataToLoad;
         insight: Partial<SandDance.specs.Insight>;
     }
 
     export let sandDanceExplorer: SandDanceExplorer.Explorer_Class;
     export const requests: MessageRequestWithSource[] = [];
 
-    export function load(data: object[] | SandDanceExplorer.DataFile, insight?: Partial<SandDance.specs.Insight>) {
+    export function load(data: DataToLoad, insight?: Partial<SandDance.specs.Insight>) {
         return new Promise((resolve) => {
 
             const innerLoad = () => {

@@ -12,9 +12,11 @@ interface MessageRequest_Init extends MessageRequestBase {
     action: 'init';
 }
 
+type  DataToLoad = object[] | SandDanceExplorer.DataFile;
+
 interface MessageRequest_Load extends MessageRequestBase {
     action: 'load';
-    data: object[];
+    data: DataToLoad;
     insight: Partial<SandDance.types.Insight>;
 }
 

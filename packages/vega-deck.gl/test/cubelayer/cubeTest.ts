@@ -4,7 +4,7 @@ import * as deck from '@deck.gl/core';
 import * as layers from '@deck.gl/layers';
 import * as luma from '@luma.gl/core';
 
-import * as VegaDeckGl from '../../src/index';
+import * as VegaDeckGl from '../../dist/es6';
 
 VegaDeckGl.use(null, deck, layers, luma);
 
@@ -15,7 +15,7 @@ const colors: { [name: string]: deck.RGBAColor } = {
     gray: [128, 128, 128]
 };
 
-export var presenter = new VegaDeckGl.Presenter(document.querySelector('#vis'));
+var presenter = new VegaDeckGl.Presenter(document.querySelector('#vis'));
 var stage: VegaDeckGl.types.Stage = {
     cubeData: [
         {
@@ -51,6 +51,16 @@ var stage: VegaDeckGl.types.Stage = {
                 color: [0, 0, 0, 255],
                 sourcePosition: [0, 0, 0],
                 targetPosition: [0, 200, 0],
+                strokeWidth: 10
+            },
+            ticks: [],
+            tickText: []
+        }],
+        z: [{
+            domain: {
+                color: [0, 0, 0, 255],
+                sourcePosition: [0, 0, 0],
+                targetPosition: [0, 0, 200],
                 strokeWidth: 10
             },
             ticks: [],
@@ -100,3 +110,5 @@ document.getElementById('animate').addEventListener('click', e => {
     presenter.present(stage, 200, 400);
 
 });
+
+window['cubeTest'] = { presenter };

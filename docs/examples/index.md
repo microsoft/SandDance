@@ -17,11 +17,14 @@ title: Examples
 * [simple vega spec](../tests/v3/umd/vega-deck.gl.test.html) using UMD/CDN
 * [transition between vega specs](../tests/v3/umd/transition.html) using UMD/CDN
 
-## Sanddance
+## SandDance
 * [simple scatterplot](../tests/v3/umd/test.html) using UMD/CDN
 * [scatterplot fetch + transform](../tests/v3/umd/transforms.html) using UMD/CDN
-* [scatterplot](../tests/v3/es6/sanddance.html) using bundled ES6
+* [scatterplot](../tests/v3/es6/sanddance-test-es6.html) using bundled ES6
 * [demovote scatterplot](../tests/v3/umd/scatterplotTest.html) using UMD/CDN
 * [qualitative barchart](../tests/v3/umd/qualBarChartTest.html) using UMD/CDN
 * [quantitative barchart](../tests/v3/umd/quanBarChartTest.html) using UMD/CDN
 * [titanic treemap](../tests/v3/umd/treeMapTest.html) using UMD/CDN
+
+## SandDance Explorer
+* [Embed the hosted SandDance Explorer via Iframe](../tests/v3/umd/embed.html)  
