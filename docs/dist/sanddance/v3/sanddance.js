@@ -244,6 +244,7 @@
                         role: 'y',
                         binnable: true,
                         axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
+                        axisSelectionBetweenTicks: true,
                         signals: [SignalNames.YBins]
                     },
                     {
@@ -411,6 +412,7 @@
                         role: 'x',
                         binnable: true,
                         axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
+                        axisSelectionBetweenTicks: true,
                         signals: [SignalNames.XBins]
                     },
                     {
@@ -574,12 +576,14 @@
                         role: 'x',
                         binnable: true,
                         axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
+                        axisSelectionBetweenTicks: true,
                         signals: [SignalNames.XBins]
                     },
                     {
                         role: 'y',
                         binnable: true,
                         axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
+                        axisSelectionBetweenTicks: true,
                         signals: [SignalNames.YBins]
                     },
                     {
@@ -790,12 +794,14 @@
                         role: 'x',
                         binnable: true,
                         axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
+                        axisSelectionBetweenTicks: true,
                         signals: [SignalNames.XBins]
                     },
                     {
                         role: 'y',
                         binnable: true,
                         axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
+                        axisSelectionBetweenTicks: true,
                         signals: [SignalNames.YBins]
                     },
                     {
@@ -5219,6 +5225,12 @@
 
     var htmlTags$2 = require$$0;
 
+    var htmlTags$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.assign({
+        __proto__: null,
+        'default': htmlTags$2,
+        __moduleExports: htmlTags$2
+    }, htmlTags$2));
+
     var svgTags = [
     	"a",
     	"altGlyph",
@@ -5311,6 +5323,14 @@
 
     var lib = require$$0$1;
 
+    var svgTags$2 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.assign({
+        __proto__: null,
+        'default': lib,
+        __moduleExports: lib
+    }, lib));
+
+    const htmlTagArray = htmlTags$2 || htmlTags$3;
+    const svgTagArray = lib || svgTags$2;
     /**
      * Decamelizes a string with/without a custom separator (hyphen by default).
      * from: https://ourcodeworld.com/articles/read/608/how-to-camelize-and-decamelize-strings-in-javascript
@@ -5467,7 +5487,7 @@
     }
     function tagNamespace(tag) {
         //issue: this won't disambiguate certain tags which exist in both svg and html: <a>, <title> ...
-        if (tag === 'svg' || (lib.indexOf(tag) >= 0 && !(htmlTags$2.indexOf(tag) >= 0))) {
+        if (tag === 'svg' || (svgTagArray.indexOf(tag) >= 0 && !(htmlTagArray.indexOf(tag) >= 0))) {
             return "http://www.w3.org/2000/svg";
         }
     }
