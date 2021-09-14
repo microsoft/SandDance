@@ -5,9 +5,9 @@
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "build:sanddance-core": "tsc -p .",
-    "deploy": "parcel build ./src/sanddance.ts"
+    "deploy": "parcel build ./src/sanddance-test-es6.ts"
   },
-  "umd": "../../docs/tests/v3/es6/js/sanddance.js",
+  "umd": "../../docs/tests/v3/es6/js/sanddance-test-es6.js",
   "targets": {
     "umd": {
       "distDir": "../../docs/tests/v3/es6/js",
