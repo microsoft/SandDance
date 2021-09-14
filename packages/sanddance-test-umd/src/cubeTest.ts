@@ -58,6 +58,16 @@ namespace cubeTest {
                 },
                 ticks: [],
                 tickText: []
+            }],
+            z: [{
+                domain: {
+                    color: [0, 0, 0, 255],
+                    sourcePosition: [0, 0, 0],
+                    targetPosition: [0, 0, 200],
+                    strokeWidth: 10
+                },
+                ticks: [],
+                tickText: []
             }]
         },
         textData: [],
