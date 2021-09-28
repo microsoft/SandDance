@@ -25,7 +25,7 @@ This is the quickest installation option. You can load scripts from a CDN, or yo
 
 ```html
 <script src="https://unpkg.com/vega@^5.11/build/vega.js" charset="utf-8"></script>
-<script src="https://unpkg.com/deck.gl@~6.4/deckgl.min.js"></script>
+<script src="https://unpkg.com/deck.gl@~8.3.7/dist.min.js"></script>
 <script src="https://unpkg.com/@msrvida/vega-deck.gl@^3/dist/umd/vega-deck.gl.js"></script>
 ```
 
