@@ -5,6 +5,11 @@
   "main": "dist/SandDanceVue.umd.js",
   "module": "dist/SandDanceVue.esm.js",
   "unpkg": "dist/SandDanceVue.min.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/SandDance.git",
+    "directory":"packages/sanddance-vue"
+  },
   "browser": {
     "./sfc": "src/SandDanceVue.vue"
   },

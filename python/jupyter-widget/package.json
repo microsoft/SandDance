@@ -17,7 +17,11 @@
   "author": "",
   "main": "lib/index.js",
   "types": "./lib/index.d.ts",
-  "repository": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/SandDance.git",
+    "directory": "python/jupyter-widget"
+  },
   "scripts": {
     "dev:install-src": "pip install -e .",
     "dev:install-deps": "pip install -r requirements-dev.txt",

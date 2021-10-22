@@ -3,6 +3,11 @@
   "version": "3.0.0",
   "description": "Embeddable SandDance Explorer.",
   "browser": "dist/umd/sanddance-embed.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/SandDance.git",
+    "directory": "packages/sanddance-embed"
+  },
   "files": [
     "dist"
   ],
