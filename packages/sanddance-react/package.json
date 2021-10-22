@@ -3,6 +3,11 @@
   "version": "3.0.1",
   "description": "SandDance visualization canvas React component",
   "main": "dist/es6/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/SandDance.git",
+    "directory": "packages/sanddance-react"
+  },
   "types": "dist/es6/index.d.ts",
   "files": [
     "dist"

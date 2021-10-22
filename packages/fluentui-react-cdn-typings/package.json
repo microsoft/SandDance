@@ -3,6 +3,11 @@
   "version": "1.0.2",
   "description": "",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/SandDance.git",
+    "directory": "packages/fluentui-react-cdn-typings"
+  },
   "scripts": {
     "install-peers": "npm install --no-save --no-package-lock @types/react@16.9.34",
     "eslint": "eslint -c ../../.eslintrc.json --fix ./*.d.ts",

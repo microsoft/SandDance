@@ -3,6 +3,11 @@
   "version": "3.2.0",
   "description": "SandDance data exploration React component.",
   "main": "dist/es6/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/SandDance.git",
+    "directory": "packages/sanddance-explorer"
+  },
   "types": "dist/es6/index.d.ts",
   "files": [
     "dist"
