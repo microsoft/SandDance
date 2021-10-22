@@ -3,6 +3,11 @@
   "version": "1.0.1",
   "description": "",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/SandDance.git",
+    "directory": "packages/office-ui-fabric-react-cdn-typings"
+  },
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./*.d.ts",
     "test": "tsc index.d.ts --lib es6 --skipLibCheck true"
