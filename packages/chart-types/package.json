@@ -21,6 +21,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "vega-typings": "^0.19.0"
+    "vega-typings": "0.21.0"
   }
 }
