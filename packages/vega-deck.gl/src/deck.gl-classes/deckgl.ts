@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import Deck, { DeckProps } from '@deck.gl/core/lib/deck';
+import Deck, { DeckProps, InteractiveState } from '@deck.gl/core/lib/deck';
 import { base } from '../base';
 import { createOrbitControllerClass, OrbitController_Class, OrbitControllerClassOptions } from './orbitController';
 
@@ -14,9 +14,7 @@ const CANVAS_STYLE = {
     height: '100%'
 };
 
-//TODO move into deckgl-typings
-export interface InteractiveState {
-    isDragging: boolean;
+export interface InteractiveStateVegaDeckGL extends InteractiveState {
     onCube: boolean;
     onText: boolean;
     onAxisSelection: boolean;
@@ -24,7 +22,7 @@ export interface InteractiveState {
 
 export type DeckGLInternalProps = DeckProps & {
     container?: HTMLElement;
-    getCursor?: (interactiveState: InteractiveState) => string;
+    getCursor?: (interactiveState: InteractiveStateVegaDeckGL) => string;
 }
 
 // Create canvas elements for map and deck
@@ -76,7 +74,7 @@ export function createDeckGLClassesForPresenter(factoryOptions: OrbitControllerC
         class DeckGLInternal extends base.deck.Deck {
             private _updateViewState;
             private onViewStateChange;
-            public interactiveState: InteractiveState;
+            public interactiveState: InteractiveStateVegaDeckGL;
 
             constructor(props: DeckGLInternalProps) {
                 if (typeof document === 'undefined') {
@@ -135,5 +133,5 @@ export function createDeckGLClassesForPresenter(factoryOptions: OrbitControllerC
  * This is not instantiatable, it is the TypeScript declaration of the type.
  */
 export declare class DeckGL_Class extends base.deck.Deck {
-    public interactiveState: InteractiveState;
+    public interactiveState: InteractiveStateVegaDeckGL;
 }

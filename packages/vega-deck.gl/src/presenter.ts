@@ -8,7 +8,7 @@ import {
     createDeckGLClassesForPresenter,
     DeckGL_Class,
     DeckGLInternalProps,
-    InteractiveState
+    InteractiveStateVegaDeckGL
 } from './deck.gl-classes/deckgl';
 import { LinearInterpolator, LinearInterpolator_Class } from './deck.gl-classes/linearInterpolator';
 import { OrbitController_Class } from './deck.gl-classes/orbitController';
@@ -185,7 +185,7 @@ export class Presenter {
                 glOptions = { preserveDrawingBuffer: true };
             }
 
-            const deckProps: DeckGLInternalProps = {
+            const deckProps: Partial<DeckGLInternalProps> = {
                 glOptions,
                 height: null,
                 width: null,
@@ -195,7 +195,7 @@ export class Presenter {
                 views: [new base.deck.OrbitView({ controller: base.deck.OrbitController })],
                 initialViewState,
                 container: this.getElement(PresenterElement.gl) as HTMLCanvasElement,
-                getCursor: (interactiveState: InteractiveState) => {
+                getCursor: (interactiveState: InteractiveStateVegaDeckGL) => {
                     if (interactiveState.onText || interactiveState.onAxisSelection) {
                         return 'pointer';
                     } else if (interactiveState.onCube) {
