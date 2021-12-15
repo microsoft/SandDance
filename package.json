@@ -15,7 +15,7 @@
         "build:sanddance-core": "lerna run build:sanddance-core",
         "build:sanddance-integration": "lerna run build:sanddance-integration",
         "build:sanddance-integration-python": "lerna run build:sanddance-integration-python",
-        "build": "npm run bootstrap && npm run build:sanddance-core && npm run build:sanddance-integration && npm run build:sanddance-integration-python",
+        "build": "npm -v && npm run bootstrap && npm run build:sanddance-core && npm run build:sanddance-integration && npm run build:sanddance-integration-python",
         "build-test": "lerna run build-test",
         "app-dev": "lerna run start --parallel --scope @msrvida/sanddance-app",
         "watch-css": "lerna run watch-css --parallel",
