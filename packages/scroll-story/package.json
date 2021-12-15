@@ -22,7 +22,7 @@
     "@parcel/transformer-mdx": "^2.0.0-rc.0",
     "@parcel/transformer-sass": "^2.0.0-rc.0",
     "@types/react": "^16.9.34",
-    "@types/react-dom": "16.9.7",
+    "@types/react-dom": "^16.9.7",
     "vega-typings": "0.21.0"
   }
 }
