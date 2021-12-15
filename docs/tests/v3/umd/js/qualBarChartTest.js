@@ -16,7 +16,7 @@ var qualBarChartTest;
         var v = getValue(i);
         data.push({
             myUid: i,
-            myX: "cat" + v,
+            myX: "cat".concat(v),
             myY: i,
             myZ: i,
             myColor: v.toString(),
