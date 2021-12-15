@@ -31,8 +31,8 @@
   },
   "devDependencies": {
     "@msrvida/fluentui-react-cdn-typings": "^1",
-    "@types/react": "16.9.34",
-    "@types/react-dom": "16.9.7",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.7",
     "powerbi-visuals-tools": "^3.1.5",
     "tslint": "^5.20.1",
     "tslint-microsoft-contrib": "^6.2.0"
