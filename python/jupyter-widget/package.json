@@ -66,8 +66,7 @@
     "mkdirp": "^0.5.1",
     "mocha": "^5.2.0",
     "source-map-loader": "^0.2.4",
-    "style-loader": "^1.0.0",
-    "typescript": "3.9.2"
+    "style-loader": "^1.0.0"
   },
   "jupyterlab": {
     "extension": "lib/plugin"
