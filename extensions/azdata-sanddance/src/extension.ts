@@ -84,7 +84,8 @@ async function downloadAndViewInSandDance(commandContext: azdata.ObjectExplorerC
             const { contents } = file;
             viewInSandDance(() => new Promise<string>(resolve => resolve(contents)), file.fsUriPath, path.extname(file.fsUriPath).substring(1), context);
         }
-    } catch (error) {
+    } catch (e) {
+        const error = e as Error;
         vscode.window.showErrorMessage(`Error viewing in sanddance: ${error.message ? error.message : error}`);
     }
 }
