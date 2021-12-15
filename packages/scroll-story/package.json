@@ -15,7 +15,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "@msrvida/sanddance-react": "^3",
-    "vega": "^5.17.0"
+    "vega": "5.20"
   },
   "devDependencies": {
     "@mdx-js/react": "^1.6.22",

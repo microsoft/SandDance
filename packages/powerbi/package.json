@@ -27,7 +27,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "regenerator-runtime": "^0.13.3",
-    "vega": "^5.17.0"
+    "vega": "5.20"
   },
   "devDependencies": {
     "@msrvida/fluentui-react-cdn-typings": "^1",
