@@ -4,9 +4,9 @@
 ///<reference path='vega.d.ts' />
 
 namespace transition {
-    declare var deck: SandDance.VegaDeckGl.types.DeckBase & SandDance.VegaDeckGl.types.DeckLayerBase;
-    declare var luma: SandDance.VegaDeckGl.types.LumaBase;
-    declare var vega: SandDance.VegaDeckGl.types.VegaBase;
+    declare const deck: SandDance.VegaDeckGl.types.DeckBase & SandDance.VegaDeckGl.types.DeckLayerBase;
+    declare const luma: SandDance.VegaDeckGl.types.LumaBase;
+    declare const vega: SandDance.VegaDeckGl.types.VegaBase;
 
     let view: SandDance.ViewGl_Class;
     let lastSpec: Vega.Spec;
@@ -40,7 +40,7 @@ namespace transition {
         const splitRight = document.getElementById('split-right');
 
         try {
-            var spec = JSON.parse(text);
+            const spec = JSON.parse(text);
 
             splitRight.style.opacity = '1';
             errorDiv.style.display = 'none';
@@ -56,7 +56,7 @@ namespace transition {
     fetch('./specs/scatter3D.json')
         .then(response => response.text())
         .then(text => {
-            var textarea = document.getElementById('text1') as HTMLTextAreaElement;
+            const textarea = document.getElementById('text1') as HTMLTextAreaElement;
             textarea.value = text;
             getText('text1');
         });

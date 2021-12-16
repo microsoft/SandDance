@@ -6,8 +6,8 @@
 namespace cubeTest {
 
     import VegaDeckGl = SandDance.VegaDeckGl;
-    declare var deck: VegaDeckGl.types.DeckBase & VegaDeckGl.types.DeckLayerBase;
-    declare var luma: VegaDeckGl.types.LumaBase;
+    declare const deck: VegaDeckGl.types.DeckBase & VegaDeckGl.types.DeckLayerBase;
+    declare const luma: VegaDeckGl.types.LumaBase;
 
     VegaDeckGl.use(null, deck, deck, luma);
 
@@ -18,8 +18,8 @@ namespace cubeTest {
         gray: [128, 128, 128]
     };
 
-    export var presenter = new VegaDeckGl.Presenter(document.querySelector('#vis'));
-    var stage: VegaDeckGl.types.Stage = {
+    export const presenter = new VegaDeckGl.Presenter(document.querySelector('#vis'));
+    const stage: VegaDeckGl.types.Stage = {
         cubeData: [
             {
                 color: colors.red,
@@ -76,7 +76,7 @@ namespace cubeTest {
 
     presenter.present(stage, 200, 400);
 
-    var orbitViewState: deck.OrbitViewState = {
+    const orbitViewState: deck.OrbitViewState = {
         target: [90, 15, 23],
         rotationOrbit: -45,
         rotationX: 67,
