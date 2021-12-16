@@ -112,8 +112,7 @@ function axisSelectionPolygons(axis: VegaDeckGl.types.Axis, vertical: boolean, a
 
 function facetSelectionPolygons(facetRects: VegaDeckGl.types.FacetRect[]) {
     const polygons: SelectPolygon[] = [];
-    let linesAndSearches: { lines: VegaDeckGl.types.StyledLine[], search: SearchExpressionGroup }[];
-    linesAndSearches = facetRects.map(({ datum, lines }, i) => {
+    const linesAndSearches: { lines: VegaDeckGl.types.StyledLine[], search: SearchExpressionGroup }[] = facetRects.map(({ datum, lines }, i) => {
         let group: SearchExpressionGroup = getSearchGroupFromVegaValue(datum[FieldNames.FacetSearch]);
         return {
             lines,
