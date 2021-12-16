@@ -4,7 +4,7 @@ function $parcel$export(e, n, v, s) {
 }
 function $parcel$exportWildcard(dest, source) {
   Object.keys(source).forEach(function(key) {
-    if (key === 'default' || key === '__esModule') {
+    if (key === 'default' || key === '__esModule' || dest.hasOwnProperty(key)) {
       return;
     }
 
@@ -59,27 +59,27 @@ if (parcelRequire == null) {
 
   $parcel$global["parcelRequiredb83"] = parcelRequire;
 }
-var $b6499bcf1ffc0a3b$exports = {};
+var $829d4043a82dc0b3$exports = {};
 
-$parcel$export($b6499bcf1ffc0a3b$exports, "controls", () => $ea687581edf48e56$exports);
-$parcel$export($b6499bcf1ffc0a3b$exports, "getEmbedHTML", () => $ddc28421fe6d69d0$export$5e624397755a2e0);
-$parcel$export($b6499bcf1ffc0a3b$exports, "SideTabId", () => $065798d25a9d250c$export$b264ae1d75dc4e4e);
-$parcel$export($b6499bcf1ffc0a3b$exports, "use", () => $c5e1961a7f97a459$export$44747fb0056adba5);
-$parcel$export($b6499bcf1ffc0a3b$exports, "capabilities", () => $3669ee32f5f0d5ff$export$33f60a5e15d39c82);
-$parcel$export($b6499bcf1ffc0a3b$exports, "getColorSettingsFromThemePalette", () => $ffac552ad0872994$export$b3e0424e22817deb);
-$parcel$export($b6499bcf1ffc0a3b$exports, "themePalettes", () => $ffac552ad0872994$export$ab53ba4bd9c9d2ec);
-$parcel$export($b6499bcf1ffc0a3b$exports, "SandDance", () => $385418a87250916e$exports);
-$parcel$export($b6499bcf1ffc0a3b$exports, "util", () => $6e437f743d80b3ba$exports);
-$parcel$export($b6499bcf1ffc0a3b$exports, "version", () => $211e3c3b38323927$export$aef83baa0e7093df);
-var $ea687581edf48e56$exports = {};
-var $3456628043e62c6c$exports = {};
+$parcel$export($829d4043a82dc0b3$exports, "controls", () => $961d401904861ecc$exports);
+$parcel$export($829d4043a82dc0b3$exports, "getEmbedHTML", () => $bcfbcdd321a042d4$export$9f4b684ea6be1a90);
+$parcel$export($829d4043a82dc0b3$exports, "SideTabId", () => $a27dff4329aa24f2$export$f3b7566ffe363e3b);
+$parcel$export($829d4043a82dc0b3$exports, "use", () => $2a6088da9113f540$export$1f96ae73734a86cc);
+$parcel$export($829d4043a82dc0b3$exports, "capabilities", () => $d80024a3f51ef424$export$8e76ac9f37578d1b);
+$parcel$export($829d4043a82dc0b3$exports, "getColorSettingsFromThemePalette", () => $843cc4195912fafb$export$93a255849c3bdb97);
+$parcel$export($829d4043a82dc0b3$exports, "themePalettes", () => $843cc4195912fafb$export$3465a0e7b289ab72);
+$parcel$export($829d4043a82dc0b3$exports, "SandDance", () => $e5c730801b562de0$exports);
+$parcel$export($829d4043a82dc0b3$exports, "util", () => $900824613c851981$exports);
+$parcel$export($829d4043a82dc0b3$exports, "version", () => $693174daac173d4a$export$83d89fbfd8236492);
+var $961d401904861ecc$exports = {};
+var $4fad1e2cc5a361cd$exports = {};
 
-$parcel$export($3456628043e62c6c$exports, "Dialog", () => $3456628043e62c6c$export$d64e687ef4853cae);
+$parcel$export($4fad1e2cc5a361cd$exports, "Dialog", () => $4fad1e2cc5a361cd$export$3ddf2d174ce01153);
 
 
 
-const $6b702e1ad8ceb63e$export$afadbaa7ce934629 = 200;
-function $6b702e1ad8ceb63e$export$30a13326eaae8e00(props) {
+const $e5db841e2c07fb20$export$8263e1ed1ef30f07 = 200;
+function $e5db841e2c07fb20$export$931cbfb6bfb85fc(props) {
     const newProps = Object.assign({
     }, props);
     let selectedKey = null;
@@ -89,10 +89,10 @@ function $6b702e1ad8ceb63e$export$30a13326eaae8e00(props) {
         if (selectedOptions && selectedOptions.length > 0) selectedKey = selectedOptions[0].key;
     }
     if (newProps.collapseLabel) newProps.onRenderTitle = (a, b)=>{
-        return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("span", null, newProps.label, ": ", a[0].text);
+        return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("span", null, newProps.label, ": ", a[0].text);
     };
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.Dropdown, Object.assign({
-        dropdownWidth: $6b702e1ad8ceb63e$export$afadbaa7ce934629
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.Dropdown, Object.assign({
+        dropdownWidth: $e5db841e2c07fb20$export$8263e1ed1ef30f07
     }, newProps, {
         label: newProps.collapseLabel ? null : newProps.label,
         selectedKey: selectedKey
@@ -100,37 +100,37 @@ function $6b702e1ad8ceb63e$export$30a13326eaae8e00(props) {
 }
 
 
-var $385418a87250916e$exports = {};
+var $e5c730801b562de0$exports = {};
 
-$parcel$export($385418a87250916e$exports, "use", () => $385418a87250916e$export$44747fb0056adba5);
-$parcel$export($385418a87250916e$exports, "colorSchemes", () => $c70916a34f2bf3db$export$4b303fbe85a206f6);
-$parcel$export($385418a87250916e$exports, "constants", () => $a3b399caf5d2c16b$exports);
-$parcel$export($385418a87250916e$exports, "searchExpression", () => $311a0d2a8fe80ff7$exports);
-$parcel$export($385418a87250916e$exports, "specs", () => $2b1a2fc98adbe4f1$exports);
-$parcel$export($385418a87250916e$exports, "types", () => $e41d8194c950c589$exports);
-$parcel$export($385418a87250916e$exports, "util", () => $406c1b16a5bd3c44$exports);
-$parcel$export($385418a87250916e$exports, "VegaDeckGl", () => $7f572b57d5948475$exports);
-$parcel$export($385418a87250916e$exports, "Viewer", () => $cd7c0c51e96048d8$exports.Viewer);
-$parcel$export($385418a87250916e$exports, "version", () => $dc138f04a6edaf73$export$aef83baa0e7093df);
-var $a3b399caf5d2c16b$exports = {};
+$parcel$export($e5c730801b562de0$exports, "use", () => $e5c730801b562de0$export$1f96ae73734a86cc);
+$parcel$export($e5c730801b562de0$exports, "colorSchemes", () => $d5cc309f57ea9332$export$2ad73d393c16f81c);
+$parcel$export($e5c730801b562de0$exports, "constants", () => $7abff30d903026d9$exports);
+$parcel$export($e5c730801b562de0$exports, "searchExpression", () => $009f7267ebde0f0b$exports);
+$parcel$export($e5c730801b562de0$exports, "specs", () => $898e5580ccaf461f$exports);
+$parcel$export($e5c730801b562de0$exports, "types", () => $e021c47cedb7e510$exports);
+$parcel$export($e5c730801b562de0$exports, "util", () => $e76dbaf7a95e1712$exports);
+$parcel$export($e5c730801b562de0$exports, "VegaDeckGl", () => $fe0c42722799ef8c$exports);
+$parcel$export($e5c730801b562de0$exports, "Viewer", () => $83151626e84e84c0$exports.Viewer);
+$parcel$export($e5c730801b562de0$exports, "version", () => $c2f62f3c6fefc6ab$export$83d89fbfd8236492);
+var $7abff30d903026d9$exports = {};
 
-$parcel$export($a3b399caf5d2c16b$exports, "GL_ORDINAL", () => $a3b399caf5d2c16b$export$b86d149b7c15b53e);
-$parcel$export($a3b399caf5d2c16b$exports, "ColorScaleNone", () => $146eeb4362821b4b$export$e1b9a037ce7886e5);
-$parcel$export($a3b399caf5d2c16b$exports, "FieldNames", () => $146eeb4362821b4b$export$29b3fae588fa046f);
-$parcel$export($a3b399caf5d2c16b$exports, "ScaleNames", () => $146eeb4362821b4b$export$9a32a517dc4aa15a);
-$parcel$export($a3b399caf5d2c16b$exports, "SignalNames", () => $146eeb4362821b4b$export$e97f264ccfdb1383);
-var $2b1a2fc98adbe4f1$exports = {};
-var $4d5208b78df53d91$exports = {};
+$parcel$export($7abff30d903026d9$exports, "GL_ORDINAL", () => $7abff30d903026d9$export$5672246984822a29);
+$parcel$export($7abff30d903026d9$exports, "ColorScaleNone", () => $5026337cfcb4b996$export$c991c3dd58d9959c);
+$parcel$export($7abff30d903026d9$exports, "FieldNames", () => $5026337cfcb4b996$export$10df5429b7082be2);
+$parcel$export($7abff30d903026d9$exports, "ScaleNames", () => $5026337cfcb4b996$export$c9f17d36dfc40d76);
+$parcel$export($7abff30d903026d9$exports, "SignalNames", () => $5026337cfcb4b996$export$809e371dee643808);
+var $898e5580ccaf461f$exports = {};
+var $f5081518125870e3$exports = {};
 
-$parcel$export($4d5208b78df53d91$exports, "build", () => $4d5208b78df53d91$export$169a89f54f090971);
-var $146eeb4362821b4b$exports = {};
+$parcel$export($f5081518125870e3$exports, "build", () => $f5081518125870e3$export$3f8fe6489e95757d);
+var $5026337cfcb4b996$exports = {};
 
-$parcel$export($146eeb4362821b4b$exports, "SignalNames", () => $146eeb4362821b4b$export$e97f264ccfdb1383);
-$parcel$export($146eeb4362821b4b$exports, "FieldNames", () => $146eeb4362821b4b$export$29b3fae588fa046f);
-$parcel$export($146eeb4362821b4b$exports, "Other", () => $146eeb4362821b4b$export$8dc108353b27858);
-$parcel$export($146eeb4362821b4b$exports, "ColorScaleNone", () => $146eeb4362821b4b$export$e1b9a037ce7886e5);
-$parcel$export($146eeb4362821b4b$exports, "ScaleNames", () => $146eeb4362821b4b$export$9a32a517dc4aa15a);
-const $146eeb4362821b4b$export$29b3fae588fa046f = {
+$parcel$export($5026337cfcb4b996$exports, "FieldNames", () => $5026337cfcb4b996$export$10df5429b7082be2);
+$parcel$export($5026337cfcb4b996$exports, "ScaleNames", () => $5026337cfcb4b996$export$c9f17d36dfc40d76);
+$parcel$export($5026337cfcb4b996$exports, "SignalNames", () => $5026337cfcb4b996$export$809e371dee643808);
+$parcel$export($5026337cfcb4b996$exports, "Other", () => $5026337cfcb4b996$export$8653a30c44b6e879);
+$parcel$export($5026337cfcb4b996$exports, "ColorScaleNone", () => $5026337cfcb4b996$export$c991c3dd58d9959c);
+const $5026337cfcb4b996$export$10df5429b7082be2 = {
     Active: '__SandDance__Active',
     Collapsed: '__SandDance__Collapsed',
     Contains: '__SandDance__Contains',
@@ -156,13 +156,13 @@ const $146eeb4362821b4b$export$29b3fae588fa046f = {
     OffsetHeight: '__SandDance__H',
     OffsetWidth: '__SandDance__W'
 };
-const $146eeb4362821b4b$export$9a32a517dc4aa15a = {
+const $5026337cfcb4b996$export$c9f17d36dfc40d76 = {
     Color: 'scale_color',
     X: 'scale_x',
     Y: 'scale_y',
     Z: 'scale_z'
 };
-const $146eeb4362821b4b$export$e97f264ccfdb1383 = {
+const $5026337cfcb4b996$export$809e371dee643808 = {
     ViewportWidth: 'ViewportWidth',
     ViewportHeight: 'ViewportHeight',
     MinCellWidth: 'MinCellWidth',
@@ -196,32 +196,32 @@ const $146eeb4362821b4b$export$e97f264ccfdb1383 = {
     ZGrounded: 'RoleZ_Grounded',
     ZProportion: 'RoleZ_ProportionSignal'
 };
-const $146eeb4362821b4b$export$8dc108353b27858 = '__Other';
-const $146eeb4362821b4b$export$e1b9a037ce7886e5 = 'none';
+const $5026337cfcb4b996$export$8653a30c44b6e879 = '__Other';
+const $5026337cfcb4b996$export$c991c3dd58d9959c = 'none';
 
 
-const $d6acc81334b00d34$export$65229671e3d10c38 = 10;
-const $d6acc81334b00d34$export$ab77596ad9a9a1f = 100;
-const $d6acc81334b00d34$export$30d18778981eac54 = 15;
-const $d6acc81334b00d34$export$9575804afbd9861b = 140;
-const $d6acc81334b00d34$export$f6f90abbea75f1e0 = 180;
-const $d6acc81334b00d34$export$3edaaab3bd4d1562 = 40;
-const $d6acc81334b00d34$export$fa0456f55c73c7db = 40;
-const $d6acc81334b00d34$export$270d92c8ba3779cc = 40;
-const $d6acc81334b00d34$export$ca35a368a1db7499 = 40;
-const $d6acc81334b00d34$export$bb1d81a2e772919b = 100;
-const $d6acc81334b00d34$export$1d47b037cd4e8baa = 100;
-const $d6acc81334b00d34$export$a4d60686dcce912 = 30;
-const $d6acc81334b00d34$export$ee365cabf3b6c6 = 60;
-const $d6acc81334b00d34$export$bfd91bf10acf0a22 = 69;
-const $d6acc81334b00d34$export$9040dcec103623d1 = 92;
-const $d6acc81334b00d34$export$1256463ddc3abfcf = 120;
-const $d6acc81334b00d34$export$7ccb1c0a7972a85f = 120;
-const $d6acc81334b00d34$export$fc724d34e5358887 = 10;
-const $d6acc81334b00d34$export$2adbe44cf52133e9 = 20;
+const $ee84a745a025909d$export$4a9b1843df49fbce = 10;
+const $ee84a745a025909d$export$15c9d32f115776f9 = 100;
+const $ee84a745a025909d$export$929dfe98c4c4722c = 15;
+const $ee84a745a025909d$export$7794a0aff56142de = 140;
+const $ee84a745a025909d$export$7c432db1d0b63312 = 180;
+const $ee84a745a025909d$export$6bd206e55cb747ae = 40;
+const $ee84a745a025909d$export$c2b9f0002271e8ba = 40;
+const $ee84a745a025909d$export$bdb7a7da14f9ff2b = 40;
+const $ee84a745a025909d$export$c11851bee1b89f04 = 40;
+const $ee84a745a025909d$export$2aa02e522549e01e = 100;
+const $ee84a745a025909d$export$d3da25ad66816957 = 100;
+const $ee84a745a025909d$export$2e7279af2df830e3 = 30;
+const $ee84a745a025909d$export$f0388d9263db6e5f = 60;
+const $ee84a745a025909d$export$fd4a597070549ada = 69;
+const $ee84a745a025909d$export$a26a082bf9fa4ca0 = 92;
+const $ee84a745a025909d$export$3f5b554d51e74365 = 120;
+const $ee84a745a025909d$export$c33f11801bb18430 = 120;
+const $ee84a745a025909d$export$e1f76e63dbed4a9a = 10;
+const $ee84a745a025909d$export$c223d3ee3c0620d9 = 20;
 
 
-function $70adb8d24ee41c9b$export$39a639737c9fd43a(specContext) {
+function $a3143d492dd590c0$export$d3be63162ba033ae(specContext) {
     switch(specContext.insight.totalStyle){
         case 'sum-strip':
         case 'sum-strip-percent':
@@ -234,19 +234,19 @@ function $70adb8d24ee41c9b$export$39a639737c9fd43a(specContext) {
 }
 
 
-function $865e6885fab52a99$export$9099ad97b570f7c(specContext) {
+function $9eb45cf912b935b7$export$2e2bcd8739ae039(specContext) {
     const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
     const { language: language  } = specViewOptions;
     const bandProps = {
         orientation: 'horizontal',
         groupby: {
             column: specColumns.y,
-            defaultBins: $d6acc81334b00d34$export$65229671e3d10c38,
-            maxbinsSignalName: $146eeb4362821b4b$export$e97f264ccfdb1383.YBins,
+            defaultBins: $ee84a745a025909d$export$4a9b1843df49fbce,
+            maxbinsSignalName: $5026337cfcb4b996$export$809e371dee643808.YBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.YMaxBins,
-            maxbins: $d6acc81334b00d34$export$ab77596ad9a9a1f
+            maxbins: $ee84a745a025909d$export$15c9d32f115776f9
         },
-        minBandWidth: $d6acc81334b00d34$export$30d18778981eac54,
+        minBandWidth: $ee84a745a025909d$export$929dfe98c4c4722c,
         showAxes: true
     };
     const x = {
@@ -378,7 +378,7 @@ function $865e6885fab52a99$export$9099ad97b570f7c(specContext) {
                     axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
                     axisSelectionBetweenTicks: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.YBins
+                        $5026337cfcb4b996$export$809e371dee643808.YBins
                     ]
                 },
                 {
@@ -396,24 +396,24 @@ function $865e6885fab52a99$export$9099ad97b570f7c(specContext) {
                 },
                 {
                     role: 'size',
-                    allowNone: $70adb8d24ee41c9b$export$39a639737c9fd43a,
+                    allowNone: $a3143d492dd590c0$export$d3be63162ba033ae,
                     excludeCategoric: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.TreeMapMethod
+                        $5026337cfcb4b996$export$809e371dee643808.TreeMapMethod
                     ]
                 },
                 {
                     role: 'facet',
                     allowNone: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.FacetBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: 'facetV',
                     allowNone: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.FacetVBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetVBins
                     ]
                 }
             ]
@@ -425,19 +425,19 @@ function $865e6885fab52a99$export$9099ad97b570f7c(specContext) {
 
 
 
-function $4bcb0de5c846a6d5$export$9099ad97b570f7c(specContext) {
+function $2a8dbbf5227f16fc$export$2e2bcd8739ae039(specContext) {
     const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
     const { language: language  } = specViewOptions;
     const bandProps = {
         orientation: 'vertical',
         groupby: {
             column: specColumns.x,
-            defaultBins: $d6acc81334b00d34$export$65229671e3d10c38,
-            maxbinsSignalName: $146eeb4362821b4b$export$e97f264ccfdb1383.XBins,
+            defaultBins: $ee84a745a025909d$export$4a9b1843df49fbce,
+            maxbinsSignalName: $5026337cfcb4b996$export$809e371dee643808.XBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.XMaxBins,
-            maxbins: $d6acc81334b00d34$export$ab77596ad9a9a1f
+            maxbins: $ee84a745a025909d$export$15c9d32f115776f9
         },
-        minBandWidth: $d6acc81334b00d34$export$30d18778981eac54,
+        minBandWidth: $ee84a745a025909d$export$929dfe98c4c4722c,
         showAxes: true
     };
     const y = {
@@ -568,7 +568,7 @@ function $4bcb0de5c846a6d5$export$9099ad97b570f7c(specContext) {
                     axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
                     axisSelectionBetweenTicks: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.XBins
+                        $5026337cfcb4b996$export$809e371dee643808.XBins
                     ]
                 },
                 {
@@ -586,24 +586,24 @@ function $4bcb0de5c846a6d5$export$9099ad97b570f7c(specContext) {
                 },
                 {
                     role: 'size',
-                    allowNone: $70adb8d24ee41c9b$export$39a639737c9fd43a,
+                    allowNone: $a3143d492dd590c0$export$d3be63162ba033ae,
                     excludeCategoric: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.TreeMapMethod
+                        $5026337cfcb4b996$export$809e371dee643808.TreeMapMethod
                     ]
                 },
                 {
                     role: 'facet',
                     allowNone: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.FacetBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: 'facetV',
                     allowNone: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.FacetVBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetVBins
                     ]
                 }
             ]
@@ -615,7 +615,7 @@ function $4bcb0de5c846a6d5$export$9099ad97b570f7c(specContext) {
 
 
 
-function $5711d986ee4e7fa7$export$9099ad97b570f7c(specContext) {
+function $a373eaa0debff22a$export$2e2bcd8739ae039(specContext) {
     const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
     const axisScales = {
         x: {
@@ -633,12 +633,12 @@ function $5711d986ee4e7fa7$export$9099ad97b570f7c(specContext) {
         orientation: 'horizontal',
         groupby: {
             column: specColumns.y,
-            defaultBins: $d6acc81334b00d34$export$65229671e3d10c38,
-            maxbinsSignalName: $146eeb4362821b4b$export$e97f264ccfdb1383.YBins,
+            defaultBins: $ee84a745a025909d$export$4a9b1843df49fbce,
+            maxbinsSignalName: $5026337cfcb4b996$export$809e371dee643808.YBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.YMaxBins,
-            maxbins: $d6acc81334b00d34$export$ab77596ad9a9a1f
+            maxbins: $ee84a745a025909d$export$15c9d32f115776f9
         },
-        minBandWidth: $d6acc81334b00d34$export$30d18778981eac54,
+        minBandWidth: $ee84a745a025909d$export$929dfe98c4c4722c,
         showAxes: true
     };
     const vBandProps = {
@@ -646,12 +646,12 @@ function $5711d986ee4e7fa7$export$9099ad97b570f7c(specContext) {
         orientation: 'vertical',
         groupby: {
             column: specColumns.x,
-            defaultBins: $d6acc81334b00d34$export$65229671e3d10c38,
-            maxbinsSignalName: $146eeb4362821b4b$export$e97f264ccfdb1383.XBins,
+            defaultBins: $ee84a745a025909d$export$4a9b1843df49fbce,
+            maxbinsSignalName: $5026337cfcb4b996$export$809e371dee643808.XBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.XMaxBins,
-            maxbins: $d6acc81334b00d34$export$ab77596ad9a9a1f
+            maxbins: $ee84a745a025909d$export$15c9d32f115776f9
         },
-        minBandWidth: $d6acc81334b00d34$export$30d18778981eac54,
+        minBandWidth: $ee84a745a025909d$export$929dfe98c4c4722c,
         showAxes: true
     };
     const aggProps = {
@@ -753,7 +753,7 @@ function $5711d986ee4e7fa7$export$9099ad97b570f7c(specContext) {
                     axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
                     axisSelectionBetweenTicks: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.XBins
+                        $5026337cfcb4b996$export$809e371dee643808.XBins
                     ]
                 },
                 {
@@ -762,7 +762,7 @@ function $5711d986ee4e7fa7$export$9099ad97b570f7c(specContext) {
                     axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
                     axisSelectionBetweenTicks: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.YBins
+                        $5026337cfcb4b996$export$809e371dee643808.YBins
                     ]
                 },
                 {
@@ -780,24 +780,24 @@ function $5711d986ee4e7fa7$export$9099ad97b570f7c(specContext) {
                 },
                 {
                     role: 'size',
-                    allowNone: $70adb8d24ee41c9b$export$39a639737c9fd43a,
+                    allowNone: $a3143d492dd590c0$export$d3be63162ba033ae,
                     excludeCategoric: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.TreeMapMethod
+                        $5026337cfcb4b996$export$809e371dee643808.TreeMapMethod
                     ]
                 },
                 {
                     role: 'facet',
                     allowNone: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.FacetBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: 'facetV',
                     allowNone: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.FacetVBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetVBins
                     ]
                 }
             ]
@@ -807,7 +807,7 @@ function $5711d986ee4e7fa7$export$9099ad97b570f7c(specContext) {
 
 
 
-function $bc5409396cd1cad9$export$9099ad97b570f7c(specContext) {
+function $08dfe35caf1fa5e1$export$2e2bcd8739ae039(specContext) {
     const { specColumns: specColumns  } = specContext;
     const squareProps = {
         sortBy: specColumns.sort,
@@ -848,14 +848,14 @@ function $bc5409396cd1cad9$export$9099ad97b570f7c(specContext) {
                     role: 'facet',
                     allowNone: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.FacetBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: 'facetV',
                     allowNone: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.FacetVBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetVBins
                     ]
                 }
             ]
@@ -865,7 +865,7 @@ function $bc5409396cd1cad9$export$9099ad97b570f7c(specContext) {
 
 
 
-function $8b05b9f953431d09$export$9099ad97b570f7c(specContext) {
+function $f3e0a138e6e929f5$export$2e2bcd8739ae039(specContext) {
     const { specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
     const scatterProps = {
         x: specColumns.x,
@@ -923,20 +923,20 @@ function $8b05b9f953431d09$export$9099ad97b570f7c(specContext) {
                     role: 'facet',
                     allowNone: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.FacetBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: 'facetV',
                     allowNone: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.FacetVBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetVBins
                     ]
                 }
             ],
             signals: [
-                $146eeb4362821b4b$export$e97f264ccfdb1383.PointScale,
-                $146eeb4362821b4b$export$e97f264ccfdb1383.ZGrounded
+                $5026337cfcb4b996$export$809e371dee643808.PointScale,
+                $5026337cfcb4b996$export$809e371dee643808.ZGrounded
             ]
         }
     };
@@ -945,7 +945,7 @@ function $8b05b9f953431d09$export$9099ad97b570f7c(specContext) {
 
 
 
-function $13c871ba05733408$export$9099ad97b570f7c(specContext) {
+function $ecb7abcc5738e856$export$2e2bcd8739ae039(specContext) {
     const { specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
     const axisScales = {
         x: {
@@ -963,12 +963,12 @@ function $13c871ba05733408$export$9099ad97b570f7c(specContext) {
         orientation: 'horizontal',
         groupby: {
             column: specColumns.y,
-            defaultBins: $d6acc81334b00d34$export$65229671e3d10c38,
-            maxbinsSignalName: $146eeb4362821b4b$export$e97f264ccfdb1383.YBins,
+            defaultBins: $ee84a745a025909d$export$4a9b1843df49fbce,
+            maxbinsSignalName: $5026337cfcb4b996$export$809e371dee643808.YBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.YMaxBins,
-            maxbins: $d6acc81334b00d34$export$ab77596ad9a9a1f
+            maxbins: $ee84a745a025909d$export$15c9d32f115776f9
         },
-        minBandWidth: $d6acc81334b00d34$export$30d18778981eac54,
+        minBandWidth: $ee84a745a025909d$export$929dfe98c4c4722c,
         showAxes: true
     };
     const vBandProps = {
@@ -976,12 +976,12 @@ function $13c871ba05733408$export$9099ad97b570f7c(specContext) {
         orientation: 'vertical',
         groupby: {
             column: specColumns.x,
-            defaultBins: $d6acc81334b00d34$export$65229671e3d10c38,
-            maxbinsSignalName: $146eeb4362821b4b$export$e97f264ccfdb1383.XBins,
+            defaultBins: $ee84a745a025909d$export$4a9b1843df49fbce,
+            maxbinsSignalName: $5026337cfcb4b996$export$809e371dee643808.XBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.XMaxBins,
-            maxbins: $d6acc81334b00d34$export$ab77596ad9a9a1f
+            maxbins: $ee84a745a025909d$export$15c9d32f115776f9
         },
-        minBandWidth: $d6acc81334b00d34$export$30d18778981eac54,
+        minBandWidth: $ee84a745a025909d$export$929dfe98c4c4722c,
         showAxes: true
     };
     const stackProps = {
@@ -1013,7 +1013,7 @@ function $13c871ba05733408$export$9099ad97b570f7c(specContext) {
                     axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
                     axisSelectionBetweenTicks: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.XBins
+                        $5026337cfcb4b996$export$809e371dee643808.XBins
                     ]
                 },
                 {
@@ -1022,7 +1022,7 @@ function $13c871ba05733408$export$9099ad97b570f7c(specContext) {
                     axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
                     axisSelectionBetweenTicks: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.YBins
+                        $5026337cfcb4b996$export$809e371dee643808.YBins
                     ]
                 },
                 {
@@ -1037,14 +1037,14 @@ function $13c871ba05733408$export$9099ad97b570f7c(specContext) {
                     role: 'facet',
                     allowNone: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.FacetBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: 'facetV',
                     allowNone: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.FacetVBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetVBins
                     ]
                 }
             ]
@@ -1054,7 +1054,7 @@ function $13c871ba05733408$export$9099ad97b570f7c(specContext) {
 
 
 
-function $6aeafd0fb264ea31$export$9099ad97b570f7c(specContext) {
+function $bbdd12a5128860ad$export$2e2bcd8739ae039(specContext) {
     const { specColumns: specColumns  } = specContext;
     const stripProps = {
         sortOrder: 'ascending',
@@ -1121,14 +1121,14 @@ function $6aeafd0fb264ea31$export$9099ad97b570f7c(specContext) {
                     role: 'facet',
                     allowNone: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.FacetBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: 'facetV',
                     allowNone: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.FacetVBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetVBins
                     ]
                 }
             ]
@@ -1138,7 +1138,7 @@ function $6aeafd0fb264ea31$export$9099ad97b570f7c(specContext) {
 
 
 
-function $592fc2648feb003d$export$9099ad97b570f7c(specContext) {
+function $fae7e5559efac1f0$export$2e2bcd8739ae039(specContext) {
     const { specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
     const treemapProps = {
         corner: 'top-left',
@@ -1204,19 +1204,19 @@ function $592fc2648feb003d$export$9099ad97b570f7c(specContext) {
                     role: 'facet',
                     allowNone: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.FacetBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: 'facetV',
                     allowNone: true,
                     signals: [
-                        $146eeb4362821b4b$export$e97f264ccfdb1383.FacetVBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetVBins
                     ]
                 }
             ],
             signals: [
-                $146eeb4362821b4b$export$e97f264ccfdb1383.TreeMapMethod
+                $5026337cfcb4b996$export$809e371dee643808.TreeMapMethod
             ]
         }
     };
@@ -1224,7 +1224,7 @@ function $592fc2648feb003d$export$9099ad97b570f7c(specContext) {
 
 
 
-function $ace849a6dc2f6251$export$343ebc577272c81a(facetStyle, facetColumn, facetVColumn, axisTextColor) {
+function $6862902fe1d31c35$export$fb43a8c8f10fdc99(facetStyle, facetColumn, facetVColumn, axisTextColor) {
     let layoutPair;
     const groupby = facetColumn;
     const plotPadding = {
@@ -1246,12 +1246,12 @@ function $ace849a6dc2f6251$export$343ebc577272c81a(facetStyle, facetColumn, face
                     props: props
                 };
                 facetPadding = {
-                    bottom: $d6acc81334b00d34$export$270d92c8ba3779cc,
-                    left: $d6acc81334b00d34$export$3edaaab3bd4d1562,
+                    bottom: $ee84a745a025909d$export$bdb7a7da14f9ff2b,
+                    left: $ee84a745a025909d$export$6bd206e55cb747ae,
                     top: 0
                 };
-                plotPadding.y = $d6acc81334b00d34$export$fa0456f55c73c7db;
-                plotPadding.x = $d6acc81334b00d34$export$ca35a368a1db7499;
+                plotPadding.y = $ee84a745a025909d$export$c2b9f0002271e8ba;
+                plotPadding.x = $ee84a745a025909d$export$c11851bee1b89f04;
                 break;
             }
         case 'wrap':
@@ -1267,9 +1267,9 @@ function $ace849a6dc2f6251$export$343ebc577272c81a(facetStyle, facetColumn, face
                     props: props
                 };
                 facetPadding = {
-                    bottom: $d6acc81334b00d34$export$270d92c8ba3779cc,
-                    left: $d6acc81334b00d34$export$3edaaab3bd4d1562,
-                    top: $d6acc81334b00d34$export$fa0456f55c73c7db
+                    bottom: $ee84a745a025909d$export$bdb7a7da14f9ff2b,
+                    left: $ee84a745a025909d$export$6bd206e55cb747ae,
+                    top: $ee84a745a025909d$export$c2b9f0002271e8ba
                 };
                 break;
             }
@@ -1287,38 +1287,38 @@ function $ace849a6dc2f6251$export$343ebc577272c81a(facetStyle, facetColumn, face
 
 
 
-const $5dcad97ed164a566$var$map = {
-    barchart: $4bcb0de5c846a6d5$export$9099ad97b570f7c,
-    barchartH: $865e6885fab52a99$export$9099ad97b570f7c,
-    barchartV: $4bcb0de5c846a6d5$export$9099ad97b570f7c,
-    density: $5711d986ee4e7fa7$export$9099ad97b570f7c,
-    grid: $bc5409396cd1cad9$export$9099ad97b570f7c,
-    scatterplot: $8b05b9f953431d09$export$9099ad97b570f7c,
-    stacks: $13c871ba05733408$export$9099ad97b570f7c,
-    strips: $6aeafd0fb264ea31$export$9099ad97b570f7c,
-    treemap: $592fc2648feb003d$export$9099ad97b570f7c
+const $e03900d3ca5c71cc$var$map = {
+    barchart: $2a8dbbf5227f16fc$export$2e2bcd8739ae039,
+    barchartH: $9eb45cf912b935b7$export$2e2bcd8739ae039,
+    barchartV: $2a8dbbf5227f16fc$export$2e2bcd8739ae039,
+    density: $a373eaa0debff22a$export$2e2bcd8739ae039,
+    grid: $08dfe35caf1fa5e1$export$2e2bcd8739ae039,
+    scatterplot: $f3e0a138e6e929f5$export$2e2bcd8739ae039,
+    stacks: $ecb7abcc5738e856$export$2e2bcd8739ae039,
+    strips: $bbdd12a5128860ad$export$2e2bcd8739ae039,
+    treemap: $fae7e5559efac1f0$export$2e2bcd8739ae039
 };
-function $5dcad97ed164a566$export$c48d4298c35d80ce(specContext) {
+function $e03900d3ca5c71cc$export$104083a36c1647a7(specContext) {
     const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
-    const fn = $5dcad97ed164a566$var$map[insight.chart];
+    const fn = $e03900d3ca5c71cc$var$map[insight.chart];
     if (fn) {
         const props = fn(specContext);
         if (insight.columns.facet) {
             const discreteFacetColumn = {
                 column: specColumns.facet,
-                defaultBins: $d6acc81334b00d34$export$65229671e3d10c38,
-                maxbins: $d6acc81334b00d34$export$ab77596ad9a9a1f,
+                defaultBins: $ee84a745a025909d$export$4a9b1843df49fbce,
+                maxbins: $ee84a745a025909d$export$15c9d32f115776f9,
                 maxbinsSignalDisplayName: specViewOptions.language.FacetMaxBins,
-                maxbinsSignalName: $146eeb4362821b4b$export$e97f264ccfdb1383.FacetBins
+                maxbinsSignalName: $5026337cfcb4b996$export$809e371dee643808.FacetBins
             };
             const discreteFacetVColumn = {
                 column: specColumns.facetV,
-                defaultBins: $d6acc81334b00d34$export$65229671e3d10c38,
-                maxbins: $d6acc81334b00d34$export$ab77596ad9a9a1f,
+                defaultBins: $ee84a745a025909d$export$4a9b1843df49fbce,
+                maxbins: $ee84a745a025909d$export$15c9d32f115776f9,
                 maxbinsSignalDisplayName: specViewOptions.language.FacetVMaxBins,
-                maxbinsSignalName: $146eeb4362821b4b$export$e97f264ccfdb1383.FacetVBins
+                maxbinsSignalName: $5026337cfcb4b996$export$809e371dee643808.FacetVBins
             };
-            const { facetLayout: facetLayout , layoutPair: layoutPair  } = $ace849a6dc2f6251$export$343ebc577272c81a(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn, specViewOptions.colors.axisText);
+            const { facetLayout: facetLayout , layoutPair: layoutPair  } = $6862902fe1d31c35$export$fb43a8c8f10fdc99(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn, specViewOptions.colors.axisText);
             props.layouts.unshift(layoutPair);
             props.facetLayout = facetLayout;
         }
@@ -1327,56 +1327,56 @@ function $5dcad97ed164a566$export$c48d4298c35d80ce(specContext) {
 }
 
 
-var $0ebaa52647c6073e$exports = {};
+var $1f41cd3bd9350891$exports = {};
 
-$parcel$export($0ebaa52647c6073e$exports, "getColumnsFromData", () => $0ebaa52647c6073e$export$d25d2216dc7fff5a);
-$parcel$export($0ebaa52647c6073e$exports, "getStats", () => $0ebaa52647c6073e$export$4c75e2c8266a336d);
-$parcel$export($0ebaa52647c6073e$exports, "inferAll", () => $0ebaa52647c6073e$export$47bd397f706b4d82);
-$parcel$export($0ebaa52647c6073e$exports, "getSpecColumns", () => $0ebaa52647c6073e$export$301044eba61980a8);
-function $c6ab9564582a00e6$export$9099ad97b570f7c(constructor, factory, prototype) {
+$parcel$export($1f41cd3bd9350891$exports, "getColumnsFromData", () => $1f41cd3bd9350891$export$3f19ad07848df794);
+$parcel$export($1f41cd3bd9350891$exports, "inferAll", () => $1f41cd3bd9350891$export$e04a97cc71178399);
+$parcel$export($1f41cd3bd9350891$exports, "getSpecColumns", () => $1f41cd3bd9350891$export$9e6128b2231f5173);
+$parcel$export($1f41cd3bd9350891$exports, "getStats", () => $1f41cd3bd9350891$export$432f698644f45d1);
+function $b6d0d243eace325c$export$2e2bcd8739ae039(constructor, factory, prototype) {
     constructor.prototype = factory.prototype = prototype;
     prototype.constructor = constructor;
 }
-function $c6ab9564582a00e6$export$46e35401bc090c62(parent, definition) {
+function $b6d0d243eace325c$export$8b58be045bf06082(parent, definition) {
     var prototype = Object.create(parent.prototype);
     for(var key in definition)prototype[key] = definition[key];
     return prototype;
 }
 
 
-function $e57f9510c1a44a77$export$e4830c8e55b4f80d() {
+function $d0913b0967b605ca$export$892596cec99bc70e() {
 }
-var $e57f9510c1a44a77$export$a49b5ca9db8c9416 = 0.7;
-var $e57f9510c1a44a77$export$acf32b1b82ce4fe7 = 1 / $e57f9510c1a44a77$export$a49b5ca9db8c9416;
-var $e57f9510c1a44a77$var$reI = "\\s*([+-]?\\d+)\\s*", $e57f9510c1a44a77$var$reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*", $e57f9510c1a44a77$var$reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*", $e57f9510c1a44a77$var$reHex = /^#([0-9a-f]{3,8})$/, $e57f9510c1a44a77$var$reRgbInteger = new RegExp("^rgb\\(" + [
-    $e57f9510c1a44a77$var$reI,
-    $e57f9510c1a44a77$var$reI,
-    $e57f9510c1a44a77$var$reI
-] + "\\)$"), $e57f9510c1a44a77$var$reRgbPercent = new RegExp("^rgb\\(" + [
-    $e57f9510c1a44a77$var$reP,
-    $e57f9510c1a44a77$var$reP,
-    $e57f9510c1a44a77$var$reP
-] + "\\)$"), $e57f9510c1a44a77$var$reRgbaInteger = new RegExp("^rgba\\(" + [
-    $e57f9510c1a44a77$var$reI,
-    $e57f9510c1a44a77$var$reI,
-    $e57f9510c1a44a77$var$reI,
-    $e57f9510c1a44a77$var$reN
-] + "\\)$"), $e57f9510c1a44a77$var$reRgbaPercent = new RegExp("^rgba\\(" + [
-    $e57f9510c1a44a77$var$reP,
-    $e57f9510c1a44a77$var$reP,
-    $e57f9510c1a44a77$var$reP,
-    $e57f9510c1a44a77$var$reN
-] + "\\)$"), $e57f9510c1a44a77$var$reHslPercent = new RegExp("^hsl\\(" + [
-    $e57f9510c1a44a77$var$reN,
-    $e57f9510c1a44a77$var$reP,
-    $e57f9510c1a44a77$var$reP
-] + "\\)$"), $e57f9510c1a44a77$var$reHslaPercent = new RegExp("^hsla\\(" + [
-    $e57f9510c1a44a77$var$reN,
-    $e57f9510c1a44a77$var$reP,
-    $e57f9510c1a44a77$var$reP,
-    $e57f9510c1a44a77$var$reN
+var $d0913b0967b605ca$export$4adafc6ed0600c10 = 0.7;
+var $d0913b0967b605ca$export$9eace2cc0d12c98d = 1 / $d0913b0967b605ca$export$4adafc6ed0600c10;
+var $d0913b0967b605ca$var$reI = "\\s*([+-]?\\d+)\\s*", $d0913b0967b605ca$var$reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*", $d0913b0967b605ca$var$reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*", $d0913b0967b605ca$var$reHex = /^#([0-9a-f]{3,8})$/, $d0913b0967b605ca$var$reRgbInteger = new RegExp("^rgb\\(" + [
+    $d0913b0967b605ca$var$reI,
+    $d0913b0967b605ca$var$reI,
+    $d0913b0967b605ca$var$reI
+] + "\\)$"), $d0913b0967b605ca$var$reRgbPercent = new RegExp("^rgb\\(" + [
+    $d0913b0967b605ca$var$reP,
+    $d0913b0967b605ca$var$reP,
+    $d0913b0967b605ca$var$reP
+] + "\\)$"), $d0913b0967b605ca$var$reRgbaInteger = new RegExp("^rgba\\(" + [
+    $d0913b0967b605ca$var$reI,
+    $d0913b0967b605ca$var$reI,
+    $d0913b0967b605ca$var$reI,
+    $d0913b0967b605ca$var$reN
+] + "\\)$"), $d0913b0967b605ca$var$reRgbaPercent = new RegExp("^rgba\\(" + [
+    $d0913b0967b605ca$var$reP,
+    $d0913b0967b605ca$var$reP,
+    $d0913b0967b605ca$var$reP,
+    $d0913b0967b605ca$var$reN
+] + "\\)$"), $d0913b0967b605ca$var$reHslPercent = new RegExp("^hsl\\(" + [
+    $d0913b0967b605ca$var$reN,
+    $d0913b0967b605ca$var$reP,
+    $d0913b0967b605ca$var$reP
+] + "\\)$"), $d0913b0967b605ca$var$reHslaPercent = new RegExp("^hsla\\(" + [
+    $d0913b0967b605ca$var$reN,
+    $d0913b0967b605ca$var$reP,
+    $d0913b0967b605ca$var$reP,
+    $d0913b0967b605ca$var$reN
 ] + "\\)$");
-var $e57f9510c1a44a77$var$named = {
+var $d0913b0967b605ca$var$named = {
     aliceblue: 15792383,
     antiquewhite: 16444375,
     aqua: 65535,
@@ -1526,74 +1526,74 @@ var $e57f9510c1a44a77$var$named = {
     yellow: 16776960,
     yellowgreen: 10145074
 };
-$c6ab9564582a00e6$export$9099ad97b570f7c($e57f9510c1a44a77$export$e4830c8e55b4f80d, $e57f9510c1a44a77$export$9099ad97b570f7c, {
+$b6d0d243eace325c$export$2e2bcd8739ae039($d0913b0967b605ca$export$892596cec99bc70e, $d0913b0967b605ca$export$2e2bcd8739ae039, {
     copy: function(channels) {
         return Object.assign(new this.constructor, this, channels);
     },
     displayable: function() {
         return this.rgb().displayable();
     },
-    hex: $e57f9510c1a44a77$var$color_formatHex,
-    formatHex: $e57f9510c1a44a77$var$color_formatHex,
-    formatHsl: $e57f9510c1a44a77$var$color_formatHsl,
-    formatRgb: $e57f9510c1a44a77$var$color_formatRgb,
-    toString: $e57f9510c1a44a77$var$color_formatRgb
+    hex: $d0913b0967b605ca$var$color_formatHex,
+    formatHex: $d0913b0967b605ca$var$color_formatHex,
+    formatHsl: $d0913b0967b605ca$var$color_formatHsl,
+    formatRgb: $d0913b0967b605ca$var$color_formatRgb,
+    toString: $d0913b0967b605ca$var$color_formatRgb
 });
-function $e57f9510c1a44a77$var$color_formatHex() {
+function $d0913b0967b605ca$var$color_formatHex() {
     return this.rgb().formatHex();
 }
-function $e57f9510c1a44a77$var$color_formatHsl() {
-    return $e57f9510c1a44a77$export$8269f892f57a576a(this).formatHsl();
+function $d0913b0967b605ca$var$color_formatHsl() {
+    return $d0913b0967b605ca$export$8133dc3fa904d6d1(this).formatHsl();
 }
-function $e57f9510c1a44a77$var$color_formatRgb() {
+function $d0913b0967b605ca$var$color_formatRgb() {
     return this.rgb().formatRgb();
 }
-function $e57f9510c1a44a77$export$9099ad97b570f7c(format) {
+function $d0913b0967b605ca$export$2e2bcd8739ae039(format) {
     var m, l;
     format = (format + "").trim().toLowerCase();
-    return (m = $e57f9510c1a44a77$var$reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? $e57f9510c1a44a77$var$rgbn(m) // #ff0000
-     : l === 3 ? new $e57f9510c1a44a77$export$224ee6128901ddf4(m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, (m & 15) << 4 | m & 15, 1) // #f00
-     : l === 8 ? $e57f9510c1a44a77$var$rgba(m >> 24 & 255, m >> 16 & 255, m >> 8 & 255, (m & 255) / 255) // #ff000000
-     : l === 4 ? $e57f9510c1a44a77$var$rgba(m >> 12 & 15 | m >> 8 & 240, m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, ((m & 15) << 4 | m & 15) / 255) // #f000
-     : null) : (m = $e57f9510c1a44a77$var$reRgbInteger.exec(format)) ? new $e57f9510c1a44a77$export$224ee6128901ddf4(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
-     : (m = $e57f9510c1a44a77$var$reRgbPercent.exec(format)) ? new $e57f9510c1a44a77$export$224ee6128901ddf4(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
-     : (m = $e57f9510c1a44a77$var$reRgbaInteger.exec(format)) ? $e57f9510c1a44a77$var$rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
-     : (m = $e57f9510c1a44a77$var$reRgbaPercent.exec(format)) ? $e57f9510c1a44a77$var$rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-     : (m = $e57f9510c1a44a77$var$reHslPercent.exec(format)) ? $e57f9510c1a44a77$var$hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-     : (m = $e57f9510c1a44a77$var$reHslaPercent.exec(format)) ? $e57f9510c1a44a77$var$hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-     : $e57f9510c1a44a77$var$named.hasOwnProperty(format) ? $e57f9510c1a44a77$var$rgbn($e57f9510c1a44a77$var$named[format]) // eslint-disable-line no-prototype-builtins
-     : format === "transparent" ? new $e57f9510c1a44a77$export$224ee6128901ddf4(NaN, NaN, NaN, 0) : null;
+    return (m = $d0913b0967b605ca$var$reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? $d0913b0967b605ca$var$rgbn(m) // #ff0000
+     : l === 3 ? new $d0913b0967b605ca$export$5e05a94393ac29e3(m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, (m & 15) << 4 | m & 15, 1) // #f00
+     : l === 8 ? $d0913b0967b605ca$var$rgba(m >> 24 & 255, m >> 16 & 255, m >> 8 & 255, (m & 255) / 255) // #ff000000
+     : l === 4 ? $d0913b0967b605ca$var$rgba(m >> 12 & 15 | m >> 8 & 240, m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, ((m & 15) << 4 | m & 15) / 255) // #f000
+     : null) : (m = $d0913b0967b605ca$var$reRgbInteger.exec(format)) ? new $d0913b0967b605ca$export$5e05a94393ac29e3(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+     : (m = $d0913b0967b605ca$var$reRgbPercent.exec(format)) ? new $d0913b0967b605ca$export$5e05a94393ac29e3(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+     : (m = $d0913b0967b605ca$var$reRgbaInteger.exec(format)) ? $d0913b0967b605ca$var$rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+     : (m = $d0913b0967b605ca$var$reRgbaPercent.exec(format)) ? $d0913b0967b605ca$var$rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+     : (m = $d0913b0967b605ca$var$reHslPercent.exec(format)) ? $d0913b0967b605ca$var$hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+     : (m = $d0913b0967b605ca$var$reHslaPercent.exec(format)) ? $d0913b0967b605ca$var$hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+     : $d0913b0967b605ca$var$named.hasOwnProperty(format) ? $d0913b0967b605ca$var$rgbn($d0913b0967b605ca$var$named[format]) // eslint-disable-line no-prototype-builtins
+     : format === "transparent" ? new $d0913b0967b605ca$export$5e05a94393ac29e3(NaN, NaN, NaN, 0) : null;
 }
-function $e57f9510c1a44a77$var$rgbn(n) {
-    return new $e57f9510c1a44a77$export$224ee6128901ddf4(n >> 16 & 255, n >> 8 & 255, n & 255, 1);
+function $d0913b0967b605ca$var$rgbn(n) {
+    return new $d0913b0967b605ca$export$5e05a94393ac29e3(n >> 16 & 255, n >> 8 & 255, n & 255, 1);
 }
-function $e57f9510c1a44a77$var$rgba(r, g, b, a) {
+function $d0913b0967b605ca$var$rgba(r, g, b, a) {
     if (a <= 0) r = g = b = NaN;
-    return new $e57f9510c1a44a77$export$224ee6128901ddf4(r, g, b, a);
+    return new $d0913b0967b605ca$export$5e05a94393ac29e3(r, g, b, a);
 }
-function $e57f9510c1a44a77$export$7138c6bf7ee5608c(o) {
-    if (!(o instanceof $e57f9510c1a44a77$export$e4830c8e55b4f80d)) o = $e57f9510c1a44a77$export$9099ad97b570f7c(o);
-    if (!o) return new $e57f9510c1a44a77$export$224ee6128901ddf4;
+function $d0913b0967b605ca$export$42da0a331c2802f5(o) {
+    if (!(o instanceof $d0913b0967b605ca$export$892596cec99bc70e)) o = $d0913b0967b605ca$export$2e2bcd8739ae039(o);
+    if (!o) return new $d0913b0967b605ca$export$5e05a94393ac29e3;
     o = o.rgb();
-    return new $e57f9510c1a44a77$export$224ee6128901ddf4(o.r, o.g, o.b, o.opacity);
+    return new $d0913b0967b605ca$export$5e05a94393ac29e3(o.r, o.g, o.b, o.opacity);
 }
-function $e57f9510c1a44a77$export$1b3a2af3f3cd47f6(r, g, b, opacity) {
-    return arguments.length === 1 ? $e57f9510c1a44a77$export$7138c6bf7ee5608c(r) : new $e57f9510c1a44a77$export$224ee6128901ddf4(r, g, b, opacity == null ? 1 : opacity);
+function $d0913b0967b605ca$export$8972dc0e6ad9238f(r, g, b, opacity) {
+    return arguments.length === 1 ? $d0913b0967b605ca$export$42da0a331c2802f5(r) : new $d0913b0967b605ca$export$5e05a94393ac29e3(r, g, b, opacity == null ? 1 : opacity);
 }
-function $e57f9510c1a44a77$export$224ee6128901ddf4(r, g, b, opacity) {
+function $d0913b0967b605ca$export$5e05a94393ac29e3(r, g, b, opacity) {
     this.r = +r;
     this.g = +g;
     this.b = +b;
     this.opacity = +opacity;
 }
-$c6ab9564582a00e6$export$9099ad97b570f7c($e57f9510c1a44a77$export$224ee6128901ddf4, $e57f9510c1a44a77$export$1b3a2af3f3cd47f6, $c6ab9564582a00e6$export$46e35401bc090c62($e57f9510c1a44a77$export$e4830c8e55b4f80d, {
+$b6d0d243eace325c$export$2e2bcd8739ae039($d0913b0967b605ca$export$5e05a94393ac29e3, $d0913b0967b605ca$export$8972dc0e6ad9238f, $b6d0d243eace325c$export$8b58be045bf06082($d0913b0967b605ca$export$892596cec99bc70e, {
     brighter: function(k) {
-        k = k == null ? $e57f9510c1a44a77$export$acf32b1b82ce4fe7 : Math.pow($e57f9510c1a44a77$export$acf32b1b82ce4fe7, k);
-        return new $e57f9510c1a44a77$export$224ee6128901ddf4(this.r * k, this.g * k, this.b * k, this.opacity);
+        k = k == null ? $d0913b0967b605ca$export$9eace2cc0d12c98d : Math.pow($d0913b0967b605ca$export$9eace2cc0d12c98d, k);
+        return new $d0913b0967b605ca$export$5e05a94393ac29e3(this.r * k, this.g * k, this.b * k, this.opacity);
     },
     darker: function(k) {
-        k = k == null ? $e57f9510c1a44a77$export$a49b5ca9db8c9416 : Math.pow($e57f9510c1a44a77$export$a49b5ca9db8c9416, k);
-        return new $e57f9510c1a44a77$export$224ee6128901ddf4(this.r * k, this.g * k, this.b * k, this.opacity);
+        k = k == null ? $d0913b0967b605ca$export$4adafc6ed0600c10 : Math.pow($d0913b0967b605ca$export$4adafc6ed0600c10, k);
+        return new $d0913b0967b605ca$export$5e05a94393ac29e3(this.r * k, this.g * k, this.b * k, this.opacity);
     },
     rgb: function() {
         return this;
@@ -1601,34 +1601,34 @@ $c6ab9564582a00e6$export$9099ad97b570f7c($e57f9510c1a44a77$export$224ee6128901dd
     displayable: function() {
         return -0.5 <= this.r && this.r < 255.5 && -0.5 <= this.g && this.g < 255.5 && -0.5 <= this.b && this.b < 255.5 && 0 <= this.opacity && this.opacity <= 1;
     },
-    hex: $e57f9510c1a44a77$var$rgb_formatHex,
-    formatHex: $e57f9510c1a44a77$var$rgb_formatHex,
-    formatRgb: $e57f9510c1a44a77$var$rgb_formatRgb,
-    toString: $e57f9510c1a44a77$var$rgb_formatRgb
+    hex: $d0913b0967b605ca$var$rgb_formatHex,
+    formatHex: $d0913b0967b605ca$var$rgb_formatHex,
+    formatRgb: $d0913b0967b605ca$var$rgb_formatRgb,
+    toString: $d0913b0967b605ca$var$rgb_formatRgb
 }));
-function $e57f9510c1a44a77$var$rgb_formatHex() {
-    return "#" + $e57f9510c1a44a77$var$hex(this.r) + $e57f9510c1a44a77$var$hex(this.g) + $e57f9510c1a44a77$var$hex(this.b);
+function $d0913b0967b605ca$var$rgb_formatHex() {
+    return "#" + $d0913b0967b605ca$var$hex(this.r) + $d0913b0967b605ca$var$hex(this.g) + $d0913b0967b605ca$var$hex(this.b);
 }
-function $e57f9510c1a44a77$var$rgb_formatRgb() {
+function $d0913b0967b605ca$var$rgb_formatRgb() {
     var a = this.opacity;
     a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
     return (a === 1 ? "rgb(" : "rgba(") + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.b) || 0)) + (a === 1 ? ")" : ", " + a + ")");
 }
-function $e57f9510c1a44a77$var$hex(value) {
+function $d0913b0967b605ca$var$hex(value) {
     value = Math.max(0, Math.min(255, Math.round(value) || 0));
     return (value < 16 ? "0" : "") + value.toString(16);
 }
-function $e57f9510c1a44a77$var$hsla(h, s, l, a) {
+function $d0913b0967b605ca$var$hsla(h, s, l, a) {
     if (a <= 0) h = s = l = NaN;
     else if (l <= 0 || l >= 1) h = s = NaN;
     else if (s <= 0) h = NaN;
-    return new $e57f9510c1a44a77$var$Hsl(h, s, l, a);
+    return new $d0913b0967b605ca$var$Hsl(h, s, l, a);
 }
-function $e57f9510c1a44a77$export$8269f892f57a576a(o) {
-    if (o instanceof $e57f9510c1a44a77$var$Hsl) return new $e57f9510c1a44a77$var$Hsl(o.h, o.s, o.l, o.opacity);
-    if (!(o instanceof $e57f9510c1a44a77$export$e4830c8e55b4f80d)) o = $e57f9510c1a44a77$export$9099ad97b570f7c(o);
-    if (!o) return new $e57f9510c1a44a77$var$Hsl;
-    if (o instanceof $e57f9510c1a44a77$var$Hsl) return o;
+function $d0913b0967b605ca$export$8133dc3fa904d6d1(o) {
+    if (o instanceof $d0913b0967b605ca$var$Hsl) return new $d0913b0967b605ca$var$Hsl(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof $d0913b0967b605ca$export$892596cec99bc70e)) o = $d0913b0967b605ca$export$2e2bcd8739ae039(o);
+    if (!o) return new $d0913b0967b605ca$var$Hsl;
+    if (o instanceof $d0913b0967b605ca$var$Hsl) return o;
     o = o.rgb();
     var r = o.r / 255, g = o.g / 255, b = o.b / 255, min = Math.min(r, g, b), max = Math.max(r, g, b), h = NaN, s = max - min, l = (max + min) / 2;
     if (s) {
@@ -1638,29 +1638,29 @@ function $e57f9510c1a44a77$export$8269f892f57a576a(o) {
         s /= l < 0.5 ? max + min : 2 - max - min;
         h *= 60;
     } else s = l > 0 && l < 1 ? 0 : h;
-    return new $e57f9510c1a44a77$var$Hsl(h, s, l, o.opacity);
+    return new $d0913b0967b605ca$var$Hsl(h, s, l, o.opacity);
 }
-function $e57f9510c1a44a77$export$1eaadac1dc277f81(h, s, l, opacity) {
-    return arguments.length === 1 ? $e57f9510c1a44a77$export$8269f892f57a576a(h) : new $e57f9510c1a44a77$var$Hsl(h, s, l, opacity == null ? 1 : opacity);
+function $d0913b0967b605ca$export$8f4a7c0bb78e6ea8(h, s, l, opacity) {
+    return arguments.length === 1 ? $d0913b0967b605ca$export$8133dc3fa904d6d1(h) : new $d0913b0967b605ca$var$Hsl(h, s, l, opacity == null ? 1 : opacity);
 }
-function $e57f9510c1a44a77$var$Hsl(h, s, l, opacity) {
+function $d0913b0967b605ca$var$Hsl(h, s, l, opacity) {
     this.h = +h;
     this.s = +s;
     this.l = +l;
     this.opacity = +opacity;
 }
-$c6ab9564582a00e6$export$9099ad97b570f7c($e57f9510c1a44a77$var$Hsl, $e57f9510c1a44a77$export$1eaadac1dc277f81, $c6ab9564582a00e6$export$46e35401bc090c62($e57f9510c1a44a77$export$e4830c8e55b4f80d, {
+$b6d0d243eace325c$export$2e2bcd8739ae039($d0913b0967b605ca$var$Hsl, $d0913b0967b605ca$export$8f4a7c0bb78e6ea8, $b6d0d243eace325c$export$8b58be045bf06082($d0913b0967b605ca$export$892596cec99bc70e, {
     brighter: function(k) {
-        k = k == null ? $e57f9510c1a44a77$export$acf32b1b82ce4fe7 : Math.pow($e57f9510c1a44a77$export$acf32b1b82ce4fe7, k);
-        return new $e57f9510c1a44a77$var$Hsl(this.h, this.s, this.l * k, this.opacity);
+        k = k == null ? $d0913b0967b605ca$export$9eace2cc0d12c98d : Math.pow($d0913b0967b605ca$export$9eace2cc0d12c98d, k);
+        return new $d0913b0967b605ca$var$Hsl(this.h, this.s, this.l * k, this.opacity);
     },
     darker: function(k) {
-        k = k == null ? $e57f9510c1a44a77$export$a49b5ca9db8c9416 : Math.pow($e57f9510c1a44a77$export$a49b5ca9db8c9416, k);
-        return new $e57f9510c1a44a77$var$Hsl(this.h, this.s, this.l * k, this.opacity);
+        k = k == null ? $d0913b0967b605ca$export$4adafc6ed0600c10 : Math.pow($d0913b0967b605ca$export$4adafc6ed0600c10, k);
+        return new $d0913b0967b605ca$var$Hsl(this.h, this.s, this.l * k, this.opacity);
     },
     rgb: function() {
         var h = this.h % 360 + (this.h < 0) * 360, s = isNaN(h) || isNaN(this.s) ? 0 : this.s, l = this.l, m2 = l + (l < 0.5 ? l : 1 - l) * s, m1 = 2 * l - m2;
-        return new $e57f9510c1a44a77$export$224ee6128901ddf4($e57f9510c1a44a77$var$hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), $e57f9510c1a44a77$var$hsl2rgb(h, m1, m2), $e57f9510c1a44a77$var$hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
+        return new $d0913b0967b605ca$export$5e05a94393ac29e3($d0913b0967b605ca$var$hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), $d0913b0967b605ca$var$hsl2rgb(h, m1, m2), $d0913b0967b605ca$var$hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
     },
     displayable: function() {
         return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && 0 <= this.l && this.l <= 1 && 0 <= this.opacity && this.opacity <= 1;
@@ -1671,19 +1671,19 @@ $c6ab9564582a00e6$export$9099ad97b570f7c($e57f9510c1a44a77$var$Hsl, $e57f9510c1a
         return (a === 1 ? "hsl(" : "hsla(") + (this.h || 0) + ", " + (this.s || 0) * 100 + "%, " + (this.l || 0) * 100 + "%" + (a === 1 ? ")" : ", " + a + ")");
     }
 }));
-/* From FvD 13.37, CSS Color Module Level 3 */ function $e57f9510c1a44a77$var$hsl2rgb(h, m1, m2) {
+/* From FvD 13.37, CSS Color Module Level 3 */ function $d0913b0967b605ca$var$hsl2rgb(h, m1, m2) {
     return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
 }
 
 
 
-function $0ebaa52647c6073e$var$isColor(cssColorSpecifier) {
-    return !!$e57f9510c1a44a77$export$9099ad97b570f7c(cssColorSpecifier);
+function $1f41cd3bd9350891$var$isColor(cssColorSpecifier) {
+    return !!$d0913b0967b605ca$export$2e2bcd8739ae039(cssColorSpecifier);
 }
-function $0ebaa52647c6073e$var$isQuantitative(column) {
+function $1f41cd3bd9350891$var$isQuantitative(column) {
     return column.type === 'number' || column.type === 'integer';
 }
-function $0ebaa52647c6073e$export$d25d2216dc7fff5a(inferTypesFn, data, columnTypes) {
+function $1f41cd3bd9350891$export$3f19ad07848df794(inferTypesFn, data, columnTypes) {
     const sample = data[0];
     const fields = sample ? Object.keys(sample) : [];
     const inferences = Object.assign(Object.assign({
@@ -1695,10 +1695,10 @@ function $0ebaa52647c6073e$export$d25d2216dc7fff5a(inferTypesFn, data, columnTyp
         };
         return column;
     });
-    $0ebaa52647c6073e$export$47bd397f706b4d82(columns, data);
+    $1f41cd3bd9350891$export$e04a97cc71178399(columns, data);
     return columns;
 }
-function $0ebaa52647c6073e$export$301044eba61980a8(insight, columns) {
+function $1f41cd3bd9350891$export$9e6128b2231f5173(insight, columns) {
     function getColumnByName(name) {
         return columns.filter((c)=>c.name === name
         )[0];
@@ -1716,27 +1716,27 @@ function $0ebaa52647c6073e$export$301044eba61980a8(insight, columns) {
         z: getColumnByName(insight.columns && insight.columns.z)
     };
 }
-function $0ebaa52647c6073e$export$47bd397f706b4d82(columns, data) {
+function $1f41cd3bd9350891$export$e04a97cc71178399(columns, data) {
     columns.forEach((column)=>{
         if (column) {
-            if (typeof column.quantitative !== 'boolean') column.quantitative = $0ebaa52647c6073e$var$isQuantitative(column);
-            if (!column.stats) column.stats = $0ebaa52647c6073e$export$4c75e2c8266a336d(data, column);
-            if (column.type === 'string' && typeof column.isColorData !== 'boolean') $0ebaa52647c6073e$var$checkIsColorData(data, column);
+            if (typeof column.quantitative !== 'boolean') column.quantitative = $1f41cd3bd9350891$var$isQuantitative(column);
+            if (!column.stats) column.stats = $1f41cd3bd9350891$export$432f698644f45d1(data, column);
+            if (column.type === 'string' && typeof column.isColorData !== 'boolean') $1f41cd3bd9350891$var$checkIsColorData(data, column);
         }
     });
 }
-function $0ebaa52647c6073e$var$checkIsColorData(data, column) {
+function $1f41cd3bd9350891$var$checkIsColorData(data, column) {
     if (!column.stats.hasColorData) {
         column.isColorData = false;
         return;
     }
-    for(let i = 0; i < data.length; i++)if (!$0ebaa52647c6073e$var$isColor(data[i][column.name])) {
+    for(let i = 0; i < data.length; i++)if (!$1f41cd3bd9350891$var$isColor(data[i][column.name])) {
         column.isColorData = false;
         return;
     }
     column.isColorData = true;
 }
-function $0ebaa52647c6073e$export$4c75e2c8266a336d(data, column) {
+function $1f41cd3bd9350891$export$432f698644f45d1(data, column) {
     const distinctMap = {
     };
     const stats = {
@@ -1754,23 +1754,23 @@ function $0ebaa52647c6073e$export$4c75e2c8266a336d(data, column) {
         if (stats.min === null || value < stats.min) stats.min = value;
         let num = +value;
         if (!isNaN(num)) sum += num;
-        if (column.type === 'string' && !stats.hasColorData && $0ebaa52647c6073e$var$isColor(value)) stats.hasColorData = true;
+        if (column.type === 'string' && !stats.hasColorData && $1f41cd3bd9350891$var$isColor(value)) stats.hasColorData = true;
     }
     if (column.quantitative) {
         stats.mean = data.length > 0 && sum / data.length;
-        stats.hasNegative = $0ebaa52647c6073e$var$detectNegative(column, data);
-        if (column.type === 'integer') stats.isSequential = $0ebaa52647c6073e$var$detectSequentialColumn(column, data);
+        stats.hasNegative = $1f41cd3bd9350891$var$detectNegative(column, data);
+        if (column.type === 'integer') stats.isSequential = $1f41cd3bd9350891$var$detectSequentialColumn(column, data);
     }
     stats.distinctValueCount = Object.keys(distinctMap).length;
     return stats;
 }
-function $0ebaa52647c6073e$var$detectNegative(column, data) {
+function $1f41cd3bd9350891$var$detectNegative(column, data) {
     for(let i = 1; i < data.length; i++){
         if (data[i][column.name] < 0) return true;
     }
     return false;
 }
-function $0ebaa52647c6073e$var$detectSequentialColumn(column, data) {
+function $1f41cd3bd9350891$var$detectSequentialColumn(column, data) {
     if (data.length < 2) return false;
     let colname = column.name;
     for(let i = 1; i < data.length; i++){
@@ -1782,31 +1782,31 @@ function $0ebaa52647c6073e$var$detectSequentialColumn(column, data) {
 
 
 
-function $b3fb1eeac72b53ef$export$fd4ba712bc1bf9c4(scope, ...axis) {
+function $1d26d69d9d3d5b6e$export$b18909608a999daa(scope, ...axis) {
     if (!scope.axes) scope.axes = [];
     scope.axes.push(...axis);
 }
-function $b3fb1eeac72b53ef$export$3af5226bf85b3fe(scope, ...data) {
+function $1d26d69d9d3d5b6e$export$6853292f627997e4(scope, ...data) {
     if (!scope.data) scope.data = [];
     scope.data.push(...data);
 }
-function $b3fb1eeac72b53ef$export$2bdeef921b699304(scope, ...marks) {
+function $1d26d69d9d3d5b6e$export$3df320e901c23a48(scope, ...marks) {
     if (!scope.marks) scope.marks = [];
     scope.marks.push(...marks);
 }
-function $b3fb1eeac72b53ef$export$7bc781d47112a1ca(scope, ...scale) {
+function $1d26d69d9d3d5b6e$export$290268902279a991(scope, ...scale) {
     if (!scope.scales) scope.scales = [];
     scope.scales.push(...scale.filter(Boolean));
 }
-function $b3fb1eeac72b53ef$export$fc8966a6eac27a(scope, ...signal) {
+function $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(scope, ...signal) {
     if (!scope.signals) scope.signals = [];
     scope.signals.push(...signal);
 }
-function $b3fb1eeac72b53ef$export$dd47277a33967f3(data, ...transforms) {
+function $1d26d69d9d3d5b6e$export$eea5d31e98930019(data, ...transforms) {
     if (!data.transform) data.transform = [];
     data.transform.push(...transforms);
 }
-function $b3fb1eeac72b53ef$export$e5cbd1d444212cf8(data, dataName) {
+function $1d26d69d9d3d5b6e$export$ef4373c7e62b2278(data, dataName) {
     for(let i = 0; i < data.length; i++){
         if (data[i].name === dataName) return {
             data: data[i],
@@ -1814,31 +1814,31 @@ function $b3fb1eeac72b53ef$export$e5cbd1d444212cf8(data, dataName) {
         };
     }
 }
-function $b3fb1eeac72b53ef$export$d8d50e04ceb89a80(groupings) {
+function $1d26d69d9d3d5b6e$export$53a21aeef48e14a8(groupings) {
     const groupby = groupings.map((g)=>g.groupby
     );
     return groupby.reduce((acc, val)=>acc.concat(val)
     , []);
 }
-function $b3fb1eeac72b53ef$export$69458ad3b16ec03a(...offsets) {
+function $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(...offsets) {
     return offsets.filter(Boolean).join(' + ');
 }
 
 
-function $5a387119767f751c$export$323335ebe3b8edf4(props) {
-    const { axesOffsets: axesOffsets , axisScales: axisScales , axesScopes: axesScopes , axesTitlePadding: axesTitlePadding , allGlobalScales: allGlobalScales , globalScope: globalScope , labelBaseline: labelBaseline , plotOffsetSignals: plotOffsetSignals , specColumns: specColumns , specViewOptions: specViewOptions  } = props;
+function $9d5f9a843f218841$export$3678bfcfeaea7c36(props1) {
+    const { axesOffsets: axesOffsets , axisScales: axisScales , axesScopes: axesScopes , axesTitlePadding: axesTitlePadding , allGlobalScales: allGlobalScales , globalScope: globalScope , labelBaseline: labelBaseline , plotOffsetSignals: plotOffsetSignals , specColumns: specColumns , specViewOptions: specViewOptions  } = props1;
     const { scope: scope  } = globalScope;
     allGlobalScales.forEach((globalScales)=>{
         const { scales: scales  } = globalScales;
         for(let xyz in scales){
             let _scales = scales[xyz];
             if (_scales) {
-                $b3fb1eeac72b53ef$export$7bc781d47112a1ca(scope, ..._scales);
+                $1d26d69d9d3d5b6e$export$290268902279a991(scope, ..._scales);
                 let { showAxes: showAxes  } = globalScales;
                 let zindex = undefined;
                 if (xyz === 'z') {
                     showAxes = false;
-                    if (props.view === '3d' && specViewOptions.zAxisOptions && !props.faceted) {
+                    if (props1.view === '3d' && specViewOptions.zAxisOptions && !props1.faceted) {
                         if (specViewOptions.zAxisOptions.showZAxis) {
                             showAxes = true;
                             zindex = specViewOptions.zAxisOptions.zIndex;
@@ -1854,7 +1854,7 @@ function $5a387119767f751c$export$323335ebe3b8edf4(props) {
                             quantitative: true
                         };
                         const title = axisScale.title;
-                        const props1 = {
+                        const props = {
                             title: title,
                             horizontal: horizontal,
                             column: column,
@@ -1864,16 +1864,16 @@ function $5a387119767f751c$export$323335ebe3b8edf4(props) {
                             labelBaseline: labelBaseline[xyz],
                             zindex: zindex
                         };
-                        axesScopes['main'].forEach((a)=>$b3fb1eeac72b53ef$export$fd4ba712bc1bf9c4(a.scope, $5a387119767f751c$var$createAxis(Object.assign(Object.assign({
-                            }, props1), {
+                        axesScopes['main'].forEach((a)=>$1d26d69d9d3d5b6e$export$b18909608a999daa(a.scope, $9d5f9a843f218841$var$createAxis(Object.assign(Object.assign({
+                            }, props), {
                                 scale: a.scale || _scales[0],
                                 showTitle: a.title,
                                 showLabels: a.labels,
                                 showLines: a.lines
                             })))
                         );
-                        if (axesScopes[xyz]) axesScopes[xyz].forEach((a)=>$b3fb1eeac72b53ef$export$fd4ba712bc1bf9c4(a.scope, $5a387119767f751c$var$createAxis(Object.assign(Object.assign({
-                            }, props1), {
+                        if (axesScopes[xyz]) axesScopes[xyz].forEach((a)=>$1d26d69d9d3d5b6e$export$b18909608a999daa(a.scope, $9d5f9a843f218841$var$createAxis(Object.assign(Object.assign({
+                            }, props), {
                                 scale: a.scale || _scales[0],
                                 showTitle: a.title,
                                 showLabels: a.labels,
@@ -1890,7 +1890,7 @@ function $5a387119767f751c$export$323335ebe3b8edf4(props) {
         }
     });
 }
-function $5a387119767f751c$var$createAxis(props) {
+function $9d5f9a843f218841$var$createAxis(props) {
     const { column: column , horizontal: horizontal , labelBaseline: labelBaseline , lineColor: lineColor , scale: scale , showLabels: showLabels , showTitle: showTitle , showLines: showLines , specViewOptions: specViewOptions , title: title , titlePadding: titlePadding , zindex: zindex  } = props;
     const axis = Object.assign(Object.assign(Object.assign(Object.assign({
         zindex: zindex,
@@ -1906,13 +1906,13 @@ function $5a387119767f751c$var$createAxis(props) {
         title: title,
         titleAlign: horizontal ? 'left' : 'right',
         titleAngle: {
-            signal: horizontal ? $146eeb4362821b4b$export$e97f264ccfdb1383.TextAngleX : $146eeb4362821b4b$export$e97f264ccfdb1383.TextAngleY
+            signal: horizontal ? $5026337cfcb4b996$export$809e371dee643808.TextAngleX : $5026337cfcb4b996$export$809e371dee643808.TextAngleY
         },
         titleColor: specViewOptions.colors.axisText,
         titleFontSize: {
-            signal: $146eeb4362821b4b$export$e97f264ccfdb1383.TextTitleSize
+            signal: $5026337cfcb4b996$export$809e371dee643808.TextTitleSize
         },
-        titleLimit: $d6acc81334b00d34$export$1d47b037cd4e8baa,
+        titleLimit: $ee84a745a025909d$export$d3da25ad66816957,
         titlePadding: titlePadding
     }), {
         labels: showLabels
@@ -1920,13 +1920,13 @@ function $5a387119767f751c$var$createAxis(props) {
         labelAlign: horizontal ? 'left' : 'right',
         labelBaseline: labelBaseline,
         labelAngle: {
-            signal: horizontal ? $146eeb4362821b4b$export$e97f264ccfdb1383.TextAngleX : $146eeb4362821b4b$export$e97f264ccfdb1383.TextAngleY
+            signal: horizontal ? $5026337cfcb4b996$export$809e371dee643808.TextAngleX : $5026337cfcb4b996$export$809e371dee643808.TextAngleY
         },
         labelColor: specViewOptions.colors.axisText,
         labelFontSize: {
-            signal: $146eeb4362821b4b$export$e97f264ccfdb1383.TextSize
+            signal: $5026337cfcb4b996$export$809e371dee643808.TextSize
         },
-        labelLimit: $d6acc81334b00d34$export$bb1d81a2e772919b
+        labelLimit: $ee84a745a025909d$export$2aa02e522549e01e
     });
     if (column.quantitative) axis.format = '~r';
     return axis;
@@ -1935,16 +1935,16 @@ function $5a387119767f751c$var$createAxis(props) {
 
 
 
-function $8eb7a07ca128ffbc$export$d899a523879bc85a(field) {
+function $bc6bc4f764e00865$export$fb70365b00e8cb7b(field) {
     return field.replace('.', '\\.').replace('[', '\\[').replace(']', '\\]');
 }
-function $8eb7a07ca128ffbc$export$2c8af6107006eb60(field) {
+function $bc6bc4f764e00865$export$74df930fa4adaae4(field) {
     //remove whitespace, period, accessors and logical modifiers
     return field.replace(/[.,:;+=\-/<>{}|~!@#$%^*[\]`'"()?\s\\]/g, '');
 }
 
 
-function $52df80fd0126b376$export$d1dcafe205a223b7(scaleName, data, field, range, reverse, zero) {
+function $0831b1e730d257f4$export$fefe9507ec0904ed(scaleName, data, field, range, reverse, zero) {
     const scale = {
         name: scaleName,
         type: 'linear',
@@ -1953,21 +1953,21 @@ function $52df80fd0126b376$export$d1dcafe205a223b7(scaleName, data, field, range
         reverse: reverse,
         domain: {
             data: data,
-            field: $8eb7a07ca128ffbc$export$d899a523879bc85a(field)
+            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(field)
         },
         zero: zero,
         nice: true
     };
     return scale;
 }
-function $52df80fd0126b376$export$3949eed57fd6ab06(scaleName, data, range, field, reverse) {
+function $0831b1e730d257f4$export$b67158f831e00d0d(scaleName, data, range, field, reverse) {
     const scale = {
         name: scaleName,
         type: 'point',
         range: range,
         domain: {
             data: data,
-            field: $8eb7a07ca128ffbc$export$d899a523879bc85a(field),
+            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(field),
             sort: true
         },
         padding: 0.5
@@ -1975,20 +1975,20 @@ function $52df80fd0126b376$export$3949eed57fd6ab06(scaleName, data, range, field
     if (reverse !== undefined) scale.reverse = reverse;
     return scale;
 }
-function $52df80fd0126b376$export$f59b7a6a9ab5fb2e(scaleName, colorBin, data, field, scheme) {
-    scheme = scheme || $146eeb4362821b4b$export$e1b9a037ce7886e5;
+function $0831b1e730d257f4$export$530110e7506d659d(scaleName, colorBin, data, field, scheme) {
+    scheme = scheme || $5026337cfcb4b996$export$c991c3dd58d9959c;
     const domain = {
         data: data,
-        field: $8eb7a07ca128ffbc$export$d899a523879bc85a(field)
+        field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(field)
     };
     const range = {
         scheme: scheme
     };
     const reverse = {
-        signal: $146eeb4362821b4b$export$e97f264ccfdb1383.ColorReverse
+        signal: $5026337cfcb4b996$export$809e371dee643808.ColorReverse
     };
     if (colorBin !== 'continuous') range.count = {
-        signal: $146eeb4362821b4b$export$e97f264ccfdb1383.ColorBinCount
+        signal: $5026337cfcb4b996$export$809e371dee643808.ColorBinCount
     };
     switch(colorBin){
         case 'continuous':
@@ -2029,13 +2029,13 @@ function $52df80fd0126b376$export$f59b7a6a9ab5fb2e(scaleName, colorBin, data, fi
 
 
 
-const $573ada9f4d41ca62$export$1b14b733306f144a = 0.6;
-function $573ada9f4d41ca62$export$e568cf8be4c6e956(context, heightSignal) {
+const $853681033abd6f83$export$7bc9b23ce3036e78 = 0.6;
+function $853681033abd6f83$export$d9407ec206a3236c(context, heightSignal) {
     const { specViewOptions: specViewOptions  } = context;
     const signals = [
         {
-            name: $146eeb4362821b4b$export$e97f264ccfdb1383.ZProportion,
-            value: $573ada9f4d41ca62$export$1b14b733306f144a,
+            name: $5026337cfcb4b996$export$809e371dee643808.ZProportion,
+            value: $853681033abd6f83$export$7bc9b23ce3036e78,
             bind: {
                 name: specViewOptions.language.zScaleProportion,
                 debounce: 50,
@@ -2046,11 +2046,11 @@ function $573ada9f4d41ca62$export$e568cf8be4c6e956(context, heightSignal) {
             }
         },
         {
-            name: $146eeb4362821b4b$export$e97f264ccfdb1383.ZHeight,
-            update: `${heightSignal} * ${$146eeb4362821b4b$export$e97f264ccfdb1383.ZProportion}`
+            name: $5026337cfcb4b996$export$809e371dee643808.ZHeight,
+            update: `${heightSignal} * ${$5026337cfcb4b996$export$809e371dee643808.ZProportion}`
         },
         {
-            name: $146eeb4362821b4b$export$e97f264ccfdb1383.TextScale,
+            name: $5026337cfcb4b996$export$809e371dee643808.TextScale,
             value: 1.2,
             bind: {
                 name: specViewOptions.language.textScaleSignal,
@@ -2062,15 +2062,15 @@ function $573ada9f4d41ca62$export$e568cf8be4c6e956(context, heightSignal) {
             }
         },
         {
-            name: $146eeb4362821b4b$export$e97f264ccfdb1383.TextSize,
-            update: `${$146eeb4362821b4b$export$e97f264ccfdb1383.TextScale} * 10`
+            name: $5026337cfcb4b996$export$809e371dee643808.TextSize,
+            update: `${$5026337cfcb4b996$export$809e371dee643808.TextScale} * 10`
         },
         {
-            name: $146eeb4362821b4b$export$e97f264ccfdb1383.TextTitleSize,
-            update: `${$146eeb4362821b4b$export$e97f264ccfdb1383.TextScale} * 15`
+            name: $5026337cfcb4b996$export$809e371dee643808.TextTitleSize,
+            update: `${$5026337cfcb4b996$export$809e371dee643808.TextScale} * 15`
         },
         {
-            name: $146eeb4362821b4b$export$e97f264ccfdb1383.TextAngleX,
+            name: $5026337cfcb4b996$export$809e371dee643808.TextAngleX,
             value: 30,
             bind: {
                 name: specViewOptions.language.xAxisTextAngleSignal,
@@ -2082,7 +2082,7 @@ function $573ada9f4d41ca62$export$e568cf8be4c6e956(context, heightSignal) {
             }
         },
         {
-            name: $146eeb4362821b4b$export$e97f264ccfdb1383.TextAngleY,
+            name: $5026337cfcb4b996$export$809e371dee643808.TextAngleY,
             value: 0,
             bind: {
                 name: specViewOptions.language.yAxisTextAngleSignal,
@@ -2094,7 +2094,7 @@ function $573ada9f4d41ca62$export$e568cf8be4c6e956(context, heightSignal) {
             }
         },
         {
-            name: $146eeb4362821b4b$export$e97f264ccfdb1383.MarkOpacity,
+            name: $5026337cfcb4b996$export$809e371dee643808.MarkOpacity,
             value: 1,
             bind: {
                 name: specViewOptions.language.markOpacitySignal,
@@ -2108,10 +2108,10 @@ function $573ada9f4d41ca62$export$e568cf8be4c6e956(context, heightSignal) {
     ];
     return signals;
 }
-function $573ada9f4d41ca62$export$1ad68bc363e02ccb(context) {
+function $853681033abd6f83$export$641fa4f0ca86c2ad(context) {
     const { specViewOptions: specViewOptions  } = context;
     const signal = {
-        name: $146eeb4362821b4b$export$e97f264ccfdb1383.ColorBinCount,
+        name: $5026337cfcb4b996$export$809e371dee643808.ColorBinCount,
         value: 7,
         bind: {
             name: specViewOptions.language.colorBinCount,
@@ -2123,10 +2123,10 @@ function $573ada9f4d41ca62$export$1ad68bc363e02ccb(context) {
     };
     return signal;
 }
-function $573ada9f4d41ca62$export$17b2e68a7137b67d(context) {
+function $853681033abd6f83$export$526461dda4c87775(context) {
     const { specViewOptions: specViewOptions  } = context;
     const signal = {
-        name: $146eeb4362821b4b$export$e97f264ccfdb1383.ColorReverse,
+        name: $5026337cfcb4b996$export$809e371dee643808.ColorReverse,
         value: false,
         bind: {
             name: specViewOptions.language.colorReverse,
@@ -2135,13 +2135,13 @@ function $573ada9f4d41ca62$export$17b2e68a7137b67d(context) {
     };
     return signal;
 }
-function $573ada9f4d41ca62$export$8a3437c1e0038352(s, fn, update) {
+function $853681033abd6f83$export$cdc9366ba30317bd(s, fn, update) {
     s.update = `${fn}((${s.update}), (${update}))`;
 }
 
 
 
-function $74d19d18fd52dec6$var$legend(column, fill) {
+function $19fb6d9d8175da0c$var$legend(column, fill) {
     const legend = {
         orient: 'none',
         title: column.name,
@@ -2162,17 +2162,17 @@ function $74d19d18fd52dec6$var$legend(column, fill) {
     }
     return legend;
 }
-function $74d19d18fd52dec6$export$eb28e9ee171b7920(context, fill) {
+function $19fb6d9d8175da0c$export$765837a81fadca85(context, fill) {
     const { specColumns: specColumns , insight: insight  } = context;
     if (specColumns.color && !insight.hideLegend && !insight.directColor && !specColumns.color.isColorData) return [
-        $74d19d18fd52dec6$var$legend(specColumns.color, fill)
+        $19fb6d9d8175da0c$var$legend(specColumns.color, fill)
     ];
 }
 
 
 
 
-function $a8cab5f262d4fb66$export$e22b7451d997d17e(column, count, source, legend, lookupName, fieldName, indexName) {
+function $e522aafa3316cf1f$export$a4725aa19e8564dd(column, count, source, legend, lookupName, fieldName, indexName) {
     const data = [
         {
             name: lookupName,
@@ -2181,7 +2181,7 @@ function $a8cab5f262d4fb66$export$e22b7451d997d17e(column, count, source, legend
                 {
                     type: 'aggregate',
                     groupby: [
-                        $8eb7a07ca128ffbc$export$d899a523879bc85a(column.name)
+                        $bc6bc4f764e00865$export$fb70365b00e8cb7b(column.name)
                     ]
                 },
                 {
@@ -2206,20 +2206,20 @@ function $a8cab5f262d4fb66$export$e22b7451d997d17e(column, count, source, legend
                 {
                     type: 'lookup',
                     from: lookupName,
-                    key: $8eb7a07ca128ffbc$export$d899a523879bc85a(column.name),
+                    key: $bc6bc4f764e00865$export$fb70365b00e8cb7b(column.name),
                     fields: [
                         column.name
-                    ].map($8eb7a07ca128ffbc$export$d899a523879bc85a),
+                    ].map($bc6bc4f764e00865$export$fb70365b00e8cb7b),
                     values: [
                         column.name
-                    ].map($8eb7a07ca128ffbc$export$d899a523879bc85a),
+                    ].map($bc6bc4f764e00865$export$fb70365b00e8cb7b),
                     as: [
                         fieldName
                     ]
                 },
                 {
                     type: 'formula',
-                    expr: `datum[${JSON.stringify(fieldName)}] == null ? '${$146eeb4362821b4b$export$8dc108353b27858}' : datum[${JSON.stringify(fieldName)}]`,
+                    expr: `datum[${JSON.stringify(fieldName)}] == null ? '${$5026337cfcb4b996$export$8653a30c44b6e879}' : datum[${JSON.stringify(fieldName)}]`,
                     as: fieldName
                 }
             ]
@@ -2229,38 +2229,38 @@ function $a8cab5f262d4fb66$export$e22b7451d997d17e(column, count, source, legend
 }
 
 
-function $d397a2a1ee48bc5e$export$2dc63264baec3ee2(props) {
+function $9f1db88e8f4618a8$export$4c4d9288a45f1fb3(props) {
     const { colorReverseSignalName: colorReverseSignalName , dataName: dataName , scope: scope , legendDataName: legendDataName , scaleName: scaleName , specContext: specContext , topLookupName: topLookupName  } = props;
     let colorDataName = dataName;
     const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
-    const legends = $74d19d18fd52dec6$export$eb28e9ee171b7920(specContext, scaleName);
+    const legends = $19fb6d9d8175da0c$export$765837a81fadca85(specContext, scaleName);
     if (legends) scope.legends = legends;
     const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     if (categoricalColor) {
-        $b3fb1eeac72b53ef$export$3af5226bf85b3fe(scope, ...$a8cab5f262d4fb66$export$e22b7451d997d17e(specColumns.color, specViewOptions.maxLegends, dataName, legendDataName, topLookupName, $146eeb4362821b4b$export$29b3fae588fa046f.TopColor, $146eeb4362821b4b$export$29b3fae588fa046f.TopIndex));
+        $1d26d69d9d3d5b6e$export$6853292f627997e4(scope, ...$e522aafa3316cf1f$export$a4725aa19e8564dd(specColumns.color, specViewOptions.maxLegends, dataName, legendDataName, topLookupName, $5026337cfcb4b996$export$10df5429b7082be2.TopColor, $5026337cfcb4b996$export$10df5429b7082be2.TopIndex));
         colorDataName = legendDataName;
     }
     if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
-        if (specColumns.color.quantitative) $b3fb1eeac72b53ef$export$7bc781d47112a1ca(scope, $52df80fd0126b376$export$f59b7a6a9ab5fb2e(scaleName, insight.colorBin, dataName, specColumns.color.name, insight.scheme));
-        else $b3fb1eeac72b53ef$export$7bc781d47112a1ca(scope, {
+        if (specColumns.color.quantitative) $1d26d69d9d3d5b6e$export$290268902279a991(scope, $0831b1e730d257f4$export$530110e7506d659d(scaleName, insight.colorBin, dataName, specColumns.color.name, insight.scheme));
+        else $1d26d69d9d3d5b6e$export$290268902279a991(scope, {
             name: scaleName,
             type: 'ordinal',
             domain: {
                 data: colorDataName,
-                field: $146eeb4362821b4b$export$29b3fae588fa046f.TopColor,
+                field: $5026337cfcb4b996$export$10df5429b7082be2.TopColor,
                 sort: true
             },
             range: {
-                scheme: insight.scheme || $146eeb4362821b4b$export$e1b9a037ce7886e5
+                scheme: insight.scheme || $5026337cfcb4b996$export$c991c3dd58d9959c
             },
             reverse: {
                 signal: colorReverseSignalName
             }
         });
     }
-    $b3fb1eeac72b53ef$export$fc8966a6eac27a(scope, $573ada9f4d41ca62$export$1ad68bc363e02ccb(specContext), $573ada9f4d41ca62$export$17b2e68a7137b67d(specContext));
+    $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(scope, $853681033abd6f83$export$641fa4f0ca86c2ad(specContext), $853681033abd6f83$export$526461dda4c87775(specContext));
     return {
-        topColorField: $146eeb4362821b4b$export$29b3fae588fa046f.TopColor,
+        topColorField: $5026337cfcb4b996$export$10df5429b7082be2.TopColor,
         colorDataName: colorDataName
     };
 }
@@ -2271,13 +2271,13 @@ function $d397a2a1ee48bc5e$export$2dc63264baec3ee2(props) {
 
 
 
-function $5a088e24510c9b50$export$45df82b83999ef0f(globalScope, colTitleSource, rowTitleSource, sizeSignals, axisTextColor) {
-    const titleSignal = `parent[${JSON.stringify($146eeb4362821b4b$export$29b3fae588fa046f.FacetTitle)}]`;
-    const index = `datum[${JSON.stringify($146eeb4362821b4b$export$29b3fae588fa046f.Ordinal)}] - 1`;
-    const col = $5a088e24510c9b50$export$a3b38db8122a18f4(colTitleSource.dataName, sizeSignals, index);
-    const row = $5a088e24510c9b50$export$db726b4ad0c270ea(rowTitleSource.dataName, sizeSignals, index);
-    $b3fb1eeac72b53ef$export$2bdeef921b699304(globalScope, col.header, row.footer);
-    $b3fb1eeac72b53ef$export$2bdeef921b699304(col.header, {
+function $267ef0242f542da1$export$4fec84497b9e6e3f(globalScope, colTitleSource, rowTitleSource, sizeSignals, axisTextColor) {
+    const titleSignal = `parent[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.FacetTitle)}]`;
+    const index = `datum[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.Ordinal)}] - 1`;
+    const col = $267ef0242f542da1$export$4f57a5f5fbf1456e(colTitleSource.dataName, sizeSignals, index);
+    const row = $267ef0242f542da1$export$d0cc3dc227001793(rowTitleSource.dataName, sizeSignals, index);
+    $1d26d69d9d3d5b6e$export$3df320e901c23a48(globalScope, col.header, row.footer);
+    $1d26d69d9d3d5b6e$export$3df320e901c23a48(col.header, {
         type: 'text',
         encode: {
             enter: {
@@ -2293,7 +2293,7 @@ function $5a088e24510c9b50$export$45df82b83999ef0f(globalScope, colTitleSource, 
             },
             update: {
                 metaData: {
-                    signal: `{search: parent[${JSON.stringify($146eeb4362821b4b$export$29b3fae588fa046f.FacetSearch)}]}`
+                    signal: `{search: parent[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.FacetSearch)}]}`
                 },
                 x: {
                     signal: `${sizeSignals.layoutWidth} / 2`
@@ -2302,7 +2302,7 @@ function $5a088e24510c9b50$export$45df82b83999ef0f(globalScope, colTitleSource, 
                     signal: sizeSignals.layoutWidth
                 },
                 fontSize: {
-                    signal: $146eeb4362821b4b$export$e97f264ccfdb1383.TextSize
+                    signal: $5026337cfcb4b996$export$809e371dee643808.TextSize
                 },
                 text: {
                     signal: titleSignal
@@ -2310,7 +2310,7 @@ function $5a088e24510c9b50$export$45df82b83999ef0f(globalScope, colTitleSource, 
             }
         }
     });
-    $b3fb1eeac72b53ef$export$2bdeef921b699304(row.footer, {
+    $1d26d69d9d3d5b6e$export$3df320e901c23a48(row.footer, {
         type: 'text',
         encode: {
             enter: {
@@ -2326,16 +2326,16 @@ function $5a088e24510c9b50$export$45df82b83999ef0f(globalScope, colTitleSource, 
             },
             update: {
                 metaData: {
-                    signal: `{search: parent[${JSON.stringify($146eeb4362821b4b$export$29b3fae588fa046f.FacetSearch)}]}`
+                    signal: `{search: parent[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.FacetSearch)}]}`
                 },
                 y: {
                     signal: `${sizeSignals.layoutHeight} / 2`
                 },
                 limit: {
-                    signal: $146eeb4362821b4b$export$e97f264ccfdb1383.PlotOffsetRight
+                    signal: $5026337cfcb4b996$export$809e371dee643808.PlotOffsetRight
                 },
                 fontSize: {
-                    signal: $146eeb4362821b4b$export$e97f264ccfdb1383.TextSize
+                    signal: $5026337cfcb4b996$export$809e371dee643808.TextSize
                 },
                 text: {
                     signal: titleSignal
@@ -2344,8 +2344,8 @@ function $5a088e24510c9b50$export$45df82b83999ef0f(globalScope, colTitleSource, 
         }
     });
 }
-function $5a088e24510c9b50$export$3de75c28c7c095a1(scope, sizeSignals, axisTextColor) {
-    $b3fb1eeac72b53ef$export$2bdeef921b699304(scope, {
+function $267ef0242f542da1$export$3735b1dd76112836(scope, sizeSignals, axisTextColor) {
+    $1d26d69d9d3d5b6e$export$3df320e901c23a48(scope, {
         type: 'text',
         encode: {
             enter: {
@@ -2361,38 +2361,38 @@ function $5a088e24510c9b50$export$3de75c28c7c095a1(scope, sizeSignals, axisTextC
             },
             update: {
                 metaData: {
-                    signal: `{search: parent[${JSON.stringify($146eeb4362821b4b$export$29b3fae588fa046f.FacetSearch)}]}`
+                    signal: `{search: parent[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.FacetSearch)}]}`
                 },
                 x: {
                     signal: `(${sizeSignals.layoutWidth}) / 2`
                 },
                 text: {
-                    signal: `parent[${JSON.stringify($146eeb4362821b4b$export$29b3fae588fa046f.FacetTitle)}]`
+                    signal: `parent[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.FacetTitle)}]`
                 },
                 fontSize: {
-                    signal: $146eeb4362821b4b$export$e97f264ccfdb1383.TextSize
+                    signal: $5026337cfcb4b996$export$809e371dee643808.TextSize
                 },
                 limit: {
                     signal: sizeSignals.layoutWidth
                 },
                 y: {
-                    signal: `-${$146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingTop} / 2`
+                    signal: `-${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingTop} / 2`
                 }
             }
         }
     });
 }
-function $5a088e24510c9b50$export$3927d38091f734de(props) {
+function $267ef0242f542da1$export$9f0b19d6fd936707(props) {
     const { colSeqName: colSeqName , colTitleScale: colTitleScale , globalScope: globalScope , facetScope: facetScope , plotScope: plotScope , rowSeqName: rowSeqName , rowTitleScale: rowTitleScale  } = props;
     const { sizeSignals: sizeSignals  } = facetScope;
-    const colSequence = $5a088e24510c9b50$var$createSequence(colSeqName, sizeSignals.colCount);
-    const rowSequence = $5a088e24510c9b50$var$createSequence(rowSeqName, sizeSignals.rowCount);
+    const colSequence = $267ef0242f542da1$var$createSequence(colSeqName, sizeSignals.colCount);
+    const rowSequence = $267ef0242f542da1$var$createSequence(rowSeqName, sizeSignals.rowCount);
     const index = 'datum.data';
-    const col = $5a088e24510c9b50$export$a3b38db8122a18f4(colSeqName, sizeSignals, index);
-    const row = $5a088e24510c9b50$export$db726b4ad0c270ea(rowSeqName, sizeSignals, index);
-    $b3fb1eeac72b53ef$export$3af5226bf85b3fe(globalScope, colSequence, rowSequence);
-    $b3fb1eeac72b53ef$export$2bdeef921b699304(globalScope, col.footer, row.header);
-    $b3fb1eeac72b53ef$export$7bc781d47112a1ca(globalScope, colTitleScale, rowTitleScale);
+    const col = $267ef0242f542da1$export$4f57a5f5fbf1456e(colSeqName, sizeSignals, index);
+    const row = $267ef0242f542da1$export$d0cc3dc227001793(rowSeqName, sizeSignals, index);
+    $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope, colSequence, rowSequence);
+    $1d26d69d9d3d5b6e$export$3df320e901c23a48(globalScope, col.footer, row.header);
+    $1d26d69d9d3d5b6e$export$290268902279a991(globalScope, colTitleScale, rowTitleScale);
     const map = {
         main: [
             {
@@ -2435,7 +2435,7 @@ function $5a088e24510c9b50$export$3927d38091f734de(props) {
     };
     return map;
 }
-function $5a088e24510c9b50$export$db726b4ad0c270ea(data, sizeSignals, index) {
+function $267ef0242f542da1$export$d0cc3dc227001793(data, sizeSignals, index) {
     const rowFn = (xSignal)=>{
         return {
             type: 'group',
@@ -2448,7 +2448,7 @@ function $5a088e24510c9b50$export$db726b4ad0c270ea(data, sizeSignals, index) {
                         signal: xSignal
                     },
                     y: {
-                        signal: `${$146eeb4362821b4b$export$e97f264ccfdb1383.PlotOffsetTop} + ${$146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingTop} + (${index}) * (${sizeSignals.layoutHeight} + ${$146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingTop} + ${$146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingBottom})`
+                        signal: `${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetTop} + ${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingTop} + (${index}) * (${sizeSignals.layoutHeight} + ${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingTop} + ${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingBottom})`
                     },
                     height: {
                         signal: sizeSignals.layoutHeight
@@ -2457,14 +2457,14 @@ function $5a088e24510c9b50$export$db726b4ad0c270ea(data, sizeSignals, index) {
             }
         };
     };
-    const header = rowFn($146eeb4362821b4b$export$e97f264ccfdb1383.PlotOffsetLeft);
-    const footer = rowFn(`${$146eeb4362821b4b$export$e97f264ccfdb1383.PlotOffsetLeft} + ${$146eeb4362821b4b$export$e97f264ccfdb1383.PlotWidthOut} + ${$146eeb4362821b4b$export$e97f264ccfdb1383.PlotOffsetRight} / 2`);
+    const header = rowFn($5026337cfcb4b996$export$809e371dee643808.PlotOffsetLeft);
+    const footer = rowFn(`${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetLeft} + ${$5026337cfcb4b996$export$809e371dee643808.PlotWidthOut} + ${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetRight} / 2`);
     return {
         header: header,
         footer: footer
     };
 }
-function $5a088e24510c9b50$export$a3b38db8122a18f4(data, sizeSignals, index) {
+function $267ef0242f542da1$export$4f57a5f5fbf1456e(data, sizeSignals, index) {
     const colFn = (ySignal)=>{
         return {
             type: 'group',
@@ -2474,7 +2474,7 @@ function $5a088e24510c9b50$export$a3b38db8122a18f4(data, sizeSignals, index) {
             encode: {
                 update: {
                     x: {
-                        signal: `(${index}) * (${sizeSignals.layoutWidth} + ${$146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingLeft}) + ${$146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingLeft} + ${$146eeb4362821b4b$export$e97f264ccfdb1383.PlotOffsetLeft}`
+                        signal: `(${index}) * (${sizeSignals.layoutWidth} + ${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingLeft}) + ${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingLeft} + ${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetLeft}`
                     },
                     y: {
                         signal: ySignal
@@ -2487,14 +2487,14 @@ function $5a088e24510c9b50$export$a3b38db8122a18f4(data, sizeSignals, index) {
         };
     };
     //create group marks based on data sequences
-    const header = colFn(`${$146eeb4362821b4b$export$e97f264ccfdb1383.PlotOffsetTop} / 2`);
-    const footer = colFn(`${$146eeb4362821b4b$export$e97f264ccfdb1383.PlotOffsetTop} + ${$146eeb4362821b4b$export$e97f264ccfdb1383.PlotHeightOut}`);
+    const header = colFn(`${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetTop} / 2`);
+    const footer = colFn(`${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetTop} + ${$5026337cfcb4b996$export$809e371dee643808.PlotHeightOut}`);
     return {
         header: header,
         footer: footer
     };
 }
-function $5a088e24510c9b50$var$createSequence(dataName, countSignal) {
+function $267ef0242f542da1$var$createSequence(dataName, countSignal) {
     return {
         name: dataName,
         transform: [
@@ -2512,21 +2512,21 @@ function $5a088e24510c9b50$var$createSequence(dataName, countSignal) {
 
 
 
-function $bcb29d9941a438e9$export$46d84c5e6bf6c95f(context, colorFieldName, scale) {
+function $b1297af14e23a528$export$9563e054e6f787fb(context, colorFieldName, scale) {
     const { specColumns: specColumns , insight: insight , specViewOptions: specViewOptions  } = context;
     const colorColumn = specColumns.color;
     return colorColumn ? colorColumn.isColorData || insight.directColor ? {
-        field: $8eb7a07ca128ffbc$export$d899a523879bc85a(colorColumn.name)
+        field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(colorColumn.name)
     } : {
         scale: scale,
-        field: colorColumn.quantitative ? $8eb7a07ca128ffbc$export$d899a523879bc85a(colorColumn.name) : colorFieldName
+        field: colorColumn.quantitative ? $bc6bc4f764e00865$export$fb70365b00e8cb7b(colorColumn.name) : colorFieldName
     } : {
         value: specViewOptions.colors.defaultCube
     };
 }
-function $bcb29d9941a438e9$export$82d51c42c483e4c3(context) {
+function $b1297af14e23a528$export$c17a3be1057836e(context) {
     const result = {
-        signal: $146eeb4362821b4b$export$e97f264ccfdb1383.MarkOpacity
+        signal: $5026337cfcb4b996$export$809e371dee643808.MarkOpacity
     };
     return result;
 }
@@ -2534,25 +2534,25 @@ function $bcb29d9941a438e9$export$82d51c42c483e4c3(context) {
 
 
 
-class $7001bce89c3d5a96$export$d44ddc9302614dc0 {
+class $1da2db5d27ae10a6$export$5fdf684e73bb2de5 {
     constructor(props){
-        const { dataName: dataName , markGroup: markGroup1 , scope: scope , signals: signals  } = props;
+        const { dataName: dataName , markGroup: markGroup , scope: scope , signals: signals  } = props;
         this.scope = scope;
-        this._markGroup = markGroup1;
+        this._markGroup = markGroup;
         this.signals = signals;
-        this.data = $b3fb1eeac72b53ef$export$e5cbd1d444212cf8(scope.data, dataName).data;
+        this.data = $1d26d69d9d3d5b6e$export$ef4373c7e62b2278(scope.data, dataName).data;
         this._markDataName = dataName;
         this.offsets = {
             x: '0',
             y: '0',
-            h: $146eeb4362821b4b$export$e97f264ccfdb1383.PlotHeightIn,
-            w: $146eeb4362821b4b$export$e97f264ccfdb1383.PlotWidthIn
+            h: $5026337cfcb4b996$export$809e371dee643808.PlotHeightIn,
+            w: $5026337cfcb4b996$export$809e371dee643808.PlotWidthIn
         };
         this.sizeSignals = {
-            layoutHeight: $146eeb4362821b4b$export$e97f264ccfdb1383.PlotHeightIn,
-            layoutWidth: $146eeb4362821b4b$export$e97f264ccfdb1383.PlotWidthIn
+            layoutHeight: $5026337cfcb4b996$export$809e371dee643808.PlotHeightIn,
+            layoutWidth: $5026337cfcb4b996$export$809e371dee643808.PlotWidthIn
         };
-        this.zSize = $146eeb4362821b4b$export$e97f264ccfdb1383.PlotHeightIn;
+        this.zSize = $5026337cfcb4b996$export$809e371dee643808.PlotHeightIn;
     }
     get markDataName() {
         return this._markDataName;
@@ -2571,7 +2571,7 @@ class $7001bce89c3d5a96$export$d44ddc9302614dc0 {
 
 
 
-class $037582629f2ca83d$export$7ea53bcb0949d09b {
+class $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         this.props = props;
         this.id = props.id;
@@ -2592,12 +2592,12 @@ class $037582629f2ca83d$export$7ea53bcb0949d09b {
 
 
 
-function $cf04044be3b2dc0d$export$fd3de786ee7197a6() {
-    return `datum.${$146eeb4362821b4b$export$29b3fae588fa046f.Collapsed}`;
+function $00118a065747f70b$export$71c45f78b1166d35() {
+    return `datum.${$5026337cfcb4b996$export$10df5429b7082be2.Collapsed}`;
 }
 
 
-class $2270ea07621d68d4$export$f3086da9948fbc27 extends $037582629f2ca83d$export$7ea53bcb0949d09b {
+class $c920a6424c9a8cf8$export$fd744dfcd98e5f49 extends $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         super(props);
         this.props = props;
@@ -2615,35 +2615,35 @@ class $2270ea07621d68d4$export$f3086da9948fbc27 extends $037582629f2ca83d$export
     getAggregateSumOp() {
         if (this.aggregation === 'sum') {
             const fieldOp = {
-                field: $8eb7a07ca128ffbc$export$d899a523879bc85a(this.props.sumBy.name),
+                field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(this.props.sumBy.name),
                 op: 'sum',
-                as: $146eeb4362821b4b$export$29b3fae588fa046f.Sum
+                as: $5026337cfcb4b996$export$10df5429b7082be2.Sum
             };
             return fieldOp;
         }
     }
     build() {
-        const { aggregation: aggregation , names: names , props: props1  } = this;
-        const { dock: dock , globalScope: globalScope , groupings: groupings , niceScale: niceScale , parentScope: parentScope , showAxes: showAxes  } = props1;
-        $b3fb1eeac72b53ef$export$dd47277a33967f3(globalScope.data, Object.assign(Object.assign({
-        }, this.getTransforms(aggregation, $b3fb1eeac72b53ef$export$d8d50e04ceb89a80(groupings))), {
+        const { aggregation: aggregation , names: names , props: props  } = this;
+        const { dock: dock , globalScope: globalScope , groupings: groupings , niceScale: niceScale , parentScope: parentScope , showAxes: showAxes  } = props;
+        $1d26d69d9d3d5b6e$export$eea5d31e98930019(globalScope.data, Object.assign(Object.assign({
+        }, this.getTransforms(aggregation, $1d26d69d9d3d5b6e$export$53a21aeef48e14a8(groupings))), {
             as: [
                 names.aggregateField
             ]
         }), {
             type: 'extent',
-            field: $8eb7a07ca128ffbc$export$d899a523879bc85a(names.aggregateField),
+            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(names.aggregateField),
             signal: names.globalAggregateExtentSignal
         });
-        $b3fb1eeac72b53ef$export$fc8966a6eac27a(globalScope.scope, {
-            name: props1.globalAggregateMaxExtentSignal,
+        $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, {
+            name: props.globalAggregateMaxExtentSignal,
             update: `${names.globalAggregateExtentSignal}[1]`
         });
         const horizontal = dock === 'left';
         const groupScaled = `scale(${JSON.stringify(names.scale)}, datum[${JSON.stringify(names.aggregateField)}])`;
         const offsets = {
             x: parentScope.offsets.x,
-            y: $b3fb1eeac72b53ef$export$69458ad3b16ec03a(parentScope.offsets.y, dock === 'bottom' ? groupScaled : ''),
+            y: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, dock === 'bottom' ? groupScaled : ''),
             h: horizontal ? parentScope.offsets.h : dock === 'top' ? groupScaled : `${parentScope.offsets.h} - ${groupScaled}`,
             w: horizontal ? groupScaled : parentScope.offsets.w
         };
@@ -2653,7 +2653,7 @@ class $2270ea07621d68d4$export$f3086da9948fbc27 extends $037582629f2ca83d$export
             domain: [
                 0,
                 {
-                    signal: props1.globalAggregateMaxExtentSignal
+                    signal: props.globalAggregateMaxExtentSignal
                 }
             ],
             range: horizontal ? [
@@ -2671,9 +2671,9 @@ class $2270ea07621d68d4$export$f3086da9948fbc27 extends $037582629f2ca83d$export
             zero: true,
             reverse: dock === 'top'
         };
-        const globalAggregateMaxExtentScaledValue = `scale(${JSON.stringify(names.scale)}, ${props1.globalAggregateMaxExtentSignal})`;
-        $b3fb1eeac72b53ef$export$fc8966a6eac27a(globalScope.scope, {
-            name: props1.globalAggregateMaxExtentScaledSignal,
+        const globalAggregateMaxExtentScaledValue = `scale(${JSON.stringify(names.scale)}, ${props.globalAggregateMaxExtentSignal})`;
+        $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, {
+            name: props.globalAggregateMaxExtentScaledSignal,
             update: dock === 'bottom' ? `${parentScope.sizeSignals.layoutHeight} - ${globalAggregateMaxExtentScaledValue}` : globalAggregateMaxExtentScaledValue
         });
         return {
@@ -2699,26 +2699,26 @@ class $2270ea07621d68d4$export$f3086da9948fbc27 extends $037582629f2ca83d$export
             encodingRuleMap: horizontal ? {
                 x: [
                     {
-                        test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
                         signal: parentScope.offsets.x
                     }
                 ],
                 width: [
                     {
-                        test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
                         value: 0
                     }
                 ]
             } : {
                 y: [
                     {
-                        test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
-                        signal: dock === 'top' ? parentScope.offsets.y : $b3fb1eeac72b53ef$export$69458ad3b16ec03a(parentScope.offsets.y, parentScope.offsets.h)
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
+                        signal: dock === 'top' ? parentScope.offsets.y : $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, parentScope.offsets.h)
                     }
                 ],
                 height: [
                     {
-                        test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
                         value: 0
                     }
                 ]
@@ -2728,21 +2728,21 @@ class $2270ea07621d68d4$export$f3086da9948fbc27 extends $037582629f2ca83d$export
     getTransforms(aggregation, groupby) {
         const trans = {
             type: 'joinaggregate',
-            groupby: groupby.map($8eb7a07ca128ffbc$export$d899a523879bc85a),
+            groupby: groupby.map($bc6bc4f764e00865$export$fb70365b00e8cb7b),
             ops: [
                 aggregation
             ]
         };
         if (aggregation === 'sum') trans.fields = [
             this.props.sumBy.name
-        ].map($8eb7a07ca128ffbc$export$d899a523879bc85a);
+        ].map($bc6bc4f764e00865$export$fb70365b00e8cb7b);
         return trans;
     }
     getAggregation() {
-        const { props: props1  } = this;
+        const { props: props  } = this;
         let s;
-        if (props1.dock === 'left') s = props1.axesScales.x;
-        else s = props1.axesScales.y;
+        if (props.dock === 'left') s = props.axesScales.x;
+        else s = props.axesScales.y;
         switch(s.aggregate){
             case 'sum':
                 return 'sum';
@@ -2757,7 +2757,7 @@ class $2270ea07621d68d4$export$f3086da9948fbc27 extends $037582629f2ca83d$export
 
 
 
-class $ccd7ede4b07b48a8$export$ab50d62f456c9445 extends $037582629f2ca83d$export$7ea53bcb0949d09b {
+class $f56476682bfa269d$export$7eda37970b01b2c extends $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         super(props);
         this.props = props;
@@ -2771,17 +2771,17 @@ class $ccd7ede4b07b48a8$export$ab50d62f456c9445 extends $037582629f2ca83d$export
         };
     }
     build() {
-        const { names: names , props: props1  } = this;
-        const { aggregation: aggregation , globalScope: globalScope , groupings: groupings , onBuild: onBuild , parentScope: parentScope  } = props1;
+        const { names: names , props: props  } = this;
+        const { aggregation: aggregation , globalScope: globalScope , groupings: groupings , onBuild: onBuild , parentScope: parentScope  } = props;
         const { sizeSignals: sizeSignals  } = parentScope;
-        $b3fb1eeac72b53ef$export$dd47277a33967f3(globalScope.data, Object.assign(Object.assign({
-        }, this.getTransforms(aggregation, $b3fb1eeac72b53ef$export$d8d50e04ceb89a80(groupings))), {
+        $1d26d69d9d3d5b6e$export$eea5d31e98930019(globalScope.data, Object.assign(Object.assign({
+        }, this.getTransforms(aggregation, $1d26d69d9d3d5b6e$export$53a21aeef48e14a8(groupings))), {
             as: [
                 names.aggregateField
             ]
         }), {
             type: 'extent',
-            field: $8eb7a07ca128ffbc$export$d899a523879bc85a(names.aggregateField),
+            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(names.aggregateField),
             signal: names.globalAggregateExtentSignal
         });
         const localAggregateMaxExtent = `datum[${JSON.stringify(names.aggregateField)}]`;
@@ -2799,8 +2799,8 @@ class $ccd7ede4b07b48a8$export$ab50d62f456c9445 extends $037582629f2ca83d$export
         const localAggregateMaxExtentScaled = squareSide;
         onBuild && onBuild(localAggregateMaxExtent, localAggregateMaxExtentScaled);
         const offsets = {
-            x: $b3fb1eeac72b53ef$export$69458ad3b16ec03a(parentScope.offsets.x, `(${parentScope.offsets.w} - ${squareSide}) / 2`),
-            y: $b3fb1eeac72b53ef$export$69458ad3b16ec03a(parentScope.offsets.y, `(${parentScope.offsets.h} - ${squareSide}) / 2`),
+            x: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.x, `(${parentScope.offsets.w} - ${squareSide}) / 2`),
+            y: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, `(${parentScope.offsets.h} - ${squareSide}) / 2`),
             h: squareSide,
             w: squareSide
         };
@@ -2813,13 +2813,13 @@ class $ccd7ede4b07b48a8$export$ab50d62f456c9445 extends $037582629f2ca83d$export
             encodingRuleMap: {
                 y: [
                     {
-                        test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
                         signal: offsets.y
                     }
                 ],
                 height: [
                     {
-                        test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
                         value: 0
                     }
                 ]
@@ -2829,14 +2829,14 @@ class $ccd7ede4b07b48a8$export$ab50d62f456c9445 extends $037582629f2ca83d$export
     getTransforms(aggregation, groupby) {
         const trans = {
             type: 'joinaggregate',
-            groupby: groupby.map($8eb7a07ca128ffbc$export$d899a523879bc85a),
+            groupby: groupby.map($bc6bc4f764e00865$export$fb70365b00e8cb7b),
             ops: [
                 aggregation
             ]
         };
         if (aggregation === 'sum') trans.fields = [
             this.props.sumBy.name
-        ].map($8eb7a07ca128ffbc$export$d899a523879bc85a);
+        ].map($bc6bc4f764e00865$export$fb70365b00e8cb7b);
         return trans;
     }
 }
@@ -2845,17 +2845,17 @@ class $ccd7ede4b07b48a8$export$ab50d62f456c9445 extends $037582629f2ca83d$export
 
 
 
-function $d262e2f96d6108a3$export$24729013614a073c(prefix, domainDataName, discreteColumn) {
+function $280f5ab5a98a6906$export$6868fd1605c79d3d(prefix, domainDataName, discreteColumn) {
     const { column: column , defaultBins: defaultBins , maxbins: maxbins , maxbinsSignalDisplayName: maxbinsSignalDisplayName , maxbinsSignalName: maxbinsSignalName  } = discreteColumn;
     if (column.quantitative) {
-        const field = `${prefix}_bin_${$8eb7a07ca128ffbc$export$2c8af6107006eb60(column.name)}`;
+        const field = `${prefix}_bin_${$bc6bc4f764e00865$export$74df930fa4adaae4(column.name)}`;
         const fieldEnd = `${field}_end`;
         const binSignal = `${field}_bins`;
         const extentSignal = `${field}_bin_extent`;
         domainDataName = `${field}_sequence`; //override the data name
         const extentTransform = {
             type: 'extent',
-            field: $8eb7a07ca128ffbc$export$d899a523879bc85a(column.name),
+            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(column.name),
             signal: extentSignal
         };
         const maxbinsSignal = {
@@ -2872,7 +2872,7 @@ function $d262e2f96d6108a3$export$24729013614a073c(prefix, domainDataName, discr
         };
         const binTransform = {
             type: 'bin',
-            field: $8eb7a07ca128ffbc$export$d899a523879bc85a(column.name),
+            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(column.name),
             as: [
                 field,
                 fieldEnd, 
@@ -2916,18 +2916,18 @@ function $d262e2f96d6108a3$export$24729013614a073c(prefix, domainDataName, discr
                         'row_number'
                     ],
                     as: [
-                        $146eeb4362821b4b$export$29b3fae588fa046f.Ordinal
+                        $5026337cfcb4b996$export$10df5429b7082be2.Ordinal
                     ]
                 },
                 {
                     type: 'formula',
                     expr: `datum.data === ${binSignal}.start`,
-                    as: $146eeb4362821b4b$export$29b3fae588fa046f.First
+                    as: $5026337cfcb4b996$export$10df5429b7082be2.First
                 },
                 {
                     type: 'formula',
                     expr: `datum.data === ${binSignal}.stop - ${binSignal}.step`,
-                    as: $146eeb4362821b4b$export$29b3fae588fa046f.Last
+                    as: $5026337cfcb4b996$export$10df5429b7082be2.Last
                 }
             ]
         };
@@ -2970,7 +2970,7 @@ function $d262e2f96d6108a3$export$24729013614a073c(prefix, domainDataName, discr
 
 
 
-class $c72c6fe7eb71177f$export$efeea70621fdf7c2 extends $037582629f2ca83d$export$7ea53bcb0949d09b {
+class $dcdb4cb44eff1858$export$5b22a87d7feca398 extends $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         super(props);
         this.props = props;
@@ -2981,28 +2981,28 @@ class $c72c6fe7eb71177f$export$efeea70621fdf7c2 extends $037582629f2ca83d$export
             bandWidth: `${p}_bandwidth`,
             accumulative: `${p}_accumulative`
         };
-        this.bin = $d262e2f96d6108a3$export$24729013614a073c(this.prefix, props.globalScope.data.name, props.groupby);
+        this.bin = $280f5ab5a98a6906$export$6868fd1605c79d3d(this.prefix, props.globalScope.data.name, props.groupby);
     }
     getGrouping() {
         return this.bin.fields;
     }
     build() {
-        const { bin: bin , names: names , props: props1  } = this;
-        const { globalScope: globalScope , minBandWidth: minBandWidth , orientation: orientation , parentScope: parentScope , showAxes: showAxes  } = props1;
+        const { bin: bin , names: names , props: props  } = this;
+        const { globalScope: globalScope , minBandWidth: minBandWidth , orientation: orientation , parentScope: parentScope , showAxes: showAxes  } = props;
         const binField = bin.fields[0];
         if (bin.native === false) {
-            $b3fb1eeac72b53ef$export$fc8966a6eac27a(globalScope.scope, ...bin.signals);
-            $b3fb1eeac72b53ef$export$dd47277a33967f3(globalScope.data, ...bin.transforms);
-            $b3fb1eeac72b53ef$export$3af5226bf85b3fe(globalScope.scope, bin.dataSequence);
+            $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, ...bin.signals);
+            $1d26d69d9d3d5b6e$export$eea5d31e98930019(globalScope.data, ...bin.transforms);
+            $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, bin.dataSequence);
         }
         //TODO don't add this, use existing dataset
-        $b3fb1eeac72b53ef$export$3af5226bf85b3fe(globalScope.scope, {
+        $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, {
             name: names.accumulative,
             source: bin.fullScaleDataname,
             transform: [
                 {
                     type: 'aggregate',
-                    groupby: this.getGrouping().map($8eb7a07ca128ffbc$export$d899a523879bc85a),
+                    groupby: this.getGrouping().map($bc6bc4f764e00865$export$fb70365b00e8cb7b),
                     ops: [
                         'count'
                     ]
@@ -3011,36 +3011,36 @@ class $c72c6fe7eb71177f$export$efeea70621fdf7c2 extends $037582629f2ca83d$export
         });
         const horizontal = orientation === 'horizontal';
         const minCellSignal = horizontal ? globalScope.signals.minCellHeight : globalScope.signals.minCellWidth;
-        $573ada9f4d41ca62$export$8a3437c1e0038352(minCellSignal, 'max', `length(data(${JSON.stringify(names.accumulative)})) * ${minBandWidth}`);
-        $b3fb1eeac72b53ef$export$fc8966a6eac27a(globalScope.scope, {
+        $853681033abd6f83$export$cdc9366ba30317bd(minCellSignal, 'max', `length(data(${JSON.stringify(names.accumulative)})) * ${minBandWidth}`);
+        $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, {
             name: names.bandWidth,
             update: `bandwidth(${JSON.stringify(horizontal ? names.yScale : names.xScale)})`
         });
         const scales = this.getScales(bin, horizontal);
         let encodingRuleMap;
-        if (!props1.excludeEncodingRuleMap) encodingRuleMap = horizontal ? {
+        if (!props.excludeEncodingRuleMap) encodingRuleMap = horizontal ? {
             x: [
                 {
-                    test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
+                    test: $00118a065747f70b$export$71c45f78b1166d35(),
                     value: parentScope.offsets.x
                 }
             ],
             width: [
                 {
-                    test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
+                    test: $00118a065747f70b$export$71c45f78b1166d35(),
                     value: 0
                 }
             ]
         } : {
             y: [
                 {
-                    test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
-                    signal: $b3fb1eeac72b53ef$export$69458ad3b16ec03a(parentScope.offsets.y, parentScope.offsets.h)
+                    test: $00118a065747f70b$export$71c45f78b1166d35(),
+                    signal: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, parentScope.offsets.h)
                 }
             ],
             height: [
                 {
-                    test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
+                    test: $00118a065747f70b$export$71c45f78b1166d35(),
                     value: 0
                 }
             ]
@@ -3065,22 +3065,22 @@ class $c72c6fe7eb71177f$export$efeea70621fdf7c2 extends $037582629f2ca83d$export
         };
     }
     getOffset(horizontal, binField) {
-        const { names: names , props: props1  } = this;
-        const { parentScope: parentScope  } = props1;
+        const { names: names , props: props  } = this;
+        const { parentScope: parentScope  } = props;
         return {
-            x: $b3fb1eeac72b53ef$export$69458ad3b16ec03a(parentScope.offsets.x, horizontal ? '' : `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(binField)}])`),
-            y: $b3fb1eeac72b53ef$export$69458ad3b16ec03a(parentScope.offsets.y, horizontal ? `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(binField)}])` : ''),
+            x: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.x, horizontal ? '' : `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(binField)}])`),
+            y: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, horizontal ? `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(binField)}])` : ''),
             h: horizontal ? names.bandWidth : parentScope.offsets.h,
             w: horizontal ? parentScope.offsets.w : names.bandWidth
         };
     }
-    getScales(bin, horizontal) {
+    getScales(bin, horizontal1) {
         const { names: names  } = this;
         const { parentScope: parentScope  } = this.props;
-        const binField = $8eb7a07ca128ffbc$export$d899a523879bc85a(bin.fields[0]);
+        const binField = $bc6bc4f764e00865$export$fb70365b00e8cb7b(bin.fields[0]);
         const scales = [];
         let bandScale;
-        if (horizontal) bandScale = {
+        if (horizontal1) bandScale = {
             type: 'band',
             name: names.yScale,
             range: [
@@ -3122,19 +3122,19 @@ class $c72c6fe7eb71177f$export$efeea70621fdf7c2 extends $037582629f2ca83d$export
 
 
 
-function $aee84c6f70860268$export$f0ba1a5b611a9ffc(bin) {
+function $d15e2fabcf2f7201$export$f241323700beca17(bin) {
     const val = (index)=>`datum[${JSON.stringify(bin.fields[index])}]`
     ;
     return bin.discreteColumn.column.quantitative ? `format(${val(0)}, '~r') + ' - ' + format(${val(1)}, '~r')` : val(0);
 }
-function $aee84c6f70860268$var$obj(nameValues, clause) {
+function $d15e2fabcf2f7201$var$obj(nameValues, clause) {
     if (clause) nameValues = [
         clause,
         ...nameValues
     ];
     return `{${nameValues.join()}}`;
 }
-function $aee84c6f70860268$export$de7be5604dfa90eb(bin, firstFieldName, lastFieldName, clause) {
+function $d15e2fabcf2f7201$export$b292ca0d4c2e4690(bin, firstFieldName, lastFieldName, clause) {
     if (bin.discreteColumn.column.quantitative) {
         const low = [
             `name:${JSON.stringify(bin.discreteColumn.column.name)}`,
@@ -3147,8 +3147,8 @@ function $aee84c6f70860268$export$de7be5604dfa90eb(bin, firstFieldName, lastFiel
             'operator:\'<\'',
             `value:datum[${JSON.stringify(bin.fields[1])}]`
         ];
-        return $aee84c6f70860268$var$obj([
-            `expressions:[ datum[${JSON.stringify(firstFieldName)}] ? null : ${$aee84c6f70860268$var$obj(low)}, datum[${JSON.stringify(lastFieldName)}] ? null : ${$aee84c6f70860268$var$obj(high)}]`
+        return $d15e2fabcf2f7201$var$obj([
+            `expressions:[ datum[${JSON.stringify(firstFieldName)}] ? null : ${$d15e2fabcf2f7201$var$obj(low)}, datum[${JSON.stringify(lastFieldName)}] ? null : ${$d15e2fabcf2f7201$var$obj(high)}]`
         ], clause);
     } else {
         const exact = [
@@ -3156,8 +3156,8 @@ function $aee84c6f70860268$export$de7be5604dfa90eb(bin, firstFieldName, lastFiel
             'operator:\'==\'',
             `value:datum[${JSON.stringify(bin.fields[0])}]`
         ];
-        return $aee84c6f70860268$var$obj([
-            `expressions:[${$aee84c6f70860268$var$obj(exact)}]`
+        return $d15e2fabcf2f7201$var$obj([
+            `expressions:[${$d15e2fabcf2f7201$var$obj(exact)}]`
         ], clause);
     }
 }
@@ -3166,8 +3166,8 @@ function $aee84c6f70860268$export$de7be5604dfa90eb(bin, firstFieldName, lastFiel
 
 
 
-function $361980567078f383$export$6e96ed03820b3f41(source, prefix, binFields, sortOrder) {
-    const _binFields = binFields.map($8eb7a07ca128ffbc$export$d899a523879bc85a);
+function $276799ff26fc5cc2$export$71d2e96f63f1ac97(source, prefix, binFields, sortOrder) {
+    const _binFields = binFields.map($bc6bc4f764e00865$export$fb70365b00e8cb7b);
     const dataName = `${prefix}_bin_order`;
     const data = {
         name: dataName,
@@ -3191,27 +3191,27 @@ function $361980567078f383$export$6e96ed03820b3f41(source, prefix, binFields, so
                     'row_number'
                 ],
                 as: [
-                    $146eeb4362821b4b$export$29b3fae588fa046f.Ordinal
+                    $5026337cfcb4b996$export$10df5429b7082be2.Ordinal
                 ]
             }
         ]
     };
     return {
         data: data,
-        scale: $361980567078f383$export$9dbb9afc1fc26dba(dataName, `scale_${prefix}_order`, binFields)
+        scale: $276799ff26fc5cc2$export$f85d5aad90241781(dataName, `scale_${prefix}_order`, binFields)
     };
 }
-function $361980567078f383$export$9dbb9afc1fc26dba(dataName, scaleName, binFields) {
+function $276799ff26fc5cc2$export$f85d5aad90241781(dataName, scaleName, binFields) {
     return {
         type: 'ordinal',
         name: scaleName,
         domain: {
             data: dataName,
-            field: $8eb7a07ca128ffbc$export$d899a523879bc85a(binFields[0])
+            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(binFields[0])
         },
         range: {
             data: dataName,
-            field: $146eeb4362821b4b$export$29b3fae588fa046f.Ordinal
+            field: $5026337cfcb4b996$export$10df5429b7082be2.Ordinal
         }
     };
 }
@@ -3219,13 +3219,13 @@ function $361980567078f383$export$9dbb9afc1fc26dba(dataName, scaleName, binField
 
 
 
-class $7b9573b63f6fb3f3$export$c9f6f75e561fd9ec extends $037582629f2ca83d$export$7ea53bcb0949d09b {
+class $8e71cd01f19f462c$export$3c877bb842c36952 extends $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         super(props);
         this.props = props;
         const p = this.prefix = `cross_${this.id}`;
-        this.binX = $d262e2f96d6108a3$export$24729013614a073c(`${p}_x`, props.globalScope.data.name, props.groupbyX);
-        this.binY = $d262e2f96d6108a3$export$24729013614a073c(`${p}_y`, props.globalScope.data.name, props.groupbyY);
+        this.binX = $280f5ab5a98a6906$export$6868fd1605c79d3d(`${p}_x`, props.globalScope.data.name, props.groupbyX);
+        this.binY = $280f5ab5a98a6906$export$6868fd1605c79d3d(`${p}_y`, props.globalScope.data.name, props.groupbyY);
         this.names = {
             facetDataName: `data_${p}_facet`,
             searchUnion: `data_${p}_search`,
@@ -3240,8 +3240,8 @@ class $7b9573b63f6fb3f3$export$c9f6f75e561fd9ec extends $037582629f2ca83d$export
         return this.binX.fields.concat(this.binY.fields);
     }
     build() {
-        const { binX: binX , binY: binY , names: names , prefix: prefix , props: props1  } = this;
-        const { axisTextColor: axisTextColor , colRowTitles: colRowTitles , globalScope: globalScope , parentScope: parentScope  } = props1;
+        const { binX: binX , binY: binY , names: names , prefix: prefix , props: props  } = this;
+        const { axisTextColor: axisTextColor , colRowTitles: colRowTitles , globalScope: globalScope , parentScope: parentScope  } = props;
         const titles = {
             x: {
                 dataName: null,
@@ -3260,8 +3260,8 @@ class $7b9573b63f6fb3f3$export$c9f6f75e561fd9ec extends $037582629f2ca83d$export
             layout: parentScope.sizeSignals.layoutWidth,
             min: globalScope.signals.minCellWidth.name,
             out: globalScope.signals.plotWidthOut,
-            offset: $146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingLeft,
-            padding: $146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingLeft,
+            offset: $5026337cfcb4b996$export$809e371dee643808.FacetPaddingLeft,
+            padding: $5026337cfcb4b996$export$809e371dee643808.FacetPaddingLeft,
             dataOut: null,
             scaleName: null,
             position: null
@@ -3274,8 +3274,8 @@ class $7b9573b63f6fb3f3$export$c9f6f75e561fd9ec extends $037582629f2ca83d$export
             layout: parentScope.sizeSignals.layoutHeight,
             min: globalScope.signals.minCellHeight.name,
             out: globalScope.signals.plotHeightOut,
-            offset: $146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingTop,
-            padding: `(${$146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingTop} + ${$146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingBottom})`,
+            offset: $5026337cfcb4b996$export$809e371dee643808.FacetPaddingTop,
+            padding: `(${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingTop} + ${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingBottom})`,
             dataOut: null,
             scaleName: null,
             position: null
@@ -3292,24 +3292,24 @@ class $7b9573b63f6fb3f3$export$c9f6f75e561fd9ec extends $037582629f2ca83d$export
             let scale;
             const titleSource = titles[dim];
             if (bin.native === false) {
-                $b3fb1eeac72b53ef$export$fc8966a6eac27a(globalScope.scope, ...bin.signals);
-                $b3fb1eeac72b53ef$export$dd47277a33967f3(globalScope.data, ...bin.transforms);
-                $b3fb1eeac72b53ef$export$3af5226bf85b3fe(globalScope.scope, bin.dataSequence);
-                $b3fb1eeac72b53ef$export$dd47277a33967f3(bin.dataSequence, {
+                $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, ...bin.signals);
+                $1d26d69d9d3d5b6e$export$eea5d31e98930019(globalScope.data, ...bin.transforms);
+                $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, bin.dataSequence);
+                $1d26d69d9d3d5b6e$export$eea5d31e98930019(bin.dataSequence, {
                     type: 'formula',
                     expr: `indata(${JSON.stringify(globalScope.markDataName)}, ${JSON.stringify(bin.fields[0])}, datum[${JSON.stringify(bin.fields[0])}])`,
-                    as: $146eeb4362821b4b$export$29b3fae588fa046f.Contains
+                    as: $5026337cfcb4b996$export$10df5429b7082be2.Contains
                 });
                 data = bin.dataSequence;
                 dataName = bin.dataSequence.name;
                 countSignal = `length(data(${JSON.stringify(dataName)}))`;
-                scale = $361980567078f383$export$9dbb9afc1fc26dba(dataName, `${names.dimScale}_${dim}`, bin.fields);
+                scale = $276799ff26fc5cc2$export$f85d5aad90241781(dataName, `${names.dimScale}_${dim}`, bin.fields);
                 titleSource.dataName = bin.dataSequence.name;
             } else {
                 dataName = globalScope.markDataName;
-                const ord = $361980567078f383$export$6e96ed03820b3f41(dataName, `${prefix}_${dim}`, bin.fields, sortOrder);
+                const ord = $276799ff26fc5cc2$export$71d2e96f63f1ac97(dataName, `${prefix}_${dim}`, bin.fields, sortOrder);
                 data = ord.data;
-                $b3fb1eeac72b53ef$export$3af5226bf85b3fe(globalScope.scope, ord.data);
+                $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, ord.data);
                 countSignal = `length(data(${JSON.stringify(ord.data.name)}))`;
                 scale = ord.scale;
                 titleSource.dataName = ord.data.name;
@@ -3317,31 +3317,31 @@ class $7b9573b63f6fb3f3$export$c9f6f75e561fd9ec extends $037582629f2ca83d$export
             titleSource.quantitative = bin.discreteColumn.column.quantitative;
             d.dataOut = data;
             d.scaleName = scale.name;
-            $b3fb1eeac72b53ef$export$dd47277a33967f3(data, {
+            $1d26d69d9d3d5b6e$export$eea5d31e98930019(data, {
                 type: 'formula',
-                expr: $aee84c6f70860268$export$de7be5604dfa90eb(bin, $146eeb4362821b4b$export$29b3fae588fa046f.First, $146eeb4362821b4b$export$29b3fae588fa046f.Last),
-                as: $146eeb4362821b4b$export$29b3fae588fa046f.FacetSearch
+                expr: $d15e2fabcf2f7201$export$b292ca0d4c2e4690(bin, $5026337cfcb4b996$export$10df5429b7082be2.First, $5026337cfcb4b996$export$10df5429b7082be2.Last),
+                as: $5026337cfcb4b996$export$10df5429b7082be2.FacetSearch
             }, {
                 type: 'formula',
-                expr: $aee84c6f70860268$export$f0ba1a5b611a9ffc(bin),
-                as: $146eeb4362821b4b$export$29b3fae588fa046f.FacetTitle
+                expr: $d15e2fabcf2f7201$export$f241323700beca17(bin),
+                as: $5026337cfcb4b996$export$10df5429b7082be2.FacetTitle
             });
-            $b3fb1eeac72b53ef$export$7bc781d47112a1ca(globalScope.scope, scale);
+            $1d26d69d9d3d5b6e$export$290268902279a991(globalScope.scope, scale);
             const count = `${names.dimCount}_${dim}`;
             const calc = `${names.dimCellSizeCalc}_${dim}`;
             const size = `${names.dimCellSize}_${dim}`;
-            $b3fb1eeac72b53ef$export$fc8966a6eac27a(globalScope.scope, {
+            $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, {
                 name: count,
                 update: countSignal
             });
-            $b3fb1eeac72b53ef$export$fc8966a6eac27a(globalScope.scope, {
+            $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, {
                 name: calc,
                 update: `${d.layout} / ${count}`
             }, {
                 name: size,
                 update: `max(${d.min}, (${calc} - ${padding}))`
             });
-            $573ada9f4d41ca62$export$8a3437c1e0038352(d.out, 'max', `((${size} + ${padding}) * ${count})`);
+            $853681033abd6f83$export$cdc9366ba30317bd(d.out, 'max', `((${size} + ${padding}) * ${count})`);
             d.position = this.dimensionOffset(d);
         });
         const groupRow = {
@@ -3363,8 +3363,8 @@ class $7b9573b63f6fb3f3$export$c9f6f75e561fd9ec extends $037582629f2ca83d$export
                     transform: [
                         {
                             type: 'formula',
-                            expr: `[datum[${JSON.stringify($146eeb4362821b4b$export$29b3fae588fa046f.FacetSearch)}], merge(parent[${JSON.stringify($146eeb4362821b4b$export$29b3fae588fa046f.FacetSearch)}], { clause: '&&'})]`,
-                            as: $146eeb4362821b4b$export$29b3fae588fa046f.FacetSearch
+                            expr: `[datum[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.FacetSearch)}], merge(parent[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.FacetSearch)}], { clause: '&&'})]`,
+                            as: $5026337cfcb4b996$export$10df5429b7082be2.FacetSearch
                         }
                     ]
                 }
@@ -3391,8 +3391,8 @@ class $7b9573b63f6fb3f3$export$c9f6f75e561fd9ec extends $037582629f2ca83d$export
                 data: names.searchUnion
             }
         };
-        $b3fb1eeac72b53ef$export$2bdeef921b699304(globalScope.markGroup, groupRow);
-        $b3fb1eeac72b53ef$export$2bdeef921b699304(groupRow, groupCol);
+        $1d26d69d9d3d5b6e$export$3df320e901c23a48(globalScope.markGroup, groupRow);
+        $1d26d69d9d3d5b6e$export$3df320e901c23a48(groupRow, groupCol);
         const offsets = {
             x: this.dimensionOffset(dx),
             y: this.dimensionOffset(dy),
@@ -3405,7 +3405,7 @@ class $7b9573b63f6fb3f3$export$c9f6f75e561fd9ec extends $037582629f2ca83d$export
             colCount: `${names.dimCount}_x`,
             rowCount: `${names.dimCount}_y`
         };
-        if (colRowTitles) $5a088e24510c9b50$export$45df82b83999ef0f(globalScope.scope, titles.x, titles.y, sizeSignals, axisTextColor);
+        if (colRowTitles) $267ef0242f542da1$export$4fec84497b9e6e3f(globalScope.scope, titles.x, titles.y, sizeSignals, axisTextColor);
         return {
             facetScope: groupCol,
             offsets: offsets,
@@ -3427,7 +3427,7 @@ class $7b9573b63f6fb3f3$export$c9f6f75e561fd9ec extends $037582629f2ca83d$export
 
 
 
-class $656da2a7576cc899$export$32a98332419a23c6 extends $037582629f2ca83d$export$7ea53bcb0949d09b {
+class $86dc958dd62c07ad$export$1c460fb4285edadc extends $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         super(props);
         this.props = props;
@@ -3444,11 +3444,11 @@ class $656da2a7576cc899$export$32a98332419a23c6 extends $037582629f2ca83d$export
         };
     }
     build() {
-        const { names: names , prefix: prefix , props: props1  } = this;
-        const { globalScope: globalScope , parentScope: parentScope , scatterPointScaleDisplay: scatterPointScaleDisplay , size: size , x: x , y: y , z: z , zGrounded: zGrounded  } = props1;
+        const { names: names , prefix: prefix , props: props  } = this;
+        const { globalScope: globalScope , parentScope: parentScope , scatterPointScaleDisplay: scatterPointScaleDisplay , size: size , x: x , y: y , z: z , zGrounded: zGrounded  } = props;
         const qsize = size && size.quantitative && size;
-        $b3fb1eeac72b53ef$export$fc8966a6eac27a(globalScope.scope, {
-            name: $146eeb4362821b4b$export$e97f264ccfdb1383.PointScale,
+        $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, {
+            name: $5026337cfcb4b996$export$809e371dee643808.PointScale,
             value: 5,
             bind: {
                 name: scatterPointScaleDisplay,
@@ -3459,7 +3459,7 @@ class $656da2a7576cc899$export$32a98332419a23c6 extends $037582629f2ca83d$export
                 step: 1
             }
         }, {
-            name: $146eeb4362821b4b$export$e97f264ccfdb1383.ZGrounded,
+            name: $5026337cfcb4b996$export$809e371dee643808.ZGrounded,
             value: false,
             bind: {
                 name: zGrounded,
@@ -3467,12 +3467,12 @@ class $656da2a7576cc899$export$32a98332419a23c6 extends $037582629f2ca83d$export
             }
         });
         if (qsize) {
-            $b3fb1eeac72b53ef$export$dd47277a33967f3(globalScope.data, {
+            $1d26d69d9d3d5b6e$export$eea5d31e98930019(globalScope.data, {
                 type: 'extent',
-                field: $8eb7a07ca128ffbc$export$d899a523879bc85a(qsize.name),
+                field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(qsize.name),
                 signal: names.sizeExtent
             });
-            $b3fb1eeac72b53ef$export$7bc781d47112a1ca(globalScope.scope, {
+            $1d26d69d9d3d5b6e$export$290268902279a991(globalScope.scope, {
                 name: names.sizeScale,
                 type: 'linear',
                 domain: [
@@ -3488,12 +3488,12 @@ class $656da2a7576cc899$export$32a98332419a23c6 extends $037582629f2ca83d$export
                     }
                 ]
             });
-            $b3fb1eeac72b53ef$export$fc8966a6eac27a(globalScope.scope, {
+            $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, {
                 name: names.sizeRange,
-                update: `min(${parentScope.sizeSignals.layoutHeight}, ${parentScope.sizeSignals.layoutWidth}) / ${$d6acc81334b00d34$export$2adbe44cf52133e9}`
+                update: `min(${parentScope.sizeSignals.layoutHeight}, ${parentScope.sizeSignals.layoutWidth}) / ${$ee84a745a025909d$export$c223d3ee3c0620d9}`
             });
         }
-        $b3fb1eeac72b53ef$export$3af5226bf85b3fe(globalScope.scope, {
+        $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, {
             name: names.markData,
             source: globalScope.markDataName,
             transform: [
@@ -3516,11 +3516,11 @@ class $656da2a7576cc899$export$32a98332419a23c6 extends $037582629f2ca83d$export
             }
         };
         const zValue = z ? `scale(${JSON.stringify(names.zScale)}, datum[${JSON.stringify(z.name)}])` : null;
-        const sizeValueSignal = qsize ? `scale(${JSON.stringify(names.sizeScale)}, datum[${JSON.stringify(qsize.name)}]) * ${$146eeb4362821b4b$export$e97f264ccfdb1383.PointScale}` : $146eeb4362821b4b$export$e97f264ccfdb1383.PointScale;
+        const sizeValueSignal = qsize ? `scale(${JSON.stringify(names.sizeScale)}, datum[${JSON.stringify(qsize.name)}]) * ${$5026337cfcb4b996$export$809e371dee643808.PointScale}` : $5026337cfcb4b996$export$809e371dee643808.PointScale;
         const update = Object.assign({
             height: [
                 {
-                    test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
+                    test: $00118a065747f70b$export$71c45f78b1166d35(),
                     value: 0
                 },
                 {
@@ -3533,20 +3533,20 @@ class $656da2a7576cc899$export$32a98332419a23c6 extends $037582629f2ca83d$export
         }, z && {
             z: [
                 {
-                    test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
+                    test: $00118a065747f70b$export$71c45f78b1166d35(),
                     value: 0
                 },
                 {
-                    signal: `${$146eeb4362821b4b$export$e97f264ccfdb1383.ZGrounded} ? 0 : ${zValue}`
+                    signal: `${$5026337cfcb4b996$export$809e371dee643808.ZGrounded} ? 0 : ${zValue}`
                 }
             ],
             depth: [
                 {
-                    test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
+                    test: $00118a065747f70b$export$71c45f78b1166d35(),
                     value: 0
                 },
                 {
-                    signal: `${$146eeb4362821b4b$export$e97f264ccfdb1383.ZGrounded} ? ${zValue} : ${sizeValueSignal}`
+                    signal: `${$5026337cfcb4b996$export$809e371dee643808.ZGrounded} ? ${zValue} : ${sizeValueSignal}`
                 }
             ]
         });
@@ -3570,20 +3570,20 @@ class $656da2a7576cc899$export$32a98332419a23c6 extends $037582629f2ca83d$export
                 xyz: 'z',
                 scaleName: names.zScale,
                 reverse: false,
-                signal: `(${globalScope.zSize}) * ${$146eeb4362821b4b$export$e97f264ccfdb1383.ZProportion}`
+                signal: `(${globalScope.zSize}) * ${$5026337cfcb4b996$export$809e371dee643808.ZProportion}`
             }
         ];
         columnSignals.forEach((cs)=>{
             const { column: column , reverse: reverse , scaleName: scaleName , signal: signal , xyz: xyz  } = cs;
             if (!column) return;
             let scale;
-            if (column.quantitative) scale = $52df80fd0126b376$export$d1dcafe205a223b7(scaleName, globalScope.data.name, column.name, [
+            if (column.quantitative) scale = $0831b1e730d257f4$export$fefe9507ec0904ed(scaleName, globalScope.data.name, column.name, [
                 0,
                 {
                     signal: signal
                 }
             ], reverse, false);
-            else scale = $52df80fd0126b376$export$3949eed57fd6ab06(scaleName, globalScope.data.name, [
+            else scale = $0831b1e730d257f4$export$b67158f831e00d0d(scaleName, globalScope.data.name, [
                 0,
                 {
                     signal: signal
@@ -3603,11 +3603,11 @@ class $656da2a7576cc899$export$32a98332419a23c6 extends $037582629f2ca83d$export
                 update: update
             }
         };
-        $b3fb1eeac72b53ef$export$2bdeef921b699304(globalScope.markGroup, mark);
+        $1d26d69d9d3d5b6e$export$3df320e901c23a48(globalScope.markGroup, mark);
         return {
             offsets: {
-                x: $b3fb1eeac72b53ef$export$69458ad3b16ec03a(parentScope.offsets.x, `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(x.name)}])`),
-                y: $b3fb1eeac72b53ef$export$69458ad3b16ec03a(parentScope.offsets.y, `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(y.name)}]) - ${sizeValueSignal}`),
+                x: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.x, `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(x.name)}])`),
+                y: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(y.name)}]) - ${sizeValueSignal}`),
                 h: sizeValueSignal,
                 w: sizeValueSignal
             },
@@ -3620,8 +3620,8 @@ class $656da2a7576cc899$export$32a98332419a23c6 extends $037582629f2ca83d$export
             encodingRuleMap: {
                 y: [
                     {
-                        test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
-                        signal: $b3fb1eeac72b53ef$export$69458ad3b16ec03a(parentScope.offsets.y, parentScope.sizeSignals.layoutHeight)
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
+                        signal: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, parentScope.sizeSignals.layoutHeight)
                     }
                 ]
             }
@@ -3637,21 +3637,21 @@ class $656da2a7576cc899$export$32a98332419a23c6 extends $037582629f2ca83d$export
 
 
 
-function $a2775ffc32b7b634$export$d64499a0aa878724(z, zSize, dataName, zScaleName) {
+function $5ff5f76bdbe420bd$export$9e1d5954d0bb865c(z, zSize, dataName, zScaleName) {
     if (z) {
         const zRange = [
             0,
             {
-                signal: `(${zSize}) * ${$146eeb4362821b4b$export$e97f264ccfdb1383.ZProportion}`
+                signal: `(${zSize}) * ${$5026337cfcb4b996$export$809e371dee643808.ZProportion}`
             }
         ];
-        const scale = z.quantitative ? $52df80fd0126b376$export$d1dcafe205a223b7(zScaleName, dataName, z.name, zRange, false, true) : $52df80fd0126b376$export$3949eed57fd6ab06(zScaleName, dataName, zRange, z.name, false);
+        const scale = z.quantitative ? $0831b1e730d257f4$export$fefe9507ec0904ed(zScaleName, dataName, z.name, zRange, false, true) : $0831b1e730d257f4$export$b67158f831e00d0d(zScaleName, dataName, zRange, z.name, false);
         return scale;
     }
 }
 
 
-class $862530b69d56ffb4$export$b9b93345c2943ac5 extends $037582629f2ca83d$export$7ea53bcb0949d09b {
+class $22e821125aa13607$export$b09fb900337259de extends $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         super(props);
         this.props = props;
@@ -3666,19 +3666,19 @@ class $862530b69d56ffb4$export$b9b93345c2943ac5 extends $037582629f2ca83d$export
         };
     }
     build() {
-        const { names: names , prefix: prefix , props: props1  } = this;
-        const { fillDirection: fillDirection , globalScope: globalScope , groupings: groupings , parentScope: parentScope , collapseYHeight: collapseYHeight , sortBy: sortBy , z: z  } = props1;
-        const zScale = $a2775ffc32b7b634$export$d64499a0aa878724(z, globalScope.zSize, globalScope.data.name, names.zScale);
-        $b3fb1eeac72b53ef$export$dd47277a33967f3(globalScope.data, Object.assign({
+        const { names: names , prefix: prefix , props: props  } = this;
+        const { fillDirection: fillDirection , globalScope: globalScope , groupings: groupings , parentScope: parentScope , collapseYHeight: collapseYHeight , sortBy: sortBy , z: z  } = props;
+        const zScale = $5ff5f76bdbe420bd$export$9e1d5954d0bb865c(z, globalScope.zSize, globalScope.data.name, names.zScale);
+        $1d26d69d9d3d5b6e$export$eea5d31e98930019(globalScope.data, Object.assign({
             type: 'stack',
-            groupby: $b3fb1eeac72b53ef$export$d8d50e04ceb89a80(groupings).map($8eb7a07ca128ffbc$export$d899a523879bc85a),
+            groupby: $1d26d69d9d3d5b6e$export$53a21aeef48e14a8(groupings).map($bc6bc4f764e00865$export$fb70365b00e8cb7b),
             as: [
                 names.stack0,
                 names.stack1
             ]
         }, sortBy && {
             sort: {
-                field: $8eb7a07ca128ffbc$export$d899a523879bc85a(sortBy.name),
+                field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(sortBy.name),
                 order: 'ascending'
             }
         }));
@@ -3696,7 +3696,7 @@ class $862530b69d56ffb4$export$b9b93345c2943ac5 extends $037582629f2ca83d$export
                 update: Object.assign({
                     height: collapseYHeight ? [
                         {
-                            test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
+                            test: $00118a065747f70b$export$71c45f78b1166d35(),
                             value: 0
                         },
                         heightSignal
@@ -3710,18 +3710,18 @@ class $862530b69d56ffb4$export$b9b93345c2943ac5 extends $037582629f2ca83d$export
                     },
                     depth: [
                         {
-                            test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
+                            test: $00118a065747f70b$export$71c45f78b1166d35(),
                             value: 0
                         },
                         {
                             scale: names.zScale,
-                            field: $8eb7a07ca128ffbc$export$d899a523879bc85a(z.name)
+                            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(z.name)
                         }
                     ]
                 })
             }
         };
-        $b3fb1eeac72b53ef$export$2bdeef921b699304(globalScope.markGroup, mark);
+        $1d26d69d9d3d5b6e$export$3df320e901c23a48(globalScope.markGroup, mark);
         const { tx: tx , ty: ty  } = this.transformXY(gap, levelSize, squaresPerBand);
         return Object.assign(Object.assign(Object.assign({
         }, z && {
@@ -3735,8 +3735,8 @@ class $862530b69d56ffb4$export$b9b93345c2943ac5 extends $037582629f2ca83d$export
             }
         }), {
             offsets: {
-                x: $b3fb1eeac72b53ef$export$69458ad3b16ec03a(parentScope.offsets.x, tx.expr),
-                y: $b3fb1eeac72b53ef$export$69458ad3b16ec03a(parentScope.offsets.y, ty.expr),
+                x: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.x, tx.expr),
+                y: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, ty.expr),
                 h: size,
                 w: size
             },
@@ -3749,7 +3749,7 @@ class $862530b69d56ffb4$export$b9b93345c2943ac5 extends $037582629f2ca83d$export
             encodingRuleMap: {
                 y: [
                     {
-                        test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
                         value: parentScope.offsets.y
                     }
                 ]
@@ -3766,14 +3766,14 @@ class $862530b69d56ffb4$export$b9b93345c2943ac5 extends $037582629f2ca83d$export
         }
     }
     addSignals() {
-        const { names: names , props: props1  } = this;
-        const { fillDirection: fillDirection , globalScope: globalScope , groupings: groupings , parentScope: parentScope  } = props1;
-        let { maxGroupedFillSize: maxGroupedFillSize , maxGroupedUnits: maxGroupedUnits  } = props1;
+        const { names: names , props: props  } = this;
+        const { fillDirection: fillDirection , globalScope: globalScope , groupings: groupings , parentScope: parentScope  } = props;
+        let { maxGroupedFillSize: maxGroupedFillSize , maxGroupedUnits: maxGroupedUnits  } = props;
         if (!maxGroupedUnits) {
             if (groupings) {
-                $b3fb1eeac72b53ef$export$dd47277a33967f3(globalScope.data, {
+                $1d26d69d9d3d5b6e$export$eea5d31e98930019(globalScope.data, {
                     type: 'joinaggregate',
-                    groupby: $b3fb1eeac72b53ef$export$d8d50e04ceb89a80(groupings).map($8eb7a07ca128ffbc$export$d899a523879bc85a),
+                    groupby: $1d26d69d9d3d5b6e$export$53a21aeef48e14a8(groupings).map($bc6bc4f764e00865$export$fb70365b00e8cb7b),
                     ops: [
                         'count'
                     ],
@@ -3810,12 +3810,12 @@ class $862530b69d56ffb4$export$b9b93345c2943ac5 extends $037582629f2ca83d$export
         const tx = {
             type: 'formula',
             expr: null,
-            as: `${prefix}_${$146eeb4362821b4b$export$29b3fae588fa046f.OffsetX}`
+            as: `${prefix}_${$5026337cfcb4b996$export$10df5429b7082be2.OffsetX}`
         };
         const ty = {
             type: 'formula',
             expr: null,
-            as: `${prefix}_${$146eeb4362821b4b$export$29b3fae588fa046f.OffsetY}`
+            as: `${prefix}_${$5026337cfcb4b996$export$10df5429b7082be2.OffsetY}`
         };
         switch(fillDirection){
             case 'down-right':
@@ -3844,7 +3844,7 @@ class $862530b69d56ffb4$export$b9b93345c2943ac5 extends $037582629f2ca83d$export
 
 
 
-class $817d45a48045a6dc$export$5ace8476f20038f3 extends $037582629f2ca83d$export$7ea53bcb0949d09b {
+class $b27405b06ac9c54d$export$694e0d28c7ffc90c extends $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         super(props);
         this.props = props;
@@ -3867,12 +3867,12 @@ class $817d45a48045a6dc$export$5ace8476f20038f3 extends $037582629f2ca83d$export
         };
     }
     build() {
-        const { names: names , props: props1  } = this;
-        const { globalScope: globalScope , groupings: groupings , parentScope: parentScope , sort: sort  } = props1;
+        const { names: names , props: props  } = this;
+        const { globalScope: globalScope , groupings: groupings , parentScope: parentScope , sort: sort  } = props;
         const { sizeSignals: sizeSignals  } = parentScope;
-        $b3fb1eeac72b53ef$export$dd47277a33967f3(globalScope.data, {
+        $1d26d69d9d3d5b6e$export$eea5d31e98930019(globalScope.data, {
             type: 'joinaggregate',
-            groupby: $b3fb1eeac72b53ef$export$d8d50e04ceb89a80(groupings).map($8eb7a07ca128ffbc$export$d899a523879bc85a),
+            groupby: $1d26d69d9d3d5b6e$export$53a21aeef48e14a8(groupings).map($bc6bc4f764e00865$export$fb70365b00e8cb7b),
             ops: [
                 'count'
             ],
@@ -3885,18 +3885,18 @@ class $817d45a48045a6dc$export$5ace8476f20038f3 extends $037582629f2ca83d$export
             signal: names.globalExtent
         }, Object.assign({
             type: 'stack',
-            groupby: $b3fb1eeac72b53ef$export$d8d50e04ceb89a80(groupings).map($8eb7a07ca128ffbc$export$d899a523879bc85a),
+            groupby: $1d26d69d9d3d5b6e$export$53a21aeef48e14a8(groupings).map($bc6bc4f764e00865$export$fb70365b00e8cb7b),
             as: [
                 names.stack0,
                 names.stack1
             ]
         }, sort && {
             sort: {
-                field: $8eb7a07ca128ffbc$export$d899a523879bc85a(sort.name),
+                field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(sort.name),
                 order: 'ascending'
             }
         }));
-        $b3fb1eeac72b53ef$export$3af5226bf85b3fe(globalScope.scope, {
+        $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, {
             name: names.sequence,
             transform: [
                 {
@@ -3950,7 +3950,7 @@ class $817d45a48045a6dc$export$5ace8476f20038f3 extends $037582629f2ca83d$export
                 }
             ]
         });
-        $b3fb1eeac72b53ef$export$fc8966a6eac27a(globalScope.scope, {
+        $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, {
             name: names.size,
             update: `min((${sizeSignals.layoutHeight}), (${sizeSignals.layoutWidth}))`
         }, {
@@ -3976,8 +3976,8 @@ class $817d45a48045a6dc$export$5ace8476f20038f3 extends $037582629f2ca83d$export
         const groupX = `(${sizeSignals.layoutWidth} - ${names.size}) / 2`;
         const groupY = `(${sizeSignals.layoutHeight} - ${names.size}) / 2`;
         const offsets = {
-            x: $b3fb1eeac72b53ef$export$69458ad3b16ec03a(parentScope.offsets.x, groupX, `${cubeX} * (${names.cube} + 1)`),
-            y: $b3fb1eeac72b53ef$export$69458ad3b16ec03a(parentScope.offsets.y, groupY, `${cubeY} * (${names.cube} + 1)`),
+            x: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.x, groupX, `${cubeX} * (${names.cube} + 1)`),
+            y: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, groupY, `${cubeY} * (${names.cube} + 1)`),
             h: names.size,
             w: names.size
         };
@@ -4003,7 +4003,7 @@ class $817d45a48045a6dc$export$5ace8476f20038f3 extends $037582629f2ca83d$export
                 }
             }
         };
-        $b3fb1eeac72b53ef$export$2bdeef921b699304(globalScope.markGroup, mark);
+        $1d26d69d9d3d5b6e$export$3df320e901c23a48(globalScope.markGroup, mark);
         const zScale = {
             type: 'linear',
             name: names.zScale,
@@ -4039,25 +4039,25 @@ class $817d45a48045a6dc$export$5ace8476f20038f3 extends $037582629f2ca83d$export
             encodingRuleMap: {
                 y: [
                     {
-                        test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
                         signal: parentScope.offsets.y
                     }
                 ],
                 z: [
                     {
-                        test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
                         value: 0
                     }
                 ],
                 depth: [
                     {
-                        test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
                         value: 0
                     }
                 ],
                 height: [
                     {
-                        test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
                         value: 0
                     }
                 ]
@@ -4073,29 +4073,29 @@ class $817d45a48045a6dc$export$5ace8476f20038f3 extends $037582629f2ca83d$export
 
 
 
-class $714f080adcb60d3e$export$64fee65f1033a46a extends $037582629f2ca83d$export$7ea53bcb0949d09b {
+class $a38643ba15c0e389$export$c4df0d8c6c8f50e4 extends $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         super(props);
         this.props = props;
         const p = this.prefix = `strip_${this.id}`;
         this.names = {
-            firstField: `${p}${$146eeb4362821b4b$export$29b3fae588fa046f.First}`,
-            lastField: `${p}${$146eeb4362821b4b$export$29b3fae588fa046f.Last}`,
-            valueField: `${p}${$146eeb4362821b4b$export$29b3fae588fa046f.Value}`,
+            firstField: `${p}${$5026337cfcb4b996$export$10df5429b7082be2.First}`,
+            lastField: `${p}${$5026337cfcb4b996$export$10df5429b7082be2.Last}`,
+            valueField: `${p}${$5026337cfcb4b996$export$10df5429b7082be2.Value}`,
             scale: `scale_${p}`,
             zScale: `scale_${p}_z`
         };
     }
     build() {
-        const { names: names , prefix: prefix , props: props1  } = this;
-        const { addPercentageScale: addPercentageScale , globalScope: globalScope , groupings: groupings , orientation: orientation , size: size , sort: sort , sortOrder: sortOrder , parentScope: parentScope , z: z  } = props1;
-        const zScale = $a2775ffc32b7b634$export$d64499a0aa878724(z, globalScope.zSize, globalScope.data.name, names.zScale);
+        const { names: names , prefix: prefix , props: props  } = this;
+        const { addPercentageScale: addPercentageScale , globalScope: globalScope , groupings: groupings , orientation: orientation , size: size , sort: sort , sortOrder: sortOrder , parentScope: parentScope , z: z  } = props;
+        const zScale = $5ff5f76bdbe420bd$export$9e1d5954d0bb865c(z, globalScope.zSize, globalScope.data.name, names.zScale);
         const horizontal = orientation === 'horizontal';
         const transform = [];
         if (sort) transform.push({
             type: 'collect',
             sort: {
-                field: $8eb7a07ca128ffbc$export$d899a523879bc85a(sort.name),
+                field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(sort.name),
                 order: sortOrder
             }
         });
@@ -4116,24 +4116,24 @@ class $714f080adcb60d3e$export$64fee65f1033a46a extends $037582629f2ca83d$export
         }
         const stackTransform = {
             type: 'stack',
-            field: $8eb7a07ca128ffbc$export$d899a523879bc85a(stackField),
+            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(stackField),
             offset: 'normalize',
             as: [
                 names.firstField,
                 names.lastField
             ]
         };
-        if (groupings.length) stackTransform.groupby = $b3fb1eeac72b53ef$export$d8d50e04ceb89a80(groupings).map($8eb7a07ca128ffbc$export$d899a523879bc85a);
+        if (groupings.length) stackTransform.groupby = $1d26d69d9d3d5b6e$export$53a21aeef48e14a8(groupings).map($bc6bc4f764e00865$export$fb70365b00e8cb7b);
         transform.push(stackTransform);
-        $b3fb1eeac72b53ef$export$dd47277a33967f3(globalScope.data, ...transform);
+        $1d26d69d9d3d5b6e$export$eea5d31e98930019(globalScope.data, ...transform);
         const span = [
             names.lastField,
             names.firstField
         ].map((f)=>`datum[${JSON.stringify(f)}]`
         ).join(' - ');
         const offsets = {
-            x: $b3fb1eeac72b53ef$export$69458ad3b16ec03a(parentScope.offsets.x, horizontal ? `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.w})` : ''),
-            y: $b3fb1eeac72b53ef$export$69458ad3b16ec03a(parentScope.offsets.y, horizontal ? '' : `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.h})`),
+            x: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.x, horizontal ? `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.w})` : ''),
+            y: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, horizontal ? '' : `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.h})`),
             h: horizontal ? parentScope.offsets.h : `(${span}) * (${parentScope.offsets.h})`,
             w: horizontal ? `(${span}) * (${parentScope.offsets.w})` : parentScope.offsets.w
         };
@@ -4157,18 +4157,18 @@ class $714f080adcb60d3e$export$64fee65f1033a46a extends $037582629f2ca83d$export
                     },
                     depth: [
                         {
-                            test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
+                            test: $00118a065747f70b$export$71c45f78b1166d35(),
                             value: 0
                         },
                         {
                             scale: names.zScale,
-                            field: $8eb7a07ca128ffbc$export$d899a523879bc85a(z.name)
+                            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(z.name)
                         }
                     ]
                 })
             }
         };
-        $b3fb1eeac72b53ef$export$2bdeef921b699304(globalScope.markGroup, mark);
+        $1d26d69d9d3d5b6e$export$3df320e901c23a48(globalScope.markGroup, mark);
         let percentageScale;
         if (addPercentageScale) percentageScale = [
             {
@@ -4219,7 +4219,7 @@ class $714f080adcb60d3e$export$64fee65f1033a46a extends $037582629f2ca83d$export
 
 
 
-class $647a5cd6b510d0f6$export$e3cdbc1a607023ae extends $037582629f2ca83d$export$7ea53bcb0949d09b {
+class $1714cc8eaad30cf2$export$d685cd2b84b49ee extends $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         super(props);
         this.props = props;
@@ -4244,18 +4244,18 @@ class $647a5cd6b510d0f6$export$e3cdbc1a607023ae extends $037582629f2ca83d$export
         };
     }
     build() {
-        const { names: names , props: props1  } = this;
-        const { globalScope: globalScope , parentScope: parentScope , treeMapMethod: treeMapMethod , z: z  } = props1;
-        const zScale = $a2775ffc32b7b634$export$d64499a0aa878724(z, globalScope.zSize, globalScope.data.name, names.zScale);
+        const { names: names , props: props  } = this;
+        const { globalScope: globalScope , parentScope: parentScope , treeMapMethod: treeMapMethod , z: z  } = props;
+        const zScale = $5ff5f76bdbe420bd$export$9e1d5954d0bb865c(z, globalScope.zSize, globalScope.data.name, names.zScale);
         const offsets = {
-            x: $b3fb1eeac72b53ef$export$69458ad3b16ec03a(parentScope.offsets.x, $647a5cd6b510d0f6$var$fn(names.fieldX0)),
-            y: $b3fb1eeac72b53ef$export$69458ad3b16ec03a(parentScope.offsets.y, $647a5cd6b510d0f6$var$fn(names.fieldY0)),
-            h: $647a5cd6b510d0f6$var$subtract(names.fieldY1, names.fieldY0),
-            w: $647a5cd6b510d0f6$var$subtract(names.fieldX1, names.fieldX0)
+            x: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.x, $1714cc8eaad30cf2$var$fn(names.fieldX0)),
+            y: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, $1714cc8eaad30cf2$var$fn(names.fieldY0)),
+            h: $1714cc8eaad30cf2$var$subtract(names.fieldY1, names.fieldY0),
+            w: $1714cc8eaad30cf2$var$subtract(names.fieldX1, names.fieldX0)
         };
         const mark = this.transformedMark(offsets);
-        $b3fb1eeac72b53ef$export$fc8966a6eac27a(globalScope.scope, {
-            name: $146eeb4362821b4b$export$e97f264ccfdb1383.TreeMapMethod,
+        $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, {
+            name: $5026337cfcb4b996$export$809e371dee643808.TreeMapMethod,
             value: 'squarify',
             bind: {
                 name: treeMapMethod,
@@ -4286,11 +4286,11 @@ class $647a5cd6b510d0f6$export$e3cdbc1a607023ae extends $037582629f2ca83d$export
         });
     }
     transformedMark(offsets) {
-        const { names: names , props: props1  } = this;
-        const { globalScope: globalScope , groupings: groupings , parentScope: parentScope  } = props1;
+        const { names: names , props: props  } = this;
+        const { globalScope: globalScope , groupings: groupings , parentScope: parentScope  } = props;
         if (groupings.length) {
             //treemap transform can't have it's boundary size grouped, so we need to facet the data.
-            $b3fb1eeac72b53ef$export$3af5226bf85b3fe(globalScope.scope, {
+            $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, {
                 name: names.dataHeightWidth,
                 source: globalScope.markDataName,
                 transform: [
@@ -4316,7 +4316,7 @@ class $647a5cd6b510d0f6$export$e3cdbc1a607023ae extends $037582629f2ca83d$export
                     facet: {
                         name: names.dataFacet,
                         data: names.dataHeightWidth,
-                        groupby: $b3fb1eeac72b53ef$export$d8d50e04ceb89a80(groupings).map($8eb7a07ca128ffbc$export$d899a523879bc85a)
+                        groupby: $1d26d69d9d3d5b6e$export$53a21aeef48e14a8(groupings).map($bc6bc4f764e00865$export$fb70365b00e8cb7b)
                     }
                 },
                 data: [
@@ -4340,7 +4340,7 @@ class $647a5cd6b510d0f6$export$e3cdbc1a607023ae extends $037582629f2ca83d$export
                 ]
             };
             globalScope.setMarkDataName(names.dataFacetMark);
-            $b3fb1eeac72b53ef$export$2bdeef921b699304(globalScope.markGroup, facets);
+            $1d26d69d9d3d5b6e$export$3df320e901c23a48(globalScope.markGroup, facets);
             //assign new markgroup after adding mark to original group
             globalScope.setMarkGroup(facets);
             this.treemapTransform(treemapData, `${names.widthExtent}[0]`, `${names.heightExtent}[0]`);
@@ -4350,9 +4350,9 @@ class $647a5cd6b510d0f6$export$e3cdbc1a607023ae extends $037582629f2ca83d$export
             return this.addMark(offsets, globalScope.markGroup, globalScope.markDataName);
         }
     }
-    addMark(offsets, markParent, markDataName) {
-        const { names: names , prefix: prefix , props: props1  } = this;
-        const { z: z  } = props1;
+    addMark(offsets1, markParent, markDataName) {
+        const { names: names , prefix: prefix , props: props  } = this;
+        const { z: z  } = props;
         const mark = {
             name: prefix,
             type: 'rect',
@@ -4362,10 +4362,10 @@ class $647a5cd6b510d0f6$export$e3cdbc1a607023ae extends $037582629f2ca83d$export
             encode: {
                 update: Object.assign({
                     width: {
-                        signal: offsets.w
+                        signal: offsets1.w
                     },
                     height: {
-                        signal: offsets.h
+                        signal: offsets1.h
                     }
                 }, z && {
                     z: {
@@ -4373,24 +4373,24 @@ class $647a5cd6b510d0f6$export$e3cdbc1a607023ae extends $037582629f2ca83d$export
                     },
                     depth: [
                         {
-                            test: $cf04044be3b2dc0d$export$fd3de786ee7197a6(),
+                            test: $00118a065747f70b$export$71c45f78b1166d35(),
                             value: 0
                         },
                         {
                             scale: names.zScale,
-                            field: $8eb7a07ca128ffbc$export$d899a523879bc85a(z.name)
+                            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(z.name)
                         }
                     ]
                 })
             }
         };
-        $b3fb1eeac72b53ef$export$2bdeef921b699304(markParent, mark);
+        $1d26d69d9d3d5b6e$export$3df320e901c23a48(markParent, mark);
         return mark;
     }
     treemapTransform(treemapData, widthSignal, heightSignal) {
-        const { names: names , props: props1  } = this;
-        const { group: group , size: size  } = props1;
-        $b3fb1eeac72b53ef$export$dd47277a33967f3(treemapData, {
+        const { names: names , props: props  } = this;
+        const { group: group , size: size  } = props;
+        $1d26d69d9d3d5b6e$export$eea5d31e98930019(treemapData, {
             type: 'filter',
             expr: `datum[${JSON.stringify(size.name)}] > 0`
         }, {
@@ -4400,14 +4400,14 @@ class $647a5cd6b510d0f6$export$e3cdbc1a607023ae extends $037582629f2ca83d$export
             ]
         }, {
             type: 'treemap',
-            field: $8eb7a07ca128ffbc$export$d899a523879bc85a(size.name),
+            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(size.name),
             sort: {
                 field: 'value',
                 order: 'descending'
             },
             round: true,
             method: {
-                signal: $146eeb4362821b4b$export$e97f264ccfdb1383.TreeMapMethod
+                signal: $5026337cfcb4b996$export$809e371dee643808.TreeMapMethod
             },
             paddingInner: 1,
             paddingOuter: 0,
@@ -4430,11 +4430,11 @@ class $647a5cd6b510d0f6$export$e3cdbc1a607023ae extends $037582629f2ca83d$export
         });
     }
 }
-function $647a5cd6b510d0f6$var$fn(n) {
+function $1714cc8eaad30cf2$var$fn(n) {
     return `datum[${JSON.stringify(n)}]`;
 }
-function $647a5cd6b510d0f6$var$subtract(...fields) {
-    return fields.map((n)=>$647a5cd6b510d0f6$var$fn(n)
+function $1714cc8eaad30cf2$var$subtract(...fields) {
+    return fields.map((n)=>$1714cc8eaad30cf2$var$fn(n)
     ).join(' - ');
 }
 
@@ -4448,12 +4448,12 @@ function $647a5cd6b510d0f6$var$subtract(...fields) {
 
 
 
-class $2fcd6dca7f9fc501$export$3c26ce2d798a50d8 extends $037582629f2ca83d$export$7ea53bcb0949d09b {
+class $667c0955d4041541$export$f6b1e3902165e5e1 extends $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         super(props);
         this.props = props;
         const p = this.prefix = `wrap_${this.id}`;
-        this.bin = $d262e2f96d6108a3$export$24729013614a073c(this.prefix, props.globalScope.data.name, props.groupby);
+        this.bin = $280f5ab5a98a6906$export$6868fd1605c79d3d(this.prefix, props.globalScope.data.name, props.groupby);
         this.names = {
             outputData: `data_${p}_out`,
             rowColumnDataName: `data_${p}_row_col`,
@@ -4480,25 +4480,25 @@ class $2fcd6dca7f9fc501$export$3c26ce2d798a50d8 extends $037582629f2ca83d$export
         return this.bin.fields;
     }
     build() {
-        const { bin: bin , names: names , prefix: prefix , props: props1  } = this;
-        const { axisTextColor: axisTextColor , cellTitles: cellTitles , globalScope: globalScope , parentScope: parentScope  } = props1;
+        const { bin: bin , names: names , prefix: prefix , props: props  } = this;
+        const { axisTextColor: axisTextColor , cellTitles: cellTitles , globalScope: globalScope , parentScope: parentScope  } = props;
         let ordinalBinData;
         if (bin.native === false) {
-            $b3fb1eeac72b53ef$export$fc8966a6eac27a(globalScope.scope, ...bin.signals);
-            $b3fb1eeac72b53ef$export$dd47277a33967f3(globalScope.data, ...bin.transforms);
-            $b3fb1eeac72b53ef$export$3af5226bf85b3fe(globalScope.scope, bin.dataSequence);
-            $b3fb1eeac72b53ef$export$dd47277a33967f3(bin.dataSequence, {
+            $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, ...bin.signals);
+            $1d26d69d9d3d5b6e$export$eea5d31e98930019(globalScope.data, ...bin.transforms);
+            $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, bin.dataSequence);
+            $1d26d69d9d3d5b6e$export$eea5d31e98930019(bin.dataSequence, {
                 type: 'formula',
                 expr: `indata(${JSON.stringify(globalScope.data.name)}, ${JSON.stringify(bin.fields[0])}, datum[${JSON.stringify(bin.fields[0])}])`,
-                as: $146eeb4362821b4b$export$29b3fae588fa046f.Contains
+                as: $5026337cfcb4b996$export$10df5429b7082be2.Contains
             });
             ordinalBinData = bin.dataSequence.name;
         } else {
-            const ord = $361980567078f383$export$6e96ed03820b3f41(globalScope.data.name, prefix, bin.fields, 'ascending');
-            $b3fb1eeac72b53ef$export$3af5226bf85b3fe(globalScope.scope, ord.data);
+            const ord = $276799ff26fc5cc2$export$71d2e96f63f1ac97(globalScope.data.name, prefix, bin.fields, 'ascending');
+            $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, ord.data);
             ordinalBinData = ord.data.name;
         }
-        $b3fb1eeac72b53ef$export$3af5226bf85b3fe(globalScope.scope, {
+        $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, {
             name: names.rxc0,
             transform: [
                 {
@@ -4561,7 +4561,7 @@ class $2fcd6dca7f9fc501$export$3c26ce2d798a50d8 extends $037582629f2ca83d$export
                 },
                 {
                     type: 'formula',
-                    expr: `datum.cols === 1 ? max(datum.cellw, ${$146eeb4362821b4b$export$e97f264ccfdb1383.MinCellWidth}) : datum.cellw`,
+                    expr: `datum.cols === 1 ? max(datum.cellw, ${$5026337cfcb4b996$export$809e371dee643808.MinCellWidth}) : datum.cellw`,
                     as: 'cellw'
                 },
                 {
@@ -4571,12 +4571,12 @@ class $2fcd6dca7f9fc501$export$3c26ce2d798a50d8 extends $037582629f2ca83d$export
                 },
                 {
                     type: 'formula',
-                    expr: `datum.rows === 1 ? max(datum.cellh, ${$146eeb4362821b4b$export$e97f264ccfdb1383.MinCellHeight}) : datum.cellh`,
+                    expr: `datum.rows === 1 ? max(datum.cellh, ${$5026337cfcb4b996$export$809e371dee643808.MinCellHeight}) : datum.cellh`,
                     as: 'cellh'
                 },
                 {
                     type: 'formula',
-                    expr: `(datum.cellw >= ${$146eeb4362821b4b$export$e97f264ccfdb1383.MinCellWidth} && datum.cellh >= ${$146eeb4362821b4b$export$e97f264ccfdb1383.MinCellHeight})`,
+                    expr: `(datum.cellw >= ${$5026337cfcb4b996$export$809e371dee643808.MinCellWidth} && datum.cellh >= ${$5026337cfcb4b996$export$809e371dee643808.MinCellHeight})`,
                     as: 'meetsmin'
                 },
                 {
@@ -4618,23 +4618,23 @@ class $2fcd6dca7f9fc501$export$3c26ce2d798a50d8 extends $037582629f2ca83d$export
             transform: [
                 {
                     type: 'formula',
-                    expr: `floor((datum[${JSON.stringify($146eeb4362821b4b$export$29b3fae588fa046f.Ordinal)}] - 1) / ${names.colCount})`,
-                    as: $146eeb4362821b4b$export$29b3fae588fa046f.WrapRow
+                    expr: `floor((datum[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.Ordinal)}] - 1) / ${names.colCount})`,
+                    as: $5026337cfcb4b996$export$10df5429b7082be2.WrapRow
                 },
                 {
                     type: 'formula',
-                    expr: `(datum[${JSON.stringify($146eeb4362821b4b$export$29b3fae588fa046f.Ordinal)}] - 1) % ${names.colCount}`,
-                    as: $146eeb4362821b4b$export$29b3fae588fa046f.WrapCol
+                    expr: `(datum[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.Ordinal)}] - 1) % ${names.colCount}`,
+                    as: $5026337cfcb4b996$export$10df5429b7082be2.WrapCol
                 },
                 {
                     type: 'formula',
-                    expr: $aee84c6f70860268$export$de7be5604dfa90eb(bin, $146eeb4362821b4b$export$29b3fae588fa046f.First, $146eeb4362821b4b$export$29b3fae588fa046f.Last),
-                    as: $146eeb4362821b4b$export$29b3fae588fa046f.FacetSearch
+                    expr: $d15e2fabcf2f7201$export$b292ca0d4c2e4690(bin, $5026337cfcb4b996$export$10df5429b7082be2.First, $5026337cfcb4b996$export$10df5429b7082be2.Last),
+                    as: $5026337cfcb4b996$export$10df5429b7082be2.FacetSearch
                 },
                 {
                     type: 'formula',
-                    expr: $aee84c6f70860268$export$f0ba1a5b611a9ffc(bin),
-                    as: $146eeb4362821b4b$export$29b3fae588fa046f.FacetTitle
+                    expr: $d15e2fabcf2f7201$export$f241323700beca17(bin),
+                    as: $5026337cfcb4b996$export$10df5429b7082be2.FacetTitle
                 }
             ]
         });
@@ -4645,28 +4645,28 @@ class $2fcd6dca7f9fc501$export$3c26ce2d798a50d8 extends $037582629f2ca83d$export
                 {
                     type: 'lookup',
                     from: names.rowColumnDataName,
-                    key: $8eb7a07ca128ffbc$export$d899a523879bc85a(bin.fields[0]),
+                    key: $bc6bc4f764e00865$export$fb70365b00e8cb7b(bin.fields[0]),
                     fields: [
                         bin.fields[0]
-                    ].map($8eb7a07ca128ffbc$export$d899a523879bc85a),
+                    ].map($bc6bc4f764e00865$export$fb70365b00e8cb7b),
                     values: [
-                        $146eeb4362821b4b$export$29b3fae588fa046f.WrapRow,
-                        $146eeb4362821b4b$export$29b3fae588fa046f.WrapCol
+                        $5026337cfcb4b996$export$10df5429b7082be2.WrapRow,
+                        $5026337cfcb4b996$export$10df5429b7082be2.WrapCol
                     ]
                 }
             ]
         };
-        $b3fb1eeac72b53ef$export$3af5226bf85b3fe(globalScope.scope, dataOut);
+        $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, dataOut);
         globalScope.setMarkDataName(names.outputData);
-        $b3fb1eeac72b53ef$export$fc8966a6eac27a(globalScope.scope, {
+        $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, {
             name: names.minAspect,
-            update: `${$146eeb4362821b4b$export$e97f264ccfdb1383.MinCellWidth} / ${$146eeb4362821b4b$export$e97f264ccfdb1383.MinCellHeight}`
+            update: `${$5026337cfcb4b996$export$809e371dee643808.MinCellWidth} / ${$5026337cfcb4b996$export$809e371dee643808.MinCellHeight}`
         }, {
             name: names.target,
             update: `${names.minAspect} === 1 ? ${1.2} : ${names.minAspect}`
         }, {
             name: names.minArea,
-            update: `${$146eeb4362821b4b$export$e97f264ccfdb1383.MinCellWidth}*${$146eeb4362821b4b$export$e97f264ccfdb1383.MinCellHeight}`
+            update: `${$5026337cfcb4b996$export$809e371dee643808.MinCellWidth}*${$5026337cfcb4b996$export$809e371dee643808.MinCellHeight}`
         }, {
             name: names.aspect,
             update: `${parentScope.sizeSignals.layoutWidth} / ${parentScope.sizeSignals.layoutHeight}`
@@ -4675,7 +4675,7 @@ class $2fcd6dca7f9fc501$export$3c26ce2d798a50d8 extends $037582629f2ca83d$export
             update: `data(${JSON.stringify(ordinalBinData)}).length`
         }, {
             name: names.growColCount,
-            update: `max(floor(${parentScope.sizeSignals.layoutWidth} / ${$146eeb4362821b4b$export$e97f264ccfdb1383.MinCellWidth}), 1)`
+            update: `max(floor(${parentScope.sizeSignals.layoutWidth} / ${$5026337cfcb4b996$export$809e371dee643808.MinCellWidth}), 1)`
         }, {
             name: names.growCellWidth,
             update: `${parentScope.sizeSignals.layoutWidth} / ${names.growColCount}`
@@ -4693,21 +4693,21 @@ class $2fcd6dca7f9fc501$export$3c26ce2d798a50d8 extends $037582629f2ca83d$export
             update: `${names.fits} ? data(${JSON.stringify(names.rxc)})[0].cellw : ${names.growCellWidth}`
         }, {
             name: names.cellHeight,
-            update: `${names.fits} ? data(${JSON.stringify(names.rxc)})[0].cellh : ${$146eeb4362821b4b$export$e97f264ccfdb1383.MinCellHeight}`
+            update: `${names.fits} ? data(${JSON.stringify(names.rxc)})[0].cellh : ${$5026337cfcb4b996$export$809e371dee643808.MinCellHeight}`
         });
-        $573ada9f4d41ca62$export$8a3437c1e0038352(globalScope.signals.plotHeightOut, 'max', `(${names.cellHeight} * ceil(${names.dataLength} / ${names.colCount}))`);
-        $573ada9f4d41ca62$export$8a3437c1e0038352(globalScope.signals.plotWidthOut, 'max', `(${names.cellWidth} * ${names.colCount})`);
+        $853681033abd6f83$export$cdc9366ba30317bd(globalScope.signals.plotHeightOut, 'max', `(${names.cellHeight} * ceil(${names.dataLength} / ${names.colCount}))`);
+        $853681033abd6f83$export$cdc9366ba30317bd(globalScope.signals.plotWidthOut, 'max', `(${names.cellWidth} * ${names.colCount})`);
         const signalH = [
             names.cellHeight,
-            $146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingTop,
-            $146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingBottom
+            $5026337cfcb4b996$export$809e371dee643808.FacetPaddingTop,
+            $5026337cfcb4b996$export$809e371dee643808.FacetPaddingBottom
         ].join(' - ');
         const signalW = [
             names.cellWidth,
-            $146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingLeft
+            $5026337cfcb4b996$export$809e371dee643808.FacetPaddingLeft
         ].join(' - ');
-        const signalX = $b3fb1eeac72b53ef$export$69458ad3b16ec03a(parentScope.offsets.x, `datum[${JSON.stringify($146eeb4362821b4b$export$29b3fae588fa046f.WrapCol)}] * ${names.cellWidth}`, $146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingLeft);
-        const signalY = $b3fb1eeac72b53ef$export$69458ad3b16ec03a(parentScope.offsets.y, `datum[${JSON.stringify($146eeb4362821b4b$export$29b3fae588fa046f.WrapRow)}] * ${names.cellHeight}`, $146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingTop);
+        const signalX = $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.x, `datum[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.WrapCol)}] * ${names.cellWidth}`, $5026337cfcb4b996$export$809e371dee643808.FacetPaddingLeft);
+        const signalY = $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, `datum[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.WrapRow)}] * ${names.cellHeight}`, $5026337cfcb4b996$export$809e371dee643808.FacetPaddingTop);
         const update = {
             height: {
                 signal: signalH
@@ -4739,14 +4739,14 @@ class $2fcd6dca7f9fc501$export$3c26ce2d798a50d8 extends $037582629f2ca83d$export
                 update: update
             }
         };
-        $b3fb1eeac72b53ef$export$2bdeef921b699304(globalScope.markGroup, group);
+        $1d26d69d9d3d5b6e$export$3df320e901c23a48(globalScope.markGroup, group);
         const sizeSignals = {
-            layoutHeight: `(${names.cellHeight} - ${$146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingTop} - ${$146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingBottom})`,
-            layoutWidth: `(${names.cellWidth} - ${$146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingLeft})`,
+            layoutHeight: `(${names.cellHeight} - ${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingTop} - ${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingBottom})`,
+            layoutWidth: `(${names.cellWidth} - ${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingLeft})`,
             colCount: names.colCount,
             rowCount: `ceil(${names.dataLength} / ${names.colCount})`
         };
-        if (cellTitles) $5a088e24510c9b50$export$3de75c28c7c095a1(group, sizeSignals, axisTextColor);
+        if (cellTitles) $267ef0242f542da1$export$3735b1dd76112836(group, sizeSignals, axisTextColor);
         return {
             facetScope: group,
             sizeSignals: sizeSignals,
@@ -4756,61 +4756,61 @@ class $2fcd6dca7f9fc501$export$3c26ce2d798a50d8 extends $037582629f2ca83d$export
 }
 
 
-const $99976a6cdb2da6d0$export$b90520ed48a3c473 = {
-    AggregateContainer: $2270ea07621d68d4$export$f3086da9948fbc27,
-    AggregateSquare: $ccd7ede4b07b48a8$export$ab50d62f456c9445,
-    Band: $c72c6fe7eb71177f$export$efeea70621fdf7c2,
-    Cross: $7b9573b63f6fb3f3$export$c9f6f75e561fd9ec,
-    Scatter: $656da2a7576cc899$export$32a98332419a23c6,
-    Square: $862530b69d56ffb4$export$b9b93345c2943ac5,
-    Stack: $817d45a48045a6dc$export$5ace8476f20038f3,
-    Strip: $714f080adcb60d3e$export$64fee65f1033a46a,
-    Treemap: $647a5cd6b510d0f6$export$e3cdbc1a607023ae,
-    Wrap: $2fcd6dca7f9fc501$export$3c26ce2d798a50d8
+const $8a2694894db03143$export$8b2ec0ba67742226 = {
+    AggregateContainer: $c920a6424c9a8cf8$export$fd744dfcd98e5f49,
+    AggregateSquare: $f56476682bfa269d$export$7eda37970b01b2c,
+    Band: $dcdb4cb44eff1858$export$5b22a87d7feca398,
+    Cross: $8e71cd01f19f462c$export$3c877bb842c36952,
+    Scatter: $86dc958dd62c07ad$export$1c460fb4285edadc,
+    Square: $22e821125aa13607$export$b09fb900337259de,
+    Stack: $b27405b06ac9c54d$export$694e0d28c7ffc90c,
+    Strip: $a38643ba15c0e389$export$c4df0d8c6c8f50e4,
+    Treemap: $1714cc8eaad30cf2$export$d685cd2b84b49ee,
+    Wrap: $667c0955d4041541$export$f6b1e3902165e5e1
 };
 
 
-class $2c2a51b6f108069b$export$e15a5a4be5d609df {
+class $c112dcddbd0b2eff$export$e2e6dd2b1097c25b {
     constructor(props, specContext){
         this.props = props;
         this.specContext = specContext;
         this.globalSignals = {
             minCellWidth: {
-                name: $146eeb4362821b4b$export$e97f264ccfdb1383.MinCellWidth,
-                update: `${$d6acc81334b00d34$export$9575804afbd9861b}`
+                name: $5026337cfcb4b996$export$809e371dee643808.MinCellWidth,
+                update: `${$ee84a745a025909d$export$7794a0aff56142de}`
             },
             minCellHeight: {
-                name: $146eeb4362821b4b$export$e97f264ccfdb1383.MinCellHeight,
-                update: `${$d6acc81334b00d34$export$f6f90abbea75f1e0}`
+                name: $5026337cfcb4b996$export$809e371dee643808.MinCellHeight,
+                update: `${$ee84a745a025909d$export$7c432db1d0b63312}`
             },
             plotOffsetLeft: {
-                name: $146eeb4362821b4b$export$e97f264ccfdb1383.PlotOffsetLeft,
+                name: $5026337cfcb4b996$export$809e371dee643808.PlotOffsetLeft,
                 update: '0'
             },
             plotOffsetTop: {
-                name: $146eeb4362821b4b$export$e97f264ccfdb1383.PlotOffsetTop,
+                name: $5026337cfcb4b996$export$809e371dee643808.PlotOffsetTop,
                 update: '0'
             },
             plotOffsetBottom: {
-                name: $146eeb4362821b4b$export$e97f264ccfdb1383.PlotOffsetBottom,
+                name: $5026337cfcb4b996$export$809e371dee643808.PlotOffsetBottom,
                 update: '0'
             },
             plotOffsetRight: {
-                name: $146eeb4362821b4b$export$e97f264ccfdb1383.PlotOffsetRight,
+                name: $5026337cfcb4b996$export$809e371dee643808.PlotOffsetRight,
                 update: '0'
             },
             plotHeightOut: {
-                name: $146eeb4362821b4b$export$e97f264ccfdb1383.PlotHeightOut,
-                update: $146eeb4362821b4b$export$e97f264ccfdb1383.PlotHeightIn
+                name: $5026337cfcb4b996$export$809e371dee643808.PlotHeightOut,
+                update: $5026337cfcb4b996$export$809e371dee643808.PlotHeightIn
             },
             plotWidthOut: {
-                name: $146eeb4362821b4b$export$e97f264ccfdb1383.PlotWidthOut,
-                update: $146eeb4362821b4b$export$e97f264ccfdb1383.PlotWidthIn
+                name: $5026337cfcb4b996$export$809e371dee643808.PlotWidthOut,
+                update: $5026337cfcb4b996$export$809e371dee643808.PlotWidthIn
             }
         };
     }
     validate() {
-        const { specContext: specContext1  } = this;
+        const { specContext: specContext  } = this;
         const { specCapabilities: specCapabilities  } = this.props;
         const { roles: roles  } = specCapabilities;
         const required = roles.filter((r)=>{
@@ -4820,50 +4820,50 @@ class $2c2a51b6f108069b$export$e15a5a4be5d609df {
                 case 'undefined':
                     return true;
                 case 'function':
-                    return !r.allowNone(specContext1);
+                    return !r.allowNone(specContext);
             }
         });
         const numeric = roles.filter((r)=>r.excludeCategoric
         );
         const errors = required.map((r)=>{
-            if (specContext1.specColumns[r.role]) return null;
+            if (specContext.specColumns[r.role]) return null;
             else return `Field ${r.role} is required.`;
         }).concat(numeric.map((r)=>{
-            if (specContext1.specColumns[r.role] && !specContext1.specColumns[r.role].quantitative) return `Field ${r.role} must be quantitative.`;
+            if (specContext.specColumns[r.role] && !specContext.specColumns[r.role].quantitative) return `Field ${r.role} must be quantitative.`;
             else return null;
         })).filter(Boolean);
         return errors;
     }
     build() {
-        const { specContext: specContext1  } = this;
+        const { specContext: specContext  } = this;
         const { facetLayout: facetLayout , specCapabilities: specCapabilities  } = this.props;
-        const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext1;
+        const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
         const dataName = 'data_source';
         const { vegaSpec: vegaSpec , groupMark: groupMark  } = this.initSpec(dataName);
-        const { topColorField: topColorField , colorDataName: colorDataName  } = $d397a2a1ee48bc5e$export$2dc63264baec3ee2({
+        const { topColorField: topColorField , colorDataName: colorDataName  } = $9f1db88e8f4618a8$export$4c4d9288a45f1fb3({
             scope: vegaSpec,
             dataName: dataName,
-            specContext: specContext1,
-            scaleName: $146eeb4362821b4b$export$9a32a517dc4aa15a.Color,
+            specContext: specContext,
+            scaleName: $5026337cfcb4b996$export$c9f17d36dfc40d76.Color,
             legendDataName: 'data_legend',
             topLookupName: 'data_topcolorlookup',
-            colorReverseSignalName: $146eeb4362821b4b$export$e97f264ccfdb1383.ColorReverse
+            colorReverseSignalName: $5026337cfcb4b996$export$809e371dee643808.ColorReverse
         });
-        const globalScope = new $7001bce89c3d5a96$export$d44ddc9302614dc0({
+        const globalScope = new $1da2db5d27ae10a6$export$5fdf684e73bb2de5({
             dataName: colorDataName,
             markGroup: groupMark,
             scope: vegaSpec,
             signals: this.globalSignals
         });
         if (facetLayout) {
-            $b3fb1eeac72b53ef$export$fc8966a6eac27a(vegaSpec, {
-                name: $146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingBottom,
+            $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(vegaSpec, {
+                name: $5026337cfcb4b996$export$809e371dee643808.FacetPaddingBottom,
                 update: `${facetLayout.facetPadding.bottom}`
             }, {
-                name: $146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingLeft,
+                name: $5026337cfcb4b996$export$809e371dee643808.FacetPaddingLeft,
                 update: `${facetLayout.facetPadding.left}`
             }, {
-                name: $146eeb4362821b4b$export$e97f264ccfdb1383.FacetPaddingTop,
+                name: $5026337cfcb4b996$export$809e371dee643808.FacetPaddingTop,
                 update: `${facetLayout.facetPadding.top}`
             });
             this.globalSignals.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
@@ -4904,7 +4904,7 @@ class $2c2a51b6f108069b$export$e15a5a4be5d609df {
                     0
                 ]
             };
-            let axesScopes = facetLayout ? $5a088e24510c9b50$export$3927d38091f734de({
+            let axesScopes = facetLayout ? $267ef0242f542da1$export$9f0b19d6fd936707({
                 globalScope: globalScope.scope,
                 plotScope: groupMark,
                 facetScope: firstScope,
@@ -4922,7 +4922,7 @@ class $2c2a51b6f108069b$export$e15a5a4be5d609df {
                     }
                 ]
             };
-            $5a387119767f751c$export$323335ebe3b8edf4({
+            $9d5f9a843f218841$export$3678bfcfeaea7c36({
                 globalScope: globalScope,
                 allGlobalScales: allGlobalScales,
                 axisScales: this.props.axisScales,
@@ -4931,15 +4931,15 @@ class $2c2a51b6f108069b$export$e15a5a4be5d609df {
                     y: this.globalSignals.plotOffsetBottom
                 },
                 axesOffsets: {
-                    x: $d6acc81334b00d34$export$1256463ddc3abfcf,
-                    y: $d6acc81334b00d34$export$7ccb1c0a7972a85f
+                    x: $ee84a745a025909d$export$3f5b554d51e74365,
+                    y: $ee84a745a025909d$export$c33f11801bb18430
                 },
                 axesTitlePadding: facetLayout ? {
-                    x: $d6acc81334b00d34$export$bfd91bf10acf0a22,
-                    y: $d6acc81334b00d34$export$9040dcec103623d1
+                    x: $ee84a745a025909d$export$fd4a597070549ada,
+                    y: $ee84a745a025909d$export$a26a082bf9fa4ca0
                 } : {
-                    x: $d6acc81334b00d34$export$a4d60686dcce912,
-                    y: $d6acc81334b00d34$export$ee365cabf3b6c6
+                    x: $ee84a745a025909d$export$2e7279af2df830e3,
+                    y: $ee84a745a025909d$export$f0388d9263db6e5f
                 },
                 labelBaseline: {
                     x: 'top',
@@ -4957,27 +4957,27 @@ class $2c2a51b6f108069b$export$e15a5a4be5d609df {
             const { update: update  } = finalScope.mark.encode;
             const outputDataName = 'output';
             finalScope.mark.from.data = outputDataName;
-            $b3fb1eeac72b53ef$export$3af5226bf85b3fe(globalScope.markGroup, {
+            $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.markGroup, {
                 name: outputDataName,
                 source: globalScope.markDataName,
                 transform: [
                     {
                         type: 'formula',
                         expr: finalScope.offsets.x,
-                        as: $146eeb4362821b4b$export$29b3fae588fa046f.OffsetX
+                        as: $5026337cfcb4b996$export$10df5429b7082be2.OffsetX
                     },
                     {
                         type: 'formula',
                         expr: finalScope.offsets.y,
-                        as: $146eeb4362821b4b$export$29b3fae588fa046f.OffsetY
+                        as: $5026337cfcb4b996$export$10df5429b7082be2.OffsetY
                     }
                 ]
             });
             update.x = {
-                field: $146eeb4362821b4b$export$29b3fae588fa046f.OffsetX
+                field: $5026337cfcb4b996$export$10df5429b7082be2.OffsetX
             };
             update.y = {
-                field: $146eeb4362821b4b$export$29b3fae588fa046f.OffsetY
+                field: $5026337cfcb4b996$export$10df5429b7082be2.OffsetY
             };
             allEncodingRules.forEach((map)=>{
                 for(let key in map)if (update[key]) {
@@ -4996,8 +4996,8 @@ class $2c2a51b6f108069b$export$e15a5a4be5d609df {
                     }
                 }
             });
-            update.fill = $bcb29d9941a438e9$export$46d84c5e6bf6c95f(specContext1, topColorField, $146eeb4362821b4b$export$9a32a517dc4aa15a.Color);
-            update.opacity = $bcb29d9941a438e9$export$82d51c42c483e4c3(specContext1);
+            update.fill = $b1297af14e23a528$export$9563e054e6f787fb(specContext, topColorField, $5026337cfcb4b996$export$c9f17d36dfc40d76.Color);
+            update.opacity = $b1297af14e23a528$export$c17a3be1057836e(specContext);
         }
         return {
             specCapabilities: specCapabilities,
@@ -5007,24 +5007,24 @@ class $2c2a51b6f108069b$export$e15a5a4be5d609df {
     initSpec(dataName) {
         const { globalSignals: globalSignals  } = this;
         const { minCellWidth: minCellWidth , minCellHeight: minCellHeight , plotOffsetLeft: plotOffsetLeft , plotOffsetBottom: plotOffsetBottom , plotOffsetTop: plotOffsetTop , plotOffsetRight: plotOffsetRight , plotHeightOut: plotHeightOut , plotWidthOut: plotWidthOut  } = globalSignals;
-        const { specContext: specContext1  } = this;
-        const { insight: insight  } = specContext1;
+        const { specContext: specContext  } = this;
+        const { insight: insight  } = specContext;
         const groupMark = {
             type: 'group',
             //style: 'cell',
             encode: {
                 update: {
                     x: {
-                        signal: $146eeb4362821b4b$export$e97f264ccfdb1383.PlotOffsetLeft
+                        signal: $5026337cfcb4b996$export$809e371dee643808.PlotOffsetLeft
                     },
                     y: {
-                        signal: $146eeb4362821b4b$export$e97f264ccfdb1383.PlotOffsetTop
+                        signal: $5026337cfcb4b996$export$809e371dee643808.PlotOffsetTop
                     },
                     height: {
-                        signal: $146eeb4362821b4b$export$e97f264ccfdb1383.PlotHeightOut
+                        signal: $5026337cfcb4b996$export$809e371dee643808.PlotHeightOut
                     },
                     width: {
-                        signal: $146eeb4362821b4b$export$e97f264ccfdb1383.PlotWidthOut
+                        signal: $5026337cfcb4b996$export$809e371dee643808.PlotWidthOut
                     }
                 }
             }
@@ -5046,38 +5046,38 @@ class $2c2a51b6f108069b$export$e15a5a4be5d609df {
             marks: [
                 groupMark
             ],
-            signals: $573ada9f4d41ca62$export$e568cf8be4c6e956(specContext1, $146eeb4362821b4b$export$e97f264ccfdb1383.ViewportHeight).concat([
+            signals: $853681033abd6f83$export$d9407ec206a3236c(specContext, $5026337cfcb4b996$export$809e371dee643808.ViewportHeight).concat([
                 minCellWidth,
                 minCellHeight,
                 {
-                    name: $146eeb4362821b4b$export$e97f264ccfdb1383.ViewportHeight,
-                    update: `max(${$146eeb4362821b4b$export$e97f264ccfdb1383.MinCellHeight}, ${insight.size.height})`
+                    name: $5026337cfcb4b996$export$809e371dee643808.ViewportHeight,
+                    update: `max(${$5026337cfcb4b996$export$809e371dee643808.MinCellHeight}, ${insight.size.height})`
                 },
                 {
-                    name: $146eeb4362821b4b$export$e97f264ccfdb1383.ViewportWidth,
-                    update: `max(${$146eeb4362821b4b$export$e97f264ccfdb1383.MinCellWidth}, ${insight.size.width})`
+                    name: $5026337cfcb4b996$export$809e371dee643808.ViewportWidth,
+                    update: `max(${$5026337cfcb4b996$export$809e371dee643808.MinCellWidth}, ${insight.size.width})`
                 },
                 plotOffsetLeft,
                 plotOffsetTop,
                 plotOffsetBottom,
                 plotOffsetRight,
                 {
-                    name: $146eeb4362821b4b$export$e97f264ccfdb1383.PlotHeightIn,
-                    update: `${$146eeb4362821b4b$export$e97f264ccfdb1383.ViewportHeight} - ${$146eeb4362821b4b$export$e97f264ccfdb1383.PlotOffsetBottom}`
+                    name: $5026337cfcb4b996$export$809e371dee643808.PlotHeightIn,
+                    update: `${$5026337cfcb4b996$export$809e371dee643808.ViewportHeight} - ${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetBottom}`
                 },
                 {
-                    name: $146eeb4362821b4b$export$e97f264ccfdb1383.PlotWidthIn,
-                    update: `${$146eeb4362821b4b$export$e97f264ccfdb1383.ViewportWidth} - ${$146eeb4362821b4b$export$e97f264ccfdb1383.PlotOffsetLeft} - ${$146eeb4362821b4b$export$e97f264ccfdb1383.PlotOffsetRight}`
+                    name: $5026337cfcb4b996$export$809e371dee643808.PlotWidthIn,
+                    update: `${$5026337cfcb4b996$export$809e371dee643808.ViewportWidth} - ${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetLeft} - ${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetRight}`
                 },
                 plotHeightOut,
                 plotWidthOut,
                 {
                     name: 'height',
-                    update: `${$146eeb4362821b4b$export$e97f264ccfdb1383.PlotOffsetTop} + ${$146eeb4362821b4b$export$e97f264ccfdb1383.PlotHeightOut} + ${$146eeb4362821b4b$export$e97f264ccfdb1383.PlotOffsetBottom}`
+                    update: `${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetTop} + ${$5026337cfcb4b996$export$809e371dee643808.PlotHeightOut} + ${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetBottom}`
                 },
                 {
                     name: 'width',
-                    update: `${$146eeb4362821b4b$export$e97f264ccfdb1383.PlotWidthOut} + ${$146eeb4362821b4b$export$e97f264ccfdb1383.PlotOffsetLeft} + ${$146eeb4362821b4b$export$e97f264ccfdb1383.PlotOffsetRight}`
+                    update: `${$5026337cfcb4b996$export$809e371dee643808.PlotWidthOut} + ${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetLeft} + ${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetRight}`
                 }
             ])
         };
@@ -5119,7 +5119,7 @@ class $2c2a51b6f108069b$export$e15a5a4be5d609df {
                         {
                             field: null,
                             op: 'count',
-                            as: $146eeb4362821b4b$export$29b3fae588fa046f.Count
+                            as: $5026337cfcb4b996$export$10df5429b7082be2.Count
                         }
                     ]
                 });
@@ -5150,10 +5150,10 @@ class $2c2a51b6f108069b$export$e15a5a4be5d609df {
         };
     }
     createLayout(layoutPair, buildProps) {
-        const { layoutType: layoutType , props: props1  } = layoutPair;
+        const { layoutType: layoutType , props: props  } = layoutPair;
         const layoutBuildProps = Object.assign(Object.assign({
-        }, props1), buildProps);
-        const layoutClass = $99976a6cdb2da6d0$export$b90520ed48a3c473[layoutType];
+        }, props), buildProps);
+        const layoutClass = $8a2694894db03143$export$8b2ec0ba67742226[layoutType];
         const layout = new layoutClass(layoutBuildProps);
         layout.id = buildProps.id;
         return layout;
@@ -5161,7 +5161,7 @@ class $2c2a51b6f108069b$export$e15a5a4be5d609df {
 }
 
 
-function $4d5208b78df53d91$export$169a89f54f090971(specContext, currData) {
+function $f5081518125870e3$export$3f8fe6489e95757d(specContext, currData) {
     const { specColumns: specColumns  } = specContext;
     const columns = [
         specColumns.color,
@@ -5174,9 +5174,9 @@ function $4d5208b78df53d91$export$169a89f54f090971(specContext, currData) {
         specColumns.y,
         specColumns.z
     ];
-    $0ebaa52647c6073e$export$47bd397f706b4d82(columns, currData);
-    const specBuilderProps = $5dcad97ed164a566$export$c48d4298c35d80ce(specContext);
-    const specBuilder = new $2c2a51b6f108069b$export$e15a5a4be5d609df(specBuilderProps, specContext);
+    $1f41cd3bd9350891$export$e04a97cc71178399(columns, currData);
+    const specBuilderProps = $e03900d3ca5c71cc$export$104083a36c1647a7(specContext);
+    const specBuilder = new $c112dcddbd0b2eff$export$e2e6dd2b1097c25b(specBuilderProps, specContext);
     let specResult;
     if (specBuilder) {
         try {
@@ -5213,39 +5213,39 @@ function $4d5208b78df53d91$export$169a89f54f090971(specContext, currData) {
 
 
 
-var $ba77fb5fc2d740bc$exports = {};
+var $9025901cbd7e0588$exports = {};
 
 
-var $ed1c58c4a3fb69c4$exports = {};
+var $b147fe9b0e5380ef$exports = {};
 
 
-$parcel$exportWildcard($2b1a2fc98adbe4f1$exports, $4d5208b78df53d91$exports);
-$parcel$exportWildcard($2b1a2fc98adbe4f1$exports, $146eeb4362821b4b$exports);
-$parcel$exportWildcard($2b1a2fc98adbe4f1$exports, $0ebaa52647c6073e$exports);
-$parcel$exportWildcard($2b1a2fc98adbe4f1$exports, $ba77fb5fc2d740bc$exports);
-$parcel$exportWildcard($2b1a2fc98adbe4f1$exports, $ed1c58c4a3fb69c4$exports);
+$parcel$exportWildcard($898e5580ccaf461f$exports, $f5081518125870e3$exports);
+$parcel$exportWildcard($898e5580ccaf461f$exports, $5026337cfcb4b996$exports);
+$parcel$exportWildcard($898e5580ccaf461f$exports, $1f41cd3bd9350891$exports);
+$parcel$exportWildcard($898e5580ccaf461f$exports, $9025901cbd7e0588$exports);
+$parcel$exportWildcard($898e5580ccaf461f$exports, $b147fe9b0e5380ef$exports);
 
 
-const $a3b399caf5d2c16b$export$b86d149b7c15b53e = 'GL_ORDINAL';
+const $7abff30d903026d9$export$5672246984822a29 = 'GL_ORDINAL';
 
 
-var $311a0d2a8fe80ff7$exports = {};
-var $66f57d958d42d9ea$exports = {};
+var $009f7267ebde0f0b$exports = {};
+var $8152aaf818f7ca2c$exports = {};
 
-$parcel$export($66f57d958d42d9ea$exports, "startsWith", () => $66f57d958d42d9ea$export$9c9bf82e6c23f371);
-$parcel$export($66f57d958d42d9ea$exports, "compare", () => $66f57d958d42d9ea$export$df417da3ae0614a2);
-$parcel$export($66f57d958d42d9ea$exports, "compareExpression", () => $66f57d958d42d9ea$export$78b9bb7e1041123b);
-$parcel$export($66f57d958d42d9ea$exports, "compareGroup", () => $66f57d958d42d9ea$export$4220516453312347);
-var $3df0cd4d21e5cd73$exports = {};
+$parcel$export($8152aaf818f7ca2c$exports, "compareExpression", () => $8152aaf818f7ca2c$export$4787a3c825f2af47);
+$parcel$export($8152aaf818f7ca2c$exports, "compareGroup", () => $8152aaf818f7ca2c$export$bc9dff9b0aa0e5b);
+$parcel$export($8152aaf818f7ca2c$exports, "compare", () => $8152aaf818f7ca2c$export$398604a469f7de9a);
+$parcel$export($8152aaf818f7ca2c$exports, "startsWith", () => $8152aaf818f7ca2c$export$68326237475e9a7d);
+var $2ba53c22c1f923f6$exports = {};
 
-$parcel$export($3df0cd4d21e5cd73$exports, "ensureSearchExpressionGroupArray", () => $3df0cd4d21e5cd73$export$fe113050ed871cdd);
-$parcel$export($3df0cd4d21e5cd73$exports, "isSearchExpressionGroup", () => $3df0cd4d21e5cd73$export$9dd7672f9e515de5);
-$parcel$export($3df0cd4d21e5cd73$exports, "createGroupFromExpression", () => $3df0cd4d21e5cd73$export$d32b363d4983b578);
-function $3df0cd4d21e5cd73$export$9dd7672f9e515de5(search) {
+$parcel$export($2ba53c22c1f923f6$exports, "isSearchExpressionGroup", () => $2ba53c22c1f923f6$export$ab134d298d957272);
+$parcel$export($2ba53c22c1f923f6$exports, "createGroupFromExpression", () => $2ba53c22c1f923f6$export$cf32a499fcfecacd);
+$parcel$export($2ba53c22c1f923f6$exports, "ensureSearchExpressionGroupArray", () => $2ba53c22c1f923f6$export$b5d04ce3dd7ae29e);
+function $2ba53c22c1f923f6$export$ab134d298d957272(search) {
     if (!search) return false;
     return !!search.expressions;
 }
-function $3df0cd4d21e5cd73$export$d32b363d4983b578(input) {
+function $2ba53c22c1f923f6$export$cf32a499fcfecacd(input) {
     const output = {
         expressions: [
             input
@@ -5253,83 +5253,83 @@ function $3df0cd4d21e5cd73$export$d32b363d4983b578(input) {
     };
     return output;
 }
-function $3df0cd4d21e5cd73$export$fe113050ed871cdd(search) {
+function $2ba53c22c1f923f6$export$b5d04ce3dd7ae29e(search) {
     if (Array.isArray(search)) return [
         ...search
     ];
-    else if ($3df0cd4d21e5cd73$export$9dd7672f9e515de5(search)) return [
+    else if ($2ba53c22c1f923f6$export$ab134d298d957272(search)) return [
         search
     ];
     else return [
-        $3df0cd4d21e5cd73$export$d32b363d4983b578(search)
+        $2ba53c22c1f923f6$export$cf32a499fcfecacd(search)
     ];
 }
 
 
-const $66f57d958d42d9ea$var$expressionKeys = Object.keys({
+const $8152aaf818f7ca2c$var$expressionKeys = Object.keys({
     clause: null,
     name: null,
     operator: null,
     value: null
 });
-function $66f57d958d42d9ea$export$78b9bb7e1041123b(a, b) {
-    if (a && b) for(let k = 0; k < $66f57d958d42d9ea$var$expressionKeys.length; k++){
-        let key = $66f57d958d42d9ea$var$expressionKeys[k];
+function $8152aaf818f7ca2c$export$4787a3c825f2af47(a, b) {
+    if (a && b) for(let k = 0; k < $8152aaf818f7ca2c$var$expressionKeys.length; k++){
+        let key = $8152aaf818f7ca2c$var$expressionKeys[k];
         if (a[key] != b[key]) return false;
     }
     else return !a && !b;
     return true;
 }
-const $66f57d958d42d9ea$var$groupKeys = Object.keys({
+const $8152aaf818f7ca2c$var$groupKeys = Object.keys({
     clause: null
 });
-function $66f57d958d42d9ea$export$4220516453312347(a, b) {
-    for(let k = 0; k < $66f57d958d42d9ea$var$groupKeys.length; k++){
-        let key = $66f57d958d42d9ea$var$groupKeys[k];
+function $8152aaf818f7ca2c$export$bc9dff9b0aa0e5b(a, b) {
+    for(let k = 0; k < $8152aaf818f7ca2c$var$groupKeys.length; k++){
+        let key = $8152aaf818f7ca2c$var$groupKeys[k];
         if (a[key] != b[key]) return false;
     }
     if (!a.expressions && !b.expressions) return true;
     if (!a.expressions || !b.expressions) return false;
     if (a.expressions.length != b.expressions.length) return false;
     for(let i = 0; i < a.expressions.length; i++){
-        if (!$66f57d958d42d9ea$export$78b9bb7e1041123b(a.expressions[i], b.expressions[i])) return false;
+        if (!$8152aaf818f7ca2c$export$4787a3c825f2af47(a.expressions[i], b.expressions[i])) return false;
     }
     return true;
 }
-function $66f57d958d42d9ea$export$df417da3ae0614a2(a, b) {
+function $8152aaf818f7ca2c$export$398604a469f7de9a(a, b) {
     if (a == b) return true;
     if (!a || !b) return false;
     let arrs = [
         a,
         b
-    ].map($3df0cd4d21e5cd73$export$fe113050ed871cdd);
+    ].map($2ba53c22c1f923f6$export$b5d04ce3dd7ae29e);
     let [arrA, arrB] = arrs;
     if (arrA.length != arrB.length) return false;
     for(let i = 0; i < arrA.length; i++){
-        if (!$66f57d958d42d9ea$export$4220516453312347(arrA[i], arrB[i])) return false;
+        if (!$8152aaf818f7ca2c$export$bc9dff9b0aa0e5b(arrA[i], arrB[i])) return false;
     }
     return true;
 }
-function $66f57d958d42d9ea$export$9c9bf82e6c23f371(whole, part) {
+function $8152aaf818f7ca2c$export$68326237475e9a7d(whole, part) {
     if (!part) return true;
     let arrs = [
         whole,
         part
-    ].map($3df0cd4d21e5cd73$export$fe113050ed871cdd);
+    ].map($2ba53c22c1f923f6$export$b5d04ce3dd7ae29e);
     let [wholeArray, partArray] = arrs;
     if (partArray.length > wholeArray.length) return false;
     for(let i = 0; i < partArray.length; i++){
-        if (!$66f57d958d42d9ea$export$4220516453312347(wholeArray[i], partArray[i])) return false;
+        if (!$8152aaf818f7ca2c$export$bc9dff9b0aa0e5b(wholeArray[i], partArray[i])) return false;
     }
     return true;
 }
 
 
-var $745dd93524c614f6$exports = {};
+var $adf6771a93c98393$exports = {};
 
-$parcel$export($745dd93524c614f6$exports, "Exec", () => $745dd93524c614f6$export$17847fd07a76a1e0);
+$parcel$export($adf6771a93c98393$exports, "Exec", () => $adf6771a93c98393$export$bbfd672d43392844);
 
-function $745dd93524c614f6$var$valueToBoolean(value) {
+function $adf6771a93c98393$var$valueToBoolean(value) {
     if (typeof value === 'string') switch(value.toLowerCase()){
         case 'true':
             return true;
@@ -5338,7 +5338,7 @@ function $745dd93524c614f6$var$valueToBoolean(value) {
     }
     return !!value;
 }
-function $745dd93524c614f6$var$valueToString(value) {
+function $adf6771a93c98393$var$valueToString(value) {
     if (value == null) return '';
     switch(typeof value){
         case 'string':
@@ -5349,7 +5349,7 @@ function $745dd93524c614f6$var$valueToString(value) {
     }
     return '';
 }
-function $745dd93524c614f6$var$isStringOperation(ex) {
+function $adf6771a93c98393$var$isStringOperation(ex) {
     switch(ex.operator){
         case 'contains':
         case '!contains':
@@ -5359,21 +5359,21 @@ function $745dd93524c614f6$var$isStringOperation(ex) {
     }
     return false;
 }
-function $745dd93524c614f6$var$isnullorEmpty(value) {
+function $adf6771a93c98393$var$isnullorEmpty(value) {
     if (value == null) return true; //double equal sign to also catch undefined
     if (typeof value === 'string' && value.length === 0) return true;
     return false;
 }
-class $745dd93524c614f6$export$17847fd07a76a1e0 {
+class $adf6771a93c98393$export$bbfd672d43392844 {
     constructor(search, columns){
         this.columns = columns;
-        this.groups = $3df0cd4d21e5cd73$export$fe113050ed871cdd(search).map((g)=>{
+        this.groups = $2ba53c22c1f923f6$export$b5d04ce3dd7ae29e(search).map((g)=>{
             const expressions = g.expressions.filter(Boolean);
             expressions.forEach((ex)=>{
                 ex.column = this.getColumn(ex.name);
-                ex.valueBool = $745dd93524c614f6$var$valueToBoolean(ex.value);
-                ex.valueLow = $745dd93524c614f6$var$valueToString(ex.value).toLocaleLowerCase();
-                ex.stringOperation = $745dd93524c614f6$var$isStringOperation(ex);
+                ex.valueBool = $adf6771a93c98393$var$valueToBoolean(ex.value);
+                ex.valueLow = $adf6771a93c98393$var$valueToString(ex.value).toLocaleLowerCase();
+                ex.stringOperation = $adf6771a93c98393$var$isStringOperation(ex);
             });
             const group = Object.assign(Object.assign({
             }, g), {
@@ -5389,16 +5389,16 @@ class $745dd93524c614f6$export$17847fd07a76a1e0 {
     }
     runExpressionOnColumn(datum, ex) {
         const actualDataValue = datum[ex.name];
-        if (ex.operator === 'isnullorEmpty') return $745dd93524c614f6$var$isnullorEmpty(actualDataValue);
-        else if (ex.operator === '!isnullorEmpty') return !$745dd93524c614f6$var$isnullorEmpty(actualDataValue);
+        if (ex.operator === 'isnullorEmpty') return $adf6771a93c98393$var$isnullorEmpty(actualDataValue);
+        else if (ex.operator === '!isnullorEmpty') return !$adf6771a93c98393$var$isnullorEmpty(actualDataValue);
         let dataValue = actualDataValue;
         let expressionValue = ex.value;
         if (ex.column) {
             if (ex.column.type === 'string' || ex.stringOperation) {
-                dataValue = $745dd93524c614f6$var$valueToString(actualDataValue).toLocaleLowerCase();
+                dataValue = $adf6771a93c98393$var$valueToString(actualDataValue).toLocaleLowerCase();
                 expressionValue = ex.valueLow;
             } else if (ex.column.type === 'boolean') {
-                dataValue = $745dd93524c614f6$var$valueToBoolean(actualDataValue);
+                dataValue = $adf6771a93c98393$var$valueToBoolean(actualDataValue);
                 expressionValue = ex.valueBool;
             } else if (ex.column.quantitative) {
                 dataValue = +actualDataValue;
@@ -5428,13 +5428,13 @@ class $745dd93524c614f6$export$17847fd07a76a1e0 {
                 return dataValue.indexOf(expressionValue) !== 0;
         }
     }
-    runExpression(datum, ex) {
-        if (ex.name == null) {
+    runExpression(datum1, ex1) {
+        if (ex1.name == null) {
             //run on all columns
             const group = {
                 expressions: this.columns.map((column, i)=>{
                     const ex2 = Object.assign(Object.assign({
-                    }, ex), {
+                    }, ex1), {
                         column: column,
                         name: column.name
                     });
@@ -5442,34 +5442,34 @@ class $745dd93524c614f6$export$17847fd07a76a1e0 {
                     return ex2;
                 })
             };
-            return this.runGroup(datum, group);
-        } else return this.runExpressionOnColumn(datum, ex);
+            return this.runGroup(datum1, group);
+        } else return this.runExpressionOnColumn(datum1, ex1);
     }
-    runGroup(datum, group) {
-        let accumulator = this.runExpression(datum, group.expressions[0]);
+    runGroup(datum2, group) {
+        let accumulator = this.runExpression(datum2, group.expressions[0]);
         for(let i = 1; i < group.expressions.length; i++){
             let ex = group.expressions[i];
             switch(ex.clause){
                 case '&&':
-                    accumulator = accumulator && this.runExpression(datum, ex);
+                    accumulator = accumulator && this.runExpression(datum2, ex);
                     break;
                 case '||':
-                    accumulator = accumulator || this.runExpression(datum, ex);
+                    accumulator = accumulator || this.runExpression(datum2, ex);
                     break;
             }
         }
         return accumulator;
     }
-    run(datum) {
-        let accumulator = this.runGroup(datum, this.groups[0]);
+    run(datum3) {
+        let accumulator = this.runGroup(datum3, this.groups[0]);
         for(let i = 1; i < this.groups.length; i++){
             let group = this.groups[i];
             switch(group.clause){
                 case '&&':
-                    accumulator = accumulator && this.runGroup(datum, group);
+                    accumulator = accumulator && this.runGroup(datum3, group);
                     break;
                 case '||':
-                    accumulator = accumulator || this.runGroup(datum, group);
+                    accumulator = accumulator || this.runGroup(datum3, group);
                     break;
             }
         }
@@ -5479,19 +5479,19 @@ class $745dd93524c614f6$export$17847fd07a76a1e0 {
 
 
 
-var $00705dd910744dd8$exports = {};
+var $f52676db54676003$exports = {};
 
-$parcel$export($00705dd910744dd8$exports, "invert", () => $00705dd910744dd8$export$4469b01c89fa5613);
+$parcel$export($f52676db54676003$exports, "invert", () => $f52676db54676003$export$6897c284b6f9f4dc);
 
-function $00705dd910744dd8$var$invertSearchExpressionGroup(input) {
+function $f52676db54676003$var$invertSearchExpressionGroup(input) {
     //this only works if all expressions in this group have the same clause
     const output = {
-        expressions: input.expressions.map($00705dd910744dd8$var$invertSearchExpression)
+        expressions: input.expressions.map($f52676db54676003$var$invertSearchExpression)
     };
-    if (input.clause) output.clause = $00705dd910744dd8$var$invertedClauses[input.clause];
+    if (input.clause) output.clause = $f52676db54676003$var$invertedClauses[input.clause];
     return output;
 }
-const $00705dd910744dd8$var$invertedOperators = {
+const $f52676db54676003$var$invertedOperators = {
     '!=': '==',
     '==': '!=',
     '<': '>=',
@@ -5505,81 +5505,81 @@ const $00705dd910744dd8$var$invertedOperators = {
     '!starts': 'starts',
     'starts': '!starts'
 };
-const $00705dd910744dd8$var$invertedClauses = {
+const $f52676db54676003$var$invertedClauses = {
     '&&': '||',
     '||': '&&'
 };
-function $00705dd910744dd8$var$invertSearchExpression(input) {
-    const operator = $00705dd910744dd8$var$invertedOperators[input.operator];
+function $f52676db54676003$var$invertSearchExpression(input) {
+    const operator = $f52676db54676003$var$invertedOperators[input.operator];
     const output = Object.assign(Object.assign({
     }, input), {
         operator: operator
     });
-    if (input.clause) output.clause = $00705dd910744dd8$var$invertedClauses[input.clause];
+    if (input.clause) output.clause = $f52676db54676003$var$invertedClauses[input.clause];
     return output;
 }
-function $00705dd910744dd8$export$4469b01c89fa5613(search) {
-    if (Array.isArray(search)) return search.map($00705dd910744dd8$var$invertSearchExpressionGroup);
-    else if ($3df0cd4d21e5cd73$export$9dd7672f9e515de5(search)) return $00705dd910744dd8$var$invertSearchExpressionGroup(search);
-    else return $00705dd910744dd8$var$invertSearchExpression(search);
+function $f52676db54676003$export$6897c284b6f9f4dc(search) {
+    if (Array.isArray(search)) return search.map($f52676db54676003$var$invertSearchExpressionGroup);
+    else if ($2ba53c22c1f923f6$export$ab134d298d957272(search)) return $f52676db54676003$var$invertSearchExpressionGroup(search);
+    else return $f52676db54676003$var$invertSearchExpression(search);
 }
 
 
-var $d8f1ab965659a119$exports = {};
+var $4442703718296195$exports = {};
 
-$parcel$export($d8f1ab965659a119$exports, "narrow", () => $d8f1ab965659a119$export$aeb8b82cc90b8eb1);
+$parcel$export($4442703718296195$exports, "narrow", () => $4442703718296195$export$ec67f55c222e1546);
 
-function $d8f1ab965659a119$export$aeb8b82cc90b8eb1(a, b) {
+function $4442703718296195$export$ec67f55c222e1546(a, b) {
     if (!a) return b;
     let arrs = [
         a,
         b
-    ].map($3df0cd4d21e5cd73$export$fe113050ed871cdd);
+    ].map($2ba53c22c1f923f6$export$b5d04ce3dd7ae29e);
     let [arrA, arrB] = arrs;
     arrB[0].clause = '&&';
     return arrA.concat(arrB);
 }
 
 
-var $c12daddb8da8817c$exports = {};
+var $3f0798cdb96ce7dd$exports = {};
 
 
-$parcel$exportWildcard($311a0d2a8fe80ff7$exports, $66f57d958d42d9ea$exports);
-$parcel$exportWildcard($311a0d2a8fe80ff7$exports, $745dd93524c614f6$exports);
-$parcel$exportWildcard($311a0d2a8fe80ff7$exports, $3df0cd4d21e5cd73$exports);
-$parcel$exportWildcard($311a0d2a8fe80ff7$exports, $00705dd910744dd8$exports);
-$parcel$exportWildcard($311a0d2a8fe80ff7$exports, $d8f1ab965659a119$exports);
-$parcel$exportWildcard($311a0d2a8fe80ff7$exports, $c12daddb8da8817c$exports);
+$parcel$exportWildcard($009f7267ebde0f0b$exports, $8152aaf818f7ca2c$exports);
+$parcel$exportWildcard($009f7267ebde0f0b$exports, $adf6771a93c98393$exports);
+$parcel$exportWildcard($009f7267ebde0f0b$exports, $2ba53c22c1f923f6$exports);
+$parcel$exportWildcard($009f7267ebde0f0b$exports, $f52676db54676003$exports);
+$parcel$exportWildcard($009f7267ebde0f0b$exports, $4442703718296195$exports);
+$parcel$exportWildcard($009f7267ebde0f0b$exports, $3f0798cdb96ce7dd$exports);
 
 
 
-var $e41d8194c950c589$exports = {};
+var $e021c47cedb7e510$exports = {};
 
 
-var $406c1b16a5bd3c44$exports = {};
+var $e76dbaf7a95e1712$exports = {};
 
-$parcel$export($406c1b16a5bd3c44$exports, "isInternalFieldName", () => $406c1b16a5bd3c44$export$2634e87bf7671285);
-$parcel$export($406c1b16a5bd3c44$exports, "getColumnsFromData", () => $0ebaa52647c6073e$export$d25d2216dc7fff5a);
-$parcel$export($406c1b16a5bd3c44$exports, "getStats", () => $0ebaa52647c6073e$export$4c75e2c8266a336d);
-$parcel$export($406c1b16a5bd3c44$exports, "inferAll", () => $0ebaa52647c6073e$export$47bd397f706b4d82);
-$parcel$export($406c1b16a5bd3c44$exports, "getPresenterStyle", () => $4143f1453a8890e4$export$3e1dd6a74003f7a3);
+$parcel$export($e76dbaf7a95e1712$exports, "isInternalFieldName", () => $e76dbaf7a95e1712$export$81adea670bebefbe);
+$parcel$export($e76dbaf7a95e1712$exports, "getColumnsFromData", () => $1f41cd3bd9350891$export$3f19ad07848df794);
+$parcel$export($e76dbaf7a95e1712$exports, "getStats", () => $1f41cd3bd9350891$export$432f698644f45d1);
+$parcel$export($e76dbaf7a95e1712$exports, "inferAll", () => $1f41cd3bd9350891$export$e04a97cc71178399);
+$parcel$export($e76dbaf7a95e1712$exports, "getPresenterStyle", () => $39c8d1d23f762a7c$export$c4db461e5e345a8);
 
 
-var $7f572b57d5948475$exports = {};
+var $fe0c42722799ef8c$exports = {};
 
-$parcel$export($7f572b57d5948475$exports, "base", () => $2f0c752020c76b68$export$12896e353ebd9cc);
-$parcel$export($7f572b57d5948475$exports, "use", () => $2f0c752020c76b68$export$44747fb0056adba5);
-$parcel$export($7f572b57d5948475$exports, "Presenter", () => $f11b1222d18f5aff$export$67eca7ff2a7e9e8e);
-$parcel$export($7f572b57d5948475$exports, "ViewGl", () => $65b765713b03cc6f$export$5ae75a3802efaf);
-$parcel$export($7f572b57d5948475$exports, "constants", () => $d1b153eb04166abb$exports);
-$parcel$export($7f572b57d5948475$exports, "controls", () => $98be522bb53bca50$exports);
-$parcel$export($7f572b57d5948475$exports, "defaults", () => $1c19a15e6d55f62b$exports);
-$parcel$export($7f572b57d5948475$exports, "types", () => $939314e4753f8ed9$exports);
-$parcel$export($7f572b57d5948475$exports, "util", () => $00670849ca68e684$exports);
-var $d1b153eb04166abb$exports = {};
+$parcel$export($fe0c42722799ef8c$exports, "base", () => $aa3185d2619292b0$export$e2253033e6e1df16);
+$parcel$export($fe0c42722799ef8c$exports, "use", () => $aa3185d2619292b0$export$1f96ae73734a86cc);
+$parcel$export($fe0c42722799ef8c$exports, "Presenter", () => $586113946f2266a2$export$893c88c42e3630f9);
+$parcel$export($fe0c42722799ef8c$exports, "ViewGl", () => $fe59b525f658c489$export$6d8f9057dcd7f9e6);
+$parcel$export($fe0c42722799ef8c$exports, "constants", () => $95a4329e07073fb3$exports);
+$parcel$export($fe0c42722799ef8c$exports, "controls", () => $b461bb0d5e9060a5$exports);
+$parcel$export($fe0c42722799ef8c$exports, "defaults", () => $f92b17f7c58b7db2$exports);
+$parcel$export($fe0c42722799ef8c$exports, "types", () => $99eab59511ede234$exports);
+$parcel$export($fe0c42722799ef8c$exports, "util", () => $357cda13648d25b4$exports);
+var $95a4329e07073fb3$exports = {};
 
-$parcel$export($d1b153eb04166abb$exports, "layerNames", () => $d1b153eb04166abb$export$2ff906254960e78d);
-const $d1b153eb04166abb$export$2ff906254960e78d = {
+$parcel$export($95a4329e07073fb3$exports, "layerNames", () => $95a4329e07073fb3$export$5792b81513a80aca);
+const $95a4329e07073fb3$export$5792b81513a80aca = {
     cubes: 'LAYER_CUBES',
     lines: 'LAYER_LINES',
     text: 'LAYER_TEXT',
@@ -5588,97 +5588,97 @@ const $d1b153eb04166abb$export$2ff906254960e78d = {
 };
 
 
-var $98be522bb53bca50$exports = {};
+var $b461bb0d5e9060a5$exports = {};
 
-$parcel$export($98be522bb53bca50$exports, "Table", () => $ff59b0d7f89aca0c$export$b168bb048906b6d9);
-var $2f7102f270c1ff71$exports = {};
+$parcel$export($b461bb0d5e9060a5$exports, "Table", () => $7bbc4e477cf1dda8$export$54ec01a60f47d33d);
+var $8707503d7929e8d5$exports = {};
 'use strict';
-parcelRequire.register("eympE", function(module, exports) {
+parcelRequire.register("8BJEB", function(module, exports) {
 module.exports = JSON.parse("[\"a\",\"abbr\",\"address\",\"area\",\"article\",\"aside\",\"audio\",\"b\",\"base\",\"bdi\",\"bdo\",\"blockquote\",\"body\",\"br\",\"button\",\"canvas\",\"caption\",\"cite\",\"code\",\"col\",\"colgroup\",\"data\",\"datalist\",\"dd\",\"del\",\"details\",\"dfn\",\"dialog\",\"div\",\"dl\",\"dt\",\"em\",\"embed\",\"fieldset\",\"figcaption\",\"figure\",\"footer\",\"form\",\"h1\",\"h2\",\"h3\",\"h4\",\"h5\",\"h6\",\"head\",\"header\",\"hgroup\",\"hr\",\"html\",\"i\",\"iframe\",\"img\",\"input\",\"ins\",\"kbd\",\"keygen\",\"label\",\"legend\",\"li\",\"link\",\"main\",\"map\",\"mark\",\"math\",\"menu\",\"menuitem\",\"meta\",\"meter\",\"nav\",\"noscript\",\"object\",\"ol\",\"optgroup\",\"option\",\"output\",\"p\",\"param\",\"picture\",\"pre\",\"progress\",\"q\",\"rb\",\"rp\",\"rt\",\"rtc\",\"ruby\",\"s\",\"samp\",\"script\",\"section\",\"select\",\"slot\",\"small\",\"source\",\"span\",\"strong\",\"style\",\"sub\",\"summary\",\"sup\",\"svg\",\"table\",\"tbody\",\"td\",\"template\",\"textarea\",\"tfoot\",\"th\",\"thead\",\"time\",\"title\",\"tr\",\"track\",\"u\",\"ul\",\"var\",\"video\",\"wbr\"]");
 
 });
 
 
-$2f7102f270c1ff71$exports = (parcelRequire("eympE"));
+$8707503d7929e8d5$exports = (parcelRequire("8BJEB"));
 
 
-var $c64d8daaa8ccecd0$exports = {};
-parcelRequire.register("674G1", function(module, exports) {
+var $269ad49adb629060$exports = {};
+parcelRequire.register("fB7g4", function(module, exports) {
 module.exports = JSON.parse("[\"a\",\"altGlyph\",\"altGlyphDef\",\"altGlyphItem\",\"animate\",\"animateColor\",\"animateMotion\",\"animateTransform\",\"circle\",\"clipPath\",\"color-profile\",\"cursor\",\"defs\",\"desc\",\"ellipse\",\"feBlend\",\"feColorMatrix\",\"feComponentTransfer\",\"feComposite\",\"feConvolveMatrix\",\"feDiffuseLighting\",\"feDisplacementMap\",\"feDistantLight\",\"feFlood\",\"feFuncA\",\"feFuncB\",\"feFuncG\",\"feFuncR\",\"feGaussianBlur\",\"feImage\",\"feMerge\",\"feMergeNode\",\"feMorphology\",\"feOffset\",\"fePointLight\",\"feSpecularLighting\",\"feSpotLight\",\"feTile\",\"feTurbulence\",\"filter\",\"font\",\"font-face\",\"font-face-format\",\"font-face-name\",\"font-face-src\",\"font-face-uri\",\"foreignObject\",\"g\",\"glyph\",\"glyphRef\",\"hkern\",\"image\",\"line\",\"linearGradient\",\"marker\",\"mask\",\"metadata\",\"missing-glyph\",\"mpath\",\"path\",\"pattern\",\"polygon\",\"polyline\",\"radialGradient\",\"rect\",\"script\",\"set\",\"stop\",\"style\",\"svg\",\"switch\",\"symbol\",\"text\",\"textPath\",\"title\",\"tref\",\"tspan\",\"use\",\"view\",\"vkern\"]");
 
 });
 
 
-$c64d8daaa8ccecd0$exports = (parcelRequire("674G1"));
+$269ad49adb629060$exports = (parcelRequire("fB7g4"));
 
 
-const $0bf1192cadf6b31c$var$htmlTagArray = $2f7102f270c1ff71$exports.default || $2f7102f270c1ff71$exports;
-const $0bf1192cadf6b31c$var$svgTagArray = $c64d8daaa8ccecd0$exports.default || $c64d8daaa8ccecd0$exports;
+const $1ba1ba975a1b16e7$var$htmlTagArray = $8707503d7929e8d5$exports.default || $8707503d7929e8d5$exports;
+const $1ba1ba975a1b16e7$var$svgTagArray = $269ad49adb629060$exports.default || $269ad49adb629060$exports;
 /**
  * Decamelizes a string with/without a custom separator (hyphen by default).
  * from: https://ourcodeworld.com/articles/read/608/how-to-camelize-and-decamelize-strings-in-javascript
  *
  * @param str String in camelcase
  * @param separator Separator for the new decamelized string.
- */ function $0bf1192cadf6b31c$var$decamelize(str, separator = '-') {
+ */ function $1ba1ba975a1b16e7$var$decamelize(str, separator = '-') {
     return str.replace(/([a-z\d])([A-Z])/g, '$1' + separator + '$2').replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1' + separator + '$2').toLowerCase();
 }
-function $0bf1192cadf6b31c$export$2f8418d37d4320b9(tag, attrs, ...children) {
+function $1ba1ba975a1b16e7$export$c8a8987d4410bf2d(tag, attrs, ...children) {
     if (typeof tag === 'function') {
         const fn = tag;
         const props = attrs;
         props.children = children;
         return fn(props);
     } else {
-        const ns = $0bf1192cadf6b31c$var$tagNamespace(tag);
+        const ns = $1ba1ba975a1b16e7$var$tagNamespace(tag);
         const el = ns ? document.createElementNS(ns, tag) : document.createElement(tag);
         const map = attrs;
         let ref;
         for(let name in map)if (name && map.hasOwnProperty(name)) {
             let value = map[name];
-            if (name === 'className' && value !== void 0) $0bf1192cadf6b31c$var$setAttribute(el, ns, 'class', value.toString());
+            if (name === 'className' && value !== void 0) $1ba1ba975a1b16e7$var$setAttribute(el, ns, 'class', value.toString());
             else if (name === 'disabled' && !value) ;
             else if (value === null || value === undefined) continue;
-            else if (value === true) $0bf1192cadf6b31c$var$setAttribute(el, ns, name, name);
+            else if (value === true) $1ba1ba975a1b16e7$var$setAttribute(el, ns, name, name);
             else if (typeof value === 'function') {
                 if (name === 'ref') ref = value;
                 else el[name.toLowerCase()] = value;
-            } else if (typeof value === 'object') $0bf1192cadf6b31c$var$setAttribute(el, ns, name, $0bf1192cadf6b31c$var$flatten(value));
-            else $0bf1192cadf6b31c$var$setAttribute(el, ns, name, value.toString());
+            } else if (typeof value === 'object') $1ba1ba975a1b16e7$var$setAttribute(el, ns, name, $1ba1ba975a1b16e7$var$flatten(value));
+            else $1ba1ba975a1b16e7$var$setAttribute(el, ns, name, value.toString());
         }
-        if (children && children.length > 0) $0bf1192cadf6b31c$var$appendChildren(el, children);
+        if (children && children.length > 0) $1ba1ba975a1b16e7$var$appendChildren(el, children);
         if (ref) ref(el);
         return el;
     }
 }
-function $0bf1192cadf6b31c$var$setAttribute(el, ns, name, value) {
+function $1ba1ba975a1b16e7$var$setAttribute(el, ns, name, value) {
     if (ns) el.setAttributeNS(null, name, value);
     else el.setAttribute(name, value);
 }
-function $0bf1192cadf6b31c$var$flatten(o) {
+function $1ba1ba975a1b16e7$var$flatten(o) {
     const arr = [];
-    for(let prop in o)arr.push(`${$0bf1192cadf6b31c$var$decamelize(prop, '-')}:${o[prop]}`);
+    for(let prop in o)arr.push(`${$1ba1ba975a1b16e7$var$decamelize(prop, '-')}:${o[prop]}`);
     return arr.join(';');
 }
-function $0bf1192cadf6b31c$export$dc189866963b3431(parentElement, child) {
+function $1ba1ba975a1b16e7$export$59da04d16460addd(parentElement, child) {
     if (child === null || child === undefined || typeof child === "boolean") return;
-    else if (Array.isArray(child)) $0bf1192cadf6b31c$var$appendChildren(parentElement, child);
-    else if ($0bf1192cadf6b31c$var$isElement(child)) parentElement.appendChild(child);
+    else if (Array.isArray(child)) $1ba1ba975a1b16e7$var$appendChildren(parentElement, child);
+    else if ($1ba1ba975a1b16e7$var$isElement(child)) parentElement.appendChild(child);
     else parentElement.appendChild(document.createTextNode(child.toString()));
 }
-function $0bf1192cadf6b31c$var$appendChildren(parentElement, children) {
-    children.forEach((child)=>$0bf1192cadf6b31c$export$dc189866963b3431(parentElement, child)
+function $1ba1ba975a1b16e7$var$appendChildren(parentElement, children) {
+    children.forEach((child)=>$1ba1ba975a1b16e7$export$59da04d16460addd(parentElement, child)
     );
 }
-function $0bf1192cadf6b31c$var$isElement(el) {
+function $1ba1ba975a1b16e7$var$isElement(el) {
     //nodeType cannot be zero https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
     return !!el.nodeType;
 }
-function $0bf1192cadf6b31c$export$294609abb1df04a5(element, container) {
+function $1ba1ba975a1b16e7$export$186d02efde07ef98(element, container) {
     container.innerHTML = '';
-    if (element) $0bf1192cadf6b31c$export$dc189866963b3431(container, element);
+    if (element) $1ba1ba975a1b16e7$export$59da04d16460addd(container, element);
 }
-function $0bf1192cadf6b31c$export$8e7b2a330fc63a94(childPositions, container) {
+function $1ba1ba975a1b16e7$export$d0bfd83e3f838e5e(childPositions, container) {
     let element = container || document.body;
     let childPosition;
     while(element && childPositions.length){
@@ -5687,19 +5687,19 @@ function $0bf1192cadf6b31c$export$8e7b2a330fc63a94(childPositions, container) {
     }
     if (element) return element;
 }
-function $0bf1192cadf6b31c$export$e46a73d8be6af194(element, activeElementInfo) {
+function $1ba1ba975a1b16e7$export$8a664f09713ad850(element, activeElementInfo) {
     element.focus();
     element.scrollTop = activeElementInfo.scrollTop;
     const input = element;
     if (input.setSelectionRange && activeElementInfo && activeElementInfo.selectionStart != null && activeElementInfo.selectionEnd != null) input.setSelectionRange(activeElementInfo.selectionStart, activeElementInfo.selectionEnd, activeElementInfo.selectionDirection);
 }
-function $0bf1192cadf6b31c$export$86621cf2b9b16a69(activeElementInfo, container) {
+function $1ba1ba975a1b16e7$export$7d007ff58288f238(activeElementInfo, container) {
     if (activeElementInfo) {
-        const element = $0bf1192cadf6b31c$export$8e7b2a330fc63a94(activeElementInfo.childPositions, container);
-        if (element) $0bf1192cadf6b31c$export$e46a73d8be6af194(element, activeElementInfo);
+        const element = $1ba1ba975a1b16e7$export$d0bfd83e3f838e5e(activeElementInfo.childPositions, container);
+        if (element) $1ba1ba975a1b16e7$export$8a664f09713ad850(element, activeElementInfo);
     }
 }
-function $0bf1192cadf6b31c$export$1b18789f888bc242(container) {
+function $1ba1ba975a1b16e7$export$5ec2c407fb44f02(container) {
     let element = document.activeElement;
     const { scrollTop: scrollTop , selectionDirection: selectionDirection , selectionEnd: selectionEnd , selectionStart: selectionStart  } = element;
     const activeElementInfo = {
@@ -5710,37 +5710,37 @@ function $0bf1192cadf6b31c$export$1b18789f888bc242(container) {
         selectionStart: selectionStart
     };
     while(element && element !== document.body && element !== container){
-        activeElementInfo.childPositions.unshift($0bf1192cadf6b31c$var$getChildPosition(element));
+        activeElementInfo.childPositions.unshift($1ba1ba975a1b16e7$var$getChildPosition(element));
         element = element.parentElement;
     }
     if ((element === document.body || element === container) && activeElementInfo.childPositions.length) return activeElementInfo;
 }
-function $0bf1192cadf6b31c$var$getChildPosition(element) {
+function $1ba1ba975a1b16e7$var$getChildPosition(element) {
     let childPosition = 0;
     while(element = element.previousElementSibling)childPosition++;
     return childPosition;
 }
-function $0bf1192cadf6b31c$var$tagNamespace(tag) {
+function $1ba1ba975a1b16e7$var$tagNamespace(tag) {
     //issue: this won't disambiguate certain tags which exist in both svg and html: <a>, <title> ...
-    if (tag === 'svg' || $0bf1192cadf6b31c$var$svgTagArray.indexOf(tag) >= 0 && !($0bf1192cadf6b31c$var$htmlTagArray.indexOf(tag) >= 0)) return "http://www.w3.org/2000/svg";
+    if (tag === 'svg' || $1ba1ba975a1b16e7$var$svgTagArray.indexOf(tag) >= 0 && !($1ba1ba975a1b16e7$var$htmlTagArray.indexOf(tag) >= 0)) return "http://www.w3.org/2000/svg";
 }
 
 
-const $ff59b0d7f89aca0c$var$KeyCodes = {
+const $7bbc4e477cf1dda8$var$KeyCodes = {
     ENTER: 13
 };
-const $ff59b0d7f89aca0c$export$b168bb048906b6d9 = (props)=>{
-    return $0bf1192cadf6b31c$export$2f8418d37d4320b9("table", {
+const $7bbc4e477cf1dda8$export$54ec01a60f47d33d = (props)=>{
+    return $1ba1ba975a1b16e7$export$c8a8987d4410bf2d("table", {
         className: props.className
-    }, props.children, props.rows.map((row, i)=>$0bf1192cadf6b31c$export$2f8418d37d4320b9("tr", {
+    }, props.children, props.rows.map((row, i)=>$1ba1ba975a1b16e7$export$c8a8987d4410bf2d("tr", {
             className: props.rowClassName || '',
             onClick: (e)=>props.onRowClick && props.onRowClick(e, i)
             ,
             tabIndex: props.onRowClick ? 0 : -1,
             onKeyUp: (e)=>{
-                if (e.keyCode === $ff59b0d7f89aca0c$var$KeyCodes.ENTER && props.onRowClick) props.onRowClick(e, i);
+                if (e.keyCode === $7bbc4e477cf1dda8$var$KeyCodes.ENTER && props.onRowClick) props.onRowClick(e, i);
             }
-        }, row.cells.map((cell, i1)=>$0bf1192cadf6b31c$export$2f8418d37d4320b9("td", {
+        }, row.cells.map((cell, i)=>$1ba1ba975a1b16e7$export$c8a8987d4410bf2d("td", {
                 className: cell.className || '',
                 title: cell.title || ''
             }, cell.content)
@@ -5751,53 +5751,53 @@ const $ff59b0d7f89aca0c$export$b168bb048906b6d9 = (props)=>{
 
 
 
-var $939314e4753f8ed9$exports = {};
+var $99eab59511ede234$exports = {};
 
 
-var $00670849ca68e684$exports = {};
+var $357cda13648d25b4$exports = {};
 
-$parcel$export($00670849ca68e684$exports, "addDiv", () => $39024345cb86b5d3$export$5e33e52a795b786d);
-$parcel$export($00670849ca68e684$exports, "addEl", () => $39024345cb86b5d3$export$d9b9448966a4dbba);
-$parcel$export($00670849ca68e684$exports, "allTruthy", () => $b0c54bedf6c3c64b$export$6a130595254331b4);
-$parcel$export($00670849ca68e684$exports, "clone", () => $951ee4546fb8e7ae$export$d6a0542127b96c83);
-$parcel$export($00670849ca68e684$exports, "colorFromString", () => $7654630391f879a6$export$286939df77fc306a);
-$parcel$export($00670849ca68e684$exports, "colorIsEqual", () => $7654630391f879a6$export$7e1a2014f13a3acf);
-$parcel$export($00670849ca68e684$exports, "colorToString", () => $7654630391f879a6$export$303cc9cbd0520953);
-$parcel$export($00670849ca68e684$exports, "concat", () => $b0c54bedf6c3c64b$export$dde0d4a9e80fb26f);
-$parcel$export($00670849ca68e684$exports, "createElement", () => $0bf1192cadf6b31c$export$2f8418d37d4320b9);
-$parcel$export($00670849ca68e684$exports, "deepMerge", () => $951ee4546fb8e7ae$export$5cce22d6f6e7c745);
-$parcel$export($00670849ca68e684$exports, "desaturate", () => $7654630391f879a6$export$dfbfe7a0951e0f20);
-$parcel$export($00670849ca68e684$exports, "getActiveElementInfo", () => $0bf1192cadf6b31c$export$1b18789f888bc242);
-$parcel$export($00670849ca68e684$exports, "getCubeLayer", () => $22297b1890eb4722$export$64c4e13ca1f096d);
-$parcel$export($00670849ca68e684$exports, "getCubes", () => $22297b1890eb4722$export$f78fa54c8b685d69);
-$parcel$export($00670849ca68e684$exports, "mount", () => $0bf1192cadf6b31c$export$294609abb1df04a5);
-$parcel$export($00670849ca68e684$exports, "outerSize", () => $39024345cb86b5d3$export$c2ca7eb188f2974);
-$parcel$export($00670849ca68e684$exports, "push", () => $b0c54bedf6c3c64b$export$280e7edab0689157);
-$parcel$export($00670849ca68e684$exports, "setActiveElement", () => $0bf1192cadf6b31c$export$86621cf2b9b16a69);
-function $b0c54bedf6c3c64b$export$dde0d4a9e80fb26f(...args) {
+$parcel$export($357cda13648d25b4$exports, "addDiv", () => $225df2655ee8edcc$export$6758c6c7563dc60e);
+$parcel$export($357cda13648d25b4$exports, "addEl", () => $225df2655ee8edcc$export$3ca29736d56b698a);
+$parcel$export($357cda13648d25b4$exports, "allTruthy", () => $ffcacbd9f650c26c$export$84af6d08e329f176);
+$parcel$export($357cda13648d25b4$exports, "clone", () => $b225001aee342575$export$9cd59f9826255e47);
+$parcel$export($357cda13648d25b4$exports, "colorFromString", () => $50dbc0324e10cd45$export$78ed65bc9abd64b1);
+$parcel$export($357cda13648d25b4$exports, "colorIsEqual", () => $50dbc0324e10cd45$export$7da6ac10e55d4f2a);
+$parcel$export($357cda13648d25b4$exports, "colorToString", () => $50dbc0324e10cd45$export$f86d83653e5a505e);
+$parcel$export($357cda13648d25b4$exports, "concat", () => $ffcacbd9f650c26c$export$ee1b3e54f0441b22);
+$parcel$export($357cda13648d25b4$exports, "createElement", () => $1ba1ba975a1b16e7$export$c8a8987d4410bf2d);
+$parcel$export($357cda13648d25b4$exports, "deepMerge", () => $b225001aee342575$export$6969335ea1e4e77c);
+$parcel$export($357cda13648d25b4$exports, "desaturate", () => $50dbc0324e10cd45$export$fb75607d98509d9);
+$parcel$export($357cda13648d25b4$exports, "getActiveElementInfo", () => $1ba1ba975a1b16e7$export$5ec2c407fb44f02);
+$parcel$export($357cda13648d25b4$exports, "getCubeLayer", () => $96e705a481cefebf$export$ccecd364047ec381);
+$parcel$export($357cda13648d25b4$exports, "getCubes", () => $96e705a481cefebf$export$fa1ee03f26227b34);
+$parcel$export($357cda13648d25b4$exports, "mount", () => $1ba1ba975a1b16e7$export$186d02efde07ef98);
+$parcel$export($357cda13648d25b4$exports, "outerSize", () => $225df2655ee8edcc$export$7642631117982e98);
+$parcel$export($357cda13648d25b4$exports, "push", () => $ffcacbd9f650c26c$export$4cbf152802aa238);
+$parcel$export($357cda13648d25b4$exports, "setActiveElement", () => $1ba1ba975a1b16e7$export$7d007ff58288f238);
+function $ffcacbd9f650c26c$export$ee1b3e54f0441b22(...args) {
     return args.reduce((p, c)=>c ? p.concat(c) : p
     , []);
 }
-function $b0c54bedf6c3c64b$export$6a130595254331b4(...args) {
+function $ffcacbd9f650c26c$export$84af6d08e329f176(...args) {
     return args.reduce((p, c)=>c ? p.concat(c) : p
     , []).filter(Boolean);
 }
-function $b0c54bedf6c3c64b$export$280e7edab0689157(arr, items) {
+function $ffcacbd9f650c26c$export$4cbf152802aa238(arr, items) {
     arr.push.apply(arr, items);
 }
 
 
-function $39024345cb86b5d3$export$d9b9448966a4dbba(tagName, parentElement) {
+function $225df2655ee8edcc$export$3ca29736d56b698a(tagName, parentElement) {
     const el = document.createElement(tagName);
     parentElement.appendChild(el);
     return el;
 }
-function $39024345cb86b5d3$export$5e33e52a795b786d(parentElement, className) {
-    const div = $39024345cb86b5d3$export$d9b9448966a4dbba('div', parentElement);
+function $225df2655ee8edcc$export$6758c6c7563dc60e(parentElement, className) {
+    const div = $225df2655ee8edcc$export$3ca29736d56b698a('div', parentElement);
     if (className) div.className = className;
     return div;
 }
-function $39024345cb86b5d3$export$c2ca7eb188f2974(el) {
+function $225df2655ee8edcc$export$7642631117982e98(el) {
     const cs = getComputedStyle(el);
     const height = parseFloat(cs.marginTop) + parseFloat(cs.paddingTop) + parseFloat(cs.borderTopWidth) + el.offsetHeight + parseFloat(cs.borderBottomWidth) + parseFloat(cs.paddingBottom) + parseFloat(cs.marginBottom);
     const width = parseFloat(cs.marginLeft) + parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth) + el.offsetWidth + parseFloat(cs.borderRightWidth) + parseFloat(cs.paddingRight) + parseFloat(cs.marginRight);
@@ -5808,135 +5808,135 @@ function $39024345cb86b5d3$export$c2ca7eb188f2974(el) {
 }
 
 
-var $a46edc27fdb359bb$exports = {};
+var $780157c56cebcdb6$exports = {};
 
-$parcel$defineInteropFlag($a46edc27fdb359bb$exports);
+$parcel$defineInteropFlag($780157c56cebcdb6$exports);
 
-$parcel$export($a46edc27fdb359bb$exports, "default", () => $a46edc27fdb359bb$export$9099ad97b570f7c);
-var $a46edc27fdb359bb$var$isMergeableObject = function isMergeableObject(value) {
-    return $a46edc27fdb359bb$var$isNonNullObject(value) && !$a46edc27fdb359bb$var$isSpecial(value);
+$parcel$export($780157c56cebcdb6$exports, "default", () => $780157c56cebcdb6$export$2e2bcd8739ae039);
+var $780157c56cebcdb6$var$isMergeableObject = function isMergeableObject(value) {
+    return $780157c56cebcdb6$var$isNonNullObject(value) && !$780157c56cebcdb6$var$isSpecial(value);
 };
-function $a46edc27fdb359bb$var$isNonNullObject(value) {
+function $780157c56cebcdb6$var$isNonNullObject(value) {
     return !!value && typeof value === 'object';
 }
-function $a46edc27fdb359bb$var$isSpecial(value) {
+function $780157c56cebcdb6$var$isSpecial(value) {
     var stringValue = Object.prototype.toString.call(value);
-    return stringValue === '[object RegExp]' || stringValue === '[object Date]' || $a46edc27fdb359bb$var$isReactElement(value);
+    return stringValue === '[object RegExp]' || stringValue === '[object Date]' || $780157c56cebcdb6$var$isReactElement(value);
 }
 // see https://github.com/facebook/react/blob/b5ac963fb791d1298e7f396236383bc955f916c1/src/isomorphic/classic/element/ReactElement.js#L21-L25
-var $a46edc27fdb359bb$var$canUseSymbol = typeof Symbol === 'function' && Symbol.for;
-var $a46edc27fdb359bb$var$REACT_ELEMENT_TYPE = $a46edc27fdb359bb$var$canUseSymbol ? Symbol.for('react.element') : 60103;
-function $a46edc27fdb359bb$var$isReactElement(value) {
-    return value.$$typeof === $a46edc27fdb359bb$var$REACT_ELEMENT_TYPE;
+var $780157c56cebcdb6$var$canUseSymbol = typeof Symbol === 'function' && Symbol.for;
+var $780157c56cebcdb6$var$REACT_ELEMENT_TYPE = $780157c56cebcdb6$var$canUseSymbol ? Symbol.for('react.element') : 60103;
+function $780157c56cebcdb6$var$isReactElement(value) {
+    return value.$$typeof === $780157c56cebcdb6$var$REACT_ELEMENT_TYPE;
 }
-function $a46edc27fdb359bb$var$emptyTarget(val) {
+function $780157c56cebcdb6$var$emptyTarget(val) {
     return Array.isArray(val) ? [] : {
     };
 }
-function $a46edc27fdb359bb$var$cloneUnlessOtherwiseSpecified(value, options) {
-    return options.clone !== false && options.isMergeableObject(value) ? $a46edc27fdb359bb$var$deepmerge($a46edc27fdb359bb$var$emptyTarget(value), value, options) : value;
+function $780157c56cebcdb6$var$cloneUnlessOtherwiseSpecified(value, options) {
+    return options.clone !== false && options.isMergeableObject(value) ? $780157c56cebcdb6$var$deepmerge($780157c56cebcdb6$var$emptyTarget(value), value, options) : value;
 }
-function $a46edc27fdb359bb$var$defaultArrayMerge(target, source, options) {
+function $780157c56cebcdb6$var$defaultArrayMerge(target, source, options) {
     return target.concat(source).map(function(element) {
-        return $a46edc27fdb359bb$var$cloneUnlessOtherwiseSpecified(element, options);
+        return $780157c56cebcdb6$var$cloneUnlessOtherwiseSpecified(element, options);
     });
 }
-function $a46edc27fdb359bb$var$mergeObject(target, source, options) {
+function $780157c56cebcdb6$var$mergeObject(target, source, options) {
     var destination = {
     };
     if (options.isMergeableObject(target)) Object.keys(target).forEach(function(key) {
-        destination[key] = $a46edc27fdb359bb$var$cloneUnlessOtherwiseSpecified(target[key], options);
+        destination[key] = $780157c56cebcdb6$var$cloneUnlessOtherwiseSpecified(target[key], options);
     });
     Object.keys(source).forEach(function(key) {
-        if (!options.isMergeableObject(source[key]) || !target[key]) destination[key] = $a46edc27fdb359bb$var$cloneUnlessOtherwiseSpecified(source[key], options);
-        else destination[key] = $a46edc27fdb359bb$var$deepmerge(target[key], source[key], options);
+        if (!options.isMergeableObject(source[key]) || !target[key]) destination[key] = $780157c56cebcdb6$var$cloneUnlessOtherwiseSpecified(source[key], options);
+        else destination[key] = $780157c56cebcdb6$var$deepmerge(target[key], source[key], options);
     });
     return destination;
 }
-function $a46edc27fdb359bb$var$deepmerge(target, source, options) {
+function $780157c56cebcdb6$var$deepmerge(target, source, options) {
     options = options || {
     };
-    options.arrayMerge = options.arrayMerge || $a46edc27fdb359bb$var$defaultArrayMerge;
-    options.isMergeableObject = options.isMergeableObject || $a46edc27fdb359bb$var$isMergeableObject;
+    options.arrayMerge = options.arrayMerge || $780157c56cebcdb6$var$defaultArrayMerge;
+    options.isMergeableObject = options.isMergeableObject || $780157c56cebcdb6$var$isMergeableObject;
     var sourceIsArray = Array.isArray(source);
     var targetIsArray = Array.isArray(target);
     var sourceAndTargetTypesMatch = sourceIsArray === targetIsArray;
-    if (!sourceAndTargetTypesMatch) return $a46edc27fdb359bb$var$cloneUnlessOtherwiseSpecified(source, options);
+    if (!sourceAndTargetTypesMatch) return $780157c56cebcdb6$var$cloneUnlessOtherwiseSpecified(source, options);
     else if (sourceIsArray) return options.arrayMerge(target, source, options);
-    else return $a46edc27fdb359bb$var$mergeObject(target, source, options);
+    else return $780157c56cebcdb6$var$mergeObject(target, source, options);
 }
-$a46edc27fdb359bb$var$deepmerge.all = function deepmergeAll(array, options) {
+$780157c56cebcdb6$var$deepmerge.all = function deepmergeAll(array, options) {
     if (!Array.isArray(array)) throw new Error('first argument should be an array');
     return array.reduce(function(prev, next) {
-        return $a46edc27fdb359bb$var$deepmerge(prev, next, options);
+        return $780157c56cebcdb6$var$deepmerge(prev, next, options);
     }, {
     });
 };
-var $a46edc27fdb359bb$var$deepmerge_1 = $a46edc27fdb359bb$var$deepmerge;
-var $a46edc27fdb359bb$export$9099ad97b570f7c = $a46edc27fdb359bb$var$deepmerge_1;
+var $780157c56cebcdb6$var$deepmerge_1 = $780157c56cebcdb6$var$deepmerge;
+var $780157c56cebcdb6$export$2e2bcd8739ae039 = $780157c56cebcdb6$var$deepmerge_1;
 
 
-const $951ee4546fb8e7ae$var$deepmerge = $a46edc27fdb359bb$exports.default || $a46edc27fdb359bb$exports;
-function $951ee4546fb8e7ae$export$d6a0542127b96c83(objectToClone) {
+const $b225001aee342575$var$deepmerge = $780157c56cebcdb6$exports.default || $780157c56cebcdb6$exports;
+function $b225001aee342575$export$9cd59f9826255e47(objectToClone) {
     if (!objectToClone) return objectToClone;
-    return $951ee4546fb8e7ae$var$deepmerge.all([
+    return $b225001aee342575$var$deepmerge.all([
         objectToClone
     ]);
 }
-const $951ee4546fb8e7ae$var$dontMerge = (destination, source)=>source
+const $b225001aee342575$var$dontMerge = (destination, source)=>source
 ;
-function $951ee4546fb8e7ae$export$5cce22d6f6e7c745(...objectsToMerge) {
+function $b225001aee342575$export$6969335ea1e4e77c(...objectsToMerge) {
     const objects = objectsToMerge.filter(Boolean);
-    return $951ee4546fb8e7ae$var$deepmerge.all(objects, {
-        arrayMerge: $951ee4546fb8e7ae$var$dontMerge
+    return $b225001aee342575$var$deepmerge.all(objects, {
+        arrayMerge: $b225001aee342575$var$dontMerge
     });
 }
 
 
-function $dbe51e4b908eb1a9$export$9099ad97b570f7c(constructor, factory, prototype) {
+function $895fd4e3ce3f8902$export$2e2bcd8739ae039(constructor, factory, prototype) {
     constructor.prototype = factory.prototype = prototype;
     prototype.constructor = constructor;
 }
-function $dbe51e4b908eb1a9$export$46e35401bc090c62(parent, definition) {
+function $895fd4e3ce3f8902$export$8b58be045bf06082(parent, definition) {
     var prototype = Object.create(parent.prototype);
     for(var key in definition)prototype[key] = definition[key];
     return prototype;
 }
 
 
-function $01e74fbc311d3ed5$export$e4830c8e55b4f80d() {
+function $67a09192127fe1ec$export$892596cec99bc70e() {
 }
-var $01e74fbc311d3ed5$export$a49b5ca9db8c9416 = 0.7;
-var $01e74fbc311d3ed5$export$acf32b1b82ce4fe7 = 1 / $01e74fbc311d3ed5$export$a49b5ca9db8c9416;
-var $01e74fbc311d3ed5$var$reI = "\\s*([+-]?\\d+)\\s*", $01e74fbc311d3ed5$var$reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*", $01e74fbc311d3ed5$var$reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*", $01e74fbc311d3ed5$var$reHex = /^#([0-9a-f]{3,8})$/, $01e74fbc311d3ed5$var$reRgbInteger = new RegExp("^rgb\\(" + [
-    $01e74fbc311d3ed5$var$reI,
-    $01e74fbc311d3ed5$var$reI,
-    $01e74fbc311d3ed5$var$reI
-] + "\\)$"), $01e74fbc311d3ed5$var$reRgbPercent = new RegExp("^rgb\\(" + [
-    $01e74fbc311d3ed5$var$reP,
-    $01e74fbc311d3ed5$var$reP,
-    $01e74fbc311d3ed5$var$reP
-] + "\\)$"), $01e74fbc311d3ed5$var$reRgbaInteger = new RegExp("^rgba\\(" + [
-    $01e74fbc311d3ed5$var$reI,
-    $01e74fbc311d3ed5$var$reI,
-    $01e74fbc311d3ed5$var$reI,
-    $01e74fbc311d3ed5$var$reN
-] + "\\)$"), $01e74fbc311d3ed5$var$reRgbaPercent = new RegExp("^rgba\\(" + [
-    $01e74fbc311d3ed5$var$reP,
-    $01e74fbc311d3ed5$var$reP,
-    $01e74fbc311d3ed5$var$reP,
-    $01e74fbc311d3ed5$var$reN
-] + "\\)$"), $01e74fbc311d3ed5$var$reHslPercent = new RegExp("^hsl\\(" + [
-    $01e74fbc311d3ed5$var$reN,
-    $01e74fbc311d3ed5$var$reP,
-    $01e74fbc311d3ed5$var$reP
-] + "\\)$"), $01e74fbc311d3ed5$var$reHslaPercent = new RegExp("^hsla\\(" + [
-    $01e74fbc311d3ed5$var$reN,
-    $01e74fbc311d3ed5$var$reP,
-    $01e74fbc311d3ed5$var$reP,
-    $01e74fbc311d3ed5$var$reN
+var $67a09192127fe1ec$export$4adafc6ed0600c10 = 0.7;
+var $67a09192127fe1ec$export$9eace2cc0d12c98d = 1 / $67a09192127fe1ec$export$4adafc6ed0600c10;
+var $67a09192127fe1ec$var$reI = "\\s*([+-]?\\d+)\\s*", $67a09192127fe1ec$var$reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*", $67a09192127fe1ec$var$reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*", $67a09192127fe1ec$var$reHex = /^#([0-9a-f]{3,8})$/, $67a09192127fe1ec$var$reRgbInteger = new RegExp("^rgb\\(" + [
+    $67a09192127fe1ec$var$reI,
+    $67a09192127fe1ec$var$reI,
+    $67a09192127fe1ec$var$reI
+] + "\\)$"), $67a09192127fe1ec$var$reRgbPercent = new RegExp("^rgb\\(" + [
+    $67a09192127fe1ec$var$reP,
+    $67a09192127fe1ec$var$reP,
+    $67a09192127fe1ec$var$reP
+] + "\\)$"), $67a09192127fe1ec$var$reRgbaInteger = new RegExp("^rgba\\(" + [
+    $67a09192127fe1ec$var$reI,
+    $67a09192127fe1ec$var$reI,
+    $67a09192127fe1ec$var$reI,
+    $67a09192127fe1ec$var$reN
+] + "\\)$"), $67a09192127fe1ec$var$reRgbaPercent = new RegExp("^rgba\\(" + [
+    $67a09192127fe1ec$var$reP,
+    $67a09192127fe1ec$var$reP,
+    $67a09192127fe1ec$var$reP,
+    $67a09192127fe1ec$var$reN
+] + "\\)$"), $67a09192127fe1ec$var$reHslPercent = new RegExp("^hsl\\(" + [
+    $67a09192127fe1ec$var$reN,
+    $67a09192127fe1ec$var$reP,
+    $67a09192127fe1ec$var$reP
+] + "\\)$"), $67a09192127fe1ec$var$reHslaPercent = new RegExp("^hsla\\(" + [
+    $67a09192127fe1ec$var$reN,
+    $67a09192127fe1ec$var$reP,
+    $67a09192127fe1ec$var$reP,
+    $67a09192127fe1ec$var$reN
 ] + "\\)$");
-var $01e74fbc311d3ed5$var$named = {
+var $67a09192127fe1ec$var$named = {
     aliceblue: 15792383,
     antiquewhite: 16444375,
     aqua: 65535,
@@ -6086,74 +6086,74 @@ var $01e74fbc311d3ed5$var$named = {
     yellow: 16776960,
     yellowgreen: 10145074
 };
-$dbe51e4b908eb1a9$export$9099ad97b570f7c($01e74fbc311d3ed5$export$e4830c8e55b4f80d, $01e74fbc311d3ed5$export$9099ad97b570f7c, {
+$895fd4e3ce3f8902$export$2e2bcd8739ae039($67a09192127fe1ec$export$892596cec99bc70e, $67a09192127fe1ec$export$2e2bcd8739ae039, {
     copy: function(channels) {
         return Object.assign(new this.constructor, this, channels);
     },
     displayable: function() {
         return this.rgb().displayable();
     },
-    hex: $01e74fbc311d3ed5$var$color_formatHex,
-    formatHex: $01e74fbc311d3ed5$var$color_formatHex,
-    formatHsl: $01e74fbc311d3ed5$var$color_formatHsl,
-    formatRgb: $01e74fbc311d3ed5$var$color_formatRgb,
-    toString: $01e74fbc311d3ed5$var$color_formatRgb
+    hex: $67a09192127fe1ec$var$color_formatHex,
+    formatHex: $67a09192127fe1ec$var$color_formatHex,
+    formatHsl: $67a09192127fe1ec$var$color_formatHsl,
+    formatRgb: $67a09192127fe1ec$var$color_formatRgb,
+    toString: $67a09192127fe1ec$var$color_formatRgb
 });
-function $01e74fbc311d3ed5$var$color_formatHex() {
+function $67a09192127fe1ec$var$color_formatHex() {
     return this.rgb().formatHex();
 }
-function $01e74fbc311d3ed5$var$color_formatHsl() {
-    return $01e74fbc311d3ed5$export$8269f892f57a576a(this).formatHsl();
+function $67a09192127fe1ec$var$color_formatHsl() {
+    return $67a09192127fe1ec$export$8133dc3fa904d6d1(this).formatHsl();
 }
-function $01e74fbc311d3ed5$var$color_formatRgb() {
+function $67a09192127fe1ec$var$color_formatRgb() {
     return this.rgb().formatRgb();
 }
-function $01e74fbc311d3ed5$export$9099ad97b570f7c(format) {
+function $67a09192127fe1ec$export$2e2bcd8739ae039(format) {
     var m, l;
     format = (format + "").trim().toLowerCase();
-    return (m = $01e74fbc311d3ed5$var$reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? $01e74fbc311d3ed5$var$rgbn(m) // #ff0000
-     : l === 3 ? new $01e74fbc311d3ed5$export$224ee6128901ddf4(m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, (m & 15) << 4 | m & 15, 1) // #f00
-     : l === 8 ? $01e74fbc311d3ed5$var$rgba(m >> 24 & 255, m >> 16 & 255, m >> 8 & 255, (m & 255) / 255) // #ff000000
-     : l === 4 ? $01e74fbc311d3ed5$var$rgba(m >> 12 & 15 | m >> 8 & 240, m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, ((m & 15) << 4 | m & 15) / 255) // #f000
-     : null) : (m = $01e74fbc311d3ed5$var$reRgbInteger.exec(format)) ? new $01e74fbc311d3ed5$export$224ee6128901ddf4(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
-     : (m = $01e74fbc311d3ed5$var$reRgbPercent.exec(format)) ? new $01e74fbc311d3ed5$export$224ee6128901ddf4(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
-     : (m = $01e74fbc311d3ed5$var$reRgbaInteger.exec(format)) ? $01e74fbc311d3ed5$var$rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
-     : (m = $01e74fbc311d3ed5$var$reRgbaPercent.exec(format)) ? $01e74fbc311d3ed5$var$rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-     : (m = $01e74fbc311d3ed5$var$reHslPercent.exec(format)) ? $01e74fbc311d3ed5$var$hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-     : (m = $01e74fbc311d3ed5$var$reHslaPercent.exec(format)) ? $01e74fbc311d3ed5$var$hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-     : $01e74fbc311d3ed5$var$named.hasOwnProperty(format) ? $01e74fbc311d3ed5$var$rgbn($01e74fbc311d3ed5$var$named[format]) // eslint-disable-line no-prototype-builtins
-     : format === "transparent" ? new $01e74fbc311d3ed5$export$224ee6128901ddf4(NaN, NaN, NaN, 0) : null;
+    return (m = $67a09192127fe1ec$var$reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? $67a09192127fe1ec$var$rgbn(m) // #ff0000
+     : l === 3 ? new $67a09192127fe1ec$export$5e05a94393ac29e3(m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, (m & 15) << 4 | m & 15, 1) // #f00
+     : l === 8 ? $67a09192127fe1ec$var$rgba(m >> 24 & 255, m >> 16 & 255, m >> 8 & 255, (m & 255) / 255) // #ff000000
+     : l === 4 ? $67a09192127fe1ec$var$rgba(m >> 12 & 15 | m >> 8 & 240, m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, ((m & 15) << 4 | m & 15) / 255) // #f000
+     : null) : (m = $67a09192127fe1ec$var$reRgbInteger.exec(format)) ? new $67a09192127fe1ec$export$5e05a94393ac29e3(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+     : (m = $67a09192127fe1ec$var$reRgbPercent.exec(format)) ? new $67a09192127fe1ec$export$5e05a94393ac29e3(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+     : (m = $67a09192127fe1ec$var$reRgbaInteger.exec(format)) ? $67a09192127fe1ec$var$rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+     : (m = $67a09192127fe1ec$var$reRgbaPercent.exec(format)) ? $67a09192127fe1ec$var$rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+     : (m = $67a09192127fe1ec$var$reHslPercent.exec(format)) ? $67a09192127fe1ec$var$hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+     : (m = $67a09192127fe1ec$var$reHslaPercent.exec(format)) ? $67a09192127fe1ec$var$hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+     : $67a09192127fe1ec$var$named.hasOwnProperty(format) ? $67a09192127fe1ec$var$rgbn($67a09192127fe1ec$var$named[format]) // eslint-disable-line no-prototype-builtins
+     : format === "transparent" ? new $67a09192127fe1ec$export$5e05a94393ac29e3(NaN, NaN, NaN, 0) : null;
 }
-function $01e74fbc311d3ed5$var$rgbn(n) {
-    return new $01e74fbc311d3ed5$export$224ee6128901ddf4(n >> 16 & 255, n >> 8 & 255, n & 255, 1);
+function $67a09192127fe1ec$var$rgbn(n) {
+    return new $67a09192127fe1ec$export$5e05a94393ac29e3(n >> 16 & 255, n >> 8 & 255, n & 255, 1);
 }
-function $01e74fbc311d3ed5$var$rgba(r, g, b, a) {
+function $67a09192127fe1ec$var$rgba(r, g, b, a) {
     if (a <= 0) r = g = b = NaN;
-    return new $01e74fbc311d3ed5$export$224ee6128901ddf4(r, g, b, a);
+    return new $67a09192127fe1ec$export$5e05a94393ac29e3(r, g, b, a);
 }
-function $01e74fbc311d3ed5$export$7138c6bf7ee5608c(o) {
-    if (!(o instanceof $01e74fbc311d3ed5$export$e4830c8e55b4f80d)) o = $01e74fbc311d3ed5$export$9099ad97b570f7c(o);
-    if (!o) return new $01e74fbc311d3ed5$export$224ee6128901ddf4;
+function $67a09192127fe1ec$export$42da0a331c2802f5(o) {
+    if (!(o instanceof $67a09192127fe1ec$export$892596cec99bc70e)) o = $67a09192127fe1ec$export$2e2bcd8739ae039(o);
+    if (!o) return new $67a09192127fe1ec$export$5e05a94393ac29e3;
     o = o.rgb();
-    return new $01e74fbc311d3ed5$export$224ee6128901ddf4(o.r, o.g, o.b, o.opacity);
+    return new $67a09192127fe1ec$export$5e05a94393ac29e3(o.r, o.g, o.b, o.opacity);
 }
-function $01e74fbc311d3ed5$export$1b3a2af3f3cd47f6(r, g, b, opacity) {
-    return arguments.length === 1 ? $01e74fbc311d3ed5$export$7138c6bf7ee5608c(r) : new $01e74fbc311d3ed5$export$224ee6128901ddf4(r, g, b, opacity == null ? 1 : opacity);
+function $67a09192127fe1ec$export$8972dc0e6ad9238f(r, g, b, opacity) {
+    return arguments.length === 1 ? $67a09192127fe1ec$export$42da0a331c2802f5(r) : new $67a09192127fe1ec$export$5e05a94393ac29e3(r, g, b, opacity == null ? 1 : opacity);
 }
-function $01e74fbc311d3ed5$export$224ee6128901ddf4(r, g, b, opacity) {
+function $67a09192127fe1ec$export$5e05a94393ac29e3(r, g, b, opacity) {
     this.r = +r;
     this.g = +g;
     this.b = +b;
     this.opacity = +opacity;
 }
-$dbe51e4b908eb1a9$export$9099ad97b570f7c($01e74fbc311d3ed5$export$224ee6128901ddf4, $01e74fbc311d3ed5$export$1b3a2af3f3cd47f6, $dbe51e4b908eb1a9$export$46e35401bc090c62($01e74fbc311d3ed5$export$e4830c8e55b4f80d, {
+$895fd4e3ce3f8902$export$2e2bcd8739ae039($67a09192127fe1ec$export$5e05a94393ac29e3, $67a09192127fe1ec$export$8972dc0e6ad9238f, $895fd4e3ce3f8902$export$8b58be045bf06082($67a09192127fe1ec$export$892596cec99bc70e, {
     brighter: function(k) {
-        k = k == null ? $01e74fbc311d3ed5$export$acf32b1b82ce4fe7 : Math.pow($01e74fbc311d3ed5$export$acf32b1b82ce4fe7, k);
-        return new $01e74fbc311d3ed5$export$224ee6128901ddf4(this.r * k, this.g * k, this.b * k, this.opacity);
+        k = k == null ? $67a09192127fe1ec$export$9eace2cc0d12c98d : Math.pow($67a09192127fe1ec$export$9eace2cc0d12c98d, k);
+        return new $67a09192127fe1ec$export$5e05a94393ac29e3(this.r * k, this.g * k, this.b * k, this.opacity);
     },
     darker: function(k) {
-        k = k == null ? $01e74fbc311d3ed5$export$a49b5ca9db8c9416 : Math.pow($01e74fbc311d3ed5$export$a49b5ca9db8c9416, k);
-        return new $01e74fbc311d3ed5$export$224ee6128901ddf4(this.r * k, this.g * k, this.b * k, this.opacity);
+        k = k == null ? $67a09192127fe1ec$export$4adafc6ed0600c10 : Math.pow($67a09192127fe1ec$export$4adafc6ed0600c10, k);
+        return new $67a09192127fe1ec$export$5e05a94393ac29e3(this.r * k, this.g * k, this.b * k, this.opacity);
     },
     rgb: function() {
         return this;
@@ -6161,34 +6161,34 @@ $dbe51e4b908eb1a9$export$9099ad97b570f7c($01e74fbc311d3ed5$export$224ee6128901dd
     displayable: function() {
         return -0.5 <= this.r && this.r < 255.5 && -0.5 <= this.g && this.g < 255.5 && -0.5 <= this.b && this.b < 255.5 && 0 <= this.opacity && this.opacity <= 1;
     },
-    hex: $01e74fbc311d3ed5$var$rgb_formatHex,
-    formatHex: $01e74fbc311d3ed5$var$rgb_formatHex,
-    formatRgb: $01e74fbc311d3ed5$var$rgb_formatRgb,
-    toString: $01e74fbc311d3ed5$var$rgb_formatRgb
+    hex: $67a09192127fe1ec$var$rgb_formatHex,
+    formatHex: $67a09192127fe1ec$var$rgb_formatHex,
+    formatRgb: $67a09192127fe1ec$var$rgb_formatRgb,
+    toString: $67a09192127fe1ec$var$rgb_formatRgb
 }));
-function $01e74fbc311d3ed5$var$rgb_formatHex() {
-    return "#" + $01e74fbc311d3ed5$var$hex(this.r) + $01e74fbc311d3ed5$var$hex(this.g) + $01e74fbc311d3ed5$var$hex(this.b);
+function $67a09192127fe1ec$var$rgb_formatHex() {
+    return "#" + $67a09192127fe1ec$var$hex(this.r) + $67a09192127fe1ec$var$hex(this.g) + $67a09192127fe1ec$var$hex(this.b);
 }
-function $01e74fbc311d3ed5$var$rgb_formatRgb() {
+function $67a09192127fe1ec$var$rgb_formatRgb() {
     var a = this.opacity;
     a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
     return (a === 1 ? "rgb(" : "rgba(") + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.b) || 0)) + (a === 1 ? ")" : ", " + a + ")");
 }
-function $01e74fbc311d3ed5$var$hex(value) {
+function $67a09192127fe1ec$var$hex(value) {
     value = Math.max(0, Math.min(255, Math.round(value) || 0));
     return (value < 16 ? "0" : "") + value.toString(16);
 }
-function $01e74fbc311d3ed5$var$hsla(h, s, l, a) {
+function $67a09192127fe1ec$var$hsla(h, s, l, a) {
     if (a <= 0) h = s = l = NaN;
     else if (l <= 0 || l >= 1) h = s = NaN;
     else if (s <= 0) h = NaN;
-    return new $01e74fbc311d3ed5$var$Hsl(h, s, l, a);
+    return new $67a09192127fe1ec$var$Hsl(h, s, l, a);
 }
-function $01e74fbc311d3ed5$export$8269f892f57a576a(o) {
-    if (o instanceof $01e74fbc311d3ed5$var$Hsl) return new $01e74fbc311d3ed5$var$Hsl(o.h, o.s, o.l, o.opacity);
-    if (!(o instanceof $01e74fbc311d3ed5$export$e4830c8e55b4f80d)) o = $01e74fbc311d3ed5$export$9099ad97b570f7c(o);
-    if (!o) return new $01e74fbc311d3ed5$var$Hsl;
-    if (o instanceof $01e74fbc311d3ed5$var$Hsl) return o;
+function $67a09192127fe1ec$export$8133dc3fa904d6d1(o) {
+    if (o instanceof $67a09192127fe1ec$var$Hsl) return new $67a09192127fe1ec$var$Hsl(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof $67a09192127fe1ec$export$892596cec99bc70e)) o = $67a09192127fe1ec$export$2e2bcd8739ae039(o);
+    if (!o) return new $67a09192127fe1ec$var$Hsl;
+    if (o instanceof $67a09192127fe1ec$var$Hsl) return o;
     o = o.rgb();
     var r = o.r / 255, g = o.g / 255, b = o.b / 255, min = Math.min(r, g, b), max = Math.max(r, g, b), h = NaN, s = max - min, l = (max + min) / 2;
     if (s) {
@@ -6198,29 +6198,29 @@ function $01e74fbc311d3ed5$export$8269f892f57a576a(o) {
         s /= l < 0.5 ? max + min : 2 - max - min;
         h *= 60;
     } else s = l > 0 && l < 1 ? 0 : h;
-    return new $01e74fbc311d3ed5$var$Hsl(h, s, l, o.opacity);
+    return new $67a09192127fe1ec$var$Hsl(h, s, l, o.opacity);
 }
-function $01e74fbc311d3ed5$export$1eaadac1dc277f81(h, s, l, opacity) {
-    return arguments.length === 1 ? $01e74fbc311d3ed5$export$8269f892f57a576a(h) : new $01e74fbc311d3ed5$var$Hsl(h, s, l, opacity == null ? 1 : opacity);
+function $67a09192127fe1ec$export$8f4a7c0bb78e6ea8(h, s, l, opacity) {
+    return arguments.length === 1 ? $67a09192127fe1ec$export$8133dc3fa904d6d1(h) : new $67a09192127fe1ec$var$Hsl(h, s, l, opacity == null ? 1 : opacity);
 }
-function $01e74fbc311d3ed5$var$Hsl(h, s, l, opacity) {
+function $67a09192127fe1ec$var$Hsl(h, s, l, opacity) {
     this.h = +h;
     this.s = +s;
     this.l = +l;
     this.opacity = +opacity;
 }
-$dbe51e4b908eb1a9$export$9099ad97b570f7c($01e74fbc311d3ed5$var$Hsl, $01e74fbc311d3ed5$export$1eaadac1dc277f81, $dbe51e4b908eb1a9$export$46e35401bc090c62($01e74fbc311d3ed5$export$e4830c8e55b4f80d, {
+$895fd4e3ce3f8902$export$2e2bcd8739ae039($67a09192127fe1ec$var$Hsl, $67a09192127fe1ec$export$8f4a7c0bb78e6ea8, $895fd4e3ce3f8902$export$8b58be045bf06082($67a09192127fe1ec$export$892596cec99bc70e, {
     brighter: function(k) {
-        k = k == null ? $01e74fbc311d3ed5$export$acf32b1b82ce4fe7 : Math.pow($01e74fbc311d3ed5$export$acf32b1b82ce4fe7, k);
-        return new $01e74fbc311d3ed5$var$Hsl(this.h, this.s, this.l * k, this.opacity);
+        k = k == null ? $67a09192127fe1ec$export$9eace2cc0d12c98d : Math.pow($67a09192127fe1ec$export$9eace2cc0d12c98d, k);
+        return new $67a09192127fe1ec$var$Hsl(this.h, this.s, this.l * k, this.opacity);
     },
     darker: function(k) {
-        k = k == null ? $01e74fbc311d3ed5$export$a49b5ca9db8c9416 : Math.pow($01e74fbc311d3ed5$export$a49b5ca9db8c9416, k);
-        return new $01e74fbc311d3ed5$var$Hsl(this.h, this.s, this.l * k, this.opacity);
+        k = k == null ? $67a09192127fe1ec$export$4adafc6ed0600c10 : Math.pow($67a09192127fe1ec$export$4adafc6ed0600c10, k);
+        return new $67a09192127fe1ec$var$Hsl(this.h, this.s, this.l * k, this.opacity);
     },
     rgb: function() {
         var h = this.h % 360 + (this.h < 0) * 360, s = isNaN(h) || isNaN(this.s) ? 0 : this.s, l = this.l, m2 = l + (l < 0.5 ? l : 1 - l) * s, m1 = 2 * l - m2;
-        return new $01e74fbc311d3ed5$export$224ee6128901ddf4($01e74fbc311d3ed5$var$hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), $01e74fbc311d3ed5$var$hsl2rgb(h, m1, m2), $01e74fbc311d3ed5$var$hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
+        return new $67a09192127fe1ec$export$5e05a94393ac29e3($67a09192127fe1ec$var$hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), $67a09192127fe1ec$var$hsl2rgb(h, m1, m2), $67a09192127fe1ec$var$hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
     },
     displayable: function() {
         return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && 0 <= this.l && this.l <= 1 && 0 <= this.opacity && this.opacity <= 1;
@@ -6231,13 +6231,13 @@ $dbe51e4b908eb1a9$export$9099ad97b570f7c($01e74fbc311d3ed5$var$Hsl, $01e74fbc311
         return (a === 1 ? "hsl(" : "hsla(") + (this.h || 0) + ", " + (this.s || 0) * 100 + "%, " + (this.l || 0) * 100 + "%" + (a === 1 ? ")" : ", " + a + ")");
     }
 }));
-/* From FvD 13.37, CSS Color Module Level 3 */ function $01e74fbc311d3ed5$var$hsl2rgb(h, m1, m2) {
+/* From FvD 13.37, CSS Color Module Level 3 */ function $67a09192127fe1ec$var$hsl2rgb(h, m1, m2) {
     return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
 }
 
 
 
-function $7654630391f879a6$var$rgbToDeckglColor(c) {
+function $50dbc0324e10cd45$var$rgbToDeckglColor(c) {
     return [
         c.r,
         c.g,
@@ -6245,41 +6245,41 @@ function $7654630391f879a6$var$rgbToDeckglColor(c) {
         c.opacity * 255
     ];
 }
-function $7654630391f879a6$export$7e1a2014f13a3acf(a, b) {
+function $50dbc0324e10cd45$export$7da6ac10e55d4f2a(a, b) {
     if (a.length !== b.length) return false;
     for(let i = 0; i < a.length; i++){
         if (a[i] !== b[i]) return false;
     }
     return true;
 }
-function $7654630391f879a6$export$286939df77fc306a(cssColorSpecifier) {
+function $50dbc0324e10cd45$export$78ed65bc9abd64b1(cssColorSpecifier) {
     if (cssColorSpecifier) {
-        const dc = $01e74fbc311d3ed5$export$9099ad97b570f7c(cssColorSpecifier);
+        const dc = $67a09192127fe1ec$export$2e2bcd8739ae039(cssColorSpecifier);
         if (dc) {
             const c = dc.rgb();
-            return $7654630391f879a6$var$rgbToDeckglColor(c);
+            return $50dbc0324e10cd45$var$rgbToDeckglColor(c);
         }
     }
 }
-function $7654630391f879a6$export$303cc9cbd0520953(color) {
+function $50dbc0324e10cd45$export$f86d83653e5a505e(color) {
     const c = [
         ...color
     ];
     if (c.length > 3) c[3] /= 255;
     return `rgba(${c.join(',')})`;
 }
-function $7654630391f879a6$export$dfbfe7a0951e0f20(color, value) {
-    const rgb = $01e74fbc311d3ed5$export$1b3a2af3f3cd47f6(color[0], color[1], color[2], color[3] / 255);
-    const hslColor = $01e74fbc311d3ed5$export$1eaadac1dc277f81(rgb);
+function $50dbc0324e10cd45$export$fb75607d98509d9(color, value) {
+    const rgb = $67a09192127fe1ec$export$8972dc0e6ad9238f(color[0], color[1], color[2], color[3] / 255);
+    const hslColor = $67a09192127fe1ec$export$8f4a7c0bb78e6ea8(rgb);
     hslColor.s = value;
     const c = hslColor.rgb();
-    return $7654630391f879a6$var$rgbToDeckglColor(c);
+    return $50dbc0324e10cd45$var$rgbToDeckglColor(c);
 }
 
 
 
 
-let $2f0c752020c76b68$var$vega = {
+let $aa3185d2619292b0$var$vega = {
     CanvasHandler: null,
     inferType: null,
     inferTypes: null,
@@ -6293,7 +6293,7 @@ let $2f0c752020c76b68$var$vega = {
     truncate: null,
     View: null
 };
-let $2f0c752020c76b68$var$deck = {
+let $aa3185d2619292b0$var$deck = {
     _CameraLight: null,
     AmbientLight: null,
     CompositeLayer: null,
@@ -6309,29 +6309,29 @@ let $2f0c752020c76b68$var$deck = {
     picking: null,
     project32: null
 };
-let $2f0c752020c76b68$var$layers = {
+let $aa3185d2619292b0$var$layers = {
     IconLayer: null,
     LineLayer: null,
     PathLayer: null,
     PolygonLayer: null,
     TextLayer: null
 };
-let $2f0c752020c76b68$var$luma = {
+let $aa3185d2619292b0$var$luma = {
     CubeGeometry: null,
     Model: null,
     Texture2D: null
 };
-const $2f0c752020c76b68$export$12896e353ebd9cc = {
-    deck: $2f0c752020c76b68$var$deck,
-    layers: $2f0c752020c76b68$var$layers,
-    luma: $2f0c752020c76b68$var$luma,
-    vega: $2f0c752020c76b68$var$vega
+const $aa3185d2619292b0$export$e2253033e6e1df16 = {
+    deck: $aa3185d2619292b0$var$deck,
+    layers: $aa3185d2619292b0$var$layers,
+    luma: $aa3185d2619292b0$var$luma,
+    vega: $aa3185d2619292b0$var$vega
 };
-function $2f0c752020c76b68$export$44747fb0056adba5(vega, deck, layers, luma) {
-    $2f0c752020c76b68$export$12896e353ebd9cc.deck = deck;
-    $2f0c752020c76b68$export$12896e353ebd9cc.layers = layers;
-    $2f0c752020c76b68$export$12896e353ebd9cc.luma = luma;
-    $2f0c752020c76b68$export$12896e353ebd9cc.vega = vega;
+function $aa3185d2619292b0$export$1f96ae73734a86cc(vega, deck, layers, luma) {
+    $aa3185d2619292b0$export$e2253033e6e1df16.deck = deck;
+    $aa3185d2619292b0$export$e2253033e6e1df16.layers = layers;
+    $aa3185d2619292b0$export$e2253033e6e1df16.luma = luma;
+    $aa3185d2619292b0$export$e2253033e6e1df16.vega = vega;
 }
 
 
@@ -6355,25 +6355,40 @@ var // Copyright (c) 2015 - 2017 Uber Technologies, Inc.
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-$829dd023807638d5$export$9099ad97b570f7c = `\
-#define SHADER_NAME cube-layer-fragment-shader\n\nprecision highp float;\n\nvarying vec4 vColor;\n\nvoid main(void) {\n  gl_FragColor = vColor;\n\n  // use highlight color if this fragment belongs to the selected object.\n  gl_FragColor = picking_filterHighlightColor(gl_FragColor);\n\n  // use picking color if rendering to picking FBO.\n  gl_FragColor = picking_filterPickingColor(gl_FragColor);\n}\n`;
+$ea8dc0faca1a6969$export$2e2bcd8739ae039 = `\
+#define SHADER_NAME cube-layer-fragment-shader
+
+precision highp float;
+
+varying vec4 vColor;
+
+void main(void) {
+  gl_FragColor = vColor;
+
+  // use highlight color if this fragment belongs to the selected object.
+  gl_FragColor = picking_filterHighlightColor(gl_FragColor);
+
+  // use picking color if rendering to picking FBO.
+  gl_FragColor = picking_filterPickingColor(gl_FragColor);
+}
+`;
 
 
-var $1c19a15e6d55f62b$exports = {};
+var $f92b17f7c58b7db2$exports = {};
 
-$parcel$export($1c19a15e6d55f62b$exports, "defaultPresenterStyle", () => $1c19a15e6d55f62b$export$6b65f26458e4302);
-$parcel$export($1c19a15e6d55f62b$exports, "min3dDepth", () => $1c19a15e6d55f62b$export$86fcdd5f967cff7a);
-$parcel$export($1c19a15e6d55f62b$exports, "createStage", () => $1c19a15e6d55f62b$export$e35daa7ba55906d8);
-$parcel$export($1c19a15e6d55f62b$exports, "minPixelSize", () => $1c19a15e6d55f62b$export$29071091ed6b4d66);
-$parcel$export($1c19a15e6d55f62b$exports, "lineZ", () => $1c19a15e6d55f62b$export$11e2f23c74a3e539);
-$parcel$export($1c19a15e6d55f62b$exports, "minHeight", () => $1c19a15e6d55f62b$export$96fb5e832e19efcf);
-$parcel$export($1c19a15e6d55f62b$exports, "defaultPresenterConfig", () => $1c19a15e6d55f62b$export$95ceab4f757f40ae);
-$parcel$export($1c19a15e6d55f62b$exports, "groupStrokeWidth", () => $1c19a15e6d55f62b$export$7d8384a7f1e55576);
-$parcel$export($1c19a15e6d55f62b$exports, "minWidth", () => $1c19a15e6d55f62b$export$45fcbe2b700352a9);
-$parcel$export($1c19a15e6d55f62b$exports, "defaultView", () => $1c19a15e6d55f62b$export$89bf53df2de0904);
-const $1c19a15e6d55f62b$export$96fb5e832e19efcf = '100px';
-const $1c19a15e6d55f62b$export$45fcbe2b700352a9 = '100px';
-const $1c19a15e6d55f62b$export$6b65f26458e4302 = {
+$parcel$export($f92b17f7c58b7db2$exports, "minHeight", () => $f92b17f7c58b7db2$export$a43cf604e12f3b17);
+$parcel$export($f92b17f7c58b7db2$exports, "minWidth", () => $f92b17f7c58b7db2$export$ee148fbbe8357dd2);
+$parcel$export($f92b17f7c58b7db2$exports, "defaultPresenterStyle", () => $f92b17f7c58b7db2$export$83ac8f5ae8122afc);
+$parcel$export($f92b17f7c58b7db2$exports, "defaultPresenterConfig", () => $f92b17f7c58b7db2$export$200f593236aebbdc);
+$parcel$export($f92b17f7c58b7db2$exports, "createStage", () => $f92b17f7c58b7db2$export$afa8810fbe5c2601);
+$parcel$export($f92b17f7c58b7db2$exports, "groupStrokeWidth", () => $f92b17f7c58b7db2$export$62471df653c738cc);
+$parcel$export($f92b17f7c58b7db2$exports, "lineZ", () => $f92b17f7c58b7db2$export$c25c42a6ee2ec894);
+$parcel$export($f92b17f7c58b7db2$exports, "defaultView", () => $f92b17f7c58b7db2$export$93acc5219d6538bb);
+$parcel$export($f92b17f7c58b7db2$exports, "min3dDepth", () => $f92b17f7c58b7db2$export$d90a7322036a432e);
+$parcel$export($f92b17f7c58b7db2$exports, "minPixelSize", () => $f92b17f7c58b7db2$export$c9c7d435df6c4ed7);
+const $f92b17f7c58b7db2$export$a43cf604e12f3b17 = '100px';
+const $f92b17f7c58b7db2$export$ee148fbbe8357dd2 = '100px';
+const $f92b17f7c58b7db2$export$83ac8f5ae8122afc = {
     cssPrefix: 'vega-deckgl-',
     defaultCubeColor: [
         128,
@@ -6388,7 +6403,7 @@ const $1c19a15e6d55f62b$export$6b65f26458e4302 = {
         255
     ]
 };
-const $1c19a15e6d55f62b$export$95ceab4f757f40ae = {
+const $f92b17f7c58b7db2$export$200f593236aebbdc = {
     onCubeClick: (e, cube)=>{
     },
     onCubeHover: (e, cube)=>{
@@ -6400,7 +6415,7 @@ const $1c19a15e6d55f62b$export$95ceab4f757f40ae = {
         view: 600
     }
 };
-function $1c19a15e6d55f62b$export$e35daa7ba55906d8(view) {
+function $f92b17f7c58b7db2$export$afa8810fbe5c2601(view) {
     const stage = {
         view: view,
         cubeData: [],
@@ -6421,28 +6436,74 @@ function $1c19a15e6d55f62b$export$e35daa7ba55906d8(view) {
     };
     return stage;
 }
-const $1c19a15e6d55f62b$export$7d8384a7f1e55576 = 1;
-const $1c19a15e6d55f62b$export$11e2f23c74a3e539 = -1;
-const $1c19a15e6d55f62b$export$89bf53df2de0904 = '2d';
-const $1c19a15e6d55f62b$export$86fcdd5f967cff7a = 0.05;
-const $1c19a15e6d55f62b$export$29071091ed6b4d66 = 0.5;
+const $f92b17f7c58b7db2$export$62471df653c738cc = 1;
+const $f92b17f7c58b7db2$export$c25c42a6ee2ec894 = -1;
+const $f92b17f7c58b7db2$export$93acc5219d6538bb = '2d';
+const $f92b17f7c58b7db2$export$d90a7322036a432e = 0.05;
+const $f92b17f7c58b7db2$export$c9c7d435df6c4ed7 = 0.5;
 
 
-var $6a90444830067801$export$9099ad97b570f7c = `\
-#define SHADER_NAME cube-layer-vertex-shader\n\nattribute vec3 positions;\nattribute vec3 normals;\n\nattribute vec3 instancePositions;\nattribute vec3 instancePositions64Low;\nattribute vec3 instanceSizes;\nattribute vec4 instanceColors;\nattribute vec3 instancePickingColors;\n\n// Custom uniforms\nuniform float lightingMix;\n\n// Result\nvarying vec4 vColor;\n\nvoid main(void) {\n\n  float x = instanceSizes.x > 0.0 ? max(instanceSizes.x, ${$1c19a15e6d55f62b$export$29071091ed6b4d66.toFixed(1)}) : 0.0;\n  float y = instanceSizes.y > 0.0 ? max(instanceSizes.y, ${$1c19a15e6d55f62b$export$29071091ed6b4d66.toFixed(1)}) : 0.0;\n\n  // if alpha == 0.0, do not render element\n  float noRender = float(instanceColors.a == 0.0);\n  float finalXScale = project_size(x) * mix(1.0, 0.0, noRender);\n  float finalYScale = project_size(y) * mix(1.0, 0.0, noRender);\n  float finalZScale = project_size(instanceSizes.z) * mix(1.0, 0.0, noRender);\n\n  // cube geometry vertics are between -1 to 1, scale and transform it to between 0, 1\n  vec3 offset = vec3(\n    (positions.x + 1.0) / 2.0 * finalXScale,\n    (positions.y + 1.0) / 2.0 * finalYScale,\n    (positions.z + 1.0) / 2.0 * finalZScale);\n\n  // extrude positions\n  vec4 position_worldspace;\n  gl_Position = project_position_to_clipspace(instancePositions, instancePositions64Low, offset, position_worldspace);\n  \n  vec3 lightColor = lighting_getLightColor(instanceColors.rgb, project_uCameraPosition, position_worldspace.xyz, project_normal(normals));\n  vec3 mixedLight = mix(instanceColors.rgb, lightColor, lightingMix);\n  vec4 color = vec4(mixedLight, instanceColors.a) / 255.0;\n  vColor = color;\n\n  // Set color to be rendered to picking fbo (also used to check for selection highlight).\n  picking_setPickingColor(instancePickingColors);\n}\n`;
+var $415253e94e2f35d3$export$2e2bcd8739ae039 = `\
+#define SHADER_NAME cube-layer-vertex-shader
+
+attribute vec3 positions;
+attribute vec3 normals;
+
+attribute vec3 instancePositions;
+attribute vec3 instancePositions64Low;
+attribute vec3 instanceSizes;
+attribute vec4 instanceColors;
+attribute vec3 instancePickingColors;
+
+// Custom uniforms
+uniform float lightingMix;
+
+// Result
+varying vec4 vColor;
+
+void main(void) {
+
+  float x = instanceSizes.x > 0.0 ? max(instanceSizes.x, ${$f92b17f7c58b7db2$export$c9c7d435df6c4ed7.toFixed(1)}) : 0.0;
+  float y = instanceSizes.y > 0.0 ? max(instanceSizes.y, ${$f92b17f7c58b7db2$export$c9c7d435df6c4ed7.toFixed(1)}) : 0.0;
+
+  // if alpha == 0.0, do not render element
+  float noRender = float(instanceColors.a == 0.0);
+  float finalXScale = project_size(x) * mix(1.0, 0.0, noRender);
+  float finalYScale = project_size(y) * mix(1.0, 0.0, noRender);
+  float finalZScale = project_size(instanceSizes.z) * mix(1.0, 0.0, noRender);
+
+  // cube geometry vertics are between -1 to 1, scale and transform it to between 0, 1
+  vec3 offset = vec3(
+    (positions.x + 1.0) / 2.0 * finalXScale,
+    (positions.y + 1.0) / 2.0 * finalYScale,
+    (positions.z + 1.0) / 2.0 * finalZScale);
+
+  // extrude positions
+  vec4 position_worldspace;
+  gl_Position = project_position_to_clipspace(instancePositions, instancePositions64Low, offset, position_worldspace);
+  
+  vec3 lightColor = lighting_getLightColor(instanceColors.rgb, project_uCameraPosition, position_worldspace.xyz, project_normal(normals));
+  vec3 mixedLight = mix(instanceColors.rgb, lightColor, lightingMix);
+  vec4 color = vec4(mixedLight, instanceColors.a) / 255.0;
+  vColor = color;
+
+  // Set color to be rendered to picking fbo (also used to check for selection highlight).
+  picking_setPickingColor(instancePickingColors);
+}
+`;
 
 
 
 //https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants
-const $757aa2396bf25f0a$var$UNSIGNED_BYTE = 5121;
-const $757aa2396bf25f0a$var$DOUBLE = 5130;
-const $757aa2396bf25f0a$var$DEFAULT_COLOR = [
+const $7c2828ce1258d05d$var$UNSIGNED_BYTE = 5121;
+const $7c2828ce1258d05d$var$DOUBLE = 5130;
+const $7c2828ce1258d05d$var$DEFAULT_COLOR = [
     255,
     0,
     255,
     255
 ];
-const $757aa2396bf25f0a$var$defaultProps = {
+const $7c2828ce1258d05d$var$defaultProps = {
     lightingMix: 0.5,
     getSize: (x)=>x.size
     ,
@@ -6455,17 +6516,17 @@ const $757aa2396bf25f0a$var$defaultProps = {
         diffuse: 1
     }
 };
-function $757aa2396bf25f0a$var$_CubeLayer(props1) {
+function $7c2828ce1258d05d$var$_CubeLayer(props) {
     //dynamic superclass, since we don't know have deck.Layer in the declaration phase
-    class __CubeLayer extends $2f0c752020c76b68$export$12896e353ebd9cc.deck.Layer {
+    class __CubeLayer extends $aa3185d2619292b0$export$e2253033e6e1df16.deck.Layer {
         getShaders() {
             return {
-                vs: $6a90444830067801$export$9099ad97b570f7c,
-                fs: $829dd023807638d5$export$9099ad97b570f7c,
+                vs: $415253e94e2f35d3$export$2e2bcd8739ae039,
+                fs: $ea8dc0faca1a6969$export$2e2bcd8739ae039,
                 modules: [
-                    $2f0c752020c76b68$export$12896e353ebd9cc.deck.project32,
-                    $2f0c752020c76b68$export$12896e353ebd9cc.deck.gouraudLighting,
-                    $2f0c752020c76b68$export$12896e353ebd9cc.deck.picking
+                    $aa3185d2619292b0$export$e2253033e6e1df16.deck.project32,
+                    $aa3185d2619292b0$export$e2253033e6e1df16.deck.gouraudLighting,
+                    $aa3185d2619292b0$export$e2253033e6e1df16.deck.picking
                 ]
             };
         }
@@ -6474,7 +6535,7 @@ function $757aa2396bf25f0a$var$_CubeLayer(props1) {
             attributeManager.addInstanced({
                 instancePositions: {
                     size: 3,
-                    type: $757aa2396bf25f0a$var$DOUBLE,
+                    type: $7c2828ce1258d05d$var$DOUBLE,
                     transition: true,
                     accessor: 'getPosition'
                 },
@@ -6485,16 +6546,16 @@ function $757aa2396bf25f0a$var$_CubeLayer(props1) {
                 },
                 instanceColors: {
                     size: 4,
-                    type: $757aa2396bf25f0a$var$UNSIGNED_BYTE,
+                    type: $7c2828ce1258d05d$var$UNSIGNED_BYTE,
                     transition: true,
                     accessor: 'getColor',
-                    defaultValue: $757aa2396bf25f0a$var$DEFAULT_COLOR
+                    defaultValue: $7c2828ce1258d05d$var$DEFAULT_COLOR
                 }
             });
         }
-        updateState({ props: props , oldProps: oldProps , changeFlags: changeFlags  }) {
+        updateState({ props: props1 , oldProps: oldProps , changeFlags: changeFlags  }) {
             super.updateState({
-                props: props,
+                props: props1,
                 oldProps: oldProps,
                 changeFlags: changeFlags
             }); //TODO add parameter type to deck.gl-typings
@@ -6509,10 +6570,10 @@ function $757aa2396bf25f0a$var$_CubeLayer(props1) {
         //}
         }
         _getModel(gl) {
-            return new $2f0c752020c76b68$export$12896e353ebd9cc.luma.Model(gl, Object.assign({
+            return new $aa3185d2619292b0$export$e2253033e6e1df16.luma.Model(gl, Object.assign({
             }, this.getShaders(), {
                 id: this.props.id,
-                geometry: new $2f0c752020c76b68$export$12896e353ebd9cc.luma.CubeGeometry(),
+                geometry: new $aa3185d2619292b0$export$e2253033e6e1df16.luma.CubeGeometry(),
                 isInstanced: true
             }));
         }
@@ -6526,40 +6587,40 @@ function $757aa2396bf25f0a$var$_CubeLayer(props1) {
         }
     }
     __CubeLayer.layerName = 'CubeLayer';
-    __CubeLayer.defaultProps = $757aa2396bf25f0a$var$defaultProps;
-    const instance = new __CubeLayer(props1);
+    __CubeLayer.defaultProps = $7c2828ce1258d05d$var$defaultProps;
+    const instance = new __CubeLayer(props);
     return instance;
 }
-const $757aa2396bf25f0a$export$332dc30a48f50bb7 = $757aa2396bf25f0a$var$_CubeLayer;
+const $7c2828ce1258d05d$export$49d6aa54bfdcaef = $7c2828ce1258d05d$var$_CubeLayer;
 
 
-function $2daddc7dce63be23$export$c18e9be96ec0ef45(x) {
+function $6926ccbdba7af71e$export$be3f0f7224794b88(x) {
     return (Math.pow(2, -10 * x) - 0.0009765625) * 1.0009775171065494;
 }
 
 
-function $3cdbde20c3c9b141$export$2745c447f92bdc2(t) {
-    return $2daddc7dce63be23$export$c18e9be96ec0ef45(1 - +t);
+function $2aa1ceac1e596a36$export$fc3e95f15e1ef38e(t) {
+    return $6926ccbdba7af71e$export$be3f0f7224794b88(1 - +t);
 }
-function $3cdbde20c3c9b141$export$c65510420a86b046(t) {
-    return 1 - $2daddc7dce63be23$export$c18e9be96ec0ef45(t);
+function $2aa1ceac1e596a36$export$f3c9b2f85fbcf0ab(t) {
+    return 1 - $6926ccbdba7af71e$export$be3f0f7224794b88(t);
 }
-function $3cdbde20c3c9b141$export$195778d17fd74088(t) {
-    return ((t *= 2) <= 1 ? $2daddc7dce63be23$export$c18e9be96ec0ef45(1 - t) : 2 - $2daddc7dce63be23$export$c18e9be96ec0ef45(t - 1)) / 2;
+function $2aa1ceac1e596a36$export$ae4d4e77fab188ff(t) {
+    return ((t *= 2) <= 1 ? $6926ccbdba7af71e$export$be3f0f7224794b88(1 - t) : 2 - $6926ccbdba7af71e$export$be3f0f7224794b88(t - 1)) / 2;
 }
 
 
 
-function $ce5538ade1fb7855$export$7f4df3f7510fa304(t) {
+function $65ec70cb7a1acea0$export$24c5ac7c37452e7d(t) {
     if (t === 0 || t === 1) return t;
-    return $3cdbde20c3c9b141$export$195778d17fd74088(t);
+    return $2aa1ceac1e596a36$export$ae4d4e77fab188ff(t);
 }
 
 
-function $22297b1890eb4722$export$9b3c8e41de401a43(presenter, config, stage, lightSettings /*LightSettings*/ , lightingMix, interpolator, guideLines) {
-    const cubeLayer = $22297b1890eb4722$var$newCubeLayer(presenter, config, stage.cubeData, presenter.style.highlightColor, lightSettings, lightingMix, interpolator);
+function $96e705a481cefebf$export$61f6a9c831786408(presenter, config, stage, lightSettings /*LightSettings*/ , lightingMix, interpolator, guideLines) {
+    const cubeLayer = $96e705a481cefebf$var$newCubeLayer(presenter, config, stage.cubeData, presenter.style.highlightColor, lightSettings, lightingMix, interpolator);
     const { x: x , y: y , z: z  } = stage.axes;
-    const lines = $b0c54bedf6c3c64b$export$dde0d4a9e80fb26f(stage.gridLines, guideLines);
+    const lines = $ffcacbd9f650c26c$export$ee1b3e54f0441b22(stage.gridLines, guideLines);
     const texts = [
         ...stage.textData
     ];
@@ -6583,10 +6644,10 @@ function $22297b1890eb4722$export$9b3c8e41de401a43(presenter, config, stage, lig
     if (stage.facets) stage.facets.forEach((f)=>{
         if (f.lines) lines.push.apply(lines, f.lines);
     });
-    const lineLayer = $22297b1890eb4722$var$newLineLayer($d1b153eb04166abb$export$2ff906254960e78d.lines, lines);
-    const textLayer = $22297b1890eb4722$var$newTextLayer(presenter, $d1b153eb04166abb$export$2ff906254960e78d.text, texts, config, presenter.style.fontFamily, characterSet);
-    const pathLayer = $22297b1890eb4722$var$newPathLayer($d1b153eb04166abb$export$2ff906254960e78d.paths, stage.pathData);
-    const polygonLayer = $22297b1890eb4722$var$newPolygonLayer($d1b153eb04166abb$export$2ff906254960e78d.polygons, stage.polygonData);
+    const lineLayer = $96e705a481cefebf$var$newLineLayer($95a4329e07073fb3$export$5792b81513a80aca.lines, lines);
+    const textLayer = $96e705a481cefebf$var$newTextLayer(presenter, $95a4329e07073fb3$export$5792b81513a80aca.text, texts, config, presenter.style.fontFamily, characterSet);
+    const pathLayer = $96e705a481cefebf$var$newPathLayer($95a4329e07073fb3$export$5792b81513a80aca.paths, stage.pathData);
+    const polygonLayer = $96e705a481cefebf$var$newPolygonLayer($95a4329e07073fb3$export$5792b81513a80aca.polygons, stage.polygonData);
     return [
         textLayer,
         cubeLayer,
@@ -6595,16 +6656,16 @@ function $22297b1890eb4722$export$9b3c8e41de401a43(presenter, config, stage, lig
         polygonLayer
     ];
 }
-function $22297b1890eb4722$var$newCubeLayer(presenter, config, cubeData, highlightColor, lightSettings /*LightSettings*/ , lightingMix, interpolator) {
-    const getPosition = $22297b1890eb4722$var$getTiming(config.transitionDurations.position, $ce5538ade1fb7855$export$7f4df3f7510fa304);
-    const getSize = $22297b1890eb4722$var$getTiming(config.transitionDurations.size, $ce5538ade1fb7855$export$7f4df3f7510fa304);
-    const getColor = $22297b1890eb4722$var$getTiming(config.transitionDurations.color);
+function $96e705a481cefebf$var$newCubeLayer(presenter, config, cubeData, highlightColor, lightSettings /*LightSettings*/ , lightingMix, interpolator) {
+    const getPosition = $96e705a481cefebf$var$getTiming(config.transitionDurations.position, $65ec70cb7a1acea0$export$24c5ac7c37452e7d);
+    const getSize = $96e705a481cefebf$var$getTiming(config.transitionDurations.size, $65ec70cb7a1acea0$export$24c5ac7c37452e7d);
+    const getColor = $96e705a481cefebf$var$getTiming(config.transitionDurations.color);
     const cubeLayerProps = {
         interpolator: interpolator,
         lightingMix: lightingMix,
-        id: $d1b153eb04166abb$export$2ff906254960e78d.cubes,
+        id: $95a4329e07073fb3$export$5792b81513a80aca.cubes,
         data: cubeData,
-        coordinateSystem: $2f0c752020c76b68$export$12896e353ebd9cc.deck.COORDINATE_SYSTEM.CARTESIAN,
+        coordinateSystem: $aa3185d2619292b0$export$e2253033e6e1df16.deck.COORDINATE_SYSTEM.CARTESIAN,
         pickable: true,
         autoHighlight: true,
         highlightColor: highlightColor,
@@ -6627,29 +6688,29 @@ function $22297b1890eb4722$var$newCubeLayer(presenter, config, cubeData, highlig
             getSize: getSize
         }
     };
-    return new $757aa2396bf25f0a$export$332dc30a48f50bb7(cubeLayerProps);
+    return new $7c2828ce1258d05d$export$49d6aa54bfdcaef(cubeLayerProps);
 }
-function $22297b1890eb4722$var$newLineLayer(id, data) {
-    return new $2f0c752020c76b68$export$12896e353ebd9cc.layers.LineLayer({
+function $96e705a481cefebf$var$newLineLayer(id, data) {
+    return new $aa3185d2619292b0$export$e2253033e6e1df16.layers.LineLayer({
         id: id,
         data: data,
         widthUnits: 'pixels',
-        coordinateSystem: $2f0c752020c76b68$export$12896e353ebd9cc.deck.COORDINATE_SYSTEM.CARTESIAN,
+        coordinateSystem: $aa3185d2619292b0$export$e2253033e6e1df16.deck.COORDINATE_SYSTEM.CARTESIAN,
         getColor: (o)=>o.color
         ,
         getWidth: (o)=>o.strokeWidth
     });
 }
-function $22297b1890eb4722$var$newPathLayer(id, data) {
+function $96e705a481cefebf$var$newPathLayer(id, data) {
     if (!data) return null;
-    return new $2f0c752020c76b68$export$12896e353ebd9cc.layers.PathLayer({
+    return new $aa3185d2619292b0$export$e2253033e6e1df16.layers.PathLayer({
         id: id,
         data: data,
         billboard: true,
         widthScale: 1,
         widthMinPixels: 2,
         widthUnits: 'pixels',
-        coordinateSystem: $2f0c752020c76b68$export$12896e353ebd9cc.deck.COORDINATE_SYSTEM.CARTESIAN,
+        coordinateSystem: $aa3185d2619292b0$export$e2253033e6e1df16.deck.COORDINATE_SYSTEM.CARTESIAN,
         getPath: (o)=>o.positions
         ,
         getColor: (o)=>o.strokeColor
@@ -6657,12 +6718,12 @@ function $22297b1890eb4722$var$newPathLayer(id, data) {
         getWidth: (o)=>o.strokeWidth
     });
 }
-function $22297b1890eb4722$var$newPolygonLayer(id, data) {
+function $96e705a481cefebf$var$newPolygonLayer(id, data) {
     if (!data) return null;
-    let newlayer = new $2f0c752020c76b68$export$12896e353ebd9cc.layers.PolygonLayer({
+    let newlayer = new $aa3185d2619292b0$export$e2253033e6e1df16.layers.PolygonLayer({
         id: id,
         data: data,
-        coordinateSystem: $2f0c752020c76b68$export$12896e353ebd9cc.deck.COORDINATE_SYSTEM.CARTESIAN,
+        coordinateSystem: $aa3185d2619292b0$export$e2253033e6e1df16.deck.COORDINATE_SYSTEM.CARTESIAN,
         getPolygon: (o)=>o.positions
         ,
         getFillColor: (o)=>o.fillColor
@@ -6680,14 +6741,14 @@ function $22297b1890eb4722$var$newPolygonLayer(id, data) {
     });
     return newlayer;
 }
-function $22297b1890eb4722$var$newTextLayer(presenter, id, data, config, fontFamily, characterSet) {
+function $96e705a481cefebf$var$newTextLayer(presenter, id, data, config, fontFamily, characterSet) {
     let alphaCutoff = config.getTextHighlightAlphaCutoff && config.getTextHighlightAlphaCutoff();
     if (alphaCutoff === undefined) alphaCutoff = 0.1;
     const props = {
         id: id,
         data: data,
         characterSet: characterSet,
-        coordinateSystem: $2f0c752020c76b68$export$12896e353ebd9cc.deck.COORDINATE_SYSTEM.CARTESIAN,
+        coordinateSystem: $aa3185d2619292b0$export$e2253033e6e1df16.deck.COORDINATE_SYSTEM.CARTESIAN,
         sizeUnits: 'pixels',
         autoHighlight: true,
         pickable: true,
@@ -6728,9 +6789,9 @@ function $22297b1890eb4722$var$newTextLayer(presenter, id, data, config, fontFam
         }
     };
     if (fontFamily) props.fontFamily = fontFamily;
-    return new $2f0c752020c76b68$export$12896e353ebd9cc.layers.TextLayer(props);
+    return new $aa3185d2619292b0$export$e2253033e6e1df16.layers.TextLayer(props);
 }
-function $22297b1890eb4722$var$getTiming(duration, easing) {
+function $96e705a481cefebf$var$getTiming(duration, easing) {
     let timing;
     if (duration) {
         timing = {
@@ -6741,12 +6802,12 @@ function $22297b1890eb4722$var$getTiming(duration, easing) {
     }
     return timing;
 }
-function $22297b1890eb4722$export$64c4e13ca1f096d(deckProps) {
-    return deckProps.layers.filter((layer)=>layer && layer.id === $d1b153eb04166abb$export$2ff906254960e78d.cubes
+function $96e705a481cefebf$export$ccecd364047ec381(deckProps) {
+    return deckProps.layers.filter((layer)=>layer && layer.id === $95a4329e07073fb3$export$5792b81513a80aca.cubes
     )[0];
 }
-function $22297b1890eb4722$export$f78fa54c8b685d69(deckProps) {
-    const cubeLayer = $22297b1890eb4722$export$64c4e13ca1f096d(deckProps);
+function $96e705a481cefebf$export$fa1ee03f26227b34(deckProps) {
+    const cubeLayer = $96e705a481cefebf$export$ccecd364047ec381(deckProps);
     if (!cubeLayer) return;
     const cubeLayerProps = cubeLayer.props;
     return cubeLayerProps.data;
@@ -6762,9 +6823,9 @@ function $22297b1890eb4722$export$f78fa54c8b685d69(deckProps) {
 
 
 
-function $926cc9f2ab1acdd7$export$ddb98ba5d6830a81(factoryOptions) {
+function $2787516b2d141fee$export$cf6caf239925fb63(factoryOptions) {
     function wrapper(props) {
-        class OrbitControllerInternal extends $2f0c752020c76b68$export$12896e353ebd9cc.deck.OrbitController {
+        class OrbitControllerInternal extends $aa3185d2619292b0$export$e2253033e6e1df16.deck.OrbitController {
             constructor(props1){
                 super(props1);
                 this.invertPan = true;
@@ -6784,7 +6845,7 @@ function $926cc9f2ab1acdd7$export$ddb98ba5d6830a81(factoryOptions) {
 
 
 //adapted from https://github.com/uber/deck.gl/blob/5.3-release/modules/lite/src/deckgl.js
-const $9cd1d8acd3e8d45d$var$CANVAS_STYLE = {
+const $34af937a047fac77$var$CANVAS_STYLE = {
     position: 'absolute',
     left: 0,
     top: 0,
@@ -6792,7 +6853,7 @@ const $9cd1d8acd3e8d45d$var$CANVAS_STYLE = {
     height: '100%'
 };
 // Create canvas elements for map and deck
-function $9cd1d8acd3e8d45d$var$createCanvas(props) {
+function $34af937a047fac77$var$createCanvas(props) {
     let { container: container = document.body  } = props;
     if (typeof container === 'string') container = document.getElementById(container);
     if (!container) throw Error('Deck: container not found');
@@ -6801,25 +6862,25 @@ function $9cd1d8acd3e8d45d$var$createCanvas(props) {
     if (containerStyle.position === 'static') container.style.position = 'relative';
     const deckCanvas = document.createElement('canvas');
     container.appendChild(deckCanvas);
-    Object.assign(deckCanvas.style, $9cd1d8acd3e8d45d$var$CANVAS_STYLE);
+    Object.assign(deckCanvas.style, $34af937a047fac77$var$CANVAS_STYLE);
     return {
         container: container,
         deckCanvas: deckCanvas
     };
 }
-function $9cd1d8acd3e8d45d$export$ab3e167748757028(factoryOptions) {
-    const OrbitControllerClass = $926cc9f2ab1acdd7$export$ddb98ba5d6830a81(factoryOptions);
+function $34af937a047fac77$export$cc8b65d27ce6adb1(factoryOptions) {
+    const OrbitControllerClass = $2787516b2d141fee$export$cf6caf239925fb63(factoryOptions);
     //dynamic superclass lets us create a subclass at execution phase instead of declaration phase.
     //This allows us to retrieve Deck from either UMD or ES6 consumers of this class.
-    function wrapper(props2) {
+    function wrapper(props) {
         /**
          * @params container (Element) - DOM element to add deck.gl canvas to
          * @params controller (Object) - Controller class. Leave empty for auto detection
-         */ class DeckGLInternal extends $2f0c752020c76b68$export$12896e353ebd9cc.deck.Deck {
+         */ class DeckGLInternal extends $aa3185d2619292b0$export$e2253033e6e1df16.deck.Deck {
             constructor(props1){
                 if (typeof document === 'undefined') // Not browser
                 throw Error('Deck can only be used in the browser');
-                const { deckCanvas: deckCanvas  } = $9cd1d8acd3e8d45d$var$createCanvas(props1);
+                const { deckCanvas: deckCanvas  } = $34af937a047fac77$var$createCanvas(props1);
                 const viewState = props1.initialViewState || props1.viewState || {
                 };
                 super(Object.assign({
@@ -6835,18 +6896,18 @@ function $9cd1d8acd3e8d45d$export$ab3e167748757028(factoryOptions) {
                     if (this.onViewStateChange) this.onViewStateChange(params);
                 };
             }
-            setProps(props) {
+            setProps(props2) {
                 // this._updateViewState must be bound to `this`
                 // but we don't have access to the current instance before calling super().
-                if ('onViewStateChange' in props && this._updateViewState) {
+                if ('onViewStateChange' in props2 && this._updateViewState) {
                     // This is called at least once at _onRendererInitialized
-                    this.onViewStateChange = props.onViewStateChange;
-                    props.onViewStateChange = this._updateViewState;
+                    this.onViewStateChange = props2.onViewStateChange;
+                    props2.onViewStateChange = this._updateViewState;
                 }
-                super.setProps(props);
+                super.setProps(props2);
             }
         }
-        const instance = new DeckGLInternal(props2);
+        const instance = new DeckGLInternal(props);
         return instance;
     }
     return {
@@ -6857,8 +6918,8 @@ function $9cd1d8acd3e8d45d$export$ab3e167748757028(factoryOptions) {
 
 
 
-function $3e04537bdeb7ed01$var$wrapper(props) {
-    class LinearInterpolatorInternal extends $2f0c752020c76b68$export$12896e353ebd9cc.deck.LinearInterpolator {
+function $70855a91bf04cf42$var$wrapper(props) {
+    class LinearInterpolatorInternal extends $aa3185d2619292b0$export$e2253033e6e1df16.deck.LinearInterpolator {
         constructor(transitionProps){
             super(transitionProps);
         }
@@ -6870,14 +6931,14 @@ function $3e04537bdeb7ed01$var$wrapper(props) {
     const instance = new LinearInterpolatorInternal(props);
     return instance;
 }
-const $3e04537bdeb7ed01$export$d12ed2a17cdbd6b6 = $3e04537bdeb7ed01$var$wrapper;
+const $70855a91bf04cf42$export$19db461e577de3cc = $70855a91bf04cf42$var$wrapper;
 
 
 
 
 
-function $b40f12e420cd2891$export$f961f681246e659e() {
-    const ambientLight = new $2f0c752020c76b68$export$12896e353ebd9cc.deck.AmbientLight({
+function $1e51c74754ca699b$export$ecab656a5b486b67() {
+    const ambientLight = new $aa3185d2619292b0$export$e2253033e6e1df16.deck.AmbientLight({
         color: [
             255,
             255,
@@ -6885,7 +6946,7 @@ function $b40f12e420cd2891$export$f961f681246e659e() {
         ],
         intensity: 0.3
     });
-    const cameraLight = new $2f0c752020c76b68$export$12896e353ebd9cc.deck._CameraLight({
+    const cameraLight = new $aa3185d2619292b0$export$e2253033e6e1df16.deck._CameraLight({
         color: [
             255,
             255,
@@ -6899,7 +6960,7 @@ function $b40f12e420cd2891$export$f961f681246e659e() {
     //     intensity: 0.2
     //   });
     return [
-        new $2f0c752020c76b68$export$12896e353ebd9cc.deck.LightingEffect({
+        new $aa3185d2619292b0$export$e2253033e6e1df16.deck.LightingEffect({
             ambientLight: ambientLight,
             cameraLight: cameraLight
         })
@@ -6907,30 +6968,30 @@ function $b40f12e420cd2891$export$f961f681246e659e() {
 }
 
 
-var $407eabbb39689985$exports = {};
+var $753ee753424d27f3$exports = {};
 
-$parcel$export($407eabbb39689985$exports, "PresenterElement", () => $407eabbb39689985$export$82c3b66b9a0309ee);
-var $407eabbb39689985$export$82c3b66b9a0309ee;
+$parcel$export($753ee753424d27f3$exports, "PresenterElement", () => $753ee753424d27f3$export$79420be32f83a5b0);
+var $753ee753424d27f3$export$79420be32f83a5b0;
 (function(PresenterElement) {
     PresenterElement[PresenterElement["root"] = 0] = "root";
     PresenterElement[PresenterElement["gl"] = 1] = "gl";
     PresenterElement[PresenterElement["panel"] = 2] = "panel";
     PresenterElement[PresenterElement["legend"] = 3] = "legend";
     PresenterElement[PresenterElement["vegaControls"] = 4] = "vegaControls";
-})($407eabbb39689985$export$82c3b66b9a0309ee || ($407eabbb39689985$export$82c3b66b9a0309ee = {
+})($753ee753424d27f3$export$79420be32f83a5b0 || ($753ee753424d27f3$export$79420be32f83a5b0 = {
 }));
 
 
 
 
 
-const $d4a2d33a2ce3fae4$export$c7e39a54887e8f2c = (props)=>{
+const $3f8bb403fc935058$export$b0b33bcc0f604685 = (props)=>{
     const rows = [];
     const addRow = (row, i)=>{
-        const fn = $d4a2d33a2ce3fae4$var$symbolMap[row.symbol.shape];
+        const fn = $3f8bb403fc935058$var$symbolMap[row.symbol.shape];
         let jsx;
         if (fn) jsx = fn(row.symbol);
-        else jsx = $0bf1192cadf6b31c$export$2f8418d37d4320b9("span", null, "x");
+        else jsx = $1ba1ba975a1b16e7$export$c8a8987d4410bf2d("span", null, "x");
         rows.push({
             cells: [
                 {
@@ -6949,19 +7010,19 @@ const $d4a2d33a2ce3fae4$export$c7e39a54887e8f2c = (props)=>{
     );
     sorted.forEach((i)=>addRow(props.legend.rows[i], +i)
     );
-    if (sorted.length) return $0bf1192cadf6b31c$export$2f8418d37d4320b9($ff59b0d7f89aca0c$export$b168bb048906b6d9, {
+    if (sorted.length) return $1ba1ba975a1b16e7$export$c8a8987d4410bf2d($7bbc4e477cf1dda8$export$54ec01a60f47d33d, {
         rows: rows,
         rowClassName: "legend-row",
         onRowClick: (e, i)=>props.onClick(e, props.legend, i)
-    }, props.legend.title !== void 0 && $0bf1192cadf6b31c$export$2f8418d37d4320b9("tr", {
+    }, props.legend.title !== void 0 && $1ba1ba975a1b16e7$export$c8a8987d4410bf2d("tr", {
         onClick: (e)=>props.onClick(e, props.legend, null)
-    }, $0bf1192cadf6b31c$export$2f8418d37d4320b9("th", {
+    }, $1ba1ba975a1b16e7$export$c8a8987d4410bf2d("th", {
         colSpan: 2
     }, props.legend.title)));
 };
-const $d4a2d33a2ce3fae4$var$symbolMap = {
+const $3f8bb403fc935058$var$symbolMap = {
     square: function(symbol) {
-        return $0bf1192cadf6b31c$export$2f8418d37d4320b9("div", {
+        return $1ba1ba975a1b16e7$export$c8a8987d4410bf2d("div", {
             style: {
                 height: `${symbol.bounds.y2 - symbol.bounds.y1}px`,
                 width: `${symbol.bounds.x2 - symbol.bounds.x1}px`,
@@ -6977,97 +7038,96 @@ const $d4a2d33a2ce3fae4$var$symbolMap = {
 
 
 
-function $c4b7c36e509fd737$export$7fe042ac7fbb96a5(v3) {
+function $dd7cabd784132680$export$5accd073ebd18e1(v3) {
     let temp = -v3[1]; //negeative y to positive z
-    if (v3[0] === $1c19a15e6d55f62b$export$11e2f23c74a3e539) v3[0] = 0;
+    if (v3[0] === $f92b17f7c58b7db2$export$c25c42a6ee2ec894) v3[0] = 0;
     v3[1] = v3[2];
     v3[2] = temp;
 }
 
 
-const $e5679472beb08609$var$markStager = (options, stage, scene, x, y, groupType)=>{
-    $2f0c752020c76b68$export$12896e353ebd9cc.vega.sceneVisit(scene, function(item) {
-        var x1, y1, x2, y2;
-        x1 = item.x || 0;
-        y1 = item.y || 0;
-        x2 = item.x2 != null ? item.x2 : x1;
-        y2 = item.y2 != null ? item.y2 : y1;
-        const lineItem = $e5679472beb08609$var$styledLine(x1 + x, y1 + y, x2 + x, y2 + y, item.stroke, item.strokeWidth);
+const $815fc47e4dad6ae3$var$markStager = (options, stage, scene, x, y, groupType)=>{
+    $aa3185d2619292b0$export$e2253033e6e1df16.vega.sceneVisit(scene, function(item) {
+        const x1 = item.x || 0;
+        const y1 = item.y || 0;
+        const x2 = item.x2 != null ? item.x2 : x1;
+        const y2 = item.y2 != null ? item.y2 : y1;
+        const lineItem = $815fc47e4dad6ae3$var$styledLine(x1 + x, y1 + y, x2 + x, y2 + y, item.stroke, item.strokeWidth);
         if (item.mark.role === 'axis-tick') {
             if (options.currAxis.role === 'z') {
-                $c4b7c36e509fd737$export$7fe042ac7fbb96a5(lineItem.sourcePosition);
-                $c4b7c36e509fd737$export$7fe042ac7fbb96a5(lineItem.targetPosition);
+                $dd7cabd784132680$export$5accd073ebd18e1(lineItem.sourcePosition);
+                $dd7cabd784132680$export$5accd073ebd18e1(lineItem.targetPosition);
             }
             options.currAxis.ticks.push(lineItem);
         } else if (item.mark.role === 'axis-domain') {
             if (options.currAxis.role === 'z') {
-                $c4b7c36e509fd737$export$7fe042ac7fbb96a5(lineItem.sourcePosition);
-                $c4b7c36e509fd737$export$7fe042ac7fbb96a5(lineItem.targetPosition);
+                $dd7cabd784132680$export$5accd073ebd18e1(lineItem.sourcePosition);
+                $dd7cabd784132680$export$5accd073ebd18e1(lineItem.targetPosition);
             }
             options.currAxis.domain = lineItem;
         } else stage.gridLines.push(lineItem);
     });
 };
-function $e5679472beb08609$var$styledLine(x1, y1, x2, y2, stroke, strokeWidth) {
+function $815fc47e4dad6ae3$var$styledLine(x1, y1, x2, y2, stroke, strokeWidth) {
     const line = {
         sourcePosition: [
             x1,
             -y1,
-            $1c19a15e6d55f62b$export$11e2f23c74a3e539
+            $f92b17f7c58b7db2$export$c25c42a6ee2ec894
         ],
         targetPosition: [
             x2,
             -y2,
-            $1c19a15e6d55f62b$export$11e2f23c74a3e539
+            $f92b17f7c58b7db2$export$c25c42a6ee2ec894
         ],
-        color: $7654630391f879a6$export$286939df77fc306a(stroke),
+        color: $50dbc0324e10cd45$export$78ed65bc9abd64b1(stroke),
         strokeWidth: strokeWidth
     };
     return line;
 }
-function $e5679472beb08609$export$202f564ca6763eba(gx, gy, height, width, stroke, strokeWidth, diagonals = false) {
+function $815fc47e4dad6ae3$export$827f4ee28efc37(gx, gy, height, width, stroke, strokeWidth, diagonals = false) {
     const lines = [
-        $e5679472beb08609$var$styledLine(gx, gy, gx + width, gy, stroke, strokeWidth),
-        $e5679472beb08609$var$styledLine(gx + width, gy, gx + width, gy + height, stroke, strokeWidth),
-        $e5679472beb08609$var$styledLine(gx + width, gy + height, gx, gy + height, stroke, strokeWidth),
-        $e5679472beb08609$var$styledLine(gx, gy + height, gx, gy, stroke, strokeWidth)
+        $815fc47e4dad6ae3$var$styledLine(gx, gy, gx + width, gy, stroke, strokeWidth),
+        $815fc47e4dad6ae3$var$styledLine(gx + width, gy, gx + width, gy + height, stroke, strokeWidth),
+        $815fc47e4dad6ae3$var$styledLine(gx + width, gy + height, gx, gy + height, stroke, strokeWidth),
+        $815fc47e4dad6ae3$var$styledLine(gx, gy + height, gx, gy, stroke, strokeWidth)
     ];
     if (diagonals) {
-        lines.push($e5679472beb08609$var$styledLine(gx, gy, gx + width, gy + height, stroke, strokeWidth));
-        lines.push($e5679472beb08609$var$styledLine(gx, gy + height, gx + width, gy, stroke, strokeWidth));
+        lines.push($815fc47e4dad6ae3$var$styledLine(gx, gy, gx + width, gy + height, stroke, strokeWidth));
+        lines.push($815fc47e4dad6ae3$var$styledLine(gx, gy + height, gx + width, gy, stroke, strokeWidth));
     }
     return lines;
 }
-var $e5679472beb08609$export$9099ad97b570f7c = $e5679472beb08609$var$markStager;
+var $815fc47e4dad6ae3$export$2e2bcd8739ae039 = $815fc47e4dad6ae3$var$markStager;
 
 
 
 
 
-function $0828bcce4552e56e$export$497b736b228abfe4(presenter) {
-    const rootDiv = $0bf1192cadf6b31c$export$2f8418d37d4320b9("div", {
-        className: $0828bcce4552e56e$export$abef0c27bc20b102($407eabbb39689985$export$82c3b66b9a0309ee.root, presenter)
-    }, $0bf1192cadf6b31c$export$2f8418d37d4320b9("div", {
-        className: $0828bcce4552e56e$export$abef0c27bc20b102($407eabbb39689985$export$82c3b66b9a0309ee.gl, presenter),
+function $3846dcfdfcef687a$export$ba5a93ad8642dce4(presenter) {
+    const rootDiv = $1ba1ba975a1b16e7$export$c8a8987d4410bf2d("div", {
+        className: $3846dcfdfcef687a$export$2913c0c0b5623090($753ee753424d27f3$export$79420be32f83a5b0.root, presenter)
+    }, $1ba1ba975a1b16e7$export$c8a8987d4410bf2d("div", {
+        className: $3846dcfdfcef687a$export$2913c0c0b5623090($753ee753424d27f3$export$79420be32f83a5b0.gl, presenter),
         style: {
-            minHeight: $1c19a15e6d55f62b$export$96fb5e832e19efcf,
-            minWidth: $1c19a15e6d55f62b$export$45fcbe2b700352a9
+            minHeight: $f92b17f7c58b7db2$export$a43cf604e12f3b17,
+            minWidth: $f92b17f7c58b7db2$export$ee148fbbe8357dd2
         }
-    }), $0bf1192cadf6b31c$export$2f8418d37d4320b9("div", {
-        className: $0828bcce4552e56e$export$abef0c27bc20b102($407eabbb39689985$export$82c3b66b9a0309ee.panel, presenter)
-    }, $0bf1192cadf6b31c$export$2f8418d37d4320b9("div", {
-        className: $0828bcce4552e56e$export$abef0c27bc20b102($407eabbb39689985$export$82c3b66b9a0309ee.vegaControls, presenter)
-    }), $0bf1192cadf6b31c$export$2f8418d37d4320b9("div", {
-        className: $0828bcce4552e56e$export$abef0c27bc20b102($407eabbb39689985$export$82c3b66b9a0309ee.legend, presenter)
+    }), $1ba1ba975a1b16e7$export$c8a8987d4410bf2d("div", {
+        className: $3846dcfdfcef687a$export$2913c0c0b5623090($753ee753424d27f3$export$79420be32f83a5b0.panel, presenter)
+    }, $1ba1ba975a1b16e7$export$c8a8987d4410bf2d("div", {
+        className: $3846dcfdfcef687a$export$2913c0c0b5623090($753ee753424d27f3$export$79420be32f83a5b0.vegaControls, presenter)
+    }), $1ba1ba975a1b16e7$export$c8a8987d4410bf2d("div", {
+        className: $3846dcfdfcef687a$export$2913c0c0b5623090($753ee753424d27f3$export$79420be32f83a5b0.legend, presenter)
     })));
-    $0bf1192cadf6b31c$export$294609abb1df04a5(rootDiv, presenter.el);
+    $1ba1ba975a1b16e7$export$186d02efde07ef98(rootDiv, presenter.el);
 }
-function $0828bcce4552e56e$export$abef0c27bc20b102(type, presenter) {
-    return `${presenter.style.cssPrefix}${$407eabbb39689985$export$82c3b66b9a0309ee[type]}`;
+function $3846dcfdfcef687a$export$2913c0c0b5623090(type, presenter) {
+    return `${presenter.style.cssPrefix}${$753ee753424d27f3$export$79420be32f83a5b0[type]}`;
 }
 
 
-function $6fdb0985cb4e7c3f$export$1a8f9f71a04e62a8(allocatedSize, empty, cubes) {
+function $e1a1227365f38150$export$9a79ca9001afcc6d(allocatedSize, empty, cubes) {
     const patched = new Array(allocatedSize);
     patched.fill(empty);
     cubes.forEach((cube)=>patched[cube.ordinal] = cube
@@ -7077,7 +7137,7 @@ function $6fdb0985cb4e7c3f$export$1a8f9f71a04e62a8(allocatedSize, empty, cubes) 
 
 
 
-const $d169b7201589e8a3$var$legendMap = {
+const $7b9674d67fb22463$var$legendMap = {
     'legend-title': function(legend, textItem) {
         legend.title = textItem.text;
     },
@@ -7103,23 +7163,23 @@ const $d169b7201589e8a3$var$legendMap = {
         row.value = label.datum.value;
     }
 };
-const $d169b7201589e8a3$var$markStager = (options, stage, scene, x, y, groupType)=>{
-    $2f0c752020c76b68$export$12896e353ebd9cc.vega.sceneVisit(scene, function(item) {
-        const fn = $d169b7201589e8a3$var$legendMap[item.mark.role];
+const $7b9674d67fb22463$var$markStager = (options, stage, scene, x, y, groupType)=>{
+    $aa3185d2619292b0$export$e2253033e6e1df16.vega.sceneVisit(scene, function(item) {
+        const fn = $7b9674d67fb22463$var$legendMap[item.mark.role];
         if (fn) fn(stage.legend, item);
     });
 };
-var $d169b7201589e8a3$export$9099ad97b570f7c = $d169b7201589e8a3$var$markStager;
+var $7b9674d67fb22463$export$2e2bcd8739ae039 = $7b9674d67fb22463$var$markStager;
 
 
 
 
 
-const $6815fe36935b3c27$var$markStager = (options, stage, scene, x, y, groupType)=>{
-    $2f0c752020c76b68$export$12896e353ebd9cc.vega.sceneVisit(scene, function(item) {
+const $51c44c36c1601a31$var$markStager = (options, stage, scene, x, y, groupType)=>{
+    $aa3185d2619292b0$export$e2253033e6e1df16.vega.sceneVisit(scene, function(item) {
         //for orthographic (2d) - always use 0 or else Deck will not show them
         const z = stage.view === '2d' ? 0 : item.z || 0;
-        const depth = (stage.view === '2d' ? 0 : item.depth || 0) + $1c19a15e6d55f62b$export$86fcdd5f967cff7a;
+        const depth = (stage.view === '2d' ? 0 : item.depth || 0) + $f92b17f7c58b7db2$export$d90a7322036a432e;
         //change direction of y from SVG to GL
         const ty = -1;
         let ordinal = options.assignCubeOrdinal(item.datum);
@@ -7138,7 +7198,7 @@ const $6815fe36935b3c27$var$markStager = (options, stage, scene, x, y, groupType
                     ty * (y + (item.y || 0)) - item.height,
                     z
                 ],
-                color: $7654630391f879a6$export$286939df77fc306a(item.fill) || options.defaultCubeColor || [
+                color: $50dbc0324e10cd45$export$78ed65bc9abd64b1(item.fill) || options.defaultCubeColor || [
                     128,
                     128,
                     128,
@@ -7150,14 +7210,14 @@ const $6815fe36935b3c27$var$markStager = (options, stage, scene, x, y, groupType
         }
     });
 };
-var $6815fe36935b3c27$export$9099ad97b570f7c = $6815fe36935b3c27$var$markStager;
+var $51c44c36c1601a31$export$2e2bcd8739ae039 = $51c44c36c1601a31$var$markStager;
 
 
 
 
 //change direction of y from SVG to GL
-const $665e38871904fb3d$var$ty = -1;
-const $665e38871904fb3d$var$markStager = (options, stage, scene, x, y, groupType)=>{
+const $9487e67f379a0115$var$ty = -1;
+const $9487e67f379a0115$var$markStager = (options, stage, scene, x, y, groupType)=>{
     const g = Object.assign({
         opacity: 1,
         strokeOpacity: 1,
@@ -7165,10 +7225,10 @@ const $665e38871904fb3d$var$markStager = (options, stage, scene, x, y, groupType
     }, scene.items[0]);
     const path = {
         strokeWidth: g.strokeWidth,
-        strokeColor: $7654630391f879a6$export$286939df77fc306a(g.stroke),
+        strokeColor: $50dbc0324e10cd45$export$78ed65bc9abd64b1(g.stroke),
         positions: scene.items.map((it)=>[
                 it.x,
-                $665e38871904fb3d$var$ty * it.y,
+                $9487e67f379a0115$var$ty * it.y,
                 it.z || 0
             ]
         )
@@ -7177,52 +7237,52 @@ const $665e38871904fb3d$var$markStager = (options, stage, scene, x, y, groupType
     path.strokeColor[3] *= g.opacity;
     stage.pathData.push(path);
 };
-var $665e38871904fb3d$export$9099ad97b570f7c = $665e38871904fb3d$var$markStager;
+var $9487e67f379a0115$export$2e2bcd8739ae039 = $9487e67f379a0115$var$markStager;
 
 
 
 
 
-const $a595c90ef2811732$var$markStager = (options, stage, scene, x, y, groupType)=>{
+const $cba04dabf50157d4$var$markStager = (options, stage, scene, x, y, groupType)=>{
     //scale Deck.Gl text to Vega size
     const fontScale = 1;
     //change direction of y from SVG to GL
     const ty = -1;
-    $2f0c752020c76b68$export$12896e353ebd9cc.vega.sceneVisit(scene, function(item) {
+    $aa3185d2619292b0$export$e2253033e6e1df16.vega.sceneVisit(scene, function(item) {
         if (!item.text) return;
         const size = item.fontSize * fontScale;
-        const alignmentBaseline = $a595c90ef2811732$var$convertBaseline(item.baseline);
+        const alignmentBaseline = $cba04dabf50157d4$var$convertBaseline(item.baseline);
         const yOffset = alignmentBaseline === 'top' ? item.fontSize / 2 : 0; //fixup to get tick text correct
         const textItem = {
-            color: $7654630391f879a6$export$286939df77fc306a(item.fill),
-            text: item.limit === undefined ? item.text : $2f0c752020c76b68$export$12896e353ebd9cc.vega.truncate(item.text, item.limit, 'right', item.ellipsis || '...'),
+            color: $50dbc0324e10cd45$export$78ed65bc9abd64b1(item.fill),
+            text: item.limit === undefined ? item.text : $aa3185d2619292b0$export$e2253033e6e1df16.vega.truncate(item.text, item.limit, 'right', item.ellipsis || '...'),
             position: [
                 x + (item.x || 0),
                 ty * (y + (item.y || 0) + yOffset),
                 0
             ],
             size: size,
-            angle: $a595c90ef2811732$var$convertAngle(item.angle),
-            textAnchor: $a595c90ef2811732$var$convertAlignment(item.align),
+            angle: $cba04dabf50157d4$var$convertAngle(item.angle),
+            textAnchor: $cba04dabf50157d4$var$convertAlignment(item.align),
             alignmentBaseline: alignmentBaseline,
             metaData: item.metaData
         };
         if (item.mark.role === 'axis-label') {
             const tickText = textItem;
             tickText.value = item.datum.value;
-            if (options.currAxis.role === 'z') $c4b7c36e509fd737$export$7fe042ac7fbb96a5(tickText.position);
+            if (options.currAxis.role === 'z') $dd7cabd784132680$export$5accd073ebd18e1(tickText.position);
             options.currAxis.tickText.push(tickText);
         } else if (item.mark.role === 'axis-title') {
-            if (options.currAxis.role === 'z') $c4b7c36e509fd737$export$7fe042ac7fbb96a5(textItem.position);
+            if (options.currAxis.role === 'z') $dd7cabd784132680$export$5accd073ebd18e1(textItem.position);
             options.currAxis.title = textItem;
         } else stage.textData.push(textItem);
     });
 };
-function $a595c90ef2811732$var$convertAngle(vegaTextAngle) {
+function $cba04dabf50157d4$var$convertAngle(vegaTextAngle) {
     if (vegaTextAngle && !isNaN(vegaTextAngle)) return 360 - vegaTextAngle;
     return 0;
 }
-function $a595c90ef2811732$var$convertAlignment(textAlign) {
+function $cba04dabf50157d4$var$convertAlignment(textAlign) {
     switch(textAlign){
         case 'center':
             return 'middle';
@@ -7233,20 +7293,20 @@ function $a595c90ef2811732$var$convertAlignment(textAlign) {
     }
     return 'start';
 }
-function $a595c90ef2811732$var$convertBaseline(baseline) {
+function $cba04dabf50157d4$var$convertBaseline(baseline) {
     switch(baseline){
         case 'middle':
             return 'center';
     }
     return baseline || 'bottom';
 }
-var $a595c90ef2811732$export$9099ad97b570f7c = $a595c90ef2811732$var$markStager;
+var $cba04dabf50157d4$export$2e2bcd8739ae039 = $cba04dabf50157d4$var$markStager;
 
 
 
 //change direction of y from SVG to GL
-const $47e1e29a0d383aee$var$ty = -1;
-const $47e1e29a0d383aee$var$markStager = (options, stage, scene, x, y, groupType)=>{
+const $8f40a25657c6d804$var$ty = -1;
+const $8f40a25657c6d804$var$markStager = (options, stage, scene, x, y, groupType)=>{
     const g = Object.assign({
         fillOpacity: 1,
         opacity: 1,
@@ -7265,10 +7325,10 @@ const $47e1e29a0d383aee$var$markStager = (options, stage, scene, x, y, groupType
         }, item);
         return [
             item.x,
-            $47e1e29a0d383aee$var$ty * item.y,
+            $8f40a25657c6d804$var$ty * item.y,
             item.z,
             item.x2,
-            $47e1e29a0d383aee$var$ty * item.y2,
+            $8f40a25657c6d804$var$ty * item.y2,
             item.z2
         ];
     });
@@ -7294,14 +7354,14 @@ const $47e1e29a0d383aee$var$markStager = (options, stage, scene, x, y, groupType
     });
     positions.push(startpoint);
     const polygon = {
-        fillColor: $7654630391f879a6$export$286939df77fc306a(g.fill) || [
+        fillColor: $50dbc0324e10cd45$export$78ed65bc9abd64b1(g.fill) || [
             0,
             0,
             0,
             0
         ],
         positions: positions,
-        strokeColor: $7654630391f879a6$export$286939df77fc306a(g.stroke) || [
+        strokeColor: $50dbc0324e10cd45$export$78ed65bc9abd64b1(g.stroke) || [
             0,
             0,
             0,
@@ -7316,74 +7376,74 @@ const $47e1e29a0d383aee$var$markStager = (options, stage, scene, x, y, groupType
     polygon.strokeColor[3] *= g.opacity;
     stage.polygonData.push(polygon);
 };
-var $47e1e29a0d383aee$export$9099ad97b570f7c = $47e1e29a0d383aee$var$markStager;
+var $8f40a25657c6d804$export$2e2bcd8739ae039 = $8f40a25657c6d804$var$markStager;
 
 
 
 
 
-var $07e63b8975cca4b6$export$c4789be062e8736;
+var $e1e96d6d81df6850$export$d460f747b73abb10;
 (function(GroupType) {
     GroupType[GroupType["none"] = 0] = "none";
     GroupType[GroupType["legend"] = 1] = "legend";
     GroupType[GroupType["xAxis"] = 2] = "xAxis";
     GroupType[GroupType["yAxis"] = 3] = "yAxis";
     GroupType[GroupType["zAxis"] = 4] = "zAxis";
-})($07e63b8975cca4b6$export$c4789be062e8736 || ($07e63b8975cca4b6$export$c4789be062e8736 = {
+})($e1e96d6d81df6850$export$d460f747b73abb10 || ($e1e96d6d81df6850$export$d460f747b73abb10 = {
 }));
 
 
-function $20556b6986ba34c2$var$getOrientItem(group) {
+function $11061d343abd81ad$var$getOrientItem(group) {
     if (group.orient) return group;
     return group.datum;
 }
-function $20556b6986ba34c2$var$convertGroupRole(group, options) {
-    if (group.mark.role === 'legend') return $07e63b8975cca4b6$export$c4789be062e8736.legend;
+function $11061d343abd81ad$var$convertGroupRole(group, options) {
+    if (group.mark.role === 'legend') return $e1e96d6d81df6850$export$d460f747b73abb10.legend;
     if (group.mark.role === 'axis') {
-        if (group.mark.zindex === options.zAxisZindex && options.zAxisZindex !== undefined) return $07e63b8975cca4b6$export$c4789be062e8736.zAxis;
-        const orientItem = $20556b6986ba34c2$var$getOrientItem(group);
+        if (group.mark.zindex === options.zAxisZindex && options.zAxisZindex !== undefined) return $e1e96d6d81df6850$export$d460f747b73abb10.zAxis;
+        const orientItem = $11061d343abd81ad$var$getOrientItem(group);
         if (orientItem) switch(orientItem.orient){
             case 'bottom':
             case 'top':
-                return $07e63b8975cca4b6$export$c4789be062e8736.xAxis;
+                return $e1e96d6d81df6850$export$d460f747b73abb10.xAxis;
             case 'left':
             case 'right':
-                return $07e63b8975cca4b6$export$c4789be062e8736.yAxis;
+                return $e1e96d6d81df6850$export$d460f747b73abb10.yAxis;
         }
     }
 }
-const $20556b6986ba34c2$var$group = (options, stage, scene, x, y, groupType)=>{
-    $2f0c752020c76b68$export$12896e353ebd9cc.vega.sceneVisit(scene, function(g) {
+const $11061d343abd81ad$var$group = (options, stage, scene, x, y, groupType)=>{
+    $aa3185d2619292b0$export$e2253033e6e1df16.vega.sceneVisit(scene, function(g) {
         const gx = g.x || 0, gy = g.y || 0;
-        if (g.context && g.context.background && !stage.backgroundColor) stage.backgroundColor = $7654630391f879a6$export$286939df77fc306a(g.context.background);
+        if (g.context && g.context.background && !stage.backgroundColor) stage.backgroundColor = $50dbc0324e10cd45$export$78ed65bc9abd64b1(g.context.background);
         if (g.stroke) {
             const facetRect = {
                 datum: g.datum,
-                lines: $e5679472beb08609$export$202f564ca6763eba(gx + x, gy + y, g.height, g.width, g.stroke, $1c19a15e6d55f62b$export$7d8384a7f1e55576)
+                lines: $815fc47e4dad6ae3$export$827f4ee28efc37(gx + x, gy + y, g.height, g.width, g.stroke, $f92b17f7c58b7db2$export$62471df653c738cc)
             };
             stage.facets.push(facetRect);
         }
-        groupType = $20556b6986ba34c2$var$convertGroupRole(g, options) || groupType;
-        $20556b6986ba34c2$var$setCurrentAxis(options, stage, groupType);
+        groupType = $11061d343abd81ad$var$convertGroupRole(g, options) || groupType;
+        $11061d343abd81ad$var$setCurrentAxis(options, stage, groupType);
         // draw group contents
-        $2f0c752020c76b68$export$12896e353ebd9cc.vega.sceneVisit(g, function(item) {
-            $20556b6986ba34c2$var$mainStager(options, stage, item, gx + x, gy + y, groupType);
+        $aa3185d2619292b0$export$e2253033e6e1df16.vega.sceneVisit(g, function(item) {
+            $11061d343abd81ad$var$mainStager(options, stage, item, gx + x, gy + y, groupType);
         });
     });
 };
-function $20556b6986ba34c2$var$setCurrentAxis(options, stage, groupType) {
+function $11061d343abd81ad$var$setCurrentAxis(options, stage, groupType) {
     let axes;
     let role;
     switch(groupType){
-        case $07e63b8975cca4b6$export$c4789be062e8736.xAxis:
+        case $e1e96d6d81df6850$export$d460f747b73abb10.xAxis:
             axes = stage.axes.x;
             role = 'x';
             break;
-        case $07e63b8975cca4b6$export$c4789be062e8736.yAxis:
+        case $e1e96d6d81df6850$export$d460f747b73abb10.yAxis:
             axes = stage.axes.y;
             role = 'y';
             break;
-        case $07e63b8975cca4b6$export$c4789be062e8736.zAxis:
+        case $e1e96d6d81df6850$export$d460f747b73abb10.zAxis:
             axes = stage.axes.z;
             role = 'z';
             break;
@@ -7398,37 +7458,37 @@ function $20556b6986ba34c2$var$setCurrentAxis(options, stage, groupType) {
     };
     axes.push(options.currAxis);
 }
-const $20556b6986ba34c2$var$markStagers = {
-    group: $20556b6986ba34c2$var$group,
-    legend: $d169b7201589e8a3$export$9099ad97b570f7c,
-    rect: $6815fe36935b3c27$export$9099ad97b570f7c,
-    rule: $e5679472beb08609$export$9099ad97b570f7c,
-    line: $665e38871904fb3d$export$9099ad97b570f7c,
-    area: $47e1e29a0d383aee$export$9099ad97b570f7c,
-    text: $a595c90ef2811732$export$9099ad97b570f7c
+const $11061d343abd81ad$var$markStagers = {
+    group: $11061d343abd81ad$var$group,
+    legend: $7b9674d67fb22463$export$2e2bcd8739ae039,
+    rect: $51c44c36c1601a31$export$2e2bcd8739ae039,
+    rule: $815fc47e4dad6ae3$export$2e2bcd8739ae039,
+    line: $9487e67f379a0115$export$2e2bcd8739ae039,
+    area: $8f40a25657c6d804$export$2e2bcd8739ae039,
+    text: $cba04dabf50157d4$export$2e2bcd8739ae039
 };
-var $20556b6986ba34c2$var$mainStager = (options, stage, scene, x, y, groupType)=>{
-    if (scene.marktype !== 'group' && groupType === $07e63b8975cca4b6$export$c4789be062e8736.legend) $d169b7201589e8a3$export$9099ad97b570f7c(options, stage, scene, x, y, groupType);
+const $11061d343abd81ad$var$mainStager = (options, stage, scene, x, y, groupType)=>{
+    if (scene.marktype !== 'group' && groupType === $e1e96d6d81df6850$export$d460f747b73abb10.legend) $7b9674d67fb22463$export$2e2bcd8739ae039(options, stage, scene, x, y, groupType);
     else {
-        var markStager = $20556b6986ba34c2$var$markStagers[scene.marktype];
+        const markStager = $11061d343abd81ad$var$markStagers[scene.marktype];
         if (markStager) markStager(options, stage, scene, x, y, groupType);
     }
 };
-function $20556b6986ba34c2$export$d22b5f8ff2b9782(options, stage, scene) {
-    $20556b6986ba34c2$var$mainStager(options, stage, scene, 0, 0, null);
-    $20556b6986ba34c2$var$sortAxis(stage.axes.x, 0);
-    $20556b6986ba34c2$var$sortAxis(stage.axes.y, 1);
+function $11061d343abd81ad$export$d78988dba6734aaa(options, stage, scene) {
+    $11061d343abd81ad$var$mainStager(options, stage, scene, 0, 0, null);
+    $11061d343abd81ad$var$sortAxis(stage.axes.x, 0);
+    $11061d343abd81ad$var$sortAxis(stage.axes.y, 1);
 }
-function $20556b6986ba34c2$var$sortAxis(axes, dim) {
+function $11061d343abd81ad$var$sortAxis(axes, dim) {
     axes.forEach((axis)=>{
-        if (axis.domain) $20556b6986ba34c2$var$orderDomain(axis.domain, dim);
+        if (axis.domain) $11061d343abd81ad$var$orderDomain(axis.domain, dim);
         axis.ticks.sort((a, b)=>a.sourcePosition[dim] - b.sourcePosition[dim]
         );
         axis.tickText.sort((a, b)=>a.position[dim] - b.position[dim]
         );
     });
 }
-function $20556b6986ba34c2$var$orderDomain(domain, dim) {
+function $11061d343abd81ad$var$orderDomain(domain, dim) {
     if (domain.sourcePosition[dim] > domain.targetPosition[dim]) {
         const temp = domain.targetPosition;
         domain.targetPosition = domain.sourcePosition;
@@ -7437,13 +7497,13 @@ function $20556b6986ba34c2$var$orderDomain(domain, dim) {
 }
 
 
-const $0d53c7f57e8e432c$export$65873ae0e87425e6 = [
+const $594341a651cbc75e$export$19551db75f175e3 = [
     'target',
     'rotationOrbit',
     'rotationX',
     'zoom'
 ];
-function $0d53c7f57e8e432c$export$9dd8668346b30dbc(height, width, view) {
+function $594341a651cbc75e$export$cf597f89e136a2d7(height, width, view) {
     const target = [
         width / 2,
         -height / 2,
@@ -7465,15 +7525,15 @@ function $0d53c7f57e8e432c$export$9dd8668346b30dbc(height, width, view) {
 
 
 
-class $f11b1222d18f5aff$export$67eca7ff2a7e9e8e {
+class $586113946f2266a2$export$893c88c42e3630f9 {
     /**
      * Instantiate a new Presenter.
      * @param el Parent HTMLElement to present within.
      * @param style Optional PresenterStyle styling options.
      */ constructor(el, style){
         this.el = el;
-        this.style = $951ee4546fb8e7ae$export$5cce22d6f6e7c745($1c19a15e6d55f62b$export$6b65f26458e4302, style);
-        $0828bcce4552e56e$export$497b736b228abfe4(this);
+        this.style = $b225001aee342575$export$6969335ea1e4e77c($f92b17f7c58b7db2$export$83ac8f5ae8122afc, style);
+        $3846dcfdfcef687a$export$ba5a93ad8642dce4(this);
         this._last = {
             view: null,
             height: null,
@@ -7519,7 +7579,7 @@ class $f11b1222d18f5aff$export$67eca7ff2a7e9e8e {
      * Retrieve a sub-element of the rendered output.
      * @param type PresenterElement type of the HTMLElement to retrieve.
      */ getElement(type) {
-        const elements = this.el.getElementsByClassName($0828bcce4552e56e$export$abef0c27bc20b102(type, this));
+        const elements = this.el.getElementsByClassName($3846dcfdfcef687a$export$2913c0c0b5623090(type, this));
         if (elements && elements.length) return elements[0];
     }
     /**
@@ -7542,17 +7602,17 @@ class $f11b1222d18f5aff$export$67eca7ff2a7e9e8e {
         };
         //determine if this is a vega scene
         if (scene.marktype) {
-            stage = $1c19a15e6d55f62b$export$e35daa7ba55906d8(scene.view);
-            $20556b6986ba34c2$export$d22b5f8ff2b9782(options, stage, scene);
+            stage = $f92b17f7c58b7db2$export$afa8810fbe5c2601(scene.view);
+            $11061d343abd81ad$export$d78988dba6734aaa(options, stage, scene);
         } else stage = sceneOrStage;
         if (!this.deckgl) {
-            const classes = $9cd1d8acd3e8d45d$export$ab3e167748757028({
+            const classes = $34af937a047fac77$export$cc8b65d27ce6adb1({
                 doubleClickHandler: ()=>{
                     this.homeCamera();
                 }
             });
             this.OrbitControllerClass = classes.OrbitControllerClass;
-            const initialViewState = $0d53c7f57e8e432c$export$9dd8668346b30dbc(height, width, stage.view);
+            const initialViewState = $594341a651cbc75e$export$cf597f89e136a2d7(height, width, stage.view);
             let glOptions;
             if (config && config.preserveDrawingBuffer) glOptions = {
                 preserveDrawingBuffer: true
@@ -7561,16 +7621,16 @@ class $f11b1222d18f5aff$export$67eca7ff2a7e9e8e {
                 glOptions: glOptions,
                 height: null,
                 width: null,
-                effects: $b40f12e420cd2891$export$f961f681246e659e(),
+                effects: $1e51c74754ca699b$export$ecab656a5b486b67(),
                 layers: [],
                 onClick: config && config.onLayerClick,
                 views: [
-                    new $2f0c752020c76b68$export$12896e353ebd9cc.deck.OrbitView({
-                        controller: $2f0c752020c76b68$export$12896e353ebd9cc.deck.OrbitController
+                    new $aa3185d2619292b0$export$e2253033e6e1df16.deck.OrbitView({
+                        controller: $aa3185d2619292b0$export$e2253033e6e1df16.deck.OrbitController
                     })
                 ],
                 initialViewState: initialViewState,
-                container: this.getElement($407eabbb39689985$export$82c3b66b9a0309ee.gl),
+                container: this.getElement($753ee753424d27f3$export$79420be32f83a5b0.gl),
                 getCursor: (interactiveState)=>{
                     if (interactiveState.onText || interactiveState.onAxisSelection) return 'pointer';
                     else if (interactiveState.onCube) return 'default';
@@ -7578,7 +7638,7 @@ class $f11b1222d18f5aff$export$67eca7ff2a7e9e8e {
                 }
             };
             if (stage.backgroundColor) deckProps.style = {
-                'background-color': $7654630391f879a6$export$303cc9cbd0520953(stage.backgroundColor)
+                'background-color': $50dbc0324e10cd45$export$f86d83653e5a505e(stage.backgroundColor)
             };
             this.deckgl = new classes.DeckGL_Class(deckProps);
         }
@@ -7594,15 +7654,15 @@ class $f11b1222d18f5aff$export$67eca7ff2a7e9e8e {
                     0
                 ] // possibly a bug in Deck.gl? set color to invisible.
             };
-            stage.cubeData = $6fdb0985cb4e7c3f$export$1a8f9f71a04e62a8(cubeCount, empty, stage.cubeData);
+            stage.cubeData = $e1a1227365f38150$export$9a79ca9001afcc6d(cubeCount, empty, stage.cubeData);
         }
         this.setDeckProps(stage, height, width, cubeCount, config);
-        const a = $0bf1192cadf6b31c$export$1b18789f888bc242();
-        $0bf1192cadf6b31c$export$294609abb1df04a5($d4a2d33a2ce3fae4$export$c7e39a54887e8f2c({
+        const a = $1ba1ba975a1b16e7$export$5ec2c407fb44f02();
+        $1ba1ba975a1b16e7$export$186d02efde07ef98($3f8bb403fc935058$export$b0b33bcc0f604685({
             legend: stage.legend,
             onClick: config && config.onLegendClick
-        }), this.getElement($407eabbb39689985$export$82c3b66b9a0309ee.legend));
-        $0bf1192cadf6b31c$export$86621cf2b9b16a69(a);
+        }), this.getElement($753ee753424d27f3$export$79420be32f83a5b0.legend));
+        $1ba1ba975a1b16e7$export$7d007ff58288f238(a);
         if (config && config.onPresent) config.onPresent();
     }
     /**
@@ -7615,16 +7675,16 @@ class $f11b1222d18f5aff$export$67eca7ff2a7e9e8e {
         }, this._last.stage), stage);
         this.setDeckProps(newStage, this._last.height, this._last.width, this._last.cubeCount, modifyConfig);
     }
-    isNewBounds(view, height, width, cubeCount) {
+    isNewBounds(view, height1, width1, cubeCount) {
         const lastBounds = this.lastBounds();
         for(let prop in lastBounds){
             if (lastBounds[prop] === null) return true;
         }
         const newBounds = {
             cubeCount: cubeCount,
-            height: height,
+            height: height1,
             view: view,
-            width: width
+            width: width1
         };
         for(let prop1 in lastBounds){
             if (lastBounds[prop1] !== newBounds[prop1]) return true;
@@ -7639,26 +7699,26 @@ class $f11b1222d18f5aff$export$67eca7ff2a7e9e8e {
             width: width
         };
     }
-    setDeckProps(stage, height, width, cubeCount, modifyConfig) {
-        const config = $951ee4546fb8e7ae$export$5cce22d6f6e7c745($1c19a15e6d55f62b$export$95ceab4f757f40ae, modifyConfig);
-        const newBounds = this.isNewBounds(stage.view, height, width, cubeCount);
+    setDeckProps(stage1, height2, width2, cubeCount1, modifyConfig1) {
+        const config = $b225001aee342575$export$6969335ea1e4e77c($f92b17f7c58b7db2$export$200f593236aebbdc, modifyConfig1);
+        const newBounds = this.isNewBounds(stage1.view, height2, width2, cubeCount1);
         //let lightSettings = this.style.lightSettings[stage.view];
-        let lightingMix = stage.view === '3d' ? 1 : 0;
+        let lightingMix = stage1.view === '3d' ? 1 : 0;
         let linearInterpolator;
         //choose the current OrbitView viewstate if possible
         let viewState = this.deckgl.viewState && Object.keys(this.deckgl.viewState).length && this.deckgl.viewState.OrbitView || this.deckgl.props.viewState;
         if (!viewState || newBounds || config.shouldViewstateTransition && config.shouldViewstateTransition()) {
             let newViewStateTarget = true;
             if (config && config.onTargetViewState) {
-                const result = config.onTargetViewState(height, width);
-                height = result.height;
-                width = result.width;
+                const result = config.onTargetViewState(height2, width2);
+                height2 = result.height;
+                width2 = result.width;
                 if (result.newViewStateTarget !== undefined) newViewStateTarget = result.newViewStateTarget;
             }
-            if (!viewState || newViewStateTarget) viewState = $0d53c7f57e8e432c$export$9dd8668346b30dbc(height, width, stage.view);
-            const oldCubeLayer = $22297b1890eb4722$export$64c4e13ca1f096d(this.deckgl.props);
+            if (!viewState || newViewStateTarget) viewState = $594341a651cbc75e$export$cf597f89e136a2d7(height2, width2, stage1.view);
+            const oldCubeLayer = $96e705a481cefebf$export$ccecd364047ec381(this.deckgl.props);
             if (oldCubeLayer) {
-                linearInterpolator = new $3e04537bdeb7ed01$export$d12ed2a17cdbd6b6($0d53c7f57e8e432c$export$65873ae0e87425e6);
+                linearInterpolator = new $70855a91bf04cf42$export$19db461e577de3cc($594341a651cbc75e$export$19551db75f175e3);
                 linearInterpolator.layerStartProps = {
                     lightingMix: oldCubeLayer.props.lightingMix
                 };
@@ -7666,25 +7726,25 @@ class $f11b1222d18f5aff$export$67eca7ff2a7e9e8e {
                     lightingMix: lightingMix
                 };
                 viewState.transitionDuration = config.transitionDurations.view;
-                viewState.transitionEasing = $ce5538ade1fb7855$export$7f4df3f7510fa304;
+                viewState.transitionEasing = $65ec70cb7a1acea0$export$24c5ac7c37452e7d;
                 viewState.transitionInterpolator = linearInterpolator;
             }
-            stage.view;
+            stage1.view;
         }
-        const guideLines = this._showGuides && $e5679472beb08609$export$202f564ca6763eba(0, 0, height, width, '#0f0', 1, true);
-        config.preLayer && config.preLayer(stage);
-        const layers = $22297b1890eb4722$export$9b3c8e41de401a43(this, config, stage, /*lightSettings*/ null, lightingMix, linearInterpolator, guideLines);
+        const guideLines = this._showGuides && $815fc47e4dad6ae3$export$827f4ee28efc37(0, 0, height2, width2, '#0f0', 1, true);
+        config.preLayer && config.preLayer(stage1);
+        const layers = $96e705a481cefebf$export$61f6a9c831786408(this, config, stage1, /*lightSettings*/ null, lightingMix, linearInterpolator, guideLines);
         const deckProps = {
-            effects: $b40f12e420cd2891$export$f961f681246e659e(),
+            effects: $1e51c74754ca699b$export$ecab656a5b486b67(),
             views: [
-                new $2f0c752020c76b68$export$12896e353ebd9cc.deck.OrbitView({
-                    controller: $2f0c752020c76b68$export$12896e353ebd9cc.deck.OrbitController
+                new $aa3185d2619292b0$export$e2253033e6e1df16.deck.OrbitView({
+                    controller: $aa3185d2619292b0$export$e2253033e6e1df16.deck.OrbitController
                 })
             ],
             initialViewState: viewState,
             layers: layers
         };
-        if (config && config.preStage) config.preStage(stage, deckProps);
+        if (config && config.preStage) config.preStage(stage1, deckProps);
         requestAnimationFrame(()=>this.deckgl.setProps(Object.assign(Object.assign({
             }, deckProps), {
                 onAfterRender: ()=>{
@@ -7692,13 +7752,13 @@ class $f11b1222d18f5aff$export$67eca7ff2a7e9e8e {
                 }
             }))
         );
-        delete stage.cubeData;
+        delete stage1.cubeData;
         this._last = {
-            cubeCount: cubeCount,
-            height: height,
-            width: width,
-            stage: stage,
-            view: stage.view
+            cubeCount: cubeCount1,
+            height: height2,
+            width: width2,
+            stage: stage1,
+            view: stage1.view
         };
     }
     canvasToDataURL() {
@@ -7713,12 +7773,12 @@ class $f11b1222d18f5aff$export$67eca7ff2a7e9e8e {
     /**
      * Home the camera to the last initial position.
      */ homeCamera() {
-        const viewState = $0d53c7f57e8e432c$export$9dd8668346b30dbc(this._last.height, this._last.width, this._last.view);
-        viewState.transitionDuration = $1c19a15e6d55f62b$export$95ceab4f757f40ae.transitionDurations.view;
-        viewState.transitionEasing = $ce5538ade1fb7855$export$7f4df3f7510fa304;
-        viewState.transitionInterpolator = new $3e04537bdeb7ed01$export$d12ed2a17cdbd6b6($0d53c7f57e8e432c$export$65873ae0e87425e6);
+        const viewState = $594341a651cbc75e$export$cf597f89e136a2d7(this._last.height, this._last.width, this._last.view);
+        viewState.transitionDuration = $f92b17f7c58b7db2$export$200f593236aebbdc.transitionDurations.view;
+        viewState.transitionEasing = $65ec70cb7a1acea0$export$24c5ac7c37452e7d;
+        viewState.transitionInterpolator = new $70855a91bf04cf42$export$19db461e577de3cc($594341a651cbc75e$export$19551db75f175e3);
         const deckProps = {
-            effects: $b40f12e420cd2891$export$f961f681246e659e(),
+            effects: $1e51c74754ca699b$export$ecab656a5b486b67(),
             views: this.deckgl.props.views,
             initialViewState: viewState,
             layers: this.deckgl.props.layers
@@ -7728,13 +7788,13 @@ class $f11b1222d18f5aff$export$67eca7ff2a7e9e8e {
     /**
      * Get cube data array from the cubes layer.
      */ getCubeData() {
-        return $22297b1890eb4722$export$f78fa54c8b685d69(this.deckgl.props);
+        return $96e705a481cefebf$export$fa1ee03f26227b34(this.deckgl.props);
     }
     /**
      * Show guidelines of rendering height/width and center of OrbitView.
      */ showGuides() {
         this._showGuides = true;
-        this.getElement($407eabbb39689985$export$82c3b66b9a0309ee.gl).classList.add('show-center');
+        this.getElement($753ee753424d27f3$export$79420be32f83a5b0.gl).classList.add('show-center');
         this.rePresent(Object.assign(Object.assign({
         }, this._last.stage), {
             cubeData: this.getCubeData()
@@ -7759,20 +7819,20 @@ class $f11b1222d18f5aff$export$67eca7ff2a7e9e8e {
 
 
 //pass in the SuperClass, which should be a vega.View
-function $9cff1a8ab4a1214a$var$_RendererGl(loader) {
+function $a291b2a9e886f07f$var$_RendererGl(loader) {
     //dynamic superclass, since we don't know have vega.View in the declaration phase
-    class RendererGlInternal extends $2f0c752020c76b68$export$12896e353ebd9cc.vega.Renderer {
+    class RendererGlInternal extends $aa3185d2619292b0$export$e2253033e6e1df16.vega.Renderer {
         initialize(el, width, height, origin) {
             this.height = height;
             this.width = width;
             // this method will invoke resize to size the canvas appropriately
             return super.initialize(el, width, height, origin);
         }
-        resize(width, height, origin) {
-            super.resize(width, height, origin);
-            this.origin = origin;
-            this.height = height;
-            this.width = width;
+        resize(width1, height1, origin1) {
+            super.resize(width1, height1, origin1);
+            this.origin = origin1;
+            this.height = height1;
+            this.width = width1;
             //rteturn this for vega
             return this;
         }
@@ -7787,16 +7847,16 @@ function $9cff1a8ab4a1214a$var$_RendererGl(loader) {
     const instance = new RendererGlInternal(loader);
     return instance;
 }
-const $9cff1a8ab4a1214a$export$e89ea95ade58a06c = $9cff1a8ab4a1214a$var$_RendererGl;
+const $a291b2a9e886f07f$export$ca9a02b0553384e7 = $a291b2a9e886f07f$var$_RendererGl;
 
 
-let $65b765713b03cc6f$var$registered = false;
+let $fe59b525f658c489$var$registered = false;
 //dynamic superclass lets us create a subclass at execution phase instead of declaration phase.
 //This allows us to retrieve vega.View from either UMD or ES6 consumers of this class.
 //pass in the SuperClass, which should be a vega.View
-function $65b765713b03cc6f$var$_ViewGl(runtime, config) {
+function $fe59b525f658c489$var$_ViewGl(runtime, config) {
     //dynamic superclass, since we don't know have vega.View in the declaration phase
-    class ViewGlInternal extends $2f0c752020c76b68$export$12896e353ebd9cc.vega.View {
+    class ViewGlInternal extends $aa3185d2619292b0$export$e2253033e6e1df16.vega.View {
         constructor(runtime1, config1 = {
         }){
             super(runtime1, config1);
@@ -7812,23 +7872,23 @@ function $65b765713b03cc6f$var$_ViewGl(runtime, config) {
         renderer(...args) {
             if (args && args.length) {
                 const renderer = args[0];
-                if (renderer === 'deck.gl' && !$65b765713b03cc6f$var$registered) {
-                    $2f0c752020c76b68$export$12896e353ebd9cc.vega.renderModule('deck.gl', {
-                        handler: $2f0c752020c76b68$export$12896e353ebd9cc.vega.CanvasHandler,
-                        renderer: $9cff1a8ab4a1214a$export$e89ea95ade58a06c
+                if (renderer === 'deck.gl' && !$fe59b525f658c489$var$registered) {
+                    $aa3185d2619292b0$export$e2253033e6e1df16.vega.renderModule('deck.gl', {
+                        handler: $aa3185d2619292b0$export$e2253033e6e1df16.vega.CanvasHandler,
+                        renderer: $a291b2a9e886f07f$export$ca9a02b0553384e7
                     });
-                    $65b765713b03cc6f$var$registered = true;
+                    $fe59b525f658c489$var$registered = true;
                 }
                 return super.renderer(renderer);
             } else return super.renderer();
         }
         initialize(el) {
-            if (!this.presenter) this.presenter = new $f11b1222d18f5aff$export$67eca7ff2a7e9e8e(el);
-            super.initialize(this.presenter.getElement($407eabbb39689985$export$82c3b66b9a0309ee.vegaControls));
+            if (!this.presenter) this.presenter = new $586113946f2266a2$export$893c88c42e3630f9(el);
+            super.initialize(this.presenter.getElement($753ee753424d27f3$export$79420be32f83a5b0.vegaControls));
             const renderer = this._renderer;
             renderer.presenterConfig = this.config.presenterConfig;
             renderer.presenter = this.presenter;
-            renderer.getView = this.config && this.config.getView || (()=>this.presenter.view || $1c19a15e6d55f62b$export$89bf53df2de0904
+            renderer.getView = this.config && this.config.getView || (()=>this.presenter.view || $f92b17f7c58b7db2$export$93acc5219d6538bb
             );
             return this;
         }
@@ -7839,22 +7899,22 @@ function $65b765713b03cc6f$var$_ViewGl(runtime, config) {
     const instance = new ViewGlInternal(runtime, config);
     return instance;
 }
-const $65b765713b03cc6f$export$5ae75a3802efaf = $65b765713b03cc6f$var$_ViewGl;
+const $fe59b525f658c489$export$6d8f9057dcd7f9e6 = $fe59b525f658c489$var$_ViewGl;
 
 
 
-$parcel$exportWildcard($7f572b57d5948475$exports, $407eabbb39689985$exports);
+$parcel$exportWildcard($fe0c42722799ef8c$exports, $753ee753424d27f3$exports);
 
 
-const { defaultPresenterConfig: $4143f1453a8890e4$var$defaultPresenterConfig , defaultPresenterStyle: $4143f1453a8890e4$var$defaultPresenterStyle  } = $1c19a15e6d55f62b$exports;
-const { desaturate: $4143f1453a8890e4$var$desaturate  } = $00670849ca68e684$exports;
-const $4143f1453a8890e4$export$23e61e65e99ffb54 = {
+const { defaultPresenterConfig: $39c8d1d23f762a7c$var$defaultPresenterConfig , defaultPresenterStyle: $39c8d1d23f762a7c$var$defaultPresenterStyle  } = $f92b17f7c58b7db2$exports;
+const { desaturate: $39c8d1d23f762a7c$var$desaturate  } = $357cda13648d25b4$exports;
+const $39c8d1d23f762a7c$export$fb736e4909afb3d7 = {
     colors: {
         activeCube: 'purple',
-        defaultCube: $00670849ca68e684$exports.colorToString($4143f1453a8890e4$var$defaultPresenterStyle.defaultCubeColor),
-        hoveredCube: $00670849ca68e684$exports.colorToString($4143f1453a8890e4$var$defaultPresenterStyle.highlightColor),
+        defaultCube: $357cda13648d25b4$exports.colorToString($39c8d1d23f762a7c$var$defaultPresenterStyle.defaultCubeColor),
+        hoveredCube: $357cda13648d25b4$exports.colorToString($39c8d1d23f762a7c$var$defaultPresenterStyle.highlightColor),
         selectedCube: 'yellow',
-        axisSelectHighlight: $00670849ca68e684$exports.colorToString([
+        axisSelectHighlight: $357cda13648d25b4$exports.colorToString([
             128,
             128,
             128,
@@ -7863,7 +7923,7 @@ const $4143f1453a8890e4$export$23e61e65e99ffb54 = {
         axisLine: '#000',
         axisText: '#000',
         unselectedColorMethod: (color)=>{
-            const c = $4143f1453a8890e4$var$desaturate(color, 0.05);
+            const c = $39c8d1d23f762a7c$var$desaturate(color, 0.05);
             c[3] = 171;
             return c;
         }
@@ -7915,26 +7975,26 @@ const $4143f1453a8890e4$export$23e61e65e99ffb54 = {
     //console.log(`UnitVisViewer errors: ${errors.join('\n')}`);
     },
     transitionDurations: Object.assign(Object.assign({
-    }, $4143f1453a8890e4$var$defaultPresenterConfig.transitionDurations), {
+    }, $39c8d1d23f762a7c$var$defaultPresenterConfig.transitionDurations), {
         scope: 600
     }),
     selectionPolygonZ: -1,
     tickSize: 10
 };
-function $4143f1453a8890e4$export$3e1dd6a74003f7a3(options) {
+function $39c8d1d23f762a7c$export$c4db461e5e345a8(options) {
     var style = {
-        cssPrefix: $4143f1453a8890e4$export$e875bf21bbc345e4,
+        cssPrefix: $39c8d1d23f762a7c$export$f0d47e1c119d5bf2,
         fontFamily: options.fontFamily,
-        defaultCubeColor: $00670849ca68e684$exports.colorFromString(options.colors.defaultCube)
+        defaultCubeColor: $357cda13648d25b4$exports.colorFromString(options.colors.defaultCube)
     };
-    if (options.colors.hoveredCube) style.highlightColor = $00670849ca68e684$exports.colorFromString(options.colors.hoveredCube);
+    if (options.colors.hoveredCube) style.highlightColor = $357cda13648d25b4$exports.colorFromString(options.colors.hoveredCube);
     //if (options.lightSettings) {
     // style.lightSettings = options.lightSettings;
     //}
     return style;
 }
-const $4143f1453a8890e4$export$e875bf21bbc345e4 = 'sanddance-';
-const $4143f1453a8890e4$export$a42d95e61e0f98d3 = {
+const $39c8d1d23f762a7c$export$f0d47e1c119d5bf2 = 'sanddance-';
+const $39c8d1d23f762a7c$export$1641cdccd8d44edd = {
     black: '#212121',
     gray: '#D2D2D2',
     blue: '#0060F0',
@@ -7944,12 +8004,12 @@ const $4143f1453a8890e4$export$a42d95e61e0f98d3 = {
 };
 
 
-function $406c1b16a5bd3c44$export$2634e87bf7671285(columnName, includeVegaDeckGLFields = false) {
+function $e76dbaf7a95e1712$export$81adea670bebefbe(columnName, includeVegaDeckGLFields = false) {
     if (includeVegaDeckGLFields) {
-        if (columnName === $a3b399caf5d2c16b$export$b86d149b7c15b53e) return true;
+        if (columnName === $7abff30d903026d9$export$5672246984822a29) return true;
     }
-    for(let f in $146eeb4362821b4b$export$29b3fae588fa046f){
-        if (columnName === $146eeb4362821b4b$export$29b3fae588fa046f[f]) return true;
+    for(let f in $5026337cfcb4b996$export$10df5429b7082be2){
+        if (columnName === $5026337cfcb4b996$export$10df5429b7082be2[f]) return true;
     }
     return false;
 }
@@ -7958,62 +8018,62 @@ function $406c1b16a5bd3c44$export$2634e87bf7671285(columnName, includeVegaDeckGL
 
 
 
-const $c70916a34f2bf3db$var$dualPairs = [
+const $d5cc309f57ea9332$var$dualPairs = [
     [
-        $4143f1453a8890e4$export$a42d95e61e0f98d3.black,
-        $4143f1453a8890e4$export$a42d95e61e0f98d3.gray
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.black,
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.gray
     ],
     [
-        $4143f1453a8890e4$export$a42d95e61e0f98d3.red,
-        $4143f1453a8890e4$export$a42d95e61e0f98d3.green
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.red,
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.green
     ],
     [
-        $4143f1453a8890e4$export$a42d95e61e0f98d3.red,
-        $4143f1453a8890e4$export$a42d95e61e0f98d3.blue
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.red,
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.blue
     ],
     [
-        $4143f1453a8890e4$export$a42d95e61e0f98d3.black,
-        $4143f1453a8890e4$export$a42d95e61e0f98d3.red
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.black,
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.red
     ],
     [
-        $4143f1453a8890e4$export$a42d95e61e0f98d3.black,
-        $4143f1453a8890e4$export$a42d95e61e0f98d3.orange
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.black,
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.orange
     ],
     [
-        $4143f1453a8890e4$export$a42d95e61e0f98d3.black,
-        $4143f1453a8890e4$export$a42d95e61e0f98d3.green
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.black,
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.green
     ]
 ];
-const $c70916a34f2bf3db$export$4b303fbe85a206f6 = [
+const $d5cc309f57ea9332$export$2ad73d393c16f81c = [
     {
-        scheme: $146eeb4362821b4b$export$e1b9a037ce7886e5,
+        scheme: $5026337cfcb4b996$export$c991c3dd58d9959c,
         colors: [
-            $4143f1453a8890e4$export$23e61e65e99ffb54.colors.defaultCube
+            $39c8d1d23f762a7c$export$fb736e4909afb3d7.colors.defaultCube
         ]
     }
 ];
-$c70916a34f2bf3db$var$createDualColorSchemes();
-function $c70916a34f2bf3db$export$2f7089dba07adb1(vega) {
-    $c70916a34f2bf3db$export$4b303fbe85a206f6.forEach((cs)=>{
+$d5cc309f57ea9332$var$createDualColorSchemes();
+function $d5cc309f57ea9332$export$3030070885af9365(vega) {
+    $d5cc309f57ea9332$export$2ad73d393c16f81c.forEach((cs)=>{
         if (cs.colors.length === 1) vega.scheme(cs.scheme, (x)=>cs.colors[0]
         );
         else vega.scheme(cs.scheme, cs.colors);
     });
 }
-function $c70916a34f2bf3db$var$createPair(names, colors) {
+function $d5cc309f57ea9332$var$createPair(names, colors) {
     const scheme = `dual_${names[0]}${names[1]}`;
-    $c70916a34f2bf3db$export$4b303fbe85a206f6.push({
+    $d5cc309f57ea9332$export$2ad73d393c16f81c.push({
         scheme: scheme,
         colors: colors
     });
 }
-function $c70916a34f2bf3db$var$createDualColorSchemes() {
-    $c70916a34f2bf3db$var$dualPairs.forEach((colors)=>{
+function $d5cc309f57ea9332$var$createDualColorSchemes() {
+    $d5cc309f57ea9332$var$dualPairs.forEach((colors)=>{
         const names = colors.map((color)=>{
-            for(let key in $4143f1453a8890e4$export$a42d95e61e0f98d3)if (color === $4143f1453a8890e4$export$a42d95e61e0f98d3[key]) return key;
+            for(let key in $39c8d1d23f762a7c$export$1641cdccd8d44edd)if (color === $39c8d1d23f762a7c$export$1641cdccd8d44edd[key]) return key;
         });
-        $c70916a34f2bf3db$var$createPair(names, colors);
-        $c70916a34f2bf3db$var$createPair([
+        $d5cc309f57ea9332$var$createPair(names, colors);
+        $d5cc309f57ea9332$var$createPair([
             ...names
         ].reverse(), [
             ...colors
@@ -8023,17 +8083,17 @@ function $c70916a34f2bf3db$var$createDualColorSchemes() {
 
 
 
-var $cd7c0c51e96048d8$exports = {};
+var $83151626e84e84c0$exports = {};
 
-$parcel$export($cd7c0c51e96048d8$exports, "Viewer", () => $cd7c0c51e96048d8$export$ff719dc3ea4d1e34, (v) => $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 = v);
-var $d8c7d617dd7f10da$export$c17ac6787f338a14;
+$parcel$export($83151626e84e84c0$exports, "Viewer", () => $83151626e84e84c0$export$2ec4afd9b3c16a85, (v) => $83151626e84e84c0$export$2ec4afd9b3c16a85 = v);
+var $b2e0f82d9487be27$export$d9e571576e98a7ab;
 (function(DataLayoutChange) {
     DataLayoutChange[DataLayoutChange["same"] = 0] = "same";
     DataLayoutChange[DataLayoutChange["reset"] = 1] = "reset";
     DataLayoutChange[DataLayoutChange["refine"] = 2] = "refine";
-})($d8c7d617dd7f10da$export$c17ac6787f338a14 || ($d8c7d617dd7f10da$export$c17ac6787f338a14 = {
+})($b2e0f82d9487be27$export$d9e571576e98a7ab || ($b2e0f82d9487be27$export$d9e571576e98a7ab = {
 }));
-class $d8c7d617dd7f10da$export$c31c6960578c025a {
+class $b2e0f82d9487be27$export$c774d8c9d4e9e234 {
     constructor(dataScope, props){
         this.dataScope = dataScope;
         this.props = props;
@@ -8041,25 +8101,25 @@ class $d8c7d617dd7f10da$export$c31c6960578c025a {
     select(search) {
         return new Promise((resolve, reject)=>{
             this.dataScope.select(search);
-            this.props.onDataChanged($d8c7d617dd7f10da$export$c17ac6787f338a14.same);
+            this.props.onDataChanged($b2e0f82d9487be27$export$d9e571576e98a7ab.same);
             resolve();
         });
     }
     deselect() {
         return new Promise((resolve, reject)=>{
             this.dataScope.deselect();
-            this.props.onDataChanged($d8c7d617dd7f10da$export$c17ac6787f338a14.same);
+            this.props.onDataChanged($b2e0f82d9487be27$export$d9e571576e98a7ab.same);
             resolve();
         });
     }
-    filter(search, keepData, collapseData, rebase) {
+    filter(search1, keepData, collapseData, rebase) {
         if (rebase) this.dataScope.collapse(false, keepData);
         this.dataScope.collapse(true, collapseData);
         return new Promise((resolve, reject)=>{
-            this.props.onAnimateDataChange($d8c7d617dd7f10da$export$c17ac6787f338a14.refine, 'before refine', 'refine').then(()=>{
+            this.props.onAnimateDataChange($b2e0f82d9487be27$export$d9e571576e98a7ab.refine, 'before refine', 'refine').then(()=>{
                 this.dataScope.deselect();
                 this.dataScope.setFilteredData(keepData);
-                this.props.onDataChanged($d8c7d617dd7f10da$export$c17ac6787f338a14.refine, search);
+                this.props.onDataChanged($b2e0f82d9487be27$export$d9e571576e98a7ab.refine, search1);
                 resolve();
             }).catch(reject);
         });
@@ -8068,9 +8128,9 @@ class $d8c7d617dd7f10da$export$c31c6960578c025a {
         return new Promise((resolve, reject)=>{
             this.dataScope.deselect();
             this.dataScope.setFilteredData(null);
-            this.props.onAnimateDataChange($d8c7d617dd7f10da$export$c17ac6787f338a14.reset, 'before reset', 'reset').then(()=>{
+            this.props.onAnimateDataChange($b2e0f82d9487be27$export$d9e571576e98a7ab.reset, 'before reset', 'reset').then(()=>{
                 this.dataScope.collapse(false);
-                this.props.onDataChanged($d8c7d617dd7f10da$export$c17ac6787f338a14.reset);
+                this.props.onDataChanged($b2e0f82d9487be27$export$d9e571576e98a7ab.reset);
                 resolve();
             }).catch(reject);
         });
@@ -8078,14 +8138,14 @@ class $d8c7d617dd7f10da$export$c31c6960578c025a {
     activate(datum) {
         return new Promise((resolve, reject)=>{
             this.dataScope.activate(datum);
-            this.props.onDataChanged($d8c7d617dd7f10da$export$c17ac6787f338a14.same);
+            this.props.onDataChanged($b2e0f82d9487be27$export$d9e571576e98a7ab.same);
             resolve();
         });
     }
     deactivate() {
         return new Promise((resolve, reject)=>{
             this.dataScope.deactivate();
-            this.props.onDataChanged($d8c7d617dd7f10da$export$c17ac6787f338a14.same);
+            this.props.onDataChanged($b2e0f82d9487be27$export$d9e571576e98a7ab.same);
             resolve();
         });
     }
@@ -8093,9 +8153,9 @@ class $d8c7d617dd7f10da$export$c31c6960578c025a {
 
 
 
-function $8f727b1c21e8c366$var$cloneAxis(axes, axisColor, axisTextColor) {
+function $100a640a591eda90$var$cloneAxis(axes, axisColor, axisTextColor) {
     return axes.map((axis)=>{
-        const newAxis = $00670849ca68e684$exports.deepMerge(axis);
+        const newAxis = $357cda13648d25b4$exports.deepMerge(axis);
         if (newAxis.domain) newAxis.domain.color = axisColor;
         if (newAxis.title) newAxis.title.color = axisTextColor;
         newAxis.ticks.forEach((t)=>{
@@ -8107,7 +8167,7 @@ function $8f727b1c21e8c366$var$cloneAxis(axes, axisColor, axisTextColor) {
         return newAxis;
     });
 }
-function $8f727b1c21e8c366$var$cloneTextData(textData, color) {
+function $100a640a591eda90$var$cloneTextData(textData, color) {
     return textData.map((t)=>{
         return Object.assign(Object.assign({
         }, t), {
@@ -8115,21 +8175,21 @@ function $8f727b1c21e8c366$var$cloneTextData(textData, color) {
         });
     });
 }
-function $8f727b1c21e8c366$export$7e9483d314559015(stage, oldColors, newColors) {
+function $100a640a591eda90$export$bb42b694d535c95a(stage, oldColors, newColors) {
     const hasNewLineColor = newColors.axisLine && newColors.axisLine !== oldColors.axisLine;
     const hasNewTextColor = newColors.axisText && newColors.axisText !== oldColors.axisText;
     let axes;
     let textData;
     if (hasNewLineColor || hasNewTextColor) {
-        const lineColor = $00670849ca68e684$exports.colorFromString(newColors.axisLine || oldColors.axisLine);
-        const textColor = $00670849ca68e684$exports.colorFromString(newColors.axisText || oldColors.axisText);
+        const lineColor = $357cda13648d25b4$exports.colorFromString(newColors.axisLine || oldColors.axisLine);
+        const textColor = $357cda13648d25b4$exports.colorFromString(newColors.axisText || oldColors.axisText);
         axes = {
-            x: $8f727b1c21e8c366$var$cloneAxis(stage.axes.x, lineColor, textColor),
-            y: $8f727b1c21e8c366$var$cloneAxis(stage.axes.y, lineColor, textColor),
-            z: $8f727b1c21e8c366$var$cloneAxis(stage.axes.z, lineColor, textColor)
+            x: $100a640a591eda90$var$cloneAxis(stage.axes.x, lineColor, textColor),
+            y: $100a640a591eda90$var$cloneAxis(stage.axes.y, lineColor, textColor),
+            z: $100a640a591eda90$var$cloneAxis(stage.axes.z, lineColor, textColor)
         };
     }
-    if (hasNewTextColor) textData = $8f727b1c21e8c366$var$cloneTextData(stage.textData, $00670849ca68e684$exports.colorFromString(newColors.axisText));
+    if (hasNewTextColor) textData = $100a640a591eda90$var$cloneTextData(stage.textData, $357cda13648d25b4$exports.colorFromString(newColors.axisText));
     return {
         axes: axes,
         textData: textData
@@ -8137,11 +8197,11 @@ function $8f727b1c21e8c366$export$7e9483d314559015(stage, oldColors, newColors) 
 }
 
 
-function $44fc789f5716c739$export$2a2f2afd479c1f6b(niceValue) {
+function $c5b8e018283877d4$export$cb7265fd11709ea(niceValue) {
     //convert "nice" numbers to numeric value
     return (niceValue + '').replace(/[\s,]/g, '');
 }
-function $44fc789f5716c739$var$tickValue(axis, i) {
+function $c5b8e018283877d4$var$tickValue(axis, i) {
     const tick = axis.tickText[i];
     let value;
     if (tick) value = axis.tickText[i].value;
@@ -8150,15 +8210,15 @@ function $44fc789f5716c739$var$tickValue(axis, i) {
         value: value
     };
 }
-function $44fc789f5716c739$export$f11b1d645ff3971c(column) {
+function $c5b8e018283877d4$export$1be0843eea5393e4(column) {
     const searchExpression = {
         name: column.name,
         operator: 'isnullorEmpty'
     };
     return searchExpression;
 }
-function $44fc789f5716c739$export$9875831c14ede476(column, value) {
-    if (value == null) return $44fc789f5716c739$export$f11b1d645ff3971c(column);
+function $c5b8e018283877d4$export$8543b98d22318eca(column, value) {
+    if (value == null) return $c5b8e018283877d4$export$1be0843eea5393e4(column);
     const searchExpression = {
         name: column.name,
         operator: '==',
@@ -8166,7 +8226,7 @@ function $44fc789f5716c739$export$9875831c14ede476(column, value) {
     };
     return searchExpression;
 }
-function $44fc789f5716c739$export$6dc90c76fa6395fd(column, values) {
+function $c5b8e018283877d4$export$e531b549585c011c(column, values) {
     const expressions = values.map((value, i)=>{
         const searchExpression = {
             name: column.name,
@@ -8181,11 +8241,11 @@ function $44fc789f5716c739$export$6dc90c76fa6395fd(column, values) {
     };
     return searchExpressionGroup;
 }
-function $44fc789f5716c739$export$5c1f62dac8cafc57(axis, column, i) {
-    const result = $44fc789f5716c739$var$tickValue(axis, i);
-    if (result.tick) return $44fc789f5716c739$export$9875831c14ede476(column, result.value);
+function $c5b8e018283877d4$export$64b81e116b959f8a(axis, column, i) {
+    const result = $c5b8e018283877d4$var$tickValue(axis, i);
+    if (result.tick) return $c5b8e018283877d4$export$8543b98d22318eca(column, result.value);
 }
-function $44fc789f5716c739$export$34d6d0f79c89c63b(column, lowValue, highValue, lowOperator = '>=', highOperator = '<') {
+function $c5b8e018283877d4$export$8bb38a473c12645e(column, lowValue, highValue, lowOperator = '>=', highOperator = '<') {
     const expressions = [];
     if (lowValue !== undefined) expressions.push({
         name: column.name,
@@ -8203,19 +8263,19 @@ function $44fc789f5716c739$export$34d6d0f79c89c63b(column, lowValue, highValue, 
     };
     return searchExpressionGroup;
 }
-function $44fc789f5716c739$export$4fd7358fd1b2a025(axis, column, i) {
-    const low = $44fc789f5716c739$var$tickValue(axis, i);
-    const high = $44fc789f5716c739$var$tickValue(axis, i + 1);
-    return $44fc789f5716c739$export$34d6d0f79c89c63b(column, low.value, high.value);
+function $c5b8e018283877d4$export$80908cccce4a97cb(axis, column, i) {
+    const low = $c5b8e018283877d4$var$tickValue(axis, i);
+    const high = $c5b8e018283877d4$var$tickValue(axis, i + 1);
+    return $c5b8e018283877d4$export$8bb38a473c12645e(column, low.value, high.value);
 }
 
 
 
 
-const { allTruthy: $98f3d02cd1bfe66c$export$6a130595254331b4 , concat: $98f3d02cd1bfe66c$export$dde0d4a9e80fb26f , push: $98f3d02cd1bfe66c$export$280e7edab0689157  } = $00670849ca68e684$exports;
+const { allTruthy: $2e0a1087c0e4ef8e$export$84af6d08e329f176 , concat: $2e0a1087c0e4ef8e$export$ee1b3e54f0441b22 , push: $2e0a1087c0e4ef8e$export$4cbf152802aa238  } = $357cda13648d25b4$exports;
 
 
-function $05162edb3d6c06e2$export$34ed1fd5ef58e5bb(search) {
+function $35851ba40c014310$export$cb06c97de370398d(search) {
     let group;
     const vegaSearch = search;
     if (Array.isArray(vegaSearch)) {
@@ -8224,9 +8284,9 @@ function $05162edb3d6c06e2$export$34ed1fd5ef58e5bb(search) {
             expressions: []
         };
         vegaSearch.forEach((g)=>{
-            const clonedExpressions = $00670849ca68e684$exports.clone(g.expressions).filter(Boolean);
+            const clonedExpressions = $357cda13648d25b4$exports.clone(g.expressions).filter(Boolean);
             clonedExpressions[0].clause = '&&';
-            $98f3d02cd1bfe66c$export$280e7edab0689157(group.expressions, clonedExpressions);
+            $2e0a1087c0e4ef8e$export$4cbf152802aa238(group.expressions, clonedExpressions);
         });
     } else group = vegaSearch ? {
         expressions: vegaSearch.expressions.filter(Boolean)
@@ -8237,21 +8297,21 @@ function $05162edb3d6c06e2$export$34ed1fd5ef58e5bb(search) {
 
 
 
-function $eb543ae47877c1a9$export$799a72d0a47efbc5(presenter, specCapabilities, columns, stage, clickHandler, highlightColor, polygonZ) {
+function $e03f28a3d2eff4a5$export$7aba45edad9b8473(presenter, specCapabilities, columns, stage, clickHandler, highlightColor, polygonZ) {
     const polygons = [];
     const xRole = specCapabilities.roles.filter((r)=>r.role === 'x'
     )[0];
     if (xRole && xRole.axisSelection) stage.axes.x.filter((axis)=>axis.tickText.length
     ).forEach((axis)=>{
-        polygons.push.apply(polygons, $eb543ae47877c1a9$var$axisSelectionPolygons(axis, false, xRole.axisSelection, columns.x));
+        polygons.push.apply(polygons, $e03f28a3d2eff4a5$var$axisSelectionPolygons(axis, false, xRole.axisSelection, columns.x));
     });
     const yRole = specCapabilities.roles.filter((r)=>r.role === 'y'
     )[0];
     if (yRole && yRole.axisSelection) stage.axes.y.filter((axis)=>axis.tickText.length
     ).forEach((axis)=>{
-        polygons.push.apply(polygons, $eb543ae47877c1a9$var$axisSelectionPolygons(axis, true, yRole.axisSelection, columns.y));
+        polygons.push.apply(polygons, $e03f28a3d2eff4a5$var$axisSelectionPolygons(axis, true, yRole.axisSelection, columns.y));
     });
-    if (stage.facets && columns.facet) polygons.push.apply(polygons, $eb543ae47877c1a9$var$facetSelectionPolygons(stage.facets));
+    if (stage.facets && columns.facet) polygons.push.apply(polygons, $e03f28a3d2eff4a5$var$facetSelectionPolygons(stage.facets));
     //move polygons to Z
     polygons.forEach((datum)=>{
         datum.polygon.forEach((p)=>{
@@ -8260,12 +8320,12 @@ function $eb543ae47877c1a9$export$799a72d0a47efbc5(presenter, specCapabilities, 
     });
     const onClick = (o, e)=>clickHandler(e.srcEvent, o.object.search)
     ;
-    const polygonLayer = new $2f0c752020c76b68$export$12896e353ebd9cc.layers.PolygonLayer({
+    const polygonLayer = new $aa3185d2619292b0$export$e2253033e6e1df16.layers.PolygonLayer({
         autoHighlight: true,
-        coordinateSystem: $2f0c752020c76b68$export$12896e353ebd9cc.deck.COORDINATE_SYSTEM.CARTESIAN,
+        coordinateSystem: $aa3185d2619292b0$export$e2253033e6e1df16.deck.COORDINATE_SYSTEM.CARTESIAN,
         data: polygons,
         extruded: false,
-        highlightColor: $00670849ca68e684$exports.colorFromString(highlightColor),
+        highlightColor: $357cda13648d25b4$exports.colorFromString(highlightColor),
         id: 'selections',
         onHover: (o, e)=>{
             if (o.index === -1) presenter.deckgl.interactiveState.onAxisSelection = false;
@@ -8286,15 +8346,15 @@ function $eb543ae47877c1a9$export$799a72d0a47efbc5(presenter, specCapabilities, 
     });
     return polygonLayer;
 }
-function $eb543ae47877c1a9$var$axisSelectionPolygons(axis, vertical, axisSelectionType, column) {
+function $e03f28a3d2eff4a5$var$axisSelectionPolygons(axis, vertical, axisSelectionType, column) {
     const polygons = [];
     const size = 50;
     const getSearch = axisSelectionType === 'exact' ? (a, c, i)=>({
             expressions: [
-                $44fc789f5716c739$export$5c1f62dac8cafc57(a, c, i)
+                $c5b8e018283877d4$export$64b81e116b959f8a(a, c, i)
             ]
         })
-     : $44fc789f5716c739$export$4fd7358fd1b2a025;
+     : $c5b8e018283877d4$export$80908cccce4a97cb;
     const { domain: domain , ticks: ticks  } = axis;
     if (ticks.length > 0 && domain) {
         const dim = vertical ? 1 : 0;
@@ -8339,11 +8399,10 @@ function $eb543ae47877c1a9$var$axisSelectionPolygons(axis, vertical, axisSelecti
     }
     return polygons;
 }
-function $eb543ae47877c1a9$var$facetSelectionPolygons(facetRects) {
+function $e03f28a3d2eff4a5$var$facetSelectionPolygons(facetRects) {
     const polygons = [];
-    let linesAndSearches;
-    linesAndSearches = facetRects.map(({ datum: datum , lines: lines  }, i)=>{
-        let group = $05162edb3d6c06e2$export$34ed1fd5ef58e5bb(datum[$146eeb4362821b4b$export$29b3fae588fa046f.FacetSearch]);
+    const linesAndSearches = facetRects.map(({ datum: datum , lines: lines  }, i)=>{
+        let group = $35851ba40c014310$export$cb06c97de370398d(datum[$5026337cfcb4b996$export$10df5429b7082be2.FacetSearch]);
         return {
             lines: lines,
             search: group
@@ -8351,7 +8410,7 @@ function $eb543ae47877c1a9$var$facetSelectionPolygons(facetRects) {
     });
     linesAndSearches.forEach(({ lines: lines , search: search  }, i)=>{
         //take any 2 lines to get a box dimension
-        const [x, y] = $eb543ae47877c1a9$var$minMaxPoints(lines.slice(2));
+        const [x, y] = $e03f28a3d2eff4a5$var$minMaxPoints(lines.slice(2));
         polygons.push({
             search: search,
             polygon: [
@@ -8376,7 +8435,7 @@ function $eb543ae47877c1a9$var$facetSelectionPolygons(facetRects) {
     });
     return polygons;
 }
-function $eb543ae47877c1a9$var$minMaxPoints(lines) {
+function $e03f28a3d2eff4a5$var$minMaxPoints(lines) {
     const points = [];
     lines.forEach((line)=>{
         [
@@ -8408,16 +8467,16 @@ function $eb543ae47877c1a9$var$minMaxPoints(lines) {
 
 
 
-function $b6965e965f496d72$export$3d85010f65df95c0(currentData, showSelectedData, showActive, viewerOptions) {
+function $c06d9ec78664a7a9$export$9cf45ec8b4cc2b65(currentData, showSelectedData, showActive, viewerOptions) {
     function getSelectionColorItem(datum) {
         let item;
-        if (showSelectedData) item = datum[$146eeb4362821b4b$export$29b3fae588fa046f.Selected] ? {
-            color: $00670849ca68e684$exports.colorFromString(viewerOptions.colors.selectedCube)
+        if (showSelectedData) item = datum[$5026337cfcb4b996$export$10df5429b7082be2.Selected] ? {
+            color: $357cda13648d25b4$exports.colorFromString(viewerOptions.colors.selectedCube)
         } : {
             unSelected: true
         };
-        if (showActive && datum[$146eeb4362821b4b$export$29b3fae588fa046f.Active]) item = {
-            color: $00670849ca68e684$exports.colorFromString(viewerOptions.colors.activeCube)
+        if (showActive && datum[$5026337cfcb4b996$export$10df5429b7082be2.Active]) item = {
+            color: $357cda13648d25b4$exports.colorFromString(viewerOptions.colors.activeCube)
         };
         return item;
     }
@@ -8426,13 +8485,13 @@ function $b6965e965f496d72$export$3d85010f65df95c0(currentData, showSelectedData
     currentData.forEach((datum)=>{
         const selectionColor = getSelectionColorItem(datum);
         if (selectionColor) {
-            const ordinal = datum[$a3b399caf5d2c16b$export$b86d149b7c15b53e];
+            const ordinal = datum[$7abff30d903026d9$export$5672246984822a29];
             colorMap[ordinal] = selectionColor;
         }
     });
     return colorMap;
 }
-function $b6965e965f496d72$export$1a7729b7ed4b2339(cubes) {
+function $c06d9ec78664a7a9$export$3b9379ac3646e0f0(cubes) {
     const map = {
     };
     cubes.forEach((cube)=>{
@@ -8442,15 +8501,15 @@ function $b6965e965f496d72$export$1a7729b7ed4b2339(cubes) {
     });
     return map;
 }
-function $b6965e965f496d72$export$2cdcf144dcfa6eb4(colorContext, presenter) {
+function $c06d9ec78664a7a9$export$44addeff9a96c1e7(colorContext, presenter) {
     if (!colorContext.colorMap) {
         const cubes = presenter.getCubeData();
-        colorContext.colorMap = $b6965e965f496d72$export$1a7729b7ed4b2339(cubes);
+        colorContext.colorMap = $c06d9ec78664a7a9$export$3b9379ac3646e0f0(cubes);
     }
-    colorContext.legend = $00670849ca68e684$exports.clone(presenter.stage.legend);
-    colorContext.legendElement = presenter.getElement($407eabbb39689985$export$82c3b66b9a0309ee.legend).children[0];
+    colorContext.legend = $357cda13648d25b4$exports.clone(presenter.stage.legend);
+    colorContext.legendElement = presenter.getElement($753ee753424d27f3$export$79420be32f83a5b0.legend).children[0];
 }
-function $b6965e965f496d72$export$65c9e5f150d5b083(maps, cubes, unselectedColorMethod) {
+function $c06d9ec78664a7a9$export$fa70acaad0e00464(maps, cubes, unselectedColorMethod) {
     Object.keys(maps[0]).forEach((ordinal)=>{
         const cube = cubes[+ordinal];
         if (cube && !cube.isEmpty) {
@@ -8475,7 +8534,7 @@ function $b6965e965f496d72$export$65c9e5f150d5b083(maps, cubes, unselectedColorM
 
 
 
-class $2f029215431ce823$export$993107647a287a6 {
+class $321a7a35ef9b29af$export$3fb74a6ae4f1171d {
     constructor(){
         this.filteredColumnsStats = {
         };
@@ -8499,11 +8558,11 @@ class $2f029215431ce823$export$993107647a287a6 {
         };
     }
     getColumns(columnTypes) {
-        if (!this.columns) this.columns = $0ebaa52647c6073e$export$d25d2216dc7fff5a($2f0c752020c76b68$export$12896e353ebd9cc.vega.inferTypes, this.data, columnTypes);
+        if (!this.columns) this.columns = $1f41cd3bd9350891$export$3f19ad07848df794($aa3185d2619292b0$export$e2253033e6e1df16.vega.inferTypes, this.data, columnTypes);
         return this.columns;
     }
     getFilteredColumnStats(columnName) {
-        if (!this.filteredColumnsStats[columnName]) this.filteredColumnsStats[columnName] = $0ebaa52647c6073e$export$4c75e2c8266a336d(this.filteredData, this.columns.filter((c)=>c.name === columnName
+        if (!this.filteredColumnsStats[columnName]) this.filteredColumnsStats[columnName] = $1f41cd3bd9350891$export$432f698644f45d1(this.filteredData, this.columns.filter((c)=>c.name === columnName
         )[0]);
         return this.filteredColumnsStats[columnName];
     }
@@ -8517,17 +8576,17 @@ class $2f029215431ce823$export$993107647a287a6 {
             if (this.selection.included.length) this.activate(this.selection.included[0]);
         }
     }
-    createUserSelection(search, assign, rebase) {
-        const exec = new $745dd93524c614f6$export$17847fd07a76a1e0(search, this.getColumns());
+    createUserSelection(search1, assign, rebase) {
+        const exec = new $adf6771a93c98393$export$bbfd672d43392844(search1, this.getColumns());
         const s = {
-            search: search,
+            search: search1,
             included: [],
             excluded: []
         };
         const data = rebase ? this.data : this.currentData();
         data.forEach((datum)=>{
             if (exec.run(datum)) {
-                if (assign) datum[$146eeb4362821b4b$export$29b3fae588fa046f.Selected] = true;
+                if (assign) datum[$5026337cfcb4b996$export$10df5429b7082be2.Selected] = true;
                 s.included.push(datum);
             } else s.excluded.push(datum);
         });
@@ -8536,7 +8595,7 @@ class $2f029215431ce823$export$993107647a287a6 {
     deselect() {
         this.deactivate();
         this.data.forEach((datum)=>{
-            delete datum[$146eeb4362821b4b$export$29b3fae588fa046f.Selected];
+            delete datum[$5026337cfcb4b996$export$10df5429b7082be2.Selected];
         });
         this.selection = null;
     }
@@ -8546,25 +8605,25 @@ class $2f029215431ce823$export$993107647a287a6 {
     hasSelectedData() {
         return !!this.selection;
     }
-    collapse(collapsed, data = this.data) {
-        data.forEach((datum)=>{
-            datum[$146eeb4362821b4b$export$29b3fae588fa046f.Collapsed] = collapsed;
+    collapse(collapsed, data1 = this.data) {
+        data1.forEach((datum)=>{
+            datum[$5026337cfcb4b996$export$10df5429b7082be2.Collapsed] = collapsed;
         });
         this.isCollapsed = collapsed;
     }
     activate(datum) {
         this.deactivate();
-        datum[$146eeb4362821b4b$export$29b3fae588fa046f.Active] = true;
+        datum[$5026337cfcb4b996$export$10df5429b7082be2.Active] = true;
         this.active = datum;
     }
     deactivate() {
-        if (this.active) delete this.active[$146eeb4362821b4b$export$29b3fae588fa046f.Active];
+        if (this.active) delete this.active[$5026337cfcb4b996$export$10df5429b7082be2.Active];
         this.active = null;
     }
     ordinalIndexWithinSelection(ordinal) {
         if (this.selection) for(let i = 0; i < this.selection.included.length; i++){
             let datum = this.selection.included[i];
-            if (datum[$a3b399caf5d2c16b$export$b86d149b7c15b53e] === ordinal) return {
+            if (datum[$7abff30d903026d9$export$5672246984822a29] === ordinal) return {
                 datum: datum,
                 index: i
             };
@@ -8594,7 +8653,7 @@ class $2f029215431ce823$export$993107647a287a6 {
 
 
 
-var $be230773a1581926$var$Action;
+var $f7f165aef83799e5$var$Action;
 (function(Action) {
     Action[Action["deselect"] = 0] = "deselect";
     Action[Action["isolate"] = 1] = "isolate";
@@ -8602,16 +8661,16 @@ var $be230773a1581926$var$Action;
     Action[Action["reset"] = 3] = "reset";
     Action[Action["next"] = 4] = "next";
     Action[Action["previous"] = 5] = "previous";
-})($be230773a1581926$var$Action || ($be230773a1581926$var$Action = {
+})($f7f165aef83799e5$var$Action || ($f7f165aef83799e5$var$Action = {
 }));
-class $be230773a1581926$export$e12e9bef3fc91403 {
-    constructor(parentElement, language, animator, dataScope, colorMapHandler, hasColorMaps){
-        this.language = language;
+class $f7f165aef83799e5$export$3e8048d3cf2ba3fd {
+    constructor(parentElement, language1, animator, dataScope, colorMapHandler, hasColorMaps){
+        this.language = language1;
         this.animator = animator;
         this.dataScope = dataScope;
         this.colorMapHandler = colorMapHandler;
         this.hasColorMaps = hasColorMaps;
-        this.element = $00670849ca68e684$exports.addDiv(parentElement, `${$4143f1453a8890e4$export$e875bf21bbc345e4}unitControls`);
+        this.element = $357cda13648d25b4$exports.addDiv(parentElement, `${$39c8d1d23f762a7c$export$f0d47e1c119d5bf2}unitControls`);
         this.clear();
     }
     finalize() {
@@ -8637,50 +8696,50 @@ class $be230773a1581926$export$e12e9bef3fc91403 {
         this.state.index = index;
         this.render();
     }
-    selectByNameValue(columnName, value) {
+    selectByNameValue(columnName1, value1) {
         const search = {
-            name: columnName,
+            name: columnName1,
             operator: '==',
-            value: value
+            value: value1
         };
         this.clearSelection();
         this.animator.select(search);
         this.populate(this.dataScope.selection);
     }
-    remapChanged(remap) {
-        this.state.remapColor = remap;
-        this.colorMapHandler(remap);
+    remapChanged(remap1) {
+        this.state.remapColor = remap1;
+        this.colorMapHandler(remap1);
         this.render();
     }
-    handleAction(action) {
+    handleAction(action1) {
         let p;
         const u = this.state.userSelection;
-        switch(action){
-            case $be230773a1581926$var$Action.deselect:
+        switch(action1){
+            case $f7f165aef83799e5$var$Action.deselect:
                 this.clearSelection();
                 p = this.animator.deselect();
                 break;
-            case $be230773a1581926$var$Action.exclude:
+            case $f7f165aef83799e5$var$Action.exclude:
                 this.clearSelection();
-                p = this.animator.filter($00705dd910744dd8$export$4469b01c89fa5613(u.search), u.excluded, u.included, false);
+                p = this.animator.filter($f52676db54676003$export$6897c284b6f9f4dc(u.search), u.excluded, u.included, false);
                 this.state.remapColor = false;
                 break;
-            case $be230773a1581926$var$Action.isolate:
+            case $f7f165aef83799e5$var$Action.isolate:
                 this.clearSelection();
                 p = this.animator.filter(u.search, u.included, u.excluded, false);
                 this.state.remapColor = false;
                 break;
-            case $be230773a1581926$var$Action.reset:
+            case $f7f165aef83799e5$var$Action.reset:
                 this.clear();
                 p = this.animator.reset();
                 break;
             default:
-                switch(action){
-                    case $be230773a1581926$var$Action.previous:
+                switch(action1){
+                    case $f7f165aef83799e5$var$Action.previous:
                         this.state.index--;
                         if (this.state.index < 0) this.state.index = this.state.userSelection.included.length - 1;
                         break;
-                    case $be230773a1581926$var$Action.next:
+                    case $f7f165aef83799e5$var$Action.next:
                         this.state.index++;
                         if (this.state.index >= this.state.userSelection.included.length) this.state.index = 0;
                         break;
@@ -8707,106 +8766,106 @@ class $be230773a1581926$export$e12e9bef3fc91403 {
             hasColorMaps: this.hasColorMaps() && hasRefinedData,
             remapColor: this.state.remapColor
         };
-        const a = $00670849ca68e684$exports.getActiveElementInfo();
-        $00670849ca68e684$exports.mount($be230773a1581926$var$renderDetails(renderProps), this.element);
-        $00670849ca68e684$exports.setActiveElement(a);
+        const a = $357cda13648d25b4$exports.getActiveElementInfo();
+        $357cda13648d25b4$exports.mount($f7f165aef83799e5$var$renderDetails(renderProps), this.element);
+        $357cda13648d25b4$exports.setActiveElement(a);
     }
 }
-const $be230773a1581926$var$renderDetails = (props)=>{
+const $f7f165aef83799e5$var$renderDetails = (props)=>{
     const controlButtons = [
-        $00670849ca68e684$exports.createElement("button", {
+        $357cda13648d25b4$exports.createElement("button", {
             disabled: !props.item,
-            onClick: (e)=>props.actionHandler($be230773a1581926$var$Action.deselect)
+            onClick: (e)=>props.actionHandler($f7f165aef83799e5$var$Action.deselect)
         }, props.language.deselect),
-        $00670849ca68e684$exports.createElement("button", {
+        $357cda13648d25b4$exports.createElement("button", {
             disabled: !props.item,
-            onClick: (e)=>props.actionHandler($be230773a1581926$var$Action.isolate)
+            onClick: (e)=>props.actionHandler($f7f165aef83799e5$var$Action.isolate)
         }, props.language.isolate),
-        $00670849ca68e684$exports.createElement("button", {
+        $357cda13648d25b4$exports.createElement("button", {
             disabled: !props.item,
-            onClick: (e)=>props.actionHandler($be230773a1581926$var$Action.exclude)
+            onClick: (e)=>props.actionHandler($f7f165aef83799e5$var$Action.exclude)
         }, props.language.exclude)
     ];
-    const colorMapping = $00670849ca68e684$exports.createElement("div", null, $00670849ca68e684$exports.createElement("button", {
+    const colorMapping = $357cda13648d25b4$exports.createElement("div", null, $357cda13648d25b4$exports.createElement("button", {
         disabled: props.remapColor,
         onClick: (e)=>props.remapColorHandler(true)
-    }, props.language.newColorMap), $00670849ca68e684$exports.createElement("button", {
+    }, props.language.newColorMap), $357cda13648d25b4$exports.createElement("button", {
         disabled: !props.remapColor,
         onClick: (e)=>props.remapColorHandler(false)
     }, props.language.oldColorMap));
     const singleItem = props.count === 1;
     const scrollButtons = [
-        $00670849ca68e684$exports.createElement("button", {
+        $357cda13648d25b4$exports.createElement("button", {
             disabled: singleItem,
-            onClick: (e)=>props.actionHandler($be230773a1581926$var$Action.previous)
+            onClick: (e)=>props.actionHandler($f7f165aef83799e5$var$Action.previous)
         }, props.language.previousDetail),
-        $00670849ca68e684$exports.createElement("button", {
+        $357cda13648d25b4$exports.createElement("button", {
             disabled: singleItem,
-            onClick: (e)=>props.actionHandler($be230773a1581926$var$Action.next)
+            onClick: (e)=>props.actionHandler($f7f165aef83799e5$var$Action.next)
         }, props.language.nextDetail),
-        $00670849ca68e684$exports.createElement("span", null, " ", props.language.selectionCount(props.count))
+        $357cda13648d25b4$exports.createElement("span", null, " ", props.language.selectionCount(props.count))
     ];
     const rows = [];
     for(let prop in props.item){
-        if (prop === $a3b399caf5d2c16b$export$b86d149b7c15b53e) continue;
-        if ($406c1b16a5bd3c44$export$2634e87bf7671285(prop)) continue;
+        if (prop === $7abff30d903026d9$export$5672246984822a29) continue;
+        if ($e76dbaf7a95e1712$export$81adea670bebefbe(prop)) continue;
         rows.push({
             cells: [
                 {
                     content: prop
                 },
                 {
-                    content: $be230773a1581926$var$linkSelect(props.language, prop, props.item[prop], props.selectionHandler)
+                    content: $f7f165aef83799e5$var$linkSelect(props.language, prop, props.item[prop], props.selectionHandler)
                 }
             ]
         });
     }
-    return $00670849ca68e684$exports.createElement("div", null, props.hasColorMaps && colorMapping, $00670849ca68e684$exports.createElement("h4", null, props.language.headers.selection), $00670849ca68e684$exports.createElement("div", {
-        className: `${$4143f1453a8890e4$export$e875bf21bbc345e4}selection`
-    }, controlButtons, $00670849ca68e684$exports.createElement("button", {
+    return $357cda13648d25b4$exports.createElement("div", null, props.hasColorMaps && colorMapping, $357cda13648d25b4$exports.createElement("h4", null, props.language.headers.selection), $357cda13648d25b4$exports.createElement("div", {
+        className: `${$39c8d1d23f762a7c$export$f0d47e1c119d5bf2}selection`
+    }, controlButtons, $357cda13648d25b4$exports.createElement("button", {
         disabled: !props.hasRefinedData,
-        onClick: (e)=>props.actionHandler($be230773a1581926$var$Action.reset)
-    }, "reset")), props.item && $00670849ca68e684$exports.createElement("h4", null, props.language.headers.details), $00670849ca68e684$exports.createElement("div", null, $00670849ca68e684$exports.createElement("div", {
-        className: `${$4143f1453a8890e4$export$e875bf21bbc345e4}details-scroll`
-    }, props.item && scrollButtons), $00670849ca68e684$exports.createElement("div", {
-        className: `${$4143f1453a8890e4$export$e875bf21bbc345e4}details`
-    }, props.item && $00670849ca68e684$exports.createElement($98be522bb53bca50$exports.Table, {
+        onClick: (e)=>props.actionHandler($f7f165aef83799e5$var$Action.reset)
+    }, "reset")), props.item && $357cda13648d25b4$exports.createElement("h4", null, props.language.headers.details), $357cda13648d25b4$exports.createElement("div", null, $357cda13648d25b4$exports.createElement("div", {
+        className: `${$39c8d1d23f762a7c$export$f0d47e1c119d5bf2}details-scroll`
+    }, props.item && scrollButtons), $357cda13648d25b4$exports.createElement("div", {
+        className: `${$39c8d1d23f762a7c$export$f0d47e1c119d5bf2}details`
+    }, props.item && $357cda13648d25b4$exports.createElement($b461bb0d5e9060a5$exports.Table, {
         rows: rows
     }))));
 };
-function $be230773a1581926$var$linkSelect(language1, columnName, value, selectionHandler) {
-    return $00670849ca68e684$exports.createElement("span", null, $00670849ca68e684$exports.createElement("a", {
+function $f7f165aef83799e5$var$linkSelect(language, columnName, value, selectionHandler) {
+    return $357cda13648d25b4$exports.createElement("span", null, $357cda13648d25b4$exports.createElement("a", {
         href: "#",
         onClick: (e)=>selectionHandler(columnName, value)
     }, value), isNaN(value) ? [
         ' ',
-        $00670849ca68e684$exports.createElement("a", {
+        $357cda13648d25b4$exports.createElement("a", {
             className: "bing-search",
             href: `https://www.bing.com/search?q=${encodeURIComponent(value)}`,
             target: "_blank"
-        }, language1.bing)
+        }, language.bing)
     ] : '');
 }
 
 
 
-function $70a576f3e0597d61$export$219bf736f4dcad63(presenter, headers) {
-    const vegaControls = presenter.getElement($407eabbb39689985$export$82c3b66b9a0309ee.vegaControls);
-    $70a576f3e0597d61$var$conditionalHeader(!!vegaControls.querySelectorAll('.vega-bindings > *').length, vegaControls, headers.chart);
-    const legend = presenter.getElement($407eabbb39689985$export$82c3b66b9a0309ee.legend);
-    $70a576f3e0597d61$var$conditionalHeader(!!legend.children.length, legend, headers.legend);
+function $33e0225dc17adec4$export$1d674716cc6da32f(presenter, headers) {
+    const vegaControls = presenter.getElement($753ee753424d27f3$export$79420be32f83a5b0.vegaControls);
+    $33e0225dc17adec4$var$conditionalHeader(!!vegaControls.querySelectorAll('.vega-bindings > *').length, vegaControls, headers.chart);
+    const legend = presenter.getElement($753ee753424d27f3$export$79420be32f83a5b0.legend);
+    $33e0225dc17adec4$var$conditionalHeader(!!legend.children.length, legend, headers.legend);
 }
-function $70a576f3e0597d61$var$conditionalHeader(condition, element, header) {
-    var existing = $70a576f3e0597d61$var$existingHeader(element, header);
-    if (condition && !existing) $70a576f3e0597d61$var$addHeader(element, header);
+function $33e0225dc17adec4$var$conditionalHeader(condition, element, header) {
+    var existing = $33e0225dc17adec4$var$existingHeader(element, header);
+    if (condition && !existing) $33e0225dc17adec4$var$addHeader(element, header);
     if (!condition && existing) existing.remove();
 }
-function $70a576f3e0597d61$var$addHeader(element, header) {
+function $33e0225dc17adec4$var$addHeader(element, header) {
     const h = document.createElement('h4');
     h.innerHTML = header;
     element.insertAdjacentElement('beforebegin', h);
 }
-function $70a576f3e0597d61$var$existingHeader(element, header) {
+function $33e0225dc17adec4$var$existingHeader(element, header) {
     const { previousElementSibling: previousElementSibling  } = element;
     if (previousElementSibling && previousElementSibling.innerHTML === header) return previousElementSibling;
 }
@@ -8814,24 +8873,24 @@ function $70a576f3e0597d61$var$existingHeader(element, header) {
 
 
 
-function $bb851559752c5ba0$var$legendRange(colorBinType, column, legend, clickedIndex) {
-    if (column.quantitative) return $bb851559752c5ba0$var$selectQuantitative(colorBinType, column, legend, clickedIndex);
-    else return $bb851559752c5ba0$var$selectCategorical(column, legend, clickedIndex);
+function $dbe5b70c4627633d$var$legendRange(colorBinType, column, legend, clickedIndex) {
+    if (column.quantitative) return $dbe5b70c4627633d$var$selectQuantitative(colorBinType, column, legend, clickedIndex);
+    else return $dbe5b70c4627633d$var$selectCategorical(column, legend, clickedIndex);
 }
-function $bb851559752c5ba0$var$selectCategorical(column, legend, clickedIndex) {
+function $dbe5b70c4627633d$var$selectCategorical(column, legend, clickedIndex) {
     const value = legend.rows[clickedIndex].value;
-    if (value === $146eeb4362821b4b$export$8dc108353b27858) {
+    if (value === $5026337cfcb4b996$export$8653a30c44b6e879) {
         const values = [];
         for(let i in legend.rows)if (+i !== clickedIndex) values.push(legend.rows[i].value);
-        return $44fc789f5716c739$export$6dc90c76fa6395fd(column, values);
+        return $c5b8e018283877d4$export$e531b549585c011c(column, values);
     } else //select equal
     return {
         expressions: [
-            $44fc789f5716c739$export$9875831c14ede476(column, legend.rows[clickedIndex].value)
+            $c5b8e018283877d4$export$8543b98d22318eca(column, legend.rows[clickedIndex].value)
         ]
     };
 }
-function $bb851559752c5ba0$var$selectQuantitative(colorBinType, column, legend, clickedIndex) {
+function $dbe5b70c4627633d$var$selectQuantitative(colorBinType, column, legend, clickedIndex) {
     const keys = Object.keys(legend.rows).map((key)=>+key
     ).sort((a, b)=>+a - +b
     );
@@ -8850,7 +8909,7 @@ function $bb851559752c5ba0$var$selectQuantitative(colorBinType, column, legend, 
                 if (rowText.indexOf('null') > 0) {
                     const ex = {
                         expressions: [
-                            $44fc789f5716c739$export$f11b1d645ff3971c(column)
+                            $c5b8e018283877d4$export$1be0843eea5393e4(column)
                         ]
                     };
                     return ex;
@@ -8868,54 +8927,54 @@ function $bb851559752c5ba0$var$selectQuantitative(colorBinType, column, legend, 
                 }
             }
     }
-    if (lowValue) lowValue = $44fc789f5716c739$export$2a2f2afd479c1f6b(lowValue);
-    if (highValue) highValue = $44fc789f5716c739$export$2a2f2afd479c1f6b(highValue);
+    if (lowValue) lowValue = $c5b8e018283877d4$export$cb7265fd11709ea(lowValue);
+    if (highValue) highValue = $c5b8e018283877d4$export$cb7265fd11709ea(highValue);
     if (lowValue === highValue) return {
         expressions: [
-            $44fc789f5716c739$export$9875831c14ede476(column, lowValue)
+            $c5b8e018283877d4$export$8543b98d22318eca(column, lowValue)
         ]
     };
-    else return $44fc789f5716c739$export$34d6d0f79c89c63b(column, lowValue, highValue, lowOperator, highOperator);
+    else return $c5b8e018283877d4$export$8bb38a473c12645e(column, lowValue, highValue, lowOperator, highOperator);
 }
-function $bb851559752c5ba0$export$803a85dd7a220b99(colorBinType, colorColumn, legend, language) {
+function $dbe5b70c4627633d$export$71ab65a966760ac3(colorBinType, colorColumn, legend, language) {
     const rowTexts = [];
     for(let i in legend.rows){
         let row = legend.rows[i];
-        row.search = $bb851559752c5ba0$var$legendRange(colorBinType, colorColumn, legend, +i);
-        if (row.value === $146eeb4362821b4b$export$8dc108353b27858) row.label = language.legendOther;
+        row.search = $dbe5b70c4627633d$var$legendRange(colorBinType, colorColumn, legend, +i);
+        if (row.value === $5026337cfcb4b996$export$8653a30c44b6e879) row.label = language.legendOther;
         else rowTexts.push(row.value);
     }
 }
 
 
 
-function $033f206191dd1c40$export$17254ea6be275784(columns, data, ordinalMap) {
+function $2a394f390c27cd1b$export$f03cc77b21b3a2b2(columns, data, ordinalMap) {
     const uCol = columns.uid && columns.uid.name;
     if (ordinalMap) data.forEach((d, i)=>{
         const key = uCol ? d[uCol] : i;
-        d[$a3b399caf5d2c16b$export$b86d149b7c15b53e] = ordinalMap[key];
+        d[$7abff30d903026d9$export$5672246984822a29] = ordinalMap[key];
     });
     else {
         ordinalMap = {
         };
         data.forEach((d, i)=>{
-            d[$a3b399caf5d2c16b$export$b86d149b7c15b53e] = i;
+            d[$7abff30d903026d9$export$5672246984822a29] = i;
             const uColValue = uCol ? d[uCol] : i;
             ordinalMap[uColValue] = i;
         });
     }
     return ordinalMap;
 }
-function $033f206191dd1c40$export$4560fd62e586acc(cube, data) {
+function $2a394f390c27cd1b$export$5844459bbee68321(cube, data) {
     const len = data.length;
     for(let i = 0; i < len; i++){
-        if (data[i][$a3b399caf5d2c16b$export$b86d149b7c15b53e] === cube.ordinal) return i;
+        if (data[i][$7abff30d903026d9$export$5672246984822a29] === cube.ordinal) return i;
     }
 }
 
 
 
-function $37e163a8fa47bb7c$export$c3a0858f04fd87bd(sv, b) {
+function $67f46c21af71ffed$export$385a06e733eab4de(sv, b) {
     if (!sv || !b || !b.signals || !b.signals.length) return;
     for(let key in sv){
         let value = sv[key];
@@ -8924,7 +8983,7 @@ function $37e163a8fa47bb7c$export$c3a0858f04fd87bd(sv, b) {
         if (signalB && signalB.bind) signalB.value = value;
     }
 }
-function $37e163a8fa47bb7c$export$6edb15af38125f88(view, spec) {
+function $67f46c21af71ffed$export$764590c093441ac7(view, spec) {
     if (!view || !spec || !spec.signals || !spec.signals.length) return;
     const result = {
     };
@@ -8943,35 +9002,35 @@ function $37e163a8fa47bb7c$export$6edb15af38125f88(view, spec) {
 
 
 
-const { outerSize: $db05ca17fb46bbe6$var$outerSize  } = $00670849ca68e684$exports;
-const { Table: $db05ca17fb46bbe6$var$Table  } = $98be522bb53bca50$exports;
-class $db05ca17fb46bbe6$export$65f75c7b414e8cb6 {
-    constructor(props){
+const { outerSize: $6af73f59b698d47b$var$outerSize  } = $357cda13648d25b4$exports;
+const { Table: $6af73f59b698d47b$var$Table  } = $b461bb0d5e9060a5$exports;
+class $6af73f59b698d47b$export$28c660c63b792dea {
+    constructor(props1){
         const renderProps = {
-            cssPrefix: props.cssPrefix,
-            rows: $db05ca17fb46bbe6$var$getRows(props.item, props.options)
+            cssPrefix: props1.cssPrefix,
+            rows: $6af73f59b698d47b$var$getRows(props1.item, props1.options)
         };
-        this.element = $db05ca17fb46bbe6$var$renderTooltip(renderProps);
+        this.element = $6af73f59b698d47b$var$renderTooltip(renderProps);
         if (this.element) {
             this.element.style.position = 'absolute';
             this.child = this.element.firstChild;
             document.body.appendChild(this.element);
             //measure and move as necessary
-            let m = $db05ca17fb46bbe6$var$outerSize(this.child);
+            let m = $6af73f59b698d47b$var$outerSize(this.child);
             while(m.height > document.documentElement.clientHeight){
                 let tr = this.child.querySelector('tr:last-child');
                 if (tr) tr.parentElement.removeChild(tr);
                 else break;
-                m = $db05ca17fb46bbe6$var$outerSize(this.child);
+                m = $6af73f59b698d47b$var$outerSize(this.child);
             }
-            if (props.position.clientX + m.width >= document.documentElement.clientWidth) this.child.style.right = '0';
+            if (props1.position.clientX + m.width >= document.documentElement.clientWidth) this.child.style.right = '0';
             let moveTop = true;
-            if (props.position.clientY + m.height >= document.documentElement.clientHeight) {
-                if (props.position.clientY - m.height > 0) this.child.style.bottom = '0';
+            if (props1.position.clientY + m.height >= document.documentElement.clientHeight) {
+                if (props1.position.clientY - m.height > 0) this.child.style.bottom = '0';
                 else moveTop = false;
             }
-            if (moveTop) this.element.style.top = `${props.position.clientY}px`;
-            this.element.style.left = `${props.position.clientX}px`;
+            if (moveTop) this.element.style.top = `${props1.position.clientY}px`;
+            this.element.style.left = `${props1.position.clientX}px`;
         }
     }
     finalize() {
@@ -8979,11 +9038,11 @@ class $db05ca17fb46bbe6$export$65f75c7b414e8cb6 {
         this.element = null;
     }
 }
-function $db05ca17fb46bbe6$var$getRows(item, options) {
+function $6af73f59b698d47b$var$getRows(item, options) {
     const rows = [];
     for(let columnName in item){
-        if (columnName === $a3b399caf5d2c16b$export$b86d149b7c15b53e) continue;
-        if ($406c1b16a5bd3c44$export$2634e87bf7671285(columnName)) continue;
+        if (columnName === $7abff30d903026d9$export$5672246984822a29) continue;
+        if ($e76dbaf7a95e1712$export$81adea670bebefbe(columnName)) continue;
         if (options && options.exclude) {
             if (options.exclude(columnName)) continue;
         }
@@ -8992,10 +9051,10 @@ function $db05ca17fb46bbe6$var$getRows(item, options) {
         if (options && options.displayValue) content = options.displayValue(value);
         else switch(value){
             case null:
-                content = $00670849ca68e684$exports.createElement("i", null, "null");
+                content = $357cda13648d25b4$exports.createElement("i", null, "null");
                 break;
             case undefined:
-                content = $00670849ca68e684$exports.createElement("i", null, "undefined");
+                content = $357cda13648d25b4$exports.createElement("i", null, "undefined");
                 break;
             default:
                 content = value.toString();
@@ -9013,11 +9072,11 @@ function $db05ca17fb46bbe6$var$getRows(item, options) {
     }
     return rows;
 }
-const $db05ca17fb46bbe6$var$renderTooltip = (props1)=>{
-    return props1.rows.length === 0 ? null : $00670849ca68e684$exports.createElement("div", {
-        className: `${props1.cssPrefix}tooltip`
-    }, $db05ca17fb46bbe6$var$Table({
-        rows: props1.rows
+const $6af73f59b698d47b$var$renderTooltip = (props)=>{
+    return props.rows.length === 0 ? null : $357cda13648d25b4$exports.createElement("div", {
+        className: `${props.cssPrefix}tooltip`
+    }, $6af73f59b698d47b$var$Table({
+        rows: props.rows
     }));
 };
 
@@ -9025,9 +9084,9 @@ const $db05ca17fb46bbe6$var$renderTooltip = (props1)=>{
 
 
 
-class $17b66d15f0c3b19b$export$8ab33d6b6c6417f7 {
-    resetCharacterSet(forceNewCharacterSet, oldInsight, newInsight) {
-        if (forceNewCharacterSet || $17b66d15f0c3b19b$var$needsNewCharacterSet(oldInsight, newInsight)) this.chars = undefined;
+class $0b154259095121b2$export$fba22c9d3f66adb {
+    resetCharacterSet(forceNewCharacterSet, oldInsight1, newInsight1) {
+        if (forceNewCharacterSet || $0b154259095121b2$var$needsNewCharacterSet(oldInsight1, newInsight1)) this.chars = undefined;
     }
     getCharacterSet(stage) {
         if (!this.chars) {
@@ -9057,7 +9116,7 @@ class $17b66d15f0c3b19b$export$8ab33d6b6c6417f7 {
         return this.chars;
     }
 }
-function $17b66d15f0c3b19b$var$needsNewCharacterSet(oldInsight, newInsight) {
+function $0b154259095121b2$var$needsNewCharacterSet(oldInsight, newInsight) {
     if (!oldInsight) return true;
     if (!newInsight) return true;
     if (oldInsight.chart !== newInsight.chart) return true;
@@ -9065,8 +9124,8 @@ function $17b66d15f0c3b19b$var$needsNewCharacterSet(oldInsight, newInsight) {
     if (oldInsight.totalStyle !== newInsight.totalStyle) return true;
     if (oldInsight.hideAxes !== newInsight.hideAxes) return true;
     if (oldInsight.view !== newInsight.view) return true;
-    if ($17b66d15f0c3b19b$var$differentObjectValues(oldInsight.signalValues, newInsight.signalValues)) return true;
-    if ($17b66d15f0c3b19b$var$differentObjectValues(oldInsight.size, newInsight.size)) return true;
+    if ($0b154259095121b2$var$differentObjectValues(oldInsight.signalValues, newInsight.signalValues)) return true;
+    if ($0b154259095121b2$var$differentObjectValues(oldInsight.size, newInsight.size)) return true;
     const oldColumns = oldInsight.columns;
     const newColumns = newInsight.columns;
     if (oldColumns.facet !== newColumns.facet) return true;
@@ -9076,7 +9135,7 @@ function $17b66d15f0c3b19b$var$needsNewCharacterSet(oldInsight, newInsight) {
     if (oldColumns.z !== newColumns.z) return true;
     return false;
 }
-function $17b66d15f0c3b19b$var$differentObjectValues(a, b) {
+function $0b154259095121b2$var$differentObjectValues(a, b) {
     if (!a && !b) return false;
     if (!a || !b) return true;
     const keys = Object.keys(b);
@@ -9085,7 +9144,7 @@ function $17b66d15f0c3b19b$var$differentObjectValues(a, b) {
         let ta = typeof a;
         let tb = typeof b;
         if (ta !== tb) return true;
-        if (ta === 'object') return $17b66d15f0c3b19b$var$differentObjectValues(a[key], b[key]);
+        if (ta === 'object') return $0b154259095121b2$var$differentObjectValues(a[key], b[key]);
         else {
             if (a[key] !== b[key]) return true;
         }
@@ -9094,7 +9153,7 @@ function $17b66d15f0c3b19b$var$differentObjectValues(a, b) {
 }
 
 
-var $cd7c0c51e96048d8$var$__awaiter = undefined && undefined.__awaiter || function(thisArg, _arguments, P, generator) {
+var $83151626e84e84c0$var$__awaiter = undefined && undefined.__awaiter || function(thisArg, _arguments, P, generator) {
     function adopt(value) {
         return value instanceof P ? value : new P(function(resolve) {
             resolve(value);
@@ -9121,25 +9180,25 @@ var $cd7c0c51e96048d8$var$__awaiter = undefined && undefined.__awaiter || functi
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const { defaultView: $cd7c0c51e96048d8$var$defaultView  } = $1c19a15e6d55f62b$exports;
-const $cd7c0c51e96048d8$var$zAxisZindex = 1010;
-let $cd7c0c51e96048d8$var$didRegisterColorSchemes = false;
-class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
+const { defaultView: $83151626e84e84c0$var$defaultView  } = $f92b17f7c58b7db2$exports;
+const $83151626e84e84c0$var$zAxisZindex = 1010;
+let $83151626e84e84c0$var$didRegisterColorSchemes = false;
+class $83151626e84e84c0$export$2ec4afd9b3c16a85 {
     /**
      * Instantiate a new Viewer.
      * @param element Parent HTMLElement to present within.
      * @param options Optional viewer options object.
-     */ constructor(element, options1){
+     */ constructor(element, options){
         this.element = element;
-        this.options = $00670849ca68e684$exports.deepMerge($4143f1453a8890e4$export$23e61e65e99ffb54, options1);
-        this.presenter = new $f11b1222d18f5aff$export$67eca7ff2a7e9e8e(element, $4143f1453a8890e4$export$3e1dd6a74003f7a3(this.options));
-        this._characterSet = new $17b66d15f0c3b19b$export$8ab33d6b6c6417f7();
-        this._dataScope = new $2f029215431ce823$export$993107647a287a6();
-        this._animator = new $d8c7d617dd7f10da$export$c31c6960578c025a(this._dataScope, {
+        this.options = $357cda13648d25b4$exports.deepMerge($39c8d1d23f762a7c$export$fb736e4909afb3d7, options);
+        this.presenter = new $586113946f2266a2$export$893c88c42e3630f9(element, $39c8d1d23f762a7c$export$c4db461e5e345a8(this.options));
+        this._characterSet = new $0b154259095121b2$export$fba22c9d3f66adb();
+        this._dataScope = new $321a7a35ef9b29af$export$3fb74a6ae4f1171d();
+        this._animator = new $b2e0f82d9487be27$export$c774d8c9d4e9e234(this._dataScope, {
             onDataChanged: this.onDataChanged.bind(this),
             onAnimateDataChange: this.onAnimateDataChange.bind(this)
         });
-        this._details = new $be230773a1581926$export$e12e9bef3fc91403(this.presenter.getElement($407eabbb39689985$export$82c3b66b9a0309ee.panel), this.options.language, this._animator, this._dataScope, (remap)=>{
+        this._details = new $f7f165aef83799e5$export$3e8048d3cf2ba3fd(this.presenter.getElement($753ee753424d27f3$export$79420be32f83a5b0.panel), this.options.language, this._animator, this._dataScope, (remap)=>{
             this.currentColorContext = ~~remap;
             this.renderSameLayout();
         }, ()=>this.insight && this.insight.columns && !!this.insight.columns.color && this.colorContexts && this.colorContexts.length > 1
@@ -9152,26 +9211,26 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
         this.currentColorContext = 0;
         this.options.onColorContextChange && this.options.onColorContextChange();
     }
-    applyLegendColorContext(colorContext) {
-        const a = $00670849ca68e684$exports.getActiveElementInfo();
-        $00670849ca68e684$exports.mount(colorContext.legendElement, this.presenter.getElement($407eabbb39689985$export$82c3b66b9a0309ee.legend));
-        $00670849ca68e684$exports.setActiveElement(a);
-        this.presenter.stage.legend = colorContext.legend;
+    applyLegendColorContext(colorContext1) {
+        const a = $357cda13648d25b4$exports.getActiveElementInfo();
+        $357cda13648d25b4$exports.mount(colorContext1.legendElement, this.presenter.getElement($753ee753424d27f3$export$79420be32f83a5b0.legend));
+        $357cda13648d25b4$exports.setActiveElement(a);
+        this.presenter.stage.legend = colorContext1.legend;
     }
     onAnimateDataChange(dataChange, waitingLabel, handlerLabel) {
         return new Promise((resolve, reject)=>{
             let innerPromise;
-            if (dataChange === $d8c7d617dd7f10da$export$c17ac6787f338a14.refine) {
+            if (dataChange === $b2e0f82d9487be27$export$d9e571576e98a7ab.refine) {
                 const oldColorContext = this.colorContexts[this.currentColorContext];
                 innerPromise = new Promise((innerResolve)=>{
                     this.renderNewLayout({
                     }, {
                         preStage: (stage, deckProps)=>{
-                            $bb851559752c5ba0$export$803a85dd7a220b99(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
+                            $dbe5b70c4627633d$export$71ab65a966760ac3(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                             this.overrideAxisLabels(stage);
-                            $b6965e965f496d72$export$65c9e5f150d5b083([
+                            $c06d9ec78664a7a9$export$fa70acaad0e00464([
                                 oldColorContext.colorMap
-                            ], $00670849ca68e684$exports.getCubes(deckProps));
+                            ], $357cda13648d25b4$exports.getCubes(deckProps));
                             if (this.options.onStage) this.options.onStage(stage, deckProps);
                         }
                     }).then(()=>{
@@ -9183,7 +9242,7 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
             } else innerPromise = this.renderNewLayout({
             }, {
                 preStage: (stage, deckProps)=>{
-                    $bb851559752c5ba0$export$803a85dd7a220b99(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
+                    $dbe5b70c4627633d$export$71ab65a966760ac3(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                     this.overrideAxisLabels(stage);
                     if (this.options.onStage) this.options.onStage(stage, deckProps);
                 }
@@ -9198,12 +9257,12 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
         });
     }
     onDataChanged(dataLayout, filter) {
-        return $cd7c0c51e96048d8$var$__awaiter(this, void 0, void 0, function*() {
+        return $83151626e84e84c0$var$__awaiter(this, void 0, void 0, function*() {
             switch(dataLayout){
-                case $d8c7d617dd7f10da$export$c17ac6787f338a14.same:
+                case $b2e0f82d9487be27$export$d9e571576e98a7ab.same:
                     this.renderSameLayout();
                     break;
-                case $d8c7d617dd7f10da$export$c17ac6787f338a14.refine:
+                case $b2e0f82d9487be27$export$d9e571576e98a7ab.refine:
                     {
                         //save cube colors
                         const oldColorContext = this.colorContexts[this.currentColorContext];
@@ -9212,18 +9271,18 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
                         }, {
                             preStage: (stage, deckProps)=>{
                                 //save off the spec colors
-                                colorMap = $b6965e965f496d72$export$1a7729b7ed4b2339(stage.cubeData);
-                                $b6965e965f496d72$export$65c9e5f150d5b083([
+                                colorMap = $c06d9ec78664a7a9$export$3b9379ac3646e0f0(stage.cubeData);
+                                $c06d9ec78664a7a9$export$fa70acaad0e00464([
                                     oldColorContext.colorMap
-                                ], $00670849ca68e684$exports.getCubes(deckProps));
+                                ], $357cda13648d25b4$exports.getCubes(deckProps));
                                 this.preStage(stage, deckProps);
                             },
                             onPresent: ()=>{
                                 //save new legend
                                 const newColorContext = {
                                     colorMap: colorMap,
-                                    legend: $00670849ca68e684$exports.clone(this.presenter.stage.legend),
-                                    legendElement: this.presenter.getElement($407eabbb39689985$export$82c3b66b9a0309ee.legend).children[0]
+                                    legend: $357cda13648d25b4$exports.clone(this.presenter.stage.legend),
+                                    legendElement: this.presenter.getElement($753ee753424d27f3$export$79420be32f83a5b0.legend).children[0]
                                 };
                                 //apply old legend
                                 this.applyLegendColorContext(oldColorContext);
@@ -9234,11 +9293,11 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
                             }
                         });
                         //narrow the filter only if it is different
-                        if (!$66f57d958d42d9ea$export$df417da3ae0614a2(this.insight.filter, filter)) this.insight.filter = $d8f1ab965659a119$export$aeb8b82cc90b8eb1(this.insight.filter, filter);
+                        if (!$8152aaf818f7ca2c$export$398604a469f7de9a(this.insight.filter, filter)) this.insight.filter = $4442703718296195$export$ec67f55c222e1546(this.insight.filter, filter);
                         if (this.options.onDataFilter) this.options.onDataFilter(this.insight.filter, this._dataScope.currentData());
                         break;
                     }
-                case $d8c7d617dd7f10da$export$c17ac6787f338a14.reset:
+                case $b2e0f82d9487be27$export$d9e571576e98a7ab.reset:
                     {
                         const colorContext = {
                             colorMap: null,
@@ -9251,7 +9310,7 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
                         yield this.renderNewLayout({
                         }, {
                             onPresent: ()=>{
-                                $b6965e965f496d72$export$2cdcf144dcfa6eb4(colorContext, this.presenter);
+                                $c06d9ec78664a7a9$export$44addeff9a96c1e7(colorContext, this.presenter);
                             }
                         });
                         delete this.insight.filter;
@@ -9291,7 +9350,7 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
         return specColumns;
     }
     renderNewLayout(signalValues, presenterConfig, view) {
-        return $cd7c0c51e96048d8$var$__awaiter(this, void 0, void 0, function*() {
+        return $83151626e84e84c0$var$__awaiter(this, void 0, void 0, function*() {
             const currData = this._dataScope.currentData();
             const context = {
                 specColumns: this.getSpecColumnsWithFilteredStats(),
@@ -9300,14 +9359,14 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
                 }, this.options), {
                     zAxisOptions: {
                         showZAxis: true,
-                        zIndex: $cd7c0c51e96048d8$var$zAxisZindex
+                        zIndex: $83151626e84e84c0$var$zAxisZindex
                     }
                 })
             };
-            const specResult = $4d5208b78df53d91$export$169a89f54f090971(context, currData);
+            const specResult = $f5081518125870e3$export$3f8fe6489e95757d(context, currData);
             if (!specResult.errors) {
-                const uiValues = $37e163a8fa47bb7c$export$6edb15af38125f88(this.vegaViewGl, this.vegaSpec);
-                $37e163a8fa47bb7c$export$c3a0858f04fd87bd(Object.assign(Object.assign({
+                const uiValues = $67f46c21af71ffed$export$764590c093441ac7(this.vegaViewGl, this.vegaSpec);
+                $67f46c21af71ffed$export$385a06e733eab4de(Object.assign(Object.assign({
                 }, uiValues), signalValues), specResult.vegaSpec);
                 this.vegaSpec = specResult.vegaSpec;
                 this.options.onVegaSpec && this.options.onVegaSpec(this.vegaSpec);
@@ -9315,14 +9374,14 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
                 const config = this.createConfig(presenterConfig);
                 if (view) config.getView = ()=>view
                 ;
-                if (!$cd7c0c51e96048d8$var$didRegisterColorSchemes) {
-                    $c70916a34f2bf3db$export$2f7089dba07adb1($2f0c752020c76b68$export$12896e353ebd9cc.vega);
-                    $cd7c0c51e96048d8$var$didRegisterColorSchemes = true;
+                if (!$83151626e84e84c0$var$didRegisterColorSchemes) {
+                    $d5cc309f57ea9332$export$3030070885af9365($aa3185d2619292b0$export$e2253033e6e1df16.vega);
+                    $83151626e84e84c0$var$didRegisterColorSchemes = true;
                 }
                 try {
                     if (this.vegaViewGl) this.vegaViewGl.finalize();
-                    const runtime = $2f0c752020c76b68$export$12896e353ebd9cc.vega.parse(this.vegaSpec);
-                    this.vegaViewGl = new $65b765713b03cc6f$export$5ae75a3802efaf(runtime, config).renderer('deck.gl').initialize(this.element);
+                    const runtime = $aa3185d2619292b0$export$e2253033e6e1df16.vega.parse(this.vegaSpec);
+                    this.vegaViewGl = new $fe59b525f658c489$export$6d8f9057dcd7f9e6(runtime, config).renderer('deck.gl').initialize(this.element);
                     yield this.vegaViewGl.runAsync();
                     const handler = (n, v)=>{
                         this._characterSet.resetCharacterSet(true);
@@ -9337,7 +9396,7 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
                         e.message
                     ];
                 }
-                if (!specResult.errors) $70a576f3e0597d61$export$219bf736f4dcad63(this.presenter, this.options.language.headers);
+                if (!specResult.errors) $33e0225dc17adec4$export$1d674716cc6da32f(this.presenter, this.options.language.headers);
             }
             if (specResult.errors) {
                 if (this.options.onError) this.options.onError(specResult.errors);
@@ -9360,12 +9419,12 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
         let recoloredAxes;
         if (newViewerOptions) {
             if (newViewerOptions.colors) {
-                recoloredAxes = $8f727b1c21e8c366$export$7e9483d314559015(this.presenter.stage, this._lastColorOptions, newViewerOptions.colors);
-                this._lastColorOptions = $00670849ca68e684$exports.clone(newViewerOptions.colors);
+                recoloredAxes = $100a640a591eda90$export$bb42b694d535c95a(this.presenter.stage, this._lastColorOptions, newViewerOptions.colors);
+                this._lastColorOptions = $357cda13648d25b4$exports.clone(newViewerOptions.colors);
                 axes = recoloredAxes.axes || axes;
                 textData = recoloredAxes.textData || textData;
             }
-            this.options = $00670849ca68e684$exports.deepMerge(this.options, newViewerOptions);
+            this.options = $357cda13648d25b4$exports.deepMerge(this.options, newViewerOptions);
         }
         let colorMaps = [
             colorContext.colorMap
@@ -9374,11 +9433,11 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
         const hasSelectedData = this._dataScope.hasSelectedData();
         const hasActive = !!this._dataScope.active;
         if (hasSelectedData || hasActive) {
-            const selectedColorMap = $b6965e965f496d72$export$3d85010f65df95c0(this._dataScope.currentData(), hasSelectedData, hasActive, this.options);
+            const selectedColorMap = $c06d9ec78664a7a9$export$9cf45ec8b4cc2b65(this._dataScope.currentData(), hasSelectedData, hasActive, this.options);
             colorMaps.push(selectedColorMap);
             colorMethod = this.options.colors.unselectedColorMethod;
         }
-        $b6965e965f496d72$export$65c9e5f150d5b083(colorMaps, clonedCubes, colorMethod);
+        $c06d9ec78664a7a9$export$fa70acaad0e00464(colorMaps, clonedCubes, colorMethod);
         const stage = {
             cubeData: clonedCubes,
             axes: axes,
@@ -9386,15 +9445,15 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
         };
         this.vegaViewGl.presenter.rePresent(stage, this.createConfig().presenterConfig);
     }
-    getView(view) {
-        if (view === undefined) {
-            if (this.presenter.view === null) return $cd7c0c51e96048d8$var$defaultView;
+    getView(view1) {
+        if (view1 === undefined) {
+            if (this.presenter.view === null) return $83151626e84e84c0$var$defaultView;
             else return this.presenter.view;
-        } else return view;
+        } else return view1;
     }
     transformData(values, transform) {
         try {
-            const runtime = $2f0c752020c76b68$export$12896e353ebd9cc.vega.parse({
+            const runtime = $aa3185d2619292b0$export$e2253033e6e1df16.vega.parse({
                 $schema: 'https://vega.github.io/schema/vega/v4.json',
                 data: [
                     {
@@ -9404,7 +9463,7 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
                     }
                 ]
             });
-            new $65b765713b03cc6f$export$5ae75a3802efaf(runtime).run();
+            new $fe59b525f658c489$export$6d8f9057dcd7f9e6(runtime).run();
         } catch (e) {
         // continue regardless of error
         }
@@ -9416,18 +9475,18 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
      * @param data Array of data objects.
      * @param view Optional View to specify camera type.
      * @param ordinalMap Optional map of ordinals to assign to the data such that the same cubes can be re-used for new data.
-     */ render(insight, data, options = {
+     */ render(insight, data, options1 = {
     }) {
-        return $cd7c0c51e96048d8$var$__awaiter(this, void 0, void 0, function*() {
+        return $83151626e84e84c0$var$__awaiter(this, void 0, void 0, function*() {
             let result;
             //see if refine expression has changed
-            if (!$66f57d958d42d9ea$export$df417da3ae0614a2(insight.filter, this.insight.filter)) {
+            if (!$8152aaf818f7ca2c$export$398604a469f7de9a(insight.filter, this.insight.filter)) {
                 const allowAsyncRenderTime = 100;
                 if (insight.filter) {
                     //refining
-                    result = yield this._render(insight, data, options, true);
+                    result = yield this._render(insight, data, options1, true);
                     this.presenter.animationQueue(()=>{
-                        this.filter(insight.filter, options.rebaseFilter && options.rebaseFilter());
+                        this.filter(insight.filter, options1.rebaseFilter && options1.rebaseFilter());
                     }, allowAsyncRenderTime, {
                         waitingLabel: 'layout before refine',
                         handlerLabel: 'refine after layout'
@@ -9435,7 +9494,7 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
                 } else {
                     //not refining
                     this._dataScope.setFilteredData(null);
-                    result = yield this._render(insight, data, options, true);
+                    result = yield this._render(insight, data, options1, true);
                     this.presenter.animationQueue(()=>{
                         this.reset();
                     }, allowAsyncRenderTime, {
@@ -9443,7 +9502,7 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
                         handlerLabel: 'reset after layout'
                     });
                 }
-            } else result = yield this._render(insight, data, options, false);
+            } else result = yield this._render(insight, data, options1, false);
             return result;
         });
     }
@@ -9455,21 +9514,21 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
         if (oldInsight.columns.facet !== newInsight.columns.facet) return true;
         return false;
     }
-    configForSignalCapture(presenterConfig) {
+    configForSignalCapture(presenterConfig1) {
         const colorContext = {
             colorMap: null,
             legend: null,
             legendElement: null
         };
         //now be ready to capture color changing signals 
-        presenterConfig.preStage = (stage, deckProps)=>{
+        presenterConfig1.preStage = (stage, deckProps)=>{
             if (this._shouldSaveColorContext()) //save off the colors from Vega layout
-            colorContext.colorMap = $b6965e965f496d72$export$1a7729b7ed4b2339(stage.cubeData);
+            colorContext.colorMap = $c06d9ec78664a7a9$export$3b9379ac3646e0f0(stage.cubeData);
             this.preStage(stage, deckProps);
         };
-        presenterConfig.onPresent = ()=>{
+        presenterConfig1.onPresent = ()=>{
             if (this._shouldSaveColorContext()) {
-                $b6965e965f496d72$export$2cdcf144dcfa6eb4(colorContext, this.presenter);
+                $c06d9ec78664a7a9$export$44addeff9a96c1e7(colorContext, this.presenter);
                 this.changeColorContexts([
                     colorContext
                 ]);
@@ -9477,40 +9536,40 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
             }
         };
     }
-    _render(insight, data, options, forceNewCharacterSet) {
-        return $cd7c0c51e96048d8$var$__awaiter(this, void 0, void 0, function*() {
+    _render(insight1, data1, options2, forceNewCharacterSet) {
+        return $83151626e84e84c0$var$__awaiter(this, void 0, void 0, function*() {
             if (this._tooltip) {
                 this._tooltip.finalize();
                 this._tooltip = null;
             }
-            if (this._dataScope.setData(data, options.columns)) //apply transform to the data
-            this.transformData(data, insight.transform);
-            this._specColumns = $0ebaa52647c6073e$export$301044eba61980a8(insight, this._dataScope.getColumns(options.columnTypes));
-            const ordinalMap = $033f206191dd1c40$export$17254ea6be275784(this._specColumns, data, options.ordinalMap);
-            this._characterSet.resetCharacterSet(forceNewCharacterSet, this.insight, insight);
-            this.insight = $00670849ca68e684$exports.clone(insight);
-            this._lastColorOptions = $00670849ca68e684$exports.clone(this.options.colors);
-            this._shouldSaveColorContext = ()=>!options.initialColorContext
+            if (this._dataScope.setData(data1, options2.columns)) //apply transform to the data
+            this.transformData(data1, insight1.transform);
+            this._specColumns = $1f41cd3bd9350891$export$9e6128b2231f5173(insight1, this._dataScope.getColumns(options2.columnTypes));
+            const ordinalMap = $2a394f390c27cd1b$export$f03cc77b21b3a2b2(this._specColumns, data1, options2.ordinalMap);
+            this._characterSet.resetCharacterSet(forceNewCharacterSet, this.insight, insight1);
+            this.insight = $357cda13648d25b4$exports.clone(insight1);
+            this._lastColorOptions = $357cda13648d25b4$exports.clone(this.options.colors);
+            this._shouldSaveColorContext = ()=>!options2.initialColorContext
             ;
-            const colorContext = options.initialColorContext || {
+            const colorContext = options2.initialColorContext || {
                 colorMap: null,
                 legend: null,
                 legendElement: null
             };
-            const specResult = yield this.renderNewLayout(insight.signalValues, {
+            const specResult = yield this.renderNewLayout(insight1.signalValues, {
                 preStage: (stage, deckProps)=>{
                     if (this._shouldSaveColorContext()) //save off the colors from Vega layout
-                    colorContext.colorMap = $b6965e965f496d72$export$1a7729b7ed4b2339(stage.cubeData);
+                    colorContext.colorMap = $c06d9ec78664a7a9$export$3b9379ac3646e0f0(stage.cubeData);
                     else //apply passed colorContext
-                    $b6965e965f496d72$export$65c9e5f150d5b083([
+                    $c06d9ec78664a7a9$export$fa70acaad0e00464([
                         colorContext.colorMap
-                    ], $00670849ca68e684$exports.getCubes(deckProps));
+                    ], $357cda13648d25b4$exports.getCubes(deckProps));
                     //if items are selected, repaint
                     const hasSelectedData = !!this._dataScope.hasSelectedData();
                     const hasActive = !!this._dataScope.active;
                     if (this._dataScope.hasSelectedData() || this._dataScope.active) {
-                        const selectedColorMap = $b6965e965f496d72$export$3d85010f65df95c0(this._dataScope.currentData(), hasSelectedData, hasActive, this.options);
-                        $b6965e965f496d72$export$65c9e5f150d5b083([
+                        const selectedColorMap = $c06d9ec78664a7a9$export$9cf45ec8b4cc2b65(this._dataScope.currentData(), hasSelectedData, hasActive, this.options);
+                        $c06d9ec78664a7a9$export$fa70acaad0e00464([
                             colorContext.colorMap,
                             selectedColorMap
                         ], stage.cubeData, this.options.colors.unselectedColorMethod);
@@ -9519,17 +9578,17 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
                 },
                 onPresent: ()=>{
                     if (this._shouldSaveColorContext()) {
-                        $b6965e965f496d72$export$2cdcf144dcfa6eb4(colorContext, this.presenter);
+                        $c06d9ec78664a7a9$export$44addeff9a96c1e7(colorContext, this.presenter);
                         this.changeColorContexts([
                             colorContext
                         ]);
                     } else //apply passed colorContext
                     this.applyLegendColorContext(colorContext);
                 },
-                shouldViewstateTransition: ()=>this.shouldViewstateTransition(insight, this.insight)
-            }, this.getView(insight.view));
+                shouldViewstateTransition: ()=>this.shouldViewstateTransition(insight1, this.insight)
+            }, this.getView(insight1.view));
             //future signal changes should save the color context
-            this._shouldSaveColorContext = ()=>!options.discardColorContextUpdates || !options.discardColorContextUpdates()
+            this._shouldSaveColorContext = ()=>!options2.discardColorContextUpdates || !options2.discardColorContextUpdates()
             ;
             this._details.render();
             const result = {
@@ -9539,7 +9598,7 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
             return result;
         });
     }
-    overrideAxisLabels(stage) {
+    overrideAxisLabels(stage2) {
     // if (this._specColumns.x && this._specColumns.x.type === 'date') {
     //     stage.axes.x.forEach(axis => makeDateRange(
     //         axis.tickText,
@@ -9553,20 +9612,20 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
     //     ));
     // }
     }
-    preStage(stage, deckProps) {
+    preStage(stage1, deckProps) {
         const onClick = (e, search)=>{
             if (this.options.onAxisClick) this.options.onAxisClick(e, search);
             else this.select(search);
         };
-        this.overrideAxisLabels(stage);
-        const polygonLayer = $eb543ae47877c1a9$export$799a72d0a47efbc5(this.presenter, this.specCapabilities, this._specColumns, stage, onClick, this.options.colors.axisSelectHighlight, this.options.selectionPolygonZ);
+        this.overrideAxisLabels(stage1);
+        const polygonLayer = $e03f28a3d2eff4a5$export$7aba45edad9b8473(this.presenter, this.specCapabilities, this._specColumns, stage1, onClick, this.options.colors.axisSelectHighlight, this.options.selectionPolygonZ);
         const order = 1; //after textlayer but before others
         deckProps.layers.splice(order, 0, polygonLayer);
-        $bb851559752c5ba0$export$803a85dd7a220b99(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
-        if (this.options.onStage) this.options.onStage(stage, deckProps);
+        $dbe5b70c4627633d$export$71ab65a966760ac3(this.insight.colorBin, this._specColumns.color, stage1.legend, this.options.language);
+        if (this.options.onStage) this.options.onStage(stage1, deckProps);
     }
-    onCubeClick(e, cube) {
-        this.options.onCubeClick && this.options.onCubeClick(e, cube);
+    onCubeClick(e3, cube) {
+        this.options.onCubeClick && this.options.onCubeClick(e3, cube);
         const hasSelectedData = this._dataScope.hasSelectedData();
         if (hasSelectedData && this._dataScope.selection.included.length > 1) {
             //if active is within selection, keep the selection and activate the one.
@@ -9581,41 +9640,41 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
                 return;
             }
         }
-        if (hasSelectedData && this._dataScope.selection.included.length === 1 && this._dataScope.selection.included[0][$a3b399caf5d2c16b$export$b86d149b7c15b53e] === cube.ordinal) {
+        if (hasSelectedData && this._dataScope.selection.included.length === 1 && this._dataScope.selection.included[0][$7abff30d903026d9$export$5672246984822a29] === cube.ordinal) {
             this.deselect();
             return;
         }
         const search = {
-            name: $a3b399caf5d2c16b$export$b86d149b7c15b53e,
+            name: $7abff30d903026d9$export$5672246984822a29,
             operator: '==',
             value: cube.ordinal
         };
         this.select(search);
     }
-    onCubeHover(e, cube) {
+    onCubeHover(e1, cube1) {
         if (this._tooltip) {
             this._tooltip.finalize();
             this._tooltip = null;
         }
-        if (!cube) return;
+        if (!cube1) return;
         const currentData = this._dataScope.currentData();
-        const index = $033f206191dd1c40$export$4560fd62e586acc(cube, currentData);
-        if (index >= 0) this._tooltip = new $db05ca17fb46bbe6$export$65f75c7b414e8cb6({
+        const index = $2a394f390c27cd1b$export$5844459bbee68321(cube1, currentData);
+        if (index >= 0) this._tooltip = new $6af73f59b698d47b$export$28c660c63b792dea({
             options: this.options.tooltipOptions,
             item: currentData[index],
-            position: e,
+            position: e1,
             cssPrefix: this.presenter.style.cssPrefix
         });
     }
-    onTextHover(e, t) {
+    onTextHover(e2, t1) {
         //return true if highlight color is different
-        if (!t || !this.options.getTextColor || !this.options.getTextHighlightColor) return false;
-        return !$00670849ca68e684$exports.colorIsEqual(this.options.getTextColor(t), this.options.getTextHighlightColor(t));
+        if (!t1 || !this.options.getTextColor || !this.options.getTextHighlightColor) return false;
+        return !$357cda13648d25b4$exports.colorIsEqual(this.options.getTextColor(t1), this.options.getTextHighlightColor(t1));
     }
     createConfig(c) {
         const { getTextColor: getTextColor , getTextHighlightColor: getTextHighlightColor , getTextHighlightAlphaCutoff: getTextHighlightAlphaCutoff , onTextClick: onTextClick  } = this.options;
         const defaultPresenterConfig = {
-            zAxisZindex: $cd7c0c51e96048d8$var$zAxisZindex,
+            zAxisZindex: $83151626e84e84c0$var$zAxisZindex,
             getCharacterSet: (stage)=>this._characterSet.getCharacterSet(stage)
             ,
             getTextColor: getTextColor,
@@ -9623,7 +9682,7 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
             getTextHighlightAlphaCutoff: getTextHighlightAlphaCutoff,
             onTextClick: (e, t)=>{
                 if (t.metaData && t.metaData.search) {
-                    const search = $05162edb3d6c06e2$export$34ed1fd5ef58e5bb(t.metaData.search);
+                    const search = $35851ba40c014310$export$cb06c97de370398d(t.metaData.search);
                     if (this.options.onAxisClick) this.options.onAxisClick(e, search);
                     else this.select(search);
                 }
@@ -9647,7 +9706,7 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
             },
             onSceneRectAssignCubeOrdinal: (datum)=>{
                 //TODO see if datum is a facet selection rect
-                return datum[$a3b399caf5d2c16b$export$b86d149b7c15b53e];
+                return datum[$7abff30d903026d9$export$5672246984822a29];
             },
             onTargetViewState: (h, w)=>{
                 const { height: height , width: width  } = this.insight.size;
@@ -9700,9 +9759,9 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
     /**
      * Select cubes by a filter expression.
      * @param search Filter expression, see https://vega.github.io/vega/docs/expressions/
-     */ select(search) {
+     */ select(search1) {
         return new Promise((resolve, reject)=>{
-            this._animator.select(search).then(()=>{
+            this._animator.select(search1).then(()=>{
                 this._details.populate(this._dataScope.selection);
                 resolve();
             });
@@ -9767,7 +9826,7 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
     /**
      * Gets current signal values.
      */ getSignalValues() {
-        return $37e163a8fa47bb7c$export$6edb15af38125f88(this.vegaViewGl, this.vegaSpec);
+        return $67f46c21af71ffed$export$764590c093441ac7(this.vegaViewGl, this.vegaSpec);
     }
     finalize() {
         if (this._dataScope) this._dataScope.finalize();
@@ -9790,21 +9849,25 @@ class $cd7c0c51e96048d8$export$ff719dc3ea4d1e34 {
 }
 /**
  * Default Viewer options.
- */ $cd7c0c51e96048d8$export$ff719dc3ea4d1e34.defaultViewerOptions = $4143f1453a8890e4$export$23e61e65e99ffb54;
+ */ $83151626e84e84c0$export$2ec4afd9b3c16a85.defaultViewerOptions = $39c8d1d23f762a7c$export$fb736e4909afb3d7;
 
 
-const $dc138f04a6edaf73$export$aef83baa0e7093df = '3.2.1';
+const $c2f62f3c6fefc6ab$export$83d89fbfd8236492 = '3.2.1';
 
 
-const $385418a87250916e$export$44747fb0056adba5 = $2f0c752020c76b68$export$44747fb0056adba5;
+const $e5c730801b562de0$export$1f96ae73734a86cc = $aa3185d2619292b0$export$1f96ae73734a86cc;
 
 
-var $6e437f743d80b3ba$exports = {};
+var $900824613c851981$exports = {};
 
-$parcel$export($6e437f743d80b3ba$exports, "classList", () => $6e437f743d80b3ba$export$f4d7ca4fe1e27e47);
-$parcel$export($6e437f743d80b3ba$exports, "deepCompare", () => $6e437f743d80b3ba$export$9699af0473c7911b);
-var $8cb2d6cf8e1a2579$exports = {};
-$8cb2d6cf8e1a2579$exports = $8cb2d6cf8e1a2579$var$compare;
+$parcel$export($900824613c851981$exports, "classList", () => $900824613c851981$export$11c615ce16f87241);
+$parcel$export($900824613c851981$exports, "deepCompare", () => $900824613c851981$export$e12301e595e16ad8);
+var $a27d0c43025d8d11$exports = {};
+
+$parcel$defineInteropFlag($a27d0c43025d8d11$exports);
+
+$parcel$export($a27d0c43025d8d11$exports, "default", () => $a27d0c43025d8d11$export$2e2bcd8739ae039);
+var $a27d0c43025d8d11$export$2e2bcd8739ae039 = $a27d0c43025d8d11$var$compare;
 /*
   primitives: value1 === value2
   functions: value1.toString == value2.toString
@@ -9817,7 +9880,7 @@ $8cb2d6cf8e1a2579$exports = $8cb2d6cf8e1a2579$var$compare;
   compare({a: 2, b: 3, c: 4}, {a: 2, b: 3}); // false
   compare({a: 2, b: 3}, {a: 2, b: 3, c: 4}); // false
   compare([[1, [2, {a: 4}], 4], [[1, [2, {a: 4}]]); // true
-*/ function $8cb2d6cf8e1a2579$var$compare(value1, value2) {
+*/ function $a27d0c43025d8d11$var$compare(value1, value2) {
     if (value1 === value2) return true;
     /* eslint-disable no-self-compare */ // if both values are NaNs return true
     if (value1 !== value1 && value2 !== value2) return true;
@@ -9827,26 +9890,28 @@ $8cb2d6cf8e1a2579$exports = $8cb2d6cf8e1a2579$var$compare;
     if (value1 !== Object(value1)) // non equal primitives
     return false;
     if (!value1) return false;
-    if (Array.isArray(value1)) return $8cb2d6cf8e1a2579$var$compareArrays(value1, value2);
+    if (Array.isArray(value1)) return $a27d0c43025d8d11$var$compareArrays(value1, value2);
     if (({
-    }).toString.call(value1) == '[object Object]') return $8cb2d6cf8e1a2579$var$compareObjects(value1, value2);
-    else return $8cb2d6cf8e1a2579$var$compareNativeSubtypes(value1, value2);
+    }).toString.call(value1) == '[object Set]') return $a27d0c43025d8d11$var$compareArrays(Array.from(value1), Array.from(value2));
+    if (({
+    }).toString.call(value1) == '[object Object]') return $a27d0c43025d8d11$var$compareObjects(value1, value2);
+    else return $a27d0c43025d8d11$var$compareNativeSubtypes(value1, value2);
 }
-function $8cb2d6cf8e1a2579$var$compareNativeSubtypes(value1, value2) {
+function $a27d0c43025d8d11$var$compareNativeSubtypes(value1, value2) {
     // e.g. Function, RegExp, Date
     return value1.toString() === value2.toString();
 }
-function $8cb2d6cf8e1a2579$var$compareArrays(value1, value2) {
+function $a27d0c43025d8d11$var$compareArrays(value1, value2) {
     var len = value1.length;
     if (len != value2.length) return false;
     var alike = true;
-    for(var i = 0; i < len; i++)if (!$8cb2d6cf8e1a2579$var$compare(value1[i], value2[i])) {
+    for(var i = 0; i < len; i++)if (!$a27d0c43025d8d11$var$compare(value1[i], value2[i])) {
         alike = false;
         break;
     }
     return alike;
 }
-function $8cb2d6cf8e1a2579$var$compareObjects(value1, value2) {
+function $a27d0c43025d8d11$var$compareObjects(value1, value2) {
     var keys1 = Object.keys(value1).sort();
     var keys2 = Object.keys(value2).sort();
     var len = keys1.length;
@@ -9854,36 +9919,36 @@ function $8cb2d6cf8e1a2579$var$compareObjects(value1, value2) {
     for(var i = 0; i < len; i++){
         var key1 = keys1[i];
         var key2 = keys2[i];
-        if (!(key1 == key2 && $8cb2d6cf8e1a2579$var$compare(value1[key1], value2[key2]))) return false;
+        if (!(key1 == key2 && $a27d0c43025d8d11$var$compare(value1[key1], value2[key2]))) return false;
     }
     return true;
 }
 
 
-const $6e437f743d80b3ba$export$f4d7ca4fe1e27e47 = (...args)=>{
+const $900824613c851981$export$11c615ce16f87241 = (...args)=>{
     return args.filter(Boolean).join(' ');
 };
-const $6e437f743d80b3ba$export$9699af0473c7911b = $8cb2d6cf8e1a2579$exports.default || $8cb2d6cf8e1a2579$exports;
+const $900824613c851981$export$e12301e595e16ad8 = $a27d0c43025d8d11$exports.default || $a27d0c43025d8d11$exports;
 
 
 
 
-const $10e70159f7836695$export$12896e353ebd9cc = {
+const $e2a889539cb3cb17$export$e2253033e6e1df16 = {
     react: null,
     reactDOM: null
 };
-function $10e70159f7836695$export$44747fb0056adba5(react, reactDOM, vega, deck, layers, luma) {
-    $7f572b57d5948475$exports.use(vega, deck, layers, luma);
-    $10e70159f7836695$export$12896e353ebd9cc.react = react;
-    $10e70159f7836695$export$12896e353ebd9cc.reactDOM = reactDOM;
+function $e2a889539cb3cb17$export$1f96ae73734a86cc(react, reactDOM, vega, deck, layers, luma) {
+    $fe0c42722799ef8c$exports.use(vega, deck, layers, luma);
+    $e2a889539cb3cb17$export$e2253033e6e1df16.react = react;
+    $e2a889539cb3cb17$export$e2253033e6e1df16.reactDOM = reactDOM;
     //inform React that we are using a dynamic base class
-    $2e70c6c127734088$export$1d29a992e629a3f4.prototype = react.Component.prototype;
+    $730c610e376ac0d0$export$441ac54c4cda559d.prototype = react.Component.prototype;
 }
 
 
 
 
-function $2e70c6c127734088$var$addNullable(insight, signalValues) {
+function $730c610e376ac0d0$var$addNullable(insight, signalValues) {
     const withNulls = Object.assign(Object.assign({
         view: null,
         filter: null
@@ -9892,21 +9957,21 @@ function $2e70c6c127734088$var$addNullable(insight, signalValues) {
     });
     return withNulls;
 }
-function $2e70c6c127734088$export$b1526dcecdc7f4ad(viewer, insight) {
+function $730c610e376ac0d0$export$1557ccb739c4ea87(viewer, insight) {
     const currentInsight = viewer.getInsight();
-    const a = $2e70c6c127734088$var$addNullable(currentInsight, Object.assign(Object.assign({
+    const a = $730c610e376ac0d0$var$addNullable(currentInsight, Object.assign(Object.assign({
     }, viewer.insight.signalValues), currentInsight.signalValues));
-    const b = $2e70c6c127734088$var$addNullable(insight, Object.assign(Object.assign({
+    const b = $730c610e376ac0d0$var$addNullable(insight, Object.assign(Object.assign({
     }, a.signalValues), insight.signalValues));
-    const compare = $6e437f743d80b3ba$export$9699af0473c7911b(a, b);
+    const compare = $900824613c851981$export$e12301e595e16ad8(a, b);
     return {
         a: a,
         b: b,
         compare: compare
     };
 }
-function $2e70c6c127734088$var$_SandDanceReact(props) {
-    class __SandDanceReact extends $10e70159f7836695$export$12896e353ebd9cc.react.Component {
+function $730c610e376ac0d0$var$_SandDanceReact(props) {
+    class __SandDanceReact extends $e2a889539cb3cb17$export$e2253033e6e1df16.react.Component {
         layout() {
             this.lastData = this.props.data;
             this.viewer.render(this.props.insight, this.props.data, this.props.renderOptions).then((renderResult)=>{
@@ -9920,27 +9985,27 @@ function $2e70c6c127734088$var$_SandDanceReact(props) {
         }
         view() {
             if (this.props.insight && this.props.data) {
-                const c = $2e70c6c127734088$export$b1526dcecdc7f4ad(this.viewer, this.props.insight);
+                const c = $730c610e376ac0d0$export$1557ccb739c4ea87(this.viewer, this.props.insight);
                 const sameDataRef = this.props.data === this.lastData;
                 if (!c.compare || !sameDataRef) this.layout();
             }
         }
         componentDidMount() {
-            const element = $10e70159f7836695$export$12896e353ebd9cc.reactDOM.findDOMNode(this.viewerDiv);
-            this.viewer = new $cd7c0c51e96048d8$exports.Viewer(element, this.props.viewerOptions);
+            const element = $e2a889539cb3cb17$export$e2253033e6e1df16.reactDOM.findDOMNode(this.viewerDiv);
+            this.viewer = new $83151626e84e84c0$exports.Viewer(element, this.props.viewerOptions);
             if (this.props.onMount) {
-                if (this.props.onMount(this.viewer.presenter.getElement($7f572b57d5948475$exports.PresenterElement.gl))) this.view();
+                if (this.props.onMount(this.viewer.presenter.getElement($fe0c42722799ef8c$exports.PresenterElement.gl))) this.view();
             } else this.view();
         }
         componentDidUpdate() {
-            this.viewer.options = $7f572b57d5948475$exports.util.deepMerge(this.viewer.options, this.props.viewerOptions);
+            this.viewer.options = $fe0c42722799ef8c$exports.util.deepMerge(this.viewer.options, this.props.viewerOptions);
             this.view();
         }
         componentWillUnmount() {
             this.viewer.finalize();
         }
         render() {
-            return $10e70159f7836695$export$12896e353ebd9cc.react.createElement("div", {
+            return $e2a889539cb3cb17$export$e2253033e6e1df16.react.createElement("div", {
                 className: "sanddance-ReactViewer",
                 ref: (div)=>this.viewerDiv = div
             });
@@ -9948,22 +10013,22 @@ function $2e70c6c127734088$var$_SandDanceReact(props) {
     }
     return new __SandDanceReact(props);
 }
-const $2e70c6c127734088$export$1d29a992e629a3f4 = $2e70c6c127734088$var$_SandDanceReact;
+const $730c610e376ac0d0$export$441ac54c4cda559d = $730c610e376ac0d0$var$_SandDanceReact;
 
 
 
-const $01b008870dc83545$export$aef83baa0e7093df = '3.0.1';
+const $befc3a45da53e8f6$export$83d89fbfd8236492 = '3.0.1';
 
 
 
 
 
-function $9339840789a2dc56$export$50478d543b96dfd6(props) {
+function $2c50b647deae576f$export$8210dfe1863c478(props) {
     if (!props.explorer.viewer || !props.signal) return null;
     if (props.signal.bind) {
         const input = props.signal.bind.input;
         if (input) {
-            const fn = $9339840789a2dc56$var$map[input];
+            const fn = $2c50b647deae576f$var$map[input];
             if (fn) {
                 const prefix = props.prefix ? `${props.prefix} ` : '';
                 let initialValue;
@@ -9976,7 +10041,7 @@ function $9339840789a2dc56$export$50478d543b96dfd6(props) {
                     props.onChange && props.onChange(value);
                     props.explorer.signal(props.signal.name, value, props.newViewStateTarget);
                 }, props.disabled, props.collapseLabel);
-                return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+                return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                     className: "sanddance-signal"
                 }, control);
             }
@@ -9984,10 +10049,10 @@ function $9339840789a2dc56$export$50478d543b96dfd6(props) {
     }
     return null;
 }
-const $9339840789a2dc56$var$map = {
+const $2c50b647deae576f$var$map = {
 };
-$9339840789a2dc56$var$map['range'] = (prefix, bind, initialValue, onChange, disabled, collapseLabel)=>{
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.Slider, {
+$2c50b647deae576f$var$map['range'] = (prefix, bind, initialValue, onChange, disabled, collapseLabel)=>{
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.Slider, {
         label: prefix + bind.name,
         max: bind.max,
         min: bind.min,
@@ -9997,7 +10062,7 @@ $9339840789a2dc56$var$map['range'] = (prefix, bind, initialValue, onChange, disa
         disabled: disabled
     });
 };
-$9339840789a2dc56$var$map['select'] = (prefix, bind, initialValue, onChange, disabled, collapseLabel)=>{
+$2c50b647deae576f$var$map['select'] = (prefix, bind, initialValue, onChange, disabled, collapseLabel)=>{
     const options = bind.options.map((o, i)=>{
         const option = {
             key: o,
@@ -10006,8 +10071,8 @@ $9339840789a2dc56$var$map['select'] = (prefix, bind, initialValue, onChange, dis
         return option;
     });
     const label = prefix + bind.name;
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.Dropdown, {
-        onRenderTitle: collapseLabel ? (a, b)=>$c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("span", null, label, ": ", a[0].text)
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.Dropdown, {
+        onRenderTitle: collapseLabel ? (a, b)=>$2a6088da9113f540$export$e2253033e6e1df16.react.createElement("span", null, label, ": ", a[0].text)
          : undefined,
         defaultSelectedKey: initialValue,
         label: collapseLabel ? undefined : label,
@@ -10017,8 +10082,8 @@ $9339840789a2dc56$var$map['select'] = (prefix, bind, initialValue, onChange, dis
         disabled: disabled
     });
 };
-$9339840789a2dc56$var$map['checkbox'] = (prefix, bind, initialValue, onChange, disabled, collapseLabel)=>{
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.Toggle, {
+$2c50b647deae576f$var$map['checkbox'] = (prefix, bind, initialValue, onChange, disabled, collapseLabel)=>{
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.Toggle, {
         defaultChecked: initialValue,
         label: prefix + bind.name,
         onChange: (e, checked)=>onChange(checked)
@@ -10028,7 +10093,7 @@ $9339840789a2dc56$var$map['checkbox'] = (prefix, bind, initialValue, onChange, d
 }; //TODO other signal types
 
 
-const $d3f49cd4a4ebf638$export$e345c26dc94dc116 = {
+const $ee7b4b80c9b36fcd$export$21c51bc433c16634 = {
     appName: 'SandDance',
     bingsearch: 'Bing',
     bingsearchDescription: (term)=>`Search Bing for "${term}"`
@@ -10275,43 +10340,43 @@ const $d3f49cd4a4ebf638$export$e345c26dc94dc116 = {
 };
 
 
-const $d359193c5ab9f387$var$maxFacets = 50;
-const $d359193c5ab9f387$var$roleLabels = {
-    color: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColumnColor,
-    facet: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColumnFacet,
-    facetV: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColumnFacetV,
-    group: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColumnGroup,
-    size: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColumnSize,
-    sort: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColumnSort,
+const $59ce348f458f6a1c$var$maxFacets = 50;
+const $59ce348f458f6a1c$var$roleLabels = {
+    color: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColumnColor,
+    facet: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColumnFacet,
+    facetV: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColumnFacetV,
+    group: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColumnGroup,
+    size: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColumnSize,
+    sort: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColumnSort,
     uid: null,
-    x: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColumnX,
-    y: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColumnY,
-    z: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColumnZ
+    x: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColumnX,
+    y: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColumnY,
+    z: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColumnZ
 };
-const $d359193c5ab9f387$var$aliasLabels = {
-    color: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelAliasColor,
-    facet: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelAliasFacet,
-    facetV: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelAliasFacetV,
-    group: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelAliasGroup,
-    size: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelAliasSize,
-    sort: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelAliasSort,
+const $59ce348f458f6a1c$var$aliasLabels = {
+    color: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelAliasColor,
+    facet: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelAliasFacet,
+    facetV: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelAliasFacetV,
+    group: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelAliasGroup,
+    size: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelAliasSize,
+    sort: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelAliasSort,
     uid: null,
-    x: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelAliasX,
-    y: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelAliasY,
-    z: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelAliasZ
+    x: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelAliasX,
+    y: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelAliasY,
+    z: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelAliasZ
 };
-function $d359193c5ab9f387$var$filterColumnList(context, columns) {
+function $59ce348f458f6a1c$var$filterColumnList(context, columns) {
     switch(context){
         case 'facet':
         case 'facetV':
-            return columns.filter((column)=>column.quantitative || column.stats.distinctValueCount && column.stats.distinctValueCount < $d359193c5ab9f387$var$maxFacets
+            return columns.filter((column)=>column.quantitative || column.stats.distinctValueCount && column.stats.distinctValueCount < $59ce348f458f6a1c$var$maxFacets
             );
         default:
             return columns.slice();
     }
 }
-function $d359193c5ab9f387$var$optionsForSpecColumn(sectionName, columns, role, disabledColumnName, selectedColumnName) {
-    const filtered = $d359193c5ab9f387$var$filterColumnList(role, columns);
+function $59ce348f458f6a1c$var$optionsForSpecColumn(sectionName, columns, role, disabledColumnName, selectedColumnName) {
+    const filtered = $59ce348f458f6a1c$var$filterColumnList(role, columns);
     const options = filtered.map((column)=>{
         const option = {
             key: `column:${column.name}`,
@@ -10326,17 +10391,17 @@ function $d359193c5ab9f387$var$optionsForSpecColumn(sectionName, columns, role, 
         const option = {
             key: sectionName,
             text: sectionName,
-            itemType: $c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.DropdownMenuItemType.Header
+            itemType: $2a6088da9113f540$export$e2253033e6e1df16.fluentUI.DropdownMenuItemType.Header
         };
         options.unshift(option);
     }
     return options;
 }
-function $d359193c5ab9f387$var$optionsForReference(sectionName, specRoles) {
+function $59ce348f458f6a1c$var$optionsForReference(sectionName, specRoles) {
     const options = specRoles.map((specRole)=>{
         const option = {
             key: `role:${specRole.role}`,
-            text: $d359193c5ab9f387$var$aliasLabels[specRole.role],
+            text: $59ce348f458f6a1c$var$aliasLabels[specRole.role],
             data: specRole.role
         };
         return option;
@@ -10346,20 +10411,20 @@ function $d359193c5ab9f387$var$optionsForReference(sectionName, specRoles) {
         const option = {
             key: sectionName,
             text: sectionName,
-            itemType: $c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.DropdownMenuItemType.Header
+            itemType: $2a6088da9113f540$export$e2253033e6e1df16.fluentUI.DropdownMenuItemType.Header
         };
         options.unshift(option);
     }
     return options;
 }
-function $d359193c5ab9f387$var$selectFirst(options) {
+function $59ce348f458f6a1c$var$selectFirst(options) {
     for(let i = 0; i < options.length; i++){
-        if (options[i].itemType === $c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.DropdownMenuItemType.Header) continue;
+        if (options[i].itemType === $2a6088da9113f540$export$e2253033e6e1df16.fluentUI.DropdownMenuItemType.Header) continue;
         options[i].selected = true;
         return;
     }
 }
-function $d359193c5ab9f387$export$6c7e7b0bee245ba4(props) {
+function $59ce348f458f6a1c$export$c171b40a34e110b5(props) {
     if (!props.specRole) return null;
     let categoricalColumns;
     let directColorColumns;
@@ -10370,35 +10435,35 @@ function $d359193c5ab9f387$export$6c7e7b0bee245ba4(props) {
         );
         directColorColumns = props.categoricalColumns.filter((c)=>c.isColorData
         );
-        directColorGroup = $d359193c5ab9f387$var$optionsForSpecColumn($d3f49cd4a4ebf638$export$e345c26dc94dc116.selectDirectColor, directColorColumns, 'color', props.disabledColumnName, props.selectedColumnName);
+        directColorGroup = $59ce348f458f6a1c$var$optionsForSpecColumn($ee7b4b80c9b36fcd$export$21c51bc433c16634.selectDirectColor, directColorColumns, 'color', props.disabledColumnName, props.selectedColumnName);
     } else categoricalColumns = props.categoricalColumns;
     if (props.specRole.role === 'sort') {
         const others = props.specCapabilities.roles.filter((specRole)=>specRole.role !== props.specRole.role
         );
-        referenceGroup = $d359193c5ab9f387$var$optionsForReference($d3f49cd4a4ebf638$export$e345c26dc94dc116.selectReference, others);
+        referenceGroup = $59ce348f458f6a1c$var$optionsForReference($ee7b4b80c9b36fcd$export$21c51bc433c16634.selectReference, others);
     }
-    const quantitativeGroup = $d359193c5ab9f387$var$optionsForSpecColumn($d3f49cd4a4ebf638$export$e345c26dc94dc116.selectNumeric, props.quantitativeColumns, props.specRole.role, props.disabledColumnName, props.selectedColumnName);
-    const categoricGroup = props.specRole.excludeCategoric ? null : $d359193c5ab9f387$var$optionsForSpecColumn($d3f49cd4a4ebf638$export$e345c26dc94dc116.selectNonNumeric, categoricalColumns, props.specRole.role, props.disabledColumnName, props.selectedColumnName);
+    const quantitativeGroup = $59ce348f458f6a1c$var$optionsForSpecColumn($ee7b4b80c9b36fcd$export$21c51bc433c16634.selectNumeric, props.quantitativeColumns, props.specRole.role, props.disabledColumnName, props.selectedColumnName);
+    const categoricGroup = props.specRole.excludeCategoric ? null : $59ce348f458f6a1c$var$optionsForSpecColumn($ee7b4b80c9b36fcd$export$21c51bc433c16634.selectNonNumeric, categoricalColumns, props.specRole.role, props.disabledColumnName, props.selectedColumnName);
     const options = referenceGroup.concat(quantitativeGroup).concat(categoricGroup).concat(directColorGroup).filter(Boolean);
     return options;
 }
-function $d359193c5ab9f387$export$ac5b76d1f02dd063(props) {
-    const options = $d359193c5ab9f387$export$6c7e7b0bee245ba4(props);
+function $59ce348f458f6a1c$export$83b9e0badda50eeb(props) {
+    const options = $59ce348f458f6a1c$export$c171b40a34e110b5(props);
     if (props.specRole.allowNone) options.unshift({
         key: -1,
-        text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.selectNone
+        text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.selectNone
     });
     const hasSelection = options.reduce((p, c)=>{
         return p || c.selected;
     }, false);
-    if (!hasSelection) $d359193c5ab9f387$var$selectFirst(options);
+    if (!hasSelection) $59ce348f458f6a1c$var$selectFirst(options);
     let signals;
     if (props.explorer.viewer && props.explorer.viewer.vegaSpec) {
         if (props.specRole.signals) signals = props.explorer.viewer.vegaSpec.signals.filter((s)=>props.specRole.signals.indexOf(s.name) >= 0
         );
     }
-    const label = $d359193c5ab9f387$var$roleLabels[props.specRole.role];
-    const signalElements = !props.hideSignals && signals && signals.map((signal, i)=>$c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($9339840789a2dc56$export$50478d543b96dfd6, {
+    const label = $59ce348f458f6a1c$var$roleLabels[props.specRole.role];
+    const signalElements = !props.hideSignals && signals && signals.map((signal, i)=>$2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2c50b647deae576f$export$8210dfe1863c478, {
             key: i,
             explorer: props.explorer,
             signal: signal,
@@ -10407,15 +10472,15 @@ function $d359193c5ab9f387$export$ac5b76d1f02dd063(props) {
             collapseLabel: props.collapseLabel
         })
     );
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "sanddance-columnMap"
-    }, props.prefix, !props.hideDropdown && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($6b702e1ad8ceb63e$export$30a13326eaae8e00, {
+    }, props.prefix, !props.hideDropdown && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($e5db841e2c07fb20$export$931cbfb6bfb85fc, {
         componentRef: props.componentRef,
         collapseLabel: props.collapseLabel,
         disabled: props.disabled,
         label: label,
         options: options,
-        onChange: (e, o)=>props.changeColumnMapping(props.specRole.role, typeof o.data === 'string' ? o.data : $385418a87250916e$exports.VegaDeckGl.util.clone(o.data))
+        onChange: (e, o)=>props.changeColumnMapping(props.specRole.role, typeof o.data === 'string' ? o.data : $e5c730801b562de0$exports.VegaDeckGl.util.clone(o.data))
         ,
         onDismiss: props.onDismiss
     }), signalElements, props.suffix);
@@ -10423,7 +10488,7 @@ function $d359193c5ab9f387$export$ac5b76d1f02dd063(props) {
 
 
 
-function $111d368e10bec10f$export$7d34e96f399a3b0b(stage, specCapabilities) {
+function $57db901d8b47d017$export$dd264fd5c92b73c6(stage, specCapabilities) {
     for(let axisName in stage.axes)specCapabilities.roles.forEach((specRole)=>{
         if (specRole.role === axisName) {
             let axes = stage.axes[axisName];
@@ -10436,11 +10501,11 @@ function $111d368e10bec10f$export$7d34e96f399a3b0b(stage, specCapabilities) {
         }
     });
 }
-function $111d368e10bec10f$var$px(n) {
+function $57db901d8b47d017$var$px(n) {
     return n + 'px';
 }
-function $111d368e10bec10f$var$_PositionedColumnMap(props) {
-    class __PositionedColumnMap extends $c5e1961a7f97a459$export$12896e353ebd9cc.react.Component {
+function $57db901d8b47d017$var$_PositionedColumnMap(props) {
+    class __PositionedColumnMap extends $2a6088da9113f540$export$e2253033e6e1df16.react.Component {
         constructor(props1){
             super(props1);
             const { left: left , top: top  } = props1;
@@ -10448,7 +10513,7 @@ function $111d368e10bec10f$var$_PositionedColumnMap(props) {
                 left: left,
                 top: top
             };
-            this.dropdownRef = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createRef();
+            this.dropdownRef = $2a6088da9113f540$export$e2253033e6e1df16.react.createRef();
         }
         focus() {
             if (!this.focused) {
@@ -10457,18 +10522,18 @@ function $111d368e10bec10f$var$_PositionedColumnMap(props) {
             }
         }
         componentDidMount() {
-            const size = $385418a87250916e$exports.VegaDeckGl.util.outerSize(this.div);
+            const size = $e5c730801b562de0$exports.VegaDeckGl.util.outerSize(this.div);
             const over = {
                 left: Math.max(0, this.state.left + size.width - this.props.container.offsetWidth),
                 top: Math.max(0, this.state.top + size.height - this.props.container.offsetHeight)
             };
             if (over.left || over.top) {
-                let { left: left1 , top: top1  } = this.state;
-                left1 -= over.left;
-                top1 -= over.top;
+                let { left: left , top: top  } = this.state;
+                left -= over.left;
+                top -= over.top;
                 this.setState({
-                    left: left1,
-                    top: top1
+                    left: left,
+                    top: top
                 });
             } else this.focus();
         }
@@ -10476,17 +10541,17 @@ function $111d368e10bec10f$var$_PositionedColumnMap(props) {
             this.focus();
         }
         render() {
-            return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+            return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                 ref: (div)=>{
                     if (div) this.div = div;
                 },
                 className: "sanddance-columnMap-absolute",
                 style: {
                     position: 'absolute',
-                    left: $111d368e10bec10f$var$px(this.state.left),
-                    top: $111d368e10bec10f$var$px(this.state.top)
+                    left: $57db901d8b47d017$var$px(this.state.left),
+                    top: $57db901d8b47d017$var$px(this.state.top)
                 }
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($d359193c5ab9f387$export$ac5b76d1f02dd063, Object.assign({
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($59ce348f458f6a1c$export$83b9e0badda50eeb, Object.assign({
             }, this.props, {
                 componentRef: this.dropdownRef,
                 hideSignals: true
@@ -10495,16 +10560,44 @@ function $111d368e10bec10f$var$_PositionedColumnMap(props) {
     }
     return new __PositionedColumnMap(props);
 }
-const $111d368e10bec10f$export$ca11bec7c35e97ff = $111d368e10bec10f$var$_PositionedColumnMap;
+const $57db901d8b47d017$export$3e341bd56774d659 = $57db901d8b47d017$var$_PositionedColumnMap;
 
 
-const $110bef004cdb041f$export$9092658cd6cf7753 = (title, embed)=>`<!DOCTYPE html>\n<html lang="en">\n\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>${title}</title>\n    <link rel="stylesheet" type="text/css"\n        href="https://unpkg.com/@msrvida/sanddance-embed@3/dist/css/sanddance-embed.css" />\n    <link rel="stylesheet" type="text/css"\n        href="https://unpkg.com/@msrvida/sanddance-explorer@3/dist/css/sanddance-explorer.css" />\n</head>\n\n<body>\n    <script src="https://unpkg.com/react@16.13/umd/react.production.min.js" crossorigin></script>\n    <script src="https://unpkg.com/react-dom@16.13/umd/react-dom.production.min.js" crossorigin></script>\n    <script src="https://unpkg.com/deck.gl@8.3.7/dist.min.js"></script>\n    <script src="https://unpkg.com/vega@5.17/build/vega.min.js"></script>\n    <script src="https://unpkg.com/@fluentui/react@7.150/dist/fluentui-react.js"></script>\n    <script src="https://unpkg.com/@msrvida/sanddance-explorer@3/dist/umd/sanddance-explorer.js"></script>\n    <script src="https://unpkg.com/@msrvida/sanddance-embed@3/dist/umd/sanddance-embed.js"></script>\n\n    <div id="app"></div>\n\n    ${embed}\n\n</body>\n\n</html>`
+const $e13ef079d5f3164f$export$c4b7cd609ccf4a5a = (title, embed)=>`<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title}</title>
+    <link rel="stylesheet" type="text/css"
+        href="https://unpkg.com/@msrvida/sanddance-embed@3/dist/css/sanddance-embed.css" />
+    <link rel="stylesheet" type="text/css"
+        href="https://unpkg.com/@msrvida/sanddance-explorer@3/dist/css/sanddance-explorer.css" />
+</head>
+
+<body>
+    <script src="https://unpkg.com/react@16.13/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16.13/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/deck.gl@8.3.7/dist.min.js"></script>
+    <script src="https://unpkg.com/vega@5.17/build/vega.min.js"></script>
+    <script src="https://unpkg.com/@fluentui/react@7.150/dist/fluentui-react.js"></script>
+    <script src="https://unpkg.com/@msrvida/sanddance-explorer@3/dist/umd/sanddance-explorer.js"></script>
+    <script src="https://unpkg.com/@msrvida/sanddance-embed@3/dist/umd/sanddance-embed.js"></script>
+
+    <div id="app"></div>
+
+    ${embed}
+
+</body>
+
+</html>`
 ;
 
 
 
 
-function $81d988802085482c$export$ff3ac2620f930363(data, delimiter) {
+function $b8f4a6bdbf94d6ba$export$65aea4b3b539487b(data, delimiter) {
     var fields = Object.keys(data[0]);
     var file = data.map((row)=>{
         return fields.map((fieldName)=>{
@@ -10524,65 +10617,65 @@ function $81d988802085482c$export$ff3ac2620f930363(data, delimiter) {
 
 
 
-const $ddc28421fe6d69d0$var$exportTypes = [
+const $bcfbcdd321a042d4$var$exportTypes = [
     [
         'json',
-        $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelExportJSON
+        $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelExportJSON
     ],
     [
         'csv',
-        $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelExportCSV
+        $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelExportCSV
     ],
     [
         'tsv',
-        $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelExportTSV
+        $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelExportTSV
     ],
     [
         'html',
-        $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelExportHTML
+        $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelExportHTML
     ]
 ];
-function $ddc28421fe6d69d0$var$_DataExportPicker(props2) {
-    class __DataExportPicker extends $c5e1961a7f97a459$export$12896e353ebd9cc.react.Component {
+function $bcfbcdd321a042d4$var$_DataExportPicker(props) {
+    class __DataExportPicker extends $2a6088da9113f540$export$e2253033e6e1df16.react.Component {
         constructor(props1){
             super(props1);
             this.state = this.getInitialState(this.props);
         }
-        getInitialState(props) {
+        getInitialState(props2) {
             const initialState = {
-                initializer: props.initializer,
+                initializer: props2.initializer,
                 dialogHidden: true,
-                exportType: $ddc28421fe6d69d0$var$exportTypes[0][0],
-                fileName: props.initializer.fileName,
+                exportType: $bcfbcdd321a042d4$var$exportTypes[0][0],
+                fileName: props2.initializer.fileName,
                 fileNameError: '',
                 working: false
             };
             return initialState;
         }
         componentDidUpdate() {
-            if (!$6e437f743d80b3ba$exports.deepCompare(this.props.initializer, this.state.initializer)) this.setState(this.getInitialState(this.props));
+            if (!$900824613c851981$exports.deepCompare(this.props.initializer, this.state.initializer)) this.setState(this.getInitialState(this.props));
         }
         // Converts to dataExport type and calls dataExportHandler to deal with data
-        createExport(exportType, displayName) {
+        createExport(exportType1, displayName1) {
             const final = (data)=>{
-                this.props.dataExportHandler(data, exportType, displayName);
+                this.props.dataExportHandler(data, exportType1, displayName1);
                 this.close();
             };
-            const json = JSON.stringify(this.props.data, $ddc28421fe6d69d0$var$columnReplacer);
-            switch(exportType){
+            const json = JSON.stringify(this.props.data, $bcfbcdd321a042d4$var$columnReplacer);
+            switch(exportType1){
                 case 'json':
                     final(json);
                     break;
                 case 'csv':
-                    final($81d988802085482c$export$ff3ac2620f930363(JSON.parse(json), ','));
+                    final($b8f4a6bdbf94d6ba$export$65aea4b3b539487b(JSON.parse(json), ','));
                     break;
                 case 'tsv':
-                    final($81d988802085482c$export$ff3ac2620f930363(JSON.parse(json), '\t'));
+                    final($b8f4a6bdbf94d6ba$export$65aea4b3b539487b(JSON.parse(json), '\t'));
                     break;
                 case 'html':
                     {
-                        const csv = $81d988802085482c$export$ff3ac2620f930363(JSON.parse(json), ',');
-                        const html = $110bef004cdb041f$export$9092658cd6cf7753(`${$d3f49cd4a4ebf638$export$e345c26dc94dc116.appName} - ${escape(displayName)}`, $ddc28421fe6d69d0$var$embedScript(csv, displayName));
+                        const csv = $b8f4a6bdbf94d6ba$export$65aea4b3b539487b(JSON.parse(json), ',');
+                        const html = $e13ef079d5f3164f$export$c4b7cd609ccf4a5a(`${$ee7b4b80c9b36fcd$export$21c51bc433c16634.appName} - ${escape(displayName1)}`, $bcfbcdd321a042d4$var$embedScript(csv, displayName1));
                         final(html);
                     }
             }
@@ -10606,26 +10699,26 @@ function $ddc28421fe6d69d0$var$_DataExportPicker(props2) {
                 }
             });
             const disabled = this.state.working || this.state.dialogHidden;
-            return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+            return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                 className: "sanddance-dataExporter"
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.DefaultButton, {
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.DefaultButton, {
                 className: "search-action search-bottom-action",
-                text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonExportCount(this.props.data.length),
+                text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonExportCount(this.props.data.length),
                 onClick: ()=>this.setState({
                         dialogHidden: false
                     })
                 ,
                 disabled: this.props.disabled
-            }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($3456628043e62c6c$export$d64e687ef4853cae, {
+            }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($4fad1e2cc5a361cd$export$3ddf2d174ce01153, {
                 hidden: this.state.dialogHidden,
                 onDismiss: closeDialog,
                 dialogContentProps: {
                     className: `sanddance-dialog ${this.props.theme}`,
-                    type: $c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.DialogType.normal,
-                    title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelExport
+                    type: $2a6088da9113f540$export$e2253033e6e1df16.fluentUI.DialogType.normal,
+                    title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelExport
                 },
                 buttons: [
-                    $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.PrimaryButton, {
+                    $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.PrimaryButton, {
                         key: 0,
                         disabled: disabled || !!this.state.fileNameError,
                         onClick: (e)=>this.setState({
@@ -10634,16 +10727,16 @@ function $ddc28421fe6d69d0$var$_DataExportPicker(props2) {
                                 working: true
                             })
                         ,
-                        text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonExport,
+                        text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonExport,
                         iconProps: {
                             iconName: 'Download'
                         }
                     })
                 ]
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.TextField, {
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelExportFileName,
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.TextField, {
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelExportFileName,
                 onChange: (e, displayName)=>{
-                    const displayNameError = $ddc28421fe6d69d0$var$getFileNameError(displayName);
+                    const displayNameError = $bcfbcdd321a042d4$var$getFileNameError(displayName);
                     this.setState({
                         fileName: displayName,
                         fileNameError: displayNameError
@@ -10651,10 +10744,10 @@ function $ddc28421fe6d69d0$var$_DataExportPicker(props2) {
                 },
                 errorMessage: this.state.fileNameError,
                 value: this.state.fileName
-            }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.ChoiceGroup, {
+            }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.ChoiceGroup, {
                 className: "sanddance-form-separate",
                 disabled: disabled,
-                options: $ddc28421fe6d69d0$var$exportTypes.map(([exportType, text])=>{
+                options: $bcfbcdd321a042d4$var$exportTypes.map(([exportType, text])=>{
                     return {
                         key: exportType,
                         text: text,
@@ -10666,43 +10759,44 @@ function $ddc28421fe6d69d0$var$_DataExportPicker(props2) {
                         exportType: option.key
                     })
                 ,
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelExportFormat
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelExportFormat
             })));
         }
     }
-    return new __DataExportPicker(props2);
+    return new __DataExportPicker(props);
 }
-const $ddc28421fe6d69d0$export$ca7914cbf553e128 = $ddc28421fe6d69d0$var$_DataExportPicker;
-const $ddc28421fe6d69d0$var$illegalChars = '\\/:*?"<>|';
-function $ddc28421fe6d69d0$var$getFileNameError(displayName) {
-    if (!displayName) return $d3f49cd4a4ebf638$export$e345c26dc94dc116.errorExportFilenameEmpty;
-    for(let i = 0; i < $ddc28421fe6d69d0$var$illegalChars.length; i++){
-        if (displayName.indexOf($ddc28421fe6d69d0$var$illegalChars[i]) >= 0) return $d3f49cd4a4ebf638$export$e345c26dc94dc116.errorExportFilenameCharacters($ddc28421fe6d69d0$var$illegalChars);
+const $bcfbcdd321a042d4$export$b1b568728c48eba1 = $bcfbcdd321a042d4$var$_DataExportPicker;
+const $bcfbcdd321a042d4$var$illegalChars = '\\/:*?"<>|';
+function $bcfbcdd321a042d4$var$getFileNameError(displayName) {
+    if (!displayName) return $ee7b4b80c9b36fcd$export$21c51bc433c16634.errorExportFilenameEmpty;
+    for(let i = 0; i < $bcfbcdd321a042d4$var$illegalChars.length; i++){
+        if (displayName.indexOf($bcfbcdd321a042d4$var$illegalChars[i]) >= 0) return $ee7b4b80c9b36fcd$export$21c51bc433c16634.errorExportFilenameCharacters($bcfbcdd321a042d4$var$illegalChars);
     }
 }
-function $ddc28421fe6d69d0$export$961ee36a1df3ff5f(fileName) {
-    $ddc28421fe6d69d0$var$exportTypes.forEach(([exportType])=>{
+function $bcfbcdd321a042d4$export$748f956e607b675b(fileName) {
+    $bcfbcdd321a042d4$var$exportTypes.forEach(([exportType])=>{
         const re = new RegExp(`\\.${exportType}`, 'ig');
         fileName = fileName.replace(re, '');
     });
     return fileName;
 }
-function $ddc28421fe6d69d0$var$columnReplacer(name, value) {
-    if ($385418a87250916e$exports.util.isInternalFieldName(name, true)) return undefined;
+function $bcfbcdd321a042d4$var$columnReplacer(name, value) {
+    if ($e5c730801b562de0$exports.util.isInternalFieldName(name, true)) return undefined;
     return value === null ? '' : value;
 }
-function $ddc28421fe6d69d0$var$embedScript(csv, displayName, snapshots) {
+function $bcfbcdd321a042d4$var$embedScript(csv, displayName, snapshots) {
     const dataFile = {
         type: 'csv',
         displayName: displayName,
         snapshots: snapshots
     };
-    return `<pre id='csv-data' style='display:none'>${csv}</pre>\n    <script>SandDanceEmbed.load(Object.assign({rawText: document.getElementById('csv-data').innerText}, ${JSON.stringify(dataFile)}))</script>`;
+    return `<pre id='csv-data' style='display:none'>${csv}</pre>
+    <script>SandDanceEmbed.load(Object.assign({rawText: document.getElementById('csv-data').innerText}, ${JSON.stringify(dataFile)}))</script>`;
 }
-function $ddc28421fe6d69d0$export$5e624397755a2e0(data, displayName, snapshots) {
-    const json = JSON.stringify(data, $ddc28421fe6d69d0$var$columnReplacer);
-    const csv = $81d988802085482c$export$ff3ac2620f930363(JSON.parse(json), ',');
-    const html = $110bef004cdb041f$export$9092658cd6cf7753(`${$d3f49cd4a4ebf638$export$e345c26dc94dc116.appName} - ${escape(displayName)}`, $ddc28421fe6d69d0$var$embedScript(csv, displayName, snapshots));
+function $bcfbcdd321a042d4$export$9f4b684ea6be1a90(data, displayName, snapshots) {
+    const json = JSON.stringify(data, $bcfbcdd321a042d4$var$columnReplacer);
+    const csv = $b8f4a6bdbf94d6ba$export$65aea4b3b539487b(JSON.parse(json), ',');
+    const html = $e13ef079d5f3164f$export$c4b7cd609ccf4a5a(`${$ee7b4b80c9b36fcd$export$21c51bc433c16634.appName} - ${escape(displayName)}`, $bcfbcdd321a042d4$var$embedScript(csv, displayName, snapshots));
     return html;
 }
 
@@ -10713,14 +10807,14 @@ function $ddc28421fe6d69d0$export$5e624397755a2e0(data, displayName, snapshots) 
 
 
 
-function $53aa18c6dd19d0a6$export$a145e63780346cea(props) {
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
-        className: $6e437f743d80b3ba$exports.classList('sanddance-group', props.className)
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+function $5fc794bf34bc903f$export$eb2fcfdbd7ba97d4(props) {
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
+        className: $900824613c851981$exports.classList('sanddance-group', props.className)
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "group-head"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("label", null, props.label), props.labelCount && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("span", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("label", null, props.label), props.labelCount && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("span", {
         className: "count"
-    }, "(", props.labelCount, ")")), props.children && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, "(", props.labelCount, ")")), props.children && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "group-body"
     }, props.children));
 }
@@ -10730,10 +10824,10 @@ function $53aa18c6dd19d0a6$export$a145e63780346cea(props) {
 
 
 
-function $f79465ec08338359$export$e5d1b2cb7c0686b6(props) {
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", null, props.allColumns.map((c, i)=>$c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+function $e0dc81c436df84bf$export$ce08aabc421980f4(props) {
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, props.allColumns.map((c, i)=>$2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
             key: c.name
-        }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("label", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.Toggle, {
+        }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("label", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.Toggle, {
             checked: props.exclusions.indexOf(c.name) < 0,
             inlineLabel: true,
             label: c.name,
@@ -10743,9 +10837,9 @@ function $f79465ec08338359$export$e5d1b2cb7c0686b6(props) {
 }
 
 
-var $2b9a71dc82b0fe6b$exports = {};
+var $acccbd7dcaf3cef4$exports = {};
 "use strict";
-var $2b9a71dc82b0fe6b$var$__createBinding = $2b9a71dc82b0fe6b$exports && $2b9a71dc82b0fe6b$exports.__createBinding || (Object.create ? function(o, m, k, k2) {
+var $acccbd7dcaf3cef4$var$__createBinding = $acccbd7dcaf3cef4$exports && $acccbd7dcaf3cef4$exports.__createBinding || (Object.create ? function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     Object.defineProperty(o, k2, {
         enumerable: true,
@@ -10757,27 +10851,27 @@ var $2b9a71dc82b0fe6b$var$__createBinding = $2b9a71dc82b0fe6b$exports && $2b9a71
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
 });
-var $2b9a71dc82b0fe6b$var$__exportStar = $2b9a71dc82b0fe6b$exports && $2b9a71dc82b0fe6b$exports.__exportStar || function(m, exports) {
-    for(var p in m)if (p !== "default" && !exports.hasOwnProperty(p)) $2b9a71dc82b0fe6b$var$__createBinding(exports, m, p);
+var $acccbd7dcaf3cef4$var$__exportStar = $acccbd7dcaf3cef4$exports && $acccbd7dcaf3cef4$exports.__exportStar || function(m, exports) {
+    for(var p in m)if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) $acccbd7dcaf3cef4$var$__createBinding(exports, m, p);
 };
-Object.defineProperty($2b9a71dc82b0fe6b$exports, "__esModule", {
+Object.defineProperty($acccbd7dcaf3cef4$exports, "__esModule", {
     value: true
 });
-parcelRequire.register("8hrAJ", function(module, exports) {
+parcelRequire.register("6vsQP", function(module, exports) {
 "use strict";
 Object.defineProperty(module.exports, "__esModule", {
     value: true
 });
 module.exports.BarChartRecommender = module.exports.BarChartRecommenderSummary = void 0;
 
-var $40Dbu = parcelRequire("40Dbu");
-var $6075505e46ea7e3c$var$maxDistinctVal = 20;
-var $6075505e46ea7e3c$var$minDistinctVal = 2;
-var $6075505e46ea7e3c$var$BarChartRecommenderSummary = function() {
+var $cwbQL = parcelRequire("cwbQL");
+var $4bcc048b2bfdf051$var$maxDistinctVal = 20;
+var $4bcc048b2bfdf051$var$minDistinctVal = 2;
+var $4bcc048b2bfdf051$var$BarChartRecommenderSummary = function() {
     function BarChartRecommenderSummary(columns, data) {
         var score = -1;
         for(var i = 0; i < columns.length; i++){
-            var recommendation = new $6075505e46ea7e3c$var$BarChartRecommender(columns[i], data).recommend();
+            var recommendation = new $4bcc048b2bfdf051$var$BarChartRecommender(columns[i], data).recommend();
             if (recommendation.score > score) {
                 this.best = recommendation;
                 score = recommendation.score;
@@ -10787,9 +10881,9 @@ var $6075505e46ea7e3c$var$BarChartRecommenderSummary = function() {
         for(var k = 0; k < columns.length; k++){
             var column = columns[k];
             if (column.name === this.best.columns.x || column.stats.isSequential) continue;
-            if (column.quantitative || column.stats.distinctValueCount < $40Dbu.maxCategoricalColors && column.stats.distinctValueCount > 1) {
+            if (column.quantitative || column.stats.distinctValueCount < $cwbQL.maxCategoricalColors && column.stats.distinctValueCount > 1) {
                 this.best.columns.color = this.best.columns.sort = column.name;
-                this.best.scheme = $40Dbu.defaultColorScheme(column);
+                this.best.scheme = (0, $cwbQL.defaultColorScheme)(column);
                 if (column.quantitative) this.best.colorBin = 'quantile';
                 break;
             }
@@ -10800,21 +10894,21 @@ var $6075505e46ea7e3c$var$BarChartRecommenderSummary = function() {
     };
     return BarChartRecommenderSummary;
 }();
-module.exports.BarChartRecommenderSummary = $6075505e46ea7e3c$var$BarChartRecommenderSummary;
-var $6075505e46ea7e3c$var$BarChartRecommender = function() {
-    function BarChartRecommender(column, data) {
+module.exports.BarChartRecommenderSummary = $4bcc048b2bfdf051$var$BarChartRecommenderSummary;
+var $4bcc048b2bfdf051$var$BarChartRecommender = function() {
+    function BarChartRecommender(column1, data) {
         this.score = 0;
-        this.column = column;
+        this.column = column1;
         //the total score for bar chart is 1
         this.rules = [
-            function(column1) {
-                if (column1.stats.isSequential) return false;
-                else if (column1.quantitative) return true;
-                else if (!column1.quantitative && column1.stats.distinctValueCount <= $6075505e46ea7e3c$var$maxDistinctVal && column1.stats.distinctValueCount >= $6075505e46ea7e3c$var$minDistinctVal) return true;
+            function(column) {
+                if (column.stats.isSequential) return false;
+                else if (column.quantitative) return true;
+                else if (!column.quantitative && column.stats.distinctValueCount <= $4bcc048b2bfdf051$var$maxDistinctVal && column.stats.distinctValueCount >= $4bcc048b2bfdf051$var$minDistinctVal) return true;
                 else return false;
             }
         ];
-        for(var i = 0; i < this.rules.length; i++)if (this.rules[i](column)) this.score++;
+        for(var i = 0; i < this.rules.length; i++)if (this.rules[i](column1)) this.score++;
     }
     BarChartRecommender.prototype.recommend = function() {
         var rec = {
@@ -10830,29 +10924,29 @@ var $6075505e46ea7e3c$var$BarChartRecommender = function() {
     };
     return BarChartRecommender;
 }();
-module.exports.BarChartRecommender = $6075505e46ea7e3c$var$BarChartRecommender;
+module.exports.BarChartRecommender = $4bcc048b2bfdf051$var$BarChartRecommender;
 
 });
-parcelRequire.register("40Dbu", function(module, exports) {
+parcelRequire.register("cwbQL", function(module, exports) {
 "use strict";
 Object.defineProperty(module.exports, "__esModule", {
     value: true
 });
 module.exports.defaultColorScheme = module.exports.Recommender = module.exports.maxCategoricalColors = void 0;
 module.exports.maxCategoricalColors = 20;
-var $2eb58eb905ff9786$var$Recommender = function() {
+var $91d1aa5a6fe6df6b$var$Recommender = function() {
     function Recommender(columns, data) {
     }
     return Recommender;
 }();
-module.exports.Recommender = $2eb58eb905ff9786$var$Recommender;
-function $2eb58eb905ff9786$var$defaultColorScheme(c) {
+module.exports.Recommender = $91d1aa5a6fe6df6b$var$Recommender;
+function $91d1aa5a6fe6df6b$var$defaultColorScheme(c) {
     if (c.quantitative) return 'redyellowgreen';
     else if (c.stats.distinctValueCount === 2) return 'dual_redgreen';
     else if (c.stats.distinctValueCount <= 10) return 'category10';
     return 'category20';
 }
-module.exports.defaultColorScheme = $2eb58eb905ff9786$var$defaultColorScheme;
+module.exports.defaultColorScheme = $91d1aa5a6fe6df6b$var$defaultColorScheme;
 
 });
 
@@ -10860,24 +10954,24 @@ module.exports.defaultColorScheme = $2eb58eb905ff9786$var$defaultColorScheme;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-$2b9a71dc82b0fe6b$var$__exportStar((parcelRequire("8hrAJ")), $2b9a71dc82b0fe6b$exports);
-parcelRequire.register("hD4wO", function(module, exports) {
+$acccbd7dcaf3cef4$var$__exportStar((parcelRequire("6vsQP")), $acccbd7dcaf3cef4$exports);
+parcelRequire.register("dV7e2", function(module, exports) {
 "use strict";
 Object.defineProperty(module.exports, "__esModule", {
     value: true
 });
 module.exports.isGeo = module.exports.isLatitude = module.exports.isLongitude = void 0;
 //TODO: languages other than english
-var $cd59976b16f6cedb$var$longitudeNames = [
+var $a226340a28925259$var$longitudeNames = [
     'lon',
     'long',
     'longitude'
 ];
-var $cd59976b16f6cedb$var$latitudeNames = [
+var $a226340a28925259$var$latitudeNames = [
     'lat',
     'latitude'
 ];
-function $cd59976b16f6cedb$var$isSpec(names, limits, column, data) {
+function $a226340a28925259$var$isSpec(names, limits, column, data) {
     var is = false;
     var cname = column.name.toLowerCase();
     for(var i = 0; i < names.length; i++)if (names[i] === cname) {
@@ -10886,40 +10980,40 @@ function $cd59976b16f6cedb$var$isSpec(names, limits, column, data) {
     }
     return is;
 }
-function $cd59976b16f6cedb$var$isLongitude(column, data) {
-    return $cd59976b16f6cedb$var$isSpec($cd59976b16f6cedb$var$longitudeNames, [
+function $a226340a28925259$var$isLongitude(column, data) {
+    return $a226340a28925259$var$isSpec($a226340a28925259$var$longitudeNames, [
         -180,
         180
     ], column, data);
 }
-module.exports.isLongitude = $cd59976b16f6cedb$var$isLongitude;
-function $cd59976b16f6cedb$var$isLatitude(column, data) {
-    return $cd59976b16f6cedb$var$isSpec($cd59976b16f6cedb$var$latitudeNames, [
+module.exports.isLongitude = $a226340a28925259$var$isLongitude;
+function $a226340a28925259$var$isLatitude(column, data) {
+    return $a226340a28925259$var$isSpec($a226340a28925259$var$latitudeNames, [
         -90,
         90
     ], column, data);
 }
-module.exports.isLatitude = $cd59976b16f6cedb$var$isLatitude;
-function $cd59976b16f6cedb$var$isGeo(column, data) {
-    return $cd59976b16f6cedb$var$isLatitude(column, data) || $cd59976b16f6cedb$var$isLongitude(column, data);
+module.exports.isLatitude = $a226340a28925259$var$isLatitude;
+function $a226340a28925259$var$isGeo(column, data) {
+    return $a226340a28925259$var$isLatitude(column, data) || $a226340a28925259$var$isLongitude(column, data);
 }
-module.exports.isGeo = $cd59976b16f6cedb$var$isGeo;
+module.exports.isGeo = $a226340a28925259$var$isGeo;
 
 });
 
 
-$2b9a71dc82b0fe6b$var$__exportStar((parcelRequire("hD4wO")), $2b9a71dc82b0fe6b$exports);
-parcelRequire.register("6xy8I", function(module, exports) {
+$acccbd7dcaf3cef4$var$__exportStar((parcelRequire("dV7e2")), $acccbd7dcaf3cef4$exports);
+parcelRequire.register("knSCk", function(module, exports) {
 "use strict";
 Object.defineProperty(module.exports, "__esModule", {
     value: true
 });
 module.exports.ScatterPlotRecommenderSummary = void 0;
 
-var $40Dbu = parcelRequire("40Dbu");
+var $cwbQL = parcelRequire("cwbQL");
 
-var $hD4wO = parcelRequire("hD4wO");
-var $4c304e8d3e975fa8$var$ScatterPlotRecommenderSummary = function() {
+var $dV7e2 = parcelRequire("dV7e2");
+var $ed7052782b6c1c52$var$ScatterPlotRecommenderSummary = function() {
     function ScatterPlotRecommenderSummary(columns, data) {
         var rec = {
             chart: 'scatterplot',
@@ -10932,16 +11026,16 @@ var $4c304e8d3e975fa8$var$ScatterPlotRecommenderSummary = function() {
         columns.forEach(function(column) {
             if (!rec.columns.x) {
                 if (column.name.toLowerCase() === 'x') return rec.columns.x = column.name;
-                else if ($hD4wO.isLongitude(column)) return rec.columns.x = column.name;
+                else if ((0, $dV7e2.isLongitude)(column)) return rec.columns.x = column.name;
             }
             if (!rec.columns.y) {
                 if (column.name.toLowerCase() === 'y') return rec.columns.y = column.name;
-                else if ($hD4wO.isLatitude(column)) return rec.columns.y = column.name;
+                else if ((0, $dV7e2.isLatitude)(column)) return rec.columns.y = column.name;
             }
             if (!rec.columns.color && !column.stats.isSequential) {
-                if (column.quantitative || column.stats.distinctValueCount < $40Dbu.maxCategoricalColors) {
+                if (column.quantitative || column.stats.distinctValueCount < $cwbQL.maxCategoricalColors) {
                     rec.columns.color = rec.columns.sort = column.name;
-                    rec.scheme = $40Dbu.defaultColorScheme(column);
+                    rec.scheme = (0, $cwbQL.defaultColorScheme)(column);
                     if (column.quantitative) rec.colorBin = 'quantile';
                     return;
                 }
@@ -10954,53 +11048,53 @@ var $4c304e8d3e975fa8$var$ScatterPlotRecommenderSummary = function() {
     };
     return ScatterPlotRecommenderSummary;
 }();
-module.exports.ScatterPlotRecommenderSummary = $4c304e8d3e975fa8$var$ScatterPlotRecommenderSummary;
+module.exports.ScatterPlotRecommenderSummary = $ed7052782b6c1c52$var$ScatterPlotRecommenderSummary;
 
 });
 
 
-$2b9a71dc82b0fe6b$var$__exportStar((parcelRequire("6xy8I")), $2b9a71dc82b0fe6b$exports);
-parcelRequire.register("jhH8Q", function(module, exports) {
+$acccbd7dcaf3cef4$var$__exportStar((parcelRequire("knSCk")), $acccbd7dcaf3cef4$exports);
+parcelRequire.register("5dIRY", function(module, exports) {
 "use strict";
 Object.defineProperty(module.exports, "__esModule", {
     value: true
 });
 module.exports.preferredColumnForTreemapSize = void 0;
 
-var $hD4wO = parcelRequire("hD4wO");
-function $e0a111de191627d0$var$preferredColumnForTreemapSize(columns, strict) {
+var $dV7e2 = parcelRequire("dV7e2");
+function $3cd0f8d387d8a948$var$preferredColumnForTreemapSize(columns, strict) {
     for(var i = 0; i < columns.length; i++){
         var c = columns[i];
         if (c.quantitative) {
             if (strict && c.stats.hasNegative) continue;
             if (strict && c.stats.isSequential) continue;
-            if (strict && $hD4wO.isGeo(c)) continue;
+            if (strict && (0, $dV7e2.isGeo)(c)) continue;
             return c;
         }
     }
 }
-module.exports.preferredColumnForTreemapSize = $e0a111de191627d0$var$preferredColumnForTreemapSize;
+module.exports.preferredColumnForTreemapSize = $3cd0f8d387d8a948$var$preferredColumnForTreemapSize;
 
 });
 
 
-$2b9a71dc82b0fe6b$var$__exportStar((parcelRequire("jhH8Q")), $2b9a71dc82b0fe6b$exports);
-parcelRequire.register("ltoGO", function(module, exports) {
+$acccbd7dcaf3cef4$var$__exportStar((parcelRequire("5dIRY")), $acccbd7dcaf3cef4$exports);
+parcelRequire.register("ib2nb", function(module, exports) {
 "use strict";
 Object.defineProperty(module.exports, "__esModule", {
     value: true
 });
 module.exports.RecommenderSummary = void 0;
 
-var $8hrAJ = parcelRequire("8hrAJ");
+var $6vsQP = parcelRequire("6vsQP");
 
-var $6xy8I = parcelRequire("6xy8I");
-var $fa1f753c48ca826c$var$RecommenderSummary = function() {
+var $knSCk = parcelRequire("knSCk");
+var $d3bb18471b8de6e4$var$RecommenderSummary = function() {
     function RecommenderSummary(columns, data) {
-        var quickRec = new $6xy8I.ScatterPlotRecommenderSummary(columns, data).recommend();
+        var quickRec = new $knSCk.ScatterPlotRecommenderSummary(columns, data).recommend();
         if (quickRec) this.rec = quickRec;
         else {
-            var barChartrec = new $8hrAJ.BarChartRecommenderSummary(columns, data).recommend();
+            var barChartrec = new $6vsQP.BarChartRecommenderSummary(columns, data).recommend();
             if (barChartrec && barChartrec.score >= 1) this.rec = barChartrec;
             else this.rec = {
                 chart: 'grid',
@@ -11015,17 +11109,17 @@ var $fa1f753c48ca826c$var$RecommenderSummary = function() {
     };
     return RecommenderSummary;
 }();
-module.exports.RecommenderSummary = $fa1f753c48ca826c$var$RecommenderSummary;
+module.exports.RecommenderSummary = $d3bb18471b8de6e4$var$RecommenderSummary;
 
 });
 
 
-$2b9a71dc82b0fe6b$var$__exportStar((parcelRequire("ltoGO")), $2b9a71dc82b0fe6b$exports);
+$acccbd7dcaf3cef4$var$__exportStar((parcelRequire("ib2nb")), $acccbd7dcaf3cef4$exports);
 
 
 
 
-function $3c7c0ab0b51acc22$export$d3f158f2cefb2dd8(insightColumns, actualColumns, transform) {
+function $bfaa631c88fa1f10$export$1e096674a95fd43b(insightColumns, actualColumns, transform) {
     //ensure columns exist
     for(let role in insightColumns){
         let columnName = insightColumns[role];
@@ -11040,9 +11134,9 @@ function $3c7c0ab0b51acc22$export$d3f158f2cefb2dd8(insightColumns, actualColumns
         if (!(column || transformColumn)) delete insightColumns[role];
     }
 }
-function $3c7c0ab0b51acc22$export$3285e8a72d4ef75f(chart, totalStyle, insightColumns, actualColumns) {
+function $bfaa631c88fa1f10$export$c2563952d877899(chart, totalStyle, insightColumns, actualColumns) {
     //ensure columns are populated
-    const nonInternal = actualColumns.filter((c)=>!$385418a87250916e$exports.util.isInternalFieldName(c.name)
+    const nonInternal = actualColumns.filter((c)=>!$e5c730801b562de0$exports.util.isInternalFieldName(c.name)
     );
     const firstColumn = nonInternal[0];
     const firstColumnName = firstColumn && firstColumn.name;
@@ -11051,7 +11145,7 @@ function $3c7c0ab0b51acc22$export$3285e8a72d4ef75f(chart, totalStyle, insightCol
     const firstQuantitativeColumnName = firstQuantitative && firstQuantitative.name;
     const ensureColumn = (role, quantitative, treemap)=>{
         if (!insightColumns[role]) {
-            if (treemap) insightColumns[role] = $3c7c0ab0b51acc22$export$22e2b85518a07a7(actualColumns).name;
+            if (treemap) insightColumns[role] = $bfaa631c88fa1f10$export$7e0d3b5c6570ae8b(actualColumns).name;
             else insightColumns[role] = quantitative ? firstQuantitativeColumnName : firstColumnName;
         }
     };
@@ -11087,68 +11181,68 @@ function $3c7c0ab0b51acc22$export$3285e8a72d4ef75f(chart, totalStyle, insightCol
             ensureColumn('y');
             break;
         case 'treemap':
-            if (!insightColumns.size) insightColumns.size = $3c7c0ab0b51acc22$export$22e2b85518a07a7(actualColumns).name;
+            if (!insightColumns.size) insightColumns.size = $bfaa631c88fa1f10$export$7e0d3b5c6570ae8b(actualColumns).name;
             if (!insightColumns.size) //error - no numeric column
             return [
-                $d3f49cd4a4ebf638$export$e345c26dc94dc116.errorColumnMustBeNumeric
+                $ee7b4b80c9b36fcd$export$21c51bc433c16634.errorColumnMustBeNumeric
             ];
             break;
     }
 }
-function $3c7c0ab0b51acc22$export$22e2b85518a07a7(columns) {
-    let column = $2b9a71dc82b0fe6b$exports.preferredColumnForTreemapSize(columns, true);
-    if (!column) column = $2b9a71dc82b0fe6b$exports.preferredColumnForTreemapSize(columns, false);
+function $bfaa631c88fa1f10$export$7e0d3b5c6570ae8b(columns) {
+    let column = $acccbd7dcaf3cef4$exports.preferredColumnForTreemapSize(columns, true);
+    if (!column) column = $acccbd7dcaf3cef4$exports.preferredColumnForTreemapSize(columns, false);
     return column;
 }
 
 
-const $1d75e5ac49b64589$var$singleFacetLayouts = [
+const $7d6d61f19df51c57$var$singleFacetLayouts = [
     {
         facetStyle: 'wrap',
-        text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelFacetLayoutWrap
-    }, 
+        text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelFacetLayoutWrap
+    }
 ];
-const $1d75e5ac49b64589$export$bce7562fc7020019 = [
+const $7d6d61f19df51c57$export$3fab399b77d7be2a = [
     {
         key: 'grid',
-        text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.chartTypeGrid
+        text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.chartTypeGrid
     },
     {
         key: 'scatterplot',
-        text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.chartTypeScatterPlot
+        text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.chartTypeScatterPlot
     },
     {
         key: 'density',
-        text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.chartTypeDensity
+        text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.chartTypeDensity
     },
     {
         key: 'barchartV',
-        text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.chartTypeBarChartV
+        text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.chartTypeBarChartV
     },
     {
         key: 'barchartH',
-        text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.chartTypeBarChartH
+        text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.chartTypeBarChartH
     },
     {
         key: 'treemap',
-        text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.chartTypeTreeMap
+        text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.chartTypeTreeMap
     },
     {
         key: 'strips',
-        text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.chartTypeStrips
+        text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.chartTypeStrips
     },
     {
         key: 'stacks',
-        text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.chartTypeStacks
+        text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.chartTypeStacks
     }
 ];
-function $1d75e5ac49b64589$export$3b8610020cb45508(key) {
-    for(let i = 0; i < $1d75e5ac49b64589$export$bce7562fc7020019.length; i++){
-        if (key === $1d75e5ac49b64589$export$bce7562fc7020019[i].key) return $1d75e5ac49b64589$export$bce7562fc7020019[i].text;
+function $7d6d61f19df51c57$export$7d1536ca08644643(key) {
+    for(let i = 0; i < $7d6d61f19df51c57$export$3fab399b77d7be2a.length; i++){
+        if (key === $7d6d61f19df51c57$export$3fab399b77d7be2a[i].key) return $7d6d61f19df51c57$export$3fab399b77d7be2a[i].text;
     }
 }
-function $1d75e5ac49b64589$var$_Chart(props) {
-    class __Chart extends $c5e1961a7f97a459$export$12896e353ebd9cc.react.Component {
+function $7d6d61f19df51c57$var$_Chart(props) {
+    class __Chart extends $2a6088da9113f540$export$e2253033e6e1df16.react.Component {
         constructor(props1){
             super(props1);
             this.state = {
@@ -11156,43 +11250,43 @@ function $1d75e5ac49b64589$var$_Chart(props) {
             };
         }
         render() {
-            const { props: props2  } = this;
-            const { explorer: explorer , specCapabilities: specCapabilities  } = props2;
+            const { props: props  } = this;
+            const { explorer: explorer , specCapabilities: specCapabilities  } = props;
             const signals = explorer.viewer && explorer.viewer.vegaSpec && specCapabilities && specCapabilities.signals && explorer.viewer.vegaSpec.signals.filter((s)=>specCapabilities.signals.indexOf(s.name) >= 0
             );
-            return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($53aa18c6dd19d0a6$export$a145e63780346cea, {
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelChart
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+            return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($5fc794bf34bc903f$export$eb2fcfdbd7ba97d4, {
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelChart
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                 className: "calculator"
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.ChoiceGroup, {
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.ChoiceGroup, {
                 className: "sanddance-chart-type",
-                options: $1d75e5ac49b64589$export$bce7562fc7020019.map((o)=>{
+                options: $7d6d61f19df51c57$export$3fab399b77d7be2a.map((o)=>{
                     return Object.assign(Object.assign({
                     }, o), {
-                        checked: props2.chart === o.key,
-                        disabled: props2.disabled || o.key === 'treemap' && props2.quantitativeColumns.length === 0
+                        checked: props.chart === o.key,
+                        disabled: props.disabled || o.key === 'treemap' && props.quantitativeColumns.length === 0
                     });
                 }),
-                onChange: (e, o)=>props2.onChangeChartType(o.key)
-            }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($53aa18c6dd19d0a6$export$a145e63780346cea, {
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColumnMapping
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", null, specCapabilities && specCapabilities.roles.map((specRole, i)=>{
-                const specColumnInRole = props2.insightColumns[specRole.role];
+                onChange: (e, o)=>props.onChangeChartType(o.key)
+            }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($5fc794bf34bc903f$export$eb2fcfdbd7ba97d4, {
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColumnMapping
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, specCapabilities && specCapabilities.roles.map((specRole, i)=>{
+                const specColumnInRole = props.insightColumns[specRole.role];
                 const selectedColumnName = specColumnInRole;
                 let disabledColumnName;
                 let prefix;
                 let suffix;
                 let hideDropdown = false;
-                let { totalStyle: totalStyle  } = props2;
-                if (!totalStyle) totalStyle = 'count-square';
-                let { facetStyle: facetStyle  } = props2;
+                let { totalStyle: totalStyle1  } = props;
+                if (!totalStyle1) totalStyle1 = 'count-square';
+                let { facetStyle: facetStyle  } = props;
                 if (!facetStyle) facetStyle = 'wrap';
                 switch(specRole.role){
                     case 'facet':
-                        suffix = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($6b702e1ad8ceb63e$export$30a13326eaae8e00, {
-                            disabled: !props2.insightColumns.facet,
-                            collapseLabel: props2.collapseLabels,
-                            label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelFacetLayout,
+                        suffix = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($e5db841e2c07fb20$export$931cbfb6bfb85fc, {
+                            disabled: !props.insightColumns.facet,
+                            collapseLabel: props.collapseLabels,
+                            label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelFacetLayout,
                             calloutProps: {
                                 style: {
                                     minWidth: '18em'
@@ -11201,10 +11295,10 @@ function $1d75e5ac49b64589$var$_Chart(props) {
                             options: [
                                 {
                                     key: 'header1',
-                                    text: `${$d3f49cd4a4ebf638$export$e345c26dc94dc116.labelFacetLayout}:`,
-                                    itemType: $c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.DropdownMenuItemType.Header
+                                    text: `${$ee7b4b80c9b36fcd$export$21c51bc433c16634.labelFacetLayout}:`,
+                                    itemType: $2a6088da9113f540$export$e2253033e6e1df16.fluentUI.DropdownMenuItemType.Header
                                 },
-                                ...$1d75e5ac49b64589$var$singleFacetLayouts.map((f)=>{
+                                ...$7d6d61f19df51c57$var$singleFacetLayouts.map((f)=>{
                                     const o = {
                                         key: f.facetStyle,
                                         text: f.text,
@@ -11216,35 +11310,35 @@ function $1d75e5ac49b64589$var$_Chart(props) {
                                 {
                                     key: 'divider',
                                     text: '-',
-                                    itemType: $c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.DropdownMenuItemType.Divider
+                                    itemType: $2a6088da9113f540$export$e2253033e6e1df16.fluentUI.DropdownMenuItemType.Divider
                                 },
                                 {
                                     key: 'header2',
-                                    text: `${$d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColumnFacetV}:`,
-                                    itemType: $c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.DropdownMenuItemType.Header
+                                    text: `${$ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColumnFacetV}:`,
+                                    itemType: $2a6088da9113f540$export$e2253033e6e1df16.fluentUI.DropdownMenuItemType.Header
                                 },
-                                ...$d359193c5ab9f387$export$6c7e7b0bee245ba4(Object.assign(Object.assign({
-                                }, props2), {
+                                ...$59ce348f458f6a1c$export$c171b40a34e110b5(Object.assign(Object.assign({
+                                }, props), {
                                     specRole: specRole,
-                                    selectedColumnName: props2.insightColumns.facetV
+                                    selectedColumnName: props.insightColumns.facetV
                                 })).map((o)=>{
-                                    if (o.itemType !== $c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.DropdownMenuItemType.Header) {
+                                    if (o.itemType !== $2a6088da9113f540$export$e2253033e6e1df16.fluentUI.DropdownMenuItemType.Header) {
                                         const facetData = {
                                             facetStyle: 'cross',
                                             column: o.data
                                         };
                                         o.data = facetData;
-                                        o.text = `${$d3f49cd4a4ebf638$export$e345c26dc94dc116.labelFacetLayoutCross} ${o.text}`;
+                                        o.text = `${$ee7b4b80c9b36fcd$export$21c51bc433c16634.labelFacetLayoutCross} ${o.text}`;
                                     }
                                     return o;
                                 })
                             ],
                             onChange: (e, o)=>{
                                 const facetData = o.data;
-                                props2.changeColumnMapping('facet', 'facet', null, {
+                                props.changeColumnMapping('facet', 'facet', null, {
                                     facetStyle: facetData.facetStyle
                                 });
-                                if (facetData.facetStyle === 'cross') props2.changeColumnMapping('facetV', $385418a87250916e$exports.VegaDeckGl.util.clone(facetData.column));
+                                if (facetData.facetStyle === 'cross') props.changeColumnMapping('facetV', $e5c730801b562de0$exports.VegaDeckGl.util.clone(facetData.column));
                             }
                         });
                         break;
@@ -11256,40 +11350,40 @@ function $1d75e5ac49b64589$var$_Chart(props) {
                             const options = [
                                 {
                                     key: 'count-square',
-                                    text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelTotalByCountSquare,
+                                    text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelTotalByCountSquare,
                                     data: 'count-square',
-                                    selected: !totalStyle || totalStyle === 'count-square'
+                                    selected: !totalStyle1 || totalStyle1 === 'count-square'
                                 },
                                 {
                                     key: 'count-strip',
-                                    text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelTotalByCountStrip,
+                                    text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelTotalByCountStrip,
                                     data: 'count-strip',
-                                    selected: totalStyle === 'count-strip'
+                                    selected: totalStyle1 === 'count-strip'
                                 },
                                 {
                                     key: 'sum-strip',
-                                    text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelTotalBySumStrip,
+                                    text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelTotalBySumStrip,
                                     data: 'sum-strip',
-                                    selected: totalStyle === 'sum-strip'
+                                    selected: totalStyle1 === 'sum-strip'
                                 },
                                 {
                                     key: 'sum-treemap',
-                                    text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelTotalBySumTreemap,
+                                    text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelTotalBySumTreemap,
                                     data: 'sum-treemap',
-                                    selected: totalStyle === 'sum-treemap',
-                                    disabled: props2.quantitativeColumns.length === 0
+                                    selected: totalStyle1 === 'sum-treemap',
+                                    disabled: props.quantitativeColumns.length === 0
                                 }
                             ];
                             if (specCapabilities.percentage) options.push({
                                 key: 'sum-strip-percent',
-                                text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelTotalBySumStripPercent,
+                                text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelTotalBySumStripPercent,
                                 data: 'sum-strip-percent',
-                                selected: totalStyle === 'sum-strip-percent',
-                                disabled: props2.quantitativeColumns.length === 0
+                                selected: totalStyle1 === 'sum-strip-percent',
+                                disabled: props.quantitativeColumns.length === 0
                             });
-                            prefix = !specCapabilities.countsAndSums ? null : $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($6b702e1ad8ceb63e$export$30a13326eaae8e00, {
-                                collapseLabel: props2.collapseLabels,
-                                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelTotal,
+                            prefix = !specCapabilities.countsAndSums ? null : $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($e5db841e2c07fb20$export$931cbfb6bfb85fc, {
+                                collapseLabel: props.collapseLabels,
+                                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelTotal,
                                 calloutProps: {
                                     style: {
                                         minWidth: '18em'
@@ -11297,79 +11391,79 @@ function $1d75e5ac49b64589$var$_Chart(props) {
                                 },
                                 options: options,
                                 onChange: (e, o)=>{
-                                    const totalStyle1 = o.data;
+                                    const totalStyle = o.data;
                                     let defaultColumn;
-                                    if (totalStyle1.indexOf('sum-') === 0) {
-                                        if (totalStyle1 === 'sum-treemap') defaultColumn = $3c7c0ab0b51acc22$export$22e2b85518a07a7(props2.allColumns);
-                                        defaultColumn = defaultColumn || props2.quantitativeColumns[0];
+                                    if (totalStyle.indexOf('sum-') === 0) {
+                                        if (totalStyle === 'sum-treemap') defaultColumn = $bfaa631c88fa1f10$export$7e0d3b5c6570ae8b(props.allColumns);
+                                        defaultColumn = defaultColumn || props.quantitativeColumns[0];
                                     }
-                                    props2.changeColumnMapping('size', 'size', defaultColumn, {
-                                        totalStyle: totalStyle1
+                                    props.changeColumnMapping('size', 'size', defaultColumn, {
+                                        totalStyle: totalStyle
                                     });
                                 }
                             });
                             break;
                         }
                 }
-                let disabled = props2.disabled || props2.view === '2d' && specRole.role === 'z' || specRole.role === 'size' && !(!specCapabilities.countsAndSums || totalStyle.indexOf('sum-') === 0) || specRole.role === 'sort' && specCapabilities.countsAndSums && totalStyle === 'sum-treemap';
-                return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($d359193c5ab9f387$export$ac5b76d1f02dd063, Object.assign({
-                }, props2, {
+                let disabled = props.disabled || props.view === '2d' && specRole.role === 'z' || specRole.role === 'size' && !(!specCapabilities.countsAndSums || totalStyle1.indexOf('sum-') === 0) || specRole.role === 'sort' && specCapabilities.countsAndSums && totalStyle1 === 'sum-treemap';
+                return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($59ce348f458f6a1c$export$83b9e0badda50eeb, Object.assign({
+                }, props, {
                     prefix: prefix,
                     suffix: suffix,
-                    collapseLabel: props2.collapseLabels,
+                    collapseLabel: props.collapseLabels,
                     disabled: disabled,
                     disabledColumnName: disabledColumnName,
                     selectedColumnName: selectedColumnName,
                     specRole: specRole,
                     key: i,
-                    onChangeSignal: (name, value)=>props2.onChangeSignal(specRole.role, selectedColumnName, name, value)
+                    onChangeSignal: (name, value)=>props.onChangeSignal(specRole.role, selectedColumnName, name, value)
                     ,
                     hideDropdown: hideDropdown
                 }));
-            }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+            }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                 className: "sanddance-tooltipMap"
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.DefaultButton, {
-                text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonTooltipMapping,
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.DefaultButton, {
+                text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonTooltipMapping,
                 onClick: ()=>this.setState({
                         showTooltipDialog: true
                     })
-            })))), signals && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($53aa18c6dd19d0a6$export$a145e63780346cea, {
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelChartTypeOptions
-            }, signals.map((signal, i)=>$c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($9339840789a2dc56$export$50478d543b96dfd6, {
+            })))), signals && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($5fc794bf34bc903f$export$eb2fcfdbd7ba97d4, {
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelChartTypeOptions
+            }, signals.map((signal, i)=>$2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2c50b647deae576f$export$8210dfe1863c478, {
                     key: i,
                     signal: signal,
                     explorer: explorer,
-                    disabled: props2.disabled || this.disableSignal(signal),
-                    collapseLabel: props2.collapseLabels,
+                    disabled: props.disabled || this.disableSignal(signal),
+                    collapseLabel: props.collapseLabels,
                     newViewStateTarget: false
                 })
-            )), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($3456628043e62c6c$export$d64e687ef4853cae, {
+            )), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($4fad1e2cc5a361cd$export$3ddf2d174ce01153, {
                 hidden: !this.state.showTooltipDialog,
                 onDismiss: ()=>this.setState({
                         showTooltipDialog: false
                     })
                 ,
-                title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelTooltipMapping
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($f79465ec08338359$export$e5d1b2cb7c0686b6, {
-                allColumns: props2.allColumns,
-                exclusions: props2.tooltipExclusions,
-                toggleExclusion: props2.toggleTooltipExclusion
+                title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelTooltipMapping
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($e0dc81c436df84bf$export$ce08aabc421980f4, {
+                allColumns: props.allColumns,
+                exclusions: props.tooltipExclusions,
+                toggleExclusion: props.toggleTooltipExclusion
             })));
         }
         disableSignal(signal) {
-            if (this.props.view === '2d' && signal.name === $385418a87250916e$exports.constants.SignalNames.ZGrounded) return true;
+            if (this.props.view === '2d' && signal.name === $e5c730801b562de0$exports.constants.SignalNames.ZGrounded) return true;
             return false;
         }
     }
     return new __Chart(props);
 }
-const $1d75e5ac49b64589$export$7decb792461ef5a9 = $1d75e5ac49b64589$var$_Chart;
+const $7d6d61f19df51c57$export$acaa6426d77a227e = $7d6d61f19df51c57$var$_Chart;
 
 
 
 
-function $70c33290fecfafcc$export$ccae1084348bcd5f(props) {
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.TextField, Object.assign({
+function $fb2d3fcbe31691d5$export$2c73285ae9390cec(props) {
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.TextField, Object.assign({
         onKeyUp: (e)=>{
             e.nativeEvent.stopImmediatePropagation();
         }
@@ -11379,23 +11473,23 @@ function $70c33290fecfafcc$export$ccae1084348bcd5f(props) {
 
 
 
-const $f67b40470923e296$export$b4c3884e0757dcc5 = 100;
-function $f67b40470923e296$export$7d9a0eec58b2266a(column) {
+const $9ab3fcce008300b2$export$210195f4ae250f0a = 100;
+function $9ab3fcce008300b2$export$c2b32f315f251228(column) {
     const type = column && column.type;
     switch(type){
         case 'boolean':
             return [
                 [
                     '==',
-                    $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchEQ
+                    $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchEQ
                 ],
                 [
                     '!=',
-                    $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchNEQ
+                    $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchNEQ
                 ],
                 [
                     'isnullorEmpty',
-                    $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchNULL
+                    $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchNULL
                 ]
             ];
         case 'date':
@@ -11404,31 +11498,31 @@ function $f67b40470923e296$export$7d9a0eec58b2266a(column) {
             return [
                 [
                     '==',
-                    $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchEQ
+                    $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchEQ
                 ],
                 [
                     '!=',
-                    $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchNEQ
+                    $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchNEQ
                 ],
                 [
                     '>',
-                    $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchGT
+                    $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchGT
                 ],
                 [
                     '>=',
-                    $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchGTE
+                    $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchGTE
                 ],
                 [
                     '<',
-                    $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchLT
+                    $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchLT
                 ],
                 [
                     '<=',
-                    $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchLTE
+                    $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchLTE
                 ],
                 [
                     'isnullorEmpty',
-                    $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchNULL
+                    $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchNULL
                 ]
             ];
         case 'string':
@@ -11436,53 +11530,53 @@ function $f67b40470923e296$export$7d9a0eec58b2266a(column) {
             return [
                 [
                     '==',
-                    $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchEQ
+                    $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchEQ
                 ],
                 [
                     '!=',
-                    $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchNEQ
+                    $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchNEQ
                 ],
                 [
                     '>',
-                    $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchGT
+                    $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchGT
                 ],
                 [
                     '>=',
-                    $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchGTE
+                    $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchGTE
                 ],
                 [
                     '<',
-                    $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchLT
+                    $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchLT
                 ],
                 [
                     '<=',
-                    $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchLTE
+                    $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchLTE
                 ],
                 [
                     'contains',
-                    $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchIN
+                    $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchIN
                 ],
                 [
                     'starts',
-                    $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchSW
+                    $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchSW
                 ],
                 [
                     'isnullorEmpty',
-                    $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchNULL
+                    $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchNULL
                 ]
             ];
     }
 }
-function $f67b40470923e296$var$getExpressionClauses(currClause, disableOR) {
+function $9ab3fcce008300b2$var$getExpressionClauses(currClause, disableOR) {
     const keys = [
         [
             '&&',
-            $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchAND
+            $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchAND
         ]
     ];
     if (!disableOR) keys.push([
         '||',
-        $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchOR
+        $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchOR
     ]);
     return keys.map((key, i)=>{
         const [clause, text] = key;
@@ -11496,9 +11590,9 @@ function $f67b40470923e296$var$getExpressionClauses(currClause, disableOR) {
         return option;
     });
 }
-function $f67b40470923e296$var$getOperators(ex, column) {
+function $9ab3fcce008300b2$var$getOperators(ex, column) {
     let anySelected = false;
-    const validOperators = $f67b40470923e296$export$7d9a0eec58b2266a(column);
+    const validOperators = $9ab3fcce008300b2$export$c2b32f315f251228(column);
     const options = validOperators.map((validoperator)=>{
         const [op, text] = validoperator;
         const selected = ex.operator === op;
@@ -11514,7 +11608,7 @@ function $f67b40470923e296$var$getOperators(ex, column) {
     if (!anySelected) options[0].selected = true;
     return options;
 }
-function $f67b40470923e296$var$getDistinctValues(data, columnName) {
+function $9ab3fcce008300b2$var$getDistinctValues(data, columnName) {
     const distinctMap = {
     };
     for(let i = 0; i < data.length; i++){
@@ -11524,10 +11618,10 @@ function $f67b40470923e296$var$getDistinctValues(data, columnName) {
     }
     return Object.keys(distinctMap).sort();
 }
-function $f67b40470923e296$var$getValues(ex, column, data, autoCompleteDistinctValues) {
+function $9ab3fcce008300b2$var$getValues(ex, column, data, autoCompleteDistinctValues) {
     const stats = column && column.stats;
-    if (stats && stats.distinctValueCount < $f67b40470923e296$export$b4c3884e0757dcc5) {
-        if (!autoCompleteDistinctValues[column.name]) autoCompleteDistinctValues[column.name] = $f67b40470923e296$var$getDistinctValues(data, column.name);
+    if (stats && stats.distinctValueCount < $9ab3fcce008300b2$export$210195f4ae250f0a) {
+        if (!autoCompleteDistinctValues[column.name]) autoCompleteDistinctValues[column.name] = $9ab3fcce008300b2$var$getDistinctValues(data, column.name);
         return autoCompleteDistinctValues[column.name].map((v, i)=>({
                 key: i,
                 text: v
@@ -11536,32 +11630,32 @@ function $f67b40470923e296$var$getValues(ex, column, data, autoCompleteDistinctV
     }
     return [];
 }
-function $f67b40470923e296$export$f20788672c44c8e(ex) {
+function $9ab3fcce008300b2$export$c72d34660a162238(ex) {
     if (ex.operator === 'isnullorEmpty') return '';
     return typeof ex.value === 'string' ? ex.value : ex.value == null ? '' : ex.value.toString();
 }
-function $f67b40470923e296$export$ce56e60ad72f30(props) {
+function $9ab3fcce008300b2$export$793106cac50ab579(props) {
     const ex = props.searchExpression;
-    const possibleValues = $f67b40470923e296$var$getValues(ex, props.column, props.data, props.autoCompleteDistinctValues);
+    const possibleValues = $9ab3fcce008300b2$var$getValues(ex, props.column, props.data, props.autoCompleteDistinctValues);
     //TODO better date handling with calendar picker
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", null, props.index > 0 && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($6b702e1ad8ceb63e$export$30a13326eaae8e00, {
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, props.index > 0 && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($e5db841e2c07fb20$export$931cbfb6bfb85fc, {
         collapseLabel: props.collapseLabels,
         className: "search-field",
-        label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelSearchClause,
+        label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelSearchClause,
         dropdownWidth: 120,
         disabled: !ex.unlocked || props.disableOR,
-        options: $f67b40470923e296$var$getExpressionClauses(ex.clause, props.disableOR),
+        options: $9ab3fcce008300b2$var$getExpressionClauses(ex.clause, props.disableOR),
         onChange: (e, o)=>props.onUpdateExpression({
                 clause: o.data
             }, props.index)
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($6b702e1ad8ceb63e$export$30a13326eaae8e00, {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($e5db841e2c07fb20$export$931cbfb6bfb85fc, {
         collapseLabel: props.collapseLabels,
         className: "search-field",
-        label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelSearchColumn,
+        label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelSearchColumn,
         options: [
             {
                 key: '',
-                text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.selectAny,
+                text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.selectAny,
                 data: null,
                 selected: ex.name === null
             }
@@ -11575,39 +11669,39 @@ function $f67b40470923e296$export$ce56e60ad72f30(props) {
         onChange: (e, o)=>props.onUpdateExpression({
                 name: o.data && o.data.name || null
             }, props.index)
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($6b702e1ad8ceb63e$export$30a13326eaae8e00, {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($e5db841e2c07fb20$export$931cbfb6bfb85fc, {
         collapseLabel: props.collapseLabels,
         className: "search-field",
-        label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelSearchOperator,
+        label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelSearchOperator,
         dropdownWidth: 120,
-        options: $f67b40470923e296$var$getOperators(ex, props.column),
+        options: $9ab3fcce008300b2$var$getOperators(ex, props.column),
         onChange: (e, o)=>props.onUpdateExpression({
                 operator: o.data
             }, props.index)
-    }), possibleValues.length > 0 && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.ComboBox, {
+    }), possibleValues.length > 0 && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.ComboBox, {
         className: "search-field",
-        label: props.collapseLabels ? null : $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelSearchValue,
-        placeholder: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelSearchValuePlaceholder,
+        label: props.collapseLabels ? null : $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelSearchValue,
+        placeholder: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelSearchValuePlaceholder,
         disabled: ex.operator === 'isnullorEmpty',
-        dropdownWidth: $6b702e1ad8ceb63e$export$afadbaa7ce934629,
+        dropdownWidth: $e5db841e2c07fb20$export$8263e1ed1ef30f07,
         allowFreeform: true,
         autoComplete: "on",
         errorMessage: ex.errorMessage,
-        text: $f67b40470923e296$export$f20788672c44c8e(ex),
-        options: $f67b40470923e296$var$getValues(ex, props.column, props.data, props.autoCompleteDistinctValues),
+        text: $9ab3fcce008300b2$export$c72d34660a162238(ex),
+        options: $9ab3fcce008300b2$var$getValues(ex, props.column, props.data, props.autoCompleteDistinctValues),
         onChange: (e, o, i, value)=>{
             if (o) value = o.text;
             props.onUpdateExpression({
                 value: value
             }, props.index);
         }
-    }), possibleValues.length === 0 && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($70c33290fecfafcc$export$ccae1084348bcd5f, {
+    }), possibleValues.length === 0 && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($fb2d3fcbe31691d5$export$2c73285ae9390cec, {
         className: "search-field",
-        label: props.collapseLabels ? null : $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelSearchValue,
-        placeholder: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelSearchValuePlaceholder,
+        label: props.collapseLabels ? null : $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelSearchValue,
+        placeholder: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelSearchValuePlaceholder,
         disabled: ex.operator === 'isnullorEmpty',
         errorMessage: ex.errorMessage,
-        value: $f67b40470923e296$export$f20788672c44c8e(ex),
+        value: $9ab3fcce008300b2$export$c72d34660a162238(ex),
         onChange: (e, v)=>props.onUpdateExpression({
                 value: v
             }, props.index)
@@ -11617,8 +11711,8 @@ function $f67b40470923e296$export$ce56e60ad72f30(props) {
 
 
 
-function $a4f65425c8c706b4$export$3e142902fa56c5af(props) {
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.DefaultButton, Object.assign({
+function $3e0db921f6d0a017$export$353f5b6fc5456de1(props) {
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.DefaultButton, Object.assign({
     }, props, {
         styles: {
             root: {
@@ -11649,47 +11743,47 @@ function $a4f65425c8c706b4$export$3e142902fa56c5af(props) {
 
 
 
-const $db7ca2292e5ff554$var$maxClauses = 5;
-function $db7ca2292e5ff554$var$getColumnWithName(columnName, columns) {
+const $8c9b7d8f2d896d07$var$maxClauses = 5;
+function $8c9b7d8f2d896d07$var$getColumnWithName(columnName, columns) {
     for(var i = 0; i < columns.length; i++){
         if (columns[i].name === columnName) return columns[i];
     }
 }
-function $db7ca2292e5ff554$var$validateExpression(ex) {
+function $8c9b7d8f2d896d07$var$validateExpression(ex) {
     if (ex.operator === 'isnullorEmpty') {
         ex.errorMessage = null;
         return;
     }
-    const s = $f67b40470923e296$export$f20788672c44c8e(ex);
-    if (s.length === 0) ex.errorMessage = $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelRequired;
+    const s = $9ab3fcce008300b2$export$c72d34660a162238(ex);
+    if (s.length === 0) ex.errorMessage = $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelRequired;
     else ex.errorMessage = null;
 }
-function $db7ca2292e5ff554$var$clearExpressionValidation(ex) {
+function $8c9b7d8f2d896d07$var$clearExpressionValidation(ex) {
     if (ex.operator === 'isnullorEmpty') {
         ex.errorMessage = null;
         return;
     }
-    const s = $f67b40470923e296$export$f20788672c44c8e(ex);
+    const s = $9ab3fcce008300b2$export$c72d34660a162238(ex);
     if (s.length !== 0) ex.errorMessage = null;
 }
-function $db7ca2292e5ff554$var$getGroupClauses(currClause, index, disableGroupOR) {
+function $8c9b7d8f2d896d07$var$getGroupClauses(currClause, index, disableGroupOR) {
     let keys;
     if (index === 0) keys = [
         [
             null,
-            $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchWHERE
+            $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchWHERE
         ]
     ];
     else {
         keys = [
             [
                 '&&',
-                $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchAND
+                $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchAND
             ]
         ];
         if (!disableGroupOR) keys.push([
             '||',
-            $d3f49cd4a4ebf638$export$e345c26dc94dc116.searchOR
+            $ee7b4b80c9b36fcd$export$21c51bc433c16634.searchOR
         ]);
     }
     return keys.map((key, i)=>{
@@ -11704,22 +11798,22 @@ function $db7ca2292e5ff554$var$getGroupClauses(currClause, index, disableGroupOR
         return option;
     });
 }
-function $db7ca2292e5ff554$var$_Search(props2) {
-    class __Search extends $c5e1961a7f97a459$export$12896e353ebd9cc.react.Component {
+function $8c9b7d8f2d896d07$var$_Search(props) {
+    class __Search extends $2a6088da9113f540$export$e2253033e6e1df16.react.Component {
         constructor(props1){
             super(props1);
             this.state = this.getInitialState(this.props);
         }
-        getInitialState(props) {
+        getInitialState(props2) {
             const initialState = {
-                groups: props.initializer.search || [
+                groups: props2.initializer.search || [
                     this.newGroup(0, null)
                 ],
                 sortedColumns: [
-                    ...props.initializer.columns
+                    ...props2.initializer.columns
                 ].sort((a, b)=>a.name.localeCompare(b.name)
                 ),
-                initializer: props.initializer
+                initializer: props2.initializer
             };
             initialState.groups.forEach((group)=>{
                 group.expressions.forEach((ex)=>ex.unlocked = group.expressions.length <= 2
@@ -11728,14 +11822,14 @@ function $db7ca2292e5ff554$var$_Search(props2) {
             return initialState;
         }
         componentDidUpdate() {
-            if (!$6e437f743d80b3ba$exports.deepCompare(this.props.initializer, this.state.initializer)) this.setState(this.getInitialState(this.props));
+            if (!$900824613c851981$exports.deepCompare(this.props.initializer, this.state.initializer)) this.setState(this.getInitialState(this.props));
         }
         validateAndSearch() {
             const groups = [
                 ...this.state.groups
             ];
             groups.forEach((group)=>{
-                group.expressions.forEach($db7ca2292e5ff554$var$validateExpression);
+                group.expressions.forEach($8c9b7d8f2d896d07$var$validateExpression);
                 const errors = group.expressions.reduce((p, c)=>p || c.errorMessage
                 , '');
                 if (errors) this.setState({
@@ -11754,13 +11848,13 @@ function $db7ca2292e5ff554$var$_Search(props2) {
             };
             return group;
         }
-        updateGroup(partialGroup, groupIndex) {
+        updateGroup(partialGroup, groupIndex5) {
             const groups = [
                 ...this.state.groups
             ];
             const group = Object.assign(Object.assign({
-            }, groups[groupIndex]), partialGroup);
-            groups[groupIndex] = group;
+            }, groups[groupIndex5]), partialGroup);
+            groups[groupIndex5] = group;
             this.setState({
                 groups: groups
             });
@@ -11777,30 +11871,30 @@ function $db7ca2292e5ff554$var$_Search(props2) {
                 groups: groups
             });
         }
-        deleteGroup(groupIndex) {
+        deleteGroup(groupIndex1) {
             const groups = [
                 ...this.state.groups
             ];
-            groups.splice(groupIndex, 1);
+            groups.splice(groupIndex1, 1);
             this.setState({
                 groups: groups
             });
         }
-        newExpression(key, clause) {
+        newExpression(key1, clause1) {
             const ex = {
-                key: key,
-                clause: clause,
+                key: key1,
+                clause: clause1,
                 name: null,
                 operator: 'contains',
                 value: ''
             };
             return ex;
         }
-        addExpression(groupIndex) {
+        addExpression(groupIndex2) {
             const groups = [
                 ...this.state.groups
             ];
-            const group = groups[groupIndex];
+            const group = groups[groupIndex2];
             const maxKey = group.expressions.reduce((max, p)=>p.key > max ? p.key : max
             , group.expressions[0].key);
             const newEx = this.newExpression(maxKey + 1, '&&');
@@ -11815,20 +11909,20 @@ function $db7ca2292e5ff554$var$_Search(props2) {
                 groups: groups
             });
         }
-        updateExpression(partialEx, groupIndex, index) {
+        updateExpression(partialEx, groupIndex3, index) {
             const groups = [
                 ...this.state.groups
             ];
-            const group = groups[groupIndex];
-            const ex = $385418a87250916e$exports.VegaDeckGl.util.clone(group.expressions[index]);
+            const group = groups[groupIndex3];
+            const ex = $e5c730801b562de0$exports.VegaDeckGl.util.clone(group.expressions[index]);
             if (ex.name !== partialEx.name) {
                 //choose an appropriate operator when switching data type
-                const oldColumn = $db7ca2292e5ff554$var$getColumnWithName(ex.name, this.state.sortedColumns);
-                const newColumn = $db7ca2292e5ff554$var$getColumnWithName(partialEx.name, this.state.sortedColumns);
+                const oldColumn = $8c9b7d8f2d896d07$var$getColumnWithName(ex.name, this.state.sortedColumns);
+                const newColumn = $8c9b7d8f2d896d07$var$getColumnWithName(partialEx.name, this.state.sortedColumns);
                 const oldType = oldColumn && oldColumn.type;
                 const newType = newColumn && newColumn.type;
                 if (oldType !== newType) {
-                    const newOperators = $f67b40470923e296$export$7d9a0eec58b2266a(newColumn).map((validOperator)=>validOperator[0]
+                    const newOperators = $9ab3fcce008300b2$export$c2b32f315f251228(newColumn).map((validOperator)=>validOperator[0]
                     );
                     //see if old operator is compatible
                     if (newOperators.indexOf(ex.operator) < 0) //not compatible, so choose "equal"
@@ -11836,21 +11930,21 @@ function $db7ca2292e5ff554$var$_Search(props2) {
                 }
             }
             Object.assign(ex, partialEx);
-            $db7ca2292e5ff554$var$clearExpressionValidation(ex);
+            $8c9b7d8f2d896d07$var$clearExpressionValidation(ex);
             group.expressions[index] = ex;
             this.setState({
                 groups: groups
             });
         }
-        deleteExpression(groupIndex, index) {
+        deleteExpression(groupIndex4, index1) {
             const groups = [
                 ...this.state.groups
             ];
-            const group = groups[groupIndex];
+            const group = groups[groupIndex4];
             const expressions = [
                 ...group.expressions
             ];
-            expressions.splice(index, 1);
+            expressions.splice(index1, 1);
             if (expressions.length === 2) expressions[1].unlocked = true;
             group.expressions = expressions;
             this.setState({
@@ -11858,91 +11952,91 @@ function $db7ca2292e5ff554$var$_Search(props2) {
             });
         }
         render() {
-            return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($53aa18c6dd19d0a6$export$a145e63780346cea, {
+            return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($5fc794bf34bc903f$export$eb2fcfdbd7ba97d4, {
                 className: "sanddance-search",
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelSearch
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", null, this.state.groups.map((group, groupIndex)=>$c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelSearch
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, this.state.groups.map((group, groupIndex)=>$2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                     className: "sanddance-search-group",
                     key: group.key
-                }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($6b702e1ad8ceb63e$export$30a13326eaae8e00, {
+                }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($e5db841e2c07fb20$export$931cbfb6bfb85fc, {
                     collapseLabel: this.props.collapseLabels,
                     className: "search-group-clause",
-                    label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelSearchClause,
+                    label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelSearchClause,
                     disabled: groupIndex === 0 || this.props.disableGroupOR,
                     dropdownWidth: 120,
-                    options: $db7ca2292e5ff554$var$getGroupClauses(group.clause, groupIndex, this.props.disableGroupOR),
+                    options: $8c9b7d8f2d896d07$var$getGroupClauses(group.clause, groupIndex, this.props.disableGroupOR),
                     onChange: (e, o)=>this.updateGroup({
                             clause: o.data
                         }, groupIndex)
-                }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", null, group.expressions.map((ex, i)=>$c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+                }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, group.expressions.map((ex1, i1)=>$2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                         className: "sanddance-search-expression",
-                        key: ex.key
-                    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($f67b40470923e296$export$ce56e60ad72f30, {
+                        key: ex1.key
+                    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($9ab3fcce008300b2$export$793106cac50ab579, {
                         collapseLabels: this.props.collapseLabels,
-                        onUpdateExpression: (ex1, i1)=>this.updateExpression(ex1, groupIndex, i1)
+                        onUpdateExpression: (ex, i)=>this.updateExpression(ex, groupIndex, i)
                         ,
                         autoCompleteDistinctValues: this.props.autoCompleteDistinctValues,
-                        index: i,
+                        index: i1,
                         columns: this.state.sortedColumns,
                         data: this.props.data,
-                        searchExpression: ex,
+                        searchExpression: ex1,
                         disableOR: this.props.disableExpressionOR,
-                        column: $db7ca2292e5ff554$var$getColumnWithName(ex.name, this.state.sortedColumns)
-                    }), group.expressions.length > 1 && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($a4f65425c8c706b4$export$3e142902fa56c5af, {
+                        column: $8c9b7d8f2d896d07$var$getColumnWithName(ex1.name, this.state.sortedColumns)
+                    }), group.expressions.length > 1 && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($3e0db921f6d0a017$export$353f5b6fc5456de1, {
                         themePalette: this.props.themePalette,
                         className: "search-action",
                         iconName: "Cancel",
-                        onClick: ()=>this.deleteExpression(groupIndex, i)
+                        onClick: ()=>this.deleteExpression(groupIndex, i1)
                         ,
-                        text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonDeleteExpression
+                        text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonDeleteExpression
                     }))
-                )), group.expressions.length < $db7ca2292e5ff554$var$maxClauses && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($a4f65425c8c706b4$export$3e142902fa56c5af, {
+                )), group.expressions.length < $8c9b7d8f2d896d07$var$maxClauses && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($3e0db921f6d0a017$export$353f5b6fc5456de1, {
                     themePalette: this.props.themePalette,
                     className: "search-action",
                     iconName: "Add",
                     onClick: ()=>this.addExpression(groupIndex)
                     ,
-                    text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonAddExpression
-                })), this.state.groups.length > 1 && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($a4f65425c8c706b4$export$3e142902fa56c5af, {
+                    text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonAddExpression
+                })), this.state.groups.length > 1 && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($3e0db921f6d0a017$export$353f5b6fc5456de1, {
                     themePalette: this.props.themePalette,
                     className: "search-action",
                     iconName: "Cancel",
                     onClick: ()=>this.deleteGroup(groupIndex)
                     ,
-                    text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonDeleteExpressionGroup
+                    text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonDeleteExpressionGroup
                 }))
-            ), this.state.groups.length < $db7ca2292e5ff554$var$maxClauses && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($a4f65425c8c706b4$export$3e142902fa56c5af, {
+            ), this.state.groups.length < $8c9b7d8f2d896d07$var$maxClauses && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($3e0db921f6d0a017$export$353f5b6fc5456de1, {
                 themePalette: this.props.themePalette,
                 className: "search-action search-bottom-action",
                 iconName: "Add",
                 onClick: ()=>this.addGroup()
                 ,
-                text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonAddExpressionGroup
-            }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.PrimaryButton, {
+                text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonAddExpressionGroup
+            }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.PrimaryButton, {
                 className: "search-action search-bottom-action",
-                text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonSelect,
+                text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonSelect,
                 onClick: ()=>this.validateAndSearch()
             }));
         }
     }
-    return new __Search(props2);
+    return new __Search(props);
 }
-const $db7ca2292e5ff554$export$59dc79d25800130f = $db7ca2292e5ff554$var$_Search;
+const $8c9b7d8f2d896d07$export$4b85d3515bd863a5 = $8c9b7d8f2d896d07$var$_Search;
 
 
 
 
 
-var $3669ee32f5f0d5ff$var$PresenterElement = $385418a87250916e$exports.VegaDeckGl.PresenterElement;
-function $3669ee32f5f0d5ff$export$6d478d95e4214fb3(viewer) {
-    var tags = viewer.presenter.getElement($3669ee32f5f0d5ff$var$PresenterElement.gl).getElementsByTagName('canvas');
+var $d80024a3f51ef424$var$PresenterElement = $e5c730801b562de0$exports.VegaDeckGl.PresenterElement;
+function $d80024a3f51ef424$export$f80a6900d44a74ee(viewer) {
+    var tags = viewer.presenter.getElement($d80024a3f51ef424$var$PresenterElement.gl).getElementsByTagName('canvas');
     if (tags) return tags[0];
 }
-function $3669ee32f5f0d5ff$export$143b1ce3525ff2(viewer) {
-    var canvas = $3669ee32f5f0d5ff$export$6d478d95e4214fb3(viewer);
+function $d80024a3f51ef424$export$95ea862e038e2d34(viewer) {
+    var canvas = $d80024a3f51ef424$export$f80a6900d44a74ee(viewer);
     if (canvas) canvas.tabIndex = -1;
 }
-const $3669ee32f5f0d5ff$export$33f60a5e15d39c82 = {
+const $d80024a3f51ef424$export$8e76ac9f37578d1b = {
     webgl: !!document.createElement('canvas').getContext('webgl'),
     webgl2: !!document.createElement('canvas').getContext('webgl2')
 };
@@ -11953,70 +12047,70 @@ const $3669ee32f5f0d5ff$export$33f60a5e15d39c82 = {
 
 
 
-const $211e3c3b38323927$export$aef83baa0e7093df = '3.2.0';
+const $693174daac173d4a$export$83d89fbfd8236492 = '3.2.0';
 
 
-var $c8349196cda2bdc1$var$SandDance = $385418a87250916e$exports;
-var $c8349196cda2bdc1$var$DataRefType;
+var $7148a278555952e4$var$SandDance = $e5c730801b562de0$exports;
+var $7148a278555952e4$var$DataRefType;
 (function(DataRefType) {
     DataRefType[DataRefType["none"] = 0] = "none";
     DataRefType[DataRefType["inline"] = 1] = "inline";
     DataRefType[DataRefType["url"] = 2] = "url";
-})($c8349196cda2bdc1$var$DataRefType || ($c8349196cda2bdc1$var$DataRefType = {
+})($7148a278555952e4$var$DataRefType || ($7148a278555952e4$var$DataRefType = {
 }));
-function $c8349196cda2bdc1$var$filterSignals(signal) {
+function $7148a278555952e4$var$filterSignals(signal) {
     switch(signal.name){
-        case $c8349196cda2bdc1$var$SandDance.constants.SignalNames.XBins:
-        case $c8349196cda2bdc1$var$SandDance.constants.SignalNames.YBins:
-        case $c8349196cda2bdc1$var$SandDance.constants.SignalNames.FacetBins:
-        case $c8349196cda2bdc1$var$SandDance.constants.SignalNames.FacetVBins:
-        case $c8349196cda2bdc1$var$SandDance.constants.SignalNames.ColorBinCount:
-        case $c8349196cda2bdc1$var$SandDance.constants.SignalNames.ColorReverse:
-        case $c8349196cda2bdc1$var$SandDance.constants.SignalNames.PointScale:
-        case $c8349196cda2bdc1$var$SandDance.constants.SignalNames.TreeMapMethod:
+        case $7148a278555952e4$var$SandDance.constants.SignalNames.XBins:
+        case $7148a278555952e4$var$SandDance.constants.SignalNames.YBins:
+        case $7148a278555952e4$var$SandDance.constants.SignalNames.FacetBins:
+        case $7148a278555952e4$var$SandDance.constants.SignalNames.FacetVBins:
+        case $7148a278555952e4$var$SandDance.constants.SignalNames.ColorBinCount:
+        case $7148a278555952e4$var$SandDance.constants.SignalNames.ColorReverse:
+        case $7148a278555952e4$var$SandDance.constants.SignalNames.PointScale:
+        case $7148a278555952e4$var$SandDance.constants.SignalNames.TreeMapMethod:
             return false;
         default:
             return !!signal.bind;
     }
 }
-function $c8349196cda2bdc1$var$cloneData(vegaSpec) {
+function $7148a278555952e4$var$cloneData(vegaSpec) {
     const data0 = vegaSpec.data[0];
     const valuesData = data0;
     const values = valuesData.values;
     delete valuesData.values;
-    const data = $c8349196cda2bdc1$var$SandDance.VegaDeckGl.util.clone(vegaSpec.data);
+    const data = $7148a278555952e4$var$SandDance.VegaDeckGl.util.clone(vegaSpec.data);
     valuesData.values = values;
     return {
         data: data,
         values: values
     };
 }
-function $c8349196cda2bdc1$var$cloneScales(vegaSpec) {
-    return $c8349196cda2bdc1$var$SandDance.VegaDeckGl.util.clone(vegaSpec.scales);
+function $7148a278555952e4$var$cloneScales(vegaSpec) {
+    return $7148a278555952e4$var$SandDance.VegaDeckGl.util.clone(vegaSpec.scales);
 }
-function $c8349196cda2bdc1$var$serializeSpec(vegaSpec, datafile, dataRefType, transform, scheme) {
-    const scales = $c8349196cda2bdc1$var$cloneScales(vegaSpec);
-    const colorScale = scales.filter((scale)=>scale.name === $c8349196cda2bdc1$var$SandDance.constants.ScaleNames.Color
+function $7148a278555952e4$var$serializeSpec(vegaSpec, datafile, dataRefType, transform, scheme) {
+    const scales = $7148a278555952e4$var$cloneScales(vegaSpec);
+    const colorScale = scales.filter((scale)=>scale.name === $7148a278555952e4$var$SandDance.constants.ScaleNames.Color
     )[0];
-    if (scheme.indexOf('dual_') >= 0) colorScale.range = $c8349196cda2bdc1$var$SandDance.colorSchemes.filter((cs)=>cs.scheme === scheme
+    if (scheme.indexOf('dual_') >= 0) colorScale.range = $7148a278555952e4$var$SandDance.colorSchemes.filter((cs)=>cs.scheme === scheme
     )[0].colors;
-    const clone = $c8349196cda2bdc1$var$cloneData(vegaSpec);
+    const clone = $7148a278555952e4$var$cloneData(vegaSpec);
     const data0 = clone.data[0];
-    if (dataRefType === $c8349196cda2bdc1$var$DataRefType.inline) {
+    if (dataRefType === $7148a278555952e4$var$DataRefType.inline) {
         const valuesData = data0;
         valuesData.format = {
             parse: 'auto',
             type: 'json'
         };
         valuesData.values = clone.values;
-    } else if (dataRefType === $c8349196cda2bdc1$var$DataRefType.none) {
+    } else if (dataRefType === $7148a278555952e4$var$DataRefType.none) {
         const valuesData = data0;
         valuesData.values = [];
         if (transform) {
             if (valuesData.transform) valuesData.transform.push.apply(valuesData.transform, transform);
             else valuesData.transform = transform;
         }
-    } else if (dataRefType === $c8349196cda2bdc1$var$DataRefType.url) {
+    } else if (dataRefType === $7148a278555952e4$var$DataRefType.url) {
         const urlData = data0;
         urlData.url = datafile.dataUrl;
         urlData.format = {
@@ -12034,166 +12128,166 @@ function $c8349196cda2bdc1$var$serializeSpec(vegaSpec, datafile, dataRefType, tr
         scales: scales
     });
 }
-function $c8349196cda2bdc1$var$defaultDataRefType(datafile) {
-    if (datafile.dataUrl) return $c8349196cda2bdc1$var$DataRefType.url;
-    return $c8349196cda2bdc1$var$DataRefType.none;
+function $7148a278555952e4$var$defaultDataRefType(datafile) {
+    if (datafile.dataUrl) return $7148a278555952e4$var$DataRefType.url;
+    return $7148a278555952e4$var$DataRefType.none;
 }
-function $c8349196cda2bdc1$var$initState(props) {
+function $7148a278555952e4$var$initState(props) {
     return {
         showSystemDialog: false,
         showVegaDialog: false,
-        dataRefType: $c8349196cda2bdc1$var$defaultDataRefType(props.dataFile),
+        dataRefType: $7148a278555952e4$var$defaultDataRefType(props.dataFile),
         spec: null
     };
 }
-function $c8349196cda2bdc1$var$signalGroupKey(key) {
-    for(let i = 0; i < $d3f49cd4a4ebf638$export$e345c26dc94dc116.signalGroups.length; i++){
-        if ($d3f49cd4a4ebf638$export$e345c26dc94dc116.signalGroups[i].prefix === key) return key;
+function $7148a278555952e4$var$signalGroupKey(key) {
+    for(let i = 0; i < $ee7b4b80c9b36fcd$export$21c51bc433c16634.signalGroups.length; i++){
+        if ($ee7b4b80c9b36fcd$export$21c51bc433c16634.signalGroups[i].prefix === key) return key;
     }
     return '*';
 }
-function $c8349196cda2bdc1$var$vegaSignalGroups(vegaSignals) {
+function $7148a278555952e4$var$vegaSignalGroups(vegaSignals) {
     const signalGroupMap = {
     };
     vegaSignals.forEach((vs)=>{
         const split = vs.name.split('_');
-        const key = $c8349196cda2bdc1$var$signalGroupKey(split[0]);
+        const key = $7148a278555952e4$var$signalGroupKey(split[0]);
         signalGroupMap[key] = signalGroupMap[key] || [];
         signalGroupMap[key].push(vs);
     });
     return signalGroupMap;
 }
-function $c8349196cda2bdc1$var$_Settings(props) {
-    class __Settings extends $c5e1961a7f97a459$export$12896e353ebd9cc.react.Component {
+function $7148a278555952e4$var$_Settings(props) {
+    class __Settings extends $2a6088da9113f540$export$e2253033e6e1df16.react.Component {
         constructor(props1){
             super(props1);
-            this.state = $c8349196cda2bdc1$var$initState(props1);
+            this.state = $7148a278555952e4$var$initState(props1);
         }
         render() {
-            const { props: props2 , state: state  } = this;
-            if (!props2.explorer.viewer || !props2.explorer.viewer.vegaSpec) return null;
+            const { props: props , state: state  } = this;
+            if (!props.explorer.viewer || !props.explorer.viewer.vegaSpec) return null;
             const options = [
                 {
-                    key: $c8349196cda2bdc1$var$DataRefType.none,
-                    text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.selectVegaSpecDataNone,
-                    selected: this.state.dataRefType === $c8349196cda2bdc1$var$DataRefType.none,
-                    data: $c8349196cda2bdc1$var$DataRefType.none
+                    key: $7148a278555952e4$var$DataRefType.none,
+                    text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.selectVegaSpecDataNone,
+                    selected: this.state.dataRefType === $7148a278555952e4$var$DataRefType.none,
+                    data: $7148a278555952e4$var$DataRefType.none
                 },
-                !props2.dataFile.rawText && {
-                    key: $c8349196cda2bdc1$var$DataRefType.url,
-                    text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.selectVegaSpecDataUrl,
-                    selected: this.state.dataRefType === $c8349196cda2bdc1$var$DataRefType.url,
-                    data: $c8349196cda2bdc1$var$DataRefType.url
+                !props.dataFile.rawText && {
+                    key: $7148a278555952e4$var$DataRefType.url,
+                    text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.selectVegaSpecDataUrl,
+                    selected: this.state.dataRefType === $7148a278555952e4$var$DataRefType.url,
+                    data: $7148a278555952e4$var$DataRefType.url
                 },
                 {
-                    key: $c8349196cda2bdc1$var$DataRefType.inline,
-                    text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.selectVegaSpecDataInline,
-                    selected: this.state.dataRefType === $c8349196cda2bdc1$var$DataRefType.inline,
-                    data: $c8349196cda2bdc1$var$DataRefType.inline
+                    key: $7148a278555952e4$var$DataRefType.inline,
+                    text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.selectVegaSpecDataInline,
+                    selected: this.state.dataRefType === $7148a278555952e4$var$DataRefType.inline,
+                    data: $7148a278555952e4$var$DataRefType.inline
                 }
             ].filter(Boolean);
-            const signalGroupMap = $c8349196cda2bdc1$var$vegaSignalGroups(props2.explorer.viewer.vegaSpec.signals);
-            return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", null, $d3f49cd4a4ebf638$export$e345c26dc94dc116.signalGroups.map((sg)=>{
+            const signalGroupMap = $7148a278555952e4$var$vegaSignalGroups(props.explorer.viewer.vegaSpec.signals);
+            return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, $ee7b4b80c9b36fcd$export$21c51bc433c16634.signalGroups.map((sg)=>{
                 const vegaSignals = signalGroupMap[sg.prefix];
                 if (vegaSignals) {
-                    const filteredVegaSignals = vegaSignals.filter($c8349196cda2bdc1$var$filterSignals);
-                    if (filteredVegaSignals.length > 0) return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($53aa18c6dd19d0a6$export$a145e63780346cea, {
+                    const filteredVegaSignals = vegaSignals.filter($7148a278555952e4$var$filterSignals);
+                    if (filteredVegaSignals.length > 0) return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($5fc794bf34bc903f$export$eb2fcfdbd7ba97d4, {
                         key: sg.prefix,
                         label: sg.label
-                    }, filteredVegaSignals.map((signal, i)=>$c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($9339840789a2dc56$export$50478d543b96dfd6, {
+                    }, filteredVegaSignals.map((signal, i)=>$2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2c50b647deae576f$export$8210dfe1863c478, {
                             key: i,
                             signal: signal,
-                            explorer: props2.explorer,
+                            explorer: props.explorer,
                             newViewStateTarget: false
                         })
                     ));
                 }
-            }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($53aa18c6dd19d0a6$export$a145e63780346cea, {
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelChartCanvas
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.Toggle, {
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelShowAxes,
-                defaultChecked: !props2.hideAxes,
-                onChange: (e, checked)=>props2.onToggleAxes(!checked)
-            }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.Toggle, {
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelShowLegend,
-                defaultChecked: !props2.hideLegend,
-                onChange: (e, checked)=>props2.onToggleLegend(!checked)
-            })), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($53aa18c6dd19d0a6$export$a145e63780346cea, {
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelTools
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.DefaultButton, {
-                text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonShowVegaSpec,
+            }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($5fc794bf34bc903f$export$eb2fcfdbd7ba97d4, {
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelChartCanvas
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.Toggle, {
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelShowAxes,
+                defaultChecked: !props.hideAxes,
+                onChange: (e, checked)=>props.onToggleAxes(!checked)
+            }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.Toggle, {
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelShowLegend,
+                defaultChecked: !props.hideLegend,
+                onChange: (e, checked)=>props.onToggleLegend(!checked)
+            })), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($5fc794bf34bc903f$export$eb2fcfdbd7ba97d4, {
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelTools
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.DefaultButton, {
+                text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonShowVegaSpec,
                 onClick: ()=>this.setState({
                         showVegaDialog: true,
-                        spec: $c8349196cda2bdc1$var$serializeSpec(props2.explorer.viewer.vegaSpec, props2.dataFile, this.state.dataRefType, props2.explorer.viewer.getInsight().transform, this.props.scheme)
+                        spec: $7148a278555952e4$var$serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, this.state.dataRefType, props.explorer.viewer.getInsight().transform, this.props.scheme)
                     })
-            })), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($53aa18c6dd19d0a6$export$a145e63780346cea, {
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelSnapshots
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.Slider, {
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelSnapshotSettingThumbnailWidth,
+            })), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($5fc794bf34bc903f$export$eb2fcfdbd7ba97d4, {
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelSnapshots
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.Slider, {
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelSnapshotSettingThumbnailWidth,
                 onChange: (value)=>{
                     this.props.explorer.snapshotThumbWidth = value;
                 },
                 min: 100,
                 max: 800,
                 defaultValue: this.props.explorer.snapshotThumbWidth
-            })), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($53aa18c6dd19d0a6$export$a145e63780346cea, {
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelTransitionDurations
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.Slider, {
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelTransitionColor,
+            })), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($5fc794bf34bc903f$export$eb2fcfdbd7ba97d4, {
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelTransitionDurations
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.Slider, {
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelTransitionColor,
                 onChange: (value)=>{
                     this.props.explorer.viewerOptions.transitionDurations.color = value;
                 },
                 min: 0,
                 max: 10000,
                 defaultValue: this.props.explorer.viewerOptions.transitionDurations.color
-            }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.Slider, {
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelTransitionPosition,
+            }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.Slider, {
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelTransitionPosition,
                 onChange: (value)=>{
                     this.props.explorer.viewerOptions.transitionDurations.position = value;
                 },
                 min: 0,
                 max: 10000,
                 defaultValue: this.props.explorer.viewerOptions.transitionDurations.position
-            }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.Slider, {
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelTransitionSize,
+            }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.Slider, {
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelTransitionSize,
                 onChange: (value)=>{
                     this.props.explorer.viewerOptions.transitionDurations.size = value;
                 },
                 min: 0,
                 max: 10000,
                 defaultValue: this.props.explorer.viewerOptions.transitionDurations.size
-            }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.Slider, {
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelTransitionCamera,
+            }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.Slider, {
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelTransitionCamera,
                 onChange: (value)=>{
                     this.props.explorer.viewerOptions.transitionDurations.view = value;
                 },
                 min: 0,
                 max: 10000,
                 defaultValue: this.props.explorer.viewerOptions.transitionDurations.view
-            })), props2.additionalSettings && props2.additionalSettings.map((g, i)=>$c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($53aa18c6dd19d0a6$export$a145e63780346cea, {
+            })), props.additionalSettings && props.additionalSettings.map((g, i)=>$2a6088da9113f540$export$e2253033e6e1df16.react.createElement($5fc794bf34bc903f$export$eb2fcfdbd7ba97d4, {
                     key: i,
                     label: g.groupLabel
                 }, g.children)
-            ), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($53aa18c6dd19d0a6$export$a145e63780346cea, {
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelSystem
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.DefaultButton, {
-                text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelSystemInfo,
+            ), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($5fc794bf34bc903f$export$eb2fcfdbd7ba97d4, {
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelSystem
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.DefaultButton, {
+                text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelSystemInfo,
                 onClick: ()=>this.setState({
                         showSystemDialog: true
                     })
-            })), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($3456628043e62c6c$export$d64e687ef4853cae, {
+            })), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($4fad1e2cc5a361cd$export$3ddf2d174ce01153, {
                 hidden: !state.showVegaDialog,
-                onDismiss: ()=>this.setState($c8349196cda2bdc1$var$initState(this.props))
+                onDismiss: ()=>this.setState($7148a278555952e4$var$initState(this.props))
                 ,
                 minWidth: "80%",
-                title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelVegaSpec,
+                title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelVegaSpec,
                 buttons: [
-                    $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.PrimaryButton, {
+                    $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.PrimaryButton, {
                         key: "copy",
                         iconProps: {
                             iconName: 'Copy'
                         },
-                        text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonCopyToClipboard,
+                        text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonCopyToClipboard,
                         onClick: ()=>{
                             var pre = document.getElementById('sanddance-vega-spec');
                             var range = document.createRange();
@@ -12204,37 +12298,37 @@ function $c8349196cda2bdc1$var$_Settings(props) {
                             document.execCommand('copy');
                         }
                     }),
-                    $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.DefaultButton, {
+                    $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.DefaultButton, {
                         key: "edit",
                         iconProps: {
                             iconName: 'OpenInNewWindow'
                         },
-                        text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonLaunchVegaEditor,
+                        text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonLaunchVegaEditor,
                         onClick: ()=>{
                             window.open('https://vega.github.io/editor/', '_blank');
                         }
                     })
                 ]
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($6b702e1ad8ceb63e$export$30a13326eaae8e00, {
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelVegaSpecData,
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($e5db841e2c07fb20$export$931cbfb6bfb85fc, {
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelVegaSpecData,
                 options: options,
                 onChange: (e, o)=>this.setState({
                         dataRefType: o.data,
-                        spec: $c8349196cda2bdc1$var$serializeSpec(props2.explorer.viewer.vegaSpec, props2.dataFile, o.data, props2.explorer.viewer.getInsight().transform, this.props.scheme)
+                        spec: $7148a278555952e4$var$serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, o.data, props.explorer.viewer.getInsight().transform, this.props.scheme)
                     })
-            }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("pre", {
+            }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("pre", {
                 id: "sanddance-vega-spec"
-            }, JSON.stringify(this.state.spec, null, 2)), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", null, $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelVegaSpecNotes)), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($3456628043e62c6c$export$d64e687ef4853cae, {
+            }, JSON.stringify(this.state.spec, null, 2)), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelVegaSpecNotes)), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($4fad1e2cc5a361cd$export$3ddf2d174ce01153, {
                 hidden: !state.showSystemDialog,
-                onDismiss: ()=>this.setState($c8349196cda2bdc1$var$initState(this.props))
+                onDismiss: ()=>this.setState($7148a278555952e4$var$initState(this.props))
                 ,
-                title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelSystemInfo
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("ul", null, this.props.children, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("li", null, "SandDanceExplorer version: ", $211e3c3b38323927$export$aef83baa0e7093df), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("li", null, "SandDanceReact version: ", $01b008870dc83545$export$aef83baa0e7093df), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("li", null, "SandDance version: ", $c8349196cda2bdc1$var$SandDance.version), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("li", null, "WebGL enabled: ", $3669ee32f5f0d5ff$export$33f60a5e15d39c82.webgl ? $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelYes : $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelNo), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("li", null, "WebGL2 enabled: ", $3669ee32f5f0d5ff$export$33f60a5e15d39c82.webgl2 ? $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelYes : $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelNo))));
+                title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelSystemInfo
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("ul", null, this.props.children, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("li", null, "SandDanceExplorer version: ", $693174daac173d4a$export$83d89fbfd8236492), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("li", null, "SandDanceReact version: ", $befc3a45da53e8f6$export$83d89fbfd8236492), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("li", null, "SandDance version: ", $7148a278555952e4$var$SandDance.version), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("li", null, "WebGL enabled: ", $d80024a3f51ef424$export$8e76ac9f37578d1b.webgl ? $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelYes : $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelNo), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("li", null, "WebGL2 enabled: ", $d80024a3f51ef424$export$8e76ac9f37578d1b.webgl2 ? $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelYes : $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelNo))));
         }
     }
     return new __Settings(props);
 }
-const $c8349196cda2bdc1$export$9c458e6eecac1eb9 = $c8349196cda2bdc1$var$_Settings;
+const $7148a278555952e4$export$c72f6eaae7b9adff = $7148a278555952e4$var$_Settings;
 
 
 
@@ -12242,8 +12336,8 @@ const $c8349196cda2bdc1$export$9c458e6eecac1eb9 = $c8349196cda2bdc1$var$_Setting
 
 
 
-function $2159fe8fc2041ed6$var$_SnapshotEditor(props) {
-    class __SnapshotEditor extends $c5e1961a7f97a459$export$12896e353ebd9cc.react.Component {
+function $ed84433650aaee3f$var$_SnapshotEditor(props) {
+    class __SnapshotEditor extends $2a6088da9113f540$export$e2253033e6e1df16.react.Component {
         constructor(props1){
             super(props1);
             this.state = {
@@ -12272,18 +12366,18 @@ function $2159fe8fc2041ed6$var$_SnapshotEditor(props) {
             };
             img.src = src;
         }
-        editSnapshot(snapshot, editIndex = -1) {
-            if (snapshot) this.setState(Object.assign(Object.assign({
+        editSnapshot(snapshot1, editIndex = -1) {
+            if (snapshot1) this.setState(Object.assign(Object.assign({
                 showEditFormDialog: true
-            }, snapshot), {
+            }, snapshot1), {
                 editIndex: editIndex
             }));
             else {
                 const signalValues = this.props.explorer.viewer.getSignalValues();
                 this.props.explorer.viewer.deselect().then(()=>{
-                    const canvas = $3669ee32f5f0d5ff$export$6d478d95e4214fb3(this.props.explorer.viewer);
+                    const canvas = $d80024a3f51ef424$export$f80a6900d44a74ee(this.props.explorer.viewer);
                     const bgColor = canvas && window.getComputedStyle(canvas).backgroundColor;
-                    const insight = $385418a87250916e$exports.VegaDeckGl.util.clone(this.props.explorer.viewer.getInsight());
+                    const insight = $e5c730801b562de0$exports.VegaDeckGl.util.clone(this.props.explorer.viewer.getInsight());
                     delete insight.size;
                     insight.signalValues = signalValues;
                     const title = this.props.getTitle && this.props.getTitle(insight) || '';
@@ -12307,9 +12401,9 @@ function $2159fe8fc2041ed6$var$_SnapshotEditor(props) {
             }
         }
         render() {
-            return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($3456628043e62c6c$export$d64e687ef4853cae, {
+            return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($4fad1e2cc5a361cd$export$3ddf2d174ce01153, {
                 modalProps: {
-                    className: $6e437f743d80b3ba$exports.classList('sanddance-snapshot-dialog', this.props.theme)
+                    className: $900824613c851981$exports.classList('sanddance-snapshot-dialog', this.props.theme)
                 },
                 minWidth: `${this.props.explorer.snapshotThumbWidth + 64}px`,
                 hidden: !this.state.showEditFormDialog,
@@ -12317,8 +12411,8 @@ function $2159fe8fc2041ed6$var$_SnapshotEditor(props) {
                         showEditFormDialog: false
                     })
                 ,
-                title: this.state.editIndex >= 0 ? $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonEditSnapshot : $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonCreateSnapshot,
-                buttons: $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.PrimaryButton, {
+                title: this.state.editIndex >= 0 ? $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonEditSnapshot : $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonCreateSnapshot,
+                buttons: $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.PrimaryButton, {
                     disabled: !this.state.image || !this.state.title,
                     key: 0,
                     onClick: (e)=>{
@@ -12341,44 +12435,44 @@ function $2159fe8fc2041ed6$var$_SnapshotEditor(props) {
                     iconProps: {
                         iconName: 'Camera'
                     },
-                    text: this.state.editIndex >= 0 ? $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonUpdateSnapshot : $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonCreateSnapshot
+                    text: this.state.editIndex >= 0 ? $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonUpdateSnapshot : $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonCreateSnapshot
                 })
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.TextField, {
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelSnapshotTitle,
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.TextField, {
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelSnapshotTitle,
                 onChange: (e, title)=>this.setState({
                         title: title
                     })
                 ,
                 value: this.state.title
-            }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.TextField, {
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelSnapshotDescription,
+            }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.TextField, {
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelSnapshotDescription,
                 onChange: (e, description)=>this.setState({
                         description: description
                     })
                 ,
                 value: this.state.description,
                 multiline: true
-            }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+            }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                 className: 'thumbnail'
-            }, !this.state.image && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.Spinner, null), this.state.image && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("img", {
+            }, !this.state.image && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.Spinner, null), this.state.image && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("img", {
                 src: this.state.image,
                 style: {
                     backgroundColor: this.state.bgColor
                 }
-            })), this.props.explorer.viewer && this.props.explorer.viewer.colorContexts && this.props.explorer.viewer.colorContexts.length > 1 && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", null, $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColorFilter));
+            })), this.props.explorer.viewer && this.props.explorer.viewer.colorContexts && this.props.explorer.viewer.colorContexts.length > 1 && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColorFilter));
         }
     }
     return new __SnapshotEditor(props);
 }
-const $2159fe8fc2041ed6$export$1b30ac79c43d2fc0 = $2159fe8fc2041ed6$var$_SnapshotEditor;
+const $ed84433650aaee3f$export$15b376344cc89d12 = $ed84433650aaee3f$var$_SnapshotEditor;
 
 
 
 
 
 
-function $118d0de4ae8ff9c2$export$aa4364103b35a0bd(props) {
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.IconButton, Object.assign({
+function $bab18bb05a251a0e$export$c25acd513dcc8062(props) {
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.IconButton, Object.assign({
     }, props, {
         styles: {
             root: {
@@ -12405,8 +12499,8 @@ function $118d0de4ae8ff9c2$export$aa4364103b35a0bd(props) {
 
 
 
-function $92d5d57bae29246e$var$_Snapshots(props) {
-    class __Snapshots extends $c5e1961a7f97a459$export$12896e353ebd9cc.react.Component {
+function $d3153b53a9fcaa75$var$_Snapshots(props) {
+    class __Snapshots extends $2a6088da9113f540$export$e2253033e6e1df16.react.Component {
         constructor(props1){
             super(props1);
             this.state = {
@@ -12422,10 +12516,10 @@ function $92d5d57bae29246e$var$_Snapshots(props) {
             const items = [
                 {
                     key: 'clear',
-                    text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonClearSnapshots,
+                    text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonClearSnapshots,
                     onClick: ()=>this.setState({
                             confirmation: {
-                                buttonText: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonClearSnapshots,
+                                buttonText: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonClearSnapshots,
                                 handler: ()=>this.props.onClearSnapshots()
                             }
                         })
@@ -12434,20 +12528,20 @@ function $92d5d57bae29246e$var$_Snapshots(props) {
                 }
             ];
             if (this.props.getTopActions) items.push.apply(items, this.props.getTopActions(this.props.snapshots));
-            return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($53aa18c6dd19d0a6$export$a145e63780346cea, {
+            return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($5fc794bf34bc903f$export$eb2fcfdbd7ba97d4, {
                 className: "sanddance-snapshots",
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelSnapshots
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.PrimaryButton, {
-                text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonCreateSnapshot,
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelSnapshots
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.PrimaryButton, {
+                text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonCreateSnapshot,
                 onClick: (e)=>this.props.editor.editSnapshot()
                 ,
                 split: true,
                 menuProps: {
                     items: items
                 }
-            }), this.props.getChildren && this.props.getChildren(this.props.snapshots), this.state.confirmation && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($3456628043e62c6c$export$d64e687ef4853cae, {
+            }), this.props.getChildren && this.props.getChildren(this.props.snapshots), this.state.confirmation && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($4fad1e2cc5a361cd$export$3ddf2d174ce01153, {
                 hidden: false,
-                buttons: $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.PrimaryButton, {
+                buttons: $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.PrimaryButton, {
                     key: 0,
                     onClick: (e)=>{
                         this.setState({
@@ -12463,12 +12557,12 @@ function $92d5d57bae29246e$var$_Snapshots(props) {
                 onDismiss: ()=>this.setState({
                         confirmation: null
                     })
-            }, $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelConfirmation), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", null, this.props.snapshots.map((snapshot, i)=>{
+            }, $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelConfirmation), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, this.props.snapshots.map((snapshot, i)=>{
                 const actions = this.props.getActions && this.props.getActions(snapshot, i) || [];
                 actions.push({
                     iconButtonProps: {
                         themePalette: this.props.themePalette,
-                        title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonEditSnapshot,
+                        title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonEditSnapshot,
                         onClick: (e)=>this.props.editor.editSnapshot(snapshot, i)
                         ,
                         iconName: 'Edit'
@@ -12478,7 +12572,7 @@ function $92d5d57bae29246e$var$_Snapshots(props) {
                     iconButtonProps: {
                         disabled: i === 0,
                         themePalette: this.props.themePalette,
-                        title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonMoveUp,
+                        title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonMoveUp,
                         onClick: (e)=>this.props.onMoveUp(i)
                         ,
                         iconName: 'SortUp'
@@ -12487,7 +12581,7 @@ function $92d5d57bae29246e$var$_Snapshots(props) {
                     iconButtonProps: {
                         disabled: i > this.props.snapshots.length - 2,
                         themePalette: this.props.themePalette,
-                        title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonMoveDown,
+                        title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonMoveDown,
                         onClick: (e)=>this.props.onMoveDown(i)
                         ,
                         iconName: 'SortDown'
@@ -12496,10 +12590,10 @@ function $92d5d57bae29246e$var$_Snapshots(props) {
                 actions.push({
                     iconButtonProps: {
                         themePalette: this.props.themePalette,
-                        title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonDeleteSnapshot,
+                        title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonDeleteSnapshot,
                         onClick: ()=>this.setState({
                                 confirmation: {
-                                    buttonText: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonDeleteSnapshot,
+                                    buttonText: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonDeleteSnapshot,
                                     handler: ()=>this.props.onRemoveSnapshot(i)
                                 }
                             })
@@ -12507,22 +12601,22 @@ function $92d5d57bae29246e$var$_Snapshots(props) {
                         iconName: 'Delete'
                     }
                 });
-                return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+                return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                     key: i,
-                    className: $6e437f743d80b3ba$exports.classList('snapshot', i === this.props.selectedSnapshotIndex && 'selected')
-                }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+                    className: $900824613c851981$exports.classList('snapshot', i === this.props.selectedSnapshotIndex && 'selected')
+                }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                     onClick: (e)=>this.props.onSnapshotClick(snapshot, i)
-                }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+                }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                     className: 'title'
-                }, snapshot.title), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+                }, snapshot.title), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                     className: 'thumbnail'
-                }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("img", {
+                }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("img", {
                     title: snapshot.description,
                     src: snapshot.image,
                     style: {
                         backgroundColor: snapshot.bgColor
                     }
-                }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($92d5d57bae29246e$var$Actions, {
+                }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($d3153b53a9fcaa75$var$Actions, {
                     actions: actions,
                     snapshot: snapshot
                 }));
@@ -12531,12 +12625,12 @@ function $92d5d57bae29246e$var$_Snapshots(props) {
     }
     return new __Snapshots(props);
 }
-const $92d5d57bae29246e$export$bd026f48d172e03 = $92d5d57bae29246e$var$_Snapshots;
-function $92d5d57bae29246e$var$Actions(props) {
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+const $d3153b53a9fcaa75$export$3e09886744a57615 = $d3153b53a9fcaa75$var$_Snapshots;
+function $d3153b53a9fcaa75$var$Actions(props) {
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "actions"
     }, props.actions.map((action, i)=>{
-        if (action.iconButtonProps) return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($118d0de4ae8ff9c2$export$aa4364103b35a0bd, Object.assign({
+        if (action.iconButtonProps) return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($bab18bb05a251a0e$export$c25acd513dcc8062, Object.assign({
             key: i
         }, action.iconButtonProps));
         if (action.element) return action.element;
@@ -12544,52 +12638,52 @@ function $92d5d57bae29246e$var$Actions(props) {
 }
 
 
-var $b44f404896596941$exports = {};
+var $851bf9263c6e17c1$exports = {};
 
-$parcel$export($b44f404896596941$exports, "Explorer", () => $b44f404896596941$export$535aff0d258afa68);
-
-
+$parcel$export($851bf9263c6e17c1$exports, "Explorer", () => $851bf9263c6e17c1$export$43584986cb77a794);
 
 
 
 
 
-const $41d7249449d225b2$var$className = 'sanddance-panel-tools';
-function $41d7249449d225b2$var$ensureToolbar(panel) {
-    const existing = panel.getElementsByClassName($41d7249449d225b2$var$className);
+
+
+const $bf02fe25b3020ba2$var$className = 'sanddance-panel-tools';
+function $bf02fe25b3020ba2$var$ensureToolbar(panel) {
+    const existing = panel.getElementsByClassName($bf02fe25b3020ba2$var$className);
     if (existing.length > 0) return existing[0];
     else {
-        const div = $385418a87250916e$exports.VegaDeckGl.util.addDiv(panel, $41d7249449d225b2$var$className);
+        const div = $e5c730801b562de0$exports.VegaDeckGl.util.addDiv(panel, $bf02fe25b3020ba2$var$className);
         panel.insertAdjacentElement('afterbegin', div);
         return div;
     }
 }
-function $41d7249449d225b2$export$d4e85aa8ca214f54(presenter, showLegend, props) {
-    const panel = presenter.getElement($385418a87250916e$exports.VegaDeckGl.PresenterElement.panel);
-    const div = $41d7249449d225b2$var$ensureToolbar(panel);
-    $c5e1961a7f97a459$export$12896e353ebd9cc.reactDOM.render($41d7249449d225b2$var$ColorMap(props), div);
+function $bf02fe25b3020ba2$export$225a002951c27da7(presenter, showLegend, props) {
+    const panel = presenter.getElement($e5c730801b562de0$exports.VegaDeckGl.PresenterElement.panel);
+    const div = $bf02fe25b3020ba2$var$ensureToolbar(panel);
+    $2a6088da9113f540$export$e2253033e6e1df16.reactDOM.render($bf02fe25b3020ba2$var$ColorMap(props), div);
     panel.style.display = showLegend ? '' : 'none';
 }
-function $41d7249449d225b2$var$ColorMap(props) {
+function $bf02fe25b3020ba2$var$ColorMap(props) {
     const menuProps = {
         items: [
             {
                 key: 'new',
-                text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonColorSchemeRemap,
+                text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonColorSchemeRemap,
                 disabled: !props.canRemap || props.isRemap,
                 onClick: ()=>props.colorMapHandler(true)
             },
             {
                 key: 'old',
-                text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonColorSchemeKeep,
+                text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonColorSchemeKeep,
                 disabled: !props.canRemap || !props.isRemap,
                 onClick: ()=>props.colorMapHandler(false)
             }
         ]
     };
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($118d0de4ae8ff9c2$export$aa4364103b35a0bd, {
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($bab18bb05a251a0e$export$c25acd513dcc8062, {
         themePalette: props.themePalette,
-        title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonColorSchemeMap,
+        title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonColorSchemeMap,
         onClick: null,
         iconName: props.canRemap ? 'FiltersSolid' : 'Filters',
         menuProps: menuProps
@@ -12597,11 +12691,11 @@ function $41d7249449d225b2$var$ColorMap(props) {
 }
 
 
-function $aa1a81963e518cec$export$4ebf557d3792c9d7(newColumn, oldColumn, oldScheme) {
-    if (oldColumn && oldColumn.quantitative === newColumn.quantitative && $aa1a81963e518cec$var$defaultColorScheme(oldColumn) === $aa1a81963e518cec$var$defaultColorScheme(newColumn)) return oldScheme;
-    return $aa1a81963e518cec$var$defaultColorScheme(newColumn);
+function $f1849127df5cc048$export$ba25af89e7ea3c1a(newColumn, oldColumn, oldScheme) {
+    if (oldColumn && oldColumn.quantitative === newColumn.quantitative && $f1849127df5cc048$var$defaultColorScheme(oldColumn) === $f1849127df5cc048$var$defaultColorScheme(newColumn)) return oldScheme;
+    return $f1849127df5cc048$var$defaultColorScheme(newColumn);
 }
-function $aa1a81963e518cec$var$defaultColorScheme(c) {
+function $f1849127df5cc048$var$defaultColorScheme(c) {
     if (c.quantitative) return 'redyellowgreen';
     else if (c.stats.distinctValueCount === 2) return 'dual_redgreen';
     else if (c.stats.distinctValueCount <= 10) return 'category10';
@@ -12614,10 +12708,10 @@ function $aa1a81963e518cec$var$defaultColorScheme(c) {
 
 
 
-function $85c4338488c809e6$export$9099ad97b570f7c(x) {
+function $bade4dbe2e577b94$export$2e2bcd8739ae039(x) {
     return Math.abs(x = Math.round(x)) >= 1000000000000000000000 ? x.toLocaleString("en").replace(/,/g, "") : x.toString(10);
 }
-function $85c4338488c809e6$export$203fda1068e56634(x, p) {
+function $bade4dbe2e577b94$export$8f8e23dd27dc19f5(x, p) {
     if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
     var i, coefficient = x.slice(0, i);
     // The string returned by toExponential either has the form \d\.\d+e[-+]\d+
@@ -12629,12 +12723,12 @@ function $85c4338488c809e6$export$203fda1068e56634(x, p) {
 }
 
 
-function $188784b179c71507$export$9099ad97b570f7c(x) {
-    return x = $85c4338488c809e6$export$203fda1068e56634(Math.abs(x)), x ? x[1] : NaN;
+function $d47f499b73a5ab3e$export$2e2bcd8739ae039(x) {
+    return x = $bade4dbe2e577b94$export$8f8e23dd27dc19f5(Math.abs(x)), x ? x[1] : NaN;
 }
 
 
-function $66f985fe0c256175$export$9099ad97b570f7c(grouping, thousands) {
+function $66ae8f0c4359f6ad$export$2e2bcd8739ae039(grouping, thousands) {
     return function(value, width) {
         var i = value.length, t = [], j = 0, g = grouping[0], length = 0;
         while(i > 0 && g > 0){
@@ -12648,7 +12742,7 @@ function $66f985fe0c256175$export$9099ad97b570f7c(grouping, thousands) {
 }
 
 
-function $dce316874c905c7f$export$9099ad97b570f7c(numerals) {
+function $ec38b2844200c876$export$2e2bcd8739ae039(numerals) {
     return function(value) {
         return value.replace(/[0-9]/g, function(i) {
             return numerals[+i];
@@ -12658,11 +12752,11 @@ function $dce316874c905c7f$export$9099ad97b570f7c(numerals) {
 
 
 // [[fill]align][sign][symbol][0][width][,][.precision][~][type]
-var $1ef03d2e5c4d2c74$var$re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
-function $1ef03d2e5c4d2c74$export$9099ad97b570f7c(specifier) {
-    if (!(match = $1ef03d2e5c4d2c74$var$re.exec(specifier))) throw new Error("invalid format: " + specifier);
+var $80bf9e7b7b0236d9$var$re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
+function $80bf9e7b7b0236d9$export$2e2bcd8739ae039(specifier) {
+    if (!(match = $80bf9e7b7b0236d9$var$re.exec(specifier))) throw new Error("invalid format: " + specifier);
     var match;
-    return new $1ef03d2e5c4d2c74$export$297ff910602bd1b1({
+    return new $80bf9e7b7b0236d9$export$963aac351db36ed4({
         fill: match[1],
         align: match[2],
         sign: match[3],
@@ -12675,8 +12769,8 @@ function $1ef03d2e5c4d2c74$export$9099ad97b570f7c(specifier) {
         type: match[10]
     });
 }
-$1ef03d2e5c4d2c74$export$9099ad97b570f7c.prototype = $1ef03d2e5c4d2c74$export$297ff910602bd1b1.prototype; // instanceof
-function $1ef03d2e5c4d2c74$export$297ff910602bd1b1(specifier) {
+$80bf9e7b7b0236d9$export$2e2bcd8739ae039.prototype = $80bf9e7b7b0236d9$export$963aac351db36ed4.prototype; // instanceof
+function $80bf9e7b7b0236d9$export$963aac351db36ed4(specifier) {
     this.fill = specifier.fill === undefined ? " " : specifier.fill + "";
     this.align = specifier.align === undefined ? ">" : specifier.align + "";
     this.sign = specifier.sign === undefined ? "-" : specifier.sign + "";
@@ -12688,12 +12782,12 @@ function $1ef03d2e5c4d2c74$export$297ff910602bd1b1(specifier) {
     this.trim = !!specifier.trim;
     this.type = specifier.type === undefined ? "" : specifier.type + "";
 }
-$1ef03d2e5c4d2c74$export$297ff910602bd1b1.prototype.toString = function() {
+$80bf9e7b7b0236d9$export$963aac351db36ed4.prototype.toString = function() {
     return this.fill + this.align + this.sign + this.symbol + (this.zero ? "0" : "") + (this.width === undefined ? "" : Math.max(1, this.width | 0)) + (this.comma ? "," : "") + (this.precision === undefined ? "" : "." + Math.max(0, this.precision | 0)) + (this.trim ? "~" : "") + this.type;
 };
 
 
-function $2a72778cc866bf64$export$9099ad97b570f7c(s) {
+function $c853e9fc7fd1918d$export$2e2bcd8739ae039(s) {
     out: for(var n = s.length, i = 1, i0 = -1, i1; i < n; ++i)switch(s[i]){
         case ".":
             i0 = i1 = i;
@@ -12713,25 +12807,25 @@ function $2a72778cc866bf64$export$9099ad97b570f7c(s) {
 
 
 
-var $3709d5dcd25d86cb$export$68edb477682bf50b;
-function $3709d5dcd25d86cb$export$9099ad97b570f7c(x, p) {
-    var d = $85c4338488c809e6$export$203fda1068e56634(x, p);
+var $ce10a8d3c9895a37$export$6863724d9a42263;
+function $ce10a8d3c9895a37$export$2e2bcd8739ae039(x, p) {
+    var d = $bade4dbe2e577b94$export$8f8e23dd27dc19f5(x, p);
     if (!d) return x + "";
-    var coefficient = d[0], exponent = d[1], i = exponent - ($3709d5dcd25d86cb$export$68edb477682bf50b = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1, n = coefficient.length;
-    return i === n ? coefficient : i > n ? coefficient + new Array(i - n + 1).join("0") : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i) : "0." + new Array(1 - i).join("0") + $85c4338488c809e6$export$203fda1068e56634(x, Math.max(0, p + i - 1))[0]; // less than 1y!
+    var coefficient = d[0], exponent = d[1], i = exponent - ($ce10a8d3c9895a37$export$6863724d9a42263 = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1, n = coefficient.length;
+    return i === n ? coefficient : i > n ? coefficient + new Array(i - n + 1).join("0") : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i) : "0." + new Array(1 - i).join("0") + $bade4dbe2e577b94$export$8f8e23dd27dc19f5(x, Math.max(0, p + i - 1))[0]; // less than 1y!
 }
 
 
 
-function $b43ad9bf0fc6363c$export$9099ad97b570f7c(x, p) {
-    var d = $85c4338488c809e6$export$203fda1068e56634(x, p);
+function $05804334e8e9e9ef$export$2e2bcd8739ae039(x, p) {
+    var d = $bade4dbe2e577b94$export$8f8e23dd27dc19f5(x, p);
     if (!d) return x + "";
     var coefficient = d[0], exponent = d[1];
     return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1) : coefficient + new Array(exponent - coefficient.length + 2).join("0");
 }
 
 
-var $4feaad501afa545e$export$9099ad97b570f7c = {
+var $98624585244c1cd2$export$2e2bcd8739ae039 = {
     "%": function(x, p) {
         return (x * 100).toFixed(p);
     },
@@ -12741,7 +12835,7 @@ var $4feaad501afa545e$export$9099ad97b570f7c = {
     "c": function(x) {
         return x + "";
     },
-    "d": $85c4338488c809e6$export$9099ad97b570f7c,
+    "d": $bade4dbe2e577b94$export$2e2bcd8739ae039,
     "e": function(x, p) {
         return x.toExponential(p);
     },
@@ -12755,10 +12849,10 @@ var $4feaad501afa545e$export$9099ad97b570f7c = {
         return Math.round(x).toString(8);
     },
     "p": function(x, p) {
-        return $b43ad9bf0fc6363c$export$9099ad97b570f7c(x * 100, p);
+        return $05804334e8e9e9ef$export$2e2bcd8739ae039(x * 100, p);
     },
-    "r": $b43ad9bf0fc6363c$export$9099ad97b570f7c,
-    "s": $3709d5dcd25d86cb$export$9099ad97b570f7c,
+    "r": $05804334e8e9e9ef$export$2e2bcd8739ae039,
+    "s": $ce10a8d3c9895a37$export$2e2bcd8739ae039,
     "X": function(x) {
         return Math.round(x).toString(16).toUpperCase();
     },
@@ -12769,12 +12863,12 @@ var $4feaad501afa545e$export$9099ad97b570f7c = {
 
 
 
-function $7e3a8e0da1fb77fd$export$9099ad97b570f7c(x) {
+function $b734e10f5003853f$export$2e2bcd8739ae039(x) {
     return x;
 }
 
 
-var $d91e3809eeaefbc6$var$map = Array.prototype.map, $d91e3809eeaefbc6$var$prefixes = [
+var $b58f58ff794d1ccb$var$map = Array.prototype.map, $b58f58ff794d1ccb$var$prefixes = [
     "y",
     "z",
     "a",
@@ -12793,14 +12887,14 @@ var $d91e3809eeaefbc6$var$map = Array.prototype.map, $d91e3809eeaefbc6$var$prefi
     "Z",
     "Y"
 ];
-function $d91e3809eeaefbc6$export$9099ad97b570f7c(locale) {
-    var group = locale.grouping === undefined || locale.thousands === undefined ? $7e3a8e0da1fb77fd$export$9099ad97b570f7c : $66f985fe0c256175$export$9099ad97b570f7c($d91e3809eeaefbc6$var$map.call(locale.grouping, Number), locale.thousands + ""), currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "", currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "", decimal = locale.decimal === undefined ? "." : locale.decimal + "", numerals = locale.numerals === undefined ? $7e3a8e0da1fb77fd$export$9099ad97b570f7c : $dce316874c905c7f$export$9099ad97b570f7c($d91e3809eeaefbc6$var$map.call(locale.numerals, String)), percent = locale.percent === undefined ? "%" : locale.percent + "", minus = locale.minus === undefined ? "-" : locale.minus + "", nan = locale.nan === undefined ? "NaN" : locale.nan + "";
+function $b58f58ff794d1ccb$export$2e2bcd8739ae039(locale) {
+    var group = locale.grouping === undefined || locale.thousands === undefined ? $b734e10f5003853f$export$2e2bcd8739ae039 : $66ae8f0c4359f6ad$export$2e2bcd8739ae039($b58f58ff794d1ccb$var$map.call(locale.grouping, Number), locale.thousands + ""), currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "", currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "", decimal = locale.decimal === undefined ? "." : locale.decimal + "", numerals = locale.numerals === undefined ? $b734e10f5003853f$export$2e2bcd8739ae039 : $ec38b2844200c876$export$2e2bcd8739ae039($b58f58ff794d1ccb$var$map.call(locale.numerals, String)), percent = locale.percent === undefined ? "%" : locale.percent + "", minus = locale.minus === undefined ? "-" : locale.minus + "", nan = locale.nan === undefined ? "NaN" : locale.nan + "";
     function newFormat(specifier) {
-        specifier = $1ef03d2e5c4d2c74$export$9099ad97b570f7c(specifier);
+        specifier = $80bf9e7b7b0236d9$export$2e2bcd8739ae039(specifier);
         var fill = specifier.fill, align = specifier.align, sign = specifier.sign, symbol = specifier.symbol, zero = specifier.zero, width = specifier.width, comma = specifier.comma, precision = specifier.precision, trim = specifier.trim, type = specifier.type;
         // The "n" type is an alias for ",g".
         if (type === "n") comma = true, type = "g";
-        else if (!$4feaad501afa545e$export$9099ad97b570f7c[type]) precision === undefined && (precision = 12), trim = true, type = "g";
+        else if (!$98624585244c1cd2$export$2e2bcd8739ae039[type]) precision === undefined && (precision = 12), trim = true, type = "g";
         // If zero fill is specified, padding goes after sign and before digits.
         if (zero || fill === "0" && align === "=") zero = true, fill = "0", align = "=";
         // Compute the prefix and suffix.
@@ -12809,7 +12903,7 @@ function $d91e3809eeaefbc6$export$9099ad97b570f7c(locale) {
         // What format function should we use?
         // Is this an integer type?
         // Can this type generate exponential notation?
-        var formatType = $4feaad501afa545e$export$9099ad97b570f7c[type], maybeSuffix = /[defgprs%]/.test(type);
+        var formatType = $98624585244c1cd2$export$2e2bcd8739ae039[type], maybeSuffix = /[defgprs%]/.test(type);
         // Set the default precision if not specified,
         // or clamp the specified precision to the supported range.
         // For significant precision, it must be in [1, 21].
@@ -12827,17 +12921,17 @@ function $d91e3809eeaefbc6$export$9099ad97b570f7c(locale) {
                 // Perform the initial formatting.
                 value = isNaN(value) ? nan : formatType(Math.abs(value), precision);
                 // Trim insignificant zeros.
-                if (trim) value = $2a72778cc866bf64$export$9099ad97b570f7c(value);
+                if (trim) value = $c853e9fc7fd1918d$export$2e2bcd8739ae039(value);
                 // If a negative value rounds to zero after formatting, and no explicit positive sign is requested, hide the sign.
                 if (valueNegative && +value === 0 && sign !== "+") valueNegative = false;
                 // Compute the prefix and suffix.
                 valuePrefix = (valueNegative ? sign === "(" ? sign : minus : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
-                valueSuffix = (type === "s" ? $d91e3809eeaefbc6$var$prefixes[8 + $3709d5dcd25d86cb$export$68edb477682bf50b / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
+                valueSuffix = (type === "s" ? $b58f58ff794d1ccb$var$prefixes[8 + $ce10a8d3c9895a37$export$6863724d9a42263 / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
                 // Break the formatted value into the integer “value” part that can be
                 // grouped, and fractional or exponential “suffix” part that is not.
                 if (maybeSuffix) {
                     i = -1, n = value.length;
-                    while((++i) < n)if (c = value.charCodeAt(i), 48 > c || c > 57) {
+                    while(++i < n)if (c = value.charCodeAt(i), 48 > c || c > 57) {
                         valueSuffix = (c === 46 ? decimal + value.slice(i + 1) : value.slice(i)) + valueSuffix;
                         value = value.slice(0, i);
                         break;
@@ -12872,10 +12966,10 @@ function $d91e3809eeaefbc6$export$9099ad97b570f7c(locale) {
         };
         return format;
     }
-    function formatPrefix(specifier, value) {
-        var f = newFormat((specifier = $1ef03d2e5c4d2c74$export$9099ad97b570f7c(specifier), specifier.type = "f", specifier)), e = Math.max(-8, Math.min(8, Math.floor($188784b179c71507$export$9099ad97b570f7c(value) / 3))) * 3, k = Math.pow(10, -e), prefix = $d91e3809eeaefbc6$var$prefixes[8 + e / 3];
-        return function(value1) {
-            return f(k * value1) + prefix;
+    function formatPrefix(specifier, value1) {
+        var f = newFormat((specifier = $80bf9e7b7b0236d9$export$2e2bcd8739ae039(specifier), specifier.type = "f", specifier)), e = Math.max(-8, Math.min(8, Math.floor($d47f499b73a5ab3e$export$2e2bcd8739ae039(value1) / 3))) * 3, k = Math.pow(10, -e), prefix = $b58f58ff794d1ccb$var$prefixes[8 + e / 3];
+        return function(value) {
+            return f(k * value) + prefix;
         };
     }
     return {
@@ -12885,10 +12979,10 @@ function $d91e3809eeaefbc6$export$9099ad97b570f7c(locale) {
 }
 
 
-var $fad03a0fd28d041d$var$locale;
-var $fad03a0fd28d041d$export$a5b158389611e45d;
-var $fad03a0fd28d041d$export$656a208b80641058;
-$fad03a0fd28d041d$export$9099ad97b570f7c({
+var $b3aac6971c7d1c88$var$locale;
+var $b3aac6971c7d1c88$export$d9468344d3651243;
+var $b3aac6971c7d1c88$export$8d85692a469dde6f;
+$b3aac6971c7d1c88$export$2e2bcd8739ae039({
     decimal: ".",
     thousands: ",",
     grouping: [
@@ -12900,92 +12994,92 @@ $fad03a0fd28d041d$export$9099ad97b570f7c({
     ],
     minus: "-"
 });
-function $fad03a0fd28d041d$export$9099ad97b570f7c(definition) {
-    $fad03a0fd28d041d$var$locale = $d91e3809eeaefbc6$export$9099ad97b570f7c(definition);
-    $fad03a0fd28d041d$export$a5b158389611e45d = $fad03a0fd28d041d$var$locale.format;
-    $fad03a0fd28d041d$export$656a208b80641058 = $fad03a0fd28d041d$var$locale.formatPrefix;
-    return $fad03a0fd28d041d$var$locale;
+function $b3aac6971c7d1c88$export$2e2bcd8739ae039(definition) {
+    $b3aac6971c7d1c88$var$locale = $b58f58ff794d1ccb$export$2e2bcd8739ae039(definition);
+    $b3aac6971c7d1c88$export$d9468344d3651243 = $b3aac6971c7d1c88$var$locale.format;
+    $b3aac6971c7d1c88$export$8d85692a469dde6f = $b3aac6971c7d1c88$var$locale.formatPrefix;
+    return $b3aac6971c7d1c88$var$locale;
 }
 
 
 
-var $0338ff3c02daec02$export$1c6888b44b81730b;
+var $9426609e4d123694$export$f0297ce57faf7d71;
 (function(DataScopeId) {
     DataScopeId[DataScopeId["AllData"] = 0] = "AllData";
     DataScopeId[DataScopeId["SelectedData"] = 1] = "SelectedData";
     DataScopeId[DataScopeId["FilteredData"] = 2] = "FilteredData";
-})($0338ff3c02daec02$export$1c6888b44b81730b || ($0338ff3c02daec02$export$1c6888b44b81730b = {
+})($9426609e4d123694$export$f0297ce57faf7d71 || ($9426609e4d123694$export$f0297ce57faf7d71 = {
 }));
-const $0338ff3c02daec02$var$shortFormat = $fad03a0fd28d041d$export$a5b158389611e45d('.2~s');
-function $0338ff3c02daec02$var$short(n) {
-    return n === -1 ? '--' : n ? n < 1000 ? n.toString() : $0338ff3c02daec02$var$shortFormat(n) : '0';
+const $9426609e4d123694$var$shortFormat = $b3aac6971c7d1c88$export$d9468344d3651243('.2~s');
+function $9426609e4d123694$var$short(n) {
+    return n === -1 ? '--' : n ? n < 1000 ? n.toString() : $9426609e4d123694$var$shortFormat(n) : '0';
 }
-function $0338ff3c02daec02$export$993107647a287a6(props) {
+function $9426609e4d123694$export$3fb74a6ae4f1171d(props) {
     const dataCount = Object.assign({
         all: -1,
         filtered: -1,
         selected: -1
     }, props.dataCount);
-    return props.compact ? $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
-        className: $6e437f743d80b3ba$exports.classList('sanddance-datascope', 'compact'),
+    return props.compact ? $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
+        className: $900824613c851981$exports.classList('sanddance-datascope', 'compact'),
         onClick: props.onCompactClick
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($0338ff3c02daec02$var$Compact, Object.assign({
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($9426609e4d123694$var$Compact, Object.assign({
     }, props, {
-        dataScopeId: $0338ff3c02daec02$export$1c6888b44b81730b.AllData,
-        text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.selectDataSpanAll,
+        dataScopeId: $9426609e4d123694$export$f0297ce57faf7d71.AllData,
+        text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.selectDataSpanAll,
         count: dataCount.all
-    })), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($0338ff3c02daec02$var$Compact, Object.assign({
+    })), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($9426609e4d123694$var$Compact, Object.assign({
     }, props, {
-        dataScopeId: $0338ff3c02daec02$export$1c6888b44b81730b.FilteredData,
-        text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.selectDataSpanFilter,
+        dataScopeId: $9426609e4d123694$export$f0297ce57faf7d71.FilteredData,
+        text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.selectDataSpanFilter,
         count: dataCount.filtered
-    })), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($0338ff3c02daec02$var$Compact, Object.assign({
+    })), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($9426609e4d123694$var$Compact, Object.assign({
     }, props, {
-        dataScopeId: $0338ff3c02daec02$export$1c6888b44b81730b.SelectedData,
-        text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.selectDataSpanSelection,
+        dataScopeId: $9426609e4d123694$export$f0297ce57faf7d71.SelectedData,
+        text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.selectDataSpanSelection,
         count: dataCount.selected
-    }))) : $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
-        className: $6e437f743d80b3ba$exports.classList('sanddance-datascope', 'extended', props.active && 'active')
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", null, props.dataSet), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }))) : $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
+        className: $900824613c851981$exports.classList('sanddance-datascope', 'extended', props.active && 'active')
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, props.dataSet), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "datascope-buttons"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($0338ff3c02daec02$var$DataScopeButton, Object.assign({
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($9426609e4d123694$var$DataScopeButton, Object.assign({
     }, props, {
-        dataScopeId: $0338ff3c02daec02$export$1c6888b44b81730b.AllData,
-        text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.selectDataSpanAll,
+        dataScopeId: $9426609e4d123694$export$f0297ce57faf7d71.AllData,
+        text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.selectDataSpanAll,
         count: dataCount.all
-    })), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($0338ff3c02daec02$var$DataScopeButton, Object.assign({
+    })), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($9426609e4d123694$var$DataScopeButton, Object.assign({
     }, props, {
-        dataScopeId: $0338ff3c02daec02$export$1c6888b44b81730b.FilteredData,
-        text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.selectDataSpanFilter,
+        dataScopeId: $9426609e4d123694$export$f0297ce57faf7d71.FilteredData,
+        text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.selectDataSpanFilter,
         count: dataCount.filtered
-    })), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($0338ff3c02daec02$var$DataScopeButton, Object.assign({
+    })), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($9426609e4d123694$var$DataScopeButton, Object.assign({
     }, props, {
-        dataScopeId: $0338ff3c02daec02$export$1c6888b44b81730b.SelectedData,
-        text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.selectDataSpanSelection,
+        dataScopeId: $9426609e4d123694$export$f0297ce57faf7d71.SelectedData,
+        text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.selectDataSpanSelection,
         count: dataCount.selected
     })))));
 }
-function $0338ff3c02daec02$var$Compact(props) {
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+function $9426609e4d123694$var$Compact(props) {
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: props.text,
         onClick: ()=>{
             props.onDataScopeClick(props.dataScopeId);
         }
-    }, $0338ff3c02daec02$var$short(props.count));
+    }, $9426609e4d123694$var$short(props.count));
 }
-function $0338ff3c02daec02$var$DataScopeButton(props) {
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($a4f65425c8c706b4$export$3e142902fa56c5af, {
+function $9426609e4d123694$var$DataScopeButton(props) {
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($3e0db921f6d0a017$export$353f5b6fc5456de1, {
         themePalette: props.themePalette,
-        className: $6e437f743d80b3ba$exports.classList('datascope-button', props.selectedDataScope === props.dataScopeId && 'selected'),
+        className: $900824613c851981$exports.classList('datascope-button', props.selectedDataScope === props.dataScopeId && 'selected'),
         disabled: props.disabled,
         text: props.text,
         onClick: ()=>{
             props.onDataScopeClick(props.dataScopeId);
         },
         onRenderText: ()=>{
-            return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+            return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                 title: props.count > 0 ? props.count.toString() : ''
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("label", null, props.text), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", null, $0338ff3c02daec02$var$short(props.count)));
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("label", null, props.text), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, $9426609e4d123694$var$short(props.count)));
         },
         onRenderIcon: ()=>null
     });
@@ -12999,17 +13093,17 @@ function $0338ff3c02daec02$var$DataScopeButton(props) {
 
 
 
-function $c401ef163b66a583$export$72ac974b48f19b39(props) {
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
-        className: $6e437f743d80b3ba$exports.classList('scrollable-container', props.className),
+function $18b915b0ca226437$export$fcc7818a78919c8c(props) {
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
+        className: $900824613c851981$exports.classList('scrollable-container', props.className),
         role: props.role
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "scrollable"
     }, props.children));
 }
 
 
-var $065798d25a9d250c$export$b264ae1d75dc4e4e;
+var $a27dff4329aa24f2$export$f3b7566ffe363e3b;
 (function(SideTabId) {
     SideTabId[SideTabId["ChartType"] = 0] = "ChartType";
     SideTabId[SideTabId["Data"] = 1] = "Data";
@@ -13020,96 +13114,96 @@ var $065798d25a9d250c$export$b264ae1d75dc4e4e;
     SideTabId[SideTabId["Settings"] = 6] = "Settings";
     SideTabId[SideTabId["Pin"] = 7] = "Pin";
     SideTabId[SideTabId["Collapse"] = 8] = "Collapse";
-})($065798d25a9d250c$export$b264ae1d75dc4e4e || ($065798d25a9d250c$export$b264ae1d75dc4e4e = {
+})($a27dff4329aa24f2$export$f3b7566ffe363e3b || ($a27dff4329aa24f2$export$f3b7566ffe363e3b = {
 }));
 
 
 
 
-function $ee1d356b7aae3d3f$export$fc9ca46a31bcb059(props) {
+function $1aadf16b3aca4a02$export$1ba59dacbcbf90fe(props) {
     const sidebuttons = [
         {
-            sideTabId: $065798d25a9d250c$export$b264ae1d75dc4e4e.ChartType,
+            sideTabId: $a27dff4329aa24f2$export$f3b7566ffe363e3b.ChartType,
             iconName: 'BIDashboard',
-            title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelChart
+            title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelChart
         },
         {
-            sideTabId: $065798d25a9d250c$export$b264ae1d75dc4e4e.Color,
+            sideTabId: $a27dff4329aa24f2$export$f3b7566ffe363e3b.Color,
             iconName: 'Color',
-            title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColor
+            title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColor
         },
         {
-            sideTabId: $065798d25a9d250c$export$b264ae1d75dc4e4e.Data,
+            sideTabId: $a27dff4329aa24f2$export$f3b7566ffe363e3b.Data,
             iconName: 'Table',
-            title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelDataBrowser
+            title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelDataBrowser
         },
         {
-            sideTabId: $065798d25a9d250c$export$b264ae1d75dc4e4e.Search,
+            sideTabId: $a27dff4329aa24f2$export$f3b7566ffe363e3b.Search,
             iconName: 'Search',
-            title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelSearch
+            title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelSearch
         },
         {
-            sideTabId: $065798d25a9d250c$export$b264ae1d75dc4e4e.Snapshots,
+            sideTabId: $a27dff4329aa24f2$export$f3b7566ffe363e3b.Snapshots,
             iconName: 'Camera',
-            title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelSnapshots
+            title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelSnapshots
         },
         {
-            sideTabId: $065798d25a9d250c$export$b264ae1d75dc4e4e.History,
+            sideTabId: $a27dff4329aa24f2$export$f3b7566ffe363e3b.History,
             iconName: 'History',
-            title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelHistory
+            title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelHistory
         },
         {
-            sideTabId: $065798d25a9d250c$export$b264ae1d75dc4e4e.Settings,
+            sideTabId: $a27dff4329aa24f2$export$f3b7566ffe363e3b.Settings,
             iconName: 'Settings',
-            title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelChartSettings
+            title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelChartSettings
         }
     ];
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
-        className: $6e437f743d80b3ba$exports.classList('sanddance-sidebar', 'calculator', props.pinned && 'pinned', props.closed && 'closed')
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
+        className: $900824613c851981$exports.classList('sanddance-sidebar', 'calculator', props.pinned && 'pinned', props.closed && 'closed')
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "sidebar-content"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($0338ff3c02daec02$export$993107647a287a6, Object.assign({
-    }, props.dataScopeProps)), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($9426609e4d123694$export$3fb74a6ae4f1171d, Object.assign({
+    }, props.dataScopeProps)), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "vbuttons",
         role: 'tablist'
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "sidebar-dialogs"
-    }, sidebuttons.map((sidebutton, i)=>$c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($ee1d356b7aae3d3f$export$8e66f8fc23b74ff3, Object.assign({
+    }, sidebuttons.map((sidebutton, i)=>$2a6088da9113f540$export$e2253033e6e1df16.react.createElement($1aadf16b3aca4a02$export$a8fc19311f33df91, Object.assign({
             key: i
         }, props, sidebutton, {
             themePalette: props.themePalette
         }))
-    )), !props.hideSidebarControls && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    )), !props.hideSidebarControls && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "sidebar-controls"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($ee1d356b7aae3d3f$export$8e66f8fc23b74ff3, Object.assign({
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($1aadf16b3aca4a02$export$a8fc19311f33df91, Object.assign({
     }, props, {
-        sideTabId: $065798d25a9d250c$export$b264ae1d75dc4e4e.Pin,
+        sideTabId: $a27dff4329aa24f2$export$f3b7566ffe363e3b.Pin,
         iconName: props.pinned ? 'Pinned' : 'Pin',
-        title: props.pinned ? $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonToolbarFloat : $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonToolbarDock
-    })), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($ee1d356b7aae3d3f$export$8e66f8fc23b74ff3, Object.assign({
+        title: props.pinned ? $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonToolbarFloat : $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonToolbarDock
+    })), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($1aadf16b3aca4a02$export$a8fc19311f33df91, Object.assign({
     }, props, {
-        sideTabId: $065798d25a9d250c$export$b264ae1d75dc4e4e.Collapse,
+        sideTabId: $a27dff4329aa24f2$export$f3b7566ffe363e3b.Collapse,
         iconName: props.closed ? 'DoubleChevronRight12' : 'DoubleChevronLeft12',
-        title: props.closed ? $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonToolbarShow : $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonToolbarHide
-    })))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c401ef163b66a583$export$72ac974b48f19b39, {
+        title: props.closed ? $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonToolbarShow : $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonToolbarHide
+    })))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($18b915b0ca226437$export$fcc7818a78919c8c, {
         role: 'tabpanel'
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "sidetab"
-    }, props.children)), props.calculating && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, props.children)), props.calculating && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "calculating"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.Spinner, {
-        size: $c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.SpinnerSize.large
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.Spinner, {
+        size: $2a6088da9113f540$export$e2253033e6e1df16.fluentUI.SpinnerSize.large
     }))));
 }
-function $ee1d356b7aae3d3f$export$8e66f8fc23b74ff3(props) {
+function $1aadf16b3aca4a02$export$a8fc19311f33df91(props) {
     const selected = !props.closed && props.selectedSideTab === props.sideTabId;
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
-        className: $6e437f743d80b3ba$exports.classList('vbutton', selected && 'selected'),
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
+        className: $900824613c851981$exports.classList('vbutton', selected && 'selected'),
         role: 'tab',
         "aria-selected": selected
-    }, props.badgeText && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, props.badgeText && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "count"
-    }, props.badgeText), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($118d0de4ae8ff9c2$export$aa4364103b35a0bd, {
+    }, props.badgeText), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($bab18bb05a251a0e$export$c25acd513dcc8062, {
         themePalette: props.themePalette,
         className: "vbutton",
         iconName: props.iconName,
@@ -13122,7 +13216,7 @@ function $ee1d356b7aae3d3f$export$8e66f8fc23b74ff3(props) {
 
 
 
-const $5e928fa465358196$export$f82d50ea4fab0593 = (props)=>{
+const $c8ebe9818b514273$export$26e7026630023d76 = (props)=>{
     const { theme: theme  } = props;
     if (!theme) throw new Error('Theme is undefined or null.');
     const { palette: palette , semanticColors: semanticColors  } = theme;
@@ -13130,7 +13224,7 @@ const $5e928fa465358196$export$f82d50ea4fab0593 = (props)=>{
     return {
         root: [
             Object.assign({
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.getFocusStyle(theme, {
+            }, $2a6088da9113f540$export$e2253033e6e1df16.fluentUI.getFocusStyle(theme, {
                 inset: 2
             })),
             {
@@ -13220,16 +13314,25 @@ const $5e928fa465358196$export$f82d50ea4fab0593 = (props)=>{
 
 
 
-const $1f6e98b04834e41e$var$s = `\n ......\n.......\n...\n......\n ......\n    ...\n.......\n......\n`;
-const $1f6e98b04834e41e$var$d = $1f6e98b04834e41e$var$s.split('\n').map((row, irow)=>row.length ? row.split('').map((char, icol)=>char.trim() ? `M${2 * icol + 1} ${2 * (irow - 1) + 1} v1 h1 v-1 Z` : ''
+const $40af10c921636ba6$var$s = `
+ ......
+.......
+...
+......
+ ......
+    ...
+.......
+......
+`;
+const $40af10c921636ba6$var$d = $40af10c921636ba6$var$s.split('\n').map((row, irow)=>row.length ? row.split('').map((char, icol)=>char.trim() ? `M${2 * icol + 1} ${2 * (irow - 1) + 1} v1 h1 v-1 Z` : ''
     ).join(' ') : ''
 ).join('\n');
-function $1f6e98b04834e41e$export$4631b22d77b0b4e3() {
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+function $40af10c921636ba6$export$e6ff31bff12b7ff4() {
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         xmlns: "http://www.w3.org/2000/svg",
         viewBox: "0 0 16 16"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("path", {
-        d: $1f6e98b04834e41e$var$d
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("path", {
+        d: $40af10c921636ba6$var$d
     }));
 }
 
@@ -13237,13 +13340,13 @@ function $1f6e98b04834e41e$export$4631b22d77b0b4e3() {
 
 
 
-function $64071d48f10c4d85$export$47517a79cab7d511(props) {
+function $0e63cc2ab4c414cc$export$1ca1e38143dcc152(props) {
     const zeroResults = props.selectionState.selectedData && props.selectionState.selectedData.length === 0;
     const disabled = !props.loaded;
     const items = [
         {
             key: 'undo',
-            name: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonUndo,
+            name: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonUndo,
             iconProps: {
                 iconName: 'Undo'
             },
@@ -13252,7 +13355,7 @@ function $64071d48f10c4d85$export$47517a79cab7d511(props) {
         },
         {
             key: 'redo',
-            name: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonRedo,
+            name: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonRedo,
             iconProps: {
                 iconName: 'Redo'
             },
@@ -13261,7 +13364,7 @@ function $64071d48f10c4d85$export$47517a79cab7d511(props) {
         },
         {
             key: 'deselect',
-            name: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonDeselect,
+            name: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonDeselect,
             iconProps: {
                 iconName: 'Cancel'
             },
@@ -13270,30 +13373,30 @@ function $64071d48f10c4d85$export$47517a79cab7d511(props) {
         },
         {
             key: 'isolate',
-            name: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonIsolate,
+            name: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonIsolate,
             iconProps: {
                 iconName: 'Filter'
             },
             disabled: disabled || !props.selectionSearch || zeroResults,
-            onClick: ()=>props.doFilter(props.selectionSearch, $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelHistoryFilterIsolate)
+            onClick: ()=>props.doFilter(props.selectionSearch, $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelHistoryFilterIsolate)
         },
         {
             key: 'exclude',
-            name: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonExclude,
+            name: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonExclude,
             iconProps: {
                 iconName: 'ClearFilter'
             },
             disabled: disabled || !props.selectionSearch || zeroResults,
-            onClick: ()=>props.doFilter($385418a87250916e$exports.searchExpression.invert(props.selectionSearch), $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelHistoryFilterIExclude)
+            onClick: ()=>props.doFilter($e5c730801b562de0$exports.searchExpression.invert(props.selectionSearch), $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelHistoryFilterIExclude)
         },
         {
             key: 'reset',
-            name: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonReset,
+            name: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonReset,
             iconProps: {
                 iconName: 'RemoveFilter'
             },
             disabled: disabled || !props.filter,
-            onClick: ()=>props.doUnfilter($d3f49cd4a4ebf638$export$e345c26dc94dc116.labelHistoryFilterClear)
+            onClick: ()=>props.doUnfilter($ee7b4b80c9b36fcd$export$21c51bc433c16634.labelHistoryFilterClear)
         }
     ];
     if (props.buttons) items.push.apply(items, props.buttons);
@@ -13305,7 +13408,7 @@ function $64071d48f10c4d85$export$47517a79cab7d511(props) {
             iconProps: {
                 iconName: 'Previous'
             },
-            title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonPrevSnapshot,
+            title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonPrevSnapshot,
             onClick: props.onSnapshotPreviousClick,
             disabled: props.snapshots.length < 2
         },
@@ -13314,7 +13417,7 @@ function $64071d48f10c4d85$export$47517a79cab7d511(props) {
             iconProps: {
                 iconName: 'Camera'
             },
-            title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonCreateSnapshot,
+            title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonCreateSnapshot,
             onClick: props.onSnapshotClick,
             disabled: !props.loaded
         },
@@ -13323,7 +13426,7 @@ function $64071d48f10c4d85$export$47517a79cab7d511(props) {
             iconProps: {
                 iconName: 'Next'
             },
-            title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonNextSnapshot,
+            title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonNextSnapshot,
             onClick: props.onSnapshotNextClick,
             disabled: props.snapshots.length < 2
         },
@@ -13332,7 +13435,7 @@ function $64071d48f10c4d85$export$47517a79cab7d511(props) {
             iconProps: {
                 iconName: props.view === '2d' ? 'CubeShape' : 'Page'
             },
-            title: props.view === '2d' ? $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelViewType3d : $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelViewType2d,
+            title: props.view === '2d' ? $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelViewType3d : $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelViewType2d,
             onClick: props.onViewClick,
             disabled: !props.loaded
         },
@@ -13341,30 +13444,30 @@ function $64071d48f10c4d85$export$47517a79cab7d511(props) {
             iconProps: {
                 iconName: 'PicturePosition'
             },
-            title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonCameraHome,
+            title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonCameraHome,
             onClick: props.onHomeClick,
             disabled: !props.loaded
         }
     ];
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "sanddance-explorer-topbar"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "logo"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($1f6e98b04834e41e$export$4631b22d77b0b4e3, null), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("a", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($40af10c921636ba6$export$e6ff31bff12b7ff4, null), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("a", {
         href: props.logoClickUrl || '/',
         target: props.logoClickTarget || '_blank'
-    }, $d3f49cd4a4ebf638$export$e345c26dc94dc116.appName)), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, $ee7b4b80c9b36fcd$export$21c51bc433c16634.appName)), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "sanddance-explorer-commandbar"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.Customizer, {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.Customizer, {
         scopedSettings: {
             CommandBarButton: {
                 styles: (buttonProps)=>{
                     buttonProps.theme.palette = props.themePalette;
-                    return $5e928fa465358196$export$f82d50ea4fab0593(buttonProps);
+                    return $c8ebe9818b514273$export$26e7026630023d76(buttonProps);
                 }
             }
         }
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.CommandBar, {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.CommandBar, {
         items: items,
         farItems: farItems,
         styles: {
@@ -13380,8 +13483,8 @@ function $64071d48f10c4d85$export$47517a79cab7d511(props) {
 
 
 
-const $3ec46caab6f4505c$export$b7dc3aabb556dfb2 = (dataFile)=>new Promise((resolve, reject)=>{
-        const vega = $385418a87250916e$exports.VegaDeckGl.base.vega;
+const $81abbb939b4f753b$export$9d26f8f2be82424f = (dataFile)=>new Promise((resolve, reject)=>{
+        const vega = $e5c730801b562de0$exports.VegaDeckGl.base.vega;
         const loader = vega.loader();
         function handleRawText(text) {
             let data;
@@ -13394,7 +13497,7 @@ const $3ec46caab6f4505c$export$b7dc3aabb556dfb2 = (dataFile)=>new Promise((resol
             } catch (e) {
                 reject(e);
             }
-            if (data) $3ec46caab6f4505c$export$5832599d7ffde789(data, dataFile.type).then((dc)=>{
+            if (data) $81abbb939b4f753b$export$c084150d12efae43(data, dataFile.type).then((dc)=>{
                 if (dataFile.snapshotsUrl) fetch(dataFile.snapshotsUrl).then((response)=>response.json()
                 ).then((snapshots)=>{
                     dc.snapshots = snapshots;
@@ -13411,13 +13514,13 @@ const $3ec46caab6f4505c$export$b7dc3aabb556dfb2 = (dataFile)=>new Promise((resol
         else reject('dataFile object must have either dataUrl or rawText property set.');
     })
 ;
-const $3ec46caab6f4505c$export$5832599d7ffde789 = (data, type)=>new Promise((resolve, reject)=>{
+const $81abbb939b4f753b$export$c084150d12efae43 = (data, type)=>new Promise((resolve, reject)=>{
         const parse = type === 'csv' || type === 'tsv';
         if (parse) //convert empty strings to null so that vega.inferType will get dates
         data.forEach((row)=>{
             for(let column in row)if (row[column] === '') row[column] = null;
         });
-        const columns = $385418a87250916e$exports.util.getColumnsFromData($385418a87250916e$exports.VegaDeckGl.base.vega.inferTypes, data).filter((c)=>c.name && c.name.trim()
+        const columns = $e5c730801b562de0$exports.util.getColumnsFromData($e5c730801b562de0$exports.VegaDeckGl.base.vega.inferTypes, data).filter((c)=>c.name && c.name.trim()
         ).sort((a, b)=>a.name.localeCompare(b.name)
         );
         if (parse) {
@@ -13454,10 +13557,10 @@ const $3ec46caab6f4505c$export$5832599d7ffde789 = (data, type)=>new Promise((res
 
 
 
-var $ffac552ad0872994$var$util = $385418a87250916e$exports.VegaDeckGl.util;
-const $ffac552ad0872994$export$ab53ba4bd9c9d2ec = {
+var $843cc4195912fafb$var$util = $e5c730801b562de0$exports.VegaDeckGl.util;
+const $843cc4195912fafb$export$3465a0e7b289ab72 = {
 };
-$ffac552ad0872994$export$ab53ba4bd9c9d2ec[''] = {
+$843cc4195912fafb$export$3465a0e7b289ab72[''] = {
     themePrimary: '#0078d4',
     themeLighterAlt: '#eff6fc',
     themeLighter: '#deecf9',
@@ -13481,7 +13584,7 @@ $ffac552ad0872994$export$ab53ba4bd9c9d2ec[''] = {
     black: '#1d1d1d',
     white: '#ffffff'
 };
-$ffac552ad0872994$export$ab53ba4bd9c9d2ec['dark-theme'] = {
+$843cc4195912fafb$export$3465a0e7b289ab72['dark-theme'] = {
     themePrimary: '#00b4f0',
     themeLighterAlt: '#00070a',
     themeLighter: '#001d26',
@@ -13505,15 +13608,15 @@ $ffac552ad0872994$export$ab53ba4bd9c9d2ec['dark-theme'] = {
     black: '#f5f5f5',
     white: '#000000'
 };
-function $ffac552ad0872994$export$b3e0424e22817deb(themePalette) {
-    const c = $ffac552ad0872994$var$util.colorFromString(themePalette.themeSecondary);
+function $843cc4195912fafb$export$93a255849c3bdb97(themePalette) {
+    const c = $843cc4195912fafb$var$util.colorFromString(themePalette.themeSecondary);
     c[3] = 256 / 3; // one-third opacity background
     return {
         axisLine: themePalette.black,
         axisText: themePalette.black,
         hoveredCube: themePalette.black,
         clickableText: themePalette.themeDark,
-        clickableTextHighlight: $ffac552ad0872994$var$util.colorToString(c),
+        clickableTextHighlight: $843cc4195912fafb$var$util.colorToString(c),
         clickableTextHighlightAlphaCutoff: 0,
         searchText: themePalette.neutralPrimary,
         searchTextHighlight: themePalette.neutralPrimaryAlt
@@ -13521,12 +13624,12 @@ function $ffac552ad0872994$export$b3e0424e22817deb(themePalette) {
 }
 
 
-const $4c9aa6a92253ee73$export$8d759f3178f6b82 = 'Segoe UI, sans-serif';
-const $4c9aa6a92253ee73$export$23e61e65e99ffb54 = {
-    colors: $ffac552ad0872994$export$b3e0424e22817deb($ffac552ad0872994$export$ab53ba4bd9c9d2ec['']),
-    fontFamily: $4c9aa6a92253ee73$export$8d759f3178f6b82
+const $bd8e96fc01144a60$export$a5975749f0374264 = 'Segoe UI, sans-serif';
+const $bd8e96fc01144a60$export$fb736e4909afb3d7 = {
+    colors: $843cc4195912fafb$export$93a255849c3bdb97($843cc4195912fafb$export$3465a0e7b289ab72['']),
+    fontFamily: $bd8e96fc01144a60$export$a5975749f0374264
 };
-const $4c9aa6a92253ee73$export$df0185090c61e4ef = 300;
+const $bd8e96fc01144a60$export$7e33de69431bbb06 = 300;
 
 
 
@@ -13534,1604 +13637,1604 @@ const $4c9aa6a92253ee73$export$df0185090c61e4ef = 300;
 
 
 
-function $e853b633102ebdad$export$b467f28d73d9ef5b(selected, scheme) {
+function $92a61093bb1a4e6c$export$535452b9416b5e17(selected, scheme) {
     return {
         key: scheme,
         text: scheme,
         selected: selected === scheme,
         scheme: scheme,
-        children: $e853b633102ebdad$export$bffb04186d5bb00c[scheme]
+        children: $92a61093bb1a4e6c$export$dc7e195cef98649[scheme]
     };
 }
-const $e853b633102ebdad$export$bffb04186d5bb00c = {
+const $92a61093bb1a4e6c$export$dc7e195cef98649 = {
 };
 
 
-const $b84b4567b28066c9$var$p8 = `${12.5}%`;
-const $b84b4567b28066c9$var$p9 = `${100 / 9}%`;
-const $b84b4567b28066c9$var$p10 = `${10}%`;
-const $b84b4567b28066c9$var$p12 = `${100 / 12}%`;
-const $b84b4567b28066c9$var$p20 = `${5}%`;
-let $b84b4567b28066c9$var$loaded = false;
-function $b84b4567b28066c9$var$load() {
-    $e853b633102ebdad$export$bffb04186d5bb00c['accent'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+const $d3eca06e28f492fc$var$p8 = `${12.5}%`;
+const $d3eca06e28f492fc$var$p9 = `${100 / 9}%`;
+const $d3eca06e28f492fc$var$p10 = `${10}%`;
+const $d3eca06e28f492fc$var$p12 = `${100 / 12}%`;
+const $d3eca06e28f492fc$var$p20 = `${5}%`;
+let $d3eca06e28f492fc$var$loaded = false;
+function $d3eca06e28f492fc$var$load() {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['accent'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "swatch"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#7fc97f",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(127, 201, 127)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#beaed4",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(190, 174, 212)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#fdc086",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(253, 192, 134)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#ffff99",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(255, 255, 153)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#386cb0",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(56, 108, 176)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#f0027f",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(240, 2, 127)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#bf5b17",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(191, 91, 23)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#666666",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(102, 102, 102)'
         }
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['category10'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['category10'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "swatch"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#1f77b4",
         style: {
-            width: $b84b4567b28066c9$var$p10,
+            width: $d3eca06e28f492fc$var$p10,
             background: 'rgb(31, 119, 180)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#ff7f0e",
         style: {
-            width: $b84b4567b28066c9$var$p10,
+            width: $d3eca06e28f492fc$var$p10,
             background: 'rgb(255, 127, 14)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#2ca02c",
         style: {
-            width: $b84b4567b28066c9$var$p10,
+            width: $d3eca06e28f492fc$var$p10,
             background: 'rgb(44, 160, 44)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#d62728",
         style: {
-            width: $b84b4567b28066c9$var$p10,
+            width: $d3eca06e28f492fc$var$p10,
             background: 'rgb(214, 39, 40)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#9467bd",
         style: {
-            width: $b84b4567b28066c9$var$p10,
+            width: $d3eca06e28f492fc$var$p10,
             background: 'rgb(148, 103, 189)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#8c564b",
         style: {
-            width: $b84b4567b28066c9$var$p10,
+            width: $d3eca06e28f492fc$var$p10,
             background: 'rgb(140, 86, 75)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#e377c2",
         style: {
-            width: $b84b4567b28066c9$var$p10,
+            width: $d3eca06e28f492fc$var$p10,
             background: 'rgb(227, 119, 194)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#7f7f7f",
         style: {
-            width: $b84b4567b28066c9$var$p10,
+            width: $d3eca06e28f492fc$var$p10,
             background: 'rgb(127, 127, 127)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#bcbd22",
         style: {
-            width: $b84b4567b28066c9$var$p10,
+            width: $d3eca06e28f492fc$var$p10,
             background: 'rgb(188, 189, 34)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#17becf",
         style: {
-            width: $b84b4567b28066c9$var$p10,
+            width: $d3eca06e28f492fc$var$p10,
             background: 'rgb(23, 190, 207)'
         }
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['category20'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['category20'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "swatch"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#1f77b4",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(31, 119, 180)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#aec7e8",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(174, 199, 232)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#ff7f0e",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(255, 127, 14)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#ffbb78",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(255, 187, 120)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#2ca02c",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(44, 160, 44)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#98df8a",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(152, 223, 138)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#d62728",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(214, 39, 40)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#ff9896",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(255, 152, 150)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#9467bd",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(148, 103, 189)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#c5b0d5",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(197, 176, 213)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#8c564b",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(140, 86, 75)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#c49c94",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(196, 156, 148)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#e377c2",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(227, 119, 194)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#f7b6d2",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(247, 182, 210)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#7f7f7f",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(127, 127, 127)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#c7c7c7",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(199, 199, 199)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#bcbd22",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(188, 189, 34)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#dbdb8d",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(219, 219, 141)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#17becf",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(23, 190, 207)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#9edae5",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(158, 218, 229)'
         }
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['category20b'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['category20b'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "swatch"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#393b79",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(57, 59, 121)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#5254a3",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(82, 84, 163)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#6b6ecf",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(107, 110, 207)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#9c9ede",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(156, 158, 222)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#637939",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(99, 121, 57)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#8ca252",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(140, 162, 82)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#b5cf6b",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(181, 207, 107)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#cedb9c",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(206, 219, 156)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#8c6d31",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(140, 109, 49)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#bd9e39",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(189, 158, 57)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#e7ba52",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(231, 186, 82)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#e7cb94",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(231, 203, 148)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#843c39",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(132, 60, 57)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#ad494a",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(173, 73, 74)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#d6616b",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(214, 97, 107)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#e7969c",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(231, 150, 156)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#7b4173",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(123, 65, 115)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#a55194",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(165, 81, 148)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#ce6dbd",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(206, 109, 189)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#de9ed6",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(222, 158, 214)'
         }
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['category20c'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['category20c'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "swatch"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#3182bd",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(49, 130, 189)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#6baed6",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(107, 174, 214)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#9ecae1",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(158, 202, 225)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#c6dbef",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(198, 219, 239)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#e6550d",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(230, 85, 13)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#fd8d3c",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(253, 141, 60)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#fdae6b",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(253, 174, 107)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#fdd0a2",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(253, 208, 162)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#31a354",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(49, 163, 84)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#74c476",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(116, 196, 118)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#a1d99b",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(161, 217, 155)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#c7e9c0",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(199, 233, 192)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#756bb1",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(117, 107, 177)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#9e9ac8",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(158, 154, 200)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#bcbddc",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(188, 189, 220)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#dadaeb",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(218, 218, 235)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#636363",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(99, 99, 99)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#969696",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(150, 150, 150)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#bdbdbd",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(189, 189, 189)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#d9d9d9",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(217, 217, 217)'
         }
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['dark2'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['dark2'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "swatch"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#1b9e77",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(27, 158, 119)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#d95f02",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(217, 95, 2)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#7570b3",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(117, 112, 179)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#e7298a",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(231, 41, 138)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#66a61e",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(102, 166, 30)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#e6ab02",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(230, 171, 2)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#a6761d",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(166, 118, 29)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#666666",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(102, 102, 102)'
         }
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['paired'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['paired'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "swatch"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#a6cee3",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(166, 206, 227)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#1f78b4",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(31, 120, 180)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#b2df8a",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(178, 223, 138)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#33a02c",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(51, 160, 44)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#fb9a99",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(251, 154, 153)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#e31a1c",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(227, 26, 28)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#fdbf6f",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(253, 191, 111)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#ff7f00",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(255, 127, 0)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#cab2d6",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(202, 178, 214)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#6a3d9a",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(106, 61, 154)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#ffff99",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(255, 255, 153)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#b15928",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(177, 89, 40)'
         }
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['pastel1'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['pastel1'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "swatch"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#fbb4ae",
         style: {
-            width: $b84b4567b28066c9$var$p9,
+            width: $d3eca06e28f492fc$var$p9,
             background: 'rgb(251, 180, 174)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#b3cde3",
         style: {
-            width: $b84b4567b28066c9$var$p9,
+            width: $d3eca06e28f492fc$var$p9,
             background: 'rgb(179, 205, 227)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#ccebc5",
         style: {
-            width: $b84b4567b28066c9$var$p9,
+            width: $d3eca06e28f492fc$var$p9,
             background: 'rgb(204, 235, 197)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#decbe4",
         style: {
-            width: $b84b4567b28066c9$var$p9,
+            width: $d3eca06e28f492fc$var$p9,
             background: 'rgb(222, 203, 228)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#fed9a6",
         style: {
-            width: $b84b4567b28066c9$var$p9,
+            width: $d3eca06e28f492fc$var$p9,
             background: 'rgb(254, 217, 166)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#ffffcc",
         style: {
-            width: $b84b4567b28066c9$var$p9,
+            width: $d3eca06e28f492fc$var$p9,
             background: 'rgb(255, 255, 204)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#e5d8bd",
         style: {
-            width: $b84b4567b28066c9$var$p9,
+            width: $d3eca06e28f492fc$var$p9,
             background: 'rgb(229, 216, 189)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#fddaec",
         style: {
-            width: $b84b4567b28066c9$var$p9,
+            width: $d3eca06e28f492fc$var$p9,
             background: 'rgb(253, 218, 236)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#f2f2f2",
         style: {
-            width: $b84b4567b28066c9$var$p9,
+            width: $d3eca06e28f492fc$var$p9,
             background: 'rgb(242, 242, 242)'
         }
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['pastel2'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['pastel2'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "swatch"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#b3e2cd",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(179, 226, 205)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#fdcdac",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(253, 205, 172)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#cbd5e8",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(203, 213, 232)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#f4cae4",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(244, 202, 228)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#e6f5c9",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(230, 245, 201)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#fff2ae",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(255, 242, 174)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#f1e2cc",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(241, 226, 204)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#cccccc",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(204, 204, 204)'
         }
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['set1'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['set1'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "swatch"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#e41a1c",
         style: {
-            width: $b84b4567b28066c9$var$p9,
+            width: $d3eca06e28f492fc$var$p9,
             background: 'rgb(228, 26, 28)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#377eb8",
         style: {
-            width: $b84b4567b28066c9$var$p9,
+            width: $d3eca06e28f492fc$var$p9,
             background: 'rgb(55, 126, 184)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#4daf4a",
         style: {
-            width: $b84b4567b28066c9$var$p9,
+            width: $d3eca06e28f492fc$var$p9,
             background: 'rgb(77, 175, 74)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#984ea3",
         style: {
-            width: $b84b4567b28066c9$var$p9,
+            width: $d3eca06e28f492fc$var$p9,
             background: 'rgb(152, 78, 163)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#ff7f00",
         style: {
-            width: $b84b4567b28066c9$var$p9,
+            width: $d3eca06e28f492fc$var$p9,
             background: 'rgb(255, 127, 0)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#ffff33",
         style: {
-            width: $b84b4567b28066c9$var$p9,
+            width: $d3eca06e28f492fc$var$p9,
             background: 'rgb(255, 255, 51)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#a65628",
         style: {
-            width: $b84b4567b28066c9$var$p9,
+            width: $d3eca06e28f492fc$var$p9,
             background: 'rgb(166, 86, 40)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#f781bf",
         style: {
-            width: $b84b4567b28066c9$var$p9,
+            width: $d3eca06e28f492fc$var$p9,
             background: 'rgb(247, 129, 191)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#999999",
         style: {
-            width: $b84b4567b28066c9$var$p9,
+            width: $d3eca06e28f492fc$var$p9,
             background: 'rgb(153, 153, 153)'
         }
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['set2'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['set2'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "swatch"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#66c2a5",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(102, 194, 165)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#fc8d62",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(252, 141, 98)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#8da0cb",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(141, 160, 203)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#e78ac3",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(231, 138, 195)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#a6d854",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(166, 216, 84)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#ffd92f",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(255, 217, 47)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#e5c494",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(229, 196, 148)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#b3b3b3",
         style: {
-            width: $b84b4567b28066c9$var$p8,
+            width: $d3eca06e28f492fc$var$p8,
             background: 'rgb(179, 179, 179)'
         }
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['set3'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['set3'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "swatch"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#8dd3c7",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(141, 211, 199)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#ffffb3",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(255, 255, 179)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#bebada",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(190, 186, 218)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#fb8072",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(251, 128, 114)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#80b1d3",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(128, 177, 211)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#fdb462",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(253, 180, 98)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#b3de69",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(179, 222, 105)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#fccde5",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(252, 205, 229)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#d9d9d9",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(217, 217, 217)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#bc80bd",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(188, 128, 189)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#ccebc5",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(204, 235, 197)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#ffed6f",
         style: {
-            width: $b84b4567b28066c9$var$p12,
+            width: $d3eca06e28f492fc$var$p12,
             background: 'rgb(255, 237, 111)'
         }
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['tableau10'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['tableau10'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "swatch"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#4c78a8",
         style: {
-            width: $b84b4567b28066c9$var$p10,
+            width: $d3eca06e28f492fc$var$p10,
             background: 'rgb(76, 120, 168)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#f58518",
         style: {
-            width: $b84b4567b28066c9$var$p10,
+            width: $d3eca06e28f492fc$var$p10,
             background: 'rgb(245, 133, 24)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#e45756",
         style: {
-            width: $b84b4567b28066c9$var$p10,
+            width: $d3eca06e28f492fc$var$p10,
             background: 'rgb(228, 87, 86)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#72b7b2",
         style: {
-            width: $b84b4567b28066c9$var$p10,
+            width: $d3eca06e28f492fc$var$p10,
             background: 'rgb(114, 183, 178)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#54a24b",
         style: {
-            width: $b84b4567b28066c9$var$p10,
+            width: $d3eca06e28f492fc$var$p10,
             background: 'rgb(84, 162, 75)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#eeca3b",
         style: {
-            width: $b84b4567b28066c9$var$p10,
+            width: $d3eca06e28f492fc$var$p10,
             background: 'rgb(238, 202, 59)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#b279a2",
         style: {
-            width: $b84b4567b28066c9$var$p10,
+            width: $d3eca06e28f492fc$var$p10,
             background: 'rgb(178, 121, 162)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#ff9da6",
         style: {
-            width: $b84b4567b28066c9$var$p10,
+            width: $d3eca06e28f492fc$var$p10,
             background: 'rgb(255, 157, 166)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#9d755d",
         style: {
-            width: $b84b4567b28066c9$var$p10,
+            width: $d3eca06e28f492fc$var$p10,
             background: 'rgb(157, 117, 93)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#bab0ac",
         style: {
-            width: $b84b4567b28066c9$var$p10,
+            width: $d3eca06e28f492fc$var$p10,
             background: 'rgb(186, 176, 172)'
         }
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['tableau20'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['tableau20'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "swatch"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#4c78a8",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(76, 120, 168)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#9ecae9",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(158, 202, 233)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#f58518",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(245, 133, 24)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#ffbf79",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(255, 191, 121)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#54a24b",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(84, 162, 75)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#88d27a",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(136, 210, 122)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#b79a20",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(183, 154, 32)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#f2cf5b",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(242, 207, 91)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#439894",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(67, 152, 148)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#83bcb6",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(131, 188, 182)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#e45756",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(228, 87, 86)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#ff9d98",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(255, 157, 152)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#79706e",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(121, 112, 110)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#bab0ac",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(186, 176, 172)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#d67195",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(214, 113, 149)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#fcbfd2",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(252, 191, 210)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#b279a2",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(178, 121, 162)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#d6a5c9",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(214, 165, 201)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#9e765f",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(158, 118, 95)'
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         title: "#d8b5a5",
         style: {
-            width: $b84b4567b28066c9$var$p20,
+            width: $d3eca06e28f492fc$var$p20,
             background: 'rgb(216, 181, 165)'
         }
     }));
-    $b84b4567b28066c9$var$loaded = true;
+    $d3eca06e28f492fc$var$loaded = true;
 }
-function $b84b4567b28066c9$export$611bfd724451b55b(selected) {
-    if (!$b84b4567b28066c9$var$loaded) $b84b4567b28066c9$var$load();
+function $d3eca06e28f492fc$export$f3a499247c9822d1(selected) {
+    if (!$d3eca06e28f492fc$var$loaded) $d3eca06e28f492fc$var$load();
     return [
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'accent'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'category10'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'category20'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'category20b'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'category20c'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'dark2'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'paired'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'pastel1'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'pastel2'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'set1'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'set2'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'set3'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'tableau10'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'tableau20')
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'accent'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'category10'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'category20'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'category20b'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'category20c'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'dark2'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'paired'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'pastel1'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'pastel2'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'set1'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'set2'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'set3'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'tableau10'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'tableau20')
     ];
 }
 
 
 
 
-let $97abaf0b46d2dfff$var$loaded = false;
-function $97abaf0b46d2dfff$var$load() {
-    $e853b633102ebdad$export$bffb04186d5bb00c['blueorange'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+let $94deb74fcf0932b2$var$loaded = false;
+function $94deb74fcf0932b2$var$load() {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['blueorange'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-blueorange"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(5, 48, 97)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(34, 101, 163)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(75, 148, 196)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(143, 194, 221)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(205, 227, 238)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(242, 240, 235)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(253, 221, 179)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(248, 182, 100)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(221, 132, 31)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(178, 90, 9)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(127, 59, 8)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-blueorange)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['brownbluegreen'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['brownbluegreen'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-brownbluegreen"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(84, 48, 5)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(139, 84, 15)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(188, 132, 53)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(222, 190, 123)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(242, 228, 192)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(238, 241, 234)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(195, 231, 226)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(127, 201, 191)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(57, 152, 143)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(10, 103, 95)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(0, 60, 48)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-brownbluegreen)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['purplegreen'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['purplegreen'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-purplegreen"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(64, 0, 75)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(115, 47, 128)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(154, 109, 170)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(193, 164, 205)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(228, 210, 230)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(239, 240, 239)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(214, 238, 209)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(162, 215, 158)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(92, 173, 101)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(33, 120, 57)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(0, 68, 27)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-purplegreen)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['pinkyellowgreen'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['pinkyellowgreen'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-pinkyellowgreen"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(142, 1, 82)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(192, 38, 126)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(221, 114, 173)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(240, 179, 214)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(250, 221, 237)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(245, 243, 239)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(225, 242, 202)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(182, 222, 135)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(128, 187, 71)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(79, 145, 37)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(39, 100, 25)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-pinkyellowgreen)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['purpleorange'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['purpleorange'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-purpleorange"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(45, 0, 75)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(85, 45, 132)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(129, 112, 172)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(176, 170, 208)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(215, 215, 233)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(243, 238, 234)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(253, 221, 179)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(248, 182, 100)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(221, 132, 31)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(178, 90, 9)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(127, 59, 8)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-purpleorange)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['redblue'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['redblue'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-redblue"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(103, 0, 31)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(172, 32, 47)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(213, 96, 80)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(241, 163, 133)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(251, 215, 196)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(242, 239, 238)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(205, 227, 238)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(143, 194, 221)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(75, 148, 196)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(34, 101, 163)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(5, 48, 97)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-redblue)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['redgrey'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['redgrey'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-redgrey"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(103, 0, 31)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(172, 32, 47)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(213, 96, 80)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(241, 163, 133)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(252, 216, 197)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(250, 244, 241)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(223, 223, 223)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(184, 184, 184)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(134, 134, 134)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(78, 78, 78)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(26, 26, 26)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-redgrey)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['redyellowblue'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['redyellowblue'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-redyellowblue"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(165, 0, 38)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(212, 50, 44)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(241, 110, 67)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(252, 172, 100)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(254, 221, 144)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(250, 248, 193)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(220, 241, 236)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(171, 214, 232)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(117, 171, 208)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(74, 116, 180)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(49, 54, 149)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-redyellowblue)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['redyellowgreen'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['redyellowgreen'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-redyellowgreen"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(165, 0, 38)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(212, 50, 44)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(241, 110, 67)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(252, 172, 99)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(254, 221, 141)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(249, 247, 174)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(215, 238, 142)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(164, 216, 110)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(100, 188, 97)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(34, 150, 79)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(0, 104, 55)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-redyellowgreen)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['spectral'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['spectral'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-spectral"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(158, 1, 66)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(209, 60, 75)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(240, 112, 74)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(252, 172, 99)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(254, 221, 141)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(251, 248, 176)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(224, 243, 161)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(169, 221, 162)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(105, 189, 169)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(66, 136, 181)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(94, 79, 162)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-spectral)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $97abaf0b46d2dfff$var$loaded = true;
+    $94deb74fcf0932b2$var$loaded = true;
 }
-function $97abaf0b46d2dfff$export$dd1d85fd681382cc(selected) {
-    if (!$97abaf0b46d2dfff$var$loaded) $97abaf0b46d2dfff$var$load();
+function $94deb74fcf0932b2$export$ab7b13a7cc99f3af(selected) {
+    if (!$94deb74fcf0932b2$var$loaded) $94deb74fcf0932b2$var$load();
     return [
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'blueorange'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'brownbluegreen'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'purplegreen'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'pinkyellowgreen'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'purpleorange'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'redblue'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'redgrey'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'redyellowblue'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'redyellowgreen'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'spectral')
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'blueorange'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'brownbluegreen'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'purplegreen'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'pinkyellowgreen'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'purpleorange'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'redblue'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'redgrey'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'redyellowblue'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'redyellowgreen'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'spectral')
     ];
 }
 
@@ -15140,13 +15243,13 @@ function $97abaf0b46d2dfff$export$dd1d85fd681382cc(selected) {
 
 
 
-let $8090ea68ee1d329a$var$loaded = false;
-function $8090ea68ee1d329a$var$load() {
-    $385418a87250916e$exports.colorSchemes.filter((cs)=>cs.colors.length === 2
+let $ef15f4ff7336ac66$var$loaded = false;
+function $ef15f4ff7336ac66$var$load() {
+    $e5c730801b562de0$exports.colorSchemes.filter((cs)=>cs.colors.length === 2
     ).map((binaryScheme, i)=>{
-        $e853b633102ebdad$export$bffb04186d5bb00c[binaryScheme.scheme] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+        $92a61093bb1a4e6c$export$dc7e195cef98649[binaryScheme.scheme] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
             className: "swatch"
-        }, binaryScheme.colors.map((color, j)=>$c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+        }, binaryScheme.colors.map((color, j)=>$2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                 key: j,
                 title: color,
                 style: {
@@ -15156,12 +15259,12 @@ function $8090ea68ee1d329a$var$load() {
             })
         ));
     });
-    $8090ea68ee1d329a$var$loaded = true;
+    $ef15f4ff7336ac66$var$loaded = true;
 }
-function $8090ea68ee1d329a$export$c6c021d4e17c9da4(selected) {
-    if (!$8090ea68ee1d329a$var$loaded) $8090ea68ee1d329a$var$load();
-    return $385418a87250916e$exports.colorSchemes.filter((cs)=>cs.colors.length === 2
-    ).map((binaryScheme, i)=>$e853b633102ebdad$export$b467f28d73d9ef5b(selected, binaryScheme.scheme)
+function $ef15f4ff7336ac66$export$d1699a1bbdf17835(selected) {
+    if (!$ef15f4ff7336ac66$var$loaded) $ef15f4ff7336ac66$var$load();
+    return $e5c730801b562de0$exports.colorSchemes.filter((cs)=>cs.colors.length === 2
+    ).map((binaryScheme, i)=>$92a61093bb1a4e6c$export$535452b9416b5e17(selected, binaryScheme.scheme)
     );
 }
 
@@ -15170,1048 +15273,1048 @@ function $8090ea68ee1d329a$export$c6c021d4e17c9da4(selected) {
 
 
 
-let $fe9d4abaa233b5b6$var$loaded = false;
-function $fe9d4abaa233b5b6$var$load() {
-    $e853b633102ebdad$export$bffb04186d5bb00c['viridis'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+let $88b394deca07349f$var$loaded = false;
+function $88b394deca07349f$var$load() {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['viridis'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-viridis"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "#440154"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "#482475"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "#414487"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "#355f8d"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "#2a788e"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "#21918c"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "#22a884"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "#44bf70"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "#7ad151"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "#bddf26"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "#fde725"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-viridis)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['inferno'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['inferno'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-inferno"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "#000004"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "#160b39"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "#420a68"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "#6a176e"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "#932667"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "#bc3754"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "#dd513a"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "#f37819"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "#fca50a"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "#f6d746"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "#fcffa4"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-inferno)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['magma'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['magma'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-magma"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "#000004"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "#140e36"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "#3b0f70"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "#641a80"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "#8c2981"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "#b73779"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "#de4968"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "#f7705c"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "#fe9f6d"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "#fecf92"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "#fcfdbf"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-magma)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['plasma'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['plasma'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-plasma"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "#0d0887"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "#41049d"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "#6a00a8"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "#8f0da4"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "#b12a90"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "#cc4778"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "#e16462"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "#f2844b"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "#fca636"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "#fcce25"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "#f0f921"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-plasma)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['bluegreen'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['bluegreen'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-bluegreen"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(247, 252, 253)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(232, 246, 249)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(213, 239, 237)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(183, 228, 218)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(143, 211, 193)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(104, 194, 163)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(73, 177, 127)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(47, 153, 89)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(21, 127, 60)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(3, 100, 41)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(0, 68, 27)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-bluegreen)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['bluepurple'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['bluepurple'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-bluepurple"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(247, 252, 253)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(228, 238, 245)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(204, 221, 236)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(178, 202, 225)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(156, 179, 213)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(143, 149, 198)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(140, 116, 181)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(137, 82, 165)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(133, 45, 143)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(115, 15, 113)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(77, 0, 75)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-bluepurple)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['greenblue'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['greenblue'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-greenblue"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(247, 252, 240)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(229, 245, 223)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(211, 238, 206)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(189, 229, 191)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(158, 217, 187)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(123, 203, 196)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(88, 183, 205)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(57, 156, 198)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(29, 126, 183)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(11, 96, 161)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(8, 64, 129)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-greenblue)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['orangered'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['orangered'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-orangered"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(255, 247, 236)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(254, 235, 207)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(253, 220, 175)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(253, 202, 148)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(253, 176, 122)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(250, 142, 93)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(241, 108, 73)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(224, 69, 48)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(200, 29, 19)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(167, 4, 3)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(127, 0, 0)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-orangered)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['purplebluegreen'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['purplebluegreen'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-purplebluegreen"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(255, 247, 251)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(239, 231, 242)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(219, 216, 234)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(190, 201, 226)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(152, 185, 217)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(105, 168, 207)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(64, 150, 192)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(25, 135, 159)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(3, 120, 119)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(1, 99, 83)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(1, 70, 54)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-purplebluegreen)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['purpleblue'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['purpleblue'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-purpleblue"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(255, 247, 251)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(239, 234, 244)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(219, 218, 235)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(191, 201, 226)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(155, 185, 217)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(114, 168, 207)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(67, 148, 195)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(26, 125, 182)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(6, 103, 161)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(4, 82, 129)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(2, 56, 88)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-purpleblue)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['purplered'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['purplered'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-purplered"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(247, 244, 249)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(234, 227, 240)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(220, 201, 226)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(208, 170, 210)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(208, 138, 194)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(221, 99, 174)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(227, 56, 144)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(215, 28, 108)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(183, 11, 79)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(143, 2, 58)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(103, 0, 31)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-purplered)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['redpurple'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['redpurple'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-redpurple"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(255, 247, 243)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(253, 228, 225)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(252, 207, 204)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(251, 181, 188)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(249, 147, 176)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(243, 105, 163)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(224, 62, 152)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(192, 23, 136)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(153, 3, 124)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(112, 1, 116)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(73, 0, 106)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-redpurple)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['yellowgreenblue'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['yellowgreenblue'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-yellowgreenblue"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(255, 255, 217)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(239, 249, 189)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(213, 238, 179)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(169, 221, 183)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(115, 201, 189)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(69, 180, 194)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(40, 151, 191)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(32, 115, 178)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(35, 78, 160)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(28, 49, 133)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(8, 29, 88)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-yellowgreenblue)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['yellowgreen'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['yellowgreen'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-yellowgreen"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(255, 255, 229)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(247, 252, 196)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(228, 244, 172)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(199, 232, 155)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(162, 216, 138)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(120, 197, 120)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(78, 175, 99)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(47, 148, 78)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(21, 121, 63)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(3, 96, 52)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(0, 69, 41)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-yellowgreen)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['yelloworangebrown'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['yelloworangebrown'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-yelloworangebrown"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(255, 255, 229)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(255, 248, 196)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(254, 234, 161)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(254, 214, 118)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(254, 186, 74)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(251, 153, 44)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(238, 121, 24)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(216, 91, 10)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(183, 67, 4)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(143, 50, 4)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(102, 37, 6)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-yelloworangebrown)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['yelloworangered'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['yelloworangered'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-yelloworangered"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(255, 255, 204)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(255, 240, 169)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(254, 224, 135)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(254, 201, 101)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(254, 171, 75)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(253, 137, 60)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(250, 92, 46)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(236, 48, 35)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(211, 17, 33)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(175, 2, 37)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(128, 0, 38)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-yelloworangered)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $fe9d4abaa233b5b6$var$loaded = true;
+    $88b394deca07349f$var$loaded = true;
 }
-function $fe9d4abaa233b5b6$export$6d349cc9a31d474e(selected) {
-    if (!$fe9d4abaa233b5b6$var$loaded) $fe9d4abaa233b5b6$var$load();
+function $88b394deca07349f$export$a4fd36c4882aa76e(selected) {
+    if (!$88b394deca07349f$var$loaded) $88b394deca07349f$var$load();
     return [
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'viridis'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'inferno'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'magma'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'plasma'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'bluegreen'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'bluepurple'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'greenblue'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'orangered'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'purplebluegreen'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'purpleblue'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'purplered'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'redpurple'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'yellowgreenblue'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'yellowgreen'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'yelloworangebrown'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'yelloworangered')
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'viridis'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'inferno'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'magma'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'plasma'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'bluegreen'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'bluepurple'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'greenblue'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'orangered'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'purplebluegreen'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'purpleblue'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'purplered'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'redpurple'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'yellowgreenblue'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'yellowgreen'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'yelloworangebrown'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'yelloworangered')
     ];
 }
 
 
 
 
-let $2c722382b9c98d40$var$loaded = false;
-function $2c722382b9c98d40$var$load() {
-    $e853b633102ebdad$export$bffb04186d5bb00c['blues'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+let $f7e4e69905fbfd46$var$loaded = false;
+function $f7e4e69905fbfd46$var$load() {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['blues'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-blues"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(247, 251, 255)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(227, 238, 249)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(207, 225, 242)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(181, 212, 233)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(147, 195, 223)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(109, 174, 213)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(75, 151, 201)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(47, 126, 188)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(24, 100, 170)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(10, 74, 144)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(8, 48, 107)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-blues)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['greens'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['greens'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-greens"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(247, 252, 245)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(232, 246, 227)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(211, 238, 205)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(183, 226, 177)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(151, 212, 148)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(115, 195, 120)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(77, 175, 98)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(47, 152, 79)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(21, 127, 59)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(3, 100, 41)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(0, 68, 27)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-greens)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['greys'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['greys'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-greys"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(255, 255, 255)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(242, 242, 242)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(226, 226, 226)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(206, 206, 206)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(180, 180, 180)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(151, 151, 151)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(122, 122, 122)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(95, 95, 95)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(64, 64, 64)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(30, 30, 30)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(0, 0, 0)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-greys)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['purples'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['purples'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-purples"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(252, 251, 253)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(241, 239, 246)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(226, 225, 239)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(206, 206, 229)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(182, 181, 216)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(158, 155, 201)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(135, 130, 188)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(115, 99, 172)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(97, 64, 155)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(80, 31, 140)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(63, 0, 125)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-purples)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['reds'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['reds'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-reds"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(255, 245, 240)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(254, 227, 214)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(253, 201, 180)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(252, 170, 142)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(252, 138, 107)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(249, 105, 76)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(239, 69, 51)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(217, 39, 35)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(187, 21, 26)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(151, 11, 19)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(103, 0, 13)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-reds)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $e853b633102ebdad$export$bffb04186d5bb00c['oranges'] = $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("svg", {
+    $92a61093bb1a4e6c$export$dc7e195cef98649['oranges'] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("defs", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("linearGradient", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("defs", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("linearGradient", {
         id: "gradient-oranges"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "0%",
         stopColor: "rgb(255, 245, 235)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "10%",
         stopColor: "rgb(254, 232, 211)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "20%",
         stopColor: "rgb(253, 216, 179)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "30%",
         stopColor: "rgb(253, 194, 140)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "40%",
         stopColor: "rgb(253, 167, 98)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "50%",
         stopColor: "rgb(251, 141, 61)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "60%",
         stopColor: "rgb(242, 112, 29)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "70%",
         stopColor: "rgb(226, 86, 9)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "80%",
         stopColor: "rgb(196, 65, 3)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "90%",
         stopColor: "rgb(159, 51, 3)"
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("stop", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("stop", {
         offset: "100%",
         stopColor: "rgb(127, 39, 4)"
-    }))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("rect", {
+    }))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("rect", {
         fill: "url(#gradient-oranges)",
         x: "0",
         y: "0",
         width: "1",
         height: "1"
     }));
-    $2c722382b9c98d40$var$loaded = true;
+    $f7e4e69905fbfd46$var$loaded = true;
 }
-function $2c722382b9c98d40$export$86e9ca20e9e50ee0(selected) {
-    if (!$2c722382b9c98d40$var$loaded) $2c722382b9c98d40$var$load();
+function $f7e4e69905fbfd46$export$9b3c8b6a286fd957(selected) {
+    if (!$f7e4e69905fbfd46$var$loaded) $f7e4e69905fbfd46$var$load();
     return [
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'blues'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'greens'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'greys'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'purples'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'reds'),
-        $e853b633102ebdad$export$b467f28d73d9ef5b(selected, 'oranges')
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'blues'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'greens'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'greys'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'purples'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'reds'),
+        $92a61093bb1a4e6c$export$535452b9416b5e17(selected, 'oranges')
     ];
 }
 
 
 
-const $36a7aa12c97398d2$var$maxDistinctColors = 20;
-function $36a7aa12c97398d2$export$2eb9bde86c5870cc(props) {
+const $8d1edb1f1211f480$var$maxDistinctColors = 20;
+function $8d1edb1f1211f480$export$e2fbaa661ec19dbf(props) {
     const { distinctValueCount: distinctValueCount  } = props.colorColumn.stats;
     let isDual = distinctValueCount === 2;
-    const categoricalNumeric = distinctValueCount > 0 && distinctValueCount < $36a7aa12c97398d2$var$maxDistinctColors;
+    const categoricalNumeric = distinctValueCount > 0 && distinctValueCount < $8d1edb1f1211f480$var$maxDistinctColors;
     let isQualitative = false;
     let isQuantitative = false;
     switch(props.colorColumn.type){
@@ -16233,32 +16336,32 @@ function $36a7aa12c97398d2$export$2eb9bde86c5870cc(props) {
         options.push({
             key: name,
             text: name,
-            itemType: $c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.DropdownMenuItemType.Header
+            itemType: $2a6088da9113f540$export$e2253033e6e1df16.fluentUI.DropdownMenuItemType.Header
         });
         options.push.apply(options, opts);
     }
-    isQualitative && menu($d3f49cd4a4ebf638$export$e345c26dc94dc116.schemeCategorical, $b84b4567b28066c9$export$611bfd724451b55b(selected));
-    isQuantitative && menu($d3f49cd4a4ebf638$export$e345c26dc94dc116.schemeSequentialSingleHue, $2c722382b9c98d40$export$86e9ca20e9e50ee0(selected));
-    isQuantitative && menu($d3f49cd4a4ebf638$export$e345c26dc94dc116.schemeSequentialMultiHue, $fe9d4abaa233b5b6$export$6d349cc9a31d474e(selected));
-    isQuantitative && menu($d3f49cd4a4ebf638$export$e345c26dc94dc116.schemeDiverging, $97abaf0b46d2dfff$export$dd1d85fd681382cc(selected));
-    isDual && menu($d3f49cd4a4ebf638$export$e345c26dc94dc116.schemeDual, $8090ea68ee1d329a$export$c6c021d4e17c9da4(selected));
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    isQualitative && menu($ee7b4b80c9b36fcd$export$21c51bc433c16634.schemeCategorical, $d3eca06e28f492fc$export$f3a499247c9822d1(selected));
+    isQuantitative && menu($ee7b4b80c9b36fcd$export$21c51bc433c16634.schemeSequentialSingleHue, $f7e4e69905fbfd46$export$9b3c8b6a286fd957(selected));
+    isQuantitative && menu($ee7b4b80c9b36fcd$export$21c51bc433c16634.schemeSequentialMultiHue, $88b394deca07349f$export$a4fd36c4882aa76e(selected));
+    isQuantitative && menu($ee7b4b80c9b36fcd$export$21c51bc433c16634.schemeDiverging, $94deb74fcf0932b2$export$ab7b13a7cc99f3af(selected));
+    isDual && menu($ee7b4b80c9b36fcd$export$21c51bc433c16634.schemeDual, $ef15f4ff7336ac66$export$d1699a1bbdf17835(selected));
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "sanddance-palette"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "sanddance-explanation",
         dangerouslySetInnerHTML: {
-            __html: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColorFieldInfo(props.colorColumn.name, props.colorColumn.type, categoricalNumeric, distinctValueCount)
+            __html: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColorFieldInfo(props.colorColumn.name, props.colorColumn.type, categoricalNumeric, distinctValueCount)
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($6b702e1ad8ceb63e$export$30a13326eaae8e00, {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($e5db841e2c07fb20$export$931cbfb6bfb85fc, {
         collapseLabel: props.collapseLabel,
         disabled: props.disabled,
         dropdownWidth: 400,
-        label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColorScheme,
+        label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColorScheme,
         onRenderOption: (option)=>{
-            if (option.itemType === $c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.DropdownMenuItemType.Header) return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("span", null, option.text);
-            else return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+            if (option.itemType === $2a6088da9113f540$export$e2253033e6e1df16.fluentUI.DropdownMenuItemType.Header) return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("span", null, option.text);
+            else return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                 className: "sanddance-scheme option"
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("span", {
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("span", {
                 className: "name"
             }, option.scheme), option.children);
         },
@@ -16266,37 +16369,37 @@ function $36a7aa12c97398d2$export$2eb9bde86c5870cc(props) {
         onChange: (e, o)=>{
             props.changeColorScheme(o.scheme);
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
-        className: $6e437f743d80b3ba$exports.classList('sanddance-scheme', props.disabled && 'disabled')
-    }, props.scheme && $e853b633102ebdad$export$bffb04186d5bb00c[props.scheme]));
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
+        className: $900824613c851981$exports.classList('sanddance-scheme', props.disabled && 'disabled')
+    }, props.scheme && $92a61093bb1a4e6c$export$dc7e195cef98649[props.scheme]));
 }
 
 
 
 
 
-function $bb63fdf99ae08a83$export$e4830c8e55b4f80d(props) {
+function $1f7c5a14680e0aa1$export$892596cec99bc70e(props) {
     const colorColumn = props.dataContent.columns.filter((c)=>c.name === props.colorColumn
     )[0];
     const disabledColorBin = !colorColumn || !colorColumn.quantitative || props.directColor;
     const colorBin = props.colorBin || 'quantize';
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "sanddance-color-dialog"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($53aa18c6dd19d0a6$export$a145e63780346cea, {
-        label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColor
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($d359193c5ab9f387$export$ac5b76d1f02dd063, Object.assign({
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($5fc794bf34bc903f$export$eb2fcfdbd7ba97d4, {
+        label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColor
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($59ce348f458f6a1c$export$83b9e0badda50eeb, Object.assign({
     }, props, {
         collapseLabel: props.compactUI,
         selectedColumnName: props.colorColumn,
         specRole: props.specCapabilities && props.specCapabilities.roles.filter((r)=>r.role === 'color'
         )[0],
         key: 0
-    })), colorColumn && colorColumn.isColorData && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    })), colorColumn && colorColumn.isColorData && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "sanddance-explanation",
         dangerouslySetInnerHTML: {
-            __html: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColorFieldIsColorData(colorColumn.name)
+            __html: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColorFieldIsColorData(colorColumn.name)
         }
-    }), colorColumn && !colorColumn.isColorData && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($36a7aa12c97398d2$export$2eb9bde86c5870cc, {
+    }), colorColumn && !colorColumn.isColorData && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($8d1edb1f1211f480$export$e2fbaa661ec19dbf, {
         collapseLabel: props.compactUI,
         scheme: props.scheme,
         colorColumn: colorColumn,
@@ -16304,33 +16407,33 @@ function $bb63fdf99ae08a83$export$e4830c8e55b4f80d(props) {
             props.onColorSchemeChange(scheme);
         },
         disabled: props.disabled || props.directColor || colorColumn && colorColumn.isColorData
-    }), colorColumn && !colorColumn.isColorData && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($9339840789a2dc56$export$50478d543b96dfd6, {
+    }), colorColumn && !colorColumn.isColorData && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2c50b647deae576f$export$8210dfe1863c478, {
         disabled: props.disabled || !colorColumn || props.directColor || colorColumn && colorColumn.isColorData,
         signal: props.colorReverseSignal,
         explorer: props.explorer,
         onChange: props.onColorReverseChange,
         collapseLabel: props.compactUI
-    })), colorColumn && !colorColumn.isColorData && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($53aa18c6dd19d0a6$export$a145e63780346cea, {
-        label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColorBin
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    })), colorColumn && !colorColumn.isColorData && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($5fc794bf34bc903f$export$eb2fcfdbd7ba97d4, {
+        label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColorBin
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "sanddance-explanation"
-    }, $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColorBinExplanation), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.ChoiceGroup, {
+    }, $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColorBinExplanation), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.ChoiceGroup, {
         options: [
             {
                 key: 'continuous',
-                text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColorBinNone,
+                text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColorBinNone,
                 checked: colorBin === 'continuous',
                 disabled: disabledColorBin
             },
             {
                 key: 'quantize',
-                text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColorBinQuantize,
+                text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColorBinQuantize,
                 checked: colorBin === 'quantize',
                 disabled: disabledColorBin
             },
             {
                 key: 'quantile',
-                text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColorBinQuantile,
+                text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColorBinQuantile,
                 checked: colorBin === 'quantile',
                 disabled: disabledColorBin
             }
@@ -16338,23 +16441,23 @@ function $bb63fdf99ae08a83$export$e4830c8e55b4f80d(props) {
         onChange: (e, o)=>{
             props.onColorBinChange(o.key);
         }
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($9339840789a2dc56$export$50478d543b96dfd6, {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2c50b647deae576f$export$8210dfe1863c478, {
         disabled: props.disabled || disabledColorBin || props.colorBin === 'continuous',
         signal: props.colorBinSignal,
         explorer: props.explorer,
         onChange: props.onColorBinCountChange,
         collapseLabel: props.compactUI
-    })), colorColumn && !colorColumn.isColorData && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($53aa18c6dd19d0a6$export$a145e63780346cea, {
-        label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelColorOptions
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.Toggle, {
-        label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.selectDirectColor,
+    })), colorColumn && !colorColumn.isColorData && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($5fc794bf34bc903f$export$eb2fcfdbd7ba97d4, {
+        label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelColorOptions
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.Toggle, {
+        label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.selectDirectColor,
         disabled: !colorColumn.stats.hasColorData,
         checked: !!(colorColumn.stats.hasColorData && props.directColor),
         onChange: (e, checked)=>props.onDirectColorChange(checked)
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "sanddance-explanation",
         dangerouslySetInnerHTML: {
-            __html: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelDataColors
+            __html: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelDataColors
         }
     })));
 }
@@ -16363,19 +16466,19 @@ function $bb63fdf99ae08a83$export$e4830c8e55b4f80d(props) {
 
 
 
-const $0a1de8c04d50d308$export$840ab787eaee4157 = {
+const $05bb2ea18ece6c32$export$ec835b702d42f3f0 = {
     ENTER: 13
 };
 
 
 
 
-function $3d49625ec08ed011$var$isNumber(value) {
+function $cca31c5ab6f4c7a4$var$isNumber(value) {
     if (typeof value === 'number') return true;
     if (!isNaN(value)) return true;
     return false;
 }
-function $3d49625ec08ed011$var$isBoolean(value) {
+function $cca31c5ab6f4c7a4$var$isBoolean(value) {
     if (typeof value === 'boolean') return true;
     if (typeof value === 'string') switch(value.toLowerCase()){
         case "true":
@@ -16384,46 +16487,46 @@ function $3d49625ec08ed011$var$isBoolean(value) {
     }
     return false;
 }
-function $3d49625ec08ed011$var$bingSearchLink(column, value) {
-    if ($3d49625ec08ed011$var$isNumber(value)) return null;
-    if ($3d49625ec08ed011$var$isBoolean(value)) return null;
+function $cca31c5ab6f4c7a4$var$bingSearchLink(column, value) {
+    if ($cca31c5ab6f4c7a4$var$isNumber(value)) return null;
+    if ($cca31c5ab6f4c7a4$var$isBoolean(value)) return null;
     if (column && column.stats.distinctValueCount === 2) return null;
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: 'bing-search'
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("a", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("a", {
         href: `https://www.bing.com/search?q=${encodeURIComponent(value)}`,
         target: '_blank',
-        title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.bingsearchDescription(value),
-        "aria-label": $d3f49cd4a4ebf638$export$e345c26dc94dc116.bingsearchDescription(value)
-    }, $d3f49cd4a4ebf638$export$e345c26dc94dc116.bingsearch));
+        title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.bingsearchDescription(value),
+        "aria-label": $ee7b4b80c9b36fcd$export$21c51bc433c16634.bingsearchDescription(value)
+    }, $ee7b4b80c9b36fcd$export$21c51bc433c16634.bingsearch));
 }
-function $3d49625ec08ed011$var$displayValue(value) {
+function $cca31c5ab6f4c7a4$var$displayValue(value) {
     switch(value){
         case '':
             return {
                 special: true,
-                display: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelBlank
+                display: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelBlank
             };
         case null:
             return {
                 special: true,
-                display: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelNull
+                display: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelNull
             };
         case true:
             return {
                 special: true,
-                display: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelTrue
+                display: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelTrue
             };
         case false:
             return {
                 special: true,
-                display: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelFalse
+                display: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelFalse
             };
         default:
             if (typeof value === 'object') {
                 if (value instanceof Date) {
                     const d = value;
-                    return $3d49625ec08ed011$var$displayValue(d.input);
+                    return $cca31c5ab6f4c7a4$var$displayValue(d.input);
                 }
                 return {
                     special: false,
@@ -16436,26 +16539,26 @@ function $3d49625ec08ed011$var$displayValue(value) {
             };
     }
 }
-function $3d49625ec08ed011$var$displayValueElement(nvp) {
-    const d = $3d49625ec08ed011$var$displayValue(nvp.value);
-    if (d.special) return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("i", null, d.display);
+function $cca31c5ab6f4c7a4$var$displayValueElement(nvp) {
+    const d = $cca31c5ab6f4c7a4$var$displayValue(nvp.value);
+    if (d.special) return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("i", null, d.display);
     return d.display;
 }
-function $3d49625ec08ed011$export$cac33346369183d6(props) {
+function $cca31c5ab6f4c7a4$export$e9ab04247990d50b(props) {
     if (!props.item) return null;
     const nameValuePairs = [];
     for(let columnName in props.item){
-        if (columnName === $385418a87250916e$exports.constants.GL_ORDINAL && !props.showSystemFields) continue;
-        if ($385418a87250916e$exports.util.isInternalFieldName(columnName)) continue;
+        if (columnName === $e5c730801b562de0$exports.constants.GL_ORDINAL && !props.showSystemFields) continue;
+        if ($e5c730801b562de0$exports.util.isInternalFieldName(columnName)) continue;
         let nameValuePair = {
             columnName: columnName,
             value: props.item[columnName]
         };
-        if (!props.bingSearchDisabled) nameValuePair.bingSearch = $3d49625ec08ed011$var$bingSearchLink(props.columns.filter((c)=>c.name === columnName
+        if (!props.bingSearchDisabled) nameValuePair.bingSearch = $cca31c5ab6f4c7a4$var$bingSearchLink(props.columns.filter((c)=>c.name === columnName
         )[0], props.item[columnName]);
         nameValuePairs.push(nameValuePair);
     }
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "sanddance-dataItem"
     }, nameValuePairs.map((nameValuePair, i)=>{
         const ex = {
@@ -16479,21 +16582,21 @@ function $3d49625ec08ed011$export$cac33346369183d6(props) {
                 search
             ]);
         };
-        const title = $d3f49cd4a4ebf638$export$e345c26dc94dc116.tooltipSearch(nameValuePair.columnName, $3d49625ec08ed011$var$displayValue(nameValuePair.value).display);
-        return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+        const title = $ee7b4b80c9b36fcd$export$21c51bc433c16634.tooltipSearch(nameValuePair.columnName, $cca31c5ab6f4c7a4$var$displayValue(nameValuePair.value).display);
+        return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
             key: i,
             onClick: !props.disabled ? searchClick : null,
             title: title,
             onKeyUp: (e)=>{
-                if (e.keyCode === $0a1de8c04d50d308$export$840ab787eaee4157.ENTER) searchClick(e);
+                if (e.keyCode === $05bb2ea18ece6c32$export$ec835b702d42f3f0.ENTER) searchClick(e);
             },
             tabIndex: 0,
             className: "name-value"
-        }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+        }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
             className: "column-name"
-        }, nameValuePair.columnName), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+        }, nameValuePair.columnName), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
             className: "column-value"
-        }, $3d49625ec08ed011$var$displayValueElement(nameValuePair)), nameValuePair.bingSearch);
+        }, $cca31c5ab6f4c7a4$var$displayValueElement(nameValuePair)), nameValuePair.bingSearch);
     }));
 }
 
@@ -16503,70 +16606,70 @@ function $3d49625ec08ed011$export$cac33346369183d6(props) {
 
 
 
-function $5d47ce1436721dba$export$50d5d540831edcd1(props) {
+function $97848a9179e2c985$export$1ce2294f62fa7154(props) {
     function activateRecord(newIndex) {
         props.onActivate(props.data[newIndex], newIndex);
     }
     const { index: index  } = props;
     const length = props.data && props.data.length || 0;
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($53aa18c6dd19d0a6$export$a145e63780346cea, {
-        label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelDataBrowser,
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($5fc794bf34bc903f$export$eb2fcfdbd7ba97d4, {
+        label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelDataBrowser,
         className: "sanddance-dataIndex"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($6b702e1ad8ceb63e$export$30a13326eaae8e00, {
-        label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelDataScope,
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($e5db841e2c07fb20$export$931cbfb6bfb85fc, {
+        label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelDataScope,
         collapseLabel: true,
         options: [
             {
-                key: $0338ff3c02daec02$export$1c6888b44b81730b.AllData,
-                text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.selectDataSpanAll,
-                isSelected: props.selectedDataScope === $0338ff3c02daec02$export$1c6888b44b81730b.AllData
+                key: $9426609e4d123694$export$f0297ce57faf7d71.AllData,
+                text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.selectDataSpanAll,
+                isSelected: props.selectedDataScope === $9426609e4d123694$export$f0297ce57faf7d71.AllData
             },
             {
-                key: $0338ff3c02daec02$export$1c6888b44b81730b.FilteredData,
-                text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.selectDataSpanFilter,
-                isSelected: props.selectedDataScope === $0338ff3c02daec02$export$1c6888b44b81730b.FilteredData
+                key: $9426609e4d123694$export$f0297ce57faf7d71.FilteredData,
+                text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.selectDataSpanFilter,
+                isSelected: props.selectedDataScope === $9426609e4d123694$export$f0297ce57faf7d71.FilteredData
             },
             {
-                key: $0338ff3c02daec02$export$1c6888b44b81730b.SelectedData,
-                text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.selectDataSpanSelection,
-                isSelected: props.selectedDataScope === $0338ff3c02daec02$export$1c6888b44b81730b.SelectedData
+                key: $9426609e4d123694$export$f0297ce57faf7d71.SelectedData,
+                text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.selectDataSpanSelection,
+                isSelected: props.selectedDataScope === $9426609e4d123694$export$f0297ce57faf7d71.SelectedData
             }
         ],
         onChange: (e, o)=>{
             props.onDataScopeClick(o.key);
         }
-    }), !props.data && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), !props.data && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         dangerouslySetInnerHTML: {
             __html: props.nullMessage
         }
-    }), props.data && !props.data.length && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", null, props.zeroMessage), !!length && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", null, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), props.data && !props.data.length && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, props.zeroMessage), !!length && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "index"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($118d0de4ae8ff9c2$export$aa4364103b35a0bd, {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($bab18bb05a251a0e$export$c25acd513dcc8062, {
         themePalette: props.themePalette,
         iconName: "ChevronLeftMed",
         onClick: (e)=>activateRecord(index <= 0 ? length - 1 : index - 1)
         ,
         disabled: props.disabled || length === 1,
-        title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonPrevDataItem
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("span", null, $d3f49cd4a4ebf638$export$e345c26dc94dc116.record(index + 1, length)), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($118d0de4ae8ff9c2$export$aa4364103b35a0bd, {
+        title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonPrevDataItem
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("span", null, $ee7b4b80c9b36fcd$export$21c51bc433c16634.record(index + 1, length)), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($bab18bb05a251a0e$export$c25acd513dcc8062, {
         themePalette: props.themePalette,
         iconName: "ChevronRightMed",
         onClick: (e)=>activateRecord(index >= length - 1 ? 0 : index + 1)
         ,
         disabled: props.disabled || length === 1,
-        title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonNextDataItem
-    })), !props.itemVisible && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+        title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonNextDataItem
+    })), !props.itemVisible && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "item-filtered"
-    }, $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelDataItemIsFiltered), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($3d49625ec08ed011$export$cac33346369183d6, {
+    }, $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelDataItemIsFiltered), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($cca31c5ab6f4c7a4$export$e9ab04247990d50b, {
         columns: props.columns,
         item: props.data[index],
         disabled: props.disabled,
         onSearch: props.onSearch,
         bingSearchDisabled: props.bingSearchDisabled
-    })), props.dataExportHandler && props.data && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($ddc28421fe6d69d0$export$ca7914cbf553e128, {
+    })), props.dataExportHandler && props.data && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($bcfbcdd321a042d4$export$b1b568728c48eba1, {
         theme: props.theme,
         initializer: {
-            fileName: `${$ddc28421fe6d69d0$export$961ee36a1df3ff5f(props.displayName)} (${props.data.length})`
+            fileName: `${$bcfbcdd321a042d4$export$748f956e607b675b(props.displayName)} (${props.data.length})`
         },
         data: props.data,
         dataExportHandler: props.dataExportHandler,
@@ -16580,15 +16683,15 @@ function $5d47ce1436721dba$export$50d5d540831edcd1(props) {
 
 
 
-function $f47f6bdc0d13e7a0$export$36b6e53ba8daf232(props) {
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($53aa18c6dd19d0a6$export$a145e63780346cea, {
-        label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelHistory,
+function $2e8d56166a32c5ec$export$84202caead5689ba(props) {
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($5fc794bf34bc903f$export$eb2fcfdbd7ba97d4, {
+        label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelHistory,
         className: "sanddance-history"
-    }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("ol", null, props.historyItems.map((hi, i)=>$c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("li", {
+    }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("ol", null, props.historyItems.map((hi, i)=>$2a6088da9113f540$export$e2253033e6e1df16.react.createElement("li", {
             key: i,
-            className: $6e437f743d80b3ba$exports.classList(i === props.historyIndex && 'selected'),
+            className: $900824613c851981$exports.classList(i === props.historyIndex && 'selected'),
             onKeyUp: (e)=>{
-                if (e.keyCode === $0a1de8c04d50d308$export$840ab787eaee4157.ENTER) props.redo(i);
+                if (e.keyCode === $05bb2ea18ece6c32$export$ec835b702d42f3f0.ENTER) props.redo(i);
             },
             onClick: ()=>props.redo(i)
             ,
@@ -16606,25 +16709,25 @@ function $f47f6bdc0d13e7a0$export$36b6e53ba8daf232(props) {
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function $66cf349a20090358$var$hasClientXY(e) {
+function $f644b7e7661c6e3a$var$hasClientXY(e) {
     if (e && e.clientX !== undefined && e.clientX !== undefined) return {
         top: e.clientY,
         left: e.clientX
     };
 }
-function $66cf349a20090358$export$27a0d3353083cdc6(e) {
-    let xy = $66cf349a20090358$var$hasClientXY(e);
+function $f644b7e7661c6e3a$export$1690e12b840569b9(e) {
+    let xy = $f644b7e7661c6e3a$var$hasClientXY(e);
     if (xy) return xy;
     const te = e;
     if (te) for(let i = 0; i < te.touches.length; i++){
-        let xy1 = $66cf349a20090358$var$hasClientXY(te.touches[i]);
-        if (xy1) return xy1;
+        let xy = $f644b7e7661c6e3a$var$hasClientXY(te.touches[i]);
+        if (xy) return xy;
     }
 }
 
 
 
-function $96c12964caac8c31$export$e56fb8381b0a349a(prefs, partialInsight) {
+function $b25ee1fff804a263$export$1915de5807f54194(prefs, partialInsight) {
     if (partialInsight) {
         const specTypePrefs = prefs[partialInsight.chart] || {
         };
@@ -16650,40 +16753,40 @@ function $96c12964caac8c31$export$e56fb8381b0a349a(prefs, partialInsight) {
                             scheme: partialInsight.scheme,
                             colorBin: partialInsight.colorBin
                         };
-                        copySignalValue($385418a87250916e$exports.constants.SignalNames.ColorBinCount);
+                        copySignalValue($e5c730801b562de0$exports.constants.SignalNames.ColorBinCount);
                         break;
                     case 'x':
-                        copySignalValue($385418a87250916e$exports.constants.SignalNames.XBins);
+                        copySignalValue($e5c730801b562de0$exports.constants.SignalNames.XBins);
                         break;
                 }
             }
         }
     }
 }
-function $96c12964caac8c31$export$c8fe9eec9afc2414(prefs, chart, role, column, signalName, signalValue) {
-    const partialInsight = $96c12964caac8c31$export$79057c9e8e65cb3c(prefs, chart, role, column, {
+function $b25ee1fff804a263$export$c2992dc6411becf6(prefs, chart, role, column, signalName, signalValue) {
+    const partialInsight = $b25ee1fff804a263$export$a14483004c11686f(prefs, chart, role, column, {
         signalValues: {
         }
     });
     partialInsight.signalValues[signalName] = signalValue;
 }
-function $96c12964caac8c31$export$96ae7597659105d4(prefs, chart, role, columnName) {
-    const specTypePrefs = $385418a87250916e$exports.VegaDeckGl.util.deepMerge({
+function $b25ee1fff804a263$export$318d2f27a5d54aff(prefs, chart, role, columnName) {
+    const specTypePrefs = $e5c730801b562de0$exports.VegaDeckGl.util.deepMerge({
     }, prefs['*'], prefs[chart]);
-    const rolePrefs = $385418a87250916e$exports.VegaDeckGl.util.deepMerge({
+    const rolePrefs = $e5c730801b562de0$exports.VegaDeckGl.util.deepMerge({
     }, specTypePrefs['*'], specTypePrefs[role]);
-    const partialInsight = $385418a87250916e$exports.VegaDeckGl.util.deepMerge({
+    const partialInsight = $e5c730801b562de0$exports.VegaDeckGl.util.deepMerge({
     }, rolePrefs['*'], rolePrefs[columnName]);
     return partialInsight;
 }
-function $96c12964caac8c31$export$79057c9e8e65cb3c(prefs, chart, role, column, partialInsight) {
+function $b25ee1fff804a263$export$a14483004c11686f(prefs, chart, role, column, partialInsight) {
     const SpecTypePrefs = prefs[chart] || {
     };
     prefs[chart] = SpecTypePrefs;
     const rolePrefs = SpecTypePrefs[role] || {
     };
     SpecTypePrefs[role] = rolePrefs;
-    rolePrefs[column] = $385418a87250916e$exports.VegaDeckGl.util.deepMerge({
+    rolePrefs[column] = $e5c730801b562de0$exports.VegaDeckGl.util.deepMerge({
     }, rolePrefs[column], partialInsight);
     return rolePrefs[column];
 }
@@ -16691,21 +16794,21 @@ function $96c12964caac8c31$export$79057c9e8e65cb3c(prefs, chart, role, column, p
 
 
 
-function $26a6576ea7ad3be3$var$comparableGroup(group) {
+function $bd9af0ed83794bce$var$comparableGroup(group) {
     return Object.assign(Object.assign({
     }, group), {
         clause: null
     });
 }
-function $26a6576ea7ad3be3$var$compareGroup(a, b) {
-    return $385418a87250916e$exports.searchExpression.compareGroup($26a6576ea7ad3be3$var$comparableGroup(a), $26a6576ea7ad3be3$var$comparableGroup(b));
+function $bd9af0ed83794bce$var$compareGroup(a, b) {
+    return $e5c730801b562de0$exports.searchExpression.compareGroup($bd9af0ed83794bce$var$comparableGroup(a), $bd9af0ed83794bce$var$comparableGroup(b));
 }
-function $26a6576ea7ad3be3$export$94cca925abc30578(haystack, needle) {
+function $bd9af0ed83794bce$export$2e59f49d97a9dbde(haystack, needle) {
     const groups = [];
     let found = false;
     //look for item in all
     haystack.forEach((group)=>{
-        if ($26a6576ea7ad3be3$var$compareGroup(group, needle)) //if it exists, don't add it
+        if ($bd9af0ed83794bce$var$compareGroup(group, needle)) //if it exists, don't add it
         found = true;
         else groups.push(group);
     });
@@ -16718,18 +16821,18 @@ function $26a6576ea7ad3be3$export$94cca925abc30578(haystack, needle) {
 
 
 
-const $b44f404896596941$var$dataBrowserZeroMessages = {
+const $851bf9263c6e17c1$var$dataBrowserZeroMessages = {
 };
-$b44f404896596941$var$dataBrowserZeroMessages[$0338ff3c02daec02$export$1c6888b44b81730b.AllData] = $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelZeroAll;
-$b44f404896596941$var$dataBrowserZeroMessages[$0338ff3c02daec02$export$1c6888b44b81730b.FilteredData] = null; //empty array is not used
-$b44f404896596941$var$dataBrowserZeroMessages[$0338ff3c02daec02$export$1c6888b44b81730b.SelectedData] = $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelZeroSearchResults;
-const $b44f404896596941$var$dataBrowserNullMessages = {
+$851bf9263c6e17c1$var$dataBrowserZeroMessages[$9426609e4d123694$export$f0297ce57faf7d71.AllData] = $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelZeroAll;
+$851bf9263c6e17c1$var$dataBrowserZeroMessages[$9426609e4d123694$export$f0297ce57faf7d71.FilteredData] = null; //empty array is not used
+$851bf9263c6e17c1$var$dataBrowserZeroMessages[$9426609e4d123694$export$f0297ce57faf7d71.SelectedData] = $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelZeroSearchResults;
+const $851bf9263c6e17c1$var$dataBrowserNullMessages = {
 };
-$b44f404896596941$var$dataBrowserNullMessages[$0338ff3c02daec02$export$1c6888b44b81730b.AllData] = $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelDataNullAll;
-$b44f404896596941$var$dataBrowserNullMessages[$0338ff3c02daec02$export$1c6888b44b81730b.FilteredData] = $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelDataNullFiltered;
-$b44f404896596941$var$dataBrowserNullMessages[$0338ff3c02daec02$export$1c6888b44b81730b.SelectedData] = $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelDataNullSelection;
-function $b44f404896596941$var$createInputSearch(search) {
-    const groups = $385418a87250916e$exports.searchExpression.ensureSearchExpressionGroupArray(search);
+$851bf9263c6e17c1$var$dataBrowserNullMessages[$9426609e4d123694$export$f0297ce57faf7d71.AllData] = $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelDataNullAll;
+$851bf9263c6e17c1$var$dataBrowserNullMessages[$9426609e4d123694$export$f0297ce57faf7d71.FilteredData] = $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelDataNullFiltered;
+$851bf9263c6e17c1$var$dataBrowserNullMessages[$9426609e4d123694$export$f0297ce57faf7d71.SelectedData] = $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelDataNullSelection;
+function $851bf9263c6e17c1$var$createInputSearch(search) {
+    const groups = $e5c730801b562de0$exports.searchExpression.ensureSearchExpressionGroupArray(search);
     const dialogSearch = groups.map((group, groupIndex)=>{
         return Object.assign(Object.assign({
             key: groupIndex
@@ -16744,8 +16847,8 @@ function $b44f404896596941$var$createInputSearch(search) {
     });
     return dialogSearch;
 }
-function $b44f404896596941$var$_Explorer(props) {
-    class __Explorer extends $c5e1961a7f97a459$export$12896e353ebd9cc.react.Component {
+function $851bf9263c6e17c1$var$_Explorer(props) {
+    class __Explorer extends $2a6088da9113f540$export$e2253033e6e1df16.react.Component {
         constructor(props1){
             super(props1);
             this.state = {
@@ -16773,8 +16876,8 @@ function $b44f404896596941$var$_Explorer(props) {
                 signalValues: null,
                 hideAxes: false,
                 hideLegend: false,
-                sideTabId: $065798d25a9d250c$export$b264ae1d75dc4e4e.ChartType,
-                dataScopeId: $0338ff3c02daec02$export$1c6888b44b81730b.AllData,
+                sideTabId: $a27dff4329aa24f2$export$f3b7566ffe363e3b.ChartType,
+                dataScopeId: $9426609e4d123694$export$f0297ce57faf7d71.AllData,
                 selectedItemIndex: {
                 },
                 sidebarClosed: false,
@@ -16788,20 +16891,20 @@ function $b44f404896596941$var$_Explorer(props) {
                 historyIndex: -1,
                 historyItems: []
             };
-            this.state.selectedItemIndex[$0338ff3c02daec02$export$1c6888b44b81730b.AllData] = 0;
-            this.state.selectedItemIndex[$0338ff3c02daec02$export$1c6888b44b81730b.FilteredData] = 0;
-            this.state.selectedItemIndex[$0338ff3c02daec02$export$1c6888b44b81730b.SelectedData] = 0;
-            this.snapshotThumbWidth = $4c9aa6a92253ee73$export$df0185090c61e4ef;
+            this.state.selectedItemIndex[$9426609e4d123694$export$f0297ce57faf7d71.AllData] = 0;
+            this.state.selectedItemIndex[$9426609e4d123694$export$f0297ce57faf7d71.FilteredData] = 0;
+            this.state.selectedItemIndex[$9426609e4d123694$export$f0297ce57faf7d71.SelectedData] = 0;
+            this.snapshotThumbWidth = $bd8e96fc01144a60$export$7e33de69431bbb06;
             this.discardColorContextUpdates = true;
             this.updateViewerOptions(Object.assign(Object.assign({
-            }, $385418a87250916e$exports.VegaDeckGl.util.clone($385418a87250916e$exports.Viewer.defaultViewerOptions)), props1.viewerOptions));
+            }, $e5c730801b562de0$exports.VegaDeckGl.util.clone($e5c730801b562de0$exports.Viewer.defaultViewerOptions)), props1.viewerOptions));
         }
         finalize() {
             if (this.viewer) this.viewer.finalize();
         }
         updateViewerOptions(viewerOptions) {
             this.viewerOptions = Object.assign(Object.assign({
-            }, $385418a87250916e$exports.VegaDeckGl.util.deepMerge($4c9aa6a92253ee73$export$23e61e65e99ffb54, this.viewerOptions, viewerOptions)), {
+            }, $e5c730801b562de0$exports.VegaDeckGl.util.deepMerge($bd8e96fc01144a60$export$fb736e4909afb3d7, this.viewerOptions, viewerOptions)), {
                 tooltipOptions: {
                     exclude: (columnName)=>this.state.tooltipExclusions.indexOf(columnName) >= 0
                 },
@@ -16810,7 +16913,7 @@ function $b44f404896596941$var$_Explorer(props) {
                 onDataFilter: (filter, filteredData)=>{
                     const selectedItemIndex = Object.assign({
                     }, this.state.selectedItemIndex);
-                    selectedItemIndex[$0338ff3c02daec02$export$1c6888b44b81730b.FilteredData] = 0;
+                    selectedItemIndex[$9426609e4d123694$export$f0297ce57faf7d71.FilteredData] = 0;
                     this.changeInsight({
                         filter: filter
                     }, {
@@ -16822,7 +16925,7 @@ function $b44f404896596941$var$_Explorer(props) {
                         filteredData: filteredData,
                         selectedItemIndex: selectedItemIndex
                     });
-                    if (this.state.sideTabId === $065798d25a9d250c$export$b264ae1d75dc4e4e.Data && this.state.dataScopeId === $0338ff3c02daec02$export$1c6888b44b81730b.FilteredData) //make sure item is active
+                    if (this.state.sideTabId === $a27dff4329aa24f2$export$f3b7566ffe363e3b.Data && this.state.dataScopeId === $9426609e4d123694$export$f0297ce57faf7d71.FilteredData) //make sure item is active
                     requestAnimationFrame(()=>filteredData && this.silentActivation(filteredData[0])
                     );
                     viewerOptions && viewerOptions.onDataFilter && viewerOptions.onDataFilter(filter, filteredData);
@@ -16831,9 +16934,10 @@ function $b44f404896596941$var$_Explorer(props) {
                     if (this.ignoreSelectionChange) return;
                     const selectedItemIndex = Object.assign({
                     }, this.state.selectedItemIndex);
-                    selectedItemIndex[$0338ff3c02daec02$export$1c6888b44b81730b.SelectedData] = index || 0;
-                    let { search: search , sideTabId: sideTabId  } = this.state;
-                    if (newSearch) search = $b44f404896596941$var$createInputSearch(newSearch);
+                    selectedItemIndex[$9426609e4d123694$export$f0297ce57faf7d71.SelectedData] = index || 0;
+                    let { search: search  } = this.state;
+                    const { sideTabId: sideTabId  } = this.state;
+                    if (newSearch) search = $851bf9263c6e17c1$var$createInputSearch(newSearch);
                     this.setState({
                         search: search,
                         selectedItemIndex: selectedItemIndex,
@@ -16846,7 +16950,7 @@ function $b44f404896596941$var$_Explorer(props) {
                     viewerOptions && viewerOptions.onAxisClick && viewerOptions.onAxisClick(e, search);
                 },
                 onLegendHeaderClick: (e)=>{
-                    const pos = $66cf349a20090358$export$27a0d3353083cdc6(e);
+                    const pos = $f644b7e7661c6e3a$export$1690e12b840569b9(e);
                     const specRole = this.state.specCapabilities && this.state.specCapabilities.roles.filter((r)=>r.role === 'color'
                     )[0];
                     const positionedColumnMapProps = Object.assign(Object.assign({
@@ -16877,17 +16981,17 @@ function $b44f404896596941$var$_Explorer(props) {
                     });
                     viewerOptions && viewerOptions.onError && viewerOptions.onError(errors);
                 },
-                onBeforeCreateLayers: $111d368e10bec10f$export$7d34e96f399a3b0b,
+                onBeforeCreateLayers: $57db901d8b47d017$export$dd264fd5c92b73c6,
                 getTextColor: (o)=>{
-                    if (o.specRole) return $385418a87250916e$exports.VegaDeckGl.util.colorFromString(this.viewerOptions.colors.clickableText);
-                    else if (o.metaData && o.metaData.search) return $385418a87250916e$exports.VegaDeckGl.util.colorFromString(this.viewerOptions.colors.searchText);
+                    if (o.specRole) return $e5c730801b562de0$exports.VegaDeckGl.util.colorFromString(this.viewerOptions.colors.clickableText);
+                    else if (o.metaData && o.metaData.search) return $e5c730801b562de0$exports.VegaDeckGl.util.colorFromString(this.viewerOptions.colors.searchText);
                     else return o.color;
                 },
                 getTextHighlightAlphaCutoff: ()=>this.viewerOptions.colors.clickableTextHighlightAlphaCutoff
                 ,
                 getTextHighlightColor: (o)=>{
-                    if (o.specRole) return $385418a87250916e$exports.VegaDeckGl.util.colorFromString(this.viewerOptions.colors.clickableTextHighlight);
-                    else if (o.metaData && o.metaData.search) return $385418a87250916e$exports.VegaDeckGl.util.colorFromString(this.viewerOptions.colors.searchTextHighlight);
+                    if (o.specRole) return $e5c730801b562de0$exports.VegaDeckGl.util.colorFromString(this.viewerOptions.colors.clickableTextHighlight);
+                    else if (o.metaData && o.metaData.search) return $e5c730801b562de0$exports.VegaDeckGl.util.colorFromString(this.viewerOptions.colors.searchTextHighlight);
                     else return [
                         0,
                         0,
@@ -16897,7 +17001,7 @@ function $b44f404896596941$var$_Explorer(props) {
                 },
                 onTextClick: (e, text)=>{
                     if (e && text) {
-                        const pos = $66cf349a20090358$export$27a0d3353083cdc6(e);
+                        const pos = $f644b7e7661c6e3a$export$1690e12b840569b9(e);
                         const { specRole: specRole  } = text;
                         if (pos && specRole) {
                             const positionedColumnMapProps = Object.assign(Object.assign({
@@ -16925,18 +17029,18 @@ function $b44f404896596941$var$_Explorer(props) {
                 onNewViewStateTarget: ()=>this.newViewStateTarget
             });
             if (this.viewer && this.viewer.presenter) {
-                const newPresenterStyle = $385418a87250916e$exports.util.getPresenterStyle(this.viewerOptions);
+                const newPresenterStyle = $e5c730801b562de0$exports.util.getPresenterStyle(this.viewerOptions);
                 const mergePrenterStyle = Object.assign(Object.assign({
                 }, this.viewer.presenter.style), newPresenterStyle);
                 this.viewer.presenter.style = mergePrenterStyle;
-                this.viewer.options = $385418a87250916e$exports.VegaDeckGl.util.deepMerge(this.viewer.options, this.props.viewerOptions, this.viewerOptions);
+                this.viewer.options = $e5c730801b562de0$exports.VegaDeckGl.util.deepMerge(this.viewer.options, this.props.viewerOptions, this.viewerOptions);
             }
         }
         signal(signalName, signalValue, newViewStateTarget) {
             switch(signalName){
-                case $385418a87250916e$exports.constants.SignalNames.ColorBinCount:
-                case $385418a87250916e$exports.constants.SignalNames.ColorReverse:
-                case $385418a87250916e$exports.constants.SignalNames.MarkOpacity:
+                case $e5c730801b562de0$exports.constants.SignalNames.ColorBinCount:
+                case $e5c730801b562de0$exports.constants.SignalNames.ColorReverse:
+                case $e5c730801b562de0$exports.constants.SignalNames.MarkOpacity:
                     this.discardColorContextUpdates = false;
                     break;
             }
@@ -16952,8 +17056,8 @@ function $b44f404896596941$var$_Explorer(props) {
         }
         manageColorToolbar() {
             const canRemap = this.viewer.colorContexts && this.viewer.colorContexts.length > 1;
-            $41d7249449d225b2$export$d4e85aa8ca214f54(this.viewer.presenter, !!this.state.columns.color, {
-                themePalette: $ffac552ad0872994$export$ab53ba4bd9c9d2ec[this.props.theme || ''],
+            $bf02fe25b3020ba2$export$225a002951c27da7(this.viewer.presenter, !!this.state.columns.color, {
+                themePalette: $843cc4195912fafb$export$3465a0e7b289ab72[this.props.theme || ''],
                 canRemap: canRemap,
                 isRemap: canRemap && this.viewer.currentColorContext > 0,
                 colorMapHandler: (remap)=>{
@@ -16966,47 +17070,47 @@ function $b44f404896596941$var$_Explorer(props) {
         getInsight() {
             return this.viewer.getInsight();
         }
-        setInsight(historyAction, newState = {
-        }, partialInsight = this.viewer.getInsight(), rebaseFilter = false) {
+        setInsight(historyAction3, newState1 = {
+        }, partialInsight1 = this.viewer.getInsight(), rebaseFilter1 = false) {
             const selectedItemIndex = Object.assign({
             }, this.state.selectedItemIndex);
-            selectedItemIndex[$0338ff3c02daec02$export$1c6888b44b81730b.AllData] = 0;
-            selectedItemIndex[$0338ff3c02daec02$export$1c6888b44b81730b.FilteredData] = 0;
-            selectedItemIndex[$0338ff3c02daec02$export$1c6888b44b81730b.SelectedData] = 0;
+            selectedItemIndex[$9426609e4d123694$export$f0297ce57faf7d71.AllData] = 0;
+            selectedItemIndex[$9426609e4d123694$export$f0297ce57faf7d71.FilteredData] = 0;
+            selectedItemIndex[$9426609e4d123694$export$f0297ce57faf7d71.SelectedData] = 0;
             const historicInsight = Object.assign({
                 chart: null,
                 scheme: null,
                 columns: null,
                 filter: null,
-                rebaseFilter: rebaseFilter
-            }, partialInsight);
+                rebaseFilter: rebaseFilter1
+            }, partialInsight1);
             const state = Object.assign({
                 filteredData: null,
                 selectedItemIndex: selectedItemIndex,
-                search: $b44f404896596941$var$createInputSearch(historicInsight.filter)
-            }, newState);
+                search: $851bf9263c6e17c1$var$createInputSearch(historicInsight.filter)
+            }, newState1);
             const changeInsight = ()=>{
                 this.getColorContext = null;
-                this.changeInsight(historicInsight, historyAction, state);
+                this.changeInsight(historicInsight, historyAction3, state);
             };
             const currentFilter = this.viewer.getInsight().filter;
-            if (rebaseFilter && currentFilter && historicInsight.filter) {
-                if ($385418a87250916e$exports.searchExpression.startsWith(historicInsight.filter, currentFilter)) changeInsight();
+            if (rebaseFilter1 && currentFilter && historicInsight.filter) {
+                if ($e5c730801b562de0$exports.searchExpression.startsWith(historicInsight.filter, currentFilter)) changeInsight();
                 else this.viewer.reset().then(()=>new Promise((resolve, reject)=>{
                         setTimeout(resolve, this.viewer.options.transitionDurations.scope);
                     })
                 ).then(changeInsight);
             } else changeInsight();
         }
-        handleReviveSnapshot(snapshot, selectedSnapshotIndex) {
+        handleReviveSnapshot(snapshot2, selectedSnapshotIndex2) {
             let handled = false;
             if (this.props.onSnapshotClick) {
                 this.setState({
-                    selectedSnapshotIndex: selectedSnapshotIndex
+                    selectedSnapshotIndex: selectedSnapshotIndex2
                 });
-                handled = this.props.onSnapshotClick(snapshot, selectedSnapshotIndex);
+                handled = this.props.onSnapshotClick(snapshot2, selectedSnapshotIndex2);
             }
-            if (!handled) this.reviveSnapshot(selectedSnapshotIndex);
+            if (!handled) this.reviveSnapshot(selectedSnapshotIndex2);
         }
         reviveSnapshot(snapshotOrIndex) {
             if (typeof snapshotOrIndex === 'number') {
@@ -17017,16 +17121,16 @@ function $b44f404896596941$var$_Explorer(props) {
                     selectedSnapshotIndex: selectedSnapshotIndex
                 };
                 if (!this.state.sidebarClosed) {
-                    newState.sideTabId = $065798d25a9d250c$export$b264ae1d75dc4e4e.Snapshots;
+                    newState.sideTabId = $a27dff4329aa24f2$export$f3b7566ffe363e3b.Snapshots;
                     this.scrollSnapshotIntoView(selectedSnapshotIndex);
                 }
                 this.setInsight({
-                    label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelHistoryReviveSnapshot
+                    label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelHistoryReviveSnapshot
                 }, newState, snapshot.insight, true);
             } else {
                 const snapshot = snapshotOrIndex;
                 if (snapshot.insight) this.setInsight({
-                    label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelHistoryReviveSnapshot
+                    label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelHistoryReviveSnapshot
                 }, {
                     note: snapshot.description,
                     selectedSnapshotIndex: -1
@@ -17037,7 +17141,7 @@ function $b44f404896596941$var$_Explorer(props) {
                 });
             }
         }
-        load(data, getPartialInsight, optionsOrPrefs) {
+        load(data1, getPartialInsight, optionsOrPrefs) {
             this.setState({
                 historyIndex: -1,
                 historyItems: []
@@ -17057,11 +17161,11 @@ function $b44f404896596941$var$_Explorer(props) {
                     };
                     if (getPartialInsight) {
                         partialInsight = getPartialInsight(dataContent.columns);
-                        $96c12964caac8c31$export$e56fb8381b0a349a(this.prefs, partialInsight);
+                        $b25ee1fff804a263$export$1915de5807f54194(this.prefs, partialInsight);
                     }
                     if (!partialInsight) {
                         //load recommendation
-                        let r = new $2b9a71dc82b0fe6b$exports.RecommenderSummary(dataContent.columns, dataContent.data);
+                        let r = new $acccbd7dcaf3cef4$exports.RecommenderSummary(dataContent.columns, dataContent.data);
                         partialInsight = r.recommend();
                     }
                     partialInsight = Object.assign({
@@ -17073,10 +17177,10 @@ function $b44f404896596941$var$_Explorer(props) {
                     if (partialInsight.chart === 'barchart') partialInsight.chart = 'barchartV';
                     const selectedItemIndex = Object.assign({
                     }, this.state.selectedItemIndex);
-                    const sideTabId = $065798d25a9d250c$export$b264ae1d75dc4e4e.ChartType;
-                    selectedItemIndex[$0338ff3c02daec02$export$1c6888b44b81730b.AllData] = 0;
-                    selectedItemIndex[$0338ff3c02daec02$export$1c6888b44b81730b.FilteredData] = 0;
-                    selectedItemIndex[$0338ff3c02daec02$export$1c6888b44b81730b.SelectedData] = 0;
+                    const sideTabId = $a27dff4329aa24f2$export$f3b7566ffe363e3b.ChartType;
+                    selectedItemIndex[$9426609e4d123694$export$f0297ce57faf7d71.AllData] = 0;
+                    selectedItemIndex[$9426609e4d123694$export$f0297ce57faf7d71.FilteredData] = 0;
+                    selectedItemIndex[$9426609e4d123694$export$f0297ce57faf7d71.SelectedData] = 0;
                     let newState = Object.assign({
                         dataFile: dataFile,
                         dataContent: dataContent,
@@ -17089,12 +17193,12 @@ function $b44f404896596941$var$_Explorer(props) {
                         sideTabId: sideTabId
                     }, partialInsight);
                     this.getColorContext = null;
-                    $3c7c0ab0b51acc22$export$d3f158f2cefb2dd8(newState.columns, dataContent.columns, newState.transform);
-                    const errors = $3c7c0ab0b51acc22$export$3285e8a72d4ef75f(partialInsight === null || partialInsight === void 0 ? void 0 : partialInsight.chart, partialInsight === null || partialInsight === void 0 ? void 0 : partialInsight.totalStyle, newState.columns, dataContent.columns);
+                    $bfaa631c88fa1f10$export$1e096674a95fd43b(newState.columns, dataContent.columns, newState.transform);
+                    const errors = $bfaa631c88fa1f10$export$c2563952d877899(partialInsight === null || partialInsight === void 0 ? void 0 : partialInsight.chart, partialInsight === null || partialInsight === void 0 ? void 0 : partialInsight.totalStyle, newState.columns, dataContent.columns);
                     newState.errors = errors;
                     //change insight
                     this.changeInsight(partialInsight, {
-                        label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelHistoryInit,
+                        label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelHistoryInit,
                         insert: true
                     }, newState);
                     //make sure item is active
@@ -17102,24 +17206,24 @@ function $b44f404896596941$var$_Explorer(props) {
                     resolve();
                 };
                 let dataFile;
-                if (Array.isArray(data)) return $3ec46caab6f4505c$export$5832599d7ffde789(data, 'json').then((result)=>{
+                if (Array.isArray(data1)) return $81abbb939b4f753b$export$c084150d12efae43(data1, 'json').then((result)=>{
                     dataFile = {
                         type: 'json'
                     };
                     loadFinal(result);
                 }).catch(reject);
                 else {
-                    dataFile = data;
-                    return $3ec46caab6f4505c$export$b7dc3aabb556dfb2(dataFile).then(loadFinal).catch(reject);
+                    dataFile = data1;
+                    return $81abbb939b4f753b$export$9d26f8f2be82424f(dataFile).then(loadFinal).catch(reject);
                 }
             });
         }
         changeChartType(chart) {
-            const partialInsight = $96c12964caac8c31$export$96ae7597659105d4(this.prefs, chart, '*', '*');
+            const partialInsight = $b25ee1fff804a263$export$318d2f27a5d54aff(this.prefs, chart, '*', '*');
             const insight = Object.assign({
                 chart: chart
             }, partialInsight);
-            const columns = $385418a87250916e$exports.VegaDeckGl.util.deepMerge({
+            const columns = $e5c730801b562de0$exports.VegaDeckGl.util.deepMerge({
             }, partialInsight.columns, this.state.columns);
             const { signalValues: signalValues  } = this.viewer.getInsight();
             insight.signalValues = Object.assign(Object.assign({
@@ -17148,10 +17252,10 @@ function $b44f404896596941$var$_Explorer(props) {
                         )[0];
                         if (prefSizeColumn && prefSizeColumn.quantitative) sizeColumn = prefSizeColumn;
                     }
-                    if (!sizeColumn) sizeColumn = $3c7c0ab0b51acc22$export$22e2b85518a07a7(this.state.dataContent.columns);
+                    if (!sizeColumn) sizeColumn = $bfaa631c88fa1f10$export$7e0d3b5c6570ae8b(this.state.dataContent.columns);
                     if (!sizeColumn) //error - no numeric columns
                     errors = [
-                        $d3f49cd4a4ebf638$export$e345c26dc94dc116.errorColumnMustBeNumeric
+                        $ee7b4b80c9b36fcd$export$21c51bc433c16634.errorColumnMustBeNumeric
                     ];
                     else insight.columns = Object.assign(Object.assign({
                     }, columns), {
@@ -17159,11 +17263,11 @@ function $b44f404896596941$var$_Explorer(props) {
                     });
                 }
             } else if (chart === 'stacks') insight.view = '3d';
-            $3c7c0ab0b51acc22$export$d3f158f2cefb2dd8(insight.columns, this.state.dataContent.columns, this.state.transform);
-            errors = $3c7c0ab0b51acc22$export$3285e8a72d4ef75f(chart, insight.totalStyle, insight.columns, this.state.dataContent.columns);
+            $bfaa631c88fa1f10$export$1e096674a95fd43b(insight.columns, this.state.dataContent.columns, this.state.transform);
+            errors = $bfaa631c88fa1f10$export$c2563952d877899(chart, insight.totalStyle, insight.columns, this.state.dataContent.columns);
             this.calculate(()=>{
                 this.changeInsight(insight, {
-                    label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelHistoryChangeChartType($1d75e5ac49b64589$export$3b8610020cb45508(chart))
+                    label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelHistoryChangeChartType($7d6d61f19df51c57$export$7d1536ca08644643(chart))
                 }, errors ? {
                     errors: errors
                 } : null);
@@ -17174,22 +17278,22 @@ function $b44f404896596941$var$_Explorer(props) {
                 calculating: calculating
             });
         }
-        changeView(view) {
+        changeView(view2) {
             this.changeInsight({
-                view: view
+                view: view2
             }, {
-                label: view === '2d' ? $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelViewType2d : $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelViewType3d
+                label: view2 === '2d' ? $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelViewType2d : $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelViewType3d
             });
         }
         //state members which change the insight
-        changeInsight(partialInsight, historyAction, additionalUIState) {
-            if (partialInsight.chart === 'barchart') partialInsight.chart = 'barchartV';
-            this.addHistory(partialInsight, historyAction, additionalUIState);
+        changeInsight(partialInsight2, historyAction1, additionalUIState) {
+            if (partialInsight2.chart === 'barchart') partialInsight2.chart = 'barchartV';
+            this.addHistory(partialInsight2, historyAction1, additionalUIState);
         }
-        addHistory(historicInsight, historyAction, additionalUIState) {
+        addHistory(historicInsight, historyAction2, additionalUIState1) {
             const setCleanState = (newState)=>{
                 const cleanState = Object.assign(Object.assign({
-                }, newState), additionalUIState);
+                }, newState), additionalUIState1);
                 if (!cleanState.note) cleanState.note = null;
                 delete cleanState.rebaseFilter;
                 if (this.viewer) {
@@ -17199,17 +17303,17 @@ function $b44f404896596941$var$_Explorer(props) {
                 }
                 this.setState(cleanState);
             };
-            if (historyAction.omit) {
+            if (historyAction2.omit) {
                 setCleanState(historicInsight);
                 return;
             }
             const historyItems = this.state.historyItems.slice(0, this.state.historyIndex + 1);
             const historyIndex = historyItems.length;
             historyItems.push({
-                label: historyAction.label,
+                label: historyAction2.label,
                 historicInsight: historicInsight
             });
-            if (historyAction.insert) setCleanState({
+            if (historyAction2.insert) setCleanState({
                 historyIndex: historyIndex,
                 historyItems: historyItems
             });
@@ -17219,16 +17323,16 @@ function $b44f404896596941$var$_Explorer(props) {
                 historyItems: historyItems
             }));
         }
-        replay(index) {
+        replay(index1) {
             let filter = null;
             let historicInsight = {
             };
-            for(let i = 0; i < index + 1; i++){
+            for(let i = 0; i < index1 + 1; i++){
                 const historyItem = this.state.historyItems[i];
                 if (historyItem) {
                     if (historyItem.historicInsight.filter === null) filter = null;
                     else if (historyItem.historicInsight.rebaseFilter) filter = historyItem.historicInsight.filter;
-                    else if (historyItem.historicInsight.filter) filter = $385418a87250916e$exports.searchExpression.narrow(filter, historyItem.historicInsight.filter);
+                    else if (historyItem.historicInsight.filter) filter = $e5c730801b562de0$exports.searchExpression.narrow(filter, historyItem.historicInsight.filter);
                     historicInsight = Object.assign(Object.assign({
                     }, historicInsight), historyItem.historicInsight);
                 }
@@ -17262,17 +17366,17 @@ function $b44f404896596941$var$_Explorer(props) {
                 specCapabilities: specCapabilities
             });
         }
-        changeColumnMapping(role, column, options) {
+        changeColumnMapping(role1, column1, options1) {
             const columns = Object.assign({
             }, this.state.columns);
-            const label = column ? $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelHistoryMapColumn(role) : $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelHistoryUnMapColumn(role);
+            const label = column1 ? $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelHistoryMapColumn(role1) : $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelHistoryUnMapColumn(role1);
             const final = ()=>{
                 const partialInsight = {
                     columns: columns,
-                    totalStyle: options ? options.totalStyle : this.state.totalStyle
+                    totalStyle: options1 ? options1.totalStyle : this.state.totalStyle
                 };
-                const errors = $3c7c0ab0b51acc22$export$3285e8a72d4ef75f(this.state.chart, partialInsight.totalStyle, partialInsight.columns, this.state.dataContent.columns);
-                columns[role] = column && column.name;
+                const errors = $bfaa631c88fa1f10$export$c2563952d877899(this.state.chart, partialInsight.totalStyle, partialInsight.columns, this.state.dataContent.columns);
+                columns[role1] = column1 && column1.name;
                 this.changeInsight(partialInsight, {
                     label: label
                 }, errors ? {
@@ -17280,25 +17384,25 @@ function $b44f404896596941$var$_Explorer(props) {
                 } : null);
             };
             const _changeInsight = (newInsight, columnUpdate, historyAction)=>{
-                newInsight.columns = $385418a87250916e$exports.VegaDeckGl.util.deepMerge({
+                newInsight.columns = $e5c730801b562de0$exports.VegaDeckGl.util.deepMerge({
                 }, columns, columnUpdate);
-                $96c12964caac8c31$export$79057c9e8e65cb3c(this.prefs, this.state.chart, '*', '*', {
+                $b25ee1fff804a263$export$a14483004c11686f(this.prefs, this.state.chart, '*', '*', {
                     columns: columnUpdate
                 });
                 this.changeInsight(newInsight, historyAction);
             };
-            if (column) {
+            if (column1) {
                 let columnUpdate;
-                switch(role){
+                switch(role1){
                     case 'facet':
                         {
-                            $96c12964caac8c31$export$96ae7597659105d4(this.prefs, this.state.chart, 'facet', column.name);
+                            $b25ee1fff804a263$export$318d2f27a5d54aff(this.prefs, this.state.chart, 'facet', column1.name);
                             const historicInsight = {
                                 columns: columns,
-                                facetStyle: options ? options.facetStyle : this.state.facetStyle
+                                facetStyle: options1 ? options1.facetStyle : this.state.facetStyle
                             };
                             columnUpdate = {
-                                facet: column.name
+                                facet: column1.name
                             };
                             _changeInsight(historicInsight, columnUpdate, {
                                 label: label
@@ -17309,21 +17413,21 @@ function $b44f404896596941$var$_Explorer(props) {
                         {
                             let calculating = null;
                             let historicInsight = {
-                                scheme: options && options.scheme,
+                                scheme: options1 && options1.scheme,
                                 columns: columns,
                                 colorBin: this.state.colorBin
                             };
-                            if (!historicInsight.scheme) $96c12964caac8c31$export$96ae7597659105d4(this.prefs, this.state.chart, 'color', column.name);
-                            if (!historicInsight.scheme) historicInsight.scheme = $aa1a81963e518cec$export$4ebf557d3792c9d7(column, null, this.state.scheme);
-                            if (!column.stats.hasColorData) {
+                            if (!historicInsight.scheme) $b25ee1fff804a263$export$318d2f27a5d54aff(this.prefs, this.state.chart, 'color', column1.name);
+                            if (!historicInsight.scheme) historicInsight.scheme = $f1849127df5cc048$export$ba25af89e7ea3c1a(column1, null, this.state.scheme);
+                            if (!column1.stats.hasColorData) {
                                 historicInsight.directColor = false;
                                 if (this.state.directColor !== historicInsight.directColor) calculating = ()=>this._resize()
                                 ;
                             }
-                            if (this.state.columns && this.state.columns.color && this.state.columns.color !== column.name) {
+                            if (this.state.columns && this.state.columns.color && this.state.columns.color !== column1.name) {
                                 const currColorColumn = this.state.dataContent.columns.filter((c)=>c.name === this.state.columns.color
                                 )[0];
-                                if (column.isColorData != currColorColumn.isColorData) calculating = ()=>this._resize()
+                                if (column1.isColorData != currColorColumn.isColorData) calculating = ()=>this._resize()
                                 ;
                             }
                             this.ignoreSelectionChange = true;
@@ -17332,7 +17436,7 @@ function $b44f404896596941$var$_Explorer(props) {
                                 //allow deselection to render
                                 requestAnimationFrame(()=>{
                                     columnUpdate = {
-                                        color: column.name
+                                        color: column1.name
                                     };
                                     this.getColorContext = null;
                                     this.setState({
@@ -17347,12 +17451,12 @@ function $b44f404896596941$var$_Explorer(props) {
                         }
                     case 'x':
                         {
-                            $96c12964caac8c31$export$96ae7597659105d4(this.prefs, this.state.chart, 'x', column.name);
+                            $b25ee1fff804a263$export$318d2f27a5d54aff(this.prefs, this.state.chart, 'x', column1.name);
                             const historicInsight = {
                                 columns: columns
                             };
                             columnUpdate = {
-                                x: column.name
+                                x: column1.name
                             };
                             _changeInsight(historicInsight, columnUpdate, {
                                 label: label
@@ -17361,12 +17465,12 @@ function $b44f404896596941$var$_Explorer(props) {
                         }
                     case 'size':
                         {
-                            $96c12964caac8c31$export$96ae7597659105d4(this.prefs, this.state.chart, 'size', column.name);
+                            $b25ee1fff804a263$export$318d2f27a5d54aff(this.prefs, this.state.chart, 'size', column1.name);
                             const historicInsight = {
-                                totalStyle: options ? options.totalStyle : this.state.totalStyle
+                                totalStyle: options1 ? options1.totalStyle : this.state.totalStyle
                             };
                             columnUpdate = {
-                                size: column.name
+                                size: column1.name
                             };
                             _changeInsight(historicInsight, columnUpdate, {
                                 label: label
@@ -17377,7 +17481,7 @@ function $b44f404896596941$var$_Explorer(props) {
                         final();
                         break;
                 }
-            } else switch(role){
+            } else switch(role1){
                 case 'facet':
                     columns.facet = null;
                     columns.facetV = null;
@@ -17393,40 +17497,40 @@ function $b44f404896596941$var$_Explorer(props) {
                     break;
             }
         }
-        setSideTabId(sideTabId, dataScopeId) {
-            if (sideTabId === $065798d25a9d250c$export$b264ae1d75dc4e4e.Data && dataScopeId == null) //choose most relevant DataScopeId
-            dataScopeId = this.getBestDataScopeId();
-            if (dataScopeId == null) dataScopeId = this.state.dataScopeId;
+        setSideTabId(sideTabId2, dataScopeId2) {
+            if (sideTabId2 === $a27dff4329aa24f2$export$f3b7566ffe363e3b.Data && dataScopeId2 == null) //choose most relevant DataScopeId
+            dataScopeId2 = this.getBestDataScopeId();
+            if (dataScopeId2 == null) dataScopeId2 = this.state.dataScopeId;
             this.setState({
-                sideTabId: sideTabId,
-                dataScopeId: dataScopeId,
+                sideTabId: sideTabId2,
+                dataScopeId: dataScopeId2,
                 sidebarClosed: false
             });
-            this.activateDataBrowserItem(sideTabId, dataScopeId);
+            this.activateDataBrowserItem(sideTabId2, dataScopeId2);
         }
         getBestDataScopeId() {
             let dataScopeId;
             const selectionState = this.viewer && this.viewer.getSelection();
-            if (selectionState && selectionState.selectedData && selectionState.selectedData.length) dataScopeId = $0338ff3c02daec02$export$1c6888b44b81730b.SelectedData;
-            else if (this.state.filteredData) dataScopeId = $0338ff3c02daec02$export$1c6888b44b81730b.FilteredData;
-            else dataScopeId = $0338ff3c02daec02$export$1c6888b44b81730b.AllData;
+            if (selectionState && selectionState.selectedData && selectionState.selectedData.length) dataScopeId = $9426609e4d123694$export$f0297ce57faf7d71.SelectedData;
+            else if (this.state.filteredData) dataScopeId = $9426609e4d123694$export$f0297ce57faf7d71.FilteredData;
+            else dataScopeId = $9426609e4d123694$export$f0297ce57faf7d71.AllData;
             return dataScopeId;
         }
-        activateDataBrowserItem(sideTabId, dataScopeId) {
+        activateDataBrowserItem(sideTabId1, dataScopeId1) {
             if (!this.viewer) return;
             let itemToActivate;
-            if (sideTabId === $065798d25a9d250c$export$b264ae1d75dc4e4e.Data) switch(dataScopeId){
-                case $0338ff3c02daec02$export$1c6888b44b81730b.AllData:
-                    itemToActivate = this.state.dataContent && this.state.dataContent.data[this.state.selectedItemIndex[$0338ff3c02daec02$export$1c6888b44b81730b.AllData]];
+            if (sideTabId1 === $a27dff4329aa24f2$export$f3b7566ffe363e3b.Data) switch(dataScopeId1){
+                case $9426609e4d123694$export$f0297ce57faf7d71.AllData:
+                    itemToActivate = this.state.dataContent && this.state.dataContent.data[this.state.selectedItemIndex[$9426609e4d123694$export$f0297ce57faf7d71.AllData]];
                     break;
-                case $0338ff3c02daec02$export$1c6888b44b81730b.FilteredData:
-                    itemToActivate = this.state.filteredData && this.state.filteredData[this.state.selectedItemIndex[$0338ff3c02daec02$export$1c6888b44b81730b.FilteredData]];
+                case $9426609e4d123694$export$f0297ce57faf7d71.FilteredData:
+                    itemToActivate = this.state.filteredData && this.state.filteredData[this.state.selectedItemIndex[$9426609e4d123694$export$f0297ce57faf7d71.FilteredData]];
                     break;
-                case $0338ff3c02daec02$export$1c6888b44b81730b.SelectedData:
+                case $9426609e4d123694$export$f0297ce57faf7d71.SelectedData:
                     {
                         const selection = this.viewer.getSelection() || {
                         };
-                        itemToActivate = selection.selectedData && selection.selectedData[this.state.selectedItemIndex[$0338ff3c02daec02$export$1c6888b44b81730b.SelectedData]];
+                        itemToActivate = selection.selectedData && selection.selectedData[this.state.selectedItemIndex[$9426609e4d123694$export$f0297ce57faf7d71.SelectedData]];
                         break;
                     }
             }
@@ -17440,9 +17544,9 @@ function $b44f404896596941$var$_Explorer(props) {
             if (itemToActivate) return this.viewer.activate(itemToActivate).then(done);
             else return this.viewer.deActivate().then(done);
         }
-        sidebar(sidebarClosed, sidebarPinned) {
+        sidebar(sidebarClosed1, sidebarPinned) {
             this.setState({
-                sidebarClosed: sidebarClosed,
+                sidebarClosed: sidebarClosed1,
                 sidebarPinned: sidebarPinned
             });
         }
@@ -17472,72 +17576,72 @@ function $b44f404896596941$var$_Explorer(props) {
                 width: div.offsetWidth
             };
         }
-        toggleableSearch(e, search) {
-            if (e.ctrlKey) {
+        toggleableSearch(e1, search3) {
+            if (e1.ctrlKey) {
                 this.setState({
-                    search: $b44f404896596941$var$createInputSearch(search)
+                    search: $851bf9263c6e17c1$var$createInputSearch(search3)
                 });
-                this.setSideTabId($065798d25a9d250c$export$b264ae1d75dc4e4e.Search);
+                this.setSideTabId($a27dff4329aa24f2$export$f3b7566ffe363e3b.Search);
             } else {
                 var oldSelection = this.viewer.getSelection();
                 if (oldSelection.search) {
                     //look for matching groups and toggle them
-                    const result = $26a6576ea7ad3be3$export$94cca925abc30578($385418a87250916e$exports.searchExpression.ensureSearchExpressionGroupArray(oldSelection.search), search);
+                    const result = $bd9af0ed83794bce$export$2e59f49d97a9dbde($e5c730801b562de0$exports.searchExpression.ensureSearchExpressionGroupArray(oldSelection.search), search3);
                     if (result.found) {
                         //removing a group
                         if (result.groups.length === 0) this.doDeselect();
                         else //select with new search removed
                         this.doSelect(result.groups);
                     } else //adding a new group
-                    if (e.altKey || e.shiftKey) {
+                    if (e1.altKey || e1.shiftKey) {
                         let group = true;
-                        if (e.altKey) search.clause = '&&';
-                        else if (e.shiftKey) {
+                        if (e1.altKey) search3.clause = '&&';
+                        else if (e1.shiftKey) {
                             if (this.props.searchORDisabled) group = false;
-                            else search.clause = '||';
+                            else search3.clause = '||';
                         }
                         if (group) {
-                            result.groups.push(search);
+                            result.groups.push(search3);
                             this.doSelect(result.groups);
-                        } else this.doSelect(search);
+                        } else this.doSelect(search3);
                     } else //replace
-                    this.doSelect(search);
-                } else this.doSelect(search);
+                    this.doSelect(search3);
+                } else this.doSelect(search3);
             }
         }
-        doFilter(search, historicFilterChange) {
+        doFilter(search1, historicFilterChange) {
             this.historicFilterChange = historicFilterChange;
-            this.viewer.filter(search);
+            this.viewer.filter(search1);
         }
-        doUnfilter(historicFilterChange) {
-            this.historicFilterChange = historicFilterChange;
+        doUnfilter(historicFilterChange1) {
+            this.historicFilterChange = historicFilterChange1;
             this.viewer.reset();
         }
-        doSelect(search) {
-            this.viewer.select(search);
+        doSelect(search2) {
+            this.viewer.select(search2);
         }
         doDeselect() {
             return this.viewer.deselect();
         }
-        writeSnapshot(snapshot, editIndex) {
+        writeSnapshot(snapshot1, editIndex) {
             let { selectedSnapshotIndex: selectedSnapshotIndex  } = this.state;
             let snapshots;
             if (editIndex >= 0) {
                 snapshots = [
                     ...this.state.snapshots
                 ];
-                snapshots[editIndex] = snapshot;
+                snapshots[editIndex] = snapshot1;
                 this.setState({
                     snapshots: snapshots,
                     selectedSnapshotIndex: selectedSnapshotIndex
                 });
             } else {
-                const note = snapshot.description;
-                snapshots = this.state.snapshots.concat(snapshot);
+                const note = snapshot1.description;
+                snapshots = this.state.snapshots.concat(snapshot1);
                 selectedSnapshotIndex = snapshots.length - 1;
                 this.scrollSnapshotIntoView(selectedSnapshotIndex);
                 this.setState({
-                    sideTabId: $065798d25a9d250c$export$b264ae1d75dc4e4e.Snapshots,
+                    sideTabId: $a27dff4329aa24f2$export$f3b7566ffe363e3b.Snapshots,
                     snapshots: snapshots,
                     selectedSnapshotIndex: selectedSnapshotIndex,
                     note: note
@@ -17545,11 +17649,11 @@ function $b44f404896596941$var$_Explorer(props) {
             }
             this.props.onSnapshotsChanged && this.props.onSnapshotsChanged(snapshots);
         }
-        scrollSnapshotIntoView(selectedSnapshotIndex) {
+        scrollSnapshotIntoView(selectedSnapshotIndex1) {
             clearTimeout(this.scrollSnapshotTimer);
             if (this.state.sidebarClosed) return;
             this.scrollSnapshotTimer = setTimeout(()=>{
-                const selectedSnapshotElement = this.div.querySelector(`.snapshot:nth-child(${selectedSnapshotIndex + 1})`);
+                const selectedSnapshotElement = this.div.querySelector(`.snapshot:nth-child(${selectedSnapshotIndex1 + 1})`);
                 if (selectedSnapshotElement) selectedSnapshotElement.scrollIntoView({
                     behavior: 'smooth',
                     block: 'nearest'
@@ -17560,22 +17664,22 @@ function $b44f404896596941$var$_Explorer(props) {
             if (this.props.mounted) this.props.mounted(this);
         }
         render() {
-            const { colorBin: colorBin , columns: columns , directColor: directColor , facetStyle: facetStyle , filter: filter , hideAxes: hideAxes , hideLegend: hideLegend , scheme: scheme , signalValues: signalValues , size: size , totalStyle: totalStyle , transform: transform , chart: chart , view: view  } = this.state;
+            const { colorBin: colorBin1 , columns: columns , directColor: directColor1 , facetStyle: facetStyle , filter: filter , hideAxes: hideAxes1 , hideLegend: hideLegend1 , scheme: scheme1 , signalValues: signalValues1 , size: size , totalStyle: totalStyle , transform: transform , chart: chart1 , view: view1  } = this.state;
             const insight = {
-                colorBin: colorBin,
+                colorBin: colorBin1,
                 columns: columns,
-                directColor: directColor,
+                directColor: directColor1,
                 facetStyle: facetStyle,
                 filter: filter,
-                hideAxes: hideAxes,
-                hideLegend: hideLegend,
-                scheme: scheme,
-                signalValues: signalValues,
+                hideAxes: hideAxes1,
+                hideLegend: hideLegend1,
+                scheme: scheme1,
+                signalValues: signalValues1,
                 size: size,
                 totalStyle: totalStyle,
                 transform: transform,
-                chart: chart,
-                view: view
+                chart: chart1,
+                view: view1
             };
             const loaded = !!(this.state.columns && this.state.dataContent);
             const selectionState = this.viewer && this.viewer.getSelection() || {
@@ -17584,9 +17688,9 @@ function $b44f404896596941$var$_Explorer(props) {
             const columnMapProps = this.getColumnMapBaseProps();
             const datas = {
             };
-            datas[$0338ff3c02daec02$export$1c6888b44b81730b.AllData] = this.state.dataContent && this.state.dataContent.data;
-            datas[$0338ff3c02daec02$export$1c6888b44b81730b.FilteredData] = this.state.filteredData;
-            datas[$0338ff3c02daec02$export$1c6888b44b81730b.SelectedData] = selectionState && selectionState.selectedData;
+            datas[$9426609e4d123694$export$f0297ce57faf7d71.AllData] = this.state.dataContent && this.state.dataContent.data;
+            datas[$9426609e4d123694$export$f0297ce57faf7d71.FilteredData] = this.state.filteredData;
+            datas[$9426609e4d123694$export$f0297ce57faf7d71.SelectedData] = selectionState && selectionState.selectedData;
             if (this.state.calculating) requestAnimationFrame(()=>{
                 //allow render to complete
                 if (this.state.calculating) {
@@ -17597,13 +17701,13 @@ function $b44f404896596941$var$_Explorer(props) {
                 }
             });
             const theme = this.props.theme || '';
-            const themePalette = $ffac552ad0872994$export$ab53ba4bd9c9d2ec[theme];
-            return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+            const themePalette = $843cc4195912fafb$export$3465a0e7b289ab72[theme];
+            return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                 ref: (div)=>{
                     if (div) this.div = div;
                 },
-                className: $6e437f743d80b3ba$exports.classList('sanddance-explorer', this.props.theme)
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($64071d48f10c4d85$export$47517a79cab7d511, {
+                className: $900824613c851981$exports.classList('sanddance-explorer', this.props.theme)
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($0e63cc2ab4c414cc$export$1ca1e38143dcc152, {
                 collapseLabels: this.props.compactUI,
                 historyIndex: this.state.historyIndex,
                 historyItems: this.state.historyItems,
@@ -17647,32 +17751,32 @@ function $b44f404896596941$var$_Explorer(props) {
                     this.handleReviveSnapshot(this.state.snapshots[selectedSnapshotIndex], selectedSnapshotIndex);
                 },
                 onViewClick: ()=>{
-                    const view1 = this.state.view === '2d' ? '3d' : '2d';
+                    const view = this.state.view === '2d' ? '3d' : '2d';
                     this.changeInsight({
-                        view: view1
+                        view: view
                     }, {
-                        label: view1 === '2d' ? $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelViewType2d : $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelViewType3d
+                        label: view === '2d' ? $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelViewType2d : $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelViewType3d
                     });
                 },
                 onHomeClick: ()=>this.viewer.presenter.homeCamera()
-            }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
-                className: $6e437f743d80b3ba$exports.classList('sanddance-main', this.state.sidebarPinned && 'pinned', this.state.sidebarClosed && 'closed', (insight.hideLegend || insight.directColor || !$b44f404896596941$var$colorMapping(insight, this.state.dataContent && this.state.dataContent.columns)) && 'hide-legend')
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+            }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
+                className: $900824613c851981$exports.classList('sanddance-main', this.state.sidebarPinned && 'pinned', this.state.sidebarClosed && 'closed', (insight.hideLegend || insight.directColor || !$851bf9263c6e17c1$var$colorMapping(insight, this.state.dataContent && this.state.dataContent.columns)) && 'hide-legend')
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                 ref: (div)=>{
                     if (div && !this.layoutDivUnpinned) this.layoutDivUnpinned = div;
                 },
                 className: "sanddance-layout-unpinned"
-            }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+            }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                 ref: (div)=>{
                     if (div && !this.layoutDivPinned) this.layoutDivPinned = div;
                 },
                 className: "sanddance-layout-pinned"
-            }), !loaded && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+            }), !loaded && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                 className: "loading"
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.Spinner, {
-                size: $c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.SpinnerSize.large,
-                label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.loading
-            })), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($ee1d356b7aae3d3f$export$fc9ca46a31bcb059, {
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.Spinner, {
+                size: $2a6088da9113f540$export$e2253033e6e1df16.fluentUI.SpinnerSize.large,
+                label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.loading
+            })), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($1aadf16b3aca4a02$export$1ba59dacbcbf90fe, {
                 themePalette: themePalette,
                 calculating: !!this.state.calculating,
                 closed: this.state.sidebarClosed,
@@ -17698,17 +17802,17 @@ function $b44f404896596941$var$_Explorer(props) {
                         filtered: this.state.filteredData && this.state.filteredData.length,
                         selected: selectionState && selectionState.selectedData && selectionState.selectedData.length
                     },
-                    active: this.state.sideTabId === $065798d25a9d250c$export$b264ae1d75dc4e4e.Data,
-                    onDataScopeClick: (dataScopeId)=>this.setSideTabId($065798d25a9d250c$export$b264ae1d75dc4e4e.Data, dataScopeId)
+                    active: this.state.sideTabId === $a27dff4329aa24f2$export$f3b7566ffe363e3b.Data,
+                    onDataScopeClick: (dataScopeId)=>this.setSideTabId($a27dff4329aa24f2$export$f3b7566ffe363e3b.Data, dataScopeId)
                     ,
                     selectedDataScope: this.state.dataScopeId,
                     disabled: !loaded
                 },
                 onSideTabClick: (sideTabId)=>{
                     //collapse or toggle
-                    if (sideTabId === $065798d25a9d250c$export$b264ae1d75dc4e4e.Collapse || this.state.sideTabId === sideTabId) {
+                    if (sideTabId === $a27dff4329aa24f2$export$f3b7566ffe363e3b.Collapse || this.state.sideTabId === sideTabId) {
                         let { dataScopeId: dataScopeId , sidebarClosed: sidebarClosed  } = this.state;
-                        if (sidebarClosed && sideTabId === $065798d25a9d250c$export$b264ae1d75dc4e4e.Data) dataScopeId = this.getBestDataScopeId();
+                        if (sidebarClosed && sideTabId === $a27dff4329aa24f2$export$f3b7566ffe363e3b.Data) dataScopeId = this.getBestDataScopeId();
                         sidebarClosed = !this.state.sidebarClosed;
                         this.changeInsight({
                             size: this.getLayoutDivSize(this.state.sidebarPinned, sidebarClosed)
@@ -17719,7 +17823,7 @@ function $b44f404896596941$var$_Explorer(props) {
                             dataScopeId: dataScopeId,
                             sidebarClosed: sidebarClosed
                         });
-                    } else if (sideTabId === $065798d25a9d250c$export$b264ae1d75dc4e4e.Pin) this.changeInsight({
+                    } else if (sideTabId === $a27dff4329aa24f2$export$f3b7566ffe363e3b.Pin) this.changeInsight({
                         size: this.getLayoutDivSize(!this.state.sidebarPinned, this.state.sidebarClosed)
                     }, {
                         label: null,
@@ -17732,8 +17836,8 @@ function $b44f404896596941$var$_Explorer(props) {
                 selectedSideTab: this.state.sideTabId
             }, loaded && (()=>{
                 switch(this.state.sideTabId){
-                    case $065798d25a9d250c$export$b264ae1d75dc4e4e.ChartType:
-                        return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($1d75e5ac49b64589$export$7decb792461ef5a9, Object.assign({
+                    case $a27dff4329aa24f2$export$f3b7566ffe363e3b.ChartType:
+                        return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($7d6d61f19df51c57$export$acaa6426d77a227e, Object.assign({
                             collapseLabels: this.props.compactUI,
                             tooltipExclusions: this.state.tooltipExclusions,
                             toggleTooltipExclusion: (columnName)=>{
@@ -17752,13 +17856,13 @@ function $b44f404896596941$var$_Explorer(props) {
                         }, columnMapProps, {
                             chart: this.state.chart,
                             view: this.state.view,
-                            onChangeChartType: (chart1)=>this.changeChartType(chart1)
+                            onChangeChartType: (chart)=>this.changeChartType(chart)
                             ,
                             insightColumns: this.state.columns,
-                            onChangeSignal: (role, column, name, value)=>$96c12964caac8c31$export$c8fe9eec9afc2414(this.prefs, this.state.chart, role, column, name, value)
+                            onChangeSignal: (role, column, name, value)=>$b25ee1fff804a263$export$c2992dc6411becf6(this.prefs, this.state.chart, role, column, name, value)
                         }));
-                    case $065798d25a9d250c$export$b264ae1d75dc4e4e.Color:
-                        return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($bb63fdf99ae08a83$export$e4830c8e55b4f80d, Object.assign({
+                    case $a27dff4329aa24f2$export$f3b7566ffe363e3b.Color:
+                        return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($1f7c5a14680e0aa1$export$892596cec99bc70e, Object.assign({
                             compactUI: this.props.compactUI,
                             specCapabilities: this.state.specCapabilities,
                             disabled: !loaded || this.state.sidebarClosed
@@ -17766,12 +17870,12 @@ function $b44f404896596941$var$_Explorer(props) {
                             dataContent: this.state.dataContent,
                             scheme: this.state.scheme,
                             colorBin: this.state.colorBin,
-                            colorBinSignal: this.viewer && this.viewer.vegaSpec && this.viewer.vegaSpec.signals.filter((s)=>s.name === $385418a87250916e$exports.constants.SignalNames.ColorBinCount
+                            colorBinSignal: this.viewer && this.viewer.vegaSpec && this.viewer.vegaSpec.signals.filter((s)=>s.name === $e5c730801b562de0$exports.constants.SignalNames.ColorBinCount
                             )[0],
-                            colorReverseSignal: this.viewer && this.viewer.vegaSpec && this.viewer.vegaSpec.signals.filter((s)=>s.name === $385418a87250916e$exports.constants.SignalNames.ColorReverse
+                            colorReverseSignal: this.viewer && this.viewer.vegaSpec && this.viewer.vegaSpec.signals.filter((s)=>s.name === $e5c730801b562de0$exports.constants.SignalNames.ColorReverse
                             )[0],
                             colorColumn: this.state.columns.color,
-                            onColorBinChange: (colorBin1)=>{
+                            onColorBinChange: (colorBin)=>{
                                 this.ignoreSelectionChange = true;
                                 this.viewer.deselect().then(()=>{
                                     this.ignoreSelectionChange = false;
@@ -17779,72 +17883,72 @@ function $b44f404896596941$var$_Explorer(props) {
                                     requestAnimationFrame(()=>{
                                         this.getColorContext = null;
                                         this.changeInsight({
-                                            colorBin: colorBin1
+                                            colorBin: colorBin
                                         }, {
-                                            label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelHistoryColorBin
+                                            label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelHistoryColorBin
                                         });
-                                        $96c12964caac8c31$export$79057c9e8e65cb3c(this.prefs, this.state.chart, 'color', this.state.columns.color, {
-                                            colorBin: colorBin1
+                                        $b25ee1fff804a263$export$a14483004c11686f(this.prefs, this.state.chart, 'color', this.state.columns.color, {
+                                            colorBin: colorBin
                                         });
                                     });
                                 });
                             },
-                            onColorSchemeChange: (scheme1)=>{
+                            onColorSchemeChange: (scheme)=>{
                                 this.changeColumnMapping('color', this.state.dataContent.columns.filter((c)=>c.name === this.state.columns.color
                                 )[0], {
-                                    scheme: scheme1
+                                    scheme: scheme
                                 });
-                                $96c12964caac8c31$export$79057c9e8e65cb3c(this.prefs, this.state.chart, 'color', this.state.columns.color, {
-                                    scheme: scheme1
+                                $b25ee1fff804a263$export$a14483004c11686f(this.prefs, this.state.chart, 'color', this.state.columns.color, {
+                                    scheme: scheme
                                 });
                             },
                             onColorBinCountChange: (value)=>{
-                                const signalValues1 = {
+                                const signalValues = {
                                 };
-                                signalValues1[$385418a87250916e$exports.constants.SignalNames.ColorBinCount] = value;
-                                $96c12964caac8c31$export$79057c9e8e65cb3c(this.prefs, this.state.chart, 'color', this.state.columns.color, {
-                                    signalValues: signalValues1
+                                signalValues[$e5c730801b562de0$exports.constants.SignalNames.ColorBinCount] = value;
+                                $b25ee1fff804a263$export$a14483004c11686f(this.prefs, this.state.chart, 'color', this.state.columns.color, {
+                                    signalValues: signalValues
                                 });
                             },
                             onColorReverseChange: (value)=>{
                                 this.getColorContext = null;
                             },
                             directColor: this.state.directColor,
-                            onDirectColorChange: (directColor1)=>{
+                            onDirectColorChange: (directColor)=>{
                                 this.changeInsight({
-                                    directColor: directColor1
+                                    directColor: directColor
                                 }, {
-                                    label: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelHistoryDirectColor
+                                    label: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelHistoryDirectColor
                                 }, {
                                     calculating: ()=>this._resize()
                                 });
                             }
                         }));
-                    case $065798d25a9d250c$export$b264ae1d75dc4e4e.Data:
+                    case $a27dff4329aa24f2$export$f3b7566ffe363e3b.Data:
                         {
                             const data = datas[this.state.dataScopeId];
                             let itemVisible = true;
                             switch(this.state.dataScopeId){
-                                case $0338ff3c02daec02$export$1c6888b44b81730b.AllData:
+                                case $9426609e4d123694$export$f0297ce57faf7d71.AllData:
                                     {
                                         const item = this.state.selectedItemIndex[this.state.dataScopeId];
                                         itemVisible = this.state.dataContent && !this.state.filteredData || this.state.filteredData.indexOf(data[item]) >= 0;
                                     }
                             }
-                            return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($5d47ce1436721dba$export$50d5d540831edcd1, {
+                            return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($97848a9179e2c985$export$1ce2294f62fa7154, {
                                 theme: this.props.theme,
                                 themePalette: themePalette,
                                 disabled: !loaded || this.state.sidebarClosed,
                                 columns: this.state.dataContent && this.state.dataContent.columns,
                                 data: data,
-                                displayName: this.state.dataFile && this.state.dataFile.displayName || $d3f49cd4a4ebf638$export$e345c26dc94dc116.defaultFileName,
-                                nullMessage: $b44f404896596941$var$dataBrowserNullMessages[this.state.dataScopeId],
-                                zeroMessage: $b44f404896596941$var$dataBrowserZeroMessages[this.state.dataScopeId],
+                                displayName: this.state.dataFile && this.state.dataFile.displayName || $ee7b4b80c9b36fcd$export$21c51bc433c16634.defaultFileName,
+                                nullMessage: $851bf9263c6e17c1$var$dataBrowserNullMessages[this.state.dataScopeId],
+                                zeroMessage: $851bf9263c6e17c1$var$dataBrowserZeroMessages[this.state.dataScopeId],
                                 index: this.state.selectedItemIndex[this.state.dataScopeId],
                                 itemVisible: itemVisible,
                                 dataExportHandler: this.props.dataExportHandler,
                                 selectedDataScope: this.state.dataScopeId,
-                                onDataScopeClick: (dataScopeId)=>this.setSideTabId($065798d25a9d250c$export$b264ae1d75dc4e4e.Data, dataScopeId)
+                                onDataScopeClick: (dataScopeId)=>this.setSideTabId($a27dff4329aa24f2$export$f3b7566ffe363e3b.Data, dataScopeId)
                                 ,
                                 onActivate: (row, index)=>{
                                     const selectedItemIndex = Object.assign({
@@ -17857,7 +17961,7 @@ function $b44f404896596941$var$_Explorer(props) {
                                 },
                                 onSearch: (e, search)=>{
                                     if (e.ctrlKey) this.setState({
-                                        sideTabId: $065798d25a9d250c$export$b264ae1d75dc4e4e.Search,
+                                        sideTabId: $a27dff4329aa24f2$export$f3b7566ffe363e3b.Search,
                                         search: search
                                     });
                                     else this.doSelect(search);
@@ -17865,8 +17969,8 @@ function $b44f404896596941$var$_Explorer(props) {
                                 bingSearchDisabled: this.props.bingSearchDisabled
                             });
                         }
-                    case $065798d25a9d250c$export$b264ae1d75dc4e4e.Search:
-                        return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($db7ca2292e5ff554$export$59dc79d25800130f, {
+                    case $a27dff4329aa24f2$export$f3b7566ffe363e3b.Search:
+                        return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($8c9b7d8f2d896d07$export$4b85d3515bd863a5, {
                             collapseLabels: this.props.compactUI,
                             themePalette: themePalette,
                             disabled: !loaded || this.state.sidebarClosed,
@@ -17881,8 +17985,8 @@ function $b44f404896596941$var$_Explorer(props) {
                             ,
                             data: this.state.dataContent.data
                         });
-                    case $065798d25a9d250c$export$b264ae1d75dc4e4e.Snapshots:
-                        return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($92d5d57bae29246e$export$bd026f48d172e03, Object.assign({
+                    case $a27dff4329aa24f2$export$f3b7566ffe363e3b.Snapshots:
+                        return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($d3153b53a9fcaa75$export$3e09886744a57615, Object.assign({
                         }, this.props.snapshotProps, {
                             editor: this.snapshotEditor,
                             themePalette: themePalette,
@@ -17958,38 +18062,38 @@ function $b44f404896596941$var$_Explorer(props) {
                                 }
                             }
                         }));
-                    case $065798d25a9d250c$export$b264ae1d75dc4e4e.History:
-                        return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($f47f6bdc0d13e7a0$export$36b6e53ba8daf232, {
+                    case $a27dff4329aa24f2$export$f3b7566ffe363e3b.History:
+                        return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2e8d56166a32c5ec$export$84202caead5689ba, {
                             theme: theme,
                             themePalette: themePalette,
                             historyIndex: this.state.historyIndex,
                             historyItems: this.state.historyItems,
                             redo: (i)=>this.redo(i)
                         });
-                    case $065798d25a9d250c$export$b264ae1d75dc4e4e.Settings:
-                        return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c8349196cda2bdc1$export$9c458e6eecac1eb9, {
+                    case $a27dff4329aa24f2$export$f3b7566ffe363e3b.Settings:
+                        return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($7148a278555952e4$export$c72f6eaae7b9adff, {
                             explorer: this,
                             dataFile: this.state.dataFile,
                             scheme: this.state.scheme,
                             hideLegend: this.state.hideLegend,
-                            onToggleLegend: (hideLegend1)=>this.setState({
-                                    hideLegend: hideLegend1,
+                            onToggleLegend: (hideLegend)=>this.setState({
+                                    hideLegend: hideLegend,
                                     calculating: ()=>this._resize()
                                 })
                             ,
                             hideAxes: this.state.hideAxes,
-                            onToggleAxes: (hideAxes1)=>this.setState({
+                            onToggleAxes: (hideAxes)=>this.setState({
                                     calculating: ()=>this.setState({
-                                            hideAxes: hideAxes1
+                                            hideAxes: hideAxes
                                         })
                                 })
                             ,
                             additionalSettings: this.props.additionalSettings
                         }, this.props.systemInfoChildren);
                 }
-            })()), loaded && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+            })()), loaded && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                 className: "sanddance-view"
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($2e70c6c127734088$export$1d29a992e629a3f4, {
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($730c610e376ac0d0$export$441ac54c4cda559d, {
                 renderOptions: {
                     rebaseFilter: ()=>{
                         const { rebaseFilter: rebaseFilter  } = this;
@@ -18014,7 +18118,7 @@ function $b44f404896596941$var$_Explorer(props) {
                         return this.viewer.colorContexts && this.viewer.colorContexts[this.viewer.currentColorContext];
                     };
                     //don't allow tabbing to the canvas
-                    $3669ee32f5f0d5ff$export$143b1ce3525ff2(this.viewer);
+                    $d80024a3f51ef424$export$95ea862e038e2d34(this.viewer);
                     this.props.onView && this.props.onView();
                 },
                 onError: (e)=>{
@@ -18023,28 +18127,28 @@ function $b44f404896596941$var$_Explorer(props) {
                 data: this.state.dataContent.data,
                 insight: insight,
                 onMount: (el)=>this.viewerMounted(el)
-            }), this.state.note && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+            }), this.state.note && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                 className: 'sanddance-note'
-            }, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($118d0de4ae8ff9c2$export$aa4364103b35a0bd, {
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($bab18bb05a251a0e$export$c25acd513dcc8062, {
                 className: 'cancel',
                 themePalette: themePalette,
-                title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonClose,
+                title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonClose,
                 iconName: 'Cancel',
                 onClick: ()=>this.setState({
                         note: null
                     })
-            }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", null, this.state.note))), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($3456628043e62c6c$export$d64e687ef4853cae, {
-                title: $d3f49cd4a4ebf638$export$e345c26dc94dc116.labelError,
+            }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, this.state.note))), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($4fad1e2cc5a361cd$export$3ddf2d174ce01153, {
+                title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelError,
                 hidden: !this.state.errors,
                 onDismiss: ()=>{
                     this.setState({
                         errors: null
                     });
                 }
-            }, this.state.errors && this.state.errors.map((error, i)=>$c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+            }, this.state.errors && this.state.errors.map((error, i)=>$2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                     key: i
                 }, error)
-            )), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($2159fe8fc2041ed6$export$1b30ac79c43d2fc0, Object.assign({
+            )), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($ed84433650aaee3f$export$15b376344cc89d12, Object.assign({
                 ref: (se)=>this.snapshotEditor = se
             }, this.props.snapshotProps, {
                 explorer: this,
@@ -18052,17 +18156,17 @@ function $b44f404896596941$var$_Explorer(props) {
                 ,
                 theme: this.props.theme,
                 themePalette: themePalette
-            }))), this.state.positionedColumnMapProps && $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($111d368e10bec10f$export$ca11bec7c35e97ff, Object.assign({
+            }))), this.state.positionedColumnMapProps && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($57db901d8b47d017$export$3e341bd56774d659, Object.assign({
             }, this.state.positionedColumnMapProps)));
         }
         getColumnMapBaseProps() {
-            const allColumns = this.state.dataContent && this.state.dataContent.columns.filter((c)=>!$385418a87250916e$exports.util.isInternalFieldName(c.name, true)
+            const allColumns = this.state.dataContent && this.state.dataContent.columns.filter((c)=>!$e5c730801b562de0$exports.util.isInternalFieldName(c.name, true)
             );
             const quantitativeColumns = allColumns && allColumns.filter((c)=>c.quantitative
             );
             const categoricalColumns = allColumns && allColumns.filter((c)=>!c.quantitative
             );
-            const props2 = {
+            const props = {
                 changeColumnMapping: (role, columnOrRole, defaultColumn, options)=>{
                     let column;
                     if (typeof columnOrRole === 'string') {
@@ -18081,64 +18185,64 @@ function $b44f404896596941$var$_Explorer(props) {
                 specCapabilities: this.state.specCapabilities,
                 explorer: this
             };
-            return props2;
+            return props;
         }
     }
     return new __Explorer(props);
 }
-const $b44f404896596941$export$535aff0d258afa68 = $b44f404896596941$var$_Explorer;
-function $b44f404896596941$var$colorMapping(insight, columns) {
+const $851bf9263c6e17c1$export$43584986cb77a794 = $851bf9263c6e17c1$var$_Explorer;
+function $851bf9263c6e17c1$var$colorMapping(insight, columns) {
     if (columns && insight.columns && insight.columns.color) return columns.filter((c)=>c.name === insight.columns.color
     )[0];
 }
 
 
 
-const $c5e1961a7f97a459$export$12896e353ebd9cc = {
+const $2a6088da9113f540$export$e2253033e6e1df16 = {
     fluentUI: null,
     react: null,
     reactDOM: null
 };
-function $c5e1961a7f97a459$export$44747fb0056adba5(fluentUI, react, reactDOM, vega, deck, layers, luma) {
-    $10e70159f7836695$export$44747fb0056adba5(react, reactDOM, vega, deck, layers, luma);
-    $c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI = fluentUI;
-    $c5e1961a7f97a459$export$12896e353ebd9cc.react = react;
-    $c5e1961a7f97a459$export$12896e353ebd9cc.reactDOM = reactDOM;
+function $2a6088da9113f540$export$1f96ae73734a86cc(fluentUI, react, reactDOM, vega, deck, layers, luma) {
+    $e2a889539cb3cb17$export$1f96ae73734a86cc(react, reactDOM, vega, deck, layers, luma);
+    $2a6088da9113f540$export$e2253033e6e1df16.fluentUI = fluentUI;
+    $2a6088da9113f540$export$e2253033e6e1df16.react = react;
+    $2a6088da9113f540$export$e2253033e6e1df16.reactDOM = reactDOM;
     //inform React that we are using a dynamic base class
-    $1d75e5ac49b64589$export$7decb792461ef5a9.prototype = react.Component.prototype;
-    $ddc28421fe6d69d0$export$ca7914cbf553e128.prototype = react.Component.prototype;
-    $b44f404896596941$export$535aff0d258afa68.prototype = react.Component.prototype;
-    $111d368e10bec10f$export$ca11bec7c35e97ff.prototype = react.Component.prototype;
-    $db7ca2292e5ff554$export$59dc79d25800130f.prototype = react.Component.prototype;
-    $2159fe8fc2041ed6$export$1b30ac79c43d2fc0.prototype = react.Component.prototype;
-    $92d5d57bae29246e$export$bd026f48d172e03.prototype = react.Component.prototype;
-    $c8349196cda2bdc1$export$9c458e6eecac1eb9.prototype = react.Component.prototype;
+    $7d6d61f19df51c57$export$acaa6426d77a227e.prototype = react.Component.prototype;
+    $bcfbcdd321a042d4$export$b1b568728c48eba1.prototype = react.Component.prototype;
+    $851bf9263c6e17c1$export$43584986cb77a794.prototype = react.Component.prototype;
+    $57db901d8b47d017$export$3e341bd56774d659.prototype = react.Component.prototype;
+    $8c9b7d8f2d896d07$export$4b85d3515bd863a5.prototype = react.Component.prototype;
+    $ed84433650aaee3f$export$15b376344cc89d12.prototype = react.Component.prototype;
+    $d3153b53a9fcaa75$export$3e09886744a57615.prototype = react.Component.prototype;
+    $7148a278555952e4$export$c72f6eaae7b9adff.prototype = react.Component.prototype;
 }
 
 
 
-function $3456628043e62c6c$export$d64e687ef4853cae(props) {
-    return $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.Dialog, Object.assign({
+function $4fad1e2cc5a361cd$export$3ddf2d174ce01153(props) {
+    return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.Dialog, Object.assign({
     }, props, {
         dialogContentProps: Object.assign({
-            type: $c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.DialogType.normal,
+            type: $2a6088da9113f540$export$e2253033e6e1df16.fluentUI.DialogType.normal,
             title: props.title
         }, props.dialogContentProps)
-    }), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement("div", {
+    }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         onKeyUp: (e)=>{
             e.nativeEvent.stopImmediatePropagation();
         }
-    }, props.children), $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.DialogFooter, null, props.buttons, $c5e1961a7f97a459$export$12896e353ebd9cc.react.createElement($c5e1961a7f97a459$export$12896e353ebd9cc.fluentUI.DefaultButton, {
+    }, props.children), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.DialogFooter, null, props.buttons, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($2a6088da9113f540$export$e2253033e6e1df16.fluentUI.DefaultButton, {
         iconProps: {
             iconName: 'Cancel'
         },
         onClick: props.onDismiss,
-        text: $d3f49cd4a4ebf638$export$e345c26dc94dc116.buttonClose
+        text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.buttonClose
     })));
 }
 
 
-$parcel$exportWildcard($ea687581edf48e56$exports, $3456628043e62c6c$exports);
+$parcel$exportWildcard($961d401904861ecc$exports, $4fad1e2cc5a361cd$exports);
 
 
 
@@ -18149,9 +18253,9 @@ $parcel$exportWildcard($ea687581edf48e56$exports, $3456628043e62c6c$exports);
 
 
 
-$parcel$exportWildcard($b6499bcf1ffc0a3b$exports, $b44f404896596941$exports);
+$parcel$exportWildcard($829d4043a82dc0b3$exports, $851bf9263c6e17c1$exports);
 
 
-window.SandDanceExplorer = $b6499bcf1ffc0a3b$exports;
+window.SandDanceExplorer = $829d4043a82dc0b3$exports;
 
 })();

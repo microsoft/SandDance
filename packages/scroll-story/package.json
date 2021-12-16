@@ -9,20 +9,20 @@
   },
   "dependencies": {
     "@mdx-js/tag": "^0.15.0",
-    "@deck.gl/core": "^8.1.5",
-    "@deck.gl/layers": "^8.1.5",
-    "@luma.gl/core": "^8.1.2",
+    "@deck.gl/core": "8.3.7",
+    "@deck.gl/layers": "8.3.7",
+    "@luma.gl/core": "8.3.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "@msrvida/sanddance-react": "^3",
-    "vega": "^5.17.0"
+    "vega": "5.20"
   },
   "devDependencies": {
     "@mdx-js/react": "^1.6.22",
     "@parcel/transformer-mdx": "^2.0.0-rc.0",
     "@parcel/transformer-sass": "^2.0.0-rc.0",
-    "@types/react": "16.9.34",
-    "@types/react-dom": "16.9.7",
-    "vega-typings": "^0.19.0"
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.7",
+    "vega-typings": "0.21.0"
   }
 }

@@ -12,8 +12,12 @@ pool:
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '12.x'
+    versionSpec: '14.x'
   displayName: 'Install Node.js'
+
+- script: |
+    npm i -g npm@7
+  displayName: 'Install npm 7'
 
 - script: |
     npm install
@@ -25,6 +29,10 @@ steps:
     scanType: 'Register'
     verbosity: 'Verbose'
     alertWarningLevel: 'High'
+
+- script: |
+    npm -v
+  displayName: 'npm version'
 
 - script: |
     npm run build:sanddance-core

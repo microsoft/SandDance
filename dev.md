@@ -12,6 +12,10 @@ The SandDance repo is a monorepo made up of several packages, managed by [Lerna]
 1. [sanddance-explorer](https://github.com/microsoft/SandDance/tree/master/packages/sanddance-explorer) - React-based data exploration component.
 1. [sanddance-app](https://github.com/microsoft/SandDance/tree/master/packages/sanddance-app) - React-based sample application used on website.
 
+## System requirements
+* Node.js 14 or higher
+* NPM 7 or higher
+
 ## Install
 1. Clone this repo
 1. `npm install`

@@ -18,13 +18,13 @@
     }
   },
   "dependencies": {
-    "@deck.gl/core": "^8.3.7",
-    "@deck.gl/layers": "^8.3.7",
-    "@luma.gl/core": "^8.3.1",
+    "@deck.gl/core": "8.3.7",
+    "@deck.gl/layers": "8.3.7",
+    "@luma.gl/core": "8.3.1",
     "@msrvida/sanddance": "^3",
-    "vega": "^5.17.0"
+    "vega": "5.20"
   },
   "devDependencies": {
-    "vega-typings": "^0.19.0"
+    "vega-typings": "0.21.0"
   }
 }

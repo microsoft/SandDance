@@ -13,13 +13,12 @@
     "dist"
   ],
   "scripts": {
-    "install-peers": "npm install --no-save --no-package-lock @types/react@16.9.34 @types/react-dom@16.9.7",
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "docs": "typedoc src/index.ts -out ../../docs/docs/sanddance-react/v3 --theme ../../typedoc/theme --excludePrivate --gitRevision master",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "build-css": "sass ./src/css/sanddance-react.scss ./dist/css/sanddance-react.css",
-    "build:sanddance-core": "npm run install-peers && npm run build-typescript && node ../../scripts/version.js && npm run build-css",
+    "build:sanddance-core": "npm run build-typescript && node ../../scripts/version.js && npm run build-css",
     "watch-css": "sass ./src/css/sanddance-react.scss ./dist/css/sanddance-react.css --watch"
   },
   "keywords": [],

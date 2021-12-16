@@ -4,9 +4,9 @@
 
 namespace transformTest {
 
-    declare var deck: SandDance.VegaDeckGl.types.DeckBase & SandDance.VegaDeckGl.types.DeckLayerBase;
-    declare var luma: SandDance.VegaDeckGl.types.LumaBase;
-    declare var vega: SandDance.VegaDeckGl.types.VegaBase;
+    declare const deck: SandDance.VegaDeckGl.types.DeckBase & SandDance.VegaDeckGl.types.DeckLayerBase;
+    declare const luma: SandDance.VegaDeckGl.types.LumaBase;
+    declare const vega: SandDance.VegaDeckGl.types.VegaBase;
 
     const insight: SandDance.specs.Insight = {
         columns: {

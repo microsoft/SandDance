@@ -19,9 +19,9 @@ const size = 100;
 
 for (let x = 0; x < size; x++) {
     for (let y = 0; y < size; y++) {
-        let id = x * y;
-        let z = Math.random() * size * (x % 10) * (y % 10);
-        let w = Math.random() * size;
+        const id = x * y;
+        const z = Math.random() * size * (x % 10) * (y % 10);
+        const w = Math.random() * size;
         data.push({ id, x, y, z, w });
     }
 }

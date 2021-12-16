@@ -38,19 +38,19 @@
     "clean:nbextension": "rimraf sanddance/nbextension/static/index.js",
     "prepack": "npm run build:lib",
     "test": "echo TODO",
-    "watch-typescript": "tsc -w",
+    "pywidget:watch-typescript": "tsc -w",
     "watch-webpack": "webpack --watch"
   },
   "dependencies": {
-    "@deck.gl/core": "^8.1.5",
-    "@deck.gl/layers": "^8.1.5",
+    "@deck.gl/core": "8.3.7",
+    "@deck.gl/layers": "8.3.7",
     "@fluentui/react": "^7.111.0",
-    "@luma.gl/core": "^8.1.2",
+    "@luma.gl/core": "8.3.1",
     "@jupyter-widgets/base": "^3",
     "@msrvida/sanddance-explorer": "^3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "vega": "^5.17.0"
+    "vega": "5.20"
   },
   "devDependencies": {
     "@msrvida/fluentui-react-cdn-typings": "^1",
@@ -59,15 +59,14 @@
     "@types/expect.js": "^0.3.29",
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.11.6",
-    "@types/react": "16.9.34",
-    "@types/react-dom": "16.9.7",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.7",
     "@types/webpack-env": "^1.13.6",
     "css-loader": "^3.2.0",
     "mkdirp": "^0.5.1",
     "mocha": "^5.2.0",
     "source-map-loader": "^0.2.4",
-    "style-loader": "^1.0.0",
-    "typescript": "3.9.2"
+    "style-loader": "^1.0.0"
   },
   "jupyterlab": {
     "extension": "lib/plugin"

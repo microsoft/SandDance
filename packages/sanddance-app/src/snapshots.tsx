@@ -13,15 +13,13 @@ import {
 } from '@msrvida/sanddance-explorer';
 import * as React from 'react';
 
-import Snapshot = SandDance.types.Snapshot;
-import VegaDeckGl = SandDance.VegaDeckGl;
-import util = VegaDeckGl.util;
+import util = SandDance.VegaDeckGl.util;
 
 function markdownImageLink(alt: string, imageUrl: string, link: string) {
     return `[![${alt}](${imageUrl})](${link})`;
 }
 
-export function cleanSnapshots(snapshots: Snapshot[]) {
+export function cleanSnapshots(snapshots: SandDance.types.Snapshot[]) {
     //remove data sources from snapshots
     const clean = util.clone(snapshots) as DataSourceSnapshot[];
     clean.forEach(snapshot => {
@@ -29,16 +27,16 @@ export function cleanSnapshots(snapshots: Snapshot[]) {
             delete snapshot.dataSource.snapshotsUrl;
         }
     });
-    return clean as Snapshot[];
+    return clean as SandDance.types.Snapshot[];
 }
 
-export function downloadSnapshotsJSON(snapshots: Snapshot[], filename: string) {
+export function downloadSnapshotsJSON(snapshots: SandDance.types.Snapshot[], filename: string) {
     //clean prior to exporting
     const clean = cleanSnapshots(snapshots);
     downloadData(JSON.stringify(clean, null, 2), filename);
 }
 
-export function serializeSnapshot(snapshotWithImage: Snapshot) {
+export function serializeSnapshot(snapshotWithImage: SandDance.types.Snapshot) {
     const snapshot = util.clone(snapshotWithImage) as DataSourceSnapshot;
     //remove the image data from the snapshot
     delete snapshot.bgColor;
@@ -49,11 +47,11 @@ export function serializeSnapshot(snapshotWithImage: Snapshot) {
     return JSON.stringify(snapshot);
 }
 
-function isSnapshot(snapshot: Snapshot) {
+function isSnapshot(snapshot: SandDance.types.Snapshot) {
     return snapshot.insight && snapshot.title;
 }
 
-export function validSnapshots(snapshots: Snapshot[]) {
+export function validSnapshots(snapshots: SandDance.types.Snapshot[]) {
     if (Array.isArray(snapshots)) {
         for (let i = 0; i < snapshots.length; i++) {
             if (!isSnapshot(snapshots[i])) {
@@ -68,7 +66,7 @@ export function validSnapshots(snapshots: Snapshot[]) {
 export interface ImportProps {
     theme: string;
     onDismiss: () => void;
-    onImportSnapshot: (snapshots: Snapshot[]) => void;
+    onImportSnapshot: (snapshots: SandDance.types.Snapshot[]) => void;
     dataSource: DataSource;
 }
 
@@ -93,7 +91,7 @@ export class SnapshotImportLocal extends React.Component<ImportProps, ImportStat
             const reader = new FileReader();
             reader.onload = () => {
                 const rawText = reader.result as string;
-                let snapshots: Snapshot[];
+                let snapshots: SandDance.types.Snapshot[];
                 try {
                     snapshots = JSON.parse(rawText);
                 }
@@ -262,7 +260,7 @@ export interface ExportProps {
     explorer: Explorer_Class;
     onDismiss: () => void;
     dataSource: DataSource;
-    snapshots: Snapshot[];
+    snapshots: SandDance.types.Snapshot[];
     theme: string;
 }
 

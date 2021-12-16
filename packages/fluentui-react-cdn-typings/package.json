@@ -9,10 +9,8 @@
     "directory": "packages/fluentui-react-cdn-typings"
   },
   "scripts": {
-    "install-peers": "npm install --no-save --no-package-lock @types/react@16.9.34",
     "eslint": "eslint -c ../../.eslintrc.json --fix ./*.d.ts",
-    "test": "tsc index.d.ts --lib es6 --skipLibCheck true",
-    "build:sanddance-core": "npm run install-peers"
+    "test": "tsc index.d.ts --lib es6 --skipLibCheck true"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +18,7 @@
     "@fluentui/react": "^7.150.0"
   },
   "peerDependencies": {
-    "@types/react": "16.9.34"
+    "@types/react": "^16.9.34"
   },
   "license": "MIT"
 }

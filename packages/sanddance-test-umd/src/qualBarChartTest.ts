@@ -4,9 +4,9 @@
 
 namespace qualBarChartTest {
 
-    declare var deck: SandDance.VegaDeckGl.types.DeckBase & SandDance.VegaDeckGl.types.DeckLayerBase;
-    declare var luma: SandDance.VegaDeckGl.types.LumaBase;
-    declare var vega: SandDance.VegaDeckGl.types.VegaBase;
+    declare const deck: SandDance.VegaDeckGl.types.DeckBase & SandDance.VegaDeckGl.types.DeckLayerBase;
+    declare const luma: SandDance.VegaDeckGl.types.LumaBase;
+    declare const vega: SandDance.VegaDeckGl.types.VegaBase;
 
     SandDance.use(vega, deck, deck, luma);
     export const viewer = new SandDance.Viewer(document.getElementById('vis'));
@@ -30,7 +30,7 @@ namespace qualBarChartTest {
     const data: MyData[] = [];
 
     for (let i = 0; i < 70; i++) {
-        let v = getValue(i);
+        const v = getValue(i);
         data.push({
             myUid: i,
             myX: `cat${v}`,

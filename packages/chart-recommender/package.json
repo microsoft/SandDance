@@ -15,7 +15,7 @@
     "@msrvida/sanddance": "^3"
   },
   "devDependencies": {
-    "vega": "^5.17.0"
+    "vega": "5.20"
   },
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
