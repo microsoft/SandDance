@@ -235,7 +235,9 @@ export class Visual implements IVisual {
     show(dataView: powerbiVisualsApi.DataView) {
         this.settings = Visual.parseSettings(dataView);
         const oldData = this.app.getDataContent();
-        let { data, different } = convertTableToObjectArray(dataView.table, oldData, this.host);
+        const temp = convertTableToObjectArray(dataView.table, oldData, this.host);
+        const { data } = temp;
+        let { different } = temp;
         if (!this.prevSettings) {
             different = true;
         }
