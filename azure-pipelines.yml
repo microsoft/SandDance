@@ -27,6 +27,14 @@ steps:
     alertWarningLevel: 'High'
 
 - script: |
+    npm -v
+  displayName: 'npm version'
+
+- script: |
+    npm run bootstrap
+  displayName: 'npm bootstrap'
+
+- script: |
     npm run build:sanddance-core
   displayName: 'npm build:sanddance-core'
 
