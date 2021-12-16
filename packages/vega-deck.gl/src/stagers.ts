@@ -126,11 +126,11 @@ const markStagers: { [id: string]: MarkStager } = {
     text
 };
 
-var mainStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scene, x: number, y: number, groupType: GroupType) => {
+const mainStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scene, x: number, y: number, groupType: GroupType) => {
     if (scene.marktype !== 'group' && groupType === GroupType.legend) {
         legend(options, stage, scene, x, y, groupType);
     } else {
-        var markStager = markStagers[scene.marktype];
+        const markStager = markStagers[scene.marktype];
         if (markStager) {
             markStager(options, stage, scene, x, y, groupType);
         } else {
