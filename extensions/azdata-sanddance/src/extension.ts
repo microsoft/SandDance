@@ -37,8 +37,7 @@ export function activate(context: vscode.ExtensionContext) {
         async onQueryEvent(type: azdata.queryeditor.QueryEvent, document: azdata.queryeditor.QueryDocument, args: any) {
             if (type === 'visualize') {
                 const providerid = document.providerId;
-                let provider: azdata.QueryProvider;
-                provider = azdata.dataprotocol.getProvider(providerid, azdata.DataProviderType.QueryProvider);
+                const provider: azdata.QueryProvider = azdata.dataprotocol.getProvider(providerid, azdata.DataProviderType.QueryProvider);
                 let data = await provider.getQueryRows({
                     ownerUri: document.uri,
                     batchIndex: args.batchId,
