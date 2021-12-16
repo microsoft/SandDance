@@ -16,6 +16,10 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
+    npm i -g npm@7
+  displayName: 'Install npm 7'
+
+- script: |
     npm install
     npm run bootstrap
   displayName: 'npm install'
@@ -29,10 +33,6 @@ steps:
 - script: |
     npm -v
   displayName: 'npm version'
-
-- script: |
-    npm run bootstrap
-  displayName: 'npm bootstrap'
 
 - script: |
     npm run build:sanddance-core
