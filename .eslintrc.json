@@ -28,6 +28,9 @@
         "no-inner-declarations": [
             "off"
         ],
+        "no-mixed-spaces-and-tabs": [
+            "off"
+        ],
         "no-prototype-builtins": [
             "off"
         ],
@@ -43,6 +46,9 @@
             "unix"
         ],
         "no-unused-vars": [
+            "off"
+        ],
+        "prefer-spread" :[
             "off"
         ],
         "quote-props": [
