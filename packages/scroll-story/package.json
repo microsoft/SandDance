@@ -9,9 +9,9 @@
   },
   "dependencies": {
     "@mdx-js/tag": "^0.15.0",
-    "@deck.gl/core": "^8.1.5",
-    "@deck.gl/layers": "^8.1.5",
-    "@luma.gl/core": "^8.1.2",
+    "@deck.gl/core": "8.3.7",
+    "@deck.gl/layers": "8.3.7",
+    "@luma.gl/core": "8.3.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "@msrvida/sanddance-react": "^3",

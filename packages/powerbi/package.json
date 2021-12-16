@@ -15,8 +15,8 @@
   "dependencies": {
     "@babel/runtime": "^7.5.5",
     "@babel/runtime-corejs2": "^7.5.5",
-    "@deck.gl/core": "^8.2.1",
-    "@deck.gl/layers": "^8.2.1",
+    "@deck.gl/core": "8.3.7",
+    "@deck.gl/layers": "8.3.7",
     "@fluentui/react": "^7.111.0",
     "@luma.gl/core": "^8.2.0",
     "@msrvida/sanddance-explorer": "^3",

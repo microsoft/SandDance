@@ -42,15 +42,15 @@
     "watch-webpack": "webpack --watch"
   },
   "dependencies": {
-    "@deck.gl/core": "^8.1.5",
-    "@deck.gl/layers": "^8.1.5",
+    "@deck.gl/core": "8.3.7",
+    "@deck.gl/layers": "8.3.7",
     "@fluentui/react": "^7.111.0",
-    "@luma.gl/core": "^8.1.2",
+    "@luma.gl/core": "8.3.1",
     "@jupyter-widgets/base": "^3",
     "@msrvida/sanddance-explorer": "^3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "vega": "^5.17.0"
+    "vega": "5.20"
   },
   "devDependencies": {
     "@msrvida/fluentui-react-cdn-typings": "^1",
