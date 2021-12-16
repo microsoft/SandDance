@@ -38,7 +38,7 @@
     "clean:nbextension": "rimraf sanddance/nbextension/static/index.js",
     "prepack": "npm run build:lib",
     "test": "echo TODO",
-    "watch-typescript": "tsc -w",
+    "pywidget:watch-typescript": "tsc -w",
     "watch-webpack": "webpack --watch"
   },
   "dependencies": {
