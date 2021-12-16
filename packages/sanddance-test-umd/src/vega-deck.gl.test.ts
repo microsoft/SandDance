@@ -4,14 +4,14 @@
 ///<reference path='vega.d.ts' />
 
 namespace vegaDeckglTest {
-    declare var vega: SandDance.VegaDeckGl.types.VegaBase;
-    declare var deck: SandDance.VegaDeckGl.types.DeckBase & SandDance.VegaDeckGl.types.DeckLayerBase;
-    declare var luma: SandDance.VegaDeckGl.types.LumaBase;
+    declare const vega: SandDance.VegaDeckGl.types.VegaBase;
+    declare const deck: SandDance.VegaDeckGl.types.DeckBase & SandDance.VegaDeckGl.types.DeckLayerBase;
+    declare const luma: SandDance.VegaDeckGl.types.LumaBase;
 
     SandDance.use(vega, deck, deck, luma);
 
     /* eslint-disable */
-    var spec: Vega.Spec = {
+    const spec: Vega.Spec = {
         "$schema": "https://vega.github.io/schema/vega/v4.json",
         "background": "#DEDEDE",
         "width": 500,
@@ -108,7 +108,7 @@ namespace vegaDeckglTest {
     };
     /* eslint-enable */
 
-    var view = new SandDance.VegaDeckGl.ViewGl(vega.parse(spec), { getView: () => '2d' })
+    const view = new SandDance.VegaDeckGl.ViewGl(vega.parse(spec), { getView: () => '2d' })
         .renderer('deck.gl')
         .initialize(document.querySelector('#vis'))
         .run();
