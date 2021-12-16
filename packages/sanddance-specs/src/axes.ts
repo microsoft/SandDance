@@ -38,7 +38,7 @@ interface Props {
     specColumns: SpecColumns;
     specViewOptions: SpecViewOptions;
     axesScopes: AxesScopeMap;
-    faceted: boolean;
+    hideZAxis: boolean;
     view: View;
 }
 
@@ -56,7 +56,7 @@ export function addGlobalAxes(props: Props) {
                 let zindex: number = undefined;
                 if (xyz === 'z') {
                     showAxes = false;
-                    if (props.view === '3d' && specViewOptions.zAxisOptions && !props.faceted) {
+                    if (props.view === '3d' && specViewOptions.zAxisOptions && !props.hideZAxis) {
                         if (specViewOptions.zAxisOptions.showZAxis) {
                             showAxes = true;
                             zindex = specViewOptions.zAxisOptions.zIndex;

@@ -9,7 +9,9 @@ import {
     axesTitlePaddingFacetX,
     axesTitlePaddingFacetY,
     axesTitlePaddingX,
-    axesTitlePaddingY
+    axesTitlePaddingY,
+    facetPaddingBottom,
+    facetPaddingLeft
 } from './defaults';
 import { minFacetHeight, minFacetWidth } from './defaults';
 import { FacetLayout } from './facetLayout';
@@ -52,6 +54,8 @@ export class SpecBuilder {
 
     constructor(public props: SpecBuilderProps, public specContext: SpecContext) {
         this.globalSignals = {
+            facetAxesAdjustX: { name: SignalNames.FacetAxesAdjustX, update: props.facetLayout ? facetPaddingLeft.toString() : '0' },
+            facetAxesAdjustY: { name: SignalNames.FacetAxesAdjustY, update: props.facetLayout ? facetPaddingBottom.toString() : '0' },
             minCellWidth: {
                 name: SignalNames.MinCellWidth,
                 update: `${minFacetWidth}`
@@ -109,7 +113,9 @@ export class SpecBuilder {
     public build(): SpecResult {
         const { specContext } = this;
 
-        const { facetLayout, specCapabilities  } = this.props;
+        console.log(this.props.layouts);
+
+        const { facetLayout, specCapabilities } = this.props;
         const { insight, specColumns, specViewOptions } = specContext;
         const dataName = 'data_source';
         const { vegaSpec, groupMark } = this.initSpec(dataName);
@@ -209,7 +215,7 @@ export class SpecBuilder {
                 specColumns,
                 specViewOptions,
                 axesScopes,
-                faceted: !!facetLayout,
+                hideZAxis: !!facetLayout,
                 view: insight.view
             });
         }
@@ -274,7 +280,7 @@ export class SpecBuilder {
 
     private initSpec(dataName: string) {
         const { globalSignals } = this;
-        const { minCellWidth, minCellHeight, plotOffsetLeft, plotOffsetBottom, plotOffsetTop, plotOffsetRight, plotHeightOut, plotWidthOut } = globalSignals;
+        const { facetAxesAdjustX, facetAxesAdjustY, minCellWidth, minCellHeight, plotOffsetLeft, plotOffsetBottom, plotOffsetTop, plotOffsetRight, plotHeightOut, plotWidthOut } = globalSignals;
         const { specContext } = this;
         const { insight } = specContext;
         const groupMark: GroupMark = {
@@ -282,10 +288,10 @@ export class SpecBuilder {
             //style: 'cell',
             encode: {
                 update: {
-                    x: { signal: SignalNames.PlotOffsetLeft },
+                    x: { signal: `${SignalNames.PlotOffsetLeft} - ${SignalNames.FacetAxesAdjustX}` },
                     y: { signal: SignalNames.PlotOffsetTop },
-                    height: { signal: SignalNames.PlotHeightOut },
-                    width: { signal: SignalNames.PlotWidthOut }
+                    height: { signal: `${SignalNames.PlotHeightOut} - ${SignalNames.FacetAxesAdjustY}` },
+                    width: { signal: `${SignalNames.PlotWidthOut} + ${SignalNames.FacetAxesAdjustX}` }
                 }
             }
         };
@@ -310,9 +316,11 @@ export class SpecBuilder {
                 plotOffsetTop,
                 plotOffsetBottom,
                 plotOffsetRight,
+                facetAxesAdjustX,
+                facetAxesAdjustY,
                 {
                     name: SignalNames.PlotHeightIn,
-                    update: `${SignalNames.ViewportHeight} - ${SignalNames.PlotOffsetBottom}`
+                    update: `${SignalNames.ViewportHeight} - ${SignalNames.PlotOffsetBottom} + ${SignalNames.FacetAxesAdjustY}`
                 },
                 {
                     name: SignalNames.PlotWidthIn,
@@ -322,7 +330,7 @@ export class SpecBuilder {
                 plotWidthOut,
                 {
                     name: 'height',
-                    update: `${SignalNames.PlotOffsetTop} + ${SignalNames.PlotHeightOut} + ${SignalNames.PlotOffsetBottom}`
+                    update: `${SignalNames.PlotOffsetTop} + ${SignalNames.PlotHeightOut} + ${SignalNames.PlotOffsetBottom} - ${SignalNames.FacetAxesAdjustY}`
                 },
                 {
                     name: 'width',
