@@ -2623,7 +2623,7 @@
                 ],
                 signal: binSignal,
                 extent: {
-                    signal: `[${extentSignal}[0], ${extentSignal}[1] + 1e-11]`,
+                    signal: `[${extentSignal}[0], ${extentSignal}[1] + 1e-11]`, //add a tiny bit to the upper extent to force the extra bin - https://github.com/vega/vega/issues/2899
                 },
                 maxbins: {
                     signal: maxbinsSignalName
@@ -5514,7 +5514,6 @@
     });
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    // Licensed under the MIT license.
 
     var types$1 = /*#__PURE__*/Object.freeze({
         __proto__: null
@@ -6233,6 +6232,7 @@ void main(void) {
         cssPrefix: 'vega-deckgl-',
         defaultCubeColor: [128, 128, 128, 255],
         highlightColor: [0, 0, 0, 255],
+        //lightSettings
     };
     const defaultPresenterConfig = {
         onCubeClick: (e, cube) => { },
@@ -6392,6 +6392,7 @@ void main(void) {
                     id: this.props.id,
                     geometry: new base.luma.CubeGeometry(),
                     isInstanced: true,
+                    //shaderCache: this.context['shaderCache']
                 }));
             }
             draw({ uniforms }) {
@@ -6853,11 +6854,10 @@ void main(void) {
     // Copyright (c) Microsoft Corporation. All rights reserved.
     const markStager = (options, stage, scene, x, y, groupType) => {
         base.vega.sceneVisit(scene, function (item) {
-            var x1, y1, x2, y2;
-            x1 = item.x || 0;
-            y1 = item.y || 0;
-            x2 = item.x2 != null ? item.x2 : x1;
-            y2 = item.y2 != null ? item.y2 : y1;
+            const x1 = item.x || 0;
+            const y1 = item.y || 0;
+            const x2 = item.x2 != null ? item.x2 : x1;
+            const y2 = item.y2 != null ? item.y2 : y1;
             const lineItem = styledLine(x1 + x, y1 + y, x2 + x, y2 + y, item.stroke, item.strokeWidth);
             if (item.mark.role === 'axis-tick') {
                 if (options.currAxis.role === 'z') {
@@ -7188,12 +7188,12 @@ void main(void) {
         area: markStager$5,
         text: markStager$4
     };
-    var mainStager = (options, stage, scene, x, y, groupType) => {
+    const mainStager = (options, stage, scene, x, y, groupType) => {
         if (scene.marktype !== 'group' && groupType === GroupType.legend) {
             markStager$1(options, stage, scene);
         }
         else {
-            var markStager = markStagers[scene.marktype];
+            const markStager = markStagers[scene.marktype];
             if (markStager) {
                 markStager(options, stage, scene, x, y, groupType);
             }
@@ -8103,8 +8103,7 @@ void main(void) {
     }
     function facetSelectionPolygons(facetRects) {
         const polygons = [];
-        let linesAndSearches;
-        linesAndSearches = facetRects.map(({ datum, lines }, i) => {
+        const linesAndSearches = facetRects.map(({ datum, lines }, i) => {
             let group = getSearchGroupFromVegaValue(datum[FieldNames.FacetSearch]);
             return {
                 lines,

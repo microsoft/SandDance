@@ -68,8 +68,8 @@ $parcel$export($829d4043a82dc0b3$exports, "use", () => $2a6088da9113f540$export$
 $parcel$export($829d4043a82dc0b3$exports, "capabilities", () => $d80024a3f51ef424$export$8e76ac9f37578d1b);
 $parcel$export($829d4043a82dc0b3$exports, "getColorSettingsFromThemePalette", () => $843cc4195912fafb$export$93a255849c3bdb97);
 $parcel$export($829d4043a82dc0b3$exports, "themePalettes", () => $843cc4195912fafb$export$3465a0e7b289ab72);
-$parcel$export($829d4043a82dc0b3$exports, "SandDance", () => $f073e1f86a136e75$exports);
-$parcel$export($829d4043a82dc0b3$exports, "util", () => $d705fb0bfff3c04a$exports);
+$parcel$export($829d4043a82dc0b3$exports, "SandDance", () => $e5c730801b562de0$exports);
+$parcel$export($829d4043a82dc0b3$exports, "util", () => $900824613c851981$exports);
 $parcel$export($829d4043a82dc0b3$exports, "version", () => $693174daac173d4a$export$83d89fbfd8236492);
 var $961d401904861ecc$exports = {};
 var $4fad1e2cc5a361cd$exports = {};
@@ -100,37 +100,37 @@ function $e5db841e2c07fb20$export$931cbfb6bfb85fc(props) {
 }
 
 
-var $f073e1f86a136e75$exports = {};
+var $e5c730801b562de0$exports = {};
 
-$parcel$export($f073e1f86a136e75$exports, "use", () => $f073e1f86a136e75$export$1f96ae73734a86cc);
-$parcel$export($f073e1f86a136e75$exports, "colorSchemes", () => $2696a83cde1f067b$export$2ad73d393c16f81c);
-$parcel$export($f073e1f86a136e75$exports, "constants", () => $fdf690fb8cecad22$exports);
-$parcel$export($f073e1f86a136e75$exports, "searchExpression", () => $264b19750297be8f$exports);
-$parcel$export($f073e1f86a136e75$exports, "specs", () => $b6f8bea235e0ed58$exports);
-$parcel$export($f073e1f86a136e75$exports, "types", () => $1b651b1d440aeab9$exports);
-$parcel$export($f073e1f86a136e75$exports, "util", () => $a95be51749eaea4c$exports);
-$parcel$export($f073e1f86a136e75$exports, "VegaDeckGl", () => $04e538fe2709dad5$exports);
-$parcel$export($f073e1f86a136e75$exports, "Viewer", () => $ba3b66095ea7d77f$exports.Viewer);
-$parcel$export($f073e1f86a136e75$exports, "version", () => $f1b82903f9552d4a$export$83d89fbfd8236492);
-var $fdf690fb8cecad22$exports = {};
+$parcel$export($e5c730801b562de0$exports, "use", () => $e5c730801b562de0$export$1f96ae73734a86cc);
+$parcel$export($e5c730801b562de0$exports, "colorSchemes", () => $d5cc309f57ea9332$export$2ad73d393c16f81c);
+$parcel$export($e5c730801b562de0$exports, "constants", () => $7abff30d903026d9$exports);
+$parcel$export($e5c730801b562de0$exports, "searchExpression", () => $009f7267ebde0f0b$exports);
+$parcel$export($e5c730801b562de0$exports, "specs", () => $898e5580ccaf461f$exports);
+$parcel$export($e5c730801b562de0$exports, "types", () => $e021c47cedb7e510$exports);
+$parcel$export($e5c730801b562de0$exports, "util", () => $e76dbaf7a95e1712$exports);
+$parcel$export($e5c730801b562de0$exports, "VegaDeckGl", () => $fe0c42722799ef8c$exports);
+$parcel$export($e5c730801b562de0$exports, "Viewer", () => $83151626e84e84c0$exports.Viewer);
+$parcel$export($e5c730801b562de0$exports, "version", () => $c2f62f3c6fefc6ab$export$83d89fbfd8236492);
+var $7abff30d903026d9$exports = {};
 
-$parcel$export($fdf690fb8cecad22$exports, "GL_ORDINAL", () => $fdf690fb8cecad22$export$5672246984822a29);
-$parcel$export($fdf690fb8cecad22$exports, "ColorScaleNone", () => $f1d0eeb6595c811e$export$c991c3dd58d9959c);
-$parcel$export($fdf690fb8cecad22$exports, "FieldNames", () => $f1d0eeb6595c811e$export$10df5429b7082be2);
-$parcel$export($fdf690fb8cecad22$exports, "ScaleNames", () => $f1d0eeb6595c811e$export$c9f17d36dfc40d76);
-$parcel$export($fdf690fb8cecad22$exports, "SignalNames", () => $f1d0eeb6595c811e$export$809e371dee643808);
-var $b6f8bea235e0ed58$exports = {};
-var $81b01ac2f879159c$exports = {};
+$parcel$export($7abff30d903026d9$exports, "GL_ORDINAL", () => $7abff30d903026d9$export$5672246984822a29);
+$parcel$export($7abff30d903026d9$exports, "ColorScaleNone", () => $5026337cfcb4b996$export$c991c3dd58d9959c);
+$parcel$export($7abff30d903026d9$exports, "FieldNames", () => $5026337cfcb4b996$export$10df5429b7082be2);
+$parcel$export($7abff30d903026d9$exports, "ScaleNames", () => $5026337cfcb4b996$export$c9f17d36dfc40d76);
+$parcel$export($7abff30d903026d9$exports, "SignalNames", () => $5026337cfcb4b996$export$809e371dee643808);
+var $898e5580ccaf461f$exports = {};
+var $f5081518125870e3$exports = {};
 
-$parcel$export($81b01ac2f879159c$exports, "build", () => $81b01ac2f879159c$export$3f8fe6489e95757d);
-var $f1d0eeb6595c811e$exports = {};
+$parcel$export($f5081518125870e3$exports, "build", () => $f5081518125870e3$export$3f8fe6489e95757d);
+var $5026337cfcb4b996$exports = {};
 
-$parcel$export($f1d0eeb6595c811e$exports, "FieldNames", () => $f1d0eeb6595c811e$export$10df5429b7082be2);
-$parcel$export($f1d0eeb6595c811e$exports, "ScaleNames", () => $f1d0eeb6595c811e$export$c9f17d36dfc40d76);
-$parcel$export($f1d0eeb6595c811e$exports, "SignalNames", () => $f1d0eeb6595c811e$export$809e371dee643808);
-$parcel$export($f1d0eeb6595c811e$exports, "Other", () => $f1d0eeb6595c811e$export$8653a30c44b6e879);
-$parcel$export($f1d0eeb6595c811e$exports, "ColorScaleNone", () => $f1d0eeb6595c811e$export$c991c3dd58d9959c);
-const $f1d0eeb6595c811e$export$10df5429b7082be2 = {
+$parcel$export($5026337cfcb4b996$exports, "FieldNames", () => $5026337cfcb4b996$export$10df5429b7082be2);
+$parcel$export($5026337cfcb4b996$exports, "ScaleNames", () => $5026337cfcb4b996$export$c9f17d36dfc40d76);
+$parcel$export($5026337cfcb4b996$exports, "SignalNames", () => $5026337cfcb4b996$export$809e371dee643808);
+$parcel$export($5026337cfcb4b996$exports, "Other", () => $5026337cfcb4b996$export$8653a30c44b6e879);
+$parcel$export($5026337cfcb4b996$exports, "ColorScaleNone", () => $5026337cfcb4b996$export$c991c3dd58d9959c);
+const $5026337cfcb4b996$export$10df5429b7082be2 = {
     Active: '__SandDance__Active',
     Collapsed: '__SandDance__Collapsed',
     Contains: '__SandDance__Contains',
@@ -156,13 +156,13 @@ const $f1d0eeb6595c811e$export$10df5429b7082be2 = {
     OffsetHeight: '__SandDance__H',
     OffsetWidth: '__SandDance__W'
 };
-const $f1d0eeb6595c811e$export$c9f17d36dfc40d76 = {
+const $5026337cfcb4b996$export$c9f17d36dfc40d76 = {
     Color: 'scale_color',
     X: 'scale_x',
     Y: 'scale_y',
     Z: 'scale_z'
 };
-const $f1d0eeb6595c811e$export$809e371dee643808 = {
+const $5026337cfcb4b996$export$809e371dee643808 = {
     ViewportWidth: 'ViewportWidth',
     ViewportHeight: 'ViewportHeight',
     MinCellWidth: 'MinCellWidth',
@@ -196,32 +196,32 @@ const $f1d0eeb6595c811e$export$809e371dee643808 = {
     ZGrounded: 'RoleZ_Grounded',
     ZProportion: 'RoleZ_ProportionSignal'
 };
-const $f1d0eeb6595c811e$export$8653a30c44b6e879 = '__Other';
-const $f1d0eeb6595c811e$export$c991c3dd58d9959c = 'none';
+const $5026337cfcb4b996$export$8653a30c44b6e879 = '__Other';
+const $5026337cfcb4b996$export$c991c3dd58d9959c = 'none';
 
 
-const $8f8d66f7ca1de7cd$export$4a9b1843df49fbce = 10;
-const $8f8d66f7ca1de7cd$export$15c9d32f115776f9 = 100;
-const $8f8d66f7ca1de7cd$export$929dfe98c4c4722c = 15;
-const $8f8d66f7ca1de7cd$export$7794a0aff56142de = 140;
-const $8f8d66f7ca1de7cd$export$7c432db1d0b63312 = 180;
-const $8f8d66f7ca1de7cd$export$6bd206e55cb747ae = 40;
-const $8f8d66f7ca1de7cd$export$c2b9f0002271e8ba = 40;
-const $8f8d66f7ca1de7cd$export$bdb7a7da14f9ff2b = 40;
-const $8f8d66f7ca1de7cd$export$c11851bee1b89f04 = 40;
-const $8f8d66f7ca1de7cd$export$2aa02e522549e01e = 100;
-const $8f8d66f7ca1de7cd$export$d3da25ad66816957 = 100;
-const $8f8d66f7ca1de7cd$export$2e7279af2df830e3 = 30;
-const $8f8d66f7ca1de7cd$export$f0388d9263db6e5f = 60;
-const $8f8d66f7ca1de7cd$export$fd4a597070549ada = 69;
-const $8f8d66f7ca1de7cd$export$a26a082bf9fa4ca0 = 92;
-const $8f8d66f7ca1de7cd$export$3f5b554d51e74365 = 120;
-const $8f8d66f7ca1de7cd$export$c33f11801bb18430 = 120;
-const $8f8d66f7ca1de7cd$export$e1f76e63dbed4a9a = 10;
-const $8f8d66f7ca1de7cd$export$c223d3ee3c0620d9 = 20;
+const $ee84a745a025909d$export$4a9b1843df49fbce = 10;
+const $ee84a745a025909d$export$15c9d32f115776f9 = 100;
+const $ee84a745a025909d$export$929dfe98c4c4722c = 15;
+const $ee84a745a025909d$export$7794a0aff56142de = 140;
+const $ee84a745a025909d$export$7c432db1d0b63312 = 180;
+const $ee84a745a025909d$export$6bd206e55cb747ae = 40;
+const $ee84a745a025909d$export$c2b9f0002271e8ba = 40;
+const $ee84a745a025909d$export$bdb7a7da14f9ff2b = 40;
+const $ee84a745a025909d$export$c11851bee1b89f04 = 40;
+const $ee84a745a025909d$export$2aa02e522549e01e = 100;
+const $ee84a745a025909d$export$d3da25ad66816957 = 100;
+const $ee84a745a025909d$export$2e7279af2df830e3 = 30;
+const $ee84a745a025909d$export$f0388d9263db6e5f = 60;
+const $ee84a745a025909d$export$fd4a597070549ada = 69;
+const $ee84a745a025909d$export$a26a082bf9fa4ca0 = 92;
+const $ee84a745a025909d$export$3f5b554d51e74365 = 120;
+const $ee84a745a025909d$export$c33f11801bb18430 = 120;
+const $ee84a745a025909d$export$e1f76e63dbed4a9a = 10;
+const $ee84a745a025909d$export$c223d3ee3c0620d9 = 20;
 
 
-function $4bf8c6eec4ec4d98$export$d3be63162ba033ae(specContext) {
+function $a3143d492dd590c0$export$d3be63162ba033ae(specContext) {
     switch(specContext.insight.totalStyle){
         case 'sum-strip':
         case 'sum-strip-percent':
@@ -234,19 +234,19 @@ function $4bf8c6eec4ec4d98$export$d3be63162ba033ae(specContext) {
 }
 
 
-function $a4bd3a2abef1c91e$export$2e2bcd8739ae039(specContext) {
+function $9eb45cf912b935b7$export$2e2bcd8739ae039(specContext) {
     const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
     const { language: language  } = specViewOptions;
     const bandProps = {
         orientation: 'horizontal',
         groupby: {
             column: specColumns.y,
-            defaultBins: $8f8d66f7ca1de7cd$export$4a9b1843df49fbce,
-            maxbinsSignalName: $f1d0eeb6595c811e$export$809e371dee643808.YBins,
+            defaultBins: $ee84a745a025909d$export$4a9b1843df49fbce,
+            maxbinsSignalName: $5026337cfcb4b996$export$809e371dee643808.YBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.YMaxBins,
-            maxbins: $8f8d66f7ca1de7cd$export$15c9d32f115776f9
+            maxbins: $ee84a745a025909d$export$15c9d32f115776f9
         },
-        minBandWidth: $8f8d66f7ca1de7cd$export$929dfe98c4c4722c,
+        minBandWidth: $ee84a745a025909d$export$929dfe98c4c4722c,
         showAxes: true
     };
     const x = {
@@ -376,8 +376,9 @@ function $a4bd3a2abef1c91e$export$2e2bcd8739ae039(specContext) {
                     role: 'y',
                     binnable: true,
                     axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
+                    axisSelectionBetweenTicks: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.YBins
+                        $5026337cfcb4b996$export$809e371dee643808.YBins
                     ]
                 },
                 {
@@ -395,24 +396,24 @@ function $a4bd3a2abef1c91e$export$2e2bcd8739ae039(specContext) {
                 },
                 {
                     role: 'size',
-                    allowNone: $4bf8c6eec4ec4d98$export$d3be63162ba033ae,
+                    allowNone: $a3143d492dd590c0$export$d3be63162ba033ae,
                     excludeCategoric: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.TreeMapMethod
+                        $5026337cfcb4b996$export$809e371dee643808.TreeMapMethod
                     ]
                 },
                 {
                     role: 'facet',
                     allowNone: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.FacetBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: 'facetV',
                     allowNone: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.FacetVBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetVBins
                     ]
                 }
             ]
@@ -424,19 +425,19 @@ function $a4bd3a2abef1c91e$export$2e2bcd8739ae039(specContext) {
 
 
 
-function $59721b26911c53b6$export$2e2bcd8739ae039(specContext) {
+function $2a8dbbf5227f16fc$export$2e2bcd8739ae039(specContext) {
     const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
     const { language: language  } = specViewOptions;
     const bandProps = {
         orientation: 'vertical',
         groupby: {
             column: specColumns.x,
-            defaultBins: $8f8d66f7ca1de7cd$export$4a9b1843df49fbce,
-            maxbinsSignalName: $f1d0eeb6595c811e$export$809e371dee643808.XBins,
+            defaultBins: $ee84a745a025909d$export$4a9b1843df49fbce,
+            maxbinsSignalName: $5026337cfcb4b996$export$809e371dee643808.XBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.XMaxBins,
-            maxbins: $8f8d66f7ca1de7cd$export$15c9d32f115776f9
+            maxbins: $ee84a745a025909d$export$15c9d32f115776f9
         },
-        minBandWidth: $8f8d66f7ca1de7cd$export$929dfe98c4c4722c,
+        minBandWidth: $ee84a745a025909d$export$929dfe98c4c4722c,
         showAxes: true
     };
     const y = {
@@ -565,8 +566,9 @@ function $59721b26911c53b6$export$2e2bcd8739ae039(specContext) {
                     role: 'x',
                     binnable: true,
                     axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
+                    axisSelectionBetweenTicks: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.XBins
+                        $5026337cfcb4b996$export$809e371dee643808.XBins
                     ]
                 },
                 {
@@ -584,24 +586,24 @@ function $59721b26911c53b6$export$2e2bcd8739ae039(specContext) {
                 },
                 {
                     role: 'size',
-                    allowNone: $4bf8c6eec4ec4d98$export$d3be63162ba033ae,
+                    allowNone: $a3143d492dd590c0$export$d3be63162ba033ae,
                     excludeCategoric: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.TreeMapMethod
+                        $5026337cfcb4b996$export$809e371dee643808.TreeMapMethod
                     ]
                 },
                 {
                     role: 'facet',
                     allowNone: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.FacetBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: 'facetV',
                     allowNone: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.FacetVBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetVBins
                     ]
                 }
             ]
@@ -613,7 +615,7 @@ function $59721b26911c53b6$export$2e2bcd8739ae039(specContext) {
 
 
 
-function $9bb712830dce4a86$export$2e2bcd8739ae039(specContext) {
+function $a373eaa0debff22a$export$2e2bcd8739ae039(specContext) {
     const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
     const axisScales = {
         x: {
@@ -631,12 +633,12 @@ function $9bb712830dce4a86$export$2e2bcd8739ae039(specContext) {
         orientation: 'horizontal',
         groupby: {
             column: specColumns.y,
-            defaultBins: $8f8d66f7ca1de7cd$export$4a9b1843df49fbce,
-            maxbinsSignalName: $f1d0eeb6595c811e$export$809e371dee643808.YBins,
+            defaultBins: $ee84a745a025909d$export$4a9b1843df49fbce,
+            maxbinsSignalName: $5026337cfcb4b996$export$809e371dee643808.YBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.YMaxBins,
-            maxbins: $8f8d66f7ca1de7cd$export$15c9d32f115776f9
+            maxbins: $ee84a745a025909d$export$15c9d32f115776f9
         },
-        minBandWidth: $8f8d66f7ca1de7cd$export$929dfe98c4c4722c,
+        minBandWidth: $ee84a745a025909d$export$929dfe98c4c4722c,
         showAxes: true
     };
     const vBandProps = {
@@ -644,12 +646,12 @@ function $9bb712830dce4a86$export$2e2bcd8739ae039(specContext) {
         orientation: 'vertical',
         groupby: {
             column: specColumns.x,
-            defaultBins: $8f8d66f7ca1de7cd$export$4a9b1843df49fbce,
-            maxbinsSignalName: $f1d0eeb6595c811e$export$809e371dee643808.XBins,
+            defaultBins: $ee84a745a025909d$export$4a9b1843df49fbce,
+            maxbinsSignalName: $5026337cfcb4b996$export$809e371dee643808.XBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.XMaxBins,
-            maxbins: $8f8d66f7ca1de7cd$export$15c9d32f115776f9
+            maxbins: $ee84a745a025909d$export$15c9d32f115776f9
         },
-        minBandWidth: $8f8d66f7ca1de7cd$export$929dfe98c4c4722c,
+        minBandWidth: $ee84a745a025909d$export$929dfe98c4c4722c,
         showAxes: true
     };
     const aggProps = {
@@ -749,16 +751,18 @@ function $9bb712830dce4a86$export$2e2bcd8739ae039(specContext) {
                     role: 'x',
                     binnable: true,
                     axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
+                    axisSelectionBetweenTicks: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.XBins
+                        $5026337cfcb4b996$export$809e371dee643808.XBins
                     ]
                 },
                 {
                     role: 'y',
                     binnable: true,
                     axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
+                    axisSelectionBetweenTicks: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.YBins
+                        $5026337cfcb4b996$export$809e371dee643808.YBins
                     ]
                 },
                 {
@@ -776,24 +780,24 @@ function $9bb712830dce4a86$export$2e2bcd8739ae039(specContext) {
                 },
                 {
                     role: 'size',
-                    allowNone: $4bf8c6eec4ec4d98$export$d3be63162ba033ae,
+                    allowNone: $a3143d492dd590c0$export$d3be63162ba033ae,
                     excludeCategoric: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.TreeMapMethod
+                        $5026337cfcb4b996$export$809e371dee643808.TreeMapMethod
                     ]
                 },
                 {
                     role: 'facet',
                     allowNone: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.FacetBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: 'facetV',
                     allowNone: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.FacetVBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetVBins
                     ]
                 }
             ]
@@ -803,7 +807,7 @@ function $9bb712830dce4a86$export$2e2bcd8739ae039(specContext) {
 
 
 
-function $637085e37fc5f95e$export$2e2bcd8739ae039(specContext) {
+function $08dfe35caf1fa5e1$export$2e2bcd8739ae039(specContext) {
     const { specColumns: specColumns  } = specContext;
     const squareProps = {
         sortBy: specColumns.sort,
@@ -844,14 +848,14 @@ function $637085e37fc5f95e$export$2e2bcd8739ae039(specContext) {
                     role: 'facet',
                     allowNone: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.FacetBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: 'facetV',
                     allowNone: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.FacetVBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetVBins
                     ]
                 }
             ]
@@ -861,7 +865,7 @@ function $637085e37fc5f95e$export$2e2bcd8739ae039(specContext) {
 
 
 
-function $063d4fc50e05fc0c$export$2e2bcd8739ae039(specContext) {
+function $f3e0a138e6e929f5$export$2e2bcd8739ae039(specContext) {
     const { specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
     const scatterProps = {
         x: specColumns.x,
@@ -919,20 +923,20 @@ function $063d4fc50e05fc0c$export$2e2bcd8739ae039(specContext) {
                     role: 'facet',
                     allowNone: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.FacetBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: 'facetV',
                     allowNone: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.FacetVBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetVBins
                     ]
                 }
             ],
             signals: [
-                $f1d0eeb6595c811e$export$809e371dee643808.PointScale,
-                $f1d0eeb6595c811e$export$809e371dee643808.ZGrounded
+                $5026337cfcb4b996$export$809e371dee643808.PointScale,
+                $5026337cfcb4b996$export$809e371dee643808.ZGrounded
             ]
         }
     };
@@ -941,7 +945,7 @@ function $063d4fc50e05fc0c$export$2e2bcd8739ae039(specContext) {
 
 
 
-function $8b0bf40e593a31a6$export$2e2bcd8739ae039(specContext) {
+function $ecb7abcc5738e856$export$2e2bcd8739ae039(specContext) {
     const { specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
     const axisScales = {
         x: {
@@ -959,12 +963,12 @@ function $8b0bf40e593a31a6$export$2e2bcd8739ae039(specContext) {
         orientation: 'horizontal',
         groupby: {
             column: specColumns.y,
-            defaultBins: $8f8d66f7ca1de7cd$export$4a9b1843df49fbce,
-            maxbinsSignalName: $f1d0eeb6595c811e$export$809e371dee643808.YBins,
+            defaultBins: $ee84a745a025909d$export$4a9b1843df49fbce,
+            maxbinsSignalName: $5026337cfcb4b996$export$809e371dee643808.YBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.YMaxBins,
-            maxbins: $8f8d66f7ca1de7cd$export$15c9d32f115776f9
+            maxbins: $ee84a745a025909d$export$15c9d32f115776f9
         },
-        minBandWidth: $8f8d66f7ca1de7cd$export$929dfe98c4c4722c,
+        minBandWidth: $ee84a745a025909d$export$929dfe98c4c4722c,
         showAxes: true
     };
     const vBandProps = {
@@ -972,12 +976,12 @@ function $8b0bf40e593a31a6$export$2e2bcd8739ae039(specContext) {
         orientation: 'vertical',
         groupby: {
             column: specColumns.x,
-            defaultBins: $8f8d66f7ca1de7cd$export$4a9b1843df49fbce,
-            maxbinsSignalName: $f1d0eeb6595c811e$export$809e371dee643808.XBins,
+            defaultBins: $ee84a745a025909d$export$4a9b1843df49fbce,
+            maxbinsSignalName: $5026337cfcb4b996$export$809e371dee643808.XBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.XMaxBins,
-            maxbins: $8f8d66f7ca1de7cd$export$15c9d32f115776f9
+            maxbins: $ee84a745a025909d$export$15c9d32f115776f9
         },
-        minBandWidth: $8f8d66f7ca1de7cd$export$929dfe98c4c4722c,
+        minBandWidth: $ee84a745a025909d$export$929dfe98c4c4722c,
         showAxes: true
     };
     const stackProps = {
@@ -1007,16 +1011,18 @@ function $8b0bf40e593a31a6$export$2e2bcd8739ae039(specContext) {
                     role: 'x',
                     binnable: true,
                     axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
+                    axisSelectionBetweenTicks: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.XBins
+                        $5026337cfcb4b996$export$809e371dee643808.XBins
                     ]
                 },
                 {
                     role: 'y',
                     binnable: true,
                     axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
+                    axisSelectionBetweenTicks: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.YBins
+                        $5026337cfcb4b996$export$809e371dee643808.YBins
                     ]
                 },
                 {
@@ -1031,14 +1037,14 @@ function $8b0bf40e593a31a6$export$2e2bcd8739ae039(specContext) {
                     role: 'facet',
                     allowNone: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.FacetBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: 'facetV',
                     allowNone: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.FacetVBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetVBins
                     ]
                 }
             ]
@@ -1048,7 +1054,7 @@ function $8b0bf40e593a31a6$export$2e2bcd8739ae039(specContext) {
 
 
 
-function $2bbfd4a14945dcb7$export$2e2bcd8739ae039(specContext) {
+function $bbdd12a5128860ad$export$2e2bcd8739ae039(specContext) {
     const { specColumns: specColumns  } = specContext;
     const stripProps = {
         sortOrder: 'ascending',
@@ -1115,14 +1121,14 @@ function $2bbfd4a14945dcb7$export$2e2bcd8739ae039(specContext) {
                     role: 'facet',
                     allowNone: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.FacetBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: 'facetV',
                     allowNone: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.FacetVBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetVBins
                     ]
                 }
             ]
@@ -1132,7 +1138,7 @@ function $2bbfd4a14945dcb7$export$2e2bcd8739ae039(specContext) {
 
 
 
-function $6d1a4b51e5763a07$export$2e2bcd8739ae039(specContext) {
+function $fae7e5559efac1f0$export$2e2bcd8739ae039(specContext) {
     const { specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
     const treemapProps = {
         corner: 'top-left',
@@ -1198,19 +1204,19 @@ function $6d1a4b51e5763a07$export$2e2bcd8739ae039(specContext) {
                     role: 'facet',
                     allowNone: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.FacetBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: 'facetV',
                     allowNone: true,
                     signals: [
-                        $f1d0eeb6595c811e$export$809e371dee643808.FacetVBins
+                        $5026337cfcb4b996$export$809e371dee643808.FacetVBins
                     ]
                 }
             ],
             signals: [
-                $f1d0eeb6595c811e$export$809e371dee643808.TreeMapMethod
+                $5026337cfcb4b996$export$809e371dee643808.TreeMapMethod
             ]
         }
     };
@@ -1218,7 +1224,7 @@ function $6d1a4b51e5763a07$export$2e2bcd8739ae039(specContext) {
 
 
 
-function $48d27d326f9b4d13$export$fb43a8c8f10fdc99(facetStyle, facetColumn, facetVColumn, axisTextColor) {
+function $6862902fe1d31c35$export$fb43a8c8f10fdc99(facetStyle, facetColumn, facetVColumn, axisTextColor) {
     let layoutPair;
     const groupby = facetColumn;
     const plotPadding = {
@@ -1240,12 +1246,12 @@ function $48d27d326f9b4d13$export$fb43a8c8f10fdc99(facetStyle, facetColumn, face
                     props: props
                 };
                 facetPadding = {
-                    bottom: $8f8d66f7ca1de7cd$export$bdb7a7da14f9ff2b,
-                    left: $8f8d66f7ca1de7cd$export$6bd206e55cb747ae,
+                    bottom: $ee84a745a025909d$export$bdb7a7da14f9ff2b,
+                    left: $ee84a745a025909d$export$6bd206e55cb747ae,
                     top: 0
                 };
-                plotPadding.y = $8f8d66f7ca1de7cd$export$c2b9f0002271e8ba;
-                plotPadding.x = $8f8d66f7ca1de7cd$export$c11851bee1b89f04;
+                plotPadding.y = $ee84a745a025909d$export$c2b9f0002271e8ba;
+                plotPadding.x = $ee84a745a025909d$export$c11851bee1b89f04;
                 break;
             }
         case 'wrap':
@@ -1261,9 +1267,9 @@ function $48d27d326f9b4d13$export$fb43a8c8f10fdc99(facetStyle, facetColumn, face
                     props: props
                 };
                 facetPadding = {
-                    bottom: $8f8d66f7ca1de7cd$export$bdb7a7da14f9ff2b,
-                    left: $8f8d66f7ca1de7cd$export$6bd206e55cb747ae,
-                    top: $8f8d66f7ca1de7cd$export$c2b9f0002271e8ba
+                    bottom: $ee84a745a025909d$export$bdb7a7da14f9ff2b,
+                    left: $ee84a745a025909d$export$6bd206e55cb747ae,
+                    top: $ee84a745a025909d$export$c2b9f0002271e8ba
                 };
                 break;
             }
@@ -1281,38 +1287,38 @@ function $48d27d326f9b4d13$export$fb43a8c8f10fdc99(facetStyle, facetColumn, face
 
 
 
-const $5e4fd8a2709ed3c1$var$map = {
-    barchart: $59721b26911c53b6$export$2e2bcd8739ae039,
-    barchartH: $a4bd3a2abef1c91e$export$2e2bcd8739ae039,
-    barchartV: $59721b26911c53b6$export$2e2bcd8739ae039,
-    density: $9bb712830dce4a86$export$2e2bcd8739ae039,
-    grid: $637085e37fc5f95e$export$2e2bcd8739ae039,
-    scatterplot: $063d4fc50e05fc0c$export$2e2bcd8739ae039,
-    stacks: $8b0bf40e593a31a6$export$2e2bcd8739ae039,
-    strips: $2bbfd4a14945dcb7$export$2e2bcd8739ae039,
-    treemap: $6d1a4b51e5763a07$export$2e2bcd8739ae039
+const $e03900d3ca5c71cc$var$map = {
+    barchart: $2a8dbbf5227f16fc$export$2e2bcd8739ae039,
+    barchartH: $9eb45cf912b935b7$export$2e2bcd8739ae039,
+    barchartV: $2a8dbbf5227f16fc$export$2e2bcd8739ae039,
+    density: $a373eaa0debff22a$export$2e2bcd8739ae039,
+    grid: $08dfe35caf1fa5e1$export$2e2bcd8739ae039,
+    scatterplot: $f3e0a138e6e929f5$export$2e2bcd8739ae039,
+    stacks: $ecb7abcc5738e856$export$2e2bcd8739ae039,
+    strips: $bbdd12a5128860ad$export$2e2bcd8739ae039,
+    treemap: $fae7e5559efac1f0$export$2e2bcd8739ae039
 };
-function $5e4fd8a2709ed3c1$export$104083a36c1647a7(specContext) {
+function $e03900d3ca5c71cc$export$104083a36c1647a7(specContext) {
     const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
-    const fn = $5e4fd8a2709ed3c1$var$map[insight.chart];
+    const fn = $e03900d3ca5c71cc$var$map[insight.chart];
     if (fn) {
         const props = fn(specContext);
         if (insight.columns.facet) {
             const discreteFacetColumn = {
                 column: specColumns.facet,
-                defaultBins: $8f8d66f7ca1de7cd$export$4a9b1843df49fbce,
-                maxbins: $8f8d66f7ca1de7cd$export$15c9d32f115776f9,
+                defaultBins: $ee84a745a025909d$export$4a9b1843df49fbce,
+                maxbins: $ee84a745a025909d$export$15c9d32f115776f9,
                 maxbinsSignalDisplayName: specViewOptions.language.FacetMaxBins,
-                maxbinsSignalName: $f1d0eeb6595c811e$export$809e371dee643808.FacetBins
+                maxbinsSignalName: $5026337cfcb4b996$export$809e371dee643808.FacetBins
             };
             const discreteFacetVColumn = {
                 column: specColumns.facetV,
-                defaultBins: $8f8d66f7ca1de7cd$export$4a9b1843df49fbce,
-                maxbins: $8f8d66f7ca1de7cd$export$15c9d32f115776f9,
+                defaultBins: $ee84a745a025909d$export$4a9b1843df49fbce,
+                maxbins: $ee84a745a025909d$export$15c9d32f115776f9,
                 maxbinsSignalDisplayName: specViewOptions.language.FacetVMaxBins,
-                maxbinsSignalName: $f1d0eeb6595c811e$export$809e371dee643808.FacetVBins
+                maxbinsSignalName: $5026337cfcb4b996$export$809e371dee643808.FacetVBins
             };
-            const { facetLayout: facetLayout , layoutPair: layoutPair  } = $48d27d326f9b4d13$export$fb43a8c8f10fdc99(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn, specViewOptions.colors.axisText);
+            const { facetLayout: facetLayout , layoutPair: layoutPair  } = $6862902fe1d31c35$export$fb43a8c8f10fdc99(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn, specViewOptions.colors.axisText);
             props.layouts.unshift(layoutPair);
             props.facetLayout = facetLayout;
         }
@@ -1321,56 +1327,56 @@ function $5e4fd8a2709ed3c1$export$104083a36c1647a7(specContext) {
 }
 
 
-var $b208adf1e2336264$exports = {};
+var $1f41cd3bd9350891$exports = {};
 
-$parcel$export($b208adf1e2336264$exports, "getColumnsFromData", () => $b208adf1e2336264$export$3f19ad07848df794);
-$parcel$export($b208adf1e2336264$exports, "inferAll", () => $b208adf1e2336264$export$e04a97cc71178399);
-$parcel$export($b208adf1e2336264$exports, "getSpecColumns", () => $b208adf1e2336264$export$9e6128b2231f5173);
-$parcel$export($b208adf1e2336264$exports, "getStats", () => $b208adf1e2336264$export$432f698644f45d1);
-function $ba87733a5a6dc4ea$export$2e2bcd8739ae039(constructor, factory, prototype) {
+$parcel$export($1f41cd3bd9350891$exports, "getColumnsFromData", () => $1f41cd3bd9350891$export$3f19ad07848df794);
+$parcel$export($1f41cd3bd9350891$exports, "inferAll", () => $1f41cd3bd9350891$export$e04a97cc71178399);
+$parcel$export($1f41cd3bd9350891$exports, "getSpecColumns", () => $1f41cd3bd9350891$export$9e6128b2231f5173);
+$parcel$export($1f41cd3bd9350891$exports, "getStats", () => $1f41cd3bd9350891$export$432f698644f45d1);
+function $b6d0d243eace325c$export$2e2bcd8739ae039(constructor, factory, prototype) {
     constructor.prototype = factory.prototype = prototype;
     prototype.constructor = constructor;
 }
-function $ba87733a5a6dc4ea$export$8b58be045bf06082(parent, definition) {
+function $b6d0d243eace325c$export$8b58be045bf06082(parent, definition) {
     var prototype = Object.create(parent.prototype);
     for(var key in definition)prototype[key] = definition[key];
     return prototype;
 }
 
 
-function $9dd900f85f77566b$export$892596cec99bc70e() {
+function $d0913b0967b605ca$export$892596cec99bc70e() {
 }
-var $9dd900f85f77566b$export$4adafc6ed0600c10 = 0.7;
-var $9dd900f85f77566b$export$9eace2cc0d12c98d = 1 / $9dd900f85f77566b$export$4adafc6ed0600c10;
-var $9dd900f85f77566b$var$reI = "\\s*([+-]?\\d+)\\s*", $9dd900f85f77566b$var$reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*", $9dd900f85f77566b$var$reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*", $9dd900f85f77566b$var$reHex = /^#([0-9a-f]{3,8})$/, $9dd900f85f77566b$var$reRgbInteger = new RegExp("^rgb\\(" + [
-    $9dd900f85f77566b$var$reI,
-    $9dd900f85f77566b$var$reI,
-    $9dd900f85f77566b$var$reI
-] + "\\)$"), $9dd900f85f77566b$var$reRgbPercent = new RegExp("^rgb\\(" + [
-    $9dd900f85f77566b$var$reP,
-    $9dd900f85f77566b$var$reP,
-    $9dd900f85f77566b$var$reP
-] + "\\)$"), $9dd900f85f77566b$var$reRgbaInteger = new RegExp("^rgba\\(" + [
-    $9dd900f85f77566b$var$reI,
-    $9dd900f85f77566b$var$reI,
-    $9dd900f85f77566b$var$reI,
-    $9dd900f85f77566b$var$reN
-] + "\\)$"), $9dd900f85f77566b$var$reRgbaPercent = new RegExp("^rgba\\(" + [
-    $9dd900f85f77566b$var$reP,
-    $9dd900f85f77566b$var$reP,
-    $9dd900f85f77566b$var$reP,
-    $9dd900f85f77566b$var$reN
-] + "\\)$"), $9dd900f85f77566b$var$reHslPercent = new RegExp("^hsl\\(" + [
-    $9dd900f85f77566b$var$reN,
-    $9dd900f85f77566b$var$reP,
-    $9dd900f85f77566b$var$reP
-] + "\\)$"), $9dd900f85f77566b$var$reHslaPercent = new RegExp("^hsla\\(" + [
-    $9dd900f85f77566b$var$reN,
-    $9dd900f85f77566b$var$reP,
-    $9dd900f85f77566b$var$reP,
-    $9dd900f85f77566b$var$reN
+var $d0913b0967b605ca$export$4adafc6ed0600c10 = 0.7;
+var $d0913b0967b605ca$export$9eace2cc0d12c98d = 1 / $d0913b0967b605ca$export$4adafc6ed0600c10;
+var $d0913b0967b605ca$var$reI = "\\s*([+-]?\\d+)\\s*", $d0913b0967b605ca$var$reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*", $d0913b0967b605ca$var$reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*", $d0913b0967b605ca$var$reHex = /^#([0-9a-f]{3,8})$/, $d0913b0967b605ca$var$reRgbInteger = new RegExp("^rgb\\(" + [
+    $d0913b0967b605ca$var$reI,
+    $d0913b0967b605ca$var$reI,
+    $d0913b0967b605ca$var$reI
+] + "\\)$"), $d0913b0967b605ca$var$reRgbPercent = new RegExp("^rgb\\(" + [
+    $d0913b0967b605ca$var$reP,
+    $d0913b0967b605ca$var$reP,
+    $d0913b0967b605ca$var$reP
+] + "\\)$"), $d0913b0967b605ca$var$reRgbaInteger = new RegExp("^rgba\\(" + [
+    $d0913b0967b605ca$var$reI,
+    $d0913b0967b605ca$var$reI,
+    $d0913b0967b605ca$var$reI,
+    $d0913b0967b605ca$var$reN
+] + "\\)$"), $d0913b0967b605ca$var$reRgbaPercent = new RegExp("^rgba\\(" + [
+    $d0913b0967b605ca$var$reP,
+    $d0913b0967b605ca$var$reP,
+    $d0913b0967b605ca$var$reP,
+    $d0913b0967b605ca$var$reN
+] + "\\)$"), $d0913b0967b605ca$var$reHslPercent = new RegExp("^hsl\\(" + [
+    $d0913b0967b605ca$var$reN,
+    $d0913b0967b605ca$var$reP,
+    $d0913b0967b605ca$var$reP
+] + "\\)$"), $d0913b0967b605ca$var$reHslaPercent = new RegExp("^hsla\\(" + [
+    $d0913b0967b605ca$var$reN,
+    $d0913b0967b605ca$var$reP,
+    $d0913b0967b605ca$var$reP,
+    $d0913b0967b605ca$var$reN
 ] + "\\)$");
-var $9dd900f85f77566b$var$named = {
+var $d0913b0967b605ca$var$named = {
     aliceblue: 15792383,
     antiquewhite: 16444375,
     aqua: 65535,
@@ -1520,74 +1526,74 @@ var $9dd900f85f77566b$var$named = {
     yellow: 16776960,
     yellowgreen: 10145074
 };
-$ba87733a5a6dc4ea$export$2e2bcd8739ae039($9dd900f85f77566b$export$892596cec99bc70e, $9dd900f85f77566b$export$2e2bcd8739ae039, {
+$b6d0d243eace325c$export$2e2bcd8739ae039($d0913b0967b605ca$export$892596cec99bc70e, $d0913b0967b605ca$export$2e2bcd8739ae039, {
     copy: function(channels) {
         return Object.assign(new this.constructor, this, channels);
     },
     displayable: function() {
         return this.rgb().displayable();
     },
-    hex: $9dd900f85f77566b$var$color_formatHex,
-    formatHex: $9dd900f85f77566b$var$color_formatHex,
-    formatHsl: $9dd900f85f77566b$var$color_formatHsl,
-    formatRgb: $9dd900f85f77566b$var$color_formatRgb,
-    toString: $9dd900f85f77566b$var$color_formatRgb
+    hex: $d0913b0967b605ca$var$color_formatHex,
+    formatHex: $d0913b0967b605ca$var$color_formatHex,
+    formatHsl: $d0913b0967b605ca$var$color_formatHsl,
+    formatRgb: $d0913b0967b605ca$var$color_formatRgb,
+    toString: $d0913b0967b605ca$var$color_formatRgb
 });
-function $9dd900f85f77566b$var$color_formatHex() {
+function $d0913b0967b605ca$var$color_formatHex() {
     return this.rgb().formatHex();
 }
-function $9dd900f85f77566b$var$color_formatHsl() {
-    return $9dd900f85f77566b$export$8133dc3fa904d6d1(this).formatHsl();
+function $d0913b0967b605ca$var$color_formatHsl() {
+    return $d0913b0967b605ca$export$8133dc3fa904d6d1(this).formatHsl();
 }
-function $9dd900f85f77566b$var$color_formatRgb() {
+function $d0913b0967b605ca$var$color_formatRgb() {
     return this.rgb().formatRgb();
 }
-function $9dd900f85f77566b$export$2e2bcd8739ae039(format) {
+function $d0913b0967b605ca$export$2e2bcd8739ae039(format) {
     var m, l;
     format = (format + "").trim().toLowerCase();
-    return (m = $9dd900f85f77566b$var$reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? $9dd900f85f77566b$var$rgbn(m) // #ff0000
-     : l === 3 ? new $9dd900f85f77566b$export$5e05a94393ac29e3(m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, (m & 15) << 4 | m & 15, 1) // #f00
-     : l === 8 ? $9dd900f85f77566b$var$rgba(m >> 24 & 255, m >> 16 & 255, m >> 8 & 255, (m & 255) / 255) // #ff000000
-     : l === 4 ? $9dd900f85f77566b$var$rgba(m >> 12 & 15 | m >> 8 & 240, m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, ((m & 15) << 4 | m & 15) / 255) // #f000
-     : null) : (m = $9dd900f85f77566b$var$reRgbInteger.exec(format)) ? new $9dd900f85f77566b$export$5e05a94393ac29e3(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
-     : (m = $9dd900f85f77566b$var$reRgbPercent.exec(format)) ? new $9dd900f85f77566b$export$5e05a94393ac29e3(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
-     : (m = $9dd900f85f77566b$var$reRgbaInteger.exec(format)) ? $9dd900f85f77566b$var$rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
-     : (m = $9dd900f85f77566b$var$reRgbaPercent.exec(format)) ? $9dd900f85f77566b$var$rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-     : (m = $9dd900f85f77566b$var$reHslPercent.exec(format)) ? $9dd900f85f77566b$var$hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-     : (m = $9dd900f85f77566b$var$reHslaPercent.exec(format)) ? $9dd900f85f77566b$var$hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-     : $9dd900f85f77566b$var$named.hasOwnProperty(format) ? $9dd900f85f77566b$var$rgbn($9dd900f85f77566b$var$named[format]) // eslint-disable-line no-prototype-builtins
-     : format === "transparent" ? new $9dd900f85f77566b$export$5e05a94393ac29e3(NaN, NaN, NaN, 0) : null;
+    return (m = $d0913b0967b605ca$var$reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? $d0913b0967b605ca$var$rgbn(m) // #ff0000
+     : l === 3 ? new $d0913b0967b605ca$export$5e05a94393ac29e3(m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, (m & 15) << 4 | m & 15, 1) // #f00
+     : l === 8 ? $d0913b0967b605ca$var$rgba(m >> 24 & 255, m >> 16 & 255, m >> 8 & 255, (m & 255) / 255) // #ff000000
+     : l === 4 ? $d0913b0967b605ca$var$rgba(m >> 12 & 15 | m >> 8 & 240, m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, ((m & 15) << 4 | m & 15) / 255) // #f000
+     : null) : (m = $d0913b0967b605ca$var$reRgbInteger.exec(format)) ? new $d0913b0967b605ca$export$5e05a94393ac29e3(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+     : (m = $d0913b0967b605ca$var$reRgbPercent.exec(format)) ? new $d0913b0967b605ca$export$5e05a94393ac29e3(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+     : (m = $d0913b0967b605ca$var$reRgbaInteger.exec(format)) ? $d0913b0967b605ca$var$rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+     : (m = $d0913b0967b605ca$var$reRgbaPercent.exec(format)) ? $d0913b0967b605ca$var$rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+     : (m = $d0913b0967b605ca$var$reHslPercent.exec(format)) ? $d0913b0967b605ca$var$hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+     : (m = $d0913b0967b605ca$var$reHslaPercent.exec(format)) ? $d0913b0967b605ca$var$hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+     : $d0913b0967b605ca$var$named.hasOwnProperty(format) ? $d0913b0967b605ca$var$rgbn($d0913b0967b605ca$var$named[format]) // eslint-disable-line no-prototype-builtins
+     : format === "transparent" ? new $d0913b0967b605ca$export$5e05a94393ac29e3(NaN, NaN, NaN, 0) : null;
 }
-function $9dd900f85f77566b$var$rgbn(n) {
-    return new $9dd900f85f77566b$export$5e05a94393ac29e3(n >> 16 & 255, n >> 8 & 255, n & 255, 1);
+function $d0913b0967b605ca$var$rgbn(n) {
+    return new $d0913b0967b605ca$export$5e05a94393ac29e3(n >> 16 & 255, n >> 8 & 255, n & 255, 1);
 }
-function $9dd900f85f77566b$var$rgba(r, g, b, a) {
+function $d0913b0967b605ca$var$rgba(r, g, b, a) {
     if (a <= 0) r = g = b = NaN;
-    return new $9dd900f85f77566b$export$5e05a94393ac29e3(r, g, b, a);
+    return new $d0913b0967b605ca$export$5e05a94393ac29e3(r, g, b, a);
 }
-function $9dd900f85f77566b$export$42da0a331c2802f5(o) {
-    if (!(o instanceof $9dd900f85f77566b$export$892596cec99bc70e)) o = $9dd900f85f77566b$export$2e2bcd8739ae039(o);
-    if (!o) return new $9dd900f85f77566b$export$5e05a94393ac29e3;
+function $d0913b0967b605ca$export$42da0a331c2802f5(o) {
+    if (!(o instanceof $d0913b0967b605ca$export$892596cec99bc70e)) o = $d0913b0967b605ca$export$2e2bcd8739ae039(o);
+    if (!o) return new $d0913b0967b605ca$export$5e05a94393ac29e3;
     o = o.rgb();
-    return new $9dd900f85f77566b$export$5e05a94393ac29e3(o.r, o.g, o.b, o.opacity);
+    return new $d0913b0967b605ca$export$5e05a94393ac29e3(o.r, o.g, o.b, o.opacity);
 }
-function $9dd900f85f77566b$export$8972dc0e6ad9238f(r, g, b, opacity) {
-    return arguments.length === 1 ? $9dd900f85f77566b$export$42da0a331c2802f5(r) : new $9dd900f85f77566b$export$5e05a94393ac29e3(r, g, b, opacity == null ? 1 : opacity);
+function $d0913b0967b605ca$export$8972dc0e6ad9238f(r, g, b, opacity) {
+    return arguments.length === 1 ? $d0913b0967b605ca$export$42da0a331c2802f5(r) : new $d0913b0967b605ca$export$5e05a94393ac29e3(r, g, b, opacity == null ? 1 : opacity);
 }
-function $9dd900f85f77566b$export$5e05a94393ac29e3(r, g, b, opacity) {
+function $d0913b0967b605ca$export$5e05a94393ac29e3(r, g, b, opacity) {
     this.r = +r;
     this.g = +g;
     this.b = +b;
     this.opacity = +opacity;
 }
-$ba87733a5a6dc4ea$export$2e2bcd8739ae039($9dd900f85f77566b$export$5e05a94393ac29e3, $9dd900f85f77566b$export$8972dc0e6ad9238f, $ba87733a5a6dc4ea$export$8b58be045bf06082($9dd900f85f77566b$export$892596cec99bc70e, {
+$b6d0d243eace325c$export$2e2bcd8739ae039($d0913b0967b605ca$export$5e05a94393ac29e3, $d0913b0967b605ca$export$8972dc0e6ad9238f, $b6d0d243eace325c$export$8b58be045bf06082($d0913b0967b605ca$export$892596cec99bc70e, {
     brighter: function(k) {
-        k = k == null ? $9dd900f85f77566b$export$9eace2cc0d12c98d : Math.pow($9dd900f85f77566b$export$9eace2cc0d12c98d, k);
-        return new $9dd900f85f77566b$export$5e05a94393ac29e3(this.r * k, this.g * k, this.b * k, this.opacity);
+        k = k == null ? $d0913b0967b605ca$export$9eace2cc0d12c98d : Math.pow($d0913b0967b605ca$export$9eace2cc0d12c98d, k);
+        return new $d0913b0967b605ca$export$5e05a94393ac29e3(this.r * k, this.g * k, this.b * k, this.opacity);
     },
     darker: function(k) {
-        k = k == null ? $9dd900f85f77566b$export$4adafc6ed0600c10 : Math.pow($9dd900f85f77566b$export$4adafc6ed0600c10, k);
-        return new $9dd900f85f77566b$export$5e05a94393ac29e3(this.r * k, this.g * k, this.b * k, this.opacity);
+        k = k == null ? $d0913b0967b605ca$export$4adafc6ed0600c10 : Math.pow($d0913b0967b605ca$export$4adafc6ed0600c10, k);
+        return new $d0913b0967b605ca$export$5e05a94393ac29e3(this.r * k, this.g * k, this.b * k, this.opacity);
     },
     rgb: function() {
         return this;
@@ -1595,34 +1601,34 @@ $ba87733a5a6dc4ea$export$2e2bcd8739ae039($9dd900f85f77566b$export$5e05a94393ac29
     displayable: function() {
         return -0.5 <= this.r && this.r < 255.5 && -0.5 <= this.g && this.g < 255.5 && -0.5 <= this.b && this.b < 255.5 && 0 <= this.opacity && this.opacity <= 1;
     },
-    hex: $9dd900f85f77566b$var$rgb_formatHex,
-    formatHex: $9dd900f85f77566b$var$rgb_formatHex,
-    formatRgb: $9dd900f85f77566b$var$rgb_formatRgb,
-    toString: $9dd900f85f77566b$var$rgb_formatRgb
+    hex: $d0913b0967b605ca$var$rgb_formatHex,
+    formatHex: $d0913b0967b605ca$var$rgb_formatHex,
+    formatRgb: $d0913b0967b605ca$var$rgb_formatRgb,
+    toString: $d0913b0967b605ca$var$rgb_formatRgb
 }));
-function $9dd900f85f77566b$var$rgb_formatHex() {
-    return "#" + $9dd900f85f77566b$var$hex(this.r) + $9dd900f85f77566b$var$hex(this.g) + $9dd900f85f77566b$var$hex(this.b);
+function $d0913b0967b605ca$var$rgb_formatHex() {
+    return "#" + $d0913b0967b605ca$var$hex(this.r) + $d0913b0967b605ca$var$hex(this.g) + $d0913b0967b605ca$var$hex(this.b);
 }
-function $9dd900f85f77566b$var$rgb_formatRgb() {
+function $d0913b0967b605ca$var$rgb_formatRgb() {
     var a = this.opacity;
     a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
     return (a === 1 ? "rgb(" : "rgba(") + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.b) || 0)) + (a === 1 ? ")" : ", " + a + ")");
 }
-function $9dd900f85f77566b$var$hex(value) {
+function $d0913b0967b605ca$var$hex(value) {
     value = Math.max(0, Math.min(255, Math.round(value) || 0));
     return (value < 16 ? "0" : "") + value.toString(16);
 }
-function $9dd900f85f77566b$var$hsla(h, s, l, a) {
+function $d0913b0967b605ca$var$hsla(h, s, l, a) {
     if (a <= 0) h = s = l = NaN;
     else if (l <= 0 || l >= 1) h = s = NaN;
     else if (s <= 0) h = NaN;
-    return new $9dd900f85f77566b$var$Hsl(h, s, l, a);
+    return new $d0913b0967b605ca$var$Hsl(h, s, l, a);
 }
-function $9dd900f85f77566b$export$8133dc3fa904d6d1(o) {
-    if (o instanceof $9dd900f85f77566b$var$Hsl) return new $9dd900f85f77566b$var$Hsl(o.h, o.s, o.l, o.opacity);
-    if (!(o instanceof $9dd900f85f77566b$export$892596cec99bc70e)) o = $9dd900f85f77566b$export$2e2bcd8739ae039(o);
-    if (!o) return new $9dd900f85f77566b$var$Hsl;
-    if (o instanceof $9dd900f85f77566b$var$Hsl) return o;
+function $d0913b0967b605ca$export$8133dc3fa904d6d1(o) {
+    if (o instanceof $d0913b0967b605ca$var$Hsl) return new $d0913b0967b605ca$var$Hsl(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof $d0913b0967b605ca$export$892596cec99bc70e)) o = $d0913b0967b605ca$export$2e2bcd8739ae039(o);
+    if (!o) return new $d0913b0967b605ca$var$Hsl;
+    if (o instanceof $d0913b0967b605ca$var$Hsl) return o;
     o = o.rgb();
     var r = o.r / 255, g = o.g / 255, b = o.b / 255, min = Math.min(r, g, b), max = Math.max(r, g, b), h = NaN, s = max - min, l = (max + min) / 2;
     if (s) {
@@ -1632,29 +1638,29 @@ function $9dd900f85f77566b$export$8133dc3fa904d6d1(o) {
         s /= l < 0.5 ? max + min : 2 - max - min;
         h *= 60;
     } else s = l > 0 && l < 1 ? 0 : h;
-    return new $9dd900f85f77566b$var$Hsl(h, s, l, o.opacity);
+    return new $d0913b0967b605ca$var$Hsl(h, s, l, o.opacity);
 }
-function $9dd900f85f77566b$export$8f4a7c0bb78e6ea8(h, s, l, opacity) {
-    return arguments.length === 1 ? $9dd900f85f77566b$export$8133dc3fa904d6d1(h) : new $9dd900f85f77566b$var$Hsl(h, s, l, opacity == null ? 1 : opacity);
+function $d0913b0967b605ca$export$8f4a7c0bb78e6ea8(h, s, l, opacity) {
+    return arguments.length === 1 ? $d0913b0967b605ca$export$8133dc3fa904d6d1(h) : new $d0913b0967b605ca$var$Hsl(h, s, l, opacity == null ? 1 : opacity);
 }
-function $9dd900f85f77566b$var$Hsl(h, s, l, opacity) {
+function $d0913b0967b605ca$var$Hsl(h, s, l, opacity) {
     this.h = +h;
     this.s = +s;
     this.l = +l;
     this.opacity = +opacity;
 }
-$ba87733a5a6dc4ea$export$2e2bcd8739ae039($9dd900f85f77566b$var$Hsl, $9dd900f85f77566b$export$8f4a7c0bb78e6ea8, $ba87733a5a6dc4ea$export$8b58be045bf06082($9dd900f85f77566b$export$892596cec99bc70e, {
+$b6d0d243eace325c$export$2e2bcd8739ae039($d0913b0967b605ca$var$Hsl, $d0913b0967b605ca$export$8f4a7c0bb78e6ea8, $b6d0d243eace325c$export$8b58be045bf06082($d0913b0967b605ca$export$892596cec99bc70e, {
     brighter: function(k) {
-        k = k == null ? $9dd900f85f77566b$export$9eace2cc0d12c98d : Math.pow($9dd900f85f77566b$export$9eace2cc0d12c98d, k);
-        return new $9dd900f85f77566b$var$Hsl(this.h, this.s, this.l * k, this.opacity);
+        k = k == null ? $d0913b0967b605ca$export$9eace2cc0d12c98d : Math.pow($d0913b0967b605ca$export$9eace2cc0d12c98d, k);
+        return new $d0913b0967b605ca$var$Hsl(this.h, this.s, this.l * k, this.opacity);
     },
     darker: function(k) {
-        k = k == null ? $9dd900f85f77566b$export$4adafc6ed0600c10 : Math.pow($9dd900f85f77566b$export$4adafc6ed0600c10, k);
-        return new $9dd900f85f77566b$var$Hsl(this.h, this.s, this.l * k, this.opacity);
+        k = k == null ? $d0913b0967b605ca$export$4adafc6ed0600c10 : Math.pow($d0913b0967b605ca$export$4adafc6ed0600c10, k);
+        return new $d0913b0967b605ca$var$Hsl(this.h, this.s, this.l * k, this.opacity);
     },
     rgb: function() {
         var h = this.h % 360 + (this.h < 0) * 360, s = isNaN(h) || isNaN(this.s) ? 0 : this.s, l = this.l, m2 = l + (l < 0.5 ? l : 1 - l) * s, m1 = 2 * l - m2;
-        return new $9dd900f85f77566b$export$5e05a94393ac29e3($9dd900f85f77566b$var$hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), $9dd900f85f77566b$var$hsl2rgb(h, m1, m2), $9dd900f85f77566b$var$hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
+        return new $d0913b0967b605ca$export$5e05a94393ac29e3($d0913b0967b605ca$var$hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), $d0913b0967b605ca$var$hsl2rgb(h, m1, m2), $d0913b0967b605ca$var$hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
     },
     displayable: function() {
         return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && 0 <= this.l && this.l <= 1 && 0 <= this.opacity && this.opacity <= 1;
@@ -1665,19 +1671,19 @@ $ba87733a5a6dc4ea$export$2e2bcd8739ae039($9dd900f85f77566b$var$Hsl, $9dd900f85f7
         return (a === 1 ? "hsl(" : "hsla(") + (this.h || 0) + ", " + (this.s || 0) * 100 + "%, " + (this.l || 0) * 100 + "%" + (a === 1 ? ")" : ", " + a + ")");
     }
 }));
-/* From FvD 13.37, CSS Color Module Level 3 */ function $9dd900f85f77566b$var$hsl2rgb(h, m1, m2) {
+/* From FvD 13.37, CSS Color Module Level 3 */ function $d0913b0967b605ca$var$hsl2rgb(h, m1, m2) {
     return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
 }
 
 
 
-function $b208adf1e2336264$var$isColor(cssColorSpecifier) {
-    return !!$9dd900f85f77566b$export$2e2bcd8739ae039(cssColorSpecifier);
+function $1f41cd3bd9350891$var$isColor(cssColorSpecifier) {
+    return !!$d0913b0967b605ca$export$2e2bcd8739ae039(cssColorSpecifier);
 }
-function $b208adf1e2336264$var$isQuantitative(column) {
+function $1f41cd3bd9350891$var$isQuantitative(column) {
     return column.type === 'number' || column.type === 'integer';
 }
-function $b208adf1e2336264$export$3f19ad07848df794(inferTypesFn, data, columnTypes) {
+function $1f41cd3bd9350891$export$3f19ad07848df794(inferTypesFn, data, columnTypes) {
     const sample = data[0];
     const fields = sample ? Object.keys(sample) : [];
     const inferences = Object.assign(Object.assign({
@@ -1689,10 +1695,10 @@ function $b208adf1e2336264$export$3f19ad07848df794(inferTypesFn, data, columnTyp
         };
         return column;
     });
-    $b208adf1e2336264$export$e04a97cc71178399(columns, data);
+    $1f41cd3bd9350891$export$e04a97cc71178399(columns, data);
     return columns;
 }
-function $b208adf1e2336264$export$9e6128b2231f5173(insight, columns) {
+function $1f41cd3bd9350891$export$9e6128b2231f5173(insight, columns) {
     function getColumnByName(name) {
         return columns.filter((c)=>c.name === name
         )[0];
@@ -1710,27 +1716,27 @@ function $b208adf1e2336264$export$9e6128b2231f5173(insight, columns) {
         z: getColumnByName(insight.columns && insight.columns.z)
     };
 }
-function $b208adf1e2336264$export$e04a97cc71178399(columns, data) {
+function $1f41cd3bd9350891$export$e04a97cc71178399(columns, data) {
     columns.forEach((column)=>{
         if (column) {
-            if (typeof column.quantitative !== 'boolean') column.quantitative = $b208adf1e2336264$var$isQuantitative(column);
-            if (!column.stats) column.stats = $b208adf1e2336264$export$432f698644f45d1(data, column);
-            if (column.type === 'string' && typeof column.isColorData !== 'boolean') $b208adf1e2336264$var$checkIsColorData(data, column);
+            if (typeof column.quantitative !== 'boolean') column.quantitative = $1f41cd3bd9350891$var$isQuantitative(column);
+            if (!column.stats) column.stats = $1f41cd3bd9350891$export$432f698644f45d1(data, column);
+            if (column.type === 'string' && typeof column.isColorData !== 'boolean') $1f41cd3bd9350891$var$checkIsColorData(data, column);
         }
     });
 }
-function $b208adf1e2336264$var$checkIsColorData(data, column) {
+function $1f41cd3bd9350891$var$checkIsColorData(data, column) {
     if (!column.stats.hasColorData) {
         column.isColorData = false;
         return;
     }
-    for(let i = 0; i < data.length; i++)if (!$b208adf1e2336264$var$isColor(data[i][column.name])) {
+    for(let i = 0; i < data.length; i++)if (!$1f41cd3bd9350891$var$isColor(data[i][column.name])) {
         column.isColorData = false;
         return;
     }
     column.isColorData = true;
 }
-function $b208adf1e2336264$export$432f698644f45d1(data, column) {
+function $1f41cd3bd9350891$export$432f698644f45d1(data, column) {
     const distinctMap = {
     };
     const stats = {
@@ -1748,23 +1754,23 @@ function $b208adf1e2336264$export$432f698644f45d1(data, column) {
         if (stats.min === null || value < stats.min) stats.min = value;
         let num = +value;
         if (!isNaN(num)) sum += num;
-        if (column.type === 'string' && !stats.hasColorData && $b208adf1e2336264$var$isColor(value)) stats.hasColorData = true;
+        if (column.type === 'string' && !stats.hasColorData && $1f41cd3bd9350891$var$isColor(value)) stats.hasColorData = true;
     }
     if (column.quantitative) {
         stats.mean = data.length > 0 && sum / data.length;
-        stats.hasNegative = $b208adf1e2336264$var$detectNegative(column, data);
-        if (column.type === 'integer') stats.isSequential = $b208adf1e2336264$var$detectSequentialColumn(column, data);
+        stats.hasNegative = $1f41cd3bd9350891$var$detectNegative(column, data);
+        if (column.type === 'integer') stats.isSequential = $1f41cd3bd9350891$var$detectSequentialColumn(column, data);
     }
     stats.distinctValueCount = Object.keys(distinctMap).length;
     return stats;
 }
-function $b208adf1e2336264$var$detectNegative(column, data) {
+function $1f41cd3bd9350891$var$detectNegative(column, data) {
     for(let i = 1; i < data.length; i++){
         if (data[i][column.name] < 0) return true;
     }
     return false;
 }
-function $b208adf1e2336264$var$detectSequentialColumn(column, data) {
+function $1f41cd3bd9350891$var$detectSequentialColumn(column, data) {
     if (data.length < 2) return false;
     let colname = column.name;
     for(let i = 1; i < data.length; i++){
@@ -1776,31 +1782,31 @@ function $b208adf1e2336264$var$detectSequentialColumn(column, data) {
 
 
 
-function $a6d4d5d140bab192$export$b18909608a999daa(scope, ...axis) {
+function $1d26d69d9d3d5b6e$export$b18909608a999daa(scope, ...axis) {
     if (!scope.axes) scope.axes = [];
     scope.axes.push(...axis);
 }
-function $a6d4d5d140bab192$export$6853292f627997e4(scope, ...data) {
+function $1d26d69d9d3d5b6e$export$6853292f627997e4(scope, ...data) {
     if (!scope.data) scope.data = [];
     scope.data.push(...data);
 }
-function $a6d4d5d140bab192$export$3df320e901c23a48(scope, ...marks) {
+function $1d26d69d9d3d5b6e$export$3df320e901c23a48(scope, ...marks) {
     if (!scope.marks) scope.marks = [];
     scope.marks.push(...marks);
 }
-function $a6d4d5d140bab192$export$290268902279a991(scope, ...scale) {
+function $1d26d69d9d3d5b6e$export$290268902279a991(scope, ...scale) {
     if (!scope.scales) scope.scales = [];
     scope.scales.push(...scale.filter(Boolean));
 }
-function $a6d4d5d140bab192$export$5346a0d8a9111b3f(scope, ...signal) {
+function $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(scope, ...signal) {
     if (!scope.signals) scope.signals = [];
     scope.signals.push(...signal);
 }
-function $a6d4d5d140bab192$export$eea5d31e98930019(data, ...transforms) {
+function $1d26d69d9d3d5b6e$export$eea5d31e98930019(data, ...transforms) {
     if (!data.transform) data.transform = [];
     data.transform.push(...transforms);
 }
-function $a6d4d5d140bab192$export$ef4373c7e62b2278(data, dataName) {
+function $1d26d69d9d3d5b6e$export$ef4373c7e62b2278(data, dataName) {
     for(let i = 0; i < data.length; i++){
         if (data[i].name === dataName) return {
             data: data[i],
@@ -1808,18 +1814,18 @@ function $a6d4d5d140bab192$export$ef4373c7e62b2278(data, dataName) {
         };
     }
 }
-function $a6d4d5d140bab192$export$53a21aeef48e14a8(groupings) {
+function $1d26d69d9d3d5b6e$export$53a21aeef48e14a8(groupings) {
     const groupby = groupings.map((g)=>g.groupby
     );
     return groupby.reduce((acc, val)=>acc.concat(val)
     , []);
 }
-function $a6d4d5d140bab192$export$e6b6683aec0fe907(...offsets) {
+function $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(...offsets) {
     return offsets.filter(Boolean).join(' + ');
 }
 
 
-function $ea3d9426ca660d78$export$3678bfcfeaea7c36(props1) {
+function $9d5f9a843f218841$export$3678bfcfeaea7c36(props1) {
     const { axesOffsets: axesOffsets , axisScales: axisScales , axesScopes: axesScopes , axesTitlePadding: axesTitlePadding , allGlobalScales: allGlobalScales , globalScope: globalScope , labelBaseline: labelBaseline , plotOffsetSignals: plotOffsetSignals , specColumns: specColumns , specViewOptions: specViewOptions  } = props1;
     const { scope: scope  } = globalScope;
     allGlobalScales.forEach((globalScales)=>{
@@ -1827,7 +1833,7 @@ function $ea3d9426ca660d78$export$3678bfcfeaea7c36(props1) {
         for(let xyz in scales){
             let _scales = scales[xyz];
             if (_scales) {
-                $a6d4d5d140bab192$export$290268902279a991(scope, ..._scales);
+                $1d26d69d9d3d5b6e$export$290268902279a991(scope, ..._scales);
                 let { showAxes: showAxes  } = globalScales;
                 let zindex = undefined;
                 if (xyz === 'z') {
@@ -1858,7 +1864,7 @@ function $ea3d9426ca660d78$export$3678bfcfeaea7c36(props1) {
                             labelBaseline: labelBaseline[xyz],
                             zindex: zindex
                         };
-                        axesScopes['main'].forEach((a)=>$a6d4d5d140bab192$export$b18909608a999daa(a.scope, $ea3d9426ca660d78$var$createAxis(Object.assign(Object.assign({
+                        axesScopes['main'].forEach((a)=>$1d26d69d9d3d5b6e$export$b18909608a999daa(a.scope, $9d5f9a843f218841$var$createAxis(Object.assign(Object.assign({
                             }, props), {
                                 scale: a.scale || _scales[0],
                                 showTitle: a.title,
@@ -1866,7 +1872,7 @@ function $ea3d9426ca660d78$export$3678bfcfeaea7c36(props1) {
                                 showLines: a.lines
                             })))
                         );
-                        if (axesScopes[xyz]) axesScopes[xyz].forEach((a)=>$a6d4d5d140bab192$export$b18909608a999daa(a.scope, $ea3d9426ca660d78$var$createAxis(Object.assign(Object.assign({
+                        if (axesScopes[xyz]) axesScopes[xyz].forEach((a)=>$1d26d69d9d3d5b6e$export$b18909608a999daa(a.scope, $9d5f9a843f218841$var$createAxis(Object.assign(Object.assign({
                             }, props), {
                                 scale: a.scale || _scales[0],
                                 showTitle: a.title,
@@ -1884,7 +1890,7 @@ function $ea3d9426ca660d78$export$3678bfcfeaea7c36(props1) {
         }
     });
 }
-function $ea3d9426ca660d78$var$createAxis(props) {
+function $9d5f9a843f218841$var$createAxis(props) {
     const { column: column , horizontal: horizontal , labelBaseline: labelBaseline , lineColor: lineColor , scale: scale , showLabels: showLabels , showTitle: showTitle , showLines: showLines , specViewOptions: specViewOptions , title: title , titlePadding: titlePadding , zindex: zindex  } = props;
     const axis = Object.assign(Object.assign(Object.assign(Object.assign({
         zindex: zindex,
@@ -1900,13 +1906,13 @@ function $ea3d9426ca660d78$var$createAxis(props) {
         title: title,
         titleAlign: horizontal ? 'left' : 'right',
         titleAngle: {
-            signal: horizontal ? $f1d0eeb6595c811e$export$809e371dee643808.TextAngleX : $f1d0eeb6595c811e$export$809e371dee643808.TextAngleY
+            signal: horizontal ? $5026337cfcb4b996$export$809e371dee643808.TextAngleX : $5026337cfcb4b996$export$809e371dee643808.TextAngleY
         },
         titleColor: specViewOptions.colors.axisText,
         titleFontSize: {
-            signal: $f1d0eeb6595c811e$export$809e371dee643808.TextTitleSize
+            signal: $5026337cfcb4b996$export$809e371dee643808.TextTitleSize
         },
-        titleLimit: $8f8d66f7ca1de7cd$export$d3da25ad66816957,
+        titleLimit: $ee84a745a025909d$export$d3da25ad66816957,
         titlePadding: titlePadding
     }), {
         labels: showLabels
@@ -1914,13 +1920,13 @@ function $ea3d9426ca660d78$var$createAxis(props) {
         labelAlign: horizontal ? 'left' : 'right',
         labelBaseline: labelBaseline,
         labelAngle: {
-            signal: horizontal ? $f1d0eeb6595c811e$export$809e371dee643808.TextAngleX : $f1d0eeb6595c811e$export$809e371dee643808.TextAngleY
+            signal: horizontal ? $5026337cfcb4b996$export$809e371dee643808.TextAngleX : $5026337cfcb4b996$export$809e371dee643808.TextAngleY
         },
         labelColor: specViewOptions.colors.axisText,
         labelFontSize: {
-            signal: $f1d0eeb6595c811e$export$809e371dee643808.TextSize
+            signal: $5026337cfcb4b996$export$809e371dee643808.TextSize
         },
-        labelLimit: $8f8d66f7ca1de7cd$export$2aa02e522549e01e
+        labelLimit: $ee84a745a025909d$export$2aa02e522549e01e
     });
     if (column.quantitative) axis.format = '~r';
     return axis;
@@ -1929,16 +1935,16 @@ function $ea3d9426ca660d78$var$createAxis(props) {
 
 
 
-function $1591e128591d53c6$export$fb70365b00e8cb7b(field) {
+function $bc6bc4f764e00865$export$fb70365b00e8cb7b(field) {
     return field.replace('.', '\\.').replace('[', '\\[').replace(']', '\\]');
 }
-function $1591e128591d53c6$export$74df930fa4adaae4(field) {
+function $bc6bc4f764e00865$export$74df930fa4adaae4(field) {
     //remove whitespace, period, accessors and logical modifiers
     return field.replace(/[.,:;+=\-/<>{}|~!@#$%^*[\]`'"()?\s\\]/g, '');
 }
 
 
-function $4c526e4a87353148$export$fefe9507ec0904ed(scaleName, data, field, range, reverse, zero) {
+function $0831b1e730d257f4$export$fefe9507ec0904ed(scaleName, data, field, range, reverse, zero) {
     const scale = {
         name: scaleName,
         type: 'linear',
@@ -1947,21 +1953,21 @@ function $4c526e4a87353148$export$fefe9507ec0904ed(scaleName, data, field, range
         reverse: reverse,
         domain: {
             data: data,
-            field: $1591e128591d53c6$export$fb70365b00e8cb7b(field)
+            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(field)
         },
         zero: zero,
         nice: true
     };
     return scale;
 }
-function $4c526e4a87353148$export$b67158f831e00d0d(scaleName, data, range, field, reverse) {
+function $0831b1e730d257f4$export$b67158f831e00d0d(scaleName, data, range, field, reverse) {
     const scale = {
         name: scaleName,
         type: 'point',
         range: range,
         domain: {
             data: data,
-            field: $1591e128591d53c6$export$fb70365b00e8cb7b(field),
+            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(field),
             sort: true
         },
         padding: 0.5
@@ -1969,20 +1975,20 @@ function $4c526e4a87353148$export$b67158f831e00d0d(scaleName, data, range, field
     if (reverse !== undefined) scale.reverse = reverse;
     return scale;
 }
-function $4c526e4a87353148$export$530110e7506d659d(scaleName, colorBin, data, field, scheme) {
-    scheme = scheme || $f1d0eeb6595c811e$export$c991c3dd58d9959c;
+function $0831b1e730d257f4$export$530110e7506d659d(scaleName, colorBin, data, field, scheme) {
+    scheme = scheme || $5026337cfcb4b996$export$c991c3dd58d9959c;
     const domain = {
         data: data,
-        field: $1591e128591d53c6$export$fb70365b00e8cb7b(field)
+        field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(field)
     };
     const range = {
         scheme: scheme
     };
     const reverse = {
-        signal: $f1d0eeb6595c811e$export$809e371dee643808.ColorReverse
+        signal: $5026337cfcb4b996$export$809e371dee643808.ColorReverse
     };
     if (colorBin !== 'continuous') range.count = {
-        signal: $f1d0eeb6595c811e$export$809e371dee643808.ColorBinCount
+        signal: $5026337cfcb4b996$export$809e371dee643808.ColorBinCount
     };
     switch(colorBin){
         case 'continuous':
@@ -2023,13 +2029,13 @@ function $4c526e4a87353148$export$530110e7506d659d(scaleName, colorBin, data, fi
 
 
 
-const $dbb29020c4a809fb$export$7bc9b23ce3036e78 = 0.6;
-function $dbb29020c4a809fb$export$d9407ec206a3236c(context, heightSignal) {
+const $853681033abd6f83$export$7bc9b23ce3036e78 = 0.6;
+function $853681033abd6f83$export$d9407ec206a3236c(context, heightSignal) {
     const { specViewOptions: specViewOptions  } = context;
     const signals = [
         {
-            name: $f1d0eeb6595c811e$export$809e371dee643808.ZProportion,
-            value: $dbb29020c4a809fb$export$7bc9b23ce3036e78,
+            name: $5026337cfcb4b996$export$809e371dee643808.ZProportion,
+            value: $853681033abd6f83$export$7bc9b23ce3036e78,
             bind: {
                 name: specViewOptions.language.zScaleProportion,
                 debounce: 50,
@@ -2040,11 +2046,11 @@ function $dbb29020c4a809fb$export$d9407ec206a3236c(context, heightSignal) {
             }
         },
         {
-            name: $f1d0eeb6595c811e$export$809e371dee643808.ZHeight,
-            update: `${heightSignal} * ${$f1d0eeb6595c811e$export$809e371dee643808.ZProportion}`
+            name: $5026337cfcb4b996$export$809e371dee643808.ZHeight,
+            update: `${heightSignal} * ${$5026337cfcb4b996$export$809e371dee643808.ZProportion}`
         },
         {
-            name: $f1d0eeb6595c811e$export$809e371dee643808.TextScale,
+            name: $5026337cfcb4b996$export$809e371dee643808.TextScale,
             value: 1.2,
             bind: {
                 name: specViewOptions.language.textScaleSignal,
@@ -2056,15 +2062,15 @@ function $dbb29020c4a809fb$export$d9407ec206a3236c(context, heightSignal) {
             }
         },
         {
-            name: $f1d0eeb6595c811e$export$809e371dee643808.TextSize,
-            update: `${$f1d0eeb6595c811e$export$809e371dee643808.TextScale} * 10`
+            name: $5026337cfcb4b996$export$809e371dee643808.TextSize,
+            update: `${$5026337cfcb4b996$export$809e371dee643808.TextScale} * 10`
         },
         {
-            name: $f1d0eeb6595c811e$export$809e371dee643808.TextTitleSize,
-            update: `${$f1d0eeb6595c811e$export$809e371dee643808.TextScale} * 15`
+            name: $5026337cfcb4b996$export$809e371dee643808.TextTitleSize,
+            update: `${$5026337cfcb4b996$export$809e371dee643808.TextScale} * 15`
         },
         {
-            name: $f1d0eeb6595c811e$export$809e371dee643808.TextAngleX,
+            name: $5026337cfcb4b996$export$809e371dee643808.TextAngleX,
             value: 30,
             bind: {
                 name: specViewOptions.language.xAxisTextAngleSignal,
@@ -2076,7 +2082,7 @@ function $dbb29020c4a809fb$export$d9407ec206a3236c(context, heightSignal) {
             }
         },
         {
-            name: $f1d0eeb6595c811e$export$809e371dee643808.TextAngleY,
+            name: $5026337cfcb4b996$export$809e371dee643808.TextAngleY,
             value: 0,
             bind: {
                 name: specViewOptions.language.yAxisTextAngleSignal,
@@ -2088,7 +2094,7 @@ function $dbb29020c4a809fb$export$d9407ec206a3236c(context, heightSignal) {
             }
         },
         {
-            name: $f1d0eeb6595c811e$export$809e371dee643808.MarkOpacity,
+            name: $5026337cfcb4b996$export$809e371dee643808.MarkOpacity,
             value: 1,
             bind: {
                 name: specViewOptions.language.markOpacitySignal,
@@ -2102,10 +2108,10 @@ function $dbb29020c4a809fb$export$d9407ec206a3236c(context, heightSignal) {
     ];
     return signals;
 }
-function $dbb29020c4a809fb$export$641fa4f0ca86c2ad(context) {
+function $853681033abd6f83$export$641fa4f0ca86c2ad(context) {
     const { specViewOptions: specViewOptions  } = context;
     const signal = {
-        name: $f1d0eeb6595c811e$export$809e371dee643808.ColorBinCount,
+        name: $5026337cfcb4b996$export$809e371dee643808.ColorBinCount,
         value: 7,
         bind: {
             name: specViewOptions.language.colorBinCount,
@@ -2117,10 +2123,10 @@ function $dbb29020c4a809fb$export$641fa4f0ca86c2ad(context) {
     };
     return signal;
 }
-function $dbb29020c4a809fb$export$526461dda4c87775(context) {
+function $853681033abd6f83$export$526461dda4c87775(context) {
     const { specViewOptions: specViewOptions  } = context;
     const signal = {
-        name: $f1d0eeb6595c811e$export$809e371dee643808.ColorReverse,
+        name: $5026337cfcb4b996$export$809e371dee643808.ColorReverse,
         value: false,
         bind: {
             name: specViewOptions.language.colorReverse,
@@ -2129,13 +2135,13 @@ function $dbb29020c4a809fb$export$526461dda4c87775(context) {
     };
     return signal;
 }
-function $dbb29020c4a809fb$export$cdc9366ba30317bd(s, fn, update) {
+function $853681033abd6f83$export$cdc9366ba30317bd(s, fn, update) {
     s.update = `${fn}((${s.update}), (${update}))`;
 }
 
 
 
-function $f00482c7a2965f70$var$legend(column, fill) {
+function $19fb6d9d8175da0c$var$legend(column, fill) {
     const legend = {
         orient: 'none',
         title: column.name,
@@ -2156,17 +2162,17 @@ function $f00482c7a2965f70$var$legend(column, fill) {
     }
     return legend;
 }
-function $f00482c7a2965f70$export$765837a81fadca85(context, fill) {
+function $19fb6d9d8175da0c$export$765837a81fadca85(context, fill) {
     const { specColumns: specColumns , insight: insight  } = context;
     if (specColumns.color && !insight.hideLegend && !insight.directColor && !specColumns.color.isColorData) return [
-        $f00482c7a2965f70$var$legend(specColumns.color, fill)
+        $19fb6d9d8175da0c$var$legend(specColumns.color, fill)
     ];
 }
 
 
 
 
-function $239d6b28a34422c6$export$a4725aa19e8564dd(column, count, source, legend, lookupName, fieldName, indexName) {
+function $e522aafa3316cf1f$export$a4725aa19e8564dd(column, count, source, legend, lookupName, fieldName, indexName) {
     const data = [
         {
             name: lookupName,
@@ -2175,7 +2181,7 @@ function $239d6b28a34422c6$export$a4725aa19e8564dd(column, count, source, legend
                 {
                     type: 'aggregate',
                     groupby: [
-                        $1591e128591d53c6$export$fb70365b00e8cb7b(column.name)
+                        $bc6bc4f764e00865$export$fb70365b00e8cb7b(column.name)
                     ]
                 },
                 {
@@ -2200,20 +2206,20 @@ function $239d6b28a34422c6$export$a4725aa19e8564dd(column, count, source, legend
                 {
                     type: 'lookup',
                     from: lookupName,
-                    key: $1591e128591d53c6$export$fb70365b00e8cb7b(column.name),
+                    key: $bc6bc4f764e00865$export$fb70365b00e8cb7b(column.name),
                     fields: [
                         column.name
-                    ].map($1591e128591d53c6$export$fb70365b00e8cb7b),
+                    ].map($bc6bc4f764e00865$export$fb70365b00e8cb7b),
                     values: [
                         column.name
-                    ].map($1591e128591d53c6$export$fb70365b00e8cb7b),
+                    ].map($bc6bc4f764e00865$export$fb70365b00e8cb7b),
                     as: [
                         fieldName
                     ]
                 },
                 {
                     type: 'formula',
-                    expr: `datum[${JSON.stringify(fieldName)}] == null ? '${$f1d0eeb6595c811e$export$8653a30c44b6e879}' : datum[${JSON.stringify(fieldName)}]`,
+                    expr: `datum[${JSON.stringify(fieldName)}] == null ? '${$5026337cfcb4b996$export$8653a30c44b6e879}' : datum[${JSON.stringify(fieldName)}]`,
                     as: fieldName
                 }
             ]
@@ -2223,38 +2229,38 @@ function $239d6b28a34422c6$export$a4725aa19e8564dd(column, count, source, legend
 }
 
 
-function $5c0d2811fe03d42a$export$4c4d9288a45f1fb3(props) {
+function $9f1db88e8f4618a8$export$4c4d9288a45f1fb3(props) {
     const { colorReverseSignalName: colorReverseSignalName , dataName: dataName , scope: scope , legendDataName: legendDataName , scaleName: scaleName , specContext: specContext , topLookupName: topLookupName  } = props;
     let colorDataName = dataName;
     const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
-    const legends = $f00482c7a2965f70$export$765837a81fadca85(specContext, scaleName);
+    const legends = $19fb6d9d8175da0c$export$765837a81fadca85(specContext, scaleName);
     if (legends) scope.legends = legends;
     const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     if (categoricalColor) {
-        $a6d4d5d140bab192$export$6853292f627997e4(scope, ...$239d6b28a34422c6$export$a4725aa19e8564dd(specColumns.color, specViewOptions.maxLegends, dataName, legendDataName, topLookupName, $f1d0eeb6595c811e$export$10df5429b7082be2.TopColor, $f1d0eeb6595c811e$export$10df5429b7082be2.TopIndex));
+        $1d26d69d9d3d5b6e$export$6853292f627997e4(scope, ...$e522aafa3316cf1f$export$a4725aa19e8564dd(specColumns.color, specViewOptions.maxLegends, dataName, legendDataName, topLookupName, $5026337cfcb4b996$export$10df5429b7082be2.TopColor, $5026337cfcb4b996$export$10df5429b7082be2.TopIndex));
         colorDataName = legendDataName;
     }
     if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
-        if (specColumns.color.quantitative) $a6d4d5d140bab192$export$290268902279a991(scope, $4c526e4a87353148$export$530110e7506d659d(scaleName, insight.colorBin, dataName, specColumns.color.name, insight.scheme));
-        else $a6d4d5d140bab192$export$290268902279a991(scope, {
+        if (specColumns.color.quantitative) $1d26d69d9d3d5b6e$export$290268902279a991(scope, $0831b1e730d257f4$export$530110e7506d659d(scaleName, insight.colorBin, dataName, specColumns.color.name, insight.scheme));
+        else $1d26d69d9d3d5b6e$export$290268902279a991(scope, {
             name: scaleName,
             type: 'ordinal',
             domain: {
                 data: colorDataName,
-                field: $f1d0eeb6595c811e$export$10df5429b7082be2.TopColor,
+                field: $5026337cfcb4b996$export$10df5429b7082be2.TopColor,
                 sort: true
             },
             range: {
-                scheme: insight.scheme || $f1d0eeb6595c811e$export$c991c3dd58d9959c
+                scheme: insight.scheme || $5026337cfcb4b996$export$c991c3dd58d9959c
             },
             reverse: {
                 signal: colorReverseSignalName
             }
         });
     }
-    $a6d4d5d140bab192$export$5346a0d8a9111b3f(scope, $dbb29020c4a809fb$export$641fa4f0ca86c2ad(specContext), $dbb29020c4a809fb$export$526461dda4c87775(specContext));
+    $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(scope, $853681033abd6f83$export$641fa4f0ca86c2ad(specContext), $853681033abd6f83$export$526461dda4c87775(specContext));
     return {
-        topColorField: $f1d0eeb6595c811e$export$10df5429b7082be2.TopColor,
+        topColorField: $5026337cfcb4b996$export$10df5429b7082be2.TopColor,
         colorDataName: colorDataName
     };
 }
@@ -2265,13 +2271,13 @@ function $5c0d2811fe03d42a$export$4c4d9288a45f1fb3(props) {
 
 
 
-function $bfc5d85c4d08ad7e$export$4fec84497b9e6e3f(globalScope, colTitleSource, rowTitleSource, sizeSignals, axisTextColor) {
-    const titleSignal = `parent[${JSON.stringify($f1d0eeb6595c811e$export$10df5429b7082be2.FacetTitle)}]`;
-    const index = `datum[${JSON.stringify($f1d0eeb6595c811e$export$10df5429b7082be2.Ordinal)}] - 1`;
-    const col = $bfc5d85c4d08ad7e$export$4f57a5f5fbf1456e(colTitleSource.dataName, sizeSignals, index);
-    const row = $bfc5d85c4d08ad7e$export$d0cc3dc227001793(rowTitleSource.dataName, sizeSignals, index);
-    $a6d4d5d140bab192$export$3df320e901c23a48(globalScope, col.header, row.footer);
-    $a6d4d5d140bab192$export$3df320e901c23a48(col.header, {
+function $267ef0242f542da1$export$4fec84497b9e6e3f(globalScope, colTitleSource, rowTitleSource, sizeSignals, axisTextColor) {
+    const titleSignal = `parent[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.FacetTitle)}]`;
+    const index = `datum[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.Ordinal)}] - 1`;
+    const col = $267ef0242f542da1$export$4f57a5f5fbf1456e(colTitleSource.dataName, sizeSignals, index);
+    const row = $267ef0242f542da1$export$d0cc3dc227001793(rowTitleSource.dataName, sizeSignals, index);
+    $1d26d69d9d3d5b6e$export$3df320e901c23a48(globalScope, col.header, row.footer);
+    $1d26d69d9d3d5b6e$export$3df320e901c23a48(col.header, {
         type: 'text',
         encode: {
             enter: {
@@ -2287,7 +2293,7 @@ function $bfc5d85c4d08ad7e$export$4fec84497b9e6e3f(globalScope, colTitleSource, 
             },
             update: {
                 metaData: {
-                    signal: `{search: parent[${JSON.stringify($f1d0eeb6595c811e$export$10df5429b7082be2.FacetSearch)}]}`
+                    signal: `{search: parent[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.FacetSearch)}]}`
                 },
                 x: {
                     signal: `${sizeSignals.layoutWidth} / 2`
@@ -2296,7 +2302,7 @@ function $bfc5d85c4d08ad7e$export$4fec84497b9e6e3f(globalScope, colTitleSource, 
                     signal: sizeSignals.layoutWidth
                 },
                 fontSize: {
-                    signal: $f1d0eeb6595c811e$export$809e371dee643808.TextSize
+                    signal: $5026337cfcb4b996$export$809e371dee643808.TextSize
                 },
                 text: {
                     signal: titleSignal
@@ -2304,7 +2310,7 @@ function $bfc5d85c4d08ad7e$export$4fec84497b9e6e3f(globalScope, colTitleSource, 
             }
         }
     });
-    $a6d4d5d140bab192$export$3df320e901c23a48(row.footer, {
+    $1d26d69d9d3d5b6e$export$3df320e901c23a48(row.footer, {
         type: 'text',
         encode: {
             enter: {
@@ -2320,16 +2326,16 @@ function $bfc5d85c4d08ad7e$export$4fec84497b9e6e3f(globalScope, colTitleSource, 
             },
             update: {
                 metaData: {
-                    signal: `{search: parent[${JSON.stringify($f1d0eeb6595c811e$export$10df5429b7082be2.FacetSearch)}]}`
+                    signal: `{search: parent[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.FacetSearch)}]}`
                 },
                 y: {
                     signal: `${sizeSignals.layoutHeight} / 2`
                 },
                 limit: {
-                    signal: $f1d0eeb6595c811e$export$809e371dee643808.PlotOffsetRight
+                    signal: $5026337cfcb4b996$export$809e371dee643808.PlotOffsetRight
                 },
                 fontSize: {
-                    signal: $f1d0eeb6595c811e$export$809e371dee643808.TextSize
+                    signal: $5026337cfcb4b996$export$809e371dee643808.TextSize
                 },
                 text: {
                     signal: titleSignal
@@ -2338,8 +2344,8 @@ function $bfc5d85c4d08ad7e$export$4fec84497b9e6e3f(globalScope, colTitleSource, 
         }
     });
 }
-function $bfc5d85c4d08ad7e$export$3735b1dd76112836(scope, sizeSignals, axisTextColor) {
-    $a6d4d5d140bab192$export$3df320e901c23a48(scope, {
+function $267ef0242f542da1$export$3735b1dd76112836(scope, sizeSignals, axisTextColor) {
+    $1d26d69d9d3d5b6e$export$3df320e901c23a48(scope, {
         type: 'text',
         encode: {
             enter: {
@@ -2355,38 +2361,38 @@ function $bfc5d85c4d08ad7e$export$3735b1dd76112836(scope, sizeSignals, axisTextC
             },
             update: {
                 metaData: {
-                    signal: `{search: parent[${JSON.stringify($f1d0eeb6595c811e$export$10df5429b7082be2.FacetSearch)}]}`
+                    signal: `{search: parent[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.FacetSearch)}]}`
                 },
                 x: {
                     signal: `(${sizeSignals.layoutWidth}) / 2`
                 },
                 text: {
-                    signal: `parent[${JSON.stringify($f1d0eeb6595c811e$export$10df5429b7082be2.FacetTitle)}]`
+                    signal: `parent[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.FacetTitle)}]`
                 },
                 fontSize: {
-                    signal: $f1d0eeb6595c811e$export$809e371dee643808.TextSize
+                    signal: $5026337cfcb4b996$export$809e371dee643808.TextSize
                 },
                 limit: {
                     signal: sizeSignals.layoutWidth
                 },
                 y: {
-                    signal: `-${$f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingTop} / 2`
+                    signal: `-${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingTop} / 2`
                 }
             }
         }
     });
 }
-function $bfc5d85c4d08ad7e$export$9f0b19d6fd936707(props) {
+function $267ef0242f542da1$export$9f0b19d6fd936707(props) {
     const { colSeqName: colSeqName , colTitleScale: colTitleScale , globalScope: globalScope , facetScope: facetScope , plotScope: plotScope , rowSeqName: rowSeqName , rowTitleScale: rowTitleScale  } = props;
     const { sizeSignals: sizeSignals  } = facetScope;
-    const colSequence = $bfc5d85c4d08ad7e$var$createSequence(colSeqName, sizeSignals.colCount);
-    const rowSequence = $bfc5d85c4d08ad7e$var$createSequence(rowSeqName, sizeSignals.rowCount);
+    const colSequence = $267ef0242f542da1$var$createSequence(colSeqName, sizeSignals.colCount);
+    const rowSequence = $267ef0242f542da1$var$createSequence(rowSeqName, sizeSignals.rowCount);
     const index = 'datum.data';
-    const col = $bfc5d85c4d08ad7e$export$4f57a5f5fbf1456e(colSeqName, sizeSignals, index);
-    const row = $bfc5d85c4d08ad7e$export$d0cc3dc227001793(rowSeqName, sizeSignals, index);
-    $a6d4d5d140bab192$export$6853292f627997e4(globalScope, colSequence, rowSequence);
-    $a6d4d5d140bab192$export$3df320e901c23a48(globalScope, col.footer, row.header);
-    $a6d4d5d140bab192$export$290268902279a991(globalScope, colTitleScale, rowTitleScale);
+    const col = $267ef0242f542da1$export$4f57a5f5fbf1456e(colSeqName, sizeSignals, index);
+    const row = $267ef0242f542da1$export$d0cc3dc227001793(rowSeqName, sizeSignals, index);
+    $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope, colSequence, rowSequence);
+    $1d26d69d9d3d5b6e$export$3df320e901c23a48(globalScope, col.footer, row.header);
+    $1d26d69d9d3d5b6e$export$290268902279a991(globalScope, colTitleScale, rowTitleScale);
     const map = {
         main: [
             {
@@ -2429,7 +2435,7 @@ function $bfc5d85c4d08ad7e$export$9f0b19d6fd936707(props) {
     };
     return map;
 }
-function $bfc5d85c4d08ad7e$export$d0cc3dc227001793(data, sizeSignals, index) {
+function $267ef0242f542da1$export$d0cc3dc227001793(data, sizeSignals, index) {
     const rowFn = (xSignal)=>{
         return {
             type: 'group',
@@ -2442,7 +2448,7 @@ function $bfc5d85c4d08ad7e$export$d0cc3dc227001793(data, sizeSignals, index) {
                         signal: xSignal
                     },
                     y: {
-                        signal: `${$f1d0eeb6595c811e$export$809e371dee643808.PlotOffsetTop} + ${$f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingTop} + (${index}) * (${sizeSignals.layoutHeight} + ${$f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingTop} + ${$f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingBottom})`
+                        signal: `${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetTop} + ${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingTop} + (${index}) * (${sizeSignals.layoutHeight} + ${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingTop} + ${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingBottom})`
                     },
                     height: {
                         signal: sizeSignals.layoutHeight
@@ -2451,14 +2457,14 @@ function $bfc5d85c4d08ad7e$export$d0cc3dc227001793(data, sizeSignals, index) {
             }
         };
     };
-    const header = rowFn($f1d0eeb6595c811e$export$809e371dee643808.PlotOffsetLeft);
-    const footer = rowFn(`${$f1d0eeb6595c811e$export$809e371dee643808.PlotOffsetLeft} + ${$f1d0eeb6595c811e$export$809e371dee643808.PlotWidthOut} + ${$f1d0eeb6595c811e$export$809e371dee643808.PlotOffsetRight} / 2`);
+    const header = rowFn($5026337cfcb4b996$export$809e371dee643808.PlotOffsetLeft);
+    const footer = rowFn(`${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetLeft} + ${$5026337cfcb4b996$export$809e371dee643808.PlotWidthOut} + ${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetRight} / 2`);
     return {
         header: header,
         footer: footer
     };
 }
-function $bfc5d85c4d08ad7e$export$4f57a5f5fbf1456e(data, sizeSignals, index) {
+function $267ef0242f542da1$export$4f57a5f5fbf1456e(data, sizeSignals, index) {
     const colFn = (ySignal)=>{
         return {
             type: 'group',
@@ -2468,7 +2474,7 @@ function $bfc5d85c4d08ad7e$export$4f57a5f5fbf1456e(data, sizeSignals, index) {
             encode: {
                 update: {
                     x: {
-                        signal: `(${index}) * (${sizeSignals.layoutWidth} + ${$f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingLeft}) + ${$f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingLeft} + ${$f1d0eeb6595c811e$export$809e371dee643808.PlotOffsetLeft}`
+                        signal: `(${index}) * (${sizeSignals.layoutWidth} + ${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingLeft}) + ${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingLeft} + ${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetLeft}`
                     },
                     y: {
                         signal: ySignal
@@ -2481,14 +2487,14 @@ function $bfc5d85c4d08ad7e$export$4f57a5f5fbf1456e(data, sizeSignals, index) {
         };
     };
     //create group marks based on data sequences
-    const header = colFn(`${$f1d0eeb6595c811e$export$809e371dee643808.PlotOffsetTop} / 2`);
-    const footer = colFn(`${$f1d0eeb6595c811e$export$809e371dee643808.PlotOffsetTop} + ${$f1d0eeb6595c811e$export$809e371dee643808.PlotHeightOut}`);
+    const header = colFn(`${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetTop} / 2`);
+    const footer = colFn(`${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetTop} + ${$5026337cfcb4b996$export$809e371dee643808.PlotHeightOut}`);
     return {
         header: header,
         footer: footer
     };
 }
-function $bfc5d85c4d08ad7e$var$createSequence(dataName, countSignal) {
+function $267ef0242f542da1$var$createSequence(dataName, countSignal) {
     return {
         name: dataName,
         transform: [
@@ -2506,21 +2512,21 @@ function $bfc5d85c4d08ad7e$var$createSequence(dataName, countSignal) {
 
 
 
-function $7268e1bc937710a5$export$9563e054e6f787fb(context, colorFieldName, scale) {
+function $b1297af14e23a528$export$9563e054e6f787fb(context, colorFieldName, scale) {
     const { specColumns: specColumns , insight: insight , specViewOptions: specViewOptions  } = context;
     const colorColumn = specColumns.color;
     return colorColumn ? colorColumn.isColorData || insight.directColor ? {
-        field: $1591e128591d53c6$export$fb70365b00e8cb7b(colorColumn.name)
+        field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(colorColumn.name)
     } : {
         scale: scale,
-        field: colorColumn.quantitative ? $1591e128591d53c6$export$fb70365b00e8cb7b(colorColumn.name) : colorFieldName
+        field: colorColumn.quantitative ? $bc6bc4f764e00865$export$fb70365b00e8cb7b(colorColumn.name) : colorFieldName
     } : {
         value: specViewOptions.colors.defaultCube
     };
 }
-function $7268e1bc937710a5$export$c17a3be1057836e(context) {
+function $b1297af14e23a528$export$c17a3be1057836e(context) {
     const result = {
-        signal: $f1d0eeb6595c811e$export$809e371dee643808.MarkOpacity
+        signal: $5026337cfcb4b996$export$809e371dee643808.MarkOpacity
     };
     return result;
 }
@@ -2528,25 +2534,25 @@ function $7268e1bc937710a5$export$c17a3be1057836e(context) {
 
 
 
-class $e9996b17012f63f8$export$5fdf684e73bb2de5 {
+class $1da2db5d27ae10a6$export$5fdf684e73bb2de5 {
     constructor(props){
         const { dataName: dataName , markGroup: markGroup , scope: scope , signals: signals  } = props;
         this.scope = scope;
         this._markGroup = markGroup;
         this.signals = signals;
-        this.data = $a6d4d5d140bab192$export$ef4373c7e62b2278(scope.data, dataName).data;
+        this.data = $1d26d69d9d3d5b6e$export$ef4373c7e62b2278(scope.data, dataName).data;
         this._markDataName = dataName;
         this.offsets = {
             x: '0',
             y: '0',
-            h: $f1d0eeb6595c811e$export$809e371dee643808.PlotHeightIn,
-            w: $f1d0eeb6595c811e$export$809e371dee643808.PlotWidthIn
+            h: $5026337cfcb4b996$export$809e371dee643808.PlotHeightIn,
+            w: $5026337cfcb4b996$export$809e371dee643808.PlotWidthIn
         };
         this.sizeSignals = {
-            layoutHeight: $f1d0eeb6595c811e$export$809e371dee643808.PlotHeightIn,
-            layoutWidth: $f1d0eeb6595c811e$export$809e371dee643808.PlotWidthIn
+            layoutHeight: $5026337cfcb4b996$export$809e371dee643808.PlotHeightIn,
+            layoutWidth: $5026337cfcb4b996$export$809e371dee643808.PlotWidthIn
         };
-        this.zSize = $f1d0eeb6595c811e$export$809e371dee643808.PlotHeightIn;
+        this.zSize = $5026337cfcb4b996$export$809e371dee643808.PlotHeightIn;
     }
     get markDataName() {
         return this._markDataName;
@@ -2565,7 +2571,7 @@ class $e9996b17012f63f8$export$5fdf684e73bb2de5 {
 
 
 
-class $5a3a04d0726e8df8$export$c84671f46d6a1ca {
+class $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         this.props = props;
         this.id = props.id;
@@ -2586,12 +2592,12 @@ class $5a3a04d0726e8df8$export$c84671f46d6a1ca {
 
 
 
-function $63d1977acbfff188$export$71c45f78b1166d35() {
-    return `datum.${$f1d0eeb6595c811e$export$10df5429b7082be2.Collapsed}`;
+function $00118a065747f70b$export$71c45f78b1166d35() {
+    return `datum.${$5026337cfcb4b996$export$10df5429b7082be2.Collapsed}`;
 }
 
 
-class $5e3c57ba5eeae727$export$fd744dfcd98e5f49 extends $5a3a04d0726e8df8$export$c84671f46d6a1ca {
+class $c920a6424c9a8cf8$export$fd744dfcd98e5f49 extends $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         super(props);
         this.props = props;
@@ -2609,9 +2615,9 @@ class $5e3c57ba5eeae727$export$fd744dfcd98e5f49 extends $5a3a04d0726e8df8$export
     getAggregateSumOp() {
         if (this.aggregation === 'sum') {
             const fieldOp = {
-                field: $1591e128591d53c6$export$fb70365b00e8cb7b(this.props.sumBy.name),
+                field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(this.props.sumBy.name),
                 op: 'sum',
-                as: $f1d0eeb6595c811e$export$10df5429b7082be2.Sum
+                as: $5026337cfcb4b996$export$10df5429b7082be2.Sum
             };
             return fieldOp;
         }
@@ -2619,17 +2625,17 @@ class $5e3c57ba5eeae727$export$fd744dfcd98e5f49 extends $5a3a04d0726e8df8$export
     build() {
         const { aggregation: aggregation , names: names , props: props  } = this;
         const { dock: dock , globalScope: globalScope , groupings: groupings , niceScale: niceScale , parentScope: parentScope , showAxes: showAxes  } = props;
-        $a6d4d5d140bab192$export$eea5d31e98930019(globalScope.data, Object.assign(Object.assign({
-        }, this.getTransforms(aggregation, $a6d4d5d140bab192$export$53a21aeef48e14a8(groupings))), {
+        $1d26d69d9d3d5b6e$export$eea5d31e98930019(globalScope.data, Object.assign(Object.assign({
+        }, this.getTransforms(aggregation, $1d26d69d9d3d5b6e$export$53a21aeef48e14a8(groupings))), {
             as: [
                 names.aggregateField
             ]
         }), {
             type: 'extent',
-            field: $1591e128591d53c6$export$fb70365b00e8cb7b(names.aggregateField),
+            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(names.aggregateField),
             signal: names.globalAggregateExtentSignal
         });
-        $a6d4d5d140bab192$export$5346a0d8a9111b3f(globalScope.scope, {
+        $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, {
             name: props.globalAggregateMaxExtentSignal,
             update: `${names.globalAggregateExtentSignal}[1]`
         });
@@ -2637,7 +2643,7 @@ class $5e3c57ba5eeae727$export$fd744dfcd98e5f49 extends $5a3a04d0726e8df8$export
         const groupScaled = `scale(${JSON.stringify(names.scale)}, datum[${JSON.stringify(names.aggregateField)}])`;
         const offsets = {
             x: parentScope.offsets.x,
-            y: $a6d4d5d140bab192$export$e6b6683aec0fe907(parentScope.offsets.y, dock === 'bottom' ? groupScaled : ''),
+            y: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, dock === 'bottom' ? groupScaled : ''),
             h: horizontal ? parentScope.offsets.h : dock === 'top' ? groupScaled : `${parentScope.offsets.h} - ${groupScaled}`,
             w: horizontal ? groupScaled : parentScope.offsets.w
         };
@@ -2666,7 +2672,7 @@ class $5e3c57ba5eeae727$export$fd744dfcd98e5f49 extends $5a3a04d0726e8df8$export
             reverse: dock === 'top'
         };
         const globalAggregateMaxExtentScaledValue = `scale(${JSON.stringify(names.scale)}, ${props.globalAggregateMaxExtentSignal})`;
-        $a6d4d5d140bab192$export$5346a0d8a9111b3f(globalScope.scope, {
+        $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, {
             name: props.globalAggregateMaxExtentScaledSignal,
             update: dock === 'bottom' ? `${parentScope.sizeSignals.layoutHeight} - ${globalAggregateMaxExtentScaledValue}` : globalAggregateMaxExtentScaledValue
         });
@@ -2693,26 +2699,26 @@ class $5e3c57ba5eeae727$export$fd744dfcd98e5f49 extends $5a3a04d0726e8df8$export
             encodingRuleMap: horizontal ? {
                 x: [
                     {
-                        test: $63d1977acbfff188$export$71c45f78b1166d35(),
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
                         signal: parentScope.offsets.x
                     }
                 ],
                 width: [
                     {
-                        test: $63d1977acbfff188$export$71c45f78b1166d35(),
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
                         value: 0
                     }
                 ]
             } : {
                 y: [
                     {
-                        test: $63d1977acbfff188$export$71c45f78b1166d35(),
-                        signal: dock === 'top' ? parentScope.offsets.y : $a6d4d5d140bab192$export$e6b6683aec0fe907(parentScope.offsets.y, parentScope.offsets.h)
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
+                        signal: dock === 'top' ? parentScope.offsets.y : $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, parentScope.offsets.h)
                     }
                 ],
                 height: [
                     {
-                        test: $63d1977acbfff188$export$71c45f78b1166d35(),
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
                         value: 0
                     }
                 ]
@@ -2722,14 +2728,14 @@ class $5e3c57ba5eeae727$export$fd744dfcd98e5f49 extends $5a3a04d0726e8df8$export
     getTransforms(aggregation, groupby) {
         const trans = {
             type: 'joinaggregate',
-            groupby: groupby.map($1591e128591d53c6$export$fb70365b00e8cb7b),
+            groupby: groupby.map($bc6bc4f764e00865$export$fb70365b00e8cb7b),
             ops: [
                 aggregation
             ]
         };
         if (aggregation === 'sum') trans.fields = [
             this.props.sumBy.name
-        ].map($1591e128591d53c6$export$fb70365b00e8cb7b);
+        ].map($bc6bc4f764e00865$export$fb70365b00e8cb7b);
         return trans;
     }
     getAggregation() {
@@ -2751,7 +2757,7 @@ class $5e3c57ba5eeae727$export$fd744dfcd98e5f49 extends $5a3a04d0726e8df8$export
 
 
 
-class $086adb3cbff09670$export$7eda37970b01b2c extends $5a3a04d0726e8df8$export$c84671f46d6a1ca {
+class $f56476682bfa269d$export$7eda37970b01b2c extends $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         super(props);
         this.props = props;
@@ -2768,14 +2774,14 @@ class $086adb3cbff09670$export$7eda37970b01b2c extends $5a3a04d0726e8df8$export$
         const { names: names , props: props  } = this;
         const { aggregation: aggregation , globalScope: globalScope , groupings: groupings , onBuild: onBuild , parentScope: parentScope  } = props;
         const { sizeSignals: sizeSignals  } = parentScope;
-        $a6d4d5d140bab192$export$eea5d31e98930019(globalScope.data, Object.assign(Object.assign({
-        }, this.getTransforms(aggregation, $a6d4d5d140bab192$export$53a21aeef48e14a8(groupings))), {
+        $1d26d69d9d3d5b6e$export$eea5d31e98930019(globalScope.data, Object.assign(Object.assign({
+        }, this.getTransforms(aggregation, $1d26d69d9d3d5b6e$export$53a21aeef48e14a8(groupings))), {
             as: [
                 names.aggregateField
             ]
         }), {
             type: 'extent',
-            field: $1591e128591d53c6$export$fb70365b00e8cb7b(names.aggregateField),
+            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(names.aggregateField),
             signal: names.globalAggregateExtentSignal
         });
         const localAggregateMaxExtent = `datum[${JSON.stringify(names.aggregateField)}]`;
@@ -2793,8 +2799,8 @@ class $086adb3cbff09670$export$7eda37970b01b2c extends $5a3a04d0726e8df8$export$
         const localAggregateMaxExtentScaled = squareSide;
         onBuild && onBuild(localAggregateMaxExtent, localAggregateMaxExtentScaled);
         const offsets = {
-            x: $a6d4d5d140bab192$export$e6b6683aec0fe907(parentScope.offsets.x, `(${parentScope.offsets.w} - ${squareSide}) / 2`),
-            y: $a6d4d5d140bab192$export$e6b6683aec0fe907(parentScope.offsets.y, `(${parentScope.offsets.h} - ${squareSide}) / 2`),
+            x: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.x, `(${parentScope.offsets.w} - ${squareSide}) / 2`),
+            y: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, `(${parentScope.offsets.h} - ${squareSide}) / 2`),
             h: squareSide,
             w: squareSide
         };
@@ -2807,13 +2813,13 @@ class $086adb3cbff09670$export$7eda37970b01b2c extends $5a3a04d0726e8df8$export$
             encodingRuleMap: {
                 y: [
                     {
-                        test: $63d1977acbfff188$export$71c45f78b1166d35(),
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
                         signal: offsets.y
                     }
                 ],
                 height: [
                     {
-                        test: $63d1977acbfff188$export$71c45f78b1166d35(),
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
                         value: 0
                     }
                 ]
@@ -2823,14 +2829,14 @@ class $086adb3cbff09670$export$7eda37970b01b2c extends $5a3a04d0726e8df8$export$
     getTransforms(aggregation, groupby) {
         const trans = {
             type: 'joinaggregate',
-            groupby: groupby.map($1591e128591d53c6$export$fb70365b00e8cb7b),
+            groupby: groupby.map($bc6bc4f764e00865$export$fb70365b00e8cb7b),
             ops: [
                 aggregation
             ]
         };
         if (aggregation === 'sum') trans.fields = [
             this.props.sumBy.name
-        ].map($1591e128591d53c6$export$fb70365b00e8cb7b);
+        ].map($bc6bc4f764e00865$export$fb70365b00e8cb7b);
         return trans;
     }
 }
@@ -2839,17 +2845,17 @@ class $086adb3cbff09670$export$7eda37970b01b2c extends $5a3a04d0726e8df8$export$
 
 
 
-function $e655012d4231bb71$export$6868fd1605c79d3d(prefix, domainDataName, discreteColumn) {
+function $280f5ab5a98a6906$export$6868fd1605c79d3d(prefix, domainDataName, discreteColumn) {
     const { column: column , defaultBins: defaultBins , maxbins: maxbins , maxbinsSignalDisplayName: maxbinsSignalDisplayName , maxbinsSignalName: maxbinsSignalName  } = discreteColumn;
     if (column.quantitative) {
-        const field = `${prefix}_bin_${$1591e128591d53c6$export$74df930fa4adaae4(column.name)}`;
+        const field = `${prefix}_bin_${$bc6bc4f764e00865$export$74df930fa4adaae4(column.name)}`;
         const fieldEnd = `${field}_end`;
         const binSignal = `${field}_bins`;
         const extentSignal = `${field}_bin_extent`;
         domainDataName = `${field}_sequence`; //override the data name
         const extentTransform = {
             type: 'extent',
-            field: $1591e128591d53c6$export$fb70365b00e8cb7b(column.name),
+            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(column.name),
             signal: extentSignal
         };
         const maxbinsSignal = {
@@ -2866,7 +2872,7 @@ function $e655012d4231bb71$export$6868fd1605c79d3d(prefix, domainDataName, discr
         };
         const binTransform = {
             type: 'bin',
-            field: $1591e128591d53c6$export$fb70365b00e8cb7b(column.name),
+            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(column.name),
             as: [
                 field,
                 fieldEnd, 
@@ -2910,18 +2916,18 @@ function $e655012d4231bb71$export$6868fd1605c79d3d(prefix, domainDataName, discr
                         'row_number'
                     ],
                     as: [
-                        $f1d0eeb6595c811e$export$10df5429b7082be2.Ordinal
+                        $5026337cfcb4b996$export$10df5429b7082be2.Ordinal
                     ]
                 },
                 {
                     type: 'formula',
                     expr: `datum.data === ${binSignal}.start`,
-                    as: $f1d0eeb6595c811e$export$10df5429b7082be2.First
+                    as: $5026337cfcb4b996$export$10df5429b7082be2.First
                 },
                 {
                     type: 'formula',
                     expr: `datum.data === ${binSignal}.stop - ${binSignal}.step`,
-                    as: $f1d0eeb6595c811e$export$10df5429b7082be2.Last
+                    as: $5026337cfcb4b996$export$10df5429b7082be2.Last
                 }
             ]
         };
@@ -2964,7 +2970,7 @@ function $e655012d4231bb71$export$6868fd1605c79d3d(prefix, domainDataName, discr
 
 
 
-class $a31d4adb8db18560$export$5b22a87d7feca398 extends $5a3a04d0726e8df8$export$c84671f46d6a1ca {
+class $dcdb4cb44eff1858$export$5b22a87d7feca398 extends $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         super(props);
         this.props = props;
@@ -2975,7 +2981,7 @@ class $a31d4adb8db18560$export$5b22a87d7feca398 extends $5a3a04d0726e8df8$export
             bandWidth: `${p}_bandwidth`,
             accumulative: `${p}_accumulative`
         };
-        this.bin = $e655012d4231bb71$export$6868fd1605c79d3d(this.prefix, props.globalScope.data.name, props.groupby);
+        this.bin = $280f5ab5a98a6906$export$6868fd1605c79d3d(this.prefix, props.globalScope.data.name, props.groupby);
     }
     getGrouping() {
         return this.bin.fields;
@@ -2985,18 +2991,18 @@ class $a31d4adb8db18560$export$5b22a87d7feca398 extends $5a3a04d0726e8df8$export
         const { globalScope: globalScope , minBandWidth: minBandWidth , orientation: orientation , parentScope: parentScope , showAxes: showAxes  } = props;
         const binField = bin.fields[0];
         if (bin.native === false) {
-            $a6d4d5d140bab192$export$5346a0d8a9111b3f(globalScope.scope, ...bin.signals);
-            $a6d4d5d140bab192$export$eea5d31e98930019(globalScope.data, ...bin.transforms);
-            $a6d4d5d140bab192$export$6853292f627997e4(globalScope.scope, bin.dataSequence);
+            $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, ...bin.signals);
+            $1d26d69d9d3d5b6e$export$eea5d31e98930019(globalScope.data, ...bin.transforms);
+            $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, bin.dataSequence);
         }
         //TODO don't add this, use existing dataset
-        $a6d4d5d140bab192$export$6853292f627997e4(globalScope.scope, {
+        $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, {
             name: names.accumulative,
             source: bin.fullScaleDataname,
             transform: [
                 {
                     type: 'aggregate',
-                    groupby: this.getGrouping().map($1591e128591d53c6$export$fb70365b00e8cb7b),
+                    groupby: this.getGrouping().map($bc6bc4f764e00865$export$fb70365b00e8cb7b),
                     ops: [
                         'count'
                     ]
@@ -3005,8 +3011,8 @@ class $a31d4adb8db18560$export$5b22a87d7feca398 extends $5a3a04d0726e8df8$export
         });
         const horizontal = orientation === 'horizontal';
         const minCellSignal = horizontal ? globalScope.signals.minCellHeight : globalScope.signals.minCellWidth;
-        $dbb29020c4a809fb$export$cdc9366ba30317bd(minCellSignal, 'max', `length(data(${JSON.stringify(names.accumulative)})) * ${minBandWidth}`);
-        $a6d4d5d140bab192$export$5346a0d8a9111b3f(globalScope.scope, {
+        $853681033abd6f83$export$cdc9366ba30317bd(minCellSignal, 'max', `length(data(${JSON.stringify(names.accumulative)})) * ${minBandWidth}`);
+        $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, {
             name: names.bandWidth,
             update: `bandwidth(${JSON.stringify(horizontal ? names.yScale : names.xScale)})`
         });
@@ -3015,26 +3021,26 @@ class $a31d4adb8db18560$export$5b22a87d7feca398 extends $5a3a04d0726e8df8$export
         if (!props.excludeEncodingRuleMap) encodingRuleMap = horizontal ? {
             x: [
                 {
-                    test: $63d1977acbfff188$export$71c45f78b1166d35(),
+                    test: $00118a065747f70b$export$71c45f78b1166d35(),
                     value: parentScope.offsets.x
                 }
             ],
             width: [
                 {
-                    test: $63d1977acbfff188$export$71c45f78b1166d35(),
+                    test: $00118a065747f70b$export$71c45f78b1166d35(),
                     value: 0
                 }
             ]
         } : {
             y: [
                 {
-                    test: $63d1977acbfff188$export$71c45f78b1166d35(),
-                    signal: $a6d4d5d140bab192$export$e6b6683aec0fe907(parentScope.offsets.y, parentScope.offsets.h)
+                    test: $00118a065747f70b$export$71c45f78b1166d35(),
+                    signal: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, parentScope.offsets.h)
                 }
             ],
             height: [
                 {
-                    test: $63d1977acbfff188$export$71c45f78b1166d35(),
+                    test: $00118a065747f70b$export$71c45f78b1166d35(),
                     value: 0
                 }
             ]
@@ -3062,8 +3068,8 @@ class $a31d4adb8db18560$export$5b22a87d7feca398 extends $5a3a04d0726e8df8$export
         const { names: names , props: props  } = this;
         const { parentScope: parentScope  } = props;
         return {
-            x: $a6d4d5d140bab192$export$e6b6683aec0fe907(parentScope.offsets.x, horizontal ? '' : `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(binField)}])`),
-            y: $a6d4d5d140bab192$export$e6b6683aec0fe907(parentScope.offsets.y, horizontal ? `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(binField)}])` : ''),
+            x: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.x, horizontal ? '' : `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(binField)}])`),
+            y: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, horizontal ? `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(binField)}])` : ''),
             h: horizontal ? names.bandWidth : parentScope.offsets.h,
             w: horizontal ? parentScope.offsets.w : names.bandWidth
         };
@@ -3071,7 +3077,7 @@ class $a31d4adb8db18560$export$5b22a87d7feca398 extends $5a3a04d0726e8df8$export
     getScales(bin, horizontal1) {
         const { names: names  } = this;
         const { parentScope: parentScope  } = this.props;
-        const binField = $1591e128591d53c6$export$fb70365b00e8cb7b(bin.fields[0]);
+        const binField = $bc6bc4f764e00865$export$fb70365b00e8cb7b(bin.fields[0]);
         const scales = [];
         let bandScale;
         if (horizontal1) bandScale = {
@@ -3116,19 +3122,19 @@ class $a31d4adb8db18560$export$5b22a87d7feca398 extends $5a3a04d0726e8df8$export
 
 
 
-function $2089422c1cc418bd$export$f241323700beca17(bin) {
+function $d15e2fabcf2f7201$export$f241323700beca17(bin) {
     const val = (index)=>`datum[${JSON.stringify(bin.fields[index])}]`
     ;
     return bin.discreteColumn.column.quantitative ? `format(${val(0)}, '~r') + ' - ' + format(${val(1)}, '~r')` : val(0);
 }
-function $2089422c1cc418bd$var$obj(nameValues, clause) {
+function $d15e2fabcf2f7201$var$obj(nameValues, clause) {
     if (clause) nameValues = [
         clause,
         ...nameValues
     ];
     return `{${nameValues.join()}}`;
 }
-function $2089422c1cc418bd$export$b292ca0d4c2e4690(bin, firstFieldName, lastFieldName, clause) {
+function $d15e2fabcf2f7201$export$b292ca0d4c2e4690(bin, firstFieldName, lastFieldName, clause) {
     if (bin.discreteColumn.column.quantitative) {
         const low = [
             `name:${JSON.stringify(bin.discreteColumn.column.name)}`,
@@ -3141,8 +3147,8 @@ function $2089422c1cc418bd$export$b292ca0d4c2e4690(bin, firstFieldName, lastFiel
             'operator:\'<\'',
             `value:datum[${JSON.stringify(bin.fields[1])}]`
         ];
-        return $2089422c1cc418bd$var$obj([
-            `expressions:[ datum[${JSON.stringify(firstFieldName)}] ? null : ${$2089422c1cc418bd$var$obj(low)}, datum[${JSON.stringify(lastFieldName)}] ? null : ${$2089422c1cc418bd$var$obj(high)}]`
+        return $d15e2fabcf2f7201$var$obj([
+            `expressions:[ datum[${JSON.stringify(firstFieldName)}] ? null : ${$d15e2fabcf2f7201$var$obj(low)}, datum[${JSON.stringify(lastFieldName)}] ? null : ${$d15e2fabcf2f7201$var$obj(high)}]`
         ], clause);
     } else {
         const exact = [
@@ -3150,8 +3156,8 @@ function $2089422c1cc418bd$export$b292ca0d4c2e4690(bin, firstFieldName, lastFiel
             'operator:\'==\'',
             `value:datum[${JSON.stringify(bin.fields[0])}]`
         ];
-        return $2089422c1cc418bd$var$obj([
-            `expressions:[${$2089422c1cc418bd$var$obj(exact)}]`
+        return $d15e2fabcf2f7201$var$obj([
+            `expressions:[${$d15e2fabcf2f7201$var$obj(exact)}]`
         ], clause);
     }
 }
@@ -3160,8 +3166,8 @@ function $2089422c1cc418bd$export$b292ca0d4c2e4690(bin, firstFieldName, lastFiel
 
 
 
-function $c82c0cd4a5aa62c8$export$71d2e96f63f1ac97(source, prefix, binFields, sortOrder) {
-    const _binFields = binFields.map($1591e128591d53c6$export$fb70365b00e8cb7b);
+function $276799ff26fc5cc2$export$71d2e96f63f1ac97(source, prefix, binFields, sortOrder) {
+    const _binFields = binFields.map($bc6bc4f764e00865$export$fb70365b00e8cb7b);
     const dataName = `${prefix}_bin_order`;
     const data = {
         name: dataName,
@@ -3185,27 +3191,27 @@ function $c82c0cd4a5aa62c8$export$71d2e96f63f1ac97(source, prefix, binFields, so
                     'row_number'
                 ],
                 as: [
-                    $f1d0eeb6595c811e$export$10df5429b7082be2.Ordinal
+                    $5026337cfcb4b996$export$10df5429b7082be2.Ordinal
                 ]
             }
         ]
     };
     return {
         data: data,
-        scale: $c82c0cd4a5aa62c8$export$f85d5aad90241781(dataName, `scale_${prefix}_order`, binFields)
+        scale: $276799ff26fc5cc2$export$f85d5aad90241781(dataName, `scale_${prefix}_order`, binFields)
     };
 }
-function $c82c0cd4a5aa62c8$export$f85d5aad90241781(dataName, scaleName, binFields) {
+function $276799ff26fc5cc2$export$f85d5aad90241781(dataName, scaleName, binFields) {
     return {
         type: 'ordinal',
         name: scaleName,
         domain: {
             data: dataName,
-            field: $1591e128591d53c6$export$fb70365b00e8cb7b(binFields[0])
+            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(binFields[0])
         },
         range: {
             data: dataName,
-            field: $f1d0eeb6595c811e$export$10df5429b7082be2.Ordinal
+            field: $5026337cfcb4b996$export$10df5429b7082be2.Ordinal
         }
     };
 }
@@ -3213,13 +3219,13 @@ function $c82c0cd4a5aa62c8$export$f85d5aad90241781(dataName, scaleName, binField
 
 
 
-class $4b702d1b81f39c20$export$3c877bb842c36952 extends $5a3a04d0726e8df8$export$c84671f46d6a1ca {
+class $8e71cd01f19f462c$export$3c877bb842c36952 extends $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         super(props);
         this.props = props;
         const p = this.prefix = `cross_${this.id}`;
-        this.binX = $e655012d4231bb71$export$6868fd1605c79d3d(`${p}_x`, props.globalScope.data.name, props.groupbyX);
-        this.binY = $e655012d4231bb71$export$6868fd1605c79d3d(`${p}_y`, props.globalScope.data.name, props.groupbyY);
+        this.binX = $280f5ab5a98a6906$export$6868fd1605c79d3d(`${p}_x`, props.globalScope.data.name, props.groupbyX);
+        this.binY = $280f5ab5a98a6906$export$6868fd1605c79d3d(`${p}_y`, props.globalScope.data.name, props.groupbyY);
         this.names = {
             facetDataName: `data_${p}_facet`,
             searchUnion: `data_${p}_search`,
@@ -3254,8 +3260,8 @@ class $4b702d1b81f39c20$export$3c877bb842c36952 extends $5a3a04d0726e8df8$export
             layout: parentScope.sizeSignals.layoutWidth,
             min: globalScope.signals.minCellWidth.name,
             out: globalScope.signals.plotWidthOut,
-            offset: $f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingLeft,
-            padding: $f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingLeft,
+            offset: $5026337cfcb4b996$export$809e371dee643808.FacetPaddingLeft,
+            padding: $5026337cfcb4b996$export$809e371dee643808.FacetPaddingLeft,
             dataOut: null,
             scaleName: null,
             position: null
@@ -3268,8 +3274,8 @@ class $4b702d1b81f39c20$export$3c877bb842c36952 extends $5a3a04d0726e8df8$export
             layout: parentScope.sizeSignals.layoutHeight,
             min: globalScope.signals.minCellHeight.name,
             out: globalScope.signals.plotHeightOut,
-            offset: $f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingTop,
-            padding: `(${$f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingTop} + ${$f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingBottom})`,
+            offset: $5026337cfcb4b996$export$809e371dee643808.FacetPaddingTop,
+            padding: `(${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingTop} + ${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingBottom})`,
             dataOut: null,
             scaleName: null,
             position: null
@@ -3286,24 +3292,24 @@ class $4b702d1b81f39c20$export$3c877bb842c36952 extends $5a3a04d0726e8df8$export
             let scale;
             const titleSource = titles[dim];
             if (bin.native === false) {
-                $a6d4d5d140bab192$export$5346a0d8a9111b3f(globalScope.scope, ...bin.signals);
-                $a6d4d5d140bab192$export$eea5d31e98930019(globalScope.data, ...bin.transforms);
-                $a6d4d5d140bab192$export$6853292f627997e4(globalScope.scope, bin.dataSequence);
-                $a6d4d5d140bab192$export$eea5d31e98930019(bin.dataSequence, {
+                $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, ...bin.signals);
+                $1d26d69d9d3d5b6e$export$eea5d31e98930019(globalScope.data, ...bin.transforms);
+                $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, bin.dataSequence);
+                $1d26d69d9d3d5b6e$export$eea5d31e98930019(bin.dataSequence, {
                     type: 'formula',
                     expr: `indata(${JSON.stringify(globalScope.markDataName)}, ${JSON.stringify(bin.fields[0])}, datum[${JSON.stringify(bin.fields[0])}])`,
-                    as: $f1d0eeb6595c811e$export$10df5429b7082be2.Contains
+                    as: $5026337cfcb4b996$export$10df5429b7082be2.Contains
                 });
                 data = bin.dataSequence;
                 dataName = bin.dataSequence.name;
                 countSignal = `length(data(${JSON.stringify(dataName)}))`;
-                scale = $c82c0cd4a5aa62c8$export$f85d5aad90241781(dataName, `${names.dimScale}_${dim}`, bin.fields);
+                scale = $276799ff26fc5cc2$export$f85d5aad90241781(dataName, `${names.dimScale}_${dim}`, bin.fields);
                 titleSource.dataName = bin.dataSequence.name;
             } else {
                 dataName = globalScope.markDataName;
-                const ord = $c82c0cd4a5aa62c8$export$71d2e96f63f1ac97(dataName, `${prefix}_${dim}`, bin.fields, sortOrder);
+                const ord = $276799ff26fc5cc2$export$71d2e96f63f1ac97(dataName, `${prefix}_${dim}`, bin.fields, sortOrder);
                 data = ord.data;
-                $a6d4d5d140bab192$export$6853292f627997e4(globalScope.scope, ord.data);
+                $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, ord.data);
                 countSignal = `length(data(${JSON.stringify(ord.data.name)}))`;
                 scale = ord.scale;
                 titleSource.dataName = ord.data.name;
@@ -3311,31 +3317,31 @@ class $4b702d1b81f39c20$export$3c877bb842c36952 extends $5a3a04d0726e8df8$export
             titleSource.quantitative = bin.discreteColumn.column.quantitative;
             d.dataOut = data;
             d.scaleName = scale.name;
-            $a6d4d5d140bab192$export$eea5d31e98930019(data, {
+            $1d26d69d9d3d5b6e$export$eea5d31e98930019(data, {
                 type: 'formula',
-                expr: $2089422c1cc418bd$export$b292ca0d4c2e4690(bin, $f1d0eeb6595c811e$export$10df5429b7082be2.First, $f1d0eeb6595c811e$export$10df5429b7082be2.Last),
-                as: $f1d0eeb6595c811e$export$10df5429b7082be2.FacetSearch
+                expr: $d15e2fabcf2f7201$export$b292ca0d4c2e4690(bin, $5026337cfcb4b996$export$10df5429b7082be2.First, $5026337cfcb4b996$export$10df5429b7082be2.Last),
+                as: $5026337cfcb4b996$export$10df5429b7082be2.FacetSearch
             }, {
                 type: 'formula',
-                expr: $2089422c1cc418bd$export$f241323700beca17(bin),
-                as: $f1d0eeb6595c811e$export$10df5429b7082be2.FacetTitle
+                expr: $d15e2fabcf2f7201$export$f241323700beca17(bin),
+                as: $5026337cfcb4b996$export$10df5429b7082be2.FacetTitle
             });
-            $a6d4d5d140bab192$export$290268902279a991(globalScope.scope, scale);
+            $1d26d69d9d3d5b6e$export$290268902279a991(globalScope.scope, scale);
             const count = `${names.dimCount}_${dim}`;
             const calc = `${names.dimCellSizeCalc}_${dim}`;
             const size = `${names.dimCellSize}_${dim}`;
-            $a6d4d5d140bab192$export$5346a0d8a9111b3f(globalScope.scope, {
+            $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, {
                 name: count,
                 update: countSignal
             });
-            $a6d4d5d140bab192$export$5346a0d8a9111b3f(globalScope.scope, {
+            $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, {
                 name: calc,
                 update: `${d.layout} / ${count}`
             }, {
                 name: size,
                 update: `max(${d.min}, (${calc} - ${padding}))`
             });
-            $dbb29020c4a809fb$export$cdc9366ba30317bd(d.out, 'max', `((${size} + ${padding}) * ${count})`);
+            $853681033abd6f83$export$cdc9366ba30317bd(d.out, 'max', `((${size} + ${padding}) * ${count})`);
             d.position = this.dimensionOffset(d);
         });
         const groupRow = {
@@ -3357,8 +3363,8 @@ class $4b702d1b81f39c20$export$3c877bb842c36952 extends $5a3a04d0726e8df8$export
                     transform: [
                         {
                             type: 'formula',
-                            expr: `[datum[${JSON.stringify($f1d0eeb6595c811e$export$10df5429b7082be2.FacetSearch)}], merge(parent[${JSON.stringify($f1d0eeb6595c811e$export$10df5429b7082be2.FacetSearch)}], { clause: '&&'})]`,
-                            as: $f1d0eeb6595c811e$export$10df5429b7082be2.FacetSearch
+                            expr: `[datum[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.FacetSearch)}], merge(parent[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.FacetSearch)}], { clause: '&&'})]`,
+                            as: $5026337cfcb4b996$export$10df5429b7082be2.FacetSearch
                         }
                     ]
                 }
@@ -3385,8 +3391,8 @@ class $4b702d1b81f39c20$export$3c877bb842c36952 extends $5a3a04d0726e8df8$export
                 data: names.searchUnion
             }
         };
-        $a6d4d5d140bab192$export$3df320e901c23a48(globalScope.markGroup, groupRow);
-        $a6d4d5d140bab192$export$3df320e901c23a48(groupRow, groupCol);
+        $1d26d69d9d3d5b6e$export$3df320e901c23a48(globalScope.markGroup, groupRow);
+        $1d26d69d9d3d5b6e$export$3df320e901c23a48(groupRow, groupCol);
         const offsets = {
             x: this.dimensionOffset(dx),
             y: this.dimensionOffset(dy),
@@ -3399,7 +3405,7 @@ class $4b702d1b81f39c20$export$3c877bb842c36952 extends $5a3a04d0726e8df8$export
             colCount: `${names.dimCount}_x`,
             rowCount: `${names.dimCount}_y`
         };
-        if (colRowTitles) $bfc5d85c4d08ad7e$export$4fec84497b9e6e3f(globalScope.scope, titles.x, titles.y, sizeSignals, axisTextColor);
+        if (colRowTitles) $267ef0242f542da1$export$4fec84497b9e6e3f(globalScope.scope, titles.x, titles.y, sizeSignals, axisTextColor);
         return {
             facetScope: groupCol,
             offsets: offsets,
@@ -3421,7 +3427,7 @@ class $4b702d1b81f39c20$export$3c877bb842c36952 extends $5a3a04d0726e8df8$export
 
 
 
-class $e3e6f18737936a95$export$1c460fb4285edadc extends $5a3a04d0726e8df8$export$c84671f46d6a1ca {
+class $86dc958dd62c07ad$export$1c460fb4285edadc extends $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         super(props);
         this.props = props;
@@ -3441,8 +3447,8 @@ class $e3e6f18737936a95$export$1c460fb4285edadc extends $5a3a04d0726e8df8$export
         const { names: names , prefix: prefix , props: props  } = this;
         const { globalScope: globalScope , parentScope: parentScope , scatterPointScaleDisplay: scatterPointScaleDisplay , size: size , x: x , y: y , z: z , zGrounded: zGrounded  } = props;
         const qsize = size && size.quantitative && size;
-        $a6d4d5d140bab192$export$5346a0d8a9111b3f(globalScope.scope, {
-            name: $f1d0eeb6595c811e$export$809e371dee643808.PointScale,
+        $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, {
+            name: $5026337cfcb4b996$export$809e371dee643808.PointScale,
             value: 5,
             bind: {
                 name: scatterPointScaleDisplay,
@@ -3453,7 +3459,7 @@ class $e3e6f18737936a95$export$1c460fb4285edadc extends $5a3a04d0726e8df8$export
                 step: 1
             }
         }, {
-            name: $f1d0eeb6595c811e$export$809e371dee643808.ZGrounded,
+            name: $5026337cfcb4b996$export$809e371dee643808.ZGrounded,
             value: false,
             bind: {
                 name: zGrounded,
@@ -3461,12 +3467,12 @@ class $e3e6f18737936a95$export$1c460fb4285edadc extends $5a3a04d0726e8df8$export
             }
         });
         if (qsize) {
-            $a6d4d5d140bab192$export$eea5d31e98930019(globalScope.data, {
+            $1d26d69d9d3d5b6e$export$eea5d31e98930019(globalScope.data, {
                 type: 'extent',
-                field: $1591e128591d53c6$export$fb70365b00e8cb7b(qsize.name),
+                field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(qsize.name),
                 signal: names.sizeExtent
             });
-            $a6d4d5d140bab192$export$290268902279a991(globalScope.scope, {
+            $1d26d69d9d3d5b6e$export$290268902279a991(globalScope.scope, {
                 name: names.sizeScale,
                 type: 'linear',
                 domain: [
@@ -3482,12 +3488,12 @@ class $e3e6f18737936a95$export$1c460fb4285edadc extends $5a3a04d0726e8df8$export
                     }
                 ]
             });
-            $a6d4d5d140bab192$export$5346a0d8a9111b3f(globalScope.scope, {
+            $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, {
                 name: names.sizeRange,
-                update: `min(${parentScope.sizeSignals.layoutHeight}, ${parentScope.sizeSignals.layoutWidth}) / ${$8f8d66f7ca1de7cd$export$c223d3ee3c0620d9}`
+                update: `min(${parentScope.sizeSignals.layoutHeight}, ${parentScope.sizeSignals.layoutWidth}) / ${$ee84a745a025909d$export$c223d3ee3c0620d9}`
             });
         }
-        $a6d4d5d140bab192$export$6853292f627997e4(globalScope.scope, {
+        $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, {
             name: names.markData,
             source: globalScope.markDataName,
             transform: [
@@ -3510,11 +3516,11 @@ class $e3e6f18737936a95$export$1c460fb4285edadc extends $5a3a04d0726e8df8$export
             }
         };
         const zValue = z ? `scale(${JSON.stringify(names.zScale)}, datum[${JSON.stringify(z.name)}])` : null;
-        const sizeValueSignal = qsize ? `scale(${JSON.stringify(names.sizeScale)}, datum[${JSON.stringify(qsize.name)}]) * ${$f1d0eeb6595c811e$export$809e371dee643808.PointScale}` : $f1d0eeb6595c811e$export$809e371dee643808.PointScale;
+        const sizeValueSignal = qsize ? `scale(${JSON.stringify(names.sizeScale)}, datum[${JSON.stringify(qsize.name)}]) * ${$5026337cfcb4b996$export$809e371dee643808.PointScale}` : $5026337cfcb4b996$export$809e371dee643808.PointScale;
         const update = Object.assign({
             height: [
                 {
-                    test: $63d1977acbfff188$export$71c45f78b1166d35(),
+                    test: $00118a065747f70b$export$71c45f78b1166d35(),
                     value: 0
                 },
                 {
@@ -3527,20 +3533,20 @@ class $e3e6f18737936a95$export$1c460fb4285edadc extends $5a3a04d0726e8df8$export
         }, z && {
             z: [
                 {
-                    test: $63d1977acbfff188$export$71c45f78b1166d35(),
+                    test: $00118a065747f70b$export$71c45f78b1166d35(),
                     value: 0
                 },
                 {
-                    signal: `${$f1d0eeb6595c811e$export$809e371dee643808.ZGrounded} ? 0 : ${zValue}`
+                    signal: `${$5026337cfcb4b996$export$809e371dee643808.ZGrounded} ? 0 : ${zValue}`
                 }
             ],
             depth: [
                 {
-                    test: $63d1977acbfff188$export$71c45f78b1166d35(),
+                    test: $00118a065747f70b$export$71c45f78b1166d35(),
                     value: 0
                 },
                 {
-                    signal: `${$f1d0eeb6595c811e$export$809e371dee643808.ZGrounded} ? ${zValue} : ${sizeValueSignal}`
+                    signal: `${$5026337cfcb4b996$export$809e371dee643808.ZGrounded} ? ${zValue} : ${sizeValueSignal}`
                 }
             ]
         });
@@ -3564,20 +3570,20 @@ class $e3e6f18737936a95$export$1c460fb4285edadc extends $5a3a04d0726e8df8$export
                 xyz: 'z',
                 scaleName: names.zScale,
                 reverse: false,
-                signal: `(${globalScope.zSize}) * ${$f1d0eeb6595c811e$export$809e371dee643808.ZProportion}`
+                signal: `(${globalScope.zSize}) * ${$5026337cfcb4b996$export$809e371dee643808.ZProportion}`
             }
         ];
         columnSignals.forEach((cs)=>{
             const { column: column , reverse: reverse , scaleName: scaleName , signal: signal , xyz: xyz  } = cs;
             if (!column) return;
             let scale;
-            if (column.quantitative) scale = $4c526e4a87353148$export$fefe9507ec0904ed(scaleName, globalScope.data.name, column.name, [
+            if (column.quantitative) scale = $0831b1e730d257f4$export$fefe9507ec0904ed(scaleName, globalScope.data.name, column.name, [
                 0,
                 {
                     signal: signal
                 }
             ], reverse, false);
-            else scale = $4c526e4a87353148$export$b67158f831e00d0d(scaleName, globalScope.data.name, [
+            else scale = $0831b1e730d257f4$export$b67158f831e00d0d(scaleName, globalScope.data.name, [
                 0,
                 {
                     signal: signal
@@ -3597,11 +3603,11 @@ class $e3e6f18737936a95$export$1c460fb4285edadc extends $5a3a04d0726e8df8$export
                 update: update
             }
         };
-        $a6d4d5d140bab192$export$3df320e901c23a48(globalScope.markGroup, mark);
+        $1d26d69d9d3d5b6e$export$3df320e901c23a48(globalScope.markGroup, mark);
         return {
             offsets: {
-                x: $a6d4d5d140bab192$export$e6b6683aec0fe907(parentScope.offsets.x, `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(x.name)}])`),
-                y: $a6d4d5d140bab192$export$e6b6683aec0fe907(parentScope.offsets.y, `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(y.name)}]) - ${sizeValueSignal}`),
+                x: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.x, `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(x.name)}])`),
+                y: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(y.name)}]) - ${sizeValueSignal}`),
                 h: sizeValueSignal,
                 w: sizeValueSignal
             },
@@ -3614,8 +3620,8 @@ class $e3e6f18737936a95$export$1c460fb4285edadc extends $5a3a04d0726e8df8$export
             encodingRuleMap: {
                 y: [
                     {
-                        test: $63d1977acbfff188$export$71c45f78b1166d35(),
-                        signal: $a6d4d5d140bab192$export$e6b6683aec0fe907(parentScope.offsets.y, parentScope.sizeSignals.layoutHeight)
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
+                        signal: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, parentScope.sizeSignals.layoutHeight)
                     }
                 ]
             }
@@ -3631,21 +3637,21 @@ class $e3e6f18737936a95$export$1c460fb4285edadc extends $5a3a04d0726e8df8$export
 
 
 
-function $ebf789ebc1341c8d$export$9e1d5954d0bb865c(z, zSize, dataName, zScaleName) {
+function $5ff5f76bdbe420bd$export$9e1d5954d0bb865c(z, zSize, dataName, zScaleName) {
     if (z) {
         const zRange = [
             0,
             {
-                signal: `(${zSize}) * ${$f1d0eeb6595c811e$export$809e371dee643808.ZProportion}`
+                signal: `(${zSize}) * ${$5026337cfcb4b996$export$809e371dee643808.ZProportion}`
             }
         ];
-        const scale = z.quantitative ? $4c526e4a87353148$export$fefe9507ec0904ed(zScaleName, dataName, z.name, zRange, false, true) : $4c526e4a87353148$export$b67158f831e00d0d(zScaleName, dataName, zRange, z.name, false);
+        const scale = z.quantitative ? $0831b1e730d257f4$export$fefe9507ec0904ed(zScaleName, dataName, z.name, zRange, false, true) : $0831b1e730d257f4$export$b67158f831e00d0d(zScaleName, dataName, zRange, z.name, false);
         return scale;
     }
 }
 
 
-class $b311bee11b45a36d$export$b09fb900337259de extends $5a3a04d0726e8df8$export$c84671f46d6a1ca {
+class $22e821125aa13607$export$b09fb900337259de extends $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         super(props);
         this.props = props;
@@ -3662,17 +3668,17 @@ class $b311bee11b45a36d$export$b09fb900337259de extends $5a3a04d0726e8df8$export
     build() {
         const { names: names , prefix: prefix , props: props  } = this;
         const { fillDirection: fillDirection , globalScope: globalScope , groupings: groupings , parentScope: parentScope , collapseYHeight: collapseYHeight , sortBy: sortBy , z: z  } = props;
-        const zScale = $ebf789ebc1341c8d$export$9e1d5954d0bb865c(z, globalScope.zSize, globalScope.data.name, names.zScale);
-        $a6d4d5d140bab192$export$eea5d31e98930019(globalScope.data, Object.assign({
+        const zScale = $5ff5f76bdbe420bd$export$9e1d5954d0bb865c(z, globalScope.zSize, globalScope.data.name, names.zScale);
+        $1d26d69d9d3d5b6e$export$eea5d31e98930019(globalScope.data, Object.assign({
             type: 'stack',
-            groupby: $a6d4d5d140bab192$export$53a21aeef48e14a8(groupings).map($1591e128591d53c6$export$fb70365b00e8cb7b),
+            groupby: $1d26d69d9d3d5b6e$export$53a21aeef48e14a8(groupings).map($bc6bc4f764e00865$export$fb70365b00e8cb7b),
             as: [
                 names.stack0,
                 names.stack1
             ]
         }, sortBy && {
             sort: {
-                field: $1591e128591d53c6$export$fb70365b00e8cb7b(sortBy.name),
+                field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(sortBy.name),
                 order: 'ascending'
             }
         }));
@@ -3690,7 +3696,7 @@ class $b311bee11b45a36d$export$b09fb900337259de extends $5a3a04d0726e8df8$export
                 update: Object.assign({
                     height: collapseYHeight ? [
                         {
-                            test: $63d1977acbfff188$export$71c45f78b1166d35(),
+                            test: $00118a065747f70b$export$71c45f78b1166d35(),
                             value: 0
                         },
                         heightSignal
@@ -3704,18 +3710,18 @@ class $b311bee11b45a36d$export$b09fb900337259de extends $5a3a04d0726e8df8$export
                     },
                     depth: [
                         {
-                            test: $63d1977acbfff188$export$71c45f78b1166d35(),
+                            test: $00118a065747f70b$export$71c45f78b1166d35(),
                             value: 0
                         },
                         {
                             scale: names.zScale,
-                            field: $1591e128591d53c6$export$fb70365b00e8cb7b(z.name)
+                            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(z.name)
                         }
                     ]
                 })
             }
         };
-        $a6d4d5d140bab192$export$3df320e901c23a48(globalScope.markGroup, mark);
+        $1d26d69d9d3d5b6e$export$3df320e901c23a48(globalScope.markGroup, mark);
         const { tx: tx , ty: ty  } = this.transformXY(gap, levelSize, squaresPerBand);
         return Object.assign(Object.assign(Object.assign({
         }, z && {
@@ -3729,8 +3735,8 @@ class $b311bee11b45a36d$export$b09fb900337259de extends $5a3a04d0726e8df8$export
             }
         }), {
             offsets: {
-                x: $a6d4d5d140bab192$export$e6b6683aec0fe907(parentScope.offsets.x, tx.expr),
-                y: $a6d4d5d140bab192$export$e6b6683aec0fe907(parentScope.offsets.y, ty.expr),
+                x: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.x, tx.expr),
+                y: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, ty.expr),
                 h: size,
                 w: size
             },
@@ -3743,7 +3749,7 @@ class $b311bee11b45a36d$export$b09fb900337259de extends $5a3a04d0726e8df8$export
             encodingRuleMap: {
                 y: [
                     {
-                        test: $63d1977acbfff188$export$71c45f78b1166d35(),
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
                         value: parentScope.offsets.y
                     }
                 ]
@@ -3765,9 +3771,9 @@ class $b311bee11b45a36d$export$b09fb900337259de extends $5a3a04d0726e8df8$export
         let { maxGroupedFillSize: maxGroupedFillSize , maxGroupedUnits: maxGroupedUnits  } = props;
         if (!maxGroupedUnits) {
             if (groupings) {
-                $a6d4d5d140bab192$export$eea5d31e98930019(globalScope.data, {
+                $1d26d69d9d3d5b6e$export$eea5d31e98930019(globalScope.data, {
                     type: 'joinaggregate',
-                    groupby: $a6d4d5d140bab192$export$53a21aeef48e14a8(groupings).map($1591e128591d53c6$export$fb70365b00e8cb7b),
+                    groupby: $1d26d69d9d3d5b6e$export$53a21aeef48e14a8(groupings).map($bc6bc4f764e00865$export$fb70365b00e8cb7b),
                     ops: [
                         'count'
                     ],
@@ -3804,12 +3810,12 @@ class $b311bee11b45a36d$export$b09fb900337259de extends $5a3a04d0726e8df8$export
         const tx = {
             type: 'formula',
             expr: null,
-            as: `${prefix}_${$f1d0eeb6595c811e$export$10df5429b7082be2.OffsetX}`
+            as: `${prefix}_${$5026337cfcb4b996$export$10df5429b7082be2.OffsetX}`
         };
         const ty = {
             type: 'formula',
             expr: null,
-            as: `${prefix}_${$f1d0eeb6595c811e$export$10df5429b7082be2.OffsetY}`
+            as: `${prefix}_${$5026337cfcb4b996$export$10df5429b7082be2.OffsetY}`
         };
         switch(fillDirection){
             case 'down-right':
@@ -3838,7 +3844,7 @@ class $b311bee11b45a36d$export$b09fb900337259de extends $5a3a04d0726e8df8$export
 
 
 
-class $97c4be7e3016367d$export$694e0d28c7ffc90c extends $5a3a04d0726e8df8$export$c84671f46d6a1ca {
+class $b27405b06ac9c54d$export$694e0d28c7ffc90c extends $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         super(props);
         this.props = props;
@@ -3864,9 +3870,9 @@ class $97c4be7e3016367d$export$694e0d28c7ffc90c extends $5a3a04d0726e8df8$export
         const { names: names , props: props  } = this;
         const { globalScope: globalScope , groupings: groupings , parentScope: parentScope , sort: sort  } = props;
         const { sizeSignals: sizeSignals  } = parentScope;
-        $a6d4d5d140bab192$export$eea5d31e98930019(globalScope.data, {
+        $1d26d69d9d3d5b6e$export$eea5d31e98930019(globalScope.data, {
             type: 'joinaggregate',
-            groupby: $a6d4d5d140bab192$export$53a21aeef48e14a8(groupings).map($1591e128591d53c6$export$fb70365b00e8cb7b),
+            groupby: $1d26d69d9d3d5b6e$export$53a21aeef48e14a8(groupings).map($bc6bc4f764e00865$export$fb70365b00e8cb7b),
             ops: [
                 'count'
             ],
@@ -3879,18 +3885,18 @@ class $97c4be7e3016367d$export$694e0d28c7ffc90c extends $5a3a04d0726e8df8$export
             signal: names.globalExtent
         }, Object.assign({
             type: 'stack',
-            groupby: $a6d4d5d140bab192$export$53a21aeef48e14a8(groupings).map($1591e128591d53c6$export$fb70365b00e8cb7b),
+            groupby: $1d26d69d9d3d5b6e$export$53a21aeef48e14a8(groupings).map($bc6bc4f764e00865$export$fb70365b00e8cb7b),
             as: [
                 names.stack0,
                 names.stack1
             ]
         }, sort && {
             sort: {
-                field: $1591e128591d53c6$export$fb70365b00e8cb7b(sort.name),
+                field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(sort.name),
                 order: 'ascending'
             }
         }));
-        $a6d4d5d140bab192$export$6853292f627997e4(globalScope.scope, {
+        $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, {
             name: names.sequence,
             transform: [
                 {
@@ -3944,7 +3950,7 @@ class $97c4be7e3016367d$export$694e0d28c7ffc90c extends $5a3a04d0726e8df8$export
                 }
             ]
         });
-        $a6d4d5d140bab192$export$5346a0d8a9111b3f(globalScope.scope, {
+        $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, {
             name: names.size,
             update: `min((${sizeSignals.layoutHeight}), (${sizeSignals.layoutWidth}))`
         }, {
@@ -3970,8 +3976,8 @@ class $97c4be7e3016367d$export$694e0d28c7ffc90c extends $5a3a04d0726e8df8$export
         const groupX = `(${sizeSignals.layoutWidth} - ${names.size}) / 2`;
         const groupY = `(${sizeSignals.layoutHeight} - ${names.size}) / 2`;
         const offsets = {
-            x: $a6d4d5d140bab192$export$e6b6683aec0fe907(parentScope.offsets.x, groupX, `${cubeX} * (${names.cube} + 1)`),
-            y: $a6d4d5d140bab192$export$e6b6683aec0fe907(parentScope.offsets.y, groupY, `${cubeY} * (${names.cube} + 1)`),
+            x: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.x, groupX, `${cubeX} * (${names.cube} + 1)`),
+            y: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, groupY, `${cubeY} * (${names.cube} + 1)`),
             h: names.size,
             w: names.size
         };
@@ -3997,7 +4003,7 @@ class $97c4be7e3016367d$export$694e0d28c7ffc90c extends $5a3a04d0726e8df8$export
                 }
             }
         };
-        $a6d4d5d140bab192$export$3df320e901c23a48(globalScope.markGroup, mark);
+        $1d26d69d9d3d5b6e$export$3df320e901c23a48(globalScope.markGroup, mark);
         const zScale = {
             type: 'linear',
             name: names.zScale,
@@ -4033,25 +4039,25 @@ class $97c4be7e3016367d$export$694e0d28c7ffc90c extends $5a3a04d0726e8df8$export
             encodingRuleMap: {
                 y: [
                     {
-                        test: $63d1977acbfff188$export$71c45f78b1166d35(),
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
                         signal: parentScope.offsets.y
                     }
                 ],
                 z: [
                     {
-                        test: $63d1977acbfff188$export$71c45f78b1166d35(),
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
                         value: 0
                     }
                 ],
                 depth: [
                     {
-                        test: $63d1977acbfff188$export$71c45f78b1166d35(),
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
                         value: 0
                     }
                 ],
                 height: [
                     {
-                        test: $63d1977acbfff188$export$71c45f78b1166d35(),
+                        test: $00118a065747f70b$export$71c45f78b1166d35(),
                         value: 0
                     }
                 ]
@@ -4067,15 +4073,15 @@ class $97c4be7e3016367d$export$694e0d28c7ffc90c extends $5a3a04d0726e8df8$export
 
 
 
-class $8bda722123c848d0$export$c4df0d8c6c8f50e4 extends $5a3a04d0726e8df8$export$c84671f46d6a1ca {
+class $a38643ba15c0e389$export$c4df0d8c6c8f50e4 extends $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         super(props);
         this.props = props;
         const p = this.prefix = `strip_${this.id}`;
         this.names = {
-            firstField: `${p}${$f1d0eeb6595c811e$export$10df5429b7082be2.First}`,
-            lastField: `${p}${$f1d0eeb6595c811e$export$10df5429b7082be2.Last}`,
-            valueField: `${p}${$f1d0eeb6595c811e$export$10df5429b7082be2.Value}`,
+            firstField: `${p}${$5026337cfcb4b996$export$10df5429b7082be2.First}`,
+            lastField: `${p}${$5026337cfcb4b996$export$10df5429b7082be2.Last}`,
+            valueField: `${p}${$5026337cfcb4b996$export$10df5429b7082be2.Value}`,
             scale: `scale_${p}`,
             zScale: `scale_${p}_z`
         };
@@ -4083,13 +4089,13 @@ class $8bda722123c848d0$export$c4df0d8c6c8f50e4 extends $5a3a04d0726e8df8$export
     build() {
         const { names: names , prefix: prefix , props: props  } = this;
         const { addPercentageScale: addPercentageScale , globalScope: globalScope , groupings: groupings , orientation: orientation , size: size , sort: sort , sortOrder: sortOrder , parentScope: parentScope , z: z  } = props;
-        const zScale = $ebf789ebc1341c8d$export$9e1d5954d0bb865c(z, globalScope.zSize, globalScope.data.name, names.zScale);
+        const zScale = $5ff5f76bdbe420bd$export$9e1d5954d0bb865c(z, globalScope.zSize, globalScope.data.name, names.zScale);
         const horizontal = orientation === 'horizontal';
         const transform = [];
         if (sort) transform.push({
             type: 'collect',
             sort: {
-                field: $1591e128591d53c6$export$fb70365b00e8cb7b(sort.name),
+                field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(sort.name),
                 order: sortOrder
             }
         });
@@ -4110,24 +4116,24 @@ class $8bda722123c848d0$export$c4df0d8c6c8f50e4 extends $5a3a04d0726e8df8$export
         }
         const stackTransform = {
             type: 'stack',
-            field: $1591e128591d53c6$export$fb70365b00e8cb7b(stackField),
+            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(stackField),
             offset: 'normalize',
             as: [
                 names.firstField,
                 names.lastField
             ]
         };
-        if (groupings.length) stackTransform.groupby = $a6d4d5d140bab192$export$53a21aeef48e14a8(groupings).map($1591e128591d53c6$export$fb70365b00e8cb7b);
+        if (groupings.length) stackTransform.groupby = $1d26d69d9d3d5b6e$export$53a21aeef48e14a8(groupings).map($bc6bc4f764e00865$export$fb70365b00e8cb7b);
         transform.push(stackTransform);
-        $a6d4d5d140bab192$export$eea5d31e98930019(globalScope.data, ...transform);
+        $1d26d69d9d3d5b6e$export$eea5d31e98930019(globalScope.data, ...transform);
         const span = [
             names.lastField,
             names.firstField
         ].map((f)=>`datum[${JSON.stringify(f)}]`
         ).join(' - ');
         const offsets = {
-            x: $a6d4d5d140bab192$export$e6b6683aec0fe907(parentScope.offsets.x, horizontal ? `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.w})` : ''),
-            y: $a6d4d5d140bab192$export$e6b6683aec0fe907(parentScope.offsets.y, horizontal ? '' : `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.h})`),
+            x: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.x, horizontal ? `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.w})` : ''),
+            y: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, horizontal ? '' : `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.h})`),
             h: horizontal ? parentScope.offsets.h : `(${span}) * (${parentScope.offsets.h})`,
             w: horizontal ? `(${span}) * (${parentScope.offsets.w})` : parentScope.offsets.w
         };
@@ -4151,18 +4157,18 @@ class $8bda722123c848d0$export$c4df0d8c6c8f50e4 extends $5a3a04d0726e8df8$export
                     },
                     depth: [
                         {
-                            test: $63d1977acbfff188$export$71c45f78b1166d35(),
+                            test: $00118a065747f70b$export$71c45f78b1166d35(),
                             value: 0
                         },
                         {
                             scale: names.zScale,
-                            field: $1591e128591d53c6$export$fb70365b00e8cb7b(z.name)
+                            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(z.name)
                         }
                     ]
                 })
             }
         };
-        $a6d4d5d140bab192$export$3df320e901c23a48(globalScope.markGroup, mark);
+        $1d26d69d9d3d5b6e$export$3df320e901c23a48(globalScope.markGroup, mark);
         let percentageScale;
         if (addPercentageScale) percentageScale = [
             {
@@ -4213,7 +4219,7 @@ class $8bda722123c848d0$export$c4df0d8c6c8f50e4 extends $5a3a04d0726e8df8$export
 
 
 
-class $0d2d6726d6a53ad5$export$d685cd2b84b49ee extends $5a3a04d0726e8df8$export$c84671f46d6a1ca {
+class $1714cc8eaad30cf2$export$d685cd2b84b49ee extends $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         super(props);
         this.props = props;
@@ -4240,16 +4246,16 @@ class $0d2d6726d6a53ad5$export$d685cd2b84b49ee extends $5a3a04d0726e8df8$export$
     build() {
         const { names: names , props: props  } = this;
         const { globalScope: globalScope , parentScope: parentScope , treeMapMethod: treeMapMethod , z: z  } = props;
-        const zScale = $ebf789ebc1341c8d$export$9e1d5954d0bb865c(z, globalScope.zSize, globalScope.data.name, names.zScale);
+        const zScale = $5ff5f76bdbe420bd$export$9e1d5954d0bb865c(z, globalScope.zSize, globalScope.data.name, names.zScale);
         const offsets = {
-            x: $a6d4d5d140bab192$export$e6b6683aec0fe907(parentScope.offsets.x, $0d2d6726d6a53ad5$var$fn(names.fieldX0)),
-            y: $a6d4d5d140bab192$export$e6b6683aec0fe907(parentScope.offsets.y, $0d2d6726d6a53ad5$var$fn(names.fieldY0)),
-            h: $0d2d6726d6a53ad5$var$subtract(names.fieldY1, names.fieldY0),
-            w: $0d2d6726d6a53ad5$var$subtract(names.fieldX1, names.fieldX0)
+            x: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.x, $1714cc8eaad30cf2$var$fn(names.fieldX0)),
+            y: $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, $1714cc8eaad30cf2$var$fn(names.fieldY0)),
+            h: $1714cc8eaad30cf2$var$subtract(names.fieldY1, names.fieldY0),
+            w: $1714cc8eaad30cf2$var$subtract(names.fieldX1, names.fieldX0)
         };
         const mark = this.transformedMark(offsets);
-        $a6d4d5d140bab192$export$5346a0d8a9111b3f(globalScope.scope, {
-            name: $f1d0eeb6595c811e$export$809e371dee643808.TreeMapMethod,
+        $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, {
+            name: $5026337cfcb4b996$export$809e371dee643808.TreeMapMethod,
             value: 'squarify',
             bind: {
                 name: treeMapMethod,
@@ -4284,7 +4290,7 @@ class $0d2d6726d6a53ad5$export$d685cd2b84b49ee extends $5a3a04d0726e8df8$export$
         const { globalScope: globalScope , groupings: groupings , parentScope: parentScope  } = props;
         if (groupings.length) {
             //treemap transform can't have it's boundary size grouped, so we need to facet the data.
-            $a6d4d5d140bab192$export$6853292f627997e4(globalScope.scope, {
+            $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, {
                 name: names.dataHeightWidth,
                 source: globalScope.markDataName,
                 transform: [
@@ -4310,7 +4316,7 @@ class $0d2d6726d6a53ad5$export$d685cd2b84b49ee extends $5a3a04d0726e8df8$export$
                     facet: {
                         name: names.dataFacet,
                         data: names.dataHeightWidth,
-                        groupby: $a6d4d5d140bab192$export$53a21aeef48e14a8(groupings).map($1591e128591d53c6$export$fb70365b00e8cb7b)
+                        groupby: $1d26d69d9d3d5b6e$export$53a21aeef48e14a8(groupings).map($bc6bc4f764e00865$export$fb70365b00e8cb7b)
                     }
                 },
                 data: [
@@ -4334,7 +4340,7 @@ class $0d2d6726d6a53ad5$export$d685cd2b84b49ee extends $5a3a04d0726e8df8$export$
                 ]
             };
             globalScope.setMarkDataName(names.dataFacetMark);
-            $a6d4d5d140bab192$export$3df320e901c23a48(globalScope.markGroup, facets);
+            $1d26d69d9d3d5b6e$export$3df320e901c23a48(globalScope.markGroup, facets);
             //assign new markgroup after adding mark to original group
             globalScope.setMarkGroup(facets);
             this.treemapTransform(treemapData, `${names.widthExtent}[0]`, `${names.heightExtent}[0]`);
@@ -4367,24 +4373,24 @@ class $0d2d6726d6a53ad5$export$d685cd2b84b49ee extends $5a3a04d0726e8df8$export$
                     },
                     depth: [
                         {
-                            test: $63d1977acbfff188$export$71c45f78b1166d35(),
+                            test: $00118a065747f70b$export$71c45f78b1166d35(),
                             value: 0
                         },
                         {
                             scale: names.zScale,
-                            field: $1591e128591d53c6$export$fb70365b00e8cb7b(z.name)
+                            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(z.name)
                         }
                     ]
                 })
             }
         };
-        $a6d4d5d140bab192$export$3df320e901c23a48(markParent, mark);
+        $1d26d69d9d3d5b6e$export$3df320e901c23a48(markParent, mark);
         return mark;
     }
     treemapTransform(treemapData, widthSignal, heightSignal) {
         const { names: names , props: props  } = this;
         const { group: group , size: size  } = props;
-        $a6d4d5d140bab192$export$eea5d31e98930019(treemapData, {
+        $1d26d69d9d3d5b6e$export$eea5d31e98930019(treemapData, {
             type: 'filter',
             expr: `datum[${JSON.stringify(size.name)}] > 0`
         }, {
@@ -4394,14 +4400,14 @@ class $0d2d6726d6a53ad5$export$d685cd2b84b49ee extends $5a3a04d0726e8df8$export$
             ]
         }, {
             type: 'treemap',
-            field: $1591e128591d53c6$export$fb70365b00e8cb7b(size.name),
+            field: $bc6bc4f764e00865$export$fb70365b00e8cb7b(size.name),
             sort: {
                 field: 'value',
                 order: 'descending'
             },
             round: true,
             method: {
-                signal: $f1d0eeb6595c811e$export$809e371dee643808.TreeMapMethod
+                signal: $5026337cfcb4b996$export$809e371dee643808.TreeMapMethod
             },
             paddingInner: 1,
             paddingOuter: 0,
@@ -4424,11 +4430,11 @@ class $0d2d6726d6a53ad5$export$d685cd2b84b49ee extends $5a3a04d0726e8df8$export$
         });
     }
 }
-function $0d2d6726d6a53ad5$var$fn(n) {
+function $1714cc8eaad30cf2$var$fn(n) {
     return `datum[${JSON.stringify(n)}]`;
 }
-function $0d2d6726d6a53ad5$var$subtract(...fields) {
-    return fields.map((n)=>$0d2d6726d6a53ad5$var$fn(n)
+function $1714cc8eaad30cf2$var$subtract(...fields) {
+    return fields.map((n)=>$1714cc8eaad30cf2$var$fn(n)
     ).join(' - ');
 }
 
@@ -4442,12 +4448,12 @@ function $0d2d6726d6a53ad5$var$subtract(...fields) {
 
 
 
-class $1059a9d70180292d$export$f6b1e3902165e5e1 extends $5a3a04d0726e8df8$export$c84671f46d6a1ca {
+class $667c0955d4041541$export$f6b1e3902165e5e1 extends $c2274c6ca8614fe2$export$c84671f46d6a1ca {
     constructor(props){
         super(props);
         this.props = props;
         const p = this.prefix = `wrap_${this.id}`;
-        this.bin = $e655012d4231bb71$export$6868fd1605c79d3d(this.prefix, props.globalScope.data.name, props.groupby);
+        this.bin = $280f5ab5a98a6906$export$6868fd1605c79d3d(this.prefix, props.globalScope.data.name, props.groupby);
         this.names = {
             outputData: `data_${p}_out`,
             rowColumnDataName: `data_${p}_row_col`,
@@ -4478,21 +4484,21 @@ class $1059a9d70180292d$export$f6b1e3902165e5e1 extends $5a3a04d0726e8df8$export
         const { axisTextColor: axisTextColor , cellTitles: cellTitles , globalScope: globalScope , parentScope: parentScope  } = props;
         let ordinalBinData;
         if (bin.native === false) {
-            $a6d4d5d140bab192$export$5346a0d8a9111b3f(globalScope.scope, ...bin.signals);
-            $a6d4d5d140bab192$export$eea5d31e98930019(globalScope.data, ...bin.transforms);
-            $a6d4d5d140bab192$export$6853292f627997e4(globalScope.scope, bin.dataSequence);
-            $a6d4d5d140bab192$export$eea5d31e98930019(bin.dataSequence, {
+            $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, ...bin.signals);
+            $1d26d69d9d3d5b6e$export$eea5d31e98930019(globalScope.data, ...bin.transforms);
+            $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, bin.dataSequence);
+            $1d26d69d9d3d5b6e$export$eea5d31e98930019(bin.dataSequence, {
                 type: 'formula',
                 expr: `indata(${JSON.stringify(globalScope.data.name)}, ${JSON.stringify(bin.fields[0])}, datum[${JSON.stringify(bin.fields[0])}])`,
-                as: $f1d0eeb6595c811e$export$10df5429b7082be2.Contains
+                as: $5026337cfcb4b996$export$10df5429b7082be2.Contains
             });
             ordinalBinData = bin.dataSequence.name;
         } else {
-            const ord = $c82c0cd4a5aa62c8$export$71d2e96f63f1ac97(globalScope.data.name, prefix, bin.fields, 'ascending');
-            $a6d4d5d140bab192$export$6853292f627997e4(globalScope.scope, ord.data);
+            const ord = $276799ff26fc5cc2$export$71d2e96f63f1ac97(globalScope.data.name, prefix, bin.fields, 'ascending');
+            $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, ord.data);
             ordinalBinData = ord.data.name;
         }
-        $a6d4d5d140bab192$export$6853292f627997e4(globalScope.scope, {
+        $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, {
             name: names.rxc0,
             transform: [
                 {
@@ -4555,7 +4561,7 @@ class $1059a9d70180292d$export$f6b1e3902165e5e1 extends $5a3a04d0726e8df8$export
                 },
                 {
                     type: 'formula',
-                    expr: `datum.cols === 1 ? max(datum.cellw, ${$f1d0eeb6595c811e$export$809e371dee643808.MinCellWidth}) : datum.cellw`,
+                    expr: `datum.cols === 1 ? max(datum.cellw, ${$5026337cfcb4b996$export$809e371dee643808.MinCellWidth}) : datum.cellw`,
                     as: 'cellw'
                 },
                 {
@@ -4565,12 +4571,12 @@ class $1059a9d70180292d$export$f6b1e3902165e5e1 extends $5a3a04d0726e8df8$export
                 },
                 {
                     type: 'formula',
-                    expr: `datum.rows === 1 ? max(datum.cellh, ${$f1d0eeb6595c811e$export$809e371dee643808.MinCellHeight}) : datum.cellh`,
+                    expr: `datum.rows === 1 ? max(datum.cellh, ${$5026337cfcb4b996$export$809e371dee643808.MinCellHeight}) : datum.cellh`,
                     as: 'cellh'
                 },
                 {
                     type: 'formula',
-                    expr: `(datum.cellw >= ${$f1d0eeb6595c811e$export$809e371dee643808.MinCellWidth} && datum.cellh >= ${$f1d0eeb6595c811e$export$809e371dee643808.MinCellHeight})`,
+                    expr: `(datum.cellw >= ${$5026337cfcb4b996$export$809e371dee643808.MinCellWidth} && datum.cellh >= ${$5026337cfcb4b996$export$809e371dee643808.MinCellHeight})`,
                     as: 'meetsmin'
                 },
                 {
@@ -4612,23 +4618,23 @@ class $1059a9d70180292d$export$f6b1e3902165e5e1 extends $5a3a04d0726e8df8$export
             transform: [
                 {
                     type: 'formula',
-                    expr: `floor((datum[${JSON.stringify($f1d0eeb6595c811e$export$10df5429b7082be2.Ordinal)}] - 1) / ${names.colCount})`,
-                    as: $f1d0eeb6595c811e$export$10df5429b7082be2.WrapRow
+                    expr: `floor((datum[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.Ordinal)}] - 1) / ${names.colCount})`,
+                    as: $5026337cfcb4b996$export$10df5429b7082be2.WrapRow
                 },
                 {
                     type: 'formula',
-                    expr: `(datum[${JSON.stringify($f1d0eeb6595c811e$export$10df5429b7082be2.Ordinal)}] - 1) % ${names.colCount}`,
-                    as: $f1d0eeb6595c811e$export$10df5429b7082be2.WrapCol
+                    expr: `(datum[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.Ordinal)}] - 1) % ${names.colCount}`,
+                    as: $5026337cfcb4b996$export$10df5429b7082be2.WrapCol
                 },
                 {
                     type: 'formula',
-                    expr: $2089422c1cc418bd$export$b292ca0d4c2e4690(bin, $f1d0eeb6595c811e$export$10df5429b7082be2.First, $f1d0eeb6595c811e$export$10df5429b7082be2.Last),
-                    as: $f1d0eeb6595c811e$export$10df5429b7082be2.FacetSearch
+                    expr: $d15e2fabcf2f7201$export$b292ca0d4c2e4690(bin, $5026337cfcb4b996$export$10df5429b7082be2.First, $5026337cfcb4b996$export$10df5429b7082be2.Last),
+                    as: $5026337cfcb4b996$export$10df5429b7082be2.FacetSearch
                 },
                 {
                     type: 'formula',
-                    expr: $2089422c1cc418bd$export$f241323700beca17(bin),
-                    as: $f1d0eeb6595c811e$export$10df5429b7082be2.FacetTitle
+                    expr: $d15e2fabcf2f7201$export$f241323700beca17(bin),
+                    as: $5026337cfcb4b996$export$10df5429b7082be2.FacetTitle
                 }
             ]
         });
@@ -4639,28 +4645,28 @@ class $1059a9d70180292d$export$f6b1e3902165e5e1 extends $5a3a04d0726e8df8$export
                 {
                     type: 'lookup',
                     from: names.rowColumnDataName,
-                    key: $1591e128591d53c6$export$fb70365b00e8cb7b(bin.fields[0]),
+                    key: $bc6bc4f764e00865$export$fb70365b00e8cb7b(bin.fields[0]),
                     fields: [
                         bin.fields[0]
-                    ].map($1591e128591d53c6$export$fb70365b00e8cb7b),
+                    ].map($bc6bc4f764e00865$export$fb70365b00e8cb7b),
                     values: [
-                        $f1d0eeb6595c811e$export$10df5429b7082be2.WrapRow,
-                        $f1d0eeb6595c811e$export$10df5429b7082be2.WrapCol
+                        $5026337cfcb4b996$export$10df5429b7082be2.WrapRow,
+                        $5026337cfcb4b996$export$10df5429b7082be2.WrapCol
                     ]
                 }
             ]
         };
-        $a6d4d5d140bab192$export$6853292f627997e4(globalScope.scope, dataOut);
+        $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.scope, dataOut);
         globalScope.setMarkDataName(names.outputData);
-        $a6d4d5d140bab192$export$5346a0d8a9111b3f(globalScope.scope, {
+        $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(globalScope.scope, {
             name: names.minAspect,
-            update: `${$f1d0eeb6595c811e$export$809e371dee643808.MinCellWidth} / ${$f1d0eeb6595c811e$export$809e371dee643808.MinCellHeight}`
+            update: `${$5026337cfcb4b996$export$809e371dee643808.MinCellWidth} / ${$5026337cfcb4b996$export$809e371dee643808.MinCellHeight}`
         }, {
             name: names.target,
             update: `${names.minAspect} === 1 ? ${1.2} : ${names.minAspect}`
         }, {
             name: names.minArea,
-            update: `${$f1d0eeb6595c811e$export$809e371dee643808.MinCellWidth}*${$f1d0eeb6595c811e$export$809e371dee643808.MinCellHeight}`
+            update: `${$5026337cfcb4b996$export$809e371dee643808.MinCellWidth}*${$5026337cfcb4b996$export$809e371dee643808.MinCellHeight}`
         }, {
             name: names.aspect,
             update: `${parentScope.sizeSignals.layoutWidth} / ${parentScope.sizeSignals.layoutHeight}`
@@ -4669,7 +4675,7 @@ class $1059a9d70180292d$export$f6b1e3902165e5e1 extends $5a3a04d0726e8df8$export
             update: `data(${JSON.stringify(ordinalBinData)}).length`
         }, {
             name: names.growColCount,
-            update: `max(floor(${parentScope.sizeSignals.layoutWidth} / ${$f1d0eeb6595c811e$export$809e371dee643808.MinCellWidth}), 1)`
+            update: `max(floor(${parentScope.sizeSignals.layoutWidth} / ${$5026337cfcb4b996$export$809e371dee643808.MinCellWidth}), 1)`
         }, {
             name: names.growCellWidth,
             update: `${parentScope.sizeSignals.layoutWidth} / ${names.growColCount}`
@@ -4687,21 +4693,21 @@ class $1059a9d70180292d$export$f6b1e3902165e5e1 extends $5a3a04d0726e8df8$export
             update: `${names.fits} ? data(${JSON.stringify(names.rxc)})[0].cellw : ${names.growCellWidth}`
         }, {
             name: names.cellHeight,
-            update: `${names.fits} ? data(${JSON.stringify(names.rxc)})[0].cellh : ${$f1d0eeb6595c811e$export$809e371dee643808.MinCellHeight}`
+            update: `${names.fits} ? data(${JSON.stringify(names.rxc)})[0].cellh : ${$5026337cfcb4b996$export$809e371dee643808.MinCellHeight}`
         });
-        $dbb29020c4a809fb$export$cdc9366ba30317bd(globalScope.signals.plotHeightOut, 'max', `(${names.cellHeight} * ceil(${names.dataLength} / ${names.colCount}))`);
-        $dbb29020c4a809fb$export$cdc9366ba30317bd(globalScope.signals.plotWidthOut, 'max', `(${names.cellWidth} * ${names.colCount})`);
+        $853681033abd6f83$export$cdc9366ba30317bd(globalScope.signals.plotHeightOut, 'max', `(${names.cellHeight} * ceil(${names.dataLength} / ${names.colCount}))`);
+        $853681033abd6f83$export$cdc9366ba30317bd(globalScope.signals.plotWidthOut, 'max', `(${names.cellWidth} * ${names.colCount})`);
         const signalH = [
             names.cellHeight,
-            $f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingTop,
-            $f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingBottom
+            $5026337cfcb4b996$export$809e371dee643808.FacetPaddingTop,
+            $5026337cfcb4b996$export$809e371dee643808.FacetPaddingBottom
         ].join(' - ');
         const signalW = [
             names.cellWidth,
-            $f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingLeft
+            $5026337cfcb4b996$export$809e371dee643808.FacetPaddingLeft
         ].join(' - ');
-        const signalX = $a6d4d5d140bab192$export$e6b6683aec0fe907(parentScope.offsets.x, `datum[${JSON.stringify($f1d0eeb6595c811e$export$10df5429b7082be2.WrapCol)}] * ${names.cellWidth}`, $f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingLeft);
-        const signalY = $a6d4d5d140bab192$export$e6b6683aec0fe907(parentScope.offsets.y, `datum[${JSON.stringify($f1d0eeb6595c811e$export$10df5429b7082be2.WrapRow)}] * ${names.cellHeight}`, $f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingTop);
+        const signalX = $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.x, `datum[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.WrapCol)}] * ${names.cellWidth}`, $5026337cfcb4b996$export$809e371dee643808.FacetPaddingLeft);
+        const signalY = $1d26d69d9d3d5b6e$export$e6b6683aec0fe907(parentScope.offsets.y, `datum[${JSON.stringify($5026337cfcb4b996$export$10df5429b7082be2.WrapRow)}] * ${names.cellHeight}`, $5026337cfcb4b996$export$809e371dee643808.FacetPaddingTop);
         const update = {
             height: {
                 signal: signalH
@@ -4733,14 +4739,14 @@ class $1059a9d70180292d$export$f6b1e3902165e5e1 extends $5a3a04d0726e8df8$export
                 update: update
             }
         };
-        $a6d4d5d140bab192$export$3df320e901c23a48(globalScope.markGroup, group);
+        $1d26d69d9d3d5b6e$export$3df320e901c23a48(globalScope.markGroup, group);
         const sizeSignals = {
-            layoutHeight: `(${names.cellHeight} - ${$f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingTop} - ${$f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingBottom})`,
-            layoutWidth: `(${names.cellWidth} - ${$f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingLeft})`,
+            layoutHeight: `(${names.cellHeight} - ${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingTop} - ${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingBottom})`,
+            layoutWidth: `(${names.cellWidth} - ${$5026337cfcb4b996$export$809e371dee643808.FacetPaddingLeft})`,
             colCount: names.colCount,
             rowCount: `ceil(${names.dataLength} / ${names.colCount})`
         };
-        if (cellTitles) $bfc5d85c4d08ad7e$export$3735b1dd76112836(group, sizeSignals, axisTextColor);
+        if (cellTitles) $267ef0242f542da1$export$3735b1dd76112836(group, sizeSignals, axisTextColor);
         return {
             facetScope: group,
             sizeSignals: sizeSignals,
@@ -4750,56 +4756,56 @@ class $1059a9d70180292d$export$f6b1e3902165e5e1 extends $5a3a04d0726e8df8$export
 }
 
 
-const $a66e79d594f6dce2$export$8b2ec0ba67742226 = {
-    AggregateContainer: $5e3c57ba5eeae727$export$fd744dfcd98e5f49,
-    AggregateSquare: $086adb3cbff09670$export$7eda37970b01b2c,
-    Band: $a31d4adb8db18560$export$5b22a87d7feca398,
-    Cross: $4b702d1b81f39c20$export$3c877bb842c36952,
-    Scatter: $e3e6f18737936a95$export$1c460fb4285edadc,
-    Square: $b311bee11b45a36d$export$b09fb900337259de,
-    Stack: $97c4be7e3016367d$export$694e0d28c7ffc90c,
-    Strip: $8bda722123c848d0$export$c4df0d8c6c8f50e4,
-    Treemap: $0d2d6726d6a53ad5$export$d685cd2b84b49ee,
-    Wrap: $1059a9d70180292d$export$f6b1e3902165e5e1
+const $8a2694894db03143$export$8b2ec0ba67742226 = {
+    AggregateContainer: $c920a6424c9a8cf8$export$fd744dfcd98e5f49,
+    AggregateSquare: $f56476682bfa269d$export$7eda37970b01b2c,
+    Band: $dcdb4cb44eff1858$export$5b22a87d7feca398,
+    Cross: $8e71cd01f19f462c$export$3c877bb842c36952,
+    Scatter: $86dc958dd62c07ad$export$1c460fb4285edadc,
+    Square: $22e821125aa13607$export$b09fb900337259de,
+    Stack: $b27405b06ac9c54d$export$694e0d28c7ffc90c,
+    Strip: $a38643ba15c0e389$export$c4df0d8c6c8f50e4,
+    Treemap: $1714cc8eaad30cf2$export$d685cd2b84b49ee,
+    Wrap: $667c0955d4041541$export$f6b1e3902165e5e1
 };
 
 
-class $369bb5fe6bf13763$export$e2e6dd2b1097c25b {
+class $c112dcddbd0b2eff$export$e2e6dd2b1097c25b {
     constructor(props, specContext){
         this.props = props;
         this.specContext = specContext;
         this.globalSignals = {
             minCellWidth: {
-                name: $f1d0eeb6595c811e$export$809e371dee643808.MinCellWidth,
-                update: `${$8f8d66f7ca1de7cd$export$7794a0aff56142de}`
+                name: $5026337cfcb4b996$export$809e371dee643808.MinCellWidth,
+                update: `${$ee84a745a025909d$export$7794a0aff56142de}`
             },
             minCellHeight: {
-                name: $f1d0eeb6595c811e$export$809e371dee643808.MinCellHeight,
-                update: `${$8f8d66f7ca1de7cd$export$7c432db1d0b63312}`
+                name: $5026337cfcb4b996$export$809e371dee643808.MinCellHeight,
+                update: `${$ee84a745a025909d$export$7c432db1d0b63312}`
             },
             plotOffsetLeft: {
-                name: $f1d0eeb6595c811e$export$809e371dee643808.PlotOffsetLeft,
+                name: $5026337cfcb4b996$export$809e371dee643808.PlotOffsetLeft,
                 update: '0'
             },
             plotOffsetTop: {
-                name: $f1d0eeb6595c811e$export$809e371dee643808.PlotOffsetTop,
+                name: $5026337cfcb4b996$export$809e371dee643808.PlotOffsetTop,
                 update: '0'
             },
             plotOffsetBottom: {
-                name: $f1d0eeb6595c811e$export$809e371dee643808.PlotOffsetBottom,
+                name: $5026337cfcb4b996$export$809e371dee643808.PlotOffsetBottom,
                 update: '0'
             },
             plotOffsetRight: {
-                name: $f1d0eeb6595c811e$export$809e371dee643808.PlotOffsetRight,
+                name: $5026337cfcb4b996$export$809e371dee643808.PlotOffsetRight,
                 update: '0'
             },
             plotHeightOut: {
-                name: $f1d0eeb6595c811e$export$809e371dee643808.PlotHeightOut,
-                update: $f1d0eeb6595c811e$export$809e371dee643808.PlotHeightIn
+                name: $5026337cfcb4b996$export$809e371dee643808.PlotHeightOut,
+                update: $5026337cfcb4b996$export$809e371dee643808.PlotHeightIn
             },
             plotWidthOut: {
-                name: $f1d0eeb6595c811e$export$809e371dee643808.PlotWidthOut,
-                update: $f1d0eeb6595c811e$export$809e371dee643808.PlotWidthIn
+                name: $5026337cfcb4b996$export$809e371dee643808.PlotWidthOut,
+                update: $5026337cfcb4b996$export$809e371dee643808.PlotWidthIn
             }
         };
     }
@@ -4834,30 +4840,30 @@ class $369bb5fe6bf13763$export$e2e6dd2b1097c25b {
         const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
         const dataName = 'data_source';
         const { vegaSpec: vegaSpec , groupMark: groupMark  } = this.initSpec(dataName);
-        const { topColorField: topColorField , colorDataName: colorDataName  } = $5c0d2811fe03d42a$export$4c4d9288a45f1fb3({
+        const { topColorField: topColorField , colorDataName: colorDataName  } = $9f1db88e8f4618a8$export$4c4d9288a45f1fb3({
             scope: vegaSpec,
             dataName: dataName,
             specContext: specContext,
-            scaleName: $f1d0eeb6595c811e$export$c9f17d36dfc40d76.Color,
+            scaleName: $5026337cfcb4b996$export$c9f17d36dfc40d76.Color,
             legendDataName: 'data_legend',
             topLookupName: 'data_topcolorlookup',
-            colorReverseSignalName: $f1d0eeb6595c811e$export$809e371dee643808.ColorReverse
+            colorReverseSignalName: $5026337cfcb4b996$export$809e371dee643808.ColorReverse
         });
-        const globalScope = new $e9996b17012f63f8$export$5fdf684e73bb2de5({
+        const globalScope = new $1da2db5d27ae10a6$export$5fdf684e73bb2de5({
             dataName: colorDataName,
             markGroup: groupMark,
             scope: vegaSpec,
             signals: this.globalSignals
         });
         if (facetLayout) {
-            $a6d4d5d140bab192$export$5346a0d8a9111b3f(vegaSpec, {
-                name: $f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingBottom,
+            $1d26d69d9d3d5b6e$export$5346a0d8a9111b3f(vegaSpec, {
+                name: $5026337cfcb4b996$export$809e371dee643808.FacetPaddingBottom,
                 update: `${facetLayout.facetPadding.bottom}`
             }, {
-                name: $f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingLeft,
+                name: $5026337cfcb4b996$export$809e371dee643808.FacetPaddingLeft,
                 update: `${facetLayout.facetPadding.left}`
             }, {
-                name: $f1d0eeb6595c811e$export$809e371dee643808.FacetPaddingTop,
+                name: $5026337cfcb4b996$export$809e371dee643808.FacetPaddingTop,
                 update: `${facetLayout.facetPadding.top}`
             });
             this.globalSignals.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
@@ -4898,7 +4904,7 @@ class $369bb5fe6bf13763$export$e2e6dd2b1097c25b {
                     0
                 ]
             };
-            let axesScopes = facetLayout ? $bfc5d85c4d08ad7e$export$9f0b19d6fd936707({
+            let axesScopes = facetLayout ? $267ef0242f542da1$export$9f0b19d6fd936707({
                 globalScope: globalScope.scope,
                 plotScope: groupMark,
                 facetScope: firstScope,
@@ -4916,7 +4922,7 @@ class $369bb5fe6bf13763$export$e2e6dd2b1097c25b {
                     }
                 ]
             };
-            $ea3d9426ca660d78$export$3678bfcfeaea7c36({
+            $9d5f9a843f218841$export$3678bfcfeaea7c36({
                 globalScope: globalScope,
                 allGlobalScales: allGlobalScales,
                 axisScales: this.props.axisScales,
@@ -4925,15 +4931,15 @@ class $369bb5fe6bf13763$export$e2e6dd2b1097c25b {
                     y: this.globalSignals.plotOffsetBottom
                 },
                 axesOffsets: {
-                    x: $8f8d66f7ca1de7cd$export$3f5b554d51e74365,
-                    y: $8f8d66f7ca1de7cd$export$c33f11801bb18430
+                    x: $ee84a745a025909d$export$3f5b554d51e74365,
+                    y: $ee84a745a025909d$export$c33f11801bb18430
                 },
                 axesTitlePadding: facetLayout ? {
-                    x: $8f8d66f7ca1de7cd$export$fd4a597070549ada,
-                    y: $8f8d66f7ca1de7cd$export$a26a082bf9fa4ca0
+                    x: $ee84a745a025909d$export$fd4a597070549ada,
+                    y: $ee84a745a025909d$export$a26a082bf9fa4ca0
                 } : {
-                    x: $8f8d66f7ca1de7cd$export$2e7279af2df830e3,
-                    y: $8f8d66f7ca1de7cd$export$f0388d9263db6e5f
+                    x: $ee84a745a025909d$export$2e7279af2df830e3,
+                    y: $ee84a745a025909d$export$f0388d9263db6e5f
                 },
                 labelBaseline: {
                     x: 'top',
@@ -4951,27 +4957,27 @@ class $369bb5fe6bf13763$export$e2e6dd2b1097c25b {
             const { update: update  } = finalScope.mark.encode;
             const outputDataName = 'output';
             finalScope.mark.from.data = outputDataName;
-            $a6d4d5d140bab192$export$6853292f627997e4(globalScope.markGroup, {
+            $1d26d69d9d3d5b6e$export$6853292f627997e4(globalScope.markGroup, {
                 name: outputDataName,
                 source: globalScope.markDataName,
                 transform: [
                     {
                         type: 'formula',
                         expr: finalScope.offsets.x,
-                        as: $f1d0eeb6595c811e$export$10df5429b7082be2.OffsetX
+                        as: $5026337cfcb4b996$export$10df5429b7082be2.OffsetX
                     },
                     {
                         type: 'formula',
                         expr: finalScope.offsets.y,
-                        as: $f1d0eeb6595c811e$export$10df5429b7082be2.OffsetY
+                        as: $5026337cfcb4b996$export$10df5429b7082be2.OffsetY
                     }
                 ]
             });
             update.x = {
-                field: $f1d0eeb6595c811e$export$10df5429b7082be2.OffsetX
+                field: $5026337cfcb4b996$export$10df5429b7082be2.OffsetX
             };
             update.y = {
-                field: $f1d0eeb6595c811e$export$10df5429b7082be2.OffsetY
+                field: $5026337cfcb4b996$export$10df5429b7082be2.OffsetY
             };
             allEncodingRules.forEach((map)=>{
                 for(let key in map)if (update[key]) {
@@ -4990,8 +4996,8 @@ class $369bb5fe6bf13763$export$e2e6dd2b1097c25b {
                     }
                 }
             });
-            update.fill = $7268e1bc937710a5$export$9563e054e6f787fb(specContext, topColorField, $f1d0eeb6595c811e$export$c9f17d36dfc40d76.Color);
-            update.opacity = $7268e1bc937710a5$export$c17a3be1057836e(specContext);
+            update.fill = $b1297af14e23a528$export$9563e054e6f787fb(specContext, topColorField, $5026337cfcb4b996$export$c9f17d36dfc40d76.Color);
+            update.opacity = $b1297af14e23a528$export$c17a3be1057836e(specContext);
         }
         return {
             specCapabilities: specCapabilities,
@@ -5009,16 +5015,16 @@ class $369bb5fe6bf13763$export$e2e6dd2b1097c25b {
             encode: {
                 update: {
                     x: {
-                        signal: $f1d0eeb6595c811e$export$809e371dee643808.PlotOffsetLeft
+                        signal: $5026337cfcb4b996$export$809e371dee643808.PlotOffsetLeft
                     },
                     y: {
-                        signal: $f1d0eeb6595c811e$export$809e371dee643808.PlotOffsetTop
+                        signal: $5026337cfcb4b996$export$809e371dee643808.PlotOffsetTop
                     },
                     height: {
-                        signal: $f1d0eeb6595c811e$export$809e371dee643808.PlotHeightOut
+                        signal: $5026337cfcb4b996$export$809e371dee643808.PlotHeightOut
                     },
                     width: {
-                        signal: $f1d0eeb6595c811e$export$809e371dee643808.PlotWidthOut
+                        signal: $5026337cfcb4b996$export$809e371dee643808.PlotWidthOut
                     }
                 }
             }
@@ -5040,38 +5046,38 @@ class $369bb5fe6bf13763$export$e2e6dd2b1097c25b {
             marks: [
                 groupMark
             ],
-            signals: $dbb29020c4a809fb$export$d9407ec206a3236c(specContext, $f1d0eeb6595c811e$export$809e371dee643808.ViewportHeight).concat([
+            signals: $853681033abd6f83$export$d9407ec206a3236c(specContext, $5026337cfcb4b996$export$809e371dee643808.ViewportHeight).concat([
                 minCellWidth,
                 minCellHeight,
                 {
-                    name: $f1d0eeb6595c811e$export$809e371dee643808.ViewportHeight,
-                    update: `max(${$f1d0eeb6595c811e$export$809e371dee643808.MinCellHeight}, ${insight.size.height})`
+                    name: $5026337cfcb4b996$export$809e371dee643808.ViewportHeight,
+                    update: `max(${$5026337cfcb4b996$export$809e371dee643808.MinCellHeight}, ${insight.size.height})`
                 },
                 {
-                    name: $f1d0eeb6595c811e$export$809e371dee643808.ViewportWidth,
-                    update: `max(${$f1d0eeb6595c811e$export$809e371dee643808.MinCellWidth}, ${insight.size.width})`
+                    name: $5026337cfcb4b996$export$809e371dee643808.ViewportWidth,
+                    update: `max(${$5026337cfcb4b996$export$809e371dee643808.MinCellWidth}, ${insight.size.width})`
                 },
                 plotOffsetLeft,
                 plotOffsetTop,
                 plotOffsetBottom,
                 plotOffsetRight,
                 {
-                    name: $f1d0eeb6595c811e$export$809e371dee643808.PlotHeightIn,
-                    update: `${$f1d0eeb6595c811e$export$809e371dee643808.ViewportHeight} - ${$f1d0eeb6595c811e$export$809e371dee643808.PlotOffsetBottom}`
+                    name: $5026337cfcb4b996$export$809e371dee643808.PlotHeightIn,
+                    update: `${$5026337cfcb4b996$export$809e371dee643808.ViewportHeight} - ${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetBottom}`
                 },
                 {
-                    name: $f1d0eeb6595c811e$export$809e371dee643808.PlotWidthIn,
-                    update: `${$f1d0eeb6595c811e$export$809e371dee643808.ViewportWidth} - ${$f1d0eeb6595c811e$export$809e371dee643808.PlotOffsetLeft} - ${$f1d0eeb6595c811e$export$809e371dee643808.PlotOffsetRight}`
+                    name: $5026337cfcb4b996$export$809e371dee643808.PlotWidthIn,
+                    update: `${$5026337cfcb4b996$export$809e371dee643808.ViewportWidth} - ${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetLeft} - ${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetRight}`
                 },
                 plotHeightOut,
                 plotWidthOut,
                 {
                     name: 'height',
-                    update: `${$f1d0eeb6595c811e$export$809e371dee643808.PlotOffsetTop} + ${$f1d0eeb6595c811e$export$809e371dee643808.PlotHeightOut} + ${$f1d0eeb6595c811e$export$809e371dee643808.PlotOffsetBottom}`
+                    update: `${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetTop} + ${$5026337cfcb4b996$export$809e371dee643808.PlotHeightOut} + ${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetBottom}`
                 },
                 {
                     name: 'width',
-                    update: `${$f1d0eeb6595c811e$export$809e371dee643808.PlotWidthOut} + ${$f1d0eeb6595c811e$export$809e371dee643808.PlotOffsetLeft} + ${$f1d0eeb6595c811e$export$809e371dee643808.PlotOffsetRight}`
+                    update: `${$5026337cfcb4b996$export$809e371dee643808.PlotWidthOut} + ${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetLeft} + ${$5026337cfcb4b996$export$809e371dee643808.PlotOffsetRight}`
                 }
             ])
         };
@@ -5113,7 +5119,7 @@ class $369bb5fe6bf13763$export$e2e6dd2b1097c25b {
                         {
                             field: null,
                             op: 'count',
-                            as: $f1d0eeb6595c811e$export$10df5429b7082be2.Count
+                            as: $5026337cfcb4b996$export$10df5429b7082be2.Count
                         }
                     ]
                 });
@@ -5147,7 +5153,7 @@ class $369bb5fe6bf13763$export$e2e6dd2b1097c25b {
         const { layoutType: layoutType , props: props  } = layoutPair;
         const layoutBuildProps = Object.assign(Object.assign({
         }, props), buildProps);
-        const layoutClass = $a66e79d594f6dce2$export$8b2ec0ba67742226[layoutType];
+        const layoutClass = $8a2694894db03143$export$8b2ec0ba67742226[layoutType];
         const layout = new layoutClass(layoutBuildProps);
         layout.id = buildProps.id;
         return layout;
@@ -5155,7 +5161,7 @@ class $369bb5fe6bf13763$export$e2e6dd2b1097c25b {
 }
 
 
-function $81b01ac2f879159c$export$3f8fe6489e95757d(specContext, currData) {
+function $f5081518125870e3$export$3f8fe6489e95757d(specContext, currData) {
     const { specColumns: specColumns  } = specContext;
     const columns = [
         specColumns.color,
@@ -5168,9 +5174,9 @@ function $81b01ac2f879159c$export$3f8fe6489e95757d(specContext, currData) {
         specColumns.y,
         specColumns.z
     ];
-    $b208adf1e2336264$export$e04a97cc71178399(columns, currData);
-    const specBuilderProps = $5e4fd8a2709ed3c1$export$104083a36c1647a7(specContext);
-    const specBuilder = new $369bb5fe6bf13763$export$e2e6dd2b1097c25b(specBuilderProps, specContext);
+    $1f41cd3bd9350891$export$e04a97cc71178399(columns, currData);
+    const specBuilderProps = $e03900d3ca5c71cc$export$104083a36c1647a7(specContext);
+    const specBuilder = new $c112dcddbd0b2eff$export$e2e6dd2b1097c25b(specBuilderProps, specContext);
     let specResult;
     if (specBuilder) {
         try {
@@ -5207,39 +5213,39 @@ function $81b01ac2f879159c$export$3f8fe6489e95757d(specContext, currData) {
 
 
 
-var $f100d2d352ed6973$exports = {};
+var $9025901cbd7e0588$exports = {};
 
 
-var $c6fd2a3b052120f6$exports = {};
+var $b147fe9b0e5380ef$exports = {};
 
 
-$parcel$exportWildcard($b6f8bea235e0ed58$exports, $81b01ac2f879159c$exports);
-$parcel$exportWildcard($b6f8bea235e0ed58$exports, $f1d0eeb6595c811e$exports);
-$parcel$exportWildcard($b6f8bea235e0ed58$exports, $b208adf1e2336264$exports);
-$parcel$exportWildcard($b6f8bea235e0ed58$exports, $f100d2d352ed6973$exports);
-$parcel$exportWildcard($b6f8bea235e0ed58$exports, $c6fd2a3b052120f6$exports);
+$parcel$exportWildcard($898e5580ccaf461f$exports, $f5081518125870e3$exports);
+$parcel$exportWildcard($898e5580ccaf461f$exports, $5026337cfcb4b996$exports);
+$parcel$exportWildcard($898e5580ccaf461f$exports, $1f41cd3bd9350891$exports);
+$parcel$exportWildcard($898e5580ccaf461f$exports, $9025901cbd7e0588$exports);
+$parcel$exportWildcard($898e5580ccaf461f$exports, $b147fe9b0e5380ef$exports);
 
 
-const $fdf690fb8cecad22$export$5672246984822a29 = 'GL_ORDINAL';
+const $7abff30d903026d9$export$5672246984822a29 = 'GL_ORDINAL';
 
 
-var $264b19750297be8f$exports = {};
-var $82c8264ab1382711$exports = {};
+var $009f7267ebde0f0b$exports = {};
+var $8152aaf818f7ca2c$exports = {};
 
-$parcel$export($82c8264ab1382711$exports, "compareExpression", () => $82c8264ab1382711$export$4787a3c825f2af47);
-$parcel$export($82c8264ab1382711$exports, "compareGroup", () => $82c8264ab1382711$export$bc9dff9b0aa0e5b);
-$parcel$export($82c8264ab1382711$exports, "compare", () => $82c8264ab1382711$export$398604a469f7de9a);
-$parcel$export($82c8264ab1382711$exports, "startsWith", () => $82c8264ab1382711$export$68326237475e9a7d);
-var $639976c8c3d045f7$exports = {};
+$parcel$export($8152aaf818f7ca2c$exports, "compareExpression", () => $8152aaf818f7ca2c$export$4787a3c825f2af47);
+$parcel$export($8152aaf818f7ca2c$exports, "compareGroup", () => $8152aaf818f7ca2c$export$bc9dff9b0aa0e5b);
+$parcel$export($8152aaf818f7ca2c$exports, "compare", () => $8152aaf818f7ca2c$export$398604a469f7de9a);
+$parcel$export($8152aaf818f7ca2c$exports, "startsWith", () => $8152aaf818f7ca2c$export$68326237475e9a7d);
+var $2ba53c22c1f923f6$exports = {};
 
-$parcel$export($639976c8c3d045f7$exports, "isSearchExpressionGroup", () => $639976c8c3d045f7$export$ab134d298d957272);
-$parcel$export($639976c8c3d045f7$exports, "createGroupFromExpression", () => $639976c8c3d045f7$export$cf32a499fcfecacd);
-$parcel$export($639976c8c3d045f7$exports, "ensureSearchExpressionGroupArray", () => $639976c8c3d045f7$export$b5d04ce3dd7ae29e);
-function $639976c8c3d045f7$export$ab134d298d957272(search) {
+$parcel$export($2ba53c22c1f923f6$exports, "isSearchExpressionGroup", () => $2ba53c22c1f923f6$export$ab134d298d957272);
+$parcel$export($2ba53c22c1f923f6$exports, "createGroupFromExpression", () => $2ba53c22c1f923f6$export$cf32a499fcfecacd);
+$parcel$export($2ba53c22c1f923f6$exports, "ensureSearchExpressionGroupArray", () => $2ba53c22c1f923f6$export$b5d04ce3dd7ae29e);
+function $2ba53c22c1f923f6$export$ab134d298d957272(search) {
     if (!search) return false;
     return !!search.expressions;
 }
-function $639976c8c3d045f7$export$cf32a499fcfecacd(input) {
+function $2ba53c22c1f923f6$export$cf32a499fcfecacd(input) {
     const output = {
         expressions: [
             input
@@ -5247,83 +5253,83 @@ function $639976c8c3d045f7$export$cf32a499fcfecacd(input) {
     };
     return output;
 }
-function $639976c8c3d045f7$export$b5d04ce3dd7ae29e(search) {
+function $2ba53c22c1f923f6$export$b5d04ce3dd7ae29e(search) {
     if (Array.isArray(search)) return [
         ...search
     ];
-    else if ($639976c8c3d045f7$export$ab134d298d957272(search)) return [
+    else if ($2ba53c22c1f923f6$export$ab134d298d957272(search)) return [
         search
     ];
     else return [
-        $639976c8c3d045f7$export$cf32a499fcfecacd(search)
+        $2ba53c22c1f923f6$export$cf32a499fcfecacd(search)
     ];
 }
 
 
-const $82c8264ab1382711$var$expressionKeys = Object.keys({
+const $8152aaf818f7ca2c$var$expressionKeys = Object.keys({
     clause: null,
     name: null,
     operator: null,
     value: null
 });
-function $82c8264ab1382711$export$4787a3c825f2af47(a, b) {
-    if (a && b) for(let k = 0; k < $82c8264ab1382711$var$expressionKeys.length; k++){
-        let key = $82c8264ab1382711$var$expressionKeys[k];
+function $8152aaf818f7ca2c$export$4787a3c825f2af47(a, b) {
+    if (a && b) for(let k = 0; k < $8152aaf818f7ca2c$var$expressionKeys.length; k++){
+        let key = $8152aaf818f7ca2c$var$expressionKeys[k];
         if (a[key] != b[key]) return false;
     }
     else return !a && !b;
     return true;
 }
-const $82c8264ab1382711$var$groupKeys = Object.keys({
+const $8152aaf818f7ca2c$var$groupKeys = Object.keys({
     clause: null
 });
-function $82c8264ab1382711$export$bc9dff9b0aa0e5b(a, b) {
-    for(let k = 0; k < $82c8264ab1382711$var$groupKeys.length; k++){
-        let key = $82c8264ab1382711$var$groupKeys[k];
+function $8152aaf818f7ca2c$export$bc9dff9b0aa0e5b(a, b) {
+    for(let k = 0; k < $8152aaf818f7ca2c$var$groupKeys.length; k++){
+        let key = $8152aaf818f7ca2c$var$groupKeys[k];
         if (a[key] != b[key]) return false;
     }
     if (!a.expressions && !b.expressions) return true;
     if (!a.expressions || !b.expressions) return false;
     if (a.expressions.length != b.expressions.length) return false;
     for(let i = 0; i < a.expressions.length; i++){
-        if (!$82c8264ab1382711$export$4787a3c825f2af47(a.expressions[i], b.expressions[i])) return false;
+        if (!$8152aaf818f7ca2c$export$4787a3c825f2af47(a.expressions[i], b.expressions[i])) return false;
     }
     return true;
 }
-function $82c8264ab1382711$export$398604a469f7de9a(a, b) {
+function $8152aaf818f7ca2c$export$398604a469f7de9a(a, b) {
     if (a == b) return true;
     if (!a || !b) return false;
     let arrs = [
         a,
         b
-    ].map($639976c8c3d045f7$export$b5d04ce3dd7ae29e);
+    ].map($2ba53c22c1f923f6$export$b5d04ce3dd7ae29e);
     let [arrA, arrB] = arrs;
     if (arrA.length != arrB.length) return false;
     for(let i = 0; i < arrA.length; i++){
-        if (!$82c8264ab1382711$export$bc9dff9b0aa0e5b(arrA[i], arrB[i])) return false;
+        if (!$8152aaf818f7ca2c$export$bc9dff9b0aa0e5b(arrA[i], arrB[i])) return false;
     }
     return true;
 }
-function $82c8264ab1382711$export$68326237475e9a7d(whole, part) {
+function $8152aaf818f7ca2c$export$68326237475e9a7d(whole, part) {
     if (!part) return true;
     let arrs = [
         whole,
         part
-    ].map($639976c8c3d045f7$export$b5d04ce3dd7ae29e);
+    ].map($2ba53c22c1f923f6$export$b5d04ce3dd7ae29e);
     let [wholeArray, partArray] = arrs;
     if (partArray.length > wholeArray.length) return false;
     for(let i = 0; i < partArray.length; i++){
-        if (!$82c8264ab1382711$export$bc9dff9b0aa0e5b(wholeArray[i], partArray[i])) return false;
+        if (!$8152aaf818f7ca2c$export$bc9dff9b0aa0e5b(wholeArray[i], partArray[i])) return false;
     }
     return true;
 }
 
 
-var $993d4e470a95e83c$exports = {};
+var $adf6771a93c98393$exports = {};
 
-$parcel$export($993d4e470a95e83c$exports, "Exec", () => $993d4e470a95e83c$export$bbfd672d43392844);
+$parcel$export($adf6771a93c98393$exports, "Exec", () => $adf6771a93c98393$export$bbfd672d43392844);
 
-function $993d4e470a95e83c$var$valueToBoolean(value) {
+function $adf6771a93c98393$var$valueToBoolean(value) {
     if (typeof value === 'string') switch(value.toLowerCase()){
         case 'true':
             return true;
@@ -5332,7 +5338,7 @@ function $993d4e470a95e83c$var$valueToBoolean(value) {
     }
     return !!value;
 }
-function $993d4e470a95e83c$var$valueToString(value) {
+function $adf6771a93c98393$var$valueToString(value) {
     if (value == null) return '';
     switch(typeof value){
         case 'string':
@@ -5343,7 +5349,7 @@ function $993d4e470a95e83c$var$valueToString(value) {
     }
     return '';
 }
-function $993d4e470a95e83c$var$isStringOperation(ex) {
+function $adf6771a93c98393$var$isStringOperation(ex) {
     switch(ex.operator){
         case 'contains':
         case '!contains':
@@ -5353,21 +5359,21 @@ function $993d4e470a95e83c$var$isStringOperation(ex) {
     }
     return false;
 }
-function $993d4e470a95e83c$var$isnullorEmpty(value) {
+function $adf6771a93c98393$var$isnullorEmpty(value) {
     if (value == null) return true; //double equal sign to also catch undefined
     if (typeof value === 'string' && value.length === 0) return true;
     return false;
 }
-class $993d4e470a95e83c$export$bbfd672d43392844 {
+class $adf6771a93c98393$export$bbfd672d43392844 {
     constructor(search, columns){
         this.columns = columns;
-        this.groups = $639976c8c3d045f7$export$b5d04ce3dd7ae29e(search).map((g)=>{
+        this.groups = $2ba53c22c1f923f6$export$b5d04ce3dd7ae29e(search).map((g)=>{
             const expressions = g.expressions.filter(Boolean);
             expressions.forEach((ex)=>{
                 ex.column = this.getColumn(ex.name);
-                ex.valueBool = $993d4e470a95e83c$var$valueToBoolean(ex.value);
-                ex.valueLow = $993d4e470a95e83c$var$valueToString(ex.value).toLocaleLowerCase();
-                ex.stringOperation = $993d4e470a95e83c$var$isStringOperation(ex);
+                ex.valueBool = $adf6771a93c98393$var$valueToBoolean(ex.value);
+                ex.valueLow = $adf6771a93c98393$var$valueToString(ex.value).toLocaleLowerCase();
+                ex.stringOperation = $adf6771a93c98393$var$isStringOperation(ex);
             });
             const group = Object.assign(Object.assign({
             }, g), {
@@ -5383,16 +5389,16 @@ class $993d4e470a95e83c$export$bbfd672d43392844 {
     }
     runExpressionOnColumn(datum, ex) {
         const actualDataValue = datum[ex.name];
-        if (ex.operator === 'isnullorEmpty') return $993d4e470a95e83c$var$isnullorEmpty(actualDataValue);
-        else if (ex.operator === '!isnullorEmpty') return !$993d4e470a95e83c$var$isnullorEmpty(actualDataValue);
+        if (ex.operator === 'isnullorEmpty') return $adf6771a93c98393$var$isnullorEmpty(actualDataValue);
+        else if (ex.operator === '!isnullorEmpty') return !$adf6771a93c98393$var$isnullorEmpty(actualDataValue);
         let dataValue = actualDataValue;
         let expressionValue = ex.value;
         if (ex.column) {
             if (ex.column.type === 'string' || ex.stringOperation) {
-                dataValue = $993d4e470a95e83c$var$valueToString(actualDataValue).toLocaleLowerCase();
+                dataValue = $adf6771a93c98393$var$valueToString(actualDataValue).toLocaleLowerCase();
                 expressionValue = ex.valueLow;
             } else if (ex.column.type === 'boolean') {
-                dataValue = $993d4e470a95e83c$var$valueToBoolean(actualDataValue);
+                dataValue = $adf6771a93c98393$var$valueToBoolean(actualDataValue);
                 expressionValue = ex.valueBool;
             } else if (ex.column.quantitative) {
                 dataValue = +actualDataValue;
@@ -5473,19 +5479,19 @@ class $993d4e470a95e83c$export$bbfd672d43392844 {
 
 
 
-var $ea86cf90c5c71925$exports = {};
+var $f52676db54676003$exports = {};
 
-$parcel$export($ea86cf90c5c71925$exports, "invert", () => $ea86cf90c5c71925$export$6897c284b6f9f4dc);
+$parcel$export($f52676db54676003$exports, "invert", () => $f52676db54676003$export$6897c284b6f9f4dc);
 
-function $ea86cf90c5c71925$var$invertSearchExpressionGroup(input) {
+function $f52676db54676003$var$invertSearchExpressionGroup(input) {
     //this only works if all expressions in this group have the same clause
     const output = {
-        expressions: input.expressions.map($ea86cf90c5c71925$var$invertSearchExpression)
+        expressions: input.expressions.map($f52676db54676003$var$invertSearchExpression)
     };
-    if (input.clause) output.clause = $ea86cf90c5c71925$var$invertedClauses[input.clause];
+    if (input.clause) output.clause = $f52676db54676003$var$invertedClauses[input.clause];
     return output;
 }
-const $ea86cf90c5c71925$var$invertedOperators = {
+const $f52676db54676003$var$invertedOperators = {
     '!=': '==',
     '==': '!=',
     '<': '>=',
@@ -5499,77 +5505,81 @@ const $ea86cf90c5c71925$var$invertedOperators = {
     '!starts': 'starts',
     'starts': '!starts'
 };
-const $ea86cf90c5c71925$var$invertedClauses = {
+const $f52676db54676003$var$invertedClauses = {
     '&&': '||',
     '||': '&&'
 };
-function $ea86cf90c5c71925$var$invertSearchExpression(input) {
-    const operator = $ea86cf90c5c71925$var$invertedOperators[input.operator];
+function $f52676db54676003$var$invertSearchExpression(input) {
+    const operator = $f52676db54676003$var$invertedOperators[input.operator];
     const output = Object.assign(Object.assign({
     }, input), {
         operator: operator
     });
-    if (input.clause) output.clause = $ea86cf90c5c71925$var$invertedClauses[input.clause];
+    if (input.clause) output.clause = $f52676db54676003$var$invertedClauses[input.clause];
     return output;
 }
-function $ea86cf90c5c71925$export$6897c284b6f9f4dc(search) {
-    if (Array.isArray(search)) return search.map($ea86cf90c5c71925$var$invertSearchExpressionGroup);
-    else if ($639976c8c3d045f7$export$ab134d298d957272(search)) return $ea86cf90c5c71925$var$invertSearchExpressionGroup(search);
-    else return $ea86cf90c5c71925$var$invertSearchExpression(search);
+function $f52676db54676003$export$6897c284b6f9f4dc(search) {
+    if (Array.isArray(search)) return search.map($f52676db54676003$var$invertSearchExpressionGroup);
+    else if ($2ba53c22c1f923f6$export$ab134d298d957272(search)) return $f52676db54676003$var$invertSearchExpressionGroup(search);
+    else return $f52676db54676003$var$invertSearchExpression(search);
 }
 
 
-var $ab300922c06ef0af$exports = {};
+var $4442703718296195$exports = {};
 
-$parcel$export($ab300922c06ef0af$exports, "narrow", () => $ab300922c06ef0af$export$ec67f55c222e1546);
+$parcel$export($4442703718296195$exports, "narrow", () => $4442703718296195$export$ec67f55c222e1546);
 
-function $ab300922c06ef0af$export$ec67f55c222e1546(a, b) {
+function $4442703718296195$export$ec67f55c222e1546(a, b) {
     if (!a) return b;
     let arrs = [
         a,
         b
-    ].map($639976c8c3d045f7$export$b5d04ce3dd7ae29e);
+    ].map($2ba53c22c1f923f6$export$b5d04ce3dd7ae29e);
     let [arrA, arrB] = arrs;
     arrB[0].clause = '&&';
     return arrA.concat(arrB);
 }
 
 
-$parcel$exportWildcard($264b19750297be8f$exports, $82c8264ab1382711$exports);
-$parcel$exportWildcard($264b19750297be8f$exports, $993d4e470a95e83c$exports);
-$parcel$exportWildcard($264b19750297be8f$exports, $639976c8c3d045f7$exports);
-$parcel$exportWildcard($264b19750297be8f$exports, $ea86cf90c5c71925$exports);
-$parcel$exportWildcard($264b19750297be8f$exports, $ab300922c06ef0af$exports);
+var $3f0798cdb96ce7dd$exports = {};
+
+
+$parcel$exportWildcard($009f7267ebde0f0b$exports, $8152aaf818f7ca2c$exports);
+$parcel$exportWildcard($009f7267ebde0f0b$exports, $adf6771a93c98393$exports);
+$parcel$exportWildcard($009f7267ebde0f0b$exports, $2ba53c22c1f923f6$exports);
+$parcel$exportWildcard($009f7267ebde0f0b$exports, $f52676db54676003$exports);
+$parcel$exportWildcard($009f7267ebde0f0b$exports, $4442703718296195$exports);
+$parcel$exportWildcard($009f7267ebde0f0b$exports, $3f0798cdb96ce7dd$exports);
 
 
 
-var $1b651b1d440aeab9$exports = {};
+var $e021c47cedb7e510$exports = {};
 
 
-var $a95be51749eaea4c$exports = {};
+var $e76dbaf7a95e1712$exports = {};
 
-$parcel$export($a95be51749eaea4c$exports, "isInternalFieldName", () => $a95be51749eaea4c$export$81adea670bebefbe);
-$parcel$export($a95be51749eaea4c$exports, "getColumnsFromData", () => $b208adf1e2336264$export$3f19ad07848df794);
-$parcel$export($a95be51749eaea4c$exports, "getStats", () => $b208adf1e2336264$export$432f698644f45d1);
-$parcel$export($a95be51749eaea4c$exports, "inferAll", () => $b208adf1e2336264$export$e04a97cc71178399);
-$parcel$export($a95be51749eaea4c$exports, "getPresenterStyle", () => $44cb48d9f5894b55$export$c4db461e5e345a8);
+$parcel$export($e76dbaf7a95e1712$exports, "isInternalFieldName", () => $e76dbaf7a95e1712$export$81adea670bebefbe);
+$parcel$export($e76dbaf7a95e1712$exports, "getColumnsFromData", () => $1f41cd3bd9350891$export$3f19ad07848df794);
+$parcel$export($e76dbaf7a95e1712$exports, "getStats", () => $1f41cd3bd9350891$export$432f698644f45d1);
+$parcel$export($e76dbaf7a95e1712$exports, "inferAll", () => $1f41cd3bd9350891$export$e04a97cc71178399);
+$parcel$export($e76dbaf7a95e1712$exports, "getPresenterStyle", () => $39c8d1d23f762a7c$export$c4db461e5e345a8);
 
 
-var $04e538fe2709dad5$exports = {};
+var $fe0c42722799ef8c$exports = {};
 
-$parcel$export($04e538fe2709dad5$exports, "base", () => $1ce8acf0567070a9$export$e2253033e6e1df16);
-$parcel$export($04e538fe2709dad5$exports, "use", () => $1ce8acf0567070a9$export$1f96ae73734a86cc);
-$parcel$export($04e538fe2709dad5$exports, "Presenter", () => $ea0d85645d70082e$export$893c88c42e3630f9);
-$parcel$export($04e538fe2709dad5$exports, "ViewGl", () => $70f68e5f1326a051$export$6d8f9057dcd7f9e6);
-$parcel$export($04e538fe2709dad5$exports, "constants", () => $8e12194d46650279$exports);
-$parcel$export($04e538fe2709dad5$exports, "controls", () => $53ceabdd339cf4eb$exports);
-$parcel$export($04e538fe2709dad5$exports, "defaults", () => $c1310db02f4288e1$exports);
-$parcel$export($04e538fe2709dad5$exports, "types", () => $5d84e7257e6328e8$exports);
-$parcel$export($04e538fe2709dad5$exports, "util", () => $2ceb34bf05dc5b6f$exports);
-var $8e12194d46650279$exports = {};
+$parcel$export($fe0c42722799ef8c$exports, "base", () => $aa3185d2619292b0$export$e2253033e6e1df16);
+$parcel$export($fe0c42722799ef8c$exports, "use", () => $aa3185d2619292b0$export$1f96ae73734a86cc);
+$parcel$export($fe0c42722799ef8c$exports, "Presenter", () => $586113946f2266a2$export$893c88c42e3630f9);
+$parcel$export($fe0c42722799ef8c$exports, "ViewGl", () => $fe59b525f658c489$export$6d8f9057dcd7f9e6);
+$parcel$export($fe0c42722799ef8c$exports, "constants", () => $95a4329e07073fb3$exports);
+$parcel$export($fe0c42722799ef8c$exports, "controls", () => $b461bb0d5e9060a5$exports);
+$parcel$export($fe0c42722799ef8c$exports, "defaults", () => $f92b17f7c58b7db2$exports);
+$parcel$export($fe0c42722799ef8c$exports, "types", () => $99eab59511ede234$exports);
+$parcel$export($fe0c42722799ef8c$exports, "util", () => $357cda13648d25b4$exports);
+var $95a4329e07073fb3$exports = {};
 
-$parcel$export($8e12194d46650279$exports, "layerNames", () => $8e12194d46650279$export$5792b81513a80aca);
-const $8e12194d46650279$export$5792b81513a80aca = {
+$parcel$export($95a4329e07073fb3$exports, "layerNames", () => $95a4329e07073fb3$export$5792b81513a80aca);
+const $95a4329e07073fb3$export$5792b81513a80aca = {
     cubes: 'LAYER_CUBES',
     lines: 'LAYER_LINES',
     text: 'LAYER_TEXT',
@@ -5578,97 +5588,97 @@ const $8e12194d46650279$export$5792b81513a80aca = {
 };
 
 
-var $53ceabdd339cf4eb$exports = {};
+var $b461bb0d5e9060a5$exports = {};
 
-$parcel$export($53ceabdd339cf4eb$exports, "Table", () => $8ff793870c89f14e$export$54ec01a60f47d33d);
-var $6dbf81423eac56f2$exports = {};
+$parcel$export($b461bb0d5e9060a5$exports, "Table", () => $7bbc4e477cf1dda8$export$54ec01a60f47d33d);
+var $8707503d7929e8d5$exports = {};
 'use strict';
-parcelRequire.register("dVn33", function(module, exports) {
+parcelRequire.register("8BJEB", function(module, exports) {
 module.exports = JSON.parse("[\"a\",\"abbr\",\"address\",\"area\",\"article\",\"aside\",\"audio\",\"b\",\"base\",\"bdi\",\"bdo\",\"blockquote\",\"body\",\"br\",\"button\",\"canvas\",\"caption\",\"cite\",\"code\",\"col\",\"colgroup\",\"data\",\"datalist\",\"dd\",\"del\",\"details\",\"dfn\",\"dialog\",\"div\",\"dl\",\"dt\",\"em\",\"embed\",\"fieldset\",\"figcaption\",\"figure\",\"footer\",\"form\",\"h1\",\"h2\",\"h3\",\"h4\",\"h5\",\"h6\",\"head\",\"header\",\"hgroup\",\"hr\",\"html\",\"i\",\"iframe\",\"img\",\"input\",\"ins\",\"kbd\",\"keygen\",\"label\",\"legend\",\"li\",\"link\",\"main\",\"map\",\"mark\",\"math\",\"menu\",\"menuitem\",\"meta\",\"meter\",\"nav\",\"noscript\",\"object\",\"ol\",\"optgroup\",\"option\",\"output\",\"p\",\"param\",\"picture\",\"pre\",\"progress\",\"q\",\"rb\",\"rp\",\"rt\",\"rtc\",\"ruby\",\"s\",\"samp\",\"script\",\"section\",\"select\",\"slot\",\"small\",\"source\",\"span\",\"strong\",\"style\",\"sub\",\"summary\",\"sup\",\"svg\",\"table\",\"tbody\",\"td\",\"template\",\"textarea\",\"tfoot\",\"th\",\"thead\",\"time\",\"title\",\"tr\",\"track\",\"u\",\"ul\",\"var\",\"video\",\"wbr\"]");
 
 });
 
 
-$6dbf81423eac56f2$exports = (parcelRequire("dVn33"));
+$8707503d7929e8d5$exports = (parcelRequire("8BJEB"));
 
 
-var $1c1f8a07e85bc78a$exports = {};
-parcelRequire.register("aO7cY", function(module, exports) {
+var $269ad49adb629060$exports = {};
+parcelRequire.register("fB7g4", function(module, exports) {
 module.exports = JSON.parse("[\"a\",\"altGlyph\",\"altGlyphDef\",\"altGlyphItem\",\"animate\",\"animateColor\",\"animateMotion\",\"animateTransform\",\"circle\",\"clipPath\",\"color-profile\",\"cursor\",\"defs\",\"desc\",\"ellipse\",\"feBlend\",\"feColorMatrix\",\"feComponentTransfer\",\"feComposite\",\"feConvolveMatrix\",\"feDiffuseLighting\",\"feDisplacementMap\",\"feDistantLight\",\"feFlood\",\"feFuncA\",\"feFuncB\",\"feFuncG\",\"feFuncR\",\"feGaussianBlur\",\"feImage\",\"feMerge\",\"feMergeNode\",\"feMorphology\",\"feOffset\",\"fePointLight\",\"feSpecularLighting\",\"feSpotLight\",\"feTile\",\"feTurbulence\",\"filter\",\"font\",\"font-face\",\"font-face-format\",\"font-face-name\",\"font-face-src\",\"font-face-uri\",\"foreignObject\",\"g\",\"glyph\",\"glyphRef\",\"hkern\",\"image\",\"line\",\"linearGradient\",\"marker\",\"mask\",\"metadata\",\"missing-glyph\",\"mpath\",\"path\",\"pattern\",\"polygon\",\"polyline\",\"radialGradient\",\"rect\",\"script\",\"set\",\"stop\",\"style\",\"svg\",\"switch\",\"symbol\",\"text\",\"textPath\",\"title\",\"tref\",\"tspan\",\"use\",\"view\",\"vkern\"]");
 
 });
 
 
-$1c1f8a07e85bc78a$exports = (parcelRequire("aO7cY"));
+$269ad49adb629060$exports = (parcelRequire("fB7g4"));
 
 
-const $9f51d2c38d8bad2e$var$htmlTagArray = $6dbf81423eac56f2$exports.default || $6dbf81423eac56f2$exports;
-const $9f51d2c38d8bad2e$var$svgTagArray = $1c1f8a07e85bc78a$exports.default || $1c1f8a07e85bc78a$exports;
+const $1ba1ba975a1b16e7$var$htmlTagArray = $8707503d7929e8d5$exports.default || $8707503d7929e8d5$exports;
+const $1ba1ba975a1b16e7$var$svgTagArray = $269ad49adb629060$exports.default || $269ad49adb629060$exports;
 /**
  * Decamelizes a string with/without a custom separator (hyphen by default).
  * from: https://ourcodeworld.com/articles/read/608/how-to-camelize-and-decamelize-strings-in-javascript
  *
  * @param str String in camelcase
  * @param separator Separator for the new decamelized string.
- */ function $9f51d2c38d8bad2e$var$decamelize(str, separator = '-') {
+ */ function $1ba1ba975a1b16e7$var$decamelize(str, separator = '-') {
     return str.replace(/([a-z\d])([A-Z])/g, '$1' + separator + '$2').replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1' + separator + '$2').toLowerCase();
 }
-function $9f51d2c38d8bad2e$export$c8a8987d4410bf2d(tag, attrs, ...children) {
+function $1ba1ba975a1b16e7$export$c8a8987d4410bf2d(tag, attrs, ...children) {
     if (typeof tag === 'function') {
         const fn = tag;
         const props = attrs;
         props.children = children;
         return fn(props);
     } else {
-        const ns = $9f51d2c38d8bad2e$var$tagNamespace(tag);
+        const ns = $1ba1ba975a1b16e7$var$tagNamespace(tag);
         const el = ns ? document.createElementNS(ns, tag) : document.createElement(tag);
         const map = attrs;
         let ref;
         for(let name in map)if (name && map.hasOwnProperty(name)) {
             let value = map[name];
-            if (name === 'className' && value !== void 0) $9f51d2c38d8bad2e$var$setAttribute(el, ns, 'class', value.toString());
+            if (name === 'className' && value !== void 0) $1ba1ba975a1b16e7$var$setAttribute(el, ns, 'class', value.toString());
             else if (name === 'disabled' && !value) ;
             else if (value === null || value === undefined) continue;
-            else if (value === true) $9f51d2c38d8bad2e$var$setAttribute(el, ns, name, name);
+            else if (value === true) $1ba1ba975a1b16e7$var$setAttribute(el, ns, name, name);
             else if (typeof value === 'function') {
                 if (name === 'ref') ref = value;
                 else el[name.toLowerCase()] = value;
-            } else if (typeof value === 'object') $9f51d2c38d8bad2e$var$setAttribute(el, ns, name, $9f51d2c38d8bad2e$var$flatten(value));
-            else $9f51d2c38d8bad2e$var$setAttribute(el, ns, name, value.toString());
+            } else if (typeof value === 'object') $1ba1ba975a1b16e7$var$setAttribute(el, ns, name, $1ba1ba975a1b16e7$var$flatten(value));
+            else $1ba1ba975a1b16e7$var$setAttribute(el, ns, name, value.toString());
         }
-        if (children && children.length > 0) $9f51d2c38d8bad2e$var$appendChildren(el, children);
+        if (children && children.length > 0) $1ba1ba975a1b16e7$var$appendChildren(el, children);
         if (ref) ref(el);
         return el;
     }
 }
-function $9f51d2c38d8bad2e$var$setAttribute(el, ns, name, value) {
+function $1ba1ba975a1b16e7$var$setAttribute(el, ns, name, value) {
     if (ns) el.setAttributeNS(null, name, value);
     else el.setAttribute(name, value);
 }
-function $9f51d2c38d8bad2e$var$flatten(o) {
+function $1ba1ba975a1b16e7$var$flatten(o) {
     const arr = [];
-    for(let prop in o)arr.push(`${$9f51d2c38d8bad2e$var$decamelize(prop, '-')}:${o[prop]}`);
+    for(let prop in o)arr.push(`${$1ba1ba975a1b16e7$var$decamelize(prop, '-')}:${o[prop]}`);
     return arr.join(';');
 }
-function $9f51d2c38d8bad2e$export$59da04d16460addd(parentElement, child) {
+function $1ba1ba975a1b16e7$export$59da04d16460addd(parentElement, child) {
     if (child === null || child === undefined || typeof child === "boolean") return;
-    else if (Array.isArray(child)) $9f51d2c38d8bad2e$var$appendChildren(parentElement, child);
-    else if ($9f51d2c38d8bad2e$var$isElement(child)) parentElement.appendChild(child);
+    else if (Array.isArray(child)) $1ba1ba975a1b16e7$var$appendChildren(parentElement, child);
+    else if ($1ba1ba975a1b16e7$var$isElement(child)) parentElement.appendChild(child);
     else parentElement.appendChild(document.createTextNode(child.toString()));
 }
-function $9f51d2c38d8bad2e$var$appendChildren(parentElement, children) {
-    children.forEach((child)=>$9f51d2c38d8bad2e$export$59da04d16460addd(parentElement, child)
+function $1ba1ba975a1b16e7$var$appendChildren(parentElement, children) {
+    children.forEach((child)=>$1ba1ba975a1b16e7$export$59da04d16460addd(parentElement, child)
     );
 }
-function $9f51d2c38d8bad2e$var$isElement(el) {
+function $1ba1ba975a1b16e7$var$isElement(el) {
     //nodeType cannot be zero https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
     return !!el.nodeType;
 }
-function $9f51d2c38d8bad2e$export$186d02efde07ef98(element, container) {
+function $1ba1ba975a1b16e7$export$186d02efde07ef98(element, container) {
     container.innerHTML = '';
-    if (element) $9f51d2c38d8bad2e$export$59da04d16460addd(container, element);
+    if (element) $1ba1ba975a1b16e7$export$59da04d16460addd(container, element);
 }
-function $9f51d2c38d8bad2e$export$d0bfd83e3f838e5e(childPositions, container) {
+function $1ba1ba975a1b16e7$export$d0bfd83e3f838e5e(childPositions, container) {
     let element = container || document.body;
     let childPosition;
     while(element && childPositions.length){
@@ -5677,19 +5687,19 @@ function $9f51d2c38d8bad2e$export$d0bfd83e3f838e5e(childPositions, container) {
     }
     if (element) return element;
 }
-function $9f51d2c38d8bad2e$export$8a664f09713ad850(element, activeElementInfo) {
+function $1ba1ba975a1b16e7$export$8a664f09713ad850(element, activeElementInfo) {
     element.focus();
     element.scrollTop = activeElementInfo.scrollTop;
     const input = element;
     if (input.setSelectionRange && activeElementInfo && activeElementInfo.selectionStart != null && activeElementInfo.selectionEnd != null) input.setSelectionRange(activeElementInfo.selectionStart, activeElementInfo.selectionEnd, activeElementInfo.selectionDirection);
 }
-function $9f51d2c38d8bad2e$export$7d007ff58288f238(activeElementInfo, container) {
+function $1ba1ba975a1b16e7$export$7d007ff58288f238(activeElementInfo, container) {
     if (activeElementInfo) {
-        const element = $9f51d2c38d8bad2e$export$d0bfd83e3f838e5e(activeElementInfo.childPositions, container);
-        if (element) $9f51d2c38d8bad2e$export$8a664f09713ad850(element, activeElementInfo);
+        const element = $1ba1ba975a1b16e7$export$d0bfd83e3f838e5e(activeElementInfo.childPositions, container);
+        if (element) $1ba1ba975a1b16e7$export$8a664f09713ad850(element, activeElementInfo);
     }
 }
-function $9f51d2c38d8bad2e$export$5ec2c407fb44f02(container) {
+function $1ba1ba975a1b16e7$export$5ec2c407fb44f02(container) {
     let element = document.activeElement;
     const { scrollTop: scrollTop , selectionDirection: selectionDirection , selectionEnd: selectionEnd , selectionStart: selectionStart  } = element;
     const activeElementInfo = {
@@ -5700,37 +5710,37 @@ function $9f51d2c38d8bad2e$export$5ec2c407fb44f02(container) {
         selectionStart: selectionStart
     };
     while(element && element !== document.body && element !== container){
-        activeElementInfo.childPositions.unshift($9f51d2c38d8bad2e$var$getChildPosition(element));
+        activeElementInfo.childPositions.unshift($1ba1ba975a1b16e7$var$getChildPosition(element));
         element = element.parentElement;
     }
     if ((element === document.body || element === container) && activeElementInfo.childPositions.length) return activeElementInfo;
 }
-function $9f51d2c38d8bad2e$var$getChildPosition(element) {
+function $1ba1ba975a1b16e7$var$getChildPosition(element) {
     let childPosition = 0;
     while(element = element.previousElementSibling)childPosition++;
     return childPosition;
 }
-function $9f51d2c38d8bad2e$var$tagNamespace(tag) {
+function $1ba1ba975a1b16e7$var$tagNamespace(tag) {
     //issue: this won't disambiguate certain tags which exist in both svg and html: <a>, <title> ...
-    if (tag === 'svg' || $9f51d2c38d8bad2e$var$svgTagArray.indexOf(tag) >= 0 && !($9f51d2c38d8bad2e$var$htmlTagArray.indexOf(tag) >= 0)) return "http://www.w3.org/2000/svg";
+    if (tag === 'svg' || $1ba1ba975a1b16e7$var$svgTagArray.indexOf(tag) >= 0 && !($1ba1ba975a1b16e7$var$htmlTagArray.indexOf(tag) >= 0)) return "http://www.w3.org/2000/svg";
 }
 
 
-const $8ff793870c89f14e$var$KeyCodes = {
+const $7bbc4e477cf1dda8$var$KeyCodes = {
     ENTER: 13
 };
-const $8ff793870c89f14e$export$54ec01a60f47d33d = (props)=>{
-    return $9f51d2c38d8bad2e$export$c8a8987d4410bf2d("table", {
+const $7bbc4e477cf1dda8$export$54ec01a60f47d33d = (props)=>{
+    return $1ba1ba975a1b16e7$export$c8a8987d4410bf2d("table", {
         className: props.className
-    }, props.children, props.rows.map((row, i)=>$9f51d2c38d8bad2e$export$c8a8987d4410bf2d("tr", {
+    }, props.children, props.rows.map((row, i)=>$1ba1ba975a1b16e7$export$c8a8987d4410bf2d("tr", {
             className: props.rowClassName || '',
             onClick: (e)=>props.onRowClick && props.onRowClick(e, i)
             ,
             tabIndex: props.onRowClick ? 0 : -1,
             onKeyUp: (e)=>{
-                if (e.keyCode === $8ff793870c89f14e$var$KeyCodes.ENTER && props.onRowClick) props.onRowClick(e, i);
+                if (e.keyCode === $7bbc4e477cf1dda8$var$KeyCodes.ENTER && props.onRowClick) props.onRowClick(e, i);
             }
-        }, row.cells.map((cell, i)=>$9f51d2c38d8bad2e$export$c8a8987d4410bf2d("td", {
+        }, row.cells.map((cell, i)=>$1ba1ba975a1b16e7$export$c8a8987d4410bf2d("td", {
                 className: cell.className || '',
                 title: cell.title || ''
             }, cell.content)
@@ -5741,53 +5751,53 @@ const $8ff793870c89f14e$export$54ec01a60f47d33d = (props)=>{
 
 
 
-var $5d84e7257e6328e8$exports = {};
+var $99eab59511ede234$exports = {};
 
 
-var $2ceb34bf05dc5b6f$exports = {};
+var $357cda13648d25b4$exports = {};
 
-$parcel$export($2ceb34bf05dc5b6f$exports, "addDiv", () => $48572053e4344b4e$export$6758c6c7563dc60e);
-$parcel$export($2ceb34bf05dc5b6f$exports, "addEl", () => $48572053e4344b4e$export$3ca29736d56b698a);
-$parcel$export($2ceb34bf05dc5b6f$exports, "allTruthy", () => $fd6d96dbab6f64c1$export$84af6d08e329f176);
-$parcel$export($2ceb34bf05dc5b6f$exports, "clone", () => $88197c4abcc50579$export$9cd59f9826255e47);
-$parcel$export($2ceb34bf05dc5b6f$exports, "colorFromString", () => $e69d5c649de4e105$export$78ed65bc9abd64b1);
-$parcel$export($2ceb34bf05dc5b6f$exports, "colorIsEqual", () => $e69d5c649de4e105$export$7da6ac10e55d4f2a);
-$parcel$export($2ceb34bf05dc5b6f$exports, "colorToString", () => $e69d5c649de4e105$export$f86d83653e5a505e);
-$parcel$export($2ceb34bf05dc5b6f$exports, "concat", () => $fd6d96dbab6f64c1$export$ee1b3e54f0441b22);
-$parcel$export($2ceb34bf05dc5b6f$exports, "createElement", () => $9f51d2c38d8bad2e$export$c8a8987d4410bf2d);
-$parcel$export($2ceb34bf05dc5b6f$exports, "deepMerge", () => $88197c4abcc50579$export$6969335ea1e4e77c);
-$parcel$export($2ceb34bf05dc5b6f$exports, "desaturate", () => $e69d5c649de4e105$export$fb75607d98509d9);
-$parcel$export($2ceb34bf05dc5b6f$exports, "getActiveElementInfo", () => $9f51d2c38d8bad2e$export$5ec2c407fb44f02);
-$parcel$export($2ceb34bf05dc5b6f$exports, "getCubeLayer", () => $067e5990472a3889$export$ccecd364047ec381);
-$parcel$export($2ceb34bf05dc5b6f$exports, "getCubes", () => $067e5990472a3889$export$fa1ee03f26227b34);
-$parcel$export($2ceb34bf05dc5b6f$exports, "mount", () => $9f51d2c38d8bad2e$export$186d02efde07ef98);
-$parcel$export($2ceb34bf05dc5b6f$exports, "outerSize", () => $48572053e4344b4e$export$7642631117982e98);
-$parcel$export($2ceb34bf05dc5b6f$exports, "push", () => $fd6d96dbab6f64c1$export$4cbf152802aa238);
-$parcel$export($2ceb34bf05dc5b6f$exports, "setActiveElement", () => $9f51d2c38d8bad2e$export$7d007ff58288f238);
-function $fd6d96dbab6f64c1$export$ee1b3e54f0441b22(...args) {
+$parcel$export($357cda13648d25b4$exports, "addDiv", () => $225df2655ee8edcc$export$6758c6c7563dc60e);
+$parcel$export($357cda13648d25b4$exports, "addEl", () => $225df2655ee8edcc$export$3ca29736d56b698a);
+$parcel$export($357cda13648d25b4$exports, "allTruthy", () => $ffcacbd9f650c26c$export$84af6d08e329f176);
+$parcel$export($357cda13648d25b4$exports, "clone", () => $b225001aee342575$export$9cd59f9826255e47);
+$parcel$export($357cda13648d25b4$exports, "colorFromString", () => $50dbc0324e10cd45$export$78ed65bc9abd64b1);
+$parcel$export($357cda13648d25b4$exports, "colorIsEqual", () => $50dbc0324e10cd45$export$7da6ac10e55d4f2a);
+$parcel$export($357cda13648d25b4$exports, "colorToString", () => $50dbc0324e10cd45$export$f86d83653e5a505e);
+$parcel$export($357cda13648d25b4$exports, "concat", () => $ffcacbd9f650c26c$export$ee1b3e54f0441b22);
+$parcel$export($357cda13648d25b4$exports, "createElement", () => $1ba1ba975a1b16e7$export$c8a8987d4410bf2d);
+$parcel$export($357cda13648d25b4$exports, "deepMerge", () => $b225001aee342575$export$6969335ea1e4e77c);
+$parcel$export($357cda13648d25b4$exports, "desaturate", () => $50dbc0324e10cd45$export$fb75607d98509d9);
+$parcel$export($357cda13648d25b4$exports, "getActiveElementInfo", () => $1ba1ba975a1b16e7$export$5ec2c407fb44f02);
+$parcel$export($357cda13648d25b4$exports, "getCubeLayer", () => $96e705a481cefebf$export$ccecd364047ec381);
+$parcel$export($357cda13648d25b4$exports, "getCubes", () => $96e705a481cefebf$export$fa1ee03f26227b34);
+$parcel$export($357cda13648d25b4$exports, "mount", () => $1ba1ba975a1b16e7$export$186d02efde07ef98);
+$parcel$export($357cda13648d25b4$exports, "outerSize", () => $225df2655ee8edcc$export$7642631117982e98);
+$parcel$export($357cda13648d25b4$exports, "push", () => $ffcacbd9f650c26c$export$4cbf152802aa238);
+$parcel$export($357cda13648d25b4$exports, "setActiveElement", () => $1ba1ba975a1b16e7$export$7d007ff58288f238);
+function $ffcacbd9f650c26c$export$ee1b3e54f0441b22(...args) {
     return args.reduce((p, c)=>c ? p.concat(c) : p
     , []);
 }
-function $fd6d96dbab6f64c1$export$84af6d08e329f176(...args) {
+function $ffcacbd9f650c26c$export$84af6d08e329f176(...args) {
     return args.reduce((p, c)=>c ? p.concat(c) : p
     , []).filter(Boolean);
 }
-function $fd6d96dbab6f64c1$export$4cbf152802aa238(arr, items) {
+function $ffcacbd9f650c26c$export$4cbf152802aa238(arr, items) {
     arr.push.apply(arr, items);
 }
 
 
-function $48572053e4344b4e$export$3ca29736d56b698a(tagName, parentElement) {
+function $225df2655ee8edcc$export$3ca29736d56b698a(tagName, parentElement) {
     const el = document.createElement(tagName);
     parentElement.appendChild(el);
     return el;
 }
-function $48572053e4344b4e$export$6758c6c7563dc60e(parentElement, className) {
-    const div = $48572053e4344b4e$export$3ca29736d56b698a('div', parentElement);
+function $225df2655ee8edcc$export$6758c6c7563dc60e(parentElement, className) {
+    const div = $225df2655ee8edcc$export$3ca29736d56b698a('div', parentElement);
     if (className) div.className = className;
     return div;
 }
-function $48572053e4344b4e$export$7642631117982e98(el) {
+function $225df2655ee8edcc$export$7642631117982e98(el) {
     const cs = getComputedStyle(el);
     const height = parseFloat(cs.marginTop) + parseFloat(cs.paddingTop) + parseFloat(cs.borderTopWidth) + el.offsetHeight + parseFloat(cs.borderBottomWidth) + parseFloat(cs.paddingBottom) + parseFloat(cs.marginBottom);
     const width = parseFloat(cs.marginLeft) + parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth) + el.offsetWidth + parseFloat(cs.borderRightWidth) + parseFloat(cs.paddingRight) + parseFloat(cs.marginRight);
@@ -5798,93 +5808,436 @@ function $48572053e4344b4e$export$7642631117982e98(el) {
 }
 
 
-var $955868db7d06fa5b$exports = {};
+var $780157c56cebcdb6$exports = {};
 
-$parcel$defineInteropFlag($955868db7d06fa5b$exports);
+$parcel$defineInteropFlag($780157c56cebcdb6$exports);
 
-$parcel$export($955868db7d06fa5b$exports, "default", () => $955868db7d06fa5b$export$2e2bcd8739ae039);
-var $955868db7d06fa5b$var$isMergeableObject = function isMergeableObject(value) {
-    return $955868db7d06fa5b$var$isNonNullObject(value) && !$955868db7d06fa5b$var$isSpecial(value);
+$parcel$export($780157c56cebcdb6$exports, "default", () => $780157c56cebcdb6$export$2e2bcd8739ae039);
+var $780157c56cebcdb6$var$isMergeableObject = function isMergeableObject(value) {
+    return $780157c56cebcdb6$var$isNonNullObject(value) && !$780157c56cebcdb6$var$isSpecial(value);
 };
-function $955868db7d06fa5b$var$isNonNullObject(value) {
+function $780157c56cebcdb6$var$isNonNullObject(value) {
     return !!value && typeof value === 'object';
 }
-function $955868db7d06fa5b$var$isSpecial(value) {
+function $780157c56cebcdb6$var$isSpecial(value) {
     var stringValue = Object.prototype.toString.call(value);
-    return stringValue === '[object RegExp]' || stringValue === '[object Date]' || $955868db7d06fa5b$var$isReactElement(value);
+    return stringValue === '[object RegExp]' || stringValue === '[object Date]' || $780157c56cebcdb6$var$isReactElement(value);
 }
 // see https://github.com/facebook/react/blob/b5ac963fb791d1298e7f396236383bc955f916c1/src/isomorphic/classic/element/ReactElement.js#L21-L25
-var $955868db7d06fa5b$var$canUseSymbol = typeof Symbol === 'function' && Symbol.for;
-var $955868db7d06fa5b$var$REACT_ELEMENT_TYPE = $955868db7d06fa5b$var$canUseSymbol ? Symbol.for('react.element') : 60103;
-function $955868db7d06fa5b$var$isReactElement(value) {
-    return value.$$typeof === $955868db7d06fa5b$var$REACT_ELEMENT_TYPE;
+var $780157c56cebcdb6$var$canUseSymbol = typeof Symbol === 'function' && Symbol.for;
+var $780157c56cebcdb6$var$REACT_ELEMENT_TYPE = $780157c56cebcdb6$var$canUseSymbol ? Symbol.for('react.element') : 60103;
+function $780157c56cebcdb6$var$isReactElement(value) {
+    return value.$$typeof === $780157c56cebcdb6$var$REACT_ELEMENT_TYPE;
 }
-function $955868db7d06fa5b$var$emptyTarget(val) {
+function $780157c56cebcdb6$var$emptyTarget(val) {
     return Array.isArray(val) ? [] : {
     };
 }
-function $955868db7d06fa5b$var$cloneUnlessOtherwiseSpecified(value, options) {
-    return options.clone !== false && options.isMergeableObject(value) ? $955868db7d06fa5b$var$deepmerge($955868db7d06fa5b$var$emptyTarget(value), value, options) : value;
+function $780157c56cebcdb6$var$cloneUnlessOtherwiseSpecified(value, options) {
+    return options.clone !== false && options.isMergeableObject(value) ? $780157c56cebcdb6$var$deepmerge($780157c56cebcdb6$var$emptyTarget(value), value, options) : value;
 }
-function $955868db7d06fa5b$var$defaultArrayMerge(target, source, options) {
+function $780157c56cebcdb6$var$defaultArrayMerge(target, source, options) {
     return target.concat(source).map(function(element) {
-        return $955868db7d06fa5b$var$cloneUnlessOtherwiseSpecified(element, options);
+        return $780157c56cebcdb6$var$cloneUnlessOtherwiseSpecified(element, options);
     });
 }
-function $955868db7d06fa5b$var$mergeObject(target, source, options) {
+function $780157c56cebcdb6$var$mergeObject(target, source, options) {
     var destination = {
     };
     if (options.isMergeableObject(target)) Object.keys(target).forEach(function(key) {
-        destination[key] = $955868db7d06fa5b$var$cloneUnlessOtherwiseSpecified(target[key], options);
+        destination[key] = $780157c56cebcdb6$var$cloneUnlessOtherwiseSpecified(target[key], options);
     });
     Object.keys(source).forEach(function(key) {
-        if (!options.isMergeableObject(source[key]) || !target[key]) destination[key] = $955868db7d06fa5b$var$cloneUnlessOtherwiseSpecified(source[key], options);
-        else destination[key] = $955868db7d06fa5b$var$deepmerge(target[key], source[key], options);
+        if (!options.isMergeableObject(source[key]) || !target[key]) destination[key] = $780157c56cebcdb6$var$cloneUnlessOtherwiseSpecified(source[key], options);
+        else destination[key] = $780157c56cebcdb6$var$deepmerge(target[key], source[key], options);
     });
     return destination;
 }
-function $955868db7d06fa5b$var$deepmerge(target, source, options) {
+function $780157c56cebcdb6$var$deepmerge(target, source, options) {
     options = options || {
     };
-    options.arrayMerge = options.arrayMerge || $955868db7d06fa5b$var$defaultArrayMerge;
-    options.isMergeableObject = options.isMergeableObject || $955868db7d06fa5b$var$isMergeableObject;
+    options.arrayMerge = options.arrayMerge || $780157c56cebcdb6$var$defaultArrayMerge;
+    options.isMergeableObject = options.isMergeableObject || $780157c56cebcdb6$var$isMergeableObject;
     var sourceIsArray = Array.isArray(source);
     var targetIsArray = Array.isArray(target);
     var sourceAndTargetTypesMatch = sourceIsArray === targetIsArray;
-    if (!sourceAndTargetTypesMatch) return $955868db7d06fa5b$var$cloneUnlessOtherwiseSpecified(source, options);
+    if (!sourceAndTargetTypesMatch) return $780157c56cebcdb6$var$cloneUnlessOtherwiseSpecified(source, options);
     else if (sourceIsArray) return options.arrayMerge(target, source, options);
-    else return $955868db7d06fa5b$var$mergeObject(target, source, options);
+    else return $780157c56cebcdb6$var$mergeObject(target, source, options);
 }
-$955868db7d06fa5b$var$deepmerge.all = function deepmergeAll(array, options) {
+$780157c56cebcdb6$var$deepmerge.all = function deepmergeAll(array, options) {
     if (!Array.isArray(array)) throw new Error('first argument should be an array');
     return array.reduce(function(prev, next) {
-        return $955868db7d06fa5b$var$deepmerge(prev, next, options);
+        return $780157c56cebcdb6$var$deepmerge(prev, next, options);
     }, {
     });
 };
-var $955868db7d06fa5b$var$deepmerge_1 = $955868db7d06fa5b$var$deepmerge;
-var $955868db7d06fa5b$export$2e2bcd8739ae039 = $955868db7d06fa5b$var$deepmerge_1;
+var $780157c56cebcdb6$var$deepmerge_1 = $780157c56cebcdb6$var$deepmerge;
+var $780157c56cebcdb6$export$2e2bcd8739ae039 = $780157c56cebcdb6$var$deepmerge_1;
 
 
-const $88197c4abcc50579$var$deepmerge = $955868db7d06fa5b$exports.default || $955868db7d06fa5b$exports;
-function $88197c4abcc50579$export$9cd59f9826255e47(objectToClone) {
+const $b225001aee342575$var$deepmerge = $780157c56cebcdb6$exports.default || $780157c56cebcdb6$exports;
+function $b225001aee342575$export$9cd59f9826255e47(objectToClone) {
     if (!objectToClone) return objectToClone;
-    return $88197c4abcc50579$var$deepmerge.all([
+    return $b225001aee342575$var$deepmerge.all([
         objectToClone
     ]);
 }
-const $88197c4abcc50579$var$dontMerge = (destination, source)=>source
+const $b225001aee342575$var$dontMerge = (destination, source)=>source
 ;
-function $88197c4abcc50579$export$6969335ea1e4e77c(...objectsToMerge) {
+function $b225001aee342575$export$6969335ea1e4e77c(...objectsToMerge) {
     const objects = objectsToMerge.filter(Boolean);
-    return $88197c4abcc50579$var$deepmerge.all(objects, {
-        arrayMerge: $88197c4abcc50579$var$dontMerge
+    return $b225001aee342575$var$deepmerge.all(objects, {
+        arrayMerge: $b225001aee342575$var$dontMerge
     });
 }
 
 
+function $895fd4e3ce3f8902$export$2e2bcd8739ae039(constructor, factory, prototype) {
+    constructor.prototype = factory.prototype = prototype;
+    prototype.constructor = constructor;
+}
+function $895fd4e3ce3f8902$export$8b58be045bf06082(parent, definition) {
+    var prototype = Object.create(parent.prototype);
+    for(var key in definition)prototype[key] = definition[key];
+    return prototype;
+}
 
-function $e69d5c649de4e105$var$rgbToDeckglColor(c) {
+
+function $67a09192127fe1ec$export$892596cec99bc70e() {
+}
+var $67a09192127fe1ec$export$4adafc6ed0600c10 = 0.7;
+var $67a09192127fe1ec$export$9eace2cc0d12c98d = 1 / $67a09192127fe1ec$export$4adafc6ed0600c10;
+var $67a09192127fe1ec$var$reI = "\\s*([+-]?\\d+)\\s*", $67a09192127fe1ec$var$reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*", $67a09192127fe1ec$var$reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*", $67a09192127fe1ec$var$reHex = /^#([0-9a-f]{3,8})$/, $67a09192127fe1ec$var$reRgbInteger = new RegExp("^rgb\\(" + [
+    $67a09192127fe1ec$var$reI,
+    $67a09192127fe1ec$var$reI,
+    $67a09192127fe1ec$var$reI
+] + "\\)$"), $67a09192127fe1ec$var$reRgbPercent = new RegExp("^rgb\\(" + [
+    $67a09192127fe1ec$var$reP,
+    $67a09192127fe1ec$var$reP,
+    $67a09192127fe1ec$var$reP
+] + "\\)$"), $67a09192127fe1ec$var$reRgbaInteger = new RegExp("^rgba\\(" + [
+    $67a09192127fe1ec$var$reI,
+    $67a09192127fe1ec$var$reI,
+    $67a09192127fe1ec$var$reI,
+    $67a09192127fe1ec$var$reN
+] + "\\)$"), $67a09192127fe1ec$var$reRgbaPercent = new RegExp("^rgba\\(" + [
+    $67a09192127fe1ec$var$reP,
+    $67a09192127fe1ec$var$reP,
+    $67a09192127fe1ec$var$reP,
+    $67a09192127fe1ec$var$reN
+] + "\\)$"), $67a09192127fe1ec$var$reHslPercent = new RegExp("^hsl\\(" + [
+    $67a09192127fe1ec$var$reN,
+    $67a09192127fe1ec$var$reP,
+    $67a09192127fe1ec$var$reP
+] + "\\)$"), $67a09192127fe1ec$var$reHslaPercent = new RegExp("^hsla\\(" + [
+    $67a09192127fe1ec$var$reN,
+    $67a09192127fe1ec$var$reP,
+    $67a09192127fe1ec$var$reP,
+    $67a09192127fe1ec$var$reN
+] + "\\)$");
+var $67a09192127fe1ec$var$named = {
+    aliceblue: 15792383,
+    antiquewhite: 16444375,
+    aqua: 65535,
+    aquamarine: 8388564,
+    azure: 15794175,
+    beige: 16119260,
+    bisque: 16770244,
+    black: 0,
+    blanchedalmond: 16772045,
+    blue: 255,
+    blueviolet: 9055202,
+    brown: 10824234,
+    burlywood: 14596231,
+    cadetblue: 6266528,
+    chartreuse: 8388352,
+    chocolate: 13789470,
+    coral: 16744272,
+    cornflowerblue: 6591981,
+    cornsilk: 16775388,
+    crimson: 14423100,
+    cyan: 65535,
+    darkblue: 139,
+    darkcyan: 35723,
+    darkgoldenrod: 12092939,
+    darkgray: 11119017,
+    darkgreen: 25600,
+    darkgrey: 11119017,
+    darkkhaki: 12433259,
+    darkmagenta: 9109643,
+    darkolivegreen: 5597999,
+    darkorange: 16747520,
+    darkorchid: 10040012,
+    darkred: 9109504,
+    darksalmon: 15308410,
+    darkseagreen: 9419919,
+    darkslateblue: 4734347,
+    darkslategray: 3100495,
+    darkslategrey: 3100495,
+    darkturquoise: 52945,
+    darkviolet: 9699539,
+    deeppink: 16716947,
+    deepskyblue: 49151,
+    dimgray: 6908265,
+    dimgrey: 6908265,
+    dodgerblue: 2003199,
+    firebrick: 11674146,
+    floralwhite: 16775920,
+    forestgreen: 2263842,
+    fuchsia: 16711935,
+    gainsboro: 14474460,
+    ghostwhite: 16316671,
+    gold: 16766720,
+    goldenrod: 14329120,
+    gray: 8421504,
+    green: 32768,
+    greenyellow: 11403055,
+    grey: 8421504,
+    honeydew: 15794160,
+    hotpink: 16738740,
+    indianred: 13458524,
+    indigo: 4915330,
+    ivory: 16777200,
+    khaki: 15787660,
+    lavender: 15132410,
+    lavenderblush: 16773365,
+    lawngreen: 8190976,
+    lemonchiffon: 16775885,
+    lightblue: 11393254,
+    lightcoral: 15761536,
+    lightcyan: 14745599,
+    lightgoldenrodyellow: 16448210,
+    lightgray: 13882323,
+    lightgreen: 9498256,
+    lightgrey: 13882323,
+    lightpink: 16758465,
+    lightsalmon: 16752762,
+    lightseagreen: 2142890,
+    lightskyblue: 8900346,
+    lightslategray: 7833753,
+    lightslategrey: 7833753,
+    lightsteelblue: 11584734,
+    lightyellow: 16777184,
+    lime: 65280,
+    limegreen: 3329330,
+    linen: 16445670,
+    magenta: 16711935,
+    maroon: 8388608,
+    mediumaquamarine: 6737322,
+    mediumblue: 205,
+    mediumorchid: 12211667,
+    mediumpurple: 9662683,
+    mediumseagreen: 3978097,
+    mediumslateblue: 8087790,
+    mediumspringgreen: 64154,
+    mediumturquoise: 4772300,
+    mediumvioletred: 13047173,
+    midnightblue: 1644912,
+    mintcream: 16121850,
+    mistyrose: 16770273,
+    moccasin: 16770229,
+    navajowhite: 16768685,
+    navy: 128,
+    oldlace: 16643558,
+    olive: 8421376,
+    olivedrab: 7048739,
+    orange: 16753920,
+    orangered: 16729344,
+    orchid: 14315734,
+    palegoldenrod: 15657130,
+    palegreen: 10025880,
+    paleturquoise: 11529966,
+    palevioletred: 14381203,
+    papayawhip: 16773077,
+    peachpuff: 16767673,
+    peru: 13468991,
+    pink: 16761035,
+    plum: 14524637,
+    powderblue: 11591910,
+    purple: 8388736,
+    rebeccapurple: 6697881,
+    red: 16711680,
+    rosybrown: 12357519,
+    royalblue: 4286945,
+    saddlebrown: 9127187,
+    salmon: 16416882,
+    sandybrown: 16032864,
+    seagreen: 3050327,
+    seashell: 16774638,
+    sienna: 10506797,
+    silver: 12632256,
+    skyblue: 8900331,
+    slateblue: 6970061,
+    slategray: 7372944,
+    slategrey: 7372944,
+    snow: 16775930,
+    springgreen: 65407,
+    steelblue: 4620980,
+    tan: 13808780,
+    teal: 32896,
+    thistle: 14204888,
+    tomato: 16737095,
+    turquoise: 4251856,
+    violet: 15631086,
+    wheat: 16113331,
+    white: 16777215,
+    whitesmoke: 16119285,
+    yellow: 16776960,
+    yellowgreen: 10145074
+};
+$895fd4e3ce3f8902$export$2e2bcd8739ae039($67a09192127fe1ec$export$892596cec99bc70e, $67a09192127fe1ec$export$2e2bcd8739ae039, {
+    copy: function(channels) {
+        return Object.assign(new this.constructor, this, channels);
+    },
+    displayable: function() {
+        return this.rgb().displayable();
+    },
+    hex: $67a09192127fe1ec$var$color_formatHex,
+    formatHex: $67a09192127fe1ec$var$color_formatHex,
+    formatHsl: $67a09192127fe1ec$var$color_formatHsl,
+    formatRgb: $67a09192127fe1ec$var$color_formatRgb,
+    toString: $67a09192127fe1ec$var$color_formatRgb
+});
+function $67a09192127fe1ec$var$color_formatHex() {
+    return this.rgb().formatHex();
+}
+function $67a09192127fe1ec$var$color_formatHsl() {
+    return $67a09192127fe1ec$export$8133dc3fa904d6d1(this).formatHsl();
+}
+function $67a09192127fe1ec$var$color_formatRgb() {
+    return this.rgb().formatRgb();
+}
+function $67a09192127fe1ec$export$2e2bcd8739ae039(format) {
+    var m, l;
+    format = (format + "").trim().toLowerCase();
+    return (m = $67a09192127fe1ec$var$reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? $67a09192127fe1ec$var$rgbn(m) // #ff0000
+     : l === 3 ? new $67a09192127fe1ec$export$5e05a94393ac29e3(m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, (m & 15) << 4 | m & 15, 1) // #f00
+     : l === 8 ? $67a09192127fe1ec$var$rgba(m >> 24 & 255, m >> 16 & 255, m >> 8 & 255, (m & 255) / 255) // #ff000000
+     : l === 4 ? $67a09192127fe1ec$var$rgba(m >> 12 & 15 | m >> 8 & 240, m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, ((m & 15) << 4 | m & 15) / 255) // #f000
+     : null) : (m = $67a09192127fe1ec$var$reRgbInteger.exec(format)) ? new $67a09192127fe1ec$export$5e05a94393ac29e3(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+     : (m = $67a09192127fe1ec$var$reRgbPercent.exec(format)) ? new $67a09192127fe1ec$export$5e05a94393ac29e3(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+     : (m = $67a09192127fe1ec$var$reRgbaInteger.exec(format)) ? $67a09192127fe1ec$var$rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+     : (m = $67a09192127fe1ec$var$reRgbaPercent.exec(format)) ? $67a09192127fe1ec$var$rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+     : (m = $67a09192127fe1ec$var$reHslPercent.exec(format)) ? $67a09192127fe1ec$var$hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+     : (m = $67a09192127fe1ec$var$reHslaPercent.exec(format)) ? $67a09192127fe1ec$var$hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+     : $67a09192127fe1ec$var$named.hasOwnProperty(format) ? $67a09192127fe1ec$var$rgbn($67a09192127fe1ec$var$named[format]) // eslint-disable-line no-prototype-builtins
+     : format === "transparent" ? new $67a09192127fe1ec$export$5e05a94393ac29e3(NaN, NaN, NaN, 0) : null;
+}
+function $67a09192127fe1ec$var$rgbn(n) {
+    return new $67a09192127fe1ec$export$5e05a94393ac29e3(n >> 16 & 255, n >> 8 & 255, n & 255, 1);
+}
+function $67a09192127fe1ec$var$rgba(r, g, b, a) {
+    if (a <= 0) r = g = b = NaN;
+    return new $67a09192127fe1ec$export$5e05a94393ac29e3(r, g, b, a);
+}
+function $67a09192127fe1ec$export$42da0a331c2802f5(o) {
+    if (!(o instanceof $67a09192127fe1ec$export$892596cec99bc70e)) o = $67a09192127fe1ec$export$2e2bcd8739ae039(o);
+    if (!o) return new $67a09192127fe1ec$export$5e05a94393ac29e3;
+    o = o.rgb();
+    return new $67a09192127fe1ec$export$5e05a94393ac29e3(o.r, o.g, o.b, o.opacity);
+}
+function $67a09192127fe1ec$export$8972dc0e6ad9238f(r, g, b, opacity) {
+    return arguments.length === 1 ? $67a09192127fe1ec$export$42da0a331c2802f5(r) : new $67a09192127fe1ec$export$5e05a94393ac29e3(r, g, b, opacity == null ? 1 : opacity);
+}
+function $67a09192127fe1ec$export$5e05a94393ac29e3(r, g, b, opacity) {
+    this.r = +r;
+    this.g = +g;
+    this.b = +b;
+    this.opacity = +opacity;
+}
+$895fd4e3ce3f8902$export$2e2bcd8739ae039($67a09192127fe1ec$export$5e05a94393ac29e3, $67a09192127fe1ec$export$8972dc0e6ad9238f, $895fd4e3ce3f8902$export$8b58be045bf06082($67a09192127fe1ec$export$892596cec99bc70e, {
+    brighter: function(k) {
+        k = k == null ? $67a09192127fe1ec$export$9eace2cc0d12c98d : Math.pow($67a09192127fe1ec$export$9eace2cc0d12c98d, k);
+        return new $67a09192127fe1ec$export$5e05a94393ac29e3(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    darker: function(k) {
+        k = k == null ? $67a09192127fe1ec$export$4adafc6ed0600c10 : Math.pow($67a09192127fe1ec$export$4adafc6ed0600c10, k);
+        return new $67a09192127fe1ec$export$5e05a94393ac29e3(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    rgb: function() {
+        return this;
+    },
+    displayable: function() {
+        return -0.5 <= this.r && this.r < 255.5 && -0.5 <= this.g && this.g < 255.5 && -0.5 <= this.b && this.b < 255.5 && 0 <= this.opacity && this.opacity <= 1;
+    },
+    hex: $67a09192127fe1ec$var$rgb_formatHex,
+    formatHex: $67a09192127fe1ec$var$rgb_formatHex,
+    formatRgb: $67a09192127fe1ec$var$rgb_formatRgb,
+    toString: $67a09192127fe1ec$var$rgb_formatRgb
+}));
+function $67a09192127fe1ec$var$rgb_formatHex() {
+    return "#" + $67a09192127fe1ec$var$hex(this.r) + $67a09192127fe1ec$var$hex(this.g) + $67a09192127fe1ec$var$hex(this.b);
+}
+function $67a09192127fe1ec$var$rgb_formatRgb() {
+    var a = this.opacity;
+    a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+    return (a === 1 ? "rgb(" : "rgba(") + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.b) || 0)) + (a === 1 ? ")" : ", " + a + ")");
+}
+function $67a09192127fe1ec$var$hex(value) {
+    value = Math.max(0, Math.min(255, Math.round(value) || 0));
+    return (value < 16 ? "0" : "") + value.toString(16);
+}
+function $67a09192127fe1ec$var$hsla(h, s, l, a) {
+    if (a <= 0) h = s = l = NaN;
+    else if (l <= 0 || l >= 1) h = s = NaN;
+    else if (s <= 0) h = NaN;
+    return new $67a09192127fe1ec$var$Hsl(h, s, l, a);
+}
+function $67a09192127fe1ec$export$8133dc3fa904d6d1(o) {
+    if (o instanceof $67a09192127fe1ec$var$Hsl) return new $67a09192127fe1ec$var$Hsl(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof $67a09192127fe1ec$export$892596cec99bc70e)) o = $67a09192127fe1ec$export$2e2bcd8739ae039(o);
+    if (!o) return new $67a09192127fe1ec$var$Hsl;
+    if (o instanceof $67a09192127fe1ec$var$Hsl) return o;
+    o = o.rgb();
+    var r = o.r / 255, g = o.g / 255, b = o.b / 255, min = Math.min(r, g, b), max = Math.max(r, g, b), h = NaN, s = max - min, l = (max + min) / 2;
+    if (s) {
+        if (r === max) h = (g - b) / s + (g < b) * 6;
+        else if (g === max) h = (b - r) / s + 2;
+        else h = (r - g) / s + 4;
+        s /= l < 0.5 ? max + min : 2 - max - min;
+        h *= 60;
+    } else s = l > 0 && l < 1 ? 0 : h;
+    return new $67a09192127fe1ec$var$Hsl(h, s, l, o.opacity);
+}
+function $67a09192127fe1ec$export$8f4a7c0bb78e6ea8(h, s, l, opacity) {
+    return arguments.length === 1 ? $67a09192127fe1ec$export$8133dc3fa904d6d1(h) : new $67a09192127fe1ec$var$Hsl(h, s, l, opacity == null ? 1 : opacity);
+}
+function $67a09192127fe1ec$var$Hsl(h, s, l, opacity) {
+    this.h = +h;
+    this.s = +s;
+    this.l = +l;
+    this.opacity = +opacity;
+}
+$895fd4e3ce3f8902$export$2e2bcd8739ae039($67a09192127fe1ec$var$Hsl, $67a09192127fe1ec$export$8f4a7c0bb78e6ea8, $895fd4e3ce3f8902$export$8b58be045bf06082($67a09192127fe1ec$export$892596cec99bc70e, {
+    brighter: function(k) {
+        k = k == null ? $67a09192127fe1ec$export$9eace2cc0d12c98d : Math.pow($67a09192127fe1ec$export$9eace2cc0d12c98d, k);
+        return new $67a09192127fe1ec$var$Hsl(this.h, this.s, this.l * k, this.opacity);
+    },
+    darker: function(k) {
+        k = k == null ? $67a09192127fe1ec$export$4adafc6ed0600c10 : Math.pow($67a09192127fe1ec$export$4adafc6ed0600c10, k);
+        return new $67a09192127fe1ec$var$Hsl(this.h, this.s, this.l * k, this.opacity);
+    },
+    rgb: function() {
+        var h = this.h % 360 + (this.h < 0) * 360, s = isNaN(h) || isNaN(this.s) ? 0 : this.s, l = this.l, m2 = l + (l < 0.5 ? l : 1 - l) * s, m1 = 2 * l - m2;
+        return new $67a09192127fe1ec$export$5e05a94393ac29e3($67a09192127fe1ec$var$hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), $67a09192127fe1ec$var$hsl2rgb(h, m1, m2), $67a09192127fe1ec$var$hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
+    },
+    displayable: function() {
+        return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && 0 <= this.l && this.l <= 1 && 0 <= this.opacity && this.opacity <= 1;
+    },
+    formatHsl: function() {
+        var a = this.opacity;
+        a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+        return (a === 1 ? "hsl(" : "hsla(") + (this.h || 0) + ", " + (this.s || 0) * 100 + "%, " + (this.l || 0) * 100 + "%" + (a === 1 ? ")" : ", " + a + ")");
+    }
+}));
+/* From FvD 13.37, CSS Color Module Level 3 */ function $67a09192127fe1ec$var$hsl2rgb(h, m1, m2) {
+    return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
+}
+
+
+
+function $50dbc0324e10cd45$var$rgbToDeckglColor(c) {
     return [
         c.r,
         c.g,
@@ -5892,41 +6245,41 @@ function $e69d5c649de4e105$var$rgbToDeckglColor(c) {
         c.opacity * 255
     ];
 }
-function $e69d5c649de4e105$export$7da6ac10e55d4f2a(a, b) {
+function $50dbc0324e10cd45$export$7da6ac10e55d4f2a(a, b) {
     if (a.length !== b.length) return false;
     for(let i = 0; i < a.length; i++){
         if (a[i] !== b[i]) return false;
     }
     return true;
 }
-function $e69d5c649de4e105$export$78ed65bc9abd64b1(cssColorSpecifier) {
+function $50dbc0324e10cd45$export$78ed65bc9abd64b1(cssColorSpecifier) {
     if (cssColorSpecifier) {
-        const dc = $9dd900f85f77566b$export$2e2bcd8739ae039(cssColorSpecifier);
+        const dc = $67a09192127fe1ec$export$2e2bcd8739ae039(cssColorSpecifier);
         if (dc) {
             const c = dc.rgb();
-            return $e69d5c649de4e105$var$rgbToDeckglColor(c);
+            return $50dbc0324e10cd45$var$rgbToDeckglColor(c);
         }
     }
 }
-function $e69d5c649de4e105$export$f86d83653e5a505e(color) {
+function $50dbc0324e10cd45$export$f86d83653e5a505e(color) {
     const c = [
         ...color
     ];
     if (c.length > 3) c[3] /= 255;
     return `rgba(${c.join(',')})`;
 }
-function $e69d5c649de4e105$export$fb75607d98509d9(color, value) {
-    const rgb = $9dd900f85f77566b$export$8972dc0e6ad9238f(color[0], color[1], color[2], color[3] / 255);
-    const hslColor = $9dd900f85f77566b$export$8f4a7c0bb78e6ea8(rgb);
+function $50dbc0324e10cd45$export$fb75607d98509d9(color, value) {
+    const rgb = $67a09192127fe1ec$export$8972dc0e6ad9238f(color[0], color[1], color[2], color[3] / 255);
+    const hslColor = $67a09192127fe1ec$export$8f4a7c0bb78e6ea8(rgb);
     hslColor.s = value;
     const c = hslColor.rgb();
-    return $e69d5c649de4e105$var$rgbToDeckglColor(c);
+    return $50dbc0324e10cd45$var$rgbToDeckglColor(c);
 }
 
 
 
 
-let $1ce8acf0567070a9$var$vega = {
+let $aa3185d2619292b0$var$vega = {
     CanvasHandler: null,
     inferType: null,
     inferTypes: null,
@@ -5940,7 +6293,7 @@ let $1ce8acf0567070a9$var$vega = {
     truncate: null,
     View: null
 };
-let $1ce8acf0567070a9$var$deck = {
+let $aa3185d2619292b0$var$deck = {
     _CameraLight: null,
     AmbientLight: null,
     CompositeLayer: null,
@@ -5956,29 +6309,29 @@ let $1ce8acf0567070a9$var$deck = {
     picking: null,
     project32: null
 };
-let $1ce8acf0567070a9$var$layers = {
+let $aa3185d2619292b0$var$layers = {
     IconLayer: null,
     LineLayer: null,
     PathLayer: null,
     PolygonLayer: null,
     TextLayer: null
 };
-let $1ce8acf0567070a9$var$luma = {
+let $aa3185d2619292b0$var$luma = {
     CubeGeometry: null,
     Model: null,
     Texture2D: null
 };
-const $1ce8acf0567070a9$export$e2253033e6e1df16 = {
-    deck: $1ce8acf0567070a9$var$deck,
-    layers: $1ce8acf0567070a9$var$layers,
-    luma: $1ce8acf0567070a9$var$luma,
-    vega: $1ce8acf0567070a9$var$vega
+const $aa3185d2619292b0$export$e2253033e6e1df16 = {
+    deck: $aa3185d2619292b0$var$deck,
+    layers: $aa3185d2619292b0$var$layers,
+    luma: $aa3185d2619292b0$var$luma,
+    vega: $aa3185d2619292b0$var$vega
 };
-function $1ce8acf0567070a9$export$1f96ae73734a86cc(vega, deck, layers, luma) {
-    $1ce8acf0567070a9$export$e2253033e6e1df16.deck = deck;
-    $1ce8acf0567070a9$export$e2253033e6e1df16.layers = layers;
-    $1ce8acf0567070a9$export$e2253033e6e1df16.luma = luma;
-    $1ce8acf0567070a9$export$e2253033e6e1df16.vega = vega;
+function $aa3185d2619292b0$export$1f96ae73734a86cc(vega, deck, layers, luma) {
+    $aa3185d2619292b0$export$e2253033e6e1df16.deck = deck;
+    $aa3185d2619292b0$export$e2253033e6e1df16.layers = layers;
+    $aa3185d2619292b0$export$e2253033e6e1df16.luma = luma;
+    $aa3185d2619292b0$export$e2253033e6e1df16.vega = vega;
 }
 
 
@@ -6002,7 +6355,7 @@ var // Copyright (c) 2015 - 2017 Uber Technologies, Inc.
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-$e230f81a7f636427$export$2e2bcd8739ae039 = `\
+$ea8dc0faca1a6969$export$2e2bcd8739ae039 = `\
 #define SHADER_NAME cube-layer-fragment-shader
 
 precision highp float;
@@ -6021,21 +6374,21 @@ void main(void) {
 `;
 
 
-var $c1310db02f4288e1$exports = {};
+var $f92b17f7c58b7db2$exports = {};
 
-$parcel$export($c1310db02f4288e1$exports, "minHeight", () => $c1310db02f4288e1$export$a43cf604e12f3b17);
-$parcel$export($c1310db02f4288e1$exports, "minWidth", () => $c1310db02f4288e1$export$ee148fbbe8357dd2);
-$parcel$export($c1310db02f4288e1$exports, "defaultPresenterStyle", () => $c1310db02f4288e1$export$83ac8f5ae8122afc);
-$parcel$export($c1310db02f4288e1$exports, "defaultPresenterConfig", () => $c1310db02f4288e1$export$200f593236aebbdc);
-$parcel$export($c1310db02f4288e1$exports, "createStage", () => $c1310db02f4288e1$export$afa8810fbe5c2601);
-$parcel$export($c1310db02f4288e1$exports, "groupStrokeWidth", () => $c1310db02f4288e1$export$62471df653c738cc);
-$parcel$export($c1310db02f4288e1$exports, "lineZ", () => $c1310db02f4288e1$export$c25c42a6ee2ec894);
-$parcel$export($c1310db02f4288e1$exports, "defaultView", () => $c1310db02f4288e1$export$93acc5219d6538bb);
-$parcel$export($c1310db02f4288e1$exports, "min3dDepth", () => $c1310db02f4288e1$export$d90a7322036a432e);
-$parcel$export($c1310db02f4288e1$exports, "minPixelSize", () => $c1310db02f4288e1$export$c9c7d435df6c4ed7);
-const $c1310db02f4288e1$export$a43cf604e12f3b17 = '100px';
-const $c1310db02f4288e1$export$ee148fbbe8357dd2 = '100px';
-const $c1310db02f4288e1$export$83ac8f5ae8122afc = {
+$parcel$export($f92b17f7c58b7db2$exports, "minHeight", () => $f92b17f7c58b7db2$export$a43cf604e12f3b17);
+$parcel$export($f92b17f7c58b7db2$exports, "minWidth", () => $f92b17f7c58b7db2$export$ee148fbbe8357dd2);
+$parcel$export($f92b17f7c58b7db2$exports, "defaultPresenterStyle", () => $f92b17f7c58b7db2$export$83ac8f5ae8122afc);
+$parcel$export($f92b17f7c58b7db2$exports, "defaultPresenterConfig", () => $f92b17f7c58b7db2$export$200f593236aebbdc);
+$parcel$export($f92b17f7c58b7db2$exports, "createStage", () => $f92b17f7c58b7db2$export$afa8810fbe5c2601);
+$parcel$export($f92b17f7c58b7db2$exports, "groupStrokeWidth", () => $f92b17f7c58b7db2$export$62471df653c738cc);
+$parcel$export($f92b17f7c58b7db2$exports, "lineZ", () => $f92b17f7c58b7db2$export$c25c42a6ee2ec894);
+$parcel$export($f92b17f7c58b7db2$exports, "defaultView", () => $f92b17f7c58b7db2$export$93acc5219d6538bb);
+$parcel$export($f92b17f7c58b7db2$exports, "min3dDepth", () => $f92b17f7c58b7db2$export$d90a7322036a432e);
+$parcel$export($f92b17f7c58b7db2$exports, "minPixelSize", () => $f92b17f7c58b7db2$export$c9c7d435df6c4ed7);
+const $f92b17f7c58b7db2$export$a43cf604e12f3b17 = '100px';
+const $f92b17f7c58b7db2$export$ee148fbbe8357dd2 = '100px';
+const $f92b17f7c58b7db2$export$83ac8f5ae8122afc = {
     cssPrefix: 'vega-deckgl-',
     defaultCubeColor: [
         128,
@@ -6050,7 +6403,7 @@ const $c1310db02f4288e1$export$83ac8f5ae8122afc = {
         255
     ]
 };
-const $c1310db02f4288e1$export$200f593236aebbdc = {
+const $f92b17f7c58b7db2$export$200f593236aebbdc = {
     onCubeClick: (e, cube)=>{
     },
     onCubeHover: (e, cube)=>{
@@ -6062,7 +6415,7 @@ const $c1310db02f4288e1$export$200f593236aebbdc = {
         view: 600
     }
 };
-function $c1310db02f4288e1$export$afa8810fbe5c2601(view) {
+function $f92b17f7c58b7db2$export$afa8810fbe5c2601(view) {
     const stage = {
         view: view,
         cubeData: [],
@@ -6083,14 +6436,14 @@ function $c1310db02f4288e1$export$afa8810fbe5c2601(view) {
     };
     return stage;
 }
-const $c1310db02f4288e1$export$62471df653c738cc = 1;
-const $c1310db02f4288e1$export$c25c42a6ee2ec894 = -1;
-const $c1310db02f4288e1$export$93acc5219d6538bb = '2d';
-const $c1310db02f4288e1$export$d90a7322036a432e = 0.05;
-const $c1310db02f4288e1$export$c9c7d435df6c4ed7 = 0.5;
+const $f92b17f7c58b7db2$export$62471df653c738cc = 1;
+const $f92b17f7c58b7db2$export$c25c42a6ee2ec894 = -1;
+const $f92b17f7c58b7db2$export$93acc5219d6538bb = '2d';
+const $f92b17f7c58b7db2$export$d90a7322036a432e = 0.05;
+const $f92b17f7c58b7db2$export$c9c7d435df6c4ed7 = 0.5;
 
 
-var $b452745ff8767c4c$export$2e2bcd8739ae039 = `\
+var $415253e94e2f35d3$export$2e2bcd8739ae039 = `\
 #define SHADER_NAME cube-layer-vertex-shader
 
 attribute vec3 positions;
@@ -6110,8 +6463,8 @@ varying vec4 vColor;
 
 void main(void) {
 
-  float x = instanceSizes.x > 0.0 ? max(instanceSizes.x, ${$c1310db02f4288e1$export$c9c7d435df6c4ed7.toFixed(1)}) : 0.0;
-  float y = instanceSizes.y > 0.0 ? max(instanceSizes.y, ${$c1310db02f4288e1$export$c9c7d435df6c4ed7.toFixed(1)}) : 0.0;
+  float x = instanceSizes.x > 0.0 ? max(instanceSizes.x, ${$f92b17f7c58b7db2$export$c9c7d435df6c4ed7.toFixed(1)}) : 0.0;
+  float y = instanceSizes.y > 0.0 ? max(instanceSizes.y, ${$f92b17f7c58b7db2$export$c9c7d435df6c4ed7.toFixed(1)}) : 0.0;
 
   // if alpha == 0.0, do not render element
   float noRender = float(instanceColors.a == 0.0);
@@ -6142,15 +6495,15 @@ void main(void) {
 
 
 //https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants
-const $23c92bd220975bbf$var$UNSIGNED_BYTE = 5121;
-const $23c92bd220975bbf$var$DOUBLE = 5130;
-const $23c92bd220975bbf$var$DEFAULT_COLOR = [
+const $7c2828ce1258d05d$var$UNSIGNED_BYTE = 5121;
+const $7c2828ce1258d05d$var$DOUBLE = 5130;
+const $7c2828ce1258d05d$var$DEFAULT_COLOR = [
     255,
     0,
     255,
     255
 ];
-const $23c92bd220975bbf$var$defaultProps = {
+const $7c2828ce1258d05d$var$defaultProps = {
     lightingMix: 0.5,
     getSize: (x)=>x.size
     ,
@@ -6163,17 +6516,17 @@ const $23c92bd220975bbf$var$defaultProps = {
         diffuse: 1
     }
 };
-function $23c92bd220975bbf$var$_CubeLayer(props) {
+function $7c2828ce1258d05d$var$_CubeLayer(props) {
     //dynamic superclass, since we don't know have deck.Layer in the declaration phase
-    class __CubeLayer extends $1ce8acf0567070a9$export$e2253033e6e1df16.deck.Layer {
+    class __CubeLayer extends $aa3185d2619292b0$export$e2253033e6e1df16.deck.Layer {
         getShaders() {
             return {
-                vs: $b452745ff8767c4c$export$2e2bcd8739ae039,
-                fs: $e230f81a7f636427$export$2e2bcd8739ae039,
+                vs: $415253e94e2f35d3$export$2e2bcd8739ae039,
+                fs: $ea8dc0faca1a6969$export$2e2bcd8739ae039,
                 modules: [
-                    $1ce8acf0567070a9$export$e2253033e6e1df16.deck.project32,
-                    $1ce8acf0567070a9$export$e2253033e6e1df16.deck.gouraudLighting,
-                    $1ce8acf0567070a9$export$e2253033e6e1df16.deck.picking
+                    $aa3185d2619292b0$export$e2253033e6e1df16.deck.project32,
+                    $aa3185d2619292b0$export$e2253033e6e1df16.deck.gouraudLighting,
+                    $aa3185d2619292b0$export$e2253033e6e1df16.deck.picking
                 ]
             };
         }
@@ -6182,7 +6535,7 @@ function $23c92bd220975bbf$var$_CubeLayer(props) {
             attributeManager.addInstanced({
                 instancePositions: {
                     size: 3,
-                    type: $23c92bd220975bbf$var$DOUBLE,
+                    type: $7c2828ce1258d05d$var$DOUBLE,
                     transition: true,
                     accessor: 'getPosition'
                 },
@@ -6193,10 +6546,10 @@ function $23c92bd220975bbf$var$_CubeLayer(props) {
                 },
                 instanceColors: {
                     size: 4,
-                    type: $23c92bd220975bbf$var$UNSIGNED_BYTE,
+                    type: $7c2828ce1258d05d$var$UNSIGNED_BYTE,
                     transition: true,
                     accessor: 'getColor',
-                    defaultValue: $23c92bd220975bbf$var$DEFAULT_COLOR
+                    defaultValue: $7c2828ce1258d05d$var$DEFAULT_COLOR
                 }
             });
         }
@@ -6217,10 +6570,10 @@ function $23c92bd220975bbf$var$_CubeLayer(props) {
         //}
         }
         _getModel(gl) {
-            return new $1ce8acf0567070a9$export$e2253033e6e1df16.luma.Model(gl, Object.assign({
+            return new $aa3185d2619292b0$export$e2253033e6e1df16.luma.Model(gl, Object.assign({
             }, this.getShaders(), {
                 id: this.props.id,
-                geometry: new $1ce8acf0567070a9$export$e2253033e6e1df16.luma.CubeGeometry(),
+                geometry: new $aa3185d2619292b0$export$e2253033e6e1df16.luma.CubeGeometry(),
                 isInstanced: true
             }));
         }
@@ -6234,40 +6587,40 @@ function $23c92bd220975bbf$var$_CubeLayer(props) {
         }
     }
     __CubeLayer.layerName = 'CubeLayer';
-    __CubeLayer.defaultProps = $23c92bd220975bbf$var$defaultProps;
+    __CubeLayer.defaultProps = $7c2828ce1258d05d$var$defaultProps;
     const instance = new __CubeLayer(props);
     return instance;
 }
-const $23c92bd220975bbf$export$49d6aa54bfdcaef = $23c92bd220975bbf$var$_CubeLayer;
+const $7c2828ce1258d05d$export$49d6aa54bfdcaef = $7c2828ce1258d05d$var$_CubeLayer;
 
 
-function $cff3fd113f2b068d$export$be3f0f7224794b88(x) {
+function $6926ccbdba7af71e$export$be3f0f7224794b88(x) {
     return (Math.pow(2, -10 * x) - 0.0009765625) * 1.0009775171065494;
 }
 
 
-function $49d869bb66f318c7$export$fc3e95f15e1ef38e(t) {
-    return $cff3fd113f2b068d$export$be3f0f7224794b88(1 - +t);
+function $2aa1ceac1e596a36$export$fc3e95f15e1ef38e(t) {
+    return $6926ccbdba7af71e$export$be3f0f7224794b88(1 - +t);
 }
-function $49d869bb66f318c7$export$f3c9b2f85fbcf0ab(t) {
-    return 1 - $cff3fd113f2b068d$export$be3f0f7224794b88(t);
+function $2aa1ceac1e596a36$export$f3c9b2f85fbcf0ab(t) {
+    return 1 - $6926ccbdba7af71e$export$be3f0f7224794b88(t);
 }
-function $49d869bb66f318c7$export$ae4d4e77fab188ff(t) {
-    return ((t *= 2) <= 1 ? $cff3fd113f2b068d$export$be3f0f7224794b88(1 - t) : 2 - $cff3fd113f2b068d$export$be3f0f7224794b88(t - 1)) / 2;
+function $2aa1ceac1e596a36$export$ae4d4e77fab188ff(t) {
+    return ((t *= 2) <= 1 ? $6926ccbdba7af71e$export$be3f0f7224794b88(1 - t) : 2 - $6926ccbdba7af71e$export$be3f0f7224794b88(t - 1)) / 2;
 }
 
 
 
-function $6a279cee8154583c$export$24c5ac7c37452e7d(t) {
+function $65ec70cb7a1acea0$export$24c5ac7c37452e7d(t) {
     if (t === 0 || t === 1) return t;
-    return $49d869bb66f318c7$export$ae4d4e77fab188ff(t);
+    return $2aa1ceac1e596a36$export$ae4d4e77fab188ff(t);
 }
 
 
-function $067e5990472a3889$export$61f6a9c831786408(presenter, config, stage, lightSettings /*LightSettings*/ , lightingMix, interpolator, guideLines) {
-    const cubeLayer = $067e5990472a3889$var$newCubeLayer(presenter, config, stage.cubeData, presenter.style.highlightColor, lightSettings, lightingMix, interpolator);
+function $96e705a481cefebf$export$61f6a9c831786408(presenter, config, stage, lightSettings /*LightSettings*/ , lightingMix, interpolator, guideLines) {
+    const cubeLayer = $96e705a481cefebf$var$newCubeLayer(presenter, config, stage.cubeData, presenter.style.highlightColor, lightSettings, lightingMix, interpolator);
     const { x: x , y: y , z: z  } = stage.axes;
-    const lines = $fd6d96dbab6f64c1$export$ee1b3e54f0441b22(stage.gridLines, guideLines);
+    const lines = $ffcacbd9f650c26c$export$ee1b3e54f0441b22(stage.gridLines, guideLines);
     const texts = [
         ...stage.textData
     ];
@@ -6291,10 +6644,10 @@ function $067e5990472a3889$export$61f6a9c831786408(presenter, config, stage, lig
     if (stage.facets) stage.facets.forEach((f)=>{
         if (f.lines) lines.push.apply(lines, f.lines);
     });
-    const lineLayer = $067e5990472a3889$var$newLineLayer($8e12194d46650279$export$5792b81513a80aca.lines, lines);
-    const textLayer = $067e5990472a3889$var$newTextLayer(presenter, $8e12194d46650279$export$5792b81513a80aca.text, texts, config, presenter.style.fontFamily, characterSet);
-    const pathLayer = $067e5990472a3889$var$newPathLayer($8e12194d46650279$export$5792b81513a80aca.paths, stage.pathData);
-    const polygonLayer = $067e5990472a3889$var$newPolygonLayer($8e12194d46650279$export$5792b81513a80aca.polygons, stage.polygonData);
+    const lineLayer = $96e705a481cefebf$var$newLineLayer($95a4329e07073fb3$export$5792b81513a80aca.lines, lines);
+    const textLayer = $96e705a481cefebf$var$newTextLayer(presenter, $95a4329e07073fb3$export$5792b81513a80aca.text, texts, config, presenter.style.fontFamily, characterSet);
+    const pathLayer = $96e705a481cefebf$var$newPathLayer($95a4329e07073fb3$export$5792b81513a80aca.paths, stage.pathData);
+    const polygonLayer = $96e705a481cefebf$var$newPolygonLayer($95a4329e07073fb3$export$5792b81513a80aca.polygons, stage.polygonData);
     return [
         textLayer,
         cubeLayer,
@@ -6303,16 +6656,16 @@ function $067e5990472a3889$export$61f6a9c831786408(presenter, config, stage, lig
         polygonLayer
     ];
 }
-function $067e5990472a3889$var$newCubeLayer(presenter, config, cubeData, highlightColor, lightSettings /*LightSettings*/ , lightingMix, interpolator) {
-    const getPosition = $067e5990472a3889$var$getTiming(config.transitionDurations.position, $6a279cee8154583c$export$24c5ac7c37452e7d);
-    const getSize = $067e5990472a3889$var$getTiming(config.transitionDurations.size, $6a279cee8154583c$export$24c5ac7c37452e7d);
-    const getColor = $067e5990472a3889$var$getTiming(config.transitionDurations.color);
+function $96e705a481cefebf$var$newCubeLayer(presenter, config, cubeData, highlightColor, lightSettings /*LightSettings*/ , lightingMix, interpolator) {
+    const getPosition = $96e705a481cefebf$var$getTiming(config.transitionDurations.position, $65ec70cb7a1acea0$export$24c5ac7c37452e7d);
+    const getSize = $96e705a481cefebf$var$getTiming(config.transitionDurations.size, $65ec70cb7a1acea0$export$24c5ac7c37452e7d);
+    const getColor = $96e705a481cefebf$var$getTiming(config.transitionDurations.color);
     const cubeLayerProps = {
         interpolator: interpolator,
         lightingMix: lightingMix,
-        id: $8e12194d46650279$export$5792b81513a80aca.cubes,
+        id: $95a4329e07073fb3$export$5792b81513a80aca.cubes,
         data: cubeData,
-        coordinateSystem: $1ce8acf0567070a9$export$e2253033e6e1df16.deck.COORDINATE_SYSTEM.CARTESIAN,
+        coordinateSystem: $aa3185d2619292b0$export$e2253033e6e1df16.deck.COORDINATE_SYSTEM.CARTESIAN,
         pickable: true,
         autoHighlight: true,
         highlightColor: highlightColor,
@@ -6335,29 +6688,29 @@ function $067e5990472a3889$var$newCubeLayer(presenter, config, cubeData, highlig
             getSize: getSize
         }
     };
-    return new $23c92bd220975bbf$export$49d6aa54bfdcaef(cubeLayerProps);
+    return new $7c2828ce1258d05d$export$49d6aa54bfdcaef(cubeLayerProps);
 }
-function $067e5990472a3889$var$newLineLayer(id, data) {
-    return new $1ce8acf0567070a9$export$e2253033e6e1df16.layers.LineLayer({
+function $96e705a481cefebf$var$newLineLayer(id, data) {
+    return new $aa3185d2619292b0$export$e2253033e6e1df16.layers.LineLayer({
         id: id,
         data: data,
         widthUnits: 'pixels',
-        coordinateSystem: $1ce8acf0567070a9$export$e2253033e6e1df16.deck.COORDINATE_SYSTEM.CARTESIAN,
+        coordinateSystem: $aa3185d2619292b0$export$e2253033e6e1df16.deck.COORDINATE_SYSTEM.CARTESIAN,
         getColor: (o)=>o.color
         ,
         getWidth: (o)=>o.strokeWidth
     });
 }
-function $067e5990472a3889$var$newPathLayer(id, data) {
+function $96e705a481cefebf$var$newPathLayer(id, data) {
     if (!data) return null;
-    return new $1ce8acf0567070a9$export$e2253033e6e1df16.layers.PathLayer({
+    return new $aa3185d2619292b0$export$e2253033e6e1df16.layers.PathLayer({
         id: id,
         data: data,
         billboard: true,
         widthScale: 1,
         widthMinPixels: 2,
         widthUnits: 'pixels',
-        coordinateSystem: $1ce8acf0567070a9$export$e2253033e6e1df16.deck.COORDINATE_SYSTEM.CARTESIAN,
+        coordinateSystem: $aa3185d2619292b0$export$e2253033e6e1df16.deck.COORDINATE_SYSTEM.CARTESIAN,
         getPath: (o)=>o.positions
         ,
         getColor: (o)=>o.strokeColor
@@ -6365,12 +6718,12 @@ function $067e5990472a3889$var$newPathLayer(id, data) {
         getWidth: (o)=>o.strokeWidth
     });
 }
-function $067e5990472a3889$var$newPolygonLayer(id, data) {
+function $96e705a481cefebf$var$newPolygonLayer(id, data) {
     if (!data) return null;
-    let newlayer = new $1ce8acf0567070a9$export$e2253033e6e1df16.layers.PolygonLayer({
+    let newlayer = new $aa3185d2619292b0$export$e2253033e6e1df16.layers.PolygonLayer({
         id: id,
         data: data,
-        coordinateSystem: $1ce8acf0567070a9$export$e2253033e6e1df16.deck.COORDINATE_SYSTEM.CARTESIAN,
+        coordinateSystem: $aa3185d2619292b0$export$e2253033e6e1df16.deck.COORDINATE_SYSTEM.CARTESIAN,
         getPolygon: (o)=>o.positions
         ,
         getFillColor: (o)=>o.fillColor
@@ -6388,14 +6741,14 @@ function $067e5990472a3889$var$newPolygonLayer(id, data) {
     });
     return newlayer;
 }
-function $067e5990472a3889$var$newTextLayer(presenter, id, data, config, fontFamily, characterSet) {
+function $96e705a481cefebf$var$newTextLayer(presenter, id, data, config, fontFamily, characterSet) {
     let alphaCutoff = config.getTextHighlightAlphaCutoff && config.getTextHighlightAlphaCutoff();
     if (alphaCutoff === undefined) alphaCutoff = 0.1;
     const props = {
         id: id,
         data: data,
         characterSet: characterSet,
-        coordinateSystem: $1ce8acf0567070a9$export$e2253033e6e1df16.deck.COORDINATE_SYSTEM.CARTESIAN,
+        coordinateSystem: $aa3185d2619292b0$export$e2253033e6e1df16.deck.COORDINATE_SYSTEM.CARTESIAN,
         sizeUnits: 'pixels',
         autoHighlight: true,
         pickable: true,
@@ -6436,9 +6789,9 @@ function $067e5990472a3889$var$newTextLayer(presenter, id, data, config, fontFam
         }
     };
     if (fontFamily) props.fontFamily = fontFamily;
-    return new $1ce8acf0567070a9$export$e2253033e6e1df16.layers.TextLayer(props);
+    return new $aa3185d2619292b0$export$e2253033e6e1df16.layers.TextLayer(props);
 }
-function $067e5990472a3889$var$getTiming(duration, easing) {
+function $96e705a481cefebf$var$getTiming(duration, easing) {
     let timing;
     if (duration) {
         timing = {
@@ -6449,12 +6802,12 @@ function $067e5990472a3889$var$getTiming(duration, easing) {
     }
     return timing;
 }
-function $067e5990472a3889$export$ccecd364047ec381(deckProps) {
-    return deckProps.layers.filter((layer)=>layer && layer.id === $8e12194d46650279$export$5792b81513a80aca.cubes
+function $96e705a481cefebf$export$ccecd364047ec381(deckProps) {
+    return deckProps.layers.filter((layer)=>layer && layer.id === $95a4329e07073fb3$export$5792b81513a80aca.cubes
     )[0];
 }
-function $067e5990472a3889$export$fa1ee03f26227b34(deckProps) {
-    const cubeLayer = $067e5990472a3889$export$ccecd364047ec381(deckProps);
+function $96e705a481cefebf$export$fa1ee03f26227b34(deckProps) {
+    const cubeLayer = $96e705a481cefebf$export$ccecd364047ec381(deckProps);
     if (!cubeLayer) return;
     const cubeLayerProps = cubeLayer.props;
     return cubeLayerProps.data;
@@ -6470,9 +6823,9 @@ function $067e5990472a3889$export$fa1ee03f26227b34(deckProps) {
 
 
 
-function $b1c4c91bc543be9f$export$cf6caf239925fb63(factoryOptions) {
+function $2787516b2d141fee$export$cf6caf239925fb63(factoryOptions) {
     function wrapper(props) {
-        class OrbitControllerInternal extends $1ce8acf0567070a9$export$e2253033e6e1df16.deck.OrbitController {
+        class OrbitControllerInternal extends $aa3185d2619292b0$export$e2253033e6e1df16.deck.OrbitController {
             constructor(props1){
                 super(props1);
                 this.invertPan = true;
@@ -6492,7 +6845,7 @@ function $b1c4c91bc543be9f$export$cf6caf239925fb63(factoryOptions) {
 
 
 //adapted from https://github.com/uber/deck.gl/blob/5.3-release/modules/lite/src/deckgl.js
-const $6b870fea42087cfb$var$CANVAS_STYLE = {
+const $34af937a047fac77$var$CANVAS_STYLE = {
     position: 'absolute',
     left: 0,
     top: 0,
@@ -6500,7 +6853,7 @@ const $6b870fea42087cfb$var$CANVAS_STYLE = {
     height: '100%'
 };
 // Create canvas elements for map and deck
-function $6b870fea42087cfb$var$createCanvas(props) {
+function $34af937a047fac77$var$createCanvas(props) {
     let { container: container = document.body  } = props;
     if (typeof container === 'string') container = document.getElementById(container);
     if (!container) throw Error('Deck: container not found');
@@ -6509,25 +6862,25 @@ function $6b870fea42087cfb$var$createCanvas(props) {
     if (containerStyle.position === 'static') container.style.position = 'relative';
     const deckCanvas = document.createElement('canvas');
     container.appendChild(deckCanvas);
-    Object.assign(deckCanvas.style, $6b870fea42087cfb$var$CANVAS_STYLE);
+    Object.assign(deckCanvas.style, $34af937a047fac77$var$CANVAS_STYLE);
     return {
         container: container,
         deckCanvas: deckCanvas
     };
 }
-function $6b870fea42087cfb$export$cc8b65d27ce6adb1(factoryOptions) {
-    const OrbitControllerClass = $b1c4c91bc543be9f$export$cf6caf239925fb63(factoryOptions);
+function $34af937a047fac77$export$cc8b65d27ce6adb1(factoryOptions) {
+    const OrbitControllerClass = $2787516b2d141fee$export$cf6caf239925fb63(factoryOptions);
     //dynamic superclass lets us create a subclass at execution phase instead of declaration phase.
     //This allows us to retrieve Deck from either UMD or ES6 consumers of this class.
     function wrapper(props) {
         /**
          * @params container (Element) - DOM element to add deck.gl canvas to
          * @params controller (Object) - Controller class. Leave empty for auto detection
-         */ class DeckGLInternal extends $1ce8acf0567070a9$export$e2253033e6e1df16.deck.Deck {
+         */ class DeckGLInternal extends $aa3185d2619292b0$export$e2253033e6e1df16.deck.Deck {
             constructor(props1){
                 if (typeof document === 'undefined') // Not browser
                 throw Error('Deck can only be used in the browser');
-                const { deckCanvas: deckCanvas  } = $6b870fea42087cfb$var$createCanvas(props1);
+                const { deckCanvas: deckCanvas  } = $34af937a047fac77$var$createCanvas(props1);
                 const viewState = props1.initialViewState || props1.viewState || {
                 };
                 super(Object.assign({
@@ -6565,8 +6918,8 @@ function $6b870fea42087cfb$export$cc8b65d27ce6adb1(factoryOptions) {
 
 
 
-function $9b58e3b906145ddd$var$wrapper(props) {
-    class LinearInterpolatorInternal extends $1ce8acf0567070a9$export$e2253033e6e1df16.deck.LinearInterpolator {
+function $70855a91bf04cf42$var$wrapper(props) {
+    class LinearInterpolatorInternal extends $aa3185d2619292b0$export$e2253033e6e1df16.deck.LinearInterpolator {
         constructor(transitionProps){
             super(transitionProps);
         }
@@ -6578,14 +6931,14 @@ function $9b58e3b906145ddd$var$wrapper(props) {
     const instance = new LinearInterpolatorInternal(props);
     return instance;
 }
-const $9b58e3b906145ddd$export$19db461e577de3cc = $9b58e3b906145ddd$var$wrapper;
+const $70855a91bf04cf42$export$19db461e577de3cc = $70855a91bf04cf42$var$wrapper;
 
 
 
 
 
-function $4c0f820b8a5ee723$export$ecab656a5b486b67() {
-    const ambientLight = new $1ce8acf0567070a9$export$e2253033e6e1df16.deck.AmbientLight({
+function $1e51c74754ca699b$export$ecab656a5b486b67() {
+    const ambientLight = new $aa3185d2619292b0$export$e2253033e6e1df16.deck.AmbientLight({
         color: [
             255,
             255,
@@ -6593,7 +6946,7 @@ function $4c0f820b8a5ee723$export$ecab656a5b486b67() {
         ],
         intensity: 0.3
     });
-    const cameraLight = new $1ce8acf0567070a9$export$e2253033e6e1df16.deck._CameraLight({
+    const cameraLight = new $aa3185d2619292b0$export$e2253033e6e1df16.deck._CameraLight({
         color: [
             255,
             255,
@@ -6607,7 +6960,7 @@ function $4c0f820b8a5ee723$export$ecab656a5b486b67() {
     //     intensity: 0.2
     //   });
     return [
-        new $1ce8acf0567070a9$export$e2253033e6e1df16.deck.LightingEffect({
+        new $aa3185d2619292b0$export$e2253033e6e1df16.deck.LightingEffect({
             ambientLight: ambientLight,
             cameraLight: cameraLight
         })
@@ -6615,30 +6968,30 @@ function $4c0f820b8a5ee723$export$ecab656a5b486b67() {
 }
 
 
-var $4a30ac4383cd199c$exports = {};
+var $753ee753424d27f3$exports = {};
 
-$parcel$export($4a30ac4383cd199c$exports, "PresenterElement", () => $4a30ac4383cd199c$export$79420be32f83a5b0);
-var $4a30ac4383cd199c$export$79420be32f83a5b0;
+$parcel$export($753ee753424d27f3$exports, "PresenterElement", () => $753ee753424d27f3$export$79420be32f83a5b0);
+var $753ee753424d27f3$export$79420be32f83a5b0;
 (function(PresenterElement) {
     PresenterElement[PresenterElement["root"] = 0] = "root";
     PresenterElement[PresenterElement["gl"] = 1] = "gl";
     PresenterElement[PresenterElement["panel"] = 2] = "panel";
     PresenterElement[PresenterElement["legend"] = 3] = "legend";
     PresenterElement[PresenterElement["vegaControls"] = 4] = "vegaControls";
-})($4a30ac4383cd199c$export$79420be32f83a5b0 || ($4a30ac4383cd199c$export$79420be32f83a5b0 = {
+})($753ee753424d27f3$export$79420be32f83a5b0 || ($753ee753424d27f3$export$79420be32f83a5b0 = {
 }));
 
 
 
 
 
-const $cb6a361036c2ca73$export$b0b33bcc0f604685 = (props)=>{
+const $3f8bb403fc935058$export$b0b33bcc0f604685 = (props)=>{
     const rows = [];
     const addRow = (row, i)=>{
-        const fn = $cb6a361036c2ca73$var$symbolMap[row.symbol.shape];
+        const fn = $3f8bb403fc935058$var$symbolMap[row.symbol.shape];
         let jsx;
         if (fn) jsx = fn(row.symbol);
-        else jsx = $9f51d2c38d8bad2e$export$c8a8987d4410bf2d("span", null, "x");
+        else jsx = $1ba1ba975a1b16e7$export$c8a8987d4410bf2d("span", null, "x");
         rows.push({
             cells: [
                 {
@@ -6657,19 +7010,19 @@ const $cb6a361036c2ca73$export$b0b33bcc0f604685 = (props)=>{
     );
     sorted.forEach((i)=>addRow(props.legend.rows[i], +i)
     );
-    if (sorted.length) return $9f51d2c38d8bad2e$export$c8a8987d4410bf2d($8ff793870c89f14e$export$54ec01a60f47d33d, {
+    if (sorted.length) return $1ba1ba975a1b16e7$export$c8a8987d4410bf2d($7bbc4e477cf1dda8$export$54ec01a60f47d33d, {
         rows: rows,
         rowClassName: "legend-row",
         onRowClick: (e, i)=>props.onClick(e, props.legend, i)
-    }, props.legend.title !== void 0 && $9f51d2c38d8bad2e$export$c8a8987d4410bf2d("tr", {
+    }, props.legend.title !== void 0 && $1ba1ba975a1b16e7$export$c8a8987d4410bf2d("tr", {
         onClick: (e)=>props.onClick(e, props.legend, null)
-    }, $9f51d2c38d8bad2e$export$c8a8987d4410bf2d("th", {
+    }, $1ba1ba975a1b16e7$export$c8a8987d4410bf2d("th", {
         colSpan: 2
     }, props.legend.title)));
 };
-const $cb6a361036c2ca73$var$symbolMap = {
+const $3f8bb403fc935058$var$symbolMap = {
     square: function(symbol) {
-        return $9f51d2c38d8bad2e$export$c8a8987d4410bf2d("div", {
+        return $1ba1ba975a1b16e7$export$c8a8987d4410bf2d("div", {
             style: {
                 height: `${symbol.bounds.y2 - symbol.bounds.y1}px`,
                 width: `${symbol.bounds.x2 - symbol.bounds.x1}px`,
@@ -6685,97 +7038,96 @@ const $cb6a361036c2ca73$var$symbolMap = {
 
 
 
-function $bbae7dffa370f990$export$5accd073ebd18e1(v3) {
+function $dd7cabd784132680$export$5accd073ebd18e1(v3) {
     let temp = -v3[1]; //negeative y to positive z
-    if (v3[0] === $c1310db02f4288e1$export$c25c42a6ee2ec894) v3[0] = 0;
+    if (v3[0] === $f92b17f7c58b7db2$export$c25c42a6ee2ec894) v3[0] = 0;
     v3[1] = v3[2];
     v3[2] = temp;
 }
 
 
-const $52e05509529017b2$var$markStager = (options, stage, scene, x, y, groupType)=>{
-    $1ce8acf0567070a9$export$e2253033e6e1df16.vega.sceneVisit(scene, function(item) {
-        var x1, y1, x2, y2;
-        x1 = item.x || 0;
-        y1 = item.y || 0;
-        x2 = item.x2 != null ? item.x2 : x1;
-        y2 = item.y2 != null ? item.y2 : y1;
-        const lineItem = $52e05509529017b2$var$styledLine(x1 + x, y1 + y, x2 + x, y2 + y, item.stroke, item.strokeWidth);
+const $815fc47e4dad6ae3$var$markStager = (options, stage, scene, x, y, groupType)=>{
+    $aa3185d2619292b0$export$e2253033e6e1df16.vega.sceneVisit(scene, function(item) {
+        const x1 = item.x || 0;
+        const y1 = item.y || 0;
+        const x2 = item.x2 != null ? item.x2 : x1;
+        const y2 = item.y2 != null ? item.y2 : y1;
+        const lineItem = $815fc47e4dad6ae3$var$styledLine(x1 + x, y1 + y, x2 + x, y2 + y, item.stroke, item.strokeWidth);
         if (item.mark.role === 'axis-tick') {
             if (options.currAxis.role === 'z') {
-                $bbae7dffa370f990$export$5accd073ebd18e1(lineItem.sourcePosition);
-                $bbae7dffa370f990$export$5accd073ebd18e1(lineItem.targetPosition);
+                $dd7cabd784132680$export$5accd073ebd18e1(lineItem.sourcePosition);
+                $dd7cabd784132680$export$5accd073ebd18e1(lineItem.targetPosition);
             }
             options.currAxis.ticks.push(lineItem);
         } else if (item.mark.role === 'axis-domain') {
             if (options.currAxis.role === 'z') {
-                $bbae7dffa370f990$export$5accd073ebd18e1(lineItem.sourcePosition);
-                $bbae7dffa370f990$export$5accd073ebd18e1(lineItem.targetPosition);
+                $dd7cabd784132680$export$5accd073ebd18e1(lineItem.sourcePosition);
+                $dd7cabd784132680$export$5accd073ebd18e1(lineItem.targetPosition);
             }
             options.currAxis.domain = lineItem;
         } else stage.gridLines.push(lineItem);
     });
 };
-function $52e05509529017b2$var$styledLine(x1, y1, x2, y2, stroke, strokeWidth) {
+function $815fc47e4dad6ae3$var$styledLine(x1, y1, x2, y2, stroke, strokeWidth) {
     const line = {
         sourcePosition: [
             x1,
             -y1,
-            $c1310db02f4288e1$export$c25c42a6ee2ec894
+            $f92b17f7c58b7db2$export$c25c42a6ee2ec894
         ],
         targetPosition: [
             x2,
             -y2,
-            $c1310db02f4288e1$export$c25c42a6ee2ec894
+            $f92b17f7c58b7db2$export$c25c42a6ee2ec894
         ],
-        color: $e69d5c649de4e105$export$78ed65bc9abd64b1(stroke),
+        color: $50dbc0324e10cd45$export$78ed65bc9abd64b1(stroke),
         strokeWidth: strokeWidth
     };
     return line;
 }
-function $52e05509529017b2$export$827f4ee28efc37(gx, gy, height, width, stroke, strokeWidth, diagonals = false) {
+function $815fc47e4dad6ae3$export$827f4ee28efc37(gx, gy, height, width, stroke, strokeWidth, diagonals = false) {
     const lines = [
-        $52e05509529017b2$var$styledLine(gx, gy, gx + width, gy, stroke, strokeWidth),
-        $52e05509529017b2$var$styledLine(gx + width, gy, gx + width, gy + height, stroke, strokeWidth),
-        $52e05509529017b2$var$styledLine(gx + width, gy + height, gx, gy + height, stroke, strokeWidth),
-        $52e05509529017b2$var$styledLine(gx, gy + height, gx, gy, stroke, strokeWidth)
+        $815fc47e4dad6ae3$var$styledLine(gx, gy, gx + width, gy, stroke, strokeWidth),
+        $815fc47e4dad6ae3$var$styledLine(gx + width, gy, gx + width, gy + height, stroke, strokeWidth),
+        $815fc47e4dad6ae3$var$styledLine(gx + width, gy + height, gx, gy + height, stroke, strokeWidth),
+        $815fc47e4dad6ae3$var$styledLine(gx, gy + height, gx, gy, stroke, strokeWidth)
     ];
     if (diagonals) {
-        lines.push($52e05509529017b2$var$styledLine(gx, gy, gx + width, gy + height, stroke, strokeWidth));
-        lines.push($52e05509529017b2$var$styledLine(gx, gy + height, gx + width, gy, stroke, strokeWidth));
+        lines.push($815fc47e4dad6ae3$var$styledLine(gx, gy, gx + width, gy + height, stroke, strokeWidth));
+        lines.push($815fc47e4dad6ae3$var$styledLine(gx, gy + height, gx + width, gy, stroke, strokeWidth));
     }
     return lines;
 }
-var $52e05509529017b2$export$2e2bcd8739ae039 = $52e05509529017b2$var$markStager;
+var $815fc47e4dad6ae3$export$2e2bcd8739ae039 = $815fc47e4dad6ae3$var$markStager;
 
 
 
 
 
-function $09d5ba1d019215f6$export$ba5a93ad8642dce4(presenter) {
-    const rootDiv = $9f51d2c38d8bad2e$export$c8a8987d4410bf2d("div", {
-        className: $09d5ba1d019215f6$export$2913c0c0b5623090($4a30ac4383cd199c$export$79420be32f83a5b0.root, presenter)
-    }, $9f51d2c38d8bad2e$export$c8a8987d4410bf2d("div", {
-        className: $09d5ba1d019215f6$export$2913c0c0b5623090($4a30ac4383cd199c$export$79420be32f83a5b0.gl, presenter),
+function $3846dcfdfcef687a$export$ba5a93ad8642dce4(presenter) {
+    const rootDiv = $1ba1ba975a1b16e7$export$c8a8987d4410bf2d("div", {
+        className: $3846dcfdfcef687a$export$2913c0c0b5623090($753ee753424d27f3$export$79420be32f83a5b0.root, presenter)
+    }, $1ba1ba975a1b16e7$export$c8a8987d4410bf2d("div", {
+        className: $3846dcfdfcef687a$export$2913c0c0b5623090($753ee753424d27f3$export$79420be32f83a5b0.gl, presenter),
         style: {
-            minHeight: $c1310db02f4288e1$export$a43cf604e12f3b17,
-            minWidth: $c1310db02f4288e1$export$ee148fbbe8357dd2
+            minHeight: $f92b17f7c58b7db2$export$a43cf604e12f3b17,
+            minWidth: $f92b17f7c58b7db2$export$ee148fbbe8357dd2
         }
-    }), $9f51d2c38d8bad2e$export$c8a8987d4410bf2d("div", {
-        className: $09d5ba1d019215f6$export$2913c0c0b5623090($4a30ac4383cd199c$export$79420be32f83a5b0.panel, presenter)
-    }, $9f51d2c38d8bad2e$export$c8a8987d4410bf2d("div", {
-        className: $09d5ba1d019215f6$export$2913c0c0b5623090($4a30ac4383cd199c$export$79420be32f83a5b0.vegaControls, presenter)
-    }), $9f51d2c38d8bad2e$export$c8a8987d4410bf2d("div", {
-        className: $09d5ba1d019215f6$export$2913c0c0b5623090($4a30ac4383cd199c$export$79420be32f83a5b0.legend, presenter)
+    }), $1ba1ba975a1b16e7$export$c8a8987d4410bf2d("div", {
+        className: $3846dcfdfcef687a$export$2913c0c0b5623090($753ee753424d27f3$export$79420be32f83a5b0.panel, presenter)
+    }, $1ba1ba975a1b16e7$export$c8a8987d4410bf2d("div", {
+        className: $3846dcfdfcef687a$export$2913c0c0b5623090($753ee753424d27f3$export$79420be32f83a5b0.vegaControls, presenter)
+    }), $1ba1ba975a1b16e7$export$c8a8987d4410bf2d("div", {
+        className: $3846dcfdfcef687a$export$2913c0c0b5623090($753ee753424d27f3$export$79420be32f83a5b0.legend, presenter)
     })));
-    $9f51d2c38d8bad2e$export$186d02efde07ef98(rootDiv, presenter.el);
+    $1ba1ba975a1b16e7$export$186d02efde07ef98(rootDiv, presenter.el);
 }
-function $09d5ba1d019215f6$export$2913c0c0b5623090(type, presenter) {
-    return `${presenter.style.cssPrefix}${$4a30ac4383cd199c$export$79420be32f83a5b0[type]}`;
+function $3846dcfdfcef687a$export$2913c0c0b5623090(type, presenter) {
+    return `${presenter.style.cssPrefix}${$753ee753424d27f3$export$79420be32f83a5b0[type]}`;
 }
 
 
-function $8d90f67a0032cf69$export$9a79ca9001afcc6d(allocatedSize, empty, cubes) {
+function $e1a1227365f38150$export$9a79ca9001afcc6d(allocatedSize, empty, cubes) {
     const patched = new Array(allocatedSize);
     patched.fill(empty);
     cubes.forEach((cube)=>patched[cube.ordinal] = cube
@@ -6785,7 +7137,7 @@ function $8d90f67a0032cf69$export$9a79ca9001afcc6d(allocatedSize, empty, cubes) 
 
 
 
-const $7aed7e2c0bccde63$var$legendMap = {
+const $7b9674d67fb22463$var$legendMap = {
     'legend-title': function(legend, textItem) {
         legend.title = textItem.text;
     },
@@ -6811,23 +7163,23 @@ const $7aed7e2c0bccde63$var$legendMap = {
         row.value = label.datum.value;
     }
 };
-const $7aed7e2c0bccde63$var$markStager = (options, stage, scene, x, y, groupType)=>{
-    $1ce8acf0567070a9$export$e2253033e6e1df16.vega.sceneVisit(scene, function(item) {
-        const fn = $7aed7e2c0bccde63$var$legendMap[item.mark.role];
+const $7b9674d67fb22463$var$markStager = (options, stage, scene, x, y, groupType)=>{
+    $aa3185d2619292b0$export$e2253033e6e1df16.vega.sceneVisit(scene, function(item) {
+        const fn = $7b9674d67fb22463$var$legendMap[item.mark.role];
         if (fn) fn(stage.legend, item);
     });
 };
-var $7aed7e2c0bccde63$export$2e2bcd8739ae039 = $7aed7e2c0bccde63$var$markStager;
+var $7b9674d67fb22463$export$2e2bcd8739ae039 = $7b9674d67fb22463$var$markStager;
 
 
 
 
 
-const $3d268b5fbd2f35de$var$markStager = (options, stage, scene, x, y, groupType)=>{
-    $1ce8acf0567070a9$export$e2253033e6e1df16.vega.sceneVisit(scene, function(item) {
+const $51c44c36c1601a31$var$markStager = (options, stage, scene, x, y, groupType)=>{
+    $aa3185d2619292b0$export$e2253033e6e1df16.vega.sceneVisit(scene, function(item) {
         //for orthographic (2d) - always use 0 or else Deck will not show them
         const z = stage.view === '2d' ? 0 : item.z || 0;
-        const depth = (stage.view === '2d' ? 0 : item.depth || 0) + $c1310db02f4288e1$export$d90a7322036a432e;
+        const depth = (stage.view === '2d' ? 0 : item.depth || 0) + $f92b17f7c58b7db2$export$d90a7322036a432e;
         //change direction of y from SVG to GL
         const ty = -1;
         let ordinal = options.assignCubeOrdinal(item.datum);
@@ -6846,7 +7198,7 @@ const $3d268b5fbd2f35de$var$markStager = (options, stage, scene, x, y, groupType
                     ty * (y + (item.y || 0)) - item.height,
                     z
                 ],
-                color: $e69d5c649de4e105$export$78ed65bc9abd64b1(item.fill) || options.defaultCubeColor || [
+                color: $50dbc0324e10cd45$export$78ed65bc9abd64b1(item.fill) || options.defaultCubeColor || [
                     128,
                     128,
                     128,
@@ -6858,14 +7210,14 @@ const $3d268b5fbd2f35de$var$markStager = (options, stage, scene, x, y, groupType
         }
     });
 };
-var $3d268b5fbd2f35de$export$2e2bcd8739ae039 = $3d268b5fbd2f35de$var$markStager;
+var $51c44c36c1601a31$export$2e2bcd8739ae039 = $51c44c36c1601a31$var$markStager;
 
 
 
 
 //change direction of y from SVG to GL
-const $2921a4906694ae08$var$ty = -1;
-const $2921a4906694ae08$var$markStager = (options, stage, scene, x, y, groupType)=>{
+const $9487e67f379a0115$var$ty = -1;
+const $9487e67f379a0115$var$markStager = (options, stage, scene, x, y, groupType)=>{
     const g = Object.assign({
         opacity: 1,
         strokeOpacity: 1,
@@ -6873,10 +7225,10 @@ const $2921a4906694ae08$var$markStager = (options, stage, scene, x, y, groupType
     }, scene.items[0]);
     const path = {
         strokeWidth: g.strokeWidth,
-        strokeColor: $e69d5c649de4e105$export$78ed65bc9abd64b1(g.stroke),
+        strokeColor: $50dbc0324e10cd45$export$78ed65bc9abd64b1(g.stroke),
         positions: scene.items.map((it)=>[
                 it.x,
-                $2921a4906694ae08$var$ty * it.y,
+                $9487e67f379a0115$var$ty * it.y,
                 it.z || 0
             ]
         )
@@ -6885,52 +7237,52 @@ const $2921a4906694ae08$var$markStager = (options, stage, scene, x, y, groupType
     path.strokeColor[3] *= g.opacity;
     stage.pathData.push(path);
 };
-var $2921a4906694ae08$export$2e2bcd8739ae039 = $2921a4906694ae08$var$markStager;
+var $9487e67f379a0115$export$2e2bcd8739ae039 = $9487e67f379a0115$var$markStager;
 
 
 
 
 
-const $d90c76d216fe5973$var$markStager = (options, stage, scene, x, y, groupType)=>{
+const $cba04dabf50157d4$var$markStager = (options, stage, scene, x, y, groupType)=>{
     //scale Deck.Gl text to Vega size
     const fontScale = 1;
     //change direction of y from SVG to GL
     const ty = -1;
-    $1ce8acf0567070a9$export$e2253033e6e1df16.vega.sceneVisit(scene, function(item) {
+    $aa3185d2619292b0$export$e2253033e6e1df16.vega.sceneVisit(scene, function(item) {
         if (!item.text) return;
         const size = item.fontSize * fontScale;
-        const alignmentBaseline = $d90c76d216fe5973$var$convertBaseline(item.baseline);
+        const alignmentBaseline = $cba04dabf50157d4$var$convertBaseline(item.baseline);
         const yOffset = alignmentBaseline === 'top' ? item.fontSize / 2 : 0; //fixup to get tick text correct
         const textItem = {
-            color: $e69d5c649de4e105$export$78ed65bc9abd64b1(item.fill),
-            text: item.limit === undefined ? item.text : $1ce8acf0567070a9$export$e2253033e6e1df16.vega.truncate(item.text, item.limit, 'right', item.ellipsis || '...'),
+            color: $50dbc0324e10cd45$export$78ed65bc9abd64b1(item.fill),
+            text: item.limit === undefined ? item.text : $aa3185d2619292b0$export$e2253033e6e1df16.vega.truncate(item.text, item.limit, 'right', item.ellipsis || '...'),
             position: [
                 x + (item.x || 0),
                 ty * (y + (item.y || 0) + yOffset),
                 0
             ],
             size: size,
-            angle: $d90c76d216fe5973$var$convertAngle(item.angle),
-            textAnchor: $d90c76d216fe5973$var$convertAlignment(item.align),
+            angle: $cba04dabf50157d4$var$convertAngle(item.angle),
+            textAnchor: $cba04dabf50157d4$var$convertAlignment(item.align),
             alignmentBaseline: alignmentBaseline,
             metaData: item.metaData
         };
         if (item.mark.role === 'axis-label') {
             const tickText = textItem;
             tickText.value = item.datum.value;
-            if (options.currAxis.role === 'z') $bbae7dffa370f990$export$5accd073ebd18e1(tickText.position);
+            if (options.currAxis.role === 'z') $dd7cabd784132680$export$5accd073ebd18e1(tickText.position);
             options.currAxis.tickText.push(tickText);
         } else if (item.mark.role === 'axis-title') {
-            if (options.currAxis.role === 'z') $bbae7dffa370f990$export$5accd073ebd18e1(textItem.position);
+            if (options.currAxis.role === 'z') $dd7cabd784132680$export$5accd073ebd18e1(textItem.position);
             options.currAxis.title = textItem;
         } else stage.textData.push(textItem);
     });
 };
-function $d90c76d216fe5973$var$convertAngle(vegaTextAngle) {
+function $cba04dabf50157d4$var$convertAngle(vegaTextAngle) {
     if (vegaTextAngle && !isNaN(vegaTextAngle)) return 360 - vegaTextAngle;
     return 0;
 }
-function $d90c76d216fe5973$var$convertAlignment(textAlign) {
+function $cba04dabf50157d4$var$convertAlignment(textAlign) {
     switch(textAlign){
         case 'center':
             return 'middle';
@@ -6941,20 +7293,20 @@ function $d90c76d216fe5973$var$convertAlignment(textAlign) {
     }
     return 'start';
 }
-function $d90c76d216fe5973$var$convertBaseline(baseline) {
+function $cba04dabf50157d4$var$convertBaseline(baseline) {
     switch(baseline){
         case 'middle':
             return 'center';
     }
     return baseline || 'bottom';
 }
-var $d90c76d216fe5973$export$2e2bcd8739ae039 = $d90c76d216fe5973$var$markStager;
+var $cba04dabf50157d4$export$2e2bcd8739ae039 = $cba04dabf50157d4$var$markStager;
 
 
 
 //change direction of y from SVG to GL
-const $0092e56f3efa4b53$var$ty = -1;
-const $0092e56f3efa4b53$var$markStager = (options, stage, scene, x, y, groupType)=>{
+const $8f40a25657c6d804$var$ty = -1;
+const $8f40a25657c6d804$var$markStager = (options, stage, scene, x, y, groupType)=>{
     const g = Object.assign({
         fillOpacity: 1,
         opacity: 1,
@@ -6973,10 +7325,10 @@ const $0092e56f3efa4b53$var$markStager = (options, stage, scene, x, y, groupType
         }, item);
         return [
             item.x,
-            $0092e56f3efa4b53$var$ty * item.y,
+            $8f40a25657c6d804$var$ty * item.y,
             item.z,
             item.x2,
-            $0092e56f3efa4b53$var$ty * item.y2,
+            $8f40a25657c6d804$var$ty * item.y2,
             item.z2
         ];
     });
@@ -7002,14 +7354,14 @@ const $0092e56f3efa4b53$var$markStager = (options, stage, scene, x, y, groupType
     });
     positions.push(startpoint);
     const polygon = {
-        fillColor: $e69d5c649de4e105$export$78ed65bc9abd64b1(g.fill) || [
+        fillColor: $50dbc0324e10cd45$export$78ed65bc9abd64b1(g.fill) || [
             0,
             0,
             0,
             0
         ],
         positions: positions,
-        strokeColor: $e69d5c649de4e105$export$78ed65bc9abd64b1(g.stroke) || [
+        strokeColor: $50dbc0324e10cd45$export$78ed65bc9abd64b1(g.stroke) || [
             0,
             0,
             0,
@@ -7024,74 +7376,74 @@ const $0092e56f3efa4b53$var$markStager = (options, stage, scene, x, y, groupType
     polygon.strokeColor[3] *= g.opacity;
     stage.polygonData.push(polygon);
 };
-var $0092e56f3efa4b53$export$2e2bcd8739ae039 = $0092e56f3efa4b53$var$markStager;
+var $8f40a25657c6d804$export$2e2bcd8739ae039 = $8f40a25657c6d804$var$markStager;
 
 
 
 
 
-var $9a203e9f7ce95868$export$d460f747b73abb10;
+var $e1e96d6d81df6850$export$d460f747b73abb10;
 (function(GroupType) {
     GroupType[GroupType["none"] = 0] = "none";
     GroupType[GroupType["legend"] = 1] = "legend";
     GroupType[GroupType["xAxis"] = 2] = "xAxis";
     GroupType[GroupType["yAxis"] = 3] = "yAxis";
     GroupType[GroupType["zAxis"] = 4] = "zAxis";
-})($9a203e9f7ce95868$export$d460f747b73abb10 || ($9a203e9f7ce95868$export$d460f747b73abb10 = {
+})($e1e96d6d81df6850$export$d460f747b73abb10 || ($e1e96d6d81df6850$export$d460f747b73abb10 = {
 }));
 
 
-function $d9ef5a15271c747a$var$getOrientItem(group) {
+function $11061d343abd81ad$var$getOrientItem(group) {
     if (group.orient) return group;
     return group.datum;
 }
-function $d9ef5a15271c747a$var$convertGroupRole(group, options) {
-    if (group.mark.role === 'legend') return $9a203e9f7ce95868$export$d460f747b73abb10.legend;
+function $11061d343abd81ad$var$convertGroupRole(group, options) {
+    if (group.mark.role === 'legend') return $e1e96d6d81df6850$export$d460f747b73abb10.legend;
     if (group.mark.role === 'axis') {
-        if (group.mark.zindex === options.zAxisZindex && options.zAxisZindex !== undefined) return $9a203e9f7ce95868$export$d460f747b73abb10.zAxis;
-        const orientItem = $d9ef5a15271c747a$var$getOrientItem(group);
+        if (group.mark.zindex === options.zAxisZindex && options.zAxisZindex !== undefined) return $e1e96d6d81df6850$export$d460f747b73abb10.zAxis;
+        const orientItem = $11061d343abd81ad$var$getOrientItem(group);
         if (orientItem) switch(orientItem.orient){
             case 'bottom':
             case 'top':
-                return $9a203e9f7ce95868$export$d460f747b73abb10.xAxis;
+                return $e1e96d6d81df6850$export$d460f747b73abb10.xAxis;
             case 'left':
             case 'right':
-                return $9a203e9f7ce95868$export$d460f747b73abb10.yAxis;
+                return $e1e96d6d81df6850$export$d460f747b73abb10.yAxis;
         }
     }
 }
-const $d9ef5a15271c747a$var$group = (options, stage, scene, x, y, groupType)=>{
-    $1ce8acf0567070a9$export$e2253033e6e1df16.vega.sceneVisit(scene, function(g) {
+const $11061d343abd81ad$var$group = (options, stage, scene, x, y, groupType)=>{
+    $aa3185d2619292b0$export$e2253033e6e1df16.vega.sceneVisit(scene, function(g) {
         const gx = g.x || 0, gy = g.y || 0;
-        if (g.context && g.context.background && !stage.backgroundColor) stage.backgroundColor = $e69d5c649de4e105$export$78ed65bc9abd64b1(g.context.background);
+        if (g.context && g.context.background && !stage.backgroundColor) stage.backgroundColor = $50dbc0324e10cd45$export$78ed65bc9abd64b1(g.context.background);
         if (g.stroke) {
             const facetRect = {
                 datum: g.datum,
-                lines: $52e05509529017b2$export$827f4ee28efc37(gx + x, gy + y, g.height, g.width, g.stroke, $c1310db02f4288e1$export$62471df653c738cc)
+                lines: $815fc47e4dad6ae3$export$827f4ee28efc37(gx + x, gy + y, g.height, g.width, g.stroke, $f92b17f7c58b7db2$export$62471df653c738cc)
             };
             stage.facets.push(facetRect);
         }
-        groupType = $d9ef5a15271c747a$var$convertGroupRole(g, options) || groupType;
-        $d9ef5a15271c747a$var$setCurrentAxis(options, stage, groupType);
+        groupType = $11061d343abd81ad$var$convertGroupRole(g, options) || groupType;
+        $11061d343abd81ad$var$setCurrentAxis(options, stage, groupType);
         // draw group contents
-        $1ce8acf0567070a9$export$e2253033e6e1df16.vega.sceneVisit(g, function(item) {
-            $d9ef5a15271c747a$var$mainStager(options, stage, item, gx + x, gy + y, groupType);
+        $aa3185d2619292b0$export$e2253033e6e1df16.vega.sceneVisit(g, function(item) {
+            $11061d343abd81ad$var$mainStager(options, stage, item, gx + x, gy + y, groupType);
         });
     });
 };
-function $d9ef5a15271c747a$var$setCurrentAxis(options, stage, groupType) {
+function $11061d343abd81ad$var$setCurrentAxis(options, stage, groupType) {
     let axes;
     let role;
     switch(groupType){
-        case $9a203e9f7ce95868$export$d460f747b73abb10.xAxis:
+        case $e1e96d6d81df6850$export$d460f747b73abb10.xAxis:
             axes = stage.axes.x;
             role = 'x';
             break;
-        case $9a203e9f7ce95868$export$d460f747b73abb10.yAxis:
+        case $e1e96d6d81df6850$export$d460f747b73abb10.yAxis:
             axes = stage.axes.y;
             role = 'y';
             break;
-        case $9a203e9f7ce95868$export$d460f747b73abb10.zAxis:
+        case $e1e96d6d81df6850$export$d460f747b73abb10.zAxis:
             axes = stage.axes.z;
             role = 'z';
             break;
@@ -7106,37 +7458,37 @@ function $d9ef5a15271c747a$var$setCurrentAxis(options, stage, groupType) {
     };
     axes.push(options.currAxis);
 }
-const $d9ef5a15271c747a$var$markStagers = {
-    group: $d9ef5a15271c747a$var$group,
-    legend: $7aed7e2c0bccde63$export$2e2bcd8739ae039,
-    rect: $3d268b5fbd2f35de$export$2e2bcd8739ae039,
-    rule: $52e05509529017b2$export$2e2bcd8739ae039,
-    line: $2921a4906694ae08$export$2e2bcd8739ae039,
-    area: $0092e56f3efa4b53$export$2e2bcd8739ae039,
-    text: $d90c76d216fe5973$export$2e2bcd8739ae039
+const $11061d343abd81ad$var$markStagers = {
+    group: $11061d343abd81ad$var$group,
+    legend: $7b9674d67fb22463$export$2e2bcd8739ae039,
+    rect: $51c44c36c1601a31$export$2e2bcd8739ae039,
+    rule: $815fc47e4dad6ae3$export$2e2bcd8739ae039,
+    line: $9487e67f379a0115$export$2e2bcd8739ae039,
+    area: $8f40a25657c6d804$export$2e2bcd8739ae039,
+    text: $cba04dabf50157d4$export$2e2bcd8739ae039
 };
-var $d9ef5a15271c747a$var$mainStager = (options, stage, scene, x, y, groupType)=>{
-    if (scene.marktype !== 'group' && groupType === $9a203e9f7ce95868$export$d460f747b73abb10.legend) $7aed7e2c0bccde63$export$2e2bcd8739ae039(options, stage, scene, x, y, groupType);
+const $11061d343abd81ad$var$mainStager = (options, stage, scene, x, y, groupType)=>{
+    if (scene.marktype !== 'group' && groupType === $e1e96d6d81df6850$export$d460f747b73abb10.legend) $7b9674d67fb22463$export$2e2bcd8739ae039(options, stage, scene, x, y, groupType);
     else {
-        var markStager = $d9ef5a15271c747a$var$markStagers[scene.marktype];
+        const markStager = $11061d343abd81ad$var$markStagers[scene.marktype];
         if (markStager) markStager(options, stage, scene, x, y, groupType);
     }
 };
-function $d9ef5a15271c747a$export$d78988dba6734aaa(options, stage, scene) {
-    $d9ef5a15271c747a$var$mainStager(options, stage, scene, 0, 0, null);
-    $d9ef5a15271c747a$var$sortAxis(stage.axes.x, 0);
-    $d9ef5a15271c747a$var$sortAxis(stage.axes.y, 1);
+function $11061d343abd81ad$export$d78988dba6734aaa(options, stage, scene) {
+    $11061d343abd81ad$var$mainStager(options, stage, scene, 0, 0, null);
+    $11061d343abd81ad$var$sortAxis(stage.axes.x, 0);
+    $11061d343abd81ad$var$sortAxis(stage.axes.y, 1);
 }
-function $d9ef5a15271c747a$var$sortAxis(axes, dim) {
+function $11061d343abd81ad$var$sortAxis(axes, dim) {
     axes.forEach((axis)=>{
-        if (axis.domain) $d9ef5a15271c747a$var$orderDomain(axis.domain, dim);
+        if (axis.domain) $11061d343abd81ad$var$orderDomain(axis.domain, dim);
         axis.ticks.sort((a, b)=>a.sourcePosition[dim] - b.sourcePosition[dim]
         );
         axis.tickText.sort((a, b)=>a.position[dim] - b.position[dim]
         );
     });
 }
-function $d9ef5a15271c747a$var$orderDomain(domain, dim) {
+function $11061d343abd81ad$var$orderDomain(domain, dim) {
     if (domain.sourcePosition[dim] > domain.targetPosition[dim]) {
         const temp = domain.targetPosition;
         domain.targetPosition = domain.sourcePosition;
@@ -7145,13 +7497,13 @@ function $d9ef5a15271c747a$var$orderDomain(domain, dim) {
 }
 
 
-const $493c93bdb6bf74d0$export$19551db75f175e3 = [
+const $594341a651cbc75e$export$19551db75f175e3 = [
     'target',
     'rotationOrbit',
     'rotationX',
     'zoom'
 ];
-function $493c93bdb6bf74d0$export$cf597f89e136a2d7(height, width, view) {
+function $594341a651cbc75e$export$cf597f89e136a2d7(height, width, view) {
     const target = [
         width / 2,
         -height / 2,
@@ -7173,15 +7525,15 @@ function $493c93bdb6bf74d0$export$cf597f89e136a2d7(height, width, view) {
 
 
 
-class $ea0d85645d70082e$export$893c88c42e3630f9 {
+class $586113946f2266a2$export$893c88c42e3630f9 {
     /**
      * Instantiate a new Presenter.
      * @param el Parent HTMLElement to present within.
      * @param style Optional PresenterStyle styling options.
      */ constructor(el, style){
         this.el = el;
-        this.style = $88197c4abcc50579$export$6969335ea1e4e77c($c1310db02f4288e1$export$83ac8f5ae8122afc, style);
-        $09d5ba1d019215f6$export$ba5a93ad8642dce4(this);
+        this.style = $b225001aee342575$export$6969335ea1e4e77c($f92b17f7c58b7db2$export$83ac8f5ae8122afc, style);
+        $3846dcfdfcef687a$export$ba5a93ad8642dce4(this);
         this._last = {
             view: null,
             height: null,
@@ -7227,7 +7579,7 @@ class $ea0d85645d70082e$export$893c88c42e3630f9 {
      * Retrieve a sub-element of the rendered output.
      * @param type PresenterElement type of the HTMLElement to retrieve.
      */ getElement(type) {
-        const elements = this.el.getElementsByClassName($09d5ba1d019215f6$export$2913c0c0b5623090(type, this));
+        const elements = this.el.getElementsByClassName($3846dcfdfcef687a$export$2913c0c0b5623090(type, this));
         if (elements && elements.length) return elements[0];
     }
     /**
@@ -7250,17 +7602,17 @@ class $ea0d85645d70082e$export$893c88c42e3630f9 {
         };
         //determine if this is a vega scene
         if (scene.marktype) {
-            stage = $c1310db02f4288e1$export$afa8810fbe5c2601(scene.view);
-            $d9ef5a15271c747a$export$d78988dba6734aaa(options, stage, scene);
+            stage = $f92b17f7c58b7db2$export$afa8810fbe5c2601(scene.view);
+            $11061d343abd81ad$export$d78988dba6734aaa(options, stage, scene);
         } else stage = sceneOrStage;
         if (!this.deckgl) {
-            const classes = $6b870fea42087cfb$export$cc8b65d27ce6adb1({
+            const classes = $34af937a047fac77$export$cc8b65d27ce6adb1({
                 doubleClickHandler: ()=>{
                     this.homeCamera();
                 }
             });
             this.OrbitControllerClass = classes.OrbitControllerClass;
-            const initialViewState = $493c93bdb6bf74d0$export$cf597f89e136a2d7(height, width, stage.view);
+            const initialViewState = $594341a651cbc75e$export$cf597f89e136a2d7(height, width, stage.view);
             let glOptions;
             if (config && config.preserveDrawingBuffer) glOptions = {
                 preserveDrawingBuffer: true
@@ -7269,16 +7621,16 @@ class $ea0d85645d70082e$export$893c88c42e3630f9 {
                 glOptions: glOptions,
                 height: null,
                 width: null,
-                effects: $4c0f820b8a5ee723$export$ecab656a5b486b67(),
+                effects: $1e51c74754ca699b$export$ecab656a5b486b67(),
                 layers: [],
                 onClick: config && config.onLayerClick,
                 views: [
-                    new $1ce8acf0567070a9$export$e2253033e6e1df16.deck.OrbitView({
-                        controller: $1ce8acf0567070a9$export$e2253033e6e1df16.deck.OrbitController
+                    new $aa3185d2619292b0$export$e2253033e6e1df16.deck.OrbitView({
+                        controller: $aa3185d2619292b0$export$e2253033e6e1df16.deck.OrbitController
                     })
                 ],
                 initialViewState: initialViewState,
-                container: this.getElement($4a30ac4383cd199c$export$79420be32f83a5b0.gl),
+                container: this.getElement($753ee753424d27f3$export$79420be32f83a5b0.gl),
                 getCursor: (interactiveState)=>{
                     if (interactiveState.onText || interactiveState.onAxisSelection) return 'pointer';
                     else if (interactiveState.onCube) return 'default';
@@ -7286,7 +7638,7 @@ class $ea0d85645d70082e$export$893c88c42e3630f9 {
                 }
             };
             if (stage.backgroundColor) deckProps.style = {
-                'background-color': $e69d5c649de4e105$export$f86d83653e5a505e(stage.backgroundColor)
+                'background-color': $50dbc0324e10cd45$export$f86d83653e5a505e(stage.backgroundColor)
             };
             this.deckgl = new classes.DeckGL_Class(deckProps);
         }
@@ -7302,15 +7654,15 @@ class $ea0d85645d70082e$export$893c88c42e3630f9 {
                     0
                 ] // possibly a bug in Deck.gl? set color to invisible.
             };
-            stage.cubeData = $8d90f67a0032cf69$export$9a79ca9001afcc6d(cubeCount, empty, stage.cubeData);
+            stage.cubeData = $e1a1227365f38150$export$9a79ca9001afcc6d(cubeCount, empty, stage.cubeData);
         }
         this.setDeckProps(stage, height, width, cubeCount, config);
-        const a = $9f51d2c38d8bad2e$export$5ec2c407fb44f02();
-        $9f51d2c38d8bad2e$export$186d02efde07ef98($cb6a361036c2ca73$export$b0b33bcc0f604685({
+        const a = $1ba1ba975a1b16e7$export$5ec2c407fb44f02();
+        $1ba1ba975a1b16e7$export$186d02efde07ef98($3f8bb403fc935058$export$b0b33bcc0f604685({
             legend: stage.legend,
             onClick: config && config.onLegendClick
-        }), this.getElement($4a30ac4383cd199c$export$79420be32f83a5b0.legend));
-        $9f51d2c38d8bad2e$export$7d007ff58288f238(a);
+        }), this.getElement($753ee753424d27f3$export$79420be32f83a5b0.legend));
+        $1ba1ba975a1b16e7$export$7d007ff58288f238(a);
         if (config && config.onPresent) config.onPresent();
     }
     /**
@@ -7348,7 +7700,7 @@ class $ea0d85645d70082e$export$893c88c42e3630f9 {
         };
     }
     setDeckProps(stage1, height2, width2, cubeCount1, modifyConfig1) {
-        const config = $88197c4abcc50579$export$6969335ea1e4e77c($c1310db02f4288e1$export$200f593236aebbdc, modifyConfig1);
+        const config = $b225001aee342575$export$6969335ea1e4e77c($f92b17f7c58b7db2$export$200f593236aebbdc, modifyConfig1);
         const newBounds = this.isNewBounds(stage1.view, height2, width2, cubeCount1);
         //let lightSettings = this.style.lightSettings[stage.view];
         let lightingMix = stage1.view === '3d' ? 1 : 0;
@@ -7363,10 +7715,10 @@ class $ea0d85645d70082e$export$893c88c42e3630f9 {
                 width2 = result.width;
                 if (result.newViewStateTarget !== undefined) newViewStateTarget = result.newViewStateTarget;
             }
-            if (!viewState || newViewStateTarget) viewState = $493c93bdb6bf74d0$export$cf597f89e136a2d7(height2, width2, stage1.view);
-            const oldCubeLayer = $067e5990472a3889$export$ccecd364047ec381(this.deckgl.props);
+            if (!viewState || newViewStateTarget) viewState = $594341a651cbc75e$export$cf597f89e136a2d7(height2, width2, stage1.view);
+            const oldCubeLayer = $96e705a481cefebf$export$ccecd364047ec381(this.deckgl.props);
             if (oldCubeLayer) {
-                linearInterpolator = new $9b58e3b906145ddd$export$19db461e577de3cc($493c93bdb6bf74d0$export$19551db75f175e3);
+                linearInterpolator = new $70855a91bf04cf42$export$19db461e577de3cc($594341a651cbc75e$export$19551db75f175e3);
                 linearInterpolator.layerStartProps = {
                     lightingMix: oldCubeLayer.props.lightingMix
                 };
@@ -7374,19 +7726,19 @@ class $ea0d85645d70082e$export$893c88c42e3630f9 {
                     lightingMix: lightingMix
                 };
                 viewState.transitionDuration = config.transitionDurations.view;
-                viewState.transitionEasing = $6a279cee8154583c$export$24c5ac7c37452e7d;
+                viewState.transitionEasing = $65ec70cb7a1acea0$export$24c5ac7c37452e7d;
                 viewState.transitionInterpolator = linearInterpolator;
             }
             stage1.view;
         }
-        const guideLines = this._showGuides && $52e05509529017b2$export$827f4ee28efc37(0, 0, height2, width2, '#0f0', 1, true);
+        const guideLines = this._showGuides && $815fc47e4dad6ae3$export$827f4ee28efc37(0, 0, height2, width2, '#0f0', 1, true);
         config.preLayer && config.preLayer(stage1);
-        const layers = $067e5990472a3889$export$61f6a9c831786408(this, config, stage1, /*lightSettings*/ null, lightingMix, linearInterpolator, guideLines);
+        const layers = $96e705a481cefebf$export$61f6a9c831786408(this, config, stage1, /*lightSettings*/ null, lightingMix, linearInterpolator, guideLines);
         const deckProps = {
-            effects: $4c0f820b8a5ee723$export$ecab656a5b486b67(),
+            effects: $1e51c74754ca699b$export$ecab656a5b486b67(),
             views: [
-                new $1ce8acf0567070a9$export$e2253033e6e1df16.deck.OrbitView({
-                    controller: $1ce8acf0567070a9$export$e2253033e6e1df16.deck.OrbitController
+                new $aa3185d2619292b0$export$e2253033e6e1df16.deck.OrbitView({
+                    controller: $aa3185d2619292b0$export$e2253033e6e1df16.deck.OrbitController
                 })
             ],
             initialViewState: viewState,
@@ -7421,12 +7773,12 @@ class $ea0d85645d70082e$export$893c88c42e3630f9 {
     /**
      * Home the camera to the last initial position.
      */ homeCamera() {
-        const viewState = $493c93bdb6bf74d0$export$cf597f89e136a2d7(this._last.height, this._last.width, this._last.view);
-        viewState.transitionDuration = $c1310db02f4288e1$export$200f593236aebbdc.transitionDurations.view;
-        viewState.transitionEasing = $6a279cee8154583c$export$24c5ac7c37452e7d;
-        viewState.transitionInterpolator = new $9b58e3b906145ddd$export$19db461e577de3cc($493c93bdb6bf74d0$export$19551db75f175e3);
+        const viewState = $594341a651cbc75e$export$cf597f89e136a2d7(this._last.height, this._last.width, this._last.view);
+        viewState.transitionDuration = $f92b17f7c58b7db2$export$200f593236aebbdc.transitionDurations.view;
+        viewState.transitionEasing = $65ec70cb7a1acea0$export$24c5ac7c37452e7d;
+        viewState.transitionInterpolator = new $70855a91bf04cf42$export$19db461e577de3cc($594341a651cbc75e$export$19551db75f175e3);
         const deckProps = {
-            effects: $4c0f820b8a5ee723$export$ecab656a5b486b67(),
+            effects: $1e51c74754ca699b$export$ecab656a5b486b67(),
             views: this.deckgl.props.views,
             initialViewState: viewState,
             layers: this.deckgl.props.layers
@@ -7436,13 +7788,13 @@ class $ea0d85645d70082e$export$893c88c42e3630f9 {
     /**
      * Get cube data array from the cubes layer.
      */ getCubeData() {
-        return $067e5990472a3889$export$fa1ee03f26227b34(this.deckgl.props);
+        return $96e705a481cefebf$export$fa1ee03f26227b34(this.deckgl.props);
     }
     /**
      * Show guidelines of rendering height/width and center of OrbitView.
      */ showGuides() {
         this._showGuides = true;
-        this.getElement($4a30ac4383cd199c$export$79420be32f83a5b0.gl).classList.add('show-center');
+        this.getElement($753ee753424d27f3$export$79420be32f83a5b0.gl).classList.add('show-center');
         this.rePresent(Object.assign(Object.assign({
         }, this._last.stage), {
             cubeData: this.getCubeData()
@@ -7467,9 +7819,9 @@ class $ea0d85645d70082e$export$893c88c42e3630f9 {
 
 
 //pass in the SuperClass, which should be a vega.View
-function $d390c9b37c6fefe2$var$_RendererGl(loader) {
+function $a291b2a9e886f07f$var$_RendererGl(loader) {
     //dynamic superclass, since we don't know have vega.View in the declaration phase
-    class RendererGlInternal extends $1ce8acf0567070a9$export$e2253033e6e1df16.vega.Renderer {
+    class RendererGlInternal extends $aa3185d2619292b0$export$e2253033e6e1df16.vega.Renderer {
         initialize(el, width, height, origin) {
             this.height = height;
             this.width = width;
@@ -7495,16 +7847,16 @@ function $d390c9b37c6fefe2$var$_RendererGl(loader) {
     const instance = new RendererGlInternal(loader);
     return instance;
 }
-const $d390c9b37c6fefe2$export$ca9a02b0553384e7 = $d390c9b37c6fefe2$var$_RendererGl;
+const $a291b2a9e886f07f$export$ca9a02b0553384e7 = $a291b2a9e886f07f$var$_RendererGl;
 
 
-let $70f68e5f1326a051$var$registered = false;
+let $fe59b525f658c489$var$registered = false;
 //dynamic superclass lets us create a subclass at execution phase instead of declaration phase.
 //This allows us to retrieve vega.View from either UMD or ES6 consumers of this class.
 //pass in the SuperClass, which should be a vega.View
-function $70f68e5f1326a051$var$_ViewGl(runtime, config) {
+function $fe59b525f658c489$var$_ViewGl(runtime, config) {
     //dynamic superclass, since we don't know have vega.View in the declaration phase
-    class ViewGlInternal extends $1ce8acf0567070a9$export$e2253033e6e1df16.vega.View {
+    class ViewGlInternal extends $aa3185d2619292b0$export$e2253033e6e1df16.vega.View {
         constructor(runtime1, config1 = {
         }){
             super(runtime1, config1);
@@ -7520,23 +7872,23 @@ function $70f68e5f1326a051$var$_ViewGl(runtime, config) {
         renderer(...args) {
             if (args && args.length) {
                 const renderer = args[0];
-                if (renderer === 'deck.gl' && !$70f68e5f1326a051$var$registered) {
-                    $1ce8acf0567070a9$export$e2253033e6e1df16.vega.renderModule('deck.gl', {
-                        handler: $1ce8acf0567070a9$export$e2253033e6e1df16.vega.CanvasHandler,
-                        renderer: $d390c9b37c6fefe2$export$ca9a02b0553384e7
+                if (renderer === 'deck.gl' && !$fe59b525f658c489$var$registered) {
+                    $aa3185d2619292b0$export$e2253033e6e1df16.vega.renderModule('deck.gl', {
+                        handler: $aa3185d2619292b0$export$e2253033e6e1df16.vega.CanvasHandler,
+                        renderer: $a291b2a9e886f07f$export$ca9a02b0553384e7
                     });
-                    $70f68e5f1326a051$var$registered = true;
+                    $fe59b525f658c489$var$registered = true;
                 }
                 return super.renderer(renderer);
             } else return super.renderer();
         }
         initialize(el) {
-            if (!this.presenter) this.presenter = new $ea0d85645d70082e$export$893c88c42e3630f9(el);
-            super.initialize(this.presenter.getElement($4a30ac4383cd199c$export$79420be32f83a5b0.vegaControls));
+            if (!this.presenter) this.presenter = new $586113946f2266a2$export$893c88c42e3630f9(el);
+            super.initialize(this.presenter.getElement($753ee753424d27f3$export$79420be32f83a5b0.vegaControls));
             const renderer = this._renderer;
             renderer.presenterConfig = this.config.presenterConfig;
             renderer.presenter = this.presenter;
-            renderer.getView = this.config && this.config.getView || (()=>this.presenter.view || $c1310db02f4288e1$export$93acc5219d6538bb
+            renderer.getView = this.config && this.config.getView || (()=>this.presenter.view || $f92b17f7c58b7db2$export$93acc5219d6538bb
             );
             return this;
         }
@@ -7547,22 +7899,22 @@ function $70f68e5f1326a051$var$_ViewGl(runtime, config) {
     const instance = new ViewGlInternal(runtime, config);
     return instance;
 }
-const $70f68e5f1326a051$export$6d8f9057dcd7f9e6 = $70f68e5f1326a051$var$_ViewGl;
+const $fe59b525f658c489$export$6d8f9057dcd7f9e6 = $fe59b525f658c489$var$_ViewGl;
 
 
 
-$parcel$exportWildcard($04e538fe2709dad5$exports, $4a30ac4383cd199c$exports);
+$parcel$exportWildcard($fe0c42722799ef8c$exports, $753ee753424d27f3$exports);
 
 
-const { defaultPresenterConfig: $44cb48d9f5894b55$var$defaultPresenterConfig , defaultPresenterStyle: $44cb48d9f5894b55$var$defaultPresenterStyle  } = $c1310db02f4288e1$exports;
-const { desaturate: $44cb48d9f5894b55$var$desaturate  } = $2ceb34bf05dc5b6f$exports;
-const $44cb48d9f5894b55$export$fb736e4909afb3d7 = {
+const { defaultPresenterConfig: $39c8d1d23f762a7c$var$defaultPresenterConfig , defaultPresenterStyle: $39c8d1d23f762a7c$var$defaultPresenterStyle  } = $f92b17f7c58b7db2$exports;
+const { desaturate: $39c8d1d23f762a7c$var$desaturate  } = $357cda13648d25b4$exports;
+const $39c8d1d23f762a7c$export$fb736e4909afb3d7 = {
     colors: {
         activeCube: 'purple',
-        defaultCube: $2ceb34bf05dc5b6f$exports.colorToString($44cb48d9f5894b55$var$defaultPresenterStyle.defaultCubeColor),
-        hoveredCube: $2ceb34bf05dc5b6f$exports.colorToString($44cb48d9f5894b55$var$defaultPresenterStyle.highlightColor),
+        defaultCube: $357cda13648d25b4$exports.colorToString($39c8d1d23f762a7c$var$defaultPresenterStyle.defaultCubeColor),
+        hoveredCube: $357cda13648d25b4$exports.colorToString($39c8d1d23f762a7c$var$defaultPresenterStyle.highlightColor),
         selectedCube: 'yellow',
-        axisSelectHighlight: $2ceb34bf05dc5b6f$exports.colorToString([
+        axisSelectHighlight: $357cda13648d25b4$exports.colorToString([
             128,
             128,
             128,
@@ -7571,7 +7923,7 @@ const $44cb48d9f5894b55$export$fb736e4909afb3d7 = {
         axisLine: '#000',
         axisText: '#000',
         unselectedColorMethod: (color)=>{
-            const c = $44cb48d9f5894b55$var$desaturate(color, 0.05);
+            const c = $39c8d1d23f762a7c$var$desaturate(color, 0.05);
             c[3] = 171;
             return c;
         }
@@ -7623,26 +7975,26 @@ const $44cb48d9f5894b55$export$fb736e4909afb3d7 = {
     //console.log(`UnitVisViewer errors: ${errors.join('\n')}`);
     },
     transitionDurations: Object.assign(Object.assign({
-    }, $44cb48d9f5894b55$var$defaultPresenterConfig.transitionDurations), {
+    }, $39c8d1d23f762a7c$var$defaultPresenterConfig.transitionDurations), {
         scope: 600
     }),
     selectionPolygonZ: -1,
     tickSize: 10
 };
-function $44cb48d9f5894b55$export$c4db461e5e345a8(options) {
+function $39c8d1d23f762a7c$export$c4db461e5e345a8(options) {
     var style = {
-        cssPrefix: $44cb48d9f5894b55$export$f0d47e1c119d5bf2,
+        cssPrefix: $39c8d1d23f762a7c$export$f0d47e1c119d5bf2,
         fontFamily: options.fontFamily,
-        defaultCubeColor: $2ceb34bf05dc5b6f$exports.colorFromString(options.colors.defaultCube)
+        defaultCubeColor: $357cda13648d25b4$exports.colorFromString(options.colors.defaultCube)
     };
-    if (options.colors.hoveredCube) style.highlightColor = $2ceb34bf05dc5b6f$exports.colorFromString(options.colors.hoveredCube);
+    if (options.colors.hoveredCube) style.highlightColor = $357cda13648d25b4$exports.colorFromString(options.colors.hoveredCube);
     //if (options.lightSettings) {
     // style.lightSettings = options.lightSettings;
     //}
     return style;
 }
-const $44cb48d9f5894b55$export$f0d47e1c119d5bf2 = 'sanddance-';
-const $44cb48d9f5894b55$export$1641cdccd8d44edd = {
+const $39c8d1d23f762a7c$export$f0d47e1c119d5bf2 = 'sanddance-';
+const $39c8d1d23f762a7c$export$1641cdccd8d44edd = {
     black: '#212121',
     gray: '#D2D2D2',
     blue: '#0060F0',
@@ -7652,12 +8004,12 @@ const $44cb48d9f5894b55$export$1641cdccd8d44edd = {
 };
 
 
-function $a95be51749eaea4c$export$81adea670bebefbe(columnName, includeVegaDeckGLFields = false) {
+function $e76dbaf7a95e1712$export$81adea670bebefbe(columnName, includeVegaDeckGLFields = false) {
     if (includeVegaDeckGLFields) {
-        if (columnName === $fdf690fb8cecad22$export$5672246984822a29) return true;
+        if (columnName === $7abff30d903026d9$export$5672246984822a29) return true;
     }
-    for(let f in $f1d0eeb6595c811e$export$10df5429b7082be2){
-        if (columnName === $f1d0eeb6595c811e$export$10df5429b7082be2[f]) return true;
+    for(let f in $5026337cfcb4b996$export$10df5429b7082be2){
+        if (columnName === $5026337cfcb4b996$export$10df5429b7082be2[f]) return true;
     }
     return false;
 }
@@ -7666,62 +8018,62 @@ function $a95be51749eaea4c$export$81adea670bebefbe(columnName, includeVegaDeckGL
 
 
 
-const $2696a83cde1f067b$var$dualPairs = [
+const $d5cc309f57ea9332$var$dualPairs = [
     [
-        $44cb48d9f5894b55$export$1641cdccd8d44edd.black,
-        $44cb48d9f5894b55$export$1641cdccd8d44edd.gray
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.black,
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.gray
     ],
     [
-        $44cb48d9f5894b55$export$1641cdccd8d44edd.red,
-        $44cb48d9f5894b55$export$1641cdccd8d44edd.green
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.red,
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.green
     ],
     [
-        $44cb48d9f5894b55$export$1641cdccd8d44edd.red,
-        $44cb48d9f5894b55$export$1641cdccd8d44edd.blue
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.red,
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.blue
     ],
     [
-        $44cb48d9f5894b55$export$1641cdccd8d44edd.black,
-        $44cb48d9f5894b55$export$1641cdccd8d44edd.red
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.black,
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.red
     ],
     [
-        $44cb48d9f5894b55$export$1641cdccd8d44edd.black,
-        $44cb48d9f5894b55$export$1641cdccd8d44edd.orange
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.black,
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.orange
     ],
     [
-        $44cb48d9f5894b55$export$1641cdccd8d44edd.black,
-        $44cb48d9f5894b55$export$1641cdccd8d44edd.green
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.black,
+        $39c8d1d23f762a7c$export$1641cdccd8d44edd.green
     ]
 ];
-const $2696a83cde1f067b$export$2ad73d393c16f81c = [
+const $d5cc309f57ea9332$export$2ad73d393c16f81c = [
     {
-        scheme: $f1d0eeb6595c811e$export$c991c3dd58d9959c,
+        scheme: $5026337cfcb4b996$export$c991c3dd58d9959c,
         colors: [
-            $44cb48d9f5894b55$export$fb736e4909afb3d7.colors.defaultCube
+            $39c8d1d23f762a7c$export$fb736e4909afb3d7.colors.defaultCube
         ]
     }
 ];
-$2696a83cde1f067b$var$createDualColorSchemes();
-function $2696a83cde1f067b$export$3030070885af9365(vega) {
-    $2696a83cde1f067b$export$2ad73d393c16f81c.forEach((cs)=>{
+$d5cc309f57ea9332$var$createDualColorSchemes();
+function $d5cc309f57ea9332$export$3030070885af9365(vega) {
+    $d5cc309f57ea9332$export$2ad73d393c16f81c.forEach((cs)=>{
         if (cs.colors.length === 1) vega.scheme(cs.scheme, (x)=>cs.colors[0]
         );
         else vega.scheme(cs.scheme, cs.colors);
     });
 }
-function $2696a83cde1f067b$var$createPair(names, colors) {
+function $d5cc309f57ea9332$var$createPair(names, colors) {
     const scheme = `dual_${names[0]}${names[1]}`;
-    $2696a83cde1f067b$export$2ad73d393c16f81c.push({
+    $d5cc309f57ea9332$export$2ad73d393c16f81c.push({
         scheme: scheme,
         colors: colors
     });
 }
-function $2696a83cde1f067b$var$createDualColorSchemes() {
-    $2696a83cde1f067b$var$dualPairs.forEach((colors)=>{
+function $d5cc309f57ea9332$var$createDualColorSchemes() {
+    $d5cc309f57ea9332$var$dualPairs.forEach((colors)=>{
         const names = colors.map((color)=>{
-            for(let key in $44cb48d9f5894b55$export$1641cdccd8d44edd)if (color === $44cb48d9f5894b55$export$1641cdccd8d44edd[key]) return key;
+            for(let key in $39c8d1d23f762a7c$export$1641cdccd8d44edd)if (color === $39c8d1d23f762a7c$export$1641cdccd8d44edd[key]) return key;
         });
-        $2696a83cde1f067b$var$createPair(names, colors);
-        $2696a83cde1f067b$var$createPair([
+        $d5cc309f57ea9332$var$createPair(names, colors);
+        $d5cc309f57ea9332$var$createPair([
             ...names
         ].reverse(), [
             ...colors
@@ -7731,17 +8083,17 @@ function $2696a83cde1f067b$var$createDualColorSchemes() {
 
 
 
-var $ba3b66095ea7d77f$exports = {};
+var $83151626e84e84c0$exports = {};
 
-$parcel$export($ba3b66095ea7d77f$exports, "Viewer", () => $ba3b66095ea7d77f$export$2ec4afd9b3c16a85, (v) => $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 = v);
-var $2bca70a612b52504$export$d9e571576e98a7ab;
+$parcel$export($83151626e84e84c0$exports, "Viewer", () => $83151626e84e84c0$export$2ec4afd9b3c16a85, (v) => $83151626e84e84c0$export$2ec4afd9b3c16a85 = v);
+var $b2e0f82d9487be27$export$d9e571576e98a7ab;
 (function(DataLayoutChange) {
     DataLayoutChange[DataLayoutChange["same"] = 0] = "same";
     DataLayoutChange[DataLayoutChange["reset"] = 1] = "reset";
     DataLayoutChange[DataLayoutChange["refine"] = 2] = "refine";
-})($2bca70a612b52504$export$d9e571576e98a7ab || ($2bca70a612b52504$export$d9e571576e98a7ab = {
+})($b2e0f82d9487be27$export$d9e571576e98a7ab || ($b2e0f82d9487be27$export$d9e571576e98a7ab = {
 }));
-class $2bca70a612b52504$export$c774d8c9d4e9e234 {
+class $b2e0f82d9487be27$export$c774d8c9d4e9e234 {
     constructor(dataScope, props){
         this.dataScope = dataScope;
         this.props = props;
@@ -7749,14 +8101,14 @@ class $2bca70a612b52504$export$c774d8c9d4e9e234 {
     select(search) {
         return new Promise((resolve, reject)=>{
             this.dataScope.select(search);
-            this.props.onDataChanged($2bca70a612b52504$export$d9e571576e98a7ab.same);
+            this.props.onDataChanged($b2e0f82d9487be27$export$d9e571576e98a7ab.same);
             resolve();
         });
     }
     deselect() {
         return new Promise((resolve, reject)=>{
             this.dataScope.deselect();
-            this.props.onDataChanged($2bca70a612b52504$export$d9e571576e98a7ab.same);
+            this.props.onDataChanged($b2e0f82d9487be27$export$d9e571576e98a7ab.same);
             resolve();
         });
     }
@@ -7764,10 +8116,10 @@ class $2bca70a612b52504$export$c774d8c9d4e9e234 {
         if (rebase) this.dataScope.collapse(false, keepData);
         this.dataScope.collapse(true, collapseData);
         return new Promise((resolve, reject)=>{
-            this.props.onAnimateDataChange($2bca70a612b52504$export$d9e571576e98a7ab.refine, 'before refine', 'refine').then(()=>{
+            this.props.onAnimateDataChange($b2e0f82d9487be27$export$d9e571576e98a7ab.refine, 'before refine', 'refine').then(()=>{
                 this.dataScope.deselect();
                 this.dataScope.setFilteredData(keepData);
-                this.props.onDataChanged($2bca70a612b52504$export$d9e571576e98a7ab.refine, search1);
+                this.props.onDataChanged($b2e0f82d9487be27$export$d9e571576e98a7ab.refine, search1);
                 resolve();
             }).catch(reject);
         });
@@ -7776,9 +8128,9 @@ class $2bca70a612b52504$export$c774d8c9d4e9e234 {
         return new Promise((resolve, reject)=>{
             this.dataScope.deselect();
             this.dataScope.setFilteredData(null);
-            this.props.onAnimateDataChange($2bca70a612b52504$export$d9e571576e98a7ab.reset, 'before reset', 'reset').then(()=>{
+            this.props.onAnimateDataChange($b2e0f82d9487be27$export$d9e571576e98a7ab.reset, 'before reset', 'reset').then(()=>{
                 this.dataScope.collapse(false);
-                this.props.onDataChanged($2bca70a612b52504$export$d9e571576e98a7ab.reset);
+                this.props.onDataChanged($b2e0f82d9487be27$export$d9e571576e98a7ab.reset);
                 resolve();
             }).catch(reject);
         });
@@ -7786,14 +8138,14 @@ class $2bca70a612b52504$export$c774d8c9d4e9e234 {
     activate(datum) {
         return new Promise((resolve, reject)=>{
             this.dataScope.activate(datum);
-            this.props.onDataChanged($2bca70a612b52504$export$d9e571576e98a7ab.same);
+            this.props.onDataChanged($b2e0f82d9487be27$export$d9e571576e98a7ab.same);
             resolve();
         });
     }
     deactivate() {
         return new Promise((resolve, reject)=>{
             this.dataScope.deactivate();
-            this.props.onDataChanged($2bca70a612b52504$export$d9e571576e98a7ab.same);
+            this.props.onDataChanged($b2e0f82d9487be27$export$d9e571576e98a7ab.same);
             resolve();
         });
     }
@@ -7801,9 +8153,9 @@ class $2bca70a612b52504$export$c774d8c9d4e9e234 {
 
 
 
-function $6f93f00cb9e36978$var$cloneAxis(axes, axisColor, axisTextColor) {
+function $100a640a591eda90$var$cloneAxis(axes, axisColor, axisTextColor) {
     return axes.map((axis)=>{
-        const newAxis = $2ceb34bf05dc5b6f$exports.deepMerge(axis);
+        const newAxis = $357cda13648d25b4$exports.deepMerge(axis);
         if (newAxis.domain) newAxis.domain.color = axisColor;
         if (newAxis.title) newAxis.title.color = axisTextColor;
         newAxis.ticks.forEach((t)=>{
@@ -7815,7 +8167,7 @@ function $6f93f00cb9e36978$var$cloneAxis(axes, axisColor, axisTextColor) {
         return newAxis;
     });
 }
-function $6f93f00cb9e36978$var$cloneTextData(textData, color) {
+function $100a640a591eda90$var$cloneTextData(textData, color) {
     return textData.map((t)=>{
         return Object.assign(Object.assign({
         }, t), {
@@ -7823,21 +8175,21 @@ function $6f93f00cb9e36978$var$cloneTextData(textData, color) {
         });
     });
 }
-function $6f93f00cb9e36978$export$bb42b694d535c95a(stage, oldColors, newColors) {
+function $100a640a591eda90$export$bb42b694d535c95a(stage, oldColors, newColors) {
     const hasNewLineColor = newColors.axisLine && newColors.axisLine !== oldColors.axisLine;
     const hasNewTextColor = newColors.axisText && newColors.axisText !== oldColors.axisText;
     let axes;
     let textData;
     if (hasNewLineColor || hasNewTextColor) {
-        const lineColor = $2ceb34bf05dc5b6f$exports.colorFromString(newColors.axisLine || oldColors.axisLine);
-        const textColor = $2ceb34bf05dc5b6f$exports.colorFromString(newColors.axisText || oldColors.axisText);
+        const lineColor = $357cda13648d25b4$exports.colorFromString(newColors.axisLine || oldColors.axisLine);
+        const textColor = $357cda13648d25b4$exports.colorFromString(newColors.axisText || oldColors.axisText);
         axes = {
-            x: $6f93f00cb9e36978$var$cloneAxis(stage.axes.x, lineColor, textColor),
-            y: $6f93f00cb9e36978$var$cloneAxis(stage.axes.y, lineColor, textColor),
-            z: $6f93f00cb9e36978$var$cloneAxis(stage.axes.z, lineColor, textColor)
+            x: $100a640a591eda90$var$cloneAxis(stage.axes.x, lineColor, textColor),
+            y: $100a640a591eda90$var$cloneAxis(stage.axes.y, lineColor, textColor),
+            z: $100a640a591eda90$var$cloneAxis(stage.axes.z, lineColor, textColor)
         };
     }
-    if (hasNewTextColor) textData = $6f93f00cb9e36978$var$cloneTextData(stage.textData, $2ceb34bf05dc5b6f$exports.colorFromString(newColors.axisText));
+    if (hasNewTextColor) textData = $100a640a591eda90$var$cloneTextData(stage.textData, $357cda13648d25b4$exports.colorFromString(newColors.axisText));
     return {
         axes: axes,
         textData: textData
@@ -7845,11 +8197,11 @@ function $6f93f00cb9e36978$export$bb42b694d535c95a(stage, oldColors, newColors) 
 }
 
 
-function $40a4d3743e70c46b$export$cb7265fd11709ea(niceValue) {
+function $c5b8e018283877d4$export$cb7265fd11709ea(niceValue) {
     //convert "nice" numbers to numeric value
     return (niceValue + '').replace(/[\s,]/g, '');
 }
-function $40a4d3743e70c46b$var$tickValue(axis, i) {
+function $c5b8e018283877d4$var$tickValue(axis, i) {
     const tick = axis.tickText[i];
     let value;
     if (tick) value = axis.tickText[i].value;
@@ -7858,15 +8210,15 @@ function $40a4d3743e70c46b$var$tickValue(axis, i) {
         value: value
     };
 }
-function $40a4d3743e70c46b$export$1be0843eea5393e4(column) {
+function $c5b8e018283877d4$export$1be0843eea5393e4(column) {
     const searchExpression = {
         name: column.name,
         operator: 'isnullorEmpty'
     };
     return searchExpression;
 }
-function $40a4d3743e70c46b$export$8543b98d22318eca(column, value) {
-    if (value == null) return $40a4d3743e70c46b$export$1be0843eea5393e4(column);
+function $c5b8e018283877d4$export$8543b98d22318eca(column, value) {
+    if (value == null) return $c5b8e018283877d4$export$1be0843eea5393e4(column);
     const searchExpression = {
         name: column.name,
         operator: '==',
@@ -7874,7 +8226,7 @@ function $40a4d3743e70c46b$export$8543b98d22318eca(column, value) {
     };
     return searchExpression;
 }
-function $40a4d3743e70c46b$export$e531b549585c011c(column, values) {
+function $c5b8e018283877d4$export$e531b549585c011c(column, values) {
     const expressions = values.map((value, i)=>{
         const searchExpression = {
             name: column.name,
@@ -7889,11 +8241,11 @@ function $40a4d3743e70c46b$export$e531b549585c011c(column, values) {
     };
     return searchExpressionGroup;
 }
-function $40a4d3743e70c46b$export$64b81e116b959f8a(axis, column, i) {
-    const result = $40a4d3743e70c46b$var$tickValue(axis, i);
-    if (result.tick) return $40a4d3743e70c46b$export$8543b98d22318eca(column, result.value);
+function $c5b8e018283877d4$export$64b81e116b959f8a(axis, column, i) {
+    const result = $c5b8e018283877d4$var$tickValue(axis, i);
+    if (result.tick) return $c5b8e018283877d4$export$8543b98d22318eca(column, result.value);
 }
-function $40a4d3743e70c46b$export$8bb38a473c12645e(column, lowValue, highValue, lowOperator = '>=', highOperator = '<') {
+function $c5b8e018283877d4$export$8bb38a473c12645e(column, lowValue, highValue, lowOperator = '>=', highOperator = '<') {
     const expressions = [];
     if (lowValue !== undefined) expressions.push({
         name: column.name,
@@ -7911,19 +8263,19 @@ function $40a4d3743e70c46b$export$8bb38a473c12645e(column, lowValue, highValue, 
     };
     return searchExpressionGroup;
 }
-function $40a4d3743e70c46b$export$80908cccce4a97cb(axis, column, i) {
-    const low = $40a4d3743e70c46b$var$tickValue(axis, i);
-    const high = $40a4d3743e70c46b$var$tickValue(axis, i + 1);
-    return $40a4d3743e70c46b$export$8bb38a473c12645e(column, low.value, high.value);
+function $c5b8e018283877d4$export$80908cccce4a97cb(axis, column, i) {
+    const low = $c5b8e018283877d4$var$tickValue(axis, i);
+    const high = $c5b8e018283877d4$var$tickValue(axis, i + 1);
+    return $c5b8e018283877d4$export$8bb38a473c12645e(column, low.value, high.value);
 }
 
 
 
 
-const { allTruthy: $7cc29404e6278a35$export$84af6d08e329f176 , concat: $7cc29404e6278a35$export$ee1b3e54f0441b22 , push: $7cc29404e6278a35$export$4cbf152802aa238  } = $2ceb34bf05dc5b6f$exports;
+const { allTruthy: $2e0a1087c0e4ef8e$export$84af6d08e329f176 , concat: $2e0a1087c0e4ef8e$export$ee1b3e54f0441b22 , push: $2e0a1087c0e4ef8e$export$4cbf152802aa238  } = $357cda13648d25b4$exports;
 
 
-function $a941725538301345$export$cb06c97de370398d(search) {
+function $35851ba40c014310$export$cb06c97de370398d(search) {
     let group;
     const vegaSearch = search;
     if (Array.isArray(vegaSearch)) {
@@ -7932,9 +8284,9 @@ function $a941725538301345$export$cb06c97de370398d(search) {
             expressions: []
         };
         vegaSearch.forEach((g)=>{
-            const clonedExpressions = $2ceb34bf05dc5b6f$exports.clone(g.expressions).filter(Boolean);
+            const clonedExpressions = $357cda13648d25b4$exports.clone(g.expressions).filter(Boolean);
             clonedExpressions[0].clause = '&&';
-            $7cc29404e6278a35$export$4cbf152802aa238(group.expressions, clonedExpressions);
+            $2e0a1087c0e4ef8e$export$4cbf152802aa238(group.expressions, clonedExpressions);
         });
     } else group = vegaSearch ? {
         expressions: vegaSearch.expressions.filter(Boolean)
@@ -7945,21 +8297,21 @@ function $a941725538301345$export$cb06c97de370398d(search) {
 
 
 
-function $fea98e7a9824fc67$export$7aba45edad9b8473(presenter, specCapabilities, columns, stage, clickHandler, highlightColor, polygonZ) {
+function $e03f28a3d2eff4a5$export$7aba45edad9b8473(presenter, specCapabilities, columns, stage, clickHandler, highlightColor, polygonZ) {
     const polygons = [];
     const xRole = specCapabilities.roles.filter((r)=>r.role === 'x'
     )[0];
     if (xRole && xRole.axisSelection) stage.axes.x.filter((axis)=>axis.tickText.length
     ).forEach((axis)=>{
-        polygons.push.apply(polygons, $fea98e7a9824fc67$var$axisSelectionPolygons(axis, false, xRole.axisSelection, columns.x));
+        polygons.push.apply(polygons, $e03f28a3d2eff4a5$var$axisSelectionPolygons(axis, false, xRole.axisSelection, columns.x));
     });
     const yRole = specCapabilities.roles.filter((r)=>r.role === 'y'
     )[0];
     if (yRole && yRole.axisSelection) stage.axes.y.filter((axis)=>axis.tickText.length
     ).forEach((axis)=>{
-        polygons.push.apply(polygons, $fea98e7a9824fc67$var$axisSelectionPolygons(axis, true, yRole.axisSelection, columns.y));
+        polygons.push.apply(polygons, $e03f28a3d2eff4a5$var$axisSelectionPolygons(axis, true, yRole.axisSelection, columns.y));
     });
-    if (stage.facets && columns.facet) polygons.push.apply(polygons, $fea98e7a9824fc67$var$facetSelectionPolygons(stage.facets));
+    if (stage.facets && columns.facet) polygons.push.apply(polygons, $e03f28a3d2eff4a5$var$facetSelectionPolygons(stage.facets));
     //move polygons to Z
     polygons.forEach((datum)=>{
         datum.polygon.forEach((p)=>{
@@ -7968,12 +8320,12 @@ function $fea98e7a9824fc67$export$7aba45edad9b8473(presenter, specCapabilities, 
     });
     const onClick = (o, e)=>clickHandler(e.srcEvent, o.object.search)
     ;
-    const polygonLayer = new $1ce8acf0567070a9$export$e2253033e6e1df16.layers.PolygonLayer({
+    const polygonLayer = new $aa3185d2619292b0$export$e2253033e6e1df16.layers.PolygonLayer({
         autoHighlight: true,
-        coordinateSystem: $1ce8acf0567070a9$export$e2253033e6e1df16.deck.COORDINATE_SYSTEM.CARTESIAN,
+        coordinateSystem: $aa3185d2619292b0$export$e2253033e6e1df16.deck.COORDINATE_SYSTEM.CARTESIAN,
         data: polygons,
         extruded: false,
-        highlightColor: $2ceb34bf05dc5b6f$exports.colorFromString(highlightColor),
+        highlightColor: $357cda13648d25b4$exports.colorFromString(highlightColor),
         id: 'selections',
         onHover: (o, e)=>{
             if (o.index === -1) presenter.deckgl.interactiveState.onAxisSelection = false;
@@ -7994,15 +8346,15 @@ function $fea98e7a9824fc67$export$7aba45edad9b8473(presenter, specCapabilities, 
     });
     return polygonLayer;
 }
-function $fea98e7a9824fc67$var$axisSelectionPolygons(axis, vertical, axisSelectionType, column) {
+function $e03f28a3d2eff4a5$var$axisSelectionPolygons(axis, vertical, axisSelectionType, column) {
     const polygons = [];
     const size = 50;
     const getSearch = axisSelectionType === 'exact' ? (a, c, i)=>({
             expressions: [
-                $40a4d3743e70c46b$export$64b81e116b959f8a(a, c, i)
+                $c5b8e018283877d4$export$64b81e116b959f8a(a, c, i)
             ]
         })
-     : $40a4d3743e70c46b$export$80908cccce4a97cb;
+     : $c5b8e018283877d4$export$80908cccce4a97cb;
     const { domain: domain , ticks: ticks  } = axis;
     if (ticks.length > 0 && domain) {
         const dim = vertical ? 1 : 0;
@@ -8047,11 +8399,10 @@ function $fea98e7a9824fc67$var$axisSelectionPolygons(axis, vertical, axisSelecti
     }
     return polygons;
 }
-function $fea98e7a9824fc67$var$facetSelectionPolygons(facetRects) {
+function $e03f28a3d2eff4a5$var$facetSelectionPolygons(facetRects) {
     const polygons = [];
-    let linesAndSearches;
-    linesAndSearches = facetRects.map(({ datum: datum , lines: lines  }, i)=>{
-        let group = $a941725538301345$export$cb06c97de370398d(datum[$f1d0eeb6595c811e$export$10df5429b7082be2.FacetSearch]);
+    const linesAndSearches = facetRects.map(({ datum: datum , lines: lines  }, i)=>{
+        let group = $35851ba40c014310$export$cb06c97de370398d(datum[$5026337cfcb4b996$export$10df5429b7082be2.FacetSearch]);
         return {
             lines: lines,
             search: group
@@ -8059,7 +8410,7 @@ function $fea98e7a9824fc67$var$facetSelectionPolygons(facetRects) {
     });
     linesAndSearches.forEach(({ lines: lines , search: search  }, i)=>{
         //take any 2 lines to get a box dimension
-        const [x, y] = $fea98e7a9824fc67$var$minMaxPoints(lines.slice(2));
+        const [x, y] = $e03f28a3d2eff4a5$var$minMaxPoints(lines.slice(2));
         polygons.push({
             search: search,
             polygon: [
@@ -8084,7 +8435,7 @@ function $fea98e7a9824fc67$var$facetSelectionPolygons(facetRects) {
     });
     return polygons;
 }
-function $fea98e7a9824fc67$var$minMaxPoints(lines) {
+function $e03f28a3d2eff4a5$var$minMaxPoints(lines) {
     const points = [];
     lines.forEach((line)=>{
         [
@@ -8116,16 +8467,16 @@ function $fea98e7a9824fc67$var$minMaxPoints(lines) {
 
 
 
-function $a29d0d97f58eede6$export$9cf45ec8b4cc2b65(currentData, showSelectedData, showActive, viewerOptions) {
+function $c06d9ec78664a7a9$export$9cf45ec8b4cc2b65(currentData, showSelectedData, showActive, viewerOptions) {
     function getSelectionColorItem(datum) {
         let item;
-        if (showSelectedData) item = datum[$f1d0eeb6595c811e$export$10df5429b7082be2.Selected] ? {
-            color: $2ceb34bf05dc5b6f$exports.colorFromString(viewerOptions.colors.selectedCube)
+        if (showSelectedData) item = datum[$5026337cfcb4b996$export$10df5429b7082be2.Selected] ? {
+            color: $357cda13648d25b4$exports.colorFromString(viewerOptions.colors.selectedCube)
         } : {
             unSelected: true
         };
-        if (showActive && datum[$f1d0eeb6595c811e$export$10df5429b7082be2.Active]) item = {
-            color: $2ceb34bf05dc5b6f$exports.colorFromString(viewerOptions.colors.activeCube)
+        if (showActive && datum[$5026337cfcb4b996$export$10df5429b7082be2.Active]) item = {
+            color: $357cda13648d25b4$exports.colorFromString(viewerOptions.colors.activeCube)
         };
         return item;
     }
@@ -8134,13 +8485,13 @@ function $a29d0d97f58eede6$export$9cf45ec8b4cc2b65(currentData, showSelectedData
     currentData.forEach((datum)=>{
         const selectionColor = getSelectionColorItem(datum);
         if (selectionColor) {
-            const ordinal = datum[$fdf690fb8cecad22$export$5672246984822a29];
+            const ordinal = datum[$7abff30d903026d9$export$5672246984822a29];
             colorMap[ordinal] = selectionColor;
         }
     });
     return colorMap;
 }
-function $a29d0d97f58eede6$export$3b9379ac3646e0f0(cubes) {
+function $c06d9ec78664a7a9$export$3b9379ac3646e0f0(cubes) {
     const map = {
     };
     cubes.forEach((cube)=>{
@@ -8150,15 +8501,15 @@ function $a29d0d97f58eede6$export$3b9379ac3646e0f0(cubes) {
     });
     return map;
 }
-function $a29d0d97f58eede6$export$44addeff9a96c1e7(colorContext, presenter) {
+function $c06d9ec78664a7a9$export$44addeff9a96c1e7(colorContext, presenter) {
     if (!colorContext.colorMap) {
         const cubes = presenter.getCubeData();
-        colorContext.colorMap = $a29d0d97f58eede6$export$3b9379ac3646e0f0(cubes);
+        colorContext.colorMap = $c06d9ec78664a7a9$export$3b9379ac3646e0f0(cubes);
     }
-    colorContext.legend = $2ceb34bf05dc5b6f$exports.clone(presenter.stage.legend);
-    colorContext.legendElement = presenter.getElement($4a30ac4383cd199c$export$79420be32f83a5b0.legend).children[0];
+    colorContext.legend = $357cda13648d25b4$exports.clone(presenter.stage.legend);
+    colorContext.legendElement = presenter.getElement($753ee753424d27f3$export$79420be32f83a5b0.legend).children[0];
 }
-function $a29d0d97f58eede6$export$fa70acaad0e00464(maps, cubes, unselectedColorMethod) {
+function $c06d9ec78664a7a9$export$fa70acaad0e00464(maps, cubes, unselectedColorMethod) {
     Object.keys(maps[0]).forEach((ordinal)=>{
         const cube = cubes[+ordinal];
         if (cube && !cube.isEmpty) {
@@ -8183,7 +8534,7 @@ function $a29d0d97f58eede6$export$fa70acaad0e00464(maps, cubes, unselectedColorM
 
 
 
-class $d80e36555dcb559d$export$3fb74a6ae4f1171d {
+class $321a7a35ef9b29af$export$3fb74a6ae4f1171d {
     constructor(){
         this.filteredColumnsStats = {
         };
@@ -8207,11 +8558,11 @@ class $d80e36555dcb559d$export$3fb74a6ae4f1171d {
         };
     }
     getColumns(columnTypes) {
-        if (!this.columns) this.columns = $b208adf1e2336264$export$3f19ad07848df794($1ce8acf0567070a9$export$e2253033e6e1df16.vega.inferTypes, this.data, columnTypes);
+        if (!this.columns) this.columns = $1f41cd3bd9350891$export$3f19ad07848df794($aa3185d2619292b0$export$e2253033e6e1df16.vega.inferTypes, this.data, columnTypes);
         return this.columns;
     }
     getFilteredColumnStats(columnName) {
-        if (!this.filteredColumnsStats[columnName]) this.filteredColumnsStats[columnName] = $b208adf1e2336264$export$432f698644f45d1(this.filteredData, this.columns.filter((c)=>c.name === columnName
+        if (!this.filteredColumnsStats[columnName]) this.filteredColumnsStats[columnName] = $1f41cd3bd9350891$export$432f698644f45d1(this.filteredData, this.columns.filter((c)=>c.name === columnName
         )[0]);
         return this.filteredColumnsStats[columnName];
     }
@@ -8226,7 +8577,7 @@ class $d80e36555dcb559d$export$3fb74a6ae4f1171d {
         }
     }
     createUserSelection(search1, assign, rebase) {
-        const exec = new $993d4e470a95e83c$export$bbfd672d43392844(search1, this.getColumns());
+        const exec = new $adf6771a93c98393$export$bbfd672d43392844(search1, this.getColumns());
         const s = {
             search: search1,
             included: [],
@@ -8235,7 +8586,7 @@ class $d80e36555dcb559d$export$3fb74a6ae4f1171d {
         const data = rebase ? this.data : this.currentData();
         data.forEach((datum)=>{
             if (exec.run(datum)) {
-                if (assign) datum[$f1d0eeb6595c811e$export$10df5429b7082be2.Selected] = true;
+                if (assign) datum[$5026337cfcb4b996$export$10df5429b7082be2.Selected] = true;
                 s.included.push(datum);
             } else s.excluded.push(datum);
         });
@@ -8244,7 +8595,7 @@ class $d80e36555dcb559d$export$3fb74a6ae4f1171d {
     deselect() {
         this.deactivate();
         this.data.forEach((datum)=>{
-            delete datum[$f1d0eeb6595c811e$export$10df5429b7082be2.Selected];
+            delete datum[$5026337cfcb4b996$export$10df5429b7082be2.Selected];
         });
         this.selection = null;
     }
@@ -8256,23 +8607,23 @@ class $d80e36555dcb559d$export$3fb74a6ae4f1171d {
     }
     collapse(collapsed, data1 = this.data) {
         data1.forEach((datum)=>{
-            datum[$f1d0eeb6595c811e$export$10df5429b7082be2.Collapsed] = collapsed;
+            datum[$5026337cfcb4b996$export$10df5429b7082be2.Collapsed] = collapsed;
         });
         this.isCollapsed = collapsed;
     }
     activate(datum) {
         this.deactivate();
-        datum[$f1d0eeb6595c811e$export$10df5429b7082be2.Active] = true;
+        datum[$5026337cfcb4b996$export$10df5429b7082be2.Active] = true;
         this.active = datum;
     }
     deactivate() {
-        if (this.active) delete this.active[$f1d0eeb6595c811e$export$10df5429b7082be2.Active];
+        if (this.active) delete this.active[$5026337cfcb4b996$export$10df5429b7082be2.Active];
         this.active = null;
     }
     ordinalIndexWithinSelection(ordinal) {
         if (this.selection) for(let i = 0; i < this.selection.included.length; i++){
             let datum = this.selection.included[i];
-            if (datum[$fdf690fb8cecad22$export$5672246984822a29] === ordinal) return {
+            if (datum[$7abff30d903026d9$export$5672246984822a29] === ordinal) return {
                 datum: datum,
                 index: i
             };
@@ -8302,7 +8653,7 @@ class $d80e36555dcb559d$export$3fb74a6ae4f1171d {
 
 
 
-var $ad8c5785dd47dd09$var$Action;
+var $f7f165aef83799e5$var$Action;
 (function(Action) {
     Action[Action["deselect"] = 0] = "deselect";
     Action[Action["isolate"] = 1] = "isolate";
@@ -8310,16 +8661,16 @@ var $ad8c5785dd47dd09$var$Action;
     Action[Action["reset"] = 3] = "reset";
     Action[Action["next"] = 4] = "next";
     Action[Action["previous"] = 5] = "previous";
-})($ad8c5785dd47dd09$var$Action || ($ad8c5785dd47dd09$var$Action = {
+})($f7f165aef83799e5$var$Action || ($f7f165aef83799e5$var$Action = {
 }));
-class $ad8c5785dd47dd09$export$3e8048d3cf2ba3fd {
+class $f7f165aef83799e5$export$3e8048d3cf2ba3fd {
     constructor(parentElement, language1, animator, dataScope, colorMapHandler, hasColorMaps){
         this.language = language1;
         this.animator = animator;
         this.dataScope = dataScope;
         this.colorMapHandler = colorMapHandler;
         this.hasColorMaps = hasColorMaps;
-        this.element = $2ceb34bf05dc5b6f$exports.addDiv(parentElement, `${$44cb48d9f5894b55$export$f0d47e1c119d5bf2}unitControls`);
+        this.element = $357cda13648d25b4$exports.addDiv(parentElement, `${$39c8d1d23f762a7c$export$f0d47e1c119d5bf2}unitControls`);
         this.clear();
     }
     finalize() {
@@ -8364,31 +8715,31 @@ class $ad8c5785dd47dd09$export$3e8048d3cf2ba3fd {
         let p;
         const u = this.state.userSelection;
         switch(action1){
-            case $ad8c5785dd47dd09$var$Action.deselect:
+            case $f7f165aef83799e5$var$Action.deselect:
                 this.clearSelection();
                 p = this.animator.deselect();
                 break;
-            case $ad8c5785dd47dd09$var$Action.exclude:
+            case $f7f165aef83799e5$var$Action.exclude:
                 this.clearSelection();
-                p = this.animator.filter($ea86cf90c5c71925$export$6897c284b6f9f4dc(u.search), u.excluded, u.included, false);
+                p = this.animator.filter($f52676db54676003$export$6897c284b6f9f4dc(u.search), u.excluded, u.included, false);
                 this.state.remapColor = false;
                 break;
-            case $ad8c5785dd47dd09$var$Action.isolate:
+            case $f7f165aef83799e5$var$Action.isolate:
                 this.clearSelection();
                 p = this.animator.filter(u.search, u.included, u.excluded, false);
                 this.state.remapColor = false;
                 break;
-            case $ad8c5785dd47dd09$var$Action.reset:
+            case $f7f165aef83799e5$var$Action.reset:
                 this.clear();
                 p = this.animator.reset();
                 break;
             default:
                 switch(action1){
-                    case $ad8c5785dd47dd09$var$Action.previous:
+                    case $f7f165aef83799e5$var$Action.previous:
                         this.state.index--;
                         if (this.state.index < 0) this.state.index = this.state.userSelection.included.length - 1;
                         break;
-                    case $ad8c5785dd47dd09$var$Action.next:
+                    case $f7f165aef83799e5$var$Action.next:
                         this.state.index++;
                         if (this.state.index >= this.state.userSelection.included.length) this.state.index = 0;
                         break;
@@ -8415,80 +8766,80 @@ class $ad8c5785dd47dd09$export$3e8048d3cf2ba3fd {
             hasColorMaps: this.hasColorMaps() && hasRefinedData,
             remapColor: this.state.remapColor
         };
-        const a = $2ceb34bf05dc5b6f$exports.getActiveElementInfo();
-        $2ceb34bf05dc5b6f$exports.mount($ad8c5785dd47dd09$var$renderDetails(renderProps), this.element);
-        $2ceb34bf05dc5b6f$exports.setActiveElement(a);
+        const a = $357cda13648d25b4$exports.getActiveElementInfo();
+        $357cda13648d25b4$exports.mount($f7f165aef83799e5$var$renderDetails(renderProps), this.element);
+        $357cda13648d25b4$exports.setActiveElement(a);
     }
 }
-const $ad8c5785dd47dd09$var$renderDetails = (props)=>{
+const $f7f165aef83799e5$var$renderDetails = (props)=>{
     const controlButtons = [
-        $2ceb34bf05dc5b6f$exports.createElement("button", {
+        $357cda13648d25b4$exports.createElement("button", {
             disabled: !props.item,
-            onClick: (e)=>props.actionHandler($ad8c5785dd47dd09$var$Action.deselect)
+            onClick: (e)=>props.actionHandler($f7f165aef83799e5$var$Action.deselect)
         }, props.language.deselect),
-        $2ceb34bf05dc5b6f$exports.createElement("button", {
+        $357cda13648d25b4$exports.createElement("button", {
             disabled: !props.item,
-            onClick: (e)=>props.actionHandler($ad8c5785dd47dd09$var$Action.isolate)
+            onClick: (e)=>props.actionHandler($f7f165aef83799e5$var$Action.isolate)
         }, props.language.isolate),
-        $2ceb34bf05dc5b6f$exports.createElement("button", {
+        $357cda13648d25b4$exports.createElement("button", {
             disabled: !props.item,
-            onClick: (e)=>props.actionHandler($ad8c5785dd47dd09$var$Action.exclude)
+            onClick: (e)=>props.actionHandler($f7f165aef83799e5$var$Action.exclude)
         }, props.language.exclude)
     ];
-    const colorMapping = $2ceb34bf05dc5b6f$exports.createElement("div", null, $2ceb34bf05dc5b6f$exports.createElement("button", {
+    const colorMapping = $357cda13648d25b4$exports.createElement("div", null, $357cda13648d25b4$exports.createElement("button", {
         disabled: props.remapColor,
         onClick: (e)=>props.remapColorHandler(true)
-    }, props.language.newColorMap), $2ceb34bf05dc5b6f$exports.createElement("button", {
+    }, props.language.newColorMap), $357cda13648d25b4$exports.createElement("button", {
         disabled: !props.remapColor,
         onClick: (e)=>props.remapColorHandler(false)
     }, props.language.oldColorMap));
     const singleItem = props.count === 1;
     const scrollButtons = [
-        $2ceb34bf05dc5b6f$exports.createElement("button", {
+        $357cda13648d25b4$exports.createElement("button", {
             disabled: singleItem,
-            onClick: (e)=>props.actionHandler($ad8c5785dd47dd09$var$Action.previous)
+            onClick: (e)=>props.actionHandler($f7f165aef83799e5$var$Action.previous)
         }, props.language.previousDetail),
-        $2ceb34bf05dc5b6f$exports.createElement("button", {
+        $357cda13648d25b4$exports.createElement("button", {
             disabled: singleItem,
-            onClick: (e)=>props.actionHandler($ad8c5785dd47dd09$var$Action.next)
+            onClick: (e)=>props.actionHandler($f7f165aef83799e5$var$Action.next)
         }, props.language.nextDetail),
-        $2ceb34bf05dc5b6f$exports.createElement("span", null, " ", props.language.selectionCount(props.count))
+        $357cda13648d25b4$exports.createElement("span", null, " ", props.language.selectionCount(props.count))
     ];
     const rows = [];
     for(let prop in props.item){
-        if (prop === $fdf690fb8cecad22$export$5672246984822a29) continue;
-        if ($a95be51749eaea4c$export$81adea670bebefbe(prop)) continue;
+        if (prop === $7abff30d903026d9$export$5672246984822a29) continue;
+        if ($e76dbaf7a95e1712$export$81adea670bebefbe(prop)) continue;
         rows.push({
             cells: [
                 {
                     content: prop
                 },
                 {
-                    content: $ad8c5785dd47dd09$var$linkSelect(props.language, prop, props.item[prop], props.selectionHandler)
+                    content: $f7f165aef83799e5$var$linkSelect(props.language, prop, props.item[prop], props.selectionHandler)
                 }
             ]
         });
     }
-    return $2ceb34bf05dc5b6f$exports.createElement("div", null, props.hasColorMaps && colorMapping, $2ceb34bf05dc5b6f$exports.createElement("h4", null, props.language.headers.selection), $2ceb34bf05dc5b6f$exports.createElement("div", {
-        className: `${$44cb48d9f5894b55$export$f0d47e1c119d5bf2}selection`
-    }, controlButtons, $2ceb34bf05dc5b6f$exports.createElement("button", {
+    return $357cda13648d25b4$exports.createElement("div", null, props.hasColorMaps && colorMapping, $357cda13648d25b4$exports.createElement("h4", null, props.language.headers.selection), $357cda13648d25b4$exports.createElement("div", {
+        className: `${$39c8d1d23f762a7c$export$f0d47e1c119d5bf2}selection`
+    }, controlButtons, $357cda13648d25b4$exports.createElement("button", {
         disabled: !props.hasRefinedData,
-        onClick: (e)=>props.actionHandler($ad8c5785dd47dd09$var$Action.reset)
-    }, "reset")), props.item && $2ceb34bf05dc5b6f$exports.createElement("h4", null, props.language.headers.details), $2ceb34bf05dc5b6f$exports.createElement("div", null, $2ceb34bf05dc5b6f$exports.createElement("div", {
-        className: `${$44cb48d9f5894b55$export$f0d47e1c119d5bf2}details-scroll`
-    }, props.item && scrollButtons), $2ceb34bf05dc5b6f$exports.createElement("div", {
-        className: `${$44cb48d9f5894b55$export$f0d47e1c119d5bf2}details`
-    }, props.item && $2ceb34bf05dc5b6f$exports.createElement($53ceabdd339cf4eb$exports.Table, {
+        onClick: (e)=>props.actionHandler($f7f165aef83799e5$var$Action.reset)
+    }, "reset")), props.item && $357cda13648d25b4$exports.createElement("h4", null, props.language.headers.details), $357cda13648d25b4$exports.createElement("div", null, $357cda13648d25b4$exports.createElement("div", {
+        className: `${$39c8d1d23f762a7c$export$f0d47e1c119d5bf2}details-scroll`
+    }, props.item && scrollButtons), $357cda13648d25b4$exports.createElement("div", {
+        className: `${$39c8d1d23f762a7c$export$f0d47e1c119d5bf2}details`
+    }, props.item && $357cda13648d25b4$exports.createElement($b461bb0d5e9060a5$exports.Table, {
         rows: rows
     }))));
 };
-function $ad8c5785dd47dd09$var$linkSelect(language, columnName, value, selectionHandler) {
-    return $2ceb34bf05dc5b6f$exports.createElement("span", null, $2ceb34bf05dc5b6f$exports.createElement("a", {
+function $f7f165aef83799e5$var$linkSelect(language, columnName, value, selectionHandler) {
+    return $357cda13648d25b4$exports.createElement("span", null, $357cda13648d25b4$exports.createElement("a", {
         href: "#",
         onClick: (e)=>selectionHandler(columnName, value)
     }, value), isNaN(value) ? [
         ' ',
-        $2ceb34bf05dc5b6f$exports.createElement("a", {
+        $357cda13648d25b4$exports.createElement("a", {
             className: "bing-search",
             href: `https://www.bing.com/search?q=${encodeURIComponent(value)}`,
             target: "_blank"
@@ -8498,23 +8849,23 @@ function $ad8c5785dd47dd09$var$linkSelect(language, columnName, value, selection
 
 
 
-function $6f2276fca1d1f970$export$1d674716cc6da32f(presenter, headers) {
-    const vegaControls = presenter.getElement($4a30ac4383cd199c$export$79420be32f83a5b0.vegaControls);
-    $6f2276fca1d1f970$var$conditionalHeader(!!vegaControls.querySelectorAll('.vega-bindings > *').length, vegaControls, headers.chart);
-    const legend = presenter.getElement($4a30ac4383cd199c$export$79420be32f83a5b0.legend);
-    $6f2276fca1d1f970$var$conditionalHeader(!!legend.children.length, legend, headers.legend);
+function $33e0225dc17adec4$export$1d674716cc6da32f(presenter, headers) {
+    const vegaControls = presenter.getElement($753ee753424d27f3$export$79420be32f83a5b0.vegaControls);
+    $33e0225dc17adec4$var$conditionalHeader(!!vegaControls.querySelectorAll('.vega-bindings > *').length, vegaControls, headers.chart);
+    const legend = presenter.getElement($753ee753424d27f3$export$79420be32f83a5b0.legend);
+    $33e0225dc17adec4$var$conditionalHeader(!!legend.children.length, legend, headers.legend);
 }
-function $6f2276fca1d1f970$var$conditionalHeader(condition, element, header) {
-    var existing = $6f2276fca1d1f970$var$existingHeader(element, header);
-    if (condition && !existing) $6f2276fca1d1f970$var$addHeader(element, header);
+function $33e0225dc17adec4$var$conditionalHeader(condition, element, header) {
+    var existing = $33e0225dc17adec4$var$existingHeader(element, header);
+    if (condition && !existing) $33e0225dc17adec4$var$addHeader(element, header);
     if (!condition && existing) existing.remove();
 }
-function $6f2276fca1d1f970$var$addHeader(element, header) {
+function $33e0225dc17adec4$var$addHeader(element, header) {
     const h = document.createElement('h4');
     h.innerHTML = header;
     element.insertAdjacentElement('beforebegin', h);
 }
-function $6f2276fca1d1f970$var$existingHeader(element, header) {
+function $33e0225dc17adec4$var$existingHeader(element, header) {
     const { previousElementSibling: previousElementSibling  } = element;
     if (previousElementSibling && previousElementSibling.innerHTML === header) return previousElementSibling;
 }
@@ -8522,24 +8873,24 @@ function $6f2276fca1d1f970$var$existingHeader(element, header) {
 
 
 
-function $446319437d6881b9$var$legendRange(colorBinType, column, legend, clickedIndex) {
-    if (column.quantitative) return $446319437d6881b9$var$selectQuantitative(colorBinType, column, legend, clickedIndex);
-    else return $446319437d6881b9$var$selectCategorical(column, legend, clickedIndex);
+function $dbe5b70c4627633d$var$legendRange(colorBinType, column, legend, clickedIndex) {
+    if (column.quantitative) return $dbe5b70c4627633d$var$selectQuantitative(colorBinType, column, legend, clickedIndex);
+    else return $dbe5b70c4627633d$var$selectCategorical(column, legend, clickedIndex);
 }
-function $446319437d6881b9$var$selectCategorical(column, legend, clickedIndex) {
+function $dbe5b70c4627633d$var$selectCategorical(column, legend, clickedIndex) {
     const value = legend.rows[clickedIndex].value;
-    if (value === $f1d0eeb6595c811e$export$8653a30c44b6e879) {
+    if (value === $5026337cfcb4b996$export$8653a30c44b6e879) {
         const values = [];
         for(let i in legend.rows)if (+i !== clickedIndex) values.push(legend.rows[i].value);
-        return $40a4d3743e70c46b$export$e531b549585c011c(column, values);
+        return $c5b8e018283877d4$export$e531b549585c011c(column, values);
     } else //select equal
     return {
         expressions: [
-            $40a4d3743e70c46b$export$8543b98d22318eca(column, legend.rows[clickedIndex].value)
+            $c5b8e018283877d4$export$8543b98d22318eca(column, legend.rows[clickedIndex].value)
         ]
     };
 }
-function $446319437d6881b9$var$selectQuantitative(colorBinType, column, legend, clickedIndex) {
+function $dbe5b70c4627633d$var$selectQuantitative(colorBinType, column, legend, clickedIndex) {
     const keys = Object.keys(legend.rows).map((key)=>+key
     ).sort((a, b)=>+a - +b
     );
@@ -8558,7 +8909,7 @@ function $446319437d6881b9$var$selectQuantitative(colorBinType, column, legend, 
                 if (rowText.indexOf('null') > 0) {
                     const ex = {
                         expressions: [
-                            $40a4d3743e70c46b$export$1be0843eea5393e4(column)
+                            $c5b8e018283877d4$export$1be0843eea5393e4(column)
                         ]
                     };
                     return ex;
@@ -8576,54 +8927,54 @@ function $446319437d6881b9$var$selectQuantitative(colorBinType, column, legend, 
                 }
             }
     }
-    if (lowValue) lowValue = $40a4d3743e70c46b$export$cb7265fd11709ea(lowValue);
-    if (highValue) highValue = $40a4d3743e70c46b$export$cb7265fd11709ea(highValue);
+    if (lowValue) lowValue = $c5b8e018283877d4$export$cb7265fd11709ea(lowValue);
+    if (highValue) highValue = $c5b8e018283877d4$export$cb7265fd11709ea(highValue);
     if (lowValue === highValue) return {
         expressions: [
-            $40a4d3743e70c46b$export$8543b98d22318eca(column, lowValue)
+            $c5b8e018283877d4$export$8543b98d22318eca(column, lowValue)
         ]
     };
-    else return $40a4d3743e70c46b$export$8bb38a473c12645e(column, lowValue, highValue, lowOperator, highOperator);
+    else return $c5b8e018283877d4$export$8bb38a473c12645e(column, lowValue, highValue, lowOperator, highOperator);
 }
-function $446319437d6881b9$export$71ab65a966760ac3(colorBinType, colorColumn, legend, language) {
+function $dbe5b70c4627633d$export$71ab65a966760ac3(colorBinType, colorColumn, legend, language) {
     const rowTexts = [];
     for(let i in legend.rows){
         let row = legend.rows[i];
-        row.search = $446319437d6881b9$var$legendRange(colorBinType, colorColumn, legend, +i);
-        if (row.value === $f1d0eeb6595c811e$export$8653a30c44b6e879) row.label = language.legendOther;
+        row.search = $dbe5b70c4627633d$var$legendRange(colorBinType, colorColumn, legend, +i);
+        if (row.value === $5026337cfcb4b996$export$8653a30c44b6e879) row.label = language.legendOther;
         else rowTexts.push(row.value);
     }
 }
 
 
 
-function $28b87aa0fb7d943f$export$f03cc77b21b3a2b2(columns, data, ordinalMap) {
+function $2a394f390c27cd1b$export$f03cc77b21b3a2b2(columns, data, ordinalMap) {
     const uCol = columns.uid && columns.uid.name;
     if (ordinalMap) data.forEach((d, i)=>{
         const key = uCol ? d[uCol] : i;
-        d[$fdf690fb8cecad22$export$5672246984822a29] = ordinalMap[key];
+        d[$7abff30d903026d9$export$5672246984822a29] = ordinalMap[key];
     });
     else {
         ordinalMap = {
         };
         data.forEach((d, i)=>{
-            d[$fdf690fb8cecad22$export$5672246984822a29] = i;
+            d[$7abff30d903026d9$export$5672246984822a29] = i;
             const uColValue = uCol ? d[uCol] : i;
             ordinalMap[uColValue] = i;
         });
     }
     return ordinalMap;
 }
-function $28b87aa0fb7d943f$export$5844459bbee68321(cube, data) {
+function $2a394f390c27cd1b$export$5844459bbee68321(cube, data) {
     const len = data.length;
     for(let i = 0; i < len; i++){
-        if (data[i][$fdf690fb8cecad22$export$5672246984822a29] === cube.ordinal) return i;
+        if (data[i][$7abff30d903026d9$export$5672246984822a29] === cube.ordinal) return i;
     }
 }
 
 
 
-function $a1e25f27318a1f17$export$385a06e733eab4de(sv, b) {
+function $67f46c21af71ffed$export$385a06e733eab4de(sv, b) {
     if (!sv || !b || !b.signals || !b.signals.length) return;
     for(let key in sv){
         let value = sv[key];
@@ -8632,7 +8983,7 @@ function $a1e25f27318a1f17$export$385a06e733eab4de(sv, b) {
         if (signalB && signalB.bind) signalB.value = value;
     }
 }
-function $a1e25f27318a1f17$export$764590c093441ac7(view, spec) {
+function $67f46c21af71ffed$export$764590c093441ac7(view, spec) {
     if (!view || !spec || !spec.signals || !spec.signals.length) return;
     const result = {
     };
@@ -8651,26 +9002,26 @@ function $a1e25f27318a1f17$export$764590c093441ac7(view, spec) {
 
 
 
-const { outerSize: $295e12fe32ead391$var$outerSize  } = $2ceb34bf05dc5b6f$exports;
-const { Table: $295e12fe32ead391$var$Table  } = $53ceabdd339cf4eb$exports;
-class $295e12fe32ead391$export$28c660c63b792dea {
+const { outerSize: $6af73f59b698d47b$var$outerSize  } = $357cda13648d25b4$exports;
+const { Table: $6af73f59b698d47b$var$Table  } = $b461bb0d5e9060a5$exports;
+class $6af73f59b698d47b$export$28c660c63b792dea {
     constructor(props1){
         const renderProps = {
             cssPrefix: props1.cssPrefix,
-            rows: $295e12fe32ead391$var$getRows(props1.item, props1.options)
+            rows: $6af73f59b698d47b$var$getRows(props1.item, props1.options)
         };
-        this.element = $295e12fe32ead391$var$renderTooltip(renderProps);
+        this.element = $6af73f59b698d47b$var$renderTooltip(renderProps);
         if (this.element) {
             this.element.style.position = 'absolute';
             this.child = this.element.firstChild;
             document.body.appendChild(this.element);
             //measure and move as necessary
-            let m = $295e12fe32ead391$var$outerSize(this.child);
+            let m = $6af73f59b698d47b$var$outerSize(this.child);
             while(m.height > document.documentElement.clientHeight){
                 let tr = this.child.querySelector('tr:last-child');
                 if (tr) tr.parentElement.removeChild(tr);
                 else break;
-                m = $295e12fe32ead391$var$outerSize(this.child);
+                m = $6af73f59b698d47b$var$outerSize(this.child);
             }
             if (props1.position.clientX + m.width >= document.documentElement.clientWidth) this.child.style.right = '0';
             let moveTop = true;
@@ -8687,11 +9038,11 @@ class $295e12fe32ead391$export$28c660c63b792dea {
         this.element = null;
     }
 }
-function $295e12fe32ead391$var$getRows(item, options) {
+function $6af73f59b698d47b$var$getRows(item, options) {
     const rows = [];
     for(let columnName in item){
-        if (columnName === $fdf690fb8cecad22$export$5672246984822a29) continue;
-        if ($a95be51749eaea4c$export$81adea670bebefbe(columnName)) continue;
+        if (columnName === $7abff30d903026d9$export$5672246984822a29) continue;
+        if ($e76dbaf7a95e1712$export$81adea670bebefbe(columnName)) continue;
         if (options && options.exclude) {
             if (options.exclude(columnName)) continue;
         }
@@ -8700,10 +9051,10 @@ function $295e12fe32ead391$var$getRows(item, options) {
         if (options && options.displayValue) content = options.displayValue(value);
         else switch(value){
             case null:
-                content = $2ceb34bf05dc5b6f$exports.createElement("i", null, "null");
+                content = $357cda13648d25b4$exports.createElement("i", null, "null");
                 break;
             case undefined:
-                content = $2ceb34bf05dc5b6f$exports.createElement("i", null, "undefined");
+                content = $357cda13648d25b4$exports.createElement("i", null, "undefined");
                 break;
             default:
                 content = value.toString();
@@ -8721,10 +9072,10 @@ function $295e12fe32ead391$var$getRows(item, options) {
     }
     return rows;
 }
-const $295e12fe32ead391$var$renderTooltip = (props)=>{
-    return props.rows.length === 0 ? null : $2ceb34bf05dc5b6f$exports.createElement("div", {
+const $6af73f59b698d47b$var$renderTooltip = (props)=>{
+    return props.rows.length === 0 ? null : $357cda13648d25b4$exports.createElement("div", {
         className: `${props.cssPrefix}tooltip`
-    }, $295e12fe32ead391$var$Table({
+    }, $6af73f59b698d47b$var$Table({
         rows: props.rows
     }));
 };
@@ -8733,9 +9084,9 @@ const $295e12fe32ead391$var$renderTooltip = (props)=>{
 
 
 
-class $fa1d83b9deb65002$export$fba22c9d3f66adb {
+class $0b154259095121b2$export$fba22c9d3f66adb {
     resetCharacterSet(forceNewCharacterSet, oldInsight1, newInsight1) {
-        if (forceNewCharacterSet || $fa1d83b9deb65002$var$needsNewCharacterSet(oldInsight1, newInsight1)) this.chars = undefined;
+        if (forceNewCharacterSet || $0b154259095121b2$var$needsNewCharacterSet(oldInsight1, newInsight1)) this.chars = undefined;
     }
     getCharacterSet(stage) {
         if (!this.chars) {
@@ -8765,7 +9116,7 @@ class $fa1d83b9deb65002$export$fba22c9d3f66adb {
         return this.chars;
     }
 }
-function $fa1d83b9deb65002$var$needsNewCharacterSet(oldInsight, newInsight) {
+function $0b154259095121b2$var$needsNewCharacterSet(oldInsight, newInsight) {
     if (!oldInsight) return true;
     if (!newInsight) return true;
     if (oldInsight.chart !== newInsight.chart) return true;
@@ -8773,8 +9124,8 @@ function $fa1d83b9deb65002$var$needsNewCharacterSet(oldInsight, newInsight) {
     if (oldInsight.totalStyle !== newInsight.totalStyle) return true;
     if (oldInsight.hideAxes !== newInsight.hideAxes) return true;
     if (oldInsight.view !== newInsight.view) return true;
-    if ($fa1d83b9deb65002$var$differentObjectValues(oldInsight.signalValues, newInsight.signalValues)) return true;
-    if ($fa1d83b9deb65002$var$differentObjectValues(oldInsight.size, newInsight.size)) return true;
+    if ($0b154259095121b2$var$differentObjectValues(oldInsight.signalValues, newInsight.signalValues)) return true;
+    if ($0b154259095121b2$var$differentObjectValues(oldInsight.size, newInsight.size)) return true;
     const oldColumns = oldInsight.columns;
     const newColumns = newInsight.columns;
     if (oldColumns.facet !== newColumns.facet) return true;
@@ -8784,7 +9135,7 @@ function $fa1d83b9deb65002$var$needsNewCharacterSet(oldInsight, newInsight) {
     if (oldColumns.z !== newColumns.z) return true;
     return false;
 }
-function $fa1d83b9deb65002$var$differentObjectValues(a, b) {
+function $0b154259095121b2$var$differentObjectValues(a, b) {
     if (!a && !b) return false;
     if (!a || !b) return true;
     const keys = Object.keys(b);
@@ -8793,7 +9144,7 @@ function $fa1d83b9deb65002$var$differentObjectValues(a, b) {
         let ta = typeof a;
         let tb = typeof b;
         if (ta !== tb) return true;
-        if (ta === 'object') return $fa1d83b9deb65002$var$differentObjectValues(a[key], b[key]);
+        if (ta === 'object') return $0b154259095121b2$var$differentObjectValues(a[key], b[key]);
         else {
             if (a[key] !== b[key]) return true;
         }
@@ -8802,7 +9153,7 @@ function $fa1d83b9deb65002$var$differentObjectValues(a, b) {
 }
 
 
-var $ba3b66095ea7d77f$var$__awaiter = undefined && undefined.__awaiter || function(thisArg, _arguments, P, generator) {
+var $83151626e84e84c0$var$__awaiter = undefined && undefined.__awaiter || function(thisArg, _arguments, P, generator) {
     function adopt(value) {
         return value instanceof P ? value : new P(function(resolve) {
             resolve(value);
@@ -8829,25 +9180,25 @@ var $ba3b66095ea7d77f$var$__awaiter = undefined && undefined.__awaiter || functi
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const { defaultView: $ba3b66095ea7d77f$var$defaultView  } = $c1310db02f4288e1$exports;
-const $ba3b66095ea7d77f$var$zAxisZindex = 1010;
-let $ba3b66095ea7d77f$var$didRegisterColorSchemes = false;
-class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
+const { defaultView: $83151626e84e84c0$var$defaultView  } = $f92b17f7c58b7db2$exports;
+const $83151626e84e84c0$var$zAxisZindex = 1010;
+let $83151626e84e84c0$var$didRegisterColorSchemes = false;
+class $83151626e84e84c0$export$2ec4afd9b3c16a85 {
     /**
      * Instantiate a new Viewer.
      * @param element Parent HTMLElement to present within.
      * @param options Optional viewer options object.
      */ constructor(element, options){
         this.element = element;
-        this.options = $2ceb34bf05dc5b6f$exports.deepMerge($44cb48d9f5894b55$export$fb736e4909afb3d7, options);
-        this.presenter = new $ea0d85645d70082e$export$893c88c42e3630f9(element, $44cb48d9f5894b55$export$c4db461e5e345a8(this.options));
-        this._characterSet = new $fa1d83b9deb65002$export$fba22c9d3f66adb();
-        this._dataScope = new $d80e36555dcb559d$export$3fb74a6ae4f1171d();
-        this._animator = new $2bca70a612b52504$export$c774d8c9d4e9e234(this._dataScope, {
+        this.options = $357cda13648d25b4$exports.deepMerge($39c8d1d23f762a7c$export$fb736e4909afb3d7, options);
+        this.presenter = new $586113946f2266a2$export$893c88c42e3630f9(element, $39c8d1d23f762a7c$export$c4db461e5e345a8(this.options));
+        this._characterSet = new $0b154259095121b2$export$fba22c9d3f66adb();
+        this._dataScope = new $321a7a35ef9b29af$export$3fb74a6ae4f1171d();
+        this._animator = new $b2e0f82d9487be27$export$c774d8c9d4e9e234(this._dataScope, {
             onDataChanged: this.onDataChanged.bind(this),
             onAnimateDataChange: this.onAnimateDataChange.bind(this)
         });
-        this._details = new $ad8c5785dd47dd09$export$3e8048d3cf2ba3fd(this.presenter.getElement($4a30ac4383cd199c$export$79420be32f83a5b0.panel), this.options.language, this._animator, this._dataScope, (remap)=>{
+        this._details = new $f7f165aef83799e5$export$3e8048d3cf2ba3fd(this.presenter.getElement($753ee753424d27f3$export$79420be32f83a5b0.panel), this.options.language, this._animator, this._dataScope, (remap)=>{
             this.currentColorContext = ~~remap;
             this.renderSameLayout();
         }, ()=>this.insight && this.insight.columns && !!this.insight.columns.color && this.colorContexts && this.colorContexts.length > 1
@@ -8861,25 +9212,25 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
         this.options.onColorContextChange && this.options.onColorContextChange();
     }
     applyLegendColorContext(colorContext1) {
-        const a = $2ceb34bf05dc5b6f$exports.getActiveElementInfo();
-        $2ceb34bf05dc5b6f$exports.mount(colorContext1.legendElement, this.presenter.getElement($4a30ac4383cd199c$export$79420be32f83a5b0.legend));
-        $2ceb34bf05dc5b6f$exports.setActiveElement(a);
+        const a = $357cda13648d25b4$exports.getActiveElementInfo();
+        $357cda13648d25b4$exports.mount(colorContext1.legendElement, this.presenter.getElement($753ee753424d27f3$export$79420be32f83a5b0.legend));
+        $357cda13648d25b4$exports.setActiveElement(a);
         this.presenter.stage.legend = colorContext1.legend;
     }
     onAnimateDataChange(dataChange, waitingLabel, handlerLabel) {
         return new Promise((resolve, reject)=>{
             let innerPromise;
-            if (dataChange === $2bca70a612b52504$export$d9e571576e98a7ab.refine) {
+            if (dataChange === $b2e0f82d9487be27$export$d9e571576e98a7ab.refine) {
                 const oldColorContext = this.colorContexts[this.currentColorContext];
                 innerPromise = new Promise((innerResolve)=>{
                     this.renderNewLayout({
                     }, {
                         preStage: (stage, deckProps)=>{
-                            $446319437d6881b9$export$71ab65a966760ac3(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
+                            $dbe5b70c4627633d$export$71ab65a966760ac3(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                             this.overrideAxisLabels(stage);
-                            $a29d0d97f58eede6$export$fa70acaad0e00464([
+                            $c06d9ec78664a7a9$export$fa70acaad0e00464([
                                 oldColorContext.colorMap
-                            ], $2ceb34bf05dc5b6f$exports.getCubes(deckProps));
+                            ], $357cda13648d25b4$exports.getCubes(deckProps));
                             if (this.options.onStage) this.options.onStage(stage, deckProps);
                         }
                     }).then(()=>{
@@ -8891,7 +9242,7 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
             } else innerPromise = this.renderNewLayout({
             }, {
                 preStage: (stage, deckProps)=>{
-                    $446319437d6881b9$export$71ab65a966760ac3(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
+                    $dbe5b70c4627633d$export$71ab65a966760ac3(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                     this.overrideAxisLabels(stage);
                     if (this.options.onStage) this.options.onStage(stage, deckProps);
                 }
@@ -8906,12 +9257,12 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
         });
     }
     onDataChanged(dataLayout, filter) {
-        return $ba3b66095ea7d77f$var$__awaiter(this, void 0, void 0, function*() {
+        return $83151626e84e84c0$var$__awaiter(this, void 0, void 0, function*() {
             switch(dataLayout){
-                case $2bca70a612b52504$export$d9e571576e98a7ab.same:
+                case $b2e0f82d9487be27$export$d9e571576e98a7ab.same:
                     this.renderSameLayout();
                     break;
-                case $2bca70a612b52504$export$d9e571576e98a7ab.refine:
+                case $b2e0f82d9487be27$export$d9e571576e98a7ab.refine:
                     {
                         //save cube colors
                         const oldColorContext = this.colorContexts[this.currentColorContext];
@@ -8920,18 +9271,18 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
                         }, {
                             preStage: (stage, deckProps)=>{
                                 //save off the spec colors
-                                colorMap = $a29d0d97f58eede6$export$3b9379ac3646e0f0(stage.cubeData);
-                                $a29d0d97f58eede6$export$fa70acaad0e00464([
+                                colorMap = $c06d9ec78664a7a9$export$3b9379ac3646e0f0(stage.cubeData);
+                                $c06d9ec78664a7a9$export$fa70acaad0e00464([
                                     oldColorContext.colorMap
-                                ], $2ceb34bf05dc5b6f$exports.getCubes(deckProps));
+                                ], $357cda13648d25b4$exports.getCubes(deckProps));
                                 this.preStage(stage, deckProps);
                             },
                             onPresent: ()=>{
                                 //save new legend
                                 const newColorContext = {
                                     colorMap: colorMap,
-                                    legend: $2ceb34bf05dc5b6f$exports.clone(this.presenter.stage.legend),
-                                    legendElement: this.presenter.getElement($4a30ac4383cd199c$export$79420be32f83a5b0.legend).children[0]
+                                    legend: $357cda13648d25b4$exports.clone(this.presenter.stage.legend),
+                                    legendElement: this.presenter.getElement($753ee753424d27f3$export$79420be32f83a5b0.legend).children[0]
                                 };
                                 //apply old legend
                                 this.applyLegendColorContext(oldColorContext);
@@ -8942,11 +9293,11 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
                             }
                         });
                         //narrow the filter only if it is different
-                        if (!$82c8264ab1382711$export$398604a469f7de9a(this.insight.filter, filter)) this.insight.filter = $ab300922c06ef0af$export$ec67f55c222e1546(this.insight.filter, filter);
+                        if (!$8152aaf818f7ca2c$export$398604a469f7de9a(this.insight.filter, filter)) this.insight.filter = $4442703718296195$export$ec67f55c222e1546(this.insight.filter, filter);
                         if (this.options.onDataFilter) this.options.onDataFilter(this.insight.filter, this._dataScope.currentData());
                         break;
                     }
-                case $2bca70a612b52504$export$d9e571576e98a7ab.reset:
+                case $b2e0f82d9487be27$export$d9e571576e98a7ab.reset:
                     {
                         const colorContext = {
                             colorMap: null,
@@ -8959,7 +9310,7 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
                         yield this.renderNewLayout({
                         }, {
                             onPresent: ()=>{
-                                $a29d0d97f58eede6$export$44addeff9a96c1e7(colorContext, this.presenter);
+                                $c06d9ec78664a7a9$export$44addeff9a96c1e7(colorContext, this.presenter);
                             }
                         });
                         delete this.insight.filter;
@@ -8999,7 +9350,7 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
         return specColumns;
     }
     renderNewLayout(signalValues, presenterConfig, view) {
-        return $ba3b66095ea7d77f$var$__awaiter(this, void 0, void 0, function*() {
+        return $83151626e84e84c0$var$__awaiter(this, void 0, void 0, function*() {
             const currData = this._dataScope.currentData();
             const context = {
                 specColumns: this.getSpecColumnsWithFilteredStats(),
@@ -9008,14 +9359,14 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
                 }, this.options), {
                     zAxisOptions: {
                         showZAxis: true,
-                        zIndex: $ba3b66095ea7d77f$var$zAxisZindex
+                        zIndex: $83151626e84e84c0$var$zAxisZindex
                     }
                 })
             };
-            const specResult = $81b01ac2f879159c$export$3f8fe6489e95757d(context, currData);
+            const specResult = $f5081518125870e3$export$3f8fe6489e95757d(context, currData);
             if (!specResult.errors) {
-                const uiValues = $a1e25f27318a1f17$export$764590c093441ac7(this.vegaViewGl, this.vegaSpec);
-                $a1e25f27318a1f17$export$385a06e733eab4de(Object.assign(Object.assign({
+                const uiValues = $67f46c21af71ffed$export$764590c093441ac7(this.vegaViewGl, this.vegaSpec);
+                $67f46c21af71ffed$export$385a06e733eab4de(Object.assign(Object.assign({
                 }, uiValues), signalValues), specResult.vegaSpec);
                 this.vegaSpec = specResult.vegaSpec;
                 this.options.onVegaSpec && this.options.onVegaSpec(this.vegaSpec);
@@ -9023,14 +9374,14 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
                 const config = this.createConfig(presenterConfig);
                 if (view) config.getView = ()=>view
                 ;
-                if (!$ba3b66095ea7d77f$var$didRegisterColorSchemes) {
-                    $2696a83cde1f067b$export$3030070885af9365($1ce8acf0567070a9$export$e2253033e6e1df16.vega);
-                    $ba3b66095ea7d77f$var$didRegisterColorSchemes = true;
+                if (!$83151626e84e84c0$var$didRegisterColorSchemes) {
+                    $d5cc309f57ea9332$export$3030070885af9365($aa3185d2619292b0$export$e2253033e6e1df16.vega);
+                    $83151626e84e84c0$var$didRegisterColorSchemes = true;
                 }
                 try {
                     if (this.vegaViewGl) this.vegaViewGl.finalize();
-                    const runtime = $1ce8acf0567070a9$export$e2253033e6e1df16.vega.parse(this.vegaSpec);
-                    this.vegaViewGl = new $70f68e5f1326a051$export$6d8f9057dcd7f9e6(runtime, config).renderer('deck.gl').initialize(this.element);
+                    const runtime = $aa3185d2619292b0$export$e2253033e6e1df16.vega.parse(this.vegaSpec);
+                    this.vegaViewGl = new $fe59b525f658c489$export$6d8f9057dcd7f9e6(runtime, config).renderer('deck.gl').initialize(this.element);
                     yield this.vegaViewGl.runAsync();
                     const handler = (n, v)=>{
                         this._characterSet.resetCharacterSet(true);
@@ -9045,7 +9396,7 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
                         e.message
                     ];
                 }
-                if (!specResult.errors) $6f2276fca1d1f970$export$1d674716cc6da32f(this.presenter, this.options.language.headers);
+                if (!specResult.errors) $33e0225dc17adec4$export$1d674716cc6da32f(this.presenter, this.options.language.headers);
             }
             if (specResult.errors) {
                 if (this.options.onError) this.options.onError(specResult.errors);
@@ -9068,12 +9419,12 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
         let recoloredAxes;
         if (newViewerOptions) {
             if (newViewerOptions.colors) {
-                recoloredAxes = $6f93f00cb9e36978$export$bb42b694d535c95a(this.presenter.stage, this._lastColorOptions, newViewerOptions.colors);
-                this._lastColorOptions = $2ceb34bf05dc5b6f$exports.clone(newViewerOptions.colors);
+                recoloredAxes = $100a640a591eda90$export$bb42b694d535c95a(this.presenter.stage, this._lastColorOptions, newViewerOptions.colors);
+                this._lastColorOptions = $357cda13648d25b4$exports.clone(newViewerOptions.colors);
                 axes = recoloredAxes.axes || axes;
                 textData = recoloredAxes.textData || textData;
             }
-            this.options = $2ceb34bf05dc5b6f$exports.deepMerge(this.options, newViewerOptions);
+            this.options = $357cda13648d25b4$exports.deepMerge(this.options, newViewerOptions);
         }
         let colorMaps = [
             colorContext.colorMap
@@ -9082,11 +9433,11 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
         const hasSelectedData = this._dataScope.hasSelectedData();
         const hasActive = !!this._dataScope.active;
         if (hasSelectedData || hasActive) {
-            const selectedColorMap = $a29d0d97f58eede6$export$9cf45ec8b4cc2b65(this._dataScope.currentData(), hasSelectedData, hasActive, this.options);
+            const selectedColorMap = $c06d9ec78664a7a9$export$9cf45ec8b4cc2b65(this._dataScope.currentData(), hasSelectedData, hasActive, this.options);
             colorMaps.push(selectedColorMap);
             colorMethod = this.options.colors.unselectedColorMethod;
         }
-        $a29d0d97f58eede6$export$fa70acaad0e00464(colorMaps, clonedCubes, colorMethod);
+        $c06d9ec78664a7a9$export$fa70acaad0e00464(colorMaps, clonedCubes, colorMethod);
         const stage = {
             cubeData: clonedCubes,
             axes: axes,
@@ -9096,13 +9447,13 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
     }
     getView(view1) {
         if (view1 === undefined) {
-            if (this.presenter.view === null) return $ba3b66095ea7d77f$var$defaultView;
+            if (this.presenter.view === null) return $83151626e84e84c0$var$defaultView;
             else return this.presenter.view;
         } else return view1;
     }
     transformData(values, transform) {
         try {
-            const runtime = $1ce8acf0567070a9$export$e2253033e6e1df16.vega.parse({
+            const runtime = $aa3185d2619292b0$export$e2253033e6e1df16.vega.parse({
                 $schema: 'https://vega.github.io/schema/vega/v4.json',
                 data: [
                     {
@@ -9112,7 +9463,7 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
                     }
                 ]
             });
-            new $70f68e5f1326a051$export$6d8f9057dcd7f9e6(runtime).run();
+            new $fe59b525f658c489$export$6d8f9057dcd7f9e6(runtime).run();
         } catch (e) {
         // continue regardless of error
         }
@@ -9126,10 +9477,10 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
      * @param ordinalMap Optional map of ordinals to assign to the data such that the same cubes can be re-used for new data.
      */ render(insight, data, options1 = {
     }) {
-        return $ba3b66095ea7d77f$var$__awaiter(this, void 0, void 0, function*() {
+        return $83151626e84e84c0$var$__awaiter(this, void 0, void 0, function*() {
             let result;
             //see if refine expression has changed
-            if (!$82c8264ab1382711$export$398604a469f7de9a(insight.filter, this.insight.filter)) {
+            if (!$8152aaf818f7ca2c$export$398604a469f7de9a(insight.filter, this.insight.filter)) {
                 const allowAsyncRenderTime = 100;
                 if (insight.filter) {
                     //refining
@@ -9172,12 +9523,12 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
         //now be ready to capture color changing signals 
         presenterConfig1.preStage = (stage, deckProps)=>{
             if (this._shouldSaveColorContext()) //save off the colors from Vega layout
-            colorContext.colorMap = $a29d0d97f58eede6$export$3b9379ac3646e0f0(stage.cubeData);
+            colorContext.colorMap = $c06d9ec78664a7a9$export$3b9379ac3646e0f0(stage.cubeData);
             this.preStage(stage, deckProps);
         };
         presenterConfig1.onPresent = ()=>{
             if (this._shouldSaveColorContext()) {
-                $a29d0d97f58eede6$export$44addeff9a96c1e7(colorContext, this.presenter);
+                $c06d9ec78664a7a9$export$44addeff9a96c1e7(colorContext, this.presenter);
                 this.changeColorContexts([
                     colorContext
                 ]);
@@ -9186,18 +9537,18 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
         };
     }
     _render(insight1, data1, options2, forceNewCharacterSet) {
-        return $ba3b66095ea7d77f$var$__awaiter(this, void 0, void 0, function*() {
+        return $83151626e84e84c0$var$__awaiter(this, void 0, void 0, function*() {
             if (this._tooltip) {
                 this._tooltip.finalize();
                 this._tooltip = null;
             }
             if (this._dataScope.setData(data1, options2.columns)) //apply transform to the data
             this.transformData(data1, insight1.transform);
-            this._specColumns = $b208adf1e2336264$export$9e6128b2231f5173(insight1, this._dataScope.getColumns(options2.columnTypes));
-            const ordinalMap = $28b87aa0fb7d943f$export$f03cc77b21b3a2b2(this._specColumns, data1, options2.ordinalMap);
+            this._specColumns = $1f41cd3bd9350891$export$9e6128b2231f5173(insight1, this._dataScope.getColumns(options2.columnTypes));
+            const ordinalMap = $2a394f390c27cd1b$export$f03cc77b21b3a2b2(this._specColumns, data1, options2.ordinalMap);
             this._characterSet.resetCharacterSet(forceNewCharacterSet, this.insight, insight1);
-            this.insight = $2ceb34bf05dc5b6f$exports.clone(insight1);
-            this._lastColorOptions = $2ceb34bf05dc5b6f$exports.clone(this.options.colors);
+            this.insight = $357cda13648d25b4$exports.clone(insight1);
+            this._lastColorOptions = $357cda13648d25b4$exports.clone(this.options.colors);
             this._shouldSaveColorContext = ()=>!options2.initialColorContext
             ;
             const colorContext = options2.initialColorContext || {
@@ -9208,17 +9559,17 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
             const specResult = yield this.renderNewLayout(insight1.signalValues, {
                 preStage: (stage, deckProps)=>{
                     if (this._shouldSaveColorContext()) //save off the colors from Vega layout
-                    colorContext.colorMap = $a29d0d97f58eede6$export$3b9379ac3646e0f0(stage.cubeData);
+                    colorContext.colorMap = $c06d9ec78664a7a9$export$3b9379ac3646e0f0(stage.cubeData);
                     else //apply passed colorContext
-                    $a29d0d97f58eede6$export$fa70acaad0e00464([
+                    $c06d9ec78664a7a9$export$fa70acaad0e00464([
                         colorContext.colorMap
-                    ], $2ceb34bf05dc5b6f$exports.getCubes(deckProps));
+                    ], $357cda13648d25b4$exports.getCubes(deckProps));
                     //if items are selected, repaint
                     const hasSelectedData = !!this._dataScope.hasSelectedData();
                     const hasActive = !!this._dataScope.active;
                     if (this._dataScope.hasSelectedData() || this._dataScope.active) {
-                        const selectedColorMap = $a29d0d97f58eede6$export$9cf45ec8b4cc2b65(this._dataScope.currentData(), hasSelectedData, hasActive, this.options);
-                        $a29d0d97f58eede6$export$fa70acaad0e00464([
+                        const selectedColorMap = $c06d9ec78664a7a9$export$9cf45ec8b4cc2b65(this._dataScope.currentData(), hasSelectedData, hasActive, this.options);
+                        $c06d9ec78664a7a9$export$fa70acaad0e00464([
                             colorContext.colorMap,
                             selectedColorMap
                         ], stage.cubeData, this.options.colors.unselectedColorMethod);
@@ -9227,7 +9578,7 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
                 },
                 onPresent: ()=>{
                     if (this._shouldSaveColorContext()) {
-                        $a29d0d97f58eede6$export$44addeff9a96c1e7(colorContext, this.presenter);
+                        $c06d9ec78664a7a9$export$44addeff9a96c1e7(colorContext, this.presenter);
                         this.changeColorContexts([
                             colorContext
                         ]);
@@ -9267,10 +9618,10 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
             else this.select(search);
         };
         this.overrideAxisLabels(stage1);
-        const polygonLayer = $fea98e7a9824fc67$export$7aba45edad9b8473(this.presenter, this.specCapabilities, this._specColumns, stage1, onClick, this.options.colors.axisSelectHighlight, this.options.selectionPolygonZ);
+        const polygonLayer = $e03f28a3d2eff4a5$export$7aba45edad9b8473(this.presenter, this.specCapabilities, this._specColumns, stage1, onClick, this.options.colors.axisSelectHighlight, this.options.selectionPolygonZ);
         const order = 1; //after textlayer but before others
         deckProps.layers.splice(order, 0, polygonLayer);
-        $446319437d6881b9$export$71ab65a966760ac3(this.insight.colorBin, this._specColumns.color, stage1.legend, this.options.language);
+        $dbe5b70c4627633d$export$71ab65a966760ac3(this.insight.colorBin, this._specColumns.color, stage1.legend, this.options.language);
         if (this.options.onStage) this.options.onStage(stage1, deckProps);
     }
     onCubeClick(e3, cube) {
@@ -9289,12 +9640,12 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
                 return;
             }
         }
-        if (hasSelectedData && this._dataScope.selection.included.length === 1 && this._dataScope.selection.included[0][$fdf690fb8cecad22$export$5672246984822a29] === cube.ordinal) {
+        if (hasSelectedData && this._dataScope.selection.included.length === 1 && this._dataScope.selection.included[0][$7abff30d903026d9$export$5672246984822a29] === cube.ordinal) {
             this.deselect();
             return;
         }
         const search = {
-            name: $fdf690fb8cecad22$export$5672246984822a29,
+            name: $7abff30d903026d9$export$5672246984822a29,
             operator: '==',
             value: cube.ordinal
         };
@@ -9307,8 +9658,8 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
         }
         if (!cube1) return;
         const currentData = this._dataScope.currentData();
-        const index = $28b87aa0fb7d943f$export$5844459bbee68321(cube1, currentData);
-        if (index >= 0) this._tooltip = new $295e12fe32ead391$export$28c660c63b792dea({
+        const index = $2a394f390c27cd1b$export$5844459bbee68321(cube1, currentData);
+        if (index >= 0) this._tooltip = new $6af73f59b698d47b$export$28c660c63b792dea({
             options: this.options.tooltipOptions,
             item: currentData[index],
             position: e1,
@@ -9318,12 +9669,12 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
     onTextHover(e2, t1) {
         //return true if highlight color is different
         if (!t1 || !this.options.getTextColor || !this.options.getTextHighlightColor) return false;
-        return !$2ceb34bf05dc5b6f$exports.colorIsEqual(this.options.getTextColor(t1), this.options.getTextHighlightColor(t1));
+        return !$357cda13648d25b4$exports.colorIsEqual(this.options.getTextColor(t1), this.options.getTextHighlightColor(t1));
     }
     createConfig(c) {
         const { getTextColor: getTextColor , getTextHighlightColor: getTextHighlightColor , getTextHighlightAlphaCutoff: getTextHighlightAlphaCutoff , onTextClick: onTextClick  } = this.options;
         const defaultPresenterConfig = {
-            zAxisZindex: $ba3b66095ea7d77f$var$zAxisZindex,
+            zAxisZindex: $83151626e84e84c0$var$zAxisZindex,
             getCharacterSet: (stage)=>this._characterSet.getCharacterSet(stage)
             ,
             getTextColor: getTextColor,
@@ -9331,7 +9682,7 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
             getTextHighlightAlphaCutoff: getTextHighlightAlphaCutoff,
             onTextClick: (e, t)=>{
                 if (t.metaData && t.metaData.search) {
-                    const search = $a941725538301345$export$cb06c97de370398d(t.metaData.search);
+                    const search = $35851ba40c014310$export$cb06c97de370398d(t.metaData.search);
                     if (this.options.onAxisClick) this.options.onAxisClick(e, search);
                     else this.select(search);
                 }
@@ -9355,7 +9706,7 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
             },
             onSceneRectAssignCubeOrdinal: (datum)=>{
                 //TODO see if datum is a facet selection rect
-                return datum[$fdf690fb8cecad22$export$5672246984822a29];
+                return datum[$7abff30d903026d9$export$5672246984822a29];
             },
             onTargetViewState: (h, w)=>{
                 const { height: height , width: width  } = this.insight.size;
@@ -9475,7 +9826,7 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
     /**
      * Gets current signal values.
      */ getSignalValues() {
-        return $a1e25f27318a1f17$export$764590c093441ac7(this.vegaViewGl, this.vegaSpec);
+        return $67f46c21af71ffed$export$764590c093441ac7(this.vegaViewGl, this.vegaSpec);
     }
     finalize() {
         if (this._dataScope) this._dataScope.finalize();
@@ -9498,25 +9849,25 @@ class $ba3b66095ea7d77f$export$2ec4afd9b3c16a85 {
 }
 /**
  * Default Viewer options.
- */ $ba3b66095ea7d77f$export$2ec4afd9b3c16a85.defaultViewerOptions = $44cb48d9f5894b55$export$fb736e4909afb3d7;
+ */ $83151626e84e84c0$export$2ec4afd9b3c16a85.defaultViewerOptions = $39c8d1d23f762a7c$export$fb736e4909afb3d7;
 
 
-const $f1b82903f9552d4a$export$83d89fbfd8236492 = '3.2.1';
+const $c2f62f3c6fefc6ab$export$83d89fbfd8236492 = '3.2.1';
 
 
-const $f073e1f86a136e75$export$1f96ae73734a86cc = $1ce8acf0567070a9$export$1f96ae73734a86cc;
+const $e5c730801b562de0$export$1f96ae73734a86cc = $aa3185d2619292b0$export$1f96ae73734a86cc;
 
 
-var $d705fb0bfff3c04a$exports = {};
+var $900824613c851981$exports = {};
 
-$parcel$export($d705fb0bfff3c04a$exports, "classList", () => $d705fb0bfff3c04a$export$11c615ce16f87241);
-$parcel$export($d705fb0bfff3c04a$exports, "deepCompare", () => $d705fb0bfff3c04a$export$e12301e595e16ad8);
-var $3ada151c1abbc2c5$exports = {};
+$parcel$export($900824613c851981$exports, "classList", () => $900824613c851981$export$11c615ce16f87241);
+$parcel$export($900824613c851981$exports, "deepCompare", () => $900824613c851981$export$e12301e595e16ad8);
+var $a27d0c43025d8d11$exports = {};
 
-$parcel$defineInteropFlag($3ada151c1abbc2c5$exports);
+$parcel$defineInteropFlag($a27d0c43025d8d11$exports);
 
-$parcel$export($3ada151c1abbc2c5$exports, "default", () => $3ada151c1abbc2c5$export$2e2bcd8739ae039);
-var $3ada151c1abbc2c5$export$2e2bcd8739ae039 = $3ada151c1abbc2c5$var$compare;
+$parcel$export($a27d0c43025d8d11$exports, "default", () => $a27d0c43025d8d11$export$2e2bcd8739ae039);
+var $a27d0c43025d8d11$export$2e2bcd8739ae039 = $a27d0c43025d8d11$var$compare;
 /*
   primitives: value1 === value2
   functions: value1.toString == value2.toString
@@ -9529,7 +9880,7 @@ var $3ada151c1abbc2c5$export$2e2bcd8739ae039 = $3ada151c1abbc2c5$var$compare;
   compare({a: 2, b: 3, c: 4}, {a: 2, b: 3}); // false
   compare({a: 2, b: 3}, {a: 2, b: 3, c: 4}); // false
   compare([[1, [2, {a: 4}], 4], [[1, [2, {a: 4}]]); // true
-*/ function $3ada151c1abbc2c5$var$compare(value1, value2) {
+*/ function $a27d0c43025d8d11$var$compare(value1, value2) {
     if (value1 === value2) return true;
     /* eslint-disable no-self-compare */ // if both values are NaNs return true
     if (value1 !== value1 && value2 !== value2) return true;
@@ -9539,28 +9890,28 @@ var $3ada151c1abbc2c5$export$2e2bcd8739ae039 = $3ada151c1abbc2c5$var$compare;
     if (value1 !== Object(value1)) // non equal primitives
     return false;
     if (!value1) return false;
-    if (Array.isArray(value1)) return $3ada151c1abbc2c5$var$compareArrays(value1, value2);
+    if (Array.isArray(value1)) return $a27d0c43025d8d11$var$compareArrays(value1, value2);
     if (({
-    }).toString.call(value1) == '[object Set]') return $3ada151c1abbc2c5$var$compareArrays(Array.from(value1), Array.from(value2));
+    }).toString.call(value1) == '[object Set]') return $a27d0c43025d8d11$var$compareArrays(Array.from(value1), Array.from(value2));
     if (({
-    }).toString.call(value1) == '[object Object]') return $3ada151c1abbc2c5$var$compareObjects(value1, value2);
-    else return $3ada151c1abbc2c5$var$compareNativeSubtypes(value1, value2);
+    }).toString.call(value1) == '[object Object]') return $a27d0c43025d8d11$var$compareObjects(value1, value2);
+    else return $a27d0c43025d8d11$var$compareNativeSubtypes(value1, value2);
 }
-function $3ada151c1abbc2c5$var$compareNativeSubtypes(value1, value2) {
+function $a27d0c43025d8d11$var$compareNativeSubtypes(value1, value2) {
     // e.g. Function, RegExp, Date
     return value1.toString() === value2.toString();
 }
-function $3ada151c1abbc2c5$var$compareArrays(value1, value2) {
+function $a27d0c43025d8d11$var$compareArrays(value1, value2) {
     var len = value1.length;
     if (len != value2.length) return false;
     var alike = true;
-    for(var i = 0; i < len; i++)if (!$3ada151c1abbc2c5$var$compare(value1[i], value2[i])) {
+    for(var i = 0; i < len; i++)if (!$a27d0c43025d8d11$var$compare(value1[i], value2[i])) {
         alike = false;
         break;
     }
     return alike;
 }
-function $3ada151c1abbc2c5$var$compareObjects(value1, value2) {
+function $a27d0c43025d8d11$var$compareObjects(value1, value2) {
     var keys1 = Object.keys(value1).sort();
     var keys2 = Object.keys(value2).sort();
     var len = keys1.length;
@@ -9568,36 +9919,36 @@ function $3ada151c1abbc2c5$var$compareObjects(value1, value2) {
     for(var i = 0; i < len; i++){
         var key1 = keys1[i];
         var key2 = keys2[i];
-        if (!(key1 == key2 && $3ada151c1abbc2c5$var$compare(value1[key1], value2[key2]))) return false;
+        if (!(key1 == key2 && $a27d0c43025d8d11$var$compare(value1[key1], value2[key2]))) return false;
     }
     return true;
 }
 
 
-const $d705fb0bfff3c04a$export$11c615ce16f87241 = (...args)=>{
+const $900824613c851981$export$11c615ce16f87241 = (...args)=>{
     return args.filter(Boolean).join(' ');
 };
-const $d705fb0bfff3c04a$export$e12301e595e16ad8 = $3ada151c1abbc2c5$exports.default || $3ada151c1abbc2c5$exports;
+const $900824613c851981$export$e12301e595e16ad8 = $a27d0c43025d8d11$exports.default || $a27d0c43025d8d11$exports;
 
 
 
 
-const $2e36289e36bfceb3$export$e2253033e6e1df16 = {
+const $e2a889539cb3cb17$export$e2253033e6e1df16 = {
     react: null,
     reactDOM: null
 };
-function $2e36289e36bfceb3$export$1f96ae73734a86cc(react, reactDOM, vega, deck, layers, luma) {
-    $04e538fe2709dad5$exports.use(vega, deck, layers, luma);
-    $2e36289e36bfceb3$export$e2253033e6e1df16.react = react;
-    $2e36289e36bfceb3$export$e2253033e6e1df16.reactDOM = reactDOM;
+function $e2a889539cb3cb17$export$1f96ae73734a86cc(react, reactDOM, vega, deck, layers, luma) {
+    $fe0c42722799ef8c$exports.use(vega, deck, layers, luma);
+    $e2a889539cb3cb17$export$e2253033e6e1df16.react = react;
+    $e2a889539cb3cb17$export$e2253033e6e1df16.reactDOM = reactDOM;
     //inform React that we are using a dynamic base class
-    $b812bdd063300296$export$441ac54c4cda559d.prototype = react.Component.prototype;
+    $730c610e376ac0d0$export$441ac54c4cda559d.prototype = react.Component.prototype;
 }
 
 
 
 
-function $b812bdd063300296$var$addNullable(insight, signalValues) {
+function $730c610e376ac0d0$var$addNullable(insight, signalValues) {
     const withNulls = Object.assign(Object.assign({
         view: null,
         filter: null
@@ -9606,21 +9957,21 @@ function $b812bdd063300296$var$addNullable(insight, signalValues) {
     });
     return withNulls;
 }
-function $b812bdd063300296$export$1557ccb739c4ea87(viewer, insight) {
+function $730c610e376ac0d0$export$1557ccb739c4ea87(viewer, insight) {
     const currentInsight = viewer.getInsight();
-    const a = $b812bdd063300296$var$addNullable(currentInsight, Object.assign(Object.assign({
+    const a = $730c610e376ac0d0$var$addNullable(currentInsight, Object.assign(Object.assign({
     }, viewer.insight.signalValues), currentInsight.signalValues));
-    const b = $b812bdd063300296$var$addNullable(insight, Object.assign(Object.assign({
+    const b = $730c610e376ac0d0$var$addNullable(insight, Object.assign(Object.assign({
     }, a.signalValues), insight.signalValues));
-    const compare = $d705fb0bfff3c04a$export$e12301e595e16ad8(a, b);
+    const compare = $900824613c851981$export$e12301e595e16ad8(a, b);
     return {
         a: a,
         b: b,
         compare: compare
     };
 }
-function $b812bdd063300296$var$_SandDanceReact(props) {
-    class __SandDanceReact extends $2e36289e36bfceb3$export$e2253033e6e1df16.react.Component {
+function $730c610e376ac0d0$var$_SandDanceReact(props) {
+    class __SandDanceReact extends $e2a889539cb3cb17$export$e2253033e6e1df16.react.Component {
         layout() {
             this.lastData = this.props.data;
             this.viewer.render(this.props.insight, this.props.data, this.props.renderOptions).then((renderResult)=>{
@@ -9634,27 +9985,27 @@ function $b812bdd063300296$var$_SandDanceReact(props) {
         }
         view() {
             if (this.props.insight && this.props.data) {
-                const c = $b812bdd063300296$export$1557ccb739c4ea87(this.viewer, this.props.insight);
+                const c = $730c610e376ac0d0$export$1557ccb739c4ea87(this.viewer, this.props.insight);
                 const sameDataRef = this.props.data === this.lastData;
                 if (!c.compare || !sameDataRef) this.layout();
             }
         }
         componentDidMount() {
-            const element = $2e36289e36bfceb3$export$e2253033e6e1df16.reactDOM.findDOMNode(this.viewerDiv);
-            this.viewer = new $ba3b66095ea7d77f$exports.Viewer(element, this.props.viewerOptions);
+            const element = $e2a889539cb3cb17$export$e2253033e6e1df16.reactDOM.findDOMNode(this.viewerDiv);
+            this.viewer = new $83151626e84e84c0$exports.Viewer(element, this.props.viewerOptions);
             if (this.props.onMount) {
-                if (this.props.onMount(this.viewer.presenter.getElement($04e538fe2709dad5$exports.PresenterElement.gl))) this.view();
+                if (this.props.onMount(this.viewer.presenter.getElement($fe0c42722799ef8c$exports.PresenterElement.gl))) this.view();
             } else this.view();
         }
         componentDidUpdate() {
-            this.viewer.options = $04e538fe2709dad5$exports.util.deepMerge(this.viewer.options, this.props.viewerOptions);
+            this.viewer.options = $fe0c42722799ef8c$exports.util.deepMerge(this.viewer.options, this.props.viewerOptions);
             this.view();
         }
         componentWillUnmount() {
             this.viewer.finalize();
         }
         render() {
-            return $2e36289e36bfceb3$export$e2253033e6e1df16.react.createElement("div", {
+            return $e2a889539cb3cb17$export$e2253033e6e1df16.react.createElement("div", {
                 className: "sanddance-ReactViewer",
                 ref: (div)=>this.viewerDiv = div
             });
@@ -9662,11 +10013,11 @@ function $b812bdd063300296$var$_SandDanceReact(props) {
     }
     return new __SandDanceReact(props);
 }
-const $b812bdd063300296$export$441ac54c4cda559d = $b812bdd063300296$var$_SandDanceReact;
+const $730c610e376ac0d0$export$441ac54c4cda559d = $730c610e376ac0d0$var$_SandDanceReact;
 
 
 
-const $ea3cef9215da943f$export$83d89fbfd8236492 = '3.0.0';
+const $befc3a45da53e8f6$export$83d89fbfd8236492 = '3.0.1';
 
 
 
@@ -10129,7 +10480,7 @@ function $59ce348f458f6a1c$export$83b9e0badda50eeb(props) {
         disabled: props.disabled,
         label: label,
         options: options,
-        onChange: (e, o)=>props.changeColumnMapping(props.specRole.role, typeof o.data === 'string' ? o.data : $f073e1f86a136e75$exports.VegaDeckGl.util.clone(o.data))
+        onChange: (e, o)=>props.changeColumnMapping(props.specRole.role, typeof o.data === 'string' ? o.data : $e5c730801b562de0$exports.VegaDeckGl.util.clone(o.data))
         ,
         onDismiss: props.onDismiss
     }), signalElements, props.suffix);
@@ -10171,7 +10522,7 @@ function $57db901d8b47d017$var$_PositionedColumnMap(props) {
             }
         }
         componentDidMount() {
-            const size = $f073e1f86a136e75$exports.VegaDeckGl.util.outerSize(this.div);
+            const size = $e5c730801b562de0$exports.VegaDeckGl.util.outerSize(this.div);
             const over = {
                 left: Math.max(0, this.state.left + size.width - this.props.container.offsetWidth),
                 top: Math.max(0, this.state.top + size.height - this.props.container.offsetHeight)
@@ -10302,7 +10653,7 @@ function $bcfbcdd321a042d4$var$_DataExportPicker(props) {
             return initialState;
         }
         componentDidUpdate() {
-            if (!$d705fb0bfff3c04a$exports.deepCompare(this.props.initializer, this.state.initializer)) this.setState(this.getInitialState(this.props));
+            if (!$900824613c851981$exports.deepCompare(this.props.initializer, this.state.initializer)) this.setState(this.getInitialState(this.props));
         }
         // Converts to dataExport type and calls dataExportHandler to deal with data
         createExport(exportType1, displayName1) {
@@ -10430,7 +10781,7 @@ function $bcfbcdd321a042d4$export$748f956e607b675b(fileName) {
     return fileName;
 }
 function $bcfbcdd321a042d4$var$columnReplacer(name, value) {
-    if ($f073e1f86a136e75$exports.util.isInternalFieldName(name, true)) return undefined;
+    if ($e5c730801b562de0$exports.util.isInternalFieldName(name, true)) return undefined;
     return value === null ? '' : value;
 }
 function $bcfbcdd321a042d4$var$embedScript(csv, displayName, snapshots) {
@@ -10458,7 +10809,7 @@ function $bcfbcdd321a042d4$export$9f4b684ea6be1a90(data, displayName, snapshots)
 
 function $5fc794bf34bc903f$export$eb2fcfdbd7ba97d4(props) {
     return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
-        className: $d705fb0bfff3c04a$exports.classList('sanddance-group', props.className)
+        className: $900824613c851981$exports.classList('sanddance-group', props.className)
     }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "group-head"
     }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("label", null, props.label), props.labelCount && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("span", {
@@ -10486,9 +10837,9 @@ function $e0dc81c436df84bf$export$ce08aabc421980f4(props) {
 }
 
 
-var $9647171e49086c01$exports = {};
+var $acccbd7dcaf3cef4$exports = {};
 "use strict";
-var $9647171e49086c01$var$__createBinding = $9647171e49086c01$exports && $9647171e49086c01$exports.__createBinding || (Object.create ? function(o, m, k, k2) {
+var $acccbd7dcaf3cef4$var$__createBinding = $acccbd7dcaf3cef4$exports && $acccbd7dcaf3cef4$exports.__createBinding || (Object.create ? function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     Object.defineProperty(o, k2, {
         enumerable: true,
@@ -10500,27 +10851,27 @@ var $9647171e49086c01$var$__createBinding = $9647171e49086c01$exports && $964717
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
 });
-var $9647171e49086c01$var$__exportStar = $9647171e49086c01$exports && $9647171e49086c01$exports.__exportStar || function(m, exports) {
-    for(var p in m)if (p !== "default" && !exports.hasOwnProperty(p)) $9647171e49086c01$var$__createBinding(exports, m, p);
+var $acccbd7dcaf3cef4$var$__exportStar = $acccbd7dcaf3cef4$exports && $acccbd7dcaf3cef4$exports.__exportStar || function(m, exports) {
+    for(var p in m)if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) $acccbd7dcaf3cef4$var$__createBinding(exports, m, p);
 };
-Object.defineProperty($9647171e49086c01$exports, "__esModule", {
+Object.defineProperty($acccbd7dcaf3cef4$exports, "__esModule", {
     value: true
 });
-parcelRequire.register("6mk6Q", function(module, exports) {
+parcelRequire.register("6vsQP", function(module, exports) {
 "use strict";
 Object.defineProperty(module.exports, "__esModule", {
     value: true
 });
 module.exports.BarChartRecommender = module.exports.BarChartRecommenderSummary = void 0;
 
-var $29GWw = parcelRequire("29GWw");
-var $4a146574e7ce7bce$var$maxDistinctVal = 20;
-var $4a146574e7ce7bce$var$minDistinctVal = 2;
-var $4a146574e7ce7bce$var$BarChartRecommenderSummary = function() {
+var $cwbQL = parcelRequire("cwbQL");
+var $4bcc048b2bfdf051$var$maxDistinctVal = 20;
+var $4bcc048b2bfdf051$var$minDistinctVal = 2;
+var $4bcc048b2bfdf051$var$BarChartRecommenderSummary = function() {
     function BarChartRecommenderSummary(columns, data) {
         var score = -1;
         for(var i = 0; i < columns.length; i++){
-            var recommendation = new $4a146574e7ce7bce$var$BarChartRecommender(columns[i], data).recommend();
+            var recommendation = new $4bcc048b2bfdf051$var$BarChartRecommender(columns[i], data).recommend();
             if (recommendation.score > score) {
                 this.best = recommendation;
                 score = recommendation.score;
@@ -10530,9 +10881,9 @@ var $4a146574e7ce7bce$var$BarChartRecommenderSummary = function() {
         for(var k = 0; k < columns.length; k++){
             var column = columns[k];
             if (column.name === this.best.columns.x || column.stats.isSequential) continue;
-            if (column.quantitative || column.stats.distinctValueCount < $29GWw.maxCategoricalColors && column.stats.distinctValueCount > 1) {
+            if (column.quantitative || column.stats.distinctValueCount < $cwbQL.maxCategoricalColors && column.stats.distinctValueCount > 1) {
                 this.best.columns.color = this.best.columns.sort = column.name;
-                this.best.scheme = $29GWw.defaultColorScheme(column);
+                this.best.scheme = (0, $cwbQL.defaultColorScheme)(column);
                 if (column.quantitative) this.best.colorBin = 'quantile';
                 break;
             }
@@ -10543,8 +10894,8 @@ var $4a146574e7ce7bce$var$BarChartRecommenderSummary = function() {
     };
     return BarChartRecommenderSummary;
 }();
-module.exports.BarChartRecommenderSummary = $4a146574e7ce7bce$var$BarChartRecommenderSummary;
-var $4a146574e7ce7bce$var$BarChartRecommender = function() {
+module.exports.BarChartRecommenderSummary = $4bcc048b2bfdf051$var$BarChartRecommenderSummary;
+var $4bcc048b2bfdf051$var$BarChartRecommender = function() {
     function BarChartRecommender(column1, data) {
         this.score = 0;
         this.column = column1;
@@ -10553,7 +10904,7 @@ var $4a146574e7ce7bce$var$BarChartRecommender = function() {
             function(column) {
                 if (column.stats.isSequential) return false;
                 else if (column.quantitative) return true;
-                else if (!column.quantitative && column.stats.distinctValueCount <= $4a146574e7ce7bce$var$maxDistinctVal && column.stats.distinctValueCount >= $4a146574e7ce7bce$var$minDistinctVal) return true;
+                else if (!column.quantitative && column.stats.distinctValueCount <= $4bcc048b2bfdf051$var$maxDistinctVal && column.stats.distinctValueCount >= $4bcc048b2bfdf051$var$minDistinctVal) return true;
                 else return false;
             }
         ];
@@ -10573,29 +10924,29 @@ var $4a146574e7ce7bce$var$BarChartRecommender = function() {
     };
     return BarChartRecommender;
 }();
-module.exports.BarChartRecommender = $4a146574e7ce7bce$var$BarChartRecommender;
+module.exports.BarChartRecommender = $4bcc048b2bfdf051$var$BarChartRecommender;
 
 });
-parcelRequire.register("29GWw", function(module, exports) {
+parcelRequire.register("cwbQL", function(module, exports) {
 "use strict";
 Object.defineProperty(module.exports, "__esModule", {
     value: true
 });
 module.exports.defaultColorScheme = module.exports.Recommender = module.exports.maxCategoricalColors = void 0;
 module.exports.maxCategoricalColors = 20;
-var $191dbb958eb861e6$var$Recommender = function() {
+var $91d1aa5a6fe6df6b$var$Recommender = function() {
     function Recommender(columns, data) {
     }
     return Recommender;
 }();
-module.exports.Recommender = $191dbb958eb861e6$var$Recommender;
-function $191dbb958eb861e6$var$defaultColorScheme(c) {
+module.exports.Recommender = $91d1aa5a6fe6df6b$var$Recommender;
+function $91d1aa5a6fe6df6b$var$defaultColorScheme(c) {
     if (c.quantitative) return 'redyellowgreen';
     else if (c.stats.distinctValueCount === 2) return 'dual_redgreen';
     else if (c.stats.distinctValueCount <= 10) return 'category10';
     return 'category20';
 }
-module.exports.defaultColorScheme = $191dbb958eb861e6$var$defaultColorScheme;
+module.exports.defaultColorScheme = $91d1aa5a6fe6df6b$var$defaultColorScheme;
 
 });
 
@@ -10603,24 +10954,24 @@ module.exports.defaultColorScheme = $191dbb958eb861e6$var$defaultColorScheme;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-$9647171e49086c01$var$__exportStar((parcelRequire("6mk6Q")), $9647171e49086c01$exports);
-parcelRequire.register("5Uljr", function(module, exports) {
+$acccbd7dcaf3cef4$var$__exportStar((parcelRequire("6vsQP")), $acccbd7dcaf3cef4$exports);
+parcelRequire.register("dV7e2", function(module, exports) {
 "use strict";
 Object.defineProperty(module.exports, "__esModule", {
     value: true
 });
 module.exports.isGeo = module.exports.isLatitude = module.exports.isLongitude = void 0;
 //TODO: languages other than english
-var $44d2b6f401edfc25$var$longitudeNames = [
+var $a226340a28925259$var$longitudeNames = [
     'lon',
     'long',
     'longitude'
 ];
-var $44d2b6f401edfc25$var$latitudeNames = [
+var $a226340a28925259$var$latitudeNames = [
     'lat',
     'latitude'
 ];
-function $44d2b6f401edfc25$var$isSpec(names, limits, column, data) {
+function $a226340a28925259$var$isSpec(names, limits, column, data) {
     var is = false;
     var cname = column.name.toLowerCase();
     for(var i = 0; i < names.length; i++)if (names[i] === cname) {
@@ -10629,40 +10980,40 @@ function $44d2b6f401edfc25$var$isSpec(names, limits, column, data) {
     }
     return is;
 }
-function $44d2b6f401edfc25$var$isLongitude(column, data) {
-    return $44d2b6f401edfc25$var$isSpec($44d2b6f401edfc25$var$longitudeNames, [
+function $a226340a28925259$var$isLongitude(column, data) {
+    return $a226340a28925259$var$isSpec($a226340a28925259$var$longitudeNames, [
         -180,
         180
     ], column, data);
 }
-module.exports.isLongitude = $44d2b6f401edfc25$var$isLongitude;
-function $44d2b6f401edfc25$var$isLatitude(column, data) {
-    return $44d2b6f401edfc25$var$isSpec($44d2b6f401edfc25$var$latitudeNames, [
+module.exports.isLongitude = $a226340a28925259$var$isLongitude;
+function $a226340a28925259$var$isLatitude(column, data) {
+    return $a226340a28925259$var$isSpec($a226340a28925259$var$latitudeNames, [
         -90,
         90
     ], column, data);
 }
-module.exports.isLatitude = $44d2b6f401edfc25$var$isLatitude;
-function $44d2b6f401edfc25$var$isGeo(column, data) {
-    return $44d2b6f401edfc25$var$isLatitude(column, data) || $44d2b6f401edfc25$var$isLongitude(column, data);
+module.exports.isLatitude = $a226340a28925259$var$isLatitude;
+function $a226340a28925259$var$isGeo(column, data) {
+    return $a226340a28925259$var$isLatitude(column, data) || $a226340a28925259$var$isLongitude(column, data);
 }
-module.exports.isGeo = $44d2b6f401edfc25$var$isGeo;
+module.exports.isGeo = $a226340a28925259$var$isGeo;
 
 });
 
 
-$9647171e49086c01$var$__exportStar((parcelRequire("5Uljr")), $9647171e49086c01$exports);
-parcelRequire.register("cpeZn", function(module, exports) {
+$acccbd7dcaf3cef4$var$__exportStar((parcelRequire("dV7e2")), $acccbd7dcaf3cef4$exports);
+parcelRequire.register("knSCk", function(module, exports) {
 "use strict";
 Object.defineProperty(module.exports, "__esModule", {
     value: true
 });
 module.exports.ScatterPlotRecommenderSummary = void 0;
 
-var $29GWw = parcelRequire("29GWw");
+var $cwbQL = parcelRequire("cwbQL");
 
-var $5Uljr = parcelRequire("5Uljr");
-var $9083724fa9311431$var$ScatterPlotRecommenderSummary = function() {
+var $dV7e2 = parcelRequire("dV7e2");
+var $ed7052782b6c1c52$var$ScatterPlotRecommenderSummary = function() {
     function ScatterPlotRecommenderSummary(columns, data) {
         var rec = {
             chart: 'scatterplot',
@@ -10675,16 +11026,16 @@ var $9083724fa9311431$var$ScatterPlotRecommenderSummary = function() {
         columns.forEach(function(column) {
             if (!rec.columns.x) {
                 if (column.name.toLowerCase() === 'x') return rec.columns.x = column.name;
-                else if ($5Uljr.isLongitude(column)) return rec.columns.x = column.name;
+                else if ((0, $dV7e2.isLongitude)(column)) return rec.columns.x = column.name;
             }
             if (!rec.columns.y) {
                 if (column.name.toLowerCase() === 'y') return rec.columns.y = column.name;
-                else if ($5Uljr.isLatitude(column)) return rec.columns.y = column.name;
+                else if ((0, $dV7e2.isLatitude)(column)) return rec.columns.y = column.name;
             }
             if (!rec.columns.color && !column.stats.isSequential) {
-                if (column.quantitative || column.stats.distinctValueCount < $29GWw.maxCategoricalColors) {
+                if (column.quantitative || column.stats.distinctValueCount < $cwbQL.maxCategoricalColors) {
                     rec.columns.color = rec.columns.sort = column.name;
-                    rec.scheme = $29GWw.defaultColorScheme(column);
+                    rec.scheme = (0, $cwbQL.defaultColorScheme)(column);
                     if (column.quantitative) rec.colorBin = 'quantile';
                     return;
                 }
@@ -10697,53 +11048,53 @@ var $9083724fa9311431$var$ScatterPlotRecommenderSummary = function() {
     };
     return ScatterPlotRecommenderSummary;
 }();
-module.exports.ScatterPlotRecommenderSummary = $9083724fa9311431$var$ScatterPlotRecommenderSummary;
+module.exports.ScatterPlotRecommenderSummary = $ed7052782b6c1c52$var$ScatterPlotRecommenderSummary;
 
 });
 
 
-$9647171e49086c01$var$__exportStar((parcelRequire("cpeZn")), $9647171e49086c01$exports);
-parcelRequire.register("4fLvc", function(module, exports) {
+$acccbd7dcaf3cef4$var$__exportStar((parcelRequire("knSCk")), $acccbd7dcaf3cef4$exports);
+parcelRequire.register("5dIRY", function(module, exports) {
 "use strict";
 Object.defineProperty(module.exports, "__esModule", {
     value: true
 });
 module.exports.preferredColumnForTreemapSize = void 0;
 
-var $5Uljr = parcelRequire("5Uljr");
-function $318d6916247d4bb4$var$preferredColumnForTreemapSize(columns, strict) {
+var $dV7e2 = parcelRequire("dV7e2");
+function $3cd0f8d387d8a948$var$preferredColumnForTreemapSize(columns, strict) {
     for(var i = 0; i < columns.length; i++){
         var c = columns[i];
         if (c.quantitative) {
             if (strict && c.stats.hasNegative) continue;
             if (strict && c.stats.isSequential) continue;
-            if (strict && $5Uljr.isGeo(c)) continue;
+            if (strict && (0, $dV7e2.isGeo)(c)) continue;
             return c;
         }
     }
 }
-module.exports.preferredColumnForTreemapSize = $318d6916247d4bb4$var$preferredColumnForTreemapSize;
+module.exports.preferredColumnForTreemapSize = $3cd0f8d387d8a948$var$preferredColumnForTreemapSize;
 
 });
 
 
-$9647171e49086c01$var$__exportStar((parcelRequire("4fLvc")), $9647171e49086c01$exports);
-parcelRequire.register("7dD3o", function(module, exports) {
+$acccbd7dcaf3cef4$var$__exportStar((parcelRequire("5dIRY")), $acccbd7dcaf3cef4$exports);
+parcelRequire.register("ib2nb", function(module, exports) {
 "use strict";
 Object.defineProperty(module.exports, "__esModule", {
     value: true
 });
 module.exports.RecommenderSummary = void 0;
 
-var $6mk6Q = parcelRequire("6mk6Q");
+var $6vsQP = parcelRequire("6vsQP");
 
-var $cpeZn = parcelRequire("cpeZn");
-var $54180a8f42ec661a$var$RecommenderSummary = function() {
+var $knSCk = parcelRequire("knSCk");
+var $d3bb18471b8de6e4$var$RecommenderSummary = function() {
     function RecommenderSummary(columns, data) {
-        var quickRec = new $cpeZn.ScatterPlotRecommenderSummary(columns, data).recommend();
+        var quickRec = new $knSCk.ScatterPlotRecommenderSummary(columns, data).recommend();
         if (quickRec) this.rec = quickRec;
         else {
-            var barChartrec = new $6mk6Q.BarChartRecommenderSummary(columns, data).recommend();
+            var barChartrec = new $6vsQP.BarChartRecommenderSummary(columns, data).recommend();
             if (barChartrec && barChartrec.score >= 1) this.rec = barChartrec;
             else this.rec = {
                 chart: 'grid',
@@ -10758,12 +11109,12 @@ var $54180a8f42ec661a$var$RecommenderSummary = function() {
     };
     return RecommenderSummary;
 }();
-module.exports.RecommenderSummary = $54180a8f42ec661a$var$RecommenderSummary;
+module.exports.RecommenderSummary = $d3bb18471b8de6e4$var$RecommenderSummary;
 
 });
 
 
-$9647171e49086c01$var$__exportStar((parcelRequire("7dD3o")), $9647171e49086c01$exports);
+$acccbd7dcaf3cef4$var$__exportStar((parcelRequire("ib2nb")), $acccbd7dcaf3cef4$exports);
 
 
 
@@ -10785,7 +11136,7 @@ function $bfaa631c88fa1f10$export$1e096674a95fd43b(insightColumns, actualColumns
 }
 function $bfaa631c88fa1f10$export$c2563952d877899(chart, totalStyle, insightColumns, actualColumns) {
     //ensure columns are populated
-    const nonInternal = actualColumns.filter((c)=>!$f073e1f86a136e75$exports.util.isInternalFieldName(c.name)
+    const nonInternal = actualColumns.filter((c)=>!$e5c730801b562de0$exports.util.isInternalFieldName(c.name)
     );
     const firstColumn = nonInternal[0];
     const firstColumnName = firstColumn && firstColumn.name;
@@ -10839,8 +11190,8 @@ function $bfaa631c88fa1f10$export$c2563952d877899(chart, totalStyle, insightColu
     }
 }
 function $bfaa631c88fa1f10$export$7e0d3b5c6570ae8b(columns) {
-    let column = $9647171e49086c01$exports.preferredColumnForTreemapSize(columns, true);
-    if (!column) column = $9647171e49086c01$exports.preferredColumnForTreemapSize(columns, false);
+    let column = $acccbd7dcaf3cef4$exports.preferredColumnForTreemapSize(columns, true);
+    if (!column) column = $acccbd7dcaf3cef4$exports.preferredColumnForTreemapSize(columns, false);
     return column;
 }
 
@@ -10849,7 +11200,7 @@ const $7d6d61f19df51c57$var$singleFacetLayouts = [
     {
         facetStyle: 'wrap',
         text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelFacetLayoutWrap
-    }, 
+    }
 ];
 const $7d6d61f19df51c57$export$3fab399b77d7be2a = [
     {
@@ -10987,7 +11338,7 @@ function $7d6d61f19df51c57$var$_Chart(props) {
                                 props.changeColumnMapping('facet', 'facet', null, {
                                     facetStyle: facetData.facetStyle
                                 });
-                                if (facetData.facetStyle === 'cross') props.changeColumnMapping('facetV', $f073e1f86a136e75$exports.VegaDeckGl.util.clone(facetData.column));
+                                if (facetData.facetStyle === 'cross') props.changeColumnMapping('facetV', $e5c730801b562de0$exports.VegaDeckGl.util.clone(facetData.column));
                             }
                         });
                         break;
@@ -11100,7 +11451,7 @@ function $7d6d61f19df51c57$var$_Chart(props) {
             })));
         }
         disableSignal(signal) {
-            if (this.props.view === '2d' && signal.name === $f073e1f86a136e75$exports.constants.SignalNames.ZGrounded) return true;
+            if (this.props.view === '2d' && signal.name === $e5c730801b562de0$exports.constants.SignalNames.ZGrounded) return true;
             return false;
         }
     }
@@ -11471,7 +11822,7 @@ function $8c9b7d8f2d896d07$var$_Search(props) {
             return initialState;
         }
         componentDidUpdate() {
-            if (!$d705fb0bfff3c04a$exports.deepCompare(this.props.initializer, this.state.initializer)) this.setState(this.getInitialState(this.props));
+            if (!$900824613c851981$exports.deepCompare(this.props.initializer, this.state.initializer)) this.setState(this.getInitialState(this.props));
         }
         validateAndSearch() {
             const groups = [
@@ -11563,7 +11914,7 @@ function $8c9b7d8f2d896d07$var$_Search(props) {
                 ...this.state.groups
             ];
             const group = groups[groupIndex3];
-            const ex = $f073e1f86a136e75$exports.VegaDeckGl.util.clone(group.expressions[index]);
+            const ex = $e5c730801b562de0$exports.VegaDeckGl.util.clone(group.expressions[index]);
             if (ex.name !== partialEx.name) {
                 //choose an appropriate operator when switching data type
                 const oldColumn = $8c9b7d8f2d896d07$var$getColumnWithName(ex.name, this.state.sortedColumns);
@@ -11676,7 +12027,7 @@ const $8c9b7d8f2d896d07$export$4b85d3515bd863a5 = $8c9b7d8f2d896d07$var$_Search;
 
 
 
-var $d80024a3f51ef424$var$PresenterElement = $f073e1f86a136e75$exports.VegaDeckGl.PresenterElement;
+var $d80024a3f51ef424$var$PresenterElement = $e5c730801b562de0$exports.VegaDeckGl.PresenterElement;
 function $d80024a3f51ef424$export$f80a6900d44a74ee(viewer) {
     var tags = viewer.presenter.getElement($d80024a3f51ef424$var$PresenterElement.gl).getElementsByTagName('canvas');
     if (tags) return tags[0];
@@ -11699,7 +12050,7 @@ const $d80024a3f51ef424$export$8e76ac9f37578d1b = {
 const $693174daac173d4a$export$83d89fbfd8236492 = '3.2.0';
 
 
-var $7148a278555952e4$var$SandDance = $f073e1f86a136e75$exports;
+var $7148a278555952e4$var$SandDance = $e5c730801b562de0$exports;
 var $7148a278555952e4$var$DataRefType;
 (function(DataRefType) {
     DataRefType[DataRefType["none"] = 0] = "none";
@@ -11972,7 +12323,7 @@ function $7148a278555952e4$var$_Settings(props) {
                 onDismiss: ()=>this.setState($7148a278555952e4$var$initState(this.props))
                 ,
                 title: $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelSystemInfo
-            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("ul", null, this.props.children, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("li", null, "SandDanceExplorer version: ", $693174daac173d4a$export$83d89fbfd8236492), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("li", null, "SandDanceReact version: ", $ea3cef9215da943f$export$83d89fbfd8236492), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("li", null, "SandDance version: ", $7148a278555952e4$var$SandDance.version), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("li", null, "WebGL enabled: ", $d80024a3f51ef424$export$8e76ac9f37578d1b.webgl ? $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelYes : $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelNo), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("li", null, "WebGL2 enabled: ", $d80024a3f51ef424$export$8e76ac9f37578d1b.webgl2 ? $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelYes : $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelNo))));
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("ul", null, this.props.children, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("li", null, "SandDanceExplorer version: ", $693174daac173d4a$export$83d89fbfd8236492), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("li", null, "SandDanceReact version: ", $befc3a45da53e8f6$export$83d89fbfd8236492), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("li", null, "SandDance version: ", $7148a278555952e4$var$SandDance.version), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("li", null, "WebGL enabled: ", $d80024a3f51ef424$export$8e76ac9f37578d1b.webgl ? $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelYes : $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelNo), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("li", null, "WebGL2 enabled: ", $d80024a3f51ef424$export$8e76ac9f37578d1b.webgl2 ? $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelYes : $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelNo))));
         }
     }
     return new __Settings(props);
@@ -12026,7 +12377,7 @@ function $ed84433650aaee3f$var$_SnapshotEditor(props) {
                 this.props.explorer.viewer.deselect().then(()=>{
                     const canvas = $d80024a3f51ef424$export$f80a6900d44a74ee(this.props.explorer.viewer);
                     const bgColor = canvas && window.getComputedStyle(canvas).backgroundColor;
-                    const insight = $f073e1f86a136e75$exports.VegaDeckGl.util.clone(this.props.explorer.viewer.getInsight());
+                    const insight = $e5c730801b562de0$exports.VegaDeckGl.util.clone(this.props.explorer.viewer.getInsight());
                     delete insight.size;
                     insight.signalValues = signalValues;
                     const title = this.props.getTitle && this.props.getTitle(insight) || '';
@@ -12052,7 +12403,7 @@ function $ed84433650aaee3f$var$_SnapshotEditor(props) {
         render() {
             return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($4fad1e2cc5a361cd$export$3ddf2d174ce01153, {
                 modalProps: {
-                    className: $d705fb0bfff3c04a$exports.classList('sanddance-snapshot-dialog', this.props.theme)
+                    className: $900824613c851981$exports.classList('sanddance-snapshot-dialog', this.props.theme)
                 },
                 minWidth: `${this.props.explorer.snapshotThumbWidth + 64}px`,
                 hidden: !this.state.showEditFormDialog,
@@ -12252,7 +12603,7 @@ function $d3153b53a9fcaa75$var$_Snapshots(props) {
                 });
                 return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                     key: i,
-                    className: $d705fb0bfff3c04a$exports.classList('snapshot', i === this.props.selectedSnapshotIndex && 'selected')
+                    className: $900824613c851981$exports.classList('snapshot', i === this.props.selectedSnapshotIndex && 'selected')
                 }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                     onClick: (e)=>this.props.onSnapshotClick(snapshot, i)
                 }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
@@ -12302,13 +12653,13 @@ function $bf02fe25b3020ba2$var$ensureToolbar(panel) {
     const existing = panel.getElementsByClassName($bf02fe25b3020ba2$var$className);
     if (existing.length > 0) return existing[0];
     else {
-        const div = $f073e1f86a136e75$exports.VegaDeckGl.util.addDiv(panel, $bf02fe25b3020ba2$var$className);
+        const div = $e5c730801b562de0$exports.VegaDeckGl.util.addDiv(panel, $bf02fe25b3020ba2$var$className);
         panel.insertAdjacentElement('afterbegin', div);
         return div;
     }
 }
 function $bf02fe25b3020ba2$export$225a002951c27da7(presenter, showLegend, props) {
-    const panel = presenter.getElement($f073e1f86a136e75$exports.VegaDeckGl.PresenterElement.panel);
+    const panel = presenter.getElement($e5c730801b562de0$exports.VegaDeckGl.PresenterElement.panel);
     const div = $bf02fe25b3020ba2$var$ensureToolbar(panel);
     $2a6088da9113f540$export$e2253033e6e1df16.reactDOM.render($bf02fe25b3020ba2$var$ColorMap(props), div);
     panel.style.display = showLegend ? '' : 'none';
@@ -12670,7 +13021,7 @@ function $9426609e4d123694$export$3fb74a6ae4f1171d(props) {
         selected: -1
     }, props.dataCount);
     return props.compact ? $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
-        className: $d705fb0bfff3c04a$exports.classList('sanddance-datascope', 'compact'),
+        className: $900824613c851981$exports.classList('sanddance-datascope', 'compact'),
         onClick: props.onCompactClick
     }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($9426609e4d123694$var$Compact, Object.assign({
     }, props, {
@@ -12688,7 +13039,7 @@ function $9426609e4d123694$export$3fb74a6ae4f1171d(props) {
         text: $ee7b4b80c9b36fcd$export$21c51bc433c16634.selectDataSpanSelection,
         count: dataCount.selected
     }))) : $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
-        className: $d705fb0bfff3c04a$exports.classList('sanddance-datascope', 'extended', props.active && 'active')
+        className: $900824613c851981$exports.classList('sanddance-datascope', 'extended', props.active && 'active')
     }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", null, props.dataSet), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "datascope-buttons"
     }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($9426609e4d123694$var$DataScopeButton, Object.assign({
@@ -12719,7 +13070,7 @@ function $9426609e4d123694$var$Compact(props) {
 function $9426609e4d123694$var$DataScopeButton(props) {
     return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($3e0db921f6d0a017$export$353f5b6fc5456de1, {
         themePalette: props.themePalette,
-        className: $d705fb0bfff3c04a$exports.classList('datascope-button', props.selectedDataScope === props.dataScopeId && 'selected'),
+        className: $900824613c851981$exports.classList('datascope-button', props.selectedDataScope === props.dataScopeId && 'selected'),
         disabled: props.disabled,
         text: props.text,
         onClick: ()=>{
@@ -12744,7 +13095,7 @@ function $9426609e4d123694$var$DataScopeButton(props) {
 
 function $18b915b0ca226437$export$fcc7818a78919c8c(props) {
     return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
-        className: $d705fb0bfff3c04a$exports.classList('scrollable-container', props.className),
+        className: $900824613c851981$exports.classList('scrollable-container', props.className),
         role: props.role
     }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "scrollable"
@@ -12808,7 +13159,7 @@ function $1aadf16b3aca4a02$export$1ba59dacbcbf90fe(props) {
         }
     ];
     return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
-        className: $d705fb0bfff3c04a$exports.classList('sanddance-sidebar', 'calculator', props.pinned && 'pinned', props.closed && 'closed')
+        className: $900824613c851981$exports.classList('sanddance-sidebar', 'calculator', props.pinned && 'pinned', props.closed && 'closed')
     }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
         className: "sidebar-content"
     }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($9426609e4d123694$export$3fb74a6ae4f1171d, Object.assign({
@@ -12847,7 +13198,7 @@ function $1aadf16b3aca4a02$export$1ba59dacbcbf90fe(props) {
 function $1aadf16b3aca4a02$export$a8fc19311f33df91(props) {
     const selected = !props.closed && props.selectedSideTab === props.sideTabId;
     return $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
-        className: $d705fb0bfff3c04a$exports.classList('vbutton', selected && 'selected'),
+        className: $900824613c851981$exports.classList('vbutton', selected && 'selected'),
         role: 'tab',
         "aria-selected": selected
     }, props.badgeText && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
@@ -13036,7 +13387,7 @@ function $0e63cc2ab4c414cc$export$1ca1e38143dcc152(props) {
                 iconName: 'ClearFilter'
             },
             disabled: disabled || !props.selectionSearch || zeroResults,
-            onClick: ()=>props.doFilter($f073e1f86a136e75$exports.searchExpression.invert(props.selectionSearch), $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelHistoryFilterIExclude)
+            onClick: ()=>props.doFilter($e5c730801b562de0$exports.searchExpression.invert(props.selectionSearch), $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelHistoryFilterIExclude)
         },
         {
             key: 'reset',
@@ -13133,7 +13484,7 @@ function $0e63cc2ab4c414cc$export$1ca1e38143dcc152(props) {
 
 
 const $81abbb939b4f753b$export$9d26f8f2be82424f = (dataFile)=>new Promise((resolve, reject)=>{
-        const vega = $f073e1f86a136e75$exports.VegaDeckGl.base.vega;
+        const vega = $e5c730801b562de0$exports.VegaDeckGl.base.vega;
         const loader = vega.loader();
         function handleRawText(text) {
             let data;
@@ -13169,7 +13520,7 @@ const $81abbb939b4f753b$export$c084150d12efae43 = (data, type)=>new Promise((res
         data.forEach((row)=>{
             for(let column in row)if (row[column] === '') row[column] = null;
         });
-        const columns = $f073e1f86a136e75$exports.util.getColumnsFromData($f073e1f86a136e75$exports.VegaDeckGl.base.vega.inferTypes, data).filter((c)=>c.name && c.name.trim()
+        const columns = $e5c730801b562de0$exports.util.getColumnsFromData($e5c730801b562de0$exports.VegaDeckGl.base.vega.inferTypes, data).filter((c)=>c.name && c.name.trim()
         ).sort((a, b)=>a.name.localeCompare(b.name)
         );
         if (parse) {
@@ -13206,7 +13557,7 @@ const $81abbb939b4f753b$export$c084150d12efae43 = (data, type)=>new Promise((res
 
 
 
-var $843cc4195912fafb$var$util = $f073e1f86a136e75$exports.VegaDeckGl.util;
+var $843cc4195912fafb$var$util = $e5c730801b562de0$exports.VegaDeckGl.util;
 const $843cc4195912fafb$export$3465a0e7b289ab72 = {
 };
 $843cc4195912fafb$export$3465a0e7b289ab72[''] = {
@@ -14894,7 +15245,7 @@ function $94deb74fcf0932b2$export$ab7b13a7cc99f3af(selected) {
 
 let $ef15f4ff7336ac66$var$loaded = false;
 function $ef15f4ff7336ac66$var$load() {
-    $f073e1f86a136e75$exports.colorSchemes.filter((cs)=>cs.colors.length === 2
+    $e5c730801b562de0$exports.colorSchemes.filter((cs)=>cs.colors.length === 2
     ).map((binaryScheme, i)=>{
         $92a61093bb1a4e6c$export$dc7e195cef98649[binaryScheme.scheme] = $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
             className: "swatch"
@@ -14912,7 +15263,7 @@ function $ef15f4ff7336ac66$var$load() {
 }
 function $ef15f4ff7336ac66$export$d1699a1bbdf17835(selected) {
     if (!$ef15f4ff7336ac66$var$loaded) $ef15f4ff7336ac66$var$load();
-    return $f073e1f86a136e75$exports.colorSchemes.filter((cs)=>cs.colors.length === 2
+    return $e5c730801b562de0$exports.colorSchemes.filter((cs)=>cs.colors.length === 2
     ).map((binaryScheme, i)=>$92a61093bb1a4e6c$export$535452b9416b5e17(selected, binaryScheme.scheme)
     );
 }
@@ -16019,7 +16370,7 @@ function $8d1edb1f1211f480$export$e2fbaa661ec19dbf(props) {
             props.changeColorScheme(o.scheme);
         }
     }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
-        className: $d705fb0bfff3c04a$exports.classList('sanddance-scheme', props.disabled && 'disabled')
+        className: $900824613c851981$exports.classList('sanddance-scheme', props.disabled && 'disabled')
     }, props.scheme && $92a61093bb1a4e6c$export$dc7e195cef98649[props.scheme]));
 }
 
@@ -16197,8 +16548,8 @@ function $cca31c5ab6f4c7a4$export$e9ab04247990d50b(props) {
     if (!props.item) return null;
     const nameValuePairs = [];
     for(let columnName in props.item){
-        if (columnName === $f073e1f86a136e75$exports.constants.GL_ORDINAL && !props.showSystemFields) continue;
-        if ($f073e1f86a136e75$exports.util.isInternalFieldName(columnName)) continue;
+        if (columnName === $e5c730801b562de0$exports.constants.GL_ORDINAL && !props.showSystemFields) continue;
+        if ($e5c730801b562de0$exports.util.isInternalFieldName(columnName)) continue;
         let nameValuePair = {
             columnName: columnName,
             value: props.item[columnName]
@@ -16338,7 +16689,7 @@ function $2e8d56166a32c5ec$export$84202caead5689ba(props) {
         className: "sanddance-history"
     }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("ol", null, props.historyItems.map((hi, i)=>$2a6088da9113f540$export$e2253033e6e1df16.react.createElement("li", {
             key: i,
-            className: $d705fb0bfff3c04a$exports.classList(i === props.historyIndex && 'selected'),
+            className: $900824613c851981$exports.classList(i === props.historyIndex && 'selected'),
             onKeyUp: (e)=>{
                 if (e.keyCode === $05bb2ea18ece6c32$export$ec835b702d42f3f0.ENTER) props.redo(i);
             },
@@ -16402,10 +16753,10 @@ function $b25ee1fff804a263$export$1915de5807f54194(prefs, partialInsight) {
                             scheme: partialInsight.scheme,
                             colorBin: partialInsight.colorBin
                         };
-                        copySignalValue($f073e1f86a136e75$exports.constants.SignalNames.ColorBinCount);
+                        copySignalValue($e5c730801b562de0$exports.constants.SignalNames.ColorBinCount);
                         break;
                     case 'x':
-                        copySignalValue($f073e1f86a136e75$exports.constants.SignalNames.XBins);
+                        copySignalValue($e5c730801b562de0$exports.constants.SignalNames.XBins);
                         break;
                 }
             }
@@ -16420,11 +16771,11 @@ function $b25ee1fff804a263$export$c2992dc6411becf6(prefs, chart, role, column, s
     partialInsight.signalValues[signalName] = signalValue;
 }
 function $b25ee1fff804a263$export$318d2f27a5d54aff(prefs, chart, role, columnName) {
-    const specTypePrefs = $f073e1f86a136e75$exports.VegaDeckGl.util.deepMerge({
+    const specTypePrefs = $e5c730801b562de0$exports.VegaDeckGl.util.deepMerge({
     }, prefs['*'], prefs[chart]);
-    const rolePrefs = $f073e1f86a136e75$exports.VegaDeckGl.util.deepMerge({
+    const rolePrefs = $e5c730801b562de0$exports.VegaDeckGl.util.deepMerge({
     }, specTypePrefs['*'], specTypePrefs[role]);
-    const partialInsight = $f073e1f86a136e75$exports.VegaDeckGl.util.deepMerge({
+    const partialInsight = $e5c730801b562de0$exports.VegaDeckGl.util.deepMerge({
     }, rolePrefs['*'], rolePrefs[columnName]);
     return partialInsight;
 }
@@ -16435,7 +16786,7 @@ function $b25ee1fff804a263$export$a14483004c11686f(prefs, chart, role, column, p
     const rolePrefs = SpecTypePrefs[role] || {
     };
     SpecTypePrefs[role] = rolePrefs;
-    rolePrefs[column] = $f073e1f86a136e75$exports.VegaDeckGl.util.deepMerge({
+    rolePrefs[column] = $e5c730801b562de0$exports.VegaDeckGl.util.deepMerge({
     }, rolePrefs[column], partialInsight);
     return rolePrefs[column];
 }
@@ -16450,7 +16801,7 @@ function $bd9af0ed83794bce$var$comparableGroup(group) {
     });
 }
 function $bd9af0ed83794bce$var$compareGroup(a, b) {
-    return $f073e1f86a136e75$exports.searchExpression.compareGroup($bd9af0ed83794bce$var$comparableGroup(a), $bd9af0ed83794bce$var$comparableGroup(b));
+    return $e5c730801b562de0$exports.searchExpression.compareGroup($bd9af0ed83794bce$var$comparableGroup(a), $bd9af0ed83794bce$var$comparableGroup(b));
 }
 function $bd9af0ed83794bce$export$2e59f49d97a9dbde(haystack, needle) {
     const groups = [];
@@ -16481,7 +16832,7 @@ $851bf9263c6e17c1$var$dataBrowserNullMessages[$9426609e4d123694$export$f0297ce57
 $851bf9263c6e17c1$var$dataBrowserNullMessages[$9426609e4d123694$export$f0297ce57faf7d71.FilteredData] = $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelDataNullFiltered;
 $851bf9263c6e17c1$var$dataBrowserNullMessages[$9426609e4d123694$export$f0297ce57faf7d71.SelectedData] = $ee7b4b80c9b36fcd$export$21c51bc433c16634.labelDataNullSelection;
 function $851bf9263c6e17c1$var$createInputSearch(search) {
-    const groups = $f073e1f86a136e75$exports.searchExpression.ensureSearchExpressionGroupArray(search);
+    const groups = $e5c730801b562de0$exports.searchExpression.ensureSearchExpressionGroupArray(search);
     const dialogSearch = groups.map((group, groupIndex)=>{
         return Object.assign(Object.assign({
             key: groupIndex
@@ -16546,14 +16897,14 @@ function $851bf9263c6e17c1$var$_Explorer(props) {
             this.snapshotThumbWidth = $bd8e96fc01144a60$export$7e33de69431bbb06;
             this.discardColorContextUpdates = true;
             this.updateViewerOptions(Object.assign(Object.assign({
-            }, $f073e1f86a136e75$exports.VegaDeckGl.util.clone($f073e1f86a136e75$exports.Viewer.defaultViewerOptions)), props1.viewerOptions));
+            }, $e5c730801b562de0$exports.VegaDeckGl.util.clone($e5c730801b562de0$exports.Viewer.defaultViewerOptions)), props1.viewerOptions));
         }
         finalize() {
             if (this.viewer) this.viewer.finalize();
         }
         updateViewerOptions(viewerOptions) {
             this.viewerOptions = Object.assign(Object.assign({
-            }, $f073e1f86a136e75$exports.VegaDeckGl.util.deepMerge($bd8e96fc01144a60$export$fb736e4909afb3d7, this.viewerOptions, viewerOptions)), {
+            }, $e5c730801b562de0$exports.VegaDeckGl.util.deepMerge($bd8e96fc01144a60$export$fb736e4909afb3d7, this.viewerOptions, viewerOptions)), {
                 tooltipOptions: {
                     exclude: (columnName)=>this.state.tooltipExclusions.indexOf(columnName) >= 0
                 },
@@ -16584,7 +16935,8 @@ function $851bf9263c6e17c1$var$_Explorer(props) {
                     const selectedItemIndex = Object.assign({
                     }, this.state.selectedItemIndex);
                     selectedItemIndex[$9426609e4d123694$export$f0297ce57faf7d71.SelectedData] = index || 0;
-                    let { search: search , sideTabId: sideTabId  } = this.state;
+                    let { search: search  } = this.state;
+                    const { sideTabId: sideTabId  } = this.state;
                     if (newSearch) search = $851bf9263c6e17c1$var$createInputSearch(newSearch);
                     this.setState({
                         search: search,
@@ -16631,15 +16983,15 @@ function $851bf9263c6e17c1$var$_Explorer(props) {
                 },
                 onBeforeCreateLayers: $57db901d8b47d017$export$dd264fd5c92b73c6,
                 getTextColor: (o)=>{
-                    if (o.specRole) return $f073e1f86a136e75$exports.VegaDeckGl.util.colorFromString(this.viewerOptions.colors.clickableText);
-                    else if (o.metaData && o.metaData.search) return $f073e1f86a136e75$exports.VegaDeckGl.util.colorFromString(this.viewerOptions.colors.searchText);
+                    if (o.specRole) return $e5c730801b562de0$exports.VegaDeckGl.util.colorFromString(this.viewerOptions.colors.clickableText);
+                    else if (o.metaData && o.metaData.search) return $e5c730801b562de0$exports.VegaDeckGl.util.colorFromString(this.viewerOptions.colors.searchText);
                     else return o.color;
                 },
                 getTextHighlightAlphaCutoff: ()=>this.viewerOptions.colors.clickableTextHighlightAlphaCutoff
                 ,
                 getTextHighlightColor: (o)=>{
-                    if (o.specRole) return $f073e1f86a136e75$exports.VegaDeckGl.util.colorFromString(this.viewerOptions.colors.clickableTextHighlight);
-                    else if (o.metaData && o.metaData.search) return $f073e1f86a136e75$exports.VegaDeckGl.util.colorFromString(this.viewerOptions.colors.searchTextHighlight);
+                    if (o.specRole) return $e5c730801b562de0$exports.VegaDeckGl.util.colorFromString(this.viewerOptions.colors.clickableTextHighlight);
+                    else if (o.metaData && o.metaData.search) return $e5c730801b562de0$exports.VegaDeckGl.util.colorFromString(this.viewerOptions.colors.searchTextHighlight);
                     else return [
                         0,
                         0,
@@ -16677,18 +17029,18 @@ function $851bf9263c6e17c1$var$_Explorer(props) {
                 onNewViewStateTarget: ()=>this.newViewStateTarget
             });
             if (this.viewer && this.viewer.presenter) {
-                const newPresenterStyle = $f073e1f86a136e75$exports.util.getPresenterStyle(this.viewerOptions);
+                const newPresenterStyle = $e5c730801b562de0$exports.util.getPresenterStyle(this.viewerOptions);
                 const mergePrenterStyle = Object.assign(Object.assign({
                 }, this.viewer.presenter.style), newPresenterStyle);
                 this.viewer.presenter.style = mergePrenterStyle;
-                this.viewer.options = $f073e1f86a136e75$exports.VegaDeckGl.util.deepMerge(this.viewer.options, this.props.viewerOptions, this.viewerOptions);
+                this.viewer.options = $e5c730801b562de0$exports.VegaDeckGl.util.deepMerge(this.viewer.options, this.props.viewerOptions, this.viewerOptions);
             }
         }
         signal(signalName, signalValue, newViewStateTarget) {
             switch(signalName){
-                case $f073e1f86a136e75$exports.constants.SignalNames.ColorBinCount:
-                case $f073e1f86a136e75$exports.constants.SignalNames.ColorReverse:
-                case $f073e1f86a136e75$exports.constants.SignalNames.MarkOpacity:
+                case $e5c730801b562de0$exports.constants.SignalNames.ColorBinCount:
+                case $e5c730801b562de0$exports.constants.SignalNames.ColorReverse:
+                case $e5c730801b562de0$exports.constants.SignalNames.MarkOpacity:
                     this.discardColorContextUpdates = false;
                     break;
             }
@@ -16743,7 +17095,7 @@ function $851bf9263c6e17c1$var$_Explorer(props) {
             };
             const currentFilter = this.viewer.getInsight().filter;
             if (rebaseFilter1 && currentFilter && historicInsight.filter) {
-                if ($f073e1f86a136e75$exports.searchExpression.startsWith(historicInsight.filter, currentFilter)) changeInsight();
+                if ($e5c730801b562de0$exports.searchExpression.startsWith(historicInsight.filter, currentFilter)) changeInsight();
                 else this.viewer.reset().then(()=>new Promise((resolve, reject)=>{
                         setTimeout(resolve, this.viewer.options.transitionDurations.scope);
                     })
@@ -16813,7 +17165,7 @@ function $851bf9263c6e17c1$var$_Explorer(props) {
                     }
                     if (!partialInsight) {
                         //load recommendation
-                        let r = new $9647171e49086c01$exports.RecommenderSummary(dataContent.columns, dataContent.data);
+                        let r = new $acccbd7dcaf3cef4$exports.RecommenderSummary(dataContent.columns, dataContent.data);
                         partialInsight = r.recommend();
                     }
                     partialInsight = Object.assign({
@@ -16871,7 +17223,7 @@ function $851bf9263c6e17c1$var$_Explorer(props) {
             const insight = Object.assign({
                 chart: chart
             }, partialInsight);
-            const columns = $f073e1f86a136e75$exports.VegaDeckGl.util.deepMerge({
+            const columns = $e5c730801b562de0$exports.VegaDeckGl.util.deepMerge({
             }, partialInsight.columns, this.state.columns);
             const { signalValues: signalValues  } = this.viewer.getInsight();
             insight.signalValues = Object.assign(Object.assign({
@@ -16980,7 +17332,7 @@ function $851bf9263c6e17c1$var$_Explorer(props) {
                 if (historyItem) {
                     if (historyItem.historicInsight.filter === null) filter = null;
                     else if (historyItem.historicInsight.rebaseFilter) filter = historyItem.historicInsight.filter;
-                    else if (historyItem.historicInsight.filter) filter = $f073e1f86a136e75$exports.searchExpression.narrow(filter, historyItem.historicInsight.filter);
+                    else if (historyItem.historicInsight.filter) filter = $e5c730801b562de0$exports.searchExpression.narrow(filter, historyItem.historicInsight.filter);
                     historicInsight = Object.assign(Object.assign({
                     }, historicInsight), historyItem.historicInsight);
                 }
@@ -17032,7 +17384,7 @@ function $851bf9263c6e17c1$var$_Explorer(props) {
                 } : null);
             };
             const _changeInsight = (newInsight, columnUpdate, historyAction)=>{
-                newInsight.columns = $f073e1f86a136e75$exports.VegaDeckGl.util.deepMerge({
+                newInsight.columns = $e5c730801b562de0$exports.VegaDeckGl.util.deepMerge({
                 }, columns, columnUpdate);
                 $b25ee1fff804a263$export$a14483004c11686f(this.prefs, this.state.chart, '*', '*', {
                     columns: columnUpdate
@@ -17234,7 +17586,7 @@ function $851bf9263c6e17c1$var$_Explorer(props) {
                 var oldSelection = this.viewer.getSelection();
                 if (oldSelection.search) {
                     //look for matching groups and toggle them
-                    const result = $bd9af0ed83794bce$export$2e59f49d97a9dbde($f073e1f86a136e75$exports.searchExpression.ensureSearchExpressionGroupArray(oldSelection.search), search3);
+                    const result = $bd9af0ed83794bce$export$2e59f49d97a9dbde($e5c730801b562de0$exports.searchExpression.ensureSearchExpressionGroupArray(oldSelection.search), search3);
                     if (result.found) {
                         //removing a group
                         if (result.groups.length === 0) this.doDeselect();
@@ -17354,7 +17706,7 @@ function $851bf9263c6e17c1$var$_Explorer(props) {
                 ref: (div)=>{
                     if (div) this.div = div;
                 },
-                className: $d705fb0bfff3c04a$exports.classList('sanddance-explorer', this.props.theme)
+                className: $900824613c851981$exports.classList('sanddance-explorer', this.props.theme)
             }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($0e63cc2ab4c414cc$export$1ca1e38143dcc152, {
                 collapseLabels: this.props.compactUI,
                 historyIndex: this.state.historyIndex,
@@ -17408,7 +17760,7 @@ function $851bf9263c6e17c1$var$_Explorer(props) {
                 },
                 onHomeClick: ()=>this.viewer.presenter.homeCamera()
             }), $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
-                className: $d705fb0bfff3c04a$exports.classList('sanddance-main', this.state.sidebarPinned && 'pinned', this.state.sidebarClosed && 'closed', (insight.hideLegend || insight.directColor || !$851bf9263c6e17c1$var$colorMapping(insight, this.state.dataContent && this.state.dataContent.columns)) && 'hide-legend')
+                className: $900824613c851981$exports.classList('sanddance-main', this.state.sidebarPinned && 'pinned', this.state.sidebarClosed && 'closed', (insight.hideLegend || insight.directColor || !$851bf9263c6e17c1$var$colorMapping(insight, this.state.dataContent && this.state.dataContent.columns)) && 'hide-legend')
             }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                 ref: (div)=>{
                     if (div && !this.layoutDivUnpinned) this.layoutDivUnpinned = div;
@@ -17518,9 +17870,9 @@ function $851bf9263c6e17c1$var$_Explorer(props) {
                             dataContent: this.state.dataContent,
                             scheme: this.state.scheme,
                             colorBin: this.state.colorBin,
-                            colorBinSignal: this.viewer && this.viewer.vegaSpec && this.viewer.vegaSpec.signals.filter((s)=>s.name === $f073e1f86a136e75$exports.constants.SignalNames.ColorBinCount
+                            colorBinSignal: this.viewer && this.viewer.vegaSpec && this.viewer.vegaSpec.signals.filter((s)=>s.name === $e5c730801b562de0$exports.constants.SignalNames.ColorBinCount
                             )[0],
-                            colorReverseSignal: this.viewer && this.viewer.vegaSpec && this.viewer.vegaSpec.signals.filter((s)=>s.name === $f073e1f86a136e75$exports.constants.SignalNames.ColorReverse
+                            colorReverseSignal: this.viewer && this.viewer.vegaSpec && this.viewer.vegaSpec.signals.filter((s)=>s.name === $e5c730801b562de0$exports.constants.SignalNames.ColorReverse
                             )[0],
                             colorColumn: this.state.columns.color,
                             onColorBinChange: (colorBin)=>{
@@ -17553,7 +17905,7 @@ function $851bf9263c6e17c1$var$_Explorer(props) {
                             onColorBinCountChange: (value)=>{
                                 const signalValues = {
                                 };
-                                signalValues[$f073e1f86a136e75$exports.constants.SignalNames.ColorBinCount] = value;
+                                signalValues[$e5c730801b562de0$exports.constants.SignalNames.ColorBinCount] = value;
                                 $b25ee1fff804a263$export$a14483004c11686f(this.prefs, this.state.chart, 'color', this.state.columns.color, {
                                     signalValues: signalValues
                                 });
@@ -17741,7 +18093,7 @@ function $851bf9263c6e17c1$var$_Explorer(props) {
                 }
             })()), loaded && $2a6088da9113f540$export$e2253033e6e1df16.react.createElement("div", {
                 className: "sanddance-view"
-            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($b812bdd063300296$export$441ac54c4cda559d, {
+            }, $2a6088da9113f540$export$e2253033e6e1df16.react.createElement($730c610e376ac0d0$export$441ac54c4cda559d, {
                 renderOptions: {
                     rebaseFilter: ()=>{
                         const { rebaseFilter: rebaseFilter  } = this;
@@ -17808,7 +18160,7 @@ function $851bf9263c6e17c1$var$_Explorer(props) {
             }, this.state.positionedColumnMapProps)));
         }
         getColumnMapBaseProps() {
-            const allColumns = this.state.dataContent && this.state.dataContent.columns.filter((c)=>!$f073e1f86a136e75$exports.util.isInternalFieldName(c.name, true)
+            const allColumns = this.state.dataContent && this.state.dataContent.columns.filter((c)=>!$e5c730801b562de0$exports.util.isInternalFieldName(c.name, true)
             );
             const quantitativeColumns = allColumns && allColumns.filter((c)=>c.quantitative
             );
@@ -17852,7 +18204,7 @@ const $2a6088da9113f540$export$e2253033e6e1df16 = {
     reactDOM: null
 };
 function $2a6088da9113f540$export$1f96ae73734a86cc(fluentUI, react, reactDOM, vega, deck, layers, luma) {
-    $2e36289e36bfceb3$export$1f96ae73734a86cc(react, reactDOM, vega, deck, layers, luma);
+    $e2a889539cb3cb17$export$1f96ae73734a86cc(react, reactDOM, vega, deck, layers, luma);
     $2a6088da9113f540$export$e2253033e6e1df16.fluentUI = fluentUI;
     $2a6088da9113f540$export$e2253033e6e1df16.react = react;
     $2a6088da9113f540$export$e2253033e6e1df16.reactDOM = reactDOM;
