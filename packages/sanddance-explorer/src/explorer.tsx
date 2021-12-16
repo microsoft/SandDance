@@ -257,7 +257,8 @@ function _Explorer(props: Props) {
                     if (this.ignoreSelectionChange) return;
                     const selectedItemIndex = { ...this.state.selectedItemIndex };
                     selectedItemIndex[DataScopeId.SelectedData] = index || 0;
-                    let { search, sideTabId } = this.state;
+                    let { search } = this.state;
+                    const { sideTabId } = this.state;
                     if (newSearch) {
                         search = createInputSearch(newSearch);
                         //} else {
