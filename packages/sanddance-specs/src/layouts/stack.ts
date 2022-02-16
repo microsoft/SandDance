@@ -96,7 +96,7 @@ export class Stack extends Layout {
                         type: 'sequence',
                         start: 1,
                         stop: {
-                            signal: `sqrt(${names.globalExtent}[1])`
+                            signal: `max(sqrt(${names.globalExtent}[1]),2)`
                         }
                     },
                     {
