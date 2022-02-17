@@ -1,5 +1,5 @@
 jupyterlab==2.1.2
-notebook==6.0.3
+notebook==6.4.1
 numpy==1.18.4
 nbval==0.9.5
 pytest==5.4.2
