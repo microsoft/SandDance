@@ -1,4 +1,4 @@
-jupyterlab==2.1.2
+jupyterlab==2.2.10
 notebook==6.4.1
 numpy==1.18.4
 nbval==0.9.5
