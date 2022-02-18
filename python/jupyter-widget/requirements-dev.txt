@@ -1,6 +1,6 @@
 jupyterlab==2.2.10
 notebook==6.4.1
-numpy==1.18.4
+numpy==1.21.0
 nbval==0.9.5
 pytest==5.4.2
 six==1.14.0
