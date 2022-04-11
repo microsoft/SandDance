@@ -43,7 +43,7 @@
     "author": "Dan Marshall",
     "license": "MIT",
     "devDependencies": {
-        "@babel/helper-compilation-targets": "^7.10.2",
+        "@babel/helper-compilation-targets": "^7.17.7",
         "@parcel/packager-ts": "^2.0.1",
         "@parcel/transformer-sass": "^2.0.1",
         "@parcel/transformer-typescript-types": "^2.0.1",
