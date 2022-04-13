@@ -136,7 +136,7 @@ export class Square extends Layout {
                     y: [
                         {
                             test: testForCollapseSelection(),
-                            value: parentScope.offsets.y
+                            signal: parentScope.offsets.y
                         }
                     ]
                 }
