@@ -6,7 +6,7 @@ export interface MousePosition {
     left: number;
 }
 
-function hasClientXY(e: MouseEvent | PointerEvent | Touch) {
+function hasClientXY(e: MouseEvent | PointerEvent | Touch): MousePosition {
     if (e && e.clientX !== undefined && e.clientX !== undefined) {
         return { top: e.clientY, left: e.clientX };
     }
@@ -18,12 +18,16 @@ export function getPosition(e: MouseEvent | PointerEvent | TouchEvent): MousePos
         return xy;
     }
     const te = e as TouchEvent;
-    if (te) {
+    if (te?.touches) {
         for (let i = 0; i < te.touches.length; i++) {
             let xy = hasClientXY(te.touches[i]);
             if (xy) {
                 return xy;
             }
         }
+    }
+    const el = e.target as HTMLElement;
+    if (el && el.getClientRects) {
+        return el.getClientRects()[0];
     }
 }
