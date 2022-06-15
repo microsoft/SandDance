@@ -20,7 +20,8 @@
         "app-dev": "lerna run start --parallel --scope @msrvida/sanddance-app",
         "watch-css": "lerna run watch-css --parallel",
         "watch-typescript": "lerna run watch-typescript --parallel",
-        "start": "npm-run-all --parallel watch-typescript watch-css app-dev",
+        "start-app": "parcel serve ./test/index.html --port 8085 --open --no-autoinstall",
+        "start": "npm-run-all --parallel watch-typescript watch-css app-dev start-app",
         "start:python": "npm-run-all --parallel watch-typescript python-webpack-watch python:dev",
         "parcel": "lerna run parcel --parallel",
         "clean-build": "rimraf ./packages/**/dist/ && rimraf ./packages/**/.cache/ && rimraf ./**/package-lock.json && rimraf ./lerna-debug.log",
@@ -78,6 +79,10 @@
         "vue-template-compiler": "^2.6.11",
         "webpack": "^5.52.0",
         "webpack-cli": "^4.8.0"
+    },
+    "alias": {
+        "react": "./alias/react-external.js",
+        "react-dom": "./alias/react-dom-external.js"
     },
     "babel": {
         "presets": [
