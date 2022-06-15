@@ -37,5 +37,6 @@
       "url": "./packages/powerbi/.api/v1.10.0/schema.dependencies.json"
     }
   ],
-  "typescript.extension.sortImports.sortMethod": "path"
+  "typescript.extension.sortImports.sortMethod": "path",
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }
