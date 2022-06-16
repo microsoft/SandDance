@@ -9,8 +9,7 @@
     "watch-typescript": "tsc -p . -w",
     "build-css": "sass ./src/css/sanddance-app.scss ./dist/css/sanddance-app.css",
     "build:sanddance-core": "npm run build-typescript && npm run bundle && npm run build-css",
-    "bundle": "parcel build ./dist/es6/index.js --no-autoinstall",
-    "start": "parcel serve ./test/index.html --port 8085 --open --no-autoinstall --no-hmr"
+    "bundle": "parcel build ./dist/es6/index.js --no-autoinstall"
   },
   "devDependencies": {
     "@types/react": "^16.9.34",

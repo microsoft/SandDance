@@ -95,7 +95,7 @@ export class Band extends Layout {
                     x: [
                         {
                             test: testForCollapseSelection(),
-                            value: parentScope.offsets.x
+                            signal: parentScope.offsets.x
                         }
                     ],
                     width: [

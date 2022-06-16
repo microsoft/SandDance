@@ -4,6 +4,7 @@ The SandDance repo is a monorepo made up of several packages, managed by [Lerna]
 
 1. [Deck.gl](https://github.com/uber/deck.gl) - WebGL rendering and canvas control.
 1. [Vega](https://github.com/vega/vega) - chart layout.
+1. [sanddance-specs](https://github.com/microsoft/SandDance/tree/master/packages/sanddance-specs) - [Vega specifications](https://vega.github.io/vega/docs/specification/) for unit visualizations.
 1. [sanddance](https://github.com/microsoft/SandDance/tree/master/packages/sanddance) - unit visualization chart views and selecting / filtering interaction.
 1. [sanddance-test-umd](https://github.com/microsoft/SandDance/tree/master/packages/sanddance-test-umd) - test of sanddance in UMD deployment.
 1. [sanddance-test-es6](https://github.com/microsoft/SandDance/tree/master/packages/sanddance-test-es6) - test of sanddance in es6 deployment.

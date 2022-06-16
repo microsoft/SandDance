@@ -13,7 +13,7 @@ title: 'RenderOptions | @msrvida/sanddance'
 				<a href="../modules/types.html">types</a>
 			</li>
 			<li>
-				<a href="types.renderoptions.html">RenderOptions</a>
+				<a href="types.RenderOptions.html">RenderOptions</a>
 			</li>
 		</ul>
 		<h1>Interface RenderOptions</h1>
@@ -38,12 +38,17 @@ title: 'RenderOptions | @msrvida/sanddance'
 					<section class="tsd-index-section ">
 						<h3>Properties</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="types.renderoptions.html#columntypes" class="tsd-kind-icon">column<wbr>Types</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="types.renderoptions.html#columns" class="tsd-kind-icon">columns</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="types.renderoptions.html#discardcolorcontextupdates" class="tsd-kind-icon">discard<wbr>Color<wbr>Context<wbr>Updates</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="types.renderoptions.html#initialcolorcontext" class="tsd-kind-icon">initial<wbr>Color<wbr>Context</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="types.renderoptions.html#ordinalmap" class="tsd-kind-icon">ordinal<wbr>Map</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="types.renderoptions.html#rebasefilter" class="tsd-kind-icon">rebase<wbr>Filter</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="types.RenderOptions.html#columnTypes" class="tsd-kind-icon">column<wbr>Types</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="types.RenderOptions.html#columns" class="tsd-kind-icon">columns</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="types.RenderOptions.html#initialColorContext" class="tsd-kind-icon">initial<wbr>Color<wbr>Context</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="types.RenderOptions.html#ordinalMap" class="tsd-kind-icon">ordinal<wbr>Map</a></li>
+						</ul>
+					</section>
+					<section class="tsd-index-section ">
+						<h3>Methods</h3>
+						<ul class="tsd-index-list">
+							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="types.RenderOptions.html#discardColorContextUpdates" class="tsd-kind-icon">discard<wbr>Color<wbr>Context<wbr>Updates</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="types.RenderOptions.html#rebaseFilter" class="tsd-kind-icon">rebase<wbr>Filter</a></li>
 						</ul>
 					</section>
 				</div>
@@ -52,9 +57,9 @@ title: 'RenderOptions | @msrvida/sanddance'
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Properties</h2>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-				<a name="columntypes" class="tsd-anchor"></a>
+				<a name="columnTypes" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> column<wbr>Types</h3>
-				<div class="tsd-signature tsd-kind-icon">column<wbr>Types<span class="tsd-signature-symbol">:</span> <a href="types.columntypemap.html" class="tsd-signature-type" data-tsd-kind="Interface">ColumnTypeMap</a></div>
+				<div class="tsd-signature tsd-kind-icon">column<wbr>Types<span class="tsd-signature-symbol">:</span> <a href="types.ColumnTypeMap.html" class="tsd-signature-type" data-tsd-kind="Interface">ColumnTypeMap</a></div>
 				<aside class="tsd-sources">
 					<ul>
 						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/types.ts#L192">sanddance/src/types.ts:192</a></li>
@@ -64,7 +69,7 @@ title: 'RenderOptions | @msrvida/sanddance'
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 				<a name="columns" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> columns</h3>
-				<div class="tsd-signature tsd-kind-icon">columns<span class="tsd-signature-symbol">:</span> <a href="types.column.html" class="tsd-signature-type" data-tsd-kind="Interface">Column</a><span class="tsd-signature-symbol">[]</span></div>
+				<div class="tsd-signature tsd-kind-icon">columns<span class="tsd-signature-symbol">:</span> <a href="types.Column.html" class="tsd-signature-type" data-tsd-kind="Interface">Column</a><span class="tsd-signature-symbol">[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
 						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/types.ts#L191">sanddance/src/types.ts:191</a></li>
@@ -72,34 +77,9 @@ title: 'RenderOptions | @msrvida/sanddance'
 				</aside>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-				<a name="discardcolorcontextupdates" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagOptional">Optional</span> discard<wbr>Color<wbr>Context<wbr>Updates</h3>
-				<div class="tsd-signature tsd-kind-icon">discard<wbr>Color<wbr>Context<wbr>Updates<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span></div>
-				<aside class="tsd-sources">
-					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/types.ts#L195">sanddance/src/types.ts:195</a></li>
-					</ul>
-				</aside>
-				<div class="tsd-type-declaration">
-					<h4>Type declaration</h4>
-					<ul class="tsd-parameters">
-						<li class="tsd-parameter-signature">
-							<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-interface">
-								<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-							</ul>
-							<ul class="tsd-descriptions">
-								<li class="tsd-description">
-									<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-			</section>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-				<a name="initialcolorcontext" class="tsd-anchor"></a>
+				<a name="initialColorContext" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> initial<wbr>Color<wbr>Context</h3>
-				<div class="tsd-signature tsd-kind-icon">initial<wbr>Color<wbr>Context<span class="tsd-signature-symbol">:</span> <a href="types.colorcontext.html" class="tsd-signature-type" data-tsd-kind="Interface">ColorContext</a></div>
+				<div class="tsd-signature tsd-kind-icon">initial<wbr>Color<wbr>Context<span class="tsd-signature-symbol">:</span> <a href="types.ColorContext.html" class="tsd-signature-type" data-tsd-kind="Interface">ColorContext</a></div>
 				<aside class="tsd-sources">
 					<ul>
 						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/types.ts#L194">sanddance/src/types.ts:194</a></li>
@@ -107,39 +87,51 @@ title: 'RenderOptions | @msrvida/sanddance'
 				</aside>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-				<a name="ordinalmap" class="tsd-anchor"></a>
+				<a name="ordinalMap" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> ordinal<wbr>Map</h3>
-				<div class="tsd-signature tsd-kind-icon">ordinal<wbr>Map<span class="tsd-signature-symbol">:</span> <a href="types.ordinalmap.html" class="tsd-signature-type" data-tsd-kind="Interface">OrdinalMap</a></div>
+				<div class="tsd-signature tsd-kind-icon">ordinal<wbr>Map<span class="tsd-signature-symbol">:</span> <a href="types.OrdinalMap.html" class="tsd-signature-type" data-tsd-kind="Interface">OrdinalMap</a></div>
 				<aside class="tsd-sources">
 					<ul>
 						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/types.ts#L193">sanddance/src/types.ts:193</a></li>
 					</ul>
 				</aside>
 			</section>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-				<a name="rebasefilter" class="tsd-anchor"></a>
+		</section>
+		<section class="tsd-panel-group tsd-member-group ">
+			<h2>Methods</h2>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+				<a name="discardColorContextUpdates" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> discard<wbr>Color<wbr>Context<wbr>Updates</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+					<li class="tsd-signature tsd-kind-icon">discard<wbr>Color<wbr>Context<wbr>Updates<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/types.ts#L195">sanddance/src/types.ts:195</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+				<a name="rebaseFilter" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> rebase<wbr>Filter</h3>
-				<div class="tsd-signature tsd-kind-icon">rebase<wbr>Filter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span></div>
-				<aside class="tsd-sources">
-					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/types.ts#L190">sanddance/src/types.ts:190</a></li>
-					</ul>
-				</aside>
-				<div class="tsd-type-declaration">
-					<h4>Type declaration</h4>
-					<ul class="tsd-parameters">
-						<li class="tsd-parameter-signature">
-							<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-interface">
-								<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+					<li class="tsd-signature tsd-kind-icon">rebase<wbr>Filter<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/types.ts#L190">sanddance/src/types.ts:190</a></li>
 							</ul>
-							<ul class="tsd-descriptions">
-								<li class="tsd-description">
-									<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</div>
+						</aside>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+					</li>
+				</ul>
 			</section>
 		</section>
 	</div>
@@ -150,13 +142,13 @@ title: 'RenderOptions | @msrvida/sanddance'
 					<a href="../modules.html">Exports</a>
 				</li>
 				<li class=" tsd-kind-namespace">
-					<a href="../modules/vegadeckgl.html">Vega<wbr>Deck<wbr>Gl</a>
+					<a href="../modules/VegaDeckGl.html">Vega<wbr>Deck<wbr>Gl</a>
 				</li>
 				<li class=" tsd-kind-namespace">
 					<a href="../modules/constants.html">constants</a>
 				</li>
 				<li class=" tsd-kind-namespace">
-					<a href="../modules/searchexpression.html">search<wbr>Expression</a>
+					<a href="../modules/searchExpression.html">search<wbr>Expression</a>
 				</li>
 				<li class=" tsd-kind-namespace">
 					<a href="../modules/specs.html">specs</a>
@@ -172,91 +164,91 @@ title: 'RenderOptions | @msrvida/sanddance'
 		<nav class="tsd-navigation secondary">
 			<ul class="before-current">
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.colorcontext.html" class="tsd-kind-icon">Color<wbr>Context</a>
+					<a href="types.ColorContext.html" class="tsd-kind-icon">Color<wbr>Context</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.colormap.html" class="tsd-kind-icon">Color<wbr>Map</a>
+					<a href="types.ColorMap.html" class="tsd-kind-icon">Color<wbr>Map</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.colormappeditem.html" class="tsd-kind-icon">Color<wbr>Mapped<wbr>Item</a>
+					<a href="types.ColorMappedItem.html" class="tsd-kind-icon">Color<wbr>Mapped<wbr>Item</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.colormethod.html" class="tsd-kind-icon">Color<wbr>Method</a>
+					<a href="types.ColorMethod.html" class="tsd-kind-icon">Color<wbr>Method</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.colorscheme.html" class="tsd-kind-icon">Color<wbr>Scheme</a>
+					<a href="types.ColorScheme.html" class="tsd-kind-icon">Color<wbr>Scheme</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.colorsettings.html" class="tsd-kind-icon">Color<wbr>Settings</a>
+					<a href="types.ColorSettings.html" class="tsd-kind-icon">Color<wbr>Settings</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.column.html" class="tsd-kind-icon">Column</a>
+					<a href="types.Column.html" class="tsd-kind-icon">Column</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.columnstats.html" class="tsd-kind-icon">Column<wbr>Stats</a>
+					<a href="types.ColumnStats.html" class="tsd-kind-icon">Column<wbr>Stats</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.columntypemap.html" class="tsd-kind-icon">Column<wbr>Type<wbr>Map</a>
+					<a href="types.ColumnTypeMap.html" class="tsd-kind-icon">Column<wbr>Type<wbr>Map</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.headers.html" class="tsd-kind-icon">Headers</a>
+					<a href="types.Headers.html" class="tsd-kind-icon">Headers</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.language.html" class="tsd-kind-icon">Language</a>
+					<a href="types.Language.html" class="tsd-kind-icon">Language</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.legendrowwithsearch.html" class="tsd-kind-icon">Legend<wbr>Row<wbr>With<wbr>Search</a>
+					<a href="types.LegendRowWithSearch.html" class="tsd-kind-icon">Legend<wbr>Row<wbr>With<wbr>Search</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.ordinalmap.html" class="tsd-kind-icon">Ordinal<wbr>Map</a>
+					<a href="types.OrdinalMap.html" class="tsd-kind-icon">Ordinal<wbr>Map</a>
 				</li>
 			</ul>
 			<ul class="current">
 				<li class="current tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.renderoptions.html" class="tsd-kind-icon">Render<wbr>Options</a>
+					<a href="types.RenderOptions.html" class="tsd-kind-icon">Render<wbr>Options</a>
 					<ul>
 						<li class=" tsd-kind-property tsd-parent-kind-interface">
-							<a href="types.renderoptions.html#columntypes" class="tsd-kind-icon">column<wbr>Types</a>
+							<a href="types.RenderOptions.html#columnTypes" class="tsd-kind-icon">column<wbr>Types</a>
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-interface">
-							<a href="types.renderoptions.html#columns" class="tsd-kind-icon">columns</a>
+							<a href="types.RenderOptions.html#columns" class="tsd-kind-icon">columns</a>
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-interface">
-							<a href="types.renderoptions.html#discardcolorcontextupdates" class="tsd-kind-icon">discard<wbr>Color<wbr>Context<wbr>Updates</a>
+							<a href="types.RenderOptions.html#initialColorContext" class="tsd-kind-icon">initial<wbr>Color<wbr>Context</a>
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-interface">
-							<a href="types.renderoptions.html#initialcolorcontext" class="tsd-kind-icon">initial<wbr>Color<wbr>Context</a>
+							<a href="types.RenderOptions.html#ordinalMap" class="tsd-kind-icon">ordinal<wbr>Map</a>
 						</li>
-						<li class=" tsd-kind-property tsd-parent-kind-interface">
-							<a href="types.renderoptions.html#ordinalmap" class="tsd-kind-icon">ordinal<wbr>Map</a>
+						<li class=" tsd-kind-method tsd-parent-kind-interface">
+							<a href="types.RenderOptions.html#discardColorContextUpdates" class="tsd-kind-icon">discard<wbr>Color<wbr>Context<wbr>Updates</a>
 						</li>
-						<li class=" tsd-kind-property tsd-parent-kind-interface">
-							<a href="types.renderoptions.html#rebasefilter" class="tsd-kind-icon">rebase<wbr>Filter</a>
+						<li class=" tsd-kind-method tsd-parent-kind-interface">
+							<a href="types.RenderOptions.html#rebaseFilter" class="tsd-kind-icon">rebase<wbr>Filter</a>
 						</li>
 					</ul>
 				</li>
 			</ul>
 			<ul class="after-current">
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.renderresult.html" class="tsd-kind-icon">Render<wbr>Result</a>
+					<a href="types.RenderResult.html" class="tsd-kind-icon">Render<wbr>Result</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.selectionstate.html" class="tsd-kind-icon">Selection<wbr>State</a>
+					<a href="types.SelectionState.html" class="tsd-kind-icon">Selection<wbr>State</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.snapshot.html" class="tsd-kind-icon">Snapshot</a>
+					<a href="types.Snapshot.html" class="tsd-kind-icon">Snapshot</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.tooltipoptions.html" class="tsd-kind-icon">Tooltip<wbr>Options</a>
+					<a href="types.TooltipOptions.html" class="tsd-kind-icon">Tooltip<wbr>Options</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.transitiondurations.html" class="tsd-kind-icon">Transition<wbr>Durations</a>
+					<a href="types.TransitionDurations.html" class="tsd-kind-icon">Transition<wbr>Durations</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.vieweroptions.html" class="tsd-kind-icon">Viewer<wbr>Options</a>
+					<a href="types.ViewerOptions.html" class="tsd-kind-icon">Viewer<wbr>Options</a>
 				</li>
 				<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
-					<a href="../modules/types.html#view" class="tsd-kind-icon">View</a>
+					<a href="../modules/types.html#View" class="tsd-kind-icon">View</a>
 				</li>
 			</ul>
 		</nav>
