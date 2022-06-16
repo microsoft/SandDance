@@ -1,8 +1,23 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
     typeof define === 'function' && define.amd ? define(['exports'], factory) :
-    (global = global || self, factory(global.VegaDeckGl = {}));
-}(this, (function (exports) { 'use strict';
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.VegaDeckGl = {}));
+})(this, (function (exports) { 'use strict';
+
+    function _mergeNamespaces(n, m) {
+        m.forEach(function (e) {
+            e && typeof e !== 'string' && !Array.isArray(e) && Object.keys(e).forEach(function (k) {
+                if (k !== 'default' && !(k in n)) {
+                    var d = Object.getOwnPropertyDescriptor(e, k);
+                    Object.defineProperty(n, k, d.get ? d : {
+                        enumerable: true,
+                        get: function () { return e[k]; }
+                    });
+                }
+            });
+        });
+        return Object.freeze(n);
+    }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
@@ -19,7 +34,7 @@
         layerNames: layerNames
     });
 
-    var htmlTags = [
+    var require$$0$1 = [
     	"a",
     	"abbr",
     	"address",
@@ -140,26 +155,14 @@
     	"wbr"
     ];
 
-    var htmlTags$1 = /*#__PURE__*/Object.freeze({
+    var htmlTags = require$$0$1;
+
+    var htmlTags$1 = /*#__PURE__*/_mergeNamespaces({
         __proto__: null,
         'default': htmlTags
-    });
+    }, [htmlTags]);
 
-    function getCjsExportFromNamespace (n) {
-    	return n && n['default'] || n;
-    }
-
-    var require$$0 = getCjsExportFromNamespace(htmlTags$1);
-
-    var htmlTags$2 = require$$0;
-
-    var htmlTags$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.assign({
-        __proto__: null,
-        'default': htmlTags$2,
-        __moduleExports: htmlTags$2
-    }, htmlTags$2));
-
-    var svgTags = [
+    var require$$0 = [
     	"a",
     	"altGlyph",
     	"altGlyphDef",
@@ -242,23 +245,15 @@
     	"vkern"
     ];
 
-    var svgTags$1 = /*#__PURE__*/Object.freeze({
+    var lib = require$$0;
+
+    var svgTags = /*#__PURE__*/_mergeNamespaces({
         __proto__: null,
-        'default': svgTags
-    });
+        'default': lib
+    }, [lib]);
 
-    var require$$0$1 = getCjsExportFromNamespace(svgTags$1);
-
-    var lib = require$$0$1;
-
-    var svgTags$2 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.assign({
-        __proto__: null,
-        'default': lib,
-        __moduleExports: lib
-    }, lib));
-
-    const htmlTagArray = htmlTags$2 || htmlTags$3;
-    const svgTagArray = lib || svgTags$2;
+    const htmlTagArray = htmlTags || htmlTags$1;
+    const svgTagArray = lib || svgTags;
     /**
      * Decamelizes a string with/without a custom separator (hyphen by default).
      * from: https://ourcodeworld.com/articles/read/608/how-to-camelize-and-decamelize-strings-in-javascript
@@ -422,13 +417,13 @@
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     const KeyCodes = {
-        ENTER: 13
+        ENTER: 'Enter',
     };
     const Table = (props) => {
         return (createElement("table", { className: props.className },
             props.children,
             props.rows.map((row, i) => (createElement("tr", { className: props.rowClassName || '', onClick: e => props.onRowClick && props.onRowClick(e, i), tabIndex: props.onRowClick ? 0 : -1, onKeyUp: e => {
-                    if (e.keyCode === KeyCodes.ENTER && props.onRowClick) {
+                    if (e.key === KeyCodes.ENTER && props.onRowClick) {
                         props.onRowClick(e, i);
                     }
                 } }, row.cells.map((cell, i) => (createElement("td", { className: cell.className || '', title: cell.title || '' }, cell.content))))))));
@@ -535,7 +530,7 @@
 
     function cloneUnlessOtherwiseSpecified(value, options) {
     	return (options.clone !== false && options.isMergeableObject(value))
-    		? deepmerge(emptyTarget(value), value, options)
+    		? deepmerge$1(emptyTarget(value), value, options)
     		: value
     }
 
@@ -556,13 +551,13 @@
     		if (!options.isMergeableObject(source[key]) || !target[key]) {
     			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options);
     		} else {
-    			destination[key] = deepmerge(target[key], source[key], options);
+    			destination[key] = deepmerge$1(target[key], source[key], options);
     		}
     	});
     	return destination
     }
 
-    function deepmerge(target, source, options) {
+    function deepmerge$1(target, source, options) {
     	options = options || {};
     	options.arrayMerge = options.arrayMerge || defaultArrayMerge;
     	options.isMergeableObject = options.isMergeableObject || isMergeableObject;
@@ -580,17 +575,17 @@
     	}
     }
 
-    deepmerge.all = function deepmergeAll(array, options) {
+    deepmerge$1.all = function deepmergeAll(array, options) {
     	if (!Array.isArray(array)) {
     		throw new Error('first argument should be an array')
     	}
 
     	return array.reduce(function(prev, next) {
-    		return deepmerge(prev, next, options)
+    		return deepmerge$1(prev, next, options)
     	}, {})
     };
 
-    var deepmerge_1 = deepmerge;
+    var deepmerge_1 = deepmerge$1;
 
     var _deepmerge = /*#__PURE__*/Object.freeze({
         __proto__: null,
@@ -598,16 +593,16 @@
     });
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    const deepmerge$1 = (deepmerge_1 || _deepmerge);
+    const deepmerge = (deepmerge_1 || _deepmerge);
     function clone(objectToClone) {
         if (!objectToClone)
             return objectToClone;
-        return deepmerge$1.all([objectToClone]);
+        return deepmerge.all([objectToClone]);
     }
     const dontMerge = (destination, source) => source;
     function deepMerge(...objectsToMerge) {
         const objects = objectsToMerge.filter(Boolean);
-        return deepmerge$1.all(objects, { arrayMerge: dontMerge });
+        return deepmerge.all(objects, { arrayMerge: dontMerge });
     }
 
     function define(constructor, factory, prototype) {
@@ -1719,6 +1714,11 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
+    // Licensed under the MIT license.
+    /**
+     * HTML elements outputted by the presenter.
+     */
+    exports.PresenterElement = void 0;
     (function (PresenterElement) {
         PresenterElement[PresenterElement["root"] = 0] = "root";
         PresenterElement[PresenterElement["gl"] = 1] = "gl";
@@ -1750,8 +1750,12 @@ void main(void) {
         var sorted = Object.keys(props.legend.rows).sort((a, b) => +a - +b);
         sorted.forEach(i => addRow(props.legend.rows[i]));
         if (sorted.length) {
-            return (createElement(Table, { rows: rows, rowClassName: "legend-row", onRowClick: (e, i) => props.onClick(e, props.legend, i) }, props.legend.title !== void 0 && createElement("tr", { onClick: e => props.onClick(e, props.legend, null) },
-                createElement("th", { colSpan: 2 }, props.legend.title))));
+            return (createElement(Table, { rows: rows, rowClassName: "legend-row", onRowClick: (e, i) => props.onClick(e, props.legend, i) }, props.legend.title !== undefined && (createElement("tr", { tabIndex: props.onClick ? 0 : -1, onClick: e => props.onClick(e, props.legend, null), onKeyUp: e => {
+                    if (e.key === KeyCodes.ENTER && props.onClick) {
+                        props.onClick(e, props.legend, null);
+                    }
+                } },
+                createElement("th", { colSpan: 2 }, props.legend.title)))));
         }
     };
     const symbolMap = {
@@ -1775,7 +1779,7 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    const markStager = (options, stage, scene, x, y, groupType) => {
+    const markStager$5 = (options, stage, scene, x, y, groupType) => {
         base.vega.sceneVisit(scene, function (item) {
             const x1 = item.x || 0;
             const y1 = item.y || 0;
@@ -1865,7 +1869,7 @@ void main(void) {
             row.value = label.datum.value;
         }
     };
-    const markStager$1 = (options, stage, scene, x, y, groupType) => {
+    const markStager$4 = (options, stage, scene, x, y, groupType) => {
         base.vega.sceneVisit(scene, function (item) {
             const fn = legendMap[item.mark.role];
             if (fn) {
@@ -1875,7 +1879,7 @@ void main(void) {
     };
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    const markStager$2 = (options, stage, scene, x, y, groupType) => {
+    const markStager$3 = (options, stage, scene, x, y, groupType) => {
         base.vega.sceneVisit(scene, function (item) {
             //for orthographic (2d) - always use 0 or else Deck will not show them
             const z = stage.view === '2d' ? 0 : (item.z || 0);
@@ -1901,15 +1905,15 @@ void main(void) {
     };
 
     //change direction of y from SVG to GL
-    const ty = -1;
-    const markStager$3 = (options, stage, scene, x, y, groupType) => {
+    const ty$1 = -1;
+    const markStager$2 = (options, stage, scene, x, y, groupType) => {
         const g = Object.assign({ opacity: 1, strokeOpacity: 1, strokeWidth: 1 }, scene.items[0]);
         const path = {
             strokeWidth: g.strokeWidth,
             strokeColor: colorFromString(g.stroke),
             positions: scene.items.map((it) => [
                 it.x,
-                ty * it.y,
+                ty$1 * it.y,
                 it.z || 0
             ])
         };
@@ -1918,7 +1922,7 @@ void main(void) {
         stage.pathData.push(path);
     };
 
-    const markStager$4 = (options, stage, scene, x, y, groupType) => {
+    const markStager$1 = (options, stage, scene, x, y, groupType) => {
         //scale Deck.Gl text to Vega size
         const fontScale = 1;
         //change direction of y from SVG to GL
@@ -1980,18 +1984,18 @@ void main(void) {
     }
 
     //change direction of y from SVG to GL
-    const ty$1 = -1;
-    const markStager$5 = (options, stage, scene, x, y, groupType) => {
+    const ty = -1;
+    const markStager = (options, stage, scene, x, y, groupType) => {
         const g = Object.assign({ fillOpacity: 1, opacity: 1, strokeOpacity: 1, strokeWidth: 0, depth: 0 }, scene.items[0]);
         const points = scene.items.map((item) => {
             item = Object.assign({ z: 0 }, item);
             item = Object.assign({ x2: item.x, y2: item.y, z2: item.z }, item);
             return [
                 item.x,
-                ty$1 * item.y,
+                ty * item.y,
                 item.z,
                 item.x2,
-                ty$1 * item.y2,
+                ty * item.y2,
                 item.z2
             ];
         });
@@ -2104,16 +2108,16 @@ void main(void) {
     }
     const markStagers = {
         group,
-        legend: markStager$1,
-        rect: markStager$2,
-        rule: markStager,
-        line: markStager$3,
-        area: markStager$5,
-        text: markStager$4
+        legend: markStager$4,
+        rect: markStager$3,
+        rule: markStager$5,
+        line: markStager$2,
+        area: markStager,
+        text: markStager$1
     };
     const mainStager = (options, stage, scene, x, y, groupType) => {
         if (scene.marktype !== 'group' && groupType === GroupType.legend) {
-            markStager$1(options, stage, scene);
+            markStager$4(options, stage, scene);
         }
         else {
             const markStager = markStagers[scene.marktype];
@@ -2565,4 +2569,4 @@ void main(void) {
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));

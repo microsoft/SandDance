@@ -1,8 +1,23 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
     typeof define === 'function' && define.amd ? define(['exports'], factory) :
-    (global = global || self, factory(global.SandDance = {}));
-}(this, (function (exports) { 'use strict';
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.SandDance = {}));
+})(this, (function (exports) { 'use strict';
+
+    function _mergeNamespaces(n, m) {
+        m.forEach(function (e) {
+            e && typeof e !== 'string' && !Array.isArray(e) && Object.keys(e).forEach(function (k) {
+                if (k !== 'default' && !(k in n)) {
+                    var d = Object.getOwnPropertyDescriptor(e, k);
+                    Object.defineProperty(n, k, d.get ? d : {
+                        enumerable: true,
+                        get: function () { return e[k]; }
+                    });
+                }
+            });
+        });
+        return Object.freeze(n);
+    }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
@@ -1078,34 +1093,34 @@
         }
     }
 
-    function define(constructor, factory, prototype) {
+    function define$1(constructor, factory, prototype) {
       constructor.prototype = factory.prototype = prototype;
       prototype.constructor = constructor;
     }
 
-    function extend(parent, definition) {
+    function extend$1(parent, definition) {
       var prototype = Object.create(parent.prototype);
       for (var key in definition) prototype[key] = definition[key];
       return prototype;
     }
 
-    function Color() {}
+    function Color$1() {}
 
-    var darker = 0.7;
-    var brighter = 1 / darker;
+    var darker$1 = 0.7;
+    var brighter$1 = 1 / darker$1;
 
-    var reI = "\\s*([+-]?\\d+)\\s*",
-        reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
-        reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
-        reHex = /^#([0-9a-f]{3,8})$/,
-        reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$"),
-        reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$"),
-        reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$"),
-        reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$"),
-        reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$"),
-        reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
+    var reI$1 = "\\s*([+-]?\\d+)\\s*",
+        reN$1 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+        reP$1 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+        reHex$1 = /^#([0-9a-f]{3,8})$/,
+        reRgbInteger$1 = new RegExp("^rgb\\(" + [reI$1, reI$1, reI$1] + "\\)$"),
+        reRgbPercent$1 = new RegExp("^rgb\\(" + [reP$1, reP$1, reP$1] + "\\)$"),
+        reRgbaInteger$1 = new RegExp("^rgba\\(" + [reI$1, reI$1, reI$1, reN$1] + "\\)$"),
+        reRgbaPercent$1 = new RegExp("^rgba\\(" + [reP$1, reP$1, reP$1, reN$1] + "\\)$"),
+        reHslPercent$1 = new RegExp("^hsl\\(" + [reN$1, reP$1, reP$1] + "\\)$"),
+        reHslaPercent$1 = new RegExp("^hsla\\(" + [reN$1, reP$1, reP$1, reN$1] + "\\)$");
 
-    var named = {
+    var named$1 = {
       aliceblue: 0xf0f8ff,
       antiquewhite: 0xfaebd7,
       aqua: 0x00ffff,
@@ -1256,86 +1271,86 @@
       yellowgreen: 0x9acd32
     };
 
-    define(Color, color, {
+    define$1(Color$1, color$1, {
       copy: function(channels) {
         return Object.assign(new this.constructor, this, channels);
       },
       displayable: function() {
         return this.rgb().displayable();
       },
-      hex: color_formatHex, // Deprecated! Use color.formatHex.
-      formatHex: color_formatHex,
-      formatHsl: color_formatHsl,
-      formatRgb: color_formatRgb,
-      toString: color_formatRgb
+      hex: color_formatHex$1, // Deprecated! Use color.formatHex.
+      formatHex: color_formatHex$1,
+      formatHsl: color_formatHsl$1,
+      formatRgb: color_formatRgb$1,
+      toString: color_formatRgb$1
     });
 
-    function color_formatHex() {
+    function color_formatHex$1() {
       return this.rgb().formatHex();
     }
 
-    function color_formatHsl() {
-      return hslConvert(this).formatHsl();
+    function color_formatHsl$1() {
+      return hslConvert$1(this).formatHsl();
     }
 
-    function color_formatRgb() {
+    function color_formatRgb$1() {
       return this.rgb().formatRgb();
     }
 
-    function color(format) {
+    function color$1(format) {
       var m, l;
       format = (format + "").trim().toLowerCase();
-      return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
-          : l === 3 ? new Rgb((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
-          : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-          : l === 4 ? rgba((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+      return (m = reHex$1.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$1(m) // #ff0000
+          : l === 3 ? new Rgb$1((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
+          : l === 8 ? rgba$1(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+          : l === 4 ? rgba$1((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
           : null) // invalid hex
-          : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
-          : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
-          : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
-          : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-          : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-          : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-          : named.hasOwnProperty(format) ? rgbn(named[format]) // eslint-disable-line no-prototype-builtins
-          : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0)
+          : (m = reRgbInteger$1.exec(format)) ? new Rgb$1(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+          : (m = reRgbPercent$1.exec(format)) ? new Rgb$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+          : (m = reRgbaInteger$1.exec(format)) ? rgba$1(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+          : (m = reRgbaPercent$1.exec(format)) ? rgba$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+          : (m = reHslPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+          : (m = reHslaPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+          : named$1.hasOwnProperty(format) ? rgbn$1(named$1[format]) // eslint-disable-line no-prototype-builtins
+          : format === "transparent" ? new Rgb$1(NaN, NaN, NaN, 0)
           : null;
     }
 
-    function rgbn(n) {
-      return new Rgb(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+    function rgbn$1(n) {
+      return new Rgb$1(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
     }
 
-    function rgba(r, g, b, a) {
+    function rgba$1(r, g, b, a) {
       if (a <= 0) r = g = b = NaN;
-      return new Rgb(r, g, b, a);
+      return new Rgb$1(r, g, b, a);
     }
 
-    function rgbConvert(o) {
-      if (!(o instanceof Color)) o = color(o);
-      if (!o) return new Rgb;
+    function rgbConvert$1(o) {
+      if (!(o instanceof Color$1)) o = color$1(o);
+      if (!o) return new Rgb$1;
       o = o.rgb();
-      return new Rgb(o.r, o.g, o.b, o.opacity);
+      return new Rgb$1(o.r, o.g, o.b, o.opacity);
     }
 
-    function rgb(r, g, b, opacity) {
-      return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
+    function rgb$1(r, g, b, opacity) {
+      return arguments.length === 1 ? rgbConvert$1(r) : new Rgb$1(r, g, b, opacity == null ? 1 : opacity);
     }
 
-    function Rgb(r, g, b, opacity) {
+    function Rgb$1(r, g, b, opacity) {
       this.r = +r;
       this.g = +g;
       this.b = +b;
       this.opacity = +opacity;
     }
 
-    define(Rgb, rgb, extend(Color, {
+    define$1(Rgb$1, rgb$1, extend$1(Color$1, {
       brighter: function(k) {
-        k = k == null ? brighter : Math.pow(brighter, k);
-        return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+        k = k == null ? brighter$1 : Math.pow(brighter$1, k);
+        return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
       },
       darker: function(k) {
-        k = k == null ? darker : Math.pow(darker, k);
-        return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+        k = k == null ? darker$1 : Math.pow(darker$1, k);
+        return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
       },
       rgb: function() {
         return this;
@@ -1346,17 +1361,17 @@
             && (-0.5 <= this.b && this.b < 255.5)
             && (0 <= this.opacity && this.opacity <= 1);
       },
-      hex: rgb_formatHex, // Deprecated! Use color.formatHex.
-      formatHex: rgb_formatHex,
-      formatRgb: rgb_formatRgb,
-      toString: rgb_formatRgb
+      hex: rgb_formatHex$1, // Deprecated! Use color.formatHex.
+      formatHex: rgb_formatHex$1,
+      formatRgb: rgb_formatRgb$1,
+      toString: rgb_formatRgb$1
     }));
 
-    function rgb_formatHex() {
-      return "#" + hex(this.r) + hex(this.g) + hex(this.b);
+    function rgb_formatHex$1() {
+      return "#" + hex$1(this.r) + hex$1(this.g) + hex$1(this.b);
     }
 
-    function rgb_formatRgb() {
+    function rgb_formatRgb$1() {
       var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
       return (a === 1 ? "rgb(" : "rgba(")
           + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
@@ -1365,23 +1380,23 @@
           + (a === 1 ? ")" : ", " + a + ")");
     }
 
-    function hex(value) {
+    function hex$1(value) {
       value = Math.max(0, Math.min(255, Math.round(value) || 0));
       return (value < 16 ? "0" : "") + value.toString(16);
     }
 
-    function hsla(h, s, l, a) {
+    function hsla$1(h, s, l, a) {
       if (a <= 0) h = s = l = NaN;
       else if (l <= 0 || l >= 1) h = s = NaN;
       else if (s <= 0) h = NaN;
-      return new Hsl(h, s, l, a);
+      return new Hsl$1(h, s, l, a);
     }
 
-    function hslConvert(o) {
-      if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
-      if (!(o instanceof Color)) o = color(o);
-      if (!o) return new Hsl;
-      if (o instanceof Hsl) return o;
+    function hslConvert$1(o) {
+      if (o instanceof Hsl$1) return new Hsl$1(o.h, o.s, o.l, o.opacity);
+      if (!(o instanceof Color$1)) o = color$1(o);
+      if (!o) return new Hsl$1;
+      if (o instanceof Hsl$1) return o;
       o = o.rgb();
       var r = o.r / 255,
           g = o.g / 255,
@@ -1400,28 +1415,28 @@
       } else {
         s = l > 0 && l < 1 ? 0 : h;
       }
-      return new Hsl(h, s, l, o.opacity);
+      return new Hsl$1(h, s, l, o.opacity);
     }
 
-    function hsl(h, s, l, opacity) {
-      return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
+    function hsl$1(h, s, l, opacity) {
+      return arguments.length === 1 ? hslConvert$1(h) : new Hsl$1(h, s, l, opacity == null ? 1 : opacity);
     }
 
-    function Hsl(h, s, l, opacity) {
+    function Hsl$1(h, s, l, opacity) {
       this.h = +h;
       this.s = +s;
       this.l = +l;
       this.opacity = +opacity;
     }
 
-    define(Hsl, hsl, extend(Color, {
+    define$1(Hsl$1, hsl$1, extend$1(Color$1, {
       brighter: function(k) {
-        k = k == null ? brighter : Math.pow(brighter, k);
-        return new Hsl(this.h, this.s, this.l * k, this.opacity);
+        k = k == null ? brighter$1 : Math.pow(brighter$1, k);
+        return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
       },
       darker: function(k) {
-        k = k == null ? darker : Math.pow(darker, k);
-        return new Hsl(this.h, this.s, this.l * k, this.opacity);
+        k = k == null ? darker$1 : Math.pow(darker$1, k);
+        return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
       },
       rgb: function() {
         var h = this.h % 360 + (this.h < 0) * 360,
@@ -1429,10 +1444,10 @@
             l = this.l,
             m2 = l + (l < 0.5 ? l : 1 - l) * s,
             m1 = 2 * l - m2;
-        return new Rgb(
-          hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2),
-          hsl2rgb(h, m1, m2),
-          hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2),
+        return new Rgb$1(
+          hsl2rgb$1(h >= 240 ? h - 240 : h + 120, m1, m2),
+          hsl2rgb$1(h, m1, m2),
+          hsl2rgb$1(h < 120 ? h + 240 : h - 120, m1, m2),
           this.opacity
         );
       },
@@ -1452,7 +1467,7 @@
     }));
 
     /* From FvD 13.37, CSS Color Module Level 3 */
-    function hsl2rgb(h, m1, m2) {
+    function hsl2rgb$1(h, m1, m2) {
       return (h < 60 ? m1 + (m2 - m1) * h / 60
           : h < 180 ? m2
           : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
@@ -1461,7 +1476,7 @@
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     function isColor(cssColorSpecifier) {
-        return !!color(cssColorSpecifier);
+        return !!color$1(cssColorSpecifier);
     }
     function isQuantitative(column) {
         return column.type === 'number' || column.type === 'integer';
@@ -2749,7 +2764,7 @@
                         x: [
                             {
                                 test: testForCollapseSelection(),
-                                value: parentScope.offsets.x
+                                signal: parentScope.offsets.x
                             }
                         ],
                         width: [
@@ -3415,7 +3430,7 @@
                     y: [
                         {
                             test: testForCollapseSelection(),
-                            value: parentScope.offsets.y
+                            signal: parentScope.offsets.y
                         }
                     ]
                 }
@@ -3549,7 +3564,7 @@
                         type: 'sequence',
                         start: 1,
                         stop: {
-                            signal: `sqrt(${names.globalExtent}[1])`
+                            signal: `max(sqrt(${names.globalExtent}[1]),2)`
                         }
                     },
                     {
@@ -4714,7 +4729,7 @@
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
 
-    var index = /*#__PURE__*/Object.freeze({
+    var index$2 = /*#__PURE__*/Object.freeze({
         __proto__: null,
         build: build,
         FieldNames: FieldNames,
@@ -4731,7 +4746,7 @@
     // Copyright (c) Microsoft Corporation. All rights reserved.
     const GL_ORDINAL = 'GL_ORDINAL';
 
-    var constants = /*#__PURE__*/Object.freeze({
+    var constants$1 = /*#__PURE__*/Object.freeze({
         __proto__: null,
         GL_ORDINAL: GL_ORDINAL,
         ColorScaleNone: ColorScaleNone,
@@ -5070,9 +5085,7 @@
         narrow: narrow
     });
 
-
-
-    var types = /*#__PURE__*/Object.freeze({
+    var types$1 = /*#__PURE__*/Object.freeze({
         __proto__: null
     });
 
@@ -5086,12 +5099,12 @@
         polygons: 'LAYER_POLYGONS'
     };
 
-    var constants$1 = /*#__PURE__*/Object.freeze({
+    var constants = /*#__PURE__*/Object.freeze({
         __proto__: null,
         layerNames: layerNames
     });
 
-    var htmlTags = [
+    var require$$0$1 = [
     	"a",
     	"abbr",
     	"address",
@@ -5212,26 +5225,14 @@
     	"wbr"
     ];
 
-    var htmlTags$1 = /*#__PURE__*/Object.freeze({
+    var htmlTags = require$$0$1;
+
+    var htmlTags$1 = /*#__PURE__*/_mergeNamespaces({
         __proto__: null,
         'default': htmlTags
-    });
+    }, [htmlTags]);
 
-    function getCjsExportFromNamespace (n) {
-    	return n && n['default'] || n;
-    }
-
-    var require$$0 = getCjsExportFromNamespace(htmlTags$1);
-
-    var htmlTags$2 = require$$0;
-
-    var htmlTags$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.assign({
-        __proto__: null,
-        'default': htmlTags$2,
-        __moduleExports: htmlTags$2
-    }, htmlTags$2));
-
-    var svgTags = [
+    var require$$0 = [
     	"a",
     	"altGlyph",
     	"altGlyphDef",
@@ -5314,23 +5315,15 @@
     	"vkern"
     ];
 
-    var svgTags$1 = /*#__PURE__*/Object.freeze({
+    var lib = require$$0;
+
+    var svgTags = /*#__PURE__*/_mergeNamespaces({
         __proto__: null,
-        'default': svgTags
-    });
+        'default': lib
+    }, [lib]);
 
-    var require$$0$1 = getCjsExportFromNamespace(svgTags$1);
-
-    var lib = require$$0$1;
-
-    var svgTags$2 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.assign({
-        __proto__: null,
-        'default': lib,
-        __moduleExports: lib
-    }, lib));
-
-    const htmlTagArray = htmlTags$2 || htmlTags$3;
-    const svgTagArray = lib || svgTags$2;
+    const htmlTagArray = htmlTags || htmlTags$1;
+    const svgTagArray = lib || svgTags;
     /**
      * Decamelizes a string with/without a custom separator (hyphen by default).
      * from: https://ourcodeworld.com/articles/read/608/how-to-camelize-and-decamelize-strings-in-javascript
@@ -5494,13 +5487,13 @@
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     const KeyCodes = {
-        ENTER: 13
+        ENTER: 'Enter',
     };
-    const Table = (props) => {
+    const Table$1 = (props) => {
         return (createElement("table", { className: props.className },
             props.children,
             props.rows.map((row, i) => (createElement("tr", { className: props.rowClassName || '', onClick: e => props.onRowClick && props.onRowClick(e, i), tabIndex: props.onRowClick ? 0 : -1, onKeyUp: e => {
-                    if (e.keyCode === KeyCodes.ENTER && props.onRowClick) {
+                    if (e.key === KeyCodes.ENTER && props.onRowClick) {
                         props.onRowClick(e, i);
                     }
                 } }, row.cells.map((cell, i) => (createElement("td", { className: cell.className || '', title: cell.title || '' }, cell.content))))))));
@@ -5510,25 +5503,25 @@
 
     var controls = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        Table: Table
+        Table: Table$1
     });
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
 
-    var types$1 = /*#__PURE__*/Object.freeze({
+    var types = /*#__PURE__*/Object.freeze({
         __proto__: null
     });
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     // Licensed under the MIT license.
-    function concat(...args) {
+    function concat$1(...args) {
         return args.reduce((p, c) => c ? p.concat(c) : p, []);
     }
     /**
      * Returns array with items which are truthy.
      * @param args array or arrays to concat into a single array.
      */
-    function allTruthy(...args) {
+    function allTruthy$1(...args) {
         return args.reduce((p, c) => c ? p.concat(c) : p, []).filter(Boolean);
     }
     /**
@@ -5536,7 +5529,7 @@
      * @param arr Array to append to.
      * @param items Arrof of items to append.
      */
-    function push(arr, items) {
+    function push$1(arr, items) {
         arr.push.apply(arr, items);
     }
 
@@ -5569,7 +5562,7 @@
      * Measure the outer height and width of an HTMLElement, including margin, padding and border.
      * @param el HTML Element to measure.
      */
-    function outerSize(el) {
+    function outerSize$1(el) {
         const cs = getComputedStyle(el);
         const height = parseFloat(cs.marginTop) + parseFloat(cs.paddingTop) + parseFloat(cs.borderTopWidth) + el.offsetHeight + parseFloat(cs.borderBottomWidth) + parseFloat(cs.paddingBottom) + parseFloat(cs.marginBottom);
         const width = parseFloat(cs.marginLeft) + parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth) + el.offsetWidth + parseFloat(cs.borderRightWidth) + parseFloat(cs.paddingRight) + parseFloat(cs.marginRight);
@@ -5607,7 +5600,7 @@
 
     function cloneUnlessOtherwiseSpecified(value, options) {
     	return (options.clone !== false && options.isMergeableObject(value))
-    		? deepmerge(emptyTarget(value), value, options)
+    		? deepmerge$1(emptyTarget(value), value, options)
     		: value
     }
 
@@ -5628,13 +5621,13 @@
     		if (!options.isMergeableObject(source[key]) || !target[key]) {
     			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options);
     		} else {
-    			destination[key] = deepmerge(target[key], source[key], options);
+    			destination[key] = deepmerge$1(target[key], source[key], options);
     		}
     	});
     	return destination
     }
 
-    function deepmerge(target, source, options) {
+    function deepmerge$1(target, source, options) {
     	options = options || {};
     	options.arrayMerge = options.arrayMerge || defaultArrayMerge;
     	options.isMergeableObject = options.isMergeableObject || isMergeableObject;
@@ -5652,17 +5645,17 @@
     	}
     }
 
-    deepmerge.all = function deepmergeAll(array, options) {
+    deepmerge$1.all = function deepmergeAll(array, options) {
     	if (!Array.isArray(array)) {
     		throw new Error('first argument should be an array')
     	}
 
     	return array.reduce(function(prev, next) {
-    		return deepmerge(prev, next, options)
+    		return deepmerge$1(prev, next, options)
     	}, {})
     };
 
-    var deepmerge_1 = deepmerge;
+    var deepmerge_1 = deepmerge$1;
 
     var _deepmerge = /*#__PURE__*/Object.freeze({
         __proto__: null,
@@ -5670,46 +5663,46 @@
     });
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    const deepmerge$1 = (deepmerge_1 || _deepmerge);
+    const deepmerge = (deepmerge_1 || _deepmerge);
     function clone(objectToClone) {
         if (!objectToClone)
             return objectToClone;
-        return deepmerge$1.all([objectToClone]);
+        return deepmerge.all([objectToClone]);
     }
     const dontMerge = (destination, source) => source;
     function deepMerge(...objectsToMerge) {
         const objects = objectsToMerge.filter(Boolean);
-        return deepmerge$1.all(objects, { arrayMerge: dontMerge });
+        return deepmerge.all(objects, { arrayMerge: dontMerge });
     }
 
-    function define$1(constructor, factory, prototype) {
+    function define(constructor, factory, prototype) {
       constructor.prototype = factory.prototype = prototype;
       prototype.constructor = constructor;
     }
 
-    function extend$1(parent, definition) {
+    function extend(parent, definition) {
       var prototype = Object.create(parent.prototype);
       for (var key in definition) prototype[key] = definition[key];
       return prototype;
     }
 
-    function Color$1() {}
+    function Color() {}
 
-    var darker$1 = 0.7;
-    var brighter$1 = 1 / darker$1;
+    var darker = 0.7;
+    var brighter = 1 / darker;
 
-    var reI$1 = "\\s*([+-]?\\d+)\\s*",
-        reN$1 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
-        reP$1 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
-        reHex$1 = /^#([0-9a-f]{3,8})$/,
-        reRgbInteger$1 = new RegExp("^rgb\\(" + [reI$1, reI$1, reI$1] + "\\)$"),
-        reRgbPercent$1 = new RegExp("^rgb\\(" + [reP$1, reP$1, reP$1] + "\\)$"),
-        reRgbaInteger$1 = new RegExp("^rgba\\(" + [reI$1, reI$1, reI$1, reN$1] + "\\)$"),
-        reRgbaPercent$1 = new RegExp("^rgba\\(" + [reP$1, reP$1, reP$1, reN$1] + "\\)$"),
-        reHslPercent$1 = new RegExp("^hsl\\(" + [reN$1, reP$1, reP$1] + "\\)$"),
-        reHslaPercent$1 = new RegExp("^hsla\\(" + [reN$1, reP$1, reP$1, reN$1] + "\\)$");
+    var reI = "\\s*([+-]?\\d+)\\s*",
+        reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+        reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+        reHex = /^#([0-9a-f]{3,8})$/,
+        reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$"),
+        reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$"),
+        reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$"),
+        reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$"),
+        reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$"),
+        reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
 
-    var named$1 = {
+    var named = {
       aliceblue: 0xf0f8ff,
       antiquewhite: 0xfaebd7,
       aqua: 0x00ffff,
@@ -5860,86 +5853,86 @@
       yellowgreen: 0x9acd32
     };
 
-    define$1(Color$1, color$1, {
+    define(Color, color, {
       copy: function(channels) {
         return Object.assign(new this.constructor, this, channels);
       },
       displayable: function() {
         return this.rgb().displayable();
       },
-      hex: color_formatHex$1, // Deprecated! Use color.formatHex.
-      formatHex: color_formatHex$1,
-      formatHsl: color_formatHsl$1,
-      formatRgb: color_formatRgb$1,
-      toString: color_formatRgb$1
+      hex: color_formatHex, // Deprecated! Use color.formatHex.
+      formatHex: color_formatHex,
+      formatHsl: color_formatHsl,
+      formatRgb: color_formatRgb,
+      toString: color_formatRgb
     });
 
-    function color_formatHex$1() {
+    function color_formatHex() {
       return this.rgb().formatHex();
     }
 
-    function color_formatHsl$1() {
-      return hslConvert$1(this).formatHsl();
+    function color_formatHsl() {
+      return hslConvert(this).formatHsl();
     }
 
-    function color_formatRgb$1() {
+    function color_formatRgb() {
       return this.rgb().formatRgb();
     }
 
-    function color$1(format) {
+    function color(format) {
       var m, l;
       format = (format + "").trim().toLowerCase();
-      return (m = reHex$1.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$1(m) // #ff0000
-          : l === 3 ? new Rgb$1((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
-          : l === 8 ? rgba$1(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-          : l === 4 ? rgba$1((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+      return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
+          : l === 3 ? new Rgb((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
+          : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+          : l === 4 ? rgba((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
           : null) // invalid hex
-          : (m = reRgbInteger$1.exec(format)) ? new Rgb$1(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
-          : (m = reRgbPercent$1.exec(format)) ? new Rgb$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
-          : (m = reRgbaInteger$1.exec(format)) ? rgba$1(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
-          : (m = reRgbaPercent$1.exec(format)) ? rgba$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-          : (m = reHslPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-          : (m = reHslaPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-          : named$1.hasOwnProperty(format) ? rgbn$1(named$1[format]) // eslint-disable-line no-prototype-builtins
-          : format === "transparent" ? new Rgb$1(NaN, NaN, NaN, 0)
+          : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+          : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+          : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+          : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+          : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+          : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+          : named.hasOwnProperty(format) ? rgbn(named[format]) // eslint-disable-line no-prototype-builtins
+          : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0)
           : null;
     }
 
-    function rgbn$1(n) {
-      return new Rgb$1(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+    function rgbn(n) {
+      return new Rgb(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
     }
 
-    function rgba$1(r, g, b, a) {
+    function rgba(r, g, b, a) {
       if (a <= 0) r = g = b = NaN;
-      return new Rgb$1(r, g, b, a);
+      return new Rgb(r, g, b, a);
     }
 
-    function rgbConvert$1(o) {
-      if (!(o instanceof Color$1)) o = color$1(o);
-      if (!o) return new Rgb$1;
+    function rgbConvert(o) {
+      if (!(o instanceof Color)) o = color(o);
+      if (!o) return new Rgb;
       o = o.rgb();
-      return new Rgb$1(o.r, o.g, o.b, o.opacity);
+      return new Rgb(o.r, o.g, o.b, o.opacity);
     }
 
-    function rgb$1(r, g, b, opacity) {
-      return arguments.length === 1 ? rgbConvert$1(r) : new Rgb$1(r, g, b, opacity == null ? 1 : opacity);
+    function rgb(r, g, b, opacity) {
+      return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
     }
 
-    function Rgb$1(r, g, b, opacity) {
+    function Rgb(r, g, b, opacity) {
       this.r = +r;
       this.g = +g;
       this.b = +b;
       this.opacity = +opacity;
     }
 
-    define$1(Rgb$1, rgb$1, extend$1(Color$1, {
+    define(Rgb, rgb, extend(Color, {
       brighter: function(k) {
-        k = k == null ? brighter$1 : Math.pow(brighter$1, k);
-        return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
+        k = k == null ? brighter : Math.pow(brighter, k);
+        return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
       },
       darker: function(k) {
-        k = k == null ? darker$1 : Math.pow(darker$1, k);
-        return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
+        k = k == null ? darker : Math.pow(darker, k);
+        return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
       },
       rgb: function() {
         return this;
@@ -5950,17 +5943,17 @@
             && (-0.5 <= this.b && this.b < 255.5)
             && (0 <= this.opacity && this.opacity <= 1);
       },
-      hex: rgb_formatHex$1, // Deprecated! Use color.formatHex.
-      formatHex: rgb_formatHex$1,
-      formatRgb: rgb_formatRgb$1,
-      toString: rgb_formatRgb$1
+      hex: rgb_formatHex, // Deprecated! Use color.formatHex.
+      formatHex: rgb_formatHex,
+      formatRgb: rgb_formatRgb,
+      toString: rgb_formatRgb
     }));
 
-    function rgb_formatHex$1() {
-      return "#" + hex$1(this.r) + hex$1(this.g) + hex$1(this.b);
+    function rgb_formatHex() {
+      return "#" + hex(this.r) + hex(this.g) + hex(this.b);
     }
 
-    function rgb_formatRgb$1() {
+    function rgb_formatRgb() {
       var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
       return (a === 1 ? "rgb(" : "rgba(")
           + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
@@ -5969,23 +5962,23 @@
           + (a === 1 ? ")" : ", " + a + ")");
     }
 
-    function hex$1(value) {
+    function hex(value) {
       value = Math.max(0, Math.min(255, Math.round(value) || 0));
       return (value < 16 ? "0" : "") + value.toString(16);
     }
 
-    function hsla$1(h, s, l, a) {
+    function hsla(h, s, l, a) {
       if (a <= 0) h = s = l = NaN;
       else if (l <= 0 || l >= 1) h = s = NaN;
       else if (s <= 0) h = NaN;
-      return new Hsl$1(h, s, l, a);
+      return new Hsl(h, s, l, a);
     }
 
-    function hslConvert$1(o) {
-      if (o instanceof Hsl$1) return new Hsl$1(o.h, o.s, o.l, o.opacity);
-      if (!(o instanceof Color$1)) o = color$1(o);
-      if (!o) return new Hsl$1;
-      if (o instanceof Hsl$1) return o;
+    function hslConvert(o) {
+      if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
+      if (!(o instanceof Color)) o = color(o);
+      if (!o) return new Hsl;
+      if (o instanceof Hsl) return o;
       o = o.rgb();
       var r = o.r / 255,
           g = o.g / 255,
@@ -6004,28 +5997,28 @@
       } else {
         s = l > 0 && l < 1 ? 0 : h;
       }
-      return new Hsl$1(h, s, l, o.opacity);
+      return new Hsl(h, s, l, o.opacity);
     }
 
-    function hsl$1(h, s, l, opacity) {
-      return arguments.length === 1 ? hslConvert$1(h) : new Hsl$1(h, s, l, opacity == null ? 1 : opacity);
+    function hsl(h, s, l, opacity) {
+      return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
     }
 
-    function Hsl$1(h, s, l, opacity) {
+    function Hsl(h, s, l, opacity) {
       this.h = +h;
       this.s = +s;
       this.l = +l;
       this.opacity = +opacity;
     }
 
-    define$1(Hsl$1, hsl$1, extend$1(Color$1, {
+    define(Hsl, hsl, extend(Color, {
       brighter: function(k) {
-        k = k == null ? brighter$1 : Math.pow(brighter$1, k);
-        return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
+        k = k == null ? brighter : Math.pow(brighter, k);
+        return new Hsl(this.h, this.s, this.l * k, this.opacity);
       },
       darker: function(k) {
-        k = k == null ? darker$1 : Math.pow(darker$1, k);
-        return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
+        k = k == null ? darker : Math.pow(darker, k);
+        return new Hsl(this.h, this.s, this.l * k, this.opacity);
       },
       rgb: function() {
         var h = this.h % 360 + (this.h < 0) * 360,
@@ -6033,10 +6026,10 @@
             l = this.l,
             m2 = l + (l < 0.5 ? l : 1 - l) * s,
             m1 = 2 * l - m2;
-        return new Rgb$1(
-          hsl2rgb$1(h >= 240 ? h - 240 : h + 120, m1, m2),
-          hsl2rgb$1(h, m1, m2),
-          hsl2rgb$1(h < 120 ? h + 240 : h - 120, m1, m2),
+        return new Rgb(
+          hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2),
+          hsl2rgb(h, m1, m2),
+          hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2),
           this.opacity
         );
       },
@@ -6056,7 +6049,7 @@
     }));
 
     /* From FvD 13.37, CSS Color Module Level 3 */
-    function hsl2rgb$1(h, m1, m2) {
+    function hsl2rgb(h, m1, m2) {
       return (h < 60 ? m1 + (m2 - m1) * h / 60
           : h < 180 ? m2
           : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
@@ -6087,7 +6080,7 @@
      */
     function colorFromString(cssColorSpecifier) {
         if (cssColorSpecifier) {
-            const dc = color$1(cssColorSpecifier);
+            const dc = color(cssColorSpecifier);
             if (dc) {
                 const c = dc.rgb();
                 return rgbToDeckglColor(c);
@@ -6105,9 +6098,9 @@
         }
         return `rgba(${c.join(',')})`;
     }
-    function desaturate(color, value) {
-        const rgb = rgb$1(color[0], color[1], color[2], color[3] / 255);
-        const hslColor = hsl$1(rgb);
+    function desaturate$1(color, value) {
+        const rgb$1 = rgb(color[0], color[1], color[2], color[3] / 255);
+        const hslColor = hsl(rgb$1);
         hslColor.s = value;
         const c = hslColor.rgb();
         return rgbToDeckglColor(c);
@@ -6171,7 +6164,7 @@
      * @param layers deck/layers library.
      * @param luma luma.gl library.
      */
-    function use(vega, deck, layers, luma) {
+    function use$1(vega, deck, layers, luma) {
         base.deck = deck;
         base.layers = layers;
         base.luma = luma;
@@ -6228,13 +6221,13 @@ void main(void) {
     //         numberOfLights: 2
     //     }
     // };
-    const defaultPresenterStyle = {
+    const defaultPresenterStyle$1 = {
         cssPrefix: 'vega-deckgl-',
         defaultCubeColor: [128, 128, 128, 255],
         highlightColor: [0, 0, 0, 255],
         //lightSettings
     };
-    const defaultPresenterConfig = {
+    const defaultPresenterConfig$1 = {
         onCubeClick: (e, cube) => { },
         onCubeHover: (e, cube) => { },
         transitionDurations: {
@@ -6266,7 +6259,7 @@ void main(void) {
     }
     const groupStrokeWidth = 1;
     const lineZ = -1;
-    const defaultView = '2d';
+    const defaultView$1 = '2d';
     const min3dDepth = 0.05;
     const minPixelSize = 0.5;
 
@@ -6274,12 +6267,12 @@ void main(void) {
         __proto__: null,
         minHeight: minHeight,
         minWidth: minWidth,
-        defaultPresenterStyle: defaultPresenterStyle,
-        defaultPresenterConfig: defaultPresenterConfig,
+        defaultPresenterStyle: defaultPresenterStyle$1,
+        defaultPresenterConfig: defaultPresenterConfig$1,
         createStage: createStage,
         groupStrokeWidth: groupStrokeWidth,
         lineZ: lineZ,
-        defaultView: defaultView,
+        defaultView: defaultView$1,
         min3dDepth: min3dDepth,
         minPixelSize: minPixelSize
     });
@@ -6438,7 +6431,7 @@ void main(void) {
     function getLayers(presenter, config, stage, lightSettings /*LightSettings*/, lightingMix, interpolator, guideLines) {
         const cubeLayer = newCubeLayer(presenter, config, stage.cubeData, presenter.style.highlightColor, lightSettings, lightingMix, interpolator);
         const { x, y, z } = stage.axes;
-        const lines = concat(stage.gridLines, guideLines);
+        const lines = concat$1(stage.gridLines, guideLines);
         const texts = [...stage.textData];
         [x, y, z].forEach(axes => {
             axes.forEach(axis => {
@@ -6628,25 +6621,25 @@ void main(void) {
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
 
-    var util = /*#__PURE__*/Object.freeze({
+    var util$1 = /*#__PURE__*/Object.freeze({
         __proto__: null,
         addDiv: addDiv,
         addEl: addEl,
-        allTruthy: allTruthy,
+        allTruthy: allTruthy$1,
         clone: clone,
         colorFromString: colorFromString,
         colorIsEqual: colorIsEqual,
         colorToString: colorToString,
-        concat: concat,
+        concat: concat$1,
         createElement: createElement,
         deepMerge: deepMerge,
-        desaturate: desaturate,
+        desaturate: desaturate$1,
         getActiveElementInfo: getActiveElementInfo,
         getCubeLayer: getCubeLayer,
         getCubes: getCubes,
         mount: mount,
-        outerSize: outerSize,
-        push: push,
+        outerSize: outerSize$1,
+        push: push$1,
         setActiveElement: setActiveElement
     });
 
@@ -6827,8 +6820,12 @@ void main(void) {
         var sorted = Object.keys(props.legend.rows).sort((a, b) => +a - +b);
         sorted.forEach(i => addRow(props.legend.rows[i]));
         if (sorted.length) {
-            return (createElement(Table, { rows: rows, rowClassName: "legend-row", onRowClick: (e, i) => props.onClick(e, props.legend, i) }, props.legend.title !== void 0 && createElement("tr", { onClick: e => props.onClick(e, props.legend, null) },
-                createElement("th", { colSpan: 2 }, props.legend.title))));
+            return (createElement(Table$1, { rows: rows, rowClassName: "legend-row", onRowClick: (e, i) => props.onClick(e, props.legend, i) }, props.legend.title !== undefined && (createElement("tr", { tabIndex: props.onClick ? 0 : -1, onClick: e => props.onClick(e, props.legend, null), onKeyUp: e => {
+                    if (e.key === KeyCodes.ENTER && props.onClick) {
+                        props.onClick(e, props.legend, null);
+                    }
+                } },
+                createElement("th", { colSpan: 2 }, props.legend.title)))));
         }
     };
     const symbolMap = {
@@ -6852,7 +6849,7 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    const markStager = (options, stage, scene, x, y, groupType) => {
+    const markStager$5 = (options, stage, scene, x, y, groupType) => {
         base.vega.sceneVisit(scene, function (item) {
             const x1 = item.x || 0;
             const y1 = item.y || 0;
@@ -6942,7 +6939,7 @@ void main(void) {
             row.value = label.datum.value;
         }
     };
-    const markStager$1 = (options, stage, scene, x, y, groupType) => {
+    const markStager$4 = (options, stage, scene, x, y, groupType) => {
         base.vega.sceneVisit(scene, function (item) {
             const fn = legendMap[item.mark.role];
             if (fn) {
@@ -6952,7 +6949,7 @@ void main(void) {
     };
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    const markStager$2 = (options, stage, scene, x, y, groupType) => {
+    const markStager$3 = (options, stage, scene, x, y, groupType) => {
         base.vega.sceneVisit(scene, function (item) {
             //for orthographic (2d) - always use 0 or else Deck will not show them
             const z = stage.view === '2d' ? 0 : (item.z || 0);
@@ -6978,15 +6975,15 @@ void main(void) {
     };
 
     //change direction of y from SVG to GL
-    const ty = -1;
-    const markStager$3 = (options, stage, scene, x, y, groupType) => {
+    const ty$1 = -1;
+    const markStager$2 = (options, stage, scene, x, y, groupType) => {
         const g = Object.assign({ opacity: 1, strokeOpacity: 1, strokeWidth: 1 }, scene.items[0]);
         const path = {
             strokeWidth: g.strokeWidth,
             strokeColor: colorFromString(g.stroke),
             positions: scene.items.map((it) => [
                 it.x,
-                ty * it.y,
+                ty$1 * it.y,
                 it.z || 0
             ])
         };
@@ -6995,7 +6992,7 @@ void main(void) {
         stage.pathData.push(path);
     };
 
-    const markStager$4 = (options, stage, scene, x, y, groupType) => {
+    const markStager$1 = (options, stage, scene, x, y, groupType) => {
         //scale Deck.Gl text to Vega size
         const fontScale = 1;
         //change direction of y from SVG to GL
@@ -7057,18 +7054,18 @@ void main(void) {
     }
 
     //change direction of y from SVG to GL
-    const ty$1 = -1;
-    const markStager$5 = (options, stage, scene, x, y, groupType) => {
+    const ty = -1;
+    const markStager = (options, stage, scene, x, y, groupType) => {
         const g = Object.assign({ fillOpacity: 1, opacity: 1, strokeOpacity: 1, strokeWidth: 0, depth: 0 }, scene.items[0]);
         const points = scene.items.map((item) => {
             item = Object.assign({ z: 0 }, item);
             item = Object.assign({ x2: item.x, y2: item.y, z2: item.z }, item);
             return [
                 item.x,
-                ty$1 * item.y,
+                ty * item.y,
                 item.z,
                 item.x2,
-                ty$1 * item.y2,
+                ty * item.y2,
                 item.z2
             ];
         });
@@ -7181,16 +7178,16 @@ void main(void) {
     }
     const markStagers = {
         group,
-        legend: markStager$1,
-        rect: markStager$2,
-        rule: markStager,
-        line: markStager$3,
-        area: markStager$5,
-        text: markStager$4
+        legend: markStager$4,
+        rect: markStager$3,
+        rule: markStager$5,
+        line: markStager$2,
+        area: markStager,
+        text: markStager$1
     };
     const mainStager = (options, stage, scene, x, y, groupType) => {
         if (scene.marktype !== 'group' && groupType === GroupType.legend) {
-            markStager$1(options, stage, scene);
+            markStager$4(options, stage, scene);
         }
         else {
             const markStager = markStagers[scene.marktype];
@@ -7253,7 +7250,7 @@ void main(void) {
          */
         constructor(el, style) {
             this.el = el;
-            this.style = deepMerge(defaultPresenterStyle, style);
+            this.style = deepMerge(defaultPresenterStyle$1, style);
             initializePanel(this);
             this._last = { view: null, height: null, width: null, cubeCount: null, stage: null };
         }
@@ -7421,7 +7418,7 @@ void main(void) {
             return { cubeCount, height, view, width };
         }
         setDeckProps(stage, height, width, cubeCount, modifyConfig) {
-            const config = deepMerge(defaultPresenterConfig, modifyConfig);
+            const config = deepMerge(defaultPresenterConfig$1, modifyConfig);
             const newBounds = this.isNewBounds(stage.view, height, width, cubeCount);
             //let lightSettings = this.style.lightSettings[stage.view];
             let lightingMix = stage.view === '3d' ? 1.0 : 0.0;
@@ -7494,7 +7491,7 @@ void main(void) {
          */
         homeCamera() {
             const viewState = targetViewState(this._last.height, this._last.width, this._last.view);
-            viewState.transitionDuration = defaultPresenterConfig.transitionDurations.view;
+            viewState.transitionDuration = defaultPresenterConfig$1.transitionDurations.view;
             viewState.transitionEasing = easing;
             viewState.transitionInterpolator = new LinearInterpolator(viewStateProps);
             const deckProps = {
@@ -7610,7 +7607,7 @@ void main(void) {
                 const renderer = this._renderer;
                 renderer.presenterConfig = this.config.presenterConfig;
                 renderer.presenter = this.presenter;
-                renderer.getView = this.config && this.config.getView || (() => this.presenter.view || defaultView);
+                renderer.getView = this.config && this.config.getView || (() => this.presenter.view || defaultView$1);
                 return this;
             }
             error(e) {
@@ -7632,34 +7629,34 @@ void main(void) {
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
 
-    var index$2 = /*#__PURE__*/Object.freeze({
+    var index = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        constants: constants$1,
+        constants: constants,
         controls: controls,
         defaults: defaults,
-        types: types$1,
-        util: util,
+        types: types,
+        util: util$1,
         base: base,
-        use: use,
+        use: use$1,
         Presenter: Presenter,
         ViewGl: ViewGl,
         get PresenterElement () { return PresenterElement; }
     });
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    const { defaultPresenterConfig: defaultPresenterConfig$1, defaultPresenterStyle: defaultPresenterStyle$1 } = defaults;
-    const { desaturate: desaturate$1 } = util;
+    const { defaultPresenterConfig, defaultPresenterStyle } = defaults;
+    const { desaturate } = util$1;
     const defaultViewerOptions = {
         colors: {
             activeCube: 'purple',
-            defaultCube: colorToString(defaultPresenterStyle$1.defaultCubeColor),
-            hoveredCube: colorToString(defaultPresenterStyle$1.highlightColor),
+            defaultCube: colorToString(defaultPresenterStyle.defaultCubeColor),
+            hoveredCube: colorToString(defaultPresenterStyle.highlightColor),
             selectedCube: 'yellow',
             axisSelectHighlight: colorToString([128, 128, 128, 128]),
             axisLine: '#000',
             axisText: '#000',
             unselectedColorMethod: (color) => {
-                const c = desaturate$1(color, 0.05);
+                const c = desaturate(color, 0.05);
                 c[3] = 171;
                 return c;
             }
@@ -7710,7 +7707,7 @@ void main(void) {
         onError: (errors) => {
             //console.log(`UnitVisViewer errors: ${errors.join('\n')}`);
         },
-        transitionDurations: Object.assign(Object.assign({}, defaultPresenterConfig$1.transitionDurations), { scope: 600 }),
+        transitionDurations: Object.assign(Object.assign({}, defaultPresenterConfig.transitionDurations), { scope: 600 }),
         selectionPolygonZ: -1,
         tickSize: 10
     };
@@ -7751,7 +7748,7 @@ void main(void) {
         return false;
     }
 
-    var util$1 = /*#__PURE__*/Object.freeze({
+    var util = /*#__PURE__*/Object.freeze({
         __proto__: null,
         isInternalFieldName: isInternalFieldName,
         getColumnsFromData: getColumnsFromData,
@@ -7993,7 +7990,7 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    const { allTruthy: allTruthy$1, concat: concat$1, push: push$1 } = util;
+    const { allTruthy, concat, push } = util$1;
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
     function getSearchGroupFromVegaValue(search) {
@@ -8005,7 +8002,7 @@ void main(void) {
             vegaSearch.forEach(g => {
                 const clonedExpressions = clone(g.expressions).filter(Boolean);
                 clonedExpressions[0].clause = '&&';
-                push$1(group.expressions, clonedExpressions);
+                push(group.expressions, clonedExpressions);
             });
         }
         else {
@@ -8496,7 +8493,7 @@ void main(void) {
             props.item && createElement("h4", null, props.language.headers.details),
             createElement("div", null,
                 createElement("div", { className: `${cssPrefix}details-scroll` }, props.item && scrollButtons),
-                createElement("div", { className: `${cssPrefix}details` }, props.item && createElement(Table, { rows: rows })))));
+                createElement("div", { className: `${cssPrefix}details` }, props.item && createElement(Table$1, { rows: rows })))));
     };
     function linkSelect(language, columnName, value, selectionHandler) {
         return (createElement("span", null,
@@ -8679,8 +8676,8 @@ void main(void) {
     }
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    const { outerSize: outerSize$1 } = util;
-    const { Table: Table$1 } = controls;
+    const { outerSize } = util$1;
+    const { Table } = controls;
     class Tooltip {
         constructor(props) {
             const renderProps = {
@@ -8693,7 +8690,7 @@ void main(void) {
                 this.child = this.element.firstChild;
                 document.body.appendChild(this.element);
                 //measure and move as necessary
-                let m = outerSize$1(this.child);
+                let m = outerSize(this.child);
                 while (m.height > document.documentElement.clientHeight) {
                     let tr = this.child.querySelector('tr:last-child');
                     if (tr) {
@@ -8702,7 +8699,7 @@ void main(void) {
                     else {
                         break;
                     }
-                    m = outerSize$1(this.child);
+                    m = outerSize(this.child);
                 }
                 if (props.position.clientX + m.width >= document.documentElement.clientWidth) {
                     this.child.style.right = '0';
@@ -8770,7 +8767,7 @@ void main(void) {
         return rows;
     }
     const renderTooltip = (props) => {
-        return props.rows.length === 0 ? null : (createElement("div", { className: `${props.cssPrefix}tooltip` }, Table$1({ rows: props.rows })));
+        return props.rows.length === 0 ? null : (createElement("div", { className: `${props.cssPrefix}tooltip` }, Table({ rows: props.rows })));
     };
 
     class CharacterSet {
@@ -8865,7 +8862,7 @@ void main(void) {
             step((generator = generator.apply(thisArg, _arguments || [])).next());
         });
     };
-    const { defaultView: defaultView$1 } = defaults;
+    const { defaultView } = defaults;
     const zAxisZindex = 1010;
     let didRegisterColorSchemes = false;
     /**
@@ -9120,7 +9117,7 @@ void main(void) {
         getView(view) {
             if (view === undefined) {
                 if (this.presenter.view === null) {
-                    return defaultView$1;
+                    return defaultView;
                 }
                 else {
                     return this.presenter.view;
@@ -9582,19 +9579,19 @@ void main(void) {
     const version = '3.2.1';
 
     // Copyright (c) Microsoft Corporation. All rights reserved.
-    const use$1 = use;
+    const use = use$1;
 
-    exports.VegaDeckGl = index$2;
+    exports.VegaDeckGl = index;
     exports.Viewer = Viewer;
     exports.colorSchemes = colorSchemes;
-    exports.constants = constants;
+    exports.constants = constants$1;
     exports.searchExpression = index$1;
-    exports.specs = index;
-    exports.types = types;
-    exports.use = use$1;
-    exports.util = util$1;
+    exports.specs = index$2;
+    exports.types = types$1;
+    exports.use = use;
+    exports.util = util;
     exports.version = version;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));
