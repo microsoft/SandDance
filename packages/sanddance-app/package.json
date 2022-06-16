@@ -32,6 +32,10 @@
     }
   },
   "umd": "./dist/umd/sanddance-app.js",
+  "alias": {
+    "react": "./alias/react-external.js",
+    "react-dom": "./alias/react-dom-external.js"
+  },
   "dependencies": {
     "@deck.gl/core": "8.3.7",
     "@deck.gl/layers": "8.3.7",
