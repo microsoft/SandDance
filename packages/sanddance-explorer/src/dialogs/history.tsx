@@ -31,6 +31,7 @@ export function History(props: Props) {
                             }
                         }}
                         onClick={() => props.redo(i)}
+                        role='button'
                         tabIndex={0}
                     >{hi.label}</li>
                 ))}
