@@ -81,12 +81,14 @@ export function Sidebar(props: Props) {
                         <div className="sidebar-controls">
                             <Sidebutton
                                 {...props}
+                                role='button'
                                 sideTabId={SideTabId.Pin}
                                 iconName={props.pinned ? 'Pinned' : 'Pin'}
                                 title={props.pinned ? strings.buttonToolbarFloat : strings.buttonToolbarDock}
                             />
                             <Sidebutton
                                 {...props}
+                                role='button'
                                 sideTabId={SideTabId.Collapse}
                                 iconName={props.closed ? 'DoubleChevronRight12' : 'DoubleChevronLeft12'}
                                 title={props.closed ? strings.buttonToolbarShow : strings.buttonToolbarHide}
@@ -117,14 +119,17 @@ export interface SidebuttonProps {
     sideTabId: SideTabId;
     badgeText?: string;
     themePalette?: Partial<FluentUITypes.IPalette>;
+    role?: string;
 }
 
 export function Sidebutton(props: SidebuttonProps & Props) {
     const selected = !props.closed && props.selectedSideTab === props.sideTabId;
     return (
-        <div className={util.classList('vbutton', selected && 'selected')} role='tab' aria-selected={selected}>
+        <div className={util.classList('vbutton', selected && 'selected')}>
             {props.badgeText && <div className="count">{props.badgeText}</div>}
             <IconButton
+                role={props.role || 'tab'} 
+                aria-selected={selected}
                 themePalette={props.themePalette}
                 className="vbutton"
                 iconName={props.iconName}
