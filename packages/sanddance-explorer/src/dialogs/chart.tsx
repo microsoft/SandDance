@@ -84,13 +84,16 @@ export function chartLabel(key: SandDance.specs.Chart) {
     }
 }
 
-function _Chart(props: Props) {
+function _Chart(_props: Props) {
     class __Chart extends base.react.Component<Props, State> {
+        private choiceRef?: React.RefObject<FluentUITypes.IChoiceGroup>;
         constructor(props: Props) {
             super(props);
             this.state = {
                 showTooltipDialog: false
             };
+            this.choiceRef = base.react.createRef<FluentUITypes.IChoiceGroup>();
+            props.explorer.dialogFocusHandler.focus = () => this.choiceRef.current?.focus();
         }
 
         render() {
@@ -106,6 +109,7 @@ function _Chart(props: Props) {
                     <Group label={strings.labelChart}>
                         <div className="calculator">
                             <base.fluentUI.ChoiceGroup
+                                componentRef={this.choiceRef}
                                 className="sanddance-chart-type"
                                 options={chartLabelMap.map(o => {
                                     return {
@@ -325,7 +329,7 @@ function _Chart(props: Props) {
         }
 
     }
-    return new __Chart(props);
+    return new __Chart(_props);
 }
 
 export const Chart: typeof Chart_Class = _Chart as any;

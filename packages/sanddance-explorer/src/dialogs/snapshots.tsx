@@ -41,7 +41,7 @@ export interface Confirmation {
 export interface State extends Snapshot {
     confirmation: Confirmation;
 }
-function _Snapshots(props: Props) {
+function _Snapshots(_props: Props) {
     class __Snapshots extends base.react.Component<Props, State>{
         constructor(props: Props) {
             super(props);
@@ -72,10 +72,15 @@ function _Snapshots(props: Props) {
             if (this.props.getTopActions) {
                 items.push.apply(items, this.props.getTopActions(this.props.snapshots));
             }
+            const ref = base.react.createRef<FluentUITypes.IButton>();
+            this.props.explorer.dialogFocusHandler.focus = () => {
+                ref.current?.focus();
+            };
             return (
                 <Group className="sanddance-snapshots" label={strings.labelSnapshots}>
                     <div>
                         <base.fluentUI.PrimaryButton
+                            componentRef={ref}
                             text={strings.buttonCreateSnapshot}
                             onClick={e => this.props.editor.editSnapshot()}
                             split
@@ -179,7 +184,7 @@ function _Snapshots(props: Props) {
             );
         }
     }
-    return new __Snapshots(props);
+    return new __Snapshots(_props);
 }
 
 export const Snapshots: typeof Snapshots_Class = _Snapshots as any;

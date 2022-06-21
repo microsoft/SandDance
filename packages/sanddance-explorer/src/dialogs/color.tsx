@@ -9,6 +9,7 @@ import { SandDance } from '@msrvida/sanddance-react';
 import { Signal } from '../controls/signal';
 import { strings } from '../language';
 import { Group } from '../controls/group';
+import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 
 export interface Props extends ColumnMapBaseProps {
     compactUI: boolean;
@@ -32,11 +33,14 @@ export function Color(props: Props) {
     const colorColumn = props.dataContent.columns.filter(c => c.name === props.colorColumn)[0];
     const disabledColorBin = !colorColumn || !colorColumn.quantitative || props.directColor;
     const colorBin = props.colorBin || 'quantize';
+    const dropdownRef = base.react.createRef<FluentUITypes.IDropdown>();
+    props.explorer.dialogFocusHandler.focus = ()=> dropdownRef.current?.focus();
     return (
         <div className="sanddance-color-dialog">
             <Group label={strings.labelColor}>
                 <ColumnMap
                     {...props}
+                    componentRef={dropdownRef}
                     collapseLabel={props.compactUI}
                     selectedColumnName={props.colorColumn}
                     specRole={props.specCapabilities && props.specCapabilities.roles.filter(r => r.role === 'color')[0]}

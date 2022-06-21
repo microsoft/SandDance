@@ -12,6 +12,7 @@ import { IconButton } from '../controls/iconButton';
 import { InputSearchExpressionGroup } from './search';
 import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
+import { Explorer_Class } from '../explorer';
 
 export interface Props {
     data: object[];
@@ -30,6 +31,7 @@ export interface Props {
     selectedDataScope: DataScopeId;
     onDataScopeClick: (dataScopeId: DataScopeId) => void;
     displayName: string;
+    explorer: Explorer_Class;
 }
 
 export function DataBrowser(props: Props) {
@@ -38,9 +40,14 @@ export function DataBrowser(props: Props) {
     }
     const { index } = props;
     const length = props.data && props.data.length || 0;
+
+    const dropdownRef = base.react.createRef<FluentUITypes.IDropdown>();
+    props.explorer.dialogFocusHandler.focus = ()=> dropdownRef.current?.focus();
+
     return (
         <Group label={strings.labelDataBrowser} className="sanddance-dataIndex">
             <Dropdown
+                componentRef={dropdownRef}
                 label={strings.labelDataScope}
                 collapseLabel={true}
                 options={[
