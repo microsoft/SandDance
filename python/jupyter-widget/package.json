@@ -48,8 +48,8 @@
     "@jupyter-widgets/base": "^3",
     "@luma.gl/core": "8.3.1",
     "@msrvida/sanddance-explorer": "^3",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": ">=16.8.0 <17.0.0",
+    "react-dom": ">=16.8.0 <17.0.0",
     "vega": "5.20"
   },
   "devDependencies": {
@@ -58,8 +58,8 @@
     "@phosphor/widgets": "^1.6.0",
     "@types/expect.js": "^0.3.29",
     "@types/node": "^10.11.6",
-    "@types/react": "^16.9.34",
-    "@types/react-dom": "^16.9.7",
+    "@types/react": ">=16.8.0 <17.0.0",
+    "@types/react-dom": ">=16.8.0 <17.0.0",
     "@types/webpack-env": "^1.13.6",
     "css-loader": "^3.2.0",
     "mkdirp": "^1.0.4",
