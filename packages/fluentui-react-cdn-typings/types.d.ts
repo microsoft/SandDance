@@ -3,6 +3,7 @@
 export { IChoiceGroupOption } from '@fluentui/react/lib/ChoiceGroup';
 
 export {
+    IButton,
     IButtonProps,
     IButtonStyles
 } from '@fluentui/react/lib/Button';
@@ -16,6 +17,8 @@ export {
 export { IDropdown, IDropdownProps, IDropdownOption } from '@fluentui/react/lib/Dropdown';
 
 export { IComboBox, IComboBoxProps, IComboBoxOption } from '@fluentui/react/lib/ComboBox';
+
+export { IChoiceGroup } from '@fluentui/react/lib/ChoiceGroup';
 
 export { ITextField, ITextFieldProps } from '@fluentui/react/lib/TextField';
 
