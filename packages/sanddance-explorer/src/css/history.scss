@@ -9,14 +9,27 @@
         li {
             border: 1px solid transparent;
             cursor: pointer;
-            padding: 2px;
 
             &.selected {
                 font-weight: bold;
             }
-            &:hover {
-                border-color: $highlight-color;
-            }
+        }
+    }
+    .sanddance-history-button {
+        background: none;
+        border: 0;
+        font-size: inherit;
+        font-style: inherit;
+        font-weight: inherit;
+        height: unset;
+        padding: 3px 4px;
+        text-align: left;
+        width: 100%;
+        
+        .ms-Button-label {
+            display: inline;
+            font-weight: inherit;
+            margin: 0;
         }
     }
 }

@@ -12,6 +12,7 @@ export interface IIconButtonProps {
     menuProps?: FluentUITypes.IContextualMenuProps;
     title: string;
     themePalette: Partial<FluentUITypes.IPalette>;
+    role?: string;
 }
 
 export function IconButton(props: IIconButtonProps) {

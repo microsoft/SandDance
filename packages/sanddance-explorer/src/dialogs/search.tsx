@@ -14,6 +14,7 @@ import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { Group } from '../controls/group';
 import { SandDance, util } from '@msrvida/sanddance-react';
 import { strings } from '../language';
+import { Explorer_Class } from '../explorer';
 
 import SearchExpressionClause = SandDance.searchExpression.SearchExpressionClause;
 
@@ -38,6 +39,7 @@ export interface Props {
     disableGroupOR: boolean;
     disabled: boolean;
     themePalette: Partial<FluentUITypes.IPalette>;
+    explorer: Explorer_Class;
 }
 
 export interface State {
@@ -103,12 +105,15 @@ function getGroupClauses(currClause: SearchExpressionClause, index: number, disa
     });
 }
 
-function _Search(props: Props) {
+function _Search(_props: Props) {
     class __Search extends base.react.Component<Props, State> {
+        private dropdownRef: React.RefObject<FluentUITypes.IDropdown>;
 
         constructor(props: Props) {
             super(props);
             this.state = this.getInitialState(this.props);
+            this.dropdownRef = base.react.createRef<FluentUITypes.IDropdown>();
+            props.explorer.dialogFocusHandler.focus = () => this.dropdownRef.current?.focus();
         }
 
         getInitialState(props: Props) {
@@ -260,6 +265,7 @@ function _Search(props: Props) {
                                             key={ex.key}
                                         >
                                             <SearchTerm
+                                                dropdownRef={groupIndex === 0 && i === 0 ? this.dropdownRef : undefined}
                                                 collapseLabels={this.props.collapseLabels}
                                                 onUpdateExpression={(ex, i) => this.updateExpression(ex, groupIndex, i)}
                                                 autoCompleteDistinctValues={this.props.autoCompleteDistinctValues}
@@ -325,7 +331,7 @@ function _Search(props: Props) {
             );
         }
     }
-    return new __Search(props);
+    return new __Search(_props);
 }
 
 export const Search: typeof Search_Class = _Search as any;

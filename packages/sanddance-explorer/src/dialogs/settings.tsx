@@ -155,7 +155,12 @@ function vegaSignalGroups(vegaSignals: VegaSignal[]) {
     return signalGroupMap;
 }
 
-function _Settings(props: Props) {
+//modeled after FluentUI ComponentRef 
+interface Focusable {
+    focus: () => void;
+}
+
+function _Settings(_props: Props) {
     class __Settings extends base.react.Component<Props, State> {
         constructor(props: Props) {
             super(props);
@@ -186,9 +191,10 @@ function _Settings(props: Props) {
                 }
             ].filter(Boolean);
             const signalGroupMap = vegaSignalGroups(props.explorer.viewer.vegaSpec.signals);
+            let first = true;
             return (
                 <div>
-                    {strings.signalGroups.map((sg: { prefix: string, label: string }) => {
+                    {strings.signalGroups.map((sg: { prefix: string, label: string }, gi) => {
                         const vegaSignals = signalGroupMap[sg.prefix];
                         if (vegaSignals) {
                             const filteredVegaSignals = vegaSignals.filter(filterSignals);
@@ -198,14 +204,27 @@ function _Settings(props: Props) {
                                         key={sg.prefix}
                                         label={sg.label}
                                     >
-                                        {filteredVegaSignals.map((signal, i) => (
-                                            <Signal
-                                                key={i}
-                                                signal={signal}
-                                                explorer={props.explorer}
-                                                newViewStateTarget={false}
-                                            />
-                                        ))}
+                                        {filteredVegaSignals.map((signal, i) => {
+                                            const ref = base.react.createRef();
+                                            if (first) {
+                                                first = false;
+                                                props.explorer.dialogFocusHandler.focus = () => {
+                                                    const f = ref.current as Focusable;
+                                                    if (f.focus) {
+                                                        f.focus();
+                                                    }
+                                                }
+                                            }
+                                            return (
+                                                <Signal
+                                                    componentRef={ref}
+                                                    key={i}
+                                                    signal={signal}
+                                                    explorer={props.explorer}
+                                                    newViewStateTarget={false}
+                                                />
+                                            );
+                                        })}
                                     </Group>
                                 );
                             }
@@ -369,7 +388,7 @@ function _Settings(props: Props) {
             );
         }
     }
-    return new __Settings(props);
+    return new __Settings(_props);
 }
 
 export const Settings: typeof Settings_Class = _Settings as any;

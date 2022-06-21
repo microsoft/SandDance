@@ -19,6 +19,7 @@ export interface Props {
     prefix?: string;
     disabled?: boolean;
     onChange?: (value: any) => void;
+    componentRef?: any;
 }
 
 export function Signal(props: Props) {
@@ -46,7 +47,8 @@ export function Signal(props: Props) {
                         props.explorer.signal(props.signal.name, value, props.newViewStateTarget);
                     },
                     props.disabled,
-                    props.collapseLabel
+                    props.collapseLabel,
+                    props.componentRef,
                 );
                 return (
                     <div className="sanddance-signal">
@@ -59,11 +61,12 @@ export function Signal(props: Props) {
     return null;
 }
 
-const map: { [input: string]: (prefix: string, bind: Binding, initialValue: any, onChange: (value: any) => void, disabled: boolean, collapseLabel: boolean) => JSX.Element } = {};
+const map: { [input: string]: (prefix: string, bind: Binding, initialValue: any, onChange: (value: any) => void, disabled: boolean, collapseLabel: boolean, ref: any) => JSX.Element } = {};
 
-map['range'] = (prefix: string, bind: BindRange, initialValue: number, onChange: (value: number) => void, disabled: boolean, collapseLabel: boolean) => {
+map['range'] = (prefix: string, bind: BindRange, initialValue: number, onChange: (value: number) => void, disabled: boolean, collapseLabel: boolean, ref: any) => {
     return (
         <base.fluentUI.Slider
+            componentRef={ref}
             label={prefix + bind.name}
             max={bind.max}
             min={bind.min}
@@ -75,7 +78,7 @@ map['range'] = (prefix: string, bind: BindRange, initialValue: number, onChange:
     );
 };
 
-map['select'] = (prefix: string, bind: BindRadioSelect, initialValue: any, onChange: (value: any) => void, disabled: boolean, collapseLabel: boolean) => {
+map['select'] = (prefix: string, bind: BindRadioSelect, initialValue: any, onChange: (value: any) => void, disabled: boolean, collapseLabel: boolean, ref: any) => {
     const options = bind.options.map((o, i) => {
         const option: FluentUITypes.IDropdownOption = {
             key: o,
@@ -86,6 +89,7 @@ map['select'] = (prefix: string, bind: BindRadioSelect, initialValue: any, onCha
     const label = prefix + bind.name;
     return (
         <base.fluentUI.Dropdown
+            componentRef={ref}
             onRenderTitle={collapseLabel ?
                 ((a, b) => (
                     <span>
@@ -103,9 +107,10 @@ map['select'] = (prefix: string, bind: BindRadioSelect, initialValue: any, onCha
     );
 };
 
-map['checkbox'] = (prefix: string, bind: BindCheckbox, initialValue: boolean, onChange: (checked: boolean) => void, disabled: boolean, collapseLabel: boolean) => {
+map['checkbox'] = (prefix: string, bind: BindCheckbox, initialValue: boolean, onChange: (checked: boolean) => void, disabled: boolean, collapseLabel: boolean, ref: any) => {
     return (
         <base.fluentUI.Toggle
+            componentRef={ref}
             defaultChecked={initialValue}
             label={prefix + bind.name}
             onChange={(e, checked?: boolean) => onChange(checked)}

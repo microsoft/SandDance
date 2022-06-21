@@ -166,6 +166,7 @@ function _Explorer(props: Props) {
         private scrollSnapshotTimer: number;
         private newViewStateTarget: boolean;
 
+        public dialogFocusHandler: { focus?: () => void; };
         public viewer: SandDance.Viewer;
         public viewerOptions: Partial<SandDance.types.ViewerOptions>;
         public discardColorContextUpdates: boolean;
@@ -175,6 +176,7 @@ function _Explorer(props: Props) {
 
         constructor(props: Props) {
             super(props);
+            this.dialogFocusHandler = {};
             this.state = {
                 calculating: null,
                 errors: null,
@@ -795,7 +797,10 @@ function _Explorer(props: Props) {
             if (dataScopeId == null) {
                 dataScopeId = this.state.dataScopeId;
             }
-            this.setState({ sideTabId, dataScopeId, sidebarClosed: false });
+            const calculating = () => {
+                this.dialogFocusHandler.focus && this.dialogFocusHandler.focus();
+            };
+            this.setState({ sideTabId, dataScopeId, sidebarClosed: false, calculating });
             this.activateDataBrowserItem(sideTabId, dataScopeId);
         }
 
@@ -1252,6 +1257,7 @@ function _Explorer(props: Props) {
                                         }
                                         return (
                                             <DataBrowser
+                                                explorer={this as any as Explorer_Class}
                                                 theme={this.props.theme}
                                                 themePalette={themePalette}
                                                 disabled={!loaded || this.state.sidebarClosed}
@@ -1285,6 +1291,7 @@ function _Explorer(props: Props) {
                                     case SideTabId.Search: {
                                         return (
                                             <Search
+                                                explorer={this as any as Explorer_Class}
                                                 collapseLabels={this.props.compactUI}
                                                 themePalette={themePalette}
                                                 disabled={!loaded || this.state.sidebarClosed}
@@ -1371,6 +1378,7 @@ function _Explorer(props: Props) {
                                     case SideTabId.History: {
                                         return (
                                             <History
+                                                explorer={this as any as Explorer_Class}
                                                 theme={theme}
                                                 themePalette={themePalette}
                                                 historyIndex={this.state.historyIndex}
@@ -1534,6 +1542,7 @@ export declare class Explorer_Class extends base.react.Component<Props, State> {
     private snapshotEditor;
     private scrollSnapshotTimer;
     private newViewStateTarget;
+    dialogFocusHandler: { focus?: () => void; }
     viewer: SandDance.Viewer;
     viewerOptions: Partial<SandDance.types.ViewerOptions>;
     discardColorContextUpdates: boolean;
