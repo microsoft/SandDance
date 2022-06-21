@@ -70,6 +70,7 @@ export interface Props {
     autoCompleteDistinctValues: AutoCompleteDistinctValues;
     onUpdateExpression: { (ex: Partial<InputSearchExpression>, index: number): void };
     column: SandDance.types.Column;
+    dropdownRef?: React.RefObject<FluentUITypes.IDropdown>;
 }
 
 function getExpressionClauses(currClause: SearchExpressionClause, disableOR: boolean) {
@@ -162,6 +163,7 @@ export function SearchTerm(props: Props) {
                 />
             )}
             <Dropdown
+                componentRef={props.dropdownRef}
                 collapseLabel={props.collapseLabels}
                 className="search-field"
                 label={strings.labelSearchColumn}
