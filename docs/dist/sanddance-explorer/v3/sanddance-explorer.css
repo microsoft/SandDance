@@ -555,13 +555,26 @@
 .sanddance-history li {
   border: 1px solid transparent;
   cursor: pointer;
-  padding: 2px;
 }
 .sanddance-history li.selected {
   font-weight: bold;
 }
-.sanddance-history li:hover {
-  border-color: #0078d4;
+
+.sanddance-history-button {
+  background: none;
+  border: 0;
+  font-size: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+  height: unset;
+  padding: 3px 4px;
+  text-align: left;
+  width: 100%;
+}
+.sanddance-history-button .ms-Button-label {
+  display: inline;
+  font-weight: inherit;
+  margin: 0;
 }
 
 .sanddance-note {
