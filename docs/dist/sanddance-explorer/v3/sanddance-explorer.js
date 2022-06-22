@@ -10153,7 +10153,7 @@ function $9c14fe62b8e7ad84$export$8210dfe1863c478(props) {
                 const control = fn(prefix, props.signal.bind, initialValue, (value)=>{
                     props.onChange && props.onChange(value);
                     props.explorer.signal(props.signal.name, value, props.newViewStateTarget);
-                }, props.disabled, props.collapseLabel);
+                }, props.disabled, props.collapseLabel, props.componentRef);
                 return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
                     className: "sanddance-signal"
                 }, control);
@@ -10163,8 +10163,9 @@ function $9c14fe62b8e7ad84$export$8210dfe1863c478(props) {
     return null;
 }
 const $9c14fe62b8e7ad84$var$map = {};
-$9c14fe62b8e7ad84$var$map["range"] = (prefix, bind, initialValue, onChange, disabled, collapseLabel)=>{
+$9c14fe62b8e7ad84$var$map["range"] = (prefix, bind, initialValue, onChange, disabled, collapseLabel, ref)=>{
     return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Slider, {
+        componentRef: ref,
         label: prefix + bind.name,
         max: bind.max,
         min: bind.min,
@@ -10174,7 +10175,7 @@ $9c14fe62b8e7ad84$var$map["range"] = (prefix, bind, initialValue, onChange, disa
         disabled: disabled
     });
 };
-$9c14fe62b8e7ad84$var$map["select"] = (prefix, bind, initialValue, onChange, disabled, collapseLabel)=>{
+$9c14fe62b8e7ad84$var$map["select"] = (prefix, bind, initialValue, onChange, disabled, collapseLabel, ref)=>{
     const options = bind.options.map((o, i)=>{
         const option = {
             key: o,
@@ -10184,6 +10185,7 @@ $9c14fe62b8e7ad84$var$map["select"] = (prefix, bind, initialValue, onChange, dis
     });
     const label = prefix + bind.name;
     return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Dropdown, {
+        componentRef: ref,
         onRenderTitle: collapseLabel ? (a, b)=>(0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("span", null, label, ": ", a[0].text) : undefined,
         defaultSelectedKey: initialValue,
         label: collapseLabel ? undefined : label,
@@ -10192,8 +10194,9 @@ $9c14fe62b8e7ad84$var$map["select"] = (prefix, bind, initialValue, onChange, dis
         disabled: disabled
     });
 };
-$9c14fe62b8e7ad84$var$map["checkbox"] = (prefix, bind, initialValue, onChange, disabled, collapseLabel)=>{
+$9c14fe62b8e7ad84$var$map["checkbox"] = (prefix, bind, initialValue, onChange, disabled, collapseLabel, ref)=>{
     return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Toggle, {
+        componentRef: ref,
         defaultChecked: initialValue,
         label: prefix + bind.name,
         onChange: (e, checked)=>onChange(checked),
@@ -11074,12 +11077,17 @@ function $247884a4197e9da6$export$7d1536ca08644643(key) {
         if (key === $247884a4197e9da6$export$3fab399b77d7be2a[i].key) return $247884a4197e9da6$export$3fab399b77d7be2a[i].text;
     }
 }
-function $247884a4197e9da6$var$_Chart(props1) {
+function $247884a4197e9da6$var$_Chart(_props) {
     class __Chart extends (0, $8535c575077b9670$export$e2253033e6e1df16).react.Component {
         constructor(props){
             super(props);
             this.state = {
                 showTooltipDialog: false
+            };
+            this.choiceRef = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createRef();
+            props.explorer.dialogFocusHandler.focus = ()=>{
+                var _a;
+                return (_a = this.choiceRef.current) === null || _a === void 0 ? void 0 : _a.focus();
             };
         }
         render() {
@@ -11091,6 +11099,7 @@ function $247884a4197e9da6$var$_Chart(props1) {
             }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
                 className: "calculator"
             }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.ChoiceGroup, {
+                componentRef: this.choiceRef,
                 className: "sanddance-chart-type",
                 options: $247884a4197e9da6$export$3fab399b77d7be2a.map((o)=>{
                     return Object.assign(Object.assign({}, o), {
@@ -11281,7 +11290,7 @@ function $247884a4197e9da6$var$_Chart(props1) {
             return false;
         }
     }
-    return new __Chart(props1);
+    return new __Chart(_props);
 }
 const $247884a4197e9da6$export$acaa6426d77a227e = $247884a4197e9da6$var$_Chart;
 
@@ -11473,6 +11482,7 @@ function $f979d5a7baf59678$export$793106cac50ab579(props) {
                 clause: o.data
             }, props.index)
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $01c4eef7f720da5f$export$931cbfb6bfb85fc), {
+        componentRef: props.dropdownRef,
         collapseLabel: props.collapseLabels,
         className: "search-field",
         label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelSearchColumn,
@@ -11620,11 +11630,16 @@ function $fd0d652c33ef4e65$var$getGroupClauses(currClause, index, disableGroupOR
         return option;
     });
 }
-function $fd0d652c33ef4e65$var$_Search(props1) {
+function $fd0d652c33ef4e65$var$_Search(_props) {
     class __Search extends (0, $8535c575077b9670$export$e2253033e6e1df16).react.Component {
         constructor(props){
             super(props);
             this.state = this.getInitialState(this.props);
+            this.dropdownRef = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createRef();
+            props.explorer.dialogFocusHandler.focus = ()=>{
+                var _a;
+                return (_a = this.dropdownRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+            };
         }
         getInitialState(props) {
             const initialState = {
@@ -11786,6 +11801,7 @@ function $fd0d652c33ef4e65$var$_Search(props1) {
                         className: "sanddance-search-expression",
                         key: ex1.key
                     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $f979d5a7baf59678$export$793106cac50ab579), {
+                        dropdownRef: groupIndex === 0 && i1 === 0 ? this.dropdownRef : undefined,
                         collapseLabels: this.props.collapseLabels,
                         onUpdateExpression: (ex, i)=>this.updateExpression(ex, groupIndex, i),
                         autoCompleteDistinctValues: this.props.autoCompleteDistinctValues,
@@ -11826,7 +11842,7 @@ function $fd0d652c33ef4e65$var$_Search(props1) {
             }));
         }
     }
-    return new __Search(props1);
+    return new __Search(_props);
 }
 const $fd0d652c33ef4e65$export$4b85d3515bd863a5 = $fd0d652c33ef4e65$var$_Search;
 
@@ -11959,7 +11975,7 @@ function $4805700d8b417596$var$vegaSignalGroups(vegaSignals) {
     });
     return signalGroupMap;
 }
-function $4805700d8b417596$var$_Settings(props1) {
+function $4805700d8b417596$var$_Settings(_props) {
     class __Settings extends (0, $8535c575077b9670$export$e2253033e6e1df16).react.Component {
         constructor(props){
             super(props);
@@ -11989,19 +12005,31 @@ function $4805700d8b417596$var$_Settings(props1) {
                 }
             ].filter(Boolean);
             const signalGroupMap = $4805700d8b417596$var$vegaSignalGroups(props.explorer.viewer.vegaSpec.signals);
-            return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", null, (0, $0db66385c00a3f15$export$21c51bc433c16634).signalGroups.map((sg)=>{
+            let first = true;
+            return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", null, (0, $0db66385c00a3f15$export$21c51bc433c16634).signalGroups.map((sg, gi)=>{
                 const vegaSignals = signalGroupMap[sg.prefix];
                 if (vegaSignals) {
                     const filteredVegaSignals = vegaSignals.filter($4805700d8b417596$var$filterSignals);
                     if (filteredVegaSignals.length > 0) return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8d43140d74b3b13d$export$eb2fcfdbd7ba97d4), {
                         key: sg.prefix,
                         label: sg.label
-                    }, filteredVegaSignals.map((signal, i)=>(0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $9c14fe62b8e7ad84$export$8210dfe1863c478), {
+                    }, filteredVegaSignals.map((signal, i)=>{
+                        const ref = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createRef();
+                        if (first) {
+                            first = false;
+                            props.explorer.dialogFocusHandler.focus = ()=>{
+                                const f = ref.current;
+                                if (f.focus) f.focus();
+                            };
+                        }
+                        return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $9c14fe62b8e7ad84$export$8210dfe1863c478), {
+                            componentRef: ref,
                             key: i,
                             signal: signal,
                             explorer: props.explorer,
                             newViewStateTarget: false
-                        })));
+                        });
+                    }));
                 }
             }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8d43140d74b3b13d$export$eb2fcfdbd7ba97d4), {
                 label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelChartCanvas
@@ -12124,7 +12152,7 @@ function $4805700d8b417596$var$_Settings(props1) {
             }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("ul", null, this.props.children, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("li", null, "SandDanceExplorer version: ", (0, $f56a95f33c4cc847$export$83d89fbfd8236492)), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("li", null, "SandDanceReact version: ", $2e8bcf4294dd4bc7$export$83d89fbfd8236492), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("li", null, "SandDance version: ", $4805700d8b417596$var$SandDance.version), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("li", null, "WebGL enabled: ", (0, $29728562a99c68a2$export$8e76ac9f37578d1b).webgl ? (0, $0db66385c00a3f15$export$21c51bc433c16634).labelYes : (0, $0db66385c00a3f15$export$21c51bc433c16634).labelNo), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("li", null, "WebGL2 enabled: ", (0, $29728562a99c68a2$export$8e76ac9f37578d1b).webgl2 ? (0, $0db66385c00a3f15$export$21c51bc433c16634).labelYes : (0, $0db66385c00a3f15$export$21c51bc433c16634).labelNo))));
         }
     }
-    return new __Settings(props1);
+    return new __Settings(_props);
 }
 const $4805700d8b417596$export$c72f6eaae7b9adff = $4805700d8b417596$var$_Settings;
 
@@ -12293,7 +12321,7 @@ function $adfb025456b8f57f$export$c25acd513dcc8062(props) {
 
 
 
-function $3465068850534ed3$var$_Snapshots(props1) {
+function $3465068850534ed3$var$_Snapshots(_props) {
     class __Snapshots extends (0, $8535c575077b9670$export$e2253033e6e1df16).react.Component {
         constructor(props){
             super(props);
@@ -12321,10 +12349,16 @@ function $3465068850534ed3$var$_Snapshots(props1) {
                 }
             ];
             if (this.props.getTopActions) items.push.apply(items, this.props.getTopActions(this.props.snapshots));
+            const ref = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createRef();
+            this.props.explorer.dialogFocusHandler.focus = ()=>{
+                var _a;
+                (_a = ref.current) === null || _a === void 0 || _a.focus();
+            };
             return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8d43140d74b3b13d$export$eb2fcfdbd7ba97d4), {
                 className: "sanddance-snapshots",
                 label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelSnapshots
             }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.PrimaryButton, {
+                componentRef: ref,
                 text: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonCreateSnapshot,
                 onClick: (e)=>this.props.editor.editSnapshot(),
                 split: true,
@@ -12411,7 +12445,7 @@ function $3465068850534ed3$var$_Snapshots(props1) {
             }))));
         }
     }
-    return new __Snapshots(props1);
+    return new __Snapshots(_props);
 }
 const $3465068850534ed3$export$3e09886744a57615 = $3465068850534ed3$var$_Snapshots;
 function $3465068850534ed3$var$Actions(props) {
@@ -12954,10 +12988,12 @@ function $31fcbd44e38b82f5$export$1ba59dacbcbf90fe(props) {
         })))), !props.hideSidebarControls && (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
         className: "sidebar-controls"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement($31fcbd44e38b82f5$export$a8fc19311f33df91, Object.assign({}, props, {
+        role: "button",
         sideTabId: (0, $a4811b1c86ed19fa$export$f3b7566ffe363e3b).Pin,
         iconName: props.pinned ? "Pinned" : "Pin",
         title: props.pinned ? (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonToolbarFloat : (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonToolbarDock
     })), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement($31fcbd44e38b82f5$export$a8fc19311f33df91, Object.assign({}, props, {
+        role: "button",
         sideTabId: (0, $a4811b1c86ed19fa$export$f3b7566ffe363e3b).Collapse,
         iconName: props.closed ? "DoubleChevronRight12" : "DoubleChevronLeft12",
         title: props.closed ? (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonToolbarShow : (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonToolbarHide
@@ -12974,12 +13010,12 @@ function $31fcbd44e38b82f5$export$1ba59dacbcbf90fe(props) {
 function $31fcbd44e38b82f5$export$a8fc19311f33df91(props) {
     const selected = !props.closed && props.selectedSideTab === props.sideTabId;
     return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
-        className: (0, $7c788f4d03083a7d$exports).classList("vbutton", selected && "selected"),
-        role: "tab",
-        "aria-selected": selected
+        className: (0, $7c788f4d03083a7d$exports).classList("vbutton", selected && "selected")
     }, props.badgeText && (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
         className: "count"
     }, props.badgeText), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $adfb025456b8f57f$export$c25acd513dcc8062), {
+        role: props.role || "tab",
+        "aria-selected": selected,
         themePalette: props.themePalette,
         className: "vbutton",
         iconName: props.iconName,
@@ -16139,11 +16175,17 @@ function $0db948ac6e4b75cc$export$892596cec99bc70e(props) {
     const colorColumn = props.dataContent.columns.filter((c)=>c.name === props.colorColumn)[0];
     const disabledColorBin = !colorColumn || !colorColumn.quantitative || props.directColor;
     const colorBin = props.colorBin || "quantize";
+    const dropdownRef = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createRef();
+    props.explorer.dialogFocusHandler.focus = ()=>{
+        var _a;
+        return (_a = dropdownRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+    };
     return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
         className: "sanddance-color-dialog"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8d43140d74b3b13d$export$eb2fcfdbd7ba97d4), {
         label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelColor
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $f3c9564b99b49be4$export$83b9e0badda50eeb), Object.assign({}, props, {
+        componentRef: dropdownRef,
         collapseLabel: props.compactUI,
         selectedColumnName: props.colorColumn,
         specRole: props.specCapabilities && props.specCapabilities.roles.filter((r)=>r.role === "color")[0],
@@ -16365,10 +16407,16 @@ function $0829079b3c747bdc$export$1ce2294f62fa7154(props) {
     }
     const { index: index  } = props;
     const length = props.data && props.data.length || 0;
+    const dropdownRef = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createRef();
+    props.explorer.dialogFocusHandler.focus = ()=>{
+        var _a;
+        return (_a = dropdownRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+    };
     return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8d43140d74b3b13d$export$eb2fcfdbd7ba97d4), {
         label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelDataBrowser,
         className: "sanddance-dataIndex"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $01c4eef7f720da5f$export$931cbfb6bfb85fc), {
+        componentRef: dropdownRef,
         label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelDataScope,
         collapseLabel: true,
         options: [
@@ -16438,15 +16486,28 @@ function $0820350effaa56a9$export$84202caead5689ba(props) {
     return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8d43140d74b3b13d$export$eb2fcfdbd7ba97d4), {
         label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelHistory,
         className: "sanddance-history"
-    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("ol", null, props.historyItems.map((hi, i)=>(0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("li", {
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("ol", null, props.historyItems.map((hi, i)=>{
+        let ref;
+        if (i === props.historyIndex) {
+            ref = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createRef();
+            props.explorer.dialogFocusHandler.focus = ()=>{
+                var _a;
+                (_a = ref.current) === null || _a === void 0 || _a.focus();
+            };
+        }
+        return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("li", {
             key: i,
             className: (0, $7c788f4d03083a7d$exports).classList(i === props.historyIndex && "selected"),
             onKeyUp: (e)=>{
                 if (e.keyCode === (0, $dbe34e1e2a9121ef$export$ec835b702d42f3f0).ENTER) props.redo(i);
-            },
-            onClick: ()=>props.redo(i),
-            tabIndex: 0
-        }, hi.label))));
+            }
+        }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.DefaultButton, {
+            className: "sanddance-history-button",
+            componentRef: ref,
+            text: hi.label,
+            onClick: ()=>props.redo(i)
+        }));
+    })));
 }
 
 
@@ -16589,6 +16650,7 @@ function $b935bf5e2863e486$var$_Explorer(props1) {
     class __Explorer extends (0, $8535c575077b9670$export$e2253033e6e1df16).react.Component {
         constructor(props){
             super(props);
+            this.dialogFocusHandler = {};
             this.state = {
                 calculating: null,
                 errors: null,
@@ -17200,10 +17262,14 @@ function $b935bf5e2863e486$var$_Explorer(props1) {
             if (sideTabId === (0, $a4811b1c86ed19fa$export$f3b7566ffe363e3b).Data && dataScopeId == null) //choose most relevant DataScopeId
             dataScopeId = this.getBestDataScopeId();
             if (dataScopeId == null) dataScopeId = this.state.dataScopeId;
+            const calculating = ()=>{
+                this.dialogFocusHandler.focus && this.dialogFocusHandler.focus();
+            };
             this.setState({
                 sideTabId: sideTabId,
                 dataScopeId: dataScopeId,
-                sidebarClosed: false
+                sidebarClosed: false,
+                calculating: calculating
             });
             this.activateDataBrowserItem(sideTabId, dataScopeId);
         }
@@ -17623,6 +17689,7 @@ function $b935bf5e2863e486$var$_Explorer(props1) {
                                     }
                             }
                             return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $0829079b3c747bdc$export$1ce2294f62fa7154), {
+                                explorer: this,
                                 theme: this.props.theme,
                                 themePalette: themePalette,
                                 disabled: !loaded || this.state.sidebarClosed,
@@ -17656,6 +17723,7 @@ function $b935bf5e2863e486$var$_Explorer(props1) {
                         }
                     case (0, $a4811b1c86ed19fa$export$f3b7566ffe363e3b).Search:
                         return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $fd0d652c33ef4e65$export$4b85d3515bd863a5), {
+                            explorer: this,
                             collapseLabels: this.props.compactUI,
                             themePalette: themePalette,
                             disabled: !loaded || this.state.sidebarClosed,
@@ -17746,6 +17814,7 @@ function $b935bf5e2863e486$var$_Explorer(props1) {
                         }));
                     case (0, $a4811b1c86ed19fa$export$f3b7566ffe363e3b).History:
                         return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $0820350effaa56a9$export$84202caead5689ba), {
+                            explorer: this,
                             theme: theme,
                             themePalette: themePalette,
                             historyIndex: this.state.historyIndex,
