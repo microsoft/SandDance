@@ -24,7 +24,7 @@
         "start": "npm-run-all --parallel watch-typescript watch-css app-dev start-app",
         "start:python": "npm-run-all --parallel watch-typescript python-webpack-watch python:dev",
         "parcel": "lerna run parcel --parallel",
-        "clean-build": "rimraf ./packages/**/dist/ && rimraf ./packages/**/.cache/ && rimraf ./**/package-lock.json && rimraf ./lerna-debug.log",
+        "clean-build": "rimraf ./packages/**/dist/ && rimraf ./packages/**/.cache/ && rimraf ./packages/**/.parcel-cache/ && rimraf ./**/package-lock.json && rimraf ./lerna-debug.log",
         "clean": "lerna clean --yes && npm run clean-build",
         "remove-pem": "rimraf **/*.pem && rimraf **/*.key",
         "deploy": "lerna run deploy",
