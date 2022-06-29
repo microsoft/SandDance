@@ -112,9 +112,6 @@ export class SpecBuilder {
 
     public build(): SpecResult {
         const { specContext } = this;
-
-        console.log(this.props.layouts);
-
         const { facetLayout, specCapabilities } = this.props;
         const { insight, specColumns, specViewOptions } = specContext;
         const dataName = 'data_source';
