@@ -6,7 +6,7 @@
 // anything defined in a previous bundle is accessed via the
 // orig method which is the require for previous bundles
 
-(function(modules, entry, mainEntry, parcelRequireName, globalName) {
+(function (modules, entry, mainEntry, parcelRequireName, globalName) {
   /* eslint-disable no-undef */
   var globalObject =
     typeof globalThis !== 'undefined'
@@ -80,11 +80,13 @@
     return cache[name].exports;
 
     function localRequire(x) {
-      return newRequire(localRequire.resolve(x));
+      var res = localRequire.resolve(x);
+      return res === false ? {} : newRequire(res);
     }
 
     function resolve(x) {
-      return modules[name][1][x] || x;
+      var id = modules[name][1][x];
+      return id != null ? id : x;
     }
   }
 
@@ -99,9 +101,9 @@
   newRequire.modules = modules;
   newRequire.cache = cache;
   newRequire.parent = previousRequire;
-  newRequire.register = function(id, exports) {
+  newRequire.register = function (id, exports) {
     modules[id] = [
-      function(require, module) {
+      function (require, module) {
         module.exports = exports;
       },
       {},
@@ -109,7 +111,7 @@
   };
 
   Object.defineProperty(newRequire, 'root', {
-    get: function() {
+    get: function () {
       return globalObject[parcelRequireName];
     },
   });
@@ -131,7 +133,7 @@
 
       // RequireJS
     } else if (typeof define === 'function' && define.amd) {
-      define(function() {
+      define(function () {
         return mainExports;
       });
 
@@ -140,11 +142,11 @@
       this[globalName] = mainExports;
     }
   }
-})({"jbvTk":[function(require,module,exports) {
+})({"lKiud":[function(require,module,exports) {
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _es6 = require("../dist/es6");
-const dataUrl = '/SandDance/sample-data/demovote.tsv';
+const dataUrl = "/SandDance/sample-data/demovote.tsv";
 const specViewOptions = {
     colors: {
         defaultCube: "steelblue",
@@ -159,24 +161,23 @@ const specViewOptions = {
 };
 let data;
 let columns;
-const container = document.getElementById('vis');
-const select = document.getElementById('select-spec');
-const insightTextarea = document.getElementById('insight-json');
-const insightUdateButton = document.getElementById('insight-update');
-const vegaOutput = document.getElementById('vega-spec');
-const vegaCopy = document.getElementById('vega-spec-copy');
-select.onchange = ()=>selected(select.selectedIndex)
-;
+const container = document.getElementById("vis");
+const select = document.getElementById("select-spec");
+const insightTextarea = document.getElementById("insight-json");
+const insightUdateButton = document.getElementById("insight-update");
+const vegaOutput = document.getElementById("vega-spec");
+const vegaCopy = document.getElementById("vega-spec-copy");
+select.onchange = ()=>selected(select.selectedIndex);
 insightUdateButton.onclick = ()=>{
     const insight = JSON.parse(insightTextarea.value);
     render(insight);
 };
 vegaCopy.onclick = ()=>{
     vegaOutput.select();
-    document.execCommand('copy');
-    vegaCopy.innerText = 'copied';
+    document.execCommand("copy");
+    vegaCopy.innerText = "copied";
     setTimeout(()=>{
-        vegaCopy.innerText = 'copy';
+        vegaCopy.innerText = "copy";
     }, 2000);
 };
 function selected(selectedIndex) {
@@ -184,22 +185,18 @@ function selected(selectedIndex) {
     fetchInsight(select.options[selectedIndex].value);
 }
 function fetchInsight(specFilename) {
-    fetch(`specs/${specFilename}`).then((response)=>response.json()
-    ).then((insight)=>render(insight)
-    ).catch((error)=>container.innerText = error
-    );
+    fetch(`specs/${specFilename}`).then((response)=>response.json()).then((insight)=>render(insight)).catch((error)=>container.innerText = error);
 }
 function render(insight) {
     insightTextarea.value = JSON.stringify(insight, null, 2);
-    const specColumns = _es6.getSpecColumns(insight, columns);
+    const specColumns = (0, _es6.getSpecColumns)(insight, columns);
     const context = {
         specColumns,
         insight,
         specViewOptions
     };
-    const specResult = _es6.build(context, data);
-    if (specResult.errors) container.innerText = specResult.errors.map((error)=>error
-    ).join('\n');
+    const specResult = (0, _es6.build)(context, data);
+    if (specResult.errors) container.innerText = specResult.errors.map((error)=>error).join("\n");
     else renderVegaSpec(specResult.vegaSpec);
 }
 function renderVegaSpec(vegaSpec) {
@@ -207,29 +204,28 @@ function renderVegaSpec(vegaSpec) {
     const vegaView = new vega.View(runtime, {
         container
     });
-    vegaView.runAsync().catch((e)=>container.innerHTML = `error ${e}`
-    ).then(()=>{
+    vegaView.runAsync().catch((e)=>container.innerHTML = `error ${e}`).then(()=>{
         const d0 = vegaSpec.data[0];
         delete d0.values;
         d0.format = {
-            parse: 'auto',
-            type: 'tsv'
+            parse: "auto",
+            type: "tsv"
         };
-        d0.url = 'https://microsoft.github.io' + dataUrl;
+        d0.url = "https://microsoft.github.io" + dataUrl;
         vegaOutput.value = JSON.stringify(vegaSpec, null, 2);
     });
 }
 container.innerHTML = `loading ${dataUrl}...`;
 vega.loader().load(dataUrl).then((tsv_data)=>{
     data = vega.read(tsv_data, {
-        type: 'tsv',
-        parse: 'auto'
+        type: "tsv",
+        parse: "auto"
     });
-    columns = _es6.getColumnsFromData(vega.inferTypes, data);
+    columns = (0, _es6.getColumnsFromData)(vega.inferTypes, data);
     selected(0);
 });
 
-},{"../dist/es6":"euhvD"}],"euhvD":[function(require,module,exports) {
+},{"../dist/es6":"7COGi"}],"7COGi":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -245,11 +241,10 @@ parcelHelpers.exportAll(_interfaces, exports);
 var _types = require("./types");
 parcelHelpers.exportAll(_types, exports);
 
-},{"./build":"1PpvK","./constants":"1t33I","./inference":"1TgWB","./interfaces":"6lM8D","./types":"jrCG9","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"1PpvK":[function(require,module,exports) {
+},{"./build":"jHFbk","./constants":"eNr4m","./inference":"bdXVF","./interfaces":"52vfF","./types":"a5HkM","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jHFbk":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "build", ()=>build
-);
+parcelHelpers.export(exports, "build", ()=>build);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _charts = require("./charts");
@@ -268,9 +263,9 @@ function build(specContext, currData) {
         specColumns.y,
         specColumns.z
     ];
-    _inference.inferAll(columns, currData);
-    const specBuilderProps = _charts.getSpecBuilderPropsForChart(specContext);
-    const specBuilder = new _specBuilder.SpecBuilder(specBuilderProps, specContext);
+    (0, _inference.inferAll)(columns, currData);
+    const specBuilderProps = (0, _charts.getSpecBuilderPropsForChart)(specContext);
+    const specBuilder = new (0, _specBuilder.SpecBuilder)(specBuilderProps, specContext);
     let specResult;
     if (specBuilder) {
         try {
@@ -304,11 +299,10 @@ function build(specContext, currData) {
     return specResult;
 }
 
-},{"./charts":"3jPAH","./inference":"1TgWB","./specBuilder":"kpKNP","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"3jPAH":[function(require,module,exports) {
+},{"./charts":"4pEB6","./inference":"bdXVF","./specBuilder":"33BLD","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"4pEB6":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "getSpecBuilderPropsForChart", ()=>getSpecBuilderPropsForChart
-);
+parcelHelpers.export(exports, "getSpecBuilderPropsForChart", ()=>getSpecBuilderPropsForChart);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _barchartH = require("./barchartH");
@@ -331,15 +325,15 @@ var _facetLayout = require("../facetLayout");
 var _constants = require("../constants");
 var _defaults = require("../defaults");
 const map = {
-    barchart: _barchartVDefault.default,
-    barchartH: _barchartHDefault.default,
-    barchartV: _barchartVDefault.default,
-    density: _densityDefault.default,
-    grid: _gridDefault.default,
-    scatterplot: _scatterplotDefault.default,
-    stacks: _stacksDefault.default,
-    strips: _stripsDefault.default,
-    treemap: _treemapDefault.default
+    barchart: (0, _barchartVDefault.default),
+    barchartH: (0, _barchartHDefault.default),
+    barchartV: (0, _barchartVDefault.default),
+    density: (0, _densityDefault.default),
+    grid: (0, _gridDefault.default),
+    scatterplot: (0, _scatterplotDefault.default),
+    stacks: (0, _stacksDefault.default),
+    strips: (0, _stripsDefault.default),
+    treemap: (0, _treemapDefault.default)
 };
 function getSpecBuilderPropsForChart(specContext) {
     const { insight , specColumns , specViewOptions  } = specContext;
@@ -349,19 +343,19 @@ function getSpecBuilderPropsForChart(specContext) {
         if (insight.columns.facet) {
             const discreteFacetColumn = {
                 column: specColumns.facet,
-                defaultBins: _defaults.defaultBins,
-                maxbins: _defaults.maxbins,
+                defaultBins: (0, _defaults.defaultBins),
+                maxbins: (0, _defaults.maxbins),
                 maxbinsSignalDisplayName: specViewOptions.language.FacetMaxBins,
-                maxbinsSignalName: _constants.SignalNames.FacetBins
+                maxbinsSignalName: (0, _constants.SignalNames).FacetBins
             };
             const discreteFacetVColumn = {
                 column: specColumns.facetV,
-                defaultBins: _defaults.defaultBins,
-                maxbins: _defaults.maxbins,
+                defaultBins: (0, _defaults.defaultBins),
+                maxbins: (0, _defaults.maxbins),
                 maxbinsSignalDisplayName: specViewOptions.language.FacetVMaxBins,
-                maxbinsSignalName: _constants.SignalNames.FacetVBins
+                maxbinsSignalName: (0, _constants.SignalNames).FacetVBins
             };
-            const { facetLayout , layoutPair  } = _facetLayout.getFacetLayout(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn, specViewOptions.colors.axisText);
+            const { facetLayout , layoutPair  } = (0, _facetLayout.getFacetLayout)(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn, specViewOptions.colors.axisText);
             props.layouts.unshift(layoutPair);
             props.facetLayout = facetLayout;
         }
@@ -369,7 +363,7 @@ function getSpecBuilderPropsForChart(specContext) {
     }
 }
 
-},{"./barchartH":"iOeTp","./barchartV":"h9IPg","./density":"je2Nv","./grid":"kiFt0","./scatterplot":"7abiv","./stacks":"cBy3D","./strips":"ghx3s","./treemap":"dLaAN","../facetLayout":"2Gjfb","../constants":"1t33I","../defaults":"3ylwt","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"iOeTp":[function(require,module,exports) {
+},{"./barchartH":"jwW3p","./barchartV":"gx8bO","./density":"hJwhn","./grid":"dUpaP","./scatterplot":"6EBdS","./stacks":"8N6Z2","./strips":"jnY66","./treemap":"g0eb5","../facetLayout":"fJidQ","../constants":"eNr4m","../defaults":"5iedU","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jwW3p":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -381,15 +375,15 @@ exports.default = function(specContext) {
     const { insight , specColumns , specViewOptions  } = specContext;
     const { language  } = specViewOptions;
     const bandProps = {
-        orientation: 'horizontal',
+        orientation: "horizontal",
         groupby: {
             column: specColumns.y,
-            defaultBins: _defaults.defaultBins,
-            maxbinsSignalName: _constants.SignalNames.YBins,
+            defaultBins: (0, _defaults.defaultBins),
+            maxbinsSignalName: (0, _constants.SignalNames).YBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.YMaxBins,
-            maxbins: _defaults.maxbins
+            maxbins: (0, _defaults.maxbins)
         },
-        minBandWidth: _defaults.minBarBandWidth,
+        minBandWidth: (0, _defaults.minBarBandWidth),
         showAxes: true
     };
     const x = {
@@ -406,102 +400,102 @@ exports.default = function(specContext) {
     };
     const layouts = [
         {
-            layoutType: 'Band',
+            layoutType: "Band",
             props: bandProps
         }
     ];
-    if (insight.totalStyle === 'sum-strip-percent') {
-        x.aggregate = 'percent';
+    if (insight.totalStyle === "sum-strip-percent") {
+        x.aggregate = "percent";
         x.title = language.percent;
         const stripProps = {
             addPercentageScale: true,
-            sortOrder: 'ascending',
-            orientation: 'horizontal',
+            sortOrder: "ascending",
+            orientation: "horizontal",
             size: specColumns.size,
             sort: specColumns.sort,
             z: specColumns.z
         };
         layouts.push({
-            layoutType: 'Strip',
+            layoutType: "Strip",
             props: stripProps
         });
     } else {
         const aggProps = {
             niceScale: true,
-            dock: 'left',
-            globalAggregateMaxExtentSignal: 'aggMaxExtent',
-            globalAggregateMaxExtentScaledSignal: 'aggMaxExtentScaled',
+            dock: "left",
+            globalAggregateMaxExtentSignal: "aggMaxExtent",
+            globalAggregateMaxExtentScaledSignal: "aggMaxExtentScaled",
             sumBy: specColumns.size,
             showAxes: true
         };
         layouts.push({
-            layoutType: 'AggregateContainer',
+            layoutType: "AggregateContainer",
             props: aggProps
         });
         switch(insight.totalStyle){
-            case 'sum-treemap':
+            case "sum-treemap":
                 {
-                    x.aggregate = 'sum';
+                    x.aggregate = "sum";
                     x.title = language.sum;
                     const treemapProps = {
-                        corner: 'top-left',
+                        corner: "top-left",
                         size: specColumns.size,
                         treeMapMethod: specViewOptions.language.treeMapMethod,
                         z: specColumns.z
                     };
                     layouts.push({
-                        layoutType: 'Treemap',
+                        layoutType: "Treemap",
                         props: treemapProps
                     });
                     break;
                 }
-            case 'sum-strip':
+            case "sum-strip":
                 {
-                    x.aggregate = 'sum';
+                    x.aggregate = "sum";
                     x.title = language.sum;
                     const stripProps = {
-                        sortOrder: 'ascending',
-                        orientation: 'horizontal',
+                        sortOrder: "ascending",
+                        orientation: "horizontal",
                         size: specColumns.size,
                         sort: specColumns.sort,
                         z: specColumns.z
                     };
                     layouts.push({
-                        layoutType: 'Strip',
+                        layoutType: "Strip",
                         props: stripProps
                     });
                     break;
                 }
-            case 'count-strip':
+            case "count-strip":
                 {
-                    x.aggregate = 'count';
+                    x.aggregate = "count";
                     x.title = language.count;
                     const stripProps = {
-                        sortOrder: 'ascending',
-                        orientation: 'horizontal',
+                        sortOrder: "ascending",
+                        orientation: "horizontal",
                         size: specColumns.size,
                         sort: specColumns.sort,
                         z: specColumns.z
                     };
                     layouts.push({
-                        layoutType: 'Strip',
+                        layoutType: "Strip",
                         props: stripProps
                     });
                     break;
                 }
             default:
                 {
-                    x.aggregate = 'count';
+                    x.aggregate = "count";
                     x.title = language.count;
                     const squareProps = {
                         sortBy: specColumns.sort,
-                        fillDirection: 'down-right',
+                        fillDirection: "down-right",
                         z: specColumns.z,
                         maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
                         maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal
                     };
                     layouts.push({
-                        layoutType: 'Square',
+                        layoutType: "Square",
                         props: squareProps
                     });
                     break;
@@ -516,47 +510,47 @@ exports.default = function(specContext) {
             percentage: true,
             roles: [
                 {
-                    role: 'y',
+                    role: "y",
                     binnable: true,
-                    axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
+                    axisSelection: specColumns.y && specColumns.y.quantitative ? "range" : "exact",
                     axisSelectionBetweenTicks: true,
                     signals: [
-                        _constants.SignalNames.YBins
+                        (0, _constants.SignalNames).YBins
                     ]
                 },
                 {
-                    role: 'z',
-                    axisSelection: specColumns.z && specColumns.z.quantitative ? 'range' : 'exact',
+                    role: "z",
+                    axisSelection: specColumns.z && specColumns.z.quantitative ? "range" : "exact",
                     allowNone: true
                 },
                 {
-                    role: 'color',
+                    role: "color",
                     allowNone: true
                 },
                 {
-                    role: 'sort',
+                    role: "sort",
                     allowNone: true
                 },
                 {
-                    role: 'size',
-                    allowNone: _size.allowNoneForSize,
+                    role: "size",
+                    allowNone: (0, _size.allowNoneForSize),
                     excludeCategoric: true,
                     signals: [
-                        _constants.SignalNames.TreeMapMethod
+                        (0, _constants.SignalNames).TreeMapMethod
                     ]
                 },
                 {
-                    role: 'facet',
+                    role: "facet",
                     allowNone: true,
                     signals: [
-                        _constants.SignalNames.FacetBins
+                        (0, _constants.SignalNames).FacetBins
                     ]
                 },
                 {
-                    role: 'facetV',
+                    role: "facetV",
                     allowNone: true,
                     signals: [
-                        _constants.SignalNames.FacetVBins
+                        (0, _constants.SignalNames).FacetVBins
                     ]
                 }
             ]
@@ -564,104 +558,97 @@ exports.default = function(specContext) {
     };
 };
 
-},{"../constants":"1t33I","../defaults":"3ylwt","../size":"akJ0W","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"1t33I":[function(require,module,exports) {
+},{"../constants":"eNr4m","../defaults":"5iedU","../size":"78CLt","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"eNr4m":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "FieldNames", ()=>FieldNames
-);
-parcelHelpers.export(exports, "ScaleNames", ()=>ScaleNames
-);
-parcelHelpers.export(exports, "SignalNames", ()=>SignalNames
-);
-parcelHelpers.export(exports, "Other", ()=>Other
-);
-parcelHelpers.export(exports, "ColorScaleNone", ()=>ColorScaleNone
-);
+parcelHelpers.export(exports, "FieldNames", ()=>FieldNames);
+parcelHelpers.export(exports, "ScaleNames", ()=>ScaleNames);
+parcelHelpers.export(exports, "SignalNames", ()=>SignalNames);
+parcelHelpers.export(exports, "Other", ()=>Other);
+parcelHelpers.export(exports, "ColorScaleNone", ()=>ColorScaleNone);
 const FieldNames = {
-    Active: '__SandDance__Active',
-    Collapsed: '__SandDance__Collapsed',
-    Contains: '__SandDance__Contains',
-    Count: '__SandDance__Count',
-    Sum: '__SandDance__Sum',
-    SumOfCount: '__SandDance__CountSum',
-    SumOfSum: '__SandDance__SumSum',
-    Selected: '__SandDance__Selected',
-    First: '__SandDance__First',
-    Last: '__SandDance__Last',
-    Top: '__SandDance__Top',
-    TopColor: '__SandDance__TopColor',
-    TopIndex: '__SandDance__TopIndex',
-    PowerBISelectionId: '__SandDance__PowerBISelectionId',
-    FacetSearch: '__SandDance__FacetSearch',
-    FacetTitle: '__SandDance__FacetTitle',
-    Ordinal: '__SandDance__Ordinal',
-    WrapCol: '__SandDance__WrapCol',
-    WrapRow: '__SandDance__WrapRow',
-    Value: '__SandDance__Value',
-    OffsetX: '__SandDance__X',
-    OffsetY: '__SandDance__Y',
-    OffsetHeight: '__SandDance__H',
-    OffsetWidth: '__SandDance__W'
+    Active: "__SandDance__Active",
+    Collapsed: "__SandDance__Collapsed",
+    Contains: "__SandDance__Contains",
+    Count: "__SandDance__Count",
+    Sum: "__SandDance__Sum",
+    SumOfCount: "__SandDance__CountSum",
+    SumOfSum: "__SandDance__SumSum",
+    Selected: "__SandDance__Selected",
+    First: "__SandDance__First",
+    Last: "__SandDance__Last",
+    Top: "__SandDance__Top",
+    TopColor: "__SandDance__TopColor",
+    TopIndex: "__SandDance__TopIndex",
+    PowerBISelectionId: "__SandDance__PowerBISelectionId",
+    FacetSearch: "__SandDance__FacetSearch",
+    FacetTitle: "__SandDance__FacetTitle",
+    Ordinal: "__SandDance__Ordinal",
+    WrapCol: "__SandDance__WrapCol",
+    WrapRow: "__SandDance__WrapRow",
+    Value: "__SandDance__Value",
+    OffsetX: "__SandDance__X",
+    OffsetY: "__SandDance__Y",
+    OffsetHeight: "__SandDance__H",
+    OffsetWidth: "__SandDance__W"
 };
 const ScaleNames = {
-    Color: 'scale_color',
-    X: 'scale_x',
-    Y: 'scale_y',
-    Z: 'scale_z'
+    Color: "scale_color",
+    X: "scale_x",
+    Y: "scale_y",
+    Z: "scale_z"
 };
 const SignalNames = {
-    ViewportWidth: 'ViewportWidth',
-    ViewportHeight: 'ViewportHeight',
-    MinCellWidth: 'MinCellWidth',
-    MinCellHeight: 'MinCellHeight',
-    PlotOffsetLeft: 'PlotOffsetLeft',
-    PlotOffsetTop: 'PlotOffsetTop',
-    PlotOffsetBottom: 'PlotOffsetBottom',
-    PlotOffsetRight: 'PlotOffsetRight',
-    PlotHeightIn: 'PlotHeightIn',
-    PlotWidthIn: 'PlotWidthIn',
-    PlotHeightOut: 'PlotHeightOut',
-    PlotWidthOut: 'PlotWidthOut',
-    ColorBinCount: 'RoleColor_BinCountSignal',
-    ColorReverse: 'RoleColor_ReverseSignal',
-    FacetBins: 'RoleFacet_BinsSignal',
-    FacetVBins: 'RoleFacetV_BinsSignal',
-    FacetPaddingTop: 'FacetPaddingTop',
-    FacetPaddingBottom: 'FacetPaddingBottom',
-    FacetPaddingLeft: 'FacetPaddingLeft',
-    MarkOpacity: 'Mark_OpacitySignal',
-    PointScale: 'Chart_PointScaleSignal',
-    TextAngleX: 'Text_AngleXSignal',
-    TextAngleY: 'Text_AngleYSignal',
-    TextScale: 'Text_ScaleSignal',
-    TextSize: 'Text_SizeSignal',
-    TextTitleSize: 'Text_TitleSizeSignal',
-    TreeMapMethod: 'Chart_TreeMapMethodSignal',
-    XBins: 'RoleX_BinsSignal',
-    YBins: 'RoleY_BinsSignal',
-    ZHeight: 'RoleZ_HeightSignal',
-    ZGrounded: 'RoleZ_Grounded',
-    ZProportion: 'RoleZ_ProportionSignal'
+    ViewportWidth: "ViewportWidth",
+    ViewportHeight: "ViewportHeight",
+    MinCellWidth: "MinCellWidth",
+    MinCellHeight: "MinCellHeight",
+    PlotOffsetLeft: "PlotOffsetLeft",
+    PlotOffsetTop: "PlotOffsetTop",
+    PlotOffsetBottom: "PlotOffsetBottom",
+    PlotOffsetRight: "PlotOffsetRight",
+    PlotHeightIn: "PlotHeightIn",
+    PlotWidthIn: "PlotWidthIn",
+    PlotHeightOut: "PlotHeightOut",
+    PlotWidthOut: "PlotWidthOut",
+    ColorBinCount: "RoleColor_BinCountSignal",
+    ColorReverse: "RoleColor_ReverseSignal",
+    FacetBins: "RoleFacet_BinsSignal",
+    FacetVBins: "RoleFacetV_BinsSignal",
+    FacetPaddingTop: "FacetPaddingTop",
+    FacetPaddingBottom: "FacetPaddingBottom",
+    FacetPaddingLeft: "FacetPaddingLeft",
+    MarkOpacity: "Mark_OpacitySignal",
+    PointScale: "Chart_PointScaleSignal",
+    TextAngleX: "Text_AngleXSignal",
+    TextAngleY: "Text_AngleYSignal",
+    TextScale: "Text_ScaleSignal",
+    TextSize: "Text_SizeSignal",
+    TextTitleSize: "Text_TitleSizeSignal",
+    TreeMapMethod: "Chart_TreeMapMethodSignal",
+    XBins: "RoleX_BinsSignal",
+    YBins: "RoleY_BinsSignal",
+    ZHeight: "RoleZ_HeightSignal",
+    ZGrounded: "RoleZ_Grounded",
+    ZProportion: "RoleZ_ProportionSignal"
 };
-const Other = '__Other';
-const ColorScaleNone = 'none';
+const Other = "__Other";
+const ColorScaleNone = "none";
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"jMF8S":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jA2du":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
     };
 };
 exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, '__esModule', {
+    Object.defineProperty(a, "__esModule", {
         value: true
     });
 };
 exports.exportAll = function(source, dest) {
     Object.keys(source).forEach(function(key) {
-        if (key === 'default' || key === '__esModule') return;
-        // Skip duplicate re-exports when they have the same value.
-        if (key in dest && dest[key] === source[key]) return;
+        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
         Object.defineProperty(dest, key, {
             enumerable: true,
             get: function() {
@@ -678,47 +665,28 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"3ylwt":[function(require,module,exports) {
+},{}],"5iedU":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "defaultBins", ()=>defaultBins
-);
-parcelHelpers.export(exports, "maxbins", ()=>maxbins
-);
-parcelHelpers.export(exports, "minBarBandWidth", ()=>minBarBandWidth
-);
-parcelHelpers.export(exports, "minFacetWidth", ()=>minFacetWidth
-);
-parcelHelpers.export(exports, "minFacetHeight", ()=>minFacetHeight
-);
-parcelHelpers.export(exports, "facetPaddingLeft", ()=>facetPaddingLeft
-);
-parcelHelpers.export(exports, "facetPaddingTop", ()=>facetPaddingTop
-);
-parcelHelpers.export(exports, "facetPaddingBottom", ()=>facetPaddingBottom
-);
-parcelHelpers.export(exports, "facetPaddingRight", ()=>facetPaddingRight
-);
-parcelHelpers.export(exports, "axesLabelLimit", ()=>axesLabelLimit
-);
-parcelHelpers.export(exports, "axesTitleLimit", ()=>axesTitleLimit
-);
-parcelHelpers.export(exports, "axesTitlePaddingX", ()=>axesTitlePaddingX
-);
-parcelHelpers.export(exports, "axesTitlePaddingY", ()=>axesTitlePaddingY
-);
-parcelHelpers.export(exports, "axesTitlePaddingFacetX", ()=>axesTitlePaddingFacetX
-);
-parcelHelpers.export(exports, "axesTitlePaddingFacetY", ()=>axesTitlePaddingFacetY
-);
-parcelHelpers.export(exports, "axesOffsetX", ()=>axesOffsetX
-);
-parcelHelpers.export(exports, "axesOffsetY", ()=>axesOffsetY
-);
-parcelHelpers.export(exports, "scatterSizedMin", ()=>scatterSizedMin
-);
-parcelHelpers.export(exports, "scatterSizedDiv", ()=>scatterSizedDiv
-);
+parcelHelpers.export(exports, "defaultBins", ()=>defaultBins);
+parcelHelpers.export(exports, "maxbins", ()=>maxbins);
+parcelHelpers.export(exports, "minBarBandWidth", ()=>minBarBandWidth);
+parcelHelpers.export(exports, "minFacetWidth", ()=>minFacetWidth);
+parcelHelpers.export(exports, "minFacetHeight", ()=>minFacetHeight);
+parcelHelpers.export(exports, "facetPaddingLeft", ()=>facetPaddingLeft);
+parcelHelpers.export(exports, "facetPaddingTop", ()=>facetPaddingTop);
+parcelHelpers.export(exports, "facetPaddingBottom", ()=>facetPaddingBottom);
+parcelHelpers.export(exports, "facetPaddingRight", ()=>facetPaddingRight);
+parcelHelpers.export(exports, "axesLabelLimit", ()=>axesLabelLimit);
+parcelHelpers.export(exports, "axesTitleLimit", ()=>axesTitleLimit);
+parcelHelpers.export(exports, "axesTitlePaddingX", ()=>axesTitlePaddingX);
+parcelHelpers.export(exports, "axesTitlePaddingY", ()=>axesTitlePaddingY);
+parcelHelpers.export(exports, "axesTitlePaddingFacetX", ()=>axesTitlePaddingFacetX);
+parcelHelpers.export(exports, "axesTitlePaddingFacetY", ()=>axesTitlePaddingFacetY);
+parcelHelpers.export(exports, "axesOffsetX", ()=>axesOffsetX);
+parcelHelpers.export(exports, "axesOffsetY", ()=>axesOffsetY);
+parcelHelpers.export(exports, "scatterSizedMin", ()=>scatterSizedMin);
+parcelHelpers.export(exports, "scatterSizedDiv", ()=>scatterSizedDiv);
 const defaultBins = 10;
 const maxbins = 100;
 const minBarBandWidth = 15;
@@ -739,16 +707,15 @@ const axesOffsetY = 120;
 const scatterSizedMin = 10;
 const scatterSizedDiv = 20;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"akJ0W":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"78CLt":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "allowNoneForSize", ()=>allowNoneForSize
-);
+parcelHelpers.export(exports, "allowNoneForSize", ()=>allowNoneForSize);
 function allowNoneForSize(specContext) {
     switch(specContext.insight.totalStyle){
-        case 'sum-strip':
-        case 'sum-strip-percent':
-        case 'sum-treemap':
+        case "sum-strip":
+        case "sum-strip-percent":
+        case "sum-treemap":
             return false;
         default:
             //if totalStyle is blank, count is assumed
@@ -756,7 +723,7 @@ function allowNoneForSize(specContext) {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"h9IPg":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"gx8bO":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -768,15 +735,15 @@ exports.default = function(specContext) {
     const { insight , specColumns , specViewOptions  } = specContext;
     const { language  } = specViewOptions;
     const bandProps = {
-        orientation: 'vertical',
+        orientation: "vertical",
         groupby: {
             column: specColumns.x,
-            defaultBins: _defaults.defaultBins,
-            maxbinsSignalName: _constants.SignalNames.XBins,
+            defaultBins: (0, _defaults.defaultBins),
+            maxbinsSignalName: (0, _constants.SignalNames).XBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.XMaxBins,
-            maxbins: _defaults.maxbins
+            maxbins: (0, _defaults.maxbins)
         },
-        minBandWidth: _defaults.minBarBandWidth,
+        minBandWidth: (0, _defaults.minBarBandWidth),
         showAxes: true
     };
     const y = {
@@ -793,101 +760,101 @@ exports.default = function(specContext) {
     };
     const layouts = [
         {
-            layoutType: 'Band',
+            layoutType: "Band",
             props: bandProps
         }
     ];
-    if (insight.totalStyle === 'sum-strip-percent') {
-        y.aggregate = 'percent';
+    if (insight.totalStyle === "sum-strip-percent") {
+        y.aggregate = "percent";
         y.title = language.percent;
         const stripProps = {
             addPercentageScale: true,
-            sortOrder: 'descending',
-            orientation: 'vertical',
+            sortOrder: "descending",
+            orientation: "vertical",
             size: specColumns.size,
             sort: specColumns.sort,
             z: specColumns.z
         };
         layouts.push({
-            layoutType: 'Strip',
+            layoutType: "Strip",
             props: stripProps
         });
     } else {
         const aggProps = {
             niceScale: true,
-            dock: 'bottom',
-            globalAggregateMaxExtentSignal: 'aggMaxExtent',
-            globalAggregateMaxExtentScaledSignal: 'aggMaxExtentScaled',
+            dock: "bottom",
+            globalAggregateMaxExtentSignal: "aggMaxExtent",
+            globalAggregateMaxExtentScaledSignal: "aggMaxExtentScaled",
             sumBy: specColumns.size,
             showAxes: true
         };
         layouts.push({
-            layoutType: 'AggregateContainer',
+            layoutType: "AggregateContainer",
             props: aggProps
         });
         switch(insight.totalStyle){
-            case 'sum-treemap':
+            case "sum-treemap":
                 {
-                    y.aggregate = 'sum';
+                    y.aggregate = "sum";
                     y.title = language.sum;
                     const treemapProps = {
-                        corner: 'bottom-left',
+                        corner: "bottom-left",
                         size: specColumns.size,
                         treeMapMethod: specViewOptions.language.treeMapMethod,
                         z: specColumns.z
                     };
                     layouts.push({
-                        layoutType: 'Treemap',
+                        layoutType: "Treemap",
                         props: treemapProps
                     });
                     break;
                 }
-            case 'sum-strip':
+            case "sum-strip":
                 {
-                    y.aggregate = 'sum';
+                    y.aggregate = "sum";
                     y.title = language.sum;
                     const stripProps = {
-                        sortOrder: 'descending',
-                        orientation: 'vertical',
+                        sortOrder: "descending",
+                        orientation: "vertical",
                         size: specColumns.size,
                         sort: specColumns.sort,
                         z: specColumns.z
                     };
                     layouts.push({
-                        layoutType: 'Strip',
+                        layoutType: "Strip",
                         props: stripProps
                     });
                     break;
                 }
-            case 'count-strip':
+            case "count-strip":
                 {
-                    y.aggregate = 'count';
+                    y.aggregate = "count";
                     y.title = language.count;
                     const stripProps = {
-                        sortOrder: 'descending',
-                        orientation: 'vertical',
+                        sortOrder: "descending",
+                        orientation: "vertical",
                         sort: specColumns.sort,
                         z: specColumns.z
                     };
                     layouts.push({
-                        layoutType: 'Strip',
+                        layoutType: "Strip",
                         props: stripProps
                     });
                     break;
                 }
             default:
                 {
-                    y.aggregate = 'count';
+                    y.aggregate = "count";
                     y.title = language.count;
                     const squareProps = {
                         sortBy: specColumns.sort,
-                        fillDirection: 'right-up',
+                        fillDirection: "right-up",
                         z: specColumns.z,
                         maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
                         maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal
                     };
                     layouts.push({
-                        layoutType: 'Square',
+                        layoutType: "Square",
                         props: squareProps
                     });
                     break;
@@ -902,47 +869,47 @@ exports.default = function(specContext) {
             percentage: true,
             roles: [
                 {
-                    role: 'x',
+                    role: "x",
                     binnable: true,
-                    axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
+                    axisSelection: specColumns.x && specColumns.x.quantitative ? "range" : "exact",
                     axisSelectionBetweenTicks: true,
                     signals: [
-                        _constants.SignalNames.XBins
+                        (0, _constants.SignalNames).XBins
                     ]
                 },
                 {
-                    role: 'z',
-                    axisSelection: specColumns.z && specColumns.z.quantitative ? 'range' : 'exact',
+                    role: "z",
+                    axisSelection: specColumns.z && specColumns.z.quantitative ? "range" : "exact",
                     allowNone: true
                 },
                 {
-                    role: 'color',
+                    role: "color",
                     allowNone: true
                 },
                 {
-                    role: 'sort',
+                    role: "sort",
                     allowNone: true
                 },
                 {
-                    role: 'size',
-                    allowNone: _size.allowNoneForSize,
+                    role: "size",
+                    allowNone: (0, _size.allowNoneForSize),
                     excludeCategoric: true,
                     signals: [
-                        _constants.SignalNames.TreeMapMethod
+                        (0, _constants.SignalNames).TreeMapMethod
                     ]
                 },
                 {
-                    role: 'facet',
+                    role: "facet",
                     allowNone: true,
                     signals: [
-                        _constants.SignalNames.FacetBins
+                        (0, _constants.SignalNames).FacetBins
                     ]
                 },
                 {
-                    role: 'facetV',
+                    role: "facetV",
                     allowNone: true,
                     signals: [
-                        _constants.SignalNames.FacetVBins
+                        (0, _constants.SignalNames).FacetVBins
                     ]
                 }
             ]
@@ -950,7 +917,7 @@ exports.default = function(specContext) {
     };
 };
 
-},{"../constants":"1t33I","../defaults":"3ylwt","../size":"akJ0W","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"je2Nv":[function(require,module,exports) {
+},{"../constants":"eNr4m","../defaults":"5iedU","../size":"78CLt","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"hJwhn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -973,28 +940,28 @@ exports.default = function(specContext) {
     };
     const hBandProps = {
         excludeEncodingRuleMap: true,
-        orientation: 'horizontal',
+        orientation: "horizontal",
         groupby: {
             column: specColumns.y,
-            defaultBins: _defaults.defaultBins,
-            maxbinsSignalName: _constants.SignalNames.YBins,
+            defaultBins: (0, _defaults.defaultBins),
+            maxbinsSignalName: (0, _constants.SignalNames).YBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.YMaxBins,
-            maxbins: _defaults.maxbins
+            maxbins: (0, _defaults.maxbins)
         },
-        minBandWidth: _defaults.minBarBandWidth,
+        minBandWidth: (0, _defaults.minBarBandWidth),
         showAxes: true
     };
     const vBandProps = {
         excludeEncodingRuleMap: true,
-        orientation: 'vertical',
+        orientation: "vertical",
         groupby: {
             column: specColumns.x,
-            defaultBins: _defaults.defaultBins,
-            maxbinsSignalName: _constants.SignalNames.XBins,
+            defaultBins: (0, _defaults.defaultBins),
+            maxbinsSignalName: (0, _constants.SignalNames).XBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.XMaxBins,
-            maxbins: _defaults.maxbins
+            maxbins: (0, _defaults.maxbins)
         },
-        minBandWidth: _defaults.minBarBandWidth,
+        minBandWidth: (0, _defaults.minBarBandWidth),
         showAxes: true
     };
     const aggProps = {
@@ -1004,71 +971,71 @@ exports.default = function(specContext) {
     };
     const layouts = [
         {
-            layoutType: 'Band',
+            layoutType: "Band",
             props: vBandProps
         },
         {
-            layoutType: 'Band',
+            layoutType: "Band",
             props: hBandProps
         },
         {
-            layoutType: 'AggregateSquare',
+            layoutType: "AggregateSquare",
             props: aggProps
         }
     ];
     switch(insight.totalStyle){
-        case 'sum-treemap':
+        case "sum-treemap":
             {
-                aggProps.aggregation = 'sum';
+                aggProps.aggregation = "sum";
                 const treemapProps = {
-                    corner: 'bottom-left',
+                    corner: "bottom-left",
                     size: specColumns.size,
                     treeMapMethod: specViewOptions.language.treeMapMethod,
                     z: specColumns.z
                 };
                 layouts.push({
-                    layoutType: 'Treemap',
+                    layoutType: "Treemap",
                     props: treemapProps
                 });
                 break;
             }
-        case 'sum-strip':
+        case "sum-strip":
             {
-                aggProps.aggregation = 'sum';
+                aggProps.aggregation = "sum";
                 const stripProps = {
-                    sortOrder: 'ascending',
-                    orientation: 'vertical',
+                    sortOrder: "ascending",
+                    orientation: "vertical",
                     size: specColumns.size,
                     sort: specColumns.sort,
                     z: specColumns.z
                 };
                 layouts.push({
-                    layoutType: 'Strip',
+                    layoutType: "Strip",
                     props: stripProps
                 });
                 break;
             }
-        case 'count-strip':
+        case "count-strip":
             {
-                aggProps.aggregation = 'count';
+                aggProps.aggregation = "count";
                 const stripProps = {
-                    sortOrder: 'ascending',
-                    orientation: 'vertical',
+                    sortOrder: "ascending",
+                    orientation: "vertical",
                     sort: specColumns.sort,
                     z: specColumns.z
                 };
                 layouts.push({
-                    layoutType: 'Strip',
+                    layoutType: "Strip",
                     props: stripProps
                 });
                 break;
             }
         default:
             {
-                aggProps.aggregation = 'count';
+                aggProps.aggregation = "count";
                 const squareProps = {
                     sortBy: specColumns.sort,
-                    fillDirection: 'right-down',
+                    fillDirection: "right-down",
                     z: specColumns.z,
                     maxGroupedUnits: null,
                     maxGroupedFillSize: null
@@ -1078,7 +1045,7 @@ exports.default = function(specContext) {
                     squareProps.maxGroupedFillSize = aggMaxExtentScaled;
                 };
                 layouts.push({
-                    layoutType: 'Square',
+                    layoutType: "Square",
                     props: squareProps
                 });
                 break;
@@ -1091,56 +1058,56 @@ exports.default = function(specContext) {
             countsAndSums: true,
             roles: [
                 {
-                    role: 'x',
+                    role: "x",
                     binnable: true,
-                    axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
+                    axisSelection: specColumns.x && specColumns.x.quantitative ? "range" : "exact",
                     axisSelectionBetweenTicks: true,
                     signals: [
-                        _constants.SignalNames.XBins
+                        (0, _constants.SignalNames).XBins
                     ]
                 },
                 {
-                    role: 'y',
+                    role: "y",
                     binnable: true,
-                    axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
+                    axisSelection: specColumns.y && specColumns.y.quantitative ? "range" : "exact",
                     axisSelectionBetweenTicks: true,
                     signals: [
-                        _constants.SignalNames.YBins
+                        (0, _constants.SignalNames).YBins
                     ]
                 },
                 {
-                    role: 'z',
-                    axisSelection: specColumns.z && specColumns.z.quantitative ? 'range' : 'exact',
+                    role: "z",
+                    axisSelection: specColumns.z && specColumns.z.quantitative ? "range" : "exact",
                     allowNone: true
                 },
                 {
-                    role: 'color',
+                    role: "color",
                     allowNone: true
                 },
                 {
-                    role: 'sort',
+                    role: "sort",
                     allowNone: true
                 },
                 {
-                    role: 'size',
-                    allowNone: _size.allowNoneForSize,
+                    role: "size",
+                    allowNone: (0, _size.allowNoneForSize),
                     excludeCategoric: true,
                     signals: [
-                        _constants.SignalNames.TreeMapMethod
+                        (0, _constants.SignalNames).TreeMapMethod
                     ]
                 },
                 {
-                    role: 'facet',
+                    role: "facet",
                     allowNone: true,
                     signals: [
-                        _constants.SignalNames.FacetBins
+                        (0, _constants.SignalNames).FacetBins
                     ]
                 },
                 {
-                    role: 'facetV',
+                    role: "facetV",
                     allowNone: true,
                     signals: [
-                        _constants.SignalNames.FacetVBins
+                        (0, _constants.SignalNames).FacetVBins
                     ]
                 }
             ]
@@ -1148,7 +1115,7 @@ exports.default = function(specContext) {
     };
 };
 
-},{"../constants":"1t33I","../defaults":"3ylwt","../size":"akJ0W","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"kiFt0":[function(require,module,exports) {
+},{"../constants":"eNr4m","../defaults":"5iedU","../size":"78CLt","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"dUpaP":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _constants = require("../constants");
@@ -1156,7 +1123,7 @@ exports.default = function(specContext) {
     const { specColumns  } = specContext;
     const squareProps = {
         sortBy: specColumns.sort,
-        fillDirection: 'right-down',
+        fillDirection: "right-down",
         z: specColumns.z,
         collapseYHeight: true
     };
@@ -1169,7 +1136,7 @@ exports.default = function(specContext) {
         axisScales,
         layouts: [
             {
-                layoutType: 'Square',
+                layoutType: "Square",
                 props: squareProps
             }
         ],
@@ -1177,30 +1144,30 @@ exports.default = function(specContext) {
             countsAndSums: false,
             roles: [
                 {
-                    role: 'z',
-                    axisSelection: specColumns.z && specColumns.z.quantitative ? 'range' : 'exact',
+                    role: "z",
+                    axisSelection: specColumns.z && specColumns.z.quantitative ? "range" : "exact",
                     allowNone: true
                 },
                 {
-                    role: 'color',
+                    role: "color",
                     allowNone: true
                 },
                 {
-                    role: 'sort',
+                    role: "sort",
                     allowNone: true
                 },
                 {
-                    role: 'facet',
+                    role: "facet",
                     allowNone: true,
                     signals: [
-                        _constants.SignalNames.FacetBins
+                        (0, _constants.SignalNames).FacetBins
                     ]
                 },
                 {
-                    role: 'facetV',
+                    role: "facetV",
                     allowNone: true,
                     signals: [
-                        _constants.SignalNames.FacetVBins
+                        (0, _constants.SignalNames).FacetVBins
                     ]
                 }
             ]
@@ -1208,7 +1175,7 @@ exports.default = function(specContext) {
     };
 };
 
-},{"../constants":"1t33I","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"7abiv":[function(require,module,exports) {
+},{"../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"6EBdS":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _constants = require("../constants");
@@ -1237,7 +1204,7 @@ exports.default = function(specContext) {
         axisScales,
         layouts: [
             {
-                layoutType: 'Scatter',
+                layoutType: "Scatter",
                 props: scatterProps
             }
         ],
@@ -1245,51 +1212,51 @@ exports.default = function(specContext) {
             countsAndSums: false,
             roles: [
                 {
-                    role: 'x',
-                    axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact'
+                    role: "x",
+                    axisSelection: specColumns.x && specColumns.x.quantitative ? "range" : "exact"
                 },
                 {
-                    role: 'y',
-                    axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact'
+                    role: "y",
+                    axisSelection: specColumns.y && specColumns.y.quantitative ? "range" : "exact"
                 },
                 {
-                    role: 'z',
-                    axisSelection: specColumns.z && specColumns.z.quantitative ? 'range' : 'exact',
+                    role: "z",
+                    axisSelection: specColumns.z && specColumns.z.quantitative ? "range" : "exact",
                     allowNone: true
                 },
                 {
-                    role: 'color',
+                    role: "color",
                     allowNone: true
                 },
                 {
-                    role: 'size',
+                    role: "size",
                     excludeCategoric: true,
                     allowNone: true
                 },
                 {
-                    role: 'facet',
+                    role: "facet",
                     allowNone: true,
                     signals: [
-                        _constants.SignalNames.FacetBins
+                        (0, _constants.SignalNames).FacetBins
                     ]
                 },
                 {
-                    role: 'facetV',
+                    role: "facetV",
                     allowNone: true,
                     signals: [
-                        _constants.SignalNames.FacetVBins
+                        (0, _constants.SignalNames).FacetVBins
                     ]
                 }
             ],
             signals: [
-                _constants.SignalNames.PointScale,
-                _constants.SignalNames.ZGrounded
+                (0, _constants.SignalNames).PointScale,
+                (0, _constants.SignalNames).ZGrounded
             ]
         }
     };
 };
 
-},{"../constants":"1t33I","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"cBy3D":[function(require,module,exports) {
+},{"../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8N6Z2":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _defaults = require("../defaults");
@@ -1309,28 +1276,28 @@ exports.default = function(specContext) {
     };
     const hBandProps = {
         excludeEncodingRuleMap: true,
-        orientation: 'horizontal',
+        orientation: "horizontal",
         groupby: {
             column: specColumns.y,
-            defaultBins: _defaults.defaultBins,
-            maxbinsSignalName: _constants.SignalNames.YBins,
+            defaultBins: (0, _defaults.defaultBins),
+            maxbinsSignalName: (0, _constants.SignalNames).YBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.YMaxBins,
-            maxbins: _defaults.maxbins
+            maxbins: (0, _defaults.maxbins)
         },
-        minBandWidth: _defaults.minBarBandWidth,
+        minBandWidth: (0, _defaults.minBarBandWidth),
         showAxes: true
     };
     const vBandProps = {
         excludeEncodingRuleMap: true,
-        orientation: 'vertical',
+        orientation: "vertical",
         groupby: {
             column: specColumns.x,
-            defaultBins: _defaults.defaultBins,
-            maxbinsSignalName: _constants.SignalNames.XBins,
+            defaultBins: (0, _defaults.defaultBins),
+            maxbinsSignalName: (0, _constants.SignalNames).XBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.XMaxBins,
-            maxbins: _defaults.maxbins
+            maxbins: (0, _defaults.maxbins)
         },
-        minBandWidth: _defaults.minBarBandWidth,
+        minBandWidth: (0, _defaults.minBarBandWidth),
         showAxes: true
     };
     const stackProps = {
@@ -1341,15 +1308,15 @@ exports.default = function(specContext) {
         customZScale: true,
         layouts: [
             {
-                layoutType: 'Band',
+                layoutType: "Band",
                 props: vBandProps
             },
             {
-                layoutType: 'Band',
+                layoutType: "Band",
                 props: hBandProps
             },
             {
-                layoutType: 'Stack',
+                layoutType: "Stack",
                 props: stackProps
             }
         ],
@@ -1357,43 +1324,43 @@ exports.default = function(specContext) {
             countsAndSums: false,
             roles: [
                 {
-                    role: 'x',
+                    role: "x",
                     binnable: true,
-                    axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
+                    axisSelection: specColumns.x && specColumns.x.quantitative ? "range" : "exact",
                     axisSelectionBetweenTicks: true,
                     signals: [
-                        _constants.SignalNames.XBins
+                        (0, _constants.SignalNames).XBins
                     ]
                 },
                 {
-                    role: 'y',
+                    role: "y",
                     binnable: true,
-                    axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
+                    axisSelection: specColumns.y && specColumns.y.quantitative ? "range" : "exact",
                     axisSelectionBetweenTicks: true,
                     signals: [
-                        _constants.SignalNames.YBins
+                        (0, _constants.SignalNames).YBins
                     ]
                 },
                 {
-                    role: 'color',
+                    role: "color",
                     allowNone: true
                 },
                 {
-                    role: 'sort',
+                    role: "sort",
                     allowNone: true
                 },
                 {
-                    role: 'facet',
+                    role: "facet",
                     allowNone: true,
                     signals: [
-                        _constants.SignalNames.FacetBins
+                        (0, _constants.SignalNames).FacetBins
                     ]
                 },
                 {
-                    role: 'facetV',
+                    role: "facetV",
                     allowNone: true,
                     signals: [
-                        _constants.SignalNames.FacetVBins
+                        (0, _constants.SignalNames).FacetVBins
                     ]
                 }
             ]
@@ -1401,15 +1368,15 @@ exports.default = function(specContext) {
     };
 };
 
-},{"../defaults":"3ylwt","../constants":"1t33I","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"ghx3s":[function(require,module,exports) {
+},{"../defaults":"5iedU","../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jnY66":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _constants = require("../constants");
 exports.default = function(specContext) {
     const { specColumns  } = specContext;
     const stripProps = {
-        sortOrder: 'ascending',
-        orientation: 'vertical',
+        sortOrder: "ascending",
+        orientation: "vertical",
         size: specColumns.size,
         sort: specColumns.sort,
         z: specColumns.z
@@ -1423,12 +1390,12 @@ exports.default = function(specContext) {
     if (specColumns.facet) {
         axisScales.y = {
             title: null,
-            aggregate: specColumns.size ? 'sum' : 'count'
+            aggregate: specColumns.size ? "sum" : "count"
         };
-        const globalAggregateMaxExtentScaledSignal = 'globalAggregateMaxExtentScaledSignal';
-        const globalAggregateMaxExtentSignal = 'globalAggregateMaxExtentSignal';
+        const globalAggregateMaxExtentScaledSignal = "globalAggregateMaxExtentScaledSignal";
+        const globalAggregateMaxExtentSignal = "globalAggregateMaxExtentSignal";
         const props = {
-            dock: 'top',
+            dock: "top",
             niceScale: false,
             globalAggregateMaxExtentScaledSignal,
             globalAggregateMaxExtentSignal,
@@ -1436,12 +1403,12 @@ exports.default = function(specContext) {
             showAxes: false
         };
         layouts.push({
-            layoutType: 'AggregateContainer',
+            layoutType: "AggregateContainer",
             props
         });
     }
     layouts.push({
-        layoutType: 'Strip',
+        layoutType: "Strip",
         props: stripProps
     });
     return {
@@ -1451,35 +1418,35 @@ exports.default = function(specContext) {
             countsAndSums: false,
             roles: [
                 {
-                    role: 'size',
+                    role: "size",
                     allowNone: true,
                     excludeCategoric: true
                 },
                 {
-                    role: 'z',
-                    axisSelection: specColumns.z && specColumns.z.quantitative ? 'range' : 'exact',
+                    role: "z",
+                    axisSelection: specColumns.z && specColumns.z.quantitative ? "range" : "exact",
                     allowNone: true
                 },
                 {
-                    role: 'color',
+                    role: "color",
                     allowNone: true
                 },
                 {
-                    role: 'sort',
+                    role: "sort",
                     allowNone: true
                 },
                 {
-                    role: 'facet',
+                    role: "facet",
                     allowNone: true,
                     signals: [
-                        _constants.SignalNames.FacetBins
+                        (0, _constants.SignalNames).FacetBins
                     ]
                 },
                 {
-                    role: 'facetV',
+                    role: "facetV",
                     allowNone: true,
                     signals: [
-                        _constants.SignalNames.FacetVBins
+                        (0, _constants.SignalNames).FacetVBins
                     ]
                 }
             ]
@@ -1487,14 +1454,14 @@ exports.default = function(specContext) {
     };
 };
 
-},{"../constants":"1t33I","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"dLaAN":[function(require,module,exports) {
+},{"../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"g0eb5":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _constants = require("../constants");
 exports.default = function(specContext) {
     const { specColumns , specViewOptions  } = specContext;
     const treemapProps = {
-        corner: 'top-left',
+        corner: "top-left",
         group: specColumns.group,
         size: specColumns.size,
         treeMapMethod: specViewOptions.language.treeMapMethod,
@@ -1509,12 +1476,12 @@ exports.default = function(specContext) {
     if (specColumns.facet) {
         axisScales.y = {
             title: null,
-            aggregate: 'sum'
+            aggregate: "sum"
         };
-        const globalAggregateMaxExtentScaledSignal = 'globalAggregateMaxExtentScaledSignal';
-        const globalAggregateMaxExtentSignal = 'globalAggregateMaxExtentSignal';
+        const globalAggregateMaxExtentScaledSignal = "globalAggregateMaxExtentScaledSignal";
+        const globalAggregateMaxExtentSignal = "globalAggregateMaxExtentSignal";
         const props = {
-            dock: 'top',
+            dock: "top",
             niceScale: false,
             globalAggregateMaxExtentScaledSignal,
             globalAggregateMaxExtentSignal,
@@ -1522,12 +1489,12 @@ exports.default = function(specContext) {
             showAxes: false
         };
         layouts.push({
-            layoutType: 'AggregateContainer',
+            layoutType: "AggregateContainer",
             props
         });
     }
     layouts.push({
-        layoutType: 'Treemap',
+        layoutType: "Treemap",
         props: treemapProps
     });
     return {
@@ -1537,49 +1504,48 @@ exports.default = function(specContext) {
             countsAndSums: false,
             roles: [
                 {
-                    role: 'size',
+                    role: "size",
                     excludeCategoric: true
                 },
                 {
-                    role: 'group',
+                    role: "group",
                     allowNone: true
                 },
                 {
-                    role: 'z',
-                    axisSelection: specColumns.z && specColumns.z.quantitative ? 'range' : 'exact',
+                    role: "z",
+                    axisSelection: specColumns.z && specColumns.z.quantitative ? "range" : "exact",
                     allowNone: true
                 },
                 {
-                    role: 'color',
+                    role: "color",
                     allowNone: true
                 },
                 {
-                    role: 'facet',
+                    role: "facet",
                     allowNone: true,
                     signals: [
-                        _constants.SignalNames.FacetBins
+                        (0, _constants.SignalNames).FacetBins
                     ]
                 },
                 {
-                    role: 'facetV',
+                    role: "facetV",
                     allowNone: true,
                     signals: [
-                        _constants.SignalNames.FacetVBins
+                        (0, _constants.SignalNames).FacetVBins
                     ]
                 }
             ],
             signals: [
-                _constants.SignalNames.TreeMapMethod
+                (0, _constants.SignalNames).TreeMapMethod
             ]
         }
     };
 };
 
-},{"../constants":"1t33I","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"2Gjfb":[function(require,module,exports) {
+},{"../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fJidQ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "getFacetLayout", ()=>getFacetLayout
-);
+parcelHelpers.export(exports, "getFacetLayout", ()=>getFacetLayout);
 var _defaults = require("./defaults");
 function getFacetLayout(facetStyle, facetColumn, facetVColumn, axisTextColor) {
     let layoutPair;
@@ -1590,7 +1556,7 @@ function getFacetLayout(facetStyle, facetColumn, facetVColumn, axisTextColor) {
     };
     let facetPadding;
     switch(facetStyle){
-        case 'cross':
+        case "cross":
             {
                 const props = {
                     axisTextColor,
@@ -1599,19 +1565,19 @@ function getFacetLayout(facetStyle, facetColumn, facetVColumn, axisTextColor) {
                     groupbyY: facetVColumn
                 };
                 layoutPair = {
-                    layoutType: 'Cross',
+                    layoutType: "Cross",
                     props
                 };
                 facetPadding = {
-                    bottom: _defaults.facetPaddingBottom,
-                    left: _defaults.facetPaddingLeft,
+                    bottom: (0, _defaults.facetPaddingBottom),
+                    left: (0, _defaults.facetPaddingLeft),
                     top: 0
                 };
-                plotPadding.y = _defaults.facetPaddingTop;
-                plotPadding.x = _defaults.facetPaddingRight;
+                plotPadding.y = (0, _defaults.facetPaddingTop);
+                plotPadding.x = (0, _defaults.facetPaddingRight);
                 break;
             }
-        case 'wrap':
+        case "wrap":
         default:
             {
                 const props = {
@@ -1620,13 +1586,13 @@ function getFacetLayout(facetStyle, facetColumn, facetVColumn, axisTextColor) {
                     groupby
                 };
                 layoutPair = {
-                    layoutType: 'Wrap',
+                    layoutType: "Wrap",
                     props
                 };
                 facetPadding = {
-                    bottom: _defaults.facetPaddingBottom,
-                    left: _defaults.facetPaddingLeft,
-                    top: _defaults.facetPaddingTop
+                    bottom: (0, _defaults.facetPaddingBottom),
+                    left: (0, _defaults.facetPaddingLeft),
+                    top: (0, _defaults.facetPaddingTop)
                 };
                 break;
             }
@@ -1641,42 +1607,37 @@ function getFacetLayout(facetStyle, facetColumn, facetVColumn, axisTextColor) {
     };
 }
 
-},{"./defaults":"3ylwt","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"1TgWB":[function(require,module,exports) {
+},{"./defaults":"5iedU","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"bdXVF":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 /**
  * Derive column metadata from the data array.
  * @param data Array of data objects.
- */ parcelHelpers.export(exports, "getColumnsFromData", ()=>getColumnsFromData
-);
+ */ parcelHelpers.export(exports, "getColumnsFromData", ()=>getColumnsFromData);
 /**
  * Get columns associated with each Insight role.
  * @param insight Insight to specify column roles.
  * @param columns Array of Columns inferred from the data.
- */ parcelHelpers.export(exports, "getSpecColumns", ()=>getSpecColumns
-);
+ */ parcelHelpers.export(exports, "getSpecColumns", ()=>getSpecColumns);
 /**
  * Populate columns with type inferences and stats.
  * @param columns Array of columns.
  * @param data Array of data objects.
- */ parcelHelpers.export(exports, "inferAll", ()=>inferAll
-);
-parcelHelpers.export(exports, "getStats", ()=>getStats
-);
+ */ parcelHelpers.export(exports, "inferAll", ()=>inferAll);
+parcelHelpers.export(exports, "getStats", ()=>getStats);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _d3Color = require("d3-color");
 function isColor(cssColorSpecifier) {
-    return !!_d3Color.color(cssColorSpecifier);
+    return !!(0, _d3Color.color)(cssColorSpecifier);
 }
 function isQuantitative(column) {
-    return column.type === 'number' || column.type === 'integer';
+    return column.type === "number" || column.type === "integer";
 }
 function getColumnsFromData(inferTypesFn, data, columnTypes) {
     const sample = data[0];
     const fields = sample ? Object.keys(sample) : [];
-    const inferences = Object.assign(Object.assign({
-    }, inferTypesFn(data, fields)), columnTypes);
+    const inferences = Object.assign(Object.assign({}, inferTypesFn(data, fields)), columnTypes);
     const columns = fields.map((name)=>{
         const column = {
             name,
@@ -1689,8 +1650,7 @@ function getColumnsFromData(inferTypesFn, data, columnTypes) {
 }
 function getSpecColumns(insight, columns) {
     function getColumnByName(name) {
-        return columns.filter((c)=>c.name === name
-        )[0];
+        return columns.filter((c)=>c.name === name)[0];
     }
     return {
         color: getColumnByName(insight.columns && insight.columns.color),
@@ -1708,9 +1668,9 @@ function getSpecColumns(insight, columns) {
 function inferAll(columns, data) {
     columns.forEach((column)=>{
         if (column) {
-            if (typeof column.quantitative !== 'boolean') column.quantitative = isQuantitative(column);
+            if (typeof column.quantitative !== "boolean") column.quantitative = isQuantitative(column);
             if (!column.stats) column.stats = getStats(data, column);
-            if (column.type === 'string' && typeof column.isColorData !== 'boolean') checkIsColorData(data, column);
+            if (column.type === "string" && typeof column.isColorData !== "boolean") checkIsColorData(data, column);
         }
     });
 }
@@ -1726,8 +1686,7 @@ function checkIsColorData(data, column) {
     column.isColorData = true;
 }
 function getStats(data, column) {
-    const distinctMap = {
-    };
+    const distinctMap = {};
     const stats = {
         distinctValueCount: null,
         max: null,
@@ -1743,12 +1702,12 @@ function getStats(data, column) {
         if (stats.min === null || value < stats.min) stats.min = value;
         let num = +value;
         if (!isNaN(num)) sum += num;
-        if (column.type === 'string' && !stats.hasColorData && isColor(value)) stats.hasColorData = true;
+        if (column.type === "string" && !stats.hasColorData && isColor(value)) stats.hasColorData = true;
     }
     if (column.quantitative) {
         stats.mean = data.length > 0 && sum / data.length;
         stats.hasNegative = detectNegative(column, data);
-        if (column.type === 'integer') stats.isSequential = detectSequentialColumn(column, data);
+        if (column.type === "integer") stats.isSequential = detectSequentialColumn(column, data);
     }
     stats.distinctValueCount = Object.keys(distinctMap).length;
     return stats;
@@ -1768,25 +1727,17 @@ function detectSequentialColumn(column, data) {
     return true;
 }
 
-},{"d3-color":"9ZVln","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"9ZVln":[function(require,module,exports) {
+},{"d3-color":"7SCp9","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7SCp9":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "color", ()=>_colorJsDefault.default
-);
-parcelHelpers.export(exports, "rgb", ()=>_colorJs.rgb
-);
-parcelHelpers.export(exports, "hsl", ()=>_colorJs.hsl
-);
-parcelHelpers.export(exports, "lab", ()=>_labJsDefault.default
-);
-parcelHelpers.export(exports, "hcl", ()=>_labJs.hcl
-);
-parcelHelpers.export(exports, "lch", ()=>_labJs.lch
-);
-parcelHelpers.export(exports, "gray", ()=>_labJs.gray
-);
-parcelHelpers.export(exports, "cubehelix", ()=>_cubehelixJsDefault.default
-);
+parcelHelpers.export(exports, "color", ()=>(0, _colorJsDefault.default));
+parcelHelpers.export(exports, "rgb", ()=>(0, _colorJs.rgb));
+parcelHelpers.export(exports, "hsl", ()=>(0, _colorJs.hsl));
+parcelHelpers.export(exports, "lab", ()=>(0, _labJsDefault.default));
+parcelHelpers.export(exports, "hcl", ()=>(0, _labJs.hcl));
+parcelHelpers.export(exports, "lch", ()=>(0, _labJs.lch));
+parcelHelpers.export(exports, "gray", ()=>(0, _labJs.gray));
+parcelHelpers.export(exports, "cubehelix", ()=>(0, _cubehelixJsDefault.default));
 var _colorJs = require("./color.js");
 var _colorJsDefault = parcelHelpers.interopDefault(_colorJs);
 var _labJs = require("./lab.js");
@@ -1794,29 +1745,20 @@ var _labJsDefault = parcelHelpers.interopDefault(_labJs);
 var _cubehelixJs = require("./cubehelix.js");
 var _cubehelixJsDefault = parcelHelpers.interopDefault(_cubehelixJs);
 
-},{"./color.js":"WkkeJ","./lab.js":"ilz7W","./cubehelix.js":"klNYx","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"WkkeJ":[function(require,module,exports) {
+},{"./color.js":"cJlE6","./lab.js":false,"./cubehelix.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"cJlE6":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Color", ()=>Color
-);
-parcelHelpers.export(exports, "darker", ()=>darker
-);
-parcelHelpers.export(exports, "brighter", ()=>brighter
-);
-parcelHelpers.export(exports, "rgbConvert", ()=>rgbConvert
-);
-parcelHelpers.export(exports, "rgb", ()=>rgb
-);
-parcelHelpers.export(exports, "Rgb", ()=>Rgb
-);
-parcelHelpers.export(exports, "hslConvert", ()=>hslConvert
-);
-parcelHelpers.export(exports, "hsl", ()=>hsl
-);
+parcelHelpers.export(exports, "Color", ()=>Color);
+parcelHelpers.export(exports, "darker", ()=>darker);
+parcelHelpers.export(exports, "brighter", ()=>brighter);
+parcelHelpers.export(exports, "rgbConvert", ()=>rgbConvert);
+parcelHelpers.export(exports, "rgb", ()=>rgb);
+parcelHelpers.export(exports, "Rgb", ()=>Rgb);
+parcelHelpers.export(exports, "hslConvert", ()=>hslConvert);
+parcelHelpers.export(exports, "hsl", ()=>hsl);
 var _defineJs = require("./define.js");
 var _defineJsDefault = parcelHelpers.interopDefault(_defineJs);
-function Color() {
-}
+function Color() {}
 var darker = 0.7;
 var brighter = 1 / darker;
 var reI = "\\s*([+-]?\\d+)\\s*", reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*", reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*", reHex = /^#([0-9a-f]{3,8})$/, reRgbInteger = new RegExp("^rgb\\(" + [
@@ -1848,156 +1790,156 @@ var reI = "\\s*([+-]?\\d+)\\s*", reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?
     reN
 ] + "\\)$");
 var named = {
-    aliceblue: 15792383,
-    antiquewhite: 16444375,
-    aqua: 65535,
-    aquamarine: 8388564,
-    azure: 15794175,
-    beige: 16119260,
-    bisque: 16770244,
-    black: 0,
-    blanchedalmond: 16772045,
-    blue: 255,
-    blueviolet: 9055202,
-    brown: 10824234,
-    burlywood: 14596231,
-    cadetblue: 6266528,
-    chartreuse: 8388352,
-    chocolate: 13789470,
-    coral: 16744272,
-    cornflowerblue: 6591981,
-    cornsilk: 16775388,
-    crimson: 14423100,
-    cyan: 65535,
-    darkblue: 139,
-    darkcyan: 35723,
-    darkgoldenrod: 12092939,
-    darkgray: 11119017,
-    darkgreen: 25600,
-    darkgrey: 11119017,
-    darkkhaki: 12433259,
-    darkmagenta: 9109643,
-    darkolivegreen: 5597999,
-    darkorange: 16747520,
-    darkorchid: 10040012,
-    darkred: 9109504,
-    darksalmon: 15308410,
-    darkseagreen: 9419919,
-    darkslateblue: 4734347,
-    darkslategray: 3100495,
-    darkslategrey: 3100495,
-    darkturquoise: 52945,
-    darkviolet: 9699539,
-    deeppink: 16716947,
-    deepskyblue: 49151,
-    dimgray: 6908265,
-    dimgrey: 6908265,
-    dodgerblue: 2003199,
-    firebrick: 11674146,
-    floralwhite: 16775920,
-    forestgreen: 2263842,
-    fuchsia: 16711935,
-    gainsboro: 14474460,
-    ghostwhite: 16316671,
-    gold: 16766720,
-    goldenrod: 14329120,
-    gray: 8421504,
-    green: 32768,
-    greenyellow: 11403055,
-    grey: 8421504,
-    honeydew: 15794160,
-    hotpink: 16738740,
-    indianred: 13458524,
-    indigo: 4915330,
-    ivory: 16777200,
-    khaki: 15787660,
-    lavender: 15132410,
-    lavenderblush: 16773365,
-    lawngreen: 8190976,
-    lemonchiffon: 16775885,
-    lightblue: 11393254,
-    lightcoral: 15761536,
-    lightcyan: 14745599,
-    lightgoldenrodyellow: 16448210,
-    lightgray: 13882323,
-    lightgreen: 9498256,
-    lightgrey: 13882323,
-    lightpink: 16758465,
-    lightsalmon: 16752762,
-    lightseagreen: 2142890,
-    lightskyblue: 8900346,
-    lightslategray: 7833753,
-    lightslategrey: 7833753,
-    lightsteelblue: 11584734,
-    lightyellow: 16777184,
-    lime: 65280,
-    limegreen: 3329330,
-    linen: 16445670,
-    magenta: 16711935,
-    maroon: 8388608,
-    mediumaquamarine: 6737322,
-    mediumblue: 205,
-    mediumorchid: 12211667,
-    mediumpurple: 9662683,
-    mediumseagreen: 3978097,
-    mediumslateblue: 8087790,
-    mediumspringgreen: 64154,
-    mediumturquoise: 4772300,
-    mediumvioletred: 13047173,
-    midnightblue: 1644912,
-    mintcream: 16121850,
-    mistyrose: 16770273,
-    moccasin: 16770229,
-    navajowhite: 16768685,
-    navy: 128,
-    oldlace: 16643558,
-    olive: 8421376,
-    olivedrab: 7048739,
-    orange: 16753920,
-    orangered: 16729344,
-    orchid: 14315734,
-    palegoldenrod: 15657130,
-    palegreen: 10025880,
-    paleturquoise: 11529966,
-    palevioletred: 14381203,
-    papayawhip: 16773077,
-    peachpuff: 16767673,
-    peru: 13468991,
-    pink: 16761035,
-    plum: 14524637,
-    powderblue: 11591910,
-    purple: 8388736,
-    rebeccapurple: 6697881,
-    red: 16711680,
-    rosybrown: 12357519,
-    royalblue: 4286945,
-    saddlebrown: 9127187,
-    salmon: 16416882,
-    sandybrown: 16032864,
-    seagreen: 3050327,
-    seashell: 16774638,
-    sienna: 10506797,
-    silver: 12632256,
-    skyblue: 8900331,
-    slateblue: 6970061,
-    slategray: 7372944,
-    slategrey: 7372944,
-    snow: 16775930,
-    springgreen: 65407,
-    steelblue: 4620980,
-    tan: 13808780,
-    teal: 32896,
-    thistle: 14204888,
-    tomato: 16737095,
-    turquoise: 4251856,
-    violet: 15631086,
-    wheat: 16113331,
-    white: 16777215,
-    whitesmoke: 16119285,
-    yellow: 16776960,
-    yellowgreen: 10145074
+    aliceblue: 0xf0f8ff,
+    antiquewhite: 0xfaebd7,
+    aqua: 0x00ffff,
+    aquamarine: 0x7fffd4,
+    azure: 0xf0ffff,
+    beige: 0xf5f5dc,
+    bisque: 0xffe4c4,
+    black: 0x000000,
+    blanchedalmond: 0xffebcd,
+    blue: 0x0000ff,
+    blueviolet: 0x8a2be2,
+    brown: 0xa52a2a,
+    burlywood: 0xdeb887,
+    cadetblue: 0x5f9ea0,
+    chartreuse: 0x7fff00,
+    chocolate: 0xd2691e,
+    coral: 0xff7f50,
+    cornflowerblue: 0x6495ed,
+    cornsilk: 0xfff8dc,
+    crimson: 0xdc143c,
+    cyan: 0x00ffff,
+    darkblue: 0x00008b,
+    darkcyan: 0x008b8b,
+    darkgoldenrod: 0xb8860b,
+    darkgray: 0xa9a9a9,
+    darkgreen: 0x006400,
+    darkgrey: 0xa9a9a9,
+    darkkhaki: 0xbdb76b,
+    darkmagenta: 0x8b008b,
+    darkolivegreen: 0x556b2f,
+    darkorange: 0xff8c00,
+    darkorchid: 0x9932cc,
+    darkred: 0x8b0000,
+    darksalmon: 0xe9967a,
+    darkseagreen: 0x8fbc8f,
+    darkslateblue: 0x483d8b,
+    darkslategray: 0x2f4f4f,
+    darkslategrey: 0x2f4f4f,
+    darkturquoise: 0x00ced1,
+    darkviolet: 0x9400d3,
+    deeppink: 0xff1493,
+    deepskyblue: 0x00bfff,
+    dimgray: 0x696969,
+    dimgrey: 0x696969,
+    dodgerblue: 0x1e90ff,
+    firebrick: 0xb22222,
+    floralwhite: 0xfffaf0,
+    forestgreen: 0x228b22,
+    fuchsia: 0xff00ff,
+    gainsboro: 0xdcdcdc,
+    ghostwhite: 0xf8f8ff,
+    gold: 0xffd700,
+    goldenrod: 0xdaa520,
+    gray: 0x808080,
+    green: 0x008000,
+    greenyellow: 0xadff2f,
+    grey: 0x808080,
+    honeydew: 0xf0fff0,
+    hotpink: 0xff69b4,
+    indianred: 0xcd5c5c,
+    indigo: 0x4b0082,
+    ivory: 0xfffff0,
+    khaki: 0xf0e68c,
+    lavender: 0xe6e6fa,
+    lavenderblush: 0xfff0f5,
+    lawngreen: 0x7cfc00,
+    lemonchiffon: 0xfffacd,
+    lightblue: 0xadd8e6,
+    lightcoral: 0xf08080,
+    lightcyan: 0xe0ffff,
+    lightgoldenrodyellow: 0xfafad2,
+    lightgray: 0xd3d3d3,
+    lightgreen: 0x90ee90,
+    lightgrey: 0xd3d3d3,
+    lightpink: 0xffb6c1,
+    lightsalmon: 0xffa07a,
+    lightseagreen: 0x20b2aa,
+    lightskyblue: 0x87cefa,
+    lightslategray: 0x778899,
+    lightslategrey: 0x778899,
+    lightsteelblue: 0xb0c4de,
+    lightyellow: 0xffffe0,
+    lime: 0x00ff00,
+    limegreen: 0x32cd32,
+    linen: 0xfaf0e6,
+    magenta: 0xff00ff,
+    maroon: 0x800000,
+    mediumaquamarine: 0x66cdaa,
+    mediumblue: 0x0000cd,
+    mediumorchid: 0xba55d3,
+    mediumpurple: 0x9370db,
+    mediumseagreen: 0x3cb371,
+    mediumslateblue: 0x7b68ee,
+    mediumspringgreen: 0x00fa9a,
+    mediumturquoise: 0x48d1cc,
+    mediumvioletred: 0xc71585,
+    midnightblue: 0x191970,
+    mintcream: 0xf5fffa,
+    mistyrose: 0xffe4e1,
+    moccasin: 0xffe4b5,
+    navajowhite: 0xffdead,
+    navy: 0x000080,
+    oldlace: 0xfdf5e6,
+    olive: 0x808000,
+    olivedrab: 0x6b8e23,
+    orange: 0xffa500,
+    orangered: 0xff4500,
+    orchid: 0xda70d6,
+    palegoldenrod: 0xeee8aa,
+    palegreen: 0x98fb98,
+    paleturquoise: 0xafeeee,
+    palevioletred: 0xdb7093,
+    papayawhip: 0xffefd5,
+    peachpuff: 0xffdab9,
+    peru: 0xcd853f,
+    pink: 0xffc0cb,
+    plum: 0xdda0dd,
+    powderblue: 0xb0e0e6,
+    purple: 0x800080,
+    rebeccapurple: 0x663399,
+    red: 0xff0000,
+    rosybrown: 0xbc8f8f,
+    royalblue: 0x4169e1,
+    saddlebrown: 0x8b4513,
+    salmon: 0xfa8072,
+    sandybrown: 0xf4a460,
+    seagreen: 0x2e8b57,
+    seashell: 0xfff5ee,
+    sienna: 0xa0522d,
+    silver: 0xc0c0c0,
+    skyblue: 0x87ceeb,
+    slateblue: 0x6a5acd,
+    slategray: 0x708090,
+    slategrey: 0x708090,
+    snow: 0xfffafa,
+    springgreen: 0x00ff7f,
+    steelblue: 0x4682b4,
+    tan: 0xd2b48c,
+    teal: 0x008080,
+    thistle: 0xd8bfd8,
+    tomato: 0xff6347,
+    turquoise: 0x40e0d0,
+    violet: 0xee82ee,
+    wheat: 0xf5deb3,
+    white: 0xffffff,
+    whitesmoke: 0xf5f5f5,
+    yellow: 0xffff00,
+    yellowgreen: 0x9acd32
 };
-_defineJsDefault.default(Color, color, {
+(0, _defineJsDefault.default)(Color, color, {
     copy: function(channels) {
         return Object.assign(new this.constructor, this, channels);
     },
@@ -2023,10 +1965,11 @@ function color(format) {
     var m, l;
     format = (format + "").trim().toLowerCase();
     return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
-     : l === 3 ? new Rgb(m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, (m & 15) << 4 | m & 15, 1) // #f00
-     : l === 8 ? rgba(m >> 24 & 255, m >> 16 & 255, m >> 8 & 255, (m & 255) / 255) // #ff000000
-     : l === 4 ? rgba(m >> 12 & 15 | m >> 8 & 240, m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, ((m & 15) << 4 | m & 15) / 255) // #f000
-     : null) : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+     : l === 3 ? new Rgb(m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, (m & 0xf) << 4 | m & 0xf, 1) // #f00
+     : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+     : l === 4 ? rgba(m >> 12 & 0xf | m >> 8 & 0xf0, m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, ((m & 0xf) << 4 | m & 0xf) / 0xff) // #f000
+     : null // invalid hex
+    ) : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
      : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
      : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
      : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
@@ -2037,7 +1980,7 @@ function color(format) {
 }
 exports.default = color;
 function rgbn(n) {
-    return new Rgb(n >> 16 & 255, n >> 8 & 255, n & 255, 1);
+    return new Rgb(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
 }
 function rgba(r, g, b, a) {
     if (a <= 0) r = g = b = NaN;
@@ -2058,7 +2001,7 @@ function Rgb(r, g, b, opacity) {
     this.b = +b;
     this.opacity = +opacity;
 }
-_defineJsDefault.default(Rgb, rgb, _defineJs.extend(Color, {
+(0, _defineJsDefault.default)(Rgb, rgb, (0, _defineJs.extend)(Color, {
     brighter: function(k) {
         k = k == null ? brighter : Math.pow(brighter, k);
         return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
@@ -2121,7 +2064,7 @@ function Hsl(h, s, l, opacity) {
     this.l = +l;
     this.opacity = +opacity;
 }
-_defineJsDefault.default(Hsl, hsl, _defineJs.extend(Color, {
+(0, _defineJsDefault.default)(Hsl, hsl, (0, _defineJs.extend)(Color, {
     brighter: function(k) {
         k = k == null ? brighter : Math.pow(brighter, k);
         return new Hsl(this.h, this.s, this.l * k, this.opacity);
@@ -2147,11 +2090,10 @@ _defineJsDefault.default(Hsl, hsl, _defineJs.extend(Color, {
     return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
 }
 
-},{"./define.js":"jjeTm","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"jjeTm":[function(require,module,exports) {
+},{"./define.js":"fa5me","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fa5me":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "extend", ()=>extend
-);
+parcelHelpers.export(exports, "extend", ()=>extend);
 exports.default = function(constructor, factory, prototype) {
     constructor.prototype = factory.prototype = prototype;
     prototype.constructor = constructor;
@@ -2162,169 +2104,10 @@ function extend(parent, definition) {
     return prototype;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"ilz7W":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"33BLD":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "gray", ()=>gray
-);
-parcelHelpers.export(exports, "Lab", ()=>Lab
-);
-parcelHelpers.export(exports, "lch", ()=>lch
-);
-parcelHelpers.export(exports, "hcl", ()=>hcl
-);
-parcelHelpers.export(exports, "Hcl", ()=>Hcl
-);
-var _defineJs = require("./define.js");
-var _defineJsDefault = parcelHelpers.interopDefault(_defineJs);
-var _colorJs = require("./color.js");
-var _mathJs = require("./math.js");
-// https://observablehq.com/@mbostock/lab-and-rgb
-var K = 18, Xn = 0.96422, Yn = 1, Zn = 0.82521, t0 = 4 / 29, t1 = 6 / 29, t2 = 3 * t1 * t1, t3 = t1 * t1 * t1;
-function labConvert(o) {
-    if (o instanceof Lab) return new Lab(o.l, o.a, o.b, o.opacity);
-    if (o instanceof Hcl) return hcl2lab(o);
-    if (!(o instanceof _colorJs.Rgb)) o = _colorJs.rgbConvert(o);
-    var r = rgb2lrgb(o.r), g = rgb2lrgb(o.g), b = rgb2lrgb(o.b), y = xyz2lab((0.2225045 * r + 0.7168786 * g + 0.0606169 * b) / Yn), x, z;
-    if (r === g && g === b) x = z = y;
-    else {
-        x = xyz2lab((0.4360747 * r + 0.3850649 * g + 0.1430804 * b) / Xn);
-        z = xyz2lab((0.0139322 * r + 0.0971045 * g + 0.7141733 * b) / Zn);
-    }
-    return new Lab(116 * y - 16, 500 * (x - y), 200 * (y - z), o.opacity);
-}
-function gray(l, opacity) {
-    return new Lab(l, 0, 0, opacity == null ? 1 : opacity);
-}
-function lab(l, a, b, opacity) {
-    return arguments.length === 1 ? labConvert(l) : new Lab(l, a, b, opacity == null ? 1 : opacity);
-}
-exports.default = lab;
-function Lab(l, a, b, opacity) {
-    this.l = +l;
-    this.a = +a;
-    this.b = +b;
-    this.opacity = +opacity;
-}
-_defineJsDefault.default(Lab, lab, _defineJs.extend(_colorJs.Color, {
-    brighter: function(k) {
-        return new Lab(this.l + K * (k == null ? 1 : k), this.a, this.b, this.opacity);
-    },
-    darker: function(k) {
-        return new Lab(this.l - K * (k == null ? 1 : k), this.a, this.b, this.opacity);
-    },
-    rgb: function() {
-        var y = (this.l + 16) / 116, x = isNaN(this.a) ? y : y + this.a / 500, z = isNaN(this.b) ? y : y - this.b / 200;
-        x = Xn * lab2xyz(x);
-        y = Yn * lab2xyz(y);
-        z = Zn * lab2xyz(z);
-        return new _colorJs.Rgb(lrgb2rgb(3.1338561 * x - 1.6168667 * y - 0.4906146 * z), lrgb2rgb(-0.9787684 * x + 1.9161415 * y + 0.033454 * z), lrgb2rgb(0.0719453 * x - 0.2289914 * y + 1.4052427 * z), this.opacity);
-    }
-}));
-function xyz2lab(t) {
-    return t > t3 ? Math.pow(t, 1 / 3) : t / t2 + t0;
-}
-function lab2xyz(t) {
-    return t > t1 ? t * t * t : t2 * (t - t0);
-}
-function lrgb2rgb(x) {
-    return 255 * (x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
-}
-function rgb2lrgb(x) {
-    return (x /= 255) <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
-}
-function hclConvert(o) {
-    if (o instanceof Hcl) return new Hcl(o.h, o.c, o.l, o.opacity);
-    if (!(o instanceof Lab)) o = labConvert(o);
-    if (o.a === 0 && o.b === 0) return new Hcl(NaN, 0 < o.l && o.l < 100 ? 0 : NaN, o.l, o.opacity);
-    var h = Math.atan2(o.b, o.a) * _mathJs.rad2deg;
-    return new Hcl(h < 0 ? h + 360 : h, Math.sqrt(o.a * o.a + o.b * o.b), o.l, o.opacity);
-}
-function lch(l, c, h, opacity) {
-    return arguments.length === 1 ? hclConvert(l) : new Hcl(h, c, l, opacity == null ? 1 : opacity);
-}
-function hcl(h, c, l, opacity) {
-    return arguments.length === 1 ? hclConvert(h) : new Hcl(h, c, l, opacity == null ? 1 : opacity);
-}
-function Hcl(h, c, l, opacity) {
-    this.h = +h;
-    this.c = +c;
-    this.l = +l;
-    this.opacity = +opacity;
-}
-function hcl2lab(o) {
-    if (isNaN(o.h)) return new Lab(o.l, 0, 0, o.opacity);
-    var h = o.h * _mathJs.deg2rad;
-    return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
-}
-_defineJsDefault.default(Hcl, hcl, _defineJs.extend(_colorJs.Color, {
-    brighter: function(k) {
-        return new Hcl(this.h, this.c, this.l + K * (k == null ? 1 : k), this.opacity);
-    },
-    darker: function(k) {
-        return new Hcl(this.h, this.c, this.l - K * (k == null ? 1 : k), this.opacity);
-    },
-    rgb: function() {
-        return hcl2lab(this).rgb();
-    }
-}));
-
-},{"./define.js":"jjeTm","./color.js":"WkkeJ","./math.js":"fZjuB","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"fZjuB":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "deg2rad", ()=>deg2rad
-);
-parcelHelpers.export(exports, "rad2deg", ()=>rad2deg
-);
-var deg2rad = Math.PI / 180;
-var rad2deg = 180 / Math.PI;
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"klNYx":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Cubehelix", ()=>Cubehelix
-);
-var _defineJs = require("./define.js");
-var _defineJsDefault = parcelHelpers.interopDefault(_defineJs);
-var _colorJs = require("./color.js");
-var _mathJs = require("./math.js");
-var A = -0.14861, B = 1.78277, C = -0.29227, D = -0.90649, E = 1.97294, ED = E * D, EB = E * B, BC_DA = B * C - D * A;
-function cubehelixConvert(o) {
-    if (o instanceof Cubehelix) return new Cubehelix(o.h, o.s, o.l, o.opacity);
-    if (!(o instanceof _colorJs.Rgb)) o = _colorJs.rgbConvert(o);
-    var r = o.r / 255, g = o.g / 255, b = o.b / 255, l = (BC_DA * b + ED * r - EB * g) / (BC_DA + ED - EB), bl = b - l, k = (E * (g - l) - C * bl) / D, s = Math.sqrt(k * k + bl * bl) / (E * l * (1 - l)), h = s ? Math.atan2(k, bl) * _mathJs.rad2deg - 120 : NaN;
-    return new Cubehelix(h < 0 ? h + 360 : h, s, l, o.opacity);
-}
-function cubehelix(h, s, l, opacity) {
-    return arguments.length === 1 ? cubehelixConvert(h) : new Cubehelix(h, s, l, opacity == null ? 1 : opacity);
-}
-exports.default = cubehelix;
-function Cubehelix(h, s, l, opacity) {
-    this.h = +h;
-    this.s = +s;
-    this.l = +l;
-    this.opacity = +opacity;
-}
-_defineJsDefault.default(Cubehelix, cubehelix, _defineJs.extend(_colorJs.Color, {
-    brighter: function(k) {
-        k = k == null ? _colorJs.brighter : Math.pow(_colorJs.brighter, k);
-        return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
-    },
-    darker: function(k) {
-        k = k == null ? _colorJs.darker : Math.pow(_colorJs.darker, k);
-        return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
-    },
-    rgb: function() {
-        var h = isNaN(this.h) ? 0 : (this.h + 120) * _mathJs.deg2rad, l = +this.l, a = isNaN(this.s) ? 0 : this.s * l * (1 - l), cosh = Math.cos(h), sinh = Math.sin(h);
-        return new _colorJs.Rgb(255 * (l + a * (A * cosh + B * sinh)), 255 * (l + a * (C * cosh + D * sinh)), 255 * (l + a * (E * cosh)), this.opacity);
-    }
-}));
-
-},{"./define.js":"jjeTm","./color.js":"WkkeJ","./math.js":"fZjuB","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"kpKNP":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "SpecBuilder", ()=>SpecBuilder
-);
+parcelHelpers.export(exports, "SpecBuilder", ()=>SpecBuilder);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _axes = require("./axes");
@@ -2343,94 +2126,93 @@ class SpecBuilder {
         this.specContext = specContext;
         this.globalSignals = {
             minCellWidth: {
-                name: _constants.SignalNames.MinCellWidth,
-                update: `${_defaults.minFacetWidth}`
+                name: (0, _constants.SignalNames).MinCellWidth,
+                update: `${0, _defaults.minFacetWidth}`
             },
             minCellHeight: {
-                name: _constants.SignalNames.MinCellHeight,
-                update: `${_defaults.minFacetHeight}`
+                name: (0, _constants.SignalNames).MinCellHeight,
+                update: `${0, _defaults.minFacetHeight}`
             },
             plotOffsetLeft: {
-                name: _constants.SignalNames.PlotOffsetLeft,
-                update: '0'
+                name: (0, _constants.SignalNames).PlotOffsetLeft,
+                update: "0"
             },
             plotOffsetTop: {
-                name: _constants.SignalNames.PlotOffsetTop,
-                update: '0'
+                name: (0, _constants.SignalNames).PlotOffsetTop,
+                update: "0"
             },
             plotOffsetBottom: {
-                name: _constants.SignalNames.PlotOffsetBottom,
-                update: '0'
+                name: (0, _constants.SignalNames).PlotOffsetBottom,
+                update: "0"
             },
             plotOffsetRight: {
-                name: _constants.SignalNames.PlotOffsetRight,
-                update: '0'
+                name: (0, _constants.SignalNames).PlotOffsetRight,
+                update: "0"
             },
             plotHeightOut: {
-                name: _constants.SignalNames.PlotHeightOut,
-                update: _constants.SignalNames.PlotHeightIn
+                name: (0, _constants.SignalNames).PlotHeightOut,
+                update: (0, _constants.SignalNames).PlotHeightIn
             },
             plotWidthOut: {
-                name: _constants.SignalNames.PlotWidthOut,
-                update: _constants.SignalNames.PlotWidthIn
+                name: (0, _constants.SignalNames).PlotWidthOut,
+                update: (0, _constants.SignalNames).PlotWidthIn
             }
         };
     }
     validate() {
-        const { specContext: specContext1  } = this;
+        const { specContext  } = this;
         const { specCapabilities  } = this.props;
         const { roles  } = specCapabilities;
         const required = roles.filter((r)=>{
             switch(typeof r.allowNone){
-                case 'boolean':
+                case "boolean":
                     return !r.allowNone;
-                case 'undefined':
+                case "undefined":
                     return true;
-                case 'function':
-                    return !r.allowNone(specContext1);
+                case "function":
+                    return !r.allowNone(specContext);
             }
         });
-        const numeric = roles.filter((r)=>r.excludeCategoric
-        );
+        const numeric = roles.filter((r)=>r.excludeCategoric);
         const errors = required.map((r)=>{
-            if (specContext1.specColumns[r.role]) return null;
+            if (specContext.specColumns[r.role]) return null;
             else return `Field ${r.role} is required.`;
         }).concat(numeric.map((r)=>{
-            if (specContext1.specColumns[r.role] && !specContext1.specColumns[r.role].quantitative) return `Field ${r.role} must be quantitative.`;
+            if (specContext.specColumns[r.role] && !specContext.specColumns[r.role].quantitative) return `Field ${r.role} must be quantitative.`;
             else return null;
         })).filter(Boolean);
         return errors;
     }
     build() {
-        const { specContext: specContext1  } = this;
+        const { specContext  } = this;
         const { facetLayout , specCapabilities  } = this.props;
-        const { insight , specColumns , specViewOptions  } = specContext1;
-        const dataName = 'data_source';
+        const { insight , specColumns , specViewOptions  } = specContext;
+        const dataName = "data_source";
         const { vegaSpec , groupMark  } = this.initSpec(dataName);
-        const { topColorField , colorDataName  } = _color.addColor({
+        const { topColorField , colorDataName  } = (0, _color.addColor)({
             scope: vegaSpec,
             dataName,
-            specContext: specContext1,
-            scaleName: _constants.ScaleNames.Color,
-            legendDataName: 'data_legend',
-            topLookupName: 'data_topcolorlookup',
-            colorReverseSignalName: _constants.SignalNames.ColorReverse
+            specContext,
+            scaleName: (0, _constants.ScaleNames).Color,
+            legendDataName: "data_legend",
+            topLookupName: "data_topcolorlookup",
+            colorReverseSignalName: (0, _constants.SignalNames).ColorReverse
         });
-        const globalScope = new _globalScope.GlobalScope({
+        const globalScope = new (0, _globalScope.GlobalScope)({
             dataName: colorDataName,
             markGroup: groupMark,
             scope: vegaSpec,
             signals: this.globalSignals
         });
         if (facetLayout) {
-            _scope.addSignals(vegaSpec, {
-                name: _constants.SignalNames.FacetPaddingBottom,
+            (0, _scope.addSignals)(vegaSpec, {
+                name: (0, _constants.SignalNames).FacetPaddingBottom,
                 update: `${facetLayout.facetPadding.bottom}`
             }, {
-                name: _constants.SignalNames.FacetPaddingLeft,
+                name: (0, _constants.SignalNames).FacetPaddingLeft,
                 update: `${facetLayout.facetPadding.left}`
             }, {
-                name: _constants.SignalNames.FacetPaddingTop,
+                name: (0, _constants.SignalNames).FacetPaddingTop,
                 update: `${facetLayout.facetPadding.top}`
             });
             this.globalSignals.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
@@ -2444,8 +2226,8 @@ class SpecBuilder {
             const plotHeightOut = this.globalSignals.plotHeightOut.name;
             const plotWidthOut = this.globalSignals.plotWidthOut.name;
             const colTitleScale = {
-                type: 'linear',
-                name: 'scale_facet_col_title',
+                type: "linear",
+                name: "scale_facet_col_title",
                 domain: [
                     0,
                     1
@@ -2458,8 +2240,8 @@ class SpecBuilder {
                 ]
             };
             const rowTitleScale = {
-                type: 'linear',
-                name: 'scale_facet_row_title',
+                type: "linear",
+                name: "scale_facet_row_title",
                 domain: [
                     0,
                     1
@@ -2471,14 +2253,14 @@ class SpecBuilder {
                     0
                 ]
             };
-            let axesScopes = facetLayout ? _facetTitle.addFacetAxesGroupMarks({
+            let axesScopes = facetLayout ? (0, _facetTitle.addFacetAxesGroupMarks)({
                 globalScope: globalScope.scope,
                 plotScope: groupMark,
                 facetScope: firstScope,
                 colTitleScale,
                 rowTitleScale,
-                colSeqName: 'data_FacetCellColTitles',
-                rowSeqName: 'data_FacetCellRowTitles'
+                colSeqName: "data_FacetCellColTitles",
+                rowSeqName: "data_FacetCellRowTitles"
             }) : {
                 main: [
                     {
@@ -2489,7 +2271,7 @@ class SpecBuilder {
                     }
                 ]
             };
-            _axes.addGlobalAxes({
+            (0, _axes.addGlobalAxes)({
                 globalScope,
                 allGlobalScales,
                 axisScales: this.props.axisScales,
@@ -2498,19 +2280,19 @@ class SpecBuilder {
                     y: this.globalSignals.plotOffsetBottom
                 },
                 axesOffsets: {
-                    x: _defaults.axesOffsetX,
-                    y: _defaults.axesOffsetY
+                    x: (0, _defaults.axesOffsetX),
+                    y: (0, _defaults.axesOffsetY)
                 },
                 axesTitlePadding: facetLayout ? {
-                    x: _defaults.axesTitlePaddingFacetX,
-                    y: _defaults.axesTitlePaddingFacetY
+                    x: (0, _defaults.axesTitlePaddingFacetX),
+                    y: (0, _defaults.axesTitlePaddingFacetY)
                 } : {
-                    x: _defaults.axesTitlePaddingX,
-                    y: _defaults.axesTitlePaddingY
+                    x: (0, _defaults.axesTitlePaddingX),
+                    y: (0, _defaults.axesTitlePaddingY)
                 },
                 labelBaseline: {
-                    x: 'top',
-                    y: 'middle'
+                    x: "top",
+                    y: "middle"
                 },
                 specColumns,
                 specViewOptions,
@@ -2522,29 +2304,29 @@ class SpecBuilder {
         //add mark to the final scope
         if (finalScope.mark) {
             const { update  } = finalScope.mark.encode;
-            const outputDataName = 'output';
+            const outputDataName = "output";
             finalScope.mark.from.data = outputDataName;
-            _scope.addData(globalScope.markGroup, {
+            (0, _scope.addData)(globalScope.markGroup, {
                 name: outputDataName,
                 source: globalScope.markDataName,
                 transform: [
                     {
-                        type: 'formula',
+                        type: "formula",
                         expr: finalScope.offsets.x,
-                        as: _constants.FieldNames.OffsetX
+                        as: (0, _constants.FieldNames).OffsetX
                     },
                     {
-                        type: 'formula',
+                        type: "formula",
                         expr: finalScope.offsets.y,
-                        as: _constants.FieldNames.OffsetY
+                        as: (0, _constants.FieldNames).OffsetY
                     }
                 ]
             });
             update.x = {
-                field: _constants.FieldNames.OffsetX
+                field: (0, _constants.FieldNames).OffsetX
             };
             update.y = {
-                field: _constants.FieldNames.OffsetY
+                field: (0, _constants.FieldNames).OffsetY
             };
             allEncodingRules.forEach((map)=>{
                 for(let key in map)if (update[key]) {
@@ -2553,18 +2335,16 @@ class SpecBuilder {
                         let value = update[key];
                         let arrOut = [];
                         update[key] = arrOut;
-                        arrIn.forEach((rule)=>arrOut.push(rule)
-                        );
+                        arrIn.forEach((rule)=>arrOut.push(rule));
                         arrOut.push(value);
                     } else {
                         let arrOut = update[key];
-                        arrIn.forEach((rule)=>arrOut.unshift(rule)
-                        );
+                        arrIn.forEach((rule)=>arrOut.unshift(rule));
                     }
                 }
             });
-            update.fill = _fill.fill(specContext1, topColorField, _constants.ScaleNames.Color);
-            update.opacity = _fill.opacity(specContext1);
+            update.fill = (0, _fill.fill)(specContext, topColorField, (0, _constants.ScaleNames).Color);
+            update.opacity = (0, _fill.opacity)(specContext);
         }
         return {
             specCapabilities,
@@ -2574,31 +2354,31 @@ class SpecBuilder {
     initSpec(dataName) {
         const { globalSignals  } = this;
         const { minCellWidth , minCellHeight , plotOffsetLeft , plotOffsetBottom , plotOffsetTop , plotOffsetRight , plotHeightOut , plotWidthOut  } = globalSignals;
-        const { specContext: specContext1  } = this;
-        const { insight  } = specContext1;
+        const { specContext  } = this;
+        const { insight  } = specContext;
         const groupMark = {
-            type: 'group',
+            type: "group",
             //style: 'cell',
             encode: {
                 update: {
                     x: {
-                        signal: _constants.SignalNames.PlotOffsetLeft
+                        signal: (0, _constants.SignalNames).PlotOffsetLeft
                     },
                     y: {
-                        signal: _constants.SignalNames.PlotOffsetTop
+                        signal: (0, _constants.SignalNames).PlotOffsetTop
                     },
                     height: {
-                        signal: _constants.SignalNames.PlotHeightOut
+                        signal: (0, _constants.SignalNames).PlotHeightOut
                     },
                     width: {
-                        signal: _constants.SignalNames.PlotWidthOut
+                        signal: (0, _constants.SignalNames).PlotWidthOut
                     }
                 }
             }
         };
-        const inputDataname = 'input';
+        const inputDataname = "input";
         const vegaSpec = {
-            $schema: 'https://vega.github.io/schema/vega/v5.json',
+            $schema: "https://vega.github.io/schema/vega/v5.json",
             //style: 'cell',
             data: [
                 {
@@ -2613,38 +2393,38 @@ class SpecBuilder {
             marks: [
                 groupMark
             ],
-            signals: _signals.textSignals(specContext1, _constants.SignalNames.ViewportHeight).concat([
+            signals: (0, _signals.textSignals)(specContext, (0, _constants.SignalNames).ViewportHeight).concat([
                 minCellWidth,
                 minCellHeight,
                 {
-                    name: _constants.SignalNames.ViewportHeight,
-                    update: `max(${_constants.SignalNames.MinCellHeight}, ${insight.size.height})`
+                    name: (0, _constants.SignalNames).ViewportHeight,
+                    update: `max(${(0, _constants.SignalNames).MinCellHeight}, ${insight.size.height})`
                 },
                 {
-                    name: _constants.SignalNames.ViewportWidth,
-                    update: `max(${_constants.SignalNames.MinCellWidth}, ${insight.size.width})`
+                    name: (0, _constants.SignalNames).ViewportWidth,
+                    update: `max(${(0, _constants.SignalNames).MinCellWidth}, ${insight.size.width})`
                 },
                 plotOffsetLeft,
                 plotOffsetTop,
                 plotOffsetBottom,
                 plotOffsetRight,
                 {
-                    name: _constants.SignalNames.PlotHeightIn,
-                    update: `${_constants.SignalNames.ViewportHeight} - ${_constants.SignalNames.PlotOffsetBottom}`
+                    name: (0, _constants.SignalNames).PlotHeightIn,
+                    update: `${(0, _constants.SignalNames).ViewportHeight} - ${(0, _constants.SignalNames).PlotOffsetBottom}`
                 },
                 {
-                    name: _constants.SignalNames.PlotWidthIn,
-                    update: `${_constants.SignalNames.ViewportWidth} - ${_constants.SignalNames.PlotOffsetLeft} - ${_constants.SignalNames.PlotOffsetRight}`
+                    name: (0, _constants.SignalNames).PlotWidthIn,
+                    update: `${(0, _constants.SignalNames).ViewportWidth} - ${(0, _constants.SignalNames).PlotOffsetLeft} - ${(0, _constants.SignalNames).PlotOffsetRight}`
                 },
                 plotHeightOut,
                 plotWidthOut,
                 {
-                    name: 'height',
-                    update: `${_constants.SignalNames.PlotOffsetTop} + ${_constants.SignalNames.PlotHeightOut} + ${_constants.SignalNames.PlotOffsetBottom}`
+                    name: "height",
+                    update: `${(0, _constants.SignalNames).PlotOffsetTop} + ${(0, _constants.SignalNames).PlotHeightOut} + ${(0, _constants.SignalNames).PlotOffsetBottom}`
                 },
                 {
-                    name: 'width',
-                    update: `${_constants.SignalNames.PlotWidthOut} + ${_constants.SignalNames.PlotOffsetLeft} + ${_constants.SignalNames.PlotOffsetRight}`
+                    name: "width",
+                    update: `${(0, _constants.SignalNames).PlotWidthOut} + ${(0, _constants.SignalNames).PlotOffsetLeft} + ${(0, _constants.SignalNames).PlotOffsetRight}`
                 }
             ])
         };
@@ -2685,8 +2465,8 @@ class SpecBuilder {
                     fieldOps: [
                         {
                             field: null,
-                            op: 'count',
-                            as: _constants.FieldNames.Count
+                            op: "count",
+                            as: (0, _constants.FieldNames).Count
                         }
                     ]
                 });
@@ -2717,40 +2497,38 @@ class SpecBuilder {
         };
     }
     createLayout(layoutPair, buildProps) {
-        const { layoutType , props: props1  } = layoutPair;
-        const layoutBuildProps = Object.assign(Object.assign({
-        }, props1), buildProps);
-        const layoutClass = _index.layoutClasses[layoutType];
+        const { layoutType , props  } = layoutPair;
+        const layoutBuildProps = Object.assign(Object.assign({}, props), buildProps);
+        const layoutClass = (0, _index.layoutClasses)[layoutType];
         const layout = new layoutClass(layoutBuildProps);
         layout.id = buildProps.id;
         return layout;
     }
 }
 
-},{"./axes":"1oKBP","./color":"83a70","./constants":"1t33I","./defaults":"3ylwt","./facetTitle":"bSVTk","./fill":"5uOBc","./globalScope":"4o6ok","./scope":"lHDQD","./signals":"hwNqr","./layouts/index":"fPHbx","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"1oKBP":[function(require,module,exports) {
+},{"./axes":"4VGAd","./color":"7m2aV","./constants":"eNr4m","./defaults":"5iedU","./facetTitle":"6LisZ","./fill":"291dn","./globalScope":"jGiIn","./scope":"k44Ul","./signals":"3piKm","./layouts/index":"8IEIT","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"4VGAd":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "addGlobalAxes", ()=>addGlobalAxes
-);
+parcelHelpers.export(exports, "addGlobalAxes", ()=>addGlobalAxes);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _constants = require("./constants");
 var _defaults = require("./defaults");
 var _scope = require("./scope");
-function addGlobalAxes(props) {
-    const { axesOffsets , axisScales , axesScopes , axesTitlePadding , allGlobalScales , globalScope , labelBaseline , plotOffsetSignals , specColumns , specViewOptions  } = props;
+function addGlobalAxes(props1) {
+    const { axesOffsets , axisScales , axesScopes , axesTitlePadding , allGlobalScales , globalScope , labelBaseline , plotOffsetSignals , specColumns , specViewOptions  } = props1;
     const { scope  } = globalScope;
     allGlobalScales.forEach((globalScales)=>{
         const { scales  } = globalScales;
         for(let xyz in scales){
             let _scales = scales[xyz];
             if (_scales) {
-                _scope.addScales(scope, ..._scales);
+                (0, _scope.addScales)(scope, ..._scales);
                 let { showAxes  } = globalScales;
                 let zindex = undefined;
-                if (xyz === 'z') {
+                if (xyz === "z") {
                     showAxes = false;
-                    if (props.view === '3d' && specViewOptions.zAxisOptions && !props.faceted) {
+                    if (props1.view === "3d" && specViewOptions.zAxisOptions && !props1.faceted) {
                         if (specViewOptions.zAxisOptions.showZAxis) {
                             showAxes = true;
                             zindex = specViewOptions.zAxisOptions.zIndex;
@@ -2761,12 +2539,12 @@ function addGlobalAxes(props) {
                     let axisScale = axisScales[xyz];
                     if (axisScale) {
                         const lineColor = specViewOptions.colors.axisLine;
-                        const horizontal = xyz === 'x';
+                        const horizontal = xyz === "x";
                         const column = specColumns[xyz] || {
                             quantitative: true
                         };
                         const title = axisScale.title;
-                        const props1 = {
+                        const props = {
                             title,
                             horizontal,
                             column,
@@ -2776,22 +2554,18 @@ function addGlobalAxes(props) {
                             labelBaseline: labelBaseline[xyz],
                             zindex
                         };
-                        axesScopes['main'].forEach((a)=>_scope.addAxes(a.scope, createAxis(Object.assign(Object.assign({
-                            }, props1), {
+                        axesScopes["main"].forEach((a)=>(0, _scope.addAxes)(a.scope, createAxis(Object.assign(Object.assign({}, props), {
                                 scale: a.scale || _scales[0],
                                 showTitle: a.title,
                                 showLabels: a.labels,
                                 showLines: a.lines
-                            })))
-                        );
-                        if (axesScopes[xyz]) axesScopes[xyz].forEach((a)=>_scope.addAxes(a.scope, createAxis(Object.assign(Object.assign({
-                            }, props1), {
+                            }))));
+                        if (axesScopes[xyz]) axesScopes[xyz].forEach((a)=>(0, _scope.addAxes)(a.scope, createAxis(Object.assign(Object.assign({}, props), {
                                 scale: a.scale || _scales[0],
                                 showTitle: a.title,
                                 showLabels: a.labels,
                                 showLines: a.lines
-                            })))
-                        );
+                            }))));
                         if (plotOffsetSignals[xyz] && axesOffsets[xyz]) {
                             const plotOffsetSignal = plotOffsetSignals[xyz];
                             plotOffsetSignal.update = `${axesOffsets[xyz]}`;
@@ -2807,7 +2581,7 @@ function createAxis(props) {
     const axis = Object.assign(Object.assign(Object.assign(Object.assign({
         zindex,
         scale: scale.name,
-        orient: horizontal ? 'bottom' : 'left',
+        orient: horizontal ? "bottom" : "left",
         domain: showLines,
         ticks: showLines
     }, showLines && {
@@ -2816,55 +2590,46 @@ function createAxis(props) {
         tickSize: specViewOptions.tickSize
     }), showTitle && {
         title,
-        titleAlign: horizontal ? 'left' : 'right',
+        titleAlign: horizontal ? "left" : "right",
         titleAngle: {
-            signal: horizontal ? _constants.SignalNames.TextAngleX : _constants.SignalNames.TextAngleY
+            signal: horizontal ? (0, _constants.SignalNames).TextAngleX : (0, _constants.SignalNames).TextAngleY
         },
         titleColor: specViewOptions.colors.axisText,
         titleFontSize: {
-            signal: _constants.SignalNames.TextTitleSize
+            signal: (0, _constants.SignalNames).TextTitleSize
         },
-        titleLimit: _defaults.axesTitleLimit,
+        titleLimit: (0, _defaults.axesTitleLimit),
         titlePadding
     }), {
         labels: showLabels
     }), showLabels && {
-        labelAlign: horizontal ? 'left' : 'right',
+        labelAlign: horizontal ? "left" : "right",
         labelBaseline,
         labelAngle: {
-            signal: horizontal ? _constants.SignalNames.TextAngleX : _constants.SignalNames.TextAngleY
+            signal: horizontal ? (0, _constants.SignalNames).TextAngleX : (0, _constants.SignalNames).TextAngleY
         },
         labelColor: specViewOptions.colors.axisText,
         labelFontSize: {
-            signal: _constants.SignalNames.TextSize
+            signal: (0, _constants.SignalNames).TextSize
         },
-        labelLimit: _defaults.axesLabelLimit
+        labelLimit: (0, _defaults.axesLabelLimit)
     });
-    if (column.quantitative) axis.format = '~r';
+    if (column.quantitative) axis.format = "~r";
     return axis;
 }
 
-},{"./constants":"1t33I","./defaults":"3ylwt","./scope":"lHDQD","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"lHDQD":[function(require,module,exports) {
+},{"./constants":"eNr4m","./defaults":"5iedU","./scope":"k44Ul","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"k44Ul":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "addAxes", ()=>addAxes
-);
-parcelHelpers.export(exports, "addData", ()=>addData
-);
-parcelHelpers.export(exports, "addMarks", ()=>addMarks
-);
-parcelHelpers.export(exports, "addScales", ()=>addScales
-);
-parcelHelpers.export(exports, "addSignals", ()=>addSignals
-);
-parcelHelpers.export(exports, "addTransforms", ()=>addTransforms
-);
-parcelHelpers.export(exports, "getDataByName", ()=>getDataByName
-);
-parcelHelpers.export(exports, "getGroupBy", ()=>getGroupBy
-);
-parcelHelpers.export(exports, "addOffsets", ()=>addOffsets
-);
+parcelHelpers.export(exports, "addAxes", ()=>addAxes);
+parcelHelpers.export(exports, "addData", ()=>addData);
+parcelHelpers.export(exports, "addMarks", ()=>addMarks);
+parcelHelpers.export(exports, "addScales", ()=>addScales);
+parcelHelpers.export(exports, "addSignals", ()=>addSignals);
+parcelHelpers.export(exports, "addTransforms", ()=>addTransforms);
+parcelHelpers.export(exports, "getDataByName", ()=>getDataByName);
+parcelHelpers.export(exports, "getGroupBy", ()=>getGroupBy);
+parcelHelpers.export(exports, "addOffsets", ()=>addOffsets);
 function addAxes(scope, ...axis) {
     if (!scope.axes) scope.axes = [];
     scope.axes.push(...axis);
@@ -2898,20 +2663,17 @@ function getDataByName(data, dataName) {
     }
 }
 function getGroupBy(groupings) {
-    const groupby = groupings.map((g)=>g.groupby
-    );
-    return groupby.reduce((acc, val)=>acc.concat(val)
-    , []);
+    const groupby = groupings.map((g)=>g.groupby);
+    return groupby.reduce((acc, val)=>acc.concat(val), []);
 }
 function addOffsets(...offsets) {
-    return offsets.filter(Boolean).join(' + ');
+    return offsets.filter(Boolean).join(" + ");
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"83a70":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7m2aV":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "addColor", ()=>addColor
-);
+parcelHelpers.export(exports, "addColor", ()=>addColor);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _scope = require("./scope");
@@ -2924,47 +2686,44 @@ function addColor(props) {
     const { colorReverseSignalName , dataName , scope , legendDataName , scaleName , specContext , topLookupName  } = props;
     let colorDataName = dataName;
     const { insight , specColumns , specViewOptions  } = specContext;
-    const legends = _legends.getLegends(specContext, scaleName);
+    const legends = (0, _legends.getLegends)(specContext, scaleName);
     if (legends) scope.legends = legends;
     const categoricalColor = specColumns.color && !specColumns.color.quantitative;
     if (categoricalColor) {
-        _scope.addData(scope, ..._top.topLookup(specColumns.color, specViewOptions.maxLegends, dataName, legendDataName, topLookupName, _constants.FieldNames.TopColor, _constants.FieldNames.TopIndex));
+        (0, _scope.addData)(scope, ...(0, _top.topLookup)(specColumns.color, specViewOptions.maxLegends, dataName, legendDataName, topLookupName, (0, _constants.FieldNames).TopColor, (0, _constants.FieldNames).TopIndex));
         colorDataName = legendDataName;
     }
     if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
-        if (specColumns.color.quantitative) _scope.addScales(scope, _scales.binnableColorScale(scaleName, insight.colorBin, dataName, specColumns.color.name, insight.scheme));
-        else _scope.addScales(scope, {
+        if (specColumns.color.quantitative) (0, _scope.addScales)(scope, (0, _scales.binnableColorScale)(scaleName, insight.colorBin, dataName, specColumns.color.name, insight.scheme));
+        else (0, _scope.addScales)(scope, {
             name: scaleName,
-            type: 'ordinal',
+            type: "ordinal",
             domain: {
                 data: colorDataName,
-                field: _constants.FieldNames.TopColor,
+                field: (0, _constants.FieldNames).TopColor,
                 sort: true
             },
             range: {
-                scheme: insight.scheme || _constants.ColorScaleNone
+                scheme: insight.scheme || (0, _constants.ColorScaleNone)
             },
             reverse: {
                 signal: colorReverseSignalName
             }
         });
     }
-    _scope.addSignals(scope, _signals.colorBinCountSignal(specContext), _signals.colorReverseSignal(specContext));
+    (0, _scope.addSignals)(scope, (0, _signals.colorBinCountSignal)(specContext), (0, _signals.colorReverseSignal)(specContext));
     return {
-        topColorField: _constants.FieldNames.TopColor,
+        topColorField: (0, _constants.FieldNames).TopColor,
         colorDataName
     };
 }
 
-},{"./scope":"lHDQD","./scales":"duG64","./signals":"hwNqr","./constants":"1t33I","./legends":"h6DHR","./top":"2AYxV","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"duG64":[function(require,module,exports) {
+},{"./scope":"k44Ul","./scales":"8b8up","./signals":"3piKm","./constants":"eNr4m","./legends":"d7VwA","./top":"1OWQa","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8b8up":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "linearScale", ()=>linearScale
-);
-parcelHelpers.export(exports, "pointScale", ()=>pointScale
-);
-parcelHelpers.export(exports, "binnableColorScale", ()=>binnableColorScale
-);
+parcelHelpers.export(exports, "linearScale", ()=>linearScale);
+parcelHelpers.export(exports, "pointScale", ()=>pointScale);
+parcelHelpers.export(exports, "binnableColorScale", ()=>binnableColorScale);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _constants = require("./constants");
@@ -2972,13 +2731,13 @@ var _expr = require("./expr");
 function linearScale(scaleName, data, field, range, reverse, zero) {
     const scale = {
         name: scaleName,
-        type: 'linear',
+        type: "linear",
         range,
         round: true,
         reverse,
         domain: {
             data,
-            field: _expr.safeFieldName(field)
+            field: (0, _expr.safeFieldName)(field)
         },
         zero,
         nice: true
@@ -2988,11 +2747,11 @@ function linearScale(scaleName, data, field, range, reverse, zero) {
 function pointScale(scaleName, data, range, field, reverse) {
     const scale = {
         name: scaleName,
-        type: 'point',
+        type: "point",
         range,
         domain: {
             data,
-            field: _expr.safeFieldName(field),
+            field: (0, _expr.safeFieldName)(field),
             sort: true
         },
         padding: 0.5
@@ -3001,37 +2760,37 @@ function pointScale(scaleName, data, range, field, reverse) {
     return scale;
 }
 function binnableColorScale(scaleName, colorBin, data, field, scheme) {
-    scheme = scheme || _constants.ColorScaleNone;
+    scheme = scheme || (0, _constants.ColorScaleNone);
     const domain = {
         data,
-        field: _expr.safeFieldName(field)
+        field: (0, _expr.safeFieldName)(field)
     };
     const range = {
         scheme
     };
     const reverse = {
-        signal: _constants.SignalNames.ColorReverse
+        signal: (0, _constants.SignalNames).ColorReverse
     };
-    if (colorBin !== 'continuous') range.count = {
-        signal: _constants.SignalNames.ColorBinCount
+    if (colorBin !== "continuous") range.count = {
+        signal: (0, _constants.SignalNames).ColorBinCount
     };
     switch(colorBin){
-        case 'continuous':
+        case "continuous":
             {
                 const sequentialScale = {
                     name: scaleName,
-                    type: 'linear',
+                    type: "linear",
                     domain,
                     range,
                     reverse
                 };
                 return sequentialScale;
             }
-        case 'quantile':
+        case "quantile":
             {
                 const quantileScale = {
                     name: scaleName,
-                    type: 'quantile',
+                    type: "quantile",
                     domain,
                     range,
                     reverse
@@ -3042,7 +2801,7 @@ function binnableColorScale(scaleName, colorBin, data, field, scheme) {
             {
                 const quantizeScale = {
                     name: scaleName,
-                    type: 'quantize',
+                    type: "quantize",
                     domain,
                     range,
                     reverse
@@ -3052,7 +2811,7 @@ function binnableColorScale(scaleName, colorBin, data, field, scheme) {
     }
 }
 
-},{"./constants":"1t33I","./expr":"2IX4W","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"2IX4W":[function(require,module,exports) {
+},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1G99Z":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -3061,105 +2820,98 @@ parcelHelpers.defineInteropFlag(exports);
  * Make sure that the field name is accessible via Vega's Field type
  * https://vega.github.io/vega/docs/types/#Field
  * examples: "source.x", "target['x']", "[my.field]"
- */ parcelHelpers.export(exports, "safeFieldName", ()=>safeFieldName
-);
+ */ parcelHelpers.export(exports, "safeFieldName", ()=>safeFieldName);
 /**
  * Make sure the field name is usable in a Vega expression
- */ parcelHelpers.export(exports, "exprSafeFieldName", ()=>exprSafeFieldName
-);
+ */ parcelHelpers.export(exports, "exprSafeFieldName", ()=>exprSafeFieldName);
 function safeFieldName(field) {
-    return field.replace('.', '\\.').replace('[', '\\[').replace(']', '\\]');
+    return field.replace(".", "\\.").replace("[", "\\[").replace("]", "\\]");
 }
 function exprSafeFieldName(field) {
     //remove whitespace, period, accessors and logical modifiers
-    return field.replace(/[.,:;+=\-/<>{}|~!@#$%^*[\]`'"()?\s\\]/g, '');
+    return field.replace(/[.,:;+=\-/<>{}|~!@#$%^*[\]`'"()?\s\\]/g, "");
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"hwNqr":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3piKm":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "defaultZProportion", ()=>defaultZProportion
-);
-parcelHelpers.export(exports, "textSignals", ()=>textSignals
-);
-parcelHelpers.export(exports, "colorBinCountSignal", ()=>colorBinCountSignal
-);
-parcelHelpers.export(exports, "colorReverseSignal", ()=>colorReverseSignal
-);
-parcelHelpers.export(exports, "modifySignal", ()=>modifySignal
-);
+parcelHelpers.export(exports, "defaultZProportion", ()=>defaultZProportion);
+parcelHelpers.export(exports, "textSignals", ()=>textSignals);
+parcelHelpers.export(exports, "colorBinCountSignal", ()=>colorBinCountSignal);
+parcelHelpers.export(exports, "colorReverseSignal", ()=>colorReverseSignal);
+parcelHelpers.export(exports, "modifySignal", ()=>modifySignal);
 var _constants = require("./constants");
 const defaultZProportion = 0.6;
 function textSignals(context, heightSignal) {
     const { specViewOptions  } = context;
     const signals = [
         {
-            name: _constants.SignalNames.ZProportion,
+            name: (0, _constants.SignalNames).ZProportion,
             value: defaultZProportion,
             bind: {
                 name: specViewOptions.language.zScaleProportion,
                 debounce: 50,
-                input: 'range',
+                input: "range",
                 min: 0.2,
                 max: 2,
                 step: 0.1
             }
         },
         {
-            name: _constants.SignalNames.ZHeight,
-            update: `${heightSignal} * ${_constants.SignalNames.ZProportion}`
+            name: (0, _constants.SignalNames).ZHeight,
+            update: `${heightSignal} * ${(0, _constants.SignalNames).ZProportion}`
         },
         {
-            name: _constants.SignalNames.TextScale,
+            name: (0, _constants.SignalNames).TextScale,
             value: 1.2,
             bind: {
                 name: specViewOptions.language.textScaleSignal,
                 debounce: 50,
-                input: 'range',
+                input: "range",
                 min: 0.5,
                 max: 2,
                 step: 0.1
             }
         },
         {
-            name: _constants.SignalNames.TextSize,
-            update: `${_constants.SignalNames.TextScale} * 10`
+            name: (0, _constants.SignalNames).TextSize,
+            update: `${(0, _constants.SignalNames).TextScale} * 10`
         },
         {
-            name: _constants.SignalNames.TextTitleSize,
-            update: `${_constants.SignalNames.TextScale} * 15`
+            name: (0, _constants.SignalNames).TextTitleSize,
+            update: `${(0, _constants.SignalNames).TextScale} * 15`
         },
         {
-            name: _constants.SignalNames.TextAngleX,
+            name: (0, _constants.SignalNames).TextAngleX,
             value: 30,
             bind: {
                 name: specViewOptions.language.xAxisTextAngleSignal,
                 debounce: 50,
-                input: 'range',
+                input: "range",
                 min: 0,
                 max: 90,
                 step: 1
             }
         },
         {
-            name: _constants.SignalNames.TextAngleY,
+            name: (0, _constants.SignalNames).TextAngleY,
             value: 0,
             bind: {
                 name: specViewOptions.language.yAxisTextAngleSignal,
                 debounce: 50,
-                input: 'range',
+                input: "range",
                 min: -90,
                 max: 0,
                 step: 1
             }
         },
         {
-            name: _constants.SignalNames.MarkOpacity,
+            name: (0, _constants.SignalNames).MarkOpacity,
             value: 1,
             bind: {
                 name: specViewOptions.language.markOpacitySignal,
                 debounce: 50,
-                input: 'range',
+                input: "range",
                 min: 0.1,
                 max: 1,
                 step: 0.05
@@ -3171,11 +2923,11 @@ function textSignals(context, heightSignal) {
 function colorBinCountSignal(context) {
     const { specViewOptions  } = context;
     const signal = {
-        name: _constants.SignalNames.ColorBinCount,
+        name: (0, _constants.SignalNames).ColorBinCount,
         value: 7,
         bind: {
             name: specViewOptions.language.colorBinCount,
-            input: 'range',
+            input: "range",
             min: 1,
             max: specViewOptions.maxLegends + 1,
             step: 1
@@ -3186,11 +2938,11 @@ function colorBinCountSignal(context) {
 function colorReverseSignal(context) {
     const { specViewOptions  } = context;
     const signal = {
-        name: _constants.SignalNames.ColorReverse,
+        name: (0, _constants.SignalNames).ColorReverse,
         value: false,
         bind: {
             name: specViewOptions.language.colorReverse,
-            input: 'checkbox'
+            input: "checkbox"
         }
     };
     return signal;
@@ -3199,29 +2951,28 @@ function modifySignal(s, fn, update) {
     s.update = `${fn}((${s.update}), (${update}))`;
 }
 
-},{"./constants":"1t33I","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"h6DHR":[function(require,module,exports) {
+},{"./constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"d7VwA":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "getLegends", ()=>getLegends
-);
+parcelHelpers.export(exports, "getLegends", ()=>getLegends);
 function legend(column, fill) {
     const legend1 = {
-        orient: 'none',
+        orient: "none",
         title: column.name,
         fill,
         encode: {
             symbols: {
                 update: {
                     shape: {
-                        value: 'square'
+                        value: "square"
                     }
                 }
             }
         }
     };
     if (column.quantitative) {
-        legend1.type = 'symbol';
-        legend1.format = '~r';
+        legend1.type = "symbol";
+        legend1.format = "~r";
     }
     return legend1;
 }
@@ -3232,11 +2983,10 @@ function getLegends(context, fill) {
     ];
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"2AYxV":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1OWQa":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "topLookup", ()=>topLookup
-);
+parcelHelpers.export(exports, "topLookup", ()=>topLookup);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _constants = require("./constants");
@@ -3248,22 +2998,22 @@ function topLookup(column, count, source, legend, lookupName, fieldName, indexNa
             source,
             transform: [
                 {
-                    type: 'aggregate',
+                    type: "aggregate",
                     groupby: [
-                        _expr.safeFieldName(column.name)
+                        (0, _expr.safeFieldName)(column.name)
                     ]
                 },
                 {
-                    type: 'window',
+                    type: "window",
                     ops: [
-                        'count'
+                        "count"
                     ],
                     as: [
                         indexName
                     ]
                 },
                 {
-                    type: 'filter',
+                    type: "filter",
                     expr: `datum[${JSON.stringify(indexName)}] <= ${count}`
                 }
             ]
@@ -3273,22 +3023,22 @@ function topLookup(column, count, source, legend, lookupName, fieldName, indexNa
             source,
             transform: [
                 {
-                    type: 'lookup',
+                    type: "lookup",
                     from: lookupName,
-                    key: _expr.safeFieldName(column.name),
+                    key: (0, _expr.safeFieldName)(column.name),
                     fields: [
                         column.name
-                    ].map(_expr.safeFieldName),
+                    ].map((0, _expr.safeFieldName)),
                     values: [
                         column.name
-                    ].map(_expr.safeFieldName),
+                    ].map((0, _expr.safeFieldName)),
                     as: [
                         fieldName
                     ]
                 },
                 {
-                    type: 'formula',
-                    expr: `datum[${JSON.stringify(fieldName)}] == null ? '${_constants.Other}' : datum[${JSON.stringify(fieldName)}]`,
+                    type: "formula",
+                    expr: `datum[${JSON.stringify(fieldName)}] == null ? '${(0, _constants.Other)}' : datum[${JSON.stringify(fieldName)}]`,
                     as: fieldName
                 }
             ]
@@ -3297,38 +3047,33 @@ function topLookup(column, count, source, legend, lookupName, fieldName, indexNa
     return data;
 }
 
-},{"./constants":"1t33I","./expr":"2IX4W","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"bSVTk":[function(require,module,exports) {
+},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"6LisZ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "addFacetColRowTitles", ()=>addFacetColRowTitles
-);
-parcelHelpers.export(exports, "addFacetCellTitles", ()=>addFacetCellTitles
-);
-parcelHelpers.export(exports, "addFacetAxesGroupMarks", ()=>addFacetAxesGroupMarks
-);
-parcelHelpers.export(exports, "facetRowHeaderFooter", ()=>facetRowHeaderFooter
-);
-parcelHelpers.export(exports, "facetColumnHeaderFooter", ()=>facetColumnHeaderFooter
-);
+parcelHelpers.export(exports, "addFacetColRowTitles", ()=>addFacetColRowTitles);
+parcelHelpers.export(exports, "addFacetCellTitles", ()=>addFacetCellTitles);
+parcelHelpers.export(exports, "addFacetAxesGroupMarks", ()=>addFacetAxesGroupMarks);
+parcelHelpers.export(exports, "facetRowHeaderFooter", ()=>facetRowHeaderFooter);
+parcelHelpers.export(exports, "facetColumnHeaderFooter", ()=>facetColumnHeaderFooter);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _scope = require("./scope");
 var _constants = require("./constants");
 function addFacetColRowTitles(globalScope, colTitleSource, rowTitleSource, sizeSignals, axisTextColor) {
-    const titleSignal = `parent[${JSON.stringify(_constants.FieldNames.FacetTitle)}]`;
-    const index = `datum[${JSON.stringify(_constants.FieldNames.Ordinal)}] - 1`;
+    const titleSignal = `parent[${JSON.stringify((0, _constants.FieldNames).FacetTitle)}]`;
+    const index = `datum[${JSON.stringify((0, _constants.FieldNames).Ordinal)}] - 1`;
     const col = facetColumnHeaderFooter(colTitleSource.dataName, sizeSignals, index);
     const row = facetRowHeaderFooter(rowTitleSource.dataName, sizeSignals, index);
-    _scope.addMarks(globalScope, col.header, row.footer);
-    _scope.addMarks(col.header, {
-        type: 'text',
+    (0, _scope.addMarks)(globalScope, col.header, row.footer);
+    (0, _scope.addMarks)(col.header, {
+        type: "text",
         encode: {
             enter: {
                 align: {
-                    value: 'center'
+                    value: "center"
                 },
                 baseline: {
-                    value: 'middle'
+                    value: "middle"
                 },
                 fill: {
                     value: axisTextColor
@@ -3336,7 +3081,7 @@ function addFacetColRowTitles(globalScope, colTitleSource, rowTitleSource, sizeS
             },
             update: {
                 metaData: {
-                    signal: `{search: parent[${JSON.stringify(_constants.FieldNames.FacetSearch)}]}`
+                    signal: `{search: parent[${JSON.stringify((0, _constants.FieldNames).FacetSearch)}]}`
                 },
                 x: {
                     signal: `${sizeSignals.layoutWidth} / 2`
@@ -3345,7 +3090,7 @@ function addFacetColRowTitles(globalScope, colTitleSource, rowTitleSource, sizeS
                     signal: sizeSignals.layoutWidth
                 },
                 fontSize: {
-                    signal: _constants.SignalNames.TextSize
+                    signal: (0, _constants.SignalNames).TextSize
                 },
                 text: {
                     signal: titleSignal
@@ -3353,15 +3098,15 @@ function addFacetColRowTitles(globalScope, colTitleSource, rowTitleSource, sizeS
             }
         }
     });
-    _scope.addMarks(row.footer, {
-        type: 'text',
+    (0, _scope.addMarks)(row.footer, {
+        type: "text",
         encode: {
             enter: {
                 align: {
-                    value: 'left'
+                    value: "left"
                 },
                 baseline: {
-                    value: 'middle'
+                    value: "middle"
                 },
                 fill: {
                     value: axisTextColor
@@ -3369,16 +3114,16 @@ function addFacetColRowTitles(globalScope, colTitleSource, rowTitleSource, sizeS
             },
             update: {
                 metaData: {
-                    signal: `{search: parent[${JSON.stringify(_constants.FieldNames.FacetSearch)}]}`
+                    signal: `{search: parent[${JSON.stringify((0, _constants.FieldNames).FacetSearch)}]}`
                 },
                 y: {
                     signal: `${sizeSignals.layoutHeight} / 2`
                 },
                 limit: {
-                    signal: _constants.SignalNames.PlotOffsetRight
+                    signal: (0, _constants.SignalNames).PlotOffsetRight
                 },
                 fontSize: {
-                    signal: _constants.SignalNames.TextSize
+                    signal: (0, _constants.SignalNames).TextSize
                 },
                 text: {
                     signal: titleSignal
@@ -3388,15 +3133,15 @@ function addFacetColRowTitles(globalScope, colTitleSource, rowTitleSource, sizeS
     });
 }
 function addFacetCellTitles(scope, sizeSignals, axisTextColor) {
-    _scope.addMarks(scope, {
-        type: 'text',
+    (0, _scope.addMarks)(scope, {
+        type: "text",
         encode: {
             enter: {
                 align: {
-                    value: 'center'
+                    value: "center"
                 },
                 baseline: {
-                    value: 'bottom'
+                    value: "bottom"
                 },
                 fill: {
                     value: axisTextColor
@@ -3404,22 +3149,22 @@ function addFacetCellTitles(scope, sizeSignals, axisTextColor) {
             },
             update: {
                 metaData: {
-                    signal: `{search: parent[${JSON.stringify(_constants.FieldNames.FacetSearch)}]}`
+                    signal: `{search: parent[${JSON.stringify((0, _constants.FieldNames).FacetSearch)}]}`
                 },
                 x: {
                     signal: `(${sizeSignals.layoutWidth}) / 2`
                 },
                 text: {
-                    signal: `parent[${JSON.stringify(_constants.FieldNames.FacetTitle)}]`
+                    signal: `parent[${JSON.stringify((0, _constants.FieldNames).FacetTitle)}]`
                 },
                 fontSize: {
-                    signal: _constants.SignalNames.TextSize
+                    signal: (0, _constants.SignalNames).TextSize
                 },
                 limit: {
                     signal: sizeSignals.layoutWidth
                 },
                 y: {
-                    signal: `-${_constants.SignalNames.FacetPaddingTop} / 2`
+                    signal: `-${(0, _constants.SignalNames).FacetPaddingTop} / 2`
                 }
             }
         }
@@ -3430,12 +3175,12 @@ function addFacetAxesGroupMarks(props) {
     const { sizeSignals  } = facetScope;
     const colSequence = createSequence(colSeqName, sizeSignals.colCount);
     const rowSequence = createSequence(rowSeqName, sizeSignals.rowCount);
-    const index = 'datum.data';
+    const index = "datum.data";
     const col = facetColumnHeaderFooter(colSeqName, sizeSignals, index);
     const row = facetRowHeaderFooter(rowSeqName, sizeSignals, index);
-    _scope.addData(globalScope, colSequence, rowSequence);
-    _scope.addMarks(globalScope, col.footer, row.header);
-    _scope.addScales(globalScope, colTitleScale, rowTitleScale);
+    (0, _scope.addData)(globalScope, colSequence, rowSequence);
+    (0, _scope.addMarks)(globalScope, col.footer, row.header);
+    (0, _scope.addScales)(globalScope, colTitleScale, rowTitleScale);
     const map = {
         main: [
             {
@@ -3481,7 +3226,7 @@ function addFacetAxesGroupMarks(props) {
 function facetRowHeaderFooter(data, sizeSignals, index) {
     const rowFn = (xSignal)=>{
         return {
-            type: 'group',
+            type: "group",
             from: {
                 data
             },
@@ -3491,7 +3236,7 @@ function facetRowHeaderFooter(data, sizeSignals, index) {
                         signal: xSignal
                     },
                     y: {
-                        signal: `${_constants.SignalNames.PlotOffsetTop} + ${_constants.SignalNames.FacetPaddingTop} + (${index}) * (${sizeSignals.layoutHeight} + ${_constants.SignalNames.FacetPaddingTop} + ${_constants.SignalNames.FacetPaddingBottom})`
+                        signal: `${(0, _constants.SignalNames).PlotOffsetTop} + ${(0, _constants.SignalNames).FacetPaddingTop} + (${index}) * (${sizeSignals.layoutHeight} + ${(0, _constants.SignalNames).FacetPaddingTop} + ${(0, _constants.SignalNames).FacetPaddingBottom})`
                     },
                     height: {
                         signal: sizeSignals.layoutHeight
@@ -3500,8 +3245,8 @@ function facetRowHeaderFooter(data, sizeSignals, index) {
             }
         };
     };
-    const header = rowFn(_constants.SignalNames.PlotOffsetLeft);
-    const footer = rowFn(`${_constants.SignalNames.PlotOffsetLeft} + ${_constants.SignalNames.PlotWidthOut} + ${_constants.SignalNames.PlotOffsetRight} / 2`);
+    const header = rowFn((0, _constants.SignalNames).PlotOffsetLeft);
+    const footer = rowFn(`${(0, _constants.SignalNames).PlotOffsetLeft} + ${(0, _constants.SignalNames).PlotWidthOut} + ${(0, _constants.SignalNames).PlotOffsetRight} / 2`);
     return {
         header,
         footer
@@ -3510,14 +3255,14 @@ function facetRowHeaderFooter(data, sizeSignals, index) {
 function facetColumnHeaderFooter(data, sizeSignals, index) {
     const colFn = (ySignal)=>{
         return {
-            type: 'group',
+            type: "group",
             from: {
                 data
             },
             encode: {
                 update: {
                     x: {
-                        signal: `(${index}) * (${sizeSignals.layoutWidth} + ${_constants.SignalNames.FacetPaddingLeft}) + ${_constants.SignalNames.FacetPaddingLeft} + ${_constants.SignalNames.PlotOffsetLeft}`
+                        signal: `(${index}) * (${sizeSignals.layoutWidth} + ${(0, _constants.SignalNames).FacetPaddingLeft}) + ${(0, _constants.SignalNames).FacetPaddingLeft} + ${(0, _constants.SignalNames).PlotOffsetLeft}`
                     },
                     y: {
                         signal: ySignal
@@ -3530,8 +3275,8 @@ function facetColumnHeaderFooter(data, sizeSignals, index) {
         };
     };
     //create group marks based on data sequences
-    const header = colFn(`${_constants.SignalNames.PlotOffsetTop} / 2`);
-    const footer = colFn(`${_constants.SignalNames.PlotOffsetTop} + ${_constants.SignalNames.PlotHeightOut}`);
+    const header = colFn(`${(0, _constants.SignalNames).PlotOffsetTop} / 2`);
+    const footer = colFn(`${(0, _constants.SignalNames).PlotOffsetTop} + ${(0, _constants.SignalNames).PlotHeightOut}`);
     return {
         header,
         footer
@@ -3542,7 +3287,7 @@ function createSequence(dataName, countSignal) {
         name: dataName,
         transform: [
             {
-                type: 'sequence',
+                type: "sequence",
                 start: 0,
                 stop: {
                     signal: countSignal
@@ -3552,13 +3297,11 @@ function createSequence(dataName, countSignal) {
     };
 }
 
-},{"./scope":"lHDQD","./constants":"1t33I","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"5uOBc":[function(require,module,exports) {
+},{"./scope":"k44Ul","./constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"291dn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "fill", ()=>fill
-);
-parcelHelpers.export(exports, "opacity", ()=>opacity
-);
+parcelHelpers.export(exports, "fill", ()=>fill);
+parcelHelpers.export(exports, "opacity", ()=>opacity);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _constants = require("./constants");
@@ -3567,49 +3310,48 @@ function fill(context, colorFieldName, scale) {
     const { specColumns , insight , specViewOptions  } = context;
     const colorColumn = specColumns.color;
     return colorColumn ? colorColumn.isColorData || insight.directColor ? {
-        field: _expr.safeFieldName(colorColumn.name)
+        field: (0, _expr.safeFieldName)(colorColumn.name)
     } : {
         scale,
-        field: colorColumn.quantitative ? _expr.safeFieldName(colorColumn.name) : colorFieldName
+        field: colorColumn.quantitative ? (0, _expr.safeFieldName)(colorColumn.name) : colorFieldName
     } : {
         value: specViewOptions.colors.defaultCube
     };
 }
 function opacity(context) {
     const result = {
-        signal: _constants.SignalNames.MarkOpacity
+        signal: (0, _constants.SignalNames).MarkOpacity
     };
     return result;
 }
 
-},{"./constants":"1t33I","./expr":"2IX4W","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"4o6ok":[function(require,module,exports) {
+},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jGiIn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "GlobalScope", ()=>GlobalScope
-);
+parcelHelpers.export(exports, "GlobalScope", ()=>GlobalScope);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _constants = require("./constants");
 var _scope = require("./scope");
 class GlobalScope {
     constructor(props){
-        const { dataName , markGroup: markGroup1 , scope , signals  } = props;
+        const { dataName , markGroup , scope , signals  } = props;
         this.scope = scope;
-        this._markGroup = markGroup1;
+        this._markGroup = markGroup;
         this.signals = signals;
-        this.data = _scope.getDataByName(scope.data, dataName).data;
+        this.data = (0, _scope.getDataByName)(scope.data, dataName).data;
         this._markDataName = dataName;
         this.offsets = {
-            x: '0',
-            y: '0',
-            h: _constants.SignalNames.PlotHeightIn,
-            w: _constants.SignalNames.PlotWidthIn
+            x: "0",
+            y: "0",
+            h: (0, _constants.SignalNames).PlotHeightIn,
+            w: (0, _constants.SignalNames).PlotWidthIn
         };
         this.sizeSignals = {
-            layoutHeight: _constants.SignalNames.PlotHeightIn,
-            layoutWidth: _constants.SignalNames.PlotWidthIn
+            layoutHeight: (0, _constants.SignalNames).PlotHeightIn,
+            layoutWidth: (0, _constants.SignalNames).PlotWidthIn
         };
-        this.zSize = _constants.SignalNames.PlotHeightIn;
+        this.zSize = (0, _constants.SignalNames).PlotHeightIn;
     }
     get markDataName() {
         return this._markDataName;
@@ -3625,11 +3367,10 @@ class GlobalScope {
     }
 }
 
-},{"./constants":"1t33I","./scope":"lHDQD","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"fPHbx":[function(require,module,exports) {
+},{"./constants":"eNr4m","./scope":"k44Ul","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8IEIT":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "layoutClasses", ()=>layoutClasses
-);
+parcelHelpers.export(exports, "layoutClasses", ()=>layoutClasses);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _aggregateContainer = require("./aggregateContainer");
@@ -3643,23 +3384,22 @@ var _strip = require("./strip");
 var _treemap = require("./treemap");
 var _wrap = require("./wrap");
 const layoutClasses = {
-    AggregateContainer: _aggregateContainer.AggregateContainer,
-    AggregateSquare: _aggregateSquare.AggregateSquare,
-    Band: _band.Band,
-    Cross: _cross.Cross,
-    Scatter: _scatter.Scatter,
-    Square: _square.Square,
-    Stack: _stack.Stack,
-    Strip: _strip.Strip,
-    Treemap: _treemap.Treemap,
-    Wrap: _wrap.Wrap
+    AggregateContainer: (0, _aggregateContainer.AggregateContainer),
+    AggregateSquare: (0, _aggregateSquare.AggregateSquare),
+    Band: (0, _band.Band),
+    Cross: (0, _cross.Cross),
+    Scatter: (0, _scatter.Scatter),
+    Square: (0, _square.Square),
+    Stack: (0, _stack.Stack),
+    Strip: (0, _strip.Strip),
+    Treemap: (0, _treemap.Treemap),
+    Wrap: (0, _wrap.Wrap)
 };
 
-},{"./aggregateContainer":"2O4nj","./aggregateSquare":"6wxfJ","./band":"2X3Vg","./cross":"in4x6","./scatter":"6EFcR","./square":"eYIiP","./stack":"jeLuC","./strip":"9us2O","./treemap":"6XNP4","./wrap":"6iuK6","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"2O4nj":[function(require,module,exports) {
+},{"./aggregateContainer":"2AO1d","./aggregateSquare":"3jVb3","./band":"cD88v","./cross":"3Xmem","./scatter":"jRktq","./square":"425K1","./stack":"b0WQI","./strip":"1pzL4","./treemap":"kPpw1","./wrap":"7BE6v","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"2AO1d":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "AggregateContainer", ()=>AggregateContainer
-);
+parcelHelpers.export(exports, "AggregateContainer", ()=>AggregateContainer);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _layout = require("./layout");
@@ -3667,7 +3407,7 @@ var _constants = require("../constants");
 var _expr = require("../expr");
 var _scope = require("../scope");
 var _selection = require("../selection");
-class AggregateContainer extends _layout.Layout {
+class AggregateContainer extends (0, _layout.Layout) {
     constructor(props){
         super(props);
         this.props = props;
@@ -3683,47 +3423,46 @@ class AggregateContainer extends _layout.Layout {
         };
     }
     getAggregateSumOp() {
-        if (this.aggregation === 'sum') {
+        if (this.aggregation === "sum") {
             const fieldOp = {
-                field: _expr.safeFieldName(this.props.sumBy.name),
-                op: 'sum',
-                as: _constants.FieldNames.Sum
+                field: (0, _expr.safeFieldName)(this.props.sumBy.name),
+                op: "sum",
+                as: (0, _constants.FieldNames).Sum
             };
             return fieldOp;
         }
     }
     build() {
-        const { aggregation , names , props: props1  } = this;
-        const { dock , globalScope , groupings , niceScale , parentScope , showAxes  } = props1;
-        _scope.addTransforms(globalScope.data, Object.assign(Object.assign({
-        }, this.getTransforms(aggregation, _scope.getGroupBy(groupings))), {
+        const { aggregation , names , props  } = this;
+        const { dock , globalScope , groupings , niceScale , parentScope , showAxes  } = props;
+        (0, _scope.addTransforms)(globalScope.data, Object.assign(Object.assign({}, this.getTransforms(aggregation, (0, _scope.getGroupBy)(groupings))), {
             as: [
                 names.aggregateField
             ]
         }), {
-            type: 'extent',
-            field: _expr.safeFieldName(names.aggregateField),
+            type: "extent",
+            field: (0, _expr.safeFieldName)(names.aggregateField),
             signal: names.globalAggregateExtentSignal
         });
-        _scope.addSignals(globalScope.scope, {
-            name: props1.globalAggregateMaxExtentSignal,
+        (0, _scope.addSignals)(globalScope.scope, {
+            name: props.globalAggregateMaxExtentSignal,
             update: `${names.globalAggregateExtentSignal}[1]`
         });
-        const horizontal = dock === 'left';
+        const horizontal = dock === "left";
         const groupScaled = `scale(${JSON.stringify(names.scale)}, datum[${JSON.stringify(names.aggregateField)}])`;
         const offsets = {
             x: parentScope.offsets.x,
-            y: _scope.addOffsets(parentScope.offsets.y, dock === 'bottom' ? groupScaled : ''),
-            h: horizontal ? parentScope.offsets.h : dock === 'top' ? groupScaled : `${parentScope.offsets.h} - ${groupScaled}`,
+            y: (0, _scope.addOffsets)(parentScope.offsets.y, dock === "bottom" ? groupScaled : ""),
+            h: horizontal ? parentScope.offsets.h : dock === "top" ? groupScaled : `${parentScope.offsets.h} - ${groupScaled}`,
             w: horizontal ? groupScaled : parentScope.offsets.w
         };
         const scale = {
-            type: 'linear',
+            type: "linear",
             name: names.scale,
             domain: [
                 0,
                 {
-                    signal: props1.globalAggregateMaxExtentSignal
+                    signal: props.globalAggregateMaxExtentSignal
                 }
             ],
             range: horizontal ? [
@@ -3739,12 +3478,12 @@ class AggregateContainer extends _layout.Layout {
             ],
             nice: niceScale,
             zero: true,
-            reverse: dock === 'top'
+            reverse: dock === "top"
         };
-        const globalAggregateMaxExtentScaledValue = `scale(${JSON.stringify(names.scale)}, ${props1.globalAggregateMaxExtentSignal})`;
-        _scope.addSignals(globalScope.scope, {
-            name: props1.globalAggregateMaxExtentScaledSignal,
-            update: dock === 'bottom' ? `${parentScope.sizeSignals.layoutHeight} - ${globalAggregateMaxExtentScaledValue}` : globalAggregateMaxExtentScaledValue
+        const globalAggregateMaxExtentScaledValue = `scale(${JSON.stringify(names.scale)}, ${props.globalAggregateMaxExtentSignal})`;
+        (0, _scope.addSignals)(globalScope.scope, {
+            name: props.globalAggregateMaxExtentScaledSignal,
+            update: dock === "bottom" ? `${parentScope.sizeSignals.layoutHeight} - ${globalAggregateMaxExtentScaledValue}` : globalAggregateMaxExtentScaledValue
         });
         return {
             offsets,
@@ -3769,26 +3508,26 @@ class AggregateContainer extends _layout.Layout {
             encodingRuleMap: horizontal ? {
                 x: [
                     {
-                        test: _selection.testForCollapseSelection(),
+                        test: (0, _selection.testForCollapseSelection)(),
                         signal: parentScope.offsets.x
                     }
                 ],
                 width: [
                     {
-                        test: _selection.testForCollapseSelection(),
+                        test: (0, _selection.testForCollapseSelection)(),
                         value: 0
                     }
                 ]
             } : {
                 y: [
                     {
-                        test: _selection.testForCollapseSelection(),
-                        signal: dock === 'top' ? parentScope.offsets.y : _scope.addOffsets(parentScope.offsets.y, parentScope.offsets.h)
+                        test: (0, _selection.testForCollapseSelection)(),
+                        signal: dock === "top" ? parentScope.offsets.y : (0, _scope.addOffsets)(parentScope.offsets.y, parentScope.offsets.h)
                     }
                 ],
                 height: [
                     {
-                        test: _selection.testForCollapseSelection(),
+                        test: (0, _selection.testForCollapseSelection)(),
                         value: 0
                     }
                 ]
@@ -3797,36 +3536,35 @@ class AggregateContainer extends _layout.Layout {
     }
     getTransforms(aggregation, groupby) {
         const trans = {
-            type: 'joinaggregate',
-            groupby: groupby.map(_expr.safeFieldName),
+            type: "joinaggregate",
+            groupby: groupby.map((0, _expr.safeFieldName)),
             ops: [
                 aggregation
             ]
         };
-        if (aggregation === 'sum') trans.fields = [
+        if (aggregation === "sum") trans.fields = [
             this.props.sumBy.name
-        ].map(_expr.safeFieldName);
+        ].map((0, _expr.safeFieldName));
         return trans;
     }
     getAggregation() {
-        const { props: props1  } = this;
+        const { props  } = this;
         let s;
-        if (props1.dock === 'left') s = props1.axesScales.x;
-        else s = props1.axesScales.y;
+        if (props.dock === "left") s = props.axesScales.x;
+        else s = props.axesScales.y;
         switch(s.aggregate){
-            case 'sum':
-                return 'sum';
+            case "sum":
+                return "sum";
             default:
-                return 'count';
+                return "count";
         }
     }
 }
 
-},{"./layout":"8pPe8","../constants":"1t33I","../expr":"2IX4W","../scope":"lHDQD","../selection":"gqqkZ","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"8pPe8":[function(require,module,exports) {
+},{"./layout":"7w384","../constants":"eNr4m","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7w384":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Layout", ()=>Layout
-);
+parcelHelpers.export(exports, "Layout", ()=>Layout);
 class Layout {
     constructor(props){
         this.props = props;
@@ -3839,34 +3577,32 @@ class Layout {
         return null;
     }
     build() {
-        throw 'Not implemented';
+        throw "Not implemented";
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"gqqkZ":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"lp0UG":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "testForCollapseSelection", ()=>testForCollapseSelection
-);
+parcelHelpers.export(exports, "testForCollapseSelection", ()=>testForCollapseSelection);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _constants = require("./constants");
 function testForCollapseSelection() {
-    return `datum.${_constants.FieldNames.Collapsed}`;
+    return `datum.${(0, _constants.FieldNames).Collapsed}`;
 }
 
-},{"./constants":"1t33I","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"6wxfJ":[function(require,module,exports) {
+},{"./constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3jVb3":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "AggregateSquare", ()=>AggregateSquare
-);
+parcelHelpers.export(exports, "AggregateSquare", ()=>AggregateSquare);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _layout = require("./layout");
 var _expr = require("../expr");
 var _scope = require("../scope");
 var _selection = require("../selection");
-class AggregateSquare extends _layout.Layout {
+class AggregateSquare extends (0, _layout.Layout) {
     constructor(props){
         super(props);
         this.props = props;
@@ -3880,17 +3616,16 @@ class AggregateSquare extends _layout.Layout {
         };
     }
     build() {
-        const { names , props: props1  } = this;
-        const { aggregation , globalScope , groupings , onBuild , parentScope  } = props1;
+        const { names , props  } = this;
+        const { aggregation , globalScope , groupings , onBuild , parentScope  } = props;
         const { sizeSignals  } = parentScope;
-        _scope.addTransforms(globalScope.data, Object.assign(Object.assign({
-        }, this.getTransforms(aggregation, _scope.getGroupBy(groupings))), {
+        (0, _scope.addTransforms)(globalScope.data, Object.assign(Object.assign({}, this.getTransforms(aggregation, (0, _scope.getGroupBy)(groupings))), {
             as: [
                 names.aggregateField
             ]
         }), {
-            type: 'extent',
-            field: _expr.safeFieldName(names.aggregateField),
+            type: "extent",
+            field: (0, _expr.safeFieldName)(names.aggregateField),
             signal: names.globalAggregateExtentSignal
         });
         const localAggregateMaxExtent = `datum[${JSON.stringify(names.aggregateField)}]`;
@@ -3898,18 +3633,18 @@ class AggregateSquare extends _layout.Layout {
         const squareMaxArea = `(${[
             squareMaxSide,
             squareMaxSide
-        ].join(' * ')})`;
+        ].join(" * ")})`;
         const shrinkRatio = `((${localAggregateMaxExtent}) / (${names.globalAggregateExtentSignal}[1]))`;
         const squareArea = `(${[
             squareMaxArea,
             shrinkRatio
-        ].join(' * ')})`;
+        ].join(" * ")})`;
         const squareSide = `sqrt(${squareArea})`;
         const localAggregateMaxExtentScaled = squareSide;
         onBuild && onBuild(localAggregateMaxExtent, localAggregateMaxExtentScaled);
         const offsets = {
-            x: _scope.addOffsets(parentScope.offsets.x, `(${parentScope.offsets.w} - ${squareSide}) / 2`),
-            y: _scope.addOffsets(parentScope.offsets.y, `(${parentScope.offsets.h} - ${squareSide}) / 2`),
+            x: (0, _scope.addOffsets)(parentScope.offsets.x, `(${parentScope.offsets.w} - ${squareSide}) / 2`),
+            y: (0, _scope.addOffsets)(parentScope.offsets.y, `(${parentScope.offsets.h} - ${squareSide}) / 2`),
             h: squareSide,
             w: squareSide
         };
@@ -3922,13 +3657,13 @@ class AggregateSquare extends _layout.Layout {
             encodingRuleMap: {
                 y: [
                     {
-                        test: _selection.testForCollapseSelection(),
+                        test: (0, _selection.testForCollapseSelection)(),
                         signal: offsets.y
                     }
                 ],
                 height: [
                     {
-                        test: _selection.testForCollapseSelection(),
+                        test: (0, _selection.testForCollapseSelection)(),
                         value: 0
                     }
                 ]
@@ -3937,24 +3672,23 @@ class AggregateSquare extends _layout.Layout {
     }
     getTransforms(aggregation, groupby) {
         const trans = {
-            type: 'joinaggregate',
-            groupby: groupby.map(_expr.safeFieldName),
+            type: "joinaggregate",
+            groupby: groupby.map((0, _expr.safeFieldName)),
             ops: [
                 aggregation
             ]
         };
-        if (aggregation === 'sum') trans.fields = [
+        if (aggregation === "sum") trans.fields = [
             this.props.sumBy.name
-        ].map(_expr.safeFieldName);
+        ].map((0, _expr.safeFieldName));
         return trans;
     }
 }
 
-},{"./layout":"8pPe8","../expr":"2IX4W","../scope":"lHDQD","../selection":"gqqkZ","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"2X3Vg":[function(require,module,exports) {
+},{"./layout":"7w384","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"cD88v":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Band", ()=>Band
-);
+parcelHelpers.export(exports, "Band", ()=>Band);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _layout = require("./layout");
@@ -3963,7 +3697,7 @@ var _expr = require("../expr");
 var _scope = require("../scope");
 var _selection = require("../selection");
 var _signals = require("../signals");
-class Band extends _layout.Layout {
+class Band extends (0, _layout.Layout) {
     constructor(props){
         super(props);
         this.props = props;
@@ -3974,66 +3708,66 @@ class Band extends _layout.Layout {
             bandWidth: `${p}_bandwidth`,
             accumulative: `${p}_accumulative`
         };
-        this.bin = _bin.binnable(this.prefix, props.globalScope.data.name, props.groupby);
+        this.bin = (0, _bin.binnable)(this.prefix, props.globalScope.data.name, props.groupby);
     }
     getGrouping() {
         return this.bin.fields;
     }
     build() {
-        const { bin , names , props: props1  } = this;
-        const { globalScope , minBandWidth , orientation , parentScope , showAxes  } = props1;
+        const { bin , names , props  } = this;
+        const { globalScope , minBandWidth , orientation , parentScope , showAxes  } = props;
         const binField = bin.fields[0];
         if (bin.native === false) {
-            _scope.addSignals(globalScope.scope, ...bin.signals);
-            _scope.addTransforms(globalScope.data, ...bin.transforms);
-            _scope.addData(globalScope.scope, bin.dataSequence);
+            (0, _scope.addSignals)(globalScope.scope, ...bin.signals);
+            (0, _scope.addTransforms)(globalScope.data, ...bin.transforms);
+            (0, _scope.addData)(globalScope.scope, bin.dataSequence);
         }
         //TODO don't add this, use existing dataset
-        _scope.addData(globalScope.scope, {
+        (0, _scope.addData)(globalScope.scope, {
             name: names.accumulative,
             source: bin.fullScaleDataname,
             transform: [
                 {
-                    type: 'aggregate',
-                    groupby: this.getGrouping().map(_expr.safeFieldName),
+                    type: "aggregate",
+                    groupby: this.getGrouping().map((0, _expr.safeFieldName)),
                     ops: [
-                        'count'
+                        "count"
                     ]
                 }
             ]
         });
-        const horizontal = orientation === 'horizontal';
+        const horizontal = orientation === "horizontal";
         const minCellSignal = horizontal ? globalScope.signals.minCellHeight : globalScope.signals.minCellWidth;
-        _signals.modifySignal(minCellSignal, 'max', `length(data(${JSON.stringify(names.accumulative)})) * ${minBandWidth}`);
-        _scope.addSignals(globalScope.scope, {
+        (0, _signals.modifySignal)(minCellSignal, "max", `length(data(${JSON.stringify(names.accumulative)})) * ${minBandWidth}`);
+        (0, _scope.addSignals)(globalScope.scope, {
             name: names.bandWidth,
             update: `bandwidth(${JSON.stringify(horizontal ? names.yScale : names.xScale)})`
         });
         const scales = this.getScales(bin, horizontal);
         let encodingRuleMap;
-        if (!props1.excludeEncodingRuleMap) encodingRuleMap = horizontal ? {
+        if (!props.excludeEncodingRuleMap) encodingRuleMap = horizontal ? {
             x: [
                 {
-                    test: _selection.testForCollapseSelection(),
-                    value: parentScope.offsets.x
+                    test: (0, _selection.testForCollapseSelection)(),
+                    signal: parentScope.offsets.x
                 }
             ],
             width: [
                 {
-                    test: _selection.testForCollapseSelection(),
+                    test: (0, _selection.testForCollapseSelection)(),
                     value: 0
                 }
             ]
         } : {
             y: [
                 {
-                    test: _selection.testForCollapseSelection(),
-                    signal: _scope.addOffsets(parentScope.offsets.y, parentScope.offsets.h)
+                    test: (0, _selection.testForCollapseSelection)(),
+                    signal: (0, _scope.addOffsets)(parentScope.offsets.y, parentScope.offsets.h)
                 }
             ],
             height: [
                 {
-                    test: _selection.testForCollapseSelection(),
+                    test: (0, _selection.testForCollapseSelection)(),
                     value: 0
                 }
             ]
@@ -4058,11 +3792,11 @@ class Band extends _layout.Layout {
         };
     }
     getOffset(horizontal, binField) {
-        const { names , props: props1  } = this;
-        const { parentScope  } = props1;
+        const { names , props  } = this;
+        const { parentScope  } = props;
         return {
-            x: _scope.addOffsets(parentScope.offsets.x, horizontal ? '' : `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(binField)}])`),
-            y: _scope.addOffsets(parentScope.offsets.y, horizontal ? `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(binField)}])` : ''),
+            x: (0, _scope.addOffsets)(parentScope.offsets.x, horizontal ? "" : `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(binField)}])`),
+            y: (0, _scope.addOffsets)(parentScope.offsets.y, horizontal ? `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(binField)}])` : ""),
             h: horizontal ? names.bandWidth : parentScope.offsets.h,
             w: horizontal ? parentScope.offsets.w : names.bandWidth
         };
@@ -4070,11 +3804,11 @@ class Band extends _layout.Layout {
     getScales(bin, horizontal) {
         const { names  } = this;
         const { parentScope  } = this.props;
-        const binField = _expr.safeFieldName(bin.fields[0]);
+        const binField = (0, _expr.safeFieldName)(bin.fields[0]);
         const scales = [];
         let bandScale;
         if (horizontal) bandScale = {
-            type: 'band',
+            type: "band",
             name: names.yScale,
             range: [
                 0,
@@ -4091,7 +3825,7 @@ class Band extends _layout.Layout {
             reverse: true
         };
         else bandScale = {
-            type: 'band',
+            type: "band",
             name: names.xScale,
             range: [
                 0,
@@ -4111,11 +3845,10 @@ class Band extends _layout.Layout {
     }
 }
 
-},{"./layout":"8pPe8","../bin":"gwlvx","../expr":"2IX4W","../scope":"lHDQD","../selection":"gqqkZ","../signals":"hwNqr","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"gwlvx":[function(require,module,exports) {
+},{"./layout":"7w384","../bin":"1wZ7F","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","../signals":"3piKm","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1wZ7F":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "binnable", ()=>binnable
-);
+parcelHelpers.export(exports, "binnable", ()=>binnable);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _constants = require("./constants");
@@ -4123,14 +3856,14 @@ var _expr = require("./expr");
 function binnable(prefix, domainDataName, discreteColumn) {
     const { column , defaultBins , maxbins , maxbinsSignalDisplayName , maxbinsSignalName  } = discreteColumn;
     if (column.quantitative) {
-        const field = `${prefix}_bin_${_expr.exprSafeFieldName(column.name)}`;
+        const field = `${prefix}_bin_${(0, _expr.exprSafeFieldName)(column.name)}`;
         const fieldEnd = `${field}_end`;
         const binSignal = `${field}_bins`;
         const extentSignal = `${field}_bin_extent`;
         domainDataName = `${field}_sequence`; //override the data name
         const extentTransform = {
-            type: 'extent',
-            field: _expr.safeFieldName(column.name),
+            type: "extent",
+            field: (0, _expr.safeFieldName)(column.name),
             signal: extentSignal
         };
         const maxbinsSignal = {
@@ -4139,15 +3872,15 @@ function binnable(prefix, domainDataName, discreteColumn) {
             bind: {
                 name: maxbinsSignalDisplayName,
                 debounce: 50,
-                input: 'range',
+                input: "range",
                 min: 1,
                 max: maxbins,
                 step: 1
             }
         };
         const binTransform = {
-            type: 'bin',
-            field: _expr.safeFieldName(column.name),
+            type: "bin",
+            field: (0, _expr.safeFieldName)(column.name),
             as: [
                 field,
                 fieldEnd, 
@@ -4164,7 +3897,7 @@ function binnable(prefix, domainDataName, discreteColumn) {
             name: domainDataName,
             transform: [
                 {
-                    type: 'sequence',
+                    type: "sequence",
                     start: {
                         signal: `${binSignal}.start`
                     },
@@ -4176,33 +3909,33 @@ function binnable(prefix, domainDataName, discreteColumn) {
                     }
                 },
                 {
-                    type: 'formula',
-                    expr: 'datum.data',
+                    type: "formula",
+                    expr: "datum.data",
                     as: field
                 },
                 {
-                    type: 'formula',
+                    type: "formula",
                     expr: `datum.data + ${binSignal}.step`,
                     as: fieldEnd
                 },
                 {
-                    type: 'window',
+                    type: "window",
                     ops: [
-                        'row_number'
+                        "row_number"
                     ],
                     as: [
-                        _constants.FieldNames.Ordinal
+                        (0, _constants.FieldNames).Ordinal
                     ]
                 },
                 {
-                    type: 'formula',
+                    type: "formula",
                     expr: `datum.data === ${binSignal}.start`,
-                    as: _constants.FieldNames.First
+                    as: (0, _constants.FieldNames).First
                 },
                 {
-                    type: 'formula',
+                    type: "formula",
                     expr: `datum.data === ${binSignal}.stop - ${binSignal}.step`,
-                    as: _constants.FieldNames.Last
+                    as: (0, _constants.FieldNames).Last
                 }
             ]
         };
@@ -4240,11 +3973,10 @@ function binnable(prefix, domainDataName, discreteColumn) {
     }
 }
 
-},{"./constants":"1t33I","./expr":"2IX4W","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"in4x6":[function(require,module,exports) {
+},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3Xmem":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Cross", ()=>Cross
-);
+parcelHelpers.export(exports, "Cross", ()=>Cross);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _layout = require("./layout");
@@ -4255,13 +3987,13 @@ var _facetTitle = require("../facetTitle");
 var _ordinal = require("../ordinal");
 var _scope = require("../scope");
 var _signals = require("../signals");
-class Cross extends _layout.Layout {
+class Cross extends (0, _layout.Layout) {
     constructor(props){
         super(props);
         this.props = props;
         const p = this.prefix = `cross_${this.id}`;
-        this.binX = _bin.binnable(`${p}_x`, props.globalScope.data.name, props.groupbyX);
-        this.binY = _bin.binnable(`${p}_y`, props.globalScope.data.name, props.groupbyY);
+        this.binX = (0, _bin.binnable)(`${p}_x`, props.globalScope.data.name, props.groupbyX);
+        this.binY = (0, _bin.binnable)(`${p}_y`, props.globalScope.data.name, props.groupbyY);
         this.names = {
             facetDataName: `data_${p}_facet`,
             searchUnion: `data_${p}_search`,
@@ -4276,8 +4008,8 @@ class Cross extends _layout.Layout {
         return this.binX.fields.concat(this.binY.fields);
     }
     build() {
-        const { binX , binY , names , prefix , props: props1  } = this;
-        const { axisTextColor , colRowTitles , globalScope , parentScope  } = props1;
+        const { binX , binY , names , prefix , props  } = this;
+        const { axisTextColor , colRowTitles , globalScope , parentScope  } = props;
         const titles = {
             x: {
                 dataName: null,
@@ -4289,29 +4021,29 @@ class Cross extends _layout.Layout {
             }
         };
         const dx = {
-            dim: 'x',
+            dim: "x",
             bin: binX,
-            sortOrder: 'ascending',
+            sortOrder: "ascending",
             size: parentScope.sizeSignals.layoutWidth,
             layout: parentScope.sizeSignals.layoutWidth,
             min: globalScope.signals.minCellWidth.name,
             out: globalScope.signals.plotWidthOut,
-            offset: _constants.SignalNames.FacetPaddingLeft,
-            padding: _constants.SignalNames.FacetPaddingLeft,
+            offset: (0, _constants.SignalNames).FacetPaddingLeft,
+            padding: (0, _constants.SignalNames).FacetPaddingLeft,
             dataOut: null,
             scaleName: null,
             position: null
         };
         const dy = {
-            dim: 'y',
+            dim: "y",
             bin: binY,
-            sortOrder: 'ascending',
+            sortOrder: "ascending",
             size: parentScope.sizeSignals.layoutHeight,
             layout: parentScope.sizeSignals.layoutHeight,
             min: globalScope.signals.minCellHeight.name,
             out: globalScope.signals.plotHeightOut,
-            offset: _constants.SignalNames.FacetPaddingTop,
-            padding: `(${_constants.SignalNames.FacetPaddingTop} + ${_constants.SignalNames.FacetPaddingBottom})`,
+            offset: (0, _constants.SignalNames).FacetPaddingTop,
+            padding: `(${(0, _constants.SignalNames).FacetPaddingTop} + ${(0, _constants.SignalNames).FacetPaddingBottom})`,
             dataOut: null,
             scaleName: null,
             position: null
@@ -4328,24 +4060,24 @@ class Cross extends _layout.Layout {
             let scale;
             const titleSource = titles[dim];
             if (bin.native === false) {
-                _scope.addSignals(globalScope.scope, ...bin.signals);
-                _scope.addTransforms(globalScope.data, ...bin.transforms);
-                _scope.addData(globalScope.scope, bin.dataSequence);
-                _scope.addTransforms(bin.dataSequence, {
-                    type: 'formula',
+                (0, _scope.addSignals)(globalScope.scope, ...bin.signals);
+                (0, _scope.addTransforms)(globalScope.data, ...bin.transforms);
+                (0, _scope.addData)(globalScope.scope, bin.dataSequence);
+                (0, _scope.addTransforms)(bin.dataSequence, {
+                    type: "formula",
                     expr: `indata(${JSON.stringify(globalScope.markDataName)}, ${JSON.stringify(bin.fields[0])}, datum[${JSON.stringify(bin.fields[0])}])`,
-                    as: _constants.FieldNames.Contains
+                    as: (0, _constants.FieldNames).Contains
                 });
                 data = bin.dataSequence;
                 dataName = bin.dataSequence.name;
                 countSignal = `length(data(${JSON.stringify(dataName)}))`;
-                scale = _ordinal.ordinalScale(dataName, `${names.dimScale}_${dim}`, bin.fields);
+                scale = (0, _ordinal.ordinalScale)(dataName, `${names.dimScale}_${dim}`, bin.fields);
                 titleSource.dataName = bin.dataSequence.name;
             } else {
                 dataName = globalScope.markDataName;
-                const ord = _ordinal.createOrdinals(dataName, `${prefix}_${dim}`, bin.fields, sortOrder);
+                const ord = (0, _ordinal.createOrdinals)(dataName, `${prefix}_${dim}`, bin.fields, sortOrder);
                 data = ord.data;
-                _scope.addData(globalScope.scope, ord.data);
+                (0, _scope.addData)(globalScope.scope, ord.data);
                 countSignal = `length(data(${JSON.stringify(ord.data.name)}))`;
                 scale = ord.scale;
                 titleSource.dataName = ord.data.name;
@@ -4353,35 +4085,35 @@ class Cross extends _layout.Layout {
             titleSource.quantitative = bin.discreteColumn.column.quantitative;
             d.dataOut = data;
             d.scaleName = scale.name;
-            _scope.addTransforms(data, {
-                type: 'formula',
-                expr: _facetSearch.serializeAsVegaExpression(bin, _constants.FieldNames.First, _constants.FieldNames.Last),
-                as: _constants.FieldNames.FacetSearch
+            (0, _scope.addTransforms)(data, {
+                type: "formula",
+                expr: (0, _facetSearch.serializeAsVegaExpression)(bin, (0, _constants.FieldNames).First, (0, _constants.FieldNames).Last),
+                as: (0, _constants.FieldNames).FacetSearch
             }, {
-                type: 'formula',
-                expr: _facetSearch.displayBin(bin),
-                as: _constants.FieldNames.FacetTitle
+                type: "formula",
+                expr: (0, _facetSearch.displayBin)(bin),
+                as: (0, _constants.FieldNames).FacetTitle
             });
-            _scope.addScales(globalScope.scope, scale);
+            (0, _scope.addScales)(globalScope.scope, scale);
             const count = `${names.dimCount}_${dim}`;
             const calc = `${names.dimCellSizeCalc}_${dim}`;
             const size = `${names.dimCellSize}_${dim}`;
-            _scope.addSignals(globalScope.scope, {
+            (0, _scope.addSignals)(globalScope.scope, {
                 name: count,
                 update: countSignal
             });
-            _scope.addSignals(globalScope.scope, {
+            (0, _scope.addSignals)(globalScope.scope, {
                 name: calc,
                 update: `${d.layout} / ${count}`
             }, {
                 name: size,
                 update: `max(${d.min}, (${calc} - ${padding}))`
             });
-            _signals.modifySignal(d.out, 'max', `((${size} + ${padding}) * ${count})`);
+            (0, _signals.modifySignal)(d.out, "max", `((${size} + ${padding}) * ${count})`);
             d.position = this.dimensionOffset(d);
         });
         const groupRow = {
-            type: 'group',
+            type: "group",
             encode: {
                 update: {
                     y: {
@@ -4398,18 +4130,18 @@ class Cross extends _layout.Layout {
                     source: dx.dataOut.name,
                     transform: [
                         {
-                            type: 'formula',
-                            expr: `[datum[${JSON.stringify(_constants.FieldNames.FacetSearch)}], merge(parent[${JSON.stringify(_constants.FieldNames.FacetSearch)}], { clause: '&&'})]`,
-                            as: _constants.FieldNames.FacetSearch
+                            type: "formula",
+                            expr: `[datum[${JSON.stringify((0, _constants.FieldNames).FacetSearch)}], merge(parent[${JSON.stringify((0, _constants.FieldNames).FacetSearch)}], { clause: '&&'})]`,
+                            as: (0, _constants.FieldNames).FacetSearch
                         }
                     ]
                 }
             ]
         };
         const groupCol = {
-            style: 'cell',
+            style: "cell",
             name: prefix,
-            type: 'group',
+            type: "group",
             encode: {
                 update: {
                     height: {
@@ -4427,8 +4159,8 @@ class Cross extends _layout.Layout {
                 data: names.searchUnion
             }
         };
-        _scope.addMarks(globalScope.markGroup, groupRow);
-        _scope.addMarks(groupRow, groupCol);
+        (0, _scope.addMarks)(globalScope.markGroup, groupRow);
+        (0, _scope.addMarks)(groupRow, groupCol);
         const offsets = {
             x: this.dimensionOffset(dx),
             y: this.dimensionOffset(dy),
@@ -4441,7 +4173,7 @@ class Cross extends _layout.Layout {
             colCount: `${names.dimCount}_x`,
             rowCount: `${names.dimCount}_y`
         };
-        if (colRowTitles) _facetTitle.addFacetColRowTitles(globalScope.scope, titles.x, titles.y, sizeSignals, axisTextColor);
+        if (colRowTitles) (0, _facetTitle.addFacetColRowTitles)(globalScope.scope, titles.x, titles.y, sizeSignals, axisTextColor);
         return {
             facetScope: groupCol,
             offsets,
@@ -4455,16 +4187,13 @@ class Cross extends _layout.Layout {
     }
 }
 
-},{"./layout":"8pPe8","../bin":"gwlvx","../constants":"1t33I","../facetSearch":"5bHzS","../facetTitle":"bSVTk","../ordinal":"iy5ix","../scope":"lHDQD","../signals":"hwNqr","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"5bHzS":[function(require,module,exports) {
+},{"./layout":"7w384","../bin":"1wZ7F","../constants":"eNr4m","../facetSearch":"2CVGj","../facetTitle":"6LisZ","../ordinal":"l8chc","../scope":"k44Ul","../signals":"3piKm","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"2CVGj":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "displayBin", ()=>displayBin
-);
-parcelHelpers.export(exports, "serializeAsVegaExpression", ()=>serializeAsVegaExpression
-);
+parcelHelpers.export(exports, "displayBin", ()=>displayBin);
+parcelHelpers.export(exports, "serializeAsVegaExpression", ()=>serializeAsVegaExpression);
 function displayBin(bin) {
-    const val = (index)=>`datum[${JSON.stringify(bin.fields[index])}]`
-    ;
+    const val = (index)=>`datum[${JSON.stringify(bin.fields[index])}]`;
     return bin.discreteColumn.column.quantitative ? `format(${val(0)}, '~r') + ' - ' + format(${val(1)}, '~r')` : val(0);
 }
 function obj(nameValues, clause) {
@@ -4478,13 +4207,13 @@ function serializeAsVegaExpression(bin, firstFieldName, lastFieldName, clause) {
     if (bin.discreteColumn.column.quantitative) {
         const low = [
             `name:${JSON.stringify(bin.discreteColumn.column.name)}`,
-            'operator:\'>=\'',
+            "operator:'>='",
             `value:datum[${JSON.stringify(bin.fields[0])}]`
         ];
         const high = [
-            'clause:\'&&\'',
+            "clause:'&&'",
             `name:${JSON.stringify(bin.discreteColumn.column.name)}`,
-            'operator:\'<\'',
+            "operator:'<'",
             `value:datum[${JSON.stringify(bin.fields[1])}]`
         ];
         return obj([
@@ -4493,7 +4222,7 @@ function serializeAsVegaExpression(bin, firstFieldName, lastFieldName, clause) {
     } else {
         const exact = [
             `name:${JSON.stringify(bin.discreteColumn.column.name)}`,
-            'operator:\'==\'',
+            "operator:'=='",
             `value:datum[${JSON.stringify(bin.fields[0])}]`
         ];
         return obj([
@@ -4502,43 +4231,40 @@ function serializeAsVegaExpression(bin, firstFieldName, lastFieldName, clause) {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"iy5ix":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"l8chc":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "createOrdinals", ()=>createOrdinals
-);
-parcelHelpers.export(exports, "ordinalScale", ()=>ordinalScale
-);
+parcelHelpers.export(exports, "createOrdinals", ()=>createOrdinals);
+parcelHelpers.export(exports, "ordinalScale", ()=>ordinalScale);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _constants = require("./constants");
 var _expr = require("./expr");
 function createOrdinals(source, prefix, binFields, sortOrder) {
-    const _binFields = binFields.map(_expr.safeFieldName);
+    const _binFields = binFields.map((0, _expr.safeFieldName));
     const dataName = `${prefix}_bin_order`;
     const data = {
         name: dataName,
         source,
         transform: [
             {
-                type: 'aggregate',
+                type: "aggregate",
                 groupby: _binFields
             },
             {
-                type: 'collect',
+                type: "collect",
                 sort: {
                     field: _binFields,
-                    order: _binFields.map((f)=>sortOrder
-                    )
+                    order: _binFields.map((f)=>sortOrder)
                 }
             },
             {
-                type: 'window',
+                type: "window",
                 ops: [
-                    'row_number'
+                    "row_number"
                 ],
                 as: [
-                    _constants.FieldNames.Ordinal
+                    (0, _constants.FieldNames).Ordinal
                 ]
             }
         ]
@@ -4550,24 +4276,23 @@ function createOrdinals(source, prefix, binFields, sortOrder) {
 }
 function ordinalScale(dataName, scaleName, binFields) {
     return {
-        type: 'ordinal',
+        type: "ordinal",
         name: scaleName,
         domain: {
             data: dataName,
-            field: _expr.safeFieldName(binFields[0])
+            field: (0, _expr.safeFieldName)(binFields[0])
         },
         range: {
             data: dataName,
-            field: _constants.FieldNames.Ordinal
+            field: (0, _constants.FieldNames).Ordinal
         }
     };
 }
 
-},{"./constants":"1t33I","./expr":"2IX4W","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"6EFcR":[function(require,module,exports) {
+},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jRktq":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Scatter", ()=>Scatter
-);
+parcelHelpers.export(exports, "Scatter", ()=>Scatter);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _layout = require("./layout");
@@ -4577,7 +4302,7 @@ var _expr = require("../expr");
 var _scales = require("../scales");
 var _scope = require("../scope");
 var _selection = require("../selection");
-class Scatter extends _layout.Layout {
+class Scatter extends (0, _layout.Layout) {
     constructor(props){
         super(props);
         this.props = props;
@@ -4594,37 +4319,37 @@ class Scatter extends _layout.Layout {
         };
     }
     build() {
-        const { names , prefix , props: props1  } = this;
-        const { globalScope , parentScope , scatterPointScaleDisplay , size , x , y , z , zGrounded  } = props1;
+        const { names , prefix , props  } = this;
+        const { globalScope , parentScope , scatterPointScaleDisplay , size , x , y , z , zGrounded  } = props;
         const qsize = size && size.quantitative && size;
-        _scope.addSignals(globalScope.scope, {
-            name: _constants.SignalNames.PointScale,
+        (0, _scope.addSignals)(globalScope.scope, {
+            name: (0, _constants.SignalNames).PointScale,
             value: 5,
             bind: {
                 name: scatterPointScaleDisplay,
                 debounce: 50,
-                input: 'range',
+                input: "range",
                 min: 1,
                 max: 10,
                 step: 1
             }
         }, {
-            name: _constants.SignalNames.ZGrounded,
+            name: (0, _constants.SignalNames).ZGrounded,
             value: false,
             bind: {
                 name: zGrounded,
-                input: 'checkbox'
+                input: "checkbox"
             }
         });
         if (qsize) {
-            _scope.addTransforms(globalScope.data, {
-                type: 'extent',
-                field: _expr.safeFieldName(qsize.name),
+            (0, _scope.addTransforms)(globalScope.data, {
+                type: "extent",
+                field: (0, _expr.safeFieldName)(qsize.name),
                 signal: names.sizeExtent
             });
-            _scope.addScales(globalScope.scope, {
+            (0, _scope.addScales)(globalScope.scope, {
                 name: names.sizeScale,
-                type: 'linear',
+                type: "linear",
                 domain: [
                     0,
                     {
@@ -4638,12 +4363,12 @@ class Scatter extends _layout.Layout {
                     }
                 ]
             });
-            _scope.addSignals(globalScope.scope, {
+            (0, _scope.addSignals)(globalScope.scope, {
                 name: names.sizeRange,
-                update: `min(${parentScope.sizeSignals.layoutHeight}, ${parentScope.sizeSignals.layoutWidth}) / ${_defaults.scatterSizedDiv}`
+                update: `min(${parentScope.sizeSignals.layoutHeight}, ${parentScope.sizeSignals.layoutWidth}) / ${(0, _defaults.scatterSizedDiv)}`
             });
         }
-        _scope.addData(globalScope.scope, {
+        (0, _scope.addData)(globalScope.scope, {
             name: names.markData,
             source: globalScope.markDataName,
             transform: [
@@ -4653,7 +4378,7 @@ class Scatter extends _layout.Layout {
             ].map((c)=>{
                 if (!c || !c.quantitative) return;
                 const t = {
-                    type: 'filter',
+                    type: "filter",
                     expr: `isValid(datum[${JSON.stringify(c.name)}])`
                 };
                 return t;
@@ -4662,15 +4387,14 @@ class Scatter extends _layout.Layout {
         globalScope.setMarkDataName(names.markData);
         const globalScales = {
             showAxes: true,
-            scales: {
-            }
+            scales: {}
         };
         const zValue = z ? `scale(${JSON.stringify(names.zScale)}, datum[${JSON.stringify(z.name)}])` : null;
-        const sizeValueSignal = qsize ? `scale(${JSON.stringify(names.sizeScale)}, datum[${JSON.stringify(qsize.name)}]) * ${_constants.SignalNames.PointScale}` : _constants.SignalNames.PointScale;
+        const sizeValueSignal = qsize ? `scale(${JSON.stringify(names.sizeScale)}, datum[${JSON.stringify(qsize.name)}]) * ${(0, _constants.SignalNames).PointScale}` : (0, _constants.SignalNames).PointScale;
         const update = Object.assign({
             height: [
                 {
-                    test: _selection.testForCollapseSelection(),
+                    test: (0, _selection.testForCollapseSelection)(),
                     value: 0
                 },
                 {
@@ -4683,57 +4407,57 @@ class Scatter extends _layout.Layout {
         }, z && {
             z: [
                 {
-                    test: _selection.testForCollapseSelection(),
+                    test: (0, _selection.testForCollapseSelection)(),
                     value: 0
                 },
                 {
-                    signal: `${_constants.SignalNames.ZGrounded} ? 0 : ${zValue}`
+                    signal: `${(0, _constants.SignalNames).ZGrounded} ? 0 : ${zValue}`
                 }
             ],
             depth: [
                 {
-                    test: _selection.testForCollapseSelection(),
+                    test: (0, _selection.testForCollapseSelection)(),
                     value: 0
                 },
                 {
-                    signal: `${_constants.SignalNames.ZGrounded} ? ${zValue} : ${sizeValueSignal}`
+                    signal: `${(0, _constants.SignalNames).ZGrounded} ? ${zValue} : ${sizeValueSignal}`
                 }
             ]
         });
         const columnSignals = [
             {
                 column: x,
-                xyz: 'x',
+                xyz: "x",
                 scaleName: names.xScale,
                 reverse: false,
                 signal: parentScope.sizeSignals.layoutWidth
             },
             {
                 column: y,
-                xyz: 'y',
+                xyz: "y",
                 scaleName: names.yScale,
                 reverse: true,
                 signal: parentScope.sizeSignals.layoutHeight
             },
             {
                 column: z,
-                xyz: 'z',
+                xyz: "z",
                 scaleName: names.zScale,
                 reverse: false,
-                signal: `(${globalScope.zSize}) * ${_constants.SignalNames.ZProportion}`
+                signal: `(${globalScope.zSize}) * ${(0, _constants.SignalNames).ZProportion}`
             }
         ];
         columnSignals.forEach((cs)=>{
             const { column , reverse , scaleName , signal , xyz  } = cs;
             if (!column) return;
             let scale;
-            if (column.quantitative) scale = _scales.linearScale(scaleName, globalScope.data.name, column.name, [
+            if (column.quantitative) scale = (0, _scales.linearScale)(scaleName, globalScope.data.name, column.name, [
                 0,
                 {
                     signal
                 }
             ], reverse, false);
-            else scale = _scales.pointScale(scaleName, globalScope.data.name, [
+            else scale = (0, _scales.pointScale)(scaleName, globalScope.data.name, [
                 0,
                 {
                     signal
@@ -4745,7 +4469,7 @@ class Scatter extends _layout.Layout {
         });
         const mark = {
             name: prefix,
-            type: 'rect',
+            type: "rect",
             from: {
                 data: globalScope.markDataName
             },
@@ -4753,11 +4477,11 @@ class Scatter extends _layout.Layout {
                 update
             }
         };
-        _scope.addMarks(globalScope.markGroup, mark);
+        (0, _scope.addMarks)(globalScope.markGroup, mark);
         return {
             offsets: {
-                x: _scope.addOffsets(parentScope.offsets.x, `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(x.name)}])`),
-                y: _scope.addOffsets(parentScope.offsets.y, `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(y.name)}]) - ${sizeValueSignal}`),
+                x: (0, _scope.addOffsets)(parentScope.offsets.x, `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(x.name)}])`),
+                y: (0, _scope.addOffsets)(parentScope.offsets.y, `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(y.name)}]) - ${sizeValueSignal}`),
                 h: sizeValueSignal,
                 w: sizeValueSignal
             },
@@ -4770,8 +4494,8 @@ class Scatter extends _layout.Layout {
             encodingRuleMap: {
                 y: [
                     {
-                        test: _selection.testForCollapseSelection(),
-                        signal: _scope.addOffsets(parentScope.offsets.y, parentScope.sizeSignals.layoutHeight)
+                        test: (0, _selection.testForCollapseSelection)(),
+                        signal: (0, _scope.addOffsets)(parentScope.offsets.y, parentScope.sizeSignals.layoutHeight)
                     }
                 ]
             }
@@ -4779,11 +4503,10 @@ class Scatter extends _layout.Layout {
     }
 }
 
-},{"./layout":"8pPe8","../constants":"1t33I","../defaults":"3ylwt","../expr":"2IX4W","../scales":"duG64","../scope":"lHDQD","../selection":"gqqkZ","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"eYIiP":[function(require,module,exports) {
+},{"./layout":"7w384","../constants":"eNr4m","../defaults":"5iedU","../expr":"1G99Z","../scales":"8b8up","../scope":"k44Ul","../selection":"lp0UG","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"425K1":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Square", ()=>Square
-);
+parcelHelpers.export(exports, "Square", ()=>Square);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _layout = require("./layout");
@@ -4792,7 +4515,7 @@ var _expr = require("../expr");
 var _scope = require("../scope");
 var _selection = require("../selection");
 var _zBase = require("../zBase");
-class Square extends _layout.Layout {
+class Square extends (0, _layout.Layout) {
     constructor(props){
         super(props);
         this.props = props;
@@ -4807,29 +4530,29 @@ class Square extends _layout.Layout {
         };
     }
     build() {
-        const { names , prefix , props: props1  } = this;
-        const { fillDirection , globalScope , groupings , parentScope , collapseYHeight , sortBy , z  } = props1;
-        const zScale = _zBase.addZScale(z, globalScope.zSize, globalScope.data.name, names.zScale);
-        _scope.addTransforms(globalScope.data, Object.assign({
-            type: 'stack',
-            groupby: _scope.getGroupBy(groupings).map(_expr.safeFieldName),
+        const { names , prefix , props  } = this;
+        const { fillDirection , globalScope , groupings , parentScope , collapseYHeight , sortBy , z  } = props;
+        const zScale = (0, _zBase.addZScale)(z, globalScope.zSize, globalScope.data.name, names.zScale);
+        (0, _scope.addTransforms)(globalScope.data, Object.assign({
+            type: "stack",
+            groupby: (0, _scope.getGroupBy)(groupings).map((0, _expr.safeFieldName)),
             as: [
                 names.stack0,
                 names.stack1
             ]
         }, sortBy && {
             sort: {
-                field: _expr.safeFieldName(sortBy.name),
-                order: 'ascending'
+                field: (0, _expr.safeFieldName)(sortBy.name),
+                order: "ascending"
             }
         }));
         const { gap , levelSize , size , squaresPerBand  } = this.addSignals();
         const heightSignal = {
-            signal: fillDirection === 'down-right' ? size : levelSize
+            signal: fillDirection === "down-right" ? size : levelSize
         };
         const mark = {
             name: prefix,
-            type: 'rect',
+            type: "rect",
             from: {
                 data: globalScope.markDataName
             },
@@ -4837,13 +4560,13 @@ class Square extends _layout.Layout {
                 update: Object.assign({
                     height: collapseYHeight ? [
                         {
-                            test: _selection.testForCollapseSelection(),
+                            test: (0, _selection.testForCollapseSelection)(),
                             value: 0
                         },
                         heightSignal
                     ] : heightSignal,
                     width: {
-                        signal: fillDirection === 'down-right' ? levelSize : size
+                        signal: fillDirection === "down-right" ? levelSize : size
                     }
                 }, z && {
                     z: {
@@ -4851,21 +4574,20 @@ class Square extends _layout.Layout {
                     },
                     depth: [
                         {
-                            test: _selection.testForCollapseSelection(),
+                            test: (0, _selection.testForCollapseSelection)(),
                             value: 0
                         },
                         {
                             scale: names.zScale,
-                            field: _expr.safeFieldName(z.name)
+                            field: (0, _expr.safeFieldName)(z.name)
                         }
                     ]
                 })
             }
         };
-        _scope.addMarks(globalScope.markGroup, mark);
+        (0, _scope.addMarks)(globalScope.markGroup, mark);
         const { tx , ty  } = this.transformXY(gap, levelSize, squaresPerBand);
-        return Object.assign(Object.assign(Object.assign({
-        }, z && {
+        return Object.assign(Object.assign(Object.assign({}, z && {
             globalScales: {
                 showAxes: true,
                 scales: {
@@ -4876,8 +4598,8 @@ class Square extends _layout.Layout {
             }
         }), {
             offsets: {
-                x: _scope.addOffsets(parentScope.offsets.x, tx.expr),
-                y: _scope.addOffsets(parentScope.offsets.y, ty.expr),
+                x: (0, _scope.addOffsets)(parentScope.offsets.x, tx.expr),
+                y: (0, _scope.addOffsets)(parentScope.offsets.y, ty.expr),
                 h: size,
                 w: size
             },
@@ -4890,8 +4612,8 @@ class Square extends _layout.Layout {
             encodingRuleMap: {
                 y: [
                     {
-                        test: _selection.testForCollapseSelection(),
-                        value: parentScope.offsets.y
+                        test: (0, _selection.testForCollapseSelection)(),
+                        signal: parentScope.offsets.y
                     }
                 ]
             }
@@ -4900,36 +4622,36 @@ class Square extends _layout.Layout {
     getBandWidth() {
         const { offsets  } = this.props.parentScope;
         switch(this.props.fillDirection){
-            case 'down-right':
+            case "down-right":
                 return offsets.h;
             default:
                 return offsets.w;
         }
     }
     addSignals() {
-        const { names , props: props1  } = this;
-        const { fillDirection , globalScope , groupings , parentScope  } = props1;
-        let { maxGroupedFillSize , maxGroupedUnits  } = props1;
+        const { names , props  } = this;
+        const { fillDirection , globalScope , groupings , parentScope  } = props;
+        let { maxGroupedFillSize , maxGroupedUnits  } = props;
         if (!maxGroupedUnits) {
             if (groupings) {
-                _scope.addTransforms(globalScope.data, {
-                    type: 'joinaggregate',
-                    groupby: _scope.getGroupBy(groupings).map(_expr.safeFieldName),
+                (0, _scope.addTransforms)(globalScope.data, {
+                    type: "joinaggregate",
+                    groupby: (0, _scope.getGroupBy)(groupings).map((0, _expr.safeFieldName)),
                     ops: [
-                        'count'
+                        "count"
                     ],
                     as: [
                         names.maxGroupField
                     ]
                 }, {
-                    type: 'extent',
+                    type: "extent",
                     field: names.maxGroupField,
                     signal: names.maxGroupSignal
                 });
                 maxGroupedUnits = `(${names.maxGroupSignal}[1])`;
             } else maxGroupedUnits = `length(data(${JSON.stringify(globalScope.data.name)}))`;
         }
-        if (!maxGroupedFillSize) maxGroupedFillSize = fillDirection === 'down-right' ? parentScope.offsets.w : parentScope.offsets.h;
+        if (!maxGroupedFillSize) maxGroupedFillSize = fillDirection === "down-right" ? parentScope.offsets.w : parentScope.offsets.h;
         const aspect = `((${names.bandWidth}) / (${maxGroupedFillSize}))`;
         const squaresPerBand = `ceil(sqrt(${maxGroupedUnits} * ${aspect}))`;
         const gap = `min(0.1 * ((${names.bandWidth}) / (${squaresPerBand} - 1)), 1)`;
@@ -4949,25 +4671,25 @@ class Square extends _layout.Layout {
         const level = `floor((datum[${JSON.stringify(names.stack0)}]) / ${squaresPerBand})`;
         const { fillDirection , parentScope  } = this.props;
         const tx = {
-            type: 'formula',
+            type: "formula",
             expr: null,
-            as: `${prefix}_${_constants.FieldNames.OffsetX}`
+            as: `${prefix}_${(0, _constants.FieldNames).OffsetX}`
         };
         const ty = {
-            type: 'formula',
+            type: "formula",
             expr: null,
-            as: `${prefix}_${_constants.FieldNames.OffsetY}`
+            as: `${prefix}_${(0, _constants.FieldNames).OffsetY}`
         };
         switch(fillDirection){
-            case 'down-right':
+            case "down-right":
                 tx.expr = `${level} * (${levelSize} + ${gap})`;
                 ty.expr = compartment;
                 break;
-            case 'right-up':
+            case "right-up":
                 tx.expr = compartment;
                 ty.expr = `${parentScope.offsets.h} - ${levelSize} - ${level} * (${levelSize} + ${gap})`;
                 break;
-            case 'right-down':
+            case "right-down":
             default:
                 tx.expr = compartment;
                 ty.expr = `${level} * (${levelSize} + ${gap})`;
@@ -4980,11 +4702,10 @@ class Square extends _layout.Layout {
     }
 }
 
-},{"./layout":"8pPe8","../constants":"1t33I","../expr":"2IX4W","../scope":"lHDQD","../selection":"gqqkZ","../zBase":"g4Q8y","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"g4Q8y":[function(require,module,exports) {
+},{"./layout":"7w384","../constants":"eNr4m","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","../zBase":"kSgN8","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"kSgN8":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "addZScale", ()=>addZScale
-);
+parcelHelpers.export(exports, "addZScale", ()=>addZScale);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _constants = require("./constants");
@@ -4994,26 +4715,25 @@ function addZScale(z, zSize, dataName, zScaleName) {
         const zRange = [
             0,
             {
-                signal: `(${zSize}) * ${_constants.SignalNames.ZProportion}`
+                signal: `(${zSize}) * ${(0, _constants.SignalNames).ZProportion}`
             }
         ];
-        const scale = z.quantitative ? _scales.linearScale(zScaleName, dataName, z.name, zRange, false, true) : _scales.pointScale(zScaleName, dataName, zRange, z.name, false);
+        const scale = z.quantitative ? (0, _scales.linearScale)(zScaleName, dataName, z.name, zRange, false, true) : (0, _scales.pointScale)(zScaleName, dataName, zRange, z.name, false);
         return scale;
     }
 }
 
-},{"./constants":"1t33I","./scales":"duG64","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"jeLuC":[function(require,module,exports) {
+},{"./constants":"eNr4m","./scales":"8b8up","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"b0WQI":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Stack", ()=>Stack
-);
+parcelHelpers.export(exports, "Stack", ()=>Stack);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _layout = require("./layout");
 var _expr = require("../expr");
 var _scope = require("../scope");
 var _selection = require("../selection");
-class Stack extends _layout.Layout {
+class Stack extends (0, _layout.Layout) {
     constructor(props){
         super(props);
         this.props = props;
@@ -5036,90 +4756,90 @@ class Stack extends _layout.Layout {
         };
     }
     build() {
-        const { names , props: props1  } = this;
-        const { globalScope , groupings , parentScope , sort  } = props1;
+        const { names , props  } = this;
+        const { globalScope , groupings , parentScope , sort  } = props;
         const { sizeSignals  } = parentScope;
-        _scope.addTransforms(globalScope.data, {
-            type: 'joinaggregate',
-            groupby: _scope.getGroupBy(groupings).map(_expr.safeFieldName),
+        (0, _scope.addTransforms)(globalScope.data, {
+            type: "joinaggregate",
+            groupby: (0, _scope.getGroupBy)(groupings).map((0, _expr.safeFieldName)),
             ops: [
-                'count'
+                "count"
             ],
             as: [
                 names.count
             ]
         }, {
-            type: 'extent',
+            type: "extent",
             field: names.count,
             signal: names.globalExtent
         }, Object.assign({
-            type: 'stack',
-            groupby: _scope.getGroupBy(groupings).map(_expr.safeFieldName),
+            type: "stack",
+            groupby: (0, _scope.getGroupBy)(groupings).map((0, _expr.safeFieldName)),
             as: [
                 names.stack0,
                 names.stack1
             ]
         }, sort && {
             sort: {
-                field: _expr.safeFieldName(sort.name),
-                order: 'ascending'
+                field: (0, _expr.safeFieldName)(sort.name),
+                order: "ascending"
             }
         }));
-        _scope.addData(globalScope.scope, {
+        (0, _scope.addData)(globalScope.scope, {
             name: names.sequence,
             transform: [
                 {
-                    type: 'sequence',
+                    type: "sequence",
                     start: 1,
                     stop: {
-                        signal: `sqrt(${names.globalExtent}[1])`
+                        signal: `max(sqrt(${names.globalExtent}[1]),2)`
                     }
                 },
                 {
-                    type: 'formula',
-                    expr: 'datum.data * datum.data',
-                    as: 'squared'
+                    type: "formula",
+                    expr: "datum.data * datum.data",
+                    as: "squared"
                 },
                 {
-                    type: 'formula',
+                    type: "formula",
                     expr: `ceil(${names.globalExtent}[1] / datum.squared)`,
-                    as: 'maxlevels'
+                    as: "maxlevels"
                 },
                 {
-                    type: 'formula',
+                    type: "formula",
                     expr: `(${names.size} - (datum.data - 1) * datum.data) / datum.data`,
-                    as: 'side'
+                    as: "side"
                 },
                 {
-                    type: 'formula',
-                    expr: 'datum.side * datum.maxlevels + datum.maxlevels - 1',
-                    as: 'sidecubeheight'
+                    type: "formula",
+                    expr: "datum.side * datum.maxlevels + datum.maxlevels - 1",
+                    as: "sidecubeheight"
                 },
                 {
-                    type: 'formula',
+                    type: "formula",
                     expr: `abs(${globalScope.zSize} - datum.sidecubeheight)`,
-                    as: 'heightmatch'
+                    as: "heightmatch"
                 },
                 {
-                    type: 'collect',
+                    type: "collect",
                     sort: {
-                        field: 'heightmatch',
-                        order: 'ascending'
+                        field: "heightmatch",
+                        order: "ascending"
                     }
                 },
                 {
-                    type: 'window',
+                    type: "window",
                     ops: [
-                        'row_number'
+                        "row_number"
                     ]
                 },
                 {
-                    type: 'filter',
-                    expr: 'datum.row_number === 1'
+                    type: "filter",
+                    expr: "datum.row_number === 1"
                 }
             ]
         });
-        _scope.addSignals(globalScope.scope, {
+        (0, _scope.addSignals)(globalScope.scope, {
             name: names.size,
             update: `min((${sizeSignals.layoutHeight}), (${sizeSignals.layoutWidth}))`
         }, {
@@ -5145,13 +4865,13 @@ class Stack extends _layout.Layout {
         const groupX = `(${sizeSignals.layoutWidth} - ${names.size}) / 2`;
         const groupY = `(${sizeSignals.layoutHeight} - ${names.size}) / 2`;
         const offsets = {
-            x: _scope.addOffsets(parentScope.offsets.x, groupX, `${cubeX} * (${names.cube} + 1)`),
-            y: _scope.addOffsets(parentScope.offsets.y, groupY, `${cubeY} * (${names.cube} + 1)`),
+            x: (0, _scope.addOffsets)(parentScope.offsets.x, groupX, `${cubeX} * (${names.cube} + 1)`),
+            y: (0, _scope.addOffsets)(parentScope.offsets.y, groupY, `${cubeY} * (${names.cube} + 1)`),
             h: names.size,
             w: names.size
         };
         const mark = {
-            type: 'rect',
+            type: "rect",
             from: {
                 data: this.names.levelDataName
             },
@@ -5172,9 +4892,9 @@ class Stack extends _layout.Layout {
                 }
             }
         };
-        _scope.addMarks(globalScope.markGroup, mark);
+        (0, _scope.addMarks)(globalScope.markGroup, mark);
         const zScale = {
-            type: 'linear',
+            type: "linear",
             name: names.zScale,
             domain: [
                 0,
@@ -5208,25 +4928,25 @@ class Stack extends _layout.Layout {
             encodingRuleMap: {
                 y: [
                     {
-                        test: _selection.testForCollapseSelection(),
+                        test: (0, _selection.testForCollapseSelection)(),
                         signal: parentScope.offsets.y
                     }
                 ],
                 z: [
                     {
-                        test: _selection.testForCollapseSelection(),
+                        test: (0, _selection.testForCollapseSelection)(),
                         value: 0
                     }
                 ],
                 depth: [
                     {
-                        test: _selection.testForCollapseSelection(),
+                        test: (0, _selection.testForCollapseSelection)(),
                         value: 0
                     }
                 ],
                 height: [
                     {
-                        test: _selection.testForCollapseSelection(),
+                        test: (0, _selection.testForCollapseSelection)(),
                         value: 0
                     }
                 ]
@@ -5235,11 +4955,10 @@ class Stack extends _layout.Layout {
     }
 }
 
-},{"./layout":"8pPe8","../expr":"2IX4W","../scope":"lHDQD","../selection":"gqqkZ","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"9us2O":[function(require,module,exports) {
+},{"./layout":"7w384","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1pzL4":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Strip", ()=>Strip
-);
+parcelHelpers.export(exports, "Strip", ()=>Strip);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _layout = require("./layout");
@@ -5248,29 +4967,29 @@ var _expr = require("../expr");
 var _scope = require("../scope");
 var _selection = require("../selection");
 var _zBase = require("../zBase");
-class Strip extends _layout.Layout {
+class Strip extends (0, _layout.Layout) {
     constructor(props){
         super(props);
         this.props = props;
         const p = this.prefix = `strip_${this.id}`;
         this.names = {
-            firstField: `${p}${_constants.FieldNames.First}`,
-            lastField: `${p}${_constants.FieldNames.Last}`,
-            valueField: `${p}${_constants.FieldNames.Value}`,
+            firstField: `${p}${(0, _constants.FieldNames).First}`,
+            lastField: `${p}${(0, _constants.FieldNames).Last}`,
+            valueField: `${p}${(0, _constants.FieldNames).Value}`,
             scale: `scale_${p}`,
             zScale: `scale_${p}_z`
         };
     }
     build() {
-        const { names , prefix , props: props1  } = this;
-        const { addPercentageScale , globalScope , groupings , orientation , size , sort , sortOrder , parentScope , z  } = props1;
-        const zScale = _zBase.addZScale(z, globalScope.zSize, globalScope.data.name, names.zScale);
-        const horizontal = orientation === 'horizontal';
+        const { names , prefix , props  } = this;
+        const { addPercentageScale , globalScope , groupings , orientation , size , sort , sortOrder , parentScope , z  } = props;
+        const zScale = (0, _zBase.addZScale)(z, globalScope.zSize, globalScope.data.name, names.zScale);
+        const horizontal = orientation === "horizontal";
         const transform = [];
         if (sort) transform.push({
-            type: 'collect',
+            type: "collect",
             sort: {
-                field: _expr.safeFieldName(sort.name),
+                field: (0, _expr.safeFieldName)(sort.name),
                 order: sortOrder
             }
         });
@@ -5278,43 +4997,42 @@ class Strip extends _layout.Layout {
         if (size) {
             stackField = size.name;
             transform.push({
-                type: 'filter',
+                type: "filter",
                 expr: `datum[${JSON.stringify(size.name)}] > 0`
             });
         } else {
             stackField = names.valueField;
             transform.push({
-                type: 'formula',
-                expr: '1',
+                type: "formula",
+                expr: "1",
                 as: stackField
             });
         }
         const stackTransform = {
-            type: 'stack',
-            field: _expr.safeFieldName(stackField),
-            offset: 'normalize',
+            type: "stack",
+            field: (0, _expr.safeFieldName)(stackField),
+            offset: "normalize",
             as: [
                 names.firstField,
                 names.lastField
             ]
         };
-        if (groupings.length) stackTransform.groupby = _scope.getGroupBy(groupings).map(_expr.safeFieldName);
+        if (groupings.length) stackTransform.groupby = (0, _scope.getGroupBy)(groupings).map((0, _expr.safeFieldName));
         transform.push(stackTransform);
-        _scope.addTransforms(globalScope.data, ...transform);
+        (0, _scope.addTransforms)(globalScope.data, ...transform);
         const span = [
             names.lastField,
             names.firstField
-        ].map((f)=>`datum[${JSON.stringify(f)}]`
-        ).join(' - ');
+        ].map((f)=>`datum[${JSON.stringify(f)}]`).join(" - ");
         const offsets = {
-            x: _scope.addOffsets(parentScope.offsets.x, horizontal ? `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.w})` : ''),
-            y: _scope.addOffsets(parentScope.offsets.y, horizontal ? '' : `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.h})`),
+            x: (0, _scope.addOffsets)(parentScope.offsets.x, horizontal ? `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.w})` : ""),
+            y: (0, _scope.addOffsets)(parentScope.offsets.y, horizontal ? "" : `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.h})`),
             h: horizontal ? parentScope.offsets.h : `(${span}) * (${parentScope.offsets.h})`,
             w: horizontal ? `(${span}) * (${parentScope.offsets.w})` : parentScope.offsets.w
         };
         const mark = {
             name: prefix,
-            type: 'rect',
+            type: "rect",
             from: {
                 data: globalScope.markDataName
             },
@@ -5332,22 +5050,22 @@ class Strip extends _layout.Layout {
                     },
                     depth: [
                         {
-                            test: _selection.testForCollapseSelection(),
+                            test: (0, _selection.testForCollapseSelection)(),
                             value: 0
                         },
                         {
                             scale: names.zScale,
-                            field: _expr.safeFieldName(z.name)
+                            field: (0, _expr.safeFieldName)(z.name)
                         }
                     ]
                 })
             }
         };
-        _scope.addMarks(globalScope.markGroup, mark);
+        (0, _scope.addMarks)(globalScope.markGroup, mark);
         let percentageScale;
         if (addPercentageScale) percentageScale = [
             {
-                type: 'linear',
+                type: "linear",
                 name: names.scale,
                 domain: [
                     0,
@@ -5387,11 +5105,10 @@ class Strip extends _layout.Layout {
     }
 }
 
-},{"./layout":"8pPe8","../constants":"1t33I","../expr":"2IX4W","../scope":"lHDQD","../selection":"gqqkZ","../zBase":"g4Q8y","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"6XNP4":[function(require,module,exports) {
+},{"./layout":"7w384","../constants":"eNr4m","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","../zBase":"kSgN8","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"kPpw1":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Treemap", ()=>Treemap
-);
+parcelHelpers.export(exports, "Treemap", ()=>Treemap);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _layout = require("./layout");
@@ -5400,7 +5117,7 @@ var _expr = require("../expr");
 var _scope = require("../scope");
 var _selection = require("../selection");
 var _zBase = require("../zBase");
-class Treemap extends _layout.Layout {
+class Treemap extends (0, _layout.Layout) {
     constructor(props){
         super(props);
         this.props = props;
@@ -5425,30 +5142,29 @@ class Treemap extends _layout.Layout {
         };
     }
     build() {
-        const { names , props: props1  } = this;
-        const { globalScope , parentScope , treeMapMethod , z  } = props1;
-        const zScale = _zBase.addZScale(z, globalScope.zSize, globalScope.data.name, names.zScale);
+        const { names , props  } = this;
+        const { globalScope , parentScope , treeMapMethod , z  } = props;
+        const zScale = (0, _zBase.addZScale)(z, globalScope.zSize, globalScope.data.name, names.zScale);
         const offsets = {
-            x: _scope.addOffsets(parentScope.offsets.x, fn(names.fieldX0)),
-            y: _scope.addOffsets(parentScope.offsets.y, fn(names.fieldY0)),
+            x: (0, _scope.addOffsets)(parentScope.offsets.x, fn(names.fieldX0)),
+            y: (0, _scope.addOffsets)(parentScope.offsets.y, fn(names.fieldY0)),
             h: subtract(names.fieldY1, names.fieldY0),
             w: subtract(names.fieldX1, names.fieldX0)
         };
         const mark = this.transformedMark(offsets);
-        _scope.addSignals(globalScope.scope, {
-            name: _constants.SignalNames.TreeMapMethod,
-            value: 'squarify',
+        (0, _scope.addSignals)(globalScope.scope, {
+            name: (0, _constants.SignalNames).TreeMapMethod,
+            value: "squarify",
             bind: {
                 name: treeMapMethod,
-                input: 'select',
+                input: "select",
                 options: [
-                    'squarify',
-                    'binary'
+                    "squarify",
+                    "binary"
                 ]
             }
         });
-        return Object.assign(Object.assign({
-        }, z && {
+        return Object.assign(Object.assign({}, z && {
             globalScales: {
                 showAxes: true,
                 scales: {
@@ -5467,21 +5183,21 @@ class Treemap extends _layout.Layout {
         });
     }
     transformedMark(offsets) {
-        const { names , props: props1  } = this;
-        const { globalScope , groupings , parentScope  } = props1;
+        const { names , props  } = this;
+        const { globalScope , groupings , parentScope  } = props;
         if (groupings.length) {
             //treemap transform can't have it's boundary size grouped, so we need to facet the data.
-            _scope.addData(globalScope.scope, {
+            (0, _scope.addData)(globalScope.scope, {
                 name: names.dataHeightWidth,
                 source: globalScope.markDataName,
                 transform: [
                     {
-                        type: 'formula',
+                        type: "formula",
                         expr: parentScope.offsets.h,
                         as: names.fieldHeight
                     },
                     {
-                        type: 'formula',
+                        type: "formula",
                         expr: parentScope.offsets.w,
                         as: names.fieldWidth
                     }
@@ -5492,12 +5208,12 @@ class Treemap extends _layout.Layout {
                 source: names.dataFacet
             };
             const facets = {
-                type: 'group',
+                type: "group",
                 from: {
                     facet: {
                         name: names.dataFacet,
                         data: names.dataHeightWidth,
-                        groupby: _scope.getGroupBy(groupings).map(_expr.safeFieldName)
+                        groupby: (0, _scope.getGroupBy)(groupings).map((0, _expr.safeFieldName))
                     }
                 },
                 data: [
@@ -5506,12 +5222,12 @@ class Treemap extends _layout.Layout {
                         source: names.dataFacet,
                         transform: [
                             {
-                                type: 'extent',
+                                type: "extent",
                                 field: names.fieldHeight,
                                 signal: names.heightExtent
                             },
                             {
-                                type: 'extent',
+                                type: "extent",
                                 field: names.fieldWidth,
                                 signal: names.widthExtent
                             }
@@ -5521,7 +5237,7 @@ class Treemap extends _layout.Layout {
                 ]
             };
             globalScope.setMarkDataName(names.dataFacetMark);
-            _scope.addMarks(globalScope.markGroup, facets);
+            (0, _scope.addMarks)(globalScope.markGroup, facets);
             //assign new markgroup after adding mark to original group
             globalScope.setMarkGroup(facets);
             this.treemapTransform(treemapData, `${names.widthExtent}[0]`, `${names.heightExtent}[0]`);
@@ -5532,11 +5248,11 @@ class Treemap extends _layout.Layout {
         }
     }
     addMark(offsets, markParent, markDataName) {
-        const { names , prefix , props: props1  } = this;
-        const { z  } = props1;
+        const { names , prefix , props  } = this;
+        const { z  } = props;
         const mark = {
             name: prefix,
-            type: 'rect',
+            type: "rect",
             from: {
                 data: markDataName
             },
@@ -5554,41 +5270,41 @@ class Treemap extends _layout.Layout {
                     },
                     depth: [
                         {
-                            test: _selection.testForCollapseSelection(),
+                            test: (0, _selection.testForCollapseSelection)(),
                             value: 0
                         },
                         {
                             scale: names.zScale,
-                            field: _expr.safeFieldName(z.name)
+                            field: (0, _expr.safeFieldName)(z.name)
                         }
                     ]
                 })
             }
         };
-        _scope.addMarks(markParent, mark);
+        (0, _scope.addMarks)(markParent, mark);
         return mark;
     }
     treemapTransform(treemapData, widthSignal, heightSignal) {
-        const { names , props: props1  } = this;
-        const { group , size  } = props1;
-        _scope.addTransforms(treemapData, {
-            type: 'filter',
+        const { names , props  } = this;
+        const { group , size  } = props;
+        (0, _scope.addTransforms)(treemapData, {
+            type: "filter",
             expr: `datum[${JSON.stringify(size.name)}] > 0`
         }, {
-            type: 'nest',
+            type: "nest",
             keys: [
-                group && group.name || '__NONE__'
+                group && group.name || "__NONE__"
             ]
         }, {
-            type: 'treemap',
-            field: _expr.safeFieldName(size.name),
+            type: "treemap",
+            field: (0, _expr.safeFieldName)(size.name),
             sort: {
-                field: 'value',
-                order: 'descending'
+                field: "value",
+                order: "descending"
             },
             round: true,
             method: {
-                signal: _constants.SignalNames.TreeMapMethod
+                signal: (0, _constants.SignalNames).TreeMapMethod
             },
             paddingInner: 1,
             paddingOuter: 0,
@@ -5615,15 +5331,13 @@ function fn(n) {
     return `datum[${JSON.stringify(n)}]`;
 }
 function subtract(...fields) {
-    return fields.map((n)=>fn(n)
-    ).join(' - ');
+    return fields.map((n)=>fn(n)).join(" - ");
 }
 
-},{"./layout":"8pPe8","../constants":"1t33I","../expr":"2IX4W","../scope":"lHDQD","../selection":"gqqkZ","../zBase":"g4Q8y","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"6iuK6":[function(require,module,exports) {
+},{"./layout":"7w384","../constants":"eNr4m","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","../zBase":"kSgN8","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7BE6v":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Wrap", ()=>Wrap
-);
+parcelHelpers.export(exports, "Wrap", ()=>Wrap);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _layout = require("./layout");
@@ -5635,12 +5349,12 @@ var _facetTitle = require("../facetTitle");
 var _ordinal = require("../ordinal");
 var _scope = require("../scope");
 var _signals = require("../signals");
-class Wrap extends _layout.Layout {
+class Wrap extends (0, _layout.Layout) {
     constructor(props){
         super(props);
         this.props = props;
         const p = this.prefix = `wrap_${this.id}`;
-        this.bin = _bin.binnable(this.prefix, props.globalScope.data.name, props.groupby);
+        this.bin = (0, _bin.binnable)(this.prefix, props.globalScope.data.name, props.groupby);
         this.names = {
             outputData: `data_${p}_out`,
             rowColumnDataName: `data_${p}_row_col`,
@@ -5667,38 +5381,38 @@ class Wrap extends _layout.Layout {
         return this.bin.fields;
     }
     build() {
-        const { bin , names , prefix , props: props1  } = this;
-        const { axisTextColor , cellTitles , globalScope , parentScope  } = props1;
+        const { bin , names , prefix , props  } = this;
+        const { axisTextColor , cellTitles , globalScope , parentScope  } = props;
         let ordinalBinData;
         if (bin.native === false) {
-            _scope.addSignals(globalScope.scope, ...bin.signals);
-            _scope.addTransforms(globalScope.data, ...bin.transforms);
-            _scope.addData(globalScope.scope, bin.dataSequence);
-            _scope.addTransforms(bin.dataSequence, {
-                type: 'formula',
+            (0, _scope.addSignals)(globalScope.scope, ...bin.signals);
+            (0, _scope.addTransforms)(globalScope.data, ...bin.transforms);
+            (0, _scope.addData)(globalScope.scope, bin.dataSequence);
+            (0, _scope.addTransforms)(bin.dataSequence, {
+                type: "formula",
                 expr: `indata(${JSON.stringify(globalScope.data.name)}, ${JSON.stringify(bin.fields[0])}, datum[${JSON.stringify(bin.fields[0])}])`,
-                as: _constants.FieldNames.Contains
+                as: (0, _constants.FieldNames).Contains
             });
             ordinalBinData = bin.dataSequence.name;
         } else {
-            const ord = _ordinal.createOrdinals(globalScope.data.name, prefix, bin.fields, 'ascending');
-            _scope.addData(globalScope.scope, ord.data);
+            const ord = (0, _ordinal.createOrdinals)(globalScope.data.name, prefix, bin.fields, "ascending");
+            (0, _scope.addData)(globalScope.scope, ord.data);
             ordinalBinData = ord.data.name;
         }
-        _scope.addData(globalScope.scope, {
+        (0, _scope.addData)(globalScope.scope, {
             name: names.rxc0,
             transform: [
                 {
-                    type: 'sequence',
+                    type: "sequence",
                     start: 1,
                     stop: {
                         signal: `ceil(sqrt(${names.dataLength})) + 1`
                     }
                 },
                 {
-                    type: 'formula',
+                    type: "formula",
                     expr: `ceil(${names.dataLength} / datum.data)`,
-                    as: 'complement'
+                    as: "complement"
                 }
             ]
         }, {
@@ -5706,12 +5420,12 @@ class Wrap extends _layout.Layout {
             source: names.rxc0,
             transform: [
                 {
-                    type: 'project',
+                    type: "project",
                     fields: [
-                        'data'
+                        "data"
                     ],
                     as: [
-                        'cols'
+                        "cols"
                     ]
                 }
             ]
@@ -5720,12 +5434,12 @@ class Wrap extends _layout.Layout {
             source: names.rxc0,
             transform: [
                 {
-                    type: 'project',
+                    type: "project",
                     fields: [
-                        'complement'
+                        "complement"
                     ],
                     as: [
-                        'cols'
+                        "cols"
                     ]
                 }
             ]
@@ -5737,64 +5451,64 @@ class Wrap extends _layout.Layout {
             ],
             transform: [
                 {
-                    type: 'formula',
+                    type: "formula",
                     expr: `ceil(${names.dataLength} / datum.cols)`,
-                    as: 'rows'
+                    as: "rows"
                 },
                 {
-                    type: 'formula',
+                    type: "formula",
                     expr: `${parentScope.sizeSignals.layoutWidth} / datum.cols`,
-                    as: 'cellw'
+                    as: "cellw"
                 },
                 {
-                    type: 'formula',
-                    expr: `datum.cols === 1 ? max(datum.cellw, ${_constants.SignalNames.MinCellWidth}) : datum.cellw`,
-                    as: 'cellw'
+                    type: "formula",
+                    expr: `datum.cols === 1 ? max(datum.cellw, ${(0, _constants.SignalNames).MinCellWidth}) : datum.cellw`,
+                    as: "cellw"
                 },
                 {
-                    type: 'formula',
+                    type: "formula",
                     expr: `${parentScope.sizeSignals.layoutHeight} / datum.rows`,
-                    as: 'cellh'
+                    as: "cellh"
                 },
                 {
-                    type: 'formula',
-                    expr: `datum.rows === 1 ? max(datum.cellh, ${_constants.SignalNames.MinCellHeight}) : datum.cellh`,
-                    as: 'cellh'
+                    type: "formula",
+                    expr: `datum.rows === 1 ? max(datum.cellh, ${(0, _constants.SignalNames).MinCellHeight}) : datum.cellh`,
+                    as: "cellh"
                 },
                 {
-                    type: 'formula',
-                    expr: `(datum.cellw >= ${_constants.SignalNames.MinCellWidth} && datum.cellh >= ${_constants.SignalNames.MinCellHeight})`,
-                    as: 'meetsmin'
+                    type: "formula",
+                    expr: `(datum.cellw >= ${(0, _constants.SignalNames).MinCellWidth} && datum.cellh >= ${(0, _constants.SignalNames).MinCellHeight})`,
+                    as: "meetsmin"
                 },
                 {
-                    type: 'filter',
-                    expr: 'datum.meetsmin'
+                    type: "filter",
+                    expr: "datum.meetsmin"
                 },
                 {
-                    type: 'formula',
-                    expr: 'datum.cellw / datum.cellh',
+                    type: "formula",
+                    expr: "datum.cellw / datum.cellh",
                     as: names.aspect
                 },
                 {
-                    type: 'formula',
+                    type: "formula",
                     expr: `abs(datum.${names.aspect} - ${names.target})`,
                     as: names.idealAspect
                 },
                 {
-                    type: 'formula',
+                    type: "formula",
                     expr: `${names.dataLength} / (datum.cols * datum.rows)`,
-                    as: 'coverage'
+                    as: "coverage"
                 },
                 {
-                    type: 'collect',
+                    type: "collect",
                     sort: {
                         field: [
                             names.idealAspect,
-                            'coverage'
+                            "coverage"
                         ],
                         order: [
-                            'ascending',
-                            'descending'
+                            "ascending",
+                            "descending"
                         ]
                     }
                 }
@@ -5804,24 +5518,24 @@ class Wrap extends _layout.Layout {
             source: ordinalBinData,
             transform: [
                 {
-                    type: 'formula',
-                    expr: `floor((datum[${JSON.stringify(_constants.FieldNames.Ordinal)}] - 1) / ${names.colCount})`,
-                    as: _constants.FieldNames.WrapRow
+                    type: "formula",
+                    expr: `floor((datum[${JSON.stringify((0, _constants.FieldNames).Ordinal)}] - 1) / ${names.colCount})`,
+                    as: (0, _constants.FieldNames).WrapRow
                 },
                 {
-                    type: 'formula',
-                    expr: `(datum[${JSON.stringify(_constants.FieldNames.Ordinal)}] - 1) % ${names.colCount}`,
-                    as: _constants.FieldNames.WrapCol
+                    type: "formula",
+                    expr: `(datum[${JSON.stringify((0, _constants.FieldNames).Ordinal)}] - 1) % ${names.colCount}`,
+                    as: (0, _constants.FieldNames).WrapCol
                 },
                 {
-                    type: 'formula',
-                    expr: _facetSearch.serializeAsVegaExpression(bin, _constants.FieldNames.First, _constants.FieldNames.Last),
-                    as: _constants.FieldNames.FacetSearch
+                    type: "formula",
+                    expr: (0, _facetSearch.serializeAsVegaExpression)(bin, (0, _constants.FieldNames).First, (0, _constants.FieldNames).Last),
+                    as: (0, _constants.FieldNames).FacetSearch
                 },
                 {
-                    type: 'formula',
-                    expr: _facetSearch.displayBin(bin),
-                    as: _constants.FieldNames.FacetTitle
+                    type: "formula",
+                    expr: (0, _facetSearch.displayBin)(bin),
+                    as: (0, _constants.FieldNames).FacetTitle
                 }
             ]
         });
@@ -5830,30 +5544,30 @@ class Wrap extends _layout.Layout {
             source: globalScope.data.name,
             transform: [
                 {
-                    type: 'lookup',
+                    type: "lookup",
                     from: names.rowColumnDataName,
-                    key: _expr.safeFieldName(bin.fields[0]),
+                    key: (0, _expr.safeFieldName)(bin.fields[0]),
                     fields: [
                         bin.fields[0]
-                    ].map(_expr.safeFieldName),
+                    ].map((0, _expr.safeFieldName)),
                     values: [
-                        _constants.FieldNames.WrapRow,
-                        _constants.FieldNames.WrapCol
+                        (0, _constants.FieldNames).WrapRow,
+                        (0, _constants.FieldNames).WrapCol
                     ]
                 }
             ]
         };
-        _scope.addData(globalScope.scope, dataOut);
+        (0, _scope.addData)(globalScope.scope, dataOut);
         globalScope.setMarkDataName(names.outputData);
-        _scope.addSignals(globalScope.scope, {
+        (0, _scope.addSignals)(globalScope.scope, {
             name: names.minAspect,
-            update: `${_constants.SignalNames.MinCellWidth} / ${_constants.SignalNames.MinCellHeight}`
+            update: `${(0, _constants.SignalNames).MinCellWidth} / ${(0, _constants.SignalNames).MinCellHeight}`
         }, {
             name: names.target,
             update: `${names.minAspect} === 1 ? ${1.2} : ${names.minAspect}`
         }, {
             name: names.minArea,
-            update: `${_constants.SignalNames.MinCellWidth}*${_constants.SignalNames.MinCellHeight}`
+            update: `${(0, _constants.SignalNames).MinCellWidth}*${(0, _constants.SignalNames).MinCellHeight}`
         }, {
             name: names.aspect,
             update: `${parentScope.sizeSignals.layoutWidth} / ${parentScope.sizeSignals.layoutHeight}`
@@ -5862,7 +5576,7 @@ class Wrap extends _layout.Layout {
             update: `data(${JSON.stringify(ordinalBinData)}).length`
         }, {
             name: names.growColCount,
-            update: `max(floor(${parentScope.sizeSignals.layoutWidth} / ${_constants.SignalNames.MinCellWidth}), 1)`
+            update: `max(floor(${parentScope.sizeSignals.layoutWidth} / ${(0, _constants.SignalNames).MinCellWidth}), 1)`
         }, {
             name: names.growCellWidth,
             update: `${parentScope.sizeSignals.layoutWidth} / ${names.growColCount}`
@@ -5880,21 +5594,21 @@ class Wrap extends _layout.Layout {
             update: `${names.fits} ? data(${JSON.stringify(names.rxc)})[0].cellw : ${names.growCellWidth}`
         }, {
             name: names.cellHeight,
-            update: `${names.fits} ? data(${JSON.stringify(names.rxc)})[0].cellh : ${_constants.SignalNames.MinCellHeight}`
+            update: `${names.fits} ? data(${JSON.stringify(names.rxc)})[0].cellh : ${(0, _constants.SignalNames).MinCellHeight}`
         });
-        _signals.modifySignal(globalScope.signals.plotHeightOut, 'max', `(${names.cellHeight} * ceil(${names.dataLength} / ${names.colCount}))`);
-        _signals.modifySignal(globalScope.signals.plotWidthOut, 'max', `(${names.cellWidth} * ${names.colCount})`);
+        (0, _signals.modifySignal)(globalScope.signals.plotHeightOut, "max", `(${names.cellHeight} * ceil(${names.dataLength} / ${names.colCount}))`);
+        (0, _signals.modifySignal)(globalScope.signals.plotWidthOut, "max", `(${names.cellWidth} * ${names.colCount})`);
         const signalH = [
             names.cellHeight,
-            _constants.SignalNames.FacetPaddingTop,
-            _constants.SignalNames.FacetPaddingBottom
-        ].join(' - ');
+            (0, _constants.SignalNames).FacetPaddingTop,
+            (0, _constants.SignalNames).FacetPaddingBottom
+        ].join(" - ");
         const signalW = [
             names.cellWidth,
-            _constants.SignalNames.FacetPaddingLeft
-        ].join(' - ');
-        const signalX = _scope.addOffsets(parentScope.offsets.x, `datum[${JSON.stringify(_constants.FieldNames.WrapCol)}] * ${names.cellWidth}`, _constants.SignalNames.FacetPaddingLeft);
-        const signalY = _scope.addOffsets(parentScope.offsets.y, `datum[${JSON.stringify(_constants.FieldNames.WrapRow)}] * ${names.cellHeight}`, _constants.SignalNames.FacetPaddingTop);
+            (0, _constants.SignalNames).FacetPaddingLeft
+        ].join(" - ");
+        const signalX = (0, _scope.addOffsets)(parentScope.offsets.x, `datum[${JSON.stringify((0, _constants.FieldNames).WrapCol)}] * ${names.cellWidth}`, (0, _constants.SignalNames).FacetPaddingLeft);
+        const signalY = (0, _scope.addOffsets)(parentScope.offsets.y, `datum[${JSON.stringify((0, _constants.FieldNames).WrapRow)}] * ${names.cellHeight}`, (0, _constants.SignalNames).FacetPaddingTop);
         const update = {
             height: {
                 signal: signalH
@@ -5916,9 +5630,9 @@ class Wrap extends _layout.Layout {
             w: signalW
         };
         const group = {
-            style: 'cell',
+            style: "cell",
             name: prefix,
-            type: 'group',
+            type: "group",
             from: {
                 data: names.rowColumnDataName
             },
@@ -5926,14 +5640,14 @@ class Wrap extends _layout.Layout {
                 update
             }
         };
-        _scope.addMarks(globalScope.markGroup, group);
+        (0, _scope.addMarks)(globalScope.markGroup, group);
         const sizeSignals = {
-            layoutHeight: `(${names.cellHeight} - ${_constants.SignalNames.FacetPaddingTop} - ${_constants.SignalNames.FacetPaddingBottom})`,
-            layoutWidth: `(${names.cellWidth} - ${_constants.SignalNames.FacetPaddingLeft})`,
+            layoutHeight: `(${names.cellHeight} - ${(0, _constants.SignalNames).FacetPaddingTop} - ${(0, _constants.SignalNames).FacetPaddingBottom})`,
+            layoutWidth: `(${names.cellWidth} - ${(0, _constants.SignalNames).FacetPaddingLeft})`,
             colCount: names.colCount,
             rowCount: `ceil(${names.dataLength} / ${names.colCount})`
         };
-        if (cellTitles) _facetTitle.addFacetCellTitles(group, sizeSignals, axisTextColor);
+        if (cellTitles) (0, _facetTitle.addFacetCellTitles)(group, sizeSignals, axisTextColor);
         return {
             facetScope: group,
             sizeSignals,
@@ -5942,9 +5656,13 @@ class Wrap extends _layout.Layout {
     }
 }
 
-},{"./layout":"8pPe8","../bin":"gwlvx","../constants":"1t33I","../expr":"2IX4W","../facetSearch":"5bHzS","../facetTitle":"bSVTk","../ordinal":"iy5ix","../scope":"lHDQD","../signals":"hwNqr","@parcel/transformer-js/src/esmodule-helpers.js":"jMF8S"}],"6lM8D":[function(require,module,exports) {
+},{"./layout":"7w384","../bin":"1wZ7F","../constants":"eNr4m","../expr":"1G99Z","../facetSearch":"2CVGj","../facetTitle":"6LisZ","../ordinal":"l8chc","../scope":"k44Ul","../signals":"3piKm","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"52vfF":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
 
-},{}],"jrCG9":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"a5HkM":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
 
-},{}]},["jbvTk"], "jbvTk", "parcelRequired43a")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}]},["lKiud"], "lKiud", "parcelRequired43a")
 
